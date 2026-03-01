@@ -6,6 +6,12 @@
 #include <cstdint>
 #include <cstring>
 
+#define TRUE true
+#define FALSE false
+#define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
+#define ZeroMemory       RtlZeroMemory
+#define WINAPI
+
 typedef unsigned int DWORD;
 typedef const char *LPCSTR;
 typedef bool BOOL;
@@ -17,8 +23,6 @@ typedef const wchar_t* LPCWSTR;
 typedef unsigned long long ULONGLONG;
 typedef int HRESULT;
 typedef unsigned int UINT;
-#define TRUE true
-#define WINAPI
 typedef void* HANDLE;
 typedef int INT;
 typedef char CHAR;
@@ -26,11 +30,8 @@ typedef void* PVOID;
 typedef unsigned long* ULONG_PTR;
 typedef long LONG;
 typedef void VOID;
-#define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
-#define ZeroMemory       RtlZeroMemory
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
-#define FALSE false
 typedef struct {
     DWORD LowPart;
     long long QuadPart;
