@@ -7,18 +7,18 @@ using namespace std;
 class Tag
 {
 public:
-    static const byte TAG_End = 0;
-    static const byte TAG_Byte = 1;
-    static const byte TAG_Short = 2;
-    static const byte TAG_Int = 3;
-    static const byte TAG_Long = 4;
-    static const byte TAG_Float = 5;
-    static const byte TAG_Double = 6;
-    static const byte TAG_Byte_Array = 7;
-    static const byte TAG_String = 8;
-    static const byte TAG_List = 9;
-    static const byte TAG_Compound = 10;
-	static const byte TAG_Int_Array = 11;
+    static const byte TAG_End = static_cast<std::byte>(0);
+    static const byte TAG_Byte = static_cast<std::byte>(1);
+    static const byte TAG_Short = static_cast<std::byte>(2);
+    static const byte TAG_Int = static_cast<std::byte>(3);
+    static const byte TAG_Long = static_cast<std::byte>(4);
+    static const byte TAG_Float = static_cast<std::byte>(5);
+    static const byte TAG_Double = static_cast<std::byte>(6);
+    static const byte TAG_Byte_Array = static_cast<std::byte>(7);
+    static const byte TAG_String = static_cast<std::byte>(8);
+    static const byte TAG_List = static_cast<std::byte>(9);
+    static const byte TAG_Compound = static_cast<std::byte>(10);
+	static const byte TAG_Int_Array = static_cast<std::byte>(11);
 
 private:
     wstring name;

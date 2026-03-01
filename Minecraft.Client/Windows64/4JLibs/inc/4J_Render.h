@@ -62,7 +62,7 @@ public:
 	void StartFrame();
 	void DoScreenGrabOnNextPresent();
 	void Present();
-	void Clear(int flags, D3D11_RECT *pRect = NULL);
+	void Clear(int flags);
 	void SetClearColour(const float colourRGBA[4]);
 	bool IsWidescreen();
 	bool IsHiDef();
@@ -160,7 +160,7 @@ public:
 	HRESULT SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int *ppDataOut);
 	HRESULT SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn);
 	void TextureGetStats();
-	ID3D11ShaderResourceView  *TextureGetTexture(int idx);
+	Gnm::Texture  *TextureGetTexture(int idx);
 
 	// State control
 	void StateSetColour(float r, float g, float b, float a);
