@@ -31,9 +31,6 @@ typedef void* HANDLE;
 typedef int INT;
 typedef char CHAR;
 typedef void* PVOID;
-// From PSXSense
-#define XUSER_MAX_COUNT                 4
-#define XUSER_INDEX_ANY                 0x000000FF
 typedef unsigned long* ULONG_PTR;
 typedef long LONG;
 typedef void VOID;
@@ -47,9 +44,6 @@ typedef struct {
     long long QuadPart;
     LONG HighPart;
 } LARGE_INTEGER;
-
-#define XCONTENT_MAX_FILENAME_LENGTH	42
-#define XCONTENT_MAX_DISPLAYNAME_LENGTH MAX_DISPLAYNAME_LENGTH
 
 typedef short SHORT;
 
@@ -90,6 +84,8 @@ typedef struct _RTL_CRITICAL_SECTION {
 } RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
 
 typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+
+#include "linux/xbox_valve.h"
 #endif
 
 #ifdef _WINDOWS64
