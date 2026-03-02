@@ -1991,6 +1991,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 target_compile_options(${PROJECT_NAME} PRIVATE
     -fpermissive
     -Wtemplate-body
+    -Wshift-count-overflow
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE x64headers)

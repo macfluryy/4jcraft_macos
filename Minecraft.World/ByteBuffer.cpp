@@ -104,7 +104,7 @@ int ByteBuffer::getSize()
 //The byte at the given index
 //Throws:
 //IndexOutOfBoundsException - If index is negative or not smaller than the buffer's limit
-BYTE ByteBuffer::get(int index)
+byte ByteBuffer::get(int index)
 {
 	assert( index < m_limit );
 	assert( index >= 0 );
@@ -124,10 +124,10 @@ int ByteBuffer::getInt()
 
 	int value = 0;
 
-	int b1 = buffer[ m_position ];
-	int b2 = buffer[ m_position+1 ];
-	int b3 = buffer[ m_position+2 ];
-	int b4 = buffer[ m_position+3 ];
+	int b1 = static_cast<int>(buffer[ m_position ]);
+	int b2 = static_cast<int>(buffer[ m_position+1 ]);
+	int b3 = static_cast<int>(buffer[ m_position+2 ]);
+	int b4 = static_cast<int>(buffer[ m_position+3 ]);
 
 	m_position += 4;
 
@@ -154,10 +154,10 @@ int ByteBuffer::getInt(unsigned int index)
 	assert( index+3 < m_limit );
 	int value = 0;
 
-	int b1 = buffer[ index ];
-	int b2 = buffer[ index+1 ];
-	int b3 = buffer[ index+2 ];
-	int b4 = buffer[ index+3 ];
+	int b1 = static_cast<int>(buffer[ index ]);
+	int b2 = static_cast<int>(buffer[ index+1 ]);
+	int b3 = static_cast<int>(buffer[ index+2 ]);
+	int b4 = static_cast<int>(buffer[ index+3 ]);
 
 	if( byteOrder == BIGENDIAN )
 	{
@@ -182,14 +182,14 @@ __int64 ByteBuffer::getLong()
 
 	__int64 value = 0;
 
-	__int64 b1 = buffer[ m_position ];
-	__int64 b2 = buffer[ m_position+1 ];
-	__int64 b3 = buffer[ m_position+2 ];
-	__int64 b4 = buffer[ m_position+3 ];
-	__int64 b5 = buffer[ m_position+4 ];
-	__int64 b6 = buffer[ m_position+5 ];
-	__int64 b7 = buffer[ m_position+6 ];
-	__int64 b8 = buffer[ m_position+7 ];
+	__int64 b1 = static_cast<__int64>(buffer[ m_position ]);
+	__int64 b2 = static_cast<__int64>(buffer[ m_position+1 ]);
+	__int64 b3 = static_cast<__int64>(buffer[ m_position+2 ]);
+	__int64 b4 = static_cast<__int64>(buffer[ m_position+3 ]);
+	__int64 b5 = static_cast<__int64>(buffer[ m_position+4 ]);
+	__int64 b6 = static_cast<__int64>(buffer[ m_position+5 ]);
+	__int64 b7 = static_cast<__int64>(buffer[ m_position+6 ]);
+	__int64 b8 = static_cast<__int64>(buffer[ m_position+7 ]);
 
 	m_position += 8;
 
@@ -216,8 +216,8 @@ short ByteBuffer::getShort()
 
 	short value = 0;
 
-	short b1 = buffer[ m_position ];
-	short b2 = buffer[ m_position+1 ];
+	short b1 = static_cast<short>(buffer[ m_position ]);
+	short b2 = static_cast<short>(buffer[ m_position+1 ]);
 
 	m_position += 2;
 
@@ -277,17 +277,17 @@ ByteBuffer *ByteBuffer::putInt(int value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = (value >> 24) & 0xFF;
-		buffer[m_position+1] = (value >> 16) & 0xFF;
-		buffer[m_position+2] = (value >> 8) & 0xFF;
-		buffer[m_position+3] = value & 0xFF;
+		buffer[m_position] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[m_position+1] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[m_position+2] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position+3] = static_cast<byte>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = value & 0xFF;
-		buffer[m_position+1] = (value >> 8) & 0xFF;
-		buffer[m_position+2] = (value >> 16) & 0xFF;
-		buffer[m_position+3] = (value >> 24) & 0xFF;
+		buffer[m_position] = static_cast<byte>(value & 0xFF);
+		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position+2] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[m_position+3] = static_cast<byte>((value >> 24) & 0xFF);
 	}
 
 	m_position += 4;
@@ -309,17 +309,17 @@ ByteBuffer *ByteBuffer::putInt(unsigned int index, int value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[index] = (value >> 24) & 0xFF;
-		buffer[index+1] = (value >> 16) & 0xFF;
-		buffer[index+2] = (value >> 8) & 0xFF;
-		buffer[index+3] = value & 0xFF;
+		buffer[index] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[index+1] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[index+2] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[index+3] = static_cast<byte>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[index] = value & 0xFF;
-		buffer[index+1] = (value >> 8) & 0xFF;
-		buffer[index+2] = (value >> 16) & 0xFF;
-		buffer[index+3] = (value >> 24) & 0xFF;
+		buffer[index] = static_cast<byte>(value & 0xFF);
+		buffer[index+1] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[index+2] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[index+3] = static_cast<byte>((value >> 24) & 0xFF);
 	}
 
 	return this;
@@ -339,13 +339,13 @@ ByteBuffer *ByteBuffer::putShort(short value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = (value >> 8) & 0xFF;
-		buffer[m_position+1] = value & 0xFF;
+		buffer[m_position] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position+1] = static_cast<byte>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = value & 0xFF;
-		buffer[m_position+1] = (value >> 8) & 0xFF;
+		buffer[m_position] = static_cast<byte>(value & 0xFF);
+		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
 	}
 
 	m_position += 2;
@@ -379,25 +379,25 @@ ByteBuffer *ByteBuffer::putLong(__int64 value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = (value >> 56) & 0xFF;
-		buffer[m_position+1] = (value >> 48) & 0xFF;
-		buffer[m_position+2] = (value >> 40) & 0xFF;
-		buffer[m_position+3] = (value >> 32) & 0xFF;
-		buffer[m_position+4] = (value >> 24) & 0xFF;
-		buffer[m_position+5] = (value >> 16) & 0xFF;
-		buffer[m_position+6] = (value >> 8) & 0xFF;
-		buffer[m_position+7] = value & 0xFF;
+		buffer[m_position] = static_cast<byte>((value >> 56) & 0xFF);
+		buffer[m_position+1] = static_cast<byte>((value >> 48) & 0xFF);
+		buffer[m_position+2] = static_cast<byte>((value >> 40) & 0xFF);
+		buffer[m_position+3] = static_cast<byte>((value >> 32) & 0xFF);
+		buffer[m_position+4] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[m_position+5] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[m_position+6] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position+7] = static_cast<byte>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = value & 0xFF;
-		buffer[m_position+1] = (value >> 8) & 0xFF;
-		buffer[m_position+2] = (value >> 16) & 0xFF;
-		buffer[m_position+3] = (value >> 24) & 0xFF;
-		buffer[m_position+4] = (value >> 32) & 0xFF;
-		buffer[m_position+5] = (value >> 40) & 0xFF;
-		buffer[m_position+6] = (value >> 48) & 0xFF;
-		buffer[m_position+7] = (value >> 56) & 0xFF;
+		buffer[m_position] = static_cast<byte>((value & 0xFF));
+		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position+2] = static_cast<byte>((value >> 16) & 0xFF);
+		buffer[m_position+3] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[m_position+4] = static_cast<byte>((value >> 32) & 0xFF);
+		buffer[m_position+5] = static_cast<byte>((value >> 40) & 0xFF);
+		buffer[m_position+6] = static_cast<byte>((value >> 48) & 0xFF);
+		buffer[m_position+7] = static_cast<byte>((value >> 56) & 0xFF);
 	}
 
 	return this;
