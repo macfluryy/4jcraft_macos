@@ -133,7 +133,7 @@ void OrbisLeaderboardManager::scoreboardThreadInternal()
 		// The following NP call should be reserved for asynchronous multiplayer modes that require PS Plus to be accessed. 
 		//
 		//	Note 2: 
-		// The message is not displayed with a user without PlayStation�Plus subscription and they are able to access the Leaderboards.
+		// The message is not displayed with a user without PlayStation®Plus subscription and they are able to access the Leaderboards.
 
 		// NotifyAsyncPlusFeature();
 

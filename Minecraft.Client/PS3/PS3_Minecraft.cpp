@@ -961,10 +961,10 @@ int main()
 	}
 	else
 	{
-		StorageManager.SetGameSaveFolderTitle((WCHAR *)app.GetString(IDS_GAMENAME));//"Minecraft: PlayStation�3 Edition");//GAMENAME);
+		StorageManager.SetGameSaveFolderTitle((WCHAR *)app.GetString(IDS_GAMENAME));//"Minecraft: PlayStation®3 Edition");//GAMENAME);
 	}
-	StorageManager.SetSaveCacheFolderTitle((WCHAR *)app.GetString(IDS_SAVECACHEFILE));//"Minecraft: PlayStation�3 Edition");//GAMENAME);
-	StorageManager.SetOptionsFolderTitle((WCHAR *)app.GetString(IDS_OPTIONSFILE));//"Minecraft: PlayStation�3 Edition");//GAMENAME);
+	StorageManager.SetSaveCacheFolderTitle((WCHAR *)app.GetString(IDS_SAVECACHEFILE));//"Minecraft: PlayStation®3 Edition");//GAMENAME);
+	StorageManager.SetOptionsFolderTitle((WCHAR *)app.GetString(IDS_OPTIONSFILE));//"Minecraft: PlayStation®3 Edition");//GAMENAME);
 	StorageManager.SetGameSaveFolderPrefix(app.GetSaveFolderPrefix());
 	StorageManager.SetMaxSaves(99);
 	byteArray baOptionsIcon = app.getArchiveFile(L"DefaultOptionsImage320x176.png");
