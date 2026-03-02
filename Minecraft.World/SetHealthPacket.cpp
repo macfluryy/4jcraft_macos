@@ -12,7 +12,7 @@ SetHealthPacket::SetHealthPacket()
 	this->food = 0;
 	this->saturation = 0;
 
-	this->damageSource = eTelemetryChallenges_Unknown;
+	this->damageSource = 0;
 }
 
 SetHealthPacket::SetHealthPacket(int health, int food, float saturation, ETelemetryChallenges damageSource)
