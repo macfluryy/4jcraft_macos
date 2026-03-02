@@ -8,6 +8,8 @@
 #include "Inventory.h"
 #include "../Minecraft.Client/Windows64Media/strings.h"
 
+#include "../Minecraft.Client/Windows64Media/strings.h"
+
 const int Inventory::POP_TIME_DURATION = 5;
 const int Inventory::MAX_INVENTORY_STACK_SIZE = 64;
 

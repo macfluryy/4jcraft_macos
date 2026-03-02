@@ -10,7 +10,7 @@
 #include "../Minecraft.Client/Windows64/Windows64_App.h"
 #include "../Minecraft.Client/Minecraft.h"
 
-
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 void Monster::_init()
 {
