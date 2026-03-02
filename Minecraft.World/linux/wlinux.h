@@ -26,6 +26,9 @@ typedef int HRESULT;
 typedef unsigned int UINT;
 typedef void* HANDLE;
 typedef int INT;
+typedef long* PLONG;
+typedef unsigned int* LPDWORD;
+typedef const void* LPCVOID;
 typedef char CHAR;
 typedef void* PVOID;
 typedef unsigned long* ULONG_PTR;
@@ -47,6 +50,8 @@ typedef struct _FILETIME {
     DWORD dwLowDateTime;
     DWORD dwHighDateTime;
 } FILETIME, *PFILETIME, *LPFILETIME;
+
+#define FILE_BEGIN SEEK_SET
 
 typedef short SHORT;
 

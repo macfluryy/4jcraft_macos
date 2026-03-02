@@ -1992,3 +1992,5 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     -fpermissive
     -Wtemplate-body
 )
+
+target_include_directories(${PROJECT_NAME} PRIVATE x64headers)

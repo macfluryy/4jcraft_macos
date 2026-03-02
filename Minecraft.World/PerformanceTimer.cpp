@@ -3,7 +3,7 @@
 
 PerformanceTimer::PerformanceTimer()
 {
-#ifndef _CONTENT_PACKAGE
+#if !defined (__linux__)
 	// Get the frequency of the timer
 	LARGE_INTEGER qwTicksPerSec;
 	QueryPerformanceFrequency( &qwTicksPerSec );
@@ -15,14 +15,14 @@ PerformanceTimer::PerformanceTimer()
 
 void PerformanceTimer::Reset()
 {
-#ifndef _CONTENT_PACKAGE
+#if !defined (__linux__)
 	QueryPerformanceCounter( &m_qwStartTime );
 #endif
 }
 
 void PerformanceTimer::PrintElapsedTime(const wstring &description)
 {
-#ifndef _CONTENT_PACKAGE
+#if !defined (__linux__)
 	LARGE_INTEGER qwNewTime, qwDeltaTime;
 
 	QueryPerformanceCounter( &qwNewTime );

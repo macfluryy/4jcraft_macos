@@ -1,5 +1,7 @@
 #pragma once
+#ifndef __linux__
 #include "xmcore.h"
+#endif // __linux__
 
 // This class is used for the compressed storage of tile data. Unlike the SparseLightingStorage class, data is split into 512 blocks of 4x4x4 tiles. Then within each block, the
 // data is compressed as described below, with a selection of bits per tile available, in a method similar to a palettised image.

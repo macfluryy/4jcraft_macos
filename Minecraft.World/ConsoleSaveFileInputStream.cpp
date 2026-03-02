@@ -25,7 +25,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 //the next byte of data, or -1 if the end of the file is reached.
 int ConsoleSaveFileInputStream::read()
 {
-	byte byteRead = 0;
+	byte byteRead = static_cast<std::byte>(0);
 	DWORD numberOfBytesRead;
 
 	BOOL result = m_saveFile->readFile(
@@ -46,7 +46,7 @@ int ConsoleSaveFileInputStream::read()
 		return -1;
 	}
 
-	return byteRead;
+	return static_cast<int>(byteRead);
 }
 
 //Reads up to b.length bytes of data from this input stream into an array of bytes. This method blocks until some input is available.
