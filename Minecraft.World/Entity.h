@@ -369,7 +369,7 @@ private:
 #if defined(_WIN32)
 	static DWORD tlsIdx;
 #else
-	static pthread_key_t tlsKey;
+	static pthread_key_t tlsIdx;
 #endif
 public:
 	static void tickExtraWandering();
