@@ -1,16 +1,19 @@
-﻿#include "stdafx.h"
-#include "..\Common\Consoles_App.h"
-#include "..\User.h"
-#include "..\..\Minecraft.Client\Minecraft.h"
-#include "..\..\Minecraft.Client\MinecraftServer.h"
-#include "..\..\Minecraft.Client\PlayerList.h"
-#include "..\..\Minecraft.Client\ServerPlayer.h"
-#include "..\..\Minecraft.World\Level.h"
-#include "..\..\Minecraft.World\LevelSettings.h"
-#include "..\..\Minecraft.World\BiomeSource.h"
-#include "..\..\Minecraft.World\LevelType.h"
+﻿#include "../../Minecraft.World/stdafx.h"
+#include "../Common/Consoles_App.h"
+#include "../User.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/PlayerList.h"
+#include "../../Minecraft.Client/ServerPlayer.h"
+#include "../../Minecraft.World/Level.h"
+#include "../../Minecraft.World/LevelSettings.h"
+#include "../../Minecraft.World/BiomeSource.h"
+#include "../../Minecraft.World/LevelType.h"
+#include "Windows64_App.h"
 
 CConsoleMinecraftApp app;
+
+#define CONTEXT_GAME_STATE                          0
 
 CConsoleMinecraftApp::CConsoleMinecraftApp() : CMinecraftApp()
 {

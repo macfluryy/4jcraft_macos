@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "FileHeader.h"
-
+#include "../Minecraft.Client/Windows64/Windows64_App.cpp"
 //#define _DEBUG_FILE_HEADER
+
+extern CConsoleMinecraftApp app;
 
 FileHeader::FileHeader()
 {
@@ -245,7 +247,7 @@ void FileHeader::ReadHeader( LPVOID saveMem, ESavePlatform plat /*= SAVE_FILE_PL
 				if(isSaveEndianDifferent())
 				{
 					// Reverse bytes
-					System::ReverseWCHARA(entry->data.filename,64);
+					// System::ReverseWCHARA(entry->data.filename,64);
 					System::ReverseULONG(&entry->data.length);
 					System::ReverseULONG(&entry->data.startOffset);
 					System::ReverseULONGLONG(&entry->data.lastModifiedTime);

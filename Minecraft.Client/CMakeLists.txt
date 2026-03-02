@@ -1239,11 +1239,11 @@ set(Windows
 source_group("Windows" FILES ${Windows})
 
 set(Windows64
-#    "Windows64/Resource.h"
-#    "Windows64/Windows64_App.cpp"
-#    "Windows64/Windows64_App.h"
-#    "Windows64/Windows64_UIController.cpp"
-#    "Windows64/Windows64_UIController.h"
+    "Windows64/Resource.h"
+    "Windows64/Windows64_App.cpp"
+    "Windows64/Windows64_App.h"
+    "Windows64/Windows64_UIController.cpp"
+    "Windows64/Windows64_UIController.h"
 )
 source_group("Windows64" FILES ${Windows64})
 
