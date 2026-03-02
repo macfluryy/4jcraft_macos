@@ -9,8 +9,8 @@ using namespace std;
 #include "../Common/Tutorial/TutorialEnum.h"
 
 #ifdef _XBOX
-#include "..\Common\XUI\XUI_Helper.h"
-#include "..\Common\XUI\XUI_HelpCredits.h"
+#include "../Common/XUI/XUI_Helper.h"
+#include "../Common/XUI/XUI_HelpCredits.h"
 #endif
 #include "UI/UIStructs.h"
 

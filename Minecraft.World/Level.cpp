@@ -39,8 +39,8 @@
 #include "../Minecraft.Client/Textures.h"
 #include "../Minecraft.Client/TexturePackRepository.h"
 #include "../Minecraft.Client/DLCTexturePack.h"
-#include "../Minecraft.Client/Common\DLC\DLCPack.h"
-#include "../Minecraft.Client/PS3\PS3Extras\ShutdownManager.h"
+#include "../Minecraft.Client/Common/DLC/DLCPack.h"
+#include "../Minecraft.Client/PS3/PS3Extras/ShutdownManager.h"
 
 
 DWORD Level::tlsIdx = TlsAlloc();
