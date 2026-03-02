@@ -35,7 +35,7 @@ int ByteArrayInputStream::read()
 	if( pos >= count )
 		return -1;
 	else
-		return buf[pos++];
+		return static_cast<unsigned int>(buf[pos++]);
 }
 
 //Reads some number of bytes from the input stream and stores them into the buffer array b.

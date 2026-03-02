@@ -68,7 +68,7 @@ void DataOutputStream::close()
 //v - a byte value to be written.
 void DataOutputStream::writeByte(byte a)
 {
-	stream->write( a );
+	stream->write( static_cast<unsigned int>(a) );
 }
 
 //Converts the double argument to a long using the doubleToLongBits method in class Double,
@@ -176,7 +176,7 @@ void DataOutputStream::writeChars(const wstring& str)
 //v - a boolean value to be written.
 void DataOutputStream::writeBoolean(bool b)
 {
-	stream->write( b ? (byte)1 : (byte)0 );
+	stream->write( b ? 1 : 0 );
 	// TODO 4J Stu - Error handling?
 	written += 1; 
 }

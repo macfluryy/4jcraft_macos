@@ -3,6 +3,11 @@
 #include <sys/sys_time.h>
 #endif
 #include "System.h"
+#if defined(__linux__)
+#include <sys/time.h>
+#include <time.h>
+#include <ctime>
+#endif // __linux__
 
 template <class T> void System::arraycopy(arrayWithLength<T> src, unsigned int srcPos, arrayWithLength<T> *dst, unsigned int dstPos, unsigned int length)
 {
@@ -16,7 +21,7 @@ template <class T> void System::arraycopy(arrayWithLength<T> src, unsigned int s
 ArrayCopyFunctionDefinition(Node *)
 ArrayCopyFunctionDefinition(Biome *)
 
-void System::arraycopy(arrayWithLength<BYTE> src, unsigned int srcPos, arrayWithLength<BYTE> *dst, unsigned int dstPos, unsigned int length)
+void System::arraycopy(arrayWithLength<byte> src, unsigned int srcPos, arrayWithLength<byte> *dst, unsigned int dstPos, unsigned int length)
 {
 	assert( srcPos >=0 && srcPos <= src.length);
 	assert( srcPos + length <= src.length );
@@ -52,7 +57,13 @@ void System::arraycopy(arrayWithLength<int> src, unsigned int srcPos, arrayWithL
 //The current value of the system timer, in nanoseconds.
 __int64 System::nanoTime()
 {
+#if !defined(__linux__)
 	return GetTickCount() * 1000000LL;
+#else
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return static_cast<int64_t>(ts.tv_sec) * 1000000000LL + ts.tv_nsec;
+#endif // __linux__
 }
 
 //Returns the current time in milliseconds. Note that while the unit of time of the return value is a millisecond,
@@ -87,7 +98,13 @@ __int64 System::currentTimeMillis()
 	sceRtcGetCurrentClockLocalTime(&Time);
 	__int64 systTime = (((((((Time.day * 24) + Time.hour) * 60) + Time.minute) * 60) + Time.second) * 1000) + (Time.microsecond / 1000);
 	return systTime;*/
+#elif defined(__linux__)
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	long long unix_time = tv.tv_sec;
+	long long file_time = (unix_time + 11644473600LL) * 10000000LL + tv.tv_usec * 10;
 
+	return file_time;
 #else
 
 	SYSTEMTIME UTCSysTime;

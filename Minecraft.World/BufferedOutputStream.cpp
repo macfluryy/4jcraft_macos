@@ -58,7 +58,7 @@ void BufferedOutputStream::write(byteArray b, unsigned int offset, unsigned int 
 	{
 		for(unsigned int i = 0; i < length; i++ )
 		{
-			write( b[offset+i] );
+			write( static_cast<unsigned int>(b[offset+i]));
 		}
 	}
 }

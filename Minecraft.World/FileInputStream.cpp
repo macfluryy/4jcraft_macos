@@ -2,6 +2,11 @@
 
 #include "File.h"
 #include "FileInputStream.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
+#include <fcntl.h>
+#include <unistd.h> // for close()
+
+extern CConsoleMinecraftApp app;
 
 //Creates a FileInputStream by opening a connection to an actual file, the file named by the File object file in the file system.
 //A new FileDescriptor object is created to represent this file connection.
@@ -29,6 +34,8 @@ FileInputStream::FileInputStream(const File &file)
 		FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
 		NULL // Unsupported
 		);
+#elif defined(__linux__)
+	m_fileHandle = open(pchFilename, O_RDONLY);
 #else
 	m_fileHandle = CreateFile(
 		pchFilename, // file name
@@ -52,15 +59,33 @@ FileInputStream::FileInputStream(const File &file)
 FileInputStream::~FileInputStream()
 {
 	if( m_fileHandle != INVALID_HANDLE_VALUE )
+#ifndef __linux__
 		CloseHandle( m_fileHandle );
+#else
+		::close( m_fileHandle );
+#endif
 }
+
+#if defined(__linux__)
+ssize_t ReadFile(int fd, void* buffer, size_t byteRead, DWORD* numberOfBytesRead, int JustAddANULL) {
+	ssize_t result = read(fd, buffer, byteRead);
+
+	if (result == -1) {
+		perror("read failed");
+		return -1;
+	} else {
+		*numberOfBytesRead = result;
+		return 0;
+	}
+}
+#endif // __linux__
 
 //Reads a byte of data from this input stream. This method blocks if no input is yet available.
 //Returns:
 //the next byte of data, or -1 if the end of the file is reached.
 int FileInputStream::read()
 {
-	byte byteRead = 0;
+	byte byteRead = static_cast<std::byte>(0);
 	DWORD numberOfBytesRead;
 
 	BOOL bSuccess = ReadFile(
@@ -69,7 +94,7 @@ int FileInputStream::read()
 		1, // number of bytes to read
 		&numberOfBytesRead, // number of bytes read
 		NULL // overlapped buffer
-		);
+	);
 
 	if( bSuccess==FALSE )
 	{
@@ -83,7 +108,7 @@ int FileInputStream::read()
 		return -1;
 	}
 
-	return byteRead;
+	return static_cast<int>(byteRead);
 }
 
 //Reads up to b.length bytes of data from this input stream into an array of bytes. This method blocks until some input is available.
@@ -166,7 +191,7 @@ void FileInputStream::close()
 		return;
 	}	
 	
-	BOOL result = CloseHandle( m_fileHandle );
+	BOOL result = ::close( m_fileHandle );
 
 	if( result == 0 )
 	{

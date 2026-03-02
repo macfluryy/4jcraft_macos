@@ -3,9 +3,12 @@
 #include "SocketAddress.h"
 #include "Socket.h"
 #include "ThreadName.h"
-#include "..\Minecraft.Client\ServerConnection.h"
+#include "../Minecraft.Client/ServerConnection.h"
 #include <algorithm>
-#include "..\Minecraft.Client\PS3\PS3Extras\ShutdownManager.h"
+#include "../Minecraft.Client/PS3/PS3Extras/ShutdownManager.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
+
+extern CConsoleMinecraftApp app;
 
 // This current socket implementation is for the creation of a single local link. 2 sockets can be created, one for either end of this local
 // link, the end (0 or 1) is passed as a parameter to the ctor.
@@ -22,6 +25,7 @@ void Socket::Initialise(ServerConnection *serverConnection)
 
 	// Only initialise everything else once - just setting up static data, one time xrnm things, thread for ticking sockets
 	static bool init = false;
+#if !defined(__linux__)
 	if( init )
 	{
 		for( int i = 0; i < 2; i++ )
@@ -38,11 +42,14 @@ void Socket::Initialise(ServerConnection *serverConnection)
 		}
 		return;
 	}
+#endif
 	init = true;
 
 	for( int i = 0; i < 2; i++ )
 	{
+#if !defined(__linux__)
 		InitializeCriticalSection(&Socket::s_hostQueueLock[i]);
+#endif
 		s_hostOutStream[i] = new SocketOutputStreamLocal(i);
 		s_hostInStream[i] = new SocketInputStreamLocal(i);
 	}
@@ -79,7 +86,9 @@ Socket::Socket(INetworkPlayer *player, bool response /* = false*/, bool hostLoca
 
 	for( int i = 0; i < 2; i++ )
 	{
+#if !defined(__linux__)
 		InitializeCriticalSection(&m_queueLockNetwork[i]);		
+#endif // __linux__
 		m_inputStream[i] = NULL;
 		m_outputStream[i] = NULL;		
 		m_endClosed[i] = false;
@@ -127,6 +136,7 @@ void Socket::setPlayer(INetworkPlayer *player)
 
 void Socket::pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHost /*= true*/)
 {
+#ifndef __linux__
 	int queueIdx = SOCKET_CLIENT_END;
 	if(!fromHost)
 		queueIdx = SOCKET_SERVER_END;
@@ -143,6 +153,7 @@ void Socket::pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHos
 		m_queueNetwork[queueIdx].push(*pbData++);
 	}
 	LeaveCriticalSection(&m_queueLockNetwork[queueIdx]);
+#endif // __linux__
 }
 
 void Socket::addIncomingSocket(Socket *socket)
@@ -259,6 +270,7 @@ Socket::SocketInputStreamLocal::SocketInputStreamLocal(int queueIdx)
 // Try and get an input byte, blocking until one is available
 int Socket::SocketInputStreamLocal::read()
 {
+#if !defined(__linux__)
 	while(m_streamOpen && ShutdownManager::ShouldRun(ShutdownManager::eConnectionReadThreads))
 	{
 		if(TryEnterCriticalSection(&s_hostQueueLock[m_queueIdx]))
@@ -274,6 +286,7 @@ int Socket::SocketInputStreamLocal::read()
 		}
 		Sleep(1);
 	}
+#endif // __linux__
 	return -1;
 }
 
@@ -286,6 +299,7 @@ int Socket::SocketInputStreamLocal::read(byteArray b)
 // Try and get an input range of bytes, blocking until enough bytes are available
 int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset, unsigned int length)
 {
+#ifndef __linux__
 	while(m_streamOpen)
 	{
 		if(TryEnterCriticalSection(&s_hostQueueLock[m_queueIdx]))
@@ -304,15 +318,18 @@ int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset, unsig
 		}
 		Sleep(1);
 	}
+#endif // __linux__
 	return -1;
 }
 
 void Socket::SocketInputStreamLocal::close()
 {
+#ifndef __linux__
 	m_streamOpen = false;
 	EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
 	s_hostQueue[m_queueIdx].empty();
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+#endif // __linux__
 }
 
 /////////////////////////////////// Socket for output, on local connection ////////////////////
@@ -325,6 +342,7 @@ Socket::SocketOutputStreamLocal::SocketOutputStreamLocal(int queueIdx)
 
 void Socket::SocketOutputStreamLocal::write(unsigned int b)
 {
+#ifndef __linux__
 	if( m_streamOpen != true )
 	{
 		return;
@@ -332,6 +350,7 @@ void Socket::SocketOutputStreamLocal::write(unsigned int b)
 	EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
 	s_hostQueue[m_queueIdx].push((byte)b);
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+#endif // __linux__
 }
 
 void Socket::SocketOutputStreamLocal::write(byteArray b)
@@ -341,6 +360,7 @@ void Socket::SocketOutputStreamLocal::write(byteArray b)
 
 void Socket::SocketOutputStreamLocal::write(byteArray b, unsigned int offset, unsigned int length)
 {
+#ifndef __linux__
 	if( m_streamOpen != true )
 	{
 		return;
@@ -353,14 +373,17 @@ void Socket::SocketOutputStreamLocal::write(byteArray b, unsigned int offset, un
 	}
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
 	MemSect(0);
+#endif // __linux__
 }
 
 void Socket::SocketOutputStreamLocal::close()
 {
+#ifndef __linux__
 	m_streamOpen = false;
 	EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
 	s_hostQueue[m_queueIdx].empty();
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+#endif // __linux__
 }
 
 /////////////////////////////////// Socket for input, on network connection ////////////////////
@@ -375,6 +398,7 @@ Socket::SocketInputStreamNetwork::SocketInputStreamNetwork(Socket *socket, int q
 // Try and get an input byte, blocking until one is available
 int Socket::SocketInputStreamNetwork::read()
 {
+#ifndef __linux__
 	while(m_streamOpen && ShutdownManager::ShouldRun(ShutdownManager::eConnectionReadThreads))
 	{
 		if(TryEnterCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]))
@@ -390,6 +414,7 @@ int Socket::SocketInputStreamNetwork::read()
 		}
 		Sleep(1);
 	}
+#endif // __linux__
 	return -1;
 }
 
@@ -402,6 +427,7 @@ int Socket::SocketInputStreamNetwork::read(byteArray b)
 // Try and get an input range of bytes, blocking until enough bytes are available
 int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset, unsigned int length)
 {
+#ifndef __linux__
 	while(m_streamOpen)
 	{
 		if(TryEnterCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]))
@@ -420,6 +446,7 @@ int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset, uns
 		}
 		Sleep(1);
 	}
+#endif // __linux__
 	return -1;
 }
 

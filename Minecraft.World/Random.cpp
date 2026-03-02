@@ -1,5 +1,7 @@
 #include "stdafx.h"	
 #include "Random.h"
+#include <ctime>
+#include <cstdint> // for int64_t
 #include "System.h"
 
 Random::Random()
@@ -7,8 +9,13 @@ Random::Random()
 	// 4J - jave now uses the system nanosecond counter added to a "seedUniquifier" to get an initial seed. Our nanosecond timer is actually only millisecond accuate, so
 	// use QueryPerformanceCounter here instead
 	__int64 seed;
-	QueryPerformanceCounter((LARGE_INTEGER *)&seed);
-	seed += 8682522807148012LL;
+
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    seed = ts.tv_sec * 1000000000LL + ts.tv_nsec;
+
+    seed += 8682522807148012LL;
 
 	setSeed(seed);
 }
