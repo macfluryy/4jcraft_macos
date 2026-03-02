@@ -17,14 +17,17 @@
 #include "EntityPos.h"
 #include "Entity.h"
 #include "SoundTypes.h"
-#include "..\minecraft.Client\HumanoidModel.h"
-#include "..\Minecraft.Client\MinecraftServer.h"
-#include "..\Minecraft.Client\MultiPlayerLevel.h"
-#include "..\Minecraft.Client\MultiplayerLocalPlayer.h"
+#include "../Minecraft.Client/HumanoidModel.h"
+#include "../Minecraft.Client/MinecraftServer.h"
+#include "../Minecraft.Client/MultiPlayerLevel.h"
+#include "../Minecraft.Client/MultiPlayerLocalPlayer.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 int Entity::entityCounter = 2048;		// 4J - changed initialiser to 2048, as we are using range 0 - 2047 as special unique smaller ids for things that need network tracked
+#ifdef _WIN32
 DWORD Entity::tlsIdx = TlsAlloc();
+#endif // _WIN32
 
 // 4J - added getSmallId & freeSmallId methods
 unsigned int Entity::entityIdUsedFlags[2048/32] = {0};
@@ -44,7 +47,12 @@ int Entity::getSmallId()
 	// for final notification to the client that the entities are removed. We can't go re-using these small Ids yet, as otherwise we will
 	// potentially end up telling the client that the entity has been removed After we have already re-used its Id and created a new entity.
 	// This ends up with newly created client-side entities being removed by accident, causing invisible mobs.
+#ifdef _WIN32
 	if( ((size_t)TlsGetValue(tlsIdx) != 0 ) )
+#else
+	pthread_key_create(&tlsKey, nullptr);
+	if ( ((size_t)pthread_getspecific(tlsKey) != 0) )
+#endif
 	{
 		MinecraftServer *server = MinecraftServer::getInstance();
 		if( server )

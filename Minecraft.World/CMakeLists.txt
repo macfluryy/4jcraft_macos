@@ -1992,6 +1992,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     -fpermissive
     -Wtemplate-body
     -Wshift-count-overflow
+    -pthread
     -std=c++11
 )
 
