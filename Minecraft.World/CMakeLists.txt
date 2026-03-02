@@ -1992,6 +1992,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     -fpermissive
     -Wtemplate-body
     -Wshift-count-overflow
+    -std=c++11
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE x64headers)
