@@ -4,12 +4,20 @@
 #include "..\Minecraft.Client\Common\zlib\zlib.h"
 #endif
 
+#if defined(__linux__)
+#include "../Minecraft.Client/Common/zlib/zlib.h"
+#include <pthread.h> // TLS shit
+#endif // __linux__
+
 #if defined __PSVITA__
 #include "..\Minecraft.Client\PSVita\PSVitaExtras\zlib.h"
 #elif defined __PS3__
 #include "..\Minecraft.Client\PS3\PS3Extras\EdgeZLib.h"
 #endif //__PS3__
 
+#if defined(__linux__)
+#define S_OK 0
+#endif // __linux__
 
 DWORD Compression::tlsIdx = 0;
 Compression::ThreadStorage *Compression::tlsDefault = NULL;
@@ -26,31 +34,32 @@ Compression::ThreadStorage::~ThreadStorage()
 
 void Compression::CreateNewThreadStorage()
 {
-	ThreadStorage *tls = new ThreadStorage();
-	if(tlsDefault == NULL )
+	ThreadStorage* tls = new ThreadStorage();
+	if (tlsDefault == nullptr)
 	{
-		tlsIdx = TlsAlloc();
+		pthread_key_create(&tlsIdx, nullptr);
 		tlsDefault = tls;
 	}
-	TlsSetValue(tlsIdx, tls);
+	pthread_setspecific(tlsIdx, tls);
 }
 
 void Compression::UseDefaultThreadStorage()
 {
-	TlsSetValue(tlsIdx, tlsDefault);
+	pthread_setspecific(tlsIdx, tlsDefault);
 }
 
 void Compression::ReleaseThreadStorage()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(tlsIdx);
-	if( tls == tlsDefault ) return;
-
-	delete tls;
+	ThreadStorage* tls = (ThreadStorage*)pthread_getspecific(tlsIdx); // POSIX equivalent
+	if (tls != tlsDefault)
+	{
+		delete tls;
+	}
 }
 
 Compression *Compression::getCompression()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(tlsIdx);
+	ThreadStorage *tls = (ThreadStorage *)pthread_getspecific(tlsIdx);
 	return tls->compression;
 }
 
@@ -502,8 +511,10 @@ Compression::Compression()
 #endif
 	m_decompressType = m_localDecompressType;
 
+#ifndef __linux__
 	InitializeCriticalSection(&rleCompressLock);
 	InitializeCriticalSection(&rleDecompressLock);
+#endif // __linux__
 }
 
 Compression::~Compression()

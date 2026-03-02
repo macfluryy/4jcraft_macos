@@ -5,7 +5,7 @@
 #include "net.minecraft.world.entity.h"
 #include "PacketListener.h"
 #include "AddEntityPacket.h"
-
+#include <bitset>
 
 
 void AddEntityPacket::_init(shared_ptr<Entity> e, int type, int data, int xp, int yp, int zp, int yRotp, int xRotp)
@@ -16,8 +16,8 @@ void AddEntityPacket::_init(shared_ptr<Entity> e, int type, int data, int xp, in
 	x = xp;//(int) floor(e->x * 32);
 	y = yp;//(int) floor(e->y * 32);
 	z = zp;//(int) floor(e->z * 32);
-	yRot = yRotp;
-	xRot = xRotp;
+	yRot = static_cast<std::byte>(yRotp);
+	xRot = static_cast<std::byte>(xRotp);
 	this->type = type;
 	this->data = data;
 	if (data > -1)	// 4J - changed "no data" value to be -1, we can have a valid entity id of 0
@@ -55,7 +55,7 @@ AddEntityPacket::AddEntityPacket(shared_ptr<Entity> e, int type, int data, int y
 void AddEntityPacket::read(DataInputStream *dis) // throws IOException  TODO 4J JEV add throws statement
 {
 	id = dis->readShort();
-	type = dis->readByte();
+	type = std::to_integer<int>(dis->readByte());
 #ifdef _LARGE_WORLDS
 	x = dis->readInt();
 	y = dis->readInt();
@@ -79,7 +79,7 @@ void AddEntityPacket::read(DataInputStream *dis) // throws IOException  TODO 4J 
 void AddEntityPacket::write(DataOutputStream *dos) // throws IOException TODO 4J JEV add throws statement
 {
 	dos->writeShort(id);
-	dos->writeByte(type);
+	dos->writeByte(static_cast<std::byte>(type));
 #ifdef _LARGE_WORLDS
 	dos->writeInt(x);
 	dos->writeInt(y);

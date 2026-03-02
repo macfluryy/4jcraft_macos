@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "File.h"
 #include "FileOutputStream.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <cwchar>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <cstring>
 
 //Creates a file output stream to write to the file represented by the specified File object. A new FileDescriptor object is
 //created to represent this file connection.
@@ -29,6 +37,13 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 		FILE_ATTRIBUTE_NORMAL , // file attributes
 		NULL // Unsupported
 		);
+#elif defined(__linux__)
+	std::wstring path = file.getPath();
+	char* convertedPath = new char[path.size() + 1];
+	std::wcstombs(convertedPath, path.c_str(), path.size() + 1);
+
+	m_fileHandle = open(convertedPath, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+	delete[] convertedPath;
 #else
 	m_fileHandle = CreateFile(
 		wstringtofilename(file.getPath()) , // file name
@@ -43,15 +58,17 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 
 	if( m_fileHandle == INVALID_HANDLE_VALUE )
 	{
-		DWORD error = GetLastError();
 		// TODO 4J Stu - Any form of error/exception handling
+#ifndef __linux__
+		DWORD error = GetLastError();
+#endif // __linux__
 	}
 }
 
 FileOutputStream::~FileOutputStream()
 {
 	if( m_fileHandle != INVALID_HANDLE_VALUE )
-		CloseHandle( m_fileHandle );
+		::close( m_fileHandle );
 }
 
 //Writes the specified byte to this file output stream. Implements the write method of OutputStream.
@@ -59,10 +76,9 @@ FileOutputStream::~FileOutputStream()
 //b - the byte to be written.
 void FileOutputStream::write(unsigned int b)
 {	
-	DWORD numberOfBytesWritten;
-
 	byte value = (byte) b;
 
+#if defined(_WIN32)
 	BOOL result = WriteFile(
 		m_fileHandle, // handle to file
 		&value, // data buffer
@@ -70,6 +86,11 @@ void FileOutputStream::write(unsigned int b)
 		&numberOfBytesWritten, // number of bytes written
 		NULL // overlapped buffer
 		);
+#else // LINUX
+	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
+	int result = static_cast<int>(numberOfBytesWritten);
+#endif // _WIN32
 
 	if( result == 0 )
 	{
@@ -86,8 +107,7 @@ void FileOutputStream::write(unsigned int b)
 //b - the data.
 void FileOutputStream::write(byteArray b)
 {
-	DWORD numberOfBytesWritten;
-
+#if defined(_WIN32)
 	BOOL result = WriteFile(
 		m_fileHandle, // handle to file
 		&b.data, // data buffer
@@ -95,6 +115,11 @@ void FileOutputStream::write(byteArray b)
 		&numberOfBytesWritten, // number of bytes written
 		NULL // overlapped buffer
 		);
+#else // Linux
+	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
+	int result = static_cast<int>(numberOfBytesWritten);
+#endif // _WIN32
 
 	if( result == 0 )
 	{
@@ -116,6 +141,7 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 	// 4J Stu - We don't want to write any more than the array buffer holds
 	assert( length <= ( b.length - offset ) );
 
+#if defined(_WIN32)
 	DWORD numberOfBytesWritten;
 
 	BOOL result = WriteFile(
@@ -125,6 +151,11 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 		&numberOfBytesWritten, // number of bytes written
 		NULL // overlapped buffer
 		);
+#else
+	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	ssize_t numberOfBytesWritten = ::write(fileDescriptor, static_cast<const void*>(&b[offset]), length);
+	int result = static_cast<int>(numberOfBytesWritten);
+#endif // _WIN32
 
 	if( result == 0 )
 	{
@@ -141,8 +172,11 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 //If this stream has an associated channel then the channel is closed as well.
 void FileOutputStream::close()
 {
+#ifdef _WIN32
 	BOOL result = CloseHandle( m_fileHandle );
-
+#else // __linux__
+	int result = ::close( m_fileHandle );
+#endif // _WIN32
 	if( result == 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling

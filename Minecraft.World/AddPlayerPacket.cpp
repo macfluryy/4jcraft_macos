@@ -44,7 +44,7 @@ AddPlayerPacket::AddPlayerPacket(shared_ptr<Player> player, PlayerUID xuid, Play
 	// 4J - changed - send current "previously sent" value of rotations to put this in sync with other clients
 	yRot = yRotp;
 	xRot = xRotp;
-	yHeadRot = yHeadRotp; // 4J Added
+	yHeadRot = static_cast<std::byte>(yHeadRotp); // 4J Added
 	//    yRot = (byte) (player->yRot * 256 / 360);
 	//    xRot = (byte) (player->xRot * 256 / 360);
 
@@ -71,13 +71,13 @@ void AddPlayerPacket::read(DataInputStream *dis) //throws IOException
 	x = dis->readInt();
 	y = dis->readInt();
 	z = dis->readInt();
-	yRot = dis->readByte();
-	xRot = dis->readByte();	
+	yRot = static_cast<char>(dis->readByte());
+	xRot = static_cast<char>(dis->readByte());
 	yHeadRot = dis->readByte(); // 4J Added
 	carriedItem = dis->readShort();
 	xuid = dis->readPlayerUID();
 	OnlineXuid = dis->readPlayerUID();
-	m_playerIndex = dis->readByte();
+	m_playerIndex = static_cast<BYTE>(dis->readByte());
 	INT skinId = dis->readInt();
 	m_skinId = *(DWORD *)&skinId;	
 	INT capeId = dis->readInt();
@@ -96,13 +96,13 @@ void AddPlayerPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writeInt(x);
 	dos->writeInt(y);
 	dos->writeInt(z);
-	dos->writeByte(yRot);
-	dos->writeByte(xRot);
-	dos->writeByte(yHeadRot); // 4J Added
+	dos->writeByte(static_cast<std::byte>(yRot));
+	dos->writeByte(static_cast<std::byte>(xRot));
+	dos->writeByte(static_cast<std::byte>(m_playerIndex)); // 4J Added
 	dos->writeShort(carriedItem);
 	dos->writePlayerUID(xuid);
 	dos->writePlayerUID(OnlineXuid);
-	dos->writeByte(m_playerIndex);
+	dos->writeByte(static_cast<std::byte>(m_playerIndex)); // 4J Added
 	dos->writeInt(m_skinId);
 	dos->writeInt(m_capeId);
 	dos->writeInt(m_uiGamePrivileges);

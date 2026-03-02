@@ -14,8 +14,8 @@ AddMobPacket::AddMobPacket()
 	x = 0;
 	y = 0;
 	z = 0;
-	yRot = 0;
-	xRot = 0;
+	yRot = static_cast<std::byte>(0);
+	xRot = static_cast<std::byte>(0);
 	entityData = nullptr;
 	unpack = NULL;
 }
@@ -29,16 +29,16 @@ AddMobPacket::AddMobPacket(shared_ptr<Mob> mob, int yRotp, int xRotp, int xp, in
 {
 	id = mob->entityId;
 
-	type = (byte) EntityIO::getId(mob);
+	type = EntityIO::getId(mob);
 	// 4J Stu - We should add entities at their "last sent" position so that the relative update packets
 	// put them in the correct place
 	x = xp;//Mth::floor(mob->x * 32);
 	y = yp;//Mth::floor(mob->y * 32);
 	z = zp;//Mth::floor(mob->z * 32);
 	// 4J - changed - send current "previously sent" value of rotations to put this in sync with other clients
-	yRot = yRotp;
-	xRot = xRotp;
-	yHeadRot = yHeadRotp;
+	yRot = static_cast<std::byte>(yRotp);
+	xRot = static_cast<std::byte>(xRotp);
+	yHeadRot = static_cast<std::byte>(yHeadRotp);
 	//	yRot = (byte) (mob->yRot * 256 / 360);
 	//	xRot = (byte) (mob->xRot * 256 / 360);
 	//	yHeadRot = (byte) (mob->yHeadRot * 256 / 360);
@@ -67,7 +67,7 @@ AddMobPacket::AddMobPacket(shared_ptr<Mob> mob, int yRotp, int xRotp, int xp, in
 void AddMobPacket::read(DataInputStream *dis) //throws IOException
 {
 	id = dis->readShort();
-	type = dis->readByte() & 0xff;
+	type = std::to_integer<int>(dis->readByte()) & 0xff;
 #ifdef _LARGE_WORLDS
 	x = dis->readInt();
 	y = dis->readInt();
@@ -91,7 +91,7 @@ void AddMobPacket::read(DataInputStream *dis) //throws IOException
 void AddMobPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeShort(id);
-	dos->writeByte(type & 0xff);
+	dos->writeByte(static_cast<std::byte>(type & 0xff));
 #ifdef _LARGE_WORLDS
 	dos->writeInt(x);
 	dos->writeInt(y);

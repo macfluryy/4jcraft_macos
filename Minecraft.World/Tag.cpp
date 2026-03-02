@@ -11,6 +11,7 @@
 #include "StringTag.h"
 #include "ListTag.h"
 #include "CompoundTag.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 Tag::Tag(const wstring &name)
 {
@@ -80,10 +81,10 @@ Tag *Tag::setName(const wstring& name)
 Tag *Tag::readNamedTag(DataInput *dis)
 {
 	byte type = dis->readByte();
-	if (type == 0) return new EndTag();
+	if ( static_cast<int>(type) == 0) return new EndTag();
 
 	// 4J Stu - readByte can return -1, so if it's that then also mark as the end tag
-	if(type == 255)
+	if(static_cast<int>(type) == 255)
 	{
 		app.DebugPrintf("readNamedTag read a type of 255\n");
 #ifndef _CONTENT_PACKAGE

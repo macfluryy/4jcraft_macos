@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "net.minecraft.commands.h"
 #include "CommandDispatcher.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 void CommandDispatcher::performCommand(shared_ptr<CommandSender> sender, EGameCommand command, byteArray commandData)
 {

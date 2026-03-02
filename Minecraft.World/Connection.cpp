@@ -4,7 +4,7 @@
 #include "Connection.h"
 #include "ThreadName.h"
 #include "compression.h"
-#include "..\Minecraft.Client\PS3\PS3Extras\ShutdownManager.h"
+#include "../Minecraft.Client/PS3/PS3Extras/ShutdownManager.h"
 
 // This should always be enabled, except for debugging use
 #ifndef _DEBUG
@@ -17,14 +17,20 @@ int Connection::writeThreads = 0;
 int Connection::readSizes[256];
 int Connection::writeSizes[256];
 
-
+#if defined(__linux__)
+#define INFINITE 999999999
+#define WAIT_TIMEOUT 258
+#include <unistd.h>
+#endif //__linux__
 
 void Connection::_init()
 {
 //	printf("Con:0x%x init\n",this);
+#if !defined(__linux__)
 	InitializeCriticalSection(&writeLock);
 	InitializeCriticalSection(&threadCounterLock);
 	InitializeCriticalSection(&incoming_cs);
+#endif
 
 	running = true;
 	quitting = false;
@@ -51,11 +57,11 @@ Connection::~Connection()
 								// may get stuck whilst blocking waiting on a read
 	readThread->WaitForCompletion(INFINITE);
 	writeThread->WaitForCompletion(INFINITE);
-
+#if defined(__linux__)
 	DeleteCriticalSection(&writeLock);
 	DeleteCriticalSection(&threadCounterLock);
 	DeleteCriticalSection(&incoming_cs);
-
+#endif // __linux__
 	delete m_hWakeReadThread;
 	delete m_hWakeWriteThread;
 
@@ -602,7 +608,7 @@ int Connection::runWrite(void* lpParam)
 	// Otherwise there is a race between the calling thread setting the running flag and this loop checking the condition
 	DWORD waitResult = WAIT_TIMEOUT;
 
-	while ((con->running || waitResult == WAIT_OBJECT_0 ) && ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads))
+	while ((con->running || waitResult == 0 ) && ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads))
 	{
 		while (con->writeTick())
 			;
@@ -633,7 +639,7 @@ int Connection::runClose(void* lpParam)
 
 	//try {
 
-	Sleep(2000);
+	sleep(2000);
 	if (con->running)
 	{
 		// 4J TODO writeThread.interrupt();
@@ -657,7 +663,7 @@ int Connection::runSendAndQuit(void* lpParam)
 
 	//try {
 
-	Sleep(2000);
+	sleep(2000);
 	if (con->running)
 	{
 		// 4J TODO writeThread.interrupt();

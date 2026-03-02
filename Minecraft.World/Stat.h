@@ -4,6 +4,8 @@ using namespace std;
 #include "StatFormatter.h"
 #include "GenericStats.h"
 
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
+
 class DecimalFormat;
 
 class Stat
