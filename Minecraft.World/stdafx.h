@@ -249,7 +249,7 @@ void MemSect(int sect);
 #include "../Minecraft.Client/Windows64/Windows64_App.h"
 #include "../Minecraft.Client/Windows64Media/strings.h"
 #include "../Minecraft.Client/Windows64/Sentient/SentientTelemetryCommon.h"
-#include "../Minecraft.Client/Windows64/Sentient/MinecraftTelemetry.h"
+// #include "../Minecraft.Client/Windows64/Sentient/MinecraftTelemetry.h"
 #else
 #include "..\Minecraft.Client\Orbis\Orbis_App.h"
 #include "..\Minecraft.Client\OrbisMedia\strings.h"
