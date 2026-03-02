@@ -3,7 +3,73 @@
 #include "../../Common/UI/UIEnums.h"
 #include "../../Xbox/Sentient/SentientTelemetryCommon.h"
 
-enum ETelemetryChallenges {};
+enum ETelemetryChallenges
+{
+	eTelemetryChallenges_Unknown = 0,
+
+	eTelemetryTutorial_TrialStart,
+	eTelemetryTutorial_Halfway,
+	eTelemetryTutorial_Complete,
+
+	eTelemetryTutorial_Inventory,
+	eTelemetryTutorial_Crafting,
+	eTelemetryTutorial_Furnace,
+	eTelemetryTutorial_Fishing,
+	eTelemetryTutorial_Minecart,
+	eTelemetryTutorial_Boat,
+	eTelemetryTutorial_Bed,
+
+	eTelemetryTutorial_Redstone_And_Pistons,
+	eTelemetryTutorial_Portal,
+	eTelemetryTutorial_FoodBar,
+	eTelemetryTutorial_CreativeMode,
+	eTelemetryTutorial_BrewingMenu,
+
+	eTelemetryInGame_Ride_Minecart,
+	eTelemetryInGame_Ride_Boat,
+	eTelemetryInGame_Ride_Pig,
+	eTelemetryInGame_UseBed,
+
+	eTelemetryTutorial_CreativeInventory, // Added TU5
+
+	eTelemetryTutorial_EnchantingMenu,
+	eTelemetryTutorial_Brewing,
+	eTelemetryTutorial_Enchanting,
+	eTelemetryTutorial_Farming,
+
+	eTelemetryPlayerDeathSource_Fall,
+	eTelemetryPlayerDeathSource_Lava,
+	eTelemetryPlayerDeathSource_Fire,
+	eTelemetryPlayerDeathSource_Water,
+	eTelemetryPlayerDeathSource_Suffocate,
+	eTelemetryPlayerDeathSource_OutOfWorld,
+	eTelemetryPlayerDeathSource_Cactus,
+
+	eTelemetryPlayerDeathSource_Player_Weapon,
+	eTelemetryPlayerDeathSource_Player_Arrow,
+
+	eTelemetryPlayerDeathSource_Explosion_Tnt,
+	eTelemetryPlayerDeathSource_Explosion_Creeper,
+
+	eTelemetryPlayerDeathSource_Wolf,
+	eTelemetryPlayerDeathSource_Zombie,
+	eTelemetryPlayerDeathSource_Skeleton,
+	eTelemetryPlayerDeathSource_Spider,
+	eTelemetryPlayerDeathSource_Slime,
+	eTelemetryPlayerDeathSource_Ghast,
+	eTelemetryPlayerDeathSource_ZombiePigman,
+
+	eTelemetryTutorial_Breeding,
+	eTelemetryTutorial_Golem,
+
+	eTelemetryTutorial_Anvil, // Added TU14
+	eTelemetryTutorial_AnvilMenu,
+	eTelemetryTutorial_Trading,
+	eTelemetryTutorial_TradingMenu,
+	eTelemetryTutorial_Enderchest,
+
+	// Sent over network as a byte
+};
 
 class CTelemetryManager
 {
