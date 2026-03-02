@@ -24,14 +24,14 @@ void ContainerButtonClickPacket::handle(PacketListener *listener)
 
 void ContainerButtonClickPacket::read(DataInputStream *dis)
 {
-	containerId = dis->readByte();
-	buttonId = dis->readByte();
+	containerId = (int)dis->readByte();
+	buttonId = (int)dis->readByte();
 }
 
 void ContainerButtonClickPacket::write(DataOutputStream *dos)
 {
-	dos->writeByte(containerId);
-	dos->writeByte(buttonId);
+	dos->writeByte((std::byte)containerId);
+	dos->writeByte((std::byte)buttonId);
 }
 
 int ContainerButtonClickPacket::getEstimatedSize()

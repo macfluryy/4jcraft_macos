@@ -27,14 +27,14 @@ void ContainerSetDataPacket::handle(PacketListener *listener)
 
 void ContainerSetDataPacket::read(DataInputStream *dis) //throws IOException 
 {
-	containerId = dis->readByte();
+	containerId = (int)dis->readByte();
 	id = dis->readShort();
 	value = dis->readShort();
 }
 
 void ContainerSetDataPacket::write(DataOutputStream *dos) // throws IOException 
 {
-	dos->writeByte(containerId);
+	dos->writeByte((std::byte)containerId);
 	dos->writeShort(id);
 	dos->writeShort(value);
 }

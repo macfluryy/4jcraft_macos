@@ -30,7 +30,7 @@ ContainerSetContentPacket::ContainerSetContentPacket(int containerId, vector<sha
 
 void ContainerSetContentPacket::read(DataInputStream *dis) //throws IOException 
 {
-	containerId = dis->readByte();
+	containerId = (int)dis->readByte();
 	int count = dis->readShort();
 	items = ItemInstanceArray(count);
 	for (int i = 0; i < count; i++) 
@@ -41,7 +41,7 @@ void ContainerSetContentPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerSetContentPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte(containerId);
+	dos->writeByte((std::byte)containerId);
 	dos->writeShort(items.length);
 	for (unsigned int i = 0; i < items.length; i++) 
 	{

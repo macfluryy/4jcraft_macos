@@ -39,9 +39,9 @@ void ContainerClickPacket::handle(PacketListener *listener)
 
 void ContainerClickPacket::read(DataInputStream *dis) //throws IOException
 {
-	containerId = dis->readByte();
+	containerId = (int)dis->readByte();
 	slotNum = dis->readShort();
-	buttonNum = dis->readByte();
+	buttonNum = (int)dis->readByte();
 	uid = dis->readShort();
 	quickKey = dis->readBoolean();
 
@@ -50,9 +50,9 @@ void ContainerClickPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerClickPacket::write(DataOutputStream *dos) // throws IOException
 {
-	dos->writeByte(containerId);
+	dos->writeByte((std::byte)containerId);
 	dos->writeShort(slotNum);
-	dos->writeByte(buttonNum);
+	dos->writeByte((std::byte)buttonNum);
 	dos->writeShort(uid);
 	dos->writeBoolean(quickKey);
 

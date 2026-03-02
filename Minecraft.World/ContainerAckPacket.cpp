@@ -27,16 +27,16 @@ void ContainerAckPacket::handle(PacketListener *listener)
 
 void ContainerAckPacket::read(DataInputStream *dis) //throws IOException 
 {
-	containerId = dis->readByte();
+	containerId = (int)dis->readByte();
 	uid = dis->readShort();
-	accepted = dis->readByte() != 0;
+	accepted = (int)dis->readByte() != 0;
 }
 
 void ContainerAckPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte(containerId);
+	dos->writeByte((std::byte)containerId);
 	dos->writeShort(uid);
-	dos->writeByte(accepted ? 1 : 0);
+	dos->writeByte((std::byte)(accepted ? 1 : 0));
 }
 
 int ContainerAckPacket::getEstimatedSize() 
