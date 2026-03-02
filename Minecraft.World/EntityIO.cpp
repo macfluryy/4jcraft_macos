@@ -13,7 +13,8 @@
 #include "net.minecraft.world.level.h"
 #include "com.mojang.nbt.h"
 #include "EntityIO.h"
-#include "../Minecraft.Client/OrbisMedia/strings.h"
+#include "../Minecraft.Client/Windows64Media/strings.h"
+
 unordered_map<wstring, entityCreateFn> *EntityIO::idCreateMap = new unordered_map<wstring, entityCreateFn>;
 unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> *EntityIO::classIdMap = new unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>;
 unordered_map<int, entityCreateFn> *EntityIO::numCreateMap = new unordered_map<int, entityCreateFn>;

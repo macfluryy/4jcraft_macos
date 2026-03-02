@@ -133,7 +133,7 @@ void Entity::countFlagsForPIX()
 void Entity::resetSmallId()
 {
 	freeSmallId(entityId);
-	if( ((size_t)TlsGetValue(tlsIdx) != 0 ) )
+	if( ((size_t)pthread_getspecific(tlsIdx) != 0 ) )
 	{
 		entityId = getSmallId();
 	}
@@ -141,7 +141,7 @@ void Entity::resetSmallId()
 
 void Entity::freeSmallId(int index)
 {
-	if( ( (size_t)TlsGetValue(tlsIdx) ) == 0 ) return;		// Don't do anything with small ids if this isn't the server thread
+	if( ( (size_t)pthread_getspecific(tlsIdx) ) == 0 ) return;		// Don't do anything with small ids if this isn't the server thread
 	if( index >= 2048 ) return;							// Don't do anything if this isn't a short id
 
 	unsigned int i = index / 32;
@@ -164,7 +164,7 @@ void Entity::useSmallIds()
 // Let the management system here know whether or not to consider this particular entity for some extra wandering
 void Entity::considerForExtraWandering(bool enable)
 {
-	if( ( (size_t)TlsGetValue(tlsIdx) ) == 0 ) return;		// Don't do anything with small ids if this isn't the server thread
+	if( ( (size_t)pthread_getspecific(tlsIdx) ) == 0 ) return;		// Don't do anything with small ids if this isn't the server thread
 	if( entityId >= 2048 ) return;							// Don't do anything if this isn't a short id
 
 	unsigned int i = entityId / 32;
@@ -184,7 +184,7 @@ void Entity::considerForExtraWandering(bool enable)
 // Should this entity do wandering in addition to what the java code would have done?
 bool Entity::isExtraWanderingEnabled()
 {
-	if( ( (size_t)TlsGetValue(tlsIdx) ) == 0 ) return false;		// Don't do anything with small ids if this isn't the server thread
+	if( ( (size_t)pthread_getspecific(tlsIdx) ) == 0 ) return false;		// Don't do anything with small ids if this isn't the server thread
 	if( entityId >= 2048 ) return false;						// Don't do anything if this isn't a short id
 
 	for( int i = 0; i < extraWanderCount; i++ )
@@ -247,7 +247,7 @@ void Entity::_init(bool useSmallId)
 	// 4J - changed to assign two different types of ids. A range from 0-2047 is used for things that we'll be wanting to identify over the network,
 	// so we should only need 11 bits rather than 32 to uniquely identify them. The rest of the range is used for anything we don't need to track like this,
 	// currently particles. We only ever want to allocate this type of id from the server thread, so using thread local storage to isolate this.
-	if( useSmallId && ((size_t)TlsGetValue(tlsIdx) != 0 ) )
+	if( useSmallId && ((size_t)pthread_getspecific(tlsIdx) != 0 ) )
 	{
 		entityId = getSmallId();
 	}
