@@ -3,7 +3,7 @@
 #include "InputOutputStream.h"
 #include "PacketListener.h"
 #include "GameEventPacket.h"
-
+#include "../Minecraft.Client/PS3Media/strings.h"
 
 
 const int GameEventPacket::NO_RESPAWN_BED_AVAILABLE = 0;

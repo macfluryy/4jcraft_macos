@@ -5,7 +5,7 @@
 #include "PacketListener.h"
 #include "LoginPacket.h"
 #include "LevelType.h"
-
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 LoginPacket::LoginPacket()
@@ -106,16 +106,16 @@ void LoginPacket::read(DataInputStream *dis) //throws IOException
 	}
 	seed = dis->readLong();
 	gameType = dis->readInt();
-	dimension = dis->readByte();
-	mapHeight = dis->readByte();
-	maxPlayers = dis->readByte();
+	dimension = (int)dis->readByte();
+	mapHeight = (int)dis->readByte();
+	maxPlayers = (int)dis->readByte();
 	m_offlineXuid = dis->readPlayerUID();
 	m_onlineXuid = dis->readPlayerUID();
 	m_friendsOnlyUGC = dis->readBoolean();
 	m_ugcPlayersVersion = dis->readInt();
-	difficulty = dis->readByte();
+	difficulty = (int)dis->readByte();
 	m_multiplayerInstanceId = dis->readInt();
-	m_playerIndex = dis->readByte();
+	m_playerIndex = (int)dis->readByte();
 	INT skinId = dis->readInt();
 	m_playerSkinId = *(DWORD *)&skinId;
 	INT capeId = dis->readInt();
@@ -145,16 +145,16 @@ void LoginPacket::write(DataOutputStream *dos) //throws IOException
 	}
 	dos->writeLong(seed);
 	dos->writeInt(gameType);
-	dos->writeByte(dimension);
-	dos->writeByte(mapHeight);
-	dos->writeByte(maxPlayers);
+	dos->writeByte((std::byte)dimension);
+	dos->writeByte((std::byte)mapHeight);
+	dos->writeByte((std::byte)maxPlayers);
 	dos->writePlayerUID(m_offlineXuid);
 	dos->writePlayerUID(m_onlineXuid);
 	dos->writeBoolean(m_friendsOnlyUGC);
 	dos->writeInt(m_ugcPlayersVersion);
-	dos->writeByte(difficulty);
+	dos->writeByte((std::byte)difficulty);
 	dos->writeInt(m_multiplayerInstanceId);
-	dos->writeByte(m_playerIndex);
+	dos->writeByte((std::byte)m_playerIndex);
 	dos->writeInt(m_playerSkinId);
 	dos->writeInt(m_playerCapeId);
 	dos->writeBoolean(m_isGuest);
