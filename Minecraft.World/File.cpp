@@ -10,6 +10,20 @@
 #include <fios2.h>
 #endif
 
+#if defined(__linux__)
+#include <limits.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <dirent.h>
+#include <string.h>
+#include <vector>
+#include <sys/types.h>
+#include <string>
+#include <unistd.h>  // for access()
+#include <fcntl.h>
+#define MAX_PATH PATH_MAX
+#endif
+
 const wchar_t File::pathSeparator = L'\\';
 #ifdef _XBOX
 const wstring File::pathRoot = L"GAME:"; // Path root after pathSeparator has been removed
@@ -97,16 +111,23 @@ this->parent = NULL;
 //true if and only if the file or directory is successfully deleted; false otherwise
 bool File::_delete()
 {
-#ifdef _UNICODE
+#if defined _UNICODE
 	BOOL result = DeleteFile( getPath().c_str() );
+#elif defined(__linux__)
+	// FIXME
+	BOOL result = 0;
 #else
 	BOOL result = DeleteFile( wstringtofilename(getPath()) );
 #endif
 	if( result == 0 )
 	{
+#if !defined(__linux__)
 		DWORD error = GetLastError();
 #ifndef _CONTENT_PACKAGE
 		printf( "File::_delete - Error code %d (%#0.8X)\n", error, error );
+#endif
+#else
+		printf("Unable to delete file :(");
 #endif
 		return false;
 	}
@@ -119,9 +140,12 @@ bool File::_delete()
 //true if and only if the directory was created; false otherwise
 bool File::mkdir() const
 {
-#ifdef _UNICODE
+#if defined (_UNICODE)
 	return CreateDirectory( getPath().c_str(),  NULL) != 0;
-
+#elif defined(__linux__)
+	std::wstring wpath = getPath();
+	std::string path(wpath.begin(), wpath.end());
+	return ::mkdir(path.c_str(), 0777) == 0;  // rwxrwxrwx
 #else
 	return CreateDirectory( wstringtofilename(getPath()),  NULL) != 0;
 #endif
@@ -175,6 +199,15 @@ bool File::mkdirs() const
 				return false;
 			}
 		}
+#elif defined(__linux__)
+		std::wstring wpath = getPath();
+		std::string path(wpath.begin(), wpath.end());
+		struct stat info;
+		if (stat(path.c_str(), &info) != 0 || !(info.st_mode & S_IFDIR)) {
+			if (::mkdir(path.c_str(), 0777) != 0) {
+				return false;
+		}
+}
 #else
 		if( GetFileAttributes(  wstringtofilename(pathToHere) ) == -1 )
 		{
@@ -207,9 +240,12 @@ return (File *) parent;
 bool File::exists() const
 {
 	// TODO 4J Stu - Possible we could get an error result from something other than the file not existing?
-#ifdef _UNICODE
+#if defined(_UNICODE)
 	return GetFileAttributes(  getPath().c_str() ) != -1;
-
+#elif defined(__linux__)
+	std::wstring wpath = getPath();
+	std::string path(wpath.begin(), wpath.end());
+	return access(path.c_str(), F_OK) != -1;
 #else
 	return GetFileAttributes(  wstringtofilename(getPath()) ) != -1;
 #endif
@@ -234,29 +270,50 @@ bool File::isFile() const
 //true if and only if the renaming succeeded; false otherwise
 bool File::renameTo(File dest)
 {
-	// 4J Stu - The wstringtofilename function returns a pointer to the same location in memory every time it is
-	// called, therefore we were getting sourcePath and destPath having the same value. The solution here is to
-	// make a copy of the sourcePath by storing it in a std::string
-	string sourcePath = wstringtofilename(getPath());
-	const char *destPath = wstringtofilename(dest.getPath());
-#ifdef _DURANGO
-	__debugbreak();	// TODO
-	BOOL result = false;
-#else
-	BOOL result = MoveFile(sourcePath.c_str(), destPath);
-#endif
+	std::string sourcePath = wstringtofilename(getPath());
+	std::string destPath = wstringtofilename(dest.getPath());
 
-	if( result == 0 )
+	int result = rename(sourcePath.c_str(), destPath.c_str());
+
+	if(result != 0)
 	{
-		DWORD error = GetLastError();
-#ifndef _CONTENT_PACKAGE
-		printf( "File::renameTo - Error code %d (%#0.8X)\n", error, error );
-#endif
+		perror("File::renameTo - Error renaming file");
 		return false;
 	}
 	else
+	{
 		return true;
+	}
 }
+
+#if defined(__linux__)
+// DecalOverdose: Stolen from my other project
+void listFiles(const char *directory) {
+	DIR *dp;
+	struct dirent *entry;
+	struct stat fileStat;
+
+	dp = opendir(directory);
+	if (dp == NULL) {
+		perror("opendir");
+		return;
+	}
+
+	while ((entry = readdir(dp)) != NULL) {
+		char fullPath[1024];
+		snprintf(fullPath, sizeof(fullPath), "%s/%s", directory, entry->d_name);
+
+		if (stat(fullPath, &fileStat) == 0) {
+			if (S_ISREG(fileStat.st_mode)) {
+				printf("File: %s\n", entry->d_name);
+			}
+		} else {
+			perror("stat");
+		}
+	}
+	closedir(dp);
+}
+#endif // __linux__
 
 //Returns an array of abstract pathnames denoting the files in the directory denoted by this abstract pathname.
 //If this abstract pathname does not denote a directory, then this method returns null. Otherwise an array of File objects is returned,
@@ -368,7 +425,11 @@ vector<File *> *File::listFiles() const
 	delete pBuf;
 #else
 
+#if defined(__linux__)
+	struct stat wfd;
+#else // _WIN32
 	WIN32_FIND_DATA wfd;
+#endif // __linux__
 
 #ifdef _UNICODE
 	WCHAR path[MAX_PATH];
@@ -385,6 +446,9 @@ vector<File *> *File::listFiles() const
 		while( FindNextFile( hFind, &wfd) );
 		FindClose( hFind);
 	}
+#elif defined(__linux__)
+	char path[MAX_PATH];
+	::listFiles(path);
 #else
 	char path[MAX_PATH];
 	sprintf( path, "%s\\*", wstringtofilename( getPath() ) );
@@ -480,6 +544,9 @@ vector<File *> *File::listFiles(FileFilter *filter) const
 		} while( FindNextFile( hFind, &wfd) );
 		FindClose( hFind);
 	}
+#elif defined(__linux__)
+	char path[MAX_PATH];
+	::listFiles(path);
 #else
 	char path[MAX_PATH];
 	WIN32_FIND_DATA wfd;
@@ -511,8 +578,12 @@ vector<File *> *File::listFiles(FileFilter *filter) const
 //true if and only if the file denoted by this abstract pathname exists and is a directory; false otherwise
 bool File::isDirectory() const
 {
-#ifdef _UNICODE
+#if defined(_UNICODE)
 	return exists() && ( GetFileAttributes( getPath().c_str() ) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
+#elif defined(__linux__)
+	std::wstring wpath = getPath();
+	std::string path(wpath.begin(), wpath.end());
+	return access(path.c_str(), F_OK) != -1;
 #else
 	return exists() && ( GetFileAttributes( wstringtofilename(getPath()) ) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
 #endif
@@ -586,9 +657,20 @@ __int64 File::length()
 		return 0;
 	}
 	return statData.fileSize;
+#elif defined(__linux__)
+	struct stat fileInfoBuffer;
+	std::wstring wpath = getPath();
+	std::string path(wpath.begin(), wpath.end());
+
+	int result = stat(path.c_str(), &fileInfoBuffer);
+
+	if(result == 0) {
+		return fileInfoBuffer.st_size;
+	} else {
+		return 0;
+	}
 #else
 	WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
-
 #ifdef _UNICODE
 	BOOL result = GetFileAttributesEx(
 		getPath().c_str(), // file or directory name
@@ -626,6 +708,7 @@ __int64 File::length()
 //or 0L if the file does not exist or if an I/O error occurs
 __int64 File::lastModified()
 {
+#if !defined(__linux__)
 	WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
 #ifdef _UNICODE
 	BOOL result = GetFileAttributesEx(
@@ -655,6 +738,17 @@ __int64 File::lastModified()
 		//Fail or a Directory
 		return 0l;
 	}
+#else
+	struct stat fileStat;
+	struct stat fileInfoBuffer;
+	std::wstring wpath = getPath();
+	std::string path(wpath.begin(), wpath.end());
+	if (stat(path.c_str(), &fileStat) == 0 && !S_ISDIR(fileStat.st_mode)) {
+		return static_cast<__int64>(fileStat.st_mtime);
+	} else {
+		return 0l;
+	}
+#endif
 }
 
 const wstring File::getPath() const
