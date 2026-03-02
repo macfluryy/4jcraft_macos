@@ -2,8 +2,6 @@
 
 
 #include "../../Common/UI/UIEnums.h"
-// #include "../../Xbox/Sentient/SentientTelemetryCommon.h"
-// #include "stdafx.h"
 
 enum ETelemetryChallenges
 {
