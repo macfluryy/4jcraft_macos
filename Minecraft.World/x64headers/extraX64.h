@@ -4,15 +4,16 @@
 #include <string>
 #include <functional>
 
-#include "..\..\Minecraft.Client\SkinBox.h"
+#include "../../Minecraft.Client/SkinBox.h"
 
 
 #include <vector>
 
 #define MULTITHREAD_ENABLE
 
+#ifndef __linux__
 typedef unsigned char byte;
-
+#endif // __linux__
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
 
@@ -24,7 +25,43 @@ const int XUSER_MAX_COUNT = 4;
 const int MINECRAFT_NET_MAX_PLAYERS = 8;
 #endif
 
+#if defined(__linux__)
 
+typedef struct _RTL_CRITICAL_SECTION {
+    // 	//
+    // 	//  The following field is used for blocking when there is contention for
+    // 	//  the resource
+    // 	//
+    //
+    union {
+        ULONG_PTR RawEvent[4];
+    } Synchronization;
+    //
+    // 	//
+    // 	//  The following three fields control entering and exiting the critical
+    // 	//  section for the resource
+    // 	//
+    //
+    LONG LockCount;
+    LONG RecursionCount;
+    HANDLE OwningThread;
+} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
+
+typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+
+
+inline void DeleteCriticalSection(CRITICAL_SECTION* stubEnterCS)
+{
+}
+
+inline void EnterCriticalSection(CRITICAL_SECTION* stubEnterCS)
+{
+}
+
+inline void LeaveCriticalSection( CRITICAL_SECTION* stubEnterCS)
+{
+}
+#endif // __linux__
 
 #ifdef __ORBIS__
 #include <net.h>
@@ -406,7 +443,7 @@ const int QNET_SENDDATA_SEQUENTIAL = 0;
 struct XRNM_SEND_BUFFER
 {
 	DWORD dwDataSize;
-	byte *pbyData;
+	std::byte *pbyData;
 };
 
 const int D3DBLEND_CONSTANTALPHA = 0;
@@ -451,7 +488,7 @@ HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
          VOID *pDestination,
          SIZE_T *pDestSize,
-         CONST VOID *pSource,
+          VOID *pSource,
          SIZE_T SrcSize
 );
 
@@ -460,20 +497,20 @@ HRESULT XMemCompress(
          XMEMCOMPRESSION_CONTEXT Context,
          VOID *pDestination,
          SIZE_T *pDestSize,
-         CONST VOID *pSource,
+          VOID *pSource,
          SIZE_T SrcSize
 );
 
 HRESULT XMemCreateCompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST VOID *pCodecParams,
+         const VOID *pCodecParams,
          DWORD Flags,
          XMEMCOMPRESSION_CONTEXT *pContext
 );
 
 HRESULT XMemCreateDecompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST VOID *pCodecParams,
+         const VOID *pCodecParams,
          DWORD Flags,
          XMEMDECOMPRESSION_CONTEXT *pContext
 );
@@ -630,7 +667,7 @@ public:
 	D3DXVECTOR3();
 	D3DXVECTOR3(float,float,float);
 	float x,y,z,pad;
-	D3DXVECTOR3& operator += ( CONST D3DXVECTOR3& add );
+	D3DXVECTOR3& operator += ( const D3DXVECTOR3& add );
 };
 
 #define QNET_E_SESSION_FULL 0

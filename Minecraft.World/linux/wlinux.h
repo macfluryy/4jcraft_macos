@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <string>
 
 #define TRUE true
 #define FALSE false
@@ -37,45 +38,23 @@ typedef struct {
     long long QuadPart;
     LONG HighPart;
 } LARGE_INTEGER;
+typedef long long LONGLONG;
+typedef size_t SIZE_T;
+typedef std::wstring LPWSTR;
+
+// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
+typedef struct _FILETIME {
+    DWORD dwLowDateTime;
+    DWORD dwHighDateTime;
+} FILETIME, *PFILETIME, *LPFILETIME;
 
 typedef short SHORT;
 
-typedef struct {
-    int xuidInvitee;
-    int xuidInviter;
-    DWORD dwTitleID;
-    int hostInfo;
-    bool fFromGameInvite;
-} XINVITE_INFO, * PXINVITE_INFO;
+typedef VOID* XMEMCOMPRESSION_CONTEXT;
+typedef VOID* XMEMDECOMPRESSION_CONTEXT;
 
-typedef XINVITE_INFO INVITE_INFO;
+typedef float FLOAT;
 
-typedef struct HXUIOBJ {
-    // Stub fields representing the actual Xbox HXUIOBJ structure.
-    int id;
-    const char* name;
-} HXUIOBJ;
-
-typedef struct _RTL_CRITICAL_SECTION {
-    // 	//
-    // 	//  The following field is used for blocking when there is contention for
-    // 	//  the resource
-    // 	//
-    //
-    	union {
-    		ULONG_PTR RawEvent[4];
-    	} Synchronization;
-    //
-    // 	//
-    // 	//  The following three fields control entering and exiting the critical
-    // 	//  section for the resource
-    // 	//
-    //
-    	LONG LockCount;
-    	LONG RecursionCount;
-    	HANDLE OwningThread;
-} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
-
-typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+#include "../x64headers/extraX64.h"
 
 #endif // WLINUX_H

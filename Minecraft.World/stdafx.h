@@ -124,8 +124,7 @@ typedef XUID GameSessionUID;
 #include <assert.h>
 #endif
 
-#if !defined(__linux__)
-#include "extraX64.h"
+#if defined(__linux__)
 #else
 #include "../Minecraft.Client/Xbox/Network/extra.h"
 #endif
