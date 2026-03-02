@@ -27,14 +27,14 @@ void InteractPacket::read(DataInputStream *dis) //throws IOException
 {
 	source = dis->readInt();
 	target = dis->readInt();
-	action = dis->readByte();
+	action = (int)dis->readByte();
 }
 
 void InteractPacket::write(DataOutputStream *dos) // throws IOException 
 {
 	dos->writeInt(source);
 	dos->writeInt(target);
-	dos->writeByte(action);
+	dos->writeByte((std::byte)action);
 }
 
 void InteractPacket::handle(PacketListener *listener) 
