@@ -42,7 +42,7 @@ typedef long long int int64;
 #define XDEVICE_PORT1               1
 #define XDEVICE_PORT2               2
 #define XDEVICE_PORT3               3
-#define XUSER_MAX_COUNT				4
+// #define XUSER_MAX_COUNT				4
 #define XUSER_INDEX_NONE            0x000000FE
 
 #define XBX_CLR_DEFAULT				0xFF000000
@@ -157,8 +157,8 @@ FORCEINLINE	void			XBX_SetStorageDeviceId( DWORD idx ) {}
 FORCEINLINE const char		*XBX_GetLanguageString() { return ""; }
 FORCEINLINE bool			XBX_IsLocalized() { return false; }
 
-#define XCONTENT_MAX_DISPLAYNAME_LENGTH	128
-#define XCONTENT_MAX_FILENAME_LENGTH	42
+// #define XCONTENT_MAX_DISPLAYNAME_LENGTH	128
+// #define XCONTENT_MAX_FILENAME_LENGTH	42
 
 #define XBX_INVALID_STORAGE_ID ((DWORD) -1)
 #define XBX_STORAGE_DECLINED ((DWORD) -2)
