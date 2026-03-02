@@ -107,6 +107,8 @@ typedef XUID GameSessionUID;
 
 #include <memory>
 
+#include "x64headers/extraX64.h"
+
 #include <list>
 #include <map>
 #include <set>

@@ -11,9 +11,7 @@
 
 #define MULTITHREAD_ENABLE
 
-#ifndef __linux__
 typedef unsigned char byte;
-#endif // __linux__
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
 
