@@ -117,7 +117,6 @@ public:
 	} ePrimitiveType;
 
 	void DrawVertices(ePrimitiveType PrimitiveType, int count, void *dataIn, eVertexType vType, C4JRender::ePixelShaderType psType);
-	void DrawVertexBuffer(ePrimitiveType PrimitiveType, int count, ID3D11Buffer *buffer, C4JRender::eVertexType vType, C4JRender::ePixelShaderType psType);
 
 	// Command buffers
 	void CBuffLockStaticCreations();
@@ -160,7 +159,7 @@ public:
 	HRESULT SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int *ppDataOut);
 	HRESULT SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn);
 	void TextureGetStats();
-	Gnm::Texture  *TextureGetTexture(int idx);
+	void  *TextureGetTexture(int idx);
 
 	// State control
 	void StateSetColour(float r, float g, float b, float a);
