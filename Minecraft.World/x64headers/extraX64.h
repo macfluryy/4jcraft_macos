@@ -11,7 +11,6 @@
 
 #define MULTITHREAD_ENABLE
 
-typedef unsigned char byte;
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
 
@@ -48,6 +47,10 @@ typedef struct _RTL_CRITICAL_SECTION {
 typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
 
 inline void InitializeCriticalSection(CRITICAL_SECTION* stubEnterCS)
+{
+}
+
+inline void InitializeCriticalSectionAndSpinCount(CRITICAL_SECTION* CriticalSection, ULONG SpinCount)
 {
 }
 
