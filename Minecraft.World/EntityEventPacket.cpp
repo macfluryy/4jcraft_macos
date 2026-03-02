@@ -9,7 +9,7 @@
 EntityEventPacket::EntityEventPacket() 
 {
 	entityId = 0;
-	eventId = 0;
+	eventId = (std::byte)0;
 }
 
 EntityEventPacket::EntityEventPacket(int entityId, byte eventId) 

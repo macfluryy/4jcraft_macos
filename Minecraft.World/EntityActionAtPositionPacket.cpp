@@ -30,18 +30,18 @@ EntityActionAtPositionPacket::EntityActionAtPositionPacket(shared_ptr<Entity> e,
 void EntityActionAtPositionPacket::read(DataInputStream *dis) //throws IOException 
 {
 	id = dis->readInt();
-	action = dis->readByte();
+	action = (int)dis->readByte();
 	x = dis->readInt();
-	y = dis->readByte();
+	y = (int)dis->readByte();
 	z = dis->readInt();
 }
 
 void EntityActionAtPositionPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeInt(id);
-	dos->writeByte(action);
+	dos->writeByte((std::byte)action);
 	dos->writeInt(x);
-	dos->writeByte(y);
+	dos->writeByte((std::byte)y);
 	dos->writeInt(z);
 }
 

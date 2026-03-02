@@ -3,6 +3,7 @@
 #include "PacketListener.h"
 #include "BasicTypeContainers.h"
 #include "GameCommandPacket.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 GameCommandPacket::GameCommandPacket()
 {
