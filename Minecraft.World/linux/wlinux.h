@@ -61,6 +61,4 @@ typedef VOID* XMEMDECOMPRESSION_CONTEXT;
 
 typedef float FLOAT;
 
-#include "../x64headers/extraX64.h"
-
 #endif // WLINUX_H
