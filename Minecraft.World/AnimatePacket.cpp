@@ -22,13 +22,13 @@ AnimatePacket::AnimatePacket(shared_ptr<Entity> e, int action)
 void AnimatePacket::read(DataInputStream *dis) //throws IOException 
 {
 	id = dis->readInt();
-	action = dis->readByte();
+	action = static_cast<int>(dis->readByte());
 }
 
 void AnimatePacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeInt(id);
-	dos->writeByte(action);
+	dos->writeByte(static_cast<std::byte>(action));
 }
 
 void AnimatePacket::handle(PacketListener *listener) 
