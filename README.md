@@ -12,6 +12,6 @@ Join our community: https://discord.gg/zFCwRWkkUg
 - Linux (WIP)
 - Emscripten (not started)
 - PS3
-- OSX (not started)
+- macOS (not started)
 - iOS (not started)
 - Android (not started)
