@@ -23,12 +23,12 @@ void ContainerClosePacket::handle(PacketListener *listener)
 
 void ContainerClosePacket::read(DataInputStream *dis) //throws IOException
 {
-	containerId = dis->readByte();
+	containerId = (int)dis->readByte();
 }
 
 void ContainerClosePacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeByte(containerId);
+	dos->writeByte((std::byte)containerId);
 }
 
 int ContainerClosePacket::getEstimatedSize() 

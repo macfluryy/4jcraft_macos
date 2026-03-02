@@ -21,7 +21,7 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket()
 	shouldDelay = true;
 	xc = 0;
 	zc = 0;
-	count = 0;
+	count = (std::byte)0;
 }
 
 ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positions, byte count, Level *level)
@@ -30,12 +30,12 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 	this->xc = xc;
 	this->zc = zc;
 	this->count = count;
-	this->positions = shortArray(count);
+	this->positions = shortArray((short int)count);
 
-	this->blocks = byteArray(count);
-	this->data = byteArray(count);
+	this->blocks = byteArray((unsigned int)count);
+	this->data = byteArray((unsigned int)count);
 	LevelChunk *levelChunk = level->getChunk(xc, zc);
-	for (int i = 0; i < count; i++) 
+	for (int i = 0; (std::byte)i < count; i++) 
 	{
 		int x = (positions[i] >> 12) & 15;
 		int z = (positions[i] >> 8) & 15;
@@ -63,33 +63,33 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 	zc = ( zc << 24 ) >> 24;
 #endif
 
-	int countAndFlags = dis->readByte();
+	int countAndFlags = (int)dis->readByte();
 	bool dataAllZero = (( countAndFlags & 0x80 ) == 0x80 );
 	levelIdx = ( countAndFlags >> 5 ) & 3;
-	count = countAndFlags & 0x1f;
+	count = (std::byte)countAndFlags & (std::byte)0x1f;
 
-	positions = shortArray(count);
-	blocks = byteArray(count);
-	data = byteArray(count);
+	positions = shortArray((short int)count);
+	blocks = byteArray((unsigned int)count);
+	data = byteArray((unsigned int)count);
 
 	int currentBlockType = -1;
-	for( int i = 0; i < count; i++ )
+	for( int i = 0; (std::byte)i < count; i++ )
 	{
 		int xzAndFlag = dis->readShort();
-		int y = dis->readByte();
+		int y = (int)dis->readByte();
 		positions[i] = (xzAndFlag & 0xff00) | (y & 0xff);
 		if( ( xzAndFlag & 0x0080 ) == 0x0080 )
 		{
 			currentBlockType = dis->read();
 		}
-		blocks[i] = currentBlockType;
+		blocks[i] = (std::byte)currentBlockType;
 		if( !dataAllZero)
 		{
-			data[i] = dis->read();
+			data[i] = (std::byte)dis->read();
 		}
 		else
 		{
-			data[i] = 0;
+			data[i] = (std::byte)0;
 		}
 	}
 }
@@ -107,22 +107,22 @@ void ChunkTilesUpdatePacket::write(DataOutputStream *dos) //throws IOException
 	// Determine if we've got any data elements that are non-zero - a large % of these packets set all data to zero, so we don't
 	// bother sending all those zeros in that case.
 	bool dataAllZero = true;
-	for( int i = 0; i < count; i++ )
+	for( int i = 0; i < (int)count; i++ )
 	{
-		if( data[i] ) dataAllZero = false;
+		if( (bool)data[i] ) dataAllZero = false;
 	}
-	int countAndFlags = count;
-	if( dataAllZero ) countAndFlags |= 0x80;
+	int countAndFlags = (int)count;
+	if( (bool)dataAllZero ) countAndFlags |= 0x80;
 	countAndFlags |= ( levelIdx << 5 );
 	dos->write(countAndFlags);
 	int lastBlockType = -1;
 	// Each block is represented by 15 bits of position, a flag to say whether the current block type is to change, and a possible data value.
 	// A large % of these packets set the same block type to a several positions, so no point resending the block type when not necessary.
-	for( int i = 0; i < count; i++ )
+	for( int i = 0; i < (int)count; i++ )
 	{
 		int xzAndFlag = positions[i] &0xff00;
 		int y = positions[i] & 0xff;
-		int thisBlockType = blocks[i];
+		int thisBlockType = (int)blocks[i];
 		if( thisBlockType != lastBlockType )
 		{
 			xzAndFlag |= 0x0080;	// Use top bit of y as a flag, we only need 7 bits for that
@@ -138,7 +138,7 @@ void ChunkTilesUpdatePacket::write(DataOutputStream *dos) //throws IOException
 		}
 		if( !dataAllZero )
 		{
-			dos->write(data[i]);
+			dos->write((unsigned int)data[i]);
 		}
 	}
 }
@@ -153,20 +153,20 @@ int ChunkTilesUpdatePacket::getEstimatedSize()
 	bool dataAllZero = true;
 	int lastBlockType = -1;
 	int blockTypeChanges = 0;
-	for( int i = 0; i < count; i++ )
+	for( int i = 0; i < (int)count; i++ )
 	{
-		if( data[i] ) dataAllZero = false;
-		int thisBlockType = blocks[i];
+		if( (bool)data[i] ) dataAllZero = false;
+		int thisBlockType = (int)blocks[i];
 		if( thisBlockType != lastBlockType )
 		{
 			blockTypeChanges++;
 			lastBlockType = thisBlockType;
 		}
 	}
-	int byteCount = 3 + 2 * count + blockTypeChanges;
+	int byteCount = 3 + 2 * (int)count + blockTypeChanges;
 	if( !dataAllZero )
 	{
-		byteCount += count;
+		byteCount += (unsigned char) count;
 	}
 
 	return byteCount;

@@ -14,12 +14,12 @@ ClientCommandPacket::ClientCommandPacket(int action)
 
 void ClientCommandPacket::read(DataInputStream *dis)
 {
-	action = dis->readByte();
+	action = (int)dis->readByte();
 }
 
 void ClientCommandPacket::write(DataOutputStream *dos)
 {
-	dos->writeByte(action & 0xff);
+	dos->writeByte((std::byte)action & (std::byte)0xff);
 }
 
 void ClientCommandPacket::handle(PacketListener *listener)
