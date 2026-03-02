@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "net.minecraft.world.inventory.h"
 #include "EnchantmentContainer.h"
-#include "../Minecraft.Client/Windows64Media/strings.h"
 
 EnchantmentContainer::EnchantmentContainer(EnchantmentMenu *menu) : SimpleContainer(IDS_ENCHANT, 1), m_menu( menu )
 {

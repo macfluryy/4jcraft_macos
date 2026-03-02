@@ -5,8 +5,6 @@
 #include "net.minecraft.world.item.h"
 #include "net.minecraft.world.item.enchantment.h"
 #include "RepairMenu.h"
-#include "../Minecraft.Client/Windows64Media/strings.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 RepairMenu::RepairMenu(shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, shared_ptr<Player> player)
 {

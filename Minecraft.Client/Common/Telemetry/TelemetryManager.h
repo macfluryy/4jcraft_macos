@@ -1,7 +1,7 @@
 #pragma once
 
+
 #include "../../Common/UI/UIEnums.h"
-#include "../../Xbox/Sentient/SentientTelemetryCommon.h"
 
 enum ETelemetryChallenges
 {

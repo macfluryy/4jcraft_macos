@@ -44,6 +44,7 @@ typedef struct {
 typedef long long LONGLONG;
 typedef size_t SIZE_T;
 typedef std::wstring LPWSTR;
+typedef unsigned char boolean; // java brainrot
 
 // https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
 typedef struct _FILETIME {

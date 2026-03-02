@@ -246,7 +246,10 @@ void MemSect(int sect);
 #include "..\Minecraft.Client\PSVita\Sentient\SentientManager.h"
 #include "..\Minecraft.Client\PSVita\Sentient\MinecraftTelemetry.h"
 #elif defined(__linux__)
-// DecalOverdose: TODO????
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
+#include "../Minecraft.Client/Windows64Media/strings.h"
+#include "../Minecraft.Client/Windows64/Sentient/SentientTelemetryCommon.h"
+// #include "../Minecraft.Client/Windows64/Sentient/MinecraftTelemetry.h"
 #else
 #include "..\Minecraft.Client\Orbis\Orbis_App.h"
 #include "..\Minecraft.Client\OrbisMedia\strings.h"
