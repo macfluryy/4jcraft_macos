@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "net.minecraft.world.Item.h"
+#include "net.minecraft.world.item.h"
 #include "DyePowderItem.h"
 #include "Tile.h"
 #include "ClothTile.h"
