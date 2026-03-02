@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include <iostream>
 #include "PacketListener.h"
-#include "PreloginPacket.h"
+#include "PreLoginPacket.h"
 #include "InputOutputStream.h"
-
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 PreLoginPacket::PreLoginPacket() 
