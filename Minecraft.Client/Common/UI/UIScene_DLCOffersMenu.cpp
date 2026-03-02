@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "UI.h"
 #include "UIScene_DLCOffersMenu.h"
-#include "..\..\..\Minecraft.World\StringHelpers.h"
+#include "../../../Minecraft.World/StringHelpers.h"
 #if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
-#include "Common\Network\Sony\SonyHttp.h"
+#include "Common/Network/Sony/SonyHttp.h"
 #endif
 
 #ifdef __PSVITA__
-#include "PSVita\Network\SonyCommerce_Vita.h"
+#include "PSVita/Network/SonyCommerce_Vita.h"
 #endif
 
 #define PLAYER_ONLINE_TIMER_ID 0
@@ -193,13 +193,13 @@ void UIScene_DLCOffersMenu::handleInput(int iPad, int key, bool repeat, bool pre
 	switch(iTextC)
 	{
 	case 0:
-		m_labelHTMLSellText.init("Voici un fantastique mini-pack de 24 apparences pour personnaliser votre personnage Minecraft et vous mettre dans l'ambiance des fêtes de fin d'année.<br><br>1-4 joueurs<br>2-8 joueurs en réseau<br><br>  Cet article fait l’objet d’une licence ou d’une sous-licence de Sony Computer Entertainment America, et est soumis aux conditions générales du service du réseau, au contrat d’utilisateur, aux restrictions d’utilisation de cet article et aux autres conditions applicables, disponibles sur le site www.us.playstation.com/support/useragreements. Si vous ne souhaitez pas accepter ces conditions, ne téléchargez pas ce produit. Cet article peut être utilisé avec un maximum de deux systèmes PlayStation®3 activés associés à ce compte Sony Entertainment Network. <br><br>'Minecraft' est une marque commerciale de Notch Development AB.");
+		m_labelHTMLSellText.init("Voici un fantastique mini-pack de 24 apparences pour personnaliser votre personnage Minecraft et vous mettre dans l'ambiance des fÃªtes de fin d'annÃ©e.<br><br>1-4 joueurs<br>2-8 joueurs en rÃ©seau<br><br>  Cet article fait lâ€™objet dâ€™une licence ou dâ€™une sous-licence de Sony Computer Entertainment America, et est soumis aux conditions gÃ©nÃ©rales du service du rÃ©seau, au contrat dâ€™utilisateur, aux restrictions dâ€™utilisation de cet article et aux autres conditions applicables, disponibles sur le site www.us.playstation.com/support/useragreements. Si vous ne souhaitez pas accepter ces conditions, ne tÃ©lÃ©chargez pas ce produit. Cet article peut Ãªtre utilisÃ© avec un maximum de deux systÃ¨mes PlayStationÂ®3 activÃ©s associÃ©s Ã  ce compte Sony Entertainment Network.Â <br><br>'Minecraft' est une marque commerciale de Notch Development AB.");
 		break;
 	case 1:
-		m_labelHTMLSellText.init("Un fabuloso minipack de 24 aspectos para personalizar tu personaje de Minecraft y ponerte a tono con las fiestas.<br><br>1-4 jugadores<br>2-8 jugadores en red<br><br>  Sony Computer Entertainment America le concede la licencia o sublicencia de este artículo, que está sujeto a los términos de servicio y al acuerdo de usuario de la red. Las restricciones de uso de este artículo, así como otros términos aplicables, se encuentran en www.us.playstation.com/support/useragreements. Si no desea aceptar todos estos términos, no descargue este artículo. Este artículo puede usarse en hasta dos sistemas PlayStation®3 activados asociados con esta cuenta de Sony Entertainment Network. <br><br>'Minecraft' es una marca comercial de Notch Development AB.");
+		m_labelHTMLSellText.init("Un fabuloso minipack de 24 aspectos para personalizar tu personaje de Minecraft y ponerte a tono con las fiestas.<br><br>1-4 jugadores<br>2-8 jugadores en red<br><br>  Sony Computer Entertainment America le concede la licencia o sublicencia de este artÃ­culo, que estÃ¡ sujeto a los tÃ©rminos de servicio y al acuerdo de usuario de la red. Las restricciones de uso de este artÃ­culo, asÃ­ como otros tÃ©rminos aplicables, se encuentran en www.us.playstation.com/support/useragreements. Si no desea aceptar todos estos tÃ©rminos, no descargue este artÃ­culo. Este artÃ­culo puede usarse en hasta dos sistemas PlayStationÂ®3 activados asociados con esta cuenta de Sony Entertainment Network.Â <br><br>'Minecraft' es una marca comercial de Notch Development AB.");
 		break;
 	case 2:
-		m_labelHTMLSellText.init("Este é um incrível pacote com 24 capas para personalizar seu personagem no Minecraft e entrar no clima de final de ano.<br><br>1-4 Jogadores<br>Jogadores em rede 2-8<br><br>  Este item está sendo licenciado ou sublicenciado para você pela Sony Computer Entertainment America e está sujeito aos Termos de Serviço da Rede e Acordo do Usuário, as restrições de uso deste item e outros termos aplicáveis estão localizados em www.us.playstation.com/support/useragreements. Caso não queira aceitar todos esses termos, não baixe este item. Este item pode ser usado com até 2 sistemas PlayStation®3 ativados associados a esta Conta de Rede Sony Entertainment. <br><br>'Minecraft' é uma marca registrada da Notch Development AB");
+		m_labelHTMLSellText.init("Este Ã© um incrÃ­vel pacote com 24 capas para personalizar seu personagem no Minecraft e entrar no clima de final de ano.<br><br>1-4 Jogadores<br>Jogadores em rede 2-8<br><br>  Este item estÃ¡ sendo licenciado ou sublicenciado para vocÃª pela Sony Computer Entertainment America e estÃ¡ sujeito aos Termos de ServiÃ§o da Rede e Acordo do UsuÃ¡rio, as restriÃ§Ãµes de uso deste item e outros termos aplicÃ¡veis estÃ£o localizados em www.us.playstation.com/support/useragreements. Caso nÃ£o queira aceitar todos esses termos, nÃ£o baixe este item. Este item pode ser usado com atÃ© 2 sistemas PlayStationÂ®3 ativados associados a esta Conta de Rede Sony Entertainment.Â <br><br>'Minecraft' Ã© uma marca registrada da Notch Development AB");
 		break;
 	}
 	iTextC++;

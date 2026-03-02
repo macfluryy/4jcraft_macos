@@ -4,7 +4,7 @@
 #include "GuiParticles.h"
 #include "Tesselator.h"
 #include "Textures.h"
-#include "..\Minecraft.World\SoundTypes.h"
+#include "../Minecraft.World/SoundTypes.h"
 
 
 

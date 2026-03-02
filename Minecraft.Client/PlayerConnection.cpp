@@ -5,31 +5,31 @@
 #include "ServerPlayerGameMode.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
-#include "..\Minecraft.World\net.minecraft.commands.h"
-#include "..\Minecraft.World\net.minecraft.network.h"
-#include "..\Minecraft.World\net.minecraft.world.entity.item.h"
-#include "..\Minecraft.World\net.minecraft.world.level.h"
-#include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
-#include "..\Minecraft.World\net.minecraft.world.item.h"
-#include "..\Minecraft.World\net.minecraft.world.item.trading.h"
-#include "..\Minecraft.World\net.minecraft.world.inventory.h"
-#include "..\Minecraft.World\net.minecraft.world.level.tile.entity.h"
-#include "..\Minecraft.World\net.minecraft.world.level.saveddata.h"
-#include "..\Minecraft.World\net.minecraft.network.h"
-#include "..\Minecraft.World\net.minecraft.world.food.h"
-#include "..\Minecraft.World\AABB.h"
-#include "..\Minecraft.World\Pos.h"
-#include "..\Minecraft.World\SharedConstants.h"
-#include "..\Minecraft.World\Socket.h"
-#include "..\Minecraft.World\Achievements.h"
-#include "..\Minecraft.World\net.minecraft.h"
+#include "../Minecraft.World/net.minecraft.commands.h"
+#include "../Minecraft.World/net.minecraft.network.h"
+#include "../Minecraft.World/net.minecraft.world.entity.item.h"
+#include "../Minecraft.World/net.minecraft.world.level.h"
+#include "../Minecraft.World/net.minecraft.world.level.dimension.h"
+#include "../Minecraft.World/net.minecraft.world.item.h"
+#include "../Minecraft.World/net.minecraft.world.item.trading.h"
+#include "../Minecraft.World/net.minecraft.world.inventory.h"
+#include "../Minecraft.World/net.minecraft.world.level.tile.entity.h"
+#include "../Minecraft.World/net.minecraft.world.level.saveddata.h"
+#include "../Minecraft.World/net.minecraft.network.h"
+#include "../Minecraft.World/net.minecraft.world.food.h"
+#include "../Minecraft.World/AABB.h"
+#include "../Minecraft.World/Pos.h"
+#include "../Minecraft.World/SharedConstants.h"
+#include "../Minecraft.World/Socket.h"
+#include "../Minecraft.World/Achievements.h"
+#include "../Minecraft.World/net.minecraft.h"
 #include "EntityTracker.h"
 #include "ServerConnection.h"
 #include "..\Minecraft.World\GenericStats.h"
 #include "..\Minecraft.World\JavaMath.h"
 
 // 4J Added
-#include "..\Minecraft.World\net.minecraft.world.item.crafting.h"
+#include "../Minecraft.World/net.minecraft.world.item.crafting.h"
 #include "Options.h"
 
 Random PlayerConnection::random;
@@ -126,7 +126,7 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason)
 	send( shared_ptr<DisconnectPacket>( new DisconnectPacket(reason) ));
 	connection->sendAndQuit();
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//server->players->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(L"งe" + player->name + L" left the game.") ) );
+	//server->players->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(L"ยงe" + player->name + L" left the game.") ) );
 	if(getWasKicked())
 	{
 		server->getPlayers()->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(player->name, ChatPacket::e_ChatPlayerKickedFromGame) ) );
@@ -569,7 +569,7 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason, 
 	if( done ) return;
 //    logger.info(player.name + " lost connection: " + reason);
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//server->players->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(L"งe" + player->name + L" left the game.") ) );
+	//server->players->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(L"ยงe" + player->name + L" left the game.") ) );
 	if(getWasKicked())
 	{
 		server->getPlayers()->broadcastAll( shared_ptr<ChatPacket>( new ChatPacket(player->name, ChatPacket::e_ChatPlayerKickedFromGame) ) );
@@ -740,13 +740,13 @@ int PlayerConnection::countDelayedPackets()
 void PlayerConnection::info(const wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//send( shared_ptr<ChatPacket>( new ChatPacket(L"ง7" + string) ) );
+	//send( shared_ptr<ChatPacket>( new ChatPacket(L"ยง7" + string) ) );
 }
 
 void PlayerConnection::warn(const wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
-	//send( shared_ptr<ChatPacket>( new ChatPacket(L"ง9" + string) ) );
+	//send( shared_ptr<ChatPacket>( new ChatPacket(L"ยง9" + string) ) );
 }
 
 wstring PlayerConnection::getConsoleName()

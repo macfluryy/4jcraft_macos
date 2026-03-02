@@ -61,8 +61,8 @@
 #include "../Minecraft.World/BasicTypeContainers.h"
 
 #ifdef __PS3__
-#include "PS3\SPU_Tasks\LevelRenderer_cull\LevelRenderer_cull.h"
-#include "PS3\SPU_Tasks\LevelRenderer_FindNearestChunk\LevelRenderer_FindNearestChunk.h"
+#include "PS3/SPU_Tasks/LevelRenderer_cull/LevelRenderer_cull.h"
+#include "PS3/SPU_Tasks/LevelRenderer_FindNearestChunk/LevelRenderer_FindNearestChunk.h"
 #include "C4JSpursJob.h"
 
 static LevelRenderer_cull_DataIn g_cullDataIn[4] __attribute__((__aligned__(16)));
