@@ -47,6 +47,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 
 typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
 
+inline void InitializeCriticalSection(CRITICAL_SECTION* stubEnterCS)
+{
+}
 
 inline void DeleteCriticalSection(CRITICAL_SECTION* stubEnterCS)
 {
