@@ -11,10 +11,10 @@
 #include "SparseLightStorage.h"
 #include "BlockReplacements.h"
 #include "LevelChunk.h"
-#include "..\Minecraft.Client\MinecraftServer.h"
-#include "..\Minecraft.Client\ServerLevel.h"
-#include "..\Minecraft.Client\ServerChunkCache.h"
-#include "..\Minecraft.Client\GameRenderer.h"
+#include "../Minecraft.Client/MinecraftServer.h"
+#include "../Minecraft.Client/ServerLevel.h"
+#include "../Minecraft.Client/ServerChunkCache.h"
+#include "../Minecraft.Client/GameRenderer.h"
 
 #ifdef __PS3__
 #include "C4JSpursJob.h"

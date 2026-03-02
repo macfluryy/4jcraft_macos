@@ -9,9 +9,9 @@
 #include "net.minecraft.network.packet.h"
 #include "SignTileEntity.h"
 #include <xuiapp.h>
-#include "..\Minecraft.Client\ClientConnection.h"
-#include "..\Minecraft.Client\Minecraft.h"
-#include "..\Minecraft.Client\ServerLevel.h"
+#include "../Minecraft.Client/ClientConnection.h"
+#include "../Minecraft.Client/Minecraft.h"
+#include "../Minecraft.Client/ServerLevel.h"
 #include "..\Minecraft.World\Level.h"
 
 

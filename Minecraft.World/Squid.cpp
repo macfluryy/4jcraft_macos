@@ -8,7 +8,7 @@ using namespace std;
 #include "net.minecraft.world.item.h"
 #include "SharedConstants.h"
 #include "Squid.h"
-#include "..\Minecraft.Client\Textures.h"
+#include "../Minecraft.Client/Textures.h"
 
 
 

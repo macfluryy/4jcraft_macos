@@ -7,11 +7,13 @@
 #include "net.minecraft.world.phys.h"
 #include "net.minecraft.world.damagesource.h"
 #include "BasicTypeContainers.h"
-#include "..\Minecraft.Client\Textures.h"
+#include "../Minecraft.Client/Textures.h"
 #include "net.minecraft.world.entity.boss.enderdragon.h"
 #include "net.minecraft.world.level.pathfinder.h"
 #include "SharedConstants.h"
 #include "EnderDragon.h"
+
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 

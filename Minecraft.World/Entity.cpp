@@ -50,8 +50,8 @@ int Entity::getSmallId()
 #ifdef _WIN32
 	if( ((size_t)TlsGetValue(tlsIdx) != 0 ) )
 #else
-	pthread_key_create(&tlsKey, nullptr);
-	if ( ((size_t)pthread_getspecific(tlsKey) != 0) )
+	pthread_key_create(&tlsIdx, nullptr);
+	if ( ((size_t)pthread_getspecific(tlsIdx) != 0) )
 #endif
 	{
 		MinecraftServer *server = MinecraftServer::getInstance();
@@ -154,7 +154,7 @@ void Entity::freeSmallId(int index)
 
 void Entity::useSmallIds()
 {
-	TlsSetValue(tlsIdx,(LPVOID)1);
+	pthread_setspecific(tlsIdx,(LPVOID)1);
 }
 
 // Things also added here to be able to manage the concept of a number of extra "wandering" entities - normally path finding entities aren't allowed to
