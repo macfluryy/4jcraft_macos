@@ -441,7 +441,7 @@ const int QNET_SENDDATA_SEQUENTIAL = 0;
 struct XRNM_SEND_BUFFER
 {
 	DWORD dwDataSize;
-	std::byte *pbyData;
+	byte *pbyData;
 };
 
 const int D3DBLEND_CONSTANTALPHA = 0;

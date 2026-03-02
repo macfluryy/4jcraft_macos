@@ -15,7 +15,7 @@ public:
     void write(DataOutput *dos)
 	{
         if (list.size() > 0) type = (list[0])->getId();
-        else type = static_cast<std::byte>(1);
+        else type = static_cast<byte>(1);
 
         dos->writeByte(type);
         dos->writeInt((int)list.size());

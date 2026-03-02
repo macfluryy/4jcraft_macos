@@ -39,9 +39,9 @@ void EntityActionAtPositionPacket::read(DataInputStream *dis) //throws IOExcepti
 void EntityActionAtPositionPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeInt(id);
-	dos->writeByte((std::byte)action);
+	dos->writeByte((byte)action);
 	dos->writeInt(x);
-	dos->writeByte((std::byte)y);
+	dos->writeByte((byte)y);
 	dos->writeInt(z);
 }
 

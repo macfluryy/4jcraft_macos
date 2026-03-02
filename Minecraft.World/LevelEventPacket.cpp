@@ -28,7 +28,7 @@ void LevelEventPacket::read(DataInputStream *dis) //throws IOException
 {
 	type = dis->readInt();
 	x = dis->readInt();
-	y = (int)(dis->readByte() & (std::byte)0xff);
+	y = (int)(dis->readByte() & (byte)0xff);
 	z = dis->readInt();
 	data = dis->readInt();
 }
@@ -37,7 +37,7 @@ void LevelEventPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeInt(type);
 	dos->writeInt(x);
-	dos->writeByte((std::byte)(y & 0xff));
+	dos->writeByte((byte)(y & 0xff));
 	dos->writeInt(z);
 	dos->writeInt(data);
 }

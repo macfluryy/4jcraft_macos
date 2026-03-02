@@ -21,7 +21,7 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket()
 	shouldDelay = true;
 	xc = 0;
 	zc = 0;
-	count = (std::byte)0;
+	count = (byte)0;
 }
 
 ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positions, byte count, Level *level)
@@ -35,7 +35,7 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 	this->blocks = byteArray((unsigned int)count);
 	this->data = byteArray((unsigned int)count);
 	LevelChunk *levelChunk = level->getChunk(xc, zc);
-	for (int i = 0; (std::byte)i < count; i++) 
+	for (int i = 0; (byte)i < count; i++) 
 	{
 		int x = (positions[i] >> 12) & 15;
 		int z = (positions[i] >> 8) & 15;
@@ -66,14 +66,14 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 	int countAndFlags = (int)dis->readByte();
 	bool dataAllZero = (( countAndFlags & 0x80 ) == 0x80 );
 	levelIdx = ( countAndFlags >> 5 ) & 3;
-	count = (std::byte)countAndFlags & (std::byte)0x1f;
+	count = (byte)countAndFlags & (byte)0x1f;
 
 	positions = shortArray((short int)count);
 	blocks = byteArray((unsigned int)count);
 	data = byteArray((unsigned int)count);
 
 	int currentBlockType = -1;
-	for( int i = 0; (std::byte)i < count; i++ )
+	for( int i = 0; (byte)i < count; i++ )
 	{
 		int xzAndFlag = dis->readShort();
 		int y = (int)dis->readByte();
@@ -82,14 +82,14 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 		{
 			currentBlockType = dis->read();
 		}
-		blocks[i] = (std::byte)currentBlockType;
+		blocks[i] = (byte)currentBlockType;
 		if( !dataAllZero)
 		{
-			data[i] = (std::byte)dis->read();
+			data[i] = (byte)dis->read();
 		}
 		else
 		{
-			data[i] = (std::byte)0;
+			data[i] = (byte)0;
 		}
 	}
 }

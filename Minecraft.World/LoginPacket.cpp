@@ -145,16 +145,16 @@ void LoginPacket::write(DataOutputStream *dos) //throws IOException
 	}
 	dos->writeLong(seed);
 	dos->writeInt(gameType);
-	dos->writeByte((std::byte)dimension);
-	dos->writeByte((std::byte)mapHeight);
-	dos->writeByte((std::byte)maxPlayers);
+	dos->writeByte((byte)dimension);
+	dos->writeByte((byte)mapHeight);
+	dos->writeByte((byte)maxPlayers);
 	dos->writePlayerUID(m_offlineXuid);
 	dos->writePlayerUID(m_onlineXuid);
 	dos->writeBoolean(m_friendsOnlyUGC);
 	dos->writeInt(m_ugcPlayersVersion);
-	dos->writeByte((std::byte)difficulty);
+	dos->writeByte((byte)difficulty);
 	dos->writeInt(m_multiplayerInstanceId);
-	dos->writeByte((std::byte)m_playerIndex);
+	dos->writeByte((byte)m_playerIndex);
 	dos->writeInt(m_playerSkinId);
 	dos->writeInt(m_playerCapeId);
 	dos->writeBoolean(m_isGuest);

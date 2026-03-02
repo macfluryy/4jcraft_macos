@@ -117,7 +117,7 @@ public:
 
     void putBoolean(wchar_t * string, bool val)
 	{
-        putByte(string, val?static_cast<std::byte>(1):static_cast<std::byte>(0));
+        putByte(string, val?static_cast<byte>(1):static_cast<byte>(0));
     }
 
     Tag *get(wchar_t *name)
@@ -200,7 +200,7 @@ public:
 
     bool getBoolean(wchar_t *string)
 	{
-        return getByte(string) != static_cast<std::byte>(0);
+        return getByte(string) != static_cast<byte>(0);
     }
 
 	void remove(const wstring &name)

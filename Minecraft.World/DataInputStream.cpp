@@ -138,7 +138,7 @@ bool DataInputStream::readFully(byteArray b)
 		}
 		else
 		{
-			b[i] = static_cast<std::byte>(byteRead);
+			b[i] = static_cast<byte>(byteRead);
 		}
 	}
 	return true;

@@ -30,8 +30,8 @@ void ContainerButtonClickPacket::read(DataInputStream *dis)
 
 void ContainerButtonClickPacket::write(DataOutputStream *dos)
 {
-	dos->writeByte((std::byte)containerId);
-	dos->writeByte((std::byte)buttonId);
+	dos->writeByte((byte)containerId);
+	dos->writeByte((byte)buttonId);
 }
 
 int ContainerButtonClickPacket::getEstimatedSize()

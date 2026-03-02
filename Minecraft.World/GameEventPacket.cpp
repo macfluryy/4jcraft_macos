@@ -44,8 +44,8 @@ void GameEventPacket::read(DataInputStream *dis) //throws IOException
 
 void GameEventPacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeByte((std::byte)_event);
-	dos->writeByte((std::byte)param);
+	dos->writeByte((byte)_event);
+	dos->writeByte((byte)param);
 }
 
 void GameEventPacket::handle(PacketListener *listener) 

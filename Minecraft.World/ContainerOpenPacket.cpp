@@ -28,18 +28,18 @@ void ContainerOpenPacket::handle(PacketListener *listener)
 
 void ContainerOpenPacket::read(DataInputStream *dis) //throws IOException 
 {
-	containerId = (int)(dis->readByte() & (std::byte)0xff);
-	type = (int)(dis->readByte() & (std::byte)0xff);
+	containerId = (int)(dis->readByte() & (byte)0xff);
+	type = (int)(dis->readByte() & (byte)0xff);
 	title = dis->readShort();
-	size = (int)(dis->readByte() & (std::byte)0xff);
+	size = (int)(dis->readByte() & (byte)0xff);
 }
 
 void ContainerOpenPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((std::byte)containerId & (std::byte)0xff);
-	dos->writeByte((std::byte)type & (std::byte)0xff);
+	dos->writeByte((byte)containerId & (byte)0xff);
+	dos->writeByte((byte)type & (byte)0xff);
 	dos->writeShort(title & 0xffff);
-	dos->writeByte((std::byte)size & (std::byte)0xff);
+	dos->writeByte((byte)size & (byte)0xff);
 }
 
 int ContainerOpenPacket::getEstimatedSize() 
