@@ -99,9 +99,9 @@ void ExplodePacket::write(DataOutputStream *dos) //throws IOException
 			int xx = tp.x-xp;
 			int yy = tp.y-yp;
 			int zz = tp.z-zp;
-			dos->writeByte(xx);
-			dos->writeByte(yy);
-			dos->writeByte(zz);
+			dos->writeByte((std::byte)xx);
+			dos->writeByte((std::byte)yy);
+			dos->writeByte((std::byte)zz);
 		}
 	}
 

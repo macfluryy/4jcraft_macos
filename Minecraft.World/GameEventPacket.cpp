@@ -38,14 +38,14 @@ GameEventPacket::GameEventPacket(int _event, int param)
 
 void GameEventPacket::read(DataInputStream *dis) //throws IOException 
 {
-	_event = dis->readByte();
-	param = dis->readByte();
+	_event = (int)dis->readByte();
+	param = (int)dis->readByte();
 }
 
 void GameEventPacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeByte(_event);
-	dos->writeByte(param);
+	dos->writeByte((std::byte)_event);
+	dos->writeByte((std::byte)param);
 }
 
 void GameEventPacket::handle(PacketListener *listener) 
