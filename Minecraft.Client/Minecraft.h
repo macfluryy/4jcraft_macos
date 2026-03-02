@@ -42,6 +42,10 @@ class PsPlusUpsellWrapper;
 #include "../Minecraft.World/DisconnectPacket.h"
 #include "../Minecraft.World/C4JThread.h"
 
+#ifdef linux
+#undef linux
+#endif
+
 using namespace std;
 
 class Minecraft

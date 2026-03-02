@@ -11,14 +11,21 @@
 #include "../Minecraft.World/LevelData.h"
 #include "../Minecraft.Client/Common/GameRules/LevelGenerationOptions.h"
 #include "../Minecraft.World/net.minecraft.world.level.chunk.storage.h"
-
+#include <ctime>
 
 #ifdef _XBOX
 #define RESERVE_ALLOCATION  MEM_RESERVE | MEM_LARGE_PAGES
 #define COMMIT_ALLOCATION  MEM_COMMIT | MEM_LARGE_PAGES
-#else
+#elif !defined(__linux__)
 #define RESERVE_ALLOCATION  MEM_RESERVE
 #define COMMIT_ALLOCATION  MEM_COMMIT
+#else
+#include <linux/mman.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#define RESERVE_ALLOCATION  0
+#define COMMIT_ALLOCATION   MAP_PRIVATE | MAP_ANONYMOUS
+#define PAGE_READWRITE O_RDWR
 #endif
 
 unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
@@ -38,7 +45,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 		// AP - The Vita doesn't have virtual memory so a pretend system has been implemented in PSVitaStubs.cpp. 
 		// All access to the memory must be done via the access function as the pointer returned from VirtualAlloc
 		// can't be used directly.
-		pvHeap = VirtualAlloc(NULL, MAX_PAGE_COUNT * CSF_PAGE_SIZE, RESERVE_ALLOCATION, PAGE_READWRITE );
+		pvHeap = mmap(NULL, NULL, MAX_PAGE_COUNT * CSF_PAGE_SIZE, RESERVE_ALLOCATION, PAGE_READWRITE, NULL );
 	}
 
 	pvSaveMem = pvHeap;
@@ -74,7 +81,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 
 	unsigned int pagesRequired = ( heapSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
 
-	void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
+	void *pvRet = mmap(NULL, pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
 	if( pvRet == NULL )
 	{
 #ifndef _CONTENT_PACKAGE
@@ -114,7 +121,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 #ifdef __PS3__
 			StorageManager.FreeSaveData();
 #endif
-			app.DebugPrintf("Filesize - %d, Adjusted size - %d\n",fileSize,storageLength);
+			printf("Filesize - %d, Adjusted size - %d\n",fileSize,storageLength);
 			fileSize = storageLength;
 		} 
 
@@ -151,7 +158,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 				if(decompSize == 0)
 				{
 					// 4J Stu - Saves created between 2/12/2011 and 7/12/2011 will have this problem
-					app.DebugPrintf("Invalid save data format\n");
+					printf("Invalid save data format\n");
 					ZeroMemory( pvSourceData, fileSize );
 					// Clear the first 8 bytes that reference the header
 					header.WriteHeader( pvSourceData );
@@ -180,7 +187,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 					if( desiredSize > currentHeapSize )
 					{
 						unsigned int pagesRequired = ( desiredSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
-						void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
+						void *pvRet = mmap(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
 						if( pvRet == NULL )
 						{
 							// Out of physical memory
@@ -488,7 +495,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, DWORD nNumberOfByt
 	if( desiredSize > currentHeapSize )
 	{
 		unsigned int pagesRequired = ( desiredSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
-		void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
+		void *pvRet = mmap(NULL, pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
 		if( pvRet == NULL )
 		{
 			// Out of physical memory
@@ -692,7 +699,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
 		fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
 
-		app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
+		printf("Check buffer size: Elapsed time %f\n", fElapsedTime);
 		PIXEndNamedEvent();
 
 		// We add 4 bytes to the start so that we can signal compressed data
@@ -723,7 +730,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
 		fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
 
-		app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
+		printf("Compress: Elapsed time %f\n", fElapsedTime);
 		PIXEndNamedEvent();
 
 		ZeroMemory(compData,8);
@@ -731,7 +738,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		memcpy( compData, &saveVer, sizeof(int) );
 		memcpy( compData+4, &fileSize, sizeof(int) );
 
-		app.DebugPrintf("Save data compressed from %d to %d\n", fileSize, compLength);
+		printf("Save data compressed from %d to %d\n", fileSize, compLength);
 #endif
 
 		PBYTE pbThumbnailData=NULL;
@@ -785,7 +792,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 #elif (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
 		// set the icon and save image
 		StorageManager.SetSaveImages(pbThumbnailData,dwThumbnailDataSize,pbDataSaveImage,dwDataSizeSaveImage,bTextMetadata,iTextMetadataBytes);
-		app.DebugPrintf("Save thumbnail size %d\n",dwThumbnailDataSize);
+		printf("Save thumbnail size %d\n",dwThumbnailDataSize);
 
 		// save the data
 		StorageManager.SaveSaveData( &ConsoleSaveFileOriginal::SaveSaveDataCallback, this );
@@ -838,8 +845,14 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 
 	wchar_t *fileName = new wchar_t[XCONTENT_MAX_FILENAME_LENGTH+1];
 
+#if defined(_WIN32)
 	SYSTEMTIME t;
 	GetSystemTime( &t );
+#else
+	// DecalOverdose: JARVIS DON'T PULL AN ALIEN SWARM: GLOBAL OFFENSIVE
+	std::time_t t = std::time(0);
+	std::tm* localTime = std::localtime(&t);
+#endif // _WIN32
 
 	//14 chars for the digits
 	//11 chars for the separators + suffix
@@ -849,7 +862,15 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	{
 		cutFileName = m_fileName.substr(0, XCONTENT_MAX_FILENAME_LENGTH - 25);
 	}
+#ifndef __linux__
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
+#else
+	snprintf(static_cast<char*>(fileName), XCONTENT_MAX_FILENAME_LENGTH + 1,
+			 "\\v%04d-%s%02d.%02d.%02d.%02d.%02d.mcs",
+		  VER_PRODUCTBUILD, cutFileName.c_str(),
+			 localTime->tm_mon + 1, localTime->tm_mday,
+		  localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
+#endif // __linux__
 
 #ifdef _UNICODE
 	wstring wtemp = targetFileDir.getPath() + wstring(fileName);
@@ -857,9 +878,13 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 #else
 	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + wstring(fileName) );
 #endif
-#ifndef __PSVITA__
+#if !defined __PSVITA__ && !defined(__linux__)
 	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
 #endif
+
+#if defined(__linux__)
+	int hSaveFile = open(lpFileName, O_RDWR);
+#endif // __linux__
 
 	if(compressedData != NULL && compressedDataSize > 0)
 	{
@@ -1041,12 +1066,12 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform()
 		wstring suffix(L".mcr");
 		if( fName.compare(fName.length() - suffix.length(), suffix.length(), suffix) == 0 )
 		{
-			app.DebugPrintf("Processing a region file: %ls\n",fName.c_str());
+			printf("Processing a region file: %ls\n",fName.c_str());
 			ConvertRegionFile(File(fe->data.filename) );
 		}
 		else
 		{
-			app.DebugPrintf("%ls is not a region file, ignoring\n", fName.c_str());
+			printf("%ls is not a region file, ignoring\n", fName.c_str());
 		}
 	}
 

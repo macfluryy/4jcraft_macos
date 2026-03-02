@@ -104,6 +104,12 @@
 #define MINECRAFT_LANGUAGE_LATINAMERICANSPANISH			0x13
 #define MINECRAFT_LANGUAGE_GREEK						0x14
 
+#if defined(__linux__)
+#define __debugbreak()
+#define __int32 int
+typedef unsigned long ULONG;
+inline void InitializeCriticalSectionAndSpinCount(CRITICAL_SECTION CriticalSection, ULONG SpinCount) {}
+#endif // __linux__
 
  /* Match these
 
