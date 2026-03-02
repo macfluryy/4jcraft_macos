@@ -9,6 +9,7 @@
 #include "Fireball.h"
 #include "net.minecraft.world.level.dimension.h"
 #include "SharedConstants.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 // 4J - added common ctor code.
