@@ -12,8 +12,6 @@
 #include "Minecart.h"
 #include "SharedConstants.h"
 
-#include "../Minecraft.Client/Windows64Media/strings.h"
-
 const int Minecart::EXITS[][2][3] = { //
 	//
 	{

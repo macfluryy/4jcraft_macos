@@ -12,9 +12,6 @@
 #include "Random.h"
 #include "Animal.h"
 
-#include "../Minecraft.Client/Windows64Media/strings.h"
-
-
 Animal::Animal(Level *level) : AgableMob( level )
 {
 //	inLove = 0;										// 4J removed - now synched data

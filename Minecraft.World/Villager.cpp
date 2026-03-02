@@ -15,7 +15,6 @@
 #include "net.minecraft.world.level.h"
 #include "../Minecraft.Client/Textures.h"
 #include "Villager.h"
-#include "../Minecraft.Client/Windows64Media/strings.h"
 
 unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
 unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "net.minecraft.world.level.tile.entity.h"
 #include "PlayerEnderChestContainer.h"
-#include "../Minecraft.Client/Windows64Media/strings.h"
 
 PlayerEnderChestContainer::PlayerEnderChestContainer() : SimpleContainer(IDS_TILE_ENDERCHEST, 9 * 3)
 {
