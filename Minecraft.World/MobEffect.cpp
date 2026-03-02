@@ -4,6 +4,7 @@
 #include "net.minecraft.world.food.h"
 #include "net.minecraft.world.effect.h"
 #include "SharedConstants.h"
+#include "../Minecraft.Client/Windows64Media/strings.h"
 
 MobEffect *MobEffect::effects[NUM_EFFECTS];
 

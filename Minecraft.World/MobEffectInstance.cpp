@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "net.minecraft.world.effect.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 void MobEffectInstance::_init(int id, int duration, int amplifier)
 {
