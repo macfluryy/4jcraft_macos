@@ -549,89 +549,65 @@ static inline time_t _FileTimeToTimeT(const FILETIME& ft)
     return (time_t)((val - EPOCH_DIFF) / 10000000ULL);
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtime
-static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime)
+// internal helper: read the current wall clock into a timespec
+static inline void _CurrentTimeSpec(struct timespec *ts)
 {
-    struct timespec ts;
 #ifdef CLOCK_REALTIME
-    clock_gettime(CLOCK_REALTIME, &ts);
+    clock_gettime(CLOCK_REALTIME, ts);
 #else
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    ts.tv_sec = tv.tv_sec;
-    ts.tv_nsec = tv.tv_usec * 1000;
+    ts->tv_sec  = tv.tv_sec;
+    ts->tv_nsec = tv.tv_usec * 1000;
 #endif
-    struct tm tm;
-    gmtime_r(&ts.tv_sec, &tm); // UTC
+}
 
-    lpSystemTime->wYear = tm.tm_year + 1900;
-    lpSystemTime->wMonth = tm.tm_mon + 1;
-    lpSystemTime->wDayOfWeek = tm.tm_wday; // 0 = Sunday
-    lpSystemTime->wDay = tm.tm_mday;
-    lpSystemTime->wHour = tm.tm_hour;
-    lpSystemTime->wMinute = tm.tm_min;
-    lpSystemTime->wSecond = tm.tm_sec;
-    lpSystemTime->wMilliseconds = ts.tv_nsec / 1000000; // ns to ms
+// internal helper: fill SYSTEMTIME from a broken-down tm + nanosecond remainder
+static inline void _FillSystemTime(const struct tm *tm, long tv_nsec, LPSYSTEMTIME lpSystemTime)
+{
+    lpSystemTime->wYear         = tm->tm_year + 1900;
+    lpSystemTime->wMonth        = tm->tm_mon + 1;
+    lpSystemTime->wDayOfWeek    = tm->tm_wday; // 0 = Sunday
+    lpSystemTime->wDay          = tm->tm_mday;
+    lpSystemTime->wHour         = tm->tm_hour;
+    lpSystemTime->wMinute       = tm->tm_min;
+    lpSystemTime->wSecond       = tm->tm_sec;
+    lpSystemTime->wMilliseconds = (WORD)(tv_nsec / 1000000); // ns to ms
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtime
+static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime)
+{
+    struct timespec ts; _CurrentTimeSpec(&ts);
+    struct tm tm; gmtime_r(&ts.tv_sec, &tm); // UTC
+    _FillSystemTime(&tm, ts.tv_nsec, lpSystemTime);
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlocaltime
 static inline VOID GetLocalTime(LPSYSTEMTIME lpSystemTime)
 {
-    struct timespec ts;
-#ifdef CLOCK_REALTIME
-    clock_gettime(CLOCK_REALTIME, &ts);
-#else
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    ts.tv_sec = tv.tv_sec;
-    ts.tv_nsec = tv.tv_usec * 1000;
-#endif
-    struct tm tm;
-    localtime_r(&ts.tv_sec, &tm); // local time
-
-    lpSystemTime->wYear = tm.tm_year + 1900;
-    lpSystemTime->wMonth = tm.tm_mon + 1;
-    lpSystemTime->wDayOfWeek = tm.tm_wday;
-    lpSystemTime->wDay = tm.tm_mday;
-    lpSystemTime->wHour = tm.tm_hour;
-    lpSystemTime->wMinute = tm.tm_min;
-    lpSystemTime->wSecond = tm.tm_sec;
-    lpSystemTime->wMilliseconds = ts.tv_nsec / 1000000;
+    struct timespec ts; _CurrentTimeSpec(&ts);
+    struct tm tm; localtime_r(&ts.tv_sec, &tm); // local time
+    _FillSystemTime(&tm, ts.tv_nsec, lpSystemTime);
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetofiletime
 static inline BOOL SystemTimeToFileTime(const SYSTEMTIME *lpSystemTime, LPFILETIME lpFileTime)
 {
-    struct tm tm = {0};
+    struct tm tm = {};
     tm.tm_year = lpSystemTime->wYear - 1900;
     tm.tm_mon  = lpSystemTime->wMonth - 1;
     tm.tm_mday = lpSystemTime->wDay;
     tm.tm_hour = lpSystemTime->wHour;
     tm.tm_min  = lpSystemTime->wMinute;
     tm.tm_sec  = lpSystemTime->wSecond;
-    tm.tm_isdst = -1; // unknown
 
-    // Convert to time_t assuming UTC
-    time_t t;
-    // Portable UTC mktime: temporarily set TZ to UTC
-    char *tz_old = getenv("TZ");
-    setenv("TZ", "UTC", 1);
-    tzset();
-    t = mktime(&tm);
-    if (tz_old)
-        setenv("TZ", tz_old, 1);
-    else
-        unsetenv("TZ");
-    tzset();
+    time_t t = timegm(&tm);
+    if (t == (time_t)-1) return FALSE;
 
-    if (t == (time_t)-1)
-        return FALSE;
-
-    // Add milliseconds
     ULONGLONG ft = ((ULONGLONG)t + 11644473600ULL) * 10000000ULL;
-    ft += lpSystemTime->wMilliseconds * 10000ULL; // 1ms = 10000 * 100ns
-
-    lpFileTime->dwLowDateTime = (DWORD)(ft & 0xFFFFFFFF);
+    ft += lpSystemTime->wMilliseconds * 10000ULL;
+    lpFileTime->dwLowDateTime  = (DWORD)(ft & 0xFFFFFFFF);
     lpFileTime->dwHighDateTime = (DWORD)(ft >> 32);
     return TRUE;
 }
@@ -639,21 +615,12 @@ static inline BOOL SystemTimeToFileTime(const SYSTEMTIME *lpSystemTime, LPFILETI
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
 static inline BOOL FileTimeToSystemTime(const FILETIME *lpFileTime, LPSYSTEMTIME lpSystemTime)
 {
-    time_t t = _FileTimeToTimeT(*lpFileTime);
     ULONGLONG ft = ((ULONGLONG)lpFileTime->dwHighDateTime << 32) | lpFileTime->dwLowDateTime;
-    ULONGLONG remainder100ns = ft % 10000000ULL; // 1 second = 10^7 * 100ns
+    time_t t = _FileTimeToTimeT(*lpFileTime);
+    long remainder_ns = (long)((ft % 10000000ULL) * 100);
 
-    struct tm tm;
-    gmtime_r(&t, &tm); // UTC
-
-    lpSystemTime->wYear = tm.tm_year + 1900;
-    lpSystemTime->wMonth = tm.tm_mon + 1;
-    lpSystemTime->wDayOfWeek = tm.tm_wday;
-    lpSystemTime->wDay = tm.tm_mday;
-    lpSystemTime->wHour = tm.tm_hour;
-    lpSystemTime->wMinute = tm.tm_min;
-    lpSystemTime->wSecond = tm.tm_sec;
-    lpSystemTime->wMilliseconds = (WORD)(remainder100ns / 10000); // 1ms = 10000 * 100ns
+    struct tm tm; gmtime_r(&t, &tm); // UTC
+    _FillSystemTime(&tm, remainder_ns, lpSystemTime);
     return TRUE;
 }
 static inline DWORD GetTickCount() 
@@ -700,5 +667,32 @@ VOID OutputDebugStringA(LPCSTR lpOutputString)
 	fprintf(stderr, lpOutputString); 
 }
 #endif // _CONTENT_PACKAGE
+
+// https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
+static inline VOID OutputDebugStringA(LPCSTR lpOutputString)
+{
+    if (!lpOutputString) return;
+    fputs(lpOutputString, stderr);
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw
+static inline VOID OutputDebugStringW(LPCWSTR lpOutputString)
+{
+    if (!lpOutputString) return;
+    // wchar_t* -> char* via wcstombs, respecting the current locale.
+    // Passing NULL as dst to wcstombs queries the required buffer length.
+    size_t len = wcstombs(NULL, lpOutputString, 0);
+    if (len == (size_t)-1) return; // unconvertible sequence
+    char *buf = (char *)malloc(len + 1);
+    if (!buf) return;
+    wcstombs(buf, lpOutputString, len + 1);
+    fputs(buf, stderr);
+    free(buf);
+}
+
+static inline VOID OutputDebugString(LPCSTR lpOutputString)
+{
+    return OutputDebugStringA(lpOutputString);
+}
 
 #endif // LINUXSTUBS_H
