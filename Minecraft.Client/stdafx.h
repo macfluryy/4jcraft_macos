@@ -54,6 +54,15 @@
 #include "PSVitaTypes.h"
 #include "PSVitaStubs.h"
 #include "PSVitaMaths.h"
+#elif defined __linux__
+#define AUTO_VAR(_var, _val) auto _var = _val
+#include <stdio.h>
+#include <stdlib.h>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector> 
+#include "Linux/LinuxStubs.h"
+#include "Linux/xbox_valve.h"
 #else
 #define AUTO_VAR(_var, _val) auto _var = _val
 #include <unordered_map>
@@ -178,6 +187,12 @@ typedef XUID GameSessionUID;
 	#include "Windows64/4JLibs/inc/4J_Profile.h"
 	#include "Windows64/4JLibs/inc/4J_Render.h"
 	#include "Windows64/4JLibs/inc/4J_Storage.h"
+#elif defined __linux__
+	// draw the rest of the owl
+	#include "Windows64/4JLibs/inc/4J_Input.h"	
+	#include "Windows64/4JLibs/inc/4J_Profile.h"
+	#include "Windows64/4JLibs/inc/4J_Render.h"
+	#include "Windows64/4JLibs/inc/4J_Storage.h"
 #elif defined __PSVITA__
 	#include "PSVita/4JLibs/inc/4J_Input.h"	
 	#include "PSVita/4JLibs/inc/4J_Profile.h"
@@ -280,13 +295,11 @@ typedef XUID GameSessionUID;
 	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	#include "Windows64Media/strings.h"
-	#include "Linux/LinuxStubs.h"
-	#include "Linux/xbox_valve.h"
 	// #include "Windows64/Sentient/MinecraftTelemetry.h"
+	#include "Windows64Media/strings.h"
 	// #include "Windows64/Windows64_App.h"
 	// #include "Windows64/Sentient/DynamicConfigurations.h"
-	// #include "Windows64/Sentient/SentientTelemetryCommon.h"
+	#include "Windows64/Sentient/SentientTelemetryCommon.h" // not platform-specific so we can steal win64's homework here for now.
 	// #include "Windows64/GameConfig/Minecraft.spa.h"
 	// #include "Windows64/XML/ATGXmlParser.h"	
 	// #include "Windows64/Social/SocialManager.h"

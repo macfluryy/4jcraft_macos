@@ -4,7 +4,9 @@
 #include "OffsettedRenderList.h"
 #include "../Minecraft.World/JavaIntHash.h"
 #include "../Minecraft.World/Level.h"
+#ifndef __linux__
 #include <xmcore.h>
+#endif // __linux__
 #ifdef __PS3__
 #include "C4JSpursJob.h"
 #endif

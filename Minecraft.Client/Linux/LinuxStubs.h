@@ -30,8 +30,10 @@
 typedef unsigned int DWORD;
 typedef const char *LPCSTR;
 typedef bool BOOL;
+typedef BOOL *PBOOL;
+typedef BOOL *LPBOOL;
 typedef void* LPVOID;
-typedef char WCHAR;
+typedef wchar_t WCHAR;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
 typedef const wchar_t* LPCWSTR;
@@ -51,6 +53,7 @@ typedef long LONG64, *PLONG64;
 typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
+typedef DWORD* PDWORD;
 typedef struct {
     DWORD LowPart;
     LONG HighPart;
@@ -62,8 +65,10 @@ typedef std::wstring LPWSTR;
 typedef unsigned char boolean; // java brainrot
 #define __debugbreak()
 #define __int32 int
+typedef int64_t __int64;
+typedef uint64_t __uint64;
 typedef unsigned long ULONG;
-typedef unsigned char byte;
+// typedef unsigned char byte;
 typedef short SHORT;
 typedef float FLOAT;
 
