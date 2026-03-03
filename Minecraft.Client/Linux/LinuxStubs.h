@@ -9,6 +9,8 @@
 #include <string>
 #include <cerrno>
 #include <atomic>
+#include <climits>
+#include <cfloat>
 #include <pthread.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -65,6 +67,12 @@ typedef unsigned long ULONG;
 typedef unsigned char byte;
 typedef short SHORT;
 typedef float FLOAT;
+
+#define ERROR_SUCCESS                    0L
+#define ERROR_IO_PENDING                 997L    // dderror
+#define ERROR_CANCELLED                  1223L
+//#define S_OK                                   ((HRESULT)0x00000000L)
+#define S_FALSE                                ((HRESULT)0x00000001L)
 
 #define PAGE_READWRITE 0x04
 #define MEM_LARGE_PAGES 0x20000000
@@ -648,5 +656,49 @@ static inline BOOL FileTimeToSystemTime(const FILETIME *lpFileTime, LPSYSTEMTIME
     lpSystemTime->wMilliseconds = (WORD)(remainder100ns / 10000); // 1ms = 10000 * 100ns
     return TRUE;
 }
+static inline DWORD GetTickCount() 
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    // milliseconds
+    return (long long)ts.tv_sec * 1000 + (long long)ts.tv_nsec / 1000000;
+}
+
+static inline BOOL QueryPerformanceFrequency(LARGE_INTEGER *lpFrequency) 
+{ 
+	// nanoseconds
+	lpFrequency->QuadPart = 1000000000;		
+	return false; 
+}
+
+
+static inline BOOL QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    // nanoseconds
+	lpPerformanceCount->QuadPart = ((long long)ts.tv_sec * 1000000000) + (long long)ts.tv_nsec;
+
+    return true;
+}
+
+#ifndef _FINAL_BUILD
+VOID OutputDebugStringW(LPCWSTR lpOutputString) 
+{ 
+	fwprintf(stderr, lpOutputString);
+}
+
+VOID OutputDebugString(LPCSTR lpOutputString) 
+{ 
+	fprintf(stderr, lpOutputString); 
+}
+
+VOID OutputDebugStringA(LPCSTR lpOutputString) 
+{ 
+	fprintf(stderr, lpOutputString); 
+}
+#endif // _CONTENT_PACKAGE
 
 #endif // LINUXSTUBS_H
