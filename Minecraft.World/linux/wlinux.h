@@ -93,7 +93,8 @@ typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
 typedef PRTL_CRITICAL_SECTION PCRITICAL_SECTION;
 typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
 
-void InitializeCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+void InitializeCriticalSection(PRTL_CRITICAL_SECTION CriticalSection)
+{
     pthread_mutexattr_t attr;
     int ret;
 
@@ -103,24 +104,29 @@ void InitializeCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
     pthread_mutexattr_destroy(&attr);
 }
 
-void InitializeCriticalSectionAndSpinCount(PRTL_CRITICAL_SECTION CriticalSection, ULONG SpinCount) {
+void InitializeCriticalSectionAndSpinCount(PRTL_CRITICAL_SECTION CriticalSection, ULONG SpinCount)
+{
     // no spin count required because we use a recursive mutex
     InitializeCriticalSection(CriticalSection);
 }
 
-void DeleteCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+void DeleteCriticalSection(PRTL_CRITICAL_SECTION CriticalSection)
+{
     pthread_mutex_destroy(CriticalSection);
 }
 
-void EnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+void EnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection)
+{
     pthread_mutex_lock(CriticalSection);
 }
 
-void LeaveCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+void LeaveCriticalSection(PRTL_CRITICAL_SECTION CriticalSection)
+{
     pthread_mutex_unlock(CriticalSection);
 }
 
-ULONG TryEnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+ULONG TryEnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection)
+{
     return pthread_mutex_trylock(CriticalSection) == 0;
 }
 
@@ -166,6 +172,18 @@ DWORD GetLastError(VOID)
     return errno;
 }
 
+VOID Sleep(DWORD dwMilliseconds)
+{
+    struct timespec ts;
+    ts.tv_nsec = (dwMilliseconds * 1000000) % 1000000000;
+    ts.tv_sec = dwMilliseconds / 1000;
+
+    int ret;
+    do {
+        ret = nanosleep(&ts, &ts);
+    } while (ret == -1 && errno == EINTR);
+}
+
 LONG64 InterlockedCompareExchangeRelease64(
     LONG64 volatile *Destination,
     LONG64 Exchange,
@@ -175,7 +193,5 @@ LONG64 InterlockedCompareExchangeRelease64(
     __atomic_compare_exchange_n(Destination, &expected, Exchange, false, __ATOMIC_RELEASE, __ATOMIC_RELAXED);
     return expected;
 }
-
-
 
 #endif // WLINUX_H
