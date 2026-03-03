@@ -9,7 +9,7 @@
 Join our community: https://discord.gg/zFCwRWkkUg
 
 ## Planned platforms to be supported:
-- Linux (WIP)
+- Linux (~52%)
 - Emscripten (not started)
 - PS3
 - macOS (not started)
