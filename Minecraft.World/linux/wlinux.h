@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <cerrno>
+#include <atomic>
 #include <pthread.h>
 
 #define TRUE true
@@ -34,6 +36,7 @@ typedef char CHAR;
 typedef void* PVOID;
 typedef unsigned long* ULONG_PTR;
 typedef long LONG;
+typedef long LONG64, *PLONG64;
 typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
@@ -51,11 +54,26 @@ typedef unsigned char boolean; // java brainrot
 typedef unsigned long ULONG;
 typedef unsigned char byte;
 
+#define PAGE_READWRITE 0x04
+#define MEM_LARGE_PAGES 0x20000000
+#define MAXULONG_PTR ((ULONG)0xFFFFFFFF)
+
 // https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
 typedef struct _FILETIME {
     DWORD dwLowDateTime;
     DWORD dwHighDateTime;
 } FILETIME, *PFILETIME, *LPFILETIME;
+
+typedef struct _MEMORYSTATUS {
+	DWORD dwLength;
+	DWORD dwMemoryLoad;
+	SIZE_T dwTotalPhys;
+	SIZE_T dwAvailPhys;
+	SIZE_T dwTotalPageFile;
+	SIZE_T dwAvailPageFile;
+	SIZE_T dwTotalVirtual;
+	SIZE_T dwAvailVirtual;
+} MEMORYSTATUS, *LPMEMORYSTATUS;
 
 #define FILE_BEGIN SEEK_SET
 
@@ -68,6 +86,7 @@ typedef float FLOAT;
 
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
 
+// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsalloc
 DWORD TlsAlloc(VOID) {
     pthread_key_t key;
 
@@ -78,19 +97,47 @@ DWORD TlsAlloc(VOID) {
     }
 }
 
+// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsfree
 BOOL TlsFree(DWORD dwTlsIndex)
 {
     return pthread_key_delete(dwTlsIndex) == 0;
 }
 
+// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsgetvalue
 LPVOID TlsGetValue(DWORD dwTlsIndex)
 {
     return pthread_getspecific(dwTlsIndex);
 }
 
+// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlssetvalue
 BOOL TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue)
 {
     return pthread_setspecific(dwTlsIndex, lpTlsValue) == 0;
 }
+
+
+// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
+VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) 
+{
+    // TODO: Parse /proc/meminfo and set based on that. Probably will also need another different
+    //       codepath for macOS too.
+}
+
+DWORD GetLastError(VOID)
+{
+    return errno;
+}
+
+LONG64 InterlockedCompareExchangeRelease64(
+    LONG64 volatile *Destination,
+    LONG64 Exchange,
+    LONG64 Comperand)
+{
+    LONG64 expected = Comperand;
+    __atomic_compare_exchange_n(Destination, &expected, Exchange, false, __ATOMIC_RELEASE, __ATOMIC_RELAXED);
+    return expected;
+}
+
+
 
 #endif // WLINUX_H
