@@ -697,7 +697,7 @@ HANDLE CreateEvent(int manual_reset, int initial_state) {
     return (HANDLE)ev;
 }
 
-typedef bool rrbool;
+//typedef bool rrbool;
 
 #define S_OK 0
 

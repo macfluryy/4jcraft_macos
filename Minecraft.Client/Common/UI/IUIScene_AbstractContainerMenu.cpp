@@ -6,13 +6,15 @@
 #include "../../../Minecraft.World/net.minecraft.world.item.h"
 #include "../../../Minecraft.World/net.minecraft.world.item.crafting.h"
 #include "../../../Minecraft.World/net.minecraft.world.level.tile.entity.h"
-#include "../../MultiplayerLocalPlayer.h"
+#include "../../MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.h"
 
 #ifdef __ORBIS__
 #include <pad.h>
 #endif
-
+#ifdef __linux__
+#include <math.h>
+#endif
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu()
 {
 	m_menu = NULL;
