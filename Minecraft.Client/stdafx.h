@@ -149,7 +149,7 @@ typedef XUID GameSessionUID;
 #endif
 
 #include "../Minecraft.World/Definitions.h"
-#include "../Minecraft.World/class.h"
+#include "../Minecraft.World/Class.h"
 #include "../Minecraft.World/ArrayWithLength.h"
 #include "../Minecraft.World/SharedConstants.h"
 #include "../Minecraft.World/Random.h"
@@ -211,7 +211,7 @@ typedef XUID GameSessionUID;
 #include "Common/UI/UIEnums.h"
 #include "Common/UI/UIStructs.h"
 // #ifdef _XBOX
-#include "Common/App_defines.h"
+#include "Common/App_Defines.h"
 #include "Common/App_enums.h"
 #include "Common/Tutorial/TutorialEnum.h"
 #include "Common/App_structs.h"
@@ -280,8 +280,10 @@ typedef XUID GameSessionUID;
 	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// #include "Windows64/Sentient/MinecraftTelemetry.h"
 	#include "Windows64Media/strings.h"
+	#include "Linux/LinuxStubs.h"
+	#include "Linux/xbox_valve.h"
+	// #include "Windows64/Sentient/MinecraftTelemetry.h"
 	// #include "Windows64/Windows64_App.h"
 	// #include "Windows64/Sentient/DynamicConfigurations.h"
 	// #include "Windows64/Sentient/SentientTelemetryCommon.h"

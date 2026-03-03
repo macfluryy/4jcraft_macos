@@ -1,5 +1,5 @@
-#ifndef WLINUX_H
-#define WLINUX_H
+#ifndef LINUXSTUBS_H
+#define LINUXSTUBS_H
 
 #pragma once
 
@@ -154,11 +154,11 @@ typedef VOID* XMEMCOMPRESSION_CONTEXT;
 typedef VOID* XMEMDECOMPRESSION_CONTEXT;
 
 // internal search state for FindFirstFile/FindNextFile
-typedef struct _WLINUX_FIND_HANDLE {
+typedef struct _LINUXSTUBS_FIND_HANDLE {
     DIR *dir;
     char dirpath[MAX_PATH];
     char pattern[MAX_PATH];
-} _WLINUX_FIND_HANDLE;
+} _LINUXSTUBS_FIND_HANDLE;
 
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
 
@@ -453,7 +453,7 @@ static inline HANDLE FindFirstFileA(const char *lpFileName, WIN32_FIND_DATAA *lp
     DIR *dir = opendir(dirpath);
     if (!dir) return INVALID_HANDLE_VALUE;
 
-    _WLINUX_FIND_HANDLE *fh = (_WLINUX_FIND_HANDLE *)malloc(sizeof(_WLINUX_FIND_HANDLE));
+    _LINUXSTUBS_FIND_HANDLE *fh = (_LINUXSTUBS_FIND_HANDLE *)malloc(sizeof(_LINUXSTUBS_FIND_HANDLE));
     if (!fh) { closedir(dir); return INVALID_HANDLE_VALUE; }
     fh->dir = dir;
     strncpy(fh->dirpath, dirpath, MAX_PATH - 1);
@@ -487,7 +487,7 @@ static inline HANDLE FindFirstFile(const char *lpFileName, WIN32_FIND_DATAA *lpF
 static inline BOOL FindNextFileA(HANDLE hFindFile, WIN32_FIND_DATAA *lpFindFileData)
 {
     if (hFindFile == INVALID_HANDLE_VALUE || !lpFindFileData) return FALSE;
-    _WLINUX_FIND_HANDLE *fh = (_WLINUX_FIND_HANDLE *)hFindFile;
+    _LINUXSTUBS_FIND_HANDLE *fh = (_LINUXSTUBS_FIND_HANDLE *)hFindFile;
 
     struct dirent *ent;
     while ((ent = readdir(fh->dir)) != NULL)
@@ -515,9 +515,9 @@ static inline BOOL FindNextFile(HANDLE hFindFile, WIN32_FIND_DATAA *lpFindFileDa
 static inline BOOL FindClose(HANDLE hFindFile)
 {
     if (hFindFile == INVALID_HANDLE_VALUE) return FALSE;
-    _WLINUX_FIND_HANDLE *fh = (_WLINUX_FIND_HANDLE *)hFindFile;
+    _LINUXSTUBS_FIND_HANDLE *fh = (_LINUXSTUBS_FIND_HANDLE *)hFindFile;
     closedir(fh->dir); free(fh);
     return TRUE;
 }
 
-#endif // WLINUX_H
+#endif // LINUXSTUBS_H
