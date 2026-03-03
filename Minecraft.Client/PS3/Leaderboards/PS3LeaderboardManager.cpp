@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "PS3LeaderboardManager.h"
+#include "../../../Minecraft.World/x64headers/extraX64.h"
 
 #include "base64.h"
 

@@ -11,6 +11,7 @@
 
 #define MULTITHREAD_ENABLE
 
+typedef unsigned char byte;
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
 
