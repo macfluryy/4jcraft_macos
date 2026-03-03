@@ -1,4 +1,10 @@
-#include "../Windows64/Iggy/include/iggy.h"
+#ifndef IGGYSTUBS_H
+#define IGGYSTUBS_H
+
+#pragma once
+
+
+#include "../../Windows64/Iggy/include/iggy.h"
 
 #define STUBBED {}
 
@@ -151,3 +157,5 @@ RADEXPFUNC  IggyLibrary  RADEXPLINK IggyLibraryCreateFromMemoryUTF16(
 RADEXPFUNC void RADEXPLINK IggyLibraryDestroy(IggyLibrary lib) {
   STUBBED;
 }
+
+#endif // IGGYSTUBS_H

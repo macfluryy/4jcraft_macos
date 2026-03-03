@@ -1,5 +1,5 @@
-#ifndef LINUXSTUBS_H
-#define LINUXSTUBS_H
+#ifndef WINAPISTUBS_H
+#define WINAPISTUBS_H
 
 #pragma once
 
@@ -32,6 +32,7 @@
 #define __cdecl
 #define _vsnprintf_s vsnprintf;
 
+#define S_OK 0
 typedef unsigned int DWORD;
 typedef const char *LPCSTR;
 typedef bool BOOL;
@@ -59,11 +60,19 @@ typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
+
 typedef struct {
     DWORD LowPart;
     LONG HighPart;
     long long QuadPart;
 } LARGE_INTEGER;
+
+typedef struct {
+    DWORD LowPart;
+    LONG HighPart;
+    long long QuadPart;
+} ULARGE_INTEGER;
+
 typedef long long LONGLONG;
 typedef size_t SIZE_T;
 typedef std::wstring LPWSTR;
@@ -699,30 +708,4 @@ HANDLE CreateEvent(int manual_reset, int initial_state) {
     return (HANDLE)ev;
 }
 
-// d3d11 stubs
-
-typedef struct _RECT
-{
-	LONG left;
-	LONG top;
-	LONG right;
-	LONG bottom;
-} RECT, *PRECT;
-
-// stole- i mean borrowed from OrbisStubs.h
-typedef void ID3D11Device;
-typedef void ID3D11DeviceContext;
-typedef void ID3D11ShaderResourceView; // used only by windows/durango gdraw and uicontroller
-typedef void IDXGISwapChain;
-typedef RECT D3D11_RECT;
-typedef void ID3D11RenderTargetView;
-typedef void ID3D11DepthStencilView;
-typedef void ID3D11Buffer;
-typedef DWORD (*PTHREAD_START_ROUTINE)(	LPVOID lpThreadParameter);
-typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
-
-//typedef bool rrbool;
-
-#define S_OK 0
-
-#endif // LINUXSTUBS_H
+#endif // WINAPISTUBS_H

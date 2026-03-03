@@ -95,8 +95,7 @@ typedef XUID GameSessionUID;
 #include <unordered_set>
 #include <vector>
 
-#include "../Minecraft.Client/Linux/LinuxStubs.h"
-#include "../Minecraft.Client/Linux/xbox_valve.h"
+#include "../Minecraft.Client/Linux/Stubs/LinuxStubs.h"
 #else
 #include <unordered_map>
 #include <unordered_set>
