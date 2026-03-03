@@ -65,7 +65,7 @@ File OldChunkStorage::getFile(int x, int z)
 
 	wchar_t xRadix36[64];
 	wchar_t zRadix36[64];
-#if ( defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ )
+#if ( defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined __linux__ )
 	assert(0);	// need a gcc verison of _itow ?
 #else
 	_itow(x,xRadix36,36);
