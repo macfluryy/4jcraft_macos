@@ -9,8 +9,6 @@
 
 #ifndef __linux__
 #include <xsocialpost.h>
-#endif // __linux__#ifndef __linux__
-#include <xsocialpost.h>
 #endif // __linux__
 
 #define MAX_SOCIALPOST_CAPTION	60
