@@ -520,4 +520,21 @@ static inline BOOL FindClose(HANDLE hFindFile)
     return TRUE;
 }
 
+BOOL QueryPerformanceFrequency(LARGE_INTEGER *lpFrequency) 
+{ 
+	// nanoseconds
+	lpFrequency->QuadPart =  (1000000000);		
+	return false; 
+}
+
+static inline BOOL QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+	lpPerformanceCount->QuadPart = (ts.tv_sec * 1000000000LL) + ts.tv_nsec;
+
+    return true;
+}
+
 #endif // LINUXSTUBS_H
