@@ -9,6 +9,8 @@
 #include <string>
 #include <cerrno>
 #include <atomic>
+#include <climits>
+#include <cfloat>
 #include <pthread.h>
 #include <fcntl.h>
 #include <unistd.h>
