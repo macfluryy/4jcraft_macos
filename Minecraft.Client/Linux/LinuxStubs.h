@@ -651,23 +651,6 @@ static inline BOOL QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
     return true;
 }
 
-#ifndef _FINAL_BUILD
-VOID OutputDebugStringW(LPCWSTR lpOutputString) 
-{ 
-	fwprintf(stderr, lpOutputString);
-}
-
-VOID OutputDebugString(LPCSTR lpOutputString) 
-{ 
-	fprintf(stderr, lpOutputString); 
-}
-
-VOID OutputDebugStringA(LPCSTR lpOutputString) 
-{ 
-	fprintf(stderr, lpOutputString); 
-}
-#endif // _CONTENT_PACKAGE
-
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
 static inline VOID OutputDebugStringA(LPCSTR lpOutputString)
 {
@@ -679,15 +662,7 @@ static inline VOID OutputDebugStringA(LPCSTR lpOutputString)
 static inline VOID OutputDebugStringW(LPCWSTR lpOutputString)
 {
     if (!lpOutputString) return;
-    // wchar_t* -> char* via wcstombs, respecting the current locale.
-    // Passing NULL as dst to wcstombs queries the required buffer length.
-    size_t len = wcstombs(NULL, lpOutputString, 0);
-    if (len == (size_t)-1) return; // unconvertible sequence
-    char *buf = (char *)malloc(len + 1);
-    if (!buf) return;
-    wcstombs(buf, lpOutputString, len + 1);
-    fputs(buf, stderr);
-    free(buf);
+    fprintf(stderr, "%ls", lpOutputString);
 }
 
 static inline VOID OutputDebugString(LPCSTR lpOutputString)
