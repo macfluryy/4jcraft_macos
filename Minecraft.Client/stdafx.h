@@ -295,18 +295,19 @@ typedef XUID GameSessionUID;
 	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// #include "Windows64/Sentient/MinecraftTelemetry.h"
+	// FIXME: Make Linux/ versions of all of these
+	// #include "Windows64/Sentient/MinecraftTelemetry.h" // conflicts with Common/Telemetry/TelemetryManager.h, no idea whats up with that
 	#include "Windows64Media/strings.h"
-	// #include "Windows64/Windows64_App.h"
-	// #include "Windows64/Sentient/DynamicConfigurations.h"
-	#include "Windows64/Sentient/SentientTelemetryCommon.h" // not platform-specific so we can steal win64's homework here for now.
-	// #include "Windows64/GameConfig/Minecraft.spa.h"
-	// #include "Windows64/XML/ATGXmlParser.h"	
-	// #include "Windows64/Social/SocialManager.h"
-	// #include "Common/Audio/SoundEngine.h"
-	// #include "Windows64/Iggy/include/iggy.h"
-	// #include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
-	// #include "Windows64/Windows64_UIController.h"
+	#include "Windows64/Windows64_App.h"
+	#include "Windows64/Sentient/DynamicConfigurations.h"
+	#include "Windows64/Sentient/SentientTelemetryCommon.h"
+	#include "Windows64/GameConfig/Minecraft.spa.h"
+	#include "Windows64/XML/ATGXmlParser.h"	
+	#include "Windows64/Social/SocialManager.h"
+	#include "Common/Audio/SoundEngine.h"
+	#include "Windows64/Iggy/include/iggy.h"
+	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
+	#include "Windows64/Windows64_UIController.h"
 #elif defined __PSVITA__
 	#include "PSVita/PSVita_App.h"
 	#include "PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this
