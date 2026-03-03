@@ -54,6 +54,15 @@
 #include "PSVitaTypes.h"
 #include "PSVitaStubs.h"
 #include "PSVitaMaths.h"
+#elif defined __linux__
+#define AUTO_VAR(_var, _val) auto _var = _val
+#include <stdio.h>
+#include <stdlib.h>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector> 
+#include "Linux/LinuxStubs.h"
+#include "Linux/xbox_valve.h"
 #else
 #define AUTO_VAR(_var, _val) auto _var = _val
 #include <unordered_map>
@@ -109,7 +118,7 @@ typedef XUID GameSessionUID;
 
 #include "../Minecraft.Client/xbox/network/extra.h"
 #else
-#include "extraX64.h"
+#include "../Minecraft.World/x64headers/extraX64.h"
 #endif
 
 #ifdef __PS3__
@@ -149,7 +158,7 @@ typedef XUID GameSessionUID;
 #endif
 
 #include "../Minecraft.World/Definitions.h"
-#include "../Minecraft.World/class.h"
+#include "../Minecraft.World/Class.h"
 #include "../Minecraft.World/ArrayWithLength.h"
 #include "../Minecraft.World/SharedConstants.h"
 #include "../Minecraft.World/Random.h"
@@ -174,6 +183,12 @@ typedef XUID GameSessionUID;
 	#include "Durango/4JLibs/inc/4J_Render.h"
 	#include "Durango/4JLibs/inc/4J_Storage.h"
 #elif defined _WINDOWS64
+	#include "Windows64/4JLibs/inc/4J_Input.h"	
+	#include "Windows64/4JLibs/inc/4J_Profile.h"
+	#include "Windows64/4JLibs/inc/4J_Render.h"
+	#include "Windows64/4JLibs/inc/4J_Storage.h"
+#elif defined __linux__
+	// draw the rest of the owl
 	#include "Windows64/4JLibs/inc/4J_Input.h"	
 	#include "Windows64/4JLibs/inc/4J_Profile.h"
 	#include "Windows64/4JLibs/inc/4J_Render.h"
@@ -211,7 +226,7 @@ typedef XUID GameSessionUID;
 #include "Common/UI/UIEnums.h"
 #include "Common/UI/UIStructs.h"
 // #ifdef _XBOX
-#include "Common/App_defines.h"
+#include "Common/App_Defines.h"
 #include "Common/App_enums.h"
 #include "Common/Tutorial/TutorialEnum.h"
 #include "Common/App_structs.h"
@@ -280,18 +295,19 @@ typedef XUID GameSessionUID;
 	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// #include "Windows64/Sentient/MinecraftTelemetry.h"
+	// FIXME: Make Linux/ versions of all of these
+	// #include "Windows64/Sentient/MinecraftTelemetry.h" // conflicts with Common/Telemetry/TelemetryManager.h, no idea whats up with that
 	#include "Windows64Media/strings.h"
-	// #include "Windows64/Windows64_App.h"
-	// #include "Windows64/Sentient/DynamicConfigurations.h"
-	// #include "Windows64/Sentient/SentientTelemetryCommon.h"
-	// #include "Windows64/GameConfig/Minecraft.spa.h"
-	// #include "Windows64/XML/ATGXmlParser.h"	
-	// #include "Windows64/Social/SocialManager.h"
-	// #include "Common/Audio/SoundEngine.h"
-	// #include "Windows64/Iggy/include/iggy.h"
-	// #include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
-	// #include "Windows64/Windows64_UIController.h"
+	#include "Windows64/Windows64_App.h"
+	#include "Windows64/Sentient/DynamicConfigurations.h"
+	#include "Windows64/Sentient/SentientTelemetryCommon.h"
+	#include "Windows64/GameConfig/Minecraft.spa.h"
+	#include "Windows64/XML/ATGXmlParser.h"	
+	#include "Windows64/Social/SocialManager.h"
+	#include "Common/Audio/SoundEngine.h"
+	#include "Windows64/Iggy/include/iggy.h"
+	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
+	#include "Windows64/Windows64_UIController.h"
 #elif defined __PSVITA__
 	#include "PSVita/PSVita_App.h"
 	#include "PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this

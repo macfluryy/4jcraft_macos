@@ -1,5 +1,7 @@
 #pragma once
+#ifndef __linux__
 #include "xmcore.h"
+#endif // __linux__
 
 // 4J added - Storage for data (ie the extra per tile storage). Data is normally stored as 4-bits per tile, in a DataLayer class of 16384 bytes ( 128 x 16 x 16 x 0.5 )
 // This class provides more economical storage for such data by taking into consideration that it is quite common for large parts of the data to be very compressible (ie zero).

@@ -9,12 +9,8 @@
 #define AUTO_VAR(_var, _val) auto _var = _val
 #endif
 
-typedef unsigned __int64;
-typedef unsigned __uint64;
-
-#if defined( __linux__ )
-#include "linux/wlinux.h"
-#include "linux/xbox_valve.h"
+#if ( defined _XBOX || defined _WINDOWS64  || defined _DURANGO )
+typedef unsigned __int64 __uint64;
 #endif
 
 #ifdef _WINDOWS64
@@ -98,6 +94,9 @@ typedef XUID GameSessionUID;
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+#include "../Minecraft.Client/Linux/LinuxStubs.h"
+#include "../Minecraft.Client/Linux/xbox_valve.h"
 #else
 #include <unordered_map>
 #include <unordered_set>
@@ -124,11 +123,6 @@ typedef XUID GameSessionUID;
 
 #ifndef __PS3__			// the PS3 lib assert is rubbish, and aborts the code, we define our own in PS3Types.h
 #include <assert.h>
-#endif
-
-#if defined(__linux__)
-#else
-#include "../Minecraft.Client/Xbox/Network/extra.h"
 #endif
 
 #include "Definitions.h"
@@ -183,6 +177,7 @@ void MemSect(int sect);
 #include "../Minecraft.Client/PSVita/4JLibs/inc/4J_Storage.h"
 #include "../Minecraft.Client/PSVita/4JLibs/inc/4J_Input.h"
 #elif defined __linux__
+// FIXME: Port 4JLibs to POSIX
 #include "../Minecraft.Client/Windows64/4JLibs/inc/4J_Profile.h"
 #include "../Minecraft.Client/Windows64/4JLibs/inc/4J_Render.h"
 #include "../Minecraft.Client/Windows64/4JLibs/inc/4J_Storage.h"
@@ -246,6 +241,7 @@ void MemSect(int sect);
 #include "../Minecraft.Client/PSVita/Sentient/SentientManager.h"
 #include "../Minecraft.Client/PSVita/Sentient/MinecraftTelemetry.h"
 #elif defined(__linux__)
+// FIXME: Move and port to ../Minecraft.Client/Linux
 #include "../Minecraft.Client/Windows64/Windows64_App.h"
 #include "../Minecraft.Client/Windows64Media/strings.h"
 #include "../Minecraft.Client/Windows64/Sentient/SentientTelemetryCommon.h"
