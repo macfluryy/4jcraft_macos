@@ -550,6 +550,21 @@ static inline BOOL QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
     return true;
 }
 
+#ifndef _FINAL_BUILD
+VOID OutputDebugStringW(LPCWSTR lpOutputString) 
+{ 
+	fwprintf(stderr, lpOutputString);
+}
 
+VOID OutputDebugString(LPCSTR lpOutputString) 
+{ 
+	fprintf(stderr, lpOutputString); 
+}
+
+VOID OutputDebugStringA(LPCSTR lpOutputString) 
+{ 
+	fprintf(stderr, lpOutputString); 
+}
+#endif // _CONTENT_PACKAGE
 
 #endif // LINUXSTUBS_H
