@@ -2,7 +2,7 @@
 #include "DemoLevel.h"
 #include "../Minecraft.World/net.minecraft.world.level.storage.h"
 
-const LevelSettings DemoLevel::DEMO_LEVEL_SETTINGS = LevelSettings(
+LevelSettings DemoLevel::DEMO_LEVEL_SETTINGS = LevelSettings(
 	DemoLevel::DEMO_LEVEL_SEED,
 	GameType::SURVIVAL,
 	false,
