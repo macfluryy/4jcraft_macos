@@ -145,6 +145,7 @@ RADEXPFUNC void RADEXPLINK IggySetTextureSubstitutionCallbacks(Iggy_TextureSubst
 }
 RADEXPFUNC void * RADEXPLINK IggyPlayerGetUserdata(Iggy *player) {
   STUBBED;
+  return 0;
 }
 RADEXPFUNC  IggyLibrary  RADEXPLINK IggyLibraryCreateFromMemoryUTF16(
                                 IggyUTF16 const *      url_utf16_null_terminated,
