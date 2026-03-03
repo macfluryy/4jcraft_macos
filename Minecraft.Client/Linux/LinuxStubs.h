@@ -696,4 +696,6 @@ HANDLE CreateEvent(int manual_reset, int initial_state) {
 
 typedef bool rrbool;
 
+#define S_OK 0
+
 #endif // LINUXSTUBS_H

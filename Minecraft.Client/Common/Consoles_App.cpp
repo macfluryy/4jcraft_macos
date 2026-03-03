@@ -66,6 +66,11 @@
 #ifdef __ORBIS__
 #include <save_data_dialog.h>
 #endif
+#include "../Linux/LinuxStubs.h"
+
+#if defined(__linux__)
+#define S_OK 0
+#endif // __linux__
 
 #include "../Common/Leaderboards/LeaderboardManager.h"
 
@@ -4333,7 +4338,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc( void* lpParameter )
 		Sleep(1);
 	}
 
-	return S_OK;
+	return 0;
 }
 
 int CMinecraftApp::UnlockFullInviteReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
@@ -4776,11 +4781,13 @@ void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChange
 	// Update the guest numbers to the current state
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
+#if defined(_XBOX)
 		if(FAILED(XUserGetSigninInfo(i,XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY,&pApp->m_currentSigninInfo[i])))
 		{
 			pApp->m_currentSigninInfo[i].xuid = INVALID_XUID;
 			pApp->m_currentSigninInfo[i].dwGuestNumber = 0;
 		}
+#endif
 		app.DebugPrintf("Player at index %d has guest number %d\n", i,pApp->m_currentSigninInfo[i].dwGuestNumber );
 	}
 }
@@ -5669,7 +5676,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 					// Give the player a warning about the trial version of the texture pack
 					ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,&CMinecraftApp::WarningTrialTexturePackReturned,pClass,app.GetStringTable());
 
-					return S_OK;					
+					return 0;
 				}
 			}
 #ifndef _XBOX_ONE
@@ -5779,7 +5786,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(void *pParam,int iPad,C4
 				// Give the player a warning about the trial version of the texture pack
 				ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,&CMinecraftApp::WarningTrialTexturePackReturned,NULL,app.GetStringTable());
 
-				return S_OK;					
+				return 0;
 			}
 		}
 		//bool validSave = StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
@@ -6439,7 +6446,7 @@ unordered_map<wstring, ULONGLONG >  CMinecraftApp::DLCInfo_SkinName;
 
 HRESULT CMinecraftApp::RegisterMojangData(WCHAR *pXuidName, PlayerUID xuid, WCHAR *pSkin, WCHAR *pCape)
 {
-	HRESULT hr=S_OK;
+	HRESULT hr=0;
 	eXUID eTempXuid=eXUID_Undefined;
 	MOJANG_DATA *pMojangData=NULL;
 
@@ -6481,7 +6488,7 @@ MOJANG_DATA *CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid)
 
 HRESULT CMinecraftApp::RegisterConfigValues(WCHAR *pType, int iValue)
 {
-	HRESULT hr=S_OK;
+	HRESULT hr=0;
 
 // #ifdef _XBOX
 // 	if(pType!=NULL)
@@ -6512,7 +6519,7 @@ HRESULT CMinecraftApp::RegisterConfigValues(WCHAR *pType, int iValue)
 #if (defined _XBOX || defined _WINDOWS64)
 HRESULT CMinecraftApp::RegisterDLCData(WCHAR *pType, WCHAR *pBannerName, int iGender, __uint64 ullOfferID_Full, __uint64 ullOfferID_Trial, WCHAR *pFirstSkin, unsigned int uiSortIndex, int iConfig, WCHAR *pDataFile)
 {
-	HRESULT hr=S_OK;
+	HRESULT hr=0;
 	DLC_INFO *pDLCData=new DLC_INFO;
 	ZeroMemory(pDLCData,sizeof(DLC_INFO));
 	pDLCData->ullOfferID_Full=ullOfferID_Full;
@@ -6582,7 +6589,7 @@ unordered_map<wstring,DLC_INFO * > *CMinecraftApp::GetDLCInfo()
 
 HRESULT CMinecraftApp::RegisterDLCData(eDLCContentType eType, WCHAR *pwchBannerName,WCHAR *pwchProductId, WCHAR *pwchProductName, WCHAR *pwchFirstSkin, int iConfig, unsigned int uiSortIndex)
 {
-	HRESULT hr=S_OK;
+	HRESULT hr=0;
 	// 4J-PB - need to convert the product id to uppercase because the catalog calls come back with upper case
 	WCHAR wchUppercaseProductID[64];
 	if(pwchProductId[0]!=0)
@@ -6652,7 +6659,7 @@ HRESULT CMinecraftApp::RegisterDLCData(char *pchDLCName, unsigned int uiSortInde
 {
 	// on PS3 we get all the required info from the name
 	char chDLCType[3];
-	HRESULT hr=S_OK;
+	HRESULT hr=0;
 	DLC_INFO *pDLCData=new DLC_INFO;
 	ZeroMemory(pDLCData,sizeof(DLC_INFO));
 
@@ -7063,7 +7070,7 @@ int CMinecraftApp::RemoteSaveThreadProc( void* lpParameter )
 
 	Tile::ReleaseThreadStorage();
 
-	return S_OK;
+	return 0;
 }
 
 void CMinecraftApp::ExitGameFromRemoteSave( LPVOID lpParameter )
@@ -7769,7 +7776,7 @@ unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 see
 	if(hasSeed)
 	{
 		strcpy((char *)bTextMetadata,"4J_SEED");
-		_i64toa_s(seed,(char *)&bTextMetadata[8],42,10);
+		snprintf((char *)&bTextMetadata[8], 42, NULL, seed);
 
 		// get the length
 		iTextMetadataBytes+=8;
@@ -7779,7 +7786,7 @@ unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 see
 
 	// Save the host options that this world was last played with
 	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_HOSTOPTIONS");
-	_itoa_s(uiHostOptions,(char *)&bTextMetadata[iTextMetadataBytes+15],9,16);
+	snprintf( (char *)&bTextMetadata[iTextMetadataBytes + 15], 9, "%X", uiHostOptions);
 
 	iTextMetadataBytes += 15;
 	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
@@ -7787,7 +7794,6 @@ unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 see
 
 	// Save the texture pack id
 	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_TEXTUREPACK");
-	_itoa_s(uiTexturePackId,(char *)&bTextMetadata[iTextMetadataBytes+15],9,16);
 
 	iTextMetadataBytes += 15;
 	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;

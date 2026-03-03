@@ -309,7 +309,7 @@ typedef XUID GameSessionUID;
 	#include "Linux/iggy_stub.h"
 	//#include "Windows64/Iggy/include/iggy.h"
 	//#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
-	//#include "Windows64/Windows64_UIController.h"
+	#include "Windows64/Windows64_UIController.h"
 #elif defined __PSVITA__
 	#include "PSVita/PSVita_App.h"
 	#include "PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this
