@@ -11,6 +11,27 @@ class UIComponent_DebugUIConsole;
 class UIComponent_DebugUIMarketingGuide;
 class UIControl;
 
+#if defined(__linux__)
+typedef struct _RECT
+{
+	LONG left;
+	LONG top;
+	LONG right;
+	LONG bottom;
+} RECT, *PRECT;
+
+// stole- i mean borrowed from OrbisStubs.h
+typedef void ID3D11Device;
+typedef void ID3D11DeviceContext;
+typedef void IDXGISwapChain;
+typedef RECT D3D11_RECT;
+typedef void ID3D11RenderTargetView;
+typedef void ID3D11DepthStencilView;
+typedef void ID3D11Buffer;
+typedef DWORD (*PTHREAD_START_ROUTINE)(	LPVOID lpThreadParameter);
+typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
+#endif // __linux__
+
 // Base class for all shared functions between UIControllers
 class UIController : public IUIController
 {

@@ -190,6 +190,8 @@ typedef struct _SYSTEMTIME {
 } SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
 
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
+// https://learn.microsoft.com/en-us/cpp/c-runtime-library/truncate?view=msvc-170
+#define _TRUNCATE ((size_t)-1)
 
 typedef pthread_mutex_t RTL_CRITICAL_SECTION;
 typedef pthread_mutex_t* PRTL_CRITICAL_SECTION;
