@@ -108,12 +108,6 @@ CMinecraftApp::CMinecraftApp()
 		m_eXuiAction[i]=eAppAction_Idle;
 		m_eXuiActionParam[i] = NULL;
 		//m_dwAdditionalModelParts[i] = 0;
-
-		if(FAILED(XUserGetSigninInfo(i,XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY ,&m_currentSigninInfo[i])))
-		{
-			m_currentSigninInfo[i].xuid = INVALID_XUID;
-			m_currentSigninInfo[i].dwGuestNumber = 0;
-		}
 		DebugPrintf("Player at index %d has guest number %d\n", i,m_currentSigninInfo[i].dwGuestNumber );
 
 		m_bRead_BannedListA[i]=false;
@@ -5222,7 +5216,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
  {
 	 DWORD dwFilesProcessed = 0;
 #ifndef _XBOX
-#if defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64) || defined (__PSVITA__)
+#if defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64) || defined (__PSVITA__) || defined(__linux__)
 	 std::vector<std::string> dlcFilenames;
 #elif defined _DURANGO
 	 std::vector<std::wstring> dlcFilenames;
@@ -6653,8 +6647,12 @@ HRESULT CMinecraftApp::RegisterDLCData(eDLCContentType eType, WCHAR *pwchBannerN
 	app.DebugPrintf("DLCInfo - type - %d, productID - %ls, name - %ls , banner - %ls, iconfig - %d, sort index - %d\n",eType,pwchProductId, pwchProductName,pwchBannerName, iConfig, uiSortIndex);
 	return hr;
 }
+#elif defined(__linux__)
+HRESULT CMinecraftApp::RegisterDLCData(WCHAR *pType, WCHAR *pBannerName, int iGender, __uint64 ullOfferID_Full, __uint64 ullOfferID_Trial, WCHAR *pFirstSkin, unsigned int uiSortIndex, int iConfig, WCHAR *pDataFile)
+{
+	// TODO
+}
 #else
-
 HRESULT CMinecraftApp::RegisterDLCData(char *pchDLCName, unsigned int uiSortIndex,char *pchImageURL)
 {
 	// on PS3 we get all the required info from the name
