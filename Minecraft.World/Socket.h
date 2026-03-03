@@ -1,7 +1,9 @@
 #pragma once
+#ifndef __linux__
 #include <xrnm.h>
-#include <queue>
 #include <qnet.h>
+#endif
+#include <queue>
 #include "InputStream.h"
 #include "OutputStream.h"
 

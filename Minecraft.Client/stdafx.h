@@ -306,6 +306,7 @@ typedef XUID GameSessionUID;
 	#include "Windows64/Social/SocialManager.h"
 	#include "Common/Audio/SoundEngine.h"
 	// DecalOverdose: DONT (according to localcc)
+	#include "Linux/iggy_stub.h"
 	//#include "Windows64/Iggy/include/iggy.h"
 	//#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	//#include "Windows64/Windows64_UIController.h"
