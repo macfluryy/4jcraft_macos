@@ -11,6 +11,7 @@
 #include <atomic>
 #include <climits>
 #include <cfloat>
+#include <cmath>
 #include <pthread.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -28,6 +29,7 @@
 #define ZeroMemory RtlZeroMemory
 #define WINAPI
 
+#define __cdecl
 #define _vsnprintf_s vsnprintf;
 
 typedef unsigned int DWORD;
@@ -696,6 +698,28 @@ HANDLE CreateEvent(int manual_reset, int initial_state) {
     ev->manual_reset = manual_reset;
     return (HANDLE)ev;
 }
+
+// d3d11 stubs
+
+typedef struct _RECT
+{
+	LONG left;
+	LONG top;
+	LONG right;
+	LONG bottom;
+} RECT, *PRECT;
+
+// stole- i mean borrowed from OrbisStubs.h
+typedef void ID3D11Device;
+typedef void ID3D11DeviceContext;
+typedef void ID3D11ShaderResourceView; // used only by windows/durango gdraw and uicontroller
+typedef void IDXGISwapChain;
+typedef RECT D3D11_RECT;
+typedef void ID3D11RenderTargetView;
+typedef void ID3D11DepthStencilView;
+typedef void ID3D11Buffer;
+typedef DWORD (*PTHREAD_START_ROUTINE)(	LPVOID lpThreadParameter);
+typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
 
 //typedef bool rrbool;
 
