@@ -305,8 +305,9 @@ typedef XUID GameSessionUID;
 	#include "Windows64/XML/ATGXmlParser.h"	
 	#include "Windows64/Social/SocialManager.h"
 	#include "Common/Audio/SoundEngine.h"
-	#include "Windows64/Iggy/include/iggy.h"
-	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
+	// DecalOverdose: DONT (according to localcc)
+	//#include "Windows64/Iggy/include/iggy.h"
+	//#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "Windows64/Windows64_UIController.h"
 #elif defined __PSVITA__
 	#include "PSVita/PSVita_App.h"
