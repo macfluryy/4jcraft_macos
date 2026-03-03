@@ -16,17 +16,17 @@ CTelemetryManager *TelemetryManager = new CTelemetryManager();
 
 HRESULT CTelemetryManager::Init()
 {
-	return S_OK;
+	return 0;
 }
 
 HRESULT CTelemetryManager::Tick()
 {
-	return S_OK;
+	return 0;
 }
 
 HRESULT CTelemetryManager::Flush()
 {
-	return S_OK;
+	return 0;
 }
 
 bool CTelemetryManager::RecordPlayerSessionStart(int iPad)

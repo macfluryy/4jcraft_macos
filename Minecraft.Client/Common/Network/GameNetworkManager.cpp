@@ -40,6 +40,8 @@
 #include "../Minecraft.World/DurangoStats.h"
 #endif
 
+#define WAIT_TIMEOUT 258
+
 // Global instance
 CGameNetworkManager g_NetworkManager;
 CPlatformNetworkManager *CGameNetworkManager::s_pPlatformNetworkManager;
@@ -878,7 +880,7 @@ int CGameNetworkManager::ServerThreadProc( void* lpParameter )
 
 	if(lpParameter != NULL) delete lpParameter;
 
-	return S_OK;
+	return 0;
 }
 
 int	CGameNetworkManager::ExitAndJoinFromInviteThreadProc( void* lpParam )
@@ -918,7 +920,7 @@ int	CGameNetworkManager::ExitAndJoinFromInviteThreadProc( void* lpParam )
 	}
 #endif
 
-	return S_OK;
+	return 0;
 }
 
 #if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
@@ -1095,7 +1097,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc( void* lpParam )
 	app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_PauseServer,(void *)TRUE);
 
 	// wait for the server to be in a non-ticking state
-	pServer->m_serverPausedEvent->WaitForSignal(INFINITE);
+	pServer->m_serverPausedEvent->WaitForSignal(INFINITY);
 	
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
 	// Swap these two messages around as one is too long to display at 480
@@ -1245,7 +1247,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc( void* lpParam )
 	app.SetChangingSessionType(false);
 	app.SetReallyChangingSessionType(false);
 
-	return S_OK;
+	return 0;
 
 }
 
@@ -1904,7 +1906,7 @@ void CGameNetworkManager::ServerReady()
 
 void CGameNetworkManager::ServerReadyWait()
 {
-	m_hServerReadyEvent->WaitForSignal(INFINITE);
+	m_hServerReadyEvent->WaitForSignal(INFINITY);
 }
 
 void CGameNetworkManager::ServerReadyDestroy()
@@ -1954,7 +1956,7 @@ void CGameNetworkManager::ServerStoppedWait()
 	}
 	else
 	{
-		m_hServerStoppedEvent->WaitForSignal(INFINITE);
+		m_hServerStoppedEvent->WaitForSignal(INFINITY);
 	}
 }
 
