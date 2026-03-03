@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <pthread.h>
 
 #define TRUE true
 #define FALSE false
@@ -64,5 +65,32 @@ typedef VOID* XMEMCOMPRESSION_CONTEXT;
 typedef VOID* XMEMDECOMPRESSION_CONTEXT;
 
 typedef float FLOAT;
+
+#define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
+
+DWORD TlsAlloc(VOID) {
+    pthread_key_t key;
+
+    if (pthread_key_create(&key, NULL) == 0) {
+        return key;
+    } else {
+        return TLS_OUT_OF_INDEXES;
+    }
+}
+
+BOOL TlsFree(DWORD dwTlsIndex)
+{
+    return pthread_key_delete(dwTlsIndex) == 0;
+}
+
+LPVOID TlsGetValue(DWORD dwTlsIndex)
+{
+    return pthread_getspecific(dwTlsIndex);
+}
+
+BOOL TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue)
+{
+    return pthread_setspecific(dwTlsIndex, lpTlsValue) == 0;
+}
 
 #endif // WLINUX_H
