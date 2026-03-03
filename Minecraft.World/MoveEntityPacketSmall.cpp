@@ -146,7 +146,7 @@ void MoveEntityPacketSmall::Pos::write(DataOutputStream *dos) //throws IOExcepti
 	short idAndY = id | ya << 11;
 	dos->writeShort(idAndY);
 	char XandZ = ( xa << 4 ) | ( za & 0x0f );
-	dos->writeByte(XandZ);
+	dos->writeByte((byte)XandZ);
 }
 
 int MoveEntityPacketSmall::Pos::getEstimatedSize()

@@ -5,7 +5,6 @@
 #include "GameEventPacket.h"
 
 
-
 const int GameEventPacket::NO_RESPAWN_BED_AVAILABLE = 0;
 const int GameEventPacket::START_RAINING = 1;
 const int GameEventPacket::STOP_RAINING = 2;
@@ -44,8 +43,8 @@ void GameEventPacket::read(DataInputStream *dis) //throws IOException
 
 void GameEventPacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeByte((std::byte)_event);
-	dos->writeByte((std::byte)param);
+	dos->writeByte((byte)_event);
+	dos->writeByte((byte)param);
 }
 
 void GameEventPacket::handle(PacketListener *listener) 

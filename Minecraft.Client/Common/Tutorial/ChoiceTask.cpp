@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include <string>
 #include <unordered_map>
-#include "..\..\Minecraft.h"
-#include "..\..\MultiplayerLocalPlayer.h"
+#include "../../Minecraft.h"
+#include "../../MultiplayerLocalPlayer.h"
 #include "Tutorial.h"
 #include "TutorialConstraints.h"
 #include "ChoiceTask.h"
-#include "..\..\..\Minecraft.World\Material.h"
+#include "../../../Minecraft.World/Material.h"
 
 ChoiceTask::ChoiceTask(Tutorial *tutorial, int descriptionId, int promptId /*= -1*/, bool requiresUserInput /*= false*/,
 	int iConfirmMapping /*= 0*/, int iCancelMapping /*= 0*/,

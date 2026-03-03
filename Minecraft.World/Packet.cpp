@@ -6,10 +6,11 @@
 #include "PacketListener.h"
 #include "Packet.h"
 #include "com.mojang.nbt.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 #ifndef _CONTENT_PACKAGE
-#include "..\Minecraft.Client\Minecraft.h"
-#include "..\Minecraft.Client\Gui.h"
+#include "../Minecraft.Client/Minecraft.h"
+#include "../Minecraft.Client/Gui.h"
 #endif
 
 void Packet::staticCtor()

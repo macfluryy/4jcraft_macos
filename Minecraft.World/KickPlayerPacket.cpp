@@ -23,12 +23,12 @@ void KickPlayerPacket::handle(PacketListener *listener)
 
 void KickPlayerPacket::read(DataInputStream *dis) //throws IOException 
 {
-	m_networkSmallId = dis->readByte();
+	m_networkSmallId = (int)dis->readByte();
 }
 
 void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte(m_networkSmallId);
+	dos->writeByte((byte)m_networkSmallId);
 }
 
 int KickPlayerPacket::getEstimatedSize() 

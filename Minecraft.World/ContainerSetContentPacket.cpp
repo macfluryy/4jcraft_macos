@@ -41,7 +41,7 @@ void ContainerSetContentPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerSetContentPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((std::byte)containerId);
+	dos->writeByte((byte)containerId);
 	dos->writeShort(items.length);
 	for (unsigned int i = 0; i < items.length; i++) 
 	{

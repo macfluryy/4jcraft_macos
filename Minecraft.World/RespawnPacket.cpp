@@ -4,6 +4,7 @@
 #include "PacketListener.h"
 #include "RespawnPacket.h"
 #include "LevelType.h"
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 RespawnPacket::RespawnPacket() 
 {

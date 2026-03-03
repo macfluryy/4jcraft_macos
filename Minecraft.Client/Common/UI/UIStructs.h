@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma message("UIStructs.h")
+// #pragma message("UIStructs.h")
 
 #include "UIEnums.h"
 

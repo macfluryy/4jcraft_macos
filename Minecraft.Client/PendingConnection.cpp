@@ -7,15 +7,15 @@
 #include "ServerLevel.h"
 #include "PlayerList.h"
 #include "MinecraftServer.h"
-#include "..\Minecraft.World\net.minecraft.network.h"
-#include "..\Minecraft.World\pos.h"
-#include "..\Minecraft.World\net.minecraft.world.level.dimension.h"
-#include "..\Minecraft.World\net.minecraft.world.level.storage.h"
-#include "..\Minecraft.World\net.minecraft.world.item.h"
-#include "..\Minecraft.World\SharedConstants.h"
+#include "../Minecraft.World/net.minecraft.network.h"
+#include "../Minecraft.World/pos.h"
+#include "../Minecraft.World/net.minecraft.world.level.dimension.h"
+#include "../Minecraft.World/net.minecraft.world.level.storage.h"
+#include "../Minecraft.World/net.minecraft.world.item.h"
+#include "../Minecraft.World/SharedConstants.h"
 #include "Settings.h"
 // #ifdef __PS3__
-// #include "PS3\Network\NetworkPlayerSony.h"
+// #include "PS3/Network/NetworkPlayerSony.h"
 // #endif
 
 Random *PendingConnection::random = new Random();
@@ -230,7 +230,7 @@ void PendingConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
 void PendingConnection::handleGetInfo(shared_ptr<GetInfoPacket> packet)
 {
 	//try {
-	//String message = server->motd + "ง" + server->players->getPlayerCount() + "ง" + server->players->getMaxPlayers();
+	//String message = server->motd + "ยง" + server->players->getPlayerCount() + "ยง" + server->players->getMaxPlayers();
 	//connection->send(new DisconnectPacket(message));
 	connection->send(shared_ptr<DisconnectPacket>(new DisconnectPacket(DisconnectPacket::eDisconnect_ServerFull) ) );
 	connection->sendAndQuit();

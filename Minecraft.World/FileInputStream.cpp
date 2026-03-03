@@ -85,7 +85,7 @@ ssize_t ReadFile(int fd, void* buffer, size_t byteRead, DWORD* numberOfBytesRead
 //the next byte of data, or -1 if the end of the file is reached.
 int FileInputStream::read()
 {
-	byte byteRead = static_cast<std::byte>(0);
+	byte byteRead = static_cast<byte>(0);
 	DWORD numberOfBytesRead;
 
 	BOOL bSuccess = ReadFile(

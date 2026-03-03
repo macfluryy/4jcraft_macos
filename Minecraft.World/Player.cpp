@@ -32,11 +32,12 @@
 #include "Inventory.h"
 #include "Player.h"
 #include "ParticleTypes.h"
-
-#include "..\Minecraft.Client\Textures.h"
-
-#include "..\Minecraft.Client\LocalPlayer.h"
-#include "..\Minecraft.Client\HumanoidModel.h"
+#include <string>
+#include <functional>
+#include "../Minecraft.Client/Textures.h"
+#include <limits.h>
+#include "../Minecraft.Client/LocalPlayer.h"
+#include "../Minecraft.Client/HumanoidModel.h"
 #include "SoundTypes.h"
 
 
@@ -2555,14 +2556,14 @@ int Player::getTexture()
 	}
 }
 
-int Player::hash_fnct(const shared_ptr<Player> k)
+int Player::hash_fnct(const std::shared_ptr<Player> k)
 {
-	// TODO 4J Stu - Should we just be using the pointers and hashing them?
+	// Hashing the player's name based on platform
 #ifdef __PS3__
-	return (int)boost::hash_value( k->name ); // 4J Stu - Names are completely unique?
+	return (int)boost::hash_value(k->name);
 #else
-	return (int)std::hash_value( k->name ); // 4J Stu - Names are completely unique?
-#endif //__PS3__
+	return (int)std::hash<std::wstring>()(k->name);
+#endif // __PS3__
 }
 
 bool Player::eq_test(const shared_ptr<Player> x, const shared_ptr<Player> y)

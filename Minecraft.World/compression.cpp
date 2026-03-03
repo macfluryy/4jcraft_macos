@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "compression.h"
 #if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64
-#include "..\Minecraft.Client\Common\zlib\zlib.h"
+#include "../Minecraft.Client/Common/zlib/zlib.h"
 #endif
 
 #if defined(__linux__)
@@ -10,9 +10,9 @@
 #endif // __linux__
 
 #if defined __PSVITA__
-#include "..\Minecraft.Client\PSVita\PSVitaExtras\zlib.h"
+#include "../Minecraft.Client/PSVita/PSVitaExtras/zlib.h"
 #elif defined __PS3__
-#include "..\Minecraft.Client\PS3\PS3Extras\EdgeZLib.h"
+#include "../Minecraft.Client/PS3/PS3Extras/EdgeZLib.h"
 #endif //__PS3__
 
 #if defined(__linux__)

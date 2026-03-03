@@ -11,9 +11,7 @@
 
 #define MULTITHREAD_ENABLE
 
-#ifndef __linux__
 typedef unsigned char byte;
-#endif // __linux__
 const int XUSER_INDEX_ANY = 255;
 const int XUSER_INDEX_FOCUS = 254;
 
@@ -25,50 +23,12 @@ const int XUSER_MAX_COUNT = 4;
 const int MINECRAFT_NET_MAX_PLAYERS = 8;
 #endif
 
-#if defined(__linux__)
-
-typedef struct _RTL_CRITICAL_SECTION {
-    // 	//
-    // 	//  The following field is used for blocking when there is contention for
-    // 	//  the resource
-    // 	//
-    //
-    union {
-        ULONG_PTR RawEvent[4];
-    } Synchronization;
-    //
-    // 	//
-    // 	//  The following three fields control entering and exiting the critical
-    // 	//  section for the resource
-    // 	//
-    //
-    LONG LockCount;
-    LONG RecursionCount;
-    HANDLE OwningThread;
-} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
-
-typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
-
-
-inline void DeleteCriticalSection(CRITICAL_SECTION* stubEnterCS)
-{
-}
-
-inline void EnterCriticalSection(CRITICAL_SECTION* stubEnterCS)
-{
-}
-
-inline void LeaveCriticalSection( CRITICAL_SECTION* stubEnterCS)
-{
-}
-#endif // __linux__
-
 #ifdef __ORBIS__
 #include <net.h>
 #include <np/np_npid.h>
 #include <user_service.h>
-#include "..\..\Minecraft.Client\Orbis\Orbis_PlayerUID.h"
-#include "..\..\Minecraft.Client\Orbis\Network\SQRNetworkManager_Orbis.h"
+#include "../../Minecraft.Client/Orbis/Orbis_PlayerUID.h"
+#include "../../Minecraft.Client/Orbis/Network/SQRNetworkManager_Orbis.h"
 typedef SQRNetworkManager_Orbis::SessionID SessionID;
 typedef SQRNetworkManager_Orbis::PresenceSyncInfo INVITE_INFO;
 
@@ -78,8 +38,8 @@ typedef SQRNetworkManager_Orbis::PresenceSyncInfo INVITE_INFO;
 #include <netex/libnetctl.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "..\..\Minecraft.Client\PS3\PS3_PlayerUID.h"
-#include "..\..\Minecraft.Client\PS3\Network\SQRNetworkManager_PS3.h"
+#include "../../Minecraft.Client/PS3/PS3_PlayerUID.h"
+#include "../../Minecraft.Client/PS3/Network/SQRNetworkManager_PS3.h"
 typedef SQRNetworkManager::SessionID SessionID;
 typedef SQRNetworkManager::PresenceSyncInfo INVITE_INFO;
 
@@ -87,15 +47,15 @@ typedef SQRNetworkManager::PresenceSyncInfo INVITE_INFO;
 #include <np.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "..\..\Minecraft.Client\PSVita\PSVita_PlayerUID.h"
-#include "..\..\Minecraft.Client\PSVita\Network\SQRNetworkManager_Vita.h"
-#include "..\..\Minecraft.Client\PSVita\Network\SQRNetworkManager_AdHoc_Vita.h"
+#include "../../Minecraft.Client/PSVita/PSVita_PlayerUID.h"
+#include "../../Minecraft.Client/PSVita/Network/SQRNetworkManager_Vita.h"
+#include "../../Minecraft.Client/PSVita/Network/SQRNetworkManager_AdHoc_Vita.h"
 typedef SQRNetworkManager_Vita::SessionID SessionID;
 typedef SQRNetworkManager_Vita::PresenceSyncInfo INVITE_INFO;
 
 #elif defined _DURANGO
-#include "..\..\Minecraft.Client\Durango\4JLibs\inc\4J_Profile.h"
-#include "..\..\Minecraft.Client\Durango\Network\DQRNetworkManager.h"
+#include "../../Minecraft.Client/Durango/4JLibs/inc/4J_Profile.h"
+#include "../../Minecraft.Client/Durango/Network/DQRNetworkManager.h"
 typedef ULONGLONG SessionID;
 typedef ULONGLONG GameSessionUID;
 typedef DQRNetworkManager::SessionInfo INVITE_INFO;
@@ -443,7 +403,7 @@ const int QNET_SENDDATA_SEQUENTIAL = 0;
 struct XRNM_SEND_BUFFER
 {
 	DWORD dwDataSize;
-	std::byte *pbyData;
+	byte *pbyData;
 };
 
 const int D3DBLEND_CONSTANTALPHA = 0;

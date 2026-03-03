@@ -1,10 +1,12 @@
 #pragma once
-#include "..\Minecraft.World\LevelListener.h"
-#include "..\Minecraft.World\Definitions.h"
+#include "../Minecraft.World/LevelListener.h"
+#include "../Minecraft.World/Definitions.h"
 #include "OffsettedRenderList.h"
-#include "..\Minecraft.World\JavaIntHash.h"
-#include "..\Minecraft.World\Level.h"
+#include "../Minecraft.World/JavaIntHash.h"
+#include "../Minecraft.World/Level.h"
+#ifndef __linux__
 #include <xmcore.h>
+#endif // __linux__
 #ifdef __PS3__
 #include "C4JSpursJob.h"
 #endif

@@ -7,18 +7,18 @@ using namespace std;
 class Tag
 {
 public:
-    static const byte TAG_End = static_cast<std::byte>(0);
-    static const byte TAG_Byte = static_cast<std::byte>(1);
-    static const byte TAG_Short = static_cast<std::byte>(2);
-    static const byte TAG_Int = static_cast<std::byte>(3);
-    static const byte TAG_Long = static_cast<std::byte>(4);
-    static const byte TAG_Float = static_cast<std::byte>(5);
-    static const byte TAG_Double = static_cast<std::byte>(6);
-    static const byte TAG_Byte_Array = static_cast<std::byte>(7);
-    static const byte TAG_String = static_cast<std::byte>(8);
-    static const byte TAG_List = static_cast<std::byte>(9);
-    static const byte TAG_Compound = static_cast<std::byte>(10);
-	static const byte TAG_Int_Array = static_cast<std::byte>(11);
+    static const byte TAG_End = static_cast<byte>(0);
+    static const byte TAG_Byte = static_cast<byte>(1);
+    static const byte TAG_Short = static_cast<byte>(2);
+    static const byte TAG_Int = static_cast<byte>(3);
+    static const byte TAG_Long = static_cast<byte>(4);
+    static const byte TAG_Float = static_cast<byte>(5);
+    static const byte TAG_Double = static_cast<byte>(6);
+    static const byte TAG_Byte_Array = static_cast<byte>(7);
+    static const byte TAG_String = static_cast<byte>(8);
+    static const byte TAG_List = static_cast<byte>(9);
+    static const byte TAG_Compound = static_cast<byte>(10);
+	static const byte TAG_Int_Array = static_cast<byte>(11);
 
 private:
     wstring name;

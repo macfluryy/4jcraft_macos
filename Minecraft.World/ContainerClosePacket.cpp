@@ -28,7 +28,7 @@ void ContainerClosePacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerClosePacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeByte((std::byte)containerId);
+	dos->writeByte((byte)containerId);
 }
 
 int ContainerClosePacket::getEstimatedSize() 

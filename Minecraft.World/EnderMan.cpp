@@ -7,9 +7,9 @@
 #include "net.minecraft.world.damagesource.h"
 #include "net.minecraft.world.phys.h"
 #include "com.mojang.nbt.h"
-#include "..\Minecraft.Client\Textures.h"
+#include "../Minecraft.Client/Textures.h"
 #include "EnderMan.h"
-
+#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 bool EnderMan::MAY_TAKE[256];

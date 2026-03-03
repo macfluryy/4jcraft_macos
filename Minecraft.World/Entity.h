@@ -5,6 +5,7 @@ using namespace std;
 #include "FloatTag.h"
 #include "Vec3.h"
 #include "Definitions.h"
+#include <pthread.h>
 
 class Mob;
 class LightningBolt;
@@ -365,7 +366,11 @@ private:
 	static int extraWanderIds[EXTRA_WANDER_MAX];
 	static int extraWanderCount;
 	static int extraWanderTicks;
+#if defined(_WIN32)
 	static DWORD tlsIdx;
+#else
+	static pthread_key_t tlsIdx;
+#endif
 public:
 	static void tickExtraWandering();
 	static void countFlagsForPIX();

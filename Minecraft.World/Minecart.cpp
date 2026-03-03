@@ -12,8 +12,6 @@
 #include "Minecart.h"
 #include "SharedConstants.h"
 
-
-
 const int Minecart::EXITS[][2][3] = { //
 	//
 	{

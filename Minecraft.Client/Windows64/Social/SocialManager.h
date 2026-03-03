@@ -7,7 +7,9 @@
 #ifndef _SOCIAL_MANAGER_H
 #define _SOCIAL_MANAGER_H
 
+#ifndef __linux__
 #include <xsocialpost.h>
+#endif // __linux__
 
 #define MAX_SOCIALPOST_CAPTION	60
 #define MAX_SOCIALPOST_DESC		100

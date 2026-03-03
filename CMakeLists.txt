@@ -6,6 +6,7 @@ project(MinecraftConsoles C CXX)
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 set(CMAKE_VS_PLATFORM_NAME "Linux")
+set(CMAKE_CXX_STANDARD 11)
 
 ################################################################################
 # Global configuration types
