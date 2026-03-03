@@ -2,7 +2,7 @@
 
 #include "SoundEngine.h"
 #include "../Consoles_App.h"
-#include "../../MultiplayerLocalPlayer.h"
+#include "../../MultiPlayerLocalPlayer.h"
 #include "../../../Minecraft.World/net.minecraft.world.level.h"
 #include "../../Minecraft.World/leveldata.h"
 #include "../../Minecraft.World/mth.h"
