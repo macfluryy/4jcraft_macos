@@ -678,4 +678,20 @@ static inline VOID OutputDebugString(LPCSTR lpOutputString)
     return OutputDebugStringA(lpOutputString);
 }
 
+typedef struct {
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
+    int signaled;
+    int manual_reset;
+} Event;
+
+HANDLE CreateEvent(int manual_reset, int initial_state) {
+    Event* ev = (Event*)malloc(sizeof(Event));
+    pthread_mutex_init(&ev->mutex, NULL);
+    pthread_cond_init(&ev->cond, NULL);
+    ev->signaled = initial_state;
+    ev->manual_reset = manual_reset;
+    return (HANDLE)ev;
+}
+
 #endif // LINUXSTUBS_H
