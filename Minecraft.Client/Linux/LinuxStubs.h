@@ -11,6 +11,7 @@
 #include <atomic>
 #include <climits>
 #include <cfloat>
+#include <cmath>
 #include <pthread.h>
 #include <fcntl.h>
 #include <unistd.h>
