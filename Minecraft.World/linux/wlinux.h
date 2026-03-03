@@ -86,6 +86,44 @@ typedef float FLOAT;
 
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
 
+typedef pthread_mutex_t RTL_CRITICAL_SECTION;
+typedef pthread_mutex_t* PRTL_CRITICAL_SECTION;
+
+typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+typedef PRTL_CRITICAL_SECTION PCRITICAL_SECTION;
+typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
+
+void InitializeCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+    pthread_mutexattr_t attr;
+    int ret;
+
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(CriticalSection, &attr);
+    pthread_mutexattr_destroy(&attr);
+}
+
+void InitializeCriticalSectionAndSpinCount(PRTL_CRITICAL_SECTION CriticalSection, ULONG SpinCount) {
+    // no spin count required because we use a recursive mutex
+    InitializeCriticalSection(CriticalSection);
+}
+
+void DeleteCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+    pthread_mutex_destroy(CriticalSection);
+}
+
+void EnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+    pthread_mutex_lock(CriticalSection);
+}
+
+void LeaveCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+    pthread_mutex_unlock(CriticalSection);
+}
+
+ULONG TryEnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
+    return pthread_mutex_trylock(CriticalSection) == 0;
+}
+
 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsalloc
 DWORD TlsAlloc(VOID) {
     pthread_key_t key;
@@ -119,8 +157,8 @@ BOOL TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue)
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
 VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) 
 {
-    // TODO: Parse /proc/meminfo and set based on that. Probably will also need another different
-    //       codepath for macOS too.
+    // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will also need another
+    // different codepath for macOS too.
 }
 
 DWORD GetLastError(VOID)
