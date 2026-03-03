@@ -21,6 +21,7 @@ Simple rules for publishing code:
 - Join our Discord server to ping us (the lead developers) about your pull requests
 - Keep your code clean and readable.
 - Use conventional commits (this is not required)
+Make sure your code compiles before making a pull request! and make sure that it's readable
 
 Remember ALL your changes will be licensed under GNU General Public License V3.0.
 
@@ -28,6 +29,6 @@ Remember ALL your changes will be licensed under GNU General Public License V3.0
 > [!NOTE]
 > The project is currently in a non-compilable state (as of 3/3/2026)
 
-Firstly install CMake, Make, GCC (>= 15.0), G++ (>= 15.0).
-Secondly, create a new directory named build after cloning the repository.
-Then enter the new directory and run `cmake ..` and then run `make`
+1. Install CMake, Make, GCC (>= 15.0), G++ (>= 15.0).
+2. Create a new directory named build after cloning the repository.
+3. Enter the new directory and run `cmake ..` and then run `make`
