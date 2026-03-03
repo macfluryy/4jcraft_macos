@@ -2,7 +2,9 @@
 #include "net.minecraft.world.entity.player.h"
 #include "../Minecraft.Client/ServerPlayer.h"
 #include "../Minecraft.Client/PlayerConnection.h"
+#ifndef __linux__
 #include <qnet.h>
+#endif // __linux__
 #include "PacketListener.h"
 #include "InputOutputStream.h"
 #include "PlayerInfoPacket.h"
