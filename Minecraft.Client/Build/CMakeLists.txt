@@ -5231,6 +5231,7 @@ if(UNIX AND NOT APPLE)
     )
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
+        Minecraft.World
         OpenGL::GL
         ${GLFW3_LIBRARIES}
         4J_Input

@@ -3,6 +3,38 @@
 #ifdef __linux__
 #include <GL/gl.h>
 #include <GL/glu.h>
+
+#undef GL_SMOOTH
+#undef GL_FLAT
+static const int GL_SMOOTH = 0x1D01;
+static const int GL_FLAT = 0x1D00;
+
+class FloatBuffer;
+class IntBuffer;
+class ByteBuffer;
+
+void glGenTextures(IntBuffer *);
+int glGenTextures();
+void glDeleteTextures(IntBuffer *);
+void glDeleteTextures(int);
+void glLight(int, int, FloatBuffer *);
+void glLightModel(int, FloatBuffer *);
+void glGetFloat(int, FloatBuffer *);
+void glTexGen(int, int, FloatBuffer *);
+void glFog(int, FloatBuffer *);
+void glTexCoordPointer(int, int, FloatBuffer *);
+void glNormalPointer(int, ByteBuffer *);
+void glColorPointer(int, bool, int, ByteBuffer *);
+void glVertexPointer(int, int, FloatBuffer *);
+void glEndList(int);
+void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer *);
+void glCallLists(IntBuffer *);
+void glGenQueriesARB(IntBuffer *);
+void glBeginQueryARB(int, int);
+void glEndQueryARB(int);
+void glGetQueryObjectuARB(int, int, IntBuffer *);
+void glReadPixels(int, int, int, int, int, int, ByteBuffer *);
+
 #else
 
 const int GL_BYTE = 0;
@@ -124,10 +156,6 @@ void glActiveTexture(int);
 #endif
 
 #ifdef __linux__
-#undef GL_SMOOTH
-#undef GL_FLAT
-#undef GL_ARRAY_BUFFER_ARB
-#undef GL_STREAM_DRAW_ARB
 class GL11
 {
 public:
@@ -136,6 +164,8 @@ public:
 	static void glShadeModel(int mode) { ::glShadeModel(mode); }
 };
 
+#undef GL_ARRAY_BUFFER_ARB
+#undef GL_STREAM_DRAW_ARB
 class ARBVertexBufferObject
 {
 public:
