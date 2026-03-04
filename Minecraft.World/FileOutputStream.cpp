@@ -59,9 +59,7 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 	if( m_fileHandle == INVALID_HANDLE_VALUE )
 	{
 		// TODO 4J Stu - Any form of error/exception handling
-#ifndef __linux__
 		DWORD error = GetLastError();
-#endif // __linux__
 	}
 }
 

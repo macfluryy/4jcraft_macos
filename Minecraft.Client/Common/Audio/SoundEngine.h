@@ -3,12 +3,6 @@ class Mob;
 class Options;
 using namespace std;
 #include "../../../Minecraft.World/SoundTypes.h"
-#ifdef __linux__
-typedef float F32;
-typedef HANDLE	        HMSOUNDBANK;
-typedef HANDLE          HDIGDRIVER;
-typedef unsigned int 	HSTREAM;
-#endif // __linux__
 
 enum eMUSICFILES
 {

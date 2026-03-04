@@ -11,39 +11,21 @@
 #include "../Minecraft.World/LevelData.h"
 #include "../Minecraft.Client/Common/GameRules/LevelGenerationOptions.h"
 #include "../Minecraft.World/net.minecraft.world.level.chunk.storage.h"
-#include <ctime>
 
 #ifdef _XBOX
 #define RESERVE_ALLOCATION  MEM_RESERVE | MEM_LARGE_PAGES
 #define COMMIT_ALLOCATION  MEM_COMMIT | MEM_LARGE_PAGES
-#elif !defined(__linux__)
+#else
 #define RESERVE_ALLOCATION  MEM_RESERVE
 #define COMMIT_ALLOCATION  MEM_COMMIT
-#else
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-#include <unistd.h>
-#include <sys/types.h>
-#include <locale>
-#include <fcntl.h>
-#include <linux/mman.h>
-#include <sys/mman.h>
-#include <fcntl.h>
-#define RESERVE_ALLOCATION  0
-#define COMMIT_ALLOCATION   MAP_PRIVATE | MAP_ANONYMOUS
-#define PAGE_READWRITE O_RDWR
-#include <codecvt>
 #endif
-
-extern CConsoleMinecraftApp app;
 
 unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
 void *ConsoleSaveFileOriginal::pvHeap = NULL;
 
 ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
-#ifndef __linux__
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
-#endif // __linux__
 
 	// One time initialise of static stuff required for our storage
 	if( pvHeap == NULL )
@@ -55,7 +37,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 		// AP - The Vita doesn't have virtual memory so a pretend system has been implemented in PSVitaStubs.cpp. 
 		// All access to the memory must be done via the access function as the pointer returned from VirtualAlloc
 		// can't be used directly.
-		pvHeap = mmap(NULL, NULL, MAX_PAGE_COUNT * CSF_PAGE_SIZE, RESERVE_ALLOCATION, PAGE_READWRITE, NULL );
+		pvHeap = VirtualAlloc(NULL, MAX_PAGE_COUNT * CSF_PAGE_SIZE, RESERVE_ALLOCATION, PAGE_READWRITE );
 	}
 
 	pvSaveMem = pvHeap;
@@ -91,7 +73,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 
 	unsigned int pagesRequired = ( heapSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
 
-	void *pvRet = mmap(NULL, pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
+	void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
 	if( pvRet == NULL )
 	{
 #ifndef _CONTENT_PACKAGE
@@ -131,7 +113,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 #ifdef __PS3__
 			StorageManager.FreeSaveData();
 #endif
-			printf("Filesize - %d, Adjusted size - %d\n",fileSize,storageLength);
+			app.DebugPrintf("Filesize - %d, Adjusted size - %d\n",fileSize,storageLength);
 			fileSize = storageLength;
 		} 
 
@@ -168,7 +150,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 				if(decompSize == 0)
 				{
 					// 4J Stu - Saves created between 2/12/2011 and 7/12/2011 will have this problem
-					printf("Invalid save data format\n");
+					app.DebugPrintf("Invalid save data format\n");
 					ZeroMemory( pvSourceData, fileSize );
 					// Clear the first 8 bytes that reference the header
 					header.WriteHeader( pvSourceData );
@@ -197,7 +179,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 					if( desiredSize > currentHeapSize )
 					{
 						unsigned int pagesRequired = ( desiredSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
-						void *pvRet = mmap(NULL, pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
+						void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
 						if( pvRet == NULL )
 						{
 							// Out of physical memory
@@ -227,9 +209,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID
 
 ConsoleSaveFileOriginal::~ConsoleSaveFileOriginal()
 {
-#ifndef __linux__
 	VirtualFree( pvHeap, MAX_PAGE_COUNT * CSF_PAGE_SIZE, MEM_DECOMMIT );
-#endif
 	pagesCommitted = 0;
 	// Make sure we don't have any thumbnail data still waiting round - we can't need it now we've destroyed the save file anyway
 #if defined _XBOX 
@@ -318,25 +298,13 @@ void ConsoleSaveFileOriginal::deleteFile( FileEntry *file )
 	ReleaseSaveAccess();
 }
 
-#if defined(__linux__)
-bool moveToEnd(int fd)
-{
-	off_t fileSize = lseek(fd, 0, SEEK_END);
-	if (fileSize == (off_t)-1) {
-		perror("lseek failed");
-		return false;
-	}
-	return true;
-}
-#endif
-
 void ConsoleSaveFileOriginal::setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod)
 {
 	LockSaveAccess();
 
 	file->currentFilePointer = file->data.startOffset + lDistanceToMove;
 
-	if( moveToEnd(dwMoveMethod))
+	if( dwMoveMethod == FILE_END)
 	{
 		file->currentFilePointer += file->getFileSize();
 	}
@@ -519,7 +487,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, DWORD nNumberOfByt
 	if( desiredSize > currentHeapSize )
 	{
 		unsigned int pagesRequired = ( desiredSize + (CSF_PAGE_SIZE - 1 ) ) / CSF_PAGE_SIZE;
-		void *pvRet = mmap(NULL, pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE, NULL);
+		void *pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE, COMMIT_ALLOCATION, PAGE_READWRITE);
 		if( pvRet == NULL )
 		{
 			// Out of physical memory
@@ -668,14 +636,21 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 {
 	LockSaveAccess();
 
+#ifdef __PSVITA__
+	// On Vita we've had problems with saves being corrupted on rapid save/save-exiting so seems prudent to wait for idle
+	while( StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle )
+	{
+		app.DebugPrintf("Flush wait\n");
+		Sleep(10);
+	}
+#endif
+
 	finalizeWrite();
 
 	// Get the frequency of the timer
 	LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime, qwDeltaTime;
 	float fElapsedTime = 0.0f;
-#ifndef __linux__
 	QueryPerformanceFrequency( &qwTicksPerSec );
-#endif // __linux__
 	float fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
 
 	unsigned int fileSize = header.GetFileSize();
@@ -713,23 +688,19 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		// Pre-calculate the buffer size required for the compressed data
 		PIXBeginNamedEvent(0,"Pre-calc save compression");
 		// Save the start time
-#if !defined(__linux__)
 		QueryPerformanceCounter( &qwTime );
-#endif // __linux__
 #ifdef __PSVITA__
 		// AP - get the compressed size via the access function. This uses a special RLE format
 		VirtualCompress(NULL,&compLength,pvSaveMem,fileSize);
 #else
 		Compression::getCompression()->Compress(NULL,&compLength,pvSaveMem,fileSize);
 #endif
-#if !defined(__linux__)
 		QueryPerformanceCounter( &qwNewTime );
-#endif // __linux__
 
 		qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
 		fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
 
-		printf("Check buffer size: Elapsed time %f\n", fElapsedTime);
+		app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
 		PIXEndNamedEvent();
 
 		// We add 4 bytes to the start so that we can signal compressed data
@@ -748,22 +719,19 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		// Re-compress all save data before we save it to disk
 		PIXBeginNamedEvent(0,"Actual save compression");
 		// Save the start time
-#if !defined(__linux__)
 		QueryPerformanceCounter( &qwTime );
-#endif // __LINUX__
 #ifdef __PSVITA__
 		// AP - compress via the access function. This uses a special RLE format
 		VirtualCompress(compData+8,&compLength,pvSaveMem,fileSize);
 #else
 		Compression::getCompression()->Compress(compData+8,&compLength,pvSaveMem,fileSize);
 #endif
-#if !defined(__linux__)
 		QueryPerformanceCounter( &qwNewTime );
-#endif // __linux__
+
 		qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
 		fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
 
-		printf("Compress: Elapsed time %f\n", fElapsedTime);
+		app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
 		PIXEndNamedEvent();
 
 		ZeroMemory(compData,8);
@@ -771,7 +739,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		memcpy( compData, &saveVer, sizeof(int) );
 		memcpy( compData+4, &fileSize, sizeof(int) );
 
-		printf("Save data compressed from %d to %d\n", fileSize, compLength);
+		app.DebugPrintf("Save data compressed from %d to %d\n", fileSize, compLength);
 #endif
 
 		PBYTE pbThumbnailData=NULL;
@@ -825,7 +793,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 #elif (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
 		// set the icon and save image
 		StorageManager.SetSaveImages(pbThumbnailData,dwThumbnailDataSize,pbDataSaveImage,dwDataSizeSaveImage,bTextMetadata,iTextMetadataBytes);
-		printf("Save thumbnail size %d\n",dwThumbnailDataSize);
+		app.DebugPrintf("Save thumbnail size %d\n",dwThumbnailDataSize);
 
 		// save the data
 		StorageManager.SaveSaveData( &ConsoleSaveFileOriginal::SaveSaveDataCallback, this );
@@ -876,90 +844,52 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	if(!targetFileDir.exists())
 		targetFileDir.mkdir();
 
-#if defined(_WIN32)
 	wchar_t *fileName = new wchar_t[XCONTENT_MAX_FILENAME_LENGTH+1];
-#else
-	// DecalOverdose(FIXME):
-	const char* fileName = new char[XCONTENT_MAX_FILENAME_LENGTH + 1];
-#endif // _wIN32
-#if defined(_WIN32)
+
 	SYSTEMTIME t;
 	GetSystemTime( &t );
-#else
-	// DecalOverdose: JARVIS DON'T PULL AN ALIEN SWARM: GLOBAL OFFENSIVE
-	std::time_t t = std::time(0);
-	std::tm* localTime = std::localtime(&t);
-#endif // _WIN32
 
 	//14 chars for the digits
 	//11 chars for the separators + suffix
 	//25 chars total
-	std::wstring cutFileName = m_fileName;
+	wstring cutFileName = m_fileName;
 	if(m_fileName.length() > XCONTENT_MAX_FILENAME_LENGTH - 25)
 	{
 		cutFileName = m_fileName.substr(0, XCONTENT_MAX_FILENAME_LENGTH - 25);
 	}
-
-#ifndef __linux__
-
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
-#else
-	char fileNameBuffer[XCONTENT_MAX_FILENAME_LENGTH + 1];
-	std::memset(fileNameBuffer, 0, sizeof(fileNameBuffer));
-	wcstombs(fileNameBuffer, cutFileName.c_str(), XCONTENT_MAX_FILENAME_LENGTH);
-	snprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH + 1,
-			 "\\v%04d-%s%02d.%02d.%02d.%02d.%02d.mcs",
-		  VER_PRODUCTBUILD, fileNameBuffer,
-		  localTime->tm_mon + 1, localTime->tm_mday,
-		  localTime->tm_hour, localTime->tm_min, localTime->tm_sec);
-#endif // __linux__
 
-#if defined (_UNICODE)
+#ifdef _UNICODE
 	wstring wtemp = targetFileDir.getPath() + wstring(fileName);
 	LPCWSTR lpFileName =  wtemp.c_str();
-#elif defined(__linux__)
-	std::wstring wtemp = targetFileDir.getPath();
-	std::wstring wfileName(fileName, fileName + strlen(fileName));
-	wtemp += wfileName;
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	std::string tempStr = converter.to_bytes(wtemp);
-	const char* lpFileName = tempStr.c_str();
 #else
 	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + wstring(fileName) );
 #endif
-#if !defined __PSVITA__ && !defined(__linux__)
+#ifndef __PSVITA__
 	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
 #endif
 
-#if defined(__linux__)
-	int hSaveFile = open(lpFileName, O_RDWR);
-#endif // __linux__
-
 	if(compressedData != NULL && compressedDataSize > 0)
 	{
-#if defined __PSVITA__
+#ifdef __PSVITA__
 		// AP - Use the access function to save
 		VirtualWriteFile( lpFileName, compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
-#elif !defined(__linux__)
-		WriteFile( hSaveFile,compressedData,compressedDataSize,&numberOfBytesWritten,NULL);
 #else
-		write(hSaveFile,compressedData,compressedDataSize);
+		WriteFile( hSaveFile,compressedData,compressedDataSize,&numberOfBytesWritten,NULL);
 #endif
 		assert(numberOfBytesWritten == compressedDataSize);
 	}
 	else
 	{
-#if defined(__PSVITA__)
+#ifdef __PSVITA__
 		// AP - Use the access function to save
 		VirtualWriteFile( lpFileName, compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
-#elif !defined(__linux__)
-		WriteFile(hSaveFile,pvSaveMem,fileSize,&numberOfBytesWritten,NULL);
 #else
-		write(hSaveFile,compressedData,compressedDataSize);
+		WriteFile(hSaveFile,pvSaveMem,fileSize,&numberOfBytesWritten,NULL);
 #endif
 		assert(numberOfBytesWritten == fileSize);
 	}
-#if !defined(__PSVITA__) && !defined(__linux__)
+#ifndef __PSVITA__
 	CloseHandle( hSaveFile );
 #endif
 
@@ -1119,12 +1049,12 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform()
 		wstring suffix(L".mcr");
 		if( fName.compare(fName.length() - suffix.length(), suffix.length(), suffix) == 0 )
 		{
-			printf("Processing a region file: %ls\n",fName.c_str());
+			app.DebugPrintf("Processing a region file: %ls\n",fName.c_str());
 			ConvertRegionFile(File(fe->data.filename) );
 		}
 		else
 		{
-			printf("%ls is not a region file, ignoring\n", fName.c_str());
+			app.DebugPrintf("%ls is not a region file, ignoring\n", fName.c_str());
 		}
 	}
 
