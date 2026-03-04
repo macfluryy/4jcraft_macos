@@ -60,9 +60,9 @@
 #include <stdlib.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector> 
-#include "Linux/LinuxStubs.h"
-#include "Linux/xbox_valve.h"
+#include <vector>
+
+#include "Linux/Stubs/LinuxStubs.h"
 #else
 #define AUTO_VAR(_var, _val) auto _var = _val
 #include <unordered_map>
@@ -305,11 +305,9 @@ typedef XUID GameSessionUID;
 	#include "Windows64/XML/ATGXmlParser.h"	
 	#include "Windows64/Social/SocialManager.h"
 	#include "Common/Audio/SoundEngine.h"
-	// DecalOverdose: DONT (according to localcc)
-	#include "Linux/iggy_stub.h"
 	//#include "Windows64/Iggy/include/iggy.h"
 	#include "Windows64/Iggy/gdraw/gdraw_d3d11.h"
-	#include "Windows64/Windows64_UIController.h"
+	#include "Linux/Linux_UIController.h"
 #elif defined __PSVITA__
 	#include "PSVita/PSVita_App.h"
 	#include "PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this

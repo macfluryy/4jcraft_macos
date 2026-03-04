@@ -12,9 +12,6 @@
 #ifdef __ORBIS__
 #include <pad.h>
 #endif
-#ifdef __linux__
-#include <math.h>
-#endif
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu()
 {
 	m_menu = NULL;

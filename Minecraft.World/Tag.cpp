@@ -149,7 +149,7 @@ Tag *Tag::newTag(byte type, const wstring &name)
 	return NULL;
 }
 
-wchar_t *Tag::getTagName(byte type)
+const wchar_t *Tag::getTagName(byte type)
 {
 	switch (type)
 	{

@@ -18,7 +18,9 @@
 #include "PlayerList.h"
 #include "EntityTracker.h"
 #include "PlayerChunkMap.h"
+#ifndef __linux__
 #include <qnet.h>
+#endif // __linux__
 
 TrackedEntity::TrackedEntity(shared_ptr<Entity> e, int range, int updateInterval, bool trackDelta)
 {

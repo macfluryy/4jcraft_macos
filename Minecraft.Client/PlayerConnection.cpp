@@ -25,8 +25,8 @@
 #include "../Minecraft.World/net.minecraft.h"
 #include "EntityTracker.h"
 #include "ServerConnection.h"
-#include "..\Minecraft.World\GenericStats.h"
-#include "..\Minecraft.World\JavaMath.h"
+#include "../Minecraft.World/GenericStats.h"
+#include "../Minecraft.World/JavaMath.h"
 
 // 4J Added
 #include "../Minecraft.World/net.minecraft.world.item.crafting.h"

@@ -1,27 +1,9 @@
-#ifndef LINUXSTUBS_H
-#define LINUXSTUBS_H
+#ifndef WINAPISTUBS_H
+#define WINAPISTUBS_H
 
 #pragma once
 
-#include <cstdint>
-#include <cstring>
-#include <cstdlib>
-#include <string>
-#include <cerrno>
-#include <atomic>
-#include <climits>
-#include <cfloat>
-#include <cmath>
-#include <pthread.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <fnmatch.h>
-#include <time.h>
-#include <stdio.h>
-#include <sys/time.h>
+#include <cassert>
 
 #define TRUE true
 #define FALSE false
@@ -32,6 +14,7 @@
 #define __cdecl
 #define _vsnprintf_s vsnprintf;
 
+#define S_OK 0
 typedef unsigned int DWORD;
 typedef const char *LPCSTR;
 typedef bool BOOL;
@@ -59,11 +42,19 @@ typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
+
 typedef struct {
     DWORD LowPart;
     LONG HighPart;
     long long QuadPart;
 } LARGE_INTEGER;
+
+typedef struct {
+    DWORD LowPart;
+    LONG HighPart;
+    long long QuadPart;
+} ULARGE_INTEGER;
+
 typedef long long LONGLONG;
 typedef size_t SIZE_T;
 typedef std::wstring LPWSTR;
@@ -83,6 +74,8 @@ typedef float FLOAT;
 #define ERROR_CANCELLED                  1223L
 //#define S_OK                                   ((HRESULT)0x00000000L)
 #define S_FALSE                                ((HRESULT)0x00000001L)
+
+#define INFINITE            0xFFFFFFFF  // Infinite timeout
 
 #define PAGE_READWRITE 0x04
 #define MEM_LARGE_PAGES 0x20000000
@@ -105,6 +98,14 @@ typedef float FLOAT;
 #define TRUNCATE_EXISTING 5
 #define WAIT_TIMEOUT 258
 
+#define FILE_FLAG_WRITE_THROUGH         0x80000000
+#define FILE_FLAG_OVERLAPPED            0x40000000
+#define FILE_FLAG_NO_BUFFERING          0x20000000
+#define FILE_FLAG_RANDOM_ACCESS         0x10000000
+#define FILE_FLAG_SEQUENTIAL_SCAN       0x08000000
+#define FILE_FLAG_DELETE_ON_CLOSE       0x04000000
+#define FILE_FLAG_BACKUP_SEMANTICS      0x02000000
+
 #define FILE_ATTRIBUTE_READONLY 0x00000001
 #define FILE_ATTRIBUTE_HIDDEN 0x00000002
 #define FILE_ATTRIBUTE_SYSTEM 0x00000004
@@ -119,6 +120,32 @@ typedef float FLOAT;
 #define FILE_BEGIN SEEK_SET
 #define FILE_CURRENT SEEK_CUR
 #define FILE_END SEEK_END
+
+#define PAGE_NOACCESS          0x01     
+#define PAGE_READONLY          0x02     
+#define PAGE_READWRITE         0x04     
+#define PAGE_WRITECOPY         0x08     
+#define PAGE_EXECUTE           0x10     
+#define PAGE_EXECUTE_READ      0x20     
+#define PAGE_EXECUTE_READWRITE 0x40
+#define PAGE_EXECUTE_WRITECOPY 0x80     
+#define PAGE_GUARD            0x100     
+#define PAGE_NOCACHE          0x200     
+#define PAGE_WRITECOMBINE     0x400     
+#define PAGE_USER_READONLY   0x1000     
+#define PAGE_USER_READWRITE  0x2000     
+#define MEM_COMMIT           0x1000     
+#define MEM_RESERVE          0x2000     
+#define MEM_DECOMMIT         0x4000     
+#define MEM_RELEASE          0x8000     
+#define MEM_FREE            0x10000     
+#define MEM_PRIVATE         0x20000     
+#define MEM_RESET           0x80000     
+#define MEM_TOP_DOWN       0x100000     
+#define MEM_NOZERO         0x800000     
+#define MEM_LARGE_PAGES  0x20000000     
+#define MEM_HEAP         0x40000000     
+#define MEM_16MB_PAGES   0x80000000     
 
 #define INVALID_HANDLE_VALUE ((HANDLE)(ULONG_PTR)-1)
 
@@ -195,6 +222,22 @@ typedef struct _SYSTEMTIME {
 #define TLS_OUT_OF_INDEXES ((DWORD)0xFFFFFFFF)
 // https://learn.microsoft.com/en-us/cpp/c-runtime-library/truncate?view=msvc-170
 #define _TRUNCATE ((size_t)-1)
+
+#define DECLARE_HANDLE(name) typedef HANDLE name
+DECLARE_HANDLE(HINSTANCE);
+
+typedef HINSTANCE HMODULE;
+
+#define _HRESULT_TYPEDEF_(_sc) _sc
+
+#define FAILED(Status) ((HRESULT)(Status)<0)
+#define MAKE_HRESULT(sev,fac,code) \
+	((HRESULT) (((unsigned int)(sev)<<31) | ((unsigned int)(fac)<<16) | ((unsigned int)(code))) )
+#define MAKE_SCODE(sev,fac,code) \
+	((SCODE) (((unsigned int)(sev)<<31) | ((unsigned int)(fac)<<16) | ((unsigned int)(code))) )
+#define E_FAIL                           _HRESULT_TYPEDEF_(0x80004005L)
+#define E_ABORT                          _HRESULT_TYPEDEF_(0x80004004L)
+#define E_NOINTERFACE                    _HRESULT_TYPEDEF_(0x80004002L)
 
 typedef pthread_mutex_t RTL_CRITICAL_SECTION;
 typedef pthread_mutex_t* PRTL_CRITICAL_SECTION;
@@ -690,7 +733,7 @@ typedef struct {
     int manual_reset;
 } Event;
 
-HANDLE CreateEvent(int manual_reset, int initial_state) {
+static inline HANDLE CreateEvent(int manual_reset, int initial_state) {
     Event* ev = (Event*)malloc(sizeof(Event));
     pthread_mutex_init(&ev->mutex, NULL);
     pthread_cond_init(&ev->cond, NULL);
@@ -699,30 +742,15 @@ HANDLE CreateEvent(int manual_reset, int initial_state) {
     return (HANDLE)ev;
 }
 
-// d3d11 stubs
+static inline HMODULE GetModuleHandle(LPCSTR lpModuleName) { return 0; }
 
-typedef struct _RECT
-{
-	LONG left;
-	LONG top;
-	LONG right;
-	LONG bottom;
-} RECT, *PRECT;
+static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
+    assert(0 && "FIXME: implement VirtualAlloc");
+}
 
-// stole- i mean borrowed from OrbisStubs.h
-typedef void ID3D11Device;
-typedef void ID3D11DeviceContext;
-typedef void ID3D11ShaderResourceView; // used only by windows/durango gdraw and uicontroller
-typedef void IDXGISwapChain;
-typedef RECT D3D11_RECT;
-typedef void ID3D11RenderTargetView;
-typedef void ID3D11DepthStencilView;
-typedef void ID3D11Buffer;
-typedef DWORD (*PTHREAD_START_ROUTINE)(	LPVOID lpThreadParameter);
-typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
+static inline BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType) {
+    assert(0 && "FIXME: implement VirtualFree");
+}
 
-//typedef bool rrbool;
 
-#define S_OK 0
-
-#endif // LINUXSTUBS_H
+#endif // WINAPISTUBS_H

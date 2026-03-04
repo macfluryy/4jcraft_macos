@@ -66,11 +66,6 @@
 #ifdef __ORBIS__
 #include <save_data_dialog.h>
 #endif
-#include "../Linux/LinuxStubs.h"
-
-#if defined(__linux__)
-#define S_OK 0
-#endif // __linux__
 
 #include "../Common/Leaderboards/LeaderboardManager.h"
 

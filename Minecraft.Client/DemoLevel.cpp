@@ -2,7 +2,16 @@
 #include "DemoLevel.h"
 #include "../Minecraft.World/net.minecraft.world.level.storage.h"
 
-DemoLevel::DemoLevel(shared_ptr<LevelStorage> levelStorage, const wstring& levelName) : Level(levelStorage, levelName, DEMO_LEVEL_SEED)
+LevelSettings DemoLevel::DEMO_LEVEL_SETTINGS = LevelSettings(
+	DemoLevel::DEMO_LEVEL_SEED,
+	GameType::SURVIVAL,
+	false,
+	false,
+	false, LevelType::lvl_normal_1_1, LEVEL_MAX_WIDTH,
+	1.0
+);
+
+DemoLevel::DemoLevel(shared_ptr<LevelStorage> levelStorage, const wstring& levelName) : Level(levelStorage, levelName, &DEMO_LEVEL_SETTINGS)
 {
 }
 

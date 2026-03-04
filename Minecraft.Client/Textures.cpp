@@ -21,7 +21,7 @@ bool Textures::MIPMAP = true;
 C4JRender::eTextureFormat Textures::TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
 
 int Textures::preLoadedIdx[TN_COUNT];
-wchar_t *Textures::preLoaded[TN_COUNT] =
+const wchar_t *Textures::preLoaded[TN_COUNT] =
 {
 	L"%blur%misc/pumpkinblur",
 //	L"%blur%/misc/vignette",		// Not currently used

@@ -1,23 +1,14 @@
 #include "stdafx.h"
 #include "compression.h"
-#if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64
+#if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__
 #include "../Minecraft.Client/Common/zlib/zlib.h"
 #endif
-
-#if defined(__linux__)
-#include "../Minecraft.Client/Common/zlib/zlib.h"
-#include <pthread.h> // TLS shit
-#endif // __linux__
 
 #if defined __PSVITA__
 #include "../Minecraft.Client/PSVita/PSVitaExtras/zlib.h"
 #elif defined __PS3__
 #include "../Minecraft.Client/PS3/PS3Extras/EdgeZLib.h"
 #endif //__PS3__
-
-#if defined(__linux__)
-#define S_OK 0
-#endif // __linux__
 
 DWORD Compression::tlsIdx = 0;
 Compression::ThreadStorage *Compression::tlsDefault = NULL;
@@ -511,10 +502,8 @@ Compression::Compression()
 #endif
 	m_decompressType = m_localDecompressType;
 
-#ifndef __linux__
 	InitializeCriticalSection(&rleCompressLock);
 	InitializeCriticalSection(&rleDecompressLock);
-#endif // __linux__
 }
 
 Compression::~Compression()

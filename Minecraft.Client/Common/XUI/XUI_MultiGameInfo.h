@@ -1,7 +1,9 @@
 #pragma once
 using namespace std;
 #include <vector>
+#ifndef __linux__
 #include <qnet.h>
+#endif // __linux__
 #include "../Media/xuiscene_multi_gameinfo.h"
 
 class FriendSessionInfo;
