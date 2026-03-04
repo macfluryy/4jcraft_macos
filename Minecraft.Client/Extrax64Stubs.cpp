@@ -31,7 +31,6 @@
 #include "StatsCounter.h"
 #include "Orbis/Social/SocialManager.h"
 #include "Orbis/Sentient/DynamicConfigurations.h"
-#include <perf.h>
 #endif
 
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
