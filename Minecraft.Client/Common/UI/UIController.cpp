@@ -1284,7 +1284,7 @@ void UIController::setupCustomDrawGameStateAndMatrices(UIScene *scene, CustomDra
 
 void UIController::endCustomDrawGameState()
 {
-#ifdef __ORBIS__
+#if defined(__ORBIS__) || defined(__linux__)
 	// TO BE IMPLEMENTED
 	RenderManager.Clear(GL_DEPTH_BUFFER_BIT);
 #else
@@ -2505,7 +2505,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(UINT
 
 	if (message == -1)
 	{
-#if defined(_XBOX_ONE) || defined(_WINDOWS64)
+#if defined(_XBOX_ONE) || defined(_WINDOWS64) || defined(__linux__)
 		// IDS_CONTENT_RESTRICTION doesn't exist on XB1
 		message = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE;
 #else

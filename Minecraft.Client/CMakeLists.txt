@@ -294,21 +294,21 @@ set(Common__Source_Files__Tutorial__Tasks
 source_group("Common\\Source Files\\Tutorial\\Tasks" FILES ${Common__Source_Files__Tutorial__Tasks})
 
 set(Common__Source_Files__UI
-#    "Common/UI/UI.h"
-#    "Common/UI/UIBitmapFont.cpp"
-#    "Common/UI/UIBitmapFont.h"
-#    "Common/UI/UIController.cpp"
-#    "Common/UI/UIController.h"
-#    "Common/UI/UIFontData.cpp"
-#    "Common/UI/UIFontData.h"
-#    "Common/UI/UIGroup.cpp"
-#    "Common/UI/UIGroup.h"
-#    "Common/UI/UILayer.cpp"
-#    "Common/UI/UILayer.h"
-#    "Common/UI/UIScene.cpp"
-#    "Common/UI/UIScene.h"
-#    "Common/UI/UITTFFont.cpp"
-#    "Common/UI/UITTFFont.h"
+    "Common/UI/UI.h"
+    "Common/UI/UIBitmapFont.cpp"
+    "Common/UI/UIBitmapFont.h"
+    "Common/UI/UIController.cpp"
+    "Common/UI/UIController.h"
+    "Common/UI/UIFontData.cpp"
+    "Common/UI/UIFontData.h"
+    "Common/UI/UIGroup.cpp"
+    "Common/UI/UIGroup.h"
+    "Common/UI/UILayer.cpp"
+    "Common/UI/UILayer.h"
+    "Common/UI/UIScene.cpp"
+    "Common/UI/UIScene.h"
+    "Common/UI/UITTFFont.cpp"
+    "Common/UI/UITTFFont.h"
 )
 source_group("Common\\Source Files\\UI" FILES ${Common__Source_Files__UI})
 
