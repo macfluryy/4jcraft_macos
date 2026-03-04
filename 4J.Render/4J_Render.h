@@ -1,8 +1,8 @@
 #pragma once
 
 #ifdef __linux__
-#include "../../Minecraft.Client/Linux/Stubs/LinuxStubs.h"
-#endif // __linux__
+#include "../Minecraft.Client/Platform/Linux/Stubs/LinuxStubs.h"
+#endif
 
 #include <cstdint>
 

@@ -1,6 +1,9 @@
 #pragma once
 
-
+#ifdef __linux__
+#include <GL/gl.h>
+#include <GL/glu.h>
+#else
 
 const int GL_BYTE = 0;
 const int GL_FLOAT = 0;
@@ -115,10 +118,34 @@ void glFog(int,FloatBuffer *);
 void glColorMaterial(int,int);
 void glMultiTexCoord2f(int, float, float);
 
-//1.8.2
 void glClientActiveTexture(int);
 void glActiveTexture(int);
 
+#endif
+
+#ifdef __linux__
+#undef GL_SMOOTH
+#undef GL_FLAT
+#undef GL_ARRAY_BUFFER_ARB
+#undef GL_STREAM_DRAW_ARB
+class GL11
+{
+public:
+	static const int GL_SMOOTH = 0x1D01;
+	static const int GL_FLAT = 0x1D00;
+	static void glShadeModel(int mode) { ::glShadeModel(mode); }
+};
+
+class ARBVertexBufferObject
+{
+public:
+	static const int GL_ARRAY_BUFFER_ARB = 0x8892;
+	static const int GL_STREAM_DRAW_ARB = 0x88E0;
+	static void glBindBufferARB(int, int) {}
+	static void glBufferDataARB(int, ByteBuffer *, int) {}
+	static void glGenBuffersARB(IntBuffer *) {}
+};
+#else
 class GL11
 {
 public:
@@ -136,6 +163,7 @@ public:
 	static void glBufferDataARB(int, ByteBuffer *, int) {}
 	static void glGenBuffersARB(IntBuffer *) {}
 };
+#endif
 
 
 class Level;

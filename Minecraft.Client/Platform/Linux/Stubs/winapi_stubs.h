@@ -413,10 +413,25 @@ static inline HANDLE CreateFileA(const char *lpFileName, DWORD dwDesiredAccess, 
     return fd == -1 ? INVALID_HANDLE_VALUE : (HANDLE)(intptr_t)fd;
 }
 
+static inline HANDLE CreateFileW(const wchar_t *lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+    void *lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+{
+    char narrowBuf[1024];
+    wcstombs(narrowBuf, lpFileName, sizeof(narrowBuf));
+    narrowBuf[sizeof(narrowBuf) - 1] = '\0';
+    return CreateFileA(narrowBuf, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+}
+
 static inline HANDLE CreateFile(const char *lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
     void *lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
     return CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+}
+
+static inline HANDLE CreateFile(const wchar_t *lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+    void *lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+{
+    return CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 }
 
 static inline BOOL CloseHandle(HANDLE hObject)

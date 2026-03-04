@@ -10,7 +10,7 @@ target_sources(${PROJECT_NAME}
     INP_Main.cpp
     INP_StringCheck.cpp
     stdafx.cpp
-    ../../Minecraft.Client/Linux/Stubs/LinuxStubs.h
+    ../Minecraft.Client/Platform/Linux/Stubs/LinuxStubs.h
 )
 target_include_directories(${PROJECT_NAME}
     PRIVATE

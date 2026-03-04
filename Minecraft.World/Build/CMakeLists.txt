@@ -1906,6 +1906,7 @@ endif()
 ################################################################################
 # Target name
 ################################################################################
+if(MSVC)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     TARGET_NAME_CONTENTPACKAGE_NO_TU   "${OUTPUT_DIRECTORY}${PROJECT_NAME}"
     TARGET_NAME_CONTENTPACKAGE_SYMBOLS "${OUTPUT_DIRECTORY}${PROJECT_NAME}"
@@ -1913,6 +1914,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     TARGET_NAME_DEBUG                  "${OUTPUT_DIRECTORY}${PROJECT_NAME}"
     TARGET_NAME_RELEASE                "${OUTPUT_DIRECTORY}${PROJECT_NAME}"
     TARGET_NAME_RELEASEFORART          "${OUTPUT_DIRECTORY}${PROJECT_NAME}")
+else()
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    TARGET_NAME_CONTENTPACKAGE_NO_TU   "${PROJECT_NAME}"
+    TARGET_NAME_CONTENTPACKAGE_SYMBOLS "${PROJECT_NAME}"
+    TARGET_NAME_CONTENTPACKAGE         "${PROJECT_NAME}"
+    TARGET_NAME_DEBUG                  "${PROJECT_NAME}"
+    TARGET_NAME_RELEASE                "${PROJECT_NAME}"
+    TARGET_NAME_RELEASEFORART          "${PROJECT_NAME}")
+endif()
 
 ################################################################################
 # Output directory
