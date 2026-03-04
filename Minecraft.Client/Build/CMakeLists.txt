@@ -5216,3 +5216,30 @@ endif()
 add_compile_options(-fpermissive -Wtemplate-body)
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 target_link_libraries(${PROJECT_NAME} PRIVATE Minecraft.World)
+
+if(UNIX AND NOT APPLE)
+    find_package(OpenGL REQUIRED)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GLFW3 REQUIRED glfw3)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${GLFW3_INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/4J.Input
+        ${CMAKE_SOURCE_DIR}/4J.Profile
+        ${CMAKE_SOURCE_DIR}/4J.Render
+        ${CMAKE_SOURCE_DIR}/4J.Storage
+    )
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        OpenGL::GL
+        ${GLFW3_LIBRARIES}
+        4J_Input
+        4J_Profile
+        4J_Render
+        4J_Storage
+        pthread
+        dl
+    )
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE __linux__)
+endif()
