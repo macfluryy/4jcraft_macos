@@ -18,6 +18,7 @@ set(Common
     "Common/Consoles_App.cpp"
     "Common/Consoles_App.h"
     "Common/Potion_Macros.h"
+    "Extrax64Stubs.cpp"
 )
 source_group("Common" FILES ${Common})
 
