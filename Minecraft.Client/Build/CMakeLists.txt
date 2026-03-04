@@ -1,7 +1,12 @@
 set(PROJECT_NAME Minecraft.Client)
 
 ################################################################################
-# Source groups
+# Source groups# Source - https://stackoverflow.com/a/179147
+# Posted by EfForEffort, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-03-04, License - CC BY-SA 4.0
+
+git commit --amend -m "New commit message"
+
 ################################################################################
 set(no_group_source_files
     "ClassDiagram.cd"
