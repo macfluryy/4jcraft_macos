@@ -228,6 +228,17 @@ DECLARE_HANDLE(HINSTANCE);
 
 typedef HINSTANCE HMODULE;
 
+#define _HRESULT_TYPEDEF_(_sc) _sc
+
+#define FAILED(Status) ((HRESULT)(Status)<0)
+#define MAKE_HRESULT(sev,fac,code) \
+	((HRESULT) (((unsigned int)(sev)<<31) | ((unsigned int)(fac)<<16) | ((unsigned int)(code))) )
+#define MAKE_SCODE(sev,fac,code) \
+	((SCODE) (((unsigned int)(sev)<<31) | ((unsigned int)(fac)<<16) | ((unsigned int)(code))) )
+#define E_FAIL                           _HRESULT_TYPEDEF_(0x80004005L)
+#define E_ABORT                          _HRESULT_TYPEDEF_(0x80004004L)
+#define E_NOINTERFACE                    _HRESULT_TYPEDEF_(0x80004002L)
+
 typedef pthread_mutex_t RTL_CRITICAL_SECTION;
 typedef pthread_mutex_t* PRTL_CRITICAL_SECTION;
 

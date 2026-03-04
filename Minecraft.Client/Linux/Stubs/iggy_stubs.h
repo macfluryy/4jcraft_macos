@@ -36,7 +36,7 @@ RADEXPFUNC inline void RADEXPLINK IggyPlayerDrawTilesEnd(Iggy *f) {
   STUBBED;
 }
 
-int thing = 0;
+static int thing = 0;
 
 RADEXPFUNC inline Iggy * RADEXPLINK IggyPlayerCreateFromMemory(
                                 void const *           data,
@@ -51,7 +51,7 @@ RADEXPFUNC inline void RADEXPLINK IggyPlayerInitializeAndTickRS(Iggy *player) {
   STUBBED;
 }
 
-IggyProperties properties;
+static IggyProperties properties;
 
 RADEXPFUNC inline IggyProperties * RADEXPLINK IggyPlayerProperties(Iggy *player) {
   STUBBED;

@@ -20,7 +20,7 @@ typedef unsigned int uint;
 typedef unsigned long long int uint64;
 typedef long long int int64;
 
-#define FORCEINLINE
+#define FORCEINLINE inline
 
 //  Content creation/open flags
 #define XCONTENTFLAG_NONE                           0x00
