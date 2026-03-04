@@ -337,10 +337,16 @@ public:
 
 	unsigned int						CRC(unsigned char *buf, int len);
 
-// #ifdef _DEBUG
-// 	void SetSaveName(int i);					
-// #endif
-	// string table for all the Storage problems. Loaded by the application
+	int							AddSubfile(int regionIndex);
+	unsigned int				GetSubfileCount();
+	void						GetSubfileDetails(unsigned int i, int* regionIndex, void** data, unsigned int* size);
+	void						ResetSubfiles();
+	void						UpdateSubfile(int index, void* data, unsigned int size);
+	void						SaveSubfiles(int (*Func)(void*, const bool), void* param);
+	ESaveGameState				GetSaveState();
+
+	void						ContinueIncompleteOperation();
+
 	C4JStringTable				*m_pStringTable;
 };
 

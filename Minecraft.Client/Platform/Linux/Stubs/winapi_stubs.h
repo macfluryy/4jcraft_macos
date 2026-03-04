@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cassert>
+#include <cstdarg>
 
 #define TRUE true
 #define FALSE false
@@ -781,6 +782,198 @@ static inline HANDLE CreateEvent(int manual_reset, int initial_state) {
     return (HANDLE)ev;
 }
 
+static inline HANDLE CreateEvent(void*, BOOL manual_reset, BOOL initial_state, void*) {
+    return CreateEvent(manual_reset, initial_state);
+}
+
+static inline BOOL SetEvent(HANDLE hEvent) {
+    Event* ev = (Event*)hEvent;
+    if (!ev) return FALSE;
+    pthread_mutex_lock(&ev->mutex);
+    ev->signaled = 1;
+    if (ev->manual_reset) pthread_cond_broadcast(&ev->cond);
+    else pthread_cond_signal(&ev->cond);
+    pthread_mutex_unlock(&ev->mutex);
+    return TRUE;
+}
+
+static inline BOOL ResetEvent(HANDLE hEvent) {
+    Event* ev = (Event*)hEvent;
+    if (!ev) return FALSE;
+    pthread_mutex_lock(&ev->mutex);
+    ev->signaled = 0;
+    pthread_mutex_unlock(&ev->mutex);
+    return TRUE;
+}
+
+#define WAIT_OBJECT_0 0
+#define WAIT_TIMEOUT 258
+#define WAIT_FAILED ((DWORD)0xFFFFFFFF)
+#define INFINITE 0xFFFFFFFF
+
+static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
+    Event* ev = (Event*)hHandle;
+    if (!ev) return WAIT_FAILED;
+    pthread_mutex_lock(&ev->mutex);
+    if (dwMilliseconds == INFINITE) {
+        while (!ev->signaled) pthread_cond_wait(&ev->cond, &ev->mutex);
+    } else if (dwMilliseconds > 0) {
+        struct timespec ts;
+        clock_gettime(CLOCK_REALTIME, &ts);
+        ts.tv_sec += dwMilliseconds / 1000;
+        ts.tv_nsec += (dwMilliseconds % 1000) * 1000000;
+        if (ts.tv_nsec >= 1000000000) { ts.tv_sec++; ts.tv_nsec -= 1000000000; }
+        while (!ev->signaled) {
+            if (pthread_cond_timedwait(&ev->cond, &ev->mutex, &ts) != 0) {
+                pthread_mutex_unlock(&ev->mutex);
+                return WAIT_TIMEOUT;
+            }
+        }
+    } else {
+        if (!ev->signaled) { pthread_mutex_unlock(&ev->mutex); return WAIT_TIMEOUT; }
+    }
+    if (!ev->manual_reset) ev->signaled = 0;
+    pthread_mutex_unlock(&ev->mutex);
+    return WAIT_OBJECT_0;
+}
+
+static inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE* lpHandles, BOOL bWaitAll, DWORD dwMilliseconds) {
+    if (bWaitAll) {
+        for (DWORD i = 0; i < nCount; i++) WaitForSingleObject(lpHandles[i], dwMilliseconds);
+        return WAIT_OBJECT_0;
+    }
+    for (int pass = 0; pass < 1000; pass++) {
+        for (DWORD i = 0; i < nCount; i++) {
+            if (WaitForSingleObject(lpHandles[i], 0) == WAIT_OBJECT_0) return WAIT_OBJECT_0 + i;
+        }
+        usleep(1000);
+    }
+    return WAIT_TIMEOUT;
+}
+
+static inline void CloseHandle_Event(HANDLE hEvent) {
+    Event* ev = (Event*)hEvent;
+    if (!ev) return;
+    pthread_mutex_destroy(&ev->mutex);
+    pthread_cond_destroy(&ev->cond);
+    free(ev);
+}
+
+#define STILL_ACTIVE 259
+#define CREATE_SUSPENDED 0x00000004
+#define THREAD_PRIORITY_LOWEST (-2)
+#define THREAD_PRIORITY_BELOW_NORMAL (-1)
+#define THREAD_PRIORITY_NORMAL 0
+#define THREAD_PRIORITY_ABOVE_NORMAL 1
+#define THREAD_PRIORITY_HIGHEST 2
+#define THREAD_PRIORITY_TIME_CRITICAL 15
+
+typedef DWORD (*LPTHREAD_START_ROUTINE)(void*);
+
+struct LinuxThread {
+    pthread_t thread;
+    LPTHREAD_START_ROUTINE func;
+    void* param;
+    DWORD threadId;
+    DWORD exitCode;
+    int suspended;
+    pthread_mutex_t suspendMutex;
+    pthread_cond_t suspendCond;
+};
+
+static inline void* _linux_thread_entry(void* arg) {
+    LinuxThread* lt = (LinuxThread*)arg;
+    pthread_mutex_lock(&lt->suspendMutex);
+    while (lt->suspended) pthread_cond_wait(&lt->suspendCond, &lt->suspendMutex);
+    pthread_mutex_unlock(&lt->suspendMutex);
+    lt->exitCode = lt->func(lt->param);
+    return NULL;
+}
+
+static DWORD g_nextThreadId = 1000;
+
+static inline HANDLE CreateThread(void*, SIZE_T stackSize, LPTHREAD_START_ROUTINE lpStartAddress, void* lpParameter, DWORD dwCreationFlags, DWORD* lpThreadId) {
+    LinuxThread* lt = (LinuxThread*)calloc(1, sizeof(LinuxThread));
+    lt->func = lpStartAddress;
+    lt->param = lpParameter;
+    lt->exitCode = STILL_ACTIVE;
+    lt->suspended = (dwCreationFlags & CREATE_SUSPENDED) ? 1 : 0;
+    lt->threadId = __sync_fetch_and_add(&g_nextThreadId, 1);
+    pthread_mutex_init(&lt->suspendMutex, NULL);
+    pthread_cond_init(&lt->suspendCond, NULL);
+    if (lpThreadId) *lpThreadId = lt->threadId;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    if (stackSize > 0) pthread_attr_setstacksize(&attr, stackSize);
+    pthread_create(&lt->thread, &attr, _linux_thread_entry, lt);
+    pthread_attr_destroy(&attr);
+    return (HANDLE)lt;
+}
+
+static inline DWORD ResumeThread(HANDLE hThread) {
+    LinuxThread* lt = (LinuxThread*)hThread;
+    if (!lt) return (DWORD)-1;
+    pthread_mutex_lock(&lt->suspendMutex);
+    lt->suspended = 0;
+    pthread_cond_signal(&lt->suspendCond);
+    pthread_mutex_unlock(&lt->suspendMutex);
+    return 0;
+}
+
+static inline BOOL SetThreadPriority(HANDLE hThread, int nPriority) {
+    (void)hThread; (void)nPriority;
+    return TRUE;
+}
+
+static inline BOOL GetExitCodeThread(HANDLE hThread, DWORD* lpExitCode) {
+    LinuxThread* lt = (LinuxThread*)hThread;
+    if (!lt || !lpExitCode) return FALSE;
+    *lpExitCode = lt->exitCode;
+    return TRUE;
+}
+
+static inline DWORD GetCurrentThreadId() {
+    return (DWORD)(unsigned long)pthread_self();
+}
+
+static inline HANDLE GetCurrentThread() {
+    return (HANDLE)(unsigned long)pthread_self();
+}
+
+template<size_t N>
+static inline int sprintf_s(char (&buf)[N], const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int ret = vsnprintf(buf, N, fmt, args);
+    va_end(args);
+    return ret;
+}
+
+static inline int sprintf_s(char* buf, size_t sz, const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt); // fucking horrid
+    int ret = vsnprintf(buf, sz, fmt, args);
+    va_end(args);
+    return ret;
+}
+
+template<size_t N>
+static inline int swprintf_s(wchar_t (&buf)[N], const wchar_t* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int ret = vswprintf(buf, N, fmt, args);
+    va_end(args);
+    return ret;
+}
+
+static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int ret = vswprintf(buf, sz, fmt, args);
+    va_end(args);
+    return ret;
+}
+
 static inline HMODULE GetModuleHandle(LPCSTR lpModuleName) { return 0; }
 
 static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
@@ -791,5 +984,11 @@ static inline BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType
     assert(0 && "FIXME: implement VirtualFree");
 }
 
+#define swscanf_s swscanf
+#define sscanf_s sscanf
+#define _wcsicmp wcscasecmp
+#define _stricmp strcasecmp
+#define _strnicmp strncasecmp
+#define _wcsnicmp wcsncasecmp
 
 #endif // WINAPISTUBS_H

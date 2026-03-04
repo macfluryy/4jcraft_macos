@@ -81,3 +81,12 @@ unsigned int C4JStorage::CRC(unsigned char *buf, int len) {
     }
     return ~crc;
 }
+
+int C4JStorage::AddSubfile(int regionIndex) { (void)regionIndex; return 0; }
+unsigned int C4JStorage::GetSubfileCount() { return 0; }
+void C4JStorage::GetSubfileDetails(unsigned int i, int* regionIndex, void** data, unsigned int* size) { (void)i; if(regionIndex) *regionIndex=0; if(data) *data=0; if(size) *size=0; }
+void C4JStorage::ResetSubfiles() {}
+void C4JStorage::UpdateSubfile(int index, void* data, unsigned int size) { (void)index; (void)data; (void)size; }
+void C4JStorage::SaveSubfiles(int (*Func)(void*, const bool), void* param) { if(Func) Func(param, true); }
+C4JStorage::ESaveGameState C4JStorage::GetSaveState() { return ESaveGame_Idle; }
+void C4JStorage::ContinueIncompleteOperation() {}

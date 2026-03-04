@@ -256,7 +256,7 @@ HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
          VOID *pDestination,
          SIZE_T *pDestSize,
-         CONST VOID *pSource,
+         VOID *pSource,
          SIZE_T SrcSize
 )
 {
@@ -287,7 +287,7 @@ HRESULT XMemCompress(
          XMEMCOMPRESSION_CONTEXT Context,
          VOID *pDestination,
          SIZE_T *pDestSize,
-         CONST VOID *pSource,
+         VOID *pSource,
          SIZE_T SrcSize
 )
 {

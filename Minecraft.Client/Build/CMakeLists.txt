@@ -418,8 +418,8 @@ set(Common__Source_Files__UI__Controls
     "Common/UI/UIControl_TextInput.h"
     "Common/UI/UIControl_TexturePackList.cpp"
     "Common/UI/UIControl_TexturePackList.h"
-#    "Common/UI/UIControl_Touch.cpp"
-#    "Common/UI/UIControl_Touch.h"
+    "Common/UI/UIControl_Touch.cpp"
+    "Common/UI/UIControl_Touch.h"
 )
 source_group("Common\\Source Files\\UI\\Controls" FILES ${Common__Source_Files__UI__Controls})
 
@@ -526,8 +526,8 @@ set(Common__Source_Files__UI__Scenes__In-Game_Menu_Screens
     "Common/UI/UIScene_InGameInfoMenu.h"
     "Common/UI/UIScene_InGamePlayerOptionsMenu.cpp"
     "Common/UI/UIScene_InGamePlayerOptionsMenu.h"
-#    "Common/UI/UIScene_InGameSaveManagementMenu.cpp"
-#    "Common/UI/UIScene_InGameSaveManagementMenu.h"
+    "Common/UI/UIScene_InGameSaveManagementMenu.cpp"
+    "Common/UI/UIScene_InGameSaveManagementMenu.h"
     "Common/UI/UIScene_PauseMenu.cpp"
     "Common/UI/UIScene_PauseMenu.h"
     "Common/UI/UIScene_SignEntryMenu.cpp"
@@ -1104,6 +1104,8 @@ set(Linux
     "../Platform/Linux/Linux_UIController.cpp"
     "../Platform/Linux/Linux_Minecraft.cpp"
     "../Platform/Linux/Linux_App.cpp"
+    "../Platform/Linux/LinuxGL.cpp"
+    "../Platform/Linux/linux_game_stubs.cpp"
 )
 source_group("Linux" FILES ${Linux})
 
@@ -5233,6 +5235,7 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         Minecraft.World
         OpenGL::GL
+        GLU
         ${GLFW3_LIBRARIES}
         4J_Input
         4J_Profile

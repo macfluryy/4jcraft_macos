@@ -25,7 +25,7 @@
 #endif 
 
 // take out Orbis until they are done
-#if defined _XBOX 
+#if defined _XBOX || defined(__linux__)
 
 SoundEngine::SoundEngine() {}
 void SoundEngine::init(Options *pOptions)
@@ -52,6 +52,13 @@ void SoundEngine::addStreaming(const wstring& name, File *file) {}
 char *SoundEngine::ConvertSoundPathToName(const wstring& name, bool bConvertSpaces) { return NULL; }
 bool SoundEngine::isStreamingWavebankReady() { return true; }
 void SoundEngine::playMusicTick() {};
+void SoundEngine::SetStreamingSounds(int, int, int, int, int, int, int) {}
+void SoundEngine::updateSystemMusicPlaying(bool) {}
+#ifdef __linux__
+char SoundEngine::m_szSoundPath[]={"Sound/"};
+char SoundEngine::m_szMusicPath[]={"music/"};
+char SoundEngine::m_szRedistName[]={"redist64"};
+#endif
 
 #else
 
@@ -94,6 +101,8 @@ char SoundEngine::m_szRedistName[]={"redist"};
 #endif
 
 #endif
+
+#ifndef __linux__
 
 F32 AILCALLBACK custom_falloff_function (HSAMPLE   S, 
 										 F32       distance,
@@ -1666,3 +1675,5 @@ F32 AILCALLBACK custom_falloff_function (HSAMPLE   S,
 
 	return result;
 }
+
+#endif
