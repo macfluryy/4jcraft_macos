@@ -2453,6 +2453,7 @@ set(ALL_FILES
     ${net__minecraft__server__network}
     ${net__minecraft__stats}
     Linux/Linux_UIController.cpp
+    Linux/Linux_Minecraft.cpp
 )
 
 ################################################################################
