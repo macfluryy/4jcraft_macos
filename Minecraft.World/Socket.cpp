@@ -6,9 +6,6 @@
 #include "../Minecraft.Client/ServerConnection.h"
 #include <algorithm>
 #include "../Minecraft.Client/PS3/PS3Extras/ShutdownManager.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-
-extern CConsoleMinecraftApp app;
 
 // This current socket implementation is for the creation of a single local link. 2 sockets can be created, one for either end of this local
 // link, the end (0 or 1) is passed as a parameter to the ctor.
@@ -277,6 +274,7 @@ int Socket::SocketInputStreamLocal::read()
 		}
 		Sleep(1);
 	}
+	return -1;
 }
 
 // Try and get an input array of bytes, blocking until enough bytes are available
@@ -306,6 +304,7 @@ int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset, unsig
 		}
 		Sleep(1);
 	}
+	return -1;
 }
 
 void Socket::SocketInputStreamLocal::close()
@@ -391,6 +390,7 @@ int Socket::SocketInputStreamNetwork::read()
 		}
 		Sleep(1);
 	}
+	return -1;
 }
 
 // Try and get an input array of bytes, blocking until enough bytes are available
@@ -420,6 +420,7 @@ int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset, uns
 		}
 		Sleep(1);
 	}
+	return -1;
 }
 
 void Socket::SocketInputStreamNetwork::close()

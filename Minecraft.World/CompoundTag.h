@@ -60,145 +60,145 @@ public:
         return TAG_Compound;
     }
 
-    void put(wchar_t *name, Tag *tag)
+    void put(const wchar_t *name, Tag *tag)
 	{
         tags[name] = tag->setName(wstring( name ));
     }
 
-    void putByte(wchar_t * name, byte value)
+    void putByte(const wchar_t * name, byte value)
 	{
         tags[name] = (new ByteTag(name,value));
     }
 
-    void putShort(wchar_t * name, short value)
+    void putShort(const wchar_t * name, short value)
 	{
         tags[name] = (new ShortTag(name,value));
     }
 
-    void putInt(wchar_t * name, int value)
+    void putInt(const wchar_t * name, int value)
 	{
         tags[name] = (new IntTag(name,value));
     }
 
-    void putLong(wchar_t * name, __int64 value)
+    void putLong(const wchar_t * name, __int64 value)
 	{
         tags[name] = (new LongTag(name,value));
     }
 
-    void putFloat(wchar_t * name, float value)
+    void putFloat(const wchar_t * name, float value)
 	{
         tags[name] = (new FloatTag(name,value));
     }
 
-    void putDouble(wchar_t * name, double value)
+    void putDouble(const wchar_t * name, double value)
 	{
         tags[name] = (new DoubleTag(name,value));
     }
 
-    void putString(wchar_t *name, const wstring& value)
+    void putString(const wchar_t *name, const wstring& value)
 	{
         tags[name] = (new StringTag(name,value));
     }
 
-    void putByteArray(wchar_t * name, byteArray value)
+    void putByteArray(const wchar_t * name, byteArray value)
 	{
         tags[name] = (new ByteArrayTag(name,value));
     }
 
-	void putIntArray(wchar_t * name, intArray value)
+	void putIntArray(const wchar_t * name, intArray value)
 	{
 		tags[name] = (new IntArrayTag(name, value));
 	}
 
-    void putCompound(wchar_t * name, CompoundTag *value)
+    void putCompound(const wchar_t * name, CompoundTag *value)
 	{
         tags[name] = value->setName( wstring( name ) );
     }
 
-    void putBoolean(wchar_t * string, bool val)
+    void putBoolean(const wchar_t * string, bool val)
 	{
         putByte(string, val?static_cast<byte>(1):static_cast<byte>(0));
     }
 
-    Tag *get(wchar_t *name)
+    Tag *get(const wchar_t *name)
 	{
 		AUTO_VAR(it, tags.find(name));
 		if(it != tags.end()) return it->second;
 		return NULL;
     }
     
-    bool contains(wchar_t * name)
+    bool contains(const wchar_t * name)
 	{
 		return tags.find(name) != tags.end();
     }
 
-    byte getByte(wchar_t * name)
+    byte getByte(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (byte)0;
         return ((ByteTag *) tags[name])->data;
     }
 
-    short getShort(wchar_t * name)
+    short getShort(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (short)0;
         return ((ShortTag *) tags[name])->data;
     }
 
-    int getInt(wchar_t * name)
+    int getInt(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (int)0;
         return ((IntTag *) tags[name])->data;
     }
 
-    __int64 getLong(wchar_t * name)
+    __int64 getLong(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (__int64)0;
         return ((LongTag *) tags[name])->data;
     }
 
-    float getFloat(wchar_t * name)
+    float getFloat(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (float)0;
         return ((FloatTag *) tags[name])->data;
     }
 
-    double getDouble(wchar_t * name)
+    double getDouble(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return (double)0;
         return ((DoubleTag *) tags[name])->data;
     }
 
-    wstring getString(wchar_t * name)
+    wstring getString(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return wstring( L"" );
         return ((StringTag *) tags[name])->data;
     }
 
-    byteArray getByteArray(wchar_t * name)
+    byteArray getByteArray(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return byteArray();
         return ((ByteArrayTag *) tags[name])->data;
     }
 
-	intArray getIntArray(wchar_t * name)
+	intArray getIntArray(const wchar_t * name)
 	{
 		if (tags.find(name) == tags.end()) return intArray(0);
 		return ((IntArrayTag *) tags[name])->data;
 	}
 
-    CompoundTag *getCompound(wchar_t * name)
+    CompoundTag *getCompound(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return new CompoundTag(name);
         return (CompoundTag *) tags[name];
     }
 
-    ListTag<Tag> *getList(wchar_t * name)
+    ListTag<Tag> *getList(const wchar_t * name)
 	{
         if (tags.find(name) == tags.end()) return new ListTag<Tag>(name);
         return (ListTag<Tag> *) tags[name];
     }
 
-    bool getBoolean(wchar_t *string)
+    bool getBoolean(const wchar_t *string)
 	{
         return getByte(string) != static_cast<byte>(0);
     }

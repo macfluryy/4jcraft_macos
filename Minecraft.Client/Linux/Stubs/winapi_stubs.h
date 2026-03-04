@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <cassert>
+
 #define TRUE true
 #define FALSE false
 #define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
@@ -730,6 +732,14 @@ static inline HANDLE CreateEvent(int manual_reset, int initial_state) {
 }
 
 static inline HMODULE GetModuleHandle(LPCSTR lpModuleName) { return 0; }
+
+static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
+    assert(0 && "FIXME: implement VirtualAlloc");
+}
+
+static inline BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType) {
+    assert(0 && "FIXME: implement VirtualFree");
+}
 
 
 #endif // WINAPISTUBS_H

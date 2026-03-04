@@ -67,10 +67,10 @@ void XShowAchievementsUI(int i) {}
 DWORD XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) { return 0; }
 
 #ifndef _DURANGO
-void PIXAddNamedCounter(int a, char *b, ...) {}
+void PIXAddNamedCounter(int a, const char *b, ...) {}
 //#define PS3_USE_PIX_EVENTS 
 //#define PS4_USE_PIX_EVENTS 
-void PIXBeginNamedEvent(int a, char *b, ...)
+void PIXBeginNamedEvent(int a, const char *b, ...)
 {
 #ifdef PS4_USE_PIX_EVENTS
 	char buf[512];
