@@ -5,8 +5,8 @@ set(PROJECT_NAME Minecraft.World)
 ################################################################################
 set(ConsoleHelpers
     "../Util/ArrayWithLength.h"
-#    "C4JThread.cpp"
-#    "C4JThread.h"
+    "../Util/C4JThread.cpp"
+    "../Util/C4JThread.h"
     "../Util/Definitions.h"
     "../Util/HashExtension.h"
     "../Util/PerformanceTimer.cpp"

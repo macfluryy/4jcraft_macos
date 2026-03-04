@@ -1,12 +1,7 @@
 set(PROJECT_NAME Minecraft.Client)
 
 ################################################################################
-# Source groups# Source - https://stackoverflow.com/a/179147
-# Posted by EfForEffort, modified by community. See post 'Timeline' for change history
-# Retrieved 2026-03-04, License - CC BY-SA 4.0
-
-git commit --amend -m "New commit message"
-
+# Source groups
 ################################################################################
 set(no_group_source_files
     "ClassDiagram.cd"
@@ -39,7 +34,7 @@ source_group("Common\\Source Files" FILES ${Common__Source_Files})
 set(Common__Source_Files__Audio
     "Common/Audio/Consoles_SoundEngine.cpp"
     "Common/Audio/Consoles_SoundEngine.h"
-#    "Common/Audio/SoundEngine.cpp"
+    "Common/Audio/SoundEngine.cpp"
     "Common/Audio/SoundEngine.h"
     "Common/Audio/SoundNames.cpp"
 )
@@ -180,8 +175,8 @@ set(Common__Source_Files__Network
     "Common/Network/GameNetworkManager.h"
     "Common/Network/NetworkPlayerInterface.h"
     "Common/Network/PlatformNetworkManagerInterface.h"
-#    "Common/Network/PlatformNetworkManagerStub.cpp"
-#    "Common/Network/PlatformNetworkManagerStub.h"
+    "Common/Network/PlatformNetworkManagerStub.cpp"
+    "Common/Network/PlatformNetworkManagerStub.h"
     "Common/Network/SessionInfo.h"
     "../Network Implementation Notes.txt"
 )
