@@ -4081,6 +4081,8 @@ void CMinecraftApp::loadMediaArchive()
 	mediapath = L"Common\\Media\\MediaPS3.arc";
 #elif _WINDOWS64
 	mediapath = L"Common\\Media\\MediaWindows64.arc";
+#elif __linux__
+	mediapath = L"Common\\Media\\MediaWindows64.arc";
 #elif __ORBIS__
 	mediapath = L"Common\\Media\\MediaOrbis.arc";
 #elif _DURANGO
