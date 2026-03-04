@@ -541,7 +541,8 @@ void				C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 
 /////////////////////////////////////////////// Storage library
 //#ifdef _WINDOWS64
-#if 0
+// TODO???
+#if defined(__linux__)
 C4JStorage::C4JStorage() {}
 void								C4JStorage::Tick() {}
 C4JStorage::EMessageResult			C4JStorage::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton) { return C4JStorage::EMessage_Undefined; }
