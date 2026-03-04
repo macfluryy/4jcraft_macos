@@ -1,4 +1,24 @@
 build/
 .cache/
 .idea/
-cmake-build-debug/cd
+cmake-build-debug/
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# IDE / editor
+*.swp
+*.swo
+*~
+.vscode/
+*.code-workspace
+
+# Compiled objects / binaries
+*.o
+*.a
+*.so
+*.out
