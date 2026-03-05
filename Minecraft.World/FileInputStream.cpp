@@ -2,7 +2,6 @@
 
 #include "File.h"
 #include "FileInputStream.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 #include <fcntl.h>
 #include <unistd.h> // for close()
 

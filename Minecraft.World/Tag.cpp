@@ -11,7 +11,6 @@
 #include "StringTag.h"
 #include "ListTag.h"
 #include "CompoundTag.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 Tag::Tag(const wstring &name)
 {

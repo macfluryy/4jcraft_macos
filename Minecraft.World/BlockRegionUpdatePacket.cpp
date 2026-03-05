@@ -10,8 +10,6 @@
 #include "DataLayer.h"
 #include "Dimension.h"
 
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-
 BlockRegionUpdatePacket::~BlockRegionUpdatePacket()
 {
 	delete [] buffer.data;

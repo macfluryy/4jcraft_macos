@@ -21,7 +21,6 @@
 #include "../Minecraft.Client/MinecraftServer.h"
 #include "../Minecraft.Client/MultiPlayerLevel.h"
 #include "../Minecraft.Client/MultiPlayerLocalPlayer.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 int Entity::entityCounter = 2048;		// 4J - changed initialiser to 2048, as we are using range 0 - 2047 as special unique smaller ids for things that need network tracked
