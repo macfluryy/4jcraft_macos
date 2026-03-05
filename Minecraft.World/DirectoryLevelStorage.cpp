@@ -287,7 +287,11 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 #ifdef _WINDOWS64
 				app.DebugPrintf("  -- %d\n", playerUid);
 #else
+	#ifdef __linux__
+				app.DebugPrintf("  -- %ls\n", playerUid);
+	#else
 				app.DebugPrintf("  -- %ls\n", playerUid.toString().c_str());
+	#endif
 #endif
 				m_playerMappings[playerUid].readMappings(&dis);
 			}
