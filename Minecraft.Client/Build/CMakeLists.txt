@@ -1106,6 +1106,8 @@ set(Linux
     "../Platform/Linux/Linux_App.cpp"
     "../Platform/Linux/LinuxGL.cpp"
     "../Platform/Linux/linux_game_stubs.cpp"
+    "../Platform/Linux/Iggy/gdraw/gdraw_glfw.c"
+    "../Platform/Linux/Iggy/gdraw/gdraw_glfw.h"
 )
 source_group("Linux" FILES ${Linux})
 

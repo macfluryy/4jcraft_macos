@@ -159,4 +159,31 @@ RADEXPFUNC inline void RADEXPLINK IggyLibraryDestroy(IggyLibrary lib) {
   STUBBED;
 }
 
+// Iggy is fake
+static GDrawFunctions *s_iggy_gdraw_funcs = 0;
+RADEXPFUNC inline void RADEXPLINK IggySetGDraw(GDrawFunctions *gdraw_funcs) {
+  s_iggy_gdraw_funcs = gdraw_funcs;
+}
+
+// Audio stubs
+RADEXPFUNC inline void RADEXPLINK IggyAudioUseDefault(void) {
+  STUBBED;
+}
+
+// Explorer/Perfmon, shit implmentation
+RADEXPFUNC inline void * RADEXPLINK IggyExpCreate(const char *host, int port, void *storage, int storage_size) {
+  STUBBED;
+  return 0;
+}
+RADEXPFUNC inline void RADEXPLINK IggyUseExplorer(Iggy *player, void *explorer) {
+  STUBBED;
+}
+RADEXPFUNC inline void * RADEXPLINK IggyPerfmonCreate(void *(*alloc_func)(unsigned long), void (*free_func)(void *), void *user) {
+  STUBBED;
+  return 0;
+}
+RADEXPFUNC inline void RADEXPLINK IggyInstallPerfmon(void *perfmon) {
+  STUBBED;
+}
+
 #endif // IGGYSTUBS_H
