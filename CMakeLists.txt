@@ -104,6 +104,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(Minecraft.Client)
-add_subdirectory(Minecraft.World)
+add_subdirectory(Minecraft.Client/Build Minecraft.Client)
+add_subdirectory(Minecraft.World/Build Minecraft.World)
 

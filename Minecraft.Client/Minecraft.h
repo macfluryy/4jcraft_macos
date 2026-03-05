@@ -38,9 +38,9 @@ class ColourTable;
 class MultiPlayerGameMode;
 class PsPlusUpsellWrapper;
 
-#include "../Minecraft.World/File.h"
-#include "../Minecraft.World/DisconnectPacket.h"
-#include "../Minecraft.World/C4JThread.h"
+#include "../Minecraft.World/IO/Files/File.h"
+#include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
+#include "../Minecraft.World/Util/C4JThread.h"
 
 #ifdef linux
 #undef linux
