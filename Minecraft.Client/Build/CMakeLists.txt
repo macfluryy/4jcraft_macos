@@ -34,7 +34,7 @@ source_group("Common\\Source Files" FILES ${Common__Source_Files})
 set(Common__Source_Files__Audio
     "Common/Audio/Consoles_SoundEngine.cpp"
     "Common/Audio/Consoles_SoundEngine.h"
-#    "Common/Audio/SoundEngine.cpp"
+    "Common/Audio/SoundEngine.cpp"
     "Common/Audio/SoundEngine.h"
     "Common/Audio/SoundNames.cpp"
 )
@@ -175,8 +175,8 @@ set(Common__Source_Files__Network
     "Common/Network/GameNetworkManager.h"
     "Common/Network/NetworkPlayerInterface.h"
     "Common/Network/PlatformNetworkManagerInterface.h"
-#    "Common/Network/PlatformNetworkManagerStub.cpp"
-#    "Common/Network/PlatformNetworkManagerStub.h"
+    "Common/Network/PlatformNetworkManagerStub.cpp"
+    "Common/Network/PlatformNetworkManagerStub.h"
     "Common/Network/SessionInfo.h"
     "../Network Implementation Notes.txt"
 )
@@ -418,8 +418,8 @@ set(Common__Source_Files__UI__Controls
     "Common/UI/UIControl_TextInput.h"
     "Common/UI/UIControl_TexturePackList.cpp"
     "Common/UI/UIControl_TexturePackList.h"
-#    "Common/UI/UIControl_Touch.cpp"
-#    "Common/UI/UIControl_Touch.h"
+    "Common/UI/UIControl_Touch.cpp"
+    "Common/UI/UIControl_Touch.h"
 )
 source_group("Common\\Source Files\\UI\\Controls" FILES ${Common__Source_Files__UI__Controls})
 
@@ -526,8 +526,8 @@ set(Common__Source_Files__UI__Scenes__In-Game_Menu_Screens
     "Common/UI/UIScene_InGameInfoMenu.h"
     "Common/UI/UIScene_InGamePlayerOptionsMenu.cpp"
     "Common/UI/UIScene_InGamePlayerOptionsMenu.h"
-#    "Common/UI/UIScene_InGameSaveManagementMenu.cpp"
-#    "Common/UI/UIScene_InGameSaveManagementMenu.h"
+    "Common/UI/UIScene_InGameSaveManagementMenu.cpp"
+    "Common/UI/UIScene_InGameSaveManagementMenu.h"
     "Common/UI/UIScene_PauseMenu.cpp"
     "Common/UI/UIScene_PauseMenu.h"
     "Common/UI/UIScene_SignEntryMenu.cpp"
@@ -1104,6 +1104,8 @@ set(Linux
     "../Platform/Linux/Linux_UIController.cpp"
     "../Platform/Linux/Linux_Minecraft.cpp"
     "../Platform/Linux/Linux_App.cpp"
+    "../Platform/Linux/LinuxGL.cpp"
+    "../Platform/Linux/linux_game_stubs.cpp"
 )
 source_group("Linux" FILES ${Linux})
 
@@ -5216,3 +5218,32 @@ endif()
 add_compile_options(-fpermissive -Wtemplate-body)
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 target_link_libraries(${PROJECT_NAME} PRIVATE Minecraft.World)
+
+if(UNIX AND NOT APPLE)
+    find_package(OpenGL REQUIRED)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GLFW3 REQUIRED glfw3)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${GLFW3_INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/4J.Input
+        ${CMAKE_SOURCE_DIR}/4J.Profile
+        ${CMAKE_SOURCE_DIR}/4J.Render
+        ${CMAKE_SOURCE_DIR}/4J.Storage
+    )
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        Minecraft.World
+        OpenGL::GL
+        GLU
+        ${GLFW3_LIBRARIES}
+        4J_Input
+        4J_Profile
+        4J_Render
+        4J_Storage
+        pthread
+        dl
+    )
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE __linux__)
+endif()

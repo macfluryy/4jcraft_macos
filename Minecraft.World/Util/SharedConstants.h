@@ -14,8 +14,7 @@ class SharedConstants
 		static const int WORLD_RESOLUTION = 16;
 
 		static bool isAllowedChatCharacter(char ch);
-
-	private:
+		// why private??????????
 		static wstring readAcceptableChars();
 
 	public:

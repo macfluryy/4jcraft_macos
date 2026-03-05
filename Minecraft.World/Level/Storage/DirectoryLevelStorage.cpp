@@ -284,7 +284,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 			for(unsigned int i = 0; i < count; ++i)
 			{
 				PlayerUID playerUid = dis.readPlayerUID();
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64) || defined(__linux__)
 				app.DebugPrintf("  -- %d\n", playerUid);
 #else
 	#ifdef __linux__
@@ -692,7 +692,7 @@ void DirectoryLevelStorage::saveMapIdLookup()
 		app.DebugPrintf("Saving %d mappings\n", m_playerMappings.size());
 		for(AUTO_VAR(it,m_playerMappings.begin()); it != m_playerMappings.end(); ++it)
 		{
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64) || defined(__linux__)
 			app.DebugPrintf("  -- %d\n", it->first);
 #else
 	#ifdef __linux__

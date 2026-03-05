@@ -157,9 +157,6 @@ FORCEINLINE	void			XBX_SetStorageDeviceId( DWORD idx ) {}
 FORCEINLINE const char		*XBX_GetLanguageString() { return ""; }
 FORCEINLINE bool			XBX_IsLocalized() { return false; }
 
-// #define XCONTENT_MAX_DISPLAYNAME_LENGTH	128
-// #define XCONTENT_MAX_FILENAME_LENGTH	42
-
 #define XBX_INVALID_STORAGE_ID ((DWORD) -1)
 #define XBX_STORAGE_DECLINED ((DWORD) -2)
 

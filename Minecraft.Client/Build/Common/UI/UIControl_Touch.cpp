@@ -18,7 +18,7 @@ void UIControl_Touch::init(int iId)
 {
 	m_id = iId;
 
-	// 4J-TomK - add this touch control to the vita touch box list
+#if !defined(__linux__)
 	switch(m_parentScene->GetParentLayer()->m_iLayer)
 	{
 	case eUILayer_Error:
@@ -28,6 +28,7 @@ void UIControl_Touch::init(int iId)
 		ui.TouchBoxAdd(this,m_parentScene);
 		break;
 	}
+#endif
 }
 
 void UIControl_Touch::ReInit()

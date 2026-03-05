@@ -11,7 +11,7 @@ Join our community:
 * Steam: https://steamcommunity.com/groups/4JCraft
 
 ## Planned platforms to be supported:
-- Linux (~90%)
+- Linux (~95%)
 - Emscripten (not started)
 - PS3
 - macOS (not started)

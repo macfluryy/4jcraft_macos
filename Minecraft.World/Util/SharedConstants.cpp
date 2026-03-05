@@ -37,7 +37,7 @@ bool SharedConstants::isAllowedChatCharacter(char ch)
 	return true;
 }
 
-wstring SharedConstants::acceptableLetters;
+wstring SharedConstants::acceptableLetters = SharedConstants::readAcceptableChars();
 
 void SharedConstants::staticCtor()
 {

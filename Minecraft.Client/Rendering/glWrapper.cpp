@@ -1,4 +1,7 @@
 #include "../Build/stdafx.h"
+
+#ifndef __linux__
+
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
@@ -387,3 +390,6 @@ void glCullFace(int dir)
 {
 	RenderManager.StateSetFaceCullCW( dir == GL_BACK);
 }
+
+#endif
+#endif

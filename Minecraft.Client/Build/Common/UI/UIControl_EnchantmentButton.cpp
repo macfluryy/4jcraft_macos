@@ -1,4 +1,6 @@
 #include "../../../../Minecraft.World/Build/stdafx.h"
+#include <iterator>
+#include <sstream>
 #include "UI.h"
 #include "UIControl_EnchantmentButton.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"

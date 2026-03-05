@@ -190,7 +190,9 @@ void UIScene_InGameSaveManagementMenu::tick()
 	{
 		if(m_bUpdateSaveSize)
 		{
+#if defined(_XBOX_ONE) || defined(__ORBIS__)
 			m_spaceIndicatorSaves.selectSave(m_iSaveListIndex);
+#endif
 			m_bUpdateSaveSize = false;
 		}
 
@@ -200,7 +202,9 @@ void UIScene_InGameSaveManagementMenu::tick()
 			m_pSaveDetails=StorageManager.ReturnSavesInfo();
 			if(m_pSaveDetails!=NULL)
 			{
+#if defined(_XBOX_ONE) || defined(__ORBIS__)
 				m_spaceIndicatorSaves.reset();
+#endif
 
 				m_bSavesDisplayed=true;
 
@@ -286,6 +290,8 @@ void UIScene_InGameSaveManagementMenu::tick()
 					(wchar_t *)u16Message,               // destination buffer
 					MAX_SAVEFILENAME_LENGTH                // size of destination buffer, in WCHAR's
 					);
+#elif defined(__linux__)
+				mbstowcs((wchar_t *)u16Message, m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename, MAX_SAVEFILENAME_LENGTH);
 #else
 #ifdef __PS3
 				size_t srcmax,dstmax;

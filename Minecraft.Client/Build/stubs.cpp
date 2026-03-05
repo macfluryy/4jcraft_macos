@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifndef __linux__
+
 void glReadPixels(int,int, int, int, int, int, ByteBuffer *)
 {
 }
@@ -116,4 +118,6 @@ DWORD XCamSetView(
 ) { return 0; }
  
 XCAMDEVICESTATE XCamGetStatus() { return XCAMDEVICESTATE_DISCONNECTED; }
+#endif
+
 #endif

@@ -77,7 +77,7 @@ private:
 
 //extern Compression gCompression;
 
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__
+#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__ || defined __linux__
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_ZLIBRLE
 #elif defined __PS3__
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_PS3ZLIB

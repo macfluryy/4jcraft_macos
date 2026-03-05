@@ -7,6 +7,25 @@
 #include "../../../Minecraft.h"
 #include "../../../Textures/Packs/TexturePackRepository.h"
 
+#ifdef __linux__
+#include <stdint.h>
+static const size_t DLC_WCHAR_BINARY = 2;
+static wstring dlc_read_wstring(const void *data)
+{
+    const uint16_t *p = (const uint16_t *)data;
+    wstring s;
+    while (*p) s += (wchar_t)*p++;
+    return s;
+}
+#define DLC_WSTRING(ptr) dlc_read_wstring(ptr)
+#define DLC_PARAM_ADV(n) (sizeof(C4JStorage::DLC_FILE_PARAM) + (n) * DLC_WCHAR_BINARY)
+#define DLC_DETAIL_ADV(n) (sizeof(C4JStorage::DLC_FILE_DETAILS) + (n) * DLC_WCHAR_BINARY)
+#else
+#define DLC_WSTRING(ptr) wstring((WCHAR *)(ptr))
+#define DLC_PARAM_ADV(n) (sizeof(C4JStorage::DLC_FILE_PARAM) + sizeof(WCHAR) * (n))
+#define DLC_DETAIL_ADV(n) (sizeof(C4JStorage::DLC_FILE_DETAILS) + sizeof(WCHAR) * (n))
+#endif
+
 const WCHAR *DLCManager::wchTypeNamesA[]=
 {
 	L"DISPLAYNAME",
@@ -282,6 +301,7 @@ DWORD DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
 		}
 	}
 
+	// gotta fix this someday
 	if(corruptDLCCount > 0 && showMessage)
 	{
 		UINT uiIDA[1];
@@ -398,13 +418,13 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	for(unsigned int i=0;i<uiParameterCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		wstring parameterName((WCHAR *)pParams->wchData);
+		wstring parameterName = DLC_WSTRING(pParams->wchData);
 		DLCManager::EDLCParameterType type = DLCManager::getParameterType(parameterName);
 		if( type != DLCManager::e_DLCParamType_Invalid )
 		{
 			parameterMapping[pParams->dwType] = type;
 		}
-		uiCurrentByte+= sizeof(C4JStorage::DLC_FILE_PARAM)+(pParams->dwWchCount*sizeof(WCHAR));
+		uiCurrentByte+= DLC_PARAM_ADV(pParams->dwWchCount);
 		pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
 	}
 	//ulCurrentByte+=ulParameterCount * sizeof(C4JStorage::DLC_FILE_PARAM);
@@ -416,7 +436,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	DWORD dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
+		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
 	PBYTE pbTemp=((PBYTE )pFile);//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
@@ -435,7 +455,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 		}
 		else if(type != e_DLCType_PackConfig)
 		{
-			dlcFile = pack->addFile(type,(WCHAR *)pFile->wchFile);
+			dlcFile = pack->addFile(type, DLC_WSTRING(pFile->wchFile));
 		}
 
 		// Params
@@ -452,15 +472,15 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 			{
 				if(type == e_DLCType_PackConfig)
 				{
-					pack->addParameter(it->second,(WCHAR *)pParams->wchData);
+					pack->addParameter(it->second, DLC_WSTRING(pParams->wchData));
 				}
 				else
 				{
-					if(dlcFile != NULL) dlcFile->addParameter(it->second,(WCHAR *)pParams->wchData);
-					else if(dlcTexturePack != NULL) dlcTexturePack->addParameter(it->second, (WCHAR *)pParams->wchData);
+					if(dlcFile != NULL) dlcFile->addParameter(it->second, DLC_WSTRING(pParams->wchData));
+					else if(dlcTexturePack != NULL) dlcTexturePack->addParameter(it->second, DLC_WSTRING(pParams->wchData));
 				}
 			}
-			pbTemp+=sizeof(C4JStorage::DLC_FILE_PARAM)+(sizeof(WCHAR)*pParams->dwWchCount);
+			pbTemp+=DLC_PARAM_ADV(pParams->dwWchCount);
 			pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
 		}
 		//pbTemp+=ulParameterCount * sizeof(C4JStorage::DLC_FILE_PARAM);
@@ -495,7 +515,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 			switch(pFile->dwType)
 			{
 			case DLCManager::e_DLCType_Skin:
-				app.vSkinNames.push_back((WCHAR *)pFile->wchFile);
+				app.vSkinNames.push_back(DLC_WSTRING(pFile->wchFile));
 				break;
 			}
 
@@ -504,7 +524,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 
 		// Move the pointer to the start of the next files data;
 		pbTemp+=pFile->uiFileSize;
-		uiCurrentByte+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
+		uiCurrentByte+=DLC_DETAIL_ADV(pFile->dwWchCount);
 
 		pFile=(C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 	}
@@ -603,13 +623,13 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 	for(unsigned int i=0;i<uiParameterCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		wstring parameterName((WCHAR *)pParams->wchData);
+		wstring parameterName = DLC_WSTRING(pParams->wchData);
 		DLCManager::EDLCParameterType type = DLCManager::getParameterType(parameterName);
 		if( type != DLCManager::e_DLCParamType_Invalid )
 		{
 			parameterMapping[pParams->dwType] = type;
 		}
-		uiCurrentByte+= sizeof(C4JStorage::DLC_FILE_PARAM)+(pParams->dwWchCount*sizeof(WCHAR));
+		uiCurrentByte+= DLC_PARAM_ADV(pParams->dwWchCount);
 		pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
 	}
 
@@ -620,7 +640,7 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 	DWORD dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
+		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
 	PBYTE pbTemp=((PBYTE )pFile);
@@ -644,7 +664,7 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 				{
 					if(it->second==e_DLCParamType_PackId)
 					{				
-						wstring wsTemp=(WCHAR *)pParams->wchData;
+						wstring wsTemp = DLC_WSTRING(pParams->wchData);
 						std::wstringstream ss;
 						// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
 						ss << std::dec << wsTemp.c_str();
@@ -654,14 +674,14 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 					}
 				}
 			}
-			pbTemp+=sizeof(C4JStorage::DLC_FILE_PARAM)+(sizeof(WCHAR)*pParams->dwWchCount);
+			pbTemp+=DLC_PARAM_ADV(pParams->dwWchCount);
 			pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
 		}
 
 		if(bPackIDSet) break;
 		// Move the pointer to the start of the next files data;
 		pbTemp+=pFile->uiFileSize;
-		uiCurrentByte+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
+		uiCurrentByte+=DLC_DETAIL_ADV(pFile->dwWchCount);
 
 		pFile=(C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 	}

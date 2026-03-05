@@ -1,6 +1,41 @@
 #pragma once
 
+#ifdef __linux__
+#include <GL/gl.h>
+#include <GL/glu.h>
 
+#undef GL_SMOOTH
+#undef GL_FLAT
+static const int GL_SMOOTH = 0x1D01;
+static const int GL_FLAT = 0x1D00;
+
+class FloatBuffer;
+class IntBuffer;
+class ByteBuffer;
+
+void glGenTextures(IntBuffer *);
+int glGenTextures();
+void glDeleteTextures(IntBuffer *);
+void glDeleteTextures(int);
+void glLight(int, int, FloatBuffer *);
+void glLightModel(int, FloatBuffer *);
+void glGetFloat(int, FloatBuffer *);
+void glTexGen(int, int, FloatBuffer *);
+void glFog(int, FloatBuffer *);
+void glTexCoordPointer(int, int, FloatBuffer *);
+void glNormalPointer(int, ByteBuffer *);
+void glColorPointer(int, bool, int, ByteBuffer *);
+void glVertexPointer(int, int, FloatBuffer *);
+void glEndList(int);
+void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer *);
+void glCallLists(IntBuffer *);
+void glGenQueriesARB(IntBuffer *);
+void glBeginQueryARB(int, int);
+void glEndQueryARB(int);
+void glGetQueryObjectuARB(int, int, IntBuffer *);
+void glReadPixels(int, int, int, int, int, int, ByteBuffer *);
+
+#else
 
 const int GL_BYTE = 0;
 const int GL_FLOAT = 0;
@@ -115,10 +150,32 @@ void glFog(int,FloatBuffer *);
 void glColorMaterial(int,int);
 void glMultiTexCoord2f(int, float, float);
 
-//1.8.2
 void glClientActiveTexture(int);
 void glActiveTexture(int);
 
+#endif
+
+#ifdef __linux__
+class GL11
+{
+public:
+	static const int GL_SMOOTH = 0x1D01;
+	static const int GL_FLAT = 0x1D00;
+	static void glShadeModel(int mode) { ::glShadeModel(mode); }
+};
+
+#undef GL_ARRAY_BUFFER_ARB
+#undef GL_STREAM_DRAW_ARB
+class ARBVertexBufferObject
+{
+public:
+	static const int GL_ARRAY_BUFFER_ARB = 0x8892;
+	static const int GL_STREAM_DRAW_ARB = 0x88E0;
+	static void glBindBufferARB(int, int) {}
+	static void glBufferDataARB(int, ByteBuffer *, int) {}
+	static void glGenBuffersARB(IntBuffer *) {}
+};
+#else
 class GL11
 {
 public:
@@ -136,6 +193,7 @@ public:
 	static void glBufferDataARB(int, ByteBuffer *, int) {}
 	static void glGenBuffersARB(IntBuffer *) {}
 };
+#endif
 
 
 class Level;
