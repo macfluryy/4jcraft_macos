@@ -995,6 +995,13 @@ int GameRenderer::getLightTexture(int iPad, Level *level)
 
 void GameRenderer::render(float a, bool bFirst)
 {
+	static int _dbgRenderCount = 0;
+	_dbgRenderCount++;
+	if (_dbgRenderCount <= 5 || (_dbgRenderCount % 300 == 0)) {
+		fprintf(stderr, "[RENDER] GameRenderer::render frame=%d level=%p screen=%p width=%d height=%d\n",
+			_dbgRenderCount, (void*)mc->level, (void*)mc->screen, mc->width, mc->height);
+		fflush(stderr);
+	}
 	if( _updateLightTexture && bFirst) updateLightTexture(a);
 	if (Display::isActive())
 	{
@@ -1254,6 +1261,17 @@ void GameRenderer::DisableUpdateThread()
 
 void GameRenderer::renderLevel(float a, __int64 until)
 {
+	static int _dbgRLCount = 0;
+	_dbgRLCount++;
+	if (_dbgRLCount <= 3 || (_dbgRLCount % 300 == 0)) {
+		fprintf(stderr, "[RENDER] renderLevel frame=%d player=%p levelRenderer=%p\n",
+			_dbgRLCount, (void*)mc->player.get(), (void*)mc->levelRenderer);
+		if (mc->player) {
+			fprintf(stderr, "[RENDER]   playerPos=(%.1f, %.1f, %.1f)\n",
+				mc->player->x, mc->player->y, mc->player->z);
+		}
+		fflush(stderr);
+	}
 //	if (updateLightTexture) updateLightTexture();	// 4J - TODO - Java 1.0.1 has this line enabled, should check why - don't want to put it in now in case it breaks split-screen
 
 	glEnable(GL_CULL_FACE);

@@ -174,6 +174,15 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
 {
     if (count <= 0 || !dataIn) return;
 
+    static int _dbgDVCount = 0;
+    _dbgDVCount++;
+    if (_dbgDVCount <= 10 || (_dbgDVCount % 5000 == 0)) {
+        GLenum err = ::glGetError();
+        fprintf(stderr, "[RENDER] DrawVertices call=%d count=%d prim=%d vType=%d displayList=%d glErr=%d\n",
+            _dbgDVCount, count, (int)PrimitiveType, (int)vType, isCompilingDisplayList(), err);
+        fflush(stderr);
+    }
+
     GLenum mode = mapPrimType((int)PrimitiveType);
     unsigned char *data = (unsigned char *)dataIn;
 
@@ -245,6 +254,13 @@ void C4JRender::CBuffEnd()
 bool C4JRender::CBuffCall(int index, bool /*full*/)
 {
     if (index <= 0) return false;
+    static int _dbgCBCount = 0;
+    _dbgCBCount++;
+    if (_dbgCBCount <= 5 || (_dbgCBCount % 5000 == 0)) {
+        fprintf(stderr, "[RENDER] CBuffCall call=%d index=%d isList=%d\n",
+            _dbgCBCount, index, ::glIsList(index));
+        fflush(stderr);
+    }
     if (::glIsList(index)) { ::glCallList(index); return true; }
     return false;
 }
