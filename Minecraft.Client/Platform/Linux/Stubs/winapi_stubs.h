@@ -165,7 +165,6 @@ typedef float FLOAT;
 
 #define IGNORE              0       // Ignore signal
 #define INFINITE            0xFFFFFFFF  // Infinite timeout
-#define WAIT_FAILED ((DWORD)0xFFFFFFFF)
 #define STATUS_WAIT_0                    ((DWORD   )0x00000000L)    
 #define WAIT_OBJECT_0       ((STATUS_WAIT_0 ) + 0 )
 #define STATUS_PENDING                   ((DWORD   )0x00000103L)    
@@ -806,8 +805,6 @@ static inline BOOL ResetEvent(HANDLE hEvent) {
     return TRUE;
 }
 
-#define WAIT_OBJECT_0 0
-#define WAIT_TIMEOUT 258
 #define WAIT_FAILED ((DWORD)0xFFFFFFFF)
 #define INFINITE 0xFFFFFFFF
 
@@ -859,14 +856,7 @@ static inline void CloseHandle_Event(HANDLE hEvent) {
     free(ev);
 }
 
-#define STILL_ACTIVE 259
 #define CREATE_SUSPENDED 0x00000004
-#define THREAD_PRIORITY_LOWEST (-2)
-#define THREAD_PRIORITY_BELOW_NORMAL (-1)
-#define THREAD_PRIORITY_NORMAL 0
-#define THREAD_PRIORITY_ABOVE_NORMAL 1
-#define THREAD_PRIORITY_HIGHEST 2
-#define THREAD_PRIORITY_TIME_CRITICAL 15
 
 typedef DWORD (*LPTHREAD_START_ROUTINE)(void*);
 
