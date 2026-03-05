@@ -67,17 +67,18 @@ To fully reset the CMake configuration (removes cache + generated Makefiles):
 
 ```bash
 rm -rf CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
-# Then re-run: cmake . && make -j$(nproc)
 ```
-
+then re-run:
+```
+cmake . && make -j$(nproc)
+```
 ---
 
 ## Running
 
+(this is temp)
 ```bash
-# Default — window opens at your primary monitor's native resolution (windowed)
 ./Linux/Debug/Minecraft.Client
-
 ```
 
 (todo refactor)
