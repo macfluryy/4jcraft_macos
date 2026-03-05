@@ -5,14 +5,14 @@
 #include <string>
 #include <pthread.h>
 
-#include "../stubs.h"
-#include "../Common/Consoles_App.h"
+#include "../../Build/stubs.h"
+#include "../../Build/Common/Consoles_App.h"
 
 void Display::update() {}
 
 int CMinecraftApp::GetTPConfigVal(WCHAR* pwchDataFile) { return 0; }
 
-#include "../../Minecraft.World/x64headers/extraX64.h"
+#include "../../../Minecraft.World/Build/x64headers/extraX64.h"
 
 void PIXSetMarkerDeprecated(int a, const char* b, ...) {}
 
