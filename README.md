@@ -74,10 +74,9 @@ rm -rf CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
 
 ## Running
 
+(this is temp)
 ```bash
-# Default — window opens at your primary monitor's native resolution (windowed)
 ./Linux/Debug/Minecraft.Client
-
 ```
 
 (todo refactor)
