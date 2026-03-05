@@ -3,9 +3,9 @@
 
 
 #ifdef __linux__
-#include "../Minecraft.Client/Linux/Stubs/LinuxStubs.h"
+#include "../Minecraft.Client/Platform/Linux/Stubs/LinuxStubs.h"
 #endif
 
-#include "../Minecraft.World/x64headers/extraX64.h"
+#include "../Minecraft.World/Build/x64headers/extraX64.h"
 
 #endif //_4J_PROFILE_STADAFX_H
