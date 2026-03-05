@@ -6647,7 +6647,8 @@ HRESULT CMinecraftApp::RegisterDLCData(eDLCContentType eType, WCHAR *pwchBannerN
 #elif defined(__linux__)
 HRESULT CMinecraftApp::RegisterDLCData(WCHAR *pType, WCHAR *pBannerName, int iGender, __uint64 ullOfferID_Full, __uint64 ullOfferID_Trial, WCHAR *pFirstSkin, unsigned int uiSortIndex, int iConfig, WCHAR *pDataFile)
 {
-	// TODO
+	fprintf(stderr, "warning: CMinecraftApp::RegisterDLCData unimplemented for platform `__linux__`\n");
+	return S_OK;
 }
 #else
 HRESULT CMinecraftApp::RegisterDLCData(char *pchDLCName, unsigned int uiSortIndex,char *pchImageURL)
