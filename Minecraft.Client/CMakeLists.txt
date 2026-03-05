@@ -1099,6 +1099,14 @@ set(PS3__Source_Files__Social
 )
 source_group("PS3\\Source Files\\Social" FILES ${PS3__Source_Files__Social})
 
+
+set(Linux
+    "Linux/Linux_UIController.cpp"
+    "Linux/Linux_Minecraft.cpp"
+    "Linux/Linux_App.cpp"
+)
+source_group("Linux" FILES ${Linux})
+
 set(PSVita
 #    "PSVita/PSVita_App.cpp"
     "PSVita/PSVita_App.h"
@@ -1716,8 +1724,8 @@ set(net__minecraft__client
     "Lighting.h"
     "MemoryTracker.cpp"
     "MemoryTracker.h"
-#    "Minecraft.cpp"
-#    "Minecraft.h"
+    "Minecraft.cpp"
+    "Minecraft.h"
     "Options.cpp"
     "Options.h"
     "ProgressRenderer.cpp"
@@ -2369,6 +2377,7 @@ set(ALL_FILES
     ${PS3__Source_Files__Network}
     ${PS3__Source_Files__Sentient}
     ${PS3__Source_Files__Social}
+    ${Linux}
     ${PSVita}
     ${PSVita__4JLibs__inc}
     ${PSVita__GameConfig}
@@ -2452,9 +2461,6 @@ set(ALL_FILES
     ${net__minecraft__server__level}
     ${net__minecraft__server__network}
     ${net__minecraft__stats}
-    Linux/Linux_UIController.cpp
-    Linux/Linux_Minecraft.cpp
-    Linux/Linux_App.cpp
 )
 
 ################################################################################
