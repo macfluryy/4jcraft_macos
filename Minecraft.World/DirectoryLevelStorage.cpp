@@ -288,7 +288,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 				app.DebugPrintf("  -- %d\n", playerUid);
 #else
 	#ifdef __linux__
-				app.DebugPrintf("  -- %ls\n", playerUid);
+				app.DebugPrintf("  -- %d\n", playerUid);
 	#else
 				app.DebugPrintf("  -- %ls\n", playerUid.toString().c_str());
 	#endif
@@ -695,7 +695,11 @@ void DirectoryLevelStorage::saveMapIdLookup()
 #ifdef _WINDOWS64
 			app.DebugPrintf("  -- %d\n", it->first);
 #else
+	#ifdef __linux__
+			app.DebugPrintf("  -- %d\n", it->first);
+	#else
 			app.DebugPrintf("  -- %ls\n", it->first.toString().c_str());
+	#endif
 #endif
 			dos.writePlayerUID(it->first);
 			it->second.writeMappings(&dos);
