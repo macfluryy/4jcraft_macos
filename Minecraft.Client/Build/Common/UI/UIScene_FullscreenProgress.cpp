@@ -154,6 +154,10 @@ void UIScene_FullscreenProgress::tick()
 	int code = thread->GetExitCode();
 	DWORD exitcode = *((DWORD *)&code);
 
+	static int s_FPTickCount = 0;
+	if(s_FPTickCount % 60 == 0) app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n", s_FPTickCount, exitcode, (DWORD)STILL_ACTIVE);
+	s_FPTickCount++;
+
 	//app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
 
 	if( exitcode != STILL_ACTIVE )

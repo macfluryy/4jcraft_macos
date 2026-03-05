@@ -20,11 +20,9 @@ int Connection::writeSizes[256];
 void Connection::_init()
 {
 //	printf("Con:0x%x init\n",this);
-#if !defined(__linux__)
 	InitializeCriticalSection(&writeLock);
 	InitializeCriticalSection(&threadCounterLock);
 	InitializeCriticalSection(&incoming_cs);
-#endif
 
 	running = true;
 	quitting = false;
@@ -51,11 +49,9 @@ Connection::~Connection()
 								// may get stuck whilst blocking waiting on a read
 	readThread->WaitForCompletion(INFINITE);
 	writeThread->WaitForCompletion(INFINITE);
-#if defined(__linux__)
 	DeleteCriticalSection(&writeLock);
 	DeleteCriticalSection(&threadCounterLock);
 	DeleteCriticalSection(&incoming_cs);
-#endif // __linux__
 	delete m_hWakeReadThread;
 	delete m_hWakeWriteThread;
 

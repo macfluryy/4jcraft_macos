@@ -6,6 +6,29 @@
 #include <assert.h>
 //#include <system_service.h>
 #include <codecvt>
+#ifdef __linux__
+#include <signal.h>
+#include <execinfo.h>
+#include <unistd.h>
+static void sigsegv_handler(int sig) {
+    const char msg[] = "\n=== SIGNAL CAUGHT: ";
+    write(STDERR_FILENO, msg, sizeof(msg)-1);
+    char signum[8];
+    int len = 0;
+    int s = sig;
+    if (s == 0) { signum[len++] = '0'; }
+    else { char tmp[8]; int tl = 0; while(s > 0) { tmp[tl++] = '0' + (s%10); s /= 10; } for(int i = tl-1; i >= 0; i--) signum[len++] = tmp[i]; }
+    write(STDERR_FILENO, signum, len);
+    const char msg1b[] = " ===\n";
+    write(STDERR_FILENO, msg1b, sizeof(msg1b)-1);
+    void *array[64];
+    int size = backtrace(array, 64);
+    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    const char msg2[] = "=== END BACKTRACE ===\n";
+    write(STDERR_FILENO, msg2, sizeof(msg2)-1);
+    _exit(139);
+}
+#endif
 #include "../Windows64/GameConfig/Minecraft.spa.h"
 #include "../../MinecraftServer.h"
 #include "../../Player/LocalPlayer.h"
@@ -552,6 +575,16 @@ int StartMinecraftThreadProc( void* lpParameter )
 
 int main(int argc, const char *argv[] )
 {
+#ifdef __linux__
+    struct sigaction sa;
+    sa.sa_handler = sigsegv_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESETHAND;
+    sigaction(SIGSEGV, &sa, NULL);
+    sigaction(SIGABRT, &sa, NULL);
+    sigaction(SIGBUS, &sa, NULL);
+    sigaction(SIGTRAP, &sa, NULL);
+#endif
     app.DebugPrintf("---main()\n");
 
     #if 0

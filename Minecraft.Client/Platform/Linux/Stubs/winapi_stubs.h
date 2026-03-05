@@ -808,10 +808,9 @@ static inline BOOL ResetEvent(HANDLE hEvent) {
 
 #define WAIT_FAILED ((DWORD)0xFFFFFFFF)
 #define INFINITE 0xFFFFFFFF
+#define HANDLE_TYPE_THREAD 0x54485200
 
-static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
-    Event* ev = (Event*)hHandle;
-    if (!ev) return WAIT_FAILED;
+static inline DWORD _WaitForEvent(Event* ev, DWORD dwMilliseconds) {
     pthread_mutex_lock(&ev->mutex);
     if (dwMilliseconds == INFINITE) {
         while (!ev->signaled) pthread_cond_wait(&ev->cond, &ev->mutex);
@@ -833,6 +832,18 @@ static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
     if (!ev->manual_reset) ev->signaled = 0;
     pthread_mutex_unlock(&ev->mutex);
     return WAIT_OBJECT_0;
+}
+
+struct LinuxThread;
+static inline DWORD _WaitForThread(struct LinuxThread* lt, DWORD dwMilliseconds);
+
+static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
+    if (!hHandle) return WAIT_FAILED;
+    // Check if this is a thread handle (LinuxThread has magic number as first field)
+    if (*(int*)hHandle == HANDLE_TYPE_THREAD) {
+        return _WaitForThread((struct LinuxThread*)hHandle, dwMilliseconds);
+    }
+    return _WaitForEvent((Event*)hHandle, dwMilliseconds);
 }
 
 static inline DWORD WaitForMultipleObjects(DWORD nCount, const HANDLE* lpHandles, BOOL bWaitAll, DWORD dwMilliseconds) {
@@ -862,6 +873,7 @@ static inline void CloseHandle_Event(HANDLE hEvent) {
 typedef DWORD (*LPTHREAD_START_ROUTINE)(void*);
 
 struct LinuxThread {
+    int handleType;
     pthread_t thread;
     LPTHREAD_START_ROUTINE func;
     void* param;
@@ -870,6 +882,9 @@ struct LinuxThread {
     int suspended;
     pthread_mutex_t suspendMutex;
     pthread_cond_t suspendCond;
+    pthread_mutex_t completionMutex;
+    pthread_cond_t completionCond;
+    int completed;
 };
 
 static inline void* _linux_thread_entry(void* arg) {
@@ -878,20 +893,58 @@ static inline void* _linux_thread_entry(void* arg) {
     while (lt->suspended) pthread_cond_wait(&lt->suspendCond, &lt->suspendMutex);
     pthread_mutex_unlock(&lt->suspendMutex);
     lt->exitCode = lt->func(lt->param);
+    // Signal completion
+    pthread_mutex_lock(&lt->completionMutex);
+    lt->completed = 1;
+    pthread_cond_broadcast(&lt->completionCond);
+    pthread_mutex_unlock(&lt->completionMutex);
     return NULL;
+}
+
+static inline DWORD _WaitForThread(struct LinuxThread* lt, DWORD dwMilliseconds) {
+    pthread_mutex_lock(&lt->completionMutex);
+    if (lt->completed) {
+        pthread_mutex_unlock(&lt->completionMutex);
+        return WAIT_OBJECT_0;
+    }
+    if (dwMilliseconds == 0) {
+        pthread_mutex_unlock(&lt->completionMutex);
+        return WAIT_TIMEOUT;
+    }
+    if (dwMilliseconds == INFINITE) {
+        while (!lt->completed) pthread_cond_wait(&lt->completionCond, &lt->completionMutex);
+    } else {
+        struct timespec ts;
+        clock_gettime(CLOCK_REALTIME, &ts);
+        ts.tv_sec += dwMilliseconds / 1000;
+        ts.tv_nsec += (dwMilliseconds % 1000) * 1000000;
+        if (ts.tv_nsec >= 1000000000) { ts.tv_sec++; ts.tv_nsec -= 1000000000; }
+        while (!lt->completed) {
+            if (pthread_cond_timedwait(&lt->completionCond, &lt->completionMutex, &ts) != 0) {
+                pthread_mutex_unlock(&lt->completionMutex);
+                return WAIT_TIMEOUT;
+            }
+        }
+    }
+    pthread_mutex_unlock(&lt->completionMutex);
+    return WAIT_OBJECT_0;
 }
 
 static DWORD g_nextThreadId = 1000;
 
 static inline HANDLE CreateThread(void*, SIZE_T stackSize, LPTHREAD_START_ROUTINE lpStartAddress, void* lpParameter, DWORD dwCreationFlags, DWORD* lpThreadId) {
     LinuxThread* lt = (LinuxThread*)calloc(1, sizeof(LinuxThread));
+    lt->handleType = HANDLE_TYPE_THREAD;
     lt->func = lpStartAddress;
     lt->param = lpParameter;
     lt->exitCode = STILL_ACTIVE;
     lt->suspended = (dwCreationFlags & CREATE_SUSPENDED) ? 1 : 0;
+    lt->completed = 0;
     lt->threadId = __sync_fetch_and_add(&g_nextThreadId, 1);
     pthread_mutex_init(&lt->suspendMutex, NULL);
     pthread_cond_init(&lt->suspendCond, NULL);
+    pthread_mutex_init(&lt->completionMutex, NULL);
+    pthread_cond_init(&lt->completionCond, NULL);
     if (lpThreadId) *lpThreadId = lt->threadId;
     pthread_attr_t attr;
     pthread_attr_init(&attr);

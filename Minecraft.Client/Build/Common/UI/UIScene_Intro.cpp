@@ -5,7 +5,6 @@
 #ifdef __linux__
 static int s_introTickCount = 0;
 #endif
-#include <Linux_UIController.h>
 
 UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

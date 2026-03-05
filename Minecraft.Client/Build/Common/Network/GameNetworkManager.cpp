@@ -226,8 +226,10 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 		thread->SetProcessor(CPU_CORE_SERVER);
 		thread->Run();
 
+		app.DebugPrintf("[NET] Waiting for server ready...\n");
 		ServerReadyWait();
 		ServerReadyDestroy();
+		app.DebugPrintf("[NET] Server ready! serverHalted=%d\n", MinecraftServer::serverHalted());
 
 		if( MinecraftServer::serverHalted() ) 
 			return false;
@@ -241,6 +243,7 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 
 #ifndef _XBOX
 	Minecraft *pMinecraft = Minecraft::GetInstance();	
+	app.DebugPrintf("[NET] IsReadyToPlayOrIdle=%d  IsInSession=%d\n", IsReadyToPlayOrIdle(), IsInSession());
 	// Make sure that we have transitioned through any joining/creating stages and are actually playing the game, so that we know the players should be valid
 	bool changedMessage = false;
 	while(!IsReadyToPlayOrIdle())
@@ -257,12 +260,15 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 #endif
 
 	// If we aren't in session, then something bad must have happened - we aren't joining, creating or ready play
+	app.DebugPrintf("[NET] Checking IsInSession...=%d\n", IsInSession());
 	if(!IsInSession() )
 	{
+		app.DebugPrintf("[NET] NOT in session! Halting server.\n");
 		MinecraftServer::HaltServer();
 		return false;
 	}
 
+	app.DebugPrintf("[NET] DLC check: completed=%d pending=%d\n", app.DLCInstallProcessCompleted(), app.DLCInstallPending());
 	// 4J Stu - Wait a while to make sure that DLC is loaded. This is the last point before the network communication starts
 	// so the latest we can check this
 	while( !app.DLCInstallProcessCompleted() && app.DLCInstallPending() && !g_NetworkManager.IsLeavingGame() )
@@ -277,12 +283,14 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 
 	// PRIMARY PLAYER
 
+	app.DebugPrintf("[NET] Creating ClientConnection (IsHost=%d)...\n", g_NetworkManager.IsHost());
 	vector<ClientConnection *> createdConnections;
 	ClientConnection *connection;
 
 	if( g_NetworkManager.IsHost() )
 	{
 		connection = new ClientConnection(minecraft, NULL);
+		app.DebugPrintf("[NET] ClientConnection created, createdOk=%d\n", connection->createdOk);
 	}
 	else
 	{
@@ -318,7 +326,9 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 		return false;
 	}
 
+	app.DebugPrintf("[NET] Sending PreLoginPacket...\n");
 	connection->send( shared_ptr<PreLoginPacket>( new PreLoginPacket(minecraft->user->name) ) );
+	app.DebugPrintf("[NET] PreLoginPacket sent. Entering connection tick loop...\n");
 
 	// Tick connection until we're ready to go. The stages involved in this are:
 	// (1) Creating the ClientConnection sends a prelogin packet to the server
