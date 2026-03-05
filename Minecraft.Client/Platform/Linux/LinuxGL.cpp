@@ -4,9 +4,11 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 #include <dlfcn.h>
-#include "../../../Minecraft.World/IO/Streams/IntBuffer.h"
-#include "../../../Minecraft.World/IO/Streams/FloatBuffer.h"
-#include "../../../Minecraft.World/IO/Streams/ByteBuffer.h"
+
+#include "../../Minecraft.World/IO/Streams/IntBuffer.h"
+#include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
+#include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
+
 
 int glGenTextures()
 {

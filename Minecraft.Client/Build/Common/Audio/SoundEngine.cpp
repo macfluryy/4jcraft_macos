@@ -5,7 +5,7 @@
 #include "../../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../../../Minecraft.World/Level/LevelData.h"
-#include "../../../../Minecraft.World/Util/Mth.h"
+#include "../../Minecraft.World/Util/Mth.h"
 #include "../../../Textures/Packs/TexturePackRepository.h"
 #include "../../../Textures/Packs/DLCTexturePack.h"
 #include "../DLC/DLCAudioFile.h"

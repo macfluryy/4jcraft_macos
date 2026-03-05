@@ -5225,6 +5225,7 @@ if(UNIX AND NOT APPLE)
     find_package(OpenGL REQUIRED)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(GLFW3 REQUIRED glfw3)
+    pkg_check_modules(GLU REQUIRED glu)
 
     target_include_directories(${PROJECT_NAME} PRIVATE
         ${GLFW3_INCLUDE_DIRS}
