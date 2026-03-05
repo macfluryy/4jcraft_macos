@@ -1,5 +1,6 @@
 #include "4J_Render.h"
 #include <cstring>
+#include <cstdlib>  // getenv
 
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
@@ -37,6 +38,17 @@ static bool s_mainThreadSet = false;
 
 void C4JRender::Initialise()
 {
+#if defined(__linux__) && (GLFW_VERSION_MAJOR > 3 || (GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR >= 4))
+    // If the session is a native Wayland session, tell GLFW to use the Wayland
+    // backend instead of falling back to XWayland.  This enables proper cursor
+    // confine-and-hide (zwp_confined_pointer_v1 + zwp_relative_pointer_v1) which
+    // is required for correct first-person mouse input on Wayland compositors.
+    if (getenv("WAYLAND_DISPLAY")) {
+        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
+        fprintf(stderr, "[4J_Render] Wayland session detected — requesting native Wayland backend\n");
+    }
+#endif
+
     if (!glfwInit()) {
         fprintf(stderr, "[4J_Render] Failed to initialise GLFW\n");
         return;
@@ -408,16 +420,17 @@ void C4JRender::TextureData(int width, int height, void *data, int level,
                    width, height, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    // Do NOT set filter params here — the game calls glTexParameteri with the correct
-    // filter settings (GL_NEAREST_MIPMAP_LINEAR etc.) BEFORE calling TextureData.
-    // Setting params here would override those mipmap settings.
-    // Only guarantee the texture is always complete by generating mipmaps as a safety net.
+    // For the base level (0), force the texture to be non-mipmapped and pixel-crisp.
+    // glGenerateMipmap() was previously called here as a "safety net", but on Mesa/Nvidia
+    // drivers it silently resets GL_TEXTURE_MIN_FILTER to the OpenGL spec default
+    // (GL_NEAREST_MIPMAP_LINEAR), overriding the GL_NEAREST set before this call.
+    // Fix: set GL_TEXTURE_MAX_LEVEL=0 (only sample level 0) and re-enforce GL_NEAREST.
+    // The game manually uploads explicit mip levels 1..N-1 after this call anyway,
+    // so we don't need glGenerateMipmap() as a completeness safety net.
     if (level == 0) {
-        GLint maxLevel = 0;
-        ::glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, &maxLevel);
-        if (maxLevel > 0) {
-            ::glGenerateMipmap(GL_TEXTURE_2D);
-        }
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 }
 

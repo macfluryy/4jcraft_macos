@@ -140,9 +140,9 @@ void C_4JInput::Initialise(int /*iInputStateC*/, unsigned char /*ucMapC*/,
     if (w) {
         glfwSetCursorPosCallback(w, onCursorPos);
         glfwSetScrollCallback(w, onScroll);
-        if (glfwRawMouseMotionSupported()) {
-            glfwSetInputMode(w, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-        }
+        // NOTE: GLFW_RAW_MOUSE_MOTION must only be set when cursor mode is
+        // GLFW_CURSOR_DISABLED (Wayland zwp_relative_pointer_v1 requirement).
+        // It is activated at the cursor-lock call sites below in Tick().
     }
 
     printf("[4J_Input] GLFW input initialised\n");
@@ -181,6 +181,8 @@ void C_4JInput::Tick(void) {
     if (menuNow && s_mouseLocked) {
         // Re-entered a menu → release mouse cursor
         s_mouseLocked = false;
+        if (glfwRawMouseMotionSupported())
+            glfwSetInputMode(w, GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
         glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         // Discard stale delta so the view doesn't jerk on re-lock
         s_mouseAccumX = s_mouseAccumY = 0.0f;
@@ -190,6 +192,11 @@ void C_4JInput::Tick(void) {
         // Left the menu → lock mouse for look control
         s_mouseLocked = true;
         glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        // Enable raw (un-accelerated) relative motion now that cursor is disabled.
+        // On Wayland this activates zwp_relative_pointer_v1 for sub-pixel precise
+        // mouse deltas; on X11 it bypasses the compositor acceleration curve.
+        if (glfwRawMouseMotionSupported())
+            glfwSetInputMode(w, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
         s_mouseAccumX = s_mouseAccumY = 0.0f;
         s_cursorInitialized = false;
     }
@@ -210,6 +217,8 @@ void C_4JInput::Tick(void) {
         if (!menuNow && lclick) {
             s_mouseLocked = true;
             glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            if (glfwRawMouseMotionSupported())
+                glfwSetInputMode(w, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
             s_mouseAccumX = s_mouseAccumY = 0.0f;
             s_cursorInitialized = false;
         }

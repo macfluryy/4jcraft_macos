@@ -17,7 +17,12 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-bool Textures::MIPMAP = true;
+// Linux/PC port: disable mipmapping globally so textures are always sampled from
+// the full-resolution level 0 with GL_NEAREST, giving pixel-crisp Minecraft blocks
+// at all distances. Mipmapping causes glGenerateMipmap() to fire (which resets the
+// min-filter to GL_NEAREST_MIPMAP_LINEAR on many Mesa/Nvidia drivers) and the
+// per-level crispBlend loop is both wasteful and still causes visible blurring.
+bool Textures::MIPMAP = false;
 C4JRender::eTextureFormat Textures::TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
 
 int Textures::preLoadedIdx[TN_COUNT];

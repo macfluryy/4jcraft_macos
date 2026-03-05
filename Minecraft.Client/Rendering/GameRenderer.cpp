@@ -838,11 +838,16 @@ void GameRenderer::turnOnLightLayer(double alpha)
         glActiveTexture(GL_TEXTURE0);
     }
 #endif
+	// Linux/PC: TextureBindVertex is a no-op (no vertex texture unit on desktop GL2.1).
+	// The glTexParameteri calls below MUST NOT execute — they would corrupt the currently
+	// bound terrain atlas on GL_TEXTURE0, replacing GL_NEAREST with GL_LINEAR every frame.
 	RenderManager.TextureBindVertex(getLightTexture(mc->player->GetXboxPad(), mc->level));
+#if 0
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+#endif
 }
 
 // 4J - change brought forward from 1.8.2
