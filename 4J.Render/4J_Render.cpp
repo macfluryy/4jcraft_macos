@@ -160,6 +160,14 @@ static GLenum mapPrimType(int pt)
     }
 }
 
+// clientside awawawa
+static bool isCompilingDisplayList()
+{
+    GLint listMode = 0;
+    ::glGetIntegerv(GL_LIST_MODE, &listMode);
+    return (listMode == GL_COMPILE || listMode == GL_COMPILE_AND_EXECUTE);
+}
+
 void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
                              void *dataIn, eVertexType vType,
                              C4JRender::ePixelShaderType psType)
@@ -169,19 +177,39 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
     GLenum mode = mapPrimType((int)PrimitiveType);
     unsigned char *data = (unsigned char *)dataIn;
 
+    // Vertex layout: 3 floats pos, 2 floats tex, 4 bytes color, 4 bytes normal, 4 bytes padding = 32 bytes
     const int stride = 32;
 
-    ::glEnableClientState(GL_VERTEX_ARRAY);
-    ::glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    ::glEnableClientState(GL_COLOR_ARRAY);
-    ::glEnableClientState(GL_NORMAL_ARRAY);
+    if (isCompilingDisplayList()) {
+        // run.
+        ::glBegin(mode);
+        for (int i = 0; i < count; i++) {
+            unsigned char *v = data + i * stride;
+            float *pos = (float *)(v);
+            float *tex = (float *)(v + 12);
+            unsigned char *col = v + 20;
+            signed char *nrm = (signed char *)(v + 24);
 
-    ::glVertexPointer(3, GL_FLOAT, stride, data);
-    ::glTexCoordPointer(2, GL_FLOAT, stride, data + 12);
-    ::glColorPointer(4, GL_UNSIGNED_BYTE, stride, data + 20);
-    ::glNormalPointer(GL_BYTE, stride, data + 24);
+            ::glNormal3f(nrm[0] / 127.0f, nrm[1] / 127.0f, nrm[2] / 127.0f);
+            ::glColor4ub(col[0], col[1], col[2], col[3]);
+            ::glTexCoord2f(tex[0], tex[1]);
+            ::glVertex3f(pos[0], pos[1], pos[2]);
+        }
+        ::glEnd();
+    } else {
+        // waiter ! fast vertex pls !
+        ::glEnableClientState(GL_VERTEX_ARRAY);
+        ::glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        ::glEnableClientState(GL_COLOR_ARRAY);
+        ::glEnableClientState(GL_NORMAL_ARRAY);
 
-    ::glDrawArrays(mode, 0, count);
+        ::glVertexPointer(3, GL_FLOAT, stride, data);
+        ::glTexCoordPointer(2, GL_FLOAT, stride, data + 12);
+        ::glColorPointer(4, GL_UNSIGNED_BYTE, stride, data + 20);
+        ::glNormalPointer(GL_BYTE, stride, data + 24);
+
+        ::glDrawArrays(mode, 0, count);
+    }
 }
 
 

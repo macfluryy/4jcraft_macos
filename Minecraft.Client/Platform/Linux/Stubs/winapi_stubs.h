@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <cstdarg>
+#include <sys/mman.h>
 
 #define TRUE true
 #define FALSE false
@@ -967,11 +968,34 @@ static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
 static inline HMODULE GetModuleHandle(LPCSTR lpModuleName) { return 0; }
 
 static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
-    assert(0 && "FIXME: implement VirtualAlloc");
+    // MEM_COMMIT | MEM_RESERVE → mmap anonymous
+    int prot = 0;
+    if (flProtect == 0x04 /*PAGE_READWRITE*/) prot = PROT_READ | PROT_WRITE;
+    else if (flProtect == 0x40 /*PAGE_EXECUTE_READWRITE*/) prot = PROT_READ | PROT_WRITE | PROT_EXEC;
+    else if (flProtect == 0x02 /*PAGE_READONLY*/) prot = PROT_READ;
+    else prot = PROT_READ | PROT_WRITE; // default
+
+    int flags = MAP_PRIVATE | MAP_ANONYMOUS;
+    if (lpAddress != NULL) flags |= MAP_FIXED;
+
+    void *p = mmap(lpAddress, dwSize, prot, flags, -1, 0);
+    if (p == MAP_FAILED) return NULL;
+    return p;
 }
 
 static inline BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType) {
-    assert(0 && "FIXME: implement VirtualFree");
+    if (lpAddress == NULL) return FALSE;
+    // MEM_RELEASE (0x8000) frees the whole region
+    if (dwFreeType == 0x8000 /*MEM_RELEASE*/) {
+        // dwSize should be 0 for MEM_RELEASE per Win32 API, but we don't track allocation sizes
+        // Use dwSize if provided, otherwise this is a best-effort
+        if (dwSize == 0) dwSize = 4096; // minimum page
+        munmap(lpAddress, dwSize);
+    } else {
+        // MEM_DECOMMIT (0x4000) - just decommit (make inaccessible)
+        madvise(lpAddress, dwSize, MADV_DONTNEED);
+    }
+    return TRUE;
 }
 
 #define swscanf_s swscanf

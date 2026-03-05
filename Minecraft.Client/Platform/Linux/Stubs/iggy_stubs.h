@@ -36,29 +36,55 @@ RADEXPFUNC inline void RADEXPLINK IggyPlayerDrawTilesEnd(Iggy *f) {
   STUBBED;
 }
 
-static int thing = 0;
+// Each fake Iggy player gets its own state block
+struct FakeIggyPlayer {
+  int tickCount;
+  bool needsTick;
+  IggyProperties props;
+  void *userdata;
+};
+
+// Simple player pool 
+static FakeIggyPlayer s_fakePlayers[64];
+static int s_fakePlayerCount = 0;
 
 RADEXPFUNC inline Iggy * RADEXPLINK IggyPlayerCreateFromMemory(
                                 void const *           data,
                                 U32                    data_size_in_bytes,
                                 IggyPlayerConfig      *config) {
-  STUBBED;
-  return (Iggy*)&thing;
+  if(s_fakePlayerCount >= 64) return nullptr;
+  FakeIggyPlayer *fp = &s_fakePlayers[s_fakePlayerCount++];
+  fp->tickCount = 0;
+  fp->needsTick = true;
+  fp->userdata = nullptr;
+  // Default to 1920x1080 at 30fps
+  memset(&fp->props, 0, sizeof(fp->props));
+  fp->props.movie_width_in_pixels = 1920;
+  fp->props.movie_height_in_pixels = 1080;
+  fp->props.movie_frame_rate_from_file_in_fps = 30.0f;
+  fp->props.movie_frame_rate_current_in_fps = 30.0f;
+  fprintf(stderr, "[Iggy Stub] Created fake player %d (data=%p, size=%u)\n", s_fakePlayerCount-1, data, data_size_in_bytes);
+  return (Iggy*)fp;
 }
 
+static FakeIggyPlayer* getFakePlayer(Iggy *player) {
+  return (FakeIggyPlayer*)player;
+}
 
 RADEXPFUNC inline void RADEXPLINK IggyPlayerInitializeAndTickRS(Iggy *player) {
-  STUBBED;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp) { fp->tickCount = 0; fp->needsTick = true; }
 }
-
-static IggyProperties properties;
 
 RADEXPFUNC inline IggyProperties * RADEXPLINK IggyPlayerProperties(Iggy *player) {
-  STUBBED;
-  return &properties;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp) return &fp->props;
+  static IggyProperties defaultProps = {};
+  return &defaultProps;
 }
 RADEXPFUNC inline void RADEXPLINK IggyPlayerSetUserdata(Iggy *player, void *userdata) {
-  STUBBED;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp) fp->userdata = userdata;
 }
 RADEXPFUNC inline IggyName RADEXPLINK IggyPlayerCreateFastName(Iggy *f, IggyUTF16 const *name, S32 len) {
   STUBBED;
@@ -69,14 +95,22 @@ RADEXPFUNC inline rrbool RADEXPLINK IggyDebugGetMemoryUseInfo(Iggy *player, Iggy
   return false;
 }
 RADEXPFUNC inline rrbool RADEXPLINK IggyPlayerReadyToTick(Iggy *player) {
-  STUBBED;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp && fp->needsTick) return true;
   return false;
 }
 RADEXPFUNC inline void RADEXPLINK IggyPlayerTickRS(Iggy *player) {
-  STUBBED;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp) {
+    fp->tickCount++;
+    // Allow one tick per frame cycle 
+    fp->needsTick = false;
+  }
 }
 RADEXPFUNC inline void RADEXPLINK IggyPlayerDraw(Iggy *f) {
-  STUBBED;
+  // Re-arm tick for next frame
+  FakeIggyPlayer *fp = getFakePlayer(f);
+  if(fp) fp->needsTick = true;
 }
 RADEXPFUNC inline void RADEXPLINK IggyMakeEventKey(IggyEvent *event, IggyKeyevent event_type, IggyKeycode keycode, IggyKeyloc keyloc) {
   STUBBED;
@@ -144,7 +178,8 @@ RADEXPFUNC inline void RADEXPLINK IggySetTextureSubstitutionCallbacks(Iggy_Textu
   STUBBED;
 }
 RADEXPFUNC inline void * RADEXPLINK IggyPlayerGetUserdata(Iggy *player) {
-  STUBBED;
+  FakeIggyPlayer *fp = getFakePlayer(player);
+  if(fp) return fp->userdata;
   return 0;
 }
 RADEXPFUNC inline  IggyLibrary  RADEXPLINK IggyLibraryCreateFromMemoryUTF16(
@@ -185,5 +220,8 @@ RADEXPFUNC inline void * RADEXPLINK IggyPerfmonCreate(void *(*alloc_func)(unsign
 RADEXPFUNC inline void RADEXPLINK IggyInstallPerfmon(void *perfmon) {
   STUBBED;
 }
+
+// GDraw memory/warning functions are defined in gdraw_glfw.c (C linkage)
+// Juicey you stupid idiot do NOT define them here 
 
 #endif // IGGYSTUBS_H
