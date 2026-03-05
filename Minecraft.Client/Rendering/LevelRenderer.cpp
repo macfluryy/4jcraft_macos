@@ -801,9 +801,9 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 	}
 	static int _dbgRC = 0;
 	_dbgRC++;
-	if (_dbgRC <= 5 || (_dbgRC % 600 == 0)) {
-		fprintf(stderr, "[RENDER] renderChunks frame=%d layer=%d total=%d notVis=%d noIdx=%d empty=%d called=%d callOk=%d xOff=%.1f yOff=%.1f zOff=%.1f chunkLists=%d\n",
-			_dbgRC, layer, chunks[playerIndex].length, dbgNotVisible, dbgNoIdx, dbgEmpty, dbgCalled, dbgCallOk, xOff, yOff, zOff, chunkLists);
+	if (_dbgRC <= 2 || (_dbgRC % 3000 == 0)) {
+		fprintf(stderr, "[RENDER] renderChunks frame=%d layer=%d total=%d notVis=%d noIdx=%d empty=%d called=%d callOk=%d chunkLists=%d\n",
+			_dbgRC, layer, chunks[playerIndex].length, dbgNotVisible, dbgNoIdx, dbgEmpty, dbgCalled, dbgCallOk, chunkLists);
 		fflush(stderr);
 	}
 

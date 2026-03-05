@@ -237,13 +237,6 @@ static GLenum mapPrimType(int pt)
 }
 
 // clientside awawawa
-static bool isCompilingDisplayList()
-{
-    GLint listMode = 0;
-    ::glGetIntegerv(GL_LIST_MODE, &listMode);
-    return (listMode == GL_COMPILE || listMode == GL_COMPILE_AND_EXECUTE);
-}
-
 void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
                              void *dataIn, eVertexType vType,
                              C4JRender::ePixelShaderType psType)
@@ -251,60 +244,67 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
     if (count <= 0 || !dataIn) return;
 
     GLenum mode = mapPrimType((int)PrimitiveType);
-    unsigned char *data = (unsigned char *)dataIn;
 
-    // Vertex layout: 3 floats pos, 2 floats tex, 4 bytes color, 4 bytes normal, 4 bytes padding = 32 bytes
-    const int stride = 32;
-
-    // Color byte-order fix for little-endian (x86/x64):
-    // Console code (Xbox 360 / PS3, big-endian) stores color as int col = (r<<24)|(g<<16)|(b<<8)|a
-    // Big-endian memory:    [r, g, b, a] — correct for glColor4ub(col[0], col[1], col[2], col[3])
-    // Little-endian memory: [a, b, g, r] — bytes are reversed!
-    // Fix: read bytes in reverse order col[3]=r, col[2]=g, col[1]=b, col[0]=a
-
-    if (isCompilingDisplayList()) {
+    if (vType == VERTEX_TYPE_COMPRESSED) {
+        // Compact terrain vertex: 8 × int16_t = 16 bytes per vertex
+        // Layout: [x*1024, y*1024, z*1024, RGB565-32768, u*8192, v*8192, tex2u, tex2v]
+        // Always use glBegin/glEnd — works correctly both inside and outside display lists.
+        int16_t *sdata = (int16_t *)dataIn;
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {
-            unsigned char *v = data + i * stride;
-            float *pos = (float *)(v);
-            float *tex = (float *)(v + 12);
-            unsigned char *col = v + 20;
-            signed char *nrm = (signed char *)(v + 24);
+            int16_t *vert = sdata + i * 8;
 
-            ::glNormal3f(nrm[0] / 127.0f, nrm[1] / 127.0f, nrm[2] / 127.0f);
-            ::glColor4ub(col[3], col[2], col[1], col[0]); // LE fix: r,g,b,a from reversed bytes
-            ::glTexCoord2f(tex[0], tex[1]);
-            ::glVertex3f(pos[0], pos[1], pos[2]);
+            float x = vert[0] / 1024.0f;
+            float y = vert[1] / 1024.0f;
+            float z = vert[2] / 1024.0f;
+
+            // Unpack RGB565 colour (Tesselator stores as packedcol - 32768 to fit in int16)
+            unsigned short packedColor = (unsigned short)((int)vert[3] + 32768);
+            float r = ((packedColor >> 11) & 0x1f) / 31.0f;
+            float g = ((packedColor >>  5) & 0x3f) / 63.0f;
+            float b = ( packedColor        & 0x1f) / 31.0f;
+
+            float fu = vert[4] / 8192.0f;
+            float fv = vert[5] / 8192.0f;
+            // Strip mipmap-disable flag: Tesselator adds +1.0 (= +8192) to u when mipmaps off
+            if (fu >= 1.0f) fu -= 1.0f;
+
+            ::glColor3f(r, g, b);
+            ::glTexCoord2f(fu, fv);
+            ::glVertex3f(x, y, z);
         }
         ::glEnd();
     } else {
-        // For vertex array path, swap color bytes in-place to RGBA order
+        // Standard (non-compact) vertex: 8 × int32 = 32 bytes per vertex
+        // Layout: [x(f), y(f), z(f), u(f), v(f), color(RGBA packed), normal, tex2]
+        // Color byte-order fix for little-endian (x86/x64):
+        //   Console code stores color as int col = (r<<24)|(g<<16)|(b<<8)|a
+        //   In little-endian memory the bytes are: [a, b, g, r] at increasing addresses.
+        //   Read as: col[3]=r, col[2]=g, col[1]=b, col[0]=a.
+        // Always use glBegin/glEnd — safe for both display-list compilation and immediate mode.
+        // (glVertexPointer/glDrawArrays inside glNewList record a stale pointer, not the data.)
+        unsigned int *idata = (unsigned int *)dataIn;
+        ::glBegin(mode);
         for (int i = 0; i < count; i++) {
-            unsigned char *col = data + i * stride + 20;
-            unsigned char tmp;
-            tmp = col[0]; col[0] = col[3]; col[3] = tmp; // swap a<->r
-            tmp = col[1]; col[1] = col[2]; col[2] = tmp; // swap b<->g
+            float *fdata = (float *)(idata + i * 8);
+
+            unsigned int colorInt = idata[i * 8 + 5];
+            unsigned char cr = (colorInt >> 24) & 0xFF;
+            unsigned char cg = (colorInt >> 16) & 0xFF;
+            unsigned char cb = (colorInt >>  8) & 0xFF;
+            unsigned char ca =  colorInt         & 0xFF;
+
+            unsigned int normalInt = idata[i * 8 + 6];
+            int8_t nx = (int8_t)( normalInt        & 0xFF);
+            int8_t ny = (int8_t)((normalInt >>  8) & 0xFF);
+            int8_t nz = (int8_t)((normalInt >> 16) & 0xFF);
+
+            ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
+            ::glColor4ub(cr, cg, cb, ca);
+            ::glTexCoord2f(fdata[3], fdata[4]);
+            ::glVertex3f(fdata[0], fdata[1], fdata[2]);
         }
-
-        ::glEnableClientState(GL_VERTEX_ARRAY);
-        ::glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        ::glEnableClientState(GL_COLOR_ARRAY);
-        ::glEnableClientState(GL_NORMAL_ARRAY);
-
-        ::glVertexPointer(3, GL_FLOAT, stride, data);
-        ::glTexCoordPointer(2, GL_FLOAT, stride, data + 12);
-        ::glColorPointer(4, GL_UNSIGNED_BYTE, stride, data + 20);
-        ::glNormalPointer(GL_BYTE, stride, data + 24);
-
-        ::glDrawArrays(mode, 0, count);
-
-        // Swap back to preserve original data
-        for (int i = 0; i < count; i++) {
-            unsigned char *col = data + i * stride + 20;
-            unsigned char tmp;
-            tmp = col[0]; col[0] = col[3]; col[3] = tmp;
-            tmp = col[1]; col[1] = col[2]; col[2] = tmp;
-        }
+        ::glEnd();
     }
 }
 
@@ -374,37 +374,44 @@ void C4JRender::TextureBind(int idx)
 
 void C4JRender::TextureBindVertex(int idx)
 {
-    ::glActiveTexture(GL_TEXTURE1);
-    if (idx < 0) {
-        ::glBindTexture(GL_TEXTURE_2D, 0);
-    } else {
-        ::glBindTexture(GL_TEXTURE_2D, (GLuint)idx);
-    }
-    ::glActiveTexture(GL_TEXTURE0);
+    // No-op on desktop OpenGL. On consoles this binds a lightmap to the vertex shader
+    // sampler. On desktop GL 2.1 fixed-function there is no vertex texture concept;
+    // lighting is handled via vertex colors. Binding anything here OVERRIDES GL_TEXTURE0
+    // after the call (because the game calls glTexParameteri on whatever is active),
+    // causing the terrain atlas filter params to be corrupted or the lightmap to appear
+    // on terrain instead of the atlas. Leave it as a no-op.
+    (void)idx;
 }
 
-void C4JRender::TextureSetTextureLevels(int levels) { s_textureLevels = levels; }
+void C4JRender::TextureSetTextureLevels(int levels)
+{
+    // Set GL_TEXTURE_MAX_LEVEL so OpenGL knows how many mip levels this texture has.
+    // Without this, the default is 1000, and any texture that doesn't upload all 1000
+    // levels is considered "incomplete" and renders as white.
+    ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, levels > 0 ? levels - 1 : 0);
+    s_textureLevels = levels;
+}
 int  C4JRender::TextureGetTextureLevels()            { return s_textureLevels; }
 
 void C4JRender::TextureData(int width, int height, void *data, int level,
                             eTextureFormat /*format*/)
 {
-    ::glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA8,
+    // Game produces [r,g,b,a] bytes via the non-Xbox transferFromImage/loadTexture paths.
+    // Use GL_RGBA so OpenGL interprets them correctly. GL_BGRA would swap R and B channels.
+    ::glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA,
                    width, height, 0,
-                   GL_BGRA, GL_UNSIGNED_BYTE, data);
+                   GL_RGBA, GL_UNSIGNED_BYTE, data);
 
+    // Do NOT set filter params here — the game calls glTexParameteri with the correct
+    // filter settings (GL_NEAREST_MIPMAP_LINEAR etc.) BEFORE calling TextureData.
+    // Setting params here would override those mipmap settings.
+    // Only guarantee the texture is always complete by generating mipmaps as a safety net.
     if (level == 0) {
-        if (s_textureLevels > 1) {
-            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                              GL_NEAREST_MIPMAP_LINEAR);
-            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL,
-                              s_textureLevels - 1);
-        } else {
-            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        GLint maxLevel = 0;
+        ::glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, &maxLevel);
+        if (maxLevel > 0) {
+            ::glGenerateMipmap(GL_TEXTURE_2D);
         }
-        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
 }
 
@@ -413,7 +420,7 @@ void C4JRender::TextureDataUpdate(int xoffset, int yoffset,
                                   void *data, int level)
 {
     ::glTexSubImage2D(GL_TEXTURE_2D, level, xoffset, yoffset,
-                      width, height, GL_BGRA, GL_UNSIGNED_BYTE, data);
+                      width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
 void C4JRender::TextureSetParam(int param, int value)
@@ -645,7 +652,15 @@ void C4JRender::StateSetFogColour(float red, float green, float blue)
 
 void C4JRender::StateSetLightingEnable(bool enable)
 {
-    if (enable) ::glEnable(GL_LIGHTING); else ::glDisable(GL_LIGHTING);
+    if (enable) {
+        ::glEnable(GL_LIGHTING);
+        // Enable color material so glColor calls set material ambient+diffuse
+        ::glEnable(GL_COLOR_MATERIAL);
+        ::glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    } else {
+        ::glDisable(GL_LIGHTING);
+        ::glDisable(GL_COLOR_MATERIAL);
+    }
 }
 
 void C4JRender::StateSetVertexTextureUV(float u, float v)

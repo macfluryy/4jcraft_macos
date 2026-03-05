@@ -382,6 +382,8 @@ shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // th
 		}
 		__debugbreak();
 		//assert(false);
+		// Close the stream to prevent further reads on a desynced stream
+		dis->close();
 		return nullptr;
 		//            throw new IOException(wstring(L"Bad packet id ") + _toString<int>(id));
 	}

@@ -37,6 +37,7 @@ void Tesselator::CreateNewThreadStorage(int bytes)
 	TlsSetValue(tlsIdx, instance);
 }
 
+// she tessalate my vertices till i render
 Tesselator::Tesselator(int size)
 {
 	// 4J - this block of things moved to constructor from general initialisations round Java class

@@ -1294,23 +1294,6 @@ void GameRenderer::renderLevel(float a, __int64 until)
 
 		setupCamera(a, i);
 		Camera::prepare(mc->player, mc->player->ThirdPersonView() == 2);
-		// DEBUG: Log camera-relevant state
-		static int _dbgCam = 0;
-		_dbgCam++;
-		if (_dbgCam <= 5 || (_dbgCam % 300 == 0)) {
-			float mv[16]; ::glGetFloatv(GL_MODELVIEW_MATRIX, mv);
-			float pj[16]; ::glGetFloatv(GL_PROJECTION_MATRIX, pj);
-			float cc[4]; ::glGetFloatv(GL_COLOR_CLEAR_VALUE, cc);
-			int vp[4]; ::glGetIntegerv(GL_VIEWPORT, vp);
-			fprintf(stderr, "[RENDER] CAM frame=%d viewport=(%d,%d,%d,%d) clearColor=(%.2f,%.2f,%.2f) renderDist=%.0f\n",
-				_dbgCam, vp[0], vp[1], vp[2], vp[3], cc[0], cc[1], cc[2], renderDistance);
-			fprintf(stderr, "[RENDER]   MV[12..14]=(%f,%f,%f) PJ[0,5,10]=(%f,%f,%f)\n",
-				mv[12], mv[13], mv[14], pj[0], pj[5], pj[10]);
-			fprintf(stderr, "[RENDER]   cameraEntity pos=(%.2f,%.2f,%.2f) heightOff=%.2f\n",
-				mc->cameraTargetPlayer->x, mc->cameraTargetPlayer->y, mc->cameraTargetPlayer->z,
-				mc->cameraTargetPlayer->heightOffset);
-			fflush(stderr);
-		}
 
 		Frustum::getFrustum();
 		if (mc->options->viewDistance < 2)
