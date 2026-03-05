@@ -60,6 +60,7 @@ void PendingConnection::disconnect(DisconnectPacket::eDisconnectReason reason)
 {
  //   try {	// 4J - removed try/catch
 //        logger.info("Disconnecting " + getName() + ": " + reason);
+		fprintf(stderr, "[PENDING] disconnect called with reason=%d at tick=%d\n", reason, _tick);
 		app.DebugPrintf("Pending connection disconnect: %d\n", reason );
         connection->send( shared_ptr<DisconnectPacket>( new DisconnectPacket(reason) ) );
         connection->sendAndQuit();
@@ -139,7 +140,7 @@ void PendingConnection::sendPreLoginResponse()
 
 void PendingConnection::handleLogin(shared_ptr<LoginPacket> packet)
 {
-//	printf("Server: handleLogin\n");
+	fprintf(stderr, "[LOGIN-SRV] handleLogin called! clientVersion=%d\n", packet->clientVersion);
     //name = packet->userName;
     if (packet->clientVersion != SharedConstants::NETWORK_PROTOCOL_VERSION)
 	{

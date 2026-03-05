@@ -347,6 +347,14 @@ unordered_map<int, Packet::PacketStatistics *> Packet::statistics = unordered_ma
 
 shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // throws IOException TODO 4J JEV, should this declare a throws?
 {
+	// N packet ID
+	static int s_clientPktHistory[64];
+	static int s_clientPktIdx = 0;
+	static int s_serverPktHistory[64];
+	static int s_serverPktIdx = 0;
+	static bool s_clientDesyncLogged = false;
+	static bool s_serverDesyncLogged = false;
+
 	int id = 0;
 	shared_ptr<Packet> packet = nullptr;
 
@@ -358,16 +366,33 @@ shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // th
 
 	if ((isServer && serverReceivedPackets.find(id) == serverReceivedPackets.end()) || (!isServer && clientReceivedPackets.find(id) == clientReceivedPackets.end()))
 	{
-		//app.DebugPrintf("Bad packet id %d\n", id);
+		int *history = isServer ? s_serverPktHistory : s_clientPktHistory;
+		int idx = isServer ? s_serverPktIdx : s_clientPktIdx;
+		bool &logged = isServer ? s_serverDesyncLogged : s_clientDesyncLogged;
+		
+		fprintf(stderr, "[PKT] Bad packet id %d (0x%x) isServer=%d\n", id, id, isServer);
+		if (!logged) {
+			logged = true;
+			fprintf(stderr, "[PKT] === PACKET HISTORY (last %d, newest last) ===\n", 64);
+			for (int i = 0; i < 64; i++) {
+				int h = history[(idx + i) % 64];
+				if (h != 0) fprintf(stderr, "[PKT]   pkt %d (0x%x)\n", h, h);
+			}
+			fprintf(stderr, "[PKT] === END HISTORY ===\n");
+		}
 		__debugbreak();
-		assert(false);
+		//assert(false);
+		return nullptr;
 		//            throw new IOException(wstring(L"Bad packet id ") + _toString<int>(id));
 	}
 
+	// Record successfully read packet ID
+	if (isServer) { s_serverPktHistory[s_serverPktIdx % 64] = id; s_serverPktIdx++; }
+	else { s_clientPktHistory[s_clientPktIdx % 64] = id; s_clientPktIdx++; }
+
 	packet = getPacket(id);
-	if (packet == NULL) assert(false);//throw new IOException(wstring(L"Bad packet id ") + _toString<int>(id));
+	if (packet == NULL) { fprintf(stderr, "[PKT] getPacket(%d) returned NULL\n", id); return nullptr; }
 	
-	//app.DebugPrintf("%s reading packet %d\n", isServer ? "Server" : "Client", packet->getId());
 	packet->read(dis);
 	//    }
 	//	catch (EOFException e) 
@@ -425,15 +450,13 @@ wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOExcepti
 	short stringLength = dis->readShort();
 	if (stringLength > maxLength)
 	{
-		wstringstream stream;
-		stream << L"Received string length longer than maximum allowed (" << stringLength << " > " << maxLength << ")";
-		assert(false);
-		//        throw new IOException( stream.str() );
+		fprintf(stderr, "[PKT] readUtf: string length %d > max %d (stream desync?)\n", stringLength, maxLength);
+		return L"";
 	}
 	if (stringLength < 0)
 	{
-		assert(false);
-		//        throw new IOException(L"Received string length is less than zero! Weird string!");
+		fprintf(stderr, "[PKT] readUtf: negative string length %d (stream desync?)\n", stringLength);
+		return L"";
 	}
 
 	wstring builder = L"";

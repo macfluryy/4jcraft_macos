@@ -196,7 +196,9 @@ bool Connection::writeTick()
 		LeaveCriticalSection(&writeLock);
 
 		Packet::writePacket(packet, bufferedDos);
-		
+#ifdef __linux__
+		bufferedDos->flush(); // Ensure buffered data reaches socket before any other writes
+#endif
 
 #ifndef _CONTENT_PACKAGE
 		// 4J Added for debugging
@@ -230,6 +232,13 @@ bool Connection::writeTick()
 
 		// If the shouldDelay flag is still set at this point then we want to write it to QNet as a single packet with priority flags
 		// Otherwise just buffer the packet with other outgoing packets as the java game did
+#ifdef __linux__
+		// Linux fix: For local connections, always use bufferedDos to avoid byte interleaving between
+		// the BufferedOutputStream buffer and direct sos writes. The shouldDelay/writeWithFlags path
+		// writes directly to sos, which can inject bytes BEFORE unflushed bufferedDos data.
+		Packet::writePacket(packet, bufferedDos);
+		bufferedDos->flush(); // Ensure data reaches socket immediately for delayed packets
+#else
 		if(packet->shouldDelay)
 		{
 			Packet::writePacket(packet, byteArrayDos);
@@ -245,6 +254,7 @@ bool Connection::writeTick()
 		{
 			Packet::writePacket(packet, bufferedDos);
 		}
+#endif
 
 #ifndef _CONTENT_PACKAGE
 		// 4J Added for debugging
@@ -329,9 +339,9 @@ close("disconnect.genericReason", "Internal exception: " + e.toString());
 
 void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
 {
-//	printf("Con:0x%x close\n",this);
+	fprintf(stderr, "[CONN] close called with reason=%d on connection=%p\n", reason, (void*)this);
 	if (!running) return;
-//	printf("Con:0x%x close doing something\n",this);
+	fprintf(stderr, "[CONN] close proceeding (was running) on connection=%p\n", (void*)this);
 	disconnected = true;
 
 	va_list input;

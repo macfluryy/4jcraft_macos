@@ -20,10 +20,12 @@ DisconnectPacket::DisconnectPacket(eDisconnectReason reason)
 void DisconnectPacket::read(DataInputStream *dis) //throws IOException
 {
 	reason = (eDisconnectReason)dis->readInt();
+	fprintf(stderr, "[PKT] DisconnectPacket::read reason=%d\n", reason);
 }
 
 void DisconnectPacket::write(DataOutputStream *dos) //throws IOException
 {
+	fprintf(stderr, "[PKT] DisconnectPacket::write reason=%d\n", reason);
 	dos->writeInt((int)reason);
 }
 
