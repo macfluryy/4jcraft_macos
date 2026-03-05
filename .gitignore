@@ -18,8 +18,8 @@ compile_commands.json
 *.code-workspace
 
 # Build output directories
-Linux/
-x64/
+/Linux/
+/x64/
 
 # Asset symlink (created at runtime for working directory resolution)
 Common
