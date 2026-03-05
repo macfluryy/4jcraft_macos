@@ -587,6 +587,28 @@ int main(int argc, const char *argv[] )
 #endif
     app.DebugPrintf("---main()\n");
 
+    // ---- Parse CLI arguments ----
+    // Usage: Minecraft.Client [--width W] [--height H] [--fullscreen]
+    // If --width/--height are omitted the primary monitor's native resolution
+    // is used automatically.
+    {
+        int reqW = 0, reqH = 0;
+        bool fs = false;
+        for (int i = 1; i < argc; i++) {
+            if (strcmp(argv[i], "--fullscreen") == 0) {
+                fs = true;
+            } else if (strcmp(argv[i], "--width") == 0 && i + 1 < argc) {
+                reqW = atoi(argv[++i]);
+            } else if (strcmp(argv[i], "--height") == 0 && i + 1 < argc) {
+                reqH = atoi(argv[++i]);
+            }
+        }
+        if (reqW > 0 && reqH > 0)
+            RenderManager.SetWindowSize(reqW, reqH);
+        if (fs)
+            RenderManager.SetFullscreen(true);
+    }
+
     #if 0
     // Main message loop
     MSG msg = {0};
@@ -647,8 +669,15 @@ app.DebugPrintf("---ReadProductCodes()\n");
 
 app.loadMediaArchive();
 app.loadStringTable();
-ui.init(1920,1080);
-
+    // Use the actual framebuffer dimensions so the UI scales to whatever
+    // window/fullscreen resolution was chosen at startup.
+    {
+        int uiW = 1920, uiH = 1080;
+        RenderManager.GetFramebufferSize(uiW, uiH);
+        if (uiW < 1) uiW = 1920;
+        if (uiH < 1) uiH = 1080;
+        ui.init(uiW, uiH);
+    }
 // storage manager is needed for the trial key check
 StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,"");
 

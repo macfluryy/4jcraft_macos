@@ -63,6 +63,10 @@ public:
 	// Core
 	void Initialise();
 	void InitialiseContext();
+	// Call before Initialise() to override window size and/or fullscreen mode.
+	// If not called, the primary monitor's native resolution is used.
+	void SetWindowSize(int w, int h);
+	void SetFullscreen(bool fs);
 	void StartFrame();
 	void DoScreenGrabOnNextPresent();
 	void Present();

@@ -15,8 +15,11 @@ C4JRender RenderManager;
 
 static GLFWwindow *s_window = nullptr;
 static int s_textureLevels = 1;
-static int s_windowWidth = 1920;
-static int s_windowHeight = 1080;
+static int s_windowWidth  = 1280;  // updated to actual framebuffer size each frame
+static int s_windowHeight = 720;
+static int s_reqWidth     = 0;     // 0 = auto-detect from primary monitor
+static int s_reqHeight    = 0;
+static bool s_fullscreen  = false;
 
 // Thread-local storage for per-thread shared GL contexts.
 // The main thread uses s_window directly; worker threads get invisible
@@ -54,12 +57,29 @@ void C4JRender::Initialise()
         return;
     }
 
+    // Resolve window dimensions: use caller-requested size, or fall back to
+    // the primary monitor's native resolution so the window fits any display.
+    GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = primaryMonitor ? glfwGetVideoMode(primaryMonitor) : nullptr;
+
+    if (s_reqWidth > 0 && s_reqHeight > 0) {
+        s_windowWidth  = s_reqWidth;
+        s_windowHeight = s_reqHeight;
+    } else if (mode) {
+        s_windowWidth  = mode->width;
+        s_windowHeight = mode->height;
+    }
+    fprintf(stderr, "[4J_Render] Window %dx%d  fullscreen=%s\n",
+            s_windowWidth, s_windowHeight, s_fullscreen ? "yes" : "no");
+    fflush(stderr);
+
     // opengl 2.1!!!
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
+    GLFWmonitor *fsMonitor = s_fullscreen ? primaryMonitor : nullptr;
     s_window = glfwCreateWindow(s_windowWidth, s_windowHeight,
-                                "Minecraft Console Edition", nullptr, nullptr);
+                                "Minecraft Console Edition", fsMonitor, nullptr);
     if (!s_window) {
         fprintf(stderr, "[4J_Render] Failed to create GLFW window\n");
         glfwTerminate();
@@ -169,6 +189,17 @@ void C4JRender::Present()
     ::glFlush();
     glfwSwapBuffers(s_window);
     glfwPollEvents();
+}
+
+void C4JRender::SetWindowSize(int w, int h)
+{
+    s_reqWidth  = (w > 0) ? w : 0;
+    s_reqHeight = (h > 0) ? h : 0;
+}
+
+void C4JRender::SetFullscreen(bool fs)
+{
+    s_fullscreen = fs;
 }
 
 bool C4JRender::ShouldClose()

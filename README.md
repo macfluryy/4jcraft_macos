@@ -11,9 +11,73 @@ Join our community:
 * Steam: https://steamcommunity.com/groups/4JCraft
 
 ## Planned platforms to be supported:
-- Linux (~95%)
+- Linux (~85%)
 - Emscripten (not started)
 - PS3
 - macOS (not started)
 - iOS (not started)
 - Android (not started)
+---
+
+## Building (Linux)
+
+### Dependencies
+
+Install the following packages before building (Debian/Ubuntu names shown):
+
+```bash
+sudo apt install \
+  build-essential cmake \
+  libglfw3-dev libgl-dev libglu1-mesa-dev \
+  libopenal-dev libvorbis-dev \
+  libpthread-stubs0-dev
+```
+
+On Arch/Manjaro:
+
+```bash
+sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
+```
+
+If you are on wayland, swap glfw-x11 to glfw-wayland, but its doesn't matter cuz xwayland got yourself covered
+
+### Configure & Build
+
+```bash
+# 1. Configure (only needed once, or after CMakeLists changes)
+cmake .
+
+# 2. Build (use -jN with your core count)
+make -j$(nproc)
+```
+
+The binary is output to:
+
+```
+Linux/Debug/Minecraft.Client
+```
+
+### Clean
+
+```bash
+make clean
+```
+
+To fully reset the CMake configuration (removes cache + generated Makefiles):
+
+```bash
+rm -rf CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
+# Then re-run: cmake . && make -j$(nproc)
+```
+
+---
+
+## Running
+
+```bash
+# Default — window opens at your primary monitor's native resolution (windowed)
+./Linux/Debug/Minecraft.Client
+
+```
+
+(todo refactor)
