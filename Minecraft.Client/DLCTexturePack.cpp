@@ -354,7 +354,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							File grf( getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dlcFile->getGrfPath() ) );
 							if (grf.exists())
 							{
-#ifdef _UNICODE
+#if defined(_UNICODE) && !defined(__linux__)
 								wstring path = grf.getPath();
 								const WCHAR *pchFilename=path.c_str();
 								HANDLE fileHandle = CreateFile(
@@ -406,7 +406,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						File grf(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), levelGen->getBaseSavePath() ));
 						if (grf.exists())
 						{
-#ifdef _UNICODE
+#if defined(_UNICODE) && !defined(__linux__)
 							wstring path = grf.getPath();
 							const WCHAR *pchFilename=path.c_str();
 							HANDLE fileHandle = CreateFile(
