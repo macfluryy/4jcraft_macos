@@ -689,6 +689,12 @@ do
 } while (minecraftThread->isRunning());
 delete minecraftThread;
 
+// Re-acquire the GL context in the main thread.
+// StartMinecraftThreadProc calls InitialiseContext() which moves the context
+// to the init thread for texture loading; we must reclaim it here before
+// any further OpenGL calls in the main render loop.
+RenderManager.InitialiseContext();
+
 Minecraft *pMinecraft=Minecraft::GetInstance();
 
 app.InitGameSettings();
@@ -727,9 +733,11 @@ g_NetworkManager.DoWork();
 PIXEndNamedEvent();
 
 // Render game graphics.
+// On Linux, always call run_middle() so mc->screen (TitleScreen etc.) renders
+// even when the game session has not yet started (Iggy Flash UI is unavailable).
+pMinecraft->run_middle();
 if(app.GetGameStarted())
 {
-    pMinecraft->run_middle();
     app.SetAppPaused( g_NetworkManager.IsLocalGame() && g_NetworkManager.GetPlayerCount() == 1 && ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()) );
 }
 else
