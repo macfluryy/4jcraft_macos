@@ -1284,7 +1284,7 @@ void UIController::setupCustomDrawGameStateAndMatrices(UIScene *scene, CustomDra
 
 void UIController::endCustomDrawGameState()
 {
-#ifdef __ORBIS__
+#if defined(__ORBIS__) || defined(__linux__)
 	// TO BE IMPLEMENTED
 	RenderManager.Clear(GL_DEPTH_BUFFER_BIT);
 #else
