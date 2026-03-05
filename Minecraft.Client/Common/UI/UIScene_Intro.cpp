@@ -18,7 +18,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : U
 #endif
 
 	// 4J Stu - These map to values in the Actionscript
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64) || defined(__linux__)
 	int platformIdx = 0;
 #elif defined(_XBOX)
 	int platformIdx = 1;
