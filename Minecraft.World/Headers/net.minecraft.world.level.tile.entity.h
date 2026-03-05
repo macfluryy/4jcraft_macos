@@ -1,0 +1,15 @@
+#pragma once
+
+#include "../Blocks/TileEntities/BrewingStandTileEntity.h"
+#include "../Blocks/TileEntities/ChestTileEntity.h"
+#include "../Blocks/TileEntities/DispenserTileEntity.h"
+#include "../Blocks/TileEntities/EnchantmentTableTileEntity.h"
+#include "../Blocks/TileEntities/FurnaceTileEntity.h"
+#include "../Blocks/TileEntities/MobSpawnerTileEntity.h"
+#include "../Blocks/TileEntities/MusicTileEntity.h"
+#include "../Blocks/TileEntities/SignTileEntity.h"
+#include "../Blocks/TileEntities/TileEntity.h"
+#include "../Blocks/PistonMovingTileEntity.h"
+#include "../Blocks/TileEntities/TheEndPortalTileEntity.h"
+#include "../Blocks/TileEntities/SkullTileEntity.h"
+#include "../Blocks/TileEntities/EnderChestTileEntity.h"

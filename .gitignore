@@ -1,4 +1,4 @@
-# .gitignore
 build/
 .cache/
 .idea/
+cmake-build-debug/cd

@@ -1,0 +1,15 @@
+#pragma once
+
+#include "../Recipes/Recipes.h"
+#include "../Recipes/Recipy.h"
+#include "../Recipes/ArmorDyeRecipe.h"
+#include "../Recipes/ArmorRecipes.h"
+#include "../Recipes/ClothDyeRecipes.h"
+#include "../Recipes/FoodRecipes.h"
+#include "../Recipes/FurnaceRecipes.h"
+#include "../Recipes/OreRecipes.h"
+#include "../Recipes/ShapedRecipy.h"
+#include "../Recipes/ShapelessRecipy.h"
+#include "../Recipes/StructureRecipes.h"
+#include "../Recipes/ToolRecipes.h"
+#include "../Recipes/WeaponRecipes.h"
