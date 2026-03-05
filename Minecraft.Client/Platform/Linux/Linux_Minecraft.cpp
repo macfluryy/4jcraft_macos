@@ -694,6 +694,8 @@ Minecraft *pMinecraft=Minecraft::GetInstance();
 app.InitGameSettings();
 
 app.InitialiseTips();
+while (!RenderManager.ShouldClose()) {
+RenderManager.StartFrame();
 app.UpdateTime();
 PIXBeginNamedEvent(0,"Input manager tick");
 InputManager.Tick();
@@ -910,6 +912,7 @@ else
 // Fix for #7318 - Title crashes after short soak in the leaderboards menu
 // A memory leak was caused because the icon renderer kept creating new Vec3's because the pool wasn't reset
 Vec3::resetPool();
+} // end game loop
 }
 
 // Free resources, unregister custom classes, and exit.

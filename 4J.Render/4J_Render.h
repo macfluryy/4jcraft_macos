@@ -206,6 +206,9 @@ public:
 	void Suspend();
 	bool Suspended();
 	void Resume();
+
+	// Linux window management
+	bool ShouldClose();
 };
 
 

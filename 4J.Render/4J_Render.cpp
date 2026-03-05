@@ -1,62 +1,307 @@
 #include "4J_Render.h"
 #include <cstring>
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glext.h>
+#include <GLFW/glfw3.h>
+#include <cstdio>
+#include <cmath>
+
 C4JRender RenderManager;
 
-static float s_identityMatrix[16] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+static GLFWwindow *s_window = nullptr;
+static int s_textureLevels = 1;
+static int s_windowWidth = 1920;
+static int s_windowHeight = 1080;
+
+void C4JRender::Initialise()
+{
+    if (!glfwInit()) {
+        fprintf(stderr, "[4J_Render] Failed to initialise GLFW\n");
+        return;
+    }
+
+    // opengl 2.1!!!
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
+    s_window = glfwCreateWindow(s_windowWidth, s_windowHeight,
+                                "Minecraft Console Edition", nullptr, nullptr);
+    if (!s_window) {
+        fprintf(stderr, "[4J_Render] Failed to create GLFW window\n");
+        glfwTerminate();
+        return;
+    }
+
+    glfwMakeContextCurrent(s_window);
+    glfwSwapInterval(1);  // vsync
+
+    // init opengl
+    ::glEnable(GL_TEXTURE_2D);
+    ::glEnable(GL_DEPTH_TEST);
+    ::glDepthFunc(GL_LEQUAL);
+    ::glClearDepth(1.0);
+    ::glEnable(GL_ALPHA_TEST);
+    ::glAlphaFunc(GL_GREATER, 0.1f);
+    ::glEnable(GL_BLEND);
+    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    ::glEnable(GL_CULL_FACE);
+    ::glCullFace(GL_BACK);
+    ::glShadeModel(GL_SMOOTH);
+    ::glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    ::glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    ::glViewport(0, 0, s_windowWidth, s_windowHeight);
+    ::glEnable(GL_COLOR_MATERIAL);
+    ::glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+    printf("[4J_Render] OpenGL %s  |  %s\n",
+           (const char*)::glGetString(GL_VERSION),
+           (const char*)::glGetString(GL_RENDERER));
+    fflush(stdout);
+}
+
+void C4JRender::InitialiseContext()
+{
+    if (s_window) glfwMakeContextCurrent(s_window);
+}
+
+void C4JRender::StartFrame()
+{
+    if (!s_window) return;
+    glfwGetFramebufferSize(s_window, &s_windowWidth, &s_windowHeight);
+    if (s_windowWidth < 1) s_windowWidth = 1;
+    if (s_windowHeight < 1) s_windowHeight = 1;
+    ::glViewport(0, 0, s_windowWidth, s_windowHeight);
+}
+
+void C4JRender::Present()
+{
+    if (!s_window) return;
+    ::glFlush();
+    glfwSwapBuffers(s_window);
+    glfwPollEvents();
+}
+
+bool C4JRender::ShouldClose()
+{
+    return !s_window || glfwWindowShouldClose(s_window);
+}
+
+void C4JRender::DoScreenGrabOnNextPresent() {}
+
+void C4JRender::Clear(int flags)
+{
+    ::glClear(flags);
+}
+
+void C4JRender::SetClearColour(const float colourRGBA[4])
+{
+    ::glClearColor(colourRGBA[0], colourRGBA[1], colourRGBA[2], colourRGBA[3]);
+}
+
+bool C4JRender::IsWidescreen() { return true; }
+bool C4JRender::IsHiDef()      { return true; }
+void C4JRender::CaptureThumbnail(ImageFileBuffer *)  {}
+void C4JRender::CaptureScreen(ImageFileBuffer *, XSOCIAL_PREVIEWIMAGE *) {}
+void C4JRender::BeginConditionalSurvey(int)   {}
+void C4JRender::EndConditionalSurvey()        {}
+void C4JRender::BeginConditionalRendering(int){}
+void C4JRender::EndConditionalRendering()     {}
+
+void C4JRender::MatrixMode(int type)     { ::glMatrixMode(type); }
+void C4JRender::MatrixSetIdentity()      { ::glLoadIdentity(); }
+void C4JRender::MatrixTranslate(float x, float y, float z) { ::glTranslatef(x, y, z); }
+
+void C4JRender::MatrixRotate(float angle, float x, float y, float z)
+{
+    // can't fucking afford pi
+    ::glRotatef(angle * (180.0f / 3.14159265358979f), x, y, z);
+}
+
+void C4JRender::MatrixScale(float x, float y, float z) { ::glScalef(x, y, z); }
+
+void C4JRender::MatrixPerspective(float fovy, float aspect, float zNear, float zFar)
+{
+    ::gluPerspective((double)fovy, (double)aspect, (double)zNear, (double)zFar);
+}
+
+void C4JRender::MatrixOrthogonal(float left, float right, float bottom, float top,
+                                  float zNear, float zFar)
+{
+    ::glOrtho(left, right, bottom, top, zNear, zFar);
+}
+
+void C4JRender::MatrixPop()              { ::glPopMatrix(); }
+void C4JRender::MatrixPush()             { ::glPushMatrix(); }
+void C4JRender::MatrixMult(float *mat)   { ::glMultMatrixf(mat); }
+
+const float* C4JRender::MatrixGet(int type)
+{
+    static float mat[16];
+    ::glGetFloatv(type, mat);
+    return mat;
+}
+
+void C4JRender::Set_matrixDirty() {} // immediate-mode
+
+static GLenum mapPrimType(int pt)
+{
+    switch (pt) {
+    case 0:  return GL_TRIANGLES;      // C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST
+    case GL_LINES:          return GL_LINES;
+    case GL_LINE_STRIP:     return GL_LINE_STRIP;
+    case GL_TRIANGLES:      return GL_TRIANGLES;
+    case GL_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
+    case GL_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
+    case GL_QUADS:          return GL_QUADS;
+    default:                return GL_TRIANGLES;
+    }
+}
+
+void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
+                             void *dataIn, eVertexType vType,
+                             C4JRender::ePixelShaderType psType)
+{
+    if (count <= 0 || !dataIn) return;
+
+    GLenum mode = mapPrimType((int)PrimitiveType);
+    unsigned char *data = (unsigned char *)dataIn;
+
+    const int stride = 32;
+
+    ::glEnableClientState(GL_VERTEX_ARRAY);
+    ::glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    ::glEnableClientState(GL_COLOR_ARRAY);
+    ::glEnableClientState(GL_NORMAL_ARRAY);
+
+    ::glVertexPointer(3, GL_FLOAT, stride, data);
+    ::glTexCoordPointer(2, GL_FLOAT, stride, data + 12);
+    ::glColorPointer(4, GL_UNSIGNED_BYTE, stride, data + 20);
+    ::glNormalPointer(GL_BYTE, stride, data + 24);
+
+    ::glDrawArrays(mode, 0, count);
+}
+
+
+void C4JRender::CBuffLockStaticCreations() {}
+
+int C4JRender::CBuffCreate(int count)
+{
+    return (int)::glGenLists(count);
+}
+
+void C4JRender::CBuffDelete(int first, int count)
+{
+    if (first > 0 && count > 0) ::glDeleteLists(first, count);
+}
+
+void C4JRender::CBuffStart(int index, bool /*full*/)
+{
+    if (index > 0) ::glNewList(index, GL_COMPILE);
+}
+
+void C4JRender::CBuffClear(int index)
+{
+    if (index > 0) { ::glNewList(index, GL_COMPILE); ::glEndList(); }
+}
+
+int  C4JRender::CBuffSize(int /*index*/) { return 0; }
+
+void C4JRender::CBuffEnd()
+{
+    ::glEndList();
+}
+
+bool C4JRender::CBuffCall(int index, bool /*full*/)
+{
+    if (index <= 0) return false;
+    if (::glIsList(index)) { ::glCallList(index); return true; }
+    return false;
+}
+
+void C4JRender::CBuffTick()              {}
+void C4JRender::CBuffDeferredModeStart() {}
+void C4JRender::CBuffDeferredModeEnd()   {}
+
+
+int C4JRender::TextureCreate()
+{
+    GLuint id = 0;
+    ::glGenTextures(1, &id);
+    return (int)id;
+}
+
+void C4JRender::TextureFree(int idx)
+{
+    GLuint id = (GLuint)idx;
+    ::glDeleteTextures(1, &id);
+}
+
+void C4JRender::TextureBind(int idx)
+{
+    if (idx < 0) {
+        ::glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        ::glBindTexture(GL_TEXTURE_2D, (GLuint)idx);
+    }
+}
+
+void C4JRender::TextureBindVertex(int idx)
+{
+    ::glActiveTexture(GL_TEXTURE1);
+    if (idx < 0) {
+        ::glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        ::glBindTexture(GL_TEXTURE_2D, (GLuint)idx);
+    }
+    ::glActiveTexture(GL_TEXTURE0);
+}
+
+void C4JRender::TextureSetTextureLevels(int levels) { s_textureLevels = levels; }
+int  C4JRender::TextureGetTextureLevels()            { return s_textureLevels; }
+
+void C4JRender::TextureData(int width, int height, void *data, int level,
+                            eTextureFormat /*format*/)
+{
+    ::glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA8,
+                   width, height, 0,
+                   GL_BGRA, GL_UNSIGNED_BYTE, data);
+
+    if (level == 0) {
+        if (s_textureLevels > 1) {
+            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                              GL_NEAREST_MIPMAP_LINEAR);
+            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL,
+                              s_textureLevels - 1);
+        } else {
+            ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        }
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+}
+
+void C4JRender::TextureDataUpdate(int xoffset, int yoffset,
+                                  int width, int height,
+                                  void *data, int level)
+{
+    ::glTexSubImage2D(GL_TEXTURE_2D, level, xoffset, yoffset,
+                      width, height, GL_BGRA, GL_UNSIGNED_BYTE, data);
+}
+
+void C4JRender::TextureSetParam(int param, int value)
+{
+    ::glTexParameteri(GL_TEXTURE_2D, param, value);
+}
+
+void C4JRender::TextureDynamicUpdateStart() {}
+void C4JRender::TextureDynamicUpdateEnd()   {}
 
 void C4JRender::Tick() {}
-void C4JRender::UpdateGamma(unsigned short usGamma) {}
-void C4JRender::MatrixMode(int type) {}
-void C4JRender::MatrixSetIdentity() {}
-void C4JRender::MatrixTranslate(float x, float y, float z) {}
-void C4JRender::MatrixRotate(float angle, float x, float y, float z) {}
-void C4JRender::MatrixScale(float x, float y, float z) {}
-void C4JRender::MatrixPerspective(float fovy, float aspect, float zNear, float zFar) {}
-void C4JRender::MatrixOrthogonal(float left, float right, float bottom, float top, float zNear, float zFar) {}
-void C4JRender::MatrixPop() {}
-void C4JRender::MatrixPush() {}
-void C4JRender::MatrixMult(float *mat) {}
-const float* C4JRender::MatrixGet(int type) { return s_identityMatrix; }
-void C4JRender::Set_matrixDirty() {}
-void C4JRender::Initialise() {}
-void C4JRender::InitialiseContext() {}
-void C4JRender::StartFrame() {}
-void C4JRender::DoScreenGrabOnNextPresent() {}
-void C4JRender::Present() {}
-void C4JRender::Clear(int flags) {}
-void C4JRender::SetClearColour(const float colourRGBA[4]) {}
-bool C4JRender::IsWidescreen() { return true; }
-bool C4JRender::IsHiDef() { return true; }
-void C4JRender::CaptureThumbnail(ImageFileBuffer *pngOut) {}
-void C4JRender::CaptureScreen(ImageFileBuffer *jpgOut, XSOCIAL_PREVIEWIMAGE *previewOut) {}
-void C4JRender::BeginConditionalSurvey(int identifier) {}
-void C4JRender::EndConditionalSurvey() {}
-void C4JRender::BeginConditionalRendering(int identifier) {}
-void C4JRender::EndConditionalRendering() {}
-void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count, void *dataIn, eVertexType vType, C4JRender::ePixelShaderType psType) {}
-void C4JRender::CBuffLockStaticCreations() {}
-int C4JRender::CBuffCreate(int count) { return 0; }
-void C4JRender::CBuffDelete(int first, int count) {}
-void C4JRender::CBuffStart(int index, bool full) {}
-void C4JRender::CBuffClear(int index) {}
-int C4JRender::CBuffSize(int index) { return 0; }
-void C4JRender::CBuffEnd() {}
-bool C4JRender::CBuffCall(int index, bool full) { return false; }
-void C4JRender::CBuffTick() {}
-void C4JRender::CBuffDeferredModeStart() {}
-void C4JRender::CBuffDeferredModeEnd() {}
-int C4JRender::TextureCreate() { return 0; }
-void C4JRender::TextureFree(int idx) {}
-void C4JRender::TextureBind(int idx) {}
-void C4JRender::TextureBindVertex(int idx) {}
-void C4JRender::TextureSetTextureLevels(int levels) {}
-int C4JRender::TextureGetTextureLevels() { return 1; }
-void C4JRender::TextureData(int width, int height, void *data, int level, eTextureFormat format) {}
-void C4JRender::TextureDataUpdate(int xoffset, int yoffset, int width, int height, void *data, int level) {}
-void C4JRender::TextureSetParam(int param, int value) {}
-void C4JRender::TextureDynamicUpdateStart() {}
-void C4JRender::TextureDynamicUpdateEnd() {}
+void C4JRender::UpdateGamma(unsigned short) {}
 // really don't know if this is nessesary but didn't find any other functions to load images properly as a png..
 // im sorry.
 #ifdef __linux__
@@ -161,37 +406,196 @@ HRESULT C4JRender::SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcI
 HRESULT C4JRender::SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn) { return S_OK; }
 void C4JRender::TextureGetStats() {}
 void* C4JRender::TextureGetTexture(int idx) { return nullptr; }
-void C4JRender::StateSetColour(float r, float g, float b, float a) {}
-void C4JRender::StateSetDepthMask(bool enable) {}
-void C4JRender::StateSetBlendEnable(bool enable) {}
-void C4JRender::StateSetBlendFunc(int src, int dst) {}
-void C4JRender::StateSetBlendFactor(unsigned int colour) {}
-void C4JRender::StateSetAlphaFunc(int func, float param) {}
-void C4JRender::StateSetDepthFunc(int func) {}
-void C4JRender::StateSetFaceCull(bool enable) {}
-void C4JRender::StateSetFaceCullCW(bool enable) {}
-void C4JRender::StateSetLineWidth(float width) {}
-void C4JRender::StateSetWriteEnable(bool red, bool green, bool blue, bool alpha) {}
-void C4JRender::StateSetDepthTestEnable(bool enable) {}
-void C4JRender::StateSetAlphaTestEnable(bool enable) {}
-void C4JRender::StateSetDepthSlopeAndBias(float slope, float bias) {}
-void C4JRender::StateSetFogEnable(bool enable) {}
-void C4JRender::StateSetFogMode(int mode) {}
-void C4JRender::StateSetFogNearDistance(float dist) {}
-void C4JRender::StateSetFogFarDistance(float dist) {}
-void C4JRender::StateSetFogDensity(float density) {}
-void C4JRender::StateSetFogColour(float red, float green, float blue) {}
-void C4JRender::StateSetLightingEnable(bool enable) {}
-void C4JRender::StateSetVertexTextureUV(float u, float v) {}
-void C4JRender::StateSetLightColour(int light, float red, float green, float blue) {}
-void C4JRender::StateSetLightAmbientColour(float red, float green, float blue) {}
-void C4JRender::StateSetLightDirection(int light, float x, float y, float z) {}
-void C4JRender::StateSetLightEnable(int light, bool enable) {}
-void C4JRender::StateSetViewport(eViewportType viewportType) {}
-void C4JRender::StateSetEnableViewportClipPlanes(bool enable) {}
-void C4JRender::StateSetTexGenCol(int col, float x, float y, float z, float w, bool eyeSpace) {}
-void C4JRender::StateSetStencil(int Function, uint8_t stencil_ref, uint8_t stencil_func_mask, uint8_t stencil_write_mask) {}
-void C4JRender::StateSetForceLOD(int LOD) {}
+
+// we handle opengl calls cuz multiplatform is painful!!
+void C4JRender::StateSetColour(float r, float g, float b, float a)
+{
+    ::glColor4f(r, g, b, a);
+}
+
+void C4JRender::StateSetDepthMask(bool enable)
+{
+    ::glDepthMask(enable ? GL_TRUE : GL_FALSE);
+}
+
+void C4JRender::StateSetBlendEnable(bool enable)
+{
+    if (enable) ::glEnable(GL_BLEND); else ::glDisable(GL_BLEND);
+}
+
+void C4JRender::StateSetBlendFunc(int src, int dst)
+{
+    ::glBlendFunc(src, dst);
+}
+
+void C4JRender::StateSetBlendFactor(unsigned int colour)
+{
+    // colour is 0xAARRGGBB packed
+    float a = ((colour >> 24) & 0xFF) / 255.0f;
+    float r = ((colour >> 16) & 0xFF) / 255.0f;
+    float g = ((colour >>  8) & 0xFF) / 255.0f;
+    float b = ( colour        & 0xFF) / 255.0f;
+    ::glBlendColor(r, g, b, a);
+}
+
+void C4JRender::StateSetAlphaFunc(int func, float param)
+{
+    ::glAlphaFunc(func, param);
+}
+
+void C4JRender::StateSetDepthFunc(int func)
+{
+    ::glDepthFunc(func);
+}
+
+void C4JRender::StateSetFaceCull(bool enable)
+{
+    if (enable) ::glEnable(GL_CULL_FACE); else ::glDisable(GL_CULL_FACE);
+}
+
+void C4JRender::StateSetFaceCullCW(bool enable)
+{
+    ::glFrontFace(enable ? GL_CW : GL_CCW);
+}
+
+void C4JRender::StateSetLineWidth(float width)
+{
+    ::glLineWidth(width);
+}
+
+void C4JRender::StateSetWriteEnable(bool red, bool green, bool blue, bool alpha)
+{
+    ::glColorMask(red, green, blue, alpha);
+}
+
+void C4JRender::StateSetDepthTestEnable(bool enable)
+{
+    if (enable) ::glEnable(GL_DEPTH_TEST); else ::glDisable(GL_DEPTH_TEST);
+}
+
+void C4JRender::StateSetAlphaTestEnable(bool enable)
+{
+    if (enable) ::glEnable(GL_ALPHA_TEST); else ::glDisable(GL_ALPHA_TEST);
+}
+
+void C4JRender::StateSetDepthSlopeAndBias(float slope, float bias)
+{
+    if (slope != 0.0f || bias != 0.0f) {
+        ::glEnable(GL_POLYGON_OFFSET_FILL);
+        ::glPolygonOffset(slope, bias);
+    } else {
+        ::glDisable(GL_POLYGON_OFFSET_FILL);
+    }
+}
+
+void C4JRender::StateSetFogEnable(bool enable)
+{
+    if (enable) ::glEnable(GL_FOG); else ::glDisable(GL_FOG);
+}
+
+void C4JRender::StateSetFogMode(int mode)
+{
+    ::glFogi(GL_FOG_MODE, mode);
+}
+
+void C4JRender::StateSetFogNearDistance(float dist)
+{
+    ::glFogf(GL_FOG_START, dist);
+}
+
+void C4JRender::StateSetFogFarDistance(float dist)
+{
+    ::glFogf(GL_FOG_END, dist);
+}
+
+void C4JRender::StateSetFogDensity(float density)
+{
+    ::glFogf(GL_FOG_DENSITY, density);
+}
+
+void C4JRender::StateSetFogColour(float red, float green, float blue)
+{
+    float c[4] = {red, green, blue, 1.0f};
+    ::glFogfv(GL_FOG_COLOR, c);
+}
+
+void C4JRender::StateSetLightingEnable(bool enable)
+{
+    if (enable) ::glEnable(GL_LIGHTING); else ::glDisable(GL_LIGHTING);
+}
+
+void C4JRender::StateSetVertexTextureUV(float u, float v)
+{
+    ::glMultiTexCoord2f(GL_TEXTURE1, u, v);
+}
+
+void C4JRender::StateSetLightColour(int light, float red, float green, float blue)
+{
+    float diffuse[4] = {red, green, blue, 1.0f};
+    ::glLightfv(GL_LIGHT0 + light, GL_DIFFUSE, diffuse);
+}
+
+void C4JRender::StateSetLightAmbientColour(float red, float green, float blue)
+{
+    float ambient[4] = {red, green, blue, 1.0f};
+    float model[4] = {red, green, blue, 1.0f};
+    ::glLightModelfv(GL_LIGHT_MODEL_AMBIENT, model);
+    // Also set on light 0 as a fallback incase
+    ::glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+}
+
+void C4JRender::StateSetLightDirection(int light, float x, float y, float z)
+{
+    float dir[4] = {x, y, z, 0.0f};  // w=0 → directional light
+    ::glLightfv(GL_LIGHT0 + light, GL_POSITION, dir);
+}
+
+void C4JRender::StateSetLightEnable(int light, bool enable)
+{
+    GLenum l = GL_LIGHT0 + light;
+    if (enable) ::glEnable(l); else ::glDisable(l);
+}
+
+void C4JRender::StateSetViewport(eViewportType viewportType)
+{
+    // Use the full framebuffer for all viewport types
+    ::glViewport(0, 0, s_windowWidth, s_windowHeight);
+}
+
+void C4JRender::StateSetEnableViewportClipPlanes(bool enable)
+{
+    // Clip planes not commonly used in the legacy path
+    if (enable) ::glEnable(GL_CLIP_PLANE0); else ::glDisable(GL_CLIP_PLANE0);
+}
+
+void C4JRender::StateSetTexGenCol(int col, float x, float y, float z, float w, bool eyeSpace)
+{
+    GLenum coord;
+    switch (col) {
+    case 0: coord = GL_S; break;
+    case 1: coord = GL_T; break;
+    case 2: coord = GL_R; break;
+    case 3: coord = GL_Q; break;
+    default: coord = GL_S; break;
+    }
+    float plane[4] = {x, y, z, w};
+    GLenum planeMode = eyeSpace ? GL_EYE_PLANE : GL_OBJECT_PLANE;
+    ::glTexGeni(coord, GL_TEXTURE_GEN_MODE,
+                eyeSpace ? GL_EYE_LINEAR : GL_OBJECT_LINEAR);
+    ::glTexGenfv(coord, planeMode, plane);
+}
+
+void C4JRender::StateSetStencil(int Function, uint8_t stencil_ref,
+                                uint8_t stencil_func_mask,
+                                uint8_t stencil_write_mask)
+{
+    ::glEnable(GL_STENCIL_TEST);
+    ::glStencilFunc(Function, stencil_ref, stencil_func_mask);
+    ::glStencilMask(stencil_write_mask);
+}
+
+void C4JRender::StateSetForceLOD(int LOD) {} // No LOD bias in legacy GL path
+
 void C4JRender::BeginEvent(LPCWSTR eventName) {}
 void C4JRender::EndEvent() {}
 void C4JRender::Suspend() {}
