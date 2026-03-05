@@ -30,3 +30,4 @@ Common
 *.so
 *.out
 oldimpl
+./oldimpl
