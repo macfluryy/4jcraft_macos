@@ -778,23 +778,33 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 
 	bool first = true;
 	int count = 0;
+	int dbgNotVisible = 0, dbgNoIdx = 0, dbgEmpty = 0, dbgCalled = 0, dbgCallOk = 0;
 	ClipChunk *pClipChunk = chunks[playerIndex].data;
 	unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
 	for( int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++ )
 	{
-		if( !pClipChunk->visible ) continue;													// This will be set if the chunk isn't visible, or isn't compiled, or has both empty flags set
-		if( pClipChunk->globalIdx == -1 ) continue;												// Not sure if we should ever encounter this... TODO check
-		if( ( globalChunkFlags[pClipChunk->globalIdx] & emptyFlag ) == emptyFlag ) continue;	// Check that this particular layer isn't empty
+		if( !pClipChunk->visible ) { dbgNotVisible++; continue; }
+		if( pClipChunk->globalIdx == -1 ) { dbgNoIdx++; continue; }
+		if( ( globalChunkFlags[pClipChunk->globalIdx] & emptyFlag ) == emptyFlag ) { dbgEmpty++; continue; }
 
 		// List can be calculated directly from the chunk's global idex
 		int list = pClipChunk->globalIdx * 2 + layer;
 		list += chunkLists;
 
+		dbgCalled++;
 		if(RenderManager.CBuffCall(list, first))
 		{
 			first = false;
+			dbgCallOk++;
 		}
 		count++;
+	}
+	static int _dbgRC = 0;
+	_dbgRC++;
+	if (_dbgRC <= 5 || (_dbgRC % 600 == 0)) {
+		fprintf(stderr, "[RENDER] renderChunks frame=%d layer=%d total=%d notVis=%d noIdx=%d empty=%d called=%d callOk=%d xOff=%.1f yOff=%.1f zOff=%.1f chunkLists=%d\n",
+			_dbgRC, layer, chunks[playerIndex].length, dbgNotVisible, dbgNoIdx, dbgEmpty, dbgCalled, dbgCallOk, xOff, yOff, zOff, chunkLists);
+		fflush(stderr);
 	}
 
 #ifdef __PSVITA__

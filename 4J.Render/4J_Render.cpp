@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 #include <cmath>
+#include <pthread.h>
 
 C4JRender RenderManager;
 
@@ -15,6 +16,24 @@ static GLFWwindow *s_window = nullptr;
 static int s_textureLevels = 1;
 static int s_windowWidth = 1920;
 static int s_windowHeight = 1080;
+
+// Thread-local storage for per-thread shared GL contexts.
+// The main thread uses s_window directly; worker threads get invisible
+// windows that share objects (textures, display lists) with s_window.
+static pthread_key_t s_glCtxKey;
+static pthread_once_t s_glCtxKeyOnce = PTHREAD_ONCE_INIT;
+static void makeGLCtxKey() { pthread_key_create(&s_glCtxKey, nullptr); }
+
+// Pre-created pool of shared contexts for worker threads
+static const int MAX_SHARED_CONTEXTS = 8;
+static GLFWwindow *s_sharedContexts[MAX_SHARED_CONTEXTS] = {};
+static int s_sharedContextCount = 0;
+static int s_nextSharedContext = 0;
+static pthread_mutex_t s_sharedCtxMutex = PTHREAD_MUTEX_INITIALIZER;
+
+// Track which thread is the main (rendering) thread
+static pthread_t s_mainThread;
+static bool s_mainThreadSet = false;
 
 void C4JRender::Initialise()
 {
@@ -60,11 +79,67 @@ void C4JRender::Initialise()
            (const char*)::glGetString(GL_VERSION),
            (const char*)::glGetString(GL_RENDERER));
     fflush(stdout);
+
+    // Tag this as the main rendering thread
+    pthread_once(&s_glCtxKeyOnce, makeGLCtxKey);
+    s_mainThread = pthread_self();
+    s_mainThreadSet = true;
+    pthread_setspecific(s_glCtxKey, s_window);
+
+    // Pre-create shared GL contexts for worker threads (chunk builders etc.)
+    // Must be done on the main thread because GLFW requires it.
+    for (int i = 0; i < MAX_SHARED_CONTEXTS; i++) {
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        s_sharedContexts[i] = glfwCreateWindow(1, 1, "", nullptr, s_window);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+        if (s_sharedContexts[i]) {
+            s_sharedContextCount++;
+        } else {
+            fprintf(stderr, "[4J_Render] WARN: only created %d/%d shared contexts\n", i, MAX_SHARED_CONTEXTS);
+            break;
+        }
+    }
+    // Ensure main thread still has the context
+    glfwMakeContextCurrent(s_window);
+    fprintf(stderr, "[4J_Render] Created %d shared GL contexts for worker threads\n", s_sharedContextCount);
+    fflush(stderr);
 }
 
 void C4JRender::InitialiseContext()
 {
-    if (s_window) glfwMakeContextCurrent(s_window);
+    if (!s_window) return;
+    pthread_once(&s_glCtxKeyOnce, makeGLCtxKey);
+
+    // Main thread reclaiming context (e.g. after startup thread finishes)
+    if (s_mainThreadSet && pthread_equal(pthread_self(), s_mainThread)) {
+        glfwMakeContextCurrent(s_window);
+        pthread_setspecific(s_glCtxKey, s_window);
+        return;
+    }
+
+    // Worker thread: check if it already has a shared context
+    GLFWwindow *ctx = (GLFWwindow*)pthread_getspecific(s_glCtxKey);
+    if (ctx) {
+        glfwMakeContextCurrent(ctx);
+        return;
+    }
+
+    // Grab a pre-created shared context from the pool
+    pthread_mutex_lock(&s_sharedCtxMutex);
+    GLFWwindow *shared = nullptr;
+    if (s_nextSharedContext < s_sharedContextCount) {
+        shared = s_sharedContexts[s_nextSharedContext++];
+    }
+    pthread_mutex_unlock(&s_sharedCtxMutex);
+
+    if (!shared) {
+        fprintf(stderr, "[4J_Render] ERROR: no shared GL contexts left for worker thread!\n");
+        return;
+    }
+    glfwMakeContextCurrent(shared);
+    pthread_setspecific(s_glCtxKey, shared);
+    fprintf(stderr, "[4J_Render] Assigned shared GL context %p to worker thread\n", (void*)shared);
+    fflush(stderr);
 }
 
 void C4JRender::StartFrame()
@@ -103,6 +178,7 @@ void C4JRender::SetClearColour(const float colourRGBA[4])
 
 bool C4JRender::IsWidescreen() { return true; }
 bool C4JRender::IsHiDef()      { return true; }
+void C4JRender::GetFramebufferSize(int &width, int &height) { width = s_windowWidth; height = s_windowHeight; }
 void C4JRender::CaptureThumbnail(ImageFileBuffer *)  {}
 void C4JRender::CaptureScreen(ImageFileBuffer *, XSOCIAL_PREVIEWIMAGE *) {}
 void C4JRender::BeginConditionalSurvey(int)   {}
@@ -174,23 +250,19 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
 {
     if (count <= 0 || !dataIn) return;
 
-    static int _dbgDVCount = 0;
-    _dbgDVCount++;
-    if (_dbgDVCount <= 10 || (_dbgDVCount % 5000 == 0)) {
-        GLenum err = ::glGetError();
-        fprintf(stderr, "[RENDER] DrawVertices call=%d count=%d prim=%d vType=%d displayList=%d glErr=%d\n",
-            _dbgDVCount, count, (int)PrimitiveType, (int)vType, isCompilingDisplayList(), err);
-        fflush(stderr);
-    }
-
     GLenum mode = mapPrimType((int)PrimitiveType);
     unsigned char *data = (unsigned char *)dataIn;
 
     // Vertex layout: 3 floats pos, 2 floats tex, 4 bytes color, 4 bytes normal, 4 bytes padding = 32 bytes
     const int stride = 32;
 
+    // Color byte-order fix for little-endian (x86/x64):
+    // Console code (Xbox 360 / PS3, big-endian) stores color as int col = (r<<24)|(g<<16)|(b<<8)|a
+    // Big-endian memory:    [r, g, b, a] — correct for glColor4ub(col[0], col[1], col[2], col[3])
+    // Little-endian memory: [a, b, g, r] — bytes are reversed!
+    // Fix: read bytes in reverse order col[3]=r, col[2]=g, col[1]=b, col[0]=a
+
     if (isCompilingDisplayList()) {
-        // run.
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {
             unsigned char *v = data + i * stride;
@@ -200,13 +272,20 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             signed char *nrm = (signed char *)(v + 24);
 
             ::glNormal3f(nrm[0] / 127.0f, nrm[1] / 127.0f, nrm[2] / 127.0f);
-            ::glColor4ub(col[0], col[1], col[2], col[3]);
+            ::glColor4ub(col[3], col[2], col[1], col[0]); // LE fix: r,g,b,a from reversed bytes
             ::glTexCoord2f(tex[0], tex[1]);
             ::glVertex3f(pos[0], pos[1], pos[2]);
         }
         ::glEnd();
     } else {
-        // waiter ! fast vertex pls !
+        // For vertex array path, swap color bytes in-place to RGBA order
+        for (int i = 0; i < count; i++) {
+            unsigned char *col = data + i * stride + 20;
+            unsigned char tmp;
+            tmp = col[0]; col[0] = col[3]; col[3] = tmp; // swap a<->r
+            tmp = col[1]; col[1] = col[2]; col[2] = tmp; // swap b<->g
+        }
+
         ::glEnableClientState(GL_VERTEX_ARRAY);
         ::glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         ::glEnableClientState(GL_COLOR_ARRAY);
@@ -218,6 +297,14 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
         ::glNormalPointer(GL_BYTE, stride, data + 24);
 
         ::glDrawArrays(mode, 0, count);
+
+        // Swap back to preserve original data
+        for (int i = 0; i < count; i++) {
+            unsigned char *col = data + i * stride + 20;
+            unsigned char tmp;
+            tmp = col[0]; col[0] = col[3]; col[3] = tmp;
+            tmp = col[1]; col[1] = col[2]; col[2] = tmp;
+        }
     }
 }
 
@@ -254,13 +341,6 @@ void C4JRender::CBuffEnd()
 bool C4JRender::CBuffCall(int index, bool /*full*/)
 {
     if (index <= 0) return false;
-    static int _dbgCBCount = 0;
-    _dbgCBCount++;
-    if (_dbgCBCount <= 5 || (_dbgCBCount % 5000 == 0)) {
-        fprintf(stderr, "[RENDER] CBuffCall call=%d index=%d isList=%d\n",
-            _dbgCBCount, index, ::glIsList(index));
-        fflush(stderr);
-    }
     if (::glIsList(index)) { ::glCallList(index); return true; }
     return false;
 }

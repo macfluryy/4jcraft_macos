@@ -70,6 +70,7 @@ public:
 	void SetClearColour(const float colourRGBA[4]);
 	bool IsWidescreen();
 	bool IsHiDef();
+	void GetFramebufferSize(int &width, int &height);
 	void CaptureThumbnail(ImageFileBuffer *pngOut);
 	void CaptureScreen(ImageFileBuffer *jpgOut, XSOCIAL_PREVIEWIMAGE *previewOut);
 	void BeginConditionalSurvey(int identifier);

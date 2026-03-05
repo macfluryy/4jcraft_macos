@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <execinfo.h>
 #include <unistd.h>
+#include <GLFW/glfw3.h>
 static void sigsegv_handler(int sig) {
     const char msg[] = "\n=== SIGNAL CAUGHT: ";
     write(STDERR_FILENO, msg, sizeof(msg)-1);
@@ -868,6 +869,71 @@ pDevice->SetSamplerState(0,SamplerStateModes[i],SamplerStateA[i]);
 
 RenderManager.Set_matrixDirty();
 #endif
+
+// DEBUG: Dump framebuffer to file once after game has been running a while
+{
+    static int _fbDumpFrame = 0;
+    _fbDumpFrame++;
+    if (_fbDumpFrame == 2000 || _fbDumpFrame == 4000) {
+        // Test: is GL context current? Force red clear before read.
+        void* curCtx = glfwGetCurrentContext();
+        fprintf(stderr, "[FBDUMP] frame=%d glfwGetCurrentContext()=%p\n", _fbDumpFrame, curCtx);
+        fflush(stderr);
+        // Read the ACTUAL rendered framebuffer first
+        int fbW, fbH;
+        RenderManager.GetFramebufferSize(fbW, fbH);
+        int sz = fbW * fbH * 3;
+        unsigned char *pixels = (unsigned char*)malloc(sz);
+        if (pixels) {
+            ::glReadPixels(0, 0, fbW, fbH, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+            GLenum err = glGetError();
+            fprintf(stderr, "[FBDUMP] glReadPixels err=0x%x size=%dx%d\n", err, fbW, fbH);
+            // Check bound framebuffer
+            GLint boundFBO = -1;
+            #ifndef GL_FRAMEBUFFER_BINDING
+            #define GL_FRAMEBUFFER_BINDING 0x8CA6
+            #endif
+            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &boundFBO);
+            GLint drawBuf = 0;
+            glGetIntegerv(GL_DRAW_BUFFER, &drawBuf);
+            GLint readBuf = 0;
+            glGetIntegerv(GL_READ_BUFFER, &readBuf);
+            fprintf(stderr, "[FBDUMP] FBO=%d drawBuf=0x%x readBuf=0x%x\n", boundFBO, drawBuf, readBuf);
+            fflush(stderr);
+            char fname[128];
+            snprintf(fname, sizeof(fname), "/tmp/fb_dump_%d.ppm", _fbDumpFrame);
+            FILE *fp = fopen(fname, "wb");
+            if (fp) {
+                fprintf(fp, "P6\n%d %d\n255\n", fbW, fbH);
+                for (int y = fbH - 1; y >= 0; y--) {
+                    fwrite(pixels + y * fbW * 3, 1, fbW * 3, fp);
+                }
+                fclose(fp);
+                fprintf(stderr, "[RENDER] Dumped framebuffer %dx%d to %s\n", fbW, fbH, fname);
+                fflush(stderr);
+            }
+            // Now force a red clear and dump again to verify GL context works
+            ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+            ::glClear(GL_COLOR_BUFFER_BIT);
+            ::glFinish();
+            ::glReadPixels(0, 0, fbW, fbH, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+            char fname2[128];
+            snprintf(fname2, sizeof(fname2), "/tmp/fb_dump_%d_RED.ppm", _fbDumpFrame);
+            FILE *fp2 = fopen(fname2, "wb");
+            if (fp2) {
+                fprintf(fp2, "P6\n%d %d\n255\n", fbW, fbH);
+                for (int y = fbH - 1; y >= 0; y--) {
+                    fwrite(pixels + y * fbW * 3, 1, fbW * 3, fp2);
+                }
+                fclose(fp2);
+                fprintf(stderr, "[RENDER] Dumped RED test %dx%d to %s\n", fbW, fbH, fname2);
+                fflush(stderr);
+            }
+            free(pixels);
+        }
+    }
+}
+
 // Present the frame.
 RenderManager.Present();
 

@@ -995,13 +995,6 @@ int GameRenderer::getLightTexture(int iPad, Level *level)
 
 void GameRenderer::render(float a, bool bFirst)
 {
-	static int _dbgRenderCount = 0;
-	_dbgRenderCount++;
-	if (_dbgRenderCount <= 5 || (_dbgRenderCount % 300 == 0)) {
-		fprintf(stderr, "[RENDER] GameRenderer::render frame=%d level=%p screen=%p width=%d height=%d\n",
-			_dbgRenderCount, (void*)mc->level, (void*)mc->screen, mc->width, mc->height);
-		fflush(stderr);
-	}
 	if( _updateLightTexture && bFirst) updateLightTexture(a);
 	if (Display::isActive())
 	{
@@ -1087,6 +1080,7 @@ void GameRenderer::render(float a, bool bFirst)
 	else
 	{
 		glViewport(0, 0, mc->width, mc->height);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glMatrixMode(GL_MODELVIEW);
@@ -1261,17 +1255,6 @@ void GameRenderer::DisableUpdateThread()
 
 void GameRenderer::renderLevel(float a, __int64 until)
 {
-	static int _dbgRLCount = 0;
-	_dbgRLCount++;
-	if (_dbgRLCount <= 3 || (_dbgRLCount % 300 == 0)) {
-		fprintf(stderr, "[RENDER] renderLevel frame=%d player=%p levelRenderer=%p\n",
-			_dbgRLCount, (void*)mc->player.get(), (void*)mc->levelRenderer);
-		if (mc->player) {
-			fprintf(stderr, "[RENDER]   playerPos=(%.1f, %.1f, %.1f)\n",
-				mc->player->x, mc->player->y, mc->player->z);
-		}
-		fflush(stderr);
-	}
 //	if (updateLightTexture) updateLightTexture();	// 4J - TODO - Java 1.0.1 has this line enabled, should check why - don't want to put it in now in case it breaks split-screen
 
 	glEnable(GL_CULL_FACE);
@@ -1311,6 +1294,23 @@ void GameRenderer::renderLevel(float a, __int64 until)
 
 		setupCamera(a, i);
 		Camera::prepare(mc->player, mc->player->ThirdPersonView() == 2);
+		// DEBUG: Log camera-relevant state
+		static int _dbgCam = 0;
+		_dbgCam++;
+		if (_dbgCam <= 5 || (_dbgCam % 300 == 0)) {
+			float mv[16]; ::glGetFloatv(GL_MODELVIEW_MATRIX, mv);
+			float pj[16]; ::glGetFloatv(GL_PROJECTION_MATRIX, pj);
+			float cc[4]; ::glGetFloatv(GL_COLOR_CLEAR_VALUE, cc);
+			int vp[4]; ::glGetIntegerv(GL_VIEWPORT, vp);
+			fprintf(stderr, "[RENDER] CAM frame=%d viewport=(%d,%d,%d,%d) clearColor=(%.2f,%.2f,%.2f) renderDist=%.0f\n",
+				_dbgCam, vp[0], vp[1], vp[2], vp[3], cc[0], cc[1], cc[2], renderDistance);
+			fprintf(stderr, "[RENDER]   MV[12..14]=(%f,%f,%f) PJ[0,5,10]=(%f,%f,%f)\n",
+				mv[12], mv[13], mv[14], pj[0], pj[5], pj[10]);
+			fprintf(stderr, "[RENDER]   cameraEntity pos=(%.2f,%.2f,%.2f) heightOff=%.2f\n",
+				mc->cameraTargetPlayer->x, mc->cameraTargetPlayer->y, mc->cameraTargetPlayer->z,
+				mc->cameraTargetPlayer->heightOffset);
+			fflush(stderr);
+		}
 
 		Frustum::getFrustum();
 		if (mc->options->viewDistance < 2)
