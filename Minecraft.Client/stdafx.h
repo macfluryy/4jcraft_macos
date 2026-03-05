@@ -297,7 +297,7 @@ typedef XUID GameSessionUID;
 #elif defined __linux__
 	// FIXME: Make Linux/ versions of all of these
 	// #include "Windows64/Sentient/MinecraftTelemetry.h" // conflicts with Common/Telemetry/TelemetryManager.h, no idea whats up with that
-	#include "Windows64Media/strings.h"
+	#include "OrbisMedia/strings.h" // using Orbis or Vita strings because IDS_CONTENT_RESTRICTION exists
 	#include "Windows64/Windows64_App.h"
 	#include "Windows64/Sentient/DynamicConfigurations.h"
 	#include "Windows64/Sentient/SentientTelemetryCommon.h"
