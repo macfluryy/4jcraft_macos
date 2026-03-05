@@ -392,4 +392,3 @@ void glCullFace(int dir)
 }
 
 #endif
-#endif
