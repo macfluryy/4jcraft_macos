@@ -5,7 +5,6 @@
 #include "PacketListener.h"
 #include "LoginPacket.h"
 #include "LevelType.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 
 
 LoginPacket::LoginPacket()

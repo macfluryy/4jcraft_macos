@@ -241,8 +241,8 @@ void MemSect(int sect);
 #include "../Minecraft.Client/PSVita/Sentient/MinecraftTelemetry.h"
 #elif defined(__linux__)
 // FIXME: Move and port to ../Minecraft.Client/Linux
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-#include "../Minecraft.Client/Windows64Media/strings.h"
+#include "../Minecraft.Client/Linux/Linux_App.h"
+#include "../Minecraft.Client/OrbisMedia/strings.h"
 #include "../Minecraft.Client/Windows64/Sentient/SentientTelemetryCommon.h"
 // #include "../Minecraft.Client/Windows64/Sentient/MinecraftTelemetry.h"
 #else

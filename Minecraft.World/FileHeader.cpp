@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "FileHeader.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.cpp"
+
 //#define _DEBUG_FILE_HEADER
 
 extern CConsoleMinecraftApp app;

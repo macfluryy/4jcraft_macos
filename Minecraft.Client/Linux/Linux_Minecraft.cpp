@@ -19,7 +19,7 @@
 #include "../../Minecraft.World/Vec3.h"
 #include "../../Minecraft.World/Level.h"
 #include "../../Minecraft.World/net.minecraft.world.level.tile.h"
-#include "../../Minecraft.Client/Windows64Media/strings.h"
+#include "../../Minecraft.Client/OrbisMedia/strings.h"
 
 #include "../ClientConnection.h"
 #include "../User.h"

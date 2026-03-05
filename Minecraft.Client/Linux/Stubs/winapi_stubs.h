@@ -57,7 +57,7 @@ typedef struct {
 
 typedef long long LONGLONG;
 typedef size_t SIZE_T;
-typedef std::wstring LPWSTR;
+typedef WCHAR *LPWSTR, *PWSTR;
 typedef unsigned char boolean; // java brainrot
 #define __debugbreak()
 #define __int32 int
@@ -146,6 +146,30 @@ typedef float FLOAT;
 #define MEM_LARGE_PAGES  0x20000000     
 #define MEM_HEAP         0x40000000     
 #define MEM_16MB_PAGES   0x80000000     
+
+#define THREAD_BASE_PRIORITY_LOWRT  15  // value that gets a thread to LowRealtime-1
+#define THREAD_BASE_PRIORITY_MAX    2   // maximum thread base priority boost
+#define THREAD_BASE_PRIORITY_MIN    -2  // minimum thread base priority boost
+#define THREAD_BASE_PRIORITY_IDLE   -15 // value that gets a thread to idle
+
+#define THREAD_PRIORITY_LOWEST          THREAD_BASE_PRIORITY_MIN
+#define THREAD_PRIORITY_BELOW_NORMAL    (THREAD_PRIORITY_LOWEST+1)
+#define THREAD_PRIORITY_NORMAL          0
+#define THREAD_PRIORITY_HIGHEST         THREAD_BASE_PRIORITY_MAX
+#define THREAD_PRIORITY_ABOVE_NORMAL    (THREAD_PRIORITY_HIGHEST-1)
+#define THREAD_PRIORITY_ERROR_RETURN    (MAXLONG)
+
+#define THREAD_PRIORITY_TIME_CRITICAL   THREAD_BASE_PRIORITY_LOWRT
+#define THREAD_PRIORITY_IDLE            THREAD_BASE_PRIORITY_IDLE
+
+#define IGNORE              0       // Ignore signal
+#define INFINITE            0xFFFFFFFF  // Infinite timeout
+#define WAIT_FAILED ((DWORD)0xFFFFFFFF)
+#define STATUS_WAIT_0                    ((DWORD   )0x00000000L)    
+#define WAIT_OBJECT_0       ((STATUS_WAIT_0 ) + 0 )
+#define STATUS_PENDING                   ((DWORD   )0x00000103L)    
+#define STILL_ACTIVE                        STATUS_PENDING
+
 
 #define INVALID_HANDLE_VALUE ((HANDLE)(ULONG_PTR)-1)
 

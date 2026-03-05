@@ -7,7 +7,6 @@
 #include "net.minecraft.world.effect.h"
 #include "net.minecraft.world.item.enchantment.h"
 #include "Monster.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
 #include "../Minecraft.Client/Minecraft.h"
 
 

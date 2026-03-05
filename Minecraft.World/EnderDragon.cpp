@@ -13,8 +13,6 @@
 #include "SharedConstants.h"
 #include "EnderDragon.h"
 
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
 

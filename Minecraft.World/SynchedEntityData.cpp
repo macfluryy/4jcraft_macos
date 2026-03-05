@@ -7,8 +7,6 @@
 #include "net.minecraft.world.item.h"
 #include "SynchedEntityData.h"
 
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-
 SynchedEntityData::SynchedEntityData()
 {
 	m_isDirty = false;

@@ -7,9 +7,6 @@
 #include "../Minecraft.Client/Textures.h"
 #include "Silverfish.h"
 #include "SoundTypes.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
-
-
 
 Silverfish::Silverfish(Level *level) : Monster( level )
 {

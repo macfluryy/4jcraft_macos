@@ -1312,7 +1312,7 @@ TEXTURE_NAME TUImages[] =
 };
 
 // This is for any TU textures that aren't part of our enum indexed preload set
-wchar_t *TUImagePaths[] =
+const wchar_t *TUImagePaths[] =
 {
 	L"font/Default",
 	L"font/Mojangles_7",

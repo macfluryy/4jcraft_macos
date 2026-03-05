@@ -3,7 +3,7 @@
 #include "PacketListener.h"
 #include "BasicTypeContainers.h"
 #include "CustomPayloadPacket.h"
-#include "../Minecraft.Client/Windows64/Windows64_App.h"
+
 // Mojang-defined custom packets
 const wstring CustomPayloadPacket::CUSTOM_BOOK_PACKET = L"MC|BEdit";
 const wstring CustomPayloadPacket::CUSTOM_BOOK_SIGN_PACKET = L"MC|BSign";
