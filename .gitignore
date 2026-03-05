@@ -17,6 +17,13 @@ compile_commands.json
 .vscode/
 *.code-workspace
 
+# Build output directories
+Linux/
+x64/
+
+# Asset symlink (created at runtime for working directory resolution)
+Common
+
 # Compiled objects / binaries
 *.o
 *.a
