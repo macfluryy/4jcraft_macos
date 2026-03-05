@@ -57,7 +57,7 @@ void ConsoleUIController::render()
 }
 
 void ConsoleUIController::beginIggyCustomDraw4J(IggyCustomDrawCallbackRegion *region, CustomDrawData *customDrawRegion)
-
+{
 	gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
 }
 
