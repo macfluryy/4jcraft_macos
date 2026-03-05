@@ -300,7 +300,13 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             int8_t nz = (int8_t)((normalInt >> 16) & 0xFF);
 
             ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
-            ::glColor4ub(cr, cg, cb, ca);
+            // Only override current GL color when the vertex actually carries one.
+            // colorInt == 0 is the Tesselator sentinel for "no colour set"
+            // (alpha=0 with all channels zero).  Skipping glColor4ub here lets
+            // sky/fog colour set before glCallList() pass through unchanged.
+            if (colorInt != 0) {
+                ::glColor4ub(cr, cg, cb, ca);
+            }
             ::glTexCoord2f(fdata[3], fdata[4]);
             ::glVertex3f(fdata[0], fdata[1], fdata[2]);
         }

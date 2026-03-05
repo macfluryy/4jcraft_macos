@@ -2009,6 +2009,12 @@ void UIScene_MainMenu::LoadTrial(void)
 	param->settings = app.GetGameHostOption( eGameHostOption_Tutorial ) | app.GetGameHostOption(eGameHostOption_DisableSaving);
 
 	vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
+	if (generators->empty())
+	{
+		app.DebugPrintf("LoadTrial: no level generators available, cannot start tutorial\n");
+		delete param;
+		return;
+	}
 	param->levelGen = generators->at(0);
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();

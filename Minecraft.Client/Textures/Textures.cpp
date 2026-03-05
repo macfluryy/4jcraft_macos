@@ -497,7 +497,9 @@ void Textures::loadTexture(BufferedImage *img, int id, bool blur, bool clamp)
 
     if (MIPMAP)
 	{
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+        // Linux/PC port: force GL_NEAREST to avoid mip-level distance blurring and keep
+        // Minecraft textures pixel-crisp at all distances.
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         /*
             * glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 0);

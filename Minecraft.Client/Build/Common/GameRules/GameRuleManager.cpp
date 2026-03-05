@@ -667,11 +667,42 @@ void GameRuleManager::loadDefaultGameRules()
 		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
 		{
 			app.m_dlcManager.addPack(pack);
-			m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
-			m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
+			if (!m_levelGenerators.getLevelGenerators()->empty())
+			{
+				m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
+				m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
+			}
+			else
+			{
+				app.DebugPrintf("loadDefaultGameRules: Tutorial.pck parsed OK but no level generators were added (missing GameRules/LevelGenerationOptions tag?)\n");
+			}
 		}
-		else delete pack;
+		else
+		{
+			app.DebugPrintf("loadDefaultGameRules: readDLCDataFile failed for Tutorial.pck (version too old, IO error, or DLC_TYPE_GameRules not found)\n");
+			delete pack;
+		}
 	}
+	else
+	{
+		app.DebugPrintf("loadDefaultGameRules: Tutorial.pck not found in archive\n");
+	}
+
+	// Linux/PC port fallback: if Tutorial.pck parsing didn't populate level generators
+	// (e.g. DLC version mismatch, missing GameRules tag), create a minimal placeholder so
+	// the game doesn't crash with vector::at(0) in LoadTrial().
+	if (m_levelGenerators.getLevelGenerators()->empty())
+	{
+		app.DebugPrintf("loadDefaultGameRules: creating minimal fallback LevelGenerationOptions\n");
+		LevelGenerationOptions *lgo = new LevelGenerationOptions();
+		lgo->setGrSource(new JustGrSource());
+		lgo->setSrc(LevelGenerationOptions::eSrc_tutorial);
+		lgo->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
+		lgo->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
+		lgo->setLoadedData();
+		addLevelGenerationOptions(lgo);
+	}
+
 	/*StringTable *strings = new StringTable(baStrings.data, baStrings.length);
 	LevelGenerationOptions *lgo = new LevelGenerationOptions();
 	lgo->setGrSource( new JustGrSource() );
