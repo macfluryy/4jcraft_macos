@@ -11,7 +11,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 
-const wstring TextEditScreen::allowedChars = SharedConstants::acceptableLetters;;
+const wstring TextEditScreen::allowedChars = SharedConstants::readAcceptableChars();
 
 TextEditScreen::TextEditScreen(shared_ptr<SignTileEntity> sign)
 {
