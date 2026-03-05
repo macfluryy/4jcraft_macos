@@ -114,7 +114,7 @@ RADEXPFUNC inline IggyResult RADEXPLINK IggyValueGetF64RS(IggyValuePath *var, Ig
 }
 RADEXPFUNC inline rrbool RADEXPLINK IggyValueSetBooleanRS(IggyValuePath *var, IggyName sub_name, char const *sub_name_utf8, rrbool value) {
   STUBBED;
-  return false;
+  return true;
 }
 RADEXPFUNC inline void RADEXPLINK IggyInit(IggyAllocator *allocator) {
   STUBBED;
