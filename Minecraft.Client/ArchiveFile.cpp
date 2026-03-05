@@ -121,7 +121,7 @@ byteArray ArchiveFile::getFile(const wstring &filename)
 		memcpy( out.data, m_cachedData + data->ptr, data->filesize );
 #else
 
-#ifdef _UNICODE
+#if defined(_UNICODE) && !defined(__linux__)
 		HANDLE hfile = CreateFile(	m_sourcefile.getPath().c_str(), 
 			GENERIC_READ,
 			0,
