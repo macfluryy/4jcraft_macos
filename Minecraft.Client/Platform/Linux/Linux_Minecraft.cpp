@@ -955,7 +955,12 @@ else
 // A memory leak was caused because the icon renderer kept creating new Vec3's because the pool wasn't reset
 Vec3::resetPool();
 } // end game loop
-}
+
+	// Graceful shutdown: destroy GL context and GLFW before any C++ dtors run.
+	// Without this, static/global destructors that touch GL objects cause SIGSEGV.
+	RenderManager.Shutdown();
+	_exit(0);
+} // end main
 
 // Free resources, unregister custom classes, and exit.
 //	app.Uninit();

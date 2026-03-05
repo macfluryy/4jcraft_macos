@@ -176,6 +176,18 @@ bool C4JRender::ShouldClose()
     return !s_window || glfwWindowShouldClose(s_window);
 }
 
+void C4JRender::Shutdown()
+{
+    // Destroy the main window and terminate GLFW cleanly so that
+    // destructors running after the game loop don't touch a dead context.
+    if (s_window)
+    {
+        glfwDestroyWindow(s_window);
+        s_window = nullptr;
+    }
+    glfwTerminate();
+}
+
 void C4JRender::DoScreenGrabOnNextPresent() {}
 
 void C4JRender::Clear(int flags)

@@ -109,11 +109,13 @@ void Tesselator::end()
         if (!hasColor)
 		{
 			// 4J - TEMP put in fixed vertex colors if we don't have any, until we have a shader that can cope without them
+			// Use 0x00000000 (not 0xffffffff) so DrawVertices skips glColor for these vertices,
+			// letting any caller-set GL colour (e.g. sky colour) pass through unmodified.
 			unsigned int *pColData = (unsigned int *)_array->data;
 			pColData += 5;
 			for( int i = 0; i < vertices; i++ )
 			{
-				*pColData = 0xffffffff;
+				*pColData = 0x00000000;
 				pColData += 8;
 			}
 #ifdef __PSVITA__

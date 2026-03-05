@@ -210,6 +210,7 @@ public:
 
 	// Linux window management
 	bool ShouldClose();
+	void Shutdown();
 };
 
 
