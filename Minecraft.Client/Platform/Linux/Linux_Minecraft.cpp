@@ -669,15 +669,8 @@ app.DebugPrintf("---ReadProductCodes()\n");
 
 app.loadMediaArchive();
 app.loadStringTable();
-    // Use the actual framebuffer dimensions so the UI scales to whatever
-    // window/fullscreen resolution was chosen at startup.
-    {
-        int uiW = 1920, uiH = 1080;
-        RenderManager.GetFramebufferSize(uiW, uiH);
-        if (uiW < 1) uiW = 1920;
-        if (uiH < 1) uiH = 1080;
-        ui.init(uiW, uiH);
-    }
+    // fuck you
+    ui.init(1920, 1080);
 // storage manager is needed for the trial key check
 StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,"");
 

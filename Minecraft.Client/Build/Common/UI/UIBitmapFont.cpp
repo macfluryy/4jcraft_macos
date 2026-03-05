@@ -98,9 +98,17 @@ UIBitmapFont::UIBitmapFont(	SFontData &sfontdata )
 
 	BufferedImage bimg(sfontdata.m_wstrFilename);
 	int *bimgData = bimg.getData();
-	
+
+	if (bimgData == nullptr)
+	{
+		fprintf(stderr, "[UIBitmapFont] ERROR: failed to load font image for '%s' — font file missing or corrupt.\n",
+			sfontdata.m_strFontName.c_str());
+		m_cFontData = new CFontData(); // default/empty — avoids null deref downstream
+		return;
+	}
+
 	m_cFontData = new CFontData(sfontdata, bimgData);
-	
+
 	//delete [] bimgData;
 }
 
