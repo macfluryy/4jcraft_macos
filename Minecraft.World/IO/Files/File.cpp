@@ -129,9 +129,7 @@ bool File::mkdir() const
 #if defined (_UNICODE)
 	return CreateDirectory( getPath().c_str(),  NULL) != 0;
 #elif defined(__linux__)
-	std::wstring wpath = getPath();
-	std::string path(wpath.begin(), wpath.end());
-	return ::mkdir(path.c_str(), 0777) == 0;  // rwxrwxrwx
+	return ::mkdir(wstringtofilename(getPath()), 0777) == 0;
 #else
 	return CreateDirectory( wstringtofilename(getPath()),  NULL) != 0;
 #endif
@@ -186,11 +184,10 @@ bool File::mkdirs() const
 			}
 		}
 #elif defined(__linux__)
-		std::wstring wpath = getPath();
-		std::string path(wpath.begin(), wpath.end());
+		const char *mkpath = wstringtofilename(getPath());
 		struct stat info;
-		if (stat(path.c_str(), &info) != 0 || !(info.st_mode & S_IFDIR)) {
-			if (::mkdir(path.c_str(), 0777) != 0) {
+		if (stat(mkpath, &info) != 0 || !(info.st_mode & S_IFDIR)) {
+			if (::mkdir(mkpath, 0777) != 0) {
 				return false;
 		}
 }
@@ -229,9 +226,8 @@ bool File::exists() const
 #if defined(_UNICODE)
 	return GetFileAttributes(  getPath().c_str() ) != -1;
 #elif defined(__linux__)
-	std::wstring wpath = getPath();
-	std::string path(wpath.begin(), wpath.end());
-	return access(path.c_str(), F_OK) != -1;
+ // BAD DOBBY BAD DOBBY
+	return access(wstringtofilename(getPath()), F_OK) != -1;
 #else
 	return GetFileAttributes(  wstringtofilename(getPath()) ) != -1;
 #endif
@@ -567,9 +563,9 @@ bool File::isDirectory() const
 #if defined(_UNICODE)
 	return exists() && ( GetFileAttributes( getPath().c_str() ) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
 #elif defined(__linux__)
-	std::wstring wpath = getPath();
-	std::string path(wpath.begin(), wpath.end());
-	return access(path.c_str(), F_OK) != -1;
+	const char *dirpath = wstringtofilename(getPath());
+	struct stat st;
+	return stat(dirpath, &st) == 0 && S_ISDIR(st.st_mode);
 #else
 	return exists() && ( GetFileAttributes( wstringtofilename(getPath()) ) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
 #endif
@@ -645,10 +641,9 @@ __int64 File::length()
 	return statData.fileSize;
 #elif defined(__linux__)
 	struct stat fileInfoBuffer;
-	std::wstring wpath = getPath();
-	std::string path(wpath.begin(), wpath.end());
+	const char *path = wstringtofilename(getPath());
 
-	int result = stat(path.c_str(), &fileInfoBuffer);
+	int result = stat(path, &fileInfoBuffer);
 
 	if(result == 0) {
 		return fileInfoBuffer.st_size;
@@ -726,10 +721,7 @@ __int64 File::lastModified()
 	}
 #else
 	struct stat fileStat;
-	struct stat fileInfoBuffer;
-	std::wstring wpath = getPath();
-	std::string path(wpath.begin(), wpath.end());
-	if (stat(path.c_str(), &fileStat) == 0 && !S_ISDIR(fileStat.st_mode)) {
+	if (stat(wstringtofilename(getPath()), &fileStat) == 0 && !S_ISDIR(fileStat.st_mode)) {
 		return static_cast<__int64>(fileStat.st_mtime);
 	} else {
 		return 0l;

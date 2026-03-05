@@ -17,6 +17,12 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+# giving a boost on the next macos implmentation 
+
+if(UNIX AND NOT APPLE)
+    find_package(PNG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE PNG::PNG)
+endif()
 
 # Mimic cmake converter behaviour
 target_precompile_headers(${PROJECT_NAME} PRIVATE

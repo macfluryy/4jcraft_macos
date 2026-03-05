@@ -300,7 +300,7 @@ HRESULT Compression::DecompressRLE(void *pDestination, unsigned int *pDestSize, 
 HRESULT Compression::Compress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize)
 {
 	// Using zlib for x64 compression - 360 is using native 360 compression and PS3 a stubbed non-compressing version of this
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__
+#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__ || defined __linux__
 	SIZE_T destSize = (SIZE_T)(*pDestSize);
 	int res = ::compress((Bytef *)pDestination, (uLongf *)&destSize, (Bytef *)pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
@@ -328,7 +328,7 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 	}
 
 	// Using zlib for x64 compression - 360 is using native 360 compression and PS3 a stubbed non-compressing version of this
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__
+#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __PSVITA__ || defined __linux__
 	SIZE_T destSize = (SIZE_T)(*pDestSize);
 	int res = ::uncompress((Bytef *)pDestination, (uLongf *)&destSize, (Bytef *)pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
@@ -405,7 +405,7 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 		}
 		break;
 	case eCompressionType_ZLIBRLE:
-#if (defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64)
+#if (defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__)
 		if (pDestination != NULL)
 			return ::uncompress((PBYTE)pDestination, (unsigned long *) pDestSize, (PBYTE) pSource, SrcSize); // Decompress
 		else break; // Cannot decompress when destination is NULL

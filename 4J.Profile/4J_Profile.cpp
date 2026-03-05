@@ -3,9 +3,18 @@
 
 C_4JProfile ProfileManager;
 
+static void *s_profileData[4] = {};
+
 void C_4JProfile::Initialise(DWORD dwTitleID, DWORD dwOfferID, unsigned short usProfileVersion,
     UINT uiProfileValuesC, UINT uiProfileSettingsC, DWORD *pdwProfileSettingsA,
-    int iGameDefinedDataSizeX4, unsigned int *puiGameDefinedDataChangedBitmask) {}
+    int iGameDefinedDataSizeX4, unsigned int *puiGameDefinedDataChangedBitmask)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        s_profileData[i] = new unsigned char[iGameDefinedDataSizeX4 / 4];
+        memset(s_profileData[i], 0, iGameDefinedDataSizeX4 / 4);
+    }
+}
 void C_4JProfile::SetTrialTextStringTable(CXuiStringTable *pStringTable, int iAccept, int iReject) {}
 void C_4JProfile::SetTrialAwardText(eAwardType AwardType, int iTitle, int iText) {}
 int C_4JProfile::GetLockedProfile() { return -1; }
@@ -58,7 +67,7 @@ static C_4JProfile::PROFILESETTINGS s_defaultSettings = {};
 C_4JProfile::PROFILESETTINGS* C_4JProfile::GetDashboardProfileSettings(int iPad) { return &s_defaultSettings; }
 void C_4JProfile::WriteToProfile(int iQuadrant, bool bGameDefinedDataChanged, bool bOverride5MinuteLimitOnProfileWrites) {}
 void C_4JProfile::ForceQueuedProfileWrites(int iPad) {}
-void* C_4JProfile::GetGameDefinedProfileData(int iQuadrant) { return nullptr; }
+void* C_4JProfile::GetGameDefinedProfileData(int iQuadrant) { return s_profileData[iQuadrant]; }
 void C_4JProfile::ResetProfileProcessState() {}
 void C_4JProfile::Tick(void) {}
 void C_4JProfile::RegisterAward(int iAwardNumber, int iGamerconfigID, eAwardType eType, bool bLeaderboardAffected,
