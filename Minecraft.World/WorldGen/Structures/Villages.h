@@ -12,8 +12,8 @@ public:
 private:
 	Level *level;
 	deque<Pos *> queries;
-	vector<shared_ptr<DoorInfo> > unclustered;
-	vector<shared_ptr<Village> > villages;
+	vector<std::shared_ptr<DoorInfo> > unclustered;
+	vector<std::shared_ptr<Village> > villages;
 	int _tick;
 
 public:
@@ -29,14 +29,14 @@ private:
 	void removeVillages();
 
 public:
-	vector<shared_ptr<Village> > *getVillages();
-	shared_ptr<Village> getClosestVillage(int x, int y, int z, int maxDist);
+	vector<std::shared_ptr<Village> > *getVillages();
+	std::shared_ptr<Village> getClosestVillage(int x, int y, int z, int maxDist);
 
 private:
 	void processNextQuery();
 	void cluster();
 	void addDoorInfos(Pos *pos);
-	shared_ptr<DoorInfo>getDoorInfo(int x, int y, int z);
+	std::shared_ptr<DoorInfo>getDoorInfo(int x, int y, int z);
 	void createDoorInfo(int x, int y, int z);
 	bool hasQuery(int x, int y, int z);
 	bool isDoor(int x, int y, int z);

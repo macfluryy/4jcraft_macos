@@ -20,7 +20,7 @@ Icon *SaplingTileItem::getIcon(int itemAuxValue)
 }
 
 // 4J brought forward to have unique names for different sapling types
-unsigned int SaplingTileItem::getDescriptionId(shared_ptr<ItemInstance> instance)
+unsigned int SaplingTileItem::getDescriptionId(std::shared_ptr<ItemInstance> instance)
 {
 	int auxValue = instance->getAuxValue();
 	if (auxValue < 0 || auxValue >= Sapling::SAPLING_NAMES_SIZE)

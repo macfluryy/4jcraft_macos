@@ -13,10 +13,10 @@ SignRenderer::SignRenderer()
 	signModel = new SignModel();
 }
 
-void SignRenderer::render(shared_ptr<TileEntity> _sign, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<SignTileEntity> sign = dynamic_pointer_cast<SignTileEntity>(_sign);
+	std::shared_ptr<SignTileEntity> sign = dynamic_pointer_cast<SignTileEntity>(_sign);
 
     Tile *tile = sign->getTile();
 

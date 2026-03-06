@@ -22,7 +22,7 @@ PlayerCommandPacket::PlayerCommandPacket()
 	action = 0;
 }
 
-PlayerCommandPacket::PlayerCommandPacket(shared_ptr<Entity> e, int action)
+PlayerCommandPacket::PlayerCommandPacket(std::shared_ptr<Entity> e, int action)
 {
 	id = e->entityId;
 	this->action = action;

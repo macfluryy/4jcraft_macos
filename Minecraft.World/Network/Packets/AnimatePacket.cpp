@@ -13,7 +13,7 @@ AnimatePacket::AnimatePacket()
 	action = 0;
 }
 
-AnimatePacket::AnimatePacket(shared_ptr<Entity> e, int action)
+AnimatePacket::AnimatePacket(std::shared_ptr<Entity> e, int action)
 {
 	id = e->entityId;
 	this->action = action;

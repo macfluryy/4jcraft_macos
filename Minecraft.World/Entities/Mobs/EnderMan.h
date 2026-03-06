@@ -33,17 +33,17 @@ public:
 	virtual void readAdditionalSaveData(CompoundTag *tag);
 
 protected:
-	virtual shared_ptr<Entity> findAttackTarget();
+	virtual std::shared_ptr<Entity> findAttackTarget();
 
 private:
-	bool isLookingAtMe(shared_ptr<Player> player);
+	bool isLookingAtMe(std::shared_ptr<Player> player);
 
 public:
 	virtual void aiStep();
 
 protected:
 	bool teleport();
-	bool teleportTowards(shared_ptr<Entity> e);
+	bool teleportTowards(std::shared_ptr<Entity> e);
 	bool teleport(double xx, double yy, double zz);
 
 	virtual int getAmbientSound();

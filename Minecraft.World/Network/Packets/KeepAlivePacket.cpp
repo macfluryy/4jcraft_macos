@@ -41,7 +41,7 @@ bool KeepAlivePacket::canBeInvalidated()
 	return true;
 }
 
-bool KeepAlivePacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool KeepAlivePacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

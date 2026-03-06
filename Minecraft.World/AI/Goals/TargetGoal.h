@@ -37,8 +37,8 @@ public:
 	virtual void stop();
 
 protected:
-	virtual bool canAttack(shared_ptr<Mob> target, bool allowInvulnerable);
+	virtual bool canAttack(std::shared_ptr<Mob> target, bool allowInvulnerable);
 
 private:
-	bool canReach(shared_ptr<Mob> target);
+	bool canReach(std::shared_ptr<Mob> target);
 };

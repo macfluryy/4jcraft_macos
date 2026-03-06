@@ -68,7 +68,7 @@ int MobEffectInstance::getAmplifier()
 * @param target
 * @return True if the effect is still active.
 */
-bool MobEffectInstance::tick(shared_ptr<Mob> target)
+bool MobEffectInstance::tick(std::shared_ptr<Mob> target)
 {
 	if (duration > 0)
 	{
@@ -86,7 +86,7 @@ int MobEffectInstance::tickDownDuration()
 	return --duration;
 }
 
-void MobEffectInstance::applyEffect(shared_ptr<Mob> mob)
+void MobEffectInstance::applyEffect(std::shared_ptr<Mob> mob)
 {
 	if (duration > 0)
 	{

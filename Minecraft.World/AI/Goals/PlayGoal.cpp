@@ -25,14 +25,14 @@ bool PlayGoal::canUse()
 	if (mob->getAge() >= 0) return false;
 	if (mob->getRandom()->nextInt(400) != 0) return false;
 
-	vector<shared_ptr<Entity> > *children = mob->level->getEntitiesOfClass(typeid(Villager), mob->bb->grow(6, 3, 6));
+	vector<std::shared_ptr<Entity> > *children = mob->level->getEntitiesOfClass(typeid(Villager), mob->bb->grow(6, 3, 6));
 	double closestDistSqr = Double::MAX_VALUE;
 	//for (Entity c : children)
 	for(AUTO_VAR(it, children->begin()); it != children->end(); ++it)
 	{
-		shared_ptr<Entity> c = *it;
+		std::shared_ptr<Entity> c = *it;
 		if (c.get() == mob) continue;
-		shared_ptr<Villager> friendV = dynamic_pointer_cast<Villager>(c);
+		std::shared_ptr<Villager> friendV = dynamic_pointer_cast<Villager>(c);
 		if (friendV->isChasing()) continue;
 		if (friendV->getAge() >= 0) continue;
 		double distSqr = friendV->distanceToSqr(mob->shared_from_this());

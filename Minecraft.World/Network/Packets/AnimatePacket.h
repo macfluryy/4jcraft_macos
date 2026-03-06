@@ -18,7 +18,7 @@ public:
 	int action;
 
 	AnimatePacket();
-	AnimatePacket(shared_ptr<Entity> e, int action);
+	AnimatePacket(std::shared_ptr<Entity> e, int action);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -26,6 +26,6 @@ public:
 	virtual int getEstimatedSize();
 	
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new AnimatePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new AnimatePacket()); }
 	virtual int getId() { return 18; }
 };

@@ -18,10 +18,10 @@ ChestRenderer::~ChestRenderer()
 	delete largeChestModel;
 }
 
-void ChestRenderer::render(shared_ptr<TileEntity>  _chest, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void ChestRenderer::render(std::shared_ptr<TileEntity>  _chest, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J Convert as we aren't using a templated class
-	shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>(_chest);
+	std::shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>(_chest);
 
 	int data;
 

@@ -21,7 +21,7 @@ EnderCrystalModel::EnderCrystalModel(float g)
 }
 
 
-void EnderCrystalModel::render(shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled)
+void EnderCrystalModel::render(std::shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled)
 {
 	glPushMatrix();
 	glScalef(2, 2, 2);

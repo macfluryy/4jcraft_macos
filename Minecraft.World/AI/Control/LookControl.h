@@ -16,7 +16,7 @@ private:
 public:
 	LookControl(Mob *mob);
 
-	void setLookAt(shared_ptr<Entity> target, float yMax, float xMax);
+	void setLookAt(std::shared_ptr<Entity> target, float yMax, float xMax);
 	void setLookAt(double x, double y, double z, float yMax, float xMax);
 	virtual void tick();
 

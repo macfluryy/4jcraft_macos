@@ -33,7 +33,7 @@ FoodItem::FoodItem(int id, int nutrition, bool isMeat)
 	_init();
 }
 
-shared_ptr<ItemInstance> FoodItem::useTimeDepleted(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> FoodItem::useTimeDepleted(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player)
 {
 	instance->count--;
 	player->getFoodData()->eat(this);
@@ -45,7 +45,7 @@ shared_ptr<ItemInstance> FoodItem::useTimeDepleted(shared_ptr<ItemInstance> inst
 	return instance;
 }
 
-void FoodItem::addEatEffect(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player)
+void FoodItem::addEatEffect(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player)
 {
 	if (!level->isClientSide && effectId > 0 && level->random->nextFloat() < effectProbability)
 	{
@@ -54,17 +54,17 @@ void FoodItem::addEatEffect(shared_ptr<ItemInstance> instance, Level *level, sha
 
 }
 
-int FoodItem::getUseDuration(shared_ptr<ItemInstance> itemInstance)
+int FoodItem::getUseDuration(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return EAT_DURATION;
 }
 
-UseAnim FoodItem::getUseAnimation(shared_ptr<ItemInstance> itemInstance)
+UseAnim FoodItem::getUseAnimation(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return UseAnim_eat;
 }
 
-shared_ptr<ItemInstance> FoodItem::use(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> FoodItem::use(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player)
 {
 	if (player->canEat(canAlwaysEat))
 	{
@@ -114,7 +114,7 @@ FoodItem *FoodItem::setCanAlwaysEat()
 }
 
 // 4J Added
-bool FoodItem::canEat(shared_ptr<Player> player)
+bool FoodItem::canEat(std::shared_ptr<Player> player)
 {
 	return player->canEat(canAlwaysEat);
 }

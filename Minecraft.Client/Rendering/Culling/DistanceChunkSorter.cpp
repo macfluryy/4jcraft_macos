@@ -3,7 +3,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../Chunk.h"
 
-DistanceChunkSorter::DistanceChunkSorter(shared_ptr<Entity> player)
+DistanceChunkSorter::DistanceChunkSorter(std::shared_ptr<Entity> player)
 {
     ix = -player->x;
     iy = -player->y;

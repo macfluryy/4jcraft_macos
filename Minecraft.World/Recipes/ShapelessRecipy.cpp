@@ -29,7 +29,7 @@ const ItemInstance *ShapelessRecipy::getResultItem()
 	return result;
 }
 
-bool ShapelessRecipy::matches(shared_ptr<CraftingContainer> craftSlots, Level *level) 
+bool ShapelessRecipy::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level) 
 {
 	vector <ItemInstance *> tempList = *ingredients;
 	
@@ -37,7 +37,7 @@ bool ShapelessRecipy::matches(shared_ptr<CraftingContainer> craftSlots, Level *l
 	{
 		for (int x = 0; x < 3; x++) 
 		{
-			shared_ptr<ItemInstance> item = craftSlots->getItem(x, y);
+			std::shared_ptr<ItemInstance> item = craftSlots->getItem(x, y);
 
 			if (item != NULL) 
 			{
@@ -67,7 +67,7 @@ bool ShapelessRecipy::matches(shared_ptr<CraftingContainer> craftSlots, Level *l
 	return tempList.empty();
 }
 
-shared_ptr<ItemInstance> ShapelessRecipy::assemble(shared_ptr<CraftingContainer> craftSlots) 
+std::shared_ptr<ItemInstance> ShapelessRecipy::assemble(std::shared_ptr<CraftingContainer> craftSlots) 
 {
 	return result->copy();
 }

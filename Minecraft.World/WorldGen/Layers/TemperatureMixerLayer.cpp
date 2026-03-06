@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 
-TemperatureMixerLayer::TemperatureMixerLayer(shared_ptr<Layer>temp, shared_ptr<Layer>parent, int layer) : Layer(0)
+TemperatureMixerLayer::TemperatureMixerLayer(std::shared_ptr<Layer>temp, std::shared_ptr<Layer>parent, int layer) : Layer(0)
 {
 	this->parent = parent;
 	this->temp = temp;

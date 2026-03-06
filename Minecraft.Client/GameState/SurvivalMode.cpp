@@ -45,7 +45,7 @@ SurvivalMode::SurvivalMode(SurvivalMode *copy) : GameMode( copy->minecraft )
     destroyDelay = copy->destroyDelay;
 }
 
-void SurvivalMode::initPlayer(shared_ptr<Player> player)
+void SurvivalMode::initPlayer(std::shared_ptr<Player> player)
 {
 	player->yRot = -180;
 }
@@ -65,7 +65,7 @@ bool SurvivalMode::destroyBlock(int x, int y, int z, int face)
     int data = minecraft->level->getData(x, y, z);
     bool changed = GameMode::destroyBlock(x, y, z, face);
 
-    shared_ptr<ItemInstance> item = minecraft->player->getSelectedItem();
+    std::shared_ptr<ItemInstance> item = minecraft->player->getSelectedItem();
     bool couldDestroy = minecraft->player->canDestroy(Tile::tiles[t]);
     if (item != NULL)
 	{
@@ -173,9 +173,9 @@ void SurvivalMode::initLevel(Level *level)
 	GameMode::initLevel(level);
 }
 
-shared_ptr<Player> SurvivalMode::createPlayer(Level *level)
+std::shared_ptr<Player> SurvivalMode::createPlayer(Level *level)
 {
-	shared_ptr<Player> player = GameMode::createPlayer(level);
+	std::shared_ptr<Player> player = GameMode::createPlayer(level);
 	//        player.inventory.add(new ItemInstance(Item.pickAxe_diamond));
 	//        player.inventory.add(new ItemInstance(Item.hatchet_diamond));
 	//        player.inventory.add(new ItemInstance(Tile.torch, 64));
@@ -191,7 +191,7 @@ void SurvivalMode::tick()
     //minecraft->soundEngine->playMusicTick();
 }
 
-bool SurvivalMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
+bool SurvivalMode::useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
 {
 	int t = level->getTile(x, y, z);
 	if (t > 0)

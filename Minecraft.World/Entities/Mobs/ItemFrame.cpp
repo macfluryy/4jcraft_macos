@@ -41,25 +41,25 @@ void ItemFrame::defineSynchedData()
 
 void ItemFrame::dropItem() 
 {
-	spawnAtLocation(shared_ptr<ItemInstance>(new ItemInstance(Item::frame)), 0.0f);
-	shared_ptr<ItemInstance> item = getItem();
+	spawnAtLocation(std::shared_ptr<ItemInstance>(new ItemInstance(Item::frame)), 0.0f);
+	std::shared_ptr<ItemInstance> item = getItem();
 	if (item != NULL) 
 	{
-		shared_ptr<MapItemSavedData> data = Item::map->getSavedData(item, level);
+		std::shared_ptr<MapItemSavedData> data = Item::map->getSavedData(item, level);
 		data->removeItemFrameDecoration(item);
 
-		shared_ptr<ItemInstance> itemToDrop = item->copy();
+		std::shared_ptr<ItemInstance> itemToDrop = item->copy();
 		itemToDrop->setFramed(nullptr);
 		spawnAtLocation(itemToDrop, 0.0f);
 	}
 }
 
-shared_ptr<ItemInstance> ItemFrame::getItem() 
+std::shared_ptr<ItemInstance> ItemFrame::getItem() 
 {
 	return getEntityData()->getItemInstance(DATA_ITEM);
 }
 
-void ItemFrame::setItem(shared_ptr<ItemInstance> item) 
+void ItemFrame::setItem(std::shared_ptr<ItemInstance> item) 
 {
 	if(item != NULL)
 	{
@@ -106,7 +106,7 @@ void ItemFrame::readAdditionalSaveData(CompoundTag *tag)
 	HangingEntity::readAdditionalSaveData(tag);
 }
 
-bool ItemFrame::interact(shared_ptr<Player> player) 
+bool ItemFrame::interact(std::shared_ptr<Player> player) 
 {
 	if(!player->isAllowedToInteract(shared_from_this()))
 	{
@@ -115,7 +115,7 @@ bool ItemFrame::interact(shared_ptr<Player> player)
 
 	if (getItem() == NULL) 
 	{
-		shared_ptr<ItemInstance> item = player->getCarriedItem();
+		std::shared_ptr<ItemInstance> item = player->getCarriedItem();
 
 		if (item != NULL) 
 		{

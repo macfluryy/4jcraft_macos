@@ -34,24 +34,24 @@ void SimpleContainer::removeListener(net_minecraft_world::ContainerListener *lis
 		listeners->erase( it );
 }
 
-shared_ptr<ItemInstance> SimpleContainer::getItem(unsigned int slot)
+std::shared_ptr<ItemInstance> SimpleContainer::getItem(unsigned int slot)
 {
 	return (*items)[slot];
 }
 
-shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot, int count)
+std::shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot, int count)
 {
 	if ((*items)[slot] != NULL) {
 		if ((*items)[slot]->count <= count)
 		{
-			shared_ptr<ItemInstance> item = (*items)[slot];
+			std::shared_ptr<ItemInstance> item = (*items)[slot];
 			(*items)[slot] = nullptr;
 			this->setChanged();
 			return item;
 		}
 		else
 		{
-			shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
+			std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
 			if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
 			this->setChanged();
 			return i;
@@ -60,18 +60,18 @@ shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot, int coun
 	return nullptr;
 }
 
-shared_ptr<ItemInstance> SimpleContainer::removeItemNoUpdate(int slot)
+std::shared_ptr<ItemInstance> SimpleContainer::removeItemNoUpdate(int slot)
 {
 	if ((*items)[slot] != NULL)
 	{
-		shared_ptr<ItemInstance> item = (*items)[slot];
+		std::shared_ptr<ItemInstance> item = (*items)[slot];
 		(*items)[slot] = nullptr;
 		return item;
 	}
 	return nullptr;
 }
 
-void SimpleContainer::setItem(unsigned int slot, shared_ptr<ItemInstance> item)
+void SimpleContainer::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item)
 {
 	(*items)[slot] = item;
 	if (item != NULL && item->count > getMaxStackSize()) item->count = getMaxStackSize();
@@ -104,7 +104,7 @@ void SimpleContainer::setChanged()
 #endif
 }
 
-bool SimpleContainer::stillValid(shared_ptr<Player> player)
+bool SimpleContainer::stillValid(std::shared_ptr<Player> player)
 {
 	return true;
 }

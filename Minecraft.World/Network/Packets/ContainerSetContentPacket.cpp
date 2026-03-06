@@ -17,13 +17,13 @@ ContainerSetContentPacket::ContainerSetContentPacket()
 	containerId = 0;
 }
 
-ContainerSetContentPacket::ContainerSetContentPacket(int containerId, vector<shared_ptr<ItemInstance> > *newItems)
+ContainerSetContentPacket::ContainerSetContentPacket(int containerId, vector<std::shared_ptr<ItemInstance> > *newItems)
 {
 	this->containerId = containerId;
 	items = ItemInstanceArray((int)newItems->size());
 	for (unsigned int i = 0; i < items.length; i++)
 	{
-		shared_ptr<ItemInstance> item = newItems->at(i);
+		std::shared_ptr<ItemInstance> item = newItems->at(i);
 		items[i] = item == NULL ? nullptr : item->copy();
 	}
 }

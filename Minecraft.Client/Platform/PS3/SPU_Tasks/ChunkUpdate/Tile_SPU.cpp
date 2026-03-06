@@ -288,7 +288,7 @@ Icon_SPU *Tile_SPU::getTexture(int face)
 // 	return id;
 // }
 // 
-// float Tile_SPU::getDestroyProgress(shared_ptr<Player> player)
+// float Tile_SPU::getDestroyProgress(std::shared_ptr<Player> player)
 // {
 // 	if (destroySpeed < 0) return 0;
 // 	if (!player->canDestroy(this)) return 1 / destroySpeed / 100.0f;
@@ -310,11 +310,11 @@ Icon_SPU *Tile_SPU::getTexture(int face)
 // 		int type = getResource(data, level->random, playerBonusLevel);
 // 		if (type <= 0) continue;
 // 
-// 		popResource(level, x, y, z, shared_ptr<ItemInstance>( new ItemInstance(type, 1, getSpawnResourcesAuxValue(data) ) ) );
+// 		popResource(level, x, y, z, std::shared_ptr<ItemInstance>( new ItemInstance(type, 1, getSpawnResourcesAuxValue(data) ) ) );
 // 	}
 // }
 // 
-// void Tile_SPU::popResource(Level *level, int x, int y, int z, shared_ptr<ItemInstance> itemInstance)
+// void Tile_SPU::popResource(Level *level, int x, int y, int z, std::shared_ptr<ItemInstance> itemInstance)
 // {
 // 	if( level->isClientSide ) return;
 // 
@@ -322,7 +322,7 @@ Icon_SPU *Tile_SPU::getTexture(int face)
 // 	double xo = level->random->nextFloat() * s + (1 - s) * 0.5;
 // 	double yo = level->random->nextFloat() * s + (1 - s) * 0.5;
 // 	double zo = level->random->nextFloat() * s + (1 - s) * 0.5;
-// 	shared_ptr<ItemEntity> item = shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) );
+// 	std::shared_ptr<ItemEntity> item = std::shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) );
 // 	item->throwTime = 10;
 // 	level->addEntity(item);
 // }
@@ -336,7 +336,7 @@ Icon_SPU *Tile_SPU::getTexture(int face)
 // 		{
 // 			int newCount = ExperienceOrb::getExperienceValue(amount);
 // 			amount -= newCount;
-// 			level->addEntity(shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
+// 			level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
 // 		}
 // 	}
 // }
@@ -346,7 +346,7 @@ Icon_SPU *Tile_SPU::getTexture(int face)
 // 	return 0;
 // }
 // 
-// float Tile_SPU::getExplosionResistance(shared_ptr<Entity> source)
+// float Tile_SPU::getExplosionResistance(std::shared_ptr<Entity> source)
 // {
 // 	return explosionResistance / 5.0f;
 // }
@@ -437,17 +437,17 @@ int Tile_SPU::getRenderLayer()
 // 	return false;
 // }
 // 
-// bool Tile_SPU::TestUse(Level *level, int x, int y, int z, shared_ptr<Player> player)
+// bool Tile_SPU::TestUse(Level *level, int x, int y, int z, std::shared_ptr<Player> player)
 // {
 // 	return false;
 // }
 // 
-// bool Tile_SPU::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+// bool Tile_SPU::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 // {
 // 	return false;
 // }
 // 
-// void Tile_SPU::stepOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+// void Tile_SPU::stepOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 // {
 // }
 // 
@@ -459,11 +459,11 @@ int Tile_SPU::getRenderLayer()
 // {
 // }
 // 
-// void Tile_SPU::attack(Level *level, int x, int y, int z, shared_ptr<Player> player)
+// void Tile_SPU::attack(Level *level, int x, int y, int z, std::shared_ptr<Player> player)
 // {
 // }
 // 
-// void Tile_SPU::handleEntityInside(Level *level, int x, int y, int z, shared_ptr<Entity> e, Vec3 *current)
+// void Tile_SPU::handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> e, Vec3 *current)
 // {
 // }
 // 
@@ -498,7 +498,7 @@ int Tile_SPU::getColor(ChunkRebuildData *level, int x, int y, int z)
 // 	return false;
 // }
 // 
-// void Tile_SPU::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+// void Tile_SPU::entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 // {
 // }
 // 
@@ -511,7 +511,7 @@ void Tile_SPU::updateDefaultShape()
 {
 }
 // 
-// void Tile_SPU::playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data)
+// void Tile_SPU::playerDestroy(Level *level, std::shared_ptr<Player> player, int x, int y, int z, int data)
 // {
 // 	// 4J Stu - Special case - only record a crop destroy if is fully grown
 // 	if(id==Tile_SPU::crops_Id)
@@ -532,7 +532,7 @@ void Tile_SPU::updateDefaultShape()
 // 
 //     if (isCubeShaped() && !isEntityTile[id] && EnchantmentHelper::hasSilkTouch(player->inventory))
 // 	{
-//         shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
+//         std::shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
 //         if (item != NULL)
 // 		{
 //             popResource(level, x, y, z, item);
@@ -545,14 +545,14 @@ void Tile_SPU::updateDefaultShape()
 //     }
 // }
 // 
-// shared_ptr<ItemInstance> Tile_SPU::getSilkTouchItemInstance(int data)
+// std::shared_ptr<ItemInstance> Tile_SPU::getSilkTouchItemInstance(int data)
 // {
 //     int popData = 0;
 //     if (id >= 0 && id < Item::items.length && Item::items[id]->isStackedByData())
 // 	{
 //         popData = data;
 //     }
-//     return shared_ptr<ItemInstance>(new ItemInstance(id, 1, popData));
+//     return std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, popData));
 // }
 // 
 // int Tile_SPU::getResourceCountForLootBonus(int bonusLevel, Random *random)
@@ -565,7 +565,7 @@ void Tile_SPU::updateDefaultShape()
 // 	return true;
 // }
 // 
-// void Tile_SPU::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by)
+// void Tile_SPU::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 // {
 // }
 // 
@@ -646,7 +646,7 @@ Material_SPU* Tile_SPU::getMaterial()
 }
 
 // 
-// void Tile_SPU::fallOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity, float fallDistance)
+// void Tile_SPU::fallOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity, float fallDistance)
 // {
 // }
 // 

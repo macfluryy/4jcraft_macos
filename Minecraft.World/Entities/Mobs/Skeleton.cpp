@@ -68,9 +68,9 @@ int Skeleton::getDeathSound()
     return eSoundType_MOB_SKELETON_HURT;
 }
 
-shared_ptr<ItemInstance> Skeleton::bow;
+std::shared_ptr<ItemInstance> Skeleton::bow;
 
-shared_ptr<ItemInstance> Skeleton::getCarriedItem() 
+std::shared_ptr<ItemInstance> Skeleton::getCarriedItem() 
 {
     return bow;
 }
@@ -101,7 +101,7 @@ void Skeleton::aiStep()
 void Skeleton::die(DamageSource *source)
 {
 	Monster::die(source);
-	shared_ptr<Player> player = dynamic_pointer_cast<Player>( source->getEntity() );
+	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( source->getEntity() );
 	if ( dynamic_pointer_cast<Arrow>( source->getDirectEntity() ) != NULL && player != NULL)
 	{
 		double xd = player->x - x;
@@ -138,7 +138,7 @@ void Skeleton::dropRareDeathLoot(int rareLootLevel)
 {
 	if (rareLootLevel > 0)
 	{
-		shared_ptr<ItemInstance> bow = shared_ptr<ItemInstance>( new ItemInstance(Item::bow) );
+		std::shared_ptr<ItemInstance> bow = std::shared_ptr<ItemInstance>( new ItemInstance(Item::bow) );
 		EnchantmentHelper::enchantItem(random, bow, 5);
 		spawnAtLocation(bow, 0);
 	}
@@ -150,5 +150,5 @@ void Skeleton::dropRareDeathLoot(int rareLootLevel)
 
 void Skeleton::staticCtor()
 {
-	Skeleton::bow = shared_ptr<ItemInstance>( new ItemInstance(Item::bow, 1) );
+	Skeleton::bow = std::shared_ptr<ItemInstance>( new ItemInstance(Item::bow, 1) );
 }

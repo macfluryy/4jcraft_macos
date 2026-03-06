@@ -17,7 +17,7 @@ public:
     virtual wstring getName();
     virtual vector<LevelSummary *> *getLevelList();
     virtual void clearAll();
-    virtual shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir);
+    virtual std::shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir);
     virtual bool isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId);
     virtual bool requiresConversion(ConsoleSaveFile *saveFile, const wstring& levelId);
     virtual bool convertLevel(ConsoleSaveFile *saveFile, const wstring& levelId, ProgressListener *progress);

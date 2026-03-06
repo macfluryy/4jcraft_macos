@@ -25,8 +25,8 @@ public:
 	{
 	public:
 		int x,z;
-		shared_ptr<ServerPlayer> player;
-		PlayerChunkAddRequest(int x, int z, shared_ptr<ServerPlayer> player ) : x(x), z(z), player(player) {}
+		std::shared_ptr<ServerPlayer> player;
+		PlayerChunkAddRequest(int x, int z, std::shared_ptr<ServerPlayer> player ) : x(x), z(z), player(player) {}
 	};
 
     class PlayerChunk
@@ -34,7 +34,7 @@ public:
 		friend class PlayerChunkMap;
 	private:
 		PlayerChunkMap *parent;			// 4J added
-		vector<shared_ptr<ServerPlayer> > players;
+		vector<std::shared_ptr<ServerPlayer> > players;
         //int x, z;
         ChunkPos pos;
 
@@ -51,25 +51,25 @@ public:
 		~PlayerChunk();
 
 		// 4J Added sendPacket param so we can aggregate the initial send into one much smaller packet
-        void add(shared_ptr<ServerPlayer> player, bool sendPacket = true);
-        void remove(shared_ptr<ServerPlayer> player);
+        void add(std::shared_ptr<ServerPlayer> player, bool sendPacket = true);
+        void remove(std::shared_ptr<ServerPlayer> player);
         void tileChanged(int x, int y, int z);
 		void prioritiseTileChanges();	// 4J added
-        void broadcast(shared_ptr<Packet> packet);
+        void broadcast(std::shared_ptr<Packet> packet);
         bool broadcastChanges(bool allowRegionUpdate);		// 4J - added parm
 
 	private:
-		void broadcast(shared_ptr<TileEntity> te);
+		void broadcast(std::shared_ptr<TileEntity> te);
     };
 
 public:
-	vector<shared_ptr<ServerPlayer> > players;
+	vector<std::shared_ptr<ServerPlayer> > players;
 	void flagEntitiesToBeRemoved(unsigned int *flags, bool *removedFound);		// 4J added
 private:
 	unordered_map<__int64,PlayerChunk *,LongKeyHash,LongKeyEq> chunks;	// 4J - was LongHashMap
     vector<PlayerChunk *> changedChunks;
 	vector<PlayerChunkAddRequest> addRequests; // 4J added
-	void tickAddRequests(shared_ptr<ServerPlayer> player);	// 4J added
+	void tickAddRequests(std::shared_ptr<ServerPlayer> player);	// 4J added
 
     ServerLevel *level;
     int radius;
@@ -83,21 +83,21 @@ public:
 	bool hasChunk(int x, int z);
 private:
 	PlayerChunk *getChunk(int x, int z, bool create);
-	void getChunkAndAddPlayer(int x, int z, shared_ptr<ServerPlayer> player);	// 4J added
-	void getChunkAndRemovePlayer(int x, int z, shared_ptr<ServerPlayer> player);	// 4J added
+	void getChunkAndAddPlayer(int x, int z, std::shared_ptr<ServerPlayer> player);	// 4J added
+	void getChunkAndRemovePlayer(int x, int z, std::shared_ptr<ServerPlayer> player);	// 4J added
 public:
-	void broadcastTileUpdate(shared_ptr<Packet> packet, int x, int y, int z);
+	void broadcastTileUpdate(std::shared_ptr<Packet> packet, int x, int y, int z);
     void tileChanged(int x, int y, int z);
 	bool isTrackingTile(int x, int y, int z);			// 4J added
 	void prioritiseTileChanges(int x, int y, int z);	// 4J added
-    void add(shared_ptr<ServerPlayer> player);
-    void remove(shared_ptr<ServerPlayer> player);
+    void add(std::shared_ptr<ServerPlayer> player);
+    void remove(std::shared_ptr<ServerPlayer> player);
 private:
 	bool chunkInRange(int x, int z, int xc, int zc);
 public:
-	void move(shared_ptr<ServerPlayer> player);
+	void move(std::shared_ptr<ServerPlayer> player);
     int getMaxRange();
-	bool isPlayerIn(shared_ptr<ServerPlayer> player, int xChunk, int zChunk);
+	bool isPlayerIn(std::shared_ptr<ServerPlayer> player, int xChunk, int zChunk);
 	static int convertChunkRangeToBlock(int radius);
 
 	// AP added for Vita

@@ -5,12 +5,12 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "MerchantMenu.h"
 
-MerchantMenu::MerchantMenu(shared_ptr<Inventory> inventory, shared_ptr<Merchant> merchant, Level *level)
+MerchantMenu::MerchantMenu(std::shared_ptr<Inventory> inventory, std::shared_ptr<Merchant> merchant, Level *level)
 {
 	trader = merchant;
 	this->level = level;
 
-	tradeContainer = shared_ptr<MerchantContainer>( new MerchantContainer(dynamic_pointer_cast<Player>(inventory->player->shared_from_this()), merchant) );
+	tradeContainer = std::shared_ptr<MerchantContainer>( new MerchantContainer(dynamic_pointer_cast<Player>(inventory->player->shared_from_this()), merchant) );
 	addSlot(new Slot(tradeContainer, PAYMENT1_SLOT, SELLSLOT1_X, ROW2_Y));
 	addSlot(new Slot(tradeContainer, PAYMENT2_SLOT, SELLSLOT2_X, ROW2_Y));
 	addSlot(new MerchantResultSlot(inventory->player, merchant, tradeContainer, RESULT_SLOT, BUYSLOT_X, ROW2_Y));
@@ -28,7 +28,7 @@ MerchantMenu::MerchantMenu(shared_ptr<Inventory> inventory, shared_ptr<Merchant>
 	}
 }
 
-shared_ptr<MerchantContainer> MerchantMenu::getTradeContainer()
+std::shared_ptr<MerchantContainer> MerchantMenu::getTradeContainer()
 {
 	return tradeContainer;
 }
@@ -43,7 +43,7 @@ void MerchantMenu::broadcastChanges()
 	AbstractContainerMenu::broadcastChanges();
 }
 
-// 4J used to take a shared_ptr<Container> but wasn't using it, so removed to simplify things
+// 4J used to take a std::shared_ptr<Container> but wasn't using it, so removed to simplify things
 void MerchantMenu::slotsChanged()
 {
 	tradeContainer->updateSellItem();
@@ -59,20 +59,20 @@ void MerchantMenu::setData(int id, int value)
 {
 }
 
-bool MerchantMenu::stillValid(shared_ptr<Player> player)
+bool MerchantMenu::stillValid(std::shared_ptr<Player> player)
 {
 	return trader->getTradingPlayer() == player;
 }
 
-shared_ptr<ItemInstance> MerchantMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> MerchantMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = NULL;
 	
 	if(slotIndex < slots->size()) slot = slots->at(slotIndex);
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex == RESULT_SLOT)
@@ -124,7 +124,7 @@ shared_ptr<ItemInstance> MerchantMenu::quickMoveStack(shared_ptr<Player> player,
 	return clicked;
 }
 
-void MerchantMenu::removed(shared_ptr<Player> player)
+void MerchantMenu::removed(std::shared_ptr<Player> player)
 {
 	AbstractContainerMenu::removed(player);
 	trader->setTradingPlayer(nullptr);
@@ -132,7 +132,7 @@ void MerchantMenu::removed(shared_ptr<Player> player)
 	AbstractContainerMenu::removed(player);
 	if (level->isClientSide) return;
 
-	shared_ptr<ItemInstance> item = tradeContainer->removeItemNoUpdate(PAYMENT1_SLOT);
+	std::shared_ptr<ItemInstance> item = tradeContainer->removeItemNoUpdate(PAYMENT1_SLOT);
 	if (item)
 	{
 		player->drop(item);
@@ -144,7 +144,7 @@ void MerchantMenu::removed(shared_ptr<Player> player)
 	}
 }
 
-shared_ptr<Merchant> MerchantMenu::getMerchant()
+std::shared_ptr<Merchant> MerchantMenu::getMerchant()
 {
 	return trader;
 }

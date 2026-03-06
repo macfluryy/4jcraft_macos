@@ -19,10 +19,10 @@ MapItem::MapItem(int id) : ComplexItem(id)
 	this->setMaxStackSize(1);
 }
 
-shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *level)
+std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *level)
 {	
 	std::wstring id = wstring( L"map_" ) + _toString(idNum);
-	shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>(level->getSavedData(typeid(MapItemSavedData), id));
+	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>(level->getSavedData(typeid(MapItemSavedData), id));
 
 	if (mapItemSavedData == NULL) 
 	{
@@ -32,20 +32,20 @@ shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *level)
 		int aux = idNum;
 
 		id = wstring( L"map_" ) + _toString(aux);
-		mapItemSavedData = shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
+		mapItemSavedData = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
 
-		level->setSavedData(id, (shared_ptr<SavedData> ) mapItemSavedData);
+		level->setSavedData(id, (std::shared_ptr<SavedData> ) mapItemSavedData);
 	}
 
 	return mapItemSavedData;
 }
 
-shared_ptr<MapItemSavedData> MapItem::getSavedData(shared_ptr<ItemInstance> itemInstance, Level *level)
+std::shared_ptr<MapItemSavedData> MapItem::getSavedData(std::shared_ptr<ItemInstance> itemInstance, Level *level)
 {
 	MemSect(31);
 	std::wstring id = wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
 	MemSect(0);
-	shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>( level->getSavedData(typeid(MapItemSavedData), id ) );
+	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>( level->getSavedData(typeid(MapItemSavedData), id ) );
 
 	bool newData = false;
 	if (mapItemSavedData == NULL)
@@ -55,7 +55,7 @@ shared_ptr<MapItemSavedData> MapItem::getSavedData(shared_ptr<ItemInstance> item
 		//itemInstance->setAuxValue(level->getFreeAuxValueFor(L"map"));
 
 		id = wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
-		mapItemSavedData = shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
+		mapItemSavedData = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
 
 		newData = true;
 	}
@@ -78,13 +78,13 @@ shared_ptr<MapItemSavedData> MapItem::getSavedData(shared_ptr<ItemInstance> item
 	
 		mapItemSavedData->setDirty();
 
-		level->setSavedData(id, (shared_ptr<SavedData> ) mapItemSavedData);
+		level->setSavedData(id, (std::shared_ptr<SavedData> ) mapItemSavedData);
 	}
 
 	return mapItemSavedData;
 }
 
-void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItemSavedData> data)
+void MapItem::update(Level *level, std::shared_ptr<Entity> player, std::shared_ptr<MapItemSavedData> data)
 {
 	if (level->dimension->id != data->dimension) 
 	{
@@ -259,20 +259,20 @@ void MapItem::update(Level *level, shared_ptr<Entity> player, shared_ptr<MapItem
 	}
 }
 
-void MapItem::inventoryTick(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Entity> owner, int slot, bool selected)
+void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Entity> owner, int slot, bool selected)
 {
 	if (level->isClientSide) return;
 
-	shared_ptr<MapItemSavedData> data = getSavedData(itemInstance, level);
+	std::shared_ptr<MapItemSavedData> data = getSavedData(itemInstance, level);
 	if (dynamic_pointer_cast<Player>(owner) != NULL) 
 	{
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(owner);
+		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(owner);
 
 		// 4J Stu - If the player has a map that belongs to another player, then merge the data over and change this map id to the owners id
 		int ownersAuxValue = level->getAuxValueForMap(player->getXuid(), data->dimension, data->x, data->z, data->scale);
 		if(ownersAuxValue != itemInstance->getAuxValue() )
 		{
-			shared_ptr<MapItemSavedData> ownersData = getSavedData(ownersAuxValue,level);
+			std::shared_ptr<MapItemSavedData> ownersData = getSavedData(ownersAuxValue,level);
 
 			ownersData->x = data->x;
 			ownersData->z = data->z;
@@ -298,7 +298,7 @@ void MapItem::inventoryTick(shared_ptr<ItemInstance> itemInstance, Level *level,
 	}
 }
 
-void MapItem::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player) 
+void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player) 
 {
 	wchar_t buf[64];
 
@@ -318,14 +318,14 @@ void MapItem::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, s
 	swprintf(buf,64,L"map_%d", itemInstance->getAuxValue());
 	std::wstring id = wstring(buf);
 
-	shared_ptr<MapItemSavedData> data = getSavedData(itemInstance->getAuxValue(), level);
+	std::shared_ptr<MapItemSavedData> data = getSavedData(itemInstance->getAuxValue(), level);
 	// 4J Stu - We only have one map per player per dimension, so don't reset the one that they have
 	// when a new one is created
 	if( data == NULL )
 	{
-		data = shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
+		data = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
 	}
-	level->setSavedData(id, (shared_ptr<SavedData> ) data);
+	level->setSavedData(id, (std::shared_ptr<SavedData> ) data);
 	
 	data->scale = mapScale;
 	// 4J-PB - for Xbox maps, we'll centre them on the origin of the world, since we can fit the whole world in our map
@@ -335,13 +335,13 @@ void MapItem::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, s
 	data->setDirty();
 }
 
-shared_ptr<Packet> MapItem::getUpdatePacket(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player) 
+std::shared_ptr<Packet> MapItem::getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player) 
 {
 	charArray data = MapItem::getSavedData(itemInstance, level)->getUpdatePacket(itemInstance, level, player);
 
 	if (data.data == NULL || data.length == 0) return nullptr;
 
-	shared_ptr<Packet> retval = shared_ptr<Packet>(new ComplexItemDataPacket((short) Item::map->id, (short) itemInstance->getAuxValue(), data));
+	std::shared_ptr<Packet> retval = std::shared_ptr<Packet>(new ComplexItemDataPacket((short) Item::map->id, (short) itemInstance->getAuxValue(), data));
 	delete data.data;
 	return retval;
 }

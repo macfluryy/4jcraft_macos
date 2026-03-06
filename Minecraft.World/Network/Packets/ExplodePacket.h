@@ -32,6 +32,6 @@ public:
 	float getKnockbackZ();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ExplodePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ExplodePacket()); }
 	virtual int getId() { return 60; }
 };

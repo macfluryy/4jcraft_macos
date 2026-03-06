@@ -22,5 +22,5 @@ public:
 	void playNote(Level *level, int x, int y, int z);
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

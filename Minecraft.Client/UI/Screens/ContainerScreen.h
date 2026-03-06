@@ -5,13 +5,13 @@ class Container;
 class ContainerScreen : public AbstractContainerScreen
 {
 private:
-	shared_ptr<Container> inventory;
-	shared_ptr<Container> container;
+	std::shared_ptr<Container> inventory;
+	std::shared_ptr<Container> container;
 
 	int containerRows;
 
 public:
-	ContainerScreen(shared_ptr<Container>inventory, shared_ptr<Container>container);
+	ContainerScreen(std::shared_ptr<Container>inventory, std::shared_ptr<Container>container);
 
 protected:
 	virtual void renderLabels();

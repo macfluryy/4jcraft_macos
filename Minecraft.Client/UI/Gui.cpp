@@ -225,7 +225,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 	// Display the pumpkin screen effect
 	/////////////////////////////////////////////////////////////////////////////////////
 
-    shared_ptr<ItemInstance> headGear = minecraft->player->inventory->getArmor(3);
+    std::shared_ptr<ItemInstance> headGear = minecraft->player->inventory->getArmor(3);
 
 	// 4J-PB - changing this to be per player
 	//if (!minecraft->options->thirdPersonView && headGear != NULL && headGear->id == Tile::pumpkin_Id) renderPumpkin(screenWidth, screenHeight);
@@ -302,7 +302,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			minecraft->textures->bindTexture(TN_GUI_GUI);	// 4J was L"/gui/gui.png"
 			MemSect(0);
 
-			shared_ptr<Inventory> inventory = minecraft->player->inventory;
+			std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
 			if(bTwoPlayerSplitscreen)
 			{
 				// need to apply scale factors depending on the mode
@@ -1027,7 +1027,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 // {
 // 	if (EnderDragonRenderer::bossInstance == NULL) return;
 // 
-// 	shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
+// 	std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
 // 	EnderDragonRenderer::bossInstance = NULL;
 // 
 // 	Minecraft *pMinecraft=Minecraft::GetInstance();
@@ -1148,7 +1148,7 @@ void Gui::renderTp(float br, int w, int h)
 
 void Gui::renderSlot(int slot, int x, int y, float a)
 {
-    shared_ptr<ItemInstance> item = minecraft->player->inventory->items[slot];
+    std::shared_ptr<ItemInstance> item = minecraft->player->inventory->items[slot];
     if (item == NULL) return;
 
     float pop = item->popTime - a;

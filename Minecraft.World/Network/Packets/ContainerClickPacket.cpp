@@ -21,7 +21,7 @@ ContainerClickPacket::ContainerClickPacket()
 	quickKey = false;
 }
 
-ContainerClickPacket::ContainerClickPacket(int containerId, int slotNum, int buttonNum, bool quickKey, shared_ptr<ItemInstance> item, short uid)
+ContainerClickPacket::ContainerClickPacket(int containerId, int slotNum, int buttonNum, bool quickKey, std::shared_ptr<ItemInstance> item, short uid)
 {
 	this->containerId = containerId;
 	this->slotNum = slotNum;

@@ -757,7 +757,7 @@ bool NetherBridgePieces::MonsterThrone::postProcess(Level *level, Random *random
 		{
 			hasPlacedMobSpawner = true;
 			level->setTile(x, y, z, Tile::mobSpawner_Id);
-			shared_ptr<MobSpawnerTileEntity> entity = dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x, y, z) );
+			std::shared_ptr<MobSpawnerTileEntity> entity = dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x, y, z) );
 			if (entity != NULL) entity->setEntityId(L"Blaze");
 		}
 	}

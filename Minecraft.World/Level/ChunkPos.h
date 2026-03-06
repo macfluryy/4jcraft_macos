@@ -13,7 +13,7 @@ public:
 	static __int64 hashCode(int x, int z);
 	int hashCode();
 
-	double distanceToSqr(shared_ptr<Entity> e);
+	double distanceToSqr(std::shared_ptr<Entity> e);
 	double distanceToSqr(double px, double pz);	// 4J added
 
 	int getMiddleBlockX();

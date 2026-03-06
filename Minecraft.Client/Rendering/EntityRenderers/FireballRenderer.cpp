@@ -12,10 +12,10 @@ FireballRenderer::FireballRenderer(float scale)
 	this->scale = scale;
 }
 
-void FireballRenderer::render(shared_ptr<Entity> _fireball, double x, double y, double z, float rot, float a)
+void FireballRenderer::render(std::shared_ptr<Entity> _fireball, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Fireball> fireball = dynamic_pointer_cast<Fireball>(_fireball);
+	std::shared_ptr<Fireball> fireball = dynamic_pointer_cast<Fireball>(_fireball);
 
     glPushMatrix();
 
@@ -54,7 +54,7 @@ void FireballRenderer::render(shared_ptr<Entity> _fireball, double x, double y, 
 }
 
 // 4J Added override. Based on EntityRenderer::renderFlame
-void FireballRenderer::renderFlame(shared_ptr<Entity> e, double x, double y, double z, float a)
+void FireballRenderer::renderFlame(std::shared_ptr<Entity> e, double x, double y, double z, float a)
 {
 	glDisable(GL_LIGHTING);
 	Icon *tex = Tile::fire->getTextureLayer(0);

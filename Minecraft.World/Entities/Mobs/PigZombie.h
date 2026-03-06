@@ -32,13 +32,13 @@ public:
     virtual void readAdditionalSaveData(CompoundTag *tag);
 
 protected:
-	virtual shared_ptr<Entity> findAttackTarget();
+	virtual std::shared_ptr<Entity> findAttackTarget();
 
 public:
     virtual bool hurt(DamageSource *source, int dmg);
 
 private:
-	void alert(shared_ptr<Entity> target);
+	void alert(std::shared_ptr<Entity> target);
 
 protected:
 	virtual int getAmbientSound();
@@ -49,12 +49,12 @@ protected:
     virtual int getDeathLoot();
 
 private:
-	static shared_ptr<ItemInstance> sword;
+	static std::shared_ptr<ItemInstance> sword;
 
 public:
 	virtual void finalizeMobSpawn();
 
-	shared_ptr<ItemInstance> getCarriedItem();
+	std::shared_ptr<ItemInstance> getCarriedItem();
 
 	static void staticCtor();
 };

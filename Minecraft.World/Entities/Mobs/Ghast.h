@@ -21,7 +21,7 @@ public:
     double xTarget, yTarget, zTarget;
 
 private: 
-	shared_ptr<Entity> target;
+	std::shared_ptr<Entity> target;
     int retargetTime;
 
 public:

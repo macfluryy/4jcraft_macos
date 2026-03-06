@@ -5,7 +5,7 @@
 #include "../Lighting.h"
 #include "EnderDragonRenderer.h"
 
-shared_ptr<EnderDragon> EnderDragonRenderer::bossInstance;
+std::shared_ptr<EnderDragon> EnderDragonRenderer::bossInstance;
 int EnderDragonRenderer::currentModel;
 
 EnderDragonRenderer::EnderDragonRenderer() : MobRenderer(new DragonModel(0), 0.5f)
@@ -15,10 +15,10 @@ EnderDragonRenderer::EnderDragonRenderer() : MobRenderer(new DragonModel(0), 0.5
 	this->setArmor(model);
 }
 
-void EnderDragonRenderer::setupRotations(shared_ptr<Mob> _mob, float bob, float bodyRot, float a)
+void EnderDragonRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob, float bodyRot, float a)
 {		
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
+	std::shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
 
 	// 4J - reorganised a bit so we can free allocations
 	double lpComponents[3];
@@ -46,10 +46,10 @@ void EnderDragonRenderer::setupRotations(shared_ptr<Mob> _mob, float bob, float 
 	}
 }
 
-void EnderDragonRenderer::renderModel(shared_ptr<Entity> _mob, float wp, float ws, float bob, float headRotMinusBodyRot, float headRotx, float scale)
+void EnderDragonRenderer::renderModel(std::shared_ptr<Entity> _mob, float wp, float ws, float bob, float headRotMinusBodyRot, float headRotx, float scale)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
+	std::shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
 
 	if (mob->dragonDeathTime > 0)
 	{
@@ -87,10 +87,10 @@ void EnderDragonRenderer::renderModel(shared_ptr<Entity> _mob, float wp, float w
 	}
 }
 
-void EnderDragonRenderer::render(shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a)
+void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
+	std::shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
 	EnderDragonRenderer::bossInstance = mob;
 	if (currentModel != DragonModel::MODEL_ID)
 	{
@@ -167,10 +167,10 @@ void EnderDragonRenderer::render(shared_ptr<Entity> _mob, double x, double y, do
 	}
 }
 
-void EnderDragonRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
+void EnderDragonRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a)
 {		
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
+	std::shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
 	MobRenderer::additionalRendering(mob, a);
 	Tesselator *t = Tesselator::getInstance();
 
@@ -227,10 +227,10 @@ void EnderDragonRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
 
 }
 
-int EnderDragonRenderer::prepareArmor(shared_ptr<Mob> _mob, int layer, float a)
+int EnderDragonRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
+	std::shared_ptr<EnderDragon> mob = dynamic_pointer_cast<EnderDragon>(_mob);
 
 	if (layer == 1)
 	{

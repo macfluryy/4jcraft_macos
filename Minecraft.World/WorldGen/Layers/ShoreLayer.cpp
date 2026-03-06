@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 
-ShoreLayer::ShoreLayer(__int64 seed, shared_ptr<Layer> parent) : Layer(seed)
+ShoreLayer::ShoreLayer(__int64 seed, std::shared_ptr<Layer> parent) : Layer(seed)
 {
 	this->parent = parent;
 }

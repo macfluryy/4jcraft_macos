@@ -52,7 +52,7 @@ Arrow::Arrow(Level *level) : Entity( level )
 	this->setSize(0.5f, 0.5f);
 }
 
-Arrow::Arrow(Level *level, shared_ptr<Mob> mob, shared_ptr<Mob> target, float power, float uncertainty) : Entity( level )
+Arrow::Arrow(Level *level, std::shared_ptr<Mob> mob, std::shared_ptr<Mob> target, float power, float uncertainty) : Entity( level )
 {
 	_init();
 
@@ -89,7 +89,7 @@ Arrow::Arrow(Level *level, double x, double y, double z) : Entity( level )
 	this->heightOffset = 0;
 }
  
-Arrow::Arrow(Level *level, shared_ptr<Mob> mob, float power) : Entity( level )
+Arrow::Arrow(Level *level, std::shared_ptr<Mob> mob, float power) : Entity( level )
 {
 	_init();
 
@@ -239,13 +239,13 @@ void Arrow::tick()
 	{
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
-	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	std::shared_ptr<Entity> hitEntity = nullptr;
+	vector<std::shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
 	AUTO_VAR(itEnd, objects->end());
 	for (AUTO_VAR(it, objects->begin()); it != itEnd; it++)
 	{
-		shared_ptr<Entity> e = *it; //objects->at(i);
+		std::shared_ptr<Entity> e = *it; //objects->at(i);
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
 		float rr = 0.3f;
@@ -299,7 +299,7 @@ void Arrow::tick()
 					res->entity->setOnFire(5);
 				}
 
-				shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(res->entity);
+				std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(res->entity);
 				if (mob != NULL)
 				{
 					mob->arrowCount++;
@@ -464,7 +464,7 @@ void Arrow::readAdditionalSaveData(CompoundTag *tag)
 	}
 }
 
-void Arrow::playerTouch(shared_ptr<Player> player)
+void Arrow::playerTouch(std::shared_ptr<Player> player)
 {
 	if (level->isClientSide || !inGround || shakeTime > 0) return;
 
@@ -472,7 +472,7 @@ void Arrow::playerTouch(shared_ptr<Player> player)
 
 	if (pickup == PICKUP_ALLOWED)
 	{
-		if (!player->inventory->add( shared_ptr<ItemInstance>( new ItemInstance(Item::arrow, 1) ) ))
+		if (!player->inventory->add( std::shared_ptr<ItemInstance>( new ItemInstance(Item::arrow, 1) ) ))
 		{
 			bRemove = false;
 		}

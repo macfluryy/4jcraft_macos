@@ -25,7 +25,7 @@ AddMobPacket::~AddMobPacket()
 	delete unpack;
 }
 
-AddMobPacket::AddMobPacket(shared_ptr<Mob> mob, int yRotp, int xRotp, int xp, int yp, int zp, int yHeadRotp)
+AddMobPacket::AddMobPacket(std::shared_ptr<Mob> mob, int yRotp, int xRotp, int xp, int yp, int zp, int yHeadRotp)
 {
 	id = mob->entityId;
 
@@ -130,7 +130,7 @@ int AddMobPacket::getEstimatedSize()
 	return size;
 }
 
-vector<shared_ptr<SynchedEntityData::DataItem> > *AddMobPacket::getUnpackedData() 
+vector<std::shared_ptr<SynchedEntityData::DataItem> > *AddMobPacket::getUnpackedData() 
 {
 	if (unpack == NULL)
 	{

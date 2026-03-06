@@ -46,7 +46,7 @@ Icon *TileItem::getIcon(int auxValue)
 	return Tile::tiles[tileId]->getTexture(Facing::UP, auxValue);
 }
 
-bool TileItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) 
+bool TileItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) 
 {
 	// 4J-PB - Adding a test only version to allow tooltips to be displayed
 	int currentTile = level->getTile(x, y, z);
@@ -162,7 +162,7 @@ bool TileItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> playe
 }
 
 
-bool TileItem::mayPlace(Level *level, int x, int y, int z, int face, shared_ptr<Player> player, shared_ptr<ItemInstance> item) 
+bool TileItem::mayPlace(Level *level, int x, int y, int z, int face, std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item) 
 {
 	int currentTile = level->getTile(x, y, z);
 	if (currentTile == Tile::topSnow_Id) 
@@ -188,7 +188,7 @@ int TileItem::getColor(int itemAuxValue, int spriteLayer)
 	return Tile::tiles[tileId]->getColor();
 }
 
-unsigned int TileItem::getDescriptionId(shared_ptr<ItemInstance> instance) 
+unsigned int TileItem::getDescriptionId(std::shared_ptr<ItemInstance> instance) 
 {
     return Tile::tiles[tileId]->getDescriptionId();
 }
@@ -200,7 +200,7 @@ unsigned int TileItem::getDescriptionId(int iData /*= -1*/)
 }
 
 
-unsigned int TileItem::getUseDescriptionId(shared_ptr<ItemInstance> instance) 
+unsigned int TileItem::getUseDescriptionId(std::shared_ptr<ItemInstance> instance) 
 {
     return Tile::tiles[tileId]->getUseDescriptionId();
 }

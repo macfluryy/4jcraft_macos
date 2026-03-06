@@ -15,7 +15,7 @@ TextureAndGeometryChangePacket::TextureAndGeometryChangePacket()
 	dwSkinID = 0;
 }
 
-TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(shared_ptr<Entity> e, const wstring &path)
+TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const wstring &path)
 {
 	id = e->entityId;
 	this->path = path;

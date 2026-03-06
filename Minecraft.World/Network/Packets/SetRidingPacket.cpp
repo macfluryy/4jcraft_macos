@@ -13,7 +13,7 @@ SetRidingPacket::SetRidingPacket()
 	riddenId = -1;
 }
 
-SetRidingPacket::SetRidingPacket(shared_ptr<Entity> rider, shared_ptr<Entity> riding)
+SetRidingPacket::SetRidingPacket(std::shared_ptr<Entity> rider, std::shared_ptr<Entity> riding)
 {
 	this->riderId = rider->entityId;
 	this->riddenId = riding != NULL ? riding->entityId : -1;
@@ -46,8 +46,8 @@ bool SetRidingPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetRidingPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetRidingPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	shared_ptr<SetRidingPacket> target = dynamic_pointer_cast<SetRidingPacket>(packet);
+	std::shared_ptr<SetRidingPacket> target = dynamic_pointer_cast<SetRidingPacket>(packet);
 	return target->riderId == riderId;
 }

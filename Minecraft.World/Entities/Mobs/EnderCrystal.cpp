@@ -91,7 +91,7 @@ bool EnderCrystal::isPickable()
 bool EnderCrystal::hurt(DamageSource *source, int damage)
 {
 	// 4J-PB - if the owner of the source is the enderdragon, then ignore it (where the dragon's fireball hits an endercrystal)
-	shared_ptr<EnderDragon> sourceIsDragon = dynamic_pointer_cast<EnderDragon>(source->getEntity());
+	std::shared_ptr<EnderDragon> sourceIsDragon = dynamic_pointer_cast<EnderDragon>(source->getEntity());
 
 	if(sourceIsDragon!=NULL)
 	{
@@ -108,12 +108,12 @@ bool EnderCrystal::hurt(DamageSource *source, int damage)
 			{
 				level->explode(nullptr, x, y, z, 6, true);
 
-				vector<shared_ptr<Entity> > entities = level->getAllEntities();
-				shared_ptr<EnderDragon> dragon = nullptr;
+				vector<std::shared_ptr<Entity> > entities = level->getAllEntities();
+				std::shared_ptr<EnderDragon> dragon = nullptr;
 				AUTO_VAR(itEnd, entities.end());
 				for (AUTO_VAR(it, entities.begin()); it != itEnd; it++)
 				{
-					shared_ptr<Entity> e = *it; //entities->at(i);
+					std::shared_ptr<Entity> e = *it; //entities->at(i);
 					dragon = dynamic_pointer_cast<EnderDragon>(e);
 					if(dragon != NULL)
 					{

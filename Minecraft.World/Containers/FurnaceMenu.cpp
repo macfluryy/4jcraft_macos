@@ -8,7 +8,7 @@
 #include "FurnaceMenu.h"
 #include "../Recipes/FurnaceRecipes.h"
 
-FurnaceMenu::FurnaceMenu(shared_ptr<Inventory> inventory, shared_ptr<FurnaceTileEntity> furnace) : AbstractContainerMenu()
+FurnaceMenu::FurnaceMenu(std::shared_ptr<Inventory> inventory, std::shared_ptr<FurnaceTileEntity> furnace) : AbstractContainerMenu()
 {
 	tc = 0;
 	lt = 0;
@@ -75,14 +75,14 @@ void FurnaceMenu::setData(int id, int value)
 	if (id == 2) furnace->litDuration = value;
 }
 
-bool FurnaceMenu::stillValid(shared_ptr<Player> player)
+bool FurnaceMenu::stillValid(std::shared_ptr<Player> player)
 {
 	return furnace->stillValid(player);
 }
 
-shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	//Slot *IngredientSlot = slots->at(INGREDIENT_SLOT);
 
@@ -90,7 +90,7 @@ shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(shared_ptr<Player> player, 
 
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex == RESULT_SLOT)
@@ -160,11 +160,11 @@ shared_ptr<ItemInstance> FurnaceMenu::quickMoveStack(shared_ptr<Player> player, 
 	return clicked;
 }
 
-shared_ptr<ItemInstance> FurnaceMenu::clicked(int slotIndex, int buttonNum, int clickType, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> FurnaceMenu::clicked(int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player)
 {
 	bool charcoalUsed = furnace->wasCharcoalUsed();
 
-	shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
+	std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
 
 #ifdef _EXTENDED_ACHIEVEMENTS
 	if ( charcoalUsed && (out!=nullptr) && (buttonNum==0 || buttonNum==1) && clickType==CLICK_PICKUP

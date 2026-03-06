@@ -47,7 +47,7 @@ MinecartModel::MinecartModel() : Model()
     }
 }
 
-void MinecartModel::render(shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled)
+void MinecartModel::render(std::shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled)
 {
     cubes[5]->y = 4 - bob;
     for (int i = 0; i < MINECART_LENGTH; i++)

@@ -89,11 +89,11 @@ public:
 	ShapedRecipy *addShapedRecipy(ItemInstance *, ... );
 	void addShapelessRecipy(ItemInstance *result,... ); 
 
-	shared_ptr<ItemInstance> getItemFor(shared_ptr<CraftingContainer> craftSlots, Level *level);
+	std::shared_ptr<ItemInstance> getItemFor(std::shared_ptr<CraftingContainer> craftSlots, Level *level);
 	vector <Recipy *> *getRecipies();
 
 	// 4J-PB - Added all below for new Xbox 'crafting'
-	shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);
+	std::shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);
 	Recipy::INGREDIENTS_REQUIRED *getRecipeIngredientsArray();
 
 private:

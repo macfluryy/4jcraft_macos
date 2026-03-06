@@ -47,11 +47,11 @@ void GameMode::render(float a)
 {
 }
 
-bool GameMode::useItem(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, bool bTestUseOnly)
+bool GameMode::useItem(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, bool bTestUseOnly)
 {
 }
 
-void GameMode::initPlayer(shared_ptr<Player> player)
+void GameMode::initPlayer(std::shared_ptr<Player> player)
 {
 }
 
@@ -59,11 +59,11 @@ void GameMode::tick()
 {
 }
 
-void GameMode::adjustPlayer(shared_ptr<Player> player)
+void GameMode::adjustPlayer(std::shared_ptr<Player> player)
 {
 }
 
-//bool GameMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly)
+//bool GameMode::useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly)
 //{
 //	// 4J-PB - Adding a test only version to allow tooltips to be displayed
 //	int t = level->getTile(x, y, z);
@@ -101,27 +101,27 @@ void GameMode::adjustPlayer(shared_ptr<Player> player)
 //}
 
 
-shared_ptr<Player> GameMode::createPlayer(Level *level)
+std::shared_ptr<Player> GameMode::createPlayer(Level *level)
 {
-	return shared_ptr<Player>( new LocalPlayer(minecraft, level, minecraft->user, level->dimension->id) );
+	return std::shared_ptr<Player>( new LocalPlayer(minecraft, level, minecraft->user, level->dimension->id) );
 }
 
-bool GameMode::interact(shared_ptr<Player> player, shared_ptr<Entity> entity)
+bool GameMode::interact(std::shared_ptr<Player> player, std::shared_ptr<Entity> entity)
 {
 	return player->interact(entity);
 }
 
-void GameMode::attack(shared_ptr<Player> player, shared_ptr<Entity> entity)
+void GameMode::attack(std::shared_ptr<Player> player, std::shared_ptr<Entity> entity)
 {
 	player->attack(entity);
 }
 
-shared_ptr<ItemInstance> GameMode::handleInventoryMouseClick(int containerId, int slotNum, int buttonNum, bool quickKeyHeld, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> GameMode::handleInventoryMouseClick(int containerId, int slotNum, int buttonNum, bool quickKeyHeld, std::shared_ptr<Player> player)
 {
 	return nullptr;
 }
 
-void GameMode::handleCloseInventory(int containerId, shared_ptr<Player> player)
+void GameMode::handleCloseInventory(int containerId, std::shared_ptr<Player> player)
 {
     player->containerMenu->removed(player);
 	delete player->containerMenu;
@@ -138,7 +138,7 @@ bool GameMode::isCutScene()
 	return false;
 }
 
-void GameMode::releaseUsingItem(shared_ptr<Player> player)
+void GameMode::releaseUsingItem(std::shared_ptr<Player> player)
 {
 	player->releaseUsingItem();
 }
@@ -163,21 +163,21 @@ bool GameMode::hasFarPickRange()
 	return false;
 }
 
-void GameMode::handleCreativeModeItemAdd(shared_ptr<ItemInstance> clicked, int i)
+void GameMode::handleCreativeModeItemAdd(std::shared_ptr<ItemInstance> clicked, int i)
 {
 }
 
-void GameMode::handleCreativeModeItemDrop(shared_ptr<ItemInstance> clicked)
+void GameMode::handleCreativeModeItemDrop(std::shared_ptr<ItemInstance> clicked)
 {
 }
 
-bool GameMode::handleCraftItem(int recipe, shared_ptr<Player> player)
+bool GameMode::handleCraftItem(int recipe, std::shared_ptr<Player> player)
 {
 	return true;
 }
 
 // 4J-PB
-void GameMode::handleDebugOptions(unsigned int uiVal, shared_ptr<Player> player)
+void GameMode::handleDebugOptions(unsigned int uiVal, std::shared_ptr<Player> player)
 {
 	player->SetDebugOptions(uiVal);
 }

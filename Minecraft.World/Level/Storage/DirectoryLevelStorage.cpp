@@ -351,7 +351,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
     return NULL;
 }
 
-void DirectoryLevelStorage::saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players)
+void DirectoryLevelStorage::saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players)
 {
 	// 4J Jev, removed try/catch
 
@@ -385,7 +385,7 @@ void DirectoryLevelStorage::saveLevelData(LevelData *levelData)
 	delete root;
 }
 
-void DirectoryLevelStorage::save(shared_ptr<Player> player)
+void DirectoryLevelStorage::save(std::shared_ptr<Player> player)
 {
 	// 4J Jev, removed try/catch.
 	PlayerUID playerXuid = player->getXuid();
@@ -433,7 +433,7 @@ void DirectoryLevelStorage::save(shared_ptr<Player> player)
 }
 
  // 4J Changed return val to bool to check if new player or loaded player
-bool DirectoryLevelStorage::load(shared_ptr<Player> player) 
+bool DirectoryLevelStorage::load(std::shared_ptr<Player> player) 
 {
 	bool newPlayer = true;
 	CompoundTag *tag = loadPlayerDataTag( player->getXuid() );
@@ -746,7 +746,7 @@ void DirectoryLevelStorage::dontSaveMapMappingForPlayer(PlayerUID xuid)
 #endif
 }
 
-void DirectoryLevelStorage::deleteMapFilesForPlayer(shared_ptr<Player> player)
+void DirectoryLevelStorage::deleteMapFilesForPlayer(std::shared_ptr<Player> player)
 {
 	PlayerUID playerXuid = player->getXuid();
 	if(playerXuid != INVALID_XUID) deleteMapFilesForPlayer(playerXuid);

@@ -21,7 +21,7 @@ ChunkStorage *MockedLevelStorage::createChunkStorage(Dimension *dimension)
     return NULL;
 }
 
-void MockedLevelStorage::saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players)
+void MockedLevelStorage::saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players)
 {
 }
 

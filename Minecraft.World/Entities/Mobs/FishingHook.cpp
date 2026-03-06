@@ -52,7 +52,7 @@ FishingHook::FishingHook(Level *level) : Entity( level )
 	_init();
 }
 
-FishingHook::FishingHook(Level *level, double x, double y, double z, shared_ptr<Player> owner) : Entity( level )
+FishingHook::FishingHook(Level *level, double x, double y, double z, std::shared_ptr<Player> owner) : Entity( level )
 {
 	_init();
 
@@ -63,7 +63,7 @@ FishingHook::FishingHook(Level *level, double x, double y, double z, shared_ptr<
 	setPos(x, y, z);
 }
 
-FishingHook::FishingHook(Level *level, shared_ptr<Player> mob) : Entity( level )
+FishingHook::FishingHook(Level *level, std::shared_ptr<Player> mob) : Entity( level )
 {
 	_init();
 
@@ -172,7 +172,7 @@ void FishingHook::tick()
 
 	if (!level->isClientSide)
 	{
-		shared_ptr<ItemInstance> selectedItem = owner->getSelectedItem();
+		std::shared_ptr<ItemInstance> selectedItem = owner->getSelectedItem();
 		if (owner->removed || !owner->isAlive() || selectedItem == NULL || selectedItem->getItem() != Item::fishingRod || this->distanceToSqr(owner) > 32 * 32)
 		{
 			remove();
@@ -230,13 +230,13 @@ void FishingHook::tick()
 	{
 		to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
 	}
-	shared_ptr<Entity> hitEntity = nullptr;
-	vector<shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+	std::shared_ptr<Entity> hitEntity = nullptr;
+	vector<std::shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 	double nearest = 0;
 	AUTO_VAR(itEnd, objects->end());
 	for (AUTO_VAR(it, objects->begin()); it != itEnd; it++)
 	{
-		shared_ptr<Entity> e = *it; // objects->at(i);
+		std::shared_ptr<Entity> e = *it; // objects->at(i);
 		if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
 		float rr = 0.3f;
@@ -421,7 +421,7 @@ int FishingHook::retrieve()
 	}
 	else if (nibble > 0)
 	{
-		shared_ptr<ItemEntity> ie = shared_ptr<ItemEntity>( new ItemEntity(this->Entity::level, x, y, z, shared_ptr<ItemInstance>( new ItemInstance(Item::fish_raw) ) ) );
+		std::shared_ptr<ItemEntity> ie = std::shared_ptr<ItemEntity>( new ItemEntity(this->Entity::level, x, y, z, std::shared_ptr<ItemInstance>( new ItemInstance(Item::fish_raw) ) ) );
 		double xa = owner->x - x;
 		double ya = owner->y - y;
 		double za = owner->z - z;
@@ -432,7 +432,7 @@ int FishingHook::retrieve()
 		ie->Entity::yd = ya * speed + sqrt(dist) * 0.08;
 		ie->Entity::zd = za * speed;
 		level->addEntity(ie);
-		owner->level->addEntity( shared_ptr<ExperienceOrb>( new ExperienceOrb(owner->level, owner->x, owner->y + 0.5f, owner->z + 0.5f, random->nextInt(3) + 1) ) ); // 4J Stu brought forward from 1.4
+		owner->level->addEntity( std::shared_ptr<ExperienceOrb>( new ExperienceOrb(owner->level, owner->x, owner->y + 0.5f, owner->z + 0.5f, random->nextInt(3) + 1) ) ); // 4J Stu brought forward from 1.4
 		dmg = 1;
 	}
 	if (inGround) dmg = 2;

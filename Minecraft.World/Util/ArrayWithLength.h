@@ -105,11 +105,11 @@ typedef arrayWithLength<Level *> LevelArray;
 typedef arrayWithLength<LevelRenderer *> LevelRendererArray;
 typedef arrayWithLength<WeighedRandomItem *> WeighedRandomItemArray;
 typedef arrayWithLength<WeighedTreasure *> WeighedTreasureArray;
-typedef arrayWithLength< shared_ptr<Layer> > LayerArray;
+typedef arrayWithLength< std::shared_ptr<Layer> > LayerArray;
 //typedef arrayWithLength<Cube *> CubeArray;
 typedef arrayWithLength<ModelPart *> ModelPartArray;
 typedef arrayWithLength<Enchantment *> EnchantmentArray;
 typedef arrayWithLength<ClipChunk> ClipChunkArray;
 
 #include "../Items/ItemInstance.h"
-typedef arrayWithLength<shared_ptr<ItemInstance> > ItemInstanceArray;
+typedef arrayWithLength<std::shared_ptr<ItemInstance> > ItemInstanceArray;

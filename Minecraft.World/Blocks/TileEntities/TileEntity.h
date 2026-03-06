@@ -54,13 +54,13 @@ public:
 	virtual void load(CompoundTag *tag);
 	virtual void save(CompoundTag *tag);
 	virtual void tick();
-	static shared_ptr<TileEntity> loadStatic(CompoundTag *tag);
+	static std::shared_ptr<TileEntity> loadStatic(CompoundTag *tag);
 	int getData();
 	void setData(int data);
 	void setChanged();
 	double distanceToSqr(double xPlayer, double yPlayer, double zPlayer);
 	Tile *getTile();
-	virtual shared_ptr<Packet> getUpdatePacket();
+	virtual std::shared_ptr<Packet> getUpdatePacket();
 	virtual bool isRemoved();
 	virtual void setRemoved();
 	virtual void clearRemoved();
@@ -68,7 +68,7 @@ public:
 	virtual void clearCache();
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone() = 0;
+	virtual std::shared_ptr<TileEntity> clone() = 0;
 protected:
-	void clone(shared_ptr<TileEntity> tileEntity);
+	void clone(std::shared_ptr<TileEntity> tileEntity);
 };

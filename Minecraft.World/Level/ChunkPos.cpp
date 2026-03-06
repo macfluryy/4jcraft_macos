@@ -21,7 +21,7 @@ int ChunkPos::hashCode()
 	return h1 ^ h2;
 }
 
-double ChunkPos::distanceToSqr(shared_ptr<Entity> e)
+double ChunkPos::distanceToSqr(std::shared_ptr<Entity> e)
 {
 	double xPos = x * 16 + 8;
 	double zPos = z * 16 + 8;

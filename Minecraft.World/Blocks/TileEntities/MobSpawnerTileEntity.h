@@ -33,7 +33,7 @@ private:
 	int minSpawnDelay;
 	int maxSpawnDelay;
 	int spawnCount;
-	shared_ptr<Entity> displayEntity;
+	std::shared_ptr<Entity> displayEntity;
 	
 public:
 	MobSpawnerTileEntity();
@@ -42,7 +42,7 @@ public:
 	void setEntityId(const wstring& entityId);
 	bool isNearPlayer();
 	virtual void tick();
-	void fillExtraData(shared_ptr<Entity> entity);
+	void fillExtraData(std::shared_ptr<Entity> entity);
 
 private:
 	void delay();
@@ -51,9 +51,9 @@ public:
 	virtual void load(CompoundTag *tag);
 	virtual void save(CompoundTag *tag);
 
-	shared_ptr<Entity> getDisplayEntity();
-	virtual shared_ptr<Packet> getUpdatePacket();
+	std::shared_ptr<Entity> getDisplayEntity();
+	virtual std::shared_ptr<Packet> getUpdatePacket();
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

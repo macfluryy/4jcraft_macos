@@ -49,7 +49,7 @@ bool SetSpawnPositionPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetSpawnPositionPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetSpawnPositionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

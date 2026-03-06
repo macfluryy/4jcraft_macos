@@ -12,7 +12,7 @@ CoalItem::CoalItem(int id) : Item( id )
 	setMaxDamage(0);
 }
 
-unsigned int CoalItem::getDescriptionId(shared_ptr<ItemInstance> instance) 
+unsigned int CoalItem::getDescriptionId(std::shared_ptr<ItemInstance> instance) 
 {
 	if (instance->getAuxValue() == CHAR_COAL) 
 	{

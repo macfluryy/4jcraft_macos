@@ -141,7 +141,7 @@ void Connection::setListener(PacketListener *packetListener)
 	this->packetListener = packetListener;
 }
 
-void Connection::send(shared_ptr<Packet> packet)
+void Connection::send(std::shared_ptr<Packet> packet)
 {
 	if (quitting) 	return;
 
@@ -167,7 +167,7 @@ void Connection::send(shared_ptr<Packet> packet)
 }
 
 
-void Connection::queueSend(shared_ptr<Packet> packet)
+void Connection::queueSend(std::shared_ptr<Packet> packet)
 {
 	if (quitting) return;
 	estimatedRemaining += packet->getEstimatedSize() + 1;
@@ -185,7 +185,7 @@ bool Connection::writeTick()
 	// try {
 	if (!outgoing.empty() && (fakeLag == 0 || System::currentTimeMillis() - outgoing.front()->createTime >= fakeLag))
 	{
-		shared_ptr<Packet> packet;
+		std::shared_ptr<Packet> packet;
 
 		EnterCriticalSection(&writeLock);
 
@@ -218,7 +218,7 @@ bool Connection::writeTick()
 
 	if ((slowWriteDelay-- <= 0) && !outgoing_slow.empty() && (fakeLag == 0 || System::currentTimeMillis() - outgoing_slow.front()->createTime >= fakeLag))
 	{
-		shared_ptr<Packet> packet;
+		std::shared_ptr<Packet> packet;
 
 		//synchronized (writeLock) {
 
@@ -296,7 +296,7 @@ bool Connection::readTick()
 
 	//try {
 
-	shared_ptr<Packet> packet = Packet::readPacket(dis, packetListener->isServerPacketListener());
+	std::shared_ptr<Packet> packet = Packet::readPacket(dis, packetListener->isServerPacketListener());
 
 	if (packet != NULL)
 	{
@@ -446,7 +446,7 @@ void Connection::tick()
 	tickCount++;
     if (tickCount % 20 == 0)
 	{
-        send( shared_ptr<KeepAlivePacket>( new KeepAlivePacket() ) );
+        send( std::shared_ptr<KeepAlivePacket>( new KeepAlivePacket() ) );
     }
 
 	// 4J Stu - 1.8.2 changed from 100 to 1000
@@ -461,10 +461,10 @@ void Connection::tick()
 
 	EnterCriticalSection(&incoming_cs);
 	// 4J Stu - If disconnected, then we shouldn't process incoming packets
-	std::vector< shared_ptr<Packet> > packetsToHandle;
+	std::vector< std::shared_ptr<Packet> > packetsToHandle;
 	while (!disconnected && !g_NetworkManager.IsLeavingGame() && g_NetworkManager.IsInSession() && !incoming.empty() && max-- >= 0)
 	{
-		shared_ptr<Packet> packet = incoming.front();
+		std::shared_ptr<Packet> packet = incoming.front();
 		packetsToHandle.push_back(packet);
 		incoming.pop();
 	}

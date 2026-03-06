@@ -666,7 +666,7 @@ byteArray GenericStats::getParam_itemsSmelted(int id, int aux, int count)
 	return this->getParam_itemsCrafted(id,aux,count);
 }
 
-byteArray GenericStats::getParam_itemsUsed(shared_ptr<Player> plr, shared_ptr<ItemInstance> itm)
+byteArray GenericStats::getParam_itemsUsed(std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm)
 {
 	return getParam_noArgs(); // Really just a count on most platforms.
 }
@@ -676,7 +676,7 @@ byteArray GenericStats::getParam_itemsBought(int id, int aux, int count)
 	return getParam_noArgs();
 }
 
-byteArray GenericStats::getParam_mobKill(shared_ptr<Player> plr, shared_ptr<Mob> mob, DamageSource *dmgSrc)
+byteArray GenericStats::getParam_mobKill(std::shared_ptr<Player> plr, std::shared_ptr<Mob> mob, DamageSource *dmgSrc)
 {
 	return getParam_noArgs(); // Really just a count on most platforms.
 }
@@ -833,7 +833,7 @@ byteArray GenericStats::param_itemsSmelted(int id, int aux, int count)
 	return instance->getParam_itemsSmelted(id,aux,count);
 }
 
-byteArray GenericStats::param_itemsUsed(shared_ptr<Player> plr, shared_ptr<ItemInstance> itm)
+byteArray GenericStats::param_itemsUsed(std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm)
 {
 	if ( (plr != NULL) && (itm != NULL) )	return instance->getParam_itemsUsed(plr, itm);
 	else									return instance->getParam_noArgs();
@@ -844,7 +844,7 @@ byteArray GenericStats::param_itemsBought(int id, int aux, int count)
 	return instance->getParam_itemsBought(id,aux,count);
 }
 
-byteArray GenericStats::param_mobKill(shared_ptr<Player> plr, shared_ptr<Mob> mob, DamageSource *dmgSrc)
+byteArray GenericStats::param_mobKill(std::shared_ptr<Player> plr, std::shared_ptr<Mob> mob, DamageSource *dmgSrc)
 {
 	if ( (plr != NULL) && (mob != NULL) )	return instance->getParam_mobKill(plr, mob, dmgSrc);	
 	else									return instance->getParam_noArgs();

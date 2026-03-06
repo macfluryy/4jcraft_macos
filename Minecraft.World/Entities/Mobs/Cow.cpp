@@ -95,20 +95,20 @@ void Cow::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	}
 }
 
-bool Cow::interact(shared_ptr<Player> player) 
+bool Cow::interact(std::shared_ptr<Player> player) 
 {
-	shared_ptr<ItemInstance> item = player->inventory->getSelected();
+	std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 	if (item != NULL && item->id == Item::bucket_empty->id) 
 	{
 		player->awardStat(GenericStats::cowsMilked(),GenericStats::param_cowsMilked());
 
 		if (--item->count <= 0) 
 		{
-			player->inventory->setItem(player->inventory->selected, shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ) );
+			player->inventory->setItem(player->inventory->selected, std::shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ) );
 		} 
-		else if (!player->inventory->add(shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ))) 
+		else if (!player->inventory->add(std::shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ))) 
 		{
-			player->drop(shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ));
+			player->drop(std::shared_ptr<ItemInstance>( new ItemInstance(Item::milk) ));
 		}
 		
 		return true;
@@ -116,12 +116,12 @@ bool Cow::interact(shared_ptr<Player> player)
 	return Animal::interact(player);
 }
 
-shared_ptr<AgableMob> Cow::getBreedOffspring(shared_ptr<AgableMob> target)
+std::shared_ptr<AgableMob> Cow::getBreedOffspring(std::shared_ptr<AgableMob> target)
 {
 	// 4J - added limit to number of animals that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
-		return shared_ptr<Cow>( new Cow(level) );
+		return std::shared_ptr<Cow>( new Cow(level) );
 	}
 	else
 	{

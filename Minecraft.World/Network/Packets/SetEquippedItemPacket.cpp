@@ -14,7 +14,7 @@ SetEquippedItemPacket::SetEquippedItemPacket()
 	item = nullptr;
 }
 
-SetEquippedItemPacket::SetEquippedItemPacket(int entity, int slot, shared_ptr<ItemInstance> item) 
+SetEquippedItemPacket::SetEquippedItemPacket(int entity, int slot, std::shared_ptr<ItemInstance> item) 
 {
 	this->entity = entity;
 	this->slot = slot;
@@ -52,7 +52,7 @@ int SetEquippedItemPacket::getEstimatedSize()
 }
 
 // 4J Stu - Brought forward from 1.3 to fix #64688 - Customer Encountered: TU7: Content: Art: Aura of enchanted item is not displayed for other players in online game
-shared_ptr<ItemInstance> SetEquippedItemPacket::getItem()
+std::shared_ptr<ItemInstance> SetEquippedItemPacket::getItem()
 {
 	return item;
 }
@@ -62,8 +62,8 @@ bool SetEquippedItemPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetEquippedItemPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetEquippedItemPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	shared_ptr<SetEquippedItemPacket> target = dynamic_pointer_cast<SetEquippedItemPacket>(packet);
+	std::shared_ptr<SetEquippedItemPacket> target = dynamic_pointer_cast<SetEquippedItemPacket>(packet);
 	return target->entity == entity && target->slot == slot;
 }

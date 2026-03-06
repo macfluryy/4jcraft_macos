@@ -273,7 +273,7 @@ bool TripWireSourceTile::checkCanSurvive(Level *level, int x, int y, int z)
 	return true;
 }
 
-void TripWireSourceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity)
+void TripWireSourceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity)
 {
 	int dir = level->getData(x, y, z) & MASK_DIR;
 	float r = 3 / 16.0f;

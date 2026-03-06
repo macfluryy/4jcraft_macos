@@ -94,15 +94,15 @@ int EmptyLevelChunk::getRawBrightness(int x, int y, int z, int skyDampen)
 	return 0;
 }
 
-void EmptyLevelChunk::addEntity(shared_ptr<Entity> e)
+void EmptyLevelChunk::addEntity(std::shared_ptr<Entity> e)
 {
 }
 
-void EmptyLevelChunk::removeEntity(shared_ptr<Entity> e)
+void EmptyLevelChunk::removeEntity(std::shared_ptr<Entity> e)
 {
 }
 
-void EmptyLevelChunk::removeEntity(shared_ptr<Entity> e, int yc)
+void EmptyLevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc)
 {
 }
 
@@ -115,16 +115,16 @@ void EmptyLevelChunk::skyBrightnessChanged()
 {
 }
 
-shared_ptr<TileEntity> EmptyLevelChunk::getTileEntity(int x, int y, int z)
+std::shared_ptr<TileEntity> EmptyLevelChunk::getTileEntity(int x, int y, int z)
 {
-	return shared_ptr<TileEntity>();
+	return std::shared_ptr<TileEntity>();
 }
 
-void EmptyLevelChunk::addTileEntity(shared_ptr<TileEntity> te)
+void EmptyLevelChunk::addTileEntity(std::shared_ptr<TileEntity> te)
 {
 }
 
-void EmptyLevelChunk::setTileEntity(int x, int y, int z, shared_ptr<TileEntity> tileEntity)
+void EmptyLevelChunk::setTileEntity(int x, int y, int z, std::shared_ptr<TileEntity> tileEntity)
 {
 }
 
@@ -144,11 +144,11 @@ void EmptyLevelChunk::markUnsaved()
 {
 }
 
-void EmptyLevelChunk::getEntities(shared_ptr<Entity> except, AABB bb, vector<shared_ptr<Entity> > &es)
+void EmptyLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb, vector<std::shared_ptr<Entity> > &es)
 {
 }
 
-void EmptyLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, vector<shared_ptr<Entity> > &es)
+void EmptyLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, vector<std::shared_ptr<Entity> > &es)
 {
 }
 

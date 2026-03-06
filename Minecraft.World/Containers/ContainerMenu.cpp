@@ -8,7 +8,7 @@
 #include "../../Minecraft.Client/Player/LocalPlayer.h"
 #include "ContainerMenu.h"
 
-ContainerMenu::ContainerMenu(shared_ptr<Container> inventory, shared_ptr<Container> container) : AbstractContainerMenu()
+ContainerMenu::ContainerMenu(std::shared_ptr<Container> inventory, std::shared_ptr<Container> container) : AbstractContainerMenu()
 {
 	this->container = container;
 	this->containerRows = container->getContainerSize() / 9;
@@ -37,18 +37,18 @@ ContainerMenu::ContainerMenu(shared_ptr<Container> inventory, shared_ptr<Contain
 	}
 }
 
-bool ContainerMenu::stillValid(shared_ptr<Player> player)
+bool ContainerMenu::stillValid(std::shared_ptr<Player> player)
 {
 	return container->stillValid(player);
 }
 
-shared_ptr<ItemInstance> ContainerMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> ContainerMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex < containerRows * 9)
@@ -79,25 +79,25 @@ shared_ptr<ItemInstance> ContainerMenu::quickMoveStack(shared_ptr<Player> player
 	return clicked;
 }
 
-void ContainerMenu::removed(shared_ptr<Player> player)
+void ContainerMenu::removed(std::shared_ptr<Player> player)
 {
 	AbstractContainerMenu::removed(player);
 	container->stopOpen();
 }
 
-shared_ptr<ItemInstance> ContainerMenu::clicked(int slotIndex, int buttonNum, int clickType, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> ContainerMenu::clicked(int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player)
 {
-	shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
+	std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
 
 #ifdef _EXTENDED_ACHIEVEMENTS
-	shared_ptr<LocalPlayer> localPlayer = dynamic_pointer_cast<LocalPlayer>(player);
+	std::shared_ptr<LocalPlayer> localPlayer = dynamic_pointer_cast<LocalPlayer>(player);
 
 	if (localPlayer != NULL)	// 4J-JEV: For "Chestful o'Cobblestone" achievement.
 	{
 		int cobblecount = 0;
 		for (int i = 0; i < container->getContainerSize(); i++)
 		{
-			shared_ptr<ItemInstance> item = container->getItem(i);
+			std::shared_ptr<ItemInstance> item = container->getItem(i);
 			if ( (item != nullptr) && (item->id == Tile::stoneBrick_Id) )
 			{
 				cobblecount += item->GetCount();

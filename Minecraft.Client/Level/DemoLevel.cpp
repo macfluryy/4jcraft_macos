@@ -11,7 +11,7 @@ LevelSettings DemoLevel::DEMO_LEVEL_SETTINGS = LevelSettings(
 	1.0
 );
 
-DemoLevel::DemoLevel(shared_ptr<LevelStorage> levelStorage, const wstring& levelName) : Level(levelStorage, levelName, &DEMO_LEVEL_SETTINGS)
+DemoLevel::DemoLevel(std::shared_ptr<LevelStorage> levelStorage, const wstring& levelName) : Level(levelStorage, levelName, &DEMO_LEVEL_SETTINGS)
 {
 }
 

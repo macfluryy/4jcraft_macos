@@ -24,7 +24,7 @@ BucketItem::BucketItem(int id, int content) : Item( id )
 	this->content = content;
 }
 
-bool BucketItem::TestUse(Level *level, shared_ptr<Player> player)
+bool BucketItem::TestUse(Level *level, std::shared_ptr<Player> player)
 {
 // 	double x = player->xo + (player->x - player->xo);
 // 	double y = player->yo + (player->y - player->yo) + 1.62 - player->heightOffset;
@@ -99,7 +99,7 @@ bool BucketItem::TestUse(Level *level, shared_ptr<Player> player)
 	return false;
 }
 
-shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> BucketItem::use(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
 	float a = 1;
 
@@ -120,11 +120,11 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 		if (!level->mayInteract(player, xt, yt, zt,content))
 		{
 			app.DebugPrintf("!!!!!!!!!!! Can't place that here\n");
-			shared_ptr<ServerPlayer> servPlayer = dynamic_pointer_cast<ServerPlayer>(player);
+			std::shared_ptr<ServerPlayer> servPlayer = dynamic_pointer_cast<ServerPlayer>(player);
 			if( servPlayer != NULL )
 			{
 				app.DebugPrintf("Sending ChatPacket::e_ChatCannotPlaceLava to player\n");
-				servPlayer->connection->send( shared_ptr<ChatPacket>( new ChatPacket(L"", ChatPacket::e_ChatCannotPlaceLava ) ) );
+				servPlayer->connection->send( std::shared_ptr<ChatPacket>( new ChatPacket(L"", ChatPacket::e_ChatCannotPlaceLava ) ) );
 			}
 			
 			delete hr;
@@ -145,13 +145,13 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 
 				if (--itemInstance->count <= 0)
 				{
-					return shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_water) );
+					return std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_water) );
 				}
 				else
 				{
-					if (!player->inventory->add(shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_water))))
+					if (!player->inventory->add(std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_water))))
 					{
-						player->drop(shared_ptr<ItemInstance>(new ItemInstance(Item::bucket_water_Id, 1, 0)));
+						player->drop(std::shared_ptr<ItemInstance>(new ItemInstance(Item::bucket_water_Id, 1, 0)));
 					}
 					return itemInstance;
 				}
@@ -172,13 +172,13 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 				}
 				if (--itemInstance->count <= 0)
 				{
-					return shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_lava) );
+					return std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_lava) );
 				}
 				else
 				{
-					if (!player->inventory->add(shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_lava))))
+					if (!player->inventory->add(std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_lava))))
 					{
-						player->drop(shared_ptr<ItemInstance>(new ItemInstance(Item::bucket_lava_Id, 1, 0)));
+						player->drop(std::shared_ptr<ItemInstance>(new ItemInstance(Item::bucket_lava_Id, 1, 0)));
 					}
 					return itemInstance;
 				}
@@ -187,7 +187,7 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 		else if (content < 0)
 		{
 			delete hr;
-			return shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_empty) );
+			return std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_empty) );
 		}
 		else
 		{
@@ -203,7 +203,7 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 
 			if (emptyBucket(level, x, y, z, xt, yt, zt) && !player->abilities.instabuild)
 			{
-				return shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_empty) );
+				return std::shared_ptr<ItemInstance>( new ItemInstance(Item::bucket_empty) );
 			}
 
 		}
@@ -217,13 +217,13 @@ shared_ptr<ItemInstance> BucketItem::use(shared_ptr<ItemInstance> itemInstance, 
 				delete hr;
 				if (--itemInstance->count <= 0)
 				{
-					return shared_ptr<ItemInstance>( new ItemInstance(Item::milk) );
+					return std::shared_ptr<ItemInstance>( new ItemInstance(Item::milk) );
 				}
 				else
 				{
-					if (!player->inventory->add(shared_ptr<ItemInstance>( new ItemInstance(Item::milk))))
+					if (!player->inventory->add(std::shared_ptr<ItemInstance>( new ItemInstance(Item::milk))))
 					{
-						player->drop(shared_ptr<ItemInstance>(new ItemInstance(Item::milk_Id, 1, 0)));
+						player->drop(std::shared_ptr<ItemInstance>(new ItemInstance(Item::milk_Id, 1, 0)));
 					}
 					return itemInstance;
 				}

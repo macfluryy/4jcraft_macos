@@ -18,7 +18,7 @@ ContainerSetSlotPacket::ContainerSetSlotPacket()
 	item = nullptr;
 }
 
-ContainerSetSlotPacket::ContainerSetSlotPacket(int containerId, int slot, shared_ptr<ItemInstance> item) 
+ContainerSetSlotPacket::ContainerSetSlotPacket(int containerId, int slot, std::shared_ptr<ItemInstance> item) 
 {
 	this->containerId = containerId;
 	this->slot = slot;

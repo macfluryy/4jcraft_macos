@@ -6,10 +6,10 @@ class SetCreativeModeSlotPacket : public Packet, public enable_shared_from_this<
 {
 	public:
 		int slotNum;
-		shared_ptr<ItemInstance> item;
+		std::shared_ptr<ItemInstance> item;
 
 		SetCreativeModeSlotPacket();
-		SetCreativeModeSlotPacket(int slotNum, shared_ptr<ItemInstance> item);
+		SetCreativeModeSlotPacket(int slotNum, std::shared_ptr<ItemInstance> item);
 
 		virtual void handle(PacketListener *listener);
 		virtual void read(DataInputStream *dis);
@@ -18,6 +18,6 @@ class SetCreativeModeSlotPacket : public Packet, public enable_shared_from_this<
 
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new SetCreativeModeSlotPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new SetCreativeModeSlotPacket()); }
 	virtual int getId() { return 107; }
 };

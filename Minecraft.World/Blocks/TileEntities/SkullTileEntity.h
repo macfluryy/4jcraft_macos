@@ -24,7 +24,7 @@ public:
 
 	void save(CompoundTag *tag);
 	void load(CompoundTag *tag);
-	shared_ptr<Packet> getUpdatePacket();
+	std::shared_ptr<Packet> getUpdatePacket();
 	void setSkullType(int skullType, const wstring &extra);
 	int getSkullType();
 	int getRotation();
@@ -32,5 +32,5 @@ public:
 	wstring getExtraType();
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

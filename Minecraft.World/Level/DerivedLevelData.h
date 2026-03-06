@@ -15,7 +15,7 @@ protected:
 
 public:
 	CompoundTag *createTag();
-	CompoundTag *createTag(vector<shared_ptr<Player> > *players);
+	CompoundTag *createTag(vector<std::shared_ptr<Player> > *players);
 	__int64 getSeed();
 	int getXSpawn();
 	int getYSpawn();

@@ -605,37 +605,37 @@ Icon *Item::getIcon(int auxValue)
 	return icon;
 }
 
-Icon *Item::getIcon(shared_ptr<ItemInstance> itemInstance)
+Icon *Item::getIcon(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return getIcon(itemInstance->getAuxValue());
 }
 
-const bool Item::useOn(shared_ptr<ItemInstance> itemInstance, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly)
+const bool Item::useOn(std::shared_ptr<ItemInstance> itemInstance, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly)
 {
 	return false;
 }
 
-bool Item::useOn(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
+bool Item::useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
 {
 	return false;
 }
 
-float Item::getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile)
+float Item::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance, Tile *tile)
 {
 	return 1;
 }
 
-bool Item::TestUse(Level *level, shared_ptr<Player> player)
+bool Item::TestUse(Level *level, std::shared_ptr<Player> player)
 {
 	return false;
 }
 
-shared_ptr<ItemInstance> Item::use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> Item::use(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
 	return itemInstance;
 }
 
-shared_ptr<ItemInstance> Item::useTimeDepleted(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> Item::useTimeDepleted(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
 	return itemInstance;
 }
@@ -689,7 +689,7 @@ bool Item::canBeDepleted()
 * @param attacker
 * @return
 */
-bool Item::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob, shared_ptr<Mob> attacker)
+bool Item::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob, std::shared_ptr<Mob> attacker)
 {
 	return false;
 }
@@ -705,12 +705,12 @@ bool Item::hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob,
 * @param owner
 * @return
 */
-bool Item::mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<Mob> owner)
+bool Item::mineBlock(std::shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, std::shared_ptr<Mob> owner)
 {
 	return false;
 }
 
-int Item::getAttackDamage(shared_ptr<Entity> entity)
+int Item::getAttackDamage(std::shared_ptr<Entity> entity)
 {
 	return 1;
 }
@@ -720,7 +720,7 @@ bool Item::canDestroySpecial(Tile *tile)
 	return false;
 }
 
-bool Item::interactEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob)
+bool Item::interactEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob)
 {
 	return false;
 }
@@ -753,7 +753,7 @@ LPCWSTR Item::getDescription()
 	//return I18n::get(getDescriptionId());
 }
 
-LPCWSTR Item::getDescription(shared_ptr<ItemInstance> instance)
+LPCWSTR Item::getDescription(std::shared_ptr<ItemInstance> instance)
 {
 	return app.GetString(getDescriptionId(instance));
 	//return I18n::get(getDescriptionId(instance));
@@ -764,7 +764,7 @@ unsigned int Item::getDescriptionId(int iData /*= -1*/)
 	return descriptionId;
 }
 
-unsigned int Item::getDescriptionId(shared_ptr<ItemInstance> instance)
+unsigned int Item::getDescriptionId(std::shared_ptr<ItemInstance> instance)
 {
 	return descriptionId;
 }
@@ -780,7 +780,7 @@ unsigned int Item::getUseDescriptionId()
 	return useDescriptionId;
 }
 
-unsigned int Item::getUseDescriptionId(shared_ptr<ItemInstance> instance)
+unsigned int Item::getUseDescriptionId(std::shared_ptr<ItemInstance> instance)
 {
 	return useDescriptionId;
 }
@@ -791,7 +791,7 @@ Item *Item::setCraftingRemainingItem(Item *craftingRemainingItem)
 	return this;
 }
 
-bool Item::shouldMoveCraftingResultToInventory(shared_ptr<ItemInstance> instance)
+bool Item::shouldMoveCraftingResultToInventory(std::shared_ptr<ItemInstance> instance)
 {
 	// Default is good for the vast majority of items
 	return true;
@@ -817,15 +817,15 @@ wstring Item::getName()
 	return L"";//I18n::get(getDescriptionId() + L".name");
 }
 
-int Item::getColor(shared_ptr<ItemInstance> item, int spriteLayer)
+int Item::getColor(std::shared_ptr<ItemInstance> item, int spriteLayer)
 {
 	return 0xffffff;
 }
 
-void Item::inventoryTick(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Entity> owner, int slot, bool selected) {
+void Item::inventoryTick(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Entity> owner, int slot, bool selected) {
 }
 
-void Item::onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+void Item::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
 }
 
@@ -834,17 +834,17 @@ bool Item::isComplex()
 	return false;
 }
 
-UseAnim Item::getUseAnimation(shared_ptr<ItemInstance> itemInstance)
+UseAnim Item::getUseAnimation(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return UseAnim_none;
 }
 
-int Item::getUseDuration(shared_ptr<ItemInstance> itemInstance)
+int Item::getUseDuration(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return 0;
 }
 
-void Item::releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft)
+void Item::releaseUsing(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player, int durationLeft)
 {
 }
 
@@ -864,35 +864,35 @@ bool Item::hasPotionBrewingFormula()
 	return !potionBrewingFormula.empty();
 }
 
-void Item::appendHoverText(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
+void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
 {
 }
 
-wstring Item::getHoverName(shared_ptr<ItemInstance> itemInstance)
+wstring Item::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
 	//String elementName = ("" + Language.getInstance().getElementName(getDescription(itemInstance))).trim();
 	//return elementName;
 	return app.GetString(getDescriptionId(itemInstance));
 }
 
-bool Item::isFoil(shared_ptr<ItemInstance> itemInstance)
+bool Item::isFoil(std::shared_ptr<ItemInstance> itemInstance)
 {
 	if (itemInstance->isEnchanted()) return true;
 	return false;
 }
 
-const Rarity *Item::getRarity(shared_ptr<ItemInstance> itemInstance)
+const Rarity *Item::getRarity(std::shared_ptr<ItemInstance> itemInstance)
 {
 	if (itemInstance->isEnchanted()) return Rarity::rare;
 	return Rarity::common;
 }
 
-bool Item::isEnchantable(shared_ptr<ItemInstance> itemInstance)
+bool Item::isEnchantable(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return getMaxStackSize() == 1 && canBeDepleted();
 }
 
-HitResult *Item::getPlayerPOVHitResult(Level *level, shared_ptr<Player> player, bool alsoPickLiquid)
+HitResult *Item::getPlayerPOVHitResult(Level *level, std::shared_ptr<Player> player, bool alsoPickLiquid)
 {
 	float a = 1;
 
@@ -935,7 +935,7 @@ Icon *Item::getLayerIcon(int auxValue, int spriteLayer)
 	return getIcon(auxValue);
 }
 
-bool Item::isValidRepairItem(shared_ptr<ItemInstance> source, shared_ptr<ItemInstance> repairItem)
+bool Item::isValidRepairItem(std::shared_ptr<ItemInstance> source, std::shared_ptr<ItemInstance> repairItem)
 {
 	return false;
 }

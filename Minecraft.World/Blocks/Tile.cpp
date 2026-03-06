@@ -798,7 +798,7 @@ AABB *Tile::getTileAABB(Level *level, int x, int y, int z)
 	return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1, y + tls->yy1, z + tls->zz1);
 }
 
-void Tile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source) 
+void Tile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source) 
 {
 	AABB *aabb = getAABB(level, x, y, z);
 	if (aabb != NULL && box->intersects(aabb)) boxes->push_back(aabb);
@@ -870,7 +870,7 @@ int Tile::getResource(int data, Random *random, int playerBonusLevel)
 	return id;
 }
 
-float Tile::getDestroyProgress(shared_ptr<Player> player, Level *level, int x, int y, int z)
+float Tile::getDestroyProgress(std::shared_ptr<Player> player, Level *level, int x, int y, int z)
 {
 	float destroySpeed = getDestroySpeed(level, x, y, z);
 	if (destroySpeed < 0) return 0;
@@ -893,11 +893,11 @@ void Tile::spawnResources(Level *level, int x, int y, int z, int data, float odd
 		int type = getResource(data, level->random, playerBonusLevel);
 		if (type <= 0) continue;
 
-		popResource(level, x, y, z, shared_ptr<ItemInstance>( new ItemInstance(type, 1, getSpawnResourcesAuxValue(data) ) ) );
+		popResource(level, x, y, z, std::shared_ptr<ItemInstance>( new ItemInstance(type, 1, getSpawnResourcesAuxValue(data) ) ) );
 	}
 }
 
-void Tile::popResource(Level *level, int x, int y, int z, shared_ptr<ItemInstance> itemInstance)
+void Tile::popResource(Level *level, int x, int y, int z, std::shared_ptr<ItemInstance> itemInstance)
 {
 	if( level->isClientSide ) return;
 
@@ -905,7 +905,7 @@ void Tile::popResource(Level *level, int x, int y, int z, shared_ptr<ItemInstanc
 	double xo = level->random->nextFloat() * s + (1 - s) * 0.5;
 	double yo = level->random->nextFloat() * s + (1 - s) * 0.5;
 	double zo = level->random->nextFloat() * s + (1 - s) * 0.5;
-	shared_ptr<ItemEntity> item = shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) );
+	std::shared_ptr<ItemEntity> item = std::shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) );
 	item->throwTime = 10;
 	level->addEntity(item);
 }
@@ -919,7 +919,7 @@ void Tile::popExperience(Level *level, int x, int y, int z, int amount)
 		{
 			int newCount = ExperienceOrb::getExperienceValue(amount);
 			amount -= newCount;
-			level->addEntity(shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
+			level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
 		}
 	}
 }
@@ -929,7 +929,7 @@ int Tile::getSpawnResourcesAuxValue(int data)
 	return 0;
 }
 
-float Tile::getExplosionResistance(shared_ptr<Entity> source)
+float Tile::getExplosionResistance(std::shared_ptr<Entity> source)
 {
 	return explosionResistance / 5.0f;
 }
@@ -1030,17 +1030,17 @@ bool Tile::TestUse()
 	return false;
 }
 
-bool Tile::TestUse(Level *level, int x, int y, int z, shared_ptr<Player> player)
+bool Tile::TestUse(Level *level, int x, int y, int z, std::shared_ptr<Player> player)
 {
 	return false;
 }
 
-bool Tile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool Tile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
 	return false;
 }
 
-void Tile::stepOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+void Tile::stepOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 {
 }
 
@@ -1053,15 +1053,15 @@ void Tile::prepareRender(Level *level, int x, int y, int z)
 {
 }
 
-void Tile::attack(Level *level, int x, int y, int z, shared_ptr<Player> player)
+void Tile::attack(Level *level, int x, int y, int z, std::shared_ptr<Player> player)
 {
 }
 
-void Tile::handleEntityInside(Level *level, int x, int y, int z, shared_ptr<Entity> e, Vec3 *current)
+void Tile::handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> e, Vec3 *current)
 {
 }
 
-void Tile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
+void Tile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
 	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
@@ -1151,7 +1151,7 @@ bool Tile::isSignalSource()
 	return false;
 }
 
-void Tile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+void Tile::entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 {
 }
 
@@ -1165,7 +1165,7 @@ void Tile::updateDefaultShape()
 	setShape(0,0,0,1,1,1);
 }
 
-void Tile::playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data)
+void Tile::playerDestroy(Level *level, std::shared_ptr<Player> player, int x, int y, int z, int data)
 {
 	// 4J Stu - Special case - only record a crop destroy if is fully grown
 	if( id==Tile::crops_Id )
@@ -1208,7 +1208,7 @@ void Tile::playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, 
 
     if (isSilkTouchable() && EnchantmentHelper::hasSilkTouch(player->inventory))
 	{
-        shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
+        std::shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
         if (item != NULL)
 		{
             popResource(level, x, y, z, item);
@@ -1226,14 +1226,14 @@ bool Tile::isSilkTouchable()
 	return isCubeShaped() && !_isEntityTile;
 }
 
-shared_ptr<ItemInstance> Tile::getSilkTouchItemInstance(int data)
+std::shared_ptr<ItemInstance> Tile::getSilkTouchItemInstance(int data)
 {
     int popData = 0;
     if (id >= 0 && id < Item::items.length && Item::items[id]->isStackedByData())
 	{
         popData = data;
     }
-    return shared_ptr<ItemInstance>(new ItemInstance(id, 1, popData));
+    return std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, popData));
 }
 
 int Tile::getResourceCountForLootBonus(int bonusLevel, Random *random)
@@ -1246,7 +1246,7 @@ bool Tile::canSurvive(Level *level, int x, int y, int z)
 	return true;
 }
 
-void Tile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by)
+void Tile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
 }
 
@@ -1307,7 +1307,7 @@ float Tile::getShadeBrightness(LevelSource *level, int x, int y, int z)
 	return level->isSolidBlockingTile(x, y, z) ? 0.2f : 1.0f;
 }
 
-void Tile::fallOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity, float fallDistance)
+void Tile::fallOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity, float fallDistance)
 {
 }
 
@@ -1321,7 +1321,7 @@ int Tile::cloneTileData(Level *level, int x, int y, int z)
 	return getSpawnResourcesAuxValue(level->getData(x, y, z));
 }
 
-void Tile::playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player)
+void Tile::playerWillDestroy(Level *level, int x, int y, int z, int data, std::shared_ptr<Player> player)
 {
 }
 

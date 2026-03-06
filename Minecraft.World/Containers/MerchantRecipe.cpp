@@ -2,7 +2,7 @@
 
 #include "MerchantRecipe.h"
 
-void MerchantRecipe::_init(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell)
+void MerchantRecipe::_init(std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB, std::shared_ptr<ItemInstance> sell)
 {
 	this->buyA = buyA;
 	this->buyB = buyB;
@@ -20,34 +20,34 @@ MerchantRecipe::MerchantRecipe(CompoundTag *tag)
 	load(tag);
 }
 
-MerchantRecipe::MerchantRecipe(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell, int uses, int maxUses)
+MerchantRecipe::MerchantRecipe(std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB, std::shared_ptr<ItemInstance> sell, int uses, int maxUses)
 {
 	_init(buyA, buyB, sell);
 	this->uses = uses;
 	this->maxUses = maxUses;
 }
 
-MerchantRecipe::MerchantRecipe(shared_ptr<ItemInstance> buy, shared_ptr<ItemInstance> sell)
+MerchantRecipe::MerchantRecipe(std::shared_ptr<ItemInstance> buy, std::shared_ptr<ItemInstance> sell)
 {
 	_init(buy, nullptr, sell);
 }
 
-MerchantRecipe::MerchantRecipe(shared_ptr<ItemInstance> buy, Item *sell)
+MerchantRecipe::MerchantRecipe(std::shared_ptr<ItemInstance> buy, Item *sell)
 {
-	_init(buy, nullptr, shared_ptr<ItemInstance>(new ItemInstance(sell)));
+	_init(buy, nullptr, std::shared_ptr<ItemInstance>(new ItemInstance(sell)));
 }
 
-MerchantRecipe::MerchantRecipe(shared_ptr<ItemInstance> buy, Tile *sell)
+MerchantRecipe::MerchantRecipe(std::shared_ptr<ItemInstance> buy, Tile *sell)
 {
-	_init(buy, nullptr, shared_ptr<ItemInstance>(new ItemInstance(sell)));
+	_init(buy, nullptr, std::shared_ptr<ItemInstance>(new ItemInstance(sell)));
 }
 
-shared_ptr<ItemInstance> MerchantRecipe::getBuyAItem()
+std::shared_ptr<ItemInstance> MerchantRecipe::getBuyAItem()
 {
 	return buyA;
 }
 
-shared_ptr<ItemInstance> MerchantRecipe::getBuyBItem()
+std::shared_ptr<ItemInstance> MerchantRecipe::getBuyBItem()
 {
 	return buyB;
 }
@@ -57,7 +57,7 @@ bool MerchantRecipe::hasSecondaryBuyItem()
 	return buyB != NULL;
 }
 
-shared_ptr<ItemInstance> MerchantRecipe::getSellItem()
+std::shared_ptr<ItemInstance> MerchantRecipe::getSellItem()
 {
 	return sell;
 }

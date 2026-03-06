@@ -20,16 +20,16 @@ const int InventoryMenu::INV_SLOT_END = InventoryMenu::INV_SLOT_START + 9 * 3;
 const int InventoryMenu::USE_ROW_SLOT_START = InventoryMenu::INV_SLOT_END;
 const int InventoryMenu::USE_ROW_SLOT_END = InventoryMenu::USE_ROW_SLOT_START + 9;
 
-InventoryMenu::InventoryMenu(shared_ptr<Inventory> inventory, bool active, Player *player) : AbstractContainerMenu()
+InventoryMenu::InventoryMenu(std::shared_ptr<Inventory> inventory, bool active, Player *player) : AbstractContainerMenu()
 {
 	owner = player;
 	_init( inventory, active );
 }
 
-void InventoryMenu::_init(shared_ptr<Inventory> inventory, bool active)
+void InventoryMenu::_init(std::shared_ptr<Inventory> inventory, bool active)
 {
-	craftSlots = shared_ptr<CraftingContainer>( new CraftingContainer(this, 2, 2) );
-	resultSlots = shared_ptr<ResultContainer>( new ResultContainer() );
+	craftSlots = std::shared_ptr<CraftingContainer>( new CraftingContainer(this, 2, 2) );
+	resultSlots = std::shared_ptr<ResultContainer>( new ResultContainer() );
 
 	this->active = active;
 	addSlot(new ResultSlot( inventory->player, craftSlots, resultSlots, 0, 144, 36));
@@ -64,19 +64,19 @@ void InventoryMenu::_init(shared_ptr<Inventory> inventory, bool active)
 	slotsChanged();  // 4J removed craftSlots parameter, see comment below
 }
 
-void InventoryMenu::slotsChanged()  // 4J used to take a shared_ptr<Container> but wasn't using it, so removed to simplify things
+void InventoryMenu::slotsChanged()  // 4J used to take a std::shared_ptr<Container> but wasn't using it, so removed to simplify things
 {
 	MemSect(23);
 	resultSlots->setItem(0, Recipes::getInstance()->getItemFor(craftSlots, owner->level) );
 	MemSect(0);
 }
 
-void InventoryMenu::removed(shared_ptr<Player> player)
+void InventoryMenu::removed(std::shared_ptr<Player> player)
 {
 	AbstractContainerMenu::removed(player);
 	for (int i = 0; i < 4; i++)
 	{
-		shared_ptr<ItemInstance> item = craftSlots->removeItemNoUpdate(i);
+		std::shared_ptr<ItemInstance> item = craftSlots->removeItemNoUpdate(i);
 		if (item != NULL)
 		{
 			player->drop(item);
@@ -86,14 +86,14 @@ void InventoryMenu::removed(shared_ptr<Player> player)
 	resultSlots->setItem(0, nullptr);
 }
 
-bool InventoryMenu::stillValid(shared_ptr<Player> player)
+bool InventoryMenu::stillValid(std::shared_ptr<Player> player)
 {
 	return true;
 }
 
-shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	
 	Slot *HelmetSlot = slots->at(ARMOR_SLOT_START);
@@ -104,7 +104,7 @@ shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(shared_ptr<Player> player
 
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex == RESULT_SLOT)
@@ -220,15 +220,15 @@ shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(shared_ptr<Player> player
 	return clicked;
 }
 
-bool InventoryMenu::mayCombine(Slot *slot, shared_ptr<ItemInstance> item)
+bool InventoryMenu::mayCombine(Slot *slot, std::shared_ptr<ItemInstance> item)
 {
 	return slot->mayCombine(item);
 }
 
 // 4J-JEV: Added for achievement 'Iron Man'.
-shared_ptr<ItemInstance> InventoryMenu::clicked(int slotIndex, int buttonNum, int clickType, shared_ptr<Player> player)
+std::shared_ptr<ItemInstance> InventoryMenu::clicked(int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player)
 {
-	shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
+	std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
 
 #ifdef _EXTENDED_ACHIEVEMENTS
 	static int ironItems[4] = {Item::helmet_iron_Id,Item::chestplate_iron_Id,Item::leggings_iron_Id,Item::boots_iron_Id};

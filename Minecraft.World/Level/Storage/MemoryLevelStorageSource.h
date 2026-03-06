@@ -8,7 +8,7 @@ class MemoryLevelStorageSource : public LevelStorageSource
 public:
     MemoryLevelStorageSource();
     wstring getName();
-    shared_ptr<LevelStorage> selectLevel(const wstring& levelId, bool createPlayerDir);
+    std::shared_ptr<LevelStorage> selectLevel(const wstring& levelId, bool createPlayerDir);
     vector<LevelSummary *> *getLevelList();
     void clearAll();
     LevelData *getDataTagFor(const wstring& levelId);

@@ -12,13 +12,13 @@ public:
 	int value;
 
 	AddExperienceOrbPacket();
-	AddExperienceOrbPacket(shared_ptr<ExperienceOrb> e);
+	AddExperienceOrbPacket(std::shared_ptr<ExperienceOrb> e);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new AddExperienceOrbPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new AddExperienceOrbPacket()); }
 	virtual int getId() { return 26; }
 };

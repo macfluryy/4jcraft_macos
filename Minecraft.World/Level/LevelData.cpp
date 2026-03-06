@@ -243,7 +243,7 @@ CompoundTag *LevelData::createTag()
     return tag;
 }
 
-CompoundTag *LevelData::createTag(vector<shared_ptr<Player> > *players) 
+CompoundTag *LevelData::createTag(vector<std::shared_ptr<Player> > *players) 
 {
 	// 4J - removed all code for storing tags for players
 	return createTag();

@@ -36,12 +36,12 @@ void HumanoidMobRenderer::createArmorParts()
 	armorParts2 = new HumanoidModel(0.5f);
 }
 
-void HumanoidMobRenderer::additionalRendering(shared_ptr<Mob> mob, float a)
+void HumanoidMobRenderer::additionalRendering(std::shared_ptr<Mob> mob, float a)
 {
 	float brightness = SharedConstants::TEXTURE_LIGHTING ? 1 : mob->getBrightness(a);
 	glColor3f(brightness, brightness, brightness);
-    shared_ptr<ItemInstance> item = mob->getCarriedItem();
-	shared_ptr<ItemInstance> headGear = mob->getArmor(3);
+    std::shared_ptr<ItemInstance> item = mob->getCarriedItem();
+	std::shared_ptr<ItemInstance> headGear = mob->getArmor(3);
 
 	if (headGear != NULL)
 	{
@@ -144,7 +144,7 @@ void HumanoidMobRenderer::additionalRendering(shared_ptr<Mob> mob, float a)
 
 }
 
-void HumanoidMobRenderer::scale(shared_ptr<Mob> mob, float a)
+void HumanoidMobRenderer::scale(std::shared_ptr<Mob> mob, float a)
 {
 	glScalef(_scale, _scale, _scale);
 }

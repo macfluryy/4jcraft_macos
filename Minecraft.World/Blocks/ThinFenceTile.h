@@ -17,15 +17,15 @@ public:
     virtual bool isCubeShaped();
     virtual int getRenderShape();
     virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
-    virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source);
+    virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source);
     virtual void updateDefaultShape();
-    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
+    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
     virtual Icon *getEdgeTexture();
     bool attachsTo(int tile);
 
 protected:
 	bool isSilkTouchable();
-	shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
+	std::shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 
 public:
 	void registerIcons(IconRegister *iconRegister);

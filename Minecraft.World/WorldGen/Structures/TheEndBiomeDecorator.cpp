@@ -58,7 +58,7 @@ void TheEndBiomeDecorator::decorate()
 	}
     if (xo == 0 && zo == 0)
 	{
-		shared_ptr<EnderDragon> enderDragon = shared_ptr<EnderDragon>(new EnderDragon(level));
+		std::shared_ptr<EnderDragon> enderDragon = std::shared_ptr<EnderDragon>(new EnderDragon(level));
         enderDragon->moveTo(0, 128, 0, random->nextFloat() * 360, 0);
         level->addEntity(enderDragon);
 	}

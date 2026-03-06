@@ -37,18 +37,18 @@ unsigned int ChestTileEntity::getContainerSize()
 	return 9 * 3;
 }
 
-shared_ptr<ItemInstance> ChestTileEntity::getItem(unsigned int slot)
+std::shared_ptr<ItemInstance> ChestTileEntity::getItem(unsigned int slot)
 {
 	return items->data[slot];
 }
 
-shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot, int count) 
+std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot, int count) 
 {
 	if (items->data[slot] != NULL)
 	{
 		if (items->data[slot]->count <= count) 
 		{
-			shared_ptr<ItemInstance> item = items->data[slot];
+			std::shared_ptr<ItemInstance> item = items->data[slot];
 			items->data[slot] = nullptr;
 			this->setChanged();
 			// 4J Stu - Fix for duplication glitch
@@ -57,7 +57,7 @@ shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot, int coun
 		} 
 		else 
 		{
-			shared_ptr<ItemInstance> i = items->data[slot]->remove(count);
+			std::shared_ptr<ItemInstance> i = items->data[slot]->remove(count);
 			if (items->data[slot]->count == 0) items->data[slot] = nullptr;
 			this->setChanged();
 			// 4J Stu - Fix for duplication glitch
@@ -68,18 +68,18 @@ shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot, int coun
 	return nullptr;
 }
 
-shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot)
+std::shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot)
 {
 	if (items->data[slot] != NULL)
 	{
-		shared_ptr<ItemInstance> item = items->data[slot];
+		std::shared_ptr<ItemInstance> item = items->data[slot];
 		items->data[slot] = nullptr;
 		return item;
 	}
 	return nullptr;
 }
 
-void ChestTileEntity::setItem(unsigned int slot, shared_ptr<ItemInstance> item)
+void ChestTileEntity::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item)
 {
 	items->data[slot] = item;
 	if (item != NULL && item->count > getMaxStackSize()) item->count = getMaxStackSize();
@@ -135,7 +135,7 @@ int ChestTileEntity::getMaxStackSize()
 	return Container::LARGE_MAX_STACK_SIZE;
 }
 
-bool ChestTileEntity::stillValid(shared_ptr<Player> player)
+bool ChestTileEntity::stillValid(std::shared_ptr<Player> player)
 {
 	if (level->getTileEntity(x, y, z) != shared_from_this() ) return false;
 	if (player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 8 * 8) return false;
@@ -273,9 +273,9 @@ void ChestTileEntity::setRemoved()
 }
 
 // 4J Added
-shared_ptr<TileEntity> ChestTileEntity::clone()
+std::shared_ptr<TileEntity> ChestTileEntity::clone()
 {
-	shared_ptr<ChestTileEntity> result = shared_ptr<ChestTileEntity>( new ChestTileEntity() );
+	std::shared_ptr<ChestTileEntity> result = std::shared_ptr<ChestTileEntity>( new ChestTileEntity() );
 	TileEntity::clone(result);
 
 	for (unsigned int i = 0; i < items->length; i++)

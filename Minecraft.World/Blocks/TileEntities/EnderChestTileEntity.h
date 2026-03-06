@@ -23,8 +23,8 @@ public:
 	void setRemoved();
 	void startOpen();
 	void stopOpen();
-	bool stillValid(shared_ptr<Player> player);
+	bool stillValid(std::shared_ptr<Player> player);
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

@@ -583,14 +583,14 @@ void LocalPlayer::closeContainer()
 	ui.CloseUIScenes( m_iPad );
 }
 
-void LocalPlayer::openTextEdit(shared_ptr<SignTileEntity> sign)
+void LocalPlayer::openTextEdit(std::shared_ptr<SignTileEntity> sign)
 {
 	bool success = app.LoadSignEntryMenu(GetXboxPad(), sign );
 	if( success ) ui.PlayUISFX(eSFX_Press);
 	//minecraft->setScreen(new TextEditScreen(sign));
 }
 
-bool LocalPlayer::openContainer(shared_ptr<Container> container)
+bool LocalPlayer::openContainer(std::shared_ptr<Container> container)
 {
 	bool success = app.LoadContainerMenu(GetXboxPad(), inventory, container );
 	if( success ) ui.PlayUISFX(eSFX_Press);
@@ -623,7 +623,7 @@ bool LocalPlayer::startRepairing(int x, int y, int z)
 	return success;
 }
 
-bool LocalPlayer::openFurnace(shared_ptr<FurnaceTileEntity> furnace)
+bool LocalPlayer::openFurnace(std::shared_ptr<FurnaceTileEntity> furnace)
 {
 	bool success = app.LoadFurnaceMenu(GetXboxPad(),inventory, furnace);
 	if( success ) ui.PlayUISFX(eSFX_Press);
@@ -631,7 +631,7 @@ bool LocalPlayer::openFurnace(shared_ptr<FurnaceTileEntity> furnace)
 	return success;
 }
 
-bool LocalPlayer::openBrewingStand(shared_ptr<BrewingStandTileEntity> brewingStand)
+bool LocalPlayer::openBrewingStand(std::shared_ptr<BrewingStandTileEntity> brewingStand)
 {
 	bool success = app.LoadBrewingStandMenu(GetXboxPad(),inventory, brewingStand);
 	if( success ) ui.PlayUISFX(eSFX_Press);
@@ -639,7 +639,7 @@ bool LocalPlayer::openBrewingStand(shared_ptr<BrewingStandTileEntity> brewingSta
 	return success;
 }
 
-bool LocalPlayer::openTrap(shared_ptr<DispenserTileEntity> trap)
+bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap)
 {
 	bool success = app.LoadTrapMenu(GetXboxPad(),inventory, trap);
 	if( success ) ui.PlayUISFX(eSFX_Press);
@@ -647,7 +647,7 @@ bool LocalPlayer::openTrap(shared_ptr<DispenserTileEntity> trap)
 	return success;
 }
 
-bool LocalPlayer::openTrading(shared_ptr<Merchant> traderTarget)
+bool LocalPlayer::openTrading(std::shared_ptr<Merchant> traderTarget)
 {
 	bool success = app.LoadTradingMenu(GetXboxPad(),inventory, traderTarget, level);
 	if( success ) ui.PlayUISFX(eSFX_Press);
@@ -655,23 +655,23 @@ bool LocalPlayer::openTrading(shared_ptr<Merchant> traderTarget)
 	return success;
 }
 
-void LocalPlayer::crit(shared_ptr<Entity> e)
+void LocalPlayer::crit(std::shared_ptr<Entity> e)
 {
-	shared_ptr<CritParticle> critParticle = shared_ptr<CritParticle>( new CritParticle((Level *)minecraft->level, e) );
+	std::shared_ptr<CritParticle> critParticle = std::shared_ptr<CritParticle>( new CritParticle((Level *)minecraft->level, e) );
 	critParticle->CritParticlePostConstructor();
 	minecraft->particleEngine->add(critParticle);
 }
 
-void LocalPlayer::magicCrit(shared_ptr<Entity> e)
+void LocalPlayer::magicCrit(std::shared_ptr<Entity> e)
 {
-	shared_ptr<CritParticle> critParticle = shared_ptr<CritParticle>( new CritParticle((Level *)minecraft->level, e, eParticleType_magicCrit) );
+	std::shared_ptr<CritParticle> critParticle = std::shared_ptr<CritParticle>( new CritParticle((Level *)minecraft->level, e, eParticleType_magicCrit) );
 	critParticle->CritParticlePostConstructor();
 	minecraft->particleEngine->add(critParticle);
 }
 
-void LocalPlayer::take(shared_ptr<Entity> e, int orgCount)
+void LocalPlayer::take(std::shared_ptr<Entity> e, int orgCount)
 {
-	minecraft->particleEngine->add( shared_ptr<TakeAnimationParticle>( new TakeAnimationParticle((Level *)minecraft->level, e, shared_from_this(), -0.5f) ) );
+	minecraft->particleEngine->add( std::shared_ptr<TakeAnimationParticle>( new TakeAnimationParticle((Level *)minecraft->level, e, shared_from_this(), -0.5f) ) );
 }
 
 void LocalPlayer::chat(const wstring& message)
@@ -1130,7 +1130,7 @@ bool LocalPlayer::hasPermission(EGameCommand command)
 	return level->getLevelData()->getAllowCommands();
 }
 
-void LocalPlayer::onCrafted(shared_ptr<ItemInstance> item)
+void LocalPlayer::onCrafted(std::shared_ptr<ItemInstance> item)
 {
 	if( minecraft->localgameModes[m_iPad] != NULL )
 	{
@@ -1408,7 +1408,7 @@ bool LocalPlayer::handleMouseClick(int button)
 		if(lastClickState == lastClick_oldRepeat) return false;
 
 
-		shared_ptr<MultiplayerLocalPlayer> mplp = dynamic_pointer_cast<MultiplayerLocalPlayer>( shared_from_this() );
+		std::shared_ptr<MultiplayerLocalPlayer> mplp = dynamic_pointer_cast<MultiplayerLocalPlayer>( shared_from_this() );
 
 		if(mplp && mplp->connection) mplp->StopSleeping();
 	
@@ -1419,7 +1419,7 @@ bool LocalPlayer::handleMouseClick(int button)
 		return false;
 	}
 
-	shared_ptr<ItemInstance> oldItem = inventory->getSelected();
+	std::shared_ptr<ItemInstance> oldItem = inventory->getSelected();
 
 	if (minecraft->hitResult == NULL)
 	{
@@ -1441,7 +1441,7 @@ bool LocalPlayer::handleMouseClick(int button)
 			if(minecraft->hitResult->entity->GetType()==eTYPE_COW)
 			{
 				// If I have an empty bucket in my hand, it's going to be filled with milk, so turn off mayUse
-				shared_ptr<ItemInstance> item = inventory->getSelected();
+				std::shared_ptr<ItemInstance> item = inventory->getSelected();
 				if(item && (item->id==Item::bucket_empty_Id))
 				{
 					mayUse=false;
@@ -1471,7 +1471,7 @@ bool LocalPlayer::handleMouseClick(int button)
 		}
 		else
 		{
-			shared_ptr<ItemInstance> item = oldItem;
+			std::shared_ptr<ItemInstance> item = oldItem;
 			int oldCount = item != NULL ? item->count : 0;
 			bool usedItem = false;
 			if (minecraft->gameMode->useItemOn(minecraft->localplayers[GetXboxPad()], level, item, x, y, z, face, minecraft->hitResult->pos, false, &usedItem))
@@ -1503,7 +1503,7 @@ bool LocalPlayer::handleMouseClick(int button)
 
 	if (mayUse && button == 1)
 	{
-		shared_ptr<ItemInstance> item = inventory->getSelected();
+		std::shared_ptr<ItemInstance> item = inventory->getSelected();
 		if (item != NULL)
 		{
 			if (minecraft->gameMode->useItem(minecraft->localplayers[GetXboxPad()], level, item))
@@ -1519,7 +1519,7 @@ void LocalPlayer::updateRichPresence()
 {
 	if((m_iPad!=-1)/* && !ui.GetMenuDisplayed(m_iPad)*/ )
 	{
-		shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
+		std::shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
 		if(selectedItem != NULL && selectedItem->id == Item::fishingRod_Id)
 		{
 			app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_FISHING);
@@ -1575,7 +1575,7 @@ float LocalPlayer::getAndResetChangeDimensionTimer()
 	return returnVal;
 }
 
-void LocalPlayer::handleCollectItem(shared_ptr<ItemInstance> item)
+void LocalPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item)
 {
 	if(item != NULL)
 	{

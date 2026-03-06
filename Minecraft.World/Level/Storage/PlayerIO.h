@@ -10,13 +10,13 @@ class Player;
 class PlayerIO 
 {
 public:
-	virtual void save(shared_ptr<Player> player) = 0;
-	virtual bool load(shared_ptr<Player> player) = 0;  // 4J Changed return val to bool to check if new player or loaded player
+	virtual void save(std::shared_ptr<Player> player) = 0;
+	virtual bool load(std::shared_ptr<Player> player) = 0;  // 4J Changed return val to bool to check if new player or loaded player
 	virtual CompoundTag *loadPlayerDataTag(PlayerUID xuid) = 0; // 4J Changed from string name to xuid
 
 	// 4J Added
 	virtual void clearOldPlayerFiles() = 0;
 	virtual void saveMapIdLookup() = 0;
-	virtual void deleteMapFilesForPlayer(shared_ptr<Player> player) = 0;
+	virtual void deleteMapFilesForPlayer(std::shared_ptr<Player> player) = 0;
 	virtual void saveAllCachedData() = 0;
 };

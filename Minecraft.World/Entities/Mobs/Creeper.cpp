@@ -125,14 +125,14 @@ void Creeper::die(DamageSource *source)
         spawnAtLocation(Item::record_01_Id + random->nextInt(12), 1);
     }
 
-	shared_ptr<Player> player = dynamic_pointer_cast<Player>(source->getEntity());
+	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(source->getEntity());
 	if ( (dynamic_pointer_cast<Arrow>(source->getDirectEntity()) != NULL) && (player != NULL) )
 	{
 		player->awardStat(GenericStats::archer(), GenericStats::param_archer());
 	}
 }
 
-bool Creeper::doHurtTarget(shared_ptr<Entity> target)
+bool Creeper::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	return true;
 }

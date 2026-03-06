@@ -22,7 +22,7 @@ unsigned int CraftingContainer::getContainerSize()
 	return items->length;
 }
 
-shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int slot)
+std::shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int slot)
 {
 	if (slot >= getContainerSize())
 	{
@@ -31,7 +31,7 @@ shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int slot)
 	return (*items)[slot];
 }
 
-shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int x, unsigned int y)
+std::shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int x, unsigned int y)
 {
 	if (x < 0 || x >= width)
 	{
@@ -46,31 +46,31 @@ int CraftingContainer::getName()
 	return 0;
 }
 
-shared_ptr<ItemInstance> CraftingContainer::removeItemNoUpdate(int slot)
+std::shared_ptr<ItemInstance> CraftingContainer::removeItemNoUpdate(int slot)
 {
 	if ((*items)[slot] != NULL)
 	{
-		shared_ptr<ItemInstance> item = (*items)[slot];
+		std::shared_ptr<ItemInstance> item = (*items)[slot];
 		(*items)[slot] = nullptr;
 		return item;
 	}
 	return nullptr;
 }
 
-shared_ptr<ItemInstance> CraftingContainer::removeItem(unsigned int slot, int count)
+std::shared_ptr<ItemInstance> CraftingContainer::removeItem(unsigned int slot, int count)
 {
 	if ((*items)[slot] != NULL)
 	{
 		if ((*items)[slot]->count <= count)
 		{
-			shared_ptr<ItemInstance> item = (*items)[slot];
+			std::shared_ptr<ItemInstance> item = (*items)[slot];
 			(*items)[slot] = nullptr;
 			menu->slotsChanged();	// 4J - used to take pointer to this, but wasn't using it so removed
 			return item;
 		}
 		else
 		{
-			shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
+			std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
 			if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
 			menu->slotsChanged();		// 4J - used to take pointer to this, but wasn't using it so removed
 			return i;
@@ -79,7 +79,7 @@ shared_ptr<ItemInstance> CraftingContainer::removeItem(unsigned int slot, int co
 	return nullptr;
 }
 
-void CraftingContainer::setItem(unsigned int slot, shared_ptr<ItemInstance> item)
+void CraftingContainer::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item)
 {
 	(*items)[slot] = item;
 	if(menu) menu->slotsChanged();
@@ -94,7 +94,7 @@ void CraftingContainer::setChanged()
 {
 }
 
-bool CraftingContainer::stillValid(shared_ptr<Player> player)
+bool CraftingContainer::stillValid(std::shared_ptr<Player> player)
 {
 	return true;
 }

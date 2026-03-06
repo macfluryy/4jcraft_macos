@@ -63,7 +63,7 @@ bool MovePlayerPacket::canBeInvalidated()
 	return true;
 }
 
-bool MovePlayerPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool MovePlayerPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

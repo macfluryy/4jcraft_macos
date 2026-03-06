@@ -187,7 +187,7 @@ void ExperienceOrb::readAdditionalSaveData(CompoundTag *tag)
 	value = tag->getShort(L"Value");
 }
 
-void ExperienceOrb::playerTouch(shared_ptr<Player> player)
+void ExperienceOrb::playerTouch(std::shared_ptr<Player> player)
 {
 	if (level->isClientSide) return;
 

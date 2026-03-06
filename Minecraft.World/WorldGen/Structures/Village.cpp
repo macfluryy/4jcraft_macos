@@ -8,7 +8,7 @@
 #include "../../Util/BasicTypeContainers.h"
 #include "Village.h"
 
-Village::Aggressor::Aggressor(shared_ptr<Mob> mob, int timeStamp)
+Village::Aggressor::Aggressor(std::shared_ptr<Mob> mob, int timeStamp)
 {
 	this->mob = mob;
 	this->timeStamp = timeStamp;
@@ -71,7 +71,7 @@ void Village::tick(int tick)
 		Vec3 *spawnPos = findRandomSpawnPos(center->x, center->y, center->z, 2, 4, 2);
 		if (spawnPos != NULL)
 		{
-			shared_ptr<VillagerGolem> vg = shared_ptr<VillagerGolem>( new VillagerGolem(level) );
+			std::shared_ptr<VillagerGolem> vg = std::shared_ptr<VillagerGolem>( new VillagerGolem(level) );
 			vg->setPos(spawnPos->x, spawnPos->y, spawnPos->z);
 			level->addEntity(vg);
 			++golemCount;
@@ -123,14 +123,14 @@ bool Village::canSpawnAt(int x, int y, int z, int sx, int sy, int sz)
 void Village::countGolem()
 {
 	// Fix - let bots report themselves?
-	vector<shared_ptr<Entity> > *golems = level->getEntitiesOfClass(typeid(VillagerGolem), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
+	vector<std::shared_ptr<Entity> > *golems = level->getEntitiesOfClass(typeid(VillagerGolem), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
 	golemCount = golems->size();
 	delete golems;
 }
 
 void Village::countPopulation()
 {
-	vector<shared_ptr<Entity> > *villagers = level->getEntitiesOfClass(typeid(Villager), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
+	vector<std::shared_ptr<Entity> > *villagers = level->getEntitiesOfClass(typeid(Villager), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
 	populationSize = villagers->size();
 	delete villagers;
 
@@ -171,19 +171,19 @@ bool Village::isInside(int xx, int yy, int zz)
 	return center->distSqr(xx, yy, zz) < radius * radius;
 }
 
-vector<shared_ptr<DoorInfo> > *Village::getDoorInfos()
+vector<std::shared_ptr<DoorInfo> > *Village::getDoorInfos()
 {
 	return &doorInfos;
 }
 
-shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z)
+std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z)
 {
-	shared_ptr<DoorInfo> closest = nullptr;
+	std::shared_ptr<DoorInfo> closest = nullptr;
 	int closestDistSqr = Integer::MAX_VALUE;
 	//for (DoorInfo dm : doorInfos)
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
-		shared_ptr<DoorInfo> dm = *it;
+		std::shared_ptr<DoorInfo> dm = *it;
 		int distSqr = dm->distanceToSqr(x, y, z);
 		if (distSqr < closestDistSqr)
 		{
@@ -194,14 +194,14 @@ shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z)
 	return closest;
 }
 
-shared_ptr<DoorInfo>Village::getBestDoorInfo(int x, int y, int z)
+std::shared_ptr<DoorInfo>Village::getBestDoorInfo(int x, int y, int z)
 {
-	shared_ptr<DoorInfo> closest = nullptr;
+	std::shared_ptr<DoorInfo> closest = nullptr;
 	int closestDist = Integer::MAX_VALUE;
 	//for (DoorInfo dm : doorInfos)
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
-		shared_ptr<DoorInfo>dm = *it;
+		std::shared_ptr<DoorInfo>dm = *it;
 
 		int distSqr = dm->distanceToSqr(x, y, z);
 		if (distSqr > 16 * 16) distSqr *= 1000;
@@ -221,19 +221,19 @@ bool Village::hasDoorInfo(int x, int y, int z)
 	return getDoorInfo(x, y, z) != NULL;
 }
 
-shared_ptr<DoorInfo>Village::getDoorInfo(int x, int y, int z)
+std::shared_ptr<DoorInfo>Village::getDoorInfo(int x, int y, int z)
 {
 	if (center->distSqr(x, y, z) > radius * radius) return nullptr;
 	//for (DoorInfo di : doorInfos)
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
-		shared_ptr<DoorInfo> di = *it;
+		std::shared_ptr<DoorInfo> di = *it;
 		if (di->x == x && di->z == z && abs(di->y - y) <= 1) return di;
 	}
 	return nullptr;
 }
 
-void Village::addDoorInfo(shared_ptr<DoorInfo> di)
+void Village::addDoorInfo(std::shared_ptr<DoorInfo> di)
 {
 	doorInfos.push_back(di);
 	accCenter->x += di->x;
@@ -248,7 +248,7 @@ bool Village::canRemove()
 	return doorInfos.empty();
 }
 
-void Village::addAggressor(shared_ptr<Mob> mob)
+void Village::addAggressor(std::shared_ptr<Mob> mob)
 {
 	//for (Aggressor a : aggressors)
 	for(AUTO_VAR(it, aggressors.begin()); it != aggressors.end(); ++it)
@@ -263,7 +263,7 @@ void Village::addAggressor(shared_ptr<Mob> mob)
 	aggressors.push_back(new Aggressor(mob, _tick));
 }
 
-shared_ptr<Mob> Village::getClosestAggressor(shared_ptr<Mob> from)
+std::shared_ptr<Mob> Village::getClosestAggressor(std::shared_ptr<Mob> from)
 {
 	double closestSqr = Double::MAX_VALUE;
 	Aggressor *closest = NULL;
@@ -279,10 +279,10 @@ shared_ptr<Mob> Village::getClosestAggressor(shared_ptr<Mob> from)
 	return closest != NULL ? closest->mob : nullptr;
 }
 
-shared_ptr<Player> Village::getClosestBadStandingPlayer(shared_ptr<Mob> from) // 4J Stu - Should be LivingEntity when we add that
+std::shared_ptr<Player> Village::getClosestBadStandingPlayer(std::shared_ptr<Mob> from) // 4J Stu - Should be LivingEntity when we add that
 {
 	double closestSqr = Double::MAX_VALUE;
-	shared_ptr<Player> closest = nullptr;
+	std::shared_ptr<Player> closest = nullptr;
 
 	//for (String player : playerStanding.keySet())
 	for(AUTO_VAR(it,playerStanding.begin()); it != playerStanding.end(); ++it)
@@ -290,7 +290,7 @@ shared_ptr<Player> Village::getClosestBadStandingPlayer(shared_ptr<Mob> from) //
 		wstring player = it->first;
 		if (isVeryBadStanding(player))
 		{
-			shared_ptr<Player> mob = level->getPlayerByName(player);
+			std::shared_ptr<Player> mob = level->getPlayerByName(player);
 			if (mob != NULL)
 			{
 				double distSqr = mob->distanceToSqr(from);
@@ -330,7 +330,7 @@ void Village::updateDoors()
 	//for (Iterator<DoorInfo> it = doorInfos.iterator(); it.hasNext();)
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end();)
 	{
-		shared_ptr<DoorInfo> dm = *it; //it.next();
+		std::shared_ptr<DoorInfo> dm = *it; //it.next();
 		if (resetBookings) dm->resetBookingCount();
 		if (!isDoor(dm->x, dm->y, dm->z) || abs(_tick - dm->timeStamp) > 1200)
 		{
@@ -373,7 +373,7 @@ void Village::calcInfo()
 	//for (DoorInfo dm : doorInfos)
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
-		shared_ptr<DoorInfo> dm = *it;
+		std::shared_ptr<DoorInfo> dm = *it;
 		maxRadiusSqr = max(dm->distanceToSqr(center->x, center->y, center->z), maxRadiusSqr);
 	}
 	int doorDist= Villages::MaxDoorDist;			// Take into local int for PS4 as max takes a reference to the const int there and then needs the value to exist for the linker
@@ -433,7 +433,7 @@ void Village::readAdditionalSaveData(CompoundTag *tag)
 	{
 		CompoundTag *dTag = doorTags->get(i);
 
-		shared_ptr<DoorInfo> door = shared_ptr<DoorInfo>(new DoorInfo(dTag->getInt(L"X"), dTag->getInt(L"Y"), dTag->getInt(L"Z"), dTag->getInt(L"IDX"), dTag->getInt(L"IDZ"), dTag->getInt(L"TS")));
+		std::shared_ptr<DoorInfo> door = std::shared_ptr<DoorInfo>(new DoorInfo(dTag->getInt(L"X"), dTag->getInt(L"Y"), dTag->getInt(L"Z"), dTag->getInt(L"IDX"), dTag->getInt(L"IDZ"), dTag->getInt(L"TS")));
 		doorInfos.push_back(door);
 	}
 
@@ -464,7 +464,7 @@ void Village::addAdditonalSaveData(CompoundTag *tag)
 	//for (DoorInfo dm : doorInfos)
 	for(AUTO_VAR(it,doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
-		shared_ptr<DoorInfo> dm = *it;
+		std::shared_ptr<DoorInfo> dm = *it;
 		CompoundTag *doorTag = new CompoundTag(L"Door");
 		doorTag->putInt(L"X", dm->x);
 		doorTag->putInt(L"Y", dm->y);
