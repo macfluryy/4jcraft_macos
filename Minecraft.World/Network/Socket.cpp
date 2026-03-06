@@ -16,14 +16,34 @@ Socket::SocketOutputStreamLocal *Socket::s_hostOutStream[2];
 Socket::SocketInputStreamLocal *Socket::s_hostInStream[2];
 ServerConnection *Socket::s_serverConnection = NULL;
 
+void Socket::EnsureStreamsInitialised()
+{
+	// Thread-safe one-time initialisation via C++11 magic-statics guarantee.
+	// The lambda body runs exactly once no matter how many threads call concurrently.
+	static bool initialized = []() -> bool {
+		for( int i = 0; i < 2; i++ )
+		{
+			InitializeCriticalSection(&Socket::s_hostQueueLock[i]);
+			s_hostOutStream[i] = new SocketOutputStreamLocal(i);
+			s_hostInStream[i]  = new SocketInputStreamLocal(i);
+		}
+		return true;
+	}();
+	(void)initialized;
+}
+
 void Socket::Initialise(ServerConnection *serverConnection)
 {
 	s_serverConnection = serverConnection;
+
+	// Ensure the host-local stream objects exist (idempotent).
+	EnsureStreamsInitialised();
 
 	// Only initialise everything else once - just setting up static data, one time xrnm things, thread for ticking sockets
 	static bool init = false;
 	if( init )
 	{
+		// Streams already exist – just reset queue state and re-open streams.
 		for( int i = 0; i < 2; i++ )
 		{
 			if(TryEnterCriticalSection(&s_hostQueueLock[i]))
@@ -39,13 +59,8 @@ void Socket::Initialise(ServerConnection *serverConnection)
 		return;
 	}
 	init = true;
-
-	for( int i = 0; i < 2; i++ )
-	{
-		InitializeCriticalSection(&Socket::s_hostQueueLock[i]);
-		s_hostOutStream[i] = new SocketOutputStreamLocal(i);
-		s_hostInStream[i] = new SocketInputStreamLocal(i);
-	}
+	// Streams are already guaranteed to exist via EnsureStreamsInitialised() above.
+	// Nothing more to do for the first call.
 }
 
 Socket::Socket(bool response)
@@ -182,6 +197,11 @@ InputStream *Socket::getInputStream(bool isServerConnection)
 	}
 	else
 	{
+		if( s_hostInStream[m_end] == NULL )
+		{
+			app.DebugPrintf("SOCKET: Warning - s_hostInStream[%d] is NULL in getInputStream(); calling EnsureStreamsInitialised()\n", m_end);
+			EnsureStreamsInitialised();
+		}
 		return s_hostInStream[m_end];
 	}
 }
@@ -216,7 +236,13 @@ Socket::SocketOutputStream *Socket::getOutputStream(bool isServerConnection)
 	}
 	else
 	{
-		return s_hostOutStream[ 1 - m_end ];
+		int outIdx = 1 - m_end;
+		if( s_hostOutStream[outIdx] == NULL )
+		{
+			app.DebugPrintf("SOCKET: Warning - s_hostOutStream[%d] is NULL in getOutputStream(); calling EnsureStreamsInitialised()\n", outIdx);
+			EnsureStreamsInitialised();
+		}
+		return s_hostOutStream[outIdx];
 	}
 }
 

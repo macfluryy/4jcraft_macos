@@ -117,6 +117,7 @@ public:
 	void setPlayer(INetworkPlayer *player);
 
 public:
+	static void EnsureStreamsInitialised();						// 4J Fix: idempotent stream creation; safe to call before Initialise(connection)
 	static void Initialise(ServerConnection *serverConnection);
 	Socket(bool response = false);								// 4J - Create a local socket, for end 0 or 1 of a connection
 	Socket(INetworkPlayer *player, bool response  = false, bool hostLocal = false);		// 4J - Create a socket for an INetworkPlayer
