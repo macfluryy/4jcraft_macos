@@ -385,7 +385,7 @@ void Chunk::rebuild()
 							MemSect(0);
 							glPushMatrix();
 							glDepthMask(true);	// 4J added
-							t->useCompactVertices(false);	 // 4J added
+							t->useCompactVertices(true);	 // 4J added
 							translateToPos();
 							float ss = 1.000001f;
 							// 4J - have removed this scale as I don't think we should need it, and have now optimised the vertex
@@ -704,7 +704,7 @@ void Chunk::rebuild_SPU()
 			MemSect(0);
 			glPushMatrix();
 			glDepthMask(true);	// 4J added
-			t->useCompactVertices(false);	 // 4J added
+			t->useCompactVertices(true);	 // 4J added
 			translateToPos();
 			float ss = 1.000001f;
 			// 4J - have removed this scale as I don't think we should need it, and have now optimised the vertex

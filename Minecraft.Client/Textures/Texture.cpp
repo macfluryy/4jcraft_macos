@@ -568,7 +568,7 @@ void Texture::transferFromImage(BufferedImage *image)
 #ifdef _XBOX
 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
 #else
-	int byteRemapRGBA[] = { 0, 1, 2, 3 };
+	int byteRemapRGBA[] = { 3, 0, 1, 2 };
 #endif
 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
 // #endif

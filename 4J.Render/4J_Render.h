@@ -244,15 +244,15 @@ const int GL_EYE_PLANE = 1;
 
 
 // These things are used by glEnable/glDisable so must be different and non-zero (zero is used by things we haven't assigned yet)
-const int GL_TEXTURE_2D = 1;
-const int GL_BLEND = 2;
-const int GL_CULL_FACE = 3;
-const int GL_ALPHA_TEST = 4;
-const int GL_DEPTH_TEST = 5;
-const int GL_FOG = 6;
-const int GL_LIGHTING = 7;
-const int GL_LIGHT0 = 8;
-const int GL_LIGHT1 = 9;
+const int GL_TEXTURE_2D = 0x0DE1;
+const int GL_BLEND = 0x0BE2;
+const int GL_CULL_FACE = 0x0B44;
+const int GL_ALPHA_TEST = 0x0BC0;
+const int GL_DEPTH_TEST = 0x0B71;
+const int GL_FOG = 0x0B60;
+const int GL_LIGHTING = 0x0B50;
+const int GL_LIGHT0 = 0x4000;
+const int GL_LIGHT1 = 0x4001;
 
 const int CLEAR_DEPTH_FLAG = 1;
 const int CLEAR_COLOUR_FLAG = 2;

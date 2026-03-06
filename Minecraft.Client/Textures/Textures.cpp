@@ -611,7 +611,7 @@ void Textures::loadTexture(BufferedImage *img, int id, bool blur, bool clamp)
 				// Swap ARGB to RGBA
 				for( int i = 0; i < ww * hh ; i++ )
 				{
-					tempData[i] = ( tempData[i] << 8 ) | ( ( tempData[i] >> 24 ) & 0xff );
+					tempData[i] = ( tempData[i] >> 24 ) | (tempData[i] << 8 );
 				}
 #endif
 			}
