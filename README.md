@@ -57,29 +57,13 @@ docker run -it -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev 
 ### Configure & Build
 
 > [!IMPORTANT]
-> GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
+> If you are using GCC, then GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
 
-This project uses the [Meson](https://mesonbuild.com/) (with [Ninja](https://ninja-build.org/)) as a build system and [lld](https://lld.llvm.org/) as a linker.
+This project uses the [Meson](https://mesonbuild.com/) build system (with [Ninja](https://ninja-build.org/)).
 
 #### Install Tooling
 
-1. Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
-2. Install the `lld` linker using your distro's package manager. This may be distributed as part of an [LLVM toolchain](https://llvm.org/).
-  
-   Debian/Ubuntu:
-   ```bash
-   sudo apt-get install lld
-   ```
-
-   RedHat/Fedora:
-   ```bash
-   sudo dnf install lld
-   ```
-
-   Arch/Manjaro:
-   ```bash
-   sudo pacman -S lld
-   ```
+Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
 
 #### Configure & Build
 
@@ -90,6 +74,20 @@ meson setup build
 # 2. Compile the project
 meson compile -C build
 ```
+
+> [!TIP]
+>
+> For the fastest compilation speeds, you may want to use the compilers and linkers provided by an [LLVM toolchain](https://llvm.org/) (`clang`/`lld`) over your system compiler and linker. To do this, install `clang` and `lld`, and configure your build using the `llvm_native.txt` nativescript in `/scripts`:
+>
+> ```bash
+> meson setup --native-file ./scripts/llvm_native.txt build
+> ```
+>
+> ...or if you've already configured a build directory:
+>
+> ```bash
+> meson setup --native-file ./scripts/llvm_native.txt build --reconfigure
+> ```
 
 The binary is output to:
 
