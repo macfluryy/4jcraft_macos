@@ -627,8 +627,13 @@ void GameRenderer::unZoomRegion()
 void GameRenderer::getFovAndAspect(float& fov, float& aspect, float a, bool applyEffects)
 {
 	// 4J - split out aspect ratio and fov here so we can adjust for viewports - we might need to revisit these as
-	// they are maybe be too generous for performance. 
-	aspect = mc->width / (float) mc->height;
+	// avoid pixel streching, its UGLEYYY 
+	{
+		int fbw = mc->width;
+		int fbh = mc->height;
+		RenderManager.GetFramebufferSize(fbw, fbh);
+		aspect = fbw / (float) fbh;
+	}
 	fov = getFov(a, applyEffects);
 
 	if( ( mc->player->m_iScreenSection == C4JRender::VIEWPORT_TYPE_SPLIT_TOP ) ||
@@ -1053,12 +1058,15 @@ void GameRenderer::render(float a, bool bFirst)
 	if (mc->noRender) return;
 	GameRenderer::anaglyph3d = mc->options->anaglyph3d;
 
-	glViewport(0, 0, mc->width, mc->height);	// 4J - added
+{
+	int fbw, fbh;
+	RenderManager.GetFramebufferSize(fbw, fbh);
+	glViewport(0, 0, fbw, fbh);
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
 	int screenWidth = ssc.getWidth();
 	int screenHeight = ssc.getHeight();
-	int xMouse = Mouse::getX() * screenWidth / mc->width;
-	int yMouse = screenHeight - Mouse::getY() * screenHeight / mc->height - 1;
+	int xMouse = Mouse::getX() * screenWidth / fbw;
+	int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
 
 	int maxFps = getFpsCap(mc->options->framerateLimit);
 
@@ -1083,7 +1091,11 @@ void GameRenderer::render(float a, bool bFirst)
 	}
 	else
 	{
-		glViewport(0, 0, mc->width, mc->height);
+		{
+			int fbw, fbh;
+			RenderManager.GetFramebufferSize(fbw, fbh);
+			glViewport(0, 0, fbw, fbh);
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -1291,7 +1303,11 @@ void GameRenderer::renderLevel(float a, __int64 until)
 		}
 
 
-		glViewport(0, 0, mc->width, mc->height);
+	{
+		int fbw, fbh;
+		RenderManager.GetFramebufferSize(fbw, fbh);
+		glViewport(0, 0, fbw, fbh);
+	}
 		setupClearColor(a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
@@ -1787,6 +1803,8 @@ void GameRenderer::renderSnowAndRain(float a)
 // 4J - added forceScale parameter
 void GameRenderer::setupGuiScreen(int forceScale /*=-1*/)
 {
+	int fbw, fbh;
+	RenderManager.GetFramebufferSize(fbw, fbh);
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height, forceScale);
 
 	glClear(GL_DEPTH_BUFFER_BIT);
