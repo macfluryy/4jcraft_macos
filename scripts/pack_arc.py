@@ -23,7 +23,12 @@ SOFTWARE.
 '''
 Simple tool to pack arc files from a target folder
 --------------------------------------------------
-Usage: pack_arc.py path/to/target/files path/to/output.arc
+Usage: pack_arc.py path/to/target/files path/to/output.arc filesToIncludeList1.txt filesToIncludeList2.txt filesToIncludeList3.txt ....
+
+The tool makes use of the txt files inside Common/Media/ that define what files should be included. We should probably put those in 
+a better place and maybe use something like json instead.
+
+You can just omit the "files to include lists" to use all files available in the folder instead.
 '''
 
 from sys import argv
@@ -52,12 +57,23 @@ def write_string(string, stream):
 
 target_dir = argv[1]
 output_file_path = argv[2]
-target_file_paths = glob(f"{target_dir}/*")
+filter_file_paths = argv[3::]
+
+# Build target file list
+target_file_paths = []
+if len(filter_file_paths) == 0:
+    target_file_paths = glob(f"{target_dir}/*.*", recursive=True)
+else:
+    for filter_path in filter_file_paths:
+        with open(filter_path) as filter_file:
+            print(f"Reading filter file: {filter_path}")
+            target_file_paths += filter_file.readlines()
+print(f"Selected {len(target_file_paths)} files for {output_file_path}")
 
 # Read our target files
 target_files = []
 for target_path in target_file_paths:
-    with open(target_path, "rb") as file: 
+    with open(f"{target_dir}/{target_path.strip()}", "rb") as file: 
         file_data = file.read()
         meta_data = FileMetaData(
             target_path,
