@@ -1,7 +1,6 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
   default_options : [
-    'cpp_std=gnu++11',
     'warning_level=0',
     'buildtype=debug',
     'unity=on',         # merge source files per target → fewer compile units

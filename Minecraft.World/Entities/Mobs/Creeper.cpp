@@ -63,8 +63,8 @@ void Creeper::defineSynchedData()
 {
     Monster::defineSynchedData();
 
-    entityData->define(DATA_SWELL_DIR, (byte) -1);
-    entityData->define(DATA_IS_POWERED, (byte) 0);
+    entityData->define(DATA_SWELL_DIR, (uint8_t) -1);
+    entityData->define(DATA_IS_POWERED, (uint8_t) 0);
 }
 
 void Creeper::addAdditonalSaveData(CompoundTag *entityTag)
@@ -76,7 +76,7 @@ void Creeper::addAdditonalSaveData(CompoundTag *entityTag)
 void Creeper::readAdditionalSaveData(CompoundTag *tag)
 {
     Monster::readAdditionalSaveData(tag);
-    entityData->set(DATA_IS_POWERED, (byte) (tag->getBoolean(L"powered") ? 1 : 0));
+    entityData->set(DATA_IS_POWERED, (uint8_t) (tag->getBoolean(L"powered") ? 1 : 0));
 }
 
 void Creeper::tick()
@@ -159,11 +159,11 @@ int Creeper::getSwellDir()
 
 void Creeper::setSwellDir(int dir)
 {
-    entityData->set(DATA_SWELL_DIR, (byte) dir);
+    entityData->set(DATA_SWELL_DIR, (uint8_t) dir);
 }
 
 void Creeper::thunderHit(const LightningBolt *lightningBolt) 
 {
     Monster::thunderHit(lightningBolt);
-    entityData->set(DATA_IS_POWERED, (byte) 1);
+    entityData->set(DATA_IS_POWERED, (uint8_t) 1);
 }

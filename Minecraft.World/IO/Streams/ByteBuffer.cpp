@@ -7,8 +7,8 @@
 ByteBuffer::ByteBuffer( unsigned int capacity ) : Buffer( capacity )
 {
 	hasBackingArray = false;
-	buffer = new byte[capacity];
-	memset( buffer,0,sizeof(byte)*capacity);
+	buffer = new uint8_t[capacity];
+	memset( buffer,0,sizeof(uint8_t)*capacity);
 	byteOrder = BIGENDIAN;
 }
 
@@ -25,7 +25,7 @@ ByteBuffer *ByteBuffer::allocateDirect(int capacity)
 }
 
 
-ByteBuffer::ByteBuffer( unsigned int capacity, byte *backingArray ) : Buffer( capacity )
+ByteBuffer::ByteBuffer( unsigned int capacity, uint8_t *backingArray ) : Buffer( capacity )
 {
 	hasBackingArray = true;
 	buffer = backingArray;
@@ -38,7 +38,7 @@ ByteBuffer::~ByteBuffer()
 }
 
 //Wraps a byte array into a buffer.
-//The new buffer will be backed by the given byte array; that is, modifications to the buffer will cause the array
+//The new buffer will be backed by the given uint8_t array; that is, modifications to the buffer will cause the array
 //to be modified and vice versa. The new buffer's capacity and limit will be array.length, its position will be zero,
 //and its mark will be undefined. Its backing array will be the given array, and its array offset will be zero.
 //
@@ -85,7 +85,7 @@ ByteBuffer *ByteBuffer::flip()
 }
 
 // 4J Added so we can write this to a file
-byte *ByteBuffer::getBuffer()
+uint8_t *ByteBuffer::getBuffer()
 {
 	return buffer;
 }
@@ -104,7 +104,7 @@ int ByteBuffer::getSize()
 //The byte at the given index
 //Throws:
 //IndexOutOfBoundsException - If index is negative or not smaller than the buffer's limit
-byte ByteBuffer::get(int index)
+uint8_t ByteBuffer::get(int index)
 {
 	assert( index < m_limit );
 	assert( index >= 0 );
@@ -253,7 +253,7 @@ void ByteBuffer::getShortArray(shortArray &s)
 //Throws:
 //IndexOutOfBoundsException - If index is negative or not smaller than the buffer's limit
 //ReadOnlyBufferException - If this buffer is read-only
-ByteBuffer *ByteBuffer::put(int index, byte b)
+ByteBuffer *ByteBuffer::put(int index, uint8_t b)
 {
 	assert( index < m_limit );
 	assert( index >= 0 );
@@ -277,17 +277,17 @@ ByteBuffer *ByteBuffer::putInt(int value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>((value >> 24) & 0xFF);
-		buffer[m_position+1] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[m_position+2] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[m_position+3] = static_cast<byte>(value & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>((value >> 24) & 0xFF);
+		buffer[m_position+1] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[m_position+2] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[m_position+3] = static_cast<uint8_t>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>(value & 0xFF);
-		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[m_position+2] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[m_position+3] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>(value & 0xFF);
+		buffer[m_position+1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[m_position+2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[m_position+3] = static_cast<uint8_t>((value >> 24) & 0xFF);
 	}
 
 	m_position += 4;
@@ -309,17 +309,17 @@ ByteBuffer *ByteBuffer::putInt(unsigned int index, int value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[index] = static_cast<byte>((value >> 24) & 0xFF);
-		buffer[index+1] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[index+2] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[index+3] = static_cast<byte>(value & 0xFF);
+		buffer[index] = static_cast<uint8_t>((value >> 24) & 0xFF);
+		buffer[index+1] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[index+2] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[index+3] = static_cast<uint8_t>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[index] = static_cast<byte>(value & 0xFF);
-		buffer[index+1] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[index+2] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[index+3] = static_cast<byte>((value >> 24) & 0xFF);
+		buffer[index] = static_cast<uint8_t>(value & 0xFF);
+		buffer[index+1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[index+2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[index+3] = static_cast<uint8_t>((value >> 24) & 0xFF);
 	}
 
 	return this;
@@ -339,13 +339,13 @@ ByteBuffer *ByteBuffer::putShort(short value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[m_position+1] = static_cast<byte>(value & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[m_position+1] = static_cast<uint8_t>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>(value & 0xFF);
-		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>(value & 0xFF);
+		buffer[m_position+1] = static_cast<uint8_t>((value >> 8) & 0xFF);
 	}
 
 	m_position += 2;
@@ -379,25 +379,25 @@ ByteBuffer *ByteBuffer::putLong(__int64 value)
 
 	if( byteOrder == BIGENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>((value >> 56) & 0xFF);
-		buffer[m_position+1] = static_cast<byte>((value >> 48) & 0xFF);
-		buffer[m_position+2] = static_cast<byte>((value >> 40) & 0xFF);
-		buffer[m_position+3] = static_cast<byte>((value >> 32) & 0xFF);
-		buffer[m_position+4] = static_cast<byte>((value >> 24) & 0xFF);
-		buffer[m_position+5] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[m_position+6] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[m_position+7] = static_cast<byte>(value & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>((value >> 56) & 0xFF);
+		buffer[m_position+1] = static_cast<uint8_t>((value >> 48) & 0xFF);
+		buffer[m_position+2] = static_cast<uint8_t>((value >> 40) & 0xFF);
+		buffer[m_position+3] = static_cast<uint8_t>((value >> 32) & 0xFF);
+		buffer[m_position+4] = static_cast<uint8_t>((value >> 24) & 0xFF);
+		buffer[m_position+5] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[m_position+6] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[m_position+7] = static_cast<uint8_t>(value & 0xFF);
 	}
 	else if( byteOrder == LITTLEENDIAN )
 	{
-		buffer[m_position] = static_cast<byte>((value & 0xFF));
-		buffer[m_position+1] = static_cast<byte>((value >> 8) & 0xFF);
-		buffer[m_position+2] = static_cast<byte>((value >> 16) & 0xFF);
-		buffer[m_position+3] = static_cast<byte>((value >> 24) & 0xFF);
-		buffer[m_position+4] = static_cast<byte>((value >> 32) & 0xFF);
-		buffer[m_position+5] = static_cast<byte>((value >> 40) & 0xFF);
-		buffer[m_position+6] = static_cast<byte>((value >> 48) & 0xFF);
-		buffer[m_position+7] = static_cast<byte>((value >> 56) & 0xFF);
+		buffer[m_position] = static_cast<uint8_t>((value & 0xFF));
+		buffer[m_position+1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+		buffer[m_position+2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+		buffer[m_position+3] = static_cast<uint8_t>((value >> 24) & 0xFF);
+		buffer[m_position+4] = static_cast<uint8_t>((value >> 32) & 0xFF);
+		buffer[m_position+5] = static_cast<uint8_t>((value >> 40) & 0xFF);
+		buffer[m_position+6] = static_cast<uint8_t>((value >> 48) & 0xFF);
+		buffer[m_position+7] = static_cast<uint8_t>((value >> 56) & 0xFF);
 	}
 
 	return this;
@@ -464,9 +464,9 @@ FloatBuffer *ByteBuffer::asFloatBuffer()
 #ifdef __PS3__
 // we're using the RSX now to upload textures to vram, so we need th main ram textures allocated from io space
 ByteBuffer_IO::ByteBuffer_IO( unsigned int capacity ) 
-	: ByteBuffer(capacity, (byte*)RenderManager.allocIOMem(capacity, 64))
+	: ByteBuffer(capacity, (uint8_t*)RenderManager.allocIOMem(capacity, 64))
 {
-	memset( buffer,0,sizeof(byte)*capacity);
+	memset( buffer,0,sizeof(uint8_t)*capacity);
 	byteOrder = BIGENDIAN;
 }
 

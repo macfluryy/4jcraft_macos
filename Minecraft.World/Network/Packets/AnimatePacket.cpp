@@ -28,7 +28,7 @@ void AnimatePacket::read(DataInputStream *dis) //throws IOException
 void AnimatePacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeInt(id);
-	dos->writeByte(static_cast<byte>(action));
+	dos->writeByte(static_cast<uint8_t>(action));
 }
 
 void AnimatePacket::handle(PacketListener *listener) 

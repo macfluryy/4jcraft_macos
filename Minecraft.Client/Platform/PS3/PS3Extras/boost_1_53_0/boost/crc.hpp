@@ -777,7 +777,7 @@ crc_basic<Bits>::process_byte
     unsigned char  byte
 )
 {
-    process_bits( (rft_in_ ? detail::reflector<CHAR_BIT>::reflect(byte)
+    process_bits( (rft_in_ ? detail::reflector<CHAR_BIT>::reflect(uint8_t)
      : byte), CHAR_BIT );
 }
 
@@ -938,7 +938,7 @@ BOOST_CRC_OPTIMAL_NAME::process_byte
     unsigned char  byte
 )
 {
-    process_bytes( &byte, sizeof(byte) );
+    process_bytes( &byte, sizeof(uint8_t) );
 }
 
 template < std::size_t Bits, BOOST_CRC_PARM_TYPE TruncPoly,
@@ -1004,7 +1004,7 @@ BOOST_CRC_OPTIMAL_NAME::operator ()
     unsigned char  byte
 )
 {
-    process_byte( byte );
+    process_byte( uint8_t );
 }
 
 template < std::size_t Bits, BOOST_CRC_PARM_TYPE TruncPoly,

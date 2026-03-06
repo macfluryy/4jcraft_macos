@@ -66,7 +66,7 @@ void Ghast::defineSynchedData()
 {
     FlyingMob::defineSynchedData();
 
-    entityData->define(DATA_IS_CHARGING, (byte) 0);
+    entityData->define(DATA_IS_CHARGING, (uint8_t) 0);
 }
 
 int Ghast::getMaxHealth()
@@ -77,7 +77,7 @@ int Ghast::getMaxHealth()
 void Ghast::tick()
 {
     FlyingMob::tick();
-    byte current = entityData->getByte(DATA_IS_CHARGING);
+    uint8_t current = entityData->getByte(DATA_IS_CHARGING);
 //    this->textureName = current == 1 ? L"/mob/ghast_fire.png" : L"/mob/ghast.png";	// 4J replaced with following line
 	this->textureIdx = current == 1 ? TN_MOB_GHAST_FIRE : TN_MOB_GHAST;
 }
@@ -174,8 +174,8 @@ void Ghast::serverAiStep()
 
     if (!level->isClientSide) 
 	{
-        byte old = entityData->getByte(DATA_IS_CHARGING);
-        byte current = (byte) (charge > 10 ? 1 : 0);
+        uint8_t old = entityData->getByte(DATA_IS_CHARGING);
+        uint8_t current = (uint8_t) (charge > 10 ? 1 : 0);
         if (old != current)
 		{
             entityData->set(DATA_IS_CHARGING, current);

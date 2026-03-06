@@ -128,7 +128,7 @@ bool Minecart::makeStepSound()
 
 void Minecart::defineSynchedData()
 {
-	entityData->define(DATA_ID_FUEL, (byte) 0);
+	entityData->define(DATA_ID_FUEL, (uint8_t) 0);
 	entityData->define(DATA_ID_HURT, 0);
 	entityData->define(DATA_ID_HURTDIR, 1);
 	entityData->define(DATA_ID_DAMAGE, 0);
@@ -861,7 +861,7 @@ void Minecart::addAdditonalSaveData(CompoundTag *base)
 			if ( (*items)[i] != NULL)
 			{
 				CompoundTag *tag = new CompoundTag();
-				tag->putByte(L"Slot", (byte) i);
+				tag->putByte(L"Slot", (uint8_t) i);
 				(*items)[i]->save(tag);
 				listTag->add(tag);
 			}
@@ -1158,11 +1158,11 @@ void Minecart::setHasFuel(bool fuel)
 {
 	if (fuel)
 	{
-		entityData->set(DATA_ID_FUEL, (byte) (entityData->getByte(DATA_ID_FUEL) | 1));
+		entityData->set(DATA_ID_FUEL, (uint8_t) (entityData->getByte(DATA_ID_FUEL) | 1));
 	}
 	else
 	{
-		entityData->set(DATA_ID_FUEL, (byte) (entityData->getByte(DATA_ID_FUEL) & ~1));
+		entityData->set(DATA_ID_FUEL, (uint8_t) (entityData->getByte(DATA_ID_FUEL) & ~1));
 	}
 }
 

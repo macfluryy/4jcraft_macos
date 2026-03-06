@@ -202,7 +202,7 @@ public:
 	bool IsHost();
 	bool IsGuest();
 	bool IsLocal();
-	PlayerUID GetXuid();	
+	PlayerUID GetXuid();
 	LPCWSTR GetGamertag();
 	int GetSessionIndex();
 	bool IsTalking();
@@ -383,7 +383,7 @@ typedef struct _XMARKETPLACE_CONTENTOFFER_INFO
     DWORD dwPointsPrice;
 } XMARKETPLACE_CONTENTOFFER_INFO, *PXMARKETPLACE_CONTENTOFFER_INFO;
 
-typedef enum 
+typedef enum
 {
     XMARKETPLACE_OFFERING_TYPE_CONTENT = 0x00000002,
     XMARKETPLACE_OFFERING_TYPE_GAME_DEMO = 0x00000020,
@@ -403,7 +403,7 @@ const int QNET_SENDDATA_SEQUENTIAL = 0;
 struct XRNM_SEND_BUFFER
 {
 	DWORD dwDataSize;
-	byte *pbyData;
+	uint8_t *pbyData;
 };
 
 const int D3DBLEND_CONSTANTALPHA = 0;
@@ -531,7 +531,7 @@ typedef struct {
 // const int XC_LANGUAGE_POLISH		=17;
 // const int XC_LANGUAGE_TURKISH		=18;
 // const int XC_LANGUAGE_LATINAMERICANSPANISH		=19;
-// 
+//
 // const int XC_LANGUAGE_GREEK			=20;
 // #else
 // const int XC_LANGUAGE_UKENGLISH	=11;

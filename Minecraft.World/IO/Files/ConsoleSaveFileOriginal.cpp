@@ -243,7 +243,7 @@ void ConsoleSaveFileOriginal::deleteFile( FileEntry *file )
 
 	const int bufferSize = 4096;
 	int amountToRead = bufferSize;
-	byte buffer[bufferSize];
+	uint8_t buffer[bufferSize];
 	DWORD bufferDataSize = 0;
 
 
@@ -474,8 +474,8 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, DWORD nNumberOfByt
 	const DWORD bufferSize = 4096;
 	DWORD amountToRead = bufferSize;
 	//assert( nNumberOfBytesToWrite <= bufferSize );
-	static byte buffer1[bufferSize];
-	static byte buffer2[bufferSize];
+	static uint8_t buffer1[bufferSize];
+	static uint8_t buffer2[bufferSize];
 	DWORD buffer1Size = 0;
 	DWORD buffer2Size = 0;
 
@@ -666,11 +666,11 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 	// On PS3, don't compress the data as we can't really afford the extra memory this requires for the output buffer. Instead we'll be writing
 	// directly from the save data.
 	StorageManager.SetSaveData(pvSaveMem,fileSize);
-	byte *compData = (byte *)pvSaveMem;
+	uint8_t *compData = (uint8_t *)pvSaveMem;
 #else
 	// Attempt to allocate the required memory
 	// We do not own this, it belongs to the StorageManager
-	byte *compData = (byte *)StorageManager.AllocateSaveData( compLength );
+	uint8_t *compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
 
 #ifdef __PSVITA__
 	// AP - make sure we always allocate just what is needed so it will only SAVE what is needed.
@@ -708,7 +708,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		compLength = compLength+8;
 
 		// Attempt to allocate the required memory
-		compData = (byte *)StorageManager.AllocateSaveData( compLength );
+		compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
 	}
 #endif
 

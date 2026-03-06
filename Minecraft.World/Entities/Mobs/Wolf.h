@@ -63,7 +63,7 @@ public:
 	virtual bool hurt(DamageSource *source, int dmg);
 	virtual bool doHurtTarget(shared_ptr<Entity> target);
 	virtual bool interact(shared_ptr<Player> player);
-	virtual void handleEntityEvent(byte id);
+	virtual void handleEntityEvent(uint8_t id);
 	float getTailAngle();
 	virtual bool isFood(shared_ptr<ItemInstance> item);
 	virtual int getMaxSpawnClusterSize();

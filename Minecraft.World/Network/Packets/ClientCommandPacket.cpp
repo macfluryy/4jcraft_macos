@@ -19,7 +19,7 @@ void ClientCommandPacket::read(DataInputStream *dis)
 
 void ClientCommandPacket::write(DataOutputStream *dos)
 {
-	dos->writeByte((byte)action & (byte)0xff);
+	dos->writeByte((uint8_t)action & (uint8_t)0xff);
 }
 
 void ClientCommandPacket::handle(PacketListener *listener)

@@ -303,7 +303,7 @@ public:
 	virtual Vec3 *getLookAngle();
 	virtual void handleInsidePortal();
 	virtual void lerpMotion(double xd, double yd, double zd);
-	virtual void handleEntityEvent(byte eventId);
+	virtual void handleEntityEvent(uint8_t eventId);
 	virtual void animateHurt();
 	virtual void prepareCustomTextures();
 	virtual ItemInstanceArray getEquipmentSlots(); // ItemInstance[]

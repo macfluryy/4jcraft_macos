@@ -6,7 +6,7 @@ template <class T> class ListTag : public Tag
 {
 private:
     vector<Tag *> list;
-    byte type;
+    uint8_t type;
 
 public:
 	ListTag() : Tag(L"") {}
@@ -15,7 +15,7 @@ public:
     void write(DataOutput *dos)
 	{
         if (list.size() > 0) type = (list[0])->getId();
-        else type = static_cast<byte>(1);
+        else type = static_cast<uint8_t>(1);
 
         dos->writeByte(type);
         dos->writeInt((int)list.size());
@@ -38,7 +38,7 @@ public:
         }
 	}
 
-	byte getId() { return TAG_List; }
+	uint8_t getId() { return TAG_List; }
 
     wstring toString()
 	{

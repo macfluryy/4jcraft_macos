@@ -34,7 +34,7 @@ void ContainerSetDataPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerSetDataPacket::write(DataOutputStream *dos) // throws IOException 
 {
-	dos->writeByte((byte)containerId);
+	dos->writeByte((uint8_t)containerId);
 	dos->writeShort(id);
 	dos->writeShort(value);
 }

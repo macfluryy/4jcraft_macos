@@ -115,14 +115,14 @@ bool DataInputStream::readBoolean()
 //This method is suitable for reading the byte written by the writeByte method of interface DataOutput.
 //Returns:
 //the 8-bit value read.
-byte DataInputStream::readByte()
+uint8_t DataInputStream::readByte()
 {
 	if (stream == NULL)
 	{
 		app.DebugPrintf("DataInputStream::readByte() but underlying stream is NULL\n");
 		return 0;
 	}
-	return (byte) stream->read();
+	return (uint8_t) stream->read();
 }
 
 unsigned char DataInputStream::readUnsignedByte()
@@ -183,7 +183,7 @@ bool DataInputStream::readFully(byteArray b)
 		}
 		else
 		{
-			b[i] = static_cast<byte>(byteRead);
+			b[i] = static_cast<uint8_t>(byteRead);
 		}
 	}
 	return true;

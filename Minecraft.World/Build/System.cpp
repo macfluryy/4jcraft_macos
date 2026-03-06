@@ -21,7 +21,7 @@ template <class T> void System::arraycopy(arrayWithLength<T> src, unsigned int s
 ArrayCopyFunctionDefinition(Node *)
 ArrayCopyFunctionDefinition(Biome *)
 
-void System::arraycopy(arrayWithLength<byte> src, unsigned int srcPos, arrayWithLength<byte> *dst, unsigned int dstPos, unsigned int length)
+void System::arraycopy(arrayWithLength<uint8_t> src, unsigned int srcPos, arrayWithLength<uint8_t> *dst, unsigned int dstPos, unsigned int length)
 {
 	assert( srcPos >=0 && srcPos <= src.length);
 	assert( srcPos + length <= src.length );
