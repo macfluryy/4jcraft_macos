@@ -48,7 +48,7 @@ If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayl
 > [!IMPORTANT]
 > GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
 
-This project uses the [Meson](https://mesonbuild.com/) (with [Ninja](https://ninja-build.org/)) as a build system and [lld](https://lld.llvm.org/) as a linker. At this time, compilation from Windows is unsupported (but plan).
+This project uses the [Meson](https://mesonbuild.com/) (with [Ninja](https://ninja-build.org/)) as a build system and [lld](https://lld.llvm.org/) as a linker.
 
 #### Install Tooling
 
@@ -69,7 +69,6 @@ This project uses the [Meson](https://mesonbuild.com/) (with [Ninja](https://nin
    ```bash
    sudo pacman -S lld
    ```
-
 
 #### Configure & Build
 
