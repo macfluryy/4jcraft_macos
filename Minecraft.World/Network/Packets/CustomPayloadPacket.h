@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class CustomPayloadPacket : public Packet, public enable_shared_from_this<CustomPayloadPacket>
+class CustomPayloadPacket : public Packet, public std::enable_shared_from_this<CustomPayloadPacket>
 {
 public:
 

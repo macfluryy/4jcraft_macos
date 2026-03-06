@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class AddEntityPacket : public Packet, public enable_shared_from_this<AddEntityPacket>
+class AddEntityPacket : public Packet, public std::enable_shared_from_this<AddEntityPacket>
 {
 public:
 	static const int BOAT = 1;

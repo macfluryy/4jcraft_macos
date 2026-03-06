@@ -4,7 +4,7 @@
 
 class MobEffectInstance;
 
-class UpdateMobEffectPacket : public Packet, public enable_shared_from_this<UpdateMobEffectPacket>
+class UpdateMobEffectPacket : public Packet, public std::enable_shared_from_this<UpdateMobEffectPacket>
 {
 public:
 	int entityId;

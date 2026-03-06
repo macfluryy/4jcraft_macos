@@ -4,7 +4,7 @@ using namespace std;
 #include "Packet.h"
 #include "../../Entities/SyncedEntityData.h"
 
-class SetEntityDataPacket : public Packet, public enable_shared_from_this<SetEntityDataPacket>
+class SetEntityDataPacket : public Packet, public std::enable_shared_from_this<SetEntityDataPacket>
 {
 public:
 	int id;

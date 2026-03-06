@@ -6,7 +6,7 @@ using namespace std;
 
 class Mob;
 
-class AddMobPacket : public Packet, public enable_shared_from_this<AddMobPacket>
+class AddMobPacket : public Packet, public std::enable_shared_from_this<AddMobPacket>
 {
 public:
 	int id;

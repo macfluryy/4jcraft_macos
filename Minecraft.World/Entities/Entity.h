@@ -32,7 +32,7 @@ enum EEntityDamageType
 	eEntityDamageType_Cactus,
 };
 
-class Entity : public enable_shared_from_this<Entity>
+class Entity : public std::enable_shared_from_this<Entity>
 {
 friend class Gui; // 4J Stu - Added to be able to access the shared flag functions and constants, without making them publicly available to everything
 public:

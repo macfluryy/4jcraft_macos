@@ -7,7 +7,7 @@ using namespace std;
 
 class DLCSkinFile;
 
-class TextureAndGeometryPacket : public Packet, public enable_shared_from_this<TextureAndGeometryPacket>
+class TextureAndGeometryPacket : public Packet, public std::enable_shared_from_this<TextureAndGeometryPacket>
 {
 public:
 	std::wstring textureName;

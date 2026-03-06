@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class LevelEventPacket : public Packet, public enable_shared_from_this<LevelEventPacket>
+class LevelEventPacket : public Packet, public std::enable_shared_from_this<LevelEventPacket>
 {
 public:
 	int type;

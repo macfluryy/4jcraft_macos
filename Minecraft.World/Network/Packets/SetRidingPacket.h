@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetRidingPacket : public Packet, public enable_shared_from_this<SetRidingPacket>
+class SetRidingPacket : public Packet, public std::enable_shared_from_this<SetRidingPacket>
 {
 public:
 	int riderId, riddenId;

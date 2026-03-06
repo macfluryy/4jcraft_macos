@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class ComplexItemDataPacket : public Packet, public enable_shared_from_this<ComplexItemDataPacket>
+class ComplexItemDataPacket : public Packet, public std::enable_shared_from_this<ComplexItemDataPacket>
 {
 public:
 	short itemType;

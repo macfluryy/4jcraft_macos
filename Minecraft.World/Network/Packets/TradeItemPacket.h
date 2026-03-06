@@ -10,7 +10,7 @@ using namespace std;
 #include <iostream>
 #include "PacketListener.h"
 
-class TradeItemPacket : public Packet, public enable_shared_from_this<TradeItemPacket>
+class TradeItemPacket : public Packet, public std::enable_shared_from_this<TradeItemPacket>
 {
 public:
     int containerId;

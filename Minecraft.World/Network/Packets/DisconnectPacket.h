@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class DisconnectPacket : public Packet, public enable_shared_from_this<DisconnectPacket>
+class DisconnectPacket : public Packet, public std::enable_shared_from_this<DisconnectPacket>
 {
 public:
 

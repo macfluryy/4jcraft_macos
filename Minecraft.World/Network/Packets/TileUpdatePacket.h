@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class TileUpdatePacket : public Packet, public enable_shared_from_this<TileUpdatePacket>
+class TileUpdatePacket : public Packet, public std::enable_shared_from_this<TileUpdatePacket>
 {
 public:
 	int x, y, z;

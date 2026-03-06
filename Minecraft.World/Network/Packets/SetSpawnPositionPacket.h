@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetSpawnPositionPacket : public Packet, public enable_shared_from_this<SetSpawnPositionPacket>
+class SetSpawnPositionPacket : public Packet, public std::enable_shared_from_this<SetSpawnPositionPacket>
 {
 public:
 	int x, y, z;

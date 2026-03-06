@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class UseItemPacket : public Packet, public enable_shared_from_this<UseItemPacket>
+class UseItemPacket : public Packet, public std::enable_shared_from_this<UseItemPacket>
 {
 private:
 	static const float CLICK_ACCURACY;

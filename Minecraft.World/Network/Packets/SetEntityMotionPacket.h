@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetEntityMotionPacket : public Packet, public enable_shared_from_this<SetEntityMotionPacket>
+class SetEntityMotionPacket : public Packet, public std::enable_shared_from_this<SetEntityMotionPacket>
 {
 public:
 	int id;

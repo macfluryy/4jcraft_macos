@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class LevelSoundPacket : public Packet, public enable_shared_from_this<LevelSoundPacket>
+class LevelSoundPacket : public Packet, public std::enable_shared_from_this<LevelSoundPacket>
 {
 public:
 	static const float PITCH_ACCURACY;

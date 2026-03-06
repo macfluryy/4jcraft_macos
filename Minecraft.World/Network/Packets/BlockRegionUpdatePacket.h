@@ -5,7 +5,7 @@ using namespace std;
 
 class Level;
 
-class BlockRegionUpdatePacket : public Packet, public enable_shared_from_this<BlockRegionUpdatePacket>
+class BlockRegionUpdatePacket : public Packet, public std::enable_shared_from_this<BlockRegionUpdatePacket>
 {
 public:
     int x, y, z;

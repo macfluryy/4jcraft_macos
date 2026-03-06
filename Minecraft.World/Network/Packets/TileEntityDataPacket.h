@@ -5,7 +5,7 @@ using namespace std;
 
 class CompoundTag;
 
-class TileEntityDataPacket : public Packet, public enable_shared_from_this<TileEntityDataPacket>
+class TileEntityDataPacket : public Packet, public std::enable_shared_from_this<TileEntityDataPacket>
 {
 public:
 	static const int TYPE_MOB_SPAWNER = 1;

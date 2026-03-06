@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetTimePacket : public Packet, public enable_shared_from_this<SetTimePacket>
+class SetTimePacket : public Packet, public std::enable_shared_from_this<SetTimePacket>
 {
 public:
 	__int64 time;

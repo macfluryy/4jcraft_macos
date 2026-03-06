@@ -4,7 +4,7 @@
 #include "PacketListener.h"
 #include "Packet.h"
 
-class RotateHeadPacket : public Packet, public enable_shared_from_this<RotateHeadPacket>
+class RotateHeadPacket : public Packet, public std::enable_shared_from_this<RotateHeadPacket>
 {
 public:
 	int id;

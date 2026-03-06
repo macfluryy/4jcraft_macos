@@ -6,7 +6,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class DebugOptionsPacket : public Packet, public enable_shared_from_this<DebugOptionsPacket>
+class DebugOptionsPacket : public Packet, public std::enable_shared_from_this<DebugOptionsPacket>
 {
 public:
 	unsigned int m_uiVal;

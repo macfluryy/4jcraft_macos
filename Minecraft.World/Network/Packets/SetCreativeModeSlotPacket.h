@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class SetCreativeModeSlotPacket : public Packet, public enable_shared_from_this<SetCreativeModeSlotPacket>
+class SetCreativeModeSlotPacket : public Packet, public std::enable_shared_from_this<SetCreativeModeSlotPacket>
 {
 	public:
 		int slotNum;

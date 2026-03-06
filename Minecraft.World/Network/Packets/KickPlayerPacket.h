@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class KickPlayerPacket : public Packet, public enable_shared_from_this<KickPlayerPacket>
+class KickPlayerPacket : public Packet, public std::enable_shared_from_this<KickPlayerPacket>
 {
 public:
 	BYTE m_networkSmallId;

@@ -4,7 +4,7 @@
 
 class ExperienceOrb;
 
-class AddExperienceOrbPacket : public Packet, public enable_shared_from_this<AddExperienceOrbPacket>
+class AddExperienceOrbPacket : public Packet, public std::enable_shared_from_this<AddExperienceOrbPacket>
 {
 public:
 	int id;

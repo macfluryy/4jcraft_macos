@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class AwardStatPacket : public Packet, public enable_shared_from_this<AwardStatPacket>
+class AwardStatPacket : public Packet, public std::enable_shared_from_this<AwardStatPacket>
 {
 public:
 	int statId;

@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class ChatPacket : public Packet, public enable_shared_from_this<ChatPacket>
+class ChatPacket : public Packet, public std::enable_shared_from_this<ChatPacket>
 {
     // longest allowed string is "<" + name + "> " + message
 private:

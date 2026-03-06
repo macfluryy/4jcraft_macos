@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetHealthPacket : public Packet, public enable_shared_from_this<SetHealthPacket>
+class SetHealthPacket : public Packet, public std::enable_shared_from_this<SetHealthPacket>
 {
 public:
 	int health;

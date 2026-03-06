@@ -5,7 +5,7 @@ using namespace std;
 
 // 4J Added packet to update clients on the time for the host to finish doing something
 
-class UpdateProgressPacket : public Packet, public enable_shared_from_this<UpdateProgressPacket>
+class UpdateProgressPacket : public Packet, public std::enable_shared_from_this<UpdateProgressPacket>
 {
 
 public:
