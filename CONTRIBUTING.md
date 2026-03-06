@@ -24,3 +24,5 @@ Simple rules for publishing code:
 Make sure your code compiles before making a pull request! and make sure that it's readable
 
 Remember ALL your changes will be licensed under GNU General Public License V3.0.
+
+## Please visit [README.md](README.md) for compilation instructions.
