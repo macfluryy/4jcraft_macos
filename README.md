@@ -91,16 +91,16 @@ sudo pacman -S meson ninja
 
 ```bash
 # 1. Configure that bih
-meson setup build_meson
+meson setup build
 
 # 2. Build
-ninja -C build_meson
+meson compile -C build
 ```
 
 The binary is output to:
 
 ```
-build_meson/Minecraft.Client
+build/Minecraft.Client
 ```
 
 #### Clean
@@ -118,7 +118,7 @@ Then re-run `meson setup build_meson` to reconfigure.
 ```bash
 # Release build
 meson setup build_release --buildtype=release
-ninja -C build_release
+meson compile -C build_release
 ```
 
 ---

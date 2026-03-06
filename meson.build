@@ -32,10 +32,15 @@ global_cpp_defs = [
   '-D_DEBUG_MENUS_ENABLED',
   '-D_DEBUG',
   '-DDEBUG',
-  '-DLINUX',
-  '-D_LINUX',
-  '-D__linux__',
 ]
+
+if host_machine.system() == 'linux'
+  global_cpp_defs += [
+    '-Dlinux',
+    '-D__linux',
+    '-D__linux__',
+  ]
+endif
 
 subdir('4J.Render')
 subdir('4J.Input')

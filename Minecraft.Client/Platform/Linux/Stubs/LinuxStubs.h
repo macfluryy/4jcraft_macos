@@ -22,7 +22,6 @@
 #include <time.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include <unistd.h>
 #include <locale>
 #include <linux/mman.h>
 #include <sys/mman.h>

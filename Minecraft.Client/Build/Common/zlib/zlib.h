@@ -31,6 +31,10 @@
 #ifndef ZLIB_H
 #define ZLIB_H
 
+#ifdef __linux__
+#define HAVE_UNISTD_H 1
+#endif
+
 #include "zconf.h"
 
 #ifdef __cplusplus
