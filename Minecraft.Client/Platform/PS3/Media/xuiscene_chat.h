@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiBack1 L"XuiBack1"
 #define IDC_XuiLabel1 L"XuiLabel1"
 #define IDC_XuiBack2 L"XuiBack2"

@@ -1,3 +1,4 @@
+#pragma once
 #include "StatTask.h"
 #include "CraftTask.h"
 #include "PickupTask.h"

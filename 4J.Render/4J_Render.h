@@ -63,6 +63,10 @@ public:
 	// Core
 	void Initialise();
 	void InitialiseContext();
+	// Call before Initialise() to override window size and/or fullscreen mode.
+	// If not called, the primary monitor's native resolution is used.
+	void SetWindowSize(int w, int h);
+	void SetFullscreen(bool fs);
 	void StartFrame();
 	void DoScreenGrabOnNextPresent();
 	void Present();
@@ -70,6 +74,7 @@ public:
 	void SetClearColour(const float colourRGBA[4]);
 	bool IsWidescreen();
 	bool IsHiDef();
+	void GetFramebufferSize(int &width, int &height);
 	void CaptureThumbnail(ImageFileBuffer *pngOut);
 	void CaptureScreen(ImageFileBuffer *jpgOut, XSOCIAL_PREVIEWIMAGE *previewOut);
 	void BeginConditionalSurvey(int identifier);
@@ -206,6 +211,10 @@ public:
 	void Suspend();
 	bool Suspended();
 	void Resume();
+
+	// Linux window management
+	bool ShouldClose();
+	void Shutdown();
 };
 
 

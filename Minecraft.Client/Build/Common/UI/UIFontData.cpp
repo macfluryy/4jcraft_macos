@@ -155,6 +155,16 @@ CFontData::CFontData(SFontData &sFontData, int *pbRawImage)
 {
 	this->m_sFontData = &sFontData;
 
+	if (pbRawImage == nullptr)
+	{
+		// Font image failed to load; leave raw buffers null so the font renders nothing
+		// rather than crashing. UIBitmapFont already logs an error in this case.
+		m_pbRawImage  = nullptr;
+		m_kerningTable = nullptr;
+		m_pfAdvanceTable = nullptr;
+		return;
+	}
+
 	// INITIALISE ALPHA CHANNEL //
 
 	// Glyph Archive (1Byte per pixel).

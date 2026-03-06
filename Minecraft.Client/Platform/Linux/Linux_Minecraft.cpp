@@ -6,6 +6,29 @@
 #include <assert.h>
 //#include <system_service.h>
 #include <codecvt>
+#ifdef __linux__
+#include <signal.h>
+#include <execinfo.h>
+#include <unistd.h>
+static void sigsegv_handler(int sig) {
+    const char msg[] = "\n=== SIGNAL CAUGHT: ";
+    write(STDERR_FILENO, msg, sizeof(msg)-1);
+    char signum[8];
+    int len = 0;
+    int s = sig;
+    if (s == 0) { signum[len++] = '0'; }
+    else { char tmp[8]; int tl = 0; while(s > 0) { tmp[tl++] = '0' + (s%10); s /= 10; } for(int i = tl-1; i >= 0; i--) signum[len++] = tmp[i]; }
+    write(STDERR_FILENO, signum, len);
+    const char msg1b[] = " ===\n";
+    write(STDERR_FILENO, msg1b, sizeof(msg1b)-1);
+    void *array[64];
+    int size = backtrace(array, 64);
+    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    const char msg2[] = "=== END BACKTRACE ===\n";
+    write(STDERR_FILENO, msg2, sizeof(msg2)-1);
+    _exit(139);
+}
+#endif
 #include "../Windows64/GameConfig/Minecraft.spa.h"
 #include "../../MinecraftServer.h"
 #include "../../Player/LocalPlayer.h"
@@ -33,7 +56,7 @@
 //#include "NetworkManager.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"
-#include "../Windows64/Sentient/SentientManager.h"
+#include "../Orbis/Sentient/SentientManager.h"
 #include "../../../Minecraft.World/Util/IntCache.h"
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/IO/Streams/Compression.h"
@@ -552,7 +575,39 @@ int StartMinecraftThreadProc( void* lpParameter )
 
 int main(int argc, const char *argv[] )
 {
+#ifdef __linux__
+    struct sigaction sa;
+    sa.sa_handler = sigsegv_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESETHAND;
+    sigaction(SIGSEGV, &sa, NULL);
+    sigaction(SIGABRT, &sa, NULL);
+    sigaction(SIGBUS, &sa, NULL);
+    sigaction(SIGTRAP, &sa, NULL);
+#endif
     app.DebugPrintf("---main()\n");
+
+    // ---- Parse CLI arguments ----
+    // Usage: Minecraft.Client [--width W] [--height H] [--fullscreen]
+    // If --width/--height are omitted the primary monitor's native resolution
+    // is used automatically.
+    {
+        int reqW = 0, reqH = 0;
+        bool fs = false;
+        for (int i = 1; i < argc; i++) {
+            if (strcmp(argv[i], "--fullscreen") == 0) {
+                fs = true;
+            } else if (strcmp(argv[i], "--width") == 0 && i + 1 < argc) {
+                reqW = atoi(argv[++i]);
+            } else if (strcmp(argv[i], "--height") == 0 && i + 1 < argc) {
+                reqH = atoi(argv[++i]);
+            }
+        }
+        if (reqW > 0 && reqH > 0)
+            RenderManager.SetWindowSize(reqW, reqH);
+        if (fs)
+            RenderManager.SetFullscreen(true);
+    }
 
     #if 0
     // Main message loop
@@ -614,8 +669,8 @@ app.DebugPrintf("---ReadProductCodes()\n");
 
 app.loadMediaArchive();
 app.loadStringTable();
-ui.init(1920,1080);
-
+    // fuck you
+    ui.init(1920, 1080);
 // storage manager is needed for the trial key check
 StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,"");
 
@@ -689,11 +744,19 @@ do
 } while (minecraftThread->isRunning());
 delete minecraftThread;
 
+// Re-acquire the GL context in the main thread.
+// StartMinecraftThreadProc calls InitialiseContext() which moves the context
+// to the init thread for texture loading; we must reclaim it here before
+// any further OpenGL calls in the main render loop.
+RenderManager.InitialiseContext();
+
 Minecraft *pMinecraft=Minecraft::GetInstance();
 
 app.InitGameSettings();
 
 app.InitialiseTips();
+while (!RenderManager.ShouldClose()) {
+RenderManager.StartFrame();
 app.UpdateTime();
 PIXBeginNamedEvent(0,"Input manager tick");
 InputManager.Tick();
@@ -725,9 +788,11 @@ g_NetworkManager.DoWork();
 PIXEndNamedEvent();
 
 // Render game graphics.
+// On Linux, always call run_middle() so mc->screen (TitleScreen etc.) renders
+// even when the game session has not yet started (Iggy Flash UI is unavailable).
+pMinecraft->run_middle();
 if(app.GetGameStarted())
 {
-    pMinecraft->run_middle();
     app.SetAppPaused( g_NetworkManager.IsLocalGame() && g_NetworkManager.GetPlayerCount() == 1 && ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()) );
 }
 else
@@ -825,6 +890,7 @@ pDevice->SetSamplerState(0,SamplerStateModes[i],SamplerStateA[i]);
 
 RenderManager.Set_matrixDirty();
 #endif
+
 // Present the frame.
 RenderManager.Present();
 
@@ -910,7 +976,13 @@ else
 // Fix for #7318 - Title crashes after short soak in the leaderboards menu
 // A memory leak was caused because the icon renderer kept creating new Vec3's because the pool wasn't reset
 Vec3::resetPool();
-}
+} // end game loop
+
+	// Graceful shutdown: destroy GL context and GLFW before any C++ dtors run.
+	// Without this, static/global destructors that touch GL objects cause SIGSEGV.
+	RenderManager.Shutdown();
+	_exit(0);
+} // end main
 
 // Free resources, unregister custom classes, and exit.
 //	app.Uninit();

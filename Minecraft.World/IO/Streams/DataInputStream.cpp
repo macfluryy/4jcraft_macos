@@ -16,6 +16,11 @@ DataInputStream::DataInputStream(InputStream *in) : stream( in )
 //This method simply performs in.read() and returns the result.
 int DataInputStream::read()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::read() called but underlying stream is NULL\n");
+		return -1;
+	}
 	return stream->read();
 }
 
@@ -42,6 +47,11 @@ int DataInputStream::read()
 //the total number of bytes read into the buffer, or -1 if there is no more data because the end of the stream has been reached.
 int DataInputStream::read(byteArray b)
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::read(byteArray) called but underlying stream is NULL\n");
+		return -1;
+	}
 	return read( b, 0, b.length );
 }
 
@@ -68,12 +78,22 @@ int DataInputStream::read(byteArray b)
 //the total number of bytes read into the buffer, or -1 if there is no more data because the end of the stream has been reached.
 int DataInputStream::read(byteArray b, unsigned int offset, unsigned int length)
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::read(byteArray,offset,length) called but underlying stream is NULL\n");
+		return -1;
+	}
 	return stream->read( b, offset, length );
 }
 
 //Closes this input stream and releases any system resources associated with the stream. This method simply performs in.close()
 void DataInputStream::close()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::close() called but underlying stream is NULL\n");
+		return;
+	}
 	stream->close();
 }
 
@@ -83,6 +103,11 @@ void DataInputStream::close()
 //the boolean value read.
 bool DataInputStream::readBoolean()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readBoolean() but underlying stream is NULL\n");
+		return false;
+	}
 	return stream->read() != 0;
 }
 
@@ -92,11 +117,21 @@ bool DataInputStream::readBoolean()
 //the 8-bit value read.
 byte DataInputStream::readByte()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readByte() but underlying stream is NULL\n");
+		return 0;
+	}
 	return (byte) stream->read();
 }
 
 unsigned char DataInputStream::readUnsignedByte()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readUnsignedByte() but underlying stream is NULL\n");
+		return 0;
+	}
 	return (unsigned char) stream->read();
 }
 
@@ -108,6 +143,11 @@ unsigned char DataInputStream::readUnsignedByte()
 //the char value read.
 wchar_t DataInputStream::readChar()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readChar() but underlying stream is NULL\n");
+		return 0;
+	}
 	int a = stream->read();
 	int b = stream->read();
 	return (wchar_t)((a << 8) | (b & 0xff)); 
@@ -129,6 +169,11 @@ bool DataInputStream::readFully(byteArray b)
 {
 	// TODO 4J Stu - I am not entirely sure if this matches the implementation of the Java library
 	// TODO 4J Stu - Need to handle exceptions here is we throw them in other InputStreams
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readFully(byteArray) but underlying stream is NULL\n");
+		return false;
+	}
 	for(unsigned int i = 0; i < b.length ;i++)
 	{
 		int byteRead = stream->read();
@@ -148,6 +193,11 @@ bool DataInputStream::readFully(charArray b)
 {
 	// TODO 4J Stu - I am not entirely sure if this matches the implementation of the Java library
 	// TODO 4J Stu - Need to handle exceptions here is we throw them in other InputStreams
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readFully(charArray) but underlying stream is NULL\n");
+		return false;
+	}
 	for(unsigned int i = 0; i < b.length ;i++)
 	{
 		int byteRead = stream->read();
@@ -197,6 +247,11 @@ float DataInputStream::readFloat()
 //the int value read.
 int DataInputStream::readInt()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readInt() but underlying stream is NULL\n");
+		return 0;
+	}
 	int a = stream->read();
 	int b = stream->read();
 	int c = stream->read();
@@ -223,6 +278,11 @@ int DataInputStream::readInt()
 //the long value read.
 __int64 DataInputStream::readLong()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readLong() but underlying stream is NULL\n");
+		return 0;
+	}
 	__int64 a = stream->read();
 	__int64 b = stream->read();
 	__int64 c = stream->read();
@@ -252,6 +312,11 @@ __int64 DataInputStream::readLong()
 //the 16-bit value read.
 short DataInputStream::readShort()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readShort() but underlying stream is NULL\n");
+		return 0;
+	}
 	int a = stream->read();
 	int b = stream->read();
 	return (short)((a << 8) | (b & 0xff));
@@ -292,6 +357,11 @@ short DataInputStream::readShort()
 wstring DataInputStream::readUTF()
 {
 	wstring outputString;
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readUTF() but underlying stream is NULL\n");
+		return outputString;
+	}
 	int a = stream->read();
 	int b = stream->read();
 	unsigned short UTFLength = (unsigned short) (((a & 0xff) << 8) | (b & 0xff));
@@ -427,6 +497,11 @@ wstring DataInputStream::readUTF()
 int DataInputStream::readUTFChar()
 {
 	int returnValue = -1;
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataInputStream::readUTFChar() but underlying stream is NULL\n");
+		return returnValue;
+	}
 	int firstByte = stream->read();
 
 	if( firstByte == -1 )

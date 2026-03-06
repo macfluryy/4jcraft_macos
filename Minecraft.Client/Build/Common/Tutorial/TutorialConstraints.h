@@ -1,3 +1,4 @@
+#pragma once
 #include "TutorialConstraint.h"
 #include "AreaConstraint.h"
 #include "ChangeStateConstraint.h"

@@ -1,3 +1,4 @@
+#pragma once
 // gdraw_psp2.h - author: Fabian Giesen - copyright 2014 RAD Game Tools
 //
 // Interface for creating a PSP2 GDraw driver.

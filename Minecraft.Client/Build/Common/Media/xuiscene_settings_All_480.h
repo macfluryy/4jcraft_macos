@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiButtonResetToDefaults L"XuiButtonResetToDefaults"
 #define IDC_XuiButtonUI L"XuiButtonUI"
 #define IDC_XuiButtonGraphics L"XuiButtonGraphics"

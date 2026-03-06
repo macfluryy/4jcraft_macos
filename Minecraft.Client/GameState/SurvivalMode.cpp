@@ -3,6 +3,8 @@
 #include "DemoMode.h"
 #include "../Rendering/LevelRenderer.h"
 #include "../Player/LocalPlayer.h"
+#include "../Level/MultiPlayerLevel.h"
+#include "../Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
@@ -67,7 +69,7 @@ bool SurvivalMode::destroyBlock(int x, int y, int z, int face)
     bool couldDestroy = minecraft->player->canDestroy(Tile::tiles[t]);
     if (item != NULL)
 	{
-        item->mineBlock(t, x, y, z, minecraft->player);
+        item->mineBlock(minecraft->level, t, x, y, z, minecraft->player);
         if (item->count == 0)
 		{
             minecraft->player->removeSelectedItem();

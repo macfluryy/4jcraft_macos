@@ -911,6 +911,12 @@ void CScene_Main::LoadTrial(void)
 	param->settings = app.GetGameHostOption( eGameHostOption_Tutorial );
 
 	vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
+	if (generators->empty())
+	{
+		app.DebugPrintf("XUI LoadTrial: no level generators available, cannot start tutorial\n");
+		delete param;
+		return;
+	}
 	param->levelGen = generators->at(0);
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();

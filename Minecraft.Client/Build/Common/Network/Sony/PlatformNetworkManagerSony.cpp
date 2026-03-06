@@ -1,6 +1,6 @@
 #include "../../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Minecraft.World/Socket.h"
-#include "../../../Minecraft.World/StringHelpers.h"
+#include "../../../../../Minecraft.World/Network/Socket.h"
+#include "../../../../../Minecraft.World/Util/StringHelpers.h"
 #include "PlatformNetworkManagerSony.h"
 #include "NetworkPlayerSony.h"
 #include "../GameNetworkManager.h"

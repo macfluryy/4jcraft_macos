@@ -10,7 +10,7 @@
 
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
-#define __LOC__ __FILE__ "("__STR1__(__LINE__)") : 4J Warning Msg: "
+#define __LOC__ __FILE__ "(" __STR1__(__LINE__) ") : 4J Warning Msg: "
 
 // use  - #pragma message(__LOC__"Need to do something here")
 
@@ -294,19 +294,16 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "../Platform/Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// FIXME: Make Linux/ versions of all of these
-	// #include "../Platform/Windows64/Sentient/MinecraftTelemetry.h" // conflicts with Common/Telemetry/TelemetryManager.h, no idea whats up with that
-	#include "../Platform/OrbisMedia/strings.h" // using Orbis or Vita strings because IDS_CONTENT_RESTRICTION exists
-	#include "../Platform/Windows64/Windows64_App.h"
-	#include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Windows64/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Windows64/GameConfig/Minecraft.spa.h"
-	#include "../Platform/Windows64/XML/ATGXmlParser.h"	
-	#include "../Platform/Windows64/Social/SocialManager.h"
+	// Linux build: avoid pulling in Windows64 platform headers (they cause
+	// symbol/class redefinitions). Use Orbis-compatible stubs and Linux controller.
+	#include "../Platform/Linux/Linux_App.h"
+	#include "../Platform/OrbisMedia/strings.h"
+	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
+	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
+	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
 	#include "Common/Audio/SoundEngine.h"
-	//#include "../Platform/Windows64/Iggy/include/iggy.h"
-	#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "../Platform/Linux/Linux_UIController.h"
+	#include "../Platform/Linux/Social/SocialManager.h"
 #elif defined __PSVITA__
 	#include "../Platform/PSVita/PSVita_App.h"
 	#include "../Platform/PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this

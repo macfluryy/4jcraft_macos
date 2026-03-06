@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_CheckboxTNT L"CheckboxTNT"
 #define IDC_CheckboxFireSpreads L"CheckboxFireSpreads"
 #define IDC_ButtonTeleportToPlayer L"ButtonTeleportToPlayer"

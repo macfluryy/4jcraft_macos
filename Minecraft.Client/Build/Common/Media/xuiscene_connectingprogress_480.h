@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Status L"Status"
 #define IDC_Title L"Title"
 #define IDC_Progress L"Progress"

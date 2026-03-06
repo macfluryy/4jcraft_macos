@@ -1,7 +1,13 @@
 #include "../../Build/stdafx.h"
 #include "Compression.h"
 #if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__
-#include "../../../Minecraft.Client/Build/Common/zlib/zlib.h"
+// zconf.h defines "typedef unsigned char Byte" which conflicts with the
+// project's "class Byte" from BasicTypeContainers.h (via stdafx.h).
+// Rename zlib's Byte to zlib_Byte before the include so the typedef lands
+// under that alias; Bytef (= Byte FAR) will resolve to zlib_Byte as well.
+#define Byte zlib_Byte
+#include <zlib.h>
+#undef Byte
 #endif
 
 #if defined __PSVITA__
@@ -407,7 +413,7 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 	case eCompressionType_ZLIBRLE:
 #if (defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__)
 		if (pDestination != NULL)
-			return ::uncompress((PBYTE)pDestination, (unsigned long *) pDestSize, (PBYTE) pSource, SrcSize); // Decompress
+			return ::uncompress((Bytef*)pDestination, (unsigned long *) pDestSize, (const Bytef*) pSource, SrcSize); // Decompress
 		else break; // Cannot decompress when destination is NULL
 #else
 		assert(0);

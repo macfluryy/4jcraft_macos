@@ -1849,6 +1849,16 @@ void Minecraft::run_middle()
 						}
 					}
 				}
+#ifdef __linux__
+				// On Linux, Iggy Flash UI is not available. If no players were rendered
+				// (menu / title-screen state), call GameRenderer directly so mc->screen draws.
+				if (bFirst)
+				{
+					localPlayerIdx = 0;
+					RenderManager.StateSetViewport(C4JRender::VIEWPORT_TYPE_FULLSCREEN);
+					gameRenderer->render(timer->a, true);
+				}
+#endif
 				// If there's an unoccupied quadrant, then clear that to black
 				if( unoccupiedQuadrant > -1 )
 				{

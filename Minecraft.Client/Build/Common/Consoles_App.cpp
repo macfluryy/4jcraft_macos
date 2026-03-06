@@ -7729,7 +7729,7 @@ unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 see
 	if(hasSeed)
 	{
 		strcpy((char *)bTextMetadata,"4J_SEED");
-		snprintf((char *)&bTextMetadata[8], 42, NULL, seed);
+		snprintf((char *)&bTextMetadata[8], 42, "%lld", (long long)seed);
 
 		// get the length
 		iTextMetadataBytes+=8;

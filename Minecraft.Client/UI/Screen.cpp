@@ -170,22 +170,7 @@ void Screen::renderBackground(int vo)
 
 void Screen::renderDirtBackground(int vo)
 {
-	// 4J Unused
-#if 0
-    glDisable(GL_LIGHTING);
-    glDisable(GL_FOG);
-    Tesselator *t = Tesselator::getInstance();
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(L"/gui/background.png"));
-    glColor4f(1, 1, 1, 1);
-    float s = 32;
-    t->begin();
-    t->color(0x404040);
-    t->vertexUV((float)(0), (float)( height), (float)( 0), (float)( 0), (float)( height / s + vo));
-    t->vertexUV((float)(width), (float)( height), (float)( 0), (float)( width / s), (float)( height / s + vo));
-    t->vertexUV((float)(width), (float)( 0), (float)( 0), (float)( width / s), (float)( 0 + vo));
-    t->vertexUV((float)(0), (float)( 0), (float)( 0), (float)( 0), (float)( 0 + vo));
-    t->end();
-#endif
+    // 4J Unused - Iggy Flash UI renders the background on consoles
 }
 
 bool Screen::isPauseScreen()

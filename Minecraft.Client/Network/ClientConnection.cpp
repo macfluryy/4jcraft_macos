@@ -1134,6 +1134,15 @@ void ClientConnection::handleTileUpdate(shared_ptr<TileUpdatePacket> packet)
 
 void ClientConnection::handleDisconnect(shared_ptr<DisconnectPacket> packet)
 {
+#ifdef __linux__
+	// Linux fix: On local host connections, ignore DisconnectPacket. The singleplayer internal
+	// server should never disconnect itself. If we see this, it's likely stream desync reading
+	// garbage data as a DisconnectPacket.
+	if (connection && connection->getSocket() && connection->getSocket()->isLocal()) {
+		fprintf(stderr, "[CONN] Ignoring DisconnectPacket on local connection (reason=%d)\n", packet->reason);
+		return;
+	}
+#endif
 	connection->close(DisconnectPacket::eDisconnect_Kicked);
     done = true;
 	
@@ -1607,7 +1616,7 @@ void ClientConnection::handleEntityActionAtPosition(shared_ptr<EntityActionAtPos
 
 void ClientConnection::handlePreLogin(shared_ptr<PreLoginPacket> packet)
 {
-//	printf("Client: handlePreLogin\n");
+	fprintf(stderr, "[LOGIN-CLI] handlePreLogin entered, isHost=%d, userIdx=%d\n", (int)g_NetworkManager.IsHost(), m_userIndex);
 #if 1
 	// 4J - Check that we can play with all the players already in the game who have Friends-Only UGC set
 	BOOL canPlay = TRUE;
@@ -2049,8 +2058,11 @@ void ClientConnection::handlePreLogin(shared_ptr<PreLoginPacket> packet)
 		}
 		BOOL allAllowed, friendsAllowed;
 		ProfileManager.AllowedPlayerCreatedContent(m_userIndex,true,&allAllowed,&friendsAllowed);
+		fprintf(stderr, "[LOGIN] Sending LoginPacket: user=%ls netVer=%d userIdx=%d isHost=%d\n",
+			minecraft->user->name.c_str(), SharedConstants::NETWORK_PROTOCOL_VERSION, m_userIndex, (int)g_NetworkManager.IsHost());
 		send( shared_ptr<LoginPacket>( new LoginPacket(minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION, offlineXUID, onlineXUID, (allAllowed!=TRUE && friendsAllowed==TRUE), 
 			packet->m_ugcPlayersVersion, app.GetPlayerSkinId(m_userIndex), app.GetPlayerCapeId(m_userIndex), ProfileManager.IsGuest( m_userIndex ))));
+		fprintf(stderr, "[LOGIN] LoginPacket sent successfully\n");
 
 		if(!g_NetworkManager.IsHost() )
 		{

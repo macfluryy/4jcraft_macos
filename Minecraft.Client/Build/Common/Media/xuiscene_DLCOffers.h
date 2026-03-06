@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiDLCPriceTag L"XuiDLCPriceTag"
 #define IDC_XuiDLCBackground L"XuiDLCBackground"
 #define IDC_XuiDLCBanner L"XuiDLCBanner"

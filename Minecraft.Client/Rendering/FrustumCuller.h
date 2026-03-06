@@ -1,3 +1,4 @@
+#pragma once
 #include "../Build/stdafx.h"
 #include "Culling/Culler.h"
 #include "Frustum.h"

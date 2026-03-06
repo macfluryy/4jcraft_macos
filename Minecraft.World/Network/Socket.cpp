@@ -60,7 +60,14 @@ Socket::Socket(bool response)
 	{
 		m_end = SOCKET_CLIENT_END;
 		Socket *socket = new Socket(1);
-		s_serverConnection->NewIncomingSocket(socket);
+		if ( s_serverConnection != NULL )
+		{
+			s_serverConnection->NewIncomingSocket(socket);
+		}
+		else
+		{
+			app.DebugPrintf("SOCKET: Warning - attempted to notify server of new incoming socket but s_serverConnection is NULL\n");
+		}
 	}
 
 	for( int i = 0; i < 2; i++ )

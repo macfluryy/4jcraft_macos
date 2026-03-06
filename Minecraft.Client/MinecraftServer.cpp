@@ -257,6 +257,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 //        logger.info("Preparing level \"" + levelName + "\"");
         m_bLoaded = loadLevel(new McRegionLevelStorageSource(File(L".")), levelName, seed, pLevelType, initData);
 //        logger.info("Done (" + (System.nanoTime() - levelNanoTime) + "ns)! For help, type \"help\" or \"?\"");
+		app.DebugPrintf("[SRV] loadLevel returned %d\n", m_bLoaded);
 
 		// 4J delete passed in save data now - this is only required for the tutorial which is loaded by passing data directly in rather than using the storage manager
 		if( initData->saveData )
@@ -266,7 +267,9 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 			initData->saveData->fileSize = 0;
 		}
 
+		app.DebugPrintf("[SRV] Signaling ServerReady\n");
 		g_NetworkManager.ServerReady();	// 4J added
+		app.DebugPrintf("[SRV] ServerReady signaled, returning m_bLoaded=%d\n", m_bLoaded);
         return m_bLoaded;
 
 }
@@ -508,8 +511,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	// 4J - Make a new thread to do post processing
 	InitializeCriticalSection(&m_postProcessCS);
 
-	// 4J-PB - fix for 108310 - TCR #001 BAS Game Stability: TU12: Code: Compliance: Crash after creating world on "journey" seed.
-	// Stack gets very deep with some sand tower falling, so increased the stacj to 256K from 128k on other platforms (was already set to that on PS3 and Orbis)
+	app.DebugPrintf("[SRV] Starting post-processing thread\n");
 
 	m_postUpdateThread = new C4JThread(runPostUpdate, this, "Post processing", 256*1024);
 
@@ -517,6 +519,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	m_postUpdateThread->SetProcessor(CPU_CORE_POST_PROCESSING);
 	m_postUpdateThread->SetPriority(THREAD_PRIORITY_ABOVE_NORMAL);
 	m_postUpdateThread->Run();
+	app.DebugPrintf("[SRV] Post-processing thread started\n");
 
 	__int64 startTime = System::currentTimeMillis();
 
@@ -589,9 +592,11 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 #else
 			__int64 lastStorageTickTime = System::currentTimeMillis();
             Pos *spawnPos = level->getSharedSpawnPos();
+			app.DebugPrintf("[SRV] dim=%d spawn=(%d,%d) r=%d\n", i, spawnPos->x, spawnPos->z, r);
 
 			int twoRPlusOne = r*2 + 1;
 			int total = twoRPlusOne * twoRPlusOne;
+			int chunksDone = 0;
             for (int x = -r; x <= r && running; x += 16)
 			{
                 for (int z = -r; z <= r && running; z += 16)
@@ -617,6 +622,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 					PIXBeginNamedEvent(0,"Creating %d ", (count++)%8);
                     level->cache->create((spawnPos->x + x) >> 4, (spawnPos->z + z) >> 4, true);	// 4J - added parameter to disable postprocessing here
 					PIXEndNamedEvent();
+					chunksDone++;
+					if(chunksDone % 50 == 0) app.DebugPrintf("[SRV] dim=%d chunk %d/%d\n", i, chunksDone, total);
 //                    while (level->updateLights() && running)
 //                        ;
 					if( System::currentTimeMillis() - lastStorageTickTime > 50 )
@@ -649,10 +656,12 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
     }
 //	printf("Main thread complete at %dms\n",System::currentTimeMillis() - startTime);
 
+	app.DebugPrintf("[SRV] All chunk loops done, waiting for postProcess\n");
 	// Wait for post processing, then lighting threads, to end (post-processing may make more lighting changes)
 	m_postUpdateTerminate = true;
 
 	postProcessTerminate(mcprogress);
+	app.DebugPrintf("[SRV] postProcessTerminate done\n");
 
 
 	// stronghold position?
@@ -713,14 +722,18 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	
 	if( levels[0]->isNew )
 	{
+		app.DebugPrintf("[SRV] Saving level 0...\n");
 		levels[0]->save(true, mcprogress);
+		app.DebugPrintf("[SRV] Level 0 saved\n");
 	}
 
 	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;
 
 	if( levels[0]->isNew || levels[1]->isNew || levels[2]->isNew )
 	{
+		app.DebugPrintf("[SRV] Saving to disc...\n");
 		levels[0]->saveToDisc(mcprogress, false);
+		app.DebugPrintf("[SRV] saveToDisc done\n");
 	}
 
 	if( s_bServerHalted || !g_NetworkManager.IsInSession() ) return false;

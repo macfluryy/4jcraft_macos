@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_CheckboxHostHunger L"CheckboxHostHunger"
 #define IDC_CheckboxHostFly L"CheckboxHostFly"
 #define IDC_CheckboxHostInvisible L"CheckboxHostInvisible"

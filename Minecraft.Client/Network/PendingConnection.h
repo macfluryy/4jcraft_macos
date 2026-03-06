@@ -11,7 +11,7 @@ class PendingConnection : public PacketListener
 {
 private:
 	static const int FAKE_LAG = 0;
-    static const int MAX_TICKS_BEFORE_LOGIN = 20 * 30;
+    static const int MAX_TICKS_BEFORE_LOGIN = 20 * 30 * 10; // 10 minutes instead of 20 sec for Linux theres just no login yet
 
 //    public static Logger logger = Logger.getLogger("Minecraft");
     static Random *random;

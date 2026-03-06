@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiButton1 L"XuiButton1"
 #define IDC_XuiButton2 L"XuiButton2"
 #define IDC_XuiButton3 L"XuiButton3"

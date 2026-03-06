@@ -1,3 +1,4 @@
+#pragma once
 #include "TileEntity.h"
 
 class PistonPieceEntity : public TileEntity

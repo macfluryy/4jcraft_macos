@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_MainPanel L"MainPanel"
 #define IDC_ScrollableBox3x3Slot1 L"ScrollableBox3x3Slot1"
 #define IDC_ScrollableBox3x3Slot2 L"ScrollableBox3x3Slot2"

@@ -1,6 +1,13 @@
 #pragma once
 
+// On Linux, the Orbis TelemetryEnum.h is already pulled in via stdafx.h ->
+// SentientManager.h -> MinecraftTelemetry.h. Using the Windows64 path would
+// cause duplicate enum definitions.
+#if defined(__linux__)
+#include "../../../Platform/Orbis/Sentient/TelemetryEnum.h"
+#else
 #include "../../../Platform/Windows64/Sentient/TelemetryEnum.h"
+#endif
 #include "../UI/UIEnums.h"
 
 class CTelemetryManager

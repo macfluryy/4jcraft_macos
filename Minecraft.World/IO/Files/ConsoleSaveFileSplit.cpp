@@ -463,7 +463,7 @@ void ConsoleSaveFileSplit::_init(const wstring &fileName, LPVOID pvSaveData, DWO
 		unsigned char *regionDataCompressed;
 		unsigned int regionSizeCompressed;
 
-		StorageManager.GetSubfileDetails(i, &regionIndex, &regionDataCompressed, &regionSizeCompressed);
+		StorageManager.GetSubfileDetails(i, (int*)&regionIndex, (void**)&regionDataCompressed, &regionSizeCompressed);
 
 		RegionFileReference *regionFileRef = new RegionFileReference(i, regionIndex, regionSizeCompressed, regionDataCompressed);
 		if( regionSizeCompressed > 0 )

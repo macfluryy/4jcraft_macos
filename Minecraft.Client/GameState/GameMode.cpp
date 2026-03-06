@@ -1,6 +1,7 @@
 #include "../Build/stdafx.h"
 #include "GameMode.h"
 #include "../Player/LocalPlayer.h"
+#include "../Level/MultiPlayerLevel.h"
 #include "../Rendering/LevelRenderer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"

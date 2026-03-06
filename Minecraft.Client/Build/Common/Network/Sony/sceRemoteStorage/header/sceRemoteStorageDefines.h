@@ -5,10 +5,10 @@
 #ifdef __psp2__
 #include <stddef.h>
 #include <apputil.h>
-#elif __ORBIS__
+#elif defined(__ORBIS__)
 #include <stddef.h>
 #define SceAppUtilSaveDataDataSlot int
-#elif __PS3__
+#elif defined(__PS3__)
 #define SceAppUtilSaveDataDataSlot int
 #endif
 

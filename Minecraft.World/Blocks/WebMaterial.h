@@ -1,3 +1,4 @@
+#pragma once
 #include "Material.h"
 
 // 4J added, Java version just does a local alteration when instantiating the Material for webs to get the same thing

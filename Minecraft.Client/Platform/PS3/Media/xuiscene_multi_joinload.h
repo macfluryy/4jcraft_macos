@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_control_ListItem L"control_ListItem"
 #define IDC_GamesList L"GamesList"
 #define IDC_Timer_Square_1 L"Timer_Square_1"
