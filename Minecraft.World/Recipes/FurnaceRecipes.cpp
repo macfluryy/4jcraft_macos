@@ -66,7 +66,7 @@ ItemInstance *FurnaceRecipes::getResult(int itemId)
 	return NULL;
 }
 
-unordered_map<int, ItemInstance *> *FurnaceRecipes::getRecipies() 
+std::unordered_map<int, ItemInstance *> *FurnaceRecipes::getRecipies() 
 {
 	return &recipies;
 }

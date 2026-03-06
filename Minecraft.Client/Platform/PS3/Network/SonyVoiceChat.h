@@ -117,7 +117,7 @@ private:
 	static uint8_t							sm_micStatus;
 	static bool								sm_bLoaded;
 	static bool								sm_bUnloading;
-	static unordered_map<SceNpMatching2RoomMemberId, bool> sm_bTalkingMap;
+	static std::unordered_map<SceNpMatching2RoomMemberId, bool> sm_bTalkingMap;
 	static bool								sm_bCanStart;		// set to true on init, false on disconnect, used to see if we should start after a re-enable
 	static bool								sm_isChatRestricted;	// true if the parental controls have been set on the main users account
 	static int								sm_currentBitrate;

@@ -64,7 +64,7 @@ int MinecraftServer::s_slowQueuePlayerIndex = 0;
 int MinecraftServer::s_slowQueueLastTime = 0;
 bool MinecraftServer::s_slowQueuePacketSent = false;
 
-unordered_map<wstring, int> MinecraftServer::ironTimers;
+std::unordered_map<wstring, int> MinecraftServer::ironTimers;
 
 MinecraftServer::MinecraftServer()
 {

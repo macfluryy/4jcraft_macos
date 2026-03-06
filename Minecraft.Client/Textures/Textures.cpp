@@ -1139,27 +1139,27 @@ void Textures::reloadAll()
 
 #if 0
 	AUTO_VAR(itEndLI, loadedImages.end() );
-	for(unordered_map<int, BufferedImage *>::iterator it = loadedImages.begin(); it != itEndLI; it++ )
+	for(std::unordered_map<int, BufferedImage *>::iterator it = loadedImages.begin(); it != itEndLI; it++ )
 	{
         BufferedImage *image = it->second;
         loadTexture(image, it->first);
     }
 
 	AUTO_VAR(itEndHT, httpTextures.end());
-	for(unordered_map<wstring, HttpTexture *>::iterator it = httpTextures.begin(); it != itEndHT; it++ )
+	for(std::unordered_map<wstring, HttpTexture *>::iterator it = httpTextures.begin(); it != itEndHT; it++ )
 	{
 		it->second->isLoaded = false;
 	}
 
 	AUTO_VAR(itEndMT, memTextures.end());
-	for(unordered_map<wstring, MemTexture *>::iterator it = memTextures.begin(); it != itEndMT; it++ )
+	for(std::unordered_map<wstring, MemTexture *>::iterator it = memTextures.begin(); it != itEndMT; it++ )
 	{
 		it->second->isLoaded = false;
 	}
 
 
 	AUTO_VAR(itEndIM, idMap.end());
-	for( unordered_map<wstring, int>::iterator it = idMap.begin(); it != itEndIM; it++ )
+	for( std::unordered_map<wstring, int>::iterator it = idMap.begin(); it != itEndIM; it++ )
 	{
 		wstring name = it->first;
 
@@ -1180,7 +1180,7 @@ void Textures::reloadAll()
 		delete image;
 	}
 	AUTO_VAR(itEndPM, pixelsMap.end());
-	for( unordered_map<wstring, intArray>::iterator it = pixelsMap.begin(); it != itEndPM; it++ )
+	for( std::unordered_map<wstring, intArray>::iterator it = pixelsMap.begin(); it != itEndPM; it++ )
 	{
 		wstring name = it->first;
 		BufferedImage *image = readImage(skin->getResource(name));

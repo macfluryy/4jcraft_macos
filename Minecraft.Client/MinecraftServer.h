@@ -64,7 +64,7 @@ public:
 	static const int TICK_STATS_SPAN = SharedConstants::TICKS_PER_SECOND * 5;
 
 //    static Logger logger = Logger.getLogger("Minecraft");
-    static unordered_map<wstring, int> ironTimers;
+    static std::unordered_map<wstring, int> ironTimers;
 
 private:
 	static const int DEFAULT_MINECRAFT_PORT = 25565;

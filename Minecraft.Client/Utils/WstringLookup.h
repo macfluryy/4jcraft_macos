@@ -6,7 +6,7 @@ class WstringLookup
 {
 private:
 	UINT numIDs;
-	unordered_map<wstring, UINT> str2int;
+	std::unordered_map<wstring, UINT> str2int;
 	vector<wstring> int2str;
 
 public:

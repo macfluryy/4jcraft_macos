@@ -90,7 +90,7 @@ public:
 private:
 	void saveLevelData();
 
-	typedef unordered_map<int, std::shared_ptr<Entity> , IntKeyHash2, IntKeyEq> intEntityMap;
+	typedef std::unordered_map<int, std::shared_ptr<Entity> , IntKeyHash2, IntKeyEq> intEntityMap;
 	intEntityMap entitiesById;	// 4J - was IntHashMap, using same hashing function as this uses
 protected:
 	virtual void entityAdded(std::shared_ptr<Entity> e);

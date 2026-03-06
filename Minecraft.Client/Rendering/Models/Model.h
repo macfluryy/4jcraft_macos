@@ -14,7 +14,7 @@ public:
     bool riding;
 	vector<ModelPart *> cubes;
 	bool young;
-	unordered_map<wstring, TexOffs * > mappedTexOffs;
+	std::unordered_map<wstring, TexOffs * > mappedTexOffs;
 	int texWidth;
 	int texHeight;
 

@@ -169,7 +169,7 @@ void CConsoleMinecraftApp::FreeLocalTMSFiles(eTMSFileType eType)
 
 int CConsoleMinecraftApp::LoadLocalDLCImages()
 {
-	unordered_map<wstring,DLC_INFO * > *pDLCInfoA=app.GetDLCInfo();
+	std::unordered_map<wstring,DLC_INFO * > *pDLCInfoA=app.GetDLCInfo();
 	// 4J-PB - Any local graphic files for the Minecraft Store?
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{
@@ -183,7 +183,7 @@ int CConsoleMinecraftApp::LoadLocalDLCImages()
 void CConsoleMinecraftApp::FreeLocalDLCImages()
 {
 	// 4J-PB - Any local graphic files for the Minecraft Store?
-	unordered_map<wstring,DLC_INFO * > *pDLCInfoA=app.GetDLCInfo();
+	std::unordered_map<wstring,DLC_INFO * > *pDLCInfoA=app.GetDLCInfo();
 
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{

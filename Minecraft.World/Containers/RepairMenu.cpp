@@ -65,7 +65,7 @@ void RepairMenu::createResult()
 	{
 		std::shared_ptr<ItemInstance> result = input->copy();
 		std::shared_ptr<ItemInstance> addition = repairSlots->getItem(ADDITIONAL_SLOT);
-		unordered_map<int,int> *enchantments = EnchantmentHelper::getEnchantments(result);
+		std::unordered_map<int,int> *enchantments = EnchantmentHelper::getEnchantments(result);
 		bool usingBook = false;
 
 		tax += input->getBaseRepairCost() + (addition == NULL ? 0 : addition->getBaseRepairCost());
@@ -132,7 +132,7 @@ void RepairMenu::createResult()
 					}
 				}
 
-				unordered_map<int, int> *additionalEnchantments = EnchantmentHelper::getEnchantments(addition);
+				std::unordered_map<int, int> *additionalEnchantments = EnchantmentHelper::getEnchantments(addition);
 
 				for(AUTO_VAR(it, additionalEnchantments->begin()); it != additionalEnchantments->end(); ++it)
 				{

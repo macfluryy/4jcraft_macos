@@ -78,7 +78,7 @@ public:
     virtual void handleContainerClose(std::shared_ptr<ContainerClosePacket> packet);
 
 private:
-	unordered_map<int, short, IntKeyHash, IntKeyEq> expectedAcks;
+	std::unordered_map<int, short, IntKeyHash, IntKeyEq> expectedAcks;
 
 public:
 	// 4J Stu - Handlers only valid in debug mode

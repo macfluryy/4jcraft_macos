@@ -16,7 +16,7 @@ public:
 	};
 
 protected:
-	unordered_map<__int64, StructureStart *> cachedStructures;
+	std::unordered_map<__int64, StructureStart *> cachedStructures;
 
 public:
 	~StructureFeature();

@@ -15,7 +15,7 @@ const int Stats::ITEMS_COLLECTED_OFFSET = 0x1010000;
 const int Stats::ITEMS_CRAFTED_OFFSET = 0x1020000;
 const int Stats::ADDITIONAL_STATS_OFFSET = 0x5010000; // Needs to be higher than Achievements::ACHIEVEMENT_OFFSET = 0x500000;
 
-unordered_map<int, Stat*>* Stats::statsById = new unordered_map<int, Stat*>;
+std::unordered_map<int, Stat*>* Stats::statsById = new std::unordered_map<int, Stat*>;
 
 vector<Stat *> *Stats::all = new vector<Stat *>;
 vector<Stat *> *Stats::generalStats = new vector<Stat *>;

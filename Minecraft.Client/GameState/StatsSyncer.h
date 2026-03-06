@@ -14,8 +14,8 @@ private:
 
     volatile bool busy;
 
-    volatile unordered_map<Stat *, int> *serverStats;
-    volatile unordered_map<Stat *, int> *failedSentStats;
+    volatile std::unordered_map<Stat *, int> *serverStats;
+    volatile std::unordered_map<Stat *, int> *failedSentStats;
 
     StatsCounter *statsCounter;
     File *unsentFile, *lastServerFile;
@@ -29,18 +29,18 @@ public:
 	StatsSyncher(User *user, StatsCounter *statsCounter, File *dir);
 private:
 	void attemptRename(File *dir, const wstring& name, File *to);
-    unordered_map<Stat *, int> *loadStatsFromDisk(File *file, File *tmp, File *old);
-    unordered_map<Stat *, int> *loadStatsFromDisk(File *file);
-    void doSend(unordered_map<Stat *, int> *stats);
-    void doSave(unordered_map<Stat *, int> *stats, File *file, File *tmp, File *old);
+    std::unordered_map<Stat *, int> *loadStatsFromDisk(File *file, File *tmp, File *old);
+    std::unordered_map<Stat *, int> *loadStatsFromDisk(File *file);
+    void doSend(std::unordered_map<Stat *, int> *stats);
+    void doSave(std::unordered_map<Stat *, int> *stats, File *file, File *tmp, File *old);
 protected:
-	unordered_map<Stat *, int> *doGetStats();
+	std::unordered_map<Stat *, int> *doGetStats();
 public:
 	void getStatsFromServer();
-    void saveUnsent(unordered_map<Stat *, int> *stats);
-    void sendUnsent(unordered_map<Stat *, int> *stats, unordered_map<Stat *, int> *fullStats);
-    void forceSendUnsent(unordered_map<Stat *, int> *stats);
-    void forceSaveUnsent(unordered_map<Stat *, int> *stats);
+    void saveUnsent(std::unordered_map<Stat *, int> *stats);
+    void sendUnsent(std::unordered_map<Stat *, int> *stats, std::unordered_map<Stat *, int> *fullStats);
+    void forceSendUnsent(std::unordered_map<Stat *, int> *stats);
+    void forceSaveUnsent(std::unordered_map<Stat *, int> *stats);
     bool maySave();
     bool maySend();
     void tick();

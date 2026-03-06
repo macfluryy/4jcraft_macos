@@ -21,7 +21,7 @@ private:
 
 	bool m_mipMap;
 
-	typedef unordered_map<wstring, StitchedTexture *> stringStitchedTextureMap;
+	typedef std::unordered_map<wstring, StitchedTexture *> stringStitchedTextureMap;
 	stringStitchedTextureMap texturesByName; //  = new HashMap<String, StitchedTexture>();
 	BufferedImage *missingTexture; // = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 	StitchedTexture *missingPosition;

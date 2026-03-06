@@ -58,7 +58,7 @@ void TextureMap::stitch()
 	}
 
 	// Collection bucket for multiple frames per texture
-	unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
+	std::unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
 
 	Stitcher *stitcher = TextureManager::getInstance()->createStitcher(name);
 	
@@ -76,7 +76,7 @@ void TextureMap::stitch()
 	stitcher->addTexture(missingHolder);
 	vector<Texture *> *missingVec = new vector<Texture *>();
 	missingVec->push_back(missingTex);
-	textures.insert( unordered_map<TextureHolder *, vector<Texture *> * >::value_type( missingHolder, missingVec ));
+	textures.insert( std::unordered_map<TextureHolder *, vector<Texture *> * >::value_type( missingHolder, missingVec ));
 
 	// Extract frames from textures and add them to the stitchers
 	//for (final String name : texturesToRegister.keySet())
@@ -98,7 +98,7 @@ void TextureMap::stitch()
 		stitcher->addTexture(holder);
 
 		// Store frames
-		textures.insert( unordered_map<TextureHolder *, vector<Texture *> * >::value_type( holder, frames ) );
+		textures.insert( std::unordered_map<TextureHolder *, vector<Texture *> * >::value_type( holder, frames ) );
 	}
 
 	// Stitch!

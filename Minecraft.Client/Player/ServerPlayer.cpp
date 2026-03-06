@@ -369,7 +369,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks)
 					okToSend = true;
 					MinecraftServer::s_slowQueuePacketSent = true;
 
-//					static unordered_map<wstring,__int64> mapLastTime;
+//					static std::unordered_map<wstring,__int64> mapLastTime;
 //					__int64 thisTime = System::currentTimeMillis();
 //					__int64 lastTime = mapLastTime[connection->getNetworkPlayer()->GetUID().toString()];
 //					app.DebugPrintf(" - OK to send (%d ms since last)\n", thisTime - lastTime);

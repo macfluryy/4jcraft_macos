@@ -14,7 +14,7 @@ private:
 	int populationSize;
 	int noBreedTimer;
 
-	unordered_map<wstring, int> playerStanding;
+	std::unordered_map<wstring, int> playerStanding;
 
 	class Aggressor
 	{

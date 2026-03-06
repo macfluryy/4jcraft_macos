@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <boost/typeof/typeof.hpp>
 #include <boost/tr1/memory.hpp>
-#include "boost_1_53_0/boost/tr1/unordered_map.hpp"
+#include "boost_1_53_0/boost/tr1/std::unordered_map.hpp"
 #include "boost_1_53_0/boost/tr1/unordered_set.hpp"
 #include "boost_1_53_0/boost/pool/pool_alloc.hpp"
 #include <boost/mpl/equal_to.hpp>
@@ -29,18 +29,18 @@ using std::tr1::std::shared_ptr;
 using std::tr1::static_pointer_cast;
 using std::tr1::swap;
 using std::tr1::weak_ptr;
-using std::tr1::unordered_map;
+using std::tr1::std::unordered_map;
 using std::tr1::unordered_set;
 using boost::hash;
 
 
-// user the pool_allocator for all unordered_set and unordered_map instances
+// user the pool_allocator for all unordered_set and std::unordered_map instances
 // template <	class T, class H = hash<T>, class P = std::equal_to<T>, class A = boost::pool_allocator<T> > 
 // 	class unordered_set : public std::tr1::unordered_set<T, H, P, A > 
 // {};
 // 
 // template <class K, class T, class H = hash<K>, class P = std::equal_to<K>, class A = boost::pool_allocator<std::pair<const K,T> > > 
-// 	class unordered_map : public std::tr1::unordered_map<K, T, H, P, A > 
+// 	class std::unordered_map : public std::tr1::std::unordered_map<K, T, H, P, A > 
 // {};
 
 
@@ -50,7 +50,7 @@ using boost::hash;
 // {};
 // 
 // template <class K, class T, class H = hash<K>, class P = std::equal_to<K>, class A = C4JPoolAllocator<std::pair<const K,T> > > 
-// class unordered_map : public std::tr1::unordered_map<K, T, H, P, A > 
+// class std::unordered_map : public std::tr1::std::unordered_map<K, T, H, P, A > 
 // {};
 
 

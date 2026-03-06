@@ -15,7 +15,7 @@ public:
 	static const wstring CONTENTS_ICON;
 
 private:
-	unordered_map<int, vector<MobEffectInstance *> *> cachedMobEffects;
+	std::unordered_map<int, vector<MobEffectInstance *> *> cachedMobEffects;
 
 	Icon *iconThrowable;
 	Icon *iconDrinkable;

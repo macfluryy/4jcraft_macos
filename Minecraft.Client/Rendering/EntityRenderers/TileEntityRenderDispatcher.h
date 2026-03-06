@@ -12,7 +12,7 @@ public:
 	static void staticCtor();	 // 4J added
 
 private:
-	typedef unordered_map<eINSTANCEOF, TileEntityRenderer *, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToTileRendererMap;
+	typedef std::unordered_map<eINSTANCEOF, TileEntityRenderer *, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToTileRendererMap;
 	classToTileRendererMap renderers;
 
 public:

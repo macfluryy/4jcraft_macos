@@ -48,7 +48,7 @@ private:
 		bool			dirty;
 		int64_t			lastWritten;
 	};
-	unordered_map<unsigned int, RegionFileReference *> regionFiles;
+	std::unordered_map<unsigned int, RegionFileReference *> regionFiles;
 	vector<WriteHistory> writeHistory;
 	int64_t				m_lastTickTime;
 

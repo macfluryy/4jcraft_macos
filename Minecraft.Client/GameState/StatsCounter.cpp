@@ -22,7 +22,7 @@ Stat** StatsCounter::LARGE_STATS[] = {
 	&Stats::timePlayed
 };
 
-unordered_map<Stat*, int> StatsCounter::statBoards;
+std::unordered_map<Stat*, int> StatsCounter::statBoards;
 
 StatsCounter::StatsCounter()
 {
@@ -64,7 +64,7 @@ void StatsCounter::award(Stat* stat, unsigned int difficulty, unsigned int count
 	requiresSave = true;
 
 	//If this stat is on a leaderboard, mark that leaderboard as needing updated
-	unordered_map<Stat*, int>::iterator leaderboardEntry = statBoards.find(stat);
+	std::unordered_map<Stat*, int>::iterator leaderboardEntry = statBoards.find(stat);
 	if( leaderboardEntry != statBoards.end() )
 	{
 		app.DebugPrintf("[StatsCounter] award(): %X\n", leaderboardEntry->second << difficulty);

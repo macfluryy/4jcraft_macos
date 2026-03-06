@@ -942,7 +942,7 @@ ShapedRecipy *Recipes::addShapedRecipy(ItemInstance *result, ...)
 	int iCount;
 	ItemInstance **ids = NULL;
 
-	myMap *mappings = new unordered_map<wchar_t, ItemInstance *>();
+	myMap *mappings = new std::unordered_map<wchar_t, ItemInstance *>();
 
 	va_start(vl,result);
 	// 4J-PB - second argument is a list of the types

@@ -163,14 +163,14 @@ Packet::Packet() : createTime( System::currentTimeMillis() )
 	shouldDelay = false;
 }
 
-unordered_map<int, packetCreateFn> Packet::idToCreateMap;
+std::unordered_map<int, packetCreateFn> Packet::idToCreateMap;
 
 unordered_set<int> Packet::clientReceivedPackets = unordered_set<int>();
 unordered_set<int> Packet::serverReceivedPackets = unordered_set<int>();
 unordered_set<int> Packet::sendToAnyClientPackets = unordered_set<int>();
 
 // 4J Added
-unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = unordered_map<int, Packet::PacketStatistics *>();
+std::unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = std::unordered_map<int, Packet::PacketStatistics *>();
 vector<Packet::PacketStatistics *> Packet::renderableStats = vector<Packet::PacketStatistics *>();
 int Packet::renderPos = 0;
 
@@ -182,7 +182,7 @@ void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendTo
 	if (classToIdMap.count(clazz) > 0) throw new IllegalArgumentException(L"Duplicate packet class:"); // TODO + clazz);
 #endif
 
-	idToCreateMap.insert( unordered_map<int, packetCreateFn>::value_type(id, createFn) );
+	idToCreateMap.insert( std::unordered_map<int, packetCreateFn>::value_type(id, createFn) );
 
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
@@ -345,7 +345,7 @@ return id;
 }
 */
 
-unordered_map<int, Packet::PacketStatistics *> Packet::statistics = unordered_map<int, Packet::PacketStatistics *>();
+std::unordered_map<int, Packet::PacketStatistics *> Packet::statistics = std::unordered_map<int, Packet::PacketStatistics *>();
 
 //int Packet::nextPrint = 0;
 

@@ -23,7 +23,7 @@ private:
 
 	bool m_mipMap;
 
-	typedef unordered_map<wstring, Icon *> stringIconMap;
+	typedef std::unordered_map<wstring, Icon *> stringIconMap;
 	stringIconMap texturesByName; //  = new HashMap<String, StitchedTexture>();
 	BufferedImage *missingTexture; // = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 	StitchedTexture *missingPosition;

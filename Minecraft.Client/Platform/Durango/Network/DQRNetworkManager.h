@@ -397,7 +397,7 @@ private:
 
 	bool																m_notifyForFullParty;
 
-	unordered_map<unsigned int,DQRConnectionInfo *>						m_sessionAddressToConnectionInfoMapHost;	// For host - there may be more than one remote session attached to this listening session
+	std::unordered_map<unsigned int,DQRConnectionInfo *>						m_sessionAddressToConnectionInfoMapHost;	// For host - there may be more than one remote session attached to this listening session
 	unsigned int														m_sessionAddressFromSmallId[256];			// For host - for mapping back from small Id, to session address
 	unsigned char														m_channelFromSmallId[256];					// For host and client, for mapping back from small Id, to channel
 	DQRConnectionInfo													m_connectionInfoClient;						// For client

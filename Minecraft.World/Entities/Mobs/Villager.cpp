@@ -17,8 +17,8 @@
 #include "Villager.h"
 #include <random>
 
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;
+std::unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
+std::unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;
 
 void Villager::_init(int profession)
 {

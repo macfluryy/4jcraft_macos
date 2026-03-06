@@ -1529,7 +1529,7 @@ void LevelChunk::unload(bool unloadTileEntities)	// 4J - added parameter
 			ListTag<CompoundTag> *tileEntityTags = new ListTag<CompoundTag>();
 
 			AUTO_VAR(itEnd,tileEntities.end());
-			for( unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = tileEntities.begin();
+			for( std::unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = tileEntities.begin();
 				it != itEnd; it++)
 			{
 				std::shared_ptr<TileEntity> te = it->second;

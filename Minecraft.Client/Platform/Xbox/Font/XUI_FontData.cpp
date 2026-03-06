@@ -321,7 +321,7 @@ HRESULT XUI_FontData::Create( int iFontTexture, const VOID* pFontData )
 		for( unsigned short i = 0; i < m_cMaxGlyph + 1; ++i )
 		{
 			if( translatorTable[i] == 0 ) continue;
-			m_TranslatorMap.insert( unordered_map<wchar_t, unsigned short>::value_type(i, translatorTable[i]) );
+			m_TranslatorMap.insert( std::unordered_map<wchar_t, unsigned short>::value_type(i, translatorTable[i]) );
 		}
 
         pData += ATGCALCFONTFILEHEADERSIZE( m_cMaxGlyph + 1 );

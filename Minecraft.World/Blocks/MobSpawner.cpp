@@ -36,7 +36,7 @@ TilePos MobSpawner::getRandomPosWithin(Level *level, int cx, int cz)
 	// AP - See CustomMap.h for an explanation of this
 	CustomMap MobSpawner::chunksToPoll;
 #else
-	unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> MobSpawner::chunksToPoll;
+	std::unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> MobSpawner::chunksToPoll;
 #endif
 
 const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFriendlies)

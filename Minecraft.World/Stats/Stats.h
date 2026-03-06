@@ -16,7 +16,7 @@ private:
 	static const int ADDITIONAL_STATS_OFFSET;
 
 protected:
-	static unordered_map<int, Stat*>* statsById;
+	static std::unordered_map<int, Stat*>* statsById;
 
 public:
 	static vector<Stat *> *all;

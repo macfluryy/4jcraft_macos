@@ -208,14 +208,14 @@ private:
 	static const wchar_t *preLoaded[TN_COUNT];
 	static int preLoadedIdx[TN_COUNT];
 
-	unordered_map<wstring, int> idMap;
-    unordered_map<wstring, intArray> pixelsMap;
-    unordered_map<int, BufferedImage *> loadedImages;
+	std::unordered_map<wstring, int> idMap;
+    std::unordered_map<wstring, intArray> pixelsMap;
+    std::unordered_map<int, BufferedImage *> loadedImages;
     //IntBuffer *pixels;	// 4J - removed so we don't have a permanent buffer kicking round using up 1MB
 
-	unordered_map<wstring, HttpTexture *> httpTextures;
+	std::unordered_map<wstring, HttpTexture *> httpTextures;
 	// 4J-PB - Added for GTS textures
-	unordered_map<wstring,MemTexture *> memTextures;
+	std::unordered_map<wstring,MemTexture *> memTextures;
     Options *options;
 
 private:

@@ -12,7 +12,7 @@ using namespace std;
 class MemoryTracker
 {
 private:
-	static unordered_map<int,int> GL_LIST_IDS;
+	static std::unordered_map<int,int> GL_LIST_IDS;
     static vector<int> TEXTURE_IDS;
 
 public:
