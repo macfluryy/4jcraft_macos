@@ -1,7 +1,7 @@
 #include "../../Build/stdafx.h"
 #include "Compression.h"
 #if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__
-#include "../../../Minecraft.Client/Build/Common/zlib/zlib.h"
+#include <zlib.h>
 #endif
 
 #if defined __PSVITA__

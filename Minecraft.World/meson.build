@@ -32,11 +32,11 @@ lib_world = static_library('Minecraft.World',
   ],
 )
 
-# dep_zlib = dependency('zlib') # using in-tree zlib for the time being
+dep_zlib = dependency('zlib')
 dep_crypto = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 
 world_dep = declare_dependency(
   link_with : lib_world,
-  dependencies : [dep_crypto],
+  dependencies : [dep_crypto, dep_zlib],
   include_directories : include_directories('Build/x64headers'),
 )
