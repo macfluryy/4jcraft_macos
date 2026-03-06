@@ -713,7 +713,7 @@ int LevelRenderer::render(shared_ptr<Mob> player, int layer, double alpha, bool 
 	glColor4f(1, 1, 1, 1);
 	glColor4f(1, 1, 1, 1);
 
-	int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
+	int count = renderChunks(0, (int)chunks[playerIndex].length, 0, alpha);
 
 	return count;
 
@@ -782,7 +782,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 	int count = 0;
 	int dbgNotVisible = 0, dbgNoIdx = 0, dbgEmpty = 0, dbgCalled = 0, dbgCallOk = 0;
 	ClipChunk *pClipChunk = chunks[playerIndex].data;
-	unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << 0;
+	unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
 	for( int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++ )
 	{
 		if( !pClipChunk->visible ) { dbgNotVisible++; continue; }
