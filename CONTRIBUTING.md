@@ -24,11 +24,3 @@ Simple rules for publishing code:
 Make sure your code compiles before making a pull request! and make sure that it's readable
 
 Remember ALL your changes will be licensed under GNU General Public License V3.0.
-
-## Compiling the project:
-> [!NOTE]
-> The project is currently in a non-compilable state (as of 3/3/2026)
-
-1. Install CMake, Make, GCC (>= 15.0), G++ (>= 15.0).
-2. Create a new directory named build after cloning the repository.
-3. Enter the new directory and run `cmake ..` and then run `make`
