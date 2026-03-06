@@ -91,12 +91,12 @@ const int LevelRenderer::DIMENSION_OFFSETS[3] = { 0, (overworldSize * overworldS
 // Dimension idx 1 (nether)    : 44 ( = 18 + 13 + 13 )
 // Dimension idx 2 (the end)   : 44 ( = 18 + 13 + 13 )
 
-const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[3] = { 32, 32, 32 };
+const int LevelRenderer::MAX_LEVEL_RENDER_SIZE[3] = { 80, 44, 44 };
 
 // Linked directly to the sizes in the previous array, these next values dictate the start offset for each dimension index into the global array for these things.
 // Each dimension uses MAX_LEVEL_RENDER_SIZE[i]^2 * 8 indices, as a MAX_LEVEL_RENDER_SIZE * MAX_LEVEL_RENDER_SIZE * 8 sized cube of references.
 
-const int LevelRenderer::DIMENSION_OFFSETS[3] = { 0, (32 * 32 * CHUNK_Y_COUNT) ,  (32 * 32 * CHUNK_Y_COUNT) + ( 32 * 32 * CHUNK_Y_COUNT ) };
+const int LevelRenderer::DIMENSION_OFFSETS[3] = { 0, (80 * 80 * CHUNK_Y_COUNT) ,  (80 * 80 * CHUNK_Y_COUNT) + ( 44 * 44 * CHUNK_Y_COUNT ) };
 #endif
 
 LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
