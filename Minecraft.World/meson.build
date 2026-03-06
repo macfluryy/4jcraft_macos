@@ -24,7 +24,10 @@ lib_world = static_library('Minecraft.World',
   ],
 )
 
+dep_zlib = dependency('zlib')
+
 world_dep = declare_dependency(
   link_with : lib_world,
+  dependencies : [dep_zlib],
   include_directories : include_directories('Build/x64headers'),
 )

@@ -69,7 +69,7 @@ public:
 	Item *getItem() const;
 	Icon *getIcon();
 	int getIconType();
-	bool useOn(shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
+	bool useOn(shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX = 0.0f, float clickY = 0.0f, float clickZ = 0.0f, bool bTestUseOnOnly=false);
 	float getDestroySpeed(Tile *tile);
 	bool TestUse(Level *level, shared_ptr<Player> player); 
 	shared_ptr<ItemInstance> use(Level *level, shared_ptr<Player> player);

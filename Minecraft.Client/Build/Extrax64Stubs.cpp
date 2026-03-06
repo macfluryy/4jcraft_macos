@@ -26,6 +26,12 @@
 #include "../Platform/PSVita/Social/SocialManager.h"
 #include "../Platform/PSVita/Sentient/DynamicConfigurations.h"
 #include <libperf.h>
+#elif defined __linux__
+// On Linux, stdafx.h already provides Orbis-compatible Sentient/Dynamic headers
+// via #pragma once. Pull in SentientManager for CSentientManager class declaration
+// and StatsCounter; CSocialManager is provided as inline stubs via Platform/Linux/Social/SocialManager.h.
+#include "../Platform/Orbis/Sentient/SentientManager.h"
+#include "../GameState/StatsCounter.h"
 #else
 #include "../Platform/Orbis/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
@@ -42,13 +48,14 @@ C_4JProfile ProfileManager;
 CSentientManager SentientManager;
 CXuiStringTable StringTable;
 
-#ifndef _XBOX_ONE
+#if !defined(_XBOX_ONE) && !defined(__linux__)
 ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
 HRESULT    ATG::XMLParser::ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize ) { return S_OK; }   
 VOID ATG::XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback ) {}
 #endif
 
+#ifndef __linux__
 bool	CSocialManager::IsTitleAllowedToPostAnything() { return false; }
 bool	CSocialManager::AreAllUsersAllowedToPostImages() { return false; }
 bool	CSocialManager::IsTitleAllowedToPostImages() { return false; }
@@ -57,6 +64,7 @@ bool	CSocialManager::PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, DWO
 bool	CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
 CSocialManager *CSocialManager::Instance() { return NULL; }
 void CSocialManager::SetSocialPostText(LPCWSTR Title, LPCWSTR Caption, LPCWSTR Desc) {};
+#endif // !__linux__
 
 DWORD XShowPartyUI(DWORD dwUserIndex) { return 0; }
 DWORD XShowFriendsUI(DWORD dwUserIndex) { return 0; }
@@ -187,7 +195,9 @@ D3DXVECTOR3& D3DXVECTOR3::operator += ( CONST D3DXVECTOR3& add ) { x += add.x; y
 BYTE IQNetPlayer::GetSmallId() { return 0; }
 void IQNetPlayer::SendData(IQNetPlayer *player, const void *pvData, DWORD dwDataSize, DWORD dwFlags)
 {
+#ifndef __linux__
 	app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n",this,player,dwDataSize);
+#endif
 }
 bool IQNetPlayer::IsSameSystem(IQNetPlayer *player) { return true; }
 DWORD IQNetPlayer::GetSendQueueSize( IQNetPlayer *player, DWORD dwFlags ) { return 0; }

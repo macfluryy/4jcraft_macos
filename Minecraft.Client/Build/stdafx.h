@@ -10,7 +10,7 @@
 
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
-#define __LOC__ __FILE__ "("__STR1__(__LINE__)") : 4J Warning Msg: "
+#define __LOC__ __FILE__ "(" __STR1__(__LINE__) ") : 4J Warning Msg: "
 
 // use  - #pragma message(__LOC__"Need to do something here")
 
@@ -295,14 +295,15 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Windows64/Windows64_UIController.h"
 #elif defined __linux__
 	// Linux build: avoid pulling in Windows64 platform headers (they cause
-	// symbol/class redefinitions). Use Linux-specific stubs and controller.
-	// FIXME: Produce proper Linux equivalents for telemetry/sentient/etc.
-	#include "../Platform/OrbisMedia/strings.h" // temporary strings
-	#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Xbox/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Xbox/GameConfig/Minecraft.spa.h"
+	// symbol/class redefinitions). Use Orbis-compatible stubs and Linux controller.
+	#include "../Platform/Linux/Linux_App.h"
+	#include "../Platform/OrbisMedia/strings.h"
+	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
+	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
+	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
 	#include "Common/Audio/SoundEngine.h"
 	#include "../Platform/Linux/Linux_UIController.h"
+	#include "../Platform/Linux/Social/SocialManager.h"
 #elif defined __PSVITA__
 	#include "../Platform/PSVita/PSVita_App.h"
 	#include "../Platform/PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this

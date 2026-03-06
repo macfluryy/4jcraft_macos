@@ -1,7 +1,21 @@
-# get all those files
+# get all those files (excluding Sony-SDK-dependent, Xbox XUI, and redist dirs)
 _client_build_raw = run_command(
   'sh', '-c',
-  'find "' + meson.current_source_dir() / 'Build' + '" -name "*.cpp" ! -path "*/redist64/*"',
+  'find "' + meson.current_source_dir() / 'Build' + '" -name "*.cpp"' +
+  ' ! -path "*/redist64/*"' +
+  ' ! -path "*/Network/Sony/*"' +
+  ' ! -path "*/Common/XUI/*"',
+  check : true,
+).stdout().strip().split('\n')
+
+# Non-Build, non-Platform Minecraft.Client sources (Rendering/, UI/, Textures/,
+# GameState/, Input/, Level/, Network/, Player/, Commands/, Utils/, etc.)
+_client_root_raw = run_command(
+  'sh', '-c',
+  'find "' + meson.current_source_dir() + '" -name "*.cpp"' +
+  ' ! -path "*/Build/*"' +
+  ' ! -path "*/Platform/*"' +
+  ' ! -path "*/CMakeFiles/*"',
   check : true,
 ).stdout().strip().split('\n')
 
@@ -12,6 +26,7 @@ _linux_cpp_sources = files(
   'Platform/Linux/LinuxGL.cpp',
   'Platform/Linux/Linux_Minecraft.cpp',
   'Platform/Linux/Linux_UIController.cpp',
+  'Platform/Linux/Linux_ShutdownManager.cpp',
 )
 
 _linux_c_sources = files(
@@ -19,7 +34,7 @@ _linux_c_sources = files(
 )
 
 executable('Minecraft.Client',
-  _client_build_raw + _linux_cpp_sources + _linux_c_sources,
+  _client_build_raw + _client_root_raw + _linux_cpp_sources + _linux_c_sources,
   include_directories : include_directories('Build'),
   dependencies : [
     render_dep,

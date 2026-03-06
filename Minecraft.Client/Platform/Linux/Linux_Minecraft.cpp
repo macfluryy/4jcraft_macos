@@ -56,7 +56,7 @@ static void sigsegv_handler(int sig) {
 //#include "NetworkManager.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"
-#include "../Windows64/Sentient/SentientManager.h"
+#include "../Orbis/Sentient/SentientManager.h"
 #include "../../../Minecraft.World/Util/IntCache.h"
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/IO/Streams/Compression.h"
