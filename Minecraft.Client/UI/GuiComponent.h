@@ -1,6 +1,6 @@
 #pragma once
 class Font;
-using namespace std;
+
 
 class GuiComponent
 {

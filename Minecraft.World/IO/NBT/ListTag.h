@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "Tag.h"
 
 template <class T> class ListTag : public Tag

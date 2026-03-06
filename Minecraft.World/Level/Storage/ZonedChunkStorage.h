@@ -5,7 +5,7 @@
 
 // 4J Stu - There are changes to this class for 1.8.2, but since we never use it anyway lets not worry about it
 
-using namespace std;
+
 
 class ZoneFile;
 class ZoneIo;

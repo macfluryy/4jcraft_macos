@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #ifdef _LARGE_WORLDS
 // 51 maps per player (7x7 overworld, 1 nether, 1 end) * 100 players rounded up to power of 2

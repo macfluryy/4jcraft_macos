@@ -1,6 +1,6 @@
 #pragma once
 #ifdef _XBOX
-//using namespace std;
+//
 namespace std
 {
 	namespace tr1

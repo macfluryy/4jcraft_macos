@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 #include "../Containers/Container.h"
 #include "../Util/UseAnim.h"

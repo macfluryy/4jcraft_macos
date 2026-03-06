@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Entities/Entity.h"
 #include "../../Util/JavaIntHash.h"

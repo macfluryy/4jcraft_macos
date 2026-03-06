@@ -1,7 +1,7 @@
 #pragma once
 #include <ostream>
 #include "../Streams/InputOutputStream.h"
-using namespace std;
+
 
  
 class Tag

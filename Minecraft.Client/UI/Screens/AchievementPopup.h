@@ -2,7 +2,7 @@
 #include "../GuiComponent.h"
 class Achievement;
 class ItemRenderer;
-using namespace std;
+
 
 class AchievementPopup : public GuiComponent
 {

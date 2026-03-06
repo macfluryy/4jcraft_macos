@@ -54,7 +54,7 @@ typedef struct _NetworkGameInitData
 	}
 } NetworkGameInitData;
 
-using namespace std;
+
 
 // 4J Stu - 1.0.1 updates the server to implement the ServerInterface class, but I don't think we will use any of the functions that defines so not implementing here
 class MinecraftServer : public ConsoleInputSource

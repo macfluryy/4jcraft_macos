@@ -3,7 +3,7 @@
 // #include "../../../../../Minecraft.World/Util/Vec3.h"
 // #include "../../../../../Minecraft.World/Util/Definitions.h"
 // #include "../../../../../Minecraft.World/Util/SoundTypes.h"
-// using namespace std;
+// 
 #include "Icon_SPU.h"
 #include "Material_SPU.h"
 #include <stddef.h>

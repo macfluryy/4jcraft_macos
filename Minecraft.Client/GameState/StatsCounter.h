@@ -3,7 +3,7 @@ class Stat;
 class Achievement;
 class StatsSyncher;
 class User;
-using namespace std;
+
 
 class StatsCounter
 {

@@ -2,7 +2,7 @@
 #include "../Screen.h"
 class EditBox;
 class LevelStorageSource;
-using namespace std;
+
 
 class CreateWorldScreen : public Screen
 {

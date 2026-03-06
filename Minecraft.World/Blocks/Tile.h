@@ -3,7 +3,7 @@
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
 #include "../Util/SoundTypes.h"
-using namespace std;
+
 
 class GrassTile;
 class LeafTile;

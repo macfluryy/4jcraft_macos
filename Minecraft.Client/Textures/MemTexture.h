@@ -1,7 +1,7 @@
 #pragma once
 class BufferedImage;
 class MemTextureProcessor;
-using namespace std;
+
 
 class MemTexture {
 public:

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 // 4J Stu - Represents java standard library class
 
 class FileFilter;

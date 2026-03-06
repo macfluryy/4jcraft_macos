@@ -11,7 +11,7 @@ class Level;
 class AABB;
 class IconRegister;
 
-using namespace std;
+
 
 class EntityRenderDispatcher;
 class Font;

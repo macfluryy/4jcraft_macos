@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Entity.h"
 #include "../../Util/ParticleTypes.h"

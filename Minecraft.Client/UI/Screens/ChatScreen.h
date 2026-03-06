@@ -1,6 +1,6 @@
 #pragma once
 #include "../Screen.h"
-using namespace std;
+
 
 class ChatScreen : public Screen
 {

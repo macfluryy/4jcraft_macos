@@ -3,7 +3,7 @@
 class Button;
 class GuiParticles;
 class Minecraft;
-using namespace std;
+
 
 class Screen : public GuiComponent
 {

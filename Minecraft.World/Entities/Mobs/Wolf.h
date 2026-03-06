@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 #include "../TamableAnimal.h"
 class DamageSource;

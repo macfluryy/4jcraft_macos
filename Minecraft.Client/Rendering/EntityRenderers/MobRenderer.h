@@ -1,7 +1,7 @@
 #pragma once
 #include "EntityRenderer.h"
 class Mob;
-using namespace std;
+
 
 #define PLAYER_NAME_READABLE_FULLSCREEN 16
 #define PLAYER_NAME_READABLE_DISTANCE_SPLITSCREEN 8

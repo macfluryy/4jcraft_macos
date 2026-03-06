@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Util/UseAnim.h"
 #include "../Headers/com.mojang.nbt.h"

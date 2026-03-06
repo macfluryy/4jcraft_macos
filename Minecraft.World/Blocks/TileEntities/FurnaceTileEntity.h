@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../FurnaceTile.h"
 #include "TileEntity.h"

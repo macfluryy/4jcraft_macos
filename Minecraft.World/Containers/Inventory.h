@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "Container.h"
 #include "../IO/NBT/ListTag.h"
 #include "../Items/ItemInstance.h"

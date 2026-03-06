@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 #include "../../../Minecraft.Client/Rendering/Models/Model.h"

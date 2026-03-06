@@ -4,7 +4,7 @@ class StatsCounter;
 class User;
 class File;
 class Stat;
-using namespace std;
+
 
 class StatsSyncher
 {

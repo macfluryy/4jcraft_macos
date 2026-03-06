@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "BossMob.h"
 
 class BossMobPart;

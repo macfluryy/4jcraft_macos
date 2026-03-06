@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../../../Minecraft.World/Util/Random.h"
 #include "SkinBox.h"
 class Mob;

@@ -6,7 +6,7 @@
 #include "../../Minecraft.World/IO/Files/File.h"
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 
-using namespace std;
+
 
 class ArchiveFile
 {

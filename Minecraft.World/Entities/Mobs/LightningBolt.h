@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../GlobalEntity.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 

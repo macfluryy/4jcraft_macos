@@ -1,6 +1,6 @@
 #pragma once
 class File;
-using namespace std;
+
 
 class Settings
 {

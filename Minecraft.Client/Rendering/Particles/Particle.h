@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../../Minecraft.World/Entities/Entity.h"
 #include "../../../Minecraft.World/Util/ParticleTypes.h"

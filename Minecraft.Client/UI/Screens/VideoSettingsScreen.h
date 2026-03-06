@@ -1,7 +1,7 @@
 #pragma once
 #include "../Screen.h"
 class Options;
-using namespace std;
+
 
 class VideoSettingsScreen : public Screen
 {

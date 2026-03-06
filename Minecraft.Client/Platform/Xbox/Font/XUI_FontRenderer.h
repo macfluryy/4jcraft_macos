@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class XUI_FontData;
 class XUI_Font;
 

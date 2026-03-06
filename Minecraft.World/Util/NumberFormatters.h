@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 // 4J Stu - The java formated numbers based on a local passed in, but I am just going for a constant format here
 class NumberFormat

@@ -9,7 +9,7 @@ class TexturePackRepository;
 class HttpTextureProcessor;
 class MemTextureProcessor;
 class Options;
-using namespace std;
+
 class IntBuffer;
 class PreStitchedTextureMap;
 

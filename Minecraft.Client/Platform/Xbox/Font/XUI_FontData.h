@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include <xuirender.h>
 
 #include "../../../Build/Common/UI/UIFontData.h"

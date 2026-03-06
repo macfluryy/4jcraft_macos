@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 class Random;
 class EatTileGoal;

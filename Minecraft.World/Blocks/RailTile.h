@@ -7,7 +7,7 @@ class Random;
 class HitResult;
 class ChunkRebuildData;
 
-using namespace std;
+
 
 class RailTile : public Tile
 {

@@ -1,7 +1,7 @@
 #pragma once
 class Mob;
 class Options;
-using namespace std;
+
 #include "../../../../Minecraft.World/Util/SoundTypes.h"
 
 #ifdef _XBOX

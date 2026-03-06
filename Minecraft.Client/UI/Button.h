@@ -1,6 +1,6 @@
 #pragma once
 #include "GuiComponent.h"
-using namespace std;
+
 
 class Button : public GuiComponent
 {

@@ -5,7 +5,7 @@
 #include "../../Minecraft.World/Util/JavaIntHash.h"
 #include "../../Minecraft.World/Level/RandomLevelSource.h"
 #include "../../Minecraft.World/Util/C4JThread.h"
-using namespace std;
+
 class ServerLevel;
 
 class ServerChunkCache : public ChunkSource

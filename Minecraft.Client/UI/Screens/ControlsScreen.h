@@ -1,6 +1,6 @@
 #pragma once
 #include "../Screen.h"
-using namespace std;
+
 class Options;
 
 class ControlsScreen : public Screen
