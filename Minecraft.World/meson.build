@@ -10,7 +10,7 @@ exclude_sources = [
   '! -name NbtSlotFile.cpp',
   '! -name ZonedChunkStorage.cpp',
   '! -name ZoneFile.cpp',
-  '! -name ZoneIo.cpp',
+  '! -name ZoneIO.cpp',
 ]
 
 # GET IT ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL

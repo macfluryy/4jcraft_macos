@@ -3,6 +3,7 @@ exclude_sources = [
   ' ! -path "*/Platform/*"',
   ' ! -path "*/Build/Common/Network/Sony/*"',
   ' ! -path "*/Build/Common/XUI/*"',
+  ' ! -path "*/Build/Common/zlib/*"',
 ]
 
 # get all those files
@@ -42,6 +43,7 @@ executable('Minecraft.Client',
     glfw_dep,
     thread_dep,
     dl_dep,
+    dependency('zlib'),
   ],
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-DUNICODE', '-D_UNICODE',
