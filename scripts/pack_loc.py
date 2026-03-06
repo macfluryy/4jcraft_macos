@@ -53,7 +53,7 @@ lang_file_paths = glob(f"{target_dir}/*/*.lang")
 # Process lang strings
 langs = {}
 for lang_file_path in lang_file_paths:
-    lang_name = path.split(lang_file_path)[0] # This will give us the dir path before strings.lang
+    lang_name = path.split(lang_file_path)[0] # This will give us the dir path to strings.lang
     lang_name = path.split(lang_name)[1] # This will give use just the directory before strings.lang (which should be the lang name)
 
     lang_file_tree = ET.parse(lang_file_path)
