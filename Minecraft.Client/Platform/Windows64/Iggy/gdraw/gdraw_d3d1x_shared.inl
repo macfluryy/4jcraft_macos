@@ -2114,7 +2114,7 @@ static bool alloc_dynbuffer(U32 size)
    //
    // 1. filled polygons. these are triangulated simple polygons and thus have
    //    roughly as many triangles as they have vertices. they use either 8- or
-   //    16-uint8_t vertex formats; this makes a worst case of 6 bytes of indices
+   //    16-byte vertex formats; this makes a worst case of 6 bytes of indices
    //    for every 8 bytes of vertex data.
    // 2. strokes and edge antialiasing. they use a 16-byte vertex format and
    //    worst-case write a "double quadstrip" which has 4 triangles for every

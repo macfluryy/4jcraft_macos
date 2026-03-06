@@ -51,7 +51,7 @@ void DQRNetworkManager::BytesReceivedInternal(DQRConnectionInfo *connectionInfo,
 
 	do
 	{
-		BYTE uint8_t = *pNextByte;
+		BYTE byte = *pNextByte;
 		switch( connectionInfo->m_internalDataState )
 		{
 			case DQRConnectionInfo::ConnectionState_InternalHeaderByte:
@@ -123,7 +123,7 @@ void DQRNetworkManager::BytesReceivedInternal(DQRConnectionInfo *connectionInfo,
 						// We therefore have to be able to handle (and ignore) this being received more than once - hence the check of the bool above.
 						// At this point, the connection is considered properly active from the point of view of the host.
 
-						int sessionIndex = GetSessionIndexForSmallId(uint8_t);
+						int sessionIndex = GetSessionIndexForSmallId(byte);
 						if( sessionIndex != -1 )
 						{
 							connectionInfo->m_channelActive[channel] = true;
@@ -136,7 +136,7 @@ void DQRNetworkManager::BytesReceivedInternal(DQRConnectionInfo *connectionInfo,
 							DQRNetworkManager::LogCommentFormat(L"Session index of %d found for player with small id %d - attempting to resolve display name\n",sessionIndex,byte);
 
 							DQRNetworkPlayer *pPlayer = new DQRNetworkPlayer(this, DQRNetworkPlayer::DNP_TYPE_REMOTE, true, 0, sessionAddress);
-							pPlayer->SetSmallId(uint8_t);
+							pPlayer->SetSmallId(byte);
 							pPlayer->SetUID(PlayerUID(m_multiplayerSession->Members->GetAt(sessionIndex)->XboxUserId->Data()));
 
 							HostGamertagResolveDetails *resolveDetails = new HostGamertagResolveDetails();
