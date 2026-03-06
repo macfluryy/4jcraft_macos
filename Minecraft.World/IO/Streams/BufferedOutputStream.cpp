@@ -21,9 +21,17 @@ BufferedOutputStream::~BufferedOutputStream()
 //Flushes this buffered output stream. This forces any buffered output bytes to be written out to the underlying output stream.
 void BufferedOutputStream::flush()
 {
-	stream->write( buf, 0, count );
+	if (stream == NULL)
+	{
+		app.DebugPrintf("BufferedOutputStream::flush() called but underlying stream is NULL\n");
+		return;
+	}
 
-	count = 0;
+	if (count > 0)
+	{
+		stream->write( buf, 0, count );
+		count = 0;
+	}
 }
 
 //Closes this output stream and releases any system resources associated with the stream.
@@ -31,6 +39,11 @@ void BufferedOutputStream::flush()
 void BufferedOutputStream::close()
 {
 	flush();
+	if (stream == NULL)
+	{
+		app.DebugPrintf("BufferedOutputStream::close() called but underlying stream is NULL\n");
+		return;
+	}
 	stream->close();
 }
 
