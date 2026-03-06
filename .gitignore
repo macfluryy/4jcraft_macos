@@ -1,5 +1,8 @@
 # ----- Build output directories -----
 build/
+builddir/
+.cache/
+.idea/
 build_meson/
 build_meson2/
 build_meson_new/

@@ -1,40 +1,35 @@
-# get all those files (excluding Sony-SDK-dependent, Xbox XUI, and redist dirs)
-_client_build_raw = run_command(
+# sources that shouldn't be compiled for whatever reason
+exclude_sources = [
+  ' ! -path "*/Platform/*"',
+  ' ! -path "*/Build/Common/Network/Sony/*"',
+  ' ! -path "*/Build/Common/XUI/*"',
+]
+
+# get all those files
+client_sources = run_command(
   'sh', '-c',
-  'find "' + meson.current_source_dir() / 'Build' + '" -name "*.cpp"' +
-  ' ! -path "*/redist64/*"' +
-  ' ! -path "*/Network/Sony/*"' +
-  ' ! -path "*/Common/XUI/*"',
+  'find "'
+    + meson.current_source_dir()
+    + '" \\( -name "*.cpp" -o -name "*.c" \\) '
+    + ' '.join(exclude_sources),
   check : true,
 ).stdout().strip().split('\n')
 
-# Non-Build, non-Platform Minecraft.Client sources (Rendering/, UI/, Textures/,
-# GameState/, Input/, Level/, Network/, Player/, Commands/, Utils/, etc.)
-_client_root_raw = run_command(
-  'sh', '-c',
-  'find "' + meson.current_source_dir() + '" -name "*.cpp"' +
-  ' ! -path "*/Build/*"' +
-  ' ! -path "*/Platform/*"' +
-  ' ! -path "*/CMakeFiles/*"',
-  check : true,
-).stdout().strip().split('\n')
+platform_sources = []
 
-# linux files
-_linux_cpp_sources = files(
-  'Platform/Linux/Linux_App.cpp',
-  'Platform/Linux/linux_game_stubs.cpp',
-  'Platform/Linux/LinuxGL.cpp',
-  'Platform/Linux/Linux_Minecraft.cpp',
-  'Platform/Linux/Linux_UIController.cpp',
-  'Platform/Linux/Linux_ShutdownManager.cpp',
-)
-
-_linux_c_sources = files(
-  'Platform/Linux/Iggy/gdraw/gdraw_glfw.c',
-)
+# linux-specific files (everything in Platform/Linux)
+if host_machine.system() == 'linux'
+  platform_sources += run_command(
+    'sh', '-c',
+    'find "'
+      + meson.current_source_dir() / 'Platform/Linux'
+      + '" \\( -name "*.cpp" -o -name "*.c" \\) ',
+    check : true,
+  ).stdout().strip().split('\n')
+endif
 
 executable('Minecraft.Client',
-  _client_build_raw + _client_root_raw + _linux_cpp_sources + _linux_c_sources,
+  client_sources + platform_sources,
   include_directories : include_directories('Build'),
   dependencies : [
     render_dep,
