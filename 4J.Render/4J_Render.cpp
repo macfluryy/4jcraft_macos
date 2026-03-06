@@ -44,24 +44,11 @@ static bool s_mainThreadSet = false;
 
 void C4JRender::Initialise()
 {
-#if defined(__linux__) && (GLFW_VERSION_MAJOR > 3 || (GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR >= 4))
-    // If the session is a native Wayland session, tell GLFW to use the Wayland
-    // backend instead of falling back to XWayland.  This enables proper cursor
-    // confine-and-hide (zwp_confined_pointer_v1 + zwp_relative_pointer_v1) which
-    // is required for correct first-person mouse input on Wayland compositors.
-    if (getenv("WAYLAND_DISPLAY")) {
-        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
-        fprintf(stderr, "[4J_Render] Wayland session detected — requesting native Wayland backend\n");
-    }
-#endif
-
     if (!glfwInit()) {
         fprintf(stderr, "[4J_Render] Failed to initialise GLFW\n");
         return;
     }
-
-    // Resolve window dimensions: use caller-requested size, or fall back to
-    // the primary monitor's native resolution so the window fits any display.
+    // todo: make resolution work
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *mode = primaryMonitor ? glfwGetVideoMode(primaryMonitor) : nullptr;
 
@@ -304,9 +291,7 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
     GLenum mode = mapPrimType((int)PrimitiveType);
 
     if (vType == VERTEX_TYPE_COMPRESSED) {
-        // Compact terrain vertex: 8 × int16_t = 16 bytes per vertex
-        // Layout: [x*1024, y*1024, z*1024, RGB565-32768, u*8192, v*8192, tex2u, tex2v]
-        // Always use glBegin/glEnd — works correctly both inside and outside display lists.
+        // NO NEED TO REWRITE IT ALL YAY
         int16_t *sdata = (int16_t *)dataIn;
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {

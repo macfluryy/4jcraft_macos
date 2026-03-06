@@ -101,9 +101,9 @@ UIBitmapFont::UIBitmapFont(	SFontData &sfontdata )
 
 	if (bimgData == nullptr)
 	{
-		fprintf(stderr, "[UIBitmapFont] ERROR: failed to load font image for '%s' — font file missing or corrupt.\n",
+		fprintf(stderr, "[UIBitmapFont] ERROR: failed to load font image for '%s' is font included?\n",
 			sfontdata.m_strFontName.c_str());
-		m_cFontData = new CFontData(); // default/empty — avoids null deref downstream
+		m_cFontData = new CFontData(); // todo: make font work
 		return;
 	}
 

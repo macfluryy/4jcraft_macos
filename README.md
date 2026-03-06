@@ -45,7 +45,7 @@ If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayl
 
 On Docker:
 
-If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you — GCC 15, Meson, Ninja, lld, and all the libraries.
+If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you - GCC 15, Meson, Ninja, lld, and all the libraries.
 
 Alternatively, you can build and use the container manually:
 
