@@ -15,14 +15,14 @@ protected:
 
 public:
 	//@Override
-	bool hasFile(const wstring &name);
+	bool hasFile(const std::wstring &name);
 	bool isTerrainUpdateCompatible();
 
-	wstring getDesc1() {return app.GetString(IDS_DEFAULT_TEXTUREPACK);}
+	std::wstring getDesc1() {return app.GetString(IDS_DEFAULT_TEXTUREPACK);}
 
 protected:
 	//@Override
-	InputStream *getResourceImplementation(const wstring &name); // throws FileNotFoundException
+	InputStream *getResourceImplementation(const std::wstring &name); // throws FileNotFoundException
 
 public:
 	virtual bool hasData() { return true; }

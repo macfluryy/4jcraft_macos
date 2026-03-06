@@ -51,7 +51,7 @@ void CreateWorldScreen::updateResultFolder()
 	for( int i = 0; i < SharedConstants::ILLEGAL_FILE_CHARACTERS_LENGTH; i++ )
 	{
 		size_t pos;
-		while( (pos = resultFolder.find(SharedConstants::ILLEGAL_FILE_CHARACTERS[i])) != wstring::npos)
+		while( (pos = resultFolder.find(SharedConstants::ILLEGAL_FILE_CHARACTERS[i])) != std::wstring::npos)
 		{
 			resultFolder[pos] = L'_';
 		}
@@ -65,9 +65,9 @@ void CreateWorldScreen::updateResultFolder()
 
 }
 
-wstring CreateWorldScreen::findAvailableFolderName(LevelStorageSource *levelSource, const wstring& folder)
+std::wstring CreateWorldScreen::findAvailableFolderName(LevelStorageSource *levelSource, const std::wstring& folder)
 {
-	wstring folder2 = folder;	// 4J - copy input as it is const
+	std::wstring folder2 = folder;	// 4J - copy input as it is const
 
 #if 0
     while (levelSource->getDataTagFor(folder2) != NULL)
@@ -98,7 +98,7 @@ void CreateWorldScreen::buttonClicked(Button *button)
         done = true;
 
         __int64 seedValue = (new Random())->nextLong();
-        wstring seedString = seedEdit->getValue();
+        std::wstring seedString = seedEdit->getValue();
 
 		if (seedString.length() != 0)
 		{

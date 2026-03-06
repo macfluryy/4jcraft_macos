@@ -10,7 +10,7 @@ private:
 	static TextureManager *instance;
 
 	int nextID;
-	typedef std::unordered_map<wstring, int> stringIntMap;
+	typedef std::unordered_map<std::wstring, int> stringIntMap;
 	typedef std::unordered_map<int, Texture *> intTextureMap;
 	intTextureMap idToTextureMap;
 	stringIntMap stringToIDMap;
@@ -24,18 +24,18 @@ private:
 
 public:
 	int createTextureID();
-	Texture *getTexture(const wstring &name);
-	void registerName(const wstring &name, Texture *texture);
+	Texture *getTexture(const std::wstring &name);
+	void registerName(const std::wstring &name, Texture *texture);
 	void registerTexture(Texture *texture);
-	void unregisterTexture(const wstring &name, Texture *texture);
-	Stitcher *createStitcher(const wstring &name);
-	vector<Texture *> *createTextures(const wstring &filename, bool mipmap); // 4J added mipmap param
+	void unregisterTexture(const std::wstring &name, Texture *texture);
+	Stitcher *createStitcher(const std::wstring &name);
+	vector<Texture *> *createTextures(const std::wstring &filename, bool mipmap); // 4J added mipmap param
 
 private:
-	wstring getTextureNameFromPath(const wstring &filename);
-	bool isAnimation(const wstring &filename, TexturePack *texturePack);
+	std::wstring getTextureNameFromPath(const std::wstring &filename);
+	bool isAnimation(const std::wstring &filename, TexturePack *texturePack);
 
 public:
-	Texture *createTexture(const wstring &name, int mode, int width, int height, int wrap, int format, int minFilter, int magFilter, bool mipmap, BufferedImage *image);
-	Texture *createTexture(const wstring &name, int mode, int width, int height, int format, bool mipmap); // 4J Added mipmap param
+	Texture *createTexture(const std::wstring &name, int mode, int width, int height, int wrap, int format, int minFilter, int magFilter, bool mipmap, BufferedImage *image);
+	Texture *createTexture(const std::wstring &name, int mode, int width, int height, int format, bool mipmap); // 4J Added mipmap param
 };

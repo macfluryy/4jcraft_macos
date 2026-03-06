@@ -133,7 +133,7 @@ void StatsScreen::GeneralStatisticsList::renderItem(int i, int x, int y, int h, 
 {
     Stat *stat = Stats::generalStats->at(i);
     parent->drawString(parent->font, stat->name, x + 2, y + 1, i % 2 == 0 ? 0xffffff : 0x909090);
-    wstring msg = stat->format(parent->stats->getTotalValue(stat));
+    std::wstring msg = stat->format(parent->stats->getTotalValue(stat));
     parent->drawString(parent->font, msg, x + 2 + 213 - parent->font->width(msg), y + 1, i % 2 == 0 ? 0xffffff : 0x909090);
 }
 
@@ -305,12 +305,12 @@ void StatsScreen::StatisticsList::renderStat(ItemStat *stat, int x, int y, bool 
 {
     if (stat != NULL)
 	{
-        wstring msg = stat->format(parent->stats->getTotalValue(stat));
+        std::wstring msg = stat->format(parent->stats->getTotalValue(stat));
         parent->drawString(parent->font, msg, x - parent->font->width(msg), y + SLOT_TEXT_OFFSET, shaded ? 0xffffff : 0x909090);
     }
 	else
 	{
-        wstring msg = L"-";
+        std::wstring msg = L"-";
         parent->drawString(parent->font, msg, x - parent->font->width(msg), y + SLOT_TEXT_OFFSET, shaded ? 0xffffff : 0x909090);
     }
 }
@@ -336,7 +336,7 @@ void StatsScreen::StatisticsList::renderDecorations(int mouseX, int mouseY)
     }
 	else
 	{
-        wstring elementName;
+        std::wstring elementName;
         if (mouseX >= (rowX + ROW_COL_1 - SLOT_BG_SIZE) && mouseX <= (rowX + ROW_COL_1))
 		{
             elementName = getHeaderDescriptionId(0);
@@ -380,7 +380,7 @@ void StatsScreen::StatisticsList::renderMousehoverTooltip(ItemStat *stat, int x,
 
     Item *item = Item::items[stat->getItemId()];
 
-    wstring elementName = trimString(L"" + Language::getInstance()->getElementName(item->getDescriptionId()));
+    std::wstring elementName = trimString(L"" + Language::getInstance()->getElementName(item->getDescriptionId()));
 
     if (elementName.length() > 0)
 	{
@@ -526,7 +526,7 @@ void StatsScreen::ItemStatisticsList::renderItem(int i, int x, int y, int h, Tes
     renderStat((ItemStat *) stat, x + ROW_COL_3, y, i % 2 == 0);*/
 }
 
-wstring StatsScreen::ItemStatisticsList::getHeaderDescriptionId(int column)
+std::wstring StatsScreen::ItemStatisticsList::getHeaderDescriptionId(int column)
 {
 	if (column == COLUMN_CRAFTED)
 	{
@@ -653,7 +653,7 @@ void StatsScreen::BlockStatisticsList::renderItem(int i, int x, int y, int h, Te
     renderStat((ItemStat *) mineCount, x + ROW_COL_3, y, i % 2 == 0);*/
 }
 
-wstring StatsScreen::BlockStatisticsList::getHeaderDescriptionId(int column)
+std::wstring StatsScreen::BlockStatisticsList::getHeaderDescriptionId(int column)
 {
 	if (column == COLUMN_CRAFTED)
 	{

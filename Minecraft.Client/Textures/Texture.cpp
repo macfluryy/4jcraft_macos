@@ -15,12 +15,12 @@ C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
 
 #define MAX_MIP_LEVELS 5
 
-Texture::Texture(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
+Texture::Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
 {
 	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, mipMap);
 }
 
-void Texture::_init(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
+void Texture::_init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
 {
 #ifdef __PS3__
 	if(g_texBlitJobQueuePort == NULL)
@@ -101,7 +101,7 @@ void Texture::_init(const wstring &name, int mode, int width, int height, int de
 	managerId = TextureManager::getInstance()->createTextureID();
 }
 
-void Texture::_init(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
+void Texture::_init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
 {
 	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, mipMap);
 	if (image == NULL)
@@ -178,12 +178,12 @@ void Texture::_init(const wstring &name, int mode, int width, int height, int de
 	}
 }
 
-Texture::Texture(const wstring &name, int mode, int width, int height, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
+Texture::Texture(const std::wstring &name, int mode, int width, int height, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
 {
 	_init(name, mode, width, height, 1, wrapMode, format, minFilter, magFilter, image, mipMap);
 }
 
-Texture::Texture(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
+Texture::Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
 {
 	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, image, mipMap);
 }
@@ -242,7 +242,7 @@ void Texture::fill(const Rect2i *rect, int color)
 	}
 }
 
-void Texture::writeAsBMP(const wstring &name)
+void Texture::writeAsBMP(const std::wstring &name)
 {
 	// 4J Don't need
 #if 0
@@ -329,7 +329,7 @@ void Texture::writeAsBMP(const wstring &name)
 #endif
 }
 
-void Texture::writeAsPNG(const wstring &filename)
+void Texture::writeAsPNG(const std::wstring &filename)
 {
 	// 4J Don't need
 #if 0
@@ -769,7 +769,7 @@ int Texture::getHeight()
 	return height;
 }
 
-wstring Texture::getName()
+std::wstring Texture::getName()
 {
 	return name;
 }

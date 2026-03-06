@@ -14,7 +14,7 @@ public:
 	WeaponRecipies()			{_init();}
 
 private:
-	static wstring shapes[][4];
+	static std::wstring shapes[][4];
 	vector <Object *> *map;
 	
 public:

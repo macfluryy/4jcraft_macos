@@ -91,7 +91,7 @@ void ServerLevel::staticCtor()
 
 };
 
-ServerLevel::ServerLevel(MinecraftServer *server, std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, int dimension, LevelSettings *levelSettings) : Level(levelStorage, levelName, levelSettings, Dimension::getNew(dimension), false)
+ServerLevel::ServerLevel(MinecraftServer *server, std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, int dimension, LevelSettings *levelSettings) : Level(levelStorage, levelName, levelSettings, Dimension::getNew(dimension), false)
 {
 	InitializeCriticalSection(&m_limiterCS);	
 	InitializeCriticalSection(&m_tickNextTickCS);	

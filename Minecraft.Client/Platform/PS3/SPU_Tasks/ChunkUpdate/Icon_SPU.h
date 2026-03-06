@@ -49,7 +49,7 @@ public:
 		return getV0() + (diff * ((float) offset / 16)); //SharedConstants::WORLD_RESOLUTION));
 	}
 
-// 	virtual wstring getName() const = 0;
+// 	virtual std::wstring getName() const = 0;
 // 	virtual int getSourceWidth() const = 0;
 // 	virtual int getSourceHeight() const = 0;
 };

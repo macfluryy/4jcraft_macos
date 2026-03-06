@@ -119,12 +119,12 @@ public:
 	class SessionInfo
 	{
 	public:
-		SessionInfo(wstring& sessionName, wstring& serviceConfig, wstring& sessionTemplate);
+		SessionInfo(std::wstring& sessionName, std::wstring& serviceConfig, std::wstring& sessionTemplate);
 		SessionInfo();
 		bool m_detailsValid;
-		wstring m_sessionName;
-		wstring m_serviceConfig;
-		wstring m_sessionTemplate;
+		std::wstring m_sessionName;
+		std::wstring m_serviceConfig;
+		std::wstring m_sessionTemplate;
 	};
 
 	static const int MAX_LOCAL_PLAYER_COUNT = 4;
@@ -153,7 +153,7 @@ public:
 	{
 	public:;
 		DQRNetworkPlayer*	m_pPlayer;
-		wstring				m_name;
+		std::wstring				m_name;
 		unsigned int		m_sessionAddress;
 		int					m_channel;
 		bool				m_sync;
@@ -181,7 +181,7 @@ public:
 	DQRNetworkPlayer	*GetPlayerByIndex(int idx);
 	DQRNetworkPlayer	*GetPlayerBySmallId(int idx);
 	DQRNetworkPlayer	*GetPlayerByXuid(PlayerUID xuid);
-	wstring				GetDisplayNameByGamertag(wstring gamertag);
+	std::wstring				GetDisplayNameByGamertag(std::wstring gamertag);
 	DQRNetworkPlayer	*GetLocalPlayerByUserIndex(int idx);
 	DQRNetworkPlayer	*GetHostPlayer();
 	int					GetSessionIndex(DQRNetworkPlayer *player);
@@ -223,16 +223,16 @@ public:
 	public:
 		SessionSearchResult() { m_extData = NULL; }
 		~SessionSearchResult() { free(m_extData); }
-		wstring			m_partyId;
-		wstring			m_sessionName;
+		std::wstring			m_partyId;
+		std::wstring			m_sessionName;
 
 		// These names/xuids reflect the server controlled list of who is actually in the game
-		wstring			m_playerNames[MAX_ONLINE_PLAYER_COUNT];
+		std::wstring			m_playerNames[MAX_ONLINE_PLAYER_COUNT];
 		PlayerUID		m_playerXuids[MAX_ONLINE_PLAYER_COUNT];
 		int				m_playerCount;
 
 		// This count & set of xuids reflects the session document list of who is in the game
-		wstring			m_sessionXuids[MAX_ONLINE_PLAYER_COUNT];
+		std::wstring			m_sessionXuids[MAX_ONLINE_PLAYER_COUNT];
 		int				m_usedSlotCount;
 
 		void			*m_extData;
@@ -488,7 +488,7 @@ public:
 	bool																JoinPartyFromSearchResult(SessionSearchResult *searchResult, int playerMask);
 	void																CancelJoinPartyFromSearchResult();
 	void																RequestDisplayName(DQRNetworkPlayer *player);
-	void																SetDisplayName(PlayerUID xuid, wstring displayName);
+	void																SetDisplayName(PlayerUID xuid, std::wstring displayName);
 
 private:
 	__int64																m_playersLeftPartyTime;
@@ -509,7 +509,7 @@ private:
 	int																	m_sessionResultCount;
 	bool																m_cancelJoinFromSearchResult;
 
-	map<wstring, wstring>												m_displayNames; // Player display names by gamertag
+	map<std::wstring, std::wstring>												m_displayNames; // Player display names by gamertag
 
 
 
@@ -521,9 +521,9 @@ private:
 	} ePartyProcessType;
 	static int															m_bootUserIndex;
 	static ePartyProcessType											m_partyProcess;
-	static wstring														m_bootSessionName;
-	static wstring														m_bootServiceConfig;
-	static wstring														m_bootSessionTemplate;
+	static std::wstring														m_bootSessionName;
+	static std::wstring														m_bootServiceConfig;
+	static std::wstring														m_bootSessionTemplate;
 	static bool															m_inviteReceived;
 
 	static DQRNetworkManager											*s_pDQRManager;

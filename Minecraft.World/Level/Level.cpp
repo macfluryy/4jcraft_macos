@@ -558,7 +558,7 @@ BiomeSource *Level::getBiomeSource()
 	return dimension->biomeSource;
 }
 
-Level::Level(std::shared_ptr<LevelStorage> levelStorage, const wstring& name, Dimension *dimension, LevelSettings *levelSettings, bool doCreateChunkSource)
+Level::Level(std::shared_ptr<LevelStorage> levelStorage, const std::wstring& name, Dimension *dimension, LevelSettings *levelSettings, bool doCreateChunkSource)
 	: seaLevel(constSeaLevel)
 {
 	_init();
@@ -617,20 +617,20 @@ Level::Level(Level *level, Dimension *dimension)
 }
 
 
-Level::Level(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings)
+Level::Level(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings)
 	: seaLevel( constSeaLevel )
 {
 	_init(levelStorage, levelName, levelSettings, NULL, true);
 }
 
 
-Level::Level(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource)
+Level::Level(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource)
 	: seaLevel( constSeaLevel )
 {
 	_init( levelStorage, levelName, levelSettings, fixedDimension, doCreateChunkSource );
 }
 
-void Level::_init(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource)
+void Level::_init(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource)
 {
 	_init();
 	this->levelStorage = levelStorage;//std::shared_ptr<LevelStorage>(levelStorage);
@@ -1602,7 +1602,7 @@ void Level::playSound(std::shared_ptr<Entity> entity, int iSound, float volume, 
 }
 
 
-//void Level::playSound(double x, double y, double z, const wstring& name, float volume, float pitch)
+//void Level::playSound(double x, double y, double z, const std::wstring& name, float volume, float pitch)
 void Level::playSound(double x, double y, double z, int iSound, float volume, float pitch, float fClipSoundDist)
 {
 	AUTO_VAR(itEnd, listeners.end());
@@ -1616,7 +1616,7 @@ void Level::playLocalSound(double x, double y, double z, int iSound, float volum
 {
 }
 
-void Level::playStreamingMusic(const wstring& name, int x, int y, int z)
+void Level::playStreamingMusic(const std::wstring& name, int x, int y, int z)
 {
 	AUTO_VAR(itEnd, listeners.end());
 	for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++)
@@ -1626,13 +1626,13 @@ void Level::playStreamingMusic(const wstring& name, int x, int y, int z)
 }
 
 
-void Level::playMusic(double x, double y, double z, const wstring& string, float volume)
+void Level::playMusic(double x, double y, double z, const std::wstring& string, float volume)
 {
 }
 
 // 4J removed - 
 /*
-void Level::addParticle(const wstring& id, double x, double y, double z, double xd, double yd, double zd)
+void Level::addParticle(const std::wstring& id, double x, double y, double z, double xd, double yd, double zd)
 {
 	AUTO_VAR(itEnd, listeners.end());
 	for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++)
@@ -2825,17 +2825,17 @@ std::shared_ptr<Entity> Level::findSubclassOf(Entity::Class *entityClass)
 */
 
 
-wstring Level::gatherStats()
+std::wstring Level::gatherStats()
 {
 	wchar_t buf[64];
 	EnterCriticalSection(&m_entitiesCS);
 	swprintf(buf,64,L"All:%d",this->entities.size());
 	LeaveCriticalSection(&m_entitiesCS);
-	return wstring(buf);
+	return std::wstring(buf);
 }
 
 
-wstring Level::gatherChunkSourceStats()
+std::wstring Level::gatherChunkSourceStats()
 {
 	return chunkSource->gatherStats();
 }
@@ -4190,7 +4190,7 @@ std::shared_ptr<Player> Level::getNearestAttackablePlayer(double x, double y, do
     return result;
 }
 
-std::shared_ptr<Player> Level::getPlayerByName(const wstring& name)
+std::shared_ptr<Player> Level::getPlayerByName(const std::wstring& name)
 {
 	AUTO_VAR(itEnd, players.end());
 	for (AUTO_VAR(it, players.begin()); it != itEnd; it++)
@@ -4203,7 +4203,7 @@ std::shared_ptr<Player> Level::getPlayerByName(const wstring& name)
 	return std::shared_ptr<Player>();
 }
 
-std::shared_ptr<Player> Level::getPlayerByUUID(const wstring& name)
+std::shared_ptr<Player> Level::getPlayerByUUID(const std::wstring& name)
 {
 	AUTO_VAR(itEnd, players.end());
 	for (AUTO_VAR(it, players.begin()); it != itEnd; it++)
@@ -4506,19 +4506,19 @@ bool Level::isHumidAt(int x, int y, int z)
 }
 
 
-void Level::setSavedData(const wstring& id, std::shared_ptr<SavedData> data)
+void Level::setSavedData(const std::wstring& id, std::shared_ptr<SavedData> data)
 {
 	savedDataStorage->set(id, data);
 }
 
 
-std::shared_ptr<SavedData> Level::getSavedData(const type_info& clazz, const wstring& id)
+std::shared_ptr<SavedData> Level::getSavedData(const type_info& clazz, const std::wstring& id)
 {
 	return savedDataStorage->get(clazz, id);
 }
 
 
-int Level::getFreeAuxValueFor(const wstring& id)
+int Level::getFreeAuxValueFor(const std::wstring& id)
 {
 	return savedDataStorage->getFreeAuxValueFor(id);
 }
@@ -4575,7 +4575,7 @@ bool Level::updateLights()
 	return false;
 }
 
-TilePos *Level::findNearestMapFeature(const wstring& featureName, int x, int y, int z)
+TilePos *Level::findNearestMapFeature(const std::wstring& featureName, int x, int y, int z)
 {
     return getChunkSource()->findNearestMapFeature(this, featureName, x, y, z);
 }

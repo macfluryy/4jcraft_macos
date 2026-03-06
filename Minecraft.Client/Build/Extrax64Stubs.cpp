@@ -500,7 +500,7 @@ void				SetFakeGamertag(char *name){ strcpy_s(fakeGamerTag, name); }
 char*				C_4JProfile::GetGamertag(int iPad){ return fakeGamerTag; }
 #else
 char*				C_4JProfile::GetGamertag(int iPad){ return "PlayerName"; }
-wstring				C_4JProfile::GetDisplayName(int iPad){ return L"PlayerName"; }
+std::wstring				C_4JProfile::GetDisplayName(int iPad){ return L"PlayerName"; }
 #endif
 bool				C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }
 void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(LPVOID, bool, unsigned int),LPVOID lpParam) {}

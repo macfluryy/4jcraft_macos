@@ -8,7 +8,7 @@
 #include "BowItem.h"
 #include "../Util/SoundTypes.h"
 
-const wstring BowItem::TEXTURE_PULL[] = {L"bow_pull_0", L"bow_pull_1", L"bow_pull_2"};
+const std::wstring BowItem::TEXTURE_PULL[] = {L"bow_pull_0", L"bow_pull_1", L"bow_pull_2"};
 
 BowItem::BowItem(int id) : Item( id )
 {

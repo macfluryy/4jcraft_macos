@@ -16,11 +16,11 @@ public:
 	static void staticCtor();
 	virtual eINSTANCEOF GetType() { return eTYPE_TILEENTITY; }
 private:
-	typedef std::unordered_map<wstring, tileEntityCreateFn> idToCreateMapType;
-	typedef std::unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToIdMapType;
+	typedef std::unordered_map<std::wstring, tileEntityCreateFn> idToCreateMapType;
+	typedef std::unordered_map<eINSTANCEOF, std::wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToIdMapType;
 	static idToCreateMapType idCreateMap;
 	static classToIdMapType classIdMap;
-	static void setId(tileEntityCreateFn createFn, eINSTANCEOF clas, wstring id);
+	static void setId(tileEntityCreateFn createFn, eINSTANCEOF clas, std::wstring id);
 	bool remove;
 	unsigned char renderRemoveStage;	// 4J added
 

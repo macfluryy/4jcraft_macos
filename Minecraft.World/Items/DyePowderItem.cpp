@@ -61,7 +61,7 @@ const unsigned int DyePowderItem::COLOR_USE_DESCS[] =
 	IDS_DESC_DYE_WHITE
 };
 
-const wstring DyePowderItem::COLOR_TEXTURES[] =
+const std::wstring DyePowderItem::COLOR_TEXTURES[] =
 { L"dyePowder_black", L"dyePowder_red", L"dyePowder_green", L"dyePowder_brown", L"dyePowder_blue", L"dyePowder_purple", L"dyePowder_cyan", L"dyePowder_silver", L"dyePowder_gray", L"dyePowder_pink",
 L"dyePowder_lime", L"dyePowder_yellow", L"dyePowder_lightBlue", L"dyePowder_magenta", L"dyePowder_orange", L"dyePowder_white"};
 

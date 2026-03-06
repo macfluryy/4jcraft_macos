@@ -203,7 +203,7 @@ bool HellFlatLevelSource::shouldSave()
 	return true;
 }
 
-wstring HellFlatLevelSource::gatherStats()
+std::wstring HellFlatLevelSource::gatherStats()
 {
 	return L"HellFlatLevelSource";
 }
@@ -218,7 +218,7 @@ vector<Biome::MobSpawnerData *> *HellFlatLevelSource::getMobsAt(MobCategory *mob
  	return biome->getMobs(mobCategory);
 }
 
-TilePos *HellFlatLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *HellFlatLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
 	return NULL;
 }

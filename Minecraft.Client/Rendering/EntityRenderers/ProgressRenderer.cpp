@@ -195,7 +195,7 @@ void ProgressRenderer::setType(eProgressStringType eType)
 	LeaveCriticalSection( &ProgressRenderer::s_progress );
 }
 
-void ProgressRenderer::progressStage(wstring &wstrText)
+void ProgressRenderer::progressStage(std::wstring &wstrText)
 {
 	EnterCriticalSection( &ProgressRenderer::s_progress );
 	m_wstrText=wstrText;
@@ -203,10 +203,10 @@ void ProgressRenderer::progressStage(wstring &wstrText)
 	LeaveCriticalSection( &ProgressRenderer::s_progress );
 }
 
-wstring& ProgressRenderer::getProgressString(void)
+std::wstring& ProgressRenderer::getProgressString(void)
 {
 	EnterCriticalSection( &ProgressRenderer::s_progress );
-	wstring &temp=m_wstrText;
+	std::wstring &temp=m_wstrText;
 	LeaveCriticalSection( &ProgressRenderer::s_progress );
 	return temp;
 }

@@ -61,5 +61,5 @@ public:
 	bool containsY(Vec3 *v);
 	bool containsZ(Vec3 *v);
 	void set(AABB *b);
-	wstring toString();
+	std::wstring toString();
 };

@@ -15,12 +15,12 @@ Language *Language::getInstance()
 }
 
 /* 4J Jev, creates 2 identical functions.
-wstring Language::getElement(const wstring& elementId)
+std::wstring Language::getElement(const std::wstring& elementId)
 {
 	return elementId;
 } */
 
-wstring Language::getElement(const wstring& elementId, ...)
+std::wstring Language::getElement(const std::wstring& elementId, ...)
 {
 #ifdef __PSVITA__		// 4J - vita doesn't like having a reference type as the last parameter passed to va_start - we shouldn't need this method anyway
 	return L"";
@@ -31,18 +31,18 @@ wstring Language::getElement(const wstring& elementId, ...)
 #endif
 }
 
-wstring Language::getElement(const wstring& elementId, va_list args)
+std::wstring Language::getElement(const std::wstring& elementId, va_list args)
 {
 	// 4J TODO
 	return elementId;
 }
 
-wstring Language::getElementName(const wstring& elementId)
+std::wstring Language::getElementName(const std::wstring& elementId)
 {
 	return elementId;
 }
 
-wstring Language::getElementDescription(const wstring& elementId)
+std::wstring Language::getElementDescription(const std::wstring& elementId)
 {
 	return elementId;
 }

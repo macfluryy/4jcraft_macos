@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.network.packet.h"
 
-//IndirectEntityDamageSource::IndirectEntityDamageSource(const wstring &msgId, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
+//IndirectEntityDamageSource::IndirectEntityDamageSource(const std::wstring &msgId, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
 IndirectEntityDamageSource::IndirectEntityDamageSource(ChatPacket::EChatPacketMessage msgId, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
 {
 	this->owner = owner;
@@ -21,7 +21,7 @@ std::shared_ptr<Entity> IndirectEntityDamageSource::getEntity()
 	return owner;
 }
 
-//wstring IndirectEntityDamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
+//std::wstring IndirectEntityDamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
 //{
 //	return L"death." + msgId + player->name + owner->getAName();
 //	//return I18n.get("death." + msgId, player.name, owner.getAName());
@@ -29,7 +29,7 @@ std::shared_ptr<Entity> IndirectEntityDamageSource::getEntity()
 
 std::shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(std::shared_ptr<Player> player)
 {
-	wstring additional = L"";
+	std::wstring additional = L"";
 	int type;
 	if(owner != NULL)
 	{

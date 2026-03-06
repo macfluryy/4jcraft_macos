@@ -30,11 +30,11 @@ TextureAndGeometryPacket::~TextureAndGeometryPacket()
 // 	}
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes) 
 {
 	this->textureName = textureName;
 
-	wstring skinValue = textureName.substr(7,textureName.size());
+	std::wstring skinValue = textureName.substr(7,textureName.size());
 	skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
 	std::wstringstream ss;
 	ss << std::dec << skinValue.c_str();
@@ -47,11 +47,11 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const wstring &textureName, P
 	this->uiAnimOverrideBitmask=0;
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile) 
 {
 	this->textureName = textureName;
 
-	wstring skinValue = textureName.substr(7,textureName.size());
+	std::wstring skinValue = textureName.substr(7,textureName.size());
 	skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
 	std::wstringstream ss;
 	ss << std::dec << skinValue.c_str();
@@ -80,11 +80,11 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const wstring &textureName, P
 	}
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes,vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes,vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
 {
 	this->textureName = textureName;
 
-	wstring skinValue = textureName.substr(7,textureName.size());
+	std::wstring skinValue = textureName.substr(7,textureName.size());
 	skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
 	std::wstringstream ss;
 	ss << std::dec << skinValue.c_str();

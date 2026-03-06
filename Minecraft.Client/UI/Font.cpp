@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/Util/Random.h"
 
-Font::Font(Options *options, const wstring& name, Textures* textures, bool enforceUnicode, TEXTURE_NAME textureName, int cols, int rows, int charWidth, int charHeight, unsigned short charMap[]/* = nullptr */) : textures(textures)
+Font::Font(Options *options, const std::wstring& name, Textures* textures, bool enforceUnicode, TEXTURE_NAME textureName, int cols, int rows, int charWidth, int charHeight, unsigned short charMap[]/* = nullptr */) : textures(textures)
 {
 	int charC = cols * rows; // Number of characters in the font
 
@@ -169,36 +169,36 @@ void Font::renderCharacter(wchar_t c)
 	xPos += (float) charWidths[c];
 }
 
-void Font::drawShadow(const wstring& str, int x, int y, int color)
+void Font::drawShadow(const std::wstring& str, int x, int y, int color)
 {
     draw(str, x + 1, y + 1, color, true);
     draw(str, x, y, color, false);
 }
 
-void Font::drawShadowWordWrap(const wstring &str, int x, int y, int w, int color, int h)
+void Font::drawShadowWordWrap(const std::wstring &str, int x, int y, int w, int color, int h)
 {
 	drawWordWrapInternal(str, x + 1, y + 1, w, color, true, h);
 	drawWordWrapInternal(str, x, y, w, color, h);
 }
 
-void Font::draw(const wstring& str, int x, int y, int color)
+void Font::draw(const std::wstring& str, int x, int y, int color)
 {
 	draw(str, x, y, color, false);
 }
 
-wstring Font::reorderBidi(const wstring &str)
+std::wstring Font::reorderBidi(const std::wstring &str)
 {
 	// 4J Not implemented
 	return str;
 }
 
-void Font::draw(const wstring &str, bool dropShadow)
+void Font::draw(const std::wstring &str, bool dropShadow)
 {
 	// Bind the texture
 	textures->bindTexture(m_textureName);
 
 	bool noise = false;
-	wstring cleanStr = sanitize(str);
+	std::wstring cleanStr = sanitize(str);
 
 	for (int i = 0; i < (int)cleanStr.length(); ++i)
 	{
@@ -250,7 +250,7 @@ void Font::draw(const wstring &str, bool dropShadow)
 	}
 }
 
-void Font::draw(const wstring& str, int x, int y, int color, bool dropShadow)
+void Font::draw(const std::wstring& str, int x, int y, int color, bool dropShadow)
 {
 	if (!str.empty())
 	{
@@ -268,9 +268,9 @@ void Font::draw(const wstring& str, int x, int y, int color, bool dropShadow)
 	}
 }
 
-int Font::width(const wstring& str)
+int Font::width(const std::wstring& str)
 {
-	wstring cleanStr = sanitize(str);
+	std::wstring cleanStr = sanitize(str);
 
 	if (cleanStr == L"") return 0;	// 4J - was NULL comparison
 	int len = 0;
@@ -293,9 +293,9 @@ int Font::width(const wstring& str)
 	return len;
 }
 
-wstring Font::sanitize(const wstring& str)
+std::wstring Font::sanitize(const std::wstring& str)
 {
-	wstring sb = str;
+	std::wstring sb = str;
 
     for (unsigned int i = 0; i < sb.length(); i++)
 	{
@@ -337,7 +337,7 @@ bool Font::CharacterExists(wchar_t c)
 	}
 }
 
-void Font::drawWordWrap(const wstring &string, int x, int y, int w, int col, int h)
+void Font::drawWordWrap(const std::wstring &string, int x, int y, int w, int col, int h)
 {
 	//if (bidirectional)
 	//{
@@ -346,12 +346,12 @@ void Font::drawWordWrap(const wstring &string, int x, int y, int w, int col, int
 	drawWordWrapInternal(string, x, y, w, col, h);
 }
 
-void Font::drawWordWrapInternal(const wstring &string, int x, int y, int w, int col, int h)
+void Font::drawWordWrapInternal(const std::wstring &string, int x, int y, int w, int col, int h)
 {
 	drawWordWrapInternal(string, x, y, w, col, false, h);
 }
 
-void Font::drawWordWrap(const wstring &string, int x, int y, int w, int col, bool darken, int h)
+void Font::drawWordWrap(const std::wstring &string, int x, int y, int w, int col, bool darken, int h)
 {
 	//if (bidirectional)
 	//{
@@ -360,9 +360,9 @@ void Font::drawWordWrap(const wstring &string, int x, int y, int w, int col, boo
 	drawWordWrapInternal(string, x, y, w, col, darken, h);
 }
 
-void Font::drawWordWrapInternal(const wstring& string, int x, int y, int w, int col, bool darken, int h)
+void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w, int col, bool darken, int h)
 {
-    vector<wstring>lines = stringSplit(string,L'\n');
+    vector<std::wstring>lines = stringSplit(string,L'\n');
     if (lines.size() > 1)
 	{
 		AUTO_VAR(itEnd, lines.end());
@@ -375,11 +375,11 @@ void Font::drawWordWrapInternal(const wstring& string, int x, int y, int w, int 
         }
         return;
     }
-    vector<wstring> words = stringSplit(string,L' ');
+    vector<std::wstring> words = stringSplit(string,L' ');
     unsigned int pos = 0;
     while (pos < words.size())
 	{
-        wstring line = words[pos++] + L" ";
+        std::wstring line = words[pos++] + L" ";
         while (pos < words.size() && width(line + words[pos]) < w)
 		{
             line += words[pos++] + L" ";
@@ -411,9 +411,9 @@ void Font::drawWordWrapInternal(const wstring& string, int x, int y, int w, int 
 
 }
 
-int Font::wordWrapHeight(const wstring& string, int w)
+int Font::wordWrapHeight(const std::wstring& string, int w)
 {
-    vector<wstring> lines = stringSplit(string,L'\n');
+    vector<std::wstring> lines = stringSplit(string,L'\n');
     if (lines.size() > 1)
 	{
         int h = 0;
@@ -424,12 +424,12 @@ int Font::wordWrapHeight(const wstring& string, int w)
         }
         return h;
     }
-	vector<wstring> words = stringSplit(string,L' ');
+	vector<std::wstring> words = stringSplit(string,L' ');
     unsigned int pos = 0;
     int y = 0;
     while (pos < words.size())
 	{
-        wstring line = words[pos++] + L" ";
+        std::wstring line = words[pos++] + L" ";
         while (pos < words.size() && width(line + words[pos]) < w)
 		{
             line += words[pos++] + L" ";
@@ -466,7 +466,7 @@ void Font::setBidirectional(bool bidirectional)
 	this->bidirectional = bidirectional;
 }
 
-bool Font::AllCharactersValid(const wstring &str)
+bool Font::AllCharactersValid(const std::wstring &str)
 {
 	for (int i = 0; i < (int)str.length(); ++i)
 	{

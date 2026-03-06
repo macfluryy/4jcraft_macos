@@ -75,7 +75,7 @@ File OldChunkStorage::getFile(int x, int z)
 	_itow(z & 63,path2,36);
 #endif
 	//sprintf(file,"%s\\%s",dir,path1);
-	File file( dir, wstring( path1 ) );
+	File file( dir, std::wstring( path1 ) );
 	if( !file.exists() )
 	{
 		if(create) file.mkdir();
@@ -87,7 +87,7 @@ File OldChunkStorage::getFile(int x, int z)
 
 	//strcat(file,"\\");
 	//strcat(file,path2);
-	file = File( file, wstring( path2 ) );
+	file = File( file, std::wstring( path2 ) );
 	if( !file.exists() )
 	{
 		if(create) file.mkdir();
@@ -100,7 +100,7 @@ File OldChunkStorage::getFile(int x, int z)
 	//strcat(file,"\\");
 	//strcat(file,name);
 	//sprintf(file,"%s\\%s",file,name);
-	file = File( file, wstring( name ) );
+	file = File( file, std::wstring( name ) );
 	if ( !file.exists() )
 	{
 		if (!create) 

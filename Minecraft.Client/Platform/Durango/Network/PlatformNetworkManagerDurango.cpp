@@ -744,12 +744,12 @@ bool CPlatformNetworkManagerDurango::SystemFlagGet(INetworkPlayer *pNetworkPlaye
 	return false;
 }
 
-wstring CPlatformNetworkManagerDurango::GatherStats()
+std::wstring CPlatformNetworkManagerDurango::GatherStats()
 {
 	return L"";
 }
 
-wstring CPlatformNetworkManagerDurango::GatherRTTStats()
+std::wstring CPlatformNetworkManagerDurango::GatherRTTStats()
 {
 	return L"";
 }
@@ -883,7 +883,7 @@ INetworkPlayer * CPlatformNetworkManagerDurango::GetPlayerBySmallId(unsigned cha
 	return getNetworkPlayer(m_pDQRNet->GetPlayerBySmallId(smallId));
 }
 
-wstring CPlatformNetworkManagerDurango::GetDisplayNameByGamertag(wstring gamertag)
+std::wstring CPlatformNetworkManagerDurango::GetDisplayNameByGamertag(std::wstring gamertag)
 {
 	return m_pDQRNet->GetDisplayNameByGamertag(gamertag);
 }

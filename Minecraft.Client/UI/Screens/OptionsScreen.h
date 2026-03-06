@@ -10,7 +10,7 @@ private:
     static const int VIDEO_BUTTON_ID = 101;
     Screen *lastScreen;
 protected:
-	wstring title;
+	std::wstring title;
 private:
 	Options *options;
 public:

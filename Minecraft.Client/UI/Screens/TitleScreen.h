@@ -11,7 +11,7 @@ private:
 
     float vo;
 
-    wstring splash;
+    std::wstring splash;
     Button *multiplayerButton;
 
 public:

@@ -6,8 +6,8 @@ class MelonTile : public Tile
 {
 	friend class ChunkRebuildData;
 private:
-	static const wstring TEX;
-    static const wstring TEX_TOP;
+	static const std::wstring TEX;
+    static const std::wstring TEX_TOP;
 
 	Icon *iconTop;
 

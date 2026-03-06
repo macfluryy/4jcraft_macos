@@ -18,9 +18,9 @@ MonsterPlacerItem::MonsterPlacerItem(int id) : Item(id)
 	overlay = NULL;
 }
 
-wstring MonsterPlacerItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
+std::wstring MonsterPlacerItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
-	wstring elementName = getDescription();
+	std::wstring elementName = getDescription();
 
 	int nameId = EntityIO::getNameId(itemInstance->getAuxValue());
 	if (nameId >= 0)

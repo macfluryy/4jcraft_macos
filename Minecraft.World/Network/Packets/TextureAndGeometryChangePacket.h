@@ -8,11 +8,11 @@ class TextureAndGeometryChangePacket : public Packet, public enable_shared_from_
 public:
 
     int id;
-	wstring path;
+	std::wstring path;
 	DWORD dwSkinID;
 
 	TextureAndGeometryChangePacket();
-	TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const wstring &path);
+	TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const std::wstring &path);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

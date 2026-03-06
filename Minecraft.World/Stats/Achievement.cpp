@@ -15,18 +15,18 @@ void Achievement::_init()
 	if (y > Achievements::yMax) Achievements::yMax = y;
 }
 
-Achievement::Achievement(int id, const wstring& name, int x, int y, Item *icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(wstring(L"achievement.").append(name)) ), desc( I18n::get(wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
+Achievement::Achievement(int id, const std::wstring& name, int x, int y, Item *icon, Achievement *requires)
+	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
 {
 }
 
-Achievement::Achievement(int id, const wstring& name, int x, int y, Tile *icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(wstring(L"achievement.").append(name)) ), desc( I18n::get(wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
+Achievement::Achievement(int id, const std::wstring& name, int x, int y, Tile *icon, Achievement *requires)
+	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
 {
 }
 
-Achievement::Achievement(int id, const wstring& name, int x, int y, std::shared_ptr<ItemInstance> icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(wstring(L"achievement.").append(name)) ), desc( I18n::get(wstring(L"achievement.").append(name).append(L".desc"))), icon(icon), x(x), y(y), requires(requires)
+Achievement::Achievement(int id, const std::wstring& name, int x, int y, std::shared_ptr<ItemInstance> icon, Achievement *requires)
+	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon(icon), x(x), y(y), requires(requires)
 {
 }
 
@@ -56,7 +56,7 @@ bool Achievement::isAchievement()
 	return true;
 }
 
-wstring Achievement::getDescription() 
+std::wstring Achievement::getDescription() 
 {
 	if (descFormatter != NULL) 
 	{

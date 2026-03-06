@@ -19,7 +19,7 @@ public:
 	static const unsigned int ANVIL_NAMES[ANVIL_NAMES_LENGTH];
 
 private:
-	static wstring TEXTURE_DAMAGE_NAMES[ANVIL_NAMES_LENGTH];
+	static std::wstring TEXTURE_DAMAGE_NAMES[ANVIL_NAMES_LENGTH];
 
 public:
 	int part;

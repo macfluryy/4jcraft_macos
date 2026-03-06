@@ -9,10 +9,10 @@ class RenameWorldScreen : public Screen
 private:
 	Screen *lastScreen;
     EditBox *nameEdit;
-    wstring levelId;
+    std::wstring levelId;
 
 public:
-	RenameWorldScreen(Screen *lastScreen, const wstring& levelId);
+	RenameWorldScreen(Screen *lastScreen, const std::wstring& levelId);
     virtual void tick();
     virtual void init() ;
     virtual void removed();

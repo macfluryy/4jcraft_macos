@@ -13,7 +13,7 @@ const unsigned int TreeTile::TREE_NAMES[TREE_NAMES_LENGTH] = {	IDS_TILE_LOG_OAK,
 													IDS_TILE_LOG_JUNGLE
 												};
 
-const wstring TreeTile::TREE_TEXTURES[] = {L"tree_side", L"tree_spruce", L"tree_birch", L"tree_jungle"};
+const std::wstring TreeTile::TREE_TEXTURES[] = {L"tree_side", L"tree_spruce", L"tree_birch", L"tree_jungle"};
 
 TreeTile::TreeTile(int id) : Tile(id, Material::wood)
 {

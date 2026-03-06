@@ -9,17 +9,17 @@
 #endif // _WIN32
 #include "Hasher.h"
 
-Hasher::Hasher(wstring &salt)
+Hasher::Hasher(std::wstring &salt)
 {
 	this->salt = salt;
 }
 
-wstring Hasher::getHash(wstring &name)
+std::wstring Hasher::getHash(std::wstring &name)
 {
 #if defined(_WIN32)
 	// 4J Stu - Removed try/catch
 	//try {
-		wstring s = wstring( salt ).append( name );
+		std::wstring s = std::wstring( salt ).append( name );
 		//MessageDigest m;
 		//m = MessageDigest.getInstance("MD5");
 		//m.update(s.getBytes(), 0, s.length());

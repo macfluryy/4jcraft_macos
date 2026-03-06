@@ -7,7 +7,7 @@ class StemTile : public Bush
 {
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURE_ANGLED;
+	static const std::wstring TEXTURE_ANGLED;
 
 private:
 	Tile *fruit;

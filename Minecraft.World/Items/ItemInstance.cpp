@@ -389,7 +389,7 @@ std::shared_ptr<ItemInstance> ItemInstance::clone(std::shared_ptr<ItemInstance> 
     return item == NULL ? nullptr : item->copy();
 }
 
-wstring ItemInstance::toString() 
+std::wstring ItemInstance::toString() 
 {
     //return count + "x" + Item::items[id]->getDescriptionId() + "@" + auxValue;
 	
@@ -470,9 +470,9 @@ void ItemInstance::setTag(CompoundTag *tag)
 	this->tag = tag;
 }
 
-wstring ItemInstance::getHoverName()
+std::wstring ItemInstance::getHoverName()
 {
-	wstring title = getItem()->getHoverName(shared_from_this());
+	std::wstring title = getItem()->getHoverName(shared_from_this());
 
 	if (tag != NULL && tag->contains(L"display"))
 	{
@@ -487,7 +487,7 @@ wstring ItemInstance::getHoverName()
 	return title;
 }
 
-void ItemInstance::setHoverName(const wstring &name)
+void ItemInstance::setHoverName(const std::wstring &name)
 {
 	if (tag == NULL) tag = new CompoundTag();
 	if (!tag->contains(L"display")) tag->putCompound(L"display", new CompoundTag());
@@ -501,11 +501,11 @@ bool ItemInstance::hasCustomHoverName()
 	return tag->getCompound(L"display")->contains(L"Name");
 }
 
-vector<wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool advanced, vector<wstring> &unformattedStrings)
+vector<std::wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings)
 {
-	vector<wstring> *lines = new vector<wstring>();
+	vector<std::wstring> *lines = new vector<std::wstring>();
 	Item *item = Item::items[id];
-	wstring title = getHoverName();
+	std::wstring title = getHoverName();
 
 	// 4J Stu - We don't do italics, but do change colour. But handle this later in the process due to text length measuring on the Xbox360
 	//if (hasCustomHoverName())
@@ -557,7 +557,7 @@ vector<wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool
 
 				if (Enchantment::enchantments[type] != NULL)
 				{
-					wstring unformatted = L"";
+					std::wstring unformatted = L"";
 					lines->push_back(Enchantment::enchantments[type]->getFullname(level, unformatted));
 					unformattedStrings.push_back(unformatted);
 				}
@@ -568,9 +568,9 @@ vector<wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool
 }
 
 // 4J Added
-vector<wstring> *ItemInstance::getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<wstring> &unformattedStrings)
+vector<std::wstring> *ItemInstance::getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings)
 {
-	vector<wstring> *lines = new vector<wstring>();
+	vector<std::wstring> *lines = new vector<std::wstring>();
 	Item *item = Item::items[id];
 
 	item->appendHoverText(shared_from_this(), player, lines, advanced, unformattedStrings);
@@ -587,7 +587,7 @@ vector<wstring> *ItemInstance::getHoverTextOnly(std::shared_ptr<Player> player, 
 
 				if (Enchantment::enchantments[type] != NULL)
 				{
-					wstring unformatted = L"";
+					std::wstring unformatted = L"";
 					lines->push_back(Enchantment::enchantments[type]->getFullname(level,unformatted));
 					unformattedStrings.push_back(unformatted);
 				}
@@ -632,7 +632,7 @@ bool ItemInstance::isEnchanted()
 	return false;
 }
 
-void ItemInstance::addTagElement(wstring name, Tag *tag)
+void ItemInstance::addTagElement(std::wstring name, Tag *tag)
 {
 	if (this->tag == NULL)
 	{

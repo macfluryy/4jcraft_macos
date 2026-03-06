@@ -323,7 +323,7 @@ bool Ozelot::canSpawn()
 	return false;
 }
 
-wstring Ozelot::getAName()
+std::wstring Ozelot::getAName()
 {
 	if (isTame())
 	{

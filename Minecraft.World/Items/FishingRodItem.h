@@ -9,7 +9,7 @@ class Level;
 class FishingRodItem : public Item
 {
 public:
-	static const wstring TEXTURE_EMPTY;
+	static const std::wstring TEXTURE_EMPTY;
 
 private:
 	Icon *emptyIcon;

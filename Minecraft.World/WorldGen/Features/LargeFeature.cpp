@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "LargeFeature.h"
 
-const wstring LargeFeature::STRONGHOLD = L"StrongHold";
+const std::wstring LargeFeature::STRONGHOLD = L"StrongHold";
 
 LargeFeature::LargeFeature()
 {

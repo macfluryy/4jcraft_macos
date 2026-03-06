@@ -12,12 +12,12 @@ bool Command::canExecute(std::shared_ptr<CommandSender> source)
 	return source->hasPermission(getId());
 }
 
-void Command::logAdminAction(std::shared_ptr<CommandSender> source, ChatPacket::EChatPacketMessage messageType, const wstring& message, int customData, const wstring& additionalMessage)
+void Command::logAdminAction(std::shared_ptr<CommandSender> source, ChatPacket::EChatPacketMessage messageType, const std::wstring& message, int customData, const std::wstring& additionalMessage)
 {
 	logAdminAction(source, 0, messageType, message, customData, additionalMessage);
 }
 
-void Command::logAdminAction(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const wstring& message, int customData, const wstring& additionalMessage)
+void Command::logAdminAction(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const std::wstring& message, int customData, const std::wstring& additionalMessage)
 {
 	if (logger != NULL)
 	{

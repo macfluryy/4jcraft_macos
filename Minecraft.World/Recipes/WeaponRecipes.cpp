@@ -7,7 +7,7 @@
 #include "WeaponRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring WeaponRecipies::shapes[][4] = 
+std::wstring WeaponRecipies::shapes[][4] = 
 {
 			{L"X", //
 			 L"X",//

@@ -37,10 +37,10 @@ private:
 public:
     bool selectSkin(TexturePack *skin);
 
-	void selectWebSkin(const wstring &url);
+	void selectWebSkin(const std::wstring &url);
 
 private:
-	void downloadWebSkin(const wstring &url, File file);
+	void downloadWebSkin(const std::wstring &url, File file);
 
 public:
 	bool isUsingWebSkin();
@@ -48,7 +48,7 @@ public:
     void updateList();
 
 private:
-	wstring getIdOrNull(File file);
+	std::wstring getIdOrNull(File file);
     vector<File> getWorkDirContents();
 
 public:
@@ -60,7 +60,7 @@ public:
 	bool isUsingDefaultSkin() { return selected == DEFAULT_TEXTURE_PACK; } // 4J Added
 	TexturePack *getDefault() { return DEFAULT_TEXTURE_PACK; } // 4J Added
 
-	vector< pair<DWORD,wstring> > *getTexturePackIdNames();
+	vector< pair<DWORD,std::wstring> > *getTexturePackIdNames();
 	bool selectTexturePackById(DWORD id); // 4J Added
 	TexturePack *getTexturePackById(DWORD id); // 4J Added
 

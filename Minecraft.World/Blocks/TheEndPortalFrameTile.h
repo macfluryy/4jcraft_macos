@@ -5,7 +5,7 @@ class TheEndPortalFrameTile : public Tile
 {
 public:
 	static const int EYE_BIT = 4;
-	static const wstring TEXTURE_EYE;
+	static const std::wstring TEXTURE_EYE;
 
 private:
 	Icon *iconTop;

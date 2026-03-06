@@ -16,7 +16,7 @@ void GameType::staticCtor()
 	ADVENTURE = new GameType(2, L"adventure");
 }
 
-GameType::GameType(int id, const wstring &name)
+GameType::GameType(int id, const std::wstring &name)
 {
 	this->id = id;
 	this->name = name;
@@ -27,7 +27,7 @@ int GameType::getId()
 	return id;
 }
 
-wstring GameType::getName()
+std::wstring GameType::getName()
 {
 	return name;
 }
@@ -75,7 +75,7 @@ GameType *GameType::byId(int id)
 	return SURVIVAL;
 }
 
-GameType *GameType::byName(const wstring &name)
+GameType *GameType::byName(const std::wstring &name)
 {
 	if(name.compare(NOT_SET->name) == 0) return NOT_SET;
 	else if(name.compare(SURVIVAL->name) == 0) return SURVIVAL;

@@ -13,7 +13,7 @@
 #include "FishingRodItem.h"
 #include "../Util/SoundTypes.h"
 
-const wstring FishingRodItem::TEXTURE_EMPTY = L"fishingRod_empty";
+const std::wstring FishingRodItem::TEXTURE_EMPTY = L"fishingRod_empty";
 
 FishingRodItem::FishingRodItem(int id) : Item(id)
 {

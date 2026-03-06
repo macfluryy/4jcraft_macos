@@ -16,14 +16,14 @@ protected:
 
 	typedef struct _MetaData
 	{
-		wstring filename;
+		std::wstring filename;
 		int ptr;
 		int filesize;
 		bool isCompressed;
 
 	} MetaData, *PMetaData;
 	
-	std::unordered_map<wstring, PMetaData> m_index;
+	std::unordered_map<std::wstring, PMetaData> m_index;
 	
 public:
 	void _readHeader(DataInputStream *dis);
@@ -31,8 +31,8 @@ public:
 	ArchiveFile(File file);
 	~ArchiveFile();
 
-	vector<wstring> *getFileList();
-	bool hasFile(const wstring &filename);
-	int getFileSize(const wstring &filename);
-	byteArray getFile(const wstring &filename);
+	vector<std::wstring> *getFileList();
+	bool hasFile(const std::wstring &filename);
+	int getFileSize(const std::wstring &filename);
+	byteArray getFile(const std::wstring &filename);
 };

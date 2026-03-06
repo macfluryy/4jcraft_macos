@@ -240,7 +240,7 @@ bool Particle::isAttackable()
 }
 
 //@Override
-wstring Particle::toString()
+std::wstring Particle::toString()
 {
 	return L"A particle"; //getClass()->getSimpleName() + ", Pos (" + x + "," + y + "," + z + "), RGBA (" + rCol + "," + gCol + "," + bCol + "," + alpha + "), Age " + age;
 }

@@ -62,15 +62,15 @@ public:
     virtual void handleSetCarriedItem(std::shared_ptr<SetCarriedItemPacket> packet);
     virtual void handleChat(std::shared_ptr<ChatPacket> packet);
 private:
-	void handleCommand(const wstring& message);
+	void handleCommand(const std::wstring& message);
 public:
 	virtual void handleAnimate(std::shared_ptr<AnimatePacket> packet);
     virtual void handlePlayerCommand(std::shared_ptr<PlayerCommandPacket> packet);
     virtual void handleDisconnect(std::shared_ptr<DisconnectPacket> packet);
     int countDelayedPackets();
-    virtual void info(const wstring& string);
-    virtual void warn(const wstring& string);
-    virtual wstring getConsoleName();
+    virtual void info(const std::wstring& string);
+    virtual void warn(const std::wstring& string);
+    virtual std::wstring getConsoleName();
     virtual void handleInteract(std::shared_ptr<InteractPacket> packet);
 	bool canHandleAsyncPackets();
 	virtual void handleClientCommand(std::shared_ptr<ClientCommandPacket> packet);
@@ -120,8 +120,8 @@ public:
 	void closeOnTick() { m_bCloseOnTick = true; }
 
 	// 4J Added so that we can send on textures that get received after this connection requested them
-	void handleTextureReceived(const wstring &textureName);
-	void handleTextureAndGeometryReceived(const wstring &textureName);
+	void handleTextureReceived(const std::wstring &textureName);
+	void handleTextureAndGeometryReceived(const std::wstring &textureName);
 
 	void setShowOnMaps(bool bVal);
 
@@ -133,7 +133,7 @@ public:
 
 private:
 	bool m_bCloseOnTick;
-	vector<wstring> m_texturesRequested;
+	vector<std::wstring> m_texturesRequested;
 
 	bool m_bWasKicked;
 };

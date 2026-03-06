@@ -287,7 +287,7 @@ std::shared_ptr<Player> Village::getClosestBadStandingPlayer(std::shared_ptr<Mob
 	//for (String player : playerStanding.keySet())
 	for(AUTO_VAR(it,playerStanding.begin()); it != playerStanding.end(); ++it)
 	{
-		wstring player = it->first;
+		std::wstring player = it->first;
 		if (isVeryBadStanding(player))
 		{
 			std::shared_ptr<Player> mob = level->getPlayerByName(player);
@@ -380,7 +380,7 @@ void Village::calcInfo()
 	radius = max(doorDist, (int) sqrt((float)maxRadiusSqr) + 1);
 }
 
-int Village::getStanding(const wstring &playerName)
+int Village::getStanding(const std::wstring &playerName)
 {
 	AUTO_VAR(it,playerStanding.find(playerName));
 	if (it != playerStanding.end())
@@ -390,25 +390,25 @@ int Village::getStanding(const wstring &playerName)
 	return 0;
 }
 
-int Village::modifyStanding(const wstring &playerName, int delta)
+int Village::modifyStanding(const std::wstring &playerName, int delta)
 {
 	int current = getStanding(playerName);
 	int newValue = Mth::clamp(current + delta, -30, 10);
-	playerStanding.insert(pair<wstring,int>(playerName, newValue));
+	playerStanding.insert(pair<std::wstring,int>(playerName, newValue));
 	return newValue;
 }
 
-bool Village::isGoodStanding(const wstring &playerName)
+bool Village::isGoodStanding(const std::wstring &playerName)
 {
 	return getStanding(playerName) >= 0;
 }
 
-bool Village::isBadStanding(const wstring &playerName)
+bool Village::isBadStanding(const std::wstring &playerName)
 {
 	return getStanding(playerName) <= -5;
 }
 
-bool Village::isVeryBadStanding(const wstring playerName)
+bool Village::isVeryBadStanding(const std::wstring playerName)
 {
 	return getStanding(playerName) <= -15;
 }
@@ -441,7 +441,7 @@ void Village::readAdditionalSaveData(CompoundTag *tag)
 	for (int i = 0; i < playerTags->size(); i++)
 	{
 		CompoundTag *pTag = playerTags->get(i);
-		playerStanding.insert(pair<wstring,int>(pTag->getString(L"Name"), pTag->getInt(L"S")));
+		playerStanding.insert(pair<std::wstring,int>(pTag->getString(L"Name"), pTag->getInt(L"S")));
 	}
 }
 
@@ -480,7 +480,7 @@ void Village::addAdditonalSaveData(CompoundTag *tag)
 	//for (String player : playerStanding.keySet())
 	for(AUTO_VAR(it, playerStanding.begin()); it != playerStanding.end(); ++it)
 	{
-		wstring player = it->first;
+		std::wstring player = it->first;
 		CompoundTag *playerTag = new CompoundTag(player);
 		playerTag->putString(L"Name", player);
 		playerTag->putInt(L"S", it->second);

@@ -47,11 +47,11 @@ void BufferedImage::ByteFlip4(unsigned int &data)
 // Loads a bitmap into a buffered image - only currently supports the 2 types of 32-bit image that we've made so far
 // and determines which of these is which by the compression method. Compression method 3 is a 32-bit image with only
 // 24-bits used (ie no alpha channel) whereas method 0 is a full 32-bit image with a valid alpha channel. 
-BufferedImage::BufferedImage(const wstring& File, bool filenameHasExtension /*=false*/, bool bTitleUpdateTexture /*=false*/, const wstring &drive /*=L""*/)
+BufferedImage::BufferedImage(const std::wstring& File, bool filenameHasExtension /*=false*/, bool bTitleUpdateTexture /*=false*/, const std::wstring &drive /*=L""*/)
 {
 	HRESULT hr;
-	wstring wDrive;
-	wstring filePath;
+	std::wstring wDrive;
+	std::wstring filePath;
 	filePath = File;
 
 	wDrive = drive;
@@ -87,7 +87,7 @@ BufferedImage::BufferedImage(const wstring& File, bool filenameHasExtension /*=f
 			pchUsrDir=getUsrDirPath();
 		}
 
-		wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+		std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
 		if(bTitleUpdateTexture)
 		{
@@ -102,7 +102,7 @@ BufferedImage::BufferedImage(const wstring& File, bool filenameHasExtension /*=f
 
 		/*char *pchUsrDir=getUsrDirPath();
 
-		wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+		std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
 		if(bTitleUpdateTexture)
 		{
@@ -145,8 +145,8 @@ BufferedImage::BufferedImage(const wstring& File, bool filenameHasExtension /*=f
 
 	for( int l = 0; l < 10; l++ )
 	{
-		wstring name;
-		wstring mipMapPath = L"";
+		std::wstring name;
+		std::wstring mipMapPath = L"";
 		if( l != 0 )
 		{
 			mipMapPath = L"MipMapLevel" + _toString<int>(l+1);
@@ -189,10 +189,10 @@ BufferedImage::BufferedImage(const wstring& File, bool filenameHasExtension /*=f
 	}
 }
 
-BufferedImage::BufferedImage(DLCPack *dlcPack, const wstring& File, bool filenameHasExtension /*= false*/ )
+BufferedImage::BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool filenameHasExtension /*= false*/ )
 {
 	HRESULT hr;
-	wstring filePath = File;
+	std::wstring filePath = File;
 	BYTE *pbData = NULL;
 	DWORD dwBytes = 0;
 
@@ -203,8 +203,8 @@ BufferedImage::BufferedImage(DLCPack *dlcPack, const wstring& File, bool filenam
 
 	for( int l = 0; l < 10; l++ )
 	{
-		wstring name;
-		wstring mipMapPath = L"";
+		std::wstring name;
+		std::wstring mipMapPath = L"";
 		if( l != 0 )
 		{
 			mipMapPath = L"MipMapLevel" + _toString<int>(l+1);

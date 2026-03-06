@@ -4,9 +4,9 @@
 #include "../Headers/net.minecraft.world.h"
 #include "SandStoneTile.h"
 
-const wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";
-const wstring SandStoneTile::TEXTURE_BOTTOM = L"sandstone_bottom";
-const wstring SandStoneTile::TEXTURE_NAMES[] = {L"sandstone_side", L"sandstone_carved", L"sandstone_smooth"};
+const std::wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";
+const std::wstring SandStoneTile::TEXTURE_BOTTOM = L"sandstone_bottom";
+const std::wstring SandStoneTile::TEXTURE_NAMES[] = {L"sandstone_side", L"sandstone_carved", L"sandstone_smooth"};
 
 int SandStoneTile::SANDSTONE_NAMES[SANDSTONE_BLOCK_NAMES] = {
 	IDS_TILE_SANDSTONE, IDS_TILE_SANDSTONE_CHISELED, IDS_TILE_SANDSTONE_SMOOTH

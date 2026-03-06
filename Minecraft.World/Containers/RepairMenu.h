@@ -35,7 +35,7 @@ public:
 
 private:
 	int repairItemCountCost;
-	wstring itemName;
+	std::wstring itemName;
 	std::shared_ptr<Player> player;
 
 public:
@@ -51,5 +51,5 @@ public:
 	void removed(std::shared_ptr<Player> player);
 	bool stillValid(std::shared_ptr<Player> player);
 	std::shared_ptr<ItemInstance> quickMoveStack(std::shared_ptr<Player> player, int slotIndex);
-	void setItemName(const wstring &name);
+	void setItemName(const std::wstring &name);
 };

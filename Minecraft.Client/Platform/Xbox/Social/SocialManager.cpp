@@ -316,7 +316,7 @@ void CSocialManager::DestroyPreviewPostImage()
 
 void CSocialManager::SetSocialPostText(LPCWSTR pwchTitle, LPCWSTR pwchCaption, LPCWSTR pwchDesc)
 {
-	wstring wTemp;
+	std::wstring wTemp;
 
 	ZeroMemory(m_wchTitleA,sizeof(WCHAR)*(MAX_SOCIALPOST_CAPTION+1));
 	ZeroMemory(m_wchCaptionA,sizeof(WCHAR)*(MAX_SOCIALPOST_CAPTION+1));

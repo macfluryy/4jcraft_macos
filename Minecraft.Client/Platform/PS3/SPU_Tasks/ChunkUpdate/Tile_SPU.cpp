@@ -575,7 +575,7 @@ void Tile_SPU::updateDefaultShape()
 // 	return this;
 // }
 // 
-// wstring Tile_SPU::getName()
+// std::wstring Tile_SPU::getName()
 // {
 // 	return I18n::get(getDescriptionId() + L".name");
 // }
@@ -655,12 +655,12 @@ Material_SPU* Tile_SPU::getMaterial()
 // 	icon = iconRegister->registerIcon(m_textureName);
 // }
 // 
-// wstring Tile_SPU::getTileItemIconName()
+// std::wstring Tile_SPU::getTileItemIconName()
 // {
 // 	return L"";
 // }
 // 
-// Tile *Tile_SPU::setTextureName(const wstring &name)
+// Tile *Tile_SPU::setTextureName(const std::wstring &name)
 // {
 // 	m_textureName = name;
 // 	return this;

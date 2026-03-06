@@ -12,7 +12,7 @@ const unsigned int Sapling::SAPLING_NAMES[SAPLING_NAMES_SIZE] = {	IDS_TILE_SAPLI
 													IDS_TILE_SAPLING_JUNGLE
 												};
 
-const wstring Sapling::TEXTURE_NAMES[] = {L"sapling", L"sapling_spruce", L"sapling_birch", L"sapling_jungle"};
+const std::wstring Sapling::TEXTURE_NAMES[] = {L"sapling", L"sapling_spruce", L"sapling_birch", L"sapling_jungle"};
 
 Sapling::Sapling(int id) : Bush( id )
 {

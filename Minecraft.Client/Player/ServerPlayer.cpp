@@ -27,7 +27,7 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../Rendering/LevelRenderer.h"
 
-ServerPlayer::ServerPlayer(MinecraftServer *server, Level *level, const wstring& name, ServerPlayerGameMode *gameMode) : Player(level)
+ServerPlayer::ServerPlayer(MinecraftServer *server, Level *level, const std::wstring& name, ServerPlayerGameMode *gameMode) : Player(level)
 {
 	// 4J - added initialisers
 	connection = nullptr;
@@ -369,7 +369,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks)
 					okToSend = true;
 					MinecraftServer::s_slowQueuePacketSent = true;
 
-//					static std::unordered_map<wstring,__int64> mapLastTime;
+//					static std::unordered_map<std::wstring,__int64> mapLastTime;
 //					__int64 thisTime = System::currentTimeMillis();
 //					__int64 lastTime = mapLastTime[connection->getNetworkPlayer()->GetUID().toString()];
 //					app.DebugPrintf(" - OK to send (%d ms since last)\n", thisTime - lastTime);
@@ -1342,7 +1342,7 @@ void ServerPlayer::displayClientMessage(int messageId)
 	}
 
     //Language *language = Language::getInstance();
-    //wstring languageString = app.GetString(messageId);//language->getElement(messageId);
+    //std::wstring languageString = app.GetString(messageId);//language->getElement(messageId);
     //connection->send( std::shared_ptr<ChatPacket>( new ChatPacket(L"", messageType) ) );
 }
 
@@ -1423,7 +1423,7 @@ void ServerPlayer::setGameMode(GameType *mode)
 	connection->send(std::shared_ptr<GameEventPacket>(new GameEventPacket(GameEventPacket::CHANGE_GAME_MODE, mode->getId())));
 }
 
-void ServerPlayer::sendMessage(const wstring& message, ChatPacket::EChatPacketMessage type /*= e_ChatCustom*/, int customData /*= -1*/, const wstring& additionalMessage /*= L""*/)
+void ServerPlayer::sendMessage(const std::wstring& message, ChatPacket::EChatPacketMessage type /*= e_ChatCustom*/, int customData /*= -1*/, const std::wstring& additionalMessage /*= L""*/)
 {
 	connection->send(std::shared_ptr<ChatPacket>(new ChatPacket(message,type,customData,additionalMessage)));
 }

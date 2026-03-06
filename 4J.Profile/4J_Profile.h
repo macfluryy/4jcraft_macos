@@ -76,7 +76,7 @@ public:
 	int					GetPrimaryPad();
 	void				SetPrimaryPad(int iPad);
 	char*				GetGamertag(int iPad);
-	wstring				GetDisplayName(int iPad);
+	std::wstring				GetDisplayName(int iPad);
 	bool				IsFullVersion();
 	void				SetSignInChangeCallback(void ( *Func)(LPVOID, bool, unsigned int),LPVOID lpParam);
 	void				SetNotificationsCallback(void ( *Func)(LPVOID, DWORD, unsigned int),LPVOID lpParam);

@@ -2,9 +2,9 @@
 #include "../Headers/net.minecraft.world.h"
 #include "HugeMushroomTile.h"
 
-const wstring HugeMushroomTile::TEXTURE_STEM = L"mushroom_skin_stem";
-const wstring HugeMushroomTile::TEXTURE_INSIDE = L"mushroom_inside";
-const wstring HugeMushroomTile::TEXTURE_TYPE[] = {L"mushroom_skin_brown", L"mushroom_skin_red"};
+const std::wstring HugeMushroomTile::TEXTURE_STEM = L"mushroom_skin_stem";
+const std::wstring HugeMushroomTile::TEXTURE_INSIDE = L"mushroom_inside";
+const std::wstring HugeMushroomTile::TEXTURE_TYPE[] = {L"mushroom_skin_brown", L"mushroom_skin_red"};
 
 HugeMushroomTile::HugeMushroomTile(int id, Material *material, int type) : Tile(id, material)
 {

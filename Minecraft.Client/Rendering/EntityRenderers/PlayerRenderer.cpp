@@ -27,7 +27,7 @@ const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
 #endif
 };
 
-const wstring PlayerRenderer::MATERIAL_NAMES[5] = { L"cloth", L"chain", L"iron", L"diamond", L"gold" };
+const std::wstring PlayerRenderer::MATERIAL_NAMES[5] = { L"cloth", L"chain", L"iron", L"diamond", L"gold" };
 
 PlayerRenderer::PlayerRenderer() : MobRenderer( new HumanoidModel(0), 0.5f )
 {
@@ -245,7 +245,7 @@ void PlayerRenderer::renderName(std::shared_ptr<Mob> _mob, double x, double y, d
         if (dist < maxDist * maxDist)
 		{
 			// Truncate display names longer than 16 char
-            wstring msg = mob->getDisplayName();
+            std::wstring msg = mob->getDisplayName();
 			if (msg.length() > 16)
 			{
 				msg.resize(16);
@@ -351,7 +351,7 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a)
 				float s = 17 / 16.0f;
 				glScalef(s, -s, -s);
 
-				wstring extra = L"";
+				std::wstring extra = L"";
 				if (headGear->hasTag() && headGear->getTag()->contains(L"SkullOwner"))
 				{
 					extra = headGear->getTag()->getString(L"SkullOwner");

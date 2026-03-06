@@ -112,7 +112,7 @@ public:
 	virtual unsigned int getDescriptionId(int iData = -1);
 	virtual ItemInstance *setDescriptionId(unsigned int id);
 	static std::shared_ptr<ItemInstance> clone(std::shared_ptr<ItemInstance> item);
-	wstring toString();
+	std::wstring toString();
 	void inventoryTick(Level *level, std::shared_ptr<Entity> owner, int slot, bool selected);
 	void onCraftedBy(Level *level, std::shared_ptr<Player> player, int craftCount);
 	bool equals(std::shared_ptr<ItemInstance> ii);
@@ -126,17 +126,17 @@ public:
 	CompoundTag *getTag();
 	ListTag<CompoundTag> *getEnchantmentTags();
 	void setTag(CompoundTag *tag);
-	wstring getHoverName();
-	void setHoverName(const wstring &name);
+	std::wstring getHoverName();
+	void setHoverName(const std::wstring &name);
 	bool hasCustomHoverName();
-	vector<wstring> *getHoverText(std::shared_ptr<Player> player, bool advanced, vector<wstring> &unformattedStrings);
-	vector<wstring> *getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<wstring> &unformattedStrings); // 4J Added
+	vector<std::wstring> *getHoverText(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings);
+	vector<std::wstring> *getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings); // 4J Added
 	bool isFoil();
 	const Rarity *getRarity();
 	bool isEnchantable();
 	void enchant(const Enchantment *enchantment, int level);
 	bool isEnchanted();
-	void addTagElement(wstring name, Tag *tag);
+	void addTagElement(std::wstring name, Tag *tag);
 
 	// 4J Added
 	void set4JData(int data);

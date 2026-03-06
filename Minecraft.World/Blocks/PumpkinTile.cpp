@@ -8,8 +8,8 @@
 #include "../Entities/Mobs/SnowMan.h"
 #include "../Entities/MobCategory.h"
 
-const wstring PumpkinTile::TEXTURE_FACE = L"pumpkin_face";
-const wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";
+const std::wstring PumpkinTile::TEXTURE_FACE = L"pumpkin_face";
+const std::wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";
 
 PumpkinTile::PumpkinTile(int id, bool lit) : DirectionalTile(id, Material::vegetable)
 {

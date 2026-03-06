@@ -380,8 +380,8 @@ void AchievementScreen::renderBg(int xm, int ym, float a)
     if (hoveredAchievement != NULL)
 	{
         Achievement *ach = hoveredAchievement;
-        wstring name = ach->name;
-        wstring descr = ach->getDescription();
+        std::wstring name = ach->name;
+        std::wstring descr = ach->getDescription();
 
         int x = xm + 12;
         int y = ym - 4;
@@ -405,7 +405,7 @@ void AchievementScreen::renderBg(int xm, int ym, float a)
 		else
 		{
             int width = Math::_max(font->width(name), 120);
-            wstring msg = I18n::get(L"achievement.requires", ach->requires->name);
+            std::wstring msg = I18n::get(L"achievement.requires", ach->requires->name);
             int height = font->wordWrapHeight(msg, width);
             fillGradient(x - 3, y - 3, x + width + 3, y + height + 12 + 3, 0xc0000000, 0xc0000000);
             font->drawWordWrap(msg, x, y + 12, width, 0xff705050);

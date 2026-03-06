@@ -23,7 +23,7 @@
 unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
 void *ConsoleSaveFileOriginal::pvHeap = NULL;
 
-ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
+ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
 
@@ -852,7 +852,7 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	//14 chars for the digits
 	//11 chars for the separators + suffix
 	//25 chars total
-	wstring cutFileName = m_fileName;
+	std::wstring cutFileName = m_fileName;
 	if(m_fileName.length() > XCONTENT_MAX_FILENAME_LENGTH - 25)
 	{
 		cutFileName = m_fileName.substr(0, XCONTENT_MAX_FILENAME_LENGTH - 25);
@@ -860,10 +860,10 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
 
 #ifdef _UNICODE
-	wstring wtemp = targetFileDir.getPath() + wstring(fileName);
+	std::wstring wtemp = targetFileDir.getPath() + std::wstring(fileName);
 	LPCWSTR lpFileName =  wtemp.c_str();
 #else
-	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + wstring(fileName) );
+	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + std::wstring(fileName) );
 #endif
 #ifndef __PSVITA__
 	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
@@ -904,12 +904,12 @@ unsigned int ConsoleSaveFileOriginal::getSizeOnDisk()
 	return header.GetFileSize();
 }
 
-wstring ConsoleSaveFileOriginal::getFilename()
+std::wstring ConsoleSaveFileOriginal::getFilename()
 {
 	return m_fileName;
 }
 
-vector<FileEntry *> *ConsoleSaveFileOriginal::getFilesWithPrefix(const wstring &prefix)
+vector<FileEntry *> *ConsoleSaveFileOriginal::getFilesWithPrefix(const std::wstring &prefix)
 {
 	return header.getFilesWithPrefix( prefix );
 }
@@ -920,11 +920,11 @@ vector<FileEntry *> *ConsoleSaveFileOriginal::getRegionFilesByDimension(unsigned
 }
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-wstring ConsoleSaveFileOriginal::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
+std::wstring ConsoleSaveFileOriginal::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 {
 	return header.getPlayerDataFilenameForLoad( pUID );
 }
-wstring ConsoleSaveFileOriginal::getPlayerDataFilenameForSave(const PlayerUID& pUID)
+std::wstring ConsoleSaveFileOriginal::getPlayerDataFilenameForSave(const PlayerUID& pUID)
 {
 	return header.getPlayerDataFilenameForSave( pUID );
 }
@@ -1041,12 +1041,12 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform()
 		return;
 	}
 	// convert each of the region files to the local platform
-	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(wstring(L""));
+	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
 	for(AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end(); ++it)
 	{
 		FileEntry *fe = *it;
-		wstring fName( fe->data.filename );
-		wstring suffix(L".mcr");
+		std::wstring fName( fe->data.filename );
+		std::wstring suffix(L".mcr");
 		if( fName.compare(fName.length() - suffix.length(), suffix.length(), suffix) == 0 )
 		{
 			app.DebugPrintf("Processing a region file: %ls\n",fName.c_str());

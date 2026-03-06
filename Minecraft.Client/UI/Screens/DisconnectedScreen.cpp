@@ -4,7 +4,7 @@
 #include "../Button.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
-DisconnectedScreen::DisconnectedScreen(const wstring& title, const wstring reason, void *reasonObjects, ...)
+DisconnectedScreen::DisconnectedScreen(const std::wstring& title, const std::wstring reason, void *reasonObjects, ...)
 {
     Language *language = Language::getInstance();
 

@@ -69,7 +69,7 @@ bool Node::inOpenSet()
 	return heapIdx >= 0;
 }
 
-wstring Node::toString() 
+std::wstring Node::toString() 
 {
 	return _toString<int>(x) + L", " + _toString<int>(y) + L", " + _toString<int>(z);
 }

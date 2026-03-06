@@ -17,7 +17,7 @@
 
 typedef Item::Tier _Tier;
 
-wstring Item::ICON_DESCRIPTION_PREFIX = L"item.";
+std::wstring Item::ICON_DESCRIPTION_PREFIX = L"item.";
 
 const _Tier *_Tier::WOOD = new _Tier(0, 59, 2, 0, 15); //
 const _Tier *_Tier::STONE = new _Tier(1, 131, 4, 1, 5); //
@@ -582,7 +582,7 @@ int Item::getMaterial()
 	return this->m_iMaterial;
 }
 
-Item *Item::setTextureName(const wstring &name)
+Item *Item::setTextureName(const std::wstring &name)
 {
 	m_textureName = name;
 
@@ -812,7 +812,7 @@ bool Item::hasCraftingRemainingItem()
 	return craftingRemainingItem != NULL;
 }
 
-wstring Item::getName()
+std::wstring Item::getName()
 {
 	return L"";//I18n::get(getDescriptionId() + L".name");
 }
@@ -848,13 +848,13 @@ void Item::releaseUsing(std::shared_ptr<ItemInstance> itemInstance, Level *level
 {
 }
 
-Item *Item::setPotionBrewingFormula(const wstring &potionBrewingFormula)
+Item *Item::setPotionBrewingFormula(const std::wstring &potionBrewingFormula)
 {
 	this->potionBrewingFormula = potionBrewingFormula;
 	return this;
 }
 
-wstring Item::getPotionBrewingFormula()
+std::wstring Item::getPotionBrewingFormula()
 {
 	return potionBrewingFormula;
 }
@@ -864,11 +864,11 @@ bool Item::hasPotionBrewingFormula()
 	return !potionBrewingFormula.empty();
 }
 
-void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
+void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
 {
 }
 
-wstring Item::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
+std::wstring Item::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
 	//String elementName = ("" + Language.getInstance().getElementName(getDescription(itemInstance))).trim();
 	//return elementName;

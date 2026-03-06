@@ -10,7 +10,7 @@
 #include "ArmorRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring ArmorRecipes::shapes[][4] = 
+std::wstring ArmorRecipes::shapes[][4] = 
 {
 	{L"XXX", //
 	L"X X",L""},//

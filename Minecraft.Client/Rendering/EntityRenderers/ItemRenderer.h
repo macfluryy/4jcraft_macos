@@ -43,7 +43,7 @@ private:
 
 public:
     void renderGuiItemDecorations(Font *font, Textures *textures, std::shared_ptr<ItemInstance> item, int x, int y, float fAlpha = 1.0f);
-	void renderGuiItemDecorations(Font *font, Textures *textures, std::shared_ptr<ItemInstance> item, int x, int y, const wstring &countText, float fAlpha = 1.0f);
+	void renderGuiItemDecorations(Font *font, Textures *textures, std::shared_ptr<ItemInstance> item, int x, int y, const std::wstring &countText, float fAlpha = 1.0f);
 private:
 	void fillRect(Tesselator *t, int x, int y, int w, int h, int c);
 public:

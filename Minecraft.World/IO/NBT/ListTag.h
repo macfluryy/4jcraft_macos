@@ -10,7 +10,7 @@ private:
 
 public:
 	ListTag() : Tag(L"") {}
-	ListTag(const wstring &name) : Tag(name) {}
+	ListTag(const std::wstring &name) : Tag(name) {}
 
     void write(DataOutput *dos)
 	{
@@ -40,11 +40,11 @@ public:
 
 	uint8_t getId() { return TAG_List; }
 
-    wstring toString()
+    std::wstring toString()
 	{
 		static wchar_t buf[64];
 		swprintf(buf,64,L"%d entries of type %ls",list.size(),Tag::getTagName(type));
-		return wstring( buf );
+		return std::wstring( buf );
 	}
 
     void print(char *prefix, ostream out)

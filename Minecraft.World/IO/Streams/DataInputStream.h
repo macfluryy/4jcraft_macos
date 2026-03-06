@@ -26,7 +26,7 @@ public:
 	virtual int readInt();
 	virtual __int64 readLong();
 	virtual short readShort();
-	virtual wstring readUTF();
+	virtual std::wstring readUTF();
 	void deleteChildStream();
 	virtual int readUTFChar();
 	virtual PlayerUID readPlayerUID(); // 4J Added

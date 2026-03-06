@@ -77,9 +77,9 @@ void AchievementPopup::render()
         Lighting::turnOff();
         prepareWindow();
 
-        wstring title = L"Minecraft " + SharedConstants::VERSION_STRING + L"   Unlicensed Copy :(";
-        wstring msg1 = L"(Or logged in from another location)";
-        wstring msg2 = L"Purchase at minecraft.net";
+        std::wstring title = L"Minecraft " + SharedConstants::VERSION_STRING + L"   Unlicensed Copy :(";
+        std::wstring msg1 = L"(Or logged in from another location)";
+        std::wstring msg2 = L"Purchase at minecraft.net";
 
         mc->font->drawShadow(title, 2, 2 + 9 * 0, 0xffffff);
         mc->font->drawShadow(msg1, 2, 2 + 9 * 1, 0xffffff);

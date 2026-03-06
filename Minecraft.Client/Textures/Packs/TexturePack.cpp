@@ -1,9 +1,9 @@
 #include "../../Build/stdafx.h"
 #include "TexturePack.h"
 
-wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
+std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
 {
-	wstring wDrive;
+	std::wstring wDrive;
 #ifdef _XBOX
 	if(bTitleUpdateTexture)
 	{
@@ -27,7 +27,7 @@ wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
 
 	char *pchUsrDir=getUsrDirPath();
 	
-	wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
 	if(bTitleUpdateTexture)
 	{
@@ -42,7 +42,7 @@ wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
 
 #elif __PSVITA__
 	char *pchUsrDir="";//getUsrDirPath();
-	wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
 	if(bTitleUpdateTexture)
 	{

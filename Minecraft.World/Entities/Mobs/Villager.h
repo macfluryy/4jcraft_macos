@@ -39,7 +39,7 @@ private:
 	int updateMerchantTimer;
 	bool addRecipeOnUpdate;
 	int riches;
-    wstring lastPlayerTradeName;
+    std::wstring lastPlayerTradeName;
 
     bool rewardPlayersOnFirstVillage;
 

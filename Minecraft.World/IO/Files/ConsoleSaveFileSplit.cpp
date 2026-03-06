@@ -379,7 +379,7 @@ FileEntry *ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex)
 	return newRef->fileEntry;
 }
 
-ConsoleSaveFileSplit::ConsoleSaveFileSplit(const wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
+ConsoleSaveFileSplit::ConsoleSaveFileSplit(const std::wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
 	DWORD fileSize = dFileSize;
 
@@ -437,7 +437,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 	}
 }
 
-void ConsoleSaveFileSplit::_init(const wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat)
+void ConsoleSaveFileSplit::_init(const std::wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat)
 {
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
 
@@ -1187,12 +1187,12 @@ void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesT
 // DIM-1r.x.z.mcr		00 01 xx zz
 // DIM1/r.x.z.mcr		00 02 xx zz
 
-bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(const wstring &fileName, unsigned int *idOut)
+bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(const std::wstring &fileName, unsigned int *idOut)
 {
 	// Determine whether it is one of our region file names if the file extension is ".mbr"
 	if( fileName.length() < 4 ) return false;
-	wstring extension = fileName.substr(fileName.length()-4,4);
-	if( extension != wstring(L".mcr") ) return false;
+	std::wstring extension = fileName.substr(fileName.length()-4,4);
+	if( extension != std::wstring(L".mcr") ) return false;
 
 	unsigned int id = 0;
 	int x, z;
@@ -1231,9 +1231,9 @@ bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(const wstring &fileName,
 
 // Convert a numeric file identifier (for region files) back into a normal filename. See comment above.
 
-wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(unsigned int idIn)
+std::wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(unsigned int idIn)
 {
-	wstring prefix;
+	std::wstring prefix;
 
 	switch(idIn & 0x00ff0000 )
 	{
@@ -1249,7 +1249,7 @@ wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(unsigned int idIn)
 	}
 	signed char regionX = ( idIn >> 8 ) & 255;
 	signed char regionZ = idIn & 255;
-	wstring region = ( prefix + wstring(L"r.") + _toString(regionX) + L"." + _toString(regionZ) + L".mcr" );
+	std::wstring region = ( prefix + std::wstring(L"r.") + _toString(regionX) + L"." + _toString(regionZ) + L".mcr" );
 
 	return region;
 }
@@ -1503,7 +1503,7 @@ void ConsoleSaveFileSplit::DebugFlushToFile(void *compressedData /*= NULL*/, uns
 	//14 chars for the digits
 	//11 chars for the separators + suffix
 	//25 chars total
-	wstring cutFileName = m_fileName;
+	std::wstring cutFileName = m_fileName;
 	if(m_fileName.length() > XCONTENT_MAX_FILENAME_LENGTH - 25)
 	{
 		cutFileName = m_fileName.substr(0, XCONTENT_MAX_FILENAME_LENGTH - 25);
@@ -1511,10 +1511,10 @@ void ConsoleSaveFileSplit::DebugFlushToFile(void *compressedData /*= NULL*/, uns
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
 
 #ifdef _UNICODE
-	wstring wtemp = targetFileDir.getPath() + wstring(fileName);
+	std::wstring wtemp = targetFileDir.getPath() + std::wstring(fileName);
 	LPCWSTR lpFileName =  wtemp.c_str();
 #else
-	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + wstring(fileName) );
+	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + std::wstring(fileName) );
 #endif
 
 	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
@@ -1542,12 +1542,12 @@ unsigned int ConsoleSaveFileSplit::getSizeOnDisk()
 	return header.GetFileSize();
 }
 
-wstring ConsoleSaveFileSplit::getFilename()
+std::wstring ConsoleSaveFileSplit::getFilename()
 {
 	return m_fileName;
 }
 
-vector<FileEntry *> *ConsoleSaveFileSplit::getFilesWithPrefix(const wstring &prefix)
+vector<FileEntry *> *ConsoleSaveFileSplit::getFilesWithPrefix(const std::wstring &prefix)
 {
 	return header.getFilesWithPrefix( prefix );
 }
@@ -1575,11 +1575,11 @@ vector<FileEntry *> *ConsoleSaveFileSplit::getRegionFilesByDimension(unsigned in
 }
 
 #if defined(__PS3__) || defined(__ORBIS__)
-wstring ConsoleSaveFileSplit::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
+std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 {
 	return header.getPlayerDataFilenameForLoad( pUID );
 }
-wstring ConsoleSaveFileSplit::getPlayerDataFilenameForSave(const PlayerUID& pUID)
+std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForSave(const PlayerUID& pUID)
 {
 	return header.getPlayerDataFilenameForSave( pUID );
 }
@@ -1690,12 +1690,12 @@ void ConsoleSaveFileSplit::ConvertToLocalPlatform()
 		return;
 	}
 	// convert each of the region files to the local platform
-	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(wstring(L""));
+	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
 	for(AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end(); ++it)
 	{
 		FileEntry *fe = *it;
-		wstring fName( fe->data.filename );
-		wstring suffix(L".mcr");
+		std::wstring fName( fe->data.filename );
+		std::wstring suffix(L".mcr");
 		if( fName.compare(fName.length() - suffix.length(), suffix.length(), suffix) == 0 )
 		{
 			app.DebugPrintf("Processing a region file: %ls\n",fName.c_str());

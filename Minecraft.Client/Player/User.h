@@ -6,9 +6,9 @@ class User
 public:
 	static vector<Tile *> allowedTiles;
 	static void staticCtor();
-	wstring name;
-	wstring sessionId;
-	wstring mpPassword;
+	std::wstring name;
+	std::wstring sessionId;
+	std::wstring mpPassword;
 
-	User(const wstring& name, const wstring& sessionId);
+	User(const std::wstring& name, const std::wstring& sessionId);
 };

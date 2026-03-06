@@ -4,7 +4,7 @@ using namespace std;
 class KeyMapping
 {
 public:
-	wstring name;
+	std::wstring name;
 	int key;
-	KeyMapping(const wstring& name, int key);
+	KeyMapping(const std::wstring& name, int key);
 };

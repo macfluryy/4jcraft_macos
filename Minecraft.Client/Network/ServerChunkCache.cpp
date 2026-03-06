@@ -897,7 +897,7 @@ bool ServerChunkCache::shouldSave()
 	return !level->noSave;
 }
 
-wstring ServerChunkCache::gatherStats()
+std::wstring ServerChunkCache::gatherStats()
 {
 	 return L"ServerChunkCache: ";// + _toString<int>(loadedChunks.size()) + L" Drop: " + _toString<int>(toDrop.size());
 }
@@ -907,7 +907,7 @@ vector<Biome::MobSpawnerData *> *ServerChunkCache::getMobsAt(MobCategory *mobCat
 	return source->getMobsAt(mobCategory, x, y, z);
 }
 
-TilePos *ServerChunkCache::findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z)
+TilePos *ServerChunkCache::findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z)
 {
 	return source->findNearestMapFeature(level, featureName, x, y, z);
 }

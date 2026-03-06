@@ -153,7 +153,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(std::shared_ptr<Item
 }
 
 
-MapItemSavedData::MapItemSavedData(const wstring& id) : SavedData( id )
+MapItemSavedData::MapItemSavedData(const std::wstring& id) : SavedData( id )
 {
 	x = z = 0;
 	dimension = 0;

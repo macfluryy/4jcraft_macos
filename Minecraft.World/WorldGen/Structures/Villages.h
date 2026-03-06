@@ -5,7 +5,7 @@
 class Villages : public SavedData
 {
 public:
-	static const wstring VILLAGE_FILE_ID;
+	static const std::wstring VILLAGE_FILE_ID;
 
 	static const int MaxDoorDist = 32;
 
@@ -17,7 +17,7 @@ private:
 	int _tick;
 
 public:
-	Villages(const wstring &id);
+	Villages(const std::wstring &id);
 	Villages(Level *level);
 	~Villages();
 

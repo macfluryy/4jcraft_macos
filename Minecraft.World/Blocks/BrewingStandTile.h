@@ -8,7 +8,7 @@ class BrewingStandTile : public EntityTile
 {
 	friend ChunkRebuildData;
 public:
-	static const wstring TEXTURE_BASE;
+	static const std::wstring TEXTURE_BASE;
 private:
 	Random *random;
 	Icon *iconBase;

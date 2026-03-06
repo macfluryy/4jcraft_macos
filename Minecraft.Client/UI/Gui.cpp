@@ -700,7 +700,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			wchar_t formatted[10];
 			swprintf(formatted, 10, L"%d",minecraft->player->experienceLevel);
 
-			wstring str = formatted;
+			std::wstring str = formatted;
 			int x = iWidthOffset + (screenWidth - font->width(str)) / 2;
 			int y = screenHeight - iSafezoneYHalf - iTooltipsYOffset;
 			// If we're in creative mode, we don't need to offset the XP display so much
@@ -795,7 +795,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 		if(minecraft->level->dimension->id==0)
 		{
-			wstring wfeature[eTerrainFeature_Count];
+			std::wstring wfeature[eTerrainFeature_Count];
 
 			wfeature[eTerrainFeature_Stronghold] = L"Stronghold: ";
 			wfeature[eTerrainFeature_Mineshaft] = L"Mineshaft: ";
@@ -806,7 +806,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			{
 				FEATURE_DATA *pFeatureData=app.m_vTerrainFeatures[i];
 
-				wstring itemInfo = L"[" + _toString<int>( pFeatureData->x*16 ) + L", " + _toString<int>( pFeatureData->z*16 ) + L"] ";
+				std::wstring itemInfo = L"[" + _toString<int>( pFeatureData->x*16 ) + L", " + _toString<int>( pFeatureData->z*16 ) + L"] ";
 				wfeature[pFeatureData->eTerrainFeature] += itemInfo;
 			}
 
@@ -940,7 +940,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 						y+= iHeightOffset;
 					}
 
-					wstring msg = guiMessages[iPad][i].string;
+					std::wstring msg = guiMessages[iPad][i].string;
 					// 4J-PB - fill the black bar across the whole screen, otherwise it looks odd due to the safe area
 					this->fill(0, y - 1, screenWidth/fScaleFactorWidth, y + 8, (alpha / 2) << 24);
 					glEnable(GL_BLEND);
@@ -1050,7 +1050,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 // 		blit(xLeft, yo, 0, 79, progress, 5);
 // 	}
 // 
-// 	wstring msg = L"Boss health - NON LOCALISED";
+// 	std::wstring msg = L"Boss health - NON LOCALISED";
 // 	font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10, 0xff00ff);
 // 	glColor4f(1, 1, 1, 1);
 // 	glBindTexture(GL_TEXTURE_2D, pMinecraft->textures->loadTexture(TN_GUI_ICONS) );//"/gui/icons.png"));
@@ -1211,9 +1211,9 @@ void Gui::clearMessages(int iPad)
 }
 
 
-void Gui::addMessage(const wstring& _string,int iPad,bool bIsDeathMessage)
+void Gui::addMessage(const std::wstring& _string,int iPad,bool bIsDeathMessage)
 {
-	wstring string = _string;	// 4J - Take copy of input as it is const
+	std::wstring string = _string;	// 4J - Take copy of input as it is const
 	//int iScale=1;
 
 	//if((minecraft->player->m_iScreenSection==C4JRender::VIEWPORT_TYPE_SPLIT_TOP) ||
@@ -1374,7 +1374,7 @@ float Gui::getJukeboxOpacity(int iPad)
 	return alpha;
 }
 
-void Gui::setNowPlaying(const wstring& string)
+void Gui::setNowPlaying(const std::wstring& string)
 {
 //	overlayMessageString = L"Now playing: " + string;
 	overlayMessageString = app.GetString(IDS_NOWPLAYING) + string;
@@ -1385,7 +1385,7 @@ void Gui::setNowPlaying(const wstring& string)
 void Gui::displayClientMessage(int messageId, int iPad)
 {
     //Language *language = Language::getInstance();
-    wstring languageString = app.GetString(messageId);//language->getElement(messageId);
+    std::wstring languageString = app.GetString(messageId);//language->getElement(messageId);
 
     addMessage(languageString, iPad);
 }

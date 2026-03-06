@@ -10,7 +10,7 @@ private:
 	static const unsigned int NAMES[SKULL_COUNT];
 
 public:
-	static wstring ICON_NAMES[SKULL_COUNT];
+	static std::wstring ICON_NAMES[SKULL_COUNT];
 
 private:
 	Icon *icons[SKULL_COUNT];
@@ -24,6 +24,6 @@ public:
 	int getLevelDataForAuxValue(int auxValue);
 	virtual unsigned int getDescriptionId(int iData = -1);
 	unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
-	wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
+	std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
 	void registerIcons(IconRegister *iconRegister);
 };

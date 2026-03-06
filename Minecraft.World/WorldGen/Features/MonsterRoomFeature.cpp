@@ -129,12 +129,12 @@ std::shared_ptr<ItemInstance> MonsterRoomFeature::randomItem(Random *random)
 	return std::shared_ptr<ItemInstance>();
 }
 
-wstring MonsterRoomFeature::randomEntityId(Random *random)
+std::wstring MonsterRoomFeature::randomEntityId(Random *random)
 {
 	int id = random->nextInt(4);
-	if (id == 0) return wstring(L"Skeleton");
-	if (id == 1) return wstring(L"Zombie");
-	if (id == 2) return wstring(L"Zombie");
-	if (id == 3) return wstring(L"Spider");
-	return wstring(L"");
+	if (id == 0) return std::wstring(L"Skeleton");
+	if (id == 1) return std::wstring(L"Zombie");
+	if (id == 2) return std::wstring(L"Zombie");
+	if (id == 3) return std::wstring(L"Spider");
+	return std::wstring(L"");
 }

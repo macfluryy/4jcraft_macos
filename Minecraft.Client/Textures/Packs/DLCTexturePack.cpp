@@ -101,7 +101,7 @@ void DLCTexturePack::loadDescription()
 	}
 }
 
-wstring DLCTexturePack::getResource(const wstring& name)
+std::wstring DLCTexturePack::getResource(const std::wstring& name)
 {
 	// 4J Stu - We should never call this function
 #ifndef __CONTENT_PACKAGE
@@ -110,7 +110,7 @@ wstring DLCTexturePack::getResource(const wstring& name)
 	return L"";
 }
 
-InputStream *DLCTexturePack::getResourceImplementation(const wstring &name) //throws IOException
+InputStream *DLCTexturePack::getResourceImplementation(const std::wstring &name) //throws IOException
 {
 	// 4J Stu - We should never call this function
 #ifndef _CONTENT_PACKAGE
@@ -120,7 +120,7 @@ InputStream *DLCTexturePack::getResourceImplementation(const wstring &name) //th
 	return NULL; //resource;
 }
 
-bool DLCTexturePack::hasFile(const wstring &name)
+bool DLCTexturePack::hasFile(const std::wstring &name)
 {
 	bool hasFile = false;
 	if(m_dlcDataPack != NULL) hasFile = m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_Texture, name);
@@ -132,16 +132,16 @@ bool DLCTexturePack::isTerrainUpdateCompatible()
 	return true;
 }
 
-wstring DLCTexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
+std::wstring DLCTexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
 {
 	return L"";
 }
 
-wstring DLCTexturePack::getAnimationString(const wstring &textureName, const wstring &path)
+std::wstring DLCTexturePack::getAnimationString(const std::wstring &textureName, const std::wstring &path)
 {
-	wstring result = L"";
+	std::wstring result = L"";
 
-	wstring fullpath = L"res/" + path + textureName + L".png"; 
+	std::wstring fullpath = L"res/" + path + textureName + L".png"; 
 	if(hasFile(fullpath))
 	{
 		result = m_dlcDataPack->getFile(DLCManager::e_DLCType_Texture, fullpath)->getParameterAsString(DLCManager::e_DLCParamType_Anim);
@@ -150,7 +150,7 @@ wstring DLCTexturePack::getAnimationString(const wstring &textureName, const wst
 	return result;
 }
 
-BufferedImage *DLCTexturePack::getImageResource(const wstring& File, bool filenameHasExtension /*= false*/, bool bTitleUpdateTexture /*=false*/, const wstring &drive /*=L""*/)
+BufferedImage *DLCTexturePack::getImageResource(const std::wstring& File, bool filenameHasExtension /*= false*/, bool bTitleUpdateTexture /*=false*/, const std::wstring &drive /*=L""*/)
 {
 	if(m_dlcDataPack) return new BufferedImage(m_dlcDataPack, L"/" + File, filenameHasExtension);
 	else return fallback->getImageResource(File, filenameHasExtension, bTitleUpdateTexture, drive);
@@ -267,7 +267,7 @@ void DLCTexturePack::loadData()
 
 
 
-wstring DLCTexturePack::getFilePath(DWORD packId, wstring filename, bool bAddDataFolder)
+std::wstring DLCTexturePack::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
 {
 	return app.getFilePath(packId,filename,bAddDataFolder);
 }
@@ -288,7 +288,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 		texturePack->setHasAudio(false);
 		DWORD dwFilesProcessed = 0;
 		// Load the DLC textures
-		wstring dataFilePath = texturePack->m_dlcInfoPack->getFullDataPath();
+		std::wstring dataFilePath = texturePack->m_dlcInfoPack->getFullDataPath();
 		if(!dataFilePath.empty())
 		{
 			if(!app.m_dlcManager.readDLCDataFile(dwFilesProcessed, getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dataFilePath),texturePack->m_dlcDataPack))
@@ -301,7 +301,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 			if(texturePack->m_dlcDataPack != NULL)
 			{
 #ifdef _XBOX
-				File xzpPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), wstring(L"TexturePack.xzp") ) );
+				File xzpPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), std::wstring(L"TexturePack.xzp") ) );
 
 				if(xzpPath.exists())
 				{
@@ -332,7 +332,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 					}
 				}
 #else
-				File archivePath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), wstring(L"media.arc") ) );
+				File archivePath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), std::wstring(L"media.arc") ) );
 				if(archivePath.exists()) texturePack->m_archiveFile = new ArchiveFile(archivePath);
 #endif
 
@@ -355,7 +355,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							if (grf.exists())
 							{
 #if defined(_UNICODE) && !defined(__linux__)
-								wstring path = grf.getPath();
+								std::wstring path = grf.getPath();
 								const WCHAR *pchFilename=path.c_str();
 								HANDLE fileHandle = CreateFile(
 									pchFilename, // file name
@@ -407,7 +407,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						if (grf.exists())
 						{
 #if defined(_UNICODE) && !defined(__linux__)
-							wstring path = grf.getPath();
+							std::wstring path = grf.getPath();
 							const WCHAR *pchFilename=path.c_str();
 							HANDLE fileHandle = CreateFile(
 								pchFilename, // file name
@@ -452,8 +452,8 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 
 				// any audio data?
 #ifdef _XBOX				
-				File audioXSBPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), wstring(L"MashUp.xsb") ) );
-				File audioXWBPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), wstring(L"MashUp.xwb") ) );
+				File audioXSBPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), std::wstring(L"MashUp.xsb") ) );
+				File audioXWBPath(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), std::wstring(L"MashUp.xwb") ) );
 				
 				if(audioXSBPath.exists() && audioXWBPath.exists())
 				{
@@ -584,9 +584,9 @@ void DLCTexturePack::unloadUI()
 	bUILoaded = false;
 }
 
-wstring DLCTexturePack::getXuiRootPath()
+std::wstring DLCTexturePack::getXuiRootPath()
 {
-	wstring path = L"";
+	std::wstring path = L"";
 	if(m_dlcDataPack != NULL && m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp"))
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");

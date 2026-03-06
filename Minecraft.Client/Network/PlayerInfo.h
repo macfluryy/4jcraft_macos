@@ -4,10 +4,10 @@ using namespace std;
 class PlayerInfo
 {
 public:
-	wstring name;
+	std::wstring name;
 	int latency;
 
-	PlayerInfo(const wstring &name)
+	PlayerInfo(const std::wstring &name)
 	{
 		this->name = name;
 		latency = 0;

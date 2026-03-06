@@ -6,7 +6,7 @@ using namespace std;
 class TextEditScreen : public Screen
 {
 protected:
-	wstring title;
+	std::wstring title;
 private:
 	std::shared_ptr<SignTileEntity> sign;
     int frame;
@@ -20,7 +20,7 @@ public:
 protected:
 	virtual void buttonClicked(Button *button);
 private:
-	static const wstring allowedChars;
+	static const std::wstring allowedChars;
 protected:
 	virtual void keyPressed(wchar_t ch, int eventKey);
 public:

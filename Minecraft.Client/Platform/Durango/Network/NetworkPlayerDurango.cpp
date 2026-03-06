@@ -97,7 +97,7 @@ const wchar_t *NetworkPlayerDurango::GetOnlineName()
 	return m_dqrPlayer->GetName();
 }
 
-wstring NetworkPlayerDurango::GetDisplayName()
+std::wstring NetworkPlayerDurango::GetDisplayName()
 {
 	return m_dqrPlayer->GetDisplayName();
 }

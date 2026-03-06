@@ -52,7 +52,7 @@ ServerCommandDispatcher::ServerCommandDispatcher()
 	Command::setLogger(this);
 }
 
-void ServerCommandDispatcher::logAdminCommand(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const wstring& message, int customData, const wstring& additionalMessage)
+void ServerCommandDispatcher::logAdminCommand(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const std::wstring& message, int customData, const std::wstring& additionalMessage)
 {
 	PlayerList *playerList = MinecraftServer::getInstance()->getPlayers();
 	//for (Player player : MinecraftServer.getInstance().getPlayers().players)

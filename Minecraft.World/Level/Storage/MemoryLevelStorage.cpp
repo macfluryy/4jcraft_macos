@@ -52,12 +52,12 @@ bool MemoryLevelStorage::load(std::shared_ptr<Player> player)
 	return false;
 }
 
-CompoundTag *MemoryLevelStorage::loadPlayerDataTag(const wstring& playerName) 
+CompoundTag *MemoryLevelStorage::loadPlayerDataTag(const std::wstring& playerName) 
 {
 	return NULL;
 }
 
-ConsoleSavePath MemoryLevelStorage::getDataFile(const wstring& id) 
+ConsoleSavePath MemoryLevelStorage::getDataFile(const std::wstring& id) 
 {
-	return ConsoleSaveFile(wstring(L""));
+	return ConsoleSaveFile(std::wstring(L""));
 }

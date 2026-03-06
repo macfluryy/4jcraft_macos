@@ -8,8 +8,8 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../../Minecraft.Client/Player/ServerPlayer.h"
 
-const wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
-const wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";
+const std::wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
+const std::wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";
 
 CauldronTile::CauldronTile(int id) : Tile(id, Material::metal, isSolidRender())
 {
@@ -39,7 +39,7 @@ void CauldronTile::registerIcons(IconRegister *iconRegister)
 	icon = iconRegister->registerIcon(L"cauldron_side");
 }
 
-Icon *CauldronTile::getTexture(const wstring &name)
+Icon *CauldronTile::getTexture(const std::wstring &name)
 {
 	if (name.compare(TEXTURE_INSIDE) == 0) return Tile::cauldron->iconInner;
 	if (name.compare(TEXTURE_BOTTOM) == 0) return Tile::cauldron->iconBottom;

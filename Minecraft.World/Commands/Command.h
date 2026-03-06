@@ -19,8 +19,8 @@ public:
 	virtual void execute(std::shared_ptr<CommandSender> source, byteArray commandData) = 0;
 	virtual bool canExecute(std::shared_ptr<CommandSender> source);
 
-	static void logAdminAction(std::shared_ptr<CommandSender> source, ChatPacket::EChatPacketMessage messageType, const wstring& message = L"", int customData = -1, const wstring& additionalMessage = L"");
-	static void logAdminAction(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const wstring& message = L"", int customData = -1, const wstring& additionalMessage = L"");
+	static void logAdminAction(std::shared_ptr<CommandSender> source, ChatPacket::EChatPacketMessage messageType, const std::wstring& message = L"", int customData = -1, const std::wstring& additionalMessage = L"");
+	static void logAdminAction(std::shared_ptr<CommandSender> source, int type, ChatPacket::EChatPacketMessage messageType, const std::wstring& message = L"", int customData = -1, const std::wstring& additionalMessage = L"");
 	static void setLogger(AdminLogCommand *logger);
 
 protected:

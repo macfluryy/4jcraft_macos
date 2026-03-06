@@ -7,7 +7,7 @@ class Texture;
 class StitchedTexture : public Icon
 {
 private:
-	const wstring name;
+	const std::wstring name;
 
 protected:
 	Texture *source;
@@ -41,11 +41,11 @@ protected:
 	int subFrame;
 
 public:
-	static StitchedTexture *create(const wstring &name);
+	static StitchedTexture *create(const std::wstring &name);
 	
 	~StitchedTexture();
 protected:
-	StitchedTexture(const wstring &name);
+	StitchedTexture(const std::wstring &name);
 
 public:
 	void initUVs(float U0, float V0, float U1, float V1);
@@ -61,7 +61,7 @@ public:
 	float getV0(bool adjust = false) const;
 	float getV1(bool adjust = false) const;
 	float getV(double offset, bool adjust = false) const;
-	wstring getName() const;
+	std::wstring getName() const;
 	virtual int getSourceWidth() const;
 	virtual int getSourceHeight() const;
 	virtual void cycleFrames();
@@ -80,7 +80,7 @@ public:
 	* @param bufferedReader
 	*/
 	void loadAnimationFrames(BufferedReader *bufferedReader);
-	void loadAnimationFrames(const wstring &string); // 4J Added
+	void loadAnimationFrames(const std::wstring &string); // 4J Added
 
 	int getFlags() const ;			// 4J added
 	void setFlags(int flags);		// 4J added

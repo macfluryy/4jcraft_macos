@@ -14,17 +14,17 @@ public:
 	static void staticCtor();
 
 private:
-	wstring m_generatorName;
+	std::wstring m_generatorName;
 	int m_version;
 	bool m_selectable;
 	bool m_replacement;
 
-	LevelType(int id, wstring generatorName);
-	LevelType(int id, wstring generatorName, int version); 
-	void init(int id, wstring generatorName, int version);
+	LevelType(int id, std::wstring generatorName);
+	LevelType(int id, std::wstring generatorName, int version); 
+	void init(int id, std::wstring generatorName, int version);
 public:
-	wstring getGeneratorName();
-	wstring getDescriptionId();
+	std::wstring getGeneratorName();
+	std::wstring getDescriptionId();
 	int getVersion();
 	LevelType *getReplacementForVersion(int oldVersion);
 private:
@@ -35,5 +35,5 @@ private:
 	LevelType *setHasReplacement();
 public:
 	bool hasReplacement();
-	static LevelType *getLevelType(wstring name);
+	static LevelType *getLevelType(std::wstring name);
 };

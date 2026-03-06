@@ -674,7 +674,7 @@ void LocalPlayer::take(std::shared_ptr<Entity> e, int orgCount)
 	minecraft->particleEngine->add( std::shared_ptr<TakeAnimationParticle>( new TakeAnimationParticle((Level *)minecraft->level, e, shared_from_this(), -0.5f) ) );
 }
 
-void LocalPlayer::chat(const wstring& message)
+void LocalPlayer::chat(const std::wstring& message)
 {
 }
 

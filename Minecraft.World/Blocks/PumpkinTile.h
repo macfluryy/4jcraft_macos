@@ -15,8 +15,8 @@ public:
 	static const int DIR_EAST = 3;
 
 private:
-	static const wstring TEXTURE_FACE;
-	static const wstring TEXTURE_LANTERN;
+	static const std::wstring TEXTURE_FACE;
+	static const std::wstring TEXTURE_LANTERN;
 	bool lit;
 	Icon *iconTop;
 	Icon *iconFace;

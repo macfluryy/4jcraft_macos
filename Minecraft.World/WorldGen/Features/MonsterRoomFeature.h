@@ -12,5 +12,5 @@ public:
 
 private:
     std::shared_ptr<ItemInstance> randomItem(Random *random);
-    wstring randomEntityId(Random *random);
+    std::wstring randomEntityId(Random *random);
 };

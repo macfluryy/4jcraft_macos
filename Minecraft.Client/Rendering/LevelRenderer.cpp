@@ -603,12 +603,12 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	mc->gameRenderer->turnOffLightLayer(a);		// 4J - brought forward from 1.8.2
 }
 
-wstring LevelRenderer::gatherStats1()
+std::wstring LevelRenderer::gatherStats1()
 {
 	return L"C: " + _toString<int>(renderedChunks) + L"/" + _toString<int>(totalChunks) + L". F: " + _toString<int>(offscreenChunks) + L", O: " + _toString<int>(occludedChunks) + L", E: " + _toString<int>(emptyChunks);
 }
 
-wstring LevelRenderer::gatherStats2()
+std::wstring LevelRenderer::gatherStats2()
 {
 	return L"E: " + _toString<int>(renderedEntities) + L"/" + _toString<int>(totalEntities) + L". B: " + _toString<int>(culledEntities) + L", I: " + _toString<int>((totalEntities - culledEntities) - renderedEntities);
 }
@@ -2560,7 +2560,7 @@ void LevelRenderer::cull(Culler *culler, float a)
 	}
 }
 
-void LevelRenderer::playStreamingMusic(const wstring& name, int x, int y, int z)
+void LevelRenderer::playStreamingMusic(const std::wstring& name, int x, int y, int z)
 {
 	if (name != L"")
 	{
@@ -2603,7 +2603,7 @@ void LevelRenderer::playSound(std::shared_ptr<Entity> entity,int iSound, double 
 // 4J-PB - original function. I've changed to an enum instead of string compares
 // 4J removed - 
 /*
-void LevelRenderer::addParticle(const wstring& name, double x, double y, double z, double xa, double ya, double za)
+void LevelRenderer::addParticle(const std::wstring& name, double x, double y, double z, double xa, double ya, double za)
 {
 if (mc == NULL || mc->cameraTargetPlayer == NULL || mc->particleEngine == NULL) return;
 

@@ -38,7 +38,7 @@ protected:
     virtual int getOverlayColor(std::shared_ptr<Mob> mob, float br, float a);
     virtual void scale(std::shared_ptr<Mob> mob, float a);
     virtual void renderName(std::shared_ptr<Mob> mob, double x, double y, double z);
-    virtual void renderNameTag(std::shared_ptr<Mob> mob, const wstring& name, double x, double y, double z, int maxDist, int color = 0xff000000);
+    virtual void renderNameTag(std::shared_ptr<Mob> mob, const std::wstring& name, double x, double y, double z, int maxDist, int color = 0xff000000);
 
 public:
 	// 4J Added

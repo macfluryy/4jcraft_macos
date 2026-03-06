@@ -408,7 +408,7 @@ void DurangoLeaderboardManager::runLeaderboardRequest(WF::IAsyncOperation<MXSL::
 	// Build stat names
 	m_statNames = ref new PC::Vector<P::String^>();
 	m_statNames->Clear();
-	for(wstring name : m_leaderboardStatNames[difficulty][type])
+	for(std::wstring name : m_leaderboardStatNames[difficulty][type])
 	{
 		m_statNames->Append(ref new P::String(name.c_str()));
 	}
@@ -548,7 +548,7 @@ void DurangoLeaderboardManager::updateStatsInfo(int userIndex, int difficulty, E
 		}
 
 		int statIndex = 0, sumScores = 0;
-		for(wstring statName : m_leaderboardStatNames[difficulty][type])
+		for(std::wstring statName : m_leaderboardStatNames[difficulty][type])
 		{
 			bool found = false;
 			for(auto result : statsResult)
@@ -585,7 +585,7 @@ void DurangoLeaderboardManager::GetProfilesCallback(LPVOID param, std::vector<Mi
 
 	if (profiles.size() > 0)
 	{
-		dlm->m_displayNames = vector<wstring>();
+		dlm->m_displayNames = vector<std::wstring>();
 		for (int i = 0; i < profiles.size(); i++)
 		{
 			dlm->m_displayNames.push_back(profiles[i]->GameDisplayName->Data());
@@ -699,7 +699,7 @@ void DurangoLeaderboardManager::setState(EStatsState newState)
 	LeaveCriticalSection(&m_csStatsState);
 }
 
-wstring DurangoLeaderboardManager::stateToString(EStatsState eState)
+std::wstring DurangoLeaderboardManager::stateToString(EStatsState eState)
 {
 	switch (eState)
 	{

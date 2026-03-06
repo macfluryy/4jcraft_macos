@@ -7,7 +7,7 @@
 #include "RecordingItem.h"
 #include "../Stats/GenericStats.h"
 
-RecordingItem::RecordingItem(int id, const wstring& recording) : Item(id), recording( recording )
+RecordingItem::RecordingItem(int id, const std::wstring& recording) : Item(id), recording( recording )
 {
 	this->maxStackSize = 1;
 }
@@ -40,7 +40,7 @@ bool RecordingItem::useOn(std::shared_ptr<ItemInstance> itemInstance, std::share
 	return false;
 }
 
-void RecordingItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
+void RecordingItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
 {
 	eMinecraftColour rarityColour = getRarity(std::shared_ptr<ItemInstance>())->color;
 	int colour = app.GetHTMLColour(rarityColour);

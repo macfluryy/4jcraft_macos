@@ -21,7 +21,7 @@ private:
     __int64 sizeOnDisk;
 //    CompoundTag *loadedPlayerTag;	// 4J removed
     int dimension;
-    wstring levelName;
+    std::wstring levelName;
     int version;
 
     bool raining;
@@ -55,7 +55,7 @@ protected:
 
 public:
 	LevelData(CompoundTag *tag);
-    LevelData(LevelSettings *levelSettings, const wstring& levelName);
+    LevelData(LevelSettings *levelSettings, const std::wstring& levelName);
     LevelData(LevelData *copy);
     CompoundTag *createTag();
     CompoundTag *createTag(vector<std::shared_ptr<Player> > *players);
@@ -101,8 +101,8 @@ public:
     virtual  void setLoadedPlayerTag(CompoundTag *loadedPlayerTag);
     //void setDimension(int dimension); // 4J Removed TU 9 as it's never used
     virtual  void setSpawn(int xSpawn, int ySpawn, int zSpawn);
-    virtual  wstring getLevelName();
-    virtual  void setLevelName(const wstring& levelName);
+    virtual  std::wstring getLevelName();
+    virtual  void setLevelName(const std::wstring& levelName);
     virtual  int getVersion();
     virtual  void setVersion(int version);
     virtual  __int64 getLastPlayed();

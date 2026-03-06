@@ -5,8 +5,8 @@ using namespace std;
 class ConsoleInput
 {
 public:
-	wstring msg;
+	std::wstring msg;
 	ConsoleInputSource *source;
 
-	ConsoleInput(const wstring& msg, ConsoleInputSource *source);
+	ConsoleInput(const std::wstring& msg, ConsoleInputSource *source);
 };

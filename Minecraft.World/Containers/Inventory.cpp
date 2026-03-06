@@ -428,7 +428,7 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item)
 #ifdef _DEBUG
 	if(item!=NULL)
 	{
-		wstring itemstring=item->toString();
+		std::wstring itemstring=item->toString();
 		app.DebugPrintf("Inventory::setItem - slot = %d,\t item = %d ",slot,item->id);
 		//OutputDebugStringW(itemstring.c_str());
 		app.DebugPrintf("\n");

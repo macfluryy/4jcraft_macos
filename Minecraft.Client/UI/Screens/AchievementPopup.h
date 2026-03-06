@@ -10,8 +10,8 @@ private:
 	Minecraft *mc;
     int width, height;
 
-    wstring title;
-    wstring desc;
+    std::wstring title;
+    std::wstring desc;
     Achievement *ach;
     __int64 startTime;
     ItemRenderer *ir;

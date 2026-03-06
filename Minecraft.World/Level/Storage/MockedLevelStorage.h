@@ -15,8 +15,8 @@ public:
 	virtual void saveLevelData(LevelData *levelData);
 	virtual PlayerIO *getPlayerIO();
 	virtual void closeAll();
-	virtual ConsoleSavePath getDataFile(const wstring& id);
-	virtual wstring getLevelId();
+	virtual ConsoleSavePath getDataFile(const std::wstring& id);
+	virtual std::wstring getLevelId();
 public:
 	virtual ConsoleSaveFile *getSaveFile() { return NULL; }
 };

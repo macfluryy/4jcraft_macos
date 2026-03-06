@@ -17,7 +17,7 @@ DirectoryLevelStorageSource::DirectoryLevelStorageSource(const File dir) : baseD
 	//this->baseDir = dir;
 }
 
-wstring DirectoryLevelStorageSource::getName()
+std::wstring DirectoryLevelStorageSource::getName()
 {
 	return L"Old Format";
 }
@@ -29,7 +29,7 @@ vector<LevelSummary *> *DirectoryLevelStorageSource::getLevelList()
 #if 0
 	for (int i = 0; i < 5; i++) 
 	{
-		wstring levelId = wstring(L"World").append( _toString( (i+1) ) );
+		std::wstring levelId = std::wstring(L"World").append( _toString( (i+1) ) );
 
 		LevelData *levelData = getDataTagFor(saveFile, levelId);
 		if (levelData != NULL) 
@@ -45,10 +45,10 @@ void DirectoryLevelStorageSource::clearAll()
 {
 }
 
-LevelData *DirectoryLevelStorageSource::getDataTagFor(ConsoleSaveFile *saveFile, const wstring& levelId) 
+LevelData *DirectoryLevelStorageSource::getDataTagFor(ConsoleSaveFile *saveFile, const std::wstring& levelId) 
 {
 	//File dataFile(dir, L"level.dat");
-	ConsoleSavePath dataFile = ConsoleSavePath( wstring( L"level.dat" ) );
+	ConsoleSavePath dataFile = ConsoleSavePath( std::wstring( L"level.dat" ) );
 	if ( saveFile->doesFileExist( dataFile ) )
 	{
 		ConsoleSaveFileInputStream fis = ConsoleSaveFileInputStream(saveFile, dataFile);
@@ -62,12 +62,12 @@ LevelData *DirectoryLevelStorageSource::getDataTagFor(ConsoleSaveFile *saveFile,
 	return NULL;
 }
 
-void DirectoryLevelStorageSource::renameLevel(const wstring& levelId, const wstring& newLevelName)
+void DirectoryLevelStorageSource::renameLevel(const std::wstring& levelId, const std::wstring& newLevelName)
 {	
 	ConsoleSaveFileOriginal tempSave(levelId);
 
 	//File dataFile = File(dir, L"level.dat");
-	ConsoleSavePath dataFile = ConsoleSavePath( wstring( L"level.dat" ) );
+	ConsoleSavePath dataFile = ConsoleSavePath( std::wstring( L"level.dat" ) );
 	if ( tempSave.doesFileExist( dataFile ) ) 
 	{
 		ConsoleSaveFileInputStream fis = ConsoleSaveFileInputStream(&tempSave, dataFile);
@@ -80,7 +80,7 @@ void DirectoryLevelStorageSource::renameLevel(const wstring& levelId, const wstr
 	}
 }
 
-bool DirectoryLevelStorageSource::isNewLevelIdAcceptable(const wstring& levelId) 
+bool DirectoryLevelStorageSource::isNewLevelIdAcceptable(const std::wstring& levelId) 
 {
 	// 4J Jev, removed try/catch.
 
@@ -95,7 +95,7 @@ bool DirectoryLevelStorageSource::isNewLevelIdAcceptable(const wstring& levelId)
 	return true;
 }
 
-void DirectoryLevelStorageSource::deleteLevel(const wstring& levelId) 
+void DirectoryLevelStorageSource::deleteLevel(const std::wstring& levelId) 
 {
 	File dir = File(baseDir, levelId);
 	if (!dir.exists()) return;
@@ -118,22 +118,22 @@ void DirectoryLevelStorageSource::deleteRecursive(vector<File *> *files)
 	}
 }
 
-std::shared_ptr<LevelStorage> DirectoryLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir)
+std::shared_ptr<LevelStorage> DirectoryLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir)
 {
 	return std::shared_ptr<LevelStorage> (new DirectoryLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
-bool DirectoryLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId)
+bool DirectoryLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId)
 {
 	return false;
 }
 
-bool DirectoryLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const wstring& levelId)
+bool DirectoryLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId)
 {
 	return false;
 }
 
-bool DirectoryLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const wstring& levelId, ProgressListener *progress) 
+bool DirectoryLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress) 
 {
 	return false;
 }

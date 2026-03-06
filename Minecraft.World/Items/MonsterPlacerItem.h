@@ -27,7 +27,7 @@ public:
 
 	MonsterPlacerItem(int id);
 
-	virtual wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
+	virtual std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
 	virtual int getColor(std::shared_ptr<ItemInstance> item, int spriteLayer);
 	virtual bool hasMultipleSpriteLayers();
 	virtual Icon *getLayerIcon(int auxValue, int spriteLayer);

@@ -11,16 +11,16 @@
 SavedDataStorage::SavedDataStorage(LevelStorage *levelStorage) 
 {
 	/*
-	cache = new std::unordered_map<wstring, std::shared_ptr<SavedData> >;
+	cache = new std::unordered_map<std::wstring, std::shared_ptr<SavedData> >;
 	savedDatas = new vector<std::shared_ptr<SavedData> >;
-	usedAuxIds = new std::unordered_map<wstring, short*>;
+	usedAuxIds = new std::unordered_map<std::wstring, short*>;
 	*/
 
     this->levelStorage = levelStorage;
     loadAuxValues();
 }
 
-std::shared_ptr<SavedData> SavedDataStorage::get(const type_info& clazz, const wstring& id)
+std::shared_ptr<SavedData> SavedDataStorage::get(const type_info& clazz, const std::wstring& id)
 {
 	AUTO_VAR(it, cache.find( id ));
 	if (it != cache.end()) return (*it).second;
@@ -59,13 +59,13 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const type_info& clazz, const w
 
     if (data != NULL)
 	{
-        cache.insert( std::unordered_map<wstring, std::shared_ptr<SavedData> >::value_type( id , data ) );
+        cache.insert( std::unordered_map<std::wstring, std::shared_ptr<SavedData> >::value_type( id , data ) );
         savedDatas.push_back(data);
     }
     return data;
 }
 
-void SavedDataStorage::set(const wstring& id, std::shared_ptr<SavedData> data) 
+void SavedDataStorage::set(const std::wstring& id, std::shared_ptr<SavedData> data) 
 {
 	if (data == NULL)
 	{
@@ -145,7 +145,7 @@ void SavedDataStorage::loadAuxValues()
             if (dynamic_cast<ShortTag *>(tag) != NULL)
 			{
                 ShortTag *sTag = (ShortTag *) tag;
-                wstring id = sTag->getName();
+                std::wstring id = sTag->getName();
                 short val = sTag->data;
                 usedAuxIds.insert( uaiMapType::value_type( id, val ) );
             }
@@ -154,7 +154,7 @@ void SavedDataStorage::loadAuxValues()
     }
 }
 
-int SavedDataStorage::getFreeAuxValueFor(const wstring& id)
+int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id)
 {
 	AUTO_VAR(it, usedAuxIds.find( id ));
     short val = 0;

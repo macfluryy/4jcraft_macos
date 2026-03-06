@@ -6,7 +6,7 @@
 #include "../Headers/net.minecraft.world.entity.item.h"
 #include "../Headers/net.minecraft.world.h"
 
-const wstring BrewingStandTile::TEXTURE_BASE = L"brewingStand_base";
+const std::wstring BrewingStandTile::TEXTURE_BASE = L"brewingStand_base";
 
 BrewingStandTile::BrewingStandTile(int id) : EntityTile(id, Material::metal, isSolidRender())
 {

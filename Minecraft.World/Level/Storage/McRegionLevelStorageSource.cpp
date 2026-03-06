@@ -27,7 +27,7 @@ McRegionLevelStorageSource::McRegionLevelStorageSource(File dir) : DirectoryLeve
 {
 }
 
-wstring McRegionLevelStorageSource::getName()
+std::wstring McRegionLevelStorageSource::getName()
 {
 	return L"Scaevolus' McRegion";
 }
@@ -49,13 +49,13 @@ vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
 			continue;
 		}
 
-		wstring levelId = file->getName();
+		std::wstring levelId = file->getName();
 
 		LevelData *levelData = getDataTagFor(levelId);
 		if (levelData != NULL)
 		{
 			bool requiresConversion = levelData->getVersion() != McRegionLevelStorage::MCREGION_VERSION_ID;
-			wstring levelName = levelData->getLevelName();
+			std::wstring levelName = levelData->getLevelName();
 
 			if (levelName.empty()) // 4J Jev TODO: levelName can't be NULL? if (levelName == NULL || isEmpty(levelName))
 			{
@@ -74,13 +74,13 @@ void McRegionLevelStorageSource::clearAll()
 {
 }
 
-std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) 
+std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir) 
 {
 	//        return new LevelStorageProfilerDecorator(new McRegionLevelStorage(baseDir, levelId, createPlayerDir));
 	return std::shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
-bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId) 
+bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId) 
 {
 	// check if there is old file format level data
 	LevelData *levelData = getDataTagFor(saveFile, levelId);
@@ -94,7 +94,7 @@ bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const 
 	return true;
 }
 
-bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const wstring& levelId)
+bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId)
 {
 	LevelData *levelData = getDataTagFor(saveFile, levelId);
 	if (levelData == NULL || levelData->getVersion() != 0)
@@ -107,7 +107,7 @@ bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, c
 	return true;
 }
 
-bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const wstring& levelId, ProgressListener *progress)
+bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress)
 {
 	assert(false);
 		// I removed this while updating the saves to use the single save file
@@ -300,7 +300,7 @@ bool McRegionLevelStorageSource::FolderFilter::accept(File *file)
 }
 
 
-bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const wstring& name) 
+bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const std::wstring& name) 
 {
 	Matcher matcher( chunkFilePattern, name );
 	return matcher.matches();

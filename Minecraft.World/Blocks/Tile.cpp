@@ -16,7 +16,7 @@
 #include "../Headers/net.minecraft.h"
 #include "Tile.h"
 
-wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile."; 
+std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile."; 
 
 const float Tile::INDESTRUCTIBLE_DESTROY_TIME = -1.0f;
 
@@ -1260,7 +1260,7 @@ Tile *Tile::setDescriptionId(unsigned int id)
 	return this;
 }
 
-wstring Tile::getName()
+std::wstring Tile::getName()
 {
 	return L"";//I18n::get(getDescriptionId() + L".name");
 }
@@ -1342,12 +1342,12 @@ void Tile::registerIcons(IconRegister *iconRegister)
 	icon = iconRegister->registerIcon(m_textureName);
 }
 
-wstring Tile::getTileItemIconName()
+std::wstring Tile::getTileItemIconName()
 {
 	return L"";
 }
 
-Tile *Tile::setTextureName(const wstring &name)
+Tile *Tile::setTextureName(const std::wstring &name)
 {
 	m_textureName = name;
 	return this;
@@ -1461,8 +1461,8 @@ float Tile::SoundType::getPitch() const
 { 
 	return pitch; 
 }
-//wstring getBreakSound() const { return breakSound; }
-//wstring getStepSound()	const { return stepSound; }
+//std::wstring getBreakSound() const { return breakSound; }
+//std::wstring getStepSound()	const { return stepSound; }
 int Tile::SoundType::getBreakSound() const
 { 
 	return iBreakSound; 

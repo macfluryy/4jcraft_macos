@@ -6,7 +6,7 @@ class SharedConstants
 {
 	public:
 		static void staticCtor();
-		static const wstring VERSION_STRING;
+		static const std::wstring VERSION_STRING;
 		static const int NETWORK_PROTOCOL_VERSION = 39;
 		
 		// NOT texture resolution. How many sub-blocks each block face is made up of.
@@ -15,11 +15,11 @@ class SharedConstants
 
 		static bool isAllowedChatCharacter(char ch);
 		// why private??????????
-		static wstring readAcceptableChars();
+		static std::wstring readAcceptableChars();
 
 	public:
 		static const int maxChatLength = 100;
-		static wstring acceptableLetters;
+		static std::wstring acceptableLetters;
 
 		static const int ILLEGAL_FILE_CHARACTERS_LENGTH = 15;
 		static const wchar_t ILLEGAL_FILE_CHARACTERS[ILLEGAL_FILE_CHARACTERS_LENGTH];

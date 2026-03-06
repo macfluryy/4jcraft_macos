@@ -94,7 +94,7 @@ bool CConsoleMinecraftApp::IsAmericanSKU()
 
 SONYDLC *CConsoleMinecraftApp::GetSONYDLCInfo(char *pchTitle)
 {
-	wstring wstrTemp=convStringToWstring(pchTitle);
+	std::wstring wstrTemp=convStringToWstring(pchTitle);
 
 	AUTO_VAR(it, m_SONYDLCMap.find(wstrTemp));
 	if(it == m_SONYDLCMap.end())
@@ -105,7 +105,7 @@ SONYDLC *CConsoleMinecraftApp::GetSONYDLCInfo(char *pchTitle)
 	}
 	return it->second;
 
-	/*wstring wstrTemp=convStringToWstring(pchTitle);
+	/*std::wstring wstrTemp=convStringToWstring(pchTitle);
 	SONYDLC *pTemp=m_SONYDLCMap.at(wstrTemp);
 
 	return pTemp;*/
@@ -172,7 +172,7 @@ BOOL CConsoleMinecraftApp::ReadProductCodes()
 
 			// push this into a vector
 
-			wstring wstrTemp=convStringToWstring(chDLCTitle);
+			std::wstring wstrTemp=convStringToWstring(chDLCTitle);
 			m_SONYDLCMap[wstrTemp]=pDLCInfo;
 		}
 		CloseHandle(file);
@@ -304,7 +304,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 	////////////////////////////////////////////////////////////////////////////////////////////// From CScene_MultiGameCreate::CreateGame
 
 	app.ClearTerrainFeaturePosition();
-	wstring wWorldName = L"TestWorld";
+	std::wstring wWorldName = L"TestWorld";
 
 	bool isFlat = false;
 	__int64 seedValue = 0;//BiomeSource::findSeed(isFlat?LevelType::lvl_flat:LevelType::lvl_normal);	// 4J - was (new Random())->nextLong() - now trying to actually find a seed to suit our requirements

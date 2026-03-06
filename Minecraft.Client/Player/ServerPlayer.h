@@ -39,7 +39,7 @@ private:
 	int lastBrupSendTickCount; // 4J Added
 
 public:
-	ServerPlayer(MinecraftServer *server, Level *level, const wstring& name, ServerPlayerGameMode *gameMode);
+	ServerPlayer(MinecraftServer *server, Level *level, const std::wstring& name, ServerPlayerGameMode *gameMode);
 	~ServerPlayer();
 	void flagEntitiesToBeRemoved(unsigned int *flags, bool *removedFound);			// 4J added
 
@@ -137,7 +137,7 @@ public:
 	void onUpdateAbilities();
 	ServerLevel *getLevel();
 	void setGameMode(GameType *mode);
-	void sendMessage(const wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const wstring& additionalMessage = L"");
+	void sendMessage(const std::wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"");
 	bool hasPermission(EGameCommand command);
 	// 4J - Don't use
 	//void updateOptions(std::shared_ptr<ClientInformationPacket> packet);

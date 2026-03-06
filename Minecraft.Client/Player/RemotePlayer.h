@@ -10,7 +10,7 @@ private:
 	bool hasStartedUsingItem;
 public:
 	Input *input;
-    RemotePlayer(Level *level, const wstring& name);
+    RemotePlayer(Level *level, const std::wstring& name);
 protected:
 	virtual void setDefaultHeadHeight();
 public:

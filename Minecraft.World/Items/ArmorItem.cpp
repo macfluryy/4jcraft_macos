@@ -9,11 +9,11 @@ const int ArmorItem::healthPerSlot[] = {
 	11, 16, 15, 13
 };
 
-const wstring ArmorItem::LEATHER_OVERLAYS[] = {
+const std::wstring ArmorItem::LEATHER_OVERLAYS[] = {
 		L"helmetCloth_overlay", L"chestplateCloth_overlay", L"leggingsCloth_overlay", L"bootsCloth_overlay"
 	};
 
-const wstring ArmorItem::TEXTURE_EMPTY_SLOTS[] = {
+const std::wstring ArmorItem::TEXTURE_EMPTY_SLOTS[] = {
 		L"slot_empty_helmet", L"slot_empty_chestplate", L"slot_empty_leggings", L"slot_empty_boots"
 	};
 

@@ -9,7 +9,7 @@ private:
 	static const int MAX_AGE = 3;
 
 	static const int NETHER_STALK_TEXTURE_COUNT = 3;
-	static const wstring TEXTURE_NAMES[];
+	static const std::wstring TEXTURE_NAMES[];
 
 	Icon **icons;
 

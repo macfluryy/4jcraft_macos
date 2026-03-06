@@ -24,5 +24,5 @@ public:
 	void collectAssignments(vector<StitchSlot *> *result);
 
 	//@Override
-	wstring toString();
+	std::wstring toString();
 };

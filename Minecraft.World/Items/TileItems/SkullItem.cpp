@@ -9,7 +9,7 @@
 
 const unsigned int SkullItem::NAMES[SKULL_COUNT] = {IDS_ITEM_SKULL_SKELETON, IDS_ITEM_SKULL_WITHER, IDS_ITEM_SKULL_ZOMBIE, IDS_ITEM_SKULL_CHARACTER, IDS_ITEM_SKULL_CREEPER};
 
-wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {L"skull_skeleton", L"skull_wither", L"skull_zombie", L"skull_char", L"skull_creeper"};
+std::wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {L"skull_skeleton", L"skull_wither", L"skull_zombie", L"skull_char", L"skull_creeper"};
 
 SkullItem::SkullItem(int id) : Item(id)
 {
@@ -50,7 +50,7 @@ bool SkullItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Pl
 
 		if (skull != NULL)
 		{
-			wstring extra = L"";
+			std::wstring extra = L"";
 			if (instance->hasTag() && instance->getTag()->contains(L"SkullOwner"))
 			{
 				extra = instance->getTag()->getString(L"SkullOwner");
@@ -118,7 +118,7 @@ unsigned int SkullItem::getDescriptionId(std::shared_ptr<ItemInstance> instance)
 	return NAMES[auxValue];
 }
 
-wstring SkullItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
+std::wstring SkullItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
 #if 0
 	if (itemInstance->getAuxValue() == SkullTileEntity::TYPE_CHAR && itemInstance->hasTag() && itemInstance->getTag()->contains(L"SkullOwner"))

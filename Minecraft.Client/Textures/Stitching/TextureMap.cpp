@@ -15,9 +15,9 @@
 #include "../Packs/TexturePackRepository.h"
 #include "TextureMap.h"
 
-const wstring TextureMap::NAME_MISSING_TEXTURE = L"missingno";
+const std::wstring TextureMap::NAME_MISSING_TEXTURE = L"missingno";
 
-TextureMap::TextureMap(int type, const wstring &name, const wstring &path, BufferedImage *missingTexture, bool mipmap) : iconType(type), name(name), path(path), extension(L".png")
+TextureMap::TextureMap(int type, const std::wstring &name, const std::wstring &path, BufferedImage *missingTexture, bool mipmap) : iconType(type), name(name), path(path), extension(L".png")
 {
 	this->missingTexture = missingTexture;
 
@@ -82,9 +82,9 @@ void TextureMap::stitch()
 	//for (final String name : texturesToRegister.keySet())
 	for(AUTO_VAR(it, texturesToRegister.begin()); it != texturesToRegister.end(); ++it)
 	{
-		wstring name = it->first;
+		std::wstring name = it->first;
 
-		wstring filename = path + name + extension;
+		std::wstring filename = path + name + extension;
 
 		// TODO: [EB] Put the frames into a proper object, not this inside out hack
 		vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
@@ -121,7 +121,7 @@ void TextureMap::stitch()
 		TextureHolder *textureHolder = slot->getHolder();
 
 		Texture *texture = textureHolder->getTexture();
-		wstring textureName = texture->getName();
+		std::wstring textureName = texture->getName();
 
 		vector<Texture *> *frames = textures.find(textureHolder)->second;
 
@@ -155,7 +155,7 @@ void TextureMap::stitch()
 		{
 			animatedTextures.push_back(stored);
 
-			wstring animationDefinitionFile = textureName + L".txt";
+			std::wstring animationDefinitionFile = textureName + L".txt";
 
 			TexturePack *texturePack = Minecraft::GetInstance()->skins->getSelected();
 			bool requiresFallback = !texturePack->hasFile(L"\\" + textureName + L".png", false);
@@ -189,7 +189,7 @@ void TextureMap::stitch()
 	stitchResult->updateOnGPU();
 }
 
-StitchedTexture *TextureMap::getTexture(const wstring &name)
+StitchedTexture *TextureMap::getTexture(const std::wstring &name)
 {
 	StitchedTexture *result = texturesByName.find(name)->second;
 	if (result == NULL) result = missingPosition;
@@ -212,7 +212,7 @@ Texture *TextureMap::getStitchedTexture()
 }
 
 // 4J Stu - register is a reserved keyword in C++
-Icon *TextureMap::registerIcon(const wstring &name)
+Icon *TextureMap::registerIcon(const std::wstring &name)
 {
 	if (name.empty())
 	{

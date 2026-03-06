@@ -19,7 +19,7 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source, byteArray c
 	int item = dis.readInt();
 	int amount = dis.readInt();
 	int aux = dis.readInt();
-	wstring tag = dis.readUTF();
+	std::wstring tag = dis.readUTF();
 	
 	bais.reset();
 
@@ -33,7 +33,7 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source, byteArray c
 	}
 }
 
-std::shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(std::shared_ptr<Player> player, int item, int amount, int aux, const wstring &tag)
+std::shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(std::shared_ptr<Player> player, int item, int amount, int aux, const std::wstring &tag)
 {
 	if(player == NULL) return nullptr;
 

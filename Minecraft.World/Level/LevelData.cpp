@@ -16,7 +16,7 @@ LevelData::LevelData(CompoundTag *tag)
 	m_pGenerator = LevelType::lvl_normal;
 	if (tag->contains(L"generatorName")) 
 	{
-		wstring generatorName = tag->getString(L"generatorName");
+		std::wstring generatorName = tag->getString(L"generatorName");
 		m_pGenerator = LevelType::getLevelType(generatorName);
 		if (m_pGenerator == NULL) 
 		{
@@ -139,7 +139,7 @@ LevelData::LevelData(CompoundTag *tag)
 	dimension = 0;
 }
 
-LevelData::LevelData(LevelSettings *levelSettings, const wstring& levelName) 
+LevelData::LevelData(LevelSettings *levelSettings, const std::wstring& levelName) 
 {
     this->seed = levelSettings->getSeed();
     this->gameType = levelSettings->getGameType();
@@ -440,12 +440,12 @@ void LevelData::setSpawn(int xSpawn, int ySpawn, int zSpawn)
     this->zSpawn = zSpawn;
 }
 
-wstring LevelData::getLevelName() 
+std::wstring LevelData::getLevelName() 
 {
     return levelName;
 }
 
-void LevelData::setLevelName(const wstring& levelName)
+void LevelData::setLevelName(const std::wstring& levelName)
 {
     this->levelName = levelName;
 }

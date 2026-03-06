@@ -150,7 +150,7 @@ int Enchantment::getDescriptionId()
 	return descriptionId;
 }
 
-wstring Enchantment::getFullname(int level,wstring &unformatted)
+std::wstring Enchantment::getFullname(int level,std::wstring &unformatted)
 {
 	wchar_t formatted[256];
 	swprintf(formatted,256,L"%ls %ls",app.GetString( getDescriptionId() ), getLevelString(level).c_str());
@@ -165,7 +165,7 @@ bool Enchantment::canEnchant(std::shared_ptr<ItemInstance> item)
 }
 
 // 4J Added
-wstring Enchantment::getLevelString(int level)
+std::wstring Enchantment::getLevelString(int level)
 {
 	int stringId = IDS_ENCHANTMENT_LEVEL_1;
 	switch(level)

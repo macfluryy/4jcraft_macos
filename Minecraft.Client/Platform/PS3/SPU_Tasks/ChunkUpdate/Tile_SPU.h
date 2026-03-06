@@ -223,7 +223,7 @@ private:
 //     unsigned int descriptionId;
 //     unsigned int useDescriptionId; // 4J Added
 // 
-// 	wstring m_textureName;
+// 	std::wstring m_textureName;
 
 protected:
 // 	Icon *icon;

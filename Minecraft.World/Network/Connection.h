@@ -95,7 +95,7 @@ private:
 public:
 	// 4J Jev, need to delete the critical section.
 	~Connection();
-	Connection(Socket *socket, const wstring& id, PacketListener *packetListener); // throws IOException
+	Connection(Socket *socket, const std::wstring& id, PacketListener *packetListener); // throws IOException
 
 	void setListener(PacketListener *packetListener);
 	void send(std::shared_ptr<Packet> packet);

@@ -9,7 +9,7 @@ class CDurangoTelemetryManager : public CTelemetryManager
 public:
 	static GUID ZERO_GUID;
 
-	std::unordered_map<wstring, float> m_multiplayerRoundStartTimes;
+	std::unordered_map<std::wstring, float> m_multiplayerRoundStartTimes;
 
 	CDurangoTelemetryManager();
 
@@ -46,5 +46,5 @@ public:
 protected:
 	DurangoStats *durangoStats();
 
-	wstring guid2str(LPCGUID guid);
+	std::wstring guid2str(LPCGUID guid);
 };

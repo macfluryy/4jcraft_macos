@@ -48,7 +48,7 @@ private:
 	int magFilter;
 	int wrapMode;
 	bool mipmapped;
-	wstring name;
+	std::wstring name;
 
 	Rect2i *rect;
 
@@ -67,19 +67,19 @@ public:
 
 	~Texture();
 private:
-	Texture(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap = true);
+	Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap = true);
 
-	void _init(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap);
-	void _init(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap);
+	void _init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap);
+	void _init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap);
 
 public:
-	Texture(const wstring &name, int mode, int width, int height, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap = true);
-	Texture(const wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap = true);
+	Texture(const std::wstring &name, int mode, int width, int height, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap = true);
+	Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap = true);
 
 	const Rect2i *getRect();
 	void fill(const Rect2i *rect, int color);
-	void writeAsBMP(const wstring &name);
-	void writeAsPNG(const wstring &filename);
+	void writeAsBMP(const std::wstring &name);
+	void writeAsPNG(const std::wstring &filename);
 	void blit(int x, int y, Texture *source);
 	void blit(int x, int y, Texture *source, bool rotated);
 	void transferFromBuffer(intArray buffer);
@@ -88,7 +88,7 @@ public:
 	int getGlId();
 	int getWidth();
 	int getHeight();
-	wstring getName();
+	std::wstring getName();
 	void setImmediateUpdate(bool immediateUpdate);
 	void bind(int mipMapIndex);
 	void updateOnGPU();

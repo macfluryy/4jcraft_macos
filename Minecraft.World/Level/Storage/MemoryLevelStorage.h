@@ -26,6 +26,6 @@ public:
     virtual void closeAll();
     virtual void save(std::shared_ptr<Player> player);
     virtual bool load(std::shared_ptr<Player> player);
-    virtual CompoundTag *loadPlayerDataTag(const wstring& playerName);
-    virtual ConsoleSavePath getDataFile(const wstring& id);
+    virtual CompoundTag *loadPlayerDataTag(const std::wstring& playerName);
+    virtual ConsoleSavePath getDataFile(const std::wstring& id);
 };

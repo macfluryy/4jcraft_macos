@@ -69,7 +69,7 @@ public:
 
 private:
 	// 4J Stu - Was const but had to change it so that we can initialise it in TileStaticInit
-	static wstring TILE_DESCRIPTION_PREFIX;
+	static std::wstring TILE_DESCRIPTION_PREFIX;
 protected:
 	static const float INDESTRUCTIBLE_DESTROY_TIME;
 
@@ -78,9 +78,9 @@ public:
 	class SoundType
 	{
 	public:
-//         wstring name;
-// 		wstring breakSound;
-// 		wstring stepSound;
+//         std::wstring name;
+// 		std::wstring breakSound;
+// 		std::wstring stepSound;
 		eMATERIALSOUND_TYPE eMaterialSound;
 		int iBreakSound,iStepSound,iPlaceSound;
         float volume;
@@ -90,8 +90,8 @@ public:
 	
 		float getVolume() const;
 		float getPitch() const;
-		//wstring getBreakSound() const { return breakSound; }
-		//wstring getStepSound()	const { return stepSound; }
+		//std::wstring getBreakSound() const { return breakSound; }
+		//std::wstring getStepSound()	const { return stepSound; }
 		int getBreakSound() const;
 		int getStepSound()	const;
 		int getPlaceSound() const;
@@ -498,7 +498,7 @@ private:
     unsigned int descriptionId;
     unsigned int useDescriptionId; // 4J Added
 
-	wstring m_textureName;
+	std::wstring m_textureName;
 
 protected:
 	Icon *icon;
@@ -615,7 +615,7 @@ public:
     virtual void setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by);
 	virtual void finalizePlacement(Level *level, int x, int y, int z, int data);
     virtual Tile *setDescriptionId(unsigned int id);
-    virtual wstring getName();
+    virtual std::wstring getName();
     virtual unsigned int getDescriptionId(int iData = -1);
     virtual Tile *setUseDescriptionId(unsigned int id); // 4J Added
     virtual unsigned int getUseDescriptionId(); // 4J Added
@@ -638,9 +638,9 @@ public:
 	virtual void handleRain(Level *level, int x, int y, int z);
 	virtual void levelTimeChanged(Level *level, __int64 delta, __int64 newTime);
 	virtual void registerIcons(IconRegister *iconRegister);
-	virtual wstring getTileItemIconName();	
+	virtual std::wstring getTileItemIconName();	
 	// 4J Using per-item textures now
-	Tile *setTextureName(const wstring &name);
+	Tile *setTextureName(const std::wstring &name);
 	// AP - added this function so we can generate the faceFlags for a block in a single fast function
 	int getFaceFlags(LevelSource *level, int x, int y, int z);
 };

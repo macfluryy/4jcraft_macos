@@ -5,7 +5,7 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.h"
 
-const wstring NetherStalkTile::TEXTURE_NAMES[] = { L"netherStalk_0", L"netherStalk_1", L"netherStalk_2" };
+const std::wstring NetherStalkTile::TEXTURE_NAMES[] = { L"netherStalk_0", L"netherStalk_1", L"netherStalk_2" };
 
 NetherStalkTile::NetherStalkTile(int id) : Bush(id)
 {

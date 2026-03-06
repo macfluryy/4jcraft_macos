@@ -6,9 +6,9 @@
 #include "../../Util/BasicTypeContainers.h"
 #include "Villages.h"
 
-const wstring Villages::VILLAGE_FILE_ID = L"villages";
+const std::wstring Villages::VILLAGE_FILE_ID = L"villages";
 
-Villages::Villages(const wstring &id) : SavedData(id)
+Villages::Villages(const std::wstring &id) : SavedData(id)
 {
 	_tick = 0;
 	level = NULL;

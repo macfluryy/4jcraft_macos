@@ -208,14 +208,14 @@ private:
 	static const wchar_t *preLoaded[TN_COUNT];
 	static int preLoadedIdx[TN_COUNT];
 
-	std::unordered_map<wstring, int> idMap;
-    std::unordered_map<wstring, intArray> pixelsMap;
+	std::unordered_map<std::wstring, int> idMap;
+    std::unordered_map<std::wstring, intArray> pixelsMap;
     std::unordered_map<int, BufferedImage *> loadedImages;
     //IntBuffer *pixels;	// 4J - removed so we don't have a permanent buffer kicking round using up 1MB
 
-	std::unordered_map<wstring, HttpTexture *> httpTextures;
+	std::unordered_map<std::wstring, HttpTexture *> httpTextures;
 	// 4J-PB - Added for GTS textures
-	std::unordered_map<wstring,MemTexture *> memTextures;
+	std::unordered_map<std::wstring,MemTexture *> memTextures;
     Options *options;
 
 private:
@@ -232,14 +232,14 @@ private:
 	void loadIndexedTextures(); // 4J Added
 
 public:
-	intArray loadTexturePixels(TEXTURE_NAME texId, const wstring& resourceName);
+	intArray loadTexturePixels(TEXTURE_NAME texId, const std::wstring& resourceName);
 private:
 	intArray loadTexturePixels(BufferedImage *img);
     intArray loadTexturePixels(BufferedImage *img, intArray pixels);
-	void setTextureFormat(const wstring& resourceName);	// 4J added
+	void setTextureFormat(const std::wstring& resourceName);	// 4J added
 
 public:
-	void bindTexture(const wstring &resourceName);
+	void bindTexture(const std::wstring &resourceName);
 	void bindTexture(int resourceId); // 4J Added
 
 	// 4J Made public for use in XUI controls
@@ -249,7 +249,7 @@ public:
 	void clearLastBoundId();
 
 private:
-	int loadTexture(TEXTURE_NAME texId, const wstring& resourceName);
+	int loadTexture(TEXTURE_NAME texId, const std::wstring& resourceName);
 public:
 	int loadTexture(int idx);			// 4J added
 	int getTexture(BufferedImage *img, C4JRender::eTextureFormat format = C4JRender::TEXTURE_FORMAT_RxGyBzAw, bool mipmap = true);
@@ -262,26 +262,26 @@ public:
 	void replaceTextureDirect(intArray rawPixels, int w, int h, int id);		// 4J added as optimisation
 	void replaceTextureDirect(shortArray rawPixels, int w, int h, int id);		// 4J added as optimisation
 	void releaseTexture(int id);
-    int loadHttpTexture(const wstring& url, const wstring& backup);
-	int loadHttpTexture(const wstring& url, int backup);	// 4J added
-	bool hasHttpTexture(const wstring &url);
-    HttpTexture *addHttpTexture(const wstring& url, HttpTextureProcessor *processor);
-    void removeHttpTexture(const wstring& url);
+    int loadHttpTexture(const std::wstring& url, const std::wstring& backup);
+	int loadHttpTexture(const std::wstring& url, int backup);	// 4J added
+	bool hasHttpTexture(const std::wstring &url);
+    HttpTexture *addHttpTexture(const std::wstring& url, HttpTextureProcessor *processor);
+    void removeHttpTexture(const std::wstring& url);
 
 	// 4J-PB - for the GTS textures
-	int				loadMemTexture(const wstring& url, const wstring& backup);
-	int				loadMemTexture(const wstring& url, int backup);
-	MemTexture *	addMemTexture(const wstring& url, MemTextureProcessor *processor);
-	//MemTexture *	getMemTexture(const wstring& url, MemTextureProcessor *processor);
-	void			removeMemTexture(const wstring& url);
+	int				loadMemTexture(const std::wstring& url, const std::wstring& backup);
+	int				loadMemTexture(const std::wstring& url, int backup);
+	MemTexture *	addMemTexture(const std::wstring& url, MemTextureProcessor *processor);
+	//MemTexture *	getMemTexture(const std::wstring& url, MemTextureProcessor *processor);
+	void			removeMemTexture(const std::wstring& url);
 
     void tick(bool updateTextures, bool tickDynamics = true);		// 4J added updateTextures parameter & tickDynamics
 public:
 	void reloadAll();
 	void stitch();
 	Icon *getMissingIcon(int type);
-	BufferedImage *readImage(TEXTURE_NAME texId, const wstring& name); // Moved this to public for Font.cpp access
+	BufferedImage *readImage(TEXTURE_NAME texId, const std::wstring& name); // Moved this to public for Font.cpp access
 	// check list of title update textures to see if we need to use the UPDATE: drive
-	static bool IsTUImage(TEXTURE_NAME texId, const wstring& name);
-	static bool IsOriginalImage(TEXTURE_NAME texId, const wstring& name);
+	static bool IsTUImage(TEXTURE_NAME texId, const std::wstring& name);
+	static bool IsOriginalImage(TEXTURE_NAME texId, const std::wstring& name);
 };

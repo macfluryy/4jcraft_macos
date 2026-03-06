@@ -48,14 +48,14 @@ void SelectWorldScreen::loadLevelList()
 	selectedWorld = -1;
 }
 
-wstring SelectWorldScreen::getWorldId(int id)
+std::wstring SelectWorldScreen::getWorldId(int id)
 {
 	return levelList->at(id)->getLevelId();
 }
 
-wstring SelectWorldScreen::getWorldName(int id)
+std::wstring SelectWorldScreen::getWorldName(int id)
 {
-    wstring levelName = levelList->at(id)->getLevelName();
+    std::wstring levelName = levelList->at(id)->getLevelName();
 
 	if ( levelName.length() == 0 )
 	{
@@ -87,16 +87,16 @@ void SelectWorldScreen::buttonClicked(Button *button)
     if (!button->active) return;
     if (button->id == BUTTON_DELETE_ID)
 	{
-        wstring worldName = getWorldName(selectedWorld);
+        std::wstring worldName = getWorldName(selectedWorld);
         if (worldName != L"")
 		{
             isDeleting = true;
 
             Language *language = Language::getInstance();
-            wstring title = language->getElement(L"selectWorld.deleteQuestion");
-            wstring warning = L"'" + worldName + L"' " + language->getElement(L"selectWorld.deleteWarning");
-            wstring yes = language->getElement(L"selectWorld.deleteButton");
-            wstring no = language->getElement(L"gui.cancel");
+            std::wstring title = language->getElement(L"selectWorld.deleteQuestion");
+            std::wstring warning = L"'" + worldName + L"' " + language->getElement(L"selectWorld.deleteWarning");
+            std::wstring yes = language->getElement(L"selectWorld.deleteButton");
+            std::wstring no = language->getElement(L"gui.cancel");
 
             ConfirmScreen *confirmScreen = new ConfirmScreen(this, title, warning, yes, no, selectedWorld);
             minecraft->setScreen(confirmScreen);
@@ -147,7 +147,7 @@ void SelectWorldScreen::worldSelected(int id)
     done = true;
     minecraft->gameMode = NULL; //new SurvivalMode(minecraft);
 
-    wstring worldFolderName = getWorldId(id);
+    std::wstring worldFolderName = getWorldId(id);
     if (worldFolderName == L"")	// 4J - was NULL comparison
 	{
         worldFolderName = L"World" + _toString<int>(id);
@@ -271,13 +271,13 @@ void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y, int 
 {
     LevelSummary *levelSummary = parent->levelList->at(i);
 
-    wstring name = levelSummary->getLevelName();
+    std::wstring name = levelSummary->getLevelName();
     if (name.length()==0)
 	{
         name = parent->worldLang + L" " + _toString<int>(i + 1);
     }
 
-    wstring id = levelSummary->getLevelId();
+    std::wstring id = levelSummary->getLevelId();
 
 	ULARGE_INTEGER rawtime;
 	rawtime.QuadPart = levelSummary->getLastPlayed() * 10000; // Convert it from milliseconds back to FileTime
@@ -296,7 +296,7 @@ void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y, int 
 
     __int64 size = levelSummary->getSizeOnDisk();
     id = id + L", " + _toString<float>(size / 1024 * 100 / 1024 / 100.0f) + L" MB)";
-    wstring info;
+    std::wstring info;
 
     if (levelSummary->isRequiresConversion())
 	{

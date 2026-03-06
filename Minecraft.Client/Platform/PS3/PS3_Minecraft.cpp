@@ -951,7 +951,7 @@ int main()
 	// 4J-PB - TRC that we need to be able to see the BD in a different titled save from the digital game
 	if(StorageManager.GetBootTypeDisc())
 	{
-		wstring wsTemp = app.GetString(IDS_GAMENAME);
+		std::wstring wsTemp = app.GetString(IDS_GAMENAME);
 		WCHAR wchTemp[64];
 		wsTemp.append(L" (");
 		mbstowcs(wchTemp,app.GetDiscProductCode(),64);
@@ -991,7 +991,7 @@ int main()
 		delete [] baSaveImage.data;
 	}
 
-	wstring wsName=L"Graphics\\SaveChest.png";
+	std::wstring wsName=L"Graphics\\SaveChest.png";
 	byteArray baSaveLoadIcon = app.getArchiveFile(wsName);
 	if(baSaveLoadIcon.data!=NULL)
 	{

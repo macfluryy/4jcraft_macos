@@ -421,7 +421,7 @@ int DQRNetworkManager::GetFriendsThreadProc()
 		}
 		for( int j = 0; j < m_sessionSearchResults[i].m_usedSlotCount; j++ )
 		{
-			m_sessionSearchResults[i].m_sessionXuids[j] = wstring( newSessionVector[i]->Members->GetAt(j)->XboxUserId->Data() );
+			m_sessionSearchResults[i].m_sessionXuids[j] = std::wstring( newSessionVector[i]->Members->GetAt(j)->XboxUserId->Data() );
 		}
 		
 		m_sessionSearchResults[i].m_extData = malloc( sizeof(GameSessionData) );

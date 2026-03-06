@@ -75,7 +75,7 @@ public:
     void add(std::shared_ptr<ServerPlayer> player);
     void move(std::shared_ptr<ServerPlayer> player);
     void remove(std::shared_ptr<ServerPlayer> player);
-    std::shared_ptr<ServerPlayer> getPlayerForLogin(PendingConnection *pendingConnection, const wstring& userName, PlayerUID xuid, PlayerUID OnlineXuid);
+    std::shared_ptr<ServerPlayer> getPlayerForLogin(PendingConnection *pendingConnection, const std::wstring& userName, PlayerUID xuid, PlayerUID OnlineXuid);
     std::shared_ptr<ServerPlayer> respawn(std::shared_ptr<ServerPlayer> serverPlayer, int targetDimension, bool keepAllPlayerData);
     void toggleDimension(std::shared_ptr<ServerPlayer> player, int targetDimension);
     void tick();
@@ -84,23 +84,23 @@ public:
     void broadcastAll(std::shared_ptr<Packet> packet);
     void broadcastAll(std::shared_ptr<Packet> packet, int dimension);
 
-    wstring getPlayerNames();
+    std::wstring getPlayerNames();
 
 public:
-	bool isWhiteListed(const wstring& name);
-    bool isOp(const wstring& name);
+	bool isWhiteListed(const std::wstring& name);
+    bool isOp(const std::wstring& name);
 	bool isOp(std::shared_ptr<ServerPlayer> player); // 4J Added
-    std::shared_ptr<ServerPlayer> getPlayer(const wstring& name);
+    std::shared_ptr<ServerPlayer> getPlayer(const std::wstring& name);
 	std::shared_ptr<ServerPlayer> getPlayer(PlayerUID uid);
-    void sendMessage(const wstring& name, const wstring& message);
+    void sendMessage(const std::wstring& name, const std::wstring& message);
     void broadcast(double x, double y, double z, double range, int dimension, std::shared_ptr<Packet> packet);
     void broadcast(std::shared_ptr<Player> except, double x, double y, double z, double range, int dimension, std::shared_ptr<Packet> packet);
-    void broadcastToAllOps(const wstring& message);
-    bool sendTo(const wstring& name, std::shared_ptr<Packet> packet);
+    void broadcastToAllOps(const std::wstring& message);
+    bool sendTo(const std::wstring& name, std::shared_ptr<Packet> packet);
 	// 4J Added ProgressListener *progressListener param and bDeleteGuestMaps param
     void saveAll(ProgressListener *progressListener, bool bDeleteGuestMaps = false);
-    void whiteList(const wstring& playerName);
-    void blackList(const wstring& playerName);
+    void whiteList(const std::wstring& playerName);
+    void blackList(const std::wstring& playerName);
 //    Set<String> getWhiteList();		/ 4J removed
     void reloadWhitelist();
     void sendLevelInfo(std::shared_ptr<ServerPlayer> player, ServerLevel *level);

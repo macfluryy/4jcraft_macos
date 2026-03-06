@@ -217,7 +217,7 @@ bool MobEffect::isHarmful()
 	return _isHarmful;
 }
 
-wstring MobEffect::formatDuration(MobEffectInstance *instance)
+std::wstring MobEffect::formatDuration(MobEffectInstance *instance)
 {
 	int duration = instance->getDuration();
 

@@ -8,8 +8,8 @@
 
 
 
-TileEntity::idToCreateMapType TileEntity::idCreateMap = std::unordered_map<wstring, tileEntityCreateFn>();
-TileEntity::classToIdMapType TileEntity::classIdMap = std::unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
+TileEntity::idToCreateMapType TileEntity::idCreateMap = std::unordered_map<std::wstring, tileEntityCreateFn>();
+TileEntity::classToIdMapType TileEntity::classIdMap = std::unordered_map<eINSTANCEOF, std::wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
 
 void TileEntity::staticCtor()
 {
@@ -28,7 +28,7 @@ void TileEntity::staticCtor()
 	TileEntity::setId(SkullTileEntity::create,eTYPE_SKULLTILEENTITY, L"Skull");
 }
 
-void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas, wstring id)
+void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas, std::wstring id)
 {
 	// 4J Stu - Java has classIdMap.containsKey(id) which would never work as id is not of the type of the key in classIdMap
 	// I have changed to use idClassMap instead so that we can still search from the string key

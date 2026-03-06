@@ -13,7 +13,7 @@ const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {	IDS_TILE_ANVIL
 												};
 
 
-wstring AnvilTile::TEXTURE_DAMAGE_NAMES[ANVIL_NAMES_LENGTH] = {
+std::wstring AnvilTile::TEXTURE_DAMAGE_NAMES[ANVIL_NAMES_LENGTH] = {
 	L"anvil_top", L"anvil_top_damaged_1", L"anvil_top_damaged_2"
 };
 
