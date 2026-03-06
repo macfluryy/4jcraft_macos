@@ -32,7 +32,7 @@ sudo apt install \
   build-essential cmake \
   libglfw3-dev libgl-dev libglu1-mesa-dev \
   libopenal-dev libvorbis-dev \
-  libpthread-stubs0-dev
+  libpng-dev libpthread-stubs0-dev
 ```
 
 On Arch/Manjaro:
@@ -42,6 +42,17 @@ sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
 ```
 
 If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
+
+On Docker:
+
+If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you — GCC 15, Meson, Ninja, lld, and all the libraries.
+
+Alternatively, you can build and use the container manually:
+
+```bash
+docker build -t 4jcraft-dev .devcontainer/
+docker run -it -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev bash
+```
 
 ### Configure & Build
 
