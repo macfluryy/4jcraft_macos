@@ -96,9 +96,9 @@ public:
 	std::wstring progressStatus;
     int progress;
 private:
-//	vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J - removed
+//	std::vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J - removed
 	CommandDispatcher *commandDispatcher;
-    vector<ConsoleInput *> consoleInput;	// 4J - was synchronizedList - TODO - investigate
+    std::vector<ConsoleInput *> consoleInput;	// 4J - was synchronizedList - TODO - investigate
 public:
     bool onlineMode;
     bool animals;
@@ -204,7 +204,7 @@ private:
 		ChunkSource		*chunkSource;
 		postProcessRequest(int x, int z, ChunkSource *chunkSource) : x(x), z(z), chunkSource(chunkSource) {}
 	};
-	vector<postProcessRequest>	m_postProcessRequests;
+	std::vector<postProcessRequest>	m_postProcessRequests;
 	CRITICAL_SECTION		m_postProcessCS;
 public:
 	void					addPostProcessRequest(ChunkSource *chunkSource, int x, int z);

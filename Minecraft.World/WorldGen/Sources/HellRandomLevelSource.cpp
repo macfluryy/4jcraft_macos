@@ -522,7 +522,7 @@ std::wstring HellRandomLevelSource::gatherStats()
 	return L"HellRandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *HellRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *HellRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     // check if the coordinates is within a netherbridge
     if (mobCategory == MobCategory::monster && netherBridgeFeature->isInsideFeature(x, y, z))

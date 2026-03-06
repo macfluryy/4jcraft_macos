@@ -148,7 +148,7 @@ bool HangingEntity::survives()
 				}
 			}
 
-			vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
+			std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
 
 			if (entities != NULL && entities->size() > 0)
 			{

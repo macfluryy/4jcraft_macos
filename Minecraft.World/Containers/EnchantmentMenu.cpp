@@ -159,7 +159,7 @@ bool EnchantmentMenu::clickMenuButton(std::shared_ptr<Player> player, int i)
 		{
 			bool isBook = item->id == Item::book_Id;
 
-			vector<EnchantmentInstance *> *newEnchantment = EnchantmentHelper::selectEnchantment(&random, item, costs[i]);
+			std::vector<EnchantmentInstance *> *newEnchantment = EnchantmentHelper::selectEnchantment(&random, item, costs[i]);
 			if (newEnchantment != NULL)
 			{
 				player->withdrawExperienceLevels(costs[i]);

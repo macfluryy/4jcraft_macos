@@ -57,10 +57,10 @@ C4JThread*		GameRenderer::m_updateThread;
 C4JThread::EventArray* GameRenderer::m_updateEvents;
 bool GameRenderer::nearThingsToDo = false;
 bool GameRenderer::updateRunning = false;
-vector<uint8_t *> GameRenderer::m_deleteStackByte;
-vector<SparseLightStorage *> GameRenderer::m_deleteStackSparseLightStorage;
-vector<CompressedTileStorage *> GameRenderer::m_deleteStackCompressedTileStorage;
-vector<SparseDataStorage *> GameRenderer::m_deleteStackSparseDataStorage;
+std::vector<uint8_t *> GameRenderer::m_deleteStackByte;
+std::vector<SparseLightStorage *> GameRenderer::m_deleteStackSparseLightStorage;
+std::vector<CompressedTileStorage *> GameRenderer::m_deleteStackCompressedTileStorage;
+std::vector<SparseDataStorage *> GameRenderer::m_deleteStackSparseDataStorage;
 #endif
 CRITICAL_SECTION GameRenderer::m_csDeleteStack;
 
@@ -352,7 +352,7 @@ void GameRenderer::pick(float a)
     Vec3 *to = from->add(b->x * range, b->y * range, b->z * range);
     hovered = nullptr;
     float overlap = 1;
-    vector<std::shared_ptr<Entity> > *objects = mc->level->getEntities(mc->cameraTargetPlayer, mc->cameraTargetPlayer->bb->expand(b->x * (range), b->y * (range), b->z * (range))->grow(overlap, overlap, overlap));
+    std::vector<std::shared_ptr<Entity> > *objects = mc->level->getEntities(mc->cameraTargetPlayer, mc->cameraTargetPlayer->bb->expand(b->x * (range), b->y * (range), b->z * (range))->grow(overlap, overlap, overlap));
     double nearest = dist;
 
 	AUTO_VAR(itEnd, objects->end());

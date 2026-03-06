@@ -790,9 +790,9 @@ void CPlatformNetworkManagerDurango::TickSearch()
 	}
 }
 
-vector<FriendSessionInfo *> *CPlatformNetworkManagerDurango::GetSessionList(int iPad, int localPlayers, bool partyOnly)
+std::vector<FriendSessionInfo *> *CPlatformNetworkManagerDurango::GetSessionList(int iPad, int localPlayers, bool partyOnly)
 {
-	vector<FriendSessionInfo *> *filteredList = new vector<FriendSessionInfo *>();
+	std::vector<FriendSessionInfo *> *filteredList = new std::vector<FriendSessionInfo *>();
 	for( int i = 0; i < m_searchResultsCount; i++ )
 	{
 		GameSessionData *gameSessionData = (GameSessionData *)m_pSearchResults[i].m_extData;

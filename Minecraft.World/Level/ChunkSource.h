@@ -62,6 +62,6 @@ public:
      */
     virtual std::wstring gatherStats() = 0;
 
-	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z) = 0;
+	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z) = 0;
     virtual TilePos *findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z) = 0;
 };

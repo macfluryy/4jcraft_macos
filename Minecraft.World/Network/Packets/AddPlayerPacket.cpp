@@ -132,7 +132,7 @@ int AddPlayerPacket::getEstimatedSize()
 	return iSize;
 }
 
-vector<std::shared_ptr<SynchedEntityData::DataItem> > *AddPlayerPacket::getUnpackedData() 
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *AddPlayerPacket::getUnpackedData() 
 {
 	if (unpack == NULL)
 	{

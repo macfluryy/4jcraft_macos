@@ -153,7 +153,7 @@ void FallingTile::causeFallDamage(float distance)
 		int dmg = Mth::ceil(distance - 1);
 		if (dmg > 0)
 		{
-			vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
+			std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
 			DamageSource *source = tile == Tile::anvil_Id ? DamageSource::anvil : DamageSource::fallingBlock;
 
 			//for (Entity entity : entities)

@@ -147,7 +147,7 @@ void ZonedChunkStorage::tick()
     tickCount++;
     if (tickCount % (20 * 10) == 4)
 	{
-		vector<__int64> toClose;
+		std::vector<__int64> toClose;
 
 		AUTO_VAR(itEndZF, zoneFiles.end());
 		for( std::unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEndZF; it++ )
@@ -198,7 +198,7 @@ void ZonedChunkStorage::loadEntities(Level *level, LevelChunk *lc)
 {
     int slot = getSlot(lc->x, lc->z);
     ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
-    vector<CompoundTag *> *tags = zoneFile->entityFile->readAll(slot);
+    std::vector<CompoundTag *> *tags = zoneFile->entityFile->readAll(slot);
 
 	AUTO_VAR(itEnd, tags->end());
 	for (AUTO_VAR(it, tags->begin()); it != itEnd; it++)
@@ -223,7 +223,7 @@ void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
     int slot = getSlot(lc->x, lc->z);
     ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
 
-    vector<CompoundTag *> tags;
+    std::vector<CompoundTag *> tags;
 
 #ifdef _ENTITIES_RW_SECTION
 	EnterCriticalRWSection(&lc->m_csEntities, true);
@@ -232,7 +232,7 @@ void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
 #endif
     for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++)
 	{
-        vector<std::shared_ptr<Entity> > *entities = lc->entityBlocks[i];
+        std::vector<std::shared_ptr<Entity> > *entities = lc->entityBlocks[i];
 
 		AUTO_VAR(itEndTags, entities->end());
 		for (AUTO_VAR(it, entities->begin()); it != itEndTags; it++)

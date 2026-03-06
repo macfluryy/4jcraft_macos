@@ -54,7 +54,7 @@ private:
 
 public:
 	static int getAppearanceValue(int brew);
-	static int getColorValue(vector<MobEffectInstance *> *effects);
+	static int getColorValue(std::vector<MobEffectInstance *> *effects);
 
 private:
 	static std::unordered_map<int, int> cachedColors;
@@ -80,7 +80,7 @@ private:
 	static int parseEffectFormulaValue(const std::wstring &definition, int start, int end, int brew);
 
 public:
-	static vector<MobEffectInstance *> *getEffects(int brew, bool includeDisabledEffects);
+	static std::vector<MobEffectInstance *> *getEffects(int brew, bool includeDisabledEffects);
 
 #if !(_SIMPLIFIED_BREWING)
 	static int boil(int brew);

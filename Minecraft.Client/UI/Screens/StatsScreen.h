@@ -78,7 +78,7 @@ private:
 		StatsScreen *parent;
 	protected:
 		int headerPressed;
-        vector<ItemStat *> statItemList;
+        std::vector<ItemStat *> statItemList;
 //        Comparator<ItemStat> itemStatSorter;
 
         int sortColumn;

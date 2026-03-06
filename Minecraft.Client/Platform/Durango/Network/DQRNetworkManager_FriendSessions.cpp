@@ -169,10 +169,10 @@ int DQRNetworkManager::GetFriendsThreadProc()
 	
 	// Get party views for each of the user party associations that we have. These seem to be able to (individually) raise errors, so
 	// accumulate results into 2 matched vectors declared below so that we can ignore any broken UserPartyAssociations from now
-	vector<WXM::PartyView^> partyViewVector;
-	vector<WXM::UserPartyAssociation^> partyResultsVector;
+	std::vector<WXM::PartyView^> partyViewVector;
+	std::vector<WXM::UserPartyAssociation^> partyResultsVector;
 
-	vector<task<void>> taskVector;
+	std::vector<task<void>> taskVector;
     for each(WXM::UserPartyAssociation^ remoteParty in partyResults) 
     {
 		auto asyncOp = WXM::Party::GetPartyViewByPartyIdAsync( primaryUser, remoteParty->PartyId );
@@ -210,8 +210,8 @@ int DQRNetworkManager::GetFriendsThreadProc()
 	}
 
 	// Filter the party view, and party results vector (partyResultsVector) this is matched to, to remove any that don't have game sessions - or game sessions that aren't this game
-	vector<WXM::PartyView^> partyViewVectorFiltered;
-	vector<WXM::UserPartyAssociation^> partyResultsFiltered;
+	std::vector<WXM::PartyView^> partyViewVectorFiltered;
+	std::vector<WXM::UserPartyAssociation^> partyResultsFiltered;
 
 	for( int i = 0; i < partyViewVector.size(); i++ )
 	{
@@ -237,9 +237,9 @@ int DQRNetworkManager::GetFriendsThreadProc()
 	// 
 	// and, from the party views, we can now attempt to get game sessions
 
-	vector<MXSM::MultiplayerSession^> sessionVector;
-	vector<WXM::PartyView^> partyViewVectorValid;
-	vector<WXM::UserPartyAssociation^> partyResultsValid;
+	std::vector<MXSM::MultiplayerSession^> sessionVector;
+	std::vector<WXM::PartyView^> partyViewVectorValid;
+	std::vector<WXM::UserPartyAssociation^> partyResultsValid;
 
   	for( int i = 0; i < partyViewVectorFiltered.size(); i++ )
 	{
@@ -284,10 +284,10 @@ int DQRNetworkManager::GetFriendsThreadProc()
 	// a session won't have any XUIDs to resolve, which would make GetUserProfilesAsync unhappy, so we'll only be creating a task
 	// when there are members. Creating new matching arrays for party results and sessions, to match the results (we don't care about the party view anymore)
 
-	vector<task<IVectorView<MXSS::XboxUserProfile^>^>> nameResolveTaskVector;
-	vector<IVectorView<MXSS::XboxUserProfile^>^> nameResolveVector;
-	vector<MXSM::MultiplayerSession^>  newSessionVector;
-	vector<WXM::UserPartyAssociation^> newPartyVector;
+	std::vector<task<IVectorView<MXSS::XboxUserProfile^>^>> nameResolveTaskVector;
+	std::vector<IVectorView<MXSS::XboxUserProfile^>^> nameResolveVector;
+	std::vector<MXSM::MultiplayerSession^>  newSessionVector;
+	std::vector<WXM::UserPartyAssociation^> newPartyVector;
 
 	for( int j = 0; j < sessionVector.size(); j++ )
 	{
@@ -383,7 +383,7 @@ int DQRNetworkManager::GetFriendsThreadProc()
 
 	try
 	{
-		auto joinTask = when_all(begin(nameResolveTaskVector), end(nameResolveTaskVector) ).then([this, &nameResolveVector](vector<IVectorView<MXSS::XboxUserProfile^>^> results)
+		auto joinTask = when_all(begin(nameResolveTaskVector), end(nameResolveTaskVector) ).then([this, &nameResolveVector](std::vector<IVectorView<MXSS::XboxUserProfile^>^> results)
 		{
 			nameResolveVector = results;
 		})

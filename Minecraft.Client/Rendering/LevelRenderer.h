@@ -120,18 +120,18 @@ public:
 	void destroyTileProgress(int id, int x, int y, int z, int progress);
 	void registerTextures(IconRegister *iconRegister);
 
-	typedef std::unordered_map<int, vector<std::shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
+	typedef std::unordered_map<int, std::vector<std::shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
 private:
 
 	// debug
 	int m_freezeticks; // used to freeze the clouds
 
 	// 4J - this block of declarations was scattered round the code but have gathered everything into one place
-	rteMap renderableTileEntities;			// 4J - changed - was vector<std::shared_ptr<TileEntity>, now hashed by chunk so we can find them
+	rteMap renderableTileEntities;			// 4J - changed - was std::vector<std::shared_ptr<TileEntity>, now hashed by chunk so we can find them
 	CRITICAL_SECTION					m_csRenderableTileEntities;
 	MultiPlayerLevel *level[4];					// 4J - now one per player
 	Textures *textures;
-	//    vector<Chunk *> *sortedChunks[4];	// 4J - removed - not sorting our chunks anymore
+	//    std::vector<Chunk *> *sortedChunks[4];	// 4J - removed - not sorting our chunks anymore
 	ClipChunkArray chunks[4];			// 4J - now one per player
 	int lastPlayerCount[4];				// 4J - added
 	int xChunks, yChunks, zChunks;
@@ -149,7 +149,7 @@ private:
 	int renderedEntities;
 	int culledEntities;
 	int chunkFixOffs;
-	vector<Chunk *> _renderChunks;
+	std::vector<Chunk *> _renderChunks;
 	int frame;
 	int repeatList;
 	double xOld[4];						// 4J - now one per player
@@ -189,7 +189,7 @@ public:
 			~RecentTile();
 		};
 		CRITICAL_SECTION			m_csDestroyedTiles;
-		vector<RecentTile *>		m_destroyedTiles;
+		std::vector<RecentTile *>		m_destroyedTiles;
 	public:
 		void destroyingTileAt( Level *level, int x, int y, int z );									// For game to let this manager know that a tile is about to be destroyed (must be called before it actually is)
 		void updatedChunkAt( Level * level, int x, int y, int z, int veryNearCount );				// For chunk rebuilding to inform the manager that a chunk (a 16x16x16 tile render chunk) has been updated

@@ -47,7 +47,7 @@ bool NearestAttackableTargetGoal::canUse()
 	}
 	else
 	{
-		vector<std::shared_ptr<Entity> > *entities = mob->level->getEntitiesOfClass(targetType, mob->bb->grow(within, 4, within));
+		std::vector<std::shared_ptr<Entity> > *entities = mob->level->getEntitiesOfClass(targetType, mob->bb->grow(within, 4, within));
 		//Collections.sort(entities, distComp);
 		std::sort(entities->begin(), entities->end(), *distComp);
 		for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)

@@ -52,7 +52,7 @@ public:
 
     int id;
 //public:
-//	vector<std::shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
+//	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
     
 private:
 	LevelRenderer::rteMap			*globalRenderableTileEntities;

@@ -864,7 +864,7 @@ bool Item::hasPotionBrewingFormula()
 	return !potionBrewingFormula.empty();
 }
 
-void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
+void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings)
 {
 }
 

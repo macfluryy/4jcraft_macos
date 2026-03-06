@@ -8,7 +8,7 @@ using namespace std;
 class GuiParticles : public GuiComponent
 {
 private:
-	vector<GuiParticle *> particles;
+	std::vector<GuiParticle *> particles;
     Minecraft *mc;
 
 public:

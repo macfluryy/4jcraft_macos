@@ -183,7 +183,7 @@ void PlayerChunkMap::PlayerChunk::prioritiseTileChanges()
 
 void PlayerChunkMap::PlayerChunk::broadcast(std::shared_ptr<Packet> packet)
 {
-	vector< std::shared_ptr<ServerPlayer> > sentTo;
+	std::vector< std::shared_ptr<ServerPlayer> > sentTo;
     for (unsigned int i = 0; i < players.size(); i++)
 	{
         std::shared_ptr<ServerPlayer> player = players[i];
@@ -330,7 +330,7 @@ bool PlayerChunkMap::PlayerChunk::broadcastChanges(bool allowRegionUpdate)
 		if( ys > 256 ) ys = 256;		
 
         broadcast( std::shared_ptr<BlockRegionUpdatePacket>( new BlockRegionUpdatePacket(xp, yp, zp, xs, ys, zs, level) ) );
-        vector<std::shared_ptr<TileEntity> > *tes = level->getTileEntitiesInRegion(xp, yp, zp, xp + xs, yp + ys, zp + zs);
+        std::vector<std::shared_ptr<TileEntity> > *tes = level->getTileEntitiesInRegion(xp, yp, zp, xp + xs, yp + ys, zp + zs);
         for (unsigned int i = 0; i < tes->size(); i++)
 		{
             broadcast(tes->at(i));

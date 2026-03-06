@@ -5,7 +5,7 @@ using namespace std;
 template <class T> class ListTag : public Tag
 {
 private:
-    vector<Tag *> list;
+    std::vector<Tag *> list;
     uint8_t type;
 
 public:

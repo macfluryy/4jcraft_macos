@@ -77,7 +77,7 @@ void VillageSiege::tick()
 
 bool VillageSiege::tryToSetupSiege()
 {
-	vector<std::shared_ptr<Player> > *players = &level->players;
+	std::vector<std::shared_ptr<Player> > *players = &level->players;
 	//for (Player player : players)
 	for(AUTO_VAR(it, players->begin()); it != players->end(); ++it)
 	{
@@ -101,7 +101,7 @@ bool VillageSiege::tryToSetupSiege()
 			spawnY = center->y;
 			spawnZ = center->z + (int) (Mth::sin(level->random->nextFloat() * PI * 2.f) * radius * 0.9);
 			overlaps = false;
-			vector<std::shared_ptr<Village> > *villages = level->villages->getVillages();
+			std::vector<std::shared_ptr<Village> > *villages = level->villages->getVillages();
 			//for (Village v : level.villages.getVillages())
 			for(AUTO_VAR(itV, villages->begin()); itV != villages->end(); ++itV)
 			{

@@ -190,10 +190,10 @@ public:
 	float getAndResetChangeDimensionTimer();
 
 	virtual void handleCollectItem(std::shared_ptr<ItemInstance> item);
-	void SetPlayerAdditionalModelParts(vector<ModelPart *>pAdditionalModelParts);
+	void SetPlayerAdditionalModelParts(std::vector<ModelPart *>pAdditionalModelParts);
 
 private:
-	vector<ModelPart *> m_pAdditionalModelParts;
+	std::vector<ModelPart *> m_pAdditionalModelParts;
 };
 
 

@@ -1609,7 +1609,7 @@ void LocalPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item)
 	}
 }
 
-void LocalPlayer::SetPlayerAdditionalModelParts(vector<ModelPart *>pAdditionalModelParts)
+void LocalPlayer::SetPlayerAdditionalModelParts(std::vector<ModelPart *>pAdditionalModelParts)
 {
 	m_pAdditionalModelParts=pAdditionalModelParts;
 }

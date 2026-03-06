@@ -4,7 +4,7 @@
 #include "../Structures/ScatteredFeaturePieces.h"
 #include "RandomScatteredLargeFeature.h"
 
-vector<Biome *> RandomScatteredLargeFeature::allowedBiomes;
+std::vector<Biome *> RandomScatteredLargeFeature::allowedBiomes;
 
 void RandomScatteredLargeFeature::staticCtor()
 {

@@ -29,7 +29,7 @@ public:
 	bool isInsideFeature(int cellX, int cellY, int cellZ);
 	TilePos *getNearestGeneratedFeature(Level *level, int cellX, int cellY, int cellZ);
 protected:
-	vector<TilePos> *getGuesstimatedFeaturePositions(); 
+	std::vector<TilePos> *getGuesstimatedFeaturePositions(); 
 
     /**
      * Returns true if the given chunk coordinates should hold a structure

@@ -1293,7 +1293,7 @@ void Mob::aiStep()
 
 	if(!level->isClientSide)
 	{
-		vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
+		std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
 		if (entities != NULL && !entities->empty()) 
 		{
 			AUTO_VAR(itEnd, entities->end());
@@ -1684,7 +1684,7 @@ void Mob::tickEffects()
 			}
 			else
 			{
-				vector<MobEffectInstance *> values;
+				std::vector<MobEffectInstance *> values;
 				for(AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end();++it)
 				{
 					values.push_back(it->second);
@@ -1735,9 +1735,9 @@ void Mob::removeAllEffects()
 	}
 }
 
-vector<MobEffectInstance *> *Mob::getActiveEffects()
+std::vector<MobEffectInstance *> *Mob::getActiveEffects()
 {
-	vector<MobEffectInstance *> *active = new vector<MobEffectInstance *>();
+	std::vector<MobEffectInstance *> *active = new std::vector<MobEffectInstance *>();
 
 	for(AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end(); ++it)
 	{

@@ -133,7 +133,7 @@ public:
 
 private:
 	bool m_bCloseOnTick;
-	vector<std::wstring> m_texturesRequested;
+	std::vector<std::wstring> m_texturesRequested;
 
 	bool m_bWasKicked;
 };

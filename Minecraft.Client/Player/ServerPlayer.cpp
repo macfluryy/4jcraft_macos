@@ -441,7 +441,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks)
 				// Don't send TileEntity data until we have sent the block data
 				if( connection->isLocal() || chunkDataSent)
 				{
-					vector<std::shared_ptr<TileEntity> > *tes = level->getTileEntitiesInRegion(nearest.x * 16, 0, nearest.z * 16, nearest.x * 16 + 16, Level::maxBuildHeight, nearest.z * 16 + 16);
+					std::vector<std::shared_ptr<TileEntity> > *tes = level->getTileEntitiesInRegion(nearest.x * 16, 0, nearest.z * 16, nearest.x * 16 + 16, Level::maxBuildHeight, nearest.z * 16 + 16);
 					for (unsigned int i = 0; i < tes->size(); i++)
 					{
 						// 4J Stu - Added delay param to ensure that these arrive after the BRUPs from above
@@ -1010,12 +1010,12 @@ void ServerPlayer::slotChanged(AbstractContainerMenu *container, int slotIndex, 
 
 void ServerPlayer::refreshContainer(AbstractContainerMenu *menu)
 {
-	vector<std::shared_ptr<ItemInstance> > *items = menu->getItems();
+	std::vector<std::shared_ptr<ItemInstance> > *items = menu->getItems();
 	refreshContainer(menu, items);
 	delete items;
 }
 
-void ServerPlayer::refreshContainer(AbstractContainerMenu *container, vector<std::shared_ptr<ItemInstance> > *items)
+void ServerPlayer::refreshContainer(AbstractContainerMenu *container, std::vector<std::shared_ptr<ItemInstance> > *items)
 {
     connection->send( std::shared_ptr<ContainerSetContentPacket>( new ContainerSetContentPacket(container->containerId, items) ) );
     connection->send( std::shared_ptr<ContainerSetSlotPacket>( new ContainerSetSlotPacket(-1, -1, inventory->getCarried()) ) );

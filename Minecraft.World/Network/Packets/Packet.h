@@ -77,7 +77,7 @@ public:
 private:
 	// 4J Added to track stats for packets that are going out via QNet
 	static std::unordered_map<int, PacketStatistics *> outgoingStatistics; // IntHashMap in 1.8.2 ... needed?
-	static vector<PacketStatistics *> renderableStats;
+	static std::vector<PacketStatistics *> renderableStats;
 	static int renderPos;
 public:
 	static void recordOutgoingPacket(std::shared_ptr<Packet> packet);

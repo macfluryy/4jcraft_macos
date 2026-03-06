@@ -17,7 +17,7 @@ CompoundTag *DerivedLevelData::createTag()
 	return wrapped->createTag();
 }
 
-CompoundTag *DerivedLevelData::createTag(vector<std::shared_ptr<Player> > *players)
+CompoundTag *DerivedLevelData::createTag(std::vector<std::shared_ptr<Player> > *players)
 {
 	return wrapped->createTag(players);
 }

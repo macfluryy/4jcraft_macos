@@ -618,7 +618,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(std::shared_ptr<ServerPlayer> 
 
 	if(keepAllPlayerData)
 	{
-		vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
+		std::vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
 		for(AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end(); ++it)
 		{
 			MobEffectInstance *effect = *it;
@@ -811,7 +811,7 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player, int targe
 	player->connection->teleport(player->x, player->y, player->z, player->yRot, player->xRot);
 
 	// 4J Stu - Fix for #64683 - Customer Encountered: TU7: Content: Gameplay: Potion effects are removed after using the Nether Portal
-	vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
+	std::vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
 	for(AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end(); ++it)
 	{
 		MobEffectInstance *effect = *it;
@@ -1034,7 +1034,7 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y, d
 {
 	// 4J - altered so that we don't send to the same machine more than once. Add the source player to the machines we have "sent" to as it doesn't need to go to that
 	// machine either
-	vector< std::shared_ptr<ServerPlayer> > sentTo;
+	std::vector< std::shared_ptr<ServerPlayer> > sentTo;
 	if( except != NULL )
 	{
 		sentTo.push_back(dynamic_pointer_cast<ServerPlayer>(except));

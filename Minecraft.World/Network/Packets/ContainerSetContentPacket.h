@@ -11,7 +11,7 @@ public:
 
 	ContainerSetContentPacket();
 	~ContainerSetContentPacket();
-	ContainerSetContentPacket(int containerId, vector<std::shared_ptr<ItemInstance> > *newItems);
+	ContainerSetContentPacket(int containerId, std::vector<std::shared_ptr<ItemInstance> > *newItems);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

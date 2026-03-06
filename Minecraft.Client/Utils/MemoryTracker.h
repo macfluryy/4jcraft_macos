@@ -13,7 +13,7 @@ class MemoryTracker
 {
 private:
 	static std::unordered_map<int,int> GL_LIST_IDS;
-    static vector<int> TEXTURE_IDS;
+    static std::vector<int> TEXTURE_IDS;
 
 public:
 	static int genLists(int count);

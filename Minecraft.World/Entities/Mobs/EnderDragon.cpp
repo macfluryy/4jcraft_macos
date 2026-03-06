@@ -440,7 +440,7 @@ void EnderDragon::aiStep()
 		{
 			if( m_actionTicks < (FLAME_TICKS - 10) )
 			{
-				vector<std::shared_ptr<Entity> > *targets = level->getEntities(shared_from_this(), m_acidArea);
+				std::vector<std::shared_ptr<Entity> > *targets = level->getEntities(shared_from_this(), m_acidArea);
 
 				for( AUTO_VAR(it, targets->begin() ); it != targets->end(); ++it)
 				{
@@ -793,7 +793,7 @@ void EnderDragon::checkCrystals()
 	if (random->nextInt(10) == 0)
 	{
 		float maxDist = 32;
-		vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), bb->grow(maxDist, maxDist, maxDist));
+		std::vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), bb->grow(maxDist, maxDist, maxDist));
 
 		std::shared_ptr<EnderCrystal> crystal = nullptr;
 		double nearest = Double::MAX_VALUE;
@@ -831,7 +831,7 @@ void EnderDragon::checkAttack()
 	}
 }
 
-void EnderDragon::knockBack(vector<std::shared_ptr<Entity> > *entities)
+void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> > *entities)
 {
 	double xm = (body->bb->x0 + body->bb->x1) / 2;
 	//        double ym = (body.bb.y0 + body.bb.y1) / 2;
@@ -851,7 +851,7 @@ void EnderDragon::knockBack(vector<std::shared_ptr<Entity> > *entities)
 	}
 }
 
-void EnderDragon::hurt(vector<std::shared_ptr<Entity> > *entities)
+void EnderDragon::hurt(std::vector<std::shared_ptr<Entity> > *entities)
 {
 	//for (int i = 0; i < entities->size(); i++)
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
@@ -1312,7 +1312,7 @@ void EnderDragon::checkDespawn()
 {
 }
 
-vector<std::shared_ptr<Entity> > *EnderDragon::getSubEntities()
+std::vector<std::shared_ptr<Entity> > *EnderDragon::getSubEntities()
 {
 	return &subEntities;
 }
@@ -1435,7 +1435,7 @@ EnderDragon::EEnderdragonAction EnderDragon::getSynchedAction()
 void EnderDragon::handleCrystalDestroyed(DamageSource *source)
 {
 	AABB *tempBB = AABB::newTemp(PODIUM_X_POS,84.0,PODIUM_Z_POS,PODIUM_X_POS+1.0,85.0,PODIUM_Z_POS+1.0);
-	vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), tempBB->grow(48, 40, 48));
+	std::vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), tempBB->grow(48, 40, 48));
 	m_remainingCrystalsCount = (int)crystals->size() - 1;
 	if(m_remainingCrystalsCount < 0) m_remainingCrystalsCount = 0;
 	delete crystals;

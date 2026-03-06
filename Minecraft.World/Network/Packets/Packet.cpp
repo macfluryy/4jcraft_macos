@@ -171,7 +171,7 @@ unordered_set<int> Packet::sendToAnyClientPackets = unordered_set<int>();
 
 // 4J Added
 std::unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = std::unordered_map<int, Packet::PacketStatistics *>();
-vector<Packet::PacketStatistics *> Packet::renderableStats = vector<Packet::PacketStatistics *>();
+std::vector<Packet::PacketStatistics *> Packet::renderableStats = std::vector<Packet::PacketStatistics *>();
 int Packet::renderPos = 0;
 
 // sendToAnyClient - true - send to anyone, false - Sends to one person per dimension per machine

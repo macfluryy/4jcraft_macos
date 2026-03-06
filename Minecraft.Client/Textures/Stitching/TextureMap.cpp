@@ -58,7 +58,7 @@ void TextureMap::stitch()
 	}
 
 	// Collection bucket for multiple frames per texture
-	std::unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
+	std::unordered_map<TextureHolder *, std::vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
 
 	Stitcher *stitcher = TextureManager::getInstance()->createStitcher(name);
 	
@@ -74,9 +74,9 @@ void TextureMap::stitch()
 	TextureHolder *missingHolder = new TextureHolder(missingTex);
 
 	stitcher->addTexture(missingHolder);
-	vector<Texture *> *missingVec = new vector<Texture *>();
+	std::vector<Texture *> *missingVec = new std::vector<Texture *>();
 	missingVec->push_back(missingTex);
-	textures.insert( std::unordered_map<TextureHolder *, vector<Texture *> * >::value_type( missingHolder, missingVec ));
+	textures.insert( std::unordered_map<TextureHolder *, std::vector<Texture *> * >::value_type( missingHolder, missingVec ));
 
 	// Extract frames from textures and add them to the stitchers
 	//for (final String name : texturesToRegister.keySet())
@@ -87,7 +87,7 @@ void TextureMap::stitch()
 		std::wstring filename = path + name + extension;
 
 		// TODO: [EB] Put the frames into a proper object, not this inside out hack
-		vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
+		std::vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
 
 		if (frames == NULL || frames->empty())
 		{
@@ -98,7 +98,7 @@ void TextureMap::stitch()
 		stitcher->addTexture(holder);
 
 		// Store frames
-		textures.insert( std::unordered_map<TextureHolder *, vector<Texture *> * >::value_type( holder, frames ) );
+		textures.insert( std::unordered_map<TextureHolder *, std::vector<Texture *> * >::value_type( holder, frames ) );
 	}
 
 	// Stitch!
@@ -123,7 +123,7 @@ void TextureMap::stitch()
 		Texture *texture = textureHolder->getTexture();
 		std::wstring textureName = texture->getName();
 
-		vector<Texture *> *frames = textures.find(textureHolder)->second;
+		std::vector<Texture *> *frames = textures.find(textureHolder)->second;
 
 		StitchedTexture *stored = NULL;
 		

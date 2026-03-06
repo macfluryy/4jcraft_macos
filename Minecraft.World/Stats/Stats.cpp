@@ -17,14 +17,14 @@ const int Stats::ADDITIONAL_STATS_OFFSET = 0x5010000; // Needs to be higher than
 
 std::unordered_map<int, Stat*>* Stats::statsById = new std::unordered_map<int, Stat*>;
 
-vector<Stat *> *Stats::all = new vector<Stat *>;
-vector<Stat *> *Stats::generalStats = new vector<Stat *>;
-vector<ItemStat *> *Stats::blocksMinedStats = new vector<ItemStat *>;
-vector<ItemStat *> *Stats::itemsCollectedStats = new vector<ItemStat *>;
-vector<ItemStat *> *Stats::itemsCraftedStats = new vector<ItemStat *>;
+std::vector<Stat *> *Stats::all = new std::vector<Stat *>;
+std::vector<Stat *> *Stats::generalStats = new std::vector<Stat *>;
+std::vector<ItemStat *> *Stats::blocksMinedStats = new std::vector<ItemStat *>;
+std::vector<ItemStat *> *Stats::itemsCollectedStats = new std::vector<ItemStat *>;
+std::vector<ItemStat *> *Stats::itemsCraftedStats = new std::vector<ItemStat *>;
 
 #if (defined _EXTENDED_ACHIEVEMENTS) && (!defined _DURANGO)
-vector<ItemStat *> *Stats::blocksPlacedStats = new vector<ItemStat *>;
+std::vector<ItemStat *> *Stats::blocksPlacedStats = new std::vector<ItemStat *>;
 #endif
 
 Stat *Stats::walkOneM = NULL;

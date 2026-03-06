@@ -7,7 +7,7 @@ class RandomScatteredLargeFeature : public StructureFeature
 {
 public:
 	static void staticCtor();
-	static vector<Biome *> allowedBiomes;
+	static std::vector<Biome *> allowedBiomes;
 	RandomScatteredLargeFeature();
 
 protected:

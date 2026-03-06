@@ -11,10 +11,10 @@ private:
 
 protected:
 	Texture *source;
-	vector<Texture *> *frames;
+	std::vector<Texture *> *frames;
 
 private:
-	typedef vector<pair<int, int> > intPairVector;
+	typedef std::vector<pair<int, int> > intPairVector;
 	intPairVector *frameOverride;
 	int flags;
 
@@ -49,7 +49,7 @@ protected:
 
 public:
 	void initUVs(float U0, float V0, float U1, float V1);
-	void init(Texture *source, vector<Texture *> *frames, int x, int y, int width, int height, bool rotated);
+	void init(Texture *source, std::vector<Texture *> *frames, int x, int y, int width, int height, bool rotated);
 	void replaceWith(StitchedTexture *texture);
 	int getX() const;
 	int getY() const;

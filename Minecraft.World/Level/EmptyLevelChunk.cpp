@@ -144,11 +144,11 @@ void EmptyLevelChunk::markUnsaved()
 {
 }
 
-void EmptyLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb, vector<std::shared_ptr<Entity> > &es)
+void EmptyLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb, std::vector<std::shared_ptr<Entity> > &es)
 {
 }
 
-void EmptyLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, vector<std::shared_ptr<Entity> > &es)
+void EmptyLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, std::vector<std::shared_ptr<Entity> > &es)
 {
 }
 

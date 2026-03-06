@@ -74,9 +74,9 @@ ArchiveFile::~ArchiveFile()
 	delete m_cachedData;
 }
 
-vector<std::wstring> *ArchiveFile::getFileList()
+std::vector<std::wstring> *ArchiveFile::getFileList()
 {
-	vector<std::wstring> *out = new vector<std::wstring>();
+	std::vector<std::wstring> *out = new std::vector<std::wstring>();
 	
 	for (	AUTO_VAR(it, m_index.begin());
 			it != m_index.end();

@@ -1061,7 +1061,7 @@ int main()
 	ShutdownManager::MainThreadHandleShutdown();
 }
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 uint8_t * AddRichPresenceString(int iID)
 {
 	uint8_t *strUtf8 = mallocAndCreateUTF8ArrayFromString(iID);

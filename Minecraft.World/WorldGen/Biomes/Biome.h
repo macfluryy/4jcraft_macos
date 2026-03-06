@@ -81,12 +81,12 @@ public:
     };
 
 protected:
-    vector<MobSpawnerData *> enemies;
-    vector<MobSpawnerData *> friendlies;
-    vector<MobSpawnerData *> waterFriendlies;
-	vector<MobSpawnerData *> friendlies_chicken;
-	vector<MobSpawnerData *> friendlies_wolf;
-	vector<MobSpawnerData *> friendlies_mushroomcow;
+    std::vector<MobSpawnerData *> enemies;
+    std::vector<MobSpawnerData *> friendlies;
+    std::vector<MobSpawnerData *> waterFriendlies;
+	std::vector<MobSpawnerData *> friendlies_chicken;
+	std::vector<MobSpawnerData *> friendlies_wolf;
+	std::vector<MobSpawnerData *> friendlies_mushroomcow;
 	
 	Biome(int id);
 	~Biome();
@@ -132,7 +132,7 @@ protected:
 public:
     virtual int getSkyColor(float temp);
 
-    vector<MobSpawnerData *> *getMobs(MobCategory *category);
+    std::vector<MobSpawnerData *> *getMobs(MobCategory *category);
 
     virtual bool hasSnow();
     virtual bool hasRain();

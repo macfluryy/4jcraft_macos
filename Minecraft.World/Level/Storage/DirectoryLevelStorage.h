@@ -96,7 +96,7 @@ private:
 	bool m_bHasLoadedMapDataMappings;
 
 	std::unordered_map<std::wstring, ByteArrayOutputStream *> m_cachedSaveData;
-	vector<short> m_mapFilesToDelete; // Temp list of files that couldn't be deleted immediately due to saving being disabled
+	std::vector<short> m_mapFilesToDelete; // Temp list of files that couldn't be deleted immediately due to saving being disabled
 
 protected:
 	ConsoleSaveFile *m_saveFile;
@@ -119,7 +119,7 @@ public:
 	void checkSession();
     virtual ChunkStorage *createChunkStorage(Dimension *dimension);
     LevelData *prepareLevel();
-    virtual void saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players);
+    virtual void saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players);
     virtual void saveLevelData(LevelData *levelData);
     virtual void save(std::shared_ptr<Player> player);
     virtual bool load(std::shared_ptr<Player> player);  // 4J Changed return val to bool to check if new player or loaded player

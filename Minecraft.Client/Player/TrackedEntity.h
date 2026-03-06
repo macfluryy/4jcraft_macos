@@ -36,7 +36,7 @@ public:
 
     TrackedEntity(std::shared_ptr<Entity> e, int range, int updateInterval, bool trackDelta);
 
-    void tick(EntityTracker *tracker, vector<std::shared_ptr<Player> > *players);
+    void tick(EntityTracker *tracker, std::vector<std::shared_ptr<Player> > *players);
     void broadcast(std::shared_ptr<Packet> packet);
     void broadcastAndSend(std::shared_ptr<Packet> packet);
     void broadcastRemoved();
@@ -56,7 +56,7 @@ private:
 	
 public:
     void updatePlayer(EntityTracker *tracker, std::shared_ptr<ServerPlayer> sp);
-    void updatePlayers(EntityTracker *tracker, vector<std::shared_ptr<Player> > *players);
+    void updatePlayers(EntityTracker *tracker, std::vector<std::shared_ptr<Player> > *players);
 private:
 	void sendEntityData(std::shared_ptr<PlayerConnection> conn);
 	std::shared_ptr<Packet> getAddEntityPacket();

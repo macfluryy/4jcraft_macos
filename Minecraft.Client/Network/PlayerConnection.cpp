@@ -858,7 +858,7 @@ void PlayerConnection::handleTextureAndGeometry(std::shared_ptr<TextureAndGeomet
 			else
 			{
 				// we don't have the dlc skin, so retrieve the data from the app store
-				vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(packet->dwSkinID);
+				std::vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(packet->dwSkinID);
 				unsigned int uiAnimOverrideBitmask= app.GetAnimOverrideBitmask(packet->dwSkinID);
 
 				send( std::shared_ptr<TextureAndGeometryPacket>( new TextureAndGeometryPacket(packet->textureName,pbData,dwTextureBytes,pvSkinBoxes,uiAnimOverrideBitmask) ) );
@@ -933,7 +933,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(const std::wstring &text
 			{
 				// get the data from the app
 				DWORD dwSkinID = app.getSkinIdFromPath(textureName);
-				vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(dwSkinID);
+				std::vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(dwSkinID);
 				unsigned int uiAnimOverrideBitmask= app.GetAnimOverrideBitmask(dwSkinID);
 
 				send( std::shared_ptr<TextureAndGeometryPacket>( new TextureAndGeometryPacket(textureName,pbData,dwTextureBytes, pvSkinBoxes, uiAnimOverrideBitmask) ) );
@@ -1146,7 +1146,7 @@ void PlayerConnection::handleContainerClick(std::shared_ptr<ContainerClickPacket
 			player->connection->send( std::shared_ptr<ContainerAckPacket>( new ContainerAckPacket(packet->containerId, packet->uid, false) ) );
 			player->containerMenu->setSynched(player, false);
 
-			vector<std::shared_ptr<ItemInstance> > items;
+			std::vector<std::shared_ptr<ItemInstance> > items;
 			for (unsigned int i = 0; i < player->containerMenu->slots->size(); i++)
 			{
 				items.push_back(player->containerMenu->slots->at(i)->getItem());
@@ -1244,7 +1244,7 @@ void PlayerConnection::handleSetCreativeModeSlot(std::shared_ptr<SetCreativeMode
 		{
 			// 4J Stu - Maps need to have their aux value update, so the client should always be assumed to be wrong
 			// This is how the Java works, as the client also incorrectly predicts the auxvalue of the mapItem
-			vector<std::shared_ptr<ItemInstance> > items;
+			std::vector<std::shared_ptr<ItemInstance> > items;
 			for (unsigned int i = 0; i < player->inventoryMenu->slots->size(); i++)
 			{
 				items.push_back(player->inventoryMenu->slots->at(i)->getItem());
@@ -1586,7 +1586,7 @@ void PlayerConnection::handleCraftItem(std::shared_ptr<CraftItemPacket> packet)
 		{
 			// 4J Stu - Maps need to have their aux value update, so the client should always be assumed to be wrong
 			// This is how the Java works, as the client also incorrectly predicts the auxvalue of the mapItem
-			vector<std::shared_ptr<ItemInstance> > items;
+			std::vector<std::shared_ptr<ItemInstance> > items;
 			for (unsigned int i = 0; i < player->containerMenu->slots->size(); i++)
 			{
 				items.push_back(player->containerMenu->slots->at(i)->getItem());

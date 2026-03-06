@@ -147,12 +147,12 @@ void Minimap::render(std::shared_ptr<Player> player, Textures *textures, std::sh
 	AUTO_VAR(itEnd, data->decorations.end());
 
 #ifdef _LARGE_WORLDS
-	vector<MapItemSavedData::MapDecoration *> m_edgeIcons;
+	std::vector<MapItemSavedData::MapDecoration *> m_edgeIcons;
 #endif
 
 	// 4J-PB - stack the map icons
 	float fIconZ=-0.04f;// 4J - moved to -0.04 (was -0.02) to stop z fighting
-	for( vector<MapItemSavedData::MapDecoration *>::iterator it = data->decorations.begin(); it != itEnd; it++ )
+	for( std::vector<MapItemSavedData::MapDecoration *>::iterator it = data->decorations.begin(); it != itEnd; it++ )
 	{
 		MapItemSavedData::MapDecoration *dec = *it;
 

@@ -490,7 +490,7 @@ void DurangoLeaderboardManager::runLeaderboardRequest(WF::IAsyncOperation<MXSL::
 
 			if(m_readCount > 0)
 			{
-				vector<PlayerUID> xuids = vector<PlayerUID>();
+				std::vector<PlayerUID> xuids = std::vector<PlayerUID>();
 				for(int i = 0; i < lastResult->Rows->Size; i++)
 				{
 					xuids.push_back(PlayerUID(lastResult->Rows->GetAt(i)->XboxUserId->Data()));
@@ -585,7 +585,7 @@ void DurangoLeaderboardManager::GetProfilesCallback(LPVOID param, std::vector<Mi
 
 	if (profiles.size() > 0)
 	{
-		dlm->m_displayNames = vector<std::wstring>();
+		dlm->m_displayNames = std::vector<std::wstring>();
 		for (int i = 0; i < profiles.size(); i++)
 		{
 			dlm->m_displayNames.push_back(profiles[i]->GameDisplayName->Data());

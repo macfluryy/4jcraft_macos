@@ -4,7 +4,7 @@ using namespace std;
 class User
 {
 public:
-	static vector<Tile *> allowedTiles;
+	static std::vector<Tile *> allowedTiles;
 	static void staticCtor();
 	std::wstring name;
 	std::wstring sessionId;

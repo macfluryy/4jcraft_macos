@@ -760,7 +760,7 @@ std::wstring RandomLevelSource::gatherStats()
 	return L"RandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *RandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *RandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     Biome *biome = level->getBiome(x, z);
     if (biome == NULL)

@@ -70,7 +70,7 @@ void PreStitchedTextureMap::stitch()
 	}
 
 	// Collection bucket for multiple frames per texture
-	std::unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
+	std::unordered_map<TextureHolder *, std::vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
 
 	Stitcher *stitcher = TextureManager::getInstance()->createStitcher(name);
 
@@ -143,7 +143,7 @@ void PreStitchedTextureMap::stitch()
 		std::wstring filename = path + textureFileName + extension;
 
 		// TODO: [EB] Put the frames into a proper object, not this inside out hack
-		vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
+		std::vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
 		if (frames == NULL || frames->empty())
 		{
 			continue; // Couldn't load a texture, skip it

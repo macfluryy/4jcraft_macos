@@ -7,7 +7,7 @@
 #include "../../IO/Files/FileHeader.h"
 #include "../../Util/JavaMath.h"
 
-vector<Biome *> StrongholdFeature::allowedBiomes;
+std::vector<Biome *> StrongholdFeature::allowedBiomes;
 
 void StrongholdFeature::staticCtor()
 {
@@ -168,9 +168,9 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
     return false;
 }
 
-vector<TilePos> *StrongholdFeature::getGuesstimatedFeaturePositions()
+std::vector<TilePos> *StrongholdFeature::getGuesstimatedFeaturePositions()
 {
-    vector<TilePos> *positions = new vector<TilePos>();
+    std::vector<TilePos> *positions = new std::vector<TilePos>();
 	for( int i = 0; i < strongholdPos_length; i++ )
 	{
 		ChunkPos *chunkPos = strongholdPos[i];
@@ -209,7 +209,7 @@ StrongholdFeature::StrongholdStart::StrongholdStart(Level *level, Random *random
     pieces.push_back(startRoom);
     startRoom->addChildren(startRoom, &pieces, random);
 
-    vector<StructurePiece *> *pendingChildren = &startRoom->pendingChildren;
+    std::vector<StructurePiece *> *pendingChildren = &startRoom->pendingChildren;
     while (!pendingChildren->empty())
 	{
         int pos = random->nextInt((int)pendingChildren->size());

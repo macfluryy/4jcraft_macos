@@ -781,7 +781,7 @@ void PartyController::OnGameSessionReady( GameSessionReadyEventArgs^ eventArgs )
     Microsoft::Xbox::Services::Multiplayer::MultiplayerSessionReference^ sessionRef =
         m_pDQRNet->ConvertToMicrosoftXboxServicesMultiplayerSessionReference(eventArgs->GameSession);
 
-	vector<Platform::String^> localAdhocAdditions;
+	std::vector<Platform::String^> localAdhocAdditions;
 
 	// Use context from any user at all for this, since this might happen before we are in a game and won't have anything set up in the network manager itself. We are only
 	// using it to read the session so there shouldn't be any requirements to use a particular live context

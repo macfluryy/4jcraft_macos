@@ -22,7 +22,7 @@ public:
     ServerPlayerGameMode *gameMode;
     double lastMoveX, lastMoveZ;
     list<ChunkPos> chunksToSend;
-	vector<int> entitiesToRemove;
+	std::vector<int> entitiesToRemove;
     unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
     int spewTimer;
 
@@ -104,7 +104,7 @@ public:
 	virtual bool openTrading(std::shared_ptr<Merchant> traderTarget); // 4J added bool return
     virtual void slotChanged(AbstractContainerMenu *container, int slotIndex, std::shared_ptr<ItemInstance> item);
     void refreshContainer(AbstractContainerMenu *menu);
-    virtual void refreshContainer(AbstractContainerMenu *container, vector<std::shared_ptr<ItemInstance> > *items);
+    virtual void refreshContainer(AbstractContainerMenu *container, std::vector<std::shared_ptr<ItemInstance> > *items);
     virtual void setContainerData(AbstractContainerMenu *container, int id, int value);
     virtual void closeContainer();
     void broadcastCarriedItem();

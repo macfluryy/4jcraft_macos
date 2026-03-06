@@ -65,7 +65,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	if(this->dwBoxC!=0)
 	{
 		this->BoxDataA= new SKIN_BOX [this->dwBoxC];
-		vector<SKIN_BOX *> *pSkinBoxes=pDLCSkinFile->getAdditionalBoxes();
+		std::vector<SKIN_BOX *> *pSkinBoxes=pDLCSkinFile->getAdditionalBoxes();
 		int iCount=0;
 
 		for(AUTO_VAR(it, pSkinBoxes->begin());it != pSkinBoxes->end(); ++it)
@@ -80,7 +80,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	}
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes,vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes,std::vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
 {
 	this->textureName = textureName;
 

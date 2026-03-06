@@ -29,7 +29,7 @@ public:
 	void registerTexture(Texture *texture);
 	void unregisterTexture(const std::wstring &name, Texture *texture);
 	Stitcher *createStitcher(const std::wstring &name);
-	vector<Texture *> *createTextures(const std::wstring &filename, bool mipmap); // 4J added mipmap param
+	std::vector<Texture *> *createTextures(const std::wstring &filename, bool mipmap); // 4J added mipmap param
 
 private:
 	std::wstring getTextureNameFromPath(const std::wstring &filename);

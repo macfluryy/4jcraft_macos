@@ -25,7 +25,7 @@ IXACT3SoundBank	*SoundEngine::m_pSoundBank2 = NULL;
 CRITICAL_SECTION SoundEngine::m_CS;
 
 X3DAUDIO_HANDLE	 SoundEngine::m_xact3dInstance;
-vector<SoundEngine::soundInfo *> SoundEngine::currentSounds;
+std::vector<SoundEngine::soundInfo *> SoundEngine::currentSounds;
 X3DAUDIO_DSP_SETTINGS	SoundEngine::m_DSPSettings;
 X3DAUDIO_EMITTER		SoundEngine::m_emitter;
 X3DAUDIO_LISTENER		SoundEngine::m_listeners[4];

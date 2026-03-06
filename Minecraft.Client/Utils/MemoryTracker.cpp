@@ -5,7 +5,7 @@
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 
 std::unordered_map<int,int> MemoryTracker::GL_LIST_IDS;
-vector<int> MemoryTracker::TEXTURE_IDS;
+std::vector<int> MemoryTracker::TEXTURE_IDS;
 
 int MemoryTracker::genLists(int count)
 {

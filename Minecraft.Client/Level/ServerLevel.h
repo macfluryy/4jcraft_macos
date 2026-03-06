@@ -21,7 +21,7 @@ private:
 	set<TickNextTickData, TickNextTickDataKeyCompare> tickNextTickList; // 4J Was TreeSet
 	unordered_set<TickNextTickData, TickNextTickDataKeyHash, TickNextTickDataKeyEq> tickNextTickSet; // 4J Was HashSet
 
-	vector<Pos *> m_queuedSendTileUpdates; // 4J added
+	std::vector<Pos *> m_queuedSendTileUpdates; // 4J added
 	CRITICAL_SECTION m_csQueueSendTileUpdates;
 
 protected:
@@ -37,7 +37,7 @@ private:
 	bool m_bAtLeastOnePlayerSleeping; // 4J Added
 	static WeighedTreasureArray RANDOM_BONUS_ITEMS;	// 4J - brought forward from 1.3.2
 
-	vector<TileEventData> tileEvents[2];
+	std::vector<TileEventData> tileEvents[2];
 	int activeTileEventsList;
 public:
 	static void staticCtor();
@@ -64,7 +64,7 @@ public:
 	void forceAddTileTick(int x, int y, int z, int tileId, int tickDelay);
 	void tickEntities();
 	bool tickPendingTicks(bool force);
-	vector<TickNextTickData> *fetchTicksInChunk(LevelChunk *chunk, bool remove);
+	std::vector<TickNextTickData> *fetchTicksInChunk(LevelChunk *chunk, bool remove);
     virtual void tick(std::shared_ptr<Entity> e, bool actual);
     void forceTick(std::shared_ptr<Entity> e, bool actual);
 	bool AllPlayersAreSleeping()			{ return allPlayersSleeping;} // 4J added for a message to other players
@@ -72,7 +72,7 @@ public:
 protected:
 	ChunkSource *createChunkSource();	// 4J - was virtual, but was called from parent ctor
 public:
-	vector<std::shared_ptr<TileEntity> > *getTileEntitiesInRegion(int x0, int y0, int z0, int x1, int y1, int z1);
+	std::vector<std::shared_ptr<TileEntity> > *getTileEntitiesInRegion(int x0, int y0, int z0, int x1, int y1, int z1);
     virtual bool mayInteract(std::shared_ptr<Player> player, int xt, int yt, int zt, int id);
 protected:
 	virtual void initializeLevel(LevelSettings *settings);

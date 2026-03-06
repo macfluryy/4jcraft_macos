@@ -152,7 +152,7 @@ public:
 
         // this queue is used so that the addChildren calls are
         // called in a random order
-        vector<StructurePiece *> pendingChildren;
+        std::vector<StructurePiece *> pendingChildren;
 
         StartPiece(int genDepth, Random *random, int west, int north, Level *level); // 4J Added level param
 		virtual TilePos *getLocatorPosition();

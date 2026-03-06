@@ -150,8 +150,8 @@ void StatsCounter::parse(void* data)
 	StatContainer newVal;
 
 	//For each stat
-	vector<Stat *>::iterator end = Stats::all->end();
-	for( vector<Stat *>::iterator iter = Stats::all->begin() ; iter != end ; ++iter )
+	std::vector<Stat *>::iterator end = Stats::all->end();
+	for( std::vector<Stat *>::iterator iter = Stats::all->begin() ; iter != end ; ++iter )
 	{
 		if( !(*iter)->isAchievement() )
 		{
@@ -230,8 +230,8 @@ void StatsCounter::save(int player, bool force)
 
 	//For each stat
 	StatsMap::iterator val;
-	vector<Stat *>::iterator end = Stats::all->end();
-	for( vector<Stat *>::iterator iter = Stats::all->begin() ; iter != end ; ++iter )
+	std::vector<Stat *>::iterator end = Stats::all->end();
+	for( std::vector<Stat *>::iterator iter = Stats::all->begin() ; iter != end ; ++iter )
 	{
 		//If the stat is in the map write out it's value
 		val = stats.find(*iter);
@@ -1283,8 +1283,8 @@ bool StatsCounter::isLargeStat(Stat* stat)
 
 void StatsCounter::dumpStatsToTTY()
 {
-	vector<Stat*>::iterator statsEnd = Stats::all->end();
-	for( vector<Stat*>::iterator statsIter = Stats::all->begin() ; statsIter!=statsEnd ; ++statsIter )
+	std::vector<Stat*>::iterator statsEnd = Stats::all->end();
+	for( std::vector<Stat*>::iterator statsIter = Stats::all->begin() ; statsIter!=statsEnd ; ++statsIter )
 	{
 		app.DebugPrintf("%ls\t\t%u\t%u\t%u\t%u\n",
 			(*statsIter)->name.c_str(),

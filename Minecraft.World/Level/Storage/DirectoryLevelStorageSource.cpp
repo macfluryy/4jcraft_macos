@@ -22,10 +22,10 @@ std::wstring DirectoryLevelStorageSource::getName()
 	return L"Old Format";
 }
 
-vector<LevelSummary *> *DirectoryLevelStorageSource::getLevelList()
+std::vector<LevelSummary *> *DirectoryLevelStorageSource::getLevelList()
 {
 	// 4J Stu - We don't use directory list with the Xbox save locations
-	vector<LevelSummary *> *levels = new vector<LevelSummary *>;
+	std::vector<LevelSummary *> *levels = new std::vector<LevelSummary *>;
 #if 0
 	for (int i = 0; i < 5; i++) 
 	{
@@ -104,7 +104,7 @@ void DirectoryLevelStorageSource::deleteLevel(const std::wstring& levelId)
 	dir._delete();
 }
 
-void DirectoryLevelStorageSource::deleteRecursive(vector<File *> *files)
+void DirectoryLevelStorageSource::deleteRecursive(std::vector<File *> *files)
 {
 	AUTO_VAR(itEnd, files->end());
 	for (AUTO_VAR(it, files->begin()); it != itEnd; it++)

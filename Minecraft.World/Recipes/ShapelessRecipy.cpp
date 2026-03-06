@@ -12,7 +12,7 @@
 #include "Recipes.h"
 #include "ShapelessRecipy.h"
 
-ShapelessRecipy::ShapelessRecipy(ItemInstance *result, vector<ItemInstance *> *ingredients, _eGroupType egroup) :
+ShapelessRecipy::ShapelessRecipy(ItemInstance *result, std::vector<ItemInstance *> *ingredients, _eGroupType egroup) :
 	result(result),
 	ingredients(ingredients),
 	group(egroup)
@@ -80,7 +80,7 @@ int ShapelessRecipy::size()
 // 4J-PB
 bool ShapelessRecipy::requires(int iRecipe) 
 {
-	vector <ItemInstance *> *tempList = new vector<ItemInstance *>;
+	vector <ItemInstance *> *tempList = new std::vector<ItemInstance *>;
 
 	*tempList=*ingredients;
 
@@ -88,7 +88,7 @@ bool ShapelessRecipy::requires(int iRecipe)
 
 	AUTO_VAR(citEnd, ingredients->end());
 	int iCount=0;
-	for (vector<ItemInstance *>::iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
+	for (std::vector<ItemInstance *>::iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
 	{
 		//printf("\tIngredient %d is %d\n",iCount++,(*ingredient)->id);
 		//if (item->id == (*ingredient)->id && ((*ingredient)->getAuxValue() == Recipes::ANY_AUX_VALUE || item->getAuxValue() == (*ingredient)->getAuxValue())) 
@@ -121,7 +121,7 @@ void ShapelessRecipy::requires(INGREDIENTS_REQUIRED *pIngReq)
 
 	AUTO_VAR(citEnd, ingredients->end());
 
-	for (vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
+	for (std::vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
 	{
 		ItemInstance *expected = *ingredient;
 

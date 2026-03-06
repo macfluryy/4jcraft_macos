@@ -75,7 +75,7 @@ void StitchedTexture::initUVs(float U0, float V0, float U1, float V1)
 	v1 = V1;
 }
 
-void StitchedTexture::init(Texture *source, vector<Texture *> *frames, int x, int y, int width, int height, bool rotated)
+void StitchedTexture::init(Texture *source, std::vector<Texture *> *frames, int x, int y, int width, int height, bool rotated)
 {
 	this->source = source;
 	this->frames = frames;

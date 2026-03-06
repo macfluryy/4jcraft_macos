@@ -10,7 +10,7 @@ private:
 	int name;
 	int size;
 	ItemInstanceArray *items;
-	vector<net_minecraft_world::ContainerListener *> *listeners;
+	std::vector<net_minecraft_world::ContainerListener *> *listeners;
 
 public:
 	SimpleContainer(int name, int size);

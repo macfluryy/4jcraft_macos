@@ -132,7 +132,7 @@ TilePos *FixedBiomeSource::findBiome(int x, int z, int r, Biome *toFind, Random 
 	return NULL;
 }
 
-TilePos *FixedBiomeSource::findBiome(int x, int z, int r, vector<Biome *> allowed, Random *random)
+TilePos *FixedBiomeSource::findBiome(int x, int z, int r, std::vector<Biome *> allowed, Random *random)
 {
 	if (find(allowed.begin(), allowed.end(), biome) != allowed.end())
 	{
@@ -147,7 +147,7 @@ bool FixedBiomeSource::containsOnly(int x, int z, int r, Biome *allowed)
 	return allowed == biome;
 }
 
-bool FixedBiomeSource::containsOnly(int x, int z, int r, vector<Biome *> allowed)
+bool FixedBiomeSource::containsOnly(int x, int z, int r, std::vector<Biome *> allowed)
 {
 	return find(allowed.begin(), allowed.end(), biome) != allowed.end();
 }

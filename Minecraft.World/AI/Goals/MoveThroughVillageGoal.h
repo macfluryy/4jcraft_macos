@@ -14,7 +14,7 @@ private:
 	Path *path;
 	weak_ptr<DoorInfo> doorInfo;
 	bool onlyAtNight;
-	vector< weak_ptr<DoorInfo> > visited;
+	std::vector< weak_ptr<DoorInfo> > visited;
 
 public:
 	MoveThroughVillageGoal(PathfinderMob *mob, float speed, bool onlyAtNight);

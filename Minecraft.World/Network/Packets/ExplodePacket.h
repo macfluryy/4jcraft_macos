@@ -9,7 +9,7 @@ class ExplodePacket : public Packet, public enable_shared_from_this<ExplodePacke
 public:
 	double x, y, z;
     float r;
-    vector<TilePos> toBlow;		// 4J - was an unorderedset but doesn't require any features of that apart from making it match the ctor toBlow type
+    std::vector<TilePos> toBlow;		// 4J - was an unorderedset but doesn't require any features of that apart from making it match the ctor toBlow type
 	bool m_bKnockbackOnly;
 	
 	private:

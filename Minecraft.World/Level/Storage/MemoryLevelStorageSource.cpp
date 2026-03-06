@@ -18,9 +18,9 @@ std::shared_ptr<LevelStorage> MemoryLevelStorageSource::selectLevel(const std::w
 	return std::shared_ptr<LevelStorage> () new MemoryLevelStorage());
 }
 
-vector<LevelSummary *> *MemoryLevelStorageSource::getLevelList() 
+std::vector<LevelSummary *> *MemoryLevelStorageSource::getLevelList() 
 {
-	return new vector<LevelSummary *>;
+	return new std::vector<LevelSummary *>;
 }
 
 void MemoryLevelStorageSource::clearAll()

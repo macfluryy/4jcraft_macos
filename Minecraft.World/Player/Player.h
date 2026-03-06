@@ -515,8 +515,8 @@ public:
 	// 4J Stu - Added hooks for the game rules
 	virtual void handleCollectItem(std::shared_ptr<ItemInstance> item) {}
 
-	vector<ModelPart *> *GetAdditionalModelParts();
-	void SetAdditionalModelParts(vector<ModelPart *> *ppAdditionalModelParts);
+	std::vector<ModelPart *> *GetAdditionalModelParts();
+	void SetAdditionalModelParts(std::vector<ModelPart *> *ppAdditionalModelParts);
 
 #if defined(__PS3__) || defined(__ORBIS__)
 	enum ePlayerNameValidState
@@ -530,7 +530,7 @@ public:
 	void SetPlayerNameValidState(bool bState);
 #endif
 private:
-	vector<ModelPart *> *m_ppAdditionalModelParts;
+	std::vector<ModelPart *> *m_ppAdditionalModelParts;
 	bool m_bCheckedForModelParts;
 	bool m_bCheckedDLCForModelParts;
 

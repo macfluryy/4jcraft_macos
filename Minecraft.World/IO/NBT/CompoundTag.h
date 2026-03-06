@@ -42,10 +42,10 @@ public:
 		delete tag;
     }
 
-    vector<Tag *> *getAllTags()		// 4J - was collection
+    std::vector<Tag *> *getAllTags()		// 4J - was collection
 	{
 		// 4J - was return tags.values();
-		vector<Tag *> *ret = new vector<Tag *>;
+		std::vector<Tag *> *ret = new std::vector<Tag *>;
 		
 		AUTO_VAR(itEnd, tags.end());
 		for( std::unordered_map<std::wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )

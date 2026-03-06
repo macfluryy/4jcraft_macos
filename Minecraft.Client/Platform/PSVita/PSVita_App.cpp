@@ -1566,7 +1566,7 @@ void CConsoleMinecraftApp::getSaveDataDeleteDialogParam(SceSaveDataDialogParam *
 	ZeroMemory(&listParam, sizeof(SceSaveDataDialogListParam));
 
 	{
-		vector<const SceAppUtilSaveDataSlot> slots;
+		std::vector<const SceAppUtilSaveDataSlot> slots;
 		for (unsigned int i = 2; i < SCE_APPUTIL_SAVEDATA_SLOT_MAX; i++)
 		{
 			SceAppUtilSaveDataSlotParam slotParam;
@@ -1589,7 +1589,7 @@ void CConsoleMinecraftApp::getSaveDataDeleteDialogParam(SceSaveDataDialogParam *
 
 		int slotIndex = 0;
 
-		vector<const SceAppUtilSaveDataSlot>::iterator itr;
+		std::vector<const SceAppUtilSaveDataSlot>::iterator itr;
 		for (itr = slots.begin(); itr != slots.end(); itr++)
 		{
 			pSavesList[slotIndex] = *itr;

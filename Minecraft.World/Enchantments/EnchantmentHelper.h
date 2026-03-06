@@ -105,6 +105,6 @@ public:
 	* @param enchantmentCost
 	* @return
 	*/
-	static vector<EnchantmentInstance *> *selectEnchantment(Random *random, std::shared_ptr<ItemInstance> itemInstance, int enchantmentCost);
+	static std::vector<EnchantmentInstance *> *selectEnchantment(Random *random, std::shared_ptr<ItemInstance> itemInstance, int enchantmentCost);
 	static std::unordered_map<int, EnchantmentInstance *> *getAvailableEnchantmentResults(int value, std::shared_ptr<ItemInstance> itemInstance);
 };

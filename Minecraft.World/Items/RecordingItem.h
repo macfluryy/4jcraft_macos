@@ -15,7 +15,7 @@ public: // 4J Stu - Was protected in Java, but the can't access it where we need
 	Icon *getIcon(int auxValue);
 	virtual bool useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
 
-	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings);
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings);
 	virtual const Rarity *getRarity(std::shared_ptr<ItemInstance> itemInstance);
 
 	//@Override

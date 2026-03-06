@@ -32,7 +32,7 @@ void GoalSelector::addGoal(int prio, Goal *goal, bool canDeletePointer /*= true*
 
 void GoalSelector::tick()
 {
-	vector<InternalGoal *> toStart;
+	std::vector<InternalGoal *> toStart;
 
 	if(tickCount++ % newGoalRate == 0)
 	{
@@ -97,7 +97,7 @@ void GoalSelector::tick()
 	}
 }
 
-vector<GoalSelector::InternalGoal *> *GoalSelector::getRunningGoals()
+std::vector<GoalSelector::InternalGoal *> *GoalSelector::getRunningGoals()
 {
 	return &usingGoals;
 }

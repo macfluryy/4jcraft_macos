@@ -5,7 +5,7 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.dimension.h"
 
-vector<Biome *> VillageFeature::allowedBiomes;
+std::vector<Biome *> VillageFeature::allowedBiomes;
 
 void VillageFeature::staticCtor()
 {
@@ -95,8 +95,8 @@ VillageFeature::VillageStart::VillageStart(Level *level, Random *random, int chu
 	pieces.push_back(startRoom);
     startRoom->addChildren(startRoom, &pieces, random);
 
-    vector<StructurePiece *> *pendingRoads = &startRoom->pendingRoads;
-    vector<StructurePiece *> *pendingHouses = &startRoom->pendingHouses;
+    std::vector<StructurePiece *> *pendingRoads = &startRoom->pendingRoads;
+    std::vector<StructurePiece *> *pendingHouses = &startRoom->pendingHouses;
     while (!pendingRoads->empty() || !pendingHouses->empty())
 	{
 

@@ -17,7 +17,7 @@ const std::wstring PotionItem::THROWABLE_ICON = L"potion_splash";
 const std::wstring PotionItem::CONTENTS_ICON = L"potion_contents";
 
 // 4J Added
-vector<pair<int, int> >  PotionItem::s_uniquePotionValues;
+std::vector<pair<int, int> >  PotionItem::s_uniquePotionValues;
 
 PotionItem::PotionItem(int id) : Item(id)
 {
@@ -30,20 +30,20 @@ PotionItem::PotionItem(int id) : Item(id)
 	iconOverlay = NULL;
 }
 
-vector<MobEffectInstance *> *PotionItem::getMobEffects(std::shared_ptr<ItemInstance> potion)
+std::vector<MobEffectInstance *> *PotionItem::getMobEffects(std::shared_ptr<ItemInstance> potion)
 {
 	return getMobEffects(potion->getAuxValue());
 }
 
-vector<MobEffectInstance *> *PotionItem::getMobEffects(int auxValue)
+std::vector<MobEffectInstance *> *PotionItem::getMobEffects(int auxValue)
 {
-	vector<MobEffectInstance *> *effects = NULL;
+	std::vector<MobEffectInstance *> *effects = NULL;
 	AUTO_VAR(it, cachedMobEffects.find(auxValue));
 	if(it != cachedMobEffects.end()) effects = it->second;
 	if (effects == NULL)
 	{
 		effects = PotionBrewing::getEffects(auxValue, false);
-		if(effects != NULL) cachedMobEffects.insert( std::pair<int, vector<MobEffectInstance *> *>(auxValue, effects) );
+		if(effects != NULL) cachedMobEffects.insert( std::pair<int, std::vector<MobEffectInstance *> *>(auxValue, effects) );
 	}
 	return effects;
 }
@@ -54,7 +54,7 @@ std::shared_ptr<ItemInstance> PotionItem::useTimeDepleted(std::shared_ptr<ItemIn
 
 	if (!level->isClientSide)
 	{
-		vector<MobEffectInstance *> *effects = getMobEffects(instance);
+		std::vector<MobEffectInstance *> *effects = getMobEffects(instance);
 		if (effects != NULL)
 		{
 			//for (MobEffectInstance effect : effects)
@@ -156,7 +156,7 @@ bool PotionItem::hasMultipleSpriteLayers()
 
 bool PotionItem::hasInstantenousEffects(int itemAuxValue)
 {
-	vector<MobEffectInstance *> *mobEffects = getMobEffects(itemAuxValue);
+	std::vector<MobEffectInstance *> *mobEffects = getMobEffects(itemAuxValue);
 	if (mobEffects == NULL || mobEffects->empty())
 	{
 		return false;
@@ -191,7 +191,7 @@ std::wstring PotionItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance
 		elementName = replaceAll(elementName,L"{*splash*}",L"");
 	}
 
-	vector<MobEffectInstance *> *effects = ((PotionItem *) Item::potion)->getMobEffects(itemInstance);
+	std::vector<MobEffectInstance *> *effects = ((PotionItem *) Item::potion)->getMobEffects(itemInstance);
 	if (effects != NULL && !effects->empty())
 	{
 		//String postfixString = effects.get(0).getDescriptionId();
@@ -212,13 +212,13 @@ std::wstring PotionItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance
 	return elementName;
 }
 
-void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
+void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings)
 {
 	if (itemInstance->getAuxValue() == 0)
 	{
 		return;
 	}
-	vector<MobEffectInstance *> *effects = ((PotionItem *) Item::potion)->getMobEffects(itemInstance);
+	std::vector<MobEffectInstance *> *effects = ((PotionItem *) Item::potion)->getMobEffects(itemInstance);
 	if (effects != NULL && !effects->empty())
 	{
 		//for (MobEffectInstance effect : effects)
@@ -283,7 +283,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std
 
 bool PotionItem::isFoil(std::shared_ptr<ItemInstance> itemInstance)
 {
-	vector<MobEffectInstance *> *mobEffects = getMobEffects(itemInstance);
+	std::vector<MobEffectInstance *> *mobEffects = getMobEffects(itemInstance);
 	return mobEffects != NULL && !mobEffects->empty();
 }
 
@@ -327,13 +327,13 @@ Icon *PotionItem::getTexture(const std::wstring &name)
 
 
 // 4J Stu - Based loosely on a function that gets added in java much later on (1.3)
-vector<pair<int, int> > *PotionItem::getUniquePotionValues()
+std::vector<pair<int, int> > *PotionItem::getUniquePotionValues()
 {
 	if (s_uniquePotionValues.empty())
 	{
 		for (int brew = 0; brew <= PotionBrewing::BREW_MASK; ++brew)
 		{
-			vector<MobEffectInstance *> *effects = PotionBrewing::getEffects(brew, false);
+			std::vector<MobEffectInstance *> *effects = PotionBrewing::getEffects(brew, false);
 
 			if (effects != NULL)
 			{

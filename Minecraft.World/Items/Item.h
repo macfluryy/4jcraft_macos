@@ -700,7 +700,7 @@ protected:
 public:
 	virtual std::wstring getPotionBrewingFormula();
 	virtual bool hasPotionBrewingFormula();
-	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings); // 4J Added unformattedStrings
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings); // 4J Added unformattedStrings
 	virtual std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
 	virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
 	virtual const Rarity *getRarity(std::shared_ptr<ItemInstance> itemInstance);

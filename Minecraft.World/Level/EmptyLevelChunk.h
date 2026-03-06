@@ -40,8 +40,8 @@ public:
 	void load();
 	void unload(bool unloadTileEntities) ;	// 4J - added parameter
 	void markUnsaved();
-	void getEntities(std::shared_ptr<Entity> except, AABB bb, vector<std::shared_ptr<Entity> > &es);
-	void getEntitiesOfClass(const type_info& ec, AABB bb, vector<std::shared_ptr<Entity> > &es);
+	void getEntities(std::shared_ptr<Entity> except, AABB bb, std::vector<std::shared_ptr<Entity> > &es);
+	void getEntitiesOfClass(const type_info& ec, AABB bb, std::vector<std::shared_ptr<Entity> > &es);
 	int countEntities();
 	bool shouldSave(bool force);
 	void setBlocks(byteArray newBlocks, int sub);
