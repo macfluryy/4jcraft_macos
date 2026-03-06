@@ -77,6 +77,10 @@ void C4JRender::Initialise()
     // opengl 2.1!!!
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
     GLFWmonitor *fsMonitor = s_fullscreen ? primaryMonitor : nullptr;
     s_window = glfwCreateWindow(s_windowWidth, s_windowHeight,

@@ -710,6 +710,8 @@ int LevelRenderer::render(shared_ptr<Mob> player, int layer, double alpha, bool 
 		//		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(), DistanceChunkSorter(player));	// 4J - removed - not sorting our chunks anymore
 	}
 	Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
+	glColor4f(1, 1, 1, 1);
 
 	int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
 
@@ -948,6 +950,7 @@ void LevelRenderer::renderSky(float alpha)
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
 
 
 		glDepthMask(false);
@@ -1020,6 +1023,7 @@ void LevelRenderer::renderSky(float alpha)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
 
 	float *c = level[playerIndex]->dimension->getSunriseColor(level[playerIndex]->getTimeOfDay(alpha), alpha);
 	if (c != NULL)

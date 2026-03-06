@@ -46,7 +46,7 @@ const int GL_VERTEX_ARRAY = 0;
 const int GL_NORMAL_ARRAY = 0;
 const int GL_TEXTURE_COORD_ARRAY = 0;
 
-const int GL_COMPILE = 0;
+const int GL_COMPILE = 0x1300;
 
 const int GL_NORMALIZE = 0;
 
