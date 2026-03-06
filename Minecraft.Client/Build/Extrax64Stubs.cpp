@@ -46,7 +46,10 @@ C_4JProfile ProfileManager;
 #endif
 #endif // __PS3__
 CSentientManager SentientManager;
+#ifndef __linux__
+// On Linux this global shadows the project's StringTable class name in unity builds
 CXuiStringTable StringTable;
+#endif
 
 #if !defined(_XBOX_ONE) && !defined(__linux__)
 ATG::XMLParser::XMLParser() {}
