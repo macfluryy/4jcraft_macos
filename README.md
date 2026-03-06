@@ -74,6 +74,55 @@ cmake . && make -j$(nproc)
 ```
 ---
 
+### we also got meson say hi meson hii
+[Meson](https://mesonbuild.com/) is bettr pls use over cmake
+
+#### Install Meson
+
+```bash
+# Debian/Ubuntu
+sudo apt install meson ninja-build
+
+# Arch/Manjaro
+sudo pacman -S meson ninja
+```
+
+#### Configure & Build
+
+```bash
+# 1. Configure that bih
+meson setup build_meson
+
+# 2. Build
+ninja -C build_meson
+```
+
+The binary is output to:
+
+```
+build_meson/Minecraft.Client
+```
+
+#### Clean
+
+Remove the build directory to do a full clean:
+
+(CAREFUL SPONGEBOB CAREFUL)
+```bash
+rm -rf build_meson
+```
+
+Then re-run `meson setup build_meson` to reconfigure.
+
+#### if u want release which u probably don't need right now
+```bash
+# Release build
+meson setup build_release --buildtype=release
+ninja -C build_release
+```
+
+---
+
 ## Running
 
 (this is temp)
@@ -82,3 +131,4 @@ cmake . && make -j$(nproc)
 ```
 
 (todo refactor)
+(todo refactor more)

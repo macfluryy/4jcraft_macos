@@ -294,18 +294,12 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "../Platform/Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// FIXME: Make Linux/ versions of all of these
-	// #include "../Platform/Windows64/Sentient/MinecraftTelemetry.h" // conflicts with Common/Telemetry/TelemetryManager.h, no idea whats up with that
-	#include "../Platform/OrbisMedia/strings.h" // using Orbis or Vita strings because IDS_CONTENT_RESTRICTION exists
-	#include "../Platform/Windows64/Windows64_App.h"
-	#include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Windows64/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Windows64/GameConfig/Minecraft.spa.h"
-	#include "../Platform/Windows64/XML/ATGXmlParser.h"	
-	#include "../Platform/Windows64/Social/SocialManager.h"
+	// Linux build: avoid pulling in Windows64 platform headers (they cause
+	// symbol/class redefinitions). Use Linux-specific stubs and controller.
+	// FIXME: Produce proper Linux equivalents for telemetry/sentient/etc.
+	#include "../Platform/OrbisMedia/strings.h" // temporary strings
+	#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
 	#include "Common/Audio/SoundEngine.h"
-	//#include "../Platform/Windows64/Iggy/include/iggy.h"
-	#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
 	#include "../Platform/Linux/Linux_UIController.h"
 #elif defined __PSVITA__
 	#include "../Platform/PSVita/PSVita_App.h"
