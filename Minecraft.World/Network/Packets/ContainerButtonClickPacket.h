@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class ContainerButtonClickPacket : public Packet, public enable_shared_from_this<ContainerButtonClickPacket>
+class ContainerButtonClickPacket : public Packet, public std::enable_shared_from_this<ContainerButtonClickPacket>
 {
 public:
 	int containerId;

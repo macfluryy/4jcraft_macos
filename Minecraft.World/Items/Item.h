@@ -24,7 +24,7 @@ class EnchantedBookItem;
 #define ITEM_ICON_COLUMNS 16
 
 
-class Item : public enable_shared_from_this<Item>
+class Item : public std::enable_shared_from_this<Item>
 {
 public:
 	static const int ITEM_NUM_COUNT = 32000;

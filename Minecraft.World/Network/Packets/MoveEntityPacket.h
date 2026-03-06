@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class MoveEntityPacket : public Packet, public enable_shared_from_this<MoveEntityPacket>
+class MoveEntityPacket : public Packet, public std::enable_shared_from_this<MoveEntityPacket>
 {
 
 	// 4J JEV, static inner/sub classes

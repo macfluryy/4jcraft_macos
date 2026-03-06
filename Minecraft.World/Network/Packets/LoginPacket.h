@@ -4,7 +4,7 @@ using namespace std;
 #include "Packet.h"
 class LevelType;
 
-class LoginPacket : public Packet, public enable_shared_from_this<LoginPacket>
+class LoginPacket : public Packet, public std::enable_shared_from_this<LoginPacket>
 {
 public:
 	int clientVersion;

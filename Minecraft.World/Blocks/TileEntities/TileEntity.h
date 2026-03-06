@@ -10,7 +10,7 @@ class CompoundTag;
 
 typedef TileEntity *(*tileEntityCreateFn)();
 
-class TileEntity : public enable_shared_from_this<TileEntity>
+class TileEntity : public std::enable_shared_from_this<TileEntity>
 {
 public:
 	static void staticCtor();

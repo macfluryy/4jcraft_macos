@@ -4,7 +4,7 @@
 
 class RepairMenu;
 
-class RepairContainer : public SimpleContainer, public enable_shared_from_this<RepairContainer>
+class RepairContainer : public SimpleContainer, public std::enable_shared_from_this<RepairContainer>
 {
 private:
 	RepairMenu *m_menu;

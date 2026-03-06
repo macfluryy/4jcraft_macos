@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class TextureChangePacket : public Packet, public enable_shared_from_this<TextureChangePacket>
+class TextureChangePacket : public Packet, public std::enable_shared_from_this<TextureChangePacket>
 {
 public:
 	enum ETextureChangeType

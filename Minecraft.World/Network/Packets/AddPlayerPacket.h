@@ -6,7 +6,7 @@ using namespace std;
 
 class Player;
 
-class AddPlayerPacket : public Packet, public enable_shared_from_this<AddPlayerPacket>
+class AddPlayerPacket : public Packet, public std::enable_shared_from_this<AddPlayerPacket>
 {
 
 private:

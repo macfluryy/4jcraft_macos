@@ -4,7 +4,7 @@ using namespace std;
 #include "../../Level/TilePos.h"
 #include "Packet.h"
 
-class ExplodePacket : public Packet, public enable_shared_from_this<ExplodePacket>
+class ExplodePacket : public Packet, public std::enable_shared_from_this<ExplodePacket>
 {
 public:
 	double x, y, z;

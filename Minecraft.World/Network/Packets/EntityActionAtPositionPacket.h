@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class EntityActionAtPositionPacket : public Packet, public enable_shared_from_this<EntityActionAtPositionPacket>
+class EntityActionAtPositionPacket : public Packet, public std::enable_shared_from_this<EntityActionAtPositionPacket>
 {
 public:
 	static const int START_SLEEP;

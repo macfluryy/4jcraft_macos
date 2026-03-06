@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SignUpdatePacket : public Packet, public enable_shared_from_this<SignUpdatePacket>
+class SignUpdatePacket : public Packet, public std::enable_shared_from_this<SignUpdatePacket>
 {
 public:
 	int x, y, z;

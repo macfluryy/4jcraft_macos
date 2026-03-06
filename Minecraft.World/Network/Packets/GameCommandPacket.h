@@ -4,7 +4,7 @@ using namespace std;
 #include "../../Commands/CommandsEnum.h"
 #include "Packet.h"
 
-class GameCommandPacket : public Packet, public enable_shared_from_this<GameCommandPacket>
+class GameCommandPacket : public Packet, public std::enable_shared_from_this<GameCommandPacket>
 {
 public:
 	EGameCommand command;

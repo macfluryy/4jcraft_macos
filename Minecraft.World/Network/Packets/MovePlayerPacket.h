@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class MovePlayerPacket : public Packet, public enable_shared_from_this<MovePlayerPacket>
+class MovePlayerPacket : public Packet, public std::enable_shared_from_this<MovePlayerPacket>
 {
 public:
 	class PosRot;

@@ -6,7 +6,7 @@ using namespace std;
 class LevelType;
 class GameType;
 
-class RespawnPacket : public Packet, public enable_shared_from_this<RespawnPacket>
+class RespawnPacket : public Packet, public std::enable_shared_from_this<RespawnPacket>
 {
 public:
 	char dimension;

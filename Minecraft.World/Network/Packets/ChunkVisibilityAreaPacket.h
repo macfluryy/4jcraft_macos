@@ -7,7 +7,7 @@ class Level;
 
 // 4J Added this packet so that when a player initially joins the game we just need to send them the area of chunks
 // around them rather than one packet for each chunk
-class ChunkVisibilityAreaPacket : public Packet, public enable_shared_from_this<ChunkVisibilityAreaPacket>
+class ChunkVisibilityAreaPacket : public Packet, public std::enable_shared_from_this<ChunkVisibilityAreaPacket>
 {
 public:
     int m_minX, m_maxX, m_minZ, m_maxZ;

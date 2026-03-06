@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class KeepAlivePacket : public Packet, public enable_shared_from_this<KeepAlivePacket>
+class KeepAlivePacket : public Packet, public std::enable_shared_from_this<KeepAlivePacket>
 {
 public:
 	int id;

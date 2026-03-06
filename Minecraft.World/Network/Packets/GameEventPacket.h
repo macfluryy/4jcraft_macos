@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class GameEventPacket : public Packet, public enable_shared_from_this<GameEventPacket>
+class GameEventPacket : public Packet, public std::enable_shared_from_this<GameEventPacket>
 {
 
 public:

@@ -18,7 +18,7 @@ class Icon;
 
 // 4J Stu - While this is not really an abstract class, we don't want to make new instances of it,
 // mainly because there are too many ctors and that doesn't fit well into out macroisation setup
-class ItemInstance: public enable_shared_from_this<ItemInstance>
+class ItemInstance: public std::enable_shared_from_this<ItemInstance>
 {
 public:
 	static const wchar_t *TAG_ENCH_ID;

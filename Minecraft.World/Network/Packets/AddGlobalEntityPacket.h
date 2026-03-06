@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class AddGlobalEntityPacket : public Packet, public enable_shared_from_this<AddGlobalEntityPacket>
+class AddGlobalEntityPacket : public Packet, public std::enable_shared_from_this<AddGlobalEntityPacket>
 {
 public:
 	static const int LIGHTNING;

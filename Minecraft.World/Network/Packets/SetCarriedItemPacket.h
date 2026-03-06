@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class SetCarriedItemPacket : public Packet, public enable_shared_from_this<SetCarriedItemPacket>
+class SetCarriedItemPacket : public Packet, public std::enable_shared_from_this<SetCarriedItemPacket>
 {
 public:
 	int slot;

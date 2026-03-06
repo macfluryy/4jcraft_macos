@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class SetExperiencePacket : public Packet, public enable_shared_from_this<SetExperiencePacket>
+class SetExperiencePacket : public Packet, public std::enable_shared_from_this<SetExperiencePacket>
 {
 public:
 	float experienceProgress;

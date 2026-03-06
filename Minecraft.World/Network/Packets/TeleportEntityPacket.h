@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class TeleportEntityPacket : public Packet, public enable_shared_from_this<TeleportEntityPacket>
+class TeleportEntityPacket : public Packet, public std::enable_shared_from_this<TeleportEntityPacket>
 {
 public:
 	int id;

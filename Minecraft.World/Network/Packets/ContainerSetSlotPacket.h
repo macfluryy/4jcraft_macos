@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class ContainerSetSlotPacket : public Packet, public enable_shared_from_this<ContainerSetSlotPacket>
+class ContainerSetSlotPacket : public Packet, public std::enable_shared_from_this<ContainerSetSlotPacket>
 {
 public:
 	static const int CONTAINER;

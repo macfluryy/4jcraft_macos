@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class TileDestructionPacket : public Packet, public enable_shared_from_this<TileDestructionPacket>
+class TileDestructionPacket : public Packet, public std::enable_shared_from_this<TileDestructionPacket>
 {
 private:
 	int id;

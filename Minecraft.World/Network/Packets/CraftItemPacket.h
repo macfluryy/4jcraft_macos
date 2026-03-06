@@ -6,7 +6,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class CraftItemPacket : public Packet, public enable_shared_from_this<CraftItemPacket>
+class CraftItemPacket : public Packet, public std::enable_shared_from_this<CraftItemPacket>
 {
 public:
 	int recipe;

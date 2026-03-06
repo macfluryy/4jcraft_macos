@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class TextureAndGeometryChangePacket : public Packet, public enable_shared_from_this<TextureAndGeometryChangePacket>
+class TextureAndGeometryChangePacket : public Packet, public std::enable_shared_from_this<TextureAndGeometryChangePacket>
 {
 public:
 

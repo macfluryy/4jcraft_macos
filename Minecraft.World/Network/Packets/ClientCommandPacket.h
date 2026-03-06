@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class ClientCommandPacket : public Packet, public enable_shared_from_this<ClientCommandPacket>
+class ClientCommandPacket : public Packet, public std::enable_shared_from_this<ClientCommandPacket>
 {
 public:
 	static const int LOGIN_COMPLETE = 0;

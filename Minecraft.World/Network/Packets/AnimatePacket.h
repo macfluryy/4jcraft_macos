@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class AnimatePacket : public Packet, public enable_shared_from_this<AnimatePacket>
+class AnimatePacket : public Packet, public std::enable_shared_from_this<AnimatePacket>
 {
 public:
 	static const int SWING = 1;

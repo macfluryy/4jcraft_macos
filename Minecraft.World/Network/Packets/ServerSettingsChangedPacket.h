@@ -6,7 +6,7 @@ using namespace std;
 
 #include "Packet.h"
 
-class ServerSettingsChangedPacket : public Packet, public enable_shared_from_this<ServerSettingsChangedPacket>
+class ServerSettingsChangedPacket : public Packet, public std::enable_shared_from_this<ServerSettingsChangedPacket>
 {
 public:
 	static const int HOST_DIFFICULTY;
