@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_BackgroundTint L"BackgroundTint"
 #define IDC_CharacterPrevious4 L"CharacterPrevious4"
 #define IDC_CharacterPrevious3 L"CharacterPrevious3"

@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_MainPanel L"MainPanel"
 #define IDC_TabImage1 L"TabImage1"
 #define IDC_TabImage2 L"TabImage2"

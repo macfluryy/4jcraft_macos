@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_CheckboxResetNether L"CheckboxResetNether"
 #define IDC_CheckboxHostPrivileges L"CheckboxHostPrivileges"
 #define IDC_CheckboxTNT L"CheckboxTNT"

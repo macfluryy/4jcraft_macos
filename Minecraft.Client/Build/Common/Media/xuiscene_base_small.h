@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiDarkOverlay L"XuiDarkOverlay"
 #define IDC_Background L"Background"
 #define IDC_Logo L"Logo"

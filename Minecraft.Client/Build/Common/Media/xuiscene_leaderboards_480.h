@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Background3 L"Background3"
 #define IDC_Background2 L"Background2"
 #define IDC_Background1 L"Background1"

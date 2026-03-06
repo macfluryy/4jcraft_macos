@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_CheckboxBonusChest L"CheckboxBonusChest"
 #define IDC_CheckboxFlatWorld L"CheckboxFlatWorld"
 #define IDC_CheckboxStructures L"CheckboxStructures"

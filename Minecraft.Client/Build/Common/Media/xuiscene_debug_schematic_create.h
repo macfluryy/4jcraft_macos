@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_StartX L"StartX"
 #define IDC_StartY L"StartY"
 #define IDC_StartZ L"StartZ"

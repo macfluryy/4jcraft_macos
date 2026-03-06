@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiSlider L"XuiSlider"
 #define IDC_FocusSink L"FocusSink"
 #define IDC_XuiSliderSound L"XuiSliderSound"

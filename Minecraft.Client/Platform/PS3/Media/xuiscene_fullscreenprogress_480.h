@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Tip L"Tip"
 #define IDC_Status L"Status"
 #define IDC_Title L"Title"

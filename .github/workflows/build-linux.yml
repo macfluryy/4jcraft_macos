@@ -17,42 +17,57 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential pkg-config ca-certificates curl git \
-            libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev libpng-dev libx11-dev \
-            libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libudev-dev ccache
-          # Install clang to avoid unrecognized GCC-only warnings/flags on runner
-          sudo apt-get install -y clang
+          sudo apt-get install -y build-essential python3 python3-pip python3-setuptools libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev libpng-dev pkg-config clang ccache
+          # Set a reasonable ccache size
+          ccache -M 5G || true
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/build-linux.yml') }}
+
       - name: Install Meson and Ninja (pip)
         run: |
           python -m pip install --upgrade pip
           pip install meson ninja
 
-      - name: Use clang for compilation
-        run: |
-          echo "Using clang for CI (CC/CXX)"
-        env:
-          CC: clang
-          CXX: clang++
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
+
+      - name: Restore meson cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/meson
+          key: ${{ runner.os }}-meson-${{ hashFiles('**/meson.build') }}
 
       - name: Configure Meson
         env:
-          CC: clang
-          CXX: clang++
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
+          mkdir -p "$CCACHE_DIR"
+          export CCACHE_DIR="$CCACHE_DIR"
           meson setup build_meson --wipe --buildtype=release
 
       - name: Build with Ninja
         env:
-          CC: clang
-          CXX: clang++
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          ninja -C build_meson -v
+          export CCACHE_DIR="${{ runner.temp }}/ccache"
+          # Use all available cores for faster parallel builds
+          ninja -C build_meson -j$(nproc) -v
 
       - name: Package Linux executable as gzip
         env:

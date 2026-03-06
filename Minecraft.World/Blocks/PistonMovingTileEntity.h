@@ -1,3 +1,4 @@
+#pragma once
 #include "TileEntities/EntityTile.h"
 
 class PistonPieceEntity;

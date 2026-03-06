@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiHtmlControlNetherPortal L"XuiHtmlControlNetherPortal"
 #define IDC_XuiImageNetherPortal L"XuiImageNetherPortal"
 #define IDC_XuiHtmlControlDispenser L"XuiHtmlControlDispenser"

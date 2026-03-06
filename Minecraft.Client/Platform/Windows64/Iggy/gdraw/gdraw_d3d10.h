@@ -1,3 +1,4 @@
+#pragma once
 // gdraw_d3d10.h - author: Fabian Giesen - copyright 2011 RAD Game Tools
 //
 // Interface for creating a D3D10 GDraw driver.

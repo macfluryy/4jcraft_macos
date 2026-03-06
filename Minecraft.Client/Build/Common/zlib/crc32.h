@@ -1,3 +1,4 @@
+#pragma once
 /* crc32.h -- tables for rapid CRC calculation
  * Generated automatically by crc32.c
  */

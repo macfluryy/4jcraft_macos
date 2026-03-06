@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Effect10 L"Effect10"
 #define IDC_Effect9 L"Effect9"
 #define IDC_Effect8 L"Effect8"

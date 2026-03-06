@@ -12,7 +12,7 @@ _world_sources_raw = run_command(
   ' ! -name "SkyIslandDimension.cpp"' +
   ' ! -name "ZonedChunkStorage.cpp"' +
   ' ! -name "ZoneFile.cpp"' +
-  ' ! -name "ZoneIo.cpp"',
+  ' ! -name "ZoneIO.cpp"',
   check : true,
 ).stdout().strip().split('\n')
 
@@ -25,9 +25,10 @@ lib_world = static_library('Minecraft.World',
 )
 
 dep_zlib = dependency('zlib')
+dep_crypto = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 
 world_dep = declare_dependency(
   link_with : lib_world,
-  dependencies : [dep_zlib],
+  dependencies : [dep_zlib, dep_crypto],
   include_directories : include_directories('Build/x64headers'),
 )
