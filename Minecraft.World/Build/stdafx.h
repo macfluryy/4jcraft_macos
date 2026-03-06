@@ -239,10 +239,12 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/SentientManager.h"
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/MinecraftTelemetry.h"
 #elif defined(__linux__)
-// FIXME: Move and port to ../Minecraft.Client/Linux
-#include "../../Minecraft.Client/Platform/Linux/Linux_App.h"
-#include "../../Minecraft.Client/Platform/OrbisMedia/strings.h"
+	// FIXME: Move and port to ../Minecraft.Client/Linux
+	#include "../../Minecraft.Client/Platform/Linux/Linux_App.h"
+	#include "../../Minecraft.Client/Platform/OrbisMedia/strings.h"
 	#include "../../Minecraft.Client/Platform/Xbox/Sentient/SentientTelemetryCommon.h"
+	#include "../../Minecraft.Client/Platform/Xbox/Sentient/DynamicConfigurations.h"
+	#include "../../Minecraft.Client/Platform/Xbox/GameConfig/Minecraft.spa.h"
 // #include "../../Minecraft.Client/Platform/Windows64/Sentient/MinecraftTelemetry.h"
 #else
 #include "../../Minecraft.Client/Platform/Orbis/Orbis_App.h"

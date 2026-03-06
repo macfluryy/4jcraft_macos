@@ -299,6 +299,8 @@ typedef XUID GameSessionUID;
 	// FIXME: Produce proper Linux equivalents for telemetry/sentient/etc.
 	#include "../Platform/OrbisMedia/strings.h" // temporary strings
 	#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
+	#include "../Platform/Xbox/Sentient/DynamicConfigurations.h"
+	#include "../Platform/Xbox/GameConfig/Minecraft.spa.h"
 	#include "Common/Audio/SoundEngine.h"
 	#include "../Platform/Linux/Linux_UIController.h"
 #elif defined __PSVITA__
