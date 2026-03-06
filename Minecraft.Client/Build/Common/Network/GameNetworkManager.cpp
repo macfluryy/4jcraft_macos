@@ -1911,12 +1911,26 @@ void CGameNetworkManager::ServerReadyCreate(bool create)
 
 void CGameNetworkManager::ServerReady()
 {
-	m_hServerReadyEvent->Set();
+	if (m_hServerReadyEvent != NULL)
+	{
+		m_hServerReadyEvent->Set();
+	}
+	else
+	{
+		app.DebugPrintf("[NET] Warning: ServerReady() called but m_hServerReadyEvent is NULL\n");
+	}
 }
 
 void CGameNetworkManager::ServerReadyWait()
 {
-	m_hServerReadyEvent->WaitForSignal(INFINITY);
+	if (m_hServerReadyEvent != NULL)
+	{
+		m_hServerReadyEvent->WaitForSignal(INFINITY);
+	}
+	else
+	{
+		app.DebugPrintf("[NET] Warning: ServerReadyWait() called but m_hServerReadyEvent is NULL\n");
+	}
 }
 
 void CGameNetworkManager::ServerReadyDestroy()
@@ -1937,7 +1951,14 @@ void CGameNetworkManager::ServerStoppedCreate(bool create)
 
 void CGameNetworkManager::ServerStopped()
 {
-	m_hServerStoppedEvent->Set();
+	if (m_hServerStoppedEvent != NULL)
+	{
+		m_hServerStoppedEvent->Set();
+	}
+	else
+	{
+		app.DebugPrintf("[NET] Warning: ServerStopped() called but m_hServerStoppedEvent is NULL\n");
+	}
 }
 
 void CGameNetworkManager::ServerStoppedWait()
@@ -1966,7 +1987,14 @@ void CGameNetworkManager::ServerStoppedWait()
 	}
 	else
 	{
-		m_hServerStoppedEvent->WaitForSignal(INFINITY);
+		if (m_hServerStoppedEvent != NULL)
+		{
+			m_hServerStoppedEvent->WaitForSignal(INFINITY);
+		}
+		else
+		{
+			app.DebugPrintf("[NET] Warning: ServerStoppedWait() called but m_hServerStoppedEvent is NULL\n");
+		}
 	}
 }
 
