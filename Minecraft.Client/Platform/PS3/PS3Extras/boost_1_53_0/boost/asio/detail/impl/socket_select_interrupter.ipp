@@ -140,7 +140,7 @@ void socket_select_interrupter::recreate()
 
 void socket_select_interrupter::interrupt()
 {
-  char uint8_t = 0;
+  char byte = 0;
   socket_ops::buf b;
   socket_ops::init_buf(b, &byte, 1);
   boost::system::error_code ec;
