@@ -1,0 +1,12 @@
+{aww..}
+
+[RENDER] renderChunks frame=3000 layer=1 total=20736 notVis=19915 noIdx=0 empty=685 called=136 callOk=136 chunkLists=4194304
+
+{yay!}
+
+[RENDER] renderChunks frame=3000 layer=0 total=20736 notVis=19417 noIdx=0 empty=1 called=1318 callOk=1318 chunkLists=4122816
+[RENDER] renderChunks frame=3000 layer=0 total=20736 notVis=19838 noIdx=0 empty=0 called=898 callOk=898 chunkLists=4122816 
+[RENDER] renderChunks frame=3000 layer=0 total=20736 notVis=20107 noIdx=0 empty=0 called=629 callOk=629 chunkLists=4122816
+[RENDER] renderChunks frame=6000 layer=0 total=20736 notVis=19278 noIdx=0 empty=5 called=1453 callOk=1453 chunkLists=4122816
+[RENDER] renderChunks frame=9000 layer=0 total=20736 notVis=19278 noIdx=0 empty=5 called=1453 callOk=1453 chunkLists=4122816
+[RENDER] renderChunks frame=3000 layer=0 total=20736 notVis=20009 noIdx=0 empty=0 called=727 callOk=727 chunkLists=4122816
