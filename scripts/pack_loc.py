@@ -98,7 +98,6 @@ with open(output_file_path, "wb") as loc_file:
         
         # Write strings
         for string_name, string in strings.items():
-            print(string_name, string)
             write_string(string_name, lang_stream)
             write_string(string, lang_stream)
         

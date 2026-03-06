@@ -52,3 +52,35 @@ executable('Minecraft.Client',
   c_args   : global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
   install  : false,
 )
+
+# This is shitty because we don't actually know what files we want to pack into an arc
+# until we check the filter files (movies.txt media.txt etc....), we should get rid of
+# the filters and use a dedicated asset dir that we can just entirely pack into an arc
+# so we can have changes in our asset files cause arc rebuild instead of doing it every build
+archive_target_dir = meson.current_source_dir() / 'Build/Common/Media'
+custom_target('Minecraft.Client_Archive',
+  output : 'MediaWindows64.arc',
+  command : [
+    'python3', meson.project_source_root() / 'scripts/pack_arc.py',
+    archive_target_dir,
+    '@OUTPUT@', 
+    archive_target_dir / 'movies1080.txt',
+    archive_target_dir / 'media.txt'
+  ],
+  install : true,
+  install_dir : 'Common/Media',
+  build_subdir : 'Common/Media',
+  build_by_default : true,
+  build_always_stale : true
+)
+
+custom_target('Minecraft.Client_Localisation',
+  output : 'languages.loc',
+  command : [
+    'python3', meson.project_source_root() / 'scripts/pack_loc.py',
+    meson.current_source_dir() / 'Platform/Windows64Media/loc',
+    '@OUTPUT@'
+  ],
+  build_by_default : true,
+  build_always_stale : true
+)
