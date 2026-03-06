@@ -46,7 +46,7 @@ If you are on wayland, swap glfw-x11 to glfw-wayland, but its doesn't matter cuz
 ### Configure & Build
 
 > [!IMPORTANT]
-> GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions of `gcc` preinstalled.
+> GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
 
 This project uses the [Meson](https://mesonbuild.com/) build system.
 
