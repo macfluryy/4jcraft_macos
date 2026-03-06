@@ -782,9 +782,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 	int count = 0;
 	int dbgNotVisible = 0, dbgNoIdx = 0, dbgEmpty = 0, dbgCalled = 0, dbgCallOk = 0;
 	ClipChunk *pClipChunk = chunks[playerIndex].data;
-	//unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
-	unsigned char emptyFlag = 0;
-
+	unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << 0;
 	for( int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++ )
 	{
 		if( !pClipChunk->visible ) { dbgNotVisible++; continue; }
