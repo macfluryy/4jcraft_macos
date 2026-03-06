@@ -73,7 +73,8 @@ print(f"Selected {len(target_file_paths)} files for {output_file_path}")
 # Read our target files
 target_files = []
 for target_path in target_file_paths:
-    with open(f"{target_dir}/{target_path.strip()}", "rb") as file: 
+    real_target_path = target_path.replace("\\", "/")
+    with open(f"{target_dir}/{real_target_path.strip()}", "rb") as file: 
         file_data = file.read()
         meta_data = FileMetaData(
             target_path,
