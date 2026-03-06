@@ -1,5 +1,6 @@
 // ts just stink, social manager is a stupid stub rn
 #pragma once
+#include <winapi_stubs.h>
 
 #ifndef _SOCIAL_MANAGER_H
 #define _SOCIAL_MANAGER_H
