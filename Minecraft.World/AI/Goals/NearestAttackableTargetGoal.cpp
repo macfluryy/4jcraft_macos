@@ -19,7 +19,7 @@ bool NearestAttackableTargetGoal::DistComp::operator() (std::shared_ptr<Entity> 
 	return true;
 }
 
-NearestAttackableTargetGoal::NearestAttackableTargetGoal(Mob *mob, const type_info& targetType, float within, int randomInterval, bool mustSee, bool mustReach /*= false*/) : TargetGoal(mob, within, mustSee, mustReach), targetType(targetType)
+NearestAttackableTargetGoal::NearestAttackableTargetGoal(Mob *mob, const std::type_info& targetType, float within, int randomInterval, bool mustSee, bool mustReach /*= false*/) : TargetGoal(mob, within, mustSee, mustReach), targetType(targetType)
 {
 	//this->targetType = targetType;
 	this->within = within;

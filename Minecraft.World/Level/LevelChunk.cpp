@@ -1602,7 +1602,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, std::vect
 #endif
 }
 
-void LevelChunk::getEntitiesOfClass(const type_info& ec, AABB *bb, std::vector<std::shared_ptr<Entity> > &es)
+void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB *bb, std::vector<std::shared_ptr<Entity> > &es)
 {
     int yc0 = Mth::floor((bb->y0 - 2) / 16);
     int yc1 = Mth::floor((bb->y1 + 2) / 16);
@@ -1638,7 +1638,7 @@ void LevelChunk::getEntitiesOfClass(const type_info& ec, AABB *bb, std::vector<s
             std::shared_ptr<Entity> e = *it; //entities->at(i);
 
 			bool isAssignableFrom = false;
-			// Some special cases where the base class is a general type that our class may be derived from, otherwise do a direct comparison of type_info
+			// Some special cases where the base class is a general type that our class may be derived from, otherwise do a direct comparison of std::type_info
 			if( ec == typeid(Player) ) { if( dynamic_pointer_cast<Player>(e) != NULL )  isAssignableFrom = true; }
 			else if ( ec == typeid(Mob) )  { if( dynamic_pointer_cast<Mob>(e) != NULL )  isAssignableFrom = true; }
 			else if ( ec == typeid(Monster) )  { if( dynamic_pointer_cast<Monster>(e) != NULL )  isAssignableFrom = true; }

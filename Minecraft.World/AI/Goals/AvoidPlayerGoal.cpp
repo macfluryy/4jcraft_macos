@@ -10,7 +10,7 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "AvoidPlayerGoal.h"
 
-AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob *mob, const type_info& avoidType, float maxDist, float walkSpeed, float sprintSpeed) : avoidType(avoidType)
+AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob *mob, const std::type_info& avoidType, float maxDist, float walkSpeed, float sprintSpeed) : avoidType(avoidType)
 {
 	this->mob = mob;
 	//this->avoidType = avoidType;

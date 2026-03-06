@@ -70,7 +70,7 @@ private:
 	MobCategory(int maxVar, Material *spawnPositionMaterial, bool isFriendly, eINSTANCEOF eBase, bool isSingleType, int maxPerLevel);
 
 public:
-	const type_info getBaseClass();
+	const std::type_info getBaseClass();
 	const eINSTANCEOF getEnumBaseClass();	// 4J added
 	int getMaxInstancesPerChunk();
 	int getMaxInstancesPerLevel();		// 4J added

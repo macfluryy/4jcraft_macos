@@ -419,8 +419,8 @@ public:
 	bool isClientSide;
 
 	std::vector<std::shared_ptr<Entity> > *getEntities(std::shared_ptr<Entity> except, AABB *bb);
-	std::vector<std::shared_ptr<Entity> > *getEntitiesOfClass(const type_info& baseClass, AABB *bb);
-	std::shared_ptr<Entity> getClosestEntityOfClass(const type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source);
+	std::vector<std::shared_ptr<Entity> > *getEntitiesOfClass(const std::type_info& baseClass, AABB *bb);
+	std::shared_ptr<Entity> getClosestEntityOfClass(const std::type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source);
 	std::vector<std::shared_ptr<Entity> > getAllEntities();
 	void tileEntityChanged(int x, int y, int z, std::shared_ptr<TileEntity> te);
 //	unsigned int countInstanceOf(BaseObject::Class *clas);
@@ -477,7 +477,7 @@ public:
 	bool isRainingAt(int x, int y, int z);
 	bool isHumidAt(int x, int y, int z);
 	void setSavedData(const std::wstring& id, std::shared_ptr<SavedData> data);
-	std::shared_ptr<SavedData> getSavedData(const type_info& clazz, const std::wstring& id);
+	std::shared_ptr<SavedData> getSavedData(const std::type_info& clazz, const std::wstring& id);
 	int getFreeAuxValueFor(const std::wstring& id);
 	void levelEvent(int type, int x, int y, int z, int data);
 	void levelEvent(std::shared_ptr<Player> source, int type, int x, int y, int z, int data);
