@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
+#specify the usage of gcc-15 for the compiler
+set(CMAKE_C_COMPILER "gcc-15")
+set(CMAKE_CXX_COMPILER "g++-15")
+
 project(MinecraftConsoles C CXX)
 
 ################################################################################
