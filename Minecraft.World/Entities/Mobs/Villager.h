@@ -86,7 +86,7 @@ public:
 	void setLastHurtByMob(shared_ptr<Mob> mob);
 	void die(DamageSource *source);
 
-	void handleEntityEvent(byte id);
+	void handleEntityEvent(uint8_t id);
 
 private:
 	void addParticlesAroundSelf(ePARTICLE_TYPE particle);

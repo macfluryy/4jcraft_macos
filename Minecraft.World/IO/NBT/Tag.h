@@ -7,18 +7,18 @@ using namespace std;
 class Tag
 {
 public:
-    static const byte TAG_End = static_cast<byte>(0);
-    static const byte TAG_Byte = static_cast<byte>(1);
-    static const byte TAG_Short = static_cast<byte>(2);
-    static const byte TAG_Int = static_cast<byte>(3);
-    static const byte TAG_Long = static_cast<byte>(4);
-    static const byte TAG_Float = static_cast<byte>(5);
-    static const byte TAG_Double = static_cast<byte>(6);
-    static const byte TAG_Byte_Array = static_cast<byte>(7);
-    static const byte TAG_String = static_cast<byte>(8);
-    static const byte TAG_List = static_cast<byte>(9);
-    static const byte TAG_Compound = static_cast<byte>(10);
-	static const byte TAG_Int_Array = static_cast<byte>(11);
+    static const uint8_t TAG_End = static_cast<uint8_t>(0);
+    static const uint8_t TAG_Byte = static_cast<uint8_t>(1);
+    static const uint8_t TAG_Short = static_cast<uint8_t>(2);
+    static const uint8_t TAG_Int = static_cast<uint8_t>(3);
+    static const uint8_t TAG_Long = static_cast<uint8_t>(4);
+    static const uint8_t TAG_Float = static_cast<uint8_t>(5);
+    static const uint8_t TAG_Double = static_cast<uint8_t>(6);
+    static const uint8_t TAG_Byte_Array = static_cast<uint8_t>(7);
+    static const uint8_t TAG_String = static_cast<uint8_t>(8);
+    static const uint8_t TAG_List = static_cast<uint8_t>(9);
+    static const uint8_t TAG_Compound = static_cast<uint8_t>(10);
+	static const uint8_t TAG_Int_Array = static_cast<uint8_t>(11);
 
 private:
     wstring name;
@@ -30,15 +30,15 @@ public:
     virtual void write(DataOutput *dos) = 0;
     virtual void load(DataInput *dis)  = 0;
     virtual wstring toString() = 0;
-    virtual byte getId() = 0;
+    virtual uint8_t getId() = 0;
     void print(ostream out);
     void print(char *prefix, wostream out);
     wstring getName();
     Tag *setName(const wstring& name);
     static Tag *readNamedTag(DataInput *dis);
     static void writeNamedTag(Tag *tag, DataOutput *dos);
-    static Tag *newTag(byte type, const wstring &name);
-    static const wchar_t *getTagName(byte type);
+    static Tag *newTag(uint8_t type, const wstring &name);
+    static const wchar_t *getTagName(uint8_t type);
 	virtual ~Tag() {}
 	virtual bool equals(Tag *obj); // 4J Brought forward from 1.2
 	virtual Tag *copy() = 0; // 4J Brought foward from 1.2

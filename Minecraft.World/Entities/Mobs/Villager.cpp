@@ -701,7 +701,7 @@ int Villager::getPurchaseCost(int itemId, Random *random)
 	return minMax.first + random->nextInt(minMax.second - minMax.first);
 }
 
-void Villager::handleEntityEvent(byte id)
+void Villager::handleEntityEvent(uint8_t id)
 {
 	if (id == EntityEvent::LOVE_HEARTS)
 	{

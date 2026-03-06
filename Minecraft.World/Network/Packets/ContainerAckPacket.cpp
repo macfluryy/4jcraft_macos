@@ -34,9 +34,9 @@ void ContainerAckPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerAckPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((byte)containerId);
+	dos->writeByte((uint8_t)containerId);
 	dos->writeShort(uid);
-	dos->writeByte((byte)(accepted ? 1 : 0));
+	dos->writeByte((uint8_t)(accepted ? 1 : 0));
 }
 
 int ContainerAckPacket::getEstimatedSize() 

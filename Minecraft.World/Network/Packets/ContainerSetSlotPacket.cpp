@@ -34,7 +34,7 @@ void ContainerSetSlotPacket::read(DataInputStream *dis) //throws IOException
 {
 	// 4J Stu - TU-1 hotfix
 	// Fix for #13142 - Holding down the A button on the furnace ingredient slot causes the UI to display incorrect item counts
-	byte byteId = dis->readByte();
+	uint8_t byteId = dis->readByte();
 	containerId = *(char *)&byteId;
 	slot = dis->readShort();
 	item = readItem(dis);
@@ -42,7 +42,7 @@ void ContainerSetSlotPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerSetSlotPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((byte)containerId);
+	dos->writeByte((uint8_t)containerId);
 	dos->writeShort(slot);
 	writeItem(item, dos);
 }

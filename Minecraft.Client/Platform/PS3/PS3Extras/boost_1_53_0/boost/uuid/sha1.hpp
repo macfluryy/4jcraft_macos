@@ -88,7 +88,7 @@ inline void sha1::reset()
 
 inline void sha1::process_byte(unsigned char byte)
 {
-    process_byte_impl(byte);
+    process_byte_impl(uint8_t);
 
     // size_t max value = 0xFFFFFFFF
     //if (bit_count_low + 8 >= 0x100000000) { // would overflow

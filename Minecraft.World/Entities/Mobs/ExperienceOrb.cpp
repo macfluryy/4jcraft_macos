@@ -175,7 +175,7 @@ bool ExperienceOrb::hurt(DamageSource *source, int damage)
 
 void ExperienceOrb::addAdditonalSaveData(CompoundTag *entityTag)
 {
-	entityTag->putShort(L"Health", (byte) health);
+	entityTag->putShort(L"Health", (uint8_t) health);
 	entityTag->putShort(L"Age", (short) age);
 	entityTag->putShort(L"Value", (short) value);
 }

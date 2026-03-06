@@ -104,7 +104,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	{
 		DLCGameRulesHeader *dlcHeader = (DLCGameRulesHeader *)pack->getFile(DLCManager::e_DLCType_GameRulesHeader, i);
 		DWORD dSize;
-		byte *dData = dlcHeader->getData(dSize);
+		uint8_t *dData = dlcHeader->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
 		//	= loadGameRules(dData, dSize); //, strings);
@@ -126,7 +126,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 		DLCGameRulesFile *dlcFile = (DLCGameRulesFile *)pack->getFile(DLCManager::e_DLCType_GameRules, i);
 
 		DWORD dSize;
-		byte *dData = dlcFile->getData(dSize);
+		uint8_t *dData = dlcFile->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
 		//	= loadGameRules(dData, dSize); //, strings);
@@ -142,7 +142,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	}
 }
 
-LevelGenerationOptions *GameRuleManager::loadGameRules(byte *dIn, UINT dSize)
+LevelGenerationOptions *GameRuleManager::loadGameRules(uint8_t *dIn, UINT dSize)
 {
 	LevelGenerationOptions *lgo = new LevelGenerationOptions();
 	lgo->setGrSource( new JustGrSource() );
@@ -153,7 +153,7 @@ LevelGenerationOptions *GameRuleManager::loadGameRules(byte *dIn, UINT dSize)
 }
 
 // 4J-JEV: Reverse of saveGameRules.
-void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, byte *dIn, UINT dSize)
+void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize)
 {
 	app.DebugPrintf("GameRuleManager::LoadingGameRules:\n");
 
@@ -240,7 +240,7 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, byte *dIn, UINT
 }
 
 // 4J-JEV: Reverse of loadGameRules.
-void GameRuleManager::saveGameRules(byte **dOut, UINT *dSize)
+void GameRuleManager::saveGameRules(uint8_t **dOut, UINT *dSize)
 {
 	if (m_currentGameRuleDefinitions == NULL &&
 		m_currentLevelGenerationOptions == NULL)
@@ -373,7 +373,7 @@ void GameRuleManager::writeRuleFile(DataOutputStream *dos)
 	m_currentGameRuleDefinitions->write(dos);
 }
 
-bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, byte *dIn, UINT dSize, StringTable *strings) //(DLCGameRulesFile *dlcFile, StringTable *strings)
+bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize, StringTable *strings) //(DLCGameRulesFile *dlcFile, StringTable *strings)
 {
 	bool levelGenAdded = false;
 	bool gameRulesAdded = false;

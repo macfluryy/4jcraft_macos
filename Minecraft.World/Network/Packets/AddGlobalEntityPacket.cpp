@@ -48,7 +48,7 @@ void AddGlobalEntityPacket::read(DataInputStream *dis) // throws IOException
 void AddGlobalEntityPacket::write(DataOutputStream *dos) // throws IOException 
 {
 	dos->writeInt(id);
-	dos->writeByte(static_cast<byte>(type));
+	dos->writeByte(static_cast<uint8_t>(type));
 	dos->writeInt(x);
 	dos->writeInt(y);
 	dos->writeInt(z);

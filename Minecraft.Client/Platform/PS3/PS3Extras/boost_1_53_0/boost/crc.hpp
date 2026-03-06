@@ -172,7 +172,7 @@ public:
     // External Operations
     void  process_bit( bool bit );
     void  process_bits( unsigned char bits, std::size_t bit_count );
-    void  process_byte( unsigned char byte );
+    void  process_byte( unsigned char uint8_t );
     void  process_block( void const *bytes_begin, void const *bytes_end );
     void  process_bytes( void const *buffer, std::size_t byte_count );
 
@@ -223,14 +223,14 @@ public:
     void        reset( value_type new_rem = InitRem );
 
     // External Operations
-    void  process_byte( unsigned char byte );
+    void  process_byte( unsigned char uint8_t );
     void  process_block( void const *bytes_begin, void const *bytes_end );
     void  process_bytes( void const *buffer, std::size_t byte_count );
 
     value_type  checksum() const;
 
     // Operators
-    void        operator ()( unsigned char byte );
+    void        operator ()( unsigned char uint8_t );
     value_type  operator ()() const;
 
 private:
@@ -777,7 +777,7 @@ crc_basic<Bits>::process_byte
     unsigned char  byte
 )
 {
-    process_bits( (rft_in_ ? detail::reflector<CHAR_BIT>::reflect(byte)
+    process_bits( (rft_in_ ? detail::reflector<CHAR_BIT>::reflect(uint8_t)
      : byte), CHAR_BIT );
 }
 
@@ -938,7 +938,7 @@ BOOST_CRC_OPTIMAL_NAME::process_byte
     unsigned char  byte
 )
 {
-    process_bytes( &byte, sizeof(byte) );
+    process_bytes( &byte, sizeof(uint8_t) );
 }
 
 template < std::size_t Bits, BOOST_CRC_PARM_TYPE TruncPoly,
@@ -1004,7 +1004,7 @@ BOOST_CRC_OPTIMAL_NAME::operator ()
     unsigned char  byte
 )
 {
-    process_byte( byte );
+    process_byte( uint8_t );
 }
 
 template < std::size_t Bits, BOOST_CRC_PARM_TYPE TruncPoly,

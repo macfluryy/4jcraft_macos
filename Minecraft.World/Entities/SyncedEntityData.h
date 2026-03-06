@@ -15,7 +15,7 @@ public:
 		const int id;
 		// 4J - there used to be one "value" type here of general type Object, just storing the different (used) varieties
 		// here separately for us
-		byte	value_byte;
+		uint8_t	value_byte;
 		int		value_int;
 		short	value_short;
 		wstring	value_wstring;
@@ -24,19 +24,19 @@ public:
 
 	public:
 		// There was one type here that took a generic Object type, using overloading here instead
-		DataItem(int type, int id, byte value);
+		DataItem(int type, int id, uint8_t value);
 		DataItem(int type, int id, int value);
 		DataItem(int type, int id, const wstring& value);
 		DataItem(int type, int id, shared_ptr<ItemInstance> itemInstance);
 		DataItem(int type, int id, short value);
 
 		int getId();
-		void setValue(byte value);
+		void setValue(uint8_t value);
 		void setValue(int value);
 		void setValue(short value);
 		void setValue(const wstring& value);
 		void setValue(shared_ptr<ItemInstance> value);
-		byte getValue_byte();
+		uint8_t getValue_byte();
 		int getValue_int();
 		short getValue_short();
 		wstring getValue_wstring();
@@ -79,14 +79,14 @@ public:
 
 	// 4J - this function used to be a template, but there's only 3 varieties of use I've found so just hard-coding now, as
 	// the original had some automatic Class to type sort of conversion that's a real pain for us to actually do
-	void define(int id, byte value);
+	void define(int id, uint8_t value);
 	void define(int id, const wstring& value);
 	void define(int id, int value);
 	void define(int id, short value);
 	void defineNULL(int id, void *pVal);
 
 	void checkId(int id);	// 4J - added to contain common code from overloaded define functions above
-	byte getByte(int id);
+	uint8_t getByte(int id);
 	short getShort(int id);
 	int getInteger(int id);
 	float getFloat(int id);
@@ -94,7 +94,7 @@ public:
 	shared_ptr<ItemInstance> getItemInstance(int id);
 	Pos *getPos(int id);
 	// 4J - using overloads rather than template here
-	void set(int id, byte value);
+	void set(int id, uint8_t value);
 	void set(int id, int value);
 	void set(int id, short value);
 	void set(int id, const wstring& value);

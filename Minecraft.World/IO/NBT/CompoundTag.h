@@ -55,7 +55,7 @@ public:
         return ret;
     }
 
-    byte getId()
+    uint8_t getId()
 	{
         return TAG_Compound;
     }
@@ -65,7 +65,7 @@ public:
         tags[name] = tag->setName(wstring( name ));
     }
 
-    void putByte(const wchar_t * name, byte value)
+    void putByte(const wchar_t * name, uint8_t value)
 	{
         tags[name] = (new ByteTag(name,value));
     }
@@ -117,7 +117,7 @@ public:
 
     void putBoolean(const wchar_t * string, bool val)
 	{
-        putByte(string, val?static_cast<byte>(1):static_cast<byte>(0));
+        putByte(string, val?static_cast<uint8_t>(1):static_cast<uint8_t>(0));
     }
 
     Tag *get(const wchar_t *name)
@@ -132,9 +132,9 @@ public:
 		return tags.find(name) != tags.end();
     }
 
-    byte getByte(const wchar_t * name)
+    uint8_t getByte(const wchar_t * name)
 	{
-        if (tags.find(name) == tags.end()) return (byte)0;
+        if (tags.find(name) == tags.end()) return (uint8_t)0;
         return ((ByteTag *) tags[name])->data;
     }
 
@@ -200,7 +200,7 @@ public:
 
     bool getBoolean(const wchar_t *string)
 	{
-        return getByte(string) != static_cast<byte>(0);
+        return getByte(string) != static_cast<uint8_t>(0);
     }
 
 	void remove(const wstring &name)

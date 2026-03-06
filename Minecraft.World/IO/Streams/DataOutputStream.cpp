@@ -66,7 +66,7 @@ void DataOutputStream::close()
 //Writes out a byte to the underlying output stream as a 1-byte value. If no exception is thrown, the counter written is incremented by 1.
 //Parameters:
 //v - a byte value to be written.
-void DataOutputStream::writeByte(byte a)
+void DataOutputStream::writeByte(uint8_t a)
 {
 	stream->write( static_cast<unsigned int>(a) );
 }
@@ -170,7 +170,7 @@ void DataOutputStream::writeChars(const wstring& str)
 }
 
 //Writes a boolean to the underlying output stream as a 1-byte value.
-//The value true is written out as the value (byte)1; the value false is written out as the value (byte)0.
+//The value true is written out as the value (uint8_t)1; the value false is written out as the value (uint8_t)0.
 //If no exception is thrown, the counter written is incremented by 1.
 //Parameters:
 //v - a boolean value to be written.
@@ -219,15 +219,15 @@ void DataOutputStream::writeUTF(const wstring& str)
 
 	byteArray bytearr(utflen+2);
 
-	bytearr[count++] = (byte) ((utflen >> 8) & 0xFF);
-	bytearr[count++] = (byte) ((utflen >> 0) & 0xFF);  
+	bytearr[count++] = (uint8_t) ((utflen >> 8) & 0xFF);
+	bytearr[count++] = (uint8_t) ((utflen >> 0) & 0xFF);  
 
 	int i=0;
 	for (i=0; i<strlen; i++)
 	{
 		c = str.at(i);
 		if (!((c >= 0x0001) && (c <= 0x007F))) break;
-		bytearr[count++] = (byte) c;
+		bytearr[count++] = (uint8_t) c;
 	}
 
 	for (;i < strlen; i++)
@@ -235,19 +235,19 @@ void DataOutputStream::writeUTF(const wstring& str)
 		c = str.at(i);
 		if ((c >= 0x0001) && (c <= 0x007F))
 		{
-			bytearr[count++] = (byte) c;
+			bytearr[count++] = (uint8_t) c;
 
 		}
 		else if (c > 0x07FF)
 		{
-			bytearr[count++] = (byte) (0xE0 | ((c >> 12) & 0x0F));
-			bytearr[count++] = (byte) (0x80 | ((c >>  6) & 0x3F));
-			bytearr[count++] = (byte) (0x80 | ((c >>  0) & 0x3F));
+			bytearr[count++] = (uint8_t) (0xE0 | ((c >> 12) & 0x0F));
+			bytearr[count++] = (uint8_t) (0x80 | ((c >>  6) & 0x3F));
+			bytearr[count++] = (uint8_t) (0x80 | ((c >>  0) & 0x3F));
 		}
 		else
 		{
-			bytearr[count++] = (byte) (0xC0 | ((c >>  6) & 0x1F));
-			bytearr[count++] = (byte) (0x80 | ((c >>  0) & 0x3F));
+			bytearr[count++] = (uint8_t) (0xC0 | ((c >>  6) & 0x1F));
+			bytearr[count++] = (uint8_t) (0x80 | ((c >>  0) & 0x3F));
 		}
 	}
 	write(bytearr, 0, utflen+2);

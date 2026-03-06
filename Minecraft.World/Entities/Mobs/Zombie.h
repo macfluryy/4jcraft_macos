@@ -72,7 +72,7 @@ protected:
 	void startConverting(int time);
 
 public:
-	void handleEntityEvent(byte id);
+	void handleEntityEvent(uint8_t id);
 	bool isConverting();
 
 protected:

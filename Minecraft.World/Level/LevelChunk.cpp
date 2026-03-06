@@ -525,7 +525,7 @@ void LevelChunk::recalcHeightmapOnly()
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
 			}
 #endif
-			heightmap[z << 4 | x] = (byte) y;
+			heightmap[z << 4 | x] = (uint8_t) y;
 			if (y < min) min = y;
 		}
 
@@ -581,7 +581,7 @@ void LevelChunk::recalcHeightmap()
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
 			}
 #endif
-            heightmap[z << 4 | x] = (byte) y;
+            heightmap[z << 4 | x] = (uint8_t) y;
             if (y < min) min = y;
 
             if (!level->dimension->hasCeiling)
@@ -803,7 +803,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z)
     if (y == yOld) return;
 
 //    level->lightColumnChanged(x, z, y, yOld);		// 4J - this call moved below & corrected - see comment further down
-    heightmap[z << 4 | x] = (byte) y;
+    heightmap[z << 4 | x] = (uint8_t) y;
 
     if (y < minHeight)
 	{
@@ -910,7 +910,7 @@ int LevelChunk::getTile(int x, int y, int z)
 
 bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
 {
-    byte tile = (byte) _tile;
+    uint8_t tile = (uint8_t) _tile;
 
 	// Optimisation brought forward from 1.8.2, change from int to unsigned char & this special value changed from -999 to 255
     int slot = z << 4 | x;
@@ -1984,7 +1984,7 @@ Biome *LevelChunk::getBiome(int x, int z, BiomeSource *biomeSource)
 	{
 		Biome *biome = biomeSource->getBiome((this->x << 4) + x, (this->z << 4) + z);
 		value = biome->id;
-		biomes[(z << 4) | x] = (byte) (value & 0xff);
+		biomes[(z << 4) | x] = (uint8_t) (value & 0xff);
 	}
 	if (Biome::biomes[value] == NULL)
 	{

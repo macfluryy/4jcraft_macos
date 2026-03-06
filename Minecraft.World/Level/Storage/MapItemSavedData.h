@@ -50,7 +50,7 @@ public:
 public:
 	int x, z;
 	char dimension;
-	byte scale;
+	uint8_t scale;
 	byteArray colors;
 	int step;
 	vector<shared_ptr<HoldingPlayer> > carriedBy;
