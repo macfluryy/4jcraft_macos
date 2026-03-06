@@ -683,7 +683,7 @@ int LevelRenderer::render(shared_ptr<Mob> player, int layer, double alpha, bool 
 		allChanged();
 	}
 
-	if (layer == 0)
+	if (layer == 1)
 	{
 		totalChunks = 0;
 		offscreenChunks = 0;
@@ -713,7 +713,7 @@ int LevelRenderer::render(shared_ptr<Mob> player, int layer, double alpha, bool 
 	glColor4f(1, 1, 1, 1);
 	glColor4f(1, 1, 1, 1);
 
-	int count = renderChunks(0, (int)chunks[playerIndex].length, 0, alpha);
+	int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
 
 	return count;
 
