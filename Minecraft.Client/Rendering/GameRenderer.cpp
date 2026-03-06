@@ -1115,7 +1115,7 @@ void GameRenderer::render(float a, bool bFirst)
 	}
 
 }
-
+}
 void GameRenderer::renderLevel(float a)
 {
 	renderLevel(a, 0);
