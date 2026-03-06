@@ -34,7 +34,7 @@ FileInputStream::FileInputStream(const File &file)
 		NULL // Unsupported
 		);
 #elif defined(__linux__)
-	m_fileHandle = open(pchFilename, O_RDONLY);
+	m_fileHandle = (HANDLE)(intptr_t)open(pchFilename, O_RDONLY);
 #else
 	m_fileHandle = CreateFile(
 		pchFilename, // file name
@@ -61,7 +61,7 @@ FileInputStream::~FileInputStream()
 #ifndef __linux__
 		CloseHandle( m_fileHandle );
 #else
-		::close( m_fileHandle );
+		::close( (int)(intptr_t)m_fileHandle );
 #endif
 }
 
@@ -190,7 +190,7 @@ void FileInputStream::close()
 		return;
 	}	
 	
-	BOOL result = ::close( m_fileHandle );
+	int result = ::close( (int)(intptr_t)m_fileHandle );
 
 	if( result == 0 )
 	{

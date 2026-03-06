@@ -42,7 +42,7 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 	char* convertedPath = new char[path.size() + 1];
 	std::wcstombs(convertedPath, path.c_str(), path.size() + 1);
 
-	m_fileHandle = open(convertedPath, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+	m_fileHandle = (HANDLE)(intptr_t)open(convertedPath, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 	delete[] convertedPath;
 #else
 	m_fileHandle = CreateFile(
@@ -66,7 +66,7 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 FileOutputStream::~FileOutputStream()
 {
 	if( m_fileHandle != INVALID_HANDLE_VALUE )
-		::close( m_fileHandle );
+		::close( (int)(intptr_t)m_fileHandle );
 }
 
 //Writes the specified byte to this file output stream. Implements the write method of OutputStream.
@@ -85,7 +85,7 @@ void FileOutputStream::write(unsigned int b)
 		NULL // overlapped buffer
 		);
 #else // LINUX
-	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
 	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
 	int result = static_cast<int>(numberOfBytesWritten);
 #endif // _WIN32
@@ -114,7 +114,7 @@ void FileOutputStream::write(byteArray b)
 		NULL // overlapped buffer
 		);
 #else // Linux
-	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
 	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
 	int result = static_cast<int>(numberOfBytesWritten);
 #endif // _WIN32
@@ -150,7 +150,7 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 		NULL // overlapped buffer
 		);
 #else
-	int fileDescriptor = reinterpret_cast<int>(m_fileHandle);
+	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
 	ssize_t numberOfBytesWritten = ::write(fileDescriptor, static_cast<const void*>(&b[offset]), length);
 	int result = static_cast<int>(numberOfBytesWritten);
 #endif // _WIN32
@@ -173,7 +173,7 @@ void FileOutputStream::close()
 #ifdef _WIN32
 	BOOL result = CloseHandle( m_fileHandle );
 #else // __linux__
-	int result = ::close( m_fileHandle );
+	int result = ::close( (int)(intptr_t)m_fileHandle );
 #endif // _WIN32
 	if( result == 0 )
 	{
