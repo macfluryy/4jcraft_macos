@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_BackgroundImage L"BackgroundImage"
 #define IDC_EditLineOne L"EditLineOne"
 #define IDC_EditLineTwo L"EditLineTwo"

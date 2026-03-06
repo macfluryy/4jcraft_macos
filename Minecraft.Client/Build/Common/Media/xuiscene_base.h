@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_BottomLeftAnchorPoint L"BottomLeftAnchorPoint"
 #define IDC_TopLeftAnchorPoint L"TopLeftAnchorPoint"
 #define IDC_XuiDarkOverlay L"XuiDarkOverlay"

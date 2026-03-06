@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Crosshair L"Crosshair"
 #define IDC_Box L"Box"
 #define IDC_Inventory1 L"Inventory1"

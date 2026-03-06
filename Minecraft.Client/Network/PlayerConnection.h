@@ -1,3 +1,4 @@
+#pragma once
 #include "../Input/ConsoleInputSource.h"
 #include "../../Minecraft.World/Network/Packets/PacketListener.h"
 #include "../../Minecraft.World/Util/JavaIntHash.h"

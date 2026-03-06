@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_ComparisonPic L"ComparisonPic"
 #define IDC_TexturePackDescription L"TexturePackDescription"
 #define IDC_TexturePackName L"TexturePackName"

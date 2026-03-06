@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiOK L"XuiOK"
 #define IDC_XuiEditDescription L"XuiEditDescription"
 #define IDC_XuiLabelDescription L"XuiLabelDescription"

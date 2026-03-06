@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_CamX L"CamX"
 #define IDC_CamZ L"CamZ"
 #define IDC_YRot L"YRot"

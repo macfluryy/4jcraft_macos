@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Description L"Description"
 #define IDC_XuiInventoryPic L"XuiInventoryPic"
 #define IDC_XuiImage L"XuiImage"

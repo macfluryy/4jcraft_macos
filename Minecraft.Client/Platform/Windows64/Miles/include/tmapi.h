@@ -1,3 +1,4 @@
+#pragma once
 // This is the null header file used to remove Telemetry calls.
 
 #define TMERR_DISABLED 1

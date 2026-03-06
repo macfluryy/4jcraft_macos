@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiNewWorld L"XuiNewWorld"
 #define IDC_XuiMoreOptions L"XuiMoreOptions"
 #define IDC_XuiSlider L"XuiSlider"

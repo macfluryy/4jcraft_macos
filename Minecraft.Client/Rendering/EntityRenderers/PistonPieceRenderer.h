@@ -1,3 +1,4 @@
+#pragma once
 #include "TileEntityRenderer.h"
 class PistonPieceEntity;
 class TileRenderer;

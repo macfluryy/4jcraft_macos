@@ -154,6 +154,10 @@ IOException::IOException(const wstring& information)
 	this->information = information;
 }
 
+RuntimeException::RuntimeException(const wstring& /*information*/)
+{
+}
+
 Packet::Packet() : createTime( System::currentTimeMillis() )
 {
 	shouldDelay = false;

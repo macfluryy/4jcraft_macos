@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_XuiLoadSettings L"XuiLoadSettings"
 #define IDC_XuiMoreOptions L"XuiMoreOptions"
 #define IDC_XuiSlider L"XuiSlider"

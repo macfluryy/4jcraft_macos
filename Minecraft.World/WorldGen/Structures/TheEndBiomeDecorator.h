@@ -1,3 +1,4 @@
+#pragma once
 #include "../Biomes/BiomeDecorator.h"
 
 class TheEndBiomeDecorator : public BiomeDecorator

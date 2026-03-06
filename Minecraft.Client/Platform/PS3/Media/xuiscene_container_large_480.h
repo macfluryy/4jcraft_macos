@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Bot_R L"Bot_R"
 #define IDC_Bot_M L"Bot_M"
 #define IDC_Bot_L L"Bot_L"

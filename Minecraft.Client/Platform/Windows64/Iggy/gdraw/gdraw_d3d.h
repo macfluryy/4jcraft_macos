@@ -1,3 +1,4 @@
+#pragma once
 // gdraw_d3d.h - author: Sean Barrett - copyright 2009-2011 RAD Game Tools
 //
 // Interface for creating a D3D GDraw driver.

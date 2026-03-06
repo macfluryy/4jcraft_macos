@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Controller L"Controller"
 #define IDC_control_ListItem L"control_ListItem"
 #define IDC_control_ListItem L"control_ListItem"

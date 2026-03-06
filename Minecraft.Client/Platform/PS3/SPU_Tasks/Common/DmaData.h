@@ -1,3 +1,4 @@
+#pragma once
 /* SCE CONFIDENTIAL
 PlayStation(R)3 Programmer Tool Runtime Library 430.001
 * Copyright (C) 2007 Sony Computer Entertainment Inc.

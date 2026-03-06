@@ -4,10 +4,16 @@ project('4jcraft-chucklegrounds', ['cpp', 'c'],
     'cpp_std=gnu++11',
     'warning_level=0',
     'buildtype=debug',
+    'unity=on',         # merge source files per target → fewer compile units
+    'unity_size=8',     # files per unity batch (tune up for faster full builds)
+    'b_pch=true',       # precompiled headers
   ],
 )
 
 cc = meson.get_compiler('cpp')
+
+# Use LLD for dramatically faster linking (ld.lld must be installed)
+add_project_link_arguments('-fuse-ld=lld', language : ['c', 'cpp'])
 
 # system deps
 gl_dep     = dependency('gl')
@@ -20,8 +26,8 @@ dl_dep     = cc.find_library('dl')
 # compile flags (chagne ts juicey)
 global_cpp_args = [
   '-fpermissive',
-  '-Wtemplate-body',
   '-Wshift-count-overflow',
+  '-pipe',             # use pipes instead of temp files between compiler stages
 ]
 
 # global ccp defs type shi

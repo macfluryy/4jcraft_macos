@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_Logo4J L"Logo4J"
 #define IDC_LogoMojang L"LogoMojang"
 #define IDC_LogoMicrosoft L"LogoMicrosoft"

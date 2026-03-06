@@ -1,3 +1,4 @@
+#pragma once
 #define IDC_icon L"icon"
 #define IDC_itemName L"itemName"
 #define IDC_itemId L"itemId"
