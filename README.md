@@ -70,16 +70,6 @@ The binary is output to:
 build/Minecraft.Client
 ```
 
-#### Running
-
-In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets to the same directory as the `Minecraft.Client` executable. 
-
-At this time, we don't have the necessary tools to build game resources without Visual Studio, so for the time being these can be obtained from the latest [MinecraftConsoles nightly](https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly).
-
-1. Download `LCEWindows64.zip` and extract.
-2. Copy the `Common` directory to the same directory as the compiled `Minecraft.Client` binary.
-3. Run `./Minecraft.Client`.
-
 #### Clean
 
 ```bash
@@ -96,10 +86,10 @@ meson setup build --reconfigure
 
 ## Running
 
-(this is temp)
-```bash
-./Linux/Debug/Minecraft.Client
-```
+In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets to the same directory as the `Minecraft.Client` executable. 
 
-(todo refactor)
-(todo refactor more)
+At this time, we don't have the necessary tools to build game resources without Visual Studio, so for the time being these can be obtained from the latest [MinecraftConsoles nightly](https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly).
+
+1. Download `LCEWindows64.zip` and extract.
+2. Copy the `Common` directory to the same directory as the compiled `Minecraft.Client` binary.
+3. Run `./Minecraft.Client`.
