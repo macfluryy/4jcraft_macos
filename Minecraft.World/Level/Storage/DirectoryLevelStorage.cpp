@@ -351,7 +351,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
     return NULL;
 }
 
-void DirectoryLevelStorage::saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players)
+void DirectoryLevelStorage::saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players)
 {
 	// 4J Jev, removed try/catch
 
@@ -480,9 +480,9 @@ void DirectoryLevelStorage::clearOldPlayerFiles()
 	if(StorageManager.GetSaveDisabled() ) return;
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	vector<FileEntry *> *playerFiles = m_saveFile->getValidPlayerDatFiles();
+	std::vector<FileEntry *> *playerFiles = m_saveFile->getValidPlayerDatFiles();
 #else
-	vector<FileEntry *> *playerFiles = m_saveFile->getFilesWithPrefix( playerDir.getName() );
+	std::vector<FileEntry *> *playerFiles = m_saveFile->getFilesWithPrefix( playerDir.getName() );
 #endif
 
 	if( playerFiles != NULL )
@@ -569,9 +569,9 @@ void DirectoryLevelStorage::resetNetherPlayerPositions()
 	if(app.GetResetNether())
 	{
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-		vector<FileEntry *> *playerFiles = m_saveFile->getValidPlayerDatFiles();
+		std::vector<FileEntry *> *playerFiles = m_saveFile->getValidPlayerDatFiles();
 #else
-		vector<FileEntry *> *playerFiles = m_saveFile->getFilesWithPrefix( playerDir.getName() );
+		std::vector<FileEntry *> *playerFiles = m_saveFile->getFilesWithPrefix( playerDir.getName() );
 #endif
 
 		if( playerFiles != NULL )

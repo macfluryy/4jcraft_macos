@@ -22,7 +22,7 @@ private:
         ResetInfo(int x, int y, int z, int tile, int data);
     };
 
-	vector<ResetInfo> updatesToReset;	// 4J - was linked list but vector seems more appropriate
+	std::vector<ResetInfo> updatesToReset;	// 4J - was linked list but vector seems more appropriate
 	bool m_bEnableResetChanges; // 4J Added
 public:
 	void unshareChunkAt(int x, int z);	// 4J - added
@@ -34,7 +34,7 @@ private:
 	int unshareCheckZ;		// 4J - added
 	int compressCheckX;		// 4J - added
 	int compressCheckZ;		// 4J - added
-    vector<ClientConnection *> connections; // 4J Stu - Made this a vector as we can have more than one local connection
+    std::vector<ClientConnection *> connections; // 4J Stu - Made this a vector as we can have more than one local connection
     MultiPlayerChunkCache *chunkCache;
 	Minecraft *minecraft;
 
@@ -68,7 +68,7 @@ public:
 	void putEntity(int id, std::shared_ptr<Entity> e);
     std::shared_ptr<Entity> getEntity(int id);
     std::shared_ptr<Entity> removeEntity(int id);
-	virtual void removeEntities(vector<std::shared_ptr<Entity> > *list); // 4J Added override
+	virtual void removeEntities(std::vector<std::shared_ptr<Entity> > *list); // 4J Added override
     virtual bool setDataNoUpdate(int x, int y, int z, int data);
     virtual bool setTileAndDataNoUpdate(int x, int y, int z, int tile, int data);
     virtual bool setTileNoUpdate(int x, int y, int z, int tile);

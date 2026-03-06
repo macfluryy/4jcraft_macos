@@ -362,7 +362,7 @@ void Font::drawWordWrap(const std::wstring &string, int x, int y, int w, int col
 
 void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w, int col, bool darken, int h)
 {
-    vector<std::wstring>lines = stringSplit(string,L'\n');
+    std::vector<std::wstring>lines = stringSplit(string,L'\n');
     if (lines.size() > 1)
 	{
 		AUTO_VAR(itEnd, lines.end());
@@ -375,7 +375,7 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
         }
         return;
     }
-    vector<std::wstring> words = stringSplit(string,L' ');
+    std::vector<std::wstring> words = stringSplit(string,L' ');
     unsigned int pos = 0;
     while (pos < words.size())
 	{
@@ -413,7 +413,7 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
 
 int Font::wordWrapHeight(const std::wstring& string, int w)
 {
-    vector<std::wstring> lines = stringSplit(string,L'\n');
+    std::vector<std::wstring> lines = stringSplit(string,L'\n');
     if (lines.size() > 1)
 	{
         int h = 0;
@@ -424,7 +424,7 @@ int Font::wordWrapHeight(const std::wstring& string, int w)
         }
         return h;
     }
-	vector<std::wstring> words = stringSplit(string,L' ');
+	std::vector<std::wstring> words = stringSplit(string,L' ');
     unsigned int pos = 0;
     int y = 0;
     while (pos < words.size())

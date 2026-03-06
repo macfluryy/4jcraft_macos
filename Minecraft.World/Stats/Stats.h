@@ -19,14 +19,14 @@ protected:
 	static std::unordered_map<int, Stat*>* statsById;
 
 public:
-	static vector<Stat *> *all;
-    static vector<Stat *> *generalStats;
-	static vector<ItemStat *> *blocksMinedStats;
-    static vector<ItemStat *> *itemsCollectedStats;
-	static vector<ItemStat *> *itemsCraftedStats;
+	static std::vector<Stat *> *all;
+    static std::vector<Stat *> *generalStats;
+	static std::vector<ItemStat *> *blocksMinedStats;
+    static std::vector<ItemStat *> *itemsCollectedStats;
+	static std::vector<ItemStat *> *itemsCraftedStats;
 			
 #if (defined _EXTENDED_ACHIEVEMENTS) && (!defined _DURANGO)
-	static vector<ItemStat *> *blocksPlacedStats;
+	static std::vector<ItemStat *> *blocksPlacedStats;
 #endif
 	
     static Stat *walkOneM;

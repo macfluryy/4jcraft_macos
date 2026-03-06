@@ -196,7 +196,7 @@ bool SynchedEntityData::isDirty()
 	return m_isDirty;
 }
 
-void SynchedEntityData::pack(vector<std::shared_ptr<DataItem> > *items, DataOutputStream *output) // TODO throws IOException
+void SynchedEntityData::pack(std::vector<std::shared_ptr<DataItem> > *items, DataOutputStream *output) // TODO throws IOException
 {
 
 	if (items != NULL)
@@ -213,10 +213,10 @@ void SynchedEntityData::pack(vector<std::shared_ptr<DataItem> > *items, DataOutp
 	output->writeByte(EOF_MARKER);
 }
 
-vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::packDirty()
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::packDirty()
 {
 
-	vector<std::shared_ptr<DataItem> > *result = NULL;
+	std::vector<std::shared_ptr<DataItem> > *result = NULL;
 
 	if (m_isDirty)
 	{
@@ -230,7 +230,7 @@ vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::packDi
 
 				if (result == NULL)
 				{
-					result = new vector<std::shared_ptr<DataItem> >();
+					result = new std::vector<std::shared_ptr<DataItem> >();
 				}
 				result->push_back(dataItem);
 			}
@@ -254,16 +254,16 @@ void SynchedEntityData::packAll(DataOutputStream *output) // throws IOException
 	output->writeByte(EOF_MARKER);
 }
 
-vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::getAll()
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::getAll()
 {
-	vector<std::shared_ptr<DataItem> > *result = NULL;
+	std::vector<std::shared_ptr<DataItem> > *result = NULL;
 
 	AUTO_VAR(itEnd, itemsById.end());
 	for (AUTO_VAR(it, itemsById.begin()); it != itEnd; it++ )
 	{
 		if (result == NULL)
 		{
-			result = new vector<std::shared_ptr<DataItem> >();
+			result = new std::vector<std::shared_ptr<DataItem> >();
 		}
 		std::shared_ptr<DataItem> dataItem = (*it).second;
 		result->push_back(dataItem);
@@ -307,10 +307,10 @@ void SynchedEntityData::writeDataItem(DataOutputStream *output, std::shared_ptr<
 	}
 }
 
-vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::unpack(DataInputStream *input) //throws IOException
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::unpack(DataInputStream *input) //throws IOException
 {
 
-	vector<std::shared_ptr<DataItem> > *result = NULL;
+	std::vector<std::shared_ptr<DataItem> > *result = NULL;
 
 	int currentHeader = input->readByte();
 
@@ -319,7 +319,7 @@ vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::unpack
 
 		if (result == NULL)
 		{
-			result = new vector<std::shared_ptr<DataItem> >();
+			result = new std::vector<std::shared_ptr<DataItem> >();
 		}
 
 		// split type and id
@@ -375,7 +375,7 @@ vector<std::shared_ptr<SynchedEntityData::DataItem> > *SynchedEntityData::unpack
 * @param items
 */
 
-void SynchedEntityData::assignValues(vector<std::shared_ptr<DataItem> > *items)
+void SynchedEntityData::assignValues(std::vector<std::shared_ptr<DataItem> > *items)
 {
 	AUTO_VAR(itEnd, items->end());
 	for (AUTO_VAR(it, items->begin()); it != itEnd; it++)

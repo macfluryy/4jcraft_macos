@@ -48,7 +48,7 @@ TrackedEntity::TrackedEntity(std::shared_ptr<Entity> e, int range, int updateInt
 
 int c0a = 0, c0b = 0, c1a = 0, c1b = 0, c1c = 0, c2a = 0, c2b = 0;
 
-void TrackedEntity::tick(EntityTracker *tracker, vector<std::shared_ptr<Player> > *players)
+void TrackedEntity::tick(EntityTracker *tracker, std::vector<std::shared_ptr<Player> > *players)
 {
     moved = false;
     if (!updatedPlayerVisibility || e->distanceToSqr(xpu, ypu, zpu) > 4 * 4)
@@ -308,7 +308,7 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet)
 	if( Packet::canSendToAnyClient( packet ) )
 	{
 		// 4J-PB - due to the knockback on a player being hit, we need to send to all players, but limit the network traffic here to players that have not already had it sent to their system
-		vector< std::shared_ptr<ServerPlayer> > sentTo;
+		std::vector< std::shared_ptr<ServerPlayer> > sentTo;
 
 		// 4J - don't send to a player we've already sent this data to that shares the same machine. 
 		// EntityMotionPacket used to limit themselves to sending once to each machine
@@ -370,7 +370,7 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet)
 
 void TrackedEntity::broadcastAndSend(std::shared_ptr<Packet> packet)
 {
-	vector< std::shared_ptr<ServerPlayer> > sentTo;
+	std::vector< std::shared_ptr<ServerPlayer> > sentTo;
     broadcast(packet);
 	std::shared_ptr<ServerPlayer> sp = dynamic_pointer_cast<ServerPlayer>(e);
 	if (sp != NULL && sp->connection)
@@ -526,7 +526,7 @@ void TrackedEntity::updatePlayer(EntityTracker *tracker, std::shared_ptr<ServerP
 		if (dynamic_pointer_cast<Mob>(e) != NULL)
 		{
 			std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(e);
-			vector<MobEffectInstance *> *activeEffects = mob->getActiveEffects();
+			std::vector<MobEffectInstance *> *activeEffects = mob->getActiveEffects();
 			for(AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end(); ++it)
 			{
 				MobEffectInstance *effect = *it;
@@ -558,7 +558,7 @@ bool TrackedEntity::canBySeenBy(std::shared_ptr<ServerPlayer> player)
 //	return player->getLevel()->getChunkMap()->isPlayerIn(player, e->xChunk, e->zChunk);
 }
 
-void TrackedEntity::updatePlayers(EntityTracker *tracker, vector<std::shared_ptr<Player> > *players)
+void TrackedEntity::updatePlayers(EntityTracker *tracker, std::vector<std::shared_ptr<Player> > *players)
 {
     for (unsigned int i = 0; i < players->size(); i++)
 	{

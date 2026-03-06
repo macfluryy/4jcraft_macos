@@ -92,22 +92,22 @@ public:
 public:
 	CRITICAL_SECTION				m_entitiesCS;		// 4J added
 
-	vector<std::shared_ptr<Entity> > entities;
+	std::vector<std::shared_ptr<Entity> > entities;
 
 protected:
-	vector<std::shared_ptr<Entity> > entitiesToRemove;
+	std::vector<std::shared_ptr<Entity> > entitiesToRemove;
 public:
 	bool							hasEntitiesToRemove();	// 4J added
 	bool							m_bDisableAddNewTileEntities; // 4J Added
 	CRITICAL_SECTION				m_tileEntityListCS;		// 4J added
-	vector<std::shared_ptr<TileEntity> > tileEntityList;
+	std::vector<std::shared_ptr<TileEntity> > tileEntityList;
 private:
-	vector<std::shared_ptr<TileEntity> > pendingTileEntities;
-	vector<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
+	std::vector<std::shared_ptr<TileEntity> > pendingTileEntities;
+	std::vector<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
 	bool updatingTileEntities;
 public:
-	vector<std::shared_ptr<Player> > players;
-	vector<std::shared_ptr<Entity> > globalEntities;
+	std::vector<std::shared_ptr<Player> > players;
+	std::vector<std::shared_ptr<Entity> > globalEntities;
 
 private:
 	int cloudColor;
@@ -135,7 +135,7 @@ public:
 	Dimension *dimension;
 	
 protected:
-	vector<LevelListener *> listeners;
+	std::vector<LevelListener *> listeners;
 
 public:
 	ChunkSource *chunkSource;		// 4J - changed to public
@@ -324,7 +324,7 @@ public:
 	virtual void addToTickNextTick(int x, int y, int z, int tileId, int tickDelay);
 	virtual void forceAddTileTick(int x, int y, int z, int tileId, int tickDelay);
 	virtual void tickEntities();
-	void addAllPendingTileEntities(vector< std::shared_ptr<TileEntity> >& entities);
+	void addAllPendingTileEntities(std::vector< std::shared_ptr<TileEntity> >& entities);
 	void tick(std::shared_ptr<Entity> e);
 	virtual void tick(std::shared_ptr<Entity> e, bool actual);
 	bool isUnobstructed(AABB *aabb);
@@ -410,24 +410,24 @@ public:
 
 public:
 	virtual bool tickPendingTicks(bool force);
-	virtual vector<TickNextTickData> *fetchTicksInChunk(LevelChunk *chunk, bool remove);
+	virtual std::vector<TickNextTickData> *fetchTicksInChunk(LevelChunk *chunk, bool remove);
 
 private:
-	vector<std::shared_ptr<Entity> > es;
+	std::vector<std::shared_ptr<Entity> > es;
 
 public:
 	bool isClientSide;
 
-	vector<std::shared_ptr<Entity> > *getEntities(std::shared_ptr<Entity> except, AABB *bb);
-	vector<std::shared_ptr<Entity> > *getEntitiesOfClass(const type_info& baseClass, AABB *bb);
+	std::vector<std::shared_ptr<Entity> > *getEntities(std::shared_ptr<Entity> except, AABB *bb);
+	std::vector<std::shared_ptr<Entity> > *getEntitiesOfClass(const type_info& baseClass, AABB *bb);
 	std::shared_ptr<Entity> getClosestEntityOfClass(const type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source);
-	vector<std::shared_ptr<Entity> > getAllEntities();
+	std::vector<std::shared_ptr<Entity> > getAllEntities();
 	void tileEntityChanged(int x, int y, int z, std::shared_ptr<TileEntity> te);
 //	unsigned int countInstanceOf(BaseObject::Class *clas);
 	unsigned int countInstanceOf(eINSTANCEOF clas, bool singleType, unsigned int *protectedCount = NULL, unsigned int *couldWanderCount = NULL);			// 4J added
 	unsigned int countInstanceOfInRange(eINSTANCEOF clas, bool singleType, int range, int x, int y, int z);													// 4J Added
-	void addEntities(vector<std::shared_ptr<Entity> > *list);
-	virtual void removeEntities(vector<std::shared_ptr<Entity> > *list);
+	void addEntities(std::vector<std::shared_ptr<Entity> > *list);
+	virtual void removeEntities(std::vector<std::shared_ptr<Entity> > *list);
 	bool mayPlace(int tileId, int x, int y, int z, bool ignoreEntities, int face, std::shared_ptr<Entity> ignoreEntity);
 	int getSeaLevel();
 	Path *findPath(std::shared_ptr<Entity> from, std::shared_ptr<Entity> to, float maxDist, bool canPassDoors, bool canOpenDoors, bool avoidWater, bool canFloat);

@@ -1460,7 +1460,7 @@ int main(int argc, const char *argv[] )
 }
 
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 
 // convert std::wstring to UTF-8 string
 std::string std::wstring_to_utf8 (const std::wstring& str)

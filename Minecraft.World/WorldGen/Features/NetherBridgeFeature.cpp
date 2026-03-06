@@ -23,7 +23,7 @@ NetherBridgeFeature::~NetherBridgeFeature()
 	if( netherFortressPos != NULL ) delete netherFortressPos;
 }
 
-vector<Biome::MobSpawnerData *> *NetherBridgeFeature::getBridgeEnemies()
+std::vector<Biome::MobSpawnerData *> *NetherBridgeFeature::getBridgeEnemies()
 {
 	return &bridgeEnemies;
 }
@@ -104,7 +104,7 @@ NetherBridgeFeature::NetherBridgeStart::NetherBridgeStart(Level *level, Random *
     pieces.push_back(start);
     start->addChildren(start, &pieces, random);
 
-    vector<StructurePiece *> *pendingChildren = &start->pendingChildren;
+    std::vector<StructurePiece *> *pendingChildren = &start->pendingChildren;
     while (!pendingChildren->empty())
 	{
         int pos = random->nextInt((int)pendingChildren->size());

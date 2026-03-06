@@ -1897,7 +1897,7 @@ std::wstring Entity::getAName()
 	//return I18n.get("entity." + id + ".name");
 }
 
-vector<std::shared_ptr<Entity> > *Entity::getSubEntities()
+std::vector<std::shared_ptr<Entity> > *Entity::getSubEntities()
 {
 	return NULL;
 }

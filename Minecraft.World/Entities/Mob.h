@@ -334,7 +334,7 @@ protected:
 
 public:
 	void removeAllEffects();
-	vector<MobEffectInstance *> *getActiveEffects();
+	std::vector<MobEffectInstance *> *getActiveEffects();
 	bool hasEffect(int id);
 	bool hasEffect(MobEffect *effect);
 	MobEffectInstance *getEffect(MobEffect *effect);

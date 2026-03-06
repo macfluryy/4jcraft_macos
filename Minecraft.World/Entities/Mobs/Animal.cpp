@@ -212,7 +212,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget()
 	float r = 8;
 	if (getInLoveValue() > 0)
 	{
-		vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*this), bb->grow(r, r, r));
+		std::vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*this), bb->grow(r, r, r));
 		//for (int i = 0; i < others->size(); i++)
 		for(AUTO_VAR(it, others->begin()); it != others->end(); ++it)
 		{
@@ -229,7 +229,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget()
 	{
 		if (getAge() == 0)
 		{
-			vector<std::shared_ptr<Entity> > *players = level->getEntitiesOfClass(typeid(Player), bb->grow(r, r, r));
+			std::vector<std::shared_ptr<Entity> > *players = level->getEntitiesOfClass(typeid(Player), bb->grow(r, r, r));
 			//for (int i = 0; i < players.size(); i++)
 			for(AUTO_VAR(it, players->begin()); it != players->end(); ++it)
 			{
@@ -246,7 +246,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget()
 		}
 		else if (getAge() > 0)
 		{
-			vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*this), bb->grow(r, r, r));
+			std::vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*this), bb->grow(r, r, r));
 			//for (int i = 0; i < others.size(); i++)			
 			for(AUTO_VAR(it, others->begin()); it != others->end(); ++it)
 			{

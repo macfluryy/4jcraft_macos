@@ -123,14 +123,14 @@ bool Village::canSpawnAt(int x, int y, int z, int sx, int sy, int sz)
 void Village::countGolem()
 {
 	// Fix - let bots report themselves?
-	vector<std::shared_ptr<Entity> > *golems = level->getEntitiesOfClass(typeid(VillagerGolem), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
+	std::vector<std::shared_ptr<Entity> > *golems = level->getEntitiesOfClass(typeid(VillagerGolem), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
 	golemCount = golems->size();
 	delete golems;
 }
 
 void Village::countPopulation()
 {
-	vector<std::shared_ptr<Entity> > *villagers = level->getEntitiesOfClass(typeid(Villager), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
+	std::vector<std::shared_ptr<Entity> > *villagers = level->getEntitiesOfClass(typeid(Villager), AABB::newTemp(center->x - radius, center->y - 4, center->z - radius, center->x + radius, center->y + 4, center->z + radius));
 	populationSize = villagers->size();
 	delete villagers;
 
@@ -171,7 +171,7 @@ bool Village::isInside(int xx, int yy, int zz)
 	return center->distSqr(xx, yy, zz) < radius * radius;
 }
 
-vector<std::shared_ptr<DoorInfo> > *Village::getDoorInfos()
+std::vector<std::shared_ptr<DoorInfo> > *Village::getDoorInfos()
 {
 	return &doorInfos;
 }

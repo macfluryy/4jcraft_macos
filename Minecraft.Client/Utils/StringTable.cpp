@@ -17,16 +17,16 @@ StringTable::StringTable(PBYTE pbData, DWORD dwSize)
 	int versionNumber = dis.readInt();
 	int languagesCount = dis.readInt();
 
-	vector< pair<std::wstring, int> > langSizeMap;
+	std::vector< pair<std::wstring, int> > langSizeMap;
 	for(int i = 0; i < languagesCount; ++i)
 	{
 		std::wstring langId = dis.readUTF();
 		int langSize = dis.readInt();
 
-		langSizeMap.push_back( vector< pair<std::wstring, int> >::value_type(langId, langSize));
+		langSizeMap.push_back( std::vector< pair<std::wstring, int> >::value_type(langId, langSize));
 	}
 
-	vector<std::wstring> locales;
+	std::vector<std::wstring> locales;
 	app.getLocale(locales);
 
 	bool foundLang = false;

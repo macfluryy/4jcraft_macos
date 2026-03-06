@@ -349,7 +349,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
 
 	disconnectReason = reason;//va_arg( input, const std::wstring );
 
-	vector<void *> objs = vector<void *>();
+	std::vector<void *> objs = std::vector<void *>();
 	void *i = NULL;
 	while (i != NULL)
 	{

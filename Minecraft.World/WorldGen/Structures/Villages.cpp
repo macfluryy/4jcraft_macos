@@ -81,7 +81,7 @@ void Villages::removeVillages()
 	}
 }
 
-vector<std::shared_ptr<Village> > *Villages::getVillages()
+std::vector<std::shared_ptr<Village> > *Villages::getVillages()
 {
 	return &villages;
 }

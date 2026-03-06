@@ -275,7 +275,7 @@ void MultiPlayerChunkCache::postProcess(ChunkSource *parent, int x, int z)
 {
 }
 
-vector<Biome::MobSpawnerData *> *MultiPlayerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *MultiPlayerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
 	return NULL;
 }

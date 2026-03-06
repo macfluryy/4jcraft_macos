@@ -1440,7 +1440,7 @@ void MinecraftServer::broadcastStopSavingPacket()
 
 void MinecraftServer::tick()
 {
-    vector<std::wstring> toRemove;
+    std::vector<std::wstring> toRemove;
     for (AUTO_VAR(it, ironTimers.begin()); it != ironTimers.end(); it++ )
 	{
         int t = it->second;

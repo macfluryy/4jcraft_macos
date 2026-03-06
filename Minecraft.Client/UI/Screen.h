@@ -13,7 +13,7 @@ public:
 	int width;
     int height;
 protected:
-	vector<Button *> buttons;
+	std::vector<Button *> buttons;
 public:
 	bool passEvents;
 protected:

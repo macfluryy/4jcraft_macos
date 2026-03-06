@@ -117,7 +117,7 @@ void MultiPlayerLevel::tick()
 
 	PIXBeginNamedEvent(0,"Connection ticking");
 	// 4J HEG - Copy the connections vector to prevent crash when moving to Nether
-	vector<ClientConnection *> connectionsTemp = connections;
+	std::vector<ClientConnection *> connectionsTemp = connections;
 	for(AUTO_VAR(connection, connectionsTemp.begin()); connection < connectionsTemp.end(); ++connection )
 	{
 		(*connection)->tick();
@@ -493,7 +493,7 @@ std::shared_ptr<Entity> MultiPlayerLevel::removeEntity(int id)
 
 // 4J Added to remove the entities from the forced list
 // This gets called when a chunk is unloaded, but we only do half an unload to remove entities slightly differently
-void MultiPlayerLevel::removeEntities(vector<std::shared_ptr<Entity> > *list)
+void MultiPlayerLevel::removeEntities(std::vector<std::shared_ptr<Entity> > *list)
 {
 	for(AUTO_VAR(it, list->begin()); it < list->end(); ++it)
 	{
@@ -809,7 +809,7 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals()
 
 	//for (int i = 0; i < entities.size(); i++)
 	EnterCriticalSection(&m_entitiesCS);
-	vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
+	std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
 	while(  it != entities.end() )
 	{
 		std::shared_ptr<Entity> e = *it;//entities.at(i);

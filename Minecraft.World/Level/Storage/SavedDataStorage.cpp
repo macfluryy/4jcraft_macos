@@ -12,7 +12,7 @@ SavedDataStorage::SavedDataStorage(LevelStorage *levelStorage)
 {
 	/*
 	cache = new std::unordered_map<std::wstring, std::shared_ptr<SavedData> >;
-	savedDatas = new vector<std::shared_ptr<SavedData> >;
+	savedDatas = new std::vector<std::shared_ptr<SavedData> >;
 	usedAuxIds = new std::unordered_map<std::wstring, short*>;
 	*/
 
@@ -136,7 +136,7 @@ void SavedDataStorage::loadAuxValues()
         dis.close();
 
 		Tag *tag;
-		vector<Tag *> *allTags = tags->getAllTags();
+		std::vector<Tag *> *allTags = tags->getAllTags();
 		AUTO_VAR(itEnd, allTags->end());
 		for (AUTO_VAR(it, allTags->begin()); it != itEnd; it++)
 		{

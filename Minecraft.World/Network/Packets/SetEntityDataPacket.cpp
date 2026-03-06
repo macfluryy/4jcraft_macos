@@ -58,7 +58,7 @@ bool SetEntityDataPacket::isAync()
 	return true;
 }
 
-vector<std::shared_ptr<SynchedEntityData::DataItem> > *SetEntityDataPacket::getUnpackedData()
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *SetEntityDataPacket::getUnpackedData()
 {
 	return packedItems;
 }

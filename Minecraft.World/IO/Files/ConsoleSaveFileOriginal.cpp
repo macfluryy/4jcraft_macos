@@ -909,12 +909,12 @@ std::wstring ConsoleSaveFileOriginal::getFilename()
 	return m_fileName;
 }
 
-vector<FileEntry *> *ConsoleSaveFileOriginal::getFilesWithPrefix(const std::wstring &prefix)
+std::vector<FileEntry *> *ConsoleSaveFileOriginal::getFilesWithPrefix(const std::wstring &prefix)
 {
 	return header.getFilesWithPrefix( prefix );
 }
 
-vector<FileEntry *> *ConsoleSaveFileOriginal::getRegionFilesByDimension(unsigned int dimensionIndex)
+std::vector<FileEntry *> *ConsoleSaveFileOriginal::getRegionFilesByDimension(unsigned int dimensionIndex)
 {
 	return NULL;
 }
@@ -928,7 +928,7 @@ std::wstring ConsoleSaveFileOriginal::getPlayerDataFilenameForSave(const PlayerU
 {
 	return header.getPlayerDataFilenameForSave( pUID );
 }
-vector<FileEntry *> *ConsoleSaveFileOriginal::getValidPlayerDatFiles()
+std::vector<FileEntry *> *ConsoleSaveFileOriginal::getValidPlayerDatFiles()
 {
 	return header.getValidPlayerDatFiles();
 }
@@ -1041,7 +1041,7 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform()
 		return;
 	}
 	// convert each of the region files to the local platform
-	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
+	std::vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
 	for(AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end(); ++it)
 	{
 		FileEntry *fe = *it;

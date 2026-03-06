@@ -18,9 +18,9 @@ class WeighedRandom
 {
 public:
 	// 4J - vectors here were Collection<? extends WeighedRandomItem>
-	static int getTotalWeight(vector<WeighedRandomItem *> *items);	
-	static WeighedRandomItem *getRandomItem(Random *random, vector<WeighedRandomItem *> *items, int totalWeight);
-	static WeighedRandomItem *getRandomItem(Random *random, vector<WeighedRandomItem *> *items);
+	static int getTotalWeight(std::vector<WeighedRandomItem *> *items);	
+	static WeighedRandomItem *getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items, int totalWeight);
+	static WeighedRandomItem *getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items);
 	static int getTotalWeight(WeighedRandomItemArray items);
 	static WeighedRandomItem *getRandomItem(Random *random, WeighedRandomItemArray items, int totalWeight);
 	static WeighedRandomItem *getRandomItem(Random *random, WeighedRandomItemArray items);

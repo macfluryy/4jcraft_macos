@@ -106,7 +106,7 @@ bool PigZombie::hurt(DamageSource *source, int dmg)
 	std::shared_ptr<Entity> sourceEntity = source->getEntity();
     if (dynamic_pointer_cast<Player>(sourceEntity) != NULL)
 	{
-        vector<std::shared_ptr<Entity> > *nearby = level->getEntities( shared_from_this(), bb->grow(32, 32, 32));		
+        std::vector<std::shared_ptr<Entity> > *nearby = level->getEntities( shared_from_this(), bb->grow(32, 32, 32));		
 		AUTO_VAR(itEnd, nearby->end());
 		for (AUTO_VAR(it, nearby->begin()); it != itEnd; it++)
 		{

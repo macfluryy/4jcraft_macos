@@ -18,8 +18,8 @@ private:
 	Minecraft *minecraft;
 	File workDir;
 	File multiplayerDir;
-	vector<TexturePack *> *texturePacks;
-	vector<TexturePack *> m_texturePacksToDelete;
+	std::vector<TexturePack *> *texturePacks;
+	std::vector<TexturePack *> m_texturePacksToDelete;
 
 	std::unordered_map<DWORD, TexturePack *> cacheById;
 
@@ -49,10 +49,10 @@ public:
 
 private:
 	std::wstring getIdOrNull(File file);
-    vector<File> getWorkDirContents();
+    std::vector<File> getWorkDirContents();
 
 public:
-    vector<TexturePack *> *getAll();
+    std::vector<TexturePack *> *getAll();
 
 	TexturePack *getSelected();
 	bool shouldPromptForWebSkin();
@@ -60,7 +60,7 @@ public:
 	bool isUsingDefaultSkin() { return selected == DEFAULT_TEXTURE_PACK; } // 4J Added
 	TexturePack *getDefault() { return DEFAULT_TEXTURE_PACK; } // 4J Added
 
-	vector< pair<DWORD,std::wstring> > *getTexturePackIdNames();
+	std::vector< pair<DWORD,std::wstring> > *getTexturePackIdNames();
 	bool selectTexturePackById(DWORD id); // 4J Added
 	TexturePack *getTexturePackById(DWORD id); // 4J Added
 

@@ -404,7 +404,7 @@ std::wstring TheEndLevelRandomLevelSource::gatherStats()
 	return L"RandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *TheEndLevelRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *TheEndLevelRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     Biome *biome = level->getBiome(x, z);
     if (biome == NULL)

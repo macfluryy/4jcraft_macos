@@ -1746,8 +1746,8 @@ void Level::removeEntity(std::shared_ptr<Entity> e)
 	e->remove();
 	if (dynamic_pointer_cast<Player>( e ) != NULL)
 	{
-		vector<std::shared_ptr<Player> >::iterator it = players.begin();
-		vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
+		std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
+		std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
 		while( it != itEnd && *it != dynamic_pointer_cast<Player>(e) )
 			it++;
 
@@ -1768,8 +1768,8 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e)
 
 	if (dynamic_pointer_cast<Player>( e ) != NULL)
 	{
-		vector<std::shared_ptr<Player> >::iterator it = players.begin();
-		vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
+		std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
+		std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
 		while( it != itEnd && *it != dynamic_pointer_cast<Player>(e) )
 			it++;
 
@@ -1790,8 +1790,8 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e)
 	}
 
 	EnterCriticalSection(&m_entitiesCS);
-	vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
-	vector<std::shared_ptr<Entity> >::iterator endIt = entities.end();
+	std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
+	std::vector<std::shared_ptr<Entity> >::iterator endIt = entities.end();
 	while( it != endIt && *it != e)
 		it++;
 
@@ -1812,8 +1812,8 @@ void Level::addListener(LevelListener *listener)
 
 void Level::removeListener(LevelListener *listener)
 {
-	vector<LevelListener *>::iterator it = listeners.begin();
-	vector<LevelListener *>::iterator itEnd = listeners.end();
+	std::vector<LevelListener *>::iterator it = listeners.begin();
+	std::vector<LevelListener *>::iterator itEnd = listeners.end();
 	while( it != itEnd && *it != listener )
 		it++;
 
@@ -1895,8 +1895,8 @@ AABBList *Level::getCubes(std::shared_ptr<Entity> source, AABB *box, bool noEnti
 	if( noEntities ) return &boxes;
 
 	double r = 0.25;
-	vector<std::shared_ptr<Entity> > *ee = getEntities(source, box->grow(r, r, r));
-	vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
+	std::vector<std::shared_ptr<Entity> > *ee = getEntities(source, box->grow(r, r, r));
+	std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
 	for (AUTO_VAR(it, ee->begin()); it != itEnd; it++)
 	{
 		AABB *collideBox = (*it)->getCollideBox();
@@ -2197,7 +2197,7 @@ void Level::forceAddTileTick(int x, int y, int z, int tileId, int tickDelay)
 void Level::tickEntities()
 {
 	//for (int i = 0; i < globalEntities.size(); i++)
-	vector<std::shared_ptr<Entity> >::iterator itGE = globalEntities.begin();
+	std::vector<std::shared_ptr<Entity> >::iterator itGE = globalEntities.begin();
 	while( itGE != globalEntities.end() )
 	{
 		std::shared_ptr<Entity> e = *itGE;//globalEntities.at(i);
@@ -2326,7 +2326,7 @@ void Level::tickEntities()
 	updatingTileEntities = true;
 	for (AUTO_VAR(it, tileEntityList.begin()); it != tileEntityList.end();)
 	{
-		std::shared_ptr<TileEntity> te = *it;//tilevector<std::shared_ptr<Entity> >.at(i);
+		std::shared_ptr<TileEntity> te = *it;//tilestd::vector<std::shared_ptr<Entity> >.at(i);
 		if( !te->isRemoved() && te->hasLevel() )
 		{
 			if (hasChunkAt(te->x, te->y, te->z))
@@ -2415,7 +2415,7 @@ void Level::tickEntities()
 	LeaveCriticalSection(&m_tileEntityListCS);
 }
 
-void Level::addAllPendingTileEntities(vector< std::shared_ptr<TileEntity> >& entities)
+void Level::addAllPendingTileEntities(std::vector< std::shared_ptr<TileEntity> >& entities)
 {
 	EnterCriticalSection(&m_tileEntityListCS);
 	if( updatingTileEntities )
@@ -2539,7 +2539,7 @@ bool Level::isUnobstructed(AABB *aabb)
 
 bool Level::isUnobstructed(AABB *aabb, std::shared_ptr<Entity> ignore)
 {
-	vector<std::shared_ptr<Entity> > *ents = getEntities(nullptr, aabb);
+	std::vector<std::shared_ptr<Entity> > *ents = getEntities(nullptr, aabb);
 	AUTO_VAR(itEnd, ents->end());
 	for (AUTO_VAR(it, ents->begin()); it != itEnd; it++)
 	{
@@ -3722,13 +3722,13 @@ bool Level::tickPendingTicks(bool force)
 	return false;
 }
 
-vector<TickNextTickData> *Level::fetchTicksInChunk(LevelChunk *chunk, bool remove)
+std::vector<TickNextTickData> *Level::fetchTicksInChunk(LevelChunk *chunk, bool remove)
 {
 	return NULL;
 }
 
 
-vector<std::shared_ptr<Entity> > *Level::getEntities(std::shared_ptr<Entity> except, AABB *bb)
+std::vector<std::shared_ptr<Entity> > *Level::getEntities(std::shared_ptr<Entity> except, AABB *bb)
 {
 	MemSect(40);
 	es.clear();
@@ -3768,13 +3768,13 @@ vector<std::shared_ptr<Entity> > *Level::getEntities(std::shared_ptr<Entity> exc
 }
 
 
-vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const type_info& baseClass, AABB *bb)
+std::vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const type_info& baseClass, AABB *bb)
 {
 	int xc0 = Mth::floor((bb->x0 - 2) / 16);
 	int xc1 = Mth::floor((bb->x1 + 2) / 16);
 	int zc0 = Mth::floor((bb->z0 - 2) / 16);
 	int zc1 = Mth::floor((bb->z1 + 2) / 16);
-	vector<std::shared_ptr<Entity> > *es = new vector<std::shared_ptr<Entity> >();
+	std::vector<std::shared_ptr<Entity> > *es = new std::vector<std::shared_ptr<Entity> >();
 
 #ifdef __PSVITA__
 #ifdef _ENTITIES_RW_SECTION
@@ -3807,7 +3807,7 @@ vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const type_info& bas
 
 std::shared_ptr<Entity> Level::getClosestEntityOfClass(const type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source)
 {
-	vector<std::shared_ptr<Entity> > *entities = getEntitiesOfClass(baseClass, bb);
+	std::vector<std::shared_ptr<Entity> > *entities = getEntitiesOfClass(baseClass, bb);
 	std::shared_ptr<Entity> closest = nullptr;
 	double closestDistSqr = Double::MAX_VALUE;
 	//for (Entity entity : entities)
@@ -3824,10 +3824,10 @@ std::shared_ptr<Entity> Level::getClosestEntityOfClass(const type_info& baseClas
 	return closest;
 }
 
-vector<std::shared_ptr<Entity> > Level::getAllEntities()
+std::vector<std::shared_ptr<Entity> > Level::getAllEntities()
 {
 	EnterCriticalSection(&m_entitiesCS);
-	vector<std::shared_ptr<Entity> > retVec = entities;
+	std::vector<std::shared_ptr<Entity> > retVec = entities;
 	LeaveCriticalSection(&m_entitiesCS);
 	return retVec;
 }
@@ -3932,7 +3932,7 @@ unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType, in
 	return count;
 }
 
-void Level::addEntities(vector<std::shared_ptr<Entity> > *list)
+void Level::addEntities(std::vector<std::shared_ptr<Entity> > *list)
 {
 	//entities.addAll(list);
 	EnterCriticalSection(&m_entitiesCS);
@@ -3973,7 +3973,7 @@ void Level::addEntities(vector<std::shared_ptr<Entity> > *list)
 }
 
 
-void Level::removeEntities(vector<std::shared_ptr<Entity> > *list)
+void Level::removeEntities(std::vector<std::shared_ptr<Entity> > *list)
 {
 	//entitiesToRemove.addAll(list);
 	entitiesToRemove.insert(entitiesToRemove.end(), list->begin(), list->end());
@@ -4353,7 +4353,7 @@ void Level::setTime(__int64 time)
 		if ( timeDiff > 0 && levelData->getTime() != -1 )
 		{
 			AUTO_VAR(itEnd, players.end());
-			for (vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
+			for (std::vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
 			{
 				(*it)->awardStat( GenericStats::timePlayed(), GenericStats::param_time(timeDiff) );
 			}

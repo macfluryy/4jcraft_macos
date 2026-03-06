@@ -1474,9 +1474,9 @@ void CPlatformNetworkManagerXbox::SetSearchResultsReady(int resultCount )
 	m_searchResultsCount[m_lastSearchPad] = resultCount;
 }
 
-vector<FriendSessionInfo *> *CPlatformNetworkManagerXbox::GetSessionList(int iPad, int localPlayers, bool partyOnly)
+std::vector<FriendSessionInfo *> *CPlatformNetworkManagerXbox::GetSessionList(int iPad, int localPlayers, bool partyOnly)
 {
-	vector<FriendSessionInfo *> *filteredList = new vector<FriendSessionInfo *>();;
+	std::vector<FriendSessionInfo *> *filteredList = new std::vector<FriendSessionInfo *>();;
 
 	const XSESSION_SEARCHRESULT *pSearchResult;
     const XNQOSINFO * pxnqi;

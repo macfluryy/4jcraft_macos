@@ -101,8 +101,8 @@ bool BrewingStandTileEntity::isBrewable()
                     break;
                 }
 
-                vector<MobEffectInstance *> *currentEffects = Item::potion->getMobEffects(currentBrew);
-                vector<MobEffectInstance *> *newEffects = Item::potion->getMobEffects(newBrew);
+                std::vector<MobEffectInstance *> *currentEffects = Item::potion->getMobEffects(currentBrew);
+                std::vector<MobEffectInstance *> *newEffects = Item::potion->getMobEffects(newBrew);
 
 				// 4J - this code replaces an expression "currentEffects.equals(newEffects)" in the java.
 				// TODO - find out whether actually checking pointers to MobEffectInstance classes for equality
@@ -183,8 +183,8 @@ void BrewingStandTileEntity::doBrew()
                 int currentBrew = items[dest]->getAuxValue();
                 int newBrew = NORMALISE_POTION_AUXVAL( applyIngredient(currentBrew, ingredient) );
 
-                vector<MobEffectInstance *> *currentEffects = Item::potion->getMobEffects(currentBrew);
-                vector<MobEffectInstance *> *newEffects = Item::potion->getMobEffects(newBrew);
+                std::vector<MobEffectInstance *> *currentEffects = Item::potion->getMobEffects(currentBrew);
+                std::vector<MobEffectInstance *> *newEffects = Item::potion->getMobEffects(newBrew);
 
 				// 4J - this code replaces an expression "currentEffects.equals(newEffects)" in the java.
 				// TODO - find out whether actually checking pointers to MobEffectInstance classes for equality

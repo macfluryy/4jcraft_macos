@@ -23,7 +23,7 @@ bool TakeFlowerGoal::canUse()
 	if (villager->getAge() >= 0) return false;
 	if (!villager->level->isDay()) return false;
 
-	vector<std::shared_ptr<Entity> > *golems = villager->level->getEntitiesOfClass(typeid(VillagerGolem), villager->bb->grow(6, 2, 6));
+	std::vector<std::shared_ptr<Entity> > *golems = villager->level->getEntitiesOfClass(typeid(VillagerGolem), villager->bb->grow(6, 2, 6));
 	if (golems->size() == 0)
 	{
 		delete golems;

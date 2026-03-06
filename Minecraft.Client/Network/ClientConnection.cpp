@@ -609,7 +609,7 @@ void ClientConnection::handleAddEntity(std::shared_ptr<AddEntityPacket> packet)
 			e->xRot = 0.0f;
 		}
 
-		vector<std::shared_ptr<Entity> > *subEntities = e->getSubEntities();
+		std::vector<std::shared_ptr<Entity> > *subEntities = e->getSubEntities();
 		if (subEntities != NULL)
 		{
 			int offs = packet->id - e->entityId;
@@ -811,7 +811,7 @@ void ClientConnection::handleAddPlayer(std::shared_ptr<AddPlayerPacket> packet)
 
     level->putEntity(packet->id, player);
 
-	vector<std::shared_ptr<SynchedEntityData::DataItem> > *unpackedData = packet->getUnpackedData();
+	std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *unpackedData = packet->getUnpackedData();
 	if (unpackedData != NULL)
 	{
 		player->getEntityData()->assignValues(unpackedData);
@@ -2118,7 +2118,7 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet)
 	mob->yRotp = packet->yRot;
 	mob->xRotp = packet->xRot;
 
-	vector<std::shared_ptr<Entity> > *subEntities = mob->getSubEntities();
+	std::vector<std::shared_ptr<Entity> > *subEntities = mob->getSubEntities();
 	if (subEntities != NULL)
 	{
 		int offs = packet->id - mob->entityId;
@@ -2140,7 +2140,7 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet)
 	mob->zd = packet->zd / 8000.0f;
 	level->putEntity(packet->id, mob);
 
-	vector<std::shared_ptr<SynchedEntityData::DataItem> > *unpackedData = packet->getUnpackedData();
+	std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *unpackedData = packet->getUnpackedData();
 	if (unpackedData != NULL)
 	{
 		mob->getEntityData()->assignValues(unpackedData);

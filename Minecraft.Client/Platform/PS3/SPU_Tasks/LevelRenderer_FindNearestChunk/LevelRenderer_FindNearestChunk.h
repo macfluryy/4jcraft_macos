@@ -64,7 +64,7 @@ public:
 		int id;
 		int padding[1];
 		//public:
-		//	vector<std::shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
+		//	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
 
 	private:
 		void	*globalRenderableTileEntities;

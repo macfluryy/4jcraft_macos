@@ -28,7 +28,7 @@ public:
 	int posPointer;
 
 	//BossMobPart[] subEntities;
-	vector<std::shared_ptr<Entity> > subEntities;
+	std::vector<std::shared_ptr<Entity> > subEntities;
 	std::shared_ptr<BossMobPart> head;
 	std::shared_ptr<BossMobPart> neck; // 4J Added
 	std::shared_ptr<BossMobPart> body;
@@ -126,8 +126,8 @@ private:
 
 	void checkCrystals();
 	void checkAttack();
-	void knockBack(vector<std::shared_ptr<Entity> > *entities);
-	void hurt(vector<std::shared_ptr<Entity> > *entities);
+	void knockBack(std::vector<std::shared_ptr<Entity> > *entities);
+	void hurt(std::vector<std::shared_ptr<Entity> > *entities);
 	void findNewTarget();
 	float rotWrap(double d);
 	bool checkWalls(AABB *bb);
@@ -145,7 +145,7 @@ protected:
 	virtual void checkDespawn();
 	virtual int getHurtSound();
 public:
-	virtual vector<std::shared_ptr<Entity> > *getSubEntities();
+	virtual std::vector<std::shared_ptr<Entity> > *getSubEntities();
 	virtual bool isPickable();
 	virtual int getSynchedHealth();
 

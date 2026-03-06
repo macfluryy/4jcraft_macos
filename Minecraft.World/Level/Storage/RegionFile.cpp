@@ -80,7 +80,7 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	{
 		nSectors = (int) fileEntry->getFileSize() / SECTOR_BYTES;
 	}
-	sectorFree = new vector<bool>;
+	sectorFree = new std::vector<bool>;
 	sectorFree->reserve(nSectors);
 
 	for (int i = 0; i < nSectors; ++i)

@@ -16,7 +16,7 @@ private:
 	bool isStatic;
 
 	std::unordered_map<std::wstring, std::wstring> m_stringsMap;
-	vector<std::wstring> m_stringsVec;
+	std::vector<std::wstring> m_stringsVec;
 
 	byteArray src;
 

@@ -94,7 +94,7 @@ void PressurePlateTile::checkPressed(Level *level, int x, int y, int z)
     bool shouldBePressed = false;
 
     float b = 2 / 16.0f;
-    vector<std::shared_ptr<Entity> > *entities = NULL;
+    std::vector<std::shared_ptr<Entity> > *entities = NULL;
 
 	bool entitiesToBeFreed = false;
     if (sensitivity == PressurePlateTile::everything) entities = level->getEntities(nullptr, AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));

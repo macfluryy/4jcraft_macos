@@ -654,7 +654,7 @@ void Player::setCustomSkin(DWORD skinId)
 	this->customTextureUrl = app.getSkinPathFromId(skinId);
 
 	// set the new player additional boxes
-	/*vector<ModelPart *> *pvModelParts=app.GetAdditionalModelParts(m_dwSkinId);
+	/*std::vector<ModelPart *> *pvModelParts=app.GetAdditionalModelParts(m_dwSkinId);
 
 	if(pvModelParts==NULL)
 	{
@@ -1038,7 +1038,7 @@ void Player::aiStep()
 
 	if (getHealth() > 0)
 	{
-		vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb->grow(1, 0, 1));
+		std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb->grow(1, 0, 1));
 		if (entities != NULL)
 		{
 			AUTO_VAR(itEnd, entities->end());
@@ -1421,7 +1421,7 @@ void Player::directAllTameWolvesOnTarget(std::shared_ptr<Mob> target, bool skipS
 
 
 	// TODO: Optimize this? Most of the time players wont have pets:
-	vector<std::shared_ptr<Entity> > *nearbyWolves = level->getEntitiesOfClass(typeid(Wolf), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(16, 4, 16));
+	std::vector<std::shared_ptr<Entity> > *nearbyWolves = level->getEntitiesOfClass(typeid(Wolf), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(16, 4, 16));
 	AUTO_VAR(itEnd, nearbyWolves->end());
 	for (AUTO_VAR(it, nearbyWolves->begin()); it != itEnd; it++)
 	{
@@ -1757,7 +1757,7 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z, bool bTes
 
 			double hRange = 8;
 			double vRange = 5;
-			vector<std::shared_ptr<Entity> > *monsters = level->getEntitiesOfClass(typeid(Monster), AABB::newTemp(x - hRange, y - vRange, z - hRange, x + hRange, y + vRange, z + hRange));
+			std::vector<std::shared_ptr<Entity> > *monsters = level->getEntitiesOfClass(typeid(Monster), AABB::newTemp(x - hRange, y - vRange, z - hRange, x + hRange, y + vRange, z + hRange));
 			if (!monsters->empty())
 			{
 				return NOT_SAFE;
@@ -2931,7 +2931,7 @@ bool Player::canCreateParticles()
 	return !hasInvisiblePrivilege();
 }
 
-vector<ModelPart *> *Player::GetAdditionalModelParts() 
+std::vector<ModelPart *> *Player::GetAdditionalModelParts() 
 { 
 	if(m_ppAdditionalModelParts==NULL && !m_bCheckedForModelParts)
 	{
@@ -2976,7 +2976,7 @@ vector<ModelPart *> *Player::GetAdditionalModelParts()
 	return m_ppAdditionalModelParts;
 }
 
-void Player::SetAdditionalModelParts(vector<ModelPart *> *ppAdditionalModelParts) 
+void Player::SetAdditionalModelParts(std::vector<ModelPart *> *ppAdditionalModelParts) 
 { 
 	m_ppAdditionalModelParts=ppAdditionalModelParts;
 }

@@ -299,7 +299,7 @@ int EnchantmentHelper::getEnchantmentCost(Random *random, int slot, int bookcase
 
 std::shared_ptr<ItemInstance> EnchantmentHelper::enchantItem(Random *random, std::shared_ptr<ItemInstance> itemInstance, int enchantmentCost)
 {
-	vector<EnchantmentInstance *> *newEnchantment = EnchantmentHelper::selectEnchantment(random, itemInstance, enchantmentCost);
+	std::vector<EnchantmentInstance *> *newEnchantment = EnchantmentHelper::selectEnchantment(random, itemInstance, enchantmentCost);
 	bool isBook = itemInstance->id == Item::book_Id;
 
 	if (isBook) itemInstance->id = Item::enchantedBook_Id;
@@ -331,7 +331,7 @@ std::shared_ptr<ItemInstance> EnchantmentHelper::enchantItem(Random *random, std
 * @param enchantmentCost
 * @return
 */
-vector<EnchantmentInstance *> *EnchantmentHelper::selectEnchantment(Random *random, std::shared_ptr<ItemInstance> itemInstance, int enchantmentCost)
+std::vector<EnchantmentInstance *> *EnchantmentHelper::selectEnchantment(Random *random, std::shared_ptr<ItemInstance> itemInstance, int enchantmentCost)
 {
 	// withdraw bonus from item
 	Item *item = itemInstance->getItem();
@@ -355,12 +355,12 @@ vector<EnchantmentInstance *> *EnchantmentHelper::selectEnchantment(Random *rand
 		realValue = 1;
 	}
 
-	vector<EnchantmentInstance *> *results = NULL;
+	std::vector<EnchantmentInstance *> *results = NULL;
 
 	std::unordered_map<int, EnchantmentInstance *> *availableEnchantments = getAvailableEnchantmentResults(realValue, itemInstance);
 	if (availableEnchantments != NULL && !availableEnchantments->empty())
 	{
-		vector<WeighedRandomItem *> values;
+		std::vector<WeighedRandomItem *> values;
 		for(AUTO_VAR(it, availableEnchantments->begin()); it != availableEnchantments->end(); ++it)
 		{
 			values.push_back(it->second);
@@ -370,7 +370,7 @@ vector<EnchantmentInstance *> *EnchantmentHelper::selectEnchantment(Random *rand
 
 		if (instance != NULL)
 		{
-			results = new vector<EnchantmentInstance *>();
+			results = new std::vector<EnchantmentInstance *>();
 			results->push_back( instance->copy() ); // 4J Stu - Inserting a copy so we can clear memory from the availableEnchantments collection
 
 			int bonusChance = realValue;

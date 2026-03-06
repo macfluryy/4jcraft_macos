@@ -287,7 +287,7 @@ bool ChestTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> p
 // 4J-PB - added from 1.5
 bool ChestTile::isCatSittingOnChest(Level *level, int x, int y, int z) 
 {
-	vector<std::shared_ptr<Entity> > *entities = level->getEntitiesOfClass(typeid(Ozelot), AABB::newTemp(x, y + 1, z, x + 1, y + 2, z + 1));
+	std::vector<std::shared_ptr<Entity> > *entities = level->getEntitiesOfClass(typeid(Ozelot), AABB::newTemp(x, y + 1, z, x + 1, y + 2, z + 1));
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
 		std::shared_ptr<Ozelot> ocelot = dynamic_pointer_cast<Ozelot>(*it);

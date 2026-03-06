@@ -129,8 +129,8 @@ public:
 	std::wstring getHoverName();
 	void setHoverName(const std::wstring &name);
 	bool hasCustomHoverName();
-	vector<std::wstring> *getHoverText(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings);
-	vector<std::wstring> *getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings); // 4J Added
+	std::vector<std::wstring> *getHoverText(std::shared_ptr<Player> player, bool advanced, std::vector<std::wstring> &unformattedStrings);
+	std::vector<std::wstring> *getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, std::vector<std::wstring> &unformattedStrings); // 4J Added
 	bool isFoil();
 	const Rarity *getRarity();
 	bool isEnchantable();

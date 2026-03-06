@@ -43,7 +43,7 @@ ListTag<CompoundTag> *EnchantedBookItem::getEnchantments(std::shared_ptr<ItemIns
 	return (ListTag<CompoundTag> *) item->tag->get((wchar_t *)TAG_STORED_ENCHANTMENTS.c_str());
 }
 
-void EnchantedBookItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
+void EnchantedBookItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings)
 {
 	Item::appendHoverText(itemInstance, player, lines, advanced, unformattedStrings);
 
@@ -108,7 +108,7 @@ std::shared_ptr<ItemInstance> EnchantedBookItem::createForEnchantment(Enchantmen
 	return item;
 }
 
-void EnchantedBookItem::createForEnchantment(Enchantment *enchant, vector<std::shared_ptr<ItemInstance> > *items)
+void EnchantedBookItem::createForEnchantment(Enchantment *enchant, std::vector<std::shared_ptr<ItemInstance> > *items)
 {
 	for (int i = enchant->getMinLevel(); i <= enchant->getMaxLevel(); i++)
 	{

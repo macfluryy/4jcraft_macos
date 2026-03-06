@@ -380,7 +380,7 @@ public:
 	bool isExtraWanderingEnabled();
 	int getWanderingQuadrant();
 	
-	virtual vector<std::shared_ptr<Entity> > *getSubEntities();
+	virtual std::vector<std::shared_ptr<Entity> > *getSubEntities();
 	virtual bool is(std::shared_ptr<Entity> other);
 	virtual float getYHeadRot();
 	virtual void setYHeadRot(float yHeadRot);

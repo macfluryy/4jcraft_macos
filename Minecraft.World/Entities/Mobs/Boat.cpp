@@ -394,7 +394,7 @@ void Boat::tick()
 
 	if(level->isClientSide) return;
 
-	vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
+	std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
 	if (entities != NULL && !entities->empty())
 	{
 		AUTO_VAR(itEnd, entities->end());

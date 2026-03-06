@@ -20,11 +20,11 @@ private:
 	int connectionCounter;
 private:
 	CRITICAL_SECTION pending_cs;	// 4J added
-	vector< std::shared_ptr<PendingConnection> > pending;
-    vector< std::shared_ptr<PlayerConnection> > players;
+	std::vector< std::shared_ptr<PendingConnection> > pending;
+    std::vector< std::shared_ptr<PlayerConnection> > players;
 
 	// 4J - When the server requests a texture, it should add it to here while we are waiting for it
-	vector<std::wstring> m_pendingTextureRequests;
+	std::vector<std::wstring> m_pendingTextureRequests;
 public:
 	MinecraftServer *server;
 

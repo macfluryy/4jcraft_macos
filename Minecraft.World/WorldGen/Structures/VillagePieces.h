@@ -120,8 +120,8 @@ public:
 
         // these queues are used so that the addChildren calls are
         // called in a random order
-		vector<StructurePiece *> pendingHouses;		// 4J - was ArrayList
-		vector<StructurePiece *> pendingRoads;		// 4J - was ArrayList
+		std::vector<StructurePiece *> pendingHouses;		// 4J - was ArrayList
+		std::vector<StructurePiece *> pendingRoads;		// 4J - was ArrayList
 		
 		StartPiece(BiomeSource *biomeSource, int genDepth, Random *random, int west, int north, list<PieceWeight *> *pieceSet, int villageSize, Level *level); // 4J Added level param
 		virtual ~StartPiece();

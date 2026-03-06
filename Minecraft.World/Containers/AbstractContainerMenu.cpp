@@ -8,14 +8,14 @@
 // TODO Make sure all derived classes also call this
 AbstractContainerMenu::AbstractContainerMenu()
 {
-	lastSlots = new vector<std::shared_ptr<ItemInstance> >();
-	slots = new vector<Slot *>();
+	lastSlots = new std::vector<std::shared_ptr<ItemInstance> >();
+	slots = new std::vector<Slot *>();
 	containerId = 0;
 
 	changeUid = 0;
 	m_bNeedsRendered = false;
 
-	containerListeners = new vector<ContainerListener *>();
+	containerListeners = new std::vector<ContainerListener *>();
 }
 
 AbstractContainerMenu::~AbstractContainerMenu()
@@ -49,15 +49,15 @@ void AbstractContainerMenu::addSlotListener(ContainerListener *listener)
 	containerListeners->push_back(listener);
 
 
-	vector<std::shared_ptr<ItemInstance> > *items = getItems();
+	std::vector<std::shared_ptr<ItemInstance> > *items = getItems();
 	listener->refreshContainer(this, items);
 	delete items;
 	broadcastChanges();
 }
 
-vector<std::shared_ptr<ItemInstance> > *AbstractContainerMenu::getItems()
+std::vector<std::shared_ptr<ItemInstance> > *AbstractContainerMenu::getItems()
 {
-	vector<std::shared_ptr<ItemInstance> > *items = new vector<std::shared_ptr<ItemInstance> >();
+	std::vector<std::shared_ptr<ItemInstance> > *items = new std::vector<std::shared_ptr<ItemInstance> >();
 	AUTO_VAR(itEnd, slots->end());
 	for (AUTO_VAR(it, slots->begin()); it != itEnd; it++)
 	{

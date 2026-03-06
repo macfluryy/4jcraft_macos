@@ -461,7 +461,7 @@ private:
 	int																	RTSDoWorkThread();
 
 	CRITICAL_SECTION													m_csVecChatPlayers;
-	vector<int>															m_vecChatPlayersJoined;
+	std::vector<int>															m_vecChatPlayersJoined;
 public:
 	void																HandleNewPartyFoundForPlayer();
 	void																HandlePlayerRemovedFromParty(int playerMask);

@@ -53,14 +53,14 @@ public:
 	uint8_t scale;
 	byteArray colors;
 	int step;
-	vector<std::shared_ptr<HoldingPlayer> > carriedBy;
+	std::vector<std::shared_ptr<HoldingPlayer> > carriedBy;
 
 private:
 	typedef std::unordered_map<std::shared_ptr<Player> , std::shared_ptr<HoldingPlayer> , PlayerKeyHash, PlayerKeyEq> playerHoldingPlayerMapType;
 	playerHoldingPlayerMapType carriedByPlayers;
 
 public:
-	vector<MapDecoration *> decorations;
+	std::vector<MapDecoration *> decorations;
 
 private:
 	// 4J Stu added

@@ -54,7 +54,7 @@ class SoundEngine : public ConsoleSoundEngine
 	};
 
 	void update3DPosition( soundInfo *pInfo, bool bPlaceEmitterAtListener = false, bool bIsCDMusic = false);
-	static vector<soundInfo *>currentSounds;
+	static std::vector<soundInfo *>currentSounds;
 
 	int noMusicDelay;
 	Random *random;

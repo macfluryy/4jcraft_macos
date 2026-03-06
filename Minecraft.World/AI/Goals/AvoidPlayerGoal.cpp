@@ -40,7 +40,7 @@ bool AvoidPlayerGoal::canUse()
 	}
 	else
 	{
-		vector<std::shared_ptr<Entity> > *entities = mob->level->getEntitiesOfClass(avoidType, mob->bb->grow(maxDist, 3, maxDist));
+		std::vector<std::shared_ptr<Entity> > *entities = mob->level->getEntitiesOfClass(avoidType, mob->bb->grow(maxDist, 3, maxDist));
 		if (entities->empty())
 		{
 			delete entities;

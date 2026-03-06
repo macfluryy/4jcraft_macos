@@ -9,7 +9,7 @@ private:
 	const int villageSizeModifier;
 public:
 	static void staticCtor();
-	static vector<Biome *> allowedBiomes;
+	static std::vector<Biome *> allowedBiomes;
     VillageFeature(int villageSizeModifier, int iXZSize);
 
 protected:

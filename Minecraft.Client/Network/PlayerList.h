@@ -22,14 +22,14 @@ private:
 	 static const int SEND_PLAYER_INFO_INTERVAL = 20 * 10;	// 4J - brought forward from 1.2.3
 //    public static Logger logger = Logger.getLogger("Minecraft");
 public:
-	vector<std::shared_ptr<ServerPlayer> > players;
+	std::vector<std::shared_ptr<ServerPlayer> > players;
 
 private:
 	MinecraftServer *server;
     unsigned int maxPlayers;
 
 	// 4J Added
-	vector<PlayerUID> m_bannedXuids;
+	std::vector<PlayerUID> m_bannedXuids;
 	deque<BYTE> m_smallIdsToKick;
 	CRITICAL_SECTION m_kickPlayersCS;
 	deque<BYTE> m_smallIdsToClose;
@@ -51,7 +51,7 @@ private:
 	int sendAllPlayerInfoIn;
 
 	// 4J Added to maintain which players in which dimensions can receive all packet types
-	vector<std::shared_ptr<ServerPlayer> > receiveAllPlayers[3];
+	std::vector<std::shared_ptr<ServerPlayer> > receiveAllPlayers[3];
 private:
 	std::shared_ptr<ServerPlayer> findAlivePlayerOnSystem(std::shared_ptr<ServerPlayer> currentPlayer);
 

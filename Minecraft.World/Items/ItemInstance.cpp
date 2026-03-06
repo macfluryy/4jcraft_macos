@@ -501,9 +501,9 @@ bool ItemInstance::hasCustomHoverName()
 	return tag->getCompound(L"display")->contains(L"Name");
 }
 
-vector<std::wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings)
+std::vector<std::wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player, bool advanced, std::vector<std::wstring> &unformattedStrings)
 {
-	vector<std::wstring> *lines = new vector<std::wstring>();
+	std::vector<std::wstring> *lines = new std::vector<std::wstring>();
 	Item *item = Item::items[id];
 	std::wstring title = getHoverName();
 
@@ -568,9 +568,9 @@ vector<std::wstring> *ItemInstance::getHoverText(std::shared_ptr<Player> player,
 }
 
 // 4J Added
-vector<std::wstring> *ItemInstance::getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, vector<std::wstring> &unformattedStrings)
+std::vector<std::wstring> *ItemInstance::getHoverTextOnly(std::shared_ptr<Player> player, bool advanced, std::vector<std::wstring> &unformattedStrings)
 {
-	vector<std::wstring> *lines = new vector<std::wstring>();
+	std::vector<std::wstring> *lines = new std::vector<std::wstring>();
 	Item *item = Item::items[id];
 
 	item->appendHoverText(shared_from_this(), player, lines, advanced, unformattedStrings);

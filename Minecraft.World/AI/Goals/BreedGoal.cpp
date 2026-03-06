@@ -49,7 +49,7 @@ void BreedGoal::tick()
 std::shared_ptr<Animal> BreedGoal::getFreePartner()
 {
 	float r = 8;
-	vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
+	std::vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
 	for(AUTO_VAR(it, others->begin()); it != others->end(); ++it)
 	{
 		std::shared_ptr<Animal> p = dynamic_pointer_cast<Animal>(*it);

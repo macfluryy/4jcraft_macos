@@ -442,7 +442,7 @@ void LevelRenderer::allChanged(int playerIndex)
 	}
 
 	chunks[playerIndex] = ClipChunkArray(xChunks * yChunks * zChunks);
-	//	sortedChunks[playerIndex] = new vector<Chunk *>(xChunks * yChunks * zChunks);		// 4J - removed - not sorting our chunks anymore
+	//	sortedChunks[playerIndex] = new std::vector<Chunk *>(xChunks * yChunks * zChunks);		// 4J - removed - not sorting our chunks anymore
 	int id = 0;
 	int count = 0;
 
@@ -520,7 +520,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 
 	// mc->gameRenderer->turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
 
-	vector<std::shared_ptr<Entity> > entities = level[playerIndex]->getAllEntities();
+	std::vector<std::shared_ptr<Entity> > entities = level[playerIndex]->getAllEntities();
 	totalEntities = (int)entities.size();
 
 	AUTO_VAR(itEndGE, level[playerIndex]->globalEntities.end());

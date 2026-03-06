@@ -30,7 +30,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 		if(app.GetResetNether())
 		{
 #ifdef SPLIT_SAVES
-			vector<FileEntry *> *netherFiles = m_saveFile->getRegionFilesByDimension(1);
+			std::vector<FileEntry *> *netherFiles = m_saveFile->getRegionFilesByDimension(1);
 			if(netherFiles!=NULL)
 			{
 				DWORD bytesWritten = 0;
@@ -41,7 +41,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 				delete netherFiles;
 			}
 #else
-			vector<FileEntry *> *netherFiles = m_saveFile->getFilesWithPrefix(LevelStorage::NETHER_FOLDER);
+			std::vector<FileEntry *> *netherFiles = m_saveFile->getFilesWithPrefix(LevelStorage::NETHER_FOLDER);
 			if(netherFiles!=NULL)
 			{		
 				for(AUTO_VAR(it, netherFiles->begin()); it != netherFiles->end(); ++it)
@@ -71,7 +71,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			// For versions before TU9 (TU7 and 8) we generate a part of The End, but we want to scrap it if it exists so that it is replaced with the TU9+ version
 			app.DebugPrintf("Loaded save version number is: %d, required to keep The End is: %d\n",m_saveFile->getSaveVersion(), SAVE_FILE_VERSION_NEW_END);
 
-			vector<FileEntry *> *endFiles = m_saveFile->getFilesWithPrefix(LevelStorage::ENDER_FOLDER);
+			std::vector<FileEntry *> *endFiles = m_saveFile->getFilesWithPrefix(LevelStorage::ENDER_FOLDER);
 
 			// 4J-PB - There will be no End in early saves
 			if(endFiles!=NULL)
@@ -89,7 +89,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
     return new McRegionChunkStorage(m_saveFile, L"");
 }
 
-void McRegionLevelStorage::saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players) 
+void McRegionLevelStorage::saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players) 
 {
     levelData->setVersion(MCREGION_VERSION_ID);
 	MemSect(38);

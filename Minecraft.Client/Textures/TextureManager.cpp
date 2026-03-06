@@ -80,9 +80,9 @@ Stitcher *TextureManager::createStitcher(const std::wstring &name)
 	return new Stitcher(name, maxTextureSize, maxTextureSize, true);
 }
 
-vector<Texture *> *TextureManager::createTextures(const std::wstring &filename, bool mipmap)
+std::vector<Texture *> *TextureManager::createTextures(const std::wstring &filename, bool mipmap)
 {
-	vector<Texture *> *result = new vector<Texture *>();
+	std::vector<Texture *> *result = new std::vector<Texture *>();
 	TexturePack *texturePack = Minecraft::GetInstance()->skins->getSelected();
 	//try {
 	int mode = Texture::TM_CONTAINER; // Most important -- so it doesn't get uploaded to videoram

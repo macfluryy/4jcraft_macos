@@ -12,7 +12,7 @@ class  Model
 public:
 	float attackTime;
     bool riding;
-	vector<ModelPart *> cubes;
+	std::vector<ModelPart *> cubes;
 	bool young;
 	std::unordered_map<std::wstring, TexOffs * > mappedTexOffs;
 	int texWidth;

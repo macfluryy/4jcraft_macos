@@ -92,7 +92,7 @@ void MobSpawnerTileEntity::tick()
 			std::shared_ptr<Mob> entity = dynamic_pointer_cast<Mob> (EntityIO::newEntity(entityId, level));
 			if (entity == NULL) return;
 
-			vector<std::shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entity), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
+			std::vector<std::shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entity), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
 			int nearBy = (int)vecNearby->size(); //4J - IB, TODO, Mob contains no getClass
 			delete vecNearby;
 
@@ -144,7 +144,7 @@ void MobSpawnerTileEntity::fillExtraData(std::shared_ptr<Entity> entity)
 		CompoundTag *data = new CompoundTag();
 		entity->save(data);
 
-		vector<Tag *> *allTags = spawnData->getAllTags();
+		std::vector<Tag *> *allTags = spawnData->getAllTags();
 		for(AUTO_VAR(it, allTags->begin()); it != allTags->end(); ++it)
 		{
 			Tag *tag = *it;

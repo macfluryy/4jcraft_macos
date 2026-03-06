@@ -211,7 +211,7 @@ bool OldChunkStorage::saveEntities(LevelChunk *lc, Level *level, CompoundTag *ta
 	for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++)
 	{
 		AUTO_VAR(itEnd, lc->entityBlocks[i]->end());
-		for( vector<std::shared_ptr<Entity> >::iterator it = lc->entityBlocks[i]->begin(); it != itEnd; it++ )
+		for( std::vector<std::shared_ptr<Entity> >::iterator it = lc->entityBlocks[i]->begin(); it != itEnd; it++ )
 		{
 			std::shared_ptr<Entity> e = *it;
 			lc->lastSaveHadEntities = true;
@@ -280,7 +280,7 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, DataOutputStream *dos)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Saving tile tick data");
-	vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
+	std::vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
 	if (ticksInChunk != NULL)
 	{
 		__int64 levelTime = level->getTime();
@@ -369,7 +369,7 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, CompoundTag *tag)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Saving tile tick data");
-	vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
+	std::vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
 	if (ticksInChunk != NULL)
 	{
 		__int64 levelTime = level->getTime();

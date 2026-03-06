@@ -331,8 +331,8 @@ public:
 	Level *animateTickLevel;	// 4J added
 
 	// 4J - When a client requests a texture, it should add it to here while we are waiting for it
-	vector<std::wstring> m_pendingTextureRequests;
-	vector<std::wstring> m_pendingGeometryRequests; // additional skin box geometry
+	std::vector<std::wstring> m_pendingTextureRequests;
+	std::vector<std::wstring> m_pendingGeometryRequests; // additional skin box geometry
 
 	// 4J Added
 	bool addPendingClientTextureRequest(const std::wstring &textureName);

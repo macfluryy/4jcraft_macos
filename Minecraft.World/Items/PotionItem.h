@@ -15,7 +15,7 @@ public:
 	static const std::wstring CONTENTS_ICON;
 
 private:
-	std::unordered_map<int, vector<MobEffectInstance *> *> cachedMobEffects;
+	std::unordered_map<int, std::vector<MobEffectInstance *> *> cachedMobEffects;
 
 	Icon *iconThrowable;
 	Icon *iconDrinkable;
@@ -24,8 +24,8 @@ private:
 public:
 	PotionItem(int id);
 
-	virtual vector<MobEffectInstance *> *getMobEffects(std::shared_ptr<ItemInstance> potion);
-	virtual vector<MobEffectInstance *> *getMobEffects(int auxValue);
+	virtual std::vector<MobEffectInstance *> *getMobEffects(std::shared_ptr<ItemInstance> potion);
+	virtual std::vector<MobEffectInstance *> *getMobEffects(int auxValue);
 	virtual std::shared_ptr<ItemInstance> useTimeDepleted(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
 	virtual int getUseDuration(std::shared_ptr<ItemInstance> itemInstance);
 	virtual UseAnim getUseAnimation(std::shared_ptr<ItemInstance> itemInstance);
@@ -40,7 +40,7 @@ public:
 	virtual bool hasMultipleSpriteLayers();
 	virtual bool hasInstantenousEffects(int itemAuxValue);
 	virtual std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
-	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings);
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings);
 	virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
 
 	virtual unsigned int getUseDescriptionId(std::shared_ptr<ItemInstance> instance);
@@ -50,8 +50,8 @@ public:
 	static Icon *getTexture(const std::wstring &name);
 
 	// 4J Stu - Based loosely on a function that gets added in java much later on (1.3)
-	static vector<pair<int, int> > *getUniquePotionValues();
+	static std::vector<pair<int, int> > *getUniquePotionValues();
 private:
 	// 4J Stu - Added to support function above, different from Java implementation
-	static vector<pair<int, int> > s_uniquePotionValues;
+	static std::vector<pair<int, int> > s_uniquePotionValues;
 };

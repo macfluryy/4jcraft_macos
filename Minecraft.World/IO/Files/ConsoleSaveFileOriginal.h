@@ -62,13 +62,13 @@ public:
 
 	virtual std::wstring getFilename();
 
-	virtual vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix);
-	virtual vector<FileEntry *> *getRegionFilesByDimension(unsigned int dimensionIndex);
+	virtual std::vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix);
+	virtual std::vector<FileEntry *> *getRegionFilesByDimension(unsigned int dimensionIndex);
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 	virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
 	virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
-	virtual vector<FileEntry *> *getValidPlayerDatFiles();
+	virtual std::vector<FileEntry *> *getValidPlayerDatFiles();
 #endif //__PS3__
 
 	virtual int getSaveVersion();

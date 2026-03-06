@@ -64,7 +64,7 @@ void ServerConnection::tick()
 	{
 		// MGH - changed this so that the the CS lock doesn't cover the tick (was causing a lockup when 2 players tried to join)
 		EnterCriticalSection(&pending_cs);
-		vector< std::shared_ptr<PendingConnection> > tempPending = pending;
+		std::vector< std::shared_ptr<PendingConnection> > tempPending = pending;
 		LeaveCriticalSection(&pending_cs);
 
 		for (unsigned int i = 0; i < tempPending.size(); i++)

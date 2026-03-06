@@ -47,7 +47,7 @@ File::File( const std::wstring& pathname ) //: parent( NULL )
 	m_abstractPathName = finalPath;
 #endif
 	/*
-	vector<std::wstring> path = stringSplit( pathname, pathSeparator );
+	std::vector<std::wstring> path = stringSplit( pathname, pathSeparator );
 
 	if( path.back().compare( pathRoot ) != 0 )		
 	m_abstractPathName = path.back();
@@ -75,7 +75,7 @@ File::File( const std::wstring& parent, const std::wstring& child  ) //: m_abstr
 
 //Creates a new File instance by converting the given path vector into an abstract pathname.
 /*
-File::File( vector<std::wstring> *path ) : parent( NULL )
+File::File( std::vector<std::wstring> *path ) : parent( NULL )
 {
 m_abstractPathName = path->back();
 path->pop_back();
@@ -157,7 +157,7 @@ bool File::mkdir() const
 //
 bool File::mkdirs() const
 {
-	vector<std::wstring> path = stringSplit( m_abstractPathName, pathSeparator );
+	std::vector<std::wstring> path = stringSplit( m_abstractPathName, pathSeparator );
 
 	std::wstring pathToHere = L"";
 	AUTO_VAR(itEnd, path.end());
@@ -311,9 +311,9 @@ void listFiles(const char *directory) {
 //An array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname.
 //The array will be empty if the directory is empty. Returns null if this abstract pathname does not denote a directory,
 //or if an I/O error occurs.
-vector<File *> *File::listFiles() const
+std::vector<File *> *File::listFiles() const
 {
-	vector<File *> *vOutput = new vector<File *>();
+	std::vector<File *> *vOutput = new std::vector<File *>();
 
 	// TODO 4J Stu - Also need to check for I/O errors?
 	if( !isDirectory() )
@@ -461,13 +461,13 @@ vector<File *> *File::listFiles() const
 //Returns:
 //An array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname.
 //The array will be empty if the directory is empty. Returns null if this abstract pathname does not denote a directory, or if an I/O error occurs.
-vector<File *> *File::listFiles(FileFilter *filter) const
+std::vector<File *> *File::listFiles(FileFilter *filter) const
 {
 	// TODO 4J Stu - Also need to check for I/O errors?
 	if( !isDirectory() )
 		return NULL;
 
-	vector<File *> *vOutput = new vector<File *>();
+	std::vector<File *> *vOutput = new std::vector<File *>();
 
 #ifdef __PS3__
 	const char *lpFileName=wstringtofilename(getPath());

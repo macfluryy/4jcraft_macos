@@ -21,7 +21,7 @@ public:
 	bool autoCreate;
 private:
 	LevelChunk **cache;
-    vector<LevelChunk *> m_loadedChunkList;
+    std::vector<LevelChunk *> m_loadedChunkList;
     ServerLevel *level;
 
 #ifdef _LARGE_WORLDS
@@ -39,7 +39,7 @@ public:
 	ServerChunkCache(ServerLevel *level, ChunkStorage *storage, ChunkSource *source);
 	virtual ~ServerChunkCache();
     virtual bool hasChunk(int x, int z);
-	vector<LevelChunk *> *getLoadedChunkList();
+	std::vector<LevelChunk *> *getLoadedChunkList();
     void drop(int x, int z);
 	void dropAll();
     virtual LevelChunk *create(int x, int z);
@@ -82,7 +82,7 @@ public:
     virtual bool shouldSave();
     virtual std::wstring gatherStats();
 
-	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
+	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
 	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z);
 
 private:

@@ -988,7 +988,7 @@ Vec3::resetPool();
 //	g_pd3dDevice->Release();
 
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 
 // convert std::wstring to UTF-8 string
 std::string wstring_to_utf8 (const std::wstring& str)

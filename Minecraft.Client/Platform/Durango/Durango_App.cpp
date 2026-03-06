@@ -559,7 +559,7 @@ int CConsoleMinecraftApp::Callback_TMSPPRetrieveFileList(void *pParam,int iPad, 
 	app.DebugPrintf("CConsoleMinecraftApp::Callback_TMSPPRetrieveFileList\n");
 	if(lpvData!=NULL)
 	{	
-		vector<C4JStorage::PTMSPP_FILE_DETAILS> *pvTmsFileDetails=(vector<C4JStorage::PTMSPP_FILE_DETAILS> *)lpvData;
+		std::vector<C4JStorage::PTMSPP_FILE_DETAILS> *pvTmsFileDetails=(std::vector<C4JStorage::PTMSPP_FILE_DETAILS> *)lpvData;
 
 		if(pvTmsFileDetails->size()>0)
 		{	

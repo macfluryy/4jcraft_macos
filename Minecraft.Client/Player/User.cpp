@@ -2,7 +2,7 @@
 #include "User.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
-vector<Tile *> User::allowedTiles;
+std::vector<Tile *> User::allowedTiles;
 
 void User::staticCtor()
 {

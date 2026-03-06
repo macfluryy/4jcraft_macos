@@ -28,9 +28,9 @@ private:
 	BufferedImage *missingTexture; // = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 	StitchedTexture *missingPosition;
 	Texture *stitchResult;
-	vector<StitchedTexture *> animatedTextures; // = new ArrayList<StitchedTexture>();
+	std::vector<StitchedTexture *> animatedTextures; // = new ArrayList<StitchedTexture>();
 
-	vector<pair<std::wstring, std::wstring> > texturesToAnimate;
+	std::vector<pair<std::wstring, std::wstring> > texturesToAnimate;
 
 	void loadUVs();
 public:

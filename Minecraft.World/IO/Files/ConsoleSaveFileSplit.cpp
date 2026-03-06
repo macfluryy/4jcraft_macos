@@ -416,7 +416,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 	if(alreadySmallRegions)
 	{
 
-		vector<FileEntry *> *sourceFiles = sourceSave->getFilesWithPrefix(L"");
+		std::vector<FileEntry *> *sourceFiles = sourceSave->getFilesWithPrefix(L"");
 
 		DWORD bytesWritten;
 		for(AUTO_VAR(it, sourceFiles->begin()); it != sourceFiles->end(); ++it)
@@ -943,7 +943,7 @@ void ConsoleSaveFileSplit::tick()
 	}
 
 	// Compile a vector of dirty regions. 
-	vector<DirtyRegionFile> dirtyRegions;
+	std::vector<DirtyRegionFile> dirtyRegions;
 	for( AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++ )
 	{
 		DirtyRegionFile dirtyRegion;
@@ -1547,14 +1547,14 @@ std::wstring ConsoleSaveFileSplit::getFilename()
 	return m_fileName;
 }
 
-vector<FileEntry *> *ConsoleSaveFileSplit::getFilesWithPrefix(const std::wstring &prefix)
+std::vector<FileEntry *> *ConsoleSaveFileSplit::getFilesWithPrefix(const std::wstring &prefix)
 {
 	return header.getFilesWithPrefix( prefix );
 }
 
-vector<FileEntry *> *ConsoleSaveFileSplit::getRegionFilesByDimension(unsigned int dimensionIndex)
+std::vector<FileEntry *> *ConsoleSaveFileSplit::getRegionFilesByDimension(unsigned int dimensionIndex)
 {
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 
 	for( AUTO_VAR(it,regionFiles.begin()); it != regionFiles.end(); ++it )
 	{
@@ -1564,7 +1564,7 @@ vector<FileEntry *> *ConsoleSaveFileSplit::getRegionFilesByDimension(unsigned in
 		{
 			if( files == NULL )
 			{
-				files = new vector<FileEntry *>();
+				files = new std::vector<FileEntry *>();
 			}
 
 			files->push_back(it->second->fileEntry);
@@ -1583,7 +1583,7 @@ std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForSave(const PlayerUID&
 {
 	return header.getPlayerDataFilenameForSave( pUID );
 }
-vector<FileEntry *> *ConsoleSaveFileSplit::getValidPlayerDatFiles()
+std::vector<FileEntry *> *ConsoleSaveFileSplit::getValidPlayerDatFiles()
 {
 	return header.getValidPlayerDatFiles();
 }
@@ -1690,7 +1690,7 @@ void ConsoleSaveFileSplit::ConvertToLocalPlatform()
 		return;
 	}
 	// convert each of the region files to the local platform
-	vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
+	std::vector<FileEntry *> *allFilesInSave = getFilesWithPrefix(std::wstring(L""));
 	for(AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end(); ++it)
 	{
 		FileEntry *fe = *it;

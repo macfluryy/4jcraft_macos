@@ -26,7 +26,7 @@ static char usrdirPathBDPatch[CELL_GAME_PATH_MAX];
 //static char sc_loadPath[] = {"/app_home/"};
 //static char sc_loadPath[CELL_GAME_PATH_MAX];
 static int iFilesOpen=0;
-vector<int> vOpenFileHandles;
+std::vector<int> vOpenFileHandles;
 
 namespace boost
 {

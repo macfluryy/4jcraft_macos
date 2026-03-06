@@ -31,7 +31,7 @@ public:
 	ArchiveFile(File file);
 	~ArchiveFile();
 
-	vector<std::wstring> *getFileList();
+	std::vector<std::wstring> *getFileList();
 	bool hasFile(const std::wstring &filename);
 	int getFileSize(const std::wstring &filename);
 	byteArray getFile(const std::wstring &filename);

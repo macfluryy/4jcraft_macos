@@ -81,7 +81,7 @@ void ScrolledSelectionList::renderDecorations(int mouseX, int mouseY)
     return -1;
 }
 
-void ScrolledSelectionList::init(vector<Button *> *buttons, int upButtonId, int downButtonId)
+void ScrolledSelectionList::init(std::vector<Button *> *buttons, int upButtonId, int downButtonId)
 {
     this->upId = upButtonId;
     this->downId = downButtonId;

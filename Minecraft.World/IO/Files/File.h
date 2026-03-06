@@ -24,8 +24,8 @@ public:
 	bool exists() const;
 	bool isFile() const;
 	bool renameTo(File dest);
-	vector<File *> *listFiles() const; // Array
-	vector<File *> *listFiles(FileFilter *filter) const;
+	std::vector<File *> *listFiles() const; // Array
+	std::vector<File *> *listFiles(FileFilter *filter) const;
 	bool isDirectory() const;
 	__int64 length();
 	__int64 lastModified();
@@ -39,8 +39,8 @@ private:
 	void _init();
 	std::wstring m_abstractPathName;
 
-	// 4J Jev, just helper functions, change between paths and vector<string>
-	//File(vector<std::wstring> *path);
+	// 4J Jev, just helper functions, change between paths and std::vector<string>
+	//File(std::vector<std::wstring> *path);
 };
 
 struct FileKeyHash

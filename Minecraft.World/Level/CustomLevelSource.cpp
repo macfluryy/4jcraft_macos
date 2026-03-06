@@ -614,7 +614,7 @@ std::wstring CustomLevelSource::gatherStats()
 	return L"CustomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *CustomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *CustomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
 #ifdef _OVERRIDE_HEIGHTMAP
 	Biome *biome = level->getBiome(x, z);

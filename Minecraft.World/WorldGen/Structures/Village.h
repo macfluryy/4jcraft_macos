@@ -4,7 +4,7 @@ class Village
 {
 private:
 	Level *level;
-	vector<std::shared_ptr<DoorInfo> > doorInfos;
+	std::vector<std::shared_ptr<DoorInfo> > doorInfos;
 
 	Pos *accCenter;
 	Pos *center;
@@ -25,7 +25,7 @@ private:
 		Aggressor(std::shared_ptr<Mob> mob, int timeStamp);
 	};
 
-	vector<Aggressor *> aggressors;
+	std::vector<Aggressor *> aggressors;
 	int golemCount;
 
 public:
@@ -50,7 +50,7 @@ public:
 	int getStableAge();
 	int getPopulationSize();
 	bool isInside(int xx, int yy, int zz);
-	vector<std::shared_ptr<DoorInfo> > *getDoorInfos();
+	std::vector<std::shared_ptr<DoorInfo> > *getDoorInfos();
 	std::shared_ptr<DoorInfo> getClosestDoorInfo(int x, int y, int z);
 	std::shared_ptr<DoorInfo> getBestDoorInfo(int x, int y, int z);
 	bool hasDoorInfo(int x, int y, int z);

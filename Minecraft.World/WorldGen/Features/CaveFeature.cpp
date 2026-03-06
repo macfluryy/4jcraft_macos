@@ -22,7 +22,7 @@ using namespace std;
 
     __int64 seed = random->nextLong();
     random->setSeed(seed);
-    vector<TilePos *> toRemove;
+    std::vector<TilePos *> toRemove;
 
     for (int d = 0; d <= 16; d++)
 	{

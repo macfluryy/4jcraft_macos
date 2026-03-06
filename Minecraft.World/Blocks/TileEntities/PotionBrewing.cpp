@@ -180,7 +180,7 @@ int PotionBrewing::getAppearanceValue(int brew)
 	return valueOf(brew, 5, 4, 3, 2, 1);
 }
 
-int PotionBrewing::getColorValue(vector<MobEffectInstance *> *effects)
+int PotionBrewing::getColorValue(std::vector<MobEffectInstance *> *effects)
 {
 	ColourTable *colourTable = Minecraft::GetInstance()->getColourTable();
 
@@ -227,7 +227,7 @@ int PotionBrewing::getColorValue(int brew, bool includeDisabledEffects)
 		{
 			return colIt->second;//cachedColors.get(brew);
 		}
-		vector<MobEffectInstance *> *effects = getEffects(brew, false);
+		std::vector<MobEffectInstance *> *effects = getEffects(brew, false);
 		int color = getColorValue(effects);
 		if(effects != NULL)
 		{
@@ -542,9 +542,9 @@ int PotionBrewing::parseEffectFormulaValue(const std::wstring &definition, int s
 }
 #endif
 
-vector<MobEffectInstance *> *PotionBrewing::getEffects(int brew, bool includeDisabledEffects)
+std::vector<MobEffectInstance *> *PotionBrewing::getEffects(int brew, bool includeDisabledEffects)
 {
-	vector<MobEffectInstance *> *list = NULL;
+	std::vector<MobEffectInstance *> *list = NULL;
 
 	//for (MobEffect effect : MobEffect.effects)
 	for(unsigned int i = 0; i < MobEffect::NUM_EFFECTS; ++i)
@@ -596,7 +596,7 @@ vector<MobEffectInstance *> *PotionBrewing::getEffects(int brew, bool includeDis
 
 			if (list == NULL)
 			{
-				list = new vector<MobEffectInstance *>();
+				list = new std::vector<MobEffectInstance *>();
 			}
 			list->push_back(new MobEffectInstance(effect->getId(), duration, amplifier));
 		}

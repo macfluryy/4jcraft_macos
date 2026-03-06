@@ -101,7 +101,7 @@ private:
 public:
 
     std::unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq> tileEntities;
-    vector<std::shared_ptr<Entity> > **entityBlocks;
+    std::vector<std::shared_ptr<Entity> > **entityBlocks;
 	
 	static const int sTerrainPopulatedFromHere		= 2;
 	static const int sTerrainPopulatedFromW			= 4;
@@ -203,8 +203,8 @@ public:
 	virtual bool isUnloaded();
 #endif
     virtual void markUnsaved();
-    virtual void getEntities(std::shared_ptr<Entity> except, AABB *bb, vector<std::shared_ptr<Entity> > &es);
-	virtual void getEntitiesOfClass(const type_info& ec, AABB *bb, vector<std::shared_ptr<Entity> > &es);
+    virtual void getEntities(std::shared_ptr<Entity> except, AABB *bb, std::vector<std::shared_ptr<Entity> > &es);
+	virtual void getEntitiesOfClass(const type_info& ec, AABB *bb, std::vector<std::shared_ptr<Entity> > &es);
     virtual int countEntities();
     virtual bool shouldSave(bool force);
     virtual int getBlocksAndData(byteArray *data, int x0, int y0, int z0, int x1, int y1, int z1, int p, bool includeLighting = true);	// 4J - added includeLighting parameter

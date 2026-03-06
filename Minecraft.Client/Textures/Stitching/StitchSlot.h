@@ -11,7 +11,7 @@ private:
 
 	const int width;
 	const int height;
-	vector<StitchSlot *> *subSlots;
+	std::vector<StitchSlot *> *subSlots;
 	TextureHolder *textureHolder;
 
 public:
@@ -21,7 +21,7 @@ public:
 	int getX();
 	int getY();
 	bool add(TextureHolder *textureHolder);
-	void collectAssignments(vector<StitchSlot *> *result);
+	void collectAssignments(std::vector<StitchSlot *> *result);
 
 	//@Override
 	std::wstring toString();

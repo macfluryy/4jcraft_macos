@@ -8,7 +8,7 @@
 bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level)
 {
 	std::shared_ptr<ItemInstance> target = nullptr;
-	vector<std::shared_ptr<ItemInstance> > dyes;
+	std::vector<std::shared_ptr<ItemInstance> > dyes;
 
 	for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
 	{
@@ -177,7 +177,7 @@ void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED *pIngReq)
 #if 0
 	AUTO_VAR(citEnd, ingredients->end());
 
-	for (vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
+	for (std::vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
 	{
 		ItemInstance *expected = *ingredient;
 

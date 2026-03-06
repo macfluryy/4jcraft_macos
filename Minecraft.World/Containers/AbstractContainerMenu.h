@@ -26,8 +26,8 @@ public:
 	static const int CONTAINER_ID_INVENTORY = 0;
 	static const int CONTAINER_ID_CREATIVE = -2;
 
-	vector<std::shared_ptr<ItemInstance> > *lastSlots;
-	vector<Slot *> *slots;
+	std::vector<std::shared_ptr<ItemInstance> > *lastSlots;
+	std::vector<Slot *> *slots;
 	int containerId;
 
 private:
@@ -35,7 +35,7 @@ private:
 	bool m_bNeedsRendered; // 4J added
 
 protected:
-	vector<ContainerListener *> *containerListeners;
+	std::vector<ContainerListener *> *containerListeners;
 
 	// 4J Stu - The java does not have ctor here (being an abstract) but we need one to initialise the member variables
 	// TODO Make sure all derived classes also call this
@@ -46,7 +46,7 @@ protected:
 public:
 	virtual ~AbstractContainerMenu();
 	virtual void addSlotListener(ContainerListener *listener);
-	vector<std::shared_ptr<ItemInstance> > *getItems();
+	std::vector<std::shared_ptr<ItemInstance> > *getItems();
 	void sendData(int id, int value);
 	virtual void broadcastChanges();
 	virtual bool needsRendered();

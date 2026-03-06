@@ -4,7 +4,7 @@
 
 //Enchantment *Enchantment::enchantments[256];
 EnchantmentArray Enchantment::enchantments = EnchantmentArray( 256 );
-vector<Enchantment *> Enchantment::validEnchantments;
+std::vector<Enchantment *> Enchantment::validEnchantments;
 
 Enchantment *Enchantment::allDamageProtection = NULL;
 Enchantment *Enchantment::fireProtection = NULL;

@@ -9,7 +9,7 @@ public:
     MemoryLevelStorageSource();
     std::wstring getName();
     std::shared_ptr<LevelStorage> selectLevel(const std::wstring& levelId, bool createPlayerDir);
-    vector<LevelSummary *> *getLevelList();
+    std::vector<LevelSummary *> *getLevelList();
     void clearAll();
     LevelData *getDataTagFor(const std::wstring& levelId);
     bool isNewLevelIdAcceptable(const std::wstring& levelId);

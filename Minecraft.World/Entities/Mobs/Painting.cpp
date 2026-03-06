@@ -76,7 +76,7 @@ Painting::Painting(Level *level, int xTile, int yTile, int zTile, int dir) : Han
 // 4J Stu - Added this so that we can use some std::shared_ptr functions that were needed in the ctor
 void Painting::PaintingPostConstructor(int dir)
 {
-	vector<Motive *> *survivableMotives = new vector<Motive *>();
+	std::vector<Motive *> *survivableMotives = new std::vector<Motive *>();
 	for (int i = 0 ; i < LAST_VALUE; i++)
 	{
 		this->motive = (Motive *)Motive::values[i];
@@ -119,7 +119,7 @@ void Painting::addAdditonalSaveData(CompoundTag *tag)
 void Painting::readAdditionalSaveData(CompoundTag *tag)
 {
 	std::wstring motiveName = tag->getString(L"Motive");
-	vector<Motive *>::iterator it;
+	std::vector<Motive *>::iterator it;
 	for (int i = 0 ; i < LAST_VALUE; i++)
 	{
 		if ( Motive::values[i]->name.compare(motiveName) == 0)

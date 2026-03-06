@@ -58,7 +58,7 @@ void LevelChunk::init(Level *level, int x, int z)
 #else
 	EnterCriticalSection(&m_csEntities);
 #endif
-	entityBlocks = new vector<std::shared_ptr<Entity> > *[ENTITY_BLOCKS_LENGTH];
+	entityBlocks = new std::vector<std::shared_ptr<Entity> > *[ENTITY_BLOCKS_LENGTH];
 #ifdef _ENTITIES_RW_SECTION
 	LeaveCriticalRWSection(&m_csEntities, true);
 #else
@@ -90,7 +90,7 @@ void LevelChunk::init(Level *level, int x, int z)
 #endif
 	for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++)
 	{
-        entityBlocks[i] = new vector<std::shared_ptr<Entity> >();
+        entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
     }
 #ifdef _ENTITIES_RW_SECTION
 	LeaveCriticalRWSection(&m_csEntities, true);
@@ -1428,7 +1428,7 @@ void LevelChunk::load()
 		}
 #endif
 
-		vector< std::shared_ptr<TileEntity> > values;
+		std::vector< std::shared_ptr<TileEntity> > values;
 		EnterCriticalSection(&m_csTileEntities);
 		for( AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end(); it++ )
 		{
@@ -1506,7 +1506,7 @@ void LevelChunk::unload(bool unloadTileEntities)	// 4J - added parameter
 			for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++)
 			{
 				AUTO_VAR(itEnd, entityBlocks[i]->end());
-				for( vector<std::shared_ptr<Entity> >::iterator it = entityBlocks[i]->begin(); it != itEnd; it++ )
+				for( std::vector<std::shared_ptr<Entity> >::iterator it = entityBlocks[i]->begin(); it != itEnd; it++ )
 		{
 					std::shared_ptr<Entity> e = *it;
 					CompoundTag *teTag = new CompoundTag();
@@ -1560,7 +1560,7 @@ void LevelChunk::markUnsaved()
 }
 
 
-void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, vector<std::shared_ptr<Entity> > &es)
+void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, std::vector<std::shared_ptr<Entity> > &es)
 {
     int yc0 = Mth::floor((bb->y0 - 2) / 16);
     int yc1 = Mth::floor((bb->y1 + 2) / 16);
@@ -1573,7 +1573,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, vector<st
 #endif
     for (int yc = yc0; yc <= yc1; yc++)
 	{
-        vector<std::shared_ptr<Entity> > *entities = entityBlocks[yc];
+        std::vector<std::shared_ptr<Entity> > *entities = entityBlocks[yc];
 
 		AUTO_VAR(itEnd, entities->end());
 		for (AUTO_VAR(it, entities->begin()); it != itEnd; it++)
@@ -1582,7 +1582,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, vector<st
             if (e != except && e->bb->intersects(bb))
 			{
 				es.push_back(e);
-                vector<std::shared_ptr<Entity> > *subs = e->getSubEntities();
+                std::vector<std::shared_ptr<Entity> > *subs = e->getSubEntities();
                 if (subs != NULL)
 				{
                     for (int j = 0; j < subs->size(); j++)
@@ -1602,7 +1602,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB *bb, vector<st
 #endif
 }
 
-void LevelChunk::getEntitiesOfClass(const type_info& ec, AABB *bb, vector<std::shared_ptr<Entity> > &es)
+void LevelChunk::getEntitiesOfClass(const type_info& ec, AABB *bb, std::vector<std::shared_ptr<Entity> > &es)
 {
     int yc0 = Mth::floor((bb->y0 - 2) / 16);
     int yc1 = Mth::floor((bb->y1 + 2) / 16);
@@ -1630,7 +1630,7 @@ void LevelChunk::getEntitiesOfClass(const type_info& ec, AABB *bb, vector<std::s
 #endif
     for (int yc = yc0; yc <= yc1; yc++)
 	{
-        vector<std::shared_ptr<Entity> > *entities = entityBlocks[yc];
+        std::vector<std::shared_ptr<Entity> > *entities = entityBlocks[yc];
 		
 		AUTO_VAR(itEnd, entities->end());
 		for (AUTO_VAR(it, entities->begin()); it != itEnd; it++)

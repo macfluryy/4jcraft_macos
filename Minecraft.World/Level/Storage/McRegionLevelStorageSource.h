@@ -15,7 +15,7 @@ public:
 
 	McRegionLevelStorageSource(File dir);
     virtual std::wstring getName();
-    virtual vector<LevelSummary *> *getLevelList();
+    virtual std::vector<LevelSummary *> *getLevelList();
     virtual void clearAll();
     virtual std::shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir);
     virtual bool isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId);
@@ -25,10 +25,10 @@ public:
 private:
 #if 0
 	// 4J - not required anymore
-	void addRegions(File &baseFolder, vector<ChunkFile *> *dest, vector<File *> *firstLevelFolders);
+	void addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders);
 #endif
-    void convertRegions(File &baseFolder, vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress);
-    void eraseFolders(vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress);
+    void convertRegions(File &baseFolder, std::vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress);
+    void eraseFolders(std::vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress);
 
 public:
 #if 0

@@ -17,7 +17,7 @@ public:
 
 private:
 	set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
-	vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
+	std::vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
 	int storageX;
 	int storageY;
 
@@ -41,7 +41,7 @@ public:
 	void addTexture(TextureHolder *textureHolder);
 	Texture *constructTexture(bool mipmap = true); // 4J Added mipmap param
 	void stitch();
-	vector<StitchSlot *> *gatherAreas();
+	std::vector<StitchSlot *> *gatherAreas();
 
 private:	
 	// Based on: http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2

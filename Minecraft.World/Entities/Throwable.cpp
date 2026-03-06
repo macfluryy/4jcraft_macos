@@ -172,7 +172,7 @@ void Throwable::tick()
 	if (!level->isClientSide)
 	{
 		std::shared_ptr<Entity> hitEntity = nullptr;
-		vector<std::shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+		std::vector<std::shared_ptr<Entity> > *objects = level->getEntities(shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
 		double nearest = 0;
 		for (int i = 0; i < objects->size(); i++)
 		{

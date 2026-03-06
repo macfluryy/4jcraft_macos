@@ -22,7 +22,7 @@ TitleScreen::TitleScreen()
 
     splash = L"missingno";
 //    try {	// 4J - removed try/catch
-    vector<std::wstring> splashes;
+    std::vector<std::wstring> splashes;
 
 	/*
     BufferedReader *br = new BufferedReader(new InputStreamReader(InputStream::getResourceAsStream(L"res\\title\\splashes.txt"))); //, Charset.forName("UTF-8")

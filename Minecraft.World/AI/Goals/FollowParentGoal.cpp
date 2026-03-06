@@ -18,7 +18,7 @@ bool FollowParentGoal::canUse()
 {
 	if (animal->getAge() >= 0) return false;
 
-	vector<std::shared_ptr<Entity> > *parents = animal->level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(8, 4, 8));
+	std::vector<std::shared_ptr<Entity> > *parents = animal->level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(8, 4, 8));
 
 	std::shared_ptr<Animal> closest = nullptr;
 	double closestDistSqr = Double::MAX_VALUE;

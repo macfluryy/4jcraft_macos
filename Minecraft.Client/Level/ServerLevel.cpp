@@ -277,10 +277,10 @@ void ServerLevel::tick()
 
 Biome::MobSpawnerData *ServerLevel::getRandomMobSpawnAt(MobCategory *mobCategory, int x, int y, int z)
 {
-    vector<Biome::MobSpawnerData *> *mobList = getChunkSource()->getMobsAt(mobCategory, x, y, z);
+    std::vector<Biome::MobSpawnerData *> *mobList = getChunkSource()->getMobsAt(mobCategory, x, y, z);
 	if (mobList == NULL || mobList->empty()) return NULL;
 
-    return (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(random, (vector<WeighedRandomItem *> *)mobList);
+    return (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(random, (std::vector<WeighedRandomItem *> *)mobList);
 }
 
 void ServerLevel::updateSleepingPlayerList()
@@ -289,7 +289,7 @@ void ServerLevel::updateSleepingPlayerList()
 	m_bAtLeastOnePlayerSleeping = false;
 
 	AUTO_VAR(itEnd, players.end());
-	for (vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
+	for (std::vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
 	{
 		if (!(*it)->isSleeping())
 		{
@@ -310,7 +310,7 @@ void ServerLevel::awakenAllPlayers()
 	m_bAtLeastOnePlayerSleeping = false;
 
 	AUTO_VAR(itEnd, players.end());
-	for (vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
+	for (std::vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++)
 	{
 		if ((*it)->isSleeping())
 		{
@@ -335,7 +335,7 @@ bool ServerLevel::allPlayersAreSleeping()
 	{
 		// all players are sleeping, but have they slept long enough?
 		AUTO_VAR(itEnd, players.end());
-		for (vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++ )
+		for (std::vector<std::shared_ptr<Player> >::iterator it = players.begin(); it != itEnd; it++ )
 		{
 			//                System.out.println(player->entityId + ": " + player->getSleepTimer());
 			if (! (*it)->isSleepingLongEnough())
@@ -625,10 +625,10 @@ bool ServerLevel::tickPendingTicks(bool force)
 	return retval;
 }
 
-vector<TickNextTickData> *ServerLevel::fetchTicksInChunk(LevelChunk *chunk, bool remove)
+std::vector<TickNextTickData> *ServerLevel::fetchTicksInChunk(LevelChunk *chunk, bool remove)
 {
 	EnterCriticalSection(&m_tickNextTickCS);
-    vector<TickNextTickData> *results = new vector<TickNextTickData>;
+    std::vector<TickNextTickData> *results = new std::vector<TickNextTickData>;
 
     ChunkPos *pos = chunk->getPos();
     int west = pos->x << 4;
@@ -693,9 +693,9 @@ ChunkSource *ServerLevel::createChunkSource()
     return cache;
 }
 
-vector<std::shared_ptr<TileEntity> > *ServerLevel::getTileEntitiesInRegion(int x0, int y0, int z0, int x1, int y1, int z1)
+std::vector<std::shared_ptr<TileEntity> > *ServerLevel::getTileEntitiesInRegion(int x0, int y0, int z0, int x1, int y1, int z1)
 {
-    vector<std::shared_ptr<TileEntity> > *result = new vector<std::shared_ptr<TileEntity> >;
+    std::vector<std::shared_ptr<TileEntity> > *result = new std::vector<std::shared_ptr<TileEntity> >;
     for (unsigned int i = 0; i < tileEntityList.size(); i++)
 	{
         std::shared_ptr<TileEntity> te = tileEntityList[i];
@@ -750,7 +750,7 @@ void ServerLevel::setInitialSpawn(LevelSettings *levelSettings)
 	isFindingSpawn = true;
 
 	BiomeSource *biomeSource = dimension->biomeSource;
-	vector<Biome *> playerSpawnBiomes = biomeSource->getPlayerSpawnBiomes();
+	std::vector<Biome *> playerSpawnBiomes = biomeSource->getPlayerSpawnBiomes();
 	Random random(getSeed());
 
 	TilePos *findBiome = biomeSource->findBiome(0, 0, 16 * 16, playerSpawnBiomes, &random);
@@ -896,7 +896,7 @@ void ServerLevel::save(bool force, ProgressListener *progressListener, bool bAut
 		{
 			// 4J Stu - This will come in a later change anyway
 			// clean cache
-			vector<LevelChunk *> *loadedChunkList = cache->getLoadedChunkList();
+			std::vector<LevelChunk *> *loadedChunkList = cache->getLoadedChunkList();
 			for (AUTO_VAR(it, loadedChunkList->begin()); it != loadedChunkList->end(); ++it)
 			{
 				LevelChunk *lc = *it;
@@ -952,7 +952,7 @@ void ServerLevel::entityAdded(std::shared_ptr<Entity> e)
 {
     Level::entityAdded(e);
     entitiesById[e->entityId] = e;
-	vector<std::shared_ptr<Entity> > *es = e->getSubEntities();
+	std::vector<std::shared_ptr<Entity> > *es = e->getSubEntities();
 	if (es != NULL)
 	{
 		//for (int i = 0; i < es.length; i++)
@@ -968,7 +968,7 @@ void ServerLevel::entityRemoved(std::shared_ptr<Entity> e)
 {
     Level::entityRemoved(e);
 	entitiesById.erase(e->entityId);
-	vector<std::shared_ptr<Entity> > *es = e->getSubEntities();
+	std::vector<std::shared_ptr<Entity> > *es = e->getSubEntities();
 	if (es != NULL)
 	{
 		//for (int i = 0; i < es.length; i++)
@@ -1016,7 +1016,7 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source, 
 		explosion->toBlow.clear();
 	}
 
-	vector<std::shared_ptr<ServerPlayer> > sentTo;
+	std::vector<std::shared_ptr<ServerPlayer> > sentTo;
 	for(AUTO_VAR(it, players.begin()); it != players.end(); ++it)
 	{
 		std::shared_ptr<ServerPlayer> player = dynamic_pointer_cast<ServerPlayer>(*it);
@@ -1144,7 +1144,7 @@ void ServerLevel::setTimeAndAdjustTileTicks(__int64 newTime)
 	__int64 delta = newTime - levelData->getTime();
 	// 4J - can't directly adjust m_delay in a set as it has a const interator, since changing values in here might change the ordering of the elements in the set.
 	// Instead move to a vector, do the adjustment, put back in the set.
-	vector<TickNextTickData> temp;
+	std::vector<TickNextTickData> temp;
 	for(AUTO_VAR(it, tickNextTickList.begin()); it != tickNextTickList.end(); ++it)
 	{
 		temp.push_back(*it);

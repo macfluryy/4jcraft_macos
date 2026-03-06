@@ -52,7 +52,7 @@ void JoinMultiplayerScreen::buttonClicked(Button *button)
         minecraft->options->lastMpIp = replaceAll(ip,L":", L"_");
         minecraft->options->save();
 
-        vector<std::wstring> parts = stringSplit(ip,L'L');
+        std::vector<std::wstring> parts = stringSplit(ip,L'L');
         if (ip[0]==L'[')
 		{
             int pos = (int)ip.find(L"]");

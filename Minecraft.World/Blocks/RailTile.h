@@ -32,7 +32,7 @@ private:
 		Level *level;
         int x, y, z;
         bool usesDataBit;
-        vector<TilePos *> connections;
+        std::vector<TilePos *> connections;
 		bool m_bValidRail; // 4J added
 
 	 public:

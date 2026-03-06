@@ -1440,8 +1440,8 @@ MXSM::MultiplayerSessionReference^ DQRNetworkManager::ConvertToMicrosoftXboxServ
 // this method is able to work out who has been added or removed from the game session, and notify the game of these events.
 void DQRNetworkManager::UpdateRoomSyncPlayers(RoomSyncData *pNewSyncData)
 {
-	vector<DQRNetworkPlayer *> tempPlayers;
-	vector<DQRNetworkPlayer *> newPlayers;
+	std::vector<DQRNetworkPlayer *> tempPlayers;
+	std::vector<DQRNetworkPlayer *> newPlayers;
 
 	EnterCriticalSection(&m_csRoomSyncData);
 
@@ -1574,7 +1574,7 @@ bool DQRNetworkManager::AddRoomSyncPlayer(DQRNetworkPlayer *pPlayer, unsigned in
 void DQRNetworkManager::RemoveRoomSyncPlayersWithSessionAddress(unsigned int sessionAddress)
 {
 	EnterCriticalSection(&m_csRoomSyncData);
-	vector<DQRNetworkPlayer *> removedPlayers;
+	std::vector<DQRNetworkPlayer *> removedPlayers;
 	int iWriteIdx = 0;
 	for( int i = 0; i < m_roomSyncData.playerCount; i++ )
 	{
@@ -1605,7 +1605,7 @@ void DQRNetworkManager::RemoveRoomSyncPlayersWithSessionAddress(unsigned int ses
 // This is called from the host a remove player from the room sync data that is sent out to the clients.
 void DQRNetworkManager::RemoveRoomSyncPlayer(DQRNetworkPlayer *pPlayer)
 {
-	vector<DQRNetworkPlayer *> removedPlayers;
+	std::vector<DQRNetworkPlayer *> removedPlayers;
 	int iWriteIdx = 0;
 	for( int i = 0; i < m_roomSyncData.playerCount; i++ )
 	{

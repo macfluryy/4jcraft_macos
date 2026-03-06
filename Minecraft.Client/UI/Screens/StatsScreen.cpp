@@ -418,7 +418,7 @@ void StatsScreen::StatisticsList::sortByColumn(int column)
 StatsScreen::ItemStatisticsList::ItemStatisticsList(StatsScreen *ss) : StatsScreen::StatisticsList(ss)
 {
 	//4J Gordon: Removed, not used anyway
-	/*for(vector<ItemStat *>::iterator it = Stats::itemStats->begin(); it != Stats::itemStats->end(); it++ )
+	/*for(std::vector<ItemStat *>::iterator it = Stats::itemStats->begin(); it != Stats::itemStats->end(); it++ )
 	{
 		ItemStat *stat = *it;
 
@@ -545,7 +545,7 @@ std::wstring StatsScreen::ItemStatisticsList::getHeaderDescriptionId(int column)
 StatsScreen::BlockStatisticsList::BlockStatisticsList(StatsScreen *ss) : StatisticsList(ss)
 {
 	//4J Gordon: Removed, not used anyway
-	/*for(vector<ItemStat *>::iterator it = Stats::blockStats->begin(); it != Stats::blockStats->end(); it++ )
+	/*for(std::vector<ItemStat *>::iterator it = Stats::blockStats->begin(); it != Stats::blockStats->end(); it++ )
 	{
 		ItemStat *stat = *it;
 

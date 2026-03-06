@@ -20,7 +20,7 @@ StatParam::StatParam(const std::wstring &base)
 {
 	m_base = base;
 	//m_numArgs = numArgs;
-	m_args = vector<int>();
+	m_args = std::vector<int>();
 
     unsigned int count=0;
     std::wstring::size_type pos =base.find(L"*");
@@ -46,9 +46,9 @@ void StatParam::addArgs(int v1, ...)
 	va_end(argptr);
 }
 
-vector<std::wstring> *StatParam::getStats()
+std::vector<std::wstring> *StatParam::getStats()
 {
-	vector<std::wstring> *out = new vector<std::wstring>();
+	std::vector<std::wstring> *out = new std::vector<std::wstring>();
 	
 	static const int MAXSIZE = 256;
 	static const std::wstring SUBSTR = L"*";
@@ -91,13 +91,13 @@ DurangoStatsDebugger::DurangoStatsDebugger()
 	InitializeCriticalSection(&m_retrievedStatsLock);
 }
 
-vector<std::wstring> *DurangoStatsDebugger::getStats()
+std::vector<std::wstring> *DurangoStatsDebugger::getStats()
 {
-	vector<std::wstring> *out = new vector<std::wstring>();
+	std::vector<std::wstring> *out = new std::vector<std::wstring>();
 
 	for (auto it = m_stats.begin(); it!=m_stats.end(); it++)
 	{
-		vector<std::wstring> *sublist = (*it)->getStats();
+		std::vector<std::wstring> *sublist = (*it)->getStats();
 		out->insert(out->end(), sublist->begin(), sublist->end());
 	}
 
@@ -322,7 +322,7 @@ void DurangoStatsDebugger::PrintStats(int iPad)
 {
 	if (instance == NULL) instance = Initialize();
 
-	vector<std::wstring> *tmp = instance->getStats();
+	std::vector<std::wstring> *tmp = instance->getStats();
 	instance->m_printQueue.insert(instance->m_printQueue.end(), tmp->begin(), tmp->end());
 
 	// app.DebugPrintf("[DEBUG] START\n");
@@ -407,7 +407,7 @@ void DurangoStatsDebugger::retrieveStats(int iPad)
 	// Create Stat retrieval threads until there is no long any stats to start retrieving.
 	while ( !instance->m_printQueue.empty() )
 	{
-		vector<std::wstring> *printing = new vector<std::wstring>();
+		std::vector<std::wstring> *printing = new std::vector<std::wstring>();
 
 		if (m_printQueue.size() > R_SIZE)
 		{

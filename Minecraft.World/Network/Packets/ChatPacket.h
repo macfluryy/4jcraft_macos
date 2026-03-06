@@ -79,8 +79,8 @@ public:
 	};
 
 public:
-	vector<std::wstring> m_stringArgs;
-	vector<int> m_intArgs;
+	std::vector<std::wstring> m_stringArgs;
+	std::vector<int> m_intArgs;
 	EChatPacketMessage m_messageType;
 
 	ChatPacket();

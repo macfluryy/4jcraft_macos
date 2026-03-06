@@ -21,7 +21,7 @@ class StrongholdFeature : public StructureFeature
 public:
 	static void staticCtor();
 private:
-	static vector<Biome *> allowedBiomes;
+	static std::vector<Biome *> allowedBiomes;
 
     bool isSpotSelected;
 	static const int strongholdPos_length = 1;// Java game has 3, but xbox game only has 1 because of the world size;	// 4J added
@@ -33,7 +33,7 @@ public:
 
 protected:
 	virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat=false);
-	vector<TilePos> *getGuesstimatedFeaturePositions();
+	std::vector<TilePos> *getGuesstimatedFeaturePositions();
     virtual StructureStart *createStructureStart(int x, int z);
 
 private:

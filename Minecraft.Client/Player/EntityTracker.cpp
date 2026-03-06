@@ -115,7 +115,7 @@ void EntityTracker::removePlayer(std::shared_ptr<Entity> e)
 
 void EntityTracker::tick()
 {
-    vector<std::shared_ptr<ServerPlayer> > movedPlayers;
+    std::vector<std::shared_ptr<ServerPlayer> > movedPlayers;
 	for( AUTO_VAR(it, entities.begin()); it != entities.end(); it++ )
 	{
 		std::shared_ptr<TrackedEntity> te = *it;

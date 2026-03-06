@@ -459,7 +459,7 @@ eINSTANCEOF MobSpawner::bedEnemies[bedEnemyCount] = {
 };
 
 
-bool MobSpawner::attackSleepingPlayers(Level *level, vector<std::shared_ptr<Player> > *players)
+bool MobSpawner::attackSleepingPlayers(Level *level, std::vector<std::shared_ptr<Player> > *players)
 {
 
 	bool somebodyWokeUp = false;
@@ -590,7 +590,7 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 {
 	// 4J - not for our version. Creates a few too many mobs.
 #if 0
-	vector<Biome::MobSpawnerData *> *mobs = biome->getMobs(MobCategory::creature);
+	std::vector<Biome::MobSpawnerData *> *mobs = biome->getMobs(MobCategory::creature);
 	if (mobs->empty())
 	{
 		return;
@@ -598,7 +598,7 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 
 	while (random->nextFloat() < biome->getCreatureProbability())
 	{
-		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((vector<WeighedRandomItem *> *)mobs));
+		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((std::vector<WeighedRandomItem *> *)mobs));
 		int count = type->minCount + random->nextInt(1 + type->maxCount - type->minCount);
 
 		int x = xo + random->nextInt(cellWidth);
