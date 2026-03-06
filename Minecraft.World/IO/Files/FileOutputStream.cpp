@@ -86,7 +86,7 @@ void FileOutputStream::write(unsigned int b)
 		);
 #else // LINUX
 	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
-	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
+	ssize_t numberOfBytesWritten = ::write(fileDescriptor, &value, 1);
 	int result = static_cast<int>(numberOfBytesWritten);
 #endif // _WIN32
 
@@ -115,7 +115,7 @@ void FileOutputStream::write(byteArray b)
 		);
 #else // Linux
 	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
-	ssize_t numberOfBytesWritten = ::write(fileDescriptor, NULL, 1);
+	ssize_t numberOfBytesWritten = ::write(fileDescriptor, static_cast<const void*>(b.data), b.length);
 	int result = static_cast<int>(numberOfBytesWritten);
 #endif // _WIN32
 

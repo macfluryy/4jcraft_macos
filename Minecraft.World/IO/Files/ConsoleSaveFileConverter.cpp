@@ -102,7 +102,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile *sourceSave, ConsoleS
 			{
 				FileEntry *sourceFe = sourceSave->createFile( sourcePlayerDatPath );
 				FileEntry *targetFe = targetSave->createFile( targetPlayerDatPath );
-				printf("Processing player dat file %s\n", playerFiles->at(fileIdx)->data.filename);
+				wprintf(L"Processing player dat file %ls\n", playerFiles->at(fileIdx)->data.filename);
 				ProcessSimpleFile(sourceSave, sourceFe, targetSave, targetFe);
 
 				targetFe->data.lastModifiedTime = sourceFe->data.lastModifiedTime;

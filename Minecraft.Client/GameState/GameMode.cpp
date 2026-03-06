@@ -49,6 +49,7 @@ void GameMode::render(float a)
 
 bool GameMode::useItem(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, bool bTestUseOnly)
 {
+	return false;
 }
 
 void GameMode::initPlayer(shared_ptr<Player> player)
