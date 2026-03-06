@@ -20,7 +20,7 @@ SavedDataStorage::SavedDataStorage(LevelStorage *levelStorage)
     loadAuxValues();
 }
 
-std::shared_ptr<SavedData> SavedDataStorage::get(const type_info& clazz, const std::wstring& id)
+std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz, const std::wstring& id)
 {
 	AUTO_VAR(it, cache.find( id ));
 	if (it != cache.end()) return (*it).second;

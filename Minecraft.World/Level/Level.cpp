@@ -3768,7 +3768,7 @@ std::vector<std::shared_ptr<Entity> > *Level::getEntities(std::shared_ptr<Entity
 }
 
 
-std::vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const type_info& baseClass, AABB *bb)
+std::vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const std::type_info& baseClass, AABB *bb)
 {
 	int xc0 = Mth::floor((bb->x0 - 2) / 16);
 	int xc1 = Mth::floor((bb->x1 + 2) / 16);
@@ -3805,7 +3805,7 @@ std::vector<std::shared_ptr<Entity> > *Level::getEntitiesOfClass(const type_info
 	return es;
 }
 
-std::shared_ptr<Entity> Level::getClosestEntityOfClass(const type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source)
+std::shared_ptr<Entity> Level::getClosestEntityOfClass(const std::type_info& baseClass, AABB *bb, std::shared_ptr<Entity> source)
 {
 	std::vector<std::shared_ptr<Entity> > *entities = getEntitiesOfClass(baseClass, bb);
 	std::shared_ptr<Entity> closest = nullptr;
@@ -4512,7 +4512,7 @@ void Level::setSavedData(const std::wstring& id, std::shared_ptr<SavedData> data
 }
 
 
-std::shared_ptr<SavedData> Level::getSavedData(const type_info& clazz, const std::wstring& id)
+std::shared_ptr<SavedData> Level::getSavedData(const std::type_info& clazz, const std::wstring& id)
 {
 	return savedDataStorage->get(clazz, id);
 }

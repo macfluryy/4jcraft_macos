@@ -55,7 +55,7 @@ public:
 
 	// 4J Stu - Added the sendToAnyClient param so we can limit some packets to be only sent to one player on a system
 	// 4J Stu - Added renderStats param for use in debugging
-	static void map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const type_info& clazz, packetCreateFn );
+	static void map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const std::type_info& clazz, packetCreateFn );
 
 public:
 	const __int64 createTime;

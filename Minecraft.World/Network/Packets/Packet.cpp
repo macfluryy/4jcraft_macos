@@ -175,7 +175,7 @@ std::vector<Packet::PacketStatistics *> Packet::renderableStats = std::vector<Pa
 int Packet::renderPos = 0;
 
 // sendToAnyClient - true - send to anyone, false - Sends to one person per dimension per machine
-void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const type_info& clazz, packetCreateFn createFn)
+void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const std::type_info& clazz, packetCreateFn createFn)
 {
 #if 0
 	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(std::wstring(L"Duplicate packet id:") + _toString<int>(id));

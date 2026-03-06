@@ -15,10 +15,10 @@ private:
 	float maxDist;
 	Path *path;
 	PathNavigation *pathNav;
-	const type_info& avoidType;
+	const std::type_info& avoidType;
 
 public:
-	AvoidPlayerGoal(PathfinderMob *mob, const type_info& avoidType, float maxDist, float walkSpeed, float sprintSpeed);
+	AvoidPlayerGoal(PathfinderMob *mob, const std::type_info& avoidType, float maxDist, float walkSpeed, float sprintSpeed);
 	~AvoidPlayerGoal();
 
 	virtual bool canUse();

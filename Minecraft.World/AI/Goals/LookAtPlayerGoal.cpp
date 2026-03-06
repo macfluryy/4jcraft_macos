@@ -5,7 +5,7 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "LookAtPlayerGoal.h"
 
-LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance) : lookAtType(lookAtType)
+LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance) : lookAtType(lookAtType)
 {
 	this->mob = mob;
 	this->lookDistance = lookDistance;
@@ -15,7 +15,7 @@ LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float 
 	lookTime = 0;
 }
 
-LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance, float probability) : lookAtType(lookAtType)
+LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance, float probability) : lookAtType(lookAtType)
 {
 	this->mob = mob;
 	this->lookDistance = lookDistance;
