@@ -1,11 +1,5 @@
 render_sources = files(
   '4J_Render.cpp',
-  'RendererCbuff.cpp',
-  'RendererCore.cpp',
-  'RendererMatrix.cpp',
-  'RendererState.cpp',
-  'RendererTexture.cpp',
-  'RendererVertex.cpp',
   'stdafx.cpp',
 )
 
