@@ -63,7 +63,7 @@ void Tag::print(char *prefix, wostream out)
 		out << L"(\"" << name << L"\")";
 	}
 	out << L": ";
-	out << toString() << endl;
+	out << toString() << std::endl;
 }
 
 std::wstring Tag::getName()

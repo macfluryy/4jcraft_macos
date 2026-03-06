@@ -222,7 +222,7 @@ public:
 	{
 		/*
         Tag::print(prefix, out);
-		out << prefix << "{" << endl;
+		out << prefix << "{" << std::endl;
 
 		char *newPrefix = new char[ strlen(prefix) + 4 ];
 		strcpy( newPrefix, prefix);
@@ -234,7 +234,7 @@ public:
 			it->second->print(newPrefix, out);
 		}
 		delete[] newPrefix;
-		out << prefix << "}" << endl;
+		out << prefix << "}" << std::endl;
 		*/
     }
 
