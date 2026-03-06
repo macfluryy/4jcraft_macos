@@ -90,7 +90,7 @@ void pipe_select_interrupter::recreate()
 
 void pipe_select_interrupter::interrupt()
 {
-  char uint8_t = 0;
+  char byte = 0;
   signed_size_type result = ::write(write_descriptor_, &byte, 1);
   (void)result;
 }

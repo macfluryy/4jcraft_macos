@@ -172,7 +172,7 @@ public:
     // External Operations
     void  process_bit( bool bit );
     void  process_bits( unsigned char bits, std::size_t bit_count );
-    void  process_byte( unsigned char uint8_t );
+    void  process_byte( unsigned char byte );
     void  process_block( void const *bytes_begin, void const *bytes_end );
     void  process_bytes( void const *buffer, std::size_t byte_count );
 
@@ -223,14 +223,14 @@ public:
     void        reset( value_type new_rem = InitRem );
 
     // External Operations
-    void  process_byte( unsigned char uint8_t );
+    void  process_byte( unsigned char byte );
     void  process_block( void const *bytes_begin, void const *bytes_end );
     void  process_bytes( void const *buffer, std::size_t byte_count );
 
     value_type  checksum() const;
 
     // Operators
-    void        operator ()( unsigned char uint8_t );
+    void        operator ()( unsigned char byte );
     value_type  operator ()() const;
 
 private:
