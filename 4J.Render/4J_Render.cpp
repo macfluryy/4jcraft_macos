@@ -11,6 +11,9 @@
 #include <cmath>
 #include <pthread.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 C4JRender RenderManager;
 
 static GLFWwindow *s_window = nullptr;
@@ -495,106 +498,62 @@ void C4JRender::TextureDynamicUpdateEnd()   {}
 
 void C4JRender::Tick() {}
 void C4JRender::UpdateGamma(unsigned short) {}
-// really don't know if this is nessesary but didn't find any other functions to load images properly as a png..
-// im sorry.
-#ifdef __linux__
-#include <png.h>
-#include <stdio.h>
-#include <string.h>
 
-static HRESULT LoadPNGFromRows(png_structp png, png_infop info, D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut)
+// This sucks, but at least better than libpng
+static HRESULT LoadFromSTB(unsigned char* data, int width, int height, D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut)
 {
-    int width = png_get_image_width(png, info);
-    int height = png_get_image_height(png, info);
-    png_byte color_type = png_get_color_type(png, info);
-    png_byte bit_depth = png_get_bit_depth(png, info);
+    int pixelCount = width * height;
+    int* pixels = new int[pixelCount];
 
-    if (bit_depth == 16) png_set_strip_16(png);
-    if (color_type == PNG_COLOR_TYPE_PALETTE) png_set_palette_to_rgb(png);
-    if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand_gray_1_2_4_to_8(png);
-    if (png_get_valid(png, info, PNG_INFO_tRNS)) png_set_tRNS_to_alpha(png);
-    if (color_type == PNG_COLOR_TYPE_RGB || color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_PALETTE)
-        png_set_filler(png, 0xFF, PNG_FILLER_AFTER);
-    if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
-        png_set_gray_to_rgb(png);
-
-    png_read_update_info(png, info);
-
-    unsigned char *buf = new unsigned char[width * height * 4];
-    png_bytep *rows = new png_bytep[height];
-    for (int y = 0; y < height; y++)
-        rows[y] = buf + y * width * 4;
-    png_read_image(png, rows);
-    delete[] rows;
-    // considering i worked on previous projects with raw pngs,,,,, 
-    int *pixels = new int[width * height];
-    for (int i = 0; i < width * height; i++)
+    for (int i = 0; i < pixelCount; i++)
     {
-        unsigned char r = buf[i * 4 + 0];
-        unsigned char g = buf[i * 4 + 1];
-        unsigned char b = buf[i * 4 + 2];
-        unsigned char a = buf[i * 4 + 3];
+        unsigned char r = data[i * 4 + 0];
+        unsigned char g = data[i * 4 + 1];
+        unsigned char b = data[i * 4 + 2];
+        unsigned char a = data[i * 4 + 3];
+
+        //pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
         pixels[i] = (a << 24) | (r << 16) | (g << 8) | b;
     }
-    delete[] buf;
 
-    pSrcInfo->Width = width;
-    pSrcInfo->Height = height;
+    if (pSrcInfo)
+    {
+        pSrcInfo->Width = width;
+        pSrcInfo->Height = height;
+    }
+
     *ppDataOut = pixels;
     return S_OK;
 }
 
-HRESULT C4JRender::LoadTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut)
+HRESULT C4JRender::LoadTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut)
 {
-    FILE *fp = fopen(szFilename, "rb");
-    if (!fp) return E_FAIL;
+    int width, height, channels;
 
-    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png) { fclose(fp); return E_FAIL; }
-    png_infop info = png_create_info_struct(png);
-    if (!info) { png_destroy_read_struct(&png, NULL, NULL); fclose(fp); return E_FAIL; }
-    if (setjmp(png_jmpbuf(png))) { png_destroy_read_struct(&png, &info, NULL); fclose(fp); return E_FAIL; }
+    unsigned char* data = stbi_load(szFilename, &width, &height, &channels, 4);
+    if (!data)
+        return E_FAIL;
 
-    png_init_io(png, fp);
-    png_read_info(png, info);
+    HRESULT hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
 
-    HRESULT hr = LoadPNGFromRows(png, info, pSrcInfo, ppDataOut);
-    png_destroy_read_struct(&png, &info, NULL);
-    fclose(fp);
+    stbi_image_free(data);
     return hr;
 }
 
-struct PNGMemReader { const unsigned char *data; png_size_t pos; png_size_t size; };
-
-static void png_mem_read(png_structp png, png_bytep out, png_size_t len)
+HRESULT C4JRender::LoadTextureData(BYTE* pbData, DWORD dwBytes, D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut)
 {
-    PNGMemReader *r = (PNGMemReader *)png_get_io_ptr(png);
-    if (r->pos + len > r->size) len = r->size - r->pos;
-    memcpy(out, r->data + r->pos, len);
-    r->pos += len;
-}
+    int width, height, channels;
 
-HRESULT C4JRender::LoadTextureData(BYTE *pbData, DWORD dwBytes, D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut)
-{
-    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png) return E_FAIL;
-    png_infop info = png_create_info_struct(png);
-    if (!info) { png_destroy_read_struct(&png, NULL, NULL); return E_FAIL; }
-    if (setjmp(png_jmpbuf(png))) { png_destroy_read_struct(&png, &info, NULL); return E_FAIL; }
+    unsigned char* data = stbi_load_from_memory(pbData, dwBytes, &width, &height, &channels, 4);
+    if (!data)
+        return E_FAIL;
 
-    PNGMemReader reader = { pbData, 0, dwBytes };
-    png_set_read_fn(png, &reader, png_mem_read);
-    png_read_info(png, info);
+    HRESULT hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
 
-    HRESULT hr = LoadPNGFromRows(png, info, pSrcInfo, ppDataOut);
-    png_destroy_read_struct(&png, &info, NULL);
+    stbi_image_free(data);
     return hr;
 }
 
-#else
-HRESULT C4JRender::LoadTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut) { return S_OK; }
-HRESULT C4JRender::LoadTextureData(BYTE *pbData, DWORD dwBytes, D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut) { return S_OK; }
-#endif
 HRESULT C4JRender::SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int *ppDataOut) { return S_OK; }
 HRESULT C4JRender::SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn) { return S_OK; }
 void C4JRender::TextureGetStats() {}
