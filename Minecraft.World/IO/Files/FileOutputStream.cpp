@@ -74,7 +74,7 @@ FileOutputStream::~FileOutputStream()
 //b - the byte to be written.
 void FileOutputStream::write(unsigned int b)
 {	
-	byte value = (byte) b;
+	uint8_t value = (uint8_t) b;
 
 #if defined(_WIN32)
 	BOOL result = WriteFile(

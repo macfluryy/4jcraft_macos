@@ -92,7 +92,7 @@ void BufferedOutputStream::write(byteArray b)
 //b - the byte to be written.
 void BufferedOutputStream::write(unsigned int b)
 {
-	buf[count++] = (byte) b;
+	buf[count++] = (uint8_t) b;
 	if( count == buf.length )
 	{
 		flush();

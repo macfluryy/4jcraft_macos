@@ -50,9 +50,9 @@ void ContainerClickPacket::read(DataInputStream *dis) //throws IOException
 
 void ContainerClickPacket::write(DataOutputStream *dos) // throws IOException
 {
-	dos->writeByte((byte)containerId);
+	dos->writeByte((uint8_t)containerId);
 	dos->writeShort(slotNum);
-	dos->writeByte((byte)buttonNum);
+	dos->writeByte((uint8_t)buttonNum);
 	dos->writeShort(uid);
 	dos->writeBoolean(quickKey);
 

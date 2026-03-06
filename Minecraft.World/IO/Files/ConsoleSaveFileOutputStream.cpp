@@ -38,7 +38,7 @@ void ConsoleSaveFileOutputStream::write(unsigned int b)
 {	
 	DWORD numberOfBytesWritten;
 
-	byte value = (byte) b;
+	uint8_t value = (uint8_t) b;
 
 	BOOL result = m_saveFile->writeFile(
 		m_file,

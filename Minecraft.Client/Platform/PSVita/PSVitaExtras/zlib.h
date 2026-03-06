@@ -599,7 +599,7 @@ ZEXTERN int ZEXPORT deflateSetDictionary OF((z_streamp strm,
    compressor and decompressor must use exactly the same dictionary (see
    inflateSetDictionary).
 
-     The dictionary should consist of strings (byte sequences) that are likely
+     The dictionary should consist of strings (uint8_t sequences) that are likely
    to be encountered later in the data to be compressed, with the most commonly
    used strings preferably put towards the end of the dictionary.  Using a
    dictionary is most useful when the data to be compressed is short and can be

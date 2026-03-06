@@ -5,8 +5,8 @@
 class SharedKeyPacket : public Packet
 {
 #if 0
-	private byte[] keybytes = new byte[]{};
-	private byte[] nonce = new byte[]{};
+	private byte[] keybytes = new uint8_t[]{};
+	private byte[] nonce = new uint8_t[]{};
 
 	private SecretKey secretKey;
 

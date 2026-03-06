@@ -100,7 +100,7 @@ void Sheep::defineSynchedData()
 	Animal::defineSynchedData();
 
 	// sheared and color share a byte
-	entityData->define(DATA_WOOL_ID, ((byte) 0)); //was new Byte((byte), 0)
+	entityData->define(DATA_WOOL_ID, ((uint8_t) 0)); //was new Byte((uint8_t), 0)
 }
 
 void Sheep::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
@@ -117,7 +117,7 @@ int Sheep::getDeathLoot()
 	return Tile::cloth_Id;
 }
 
-void Sheep::handleEntityEvent(byte id)
+void Sheep::handleEntityEvent(uint8_t id)
 {
 	if (id == EntityEvent::EAT_GRASS)
 	{
@@ -195,7 +195,7 @@ void Sheep::addAdditonalSaveData(CompoundTag *tag)
 {
 	Animal::addAdditonalSaveData(tag);
 	tag->putBoolean(L"Sheared", isSheared());
-	tag->putByte(L"Color", (byte) getColor());
+	tag->putByte(L"Color", (uint8_t) getColor());
 }
 
 void Sheep::readAdditionalSaveData(CompoundTag *tag) 
@@ -227,8 +227,8 @@ int Sheep::getColor()
 
 void Sheep::setColor(int color) 
 {
-	byte current = entityData->getByte(DATA_WOOL_ID);
-	entityData->set(DATA_WOOL_ID, (byte) ((current & 0xf0) | (color & 0x0f)));
+	uint8_t current = entityData->getByte(DATA_WOOL_ID);
+	entityData->set(DATA_WOOL_ID, (uint8_t) ((current & 0xf0) | (color & 0x0f)));
 }
 
 bool Sheep::isSheared() 
@@ -238,14 +238,14 @@ bool Sheep::isSheared()
 
 void Sheep::setSheared(bool value) 
 {
-	byte current = entityData->getByte(DATA_WOOL_ID);
+	uint8_t current = entityData->getByte(DATA_WOOL_ID);
 	if (value) 
 	{
-		entityData->set(DATA_WOOL_ID, (byte) (current | 0x10));
+		entityData->set(DATA_WOOL_ID, (uint8_t) (current | 0x10));
 	} 
 	else 
 	{
-		entityData->set(DATA_WOOL_ID, (byte) (current & ~0x10));
+		entityData->set(DATA_WOOL_ID, (uint8_t) (current & ~0x10));
 	}
 }
 

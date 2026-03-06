@@ -406,8 +406,8 @@ void				C_4JProfile::Initialise( DWORD dwTitleID,
 {
 	for( int i = 0; i < 4; i++ )
 	{
-		profileData[i] = new byte[iGameDefinedDataSizeX4/4];
-		ZeroMemory(profileData[i],sizeof(byte)*iGameDefinedDataSizeX4/4);
+		profileData[i] = new uint8_t[iGameDefinedDataSizeX4/4];
+		ZeroMemory(profileData[i],sizeof(uint8_t)*iGameDefinedDataSizeX4/4);
 
 		// Set some sane initial values!
 		GAME_SETTINGS *pGameSettings = (GAME_SETTINGS *)profileData[i];

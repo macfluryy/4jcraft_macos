@@ -34,7 +34,7 @@ void InteractPacket::write(DataOutputStream *dos) // throws IOException
 {
 	dos->writeInt(source);
 	dos->writeInt(target);
-	dos->writeByte((byte)action);
+	dos->writeByte((uint8_t)action);
 }
 
 void InteractPacket::handle(PacketListener *listener) 

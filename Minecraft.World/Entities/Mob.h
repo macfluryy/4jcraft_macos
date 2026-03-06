@@ -324,7 +324,7 @@ public:
 	virtual int getMaxSpawnClusterSize();
 	virtual shared_ptr<ItemInstance> getCarriedItem();
 	virtual shared_ptr<ItemInstance> getArmor(int pos);
-	virtual void handleEntityEvent(byte id);
+	virtual void handleEntityEvent(uint8_t id);
 	virtual bool isSleeping();
 	virtual Icon *getItemInHandIcon(shared_ptr<ItemInstance> item, int layer);
 	virtual bool shouldRender(Vec3 *c);

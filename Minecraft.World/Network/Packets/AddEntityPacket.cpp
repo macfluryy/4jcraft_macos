@@ -16,8 +16,8 @@ void AddEntityPacket::_init(shared_ptr<Entity> e, int type, int data, int xp, in
 	x = xp;//(int) floor(e->x * 32);
 	y = yp;//(int) floor(e->y * 32);
 	z = zp;//(int) floor(e->z * 32);
-	yRot = static_cast<byte>(yRotp);
-	xRot = static_cast<byte>(xRotp);
+	yRot = static_cast<uint8_t>(yRotp);
+	xRot = static_cast<uint8_t>(xRotp);
 	this->type = type;
 	this->data = data;
 	if (data > -1)	// 4J - changed "no data" value to be -1, we can have a valid entity id of 0
@@ -79,7 +79,7 @@ void AddEntityPacket::read(DataInputStream *dis) // throws IOException  TODO 4J 
 void AddEntityPacket::write(DataOutputStream *dos) // throws IOException TODO 4J JEV add throws statement
 {
 	dos->writeShort(id);
-	dos->writeByte(static_cast<byte>(type));
+	dos->writeByte(static_cast<uint8_t>(type));
 #ifdef _LARGE_WORLDS
 	dos->writeInt(x);
 	dos->writeInt(y);

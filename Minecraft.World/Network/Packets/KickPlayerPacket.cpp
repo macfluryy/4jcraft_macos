@@ -28,7 +28,7 @@ void KickPlayerPacket::read(DataInputStream *dis) //throws IOException
 
 void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((byte)m_networkSmallId);
+	dos->writeByte((uint8_t)m_networkSmallId);
 }
 
 int KickPlayerPacket::getEstimatedSize() 

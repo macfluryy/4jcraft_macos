@@ -360,7 +360,7 @@ void Tesselator_SPU::color(int r, int g, int b, int a)
     col = (r << 24) | (g << 16) | (b << 8) | (a);
 }
 
-void Tesselator_SPU::color(byte r, byte g, byte b)
+void Tesselator_SPU::color(uint8_t r, uint8_t g, uint8_t b)
 {
 	color(r & 0xff, g & 0xff, b & 0xff);
 }
@@ -723,9 +723,9 @@ void Tesselator_SPU::noColor()
 void Tesselator_SPU::normal(float x, float y, float z)
 {
     hasNormal = true;
-    byte xx = (byte) (x * 127);
-    byte yy = (byte) (y * 127);
-    byte zz = (byte) (z * 127);
+    uint8_t xx = (uint8_t) (x * 127);
+    uint8_t yy = (uint8_t) (y * 127);
+    uint8_t zz = (uint8_t) (z * 127);
 
     _normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
 }

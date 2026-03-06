@@ -4425,7 +4425,7 @@ bool Level::mayInteract(shared_ptr<Player> player, int xt, int yt, int zt, int c
 }
 
 
-void Level::broadcastEntityEvent(shared_ptr<Entity> e, byte event)
+void Level::broadcastEntityEvent(shared_ptr<Entity> e, uint8_t event)
 {
 }
 

@@ -7,7 +7,7 @@ class ServerAuthDataPacket : public Packet
 #if 0
 	private String serverId;
 	private PublicKey publicKey;
-	private byte[] nonce = new byte[]{};
+	private byte[] nonce = new uint8_t[]{};
 
 	public ServerAuthDataPacket() {
 		// Needed

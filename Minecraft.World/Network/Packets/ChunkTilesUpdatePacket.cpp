@@ -21,10 +21,10 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket()
 	shouldDelay = true;
 	xc = 0;
 	zc = 0;
-	count = (byte)0;
+	count = (uint8_t)0;
 }
 
-ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positions, byte count, Level *level)
+ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positions, uint8_t count, Level *level)
 {
 	shouldDelay = true;
 	this->xc = xc;
@@ -35,15 +35,15 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc, shortArray positi
 	this->blocks = byteArray((unsigned int)count);
 	this->data = byteArray((unsigned int)count);
 	LevelChunk *levelChunk = level->getChunk(xc, zc);
-	for (int i = 0; (byte)i < count; i++) 
+	for (int i = 0; (uint8_t)i < count; i++) 
 	{
 		int x = (positions[i] >> 12) & 15;
 		int z = (positions[i] >> 8) & 15;
 		int y = (positions[i]) & 255;
 
 		this->positions[i] = positions[i];
-		blocks[i] = (byte) levelChunk->getTile(x, y, z);
-		data[i] = (byte) levelChunk->getData(x, y, z);
+		blocks[i] = (uint8_t) levelChunk->getTile(x, y, z);
+		data[i] = (uint8_t) levelChunk->getData(x, y, z);
 	}
 	levelIdx = ( ( level->dimension->id == 0 ) ? 0 : ( (level->dimension->id == -1) ? 1 : 2 ) );
 }
@@ -66,14 +66,14 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 	int countAndFlags = (int)dis->readByte();
 	bool dataAllZero = (( countAndFlags & 0x80 ) == 0x80 );
 	levelIdx = ( countAndFlags >> 5 ) & 3;
-	count = (byte)countAndFlags & (byte)0x1f;
+	count = (uint8_t)countAndFlags & (uint8_t)0x1f;
 
 	positions = shortArray((short int)count);
 	blocks = byteArray((unsigned int)count);
 	data = byteArray((unsigned int)count);
 
 	int currentBlockType = -1;
-	for( int i = 0; (byte)i < count; i++ )
+	for( int i = 0; (uint8_t)i < count; i++ )
 	{
 		int xzAndFlag = dis->readShort();
 		int y = (int)dis->readByte();
@@ -82,14 +82,14 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 		{
 			currentBlockType = dis->read();
 		}
-		blocks[i] = (byte)currentBlockType;
+		blocks[i] = (uint8_t)currentBlockType;
 		if( !dataAllZero)
 		{
-			data[i] = (byte)dis->read();
+			data[i] = (uint8_t)dis->read();
 		}
 		else
 		{
-			data[i] = (byte)0;
+			data[i] = (uint8_t)0;
 		}
 	}
 }

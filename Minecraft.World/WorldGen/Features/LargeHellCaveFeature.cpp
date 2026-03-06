@@ -140,7 +140,7 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
                         int block = blocks[p];
                         if (block == Tile::hellRock_Id || block == Tile::dirt_Id || block == Tile::grass_Id)
 						{
-                            blocks[p] = (byte) 0;
+                            blocks[p] = (uint8_t) 0;
                         }
                     }
                     p--;

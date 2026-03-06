@@ -282,7 +282,7 @@ void ChatIntegrationLayer::OnOutgoingChatPacketReady(
     __in Microsoft::Xbox::GameChat::ChatPacketEventArgs^ args 
     )
 {
-	byte *bytes;
+	uint8_t *bytes;
 	int byteCount;
 
 	GetBufferBytes(args->PacketBuffer, &bytes);
@@ -300,7 +300,7 @@ void ChatIntegrationLayer::OnOutgoingChatPacketReady(
 
 void ChatIntegrationLayer::OnIncomingChatMessage( 
 	unsigned int sessionAddress,
-	Platform::Array<byte>^ message
+	Platform::Array<uint8_t>^ message
     )
 {
     // To integrate the Chat DLL in your game, change the following code to use your game's network layer.
@@ -797,7 +797,7 @@ void ChatIntegrationLayer::GetBufferBytes( __in Windows::Storage::Streams::IBuff
     srcBufferByteAccess->Buffer(ppOut);
 }
 
-Windows::Storage::Streams::IBuffer^ ChatIntegrationLayer::ArrayToBuffer( __in Platform::Array<byte>^ array )
+Windows::Storage::Streams::IBuffer^ ChatIntegrationLayer::ArrayToBuffer( __in Platform::Array<uint8_t>^ array )
 {
     Windows::Storage::Streams::DataWriter^ writer = ref new Windows::Storage::Streams::DataWriter();
     writer->WriteBytes(array);

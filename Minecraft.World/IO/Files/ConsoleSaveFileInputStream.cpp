@@ -25,7 +25,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 //the next byte of data, or -1 if the end of the file is reached.
 int ConsoleSaveFileInputStream::read()
 {
-	byte byteRead = static_cast<byte>(0);
+	uint8_t byteRead = static_cast<uint8_t>(0);
 	DWORD numberOfBytesRead;
 
 	BOOL result = m_saveFile->readFile(

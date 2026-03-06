@@ -79,7 +79,7 @@ Tag *Tag::setName(const wstring& name)
 
 Tag *Tag::readNamedTag(DataInput *dis)
 {
-	byte type = dis->readByte();
+	uint8_t type = dis->readByte();
 	if ( static_cast<int>(type) == 0) return new EndTag();
 
 	// 4J Stu - readByte can return -1, so if it's that then also mark as the end tag
@@ -96,7 +96,7 @@ Tag *Tag::readNamedTag(DataInput *dis)
 
 	Tag *tag = newTag(type, name);
 	//        short length = dis.readShort();
-	//        byte[] bytes = new byte[length];
+	//        byte[] bytes = new uint8_t[length];
 	//        dis.readFully(bytes);
 
 	tag->load(dis);
@@ -116,7 +116,7 @@ void Tag::writeNamedTag(Tag *tag, DataOutput *dos)
 	tag->write(dos);
 }
 
-Tag *Tag::newTag(byte type, const wstring &name)
+Tag *Tag::newTag(uint8_t type, const wstring &name)
 {
 	switch (type)
 	{
@@ -148,7 +148,7 @@ Tag *Tag::newTag(byte type, const wstring &name)
 	return NULL;
 }
 
-const wchar_t *Tag::getTagName(byte type)
+const wchar_t *Tag::getTagName(uint8_t type)
 {
 	switch (type)
 	{

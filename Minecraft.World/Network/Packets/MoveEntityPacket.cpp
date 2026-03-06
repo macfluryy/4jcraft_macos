@@ -92,11 +92,11 @@ void MoveEntityPacket::PosRot::read(DataInputStream *dis) //throws IOException
 void MoveEntityPacket::PosRot::write(DataOutputStream *dos) //throws IOException 
 {
 	MoveEntityPacket::write(dos);
-	dos->writeByte((byte)xa);
-	dos->writeByte((byte)ya);
-	dos->writeByte((byte)za);
-	dos->writeByte((byte)yRot);
-	dos->writeByte((byte)xRot);
+	dos->writeByte((uint8_t)xa);
+	dos->writeByte((uint8_t)ya);
+	dos->writeByte((uint8_t)za);
+	dos->writeByte((uint8_t)yRot);
+	dos->writeByte((uint8_t)xRot);
 }
 
 int MoveEntityPacket::PosRot::getEstimatedSize() 
@@ -126,9 +126,9 @@ void MoveEntityPacket::Pos::read(DataInputStream *dis) //throws IOException
 void MoveEntityPacket::Pos::write(DataOutputStream *dos) //throws IOException
 {
 	MoveEntityPacket::write(dos);
-	dos->writeByte((byte)xa);
-	dos->writeByte((byte)ya);
-	dos->writeByte((byte)za);
+	dos->writeByte((uint8_t)xa);
+	dos->writeByte((uint8_t)ya);
+	dos->writeByte((uint8_t)za);
 }
 
 int MoveEntityPacket::Pos::getEstimatedSize()
@@ -158,8 +158,8 @@ void MoveEntityPacket::Rot::read(DataInputStream *dis) //throws IOException
 void MoveEntityPacket::Rot::write(DataOutputStream *dos) //throws IOException 
 {
 	MoveEntityPacket::write(dos);
-	dos->writeByte((byte)yRot);
-	dos->writeByte((byte)xRot);
+	dos->writeByte((uint8_t)yRot);
+	dos->writeByte((uint8_t)xRot);
 }
 
 int MoveEntityPacket::Rot::getEstimatedSize()
