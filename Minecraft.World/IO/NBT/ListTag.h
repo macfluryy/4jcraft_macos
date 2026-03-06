@@ -51,7 +51,7 @@ public:
 	{
         printf(prefix);
 
-		out << prefix << "{" << endl;
+		out << prefix << "{" << std::endl;
 
 		char *newPrefix = new char[ strlen(prefix) + 4 ];
 		strcpy( newPrefix, prefix);
@@ -60,7 +60,7 @@ public:
         for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
             printf(newPrefix);
 		delete[] newPrefix;
-		out << prefix << "}" << endl;
+		out << prefix << "}" << std::endl;
 	}
 
     void add(T *tag)
