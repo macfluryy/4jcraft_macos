@@ -407,7 +407,7 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 	case eCompressionType_ZLIBRLE:
 #if (defined __ORBIS__ || defined __PS3__ || defined _DURANGO || defined _WIN64 || defined __linux__)
 		if (pDestination != NULL)
-			return ::uncompress((PBYTE)pDestination, (unsigned long *) pDestSize, (PBYTE) pSource, SrcSize); // Decompress
+			return ::uncompress((Bytef*)pDestination, (unsigned long *) pDestSize, (const Bytef*) pSource, SrcSize); // Decompress
 		else break; // Cannot decompress when destination is NULL
 #else
 		assert(0);
