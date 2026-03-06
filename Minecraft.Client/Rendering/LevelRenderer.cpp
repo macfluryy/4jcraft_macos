@@ -2386,7 +2386,7 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1, Lev
 
 					dirtyChunksLockFreeStack.Push((int *)(index));
 #else
-					dirtyChunksLockFreeStack.Push((int *)(index + 2));		
+					dirtyChunksLockFreeStack.Push((int *)(uintptr_t)(index + 2));		
 #endif
 
 #ifdef _XBOX
@@ -3596,14 +3596,13 @@ void LevelRenderer::staticCtor()
 {
 	s_rebuildCompleteEvents = new C4JThread::EventArray(MAX_CHUNK_REBUILD_THREADS);
 	char threadName[256];
-	for(unsigned int i = 0; i < MAX_CHUNK_REBUILD_THREADS; ++i)
-	{
-		sprintf(threadName,"Rebuild Chunk Thread %d\n",i);
-		rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)i,threadName);
-
-		s_activationEventA[i] = new C4JThread::Event();
-
-		// Threads 1,3 and 5 are generally idle so use them
+	        for(unsigned int i = 0; i < MAX_CHUNK_REBUILD_THREADS; ++i)
+	        {
+	                sprintf(threadName,"Rebuild Chunk Thread %d\n",i);
+	                rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)(uintptr_t)i,threadName);
+	
+	                s_activationEventA[i] = new C4JThread::Event();
+			// Threads 1,3 and 5 are generally idle so use them
 		if((i%3) == 0) rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_A);
 		else if((i%3) == 1)
 		{
@@ -3626,12 +3625,13 @@ int LevelRenderer::rebuildChunkThreadProc(LPVOID lpParam)
 	IntCache::CreateNewThreadStorage();
 	Tesselator::CreateNewThreadStorage(1024*1024);
 	RenderManager.InitialiseContext();
-	Chunk::CreateNewThreadStorage();
-	Tile::CreateNewThreadStorage();
-
-	int index = (size_t)lpParam;
-
-	while(true)
+	        Chunk::CreateNewThreadStorage();
+	        Tile::CreateNewThreadStorage();
+	
+	        int index = (int)(uintptr_t)lpParam;
+	
+	        while(true)
+	
 	{
 		s_activationEventA[index]->WaitForSignal(INFINITE);
 

@@ -359,7 +359,7 @@ void ConsoleSaveFileSplit::RegionFileReference::ReleaseCompressed()
 //	app.DebugPrintf("Releasing compressed data for region file from 0x%.8x\n", fileEntry->data.regionIndex );
 	free(dataCompressed);
 	dataCompressed = NULL;
-	dataCompressedSize = NULL;
+	dataCompressedSize = 0;
 }
 
 FileEntry *ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex)
