@@ -9,7 +9,7 @@
 4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.)
 
 Join our community:
-* Discord (Not currently available): https://discord.gg/zFCwRWkkUg
+* Discord: https://discord.gg/zFCwRWkkUg
 * Steam: https://steamcommunity.com/groups/4JCraft
 
 ## Planned platforms to be supported:
