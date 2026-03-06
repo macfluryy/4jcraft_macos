@@ -12,7 +12,7 @@ class ServerChunkCache : public ChunkSource
 {
 
 private:
-//	unordered_set<int,IntKeyHash, IntKeyEq> toDrop;
+//	std::unordered_set<int,IntKeyHash, IntKeyEq> toDrop;
 private:
 	LevelChunk *emptyChunk;
     ChunkSource *source;

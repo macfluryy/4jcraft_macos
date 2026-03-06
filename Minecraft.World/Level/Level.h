@@ -380,7 +380,7 @@ protected:
 	// AP - See CustomSet.h for an explanation of this
 	CustomSet chunksToPoll;
 #else
-	unordered_set<ChunkPos,ChunkPosKeyHash,ChunkPosKeyEq> chunksToPoll;
+	std::unordered_set<ChunkPos,ChunkPosKeyHash,ChunkPosKeyEq> chunksToPoll;
 #endif
 
 private:

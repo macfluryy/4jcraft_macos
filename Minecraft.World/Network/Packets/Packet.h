@@ -49,9 +49,9 @@ public:
 public:
 	static std::unordered_map<int, packetCreateFn> idToCreateMap; // IntHashMap in 1.8.2 ... needed? // Made public in 1.0.1
 
-	static unordered_set<int> clientReceivedPackets;
-	static unordered_set<int> serverReceivedPackets;
-	static unordered_set<int> sendToAnyClientPackets;
+	static std::unordered_set<int> clientReceivedPackets;
+	static std::unordered_set<int> serverReceivedPackets;
+	static std::unordered_set<int> sendToAnyClientPackets;
 
 	// 4J Stu - Added the sendToAnyClient param so we can limit some packets to be only sent to one player on a system
 	// 4J Stu - Added renderStats param for use in debugging

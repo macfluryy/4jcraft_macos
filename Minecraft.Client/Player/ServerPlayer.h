@@ -23,7 +23,7 @@ public:
     double lastMoveX, lastMoveZ;
     list<ChunkPos> chunksToSend;
 	std::vector<int> entitiesToRemove;
-    unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
+    std::unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
     int spewTimer;
 
 	// 4J-Added, for 'Adventure Time' achievement.

@@ -32,7 +32,7 @@ private:
 public:
 	bool moved;
 
-    unordered_set<std::shared_ptr<ServerPlayer> , PlayerKeyHash, PlayerKeyEq > seenBy;
+    std::unordered_set<std::shared_ptr<ServerPlayer> , PlayerKeyHash, PlayerKeyEq > seenBy;
 
     TrackedEntity(std::shared_ptr<Entity> e, int range, int updateInterval, bool trackDelta);
 

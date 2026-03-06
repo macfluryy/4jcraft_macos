@@ -22,7 +22,7 @@ public:
 	std::shared_ptr<Entity> source;
 	float r;
 
-	unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> toBlow;
+	std::unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> toBlow;
 	
 private:
 	typedef std::unordered_map<std::shared_ptr<Player>, Vec3 * , PlayerKeyHash, PlayerKeyEq> playerVec3Map;

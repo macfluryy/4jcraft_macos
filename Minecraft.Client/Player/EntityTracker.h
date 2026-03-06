@@ -13,7 +13,7 @@ class EntityTracker
 {
 private:
 	ServerLevel *level;
-	unordered_set<std::shared_ptr<TrackedEntity> > entities;
+	std::unordered_set<std::shared_ptr<TrackedEntity> > entities;
     std::unordered_map<int, std::shared_ptr<TrackedEntity> , IntKeyHash2, IntKeyEq> entityMap;	// was IntHashMap
     int maxRange;
 
