@@ -109,10 +109,13 @@ jobs:
           # Copy the binary
           cp "$EXE_PATH" "$BUNDLE/Minecraft.Client"
 
-          # Collect all non-vdso shared library dependencies and copy them in
+          # Collect non-system shared library dependencies and copy them in.
+          # Exclude glibc/libstdc++/libgcc — these are ABI-specific and must
+          # come from the user's system, not from the build runner.
           ldd "$EXE_PATH" \
             | awk '/=>/ { print $3 }' \
             | grep -v '^(' \
+            | grep -Ev '/(libc|libm|libdl|libpthread|librt|libgcc_s|libstdc\+\+|ld-linux)[^/]*\.so' \
             | sort -u \
             | while read -r lib; do
                 [ -f "$lib" ] && cp "$lib" "$BUNDLE/lib/" || true
@@ -160,15 +163,12 @@ jobs:
           3. Run:  ./run.sh [--width W] [--height H] [--fullscreen]
           EOF
 
-          # Pack it up
-          mkdir -p out
-          tar -czf "out/minecraft-client-linux-${SHORT_SHA}.tar.gz" -C out "minecraft-client-linux-${SHORT_SHA}"
-          echo "Packaged: out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
-          ls -lh "out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
+          echo "Bundle ready: $BUNDLE"
+          ls -lh "$BUNDLE" "$BUNDLE/lib"
 
-      - name: Upload artifact (.tar.gz)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
-          path: out/*.tar.gz
+          path: out/minecraft-client-linux-*/
           retention-days: 7
