@@ -41,18 +41,35 @@ On Arch/Manjaro:
 sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
 ```
 
-If you are on wayland, swap glfw-x11 to glfw-wayland, but its doesn't matter cuz xwayland got yourself covered
+If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
 
 ### Configure & Build
 
 > [!IMPORTANT]
 > GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
 
-This project uses the [Meson](https://mesonbuild.com/) build system.
+This project uses the [Meson](https://mesonbuild.com/) (with [Ninja](https://ninja-build.org/)) as a build system and [lld](https://lld.llvm.org/) as a linker. At this time, compilation from Windows is unsupported (but plan).
 
 #### Install Tooling
 
-- Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
+1. Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
+2. Install the `lld` linker using your distro's package manager. This may be distributed as part of an [LLVM toolchain](https://llvm.org/).
+  
+   Debian/Ubuntu:
+   ```bash
+   sudo apt-get install lld
+   ```
+
+   RedHat/Fedora:
+   ```bash
+   sudo dnf install lld
+   ```
+
+   Arch/Manjaro:
+   ```bash
+   sudo pacman -S lld
+   ```
+
 
 #### Configure & Build
 
