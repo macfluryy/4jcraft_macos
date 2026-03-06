@@ -1,0 +1,116 @@
+'''
+Copyright (c) 2026 Pyogenics
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
+
+'''
+Localisation packer tool
+--------------------------------------------------
+Usage: pack_lock.py path/to/lang/dir path/to/output.loc
+'''
+
+from sys import argv
+import xml.etree.ElementTree as ET
+from glob import glob
+from os import path
+from struct import pack
+from io import BytesIO
+
+
+def pack_stream(format, stream, *data):
+    packedData = pack(format, *data)
+    stream.write(packedData)
+
+
+def write_string(string, stream):
+    string = string.encode("utf-8")
+    pack_stream(">H", stream, len(string))
+    stream.write(string)
+
+
+target_dir = argv[1]
+output_file_path = argv[2]
+
+lang_file_paths = glob(f"{target_dir}/*/*.lang")
+
+# Process lang strings
+langs = {}
+for lang_file_path in lang_file_paths:
+    lang_name = path.split(lang_file_path)[0] # This will give us the dir path before strings.lang
+    lang_name = path.split(lang_name)[1] # This will give use just the directory before strings.lang (which should be the lang name)
+
+    lang_file_tree = ET.parse(lang_file_path)
+    lang_root = lang_file_tree.getroot()
+    strings = {}
+    for lang_data in lang_root:
+        string_name = lang_data.attrib["name"]
+        string = lang_data[0].text
+
+        # Some strings have empty values
+        if string == None:
+            string = ""
+
+        strings[string_name] = string
+    print(f"Processed {len(strings)} strings from {lang_file_path}")
+
+    langs[lang_name] = strings
+print(f"Processed {len(langs)} languages")
+
+# Write loc file
+# TODO: allow switching version and handle actually writing those versions
+TARGET_LOC_VERSION = 0
+TARGET_LANG_VERSION = 0
+with open(output_file_path, "wb") as loc_file:
+    # Write header
+    pack_stream(">2I", loc_file,
+        TARGET_LOC_VERSION,
+        len(langs)
+    )
+
+    # Write lang data
+    lang_sizes = {}
+    lang_stream = BytesIO()
+    old_stream_pos = 0
+    for lang_name, strings in langs.items():
+        old_stream_pos = lang_stream.tell()
+
+        # Write header
+        pack_stream(">I", lang_stream, TARGET_LANG_VERSION) # version
+        write_string(lang_name, lang_stream) # lang name
+        pack_stream(">I", lang_stream, len(strings)) # string count
+        
+        # Write strings
+        for string_name, string in strings.items():
+            print(string_name, string)
+            write_string(string_name, lang_stream)
+            write_string(string, lang_stream)
+        
+        lang_sizes[lang_name] = lang_stream.tell() - old_stream_pos
+
+    # Write lang size map, this is used by the client to skip to its prefered lang and read it
+    for lang_name, size in lang_sizes.items():
+        write_string(lang_name, loc_file)
+        pack_stream(">I", loc_file, size)
+    
+    # Write out the lang data now
+    lang_stream.seek(0, 0)
+    loc_file.write(lang_stream.read())
+
+    print(f"Wrote {loc_file.tell()} bytes to {output_file_path}")
