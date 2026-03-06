@@ -33,7 +33,7 @@ global_cpp_args = [
 # global ccp defs type shi
 global_cpp_defs = [
   '-DSPLIT_SAVES',
-  '-D_LARGE_WORLDS',
+#  '-D_LARGE_WORLDS',
   '-D_EXTENDED_ACHIEVEMENTS',
   '-D_DEBUG_MENUS_ENABLED',
   '-D_DEBUG',
