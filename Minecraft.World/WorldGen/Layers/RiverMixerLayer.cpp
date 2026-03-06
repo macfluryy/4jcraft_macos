@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 
-RiverMixerLayer::RiverMixerLayer(__int64 seed, shared_ptr<Layer>biomes, shared_ptr<Layer>rivers) : Layer(seed)
+RiverMixerLayer::RiverMixerLayer(__int64 seed, std::shared_ptr<Layer>biomes, std::shared_ptr<Layer>rivers) : Layer(seed)
 {
 	this->biomes = biomes;
 	this->rivers = rivers;

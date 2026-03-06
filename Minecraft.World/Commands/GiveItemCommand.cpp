@@ -10,7 +10,7 @@ EGameCommand GiveItemCommand::getId()
 	return eGameCommand_Give;
 }
 
-void GiveItemCommand::execute(shared_ptr<CommandSender> source, byteArray commandData)
+void GiveItemCommand::execute(std::shared_ptr<CommandSender> source, byteArray commandData)
 {
 	ByteArrayInputStream bais(commandData);
 	DataInputStream dis(&bais);
@@ -23,17 +23,17 @@ void GiveItemCommand::execute(shared_ptr<CommandSender> source, byteArray comman
 	
 	bais.reset();
 
-	shared_ptr<ServerPlayer> player = getPlayer(uid);
+	std::shared_ptr<ServerPlayer> player = getPlayer(uid);
 	if(player != NULL && item > 0 && Item::items[item] != NULL)
 	{
-		shared_ptr<ItemInstance> itemInstance = shared_ptr<ItemInstance>(new ItemInstance(item, amount, aux));
+		std::shared_ptr<ItemInstance> itemInstance = std::shared_ptr<ItemInstance>(new ItemInstance(item, amount, aux));
 		player->drop(itemInstance);
 		//logAdminAction(source, L"commands.give.success", ChatPacket::e_ChatCustom, Item::items[item]->getName(itemInstance), item, amount, player->getAName());
 		logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.give.success", item, player->getAName());
 	}
 }
 
-shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(shared_ptr<Player> player, int item, int amount, int aux, const wstring &tag)
+std::shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(std::shared_ptr<Player> player, int item, int amount, int aux, const wstring &tag)
 {
 	if(player == NULL) return nullptr;
 
@@ -46,5 +46,5 @@ shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(shared_ptr<Player> 
 	dos.writeInt(aux);
 	dos.writeUTF(tag);
 
-	return shared_ptr<GameCommandPacket>( new GameCommandPacket(eGameCommand_Give, baos.toByteArray() ));
+	return std::shared_ptr<GameCommandPacket>( new GameCommandPacket(eGameCommand_Give, baos.toByteArray() ));
 }

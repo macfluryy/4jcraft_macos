@@ -1146,14 +1146,14 @@ void Recipes::addShapelessRecipy(ItemInstance *result,... )
 	recipies->push_back(new ShapelessRecipy(result, ingredients, group));	
 }
 
-shared_ptr<ItemInstance> Recipes::getItemFor(shared_ptr<CraftingContainer> craftSlots, Level *level) 
+std::shared_ptr<ItemInstance> Recipes::getItemFor(std::shared_ptr<CraftingContainer> craftSlots, Level *level) 
 {
 	int count = 0;
-	shared_ptr<ItemInstance> first = nullptr;
-	shared_ptr<ItemInstance> second = nullptr;
+	std::shared_ptr<ItemInstance> first = nullptr;
+	std::shared_ptr<ItemInstance> second = nullptr;
 	for (int i = 0; i < craftSlots->getContainerSize(); i++)
 	{
-		shared_ptr<ItemInstance> item = craftSlots->getItem(i);
+		std::shared_ptr<ItemInstance> item = craftSlots->getItem(i);
 		if (item != NULL)
 		{
 			if (count == 0) first = item;
@@ -1170,7 +1170,7 @@ shared_ptr<ItemInstance> Recipes::getItemFor(shared_ptr<CraftingContainer> craft
 		int remaining = (remaining1 + remaining2) + item->getMaxDamage() * 5 / 100;
 		int resultDamage = item->getMaxDamage() - remaining;
 		if (resultDamage < 0) resultDamage = 0;
-		return shared_ptr<ItemInstance>( new ItemInstance(first->id, 1, resultDamage) );
+		return std::shared_ptr<ItemInstance>( new ItemInstance(first->id, 1, resultDamage) );
 	}
 
 	AUTO_VAR(itEnd, recipies->end());
@@ -1188,7 +1188,7 @@ vector <Recipy *> *Recipes::getRecipies()
 }
 
 // 4J-PB - added to deal with Xb0x 'crafting'
-shared_ptr<ItemInstance> Recipes::getItemForRecipe(Recipy *r) 
+std::shared_ptr<ItemInstance> Recipes::getItemForRecipe(Recipy *r) 
 {
 	return r->assemble(nullptr);
 }

@@ -25,7 +25,7 @@ public:
 	ItemInHandRenderer *itemInHandRenderer;
 private:
 	int _tick;
-    shared_ptr<Entity> hovered;
+    std::shared_ptr<Entity> hovered;
 
     // smooth camera movement
     SmoothFloat smoothTurnX;
@@ -108,7 +108,7 @@ public:
 private:
 	void tickLightTexture();
 	void updateLightTexture(float a);
-	float getNightVisionScale(shared_ptr<Player> player, float a);
+	float getNightVisionScale(std::shared_ptr<Player> player, float a);
 public:
 	void render(float a, bool bFirst);		// 4J added bFirst
     void renderLevel(float a);

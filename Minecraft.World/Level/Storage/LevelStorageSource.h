@@ -13,7 +13,7 @@ class LevelStorageSource
 {
 public:
 	virtual wstring getName() = 0;
-    virtual shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) = 0;
+    virtual std::shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) = 0;
     virtual vector<LevelSummary *> *getLevelList() = 0;
     virtual void clearAll() = 0;
     virtual LevelData *getDataTagFor(ConsoleSaveFile *saveFile, const wstring& levelId) = 0;

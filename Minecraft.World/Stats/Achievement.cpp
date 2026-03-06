@@ -25,7 +25,7 @@ Achievement::Achievement(int id, const wstring& name, int x, int y, Tile *icon, 
 {
 }
 
-Achievement::Achievement(int id, const wstring& name, int x, int y, shared_ptr<ItemInstance> icon, Achievement *requires)
+Achievement::Achievement(int id, const wstring& name, int x, int y, std::shared_ptr<ItemInstance> icon, Achievement *requires)
 	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(wstring(L"achievement.").append(name)) ), desc( I18n::get(wstring(L"achievement.").append(name).append(L".desc"))), icon(icon), x(x), y(y), requires(requires)
 {
 }

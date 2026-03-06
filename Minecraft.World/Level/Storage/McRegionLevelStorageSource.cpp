@@ -74,10 +74,10 @@ void McRegionLevelStorageSource::clearAll()
 {
 }
 
-shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) 
+std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) 
 {
 	//        return new LevelStorageProfilerDecorator(new McRegionLevelStorage(baseDir, levelId, createPlayerDir));
-	return shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
+	return std::shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
 bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId) 

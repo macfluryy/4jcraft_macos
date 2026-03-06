@@ -13,7 +13,7 @@ SignItem::SignItem(int id) : Item(id)
 	maxStackSize = 16;
 }
 
-bool SignItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
+bool SignItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
 {
 	// 4J-PB - Adding a test only version to allow tooltips to be displayed
 	if (face == 0) return false;
@@ -43,7 +43,7 @@ bool SignItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> playe
 		}
 
 		instance->count--;
-		shared_ptr<SignTileEntity> ste = dynamic_pointer_cast<SignTileEntity>( level->getTileEntity(x, y, z) );
+		std::shared_ptr<SignTileEntity> ste = dynamic_pointer_cast<SignTileEntity>( level->getTileEntity(x, y, z) );
 		if (ste != NULL) player->openTextEdit(ste);
 
 		// 4J-JEV: Hook for durango 'BlockPlaced' event.

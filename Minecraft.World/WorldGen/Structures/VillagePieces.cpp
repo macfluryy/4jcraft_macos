@@ -347,7 +347,7 @@ void VillagePieces::VillagePiece::spawnVillagers(Level *level, BoundingBox *chun
 		{
 			spawnedVillagerCount++;
 
-			shared_ptr<Villager> villager = shared_ptr<Villager>(new Villager(level, getVillagerProfession(i)));
+			std::shared_ptr<Villager> villager = std::shared_ptr<Villager>(new Villager(level, getVillagerProfession(i)));
 			villager->moveTo(worldX + 0.5, worldY, worldZ + 0.5, 0, 0);
 			level->addEntity(villager);
 		}

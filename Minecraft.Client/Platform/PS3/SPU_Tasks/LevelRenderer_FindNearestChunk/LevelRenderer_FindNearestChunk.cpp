@@ -172,7 +172,7 @@ void LevelRenderer_FindNearestChunk_DataIn::findNearestChunk()
 	for( int p = 0; p < 4; p++ )
 	{
 		// It's possible that the localplayers member can be set to NULL on the main thread when a player chooses to exit the game
-		// So take a reference to the player object now. As it is a shared_ptr it should live as long as we need it
+		// So take a reference to the player object now. As it is a std::shared_ptr it should live as long as we need it
 		PlayerData* player = &playerData[p]; 
 		if( player->bValid == NULL ) continue;
 		if( chunks[p] == NULL ) continue;

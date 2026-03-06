@@ -20,7 +20,7 @@ AddGlobalEntityPacket::AddGlobalEntityPacket()
 	type = 0;
 }
 
-AddGlobalEntityPacket::AddGlobalEntityPacket(shared_ptr<Entity> e) 
+AddGlobalEntityPacket::AddGlobalEntityPacket(std::shared_ptr<Entity> e) 
 {
 	id = e->entityId;
     x = Mth::floor(e->x * 32);

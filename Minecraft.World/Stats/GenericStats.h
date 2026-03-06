@@ -159,10 +159,10 @@ public:
 	static byteArray param_itemsCollected(int id, int aux, int count);
 	static byteArray param_itemsCrafted(int id, int aux, int count);
 	static byteArray param_itemsSmelted(int id, int aux, int cound);
-	static byteArray param_itemsUsed(shared_ptr<Player> plr, shared_ptr<ItemInstance> itm);
+	static byteArray param_itemsUsed(std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm);
 	static byteArray param_itemsBought(int id, int aux, int count);
 
-	static byteArray param_mobKill(shared_ptr<Player> plr, shared_ptr<Mob> mob, DamageSource *dmgSrc);
+	static byteArray param_mobKill(std::shared_ptr<Player> plr, std::shared_ptr<Mob> mob, DamageSource *dmgSrc);
 
 	static byteArray param_breedEntity(eINSTANCEOF mobType);
 	static byteArray param_tamedEntity(eINSTANCEOF mobType);
@@ -318,10 +318,10 @@ protected:
 	virtual byteArray getParam_itemsCollected(int id, int aux, int count);
 	virtual byteArray getParam_itemsCrafted(int id, int aux, int count);
 	virtual byteArray getParam_itemsSmelted(int id, int aux, int count);
-	virtual byteArray getParam_itemsUsed(shared_ptr<Player> plr, shared_ptr<ItemInstance> itm);
+	virtual byteArray getParam_itemsUsed(std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm);
 	virtual byteArray getParam_itemsBought(int id, int aux, int count);
 
-	virtual byteArray getParam_mobKill(shared_ptr<Player> plr, shared_ptr<Mob> mob, DamageSource *dmgSrc);
+	virtual byteArray getParam_mobKill(std::shared_ptr<Player> plr, std::shared_ptr<Mob> mob, DamageSource *dmgSrc);
 
 	virtual byteArray getParam_breedEntity(eINSTANCEOF entityId);
 	virtual byteArray getParam_tamedEntity(eINSTANCEOF entityId);

@@ -95,7 +95,7 @@ bool DemoMode::destroyBlock(int x, int y, int z, int face)
     return SurvivalMode::destroyBlock(x, y, z, face);
 }
 
-bool DemoMode::useItem(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item)
+bool DemoMode::useItem(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item)
 {
     if (demoHasEnded)
 	{
@@ -105,7 +105,7 @@ bool DemoMode::useItem(shared_ptr<Player> player, Level *level, shared_ptr<ItemI
     return SurvivalMode::useItem(player, level, item);
 }
 
-bool DemoMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face)
+bool DemoMode::useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face)
 {
     if (demoHasEnded) {
         outputDemoReminder();
@@ -114,7 +114,7 @@ bool DemoMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<Ite
     return SurvivalMode::useItemOn(player, level, item, x, y, z, face);
 }
 
-void DemoMode::attack(shared_ptr<Player> player, shared_ptr<Entity> entity)
+void DemoMode::attack(std::shared_ptr<Player> player, std::shared_ptr<Entity> entity)
 {
     if (demoHasEnded)
 	{

@@ -89,10 +89,10 @@ void MobSpawnerTileEntity::tick()
 
 		for (int c = 0; c < spawnCount; c++) 
 		{
-			shared_ptr<Mob> entity = dynamic_pointer_cast<Mob> (EntityIO::newEntity(entityId, level));
+			std::shared_ptr<Mob> entity = dynamic_pointer_cast<Mob> (EntityIO::newEntity(entityId, level));
 			if (entity == NULL) return;
 
-			vector<shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entity), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
+			vector<std::shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entity), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
 			int nearBy = (int)vecNearby->size(); //4J - IB, TODO, Mob contains no getClass
 			delete vecNearby;
 
@@ -115,7 +115,7 @@ void MobSpawnerTileEntity::tick()
 				double xp = x + (level->random->nextDouble() - level->random->nextDouble()) * 4;
 				double yp = y + level->random->nextInt(3) - 1;
 				double zp = z + (level->random->nextDouble() - level->random->nextDouble()) * 4;
-				shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>( entity );
+				std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>( entity );
 
 				entity->moveTo(xp, yp, zp, level->random->nextFloat() * 360, 0);
 
@@ -137,7 +137,7 @@ void MobSpawnerTileEntity::tick()
 	TileEntity::tick();
 }
 
-void MobSpawnerTileEntity::fillExtraData(shared_ptr<Entity> entity)
+void MobSpawnerTileEntity::fillExtraData(std::shared_ptr<Entity> entity)
 {
 	if (spawnData != NULL)
 	{
@@ -201,11 +201,11 @@ void MobSpawnerTileEntity::save(CompoundTag *tag)
 	}
 }
 
-shared_ptr<Entity> MobSpawnerTileEntity::getDisplayEntity()
+std::shared_ptr<Entity> MobSpawnerTileEntity::getDisplayEntity()
 {
 	if (displayEntity == NULL || m_bEntityIdUpdated)
 	{
-		shared_ptr<Entity> e = EntityIO::newEntity(getEntityId(), NULL);
+		std::shared_ptr<Entity> e = EntityIO::newEntity(getEntityId(), NULL);
 		fillExtraData(e);
 		displayEntity = e;
 		m_bEntityIdUpdated = false;
@@ -214,17 +214,17 @@ shared_ptr<Entity> MobSpawnerTileEntity::getDisplayEntity()
 	return displayEntity;
 }
 
-shared_ptr<Packet> MobSpawnerTileEntity::getUpdatePacket()
+std::shared_ptr<Packet> MobSpawnerTileEntity::getUpdatePacket()
 {
 	CompoundTag *tag = new CompoundTag();
 	save(tag);
-	return shared_ptr<TileEntityDataPacket>( new TileEntityDataPacket(x, y, z, TileEntityDataPacket::TYPE_MOB_SPAWNER, tag) );
+	return std::shared_ptr<TileEntityDataPacket>( new TileEntityDataPacket(x, y, z, TileEntityDataPacket::TYPE_MOB_SPAWNER, tag) );
 }
 
 // 4J Added
-shared_ptr<TileEntity> MobSpawnerTileEntity::clone()
+std::shared_ptr<TileEntity> MobSpawnerTileEntity::clone()
 {
-	shared_ptr<MobSpawnerTileEntity> result = shared_ptr<MobSpawnerTileEntity>( new MobSpawnerTileEntity() );
+	std::shared_ptr<MobSpawnerTileEntity> result = std::shared_ptr<MobSpawnerTileEntity>( new MobSpawnerTileEntity() );
 	TileEntity::clone(result);
 
 	result->entityId = entityId;

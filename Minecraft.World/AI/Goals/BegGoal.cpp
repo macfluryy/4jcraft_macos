@@ -51,9 +51,9 @@ void BegGoal::tick()
 	--lookTime;
 }
 
-bool BegGoal::playerHoldingInteresting(shared_ptr<Player> player)
+bool BegGoal::playerHoldingInteresting(std::shared_ptr<Player> player)
 {
-	shared_ptr<ItemInstance> item = player->inventory->getSelected();
+	std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 	if (item == NULL) return false;
 	if (!wolf->isTame() && item->id == Item::bone_Id) return true;
 	return wolf->isFood(item);

@@ -100,7 +100,7 @@ bool CactusTile::canSurvive(Level *level, int x, int y, int z)
     return below == Tile::cactus_Id || below == Tile::sand_Id;
 }
 
-void CactusTile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+void CactusTile::entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 {
 	entity->hurt(DamageSource::cactus, 1);
 }

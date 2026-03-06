@@ -8,12 +8,12 @@ class TextEditScreen : public Screen
 protected:
 	wstring title;
 private:
-	shared_ptr<SignTileEntity> sign;
+	std::shared_ptr<SignTileEntity> sign;
     int frame;
     int line;
 
 public:
-	TextEditScreen(shared_ptr<SignTileEntity> sign);
+	TextEditScreen(std::shared_ptr<SignTileEntity> sign);
     virtual void init();
     virtual void removed();
     virtual void tick();

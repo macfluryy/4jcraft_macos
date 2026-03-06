@@ -647,7 +647,7 @@ void ChunkRebuildData::tesselateAllTiles(TileRenderer_SPU* pTileRenderer)
 				{
 // 					if (m_currentLayer == 0 && m_tileData.isEntityTile[tileId])
 // 					{
-// 						shared_ptr<TileEntity> et = region->getTileEntity(x, y, z);
+// 						std::shared_ptr<TileEntity> et = region->getTileEntity(x, y, z);
 // 						if (TileEntityRenderDispatcher::instance->hasRenderer(et))
 // 						{
 // 							renderableTileEntities.push_back(et);

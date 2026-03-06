@@ -618,15 +618,15 @@ public:
 
 	virtual int getIconType();
 	virtual Icon *getIcon(int auxValue);
-	Icon *getIcon(shared_ptr<ItemInstance> itemInstance);
+	Icon *getIcon(std::shared_ptr<ItemInstance> itemInstance);
 
-	const bool useOn(shared_ptr<ItemInstance> itemInstance, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly=false);
+	const bool useOn(std::shared_ptr<ItemInstance> itemInstance, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly=false);
 
-	virtual bool useOn(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
-	virtual float getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile);
-	virtual bool TestUse(Level *level, shared_ptr<Player> player);
-	virtual shared_ptr<ItemInstance> use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player);
-	virtual shared_ptr<ItemInstance> useTimeDepleted(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player);
+	virtual bool useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
+	virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance, Tile *tile);
+	virtual bool TestUse(Level *level, std::shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> use(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> useTimeDepleted(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player);
 	virtual int getMaxStackSize();
 	virtual int getLevelDataForAuxValue(int auxValue);
 	bool isStackedByData();
@@ -651,7 +651,7 @@ public:
 	* @param attacker
 	* @return
 	*/
-	virtual bool hurtEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob, shared_ptr<Mob> attacker);
+	virtual bool hurtEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob, std::shared_ptr<Mob> attacker);
 
 	/**
 	* Returns true when the item was used to mine more efficiently
@@ -664,35 +664,35 @@ public:
 	* @param owner
 	* @return
 	*/
-	virtual bool mineBlock(shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, shared_ptr<Mob> owner);
-	virtual int getAttackDamage(shared_ptr<Entity> entity);
+	virtual bool mineBlock(std::shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, std::shared_ptr<Mob> owner);
+	virtual int getAttackDamage(std::shared_ptr<Entity> entity);
 	virtual bool canDestroySpecial(Tile *tile);
-	virtual bool interactEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob);
+	virtual bool interactEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob);
 	Item *handEquipped();
 	virtual bool isHandEquipped();
 	virtual bool isMirroredArt();
 	Item *setDescriptionId(unsigned int id);
 	LPCWSTR getDescription();
-	LPCWSTR getDescription(shared_ptr<ItemInstance> instance);
+	LPCWSTR getDescription(std::shared_ptr<ItemInstance> instance);
 	virtual unsigned int getDescriptionId(int iData = -1);
-	virtual unsigned int getDescriptionId(shared_ptr<ItemInstance> instance);
+	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
 	Item *setUseDescriptionId(unsigned int id);
 	virtual unsigned int getUseDescriptionId();
-	virtual unsigned int getUseDescriptionId(shared_ptr<ItemInstance> instance);
+	virtual unsigned int getUseDescriptionId(std::shared_ptr<ItemInstance> instance);
 	Item *setCraftingRemainingItem(Item *craftingRemainingItem);
-	virtual bool shouldMoveCraftingResultToInventory(shared_ptr<ItemInstance> instance);
+	virtual bool shouldMoveCraftingResultToInventory(std::shared_ptr<ItemInstance> instance);
 	virtual bool shouldOverrideMultiplayerNBT();
 	Item *getCraftingRemainingItem();
 	bool hasCraftingRemainingItem();
 	std::wstring getName();
-	virtual int getColor(shared_ptr<ItemInstance> item, int spriteLayer);
-	virtual void inventoryTick(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Entity> owner, int slot, bool selected);
-	virtual void onCraftedBy(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player);
+	virtual int getColor(std::shared_ptr<ItemInstance> item, int spriteLayer);
+	virtual void inventoryTick(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Entity> owner, int slot, bool selected);
+	virtual void onCraftedBy(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player);
 	virtual bool isComplex();
 
-	virtual UseAnim getUseAnimation(shared_ptr<ItemInstance> itemInstance);
-	virtual int getUseDuration(shared_ptr<ItemInstance> itemInstance);
-	virtual void releaseUsing(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player, int durationLeft);
+	virtual UseAnim getUseAnimation(std::shared_ptr<ItemInstance> itemInstance);
+	virtual int getUseDuration(std::shared_ptr<ItemInstance> itemInstance);
+	virtual void releaseUsing(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player, int durationLeft);
 
 protected:
 	virtual Item *setPotionBrewingFormula(const wstring &potionBrewingFormula);
@@ -700,19 +700,19 @@ protected:
 public:
 	virtual wstring getPotionBrewingFormula();
 	virtual bool hasPotionBrewingFormula();
-	virtual void appendHoverText(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings); // 4J Added unformattedStrings
-	virtual wstring getHoverName(shared_ptr<ItemInstance> itemInstance);
-	virtual bool isFoil(shared_ptr<ItemInstance> itemInstance);
-	virtual const Rarity *getRarity(shared_ptr<ItemInstance> itemInstance);
-	virtual bool isEnchantable(shared_ptr<ItemInstance> itemInstance);
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings); // 4J Added unformattedStrings
+	virtual wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
+	virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
+	virtual const Rarity *getRarity(std::shared_ptr<ItemInstance> itemInstance);
+	virtual bool isEnchantable(std::shared_ptr<ItemInstance> itemInstance);
 
 protected:
-	HitResult *getPlayerPOVHitResult(Level *level, shared_ptr<Player> player, bool alsoPickLiquid);
+	HitResult *getPlayerPOVHitResult(Level *level, std::shared_ptr<Player> player, bool alsoPickLiquid);
 
 public:
 	virtual int getEnchantmentValue();
 	virtual bool hasMultipleSpriteLayers();
 	virtual Icon *getLayerIcon(int auxValue, int spriteLayer);
-	virtual bool isValidRepairItem(shared_ptr<ItemInstance> source, shared_ptr<ItemInstance> repairItem);
+	virtual bool isValidRepairItem(std::shared_ptr<ItemInstance> source, std::shared_ptr<ItemInstance> repairItem);
 	virtual void registerIcons(IconRegister *iconRegister);
 };

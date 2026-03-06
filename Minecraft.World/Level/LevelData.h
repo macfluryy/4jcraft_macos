@@ -58,7 +58,7 @@ public:
     LevelData(LevelSettings *levelSettings, const wstring& levelName);
     LevelData(LevelData *copy);
     CompoundTag *createTag();
-    CompoundTag *createTag(vector<shared_ptr<Player> > *players);
+    CompoundTag *createTag(vector<std::shared_ptr<Player> > *players);
 
 	enum
 	{

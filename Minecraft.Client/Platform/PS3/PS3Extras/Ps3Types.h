@@ -25,7 +25,7 @@ using std::tr1::const_pointer_cast;
 using std::tr1::dynamic_pointer_cast;
 using std::tr1::enable_shared_from_this;
 using std::tr1::get_deleter;
-using std::tr1::shared_ptr;
+using std::tr1::std::shared_ptr;
 using std::tr1::static_pointer_cast;
 using std::tr1::swap;
 using std::tr1::weak_ptr;
@@ -62,7 +62,7 @@ using boost::hash;
 class Cnullptr{
 public:
 	template<typename T>
-	operator shared_ptr<T>() { return shared_ptr<T>(); }
+	operator std::shared_ptr<T>() { return std::shared_ptr<T>(); }
 };
 
 extern Cnullptr nullptr;

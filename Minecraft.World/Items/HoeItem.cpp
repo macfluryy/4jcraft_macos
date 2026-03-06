@@ -12,7 +12,7 @@ HoeItem::HoeItem(int id, const Tier *tier) : Item(id)
 	setMaxDamage(tier->getUses());
 }
 
-bool HoeItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
+bool HoeItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
 {
 	if (!player->mayBuild(x, y, z)) return false;
 

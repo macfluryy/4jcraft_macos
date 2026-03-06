@@ -32,7 +32,7 @@ TargetGoal::TargetGoal(Mob *mob, float within, bool mustSee, bool mustReach)
 
 bool TargetGoal::canContinueToUse()
 {
-	shared_ptr<Mob> target = mob->getTarget();
+	std::shared_ptr<Mob> target = mob->getTarget();
 	if (target == NULL) return false;
 	if (!target->isAlive()) return false;
 	if (mob->distanceToSqr(target) > within * within) return false;
@@ -62,17 +62,17 @@ void TargetGoal::stop()
 	mob->setTarget(nullptr);
 }
 
-bool TargetGoal::canAttack(shared_ptr<Mob> target, bool allowInvulnerable)
+bool TargetGoal::canAttack(std::shared_ptr<Mob> target, bool allowInvulnerable)
 {
 	if (target == NULL) return false;
 	if (target == mob->shared_from_this()) return false;
 	if (!target->isAlive()) return false;
 	if (!mob->canAttackType(target->GetType())) return false;
 
-	shared_ptr<TamableAnimal> tamableAnimal = dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
+	std::shared_ptr<TamableAnimal> tamableAnimal = dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
 	if (tamableAnimal != NULL && tamableAnimal->isTame())
 	{
-		shared_ptr<TamableAnimal> tamableTarget = dynamic_pointer_cast<TamableAnimal>(target);
+		std::shared_ptr<TamableAnimal> tamableTarget = dynamic_pointer_cast<TamableAnimal>(target);
 		if (tamableTarget != NULL && tamableTarget->isTame()) return false;
 		if (target == tamableAnimal->getOwner()) return false;
 	}
@@ -95,7 +95,7 @@ bool TargetGoal::canAttack(shared_ptr<Mob> target, bool allowInvulnerable)
 	return true;
 }
 
-bool TargetGoal::canReach(shared_ptr<Mob> target)
+bool TargetGoal::canReach(std::shared_ptr<Mob> target)
 {
 	reachCacheTime = 10 + mob->getRandom()->nextInt(5);
 	Path *path = mob->getNavigation()->createPath(target);

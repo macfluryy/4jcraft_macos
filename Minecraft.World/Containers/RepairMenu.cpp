@@ -6,10 +6,10 @@
 #include "../Headers/net.minecraft.world.item.enchantment.h"
 #include "RepairMenu.h"
 
-RepairMenu::RepairMenu(shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, shared_ptr<Player> player)
+RepairMenu::RepairMenu(std::shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, std::shared_ptr<Player> player)
 {
-	resultSlots = shared_ptr<ResultContainer>( new ResultContainer() );
-	repairSlots = shared_ptr<RepairContainer>( new RepairContainer(this,IDS_REPAIR_AND_NAME, 2) );
+	resultSlots = std::shared_ptr<ResultContainer>( new ResultContainer() );
+	repairSlots = std::shared_ptr<RepairContainer>( new RepairContainer(this,IDS_REPAIR_AND_NAME, 2) );
 	cost = 0;
 	repairItemCountCost = 0;
 
@@ -38,7 +38,7 @@ RepairMenu::RepairMenu(shared_ptr<Inventory> inventory, Level *level, int xt, in
 	}
 }
 
-void RepairMenu::slotsChanged(shared_ptr<Container> container)
+void RepairMenu::slotsChanged(std::shared_ptr<Container> container)
 {
 	AbstractContainerMenu::slotsChanged();
 
@@ -47,7 +47,7 @@ void RepairMenu::slotsChanged(shared_ptr<Container> container)
 
 void RepairMenu::createResult()
 {
-	shared_ptr<ItemInstance> input = repairSlots->getItem(INPUT_SLOT);
+	std::shared_ptr<ItemInstance> input = repairSlots->getItem(INPUT_SLOT);
 	cost = 0;
 	int price = 0;
 	int tax = 0;
@@ -63,8 +63,8 @@ void RepairMenu::createResult()
 	}
 	else
 	{
-		shared_ptr<ItemInstance> result = input->copy();
-		shared_ptr<ItemInstance> addition = repairSlots->getItem(ADDITIONAL_SLOT);
+		std::shared_ptr<ItemInstance> result = input->copy();
+		std::shared_ptr<ItemInstance> addition = repairSlots->getItem(ADDITIONAL_SLOT);
 		unordered_map<int,int> *enchantments = EnchantmentHelper::getEnchantments(result);
 		bool usingBook = false;
 
@@ -319,14 +319,14 @@ void RepairMenu::setData(int id, int value)
 	if (id == DATA_TOTAL_COST) cost = value;
 }
 
-void RepairMenu::removed(shared_ptr<Player> player)
+void RepairMenu::removed(std::shared_ptr<Player> player)
 {
 	AbstractContainerMenu::removed(player);
 	if (level->isClientSide) return;
 
 	for (int i = 0; i < repairSlots->getContainerSize(); i++)
 	{
-		shared_ptr<ItemInstance> item = repairSlots->removeItemNoUpdate(i);
+		std::shared_ptr<ItemInstance> item = repairSlots->removeItemNoUpdate(i);
 		if (item != NULL)
 		{
 			player->drop(item);
@@ -334,20 +334,20 @@ void RepairMenu::removed(shared_ptr<Player> player)
 	}
 }
 
-bool RepairMenu::stillValid(shared_ptr<Player> player)
+bool RepairMenu::stillValid(std::shared_ptr<Player> player)
 {
 	if (level->getTile(x, y, z) != Tile::anvil_Id) return false;
 	if (player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 8 * 8) return false;
 	return true;
 }
 
-shared_ptr<ItemInstance> RepairMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> RepairMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex == RESULT_SLOT)

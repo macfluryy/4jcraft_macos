@@ -33,7 +33,7 @@ HalfSlabTile::HalfSlabTile(int id, bool fullSize, Material *material) : Tile(id,
 	setLightBlock(255);
 }
 
-void HalfSlabTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity)	// 4J added forceData, forceEntity param
+void HalfSlabTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity)	// 4J added forceData, forceEntity param
 {
 	if (fullSize) 
 	{
@@ -65,7 +65,7 @@ void HalfSlabTile::updateDefaultShape()
 	}
 }
 
-void HalfSlabTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source) 
+void HalfSlabTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source) 
 {
 	updateShape(level, x, y, z);
 	Tile::addAABBs(level, x, y, z, box, boxes, source);

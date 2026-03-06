@@ -272,7 +272,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 
 	if (isCreative())
 	{
-		shared_ptr<TileUpdatePacket> tup = shared_ptr<TileUpdatePacket>( new TileUpdatePacket(x, y, z, level) );
+		std::shared_ptr<TileUpdatePacket> tup = std::shared_ptr<TileUpdatePacket>( new TileUpdatePacket(x, y, z, level) );
 		// 4J - a bit of a hack here, but if we want to tell the client that it needs to inform the renderer of a block being destroyed, then send a block 255 instead of a 0. This is handled in ClientConnection::handleTileUpdate
 		if( tup->block == 0 )
 		{
@@ -282,7 +282,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 	}
 	else 
 	{
-		shared_ptr<ItemInstance> item = player->getSelectedItem();
+		std::shared_ptr<ItemInstance> item = player->getSelectedItem();
 		bool canDestroy = player->canDestroy(Tile::tiles[t]);
 		if (item != NULL)
 		{
@@ -301,13 +301,13 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 
 }
 
-bool ServerPlayerGameMode::useItem(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, bool bTestUseOnly)
+bool ServerPlayerGameMode::useItem(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, bool bTestUseOnly)
 {
 	if(!player->isAllowedToUse(item)) return false;
 
     int oldCount = item->count;
 	int oldAux = item->getAuxValue();
-    shared_ptr<ItemInstance> itemInstance = item->use(level, player);
+    std::shared_ptr<ItemInstance> itemInstance = item->use(level, player);
     if ((itemInstance != NULL && itemInstance != item) || (itemInstance != NULL && itemInstance->count != oldCount) || (itemInstance != NULL && itemInstance->getUseDuration() > 0))
 	{
         player->inventory->items[player->inventory->selected] = itemInstance;
@@ -326,7 +326,7 @@ bool ServerPlayerGameMode::useItem(shared_ptr<Player> player, Level *level, shar
 
 }
 
-bool ServerPlayerGameMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly, bool *pbUsedItem)
+bool ServerPlayerGameMode::useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly, bool *pbUsedItem)
 {
 	// 4J-PB - Adding a test only version to allow tooltips to be displayed
 	int t = level->getTile(x, y, z);

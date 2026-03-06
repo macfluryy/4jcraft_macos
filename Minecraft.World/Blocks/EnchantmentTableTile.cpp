@@ -67,12 +67,12 @@ Icon *EnchantmentTableTile::getTexture(int face, int data)
 	return icon;
 }
 
-shared_ptr<TileEntity> EnchantmentTableTile::newTileEntity(Level *level)
+std::shared_ptr<TileEntity> EnchantmentTableTile::newTileEntity(Level *level)
 {
-	return shared_ptr<TileEntity>(new EnchantmentTableEntity());
+	return std::shared_ptr<TileEntity>(new EnchantmentTableEntity());
 }
 
-bool EnchantmentTableTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool EnchantmentTableTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
 	if(soundOnly) return false;
 

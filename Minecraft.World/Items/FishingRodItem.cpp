@@ -32,7 +32,7 @@ bool FishingRodItem::isMirroredArt()
 	return true;
 }
 
-shared_ptr<ItemInstance> FishingRodItem::use(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player) 
+std::shared_ptr<ItemInstance> FishingRodItem::use(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player) 
 {
 	if (player->fishing != NULL) 
 	{
@@ -46,9 +46,9 @@ shared_ptr<ItemInstance> FishingRodItem::use(shared_ptr<ItemInstance> instance, 
 		if (!level->isClientSide) 
 		{
 			// 4J Stu - Move the player->fishing out of the ctor as we cannot reference 'this'
-			shared_ptr<FishingHook> hook = shared_ptr<FishingHook>( new FishingHook(level, player) );
+			std::shared_ptr<FishingHook> hook = std::shared_ptr<FishingHook>( new FishingHook(level, player) );
 			player->fishing = hook;
-			level->addEntity( shared_ptr<FishingHook>( hook ) );
+			level->addEntity( std::shared_ptr<FishingHook>( hook ) );
 		}
 		player->swing();
 	}

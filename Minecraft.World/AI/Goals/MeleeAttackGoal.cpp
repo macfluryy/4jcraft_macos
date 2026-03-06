@@ -42,7 +42,7 @@ MeleeAttackGoal::~MeleeAttackGoal()
 
 bool MeleeAttackGoal::canUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
 	if(!bestTarget->isAlive()) return false;
 	if (attackType != eTYPE_NOTSET && (attackType & bestTarget->GetType()) != attackType) return false;
@@ -54,7 +54,7 @@ bool MeleeAttackGoal::canUse()
 
 bool MeleeAttackGoal::canContinueToUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
 	if (target.lock() == NULL || !target.lock()->isAlive()) return false;
 	if (!trackTarget) return !mob->getNavigation()->isDone();

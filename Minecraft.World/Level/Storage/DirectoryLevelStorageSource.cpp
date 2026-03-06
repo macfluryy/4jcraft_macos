@@ -118,9 +118,9 @@ void DirectoryLevelStorageSource::deleteRecursive(vector<File *> *files)
 	}
 }
 
-shared_ptr<LevelStorage> DirectoryLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir)
+std::shared_ptr<LevelStorage> DirectoryLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir)
 {
-	return shared_ptr<LevelStorage> (new DirectoryLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
+	return std::shared_ptr<LevelStorage> (new DirectoryLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
 bool DirectoryLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId)

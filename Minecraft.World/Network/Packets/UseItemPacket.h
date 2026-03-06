@@ -8,12 +8,12 @@ class UseItemPacket : public Packet, public enable_shared_from_this<UseItemPacke
 private:
 	static const float CLICK_ACCURACY;
 	int x, y, z, face;
-	shared_ptr<ItemInstance> item;
+	std::shared_ptr<ItemInstance> item;
 	float clickX, clickY, clickZ;
 
 public:
 	UseItemPacket();
-	UseItemPacket(int x, int y, int z, int face, shared_ptr<ItemInstance> item, float clickX, float clickY, float clickZ);
+	UseItemPacket(int x, int y, int z, int face, std::shared_ptr<ItemInstance> item, float clickX, float clickY, float clickZ);
 	~UseItemPacket();
 
 	virtual void read(DataInputStream *dis);
@@ -25,12 +25,12 @@ public:
 	int getY();
 	int getZ();
 	int getFace();
-	shared_ptr<ItemInstance> getItem();
+	std::shared_ptr<ItemInstance> getItem();
 	float getClickX();
 	float getClickY();
 	float getClickZ();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new UseItemPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new UseItemPacket()); }
 	virtual int getId() { return 15; }
 };

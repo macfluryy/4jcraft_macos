@@ -77,7 +77,7 @@ void Squid::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	int count = random->nextInt(3 + playerBonusLevel) + 1;
 	for (int i = 0; i < count; i++) 
 	{
-		spawnAtLocation(shared_ptr<ItemInstance>( new ItemInstance(Item::dye_powder, 1, DyePowderItem::BLACK) ), 0.0f);
+		spawnAtLocation(std::shared_ptr<ItemInstance>( new ItemInstance(Item::dye_powder, 1, DyePowderItem::BLACK) ), 0.0f);
 	}
 }
 

@@ -86,7 +86,7 @@ int MobEffect::getId()
 * @param mob
 * @param amplification
 */
-void MobEffect::applyEffectTick(shared_ptr<Mob> mob, int amplification)
+void MobEffect::applyEffectTick(std::shared_ptr<Mob> mob, int amplification)
 {
 
 	// Maybe move this to separate class implementations in the future?
@@ -120,7 +120,7 @@ void MobEffect::applyEffectTick(shared_ptr<Mob> mob, int amplification)
 	}
 }
 
-void MobEffect::applyInstantenousEffect(shared_ptr<Mob> source, shared_ptr<Mob> mob, int amplification, double scale)
+void MobEffect::applyInstantenousEffect(std::shared_ptr<Mob> source, std::shared_ptr<Mob> mob, int amplification, double scale)
 {
 	if ((id == heal->id && !mob->isInvertedHealAndHarm()) || (id == harm->id && mob->isInvertedHealAndHarm()))
 	{

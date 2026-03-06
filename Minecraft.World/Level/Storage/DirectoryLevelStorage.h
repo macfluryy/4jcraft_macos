@@ -119,10 +119,10 @@ public:
 	void checkSession();
     virtual ChunkStorage *createChunkStorage(Dimension *dimension);
     LevelData *prepareLevel();
-    virtual void saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players);
+    virtual void saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players);
     virtual void saveLevelData(LevelData *levelData);
-    virtual void save(shared_ptr<Player> player);
-    virtual bool load(shared_ptr<Player> player);  // 4J Changed return val to bool to check if new player or loaded player
+    virtual void save(std::shared_ptr<Player> player);
+    virtual bool load(std::shared_ptr<Player> player);  // 4J Changed return val to bool to check if new player or loaded player
     virtual CompoundTag *loadPlayerDataTag(PlayerUID xuid);
 	virtual void clearOldPlayerFiles(); // 4J Added
     PlayerIO *getPlayerIO();
@@ -133,7 +133,7 @@ public:
 	// 4J Added
 	virtual int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC, int centreZC, int scale);
 	virtual void saveMapIdLookup();
-	virtual void deleteMapFilesForPlayer(shared_ptr<Player> player);
+	virtual void deleteMapFilesForPlayer(std::shared_ptr<Player> player);
 	virtual void saveAllCachedData();
 	void resetNetherPlayerPositions(); // 4J Added
 	static wstring getPlayerDir() { return sc_szPlayerDir; }

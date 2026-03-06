@@ -53,9 +53,9 @@ void MusicTileEntity::playNote(Level *level, int x, int y, int z)
 }
 
 // 4J Added
-shared_ptr<TileEntity> MusicTileEntity::clone()
+std::shared_ptr<TileEntity> MusicTileEntity::clone()
 {
-	shared_ptr<MusicTileEntity> result = shared_ptr<MusicTileEntity>( new MusicTileEntity() );
+	std::shared_ptr<MusicTileEntity> result = std::shared_ptr<MusicTileEntity>( new MusicTileEntity() );
 	TileEntity::clone(result);
 
 	result->note = note;

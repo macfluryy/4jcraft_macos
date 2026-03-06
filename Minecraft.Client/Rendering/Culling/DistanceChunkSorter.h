@@ -8,6 +8,6 @@ private:
 	double ix, iy, iz;
 
 public:
-    DistanceChunkSorter(shared_ptr<Entity> player);
+    DistanceChunkSorter(std::shared_ptr<Entity> player);
 	bool operator()(const Chunk *a, const Chunk *b) const;
 };

@@ -20,7 +20,7 @@ protected:
 	virtual int getDeathSound();
 
 public:
-    virtual shared_ptr<ItemInstance> getCarriedItem();
+    virtual std::shared_ptr<ItemInstance> getCarriedItem();
 	virtual MobType getMobType();
 	virtual void aiStep();
 	virtual void die(DamageSource *source);
@@ -31,7 +31,7 @@ protected:
 	virtual void dropRareDeathLoot(int rareLootLevel);
 
 private:
-	static shared_ptr<ItemInstance> bow;
+	static std::shared_ptr<ItemInstance> bow;
 
 public:
 

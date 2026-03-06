@@ -78,8 +78,8 @@ bool TileDestructionPacket::canBeInvalidated()
 	return true;
 }
 
-bool TileDestructionPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool TileDestructionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	shared_ptr<TileDestructionPacket> target = dynamic_pointer_cast<TileDestructionPacket>(packet);
+	std::shared_ptr<TileDestructionPacket> target = dynamic_pointer_cast<TileDestructionPacket>(packet);
 	return target->id == id;
 }

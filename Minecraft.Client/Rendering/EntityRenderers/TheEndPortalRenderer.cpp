@@ -7,10 +7,10 @@
 #include "../../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "TheEndPortalRenderer.h"
 
-void TheEndPortalRenderer::render(shared_ptr<TileEntity> _table, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void TheEndPortalRenderer::render(std::shared_ptr<TileEntity> _table, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J Convert as we aren't using a templated class
-	shared_ptr<TheEndPortalTileEntity> table = dynamic_pointer_cast<TheEndPortalTileEntity>(_table);
+	std::shared_ptr<TheEndPortalTileEntity> table = dynamic_pointer_cast<TheEndPortalTileEntity>(_table);
 	float xx = (float) (tileEntityRenderDispatcher->xPlayer);
 	float yy = (float) (tileEntityRenderDispatcher->yPlayer);
 	float zz = (float) (tileEntityRenderDispatcher->zPlayer);

@@ -14,7 +14,7 @@ TextureChangePacket::TextureChangePacket()
 	path = L"";
 }
 
-TextureChangePacket::TextureChangePacket(shared_ptr<Entity> e, ETextureChangeType action, const wstring &path)
+TextureChangePacket::TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action, const wstring &path)
 {
 	id = e->entityId;
 	this->action = action;

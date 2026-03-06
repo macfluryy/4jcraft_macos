@@ -119,12 +119,12 @@ bool PistonBaseTile::isSolidRender(bool isServerLevel)
 	return false;
 }
 
-bool PistonBaseTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool PistonBaseTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
 	return false;
 }
 
-void PistonBaseTile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by)
+void PistonBaseTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
     int targetData = getNewFacing(level, x, y, z, dynamic_pointer_cast<Player>(by) );
     level->setData(x, y, z, targetData);
@@ -249,7 +249,7 @@ void PistonBaseTile::triggerEvent(Level *level, int x, int y, int z, int param1,
 	else if (param1 == TRIGGER_CONTRACT)
 	{
 		PIXBeginNamedEvent(0,"Contract phase A\n");
-        shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(x + Facing::STEP_X[facing], y + Facing::STEP_Y[facing], z + Facing::STEP_Z[facing]);
+        std::shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(x + Facing::STEP_X[facing], y + Facing::STEP_Y[facing], z + Facing::STEP_Z[facing]);
         if (prevTileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity) != NULL)
 		{
             dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity)->finalTick();
@@ -280,10 +280,10 @@ void PistonBaseTile::triggerEvent(Level *level, int x, int y, int z, int param1,
                 // the block two steps away is a moving piston block piece,
                 // so replace it with the real data, since it's probably
                 // this piston which is changing too fast
-                shared_ptr<TileEntity> tileEntity = level->getTileEntity(twoX, twoY, twoZ);
+                std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(twoX, twoY, twoZ);
                 if (tileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL )
 				{
-                    shared_ptr<PistonPieceEntity> ppe = dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
+                    std::shared_ptr<PistonPieceEntity> ppe = dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
 
                     if (ppe->getFacing() == facing && ppe->isExtending())
 					{
@@ -337,7 +337,7 @@ void PistonBaseTile::triggerEvent(Level *level, int x, int y, int z, int param1,
 	ignoreUpdate(false);
 }
 
-void PistonBaseTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
+void PistonBaseTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
     int data = (forceData == -1 ) ? level->getData(x, y, z) : forceData;
 
@@ -377,7 +377,7 @@ void PistonBaseTile::updateDefaultShape()
 	setShape(0, 0, 0, 1, 1, 1);
 }
 
-void PistonBaseTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source)
+void PistonBaseTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source)
 {
     setShape(0, 0, 0, 1, 1, 1);
     Tile::addAABBs(level, x, y, z, box, boxes, source);
@@ -404,7 +404,7 @@ bool PistonBaseTile::isExtended(int data)
 	return (data & EXTENDED_BIT) != 0;
 }
 
-int PistonBaseTile::getNewFacing(Level *level, int x, int y, int z, shared_ptr<Player> player)
+int PistonBaseTile::getNewFacing(Level *level, int x, int y, int z, std::shared_ptr<Player> player)
 {
     if (Mth::abs((float) player->x - x) < 2 && Mth::abs((float) player->z - z) < 2) 
 	{

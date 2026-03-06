@@ -5,15 +5,15 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.h"
 
-void MobSpawnerRenderer::render(shared_ptr<TileEntity> _spawner, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<MobSpawnerTileEntity> spawner = dynamic_pointer_cast<MobSpawnerTileEntity>(_spawner);
+	std::shared_ptr<MobSpawnerTileEntity> spawner = dynamic_pointer_cast<MobSpawnerTileEntity>(_spawner);
 
 	glPushMatrix();
     glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 
-    shared_ptr<Entity> e = spawner->getDisplayEntity();
+    std::shared_ptr<Entity> e = spawner->getDisplayEntity();
     if (e != NULL)
 	{
         e->setLevel(spawner->level);

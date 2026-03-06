@@ -27,7 +27,7 @@ ThrownPotion::ThrownPotion(Level *level) : Throwable(level)
 	_init();
 }
 
-ThrownPotion::ThrownPotion(Level *level, shared_ptr<Mob> mob, int potionValue) : Throwable(level,mob)
+ThrownPotion::ThrownPotion(Level *level, std::shared_ptr<Mob> mob, int potionValue) : Throwable(level,mob)
 {
 	_init();
 
@@ -74,15 +74,15 @@ void ThrownPotion::onHit(HitResult *res)
 		if (mobEffects != NULL && !mobEffects->empty())
 		{
 			AABB *aoe = bb->grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
-			vector<shared_ptr<Entity> > *entitiesOfClass = level->getEntitiesOfClass(typeid(Mob), aoe);
+			vector<std::shared_ptr<Entity> > *entitiesOfClass = level->getEntitiesOfClass(typeid(Mob), aoe);
 
 			if (entitiesOfClass != NULL && !entitiesOfClass->empty())
 			{
 				//for (Entity e : entitiesOfClass)
 				for(AUTO_VAR(it, entitiesOfClass->begin()); it != entitiesOfClass->end(); ++it)
 				{
-					//shared_ptr<Entity> e = *it;
-					shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+					//std::shared_ptr<Entity> e = *it;
+					std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
 					double dist = distanceToSqr(e);
 					if (dist < SPLASH_RANGE_SQ)
 					{

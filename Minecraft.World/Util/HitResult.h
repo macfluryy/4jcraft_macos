@@ -12,11 +12,11 @@ public:
 	Type type;
 	int x, y, z, f;
 	Vec3 *pos;
-	shared_ptr<Entity> entity;
+	std::shared_ptr<Entity> entity;
 
 	HitResult(int x, int y, int z, int f, Vec3 *pos);
 
-	HitResult(shared_ptr<Entity> entity);
+	HitResult(std::shared_ptr<Entity> entity);
 
-	double distanceTo(shared_ptr<Entity> e);
+	double distanceTo(std::shared_ptr<Entity> e);
 };

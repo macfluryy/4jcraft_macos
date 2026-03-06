@@ -46,10 +46,10 @@ unsigned int PlayerRenderer::getNametagColour(int index)
 	return 0xFF000000;
 }
 
-int PlayerRenderer::prepareArmor(shared_ptr<Mob> _player, int layer, float a)
+int PlayerRenderer::prepareArmor(std::shared_ptr<Mob> _player, int layer, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> player = dynamic_pointer_cast<Player>(_player);
+	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(_player);
 
 	// 4J-PB - need to disable rendering armour for some special skins (Daleks)
 	unsigned int uiAnimOverrideBitmask=player->getAnimOverrideBitmask();
@@ -58,7 +58,7 @@ int PlayerRenderer::prepareArmor(shared_ptr<Mob> _player, int layer, float a)
 		return -1;
 	}
 
-    shared_ptr<ItemInstance> itemInstance = player->inventory->getArmor(3 - layer);
+    std::shared_ptr<ItemInstance> itemInstance = player->inventory->getArmor(3 - layer);
     if (itemInstance != NULL)
 	{
         Item *item = itemInstance->getItem();
@@ -108,11 +108,11 @@ int PlayerRenderer::prepareArmor(shared_ptr<Mob> _player, int layer, float a)
 
 }
 
-void PlayerRenderer::prepareSecondPassArmor(shared_ptr<Mob> _player, int layer, float a)
+void PlayerRenderer::prepareSecondPassArmor(std::shared_ptr<Mob> _player, int layer, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> player = dynamic_pointer_cast<Player>(_player);
-	shared_ptr<ItemInstance> itemInstance = player->inventory->getArmor(3 - layer);
+	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(_player);
+	std::shared_ptr<ItemInstance> itemInstance = player->inventory->getArmor(3 - layer);
 	if (itemInstance != NULL)
 	{
 		Item *item = itemInstance->getItem();
@@ -127,14 +127,14 @@ void PlayerRenderer::prepareSecondPassArmor(shared_ptr<Mob> _player, int layer, 
 	}
 }
 
-void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a)
+void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
+	std::shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
 
 	if(mob->hasInvisiblePrivilege()) return;
 
-    shared_ptr<ItemInstance> item = mob->inventory->getSelected();
+    std::shared_ptr<ItemInstance> item = mob->inventory->getSelected();
     armorParts1->holdingRightHand = armorParts2->holdingRightHand = humanoidModel->holdingRightHand = item != NULL ? 1 : 0;
 	if (item != NULL)
 	{
@@ -228,10 +228,10 @@ void PlayerRenderer::render(shared_ptr<Entity> _mob, double x, double y, double 
 
 }
 
-void PlayerRenderer::renderName(shared_ptr<Mob> _mob, double x, double y, double z)
+void PlayerRenderer::renderName(std::shared_ptr<Mob> _mob, double x, double y, double z)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
+	std::shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
 
     if (Minecraft::renderNames() && mob != entityRenderDispatcher->cameraEntity
 		&& !mob->isInvisibleTo(Minecraft::GetInstance()->player) ) // 4J-JEV: Todo, move to LivingEntityRenderer.
@@ -316,14 +316,14 @@ void PlayerRenderer::renderName(shared_ptr<Mob> _mob, double x, double y, double
 
 }
 
-void PlayerRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
+void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a)
 {
 	MobRenderer::additionalRendering(_mob,a);
 
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
+	std::shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
 
-    shared_ptr<ItemInstance> headGear = mob->inventory->getArmor(3);
+    std::shared_ptr<ItemInstance> headGear = mob->inventory->getArmor(3);
     if (headGear != NULL)
 	{
 		// don't render the pumpkin for the skins
@@ -428,7 +428,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
     }
 	
 
-    shared_ptr<ItemInstance> item = mob->inventory->getSelected();
+    std::shared_ptr<ItemInstance> item = mob->inventory->getSelected();
 
     if (item != NULL)
 	{
@@ -438,7 +438,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
 
         if (mob->fishing != NULL)
 		{
-            item = shared_ptr<ItemInstance>( new ItemInstance(Item::stick) );
+            item = std::shared_ptr<ItemInstance>( new ItemInstance(Item::stick) );
         }
 
 		UseAnim anim = UseAnim_none;//null;
@@ -521,7 +521,7 @@ void PlayerRenderer::additionalRendering(shared_ptr<Mob> _mob, float a)
 
 }
 
-void PlayerRenderer::scale(shared_ptr<Mob> player, float a)
+void PlayerRenderer::scale(std::shared_ptr<Mob> player, float a)
 {
     float s = 15 / 16.0f;
     glScalef(s, s, s);
@@ -540,10 +540,10 @@ void PlayerRenderer::renderHand()
 	}
 }
 
-void PlayerRenderer::setupPosition(shared_ptr<Mob> _mob, double x, double y, double z)
+void PlayerRenderer::setupPosition(std::shared_ptr<Mob> _mob, double x, double y, double z)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
+	std::shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
 
     if (mob->isAlive() && mob->isSleeping())
 	{
@@ -556,10 +556,10 @@ void PlayerRenderer::setupPosition(shared_ptr<Mob> _mob, double x, double y, dou
     }
 }
 
-void PlayerRenderer::setupRotations(shared_ptr<Mob> _mob, float bob, float bodyRot, float a)
+void PlayerRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob, float bodyRot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
+	std::shared_ptr<Player> mob = dynamic_pointer_cast<Player>(_mob);
 
     if (mob->isAlive() && mob->isSleeping())
 	{
@@ -574,11 +574,11 @@ void PlayerRenderer::setupRotations(shared_ptr<Mob> _mob, float bob, float bodyR
 }
 
 // 4J Added override to stop rendering shadow if player is invisible
-void PlayerRenderer::renderShadow(shared_ptr<Entity> e, double x, double y, double z, float pow, float a)
+void PlayerRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y, double z, float pow, float a)
 {
 	if(app.GetGameHostOption(eGameHostOption_HostCanBeInvisible) > 0)
 	{
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(e);
+		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(e);
 		if(player != NULL && player->hasInvisiblePrivilege()) return;
 	}
 	EntityRenderer::renderShadow(e,x,y,z,pow,a);

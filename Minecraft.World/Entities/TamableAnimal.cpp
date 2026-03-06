@@ -148,7 +148,7 @@ void TamableAnimal::setOwnerUUID(const wstring &name)
 	entityData->set(DATA_OWNERUUID_ID, name);
 }
 
-shared_ptr<Mob> TamableAnimal::getOwner()
+std::shared_ptr<Mob> TamableAnimal::getOwner()
 {
 	return level->getPlayerByUUID(getOwnerUUID());
 }

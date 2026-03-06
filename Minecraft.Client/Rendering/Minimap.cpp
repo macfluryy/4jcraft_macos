@@ -98,7 +98,7 @@ void Minimap::reloadColours()
 }
 
 // 4J added entityId
-void Minimap::render(shared_ptr<Player> player, Textures *textures, shared_ptr<MapItemSavedData> data, int entityId)
+void Minimap::render(std::shared_ptr<Player> player, Textures *textures, std::shared_ptr<MapItemSavedData> data, int entityId)
 {
 	// 4J - only update every 8 renders, as an optimisation
 	// We don't want to use this for ItemFrame renders of maps, as then we can't have different maps together

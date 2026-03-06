@@ -48,9 +48,9 @@ ePARTICLE_TYPE LavaSlime::getParticleName()
 	return eParticleType_flame;
 }
 
-shared_ptr<Slime> LavaSlime::createChild()
+std::shared_ptr<Slime> LavaSlime::createChild()
 {
-	return shared_ptr<LavaSlime>( new LavaSlime(level) );
+	return std::shared_ptr<LavaSlime>( new LavaSlime(level) );
 }
 
 int LavaSlime::getDeathLoot()

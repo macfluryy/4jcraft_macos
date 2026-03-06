@@ -7,7 +7,7 @@ EGameCommand GameModeCommand::getId()
 	return eGameCommand_GameMode;
 }
 
-void GameModeCommand::execute(shared_ptr<CommandSender> source, byteArray commandData)
+void GameModeCommand::execute(std::shared_ptr<CommandSender> source, byteArray commandData)
 {
 	//if (args.length > 0)
 	//{
@@ -26,7 +26,7 @@ void GameModeCommand::execute(shared_ptr<CommandSender> source, byteArray comman
 	//}
 }
 
-GameType *GameModeCommand::getModeForString(shared_ptr<CommandSender> source, const wstring &name)
+GameType *GameModeCommand::getModeForString(std::shared_ptr<CommandSender> source, const wstring &name)
 {
 	return NULL;
 	//if (name.equalsIgnoreCase(GameType.SURVIVAL.getName()) || name.equalsIgnoreCase("s")) {
@@ -40,7 +40,7 @@ GameType *GameModeCommand::getModeForString(shared_ptr<CommandSender> source, co
 	//}
 }
 
-shared_ptr<Player> GameModeCommand::getPlayer(PlayerUID playerId)
+std::shared_ptr<Player> GameModeCommand::getPlayer(PlayerUID playerId)
 {
 	return nullptr;
 	//Player player = MinecraftServer.getInstance().getPlayers().getPlayer(name);

@@ -5,14 +5,14 @@
 #include "../Headers/net.minecraft.world.item.crafting.h"
 #include "ArmorDyeRecipe.h"
 
-bool ArmorDyeRecipe::matches(shared_ptr<CraftingContainer> craftSlots, Level *level)
+bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level)
 {
-	shared_ptr<ItemInstance> target = nullptr;
-	vector<shared_ptr<ItemInstance> > dyes;
+	std::shared_ptr<ItemInstance> target = nullptr;
+	vector<std::shared_ptr<ItemInstance> > dyes;
 
 	for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
 	{
-		shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+		std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
 		if (item == NULL) continue;
 
 		ArmorItem *armor = dynamic_cast<ArmorItem *>(item->getItem());
@@ -40,9 +40,9 @@ bool ArmorDyeRecipe::matches(shared_ptr<CraftingContainer> craftSlots, Level *le
 	return target != NULL && !dyes.empty();
 }
 
-shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingContainer> craftSlots)
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(std::shared_ptr<CraftingContainer> craftSlots)
 {
-	shared_ptr<ItemInstance> target = nullptr;
+	std::shared_ptr<ItemInstance> target = nullptr;
 	int colorTotals[3];
 	colorTotals[0] = 0;
 	colorTotals[1] = 0;
@@ -55,7 +55,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 	{
 		for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
 		{
-			shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+			std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
 			if (item == NULL) continue;
 
 			armor = dynamic_cast<ArmorItem *>(item->getItem());
@@ -128,7 +128,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 	return target;
 }
 
-shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(shared_ptr<CraftingContainer> craftSlots)
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(std::shared_ptr<CraftingContainer> craftSlots)
 {
 	return ArmorDyeRecipe::assembleDyedArmor(craftSlots);
 }

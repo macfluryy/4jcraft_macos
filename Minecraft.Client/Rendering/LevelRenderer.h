@@ -73,7 +73,7 @@ public:
 private:
 	void resortChunks(int xc, int yc, int zc);
 public:
-	int render(shared_ptr<Mob> player, int layer, double alpha, bool updateChunks);
+	int render(std::shared_ptr<Mob> player, int layer, double alpha, bool updateChunks);
 private:
 	int renderChunks(int from, int to, int layer, double alpha);
 public:
@@ -89,9 +89,9 @@ public:
 	bool updateDirtyChunks();
 
 public:
-	void renderHit(shared_ptr<Player> player, HitResult *h, int mode, shared_ptr<ItemInstance> inventoryItem, float a);
-	void renderDestroyAnimation(Tesselator *t, shared_ptr<Player> player, float a);
-	void renderHitOutline(shared_ptr<Player> player, HitResult *h, int mode, shared_ptr<ItemInstance> inventoryItem, float a);
+	void renderHit(std::shared_ptr<Player> player, HitResult *h, int mode, std::shared_ptr<ItemInstance> inventoryItem, float a);
+	void renderDestroyAnimation(Tesselator *t, std::shared_ptr<Player> player, float a);
+	void renderHitOutline(std::shared_ptr<Player> player, HitResult *h, int mode, std::shared_ptr<ItemInstance> inventoryItem, float a);
 	void render(AABB *b);
 	void setDirty(int x0, int y0, int z0, int x1, int y1, int z1, Level *level);		// 4J - added level param
 	void tileChanged(int x, int y, int z);
@@ -108,26 +108,26 @@ public:
 	void cull(Culler *culler, float a);
 	void playStreamingMusic(const wstring& name, int x, int y, int z);
 	void playSound(int iSound, double x, double y, double z, float volume, float pitch, float fSoundClipDist=16.0f);
-	void playSound(shared_ptr<Entity> entity,int iSound, double x, double y, double z, float volume, float pitch, float fSoundClipDist=16.0f);
+	void playSound(std::shared_ptr<Entity> entity,int iSound, double x, double y, double z, float volume, float pitch, float fSoundClipDist=16.0f);
 	void addParticle(ePARTICLE_TYPE eParticleType, double x, double y, double z, double xa, double ya, double za); // 4J added
-	shared_ptr<Particle> addParticleInternal(ePARTICLE_TYPE eParticleType, double x, double y, double z, double xa, double ya, double za); // 4J added
-	void entityAdded(shared_ptr<Entity> entity);
-	void entityRemoved(shared_ptr<Entity> entity);
-	void playerRemoved(shared_ptr<Entity> entity) {}		// 4J added - for when a player is removed from the level's player array, not just the entity storage
+	std::shared_ptr<Particle> addParticleInternal(ePARTICLE_TYPE eParticleType, double x, double y, double z, double xa, double ya, double za); // 4J added
+	void entityAdded(std::shared_ptr<Entity> entity);
+	void entityRemoved(std::shared_ptr<Entity> entity);
+	void playerRemoved(std::shared_ptr<Entity> entity) {}		// 4J added - for when a player is removed from the level's player array, not just the entity storage
 	void skyColorChanged();
 	void clear();
-	void levelEvent(shared_ptr<Player> source, int type, int x, int y, int z, int data);
+	void levelEvent(std::shared_ptr<Player> source, int type, int x, int y, int z, int data);
 	void destroyTileProgress(int id, int x, int y, int z, int progress);
 	void registerTextures(IconRegister *iconRegister);
 
-	typedef unordered_map<int, vector<shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
+	typedef unordered_map<int, vector<std::shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
 private:
 
 	// debug
 	int m_freezeticks; // used to freeze the clouds
 
 	// 4J - this block of declarations was scattered round the code but have gathered everything into one place
-	rteMap renderableTileEntities;			// 4J - changed - was vector<shared_ptr<TileEntity>, now hashed by chunk so we can find them
+	rteMap renderableTileEntities;			// 4J - changed - was vector<std::shared_ptr<TileEntity>, now hashed by chunk so we can find them
 	CRITICAL_SECTION					m_csRenderableTileEntities;
 	MultiPlayerLevel *level[4];					// 4J - now one per player
 	Textures *textures;

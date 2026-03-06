@@ -14,7 +14,7 @@ TerrainParticle::TerrainParticle(Level *level, double x, double y, double z, dou
     size /= 2;
 }
 
-shared_ptr<TerrainParticle> TerrainParticle::init(int x, int y, int z, int data)	// 4J - added data parameter
+std::shared_ptr<TerrainParticle> TerrainParticle::init(int x, int y, int z, int data)	// 4J - added data parameter
 {
     if (tile == Tile::grass) return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
     int col = tile->getColor(level, x, y, z, data);	// 4J - added data parameter
@@ -24,7 +24,7 @@ shared_ptr<TerrainParticle> TerrainParticle::init(int x, int y, int z, int data)
     return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
 }
 
-shared_ptr<TerrainParticle> TerrainParticle::init(int data)
+std::shared_ptr<TerrainParticle> TerrainParticle::init(int data)
 {
 	if (tile == Tile::grass) return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
 	int col = tile->getColor(data);

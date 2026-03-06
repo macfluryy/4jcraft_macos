@@ -59,7 +59,7 @@ void TntTile::wasExploded(Level *level, int x, int y, int z)
 	// 4J-JEV: Fix for #90934 - Customer Encountered: TU11: Content: Gameplay: TNT blocks are triggered by explosions even though "TNT explodes" option is unchecked.
 	if( level->newPrimedTntAllowed() && app.GetGameHostOption(eGameHostOption_TNT) )
 	{
-		shared_ptr<PrimedTnt> primed = shared_ptr<PrimedTnt>( new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f) );
+		std::shared_ptr<PrimedTnt> primed = std::shared_ptr<PrimedTnt>( new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f) );
 		primed->life = level->random->nextInt(primed->life / 4) + primed->life / 8;
 		level->addEntity(primed);
 	}
@@ -74,14 +74,14 @@ void TntTile::destroy(Level *level, int x, int y, int z, int data)
 		// 4J - added condition to have finite limit of these
 		if( level->newPrimedTntAllowed() && app.GetGameHostOption(eGameHostOption_TNT) )
 		{
-			shared_ptr<PrimedTnt> tnt = shared_ptr<PrimedTnt>(  new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f) );
+			std::shared_ptr<PrimedTnt> tnt = std::shared_ptr<PrimedTnt>(  new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f) );
 			level->addEntity(tnt);
 			level->playSound(tnt, eSoundType_RANDOM_FUSE, 1, 1.0f);
 		}
 	}
 }
 
-bool TntTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool TntTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
 	if (soundOnly) return false;
 	if (player->getSelectedItem() != NULL && player->getSelectedItem()->id == Item::flintAndSteel_Id)
@@ -93,12 +93,12 @@ bool TntTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, 
 	return Tile::use(level, x, y, z, player, clickedFace, clickX, clickY, clickZ);
 }
 
-void TntTile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity)
+void TntTile::entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
 {
 	if (entity->GetType() == eTYPE_ARROW && !level->isClientSide)
 	{
 		// 4J Stu - Don't need to cast this
-		//shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
+		//std::shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
 		if (entity->isOnFire())
 		{
 			destroy(level, x, y, z, EXPLODE_BIT);
@@ -107,7 +107,7 @@ void TntTile::entityInside(Level *level, int x, int y, int z, shared_ptr<Entity>
 	}
 }
 
-shared_ptr<ItemInstance> TntTile::getSilkTouchItemInstance(int data)
+std::shared_ptr<ItemInstance> TntTile::getSilkTouchItemInstance(int data)
 {
 	return nullptr;
 }

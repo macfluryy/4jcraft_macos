@@ -8,15 +8,15 @@ SpiderRenderer::SpiderRenderer() : MobRenderer(new SpiderModel(), 1.0f)
 	this->setArmor(new SpiderModel());
 }
 
-float SpiderRenderer::getFlipDegrees(shared_ptr<Mob> spider)
+float SpiderRenderer::getFlipDegrees(std::shared_ptr<Mob> spider)
 {
 	return 180;
 }
 
-int SpiderRenderer::prepareArmor(shared_ptr<Mob> _spider, int layer, float a)
+int SpiderRenderer::prepareArmor(std::shared_ptr<Mob> _spider, int layer, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Spider> spider = dynamic_pointer_cast<Spider>(_spider);
+	std::shared_ptr<Spider> spider = dynamic_pointer_cast<Spider>(_spider);
 
     if (layer!=0) return -1;
 	MemSect(31);
@@ -52,10 +52,10 @@ int SpiderRenderer::prepareArmor(shared_ptr<Mob> _spider, int layer, float a)
     return 1;
 }
 
-void SpiderRenderer::scale(shared_ptr<Mob> _mob, float a)
+void SpiderRenderer::scale(std::shared_ptr<Mob> _mob, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Spider> mob = dynamic_pointer_cast<Spider>(_mob);
+	std::shared_ptr<Spider> mob = dynamic_pointer_cast<Spider>(_mob);
 	float scale = mob->getModelScale();
 	glScalef(scale, scale, scale);
 }

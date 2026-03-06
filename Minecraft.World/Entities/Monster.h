@@ -27,14 +27,14 @@ public:
     virtual void tick();
 
 protected:
-	virtual shared_ptr<Entity> findAttackTarget();
+	virtual std::shared_ptr<Entity> findAttackTarget();
 
 public:
 	virtual bool hurt(DamageSource *source, int dmg);
-	virtual bool doHurtTarget(shared_ptr<Entity> target);
+	virtual bool doHurtTarget(std::shared_ptr<Entity> target);
 
 protected:
-	virtual void checkHurtTarget(shared_ptr<Entity> target, float distance);
+	virtual void checkHurtTarget(std::shared_ptr<Entity> target, float distance);
 
 public:
     virtual float getWalkTargetValue(int x, int y, int z);

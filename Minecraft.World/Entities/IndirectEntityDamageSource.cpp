@@ -4,30 +4,30 @@
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.network.packet.h"
 
-//IndirectEntityDamageSource::IndirectEntityDamageSource(const wstring &msgId, shared_ptr<Entity> entity, shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
-IndirectEntityDamageSource::IndirectEntityDamageSource(ChatPacket::EChatPacketMessage msgId, shared_ptr<Entity> entity, shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
+//IndirectEntityDamageSource::IndirectEntityDamageSource(const wstring &msgId, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
+IndirectEntityDamageSource::IndirectEntityDamageSource(ChatPacket::EChatPacketMessage msgId, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> owner) : EntityDamageSource(msgId, entity)
 {
 	this->owner = owner;
 }
 
 // 4J Stu - Brought forward from 1.2.3 to fix #46422
-shared_ptr<Entity> IndirectEntityDamageSource::getDirectEntity()
+std::shared_ptr<Entity> IndirectEntityDamageSource::getDirectEntity()
 {
 	return entity;
 }
 
-shared_ptr<Entity> IndirectEntityDamageSource::getEntity()
+std::shared_ptr<Entity> IndirectEntityDamageSource::getEntity()
 {
 	return owner;
 }
 
-//wstring IndirectEntityDamageSource::getLocalizedDeathMessage(shared_ptr<Player> player)
+//wstring IndirectEntityDamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
 //{
 //	return L"death." + msgId + player->name + owner->getAName();
 //	//return I18n.get("death." + msgId, player.name, owner.getAName());
 //}
 
-shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(shared_ptr<Player> player)
+std::shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(std::shared_ptr<Player> player)
 {
 	wstring additional = L"";
 	int type;
@@ -36,7 +36,7 @@ shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(shared_
 		type = owner->GetType();
 		if(type == eTYPE_SERVERPLAYER)
 		{
-			shared_ptr<Player> sourcePlayer = dynamic_pointer_cast<Player>(owner);
+			std::shared_ptr<Player> sourcePlayer = dynamic_pointer_cast<Player>(owner);
 			if(sourcePlayer != NULL) additional = sourcePlayer->name;
 		}
 	}
@@ -44,5 +44,5 @@ shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(shared_
 	{
 		type = entity->GetType();
 	}
-	return shared_ptr<ChatPacket>( new ChatPacket(player->name, m_msgId, type, additional ) );
+	return std::shared_ptr<ChatPacket>( new ChatPacket(player->name, m_msgId, type, additional ) );
 }

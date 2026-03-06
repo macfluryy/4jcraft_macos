@@ -41,7 +41,7 @@ bool SetTimePacket::canBeInvalidated()
 	return true;
 }
 
-bool SetTimePacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetTimePacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

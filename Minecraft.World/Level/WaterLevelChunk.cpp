@@ -53,15 +53,15 @@ void WaterLevelChunk::setBrightness(LightLayer::variety layer, int x, int y, int
 {
 }
 
-void WaterLevelChunk::addEntity(shared_ptr<Entity> e)
+void WaterLevelChunk::addEntity(std::shared_ptr<Entity> e)
 {
 }
 
-void WaterLevelChunk::removeEntity(shared_ptr<Entity> e)
+void WaterLevelChunk::removeEntity(std::shared_ptr<Entity> e)
 {
 }
 
-void WaterLevelChunk::removeEntity(shared_ptr<Entity> e, int yc)
+void WaterLevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc)
 {
 }
 
@@ -69,16 +69,16 @@ void WaterLevelChunk::skyBrightnessChanged()
 {
 }
 
-shared_ptr<TileEntity> WaterLevelChunk::getTileEntity(int x, int y, int z)
+std::shared_ptr<TileEntity> WaterLevelChunk::getTileEntity(int x, int y, int z)
 {
-	return shared_ptr<TileEntity>();
+	return std::shared_ptr<TileEntity>();
 }
 
-void WaterLevelChunk::addTileEntity(shared_ptr<TileEntity> te)
+void WaterLevelChunk::addTileEntity(std::shared_ptr<TileEntity> te)
 {
 }
 
-void WaterLevelChunk::setTileEntity(int x, int y, int z, shared_ptr<TileEntity> tileEntity)
+void WaterLevelChunk::setTileEntity(int x, int y, int z, std::shared_ptr<TileEntity> tileEntity)
 {
 }
 
@@ -98,11 +98,11 @@ void WaterLevelChunk::markUnsaved()
 {
 }
 
-void WaterLevelChunk::getEntities(shared_ptr<Entity> except, AABB bb, vector<shared_ptr<Entity> > &es)
+void WaterLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb, vector<std::shared_ptr<Entity> > &es)
 {
 }
 
-void WaterLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, vector<shared_ptr<Entity> > &es)
+void WaterLevelChunk::getEntitiesOfClass(const type_info& ec, AABB bb, vector<std::shared_ptr<Entity> > &es)
 {
 }
 

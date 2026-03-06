@@ -17,10 +17,10 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 	virtual bool isAync();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new SetExperiencePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new SetExperiencePacket()); }
 	virtual int getId() { return 43; }
 };

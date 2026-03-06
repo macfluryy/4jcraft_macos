@@ -36,7 +36,7 @@ protected:
 	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 public:
-	virtual shared_ptr<AgableMob> getBreedOffspring(shared_ptr<AgableMob> target);
-	virtual bool isFood(shared_ptr<ItemInstance> itemInstance);
+	virtual std::shared_ptr<AgableMob> getBreedOffspring(std::shared_ptr<AgableMob> target);
+	virtual bool isFood(std::shared_ptr<ItemInstance> itemInstance);
 
 };

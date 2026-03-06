@@ -11,10 +11,10 @@ PaintingRenderer::PaintingRenderer()
 	random = new Random();
 }
 
-void PaintingRenderer::render(shared_ptr<Entity> _painting, double x, double y, double z, float rot, float a)
+void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	shared_ptr<Painting> painting = dynamic_pointer_cast<Painting>(_painting);
+	std::shared_ptr<Painting> painting = dynamic_pointer_cast<Painting>(_painting);
 	
     random->setSeed(187);
 
@@ -33,7 +33,7 @@ void PaintingRenderer::render(shared_ptr<Entity> _painting, double x, double y, 
     glPopMatrix();
 }
 
-void PaintingRenderer::renderPainting(shared_ptr<Painting> painting, int w, int h, int uo, int vo)
+void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w, int h, int uo, int vo)
 {
     float xx0 = -w / 2.0f;
     float yy0 = -h / 2.0f;
@@ -113,7 +113,7 @@ void PaintingRenderer::renderPainting(shared_ptr<Painting> painting, int w, int 
 
 }
 
-void PaintingRenderer::setBrightness(shared_ptr<Painting> painting, float ss, float ya)
+void PaintingRenderer::setBrightness(std::shared_ptr<Painting> painting, float ss, float ya)
 {
     int x = Mth::floor(painting->x);
     int y = Mth::floor(painting->y + ya/16.0f);

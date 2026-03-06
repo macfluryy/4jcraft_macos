@@ -23,7 +23,7 @@ MapItemSavedData::MapDecoration::MapDecoration(char img, char x, char y, char ro
 	this->visible = visible;
 }
 
-MapItemSavedData::HoldingPlayer::HoldingPlayer(shared_ptr<Player> player, const MapItemSavedData *parent) : parent( parent ), player( player )
+MapItemSavedData::HoldingPlayer::HoldingPlayer(std::shared_ptr<Player> player, const MapItemSavedData *parent) : parent( parent ), player( player )
 {
 	// inited outside of ctor
 	rowsDirtyMin = intArray(MapItem::IMAGE_WIDTH);
@@ -48,7 +48,7 @@ MapItemSavedData::HoldingPlayer::~HoldingPlayer()
 	delete lastSentDecorations.data;
 }
 
-charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(shared_ptr<ItemInstance> itemInstance)
+charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(std::shared_ptr<ItemInstance> itemInstance)
 {
 	if (--sendPosTick < 0)
 	{
@@ -125,7 +125,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(shared_ptr<ItemInsta
 		}
 		delete data.data;
 	}
-	shared_ptr<ServerPlayer> servPlayer = dynamic_pointer_cast<ServerPlayer>(player);
+	std::shared_ptr<ServerPlayer> servPlayer = dynamic_pointer_cast<ServerPlayer>(player);
 	for (int d = 0; d < 10; d++)
 	{
 		int column = (tick * 11) % (MapItem::IMAGE_WIDTH);
@@ -223,11 +223,11 @@ void MapItemSavedData::save(CompoundTag *tag)
 	tag->putByteArray(L"colors", colors);
 }
 
-void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemInstance> item)
+void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item)
 {
 	if (carriedByPlayers.find(player) == carriedByPlayers.end())
 	{
-		shared_ptr<HoldingPlayer> hp = shared_ptr<HoldingPlayer>( new HoldingPlayer(player, this ) );
+		std::shared_ptr<HoldingPlayer> hp = std::shared_ptr<HoldingPlayer>( new HoldingPlayer(player, this ) );
 		carriedByPlayers.insert( playerHoldingPlayerMapType::value_type(player, hp) );
 		carriedBy.push_back(hp);
 	}
@@ -245,12 +245,12 @@ void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemI
 	bool addedPlayers = false;
 	for (AUTO_VAR(it, carriedBy.begin()); it != carriedBy.end(); )
 	{
-		shared_ptr<HoldingPlayer> hp = *it;
+		std::shared_ptr<HoldingPlayer> hp = *it;
 
 		// 4J Stu - Players in the same dimension as an item frame with a map need to be sent this data, so don't remove them
 		if (hp->player->removed ) //|| (!hp->player->inventory->contains(item) && !item->isFramed() ))
 		{
-			AUTO_VAR(it2, carriedByPlayers.find( (shared_ptr<Player> ) hp->player ));
+			AUTO_VAR(it2, carriedByPlayers.find( (std::shared_ptr<Player> ) hp->player ));
 			if( it2 != carriedByPlayers.end() )
 			{
 				carriedByPlayers.erase( it2 );
@@ -268,7 +268,7 @@ void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemI
 				PlayerList *players = MinecraftServer::getInstance()->getPlayerList();
 				for(AUTO_VAR(it3, players->players.begin()); it3 != players->players.end(); ++it3)
 				{
-					shared_ptr<ServerPlayer> serverPlayer = *it3;
+					std::shared_ptr<ServerPlayer> serverPlayer = *it3;
 					if(serverPlayer->dimension == 1)
 					{
 						atLeastOnePlayerInTheEnd = true;
@@ -354,7 +354,7 @@ void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemI
 #if 0
 			for(AUTO_VAR(it,playerLevel->entities.begin()); it != playerLevel->entities.end(); ++it)
 			{
-				shared_ptr<Entity> ent = *it;
+				std::shared_ptr<Entity> ent = *it;
 
 				if((ent->GetType() & eTYPE_ENEMY) == 0) continue;
 
@@ -393,7 +393,7 @@ void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemI
 				PlayerList *players = MinecraftServer::getInstance()->getPlayerList();
 				for(AUTO_VAR(it3, players->players.begin()); it3 != players->players.end(); ++it3)
 				{
-					shared_ptr<ServerPlayer> decorationPlayer = *it3;
+					std::shared_ptr<ServerPlayer> decorationPlayer = *it3;
 					if(decorationPlayer!=NULL && decorationPlayer->dimension == this->dimension)
 					{
 						float xd = (float) (decorationPlayer->x - x) / (1 << scale);
@@ -470,12 +470,12 @@ void MapItemSavedData::tickCarriedBy(shared_ptr<Player> player, shared_ptr<ItemI
 	}
 }
 
-charArray MapItemSavedData::getUpdatePacket(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+charArray MapItemSavedData::getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
 	AUTO_VAR(it, carriedByPlayers.find(player));
 	if (it == carriedByPlayers.end() ) return charArray();
 
-	shared_ptr<HoldingPlayer> hp = it->second;
+	std::shared_ptr<HoldingPlayer> hp = it->second;
 	return hp->nextUpdatePacket(itemInstance);
 }
 
@@ -486,7 +486,7 @@ void MapItemSavedData::setDirty(int x, int y0, int y1)
 	AUTO_VAR(itEnd, carriedBy.end());
 	for (AUTO_VAR(it, carriedBy.begin()); it != itEnd; it++)
 	{
-		shared_ptr<HoldingPlayer> hp = *it; //carriedBy.at(i);
+		std::shared_ptr<HoldingPlayer> hp = *it; //carriedBy.at(i);
 		if (hp->rowsDirtyMin[x] < 0 || hp->rowsDirtyMin[x] > y0) hp->rowsDirtyMin[x] = y0;
 		if (hp->rowsDirtyMax[x] < 0 || hp->rowsDirtyMax[x] < y1) hp->rowsDirtyMax[x] = y1;
 	}
@@ -534,7 +534,7 @@ void MapItemSavedData::handleComplexItemData(charArray &data)
 // 4J Added
 // We only have one map per player per dimension, so if they pickup someone elses map we merge their map data with ours
 // so that we can see everything that they discovered but still only have one map data ourself
-void MapItemSavedData::mergeInMapData(shared_ptr<MapItemSavedData> dataToAdd)
+void MapItemSavedData::mergeInMapData(std::shared_ptr<MapItemSavedData> dataToAdd)
 {
 	int w = MapItem::IMAGE_WIDTH;
 	int h = MapItem::IMAGE_HEIGHT;
@@ -562,7 +562,7 @@ void MapItemSavedData::mergeInMapData(shared_ptr<MapItemSavedData> dataToAdd)
 	}
 }
 
-void MapItemSavedData::removeItemFrameDecoration(shared_ptr<ItemInstance> item)
+void MapItemSavedData::removeItemFrameDecoration(std::shared_ptr<ItemInstance> item)
 {
 	AUTO_VAR(frameDecoration, nonPlayerDecorations.find( item->getFrame()->entityId ) );
 	if ( frameDecoration != nonPlayerDecorations.end() )

@@ -60,7 +60,7 @@ bool Wolf::useNewAi()
 	return true;
 }
 
-void Wolf::setTarget(shared_ptr<Mob> target)
+void Wolf::setTarget(std::shared_ptr<Mob> target)
 {
 	TamableAnimal::setTarget(target);
 	if ( dynamic_pointer_cast<Player>(target) == NULL )
@@ -292,7 +292,7 @@ int Wolf::getMaxHeadXRot()
 bool Wolf::hurt(DamageSource *source, int dmg) 
 {
 	if (isInvulnerable()) return false;
-	shared_ptr<Entity> sourceEntity = source->getEntity();
+	std::shared_ptr<Entity> sourceEntity = source->getEntity();
 	sitGoal->wantToSit(false);
 	if (sourceEntity != NULL && !(dynamic_pointer_cast<Player>(sourceEntity) != NULL || dynamic_pointer_cast<Arrow>(sourceEntity) != NULL)) 
 	{
@@ -302,7 +302,7 @@ bool Wolf::hurt(DamageSource *source, int dmg)
 	return TamableAnimal::hurt(source, dmg);
 }
 
-bool Wolf::doHurtTarget(shared_ptr<Entity> target)
+bool Wolf::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	int damage = isTame() ? 4 : 2;
 	return target->hurt(DamageSource::mobAttack(dynamic_pointer_cast<Mob>(shared_from_this())), damage);
@@ -322,9 +322,9 @@ void Wolf::tame(const wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool b
 	spawnTamingParticles(bDisplayTamingParticles);
 }
 
-bool Wolf::interact(shared_ptr<Player> player) 
+bool Wolf::interact(std::shared_ptr<Player> player) 
 {
-	shared_ptr<ItemInstance> item = player->inventory->getSelected();
+	std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 
 	if (isTame()) 
 	{
@@ -451,7 +451,7 @@ float Wolf::getTailAngle()
 	return 0.20f * PI;
 }
 
-bool Wolf::isFood(shared_ptr<ItemInstance> item)
+bool Wolf::isFood(std::shared_ptr<ItemInstance> item)
 {
 	if (item == NULL) return false;
 	if (dynamic_cast<FoodItem *>(Item::items[item->id]) == NULL) return false;
@@ -498,12 +498,12 @@ int Wolf::GetSynchedHealth()
 	return getEntityData()->getInteger(DATA_HEALTH_ID);
 }	
 
-shared_ptr<AgableMob> Wolf::getBreedOffspring(shared_ptr<AgableMob> target)
+std::shared_ptr<AgableMob> Wolf::getBreedOffspring(std::shared_ptr<AgableMob> target)
 {
 	// 4J - added limit to wolves that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
-		shared_ptr<Wolf> pBabyWolf = shared_ptr<Wolf>( new Wolf(level) );
+		std::shared_ptr<Wolf> pBabyWolf = std::shared_ptr<Wolf>( new Wolf(level) );
 
 		if(!getOwnerUUID().empty())
 		{
@@ -532,11 +532,11 @@ void Wolf::setIsInterested(bool value)
 	}
 }
 
-bool Wolf::canMate(shared_ptr<Animal> animal)
+bool Wolf::canMate(std::shared_ptr<Animal> animal)
 {
 	if (animal == shared_from_this()) return false;
 	if (!isTame()) return false;
-	shared_ptr<Wolf> partner = dynamic_pointer_cast<Wolf>(animal);
+	std::shared_ptr<Wolf> partner = dynamic_pointer_cast<Wolf>(animal);
 	if (partner == NULL) return false;
 	if (!partner->isTame()) return false;
 	if (partner->isSitting()) return false;

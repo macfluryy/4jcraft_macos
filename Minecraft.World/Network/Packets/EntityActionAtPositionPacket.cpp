@@ -18,7 +18,7 @@ EntityActionAtPositionPacket::EntityActionAtPositionPacket()
 	action = 0;
 }
 
-EntityActionAtPositionPacket::EntityActionAtPositionPacket(shared_ptr<Entity> e, int action, int x, int y, int z)
+EntityActionAtPositionPacket::EntityActionAtPositionPacket(std::shared_ptr<Entity> e, int action, int x, int y, int z)
 {
 	this->action = action;
 	this->x = x;

@@ -18,7 +18,7 @@ int BossMob::getMaxHealth()
 	return maxHealth;
 }
 
-bool BossMob::hurt(shared_ptr<BossMobPart> bossMobPart, DamageSource *source, int damage)
+bool BossMob::hurt(std::shared_ptr<BossMobPart> bossMobPart, DamageSource *source, int damage)
 {
 	return hurt(source, damage);
 }

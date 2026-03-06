@@ -50,11 +50,11 @@ protected:
 	virtual void serverAiStep();
 	virtual void decreaseSquish();
 	virtual int getJumpDelay();
-	virtual shared_ptr<Slime> createChild();
+	virtual std::shared_ptr<Slime> createChild();
 
 public:
 	virtual void remove();
-	virtual void playerTouch(shared_ptr<Player> player);
+	virtual void playerTouch(std::shared_ptr<Player> player);
 
 protected:
 	virtual bool isDealsDamage();

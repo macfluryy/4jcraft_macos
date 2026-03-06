@@ -8,7 +8,7 @@
 #include <bitset>
 
 
-void AddEntityPacket::_init(shared_ptr<Entity> e, int type, int data, int xp, int yp, int zp, int yRotp, int xRotp)
+void AddEntityPacket::_init(std::shared_ptr<Entity> e, int type, int data, int xp, int yp, int zp, int yRotp, int xRotp)
 {
 	id = e->entityId;
 	// 4J Stu - We should add entities at their "last sent" position so that the relative update packets
@@ -42,12 +42,12 @@ AddEntityPacket::AddEntityPacket()
 {
 }
 
-AddEntityPacket::AddEntityPacket(shared_ptr<Entity> e, int type, int yRotp, int xRotp, int xp, int yp, int zp )
+AddEntityPacket::AddEntityPacket(std::shared_ptr<Entity> e, int type, int yRotp, int xRotp, int xp, int yp, int zp )
 {
 	_init(e, type, -1, xp, yp, zp, yRotp, xRotp); // 4J - changed "no data" value to be -1, we can have a valid entity id of 0
 }
 
-AddEntityPacket::AddEntityPacket(shared_ptr<Entity> e, int type, int data, int yRotp, int xRotp, int xp, int yp, int zp ) 
+AddEntityPacket::AddEntityPacket(std::shared_ptr<Entity> e, int type, int data, int yRotp, int xRotp, int xp, int yp, int zp ) 
 {
 	_init(e, type, data, xp, yp, zp, yRotp, xRotp);
 }

@@ -104,7 +104,7 @@ bool FurnaceTile::TestUse()
 	return true;
 }
 
-bool FurnaceTile::use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool FurnaceTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
 {
 	if( soundOnly) return false;
 
@@ -112,7 +112,7 @@ bool FurnaceTile::use(Level *level, int x, int y, int z, shared_ptr<Player> play
 	{
 		return true;
 	}
-	shared_ptr<FurnaceTileEntity> furnace = dynamic_pointer_cast<FurnaceTileEntity>( level->getTileEntity(x, y, z) );
+	std::shared_ptr<FurnaceTileEntity> furnace = dynamic_pointer_cast<FurnaceTileEntity>( level->getTileEntity(x, y, z) );
 	if (furnace != NULL ) player->openFurnace(furnace);
 	return true;
 }
@@ -120,7 +120,7 @@ bool FurnaceTile::use(Level *level, int x, int y, int z, shared_ptr<Player> play
 void FurnaceTile::setLit(bool lit, Level *level, int x, int y, int z)
 {
 	int data = level->getData(x, y, z);
-	shared_ptr<TileEntity> te = level->getTileEntity(x, y, z);
+	std::shared_ptr<TileEntity> te = level->getTileEntity(x, y, z);
 
 	noDrop = true;
 	if (lit) level->setTile(x, y, z, Tile::furnace_lit_Id);
@@ -135,12 +135,12 @@ void FurnaceTile::setLit(bool lit, Level *level, int x, int y, int z)
 	}
 }
 
-shared_ptr<TileEntity> FurnaceTile::newTileEntity(Level *level)
+std::shared_ptr<TileEntity> FurnaceTile::newTileEntity(Level *level)
 {
-	return shared_ptr<FurnaceTileEntity>( new FurnaceTileEntity() );
+	return std::shared_ptr<FurnaceTileEntity>( new FurnaceTileEntity() );
 }
 
-void FurnaceTile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by)
+void FurnaceTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
 	int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
 
@@ -154,12 +154,12 @@ void FurnaceTile::onRemove(Level *level, int x, int y, int z, int id, int data)
 {
 	if (!noDrop)
 	{
-		shared_ptr<Container> container = dynamic_pointer_cast<FurnaceTileEntity>( level->getTileEntity(x, y, z) );
+		std::shared_ptr<Container> container = dynamic_pointer_cast<FurnaceTileEntity>( level->getTileEntity(x, y, z) );
 		if( container != NULL )
 		{
 			for (unsigned int i = 0; i < container->getContainerSize(); i++)
 			{
-				shared_ptr<ItemInstance> item = container->getItem(i);
+				std::shared_ptr<ItemInstance> item = container->getItem(i);
 				if (item != NULL)
 				{
 					float xo = random->nextFloat() * 0.8f + 0.1f;
@@ -183,9 +183,9 @@ void FurnaceTile::onRemove(Level *level, int x, int y, int z, int id, int data)
 						}
 #endif
 						
-						shared_ptr<ItemInstance> newItem = shared_ptr<ItemInstance>( new ItemInstance(item->id, count, item->getAuxValue()) );
+						std::shared_ptr<ItemInstance> newItem = std::shared_ptr<ItemInstance>( new ItemInstance(item->id, count, item->getAuxValue()) );
 						newItem->set4JData( item->get4JData() );
-						shared_ptr<ItemEntity> itemEntity = shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, newItem) );
+						std::shared_ptr<ItemEntity> itemEntity = std::shared_ptr<ItemEntity>( new ItemEntity(level, x + xo, y + yo, z + zo, newItem) );
 						float pow = 0.05f;
 						itemEntity->xd = (float) random->nextGaussian() * pow;
 						itemEntity->yd = (float) random->nextGaussian() * pow + 0.2f;

@@ -21,7 +21,7 @@ void CreativeMode::init()
 	// initPlayer();
 }
 
-void CreativeMode::enableCreativeForPlayer(shared_ptr<Player> player)
+void CreativeMode::enableCreativeForPlayer(std::shared_ptr<Player> player)
 {
 	// please check ServerPlayerGameMode.java if you change these
 	player->abilities.mayfly = true;
@@ -29,7 +29,7 @@ void CreativeMode::enableCreativeForPlayer(shared_ptr<Player> player)
 	player->abilities.invulnerable = true;
 }
 
-void CreativeMode::disableCreativeForPlayer(shared_ptr<Player> player)
+void CreativeMode::disableCreativeForPlayer(std::shared_ptr<Player> player)
 {
 	player->abilities.mayfly = false;
 	player->abilities.flying = false;
@@ -37,7 +37,7 @@ void CreativeMode::disableCreativeForPlayer(shared_ptr<Player> player)
 	player->abilities.invulnerable = false;
 }
 
-void CreativeMode::adjustPlayer(shared_ptr<Player> player)
+void CreativeMode::adjustPlayer(std::shared_ptr<Player> player)
 {
 	enableCreativeForPlayer(player);
 
@@ -45,7 +45,7 @@ void CreativeMode::adjustPlayer(shared_ptr<Player> player)
 	{
         if (player->inventory->items[i] == NULL)
 		{
-            player->inventory->items[i] = shared_ptr<ItemInstance>( new ItemInstance(User::allowedTiles[i]) );
+            player->inventory->items[i] = std::shared_ptr<ItemInstance>( new ItemInstance(User::allowedTiles[i]) );
         }
 		else
 		{
@@ -63,7 +63,7 @@ void CreativeMode::creativeDestroyBlock(Minecraft *minecraft, GameMode *gameMode
 	}
 }
 
-bool CreativeMode::useItemOn(shared_ptr<Player> player, Level *level, shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
+bool CreativeMode::useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool bTestUseOnOnly, bool *pbUsedItem)
 {
 	int t = level->getTile(x, y, z);
 	if (t > 0)

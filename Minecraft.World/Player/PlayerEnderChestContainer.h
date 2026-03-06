@@ -7,15 +7,15 @@ class EnderChestTileEntity;
 class PlayerEnderChestContainer : public SimpleContainer
 {
 private:
-	shared_ptr<EnderChestTileEntity> activeChest;
+	std::shared_ptr<EnderChestTileEntity> activeChest;
 
 public:
 	PlayerEnderChestContainer();
 
-	void setActiveChest(shared_ptr<EnderChestTileEntity> activeChest);
+	void setActiveChest(std::shared_ptr<EnderChestTileEntity> activeChest);
 	void setItemsByTag(ListTag<CompoundTag> *enderItemsList);
 	ListTag<CompoundTag> *createTag();
-	bool stillValid(shared_ptr<Player> player);
+	bool stillValid(std::shared_ptr<Player> player);
 	void startOpen();
 	void stopOpen();
 };

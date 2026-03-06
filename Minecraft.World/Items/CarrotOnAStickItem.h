@@ -9,5 +9,5 @@ public:
 
 	bool isHandEquipped();
 	bool isMirroredArt();
-	shared_ptr<ItemInstance> use(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player);
+	std::shared_ptr<ItemInstance> use(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player);
 };

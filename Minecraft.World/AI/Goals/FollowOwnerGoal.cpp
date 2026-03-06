@@ -24,7 +24,7 @@ FollowOwnerGoal::FollowOwnerGoal(TamableAnimal *tamable, float speed, float star
 
 bool FollowOwnerGoal::canUse()
 {
-	shared_ptr<Mob> owner = tamable->getOwner();
+	std::shared_ptr<Mob> owner = tamable->getOwner();
 	if (owner == NULL) return false;
 	if (tamable->isSitting()) return false;
 	if (tamable->distanceToSqr(owner) < startDistance * startDistance) return false;

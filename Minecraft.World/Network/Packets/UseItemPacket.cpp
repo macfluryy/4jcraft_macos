@@ -23,14 +23,14 @@ UseItemPacket::UseItemPacket()
 	clickZ = 0.0f;
 }
 
-UseItemPacket::UseItemPacket(int x, int y, int z, int face, shared_ptr<ItemInstance> item, float clickX, float clickY, float clickZ) 
+UseItemPacket::UseItemPacket(int x, int y, int z, int face, std::shared_ptr<ItemInstance> item, float clickX, float clickY, float clickZ) 
 {
 	this->x = x;
 	this->y = y;
 	this->z = z;
 	this->face = face;
 	// 4J - take copy of item as we want our packets to have full ownership of any referenced data
-	this->item = item ? item->copy() : shared_ptr<ItemInstance>();
+	this->item = item ? item->copy() : std::shared_ptr<ItemInstance>();
 	this->clickX = clickX;
 	this->clickY = clickY;
 	this->clickZ = clickZ;
@@ -91,7 +91,7 @@ int UseItemPacket::getFace()
 	return face;
 }
 
-shared_ptr<ItemInstance> UseItemPacket::getItem()
+std::shared_ptr<ItemInstance> UseItemPacket::getItem()
 {
 	return item;
 }

@@ -51,7 +51,7 @@ bool WallTile::isSolidRender(bool isServerLevel)
 	return false;
 }
 
-void WallTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity)
+void WallTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity)
 {
 	bool n = connectsTo(level, x, y, z - 1);
 	bool s = connectsTo(level, x, y, z + 1);

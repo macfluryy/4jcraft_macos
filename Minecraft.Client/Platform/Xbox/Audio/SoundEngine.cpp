@@ -984,7 +984,7 @@ void SoundEngine::update3DPosition(SoundEngine::soundInfo *pInfo, bool bPlaceEmi
 	XACT3DApply( &m_DSPSettings, pInfo->pCue);
 }
 
-void SoundEngine::tick(shared_ptr<Mob> *players, float a)
+void SoundEngine::tick(std::shared_ptr<Mob> *players, float a)
 {
 	if( m_pXACT3Engine == NULL ) return;
 

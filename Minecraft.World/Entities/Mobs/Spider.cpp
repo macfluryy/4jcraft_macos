@@ -61,13 +61,13 @@ bool Spider::makeStepSound()
 	return false;
 }
 
-shared_ptr<Entity> Spider::findAttackTarget()
+std::shared_ptr<Entity> Spider::findAttackTarget()
 {
 #ifndef _FINAL_BUILD
 #ifdef _DEBUG_MENUS_ENABLED
 	if(app.GetMobsDontAttackEnabled())
 	{
-		return shared_ptr<Player>();
+		return std::shared_ptr<Player>();
 	}
 #endif
 #endif
@@ -78,7 +78,7 @@ shared_ptr<Entity> Spider::findAttackTarget()
 		double maxDist = 16;
 		return level->getNearestAttackablePlayer(shared_from_this(), maxDist);
 	}
-	return shared_ptr<Entity>();
+	return std::shared_ptr<Entity>();
 }
 
 int Spider::getAmbientSound()
@@ -96,7 +96,7 @@ int Spider::getDeathSound()
 	return eSoundType_MOB_SPIDER_DEATH;
 }
 
-void Spider::checkHurtTarget(shared_ptr<Entity> target, float d) 
+void Spider::checkHurtTarget(std::shared_ptr<Entity> target, float d) 
 {
 	float br = getBrightness(1);
 	if (br > 0.5f && random->nextInt(100) == 0)

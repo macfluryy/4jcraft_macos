@@ -82,16 +82,16 @@ void EnderMan::readAdditionalSaveData(CompoundTag *tag)
 	setCarryingData(tag->getShort(L"carryingData"));
 }
 
-shared_ptr<Entity> EnderMan::findAttackTarget()
+std::shared_ptr<Entity> EnderMan::findAttackTarget()
 {
 #ifndef _FINAL_BUILD
 	if(app.GetMobsDontAttackEnabled())
 	{
-		return shared_ptr<Player>();
+		return std::shared_ptr<Player>();
 	}
 #endif
 
-	shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 64);
+	std::shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 64);
 	if (player != NULL)
 	{
 		if (isLookingAtMe(player))
@@ -111,9 +111,9 @@ shared_ptr<Entity> EnderMan::findAttackTarget()
 	return nullptr;
 }
 
-bool EnderMan::isLookingAtMe(shared_ptr<Player> player)
+bool EnderMan::isLookingAtMe(std::shared_ptr<Player> player)
 {
-	shared_ptr<ItemInstance> helmet = player->inventory->armor[3];
+	std::shared_ptr<ItemInstance> helmet = player->inventory->armor[3];
 	if (helmet != NULL && helmet->id == Tile::pumpkin_Id) return false;
 
 	Vec3 *look = player->getViewVector(1)->normalize();
@@ -249,7 +249,7 @@ bool EnderMan::teleport()
 	return teleport(xx, yy, zz);
 }
 
-bool EnderMan::teleportTowards(shared_ptr<Entity> e)
+bool EnderMan::teleportTowards(std::shared_ptr<Entity> e)
 {
 	Vec3 *dir = Vec3::newTemp(x - e->x, bb->y0 + bbHeight / 2 - e->y + e->getHeadHeight(), z - e->z);
 	dir = dir->normalize();

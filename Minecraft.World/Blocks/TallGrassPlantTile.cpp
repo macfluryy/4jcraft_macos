@@ -79,7 +79,7 @@ int TallGrass::getResourceCountForLootBonus(int bonusLevel, Random *random)
 	return 1 + random->nextInt(bonusLevel * 2 + 1);
 }
 
-void TallGrass::playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data)
+void TallGrass::playerDestroy(Level *level, std::shared_ptr<Player> player, int x, int y, int z, int data)
 {
     if (!level->isClientSide && player->getSelectedItem() != NULL && player->getSelectedItem()->id == Item::shears->id)
 	{
@@ -89,7 +89,7 @@ void TallGrass::playerDestroy(Level *level, shared_ptr<Player> player, int x, in
 			);
 
         // drop leaf block instead of sapling
-        popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Tile::tallgrass, 1, data)));
+        popResource(level, x, y, z, std::shared_ptr<ItemInstance>(new ItemInstance(Tile::tallgrass, 1, data)));
     }
 	else
 	{

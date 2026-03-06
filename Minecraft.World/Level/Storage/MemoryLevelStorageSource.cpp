@@ -13,9 +13,9 @@ wstring MemoryLevelStorageSource::getName()
 	return L"Memory Storage";
 }
 
-shared_ptr<LevelStorage> MemoryLevelStorageSource::selectLevel(const wstring&  levelId, bool createPlayerDir) 
+std::shared_ptr<LevelStorage> MemoryLevelStorageSource::selectLevel(const wstring&  levelId, bool createPlayerDir) 
 {
-	return shared_ptr<LevelStorage> () new MemoryLevelStorage());
+	return std::shared_ptr<LevelStorage> () new MemoryLevelStorage());
 }
 
 vector<LevelSummary *> *MemoryLevelStorageSource::getLevelList() 

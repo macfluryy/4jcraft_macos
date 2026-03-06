@@ -204,10 +204,10 @@ void Chunk::rebuild()
 
 	LevelChunk::touchedSky = false;
 
-//	unordered_set<shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
+//	unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
 //	renderableTileEntities.clear();
 
-	vector<shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
+	vector<std::shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
 
 	int r = 1;
 
@@ -402,7 +402,7 @@ void Chunk::rebuild()
 						Tile *tile = Tile::tiles[tileId];
 						if (currentLayer == 0 && tile->isEntityTile())
 						{
-							shared_ptr<TileEntity> et = region->getTileEntity(x, y, z);
+							std::shared_ptr<TileEntity> et = region->getTileEntity(x, y, z);
 							if (TileEntityRenderDispatcher::instance->hasRenderer(et))
 							{
 								renderableTileEntities.push_back(et);
@@ -554,10 +554,10 @@ void Chunk::rebuild()
 		*/
         
 
-    unordered_set<shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     
 	AUTO_VAR(endIt, oldTileEntities.end());
-	for( unordered_set<shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
+	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
 	{
 		newTileEntities.erase(*it);
 	}
@@ -566,7 +566,7 @@ void Chunk::rebuild()
 
 	EnterCriticalSection(globalRenderableTileEntities_cs);
 	endIt = newTileEntities.end();
-	for( unordered_set<shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
+	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
 	{
 		globalRenderableTileEntities->push_back(*it);
 	}
@@ -574,12 +574,12 @@ void Chunk::rebuild()
 	// 4J - All these new things added to globalRenderableTileEntities
 
 	AUTO_VAR(endItRTE, renderableTileEntities.end());
-	for( vector<shared_ptr<TileEntity> >::iterator it = renderableTileEntities.begin(); it != endItRTE; it++ )
+	for( vector<std::shared_ptr<TileEntity> >::iterator it = renderableTileEntities.begin(); it != endItRTE; it++ )
 	{
 		oldTileEntities.erase(*it);
 	}
 	// 4J - oldTileEntities is now the removed items
-	vector<shared_ptr<TileEntity> >::iterator it = globalRenderableTileEntities->begin();
+	vector<std::shared_ptr<TileEntity> >::iterator it = globalRenderableTileEntities->begin();
 	while(  it != globalRenderableTileEntities->end() )
 	{
 		if( oldTileEntities.find(*it) != oldTileEntities.end() )
@@ -656,10 +656,10 @@ void Chunk::rebuild_SPU()
 
 	LevelChunk::touchedSky = false;
 
-//	unordered_set<shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
+//	unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
 //	renderableTileEntities.clear();
 
-	vector<shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
+	vector<std::shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
 
 //        List<TileEntity> newTileEntities = new ArrayList<TileEntity>();
 //        newTileEntities.clear();
@@ -750,7 +750,7 @@ void Chunk::rebuild_SPU()
 					{
 						if (currentLayer == 0 && Tile::tiles[tileId]->isEntityTile())
 						{
-							shared_ptr<TileEntity> et = region.getTileEntity(x, y, z);
+							std::shared_ptr<TileEntity> et = region.getTileEntity(x, y, z);
 							if (TileEntityRenderDispatcher::instance->hasRenderer(et))
 							{
 								renderableTileEntities.push_back(et);
@@ -883,10 +883,10 @@ void Chunk::rebuild_SPU()
 		*/
         
 
-    unordered_set<shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     
 	AUTO_VAR(endIt, oldTileEntities.end());
-	for( unordered_set<shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
+	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
 	{
 		newTileEntities.erase(*it);
 	}
@@ -895,7 +895,7 @@ void Chunk::rebuild_SPU()
 
 	EnterCriticalSection(globalRenderableTileEntities_cs);
 	endIt = newTileEntities.end();
-	for( unordered_set<shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
+	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
 	{
 		globalRenderableTileEntities.push_back(*it);
 	}
@@ -903,12 +903,12 @@ void Chunk::rebuild_SPU()
 	// 4J - All these new things added to globalRenderableTileEntities
 
 	AUTO_VAR(endItRTE, renderableTileEntities.end());
-	for( vector<shared_ptr<TileEntity> >::iterator it = renderableTileEntities.begin(); it != endItRTE; it++ )
+	for( vector<std::shared_ptr<TileEntity> >::iterator it = renderableTileEntities.begin(); it != endItRTE; it++ )
 	{
 		oldTileEntities.erase(*it);
 	}
 	// 4J - oldTileEntities is now the removed items
-	vector<shared_ptr<TileEntity> >::iterator it = globalRenderableTileEntities->begin();
+	vector<std::shared_ptr<TileEntity> >::iterator it = globalRenderableTileEntities->begin();
 	while(  it != globalRenderableTileEntities->end() )
 	{
 		if( oldTileEntities.find(*it) != oldTileEntities.end() )
@@ -941,7 +941,7 @@ void Chunk::rebuild_SPU()
 #endif // _PS3_
 
 
-float Chunk::distanceToSqr(shared_ptr<Entity> player) const
+float Chunk::distanceToSqr(std::shared_ptr<Entity> player) const
 {
 	float xd = (float) (player->x - xm);
 	float yd = (float) (player->y - ym);
@@ -949,7 +949,7 @@ float Chunk::distanceToSqr(shared_ptr<Entity> player) const
 	return xd * xd + yd * yd + zd * zd;
 }
 
-float Chunk::squishedDistanceToSqr(shared_ptr<Entity> player)
+float Chunk::squishedDistanceToSqr(std::shared_ptr<Entity> player)
 {
 	float xd = (float) (player->x - xm);
 	float yd = (float) (player->y - ym) * 2;

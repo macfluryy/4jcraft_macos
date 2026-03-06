@@ -4,7 +4,7 @@
 #include "../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
-CraftingScreen::CraftingScreen(shared_ptr<Inventory> inventory, Level *level, int x, int y, int z) : AbstractContainerScreen(new CraftingMenu(inventory, level, x, y, z))
+CraftingScreen::CraftingScreen(std::shared_ptr<Inventory> inventory, Level *level, int x, int y, int z) : AbstractContainerScreen(new CraftingMenu(inventory, level, x, y, z))
 {
 }
 

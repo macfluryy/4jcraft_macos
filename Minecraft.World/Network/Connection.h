@@ -52,10 +52,10 @@ private:
 
 	bool running;
 
-	queue<shared_ptr<Packet> > incoming;			// 4J - was using synchronizedList...
+	queue<std::shared_ptr<Packet> > incoming;			// 4J - was using synchronizedList...
 	CRITICAL_SECTION incoming_cs;		// ... now has this critical section
-	queue<shared_ptr<Packet> > outgoing;			// 4J - was using synchronizedList - but don't think it is required as usage is wrapped in writeLock critical section
-	queue<shared_ptr<Packet> > outgoing_slow;		// 4J - was using synchronizedList - but don't think it is required as usage is wrapped in writeLock critical section
+	queue<std::shared_ptr<Packet> > outgoing;			// 4J - was using synchronizedList - but don't think it is required as usage is wrapped in writeLock critical section
+	queue<std::shared_ptr<Packet> > outgoing_slow;		// 4J - was using synchronizedList - but don't think it is required as usage is wrapped in writeLock critical section
 	
 
 	PacketListener *packetListener;
@@ -98,10 +98,10 @@ public:
 	Connection(Socket *socket, const wstring& id, PacketListener *packetListener); // throws IOException
 
 	void setListener(PacketListener *packetListener);
-	void send(shared_ptr<Packet> packet);
+	void send(std::shared_ptr<Packet> packet);
 
 public:
-	void queueSend(shared_ptr<Packet> packet);
+	void queueSend(std::shared_ptr<Packet> packet);
 
 private:
 	int slowWriteDelay;

@@ -65,9 +65,9 @@ bool MoveEntityPacketSmall::canBeInvalidated()
 	return true;
 }
 
-bool MoveEntityPacketSmall::isInvalidatedBy(shared_ptr<Packet> packet)
+bool MoveEntityPacketSmall::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	shared_ptr<MoveEntityPacketSmall> target = dynamic_pointer_cast<MoveEntityPacketSmall>(packet);
+	std::shared_ptr<MoveEntityPacketSmall> target = dynamic_pointer_cast<MoveEntityPacketSmall>(packet);
 	return target != NULL && target->id == id;
 }
 

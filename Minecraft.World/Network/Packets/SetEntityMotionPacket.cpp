@@ -37,7 +37,7 @@ SetEntityMotionPacket::SetEntityMotionPacket()
 	_init(0, 0.0f, 0.0f, 0.0f);
 }
 
-SetEntityMotionPacket::SetEntityMotionPacket(shared_ptr<Entity> e)
+SetEntityMotionPacket::SetEntityMotionPacket(std::shared_ptr<Entity> e)
 {
 	_init(e->entityId, e->xd, e->yd, e->zd);
 }
@@ -106,8 +106,8 @@ bool SetEntityMotionPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetEntityMotionPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetEntityMotionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	shared_ptr<SetEntityMotionPacket> target = dynamic_pointer_cast<SetEntityMotionPacket>(packet);
+	std::shared_ptr<SetEntityMotionPacket> target = dynamic_pointer_cast<SetEntityMotionPacket>(packet);
 	return target->id == id;
 }

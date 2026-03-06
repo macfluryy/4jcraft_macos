@@ -193,19 +193,19 @@ Random *Mob::getRandom()
 	return random;
 }
 
-shared_ptr<Mob> Mob::getLastHurtByMob()
+std::shared_ptr<Mob> Mob::getLastHurtByMob()
 {
 	return lastHurtByMob;
 }
 
-shared_ptr<Mob> Mob::getLastHurtMob()
+std::shared_ptr<Mob> Mob::getLastHurtMob()
 {
 	return lastHurtMob;
 }
 
-void Mob::setLastHurtMob(shared_ptr<Entity> target)
+void Mob::setLastHurtMob(std::shared_ptr<Entity> target)
 {
-	shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(target);
+	std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(target);
 	if (mob != NULL) lastHurtMob = mob;
 }
 
@@ -235,18 +235,18 @@ void Mob::setSpeed(float speed)
 	setYya(speed);
 }
 
-bool Mob::doHurtTarget(shared_ptr<Entity> target)
+bool Mob::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	setLastHurtMob(target);
 	return false;
 }
 
-shared_ptr<Mob> Mob::getTarget()
+std::shared_ptr<Mob> Mob::getTarget()
 {
 	return target;
 }
 
-void Mob::setTarget(shared_ptr<Mob> target)
+void Mob::setTarget(std::shared_ptr<Mob> target)
 {
 	this->target = target;
 }
@@ -299,7 +299,7 @@ bool Mob::hasRestriction()
 	return restrictRadius != -1;
 }
 
-void Mob::setLastHurtByMob(shared_ptr<Mob> hurtBy)
+void Mob::setLastHurtByMob(std::shared_ptr<Mob> hurtBy)
 {
 	lastHurtByMob = hurtBy;
 	lastHurtByMobTime = lastHurtByMob != NULL ? PLAYER_HURT_EXPERIENCE_TIME : 0;
@@ -310,7 +310,7 @@ void Mob::defineSynchedData()
 	entityData->define(DATA_EFFECT_COLOR_ID, effectColor);
 }
 
-bool Mob::canSee(shared_ptr<Entity> target) 
+bool Mob::canSee(std::shared_ptr<Entity> target) 
 {
 	HitResult *hres = level->clip(Vec3::newTemp(x, y + getHeadHeight(), z), Vec3::newTemp(target->x, target->y + target->getHeadHeight(), target->z));
 	bool retVal = (hres == NULL);
@@ -412,7 +412,7 @@ void Mob::baseTick()
 	if (lastHurtByPlayerTime > 0) lastHurtByPlayerTime--;
 	else
 	{
-		// Note - this used to just set to nullptr, but that has to create a new shared_ptr and free an old one, when generally this won't be doing anything at all. This
+		// Note - this used to just set to nullptr, but that has to create a new std::shared_ptr and free an old one, when generally this won't be doing anything at all. This
 		// is the lightweight but ugly alternative
 		if( lastHurtByPlayer )
 		{
@@ -454,7 +454,7 @@ void Mob::tickDeath()
 				{
 					int newCount = ExperienceOrb::getExperienceValue(xpCount);
 					xpCount -= newCount;
-					level->addEntity(shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount) ) );
+					level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount) ) );
 				}
 			}
 		}
@@ -475,7 +475,7 @@ int Mob::decreaseAirSupply(int currentSupply)
 	return currentSupply - 1;
 }
 
-int Mob::getExperienceReward(shared_ptr<Player> killedBy)
+int Mob::getExperienceReward(std::shared_ptr<Player> killedBy)
 {
 	return xpReward;
 }
@@ -661,7 +661,7 @@ bool Mob::hurt(DamageSource *source, int dmg)
 	if ( source->isFire() && hasEffect(MobEffect::fireResistance) )
 	{
 		// 4J-JEV, for new achievement Stayin'Frosty, TODO merge with Java version.
-		shared_ptr<Player> plr = dynamic_pointer_cast<Player>(shared_from_this());
+		std::shared_ptr<Player> plr = dynamic_pointer_cast<Player>(shared_from_this());
 		if ( plr != NULL && source == DamageSource::lava ) // Only award when in lava (not any fire).
 		{
 			plr->awardStat(GenericStats::stayinFrosty(),GenericStats::param_stayinFrosty());
@@ -690,7 +690,7 @@ bool Mob::hurt(DamageSource *source, int dmg)
 
 	hurtDir = 0;
 
-	shared_ptr<Entity> sourceEntity = source->getEntity();
+	std::shared_ptr<Entity> sourceEntity = source->getEntity();
 	if (sourceEntity != NULL)
 	{
 		if (dynamic_pointer_cast<Mob>(sourceEntity) != NULL) {
@@ -704,7 +704,7 @@ bool Mob::hurt(DamageSource *source, int dmg)
 		}
 		else if (dynamic_pointer_cast<Wolf>(sourceEntity))
 		{
-			shared_ptr<Wolf> w = dynamic_pointer_cast<Wolf>(sourceEntity);
+			std::shared_ptr<Wolf> w = dynamic_pointer_cast<Wolf>(sourceEntity);
 			if (w->isTame())
 			{
 				lastHurtByPlayerTime = PLAYER_HURT_EXPERIENCE_TIME;
@@ -834,7 +834,7 @@ int Mob::getDeathSound()
 	return eSoundType_DAMAGE_HURT;
 }
 
-void Mob::knockback(shared_ptr<Entity> source, int dmg, double xd, double zd) 
+void Mob::knockback(std::shared_ptr<Entity> source, int dmg, double xd, double zd) 
 {
 	hasImpulse = true;
 	float dd = (float) sqrt(xd * xd + zd * zd);
@@ -853,7 +853,7 @@ void Mob::knockback(shared_ptr<Entity> source, int dmg, double xd, double zd)
 
 void Mob::die(DamageSource *source) 
 {
-	shared_ptr<Entity> sourceEntity = source->getEntity();
+	std::shared_ptr<Entity> sourceEntity = source->getEntity();
 	if (deathScore >= 0 && sourceEntity != NULL) sourceEntity->awardKillScore(shared_from_this(), deathScore);
 
 	if (sourceEntity != NULL) sourceEntity->killed( dynamic_pointer_cast<Mob>( shared_from_this() ) );
@@ -863,7 +863,7 @@ void Mob::die(DamageSource *source)
 	if (!level->isClientSide) 
 	{
 		int playerBonus = 0;
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(sourceEntity);
+		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(sourceEntity);
 		if (player != NULL)
 		{
 			playerBonus = EnchantmentHelper::getKillingLootBonus(player->inventory);
@@ -960,7 +960,7 @@ void Mob::travel(float xa, float ya)
 		thisPlayer = (Player*) this;
 	}
 #else
-	shared_ptr<Player> thisPlayer = dynamic_pointer_cast<Player>(shared_from_this());
+	std::shared_ptr<Player> thisPlayer = dynamic_pointer_cast<Player>(shared_from_this());
 #endif
 	if (isInWater() && !(thisPlayer && thisPlayer->abilities.flying) ) 
 	{
@@ -1293,13 +1293,13 @@ void Mob::aiStep()
 
 	if(!level->isClientSide)
 	{
-		vector<shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
+		vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
 		if (entities != NULL && !entities->empty()) 
 		{
 			AUTO_VAR(itEnd, entities->end());
 			for (AUTO_VAR(it, entities->begin()); it != itEnd; it++)
 			{
-				shared_ptr<Entity> e = *it; //entities->at(i);
+				std::shared_ptr<Entity> e = *it; //entities->at(i);
 				if (e->isPushable()) e->push(shared_from_this());
 			}
 		}
@@ -1350,7 +1350,7 @@ bool Mob::removeWhenFarAway()
 
 void Mob::checkDespawn() 
 {
-	shared_ptr<Entity> player = level->getNearestPlayer(shared_from_this(), -1);
+	std::shared_ptr<Entity> player = level->getNearestPlayer(shared_from_this(), -1);
 	if (player != NULL) 
 	{
 		double xd = player->x - x;
@@ -1409,7 +1409,7 @@ void Mob::serverAiStep()
 	float lookDistance = 8;
 	if (random->nextFloat() < 0.02f) 
 	{
-		shared_ptr<Player> player = level->getNearestPlayer(shared_from_this(), lookDistance);
+		std::shared_ptr<Player> player = level->getNearestPlayer(shared_from_this(), lookDistance);
 		if (player != NULL) 
 		{
 			lookingAt = player;
@@ -1449,13 +1449,13 @@ int Mob::getMaxHeadXRot()
 	return 40;
 }
 
-void Mob::lookAt(shared_ptr<Entity> e, float yMax, float xMax) 
+void Mob::lookAt(std::shared_ptr<Entity> e, float yMax, float xMax) 
 {
 	double xd = e->x - x;
 	double yd;
 	double zd = e->z - z;
 	
-	shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(e);
+	std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(e);
 	if(mob != NULL)
 	{
 		yd = (y + getHeadHeight()) - (mob->y + mob->getHeadHeight());
@@ -1478,7 +1478,7 @@ bool Mob::isLookingAtAnEntity()
 	return lookingAt != NULL;
 }
 
-shared_ptr<Entity> Mob::getLookingAt() 
+std::shared_ptr<Entity> Mob::getLookingAt() 
 {
 	return lookingAt;
 }
@@ -1579,12 +1579,12 @@ int Mob::getMaxSpawnClusterSize()
 	return 4;
 }
 
-shared_ptr<ItemInstance> Mob::getCarriedItem() 
+std::shared_ptr<ItemInstance> Mob::getCarriedItem() 
 {
 	return nullptr;
 }
 
-shared_ptr<ItemInstance> Mob::getArmor(int pos)
+std::shared_ptr<ItemInstance> Mob::getArmor(int pos)
 {
 	// 4J Stu - Not implemented yet
 	return nullptr;
@@ -1635,7 +1635,7 @@ bool Mob::isSleeping()
 	return false;
 }
 
-Icon *Mob::getItemInHandIcon(shared_ptr<ItemInstance> item, int layer) 
+Icon *Mob::getItemInHandIcon(std::shared_ptr<ItemInstance> item, int layer) 
 {
 	return item->getIcon();
 }
@@ -1900,7 +1900,7 @@ MobType Mob::getMobType()
 	return UNDEFINED;
 }
 
-void Mob::breakItem(shared_ptr<ItemInstance> itemInstance)
+void Mob::breakItem(std::shared_ptr<ItemInstance> itemInstance)
 {
 	level->playSound(shared_from_this(), eSoundType_RANDOM_BREAK, 0.8f, 0.8f + level->random->nextFloat() * 0.4f);
 

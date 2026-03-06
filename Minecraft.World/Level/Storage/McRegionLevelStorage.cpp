@@ -89,7 +89,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
     return new McRegionChunkStorage(m_saveFile, L"");
 }
 
-void McRegionLevelStorage::saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players) 
+void McRegionLevelStorage::saveLevelData(LevelData *levelData, vector<std::shared_ptr<Player> > *players) 
 {
     levelData->setVersion(MCREGION_VERSION_ID);
 	MemSect(38);

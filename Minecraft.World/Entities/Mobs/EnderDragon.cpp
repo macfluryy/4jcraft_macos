@@ -84,14 +84,14 @@ EnderDragon::EnderDragon(Level *level) : BossMob(level)
 {
 	_init();
 
-	head = shared_ptr<BossMobPart>( new BossMobPart(this, L"head", 6, 6) );
-	neck = shared_ptr<BossMobPart>( new BossMobPart(this, L"neck", 6, 6) ); // 4J Added
-	body = shared_ptr<BossMobPart>( new BossMobPart(this, L"body", 8, 8) );
-	tail1 = shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
-	tail2 = shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
-	tail3 = shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
-	wing1 = shared_ptr<BossMobPart>( new BossMobPart(this, L"wing", 4, 4) );
-	wing2 = shared_ptr<BossMobPart>( new BossMobPart(this, L"wing", 4, 4) );
+	head = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"head", 6, 6) );
+	neck = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"neck", 6, 6) ); // 4J Added
+	body = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"body", 8, 8) );
+	tail1 = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
+	tail2 = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
+	tail3 = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"tail", 4, 4) );
+	wing1 = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"wing", 4, 4) );
+	wing2 = std::shared_ptr<BossMobPart>( new BossMobPart(this, L"wing", 4, 4) );
 
 	subEntities.push_back(head);
 	subEntities.push_back(neck); // 4J Added
@@ -440,11 +440,11 @@ void EnderDragon::aiStep()
 		{
 			if( m_actionTicks < (FLAME_TICKS - 10) )
 			{
-				vector<shared_ptr<Entity> > *targets = level->getEntities(shared_from_this(), m_acidArea);
+				vector<std::shared_ptr<Entity> > *targets = level->getEntities(shared_from_this(), m_acidArea);
 
 				for( AUTO_VAR(it, targets->begin() ); it != targets->end(); ++it)
 				{
-					shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+					std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
 					if (e != NULL)
 					{
 						//app.DebugPrintf("Attacking entity with acid\n");
@@ -685,7 +685,7 @@ void EnderDragon::aiStep()
 	// Curls/straightens the tail
 	for (int i = 0; i < 3; i++)
 	{
-		shared_ptr<BossMobPart> part = nullptr;
+		std::shared_ptr<BossMobPart> part = nullptr;
 
 		if (i == 0) part = tail1;
 		if (i == 1) part = tail2;
@@ -734,7 +734,7 @@ void EnderDragon::aiStep()
 					double zdd = attackTarget->z - startingZ;
 
 					level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL, (int) x, (int) y, (int) z, 0);
-					shared_ptr<DragonFireball> ie = shared_ptr<DragonFireball>( new DragonFireball(level, dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
+					std::shared_ptr<DragonFireball> ie = std::shared_ptr<DragonFireball>( new DragonFireball(level, dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
 					ie->x = startingX;
 					ie->y = startingY;
 					ie->z = startingZ;
@@ -793,14 +793,14 @@ void EnderDragon::checkCrystals()
 	if (random->nextInt(10) == 0)
 	{
 		float maxDist = 32;
-		vector<shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), bb->grow(maxDist, maxDist, maxDist));
+		vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), bb->grow(maxDist, maxDist, maxDist));
 
-		shared_ptr<EnderCrystal> crystal = nullptr;
+		std::shared_ptr<EnderCrystal> crystal = nullptr;
 		double nearest = Double::MAX_VALUE;
 		//for (Entity ec : crystals)
  		for(AUTO_VAR(it, crystals->begin()); it != crystals->end(); ++it)
 		{
-			shared_ptr<EnderCrystal> ec = dynamic_pointer_cast<EnderCrystal>( *it );
+			std::shared_ptr<EnderCrystal> ec = dynamic_pointer_cast<EnderCrystal>( *it );
 			double dist = ec->distanceToSqr(shared_from_this() );
 			if (dist < nearest)
 			{
@@ -831,7 +831,7 @@ void EnderDragon::checkAttack()
 	}
 }
 
-void EnderDragon::knockBack(vector<shared_ptr<Entity> > *entities)
+void EnderDragon::knockBack(vector<std::shared_ptr<Entity> > *entities)
 {
 	double xm = (body->bb->x0 + body->bb->x1) / 2;
 	//        double ym = (body.bb.y0 + body.bb.y1) / 2;
@@ -840,7 +840,7 @@ void EnderDragon::knockBack(vector<shared_ptr<Entity> > *entities)
 	//for (Entity e : entities)
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
-		shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+		std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
 		if (e != NULL)//(e instanceof Mob)
 		{
 			double xd = e->x - xm;
@@ -851,12 +851,12 @@ void EnderDragon::knockBack(vector<shared_ptr<Entity> > *entities)
 	}
 }
 
-void EnderDragon::hurt(vector<shared_ptr<Entity> > *entities)
+void EnderDragon::hurt(vector<std::shared_ptr<Entity> > *entities)
 {
 	//for (int i = 0; i < entities->size(); i++)
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
-		shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );//entities.get(i);
+		std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );//entities.get(i);
 		if (e != NULL) //(e instanceof Mob)
 		{
 			DamageSource *damageSource = DamageSource::mobAttack( dynamic_pointer_cast<Mob>( shared_from_this() ));
@@ -868,7 +868,7 @@ void EnderDragon::hurt(vector<shared_ptr<Entity> > *entities)
 
 void EnderDragon::findNewTarget()
 {
-	shared_ptr<Player> playerNearestToEgg = nullptr;
+	std::shared_ptr<Player> playerNearestToEgg = nullptr;
 
 	// Update current action
 	switch(getSynchedAction())
@@ -1100,7 +1100,7 @@ bool EnderDragon::checkWalls(AABB *bb)
 	return hitWall;
 }
 
-bool EnderDragon::hurt(shared_ptr<BossMobPart> bossMobPart, DamageSource *source, int damage)
+bool EnderDragon::hurt(std::shared_ptr<BossMobPart> bossMobPart, DamageSource *source, int damage)
 {
 	if (bossMobPart != head)
 	{
@@ -1193,7 +1193,7 @@ void EnderDragon::tickDeath()
 			{
 				int newCount = ExperienceOrb::getExperienceValue(xpCount);
 				xpCount -= newCount;
-				level->addEntity(shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount) ));
+				level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount) ));
 			}
 		}
 		if (dragonDeathTime == 1) 
@@ -1214,7 +1214,7 @@ void EnderDragon::tickDeath()
 		{
 			int newCount = ExperienceOrb::getExperienceValue(xpCount);
 			xpCount -= newCount;
-			level->addEntity(shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount)));
+			level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount)));
 		}
 		int xo = 5 + random->nextInt(2) * 2 - 1;
 		int zo = 5 + random->nextInt(2) * 2 - 1;
@@ -1312,7 +1312,7 @@ void EnderDragon::checkDespawn()
 {
 }
 
-vector<shared_ptr<Entity> > *EnderDragon::getSubEntities()
+vector<std::shared_ptr<Entity> > *EnderDragon::getSubEntities()
 {
 	return &subEntities;
 }
@@ -1435,7 +1435,7 @@ EnderDragon::EEnderdragonAction EnderDragon::getSynchedAction()
 void EnderDragon::handleCrystalDestroyed(DamageSource *source)
 {
 	AABB *tempBB = AABB::newTemp(PODIUM_X_POS,84.0,PODIUM_Z_POS,PODIUM_X_POS+1.0,85.0,PODIUM_Z_POS+1.0);
-	vector<shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), tempBB->grow(48, 40, 48));
+	vector<std::shared_ptr<Entity> > *crystals = level->getEntitiesOfClass(typeid(EnderCrystal), tempBB->grow(48, 40, 48));
 	m_remainingCrystalsCount = (int)crystals->size() - 1;
 	if(m_remainingCrystalsCount < 0) m_remainingCrystalsCount = 0;
 	delete crystals;

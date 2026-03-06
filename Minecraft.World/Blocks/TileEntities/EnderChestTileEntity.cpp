@@ -81,7 +81,7 @@ void EnderChestTileEntity::stopOpen()
 	level->tileEvent(x, y, z, Tile::enderChest_Id, ChestTile::EVENT_SET_OPEN_COUNT, openCount);
 }
 
-bool EnderChestTileEntity::stillValid(shared_ptr<Player> player)
+bool EnderChestTileEntity::stillValid(std::shared_ptr<Player> player)
 {
 	if (level->getTileEntity(x, y, z) != shared_from_this()) return false;
 	if (player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 8 * 8) return false;
@@ -90,9 +90,9 @@ bool EnderChestTileEntity::stillValid(shared_ptr<Player> player)
 }
 
 // 4J Added
-shared_ptr<TileEntity> EnderChestTileEntity::clone()
+std::shared_ptr<TileEntity> EnderChestTileEntity::clone()
 {
-	shared_ptr<EnderChestTileEntity> result = shared_ptr<EnderChestTileEntity>( new EnderChestTileEntity() );
+	std::shared_ptr<EnderChestTileEntity> result = std::shared_ptr<EnderChestTileEntity>( new EnderChestTileEntity() );
 	TileEntity::clone(result);
 
 	return result;

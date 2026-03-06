@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 
-AddIslandLayer::AddIslandLayer(__int64 seedMixup, shared_ptr<Layer>parent) : Layer(seedMixup)
+AddIslandLayer::AddIslandLayer(__int64 seedMixup, std::shared_ptr<Layer>parent) : Layer(seedMixup)
 {
 	this->parent = parent;
 }

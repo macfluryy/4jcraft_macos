@@ -545,7 +545,7 @@ public:
     virtual Icon *getTexture(int face, int data);
     virtual Icon *getTexture(int face);
     virtual AABB *getTileAABB(Level *level, int x, int y, int z);
-	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source);
+	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source);
     virtual AABB *getAABB(Level *level, int x, int y, int z);
     virtual bool isSolidRender(bool isServerLevel = false);							// 4J - Added isServerLevel param
     virtual bool mayPick(int data, bool liquid);
@@ -560,16 +560,16 @@ public:
     virtual void onRemove(Level *level, int x, int y, int z, int id, int data);
     virtual int getResourceCount(Random *random);
     virtual int getResource(int data, Random *random, int playerBonusLevel);
-    virtual float getDestroyProgress(shared_ptr<Player> player, Level *level = nullptr, int x = 0, int y = 0, int z = 0);
+    virtual float getDestroyProgress(std::shared_ptr<Player> player, Level *level = nullptr, int x = 0, int y = 0, int z = 0);
     virtual void spawnResources(Level *level, int x, int y, int z, int data, int playerBonusLevel);
     virtual void spawnResources(Level *level, int x, int y, int z, int data, float odds, int playerBonusLevel);
 protected:
-	virtual void popResource(Level *level, int x, int y, int z, shared_ptr<ItemInstance> itemInstance);
+	virtual void popResource(Level *level, int x, int y, int z, std::shared_ptr<ItemInstance> itemInstance);
 	virtual void popExperience(Level *level, int x, int y, int z, int amount);
 
 public:
 	virtual int getSpawnResourcesAuxValue(int data);
-    virtual float getExplosionResistance(shared_ptr<Entity> source);
+    virtual float getExplosionResistance(std::shared_ptr<Entity> source);
     virtual HitResult *clip(Level *level, int xt, int yt, int zt, Vec3 *a, Vec3 *b);
 private:
     virtual bool containsX(Vec3 *v);
@@ -581,14 +581,14 @@ public:
     virtual bool mayPlace(Level *level, int x, int y, int z, int face);
     virtual bool mayPlace(Level *level, int x, int y, int z);
 	virtual bool TestUse();
-	virtual bool TestUse(Level *level, int x, int y, int z, shared_ptr<Player> player);
-	virtual bool use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace = 0, float clickX = 0.0f, float clickY = 0.0f, float clickZ = 0.0f, bool soundOnly = false); // 4J added soundOnly param
-    virtual void stepOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity);
+	virtual bool TestUse(Level *level, int x, int y, int z, std::shared_ptr<Player> player);
+	virtual bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace = 0, float clickX = 0.0f, float clickY = 0.0f, float clickZ = 0.0f, bool soundOnly = false); // 4J added soundOnly param
+    virtual void stepOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity);
 	virtual int getPlacedOnFaceDataValue(Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, int itemValue);
     virtual void prepareRender(Level *level, int x, int y, int z);
-    virtual void attack(Level *level, int x, int y, int z, shared_ptr<Player> player);
-    virtual void handleEntityInside(Level *level, int x, int y, int z, shared_ptr<Entity> e, Vec3 *current);
-    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
+    virtual void attack(Level *level, int x, int y, int z, std::shared_ptr<Player> player);
+    virtual void handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> e, Vec3 *current);
+    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
 	virtual double getShapeX0();
 	virtual double getShapeX1();
 	virtual double getShapeY0();
@@ -602,17 +602,17 @@ public:
     virtual bool getSignal(LevelSource *level, int x, int y, int z);
     virtual bool getSignal(LevelSource *level, int x, int y, int z, int dir);
     virtual bool isSignalSource();
-    virtual void entityInside(Level *level, int x, int y, int z, shared_ptr<Entity> entity);
+    virtual void entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity);
     virtual bool getDirectSignal(Level *level, int x, int y, int z, int dir);
     virtual void updateDefaultShape();
-    virtual void playerDestroy(Level *level, shared_ptr<Player> player, int x, int y, int z, int data);
+    virtual void playerDestroy(Level *level, std::shared_ptr<Player> player, int x, int y, int z, int data);
     virtual bool canSurvive(Level *level, int x, int y, int z);
 protected:
 	virtual bool isSilkTouchable();
-	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
+	virtual std::shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 public:
 	virtual int getResourceCountForLootBonus(int bonusLevel, Random *random);
-    virtual void setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by);
+    virtual void setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by);
 	virtual void finalizePlacement(Level *level, int x, int y, int z, int data);
     virtual Tile *setDescriptionId(unsigned int id);
     virtual wstring getName();
@@ -630,10 +630,10 @@ protected:
 public:
 	virtual int getPistonPushReaction();
 	virtual float getShadeBrightness(LevelSource *level, int x, int y, int z);	// 4J - brought forward from 1.8.2
-	virtual void fallOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity, float fallDistance);
+	virtual void fallOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity, float fallDistance);
 	virtual int cloneTileId(Level *level, int x, int y, int z);
 	virtual int cloneTileData(Level *level, int x, int y, int z);
-	virtual void playerWillDestroy(Level *level, int x, int y, int z, int data, shared_ptr<Player> player);
+	virtual void playerWillDestroy(Level *level, int x, int y, int z, int data, std::shared_ptr<Player> player);
 	virtual void onRemoving(Level *level, int x, int y, int z, int data);
 	virtual void handleRain(Level *level, int x, int y, int z);
 	virtual void levelTimeChanged(Level *level, __int64 delta, __int64 newTime);

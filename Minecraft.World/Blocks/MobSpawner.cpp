@@ -105,7 +105,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 	AUTO_VAR(itEnd, level->players.end());
 	for (AUTO_VAR(it, level->players.begin()); it != itEnd; it++)
 	{
-		shared_ptr<Player> player = *it; //level->players.at(i);
+		std::shared_ptr<Player> player = *it; //level->players.at(i);
 		int xx = Mth::floor(player->x / 16);
 		int zz = Mth::floor(player->z / 16);
 
@@ -125,7 +125,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 	int *zz = new int[playerCount];
 	for (int i = 0; i < playerCount; i++)
 	{
-		shared_ptr<Player> player = level->players[i];
+		std::shared_ptr<Player> player = level->players[i];
 		xx[i] = Mth::floor(player->x / 16);
 		zz[i] = Mth::floor(player->z / 16);
 #ifdef __PSVITA__
@@ -288,7 +288,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
                                 }
                             }
 
-						   shared_ptr<Mob> mob;
+						   std::shared_ptr<Mob> mob;
 						   // 4J - removed try/catch
 //						   try
 //						   {
@@ -423,11 +423,11 @@ bool MobSpawner::isSpawnPositionOk(MobCategory *category, Level *level, int x, i
 }
 
 
-void MobSpawner::finalizeMobSettings(shared_ptr<Mob> mob, Level *level, float xx, float yy, float zz)
+void MobSpawner::finalizeMobSettings(std::shared_ptr<Mob> mob, Level *level, float xx, float yy, float zz)
 {
 	if (dynamic_pointer_cast<Spider>( mob ) != NULL && level->random->nextInt(100) == 0)
 	{
-		shared_ptr<Skeleton> skeleton = shared_ptr<Skeleton>( new Skeleton(level) );
+		std::shared_ptr<Skeleton> skeleton = std::shared_ptr<Skeleton>( new Skeleton(level) );
 		skeleton->moveTo(xx, yy, zz, mob->yRot, 0);
 		level->addEntity(skeleton);
 		skeleton->ride(mob);
@@ -442,7 +442,7 @@ void MobSpawner::finalizeMobSettings(shared_ptr<Mob> mob, Level *level, float xx
 		{
 			for (int kitten = 0; kitten < 2; kitten++)
 			{
-				shared_ptr<Ozelot> ozelot = shared_ptr<Ozelot>(new Ozelot(level));
+				std::shared_ptr<Ozelot> ozelot = std::shared_ptr<Ozelot>(new Ozelot(level));
 				ozelot->moveTo(xx, yy, zz, mob->yRot, 0);
 				ozelot->setAge(-20 * 60 * 20);
 				level->addEntity(ozelot);
@@ -459,7 +459,7 @@ eINSTANCEOF MobSpawner::bedEnemies[bedEnemyCount] = {
 };
 
 
-bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> > *players)
+bool MobSpawner::attackSleepingPlayers(Level *level, vector<std::shared_ptr<Player> > *players)
 {
 
 	bool somebodyWokeUp = false;
@@ -469,7 +469,7 @@ bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> >
 	AUTO_VAR(itEnd, players->end());
 	for (AUTO_VAR(it, players->begin()); it != itEnd; it++)
 	{
-		shared_ptr<Player> player = (*it);
+		std::shared_ptr<Player> player = (*it);
 
 		bool nextPlayer = false;
 
@@ -514,7 +514,7 @@ bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> >
 					float yy = (float) y;
 					float zz = z + 0.5f;
 
-					shared_ptr<Mob> mob;
+					std::shared_ptr<Mob> mob;
 // 4J - removed try/catch
 //					try
 //					{
@@ -619,7 +619,7 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 					float yy = (float)y;
 					float zz = z + 0.5f;
 
-					shared_ptr<Mob> mob;
+					std::shared_ptr<Mob> mob;
 					//try {
 					mob = dynamic_pointer_cast<Mob>( EntityIO::newByEnumType(type->mobClass, level ) );
 					//} catch (Exception e) {

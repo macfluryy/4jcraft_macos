@@ -129,7 +129,7 @@ int Enchantment::getDamageProtection(int level, DamageSource *source)
 	return 0;
 }
 
-int Enchantment::getDamageBonus(int level, shared_ptr<Mob> target)
+int Enchantment::getDamageBonus(int level, std::shared_ptr<Mob> target)
 {
 	return 0;
 }
@@ -159,7 +159,7 @@ wstring Enchantment::getFullname(int level,wstring &unformatted)
 	return formatted;
 }
 
-bool Enchantment::canEnchant(shared_ptr<ItemInstance> item)
+bool Enchantment::canEnchant(std::shared_ptr<ItemInstance> item)
 {
 	return category->canEnchant(item->getItem());
 }
