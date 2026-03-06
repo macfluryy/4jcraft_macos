@@ -31,8 +31,8 @@ public:
     virtual void load(DataInput *dis)  = 0;
     virtual std::wstring toString() = 0;
     virtual uint8_t getId() = 0;
-    void print(ostream out);
-    void print(char *prefix, wostream out);
+    void print(std::ostream out);
+    void print(char *prefix, std::wostream out);
     std::wstring getName();
     Tag *setName(const std::wstring& name);
     static Tag *readNamedTag(DataInput *dis);

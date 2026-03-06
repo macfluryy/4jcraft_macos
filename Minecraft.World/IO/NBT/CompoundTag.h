@@ -218,7 +218,7 @@ public:
 		return std::wstring( buf );
     }
 
-    void print(char *prefix, ostream out)
+    void print(char *prefix, std::ostream out)
 	{
 		/*
         Tag::print(prefix, out);
