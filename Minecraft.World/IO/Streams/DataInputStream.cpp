@@ -60,7 +60,7 @@ int DataInputStream::read(byteArray b)
 //This method blocks until input data is available, end of file is detected, or an exception is thrown.
 //
 //If len is zero, then no bytes are read and 0 is returned; otherwise, there is an attempt to read at least one byte.
-//If no uint8_t is available because the stream is at end of file, the value -1 is returned; otherwise, at least one byte is read and stored into b.
+//If no byte is available because the stream is at end of file, the value -1 is returned; otherwise, at least one byte is read and stored into b.
 //
 //The first byte read is stored into element b[off], the next one into b[off+1], and so on. The number of bytes read is,
 //at most, equal to len. Let k be the number of bytes actually read; these bytes will be stored in elements b[off] through b[off+k-1],
