@@ -1,8 +1,26 @@
 name: Build Linux Release
 
 on:
-  push: {}
-  pull_request: {}
+  push:
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**/meson.build'
+      - 'meson.build'
+      - '**/CMakeLists.txt'
+      - 'CMakeLists.txt'
+      - '.github/workflows/build-linux.yml'
+  pull_request:
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**/meson.build'
+      - 'meson.build'
+      - '**/CMakeLists.txt'
+      - 'CMakeLists.txt'
+      - '.github/workflows/build-linux.yml'
 
 jobs:
   build-linux:
