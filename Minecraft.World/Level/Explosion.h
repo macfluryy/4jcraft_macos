@@ -25,7 +25,7 @@ public:
 	unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> toBlow;
 	
 private:
-	typedef unordered_map<std::shared_ptr<Player>, Vec3 * , PlayerKeyHash, PlayerKeyEq> playerVec3Map;
+	typedef std::unordered_map<std::shared_ptr<Player>, Vec3 * , PlayerKeyHash, PlayerKeyEq> playerVec3Map;
 	playerVec3Map hitPlayers;
 
 public:

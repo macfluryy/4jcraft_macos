@@ -23,7 +23,7 @@ protected:
 
 	} MetaData, *PMetaData;
 	
-	unordered_map<wstring, PMetaData> m_index;
+	std::unordered_map<wstring, PMetaData> m_index;
 	
 public:
 	void _readHeader(DataInputStream *dis);

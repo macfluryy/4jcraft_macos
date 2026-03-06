@@ -202,7 +202,7 @@ private:
 //	SonyCommerce::ProductInfoDetailed m_ProductInfoDetailed;
 
 	PRODUCTCODES ProductCodes;
-	unordered_map<wstring, SONYDLC *> m_SONYDLCMap;
+	std::unordered_map<wstring, SONYDLC *> m_SONYDLCMap;
 
 
 	bool m_bVoiceChatAndUGCRestricted;

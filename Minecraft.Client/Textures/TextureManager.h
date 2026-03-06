@@ -10,8 +10,8 @@ private:
 	static TextureManager *instance;
 
 	int nextID;
-	typedef unordered_map<wstring, int> stringIntMap;
-	typedef unordered_map<int, Texture *> intTextureMap;
+	typedef std::unordered_map<wstring, int> stringIntMap;
+	typedef std::unordered_map<int, Texture *> intTextureMap;
 	intTextureMap idToTextureMap;
 	stringIntMap stringToIDMap;
 

@@ -3212,7 +3212,7 @@ void LevelRenderer::destroyTileProgress(int id, int x, int y, int z, int progres
 		if (entry == NULL || entry->getX() != x || entry->getY() != y || entry->getZ() != z)
 		{
 			entry = new BlockDestructionProgress(id, x, y, z);
-			destroyingBlocks.insert( unordered_map<int, BlockDestructionProgress *>::value_type(id, entry) );
+			destroyingBlocks.insert( std::unordered_map<int, BlockDestructionProgress *>::value_type(id, entry) );
 		}
 
 		entry->setProgress(progress);

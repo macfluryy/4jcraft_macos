@@ -888,7 +888,7 @@ void SetRenderAndSamplerStates(IDirect3DDevice9 *pDevice,DWORD *RenderStateA,DWO
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-unordered_map<int,int> allocCounts;
+std::unordered_map<int,int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;

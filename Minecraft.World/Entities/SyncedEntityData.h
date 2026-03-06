@@ -71,7 +71,7 @@ private:
 	// the id value must fit in the remaining bits
 	static const int MAX_ID_VALUE = ~TYPE_MASK & 0xff;
 
-	unordered_map<int, std::shared_ptr<DataItem> > itemsById;
+	std::unordered_map<int, std::shared_ptr<DataItem> > itemsById;
 	bool m_isDirty;
 
 public:

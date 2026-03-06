@@ -288,7 +288,7 @@ int CConsoleMinecraftApp::GetLocalTMSFileIndex(WCHAR *wchTMSFile,bool bFilenameI
 int CConsoleMinecraftApp::LoadLocalDLCImages()
 {
 	// 4J-PB - Any local graphic files for the Minecraft Store?
-	unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
+	std::unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{
 		SONYDLC * pDLCInfo=(*it).second;
@@ -301,7 +301,7 @@ int CConsoleMinecraftApp::LoadLocalDLCImages()
 void CConsoleMinecraftApp::FreeLocalDLCImages()
 {
 	// 4J-PB - Any local graphic files for the Minecraft Store?
-	unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
+	std::unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{
 		SONYDLC * pDLCInfo=(*it).second;

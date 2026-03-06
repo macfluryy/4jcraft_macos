@@ -15,7 +15,7 @@ class StringTable
 private:
 	bool isStatic;
 
-	unordered_map<wstring, wstring> m_stringsMap;
+	std::unordered_map<wstring, wstring> m_stringsMap;
 	vector<wstring> m_stringsVec;
 
 	byteArray src;

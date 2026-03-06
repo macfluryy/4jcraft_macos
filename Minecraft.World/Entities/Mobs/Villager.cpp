@@ -16,8 +16,8 @@
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "Villager.h"
 
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;
+std::unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
+std::unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;
 
 void Villager::_init(int profession)
 {

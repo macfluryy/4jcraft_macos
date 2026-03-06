@@ -9,7 +9,7 @@ class RegionFileCache
 private:
 	static const int MAX_CACHE_SIZE = 256;
 
-	unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> cache;
+	std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> cache;
 
 	static RegionFileCache s_defaultCache;
 

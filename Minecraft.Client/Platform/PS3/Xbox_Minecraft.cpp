@@ -1003,7 +1003,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-unordered_map<int,int> allocCounts;
+std::unordered_map<int,int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;

@@ -9,12 +9,12 @@ class SavedDataStorage
 private:
 	LevelStorage *levelStorage;
 
-	typedef unordered_map<wstring, std::shared_ptr<SavedData> > cacheMapType;
+	typedef std::unordered_map<wstring, std::shared_ptr<SavedData> > cacheMapType;
     cacheMapType cache;
 
     vector<std::shared_ptr<SavedData> > savedDatas;
 
-	typedef unordered_map<wstring, short> uaiMapType;
+	typedef std::unordered_map<wstring, short> uaiMapType;
     uaiMapType usedAuxIds;
 
 public:

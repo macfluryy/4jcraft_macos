@@ -28,15 +28,15 @@ public:
 	};
 
 private:
-	static unordered_map<wstring, entityCreateFn> *idCreateMap;
-	static unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> *classIdMap;
-	static unordered_map<int, entityCreateFn> *numCreateMap;
-	static unordered_map<int, eINSTANCEOF> *numClassMap;
-	static unordered_map<eINSTANCEOF, int, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> *classNumMap;
-	static unordered_map<wstring, int> *idNumMap;
+	static std::unordered_map<wstring, entityCreateFn> *idCreateMap;
+	static std::unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> *classIdMap;
+	static std::unordered_map<int, entityCreateFn> *numCreateMap;
+	static std::unordered_map<int, eINSTANCEOF> *numClassMap;
+	static std::unordered_map<eINSTANCEOF, int, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> *classNumMap;
+	static std::unordered_map<wstring, int> *idNumMap;
 
 public:
-	static unordered_map<int, SpawnableMobInfo *> idsSpawnableInCreative;
+	static std::unordered_map<int, SpawnableMobInfo *> idsSpawnableInCreative;
 
 private:
 	static void setId(entityCreateFn createFn, eINSTANCEOF clas, const wstring &id, int idNum);

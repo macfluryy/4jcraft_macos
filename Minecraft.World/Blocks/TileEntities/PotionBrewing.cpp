@@ -98,7 +98,7 @@ const wstring PotionBrewing::MOD_GUNPOWDER = L""; // gunpowder makes them throwa
 PotionBrewing::intStringMap PotionBrewing::potionEffectDuration;
 PotionBrewing::intStringMap PotionBrewing::potionEffectAmplifier;
 
-unordered_map<int, int> PotionBrewing::cachedColors;
+std::unordered_map<int, int> PotionBrewing::cachedColors;
 
 void PotionBrewing::staticCtor()
 {

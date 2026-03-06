@@ -28,7 +28,7 @@ private:
 		}
 	};
 	
-	typedef unordered_map<Stat*, StatContainer> StatsMap;
+	typedef std::unordered_map<Stat*, StatContainer> StatsMap;
 
 	//static const int STAT_DATA_OFFSET = 32;
 	static const int LARGE_STATS_COUNT = 8;
@@ -69,7 +69,7 @@ private:
 	int saveCounter;
 
 	int modifiedBoards;
-	static unordered_map<Stat*, int> statBoards;
+	static std::unordered_map<Stat*, int> statBoards;
 	int flushCounter;
 
 public:

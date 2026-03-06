@@ -8,8 +8,8 @@
 
 
 
-TileEntity::idToCreateMapType TileEntity::idCreateMap = unordered_map<wstring, tileEntityCreateFn>();
-TileEntity::classToIdMapType TileEntity::classIdMap = unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
+TileEntity::idToCreateMapType TileEntity::idCreateMap = std::unordered_map<wstring, tileEntityCreateFn>();
+TileEntity::classToIdMapType TileEntity::classIdMap = std::unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
 
 void TileEntity::staticCtor()
 {

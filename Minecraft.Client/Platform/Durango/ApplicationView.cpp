@@ -27,7 +27,7 @@ XALLOC_ATTRIBUTES ExpandAllocAttributes( _In_ LONGLONG dwAttributes )
 }
 
 SIZE_T totalTracked = 0;
-unordered_map<uintptr_t, SIZE_T> tracker;
+std::unordered_map<uintptr_t, SIZE_T> tracker;
 static volatile bool memDump = false;
 static volatile bool memReset = false;
 static bool memDumpInit = false;

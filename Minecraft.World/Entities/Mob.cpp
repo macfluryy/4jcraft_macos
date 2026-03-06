@@ -1125,7 +1125,7 @@ void Mob::readAdditionalSaveData(CompoundTag *tag)
 			int amplifier = effectTag->getByte(L"Amplifier");
 			int duration = effectTag->getInt(L"Duration");
 
-			activeEffects.insert( unordered_map<int, MobEffectInstance *>::value_type( id, new MobEffectInstance(id, duration, amplifier) ) );
+			activeEffects.insert( std::unordered_map<int, MobEffectInstance *>::value_type( id, new MobEffectInstance(id, duration, amplifier) ) );
 		}
 	}
 }
@@ -1783,7 +1783,7 @@ void Mob::addEffect(MobEffectInstance *newEffect)
 	}
 	else
 	{
-		activeEffects.insert( unordered_map<int, MobEffectInstance *>::value_type( newEffect->getId(), newEffect ) );
+		activeEffects.insert( std::unordered_map<int, MobEffectInstance *>::value_type( newEffect->getId(), newEffect ) );
 		onEffectAdded(newEffect);
 	}
 }
@@ -1804,7 +1804,7 @@ void Mob::addEffectNoUpdate(MobEffectInstance *newEffect)
 	}
 	else
 	{
-		activeEffects.insert( unordered_map<int, MobEffectInstance *>::value_type( newEffect->getId(), newEffect ) );
+		activeEffects.insert( std::unordered_map<int, MobEffectInstance *>::value_type( newEffect->getId(), newEffect ) );
 	}
 }
 

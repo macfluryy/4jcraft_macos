@@ -46,7 +46,7 @@ class TileRenderer
 	bool smoothShapeLighting;
 	Minecraft *minecraft;
 	///////////////////////////////////////// Data caching
-	unordered_map<int,int> getLightColorCount;
+	std::unordered_map<int,int> getLightColorCount;
 	int xMin, yMin, zMin;
 	int xMin2, yMin2, zMin2;
 	int getLightColor( Tile *tt, LevelSource *level, int x, int y, int z);

@@ -309,7 +309,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player, std::shared
 					}
 #endif
 					//decorations.push_back(new MapDecoration(4, x, y, 0));
-					nonPlayerDecorations.insert( unordered_map<int, MapDecoration *>::value_type( END_PORTAL_DECORATION_KEY, new MapDecoration(4, x, y, 0, END_PORTAL_DECORATION_KEY, true) ) );
+					nonPlayerDecorations.insert( std::unordered_map<int, MapDecoration *>::value_type( END_PORTAL_DECORATION_KEY, new MapDecoration(4, x, y, 0, END_PORTAL_DECORATION_KEY, true) ) );
 				}
 				else if ( currentPortalDecoration != nonPlayerDecorations.end() && !atLeastOnePlayerInTheEnd )
 				{
@@ -346,7 +346,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player, std::shared
 					}
 #endif
 					//decorations.push_back(new MapDecoration(7, x, y, 0));
-					nonPlayerDecorations.insert( unordered_map<int, MapDecoration *>::value_type( item->getFrame()->entityId, new MapDecoration(12, x, y, rot, item->getFrame()->entityId, true) ) );
+					nonPlayerDecorations.insert( std::unordered_map<int, MapDecoration *>::value_type( item->getFrame()->entityId, new MapDecoration(12, x, y, rot, item->getFrame()->entityId, true) ) );
 				}
 			}
 
@@ -380,7 +380,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player, std::shared
 				}
 #endif
 				//decorations.push_back(new MapDecoration(7, x, y, 0));
-				nonPlayerDecorations.insert( unordered_map<int, MapDecoration *>::value_type( ent->entityId, new MapDecoration(4, x, y, rot, ent->entityId, true) ) );
+				nonPlayerDecorations.insert( std::unordered_map<int, MapDecoration *>::value_type( ent->entityId, new MapDecoration(4, x, y, rot, ent->entityId, true) ) );
 			}
 #endif
 

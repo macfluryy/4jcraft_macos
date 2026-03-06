@@ -54,7 +54,7 @@ public:
     void setChunkVisible(int x, int z, bool visible);
 
 private:
-	unordered_map<int, std::shared_ptr<Entity>, IntKeyHash2, IntKeyEq> entitiesById;	// 4J - was IntHashMap
+	std::unordered_map<int, std::shared_ptr<Entity>, IntKeyHash2, IntKeyEq> entitiesById;	// 4J - was IntHashMap
     unordered_set<std::shared_ptr<Entity> > forced;
     unordered_set<std::shared_ptr<Entity> > reEntries;
 

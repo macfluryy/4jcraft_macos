@@ -21,7 +21,7 @@ private:
 	vector<TexturePack *> *texturePacks;
 	vector<TexturePack *> m_texturePacksToDelete;
 
-	unordered_map<DWORD, TexturePack *> cacheById;
+	std::unordered_map<DWORD, TexturePack *> cacheById;
 
 	TexturePack *selected;
 	TexturePack *lastSelected;

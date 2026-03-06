@@ -47,7 +47,7 @@ public:
 	static void staticCtor();
 
 public:
-	static unordered_map<int, packetCreateFn> idToCreateMap; // IntHashMap in 1.8.2 ... needed? // Made public in 1.0.1
+	static std::unordered_map<int, packetCreateFn> idToCreateMap; // IntHashMap in 1.8.2 ... needed? // Made public in 1.0.1
 
 	static unordered_set<int> clientReceivedPackets;
 	static unordered_set<int> serverReceivedPackets;
@@ -76,7 +76,7 @@ public:
 
 private:
 	// 4J Added to track stats for packets that are going out via QNet
-	static unordered_map<int, PacketStatistics *> outgoingStatistics; // IntHashMap in 1.8.2 ... needed?
+	static std::unordered_map<int, PacketStatistics *> outgoingStatistics; // IntHashMap in 1.8.2 ... needed?
 	static vector<PacketStatistics *> renderableStats;
 	static int renderPos;
 public:
@@ -87,7 +87,7 @@ public:
 	static __int64 getIndexedStatValue(unsigned int samplePos, unsigned int renderableId);
 
 private :
-	static unordered_map<int, PacketStatistics *> statistics;
+	static std::unordered_map<int, PacketStatistics *> statistics;
 	//static int nextPrint;
 
 public:

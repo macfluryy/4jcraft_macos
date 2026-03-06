@@ -87,7 +87,7 @@ StringTable::StringTable(PBYTE pbData, DWORD dwSize)
 				wstring stringId = dis2.readUTF();
 				wstring stringValue = dis2.readUTF();
 
-				m_stringsMap.insert( unordered_map<wstring, wstring>::value_type(stringId, stringValue) );
+				m_stringsMap.insert( std::unordered_map<wstring, wstring>::value_type(stringId, stringValue) );
 			}
 		}
 		else

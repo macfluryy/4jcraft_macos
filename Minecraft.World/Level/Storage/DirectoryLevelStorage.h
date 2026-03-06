@@ -75,7 +75,7 @@ private:
 	{
 		friend class DirectoryLevelStorage;
 	private:
-		unordered_map<__int64, short> m_mappings;
+		std::unordered_map<__int64, short> m_mappings;
 
 	public:
 		void addMapping(int id, int centreX, int centreZ, int dimension, int scale);
@@ -84,9 +84,9 @@ private:
 		void readMappings(DataInputStream *dis);
 	};
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__) || defined(_DURANGO)
-	unordered_map<PlayerUID, PlayerMappings, PlayerUID::Hash> m_playerMappings;
+	std::unordered_map<PlayerUID, PlayerMappings, PlayerUID::Hash> m_playerMappings;
 #else
-	unordered_map<PlayerUID, PlayerMappings> m_playerMappings;
+	std::unordered_map<PlayerUID, PlayerMappings> m_playerMappings;
 #endif
 	byteArray m_usedMappings;
 #else
@@ -95,7 +95,7 @@ private:
 #endif	
 	bool m_bHasLoadedMapDataMappings;
 
-	unordered_map<wstring, ByteArrayOutputStream *> m_cachedSaveData;
+	std::unordered_map<wstring, ByteArrayOutputStream *> m_cachedSaveData;
 	vector<short> m_mapFilesToDelete; // Temp list of files that couldn't be deleted immediately due to saving being disabled
 
 protected:

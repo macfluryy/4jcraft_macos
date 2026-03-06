@@ -24,7 +24,7 @@ protected:
 
 	// The XUI_Font is a temporary instance that is around as long as XUI needs it, but does the actual rendering
 	// These can be chained
-	unordered_map<float, XUI_Font *> m_loadedFonts[eFontData_MAX];
+	std::unordered_map<float, XUI_Font *> m_loadedFonts[eFontData_MAX];
 
 public:
     XUI_FontRenderer();

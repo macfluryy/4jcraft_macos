@@ -16,7 +16,7 @@ private:
 	ConsoleSaveFile *m_saveFile;
 	static CRITICAL_SECTION		cs_memory;
 
-	unordered_map<__int64, byteArray> m_entityData;
+	std::unordered_map<__int64, byteArray> m_entityData;
 
 	static std::deque<DataOutputStream *> s_chunkDataQueue;
 	static int s_runningThreadCount;

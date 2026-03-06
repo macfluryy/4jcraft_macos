@@ -10,7 +10,7 @@ class EntityRenderDispatcher
 public:
 	static void staticCtor();	// 4J added
 private:
-	typedef unordered_map<eINSTANCEOF, EntityRenderer *, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToRendererMap;
+	typedef std::unordered_map<eINSTANCEOF, EntityRenderer *, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToRendererMap;
 	classToRendererMap renderers;
 	// 4J - was:
 //	Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers = new HashMap<Class<? extends Entity>, EntityRenderer<? extends Entity>>();

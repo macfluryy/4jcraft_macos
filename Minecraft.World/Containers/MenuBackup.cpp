@@ -7,7 +7,7 @@
 
 MenuBackup::MenuBackup(std::shared_ptr<Inventory> inventory, AbstractContainerMenu *menu)
 {
-	backups = new unordered_map<short, ItemInstanceArray *>();
+	backups = new std::unordered_map<short, ItemInstanceArray *>();
 
 	this->inventory = inventory;
 	this->menu = menu;
@@ -21,7 +21,7 @@ void MenuBackup::save(short changeUid)
 	{
 		(*backup)[i + 1] = ItemInstance::clone(menu->slots->at(i)->getItem());
 	}
-	// TODO Is unordered_map use correct?
+	// TODO Is std::unordered_map use correct?
 	// Was backups.put(changeUid, backup);
 	(*backups)[changeUid] = backup;
 }
@@ -29,7 +29,7 @@ void MenuBackup::save(short changeUid)
 // Cannot use delete as function name as it is a reserved keyword
 void MenuBackup::deleteBackup(short changeUid)
 {
-	// TODO Is the unordered_map use correct?
+	// TODO Is the std::unordered_map use correct?
 	// 4J Was backups.remove(changeUid);
 	backups->erase(changeUid);
 }

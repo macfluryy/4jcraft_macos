@@ -56,7 +56,7 @@ public:
 	vector<std::shared_ptr<HoldingPlayer> > carriedBy;
 
 private:
-	typedef unordered_map<std::shared_ptr<Player> , std::shared_ptr<HoldingPlayer> , PlayerKeyHash, PlayerKeyEq> playerHoldingPlayerMapType;
+	typedef std::unordered_map<std::shared_ptr<Player> , std::shared_ptr<HoldingPlayer> , PlayerKeyHash, PlayerKeyEq> playerHoldingPlayerMapType;
 	playerHoldingPlayerMapType carriedByPlayers;
 
 public:
@@ -64,7 +64,7 @@ public:
 
 private:
 	// 4J Stu added
-	unordered_map<int, MapDecoration *> nonPlayerDecorations;
+	std::unordered_map<int, MapDecoration *> nonPlayerDecorations;
 	static const int END_PORTAL_DECORATION_KEY;
 
 

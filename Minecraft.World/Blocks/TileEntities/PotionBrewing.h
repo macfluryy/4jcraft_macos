@@ -29,7 +29,7 @@ public:
 	static const wstring MOD_GOLDENCARROT;
 
 private:
-	typedef unordered_map<int, wstring> intStringMap;
+	typedef std::unordered_map<int, wstring> intStringMap;
 	static intStringMap potionEffectDuration;
 	static intStringMap potionEffectAmplifier;
 	
@@ -57,7 +57,7 @@ public:
 	static int getColorValue(vector<MobEffectInstance *> *effects);
 
 private:
-	static unordered_map<int, int> cachedColors;
+	static std::unordered_map<int, int> cachedColors;
 
 public:
 	static int getColorValue(int brew, bool includeDisabledEffects);

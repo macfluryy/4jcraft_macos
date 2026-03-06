@@ -9,7 +9,7 @@ class CDurangoTelemetryManager : public CTelemetryManager
 public:
 	static GUID ZERO_GUID;
 
-	unordered_map<wstring, float> m_multiplayerRoundStartTimes;
+	std::unordered_map<wstring, float> m_multiplayerRoundStartTimes;
 
 	CDurangoTelemetryManager();
 

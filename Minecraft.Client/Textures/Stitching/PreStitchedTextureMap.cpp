@@ -70,7 +70,7 @@ void PreStitchedTextureMap::stitch()
 	}
 
 	// Collection bucket for multiple frames per texture
-	unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
+	std::unordered_map<TextureHolder *, vector<Texture *> * > textures; // = new HashMap<TextureHolder, List<Texture>>();
 
 	Stitcher *stitcher = TextureManager::getInstance()->createStitcher(name);
 

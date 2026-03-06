@@ -14,7 +14,7 @@
 class CompoundTag : public Tag    
 {
 private:
-	unordered_map<wstring, Tag *> tags;
+	std::unordered_map<wstring, Tag *> tags;
 
 public:
 	CompoundTag() : Tag(L"") {}
@@ -23,7 +23,7 @@ public:
     void write(DataOutput *dos)
 	{
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			Tag::writeNamedTag(it->second, dos);
 		}
@@ -48,7 +48,7 @@ public:
 		vector<Tag *> *ret = new vector<Tag *>;
 		
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			ret->push_back(it->second);
 		}
@@ -229,7 +229,7 @@ public:
 		strcat( newPrefix, "   ");
 		
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<string, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<string, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			it->second->print(newPrefix, out);
 		}

@@ -32,7 +32,7 @@ class ToolRecipies;
 class WeaponRecipies;
 class ShapedRecipy;
 
-typedef unordered_map<wchar_t, ItemInstance *> myMap;
+typedef std::unordered_map<wchar_t, ItemInstance *> myMap;
 
 #define ADD_OBJECT(a,b) a.push_back(new Object(b))
 

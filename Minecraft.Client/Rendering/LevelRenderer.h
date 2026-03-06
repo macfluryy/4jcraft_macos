@@ -120,7 +120,7 @@ public:
 	void destroyTileProgress(int id, int x, int y, int z, int progress);
 	void registerTextures(IconRegister *iconRegister);
 
-	typedef unordered_map<int, vector<std::shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
+	typedef std::unordered_map<int, vector<std::shared_ptr<TileEntity> >, IntKeyHash, IntKeyEq> rteMap;
 private:
 
 	// debug
@@ -160,7 +160,7 @@ private:
 	static const int RENDERLISTS_LENGTH = 4;		// 4J - added
 	OffsettedRenderList renderLists[RENDERLISTS_LENGTH];
 
-	unordered_map<int, BlockDestructionProgress *> destroyingBlocks;
+	std::unordered_map<int, BlockDestructionProgress *> destroyingBlocks;
 	Icon **breakingTextures;
 
 public:

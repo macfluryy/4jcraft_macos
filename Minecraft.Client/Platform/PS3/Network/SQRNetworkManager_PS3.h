@@ -205,7 +205,7 @@ private:
 	unsigned int									m_searchResultCount;
 
 	// Rudp management and local players
-	unordered_map<int,SQRNetworkPlayer	*>			m_RudpCtxToPlayerMap;	
+	std::unordered_map<int,SQRNetworkPlayer	*>			m_RudpCtxToPlayerMap;	
 	bool											CreateRudpConnections(SceNpMatching2RoomId roomId, SceNpMatching2RoomMemberId peerMemberId, int playerMask, SceNpMatching2RoomMemberId playersPeerMemberId);
 	SQRNetworkPlayer								*GetPlayerFromRudpCtx(int rudpCtx);
 	SQRNetworkPlayer								*GetPlayerFromRoomMemberAndLocalIdx(int roomMember, int localIdx);

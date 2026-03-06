@@ -30,7 +30,7 @@ public:
     File dir;
 
 private:
-    unordered_map<__int64, ZoneFile *> zoneFiles;
+    std::unordered_map<__int64, ZoneFile *> zoneFiles;
     __int64 tickCount;
 
 public:

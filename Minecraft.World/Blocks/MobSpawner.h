@@ -22,7 +22,7 @@ private:
 	// AP - See CustomMap.h for an explanation of this
 	static CustomMap chunksToPoll;
 #else
-	static unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> chunksToPoll;
+	static std::unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> chunksToPoll;
 #endif
 
 public:

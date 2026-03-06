@@ -100,7 +100,7 @@ private:
 	bool hasGapsToCheck;
 public:
 
-    unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq> tileEntities;
+    std::unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq> tileEntities;
     vector<std::shared_ptr<Entity> > **entityBlocks;
 	
 	static const int sTerrainPopulatedFromHere		= 2;
