@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Util/JavaIntHash.h"
-using namespace std;
+
 
 class LevelSource;
 

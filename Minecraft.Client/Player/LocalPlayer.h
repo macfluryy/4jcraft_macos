@@ -13,7 +13,7 @@ class Input;
 class Stat;
 class Minecraft;
 
-using namespace std;
+
 
 // Time in seconds before the players presence is update to Idle
 #define PLAYER_IDLE_TIME 300

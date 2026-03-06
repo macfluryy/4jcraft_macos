@@ -2,7 +2,7 @@
 #include "../Screen.h"
 class Button;
 class EditBox;
-using namespace std;
+
 
 class RenameWorldScreen : public Screen
 {

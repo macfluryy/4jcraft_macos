@@ -3,7 +3,7 @@ class Entity;
 //class ServerPlayer;
 #include "ServerPlayer.h"
 class Packet;
-using namespace std;
+
 
 class EntityTracker;
 

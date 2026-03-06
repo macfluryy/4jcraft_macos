@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../../Headers/net.minecraft.world.level.h"
 
 class LevelType 

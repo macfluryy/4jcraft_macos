@@ -3,7 +3,7 @@
 class ByteBuffer;
 class IntBuffer;
 class FloatBuffer;
-using namespace std;
+
 
 /** Original comment
  * This class is used so we can release all memory (allocated on the graphics card on shutdown)

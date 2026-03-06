@@ -3,7 +3,7 @@
 
 class GuiParticle;
 class Minecraft;
-using namespace std;
+
 
 class GuiParticles : public GuiComponent
 {

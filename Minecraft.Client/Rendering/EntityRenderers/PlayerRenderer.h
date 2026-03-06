@@ -2,7 +2,7 @@
 #include "MobRenderer.h"
 #include "../../../Minecraft.World/Player/Player.h"
 class HumanoidModel;
-using namespace std;
+
 
 class PlayerRenderer : public MobRenderer
 {

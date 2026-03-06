@@ -7,7 +7,7 @@ class TrackedEntity;
 class MinecraftServer;
 class Packet;
 
-using namespace std;
+
 
 class EntityTracker
 {

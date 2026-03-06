@@ -5,7 +5,7 @@ class MinecraftServer;
 class Socket;
 class ServerSettingsChangedPacket;
 
-using namespace std;
+
 
 class ServerConnection
 {

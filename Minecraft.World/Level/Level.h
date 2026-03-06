@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "Storage/LevelSource.h"
 #include "../Util/LightLayer.h"
 #include "ChunkPos.h"

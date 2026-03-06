@@ -1,7 +1,7 @@
 #pragma once
 class BufferedImage;
 class HttpTextureProcessor;
-using namespace std;
+
 
 class HttpTexture {
 public:

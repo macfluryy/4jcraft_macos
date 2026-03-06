@@ -5,7 +5,7 @@ class Socket;
 class LoginPacket;
 class Connection;
 class Random;
-using namespace std;
+
 
 class PendingConnection : public PacketListener
 {

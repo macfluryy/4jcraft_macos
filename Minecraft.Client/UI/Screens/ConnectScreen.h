@@ -3,7 +3,7 @@
 class ClientConnection;
 class Minecraft;
 
-using namespace std;
+
 
 class ConnectScreen : public Screen
 {

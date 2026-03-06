@@ -1,4 +1,4 @@
-using namespace std;
+
 
 #include "../../Build/stdafx.h"
 #include "../../Headers/com.mojang.nbt.h"

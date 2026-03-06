@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 #include "../../Headers/com.mojang.nbt.h"
 #include "TileEntity.h"

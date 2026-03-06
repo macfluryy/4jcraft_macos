@@ -11,7 +11,7 @@ class TileEntity;
 class Entity;
 class BrewingStandTileEntity;
 class Merchant;
-using namespace std;
+
 
 class ServerPlayer : public Player, public net_minecraft_world_inventory::ContainerListener
 {

@@ -46,7 +46,7 @@ class PsPlusUpsellWrapper;
 #undef linux
 #endif
 
-using namespace std;
+
 
 class Minecraft
 {

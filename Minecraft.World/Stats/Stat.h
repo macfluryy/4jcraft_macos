@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "StatFormatter.h"
 #include "GenericStats.h"

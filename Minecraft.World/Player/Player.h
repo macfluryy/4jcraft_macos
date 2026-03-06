@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Entities/Mob.h"
 #include "../Util/Definitions.h"

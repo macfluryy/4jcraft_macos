@@ -21,7 +21,7 @@ namespace WFC = Windows::Foundation::Collections;
 #define MATCH_SESSION_TEMPLATE_NAME    L"PeerToHostTemplate"
 #define MAX_PLAYERS_IN_TEMPLATE		   8
 
-using namespace std;
+
 
 ref class DQRNetworkManagerEventHandlers sealed
 {

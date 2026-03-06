@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class Minecraft;
 class KeyMapping;
 #include "../../Minecraft.World/IO/Files/File.h"

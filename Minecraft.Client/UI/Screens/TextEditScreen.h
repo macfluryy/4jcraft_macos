@@ -1,7 +1,7 @@
 #pragma once
 #include "../Screen.h"
 class SignTileEntity;
-using namespace std;
+
 
 class TextEditScreen : public Screen
 {

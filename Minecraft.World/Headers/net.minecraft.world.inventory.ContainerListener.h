@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class AbstractContainerMenu;
 
 // 4J Stu

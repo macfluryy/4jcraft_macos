@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include <vector>
 #include <qnet.h>
 #include "../../../../Minecraft.World/Util/C4JThread.h"

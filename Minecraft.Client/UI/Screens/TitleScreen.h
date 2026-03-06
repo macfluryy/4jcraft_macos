@@ -2,7 +2,7 @@
 #include "../Screen.h"
 class Random;
 class Button;
-using namespace std;
+
 
 class TitleScreen : public Screen
 {

@@ -8,7 +8,7 @@ class Connection;
 class ServerPlayer;
 class INetworkPlayer;
 
-using namespace std;
+
 
 class PlayerConnection : public PacketListener, public ConsoleInputSource
 {

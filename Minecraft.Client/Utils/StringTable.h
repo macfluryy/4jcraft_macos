@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
 #define LOCALE_COUNT 21

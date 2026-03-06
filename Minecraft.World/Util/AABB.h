@@ -4,7 +4,7 @@
 #include "Definitions.h"
 
 class HitResult;
-using namespace std;
+
 
 class AABB 
 {

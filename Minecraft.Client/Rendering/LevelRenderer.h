@@ -24,7 +24,7 @@ class Particle;
 class BlockDestructionProgress;
 class IconRegister;
 class Tesselator;
-using namespace std;
+
 
 // AP - this is a system that works out which chunks actually need to be grouped together via the deferral system when doing chunk::rebuild. Doing this will reduce the number
 // of chunks built in a single group and reduce the chance of seeing through the landscape when digging near the edges/corners of a chunk.

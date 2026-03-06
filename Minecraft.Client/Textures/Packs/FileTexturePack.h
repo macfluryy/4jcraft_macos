@@ -4,7 +4,7 @@
 class BufferedImage;
 class File;
 class Textures;
-using namespace std;
+
 
 class FileTexturePack : public AbstractTexturePack
 {

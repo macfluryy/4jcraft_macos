@@ -1,12 +1,12 @@
 #pragma once
-using namespace std;
+
 
 class Particle;
 class Level;
 class Textures;
 class Entity;
 class Random;
-using namespace std;
+
 
 class ParticleEngine
 {

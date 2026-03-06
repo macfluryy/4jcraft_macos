@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../IO/NBT/ListTag.h"
 #include "../IO/NBT/DoubleTag.h"
 #include "../IO/NBT/FloatTag.h"

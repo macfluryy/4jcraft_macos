@@ -3,7 +3,7 @@
 #include "../../../Minecraft.World/Entities/Entity.h"
 #include "../../../Minecraft.World/Util/JavaIntHash.h"
 class font;
-using namespace std;
+
 
 class EntityRenderDispatcher
 {

@@ -14,7 +14,7 @@ class ProgressListener;
 class GameType;
 class LoginPacket;
 
-using namespace std;
+
 
 class PlayerList
 {

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class MobEffectInstance;
 
 class PotionBrewing
