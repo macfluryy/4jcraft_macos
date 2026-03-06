@@ -1002,9 +1002,8 @@ int GameRenderer::getLightTexture(int iPad, Level *level)
 	return lightTexture[iPad]; // 4J-JEV: Changing to Per Player lighting textures.
 }
 
-void GameRenderer::render(float a, bool bFirst)
+void GameRenderer::render(float a = 1, bool bFirst)
 {
-	float a = 1;
 	if( _updateLightTexture && bFirst) updateLightTexture(a);
 	if (Display::isActive())
 	{
