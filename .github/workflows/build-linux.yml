@@ -1,0 +1,62 @@
+name: Build Linux Release
+
+on:
+  push: {}
+  pull_request: {}
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: build-linux-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config ca-certificates curl git \
+            libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev libpng-dev libx11-dev \
+            libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libudev-dev ccache
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Meson and Ninja (pip)
+        run: |
+          python -m pip install --upgrade pip
+          pip install meson ninja
+
+      - name: Configure Meson
+        run: |
+          meson setup build_meson --wipe --buildtype=release
+
+      - name: Build with Ninja
+        run: |
+          ninja -C build_meson -v
+
+      - name: Package Linux executable as gzip
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p out
+          SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
+          EXE_PATH=build_meson/Minecraft.Client/Minecraft.Client
+          if [ -f "$EXE_PATH" ]; then
+            tar -czf out/minecraft-client-linux-${SHORT_SHA}.tar.gz -C build_meson Minecraft.Client/Minecraft.Client
+            echo "packaged: out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
+          else
+            echo "ERROR: expected executable at $EXE_PATH" >&2
+            ls -la build_meson || true
+            exit 1
+          fi
+
+      - name: Upload artifact (.tar.gz)
+        uses: actions/upload-artifact@v4
+        with:
+          name: minecraft-client-linux-${{ github.sha }}
+          path: out/*.tar.gz
