@@ -592,7 +592,7 @@ bool SQRNetworkManager_PS3::FriendRoomManagerSearch2()
 	if( m_searchResultCount )
 	{
 		// If we have some results, then we also want to make sure that we don't have any duplicate rooms here if more than one friend is playing in the same room.
-		unordered_set<SceNpMatching2RoomId> uniqueRooms;
+		std::unordered_set<SceNpMatching2RoomId> uniqueRooms;
 		for( unsigned int i = 0; i < m_searchResultCount; i++ )
 		{
 			if(m_aSearchResultRoomFound[ i ])

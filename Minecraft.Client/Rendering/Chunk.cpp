@@ -204,7 +204,7 @@ void Chunk::rebuild()
 
 	LevelChunk::touchedSky = false;
 
-//	unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
+//	std::unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
 //	renderableTileEntities.clear();
 
 	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
@@ -554,10 +554,10 @@ void Chunk::rebuild()
 		*/
         
 
-    unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    std::unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     
 	AUTO_VAR(endIt, oldTileEntities.end());
-	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
+	for( std::unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
 	{
 		newTileEntities.erase(*it);
 	}
@@ -566,7 +566,7 @@ void Chunk::rebuild()
 
 	EnterCriticalSection(globalRenderableTileEntities_cs);
 	endIt = newTileEntities.end();
-	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
+	for( std::unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
 	{
 		globalRenderableTileEntities->push_back(*it);
 	}
@@ -656,7 +656,7 @@ void Chunk::rebuild_SPU()
 
 	LevelChunk::touchedSky = false;
 
-//	unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
+//	std::unordered_set<std::shared_ptr<TileEntity> > oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());		// 4J removed this & next line
 //	renderableTileEntities.clear();
 
 	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;	// 4J - added
@@ -883,10 +883,10 @@ void Chunk::rebuild_SPU()
 		*/
         
 
-    unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    std::unordered_set<std::shared_ptr<TileEntity> > newTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     
 	AUTO_VAR(endIt, oldTileEntities.end());
-	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
+	for( std::unordered_set<std::shared_ptr<TileEntity> >::iterator it = oldTileEntities.begin(); it != endIt; it++ )
 	{
 		newTileEntities.erase(*it);
 	}
@@ -895,7 +895,7 @@ void Chunk::rebuild_SPU()
 
 	EnterCriticalSection(globalRenderableTileEntities_cs);
 	endIt = newTileEntities.end();
-	for( unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
+	for( std::unordered_set<std::shared_ptr<TileEntity> >::iterator it = newTileEntities.begin(); it != endIt; it++ )
 	{
 		globalRenderableTileEntities.push_back(*it);
 	}

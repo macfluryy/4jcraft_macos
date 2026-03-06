@@ -19,7 +19,7 @@ private:
 
 	CRITICAL_SECTION				m_tickNextTickCS;	// 4J added
 	set<TickNextTickData, TickNextTickDataKeyCompare> tickNextTickList; // 4J Was TreeSet
-	unordered_set<TickNextTickData, TickNextTickDataKeyHash, TickNextTickDataKeyEq> tickNextTickSet; // 4J Was HashSet
+	std::unordered_set<TickNextTickData, TickNextTickDataKeyHash, TickNextTickDataKeyEq> tickNextTickSet; // 4J Was HashSet
 
 	std::vector<Pos *> m_queuedSendTileUpdates; // 4J added
 	CRITICAL_SECTION m_csQueueSendTileUpdates;

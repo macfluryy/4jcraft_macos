@@ -68,7 +68,7 @@ public:
 	short backup(std::shared_ptr<Inventory> inventory);
 
 private:
-	unordered_set<std::shared_ptr<Player> , PlayerKeyHash, PlayerKeyEq> unSynchedPlayers;
+	std::unordered_set<std::shared_ptr<Player> , PlayerKeyHash, PlayerKeyEq> unSynchedPlayers;
 
 public:
 	bool isSynched(std::shared_ptr<Player> player);

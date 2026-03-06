@@ -165,9 +165,9 @@ Packet::Packet() : createTime( System::currentTimeMillis() )
 
 std::unordered_map<int, packetCreateFn> Packet::idToCreateMap;
 
-unordered_set<int> Packet::clientReceivedPackets = unordered_set<int>();
-unordered_set<int> Packet::serverReceivedPackets = unordered_set<int>();
-unordered_set<int> Packet::sendToAnyClientPackets = unordered_set<int>();
+std::unordered_set<int> Packet::clientReceivedPackets = std::unordered_set<int>();
+std::unordered_set<int> Packet::serverReceivedPackets = std::unordered_set<int>();
+std::unordered_set<int> Packet::sendToAnyClientPackets = std::unordered_set<int>();
 
 // 4J Added
 std::unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = std::unordered_map<int, Packet::PacketStatistics *>();

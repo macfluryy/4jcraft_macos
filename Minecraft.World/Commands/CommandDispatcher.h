@@ -11,7 +11,7 @@ private:
 #else
 	std::unordered_map<EGameCommand, Command *> commandsById;
 #endif
-	unordered_set<Command *> commands;
+	std::unordered_set<Command *> commands;
 
 public:
 	void performCommand(std::shared_ptr<CommandSender> sender, EGameCommand command, byteArray commandData);

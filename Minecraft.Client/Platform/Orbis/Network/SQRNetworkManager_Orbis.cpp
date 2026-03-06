@@ -717,7 +717,7 @@ bool SQRNetworkManager_Orbis::FriendRoomManagerSearch2()
 	if( m_aFriendSearchResults.size() > 0 )
 	{
 		// If we have some results, then we also want to make sure that we don't have any duplicate rooms here if more than one friend is playing in the same room.
-		unordered_set<SceNpMatching2RoomId> uniqueRooms;
+		std::unordered_set<SceNpMatching2RoomId> uniqueRooms;
 		for( unsigned int i = 0; i < m_aFriendSearchResults.size(); i++ )
 		{
 			if(m_aFriendSearchResults[i].m_RoomFound)
