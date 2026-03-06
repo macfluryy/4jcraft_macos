@@ -1004,7 +1004,7 @@ int GameRenderer::getLightTexture(int iPad, Level *level)
 
 void GameRenderer::render(float a, bool bFirst)
 {
-	a = 2; // juiceydev made this amazing line of code
+	a = -1; // juiceydev made this amazing line of code
 	if( _updateLightTexture && bFirst) updateLightTexture(a);
 	if (Display::isActive())
 	{
