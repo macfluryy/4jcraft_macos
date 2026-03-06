@@ -69,24 +69,88 @@ jobs:
           # Use all available cores for faster parallel builds
           ninja -C build_meson -j$(nproc) -v
 
-      - name: Package Linux executable as gzip
+      - name: Install patchelf
+        run: sudo apt-get install -y patchelf
+
+      - name: Bundle executable + libraries
         env:
           GITHUB_SHA: ${{ github.sha }}
         run: |
-          mkdir -p out
-          SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-8)
+          set -euo pipefail
           EXE_PATH=build_meson/Minecraft.Client/Minecraft.Client
-          if [ -f "$EXE_PATH" ]; then
-            tar -czf out/minecraft-client-linux-${SHORT_SHA}.tar.gz -C build_meson Minecraft.Client/Minecraft.Client
-            echo "packaged: out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
-          else
+          if [ ! -f "$EXE_PATH" ]; then
             echo "ERROR: expected executable at $EXE_PATH" >&2
             ls -la build_meson || true
             exit 1
           fi
+
+          SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c1-8)
+          BUNDLE=out/minecraft-client-linux-${SHORT_SHA}
+          mkdir -p "$BUNDLE/lib"
+
+          # Copy the binary
+          cp "$EXE_PATH" "$BUNDLE/Minecraft.Client"
+
+          # Collect all non-vdso shared library dependencies and copy them in
+          ldd "$EXE_PATH" \
+            | awk '/=>/ { print $3 }' \
+            | grep -v '^(' \
+            | sort -u \
+            | while read -r lib; do
+                [ -f "$lib" ] && cp "$lib" "$BUNDLE/lib/" || true
+              done
+
+          # Patch the binary RPATH so it finds libs in ./lib at runtime
+          patchelf --set-rpath '$ORIGIN/lib' "$BUNDLE/Minecraft.Client"
+
+          # Write a launcher script
+          cat > "$BUNDLE/run.sh" << 'RUNEOF'
+          #!/usr/bin/env bash
+          # 4JCraft Linux launcher
+          # -------------------------------------------------------------------
+          # IMPORTANT: Before running, copy the "Common" assets folder from
+          # https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly
+          # (LCEWindows64.zip → extract → copy "Common" next to this script)
+          # -------------------------------------------------------------------
+          DIR="$(cd "$(dirname "$0")" && pwd)"
+          if [ ! -d "$DIR/Common" ]; then
+            echo "ERROR: Missing 'Common' assets folder."
+            echo "Download LCEWindows64.zip from:"
+            echo "  https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly"
+            echo "Extract it and copy the 'Common' folder next to this run.sh file."
+            exit 1
+          fi
+          cd "$DIR"
+          exec ./Minecraft.Client "$@"
+          RUNEOF
+          chmod +x "$BUNDLE/run.sh"
+
+          # Write a README
+          cat > "$BUNDLE/README.txt" << 'EOF'
+          4JCraft Linux Build
+          ===================
+          This bundle contains:
+            Minecraft.Client   - compiled Linux binary
+            lib/               - all required shared libraries (GL, GLFW, png, zlib, X11 etc.)
+            run.sh             - launcher script
+
+          To run:
+          1. Download LCEWindows64.zip from the MinecraftConsoles nightly release:
+               https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly
+          2. Extract it and copy the "Common" folder into this directory
+             (so you have Common/ sitting next to run.sh)
+          3. Run:  ./run.sh [--width W] [--height H] [--fullscreen]
+          EOF
+
+          # Pack it up
+          mkdir -p out
+          tar -czf "out/minecraft-client-linux-${SHORT_SHA}.tar.gz" -C out "minecraft-client-linux-${SHORT_SHA}"
+          echo "Packaged: out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
+          ls -lh "out/minecraft-client-linux-${SHORT_SHA}.tar.gz"
 
       - name: Upload artifact (.tar.gz)
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
           path: out/*.tar.gz
+          retention-days: 7
