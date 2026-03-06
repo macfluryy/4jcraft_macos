@@ -4,7 +4,6 @@ set(PROJECT_NAME Minecraft.Client)
 # Source groups
 ################################################################################
 set(no_group_source_files
-    "ClassDiagram.cd"
     "../Platform/Durango/manifest.xml"
 #    "Orbis/GameConfig/Minecraft.spa"
     "../ReadMe.txt"
@@ -2515,22 +2514,22 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 ################################################################################
 string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
        $<$<CONFIG:ContentPackage_NO_TU>:
-        libstdc++
+        MultiThreaded
     >
     $<$<CONFIG:CONTENTPACKAGE_SYMBOLS>:
-        libstdc++
+        MultiThreaded
     >
     $<$<CONFIG:ContentPackage>:
-        libstdc++
+        MultiThreaded
     >
     $<$<CONFIG:Debug>:
-        libstdc++_debug
+        MultiThreadedDebug
     >
     $<$<CONFIG:Release>:
-        libstdc++
+        MultiThreaded
     >
     $<$<CONFIG:ReleaseForArt>:
-        libstdc++
+        MultiThreaded
     >
     $<$<NOT:$<OR:$<CONFIG:ContentPackage_NO_TU>,$<CONFIG:CONTENTPACKAGE_SYMBOLS>,$<CONFIG:ContentPackage>,$<CONFIG:Debug>,$<CONFIG:Release>,$<CONFIG:ReleaseForArt>>>:${CXX_RUNTIME_LIBRARY_DEFAULT}>
 )
