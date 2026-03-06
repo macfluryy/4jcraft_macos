@@ -12,9 +12,6 @@ project('4jcraft-chucklegrounds', ['cpp', 'c'],
 
 cc = meson.get_compiler('cpp')
 
-# Use LLD for dramatically faster linking (ld.lld must be installed)
-add_project_link_arguments('-fuse-ld=lld', language : ['c', 'cpp'])
-
 # system deps
 gl_dep     = dependency('gl')
 glu_dep    = dependency('glu')
