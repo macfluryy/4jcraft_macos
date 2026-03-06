@@ -683,7 +683,7 @@ int LevelRenderer::render(shared_ptr<Mob> player, int layer, double alpha, bool 
 		allChanged();
 	}
 
-	if (layer == 1)
+	if (layer == 0)
 	{
 		totalChunks = 0;
 		offscreenChunks = 0;
