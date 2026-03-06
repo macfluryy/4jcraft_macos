@@ -45,57 +45,22 @@ If you are on wayland, swap glfw-x11 to glfw-wayland, but its doesn't matter cuz
 
 ### Configure & Build
 
-```bash
-# 1. Configure (only needed once, or after CMakeLists changes)
-cmake .
+> [!IMPORTANT]
+> GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions of `gcc` preinstalled.
 
-# 2. Build (use -jN with your core count)
-make -j$(nproc)
-```
+This project uses the [Meson](https://mesonbuild.com/) build system.
 
-The binary is output to:
+#### Install Tooling
 
-```
-Linux/Debug/Minecraft.Client
-```
-
-### Clean
-
-```bash
-make clean
-```
-
-To fully reset the CMake configuration (removes cache + generated Makefiles):
-
-```bash
-rm -rf CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
-```
-then re-run:
-```
-cmake . && make -j$(nproc)
-```
----
-
-### we also got meson say hi meson hii
-[Meson](https://mesonbuild.com/) is bettr pls use over cmake
-
-#### Install Meson
-
-```bash
-# Debian/Ubuntu
-sudo apt install meson ninja-build
-
-# Arch/Manjaro
-sudo pacman -S meson ninja
-```
+- Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
 
 #### Configure & Build
 
 ```bash
-# 1. Configure that bih
+# 1. Configure a build directory (we'll name it `build`)
 meson setup build
 
-# 2. Build
+# 2. Compile the project
 meson compile -C build
 ```
 
@@ -105,22 +70,26 @@ The binary is output to:
 build/Minecraft.Client
 ```
 
+#### Running
+
+In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets to the same directory as the `Minecraft.Client` executable. 
+
+At this time, we don't have the necessary tools to build game resources without Visual Studio, so for the time being these can be obtained from the latest [MinecraftConsoles nightly](https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly).
+
+1. Download `LCEWindows64.zip` and extract.
+2. Copy the `Common` directory to the same directory as the compiled `Minecraft.Client` binary.
+3. Run `./Minecraft.Client`.
+
 #### Clean
 
-Remove the build directory to do a full clean:
-
-(CAREFUL SPONGEBOB CAREFUL)
 ```bash
-rm -rf build_meson
+meson compile --clean -C build
 ```
 
-Then re-run `meson setup build_meson` to reconfigure.
+...or to reconfigure an existing build directory:
 
-#### if u want release which u probably don't need right now
 ```bash
-# Release build
-meson setup build_release --buildtype=release
-meson compile -C build_release
+meson setup build --reconfigure 
 ```
 
 ---
