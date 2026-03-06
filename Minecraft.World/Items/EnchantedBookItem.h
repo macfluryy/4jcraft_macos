@@ -7,7 +7,7 @@ class EnchantmentInstance;
 class EnchantedBookItem : public Item
 {
 public:
-	static const wstring TAG_STORED_ENCHANTMENTS;
+	static const std::wstring TAG_STORED_ENCHANTMENTS;
 
 	EnchantedBookItem(int id);
 
@@ -15,7 +15,7 @@ public:
 	bool isEnchantable(std::shared_ptr<ItemInstance> itemInstance);
 	const Rarity *getRarity(std::shared_ptr<ItemInstance> itemInstance);
 	ListTag<CompoundTag> *getEnchantments(std::shared_ptr<ItemInstance> item);
-	void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings);
+	void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings);
 	void addEnchantment(std::shared_ptr<ItemInstance> item, EnchantmentInstance *enchantment);
 	std::shared_ptr<ItemInstance> createForEnchantment(EnchantmentInstance *enchant);
 	void createForEnchantment(Enchantment *enchant, vector<std::shared_ptr<ItemInstance> > *items);

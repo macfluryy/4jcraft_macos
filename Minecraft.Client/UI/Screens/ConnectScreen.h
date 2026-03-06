@@ -11,7 +11,7 @@ private:
 	ClientConnection *connection;
     bool aborted;
 public:
-	ConnectScreen(Minecraft *minecraft, const wstring& ip, int port);
+	ConnectScreen(Minecraft *minecraft, const std::wstring& ip, int port);
     virtual void tick();
 protected:
 	virtual void keyPressed(char eventCharacter, int eventKey);

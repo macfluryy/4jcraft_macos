@@ -4,9 +4,9 @@ using namespace std;
 class Hasher
 {
 private:
-	wstring salt;
+	std::wstring salt;
 
 public:
-	Hasher(wstring &salt);
-	wstring getHash(wstring &name);
+	Hasher(std::wstring &salt);
+	std::wstring getHash(std::wstring &name);
 };

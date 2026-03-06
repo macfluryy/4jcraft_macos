@@ -37,7 +37,7 @@ public:
 protected:
 	virtual void reallyDrop(std::shared_ptr<ItemEntity> itemEntity);
 public:
-	virtual void chat(const wstring& message);
+	virtual void chat(const std::wstring& message);
     virtual void swing();
     virtual void respawn();
 protected:

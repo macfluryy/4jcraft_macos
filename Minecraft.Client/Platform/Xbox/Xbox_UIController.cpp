@@ -141,7 +141,7 @@ void ConsoleUIController::DisplayGamertag(unsigned int iPad, bool show)
 	CXuiSceneBase::DisplayGamertag(iPad, show?TRUE:FALSE);
 }
 
-void ConsoleUIController::SetSelectedItem(unsigned int iPad, const wstring &name)
+void ConsoleUIController::SetSelectedItem(unsigned int iPad, const std::wstring &name)
 {
 	CXuiSceneBase::SetSelectedItem(iPad, name);
 }

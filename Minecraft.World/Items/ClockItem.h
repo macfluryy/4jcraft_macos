@@ -7,7 +7,7 @@ class ClockItem : public Item
 {
 private:
 	Icon **icons;
-	static const wstring TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT];
+	static const std::wstring TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT];
 
 public:
 	ClockItem(int id);

@@ -4,5 +4,5 @@ using namespace std;
 class StatFormatter
 {
 public:
-	virtual wstring format(int value) = 0;
+	virtual std::wstring format(int value) = 0;
 };

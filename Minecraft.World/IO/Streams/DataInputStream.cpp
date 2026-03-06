@@ -354,9 +354,9 @@ short DataInputStream::readShort()
 //
 //Returns:
 //a Unicode string.
-wstring DataInputStream::readUTF()
+std::wstring DataInputStream::readUTF()
 {
-	wstring outputString;
+	std::wstring outputString;
 	if (stream == NULL)
 	{
 		app.DebugPrintf("DataInputStream::readUTF() but underlying stream is NULL\n");

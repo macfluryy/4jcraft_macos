@@ -2,18 +2,18 @@
 #include "Button.h"
 #include "../Textures/Textures.h"
 
-Button::Button(int id, int x, int y, const wstring& msg)
+Button::Button(int id, int x, int y, const std::wstring& msg)
 {
 	init(id, x, y, 200, 20, msg);
 }
 
-Button::Button(int id, int x, int y, int w, int h, const wstring& msg)
+Button::Button(int id, int x, int y, int w, int h, const std::wstring& msg)
 {
 	init(id, x, y, w, h, msg);
 }
 
 // 4J - added
-void Button::init(int id, int x, int y, int w, int h, const wstring& msg)
+void Button::init(int id, int x, int y, int w, int h, const std::wstring& msg)
 {
 	active = true;
 	visible = true;

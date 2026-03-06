@@ -69,7 +69,7 @@ private:
 
 
 public:
-	MapItemSavedData(const wstring& id);
+	MapItemSavedData(const std::wstring& id);
 	~MapItemSavedData();
 
 	virtual void load(CompoundTag *tag);

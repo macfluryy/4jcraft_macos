@@ -179,7 +179,7 @@ void DataOutputStream::writeChar( wchar_t v )
 //If no exception is thrown, the counter written is incremented by twice the length of s.
 //Parameters:
 //s - a String value to be written.
-void DataOutputStream::writeChars(const wstring& str)
+void DataOutputStream::writeChars(const std::wstring& str)
 {
 	for( unsigned int i = 0; i < str.length(); i++)
 	{
@@ -209,7 +209,7 @@ void DataOutputStream::writeBoolean(bool b)
 //This will be at least two plus the length of str, and at most two plus thrice the length of str.
 //Parameters:
 //str - a string to be written.
-void DataOutputStream::writeUTF(const wstring& str)
+void DataOutputStream::writeUTF(const std::wstring& str)
 {
 	int strlen = (int)str.length();
 	int utflen = 0;

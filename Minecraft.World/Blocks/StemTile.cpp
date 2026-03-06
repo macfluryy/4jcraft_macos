@@ -7,7 +7,7 @@
 #include "../../Common/Colours/ColourTable.h"
 #include "StemTile.h"
 
-const wstring StemTile::TEXTURE_ANGLED = L"stem_bent";
+const std::wstring StemTile::TEXTURE_ANGLED = L"stem_bent";
 
 StemTile::StemTile(int id, Tile *fruit) : Bush(id)
 {

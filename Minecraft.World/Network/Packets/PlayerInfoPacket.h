@@ -8,7 +8,7 @@ class PlayerInfoPacket : public Packet, public enable_shared_from_this<PlayerInf
 {
 	public:
 		// 4J Stu - I have re-purposed this packet for our uses
-		//wstring name;
+		//std::wstring name;
 		//bool add;
 		//int latency;
 		short m_networkSmallId;
@@ -17,7 +17,7 @@ class PlayerInfoPacket : public Packet, public enable_shared_from_this<PlayerInf
 		int m_entityId;
 
 		PlayerInfoPacket();
-		//PlayerInfoPacket(const wstring &name, bool add, int latency);
+		//PlayerInfoPacket(const std::wstring &name, bool add, int latency);
 		PlayerInfoPacket(BYTE networkSmallId, short playerColourIndex, unsigned int playerPrivileges = 0);
 		PlayerInfoPacket(std::shared_ptr<ServerPlayer> player);
 

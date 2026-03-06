@@ -5,12 +5,12 @@ using namespace std;
 class NumberFormat
 {
 public:
-	static wstring format(int value)
+	static std::wstring format(int value)
 	{
 		// TODO 4J Stu - Change the length of the formatted number
 		wchar_t output[256];
 		swprintf( output, 256, L"%d", value);
-		wstring result = wstring( output );
+		std::wstring result = std::wstring( output );
 		return result;
 	}
 };
@@ -19,17 +19,17 @@ public:
 class DecimalFormat
 {
 private:
-	const wstring formatString;
+	const std::wstring formatString;
 public:
-	wstring format(double value)
+	std::wstring format(double value)
 	{
 		// TODO 4J Stu - Change the length of the formatted number
 		wchar_t output[256];
 		swprintf( output, 256, formatString.c_str(), value);
-		wstring result = wstring( output );
+		std::wstring result = std::wstring( output );
 		return result;
 	}
 
 	// 4J Stu - The java code took a string format, we take a printf format string
-	DecimalFormat(wstring x) : formatString( x ) {};
+	DecimalFormat(std::wstring x) : formatString( x ) {};
 };

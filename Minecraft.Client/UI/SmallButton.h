@@ -8,8 +8,8 @@ private:
 	const Options::Option *option;
 
 public:
-	SmallButton(int id, int x, int y, const wstring& msg);
-    SmallButton(int id, int x, int y, int width, int height, const wstring& msg);
-    SmallButton(int id, int x, int y, const Options::Option *item, const wstring& msg);
+	SmallButton(int id, int x, int y, const std::wstring& msg);
+    SmallButton(int id, int x, int y, int width, int height, const std::wstring& msg);
+    SmallButton(int id, int x, int y, const Options::Option *item, const std::wstring& msg);
     const Options::Option *getOption();
 };

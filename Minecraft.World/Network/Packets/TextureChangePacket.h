@@ -14,10 +14,10 @@ public:
 
     int id;
     ETextureChangeType action;
-	wstring path;
+	std::wstring path;
 
 	TextureChangePacket();
-	TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action, const wstring &path);
+	TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action, const std::wstring &path);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

@@ -565,7 +565,7 @@ void ItemRenderer::renderGuiItemDecorations(Font *font, Textures *textures, std:
 	renderGuiItemDecorations(font, textures, item, x, y, L"", fAlpha);
 }
 
-void ItemRenderer::renderGuiItemDecorations(Font *font, Textures *textures, std::shared_ptr<ItemInstance> item, int x, int y, const wstring &countText, float fAlpha)
+void ItemRenderer::renderGuiItemDecorations(Font *font, Textures *textures, std::shared_ptr<ItemInstance> item, int x, int y, const std::wstring &countText, float fAlpha)
 {
     if (item == NULL)
 	{
@@ -578,7 +578,7 @@ void ItemRenderer::renderGuiItemDecorations(Font *font, Textures *textures, std:
     if (item->count > 1 || !countText.empty() || item->GetForceNumberDisplay())
 	{
 		MemSect(31);
-        wstring amount = countText;
+        std::wstring amount = countText;
 		if(amount.empty())
 		{
 			int count = item->count;

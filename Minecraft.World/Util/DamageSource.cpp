@@ -90,7 +90,7 @@ bool DamageSource::isBypassInvul()
 }
 
 
-//DamageSource::DamageSource(const wstring &msgId)
+//DamageSource::DamageSource(const std::wstring &msgId)
 DamageSource::DamageSource(ChatPacket::EChatPacketMessage msgId)
 {
 	// 4J added initialisors
@@ -158,7 +158,7 @@ DamageSource *DamageSource::setMagic()
 	return this;
 }
 
-//wstring DamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
+//std::wstring DamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
 //{
 //	return L"death." + msgId + player->name;
 //	//return I18n.get(L"death." + msgId, player.name);

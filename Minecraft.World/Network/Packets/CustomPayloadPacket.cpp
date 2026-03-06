@@ -5,20 +5,20 @@
 #include "CustomPayloadPacket.h"
 
 // Mojang-defined custom packets
-const wstring CustomPayloadPacket::CUSTOM_BOOK_PACKET = L"MC|BEdit";
-const wstring CustomPayloadPacket::CUSTOM_BOOK_SIGN_PACKET = L"MC|BSign";
-const wstring CustomPayloadPacket::TEXTURE_PACK_PACKET = L"MC|TPack";
-const wstring CustomPayloadPacket::TRADER_LIST_PACKET = L"MC|TrList";
-const wstring CustomPayloadPacket::TRADER_SELECTION_PACKET = L"MC|TrSel";
-const wstring CustomPayloadPacket::SET_ADVENTURE_COMMAND_PACKET = L"MC|AdvCdm";
-const wstring CustomPayloadPacket::SET_BEACON_PACKET = L"MC|Beacon";
-const wstring CustomPayloadPacket::SET_ITEM_NAME_PACKET = L"MC|ItemName";
+const std::wstring CustomPayloadPacket::CUSTOM_BOOK_PACKET = L"MC|BEdit";
+const std::wstring CustomPayloadPacket::CUSTOM_BOOK_SIGN_PACKET = L"MC|BSign";
+const std::wstring CustomPayloadPacket::TEXTURE_PACK_PACKET = L"MC|TPack";
+const std::wstring CustomPayloadPacket::TRADER_LIST_PACKET = L"MC|TrList";
+const std::wstring CustomPayloadPacket::TRADER_SELECTION_PACKET = L"MC|TrSel";
+const std::wstring CustomPayloadPacket::SET_ADVENTURE_COMMAND_PACKET = L"MC|AdvCdm";
+const std::wstring CustomPayloadPacket::SET_BEACON_PACKET = L"MC|Beacon";
+const std::wstring CustomPayloadPacket::SET_ITEM_NAME_PACKET = L"MC|ItemName";
 
 CustomPayloadPacket::CustomPayloadPacket()
 {
 }
 
-CustomPayloadPacket::CustomPayloadPacket(const wstring &identifier, byteArray data)
+CustomPayloadPacket::CustomPayloadPacket(const std::wstring &identifier, byteArray data)
 {
 	this->identifier = identifier;
 	this->data = data;

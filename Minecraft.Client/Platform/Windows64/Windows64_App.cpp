@@ -71,7 +71,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 	////////////////////////////////////////////////////////////////////////////////////////////// From CScene_MultiGameCreate::CreateGame
 
 	app.ClearTerrainFeaturePosition();
-	wstring wWorldName = L"TestWorld";
+	std::wstring wWorldName = L"TestWorld";
 
 	StorageManager.ResetSaveData();
 	StorageManager.SetSaveTitle(wWorldName.c_str());

@@ -9,5 +9,5 @@ class File;
 class FilenameFilter
 {
 public:
-	virtual bool accept(File *dir, const wstring& name) = 0;
+	virtual bool accept(File *dir, const std::wstring& name) = 0;
 };

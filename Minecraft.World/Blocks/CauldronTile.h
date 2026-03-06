@@ -6,8 +6,8 @@ class IconRegister;
 class CauldronTile : public Tile
 {
 public:
-	static const wstring TEXTURE_INSIDE;
-    static const wstring TEXTURE_BOTTOM;
+	static const std::wstring TEXTURE_INSIDE;
+    static const std::wstring TEXTURE_BOTTOM;
 
 private:
 	Icon *iconInner;
@@ -20,7 +20,7 @@ public:
 	virtual Icon *getTexture(int face, int data);
 	//@Override
 	void registerIcons(IconRegister *iconRegister);
-	static Icon *getTexture(const wstring &name);
+	static Icon *getTexture(const std::wstring &name);
 	virtual void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source);
 	virtual void updateDefaultShape();
 	virtual bool isSolidRender(bool isServerLevel = false);

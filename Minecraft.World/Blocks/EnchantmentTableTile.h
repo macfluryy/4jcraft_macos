@@ -6,9 +6,9 @@ class EnchantmentTableTile : public EntityTile
 {
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURE_SIDE;
-	static const wstring TEXTURE_TOP;
-	static const wstring TEXTURE_BOTTOM;
+	static const std::wstring TEXTURE_SIDE;
+	static const std::wstring TEXTURE_TOP;
+	static const std::wstring TEXTURE_BOTTOM;
 
 private:
 	Icon *iconTop;

@@ -1097,15 +1097,15 @@ bool CPlatformNetworkManagerXbox::SystemFlagGet(INetworkPlayer *pNetworkPlayer, 
 	return false;
 }
 
-wstring CPlatformNetworkManagerXbox::GatherStats()
+std::wstring CPlatformNetworkManagerXbox::GatherStats()
 {
 	return L"Queue messages: " + _toString(((NetworkPlayerXbox *)GetHostPlayer())->GetQNetPlayer()->GetSendQueueSize( NULL, QNET_GETSENDQUEUESIZE_MESSAGES ) )
 		+ L" Queue bytes: " + _toString( ((NetworkPlayerXbox *)GetHostPlayer())->GetQNetPlayer()->GetSendQueueSize( NULL, QNET_GETSENDQUEUESIZE_BYTES  ) );
 }
 
-wstring CPlatformNetworkManagerXbox::GatherRTTStats()
+std::wstring CPlatformNetworkManagerXbox::GatherRTTStats()
 {
-	wstring stats(L"Rtt: ");
+	std::wstring stats(L"Rtt: ");
 
 	wchar_t stat[32];
 
@@ -1529,7 +1529,7 @@ vector<FriendSessionInfo *> *CPlatformNetworkManagerXbox::GetSessionList(int iPa
 				{
 					sessionInfo->data = *(GameSessionData *)pxnqi->pbData;
 
-					wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
+					std::wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
 #ifndef _CONTENT_PACKAGE
 					if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 					{
@@ -1622,7 +1622,7 @@ bool CPlatformNetworkManagerXbox::GetGameSessionInfo(int iPad, SessionID session
 				{
 					sessionInfo->data = *(GameSessionData *)pxnqi->pbData;
 
-					wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
+					std::wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
 					swprintf(sessionInfo->displayLabel,app.GetString(IDS_GAME_HOST_NAME),L"MWWWWWWWWWWWWWWM");// gamerName.c_str() );
 				}
 				else

@@ -93,7 +93,7 @@ void Painting::PaintingPostConstructor(int dir)
 	setDir(dir);
 }
 
-Painting::Painting(Level *level, int x, int y, int z, int dir, wstring motiveName) : HangingEntity( level , x, y, z, dir )
+Painting::Painting(Level *level, int x, int y, int z, int dir, std::wstring motiveName) : HangingEntity( level , x, y, z, dir )
 {
 	_init(level);
 
@@ -118,7 +118,7 @@ void Painting::addAdditonalSaveData(CompoundTag *tag)
 
 void Painting::readAdditionalSaveData(CompoundTag *tag)
 {
-	wstring motiveName = tag->getString(L"Motive");
+	std::wstring motiveName = tag->getString(L"Motive");
 	vector<Motive *>::iterator it;
 	for (int i = 0 ; i < LAST_VALUE; i++)
 	{

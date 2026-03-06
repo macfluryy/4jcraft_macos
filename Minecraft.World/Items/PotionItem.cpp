@@ -12,9 +12,9 @@
 #include "PotionItem.h"
 #include "../Util/SoundTypes.h"
 
-const wstring PotionItem::DEFAULT_ICON = L"potion";
-const wstring PotionItem::THROWABLE_ICON = L"potion_splash";
-const wstring PotionItem::CONTENTS_ICON = L"potion_contents";
+const std::wstring PotionItem::DEFAULT_ICON = L"potion";
+const std::wstring PotionItem::THROWABLE_ICON = L"potion_splash";
+const std::wstring PotionItem::CONTENTS_ICON = L"potion_contents";
 
 // 4J Added
 vector<pair<int, int> >  PotionItem::s_uniquePotionValues;
@@ -173,14 +173,14 @@ bool PotionItem::hasInstantenousEffects(int itemAuxValue)
 	return false;
 }
 
-wstring PotionItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
+std::wstring PotionItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
 	if (itemInstance->getAuxValue() == 0)
 	{
 		return app.GetString(IDS_ITEM_WATER_BOTTLE); // I18n.get("item.emptyPotion.name").trim();
 	}
 
-	wstring elementName = Item::getHoverName(itemInstance);
+	std::wstring elementName = Item::getHoverName(itemInstance);
 	if (isThrowable(itemInstance->getAuxValue()))
 	{
 		//elementName = I18n.get("potion.prefix.grenade").trim() + " " + elementName;
@@ -212,7 +212,7 @@ wstring PotionItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 	return elementName;
 }
 
-void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
+void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
 {
 	if (itemInstance->getAuxValue() == 0)
 	{
@@ -225,10 +225,10 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std
 		for(AUTO_VAR(it, effects->begin()); it != effects->end(); ++it)
 		{
 			MobEffectInstance *effect = *it;
-			wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
+			std::wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
 			if (effect->getAmplifier() > 0)
 			{
-				wstring potencyString = L"";
+				std::wstring potencyString = L"";
 				switch(effect->getAmplifier())
 				{
 				case 1:
@@ -273,7 +273,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std
 	}
 	else
 	{
-		wstring effectString = app.GetString(IDS_POTION_EMPTY); //I18n.get("potion.empty").trim();
+		std::wstring effectString = app.GetString(IDS_POTION_EMPTY); //I18n.get("potion.empty").trim();
 		//eHTMLColor_7
 		wchar_t formatted[256];
 		swprintf(formatted,256,L"<font color=\"#%08x\">%ls</font>",app.GetHTMLColour(eHTMLColor_7),effectString.c_str());
@@ -317,7 +317,7 @@ void PotionItem::registerIcons(IconRegister *iconRegister)
 	iconOverlay = iconRegister->registerIcon(CONTENTS_ICON);
 }
 
-Icon *PotionItem::getTexture(const wstring &name)
+Icon *PotionItem::getTexture(const std::wstring &name)
 {
 	if (name.compare(DEFAULT_ICON) == 0) return Item::potion->iconDrinkable;
 	if (name.compare(THROWABLE_ICON) == 0) return Item::potion->iconThrowable;

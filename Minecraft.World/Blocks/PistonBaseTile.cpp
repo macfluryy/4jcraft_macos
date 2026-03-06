@@ -11,11 +11,11 @@
 #include "../Level/LevelChunk.h"
 #include "../Level/Dimensions/Dimension.h"
 
-const wstring PistonBaseTile::EDGE_TEX = L"piston_side";
-const wstring PistonBaseTile::PLATFORM_TEX = L"piston_top";
-const wstring PistonBaseTile::PLATFORM_STICKY_TEX = L"piston_top_sticky";
-const wstring PistonBaseTile::BACK_TEX = L"piston_bottom";
-const wstring PistonBaseTile::INSIDE_TEX = L"piston_inner_top";
+const std::wstring PistonBaseTile::EDGE_TEX = L"piston_side";
+const std::wstring PistonBaseTile::PLATFORM_TEX = L"piston_top";
+const std::wstring PistonBaseTile::PLATFORM_STICKY_TEX = L"piston_top_sticky";
+const std::wstring PistonBaseTile::BACK_TEX = L"piston_bottom";
+const std::wstring PistonBaseTile::INSIDE_TEX = L"piston_inner_top";
 
 const float PistonBaseTile::PLATFORM_THICKNESS = 4.0f;
 
@@ -90,7 +90,7 @@ Icon *PistonBaseTile::getTexture(int face, int data)
     return icon;
 }
 
-Icon *PistonBaseTile::getTexture(const wstring &name)
+Icon *PistonBaseTile::getTexture(const std::wstring &name)
 {
 	if (name.compare(EDGE_TEX) == 0) return Tile::pistonBase->icon;
 	if (name.compare(PLATFORM_TEX) == 0) return Tile::pistonBase->iconPlatform;

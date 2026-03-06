@@ -205,7 +205,7 @@ void ParticleEngine::crack(int x, int y, int z, int face)
 
 }
 
-wstring ParticleEngine::countParticles()
+std::wstring ParticleEngine::countParticles()
 {
 	int l = level->dimension->id == 0 ? 0 : (level->dimension->id == -1 ? 1 : 2 );
 	return _toString<int>((int)(particles[l][0].size() + particles[l][1].size() + particles[l][2].size()));

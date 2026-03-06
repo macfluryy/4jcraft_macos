@@ -7,7 +7,7 @@
 #include "PressurePlateTile.h"
 #include "../Util/SoundTypes.h"
 
-PressurePlateTile::PressurePlateTile(int id, const wstring &tex, Material *material, Sensitivity sensitivity) : Tile(id, material, isSolidRender())
+PressurePlateTile::PressurePlateTile(int id, const std::wstring &tex, Material *material, Sensitivity sensitivity) : Tile(id, material, isSolidRender())
 {
 	this->sensitivity = sensitivity;
 	this->setTicking(true);

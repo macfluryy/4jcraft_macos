@@ -38,9 +38,9 @@ public:
     virtual bool tick();
     virtual bool shouldSave();
     virtual void postProcess(ChunkSource *parent, int x, int z);
-    virtual wstring gatherStats();
+    virtual std::wstring gatherStats();
 	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-	virtual TilePos *findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z);
+	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z);
 	virtual void dataReceived(int x, int z);	// 4J added
 
 	virtual LevelChunk **getCache() { return cache; }		// 4J added

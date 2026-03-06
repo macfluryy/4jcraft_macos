@@ -14,7 +14,7 @@ public:
 	virtual void writeShort(short a) = 0;
 	virtual void writeBoolean(bool v) = 0;
 	virtual void writeChar(wchar_t v) = 0;
-	virtual void writeChars(const wstring& s) = 0;
-	virtual void writeUTF(const wstring& a) = 0;
+	virtual void writeChars(const std::wstring& s) = 0;
+	virtual void writeUTF(const std::wstring& a) = 0;
 	virtual void writePlayerUID(PlayerUID player) = 0; // 4J Added
 };

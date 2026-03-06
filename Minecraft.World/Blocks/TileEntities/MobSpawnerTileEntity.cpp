@@ -35,12 +35,12 @@ MobSpawnerTileEntity::MobSpawnerTileEntity() : TileEntity()
 	displayEntity = nullptr;
 }
 
-wstring MobSpawnerTileEntity::getEntityId() 
+std::wstring MobSpawnerTileEntity::getEntityId() 
 {
 	return entityId;
 }
 
-void MobSpawnerTileEntity::setEntityId(const wstring& entityId)
+void MobSpawnerTileEntity::setEntityId(const std::wstring& entityId)
 {
 	this->entityId = entityId;
 }

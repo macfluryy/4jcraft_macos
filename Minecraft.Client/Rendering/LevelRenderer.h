@@ -68,8 +68,8 @@ public:
 	void AddDLCSkinsToMemTextures();
 public:
 	void renderEntities(Vec3 *cam, Culler *culler, float a);
-	wstring gatherStats1();
-	wstring gatherStats2();
+	std::wstring gatherStats1();
+	std::wstring gatherStats2();
 private:
 	void resortChunks(int xc, int yc, int zc);
 public:
@@ -106,7 +106,7 @@ public:
 	bool	m_bSPUCullStarted[4];
 #endif // __PS3__
 	void cull(Culler *culler, float a);
-	void playStreamingMusic(const wstring& name, int x, int y, int z);
+	void playStreamingMusic(const std::wstring& name, int x, int y, int z);
 	void playSound(int iSound, double x, double y, double z, float volume, float pitch, float fSoundClipDist=16.0f);
 	void playSound(std::shared_ptr<Entity> entity,int iSound, double x, double y, double z, float volume, float pitch, float fSoundClipDist=16.0f);
 	void addParticle(ePARTICLE_TYPE eParticleType, double x, double y, double z, double xa, double ya, double za); // 4J added

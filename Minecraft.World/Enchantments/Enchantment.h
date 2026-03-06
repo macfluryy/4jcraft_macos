@@ -78,10 +78,10 @@ public:
 	virtual bool isCompatibleWith(Enchantment *other) const;
 	virtual Enchantment *setDescriptionId(int id);
 	virtual int getDescriptionId();
-	virtual wstring getFullname(int level,wstring &unformatted); // 4J Stu added unformatted
+	virtual std::wstring getFullname(int level,std::wstring &unformatted); // 4J Stu added unformatted
 	virtual bool canEnchant(std::shared_ptr<ItemInstance> item);
 
 private:
 	// 4J Added
-	wstring getLevelString(int level);
+	std::wstring getLevelString(int level);
 };

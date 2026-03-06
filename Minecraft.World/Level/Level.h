@@ -160,13 +160,13 @@ private:
 
 	// 4J Stu - Added these ctors to handle init of member variables
 	void _init();
-	void _init(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource = true);
+	void _init(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource = true);
 
 public:
-	Level(std::shared_ptr<LevelStorage>levelStorage, const wstring& name, Dimension *dimension, LevelSettings *levelSettings, bool doCreateChunkSource = true);
+	Level(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& name, Dimension *dimension, LevelSettings *levelSettings, bool doCreateChunkSource = true);
 	Level(Level *level, Dimension *dimension);
-	Level(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings);
-	Level(std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource = true);
+	Level(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings);
+	Level(std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, LevelSettings *levelSettings, Dimension *fixedDimension, bool doCreateChunkSource = true);
 
 	virtual ~Level();
 
@@ -283,9 +283,9 @@ public:
 
 	virtual void playLocalSound(double x, double y, double z, int iSound, float volume, float pitch, float fClipSoundDist=16.0f);
 
-	void playStreamingMusic(const wstring& name, int x, int y, int z);
-	void playMusic(double x, double y, double z, const wstring& string, float volume);
-	// 4J removed - void addParticle(const wstring& id, double x, double y, double z, double xd, double yd, double zd);
+	void playStreamingMusic(const std::wstring& name, int x, int y, int z);
+	void playMusic(double x, double y, double z, const std::wstring& string, float volume);
+	// 4J removed - void addParticle(const std::wstring& id, double x, double y, double z, double xd, double yd, double zd);
 	void addParticle(ePARTICLE_TYPE id, double x, double y, double z, double xd, double yd, double zd); // 4J added
 	virtual bool addGlobalEntity(std::shared_ptr<Entity> e);
 	virtual bool addEntity(std::shared_ptr<Entity> e);
@@ -341,8 +341,8 @@ public:
 	virtual std::shared_ptr<Explosion> explode(std::shared_ptr<Entity> source, double x, double y, double z, float r, bool fire, bool destroyBlocks);
 	float getSeenPercent(Vec3 *center, AABB *bb);
 	bool extinguishFire(std::shared_ptr<Player> player, int x, int y, int z, int face);
-	wstring gatherStats();
-	wstring gatherChunkSourceStats();
+	std::wstring gatherStats();
+	std::wstring gatherChunkSourceStats();
 	virtual std::shared_ptr<TileEntity> getTileEntity(int x, int y, int z);
 	void setTileEntity(int x, int y, int z, std::shared_ptr<TileEntity> tileEntity);
 	void removeTileEntity(int x, int y, int z);
@@ -443,8 +443,8 @@ public:
     std::shared_ptr<Player> getNearestAttackablePlayer(std::shared_ptr<Entity> source, double maxDist);
     std::shared_ptr<Player> getNearestAttackablePlayer(double x, double y, double z, double maxDist);
 
-	std::shared_ptr<Player> getPlayerByName(const wstring& name);
-	std::shared_ptr<Player> getPlayerByUUID(const wstring& name); // 4J Added
+	std::shared_ptr<Player> getPlayerByName(const std::wstring& name);
+	std::shared_ptr<Player> getPlayerByUUID(const std::wstring& name); // 4J Added
 	byteArray getBlocksAndData(int x, int y, int z, int xs, int ys, int zs, bool includeLighting = true);
 	void setBlocksAndData(int x, int y, int z, int xs, int ys, int zs, byteArray data, bool includeLighting = true);
 	virtual void disconnect(bool sendDisconnect = true);
@@ -476,9 +476,9 @@ public:
 	bool isRaining();
 	bool isRainingAt(int x, int y, int z);
 	bool isHumidAt(int x, int y, int z);
-	void setSavedData(const wstring& id, std::shared_ptr<SavedData> data);
-	std::shared_ptr<SavedData> getSavedData(const type_info& clazz, const wstring& id);
-	int getFreeAuxValueFor(const wstring& id);
+	void setSavedData(const std::wstring& id, std::shared_ptr<SavedData> data);
+	std::shared_ptr<SavedData> getSavedData(const type_info& clazz, const std::wstring& id);
+	int getFreeAuxValueFor(const std::wstring& id);
 	void levelEvent(int type, int x, int y, int z, int data);
 	void levelEvent(std::shared_ptr<Player> source, int type, int x, int y, int z, int data);
 	int getMaxBuildHeight();
@@ -488,7 +488,7 @@ public:
 	virtual bool isAllEmpty();
 	double getHorizonHeight() ;
 	void destroyTileProgress(int id, int x, int y, int z, int progress);
-    TilePos *findNearestMapFeature(const wstring& featureName, int x, int y, int z);
+    TilePos *findNearestMapFeature(const std::wstring& featureName, int x, int y, int z);
 
 	// 4J Added
 	int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC, int centreZC, int scale);

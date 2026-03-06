@@ -1302,7 +1302,7 @@ bool Entity::shouldRenderAtSqrDistance(double distance)
 	return distance < size * size;
 }
 
-// 4J - used to be wstring return type, returning L""
+// 4J - used to be std::wstring return type, returning L""
 int Entity::getTexture()
 {
 	return -1;
@@ -1315,7 +1315,7 @@ bool Entity::isCreativeModeAllowed()
 
 bool Entity::save(CompoundTag *entityTag)
 {
-	wstring id = getEncodeId();
+	std::wstring id = getEncodeId();
 	if (removed || id.empty() )
 	{
 		return false;
@@ -1382,7 +1382,7 @@ void Entity::load(CompoundTag *tag)
 }
 
 
-const wstring Entity::getEncodeId()
+const std::wstring Entity::getEncodeId()
 {
 	return EntityIO::getEncodeId( shared_from_this() );
 }
@@ -1889,9 +1889,9 @@ void Entity::makeStuckInWeb()
 	fallDistance = 0;
 }
 
-wstring Entity::getAName()
+std::wstring Entity::getAName()
 {
-	wstring id = EntityIO::getEncodeId(shared_from_this());
+	std::wstring id = EntityIO::getEncodeId(shared_from_this());
 	if (id.empty()) id = L"generic";
 	return L"entity." + id + _toString(entityId);
 	//return I18n.get("entity." + id + ".name");

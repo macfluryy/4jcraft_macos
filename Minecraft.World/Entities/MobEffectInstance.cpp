@@ -113,10 +113,10 @@ int MobEffectInstance::hashCode()
 	return (id & 0xff) | ( (amplifier & 0xff) << 8) | ( (duration & 0xffff) << 16);
 }
 
-wstring MobEffectInstance::toString()
+std::wstring MobEffectInstance::toString()
 {
-	wstring result = L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
-	//wstring result = "";
+	std::wstring result = L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
+	//std::wstring result = "";
 	//if (getAmplifier() > 0)
 	//{
 	//	result = getDescriptionId() + " x " + (getAmplifier() + 1) + ", Duration: " + getDuration();

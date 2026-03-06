@@ -263,7 +263,7 @@ Icon *SkullTile::getTexture(int face, int data)
 	return Tile::hellSand->getTexture(face);
 }
 
-wstring SkullTile::getTileItemIconName()
+std::wstring SkullTile::getTileItemIconName()
 {
 	return L"";
 	//return SkullItem::ICON_NAMES[0];

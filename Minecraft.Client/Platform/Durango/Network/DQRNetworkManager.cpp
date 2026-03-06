@@ -22,14 +22,14 @@ DQRNetworkManager::ePartyProcessType	DQRNetworkManager::m_partyProcess = DQRNetw
 
 bool DQRNetworkManager::m_inviteReceived = false;
 int DQRNetworkManager::m_bootUserIndex;
-wstring	DQRNetworkManager::m_bootSessionName;
-wstring	DQRNetworkManager::m_bootServiceConfig;
-wstring	DQRNetworkManager::m_bootSessionTemplate;
+std::wstring	DQRNetworkManager::m_bootSessionName;
+std::wstring	DQRNetworkManager::m_bootServiceConfig;
+std::wstring	DQRNetworkManager::m_bootSessionTemplate;
 DQRNetworkManager * DQRNetworkManager::s_pDQRManager = NULL;
 
 //using namespace Windows::Xbox::Networking;
 
-DQRNetworkManager::SessionInfo::SessionInfo(wstring& sessionName, wstring& serviceConfig, wstring& sessionTemplate)
+DQRNetworkManager::SessionInfo::SessionInfo(std::wstring& sessionName, std::wstring& serviceConfig, std::wstring& sessionTemplate)
 {
 	m_detailsValid = true;
 	m_sessionName = sessionName;
@@ -782,7 +782,7 @@ DQRNetworkPlayer *DQRNetworkManager::GetPlayerByXuid(PlayerUID xuid)
 }
 
 // Retrieve player display name by gamertag
-wstring DQRNetworkManager::GetDisplayNameByGamertag(wstring gamertag)
+std::wstring DQRNetworkManager::GetDisplayNameByGamertag(std::wstring gamertag)
 {
 	if (m_displayNames.find(gamertag) != m_displayNames.end())
 	{
@@ -2184,7 +2184,7 @@ int DQRNetworkManager::HostGameThreadProc()
 		if( m_currentUserMask & ( 1 << i ) && ProfileManager.IsSignedIn(i))
 		{
 			auto user = ProfileManager.GetUser(i);
-			wstring displayName = ProfileManager.GetDisplayName(i); 
+			std::wstring displayName = ProfileManager.GetDisplayName(i); 
 
 			DQRNetworkPlayer* pPlayer = new DQRNetworkPlayer(this, ( ( smallId == m_hostSmallId ) ? DQRNetworkPlayer::DNP_TYPE_HOST : DQRNetworkPlayer::DNP_TYPE_LOCAL ), true, i, localSessionAddress);
 			pPlayer->SetSmallId(smallId);
@@ -3031,7 +3031,7 @@ void DQRNetworkManager::GetProfileCallback(LPVOID pParam, Microsoft::Xbox::Servi
 }
 
 // Set player display name
-void DQRNetworkManager::SetDisplayName(PlayerUID xuid, wstring displayName)
+void DQRNetworkManager::SetDisplayName(PlayerUID xuid, std::wstring displayName)
 {
 	EnterCriticalSection(&m_csRoomSyncData);
 	for (int i = 0; i < m_roomSyncData.playerCount; i++)

@@ -192,13 +192,13 @@ void DQRNetworkPlayer::SetName(const wchar_t *name)
 }
 
 // Return display name (if display name is not set, return name instead)
-wstring	DQRNetworkPlayer::GetDisplayName()
+std::wstring	DQRNetworkPlayer::GetDisplayName()
 {
 	return (m_displayName == L"") ? m_name : m_displayName;
 }
 
 // Set display name
-void DQRNetworkPlayer::SetDisplayName(wstring displayName)
+void DQRNetworkPlayer::SetDisplayName(std::wstring displayName)
 {
 	m_displayName = displayName;
 }

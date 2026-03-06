@@ -8,7 +8,7 @@ class Level;
 class BowItem : public Item
 {
 public:
-	static const wstring TEXTURE_PULL[];
+	static const std::wstring TEXTURE_PULL[];
 	static const int MAX_DRAW_DURATION = 20 * 1;
 
 private:

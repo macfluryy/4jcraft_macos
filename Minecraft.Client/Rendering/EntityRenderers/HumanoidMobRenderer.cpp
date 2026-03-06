@@ -70,7 +70,7 @@ void HumanoidMobRenderer::additionalRendering(std::shared_ptr<Mob> mob, float a)
 				float s = 17 / 16.0f;
 				glScalef(s, -s, -s);
 
-				wstring extra = L"";
+				std::wstring extra = L"";
 				if (headGear->hasTag() && headGear->getTag()->contains(L"SkullOwner"))
 				{
 					extra = headGear->getTag()->getString(L"SkullOwner");

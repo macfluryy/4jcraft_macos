@@ -12,11 +12,11 @@ public:
 	static const int TRIGGER_EXTEND = 0;
 	static const int TRIGGER_CONTRACT = 1;
 
-	static const wstring EDGE_TEX;
-	static const wstring PLATFORM_TEX;
-	static const wstring PLATFORM_STICKY_TEX;
-	static const wstring BACK_TEX;
-	static const wstring INSIDE_TEX;
+	static const std::wstring EDGE_TEX;
+	static const std::wstring PLATFORM_TEX;
+	static const std::wstring PLATFORM_STICKY_TEX;
+	static const std::wstring BACK_TEX;
+	static const std::wstring INSIDE_TEX;
 
 private:
 	bool isSticky;
@@ -37,7 +37,7 @@ public:
 	virtual void updateShape(float x0, float y0, float z0, float x1, float y1, float z1);
 
     virtual Icon *getTexture(int face, int data);
-	static Icon *getTexture(const wstring &name);
+	static Icon *getTexture(const std::wstring &name);
 	void registerIcons(IconRegister *iconRegister);
 
     virtual int getRenderShape();

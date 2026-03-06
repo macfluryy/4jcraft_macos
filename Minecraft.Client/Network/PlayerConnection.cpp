@@ -638,7 +638,7 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet)
 {
 	// 4J - TODO
 #if 0
-	wstring message = packet->message;
+	std::wstring message = packet->message;
 	if (message.length() > SharedConstants::maxChatLength)
 	{
 		disconnect(L"Chat message too long");
@@ -670,7 +670,7 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet)
 #endif
 }
 
-void PlayerConnection::handleCommand(const wstring& message)
+void PlayerConnection::handleCommand(const std::wstring& message)
 {
 	// 4J - TODO
 #if 0
@@ -737,19 +737,19 @@ int PlayerConnection::countDelayedPackets()
 	return connection->countDelayedPackets();
 }
 
-void PlayerConnection::info(const wstring& string)
+void PlayerConnection::info(const std::wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
 	//send( std::shared_ptr<ChatPacket>( new ChatPacket(L"§7" + string) ) );
 }
 
-void PlayerConnection::warn(const wstring& string)
+void PlayerConnection::warn(const std::wstring& string)
 {
 	// 4J-PB - removed, since it needs to be localised in the language the client is in
 	//send( std::shared_ptr<ChatPacket>( new ChatPacket(L"§9" + string) ) );
 }
 
-wstring PlayerConnection::getConsoleName()
+std::wstring PlayerConnection::getConsoleName()
 {
 	return player->name;
 }
@@ -894,7 +894,7 @@ void PlayerConnection::handleTextureAndGeometry(std::shared_ptr<TextureAndGeomet
 	}
 }
 
-void PlayerConnection::handleTextureReceived(const wstring &textureName)
+void PlayerConnection::handleTextureReceived(const std::wstring &textureName)
 {
 	// This sends the server received texture out to any other players waiting for the data
 	AUTO_VAR(it, find( m_texturesRequested.begin(), m_texturesRequested.end(), textureName ));
@@ -912,7 +912,7 @@ void PlayerConnection::handleTextureReceived(const wstring &textureName)
 	}
 }
 
-void PlayerConnection::handleTextureAndGeometryReceived(const wstring &textureName)
+void PlayerConnection::handleTextureAndGeometryReceived(const std::wstring &textureName)
 {
 	// This sends the server received texture out to any other players waiting for the data
 	AUTO_VAR(it, find( m_texturesRequested.begin(), m_texturesRequested.end(), textureName ));
@@ -1194,7 +1194,7 @@ void PlayerConnection::handleSetCreativeModeSlot(std::shared_ptr<SetCreativeMode
 			// when a new one is created
 			wchar_t buf[64];
 			swprintf(buf,64,L"map_%d", item->getAuxValue());
-			std::wstring id = wstring(buf);
+			std::wstring id = std::wstring(buf);
 			if( data == NULL )
 			{
 				data = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
@@ -1292,7 +1292,7 @@ void PlayerConnection::handleSignUpdate(std::shared_ptr<SignUpdatePacket> packet
 			std::shared_ptr<SignTileEntity> ste = dynamic_pointer_cast<SignTileEntity>(te);
 			for (int i = 0; i < 4; i++)
 			{
-				wstring lineText = packet->lines[i].substr(0,15);
+				std::wstring lineText = packet->lines[i].substr(0,15);
 				ste->SetMessage( i, lineText );
 			}
 			ste->SetVerified(false);
@@ -1498,7 +1498,7 @@ void PlayerConnection::handleCustomPayload(std::shared_ptr<CustomPayloadPacket> 
 				{
 					ByteArrayInputStream bais(customPayloadPacket->data);
 					DataInputStream dis(&bais);
-					wstring name = dis.readUTF();
+					std::wstring name = dis.readUTF();
 					if (name.length() <= 30)
 					{
 						menu->setItemName(name);

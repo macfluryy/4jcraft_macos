@@ -439,7 +439,7 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player)
 	saveAll(NULL,false);
 }
 
-std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(PendingConnection *pendingConnection, const wstring& userName, PlayerUID xuid, PlayerUID onlineXuid)
+std::shared_ptr<ServerPlayer> PlayerList::getPlayerForLogin(PendingConnection *pendingConnection, const std::wstring& userName, PlayerUID xuid, PlayerUID onlineXuid)
 {
     if (players.size() >= maxPlayers)
 	{
@@ -957,9 +957,9 @@ void PlayerList::broadcastAll(std::shared_ptr<Packet> packet, int dimension)
     }
 }
 
-wstring PlayerList::getPlayerNames()
+std::wstring PlayerList::getPlayerNames()
 {
-    wstring msg;
+    std::wstring msg;
     for (unsigned int i = 0; i < players.size(); i++)
 	{
         if (i > 0) msg += L", ";
@@ -968,12 +968,12 @@ wstring PlayerList::getPlayerNames()
     return msg;
 }
 
-bool PlayerList::isWhiteListed(const wstring& name)
+bool PlayerList::isWhiteListed(const std::wstring& name)
 {
 	return true;
 }
 
-bool PlayerList::isOp(const wstring& name)
+bool PlayerList::isOp(const std::wstring& name)
 {
 	return false;
 }
@@ -989,7 +989,7 @@ bool PlayerList::isOp(std::shared_ptr<ServerPlayer> player)
 	return isOp;
 }
 
-std::shared_ptr<ServerPlayer> PlayerList::getPlayer(const wstring& name)
+std::shared_ptr<ServerPlayer> PlayerList::getPlayer(const std::wstring& name)
 {
     for (unsigned int i = 0; i < players.size(); i++) 
 	{
@@ -1016,7 +1016,7 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayer(PlayerUID uid)
     return nullptr;
 }
 
-void PlayerList::sendMessage(const wstring& name, const wstring& message)
+void PlayerList::sendMessage(const std::wstring& name, const std::wstring& message)
 {
     std::shared_ptr<ServerPlayer> player = getPlayer(name);
     if (player != NULL)
@@ -1097,7 +1097,7 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y, d
 
 }
 
-void PlayerList::broadcastToAllOps(const wstring& message)
+void PlayerList::broadcastToAllOps(const std::wstring& message)
 {
     std::shared_ptr<Packet> chatPacket = std::shared_ptr<ChatPacket>( new ChatPacket(message) );
     for (unsigned int i = 0; i < players.size(); i++)
@@ -1110,7 +1110,7 @@ void PlayerList::broadcastToAllOps(const wstring& message)
     }
 }
 
-bool PlayerList::sendTo(const wstring& name, std::shared_ptr<Packet> packet)
+bool PlayerList::sendTo(const std::wstring& name, std::shared_ptr<Packet> packet)
 {
     std::shared_ptr<ServerPlayer> player = getPlayer(name);
     if (player != NULL)
@@ -1142,11 +1142,11 @@ void PlayerList::saveAll(ProgressListener *progressListener, bool bDeleteGuestMa
 	}
 }
 
-void PlayerList::whiteList(const wstring& playerName)
+void PlayerList::whiteList(const std::wstring& playerName)
 {
 }
 
-void PlayerList::blackList(const wstring& playerName)
+void PlayerList::blackList(const std::wstring& playerName)
 {
 }
 

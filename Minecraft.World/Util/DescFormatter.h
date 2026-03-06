@@ -4,5 +4,5 @@ using namespace std;
 class DescFormatter
 {
 public:
-	virtual wstring format(const wstring& i18nValue);
+	virtual std::wstring format(const std::wstring& i18nValue);
 };

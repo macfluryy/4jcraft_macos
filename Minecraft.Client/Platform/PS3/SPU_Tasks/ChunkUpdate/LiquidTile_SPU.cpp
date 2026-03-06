@@ -7,10 +7,10 @@
 #include "../Common/spu_assert.h"
 #endif
 
-// const wstring LiquidTile::TEXTURE_LAVA_STILL = L"lava";
-// const wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
-// const wstring LiquidTile::TEXTURE_WATER_FLOW = L"water_flow";
-// const wstring LiquidTile::TEXTURE_LAVA_FLOW = L"lava_flow";
+// const std::wstring LiquidTile::TEXTURE_LAVA_STILL = L"lava";
+// const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
+// const std::wstring LiquidTile::TEXTURE_WATER_FLOW = L"water_flow";
+// const std::wstring LiquidTile::TEXTURE_LAVA_FLOW = L"lava_flow";
 
 #define MATH_PI (3.141592654f)
 

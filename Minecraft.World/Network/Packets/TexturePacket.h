@@ -6,13 +6,13 @@ using namespace std;
 class TexturePacket : public Packet, public enable_shared_from_this<TexturePacket>
 {
 public:
-	wstring textureName;
+	std::wstring textureName;
 	PBYTE pbData;
 	DWORD dwBytes;
 
 	TexturePacket();
 	~TexturePacket(); 
-	TexturePacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes);
+	TexturePacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes);
 
 	virtual void handle(PacketListener *listener);
 	virtual void read(DataInputStream *dis);

@@ -21,7 +21,7 @@ private:
 	bool done;
     Connection *connection;
 public:
-	wstring message;
+	std::wstring message;
 	bool createdOk;	// 4J added
 private:
 	Minecraft *minecraft;
@@ -44,7 +44,7 @@ private:
 	DWORD m_userIndex; // 4J Added
 public:
 	SavedDataStorage *savedDataStorage;
-    ClientConnection(Minecraft *minecraft, const wstring& ip, int port);
+    ClientConnection(Minecraft *minecraft, const std::wstring& ip, int port);
 	ClientConnection(Minecraft *minecraft, Socket *socket, int iUserIndex = -1);
 	~ClientConnection();
     void tick();
@@ -90,7 +90,7 @@ public:
     virtual void handleEntityEvent(std::shared_ptr<EntityEventPacket> packet);
 private:
 	std::shared_ptr<Entity> getEntity(int entityId);
-	wstring GetDisplayNameByGamertag(wstring gamertag);
+	std::wstring GetDisplayNameByGamertag(std::wstring gamertag);
 public:
     virtual void handleSetHealth(std::shared_ptr<SetHealthPacket> packet);
 	virtual void handleSetExperience(std::shared_ptr<SetExperiencePacket> packet);

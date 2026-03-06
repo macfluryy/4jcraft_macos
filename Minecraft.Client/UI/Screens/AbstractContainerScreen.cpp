@@ -96,7 +96,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
     if (inventory->getCarried() == NULL && hoveredSlot != NULL && hoveredSlot->hasItem())
 	{
 
-        wstring elementName = trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
+        std::wstring elementName = trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
 
         if (elementName.length() > 0)
 		{

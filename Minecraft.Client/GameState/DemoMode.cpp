@@ -32,7 +32,7 @@ void DemoMode::tick()
 	else if (day == 1)
 	{
         Options *options = minecraft->options;
-        wstring message;
+        std::wstring message;
 
         if (time == 100) {
             minecraft.gui.addMessage("Seed: " + minecraft.level.getSeed());

@@ -31,7 +31,7 @@ void SkullTileRenderer::init(TileEntityRenderDispatcher *tileEntityRenderDispatc
 	instance = this;
 }
 
-void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float rot, int type, const wstring &extra)
+void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float rot, int type, const std::wstring &extra)
 {
 	Model *model = skeletonModel;
 
@@ -47,7 +47,7 @@ void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float r
 	case SkullTileEntity::TYPE_CHAR:
 		//if (!extra.empty())
 		//{
-		//	wstring url = "http://skins.minecraft.net/MinecraftSkins/" + StringUtil.stripColor(extra) + ".png";
+		//	std::wstring url = "http://skins.minecraft.net/MinecraftSkins/" + StringUtil.stripColor(extra) + ".png";
 
 		//	if (!instance->tileEntityRenderDispatcher->textures->hasHttpTexture(url))
 		//	{

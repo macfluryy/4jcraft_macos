@@ -777,11 +777,11 @@ void Player::setCustomCape(DWORD capeId)
 			{
 				if(app.DefaultCapeExists())
 				{
-					this->customTextureUrl2= wstring(L"Special_Cape.png");
+					this->customTextureUrl2= std::wstring(L"Special_Cape.png");
 				}
 				else
 				{
-					this->customTextureUrl2= wstring(L"");
+					this->customTextureUrl2= std::wstring(L"");
 				}
 			}
 
@@ -791,17 +791,17 @@ void Player::setCustomCape(DWORD capeId)
 			// if there is a custom default cloak, then set it here
 			if(app.DefaultCapeExists())
 			{
-				this->customTextureUrl2= wstring(L"Special_Cape.png");
+				this->customTextureUrl2= std::wstring(L"Special_Cape.png");
 			}
 			else
 			{
-				this->customTextureUrl2 =wstring(L"");
+				this->customTextureUrl2 =std::wstring(L"");
 			}
 		}
 	}
 }
 
-DWORD Player::getCapeIdFromPath(const wstring &cape)
+DWORD Player::getCapeIdFromPath(const std::wstring &cape)
 {
 	bool dlcCape = false; 
 	unsigned int capeId = 0;
@@ -810,7 +810,7 @@ DWORD Player::getCapeIdFromPath(const wstring &cape)
 	{
 		dlcCape = cape.substr(0,3).compare(L"dlc") == 0;
 
-		wstring capeValue = cape.substr(7,cape.size());
+		std::wstring capeValue = cape.substr(7,cape.size());
 		capeValue = capeValue.substr(0,capeValue.find_first_of(L'.'));
 
 		std::wstringstream ss;
@@ -827,7 +827,7 @@ DWORD Player::getCapeIdFromPath(const wstring &cape)
 	return capeId;
 }
 
-wstring Player::getCapePathFromId(DWORD capeId)
+std::wstring Player::getCapePathFromId(DWORD capeId)
 {
 	// 4J Stu - This function maps the encoded DWORD we store in the player profile
 	// to a filename that is stored as a memory texture and shared between systems in game
@@ -899,11 +899,11 @@ void Player::prepareCustomTextures()
 		//{
 		//	if(app.DefaultCapeExists())
 		//	{
-		//		this->customTextureUrl2= wstring(L"Default_Cape.png");
+		//		this->customTextureUrl2= std::wstring(L"Default_Cape.png");
 		//	}
 		//	else
 		//	{
-		//		this->customTextureUrl2= wstring(L"");
+		//		this->customTextureUrl2= std::wstring(L"");
 		//	}
 		//}
 
@@ -914,15 +914,15 @@ void Player::prepareCustomTextures()
 		// if there is a custom default cloak, then set it here
 		//if(app.DefaultCapeExists())
 		//{
-		//	this->customTextureUrl2= wstring(L"Default_Cape.png");
+		//	this->customTextureUrl2= std::wstring(L"Default_Cape.png");
 		//}
 		//else
 		//{
-		//	this->customTextureUrl2 =wstring(L"");
+		//	this->customTextureUrl2 =std::wstring(L"");
 		//}
 	}
 
-	/*cloakTexture = wstring(L"http://s3.amazonaws.com/MinecraftCloaks/").append( name ).append( L".png" );*/
+	/*cloakTexture = std::wstring(L"http://s3.amazonaws.com/MinecraftCloaks/").append( name ).append( L".png" );*/
 	//this->customTextureUrl2 = cloakTexture;
 }
 
@@ -2455,7 +2455,7 @@ bool Player::isAlwaysExperienceDropper()
 	return true;
 }
 
-wstring Player::getAName()
+std::wstring Player::getAName()
 {
 	return name;
 }
@@ -2502,12 +2502,12 @@ void Player::setGameMode(GameType *mode)
 {
 }
 
-wstring Player::getName()
+std::wstring Player::getName()
 {
 	return name;
 }
 
-wstring Player::getDisplayName()
+std::wstring Player::getDisplayName()
 {
 	return displayName;
 }

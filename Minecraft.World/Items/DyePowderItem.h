@@ -12,7 +12,7 @@ class DyePowderItem : public Item
 public:
 	static const unsigned int COLOR_DESCS[];
 	static const unsigned int COLOR_USE_DESCS[];
-	static const wstring COLOR_TEXTURES[];
+	static const std::wstring COLOR_TEXTURES[];
 	static const int COLOR_RGB[];
 
 	static const int BLACK;

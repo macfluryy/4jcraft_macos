@@ -144,17 +144,17 @@ void Packet::staticCtor()
 	map(255, true, true, true, false, typeid(DisconnectPacket), DisconnectPacket::create);
 }
 
-IllegalArgumentException::IllegalArgumentException(const wstring& information)
+IllegalArgumentException::IllegalArgumentException(const std::wstring& information)
 {
 	this->information = information;
 }
 
-IOException::IOException(const wstring& information)
+IOException::IOException(const std::wstring& information)
 {
 	this->information = information;
 }
 
-RuntimeException::RuntimeException(const wstring& /*information*/)
+RuntimeException::RuntimeException(const std::wstring& /*information*/)
 {
 }
 
@@ -178,7 +178,7 @@ int Packet::renderPos = 0;
 void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const type_info& clazz, packetCreateFn createFn)
 {
 #if 0
-	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(wstring(L"Duplicate packet id:") + _toString<int>(id));
+	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(std::wstring(L"Duplicate packet id:") + _toString<int>(id));
 	if (classToIdMap.count(clazz) > 0) throw new IllegalArgumentException(L"Duplicate packet class:"); // TODO + clazz);
 #endif
 
@@ -389,7 +389,7 @@ std::shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) 
 		// Close the stream to prevent further reads on a desynced stream
 		dis->close();
 		return nullptr;
-		//            throw new IOException(wstring(L"Bad packet id ") + _toString<int>(id));
+		//            throw new IOException(std::wstring(L"Bad packet id ") + _toString<int>(id));
 	}
 
 	// Record successfully read packet ID
@@ -437,7 +437,7 @@ void Packet::writePacket(std::shared_ptr<Packet> packet, DataOutputStream *dos) 
 	packet->write(dos);
 }
 
-void Packet::writeUtf(const wstring& value, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
+void Packet::writeUtf(const std::wstring& value, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 #if 0
 	if (value.length() > Short::MAX_VALUE) 
@@ -450,7 +450,7 @@ void Packet::writeUtf(const wstring& value, DataOutputStream *dos) // throws IOE
 	dos->writeChars(value);
 }
 
-wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOException TODO 4J JEV, should this declare a throws?
+std::wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 
 	short stringLength = dis->readShort();
@@ -465,7 +465,7 @@ wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOExcepti
 		return L"";
 	}
 
-	wstring builder = L"";
+	std::wstring builder = L"";
 	for (int i = 0; i < stringLength; i++) 
 	{
 		wchar_t rc = dis->readChar();
@@ -530,7 +530,7 @@ __int64 Packet::PacketStatistics::getCountSample(int samplePos)
 	return countSamples[samplePos] * 10;
 }
 
-wstring Packet::PacketStatistics::getLegendString()
+std::wstring Packet::PacketStatistics::getLegendString()
 {
 	static wchar_t string[128];
 	double bps = 0.0;

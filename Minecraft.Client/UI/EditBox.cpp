@@ -2,7 +2,7 @@
 #include "EditBox.h"
 #include "../../Minecraft.World/Util/SharedConstants.h"
 
-EditBox::EditBox(Screen *screen, Font *font, int x, int y, int width, int height, const wstring& value)
+EditBox::EditBox(Screen *screen, Font *font, int x, int y, int width, int height, const std::wstring& value)
 {
 	// 4J - added initialisers
 	maxLength = 0;
@@ -17,12 +17,12 @@ EditBox::EditBox(Screen *screen, Font *font, int x, int y, int width, int height
 	this->setValue(value);
 }
 
-void EditBox::setValue(const wstring& value)
+void EditBox::setValue(const std::wstring& value)
 {
 	this->value = value;
 }
 
-wstring EditBox::getValue()
+std::wstring EditBox::getValue()
 {
 	return value;
 }
@@ -60,7 +60,7 @@ void EditBox::keyPressed(wchar_t ch, int eventKey)
 	{
         value = value.substr(0, value.length() - 1);
     }
-    if (SharedConstants::acceptableLetters.find(ch) != wstring::npos && (value.length() < maxLength || maxLength == 0))
+    if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos && (value.length() < maxLength || maxLength == 0))
 	{
         value += ch;
     }

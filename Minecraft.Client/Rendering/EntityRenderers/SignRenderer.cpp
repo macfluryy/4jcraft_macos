@@ -60,7 +60,7 @@ void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
     glDepthMask(false);
 
 	int col = Minecraft::GetInstance()->getColourTable()->getColor(eMinecraftColour_Sign_Text);
-	wstring msg;
+	std::wstring msg;
 	// need to send the new data
 	// Get the current language setting from the console
 	DWORD dwLanguage = XGetLanguage( );

@@ -322,7 +322,7 @@ public:
 	C4JStorage::ETMSStatus				TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)=NULL,LPVOID lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_ReadFileList(int iPad,C4JStorage::eGlobalStorage eStorageFacility,CHAR *pchFilePath,int( *Func)(LPVOID,int,int,PTMSPP_FILE_LIST)=NULL,LPVOID lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_DeleteFile(int iPad,LPCSTR szFilePath,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,int( *Func)(LPVOID,int,int),LPVOID lpParam=NULL, int iUserData=0);
-	// 	bool								TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const wstring &Filename);
+	// 	bool								TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const std::wstring &Filename);
 	// 	unsigned int						CRC(unsigned char *buf, int len);
 
 // 	enum eXBLWS

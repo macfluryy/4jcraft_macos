@@ -70,7 +70,7 @@ public:
 	bool swinging;
 	int swingTime;
 
-	wstring name;
+	std::wstring name;
 	int dimension;
 	int takeXpDelay;
 
@@ -78,13 +78,13 @@ public:
 	unsigned int m_uiPlayerCurrentSkin;
 	void ChangePlayerSkin();
 
-	// 4J-PB - not needed, since cutomtextureurl2 is the same thing wstring cloakTexture;
+	// 4J-PB - not needed, since cutomtextureurl2 is the same thing std::wstring cloakTexture;
 
 	double xCloakO, yCloakO, zCloakO;
 	double xCloak, yCloak, zCloak;
 
 	// 4J-HEG - store display name, added for Xbox One
-	wstring displayName;
+	std::wstring displayName;
 
 protected:
 	// player sleeping in bed?
@@ -361,7 +361,7 @@ protected:
 	virtual bool isAlwaysExperienceDropper();
 
 public:
-	virtual wstring getAName();
+	virtual std::wstring getAName();
 
 	virtual void changeDimension(int i);
 	virtual void restoreFrom(std::shared_ptr<Player> oldPlayer, bool restoreAll);
@@ -372,8 +372,8 @@ protected:
 public:
 	void onUpdateAbilities();
 	void setGameMode(GameType *mode);
-	wstring getName();
-	wstring getDisplayName(); // 4J added
+	std::wstring getName();
+	std::wstring getDisplayName(); // 4J added
 
 	//Language getLanguage() { return Language.getInstance(); }
 	//String localize(String key, Object... args) { return getLanguage().getElement(key, args); }
@@ -393,7 +393,7 @@ public:
 	virtual void onCrafted(std::shared_ptr<ItemInstance> item) {}
 
 	// 4J Overriding this so that we can have some different default skins
-	virtual int getTexture();		// 4J changed from wstring to int
+	virtual int getTexture();		// 4J changed from std::wstring to int
 	void setPlayerDefaultSkin(EDefaultSkins skin);
 	EDefaultSkins getPlayerDefaultSkin()												{ return m_skinIndex; }
 	virtual void setCustomSkin(DWORD skinId);
@@ -401,8 +401,8 @@ public:
 	virtual void setCustomCape(DWORD capeId);
 	DWORD getCustomCape()																	{return m_dwCapeId; }
 
-	static DWORD getCapeIdFromPath(const wstring &cape);
-	static wstring getCapePathFromId(DWORD capeId);
+	static DWORD getCapeIdFromPath(const std::wstring &cape);
+	static std::wstring getCapePathFromId(DWORD capeId);
 	static unsigned int getSkinAnimOverrideBitmask(DWORD skinId);
 
 	// 4J Added
@@ -410,8 +410,8 @@ public:
 	PlayerUID getXuid()																			{ return m_xuid; }
 	void setOnlineXuid(PlayerUID xuid)															{ m_OnlineXuid = xuid; }
 	PlayerUID getOnlineXuid()																	{ return m_OnlineXuid; }
-	void setUUID(const wstring &UUID)															{ m_UUID = UUID; }
-	wstring getUUID()																			{ return m_UUID; }
+	void setUUID(const std::wstring &UUID)															{ m_UUID = UUID; }
+	std::wstring getUUID()																			{ return m_UUID; }
 
 	void setPlayerIndex(DWORD dwIndex)														{ m_playerIndex = dwIndex; }
 	DWORD getPlayerIndex()																	{ return m_playerIndex; }
@@ -422,13 +422,13 @@ public:
 	void setShowOnMaps(bool bVal)															{ m_bShownOnMaps = bVal; }
 	bool canShowOnMaps()																	{ return m_bShownOnMaps && !getPlayerGamePrivilege(ePlayerGamePrivilege_Invisible); }
 	
-	virtual void sendMessage(const wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const wstring& additionalMessage = L"") { }
+	virtual void sendMessage(const std::wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"") { }
 private:
 	PlayerUID m_xuid;
 	PlayerUID m_OnlineXuid;
 
 protected:
-	wstring m_UUID; // 4J Added
+	std::wstring m_UUID; // 4J Added
 
 	bool m_bShownOnMaps;
 

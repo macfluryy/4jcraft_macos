@@ -66,9 +66,9 @@ private:
     //const File dataDir;
 	const ConsoleSavePath dataDir;
     const __int64 sessionId;
-	const wstring levelId;
+	const std::wstring levelId;
 
-	static const wstring sc_szPlayerDir;
+	static const std::wstring sc_szPlayerDir;
 	// 4J Added
 #ifdef _LARGE_WORLDS
 	class PlayerMappings
@@ -95,7 +95,7 @@ private:
 #endif	
 	bool m_bHasLoadedMapDataMappings;
 
-	std::unordered_map<wstring, ByteArrayOutputStream *> m_cachedSaveData;
+	std::unordered_map<std::wstring, ByteArrayOutputStream *> m_cachedSaveData;
 	vector<short> m_mapFilesToDelete; // Temp list of files that couldn't be deleted immediately due to saving being disabled
 
 protected:
@@ -106,7 +106,7 @@ public:
 	virtual void flushSaveFile(bool autosave);
 
 public:
-	DirectoryLevelStorage(ConsoleSaveFile *saveFile, const File dir, const wstring& levelId, bool createPlayerDir);
+	DirectoryLevelStorage(ConsoleSaveFile *saveFile, const File dir, const std::wstring& levelId, bool createPlayerDir);
 	~DirectoryLevelStorage();
 
 private:
@@ -127,8 +127,8 @@ public:
 	virtual void clearOldPlayerFiles(); // 4J Added
     PlayerIO *getPlayerIO();
     virtual void closeAll();
-    ConsoleSavePath getDataFile(const wstring& id);
-	wstring getLevelId();
+    ConsoleSavePath getDataFile(const std::wstring& id);
+	std::wstring getLevelId();
 
 	// 4J Added
 	virtual int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC, int centreZC, int scale);
@@ -136,7 +136,7 @@ public:
 	virtual void deleteMapFilesForPlayer(std::shared_ptr<Player> player);
 	virtual void saveAllCachedData();
 	void resetNetherPlayerPositions(); // 4J Added
-	static wstring getPlayerDir() { return sc_szPlayerDir; }
+	static std::wstring getPlayerDir() { return sc_szPlayerDir; }
 
 private:
 	void dontSaveMapMappingForPlayer(PlayerUID xuid);

@@ -236,7 +236,7 @@ void Minecraft::clearConnectionFailed()
 	app.SetDisconnectReason(DisconnectPacket::eDisconnect_None);
 }
 
-void Minecraft::connectTo(const wstring& server, int port)
+void Minecraft::connectTo(const std::wstring& server, int port)
 {
 	connectToIp = server;
 	connectToPort = port;
@@ -489,7 +489,7 @@ File Minecraft::getWorkingDirectory()
 	return workDir;
 }
 
-File Minecraft::getWorkingDirectory(const wstring& applicationName)
+File Minecraft::getWorkingDirectory(const std::wstring& applicationName)
 {
 #if 0
 	// 4J - original version
@@ -514,7 +514,7 @@ File Minecraft::getWorkingDirectory(const wstring& applicationName)
 	if (!workingDirectory.exists()) if (!workingDirectory.mkdirs()) throw new RuntimeException("The working directory could not be created: " + workingDirectory);
 	return workingDirectory;
 #else
-	wstring userHome = L"home";	// 4J - TODO
+	std::wstring userHome = L"home";	// 4J - TODO
 	File workingDirectory(userHome, applicationName);
 	// 4J Removed
 	//if (!workingDirectory.exists())
@@ -620,7 +620,7 @@ void Minecraft::setScreen(Screen *screen)
 	}*/
 }
 
-void Minecraft::checkGlError(const wstring& string)
+void Minecraft::checkGlError(const std::wstring& string)
 {
 	// 4J - TODO
 }
@@ -1025,7 +1025,7 @@ void Minecraft::addPendingLocalConnection(int idx, ClientConnection *connection)
 	m_pendingLocalConnections[idx] = connection;
 }
 
-std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(int idx, const wstring& name, int iPad, int iDimension, ClientConnection *clientConnection /*= NULL*/,MultiPlayerLevel *levelpassedin)
+std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(int idx, const std::wstring& name, int iPad, int iDimension, ClientConnection *clientConnection /*= NULL*/,MultiPlayerLevel *levelpassedin)
 {
 	if( clientConnection == NULL) return nullptr;
 
@@ -1037,7 +1037,7 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(int id
 			// A temp player displaying a connecting screen
 			tempScreenSection = localplayers[idx]->m_iScreenSection;
 		}
-		wstring prevname = user->name;
+		std::wstring prevname = user->name;
 		user->name = name;
 
 		// Don't need this any more
@@ -3439,7 +3439,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 #endif
 		if( selected || wheel != 0 || (player->ullButtonsPressed&(1LL<<MINECRAFT_ACTION_DROP)) )
 		{
-			wstring itemName = L"";
+			std::wstring itemName = L"";
 			std::shared_ptr<ItemInstance> selectedItem = player->getSelectedItem();
 			// Dropping items happens over network, so if we only have one then assume that we dropped it and should hide the item
 			int iCount=0;
@@ -3782,16 +3782,16 @@ bool Minecraft::isClientSide()
 	return level != NULL && level->isClientSide;
 }
 
-void Minecraft::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, const wstring& levelName, LevelSettings *levelSettings)
+void Minecraft::selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, const std::wstring& levelName, LevelSettings *levelSettings)
 {
 	}
 
-bool Minecraft::saveSlot(int slot, const wstring& name)
+bool Minecraft::saveSlot(int slot, const std::wstring& name)
 {
 	return false;
 }
 
-bool Minecraft::loadSlot(const wstring& userName, int slot)
+bool Minecraft::loadSlot(const std::wstring& userName, int slot)
 {
 	return false;
 }
@@ -3835,7 +3835,7 @@ MultiPlayerLevel *Minecraft::getLevel(int dimension)
 
 // Also causing ambiguous call for some reason
 // as it is matching std::shared_ptr<Player> from the func below with bool from this one
-//void Minecraft::setLevel(Level *level, const wstring& message, bool doForceStatsSave /*= true*/)
+//void Minecraft::setLevel(Level *level, const std::wstring& message, bool doForceStatsSave /*= true*/)
 //{
 //	setLevel(level, message, NULL, doForceStatsSave);
 //}
@@ -4106,11 +4106,11 @@ void Minecraft::prepareLevel(int title)
 }
 }
 
-void Minecraft::fileDownloaded(const wstring& name, File *file)
+void Minecraft::fileDownloaded(const std::wstring& name, File *file)
 {
 	int p = (int)name.find(L"/");
-	wstring category = name.substr(0, p);
-	wstring name2 = name.substr(p + 1);
+	std::wstring category = name.substr(0, p);
+	std::wstring name2 = name.substr(p + 1);
 	toLower(category);
 	if (category==L"sound")
 	{
@@ -4134,25 +4134,25 @@ void Minecraft::fileDownloaded(const wstring& name, File *file)
 	}
 }
 
-wstring Minecraft::gatherStats1()
+std::wstring Minecraft::gatherStats1()
 {
 	//return levelRenderer->gatherStats1();
 	return L"Time to autosave: " + _toString<unsigned int>( app.SecondsToAutosave() ) + L"s";
 }
 
-wstring Minecraft::gatherStats2()
+std::wstring Minecraft::gatherStats2()
 {
 	return g_NetworkManager.GatherStats();
 	//return levelRenderer->gatherStats2();
 }
 
-wstring Minecraft::gatherStats3()
+std::wstring Minecraft::gatherStats3()
 {
 	return g_NetworkManager.GatherRTTStats();
 	//return L"P: " + particleEngine->countParticles() + L". T: " + level->gatherStats();
 }
 
-wstring Minecraft::gatherStats4()
+std::wstring Minecraft::gatherStats4()
 {
 	return level->gatherChunkSourceStats();
 }
@@ -4260,15 +4260,15 @@ void Minecraft::respawnPlayer(int iPad, int dimension, int newEntityId)
 	gameRenderer->EnableUpdateThread();
 }
 
-void Minecraft::start(const wstring& name, const wstring& sid)
+void Minecraft::start(const std::wstring& name, const std::wstring& sid)
 {
 	startAndConnectTo(name, sid, L"");
 }
 
-void Minecraft::startAndConnectTo(const wstring& name, const wstring& sid, const wstring& url)
+void Minecraft::startAndConnectTo(const std::wstring& name, const std::wstring& sid, const std::wstring& url)
 {
 	bool fullScreen = false;
-	wstring userName = name;
+	std::wstring userName = name;
 
 	/* 4J - removed window handling things here
 	final Frame frame = new Frame("Minecraft");
@@ -4367,8 +4367,8 @@ int g_iMainThreadId;
 
 void Minecraft::main()
 {
-	wstring name;
-	wstring sessionId;
+	std::wstring name;
+	std::wstring sessionId;
 
 	//g_iMainThreadId = GetCurrentThreadId();
 
@@ -4452,7 +4452,7 @@ bool Minecraft::renderDebug()
 	return (m_instance != NULL && m_instance->options->renderDebug);
 }
 
-bool Minecraft::handleClientSideCommand(const wstring& chatMessage)
+bool Minecraft::handleClientSideCommand(const std::wstring& chatMessage)
 {
 	/* 4J - TODO
 	if (chatMessage.startsWith("/")) {
@@ -4841,7 +4841,7 @@ void Minecraft::tickAllConnections()
 	setLocalPlayerIdx(oldIdx);
 }
 
-bool Minecraft::addPendingClientTextureRequest(const wstring &textureName)
+bool Minecraft::addPendingClientTextureRequest(const std::wstring &textureName)
 {
 	AUTO_VAR(it, find( m_pendingTextureRequests.begin(), m_pendingTextureRequests.end(), textureName));
 	if( it == m_pendingTextureRequests.end() )
@@ -4852,7 +4852,7 @@ bool Minecraft::addPendingClientTextureRequest(const wstring &textureName)
 	return false;
 }
 
-void Minecraft::handleClientTextureReceived(const wstring &textureName)
+void Minecraft::handleClientTextureReceived(const std::wstring &textureName)
 {
 	AUTO_VAR(it, find( m_pendingTextureRequests.begin(), m_pendingTextureRequests.end(), textureName));
 	if( it != m_pendingTextureRequests.end() )

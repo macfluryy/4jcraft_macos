@@ -261,7 +261,7 @@ void ItemEntity::playerTouch(std::shared_ptr<Player> player)
 	}
 }
 
-wstring ItemEntity::getAName()
+std::wstring ItemEntity::getAName()
 {
 	return L"";//L"item." + getItem()->getDescriptionId();
 	//return I18n.get("item." + item.getDescriptionId());
@@ -295,12 +295,12 @@ bool ItemEntity::isAttackable()
 	return false;
 }
 
-void ItemEntity::setThrower(const wstring &thrower)
+void ItemEntity::setThrower(const std::wstring &thrower)
 {
 	this->thrower = thrower;
 }
 
-wstring ItemEntity::getThrower()
+std::wstring ItemEntity::getThrower()
 {
 	return this->thrower;
 }

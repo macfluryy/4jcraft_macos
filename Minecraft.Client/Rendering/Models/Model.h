@@ -14,7 +14,7 @@ public:
     bool riding;
 	vector<ModelPart *> cubes;
 	bool young;
-	std::unordered_map<wstring, TexOffs * > mappedTexOffs;
+	std::unordered_map<std::wstring, TexOffs * > mappedTexOffs;
 	int texWidth;
 	int texHeight;
 
@@ -25,8 +25,8 @@ public:
 	virtual ModelPart *getRandomCube(Random random) {return cubes.at(random.nextInt((int)cubes.size()));}
 	virtual ModelPart * AddOrRetrievePart(SKIN_BOX *pBox) { return NULL;}
 
-	void setMapTex(wstring id, int x, int y);
-	TexOffs *getMapTex(wstring id);
+	void setMapTex(std::wstring id, int x, int y);
+	TexOffs *getMapTex(std::wstring id);
 
 protected:
 	float yHeadOffs;

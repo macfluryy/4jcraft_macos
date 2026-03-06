@@ -6,7 +6,7 @@ class Level;
 class LargeFeature
 {
 public:
-	static const wstring STRONGHOLD;
+	static const std::wstring STRONGHOLD;
 protected:
     int radius;
     Random *random;

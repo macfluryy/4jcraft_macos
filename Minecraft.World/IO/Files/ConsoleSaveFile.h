@@ -26,13 +26,13 @@ public:
 	virtual void DebugFlushToFile(void *compressedData = NULL, unsigned int compressedDataSize = 0) = 0;
 #endif
 	virtual unsigned int getSizeOnDisk() = 0;
-	virtual wstring getFilename() = 0;
-	virtual vector<FileEntry *> *getFilesWithPrefix(const wstring &prefix) = 0;
+	virtual std::wstring getFilename() = 0;
+	virtual vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix) = 0;
 	virtual vector<FileEntry *> *getRegionFilesByDimension(unsigned int dimensionIndex) = 0;
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	virtual wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID) = 0;
-	virtual wstring getPlayerDataFilenameForSave(const PlayerUID& pUID) = 0;
+	virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID) = 0;
+	virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID) = 0;
 	virtual vector<FileEntry *> *getValidPlayerDatFiles() = 0;
 #endif //__PS3__
 

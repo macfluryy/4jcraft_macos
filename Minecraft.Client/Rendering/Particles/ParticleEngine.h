@@ -40,5 +40,5 @@ public:
     void setLevel(Level *level);
     void destroy(int x, int y, int z, int tid, int data);
     void crack(int x, int y, int z, int face);
-    wstring countParticles();
+    std::wstring countParticles();
 };

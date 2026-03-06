@@ -1,4 +1,4 @@
 #include "Build/stdafx.h"
 #include "ClientConstants.h"
 
-const wstring ClientConstants::VERSION_STRING = wstring(L"Minecraft Xbox ") + VER_FILEVERSION_STR_W;//+ SharedConstants::VERSION_STRING;
+const std::wstring ClientConstants::VERSION_STRING = std::wstring(L"Minecraft Xbox ") + VER_FILEVERSION_STR_W;//+ SharedConstants::VERSION_STRING;

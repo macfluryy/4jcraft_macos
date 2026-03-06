@@ -114,7 +114,7 @@ void ServerConnection::tick()
 
 }
 
-bool ServerConnection::addPendingTextureRequest(const wstring &textureName)
+bool ServerConnection::addPendingTextureRequest(const std::wstring &textureName)
 {
 	AUTO_VAR(it, find( m_pendingTextureRequests.begin(), m_pendingTextureRequests.end(), textureName));
 	if( it == m_pendingTextureRequests.end() )
@@ -129,7 +129,7 @@ bool ServerConnection::addPendingTextureRequest(const wstring &textureName)
 	return true;
 }
 
-void ServerConnection::handleTextureReceived(const wstring &textureName)
+void ServerConnection::handleTextureReceived(const std::wstring &textureName)
 {
 	AUTO_VAR(it, find( m_pendingTextureRequests.begin(), m_pendingTextureRequests.end(), textureName));
 	if( it != m_pendingTextureRequests.end() )
@@ -146,7 +146,7 @@ void ServerConnection::handleTextureReceived(const wstring &textureName)
     }
 }
 
-void ServerConnection::handleTextureAndGeometryReceived(const wstring &textureName)
+void ServerConnection::handleTextureAndGeometryReceived(const std::wstring &textureName)
 {
 	AUTO_VAR(it, find( m_pendingTextureRequests.begin(), m_pendingTextureRequests.end(), textureName));
 	if( it != m_pendingTextureRequests.end() )

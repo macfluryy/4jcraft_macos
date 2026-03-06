@@ -12,37 +12,37 @@ class BufferedImage;
 class PreStitchedTextureMap : public IconRegister
 {
 public:
-	static const wstring NAME_MISSING_TEXTURE;
+	static const std::wstring NAME_MISSING_TEXTURE;
 
 private:
 	const int iconType;
 
-	const wstring name;
-	const wstring path;
-	const wstring extension;
+	const std::wstring name;
+	const std::wstring path;
+	const std::wstring extension;
 
 	bool m_mipMap;
 
-	typedef std::unordered_map<wstring, Icon *> stringIconMap;
+	typedef std::unordered_map<std::wstring, Icon *> stringIconMap;
 	stringIconMap texturesByName; //  = new HashMap<String, StitchedTexture>();
 	BufferedImage *missingTexture; // = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 	StitchedTexture *missingPosition;
 	Texture *stitchResult;
 	vector<StitchedTexture *> animatedTextures; // = new ArrayList<StitchedTexture>();
 
-	vector<pair<wstring, wstring> > texturesToAnimate;
+	vector<pair<std::wstring, std::wstring> > texturesToAnimate;
 
 	void loadUVs();
 public:
-	PreStitchedTextureMap(int type, const wstring &name, const wstring &path, BufferedImage *missingTexture, bool mipMap = false);
+	PreStitchedTextureMap(int type, const std::wstring &name, const std::wstring &path, BufferedImage *missingTexture, bool mipMap = false);
 
 	void stitch();
-	StitchedTexture *getTexture(const wstring &name);
+	StitchedTexture *getTexture(const std::wstring &name);
 	void cycleAnimationFrames();
 	Texture *getStitchedTexture();
 
 	// 4J Stu - register is a reserved keyword in C++
-	Icon *registerIcon(const wstring &name);
+	Icon *registerIcon(const std::wstring &name);
 
 	int getIconType();
 	Icon *getMissingIcon();

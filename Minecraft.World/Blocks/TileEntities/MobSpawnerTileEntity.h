@@ -21,7 +21,7 @@ public:
 	int spawnDelay;
 
 private:
-	wstring entityId;
+	std::wstring entityId;
 	CompoundTag *spawnData;
 
 	bool m_bEntityIdUpdated; // 4J Added
@@ -38,8 +38,8 @@ private:
 public:
 	MobSpawnerTileEntity();
 
-	wstring getEntityId();
-	void setEntityId(const wstring& entityId);
+	std::wstring getEntityId();
+	void setEntityId(const std::wstring& entityId);
 	bool isNearPlayer();
 	virtual void tick();
 	void fillExtraData(std::shared_ptr<Entity> entity);

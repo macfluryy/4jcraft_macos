@@ -8,7 +8,7 @@ class PressurePlateTile : public Tile
 {
 	friend class Tile;
 private:
-	wstring texture;
+	std::wstring texture;
 public:
     enum Sensitivity
 	{
@@ -20,7 +20,7 @@ public:
 private:
 	Sensitivity sensitivity;
 protected:
-	PressurePlateTile(int id, const wstring &tex, Material *material, Sensitivity sensitivity);
+	PressurePlateTile(int id, const std::wstring &tex, Material *material, Sensitivity sensitivity);
 public:
     virtual int getTickDelay();
     virtual AABB *getAABB(Level *level, int x, int y, int z);

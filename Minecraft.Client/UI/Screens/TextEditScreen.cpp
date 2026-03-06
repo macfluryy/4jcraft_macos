@@ -11,7 +11,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 
-const wstring TextEditScreen::allowedChars = SharedConstants::readAcceptableChars();
+const std::wstring TextEditScreen::allowedChars = SharedConstants::readAcceptableChars();
 
 TextEditScreen::TextEditScreen(std::shared_ptr<SignTileEntity> sign)
 {
@@ -61,12 +61,12 @@ void TextEditScreen::keyPressed(wchar_t ch, int eventKey)
     if (eventKey == Keyboard::KEY_UP) line = (line - 1) & 3;
     if (eventKey == Keyboard::KEY_DOWN || eventKey == Keyboard::KEY_RETURN) line = (line + 1) & 3;
 
-	wstring temp=sign->GetMessage(line);
+	std::wstring temp=sign->GetMessage(line);
     if (eventKey == Keyboard::KEY_BACK && temp.length() > 0)
 	{
         temp = temp.substr(0, temp.length() - 1);
     }
-    if (allowedChars.find(ch) != wstring::npos && temp.length() < 15)
+    if (allowedChars.find(ch) != std::wstring::npos && temp.length() < 15)
 	{
         temp += ch;
     }

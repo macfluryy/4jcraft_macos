@@ -41,7 +41,7 @@ private:
 	int activeTileEventsList;
 public:
 	static void staticCtor();
-	ServerLevel(MinecraftServer *server, std::shared_ptr<LevelStorage>levelStorage, const wstring& levelName, int dimension, LevelSettings *levelSettings);
+	ServerLevel(MinecraftServer *server, std::shared_ptr<LevelStorage>levelStorage, const std::wstring& levelName, int dimension, LevelSettings *levelSettings);
 	~ServerLevel();
 	void tick();
 	Biome::MobSpawnerData *getRandomMobSpawnAt(MobCategory *mobCategory, int x, int y, int z);

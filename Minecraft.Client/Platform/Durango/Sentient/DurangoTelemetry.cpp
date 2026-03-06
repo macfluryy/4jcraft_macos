@@ -971,9 +971,9 @@ DurangoStats *CDurangoTelemetryManager::durangoStats()
 	return (DurangoStats*) GenericStats::getInstance();
 }
 
-wstring CDurangoTelemetryManager::guid2str(LPCGUID guid)
+std::wstring CDurangoTelemetryManager::guid2str(LPCGUID guid)
 {
-	wstring out = L"GUID<";
+	std::wstring out = L"GUID<";
 	out += _toString<unsigned long>(guid->Data1);
 	out += L":";
 	out += _toString<unsigned short>(guid->Data2);

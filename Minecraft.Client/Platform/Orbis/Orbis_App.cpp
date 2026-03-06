@@ -99,7 +99,7 @@ bool CConsoleMinecraftApp::IsAmericanSKU()
 
 SONYDLC *CConsoleMinecraftApp::GetSONYDLCInfo(char *pchTitle)
 {
-	wstring wstrTemp=convStringToWstring(pchTitle);
+	std::wstring wstrTemp=convStringToWstring(pchTitle);
 
 	AUTO_VAR(it, m_SONYDLCMap.find(wstrTemp));
 	if(it == m_SONYDLCMap.end())
@@ -191,7 +191,7 @@ BOOL CConsoleMinecraftApp::ReadProductCodes()
 
 			// push this into a vector
 
-			wstring wstrTemp=convStringToWstring(chDLCTitle);
+			std::wstring wstrTemp=convStringToWstring(chDLCTitle);
 			m_SONYDLCMap[wstrTemp]=pDLCInfo;
 		}
 		CloseHandle(file);
@@ -288,7 +288,7 @@ int CConsoleMinecraftApp::GetLocalTMSFileIndex(WCHAR *wchTMSFile,bool bFilenameI
 int CConsoleMinecraftApp::LoadLocalDLCImages()
 {
 	// 4J-PB - Any local graphic files for the Minecraft Store?
-	std::unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
+	std::unordered_map<std::wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{
 		SONYDLC * pDLCInfo=(*it).second;
@@ -301,7 +301,7 @@ int CConsoleMinecraftApp::LoadLocalDLCImages()
 void CConsoleMinecraftApp::FreeLocalDLCImages()
 {
 	// 4J-PB - Any local graphic files for the Minecraft Store?
-	std::unordered_map<wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
+	std::unordered_map<std::wstring, SONYDLC *>*pDLCInfoA=app.GetSonyDLCMap();
 	for( AUTO_VAR(it, pDLCInfoA->begin()); it != pDLCInfoA->end(); it++ )
 	{
 		SONYDLC * pDLCInfo=(*it).second;
@@ -394,7 +394,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 	////////////////////////////////////////////////////////////////////////////////////////////// From CScene_MultiGameCreate::CreateGame
 
 	app.ClearTerrainFeaturePosition();
-	wstring wWorldName = L"TestWorld";
+	std::wstring wWorldName = L"TestWorld";
 
 	StorageManager.ResetSaveData();
 	StorageManager.SetSaveTitle(wWorldName.c_str());

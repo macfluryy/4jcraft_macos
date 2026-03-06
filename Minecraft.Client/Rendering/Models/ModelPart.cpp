@@ -23,7 +23,7 @@ ModelPart::ModelPart()
 	_init();
 }
 
-ModelPart::ModelPart(Model *model, const wstring& id) 
+ModelPart::ModelPart(Model *model, const std::wstring& id) 
 {
 	construct(model, id);
 }
@@ -39,7 +39,7 @@ ModelPart::ModelPart(Model *model, int xTexOffs, int yTexOffs)
 }
 
 
-void ModelPart::construct(Model *model, const wstring& id) 
+void ModelPart::construct(Model *model, const std::wstring& id) 
 {
 	_init();
 	this->model = model;
@@ -108,7 +108,7 @@ ModelPart *ModelPart::texOffs(int xTexOffs, int yTexOffs)
 	return this;
 }
 
-ModelPart *ModelPart::addBox(wstring id, float x0, float y0, float z0, int w, int h, int d) 
+ModelPart *ModelPart::addBox(std::wstring id, float x0, float y0, float z0, int w, int h, int d) 
 {
 	id = this->id + L"." + id;
 	TexOffs *offs = model->getMapTex(id);

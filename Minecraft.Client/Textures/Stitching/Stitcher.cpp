@@ -6,7 +6,7 @@
 #include "StitchedTexture.h"
 #include "Stitcher.h"
 
-void Stitcher::_init(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
+void Stitcher::_init(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
 {
 	this->name = name;
 	this->maxWidth = maxWidth;
@@ -20,12 +20,12 @@ void Stitcher::_init(const wstring &name, int maxWidth, int maxHeight, bool forc
 	stitchedTexture = NULL;
 }
 
-Stitcher::Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo)
+Stitcher::Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo)
 {
 	_init(name, maxWidth, maxHeight, forcePowerOfTwo, 0);
 }
 
-Stitcher::Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
+Stitcher::Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
 {
 	_init(name, maxWidth, maxHeight, forcePowerOfTwo, forcedScale);
 }

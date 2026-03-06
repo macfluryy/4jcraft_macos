@@ -23,7 +23,7 @@ public:
 	ArmorRecipes()			{_init();}
 private:
 	// 4J-PB - this wasn't static in java, so might not be right
-	static wstring shapes[][4];
+	static std::wstring shapes[][4];
 
 private:	
 	vector <Object *> *map;

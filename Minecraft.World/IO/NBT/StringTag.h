@@ -4,9 +4,9 @@
 class StringTag : public Tag
 {
 public:
-	wstring data;
-	StringTag(const wstring &name) : Tag(name) {}
-	StringTag(const wstring &name, const wstring& data) : Tag(name) {this->data = data; }
+	std::wstring data;
+	StringTag(const std::wstring &name) : Tag(name) {}
+	StringTag(const std::wstring &name, const std::wstring& data) : Tag(name) {this->data = data; }
 
 	void write(DataOutput *dos)
 	{
@@ -20,7 +20,7 @@ public:
 
 	uint8_t getId() { return TAG_String; }
 
-	wstring toString()
+	std::wstring toString()
 	{
 		return data;
 	}

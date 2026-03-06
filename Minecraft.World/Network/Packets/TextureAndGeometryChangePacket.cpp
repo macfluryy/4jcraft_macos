@@ -15,11 +15,11 @@ TextureAndGeometryChangePacket::TextureAndGeometryChangePacket()
 	dwSkinID = 0;
 }
 
-TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const wstring &path)
+TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const std::wstring &path)
 {
 	id = e->entityId;
 	this->path = path;
-	wstring skinValue = path.substr(7,path.size());
+	std::wstring skinValue = path.substr(7,path.size());
 	skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
 	std::wstringstream ss;
 	ss << std::dec << skinValue.c_str();

@@ -162,7 +162,7 @@ void MultiplayerLocalPlayer::reallyDrop(std::shared_ptr<ItemEntity> itemEntity)
 {
 }
 
-void MultiplayerLocalPlayer::chat(const wstring& message)
+void MultiplayerLocalPlayer::chat(const std::wstring& message)
 {
 	connection->send( std::shared_ptr<ChatPacket>( new ChatPacket(message) ) );
 }

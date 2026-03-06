@@ -229,7 +229,7 @@ class ZipFile
 public:
 	ZipFile(File *file) {}
 	InputStream *getInputStream(ZipEntry *entry) { return NULL; }
-	ZipEntry *getEntry(const wstring& name) {return NULL;}
+	ZipEntry *getEntry(const std::wstring& name) {return NULL;}
 	void close() {}
 };
 
@@ -245,7 +245,7 @@ public:
 	static void create() {}
 	static void destroy() {}
 	static bool isKeyDown(int) {return false;}
-	static wstring getKeyName(int) { return L"KEYNAME"; }
+	static std::wstring getKeyName(int) { return L"KEYNAME"; }
 	static void enableRepeatEvents(bool) {}
 	static const int KEY_A = 0;
 	static const int KEY_B = 1;

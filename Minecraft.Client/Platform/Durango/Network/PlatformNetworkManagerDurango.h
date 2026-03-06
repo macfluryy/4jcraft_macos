@@ -28,7 +28,7 @@ public:
 	virtual INetworkPlayer *GetPlayerByIndex(int playerIndex);
 	virtual INetworkPlayer * GetPlayerByXuid(PlayerUID xuid);
 	virtual INetworkPlayer * GetPlayerBySmallId(unsigned char smallId);
-	virtual wstring GetDisplayNameByGamertag(wstring gamertag);
+	virtual std::wstring GetDisplayNameByGamertag(std::wstring gamertag);
 	virtual bool ShouldMessageForFullSession();
 
 	virtual INetworkPlayer *GetHostPlayer();
@@ -120,8 +120,8 @@ private:
 	float m_lastPlayerEventTimeStart;
 
 public:
-	wstring GatherStats();
-	wstring GatherRTTStats();
+	std::wstring GatherStats();
+	std::wstring GatherRTTStats();
 
 private:	
 	vector<FriendSessionInfo *> friendsSessions[XUSER_MAX_COUNT];

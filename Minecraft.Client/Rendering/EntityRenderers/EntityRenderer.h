@@ -39,10 +39,10 @@ public:
 	virtual void render(std::shared_ptr<Entity> entity, double x, double y, double z, float rot, float a) = 0;
 protected:
 	virtual void bindTexture(int resourceName);	// 4J - added
-	virtual void bindTexture(const wstring& resourceName);
+	virtual void bindTexture(const std::wstring& resourceName);
 
-    virtual bool bindTexture(const wstring& urlTexture, int backupTexture);			// 4J added
-	virtual bool bindTexture(const wstring& urlTexture, const wstring& backupTexture);	
+    virtual bool bindTexture(const std::wstring& urlTexture, int backupTexture);			// 4J added
+	virtual bool bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture);	
 private:
 	virtual void renderFlame(std::shared_ptr<Entity> e, double x, double y, double z, float a);
     virtual void renderShadow(std::shared_ptr<Entity> e, double x, double y, double z, float pow, float a);

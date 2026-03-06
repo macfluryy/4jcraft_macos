@@ -6,7 +6,7 @@
 #include "../Headers/net.minecraft.h"
 #include "CocoaTile.h"
 
-const wstring CocoaTile::TEXTURE_AGES[] = {	L"cocoa_0", L"cocoa_1", L"cocoa_2"};
+const std::wstring CocoaTile::TEXTURE_AGES[] = {	L"cocoa_0", L"cocoa_1", L"cocoa_2"};
 
 CocoaTile::CocoaTile(int id) : DirectionalTile(id, Material::plant, isSolidRender() )
 {

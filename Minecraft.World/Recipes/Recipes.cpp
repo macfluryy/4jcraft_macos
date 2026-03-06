@@ -925,7 +925,7 @@ Recipes::Recipes()
 // 4J-PB - this function has been substantially changed due to the differences with a va_list of classes in C++ and Java
 ShapedRecipy *Recipes::addShapedRecipy(ItemInstance *result, ...)
 {
-	wstring map = L"";
+	std::wstring map = L"";
 	int p = 0;
 	int width = 0;
 	int height = 0;
@@ -933,8 +933,8 @@ ShapedRecipy *Recipes::addShapedRecipy(ItemInstance *result, ...)
 	va_list vl;
 	wchar_t *wchTypes;
 	wchar_t *pwchString;
-	wstring wString;
-	wstring *wStringA;
+	std::wstring wString;
+	std::wstring *wStringA;
 	ItemInstance *pItemInstance;
 	Tile *pTile;
 	Item *pItem;
@@ -981,7 +981,7 @@ ShapedRecipy *Recipes::addShapedRecipy(ItemInstance *result, ...)
 			map += wString;
 			break;
 		case L'w':
-			wStringA=va_arg(vl,wstring *);
+			wStringA=va_arg(vl,std::wstring *);
 			iCount=0;
 			do
 			{
@@ -1077,7 +1077,7 @@ void Recipes::addShapelessRecipy(ItemInstance *result,... )
 {
 	va_list vl;
 	wchar_t *szTypes;
-	wstring String;
+	std::wstring String;
 	ItemInstance *pItemInstance;
 	Tile *pTile;
 	Item *pItem;

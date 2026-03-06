@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Util/Facing.h"
 
-const wstring TheEndPortalFrameTile::TEXTURE_EYE = L"endframe_eye";
+const std::wstring TheEndPortalFrameTile::TEXTURE_EYE = L"endframe_eye";
 
 TheEndPortalFrameTile::TheEndPortalFrameTile(int id) : Tile(id, Material::glass, isSolidRender() )
 {

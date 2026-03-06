@@ -21,7 +21,7 @@ MapItem::MapItem(int id) : ComplexItem(id)
 
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *level)
 {	
-	std::wstring id = wstring( L"map_" ) + _toString(idNum);
+	std::wstring id = std::wstring( L"map_" ) + _toString(idNum);
 	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>(level->getSavedData(typeid(MapItemSavedData), id));
 
 	if (mapItemSavedData == NULL) 
@@ -31,7 +31,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *leve
 		//int aux = level->getFreeAuxValueFor(L"map");
 		int aux = idNum;
 
-		id = wstring( L"map_" ) + _toString(aux);
+		id = std::wstring( L"map_" ) + _toString(aux);
 		mapItemSavedData = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
 
 		level->setSavedData(id, (std::shared_ptr<SavedData> ) mapItemSavedData);
@@ -43,7 +43,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *leve
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(std::shared_ptr<ItemInstance> itemInstance, Level *level)
 {
 	MemSect(31);
-	std::wstring id = wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
+	std::wstring id = std::wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
 	MemSect(0);
 	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>( level->getSavedData(typeid(MapItemSavedData), id ) );
 
@@ -54,7 +54,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(std::shared_ptr<ItemInst
 		// In any case that won't work with the new map setup
 		//itemInstance->setAuxValue(level->getFreeAuxValueFor(L"map"));
 
-		id = wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
+		id = std::wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
 		mapItemSavedData = std::shared_ptr<MapItemSavedData>( new MapItemSavedData(id) );
 
 		newData = true;
@@ -316,7 +316,7 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance, Level *lev
 	itemInstance->setAuxValue(level->getAuxValueForMap(player->getXuid(), player->dimension, centreXC, centreZC, mapScale));
 	
 	swprintf(buf,64,L"map_%d", itemInstance->getAuxValue());
-	std::wstring id = wstring(buf);
+	std::wstring id = std::wstring(buf);
 
 	std::shared_ptr<MapItemSavedData> data = getSavedData(itemInstance->getAuxValue(), level);
 	// 4J Stu - We only have one map per player per dimension, so don't reset the one that they have

@@ -19,9 +19,9 @@
 #include "../CompassTexture.h"
 #include "../ClockTexture.h"
 
-const wstring PreStitchedTextureMap::NAME_MISSING_TEXTURE = L"missingno";
+const std::wstring PreStitchedTextureMap::NAME_MISSING_TEXTURE = L"missingno";
 
-PreStitchedTextureMap::PreStitchedTextureMap(int type, const wstring &name, const wstring &path, BufferedImage *missingTexture, bool mipmap) : iconType(type), name(name), path(path), extension(L".png")
+PreStitchedTextureMap::PreStitchedTextureMap(int type, const std::wstring &name, const std::wstring &path, BufferedImage *missingTexture, bool mipmap) : iconType(type), name(name), path(path), extension(L".png")
 {
 	this->missingTexture = missingTexture;
 
@@ -77,7 +77,7 @@ void PreStitchedTextureMap::stitch()
 	animatedTextures.clear();
 
 	// Create the final image
-	wstring filename = name + extension;
+	std::wstring filename = name + extension;
 
 	TexturePack *texturePack = Minecraft::GetInstance()->skins->getSelected();
 	//try {
@@ -87,7 +87,7 @@ void PreStitchedTextureMap::stitch()
 	int magFilter = Texture::TFLT_NEAREST;
 
 	MemSect(32);
-	wstring drive = L"";
+	std::wstring drive = L"";
 	if(texturePack->hasFile(L"res/" + filename,false))
 	{
 		drive = texturePack->getPath(true);
@@ -129,8 +129,8 @@ void PreStitchedTextureMap::stitch()
 	MemSect(52);
 	for(AUTO_VAR(it, texturesToAnimate.begin()); it != texturesToAnimate.end(); ++it)
 	{
-		wstring textureName = it->first;
-		wstring textureFileName = it->second;
+		std::wstring textureName = it->first;
+		std::wstring textureFileName = it->second;
 
 		StitchedTexture *preStitched = (StitchedTexture *)texturesByName[textureName];
 
@@ -140,7 +140,7 @@ void PreStitchedTextureMap::stitch()
 			continue;
 		}
 
-		wstring filename = path + textureFileName + extension;
+		std::wstring filename = path + textureFileName + extension;
 
 		// TODO: [EB] Put the frames into a proper object, not this inside out hack
 		vector<Texture *> *frames = TextureManager::getInstance()->createTextures(filename, m_mipMap);
@@ -164,7 +164,7 @@ void PreStitchedTextureMap::stitch()
 		{
 			animatedTextures.push_back(preStitched);
 
-			wstring animString = texturePack->getAnimationString(textureFileName, path, true);
+			std::wstring animString = texturePack->getAnimationString(textureFileName, path, true);
 
 			preStitched->loadAnimationFrames(animString);
 		}
@@ -216,7 +216,7 @@ void PreStitchedTextureMap::stitch()
 #endif
 }
 
-StitchedTexture *PreStitchedTextureMap::getTexture(const wstring &name)
+StitchedTexture *PreStitchedTextureMap::getTexture(const std::wstring &name)
 {
 #ifndef _CONTENT_PACKAGE
 	app.DebugPrintf("Not implemented!\n");
@@ -246,7 +246,7 @@ Texture *PreStitchedTextureMap::getStitchedTexture()
 }
 
 // 4J Stu - register is a reserved keyword in C++
-Icon *PreStitchedTextureMap::registerIcon(const wstring &name)
+Icon *PreStitchedTextureMap::registerIcon(const std::wstring &name)
 {
 	Icon *result = NULL;
 	if (name.empty())
@@ -363,11 +363,11 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"compassP1",new SimpleIcon(L"compassP1",slotSize*8,slotSize*14,slotSize*(8+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"compassP2",new SimpleIcon(L"compassP2",slotSize*9,slotSize*14,slotSize*(9+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"compassP3",new SimpleIcon(L"compassP3",slotSize*10,slotSize*14,slotSize*(10+1),slotSize*(14+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"compass",L"compass"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"compassP0",L"compass"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"compassP1",L"compass"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"compassP2",L"compass"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"compassP3",L"compass"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"compass",L"compass"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"compassP0",L"compass"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"compassP1",L"compass"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"compassP2",L"compass"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"compassP3",L"compass"));
 		texturesByName.insert(stringIconMap::value_type(L"diamond",new SimpleIcon(L"diamond",slotSize*7,slotSize*3,slotSize*(7+1),slotSize*(3+1))));
 		texturesByName.insert(stringIconMap::value_type(L"redstone",new SimpleIcon(L"redstone",slotSize*8,slotSize*3,slotSize*(8+1),slotSize*(3+1))));
 		texturesByName.insert(stringIconMap::value_type(L"clay",new SimpleIcon(L"clay",slotSize*9,slotSize*3,slotSize*(9+1),slotSize*(3+1))));
@@ -388,11 +388,11 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"clockP1",new SimpleIcon(L"clockP1",slotSize*12,slotSize*14,slotSize*(12+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"clockP2",new SimpleIcon(L"clockP2",slotSize*13,slotSize*14,slotSize*(13+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"clockP3",new SimpleIcon(L"clockP3",slotSize*14,slotSize*14,slotSize*(14+1),slotSize*(14+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"clock",L"clock"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"clockP0",L"clock"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"clockP1",L"clock"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"clockP2",L"clock"));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"clockP3",L"clock"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"clock",L"clock"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"clockP0",L"clock"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"clockP1",L"clock"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"clockP2",L"clock"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"clockP3",L"clock"));
 		texturesByName.insert(stringIconMap::value_type(L"bowl",new SimpleIcon(L"bowl",slotSize*7,slotSize*4,slotSize*(7+1),slotSize*(4+1))));
 		texturesByName.insert(stringIconMap::value_type(L"mushroomStew",new SimpleIcon(L"mushroomStew",slotSize*8,slotSize*4,slotSize*(8+1),slotSize*(4+1))));
 		texturesByName.insert(stringIconMap::value_type(L"yellowDust",new SimpleIcon(L"yellowDust",slotSize*9,slotSize*4,slotSize*(9+1),slotSize*(4+1))));
@@ -607,7 +607,7 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"rose",new SimpleIcon(L"rose",slotSize*12,slotSize*0,slotSize*(12+1),slotSize*(0+1))));
 		texturesByName.insert(stringIconMap::value_type(L"flower",new SimpleIcon(L"flower",slotSize*13,slotSize*0,slotSize*(13+1),slotSize*(0+1))));
 		texturesByName.insert(stringIconMap::value_type(L"portal",new SimpleIcon(L"portal",slotSize*14,slotSize*0,slotSize*(14+1),slotSize*(0+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"portal",L"portal"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"portal",L"portal"));
 		texturesByName.insert(stringIconMap::value_type(L"sapling",new SimpleIcon(L"sapling",slotSize*15,slotSize*0,slotSize*(15+1),slotSize*(0+1))));
 		texturesByName.insert(stringIconMap::value_type(L"stonebrick",new SimpleIcon(L"stonebrick",slotSize*0,slotSize*1,slotSize*(0+1),slotSize*(1+1))));
 		texturesByName.insert(stringIconMap::value_type(L"bedrock",new SimpleIcon(L"bedrock",slotSize*1,slotSize*1,slotSize*(1+1),slotSize*(1+1))));
@@ -625,7 +625,7 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"mushroom_brown",new SimpleIcon(L"mushroom_brown",slotSize*13,slotSize*1,slotSize*(13+1),slotSize*(1+1))));
 		texturesByName.insert(stringIconMap::value_type(L"sapling_jungle",new SimpleIcon(L"sapling_jungle",slotSize*14,slotSize*1,slotSize*(14+1),slotSize*(1+1))));
 		texturesByName.insert(stringIconMap::value_type(L"fire_0",new SimpleIcon(L"fire_0",slotSize*15,slotSize*1,slotSize*(15+1),slotSize*(1+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"fire_0",L"fire_0"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"fire_0",L"fire_0"));
 		texturesByName.insert(stringIconMap::value_type(L"oreGold",new SimpleIcon(L"oreGold",slotSize*0,slotSize*2,slotSize*(0+1),slotSize*(2+1))));
 		texturesByName.insert(stringIconMap::value_type(L"oreIron",new SimpleIcon(L"oreIron",slotSize*1,slotSize*2,slotSize*(1+1),slotSize*(2+1))));
 		texturesByName.insert(stringIconMap::value_type(L"oreCoal",new SimpleIcon(L"oreCoal",slotSize*2,slotSize*2,slotSize*(2+1),slotSize*(2+1))));
@@ -642,7 +642,7 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"furnace_side",new SimpleIcon(L"furnace_side",slotSize*13,slotSize*2,slotSize*(13+1),slotSize*(2+1))));
 		texturesByName.insert(stringIconMap::value_type(L"dispenser_front",new SimpleIcon(L"dispenser_front",slotSize*14,slotSize*2,slotSize*(14+1),slotSize*(2+1))));
 		texturesByName.insert(stringIconMap::value_type(L"fire_1",new SimpleIcon(L"fire_1",slotSize*15,slotSize*1,slotSize*(15+1),slotSize*(1+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"fire_1",L"fire_1"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"fire_1",L"fire_1"));
 		texturesByName.insert(stringIconMap::value_type(L"sponge",new SimpleIcon(L"sponge",slotSize*0,slotSize*3,slotSize*(0+1),slotSize*(3+1))));
 		texturesByName.insert(stringIconMap::value_type(L"glass",new SimpleIcon(L"glass",slotSize*1,slotSize*3,slotSize*(1+1),slotSize*(3+1))));
 		texturesByName.insert(stringIconMap::value_type(L"oreDiamond",new SimpleIcon(L"oreDiamond",slotSize*2,slotSize*3,slotSize*(2+1),slotSize*(3+1))));
@@ -803,9 +803,9 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"potatoes_2",new SimpleIcon(L"potatoes_2",slotSize*10,slotSize*12,slotSize*(10+1),slotSize*(12+1))));
 		texturesByName.insert(stringIconMap::value_type(L"potatoes_3",new SimpleIcon(L"potatoes_3",slotSize*12,slotSize*12,slotSize*(12+1),slotSize*(12+1))));
 		texturesByName.insert(stringIconMap::value_type(L"water",new SimpleIcon(L"water",slotSize*13,slotSize*12,slotSize*(13+1),slotSize*(12+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"water",L"water"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"water",L"water"));
 		texturesByName.insert(stringIconMap::value_type(L"water_flow",new SimpleIcon(L"water_flow",slotSize*14,slotSize*12,slotSize*(14+2),slotSize*(12+2))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"water_flow",L"water_flow"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"water_flow",L"water_flow"));
 		texturesByName.insert(stringIconMap::value_type(L"sandstone_bottom",new SimpleIcon(L"sandstone_bottom",slotSize*0,slotSize*13,slotSize*(0+1),slotSize*(13+1))));
 		texturesByName.insert(stringIconMap::value_type(L"cloth_9",new SimpleIcon(L"cloth_9",slotSize*1,slotSize*13,slotSize*(1+1),slotSize*(13+1))));
 		texturesByName.insert(stringIconMap::value_type(L"cloth_1",new SimpleIcon(L"cloth_1",slotSize*2,slotSize*13,slotSize*(2+1),slotSize*(13+1))));
@@ -834,9 +834,9 @@ void PreStitchedTextureMap::loadUVs()
 		texturesByName.insert(stringIconMap::value_type(L"quartzblock_side",new SimpleIcon(L"quartzblock_side",slotSize*11,slotSize*14,slotSize*(11+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"hopper_inside",new SimpleIcon(L"hopper_inside",slotSize*12,slotSize*14,slotSize*(12+1),slotSize*(14+1))));
 		texturesByName.insert(stringIconMap::value_type(L"lava",new SimpleIcon(L"lava",slotSize*13,slotSize*14,slotSize*(13+1),slotSize*(14+1))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"lava",L"lava"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"lava",L"lava"));
 		texturesByName.insert(stringIconMap::value_type(L"lava_flow",new SimpleIcon(L"lava_flow",slotSize*14,slotSize*14,slotSize*(14+2),slotSize*(14+2))));
-		texturesToAnimate.push_back(pair<wstring, wstring>(L"lava_flow",L"lava_flow"));
+		texturesToAnimate.push_back(pair<std::wstring, std::wstring>(L"lava_flow",L"lava_flow"));
 		texturesByName.insert(stringIconMap::value_type(L"destroy_0",new SimpleIcon(L"destroy_0",slotSize*0,slotSize*15,slotSize*(0+1),slotSize*(15+1))));
 		texturesByName.insert(stringIconMap::value_type(L"destroy_1",new SimpleIcon(L"destroy_1",slotSize*1,slotSize*15,slotSize*(1+1),slotSize*(15+1))));
 		texturesByName.insert(stringIconMap::value_type(L"destroy_2",new SimpleIcon(L"destroy_2",slotSize*2,slotSize*15,slotSize*(2+1),slotSize*(15+1))));

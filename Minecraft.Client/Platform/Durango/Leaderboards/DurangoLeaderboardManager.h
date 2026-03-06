@@ -35,12 +35,12 @@ private:
 	unsigned int m_maxRank;
 
 	MXS::XboxLiveContext^ m_xboxLiveContext;
-	wstring m_leaderboardNames[4][eStatsType_MAX];
-	wstring m_socialLeaderboardNames[4][eStatsType_MAX];
-	std::vector<wstring> m_leaderboardStatNames[4][eStatsType_MAX];
+	std::wstring m_leaderboardNames[4][eStatsType_MAX];
+	std::wstring m_socialLeaderboardNames[4][eStatsType_MAX];
+	std::vector<std::wstring> m_leaderboardStatNames[4][eStatsType_MAX];
 
 	// Display names for the current scores
-	std::vector<wstring> m_displayNames;
+	std::vector<std::wstring> m_displayNames;
 	bool m_waitingForProfiles;
 
 	int m_difficulty;
@@ -90,5 +90,5 @@ private:
 
 	EStatsState getState();
 	void setState(EStatsState newState);
-	wstring stateToString(EStatsState eState);
+	std::wstring stateToString(EStatsState eState);
 };

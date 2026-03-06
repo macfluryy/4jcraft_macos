@@ -35,7 +35,7 @@ string DsItemEvent::nameMethods[] = {
 	"itemBought", "itemSmithed", "blockMined", "blockPlaced", "MAX"
 };
 
-DsItemEvent::DsItemEvent(int id, const wstring &name) : Stat(id,name) {}
+DsItemEvent::DsItemEvent(int id, const std::wstring &name) : Stat(id,name) {}
 
 bool DsItemEvent::onLeaderboard(ELeaderboardId leaderboard, eAcquisitionMethod methodId, Param *param)
 {
@@ -203,7 +203,7 @@ byteArray DsItemEvent::createParamBlob(eAcquisitionMethod eMethod, int itemId, i
   // Ds Mob Killed //
  ///////////////////
 
-DsMobKilled::DsMobKilled(int id, const wstring &name) : Stat(id,name) {}
+DsMobKilled::DsMobKilled(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsMobKilled::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -321,7 +321,7 @@ string DsMobInteract::nameInteract[] = {
 	"unknownMobInteraction", "mobBred", "mobTamed", "mobCured", "mobCrafted", "mobSheared"
 };
 
-DsMobInteract::DsMobInteract(int id, const wstring &name) : Stat(id,name) {}
+DsMobInteract::DsMobInteract(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsMobInteract::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -373,7 +373,7 @@ unsigned int DsTravel::CACHE_SIZES[eMethod_MAX] =
 		20*60*5,	//  TIME - GameTicks (20*60*5 ~ 5 mins)
 	};
 
-DsTravel::DsTravel(int id, const wstring &name) : Stat(id,name)
+DsTravel::DsTravel(int id, const std::wstring &name) : Stat(id,name)
 {
 	ZeroMemory(&param_cache, sizeof(unsigned int)*eMethod_MAX*MAX_LOCAL_PLAYERS);
 }
@@ -475,7 +475,7 @@ void DsTravel::write(std::shared_ptr<LocalPlayer> player, eMethod method, int di
   // Ds Item Used //
  //////////////////
 
-DsItemUsed::DsItemUsed(int id, const wstring &name) : Stat(id,name) {}
+DsItemUsed::DsItemUsed(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsItemUsed::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -518,7 +518,7 @@ byteArray DsItemUsed::createParamBlob(int itemId, int aux, int count, int health
   // Ds Achievement //
  ////////////////////
 
-DsAchievement::DsAchievement(int id, const wstring &name) : Stat(id,name) {}
+DsAchievement::DsAchievement(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsAchievement::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -614,7 +614,7 @@ byteArray DsAchievement::createLargeParamBlob(eAward award, int count)
   // Ds Changed Dimension //
  //////////////////////////
 
-DsChangedDimension::DsChangedDimension(int id, const wstring &name) : Stat(id,name) {}
+DsChangedDimension::DsChangedDimension(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsChangedDimension::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -642,7 +642,7 @@ byteArray DsChangedDimension::createParamBlob(int fromDimId, int toDimId)
   // Ds Entered Biome //
  //////////////////////
 
-DsEnteredBiome::DsEnteredBiome(int id, const wstring &name) : Stat(id,name) {}
+DsEnteredBiome::DsEnteredBiome(int id, const std::wstring &name) : Stat(id,name) {}
 
 void DsEnteredBiome::handleParamBlob(std::shared_ptr<LocalPlayer> player, byteArray paramBlob)
 {
@@ -1121,7 +1121,7 @@ LPCWSTR DurangoStats::getUserId(std::shared_ptr<LocalPlayer> player)
 
 LPCWSTR DurangoStats::getUserId(int iPad)
 {
-	static wstring cache = L"";
+	static std::wstring cache = L"";
 	PlayerUID uid = INVALID_XUID;
 	ProfileManager.GetXUID(iPad, &uid, true);
 	cache = uid.toString();

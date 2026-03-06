@@ -392,7 +392,7 @@ std::shared_ptr<ItemInstance> RepairMenu::quickMoveStack(std::shared_ptr<Player>
 	return clicked;
 }
 
-void RepairMenu::setItemName(const wstring &name)
+void RepairMenu::setItemName(const std::wstring &name)
 {
 	this->itemName = name;
 	if (getSlot(RESULT_SLOT)->hasItem())

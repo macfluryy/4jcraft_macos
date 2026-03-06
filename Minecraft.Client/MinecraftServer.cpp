@@ -64,7 +64,7 @@ int MinecraftServer::s_slowQueuePlayerIndex = 0;
 int MinecraftServer::s_slowQueueLastTime = 0;
 bool MinecraftServer::s_slowQueuePacketSent = false;
 
-std::unordered_map<wstring, int> MinecraftServer::ironTimers;
+std::unordered_map<std::wstring, int> MinecraftServer::ironTimers;
 
 MinecraftServer::MinecraftServer()
 {
@@ -77,7 +77,7 @@ MinecraftServer::MinecraftServer()
 	m_bLoaded = false;
 	stopped = false;
     tickCount = 0;
-	wstring progressStatus;
+	std::wstring progressStatus;
     progress = 0;
 	motd = L"";
 
@@ -203,8 +203,8 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 
         __int64 levelNanoTime = System::nanoTime();
 
-        wstring levelName = settings->getString(L"level-name", L"world");
-		wstring levelTypeString;
+        std::wstring levelName = settings->getString(L"level-name", L"world");
+		std::wstring levelTypeString;
 
 		bool gameRuleUseFlatWorld = false;
 		if(app.getLevelGenerationOptions() != NULL)
@@ -244,7 +244,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 		//settings->setProperty(L"max-build-height", maxBuildHeight);
 
 #if 0
-        wstring levelSeedString = settings->getString(L"level-seed", L"");
+        std::wstring levelSeedString = settings->getString(L"level-seed", L"");
         __int64 levelSeed = (new Random())->nextLong();
         if (levelSeedString.length() > 0)
 		{
@@ -378,7 +378,7 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer *mcprogress)
 	DeleteCriticalSection(&m_postProcessCS);
 }
 
-bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData)
+bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData)
 {
 //	4J - TODO - do with new save stuff
 //    if (storageSource->requiresConversion(name))
@@ -750,7 +750,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	return true;
 }
 
-void MinecraftServer::setProgress(const wstring& status, int progress)
+void MinecraftServer::setProgress(const std::wstring& status, int progress)
 {
     progressStatus = status;
     this->progress = progress;
@@ -1347,7 +1347,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 						wchar_t filename[128];
 						swprintf(filename,128,L"%ls%dx%dx%d.sch",initData->name,(initData->endX - initData->startX + 1), (initData->endY - initData->startY + 1), (initData->endZ - initData->startZ + 1));
 
-						File dataFile = File( targetFileDir, wstring(filename) );
+						File dataFile = File( targetFileDir, std::wstring(filename) );
 						if(dataFile.exists()) dataFile._delete();
 						FileOutputStream fos = FileOutputStream(dataFile);
 						DataOutputStream dos = DataOutputStream(&fos);				
@@ -1440,7 +1440,7 @@ void MinecraftServer::broadcastStopSavingPacket()
 
 void MinecraftServer::tick()
 {
-    vector<wstring> toRemove;
+    vector<std::wstring> toRemove;
     for (AUTO_VAR(it, ironTimers.begin()); it != ironTimers.end(); it++ )
 	{
         int t = it->second;
@@ -1561,7 +1561,7 @@ void MinecraftServer::tick()
 //    }
 }
 
-void MinecraftServer::handleConsoleInput(const wstring& msg, ConsoleInputSource *source)
+void MinecraftServer::handleConsoleInput(const std::wstring& msg, ConsoleInputSource *source)
 {
 	consoleInput.push_back(new ConsoleInput(msg, source));
 }
@@ -1599,20 +1599,20 @@ void MinecraftServer::HaltServer(bool bPrimaryPlayerSignedOut)
 	}
 }
 
-File *MinecraftServer::getFile(const wstring& name)
+File *MinecraftServer::getFile(const std::wstring& name)
 {
 	return new File(name);
 }
 
-void MinecraftServer::info(const wstring& string)
+void MinecraftServer::info(const std::wstring& string)
 {
 }
 
-void MinecraftServer::warn(const wstring& string)
+void MinecraftServer::warn(const std::wstring& string)
 {
 }
 
-wstring MinecraftServer::getConsoleName()
+std::wstring MinecraftServer::getConsoleName()
 {
 	return L"CONSOLE";
 }

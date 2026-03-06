@@ -438,7 +438,7 @@ void SoundEngine::XACTNotificationCallback( const XACT_NOTIFICATION* pNotificati
 	}
 }
 
-char *SoundEngine::ConvertSoundPathToName(const wstring& name, bool bConvertSpaces)
+char *SoundEngine::ConvertSoundPathToName(const std::wstring& name, bool bConvertSpaces)
 {
 	static char buf[256];
 	assert(name.length()<256);
@@ -468,7 +468,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 	{
 		return;
 	}
-	wstring name = wchSoundNames[iSound];
+	std::wstring name = wchSoundNames[iSound];
 	//const unsigned char *name=ucSoundNames[iSound];
 
 	char *xboxName = ConvertSoundPathToName(name);
@@ -576,7 +576,7 @@ void SoundEngine::playUI(int iSound, float, float)
 	{
 		return;
 	}
-	wstring name = wchSoundNames[iSound];
+	std::wstring name = wchSoundNames[iSound];
 
 	char *xboxName = (char *)ConvertSoundPathToName(name);
 
@@ -635,7 +635,7 @@ void SoundEngine::playUI(int iSound, float, float)
 	cueInstance->Play();
 }
 
-void SoundEngine::playStreaming(const wstring& name, float x, float y, float z, float vol, float pitch, bool bMusicDelay)
+void SoundEngine::playStreaming(const std::wstring& name, float x, float y, float z, float vol, float pitch, bool bMusicDelay)
 {
 	IXACT3SoundBank *pSoundBank=NULL;
 	
@@ -1065,14 +1065,14 @@ void SoundEngine::tick(std::shared_ptr<Mob> *players, float a)
 	m_pXACT3Engine->DoWork();
 }
 
-void SoundEngine::add(const wstring& name, File *file)
+void SoundEngine::add(const std::wstring& name, File *file)
 {
 }
 
-void SoundEngine::addMusic(const wstring& name, File *file)
+void SoundEngine::addMusic(const std::wstring& name, File *file)
 {
 }
 
-void SoundEngine::addStreaming(const wstring& name, File *file)
+void SoundEngine::addStreaming(const std::wstring& name, File *file)
 {
 }

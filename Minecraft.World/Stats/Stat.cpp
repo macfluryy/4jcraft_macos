@@ -16,12 +16,12 @@ void Stat::_init()
 	awardLocallyOnly = false;
 }
 
-Stat::Stat(int id, const wstring& name, StatFormatter *formatter) : id(id), name(name), formatter(formatter)
+Stat::Stat(int id, const std::wstring& name, StatFormatter *formatter) : id(id), name(name), formatter(formatter)
 {
 	_init();
 }
 
-Stat::Stat(int id, const wstring& name) : id(id), name(name), formatter(defaultFormatter)
+Stat::Stat(int id, const std::wstring& name) : id(id), name(name), formatter(defaultFormatter)
 {
     _init();
 }
@@ -55,17 +55,17 @@ bool Stat::isAchievement()
     return false;
 }
 
-wstring Stat::format(int value)
+std::wstring Stat::format(int value)
 {
     return ((StatFormatter *)formatter)->format(value);
 }
 
-wstring Stat::toString()
+std::wstring Stat::toString()
 {
     return name;
 }
 
-wstring Stat::TimeFormatter::format(int value)
+std::wstring Stat::TimeFormatter::format(int value)
 {
     double seconds = value / 20.0;
     double minutes = seconds / 60.0;
@@ -93,12 +93,12 @@ wstring Stat::TimeFormatter::format(int value)
     return _toString<double>(seconds) + L" s";
 }
 
-wstring Stat::DefaultFormat::format(int value)
+std::wstring Stat::DefaultFormat::format(int value)
 {
 	return NumberFormat::format( value ); //numberFormat->format(value);
 }
 
-wstring Stat::DistanceFormatter::format(int cm)
+std::wstring Stat::DistanceFormatter::format(int cm)
 {
     double meters = cm / 100.0;
     double kilometers = meters / 1000.0;

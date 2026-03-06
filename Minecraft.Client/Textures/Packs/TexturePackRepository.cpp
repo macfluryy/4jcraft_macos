@@ -105,7 +105,7 @@ bool TexturePackRepository::selectSkin(TexturePack *skin)
     return true;
 }
 
-void TexturePackRepository::selectWebSkin(const wstring &url)
+void TexturePackRepository::selectWebSkin(const std::wstring &url)
 {
 	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
@@ -117,7 +117,7 @@ void TexturePackRepository::selectWebSkin(const wstring &url)
 #endif
 }
 
-void TexturePackRepository::downloadWebSkin(const wstring &url, File file)
+void TexturePackRepository::downloadWebSkin(const std::wstring &url, File file)
 {
 	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
@@ -219,7 +219,7 @@ void TexturePackRepository::updateList()
 #endif
 }
 
-wstring TexturePackRepository::getIdOrNull(File file)
+std::wstring TexturePackRepository::getIdOrNull(File file)
 {
 	app.DebugPrintf("TexturePackRepository::getIdOrNull is not implemented\n");
 #if 0
@@ -291,14 +291,14 @@ bool TexturePackRepository::canUseWebSkin()
 	return false;
 }
 
-vector< pair<DWORD,wstring> > *TexturePackRepository::getTexturePackIdNames()
+vector< pair<DWORD,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
 {
-	vector< pair<DWORD,wstring> > *packList = new vector< pair<DWORD,wstring> >();
+	vector< pair<DWORD,std::wstring> > *packList = new vector< pair<DWORD,std::wstring> >();
 
 	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
 	{
 		TexturePack *pack = *it;
-		packList->push_back( pair<DWORD,wstring>(pack->getId(),pack->getName()) );
+		packList->push_back( pair<DWORD,std::wstring>(pack->getId(),pack->getName()) );
 	}
 	return packList;
 }

@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.network.packet.h"
 
-//EntityDamageSource::EntityDamageSource(const wstring &msgId, std::shared_ptr<Entity> entity) : DamageSource(msgId)
+//EntityDamageSource::EntityDamageSource(const std::wstring &msgId, std::shared_ptr<Entity> entity) : DamageSource(msgId)
 EntityDamageSource::EntityDamageSource(ChatPacket::EChatPacketMessage msgId, std::shared_ptr<Entity> entity) : DamageSource(msgId)
 {
 	this->entity = entity;
@@ -15,7 +15,7 @@ std::shared_ptr<Entity> EntityDamageSource::getEntity()
 	return entity;
 }
 
-//wstring EntityDamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
+//std::wstring EntityDamageSource::getLocalizedDeathMessage(std::shared_ptr<Player> player)
 //{
 //	return L"death." + msgId + player->name + entity->getAName();
 //	//return I18n.get("death." + msgId, player.name, entity.getAName());
@@ -23,7 +23,7 @@ std::shared_ptr<Entity> EntityDamageSource::getEntity()
 
 std::shared_ptr<ChatPacket> EntityDamageSource::getDeathMessagePacket(std::shared_ptr<Player> player)
 {
-	wstring additional = L"";
+	std::wstring additional = L"";
 	if(entity->GetType() == eTYPE_SERVERPLAYER)
 	{
 		std::shared_ptr<Player> sourcePlayer = dynamic_pointer_cast<Player>(entity);

@@ -72,5 +72,5 @@ public:
 	virtual int getCatType();
 	virtual void setCatType(int type);
 	virtual bool canSpawn();
-	virtual wstring getAName();
+	virtual std::wstring getAName();
 };

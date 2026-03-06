@@ -20,7 +20,7 @@ public:
 
 private:
 	static const int DOOR_TILE_TEXTURE_COUNT = 4;
-	static const wstring TEXTURES[];
+	static const std::wstring TEXTURES[];
 	int texBase;
 	Icon **icons;
 

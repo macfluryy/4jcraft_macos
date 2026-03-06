@@ -111,7 +111,7 @@ public:
 	virtual void crit(std::shared_ptr<Entity> e);
 	virtual void magicCrit(std::shared_ptr<Entity> e);
     virtual void take(std::shared_ptr<Entity> e, int orgCount);
-    virtual void chat(const wstring& message);
+    virtual void chat(const std::wstring& message);
 	virtual bool isSneaking();
 	//virtual bool isIdle();
     virtual void hurtTo(int newHealth, ETelemetryChallenges damageSource);

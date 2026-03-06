@@ -17,7 +17,7 @@ public:
 protected:
 	virtual void buttonClicked(Button *button);
 private:
-	virtual int parseInt(const wstring& str, int def);
+	virtual int parseInt(const std::wstring& str, int def);
 protected:
 	virtual void keyPressed(wchar_t ch, int eventKey);
     virtual void mouseClicked(int x, int y, int buttonNum);

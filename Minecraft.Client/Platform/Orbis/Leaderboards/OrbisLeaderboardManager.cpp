@@ -1005,8 +1005,8 @@ void OrbisLeaderboardManager::initReadScoreStruct(ReadScore &out, SceNpScoreRank
 	out.m_uid.setOnlineID( rankData.npId.handle, true );
 	out.m_rank = rankData.rank;
 
-	// Convert to wstring and copy name.
-	wstring wstrName = convStringToWstring( string(rankData.npId.handle.data) ).c_str();
+	// Convert to std::wstring and copy name.
+	std::wstring wstrName = convStringToWstring( string(rankData.npId.handle.data) ).c_str();
 	//memcpy(&out.m_name, wstrName.c_str(), XUSER_NAME_SIZE);
 	out.m_name=wstrName;
 }

@@ -9,5 +9,5 @@ private:
 	static const __int32 serialVersionUID = 1L;
     
 public:
-	LevelConflictException(const wstring& msg);
+	LevelConflictException(const std::wstring& msg);
 };

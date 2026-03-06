@@ -55,11 +55,11 @@ protected:
 	float oRun, run;
 	float animStep, animStepO;
 	bool hasHair;
-	//	wstring textureName;
-	int textureIdx;		// 4J changed from wstring textureName
+	//	std::wstring textureName;
+	int textureIdx;		// 4J changed from std::wstring textureName
 	bool allowAlpha;
 	float rotOffs;
-	wstring modelName;
+	std::wstring modelName;
 	float bobStrength;
 	int deathScore;
 	float renderOffset;
@@ -172,7 +172,7 @@ protected:
 
 public:
 	bool canSee(std::shared_ptr<Entity> target);
-	virtual int getTexture();		// 4J - changed from wstring to int
+	virtual int getTexture();		// 4J - changed from std::wstring to int
 	virtual bool isPickable() ;
 	virtual bool isPushable();
 	virtual float getHeadHeight();

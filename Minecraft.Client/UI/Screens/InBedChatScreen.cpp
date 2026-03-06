@@ -28,7 +28,7 @@ void InBedChatScreen::keyPressed(wchar_t ch, int eventKey)
     }
 	else if (eventKey == Keyboard::KEY_RETURN)
 	{
-        wstring msg = trimString(message);
+        std::wstring msg = trimString(message);
         if (msg.length() > 0)
 		{
             minecraft->player->chat(trimString(message));

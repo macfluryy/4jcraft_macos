@@ -54,13 +54,13 @@ void TamableAnimal::readAdditionalSaveData(CompoundTag *tag)
 	Animal::readAdditionalSaveData(tag);
 #ifdef _XBOX_ONE
 	// 4J Stu Added from later Java version to remove owners from save transfer saves. We will probably want this on other platforms in the future
-	wstring owner = L"";
+	std::wstring owner = L"";
 	if(tag->contains(L"OwnerUUID") )
 	{
 		owner = tag->getString(L"OwnerUUID");
 	}
 #else
-	wstring owner = tag->getString(L"Owner");
+	std::wstring owner = tag->getString(L"Owner");
 #endif
 	if (owner.length() > 0)
 	{
@@ -138,12 +138,12 @@ void TamableAnimal::setSitting(bool value)
 	}
 }
 
-wstring TamableAnimal::getOwnerUUID()
+std::wstring TamableAnimal::getOwnerUUID()
 {
 	return entityData->getString(DATA_OWNERUUID_ID);
 }
 
-void TamableAnimal::setOwnerUUID(const wstring &name)
+void TamableAnimal::setOwnerUUID(const std::wstring &name)
 {
 	entityData->set(DATA_OWNERUUID_ID, name);
 }

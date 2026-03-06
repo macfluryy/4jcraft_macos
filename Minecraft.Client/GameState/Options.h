@@ -37,24 +37,24 @@ public:
 	private:
 		const bool _isProgress;
         const bool _isBoolean;
-        const wstring captionId;
+        const std::wstring captionId;
 
 	public:
 		static const Option *getItem(int id);
 
-        Option(const wstring& captionId, bool hasProgress, bool isBoolean);
+        Option(const std::wstring& captionId, bool hasProgress, bool isBoolean);
         bool	isProgress() const;
 		bool	isBoolean() const;
 		int		getId() const;
-		wstring getCaptionId() const;
+		std::wstring getCaptionId() const;
     };
 
 private:
-	static const wstring RENDER_DISTANCE_NAMES[];
-    static const wstring DIFFICULTY_NAMES[];
-    static const wstring GUI_SCALE[];
-    static const wstring FRAMERATE_LIMITS[];
-	static const wstring PARTICLES[];
+	static const std::wstring RENDER_DISTANCE_NAMES[];
+    static const std::wstring DIFFICULTY_NAMES[];
+    static const std::wstring GUI_SCALE[];
+    static const std::wstring FRAMERATE_LIMITS[];
+	static const std::wstring PARTICLES[];
 
 public:
 	float music;
@@ -69,7 +69,7 @@ public:
     bool fancyGraphics;
     bool ambientOcclusion;
 	bool renderClouds;
-    wstring skin;
+    std::wstring skin;
 
     KeyMapping *keyUp;
     KeyMapping *keyLeft;
@@ -99,7 +99,7 @@ public:
     bool hideGui;
     bool thirdPersonView;
     bool renderDebug;
-    wstring lastMpIp;
+    std::wstring lastMpIp;
 
     bool isFlying;
     bool smoothCamera;
@@ -114,17 +114,17 @@ public:
 	void init();	// 4J added
     Options(Minecraft *minecraft, File workingDirectory);
     Options();
-    wstring getKeyDescription(int i);
-    wstring getKeyMessage(int i);
+    std::wstring getKeyDescription(int i);
+    std::wstring getKeyMessage(int i);
     void setKey(int i, int key);
     void set(const Options::Option *item, float value);
     void toggle(const Options::Option *option, int dir);
     float getProgressValue(const Options::Option *item);
     bool getBooleanValue(const Options::Option *item);
-    wstring getMessage(const Options::Option *item);
+    std::wstring getMessage(const Options::Option *item);
     void load();
 private:
-	float readFloat(wstring string);
+	float readFloat(std::wstring string);
 public:
 	void save();
 

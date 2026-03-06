@@ -101,7 +101,7 @@ public:
 	bool hasIcon();
 	EMobEffectIcon getIcon(); // 4J changed return type
 	bool isHarmful();
-	static wstring formatDuration(MobEffectInstance *instance);
+	static std::wstring formatDuration(MobEffectInstance *instance);
 
 protected:
 	MobEffect *setDurationModifier(double durationModifier);

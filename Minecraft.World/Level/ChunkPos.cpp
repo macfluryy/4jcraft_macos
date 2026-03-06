@@ -58,7 +58,7 @@ TilePos ChunkPos::getMiddleBlockPosition(int y)
 	return TilePos(getMiddleBlockX(), y, getMiddleBlockZ());
 }
 
-wstring ChunkPos::toString()
+std::wstring ChunkPos::toString()
 {
     return L"[" + _toString<int>(x) + L", " + _toString<int>(z) + L"]";
 }

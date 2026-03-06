@@ -12,19 +12,19 @@
 
 const wchar_t File::pathSeparator = L'\\';
 #ifdef _XBOX
-const wstring File::pathRoot = L"GAME:"; // Path root after pathSeparator has been removed
+const std::wstring File::pathRoot = L"GAME:"; // Path root after pathSeparator has been removed
 #else
-const wstring File::pathRoot = L""; // Path root after pathSeparator has been removed
+const std::wstring File::pathRoot = L""; // Path root after pathSeparator has been removed
 #endif
 
 //Creates a new File instance from a parent abstract pathname and a child pathname string.
-File::File( const File &parent, const wstring& child )
+File::File( const File &parent, const std::wstring& child )
 {
 	m_abstractPathName = parent.getPath() + pathSeparator + child;
 }
 
 //Creates a new File instance by converting the given pathname string into an abstract pathname.
-File::File( const wstring& pathname ) //: parent( NULL )
+File::File( const std::wstring& pathname ) //: parent( NULL )
 {
 	// #ifndef _CONTENT_PACKAGE
 	// 	char buf[256];
@@ -32,7 +32,7 @@ File::File( const wstring& pathname ) //: parent( NULL )
 	// 	printf("File::File - %s\n",buf);
 	// #endif
 	if( pathname.empty() )
-		m_abstractPathName = wstring( L"" );
+		m_abstractPathName = std::wstring( L"" );
 	else
 		m_abstractPathName = pathname;
 
@@ -42,12 +42,12 @@ File::File( const wstring& pathname ) //: parent( NULL )
 	if(finalPath.size() == 0) finalPath = path;
 	m_abstractPathName = convStringToWstring(finalPath);
 #elif defined(_DURANGO)
-	wstring finalPath = StorageManager.GetMountedPath(m_abstractPathName.c_str());
+	std::wstring finalPath = StorageManager.GetMountedPath(m_abstractPathName.c_str());
 	if(finalPath.size() == 0) finalPath = m_abstractPathName;
 	m_abstractPathName = finalPath;
 #endif
 	/*
-	vector<wstring> path = stringSplit( pathname, pathSeparator );
+	vector<std::wstring> path = stringSplit( pathname, pathSeparator );
 
 	if( path.back().compare( pathRoot ) != 0 )		
 	m_abstractPathName = path.back();
@@ -67,7 +67,7 @@ File::File( const wstring& pathname ) //: parent( NULL )
 	*/
 }
 
-File::File( const wstring& parent, const wstring& child  ) //: m_abstractPathName( child  )
+File::File( const std::wstring& parent, const std::wstring& child  ) //: m_abstractPathName( child  )
 {
 	m_abstractPathName = pathRoot + pathSeparator + parent + pathSeparator + child;
 	//this->parent = new File( parent );
@@ -75,7 +75,7 @@ File::File( const wstring& parent, const wstring& child  ) //: m_abstractPathNam
 
 //Creates a new File instance by converting the given path vector into an abstract pathname.
 /*
-File::File( vector<wstring> *path ) : parent( NULL )
+File::File( vector<std::wstring> *path ) : parent( NULL )
 {
 m_abstractPathName = path->back();
 path->pop_back();
@@ -157,9 +157,9 @@ bool File::mkdir() const
 //
 bool File::mkdirs() const
 {
-	vector<wstring> path = stringSplit( m_abstractPathName, pathSeparator );
+	vector<std::wstring> path = stringSplit( m_abstractPathName, pathSeparator );
 
-	wstring pathToHere = L"";
+	std::wstring pathToHere = L"";
 	AUTO_VAR(itEnd, path.end());
 	for( AUTO_VAR(it, path.begin()); it != itEnd; it++ )
 	{
@@ -729,14 +729,14 @@ __int64 File::lastModified()
 #endif
 }
 
-const wstring File::getPath() const
+const std::wstring File::getPath() const
 {
 	/*
-	wstring path;
+	std::wstring path;
 	if ( parent != NULL)
 	path = parent->getPath();
 	else
-	path = wstring(pathRoot);
+	path = std::wstring(pathRoot);
 
 	path.push_back( pathSeparator );
 	path.append(m_abstractPathName);
@@ -744,7 +744,7 @@ const wstring File::getPath() const
 	return m_abstractPathName;
 }
 
-wstring File::getName() const
+std::wstring File::getName() const
 {
 	unsigned int sep = (unsigned int )(m_abstractPathName.find_last_of( this->pathSeparator ));
 	return m_abstractPathName.substr( sep + 1, m_abstractPathName.length() );

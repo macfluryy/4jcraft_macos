@@ -20,7 +20,7 @@ ServerLevelListener::ServerLevelListener(MinecraftServer *server, ServerLevel *l
 
 // 4J removed - 
 /*
-void ServerLevelListener::addParticle(const wstring& name, double x, double y, double z, double xa, double ya, double za)
+void ServerLevelListener::addParticle(const std::wstring& name, double x, double y, double z, double xa, double ya, double za)
 {
 }
 */
@@ -98,7 +98,7 @@ void ServerLevelListener::tileLightChanged(int x, int y, int z)
 {
 }
 
-void ServerLevelListener::playStreamingMusic(const wstring& name, int x, int y, int z)
+void ServerLevelListener::playStreamingMusic(const std::wstring& name, int x, int y, int z)
 {
 }
 

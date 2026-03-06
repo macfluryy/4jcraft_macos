@@ -45,7 +45,7 @@ void RespawnPacket::read(DataInputStream *dis) //throws IOException
 	dimension = dis->readByte();
 	playerGameType = GameType::byId(dis->readByte());
 	mapHeight = dis->readShort();
-	wstring typeName = readUtf(dis, 16);
+	std::wstring typeName = readUtf(dis, 16);
 	m_pLevelType = LevelType::getLevelType(typeName);
 	if (m_pLevelType == NULL) 
 	{

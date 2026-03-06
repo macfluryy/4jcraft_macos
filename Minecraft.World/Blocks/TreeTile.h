@@ -25,7 +25,7 @@ public:
 
 	static const unsigned int TREE_NAMES[TREE_NAMES_LENGTH];
 
-	static const wstring TREE_TEXTURES[];
+	static const std::wstring TREE_TEXTURES[];
 
 private:
 	Icon **icons;

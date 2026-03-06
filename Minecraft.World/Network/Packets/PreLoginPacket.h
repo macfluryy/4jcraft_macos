@@ -21,11 +21,11 @@ public:
 	DWORD m_texturePackId;
 	SHORT m_netcodeVersion;
 
-	wstring loginKey;
+	std::wstring loginKey;
 
 	PreLoginPacket();
-	PreLoginPacket(wstring userName);
-	PreLoginPacket(wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId);
+	PreLoginPacket(std::wstring userName);
+	PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId);
 	~PreLoginPacket();
 
 	virtual void read(DataInputStream *dis);

@@ -39,7 +39,7 @@ public:
 		int methodId, itemId, itemAux, itemCount;
 	} Param;
 
-	DsItemEvent(int id, const wstring &name);
+	DsItemEvent(int id, const std::wstring &name);
 
 	bool onLeaderboard(ELeaderboardId leaderboard, eAcquisitionMethod methodId, Param *param);
 	int mergeIds(int itemId);
@@ -56,7 +56,7 @@ public:
 
 	static const int SPIDER_JOCKEY_ID = 49;
 
-	DsMobKilled(int id, const wstring &name);
+	DsMobKilled(int id, const std::wstring &name);
 
 	typedef struct { bool isRanged; int mobType, weaponId, distance, damage; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray param);
@@ -79,7 +79,7 @@ public:
 		eInteract_Sheared
 	};
 
-	DsMobInteract(int id, const wstring &name);
+	DsMobInteract(int id, const std::wstring &name);
 
 	typedef struct { int interactionType, mobId; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray param);
@@ -107,7 +107,7 @@ public:
 
 	static unsigned int CACHE_SIZES[eMethod_MAX];
 
-	DsTravel(int id, const wstring &name);
+	DsTravel(int id, const std::wstring &name);
 
 	typedef struct { eMethod method; int distance; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray paramBlob);
@@ -124,7 +124,7 @@ protected:
 class DsItemUsed : public Stat
 {
 public:
-	DsItemUsed(int id, const wstring &name);
+	DsItemUsed(int id, const std::wstring &name);
 	typedef struct { int itemId, aux, count, health, hunger; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray paramBlob);
 	static byteArray createParamBlob(int itemId, int aux, int count, int health, int hunger);
@@ -133,7 +133,7 @@ public:
 class DsAchievement : public Stat
 {
 public:
-	DsAchievement(int id, const wstring &name);
+	DsAchievement(int id, const std::wstring &name);
 	
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray paramBlob);
 
@@ -147,7 +147,7 @@ public:
 class DsChangedDimension : public Stat
 {
 public:
-	DsChangedDimension(int id, const wstring &name);
+	DsChangedDimension(int id, const std::wstring &name);
 	typedef struct { int fromDimId, toDimId; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray paramBlob);
 	static byteArray createParamBlob(int fromDimId, int toDimId);
@@ -156,7 +156,7 @@ public:
 class DsEnteredBiome : public Stat
 {
 public:
-	DsEnteredBiome(int id, const wstring &name);
+	DsEnteredBiome(int id, const std::wstring &name);
 	typedef struct { int biomeId; } Param;
 	virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr, byteArray paramBlob);
 	static byteArray createParamBlob(int biomeId);

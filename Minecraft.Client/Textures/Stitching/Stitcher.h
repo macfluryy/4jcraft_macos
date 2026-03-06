@@ -28,13 +28,13 @@ private:
 
 	Texture *stitchedTexture;
 
-	wstring name;
+	std::wstring name;
 
-	void _init(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+	void _init(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
 
 public:
-	Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo);
-	Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo);
+	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
 
 	int getWidth();
 	int getHeight();

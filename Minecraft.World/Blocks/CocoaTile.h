@@ -6,7 +6,7 @@ class CocoaTile : public DirectionalTile
 {
 public:	
 	static const int COCOA_TEXTURES_LENGTH = 3;
-	static const wstring TEXTURE_AGES[];
+	static const std::wstring TEXTURE_AGES[];
 
 private:
 	Icon **icons;

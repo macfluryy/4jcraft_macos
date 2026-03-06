@@ -8,19 +8,19 @@ private:
 	bool bUILoaded;
 
 public:
-	FolderTexturePack(DWORD id, const wstring &name, File *folder, TexturePack *fallback);
+	FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback);
 
 protected:
 	//@Override
-	InputStream *getResourceImplementation(const wstring &name); //throws IOException
+	InputStream *getResourceImplementation(const std::wstring &name); //throws IOException
 
 public:
 	//@Override
-	bool hasFile(const wstring &name);
+	bool hasFile(const std::wstring &name);
 	bool isTerrainUpdateCompatible();
 
 	// 4J Added
-	virtual wstring getPath(bool bTitleUpdateTexture = false);
+	virtual std::wstring getPath(bool bTitleUpdateTexture = false);
 	virtual void loadUI();
 	virtual void unloadUI();
 };

@@ -12,7 +12,7 @@
 #include "DirectoryLevelStorage.h"
 #include "../../IO/Files/ConsoleSaveFileIO.h"
 
-const wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
+const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 
 _MapDataMappings::_MapDataMappings()
 {
@@ -159,8 +159,8 @@ void DirectoryLevelStorage::PlayerMappings::readMappings(DataInputStream *dis)
 }
 #endif
 
-DirectoryLevelStorage::DirectoryLevelStorage(ConsoleSaveFile *saveFile, const File dir, const wstring& levelId, bool createPlayerDir) : sessionId( System::currentTimeMillis() ),
-	dir( L"" ), playerDir( sc_szPlayerDir ), dataDir( wstring(L"data/") ), levelId(levelId)
+DirectoryLevelStorage::DirectoryLevelStorage(ConsoleSaveFile *saveFile, const File dir, const std::wstring& levelId, bool createPlayerDir) : sessionId( System::currentTimeMillis() ),
+	dir( L"" ), playerDir( sc_szPlayerDir ), dataDir( std::wstring(L"data/") ), levelId(levelId)
 {
 	m_saveFile = saveFile;
 	m_bHasLoadedMapDataMappings = false;
@@ -188,7 +188,7 @@ void DirectoryLevelStorage::initiateSession()
 {
 	// 4J Jev, removed try/catch.
 
-	File dataFile = File( dir, wstring(L"session.lock") );
+	File dataFile = File( dir, std::wstring(L"session.lock") );
 	FileOutputStream fos = FileOutputStream(dataFile);
 	DataOutputStream dos = DataOutputStream(&fos);
 	dos.writeLong(sessionId);
@@ -206,7 +206,7 @@ void DirectoryLevelStorage::checkSession()
 	// 4J-PB - Not in the Xbox game
 
 	/*
-	File dataFile = File( dir, wstring(L"session.lock"));
+	File dataFile = File( dir, std::wstring(L"session.lock"));
 	FileInputStream fis = FileInputStream(dataFile);
 	DataInputStream dis = DataInputStream(&fis);
 	dis.close();
@@ -336,7 +336,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 
 	// 4J Jev, removed try/catch
 
-	ConsoleSavePath dataFile = ConsoleSavePath( wstring( L"level.dat" ) );
+	ConsoleSavePath dataFile = ConsoleSavePath( std::wstring( L"level.dat" ) );
 
 	if ( m_saveFile->doesFileExist( dataFile ) ) 
 	{
@@ -360,7 +360,7 @@ void DirectoryLevelStorage::saveLevelData(LevelData *levelData, vector<std::shar
 	CompoundTag *root = new CompoundTag();
 	root->put(L"Data", dataTag);
 
-	ConsoleSavePath currentFile = ConsoleSavePath( wstring( L"level.dat" ) );
+	ConsoleSavePath currentFile = ConsoleSavePath( std::wstring( L"level.dat" ) );
 
 	ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, currentFile );
 	NbtIo::writeCompressed(root, &fos);
@@ -377,7 +377,7 @@ void DirectoryLevelStorage::saveLevelData(LevelData *levelData)
 	CompoundTag *root = new CompoundTag();
 	root->put(L"Data", dataTag);
 
-	ConsoleSavePath currentFile = ConsoleSavePath( wstring( L"level.dat" ) );
+	ConsoleSavePath currentFile = ConsoleSavePath( std::wstring( L"level.dat" ) );
 
 	ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, currentFile );
 	NbtIo::writeCompressed(root, &fos);
@@ -493,7 +493,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles()
 			for(unsigned int i = 0; i < playerFiles->size(); ++i )
 			{
 				FileEntry *file = playerFiles->at(i);
-				wstring xuidStr = replaceAll( replaceAll(file->data.filename,playerDir.getName(),L""),L".dat",L"");
+				std::wstring xuidStr = replaceAll( replaceAll(file->data.filename,playerDir.getName(),L""),L".dat",L"");
 #if defined(__PS3__) || defined(__ORBIS__) || defined(_DURANGO)
 				PlayerUID xuid(xuidStr);
 #else
@@ -512,7 +512,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles()
 				for(unsigned int i = MAX_PLAYER_DATA_SAVES; i < playerFiles->size(); ++i )
 			{
 					FileEntry *file = playerFiles->at(i);
-					wstring xuidStr = replaceAll( replaceAll(file->data.filename,playerDir.getName(),L""),L".dat",L"");
+					std::wstring xuidStr = replaceAll( replaceAll(file->data.filename,playerDir.getName(),L""),L".dat",L"");
 #if defined(__PS3__) || defined(__ORBIS__) || defined(_DURANGO)
 				PlayerUID xuid(xuidStr);
 #else
@@ -536,12 +536,12 @@ void DirectoryLevelStorage::closeAll()
 {
 }
 
-ConsoleSavePath DirectoryLevelStorage::getDataFile(const wstring& id)
+ConsoleSavePath DirectoryLevelStorage::getDataFile(const std::wstring& id)
 {
 	return ConsoleSavePath( dataDir.getName() + id + L".dat" );
 }
 
-wstring DirectoryLevelStorage::getLevelId()
+std::wstring DirectoryLevelStorage::getLevelId()
 {
 	return levelId;
 }
@@ -654,7 +654,7 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension, int 
 		m_saveableMapDataMappings.setMapping(mapId, xuid, dimension);
 
 		// If we had an old map file for a mapping that is no longer valid, delete it
-		std::wstring id = wstring( L"map_" ) + _toString(mapId);
+		std::wstring id = std::wstring( L"map_" ) + _toString(mapId);
 		ConsoleSavePath file = getDataFile(id);
 
 		if(m_saveFile->doesFileExist(file) )
@@ -760,7 +760,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid)
 	{
 		for(AUTO_VAR(itMap, it->second.m_mappings.begin()); itMap != it->second.m_mappings.end(); ++itMap)
 		{
-			std::wstring id = wstring( L"map_" ) + _toString(itMap->second);
+			std::wstring id = std::wstring( L"map_" ) + _toString(itMap->second);
 			ConsoleSavePath file = getDataFile(id);
 
 			if(m_saveFile->doesFileExist(file) )
@@ -784,7 +784,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid)
 		{
 			changed = true;
 
-			std::wstring id = wstring( L"map_" ) + _toString(i);
+			std::wstring id = std::wstring( L"map_" ) + _toString(i);
 			ConsoleSavePath file = getDataFile(id);
 
 			if(m_saveFile->doesFileExist(file) )
@@ -821,7 +821,7 @@ void DirectoryLevelStorage::saveAllCachedData()
 
 	for(AUTO_VAR(it, m_mapFilesToDelete.begin()); it != m_mapFilesToDelete.end(); ++it)
 	{
-		std::wstring id = wstring( L"map_" ) + _toString(*it);
+		std::wstring id = std::wstring( L"map_" ) + _toString(*it);
 		ConsoleSavePath file = getDataFile(id);
 		if(m_saveFile->doesFileExist(file) )
 		{

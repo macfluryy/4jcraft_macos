@@ -308,7 +308,7 @@ bool Wolf::doHurtTarget(std::shared_ptr<Entity> target)
 	return target->hurt(DamageSource::mobAttack(dynamic_pointer_cast<Mob>(shared_from_this())), damage);
 }
 
-void Wolf::tame(const wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool bSetSitting) 
+void Wolf::tame(const std::wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool bSetSitting) 
 {
 	setTame(true);
 	setPath(NULL);

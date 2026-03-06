@@ -22,6 +22,6 @@ public:
     void saveLevelData(LevelData *levelData);
     PlayerIO *getPlayerIO();
     void closeAll();
-    ConsoleSavePath getDataFile(const wstring& id);
-	wstring getLevelId();
+    ConsoleSavePath getDataFile(const std::wstring& id);
+	std::wstring getLevelId();
 };

@@ -20,7 +20,7 @@
 
 Random *PendingConnection::random = new Random();
 
-PendingConnection::PendingConnection(MinecraftServer *server, Socket *socket, const wstring& id)
+PendingConnection::PendingConnection(MinecraftServer *server, Socket *socket, const std::wstring& id)
 {
 	// 4J - added initialisers
 	done = false;
@@ -257,7 +257,7 @@ void PendingConnection::send(std::shared_ptr<Packet> packet)
 	connection->send(packet);
 }
 
-wstring PendingConnection::getName()
+std::wstring PendingConnection::getName()
 {
 	return L"Unimplemented";
 //        if (name != null) return name + " [" + connection.getRemoteAddress().toString() + "]";

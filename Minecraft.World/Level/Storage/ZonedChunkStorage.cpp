@@ -29,7 +29,7 @@ ZonedChunkStorage::ZonedChunkStorage(File dir)
 	tickCount = 0;
 
 	//this->dir = dir;
-	this->dir = File( dir, wstring( L"data" ) );
+	this->dir = File( dir, std::wstring( L"data" ) );
 	if( !this->dir.exists() ) this->dir.mkdirs();
 }
 
@@ -58,7 +58,7 @@ ZoneFile *ZonedChunkStorage::getZoneFile(int x, int z, bool create)
 		wchar_t zRadix36[64];
 		_itow(x,xRadix36,36);
 		_itow(z,zRadix36,36);
-		File file = File(dir, wstring( L"zone_") +  _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+		File file = File(dir, std::wstring( L"zone_") +  _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
 
 		if ( !file.exists() )
 		{
@@ -67,7 +67,7 @@ ZoneFile *ZonedChunkStorage::getZoneFile(int x, int z, bool create)
 			CloseHandle(ch);
         }
 
-		File entityFile = File(dir, wstring( L"entities_") + _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+		File entityFile = File(dir, std::wstring( L"entities_") + _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
 
         zoneFiles[key] = new ZoneFile(key, file, entityFile);
     }

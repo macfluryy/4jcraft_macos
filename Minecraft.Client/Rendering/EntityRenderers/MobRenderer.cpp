@@ -330,7 +330,7 @@ void MobRenderer::renderName(std::shared_ptr<Mob> mob, double x, double y, doubl
 }
 
 // 4J Added parameter for color here so that we can colour players names
-void MobRenderer::renderNameTag(std::shared_ptr<Mob> mob, const wstring& OriginalName, double x, double y, double z, int maxDist, int color /*= 0xffffffff*/)
+void MobRenderer::renderNameTag(std::shared_ptr<Mob> mob, const std::wstring& OriginalName, double x, double y, double z, int maxDist, int color /*= 0xffffffff*/)
 {
 
 	if ( app.GetGameSettings(eGameSetting_DisplayHUD)==0 )
@@ -399,7 +399,7 @@ void MobRenderer::renderNameTag(std::shared_ptr<Mob> mob, const wstring& Origina
 	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(mob);
 	if (player != NULL && app.isXuidDeadmau5( player->getXuid() ) ) offs = -10;
 
-	wstring playerName;
+	std::wstring playerName;
 	WCHAR wchName[2];
 
 #if defined(__PS3__) || defined(__ORBIS__)

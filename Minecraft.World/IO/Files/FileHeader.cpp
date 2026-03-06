@@ -24,7 +24,7 @@ FileHeader::~FileHeader()
 	}
 }
 
-FileEntry *FileHeader::AddFile( const wstring &name, unsigned int length /* = 0 */ )
+FileEntry *FileHeader::AddFile( const std::wstring &name, unsigned int length /* = 0 */ )
 {
 	assert( name.length() < 64 );
 	
@@ -350,7 +350,7 @@ void FileHeader::AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite
 	}
 }
 
-bool FileHeader::fileExists( const wstring &name )
+bool FileHeader::fileExists( const std::wstring &name )
 {
 	for( unsigned int i = 0; i < fileTable.size(); ++i )
 	{
@@ -363,7 +363,7 @@ bool FileHeader::fileExists( const wstring &name )
 	return false;
 }
 
-vector<FileEntry *> *FileHeader::getFilesWithPrefix(const wstring &prefix)
+vector<FileEntry *> *FileHeader::getFilesWithPrefix(const std::wstring &prefix)
 {
 	vector<FileEntry *> *files = NULL;
 
@@ -428,9 +428,9 @@ static wchar_t* findFilenameStart(wchar_t* str)
 	return filenameStart;
 }
 
-wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
+std::wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 {
-	wstring retVal = L"";
+	std::wstring retVal = L"";
 	vector<FileEntry*>* pFiles = getDatFilesWithOnlineID(pUID);
 	if(!pFiles)
 	{
@@ -455,7 +455,7 @@ wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 	return retVal;
 }
 
-wstring FileHeader::getPlayerDataFilenameForSave(const PlayerUID& pUID)
+std::wstring FileHeader::getPlayerDataFilenameForSave(const PlayerUID& pUID)
 {
 	// check if we're online first
 	if(pUID.isSignedIntoPSN() == false)
@@ -466,14 +466,14 @@ wstring FileHeader::getPlayerDataFilenameForSave(const PlayerUID& pUID)
 		{
 			// we've found a previous save, use the filename from it, as it might have the online part too
 // 			assert(pFiles->size() == 1);
-			wstring retVal = pFiles->at(0)->data.filename;
+			std::wstring retVal = pFiles->at(0)->data.filename;
 			delete pFiles;
 			return retVal;
 		}
 	}
 
 	// we're either online, or we can't find a previous save, so use the standard filename
-	wstring retVal = pUID.toString() + L".dat";
+	std::wstring retVal = pUID.toString() + L".dat";
 	return retVal;
 }
 

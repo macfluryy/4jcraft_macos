@@ -7,8 +7,8 @@ class ByteArrayTag : public Tag
 public:
 	byteArray data;
 	
-	ByteArrayTag(const wstring &name) : Tag(name) { }
-	ByteArrayTag(const wstring &name, byteArray data) : Tag(name) {this->data = data; }			// 4J - added ownData param
+	ByteArrayTag(const std::wstring &name) : Tag(name) { }
+	ByteArrayTag(const std::wstring &name, byteArray data) : Tag(name) {this->data = data; }			// 4J - added ownData param
 	
 	void write(DataOutput *dos)
 	{
@@ -27,11 +27,11 @@ public:
 
 	uint8_t getId() { return TAG_Byte_Array; }
 
-	wstring toString()
+	std::wstring toString()
 	{
 		static wchar_t buf[32];
 		swprintf(buf, 32, L"[%d bytes]",data.length);
-		return wstring( buf );
+		return std::wstring( buf );
 	}
 
 	bool equals(Tag *obj)

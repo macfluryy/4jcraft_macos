@@ -9,10 +9,10 @@ public:
 	int x, y, z;
 	bool m_bVerified;
 	bool m_bCensored;
-    wstring lines[4];
+    std::wstring lines[4];
 
 	SignUpdatePacket();
-	SignUpdatePacket(int x, int y, int z, bool bVerified, bool bCensored, wstring lines[]);
+	SignUpdatePacket(int x, int y, int z, bool bVerified, bool bCensored, std::wstring lines[]);
 	bool GetVerified() {return m_bVerified;}
 	bool GetCensored() {return m_bCensored;}
 	virtual void read(DataInputStream *dis);

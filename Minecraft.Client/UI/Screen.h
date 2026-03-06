@@ -26,8 +26,8 @@ public:
 protected:
 	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
 public:
-	static wstring getClipboard();
-    static void setClipboard(const wstring& str);
+	static std::wstring getClipboard();
+    static void setClipboard(const std::wstring& str);
 private:
 	Button *clickedButton;
 

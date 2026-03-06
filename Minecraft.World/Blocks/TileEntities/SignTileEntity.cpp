@@ -86,7 +86,7 @@ void SignTileEntity::load(CompoundTag *tag)
 
 std::shared_ptr<Packet> SignTileEntity::getUpdatePacket()
 {
-	wstring copy[MAX_SIGN_LINES];
+	std::wstring copy[MAX_SIGN_LINES];
 	for (int i = 0; i < MAX_SIGN_LINES; i++) 
 	{
 		copy[i] = m_wsmessages[i];
@@ -149,7 +149,7 @@ void SignTileEntity::setChanged()
 }
 
 
-void SignTileEntity::SetMessage(int iIndex,wstring &wsText) 
+void SignTileEntity::SetMessage(int iIndex,std::wstring &wsText) 
 { 
 	m_wsmessages[iIndex]=wsText;
 

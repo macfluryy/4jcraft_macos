@@ -462,7 +462,7 @@ float Boat::getShadowHeightOffs()
 	return 0;
 }
 
-wstring Boat::getName()
+std::wstring Boat::getName()
 {
 	return L"Boat";
 }

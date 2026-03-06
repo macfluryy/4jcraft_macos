@@ -11,7 +11,7 @@ const int TallGrass_SPU::DEAD_SHRUB = 0;
 const int TallGrass_SPU::TALL_GRASS = 1;
 const int TallGrass_SPU::FERN = 2;
 
-// const wstring TallGrass::TEXTURE_NAMES[] = {L"deadbush", L"tallgrass", L"fern"};
+// const std::wstring TallGrass::TEXTURE_NAMES[] = {L"deadbush", L"tallgrass", L"fern"};
 
 
 Icon_SPU *TallGrass_SPU::getTexture(int face, int data)

@@ -9,5 +9,5 @@ private:
 public:
 	PerformanceTimer();
 	void Reset();
-	void PrintElapsedTime(const wstring &description);
+	void PrintElapsedTime(const std::wstring &description);
 };

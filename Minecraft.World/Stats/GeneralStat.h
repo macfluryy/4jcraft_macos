@@ -6,7 +6,7 @@ using namespace std;
 class GeneralStat : public Stat 
 {
 public:
-	GeneralStat(int id, const wstring& name, StatFormatter *formatter);
-	GeneralStat(int id, const wstring& name);
+	GeneralStat(int id, const std::wstring& name, StatFormatter *formatter);
+	GeneralStat(int id, const std::wstring& name);
 	Stat *postConstruct();
 };

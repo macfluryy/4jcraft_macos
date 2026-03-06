@@ -6,12 +6,12 @@ class HugeMushroomTile : public Tile
 {
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURE_STEM;
-	static const wstring TEXTURE_INSIDE;
+	static const std::wstring TEXTURE_STEM;
+	static const std::wstring TEXTURE_INSIDE;
 
 private:
 	static const int HUGE_MUSHROOM_TEXTURE_COUNT = 2;
-	static const wstring TEXTURE_TYPE[];
+	static const std::wstring TEXTURE_TYPE[];
 	int type;
 	Icon **icons;
 	Icon *iconStem;

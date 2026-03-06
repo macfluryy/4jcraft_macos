@@ -1,7 +1,7 @@
 #include "../Build/stdafx.h"
 #include "MemTexture.h"
 
-MemTexture::MemTexture(const wstring& _url, PBYTE pbData,DWORD dwBytes, MemTextureProcessor *processor)
+MemTexture::MemTexture(const std::wstring& _url, PBYTE pbData,DWORD dwBytes, MemTextureProcessor *processor)
 {
 	// 4J - added
     count = 1;

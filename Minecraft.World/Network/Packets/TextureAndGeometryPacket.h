@@ -10,7 +10,7 @@ class DLCSkinFile;
 class TextureAndGeometryPacket : public Packet, public enable_shared_from_this<TextureAndGeometryPacket>
 {
 public:
-	wstring textureName;
+	std::wstring textureName;
 	DWORD dwSkinID;
 	PBYTE pbData;
 	DWORD dwTextureBytes;
@@ -20,9 +20,9 @@ public:
 
 	TextureAndGeometryPacket();
 	~TextureAndGeometryPacket();
-	TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes); 
-	TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile); 
-	TextureAndGeometryPacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes, vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask); 
+	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes); 
+	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile); 
+	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask); 
 
 	virtual void handle(PacketListener *listener);
 	virtual void read(DataInputStream *dis);

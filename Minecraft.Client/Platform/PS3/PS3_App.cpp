@@ -105,7 +105,7 @@ bool CConsoleMinecraftApp::IsAmericanSKU()
 
 SONYDLC *CConsoleMinecraftApp::GetSONYDLCInfo(char *pchTitle)
 {
-	wstring wstrTemp=convStringToWstring(pchTitle);
+	std::wstring wstrTemp=convStringToWstring(pchTitle);
 	SONYDLC *pTemp=m_SONYDLCMap.at(wstrTemp);
 
 	return pTemp;
@@ -174,7 +174,7 @@ BOOL CConsoleMinecraftApp::ReadProductCodes()
 
 			// push this into a vector
 			
-			wstring wstrTemp=convStringToWstring(chDLCTitle);
+			std::wstring wstrTemp=convStringToWstring(chDLCTitle);
 			m_SONYDLCMap[wstrTemp]=pDLCInfo;
 		}
 		CloseHandle(file);
@@ -466,7 +466,7 @@ void CConsoleMinecraftApp::FreeLocalTMSFiles(eTMSFileType eType)
 
 }
 
-LoadSaveDataThreadParam* LoadSaveFromDisk(const wstring& pathName)
+LoadSaveDataThreadParam* LoadSaveFromDisk(const std::wstring& pathName)
 {	
 	File saveFile(pathName);
 	__int64 fileSize = saveFile.length();
@@ -501,7 +501,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 
 	////////////////////////////////////////////////////////////////////////////////////////////// From CScene_MultiGameCreate::CreateGame
 
-	app.ClearTerrainFeaturePosition();	wstring wWorldName = L"TestWorld";
+	app.ClearTerrainFeaturePosition();	std::wstring wWorldName = L"TestWorld";
 
 	StorageManager.ResetSaveData();
 	StorageManager.SetSaveTitle(wWorldName.c_str());
@@ -519,7 +519,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 	NetworkGameInitData *param = new NetworkGameInitData();
 	param->seed = seedValue;
 #ifdef SAVE_GAME_TO_LOAD
-	param->saveData =  LoadSaveFromDisk(wstring(SAVE_GAME_TO_LOAD));
+	param->saveData =  LoadSaveFromDisk(std::wstring(SAVE_GAME_TO_LOAD));
 #else
  	param->saveData =  NULL;
 #endif

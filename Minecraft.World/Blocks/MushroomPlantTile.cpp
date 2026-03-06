@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "MushroomPlantTile.h"
 
-Mushroom::Mushroom(int id, const wstring &texture) : Bush(id)
+Mushroom::Mushroom(int id, const std::wstring &texture) : Bush(id)
 {
     this->updateDefaultShape();
     this->setTicking(true);

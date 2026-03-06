@@ -7,13 +7,13 @@ class UpdateGameRuleProgressPacket : public Packet, public enable_shared_from_th
 {
 public:
 	ConsoleGameRules::EGameRuleType m_definitionType;
-	wstring m_messageId;
+	std::wstring m_messageId;
 	int m_icon, m_auxValue;
 	int m_dataTag;
 	byteArray m_data;
 
 	UpdateGameRuleProgressPacket();
-	UpdateGameRuleProgressPacket(ConsoleGameRules::EGameRuleType definitionType, const wstring &messageId, int icon, int auxValue, int dataTag, void *data, int dataLength);
+	UpdateGameRuleProgressPacket(ConsoleGameRules::EGameRuleType definitionType, const std::wstring &messageId, int icon, int auxValue, int dataTag, void *data, int dataLength);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

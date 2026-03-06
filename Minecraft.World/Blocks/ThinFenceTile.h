@@ -5,13 +5,13 @@
 class ThinFenceTile : public Tile
 {
 private:
-	wstring edgeTexture;
+	std::wstring edgeTexture;
 	bool dropsResources;
-	wstring texture;
+	std::wstring texture;
 	Icon *iconSide;
 
 public:
-	ThinFenceTile(int id, const wstring &tex, const wstring &edgeTex, Material *material, bool dropsResources);
+	ThinFenceTile(int id, const std::wstring &tex, const std::wstring &edgeTex, Material *material, bool dropsResources);
 	virtual int getResource(int data, Random *random, int playerBonusLevel); 
 	virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();

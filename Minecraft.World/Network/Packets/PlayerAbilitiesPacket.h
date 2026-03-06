@@ -28,7 +28,7 @@ public:
 	void write(DataOutputStream *dos);
 	void handle(PacketListener *listener);
 	int getEstimatedSize();
-	//wstring getDebugInfo();
+	//std::wstring getDebugInfo();
 	bool isInvulnerable();
 	void setInvulnerable(bool invulnerable);
 	bool isFlying();

@@ -32,8 +32,8 @@ public:
     virtual bool save(bool force, ProgressListener *progressListener);
     virtual bool tick();
     virtual bool shouldSave();
-    virtual wstring gatherStats();
+    virtual std::wstring gatherStats();
 
 	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-    virtual TilePos *findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z);
+    virtual TilePos *findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z);
 };

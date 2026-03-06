@@ -8,7 +8,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
 
-ConnectScreen::ConnectScreen(Minecraft *minecraft, const wstring& ip, int port)
+ConnectScreen::ConnectScreen(Minecraft *minecraft, const std::wstring& ip, int port)
 {
 	aborted = false;
 //    System.out.println("Connecting to " + ip + ", " + port);

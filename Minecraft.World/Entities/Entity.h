@@ -112,8 +112,8 @@ private:
 	bool firstTick;
 
 public:
-	wstring customTextureUrl;
-	wstring customTextureUrl2;
+	std::wstring customTextureUrl;
+	std::wstring customTextureUrl2;
 
 protected:
 	bool fireImmune;
@@ -265,14 +265,14 @@ public:
 	virtual void awardKillScore(std::shared_ptr<Entity> victim, int score);
 	virtual bool shouldRender(Vec3 *c);
 	virtual bool shouldRenderAtSqrDistance(double distance);
-	virtual int getTexture();			// 4J - changed from wstring to int
+	virtual int getTexture();			// 4J - changed from std::wstring to int
 	virtual bool isCreativeModeAllowed();
 	bool save(CompoundTag *entityTag);
 	void saveWithoutId(CompoundTag *entityTag);
 	virtual void load(CompoundTag *tag);
 
 protected:
-	const wstring getEncodeId();
+	const std::wstring getEncodeId();
 
 public:
 	virtual void readAdditionalSaveData(CompoundTag *tag) = 0;
@@ -345,7 +345,7 @@ protected:
 public:
 	virtual void makeStuckInWeb();
 
-	virtual wstring getAName();
+	virtual std::wstring getAName();
 
 	// TU9
 	bool skipAttackInteraction(std::shared_ptr<Entity> source) {return false;}

@@ -17,7 +17,7 @@ bool RegionFileCache::useSplitSaves(ESavePlatform platform)
 	};
 }
 
-RegionFile *RegionFileCache::_getRegionFile(ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)		// 4J - TODO was synchronized
+RegionFile *RegionFileCache::_getRegionFile(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)		// 4J - TODO was synchronized
 {
 	// 4J Jev - changed back to use of the File class.
 	//char file[MAX_PATH_SIZE];
@@ -25,16 +25,16 @@ RegionFile *RegionFileCache::_getRegionFile(ConsoleSaveFile *saveFile, const wst
 
 	//File regionDir(basePath, L"region");
 
-	//File file(regionDir, wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
+	//File file(regionDir, std::wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
 	MemSect(31);
 	File file;
 	if(useSplitSaves(saveFile->getSavePlatform()))
 	{
-		file = File( prefix + wstring(L"r.") + _toString(chunkX>>4) + L"." + _toString(chunkZ>>4) + L".mcr" );
+		file = File( prefix + std::wstring(L"r.") + _toString(chunkX>>4) + L"." + _toString(chunkZ>>4) + L".mcr" );
 	}
 	else
 	{
-		file = File( prefix + wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
+		file = File( prefix + std::wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
 	}
 	MemSect(0);
 
@@ -87,13 +87,13 @@ void RegionFileCache::_clear()															// 4J - TODO was synchronized
 	cache.clear();
 }
 
-int RegionFileCache::_getSizeDelta(ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)
+int RegionFileCache::_getSizeDelta(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
 {
     RegionFile *r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
     return r->getSizeDelta();
 }
 
-DataInputStream *RegionFileCache::_getChunkDataInputStream(ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)
+DataInputStream *RegionFileCache::_getChunkDataInputStream(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
 {
 	RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
 	if(useSplitSaves(saveFile->getSavePlatform()))
@@ -107,7 +107,7 @@ DataInputStream *RegionFileCache::_getChunkDataInputStream(ConsoleSaveFile *save
 	}
 }
 
-DataOutputStream *RegionFileCache::_getChunkDataOutputStream(ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)
+DataOutputStream *RegionFileCache::_getChunkDataOutputStream(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
 {
 	RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
 	if(useSplitSaves(saveFile->getSavePlatform()))

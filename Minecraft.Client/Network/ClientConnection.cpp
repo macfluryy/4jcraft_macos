@@ -57,7 +57,7 @@
 #include "../../Minecraft.World/Stats/GenericStats.h"
 #endif
 
-ClientConnection::ClientConnection(Minecraft *minecraft, const wstring& ip, int port)
+ClientConnection::ClientConnection(Minecraft *minecraft, const std::wstring& ip, int port)
 {
 	// 4J Stu - No longer used as we use the socket version below.
 	assert(FALSE);
@@ -207,7 +207,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 			// a skin?
 			if(pMojangData->wchSkin[0]!=0L)
 			{
-				wstring wstr=pMojangData->wchSkin;
+				std::wstring wstr=pMojangData->wchSkin;
 				// check the file is not already in
 				bRes=app.IsFileInMemoryTextures(wstr);
 				if(!bRes)
@@ -229,7 +229,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 			// a cloak?
 			if(pMojangData->wchCape[0]!=0L)
 			{		
-				wstring wstr=pMojangData->wchCape;
+				std::wstring wstr=pMojangData->wchCape;
 				// check the file is not already in
 				bRes=app.IsFileInMemoryTextures(wstr);
 				if(!bRes)
@@ -1277,12 +1277,12 @@ void ClientConnection::handleTakeItemEntity(std::shared_ptr<TakeItemEntityPacket
 
 void ClientConnection::handleChat(std::shared_ptr<ChatPacket> packet)
 {
-	wstring message;
+	std::wstring message;
 	int iPos;
 	bool displayOnGui = true;
 
-	wstring playerDisplayName = L"";
-	wstring sourceDisplayName = L"";
+	std::wstring playerDisplayName = L"";
+	std::wstring sourceDisplayName = L"";
 
 	// On platforms other than Xbox One this just sets display name to gamertag
 	if (packet->m_stringArgs.size() >= 1) playerDisplayName = GetDisplayNameByGamertag(packet->m_stringArgs[0]);
@@ -3053,7 +3053,7 @@ void ClientConnection::displayPrivilegeChanges(std::shared_ptr<MultiplayerLocalP
 		if( Player::getPlayerGamePrivilege(newPrivileges,priv) != Player::getPlayerGamePrivilege(oldPrivileges,priv))
 		{
 			privOn = Player::getPlayerGamePrivilege(newPrivileges,priv);
-			wstring message = L"";
+			std::wstring message = L"";
 			if(app.GetGameHostOption(eGameHostOption_TrustPlayers) == 0)
 			{
 				switch(priv)
@@ -3246,7 +3246,7 @@ void ClientConnection::handleUpdateGameRuleProgressPacket(std::shared_ptr<Update
 	LPCWSTR string = app.GetGameRulesString(packet->m_messageId);
 	if(string != NULL)
 	{
-		wstring message(string);
+		std::wstring message(string);
 		message = GameRuleDefinition::generateDescriptionString(packet->m_definitionType,message,packet->m_data.data,packet->m_data.length);
 		if(minecraft->localgameModes[m_userIndex]!=NULL)
 		{
@@ -3348,10 +3348,10 @@ int ClientConnection::ExitGameAndSaveReturned(void *pParam,int iPad,C4JStorage::
 }
 
 // 
-wstring ClientConnection::GetDisplayNameByGamertag(wstring gamertag)
+std::wstring ClientConnection::GetDisplayNameByGamertag(std::wstring gamertag)
 {
 #ifdef _DURANGO
-	wstring displayName = g_NetworkManager.GetDisplayNameByGamertag(gamertag);
+	std::wstring displayName = g_NetworkManager.GetDisplayNameByGamertag(gamertag);
 	return displayName;
 #else
 	return gamertag;

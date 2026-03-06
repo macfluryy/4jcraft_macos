@@ -15,7 +15,7 @@ private:
 
 public:
 	int id;
-    wstring name;
+    std::wstring name;
     int x, y, z;
     char yRot, xRot;
     int carriedItem;

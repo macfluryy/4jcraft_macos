@@ -14,7 +14,7 @@ private:
 	int populationSize;
 	int noBreedTimer;
 
-	std::unordered_map<wstring, int> playerStanding;
+	std::unordered_map<std::wstring, int> playerStanding;
 
 	class Aggressor
 	{
@@ -68,11 +68,11 @@ private:
 	void calcInfo();
 
 public:
-	int getStanding(const wstring &playerName);
-	int modifyStanding(const wstring &playerName, int delta);
-	bool isGoodStanding(const wstring &playerName);
-	bool isBadStanding(const wstring &playerName);
-	bool isVeryBadStanding(const wstring playerName);
+	int getStanding(const std::wstring &playerName);
+	int modifyStanding(const std::wstring &playerName, int delta);
+	bool isGoodStanding(const std::wstring &playerName);
+	bool isBadStanding(const std::wstring &playerName);
+	bool isVeryBadStanding(const std::wstring playerName);
 	void readAdditionalSaveData(CompoundTag *tag);
 	void addAdditonalSaveData(CompoundTag *tag);
 	void resetNoBreedTimer();

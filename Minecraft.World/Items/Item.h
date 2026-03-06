@@ -129,7 +129,7 @@ public:
 
 protected:
 	static const int ICON_COLUMNS = ITEM_ICON_COLUMNS;
-	static wstring ICON_DESCRIPTION_PREFIX; // 4J Stu - Was const but we have to static initialise it outside of this class
+	static std::wstring ICON_DESCRIPTION_PREFIX; // 4J Stu - Was const but we have to static initialise it outside of this class
 
 public:
 
@@ -595,7 +595,7 @@ protected:
 
 private:
 	Item *craftingRemainingItem;
-	wstring potionBrewingFormula;
+	std::wstring potionBrewingFormula;
 
 	// 4J Stu - A value from strings.h, that is the name of the item
 	unsigned int descriptionId;
@@ -603,14 +603,14 @@ private:
 	// 4J Stu - A value from strings.h that says what this does
 	unsigned int useDescriptionId;
 
-	wstring m_textureName;
+	std::wstring m_textureName;
 
 protected:
 	Item(int id);
 
 public:
 	// 4J Using per-item textures now
-	Item *setTextureName(const wstring &name);
+	Item *setTextureName(const std::wstring &name);
 	Item *setMaxStackSize(int max);
 	Item *setBaseItemTypeAndMaterial(int iType,int iMaterial);
 	int getBaseItemType();
@@ -695,13 +695,13 @@ public:
 	virtual void releaseUsing(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player, int durationLeft);
 
 protected:
-	virtual Item *setPotionBrewingFormula(const wstring &potionBrewingFormula);
+	virtual Item *setPotionBrewingFormula(const std::wstring &potionBrewingFormula);
 
 public:
-	virtual wstring getPotionBrewingFormula();
+	virtual std::wstring getPotionBrewingFormula();
 	virtual bool hasPotionBrewingFormula();
-	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings); // 4J Added unformattedStrings
-	virtual wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings); // 4J Added unformattedStrings
+	virtual std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
 	virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
 	virtual const Rarity *getRarity(std::shared_ptr<ItemInstance> itemInstance);
 	virtual bool isEnchantable(std::shared_ptr<ItemInstance> itemInstance);

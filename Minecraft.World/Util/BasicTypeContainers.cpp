@@ -14,7 +14,7 @@ const float Float::MAX_VALUE = FLT_MAX;
 
 const double Double::MAX_VALUE = DBL_MAX;
 
-int Integer::parseInt(wstring &str, int radix /* = 10*/)
+int Integer::parseInt(std::wstring &str, int radix /* = 10*/)
 {
 	return wcstol( str.c_str(), NULL, radix );
 }

@@ -38,13 +38,13 @@ void Screen::keyPressed(wchar_t eventCharacter, int eventKey)
 	}
 }
 
-wstring Screen::getClipboard()
+std::wstring Screen::getClipboard()
 {
 	// 4J - removed
 	return NULL;
 }
 
-void Screen::setClipboard(const wstring& str)
+void Screen::setClipboard(const std::wstring& str)
 {
 	// 4J - removed
 }

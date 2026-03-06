@@ -10,9 +10,9 @@ private:
 	static const int DRINK_DURATION = (int) (20 * 1.6);
 
 public:
-	static const wstring DEFAULT_ICON;
-	static const wstring THROWABLE_ICON;
-	static const wstring CONTENTS_ICON;
+	static const std::wstring DEFAULT_ICON;
+	static const std::wstring THROWABLE_ICON;
+	static const std::wstring CONTENTS_ICON;
 
 private:
 	std::unordered_map<int, vector<MobEffectInstance *> *> cachedMobEffects;
@@ -39,15 +39,15 @@ public:
 	virtual int getColor(std::shared_ptr<ItemInstance> item, int spriteLayer);
 	virtual bool hasMultipleSpriteLayers();
 	virtual bool hasInstantenousEffects(int itemAuxValue);
-	virtual wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
-	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings);
+	virtual std::wstring getHoverName(std::shared_ptr<ItemInstance> itemInstance);
+	virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings);
 	virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
 
 	virtual unsigned int getUseDescriptionId(std::shared_ptr<ItemInstance> instance);
 
 	//@Override
 	void registerIcons(IconRegister *iconRegister);
-	static Icon *getTexture(const wstring &name);
+	static Icon *getTexture(const std::wstring &name);
 
 	// 4J Stu - Based loosely on a function that gets added in java much later on (1.3)
 	static vector<pair<int, int> > *getUniquePotionValues();

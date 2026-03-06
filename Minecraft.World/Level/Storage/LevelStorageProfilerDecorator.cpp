@@ -46,12 +46,12 @@ void LevelStorageProfilerDecorator::closeAll()
 	capsulated->closeAll();
 }
 
-ConsoleSavePath LevelStorageProfilerDecorator::getDataFile(const wstring& id)
+ConsoleSavePath LevelStorageProfilerDecorator::getDataFile(const std::wstring& id)
 {
 	return capsulated->getDataFile(id);
 }
 
-wstring LevelStorageProfilerDecorator::getLevelId()
+std::wstring LevelStorageProfilerDecorator::getLevelId()
 {
 	return capsulated->getLevelId();
 }

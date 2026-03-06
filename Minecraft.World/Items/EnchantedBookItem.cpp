@@ -4,7 +4,7 @@
 #include "../Util/WeighedTreasure.h"
 #include "EnchantedBookItem.h"
 
-const wstring EnchantedBookItem::TAG_STORED_ENCHANTMENTS = L"StoredEnchantments";
+const std::wstring EnchantedBookItem::TAG_STORED_ENCHANTMENTS = L"StoredEnchantments";
 
 EnchantedBookItem::EnchantedBookItem(int id) : Item(id)
 {
@@ -43,7 +43,7 @@ ListTag<CompoundTag> *EnchantedBookItem::getEnchantments(std::shared_ptr<ItemIns
 	return (ListTag<CompoundTag> *) item->tag->get((wchar_t *)TAG_STORED_ENCHANTMENTS.c_str());
 }
 
-void EnchantedBookItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<wstring> *lines, bool advanced, vector<wstring> &unformattedStrings)
+void EnchantedBookItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, vector<std::wstring> *lines, bool advanced, vector<std::wstring> &unformattedStrings)
 {
 	Item::appendHoverText(itemInstance, player, lines, advanced, unformattedStrings);
 
@@ -51,7 +51,7 @@ void EnchantedBookItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstan
 
 	if (list != NULL)
 	{
-		wstring unformatted = L"";
+		std::wstring unformatted = L"";
 		for (int i = 0; i < list->size(); i++)
 		{
 			int type = list->get(i)->getShort((wchar_t *)ItemInstance::TAG_ENCH_ID);

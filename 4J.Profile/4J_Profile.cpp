@@ -51,7 +51,7 @@ void C_4JProfile::SetPrimaryPad(int iPad) {}
 
 static char s_gamertag[64] = "Player";
 char* C_4JProfile::GetGamertag(int iPad) { return s_gamertag; }
-wstring C_4JProfile::GetDisplayName(int iPad) { return L"Player"; }
+std::wstring C_4JProfile::GetDisplayName(int iPad) { return L"Player"; }
 bool C_4JProfile::IsFullVersion() { return true; }
 void C_4JProfile::SetSignInChangeCallback(void(*Func)(LPVOID, bool, unsigned int), LPVOID lpParam) {}
 void C_4JProfile::SetNotificationsCallback(void(*Func)(LPVOID, DWORD, unsigned int), LPVOID lpParam) {}

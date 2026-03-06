@@ -10,7 +10,7 @@
 #include "ToolRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring ToolRecipies::shapes[][4] = 
+std::wstring ToolRecipies::shapes[][4] = 
 {
 	{L"XXX", //
 	L" # ",//

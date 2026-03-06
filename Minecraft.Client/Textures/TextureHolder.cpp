@@ -56,7 +56,7 @@ void TextureHolder::setForcedScale(int targetSize)
 }
 
 //@Override
-wstring TextureHolder::toString()
+std::wstring TextureHolder::toString()
 {
 	return L"TextureHolder{width=" + _toString(width) +	L", height=" + _toString(height) + L'}';
 }

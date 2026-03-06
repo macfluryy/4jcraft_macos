@@ -60,7 +60,7 @@ const Options::Option *Options::Option::getItem(int id)
 	return &options[id];
 }
 
-Options::Option::Option(const wstring& captionId, bool hasProgress, bool isBoolean) : _isProgress(hasProgress), _isBoolean(isBoolean), captionId(captionId)
+Options::Option::Option(const std::wstring& captionId, bool hasProgress, bool isBoolean) : _isProgress(hasProgress), _isBoolean(isBoolean), captionId(captionId)
 {
 }
 
@@ -79,29 +79,29 @@ int	Options::Option::getId() const
 	return (int)(this-options);
 }
 
-wstring Options::Option::getCaptionId() const
+std::wstring Options::Option::getCaptionId() const
 {
 	return captionId;
 }
 
-const wstring Options::RENDER_DISTANCE_NAMES[] =
+const std::wstring Options::RENDER_DISTANCE_NAMES[] =
 {
         L"options.renderDistance.far", L"options.renderDistance.normal", L"options.renderDistance.short", L"options.renderDistance.tiny"
 };
-const wstring Options::DIFFICULTY_NAMES[] =
+const std::wstring Options::DIFFICULTY_NAMES[] =
 {
         L"options.difficulty.peaceful", L"options.difficulty.easy", L"options.difficulty.normal", L"options.difficulty.hard"
 };
-const wstring Options::GUI_SCALE[] =
+const std::wstring Options::GUI_SCALE[] =
 {
         L"options.guiScale.auto", L"options.guiScale.small", L"options.guiScale.normal", L"options.guiScale.large"
 };
-const wstring Options::FRAMERATE_LIMITS[] =
+const std::wstring Options::FRAMERATE_LIMITS[] =
 {
         L"performance.max", L"performance.balanced", L"performance.powersaver"
 };
 
-const wstring Options::PARTICLES[] = {
+const std::wstring Options::PARTICLES[] = {
 	L"options.particles.all", L"options.particles.decreased", L"options.particles.minimal"
 };
 
@@ -184,13 +184,13 @@ Options::Options()
 	init();
 }
 
-wstring Options::getKeyDescription(int i)
+std::wstring Options::getKeyDescription(int i)
 {
     Language *language = Language::getInstance();
     return language->getElement(keyMappings[i]->name);
 }
 
-wstring Options::getKeyMessage(int i)
+std::wstring Options::getKeyMessage(int i)
 {
 	int key = keyMappings[i]->key;
 	if (key < 0) {
@@ -307,12 +307,12 @@ bool Options::getBooleanValue(const Options::Option *item)
 	return false;
 }
 
-wstring Options::getMessage(const Options::Option *item)
+std::wstring Options::getMessage(const Options::Option *item)
 {
-	// 4J TODO, should these wstrings append rather than add?
+	// 4J TODO, should these std::wstrings append rather than add?
 
     Language *language = Language::getInstance();
-    wstring caption = language->getElement(item->getCaptionId()) + L": ";
+    std::wstring caption = language->getElement(item->getCaptionId()) + L": ";
 
     if (item->isProgress())
 	{
@@ -411,14 +411,14 @@ void Options::load()
 		// 4J - was new BufferedReader(new FileReader(optionsFile));
         BufferedReader *br = new BufferedReader(new InputStreamReader( new FileInputStream( optionsFile ) ) );
 			
-        wstring line = L"";
+        std::wstring line = L"";
         while ((line = br->readLine()) != L"")	// 4J - was check against NULL - do we need to distinguish between empty lines and a fail here?
 		{
 			// 4J - removed try/catch
 //            try {
-                wstring cmds[2];
+                std::wstring cmds[2];
 				int splitpos = (int)line.find(L":");
-				if( splitpos == wstring::npos )
+				if( splitpos == std::wstring::npos )
 				{
 					cmds[0] = line;
 					cmds[1] = L"";
@@ -469,7 +469,7 @@ void Options::load()
 
 }
 
-float Options::readFloat(wstring string)
+float Options::readFloat(std::wstring string)
 {
     if (string == L"true") return 1;
     if (string == L"false") return 0;
@@ -488,20 +488,20 @@ void Options::save()
 
 		dos.writeChars(L"music:" + _toString<float>(music) + L"\n");
         dos.writeChars(L"sound:" + _toString<float>(sound) + L"\n");
-        dos.writeChars(L"invertYMouse:" + wstring(invertYMouse ? L"true" : L"false") + L"\n");
+        dos.writeChars(L"invertYMouse:" + std::wstring(invertYMouse ? L"true" : L"false") + L"\n");
         dos.writeChars(L"mouseSensitivity:" + _toString<float>(sensitivity));
 		dos.writeChars(L"fov:" + _toString<float>(fov));
 		dos.writeChars(L"gamma:" + _toString<float>(gamma));
         dos.writeChars(L"viewDistance:" + _toString<int>(viewDistance));
         dos.writeChars(L"guiScale:" + _toString<int>(guiScale));
 		dos.writeChars(L"particles:" + _toString<int>(particles));
-        dos.writeChars(L"bobView:" + wstring(bobView ? L"true" : L"false"));
-        dos.writeChars(L"anaglyph3d:" + wstring(anaglyph3d ? L"true" : L"false"));
-        dos.writeChars(L"advancedOpengl:" + wstring(advancedOpengl ? L"true" : L"false"));
+        dos.writeChars(L"bobView:" + std::wstring(bobView ? L"true" : L"false"));
+        dos.writeChars(L"anaglyph3d:" + std::wstring(anaglyph3d ? L"true" : L"false"));
+        dos.writeChars(L"advancedOpengl:" + std::wstring(advancedOpengl ? L"true" : L"false"));
         dos.writeChars(L"fpsLimit:" + _toString<int>(framerateLimit));
         dos.writeChars(L"difficulty:" + _toString<int>(difficulty));
-        dos.writeChars(L"fancyGraphics:" + wstring(fancyGraphics ? L"true" : L"false"));
-        dos.writeChars(L"ao:" + wstring(ambientOcclusion ? L"true" : L"false"));
+        dos.writeChars(L"fancyGraphics:" + std::wstring(fancyGraphics ? L"true" : L"false"));
+        dos.writeChars(L"ao:" + std::wstring(ambientOcclusion ? L"true" : L"false"));
 		dos.writeChars(L"clouds:" + _toString<bool>(renderClouds));
         dos.writeChars(L"skin:" + skin);
         dos.writeChars(L"lastServer:" + lastMpIp);

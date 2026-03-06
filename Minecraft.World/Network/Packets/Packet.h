@@ -40,7 +40,7 @@ public:
 		// 4J Added
 		void renderStats();
 		__int64 getCountSample(int samplePos);
-		wstring getLegendString();
+		std::wstring getLegendString();
 	};
 
 	// 4J JEV, replaces the static blocks.
@@ -93,8 +93,8 @@ private :
 public:
 	static std::shared_ptr<Packet> readPacket(DataInputStream *dis, bool isServer);
 	static void writePacket(std::shared_ptr<Packet> packet, DataOutputStream *dos);
-	static void writeUtf(const wstring& value, DataOutputStream *dos);
-	static wstring readUtf(DataInputStream *dis, int maxLength);
+	static void writeUtf(const std::wstring& value, DataOutputStream *dos);
+	static std::wstring readUtf(DataInputStream *dis, int maxLength);
 	virtual void read(DataInputStream *dis) = 0; // throws IOException = 0; TODO 4J JEV, should this declare a throws?
 	virtual void write(DataOutputStream *dos) = 0; // throws IOException = 0; TODO 4J JEV, should this declare a throws?
 	virtual void handle(PacketListener *listener) = 0;

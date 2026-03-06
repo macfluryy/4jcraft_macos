@@ -9,7 +9,7 @@ class ConsoleSaveFileOriginal : public ConsoleSaveFile
 private:
 	FileHeader header;
 
-	wstring m_fileName;
+	std::wstring m_fileName;
 
 //	HANDLE hHeap;
 	static void *pvHeap;
@@ -35,7 +35,7 @@ public:
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
 	static int SaveSaveDataCallback(LPVOID lpParam,bool bRes);
 #endif
-	ConsoleSaveFileOriginal(const wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileOriginal(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	virtual ~ConsoleSaveFileOriginal();
 
 	// 4J Stu - Initial implementation is intended to have a similar interface to the standard Xbox file access functions
@@ -60,14 +60,14 @@ public:
 #endif
 	virtual unsigned int getSizeOnDisk();
 
-	virtual wstring getFilename();
+	virtual std::wstring getFilename();
 
-	virtual vector<FileEntry *> *getFilesWithPrefix(const wstring &prefix);
+	virtual vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix);
 	virtual vector<FileEntry *> *getRegionFilesByDimension(unsigned int dimensionIndex);
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	virtual wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
-	virtual wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
+	virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
+	virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
 	virtual vector<FileEntry *> *getValidPlayerDatFiles();
 #endif //__PS3__
 

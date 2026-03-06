@@ -70,7 +70,7 @@ Connection::~Connection()
 	dis = NULL;
 }
 
-Connection::Connection(Socket *socket, const wstring& id, PacketListener *packetListener) // throws IOException
+Connection::Connection(Socket *socket, const std::wstring& id, PacketListener *packetListener) // throws IOException
 {
 	_init();
 
@@ -121,7 +121,7 @@ Connection::Connection(Socket *socket, const wstring& id, PacketListener *packet
 
 
 	/* 4J JEV, java:	
-	new Thread(wstring(id).append(L" read thread")) {
+	new Thread(std::wstring(id).append(L" read thread")) {
 
 	};
 
@@ -347,7 +347,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
 	va_list input;
 	va_start( input, reason );
 
-	disconnectReason = reason;//va_arg( input, const wstring );
+	disconnectReason = reason;//va_arg( input, const std::wstring );
 
 	vector<void *> objs = vector<void *>();
 	void *i = NULL;

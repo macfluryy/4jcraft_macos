@@ -79,12 +79,12 @@ public:
 	};
 
 public:
-	vector<wstring> m_stringArgs;
+	vector<std::wstring> m_stringArgs;
 	vector<int> m_intArgs;
 	EChatPacketMessage m_messageType;
 
 	ChatPacket();
-	ChatPacket(const wstring& message, EChatPacketMessage type = e_ChatCustom, int customData = -1, const wstring& additionalMessage = L"");
+	ChatPacket(const std::wstring& message, EChatPacketMessage type = e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"");
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

@@ -54,7 +54,7 @@ private:
 
 	FileEntry *GetRegionFileEntry(unsigned int regionIndex);
 
-	wstring m_fileName;
+	std::wstring m_fileName;
 	bool m_autosave;
 
 //	HANDLE hHeap;
@@ -74,8 +74,8 @@ private:
 	void PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite );
 	void MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite);
 
-	bool GetNumericIdentifierFromName(const wstring &fileName, unsigned int *idOut);
-	wstring GetNameFromNumericIdentifier(unsigned int idIn);
+	bool GetNumericIdentifierFromName(const std::wstring &fileName, unsigned int *idOut);
+	std::wstring GetNameFromNumericIdentifier(unsigned int idIn);
 	void processSubfilesForWrite();
 	void processSubfilesAfterWrite();
 public:
@@ -83,10 +83,10 @@ public:
 	static int SaveRegionFilesCallback(LPVOID lpParam,bool bRes);
 	
 private:
-	void _init(const wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat);
+	void _init(const std::wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat);
 
 public:
-	ConsoleSaveFileSplit(const wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileSplit(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alreadySmallRegions = true, ProgressListener *progress = NULL);
 	virtual ~ConsoleSaveFileSplit();
 
@@ -113,14 +113,14 @@ public:
 #endif
 	virtual unsigned int getSizeOnDisk();
 
-	virtual wstring getFilename();
+	virtual std::wstring getFilename();
 
-	virtual vector<FileEntry *> *getFilesWithPrefix(const wstring &prefix);
+	virtual vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix);
 	virtual vector<FileEntry *> *getRegionFilesByDimension(unsigned int dimensionIndex);
 
 #if defined(__PS3__) || defined(__ORBIS__)
-	virtual wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
-	virtual wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
+	virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
+	virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
 	virtual vector<FileEntry *> *getValidPlayerDatFiles();
 #endif //__PS3__
 

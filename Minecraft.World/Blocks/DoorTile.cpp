@@ -8,7 +8,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.h"
 
-const wstring DoorTile::TEXTURES[] = { L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper" };
+const std::wstring DoorTile::TEXTURES[] = { L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper" };
 
 DoorTile::DoorTile(int id, Material *material) : Tile(id, material,isSolidRender())
 {

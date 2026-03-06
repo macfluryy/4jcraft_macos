@@ -39,7 +39,7 @@ protected:
 	virtual bool makeStepSound();
 
 public:
-	virtual int getTexture();		// 4J - changed from wstring to ing
+	virtual int getTexture();		// 4J - changed from std::wstring to ing
 	virtual void addAdditonalSaveData(CompoundTag *tag);
 	virtual void readAdditionalSaveData(CompoundTag *tag);
 
@@ -71,7 +71,7 @@ public:
 	void setAngry(bool value);
 	int getCollarColor();
 	void setCollarColor(int color);
-	void tame(const wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool bSetSitting);
+	void tame(const std::wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool bSetSitting);
 
 	// For tooltips
 	int GetSynchedHealth();

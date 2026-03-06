@@ -7,9 +7,9 @@ class Mushroom : public Bush
 {
 	friend class Tile;
 private:
-	wstring texture;
+	std::wstring texture;
 protected:
-	Mushroom(int id, const wstring &texture);
+	Mushroom(int id, const std::wstring &texture);
 public:
     virtual void updateDefaultShape(); // 4J Added override
 	virtual void tick(Level *level, int x, int y, int z, Random *random);

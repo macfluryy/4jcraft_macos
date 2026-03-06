@@ -46,7 +46,7 @@ void SynchedEntityData::define(int id, short value)
 	m_isEmpty = false;
 }
 
-void SynchedEntityData::define(int id, const wstring& value)
+void SynchedEntityData::define(int id, const std::wstring& value)
 {
 	MemSect(17);
 	checkId(id);
@@ -103,7 +103,7 @@ float SynchedEntityData::getFloat(int id)
 	return 0;
 }
 
-wstring SynchedEntityData::getString(int id)
+std::wstring SynchedEntityData::getString(int id)
 {
 	return itemsById[id]->getValue_wstring();
 }
@@ -159,7 +159,7 @@ void SynchedEntityData::set(int id, short value)
 	}
 }
 
-void SynchedEntityData::set(int id, const wstring& value)
+void SynchedEntityData::set(int id, const std::wstring& value)
 {
 	std::shared_ptr<DataItem> dataItem = itemsById[id];
 
@@ -474,7 +474,7 @@ SynchedEntityData::DataItem::DataItem(int type, int id, short value) : type( typ
 	this->dirty = true;
 }
 
-SynchedEntityData::DataItem::DataItem(int type, int id, const wstring& value) : type( type ), id( id )
+SynchedEntityData::DataItem::DataItem(int type, int id, const std::wstring& value) : type( type ), id( id )
 {
 	this->value_wstring = value;
 	this->dirty = true;
@@ -506,7 +506,7 @@ void SynchedEntityData::DataItem::setValue(short value)
 	this->value_short = value;
 }
 
-void SynchedEntityData::DataItem::setValue(const wstring& value)
+void SynchedEntityData::DataItem::setValue(const std::wstring& value)
 {
 	this->value_wstring = value;
 }
@@ -531,7 +531,7 @@ uint8_t SynchedEntityData::DataItem::getValue_byte()
 	return value_byte;
 }
 
-wstring SynchedEntityData::DataItem::getValue_wstring()
+std::wstring SynchedEntityData::DataItem::getValue_wstring()
 {
 	return value_wstring;
 }

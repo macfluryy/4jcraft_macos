@@ -14,7 +14,7 @@ ChatPacket::ChatPacket()
 }
 
 // Old chat packet constructor, adds message, custom data and additional message to arg vectors
-ChatPacket::ChatPacket(const wstring& message, EChatPacketMessage type /*= e_ChatCustom*/, int customData /*= -1*/, const wstring& additionalMessage /*= L""*/)
+ChatPacket::ChatPacket(const std::wstring& message, EChatPacketMessage type /*= e_ChatCustom*/, int customData /*= -1*/, const std::wstring& additionalMessage /*= L""*/)
 {
 	m_messageType = type;
 	if (customData != -1) m_intArgs.push_back(customData);

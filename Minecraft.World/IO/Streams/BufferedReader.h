@@ -23,5 +23,5 @@ public:
 	virtual void close();
 	virtual int read();
 	virtual int read(wchar_t cbuf[], unsigned int off, unsigned int len);
-	wstring readLine();
+	std::wstring readLine();
 };

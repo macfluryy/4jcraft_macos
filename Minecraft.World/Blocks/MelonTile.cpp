@@ -4,8 +4,8 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Util/Facing.h"
 
-const wstring MelonTile::TEX = L"melon_side";
-const wstring MelonTile::TEX_TOP = L"melon_top";
+const std::wstring MelonTile::TEX = L"melon_side";
+const std::wstring MelonTile::TEX_TOP = L"melon_top";
 
 MelonTile::MelonTile(int id) : Tile(id, Material::vegetable)
 {

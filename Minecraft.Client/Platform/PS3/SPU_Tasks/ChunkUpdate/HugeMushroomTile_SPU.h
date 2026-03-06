@@ -4,8 +4,8 @@
 class HugeMushroomTile_SPU : public Tile_SPU
 {
 public:
-// 	static const wstring TEXTURE_STEM;
-// 	static const wstring TEXTURE_INSIDE;
+// 	static const std::wstring TEXTURE_STEM;
+// 	static const std::wstring TEXTURE_INSIDE;
 
 private:
 	static const int HUGE_MUSHROOM_TEXTURE_COUNT = 2;

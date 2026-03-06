@@ -31,12 +31,12 @@ void EntityRenderer::bindTexture(int resourceName)
     entityRenderDispatcher->textures->bindTexture(resourceName);
 }
 
-void EntityRenderer::bindTexture(const wstring& resourceName)
+void EntityRenderer::bindTexture(const std::wstring& resourceName)
 {
     entityRenderDispatcher->textures->bindTexture(resourceName);
 }
 
-bool EntityRenderer::bindTexture(const wstring& urlTexture, int backupTexture)
+bool EntityRenderer::bindTexture(const std::wstring& urlTexture, int backupTexture)
 {
     Textures *t = entityRenderDispatcher->textures;
 
@@ -57,7 +57,7 @@ bool EntityRenderer::bindTexture(const wstring& urlTexture, int backupTexture)
     }
 }
 
-bool EntityRenderer::bindTexture(const wstring& urlTexture, const wstring& backupTexture)
+bool EntityRenderer::bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture)
 {
     Textures *t = entityRenderDispatcher->textures;
 
