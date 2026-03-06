@@ -72,6 +72,8 @@ build/Minecraft.Client
 
 #### Clean
 
+To perform a clean compilation:
+
 ```bash
 meson compile --clean -C build
 ```
@@ -80,6 +82,13 @@ meson compile --clean -C build
 
 ```bash
 meson setup build --reconfigure 
+```
+
+...or to hard reset the build directory:
+
+```bash
+rm -rf ./build
+meson setup build
 ```
 
 ---
