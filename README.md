@@ -84,7 +84,7 @@ meson compile -C build
 The binary is output to:
 
 ```
-build/Minecraft.Client
+./build/Minecraft.Client/Minecraft.Client
 ```
 
 #### Clean
@@ -118,4 +118,4 @@ At this time, we don't have the necessary tools to build game resources without 
 
 1. Download `LCEWindows64.zip` and extract.
 2. Copy the `Common` directory to the same directory as the compiled `Minecraft.Client` binary.
-3. Run `./Minecraft.Client`.
+3. Run `./build/Minecraft.Client/Minecraft.Client`.
