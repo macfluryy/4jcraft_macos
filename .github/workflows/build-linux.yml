@@ -77,6 +77,16 @@ jobs:
           export CCACHE_DIR="$CCACHE_DIR"
           meson setup build_meson --wipe --buildtype=release
 
+      - name: Configure Meson (debug)
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          mkdir -p "$CCACHE_DIR"
+          export CCACHE_DIR="$CCACHE_DIR"
+          meson setup build_debug --wipe --buildtype=debug
+
       - name: Build with Ninja
         env:
           CC: "ccache clang"
@@ -86,6 +96,15 @@ jobs:
           export CCACHE_DIR="${{ runner.temp }}/ccache"
           # Use all available cores for faster parallel builds
           ninja -C build_meson -j$(nproc) -v
+
+      - name: Build Debug with Ninja
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          export CCACHE_DIR="${{ runner.temp }}/ccache"
+          ninja -C build_debug -j$(nproc) -v
 
       - name: Install patchelf
         run: sudo apt-get install -y patchelf
@@ -166,9 +185,47 @@ jobs:
           echo "Bundle ready: $BUNDLE"
           ls -lh "$BUNDLE" "$BUNDLE/lib"
 
+      - name: Bundle debug executable + libraries
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          EXE_PATH=build_debug/Minecraft.Client/Minecraft.Client
+          if [ ! -f "$EXE_PATH" ]; then
+            echo "ERROR: expected debug executable at $EXE_PATH" >&2
+            ls -la build_debug || true
+            exit 1
+          fi
+
+          SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c1-8)
+          BUNDLE=out/minecraft-client-linux-${SHORT_SHA}-debug
+          mkdir -p "$BUNDLE/lib"
+
+          # Copy the binary
+          cp "$EXE_PATH" "$BUNDLE/Minecraft.Client.debug"
+
+          # Collect non-system shared library dependencies and copy them in.
+          ldd "$EXE_PATH" \
+            | awk '/=>/ { print $3 }' \
+            | grep -v '^(' \
+            | grep -Ev '/(libc|libm|libdl|libpthread|librt|libgcc_s|libstdc\+\+|ld-linux)[^/]*\.so' \
+            | sort -u \
+            | while read -r lib; do
+                [ -f "$lib" ] && cp "$lib" "$BUNDLE/lib/" || true
+              done
+
+          # Patch the binary RPATH so it finds libs in ./lib at runtime
+          patchelf --set-rpath '$ORIGIN/lib' "$BUNDLE/Minecraft.Client.debug"
+
+          # Keep a copy of the unstripped debug binary (symbols are already present in debug build)
+          echo "Debug bundle ready: $BUNDLE"
+          ls -lh "$BUNDLE" "$BUNDLE/lib"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
-          path: out/minecraft-client-linux-*/
+          path: |
+            out/minecraft-client-linux-*/
+            out/minecraft-client-linux-*-debug/
           retention-days: 7
