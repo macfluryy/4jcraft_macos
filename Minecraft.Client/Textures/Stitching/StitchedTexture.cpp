@@ -225,7 +225,7 @@ Texture *StitchedTexture::getSource()
 
 Texture *StitchedTexture::getFrame(int i)
 {
-	return frames->at(0);
+	return frames->at(i);
 }
 
 int StitchedTexture::getFrames()
