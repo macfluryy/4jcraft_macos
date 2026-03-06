@@ -20,6 +20,8 @@ jobs:
           sudo apt-get install -y build-essential pkg-config ca-certificates curl git \
             libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev libpng-dev libx11-dev \
             libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libudev-dev ccache
+          # Install clang to avoid unrecognized GCC-only warnings/flags on runner
+          sudo apt-get install -y clang
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -31,11 +33,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install meson ninja
 
+      - name: Use clang for compilation
+        run: |
+          echo "Using clang for CI (CC/CXX)"
+        env:
+          CC: clang
+          CXX: clang++
+
       - name: Configure Meson
+        env:
+          CC: clang
+          CXX: clang++
         run: |
           meson setup build_meson --wipe --buildtype=release
 
       - name: Build with Ninja
+        env:
+          CC: clang
+          CXX: clang++
         run: |
           ninja -C build_meson -v
 
