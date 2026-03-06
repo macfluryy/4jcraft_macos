@@ -8,6 +8,7 @@
 
 [RENDER] renderChunks frame=3000 layer=1 total=20736 notVis=19915 noIdx=0 empty=685 called=136 callOk=136 chunkLists=4194304
 [RENDER] renderChunks frame=3000 layer=1 total=20736 notVis=19329 noIdx=0 empty=1122 called=285 callOk=285 chunkLists=4194304
+[RENDER] renderChunks frame=3000 layer=1 total=20736 notVis=20037 noIdx=0 empty=576 called=123 callOk=123 chunkLists=4194304
 
 {working render}
 
