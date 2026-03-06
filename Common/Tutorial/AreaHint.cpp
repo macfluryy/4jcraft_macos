@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "AreaHint.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.World/Util/AABB.h"
 #include "Tutorial.h"
 
 AreaHint::AreaHint(eTutorial_Hint id, Tutorial *tutorial, eTutorial_State displayState, eTutorial_State completeState,

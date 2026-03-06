@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "IUIScene_EnchantingMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection IUIScene_EnchantingMenu::GetSectionAndSlotInDirection( IUIScene_AbstractContainerMenu::ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY )

@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../../Minecraft.World/Recipes/Recipy.h"
-#include "../../../../Minecraft.World/Items/Item.h"
+#include "../../Minecraft.World/Recipes/Recipy.h"
+#include "../../Minecraft.World/Items/Item.h"
 
 class LocalPlayer;
 

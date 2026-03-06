@@ -1,5 +1,5 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "FullTutorial.h"
 #include "FullTutorialMode.h"
 

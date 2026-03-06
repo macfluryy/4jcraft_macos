@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Build/Common/Leaderboards/LeaderboardManager.h"
+#include "../../../../Common/Leaderboards/LeaderboardManager.h"
 #include "../../../../Minecraft.World/Build/x64headers/extraX64.h"
 
 #include "../Passphrase/ps3__np_conf.h"

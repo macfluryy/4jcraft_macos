@@ -1,16 +1,16 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_LoadMenu.h"
-#include "../../../Minecraft.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../GameState/Options.h"
-#include "../../../MinecraftServer.h"
-#include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/GameState/Options.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.World/Level/Storage/LevelSettings.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 #include "../Network/Sony/SonyHttp.h"
 #endif
-#include "../../../Textures/Packs/DLCTexturePack.h"
+#include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #if defined(__ORBIS__) || defined(__PSVITA__)
 #include <ces.h>
 #endif

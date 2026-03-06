@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_CreativeMenu.h"
 
-#include "../../../../Minecraft.World/Util/JavaMath.h"
-#include "../../../Player/LocalPlayer.h"
+#include "../../Minecraft.World/Util/JavaMath.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
 #include "../Tutorial/Tutorial.h"
 #include "../Tutorial/TutorialMode.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
 #ifdef __PSVITA__
 #define GAME_CREATIVE_TOUCHUPDATE_TIMER_ID 0

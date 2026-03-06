@@ -187,25 +187,25 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/Orbis/4JLibs/inc/4J_Input.h"
 #endif
 
-#include "../../Minecraft.Client/Build/Common/Network/GameNetworkManager.h"
+#include "../../Common/Network/GameNetworkManager.h"
 
 // #ifdef _XBOX
-#include "../../Minecraft.Client/Build/Common/UI/UIEnums.h"
-#include "../../Minecraft.Client/Build/Common/App_Defines.h"
-#include "../../Minecraft.Client/Build/Common/App_enums.h"
-#include "../../Minecraft.Client/Build/Common/Tutorial/TutorialEnum.h"
-#include "../../Minecraft.Client/Build/Common/App_structs.h"
+#include "../../Common/UI/UIEnums.h"
+#include "../../Common/App_Defines.h"
+#include "../../Common/App_enums.h"
+#include "../../Common/Tutorial/TutorialEnum.h"
+#include "../../Common/App_structs.h"
 //#endif
 
 #ifdef _XBOX
-#include "../../Minecraft.Client/Build/Common/XUI/XUI_Helper.h"
-#include "../../Minecraft.Client/Build/Common/XUI/XUI_Scene_Base.h"
+#include "../../Common/XUI/XUI_Helper.h"
+#include "../../Common/XUI/XUI_Scene_Base.h"
 #endif
-#include "../../Minecraft.Client/Build/Common/Consoles_App.h"
-#include "../../Minecraft.Client/Build/Common/Minecraft_Macros.h"
-#include "../../Minecraft.Client/Build/Common/Colours/ColourTable.h"
+#include "../../Common/Consoles_App.h"
+#include "../../Common/Minecraft_Macros.h"
+#include "../../Common/Colours/ColourTable.h"
 
-#include "../../Minecraft.Client/Build/Common/BuildVer.h"
+#include "../../Common/BuildVer.h"
 
 #ifdef _XBOX
 #include "../../Minecraft.Client/Platform/Xbox/Xbox_App.h"
@@ -255,10 +255,10 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/Orbis/Sentient/MinecraftTelemetry.h"
 #endif
 
-#include "../../Minecraft.Client/Build/Common/DLC/DLCSkinFile.h"
-#include "../../Minecraft.Client/Build/Common/Console_Awards_enum.h"
-#include "../../Minecraft.Client/Build/Common/Potion_Macros.h"
-#include "../../Minecraft.Client/Build/Common/Console_Debug_enum.h"
-#include "../../Minecraft.Client/Build/Common/GameRules/ConsoleGameRulesConstants.h"
-#include "../../Minecraft.Client/Build/Common/GameRules/ConsoleGameRules.h"
-#include "../../Minecraft.Client/Build/Common/Telemetry/TelemetryManager.h"
+#include "../../Common/DLC/DLCSkinFile.h"
+#include "../../Common/Console_Awards_enum.h"
+#include "../../Common/Potion_Macros.h"
+#include "../../Common/Console_Debug_enum.h"
+#include "../../Common/GameRules/ConsoleGameRulesConstants.h"
+#include "../../Common/GameRules/ConsoleGameRules.h"
+#include "../../Common/Telemetry/TelemetryManager.h"

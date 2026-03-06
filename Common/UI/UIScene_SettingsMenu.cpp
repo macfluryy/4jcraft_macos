@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_SettingsMenu.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.Client/Minecraft.h"
 
 UIScene_SettingsMenu::UIScene_SettingsMenu(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

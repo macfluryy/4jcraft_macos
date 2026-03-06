@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "DLCManager.h"
 #include "DLCLocalisationFile.h"
-#include "../../../Utils/StringTable.h"
+#include "../../Minecraft.Client/Utils/StringTable.h"
 
 DLCLocalisationFile::DLCLocalisationFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_LocalisationData,path)
 {	

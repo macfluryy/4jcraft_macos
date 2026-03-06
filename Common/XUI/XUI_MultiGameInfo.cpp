@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <xuiresource.h>
 #include <xuiapp.h>
 #include <assert.h>
-#include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Level/Storage/LevelSettings.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "XUI_MultiGameInfo.h"
 #include "XUI_MultiGameJoinLoad.h"
-#include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
-#include "../../../../Minecraft.World/Util/Difficulty.h"
+#include "../../Minecraft.World/Level/Storage/LevelSettings.h"
+#include "../../Minecraft.World/Util/Difficulty.h"
 
 #define UPDATE_PLAYERS_TIMER_ID 0
 #define UPDATE_PLAYERS_TIMER_TIME 30000

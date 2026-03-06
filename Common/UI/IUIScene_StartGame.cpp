@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
-#include "../../../Textures/Packs/TexturePack.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "IUIScene_StartGame.h"
 
 IUIScene_StartGame::IUIScene_StartGame(int iPad, UILayer *parentLayer) : UIScene(iPad, parentLayer)

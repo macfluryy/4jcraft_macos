@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XboxStructureActionGenerateBox.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
 
 XboxStructureActionGenerateBox::XboxStructureActionGenerateBox()
 {

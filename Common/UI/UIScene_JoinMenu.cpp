@@ -1,12 +1,12 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_JoinMenu.h"
-#include "../../../Minecraft.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../GameState/Options.h"
-#include "../../../MinecraftServer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/GameState/Options.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.h"
 
 #define UPDATE_PLAYERS_TIMER_ID 0
 #define UPDATE_PLAYERS_TIMER_TIME 30000

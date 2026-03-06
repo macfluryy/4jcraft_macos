@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Blocks/TileEntities/DispenserTileEntity.h"
-#include "../../../../Minecraft.World/Containers/TrapMenu.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Blocks/TileEntities/DispenserTileEntity.h"
+#include "../../Minecraft.World/Containers/TrapMenu.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "XUI_Ctrl_SlotList.h"
 #include "XUI_Scene_Trap.h"
 #include "../Tutorial/Tutorial.h"

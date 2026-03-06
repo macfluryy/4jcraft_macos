@@ -4,21 +4,21 @@ using namespace std;
 #ifndef __linux__
 #include <qnet.h>
 #endif
-#include "../../../../Minecraft.World/Util/C4JThread.h"
+#include "../../Minecraft.World/Util/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #ifdef _XBOX
-#include "../../../Platform/Xbox/Network/PlatformNetworkManagerXbox.h"
+#include "../../Minecraft.Client/Platform/Xbox/Network/PlatformNetworkManagerXbox.h"
 #elif defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
 #include "Sony/PlatformNetworkManagerSony.h"
 #elif defined _DURANGO
-#include "../../../Platform/Durango/Network/PlatformNetworkManagerDurango.h"
+#include "../../Minecraft.Client/Platform/Durango/Network/PlatformNetworkManagerDurango.h"
 #else
 #include "PlatformNetworkManagerStub.h"
 #endif
 #include "SessionInfo.h"
 
 #ifdef __ORBIS__
-#include "../../../Platform/Orbis/Network/PsPlusUpsellWrapper_Orbis.h"
+#include "../../Minecraft.Client/Platform/Orbis/Network/PsPlusUpsellWrapper_Orbis.h"
 #endif
 
 class ClientConnection;

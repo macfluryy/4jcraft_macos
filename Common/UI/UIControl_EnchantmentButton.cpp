@@ -1,12 +1,12 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <iterator>
 #include <sstream>
 #include "UI.h"
 #include "UIControl_EnchantmentButton.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 #include <iterator>
 

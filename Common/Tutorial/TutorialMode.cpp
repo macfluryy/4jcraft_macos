@@ -1,12 +1,12 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <memory>
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Level/MultiPlayerLevel.h"
-#include "../../../../Minecraft.World/Containers/Inventory.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Level/MultiPlayerLevel.h"
+#include "../../Minecraft.World/Containers/Inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "TutorialMode.h"
 
 TutorialMode::TutorialMode(int iPad, Minecraft *minecraft, ClientConnection *connection) : MultiPlayerGameMode( minecraft, connection ), m_iPad( iPad )

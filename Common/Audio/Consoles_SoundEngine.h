@@ -1,28 +1,28 @@
 #pragma once
 
-#include "../../../../Minecraft.World/Util/SoundTypes.h"
+#include "../../Minecraft.World/Util/SoundTypes.h"
 
 #ifdef _XBOX
 
 #elif defined (__PS3__)
 #undef __in
 #undef __out
-#include "../../../Platform/PS3/Miles/include/mss.h"
+#include "../../Minecraft.Client/Platform/PS3/Miles/include/mss.h"
 #elif defined (__PSVITA__)
 #include "../../PSVITA/Miles/include/mss.h"
 #elif defined _DURANGO
 // 4J Stu - Temp define to get Miles to link, can likely be removed when we get a new version of Miles
 #define _SEKRIT
-#include "../../../Platform/Durango/Miles/include/mss.h"
+#include "../../Minecraft.Client/Platform/Durango/Miles/include/mss.h"
 #elif defined _WINDOWS64
 #include "../../windows64/Miles/include/mss.h"
 #elif defined(__linux__)
 // (DecalOverdose)HACK + TODO: Find native Linux headers and libs for this, but for now I'm using Win64 ones
-#include "../../../Platform/Windows64/Miles/include/mss.h"
+#include "../../Minecraft.Client/Platform/Windows64/Miles/include/mss.h"
 #else // PS4
 // 4J Stu - Temp define to get Miles to link, can likely be removed when we get a new version of Miles
 #define _SEKRIT2
-#include "../../../Platform/Orbis/Miles/include/mss.h"
+#include "../../Minecraft.Client/Platform/Orbis/Miles/include/mss.h"
 #endif
 
 typedef struct

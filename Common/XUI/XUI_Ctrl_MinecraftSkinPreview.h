@@ -2,9 +2,9 @@
 
 #include <string>
 #include <XuiApp.h>
-#include "../../../Textures/Textures.h"
+#include "../../Minecraft.Client/Textures/Textures.h"
 //#include "../../Xbox/DLC/DLCSkinFile.h"
-#include "../../../Rendering/Models/Model.h"
+#include "../../Minecraft.Client/Rendering/Models/Model.h"
 
 using namespace std;
 

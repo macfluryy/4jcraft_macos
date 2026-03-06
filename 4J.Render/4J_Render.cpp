@@ -1,3 +1,5 @@
+
+// TODO: ADD BETTER COMMENTS.
 #include "4J_Render.h"
 #include <cstring>
 #include <cstdlib>  // getenv
@@ -42,13 +44,22 @@ static pthread_mutex_t s_sharedCtxMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t s_mainThread;
 static bool s_mainThreadSet = false;
 
+// viewport go brr
+static void onFramebufferResize(GLFWwindow * /*win*/, int w, int h)
+{
+    if (w < 1) w = 1;
+    if (h < 1) h = 1;
+    s_windowWidth  = w;
+    s_windowHeight = h;
+    ::glViewport(0, 0, w, h);
+}
+
 void C4JRender::Initialise()
 {
     if (!glfwInit()) {
         fprintf(stderr, "[4J_Render] Failed to initialise GLFW\n");
         return;
     }
-    // todo: make resolution work
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *mode = primaryMonitor ? glfwGetVideoMode(primaryMonitor) : nullptr;
 
@@ -78,6 +89,9 @@ void C4JRender::Initialise()
 
     glfwMakeContextCurrent(s_window);
     glfwSwapInterval(1);  // vsync
+
+    // Keep viewport in sync with OS-driven window resizes.
+    glfwSetFramebufferSizeCallback(s_window, onFramebufferResize);
 
     // init opengl
     ::glEnable(GL_TEXTURE_2D);
@@ -318,14 +332,6 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
         }
         ::glEnd();
     } else {
-        // Standard (non-compact) vertex: 8 × int32 = 32 bytes per vertex
-        // Layout: [x(f), y(f), z(f), u(f), v(f), color(RGBA packed), normal, tex2]
-        // Color byte-order fix for little-endian (x86/x64):
-        //   Console code stores color as int col = (r<<24)|(g<<16)|(b<<8)|a
-        //   In little-endian memory the bytes are: [a, b, g, r] at increasing addresses.
-        //   Read as: col[3]=r, col[2]=g, col[1]=b, col[0]=a.
-        // Always use glBegin/glEnd — safe for both display-list compilation and immediate mode.
-        // (glVertexPointer/glDrawArrays inside glNewList record a stale pointer, not the data.)
         unsigned int *idata = (unsigned int *)dataIn;
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {
@@ -423,12 +429,6 @@ void C4JRender::TextureBind(int idx)
 
 void C4JRender::TextureBindVertex(int idx)
 {
-    // No-op on desktop OpenGL. On consoles this binds a lightmap to the vertex shader
-    // sampler. On desktop GL 2.1 fixed-function there is no vertex texture concept;
-    // lighting is handled via vertex colors. Binding anything here OVERRIDES GL_TEXTURE0
-    // after the call (because the game calls glTexParameteri on whatever is active),
-    // causing the terrain atlas filter params to be corrupted or the lightmap to appear
-    // on terrain instead of the atlas. Leave it as a no-op.
     (void)idx;
 }
 
@@ -451,13 +451,6 @@ void C4JRender::TextureData(int width, int height, void *data, int level,
                    width, height, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    // For the base level (0), force the texture to be non-mipmapped and pixel-crisp.
-    // glGenerateMipmap() was previously called here as a "safety net", but on Mesa/Nvidia
-    // drivers it silently resets GL_TEXTURE_MIN_FILTER to the OpenGL spec default
-    // (GL_NEAREST_MIPMAP_LINEAR), overriding the GL_NEAREST set before this call.
-    // Fix: set GL_TEXTURE_MAX_LEVEL=0 (only sample level 0) and re-enforce GL_NEAREST.
-    // The game manually uploads explicit mip levels 1..N-1 after this call anyway,
-    // so we don't need glGenerateMipmap() as a completeness safety net.
     if (level == 0) {
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

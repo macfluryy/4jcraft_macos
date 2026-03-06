@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Containers/AbstractContainerMenu.h"
+#include "../../Minecraft.World/Containers/AbstractContainerMenu.h"
 
 #include "XUI_Ctrl_SlotItemListItem.h"
 #include "XUI_Ctrl_SlotList.h"

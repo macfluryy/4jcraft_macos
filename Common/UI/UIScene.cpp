@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene.h"
 
-#include "../../../Rendering/Lighting.h"
-#include "../../../Player/LocalPlayer.h"
-#include "../../../Rendering/EntityRenderers/ItemRenderer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.Client/Rendering/Lighting.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/ItemRenderer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
 UIScene::UIScene(int iPad, UILayer *parentLayer)
 {

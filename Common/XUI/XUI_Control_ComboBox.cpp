@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XUI_Control_ComboBox.h"
-#include "../../../Platform/Xbox/Xbox_App.h"
+#include "../../Minecraft.Client/Platform/Xbox/Xbox_App.h"
 
 HRESULT CXuiControl4JComboBox::OnInit(XUIMessageInit *pInitData, BOOL& bHandled)
 {

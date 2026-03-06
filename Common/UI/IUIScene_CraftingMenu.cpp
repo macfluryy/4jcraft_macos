@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.crafting.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.stats.h"
-#include "../../../Player/LocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.crafting.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Headers/net.minecraft.stats.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
 #include "IUIScene_CraftingMenu.h"
 
 Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping4GridA[IUIScene_CraftingMenu::m_iMaxGroup2x2]=

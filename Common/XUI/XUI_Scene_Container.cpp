@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Containers/Container.h"
-#include "../../../../Minecraft.World/Containers/ContainerMenu.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Containers/Container.h"
+#include "../../Minecraft.World/Containers/ContainerMenu.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "XUI_Ctrl_SlotList.h"
 #include "XUI_Scene_Container.h"
 #include "XUI_Ctrl_SlotItemListItem.h"

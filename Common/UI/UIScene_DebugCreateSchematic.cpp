@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UI.h"
 #include "UIScene_DebugCreateSchematic.h"
-#include "../../../Minecraft.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 
 UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

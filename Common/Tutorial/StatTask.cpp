@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/LocalPlayer.h"
-#include "../../../GameState/StatsCounter.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.stats.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
+#include "../../Minecraft.Client/GameState/StatsCounter.h"
+#include "../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "StatTask.h"
 
 StatTask::StatTask(Tutorial *tutorial, int descriptionId, bool enablePreCompletion, Stat *stat, int variance /*= 1*/)

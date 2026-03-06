@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "DLCManager.h"
 #include "DLCSkinFile.h"
-#include "../../../Rendering/Models/ModelPart.h"
-#include "../../../Rendering/EntityRenderers/EntityRenderer.h"
-#include "../../../Rendering/EntityRenderers/EntityRenderDispatcher.h"
-#include "../../../../Minecraft.World/Player/Player.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Rendering/Models/ModelPart.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EntityRenderer.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"
+#include "../../Minecraft.World/Player/Player.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 DLCSkinFile::DLCSkinFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Skin,path)
 {

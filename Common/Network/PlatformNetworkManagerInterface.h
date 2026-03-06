@@ -4,7 +4,7 @@ using namespace std;
 #ifndef __linux__
 #include <qnet.h>
 #endif // __linux__
-#include "../../../../Minecraft.World/Util/C4JThread.h"
+#include "../../Minecraft.World/Util/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #include "SessionInfo.h"
 

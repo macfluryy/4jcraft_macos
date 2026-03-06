@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Utils/WstringLookup.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.Client/Utils/WstringLookup.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "ConsoleGameRules.h"
 
 GameRuleDefinition::GameRuleDefinition()

@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Entities/Entity.h"
-#include "../../../../Minecraft.World/Level/Level.h"
-#include "../../../../Minecraft.World/Items/ItemInstance.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Entities/Entity.h"
+#include "../../Minecraft.World/Level/Level.h"
+#include "../../Minecraft.World/Items/ItemInstance.h"
 #include "UseTileTask.h"
 
 UseTileTask::UseTileTask(const int tileId, int x, int y, int z, Tutorial *tutorial, int descriptionId,

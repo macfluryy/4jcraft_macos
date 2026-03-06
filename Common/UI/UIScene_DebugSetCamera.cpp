@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UI.h"
 #include "UIScene_DebugSetCamera.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

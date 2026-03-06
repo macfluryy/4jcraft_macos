@@ -9,7 +9,7 @@
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
-#include "../../../Build/Common/Console_Awards_enum.h"
+#include "../../../../Common/Console_Awards_enum.h"
 
 #include "DurangoStatsDebugger.h"
 

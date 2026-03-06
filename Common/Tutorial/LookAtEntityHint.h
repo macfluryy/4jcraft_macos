@@ -1,7 +1,7 @@
 #pragma once
 using namespace std;
 
-#include "../../../../Minecraft.World/Util/Class.h"
+#include "../../Minecraft.World/Util/Class.h"
 #include "TutorialHint.h"
 
 class ItemInstance;

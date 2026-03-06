@@ -1,14 +1,14 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "../Tutorial/TutorialMode.h"
-#include "../../../UI/Font.h"
-#include "../../../../Minecraft.World/Util/Random.h"
-#include "../../../../Minecraft.World/Util/SharedConstants.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/UI/Font.h"
+#include "../../Minecraft.World/Util/Random.h"
+#include "../../Minecraft.World/Util/SharedConstants.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "XUI_Scene_Win.h"
 
 BYTE CScene_Win::s_winUserIndex = 0;

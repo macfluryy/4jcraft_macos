@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/IO/Files/File.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/IO/Files/File.h"
 #include "UITTFFont.h"
 
 UITTFFont::UITTFFont(const string &path, S32 fallbackCharacter)

@@ -4,7 +4,7 @@ using namespace std;
 // #pragma message("LevelGenerationOptions.h ")
 
 #include "GameRuleDefinition.h"
-#include "../../../../Minecraft.World/WorldGen/Features/StructureFeature.h"
+#include "../../Minecraft.World/WorldGen/Features/StructureFeature.h"
 
 class ApplySchematicRuleDefinition;
 class LevelChunk;

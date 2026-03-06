@@ -1,5 +1,5 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Items/ItemInstance.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Items/ItemInstance.h"
 #include "CompleteUsingItemTask.h"
 
 CompleteUsingItemTask::CompleteUsingItemTask(Tutorial *tutorial, int descriptionId, int itemIds[], unsigned int itemIdsLength, bool enablePreCompletion)

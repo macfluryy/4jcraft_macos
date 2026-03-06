@@ -1,15 +1,15 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UIController.h"
 #include "UI.h"
 #include "UIScene.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Player/LocalPlayer.h"
-#include "../../../Textures/Packs/DLCTexturePack.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Minecraft.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"
-#include "../../../Rendering/EntityRenderers/EnderDragonRenderer.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
+#include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EnderDragonRenderer.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "UIFontData.h"
 #ifdef __PSVITA__
 #include <message_dialog.h>
@@ -21,7 +21,7 @@
 
 //#define ENABLE_IGGY_EXPLORER
 #ifdef ENABLE_IGGY_EXPLORER
-#include "../../../Platform/Windows64/Iggy/include/iggyexpruntime.h"
+#include "../../Minecraft.Client/Platform/Windows64/Iggy/include/iggyexpruntime.h"
 #endif
 
 //#define ENABLE_IGGY_PERFMON
@@ -31,18 +31,18 @@
 #define PM_ORIGIN_Y 34
 
 #ifdef __ORBIS__
-#include "../../../Platform/Orbis/Iggy/include/iggyperfmon.h"
-#include "../../../Platform/Orbis/Iggy/include/iggyperfmon_orbis.h"
+#include "../../Minecraft.Client/Platform/Orbis/Iggy/include/iggyperfmon.h"
+#include "../../Minecraft.Client/Platform/Orbis/Iggy/include/iggyperfmon_orbis.h"
 #elif defined _DURANGO
-#include "../../../Platform/Durango/Iggy/include/iggyperfmon.h"
+#include "../../Minecraft.Client/Platform/Durango/Iggy/include/iggyperfmon.h"
 #elif defined __PS3__
-#include "../../../Platform/PS3/Iggy/include/iggyperfmon.h"
-#include "../../../Platform/PS3/Iggy/include/iggyperfmon_ps3.h"
+#include "../../Minecraft.Client/Platform/PS3/Iggy/include/iggyperfmon.h"
+#include "../../Minecraft.Client/Platform/PS3/Iggy/include/iggyperfmon_ps3.h"
 #elif defined __PSVITA__
-#include "../../../Platform/PSVita/Iggy/include/iggyperfmon.h"
-#include "../../../Platform/PSVita/Iggy/include/iggyperfmon_psp2.h"
+#include "../../Minecraft.Client/Platform/PSVita/Iggy/include/iggyperfmon.h"
+#include "../../Minecraft.Client/Platform/PSVita/Iggy/include/iggyperfmon_psp2.h"
 #elif defined __WINDOWS64
-#include "../../../Platform/Windows64/Iggy/include/iggyperfmon.h"
+#include "../../Minecraft.Client/Platform/Windows64/Iggy/include/iggyperfmon.h"
 #endif
 
 #endif

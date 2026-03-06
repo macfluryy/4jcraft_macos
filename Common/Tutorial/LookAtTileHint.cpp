@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "Tutorial.h"
 #include "LookAtTileHint.h"
 

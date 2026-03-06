@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.enchantment.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.enchantment.h"
 #include "AddEnchantmentRuleDefinition.h"
 
 AddEnchantmentRuleDefinition::AddEnchantmentRuleDefinition()

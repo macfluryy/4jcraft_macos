@@ -3,7 +3,7 @@ using namespace std;
 
 #include "../Media/xuiscene_enchant.h"
 
-#include "../../../Rendering/Models/BookModel.h"
+#include "../../Minecraft.Client/Rendering/Models/BookModel.h"
 
 #include "XUI_Ctrl_SlotList.h"
 #include "XUI_Ctrl_EnchantmentBook.h"
@@ -13,8 +13,8 @@ using namespace std;
 
 #include "XUI_Scene_Enchant.h"
 
-#include "../../../../Minecraft.World/Containers/AbstractContainerMenu.h"
-#include "../../../../Minecraft.World/Containers/SimpleContainer.h"
+#include "../../Minecraft.World/Containers/AbstractContainerMenu.h"
+#include "../../Minecraft.World/Containers/SimpleContainer.h"
 
 class Level;
 class CXuiCtrlEnchantmentButton;

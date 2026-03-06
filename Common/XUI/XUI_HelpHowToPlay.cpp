@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_HelpHowToPlay.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 static SHowToPlayPageDef gs_aPageDefs[ eHowToPlay_NumPages ] =
 {

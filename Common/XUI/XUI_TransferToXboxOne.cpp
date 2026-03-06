@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <xuiresource.h>
 #include <xuiapp.h>
 #include <assert.h>
@@ -6,7 +6,7 @@
 #include "XUI_Ctrl_4JList.h"
 #include "XUI_Ctrl_4JIcon.h"
 #include "XUI_LoadSettings.h"
-#include "../../../Rendering/EntityRenderers/ProgressRenderer.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
 #include "XUI_TransferToXboxOne.h"
 
 

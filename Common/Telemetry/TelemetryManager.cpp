@@ -1,10 +1,10 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 
-#include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
-#include "../../../../Minecraft.World/Level/LevelData.h"
-#include "../../../../Minecraft.World/Level/Level.h"
+#include "../../Minecraft.World/Level/Storage/LevelSettings.h"
+#include "../../Minecraft.World/Level/LevelData.h"
+#include "../../Minecraft.World/Level/Level.h"
 
 #include "TelemetryManager.h"
 

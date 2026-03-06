@@ -4,9 +4,9 @@
 // SentientManager.h -> MinecraftTelemetry.h. Using the Windows64 path would
 // cause duplicate enum definitions.
 #if defined(__linux__)
-#include "../../../Platform/Orbis/Sentient/TelemetryEnum.h"
+#include "../../Minecraft.Client/Platform/Orbis/Sentient/TelemetryEnum.h"
 #else
-#include "../../../Platform/Windows64/Sentient/TelemetryEnum.h"
+#include "../../Minecraft.Client/Platform/Windows64/Sentient/TelemetryEnum.h"
 #endif
 #include "../UI/UIEnums.h"
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../../Minecraft.World/Containers/MerchantMenu.h"
+#include "../../Minecraft.World/Containers/MerchantMenu.h"
 
 class MerchantRecipe;
 

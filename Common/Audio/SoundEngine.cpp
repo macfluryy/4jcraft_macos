@@ -1,13 +1,13 @@
-﻿#include "../../../../Minecraft.World/Build/stdafx.h"
+﻿#include "../../Minecraft.World/Build/stdafx.h"
 
 #include "SoundEngine.h"
 #include "../Consoles_App.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Level/LevelData.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Level/LevelData.h"
 #include "../../Minecraft.World/Util/Mth.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Textures/Packs/DLCTexturePack.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../DLC/DLCAudioFile.h"
 
 #ifdef __PSVITA__
@@ -15,8 +15,8 @@
 #endif
 
 #ifdef _WINDOWS64
-#include "../../../Platform/Windows64/Windows64_App.h"
-#include "../../../Platform/Windows64/Miles/include/imssapi.h"
+#include "../../Minecraft.Client/Platform/Windows64/Windows64_App.h"
+#include "../../Minecraft.Client/Platform/Windows64/Miles/include/imssapi.h"
 #endif
 
 #ifdef __ORBIS__

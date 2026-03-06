@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Containers/Slot.h"
-#include "../../../../Minecraft.World/Items/ItemInstance.h"
+#include "../../Minecraft.World/Containers/Slot.h"
+#include "../../Minecraft.World/Items/ItemInstance.h"
 
 #include "SlotItemControlBase.h"
 #include "SlotProgressControl.h"

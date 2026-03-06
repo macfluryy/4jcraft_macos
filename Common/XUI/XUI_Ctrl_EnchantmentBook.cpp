@@ -1,21 +1,21 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
-#include "../../../Minecraft.h"
-#include "../../../UI/ScreenSizeCalculator.h"
-#include "../../../Rendering/EntityRenderers/TileEntityRenderDispatcher.h"
-#include "../../../Rendering/EntityRenderers/EnchantTableRenderer.h"
-#include "../../../Rendering/Lighting.h"
-#include "../../../Player/LocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/UI/ScreenSizeCalculator.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/TileEntityRenderDispatcher.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EnchantTableRenderer.h"
+#include "../../Minecraft.Client/Rendering/Lighting.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
 
 #include "XUI_Scene_Enchant.h"
 
 #include "XUI_Ctrl_EnchantmentBook.h"
-#include "../../../Rendering/Models/BookModel.h"
-#include "../../../GameState/Options.h"
+#include "../../Minecraft.Client/Rendering/Models/BookModel.h"
+#include "../../Minecraft.Client/GameState/Options.h"
 
 //-----------------------------------------------------------------------------
 //  CXuiCtrlEnchantmentBook class

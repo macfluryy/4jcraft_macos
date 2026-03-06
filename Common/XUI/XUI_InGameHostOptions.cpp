@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XUI_MultiGameCreate.h"
 #include "XUI_InGameHostOptions.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Network/ClientConnection.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.network.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.network.packet.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Network/ClientConnection.h"
+#include "../../Minecraft.World/Headers/net.minecraft.network.h"
+#include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
 
 //----------------------------------------------------------------------------------
 // Performs initialization tasks - retrieves controls.

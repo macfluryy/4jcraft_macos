@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "DLCManager.h"
 #include "DLCAudioFile.h"
 #if defined _XBOX || defined _WINDOWS64
-#include "../../../Platform/Xbox/XML/ATGXmlParser.h"
-#include "../../../Platform/Xbox/XML/xmlFilesCallback.h"
+#include "../../Minecraft.Client/Platform/Xbox/XML/ATGXmlParser.h"
+#include "../../Minecraft.Client/Platform/Xbox/XML/xmlFilesCallback.h"
 #endif
 
 DLCAudioFile::DLCAudioFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Audio,path)

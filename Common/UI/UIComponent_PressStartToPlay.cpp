@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIComponent_PressStartToPlay.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

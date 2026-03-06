@@ -4,7 +4,7 @@
 #include "XUI_Ctrl_SlotItem.h"
 #include "XUI_CustomMessages.h"
 #include "../UI/UIEnums.h"
-#include "../../../../Minecraft.World/Util/SoundTypes.h"
+#include "../../Minecraft.World/Util/SoundTypes.h"
 
 #define BUTTON_TOOLTIP_A	0
 #define BUTTON_TOOLTIP_B	1

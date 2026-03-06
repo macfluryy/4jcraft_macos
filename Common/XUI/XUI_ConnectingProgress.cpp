@@ -1,11 +1,11 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
-#include "../../../Minecraft.h"
-#include "../../../../Minecraft.World/Network/Packets/DisconnectPacket.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.World/Network/Packets/DisconnectPacket.h"
 
 //----------------------------------------------------------------------------------
 // Performs initialization tasks - retrieves controls.

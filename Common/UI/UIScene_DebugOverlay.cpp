@@ -1,20 +1,20 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UI.h"
 #include "UIScene_DebugOverlay.h"
-#include "../../../Minecraft.h"
-#include "../../../MinecraftServer.h"
-#include "../../../Rendering/GameRenderer.h"
-#include "../../../Level/MultiPlayerLevel.h"
-#include "../../../Network/ClientConnection.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.commands.common.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.enchantment.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Rendering/GameRenderer.h"
+#include "../../Minecraft.Client/Level/MultiPlayerLevel.h"
+#include "../../Minecraft.Client/Network/ClientConnection.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
+#include "../../Minecraft.World/Headers/net.minecraft.commands.common.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.enchantment.h"
 
 UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

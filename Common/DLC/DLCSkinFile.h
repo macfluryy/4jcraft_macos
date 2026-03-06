@@ -1,6 +1,6 @@
 #pragma once
 #include "DLCFile.h"
-#include "../../../Rendering/Models/HumanoidModel.h"
+#include "../../Minecraft.Client/Rendering/Models/HumanoidModel.h"
 
 class DLCSkinFile : public DLCFile
 {

@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "ConsoleGenerateStructure.h"
 #include "ConsoleGameRules.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.h"
 
 ConsoleGenerateStructure::ConsoleGenerateStructure() : StructurePiece(0)
 {

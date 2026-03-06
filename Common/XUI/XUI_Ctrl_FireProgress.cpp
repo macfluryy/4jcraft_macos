@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Containers/FurnaceMenu.h"
-#include "../../../../Minecraft.World/Blocks/TileEntities/FurnaceTileEntity.h"
+#include "../../Minecraft.World/Containers/FurnaceMenu.h"
+#include "../../Minecraft.World/Blocks/TileEntities/FurnaceTileEntity.h"
 #include "XUI_Scene_Furnace.h"
 #include "XUI_Ctrl_FireProgress.h"
 

@@ -2,8 +2,8 @@
 
 #include "../media/xuiscene_skinselect.h"
 #include "XUI_CustomMessages.h"
-#include "../../../../Minecraft.World/Util/Definitions.h"
-#include "../../../Textures/Textures.h"
+#include "../../Minecraft.World/Util/Definitions.h"
+#include "../../Minecraft.Client/Textures/Textures.h"
 
 class DLCPack;
 

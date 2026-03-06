@@ -1,7 +1,7 @@
 #pragma once
 using namespace std;
 
-#include "../../../../Minecraft.World/Entities/MobEffect.h"
+#include "../../Minecraft.World/Entities/MobEffect.h"
 
 class CXuiCtrlMobEffect : public CXuiControlImpl
 {

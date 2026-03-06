@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../../Minecraft.World/Util/Definitions.h"
+#include "../../Minecraft.World/Util/Definitions.h"
 #include "UIScene.h"
 #include "UIControl_PlayerSkinPreview.h"
 

@@ -7,7 +7,7 @@
 #include "../../../../Minecraft.World/Level/LevelData.h"
 #include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
 
-#include "../../../Build/Common/Network/GameNetworkManager.h"
+#include "../../../../Common/Network/GameNetworkManager.h"
 #include "../../../Player/MultiPlayerLocalPlayer.h"
 
 #include "../ServiceConfig/Events-XBLA.8-149E11AEEvents.h"

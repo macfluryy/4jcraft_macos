@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_FullscreenProgress.h"
-#include "../../../Minecraft.h"
-#include "../../../Rendering/EntityRenderers/ProgressRenderer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
 
 
 UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)

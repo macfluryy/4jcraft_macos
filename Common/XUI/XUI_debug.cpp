@@ -1,11 +1,11 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_Debug.h"
-#include "../../../GameState/StatsCounter.h"
+#include "../../Minecraft.Client/GameState/StatsCounter.h"
 
 LPCWSTR CScene_Debug::m_DebugCheckboxTextA[eDebugSetting_Max+1]=
 {

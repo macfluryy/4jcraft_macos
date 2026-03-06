@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include "Tutorial.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "ChangeStateConstraint.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
-#include "../../../Network/ClientConnection.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.network.packet.h"
+#include "../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.Client/Network/ClientConnection.h"
+#include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
 
 ChangeStateConstraint::ChangeStateConstraint( Tutorial *tutorial, eTutorial_State targetState, eTutorial_State sourceStates[], DWORD sourceStatesCount,
 	double x0, double y0, double z0, double x1, double y1, double z1, bool contains /*= true*/, bool changeGameMode /*= false*/, GameType *targetGameMode /*= 0*/ )

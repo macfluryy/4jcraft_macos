@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "DLCManager.h"
 #include "DLCColourTableFile.h"
-#include "../../../Minecraft.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Textures/Packs/TexturePack.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
 
 DLCColourTableFile::DLCColourTableFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_ColourTable,path)
 {	

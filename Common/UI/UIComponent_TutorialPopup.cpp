@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIComponent_TutorialPopup.h"
 #include "../Tutorial/Tutorial.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Minecraft.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XUI_Chat.h"
-#include "../../../Minecraft.h"
-#include "../../../UI/Gui.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/UI/Gui.h"
 
 HRESULT CScene_Chat::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 {

@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../Textures/BufferedImage.h"
+#include "../../Minecraft.Client/Textures/BufferedImage.h"
 #include "UIFontData.h"
 
 #include <unordered_set>

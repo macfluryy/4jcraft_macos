@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "AddItemRuleDefinition.h"
 #include "AddEnchantmentRuleDefinition.h"
 

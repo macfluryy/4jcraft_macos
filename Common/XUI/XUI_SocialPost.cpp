@@ -1,19 +1,19 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_SocialPost.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Util/SharedConstants.h"
-#include "../../../../Minecraft.World/Util/Random.h"
-#include "../../../GameState/SurvivalMode.h"
-#include "../../../UI/Screens/CreateWorldScreen.h"
-#include "../../../../Minecraft.World/IO/Files/ConsoleSaveFileIO.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
-#include "../../../../Minecraft.World/Util/Vec3.h"
-#include "../../../Player/LocalPlayer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/SharedConstants.h"
+#include "../../Minecraft.World/Util/Random.h"
+#include "../../Minecraft.Client/GameState/SurvivalMode.h"
+#include "../../Minecraft.Client/UI/Screens/CreateWorldScreen.h"
+#include "../../Minecraft.World/IO/Files/ConsoleSaveFileIO.h"
+#include "../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.World/Util/Vec3.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
 
 
 //----------------------------------------------------------------------------------

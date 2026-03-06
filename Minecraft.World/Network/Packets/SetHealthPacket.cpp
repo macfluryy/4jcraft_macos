@@ -3,7 +3,7 @@
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetHealthPacket.h"
-#include "../../../Minecraft.Client/Build/Common/Telemetry/TelemetryManager.h"
+#include "../../../Common/Telemetry/TelemetryManager.h"
 
 
 SetHealthPacket::SetHealthPacket()

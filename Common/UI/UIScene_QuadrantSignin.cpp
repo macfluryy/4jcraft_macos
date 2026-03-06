@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_QuadrantSignin.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #if defined(__ORBIS__)
 #include "../Network/Sony/SonyHttp.h"
 #endif

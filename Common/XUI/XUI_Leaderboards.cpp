@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <xuiresource.h>
 #include <xuiapp.h>
 #include "XUI_Leaderboards.h"
-#include "../../../../Minecraft.World/Blocks/Tile.h"
-#include "../../../../Minecraft.World/Items/Item.h"
+#include "../../Minecraft.World/Blocks/Tile.h"
+#include "../../Minecraft.World/Items/Item.h"
 #include "XUI_Ctrl_CraftIngredientSlot.h"
 #include "XUI_XZP_Icons.h"
 

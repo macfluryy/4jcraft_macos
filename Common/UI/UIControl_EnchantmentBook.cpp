@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIControl_EnchantmentBook.h"
-#include "../../../Minecraft.h"
-#include "../../../Rendering/EntityRenderers/TileEntityRenderDispatcher.h"
-#include "../../../Rendering/EntityRenderers/EnchantTableRenderer.h"
-#include "../../../Rendering/Lighting.h"
-#include "../../../Rendering/Models/BookModel.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/TileEntityRenderDispatcher.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EnchantTableRenderer.h"
+#include "../../Minecraft.Client/Rendering/Lighting.h"
+#include "../../Minecraft.Client/Rendering/Models/BookModel.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
 UIControl_EnchantmentBook::UIControl_EnchantmentBook()
 {

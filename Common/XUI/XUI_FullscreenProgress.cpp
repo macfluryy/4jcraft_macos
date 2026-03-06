@@ -1,12 +1,12 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
-#include "../../../Minecraft.h"
-#include "../../../Rendering/EntityRenderers/ProgressRenderer.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../Tutorial/TutorialMode.h"
 
 //----------------------------------------------------------------------------------

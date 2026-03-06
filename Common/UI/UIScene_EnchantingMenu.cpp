@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "UIScene_EnchantingMenu.h"
 
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void *_initData, UILayer *parentLayer) : UIScene_AbstractContainerMenu(iPad, parentLayer)

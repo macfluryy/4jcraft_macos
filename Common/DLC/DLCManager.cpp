@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include <algorithm>
 #include "DLCManager.h"
 #include "DLCPack.h"
 #include "DLCFile.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Minecraft.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
 
 #ifdef __linux__
 #include <stdint.h>

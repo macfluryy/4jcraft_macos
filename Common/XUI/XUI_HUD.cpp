@@ -1,12 +1,12 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XUI_HUD.h"
-#include "../../../Minecraft.h"
-#include "../../../UI/Gui.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Util/Random.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.effect.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.material.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/UI/Gui.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Util/Random.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.effect.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.material.h"
 
 HRESULT CXuiSceneHud::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 {

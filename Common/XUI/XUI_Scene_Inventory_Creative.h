@@ -4,8 +4,8 @@ using namespace std;
 #include "../Media/xuiscene_inventory_creative.h"
 #include "XUI_Scene_AbstractContainer.h"
 #include "XUI_CustomMessages.h"
-#include "../../../../Minecraft.World/Containers/AbstractContainerMenu.h"
-#include "../../../../Minecraft.World/Containers/SimpleContainer.h"
+#include "../../Minecraft.World/Containers/AbstractContainerMenu.h"
+#include "../../Minecraft.World/Containers/SimpleContainer.h"
 
 #include "../UI/IUIScene_CreativeMenu.h"
 

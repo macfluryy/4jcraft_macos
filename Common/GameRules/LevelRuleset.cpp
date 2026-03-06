@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Utils/StringTable.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Utils/StringTable.h"
 #include "ConsoleGameRules.h"
 #include "LevelRuleset.h"
 

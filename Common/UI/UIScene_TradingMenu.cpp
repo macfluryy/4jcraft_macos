@@ -1,10 +1,10 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.trading.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.trading.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "UIScene_TradingMenu.h"
 
 UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void *_initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)

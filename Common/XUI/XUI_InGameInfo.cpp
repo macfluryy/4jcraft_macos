@@ -1,19 +1,19 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_InGameInfo.h"
-#include "../../../Player/ServerPlayer.h"
-#include "../../../Network/PlayerConnection.h"
-#include "../../../Network/PlayerList.h"
-#include "../../../MinecraftServer.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Rendering/EntityRenderers/PlayerRenderer.h"
+#include "../../Minecraft.Client/Player/ServerPlayer.h"
+#include "../../Minecraft.Client/Network/PlayerConnection.h"
+#include "../../Minecraft.Client/Network/PlayerList.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/PlayerRenderer.h"
 #include "XUI_InGamePlayerOptions.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Network/ClientConnection.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.network.packet.h"
-#include "../../../Platform/Xbox/Network/NetworkPlayerXbox.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Network/ClientConnection.h"
+#include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
+#include "../../Minecraft.Client/Platform/Xbox/Network/NetworkPlayerXbox.h"
 
 #define IGNORE_KEYPRESS_TIMERID 0
 #define TOOLTIP_TIMERID 1

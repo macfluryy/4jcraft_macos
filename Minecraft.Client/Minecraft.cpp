@@ -65,8 +65,8 @@
 #ifdef _XBOX
 #include "Platform/Xbox/Network/NetworkPlayerXbox.h"
 #endif
-#include "Build/Common/UI/IUIScene_CreativeMenu.h"
-#include "Build/Common/UI/UIFontData.h"
+#include "../Common/UI/IUIScene_CreativeMenu.h"
+#include "../Common/UI/UIFontData.h"
 #include "Textures/Packs/DLCTexturePack.h"
 
 #ifdef __ORBIS__

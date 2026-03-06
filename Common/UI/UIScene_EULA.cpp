@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_EULA.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 UIScene_EULA::UIScene_EULA(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

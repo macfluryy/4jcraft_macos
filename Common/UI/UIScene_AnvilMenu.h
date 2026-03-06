@@ -2,7 +2,7 @@
 
 #include "UIScene_AbstractContainerMenu.h"
 #include "IUIScene_AnvilMenu.h"
-#include "../../../../Minecraft.World/Containers/MerchantMenu.h"
+#include "../../Minecraft.World/Containers/MerchantMenu.h"
 
 class InventoryMenu;
 

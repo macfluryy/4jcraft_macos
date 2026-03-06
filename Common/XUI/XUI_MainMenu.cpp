@@ -1,23 +1,23 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_MainMenu.h"
-#include "../../../GameState/SurvivalMode.h"
-#include "../../../../Minecraft.World/IO/Files/ConsoleSaveFileIO.h"
-#include "../../../Player/LocalPlayer.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
-#include "../../../../Minecraft.World/Util/Vec3.h"
-#include "../../../Player/User.h"
+#include "../../Minecraft.Client/GameState/SurvivalMode.h"
+#include "../../Minecraft.World/IO/Files/ConsoleSaveFileIO.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
+#include "../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.World/Util/Vec3.h"
+#include "../../Minecraft.Client/Player/User.h"
 //#include "XUI_CreateLoad.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Util/Random.h"
-#include "../../../MinecraftServer.h"
-#include "../../../Minecraft.h"
-#include "../../../GameState/Options.h"
-#include "../../../UI/Font.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/Random.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/GameState/Options.h"
+#include "../../Minecraft.Client/UI/Font.h"
 #include "../GameRules/ConsoleGameRules.h"
 
 #define DLC_INSTALLED_TIMER_ID 1

@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIComponent_Chat.h"
-#include "../../../Minecraft.h"
-#include "../../../UI/Gui.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/UI/Gui.h"
 
 UIComponent_Chat::UIComponent_Chat(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {

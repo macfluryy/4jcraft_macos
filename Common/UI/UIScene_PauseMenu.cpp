@@ -1,22 +1,22 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_PauseMenu.h"
-#include "../../../MinecraftServer.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Textures/Packs/TexturePack.h"
-#include "../../../Textures/Packs/DLCTexturePack.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
+#include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #ifdef __ORBIS__
 #include <error_dialog.h>
 #endif
 
 #ifdef _DURANGO
-#include "../../../Platform/Durango/Leaderboards/DurangoStatsDebugger.h"
+#include "../../Minecraft.Client/Platform/Durango/Leaderboards/DurangoStatsDebugger.h"
 #endif
 
 #ifdef __PSVITA__
-#include "../../../Platform/PSVita/Network/SonyCommerce_Vita.h"
+#include "../../Minecraft.Client/Platform/PSVita/Network/SonyCommerce_Vita.h"
 #endif
 
 #if defined __PS3__ || defined __ORBIS__

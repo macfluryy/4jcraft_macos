@@ -3,7 +3,7 @@
 #include "UIScene_AbstractContainerMenu.h"
 #include "IUIScene_InventoryMenu.h"
 
-#include "../../../../Minecraft.World/Entities/MobEffect.h"
+#include "../../Minecraft.World/Entities/MobEffect.h"
 
 class InventoryMenu;
 

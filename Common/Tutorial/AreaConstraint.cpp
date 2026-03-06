@@ -1,9 +1,9 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "AreaConstraint.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.World/Util/AABB.h"
 
 AreaConstraint::AreaConstraint( int descriptionId, double x0, double y0, double z0, double x1, double y1, double z1, bool contains /*= true*/, bool restrictsMovement /*=true*/ )
 	: TutorialConstraint( descriptionId )

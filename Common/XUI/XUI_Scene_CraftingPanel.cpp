@@ -1,19 +1,19 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
-#include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.crafting.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Blocks/Tile.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.stats.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.crafting.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Blocks/Tile.h"
+#include "../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../Tutorial/Tutorial.h"
 #include "../Tutorial/TutorialMode.h"
 #include "../Tutorial/TutorialEnum.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "XUI_Ctrl_CraftIngredientSlot.h"
 #include "XUI_Ctrl_SlotList.h"
 

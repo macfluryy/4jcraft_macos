@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "Tutorial.h"
 #include "TutorialHint.h"
-#include "../../../Minecraft.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 
 TutorialHint::TutorialHint(eTutorial_Hint id, Tutorial *tutorial, int descriptionId, eHintType type, bool allowFade /*= true*/) 
 	: m_id( id ), m_tutorial(tutorial), m_descriptionId( descriptionId ), m_type( type ), m_counter( 0 ),

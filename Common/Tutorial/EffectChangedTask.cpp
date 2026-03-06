@@ -1,5 +1,5 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.effect.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.effect.h"
 #include "EffectChangedTask.h"
 
 EffectChangedTask::EffectChangedTask(Tutorial *tutorial, int descriptionId, MobEffect *effect, bool apply,

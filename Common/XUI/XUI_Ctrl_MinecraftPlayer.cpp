@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Minecraft.h"
-#include "../../../UI/ScreenSizeCalculator.h"
-#include "../../../Rendering/EntityRenderers/EntityRenderDispatcher.h"
-#include "../../../Rendering/Lighting.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/UI/ScreenSizeCalculator.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"
+#include "../../Minecraft.Client/Rendering/Lighting.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "XUI_Ctrl_MinecraftPlayer.h"
 #include "XUI_Scene_AbstractContainer.h"
 #include "XUI_Scene_Inventory.h"
-#include "../../../GameState/Options.h"
+#include "../../Minecraft.Client/GameState/Options.h"
 
 //-----------------------------------------------------------------------------
 //  CXuiCtrlMinecraftPlayer class

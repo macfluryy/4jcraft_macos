@@ -1,10 +1,10 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <string>
 
-#include "../../../../Minecraft.World/IO/Files/File.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/IO/Streams/InputOutputStream.h"
+#include "../../Minecraft.World/IO/Files/File.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/IO/Streams/InputOutputStream.h"
 
 #include "DLCManager.h"
 #include "DLCGameRulesHeader.h"

@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UpdatePlayerRuleDefinition.h"
 #include "ConsoleGameRules.h"
-#include "../../../../Minecraft.World/Util/Pos.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.food.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
+#include "../../Minecraft.World/Util/Pos.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.food.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
 UpdatePlayerRuleDefinition::UpdatePlayerRuleDefinition()
 {

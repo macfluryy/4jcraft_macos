@@ -1,8 +1,8 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../../../Minecraft.World/Util/SharedConstants.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.item.alchemy.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
+#include "../../Minecraft.World/Util/SharedConstants.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.item.alchemy.h"
 #include "XUI_Ctrl_BrewProgress.h"
 
 int CXuiCtrlBrewProgress::GetValue()

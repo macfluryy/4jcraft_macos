@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "XUI_TextEntry.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 
 
 CScene_TextEntry::CommandParams CScene_TextEntry::CommandA[CScene_TextEntry::eCommand_MAX]=

@@ -3,9 +3,9 @@ using namespace std;
 
 #include "../media/xuiscene_craftingpanel_2x2.h"
 #include "XUI_Ctrl_MinecraftSlot.h"
-#include "../../../../Minecraft.World/Recipes/Recipy.h" 
+#include "../../Minecraft.World/Recipes/Recipy.h" 
 #include "XUI_Ctrl_CraftIngredientSlot.h"
-#include "../../../../Minecraft.World/Items/Item.h"
+#include "../../Minecraft.World/Items/Item.h"
 #include "XUI_CustomMessages.h"
 #include "../Tutorial/TutorialEnum.h"
 #include "../UI/IUIScene_CraftingMenu.h"

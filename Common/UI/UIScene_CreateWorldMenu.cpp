@@ -1,26 +1,26 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "UI.h"
 #include "UIScene_CreateWorldMenu.h"
-#include "../../../MinecraftServer.h"
-#include "../../../Minecraft.h"
-#include "../../../GameState/Options.h"
-#include "../../../Textures/Packs/TexturePackRepository.h"
-#include "../../../Textures/Packs/TexturePack.h"
-#include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
-#include "../../../../Minecraft.World/Util/IntCache.h"
-#include "../../../../Minecraft.World/Level/Storage/LevelType.h"
-#include "../../../Textures/Packs/DLCTexturePack.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/GameState/Options.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
+#include "../../Minecraft.World/Level/Storage/LevelSettings.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
+#include "../../Minecraft.World/Util/IntCache.h"
+#include "../../Minecraft.World/Level/Storage/LevelType.h"
+#include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 
 #ifdef __PSVITA__
-#include "../../../Platform/PSVita/Network/SQRNetworkManager_AdHoc_Vita.h"
+#include "../../Minecraft.Client/Platform/PSVita/Network/SQRNetworkManager_AdHoc_Vita.h"
 #endif
 
 #ifdef  _WINDOWS64
 
 #include <windows.h>
-#include "../../../Platform/Xbox/Resource.h"
+#include "../../Minecraft.Client/Platform/Xbox/Resource.h"
 #endif
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0

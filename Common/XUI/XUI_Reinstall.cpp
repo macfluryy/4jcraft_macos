@@ -1,22 +1,22 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
 #include "XUI_Reinstall.h"
-#include "../../../../Minecraft.World/Util/AABB.h"
-#include "../../../../Minecraft.World/Util/Vec3.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.stats.h"
-#include "../../../GameState/StatsCounter.h"
-#include "../../../../Minecraft.World/Entities/Entity.h"
-#include "../../../../Minecraft.World/Level/Level.h"
-#include "../../../Player/LocalPlayer.h"
-#include "../../../MinecraftServer.h"
-#include "../../../Rendering/EntityRenderers/ProgressRenderer.h"
-#include "../../../../Minecraft.World/Network/Packets/DisconnectPacket.h"
-#include "../../../Minecraft.h"
-#include "../../../GameState/Options.h"
+#include "../../Minecraft.World/Util/AABB.h"
+#include "../../Minecraft.World/Util/Vec3.h"
+#include "../../Minecraft.World/Headers/net.minecraft.stats.h"
+#include "../../Minecraft.Client/GameState/StatsCounter.h"
+#include "../../Minecraft.World/Entities/Entity.h"
+#include "../../Minecraft.World/Level/Level.h"
+#include "../../Minecraft.Client/Player/LocalPlayer.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
+#include "../../Minecraft.World/Network/Packets/DisconnectPacket.h"
+#include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.Client/GameState/Options.h"
 
 
 

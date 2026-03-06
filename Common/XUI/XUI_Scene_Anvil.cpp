@@ -1,12 +1,12 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
-#include "../../../Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../Tutorial/Tutorial.h"
 #include "../Tutorial/TutorialMode.h"
 #include "../Tutorial/TutorialEnum.h"
-#include "../../../Minecraft.h"
+#include "../../Minecraft.Client/Minecraft.h"
 #include "XUI_Ctrl_SlotList.h"
 #include "XUI_Scene_Anvil.h"
 

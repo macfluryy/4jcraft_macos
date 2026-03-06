@@ -1,11 +1,11 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "XboxStructureActionPlaceContainer.h"
 #include "AddItemRuleDefinition.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
 XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer()
 {

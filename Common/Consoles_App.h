@@ -14,17 +14,17 @@ using namespace std;
 #endif
 #include "UI/UIStructs.h"
 
-#include "../../../Minecraft.World/Network/Packets/DisconnectPacket.h"
+#include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
 #ifndef __linux__
 #include <xsocialpost.h>
 #endif // __linux__
 
-#include "../../Utils/StringTable.h"
+#include "../Minecraft.Client/Utils/StringTable.h"
 #include "DLC/DLCManager.h"
 #include "GameRules/ConsoleGameRulesConstants.h"
 #include "GameRules/GameRuleManager.h"
-#include "../../Rendering/Models/SkinBox.h"
-#include "../../Utils/ArchiveFile.h"
+#include "../Minecraft.Client/Rendering/Models/SkinBox.h"
+#include "../Minecraft.Client/Utils/ArchiveFile.h"
 
 typedef struct _JoinFromInviteData
 {

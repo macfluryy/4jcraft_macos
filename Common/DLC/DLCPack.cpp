@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Build/stdafx.h"
 #include "DLCPack.h"
 #include "DLCSkinFile.h"
 #include "DLCCapeFile.h"
@@ -9,7 +9,7 @@
 #include "DLCGameRulesHeader.h"
 #include "DLCAudioFile.h"
 #include "DLCColourTableFile.h"
-#include "../../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 
 DLCPack::DLCPack(const wstring &name,DWORD dwLicenseMask)
 {
