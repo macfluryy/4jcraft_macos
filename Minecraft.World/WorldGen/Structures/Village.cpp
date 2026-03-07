@@ -394,7 +394,7 @@ int Village::modifyStanding(const std::wstring &playerName, int delta)
 {
 	int current = getStanding(playerName);
 	int newValue = Mth::clamp(current + delta, -30, 10);
-	playerStanding.insert(pair<std::wstring,int>(playerName, newValue));
+	playerStanding.insert(std::pair<std::wstring,int>(playerName, newValue));
 	return newValue;
 }
 
@@ -441,7 +441,7 @@ void Village::readAdditionalSaveData(CompoundTag *tag)
 	for (int i = 0; i < playerTags->size(); i++)
 	{
 		CompoundTag *pTag = playerTags->get(i);
-		playerStanding.insert(pair<std::wstring,int>(pTag->getString(L"Name"), pTag->getInt(L"S")));
+		playerStanding.insert(std::pair<std::wstring,int>(pTag->getString(L"Name"), pTag->getInt(L"S")));
 	}
 }
 

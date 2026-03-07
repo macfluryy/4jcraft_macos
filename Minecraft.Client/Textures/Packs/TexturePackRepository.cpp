@@ -291,14 +291,14 @@ bool TexturePackRepository::canUseWebSkin()
 	return false;
 }
 
-std::vector< pair<DWORD,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
+std::vector< std::pair<DWORD,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
 {
-	std::vector< pair<DWORD,std::wstring> > *packList = new std::vector< pair<DWORD,std::wstring> >();
+	std::vector< std::pair<DWORD,std::wstring> > *packList = new std::vector< std::pair<DWORD,std::wstring> >();
 
 	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
 	{
 		TexturePack *pack = *it;
-		packList->push_back( pair<DWORD,std::wstring>(pack->getId(),pack->getName()) );
+		packList->push_back( std::pair<DWORD,std::wstring>(pack->getId(),pack->getName()) );
 	}
 	return packList;
 }

@@ -40,7 +40,7 @@ Stat *Stat::postConstruct()
     //}
     Stats::all->push_back(this);
 
-	pair<int, Stat *> id1(id,this);
+	std::pair<int, Stat *> id1(id,this);
 #ifdef __PS3__
 	Stats::statsById->emplace(id1 );//	assert(0); // MGH - TODO - FIX - find out where this move function comes from
 #else

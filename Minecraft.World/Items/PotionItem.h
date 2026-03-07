@@ -50,8 +50,8 @@ public:
 	static Icon *getTexture(const std::wstring &name);
 
 	// 4J Stu - Based loosely on a function that gets added in java much later on (1.3)
-	static std::vector<pair<int, int> > *getUniquePotionValues();
+	static std::vector<std::pair<int, int> > *getUniquePotionValues();
 private:
 	// 4J Stu - Added to support function above, different from Java implementation
-	static std::vector<pair<int, int> > s_uniquePotionValues;
+	static std::vector<std::pair<int, int> > s_uniquePotionValues;
 };

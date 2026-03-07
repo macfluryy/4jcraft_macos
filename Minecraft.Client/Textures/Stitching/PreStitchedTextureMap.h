@@ -30,7 +30,7 @@ private:
 	Texture *stitchResult;
 	std::vector<StitchedTexture *> animatedTextures; // = new ArrayList<StitchedTexture>();
 
-	std::vector<pair<std::wstring, std::wstring> > texturesToAnimate;
+	std::vector<std::pair<std::wstring, std::wstring> > texturesToAnimate;
 
 	void loadUVs();
 public:

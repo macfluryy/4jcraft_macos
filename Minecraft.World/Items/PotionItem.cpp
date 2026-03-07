@@ -17,7 +17,7 @@ const std::wstring PotionItem::THROWABLE_ICON = L"potion_splash";
 const std::wstring PotionItem::CONTENTS_ICON = L"potion_contents";
 
 // 4J Added
-std::vector<pair<int, int> >  PotionItem::s_uniquePotionValues;
+std::vector<std::pair<int, int> >  PotionItem::s_uniquePotionValues;
 
 PotionItem::PotionItem(int id) : Item(id)
 {
@@ -327,7 +327,7 @@ Icon *PotionItem::getTexture(const std::wstring &name)
 
 
 // 4J Stu - Based loosely on a function that gets added in java much later on (1.3)
-std::vector<pair<int, int> > *PotionItem::getUniquePotionValues()
+std::vector<std::pair<int, int> > *PotionItem::getUniquePotionValues()
 {
 	if (s_uniquePotionValues.empty())
 	{
@@ -361,7 +361,7 @@ std::vector<pair<int, int> > *PotionItem::getUniquePotionValues()
 					}
 					if( toAdd )
 					{
-						s_uniquePotionValues.push_back(pair<int,int>(effectsHashCode, brew) );
+						s_uniquePotionValues.push_back(std::pair<int,int>(effectsHashCode, brew) );
 					}
 				}
 				delete effects;
