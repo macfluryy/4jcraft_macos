@@ -17,6 +17,7 @@ RUN apt-get update \
         libvorbis-dev \
         libpng-dev \
         libpthread-stubs0-dev \
+        clang \
         lld \
         meson \
         ninja-build \
