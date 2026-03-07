@@ -1704,7 +1704,7 @@ void Minecraft::run_middle()
 				timer->advanceTime();
 			}
 
-			//__int64 beforeTickTime = System::nanoTime();
+			__int64 beforeTickTime = System::nanoTime();
 			for (int i = 0; i < timer->ticks; i++)
 			{
 				bool bLastTimerTick = ( i == ( timer->ticks - 1 ) );
@@ -1790,7 +1790,7 @@ void Minecraft::run_middle()
 // 				CompressedTileStorage::tick();	// 4J added
 // 				SparseDataStorage::tick();		// 4J added
 			}
-			//__int64 tickDuraction = System::nanoTime() - beforeTickTime;
+			__int64 tickDuraction = System::nanoTime() - beforeTickTime;
 			MemSect(31);
 			checkGlError(L"Pre render");
 			MemSect(0);
@@ -1895,10 +1895,10 @@ void Minecraft::run_middle()
 			Sleep(10);
 			}
 			*/
-
+			renderFpsMeter(tickDuraction);
 			if (options->renderDebug)
 			{
-				//renderFpsMeter(tickDuraction);
+				
 
 #if DEBUG_RENDER_SHOWS_PACKETS
 				// To show data for only one packet type
