@@ -86,7 +86,7 @@ void Sheep::newServerAiStep()
 
 void Sheep::aiStep()
 {
-	if (level->isClientSide) eatAnimationTick = max(0, eatAnimationTick - 1);
+	if (level->isClientSide) eatAnimationTick = std::max(0, eatAnimationTick - 1);
 	Animal::aiStep();
 }
 

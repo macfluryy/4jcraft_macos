@@ -374,10 +374,10 @@ void Village::calcInfo()
 	for(AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it)
 	{
 		std::shared_ptr<DoorInfo> dm = *it;
-		maxRadiusSqr = max(dm->distanceToSqr(center->x, center->y, center->z), maxRadiusSqr);
+		maxRadiusSqr = std::max(dm->distanceToSqr(center->x, center->y, center->z), maxRadiusSqr);
 	}
 	int doorDist= Villages::MaxDoorDist;			// Take into local int for PS4 as max takes a reference to the const int there and then needs the value to exist for the linker
-	radius = max(doorDist, (int) sqrt((float)maxRadiusSqr) + 1);
+	radius = std::max(doorDist, (int) sqrt((float)maxRadiusSqr) + 1);
 }
 
 int Village::getStanding(const std::wstring &playerName)

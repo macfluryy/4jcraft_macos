@@ -1083,7 +1083,7 @@ void Recipes::addShapelessRecipy(ItemInstance *result,... )
 	Item *pItem;
 	Recipy::_eGroupType group = Recipy::eGroupType_Decoration;
 	wchar_t wchFrom;
-	vector <ItemInstance *> *ingredients = new std::vector<ItemInstance *>();
+	std::vector <ItemInstance *> *ingredients = new std::vector<ItemInstance *>();
 
 	va_start(vl,result);
 	// 4J-PB - second argument is a list of the types

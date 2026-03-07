@@ -30,7 +30,7 @@ FileEntry *FileHeader::AddFile( const std::wstring &name, unsigned int length /*
 	
 	wchar_t filename[64];
 	memset( &filename, 0, sizeof( wchar_t ) * 64 );
-	memcpy( &filename, name.c_str(), min( sizeof( wchar_t ) * 64, sizeof( wchar_t ) * name.length() ) );
+	memcpy( &filename, name.c_str(), std::min( sizeof( wchar_t ) * 64, sizeof( wchar_t ) * name.length() ) );
 
 	// Would a map be more efficient? Our file tables probably won't be very big so better to avoid hashing all the time?
 	// Does the file exist?

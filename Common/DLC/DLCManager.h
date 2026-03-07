@@ -89,8 +89,8 @@ public:
 	DWORD checkForCorruptDLCAndAlert(bool showMessage = true);
 
 	bool readDLCDataFile(DWORD &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive = false);
-	bool readDLCDataFile(DWORD &dwFilesProcessed, const string &path, DLCPack *pack, bool fromArchive = false);
-	DWORD retrievePackIDFromDLCDataFile(const string &path, DLCPack *pack);
+	bool readDLCDataFile(DWORD &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive = false);
+	DWORD retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
 
 private:
 	bool processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD dwLength, DLCPack *pack);

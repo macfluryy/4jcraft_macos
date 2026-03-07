@@ -1761,9 +1761,9 @@ inline bool BoundingBox::Intersects( FXMVECTOR Origin, FXMVECTOR Direction, floa
     // t_min.x = maximum( t_min.x, t_min.y, t_min.z );
     // t_max.x = minimum( t_max.x, t_max.y, t_max.z );
     t_min = XMVectorMax( t_min, XMVectorSplatY( t_min ) );  // x = max(x,y)
-    t_min = XMVectorMax( t_min, XMVectorSplatZ( t_min ) );  // x = max(max(x,y),z)
+    t_min = XMVectorMax( t_min, XMVectorSplatZ( t_min ) );  // x = max(std::max(x,y),z)
     t_max = XMVectorMin( t_max, XMVectorSplatY( t_max ) );  // x = min(x,y)
-    t_max = XMVectorMin( t_max, XMVectorSplatZ( t_max ) );  // x = min(min(x,y),z)
+    t_max = XMVectorMin( t_max, XMVectorSplatZ( t_max ) );  // x = min(std::min(x,y),z)
 
     // if ( t_min > t_max ) return false;
     XMVECTOR NoIntersection = XMVectorGreater( XMVectorSplatX( t_min ), XMVectorSplatX( t_max ) );
@@ -2589,9 +2589,9 @@ inline bool BoundingOrientedBox::Intersects( FXMVECTOR Origin, FXMVECTOR Directi
     // t_min.x = maximum( t_min.x, t_min.y, t_min.z );
     // t_max.x = minimum( t_max.x, t_max.y, t_max.z );
     t_min = XMVectorMax( t_min, XMVectorSplatY( t_min ) );  // x = max(x,y)
-    t_min = XMVectorMax( t_min, XMVectorSplatZ( t_min ) );  // x = max(max(x,y),z)
+    t_min = XMVectorMax( t_min, XMVectorSplatZ( t_min ) );  // x = max(std::max(x,y),z)
     t_max = XMVectorMin( t_max, XMVectorSplatY( t_max ) );  // x = min(x,y)
-    t_max = XMVectorMin( t_max, XMVectorSplatZ( t_max ) );  // x = min(min(x,y),z)
+    t_max = XMVectorMin( t_max, XMVectorSplatZ( t_max ) );  // x = min(std::min(x,y),z)
 
     // if ( t_min > t_max ) return false;
     XMVECTOR NoIntersection = XMVectorGreater( XMVectorSplatX( t_min ), XMVectorSplatX( t_max ) );

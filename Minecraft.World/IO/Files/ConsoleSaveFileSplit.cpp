@@ -478,7 +478,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring &fileName, LPVOID pvSaveData
 		regionFiles[regionIndex] = regionFileRef;
 	}
 
-	DWORD heapSize = max( fileSize, (DWORD)(1024 * 1024 * 2)); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
+	DWORD heapSize = std::max( fileSize, (DWORD)(1024 * 1024 * 2)); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
 
 	// Initially committ enough room to store headSize bytes (using CSF_PAGE_SIZE pages, so rounding up here). We should only ever have one save file at a time,
 	// and the pages should be decommitted in the dtor, so pages committed should always be zero at this point.

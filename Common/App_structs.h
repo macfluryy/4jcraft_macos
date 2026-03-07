@@ -224,4 +224,4 @@ typedef struct _TMSPPRequest
 } 
 TMSPPRequest;
 
-typedef pair<EUIScene, HXUIOBJ> SceneStackPair;
+typedef std::pair<EUIScene, HXUIOBJ> SceneStackPair;

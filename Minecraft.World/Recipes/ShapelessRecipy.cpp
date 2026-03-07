@@ -31,7 +31,7 @@ const ItemInstance *ShapelessRecipy::getResultItem()
 
 bool ShapelessRecipy::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level) 
 {
-	vector <ItemInstance *> tempList = *ingredients;
+	std::vector <ItemInstance *> tempList = *ingredients;
 	
 	for (int y = 0; y < 3; y++) 
 	{
@@ -80,7 +80,7 @@ int ShapelessRecipy::size()
 // 4J-PB
 bool ShapelessRecipy::requires(int iRecipe) 
 {
-	vector <ItemInstance *> *tempList = new std::vector<ItemInstance *>;
+	std::vector <ItemInstance *> *tempList = new std::vector<ItemInstance *>;
 
 	*tempList=*ingredients;
 
