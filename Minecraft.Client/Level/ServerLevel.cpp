@@ -671,11 +671,11 @@ void ServerLevel::tick(std::shared_ptr<Entity> e, bool actual)
 	{
         e->remove();
     }
-	if (!server->isNpcsEnabled() && (dynamic_pointer_cast<Npc>(e) != NULL))
+	if (!server->isNpcsEnabled() && (std::dynamic_pointer_cast<Npc>(e) != NULL))
 	{
 		e->remove();
 	}
-    if (e->rider.lock() == NULL || (dynamic_pointer_cast<Player>(e->rider.lock())==NULL) )		// 4J - was !(e->rider instanceof Player)
+    if (e->rider.lock() == NULL || (std::dynamic_pointer_cast<Player>(e->rider.lock())==NULL) )		// 4J - was !(e->rider instanceof Player)
 	{
         Level::tick(e, actual);
     }
@@ -814,7 +814,7 @@ void ServerLevel::generateBonusItemsNearSpawn()
 			
 			if( getTile( x, y, z ) == Tile::chest_Id )
 			{
-				std::shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>(getTileEntity(x, y, z));
+				std::shared_ptr<ChestTileEntity> chest = std::dynamic_pointer_cast<ChestTileEntity>(getTileEntity(x, y, z));
 				if (chest != NULL)
 				{
 					if( chest->isBonusChest )
@@ -1019,7 +1019,7 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source, 
 	std::vector<std::shared_ptr<ServerPlayer> > sentTo;
 	for(AUTO_VAR(it, players.begin()); it != players.end(); ++it)
 	{
-		std::shared_ptr<ServerPlayer> player = dynamic_pointer_cast<ServerPlayer>(*it);
+		std::shared_ptr<ServerPlayer> player = std::dynamic_pointer_cast<ServerPlayer>(*it);
 		if (player->dimension != dimension->id) continue;
 
 		bool knockbackOnly = false;
@@ -1188,7 +1188,7 @@ void ServerLevel::runQueuedSendTileUpdates()
 bool ServerLevel::addEntity(std::shared_ptr<Entity> e)
 {
 	// If its an item entity, and we've got to our capacity, delete the oldest
-	if( dynamic_pointer_cast<ItemEntity>(e) != NULL )
+	if( std::dynamic_pointer_cast<ItemEntity>(e) != NULL )
 	{
 //		printf("Adding item entity count %d\n",m_itemEntities.size());
 		EnterCriticalSection(&m_limiterCS);
@@ -1200,7 +1200,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e)
 		LeaveCriticalSection(&m_limiterCS);
 	}
 	// If its an hanging entity, and we've got to our capacity, delete the oldest
-	else if( dynamic_pointer_cast<HangingEntity>(e) != NULL )
+	else if( std::dynamic_pointer_cast<HangingEntity>(e) != NULL )
 	{
 		//		printf("Adding item entity count %d\n",m_itemEntities.size());
 		EnterCriticalSection(&m_limiterCS);
@@ -1217,7 +1217,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e)
 		LeaveCriticalSection(&m_limiterCS);
 	}
 	// If its an arrow entity, and we've got to our capacity, delete the oldest
-	else if( dynamic_pointer_cast<Arrow>(e) != NULL )
+	else if( std::dynamic_pointer_cast<Arrow>(e) != NULL )
 	{
 //		printf("Adding arrow entity count %d\n",m_arrowEntities.size());
 		EnterCriticalSection(&m_limiterCS);
@@ -1229,7 +1229,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e)
 		LeaveCriticalSection(&m_limiterCS);
 	}
 	// If its an experience orb entity, and we've got to our capacity, delete the oldest
-	else if( dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
+	else if( std::dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
 	{
 //		printf("Adding arrow entity count %d\n",m_arrowEntities.size());
 		EnterCriticalSection(&m_limiterCS);
@@ -1246,41 +1246,41 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e)
 // Maintain a cound of primed tnt & falling tiles in this level
 void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e)
 {
-	if( dynamic_pointer_cast<ItemEntity>(e) != NULL )
+	if( std::dynamic_pointer_cast<ItemEntity>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_itemEntities.push_back(e);
 //		printf("entity added: item entity count now %d\n",m_itemEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<HangingEntity>(e) != NULL )
+	else if( std::dynamic_pointer_cast<HangingEntity>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_hangingEntities.push_back(e);
 		//		printf("entity added: item entity count now %d\n",m_itemEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<Arrow>(e) != NULL )
+	else if( std::dynamic_pointer_cast<Arrow>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_arrowEntities.push_back(e);
 //		printf("entity added: arrow entity count now %d\n",m_arrowEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
+	else if( std::dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_experienceOrbEntities.push_back(e);
 //		printf("entity added: experience orb entity count now %d\n",m_arrowEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<PrimedTnt>(e) != NULL )
+	else if( std::dynamic_pointer_cast<PrimedTnt>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_primedTntCount++;
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<FallingTile>(e) != NULL )
+	else if( std::dynamic_pointer_cast<FallingTile>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_fallingTileCount++;
@@ -1291,7 +1291,7 @@ void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e)
 // Maintain a cound of primed tnt & falling tiles in this level, and remove any item entities from our list
 void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e)
 {
-	if( dynamic_pointer_cast<ItemEntity>(e) != NULL )
+	if( std::dynamic_pointer_cast<ItemEntity>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 //		printf("entity removed: item entity count %d\n",m_itemEntities.size());
@@ -1304,7 +1304,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e)
 //		printf("entity removed: item entity count now %d\n",m_itemEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	} 
-	else if( dynamic_pointer_cast<HangingEntity>(e) != NULL )
+	else if( std::dynamic_pointer_cast<HangingEntity>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		//		printf("entity removed: item entity count %d\n",m_itemEntities.size());
@@ -1317,7 +1317,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e)
 		//		printf("entity removed: item entity count now %d\n",m_itemEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	} 
-	else if( dynamic_pointer_cast<Arrow>(e) != NULL )
+	else if( std::dynamic_pointer_cast<Arrow>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 //		printf("entity removed: arrow entity count %d\n",m_arrowEntities.size());
@@ -1330,7 +1330,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e)
 //		printf("entity removed: arrow entity count now %d\n",m_arrowEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	} 
-	else if( dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
+	else if( std::dynamic_pointer_cast<ExperienceOrb>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 //		printf("entity removed: experience orb entity count %d\n",m_arrowEntities.size());
@@ -1343,13 +1343,13 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e)
 //		printf("entity removed: experience orb entity count now %d\n",m_arrowEntities.size());
 		LeaveCriticalSection(&m_limiterCS);
 	} 
-	else if( dynamic_pointer_cast<PrimedTnt>(e) != NULL )
+	else if( std::dynamic_pointer_cast<PrimedTnt>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_primedTntCount--;
 		LeaveCriticalSection(&m_limiterCS);
 	}
-	else if( dynamic_pointer_cast<FallingTile>(e) != NULL )
+	else if( std::dynamic_pointer_cast<FallingTile>(e) != NULL )
 	{
 		EnterCriticalSection(&m_limiterCS);
 		m_fallingTileCount--;

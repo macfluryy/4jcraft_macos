@@ -24,7 +24,7 @@ bool FollowParentGoal::canUse()
 	double closestDistSqr = Double::MAX_VALUE;
 	for(AUTO_VAR(it, parents->begin()); it != parents->end(); ++it)
 	{
-		std::shared_ptr<Animal> parent = dynamic_pointer_cast<Animal>(*it);
+		std::shared_ptr<Animal> parent = std::dynamic_pointer_cast<Animal>(*it);
 		if (parent->getAge() < 0) continue;
 		double distSqr = animal->distanceToSqr(parent);
 		if (distSqr > closestDistSqr) continue;

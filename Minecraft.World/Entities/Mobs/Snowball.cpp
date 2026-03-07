@@ -34,7 +34,7 @@ void Snowball::onHit(HitResult *res)
 	if (res->entity != NULL)
 	{
 		int damage = 0;
-		if (dynamic_pointer_cast<Blaze>(res->entity) != NULL)
+		if (std::dynamic_pointer_cast<Blaze>(res->entity) != NULL)
 		{
 			damage = 3;
 		}

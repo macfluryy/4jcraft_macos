@@ -18,7 +18,7 @@ FurnaceMenu::FurnaceMenu(std::shared_ptr<Inventory> inventory, std::shared_ptr<F
 
 	addSlot(new Slot(furnace, 0, 52 + 4, 13 + 4));
 	addSlot(new Slot(furnace, 1, 52 + 4, 49 + 4));
-	addSlot(new FurnaceResultSlot( dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), furnace, 2, 112 + 4, 31 + 4));
+	addSlot(new FurnaceResultSlot( std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), furnace, 2, 112 + 4, 31 + 4));
 
 	for (int y = 0; y < 3; y++)
 	{

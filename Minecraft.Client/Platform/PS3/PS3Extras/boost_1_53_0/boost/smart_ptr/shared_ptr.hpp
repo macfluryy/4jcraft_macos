@@ -805,7 +805,7 @@ template<class T, class U> shared_ptr<T> const_pointer_cast( shared_ptr<U> const
     return shared_ptr<T>( r, p );
 }
 
-template<class T, class U> shared_ptr<T> dynamic_pointer_cast( shared_ptr<U> const & r ) BOOST_NOEXCEPT 
+template<class T, class U> shared_ptr<T> std::dynamic_pointer_cast( shared_ptr<U> const & r ) BOOST_NOEXCEPT 
 {
     //(void) dynamic_cast< T* >( static_cast< U* >( 0 ) );	// // MGH - TODO - FIX - removed this check, as it was breaking the PS3 compile, and I've no idea why :-s
 

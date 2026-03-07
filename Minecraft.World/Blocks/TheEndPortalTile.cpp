@@ -66,7 +66,7 @@ void TheEndPortal::entityInside(Level *level, int x, int y, int z, std::shared_p
 {
     if (entity->riding == NULL && entity->rider.lock() == NULL)
 	{
-        if (dynamic_pointer_cast<Player>(entity) != NULL)
+        if (std::dynamic_pointer_cast<Player>(entity) != NULL)
 		{
             if (!level->isClientSide)
 			{
@@ -80,7 +80,7 @@ void TheEndPortal::entityInside(Level *level, int x, int y, int z, std::shared_p
 					level->getLevelData()->setHasStrongholdEndPortal();
 				}
 
-                (dynamic_pointer_cast<Player>(entity))->changeDimension(1);
+                (std::dynamic_pointer_cast<Player>(entity))->changeDimension(1);
             }
         }
     }

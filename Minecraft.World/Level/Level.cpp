@@ -568,7 +568,7 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage, const std::wstring& nam
 	if( !this->levelData->useNewSeaLevel() ) seaLevel = Level::genDepth / 2;		// 4J added - sea level is one unit lower since 1.8.2, maintain older height for old levels
 	this->savedDataStorage = new SavedDataStorage(levelStorage.get());
 
-	std::shared_ptr<Villages> savedVillages = dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
+	std::shared_ptr<Villages> savedVillages = std::dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
 	if (savedVillages == NULL)
 	{
 		villages = std::shared_ptr<Villages>(new Villages(this));
@@ -597,7 +597,7 @@ Level::Level(Level *level, Dimension *dimension)
 	if( !this->levelData->useNewSeaLevel() ) seaLevel = Level::genDepth / 2;		// 4J added - sea level is one unit lower since 1.8.2, maintain older height for old levels
 	this->savedDataStorage = new SavedDataStorage( levelStorage.get() );
 	
-	std::shared_ptr<Villages> savedVillages = dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
+	std::shared_ptr<Villages> savedVillages = std::dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
 	if (savedVillages == NULL)
 	{
 		villages = std::shared_ptr<Villages>(new Villages(this));
@@ -636,7 +636,7 @@ void Level::_init(std::shared_ptr<LevelStorage>levelStorage, const std::wstring&
 	this->levelStorage = levelStorage;//std::shared_ptr<LevelStorage>(levelStorage);
 	this->savedDataStorage = new SavedDataStorage(levelStorage.get());
 
-	std::shared_ptr<Villages> savedVillages = dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
+	std::shared_ptr<Villages> savedVillages = std::dynamic_pointer_cast<Villages>(savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
 	if (savedVillages == NULL)
 	{
 		villages = std::shared_ptr<Villages>(new Villages(this));
@@ -1667,16 +1667,16 @@ bool Level::addEntity(std::shared_ptr<Entity> e)
 	}
 
 	bool forced = false;
-	if (dynamic_pointer_cast<Player>( e ) != NULL)
+	if (std::dynamic_pointer_cast<Player>( e ) != NULL)
 	{
 		forced = true;
 	}
 
 	if (forced || hasChunk(xc, zc))
 	{
-		if (dynamic_pointer_cast<Player>( e ) != NULL)
+		if (std::dynamic_pointer_cast<Player>( e ) != NULL)
 		{
-			std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(e);
+			std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(e);
 
 			// 4J Stu - Added so we don't continually add the player to the players list while they are dead
 			if( find( players.begin(), players.end(), e ) == players.end() )
@@ -1744,11 +1744,11 @@ void Level::removeEntity(std::shared_ptr<Entity> e)
 		e->ride(nullptr);
 	}
 	e->remove();
-	if (dynamic_pointer_cast<Player>( e ) != NULL)
+	if (std::dynamic_pointer_cast<Player>( e ) != NULL)
 	{
 		std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
 		std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
-		while( it != itEnd && *it != dynamic_pointer_cast<Player>(e) )
+		while( it != itEnd && *it != std::dynamic_pointer_cast<Player>(e) )
 			it++;
 
 		if( it != itEnd )
@@ -1766,11 +1766,11 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e)
 {
 	e->remove();
 
-	if (dynamic_pointer_cast<Player>( e ) != NULL)
+	if (std::dynamic_pointer_cast<Player>( e ) != NULL)
 	{
 		std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
 		std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
-		while( it != itEnd && *it != dynamic_pointer_cast<Player>(e) )
+		while( it != itEnd && *it != std::dynamic_pointer_cast<Player>(e) )
 			it++;
 
 		if( it != itEnd )
@@ -2286,7 +2286,7 @@ void Level::tickEntities()
 		if (!e->removed)
 		{
 #ifndef _FINAL_BUILD
-			if(!( app.DebugSettingsOn() && app.GetMobsDontTickEnabled() && (dynamic_pointer_cast<Mob>(e) != NULL) &&  (dynamic_pointer_cast<Player>(e) == NULL)))
+			if(!( app.DebugSettingsOn() && app.GetMobsDontTickEnabled() && (std::dynamic_pointer_cast<Mob>(e) != NULL) &&  (std::dynamic_pointer_cast<Player>(e) == NULL)))
 #endif			
 			{
 				tick(e);

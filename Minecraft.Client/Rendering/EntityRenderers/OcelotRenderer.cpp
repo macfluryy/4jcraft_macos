@@ -15,7 +15,7 @@ void OzelotRenderer::scale(std::shared_ptr<Mob> _mob, float a)
 {
 	// 4J - original version used generics and thus had an input parameter of type Blaze rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<Ozelot> mob = dynamic_pointer_cast<Ozelot>(_mob);
+	std::shared_ptr<Ozelot> mob = std::dynamic_pointer_cast<Ozelot>(_mob);
 	MobRenderer::scale(mob, a);
 	if (mob->isTame())
 	{

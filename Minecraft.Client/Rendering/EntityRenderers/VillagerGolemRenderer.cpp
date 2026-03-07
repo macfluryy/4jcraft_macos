@@ -24,7 +24,7 @@ void VillagerGolemRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
 {
 	// 4J - original version used generics and thus had an input parameter of type Blaze rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<VillagerGolem> mob = dynamic_pointer_cast<VillagerGolem>(_mob);
+	std::shared_ptr<VillagerGolem> mob = std::dynamic_pointer_cast<VillagerGolem>(_mob);
 	MobRenderer::setupRotations(mob, bob, bodyRot, a);
 	if (mob->walkAnimSpeed < 0.01) return;
 
@@ -38,7 +38,7 @@ void VillagerGolemRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float
 {
 	// 4J - original version used generics and thus had an input parameter of type Blaze rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<VillagerGolem> mob = dynamic_pointer_cast<VillagerGolem>(_mob);
+	std::shared_ptr<VillagerGolem> mob = std::dynamic_pointer_cast<VillagerGolem>(_mob);
 	MobRenderer::additionalRendering(mob, a);
 	if (mob->getOfferFlowerTick() == 0) return;
 

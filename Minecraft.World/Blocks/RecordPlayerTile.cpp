@@ -42,7 +42,7 @@ void RecordPlayerTile::setRecord(Level *level, int x, int y, int z, int record)
 {
     if (level->isClientSide) return;
 
-    std::shared_ptr<RecordPlayerTile::Entity> rte = dynamic_pointer_cast<RecordPlayerTile::Entity>( level->getTileEntity(x, y, z) );
+    std::shared_ptr<RecordPlayerTile::Entity> rte = std::dynamic_pointer_cast<RecordPlayerTile::Entity>( level->getTileEntity(x, y, z) );
     rte->record = record;
     rte->setChanged();
 
@@ -53,7 +53,7 @@ void RecordPlayerTile::dropRecording(Level *level, int x, int y, int z)
 {
     if (level->isClientSide) return;
 
-    std::shared_ptr<RecordPlayerTile::Entity> rte = dynamic_pointer_cast<RecordPlayerTile::Entity>( level->getTileEntity(x, y, z) );
+    std::shared_ptr<RecordPlayerTile::Entity> rte = std::dynamic_pointer_cast<RecordPlayerTile::Entity>( level->getTileEntity(x, y, z) );
 	if( rte == NULL ) return;
 
     int oldRecord = rte->record;

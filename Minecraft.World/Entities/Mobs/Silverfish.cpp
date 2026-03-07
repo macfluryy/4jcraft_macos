@@ -84,7 +84,7 @@ void Silverfish::checkHurtTarget(std::shared_ptr<Entity> target, float d)
 	if (attackTime <= 0 && d < 1.2f && target->bb->y1 > bb->y0 && target->bb->y0 < bb->y1)
 	{
 		attackTime = 20;
-		DamageSource *damageSource = DamageSource::mobAttack( dynamic_pointer_cast<Mob>( shared_from_this() ) );
+		DamageSource *damageSource = DamageSource::mobAttack( std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
 		target->hurt(damageSource, attackDamage);
 		delete damageSource;
 	}

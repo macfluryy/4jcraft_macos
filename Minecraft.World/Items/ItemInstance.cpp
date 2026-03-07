@@ -216,7 +216,7 @@ void ItemInstance::hurt(int i, std::shared_ptr<Mob> owner)
         return;
     }
 
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(owner);
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(owner);
  	if (i > 0 && player != NULL)
 	{
 		int enchanted = EnchantmentHelper::getDigDurability(player->inventory);

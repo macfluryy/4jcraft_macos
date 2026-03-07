@@ -75,7 +75,7 @@ int SkullTile::cloneTileId(Level *level, int x, int y, int z)
 int SkullTile::cloneTileData(Level *level, int x, int y, int z)
 {
 	std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-	std::shared_ptr<SkullTileEntity> skull = dynamic_pointer_cast<SkullTileEntity>(tileEntity);
+	std::shared_ptr<SkullTileEntity> skull = std::dynamic_pointer_cast<SkullTileEntity>(tileEntity);
 	if (skull != NULL)
 	{
 		return skull->getSkullType();
@@ -117,7 +117,7 @@ void SkullTile::onRemove(Level *level, int x, int y, int z)//, int id, int data)
 	if ((data & NO_DROP_BIT) == 0)
 	{
 		std::shared_ptr<ItemInstance> item = std::shared_ptr<ItemInstance>(new ItemInstance(Item::skull_Id, 1, cloneTileData(level, x, y, z)));
-		std::shared_ptr<SkullTileEntity> entity = dynamic_pointer_cast<SkullTileEntity>(level->getTileEntity(x, y, z));
+		std::shared_ptr<SkullTileEntity> entity = std::dynamic_pointer_cast<SkullTileEntity>(level->getTileEntity(x, y, z));
 
 		if (entity->getSkullType() == SkullTileEntity::TYPE_CHAR && !entity->getExtraType().empty())
 		{
@@ -245,7 +245,7 @@ bool SkullTile::isSkullAt(Level *level, int x, int y, int z, int skullType)
 		return false;
 	}
 	std::shared_ptr<TileEntity> te = level->getTileEntity(x, y, z);
-	std::shared_ptr<SkullTileEntity> skull = dynamic_pointer_cast<SkullTileEntity>(te);
+	std::shared_ptr<SkullTileEntity> skull = std::dynamic_pointer_cast<SkullTileEntity>(te);
 	if (skull == NULL)
 	{
 		return false;

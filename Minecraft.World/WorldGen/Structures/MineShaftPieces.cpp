@@ -440,7 +440,7 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level *level, Random *rando
 			{
 				hasPlacedSpider = true;
 				level->setTile(x, y, newZ, Tile::mobSpawner_Id);
-				std::shared_ptr<MobSpawnerTileEntity> entity = dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x, y, newZ) );
+				std::shared_ptr<MobSpawnerTileEntity> entity = std::dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x, y, newZ) );
 				if (entity != NULL) entity->setEntityId(L"CaveSpider");
 			}
 		}

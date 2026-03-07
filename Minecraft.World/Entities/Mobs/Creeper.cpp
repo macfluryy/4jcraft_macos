@@ -120,13 +120,13 @@ void Creeper::die(DamageSource *source)
 {
     Monster::die(source);
 
-    if ( dynamic_pointer_cast<Skeleton>(source->getEntity()) != NULL )
+    if ( std::dynamic_pointer_cast<Skeleton>(source->getEntity()) != NULL )
 	{
         spawnAtLocation(Item::record_01_Id + random->nextInt(12), 1);
     }
 
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(source->getEntity());
-	if ( (dynamic_pointer_cast<Arrow>(source->getDirectEntity()) != NULL) && (player != NULL) )
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(source->getEntity());
+	if ( (std::dynamic_pointer_cast<Arrow>(source->getDirectEntity()) != NULL) && (player != NULL) )
 	{
 		player->awardStat(GenericStats::archer(), GenericStats::param_archer());
 	}

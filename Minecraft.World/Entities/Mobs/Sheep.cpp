@@ -277,9 +277,9 @@ std::shared_ptr<AgableMob> Sheep::getBreedOffspring(std::shared_ptr<AgableMob> t
 	// 4J - added limit to number of animals that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
-		std::shared_ptr<Sheep> otherSheep = dynamic_pointer_cast<Sheep>( target );
+		std::shared_ptr<Sheep> otherSheep = std::dynamic_pointer_cast<Sheep>( target );
 		std::shared_ptr<Sheep> sheep = std::shared_ptr<Sheep>( new Sheep(level) );
-		int color = getOffspringColor(dynamic_pointer_cast<Animal>(shared_from_this()), otherSheep);
+		int color = getOffspringColor(std::dynamic_pointer_cast<Animal>(shared_from_this()), otherSheep);
 		sheep->setColor(15 - color);
 		return sheep;
 	}
@@ -333,5 +333,5 @@ int Sheep::getOffspringColor(std::shared_ptr<Animal> animal, std::shared_ptr<Ani
 
 int Sheep::getDyeColor(std::shared_ptr<Animal> animal)
 {
-	return 15 - dynamic_pointer_cast<Sheep>(animal)->getColor();
+	return 15 - std::dynamic_pointer_cast<Sheep>(animal)->getColor();
 }

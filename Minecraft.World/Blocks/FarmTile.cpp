@@ -81,7 +81,7 @@ void FarmTile::fallOn(Level *level, int x, int y, int z, std::shared_ptr<Entity>
 	if (!level->isClientSide && level->random->nextFloat() < (fallDistance - .5f))
 	{
 		// Fix for #60547 - TU7: Content: Gameplay: Players joining a game can destroy crops even with Trust Players option disabled.
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(entity);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(entity);
 		if(player == NULL || player->isAllowedToMine()) level->setTile(x, y, z, Tile::dirt_Id);
     }
 }

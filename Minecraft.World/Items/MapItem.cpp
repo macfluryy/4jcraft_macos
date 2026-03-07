@@ -22,7 +22,7 @@ MapItem::MapItem(int id) : ComplexItem(id)
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum, Level *level)
 {	
 	std::wstring id = std::wstring( L"map_" ) + _toString(idNum);
-	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>(level->getSavedData(typeid(MapItemSavedData), id));
+	std::shared_ptr<MapItemSavedData> mapItemSavedData = std::dynamic_pointer_cast<MapItemSavedData>(level->getSavedData(typeid(MapItemSavedData), id));
 
 	if (mapItemSavedData == NULL) 
 	{
@@ -45,7 +45,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(std::shared_ptr<ItemInst
 	MemSect(31);
 	std::wstring id = std::wstring( L"map_" ) + _toString(itemInstance->getAuxValue() );
 	MemSect(0);
-	std::shared_ptr<MapItemSavedData> mapItemSavedData = dynamic_pointer_cast<MapItemSavedData>( level->getSavedData(typeid(MapItemSavedData), id ) );
+	std::shared_ptr<MapItemSavedData> mapItemSavedData = std::dynamic_pointer_cast<MapItemSavedData>( level->getSavedData(typeid(MapItemSavedData), id ) );
 
 	bool newData = false;
 	if (mapItemSavedData == NULL)
@@ -264,9 +264,9 @@ void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance, Level *l
 	if (level->isClientSide) return;
 
 	std::shared_ptr<MapItemSavedData> data = getSavedData(itemInstance, level);
-	if (dynamic_pointer_cast<Player>(owner) != NULL) 
+	if (std::dynamic_pointer_cast<Player>(owner) != NULL) 
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(owner);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(owner);
 
 		// 4J Stu - If the player has a map that belongs to another player, then merge the data over and change this map id to the owners id
 		int ownersAuxValue = level->getAuxValueForMap(player->getXuid(), data->dimension, data->x, data->z, data->scale);

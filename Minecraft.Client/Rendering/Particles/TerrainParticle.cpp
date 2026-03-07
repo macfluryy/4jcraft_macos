@@ -16,22 +16,22 @@ TerrainParticle::TerrainParticle(Level *level, double x, double y, double z, dou
 
 std::shared_ptr<TerrainParticle> TerrainParticle::init(int x, int y, int z, int data)	// 4J - added data parameter
 {
-    if (tile == Tile::grass) return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
+    if (tile == Tile::grass) return std::dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
     int col = tile->getColor(level, x, y, z, data);	// 4J - added data parameter
     rCol *= ((col >> 16) & 0xff) / 255.0f;
     gCol *= ((col >> 8) & 0xff) / 255.0f;
     bCol *= ((col) & 0xff) / 255.0f;
-    return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
+    return std::dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
 }
 
 std::shared_ptr<TerrainParticle> TerrainParticle::init(int data)
 {
-	if (tile == Tile::grass) return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
+	if (tile == Tile::grass) return std::dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
 	int col = tile->getColor(data);
 	rCol *= ((col >> 16) & 0xff) / 255.0f;
 	gCol *= ((col >> 8) & 0xff) / 255.0f;
 	bCol *= ((col) & 0xff) / 255.0f;
-	return dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
+	return std::dynamic_pointer_cast<TerrainParticle>( shared_from_this() );
 }
 
 int TerrainParticle::getParticleTexture()

@@ -10,7 +10,7 @@
 void TheEndPortalRenderer::render(std::shared_ptr<TileEntity> _table, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J Convert as we aren't using a templated class
-	std::shared_ptr<TheEndPortalTileEntity> table = dynamic_pointer_cast<TheEndPortalTileEntity>(_table);
+	std::shared_ptr<TheEndPortalTileEntity> table = std::dynamic_pointer_cast<TheEndPortalTileEntity>(_table);
 	float xx = (float) (tileEntityRenderDispatcher->xPlayer);
 	float yy = (float) (tileEntityRenderDispatcher->yPlayer);
 	float zz = (float) (tileEntityRenderDispatcher->zPlayer);

@@ -276,7 +276,7 @@ void LocalPlayer::aiStep()
 	float runTreshold = 0.8f;
 
 	bool wasRunning = input->ya >= runTreshold;
-	//input->tick( dynamic_pointer_cast<Player>( shared_from_this() ) );
+	//input->tick( std::dynamic_pointer_cast<Player>( shared_from_this() ) );
 	// 4J-PB - make it a localplayer
 	input->tick( this );
 	if (isUsingItem())
@@ -600,7 +600,7 @@ bool LocalPlayer::openContainer(std::shared_ptr<Container> container)
 
 bool LocalPlayer::startCrafting(int x, int y, int z)
 {
-	bool success = app.LoadCrafting3x3Menu(GetXboxPad(), dynamic_pointer_cast<LocalPlayer>( shared_from_this() ), x, y, z );
+	bool success = app.LoadCrafting3x3Menu(GetXboxPad(), std::dynamic_pointer_cast<LocalPlayer>( shared_from_this() ), x, y, z );
 	if( success ) ui.PlayUISFX(eSFX_Press);
 	//app.LoadXuiCraftMenu(0,inventory, level, x, y, z);
 	//minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
@@ -744,7 +744,7 @@ void LocalPlayer::awardStat(Stat *stat, byteArray param)
 			&& ProfileManager.IsFullVersion()
 		)
 	{
-		stat->handleParamBlob(dynamic_pointer_cast<LocalPlayer>(shared_from_this()), param);
+		stat->handleParamBlob(std::dynamic_pointer_cast<LocalPlayer>(shared_from_this()), param);
 	}
 	delete [] param.data;
 #else
@@ -1408,7 +1408,7 @@ bool LocalPlayer::handleMouseClick(int button)
 		if(lastClickState == lastClick_oldRepeat) return false;
 
 
-		std::shared_ptr<MultiplayerLocalPlayer> mplp = dynamic_pointer_cast<MultiplayerLocalPlayer>( shared_from_this() );
+		std::shared_ptr<MultiplayerLocalPlayer> mplp = std::dynamic_pointer_cast<MultiplayerLocalPlayer>( shared_from_this() );
 
 		if(mplp && mplp->connection) mplp->StopSleeping();
 	
@@ -1528,15 +1528,15 @@ void LocalPlayer::updateRichPresence()
 		{
 			app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_MAP);
 		}	
-		else if(riding != NULL && dynamic_pointer_cast<Minecart>(riding) != NULL)
+		else if(riding != NULL && std::dynamic_pointer_cast<Minecart>(riding) != NULL)
 		{
 			app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_RIDING_MINECART);
 		}
-		else if(riding != NULL && dynamic_pointer_cast<Boat>(riding) != NULL)
+		else if(riding != NULL && std::dynamic_pointer_cast<Boat>(riding) != NULL)
 		{
 			app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_BOATING);
 		}
-		else if(riding != NULL && dynamic_pointer_cast<Pig>(riding) != NULL)
+		else if(riding != NULL && std::dynamic_pointer_cast<Pig>(riding) != NULL)
 		{
 			app.SetRichPresenceContext(m_iPad,CONTEXT_GAME_STATE_RIDING_PIG);
 		}

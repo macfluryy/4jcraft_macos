@@ -123,9 +123,9 @@ bool CauldronTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player
                 level->addEntity(std::shared_ptr<ItemEntity>(new ItemEntity(level, x + 0.5, y + 1.5, z + 0.5, potion)));
             }
 			// 4J Stu - Brought forward change to update inventory when filling bottles with water
-			else if (dynamic_pointer_cast<ServerPlayer>( player ) != NULL)
+			else if (std::dynamic_pointer_cast<ServerPlayer>( player ) != NULL)
 			{
-				dynamic_pointer_cast<ServerPlayer>( player )->refreshContainer(player->inventoryMenu);
+				std::dynamic_pointer_cast<ServerPlayer>( player )->refreshContainer(player->inventoryMenu);
 			}
 			// 4J-PB - don't lose the water in creative mode
 			if (player->abilities.instabuild==false)

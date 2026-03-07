@@ -57,7 +57,7 @@ Arrow::Arrow(Level *level, std::shared_ptr<Mob> mob, std::shared_ptr<Mob> target
 	_init();
 
 	this->owner = mob;
-	if ( dynamic_pointer_cast<Player>( mob ) != NULL) pickup = PICKUP_ALLOWED;
+	if ( std::dynamic_pointer_cast<Player>( mob ) != NULL) pickup = PICKUP_ALLOWED;
 
 	y = mob->y + mob->getHeadHeight() - 0.1f;
 
@@ -94,7 +94,7 @@ Arrow::Arrow(Level *level, std::shared_ptr<Mob> mob, float power) : Entity( leve
 	_init();
 
 	this->owner = mob;
-	if ( dynamic_pointer_cast<Player>( mob ) != NULL) pickup = PICKUP_ALLOWED;
+	if ( std::dynamic_pointer_cast<Player>( mob ) != NULL) pickup = PICKUP_ALLOWED;
 
 	setSize(0.5f, 0.5f);
 
@@ -281,11 +281,11 @@ void Arrow::tick()
 			DamageSource *damageSource = NULL;
 			if (owner == NULL)
 			{
-				damageSource = DamageSource::arrow(dynamic_pointer_cast<Arrow>(shared_from_this()), shared_from_this());
+				damageSource = DamageSource::arrow(std::dynamic_pointer_cast<Arrow>(shared_from_this()), shared_from_this());
 			}
 			else
 			{
-				damageSource = DamageSource::arrow(dynamic_pointer_cast<Arrow>(shared_from_this()), owner);
+				damageSource = DamageSource::arrow(std::dynamic_pointer_cast<Arrow>(shared_from_this()), owner);
 			}
 
 			if(res->entity->hurt(damageSource, dmg))
@@ -299,7 +299,7 @@ void Arrow::tick()
 					res->entity->setOnFire(5);
 				}
 
-				std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(res->entity);
+				std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(res->entity);
 				if (mob != NULL)
 				{
 					mob->arrowCount++;
@@ -319,12 +319,12 @@ void Arrow::tick()
 				}
 
 				// 4J : WESTY : For award, need to track if creeper was killed by arrow from the player.
-				if ( (dynamic_pointer_cast<Player>(owner) != NULL ) &&				// arrow owner is a player
+				if ( (std::dynamic_pointer_cast<Player>(owner) != NULL ) &&				// arrow owner is a player
 					( res->entity->isAlive() == false ) &&							// target is now dead
-					( dynamic_pointer_cast<Creeper>( res->entity ) != NULL ) )		// target is a creeper
+					( std::dynamic_pointer_cast<Creeper>( res->entity ) != NULL ) )		// target is a creeper
 
 				{
-					dynamic_pointer_cast<Player>(owner)->awardStat(
+					std::dynamic_pointer_cast<Player>(owner)->awardStat(
 						GenericStats::arrowKillCreeper(),
 						GenericStats::param_arrowKillCreeper()
 						);

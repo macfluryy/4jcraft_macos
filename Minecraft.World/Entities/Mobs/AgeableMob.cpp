@@ -24,7 +24,7 @@ bool AgableMob::interact(std::shared_ptr<Player> player)
 			eINSTANCEOF classToSpawn = EntityIO::getClass(item->getAuxValue());
 			if (classToSpawn != eTYPE_NOTSET && (classToSpawn & eTYPE_AGABLE_MOB) == eTYPE_AGABLE_MOB && classToSpawn == GetType() ) // 4J Added GetType() check to only spawn same type
 			{
-				std::shared_ptr<AgableMob> offspring = getBreedOffspring(dynamic_pointer_cast<AgableMob>(shared_from_this()));
+				std::shared_ptr<AgableMob> offspring = getBreedOffspring(std::dynamic_pointer_cast<AgableMob>(shared_from_this()));
 				if (offspring != NULL)
 				{
 					offspring->setAge(-20 * 60 * 20);

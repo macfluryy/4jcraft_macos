@@ -27,7 +27,7 @@ void ItemFrameRenderer::render(std::shared_ptr<Entity>  _itemframe, double x, do
 {
 	// 4J - original version used generics and thus had an input parameter of type EnderCrystal rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<ItemFrame> itemFrame = dynamic_pointer_cast<ItemFrame>(_itemframe);
+	std::shared_ptr<ItemFrame> itemFrame = std::dynamic_pointer_cast<ItemFrame>(_itemframe);
 
 	glPushMatrix();
 	float xOffs = (float) (itemFrame->x - x) - 0.5f;

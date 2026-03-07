@@ -98,7 +98,7 @@ void TntTile::entityInside(Level *level, int x, int y, int z, std::shared_ptr<En
 	if (entity->GetType() == eTYPE_ARROW && !level->isClientSide)
 	{
 		// 4J Stu - Don't need to cast this
-		//std::shared_ptr<Arrow> arrow = dynamic_pointer_cast<Arrow>(entity);
+		//std::shared_ptr<Arrow> arrow = std::dynamic_pointer_cast<Arrow>(entity);
 		if (entity->isOnFire())
 		{
 			destroy(level, x, y, z, EXPLODE_BIT);

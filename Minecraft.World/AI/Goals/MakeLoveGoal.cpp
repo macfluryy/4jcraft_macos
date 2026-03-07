@@ -32,7 +32,7 @@ bool MakeLoveGoal::canUse()
 	std::shared_ptr<Entity> mate = level->getClosestEntityOfClass(typeid(Villager), villager->bb->grow(8, 3, 8), villager->shared_from_this());
 	if (mate == NULL) return false;
 
-	partner = std::weak_ptr<Villager>(dynamic_pointer_cast<Villager>(mate));
+	partner = std::weak_ptr<Villager>(std::dynamic_pointer_cast<Villager>(mate));
 	if (partner.lock()->getAge() != 0) return false;
 
 	return true;

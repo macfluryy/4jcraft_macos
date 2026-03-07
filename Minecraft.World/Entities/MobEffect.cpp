@@ -104,11 +104,11 @@ void MobEffect::applyEffectTick(std::shared_ptr<Mob> mob, int amplification)
 			mob->hurt(DamageSource::magic, 1);
 		}
 	}
-	else if (id == hunger->id && dynamic_pointer_cast<Player>(mob) != NULL)
+	else if (id == hunger->id && std::dynamic_pointer_cast<Player>(mob) != NULL)
 	{
 		// every tick, cause the same amount of exhaustion as when removing
 		// a block, times amplification
-		dynamic_pointer_cast<Player>(mob)->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE * (amplification + 1));
+		std::dynamic_pointer_cast<Player>(mob)->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE * (amplification + 1));
 	}
 	else if ((id == heal->id && !mob->isInvertedHealAndHarm()) || (id == harm->id && mob->isInvertedHealAndHarm()))
 	{

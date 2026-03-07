@@ -82,7 +82,7 @@ void ThrownPotion::onHit(HitResult *res)
 				for(AUTO_VAR(it, entitiesOfClass->begin()); it != entitiesOfClass->end(); ++it)
 				{
 					//std::shared_ptr<Entity> e = *it;
-					std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+					std::shared_ptr<Mob> e = std::dynamic_pointer_cast<Mob>( *it );
 					double dist = distanceToSqr(e);
 					if (dist < SPLASH_RANGE_SQ)
 					{

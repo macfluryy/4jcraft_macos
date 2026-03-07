@@ -13,7 +13,7 @@ void MushroomCowRenderer::render(std::shared_ptr<Entity> _mob, double x, double 
 {
 	// 4J - original version used generics and thus had an input parameter of type MushroomCow rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	//std::shared_ptr<MushroomCow> mob = dynamic_pointer_cast<MushroomCow>(_mob);
+	//std::shared_ptr<MushroomCow> mob = std::dynamic_pointer_cast<MushroomCow>(_mob);
 
 	// 4J Stu - No need to do the cast, just pass through as-is
 	MobRenderer::render(_mob, x, y, z, rot, a);
@@ -23,7 +23,7 @@ void MushroomCowRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a
 {
 	// 4J - original version used generics and thus had an input parameter of type MushroomCow rather than std::shared_ptr<Mob>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<MushroomCow> mob = dynamic_pointer_cast<MushroomCow>(_mob);
+	std::shared_ptr<MushroomCow> mob = std::dynamic_pointer_cast<MushroomCow>(_mob);
 	MobRenderer::additionalRendering(mob, a);
 	if (mob->isBaby()) return;
 	bindTexture(TN_TERRAIN); // 4J was "/terrain.png"

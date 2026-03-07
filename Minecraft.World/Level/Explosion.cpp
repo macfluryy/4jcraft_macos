@@ -149,7 +149,7 @@ void Explosion::explode()
 			e->yd += ya * push;
 			e->zd += za * push;					
 
-			std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(e);
+			std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(e);
 			if (player != NULL)
 			{
 				//app.DebugPrintf("Adding player knockback (%f,%f,%f)\n", xa * pow, ya * pow, za * pow);

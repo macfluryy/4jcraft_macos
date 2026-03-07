@@ -11,9 +11,9 @@ SaddleItem::SaddleItem(int id) : Item(id)
 
 bool SaddleItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob) 
 {
-    if ( dynamic_pointer_cast<Pig>(mob) )
+    if ( std::dynamic_pointer_cast<Pig>(mob) )
 	{
-        std::shared_ptr<Pig> pig = dynamic_pointer_cast<Pig>(mob);
+        std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(mob);
         if (!pig->hasSaddle() && !pig->isBaby()) 
 		{
             pig->setSaddle(true);

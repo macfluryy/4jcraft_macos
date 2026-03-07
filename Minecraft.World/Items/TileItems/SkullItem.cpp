@@ -46,7 +46,7 @@ bool SkullItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Pl
 		}
 
 		std::shared_ptr<TileEntity> skullTE = level->getTileEntity(x, y, z);
-		std::shared_ptr<SkullTileEntity> skull = dynamic_pointer_cast<SkullTileEntity>(skullTE);
+		std::shared_ptr<SkullTileEntity> skull = std::dynamic_pointer_cast<SkullTileEntity>(skullTE);
 
 		if (skull != NULL)
 		{

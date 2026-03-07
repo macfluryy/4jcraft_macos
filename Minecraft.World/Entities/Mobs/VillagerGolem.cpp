@@ -137,7 +137,7 @@ bool VillagerGolem::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	attackAnimationTick = 10;
 	level->broadcastEntityEvent(shared_from_this(), EntityEvent::START_ATTACKING);
-	bool hurt = target->hurt(DamageSource::mobAttack(dynamic_pointer_cast<Mob>(shared_from_this())), 7 + random->nextInt(15));
+	bool hurt = target->hurt(DamageSource::mobAttack(std::dynamic_pointer_cast<Mob>(shared_from_this())), 7 + random->nextInt(15));
 	if (hurt) target->yd += 0.4f;
 	level->playSound(shared_from_this(), eSoundType_MOB_IRONGOLEM_THROW, 1, 1);
 	return hurt;

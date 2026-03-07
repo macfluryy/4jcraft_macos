@@ -107,7 +107,7 @@ bool DispenserTile::use(Level *level, int x, int y, int z, std::shared_ptr<Playe
 		return true;
 	}
 
-	std::shared_ptr<DispenserTileEntity> trap = dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
+	std::shared_ptr<DispenserTileEntity> trap = std::dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
 	player->openTrap(trap);
 
 	return true;
@@ -138,7 +138,7 @@ void DispenserTile::fireArrow(Level *level, int x, int y, int z, Random *random)
 		xd = -1;
 	}
 
-	std::shared_ptr<DispenserTileEntity> trap = dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
+	std::shared_ptr<DispenserTileEntity> trap = std::dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
 	if(trap != NULL)
 	{
 		int slot=trap->getRandomSlot();
@@ -207,7 +207,7 @@ void DispenserTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_p
 
 void DispenserTile::onRemove(Level *level, int x, int y, int z, int id, int data)
 {
-	std::shared_ptr<Container> container = dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
+	std::shared_ptr<Container> container = std::dynamic_pointer_cast<DispenserTileEntity>( level->getTileEntity(x, y, z) );
 	if (container != NULL )
 	{
 		for (unsigned int i = 0; i < container->getContainerSize(); i++)
@@ -422,7 +422,7 @@ int DispenserTile::dispenseItem(std::shared_ptr<DispenserTileEntity> trap, Level
 			//MonsterPlacerItem *spawnEgg = (MonsterPlacerItem *)item->getItem();
 			std::shared_ptr<Entity> newEntity = MonsterPlacerItem::canSpawn(item->getAuxValue(), level,&iResult);
 			
-			std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(newEntity);
+			std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(newEntity);
 			if (mob != NULL)
 			{		
 				// 4J-PB - Changed the line below slightly since mobs were sticking to the dispenser rather than dropping down when fired

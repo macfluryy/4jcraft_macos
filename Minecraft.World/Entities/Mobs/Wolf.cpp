@@ -63,7 +63,7 @@ bool Wolf::useNewAi()
 void Wolf::setTarget(std::shared_ptr<Mob> target)
 {
 	TamableAnimal::setTarget(target);
-	if ( dynamic_pointer_cast<Player>(target) == NULL )
+	if ( std::dynamic_pointer_cast<Player>(target) == NULL )
 	{
 		setAngry(false);
 	}
@@ -294,7 +294,7 @@ bool Wolf::hurt(DamageSource *source, int dmg)
 	if (isInvulnerable()) return false;
 	std::shared_ptr<Entity> sourceEntity = source->getEntity();
 	sitGoal->wantToSit(false);
-	if (sourceEntity != NULL && !(dynamic_pointer_cast<Player>(sourceEntity) != NULL || dynamic_pointer_cast<Arrow>(sourceEntity) != NULL)) 
+	if (sourceEntity != NULL && !(std::dynamic_pointer_cast<Player>(sourceEntity) != NULL || std::dynamic_pointer_cast<Arrow>(sourceEntity) != NULL)) 
 	{
 		// take half damage from non-players and arrows
 		dmg = (dmg + 1) / 2;
@@ -305,7 +305,7 @@ bool Wolf::hurt(DamageSource *source, int dmg)
 bool Wolf::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	int damage = isTame() ? 4 : 2;
-	return target->hurt(DamageSource::mobAttack(dynamic_pointer_cast<Mob>(shared_from_this())), damage);
+	return target->hurt(DamageSource::mobAttack(std::dynamic_pointer_cast<Mob>(shared_from_this())), damage);
 }
 
 void Wolf::tame(const std::wstring &wsOwnerUUID, bool bDisplayTamingParticles, bool bSetSitting) 
@@ -536,7 +536,7 @@ bool Wolf::canMate(std::shared_ptr<Animal> animal)
 {
 	if (animal == shared_from_this()) return false;
 	if (!isTame()) return false;
-	std::shared_ptr<Wolf> partner = dynamic_pointer_cast<Wolf>(animal);
+	std::shared_ptr<Wolf> partner = std::dynamic_pointer_cast<Wolf>(animal);
 	if (partner == NULL) return false;
 	if (!partner->isTame()) return false;
 	if (partner->isSitting()) return false;

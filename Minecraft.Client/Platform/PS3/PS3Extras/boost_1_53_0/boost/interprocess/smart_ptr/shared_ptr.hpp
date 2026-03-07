@@ -341,7 +341,7 @@ shared_ptr<T, VoidAllocator, Deleter> const_pointer_cast(shared_ptr<U, VoidAlloc
 {  return shared_ptr<T, VoidAllocator, Deleter>(r, ipcdetail::const_cast_tag()); }
 
 template<class T, class VoidAllocator, class Deleter, class U> inline
-shared_ptr<T, VoidAllocator, Deleter> dynamic_pointer_cast(shared_ptr<U, VoidAllocator, Deleter> const & r)
+shared_ptr<T, VoidAllocator, Deleter> std::dynamic_pointer_cast(shared_ptr<U, VoidAllocator, Deleter> const & r)
 {  return shared_ptr<T, VoidAllocator, Deleter>(r, ipcdetail::dynamic_cast_tag());  }
 
 // to_raw_pointer() enables boost::mem_fn to recognize shared_ptr

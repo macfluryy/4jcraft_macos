@@ -66,14 +66,14 @@ std::shared_ptr<Particle> Particle::setPower(float power)
     xd *= power;
     yd = (yd - 0.1f) * power + 0.1f;
     zd *= power;
-    return dynamic_pointer_cast<Particle>( shared_from_this() );
+    return std::dynamic_pointer_cast<Particle>( shared_from_this() );
 }
 
 std::shared_ptr<Particle> Particle::scale(float scale)
 {
     setSize(0.2f * scale, 0.2f * scale);
     size *= scale;
-    return dynamic_pointer_cast<Particle>( shared_from_this() );
+    return std::dynamic_pointer_cast<Particle>( shared_from_this() );
 }
 
 void Particle::setColor(float r, float g, float b)

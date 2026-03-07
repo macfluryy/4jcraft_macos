@@ -108,6 +108,6 @@ bool SetEntityMotionPacket::canBeInvalidated()
 
 bool SetEntityMotionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	std::shared_ptr<SetEntityMotionPacket> target = dynamic_pointer_cast<SetEntityMotionPacket>(packet);
+	std::shared_ptr<SetEntityMotionPacket> target = std::dynamic_pointer_cast<SetEntityMotionPacket>(packet);
 	return target->id == id;
 }

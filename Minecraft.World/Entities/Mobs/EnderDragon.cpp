@@ -444,7 +444,7 @@ void EnderDragon::aiStep()
 
 				for( AUTO_VAR(it, targets->begin() ); it != targets->end(); ++it)
 				{
-					std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+					std::shared_ptr<Mob> e = std::dynamic_pointer_cast<Mob>( *it );
 					if (e != NULL)
 					{
 						//app.DebugPrintf("Attacking entity with acid\n");
@@ -734,7 +734,7 @@ void EnderDragon::aiStep()
 					double zdd = attackTarget->z - startingZ;
 
 					level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL, (int) x, (int) y, (int) z, 0);
-					std::shared_ptr<DragonFireball> ie = std::shared_ptr<DragonFireball>( new DragonFireball(level, dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
+					std::shared_ptr<DragonFireball> ie = std::shared_ptr<DragonFireball>( new DragonFireball(level, std::dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
 					ie->x = startingX;
 					ie->y = startingY;
 					ie->z = startingZ;
@@ -800,7 +800,7 @@ void EnderDragon::checkCrystals()
 		//for (Entity ec : crystals)
  		for(AUTO_VAR(it, crystals->begin()); it != crystals->end(); ++it)
 		{
-			std::shared_ptr<EnderCrystal> ec = dynamic_pointer_cast<EnderCrystal>( *it );
+			std::shared_ptr<EnderCrystal> ec = std::dynamic_pointer_cast<EnderCrystal>( *it );
 			double dist = ec->distanceToSqr(shared_from_this() );
 			if (dist < nearest)
 			{
@@ -840,7 +840,7 @@ void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> > *entities)
 	//for (Entity e : entities)
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
-		std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );
+		std::shared_ptr<Mob> e = std::dynamic_pointer_cast<Mob>( *it );
 		if (e != NULL)//(e instanceof Mob)
 		{
 			double xd = e->x - xm;
@@ -856,10 +856,10 @@ void EnderDragon::hurt(std::vector<std::shared_ptr<Entity> > *entities)
 	//for (int i = 0; i < entities->size(); i++)
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
-		std::shared_ptr<Mob> e = dynamic_pointer_cast<Mob>( *it );//entities.get(i);
+		std::shared_ptr<Mob> e = std::dynamic_pointer_cast<Mob>( *it );//entities.get(i);
 		if (e != NULL) //(e instanceof Mob)
 		{
-			DamageSource *damageSource = DamageSource::mobAttack( dynamic_pointer_cast<Mob>( shared_from_this() ));
+			DamageSource *damageSource = DamageSource::mobAttack( std::dynamic_pointer_cast<Mob>( shared_from_this() ));
 			e->hurt(damageSource, 10);
 			delete damageSource;
 		}
@@ -1116,7 +1116,7 @@ bool EnderDragon::hurt(std::shared_ptr<BossMobPart> bossMobPart, DamageSource *s
 	//zTarget = z - cc1 * 5 + (random->nextFloat() - 0.5f) * 2;
 	//attackTarget = NULL;
 
-	if (source == DamageSource::explosion || (dynamic_pointer_cast<Player>(source->getEntity()) != NULL))
+	if (source == DamageSource::explosion || (std::dynamic_pointer_cast<Player>(source->getEntity()) != NULL))
 	{
 		int healthBefore = health;
 		reallyHurt(source, damage);
@@ -1461,11 +1461,11 @@ void EnderDragon::handleCrystalDestroyed(DamageSource *source)
 #endif
 		}
 	}
-	else if(dynamic_pointer_cast<Player>(source->getEntity()) != NULL)
+	else if(std::dynamic_pointer_cast<Player>(source->getEntity()) != NULL)
 	{
 		if(setSynchedAction(e_EnderdragonAction_StrafePlayer))
 		{
-			attackTarget = dynamic_pointer_cast<Player>(source->getEntity());
+			attackTarget = std::dynamic_pointer_cast<Player>(source->getEntity());
 #if PRINT_DRAGON_STATE_CHANGE_MESSAGES
 			app.DebugPrintf("Dragon action is now: StrafePlayer\n");
 #endif

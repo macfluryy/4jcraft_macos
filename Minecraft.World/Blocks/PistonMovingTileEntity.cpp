@@ -23,9 +23,9 @@ void PistonMovingPiece::onPlace(Level *level, int x, int y, int z)
 void PistonMovingPiece::onRemove(Level *level, int x, int y, int z, int id, int data)
 {
     std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-    if (tileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL)
+    if (tileEntity != NULL && std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL)
 	{
-        dynamic_pointer_cast<PistonPieceEntity>(tileEntity)->finalTick();
+        std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity)->finalTick();
     }
 	else
 	{
@@ -120,7 +120,7 @@ AABB *PistonMovingPiece::getAABB(Level *level, int x, int y, int z)
 
 void PistonMovingPiece::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
-    std::shared_ptr<PistonPieceEntity> entity = dynamic_pointer_cast<PistonPieceEntity>(forceEntity);
+    std::shared_ptr<PistonPieceEntity> entity = std::dynamic_pointer_cast<PistonPieceEntity>(forceEntity);
 	if( entity == NULL ) entity = getEntity(level, x, y, z);
     if (entity != NULL)
 	{
@@ -191,9 +191,9 @@ AABB *PistonMovingPiece::getAABB(Level *level, int x, int y, int z, int tile, fl
 std::shared_ptr<PistonPieceEntity> PistonMovingPiece::getEntity(LevelSource *level, int x, int y, int z)
 {
     std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-    if (tileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL)
+    if (tileEntity != NULL && std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL)
 	{
-    	return  dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
+    	return  std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
     }
     return nullptr;
 }

@@ -9,7 +9,7 @@ GhastRenderer::GhastRenderer() : MobRenderer(new GhastModel(), 0.5f)
 
 void GhastRenderer::scale(std::shared_ptr<Mob> mob, float a)
 {
-	std::shared_ptr<Ghast> ghast = dynamic_pointer_cast<Ghast>(mob);
+	std::shared_ptr<Ghast> ghast = std::dynamic_pointer_cast<Ghast>(mob);
         
 	float ss = (ghast->oCharge+(ghast->charge-ghast->oCharge)*a)/20.0f;
 	if (ss<0) ss = 0;

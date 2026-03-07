@@ -66,7 +66,7 @@ void ItemFrame::setItem(std::shared_ptr<ItemInstance> item)
 		item = item->copy();
 		item->count = 1;
 
-		item->setFramed(dynamic_pointer_cast<ItemFrame>( shared_from_this() ));
+		item->setFramed(std::dynamic_pointer_cast<ItemFrame>( shared_from_this() ));
 	}
 	getEntityData()->set(DATA_ITEM, item);
 	getEntityData()->markDirty(DATA_ITEM);

@@ -14,7 +14,7 @@ PaintingRenderer::PaintingRenderer()
 void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Painting> painting = dynamic_pointer_cast<Painting>(_painting);
+	std::shared_ptr<Painting> painting = std::dynamic_pointer_cast<Painting>(_painting);
 	
     random->setSeed(187);
 

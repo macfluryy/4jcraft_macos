@@ -602,7 +602,7 @@ inline boost::interprocess::offset_ptr<T1, P1, O1, A1>
 //!Simulation of dynamic_cast between pointers. Never throws.
 template<class T1, class P1, class O1, std::size_t A1, class T2, class P2, class O2, std::size_t A2>
 inline boost::interprocess::offset_ptr<T1, P1, O1, A1>
-   dynamic_pointer_cast(const boost::interprocess::offset_ptr<T2, P2, O2, A2> & r)
+   std::dynamic_pointer_cast(const boost::interprocess::offset_ptr<T2, P2, O2, A2> & r)
 {
    return boost::interprocess::offset_ptr<T1, P1, O1, A1>
             (r, boost::interprocess::ipcdetail::dynamic_cast_tag());

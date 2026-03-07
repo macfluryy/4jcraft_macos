@@ -94,19 +94,19 @@ bool Monster::doHurtTarget(std::shared_ptr<Entity> target)
 		dmg -= (2 << getEffect(MobEffect::weakness)->getAmplifier());
 	}
 
-	DamageSource *damageSource = DamageSource::mobAttack(dynamic_pointer_cast<Mob>( shared_from_this() ) );
+	DamageSource *damageSource = DamageSource::mobAttack(std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
 	bool didHurt = target->hurt(damageSource, dmg);
 	delete damageSource;
 
 	if (didHurt)
 	{
-		int fireAspect = EnchantmentHelper::getFireAspect(dynamic_pointer_cast<Mob>(shared_from_this()));
+		int fireAspect = EnchantmentHelper::getFireAspect(std::dynamic_pointer_cast<Mob>(shared_from_this()));
 		if (fireAspect > 0)
 		{
 			target->setOnFire(fireAspect * 4);
 		}
 
-		std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(target);
+		std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(target);
 		if (mob != NULL)
 		{
 			ThornsEnchantment::doThornsAfterAttack(shared_from_this(), mob, random);

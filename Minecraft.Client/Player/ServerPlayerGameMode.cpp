@@ -247,7 +247,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z)
 	if( isCreative() )
 	{
 		clientToUpdateRenderer = true;
-		if( dynamic_pointer_cast<ServerPlayer>(player)->connection->isLocal() )
+		if( std::dynamic_pointer_cast<ServerPlayer>(player)->connection->isLocal() )
 		{
 			// Establish whether we are sharing this chunk between client & server
 			MultiPlayerLevel *clientLevel = Minecraft::GetInstance()->getLevel(level->dimension->id);
