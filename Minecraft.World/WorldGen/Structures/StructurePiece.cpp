@@ -53,7 +53,7 @@ StructurePiece::~StructurePiece()
 	if(boundingBox != NULL) delete boundingBox;
 }
 
-void StructurePiece::addChildren( StructurePiece* startPiece, list< StructurePiece* > *pieces, Random* random )
+void StructurePiece::addChildren( StructurePiece* startPiece, std::list< StructurePiece* > *pieces, Random* random )
 {
 }
 
@@ -75,7 +75,7 @@ bool StructurePiece::isInChunk( ChunkPos* pos )
 	return boundingBox->intersects( cx, cz, cx + 15, cz + 15 );
 }
 
-StructurePiece* StructurePiece::findCollisionPiece( list< StructurePiece* > *pieces, BoundingBox* box )
+StructurePiece* StructurePiece::findCollisionPiece( std::list< StructurePiece* > *pieces, BoundingBox* box )
 {
 	for ( AUTO_VAR(it, pieces->begin()); it != pieces->end(); it++ )
 	{

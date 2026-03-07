@@ -6,14 +6,14 @@ class StructureStart
 {
 
 protected:
-	list<StructurePiece *> pieces;
+	std::list<StructurePiece *> pieces;
     BoundingBox *boundingBox;
 
     StructureStart();
 public:
 	~StructureStart();
 	BoundingBox *getBoundingBox();
-    list<StructurePiece *> *getPieces();
+    std::list<StructurePiece *> *getPieces();
     void postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 protected:
 	void calculateBoundingBox();

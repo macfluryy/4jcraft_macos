@@ -134,10 +134,10 @@ public:
 	int							m_primedTntCount;
 	int							m_fallingTileCount;
 	CRITICAL_SECTION			m_limiterCS;
-	list< std::shared_ptr<Entity> >	m_itemEntities;
-	list< std::shared_ptr<Entity> >	m_hangingEntities;
-	list< std::shared_ptr<Entity> >	m_arrowEntities;
-	list< std::shared_ptr<Entity> >	m_experienceOrbEntities;
+	std::list< std::shared_ptr<Entity> >	m_itemEntities;
+	std::list< std::shared_ptr<Entity> >	m_hangingEntities;
+	std::list< std::shared_ptr<Entity> >	m_arrowEntities;
+	std::list< std::shared_ptr<Entity> >	m_experienceOrbEntities;
 
 	virtual bool addEntity(std::shared_ptr<Entity> e);
 	void entityAddedExtra(std::shared_ptr<Entity> e);

@@ -58,7 +58,7 @@ private:
 		virtual bool doPlace(int depth) { return PieceWeight::doPlace(depth) && depth > 5; }
 	};
 
-    static list<PieceWeight *> currentPieces;
+    static std::list<PieceWeight *> currentPieces;
 	static EPieceClass imposedPiece;
     static int totalWeight;
 
@@ -68,9 +68,9 @@ public:
 private:
 	class StrongholdPiece;
 	static bool updatePieceWeight();
-	static StrongholdPiece *findAndCreatePieceFactory(EPieceClass pieceClass, list<StructurePiece*> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
-	static StrongholdPiece *generatePieceFromSmallDoor(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
-	static StructurePiece *generateAndAddPiece(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
+	static StrongholdPiece *findAndCreatePieceFactory(EPieceClass pieceClass, std::list<StructurePiece*> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
+	static StrongholdPiece *generatePieceFromSmallDoor(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
+	static StructurePiece *generateAndAddPiece(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
 
 
     /**
@@ -91,9 +91,9 @@ private:
 
 		void generateSmallDoor(Level *level, Random *random, BoundingBox *chunkBB, SmallDoorType doorType, int footX, int footY, int footZ);
 		SmallDoorType randomSmallDoor(Random *random);		
-		StructurePiece *generateSmallDoorChildForward(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int xOff, int yOff);
-		StructurePiece *generateSmallDoorChildLeft(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int yOff, int zOff);
-		StructurePiece *generateSmallDoorChildRight(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int yOff, int zOff);
+		StructurePiece *generateSmallDoorChildForward(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int xOff, int yOff);
+		StructurePiece *generateSmallDoorChildLeft(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int yOff, int zOff);
+		StructurePiece *generateSmallDoorChildRight(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int yOff, int zOff);
 		
 		static bool isOkBox(BoundingBox *box, StartPiece *startRoom); // 4J added startRoom param
     };
@@ -111,7 +111,7 @@ public:
 	public:
 		FillerCorridor(int genDepth, Random *random, BoundingBox *corridorBox, int direction);
 
-        static BoundingBox *findPieceBox(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
+        static BoundingBox *findPieceBox(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -134,8 +134,8 @@ public:
 		StairsDown(int genDepth, Random *random, int west, int north);
 		StairsDown(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
 
-        virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-        static StairsDown *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+        static StairsDown *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -176,8 +176,8 @@ public:
 
 	public:
 		Straight(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-		static Straight *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+		static Straight *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 
     };
@@ -201,8 +201,8 @@ public:
 
 	public:
 		ChestCorridor(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-        virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-        static ChestCorridor *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+        static ChestCorridor *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -222,8 +222,8 @@ public:
 
 	public:
 		StraightStairsDown(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-		static StraightStairsDown *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+		static StraightStairsDown *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -244,8 +244,8 @@ public:
 
 	public:
 		LeftTurn(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-		static LeftTurn *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+		static LeftTurn *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -258,7 +258,7 @@ public:
 	{
 	public:
 		RightTurn(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
 	    virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 	};
 
@@ -283,8 +283,8 @@ public:
         const int type;
 	public:
 		RoomCrossing(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-        virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-        static RoomCrossing *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+        static RoomCrossing *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -304,8 +304,8 @@ public:
 
 	public:
 		PrisonHall(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-        virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-		static PrisonHall *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+		static PrisonHall *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -332,7 +332,7 @@ public:
 
 	public:
 		Library(int genDepth, Random *random, BoundingBox *roomBox, int direction);
-        static Library *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        static Library *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 
     };
@@ -356,8 +356,8 @@ public:
 
 	public:
 		FiveCrossing(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-        virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-        static FiveCrossing *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+        virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+        static FiveCrossing *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
         virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 
@@ -378,8 +378,8 @@ public:
 
 	public:
 		PortalRoom(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
-		void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
-		static PortalRoom *createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+		void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
+		static PortalRoom *createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
 		bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
     };
 

@@ -54,7 +54,7 @@ NetherBridgePieces::PieceWeight *NetherBridgePieces::castlePieceWeights[NetherBr
 	new PieceWeight(EPieceClass_CastleCorridorTBalconyPiece, 7, 2),
 };
 
-NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::findAndCreateBridgePieceFactory(NetherBridgePieces::PieceWeight *piece, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth)
+NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::findAndCreateBridgePieceFactory(NetherBridgePieces::PieceWeight *piece, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth)
 {
 	EPieceClass pieceClass = piece->pieceClass;
 	NetherBridgePiece *structurePiece = NULL;
@@ -118,7 +118,7 @@ NetherBridgePieces::NetherBridgePiece::NetherBridgePiece(int genDepth) : Structu
 {
 }
 
-int NetherBridgePieces::NetherBridgePiece::updatePieceWeight(list<PieceWeight *> *currentPieces)
+int NetherBridgePieces::NetherBridgePiece::updatePieceWeight(std::list<PieceWeight *> *currentPieces)
 {
 	bool hasAnyPieces = false;
 	int totalWeight = 0;
@@ -135,7 +135,7 @@ int NetherBridgePieces::NetherBridgePiece::updatePieceWeight(list<PieceWeight *>
 	return (hasAnyPieces ? totalWeight : -1);
 }
 
-NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::NetherBridgePiece::generatePiece(StartPiece *startPiece, list<NetherBridgePieces::PieceWeight *> *currentPieces, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth)
+NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::NetherBridgePiece::generatePiece(StartPiece *startPiece, std::list<NetherBridgePieces::PieceWeight *> *currentPieces, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth)
 {
 	int totalWeight = updatePieceWeight(currentPieces);
 	boolean doStuff = totalWeight > 0 && depth <= MAX_DEPTH;
@@ -178,13 +178,13 @@ NetherBridgePieces::NetherBridgePiece *NetherBridgePieces::NetherBridgePiece::ge
 
 }
 
-StructurePiece *NetherBridgePieces::NetherBridgePiece::generateAndAddPiece(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth, bool isCastle)
+StructurePiece *NetherBridgePieces::NetherBridgePiece::generateAndAddPiece(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth, bool isCastle)
 {
 	if (abs(footX - startPiece->getBoundingBox()->x0) > 7 * 16 || abs(footZ - startPiece->getBoundingBox()->z0) > 7 * 16)
 	{
 		return BridgeEndFiller::createPiece(pieces, random, footX, footY, footZ, direction, depth);
 	}
-	list<PieceWeight *> *availablePieces = &startPiece->availableBridgePieces;
+	std::list<PieceWeight *> *availablePieces = &startPiece->availableBridgePieces;
 	if (isCastle)
 	{
 		availablePieces = &startPiece->availableCastlePieces;
@@ -198,7 +198,7 @@ StructurePiece *NetherBridgePieces::NetherBridgePiece::generateAndAddPiece(Start
 	return newPiece;
 }
 
-StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildForward(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int xOff, int yOff, bool isCastle)
+StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildForward(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int xOff, int yOff, bool isCastle)
 {
 	switch (orientation)
 	{
@@ -214,7 +214,7 @@ StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildForward(Star
 	return NULL;
 }
 
-StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildLeft(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int yOff, int zOff, bool isCastle)
+StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildLeft(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int yOff, int zOff, bool isCastle)
 {
 	switch (orientation)
 	{
@@ -230,7 +230,7 @@ StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildLeft(StartPi
 	return NULL;
 }
 
-StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildRight(StartPiece *startPiece, list<StructurePiece *> *pieces, Random *random, int yOff, int zOff, bool isCastle)
+StructurePiece *NetherBridgePieces::NetherBridgePiece::generateChildRight(StartPiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int yOff, int zOff, bool isCastle)
 {
 	switch (orientation)
 	{
@@ -316,12 +316,12 @@ NetherBridgePieces::BridgeStraight::BridgeStraight(int genDepth, Random *random,
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::BridgeStraight::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::BridgeStraight::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 1, 3, false);
 }
 
-NetherBridgePieces::BridgeStraight *NetherBridgePieces::BridgeStraight::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::BridgeStraight *NetherBridgePieces::BridgeStraight::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, -3, 0, width, height, depth, direction);
 
@@ -382,7 +382,7 @@ NetherBridgePieces::BridgeEndFiller::BridgeEndFiller(int genDepth, Random *rando
 	selfSeed = random->nextInt();
 }
 
-NetherBridgePieces::BridgeEndFiller *NetherBridgePieces::BridgeEndFiller::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::BridgeEndFiller *NetherBridgePieces::BridgeEndFiller::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, -3, 0, width, height, depth, direction);
 
@@ -464,14 +464,14 @@ NetherBridgePieces::BridgeCrossing::BridgeCrossing(Random *random, int west, int
 	}
 }
 
-void NetherBridgePieces::BridgeCrossing::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::BridgeCrossing::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 8, 3, false);
 	generateChildLeft((StartPiece *) startPiece, pieces, random, 3, 8, false);
 	generateChildRight((StartPiece *) startPiece, pieces, random, 3, 8, false);
 }
 
-NetherBridgePieces::BridgeCrossing *NetherBridgePieces::BridgeCrossing::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::BridgeCrossing *NetherBridgePieces::BridgeCrossing::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -8, -3, 0, width, height, depth, direction);
 
@@ -565,14 +565,14 @@ NetherBridgePieces::RoomCrossing::RoomCrossing(int genDepth, Random *random, Bou
 	boundingBox = box;
 }
 
-void NetherBridgePieces::RoomCrossing::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::RoomCrossing::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 2, 0, false);
 	generateChildLeft((StartPiece *) startPiece, pieces, random, 0, 2, false);
 	generateChildRight((StartPiece *) startPiece, pieces, random, 0, 2, false);
 }
 
-NetherBridgePieces::RoomCrossing *NetherBridgePieces::RoomCrossing::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::RoomCrossing *NetherBridgePieces::RoomCrossing::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0, width, height, depth, direction);
 
@@ -632,12 +632,12 @@ NetherBridgePieces::StairsRoom::StairsRoom(int genDepth, Random *random, Boundin
 	boundingBox = box;
 }
 
-void NetherBridgePieces::StairsRoom::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::StairsRoom::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildRight((StartPiece *) startPiece, pieces, random, 6, 2, false);
 }
 
-NetherBridgePieces::StairsRoom *NetherBridgePieces::StairsRoom::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::StairsRoom *NetherBridgePieces::StairsRoom::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0, width, height, depth, direction);
 
@@ -707,7 +707,7 @@ NetherBridgePieces::MonsterThrone::MonsterThrone(int genDepth, Random *random, B
 	hasPlacedMobSpawner = false;
 }
 
-NetherBridgePieces::MonsterThrone *NetherBridgePieces::MonsterThrone::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::MonsterThrone *NetherBridgePieces::MonsterThrone::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0, width, height, depth, direction);
 
@@ -780,12 +780,12 @@ NetherBridgePieces::CastleEntrance::CastleEntrance(int genDepth, Random *random,
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleEntrance::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleEntrance::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 5, 3, true);
 }
 
-NetherBridgePieces::CastleEntrance *NetherBridgePieces::CastleEntrance::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleEntrance *NetherBridgePieces::CastleEntrance::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -5, -3, 0, width, height, depth, direction);
 
@@ -905,13 +905,13 @@ NetherBridgePieces::CastleStalkRoom::CastleStalkRoom(int genDepth, Random *rando
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleStalkRoom::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleStalkRoom::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 5, 3, true);
 	generateChildForward((StartPiece *) startPiece, pieces, random, 5, 11, true);
 }
 
-NetherBridgePieces::CastleStalkRoom *NetherBridgePieces::CastleStalkRoom::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleStalkRoom *NetherBridgePieces::CastleStalkRoom::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -5, -3, 0, width, height, depth, direction);
 
@@ -1067,12 +1067,12 @@ NetherBridgePieces::CastleSmallCorridorPiece::CastleSmallCorridorPiece(int genDe
 }
 
 
-void NetherBridgePieces::CastleSmallCorridorPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleSmallCorridorPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 1, 0, true);
 }
 
-NetherBridgePieces::CastleSmallCorridorPiece *NetherBridgePieces::CastleSmallCorridorPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleSmallCorridorPiece *NetherBridgePieces::CastleSmallCorridorPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0, width, height, depth, direction);
@@ -1126,14 +1126,14 @@ NetherBridgePieces::CastleSmallCorridorCrossingPiece::CastleSmallCorridorCrossin
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleSmallCorridorCrossingPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleSmallCorridorCrossingPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 1, 0, true);
 	generateChildLeft((StartPiece *) startPiece, pieces, random, 0, 1, true);
 	generateChildRight((StartPiece *) startPiece, pieces, random, 0, 1, true);
 }
 
-NetherBridgePieces::CastleSmallCorridorCrossingPiece *NetherBridgePieces::CastleSmallCorridorCrossingPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleSmallCorridorCrossingPiece *NetherBridgePieces::CastleSmallCorridorCrossingPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0, width, height, depth, direction);
 
@@ -1184,12 +1184,12 @@ NetherBridgePieces::CastleSmallCorridorRightTurnPiece::CastleSmallCorridorRightT
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleSmallCorridorRightTurnPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleSmallCorridorRightTurnPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildRight((StartPiece *) startPiece, pieces, random, 0, 1, true);
 }
 
-NetherBridgePieces::CastleSmallCorridorRightTurnPiece *NetherBridgePieces::CastleSmallCorridorRightTurnPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleSmallCorridorRightTurnPiece *NetherBridgePieces::CastleSmallCorridorRightTurnPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0, width, height, depth, direction);
 
@@ -1245,12 +1245,12 @@ NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::CastleSmallCorridorLeftTur
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildLeft((StartPiece *) startPiece, pieces, random, 0, 1, true);
 }
 
-NetherBridgePieces::CastleSmallCorridorLeftTurnPiece *NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleSmallCorridorLeftTurnPiece *NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0, width, height, depth, direction);
 
@@ -1306,12 +1306,12 @@ NetherBridgePieces::CastleCorridorStairsPiece::CastleCorridorStairsPiece(int gen
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleCorridorStairsPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleCorridorStairsPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	generateChildForward((StartPiece *) startPiece, pieces, random, 1, 0, true);
 }
 
-NetherBridgePieces::CastleCorridorStairsPiece *NetherBridgePieces::CastleCorridorStairsPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleCorridorStairsPiece *NetherBridgePieces::CastleCorridorStairsPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, -7, 0, width, height, depth, direction);
 
@@ -1376,7 +1376,7 @@ NetherBridgePieces::CastleCorridorTBalconyPiece::CastleCorridorTBalconyPiece(int
 	boundingBox = stairsBox;
 }
 
-void NetherBridgePieces::CastleCorridorTBalconyPiece::addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random)
+void NetherBridgePieces::CastleCorridorTBalconyPiece::addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random)
 {
 	int zOff = 1;
 	// compensate for weird negative-facing behaviour
@@ -1389,7 +1389,7 @@ void NetherBridgePieces::CastleCorridorTBalconyPiece::addChildren(StructurePiece
 	generateChildRight((StartPiece *) startPiece, pieces, random, 0, zOff, random->nextInt(8) > 0);
 }
 
-NetherBridgePieces::CastleCorridorTBalconyPiece *NetherBridgePieces::CastleCorridorTBalconyPiece::createPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
+NetherBridgePieces::CastleCorridorTBalconyPiece *NetherBridgePieces::CastleCorridorTBalconyPiece::createPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth)
 {
 	BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -3, 0, 0, width, height, depth, direction);
 
