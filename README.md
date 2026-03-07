@@ -6,19 +6,26 @@
 
 ---
 
-4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.)
+4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.) and refactoring the codebase to improve organization and use modern C++ features.
 
 Join our community:
 * Discord: https://discord.gg/zFCwRWkkUg
 * Steam: https://steamcommunity.com/groups/4JCraft
 
-## Planned platforms to be supported:
-- Linux (~85%)
+## Scope & Platform Support
+
+At the moment, we're aiming to support the following platforms:
+
+- Linux (~85%, *rough estimate*)
 - Emscripten (not started)
-- PS3
 - macOS (not started)
 - iOS (not started)
 - Android (not started)
+
+> All efforts are focused towards a native Linux port, OpenGL rendering pipeline, and modernizing the existing LCE codebase/tooling to make future platform ports easier.
+> 
+> `Windows64` and other platforms originally supported by LCE are currently unsupported, since the original Visual Studio tooling has been stripped from this repository and replaced with our own.
+
 ---
 
 ## Building (Linux)
