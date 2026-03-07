@@ -22,14 +22,13 @@ install_subdir(client_platform_path / 'DurangoMedia/DLC', install_dir : 'Windows
 
 # TODO: Need to make this take inputs
 localisation = custom_target('Minecraft.Assets_Localisation',
-  output : [ 'languages.loc', 'localisation_strings.h' ],
+  output : [ 'languages.loc', 'strings.h' ],
   command : [
     'python3', meson.project_source_root() / 'scripts/pack_loc.py',
      client_platform_path / 'Windows64Media/loc',
     '@OUTPUT0@',
     '@OUTPUT1@'
-  ],
-  build_always_stale : true
+  ]
 )
 
 colour_table = custom_target('Minecraft.Assets_Colour_Table',
@@ -427,7 +426,7 @@ assets_archive = custom_target('Minecraft.Assets_Archive',
   install : true,
   install_dir : 'Common/Media',
   build_subdir : 'Common/Media',
-  build_by_default : true,
+  build_by_default : true
 )
 
 
@@ -438,6 +437,7 @@ assets_archive = custom_target('Minecraft.Assets_Archive',
 
 assets_localisation_dep = declare_dependency(
     sources : localisation[1],
+    # sources : client_platform_path / 'Windows64Media/strings.h', 
     include_directories : include_directories('.')
 )
 

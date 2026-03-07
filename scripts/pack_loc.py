@@ -71,7 +71,7 @@ for lang_file_path in lang_file_paths:
         strings[string_name] = string
     print(f"Processed {len(strings)} strings from {lang_file_path}")
 
-    langs[lang_name] = strings
+    langs[lang_name] = dict(sorted(strings.items()))
 print(f"Processed {len(langs)} languages")
 
 # Write loc file
