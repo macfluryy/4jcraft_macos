@@ -95,7 +95,7 @@ colour_table = custom_target('Minecraft.Client_Colour_Table',
 
 movies_path = meson.current_source_dir() / 'Build/Assets/movies'
 archive_sources = [ 
-  meson.current_source_dir() / 'Platform/Windows64Media/Media/languages.loc',
+  localisation, #meson.current_source_dir() / 'Platform/Windows64Media/Media/languages.loc',
   colour_table,
   asset_dir / 'splashes.txt',
   asset_dir / 'graphics\SaveChest.png',
