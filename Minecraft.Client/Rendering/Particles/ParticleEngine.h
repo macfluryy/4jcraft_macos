@@ -26,7 +26,7 @@ public:
 protected:
 	Level *level;
 private:
-	deque<std::shared_ptr<Particle> > particles[3][TEXTURE_COUNT];		// 4J made two arrays to cope with simultaneous two dimensions
+	std::deque<std::shared_ptr<Particle> > particles[3][TEXTURE_COUNT];		// 4J made two arrays to cope with simultaneous two dimensions
     Textures *textures;
     Random *random;
 

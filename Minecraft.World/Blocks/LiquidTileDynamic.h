@@ -18,7 +18,7 @@ private:
 		{
 		}
 	} LiquidTickData;
-	deque<LiquidTickData> m_tilesToTick; // For an iterative version of instatick
+	std::deque<LiquidTickData> m_tilesToTick; // For an iterative version of instatick
 	bool m_iterativeInstatick;
 protected:
 	LiquidTileDynamic(int id, Material *material);
