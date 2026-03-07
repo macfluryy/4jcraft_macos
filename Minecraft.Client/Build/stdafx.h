@@ -235,11 +235,13 @@ typedef XUID GameSessionUID;
 #include "Common/Minecraft_Macros.h"
 #include "Common/BuildVer.h"
 
+// This is generated at build time via scripts/pack_loc.py
+#include "strings.h"
+
 #ifdef _XBOX
 	#include "../Platform/Xbox/Xbox_App.h"
 	#include "../Platform/Xbox/Sentient/MinecraftTelemetry.h"
 	#include "../Platform/Xbox/Sentient/DynamicConfigurations.h"
-	#include "XboxMedia/strings.h"
 	#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
 	#include "../Platform/Xbox/Sentient/Include/SenClientStats.h"
 	#include "../Platform/Xbox/GameConfig/Minecraft.spa.h"
@@ -255,7 +257,6 @@ typedef XUID GameSessionUID;
 	#include "../Platform/PS3/Sentient/MinecraftTelemetry.h"
 	#include "../Platform/PS3/Sentient/DynamicConfigurations.h"
 	#include "../Platform/PS3/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/PS3Media/strings.h"
 	#include "../Platform/PS3/PS3_App.h"
 	#include "../Platform/PS3/GameConfig/Minecraft.spa.h"
 	#include "../Platform/PS3Media/4J_strings.h"
@@ -267,7 +268,6 @@ typedef XUID GameSessionUID;
 	#include "../Platform/PS3/PS3_UIController.h"
 #elif defined _DURANGO
 	#include "../Platform/Durango/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/DurangoMedia/strings.h"
 	#include "../Platform/Durango/Durango_App.h"
 	#include "../Platform/Durango/Sentient/DynamicConfigurations.h"	
 	#include "../Platform/Durango/Sentient/TelemetryEnum.h"
@@ -282,7 +282,6 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Durango/Durango_UIController.h"
 #elif defined _WINDOWS64
 	#include "../Platform/Windows64/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/Windows64Media/strings.h"
 	#include "../Platform/Windows64/Windows64_App.h"
 	#include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
 	#include "../Platform/Windows64/Sentient/SentientTelemetryCommon.h"
@@ -297,7 +296,6 @@ typedef XUID GameSessionUID;
 	// Linux build: avoid pulling in Windows64 platform headers (they cause
 	// symbol/class redefinitions). Use Orbis-compatible stubs and Linux controller.
 	#include "../Platform/Linux/Linux_App.h"
-	#include "../Platform/OrbisMedia/strings.h"
 	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
 	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
 	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
@@ -306,7 +304,6 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Linux/Social/SocialManager.h"
 #elif defined __PSVITA__
 	#include "../Platform/PSVita/PSVita_App.h"
-	#include "../Platform/PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this
 	#include "../Platform/PSVita/Sentient/SentientManager.h"
 	#include "../Platform/PSVita/Sentient/MinecraftTelemetry.h"
 	#include "../Platform/PSVita/Sentient/DynamicConfigurations.h"
@@ -319,7 +316,6 @@ typedef XUID GameSessionUID;
 	#include "../Platform/PSVita/PSVita_UIController.h"
 #else
 	#include "../Platform/Orbis/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/OrbisMedia/strings.h"
 	#include "../Platform/Orbis/Orbis_App.h"
 	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
 	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"

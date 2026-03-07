@@ -4,7 +4,6 @@
 #include "../../../Minecraft.World/Build/stdafx.h"
 
 #include <assert.h>
-#include "../DurangoMedia/strings.h"
 #include "../DurangoMedia/4J_strings.h"
 #include "Minecraft_Controller_Actions.h"
 #include "../Xbox/Xbox_App.h"

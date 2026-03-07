@@ -14,7 +14,6 @@
 #include "SonyVoiceChat_Orbis.h"
 #include "../../../Build/Common/Network/Sony/SonyHttp.h"
 #include "../../../../Minecraft.World/Util/C4JThread.h"
-// #include "../../PS3/PS3Extras/PS3Strings.h"
 
 
 int (* SQRNetworkManager_Orbis::s_SignInCompleteCallbackFn)(void *pParam, bool bContinue, int pad) = NULL;

@@ -30,13 +30,14 @@ if host_machine.system() == 'linux'
 endif
 
 executable('Minecraft.Client',
-  client_sources + platform_sources,
+  client_sources + platform_sources + localisation[1],
   include_directories : include_directories('Build'),
   dependencies : [
     render_dep,
     input_dep,
     profile_dep,
     storage_dep,
+    assets_localisation_dep,
     world_dep,
     gl_dep,
     glu_dep,
@@ -50,5 +51,7 @@ executable('Minecraft.Client',
     '-include', meson.current_source_dir() / 'Build/stdafx.h',
   ],
   c_args   : global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
-  install  : false,
+  install  : true,
+  install_dir : ''
 )
+

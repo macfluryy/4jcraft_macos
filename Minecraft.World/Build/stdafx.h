@@ -207,21 +207,21 @@ void MemSect(int sect);
 
 #include "../../Minecraft.Client/Build/Common/BuildVer.h"
 
+// This is generated at build time via scripts/pack_loc.py
+#include "strings.h"
+
 #ifdef _XBOX
 #include "../../Minecraft.Client/Platform/Xbox/Xbox_App.h"
-#include "../Minecraft.Client/XboxMedia/strings.h"
 #include "../../Minecraft.Client/Platform/Xbox/Sentient/SentientTelemetryCommon.h"
 #include "../../Minecraft.Client/Platform/Xbox/Sentient/MinecraftTelemetry.h"
 
 #elif defined (__PS3__)
 #include "../../Minecraft.Client/Platform/PS3/PS3_App.h"
-#include "../../Minecraft.Client/Platform/PS3Media/strings.h"
 #include "../../Minecraft.Client/Platform/PS3/Sentient/SentientTelemetryCommon.h"
 #include "../../Minecraft.Client/Platform/PS3/Sentient/MinecraftTelemetry.h"
 
 #elif defined _DURANGO
 #include "../../Minecraft.Client/Platform/Durango/Durango_App.h"
-#include "../../Minecraft.Client/Platform/DurangoMedia/strings.h"
 //#include "../../Minecraft.Client/Platform/Durango/Sentient/SentientManager.h"
 #include "../../Minecraft.Client/Platform/Durango/Sentient/SentientTelemetryCommon.h"
 #include "../../Minecraft.Client/Platform/Durango/Sentient/MinecraftTelemetry.h"
@@ -229,13 +229,11 @@ void MemSect(int sect);
 
 #elif defined _WINDOWS64
 #include "../../Minecraft.Client/Platform/Windows64/Windows64_App.h"
-#include "../../Minecraft.Client/Platform/Windows64Media/strings.h"
 #include "../../Minecraft.Client/Platform/Windows64/Sentient/SentientTelemetryCommon.h"
 #include "../../Minecraft.Client/Platform/Windows64/Sentient/MinecraftTelemetry.h"
 
 #elif defined __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVita_App.h"
-#include "../../Minecraft.Client/Platform/PSVitaMedia/strings.h"		// TODO - create PSVita-specific version of this
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/SentientManager.h"
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/MinecraftTelemetry.h"
 #elif defined(__linux__)
@@ -243,14 +241,12 @@ void MemSect(int sect);
 	// All Orbis Sentient headers have #pragma once, preventing double-inclusion
 	// when DLC/other Common files also pull in Minecraft.Client stdafx.h.
 	#include "../../Minecraft.Client/Platform/Linux/Linux_App.h"
-	#include "../../Minecraft.Client/Platform/OrbisMedia/strings.h"
 	#include "../../Minecraft.Client/Platform/Orbis/Sentient/SentientTelemetryCommon.h"
 	#include "../../Minecraft.Client/Platform/Orbis/Sentient/DynamicConfigurations.h"
 	#include "../../Minecraft.Client/Platform/Orbis/GameConfig/Minecraft.spa.h"
 // #include "../../Minecraft.Client/Platform/Windows64/Sentient/MinecraftTelemetry.h"
 #else
 #include "../../Minecraft.Client/Platform/Orbis/Orbis_App.h"
-#include "../../Minecraft.Client/Platform/OrbisMedia/strings.h"
 #include "../../Minecraft.Client/Platform/Orbis/Sentient/SentientTelemetryCommon.h"
 #include "../../Minecraft.Client/Platform/Orbis/Sentient/MinecraftTelemetry.h"
 #endif
