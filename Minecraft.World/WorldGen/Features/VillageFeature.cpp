@@ -89,7 +89,7 @@ VillageFeature::VillageStart::VillageStart(Level *level, Random *random, int chu
 	valid = false;	// 4J added initialiser
 	m_iXZSize=iXZSize;
 
-    list<VillagePieces::PieceWeight *> *pieceSet = VillagePieces::createPieceSet(random, villageSizeModifier);
+    std::list<VillagePieces::PieceWeight *> *pieceSet = VillagePieces::createPieceSet(random, villageSizeModifier);
 
     VillagePieces::StartPiece *startRoom = new VillagePieces::StartPiece(level->getBiomeSource(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, pieceSet, villageSizeModifier, level);
 	pieces.push_back(startRoom);

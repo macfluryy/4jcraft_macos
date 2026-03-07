@@ -21,7 +21,7 @@ public:
     MinecraftServer *server;
     ServerPlayerGameMode *gameMode;
     double lastMoveX, lastMoveZ;
-    list<ChunkPos> chunksToSend;
+    std::list<ChunkPos> chunksToSend;
 	std::vector<int> entitiesToRemove;
     std::unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> seenChunks;
     int spewTimer;
