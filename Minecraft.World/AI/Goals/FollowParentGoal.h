@@ -8,7 +8,7 @@ class FollowParentGoal : public Goal
 {
 private:
 	Animal *animal; // Owner of this goal
-	weak_ptr<Animal> parent;
+	std::<Animal> parent;
 	float speed;
 	int timeToRecalcPath;
 

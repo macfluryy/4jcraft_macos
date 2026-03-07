@@ -818,7 +818,7 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals()
 		{
 			if (e->riding->removed || e->riding->rider.lock() != e)
 			{
-				e->riding->rider = weak_ptr<Entity>();
+				e->riding->rider = std::<Entity>();
 				e->riding = nullptr;
 			}
 			else 

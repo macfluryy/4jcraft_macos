@@ -434,7 +434,7 @@ void Boat::tick()
 
 	if (rider.lock() != NULL)
 	{
-		if (rider.lock()->removed) rider = weak_ptr<Entity>();
+		if (rider.lock()->removed) rider = std::<Entity>();
 	}
 }
 

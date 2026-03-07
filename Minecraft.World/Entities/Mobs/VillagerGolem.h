@@ -16,7 +16,7 @@ protected:
 
 private:
 	int villageUpdateInterval;
-	weak_ptr<Village> village;
+	std::<Village> village;
 	int attackAnimationTick;
 	int offerFlowerTick;
 

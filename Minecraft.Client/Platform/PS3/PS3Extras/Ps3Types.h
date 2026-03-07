@@ -20,7 +20,7 @@
 
 //#include "winerror.h"
 
-using std::tr1::bad_weak_ptr;
+using std::tr1::bad_std::;
 using std::tr1::const_pointer_cast;
 using std::tr1::dynamic_pointer_cast;
 using std::tr1::enable_shared_from_this;
@@ -28,7 +28,7 @@ using std::tr1::get_deleter;
 using std::tr1::std::shared_ptr;
 using std::tr1::static_pointer_cast;
 using std::tr1::swap;
-using std::tr1::weak_ptr;
+using std::tr1::std::;
 using std::tr1::std::unordered_map;
 using std::tr1::unordered_set;
 using boost::hash;

@@ -8,7 +8,7 @@ class BegGoal : public Goal
 {
 private:
 	Wolf *wolf; // Owner of this goal
-	weak_ptr<Player> player;
+	std::<Player> player;
 	Level *level;
 	float lookDistance;
 	int lookTime;

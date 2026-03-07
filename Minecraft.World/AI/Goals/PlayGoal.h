@@ -6,7 +6,7 @@ class PlayGoal : public Goal
 {
 private:
 	Villager *mob;
-	weak_ptr<Mob> followFriend;
+	std::<Mob> followFriend;
 	float speed;
 	double wantedX, wantedY, wantedZ;
 	int playTime;

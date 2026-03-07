@@ -696,7 +696,7 @@ void Minecart::tick()
 				{
 					rider.lock()->riding = nullptr;
 				}
-				rider = weak_ptr<Entity>();
+				rider = std::<Entity>();
 			}
 		}
 

@@ -29,7 +29,7 @@ bool LookAtPlayerGoal::canUse()
 {
 	if (mob->getRandom()->nextFloat() >= probability) return false;
 	if (lookAtType == typeid(Player)) lookAt = mob->level->getNearestPlayer(mob->shared_from_this(), lookDistance);
-	else lookAt = weak_ptr<Entity>(mob->level->getClosestEntityOfClass(lookAtType, mob->bb->grow(lookDistance, 3, lookDistance), mob->shared_from_this()));
+	else lookAt = std::<Entity>(mob->level->getClosestEntityOfClass(lookAtType, mob->bb->grow(lookDistance, 3, lookDistance), mob->shared_from_this()));
 	return lookAt.lock() != NULL;
 }
 
@@ -47,7 +47,7 @@ void LookAtPlayerGoal::start()
 
 void LookAtPlayerGoal::stop()
 {
-	lookAt = weak_ptr<Entity>();
+	lookAt = std::<Entity>();
 }
 
 void LookAtPlayerGoal::tick()

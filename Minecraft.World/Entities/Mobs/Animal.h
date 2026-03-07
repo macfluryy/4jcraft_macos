@@ -13,7 +13,7 @@ private:
 
 //	int inLove;							// 4J removed - now synched data
 	int loveTime;
-	weak_ptr<Player> loveCause;
+	std::<Player> loveCause;
 
 public:
 	Animal(Level *level);

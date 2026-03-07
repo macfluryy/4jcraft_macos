@@ -11,7 +11,7 @@ class MeleeAttackGoal : public Goal
 private:
 	Level *level;
 	Mob *mob; // Owner of this goal
-	weak_ptr<Mob> target;
+	std::<Mob> target;
 
 	int attackTime;
 	float speed;
