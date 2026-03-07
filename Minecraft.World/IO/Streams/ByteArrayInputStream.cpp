@@ -10,7 +10,7 @@
 //offset - the offset in the buffer of the first byte to read.
 //length - the maximum number of bytes to read from the buffer.
 ByteArrayInputStream::ByteArrayInputStream(byteArray buf, unsigned int offset, unsigned int length)
-	: pos( offset ), count( min( offset+length, buf.length ) ), mark( offset )
+	: pos( offset ), count( std::min( offset+length, buf.length ) ), mark( offset )
 {
 	this->buf = buf;
 }
@@ -77,7 +77,7 @@ int ByteArrayInputStream::read(byteArray b, unsigned int offset, unsigned int le
 	if( pos == count )
 		return -1;
 
-	int k = min( length, count-pos );
+	int k = std::min( length, count-pos );
 	XMemCpy( &b[offset], &buf[pos], k );
 	//std::copy( buf->data+pos, buf->data+pos+k, b->data + offset ); // Or this instead?
 

@@ -70,7 +70,7 @@ public:
 private: 
 	static Recipes *instance;
 
-	vector <Recipy *> *recipies;
+	std::vector <Recipy *> *recipies;
 
 public:
 	static void staticCtor();
@@ -90,7 +90,7 @@ public:
 	void addShapelessRecipy(ItemInstance *result,... ); 
 
 	std::shared_ptr<ItemInstance> getItemFor(std::shared_ptr<CraftingContainer> craftSlots, Level *level);
-	vector <Recipy *> *getRecipies();
+	std::vector <Recipy *> *getRecipies();
 
 	// 4J-PB - Added all below for new Xbox 'crafting'
 	std::shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);

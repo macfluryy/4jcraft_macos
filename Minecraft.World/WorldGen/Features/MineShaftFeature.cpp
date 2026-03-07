@@ -11,7 +11,7 @@ bool MineShaftFeature::isFeatureChunk(int x, int z, bool bIsSuperflat)
 		forcePlacement = levelGenOptions->isFeatureChunk(x,z,eFeature_Mineshaft);
 	}
 
-	return forcePlacement || (random->nextInt(100) == 0 && random->nextInt(80) < max(abs(x), abs(z)));
+	return forcePlacement || (random->nextInt(100) == 0 && random->nextInt(80) < std::max(abs(x), abs(z)));
 }
 
 StructureStart *MineShaftFeature::createStructureStart(int x, int z)

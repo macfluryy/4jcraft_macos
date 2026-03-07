@@ -188,7 +188,7 @@ bool MineShaftPieces::MineShaftRoom::postProcess(Level *level, Random *random, B
 	generateBox(level, chunkBB, boundingBox->x0, boundingBox->y0, boundingBox->z0, boundingBox->x1, boundingBox->y0, boundingBox->z1, Tile::dirt_Id, 0, true);
 
 	// room air
-	generateBox(level, chunkBB, boundingBox->x0, boundingBox->y0 + 1, boundingBox->z0, boundingBox->x1, min(boundingBox->y0 + 3, boundingBox->y1), boundingBox->z1, 0, 0, false);
+	generateBox(level, chunkBB, boundingBox->x0, boundingBox->y0 + 1, boundingBox->z0, boundingBox->x1, std::min(boundingBox->y0 + 3, boundingBox->y1), boundingBox->z1, 0, 0, false);
 	for(AUTO_VAR(it, childEntranceBoxes.begin()); it != childEntranceBoxes.end(); ++it)
 	{
 		BoundingBox *entranceBox = *it;

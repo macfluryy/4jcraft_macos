@@ -15,7 +15,7 @@ public:
 
 private:
 	static std::wstring shapes[][4];
-	vector <Object *> *map;
+	std::vector <Object *> *map;
 	
 public:
 	void addRecipes(Recipes *r);

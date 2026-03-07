@@ -1298,7 +1298,7 @@ void CPlatformNetworkManagerXbox::SearchForGames()
 		return;
 	}
 
-	DWORD sessionIDCount = min( XSESSION_SEARCH_MAX_IDS, friendsSessions[m_lastSearchPad].size() );
+	DWORD sessionIDCount = std::min( XSESSION_SEARCH_MAX_IDS, friendsSessions[m_lastSearchPad].size() );
 	SessionID *sessionIDList = new SessionID[sessionIDCount];
 
 	for(DWORD i = 0; i < sessionIDCount; ++i)

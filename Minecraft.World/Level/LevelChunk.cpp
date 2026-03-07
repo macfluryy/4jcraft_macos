@@ -1696,21 +1696,21 @@ int LevelChunk::getBlocksAndData(byteArray *data, int x0, int y0, int z0, int x1
 	int compressedHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 
 	// 4J - replaced block storage as now using CompressedTileStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlocks->getDataRegion( *data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlocks->getDataRegion( *data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlocks->getDataRegion( *data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlocks->getDataRegion( *data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
 	// 4J - replaced data storage as now using SparseDataStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->getDataRegion( *data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->getDataRegion( *data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->getDataRegion( *data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->getDataRegion( *data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
 	if( includeLighting )
 	{
 		// 4J - replaced block and skylight storage as these now use our SparseLightStorage
-		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->getDataRegion( *data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->getDataRegion( *data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->getDataRegion( *data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->getDataRegion( *data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
-		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->getDataRegion( *data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->getDataRegion( *data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->getDataRegion( *data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->getDataRegion( *data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 	}
 
 	/*
@@ -1744,8 +1744,8 @@ bool LevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0, int z0, in
 	// 4J Stu - Added this because some "min" functions don't let us use our constants :(
 	int compressedHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) changed = lowerBlocks->testSetDataRegion(data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p);
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) changed = changed || upperBlocks->testSetDataRegion(data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p);
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) changed = lowerBlocks->testSetDataRegion(data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p);
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) changed = changed || upperBlocks->testSetDataRegion(data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p);
 
 	return changed;
 }
@@ -1788,8 +1788,8 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
 	int compressedHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 
 	// 4J - replaced block storage as now uses CompressedTileStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlocks->setDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p, includeLighting ? NULL : tileUpdatedCallback, this, 0 );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlocks->setDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p, includeLighting ? NULL : tileUpdatedCallback, this, Level::COMPRESSED_CHUNK_SECTION_HEIGHT );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlocks->setDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p, includeLighting ? NULL : tileUpdatedCallback, this, 0 );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlocks->setDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p, includeLighting ? NULL : tileUpdatedCallback, this, Level::COMPRESSED_CHUNK_SECTION_HEIGHT );
 	/*
     for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++)
@@ -1803,17 +1803,17 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
     recalcHeightmapOnly();
 
 	// 4J - replaced data storage as now uses SparseDataStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->setDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p, includeLighting ? NULL : tileUpdatedCallback, this, 0 );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->setDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p, includeLighting ? NULL : tileUpdatedCallback, this, Level::COMPRESSED_CHUNK_SECTION_HEIGHT );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->setDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p, includeLighting ? NULL : tileUpdatedCallback, this, 0 );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->setDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p, includeLighting ? NULL : tileUpdatedCallback, this, Level::COMPRESSED_CHUNK_SECTION_HEIGHT );
 
 	if( includeLighting )
 	{
 		// 4J - replaced block and skylight storage as these now use our SparseLightStorage
-		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->setDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->setDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->setDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->setDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
-		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->setDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->setDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+		if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->setDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+		if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->setDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
 		memcpy(biomes.data, &data.data[p],biomes.length);
 		p += biomes.length;
@@ -2324,7 +2324,7 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 {
 	int highestNonEmpty = getHighestNonEmptyY();
 
-	ys = min(highestNonEmpty - y0, ys);
+	ys = std::min(highestNonEmpty - y0, ys);
 	if(ys < 0 ) ys = 0;
 
 	int x1 = x0 + xs;
@@ -2354,15 +2354,15 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs, 
 	int compressedHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 
 	// 4J - replaced data storage as now using SparseDataStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->getDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->getDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerData->getDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperData->getDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
 	// 4J - replaced block and skylight storage as these now use our SparseLightStorage
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->getDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->getDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerBlockLight->getDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperBlockLight->getDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
-	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->getDataRegion( data, x0, y0, z0, x1, min(compressedHeight, y1), z1, p );
-	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->getDataRegion( data, x0, max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
+	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += lowerSkyLight->getDataRegion( data, x0, y0, z0, x1, std::min(compressedHeight, y1), z1, p );
+	if(y1 > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) p += upperSkyLight->getDataRegion( data, x0, std::max(y0-compressedHeight,0), z0, x1, y1-Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p );
 
 	memcpy(&data.data[p],biomes.data,biomes.length);
 
@@ -2402,7 +2402,7 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs, byteA
 	unsigned int halfTileCount = tileCount/2;
 	
 	int sectionHeight = Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-	int lowerYSpan = min(y1, sectionHeight) - y0;
+	int lowerYSpan = std::min(y1, sectionHeight) - y0;
 	int upperYSpan = ys - lowerYSpan;
 	int upperSlotOffset = xs * zs * lowerYSpan;
 

@@ -86,7 +86,7 @@ void HangingEntity::setDir(int dir)
 	float y1 = y + h + ss;
 	float z0 = z - d - ss;
 	float z1 = z + d + ss;
-	bb->set(min(x0,x1), min(y0,y1), min(z0,z1), max(x0,x1), max(y0,y1), max(z0,z1));
+	bb->set(std::min(x0,x1), std::min(y0,y1), std::min(z0,z1), std::max(x0,x1), std::max(y0,y1), std::max(z0,z1));
 }
 
 float HangingEntity::offs(int w) 
@@ -117,8 +117,8 @@ bool HangingEntity::survives()
 	} 
 	else 
 	{
-		int ws = max(1, getWidth() / 16);
-		int hs = max(1, getHeight() / 16);
+		int ws = std::max(1, getWidth() / 16);
+		int hs = std::max(1, getHeight() / 16);
 
 		int xt = xTile;
 		int yt = yTile;

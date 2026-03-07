@@ -86,7 +86,7 @@ void MeleeAttackGoal::tick()
 		}
 	}
 
-	attackTime = max(attackTime - 1, 0);
+	attackTime = std::max(attackTime - 1, 0);
 
 	double meleeRadiusSqr = (mob->bbWidth * 2) * (mob->bbWidth * 2);
 	if (mob->distanceToSqr(target.lock()->x, target.lock()->bb->y0, target.lock()->z) > meleeRadiusSqr) return;

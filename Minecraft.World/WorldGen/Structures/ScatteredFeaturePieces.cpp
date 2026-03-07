@@ -43,7 +43,7 @@ bool ScatteredFeaturePieces::ScatteredFeaturePiece::updateAverageGroundHeight(Le
 		{
 			if (chunkBB->isInside(x, 64, z))
 			{
-				total += max(level->getTopSolidBlock(x, z), level->dimension->getSpawnYPosition());
+				total += std::max(level->getTopSolidBlock(x, z), level->dimension->getSpawnYPosition());
 				count++;
 			}
 		}

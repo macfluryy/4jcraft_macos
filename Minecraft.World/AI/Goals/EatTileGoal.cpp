@@ -51,7 +51,7 @@ int EatTileGoal::getEatAnimationTick()
 
 void EatTileGoal::tick()
 {
-	eatAnimationTick = max(0, eatAnimationTick - 1);
+	eatAnimationTick = std::max(0, eatAnimationTick - 1);
 	if (eatAnimationTick != 4) return;
 
 	int xx = Mth::floor(mob->x);

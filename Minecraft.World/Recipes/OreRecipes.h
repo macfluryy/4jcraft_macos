@@ -10,7 +10,7 @@ public:
 	OreRecipies()			{_init();}
 
 private:
-	vector <Object *> *map;
+	std::vector <Object *> *map;
 
 public:
 	void addRecipes(Recipes *r);

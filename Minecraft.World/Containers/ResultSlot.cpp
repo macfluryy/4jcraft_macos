@@ -22,7 +22,7 @@ std::shared_ptr<ItemInstance> ResultSlot::remove(int c)
 {
 	if (hasItem())
 	{
-		removeCount += min(c, getItem()->count);
+		removeCount += std::min(c, getItem()->count);
 	}
 	return Slot::remove(c);
 }

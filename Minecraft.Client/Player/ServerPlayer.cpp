@@ -253,7 +253,7 @@ void ServerPlayer::flushEntitiesToRemove()
 	if (!entitiesToRemove.empty())
 	{
 		int sz = entitiesToRemove.size();
-		int amount = min(sz, RemoveEntitiesPacket::MAX_PER_PACKET);
+		int amount = std::min(sz, RemoveEntitiesPacket::MAX_PER_PACKET);
 		intArray ids(amount);
 		int pos = 0;
 

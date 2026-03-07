@@ -154,7 +154,7 @@ bool Stitcher::addToStorage(TextureHolder *textureHolder)
 */
 bool Stitcher::expand(TextureHolder *textureHolder)
 {
-	int minDistance = min(textureHolder->getHeight(), textureHolder->getWidth());
+	int minDistance = std::min(textureHolder->getHeight(), textureHolder->getWidth());
 	bool firstAddition = storageX == 0 && storageY == 0;
 
 	// It couldn't fit, decide which direction to grow to
@@ -175,7 +175,7 @@ bool Stitcher::expand(TextureHolder *textureHolder)
 		}
 
 		// Even if the smallest side fits the larger might not >.>
-		int maxDistance = max(textureHolder->getHeight(), textureHolder->getWidth());
+		int maxDistance = std::max(textureHolder->getHeight(), textureHolder->getWidth());
 		// TODO: This seems wrong ...
 		if (firstAddition && !xCanGrow && !(smallestEncompassingPowerOfTwo(storageY + maxDistance) <= maxHeight))
 		{

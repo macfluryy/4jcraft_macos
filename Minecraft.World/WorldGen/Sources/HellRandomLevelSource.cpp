@@ -228,7 +228,7 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks
 										// Place the nether wart on top of the soul sand
 										y += 1;
 										int genDepthMinusOne = Level::genDepthMinusOne; // Take into local int for PS4 as min takes a reference to the const int there and then needs the value to exist for the linker
-										y = min(y, genDepthMinusOne);
+										y = std::min(y, genDepthMinusOne);
 										runDepth += 1;
 										offs = (z * 16 + x) * Level::genDepth + y;
 									}
