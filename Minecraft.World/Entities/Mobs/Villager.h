@@ -109,8 +109,8 @@ public:
 	void overrideOffers(MerchantRecipeList *recipeList);
 
 private:
-	static std::unordered_map<int, pair<int,int> > MIN_MAX_VALUES;
-	static std::unordered_map<int, pair<int,int> > MIN_MAX_PRICES;
+	static std::unordered_map<int, std::pair<int,int> > MIN_MAX_VALUES;
+	static std::unordered_map<int, std::pair<int,int> > MIN_MAX_PRICES;
 
 public:
 	static void staticCtor();

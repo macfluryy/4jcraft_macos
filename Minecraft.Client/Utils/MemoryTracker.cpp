@@ -10,7 +10,7 @@ std::vector<int> MemoryTracker::TEXTURE_IDS;
 int MemoryTracker::genLists(int count)
 {
 	int id = glGenLists(count);
-	GL_LIST_IDS.insert( pair<int,int>(id,count) );
+	GL_LIST_IDS.insert( std::pair<int,int>(id,count) );
 	return id;
 }
 

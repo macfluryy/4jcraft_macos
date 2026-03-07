@@ -14,7 +14,7 @@ protected:
 	std::vector<Texture *> *frames;
 
 private:
-	typedef std::vector<pair<int, int> > intPairVector;
+	typedef std::vector<std::pair<int, int> > intPairVector;
 	intPairVector *frameOverride;
 	int flags;
 

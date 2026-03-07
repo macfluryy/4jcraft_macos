@@ -21,8 +21,8 @@ UINT WstringLookup::lookup(std::wstring str)
 {
 	if (str2int.find(str) == str2int.end())
 	{
-		pair<std::wstring,UINT> p = 
-			pair<std::wstring,UINT>(str, numIDs);
+		std::pair<std::wstring,UINT> p = 
+			std::pair<std::wstring,UINT>(str, numIDs);
 
 		str2int.insert( p );
 		int2str.push_back( str );

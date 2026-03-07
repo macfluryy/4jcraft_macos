@@ -189,7 +189,7 @@ void StitchedTexture::cycleFrames()
 {
 	if (frameOverride != NULL)
 	{
-		pair<int, int> current = frameOverride->at(frame);
+		std::pair<int, int> current = frameOverride->at(frame);
 		subFrame++;
 		if (subFrame >= current.second)
 		{
