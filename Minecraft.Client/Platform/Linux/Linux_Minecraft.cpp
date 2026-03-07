@@ -994,11 +994,8 @@ vector<uint8_t *> vRichPresenceStrings;
 // convert wstring to UTF-8 string
 std::string wstring_to_utf8 (const std::wstring& str)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
     return myconv.to_bytes(str);
-#pragma GCC diagnostic pop
 }
 
 uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)
