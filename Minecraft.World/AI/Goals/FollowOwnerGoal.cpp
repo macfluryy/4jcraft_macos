@@ -9,7 +9,7 @@
 
 FollowOwnerGoal::FollowOwnerGoal(TamableAnimal *tamable, float speed, float startDistance, float stopDistance)
 {
-	owner = weak_ptr<Mob>();
+	owner = std::<Mob>();
 	timeToRecalcPath = 0;
 	oldAvoidWater = false;
 
@@ -28,7 +28,7 @@ bool FollowOwnerGoal::canUse()
 	if (owner == NULL) return false;
 	if (tamable->isSitting()) return false;
 	if (tamable->distanceToSqr(owner) < startDistance * startDistance) return false;
-	this->owner = weak_ptr<Mob>(owner);
+	this->owner = std::<Mob>(owner);
 	return true;
 }
 
@@ -46,7 +46,7 @@ void FollowOwnerGoal::start()
 
 void FollowOwnerGoal::stop()
 {
-	owner = weak_ptr<Mob>();
+	owner = std::<Mob>();
 	navigation->stop();
 	tamable->getNavigation()->setAvoidWater(oldAvoidWater);
 }

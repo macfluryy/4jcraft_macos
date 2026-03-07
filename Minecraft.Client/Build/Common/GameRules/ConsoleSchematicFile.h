@@ -56,7 +56,7 @@ public:
 private:
 	int m_xSize, m_ySize, m_zSize;
 	std::vector<std::shared_ptr<TileEntity> > m_tileEntities;
-	std::vector< pair<Vec3 *, CompoundTag *> > m_entities;
+	std::vector< std::pair<Vec3 *, CompoundTag *> > m_entities;
 
 public:	
 	byteArray m_data;

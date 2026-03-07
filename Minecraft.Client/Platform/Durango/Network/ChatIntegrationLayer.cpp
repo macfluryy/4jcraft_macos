@@ -63,7 +63,7 @@ void ChatIntegrationLayer::InitializeChatManager(
 
 	InitializeCriticalSection(&m_csAddedUsers);
 
-    std::weak_ptr<ChatIntegrationLayer> weakPtrToThis = shared_from_this();
+    std::<ChatIntegrationLayer> weakPtrToThis = shared_from_this();
 
 #ifdef PROFILE
     m_chatManager->ChatSettings->PerformanceCountersEnabled = true;
@@ -74,7 +74,7 @@ void ChatIntegrationLayer::InitializeChatManager(
     m_tokenResourceAvailabilityChanged = Windows::ApplicationModel::Core::CoreApplication::ResourceAvailabilityChanged += 
         ref new EventHandler< Platform::Object^ >( [weakPtrToThis] (Platform::Object^, Platform::Object^ )
     {
-        // Using a std::weak_ptr instead of 'this' to avoid dangling pointer if caller class is released.
+        // Using a std:: instead of 'this' to avoid dangling pointer if caller class is released.
         // Simply unregistering the callback in the destructor isn't enough to prevent a dangling pointer
         std::shared_ptr<ChatIntegrationLayer> sharedPtrToThis(weakPtrToThis.lock());
         if( sharedPtrToThis != nullptr )
@@ -103,7 +103,7 @@ void ChatIntegrationLayer::InitializeChatManager(
         ref new Windows::Foundation::EventHandler<Microsoft::Xbox::GameChat::DebugMessageEventArgs^>(
             [weakPtrToThis] ( Platform::Object^, Microsoft::Xbox::GameChat::DebugMessageEventArgs^ args )
     {
-        // Using a std::weak_ptr instead of 'this' to avoid dangling pointer if caller class is released.
+        // Using a std:: instead of 'this' to avoid dangling pointer if caller class is released.
         // Simply unregistering the callback in the destructor isn't enough to prevent a dangling pointer
         std::shared_ptr<ChatIntegrationLayer> sharedPtrToThis(weakPtrToThis.lock());
         if( sharedPtrToThis != nullptr )
@@ -116,7 +116,7 @@ void ChatIntegrationLayer::InitializeChatManager(
         ref new Windows::Foundation::EventHandler<Microsoft::Xbox::GameChat::ChatPacketEventArgs^>( 
             [weakPtrToThis] ( Platform::Object^, Microsoft::Xbox::GameChat::ChatPacketEventArgs^ args )
     {
-        // Using a std::weak_ptr instead of 'this' to avoid dangling pointer if caller class is released.
+        // Using a std:: instead of 'this' to avoid dangling pointer if caller class is released.
         // Simply unregistering the callback in the destructor isn't enough to prevent a dangling pointer
         std::shared_ptr<ChatIntegrationLayer> sharedPtrToThis(weakPtrToThis.lock());
         if( sharedPtrToThis != nullptr )
@@ -129,7 +129,7 @@ void ChatIntegrationLayer::InitializeChatManager(
         ref new Microsoft::Xbox::GameChat::CompareUniqueConsoleIdentifiersHandler( 
             [weakPtrToThis] ( Platform::Object^ obj1, Platform::Object^ obj2 ) 
     { 
-        // Using a std::weak_ptr instead of 'this' to avoid dangling pointer if caller class is released.
+        // Using a std:: instead of 'this' to avoid dangling pointer if caller class is released.
         // Simply unregistering the callback in the destructor isn't enough to prevent a dangling pointer
         std::shared_ptr<ChatIntegrationLayer> sharedPtrToThis(weakPtrToThis.lock());
         if( sharedPtrToThis != nullptr )

@@ -28,7 +28,7 @@ VillagerGolem::VillagerGolem(Level *level) : Golem(level)
 	health = getMaxHealth();
 
 	villageUpdateInterval = 0;
-	village = weak_ptr<Village>();
+	village = std::<Village>();
 	attackAnimationTick = 0;
 	offerFlowerTick = 0;
 

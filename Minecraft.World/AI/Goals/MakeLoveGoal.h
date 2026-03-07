@@ -9,10 +9,10 @@ class MakeLoveGoal : public Goal
 {
 private:
 	Villager *villager; // Owner of this goal
-	weak_ptr<Villager> partner;
+	std::<Villager> partner;
 	Level *level;
 	int loveMakingTime;
-	weak_ptr<Village> village;
+	std::<Village> village;
 
 public:
 	MakeLoveGoal(Villager *villager);

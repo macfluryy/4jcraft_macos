@@ -257,7 +257,7 @@ void Entity::_init(bool useSmallId)
 	viewScale = 1.0;
 
 	blocksBuilding = false;
-	rider = weak_ptr<Entity>();
+	rider = std::<Entity>();
 	riding = nullptr;
 
 	//level = NULL; // Level is assigned to in the original c_tor code
@@ -1571,14 +1571,14 @@ void Entity::ride(std::shared_ptr<Entity> e)
 		{
 			// 4J Stu - Position should already be updated before the SetRidingPacket comes in
 			if(!level->isClientSide) moveTo(riding->x, riding->bb->y0 + riding->bbHeight, riding->z, yRot, xRot);
-			riding->rider = weak_ptr<Entity>();
+			riding->rider = std::<Entity>();
 		}
 		riding = nullptr;
 		return;
 	}
 	if (riding != NULL)
 	{
-		riding->rider = weak_ptr<Entity>();
+		riding->rider = std::<Entity>();
 	}
 	riding = e;
 	e->rider = shared_from_this();

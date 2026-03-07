@@ -9,7 +9,7 @@ class MoveIndoorsGoal : public Goal
 {
 private:
 	PathfinderMob *mob;
-	weak_ptr<DoorInfo> doorInfo;
+	std::<DoorInfo> doorInfo;
 	int insideX, insideZ;
 
 public:

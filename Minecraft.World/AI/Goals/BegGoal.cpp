@@ -8,7 +8,7 @@
 
 BegGoal::BegGoal(Wolf *wolf, float lookDistance)
 {
-	player = weak_ptr<Player>();
+	player = std::<Player>();
 	lookTime = 0;
 
 	this->wolf = wolf;
@@ -19,7 +19,7 @@ BegGoal::BegGoal(Wolf *wolf, float lookDistance)
 
 bool BegGoal::canUse()
 {
-	player = weak_ptr<Player>(level->getNearestPlayer(wolf->shared_from_this(), lookDistance));
+	player = std::<Player>(level->getNearestPlayer(wolf->shared_from_this(), lookDistance));
 	if (player.lock() == NULL) return false;
 	wolf->setDespawnProtected();
 	return playerHoldingInteresting(player.lock());
@@ -42,7 +42,7 @@ void BegGoal::start()
 void BegGoal::stop()
 {
 	wolf->setIsInterested(false);
-	player = weak_ptr<Player>();
+	player = std::<Player>();
 }
 
 void BegGoal::tick()

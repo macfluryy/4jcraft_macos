@@ -41,7 +41,7 @@ bool NearestAttackableTargetGoal::canUse()
 		std::shared_ptr<Mob> potentialTarget = mob->level->getNearestAttackablePlayer(mob->shared_from_this(), within);
 		if (canAttack(potentialTarget, false))
 		{
-			target = weak_ptr<Mob>(potentialTarget);
+			target = std::<Mob>(potentialTarget);
 			return true;
 		}
 	}
@@ -55,7 +55,7 @@ bool NearestAttackableTargetGoal::canUse()
 			std::shared_ptr<Mob> potTarget = dynamic_pointer_cast<Mob>(*it);
 			if (canAttack(potTarget, false))
 			{
-				target = weak_ptr<Mob>(potTarget);
+				target = std::<Mob>(potTarget);
 				return true;
 			}
 		}

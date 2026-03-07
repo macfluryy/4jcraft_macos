@@ -32,9 +32,9 @@ private:
 
 	bool inLove;
 	bool chasing;
-	weak_ptr<Village> village;
+	std::<Village> village;
 
-	weak_ptr<Player> tradingPlayer;
+	std::<Player> tradingPlayer;
 	MerchantRecipeList *offers;
 	int updateMerchantTimer;
 	bool addRecipeOnUpdate;

@@ -45,7 +45,7 @@ bool MeleeAttackGoal::canUse()
 	if (bestTarget == NULL) return false;
 	if(!bestTarget->isAlive()) return false;
 	if (attackType != eTYPE_NOTSET && (attackType & bestTarget->GetType()) != attackType) return false;
-	target = weak_ptr<Mob>(bestTarget);
+	target = std::<Mob>(bestTarget);
 	delete path;
 	path = mob->getNavigation()->createPath(target.lock());
 	return path != NULL;
@@ -70,7 +70,7 @@ void MeleeAttackGoal::start()
 
 void MeleeAttackGoal::stop()
 {
-	target = weak_ptr<Mob>();
+	target = std::<Mob>();
 	mob->getNavigation()->stop();
 }
 

@@ -11,7 +11,7 @@ public:
 
 private:
 	VillagerGolem *golem;
-	weak_ptr<Villager> villager;
+	std::<Villager> villager;
 	int _tick;
 
 public:

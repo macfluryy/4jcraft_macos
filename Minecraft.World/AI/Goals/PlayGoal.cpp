@@ -11,7 +11,7 @@
 
 PlayGoal::PlayGoal(Villager *mob, float speed)
 {
-	followFriend = weak_ptr<Mob>();
+	followFriend = std::<Mob>();
 	wantedX = wantedY = wantedZ = 0.0;
 	playTime = 0;
 
@@ -38,7 +38,7 @@ bool PlayGoal::canUse()
 		double distSqr = friendV->distanceToSqr(mob->shared_from_this());
 		if (distSqr > closestDistSqr) continue;
 		closestDistSqr = distSqr;
-		followFriend = weak_ptr<Mob>(friendV);
+		followFriend = std::<Mob>(friendV);
 	}
 	delete children;
 
@@ -64,7 +64,7 @@ void PlayGoal::start()
 void PlayGoal::stop()
 {
 	mob->setChasing(false);
-	followFriend = weak_ptr<Mob>();
+	followFriend = std::<Mob>();
 }
 
 void PlayGoal::tick()

@@ -12,7 +12,7 @@
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob *mob, float speed, bool onlyAtNight)
 {
 	path = NULL;
-	doorInfo = weak_ptr<DoorInfo>();
+	doorInfo = std::<DoorInfo>();
 
 	this->mob = mob;
 	this->speed = speed;

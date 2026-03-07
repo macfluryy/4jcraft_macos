@@ -17,7 +17,7 @@ public:
 	};
 
 private:
-	weak_ptr<Mob> target;
+	std::<Mob> target;
 	const std::type_info& targetType;
 	int randomInterval;
 	DistComp *distComp;
