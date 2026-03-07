@@ -48,7 +48,7 @@ void UIControl_LeaderboardList::clearList()
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_funcResetLeaderboard , 0 , NULL );
 }
 
-void UIControl_LeaderboardList::setupTitles(const wstring &rank, const wstring &gamertag)
+void UIControl_LeaderboardList::setupTitles(const std::wstring &rank, const std::wstring &gamertag)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];
@@ -111,7 +111,7 @@ void UIControl_LeaderboardList::setColumnIcon(int iColumn, int iType)
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_funcSetColumnIcon , 2 , value );
 }
 
-void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const wstring &gamertag, bool bDisplayMessage, const wstring &col0, const wstring &col1, const wstring &col2, const wstring &col3, const wstring &col4, const wstring &col5, const wstring &col6)
+void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const std::wstring &gamertag, bool bDisplayMessage, const std::wstring &col0, const std::wstring &col1, const std::wstring &col2, const std::wstring &col3, const std::wstring &col4, const std::wstring &col5, const std::wstring &col6)
 {
 	IggyDataValue result;
 	IggyDataValue value[12];

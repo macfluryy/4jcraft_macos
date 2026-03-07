@@ -8,7 +8,7 @@ UIComponent_Logo::UIComponent_Logo(int iPad, void *initData, UILayer *parentLaye
 	initialiseMovie();
 }
 
-wstring UIComponent_Logo::getMoviePath()
+std::wstring UIComponent_Logo::getMoviePath()
 {
 	switch( m_parentLayer->getViewport() )
 	{

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "TutorialTask.h"
 
@@ -14,7 +14,7 @@ private:
 
 public:
 	UseItemTask(const int itemId, Tutorial *tutorial, int descriptionId,
-		bool enablePreCompletion = false, vector<TutorialConstraint *> *inConstraints = NULL, bool bShowMinimumTime = false, bool bAllowFade = true, bool bTaskReminders = true );
+		bool enablePreCompletion = false, std::vector<TutorialConstraint *> *inConstraints = NULL, bool bShowMinimumTime = false, bool bAllowFade = true, bool bTaskReminders = true );
 	virtual bool isCompleted();
-	virtual void useItem(shared_ptr<ItemInstance> item, bool bTestUseOnly=false);
+	virtual void useItem(std::shared_ptr<ItemInstance> item, bool bTestUseOnly=false);
 };

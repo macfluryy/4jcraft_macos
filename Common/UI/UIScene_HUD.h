@@ -31,7 +31,7 @@ private:
 
 	unsigned int m_uiSelectedItemOpacityCountDown;
 
-	wstring m_displayName;
+	std::wstring m_displayName;
 
 protected:
 	UIControl_Label m_labelChatText[CHAT_LINES_COUNT];
@@ -114,7 +114,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	virtual EUIScene getSceneType() { return eUIScene_HUD;}
@@ -153,17 +153,17 @@ private:
 	void SetFoodSaturationLevel(int iSaturation);
 
 	void SetDragonHealth(float health);
-	void SetDragonLabel(const wstring &label);
+	void SetDragonLabel(const std::wstring &label);
 	void ShowDragonHealth(bool show);
 
 	void HideSelectedLabel();
 
-	void SetDisplayName(const wstring &displayName);
+	void SetDisplayName(const std::wstring &displayName);
 
 	void SetTooltipsEnabled(bool bEnabled);
 
 public:
-	void SetSelectedLabel(const wstring &label);
+	void SetSelectedLabel(const std::wstring &label);
 	void ShowDisplayName(bool show);
 
 	void handleGameTick();

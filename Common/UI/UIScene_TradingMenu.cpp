@@ -65,7 +65,7 @@ UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void *_initData, UILayer *par
 	app.SetRichPresenceContext(iPad, CONTEXT_GAME_STATE_TRADING);
 }
 
-wstring UIScene_TradingMenu::getMoviePath()
+std::wstring UIScene_TradingMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -147,7 +147,7 @@ void UIScene_TradingMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	shared_ptr<ItemInstance> item = nullptr;
+	std::shared_ptr<ItemInstance> item = nullptr;
 	int slotId = -1;
 	swscanf((wchar_t*)region->name,L"slot_%d",&slotId);
 
@@ -223,17 +223,17 @@ void UIScene_TradingMenu::moveSelector(bool right)
 	IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcMoveSelector , 1 , value );
 }
 
-void UIScene_TradingMenu::setTitle(const wstring &name)
+void UIScene_TradingMenu::setTitle(const std::wstring &name)
 {
 	m_labelTrading.setLabel(name);
 }
 
-void UIScene_TradingMenu::setRequest1Name(const wstring &name)
+void UIScene_TradingMenu::setRequest1Name(const std::wstring &name)
 {
 	m_labelRequest1.setLabel(name);
 }
 
-void UIScene_TradingMenu::setRequest2Name(const wstring &name)
+void UIScene_TradingMenu::setRequest2Name(const std::wstring &name)
 {
 	m_labelRequest2.setLabel(name);
 }
@@ -253,7 +253,7 @@ void UIScene_TradingMenu::setTradeRedBox(int index, bool show)
 	m_slotListTrades.showSlotRedBox(index,show);
 }
 
-void UIScene_TradingMenu::setOfferDescription(const wstring &name, vector<wstring> &unformattedStrings)
+void UIScene_TradingMenu::setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings)
 {
 	IggyDataValue result;
 	IggyDataValue value[1];

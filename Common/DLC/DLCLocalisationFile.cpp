@@ -3,7 +3,7 @@
 #include "DLCLocalisationFile.h"
 #include "../../Minecraft.Client/Utils/StringTable.h"
 
-DLCLocalisationFile::DLCLocalisationFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_LocalisationData,path)
+DLCLocalisationFile::DLCLocalisationFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_LocalisationData,path)
 {	
 	m_strings = NULL;
 }

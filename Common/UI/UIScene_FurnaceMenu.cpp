@@ -41,7 +41,7 @@ UIScene_FurnaceMenu::UIScene_FurnaceMenu(int iPad, void *_initData, UILayer *par
 	delete initData;
 }
 
-wstring UIScene_FurnaceMenu::getMoviePath()
+std::wstring UIScene_FurnaceMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

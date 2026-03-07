@@ -13,18 +13,18 @@ private:
 	int m_auxValue;
 	int m_dataTag;
 	int m_slot;
-	vector<AddEnchantmentRuleDefinition *> m_enchantments;
+	std::vector<AddEnchantmentRuleDefinition *> m_enchantments;
 
 public:
 	AddItemRuleDefinition();
 
 	virtual void writeAttributes(DataOutputStream *, UINT numAttributes);
-	virtual void getChildren(vector<GameRuleDefinition *> *children);
+	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_AddItem; }
 
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
-	bool addItemToContainer(shared_ptr<Container> container, int slotId);
+	bool addItemToContainer(std::shared_ptr<Container> container, int slotId);
 };

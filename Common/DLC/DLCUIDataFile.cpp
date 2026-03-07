@@ -2,7 +2,7 @@
 #include "DLCManager.h"
 #include "DLCUIDataFile.h"
 
-DLCUIDataFile::DLCUIDataFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_UIData,path)
+DLCUIDataFile::DLCUIDataFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_UIData,path)
 {	
 	m_pbData = NULL;
 	m_dwBytes = 0;

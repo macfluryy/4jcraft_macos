@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../media/xuiscene_teleportmenu.h"
 #include "XUI_CustomMessages.h"
 

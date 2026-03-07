@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "IUIController.h"
 #include "UIEnums.h"
 #include "UIGroup.h"
@@ -52,7 +52,7 @@ private:
 	}
 	UIELEMENT;
 	// E3 - Fine for now, but we need to make this better!
-	vector<UIELEMENT *> m_TouchBoxes[eUIGroup_COUNT][eUILayer_COUNT][eUIScene_COUNT];
+	std::vector<UIELEMENT *> m_TouchBoxes[eUIGroup_COUNT][eUILayer_COUNT][eUIScene_COUNT];
 	bool m_bTouchscreenPressed;
 #endif
 	// 4J Stu - These should be in the order that they reference each other (i.e. they can only reference one with a lower value in the enum)
@@ -113,14 +113,14 @@ private:
 	
 	static DWORD				m_dwTrialTimerLimitSecs;
 
-	unordered_map<wstring, byteArray> m_substitutionTextures;
+	std::unordered_map<std::wstring, byteArray> m_substitutionTextures;
 
 	typedef struct _CachedMovieData
 	{
 		byteArray m_ba;
 		__int64 m_expiry;
 	} CachedMovieData;
-	unordered_map<wstring, CachedMovieData> m_cachedMovieData;
+	std::unordered_map<std::wstring, CachedMovieData> m_cachedMovieData;
 
 	typedef struct _QueuedMessageBoxData
 	{
@@ -128,7 +128,7 @@ private:
 		int iPad;
 		EUILayer layer;
 	} QueuedMessageBoxData;
-	vector<QueuedMessageBoxData *> m_queuedMessageBoxData;
+	std::vector<QueuedMessageBoxData *> m_queuedMessageBoxData;
 
 	unsigned int m_winUserIndex;
 	//bool m_bSysUIShowing;
@@ -139,7 +139,7 @@ private:
 
 	D3D11_RECT m_customRenderingClearRect;
 
-	unordered_map<size_t, UIScene *> m_registeredCallbackScenes; // A collection of scenes and unique id's that are used in async callbacks so we can safely handle when they get destroyed
+	std::unordered_map<size_t, UIScene *> m_registeredCallbackScenes; // A collection of scenes and unique id's that are used in async callbacks so we can safely handle when they get destroyed
 	CRITICAL_SECTION m_registeredCallbackScenesCS;;
 
 public:
@@ -188,7 +188,7 @@ public:
 
 private:
 	void loadSkins();
-	IggyLibrary loadSkin(const wstring &skinPath, const wstring &skinName);
+	IggyLibrary loadSkin(const std::wstring &skinPath, const std::wstring &skinName);
 
 public:
 	void ReloadSkin();
@@ -201,7 +201,7 @@ private:
 	static int reloadSkinThreadProc(void* lpParam);
 
 public:
-	byteArray getMovieData(const wstring &filename);
+	byteArray getMovieData(const std::wstring &filename);
 
 	// INPUT
 private:
@@ -256,8 +256,8 @@ protected:
 	virtual void destroySubstitutionTexture(void *destroyCallBackData, GDrawTexture *handle) {}
 
 public:
-	void registerSubstitutionTexture(const wstring &textureName, PBYTE pbData, DWORD dwLength);
-	void unregisterSubstitutionTexture(const wstring &textureName, bool deleteData);
+	void registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength);
+	void unregisterSubstitutionTexture(const std::wstring &textureName, bool deleteData);
 
 public:
 	// NAVIGATION
@@ -302,7 +302,7 @@ public:
 	virtual void PlayUISFX(ESoundEffect eSound);
 
 	virtual void DisplayGamertag(unsigned int iPad, bool show);
-	virtual void SetSelectedItem(unsigned int iPad, const wstring &name);
+	virtual void SetSelectedItem(unsigned int iPad, const std::wstring &name);
 	virtual void UpdateSelectedItemPos(unsigned int iPad);
 
 	virtual void HandleDLCMountingComplete();

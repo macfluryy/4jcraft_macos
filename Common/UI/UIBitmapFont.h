@@ -13,7 +13,7 @@ class CFontData;
 // 								| XC_LANGUAGE_PORTUGUESE 
 // 								| XC_LANGUAGE_BRAZILIAN;
 
-using namespace std;
+//using namespace std;
 
 class UIAbstractBitmapFont
 {

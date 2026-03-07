@@ -35,7 +35,7 @@ void XboxStructureActionGenerateBox::writeAttributes(DataOutputStream *dos, UINT
 	dos->writeUTF(_toString(m_skipAir));
 }
 
-void XboxStructureActionGenerateBox::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void XboxStructureActionGenerateBox::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"x0") == 0)
 	{

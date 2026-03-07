@@ -43,7 +43,7 @@ public:
 	XUI_IMPLEMENT_CLASS( CScene_SignEntry, L"CScene_SignEntry", XUI_CLASS_SCENE )
 
 private:
-	shared_ptr<SignTileEntity> m_sign;
+	std::shared_ptr<SignTileEntity> m_sign;
 	D3DXVECTOR3 m_OriginalPosition;
 
 };

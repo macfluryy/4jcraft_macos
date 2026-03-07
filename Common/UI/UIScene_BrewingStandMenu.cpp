@@ -43,7 +43,7 @@ UIScene_BrewingStandMenu::UIScene_BrewingStandMenu(int iPad, void *_initData, UI
 	app.SetRichPresenceContext(iPad, CONTEXT_GAME_STATE_BREWING);
 }
 
-wstring UIScene_BrewingStandMenu::getMoviePath()
+std::wstring UIScene_BrewingStandMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

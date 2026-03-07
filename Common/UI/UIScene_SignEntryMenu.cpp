@@ -56,7 +56,7 @@ UIScene_SignEntryMenu::~UIScene_SignEntryMenu()
 	m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
 
-wstring UIScene_SignEntryMenu::getMoviePath()
+std::wstring UIScene_SignEntryMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -84,7 +84,7 @@ void UIScene_SignEntryMenu::tick()
 		// Set the sign text here so we on;y call the verify once it has been set, not while we're typing in to it
 		for(int i=0;i<4;i++)
 		{
-			wstring temp=m_textInputLines[i].getLabel();
+			std::wstring temp=m_textInputLines[i].getLabel();
 			m_sign->SetMessage(i,temp);		
 		}
 
@@ -94,10 +94,10 @@ void UIScene_SignEntryMenu::tick()
 		// need to send the new data
 		if (pMinecraft->level->isClientSide)
 		{
-			shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+			std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
 			if(player != NULL && player->connection && player->connection->isStarted())
 			{
-				player->connection->send( shared_ptr<SignUpdatePacket>( new SignUpdatePacket(m_sign->x, m_sign->y, m_sign->z, m_sign->IsVerified(), m_sign->IsCensored(), m_sign->GetMessages()) ) );
+				player->connection->send( std::shared_ptr<SignUpdatePacket>( new SignUpdatePacket(m_sign->x, m_sign->y, m_sign->z, m_sign->IsVerified(), m_sign->IsCensored(), m_sign->GetMessages()) ) );
 			}
 		}
 		ui.CloseUIScenes(m_iPad);
@@ -116,7 +116,7 @@ void UIScene_SignEntryMenu::handleInput(int iPad, int key, bool repeat, bool pre
 		if(pressed)
 		{
 			// user backed out, so wipe the sign
-			wstring temp=L"";
+			std::wstring temp=L"";
 
 			for(int i=0;i<4;i++)
 			{

@@ -22,12 +22,12 @@ UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad, void *initD
 	m_labelTrialTimer.setVisible(false);
 
 #ifdef __ORBIS__
-	wstring text = app.GetString(IDS_PRESS_X_TO_JOIN);
+	std::wstring text = app.GetString(IDS_PRESS_X_TO_JOIN);
 	text = replaceAll(text, L"{*CONTROLLER_VK_A*}",					app.GetVKReplacement(VK_PAD_A) );
 
 	m_labelPressStart.init(text.c_str());
 #elif defined _XBOX_ONE
-	wstring text = app.GetString(IDS_PRESS_START_TO_JOIN);
+	std::wstring text = app.GetString(IDS_PRESS_START_TO_JOIN);
 	text = replaceAll(text, L"{*CONTROLLER_VK_START*}",			app.GetVKReplacement(VK_PAD_START) );
 	m_labelPressStart.init(text.c_str());
 #else
@@ -38,7 +38,7 @@ UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad, void *initD
 	m_playerDisplayName.setVisible(false);
 }
 
-wstring UIComponent_PressStartToPlay::getMoviePath()
+std::wstring UIComponent_PressStartToPlay::getMoviePath()
 {
 	return L"PressStartToPlay";
 }
@@ -104,7 +104,7 @@ void UIComponent_PressStartToPlay::showPressStart(int iPad, bool show)
 	}
 }
 
-void UIComponent_PressStartToPlay::setTrialTimer(const wstring &label)
+void UIComponent_PressStartToPlay::setTrialTimer(const std::wstring &label)
 {
 	m_trialTimer = label;
 	if(!ui.IsExpectingOrReloadingSkin() && hasMovie())
@@ -122,7 +122,7 @@ void UIComponent_PressStartToPlay::showTrialTimer(bool show)
 	}
 }
 
-void UIComponent_PressStartToPlay::setAutosaveTimer(const wstring &label)
+void UIComponent_PressStartToPlay::setAutosaveTimer(const std::wstring &label)
 {
 	m_autosaveTimer = label;
 	if(!ui.IsExpectingOrReloadingSkin() && hasMovie())

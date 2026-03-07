@@ -45,7 +45,7 @@ void UIControl_Base::tick()
 	}
 }
 
-void UIControl_Base::setLabel(const wstring &label, bool instant, bool force)
+void UIControl_Base::setLabel(const std::wstring &label, bool instant, bool force)
 {
 	if( force || ((!m_label.empty() || !label.empty()) && m_label.compare(label) != 0) ) m_bLabelChanged = true;
 	m_label = label;
@@ -69,7 +69,7 @@ void UIControl_Base::setLabel(const wstring &label, bool instant, bool force)
 
 void UIControl_Base::setLabel(const string &label)
 {
-	wstring wlabel = convStringToWstring(label);
+	std::wstring wlabel = convStringToWstring(label);
 	setLabel(wlabel);
 }
 
@@ -80,7 +80,7 @@ const wchar_t* UIControl_Base::getLabel()
 
 	if(result.type == IGGY_DATATYPE_string_UTF16)
 	{
-		m_label = wstring( (wchar_t *)result.string16.string, result.string16.length);
+		m_label = std::wstring( (wchar_t *)result.string16.string, result.string16.length);
 	}
 
 	return m_label.c_str();

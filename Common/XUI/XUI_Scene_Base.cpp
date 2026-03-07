@@ -215,7 +215,7 @@ void CXuiSceneBase::_TickAllBaseScenes()
 	}
 	else
 	{
-		shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
+		std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
 		EnderDragonRenderer::bossInstance = nullptr;
 		m_ticksWithNoBoss = 0;
 
@@ -1609,7 +1609,7 @@ HRESULT CXuiSceneBase::_DisplayGamertag( unsigned int iPad, BOOL bDisplay )
 		{		
 			if(Minecraft::GetInstance() != NULL && Minecraft::GetInstance()->localplayers[iPad]!=NULL)
 			{
-				wstring wsGamertag = convStringToWstring( ProfileManager.GetGamertag(iPad));
+				std::wstring wsGamertag = convStringToWstring( ProfileManager.GetGamertag(iPad));
 				XuiControlSetText(m_hGamerTagA[iPad],wsGamertag.c_str());
 
 			}
@@ -1666,7 +1666,7 @@ HRESULT CXuiSceneBase::_DisplayGamertag( unsigned int iPad, BOOL bDisplay )
 	return S_OK;
 }
 
-void CXuiSceneBase::_SetSelectedItem( unsigned int iPad, const wstring& name)
+void CXuiSceneBase::_SetSelectedItem( unsigned int iPad, const std::wstring& name)
 {
 	if(app.GetGameSettings(eGameSetting_Hints) == 0 || name.empty())
 	{
@@ -2217,7 +2217,7 @@ HRESULT CXuiSceneBase::DisplayGamertag( unsigned int iPad, BOOL bDisplay )
 	return S_OK;
 }
 
-void CXuiSceneBase::SetSelectedItem( unsigned int iPad, const wstring &name)
+void CXuiSceneBase::SetSelectedItem( unsigned int iPad, const std::wstring &name)
 {
 	CXuiSceneBase::Instance->_SetSelectedItem(iPad,name);
 }

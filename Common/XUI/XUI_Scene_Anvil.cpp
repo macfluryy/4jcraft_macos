@@ -83,23 +83,23 @@ HRESULT CXuiSceneAnvil::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINotifyValue
 {
 	if(hObjSource == m_editName)
 	{
-		wstring newValue = m_editName.GetText();
+		std::wstring newValue = m_editName.GetText();
 		LPCWSTR szText=newValue.c_str();
 		stripWhitespaceForHtml(newValue);
 
 		// strip leading spaces
-		wstring b;
+		std::wstring b;
 		int start = (int)newValue.find_first_not_of(L" ");
 		int end = (int)newValue.find_last_not_of(L" ");
 
-		if( start == wstring::npos )
+		if( start == std::wstring::npos )
 		{
 			// the string is all space
 			newValue=L"";
 		}
 		else
 		{
-			if( end == wstring::npos ) end = (int)newValue.size()-1;
+			if( end == std::wstring::npos ) end = (int)newValue.size()-1;
 			b = newValue.substr(start,(end-start)+1);
 			newValue=b;
 		}
@@ -209,9 +209,9 @@ void CXuiSceneAnvil::handleEditNamePressed()
 	//m_editName.RequestKeyboard(m_iPad);
 }
 
-void CXuiSceneAnvil::setEditNameValue(const wstring &name)
+void CXuiSceneAnvil::setEditNameValue(const std::wstring &name)
 {
-	wstring parsedName = parseXMLSpecials(name);
+	std::wstring parsedName = parseXMLSpecials(name);
 	m_editName.SetText(parsedName.c_str());
 	m_editName.SetCaretPosition(parsedName.length());
 }
@@ -220,7 +220,7 @@ void CXuiSceneAnvil::setEditNameEditable(bool enabled)
 {
 }
 
-void CXuiSceneAnvil::setCostLabel(const wstring &label, bool canAfford)
+void CXuiSceneAnvil::setCostLabel(const std::wstring &label, bool canAfford)
 {
 	if(canAfford)
 	{

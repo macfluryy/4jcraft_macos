@@ -267,7 +267,7 @@ extern CRITICAL_SECTION s_loadSkinCS;
 void UIScene::loadMovie()
 {
 	EnterCriticalSection(&UIController::ms_reloadSkinCS);		// MGH - added to prevent crash loading Iggy movies while the skins were being reloaded
-	wstring moviePath = getMoviePath();
+	std::wstring moviePath = getMoviePath();
 
 #ifdef __PS3__
 	if(RenderManager.IsWidescreen())
@@ -386,7 +386,7 @@ void UIScene::loadMovie()
 
 }
 
-void UIScene::getDebugMemoryUseRecursive(const wstring &moviePath, IggyMemoryUseInfo &memoryInfo)
+void UIScene::getDebugMemoryUseRecursive(const std::wstring &moviePath, IggyMemoryUseInfo &memoryInfo)
 {
 	rrbool res;
 	IggyMemoryUseInfo internalMemoryInfo;
@@ -497,7 +497,7 @@ void UIScene::tickTimers()
 	}
 }
 
-IggyName UIScene::registerFastName(const wstring &name)
+IggyName UIScene::registerFastName(const std::wstring &name)
 {
 	IggyName var;
 	AUTO_VAR(it,m_fastNames.find(name));
@@ -597,7 +597,7 @@ void UIScene::customDraw(IggyCustomDrawCallbackRegion *region)
 	app.DebugPrintf("Handling custom draw for scene with no override!\n");
 }
 
-void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations)
+void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations)
 {
 	if (item!= NULL)
 	{
@@ -608,7 +608,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iP
 				//Make sure that pMinecraft->player is the correct player so that player specific rendering
 				// eg clock and compass, are rendered correctly
 				Minecraft *pMinecraft=Minecraft::GetInstance();
-				shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
+				std::shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
 				if( iPad >= 0 && iPad < XUSER_MAX_COUNT ) pMinecraft->player = pMinecraft->localplayers[iPad];
 
 				// Setup GDraw, normal game render states and matrices
@@ -688,7 +688,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iP
 
 			//Make sure that pMinecraft->player is the correct player so that player specific rendering
 			// eg clock and compass, are rendered correctly
-			shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
+			std::shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
 			if( iPad >= 0 && iPad < XUSER_MAX_COUNT ) pMinecraft->player = pMinecraft->localplayers[iPad];
 
 			_customDrawSlotControl(customDrawRegion, iPad, item, fAlpha, isFoil, bDecorations, false);
@@ -701,7 +701,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iP
 	}	
 }
 
-void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations, bool usingCommandBuffer)
+void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations, bool usingCommandBuffer)
 {
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 
@@ -1161,13 +1161,13 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 	}
 }
 
-void UIScene::registerSubstitutionTexture(const wstring &textureName, PBYTE pbData, DWORD dwLength, bool deleteData)
+void UIScene::registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength, bool deleteData)
 {
 	m_registeredTextures[textureName] = deleteData;;
 	ui.registerSubstitutionTexture(textureName, pbData, dwLength);
 }
 
-bool UIScene::hasRegisteredSubstitutionTexture(const wstring &textureName)
+bool UIScene::hasRegisteredSubstitutionTexture(const std::wstring &textureName)
 {
 	AUTO_VAR(it, m_registeredTextures.find( textureName ) );
 

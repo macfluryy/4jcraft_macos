@@ -9,7 +9,7 @@ private:
 	ColourTable *m_colourTable;
 
 public:
-	DLCColourTableFile(const wstring &path);
+	DLCColourTableFile(const std::wstring &path);
 	~DLCColourTableFile();
 
 	virtual void addData(PBYTE pbData, DWORD dwBytes);

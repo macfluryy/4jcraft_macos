@@ -24,7 +24,7 @@ XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer()
 //void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream *dos, UINT numAttrs)
 	
 
-void XboxStructureActionPlaceContainer::getChildren(vector<GameRuleDefinition *> *children)
+void XboxStructureActionPlaceContainer::getChildren(std::vector<GameRuleDefinition *> *children)
 {
 	XboxStructureActionPlaceBlock::getChildren(children);
 	for(AUTO_VAR(it, m_items.begin()); it!=m_items.end(); it++)
@@ -48,7 +48,7 @@ GameRuleDefinition *XboxStructureActionPlaceContainer::addChild(ConsoleGameRules
 	return rule;
 }
 
-void XboxStructureActionPlaceContainer::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void XboxStructureActionPlaceContainer::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"facing") == 0)
 	{
@@ -78,7 +78,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(StructurePiece *st
 		}
 
 		level->setTile( worldX, worldY, worldZ, m_tile );
-		shared_ptr<Container> container = dynamic_pointer_cast<Container>(level->getTileEntity( worldX, worldY, worldZ ));
+		std::shared_ptr<Container> container = dynamic_pointer_cast<Container>(level->getTileEntity( worldX, worldY, worldZ ));
 		
 		app.DebugPrintf("XboxStructureActionPlaceContainer - placing a container at (%d,%d,%d)\n", worldX, worldY, worldZ);
 		if ( container != NULL )

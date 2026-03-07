@@ -39,7 +39,7 @@ UIScene_DeathMenu::~UIScene_DeathMenu()
 	}
 }
 
-wstring UIScene_DeathMenu::getMoviePath()
+std::wstring UIScene_DeathMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

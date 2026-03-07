@@ -21,7 +21,7 @@ void StartFeature::writeAttributes(DataOutputStream *dos, UINT numAttrs)
 	dos->writeUTF(_toString((int)m_feature));
 }
 
-void StartFeature::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void StartFeature::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"chunkX") == 0)
 	{

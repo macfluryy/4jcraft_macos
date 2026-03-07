@@ -16,7 +16,7 @@ IUIScene_TradingMenu::IUIScene_TradingMenu()
 	m_bHasUpdatedOnce = false;
 }
 
-shared_ptr<Merchant> IUIScene_TradingMenu::getMerchant()
+std::shared_ptr<Merchant> IUIScene_TradingMenu::getMerchant()
 {
 	return m_merchant;
 }
@@ -70,9 +70,9 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 				if(!activeRecipe->isDeprecated())
 				{
 					// Do we have the ingredients?
-					shared_ptr<ItemInstance> buyAItem = activeRecipe->getBuyAItem();
-					shared_ptr<ItemInstance> buyBItem = activeRecipe->getBuyBItem();
-					shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
+					std::shared_ptr<ItemInstance> buyAItem = activeRecipe->getBuyAItem();
+					std::shared_ptr<ItemInstance> buyBItem = activeRecipe->getBuyBItem();
+					std::shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
 					int buyAMatches = player->inventory->countMatches(buyAItem);
 					int buyBMatches = player->inventory->countMatches(buyBItem);
 					if( (buyAItem != NULL && buyAMatches >= buyAItem->count) && (buyBItem == NULL || buyBMatches >= buyBItem->count) )
@@ -84,7 +84,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 						player->inventory->removeResources(buyBItem);
 
 						// Add the item we have purchased
-						shared_ptr<ItemInstance> result = activeRecipe->getSellItem()->copy();
+						std::shared_ptr<ItemInstance> result = activeRecipe->getSellItem()->copy();
 						if(!player->inventory->add( result ) )
 						{
 							player->drop(result);
@@ -92,7 +92,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 
 						// Send a packet to the server
 						int actualShopItem = m_activeOffers.at(selectedShopItem).second;
-						player->connection->send( shared_ptr<TradeItemPacket>( new TradeItemPacket(m_menu->containerId, actualShopItem) ) );
+						player->connection->send( std::shared_ptr<TradeItemPacket>( new TradeItemPacket(m_menu->containerId, actualShopItem) ) );
 
 						updateDisplay();
 					}
@@ -149,7 +149,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 			ByteArrayOutputStream rawOutput;
 			DataOutputStream output(&rawOutput);
 			output.writeInt(actualShopItem);
-			Minecraft::GetInstance()->getConnection(getPad())->send(shared_ptr<CustomPayloadPacket>( new CustomPayloadPacket(CustomPayloadPacket::TRADER_SELECTION_PACKET, rawOutput.toByteArray())));
+			Minecraft::GetInstance()->getConnection(getPad())->send(std::shared_ptr<CustomPayloadPacket>( new CustomPayloadPacket(CustomPayloadPacket::TRADER_SELECTION_PACKET, rawOutput.toByteArray())));
 		}
 	}
 	return handled;
@@ -203,7 +203,7 @@ void IUIScene_TradingMenu::updateDisplay()
 				ByteArrayOutputStream rawOutput;
 				DataOutputStream output(&rawOutput);
 				output.writeInt(firstValidTrade);
-				Minecraft::GetInstance()->getConnection(getPad())->send(shared_ptr<CustomPayloadPacket>( new CustomPayloadPacket(CustomPayloadPacket::TRADER_SELECTION_PACKET, rawOutput.toByteArray())));
+				Minecraft::GetInstance()->getConnection(getPad())->send(std::shared_ptr<CustomPayloadPacket>( new CustomPayloadPacket(CustomPayloadPacket::TRADER_SELECTION_PACKET, rawOutput.toByteArray())));
 			}
 		}
 
@@ -234,7 +234,7 @@ void IUIScene_TradingMenu::updateDisplay()
 		{
 			MerchantRecipe *activeRecipe = m_activeOffers.at(selectedShopItem).first;
 
-			wstring wsTemp;
+			std::wstring wsTemp;
 
 			// 4J-PB - need to get the villager type here
 			wsTemp = app.GetString(IDS_VILLAGER_OFFERS_ITEM);
@@ -244,12 +244,12 @@ void IUIScene_TradingMenu::updateDisplay()
 
 			setTitle(wsTemp.c_str());
 
-			vector<wstring> unformattedStrings;
-			wstring offerDescription = GetItemDescription(activeRecipe->getSellItem(), unformattedStrings);
+			std::vector<std::wstring> unformattedStrings;
+			std::wstring offerDescription = GetItemDescription(activeRecipe->getSellItem(), unformattedStrings);
 			setOfferDescription(offerDescription, unformattedStrings);
 			
-			shared_ptr<ItemInstance> buyAItem = activeRecipe->getBuyAItem();
-			shared_ptr<ItemInstance> buyBItem = activeRecipe->getBuyBItem();
+			std::shared_ptr<ItemInstance> buyAItem = activeRecipe->getBuyAItem();
+			std::shared_ptr<ItemInstance> buyBItem = activeRecipe->getBuyBItem();
 
 			setRequest1Item(buyAItem);
 			setRequest2Item(buyBItem);
@@ -262,7 +262,7 @@ void IUIScene_TradingMenu::updateDisplay()
 
 			bool canMake = true;
 
-			shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
+			std::shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
 			int buyAMatches = player->inventory->countMatches(buyAItem);
 			if(buyAMatches > 0)
 			{
@@ -321,10 +321,10 @@ bool IUIScene_TradingMenu::canMake(MerchantRecipe *recipe)
 	{
 		if(recipe->isDeprecated()) return false;
 
-		shared_ptr<ItemInstance> buyAItem = recipe->getBuyAItem();
-		shared_ptr<ItemInstance> buyBItem = recipe->getBuyBItem();
+		std::shared_ptr<ItemInstance> buyAItem = recipe->getBuyAItem();
+		std::shared_ptr<ItemInstance> buyBItem = recipe->getBuyBItem();
 
-		shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
+		std::shared_ptr<MultiplayerLocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
 		int buyAMatches = player->inventory->countMatches(buyAItem);
 		if(buyAMatches > 0)
 		{
@@ -349,28 +349,28 @@ bool IUIScene_TradingMenu::canMake(MerchantRecipe *recipe)
 }
 
 
-void IUIScene_TradingMenu::setRequest1Item(shared_ptr<ItemInstance> item)
+void IUIScene_TradingMenu::setRequest1Item(std::shared_ptr<ItemInstance> item)
 {
 }
 
-void IUIScene_TradingMenu::setRequest2Item(shared_ptr<ItemInstance> item)
+void IUIScene_TradingMenu::setRequest2Item(std::shared_ptr<ItemInstance> item)
 {
 }
 
-void IUIScene_TradingMenu::setTradeItem(int index, shared_ptr<ItemInstance> item)
+void IUIScene_TradingMenu::setTradeItem(int index, std::shared_ptr<ItemInstance> item)
 {
 }
 
-wstring IUIScene_TradingMenu::GetItemDescription(shared_ptr<ItemInstance> item, vector<wstring> &unformattedStrings)
+std::wstring IUIScene_TradingMenu::GetItemDescription(std::shared_ptr<ItemInstance> item, std::vector<std::wstring> &unformattedStrings)
 {
 	if(item == NULL) return L"";
 
-	wstring desc = L"";
-	vector<wstring> *strings = item->getHoverTextOnly(nullptr, false, unformattedStrings);
+	std::wstring desc = L"";
+	std::vector<std::wstring> *strings = item->getHoverTextOnly(nullptr, false, unformattedStrings);
 	bool firstLine = true;
 	for(AUTO_VAR(it, strings->begin()); it != strings->end(); ++it)
 	{
-		wstring thisString = *it;
+		std::wstring thisString = *it;
 		if(!firstLine)
 		{
 			desc.append( L"<br />" );

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../media/xuiscene_debug_item_editor.h"
 
 #include "XUI_Ctrl_CraftIngredientSlot.h"
@@ -18,7 +18,7 @@ public:
 	} ItemEditorInput;
 private:
 	int m_iPad;
-	shared_ptr<ItemInstance> m_item;
+	std::shared_ptr<ItemInstance> m_item;
 	Slot *m_slot;
 	AbstractContainerMenu *m_menu;
 

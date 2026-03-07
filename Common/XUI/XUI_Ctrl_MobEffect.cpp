@@ -60,12 +60,12 @@ void CXuiCtrlMobEffect::setIcon(MobEffect::EMobEffectIcon icon)
 	m_icon = icon;
 }
 
-void CXuiCtrlMobEffect::setName(const wstring &name)
+void CXuiCtrlMobEffect::setName(const std::wstring &name)
 {
 	m_name = name;
 }
 
-void CXuiCtrlMobEffect::setDuration(const wstring &duration)
+void CXuiCtrlMobEffect::setDuration(const std::wstring &duration)
 {
 	m_duration = duration;
 }

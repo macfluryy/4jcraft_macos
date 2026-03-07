@@ -53,7 +53,7 @@ HRESULT CScene_FullscreenProgress::OnInit( XUIMessageInit* pInitData, BOOL& bHan
 	pMinecraft->progressRenderer->progressStage(-1);
 
 	// set the tip
-	wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+	std::wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 	wchar_t startTags[64];
 	swprintf(startTags,64,L"<font color=\"#%08x\" size=14><DIV ALIGN=CENTER>",app.GetHTMLColour(eHTMLColor_White));
 	wsText= startTags + wsText + L"</DIV>";
@@ -359,7 +359,7 @@ HRESULT CScene_FullscreenProgress::OnTimer( XUIMessageTimer *pTimer, BOOL& bHand
 		case TIMER_FULLSCREEN_TIPS:
 			{		
 				// display the next tip
-				wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+				std::wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 				wchar_t startTags[64];
 				swprintf(startTags,64,L"<font color=\"#%08x\" size=14><DIV ALIGN=CENTER>",app.GetHTMLColour(eHTMLColor_White));
 				wsText= startTags + wsText + L"</DIV>";

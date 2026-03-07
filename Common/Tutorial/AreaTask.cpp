@@ -2,7 +2,7 @@
 #include "Tutorial.h"
 #include "AreaTask.h"
 
-AreaTask::AreaTask(eTutorial_State state, Tutorial *tutorial, vector<TutorialConstraint *> *inConstraints, int descriptionId, EAreaTaskCompletionStates completionState)
+AreaTask::AreaTask(eTutorial_State state, Tutorial *tutorial, std::vector<TutorialConstraint *> *inConstraints, int descriptionId, EAreaTaskCompletionStates completionState)
 	: TutorialTask( tutorial, descriptionId, false, inConstraints, false, false, false )
 {
 	m_tutorialState = state;

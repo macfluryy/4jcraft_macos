@@ -20,7 +20,7 @@ void AddEnchantmentRuleDefinition::writeAttributes(DataOutputStream *dos, UINT n
 	dos->writeUTF( _toString( m_enchantmentLevel ) );
 }
 
-void AddEnchantmentRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void AddEnchantmentRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"enchantmentId") == 0)
 	{
@@ -43,7 +43,7 @@ void AddEnchantmentRuleDefinition::addAttribute(const wstring &attributeName, co
 	}
 }
 
-bool AddEnchantmentRuleDefinition::enchantItem(shared_ptr<ItemInstance> item)
+bool AddEnchantmentRuleDefinition::enchantItem(std::shared_ptr<ItemInstance> item)
 {
 	bool enchanted = false;
 	if (item != NULL)

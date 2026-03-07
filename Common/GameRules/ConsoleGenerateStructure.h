@@ -13,18 +13,18 @@ class ConsoleGenerateStructure : public GameRuleDefinition, public StructurePiec
 {
 private:
 	int m_x, m_y, m_z;
-	vector<ConsoleGenerateStructureAction *> m_actions;
+	std::vector<ConsoleGenerateStructureAction *> m_actions;
 	int m_dimension;
 public:	
 	ConsoleGenerateStructure();
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_GenerateStructure; }
 
-	virtual void getChildren(vector<GameRuleDefinition *> *children);
+	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 	
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttrs);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	// StructurePiece
 	virtual BoundingBox *getBoundingBox();

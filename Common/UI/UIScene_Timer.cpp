@@ -15,7 +15,7 @@ UIScene_Timer::UIScene_Timer(int iPad, void *initData, UILayer *parentLayer) : U
 	}
 }
 
-wstring UIScene_Timer::getMoviePath()
+std::wstring UIScene_Timer::getMoviePath()
 {
 	return L"Timer";
 }

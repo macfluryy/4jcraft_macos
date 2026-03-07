@@ -46,7 +46,7 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void *initData, UILayer *pa
 			m_players[m_playersCount] = player->GetSmallId();
 			++m_playersCount;
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -93,7 +93,7 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void *initData, UILayer *pa
 	ui.HidePressStart();
 }
 
-wstring UIScene_TeleportMenu::getMoviePath()
+std::wstring UIScene_TeleportMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -136,7 +136,7 @@ void UIScene_TeleportMenu::handleReload()
 			m_players[m_playersCount] = player->GetSmallId();
 			++m_playersCount;
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -201,7 +201,7 @@ void UIScene_TeleportMenu::tick()
 				m_playerList.setPlayerIcon( i, (int)app.GetPlayerColour( m_players[i] ) );
 			}
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -258,7 +258,7 @@ void UIScene_TeleportMenu::handlePress(F64 controlId, F64 childId)
 		INetworkPlayer *selectedPlayer = g_NetworkManager.GetPlayerBySmallId( m_players[ currentSelection ] );
 		INetworkPlayer *thisPlayer = g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
 		
-		shared_ptr<GameCommandPacket> packet;
+		std::shared_ptr<GameCommandPacket> packet;
 		if(m_teleportToPlayer)
 		{
 			packet = TeleportCommand::preparePacket(thisPlayer->GetUID(),selectedPlayer->GetUID());
@@ -307,7 +307,7 @@ void UIScene_TeleportMenu::OnPlayerChanged(void *callbackParam, INetworkPlayer *
 		scene->m_players[scene->m_playersCount] = pPlayer->GetSmallId();
 		++scene->m_playersCount;
 
-		wstring playerName = L"";
+		std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 		if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 		{

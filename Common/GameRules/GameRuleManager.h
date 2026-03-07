@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+////using namespace std;
 
 #include "LevelGenerators.h"
 #include "LevelRules.h"
@@ -54,8 +54,8 @@ public:
 	bool readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize, StringTable *strings); //(DLCGameRulesFile *dlcFile, StringTable *strings);
 
 private:
-	void readAttributes(DataInputStream *dis, vector<wstring> *tagsAndAtts, GameRuleDefinition *rule);
-	void readChildren(DataInputStream *dis, vector<wstring> *tagsAndAtts, unordered_map<int, ConsoleGameRules::EGameRuleType> *tagIdMap, GameRuleDefinition *rule);
+	void readAttributes(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, GameRuleDefinition *rule);
+	void readChildren(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, std::unordered_map<int, ConsoleGameRules::EGameRuleType> *tagIdMap, GameRuleDefinition *rule);
 
 public:
 	void processSchematics(LevelChunk *levelChunk);
@@ -68,11 +68,11 @@ private:
 	LEVEL_GEN_ID addLevelGenerationOptions(LevelGenerationOptions *);
 
 public:
-	vector<LevelGenerationOptions *> *getLevelGenerators() { return m_levelGenerators.getLevelGenerators(); }
+	std::vector<LevelGenerationOptions *> *getLevelGenerators() { return m_levelGenerators.getLevelGenerators(); }
 	void setLevelGenerationOptions(LevelGenerationOptions *levelGen);
 	LevelRuleset *getGameRuleDefinitions() { return m_currentGameRuleDefinitions; }
 	LevelGenerationOptions *getLevelGenerationOptions() { return m_currentLevelGenerationOptions; }
-	LPCWSTR	GetGameRulesString(const wstring &key);
+	LPCWSTR	GetGameRulesString(const std::wstring &key);
 
 	// 4J-JEV:
 	// Properly cleans-up and unloads the current set of gameRules.

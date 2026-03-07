@@ -28,7 +28,7 @@ void UseTileRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttri
 	dos->writeUTF(_toString(m_coordinates.z));
 }
 
-void UseTileRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void UseTileRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"tileId") == 0)
 	{

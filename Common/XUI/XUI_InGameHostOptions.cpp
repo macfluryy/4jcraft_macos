@@ -75,10 +75,10 @@ HRESULT CScene_InGameHostOptions::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 			if(hostOptions != app.GetGameHostOption(eGameHostOption_All) )
 			{
 				Minecraft *pMinecraft = Minecraft::GetInstance();				
-				shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+				std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
 				if(player != NULL && player->connection)
 				{
-					player->connection->send( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, hostOptions) ) );
+					player->connection->send( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, hostOptions) ) );
 				}
 			}
 

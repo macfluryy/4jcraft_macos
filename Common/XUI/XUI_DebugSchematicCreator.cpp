@@ -57,7 +57,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINo
 		else if(m_data->endZ < 0 && m_data->endZ%2 ==0)
 			m_data->endZ+=1;
 
-		wstring value = m_name.GetText();
+		std::wstring value = m_name.GetText();
 		if(!value.empty())
 		{
 			swprintf(m_data->name,64,L"%ls", value.c_str());
@@ -110,7 +110,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	if(hObjSource == m_startX)
 	{
 		int iVal = 0;
-		wstring value = m_startX.GetText();
+		std::wstring value = m_startX.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))
@@ -121,7 +121,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	else if(hObjSource == m_startY)
 	{
 		int iVal = 0;
-		wstring value = m_startY.GetText();
+		std::wstring value = m_startY.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))
@@ -132,7 +132,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	else if(hObjSource == m_startZ)
 	{
 		int iVal = 0;
-		wstring value = m_startZ.GetText();
+		std::wstring value = m_startZ.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))
@@ -143,7 +143,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	else if(hObjSource == m_endX)
 	{
 		int iVal = 0;
-		wstring value = m_endX.GetText();
+		std::wstring value = m_endX.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))
@@ -154,7 +154,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	else if(hObjSource == m_endY)
 	{
 		int iVal = 0;
-		wstring value = m_endY.GetText();
+		std::wstring value = m_endY.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))
@@ -165,7 +165,7 @@ HRESULT CScene_DebugSchematicCreator::OnNotifyValueChanged( HXUIOBJ hObjSource, 
 	else if(hObjSource == m_endZ)
 	{
 		int iVal = 0;
-		wstring value = m_endZ.GetText();
+		std::wstring value = m_endZ.GetText();
 		if(!value.empty()) iVal = _fromString<int>( value );
 
 		if( iVal >= (LEVEL_MAX_WIDTH * -16) || iVal < (LEVEL_MAX_WIDTH * 16))

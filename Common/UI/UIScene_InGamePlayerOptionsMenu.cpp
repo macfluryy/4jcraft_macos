@@ -215,7 +215,7 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(int iPad, void 
 #endif
 }
 
-wstring UIScene_InGamePlayerOptionsMenu::getMoviePath()
+std::wstring UIScene_InGamePlayerOptionsMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -316,10 +316,10 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key, bool repeat
 			{
 				// Send update settings packet to server
 				Minecraft *pMinecraft = Minecraft::GetInstance();				
-				shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+				std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
 				if(player->connection)
 				{
-					player->connection->send( shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( m_networkSmallId, -1, m_playerPrivileges) ) );
+					player->connection->send( std::shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( m_networkSmallId, -1, m_playerPrivileges) ) );
 				}
 			}
 			navigateBack();
@@ -366,10 +366,10 @@ int UIScene_InGamePlayerOptionsMenu::KickPlayerReturned(void *pParam,int iPad,C4
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		
 		Minecraft *pMinecraft = Minecraft::GetInstance();
-		shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
+		std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
 		if(localPlayer->connection)
 		{
-			localPlayer->connection->send( shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
+			localPlayer->connection->send( std::shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
 		}
 
 		// Fix for #61494 - [CRASH]: TU7: Code: Multiplayer: Title may crash while kicking a player from an online game.

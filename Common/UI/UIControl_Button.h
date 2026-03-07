@@ -12,7 +12,7 @@ public:
 
 	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
 
-	void init(const wstring &label, int id);
+	void init(const std::wstring &label, int id);
 	virtual void ReInit();
 
 	void setEnable(bool enable);

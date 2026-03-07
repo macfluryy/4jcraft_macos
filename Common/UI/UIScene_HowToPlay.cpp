@@ -70,7 +70,7 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void *initData, UILayer *parentLa
 	// Setup all the Iggy references we need for this scene
 	initialiseMovie();
 
-	wstring inventoryString = app.GetString(IDS_INVENTORY);
+	std::wstring inventoryString = app.GetString(IDS_INVENTORY);
 	m_labels[ eHowToPlay_LabelCTItem].init(app.GetString(IDS_ITEM_HATCHET_WOOD));
 	m_labels[ eHowToPlay_LabelCTGroup].init(app.GetString(IDS_GROUPNAME_TOOLS));
 	m_labels[ eHowToPlay_LabelCTInventory3x3].init(inventoryString);
@@ -95,8 +95,8 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void *initData, UILayer *parentLa
 	m_labels[ eHowToPlay_LabelBInventory].init(inventoryString);
 	m_labels[ eHowToPlay_LabelAnvil_Inventory].init(inventoryString.c_str());
 	
-	wstring wsTemp = app.GetString(IDS_REPAIR_COST);
-	wsTemp.replace( wsTemp.find(L"%d"), 2, wstring(L"8") );
+	std::wstring wsTemp = app.GetString(IDS_REPAIR_COST);
+	wsTemp.replace( wsTemp.find(L"%d"), 2, std::wstring(L"8") );
 
 	m_labels[ eHowToPlay_LabelAnvil_Cost].init(wsTemp.c_str());
 	m_labels[ eHowToPlay_LabelAnvil_ARepairAndName].init(app.GetString(IDS_REPAIR_AND_NAME));
@@ -120,7 +120,7 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void *initData, UILayer *parentLa
 	StartPage( eStartPage );
 }
 
-wstring UIScene_HowToPlay::getMoviePath()
+std::wstring UIScene_HowToPlay::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -263,7 +263,7 @@ void UIScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 	SHowToPlayPageDef* pDef = &( gs_aPageDefs[ m_eCurrPage ] );
 
 	// Replace button identifiers in the text with actual button images.
-	wstring replacedText = app.FormatHTMLString(m_iPad, app.GetString( pDef->m_iTextStringID ));
+	std::wstring replacedText = app.FormatHTMLString(m_iPad, app.GetString( pDef->m_iTextStringID ));
 	// 4J-PB - replace the title with the platform specific title, and the platform name
 //	replacedText = replaceAll(replacedText,L"{*TITLE_UPDATE_NAME*}",app.GetString(IDS_TITLE_UPDATE_NAME));
 #ifndef _WINDOWS64
@@ -279,15 +279,15 @@ void UIScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 	stripWhitespaceForHtml( replacedText, true );
 
 	// Set the text colour
-	wstring finalText(replacedText.c_str() );
+	std::wstring finalText(replacedText.c_str() );
 	wchar_t startTags[64];
 	swprintf(startTags,64,L"<font color=\"#%08x\">",app.GetHTMLColour(eHTMLColor_White));
 	finalText = startTags + finalText;
 
-	vector<wstring> paragraphs;
+	std::vector<std::wstring> paragraphs;
 	int lastIndex = 0;
 	for (	int index = finalText.find(L"\r\n", lastIndex, 2);
-		index != wstring::npos; 
+		index != std::wstring::npos; 
 		index = finalText.find(L"\r\n", lastIndex, 2)
 		)
 	{

@@ -24,7 +24,7 @@ UIScene_Keyboard::UIScene_Keyboard(int iPad, void *initData, UILayer *parentLaye
 	m_ButtonBackspace.init(L"Backspace", -1);
 
 	// Initialise function keyboard Buttons and set alternative symbol button string
-	wstring label = L"Abc";
+	std::wstring label = L"Abc";
 	IggyStringUTF16 stringVal;
 	stringVal.string = (IggyUTF16*)label.c_str();
 	stringVal.length = label.length();
@@ -46,7 +46,7 @@ UIScene_Keyboard::~UIScene_Keyboard()
 	m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
 
-wstring UIScene_Keyboard::getMoviePath()
+std::wstring UIScene_Keyboard::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1 && !m_parentLayer->IsFullscreenGroup())
 	{

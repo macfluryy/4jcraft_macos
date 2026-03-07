@@ -20,10 +20,10 @@ public:
 
 	void clearList();
 
-	void addItem(const wstring &label);
+	void addItem(const std::wstring &label);
 	void addItem(const string &label);
 
-	void addItem(const wstring &label, int data);
+	void addItem(const std::wstring &label, int data);
 	void addItem(const string &label, int data);
 
 	void removeItem(int index);
@@ -35,7 +35,7 @@ public:
 
 	void updateChildFocus(int iChild);
 
-	void setButtonLabel(int iButtonId, const wstring &label);
+	void setButtonLabel(int iButtonId, const std::wstring &label);
 
 #ifdef __PSVITA__
 	void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);

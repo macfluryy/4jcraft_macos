@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include <vector>
 #ifndef __linux__
 #include <qnet.h>
@@ -103,8 +103,8 @@ public:
 	virtual void SystemFlagSet(INetworkPlayer *pNetworkPlayer, int index) = 0;
 	virtual bool SystemFlagGet(INetworkPlayer *pNetworkPlayer, int index) = 0;
 
-	virtual wstring GatherStats() = 0;
-	virtual wstring GatherRTTStats() = 0;
+	virtual std::wstring GatherStats() = 0;
+	virtual std::wstring GatherRTTStats() = 0;
 
 private:	
 	virtual void SetSessionTexturePackParentId( int id ) = 0;
@@ -112,7 +112,7 @@ private:
 	virtual void Notify(int ID, ULONG_PTR Param) = 0;
 
 public:
-	virtual vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly) = 0;
+	virtual std::vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly) = 0;
 	virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession) = 0;
 	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam ) = 0;
 	virtual void GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam ) = 0;
@@ -123,6 +123,6 @@ public:
 #endif
 
 #ifdef _DURANGO
-	virtual wstring GetDisplayNameByGamertag(wstring gamertag) = 0;
+	virtual std::wstring GetDisplayNameByGamertag(std::wstring gamertag) = 0;
 #endif
 };

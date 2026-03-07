@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 class Slot;
 class ItemInstance;
@@ -47,9 +47,9 @@ public:
 
 	bool isEmpty( HXUIOBJ hObj );
 
-	wstring GetItemDescription( HXUIOBJ hObj, vector<wstring> &unformattedStrings );
+	std::wstring GetItemDescription( HXUIOBJ hObj, std::vector<std::wstring> &unformattedStrings );
 
-	shared_ptr<ItemInstance> getItemInstance( HXUIOBJ hObj );
+	std::shared_ptr<ItemInstance> getItemInstance( HXUIOBJ hObj );
 	Slot *getSlot( HXUIOBJ hObj );
 
 	// 4J WESTY : Pointer Prototype : Added to support prototype only.

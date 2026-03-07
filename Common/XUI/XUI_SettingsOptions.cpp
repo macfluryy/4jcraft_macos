@@ -80,7 +80,7 @@ HRESULT CScene_SettingsOptions::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	m_SliderA[SLIDER_SETTINGS_DIFFICULTY].SetText(TempString);
 
 
- 	wstring wsText=app.GetString(m_iDifficultySettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]);
+ 	std::wstring wsText=app.GetString(m_iDifficultySettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]);
 	int size = 14;
 	if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
 	{
@@ -138,7 +138,7 @@ HRESULT CScene_SettingsOptions::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	}
 	else
 	{
-		wstring wsText=app.GetString(m_iDifficultySettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]);
+		std::wstring wsText=app.GetString(m_iDifficultySettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]);
 		int size = 14;
 		if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
 		{
@@ -284,7 +284,7 @@ HRESULT CScene_SettingsOptions::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINot
 		swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[pNotifyValueChanged->nValue]));		
 		m_SliderA[SLIDER_SETTINGS_DIFFICULTY].SetText(TempString);
 		
-		wstring wsText=app.GetString(m_iDifficultySettingA[pNotifyValueChanged->nValue]);
+		std::wstring wsText=app.GetString(m_iDifficultySettingA[pNotifyValueChanged->nValue]);
 		int size = 14;
 		if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
 		{

@@ -13,7 +13,7 @@ bool UIControl_SaveList::setupControl(UIScene *scene, IggyValuePath *parent, con
 	return success;
 }
 
-void UIControl_SaveList::addItem(const wstring &label)
+void UIControl_SaveList::addItem(const std::wstring &label)
 {
 	addItem(label, L"");
 }
@@ -23,7 +23,7 @@ void UIControl_SaveList::addItem(const string &label)
 	addItem(label, L"");
 }
 
-void UIControl_SaveList::addItem(const wstring &label, int data)
+void UIControl_SaveList::addItem(const std::wstring &label, int data)
 {
 	addItem(label, L"", data);
 }
@@ -33,19 +33,19 @@ void UIControl_SaveList::addItem(const string &label, int data)
 	addItem(label, L"", data);
 }
 
-void UIControl_SaveList::addItem(const string &label, const wstring &iconName)
+void UIControl_SaveList::addItem(const string &label, const std::wstring &iconName)
 {
 	addItem(label, iconName, m_itemCount);
 	++m_itemCount;
 }
 
-void UIControl_SaveList::addItem(const wstring &label, const wstring &iconName)
+void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &iconName)
 {
 	addItem(label, iconName, m_itemCount);
 	++m_itemCount;
 }
 
-void UIControl_SaveList::addItem(const string &label, const wstring &iconName, int data)
+void UIControl_SaveList::addItem(const string &label, const std::wstring &iconName, int data)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];
@@ -67,7 +67,7 @@ void UIControl_SaveList::addItem(const string &label, const wstring &iconName, i
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_addNewItemFunc , 3 , value );
 }
 
-void UIControl_SaveList::addItem(const wstring &label, const wstring &iconName, int data)
+void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &iconName, int data)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];
@@ -89,7 +89,7 @@ void UIControl_SaveList::addItem(const wstring &label, const wstring &iconName, 
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_addNewItemFunc , 3 , value );
 }
 
-void UIControl_SaveList::setTextureName(int iId, const wstring &iconName)
+void UIControl_SaveList::setTextureName(int iId, const std::wstring &iconName)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

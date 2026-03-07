@@ -13,7 +13,7 @@ bool UIControl_BitmapIcon::setupControl(UIScene *scene, IggyValuePath *parent, c
 	return success;
 }
 
-void UIControl_BitmapIcon::setTextureName(const wstring &iconName)
+void UIControl_BitmapIcon::setTextureName(const std::wstring &iconName)
 {
 	IggyDataValue result;
 	IggyDataValue value[1];

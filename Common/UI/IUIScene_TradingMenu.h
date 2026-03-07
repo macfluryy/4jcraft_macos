@@ -7,8 +7,8 @@ class IUIScene_TradingMenu
 {
 protected:
 	MerchantMenu *m_menu;
-	shared_ptr<Merchant> m_merchant;
-	vector< pair<MerchantRecipe *,int> > m_activeOffers;
+	std::shared_ptr<Merchant> m_merchant;
+	std::vector< pair<MerchantRecipe *,int> > m_activeOffers;
 
 	int m_validOffersCount;
 	int m_selectedSlot;
@@ -32,27 +32,27 @@ protected:
 	virtual void showScrollRightArrow(bool show) = 0;
 	virtual void showScrollLeftArrow(bool show) = 0;
 	virtual void moveSelector(bool right) = 0;
-	virtual void setRequest1Name(const wstring &name) = 0;
-	virtual void setRequest2Name(const wstring &name) = 0;
-	virtual void setTitle(const wstring &name) = 0;
+	virtual void setRequest1Name(const std::wstring &name) = 0;
+	virtual void setRequest2Name(const std::wstring &name) = 0;
+	virtual void setTitle(const std::wstring &name) = 0;
 
 	virtual void setRequest1RedBox(bool show) = 0;
 	virtual void setRequest2RedBox(bool show) = 0;
 	virtual void setTradeRedBox(int index, bool show) = 0;
 	
-	virtual void setOfferDescription(const wstring &name, vector<wstring> &unformattedStrings) = 0;
+	virtual void setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings) = 0;
 
-	virtual void setRequest1Item(shared_ptr<ItemInstance> item);
-	virtual void setRequest2Item(shared_ptr<ItemInstance> item);
-	virtual void setTradeItem(int index, shared_ptr<ItemInstance> item);
+	virtual void setRequest1Item(std::shared_ptr<ItemInstance> item);
+	virtual void setRequest2Item(std::shared_ptr<ItemInstance> item);
+	virtual void setTradeItem(int index, std::shared_ptr<ItemInstance> item);
 
 private:
 	void updateDisplay();
 	bool canMake(MerchantRecipe *recipe);
-	wstring GetItemDescription(shared_ptr<ItemInstance> item, vector<wstring> &unformattedStrings);
+	std::wstring GetItemDescription(std::shared_ptr<ItemInstance> item, std::vector<std::wstring> &unformattedStrings);
 
 public:
-	shared_ptr<Merchant> getMerchant();
+	std::shared_ptr<Merchant> getMerchant();
 
 	virtual int getPad() = 0;
 };

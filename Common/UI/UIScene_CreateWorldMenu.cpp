@@ -261,7 +261,7 @@ void UIScene_CreateWorldMenu::updateComponents()
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
-wstring UIScene_CreateWorldMenu::getMoviePath()
+std::wstring UIScene_CreateWorldMenu::getMoviePath()
 {
 	return L"CreateWorldMenu";
 }
@@ -1083,13 +1083,13 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 	app.ClearTerrainFeaturePosition();
 
 	// create the world and launch
-	wstring wWorldName = pClass->m_worldName;
+	std::wstring wWorldName = pClass->m_worldName;
 
 	StorageManager.ResetSaveData();
 	// Make our next save default to the name of the level
 	StorageManager.SetSaveTitle((wchar_t *)wWorldName.c_str());
 
-	wstring wSeed;
+	std::wstring wSeed;
 	if(!pClass->m_MoreOptionsParams.seed.empty() )
 	{
 		wSeed=pClass->m_MoreOptionsParams.seed;

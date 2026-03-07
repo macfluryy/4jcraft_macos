@@ -622,8 +622,8 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 {
 	BOOL showPrevious = FALSE, showNext = FALSE;
 	DWORD previousIndex = 0, nextIndex = 0;
-	wstring skinName = L"";
-	wstring skinOrigin = L"";
+	std::wstring skinName = L"";
+	std::wstring skinOrigin = L"";
 	bool bSkinIsFree=false;
 	bool bLicensed=false;
 	DLCSkinFile *skinFile=NULL;
@@ -752,7 +752,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 	if(m_vAdditionalSkinBoxes && m_vAdditionalSkinBoxes->size()!=0)
 	{
 		// add the boxes to the humanoid model, but only if we've not done this already
-		vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+		std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
 		if(pAdditionalModelParts==NULL)
 		{
 			pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),m_vAdditionalSkinBoxes);
@@ -772,9 +772,9 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 	nextIndex = getNextSkinIndex(m_skinIndex);
 	previousIndex = getPreviousSkinIndex(m_skinIndex);
 
-	wstring otherSkinPath = L"";
-	wstring otherCapePath = L"";
-	vector<SKIN_BOX *> *othervAdditionalSkinBoxes=NULL;
+	std::wstring otherSkinPath = L"";
+	std::wstring otherCapePath = L"";
+	std::vector<SKIN_BOX *> *othervAdditionalSkinBoxes=NULL;
 	wchar_t chars[256];
 
 	// turn off all displays
@@ -866,7 +866,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 			}
   			if(othervAdditionalSkinBoxes && othervAdditionalSkinBoxes->size()!=0)
   			{
- 				vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+ 				std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
  				if(pAdditionalModelParts==NULL)
  				{
  					pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),othervAdditionalSkinBoxes);
@@ -938,7 +938,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 			}
  			if(othervAdditionalSkinBoxes && othervAdditionalSkinBoxes->size()!=0)
  			{
-				vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+				std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
 				if(pAdditionalModelParts==NULL)
 				{
 					pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),othervAdditionalSkinBoxes);

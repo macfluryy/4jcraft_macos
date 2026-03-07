@@ -213,7 +213,7 @@ CMinecraftApp::CMinecraftApp()
 
 	for(int i=0;i<XUSER_MAX_COUNT;i++)
 	{
-		m_vBannedListA[i] = new vector<PBANNEDLISTDATA>;	
+		m_vBannedListA[i] = new std::vector<PBANNEDLISTDATA>;	
 	}
 
 	LocaleAndLanguageInit();
@@ -316,7 +316,7 @@ void CMinecraftApp::HandleButtonPresses(int iPad)
 //  		ProfileManager.WriteToProfile(iPad,true);
 }
 
-bool CMinecraftApp::LoadInventoryMenu(int iPad,shared_ptr<LocalPlayer> player,bool bNavigateBack)
+bool CMinecraftApp::LoadInventoryMenu(int iPad,std::shared_ptr<LocalPlayer> player,bool bNavigateBack)
 {
 	bool success = true;
 
@@ -339,7 +339,7 @@ bool CMinecraftApp::LoadInventoryMenu(int iPad,shared_ptr<LocalPlayer> player,bo
 	return success;
 }
 
-bool CMinecraftApp::LoadCreativeMenu(int iPad,shared_ptr<LocalPlayer> player,bool bNavigateBack)
+bool CMinecraftApp::LoadCreativeMenu(int iPad,std::shared_ptr<LocalPlayer> player,bool bNavigateBack)
 {
 	bool success = true;
 
@@ -362,7 +362,7 @@ bool CMinecraftApp::LoadCreativeMenu(int iPad,shared_ptr<LocalPlayer> player,boo
 	return success;
 }
 
-bool CMinecraftApp::LoadCrafting2x2Menu(int iPad,shared_ptr<LocalPlayer> player)
+bool CMinecraftApp::LoadCrafting2x2Menu(int iPad,std::shared_ptr<LocalPlayer> player)
 {
 	bool success = true;
 
@@ -388,7 +388,7 @@ bool CMinecraftApp::LoadCrafting2x2Menu(int iPad,shared_ptr<LocalPlayer> player)
 	return success;
 }
 
-bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,shared_ptr<LocalPlayer> player, int x, int y, int z)
+bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,std::shared_ptr<LocalPlayer> player, int x, int y, int z)
 {
 	bool success = true;
 
@@ -414,7 +414,7 @@ bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,shared_ptr<LocalPlayer> player,
 	return success;
 }
 
-bool CMinecraftApp::LoadEnchantingMenu(int iPad,shared_ptr<Inventory> inventory, int x, int y, int z, Level *level)
+bool CMinecraftApp::LoadEnchantingMenu(int iPad,std::shared_ptr<Inventory> inventory, int x, int y, int z, Level *level)
 {
 	bool success = true;
 
@@ -440,7 +440,7 @@ bool CMinecraftApp::LoadEnchantingMenu(int iPad,shared_ptr<Inventory> inventory,
 	return success;
 }
 
-bool CMinecraftApp::LoadFurnaceMenu(int iPad,shared_ptr<Inventory> inventory, shared_ptr<FurnaceTileEntity> furnace)
+bool CMinecraftApp::LoadFurnaceMenu(int iPad,std::shared_ptr<Inventory> inventory, std::shared_ptr<FurnaceTileEntity> furnace)
 {
 	bool success = true;
 
@@ -465,7 +465,7 @@ bool CMinecraftApp::LoadFurnaceMenu(int iPad,shared_ptr<Inventory> inventory, sh
 	return success;
 }
 
-bool CMinecraftApp::LoadBrewingStandMenu(int iPad,shared_ptr<Inventory> inventory, shared_ptr<BrewingStandTileEntity> brewingStand)
+bool CMinecraftApp::LoadBrewingStandMenu(int iPad,std::shared_ptr<Inventory> inventory, std::shared_ptr<BrewingStandTileEntity> brewingStand)
 {
 	bool success = true;
 
@@ -491,7 +491,7 @@ bool CMinecraftApp::LoadBrewingStandMenu(int iPad,shared_ptr<Inventory> inventor
 }
 
 
-bool CMinecraftApp::LoadContainerMenu(int iPad,shared_ptr<Container> inventory, shared_ptr<Container> container)
+bool CMinecraftApp::LoadContainerMenu(int iPad,std::shared_ptr<Container> inventory, std::shared_ptr<Container> container)
 {
 	bool success = true;
 
@@ -525,7 +525,7 @@ bool CMinecraftApp::LoadContainerMenu(int iPad,shared_ptr<Container> inventory, 
 	return success;
 }
 
-bool CMinecraftApp::LoadTrapMenu(int iPad,shared_ptr<Container> inventory, shared_ptr<DispenserTileEntity> trap)
+bool CMinecraftApp::LoadTrapMenu(int iPad,std::shared_ptr<Container> inventory, std::shared_ptr<DispenserTileEntity> trap)
 {
 	bool success = true;
 
@@ -550,7 +550,7 @@ bool CMinecraftApp::LoadTrapMenu(int iPad,shared_ptr<Container> inventory, share
 	return success;
 }
 
-bool CMinecraftApp::LoadSignEntryMenu(int iPad,shared_ptr<SignTileEntity> sign)
+bool CMinecraftApp::LoadSignEntryMenu(int iPad,std::shared_ptr<SignTileEntity> sign)
 {
 	bool success = true;
 
@@ -566,7 +566,7 @@ bool CMinecraftApp::LoadSignEntryMenu(int iPad,shared_ptr<SignTileEntity> sign)
 	return success;
 }
 
-bool CMinecraftApp::LoadRepairingMenu(int iPad,shared_ptr<Inventory> inventory, Level *level, int x, int y, int z)
+bool CMinecraftApp::LoadRepairingMenu(int iPad,std::shared_ptr<Inventory> inventory, Level *level, int x, int y, int z)
 {
 	bool success = true;
 
@@ -585,7 +585,7 @@ bool CMinecraftApp::LoadRepairingMenu(int iPad,shared_ptr<Inventory> inventory, 
 	return success;
 }
 
-bool CMinecraftApp::LoadTradingMenu(int iPad, shared_ptr<Inventory> inventory, shared_ptr<Merchant> trader, Level *level)
+bool CMinecraftApp::LoadTradingMenu(int iPad, std::shared_ptr<Inventory> inventory, std::shared_ptr<Merchant> trader, Level *level)
 {
 	bool success = true;
 
@@ -1223,7 +1223,7 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 				PlayerList *players = MinecraftServer::getInstance()->getPlayerList();
 				for(AUTO_VAR(it3, players->players.begin()); it3 != players->players.end(); ++it3)
 				{
-					shared_ptr<ServerPlayer> decorationPlayer = *it3;
+					std::shared_ptr<ServerPlayer> decorationPlayer = *it3;
 					decorationPlayer->setShowOnMaps((app.GetGameHostOption(eGameHostOption_Gamertags)!=0)?true:false);
 				}
 			}
@@ -1328,7 +1328,7 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 	}
 }
 
-void CMinecraftApp::SetPlayerSkin(int iPad,const wstring &name)
+void CMinecraftApp::SetPlayerSkin(int iPad,const std::wstring &name)
 {
 	DWORD skinId = app.getSkinIdFromPath(name);
 
@@ -1348,7 +1348,7 @@ void CMinecraftApp::SetPlayerSkin(int iPad,DWORD dwSkinId)
 }
 
 
-wstring CMinecraftApp::GetPlayerSkinName(int iPad)
+std::wstring CMinecraftApp::GetPlayerSkinName(int iPad)
 {
 	return app.getSkinPathFromId(GameSettingsA[iPad]->dwSelectedSkin);
 }
@@ -1396,7 +1396,7 @@ DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
  }
 
 
-void CMinecraftApp::SetPlayerCape(int iPad,const wstring &name)
+void CMinecraftApp::SetPlayerCape(int iPad,const std::wstring &name)
 {
 	DWORD capeId = Player::getCapeIdFromPath(name);
 
@@ -1415,7 +1415,7 @@ void CMinecraftApp::SetPlayerCape(int iPad,DWORD dwCapeId)
 	if(Minecraft::GetInstance()->localplayers[iPad]!=NULL) Minecraft::GetInstance()->localplayers[iPad]->setAndBroadcastCustomCape(dwCapeId);
 }
 
-wstring CMinecraftApp::GetPlayerCapeName(int iPad)
+std::wstring CMinecraftApp::GetPlayerCapeName(int iPad)
 {
 	return Player::getCapePathFromId(GameSettingsA[iPad]->dwSelectedCape);
 }
@@ -2191,7 +2191,7 @@ unsigned int CMinecraftApp::GetGameSettingsDebugMask(int iPad,bool bOverridePlay
 	}
 	if(iPad < 0) iPad = 0;
 
-	shared_ptr<Player> player = Minecraft::GetInstance()->localplayers[iPad];
+	std::shared_ptr<Player> player = Minecraft::GetInstance()->localplayers[iPad];
 
 	if(bOverridePlayer || player==NULL)
 	{
@@ -2211,7 +2211,7 @@ void CMinecraftApp::SetGameSettingsDebugMask(int iPad, unsigned int uiVal)
 	GameSettingsA[iPad]->uiDebugBitmask=uiVal;
 
 	// update the value so the network server can use it
-	shared_ptr<Player> player = Minecraft::GetInstance()->localplayers[iPad];
+	std::shared_ptr<Player> player = Minecraft::GetInstance()->localplayers[iPad];
 
 	if(player)
 	{
@@ -2378,7 +2378,7 @@ void CMinecraftApp::HandleXuiActions(void)
 	eTMSAction eTMS;
 	LPVOID param;
 	Minecraft *pMinecraft=Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> player;
+	std::shared_ptr<MultiplayerLocalPlayer> player;
 
 	// are there any global actions to deal with?
 	eAction = app.GetGlobalXuiAction();
@@ -4032,7 +4032,7 @@ int CMinecraftApp::BannedLevelDialogReturned(void *pParam,int iPad,const C4JStor
 
 void CMinecraftApp::loadMediaArchive()
 {
-	wstring mediapath = L"";
+	std::wstring mediapath = L"";
 
 #ifdef __PS3__
 	mediapath = L"Common\\Media\\MediaPS3.arc";
@@ -4102,7 +4102,7 @@ void CMinecraftApp::loadStringTable()
 		// we need to unload the current string table, this is a reload
 		delete m_stringTable;
 	}
-	wstring localisationFile = L"languages.loc";
+	std::wstring localisationFile = L"languages.loc";
 	if (m_mediaArchive->hasFile(localisationFile))
 	{
 		byteArray locFile = m_mediaArchive->getFile(localisationFile);
@@ -5146,7 +5146,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 // 		 // we only attempt to install the cape once per launch of the game
 // 		 m_bDefaultCapeInstallAttempted=true;
 // 
-// 		 wstring wTemp=L"Default_Cape.png";
+// 		 std::wstring wTemp=L"Default_Cape.png";
 // 		 bool bRes=app.IsFileInMemoryTextures(wTemp);
 // 		 // if the file is not already in the memory textures, then read it from TMS
 // 		 if(!bRes)
@@ -5210,7 +5210,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 				DWORD dwPackID=m_dlcManager.retrievePackIDFromDLCDataFile(szFullFilename,pack);
 
 				// Do we need to override the TexturePack.pck with an updated version in a TU?
-				wstring wsTemp=getFilePath(dwPackID, wstring(L"TexturePack.pck"),false );
+				std::wstring wsTemp=getFilePath(dwPackID, std::wstring(L"TexturePack.pck"),false );
 				File texturePCKPath(wsTemp );
 				if(texturePCKPath.exists())
 				{
@@ -5314,7 +5314,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid)
 	return false;
 }
 
-void CMinecraftApp::AddMemoryTextureFile(const wstring &wName,PBYTE pbData,DWORD dwBytes)	
+void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName,PBYTE pbData,DWORD dwBytes)	
 {	
 	EnterCriticalSection(&csMemFilesLock);
 	// check it's not already in
@@ -5360,7 +5360,7 @@ void CMinecraftApp::AddMemoryTextureFile(const wstring &wName,PBYTE pbData,DWORD
 	LeaveCriticalSection(&csMemFilesLock);
 }
 
-void CMinecraftApp::RemoveMemoryTextureFile(const wstring &wName)
+void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring &wName)
 {
 	EnterCriticalSection(&csMemFilesLock);
 	
@@ -5386,7 +5386,7 @@ void CMinecraftApp::RemoveMemoryTextureFile(const wstring &wName)
 
 bool CMinecraftApp::DefaultCapeExists()
 {
-	wstring wTex=L"Special_Cape.png";
+	std::wstring wTex=L"Special_Cape.png";
 	bool val = false;
 
 	EnterCriticalSection(&csMemFilesLock);
@@ -5397,7 +5397,7 @@ bool CMinecraftApp::DefaultCapeExists()
 	return val;
 }
 
-bool CMinecraftApp::IsFileInMemoryTextures(const wstring &wName)
+bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring &wName)
 {
 	bool val = false;
 
@@ -5409,7 +5409,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const wstring &wName)
 	return val;
 }
 
-void CMinecraftApp::GetMemFileDetails(const wstring &wName,PBYTE *ppbData,DWORD *pdwBytes)
+void CMinecraftApp::GetMemFileDetails(const std::wstring &wName,PBYTE *ppbData,DWORD *pdwBytes)
 {
 	EnterCriticalSection(&csMemFilesLock);
 	AUTO_VAR(it, m_MEM_Files.find(wName));
@@ -5525,7 +5525,7 @@ void CMinecraftApp::GetTPD(int iConfig,PBYTE *ppbData,DWORD *pdwBytes)
 }
 
 
-// bool CMinecraftApp::UploadFileToGlobalStorage(int iQuadrant, C4JStorage::eGlobalStorage eStorageFacility, wstring *wsFile  )
+// bool CMinecraftApp::UploadFileToGlobalStorage(int iQuadrant, C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  )
 // {
 // 	bool bRes=false;
 // #ifndef _CONTENT_PACKAGE
@@ -5971,9 +5971,9 @@ int CMinecraftApp::GetHTMLFontSize(EHTMLFontSize size)
 	return s_iHTMLFontSizesA[size];
 }
 
-wstring CMinecraftApp::FormatHTMLString(int iPad, const wstring &desc, int shadowColour /*= 0xFFFFFFFF*/)
+std::wstring CMinecraftApp::FormatHTMLString(int iPad, const std::wstring &desc, int shadowColour /*= 0xFFFFFFFF*/)
 {
-	wstring text(desc);
+	std::wstring text(desc);
 	
 	wchar_t replacements[64];
 	// We will also insert line breaks here as couldn't figure out how to get them to come through from strings.resx !
@@ -6071,7 +6071,7 @@ wstring CMinecraftApp::FormatHTMLString(int iPad, const wstring &desc, int shado
 #endif
 
 #ifdef _XBOX
-	wstring imageRoot = L"";
+	std::wstring imageRoot = L"";
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	imageRoot = pMinecraft->skins->getSelected()->getXuiRootPath();
@@ -6093,7 +6093,7 @@ wstring CMinecraftApp::FormatHTMLString(int iPad, const wstring &desc, int shado
 	return text;
 }
 
-wstring CMinecraftApp::GetActionReplacement(int iPad, unsigned char ucAction)
+std::wstring CMinecraftApp::GetActionReplacement(int iPad, unsigned char ucAction)
 {
 	unsigned int input = InputManager.GetGameJoypadMaps(InputManager.GetJoypadMapVal(iPad) ,ucAction);
 
@@ -6145,7 +6145,7 @@ wstring CMinecraftApp::GetActionReplacement(int iPad, unsigned char ucAction)
 	};
 	return L"";
 #else
-	wstring replacement = L"";
+	std::wstring replacement = L"";
 
 	// 4J Stu - Some of our actions can be mapped to multiple physical buttons, so replaces the switch that was here
 	if (input & _360_JOY_BUTTON_A) replacement = L"ButtonA";
@@ -6200,7 +6200,7 @@ wstring CMinecraftApp::GetActionReplacement(int iPad, unsigned char ucAction)
 #endif
 }
 
-wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey)
+std::wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey)
 {
 #ifdef _XBOX
 	switch(uiVKey)
@@ -6244,7 +6244,7 @@ wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey)
 	}
 	return NULL;
 #else
-	wstring replacement = L"";
+	std::wstring replacement = L"";
 	switch(uiVKey)
 	{
 	case VK_PAD_A:
@@ -6329,7 +6329,7 @@ wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey)
 #endif
 }
 
-wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon)
+std::wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon)
 {
 #ifdef _XBOX
 	switch(uiIcon)
@@ -6355,7 +6355,7 @@ wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon)
 #endif
 
 	swprintf(string,128,L"<img src=\"Icon_Shank\" align=\"middle\" height=\"%d\" width=\"%d\"/>", size, size);
-	wstring result = L"";
+	std::wstring result = L"";
 	switch(uiIcon)
 	{
 	case XZP_ICON_SHANK_01:
@@ -6372,22 +6372,22 @@ wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon)
 }
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
-unordered_map<PlayerUID, MOJANG_DATA *, PlayerUID::Hash> CMinecraftApp::MojangData;
-unordered_map<int, char * >  CMinecraftApp::DLCTextures_PackID;
-unordered_map<string, DLC_INFO * >  CMinecraftApp::DLCInfo;
-unordered_map<wstring, ULONGLONG >  CMinecraftApp::DLCInfo_SkinName;
+std::unordered_map<PlayerUID, MOJANG_DATA *, PlayerUID::Hash> CMinecraftApp::MojangData;
+std::unordered_map<int, char * >  CMinecraftApp::DLCTextures_PackID;
+std::unordered_map<string, DLC_INFO * >  CMinecraftApp::DLCInfo;
+std::unordered_map<std::wstring, ULONGLONG >  CMinecraftApp::DLCInfo_SkinName;
 #elif defined(_DURANGO)
-unordered_map<PlayerUID,MOJANG_DATA *, PlayerUID::Hash > CMinecraftApp::MojangData;
-unordered_map<int, wstring >  CMinecraftApp::DLCTextures_PackID; // for mash-up packs & texture packs
-//unordered_map<ULONGLONG,DLC_INFO * > CMinecraftApp::DLCInfo_Trial; // full offerid, dlc_info
-unordered_map<wstring,DLC_INFO * > CMinecraftApp::DLCInfo_Full; // full offerid, dlc_info
-unordered_map<wstring, wstring >  CMinecraftApp::DLCInfo_SkinName; // skin name, full offer id
+std::unordered_map<PlayerUID,MOJANG_DATA *, PlayerUID::Hash > CMinecraftApp::MojangData;
+std::unordered_map<int, std::wstring >  CMinecraftApp::DLCTextures_PackID; // for mash-up packs & texture packs
+//std::unordered_map<ULONGLONG,DLC_INFO * > CMinecraftApp::DLCInfo_Trial; // full offerid, dlc_info
+std::unordered_map<std::wstring,DLC_INFO * > CMinecraftApp::DLCInfo_Full; // full offerid, dlc_info
+std::unordered_map<std::wstring, std::wstring >  CMinecraftApp::DLCInfo_SkinName; // skin name, full offer id
 #else
-unordered_map<PlayerUID, MOJANG_DATA *> CMinecraftApp::MojangData;
-unordered_map<int, ULONGLONG >  CMinecraftApp::DLCTextures_PackID;
-unordered_map<ULONGLONG, DLC_INFO * >  CMinecraftApp::DLCInfo_Trial;
-unordered_map<ULONGLONG, DLC_INFO * >  CMinecraftApp::DLCInfo_Full;
-unordered_map<wstring, ULONGLONG >  CMinecraftApp::DLCInfo_SkinName;
+std::unordered_map<PlayerUID, MOJANG_DATA *> CMinecraftApp::MojangData;
+std::unordered_map<int, ULONGLONG >  CMinecraftApp::DLCTextures_PackID;
+std::unordered_map<ULONGLONG, DLC_INFO * >  CMinecraftApp::DLCInfo_Trial;
+std::unordered_map<ULONGLONG, DLC_INFO * >  CMinecraftApp::DLCInfo_Full;
+std::unordered_map<std::wstring, ULONGLONG >  CMinecraftApp::DLCInfo_SkinName;
 #endif
 
 
@@ -6530,7 +6530,7 @@ HRESULT CMinecraftApp::RegisterDLCData(WCHAR *pType, WCHAR *pBannerName, int iGe
 }
 #elif defined _XBOX_ONE
 
-unordered_map<wstring,DLC_INFO * > *CMinecraftApp::GetDLCInfo()
+std::unordered_map<std::wstring,DLC_INFO * > *CMinecraftApp::GetDLCInfo()
 {
 	return &DLCInfo_Full;
 }
@@ -6549,7 +6549,7 @@ HRESULT CMinecraftApp::RegisterDLCData(eDLCContentType eType, WCHAR *pwchBannerN
 	}
 
 	// check if we already have this info from the local DLC file
-	wstring wsTemp=wchUppercaseProductID;
+	std::wstring wsTemp=wchUppercaseProductID;
 
 	AUTO_VAR(it, DLCInfo_Full.find(wsTemp));
 	if( it == DLCInfo_Full.end() )
@@ -6662,7 +6662,7 @@ HRESULT CMinecraftApp::RegisterDLCData(char *pchDLCName, unsigned int uiSortInde
 
 
 #if defined( __PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const wstring &FirstSkin,ULONGLONG *pullVal)
+bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring &FirstSkin,ULONGLONG *pullVal)
 {
 	AUTO_VAR(it, DLCInfo_SkinName.find(FirstSkin));
 	if( it == DLCInfo_SkinName.end() )
@@ -6712,7 +6712,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfo(char *pchDLCName)
 
 DLC_INFO *CMinecraftApp::GetDLCInfoFromTPackID(int iTPID)
 {
-	unordered_map<string, DLC_INFO *>::iterator it= DLCInfo.begin();
+	std::unordered_map<string, DLC_INFO *>::iterator it= DLCInfo.begin();
 
 	for(int i=0;i<DLCInfo.size();i++)
 	{
@@ -6727,7 +6727,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfoFromTPackID(int iTPID)
 
 DLC_INFO *CMinecraftApp::GetDLCInfo(int iIndex)
 {
-	unordered_map<string, DLC_INFO *>::iterator it= DLCInfo.begin();
+	std::unordered_map<string, DLC_INFO *>::iterator it= DLCInfo.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6739,7 +6739,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfo(int iIndex)
 
 char *CMinecraftApp::GetDLCInfoTextures(int iIndex)
 {
-	unordered_map<int, char * >::iterator it= DLCTextures_PackID.begin();
+	std::unordered_map<int, char * >::iterator it= DLCTextures_PackID.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6750,7 +6750,7 @@ char *CMinecraftApp::GetDLCInfoTextures(int iIndex)
 }
 
 #elif defined _XBOX_ONE
-bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const wstring &FirstSkin,wstring &ProductId)
+bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring &FirstSkin,std::wstring &ProductId)
 {
 	AUTO_VAR(it, DLCInfo_SkinName.find(FirstSkin));
 	if( it == DLCInfo_SkinName.end() )
@@ -6763,7 +6763,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const wstring &FirstSkin,wstring 
 		return true;
 	}
 }
-bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,wstring &ProductId)
+bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,std::wstring &ProductId)
 {
 	AUTO_VAR(it, DLCTextures_PackID.find(iPackID));
 	if( it == DLCTextures_PackID.end() )
@@ -6776,7 +6776,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,wstring &Produc
 		return true;
 	}
 }
-// DLC_INFO *CMinecraftApp::GetDLCInfoForTrialOfferID(wstring &ProductId)
+// DLC_INFO *CMinecraftApp::GetDLCInfoForTrialOfferID(std::wstring &ProductId)
 // {
 // 	return NULL;
 // }
@@ -6787,7 +6787,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfoTrialOffer(int iIndex)
 }
 DLC_INFO *CMinecraftApp::GetDLCInfoFullOffer(int iIndex)
 {
-	unordered_map<wstring, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
+	std::unordered_map<std::wstring, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6796,9 +6796,9 @@ DLC_INFO *CMinecraftApp::GetDLCInfoFullOffer(int iIndex)
 
 	return it->second;
 }
-wstring CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex)
+std::wstring CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex)
 {
-	unordered_map<int, wstring >::iterator it= DLCTextures_PackID.begin();
+	std::unordered_map<int, std::wstring >::iterator it= DLCTextures_PackID.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6808,7 +6808,7 @@ wstring CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex)
 	return it->second;
 }
 #else
-bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const wstring &FirstSkin,ULONGLONG *pullVal)
+bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring &FirstSkin,ULONGLONG *pullVal)
 {
 	AUTO_VAR(it, DLCInfo_SkinName.find(FirstSkin));
 	if( it == DLCInfo_SkinName.end() )
@@ -6857,7 +6857,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial)
 
 DLC_INFO *CMinecraftApp::GetDLCInfoTrialOffer(int iIndex)
 {
-	unordered_map<ULONGLONG, DLC_INFO *>::iterator it= DLCInfo_Trial.begin();
+	std::unordered_map<ULONGLONG, DLC_INFO *>::iterator it= DLCInfo_Trial.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6868,7 +6868,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfoTrialOffer(int iIndex)
 }
 DLC_INFO *CMinecraftApp::GetDLCInfoFullOffer(int iIndex)
 {
-	unordered_map<ULONGLONG, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
+	std::unordered_map<ULONGLONG, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6879,7 +6879,7 @@ DLC_INFO *CMinecraftApp::GetDLCInfoFullOffer(int iIndex)
 }
 ULONGLONG CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex)
 {
-	unordered_map<int, ULONGLONG >::iterator it= DLCTextures_PackID.begin();
+	std::unordered_map<int, ULONGLONG >::iterator it= DLCTextures_PackID.begin();
 
 	for(int i=0;i<iIndex;i++)
 	{
@@ -6894,7 +6894,7 @@ ULONGLONG CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex)
 
 DLC_INFO *CMinecraftApp::GetDLCInfoForFullOfferID(WCHAR *pwchProductID)
 {
-	wstring wsTemp = pwchProductID;
+	std::wstring wsTemp = pwchProductID;
 	if(DLCInfo_Full.size()>0)
 	{	
 		AUTO_VAR(it, DLCInfo_Full.find(wsTemp));
@@ -6913,8 +6913,8 @@ DLC_INFO *CMinecraftApp::GetDLCInfoForFullOfferID(WCHAR *pwchProductID)
 }
 DLC_INFO *CMinecraftApp::GetDLCInfoForProductName(WCHAR *pwchProductName)
 {
-	unordered_map<wstring, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
-	wstring wsProductName=pwchProductName;
+	std::unordered_map<std::wstring, DLC_INFO *>::iterator it= DLCInfo_Full.begin();
+	std::wstring wsProductName=pwchProductName;
 
 	for(int i=0;i<DLCInfo_Full.size();i++)
 	{
@@ -7250,12 +7250,12 @@ void CMinecraftApp::AddCreditText(LPCWSTR lpStr)
 	vDLCCredits.push_back(pCreditStruct);
 }
 
-bool CMinecraftApp::AlreadySeenCreditText(const wstring &wstemp)
+bool CMinecraftApp::AlreadySeenCreditText(const std::wstring &wstemp)
 {
 
 	for(unsigned int i=0;i<m_vCreditText.size();i++)
 	{
-		wstring temp=m_vCreditText.at(i);
+		std::wstring temp=m_vCreditText.at(i);
 
 		// if they are the same, break out of the case
 		if(temp.compare(wstemp)==0) 
@@ -7601,7 +7601,7 @@ void CMinecraftApp::setLevelGenerationOptions(LevelGenerationOptions *levelGen)
 	m_gameRules.setLevelGenerationOptions(levelGen);
 }
 
-LPCWSTR	CMinecraftApp::GetGameRulesString(const wstring &key)
+LPCWSTR	CMinecraftApp::GetGameRulesString(const std::wstring &key)
 {
 	return m_gameRules.GetGameRulesString(key);
 }
@@ -7858,7 +7858,7 @@ unsigned int CMinecraftApp::GetPlayerPrivileges(BYTE networkSmallId)
 	return privileges;
 }
 
-wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
+std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 {
 	switch(type)
 	{
@@ -8598,8 +8598,8 @@ void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, D
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
-	vector<ModelPart *> *pvModelPart = new vector<ModelPart *>;
-	vector<SKIN_BOX *> *pvSkinBoxes = new vector<SKIN_BOX *>;
+	std::vector<ModelPart *> *pvModelPart = new std::vector<ModelPart *>;
+	std::vector<SKIN_BOX *> *pvSkinBoxes = new std::vector<SKIN_BOX *>;
 
 	EnterCriticalSection( &csAdditionalModelParts );
 	EnterCriticalSection( &csAdditionalSkinBoxes );
@@ -8618,19 +8618,19 @@ void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, D
 	}
 
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
+	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
 	
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
 
 }
 
-vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, vector<SKIN_BOX *> *pvSkinBoxA)
+std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA)
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
-	vector<ModelPart *> *pvModelPart = new vector<ModelPart *>;
+	std::vector<ModelPart *> *pvModelPart = new std::vector<ModelPart *>;
 
 	EnterCriticalSection( &csAdditionalModelParts );
 	EnterCriticalSection( &csAdditionalSkinBoxes );
@@ -8646,8 +8646,8 @@ vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, vect
 		}
 	}
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
+	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
 
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
@@ -8655,10 +8655,10 @@ vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, vect
 }
 
 
-vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
+std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalModelParts );
-	vector<ModelPart *> *pvModelParts=NULL;
+	std::vector<ModelPart *> *pvModelParts=NULL;
 	if(m_AdditionalModelParts.size()>0)
 	{
 		AUTO_VAR(it, m_AdditionalModelParts.find(dwSkinID));
@@ -8672,10 +8672,10 @@ vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
 	return pvModelParts;
 }
 
-vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
+std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalSkinBoxes );
-	vector<SKIN_BOX *> *pvSkinBoxes=NULL;
+	std::vector<SKIN_BOX *> *pvSkinBoxes=NULL;
 	if(m_AdditionalSkinBoxes.size()>0)
 	{
 		AUTO_VAR(it,m_AdditionalSkinBoxes.find(dwSkinID));
@@ -8725,7 +8725,7 @@ void CMinecraftApp::SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOve
 	LeaveCriticalSection( &csAnimOverrideBitmask );
 }
 
-DWORD CMinecraftApp::getSkinIdFromPath(const wstring &skin)
+DWORD CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
 {
 	bool dlcSkin = false; 
 	unsigned int skinId = 0;
@@ -8734,7 +8734,7 @@ DWORD CMinecraftApp::getSkinIdFromPath(const wstring &skin)
 	{
 		dlcSkin = skin.substr(0,3).compare(L"dlc") == 0;
 
-		wstring skinValue = skin.substr(7,skin.size());
+		std::wstring skinValue = skin.substr(7,skin.size());
 		skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
  
 		std::wstringstream ss;
@@ -8751,7 +8751,7 @@ DWORD CMinecraftApp::getSkinIdFromPath(const wstring &skin)
 	return skinId;
 }
 
-wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
+std::wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
 {
 	// 4J Stu - This function maps the encoded DWORD we store in the player profile
 	// to a filename that is stored as a memory texture and shared between systems in game
@@ -8810,7 +8810,7 @@ int CMinecraftApp::TexturePackDialogReturned(void *pParam,int iPad,C4JStorage::E
 	return 0;
 }
 
-int CMinecraftApp::getArchiveFileSize(const wstring &filename)
+int CMinecraftApp::getArchiveFileSize(const std::wstring &filename)
 {
 	TexturePack *tPack = NULL;
 	Minecraft *pMinecraft = Minecraft::GetInstance();
@@ -8822,7 +8822,7 @@ int CMinecraftApp::getArchiveFileSize(const wstring &filename)
 	else return m_mediaArchive->getFileSize(filename);
 }
 
-bool CMinecraftApp::hasArchiveFile(const wstring &filename)
+bool CMinecraftApp::hasArchiveFile(const std::wstring &filename)
 {
 	TexturePack *tPack = NULL;
 	Minecraft *pMinecraft = Minecraft::GetInstance();
@@ -8831,7 +8831,7 @@ bool CMinecraftApp::hasArchiveFile(const wstring &filename)
 	else return m_mediaArchive->hasFile(filename);
 }
 
-byteArray CMinecraftApp::getArchiveFile(const wstring &filename)
+byteArray CMinecraftApp::getArchiveFile(const std::wstring &filename)
 {
 	TexturePack *tPack = NULL;
 	Minecraft *pMinecraft = Minecraft::GetInstance();
@@ -8945,9 +8945,9 @@ bool CMinecraftApp::IsLocalMultiplayerAvailable()
 
 // 4J-PB - language and locale function
 
-void CMinecraftApp::getLocale(vector<wstring> &vecWstrLocales)
+void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 {
-	vector<eMCLang> locales;
+	std::vector<eMCLang> locales;
 	
 	DWORD dwSystemLanguage = XGetLanguage( );
 
@@ -9391,10 +9391,10 @@ void CMinecraftApp::SetTickTMSDLCFiles(bool bVal)
 	m_bTickTMSDLCFiles=bVal;
 }
 
-wstring CMinecraftApp::getFilePath(DWORD packId, wstring filename, bool bAddDataFolder)
+std::wstring CMinecraftApp::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
 {
 #ifdef _XBOX
-	wstring path = getRootPath(packId, true, bAddDataFolder) + filename;
+	std::wstring path = getRootPath(packId, true, bAddDataFolder) + filename;
 	File f(path);
 	if(f.exists())
 	{
@@ -9421,15 +9421,15 @@ enum ETitleUpdateTexturePacks
 };
 
 #ifdef _TU_BUILD
-wstring titleUpdateTexturePackRoot = L"UPDATE:\\res\\DLC\\";
+std::wstring titleUpdateTexturePackRoot = L"UPDATE:\\res\\DLC\\";
 #else
-wstring titleUpdateTexturePackRoot = L"GAME:\\res\\TitleUpdate\\DLC\\";
+std::wstring titleUpdateTexturePackRoot = L"GAME:\\res\\TitleUpdate\\DLC\\";
 #endif
 #endif
 
-wstring CMinecraftApp::getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder)
+std::wstring CMinecraftApp::getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder)
 {
-	wstring path = L"TPACK:";
+	std::wstring path = L"TPACK:";
 #ifdef _XBOX
 	if(allowOverride)
 	{

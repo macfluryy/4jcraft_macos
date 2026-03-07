@@ -18,7 +18,7 @@ UIComponent_Chat::UIComponent_Chat(int iPad, void *initData, UILayer *parentLaye
 	addTimer(0, 100);
 }
 
-wstring UIComponent_Chat::getMoviePath()
+std::wstring UIComponent_Chat::getMoviePath()
 {
 	switch( m_parentLayer->getViewport() )
 	{

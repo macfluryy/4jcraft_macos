@@ -17,11 +17,11 @@ HRESULT CScene_NewUpdateMessage::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 	// set the text in the XuiHTMLMessage
 	wchar_t formatting[40];
-	wstring wstrTemp = app.GetString(IDS_TITLEUPDATE);
+	std::wstring wstrTemp = app.GetString(IDS_TITLEUPDATE);
 	swprintf(formatting, 40, L"<font size=\"%d\">", m_bIsSD?12:14);
 	wstrTemp = formatting + wstrTemp;
 
-	wstring wsText=app.FormatHTMLString(m_iPad,wstrTemp);
+	std::wstring wsText=app.FormatHTMLString(m_iPad,wstrTemp);
 	m_HTMLText.SetText(wsText.c_str());
 	m_HTMLText.SetShow(TRUE);
 

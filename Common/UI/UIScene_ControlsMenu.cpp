@@ -107,7 +107,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void *initData, UILayer *pa
 	PositionAllText(m_iPad);
 }
 
-wstring UIScene_ControlsMenu::getMoviePath()
+std::wstring UIScene_ControlsMenu::getMoviePath()
 {
 #ifdef __ORBIS__
 	if(InputManager.UsingRemoteVita())

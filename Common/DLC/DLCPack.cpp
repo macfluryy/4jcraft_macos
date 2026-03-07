@@ -11,7 +11,7 @@
 #include "DLCColourTableFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-DLCPack::DLCPack(const wstring &name,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,DWORD dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -35,7 +35,7 @@ DLCPack::DLCPack(const wstring &name,DWORD dwLicenseMask)
 }
 
 #ifdef _XBOX_ONE
-DLCPack::DLCPack(const wstring &name,const wstring &productID,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,DWORD dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -119,7 +119,7 @@ void DLCPack::setParentPack(DLCPack *parentPack)
 	m_parentPack = parentPack;
 }
 
-void DLCPack::addParameter(DLCManager::EDLCParameterType type, const wstring &value)
+void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstring &value)
 {
 	switch(type)
 	{
@@ -183,7 +183,7 @@ bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type, unsigned in
 	return false;
 }
 
-DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const wstring &path)
+DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const std::wstring &path)
 {
 	DLCFile *newFile = NULL;
 
@@ -192,7 +192,7 @@ DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const wstring &path)
 	case DLCManager::e_DLCType_Skin:
 		{
 			std::vector<std::wstring> splitPath = stringSplit(path,L'/');
-			wstring strippedPath = splitPath.back();
+			std::wstring strippedPath = splitPath.back();
 
 			newFile = new DLCSkinFile(strippedPath);
 
@@ -212,7 +212,7 @@ DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const wstring &path)
 	case DLCManager::e_DLCType_Cape:
 		{
 			std::vector<std::wstring> splitPath = stringSplit(path,L'/');
-			wstring strippedPath = splitPath.back();
+			std::wstring strippedPath = splitPath.back();
 			newFile = new DLCCapeFile(strippedPath);
 		}
 		break;
@@ -248,13 +248,13 @@ DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const wstring &path)
 }
 
 // MGH - added this comp func, as the embedded func in find_if was confusing the PS3 compiler
-static const wstring *g_pathCmpString = NULL;
+static const std::wstring *g_pathCmpString = NULL;
 static bool pathCmp(DLCFile *val)
 {
 	return (g_pathCmpString->compare(val->getPath()) == 0); 
 }
 
-bool DLCPack::doesPackContainFile(DLCManager::EDLCType type, const wstring &path)
+bool DLCPack::doesPackContainFile(DLCManager::EDLCType type, const std::wstring &path)
 {
 	bool hasFile = false;
 	if(type == DLCManager::e_DLCType_All)
@@ -300,7 +300,7 @@ DLCFile *DLCPack::getFile(DLCManager::EDLCType type, DWORD index)
 	return file;
 }
 
-DLCFile *DLCPack::getFile(DLCManager::EDLCType type, const wstring &path)
+DLCFile *DLCPack::getFile(DLCManager::EDLCType type, const std::wstring &path)
 {
 	DLCFile *file = NULL;
 	if(type == DLCManager::e_DLCType_All)
@@ -352,7 +352,7 @@ DWORD DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCT
 	return count;
 };
 
-DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const wstring &path, bool &found)
+DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
 {
 	if(type == DLCManager::e_DLCType_All)
 	{
@@ -380,7 +380,7 @@ DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const wstring &path, bo
 	return foundIndex;
 }
 
-bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type, const wstring &path)
+bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type, const std::wstring &path)
 {
 	if(type == DLCManager::e_DLCType_All)
 	{

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include <vector>
 #include "../Media/xuiscene_multi_joinload.h"
 #include "XUI_CustomMessages.h"
@@ -135,7 +135,7 @@ private:
 
 
 	bool m_bIgnoreInput;
-	vector<File *> *m_saves;
+	std::vector<File *> *m_saves;
 
 	int m_iSaveInfoC;
 	int m_iDefaultButtonsC;
@@ -145,14 +145,14 @@ private:
 	bool m_bMultiplayerAllowed;
 	bool m_bKillSaveInfoEnumerate;
 
-	vector<FriendSessionInfo *> currentSessions;
+	std::vector<FriendSessionInfo *> currentSessions;
 	bool m_bReady;
 	bool m_bRetrievingSaveInfo;
 	//bool m_bSaveRenamed;
 	WCHAR m_wchNewName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
 	unsigned char m_szSeed[50];
 
-	vector<LevelGenerationOptions *> *m_generators;
+	std::vector<LevelGenerationOptions *> *m_generators;
 	JoinMenuInitData *m_initData;
 
 	UINT m_DefaultMinecraftIconSize;

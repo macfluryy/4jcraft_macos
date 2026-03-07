@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../media/xuiscene_debugoverlay.h"
 
 #define DEBUG_OVERLAY_UPDATE_TIME_PERIOD 10000
@@ -18,9 +18,9 @@ private:
 	CXuiControl m_resetTutorial, m_createSchematic, m_toggleRain, m_toggleThunder, m_setCamera;
 	CXuiControl m_setDay, m_setNight;
 	CXuiSlider m_chunkRadius, m_setTime,m_setFov;
-	vector<int> m_itemIds;
-	vector<eINSTANCEOF> m_mobFactories;
-	vector<int> m_enchantmentIds;
+	std::vector<int> m_itemIds;
+	std::vector<eINSTANCEOF> m_mobFactories;
+	std::vector<int> m_enchantmentIds;
 
 protected:
 	// Message map. Here we tie messages to message handlers.
@@ -65,8 +65,8 @@ private:
 #ifndef _CONTENT_PACKAGE
 	void SaveLimitedFile(int chunkRadius);
 #endif	
-	RegionFile *getRegionFile(unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ);
+	RegionFile *getRegionFile(std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ);
 
-	DataOutputStream *getChunkDataOutputStream(unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ);
+	DataOutputStream *getChunkDataOutputStream(std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ);
 #endif
 };

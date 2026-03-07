@@ -12,6 +12,6 @@ public:
 
 	using UIControl_ButtonList::addItem;
 	void addItem(const string &label, bool showTick, int iId);
-	void addItem(const wstring &label, bool showTick, int iId);
+	void addItem(const std::wstring &label, bool showTick, int iId);
 	void showTick(int iId, bool showTick);
 };

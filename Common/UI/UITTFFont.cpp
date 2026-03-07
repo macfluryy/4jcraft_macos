@@ -9,7 +9,7 @@ UITTFFont::UITTFFont(const string &path, S32 fallbackCharacter)
 	app.DebugPrintf("UITTFFont opening %s\n",path.c_str());
 
 #if defined(_UNICODE) && !defined(__linux__)
-	wstring wPath = convStringToWstring(path);
+	std::wstring wPath = convStringToWstring(path);
 	HANDLE file = CreateFile(wPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #else
 	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);

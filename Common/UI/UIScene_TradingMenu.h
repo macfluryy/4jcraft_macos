@@ -50,7 +50,7 @@ protected:
 		UI_MAP_NAME(m_funcSetOfferDescription, L"SetOfferDescription")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	virtual void updateTooltips();
 	virtual void handleDestroy();
 	virtual void handleReload();
@@ -64,15 +64,15 @@ protected:
 	virtual void showScrollRightArrow(bool show);
 	virtual void showScrollLeftArrow(bool show);
 	virtual void moveSelector(bool right);
-	virtual void setTitle(const wstring &name);
-	virtual void setRequest1Name(const wstring &name);
-	virtual void setRequest2Name(const wstring &name);
+	virtual void setTitle(const std::wstring &name);
+	virtual void setRequest1Name(const std::wstring &name);
+	virtual void setRequest2Name(const std::wstring &name);
 
 	virtual void setRequest1RedBox(bool show);
 	virtual void setRequest2RedBox(bool show);
 	virtual void setTradeRedBox(int index, bool show);
 
-	virtual void setOfferDescription(const wstring &name, vector<wstring> &unformattedStrings);
+	virtual void setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings);
 
 	int getPad() { return m_iPad; }
 };

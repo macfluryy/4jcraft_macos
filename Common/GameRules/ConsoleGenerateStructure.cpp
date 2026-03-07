@@ -15,7 +15,7 @@ ConsoleGenerateStructure::ConsoleGenerateStructure() : StructurePiece(0)
 	m_dimension = 0;
 }
 
-void ConsoleGenerateStructure::getChildren(vector<GameRuleDefinition *> *children)
+void ConsoleGenerateStructure::getChildren(std::vector<GameRuleDefinition *> *children)
 {
 	GameRuleDefinition::getChildren(children); 
 	
@@ -72,7 +72,7 @@ void ConsoleGenerateStructure::writeAttributes(DataOutputStream *dos, UINT numAt
 	dos->writeUTF(_toString(m_dimension));
 }
 
-void ConsoleGenerateStructure::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void ConsoleGenerateStructure::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"x") == 0)
 	{

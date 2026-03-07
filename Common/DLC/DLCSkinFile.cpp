@@ -7,7 +7,7 @@
 #include "../../Minecraft.World/Player/Player.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-DLCSkinFile::DLCSkinFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Skin,path)
+DLCSkinFile::DLCSkinFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Skin,path)
 {
 	m_displayName = L"";
 	m_themeName = L"";
@@ -21,7 +21,7 @@ void DLCSkinFile::addData(PBYTE pbData, DWORD dwBytes)
 	app.AddMemoryTextureFile(m_path,pbData,dwBytes);
 }
 
-void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const wstring &value)
+void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::wstring &value)
 {
 	switch(type)
 	{
@@ -71,7 +71,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const wstring
 				maximumChars = 35;
 				break;
 			}
-			wstring creditValue = value;
+			std::wstring creditValue = value;
 			while (creditValue.length() > maximumChars)
 			{
 				unsigned int i = 1;
@@ -163,7 +163,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const wstring
 	}
 }
 
-// vector<ModelPart *> *DLCSkinFile::getAdditionalModelParts()
+// std::vector<ModelPart *> *DLCSkinFile::getAdditionalModelParts()
 // {
 // 	return &m_AdditionalModelParts;
 // }
@@ -172,12 +172,12 @@ int DLCSkinFile::getAdditionalBoxesCount()
 {
 	return (int)m_AdditionalBoxes.size();
 }
-vector<SKIN_BOX *> *DLCSkinFile::getAdditionalBoxes()
+std::vector<SKIN_BOX *> *DLCSkinFile::getAdditionalBoxes()
 {
 	return &m_AdditionalBoxes;
 }
 
-wstring DLCSkinFile::getParameterAsString(DLCManager::EDLCParameterType type)
+std::wstring DLCSkinFile::getParameterAsString(DLCManager::EDLCParameterType type)
 {
 	switch(type)
 	{

@@ -31,7 +31,7 @@ void CollectItemRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numA
 	dos->writeUTF( _toString( m_quantity ) );
 }
 
-void CollectItemRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void CollectItemRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"itemId") == 0)
 	{
@@ -74,7 +74,7 @@ void CollectItemRuleDefinition::populateGameRule(GameRulesInstance::EGameRulesIn
 	GameRuleDefinition::populateGameRule(type, rule);
 }
 
-bool CollectItemRuleDefinition::onCollectItem(GameRule *rule, shared_ptr<ItemInstance> item)
+bool CollectItemRuleDefinition::onCollectItem(GameRule *rule, std::shared_ptr<ItemInstance> item)
 {
 	bool statusChanged = false;
 	if(item != NULL && item->id == m_itemId && item->getAuxValue() == m_auxValue && item->get4JData() == m_4JDataValue)
@@ -94,7 +94,7 @@ bool CollectItemRuleDefinition::onCollectItem(GameRule *rule, shared_ptr<ItemIns
 
 				if(rule->getConnection() != NULL)
 				{
-					rule->getConnection()->send( shared_ptr<UpdateGameRuleProgressPacket>( new UpdateGameRuleProgressPacket(getActionType(), this->m_descriptionId, m_itemId, m_auxValue, this->m_4JDataValue,NULL,0)));
+					rule->getConnection()->send( std::shared_ptr<UpdateGameRuleProgressPacket>( new UpdateGameRuleProgressPacket(getActionType(), this->m_descriptionId, m_itemId, m_auxValue, this->m_4JDataValue,NULL,0)));
 				}
 			}
 		}
@@ -102,10 +102,10 @@ bool CollectItemRuleDefinition::onCollectItem(GameRule *rule, shared_ptr<ItemIns
 	return statusChanged;
 }
 
-wstring CollectItemRuleDefinition::generateXml(shared_ptr<ItemInstance> item)
+std::wstring CollectItemRuleDefinition::generateXml(std::shared_ptr<ItemInstance> item)
 {
 	// 4J Stu - This should be kept in sync with the GameRulesDefinition.xsd
-	wstring xml = L"";
+	std::wstring xml = L"";
 	if(item != NULL)
 	{
 		xml = L"<CollectItemRule itemId=\"" + _toString<int>(item->id) + L"\" quantity=\"SET\" descriptionName=\"OPTIONAL\" promptName=\"OPTIONAL\"";

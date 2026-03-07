@@ -154,7 +154,7 @@ void UIScene_LeaderboardsMenu::updateComponents()
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
-wstring UIScene_LeaderboardsMenu::getMoviePath()
+std::wstring UIScene_LeaderboardsMenu::getMoviePath()
 {
 	return L"LeaderboardMenu";
 }
@@ -731,7 +731,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(LeaderboardManager::ReadScor
 
 #ifdef __PS3__
 	// m_name can be unicode characters somehow for Japan - should use m_onlineID
-	wstring wstr=convStringToWstring(statsRow->m_uid.getOnlineID());
+	std::wstring wstr=convStringToWstring(statsRow->m_uid.getOnlineID());
 	swprintf(leaderboardEntry->m_gamerTag, XUSER_NAME_SIZE, L"%ls",wstr.c_str());
 #else
 	memcpy(leaderboardEntry->m_gamerTag, statsRow->m_name.data(), statsRow->m_name.size() * sizeof(wchar_t));
@@ -969,7 +969,7 @@ void UIScene_LeaderboardsMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	}
 	else
 	{
-		shared_ptr<ItemInstance> item = shared_ptr<ItemInstance>( new ItemInstance(TitleIcons[m_currentLeaderboard][slotId], 1, 0) );
+		std::shared_ptr<ItemInstance> item = std::shared_ptr<ItemInstance>( new ItemInstance(TitleIcons[m_currentLeaderboard][slotId], 1, 0) );
 		customDrawSlotControl(region,m_iPad,item,1.0f,false,false);
 	}
 }

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "../../Minecraft.World/Util/Class.h"
 #include "TutorialHint.h"

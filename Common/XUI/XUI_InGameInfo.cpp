@@ -58,7 +58,7 @@ HRESULT CScene_InGameInfo::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	if(thisPlayer != NULL) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 	if(!m_isHostPlayer && !localPlayer->isModerator() )
 	{
 		m_gameOptionsButton.SetEnable(FALSE);
@@ -183,7 +183,7 @@ HRESULT CScene_InGameInfo::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 		INetworkPlayer *selectedPlayer = g_NetworkManager.GetPlayerBySmallId( m_players[ playersList.GetCurSel() ] );
 		
 		Minecraft *pMinecraft = Minecraft::GetInstance();
-		shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+		std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 
 		bool isOp = m_isHostPlayer || localPlayer->isModerator();
 		bool cheats = app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
@@ -465,7 +465,7 @@ void CScene_InGameInfo::updateTooltips()
 
 	int keyA = -1;
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 	
 	bool isOp = m_isHostPlayer || localPlayer->isModerator();
 	bool cheats = app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
@@ -526,10 +526,10 @@ int CScene_InGameInfo::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMes
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		
 		Minecraft *pMinecraft = Minecraft::GetInstance();
-		shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
+		std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
 		if(localPlayer != NULL && localPlayer->connection)
 		{
-			localPlayer->connection->send( shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
+			localPlayer->connection->send( std::shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
 		}
 	}
 

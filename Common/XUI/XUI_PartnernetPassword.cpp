@@ -37,7 +37,7 @@ HRESULT CScene_PartnernetPassword::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotif
 	if(hObjPressed==m_OK)
 	{
 		// create the world and launch
-		wstring wPassword = m_PartnernetPassword.GetText();
+		std::wstring wPassword = m_PartnernetPassword.GetText();
 		if(wPassword==L"5183")
 		{
 			app.NavigateBack(pNotifyPressData->UserIndex);

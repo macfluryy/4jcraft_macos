@@ -115,7 +115,7 @@ int UIScene_DLCOffersMenu::ExitDLCOffersMenu(void *pParam,int iPad,C4JStorage::E
 	return 0;
 }
 
-wstring UIScene_DLCOffersMenu::getMoviePath()
+std::wstring UIScene_DLCOffersMenu::getMoviePath()
 {
 	return L"DLCOffersMenu";
 }
@@ -226,7 +226,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId)
 #if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
 			// buy the DLC
 
-			vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
+			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
 			string teststring;
 			for(int i=0;i<childId;i++)
 			{
@@ -309,7 +309,7 @@ void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId)
 	if(m_pvProductInfo)
 	{	
 		m_bIsSelected = true;
-		vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
+		std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
 		string teststring;
 		for(int i=0;i<childId;i++)
 		{
@@ -360,7 +360,7 @@ void UIScene_DLCOffersMenu::tick()
 				else m_iTotalDLC=m_pvProductInfo->size();
 			}
 
-			vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
+			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
 			string teststring;
 			bool bFirstItemSet=false;
 			for(int i=0;i<m_iTotalDLC;i++)
@@ -434,7 +434,7 @@ void UIScene_DLCOffersMenu::tick()
 					}
 
 					// get the image - if we haven't already
-					wstring textureName = filenametowstring(info.imageUrl);
+					std::wstring textureName = filenametostd::wstring(info.imageUrl);
 
 					if(hasRegisteredSubstitutionTexture(textureName)==false)
 					{
@@ -512,7 +512,7 @@ void UIScene_DLCOffersMenu::tick()
 		{
 			
 			{	
-				vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
+				std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
 				for(int i=0;i<m_iTotalDLC;i++)
 				{
 					SonyCommerce::ProductInfo info = *it;
@@ -538,7 +538,7 @@ void UIScene_DLCOffersMenu::tick()
 		{
 
 
-			vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
+			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
 			string teststring;
 			for(int i=0;i<m_iCurrentDLC;i++)
 			{
@@ -566,7 +566,7 @@ void UIScene_DLCOffersMenu::tick()
 			// get the image
 
 			// then retrieve from the web
-			wstring textureName = filenametowstring(info.imageUrl);
+			std::wstring textureName = filenametostd::wstring(info.imageUrl);
 
 			if(hasRegisteredSubstitutionTexture(textureName)==false)
 			{
@@ -730,7 +730,7 @@ void UIScene_DLCOffersMenu::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 
 			if(pDLC->eDLCType==(eDLCContentType)m_iProductInfoIndex)
 			{		
-				wstring wstrTemp=xOffer.wszOfferName;
+				std::wstring wstrTemp=xOffer.wszOfferName;
 
 				// 4J-PB - Rog requested we remove the Minecraft at the start of the name. It's required for the Bing search, but gets in the way here
 				app.DebugPrintf("Adding %ls at %d\n",wstrTemp.c_str(), i);
@@ -790,7 +790,7 @@ void UIScene_DLCOffersMenu::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		// set the default text
 
 		wchar_t formatting[40];
-		wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
+		std::wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
 // 		swprintf(formatting, 40, L"<font size=\"%d\">", m_bIsSD?12:14);
 // 		wstrTemp = formatting + wstrTemp;
 
@@ -885,7 +885,7 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(MARKETPLACE_CONTENTOFFER_INFO& xOffer)
 	else
 	{
 		wchar_t formatting[40];
-		wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
+		std::wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
 		m_labelHTMLSellText.setLabel(wstrTemp.c_str());
 		m_labelPriceTag.setVisible(false);
 	}

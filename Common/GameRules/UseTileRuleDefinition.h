@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "GameRuleDefinition.h"
 #include "../../Minecraft.World/Util/Pos.h"
@@ -18,7 +18,7 @@ public:
 	ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_UseTileRule; }
 
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 	
 	virtual bool onUseTile(GameRule *rule, int tileId, int x, int y, int z);
 };

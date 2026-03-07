@@ -347,12 +347,12 @@ void GameRuleManager::writeRuleFile(DataOutputStream *dos)
 	for (int i = 0; i < ConsoleGameRules::eGameRuleAttr_Count; i++)	dos->writeUTF( wchAttrNameA[i] );
 
 	// Write schematic files.
-	unordered_map<wstring, ConsoleSchematicFile *> *files;
+	std::unordered_map<std::wstring, ConsoleSchematicFile *> *files;
 	files = getLevelGenerationOptions()->getUnfinishedSchematicFiles();
 	dos->writeInt( files->size() );
 	for (AUTO_VAR(it, files->begin()); it != files->end(); it++)
 	{
-		wstring filename = it->first;
+		std::wstring filename = it->first;
 		ConsoleSchematicFile *file = it->second;
 
 		ByteArrayOutputStream fileBaos;
@@ -470,18 +470,18 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 
 	// string lookup.
 	UINT numStrings = contentDis->readInt();
-	vector<wstring> tagsAndAtts;
+	std::vector<std::wstring> tagsAndAtts;
 	for (UINT i = 0; i < numStrings; i++)
 		tagsAndAtts.push_back( contentDis->readUTF() );
 
-	unordered_map<int, ConsoleGameRules::EGameRuleType> tagIdMap;
+	std::unordered_map<int, ConsoleGameRules::EGameRuleType> tagIdMap;
 	for(int type = (int)ConsoleGameRules::eGameRuleType_Root; type < (int)ConsoleGameRules::eGameRuleType_Count; ++type)
 	{
 		for(UINT i = 0; i < numStrings; ++i)
 		{
 			if(tagsAndAtts[i].compare(wchTagNameA[type]) == 0)
 			{
-				tagIdMap.insert( unordered_map<int, ConsoleGameRules::EGameRuleType>::value_type(i, (ConsoleGameRules::EGameRuleType)type) );
+				tagIdMap.insert( std::unordered_map<int, ConsoleGameRules::EGameRuleType>::value_type(i, (ConsoleGameRules::EGameRuleType)type) );
 				break;
 			}
 		}
@@ -489,14 +489,14 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 
 	// 4J-JEV: TODO: As yet unused.
 	/*
-	unordered_map<int, ConsoleGameRules::EGameRuleAttr> attrIdMap;
+	std::unordered_map<int, ConsoleGameRules::EGameRuleAttr> attrIdMap;
 	for(int attr = (int)ConsoleGameRules::eGameRuleAttr_descriptionName; attr < (int)ConsoleGameRules::eGameRuleAttr_Count; ++attr)
 	{
 		for (UINT i = 0; i < numStrings; i++)
 		{
 			if (tagsAndAtts[i].compare(wchAttrNameA[attr]) == 0)
 			{
-				tagIdMap.insert( unordered_map<int, ConsoleGameRules::EGameRuleAttr>::value_type(i , (ConsoleGameRules::EGameRuleAttr)attr) );
+				tagIdMap.insert( std::unordered_map<int, ConsoleGameRules::EGameRuleAttr>::value_type(i , (ConsoleGameRules::EGameRuleAttr)attr) );
 				break;
 			}
 		}
@@ -506,7 +506,7 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 	UINT numFiles = contentDis->readInt();
 	for (UINT i = 0; i < numFiles; i++)
 	{
-		wstring sFilename = contentDis->readUTF();
+		std::wstring sFilename = contentDis->readUTF();
 		int length = contentDis->readInt();
 		byteArray ba( length );
 
@@ -581,19 +581,19 @@ LevelGenerationOptions *GameRuleManager::readHeader(DLCGameRulesHeader *grh)
 	return out;
 }
 
-void GameRuleManager::readAttributes(DataInputStream *dis, vector<wstring> *tagsAndAtts, GameRuleDefinition *rule)
+void GameRuleManager::readAttributes(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, GameRuleDefinition *rule)
 {
 	int numAttrs = dis->readInt();
 	for (UINT att = 0; att < numAttrs; ++att)
 	{
 		int attID = dis->readInt();
-		wstring value = dis->readUTF();
+		std::wstring value = dis->readUTF();
 
 		if(rule != NULL) rule->addAttribute(tagsAndAtts->at(attID),value);
 	}
 }
 
-void GameRuleManager::readChildren(DataInputStream *dis, vector<wstring> *tagsAndAtts, unordered_map<int, ConsoleGameRules::EGameRuleType> *tagIdMap, GameRuleDefinition *rule)
+void GameRuleManager::readChildren(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, std::unordered_map<int, ConsoleGameRules::EGameRuleType> *tagIdMap, GameRuleDefinition *rule)
 {
 	int numChildren = dis->readInt();
 	for(UINT child = 0; child < numChildren; ++child)
@@ -633,9 +633,9 @@ void GameRuleManager::loadDefaultGameRules()
 {
 #ifdef _XBOX
 #ifdef _TU_BUILD
-	wstring fileRoot = L"UPDATE:\\res\\GameRules\\Tutorial.pck";
+	std::wstring fileRoot = L"UPDATE:\\res\\GameRules\\Tutorial.pck";
 #else
-	wstring fileRoot = L"GAME:\\res\\TitleUpdate\\GameRules\\Tutorial.pck";
+	std::wstring fileRoot = L"GAME:\\res\\TitleUpdate\\GameRules\\Tutorial.pck";
 #endif
 	File packedTutorialFile(fileRoot);
 	if(loadGameRulesPack(&packedTutorialFile))
@@ -648,7 +648,7 @@ void GameRuleManager::loadDefaultGameRules()
 #ifndef _CONTENT_PACKAGE
 	// 4J Stu - Remove these just now
 	//File testRulesPath(L"GAME:\\GameRules");
-	//vector<File *> *packFiles = testRulesPath.listFiles();
+	//std::vector<File *> *packFiles = testRulesPath.listFiles();
 
 	//for(AUTO_VAR(it,packFiles->begin()); it != packFiles->end(); ++it)
 	//{
@@ -659,7 +659,7 @@ void GameRuleManager::loadDefaultGameRules()
 
 #else // _XBOX
 
-	wstring fpTutorial = L"Tutorial.pck";
+	std::wstring fpTutorial = L"Tutorial.pck";
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
@@ -749,7 +749,7 @@ void GameRuleManager::setLevelGenerationOptions(LevelGenerationOptions *levelGen
 		m_currentLevelGenerationOptions->reset_start();
 }
 
-LPCWSTR	GameRuleManager::GetGameRulesString(const wstring &key)
+LPCWSTR	GameRuleManager::GetGameRulesString(const std::wstring &key)
 {
 	if(m_currentGameRuleDefinitions != NULL && !key.empty() )
 	{
@@ -763,7 +763,7 @@ LPCWSTR	GameRuleManager::GetGameRulesString(const wstring &key)
 
 LEVEL_GEN_ID GameRuleManager::addLevelGenerationOptions(LevelGenerationOptions *lgo)
 {
-	vector<LevelGenerationOptions *> *lgs = m_levelGenerators.getLevelGenerators();
+	std::vector<LevelGenerationOptions *> *lgs = m_levelGenerators.getLevelGenerators();
 	
 	for (int i = 0; i<lgs->size(); i++)
 		if (lgs->at(i) == lgo)

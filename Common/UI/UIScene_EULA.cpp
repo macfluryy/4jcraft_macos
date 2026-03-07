@@ -14,7 +14,7 @@ UIScene_EULA::UIScene_EULA(int iPad, void *initData, UILayer *parentLayer) : UIS
 	m_buttonConfirm.init(app.GetString(IDS_TOOLTIPS_ACCEPT),eControl_Confirm);
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	wstring EULA = app.GetString(IDS_EULA);
+	std::wstring EULA = app.GetString(IDS_EULA);
 	EULA.append(L"\r\n");
 
 #if defined(__PS3__)
@@ -44,13 +44,13 @@ UIScene_EULA::UIScene_EULA(int iPad, void *initData, UILayer *parentLayer) : UIS
 	}
 #endif
 #else
-	wstring EULA = L"";
+	std::wstring EULA = L"";
 #endif
 
-	vector<wstring> paragraphs;
+	std::vector<std::wstring> paragraphs;
 	int lastIndex = 0;
 	for (	int index = EULA.find(L"\r\n", lastIndex, 2);
-			index != wstring::npos; 
+			index != std::wstring::npos; 
 			index = EULA.find(L"\r\n", lastIndex, 2)
 		)
 	{
@@ -92,7 +92,7 @@ UIScene_EULA::~UIScene_EULA()
 	m_parentLayer->removeComponent(eUIComponent_Logo);
 }
 
-wstring UIScene_EULA::getMoviePath()
+std::wstring UIScene_EULA::getMoviePath()
 {
 	return L"EULA";
 }

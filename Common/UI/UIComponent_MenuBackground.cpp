@@ -9,7 +9,7 @@ UIComponent_MenuBackground::UIComponent_MenuBackground(int iPad, void *initData,
 	initialiseMovie();
 }
 
-wstring UIComponent_MenuBackground::getMoviePath()
+std::wstring UIComponent_MenuBackground::getMoviePath()
 {	switch( m_parentLayer->getViewport() )
 	{
 	case C4JRender::VIEWPORT_TYPE_SPLIT_TOP:

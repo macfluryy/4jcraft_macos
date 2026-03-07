@@ -71,7 +71,7 @@ UIScene_QuadrantSignin::~UIScene_QuadrantSignin()
 	m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
 
-wstring UIScene_QuadrantSignin::getMoviePath()
+std::wstring UIScene_QuadrantSignin::getMoviePath()
 {
 	return L"QuadrantSignin";
 }

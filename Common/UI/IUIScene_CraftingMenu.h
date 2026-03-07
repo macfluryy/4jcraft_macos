@@ -49,7 +49,7 @@ protected:
 	int m_iCurrentSlotVIndex;
 	int m_iRecipeC;
 	int m_iContainerType; // 2x2 or 3x3
-	shared_ptr<LocalPlayer> m_pPlayer;
+	std::shared_ptr<LocalPlayer> m_pPlayer;
 	int m_iGroupIndex;
 
 	int iVSlotIndexA[3]; // index of the v slots currently displayed
@@ -96,13 +96,13 @@ protected:
 	virtual void hideAllHSlots() = 0;
 	virtual void hideAllVSlots() = 0;
 	virtual void hideAllIngredientsSlots() = 0;
-	virtual void setCraftHSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha) = 0;
-	virtual void setCraftVSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha) = 0;
-	virtual void setCraftingOutputSlotItem(int iPad, shared_ptr<ItemInstance> item) = 0;
+	virtual void setCraftHSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha) = 0;
+	virtual void setCraftVSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha) = 0;
+	virtual void setCraftingOutputSlotItem(int iPad, std::shared_ptr<ItemInstance> item) = 0;
 	virtual void setCraftingOutputSlotRedBox(bool show) = 0;
-	virtual void setIngredientSlotItem(int iPad, int index, shared_ptr<ItemInstance> item) = 0;
+	virtual void setIngredientSlotItem(int iPad, int index, std::shared_ptr<ItemInstance> item) = 0;
 	virtual void setIngredientSlotRedBox(int index, bool show) = 0;
-	virtual void setIngredientDescriptionItem(int iPad, int index, shared_ptr<ItemInstance> item) = 0;
+	virtual void setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item) = 0;
 	virtual void setIngredientDescriptionRedBox(int index, bool show) = 0;
 	virtual void setIngredientDescriptionText(int index, LPCWSTR text) = 0;
 	virtual void setShowCraftHSlot(int iIndex, bool show) = 0;

@@ -84,7 +84,7 @@ public:
 		eFM_UNDEFINED
 	};	
 
-	static const wstring filterNames[eNumFilterModes];
+	static const std::wstring filterNames[eNumFilterModes];
 
 	typedef struct KillsRecord
 	{
@@ -167,7 +167,7 @@ public:
 
 		PlayerUID		m_uid;						// Player's unique identifier.
 		unsigned long	m_rank;						// Rank of the player on this scoreboard.
-		wstring			m_name;						// Player's display name.
+		std::wstring			m_name;						// Player's display name.
 		
 		unsigned long	m_totalScore;				// Sum of all the player's scores on this leaderboard.
 

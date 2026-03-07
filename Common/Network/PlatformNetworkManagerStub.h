@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include <vector>
 #include "../../Minecraft.World/Util/C4JThread.h"
 #include "NetworkPlayerInterface.h"
@@ -66,7 +66,7 @@ private:
 
 	HANDLE m_notificationListener;
 
-	vector<IQNetPlayer *> m_machineQNetPrimaryPlayers; // collection of players that we deem to be the main one for that system
+	std::vector<IQNetPlayer *> m_machineQNetPrimaryPlayers; // collection of players that we deem to be the main one for that system
 
 	bool			m_bLeavingGame;
 	bool			m_bLeaveGameOnTick;
@@ -101,7 +101,7 @@ private:
 		PlayerFlags(INetworkPlayer *pNetworkPlayer, unsigned int count);
 		~PlayerFlags();
 	};
-	vector<PlayerFlags *> m_playerFlags;
+	std::vector<PlayerFlags *> m_playerFlags;
 	void SystemFlagAddPlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagRemovePlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagReset();
@@ -114,11 +114,11 @@ private:
 	float m_lastPlayerEventTimeStart;
 
 public:
-	wstring GatherStats();
-	wstring GatherRTTStats();
+	std::wstring GatherStats();
+	std::wstring GatherRTTStats();
 
 private:	
-	vector<FriendSessionInfo *> friendsSessions[XUSER_MAX_COUNT];
+	std::vector<FriendSessionInfo *> friendsSessions[XUSER_MAX_COUNT];
 	int m_searchResultsCount[XUSER_MAX_COUNT];
 	int m_lastSearchStartTime[XUSER_MAX_COUNT];
 
@@ -145,7 +145,7 @@ private:
 
 	void SetSearchResultsReady(int resultCount = 0);
 
-	vector<INetworkPlayer *>currentNetworkPlayers;
+	std::vector<INetworkPlayer *>currentNetworkPlayers;
 	INetworkPlayer *addNetworkPlayer(IQNetPlayer *pQNetPlayer);
 	void removeNetworkPlayer(IQNetPlayer *pQNetPlayer);
 	static INetworkPlayer *getNetworkPlayer(IQNetPlayer *pQNetPlayer);
@@ -155,7 +155,7 @@ private:
 	virtual void Notify(int ID, ULONG_PTR Param);
 
 public:
-	virtual vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly);
+	virtual std::vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly);
 	virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession);
 	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam );
 	virtual void GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam );

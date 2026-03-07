@@ -6,11 +6,11 @@ LevelRules::LevelRules()
 {
 }
 
-void LevelRules::addLevelRule(const wstring &displayName, PBYTE pbData, DWORD dwLen)
+void LevelRules::addLevelRule(const std::wstring &displayName, PBYTE pbData, DWORD dwLen)
 {
 }
 
-void LevelRules::addLevelRule(const wstring &displayName, LevelRuleset *rootRule)
+void LevelRules::addLevelRule(const std::wstring &displayName, LevelRuleset *rootRule)
 {
 }
 

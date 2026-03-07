@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../Media/xuiscene_anvil.h"
 #include "XUI_Scene_AbstractContainer.h"
 #include "../UI/IUIScene_AnvilMenu.h"
@@ -81,8 +81,8 @@ private:
 
 protected:
 	virtual void handleEditNamePressed();
-	virtual void setEditNameValue(const wstring &name);
+	virtual void setEditNameValue(const std::wstring &name);
 	virtual void setEditNameEditable(bool enabled);
-	virtual void setCostLabel(const wstring &label, bool canAfford);
+	virtual void setCostLabel(const std::wstring &label, bool canAfford);
 	virtual void showCross(bool show);
 };

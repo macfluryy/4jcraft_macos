@@ -70,7 +70,7 @@ private:
 
 	PBYTE m_pbThumbnailData;
 	unsigned int m_uiThumbnailSize;
-	wstring m_thumbnailName;
+	std::wstring m_thumbnailName;
 
 	bool m_bRebuildTouchBoxes;
 public:
@@ -89,7 +89,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT

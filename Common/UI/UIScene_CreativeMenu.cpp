@@ -21,7 +21,7 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void *_initData, UILayer *p
 
 	InventoryScreenInput *initData = (InventoryScreenInput *)_initData;
 
-	shared_ptr<SimpleContainer> creativeContainer = shared_ptr<SimpleContainer>(new SimpleContainer( 0, TabSpec::MAX_SIZE ));
+	std::shared_ptr<SimpleContainer> creativeContainer = std::shared_ptr<SimpleContainer>(new SimpleContainer( 0, TabSpec::MAX_SIZE ));
 	itemPickerMenu = new ItemPickerMenu(creativeContainer, initData->player->inventory);
 
 	Initialize( initData->iPad, itemPickerMenu, false, -1, eSectionInventoryCreativeUsing, eSectionInventoryCreativeMax, initData->bNavigateBack);
@@ -63,7 +63,7 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void *_initData, UILayer *p
 #endif
 }
 
-wstring UIScene_CreativeMenu::getMoviePath()
+std::wstring UIScene_CreativeMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

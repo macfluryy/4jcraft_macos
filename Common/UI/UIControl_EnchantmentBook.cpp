@@ -100,7 +100,7 @@ void UIControl_EnchantmentBook::tickBook()
 {
 	UIScene_EnchantingMenu *m_containerScene = (UIScene_EnchantingMenu *)m_parentScene;
 	EnchantmentMenu *menu = m_containerScene->getMenu();
-	shared_ptr<ItemInstance> current = menu->getSlot(0)->getItem();
+	std::shared_ptr<ItemInstance> current = menu->getSlot(0)->getItem();
 	if (!ItemInstance::matches(current, last))
 	{
         last = current;

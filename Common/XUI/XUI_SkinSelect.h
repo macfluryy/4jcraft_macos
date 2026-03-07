@@ -109,9 +109,9 @@ protected:
 
 	int m_iPad;
 	D3DXVECTOR3 m_OriginalPosition;
-	wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
-	vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
-	//vector<ModelPart *> *m_vAdditionalModelParts;
+	std::wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
+	std::vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
+	//std::vector<ModelPart *> *m_vAdditionalModelParts;
 	DWORD m_originalSkinId;
 
 	DLCPack *m_currentPack;

@@ -208,7 +208,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 					int iSlot=iVSlotIndexA[m_iCurrentSlotVIndex];
 
 					int iRecipe= CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot];
-					shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
+					std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
 					//int iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
 
 					if( pMinecraft->localgameModes[iPad] != NULL)
@@ -244,7 +244,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 					iSlot=0;
 				}
 				int iRecipe= CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot];
-				shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
+				std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
 				//int iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
 
 				if( pMinecraft->localgameModes[iPad] != NULL )
@@ -272,7 +272,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 					{
 						for(int j=0;j<pRecipeIngredientsRequired[iRecipe].iIngValA[i];j++)
 						{
-							shared_ptr<ItemInstance> ingItemInst = nullptr;
+							std::shared_ptr<ItemInstance> ingItemInst = nullptr;
 							// do we need to remove a specific aux value?
 							if(pRecipeIngredientsRequired[iRecipe].iIngAuxValA[i]!=Recipes::ANY_AUX_VALUE)
 							{
@@ -291,7 +291,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 								if (ingItemInst->getItem()->hasCraftingRemainingItem())
 								{
 									// replace item with remaining result
-									m_pPlayer->inventory->add( shared_ptr<ItemInstance>( new ItemInstance(ingItemInst->getItem()->getCraftingRemainingItem()) ) );
+									m_pPlayer->inventory->add( std::shared_ptr<ItemInstance>( new ItemInstance(ingItemInst->getItem()->getCraftingRemainingItem()) ) );
 								}
 
 							}
@@ -607,7 +607,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable()
 		{
 		if (m_pPlayer->inventory->items[k] != NULL)
 		{
-		wstring itemstring=m_pPlayer->inventory->items[k]->toString();
+		std::wstring itemstring=m_pPlayer->inventory->items[k]->toString();
 
 		//printf("--- Player has ");
 		OutputDebugStringW(itemstring.c_str());
@@ -624,10 +624,10 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable()
 
 		// 		for (int i = 0; i < iRecipeC; i++)
 		// 		{
-		// 			shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(NULL);
+		// 			std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(NULL);
 		// 			if (pTempItemInst != NULL)
 		// 			{
-		// 				wstring itemstring=pTempItemInst->toString();
+		// 				std::wstring itemstring=pTempItemInst->toString();
 		// 		
 		// 				printf("Recipe [%d] = ",i);
 		// 				OutputDebugStringW(itemstring.c_str());
@@ -761,7 +761,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable()
 			if(iHSlotBrushControl<=m_iCraftablesMaxHSlotC)
 			{
 				bool bFound=false;
-				shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(nullptr);
+				std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[i].pRecipy->assemble(nullptr);
 				//int iIcon=pTempItemInst->getItem()->getIcon(pTempItemInst->getAuxValue());
 				int iID=pTempItemInst->getItem()->id;
 				int iBaseType;
@@ -835,7 +835,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable()
 
 	while((iIndex<m_iCraftablesMaxHSlotC) && CanBeMadeA[iIndex].iCount!=0)
 	{
-		shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[CanBeMadeA[iIndex].iRecipeA[0]].pRecipy->assemble(nullptr);
+		std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[CanBeMadeA[iIndex].iRecipeA[0]].pRecipy->assemble(nullptr);
 		assert(pTempItemInst->id!=0);
 		unsigned int uiAlpha;
 
@@ -903,7 +903,7 @@ void IUIScene_CraftingMenu::UpdateHighlight()
 		{
 			iSlot=0;
 		}
-		shared_ptr<ItemInstance> pTempItemInstAdditional=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].pRecipy->assemble(nullptr);
+		std::shared_ptr<ItemInstance> pTempItemInstAdditional=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].pRecipy->assemble(nullptr);
 
 		// special case for the torch coal/charcoal
 		int id=pTempItemInstAdditional->getDescriptionId();
@@ -991,7 +991,7 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots()
 			{
 				if(i!=1) continue;
 			}
-			shared_ptr<ItemInstance> pTempItemInstAdditional=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iVSlotIndexA[i]]].pRecipy->assemble(nullptr);
+			std::shared_ptr<ItemInstance> pTempItemInstAdditional=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iVSlotIndexA[i]]].pRecipy->assemble(nullptr);
 
 			assert(pTempItemInstAdditional->id!=0);
 			unsigned int uiAlpha;
@@ -1057,7 +1057,7 @@ void IUIScene_CraftingMenu::DisplayIngredients()
 		int iBoxWidth=(m_iContainerType==RECIPE_TYPE_2x2)?2:3;
 		int iRecipe=CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot];
 		bool bCanMakeRecipe  = pRecipeIngredientsRequired[iRecipe].bCanMake[getPad()];
-		shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
+		std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[iRecipe].pRecipy->assemble(nullptr);
 
 		m_iIngredientsC=pRecipeIngredientsRequired[iRecipe].iIngC;
 
@@ -1077,7 +1077,7 @@ void IUIScene_CraftingMenu::DisplayIngredients()
 				iAuxVal = 0xFF;
 			}
 
-			shared_ptr<ItemInstance> itemInst= shared_ptr<ItemInstance>(new ItemInstance(item,pRecipeIngredientsRequired[iRecipe].iIngValA[i],iAuxVal));
+			std::shared_ptr<ItemInstance> itemInst= std::shared_ptr<ItemInstance>(new ItemInstance(item,pRecipeIngredientsRequired[iRecipe].iIngValA[i],iAuxVal));
 
 			setIngredientDescriptionItem(getPad(),i,itemInst);
 			setIngredientDescriptionRedBox(i,false);
@@ -1141,7 +1141,7 @@ void IUIScene_CraftingMenu::DisplayIngredients()
 					{
 						iAuxVal = 0xFF;
 					}
-					shared_ptr<ItemInstance> itemInst= shared_ptr<ItemInstance>(new ItemInstance(id,1,iAuxVal));
+					std::shared_ptr<ItemInstance> itemInst= std::shared_ptr<ItemInstance>(new ItemInstance(id,1,iAuxVal));
 					setIngredientSlotItem(getPad(),index,itemInst);
 					// show the ingredients we don't have if we can't make the recipe
 					if(app.DebugSettingsOn() && app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_CraftAnything))
@@ -1218,7 +1218,7 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade)
 			//iRecipy=CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[0];
 		}
 
-		shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].pRecipy->assemble(nullptr);
+		std::shared_ptr<ItemInstance> pTempItemInst=pRecipeIngredientsRequired[CanBeMadeA[m_iCurrentSlotHIndex].iRecipeA[iSlot]].pRecipy->assemble(nullptr);
 		int iID=pTempItemInst->getItem()->id;
 		int iAuxVal=pTempItemInst->getAuxValue();
 		int iBaseType;
@@ -1257,8 +1257,8 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade)
 		if(iIDSString>=0)
 		{
 			// this is an html control now, so set the font size and colour
-			//wstring wsText=app.GetString(iIDSString);
-			wstring wsText=app.FormatHTMLString(getPad(),app.GetString(iIDSString));
+			//std::wstring wsText=app.GetString(iIDSString);
+			std::wstring wsText=app.FormatHTMLString(getPad(),app.GetString(iIDSString));
 
 			// 12 for splitscreen, 14 for normal
 			EHTMLFontSize size = eHTMLSize_Normal;

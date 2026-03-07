@@ -200,18 +200,18 @@ protected:
 	virtual void setSectionFocus(ESceneSection eSection, int iPad) = 0;
 	virtual void setSectionSelectedSlot(ESceneSection eSection, int x, int y) = 0;
 	virtual void setFocusToPointer(int iPad) = 0;
-	virtual void SetPointerText(const wstring &description, vector<wstring> &unformattedStrings, bool newSlot) = 0;
-	virtual shared_ptr<ItemInstance> getSlotItem(ESceneSection eSection, int iSlot) = 0;
+	virtual void SetPointerText(const std::wstring &description, std::vector<std::wstring> &unformattedStrings, bool newSlot) = 0;
+	virtual std::shared_ptr<ItemInstance> getSlotItem(ESceneSection eSection, int iSlot) = 0;
 	virtual bool isSlotEmpty(ESceneSection eSection, int iSlot) = 0;
 	virtual void adjustPointerForSafeZone() = 0;
 
-	virtual bool overrideTooltips(ESceneSection sectionUnderPointer, shared_ptr<ItemInstance> itemUnderPointer, bool bIsItemCarried, bool bSlotHasItem, bool bCarriedIsSameAsSlot, int iSlotStackSizeRemaining,
+	virtual bool overrideTooltips(ESceneSection sectionUnderPointer, std::shared_ptr<ItemInstance> itemUnderPointer, bool bIsItemCarried, bool bSlotHasItem, bool bCarriedIsSameAsSlot, int iSlotStackSizeRemaining,
 		EToolTipItem &buttonA, EToolTipItem &buttonX, EToolTipItem &buttonY, EToolTipItem &buttonRT) { return false; }
 
 private:
-	bool IsSameItemAs(shared_ptr<ItemInstance> itemA, shared_ptr<ItemInstance> itemB);
+	bool IsSameItemAs(std::shared_ptr<ItemInstance> itemA, std::shared_ptr<ItemInstance> itemB);
 	int GetEmptyStackSpace(Slot *slot);
-	wstring GetItemDescription(Slot *slot, vector<wstring> &unformattedStrings);
+	std::wstring GetItemDescription(Slot *slot, std::vector<std::wstring> &unformattedStrings);
 
 protected:
 

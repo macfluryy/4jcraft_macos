@@ -22,7 +22,7 @@ bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const
 	return success;
 }
 
-void UIControl_Slider::init(const wstring &label, int id, int min, int max, int current)
+void UIControl_Slider::init(const std::wstring &label, int id, int min, int max, int current)
 {
 	m_label = label;
 	m_id = id;

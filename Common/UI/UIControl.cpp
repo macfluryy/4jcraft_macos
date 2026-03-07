@@ -147,7 +147,7 @@ bool UIControl::getVisible()
 	return bVisible;
 }
 
-IggyName UIControl::registerFastName(const wstring &name)
+IggyName UIControl::registerFastName(const std::wstring &name)
 {
 	return m_parentScene->registerFastName(name);
 }

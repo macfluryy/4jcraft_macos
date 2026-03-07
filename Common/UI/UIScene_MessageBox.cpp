@@ -59,7 +59,7 @@ UIScene_MessageBox::~UIScene_MessageBox()
 	m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
 
-wstring UIScene_MessageBox::getMoviePath()
+std::wstring UIScene_MessageBox::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1 && !m_parentLayer->IsFullscreenGroup())
 	{

@@ -8,7 +8,7 @@ private:
 	DWORD m_dwBytes;
 
 public:
-	DLCGameRulesFile(const wstring &path);
+	DLCGameRulesFile(const std::wstring &path);
 
 	virtual void addData(PBYTE pbData, DWORD dwBytes);
 	virtual PBYTE getData(DWORD &dwBytes);

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "../../Minecraft.World/Entities/MobEffect.h"
 
@@ -19,13 +19,13 @@ protected:
 
 public:
 	void setIcon(MobEffect::EMobEffectIcon icon);
-	void setName(const wstring &name);
-	void setDuration(const wstring &duration);
+	void setName(const std::wstring &name);
+	void setDuration(const std::wstring &duration);
 
 private:
 	MobEffect::EMobEffectIcon m_icon;
-	wstring m_name;
-	wstring m_duration;
+	std::wstring m_name;
+	std::wstring m_duration;
 
 	static LPCWSTR iconFrameNames[MobEffect::e_MobEffectIcon_COUNT];
 };

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "Tutorial.h"
 #include "TutorialTask.h"
 
@@ -9,7 +9,7 @@ private:
 	eTutorial_State m_state;
 public:
 	StateChangeTask(eTutorial_State state,
-		Tutorial *tutorial, int descriptionId = -1, bool enablePreCompletion = false, vector<TutorialConstraint *> *inConstraints = NULL,
+		Tutorial *tutorial, int descriptionId = -1, bool enablePreCompletion = false, std::vector<TutorialConstraint *> *inConstraints = NULL,
 		bool bShowMinimumTime=false,  bool bAllowFade=true, bool m_bTaskReminders=true ) :
 	TutorialTask(tutorial, descriptionId, enablePreCompletion, inConstraints, bShowMinimumTime,  bAllowFade, m_bTaskReminders ),
 		m_state( state )

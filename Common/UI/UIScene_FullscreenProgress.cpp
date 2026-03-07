@@ -47,7 +47,7 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void *initData,
 	m_progressBar.init(L"",0,0,100,0);
 
 	// set the tip
-	wstring wsText= app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+	std::wstring wsText= app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 
 	wchar_t startTags[64];
 	swprintf(startTags,64,L"<font color=\"#%08x\"><p align=center>",app.GetHTMLColour(eHTMLColor_White));
@@ -86,7 +86,7 @@ UIScene_FullscreenProgress::~UIScene_FullscreenProgress()
 	delete m_CompletionData;
 }
 
-wstring UIScene_FullscreenProgress::getMoviePath()
+std::wstring UIScene_FullscreenProgress::getMoviePath()
 {
 	return L"FullscreenProgress";
 }
@@ -146,7 +146,7 @@ void UIScene_FullscreenProgress::tick()
 	}
 	else
 	{
-		wstring& wstrText = pMinecraft->progressRenderer->getProgressString();
+		std::wstring& wstrText = pMinecraft->progressRenderer->getProgressString();
 		m_progressBar.setLabel(wstrText.c_str());
 	}
 
@@ -350,7 +350,7 @@ void UIScene_FullscreenProgress::handleTimerComplete(int id)
 	case TIMER_FULLSCREEN_TIPS:
 		{		
 			// display the next tip
-			wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+			std::wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 			wchar_t startTags[64];
 			swprintf(startTags,64,L"<font color=\"#%08x\"><p align=center>",app.GetHTMLColour(eHTMLColor_White));
 			wsText= startTags + wsText + L"</p>";

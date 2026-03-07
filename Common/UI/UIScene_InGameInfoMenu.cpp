@@ -32,7 +32,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void *initData, UILayer
 			m_players[i] = player->GetSmallId();
 			++m_playersCount;
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -78,7 +78,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void *initData, UILayer
 	if(thisPlayer != NULL) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 	if(!m_isHostPlayer && !localPlayer->isModerator() )
 	{
 		removeControl( &m_buttonGameOptions, false );
@@ -98,7 +98,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void *initData, UILayer
 #endif
 }
 
-wstring UIScene_InGameInfoMenu::getMoviePath()
+std::wstring UIScene_InGameInfoMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -131,7 +131,7 @@ void UIScene_InGameInfoMenu::updateTooltips()
 
 	int keyA = -1;
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 
 	bool isOp = m_isHostPlayer || localPlayer->isModerator();
 	bool cheats = app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
@@ -208,7 +208,7 @@ void UIScene_InGameInfoMenu::handleReload()
 			m_players[i] = player->GetSmallId();
 			++m_playersCount;
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -252,7 +252,7 @@ void UIScene_InGameInfoMenu::handleReload()
 	if(thisPlayer != NULL) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 	if(!m_isHostPlayer && !localPlayer->isModerator() )
 	{
 		removeControl( &m_buttonGameOptions, false );
@@ -311,7 +311,7 @@ void UIScene_InGameInfoMenu::tick()
 				m_playerList.setPlayerIcon( i, (int)app.GetPlayerColour( m_players[i] ) );
 			}
 
-			wstring playerName = L"";
+			std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 			if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 			{
@@ -431,7 +431,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId)
 		INetworkPlayer *selectedPlayer = g_NetworkManager.GetPlayerBySmallId( m_players[ currentSelection ] );
 
 		Minecraft *pMinecraft = Minecraft::GetInstance();
-		shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
+		std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[m_iPad];
 
 		bool isOp = m_isHostPlayer || localPlayer->isModerator();
 		bool cheats = app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
@@ -512,7 +512,7 @@ void UIScene_InGameInfoMenu::OnPlayerChanged(void *callbackParam, INetworkPlayer
 		scene->m_players[scene->m_playersCount] = pPlayer->GetSmallId();
 		++scene->m_playersCount;
 
-		wstring playerName = L"";
+		std::wstring playerName = L"";
 #ifndef _CONTENT_PACKAGE
 		if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
 		{
@@ -556,10 +556,10 @@ int UIScene_InGameInfoMenu::KickPlayerReturned(void *pParam,int iPad,C4JStorage:
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		
 		Minecraft *pMinecraft = Minecraft::GetInstance();
-		shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
+		std::shared_ptr<MultiplayerLocalPlayer> localPlayer = pMinecraft->localplayers[iPad];
 		if(localPlayer->connection)
 		{
-			localPlayer->connection->send( shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
+			localPlayer->connection->send( std::shared_ptr<KickPlayerPacket>( new KickPlayerPacket(smallId) ) );
 		}
 	}
 

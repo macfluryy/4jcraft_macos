@@ -164,8 +164,8 @@ typedef struct
 
 #ifdef _XBOX_ONE
 
-	wstring wsProductId;
-	wstring wsDisplayName;
+	std::wstring wsProductId;
+	std::wstring wsDisplayName;
 
 	// add a store for the local DLC image
 	PBYTE pbImageData;

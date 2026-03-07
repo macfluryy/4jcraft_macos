@@ -60,7 +60,7 @@ UIScene_SettingsGraphicsMenu::~UIScene_SettingsGraphicsMenu()
 {
 }
 
-wstring UIScene_SettingsGraphicsMenu::getMoviePath()
+std::wstring UIScene_SettingsGraphicsMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

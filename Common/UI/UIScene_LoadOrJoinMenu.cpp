@@ -28,7 +28,7 @@
 
 #ifdef SONY_REMOTE_STORAGE_DOWNLOAD
 unsigned long UIScene_LoadOrJoinMenu::m_ulFileSize=0L;
-wstring UIScene_LoadOrJoinMenu::m_wstrStageText=L"";
+std::wstring UIScene_LoadOrJoinMenu::m_wstrStageText=L"";
 #endif
 
 
@@ -44,7 +44,7 @@ wstring UIScene_LoadOrJoinMenu::m_wstrStageText=L"";
 UIScene_LoadOrJoinMenu::ESaveTransferFiles UIScene_LoadOrJoinMenu::s_eSaveTransferFile;
 unsigned long UIScene_LoadOrJoinMenu::s_ulFileSize=0L;
 byteArray UIScene_LoadOrJoinMenu::s_transferData = byteArray();
-wstring UIScene_LoadOrJoinMenu::m_wstrStageText=L"";
+std::wstring UIScene_LoadOrJoinMenu::m_wstrStageText=L"";
 
 #ifdef _DEBUG_MENUS_ENABLED
 C4JStorage::SAVETRANSFER_FILE_DETAILS UIScene_LoadOrJoinMenu::m_debugTransferDetails;
@@ -539,7 +539,7 @@ void UIScene_LoadOrJoinMenu::handleLoseFocus()
     killTimer(JOIN_LOAD_ONLINE_TIMER_ID);
 }
 
-wstring UIScene_LoadOrJoinMenu::getMoviePath()
+std::wstring UIScene_LoadOrJoinMenu::getMoviePath()
 {
     return L"LoadOrJoinMenu";
 }
@@ -850,7 +850,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo()
         for(unsigned int i=0;i<listItems;i++)
         {
 
-            wstring wName = m_saves->at(i)->getName();
+            std::wstring wName = m_saves->at(i)->getName();
             wchar_t *name = new wchar_t[wName.size()+1];
             for(unsigned int j = 0; j < wName.size(); ++j)
             {
@@ -1844,7 +1844,7 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id)
                     if(pDLCInfo)
                     {
                         // retrieve the image - if we haven't already
-                        wstring textureName = filenametowstring(pDLCInfo->chImageURL);
+                        std::wstring textureName = filenametostd::wstring(pDLCInfo->chImageURL);
 
                         if(hasRegisteredSubstitutionTexture(textureName)==false)
                         {
@@ -2199,7 +2199,7 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(void *pParam,int iPad,C4JS
 		{	
 			if (ProfileManager.IsSignedInLive(iPad))
 			{
-				wstring ProductId;
+				std::wstring ProductId;
 				app.GetDLCFullOfferIDForPackID(pClass->m_initData->selectedSession->data.texturePackParentId,ProductId);
 
 				StorageManager.InstallOffer(1,(WCHAR *)ProductId.c_str(),NULL,NULL);
@@ -3062,10 +3062,10 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc( LPVOID lpParameter )
                     ByteArrayInputStream bais(UIScene_LoadOrJoinMenu::s_transferData);
                     DataInputStream dis(&bais);
 
-                    wstring saveTitle = dis.readUTF();				
+                    std::wstring saveTitle = dis.readUTF();				
                     StorageManager.SetSaveTitle(saveTitle.c_str());
 
-                    wstring saveUniqueName = dis.readUTF();
+                    std::wstring saveUniqueName = dis.readUTF();
 
 					// 4J Stu - Don't set this any more. We added it so that we could share the ban list data for this save
 					// However if the player downloads the same save multiple times, it will overwrite the previous version 
@@ -3204,7 +3204,7 @@ void UIScene_LoadOrJoinMenu::RequestFileSize( SaveTransferStateContainer *pClass
     {
         ZeroMemory(&m_debugTransferDetails, sizeof(C4JStorage::SAVETRANSFER_FILE_DETAILS) );
 
-        File targetFile( wstring(L"FakeTMSPP\\").append(filename) );
+        File targetFile( std::wstring(L"FakeTMSPP\\").append(filename) );
         if(targetFile.exists()) m_debugTransferDetails.ulFileLen = targetFile.length();
 
         SaveTransferReturned(pClass,&m_debugTransferDetails);
@@ -3238,7 +3238,7 @@ void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass
 #ifdef _DEBUG_MENUS_ENABLED
     if(app.GetLoadSavesFromFolderEnabled())
     {
-        File targetFile( wstring(L"FakeTMSPP\\").append(filename) );
+        File targetFile( std::wstring(L"FakeTMSPP\\").append(filename) );
         if(targetFile.exists())
         {
             HANDLE hSaveFile = CreateFile( targetFile.getPath().c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);

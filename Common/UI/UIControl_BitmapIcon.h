@@ -10,5 +10,5 @@ private:
 public:
 	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
 
-	void setTextureName(const wstring &iconName);
+	void setTextureName(const std::wstring &iconName);
 };

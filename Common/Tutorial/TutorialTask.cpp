@@ -3,7 +3,7 @@
 #include "TutorialConstraints.h"
 #include "TutorialTask.h"
 
-TutorialTask::TutorialTask(Tutorial *tutorial, int descriptionId, bool enablePreCompletion, vector<TutorialConstraint *> *inConstraints, 
+TutorialTask::TutorialTask(Tutorial *tutorial, int descriptionId, bool enablePreCompletion, std::vector<TutorialConstraint *> *inConstraints, 
 							bool bShowMinimumTime, bool bAllowFade, bool bTaskReminders)
 		: tutorial( tutorial ), descriptionId( descriptionId ), m_promptId( -1 ), enablePreCompletion( enablePreCompletion ),
 		areConstraintsEnabled( false ), bIsCompleted( false ), bHasBeenActivated( false ),

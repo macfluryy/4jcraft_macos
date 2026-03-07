@@ -2,7 +2,7 @@
 #include "DLCManager.h"
 #include "DLCGameRulesFile.h"
 
-DLCGameRulesFile::DLCGameRulesFile(const wstring &path) : DLCGameRules(DLCManager::e_DLCType_GameRules,path)
+DLCGameRulesFile::DLCGameRulesFile(const std::wstring &path) : DLCGameRules(DLCManager::e_DLCType_GameRules,path)
 {	
 	m_pbData = NULL;
 	m_dwBytes = 0;

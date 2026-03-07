@@ -74,7 +74,7 @@ HRESULT CXuiCtrlMinecraftSkinPreview::OnInit(XUIMessageInit* pInitData, BOOL& rf
 	return hr;
 }
 
-void CXuiCtrlMinecraftSkinPreview::SetTexture(const wstring &url, TEXTURE_NAME backupTexture)
+void CXuiCtrlMinecraftSkinPreview::SetTexture(const std::wstring &url, TEXTURE_NAME backupTexture)
 {
 	m_customTextureUrl = url;
 	m_backupTexture = backupTexture;
@@ -252,7 +252,7 @@ HRESULT CXuiCtrlMinecraftSkinPreview::OnRender(XUIMessageRender *pRenderData, BO
     if (renderer != NULL)
 	{
 		// 4J-PB - any additional parts to turn on for this player (skin dependent)
-		//vector<ModelPart *> *pAdditionalModelParts=mob->GetAdditionalModelParts();
+		//std::vector<ModelPart *> *pAdditionalModelParts=mob->GetAdditionalModelParts();
 		
 		if(m_pvAdditionalModelParts && m_pvAdditionalModelParts->size()!=0)
 		{	
@@ -510,7 +510,7 @@ void CXuiCtrlMinecraftSkinPreview::render(EntityRenderer *renderer, double x, do
 	model->holdingLeftHand = false;
 }
 
-bool CXuiCtrlMinecraftSkinPreview::bindTexture(const wstring& urlTexture, int backupTexture)
+bool CXuiCtrlMinecraftSkinPreview::bindTexture(const std::wstring& urlTexture, int backupTexture)
 {
     Textures *t = Minecraft::GetInstance()->textures;
 
@@ -530,7 +530,7 @@ bool CXuiCtrlMinecraftSkinPreview::bindTexture(const wstring& urlTexture, int ba
     }
 }
 
-bool CXuiCtrlMinecraftSkinPreview::bindTexture(const wstring& urlTexture, const wstring& backupTexture)
+bool CXuiCtrlMinecraftSkinPreview::bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture)
 {
     Textures *t = Minecraft::GetInstance()->textures;
 

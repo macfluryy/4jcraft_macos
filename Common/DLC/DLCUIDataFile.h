@@ -9,7 +9,7 @@ private:
 	bool m_canDeleteData;
 
 public:
-	DLCUIDataFile(const wstring &path);
+	DLCUIDataFile(const std::wstring &path);
 	~DLCUIDataFile();
 
 	using DLCFile::addData;

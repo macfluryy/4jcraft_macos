@@ -18,7 +18,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 
 	// 4J Stu - Don't need these, the AS handles the scrolling and makes it look nice
 #if 0
-	wstring halfScreenLineBreaks;
+	std::wstring halfScreenLineBreaks;
 
 	if(RenderManager.IsHiDef())
 	{
@@ -49,7 +49,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	wstring playerName = L"";
+	std::wstring playerName = L"";
 	if(pMinecraft->localplayers[ui.GetWinUserIndex()] != NULL)
 	{
 		playerName = escapeXML( pMinecraft->localplayers[ui.GetWinUserIndex()]->getDisplayName() );
@@ -74,10 +74,10 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 
 
 	// 4J-JEV: Find paragraph start and end points.
-	m_paragraphs = vector<wstring>();
+	m_paragraphs = std::vector<std::wstring>();
 	int lastIndex = 0;
 	for (	int index = 0;
-			index != wstring::npos; 
+			index != std::wstring::npos; 
 			index = noiseString.find(L"<br /><br />", index+12, 12)
 		)
 	{
@@ -90,7 +90,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 	//m_htmlPoem.init(noiseString.c_str());
 	//m_htmlPoem.startAutoScroll();
 
-	//wstring result = m_htmlControl.GetText();
+	//std::wstring result = m_htmlControl.GetText();
 
 	//wcout << result.c_str();
 
@@ -105,7 +105,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 	m_requestedLabel = 0;
 }
 
-wstring UIScene_EndPoem::getMoviePath()
+std::wstring UIScene_EndPoem::getMoviePath()
 {
 	return L"EndPoem";
 }
@@ -121,7 +121,7 @@ void UIScene_EndPoem::tick()
 
 	if( m_requestedLabel >= 0 && m_requestedLabel < m_paragraphs.size())
 	{
-		wstring label = m_paragraphs[m_requestedLabel];
+		std::wstring label = m_paragraphs[m_requestedLabel];
 
 		IggyDataValue result;
 		IggyDataValue value[3];
@@ -201,13 +201,13 @@ void UIScene_EndPoem::updateNoise()
 	
 	int length = 0;
 	wchar_t replacements[64];
-	wstring replaceString = L"";
+	std::wstring replaceString = L"";
 	wchar_t randomChar = L'a';
 	Random *random = pMinecraft->font->random;
 
 	bool darken = false;
 
-	wstring tag = L"{*NOISE*}";
+	std::wstring tag = L"{*NOISE*}";
 
 	AUTO_VAR(it, m_noiseLengths.begin());
 	int found=(int)noiseString.find(tag);
@@ -221,7 +221,7 @@ void UIScene_EndPoem::updateNoise()
 		{
 			randomChar = SharedConstants::acceptableLetters[random->nextInt((int)SharedConstants::acceptableLetters.length())];
 			
-			wstring randomCharStr = L"";
+			std::wstring randomCharStr = L"";
 			randomCharStr.push_back(randomChar);
 			if(randomChar == L'<')
 			{

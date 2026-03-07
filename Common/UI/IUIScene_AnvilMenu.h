@@ -16,9 +16,9 @@ class RepairMenu;
 class IUIScene_AnvilMenu : public virtual IUIScene_AbstractContainerMenu, public net_minecraft_world_inventory::ContainerListener
 {
 protected:
-	shared_ptr<Inventory> m_inventory;
+	std::shared_ptr<Inventory> m_inventory;
 	RepairMenu *m_repairMenu;
-	wstring m_itemName;
+	std::wstring m_itemName;
 
 protected:
 	IUIScene_AnvilMenu();
@@ -32,14 +32,14 @@ protected:
 
 	// Anvil only
 	virtual void handleEditNamePressed() = 0;
-	virtual void setEditNameValue(const wstring &name) = 0;
+	virtual void setEditNameValue(const std::wstring &name) = 0;
 	virtual void setEditNameEditable(bool enabled) = 0;
-	virtual void setCostLabel(const wstring &label, bool canAfford) = 0;
+	virtual void setCostLabel(const std::wstring &label, bool canAfford) = 0;
 	virtual void showCross(bool show) = 0;
 	void updateItemName();
 
 	// ContainerListenr
-	void refreshContainer(AbstractContainerMenu *container, vector<shared_ptr<ItemInstance> > *items);
-	void slotChanged(AbstractContainerMenu *container, int slotIndex, shared_ptr<ItemInstance> item);
+	void refreshContainer(AbstractContainerMenu *container, std::vector<std::shared_ptr<ItemInstance> > *items);
+	void slotChanged(AbstractContainerMenu *container, int slotIndex, std::shared_ptr<ItemInstance> item);
 	void setContainerData(AbstractContainerMenu *container, int id, int value);
 };

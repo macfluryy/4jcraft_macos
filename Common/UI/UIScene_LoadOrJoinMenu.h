@@ -77,9 +77,9 @@ private:
 	int m_iMashUpButtonsC;
 	int m_iState;
 
-	vector<FriendSessionInfo *> *m_currentSessions;
-	vector<LevelGenerationOptions *> m_generators;
-	vector<File *> *m_saves;
+	std::vector<FriendSessionInfo *> *m_currentSessions;
+	std::vector<LevelGenerationOptions *> m_generators;
+	std::vector<File *> *m_saves;
 	
 	bool m_bIgnoreInput;
 	bool m_bAllLoaded;
@@ -141,7 +141,7 @@ private:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 
@@ -197,7 +197,7 @@ private:
 	static ESaveTransferFiles s_eSaveTransferFile;
 	static unsigned long s_ulFileSize;
 	static byteArray s_transferData;
-	static wstring m_wstrStageText;
+	static std::wstring m_wstrStageText;
 	LoadMenuInitData *m_loadMenuInitData;
 
 #ifdef _DEBUG_MENUS_ENABLED
@@ -249,7 +249,7 @@ private:
 	};
 	eSaveTransferState m_eSaveTransferState;
 	static unsigned long m_ulFileSize;
-	static wstring m_wstrStageText;
+	static std::wstring m_wstrStageText;
 	int m_iProgress;
 	char m_downloadedUniqueFilename[64];//SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE];
 	bool m_saveTransferDownloadCancelled;

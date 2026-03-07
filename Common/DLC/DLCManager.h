@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include <vector>
 class DLCPack;
 class DLCSkinFile;
@@ -51,7 +51,7 @@ public:
 	const static WCHAR *wchTypeNamesA[e_DLCParamType_Max];
 
 private:
-	vector<DLCPack *> m_packs;
+	std::vector<DLCPack *> m_packs;
 	//bool m_bNeedsUpdated;
 	bool m_bNeedsCorruptCheck;
 	DWORD m_dwUnnamedCorruptDLCCount;
@@ -59,7 +59,7 @@ public:
 	DLCManager();
 	~DLCManager();
 
-	static EDLCParameterType getParameterType(const wstring &paramName);
+	static EDLCParameterType getParameterType(const std::wstring &paramName);
 
 	DWORD getPackCount(EDLCType type = e_DLCType_All);
 
@@ -75,20 +75,20 @@ public:
 	void addPack(DLCPack *pack);
 	void removePack(DLCPack *pack);
 
-	DLCPack *getPack(const wstring &name);
+	DLCPack *getPack(const std::wstring &name);
 #ifdef _XBOX_ONE
-	DLCPack *DLCManager::getPackFromProductID(const wstring &productID);
+	DLCPack *DLCManager::getPackFromProductID(const std::wstring &productID);
 #endif
 	DLCPack *getPack(DWORD index, EDLCType type = e_DLCType_All);
 	DWORD getPackIndex(DLCPack *pack, bool &found, EDLCType type = e_DLCType_All);
-	DLCSkinFile *getSkinFile(const wstring &path); // Will hunt all packs of type skin to find the right skinfile
+	DLCSkinFile *getSkinFile(const std::wstring &path); // Will hunt all packs of type skin to find the right skinfile
 
-	DLCPack *getPackContainingSkin(const wstring &path);
-	DWORD getPackIndexContainingSkin(const wstring &path, bool &found);
+	DLCPack *getPackContainingSkin(const std::wstring &path);
+	DWORD getPackIndexContainingSkin(const std::wstring &path, bool &found);
 
 	DWORD checkForCorruptDLCAndAlert(bool showMessage = true);
 
-	bool readDLCDataFile(DWORD &dwFilesProcessed, const wstring &path, DLCPack *pack, bool fromArchive = false);
+	bool readDLCDataFile(DWORD &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive = false);
 	bool readDLCDataFile(DWORD &dwFilesProcessed, const string &path, DLCPack *pack, bool fromArchive = false);
 	DWORD retrievePackIDFromDLCDataFile(const string &path, DLCPack *pack);
 

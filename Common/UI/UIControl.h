@@ -88,5 +88,5 @@ public:
 	virtual bool hasFocus() { return false; }
 
 protected:
-	IggyName registerFastName(const wstring &name);
+	IggyName registerFastName(const std::wstring &name);
 };

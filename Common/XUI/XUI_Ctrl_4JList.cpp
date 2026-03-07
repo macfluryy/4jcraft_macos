@@ -231,8 +231,8 @@ bool CXuiCtrl4JList::AlphabeticSortFn(const void *a, const void *b)
 	CXuiCtrl4JList::LIST_ITEM_INFO *SaveDetailsA=(CXuiCtrl4JList::LIST_ITEM_INFO *)a;
 	CXuiCtrl4JList::LIST_ITEM_INFO *SaveDetailsB=(CXuiCtrl4JList::LIST_ITEM_INFO *)b; 
 
-	wstring wstr1=SaveDetailsA->pwszText;
-	wstring wstr2=SaveDetailsB->pwszText;
+	std::wstring wstr1=SaveDetailsA->pwszText;
+	std::wstring wstr2=SaveDetailsB->pwszText;
 	if(wstr1.compare(wstr2)<0)
 	{
 		return true;

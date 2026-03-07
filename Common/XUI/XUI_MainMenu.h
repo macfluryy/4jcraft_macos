@@ -19,7 +19,7 @@ class CScene_Main : public CXuiSceneImpl
 {
 private:
 	static Random *random;
-	vector<wstring> m_splashes;
+	std::vector<std::wstring> m_splashes;
 	D3DXVECTOR3 m_vPosExitGame;
 	bool m_bIgnorePress;
 	float m_fSubtitleHeight, m_fSubtitleWidth;

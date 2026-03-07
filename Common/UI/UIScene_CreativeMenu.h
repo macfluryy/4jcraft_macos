@@ -56,7 +56,7 @@ protected:
 		UI_MAP_NAME(m_funcSetScrollBar, L"SetScrollBar")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	virtual void handleReload();
 
 	virtual int getSectionColumns(ESceneSection eSection);

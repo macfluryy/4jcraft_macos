@@ -168,7 +168,7 @@ void UIScene_InGameSaveManagementMenu::handleGainFocus(bool navBack)
 	}
 }
 
-wstring UIScene_InGameSaveManagementMenu::getMoviePath()
+std::wstring UIScene_InGameSaveManagementMenu::getMoviePath()
 {
 	return L"SaveMenu";
 }

@@ -74,7 +74,7 @@ void UIScene_ConnectingProgress::tick()
 	}
 }
 
-wstring UIScene_ConnectingProgress::getMoviePath()
+std::wstring UIScene_ConnectingProgress::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1 && !m_parentLayer->IsFullscreenGroup())
 	{

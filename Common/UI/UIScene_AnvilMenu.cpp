@@ -37,7 +37,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void *_initData, UILayer *parentL
 	m_slotListResult.addSlots(RepairMenu::RESULT_SLOT, 1);
 
 	bool expensive = false;
-	wstring m_costString = L"";
+	std::wstring m_costString = L"";
 
 	if(m_repairMenu->cost > 0)
 	{
@@ -71,7 +71,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void *_initData, UILayer *parentL
 	app.SetRichPresenceContext(iPad, CONTEXT_GAME_STATE_ANVIL);
 }
 
-wstring UIScene_AnvilMenu::getMoviePath()
+std::wstring UIScene_AnvilMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -346,7 +346,7 @@ void UIScene_AnvilMenu::handleEditNamePressed()
 #endif
 }
 
-void UIScene_AnvilMenu::setEditNameValue(const wstring &name)
+void UIScene_AnvilMenu::setEditNameValue(const std::wstring &name)
 {
 	m_textInputAnvil.setLabel(name);
 }
@@ -355,7 +355,7 @@ void UIScene_AnvilMenu::setEditNameEditable(bool enabled)
 {
 }
 
-void UIScene_AnvilMenu::setCostLabel(const wstring &label, bool canAfford)
+void UIScene_AnvilMenu::setCostLabel(const std::wstring &label, bool canAfford)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

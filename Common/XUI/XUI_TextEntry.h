@@ -48,7 +48,7 @@ protected:
 	HRESULT OnNotifyValueChanged (HXUIOBJ hObjSource, XUINotifyValueChanged* pValueChangedData, BOOL& rfHandled);
 	HRESULT OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled);
 
-	HRESULT InterpretString(wstring &wsText);
+	HRESULT InterpretString(std::wstring &wsText);
 	HRESULT Init_Commands();
 public:
 
@@ -60,5 +60,5 @@ private:
 	int m_iPad;
 	WCHAR m_wchInitialChar;
 	static CommandParams CommandA[eCommand_MAX];
-	unordered_map<wstring, int> m_CommandSet;
+	std::unordered_map<std::wstring, int> m_CommandSet;
 };

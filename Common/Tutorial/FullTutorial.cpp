@@ -159,7 +159,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 		AABB *area = app.getGameRuleDefinitions()->getNamedArea(L"tutorialArea");
 		if(area != NULL)
 		{
-			vector<TutorialConstraint *> *areaConstraints = new vector<TutorialConstraint *>();
+			std::vector<TutorialConstraint *> *areaConstraints = new std::vector<TutorialConstraint *>();
 			areaConstraints->push_back( new AreaConstraint( IDS_TUTORIAL_CONSTRAINT_TUTORIAL_AREA, area->x0,area->y0,area->z0,area->x1,area->y1,area->z1) );
 			addTask(e_Tutorial_State_Gameplay, new AreaTask(e_Tutorial_State_Gameplay,this, areaConstraints) );
 		}
@@ -413,12 +413,12 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 			AABB *exitArea = app.getGameRuleDefinitions()->getNamedArea(L"creativeExitArea");
 			if(exitArea != NULL)
 			{
-				vector<TutorialConstraint *> *creativeExitAreaConstraints = new vector<TutorialConstraint *>();
+				std::vector<TutorialConstraint *> *creativeExitAreaConstraints = new std::vector<TutorialConstraint *>();
 				creativeExitAreaConstraints->push_back( new AreaConstraint( -1, exitArea->x0,exitArea->y0,exitArea->z0,exitArea->x1,exitArea->y1,exitArea->z1,true,false) );
 				creativeFinalTask->AddTask( new AreaTask(e_Tutorial_State_CreativeMode, this, creativeExitAreaConstraints,IDS_TUTORIAL_TASK_CREATIVE_EXIT,AreaTask::eAreaTaskCompletion_CompleteOnConstraintsSatisfied) );
 			}
 
-			vector<TutorialConstraint *> *creativeAreaConstraints = new vector<TutorialConstraint *>();
+			std::vector<TutorialConstraint *> *creativeAreaConstraints = new std::vector<TutorialConstraint *>();
 			creativeAreaConstraints->push_back( new AreaConstraint( IDS_TUTORIAL_CONSTRAINT_TUTORIAL_AREA, area->x0,area->y0,area->z0,area->x1,area->y1,area->z1) );
 			creativeFinalTask->AddTask( new AreaTask(e_Tutorial_State_CreativeMode, this, creativeAreaConstraints) );
 

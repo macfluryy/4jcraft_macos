@@ -8,7 +8,7 @@ class InventoryMenu;
 class UIScene_FurnaceMenu : public UIScene_AbstractContainerMenu, public IUIScene_FurnaceMenu
 {
 private:
-	shared_ptr<FurnaceTileEntity> m_furnace;
+	std::shared_ptr<FurnaceTileEntity> m_furnace;
 
 public:
 	UIScene_FurnaceMenu(int iPad, void *initData, UILayer *parentLayer);
@@ -34,7 +34,7 @@ protected:
 		UI_END_MAP_CHILD_ELEMENTS()
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	virtual void handleReload();
 
 	virtual void tick();

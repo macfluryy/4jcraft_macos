@@ -11,14 +11,14 @@ private:
 	__int64 m_currentSave, m_currentTotal;
 	float m_currentOffset;
 
-	vector<pair<__int64,float> > m_sizeAndOffsets;
+	std::vector<pair<__int64,float> > m_sizeAndOffsets;
 
 public:
 	UIControl_SpaceIndicatorBar();
 
 	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
 
-	void init(const wstring &label, int id, __int64 min, __int64 max);
+	void init(const std::wstring &label, int id, __int64 min, __int64 max);
 	virtual void ReInit();
 	void reset();
 

@@ -364,7 +364,7 @@ private:
 	HRESULT						_PlayUISFX(ESoundEffect eSound);
 	void						_SetEmptyQuadrantLogo(int iPad,EBaseScenePosition ePos);
 	HRESULT						_DisplayGamertag( unsigned int iPad, BOOL bDisplay );
-	void						_SetSelectedItem( unsigned int iPad, const wstring& name);
+	void						_SetSelectedItem( unsigned int iPad, const std::wstring& name);
 	void						_HideAllGameUIElements();
 	bool						_GetBaseSceneSafeZone( unsigned int iPad, D3DXVECTOR2 &origin, float &width, float &height);
 
@@ -420,7 +420,7 @@ public:
 	static HRESULT				PlayUISFX(ESoundEffect eSound);
 	static void					SetEmptyQuadrantLogo(int iSection);
 	static HRESULT				DisplayGamertag( unsigned int iPad, BOOL bDisplay );
-	static void					SetSelectedItem( unsigned int iPad, const wstring &name);
+	static void					SetSelectedItem( unsigned int iPad, const std::wstring &name);
 	static void					HideAllGameUIElements();
 
 	// Returns details on the fully transformed (ie screen space) base scene position, adjusted for safe zones
