@@ -135,6 +135,8 @@ At this time, we don't have the necessary tools to build game resources without 
 2. Copy the `Common` directory to your current working directory.
 3. Run `Minecraft.Client`.
 
+---
+
 ## Generative AI Policy
 
 Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.
