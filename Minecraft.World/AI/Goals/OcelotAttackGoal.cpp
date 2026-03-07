@@ -8,7 +8,7 @@
 
 OzelotAttackGoal::OzelotAttackGoal(Mob *mob)
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 	attackTime = 0;
 	speed = 0;
 	trackTarget = false;
@@ -22,7 +22,7 @@ bool OzelotAttackGoal::canUse()
 {
 	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
-	target = std::<Mob>(bestTarget);
+	target = std::weak_ptr<Mob>(bestTarget);
 	return true;
 }
 
@@ -35,7 +35,7 @@ bool OzelotAttackGoal::canContinueToUse()
 
 void OzelotAttackGoal::stop()
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 	mob->getNavigation()->stop();
 }
 

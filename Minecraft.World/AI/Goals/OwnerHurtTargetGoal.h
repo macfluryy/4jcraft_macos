@@ -8,7 +8,7 @@ class OwnerHurtTargetGoal : public TargetGoal
 {
 private:
 	TamableAnimal *tameAnimal; // Owner of this goal
-	std::<Mob> ownerLastHurt;
+	std::weak_ptr<Mob> ownerLastHurt;
 
 public:
 	OwnerHurtTargetGoal(TamableAnimal *tameAnimal);

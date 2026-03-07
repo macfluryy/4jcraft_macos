@@ -12,7 +12,7 @@
 ArrowAttackGoal::ArrowAttackGoal(Mob *mob, float speed, int projectileType, int attackInterval)
 {
 	// 4J Init
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 	attackTime = 0;
 	seeTime = 0;
 
@@ -28,7 +28,7 @@ bool ArrowAttackGoal::canUse()
 {
 	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
-	target = std::<Mob>(bestTarget);
+	target = std::weak_ptr<Mob>(bestTarget);
 	return true;
 }
 
@@ -39,7 +39,7 @@ bool ArrowAttackGoal::canContinueToUse()
 
 void ArrowAttackGoal::stop()
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 }
 
 void ArrowAttackGoal::tick()

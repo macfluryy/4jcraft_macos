@@ -158,10 +158,10 @@ void ChestTileEntity::checkNeighbors()
     if (hasCheckedNeighbors) return;
 
     hasCheckedNeighbors = true;
-    n = std::<ChestTileEntity>();
-    e = std::<ChestTileEntity>();
-    w = std::<ChestTileEntity>();
-    s = std::<ChestTileEntity>();
+    n = std::weak_ptr<ChestTileEntity>();
+    e = std::weak_ptr<ChestTileEntity>();
+    w = std::weak_ptr<ChestTileEntity>();
+    s = std::weak_ptr<ChestTileEntity>();
 
     if (level->getTile(x - 1, y, z) == Tile::chest_Id)
 	{

@@ -11,7 +11,7 @@
 
 BreedGoal::BreedGoal(Animal *animal, float speed)
 {
-	partner = std::<Animal>();
+	partner = std::weak_ptr<Animal>();
 	loveTime = 0;
 
 	this->animal = animal;
@@ -23,7 +23,7 @@ BreedGoal::BreedGoal(Animal *animal, float speed)
 bool BreedGoal::canUse()
 {
 	if (!animal->isInLove()) return false;
-	partner = std::<Animal>(getFreePartner());
+	partner = std::weak_ptr<Animal>(getFreePartner());
 	return partner.lock() != NULL;
 }
 
@@ -34,7 +34,7 @@ bool BreedGoal::canContinueToUse()
 
 void BreedGoal::stop()
 {
-	partner = std::<Animal>();
+	partner = std::weak_ptr<Animal>();
 	loveTime = 0;
 }
 

@@ -12,9 +12,9 @@ private:
 	PathfinderMob *mob;
 	float speed;
 	Path *path;
-	std::<DoorInfo> doorInfo;
+	std::weak_ptr<DoorInfo> doorInfo;
 	bool onlyAtNight;
-	std::vector< std::<DoorInfo> > visited;
+	std::vector< std::weak_ptr<DoorInfo> > visited;
 
 public:
 	MoveThroughVillageGoal(PathfinderMob *mob, float speed, bool onlyAtNight);

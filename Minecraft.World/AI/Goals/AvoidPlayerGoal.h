@@ -11,7 +11,7 @@ class AvoidPlayerGoal : public Goal
 private:
 	PathfinderMob *mob; // Owner of this goal
 	float walkSpeed, sprintSpeed;
-	std::<Entity> toAvoid;
+	std::weak_ptr<Entity> toAvoid;
 	float maxDist;
 	Path *path;
 	PathNavigation *pathNav;

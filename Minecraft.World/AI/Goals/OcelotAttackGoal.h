@@ -7,7 +7,7 @@ class OzelotAttackGoal : public Goal
 private:
 	Level *level;
 	Mob *mob;
-	std::<Mob> target;
+	std::weak_ptr<Mob> target;
 	int attackTime;
 	float speed;
 	bool trackTarget;

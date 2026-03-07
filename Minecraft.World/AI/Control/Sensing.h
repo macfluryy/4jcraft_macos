@@ -4,8 +4,8 @@ class Sensing
 {
 private:
 	Mob *mob;
-	std::vector<std::<Entity> > seen;
-	std::vector<std::<Entity> > unseen;
+	std::vector<std::weak_ptr<Entity> > seen;
+	std::vector<std::weak_ptr<Entity> > unseen;
 
 public:
 	Sensing(Mob *mob);

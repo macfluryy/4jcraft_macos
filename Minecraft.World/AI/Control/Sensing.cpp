@@ -29,7 +29,7 @@ bool Sensing::canSee(std::shared_ptr<Entity> target)
 	//util.Timer.push("canSee");
 	bool canSee = mob->canSee(target);
 	//util.Timer.pop();
-	if (canSee) seen.push_back(std::<Entity>(target));
-	else unseen.push_back(std::<Entity>(target));
+	if (canSee) seen.push_back(std::weak_ptr<Entity>(target));
+	else unseen.push_back(std::weak_ptr<Entity>(target));
 	return canSee;
 }

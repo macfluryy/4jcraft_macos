@@ -16,7 +16,7 @@ MoveTowardsTargetGoal::MoveTowardsTargetGoal(PathfinderMob *mob, float speed, fl
 
 bool MoveTowardsTargetGoal::canUse()
 {
-	target = std::<Mob>(mob->getTarget());
+	target = std::weak_ptr<Mob>(mob->getTarget());
 	if (target.lock() == NULL) return false;
 	if (target.lock()->distanceToSqr(mob->shared_from_this()) > within * within) return false;
 	Vec3 *pos = RandomPos::getPosTowards(dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 7, Vec3::newTemp(target.lock()->x, target.lock()->y, target.lock()->z));
@@ -34,7 +34,7 @@ bool MoveTowardsTargetGoal::canContinueToUse()
 
 void MoveTowardsTargetGoal::stop()
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 }
 
 void MoveTowardsTargetGoal::start()

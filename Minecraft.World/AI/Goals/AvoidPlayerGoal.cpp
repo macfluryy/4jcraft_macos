@@ -20,7 +20,7 @@ AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob *mob, const std::type_info& avoid
 	this->pathNav = mob->getNavigation();
 	setRequiredControlFlags(Control::MoveControlFlag);
 
-	toAvoid = std::<Entity>();
+	toAvoid = std::weak_ptr<Entity>();
 	path = NULL;
 }
 
@@ -35,7 +35,7 @@ bool AvoidPlayerGoal::canUse()
 	{
 		std::shared_ptr<TamableAnimal> tamableAnimal = dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
 		if (tamableAnimal != NULL && tamableAnimal->isTame()) return false;
-		toAvoid = std::<Entity>(mob->level->getNearestPlayer(mob->shared_from_this(), maxDist));
+		toAvoid = std::weak_ptr<Entity>(mob->level->getNearestPlayer(mob->shared_from_this(), maxDist));
 		if (toAvoid.lock() == NULL) return false;
 	}
 	else
@@ -46,7 +46,7 @@ bool AvoidPlayerGoal::canUse()
 			delete entities;
 			return false;
 		}
-		toAvoid = std::<Entity>(entities->at(0));
+		toAvoid = std::weak_ptr<Entity>(entities->at(0));
 		delete entities;
 	}
 
@@ -75,7 +75,7 @@ void AvoidPlayerGoal::start()
 
 void AvoidPlayerGoal::stop()
 {
-	toAvoid = std::<Entity>();
+	toAvoid = std::weak_ptr<Entity>();
 }
 
 void AvoidPlayerGoal::tick()

@@ -6,7 +6,7 @@ class MoveTowardsTargetGoal : public Goal
 {
 private:
 	PathfinderMob *mob;
-	std::<Mob> target;
+	std::weak_ptr<Mob> target;
 	double wantedX, wantedY, wantedZ;
 	float speed, within;
 
