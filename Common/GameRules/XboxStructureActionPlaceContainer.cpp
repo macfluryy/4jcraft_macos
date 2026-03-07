@@ -78,7 +78,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(StructurePiece *st
 		}
 
 		level->setTile( worldX, worldY, worldZ, m_tile );
-		std::shared_ptr<Container> container = dynamic_pointer_cast<Container>(level->getTileEntity( worldX, worldY, worldZ ));
+		std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(level->getTileEntity( worldX, worldY, worldZ ));
 		
 		app.DebugPrintf("XboxStructureActionPlaceContainer - placing a container at (%d,%d,%d)\n", worldX, worldY, worldZ);
 		if ( container != NULL )

@@ -216,7 +216,7 @@ void IUIScene_AnvilMenu::handleTick()
 			wchar_t temp[256];
 			swprintf(temp, 256, costString, m_repairMenu->cost);
 			m_costString = temp;
-			if(!m_repairMenu->getSlot(RepairMenu::RESULT_SLOT)->mayPickup(dynamic_pointer_cast<Player>(m_inventory->player->shared_from_this())))
+			if(!m_repairMenu->getSlot(RepairMenu::RESULT_SLOT)->mayPickup(std::dynamic_pointer_cast<Player>(m_inventory->player->shared_from_this())))
 			{
 				canAfford = false;
 			}

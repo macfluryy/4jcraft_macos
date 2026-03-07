@@ -128,7 +128,7 @@ HRESULT CScene_DebugOverlay::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress
 			int id = m_itemIds[nIndex];
 			//app.SetXuiServerAction(pNotifyPressData->UserIndex, eXuiServerAction_DropItem, (void *)id);
 			ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-			conn->send( GiveItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), id) );
+			conn->send( GiveItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), id) );
 		}
     }
 	else if ( hObjPressed == m_mobs )
@@ -143,7 +143,7 @@ HRESULT CScene_DebugOverlay::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress
     {
         nIndex = m_enchantments.GetCurSel();
 		ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-		conn->send( EnchantItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIds[nIndex]) );
+		conn->send( EnchantItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIds[nIndex]) );
     }
 	/*else if( hObjPressed == m_saveToDisc ) // 4J-JEV: Doesn't look like we use this debug option anymore.
 	{

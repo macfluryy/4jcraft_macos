@@ -258,7 +258,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat)
 
 				if(pRecipeIngredientsRequired[iRecipe].bCanMake[iPad]) 
 				{
-					pTempItemInst->onCraftedBy(m_pPlayer->level, dynamic_pointer_cast<Player>( m_pPlayer->shared_from_this() ), pTempItemInst->count );
+					pTempItemInst->onCraftedBy(m_pPlayer->level, std::dynamic_pointer_cast<Player>( m_pPlayer->shared_from_this() ), pTempItemInst->count );
 					// TODO 4J Stu - handleCraftItem should do a lot more than what it does, loads of the "can we craft" code should also probably be
 					// shifted to the GameMode
 					pMinecraft->localgameModes[iPad]->handleCraftItem(iRecipe,m_pPlayer);
