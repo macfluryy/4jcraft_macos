@@ -72,14 +72,15 @@ install_subdir(meson.current_source_dir() / 'Platform/Durango/Sound', install_di
 # install_subdir(meson.current_source_dir() / 'Platform/Windows64Media/DLC', install_dir : 'Windows64Media')
 install_subdir(meson.current_source_dir() / 'Platform/DurangoMedia/DLC', install_dir : 'Windows64Media') # Use this just for funsies so we get access to more dlc
 
-
+# Need to make this take inputs
 localisation = custom_target('Minecraft.Client_Localisation',
   output : 'languages.loc',
   command : [
     'python3', meson.project_source_root() / 'scripts/pack_loc.py',
     meson.current_source_dir() / 'Platform/Windows64Media/loc',
     '@OUTPUT@'
-  ]
+  ],
+  build_always_stale : true
 )
 
 colour_table = custom_target('Minecraft.Client_Colour_Table',
@@ -94,12 +95,19 @@ colour_table = custom_target('Minecraft.Client_Colour_Table',
 
 movies_path = meson.current_source_dir() / 'Build/Assets/movies'
 archive_sources = [ 
-  localisation,
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/languages.loc',
   colour_table,
   asset_dir / 'splashes.txt',
   asset_dir / 'graphics\SaveChest.png',
   asset_dir / 'graphics\MinecraftIcon.png',
-  asset_dir / 'graphics\TexturePackIcon.png'
+  asset_dir / 'graphics\TexturePackIcon.png',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/Tutorial.pck',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/skinWin.swf',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/skinHDWin.swf',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/DLCOffersMenu480.swf',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/DLCOffersMenu720.swf',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/DLCOffersMenu1080.swf',
+  meson.current_source_dir() / 'Platform/Windows64Media/Media/DLCOffersMenuVita.swf'
 ]
 archive_sources_movies1080 = [
   movies_path / 'skinHDGraphics.swf',
@@ -387,14 +395,14 @@ archive_sources_movies480 = [
   movies_path / 'TutorialPopup480.swf'
 ]
 archive_sources_moviesVita = [
-  movies_path / 'skinGraphics.swf',
-  movies_path / 'skinGraphicsHud.swf',
-  movies_path / 'skinGraphicsLabels.swf',
-  movies_path / 'skinGraphicsInGame.swf',
-  movies_path / 'skin.swf',
-  movies_path / 'skinHud.swf',
-  movies_path / 'skinLabels.swf',
-  movies_path / 'skinInGame.swf',
+  # movies_path / 'skinGraphics.swf',
+  # movies_path / 'skinGraphicsHud.swf',
+  # movies_path / 'skinGraphicsLabels.swf',
+  # movies_path / 'skinGraphicsInGame.swf',
+  # movies_path / 'skin.swf',
+  # movies_path / 'skinHud.swf',
+  # movies_path / 'skinLabels.swf',
+  # movies_path / 'skinInGame.swf',
   movies_path / 'AnvilMenuVita.swf',
   movies_path / 'BrewingStandMenuVita.swf',
   movies_path / 'ChestLargeMenuVita.swf',
@@ -451,12 +459,12 @@ archive_sources_moviesVita = [
   movies_path / 'ToolTipsVita.swf',
   movies_path / 'TradingMenuVita.swf',
   movies_path / 'TutorialPopupVita.swf',
-  movies_path / 'DebugCreateSchematic720.swf',
-  movies_path / 'DebugMenu720.swf',
-  movies_path / 'DebugOptionsMenu720.swf',
-  movies_path / 'DebugSetCamera720.swf',
-  movies_path / 'DebugUIConsoleComponent720.swf',
-  movies_path / 'DebugUIMarketingGuide720.swf'
+  # movies_path / 'DebugCreateSchematic720.swf',
+  # movies_path / 'DebugMenu720.swf',
+  # movies_path / 'DebugOptionsMenu720.swf',
+  # movies_path / 'DebugSetCamera720.swf',
+  # movies_path / 'DebugUIConsoleComponent720.swf',
+  # movies_path / 'DebugUIMarketingGuide720.swf'
 ]
 
 custom_target('Minecraft.Client_Archive',
