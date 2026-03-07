@@ -551,7 +551,7 @@ void UIScene_InGameInfoMenu::OnPlayerChanged(void *callbackParam, INetworkPlayer
 int UIScene_InGameInfoMenu::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
 	BYTE smallId = *(BYTE *)pParam;
-	delete pParam;
+	delete (BYTE*)pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		

@@ -7,7 +7,7 @@
 // Desc: Internal helper function
 //--------------------------------------------------------------------------------------
 #ifndef _CONTENT_PACKAGE
-static VOID DebugSpewV( const CHAR* strFormat, const va_list pArgList )
+static VOID DebugSpewV( const CHAR* strFormat, va_list pArgList )
 {
 #if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined(__linux__)
 	assert(0);
