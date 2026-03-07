@@ -197,7 +197,7 @@ void EntityRenderDispatcher::prepare(Level *level, Textures *textures, Font *fon
         playerRotX = player->xRotO + (player->xRot - player->xRotO) * a;
     }
 
-	std::shared_ptr<Player> pl = dynamic_pointer_cast<Player>(player);
+	std::shared_ptr<Player> pl = std::dynamic_pointer_cast<Player>(player);
 	if (pl->ThirdPersonView() == 2)
 	{
 		playerRotY += 180;

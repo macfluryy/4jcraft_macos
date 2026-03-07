@@ -13,7 +13,7 @@ MinecartRenderer::MinecartRenderer()
 void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Minecart> cart = dynamic_pointer_cast<Minecart>(_cart);
+	std::shared_ptr<Minecart> cart = std::dynamic_pointer_cast<Minecart>(_cart);
 
     glPushMatrix();
 	

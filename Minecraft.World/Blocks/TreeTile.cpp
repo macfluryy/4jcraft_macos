@@ -63,7 +63,7 @@ void TreeTile::onRemove(Level *level, int x, int y, int z, int id, int data)
 void TreeTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
 	int type = level->getData(x, y, z) & MASK_TYPE;
-	int dir = PistonBaseTile::getNewFacing(level, x, y, z, dynamic_pointer_cast<Player>(by));
+	int dir = PistonBaseTile::getNewFacing(level, x, y, z, std::dynamic_pointer_cast<Player>(by));
 	int facing = 0;
 
 	switch (dir)

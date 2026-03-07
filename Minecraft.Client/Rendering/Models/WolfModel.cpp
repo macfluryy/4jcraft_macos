@@ -96,7 +96,7 @@ void WolfModel::render(std::shared_ptr<Entity> entity, float time, float r, floa
 
 void WolfModel::prepareMobModel(std::shared_ptr<Mob> mob, float time, float r, float a)
 {
-    std::shared_ptr<Wolf> wolf = dynamic_pointer_cast<Wolf>(mob);
+    std::shared_ptr<Wolf> wolf = std::dynamic_pointer_cast<Wolf>(mob);
 
     if (wolf->isAngry())
 	{

@@ -34,7 +34,7 @@ bool BossMobPart::isPickable()
 
 bool BossMobPart::hurt(DamageSource *source, int damage)
 {
-	return bossMob->hurt( dynamic_pointer_cast<BossMobPart>( shared_from_this() ), source, damage);
+	return bossMob->hurt( std::dynamic_pointer_cast<BossMobPart>( shared_from_this() ), source, damage);
 }
 
 bool BossMobPart::is(std::shared_ptr<Entity> other)

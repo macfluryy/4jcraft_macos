@@ -15,7 +15,7 @@ PistonPieceRenderer::PistonPieceRenderer()
 void PistonPieceRenderer::render(std::shared_ptr<TileEntity> _entity, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<PistonPieceEntity> entity = dynamic_pointer_cast<PistonPieceEntity>(_entity);
+	std::shared_ptr<PistonPieceEntity> entity = std::dynamic_pointer_cast<PistonPieceEntity>(_entity);
 
     Tile *tile = Tile::tiles[entity->getId()];
     if (tile != NULL && entity->getProgress(a) <= 1)	// 4J - changed condition from < to <= as our chunk update is async to main thread and so we can have to render these with progress of 1

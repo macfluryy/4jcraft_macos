@@ -334,9 +334,9 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e)
 		}
 		else if (!wasRiding && isRiding)
 		{
-			if(dynamic_pointer_cast<Minecart>(e) != NULL)
+			if(std::dynamic_pointer_cast<Minecart>(e) != NULL)
 				gameMode->getTutorial()->changeTutorialState(e_Tutorial_State_Riding_Minecart);
-			else if(dynamic_pointer_cast<Boat>(e) != NULL)
+			else if(std::dynamic_pointer_cast<Boat>(e) != NULL)
 				gameMode->getTutorial()->changeTutorialState(e_Tutorial_State_Riding_Boat);
 		}
 	}

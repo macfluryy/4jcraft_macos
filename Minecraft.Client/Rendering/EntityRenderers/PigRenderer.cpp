@@ -10,7 +10,7 @@ PigRenderer::PigRenderer(Model *model, Model *armor, float shadow) : MobRenderer
 int PigRenderer::prepareArmor(std::shared_ptr<Mob> _pig, int layer, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Pig> pig = dynamic_pointer_cast<Pig>(_pig);
+	std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(_pig);
 
 	MemSect(31);
     bindTexture(TN_MOB_SADDLE);	// 4J was L"/mob/saddle.png"

@@ -58,7 +58,7 @@ FishingHook::FishingHook(Level *level, double x, double y, double z, std::shared
 
 	this->owner = owner;
 	// 4J Stu - Moved this outside the ctor
-	//owner->fishing = dynamic_pointer_cast<FishingHook>( shared_from_this() );
+	//owner->fishing = std::dynamic_pointer_cast<FishingHook>( shared_from_this() );
 
 	setPos(x, y, z);
 }
@@ -69,7 +69,7 @@ FishingHook::FishingHook(Level *level, std::shared_ptr<Player> mob) : Entity( le
 
 	this->owner = mob;
 	// 4J Stu - Moved this outside the ctor
-	//owner->fishing = dynamic_pointer_cast<FishingHook>( shared_from_this() );
+	//owner->fishing = std::dynamic_pointer_cast<FishingHook>( shared_from_this() );
 
 	this->moveTo(mob->x, mob->y + 1.62 - mob->heightOffset, mob->z, mob->yRot, mob->xRot);
 
@@ -265,7 +265,7 @@ void FishingHook::tick()
 		if (res->entity != NULL) 
 		{
 			// 4J Stu Move fix for : fix for #48587 - CRASH: Code: Gameplay: Hitting another player with the fishing bobber crashes the game. [Fishing pole, line]
-			// Incorrect dynamic_pointer_cast used around the shared_from_this()
+			// Incorrect std::dynamic_pointer_cast used around the shared_from_this()
 			DamageSource *damageSource = DamageSource::thrown(shared_from_this(), owner);
 			if (res->entity->hurt(damageSource, 0))
 			{

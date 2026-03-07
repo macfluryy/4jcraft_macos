@@ -100,8 +100,8 @@ bool Boat::hurt(DamageSource *source, int hurtDamage)
 	{
 		std::shared_ptr<Entity> attacker = source->getDirectEntity();
 
-		if (dynamic_pointer_cast<Player>(attacker) != NULL && 
-			!dynamic_pointer_cast<Player>(attacker)->isAllowedToHurtEntity( shared_from_this() ))
+		if (std::dynamic_pointer_cast<Player>(attacker) != NULL && 
+			!std::dynamic_pointer_cast<Player>(attacker)->isAllowedToHurtEntity( shared_from_this() ))
 			return false;
 	}
 
@@ -117,7 +117,7 @@ bool Boat::hurt(DamageSource *source, int hurtDamage)
 	markHurt();
 
 	// 4J Stu - Brought froward from 12w36 to fix #46611 - TU5: Gameplay: Minecarts and boat requires more hits than one to be destroyed in creative mode
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(source->getEntity());
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(source->getEntity());
 	if (player != NULL && player->abilities.instabuild) setDamage(100);
 
 	if (getDamage() > 20 * 2)
@@ -469,7 +469,7 @@ std::wstring Boat::getName()
 
 bool Boat::interact(std::shared_ptr<Player> player)
 {
-	if (rider.lock() != NULL && dynamic_pointer_cast<Player>(rider.lock())!=NULL && rider.lock() != player) return true;
+	if (rider.lock() != NULL && std::dynamic_pointer_cast<Player>(rider.lock())!=NULL && rider.lock() != player) return true;
 	if (!level->isClientSide)
 	{
 		// 4J HEG - Fixed issue with player not being able to dismount boat (issue #4446)

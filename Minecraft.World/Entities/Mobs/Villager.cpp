@@ -158,7 +158,7 @@ bool Villager::interact(std::shared_ptr<Player> player)
 		{
 			// note: stop() logic is controlled by trading ai goal
 			setTradingPlayer(player);
-			player->openTrading(dynamic_pointer_cast<Merchant>(shared_from_this()));
+			player->openTrading(std::dynamic_pointer_cast<Merchant>(shared_from_this()));
 		}
 		return true;
 	}
@@ -290,7 +290,7 @@ void Villager::setLastHurtByMob(std::shared_ptr<Mob> mob)
 	{
 		_village->addAggressor(mob);
 
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(mob);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(mob);
 		if (player)
 		{
 			int amount = -1;
@@ -317,7 +317,7 @@ void Villager::die(DamageSource *source)
 		{
 			if ((sourceEntity->GetType() & eTYPE_PLAYER) == eTYPE_PLAYER)
 			{
-				std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(sourceEntity);
+				std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(sourceEntity);
 				_village->modifyStanding(player->getName(), -2);
 			}
 			else if ((sourceEntity->GetType() & eTYPE_ENEMY) == eTYPE_ENEMY)

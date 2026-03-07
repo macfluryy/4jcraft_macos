@@ -1273,9 +1273,9 @@ void PlayerConnection::handleSignUpdate(std::shared_ptr<SignUpdatePacket> packet
 	{
 		std::shared_ptr<TileEntity> te = level->getTileEntity(packet->x, packet->y, packet->z);
 
-		if (dynamic_pointer_cast<SignTileEntity>(te) != NULL)
+		if (std::dynamic_pointer_cast<SignTileEntity>(te) != NULL)
 		{
-			std::shared_ptr<SignTileEntity> ste = dynamic_pointer_cast<SignTileEntity>(te);
+			std::shared_ptr<SignTileEntity> ste = std::dynamic_pointer_cast<SignTileEntity>(te);
 			if (!ste->isEditable())
 			{
 				server->warn(L"Player " + player->name + L" just tried to change non-editable sign");
@@ -1284,12 +1284,12 @@ void PlayerConnection::handleSignUpdate(std::shared_ptr<SignUpdatePacket> packet
 		}
 
 		// 4J-JEV: Changed to allow characters to display as a [].
-		if (dynamic_pointer_cast<SignTileEntity>(te) != NULL)
+		if (std::dynamic_pointer_cast<SignTileEntity>(te) != NULL)
 		{
 			int x = packet->x;
 			int y = packet->y;
 			int z = packet->z;
-			std::shared_ptr<SignTileEntity> ste = dynamic_pointer_cast<SignTileEntity>(te);
+			std::shared_ptr<SignTileEntity> ste = std::dynamic_pointer_cast<SignTileEntity>(te);
 			for (int i = 0; i < 4; i++)
 			{
 				std::wstring lineText = packet->lines[i].substr(0,15);
@@ -1512,7 +1512,7 @@ void PlayerConnection::handleCustomPayload(std::shared_ptr<CustomPayloadPacket> 
 
 void PlayerConnection::handleDebugOptions(std::shared_ptr<DebugOptionsPacket> packet)
 {
-	//Player player = dynamic_pointer_cast<Player>( player->shared_from_this() );
+	//Player player = std::dynamic_pointer_cast<Player>( player->shared_from_this() );
 	player->SetDebugOptions(packet->m_uiVal);
 }
 
@@ -1528,7 +1528,7 @@ void PlayerConnection::handleCraftItem(std::shared_ptr<CraftItemPacket> packet)
 
 	if(app.DebugSettingsOn() && (player->GetDebugOptions()&(1L<<eDebugSetting_CraftAnything)))
 	{
-		pTempItemInst->onCraftedBy(player->level, dynamic_pointer_cast<Player>( player->shared_from_this() ), pTempItemInst->count );
+		pTempItemInst->onCraftedBy(player->level, std::dynamic_pointer_cast<Player>( player->shared_from_this() ), pTempItemInst->count );
 		if(player->inventory->add(pTempItemInst)==false )
 		{
 			// no room in inventory, so throw it down
@@ -1542,7 +1542,7 @@ void PlayerConnection::handleCraftItem(std::shared_ptr<CraftItemPacket> packet)
 	// TODO 4J Stu - Assume at the moment that the client can work this out for us...
 	//if(pRecipeIngredientsRequired[iRecipe].bCanMake) 
 	//{
-		pTempItemInst->onCraftedBy(player->level, dynamic_pointer_cast<Player>( player->shared_from_this() ), pTempItemInst->count );
+		pTempItemInst->onCraftedBy(player->level, std::dynamic_pointer_cast<Player>( player->shared_from_this() ), pTempItemInst->count );
 
 		// and remove those resources from your inventory
 		for(int i=0;i<pRecipeIngredientsRequired[iRecipe].iIngC;i++)

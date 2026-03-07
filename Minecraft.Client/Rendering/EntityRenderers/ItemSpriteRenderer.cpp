@@ -37,7 +37,7 @@ void ItemSpriteRenderer::render(std::shared_ptr<Entity> e, double x, double y, d
 	if (icon == PotionItem::getTexture(PotionItem::THROWABLE_ICON) )
 	{
 
-		int col = PotionBrewing::getColorValue((dynamic_pointer_cast<ThrownPotion>(e) )->getPotionValue(), false);
+		int col = PotionBrewing::getColorValue((std::dynamic_pointer_cast<ThrownPotion>(e) )->getPotionValue(), false);
 		float red = ((col >> 16) & 0xff) / 255.0f;
 		float g = ((col >> 8) & 0xff) / 255.0f;
 		float b = ((col) & 0xff) / 255.0f;

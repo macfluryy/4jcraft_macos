@@ -17,7 +17,7 @@ void SnowManRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a)
 {
 	// 4J - original version used generics and thus had an input parameter of type SnowMan rather than std::shared_ptr<Mob>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<SnowMan> mob = dynamic_pointer_cast<SnowMan>(_mob);
+	std::shared_ptr<SnowMan> mob = std::dynamic_pointer_cast<SnowMan>(_mob);
 
 	MobRenderer::additionalRendering(mob, a);
 	std::shared_ptr<ItemInstance> headGear = std::shared_ptr<ItemInstance>( new ItemInstance(Tile::pumpkin, 1) );

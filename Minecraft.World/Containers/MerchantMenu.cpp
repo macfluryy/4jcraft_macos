@@ -10,7 +10,7 @@ MerchantMenu::MerchantMenu(std::shared_ptr<Inventory> inventory, std::shared_ptr
 	trader = merchant;
 	this->level = level;
 
-	tradeContainer = std::shared_ptr<MerchantContainer>( new MerchantContainer(dynamic_pointer_cast<Player>(inventory->player->shared_from_this()), merchant) );
+	tradeContainer = std::shared_ptr<MerchantContainer>( new MerchantContainer(std::dynamic_pointer_cast<Player>(inventory->player->shared_from_this()), merchant) );
 	addSlot(new Slot(tradeContainer, PAYMENT1_SLOT, SELLSLOT1_X, ROW2_Y));
 	addSlot(new Slot(tradeContainer, PAYMENT2_SLOT, SELLSLOT2_X, ROW2_Y));
 	addSlot(new MerchantResultSlot(inventory->player, merchant, tradeContainer, RESULT_SLOT, BUYSLOT_X, ROW2_Y));

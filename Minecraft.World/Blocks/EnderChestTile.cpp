@@ -64,7 +64,7 @@ void EnderChestTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_
 bool EnderChestTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly)
 {
 	std::shared_ptr<PlayerEnderChestContainer> container = player->getEnderChestInventory();
-	std::shared_ptr<EnderChestTileEntity> enderChest = dynamic_pointer_cast<EnderChestTileEntity>(level->getTileEntity(x, y, z));
+	std::shared_ptr<EnderChestTileEntity> enderChest = std::dynamic_pointer_cast<EnderChestTileEntity>(level->getTileEntity(x, y, z));
 	if (container == NULL || enderChest == NULL) return true;
 
 	if (level->isSolidBlockingTile(x, y + 1, z)) return true;

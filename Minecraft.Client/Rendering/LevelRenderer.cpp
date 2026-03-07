@@ -540,7 +540,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 		{
 			// 4J-PB - changing this to be per player
 			//if (entity == mc->cameraTargetPlayer && !mc->options->thirdPersonView && !mc->cameraTargetPlayer->isSleeping()) continue;
-			std::shared_ptr<LocalPlayer> localplayer = dynamic_pointer_cast<LocalPlayer>(mc->cameraTargetPlayer);
+			std::shared_ptr<LocalPlayer> localplayer = std::dynamic_pointer_cast<LocalPlayer>(mc->cameraTargetPlayer);
 
 			if (localplayer && entity == mc->cameraTargetPlayer && !localplayer->ThirdPersonView() && !mc->cameraTargetPlayer->isSleeping()) continue;
 
@@ -2802,7 +2802,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(ePARTICLE_TYPE ePar
 		break;
 	case eParticleType_instantSpell:
 		particle = std::shared_ptr<Particle>(new SpellParticle(lev, x, y, z, xa, ya, za));
-		dynamic_pointer_cast<SpellParticle>(particle)->setBaseTex(9 * 16);
+		std::dynamic_pointer_cast<SpellParticle>(particle)->setBaseTex(9 * 16);
 		break;
 	case eParticleType_note:
 		particle = std::shared_ptr<Particle>( new NoteParticle(lev, x, y, z, xa, ya, za) );
@@ -2877,7 +2877,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(ePARTICLE_TYPE ePar
 		else if( ( eParticleType >= eParticleType_tilecrack_base ) &&  ( eParticleType <= eParticleType_tilecrack_last )  )
 		{
 			int id = PARTICLE_CRACK_ID(eParticleType), data = PARTICLE_CRACK_DATA(eParticleType);
-			particle = dynamic_pointer_cast<Particle>( std::shared_ptr<TerrainParticle>(new TerrainParticle(lev, x, y, z, xa, ya, za, Tile::tiles[id], 0, data, textures))->init(data) );
+			particle = std::dynamic_pointer_cast<Particle>( std::shared_ptr<TerrainParticle>(new TerrainParticle(lev, x, y, z, xa, ya, za, Tile::tiles[id], 0, data, textures))->init(data) );
 		}
 	}
 

@@ -14,7 +14,7 @@ void EndermanRenderer::render(std::shared_ptr<Entity> _mob, double x, double y, 
 {
 	// 4J - original version used generics and thus had an input parameter of type Boat rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<EnderMan> mob = dynamic_pointer_cast<EnderMan>(_mob);
+	std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
 	model->carrying = mob->getCarryingTile() > 0;
 	model->creepy = mob->isCreepy();
@@ -33,7 +33,7 @@ void EndermanRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a)
 {
 	// 4J - original version used generics and thus had an input parameter of type Boat rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<EnderMan> mob = dynamic_pointer_cast<EnderMan>(_mob);
+	std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
 	MobRenderer::additionalRendering(_mob, a);
 
@@ -72,7 +72,7 @@ int EndermanRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a
 {
 	// 4J - original version used generics and thus had an input parameter of type Boat rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<EnderMan> mob = dynamic_pointer_cast<EnderMan>(_mob);
+	std::shared_ptr<EnderMan> mob = std::dynamic_pointer_cast<EnderMan>(_mob);
 
 	if (layer != 0) return -1;
 

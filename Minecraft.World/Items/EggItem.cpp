@@ -25,7 +25,7 @@ std::shared_ptr<ItemInstance> EggItem::use(std::shared_ptr<ItemInstance> instanc
 	{
 		instance->count--;
 	}
-    level->playSound( dynamic_pointer_cast<Entity>(player), eSoundType_RANDOM_BOW, 0.5f, 0.4f / (random->nextFloat() * 0.4f + 0.8f));
-    if (!level->isClientSide) level->addEntity( std::shared_ptr<ThrownEgg>( new ThrownEgg(level, dynamic_pointer_cast<Mob>( player )) ));
+    level->playSound( std::dynamic_pointer_cast<Entity>(player), eSoundType_RANDOM_BOW, 0.5f, 0.4f / (random->nextFloat() * 0.4f + 0.8f));
+    if (!level->isClientSide) level->addEntity( std::shared_ptr<ThrownEgg>( new ThrownEgg(level, std::dynamic_pointer_cast<Mob>( player )) ));
     return instance;
 }

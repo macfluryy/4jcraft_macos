@@ -1639,10 +1639,10 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB *bb, std::vec
 
 			bool isAssignableFrom = false;
 			// Some special cases where the base class is a general type that our class may be derived from, otherwise do a direct comparison of std::type_info
-			if( ec == typeid(Player) ) { if( dynamic_pointer_cast<Player>(e) != NULL )  isAssignableFrom = true; }
-			else if ( ec == typeid(Mob) )  { if( dynamic_pointer_cast<Mob>(e) != NULL )  isAssignableFrom = true; }
-			else if ( ec == typeid(Monster) )  { if( dynamic_pointer_cast<Monster>(e) != NULL )  isAssignableFrom = true; }
-			else if ( ec == typeid(Zombie) )  { if( dynamic_pointer_cast<Zombie>(e) != NULL )  isAssignableFrom = true; }
+			if( ec == typeid(Player) ) { if( std::dynamic_pointer_cast<Player>(e) != NULL )  isAssignableFrom = true; }
+			else if ( ec == typeid(Mob) )  { if( std::dynamic_pointer_cast<Mob>(e) != NULL )  isAssignableFrom = true; }
+			else if ( ec == typeid(Monster) )  { if( std::dynamic_pointer_cast<Monster>(e) != NULL )  isAssignableFrom = true; }
+			else if ( ec == typeid(Zombie) )  { if( std::dynamic_pointer_cast<Zombie>(e) != NULL )  isAssignableFrom = true; }
 			else if(e != NULL && ec == typeid(*(e.get())) ) isAssignableFrom = true;
             if (isAssignableFrom && e->bb->intersects(bb)) es.push_back(e);
 			// 4J - note needs to be equivalent to baseClass.isAssignableFrom(e.getClass())

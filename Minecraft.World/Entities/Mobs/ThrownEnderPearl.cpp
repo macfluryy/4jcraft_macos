@@ -47,7 +47,7 @@ void ThrownEnderpearl::onHit(HitResult *res)
 	{
 		// Fix for #67486 - TCR #001: BAS Game Stability: Customer Encountered: TU8: Code: Gameplay: The title crashes on Host's console when Client Player leaves the game before the Ender Pearl thrown by him touches the ground.
 		// If the owner has been removed, then ignore
-		std::shared_ptr<ServerPlayer> serverPlayer = dynamic_pointer_cast<ServerPlayer>(owner);
+		std::shared_ptr<ServerPlayer> serverPlayer = std::dynamic_pointer_cast<ServerPlayer>(owner);
 		if (serverPlayer != NULL && !serverPlayer->removed)
 		{
 			if(!serverPlayer->connection->done && serverPlayer->level == this->level)

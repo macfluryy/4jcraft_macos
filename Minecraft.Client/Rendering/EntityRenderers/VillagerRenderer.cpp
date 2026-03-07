@@ -31,7 +31,7 @@ void VillagerRenderer::scale(std::shared_ptr<Mob> _mob, float a)
 {
 	// 4J - original version used generics and thus had an input parameter of type Blaze rather than std::shared_ptr<Entity>  we have here - 
 	// do some casting around instead
-	std::shared_ptr<Villager> mob = dynamic_pointer_cast<Villager>(_mob);
+	std::shared_ptr<Villager> mob = std::dynamic_pointer_cast<Villager>(_mob);
 	float s = 15 / 16.0f;
 	if (mob->getAge() < 0)
 	{

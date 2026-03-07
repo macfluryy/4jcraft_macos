@@ -69,16 +69,16 @@ bool TargetGoal::canAttack(std::shared_ptr<Mob> target, bool allowInvulnerable)
 	if (!target->isAlive()) return false;
 	if (!mob->canAttackType(target->GetType())) return false;
 
-	std::shared_ptr<TamableAnimal> tamableAnimal = dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
+	std::shared_ptr<TamableAnimal> tamableAnimal = std::dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
 	if (tamableAnimal != NULL && tamableAnimal->isTame())
 	{
-		std::shared_ptr<TamableAnimal> tamableTarget = dynamic_pointer_cast<TamableAnimal>(target);
+		std::shared_ptr<TamableAnimal> tamableTarget = std::dynamic_pointer_cast<TamableAnimal>(target);
 		if (tamableTarget != NULL && tamableTarget->isTame()) return false;
 		if (target == tamableAnimal->getOwner()) return false;
 	}
-	else if (dynamic_pointer_cast<Player>(target) != NULL)
+	else if (std::dynamic_pointer_cast<Player>(target) != NULL)
 	{
-		if (!allowInvulnerable && (dynamic_pointer_cast<Player>(target))->abilities.invulnerable) return false;
+		if (!allowInvulnerable && (std::dynamic_pointer_cast<Player>(target))->abilities.invulnerable) return false;
 	}
 
 	if (!mob->isWithinRestriction(Mth::floor(target->x), Mth::floor(target->y), Mth::floor(target->z))) return false;

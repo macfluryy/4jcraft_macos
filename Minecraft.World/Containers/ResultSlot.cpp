@@ -35,7 +35,7 @@ void ResultSlot::onQuickCraft(std::shared_ptr<ItemInstance> picked, int count)
 
 void ResultSlot::checkTakeAchievements(std::shared_ptr<ItemInstance> carried)
 {
-	carried->onCraftedBy(player->level, dynamic_pointer_cast<Player>( player->shared_from_this() ), removeCount);
+	carried->onCraftedBy(player->level, std::dynamic_pointer_cast<Player>( player->shared_from_this() ), removeCount);
 	removeCount = 0;
 
 	if (carried->id == Tile::workBench_Id)				player->awardStat(GenericStats::buildWorkbench(),		GenericStats::param_buildWorkbench());

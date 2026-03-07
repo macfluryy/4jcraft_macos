@@ -12,9 +12,9 @@ BrewingStandMenu::BrewingStandMenu(std::shared_ptr<Inventory> inventory, std::sh
 
 	this->brewingStand = brewingStand;
 
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 0, 56, 46));
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 1, 79, 53));
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 2, 102, 46));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 0, 56, 46));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 1, 79, 53));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 2, 102, 46));
 	ingredientSlot = addSlot(new IngredientsSlot(brewingStand, 3, 79, 17));
 
 	for (int y = 0; y < 3; y++)
@@ -190,7 +190,7 @@ int BrewingStandMenu::PotionSlot::getMaxStackSize()
 
 void BrewingStandMenu::PotionSlot::onTake(std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> carried)
 {
-	carried->onCraftedBy(this->player->level, dynamic_pointer_cast<Player>( this->player->shared_from_this() ), 1);
+	carried->onCraftedBy(this->player->level, std::dynamic_pointer_cast<Player>( this->player->shared_from_this() ), 1);
 	if (carried->id == Item::potion_Id && carried->getAuxValue() > 0)
 		this->player->awardStat(GenericStats::potion(),GenericStats::param_potion());
 	Slot::onTake(player, carried);

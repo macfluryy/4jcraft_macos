@@ -60,7 +60,7 @@ bool MoveEntityPacket::canBeInvalidated()
 
 bool MoveEntityPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	std::shared_ptr<MoveEntityPacket> target = dynamic_pointer_cast<MoveEntityPacket>(packet);
+	std::shared_ptr<MoveEntityPacket> target = std::dynamic_pointer_cast<MoveEntityPacket>(packet);
 	return target != NULL && target->id == id;
 }
 

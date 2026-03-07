@@ -48,6 +48,6 @@ bool SetRidingPacket::canBeInvalidated()
 
 bool SetRidingPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
-	std::shared_ptr<SetRidingPacket> target = dynamic_pointer_cast<SetRidingPacket>(packet);
+	std::shared_ptr<SetRidingPacket> target = std::dynamic_pointer_cast<SetRidingPacket>(packet);
 	return target->riderId == riderId;
 }

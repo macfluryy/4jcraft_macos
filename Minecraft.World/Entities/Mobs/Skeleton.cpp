@@ -101,8 +101,8 @@ void Skeleton::aiStep()
 void Skeleton::die(DamageSource *source)
 {
 	Monster::die(source);
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( source->getEntity() );
-	if ( dynamic_pointer_cast<Arrow>( source->getDirectEntity() ) != NULL && player != NULL)
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( source->getEntity() );
+	if ( std::dynamic_pointer_cast<Arrow>( source->getDirectEntity() ) != NULL && player != NULL)
 	{
 		double xd = player->x - x;
 		double zd = player->z - z;

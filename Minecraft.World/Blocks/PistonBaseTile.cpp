@@ -126,7 +126,7 @@ bool PistonBaseTile::use(Level *level, int x, int y, int z, std::shared_ptr<Play
 
 void PistonBaseTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
-    int targetData = getNewFacing(level, x, y, z, dynamic_pointer_cast<Player>(by) );
+    int targetData = getNewFacing(level, x, y, z, std::dynamic_pointer_cast<Player>(by) );
     level->setData(x, y, z, targetData);
     if (!level->isClientSide && !ignoreUpdate())
 	{
@@ -250,9 +250,9 @@ void PistonBaseTile::triggerEvent(Level *level, int x, int y, int z, int param1,
 	{
 		PIXBeginNamedEvent(0,"Contract phase A\n");
         std::shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(x + Facing::STEP_X[facing], y + Facing::STEP_Y[facing], z + Facing::STEP_Z[facing]);
-        if (prevTileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity) != NULL)
+        if (prevTileEntity != NULL && std::dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity) != NULL)
 		{
-            dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity)->finalTick();
+            std::dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity)->finalTick();
         }
 
 		stopSharingIfServer(level, x, y, z);	// 4J added
@@ -281,9 +281,9 @@ void PistonBaseTile::triggerEvent(Level *level, int x, int y, int z, int param1,
                 // so replace it with the real data, since it's probably
                 // this piston which is changing too fast
                 std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(twoX, twoY, twoZ);
-                if (tileEntity != NULL && dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL )
+                if (tileEntity != NULL && std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL )
 				{
-                    std::shared_ptr<PistonPieceEntity> ppe = dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
+                    std::shared_ptr<PistonPieceEntity> ppe = std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
 
                     if (ppe->getFacing() == facing && ppe->isExtending())
 					{

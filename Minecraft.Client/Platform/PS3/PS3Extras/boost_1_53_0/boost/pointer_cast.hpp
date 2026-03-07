@@ -19,9 +19,9 @@ inline T* static_pointer_cast(U *ptr)
    return static_cast<T*>(ptr);
 }
 
-//dynamic_pointer_cast overload for raw pointers
+//std::dynamic_pointer_cast overload for raw pointers
 template<class T, class U>
-inline T* dynamic_pointer_cast(U *ptr)
+inline T* std::dynamic_pointer_cast(U *ptr)
 {  
    return dynamic_cast<T*>(ptr);
 }

@@ -49,7 +49,7 @@ bool Ghast::hurt(DamageSource *source, int dmg)
 {
 	if (source->getMsgId() == ChatPacket::e_ChatDeathFireball)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( source->getEntity() );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( source->getEntity() );
 		if (player != NULL)
 		{
 			// reflected fireball, kill the ghast
@@ -151,7 +151,7 @@ void Ghast::serverAiStep()
 			{
 				// 4J - change brought forward from 1.2.3
 				level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL, (int) x, (int) y, (int) z, 0);
-                std::shared_ptr<Fireball> ie = std::shared_ptr<Fireball>( new Fireball(level, dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
+                std::shared_ptr<Fireball> ie = std::shared_ptr<Fireball>( new Fireball(level, std::dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
                 double d = 4;
                 Vec3 *v = getViewVector(1);
                 ie->x = x + v->x * d;

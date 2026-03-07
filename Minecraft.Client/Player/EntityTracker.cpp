@@ -31,7 +31,7 @@ void EntityTracker::addEntity(std::shared_ptr<Entity> e)
     if (e->GetType() == eTYPE_SERVERPLAYER)
 	{
         addEntity(e, 32 * 16, 2);
-        std::shared_ptr<ServerPlayer> player = dynamic_pointer_cast<ServerPlayer>(e);
+        std::shared_ptr<ServerPlayer> player = std::dynamic_pointer_cast<ServerPlayer>(e);
 		for( AUTO_VAR(it, entities.begin()); it != entities.end(); it++ )
 		{
 			if( (*it)->e != player )
@@ -55,7 +55,7 @@ void EntityTracker::addEntity(std::shared_ptr<Entity> e)
     else if (e->GetType() == eTYPE_MINECART) addEntity(e, 16 * 5, 3, true);
     else if (e->GetType() == eTYPE_BOAT) addEntity(e, 16 * 5, 3, true);
     else if (e->GetType() == eTYPE_SQUID) addEntity(e, 16 * 4, 3, true);
-    else if (dynamic_pointer_cast<Creature>(e)!=NULL) addEntity(e, 16 * 5, 3, true);
+    else if (std::dynamic_pointer_cast<Creature>(e)!=NULL) addEntity(e, 16 * 5, 3, true);
 	else if (e->GetType() == eTYPE_ENDERDRAGON ) addEntity(e, 16 * 10, 3, true);
     else if (e->GetType() == eTYPE_PRIMEDTNT) addEntity(e, 16 * 10, 10, true);
     else if (e->GetType() == eTYPE_FALLINGTILE) addEntity(e, 16 * 10, 20, true);
@@ -105,7 +105,7 @@ void EntityTracker::removePlayer(std::shared_ptr<Entity> e)
 {
     if (e->GetType() == eTYPE_SERVERPLAYER)
 	{
-        std::shared_ptr<ServerPlayer> player = dynamic_pointer_cast<ServerPlayer>(e);
+        std::shared_ptr<ServerPlayer> player = std::dynamic_pointer_cast<ServerPlayer>(e);
 		for( AUTO_VAR(it, entities.begin()); it != entities.end(); it++ )
 		{
 			(*it)->removePlayer(player);
@@ -122,7 +122,7 @@ void EntityTracker::tick()
         te->tick(this, &level->players);
         if (te->moved && te->e->GetType() == eTYPE_SERVERPLAYER)
 		{
-            movedPlayers.push_back(dynamic_pointer_cast<ServerPlayer>(te->e));
+            movedPlayers.push_back(std::dynamic_pointer_cast<ServerPlayer>(te->e));
         }
 	}
 
@@ -174,7 +174,7 @@ void EntityTracker::tick()
 	// 4J Stu - We want to do this for dead players as they don't tick normally
 	for(AUTO_VAR(it, level->players.begin()); it != level->players.end(); ++it)
 	{
-        std::shared_ptr<ServerPlayer> player = dynamic_pointer_cast<ServerPlayer>(*it);
+        std::shared_ptr<ServerPlayer> player = std::dynamic_pointer_cast<ServerPlayer>(*it);
 		if(!player->isAlive())
 		{
 			player->flushEntitiesToRemove();

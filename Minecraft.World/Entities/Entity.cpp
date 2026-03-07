@@ -675,7 +675,7 @@ void Entity::move(double xa, double ya, double za, bool noEntityCubes)   // 4J -
 
 	AABB *bbOrg = bb->copy();
 
-	bool isPlayerSneaking = onGround && isSneaking() && dynamic_pointer_cast<Player>(shared_from_this()) != NULL;
+	bool isPlayerSneaking = onGround && isSneaking() && std::dynamic_pointer_cast<Player>(shared_from_this()) != NULL;
 
 	if (isPlayerSneaking)
 	{
@@ -1006,7 +1006,7 @@ void Entity::checkFallDamage(double ya, bool onGround)
 	{
 		if (fallDistance > 0)
 		{
-			if (dynamic_pointer_cast<Mob>(shared_from_this()) != NULL)
+			if (std::dynamic_pointer_cast<Mob>(shared_from_this()) != NULL)
 			{
 				int xt = Mth::floor(x);
 				int yt = Mth::floor(y - 0.2f - this->heightOffset);
@@ -1539,7 +1539,7 @@ void Entity::positionRider()
 	std::shared_ptr<Entity> lockedRider = rider.lock();
 	if( lockedRider )
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(lockedRider);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(lockedRider);
 		if (!(player && player->isLocalPlayer()))
 		{
 			lockedRider->xOld = xOld;

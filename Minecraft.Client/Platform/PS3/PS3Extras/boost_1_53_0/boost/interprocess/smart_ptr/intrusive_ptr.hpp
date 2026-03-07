@@ -262,7 +262,7 @@ inline boost::interprocess::intrusive_ptr<T, VP> const_pointer_cast
 /*Emulates dynamic cast operator. Does not throw*/
 /*
 template<class T, class U, class VP>
-inline boost::interprocess::intrusive_ptr<T, VP> dynamic_pointer_cast
+inline boost::interprocess::intrusive_ptr<T, VP> std::dynamic_pointer_cast
    (boost::interprocess::intrusive_ptr<U, VP> const & p)
 {  return do_dynamic_cast<U>(p.get()); }
 */

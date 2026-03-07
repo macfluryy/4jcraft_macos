@@ -36,13 +36,13 @@ void ControlledByPlayerGoal::stop()
 
 bool ControlledByPlayerGoal::canUse()
 {
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( mob->rider.lock() );
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( mob->rider.lock() );
 	return mob->isAlive() && player && (boosting || mob->canBeControlledByRider());
 }
 
 void ControlledByPlayerGoal::tick()
 {
-	std::shared_ptr<Player> player = dynamic_pointer_cast<Player>(mob->rider.lock());
+	std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(mob->rider.lock());
 	PathfinderMob *pig = (PathfinderMob *)mob;
 
 	float yrd = Mth::wrapDegrees(player->yRot - mob->yRot) * 0.5f;

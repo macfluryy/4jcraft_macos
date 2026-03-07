@@ -21,7 +21,7 @@ ExperienceOrbRenderer::ExperienceOrbRenderer()
 
 void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x, double y, double z, float rot, float a)
 {
-	std::shared_ptr<ExperienceOrb> orb = dynamic_pointer_cast<ExperienceOrb>(_orb);
+	std::shared_ptr<ExperienceOrb> orb = std::dynamic_pointer_cast<ExperienceOrb>(_orb);
 	glPushMatrix();
 	glTranslatef((float) x, (float) y, (float) z);
 

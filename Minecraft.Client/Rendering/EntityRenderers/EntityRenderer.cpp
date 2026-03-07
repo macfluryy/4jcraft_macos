@@ -160,17 +160,17 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
 
     glDepthMask(false);
     float r = shadowRadius;
-	std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(e);
+	std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(e);
 	bool isLocalPlayer = false;
 	float fYLocalPlayerShadowOffset=0.0f;
 
-	//if (dynamic_pointer_cast<Mob>(e) != NULL)
+	//if (std::dynamic_pointer_cast<Mob>(e) != NULL)
 	if (mob != NULL)
 	{
-		//std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(e);
+		//std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(e);
 		r *= mob->getSizeScale();
 
-		std::shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(mob);
+		std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(mob);
 		if (animal != NULL)
 		{
 			if (animal->isBaby())
@@ -179,7 +179,7 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
 			}
 		}
 
-		if(dynamic_pointer_cast<LocalPlayer>(mob)!=NULL)
+		if(std::dynamic_pointer_cast<LocalPlayer>(mob)!=NULL)
 		{
 			isLocalPlayer=true;
 		}

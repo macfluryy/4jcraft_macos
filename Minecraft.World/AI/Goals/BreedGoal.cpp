@@ -52,7 +52,7 @@ std::shared_ptr<Animal> BreedGoal::getFreePartner()
 	std::vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
 	for(AUTO_VAR(it, others->begin()); it != others->end(); ++it)
 	{
-		std::shared_ptr<Animal> p = dynamic_pointer_cast<Animal>(*it);
+		std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);
 		if (animal->canMate(p))
 		{
 			delete others;

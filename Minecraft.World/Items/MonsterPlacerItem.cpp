@@ -181,7 +181,7 @@ bool MonsterPlacerItem::useOn(std::shared_ptr<ItemInstance> itemInstance, std::s
 		// 4J Stu - Force adding this as a tile update
 		level->setTile(x,y,z,0);
 		level->setTile(x,y,z,Tile::mobSpawner_Id);
-		std::shared_ptr<MobSpawnerTileEntity> mste = dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x,y,z) );
+		std::shared_ptr<MobSpawnerTileEntity> mste = std::dynamic_pointer_cast<MobSpawnerTileEntity>( level->getTileEntity(x,y,z) );
 		if(mste != NULL)
 		{
 			mste->setEntityId( EntityIO::getEncodeId(itemInstance->getAuxValue()) );
@@ -267,7 +267,7 @@ std::shared_ptr<Entity> MonsterPlacerItem::spawnMobAt(Level *level, int mobId, d
 	{
 		newEntity = canSpawn(mobId, level, piResult);
 
-		std::shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(newEntity);
+		std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(newEntity);
 		if (mob)
 		{
 			newEntity->moveTo(x, y, z, Mth::wrapDegrees(level->random->nextFloat() * 360), 0);

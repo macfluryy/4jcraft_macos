@@ -15,7 +15,7 @@ FireballRenderer::FireballRenderer(float scale)
 void FireballRenderer::render(std::shared_ptr<Entity> _fireball, double x, double y, double z, float rot, float a)
 {
 	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Fireball> fireball = dynamic_pointer_cast<Fireball>(_fireball);
+	std::shared_ptr<Fireball> fireball = std::dynamic_pointer_cast<Fireball>(_fireball);
 
     glPushMatrix();
 

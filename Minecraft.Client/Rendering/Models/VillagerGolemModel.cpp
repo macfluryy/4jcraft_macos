@@ -61,7 +61,7 @@ void VillagerGolemModel::setupAnim(float time, float r, float bob, float yRot, f
 
 void VillagerGolemModel::prepareMobModel(std::shared_ptr<Mob> mob, float time, float r, float a)
 {
-	std::shared_ptr<VillagerGolem> vg = dynamic_pointer_cast<VillagerGolem>(mob);
+	std::shared_ptr<VillagerGolem> vg = std::dynamic_pointer_cast<VillagerGolem>(mob);
 	int attackTick = vg->getAttackAnimationTick();
 	if (attackTick > 0)
 	{

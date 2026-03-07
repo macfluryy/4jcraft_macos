@@ -25,7 +25,7 @@ std::shared_ptr<ItemInstance> CarrotOnAStickItem::use(std::shared_ptr<ItemInstan
 {
 	if (player->isRiding())
 	{
-		std::shared_ptr<Pig> pig = dynamic_pointer_cast<Pig>(player->riding);
+		std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(player->riding);
 		if(pig)
 		{
 			if (pig->getControlGoal()->canBoost() && itemInstance->getMaxDamage() - itemInstance->getAuxValue() >= 7)
