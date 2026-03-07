@@ -24,12 +24,21 @@
       libs = with pkgs; [
         openssl.dev
         libGL
+        libGLU
         glfw
+        libpng
+        zlib
+        openal
+        libvorbis
       ];
       packages = with pkgs; [
-        gcc
+        gcc15
+        lld
         cmake
         gnumake
+        meson
+        ninja
+        pkg-config
       ];
       in
       {
