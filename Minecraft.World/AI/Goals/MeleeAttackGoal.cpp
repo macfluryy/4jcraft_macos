@@ -7,6 +7,7 @@
 #include "../../Headers/net.minecraft.world.entity.ai.sensing.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "MeleeAttackGoal.h"
+#include "../Navigation/Path.h"
 
 void MeleeAttackGoal::_init(Mob *mob, float speed, bool trackTarget)
 {

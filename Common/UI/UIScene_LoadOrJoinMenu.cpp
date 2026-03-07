@@ -874,7 +874,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo()
         m_pSaveDetails=StorageManager.ReturnSavesInfo();
         if(m_pSaveDetails==NULL)
         {
-            C4JStorage::ESaveGameState eSGIStatus= StorageManager.GetSavesInfo(m_iPad,NULL,this,"save"); 
+            C4JStorage::ESaveGameState eSGIStatus= StorageManager.GetSavesInfo(m_iPad,NULL,this,(char*)"save"); 
         }
 
 #if TO_BE_IMPLEMENTED

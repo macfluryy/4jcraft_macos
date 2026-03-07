@@ -392,7 +392,7 @@ void UIScene::getDebugMemoryUseRecursive(const wstring &moviePath, IggyMemoryUse
 	IggyMemoryUseInfo internalMemoryInfo;
 	int internalIteration = 0;
 	while(res = IggyDebugGetMemoryUseInfo ( swf ,
-		NULL ,
+		0 ,
 		memoryInfo.subcategory ,
 		memoryInfo.subcategory_stringlen ,
 		internalIteration ,
@@ -415,7 +415,7 @@ void UIScene::PrintTotalMemoryUsage(__int64 &totalStatic, __int64 &totalDynamic)
 	__int64 sceneStatic = 0;
 	__int64 sceneDynamic = 0;
 	while(res = IggyDebugGetMemoryUseInfo ( swf ,
-		NULL ,
+		0 ,
 		"" ,
 		0 ,
 		iteration ,

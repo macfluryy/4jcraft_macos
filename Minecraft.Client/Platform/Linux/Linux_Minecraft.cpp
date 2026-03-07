@@ -672,7 +672,7 @@ app.loadStringTable();
     // fuck you
     ui.init(1920, 1080);
 // storage manager is needed for the trial key check
-StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,"");
+StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),(char*)"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,(char*)"");
 
 ////////////////
 // Initialise //
@@ -994,8 +994,11 @@ vector<uint8_t *> vRichPresenceStrings;
 // convert wstring to UTF-8 string
 std::string wstring_to_utf8 (const std::wstring& str)
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
     return myconv.to_bytes(str);
+#pragma GCC diagnostic pop
 }
 
 uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)

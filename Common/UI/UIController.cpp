@@ -1351,7 +1351,7 @@ GDrawTexture * RADLINK UIController::TextureSubstitutionCreateCallback ( void * 
 			*height = 64;
 
 	#endif
-			*destroy_callback_data = (void *)id;
+			*destroy_callback_data = (void *)(intptr_t)id;
 
 			app.DebugPrintf("Found substitution texture %ls (%d) - %dx%d\n", (wchar_t *)texture_name, id, image.getWidth(), image.getHeight());
 			return ui.getSubstitutionTexture(id);

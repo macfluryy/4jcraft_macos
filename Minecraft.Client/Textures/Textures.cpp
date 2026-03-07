@@ -1376,7 +1376,7 @@ TEXTURE_NAME OriginalImages[] =
 	TN_COUNT
 };
 	
-wchar_t *OriginalImagesPaths[] =
+const wchar_t *OriginalImagesPaths[] =
 {
 	L"misc/watercolor.png",
 

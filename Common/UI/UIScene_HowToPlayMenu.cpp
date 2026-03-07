@@ -200,6 +200,6 @@ void UIScene_HowToPlayMenu::handlePress(F64 controlId, F64 childId)
 
 		unsigned int uiInitData;
 		uiInitData = ( ( 1 <<  31 )  | ( m_uiHTPSceneA[(int)childId]  << 16 ) | ( short )( m_iPad ) );
-		ui.NavigateToScene(m_iPad, eUIScene_HowToPlay, ( void* )( uiInitData ) );
+		ui.NavigateToScene(m_iPad, eUIScene_HowToPlay, ( void* )(intptr_t)( uiInitData ) );
 	}
 }

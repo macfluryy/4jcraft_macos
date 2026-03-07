@@ -899,7 +899,7 @@ int CGameNetworkManager::ServerThreadProc( void* lpParameter )
 	IntCache::ReleaseThreadStorage();
 	Level::destroyLightingCache();
 
-	if(lpParameter != NULL) delete lpParameter;
+	if(lpParameter != NULL) delete (NetworkGameInitData*)lpParameter;
 
 	return 0;
 }

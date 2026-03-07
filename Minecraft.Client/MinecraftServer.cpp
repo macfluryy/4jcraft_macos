@@ -262,7 +262,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 		// 4J delete passed in save data now - this is only required for the tutorial which is loaded by passing data directly in rather than using the storage manager
 		if( initData->saveData )
 		{
-			delete[] (unsigned char*)initData->saveData->data;
+			delete[] (BYTE*)initData->saveData->data;
 			initData->saveData->data = 0;
 			initData->saveData->fileSize = 0;
 		}
