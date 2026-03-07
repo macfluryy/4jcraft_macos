@@ -74,9 +74,9 @@ for lang_file_path in lang_file_paths:
 print(f"Processed {len(langs)} languages")
 
 # Write loc file
-# TODO: allow switching version and handle actually writing those versions
 TARGET_LOC_VERSION = 0
-TARGET_LANG_VERSION = 0
+TARGET_LANG_VERSION = 1
+TARGET_LANG_STATIC = True
 with open(output_file_path, "wb") as loc_file:
     # Write header
     pack_stream(">2I", loc_file,
@@ -93,13 +93,19 @@ with open(output_file_path, "wb") as loc_file:
 
         # Write header
         pack_stream(">I", lang_stream, TARGET_LANG_VERSION) # version
+        if TARGET_LANG_VERSION > 0:
+            pack_stream("?", lang_stream, TARGET_LANG_STATIC)
         write_string(lang_name, lang_stream) # lang name
         pack_stream(">I", lang_stream, len(strings)) # string count
         
         # Write strings
-        for string_name, string in strings.items():
-            write_string(string_name, lang_stream)
-            write_string(string, lang_stream)
+        if TARGET_LANG_STATIC:
+            for string in strings.values():
+                write_string(string, lang_stream)
+        else:
+            for string_name, string in strings.items():
+                write_string(string_name, lang_stream)
+                write_string(string, lang_stream)
         
         lang_sizes[lang_name] = lang_stream.tell() - old_stream_pos
 
