@@ -169,7 +169,7 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId)
 			int id = childId;
 			//app.SetXuiServerAction(m_iPad, eXuiServerAction_DropItem, (void *)m_itemIds[id]);
 			ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-			conn->send( GiveItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_itemIds[id]) );
+			conn->send( GiveItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_itemIds[id]) );
 		}
 		break;
 	case eControl_Mobs:
@@ -185,7 +185,7 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId)
 		{
 			int id = childId;
 			ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-			conn->send( EnchantItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIdAndLevels[id].first, m_enchantmentIdAndLevels[id].second) );
+			conn->send( EnchantItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIdAndLevels[id].first, m_enchantmentIdAndLevels[id].second) );
 		}
 		break;
 	case eControl_Schematic:

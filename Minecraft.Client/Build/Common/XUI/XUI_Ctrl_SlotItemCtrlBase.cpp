@@ -49,7 +49,7 @@ HRESULT CXuiCtrlSlotItemCtrlBase::OnCustomMessage_GetSlotItem(HXUIOBJ hObj, Cust
 	}
 	else if(pUserDataContainer->m_iPad >= 0 && pUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
 		if(player != NULL) item = player->inventory->getCarried();
 	}
 
@@ -119,7 +119,7 @@ bool CXuiCtrlSlotItemCtrlBase::isEmpty( HXUIOBJ hObj )
 	}
 	else if(pUserDataContainer->m_iPad >= 0 && pUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
 		if(player != NULL) return player->inventory->getCarried() == NULL;
 
 	}
@@ -167,7 +167,7 @@ std::wstring CXuiCtrlSlotItemCtrlBase::GetItemDescription( HXUIOBJ hObj, std::ve
 	}
 	else if(pUserDataContainer->m_iPad >= 0 && pUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
 		if(player != NULL)
 		{
 			std::shared_ptr<ItemInstance> item = player->inventory->getCarried();
@@ -190,7 +190,7 @@ std::shared_ptr<ItemInstance> CXuiCtrlSlotItemCtrlBase::getItemInstance( HXUIOBJ
 	}
 	else if(pUserDataContainer->m_iPad >= 0 && pUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
 		if(player != NULL) return player->inventory->getCarried();
 
 	}
@@ -268,7 +268,7 @@ int CXuiCtrlSlotItemCtrlBase::GetObjectCount( HXUIOBJ hObj )
 	}
 	else if(pUserDataContainer->m_iPad >= 0 && pUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pUserDataContainer->m_iPad] );
 		if(player != NULL && player->inventory->getCarried() != NULL)
 		{
 			iCount = player->inventory->getCarried()->count;
@@ -309,7 +309,7 @@ bool CXuiCtrlSlotItemCtrlBase::IsSameItemAs( HXUIOBJ hThisObj, HXUIOBJ hOtherObj
 	}
 	else if(pThisUserDataContainer->m_iPad >= 0 && pThisUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pThisUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pThisUserDataContainer->m_iPad] );
 		if(player != NULL && player->inventory->getCarried() != NULL)
 		{
 			iThisID = player->inventory->getCarried()->id;
@@ -336,7 +336,7 @@ bool CXuiCtrlSlotItemCtrlBase::IsSameItemAs( HXUIOBJ hThisObj, HXUIOBJ hOtherObj
 	}
 	else if(pOtherUserDataContainer->m_iPad >= 0 && pOtherUserDataContainer->m_iPad < XUSER_MAX_COUNT)
 	{
-		std::shared_ptr<Player> player = dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pOtherUserDataContainer->m_iPad] );
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( Minecraft::GetInstance()->localplayers[pOtherUserDataContainer->m_iPad] );
 		if(player != NULL && player->inventory->getCarried() != NULL)
 		{
 			iOtherID = player->inventory->getCarried()->id;
