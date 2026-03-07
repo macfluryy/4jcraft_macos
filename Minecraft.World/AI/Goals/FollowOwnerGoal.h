@@ -12,7 +12,7 @@ public:
 
 private:
 	TamableAnimal *tamable; // Owner of this goal
-	std::<Mob> owner;
+	std::weak_ptr<Mob> owner;
 	Level *level;
 	float speed;
 	PathNavigation *navigation;

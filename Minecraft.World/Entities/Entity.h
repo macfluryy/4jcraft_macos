@@ -52,7 +52,7 @@ public:
 	double viewScale;
 
 	bool blocksBuilding;
-	std::<Entity> rider;		// Changed to weak to avoid circular dependency between rider/riding entity
+	std::weak_ptr<Entity> rider;		// Changed to weak to avoid circular dependency between rider/riding entity
 	std::shared_ptr<Entity> riding;
 
 	Level *level;

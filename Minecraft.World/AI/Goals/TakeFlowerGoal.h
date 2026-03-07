@@ -6,7 +6,7 @@ class TakeFlowerGoal : public Goal
 {
 private:
 	Villager *villager;
-	std::<VillagerGolem> golem;
+	std::weak_ptr<VillagerGolem> golem;
 	int pickupTick;
 	bool takeFlower;
 

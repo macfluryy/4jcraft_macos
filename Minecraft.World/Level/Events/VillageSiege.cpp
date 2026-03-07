@@ -11,7 +11,7 @@ VillageSiege::VillageSiege(Level *level)
 	siegeState = SIEGE_NOT_INITED;
 	siegeCount = 0;
 	nextSpawnTime = 0;
-	village = std::<Village>();
+	village = std::weak_ptr<Village>();
 	spawnX = spawnY = spawnZ = 0;
 
 	this->level = level;

@@ -39,7 +39,7 @@ void MoveIndoorsGoal::start()
 	std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
 	if( _doorInfo == NULL )
 	{
-		doorInfo = std::<DoorInfo>();
+		doorInfo = std::weak_ptr<DoorInfo>();
 		return;
 	}
 	if (mob->distanceToSqr(_doorInfo->getIndoorX(), _doorInfo->y, _doorInfo->getIndoorZ()) > 16 * 16)
@@ -55,11 +55,11 @@ void MoveIndoorsGoal::stop()
 	std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
 	if( _doorInfo == NULL )
 	{
-		doorInfo = std::<DoorInfo>();
+		doorInfo = std::weak_ptr<DoorInfo>();
 		return;
 	}
 
 	insideX = _doorInfo->getIndoorX();
 	insideZ = _doorInfo->getIndoorZ();
-	doorInfo = std::<DoorInfo>();
+	doorInfo = std::weak_ptr<DoorInfo>();
 }

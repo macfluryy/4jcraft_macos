@@ -8,7 +8,7 @@ private:
 	PathfinderMob *mob;
 	float speed;
 	double px, py, pz, pRotX, pRotY;
-	std::<Player> player;
+	std::weak_ptr<Player> player;
 	int calmDown ;
 	bool _isRunning;
 	int itemId;

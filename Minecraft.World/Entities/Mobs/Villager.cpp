@@ -36,9 +36,9 @@ void Villager::_init(int profession)
 	villageUpdateInterval = 0;
 	inLove = false;
 	chasing = false;
-	village = std::<Village>();
+	village = std::weak_ptr<Village>();
 
-	tradingPlayer = std::<Player>();
+	tradingPlayer = std::weak_ptr<Player>();
 	offers = NULL;
 	updateMerchantTimer = 0;
 	addRecipeOnUpdate = false;
@@ -341,7 +341,7 @@ void Villager::die(DamageSource *source)
 
 void Villager::setTradingPlayer(std::shared_ptr<Player> player)
 {
-	tradingPlayer = std::<Player>(player);
+	tradingPlayer = std::weak_ptr<Player>(player);
 }
 
 std::shared_ptr<Player> Villager::getTradingPlayer()

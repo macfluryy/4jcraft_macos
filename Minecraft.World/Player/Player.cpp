@@ -603,7 +603,7 @@ void Player::ride(std::shared_ptr<Entity> e)
 
 		if (riding != NULL)
 		{
-			riding->rider = std::<Entity>();
+			riding->rider = std::weak_ptr<Entity>();
 		}
 		riding = nullptr;
 

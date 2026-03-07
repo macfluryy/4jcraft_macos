@@ -10,7 +10,7 @@ class BreedGoal : public Goal
 private:
 	Animal *animal; // Owner of this goal
 	Level *level;
-	std::<Animal> partner;
+	std::weak_ptr<Animal> partner;
 	int loveTime;
 	float speed;
 

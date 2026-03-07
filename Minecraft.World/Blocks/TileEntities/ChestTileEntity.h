@@ -28,10 +28,10 @@ private:
 public:
 	bool isBonusChest;					// 4J added
 	bool hasCheckedNeighbors;
-    std::<ChestTileEntity> n;
-    std::<ChestTileEntity> e;
-    std::<ChestTileEntity> w;
-    std::<ChestTileEntity> s;
+    std::weak_ptr<ChestTileEntity> n;
+    std::weak_ptr<ChestTileEntity> e;
+    std::weak_ptr<ChestTileEntity> w;
+    std::weak_ptr<ChestTileEntity> s;
 
 	float openness, oOpenness;
 	int openCount;

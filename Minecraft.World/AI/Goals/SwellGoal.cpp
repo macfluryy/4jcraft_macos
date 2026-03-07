@@ -7,7 +7,7 @@
 
 SwellGoal::SwellGoal(Creeper *creeper)
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 
 	this->creeper = creeper;
 	setRequiredControlFlags(Control::MoveControlFlag);
@@ -22,12 +22,12 @@ bool SwellGoal::canUse()
 void SwellGoal::start()
 {
 	creeper->getNavigation()->stop();
-	target = std::<Mob>(creeper->getTarget());
+	target = std::weak_ptr<Mob>(creeper->getTarget());
 }
 
 void SwellGoal::stop()
 {
-	target = std::<Mob>();
+	target = std::weak_ptr<Mob>();
 }
 
 void SwellGoal::tick()

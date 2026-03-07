@@ -8,7 +8,7 @@ private:
 	int siegeState;
 	int siegeCount;
 	int nextSpawnTime;
-	std::<Village> village;
+	std::weak_ptr<Village> village;
 	int spawnX, spawnY, spawnZ;
 
 	static const int SIEGE_NOT_INITED = -1;

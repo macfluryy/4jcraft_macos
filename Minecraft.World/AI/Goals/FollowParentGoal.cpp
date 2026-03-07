@@ -35,7 +35,7 @@ bool FollowParentGoal::canUse()
 
 	if (closest == NULL) return false;
 	if (closestDistSqr < 3 * 3) return false;
-	parent = std::<Animal>(closest);
+	parent = std::weak_ptr<Animal>(closest);
 	return true;
 }
 
@@ -54,7 +54,7 @@ void FollowParentGoal::start()
 
 void FollowParentGoal::stop()
 {
-	parent = std::<Animal>();
+	parent = std::weak_ptr<Animal>();
 }
 
 void FollowParentGoal::tick()

@@ -63,7 +63,7 @@ void ChatIntegrationLayer::InitializeChatManager(
 
 	InitializeCriticalSection(&m_csAddedUsers);
 
-    std::<ChatIntegrationLayer> weakPtrToThis = shared_from_this();
+    std::weak_ptr<ChatIntegrationLayer> weakPtrToThis = shared_from_this();
 
 #ifdef PROFILE
     m_chatManager->ChatSettings->PerformanceCountersEnabled = true;

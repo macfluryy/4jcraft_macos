@@ -2273,7 +2273,7 @@ void Level::tickEntities()
 		{
 			if (e->riding->removed || e->riding->rider.lock() != e)
 			{
-				e->riding->rider = std::<Entity>();
+				e->riding->rider = std::weak_ptr<Entity>();
 				e->riding = nullptr;
 			}
 			else
@@ -2521,7 +2521,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual)
 			if (e->rider.lock()->removed || e->rider.lock()->riding != e)
 			{
 				e->rider.lock()->riding = nullptr;
-				e->rider = std::<Entity>();
+				e->rider = std::weak_ptr<Entity>();
 			}
 			else
 			{

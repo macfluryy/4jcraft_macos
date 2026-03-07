@@ -12,7 +12,7 @@ TakeFlowerGoal::TakeFlowerGoal(Villager *villager)
 {
 	takeFlower = false;
 	pickupTick = 0;
-	golem = std::<VillagerGolem>();
+	golem = std::weak_ptr<VillagerGolem>();
 
 	this->villager = villager;
 	setRequiredControlFlags(Control::MoveControlFlag | Control::LookControlFlag);
@@ -36,7 +36,7 @@ bool TakeFlowerGoal::canUse()
 		std::shared_ptr<VillagerGolem> vg = dynamic_pointer_cast<VillagerGolem>(*it);
 		if (vg->getOfferFlowerTick() > 0)
 		{
-			golem = std::<VillagerGolem>(vg);
+			golem = std::weak_ptr<VillagerGolem>(vg);
 			break;
 		}
 	}
@@ -58,7 +58,7 @@ void TakeFlowerGoal::start()
 
 void TakeFlowerGoal::stop()
 {
-	golem = std::<VillagerGolem>();
+	golem = std::weak_ptr<VillagerGolem>();
 	villager->getNavigation()->stop();
 }
 
