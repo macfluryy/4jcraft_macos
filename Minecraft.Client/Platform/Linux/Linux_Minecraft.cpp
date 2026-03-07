@@ -42,7 +42,6 @@ static void sigsegv_handler(int sig) {
 #include "../../../Minecraft.World/Util/Vec3.h"
 #include "../../../Minecraft.World/Level/Level.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../OrbisMedia/strings.h"
 
 #include "../../Network/ClientConnection.h"
 #include "../../Player/User.h"
