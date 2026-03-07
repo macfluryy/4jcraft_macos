@@ -6,19 +6,26 @@
 
 ---
 
-4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.)
+4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.) and refactoring the codebase to improve organization and use modern C++ features.
 
 Join our community:
 * Discord: https://discord.gg/zFCwRWkkUg
 * Steam: https://steamcommunity.com/groups/4JCraft
 
-## Planned platforms to be supported:
-- Linux (~85%)
+## Scope & Platform Support
+
+At the moment, we're aiming to support the following platforms:
+
+- Linux (~85%, *rough estimate*)
 - Emscripten (not started)
-- PS3
 - macOS (not started)
 - iOS (not started)
 - Android (not started)
+
+> All efforts are focused towards a native Linux port, OpenGL rendering pipeline, and modernizing the existing LCE codebase/tooling to make future platform ports easier.
+> 
+> `Windows64` and other platforms originally supported by LCE are currently unsupported, since the original Visual Studio tooling has been stripped from this repository and replaced with our own.
+
 ---
 
 ## Building (Linux)
@@ -120,10 +127,14 @@ meson setup build
 
 ## Running
 
-In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets. The `Common` folder should be placed at the current working directory when you run the `Minecraft.Client` executable. 
+In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets. The `Common` folder should be placed at the current working directory when you run the `Minecraft.Client` executable.
 
 At this time, we don't have the necessary tools to build game resources without Visual Studio, so for the time being these can be obtained from the latest [MinecraftConsoles nightly](https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly).
 
 1. Download `LCEWindows64.zip` and extract.
 2. Copy the `Common` directory to your current working directory.
 3. Run `Minecraft.Client`.
+
+## Generative AI Policy
+
+Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.
