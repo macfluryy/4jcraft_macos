@@ -16,7 +16,7 @@ public:
 	static const int MIN_TEXEL = 1 << MAX_MIPLEVEL;
 
 private:
-	set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
+	std::set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
 	std::vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
 	int storageX;
 	int storageY;

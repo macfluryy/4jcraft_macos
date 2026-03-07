@@ -41,7 +41,7 @@ private:
 public:
 	UIControl_EnchantmentButton();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	virtual void tick();
 

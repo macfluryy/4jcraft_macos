@@ -358,7 +358,7 @@ public:
 
 	virtual void ShowUIDebugConsole(bool show);
 	virtual void ShowUIDebugMarketingGuide(bool show);
-	void logDebugString(const string &text);
+	void logDebugString(const std::string &text);
 	UIScene* FindScene(EUIScene sceneType);
 
 public:

@@ -8,7 +8,7 @@ UIControl_ButtonList::UIControl_ButtonList()
 	m_iCurrentSelection = 0;
 }
 
-bool UIControl_ButtonList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_ButtonList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eButtonList);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -65,7 +65,7 @@ void UIControl_ButtonList::clearList()
 	m_itemCount = 0;
 }
 
-void UIControl_ButtonList::addItem(const string &label)
+void UIControl_ButtonList::addItem(const std::string &label)
 {
 	addItem(label, m_itemCount);
 }
@@ -75,7 +75,7 @@ void UIControl_ButtonList::addItem(const std::wstring &label)
 	addItem(label, m_itemCount);
 }
 
-void UIControl_ButtonList::addItem(const string &label, int data)
+void UIControl_ButtonList::addItem(const std::string &label, int data)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

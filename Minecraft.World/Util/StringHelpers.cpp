@@ -39,7 +39,7 @@ bool equalsIgnoreCase(const std::wstring& a, const std::wstring& b)
 	return out;
 }
 
-std::wstring convStringToWstring(const string& converting)
+std::wstring convStringToWstring(const std::string& converting)
 {
 	std::wstring converted(converting.length(), L' ');
 	copy(converting.begin(), converting.end(), converted.begin());

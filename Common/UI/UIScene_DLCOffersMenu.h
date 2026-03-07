@@ -80,7 +80,7 @@ private:
 	}
 	SORTINDEXSTRUCT;
 
-	vector <std::wstring>m_vIconRetrieval;
+	std::vector <std::wstring>m_vIconRetrieval;
 	bool m_bSelectionChanged;
 
 #endif

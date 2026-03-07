@@ -340,7 +340,7 @@ void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(INetworkPlayer *pN
 // 				m_hostGameSessionData.players[i] = ((NetworkPlayerXbox *)pNetworkPlayer)->GetUID();
 // 
 // 				char *temp;
-// 				temp = (char *)std::wstringtofilename( pNetworkPlayer->GetOnlineName() );
+// 				temp = (char *)wstringtofilename( pNetworkPlayer->GetOnlineName() );
 // 				memcpy(m_hostGameSessionData.szPlayers[i],temp,XUSER_NAME_SIZE);
 // 			}
 // 			else

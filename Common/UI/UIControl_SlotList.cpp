@@ -7,7 +7,7 @@ UIControl_SlotList::UIControl_SlotList()
 	m_lastHighlighted = -1;
 }
 
-bool UIControl_SlotList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_SlotList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eSlotList);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

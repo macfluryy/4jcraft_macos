@@ -11,7 +11,7 @@ HRESULT CXuiCtrl4JEdit::OnInit(XUIMessageInit* pInitData, BOOL& rfHandled)
 	m_uTextLimit=XUI_4JEDIT_MAX_CHARS-1;
 	XuiEditSetTextLimit(m_hObj,m_uTextLimit);
 	//  Find the text limit. (Add one for NULL terminator)
-	//m_uTextLimit = min( XuiEditGetTextLimit(m_hObj) + 1, XUI_4JEDIT_MAX_CHARS);
+	//m_uTextLimit = std::min( XuiEditGetTextLimit(m_hObj) + 1, XUI_4JEDIT_MAX_CHARS);
 
 	ZeroMemory( wchText , sizeof(WCHAR)*(m_uTextLimit+1) );
 
@@ -146,7 +146,7 @@ HRESULT CXuiCtrl4JEdit::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled)
 	if( pThis->m_bReadOnly ) return hr;
 
 	//  Find the text limit. (Add one for NULL terminator)
-	//m_uTextLimit = min( XuiEditGetTextLimit(m_hObj) + 1, XUI_4JEDIT_MAX_CHARS);
+	//m_uTextLimit = std::min( XuiEditGetTextLimit(m_hObj) + 1, XUI_4JEDIT_MAX_CHARS);
 
 	if((((pInputData->dwKeyCode == VK_PAD_A) && (pInputData->wch == 0)) || (pInputData->dwKeyCode == VK_PAD_START)) && !(pInputData->dwFlags & XUI_INPUT_FLAG_REPEAT))
 	{

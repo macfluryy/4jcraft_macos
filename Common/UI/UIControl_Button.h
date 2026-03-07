@@ -10,7 +10,7 @@ private:
 public:
 	UIControl_Button();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	void init(const std::wstring &label, int id);
 	virtual void ReInit();

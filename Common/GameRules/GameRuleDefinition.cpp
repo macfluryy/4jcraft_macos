@@ -122,7 +122,7 @@ std::unordered_map<GameRuleDefinition *, int> *GameRuleDefinition::enumerateMap(
 	int i = 0;
 	std::vector<GameRuleDefinition *> *gRules = enumerate();
 	for (AUTO_VAR(it, gRules->begin()); it != gRules->end(); it++)
-		out->insert( pair<GameRuleDefinition *, int>( *it, i++ ) );
+		out->insert( std::pair<GameRuleDefinition *, int>( *it, i++ ) );
 
 	return out;
 }

@@ -24,7 +24,7 @@ StatParam::StatParam(const std::wstring &base)
 
     unsigned int count=0;
     std::wstring::size_type pos =base.find(L"*");
-    while(pos!=string::npos)
+    while(pos!=std::string::npos)
     {
         count++;
         pos=base.find(L"*",pos+1);

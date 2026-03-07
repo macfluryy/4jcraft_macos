@@ -1380,7 +1380,7 @@ void Tutorial::tick()
 								while(itCon != constraintsToRemove[m_CurrentState].end() )
 								{
 									constraints[e_Tutorial_State_Gameplay].push_back(itCon->first);
-									constraintsToRemove[e_Tutorial_State_Gameplay].push_back( pair<TutorialConstraint *, unsigned char>(itCon->first, itCon->second) );
+									constraintsToRemove[e_Tutorial_State_Gameplay].push_back( std::pair<TutorialConstraint *, unsigned char>(itCon->first, itCon->second) );
 
 									constraints[m_CurrentState].erase( find( constraints[m_CurrentState].begin(), constraints[m_CurrentState].end(), itCon->first) );
 									itCon = constraintsToRemove[m_CurrentState].erase(itCon);
@@ -2024,7 +2024,7 @@ void Tutorial::RemoveConstraint(TutorialConstraint *c, bool delayedRemove /*= fa
 	else if(delayedRemove)
 	{
 		c->setQueuedForRemoval(true);
-		constraintsToRemove[m_CurrentState].push_back( pair<TutorialConstraint *, unsigned char>(c, 0) );
+		constraintsToRemove[m_CurrentState].push_back( std::pair<TutorialConstraint *, unsigned char>(c, 0) );
 	}
 	else
 	{

@@ -6,7 +6,7 @@ UIControl_Touch::UIControl_Touch()
 {
 }
 
-bool UIControl_Touch::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Touch::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eTouchControl);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

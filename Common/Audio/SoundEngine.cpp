@@ -1234,7 +1234,7 @@ void SoundEngine::playMusicUpdate()
 					char szName[255];
 					wcstombs(szName,wstrSoundName.c_str(),255);
 
-					string strFile="TPACK:\\Data\\" + string(szName) + ".binka";
+					std::string strFile="TPACK:\\Data\\" + string(szName) + ".binka";
 					std::string mountedPath = StorageManager.GetMountedPath(strFile);
 					strcpy(m_szStreamName,mountedPath.c_str());
 #endif

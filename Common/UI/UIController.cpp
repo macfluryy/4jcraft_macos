@@ -1252,10 +1252,10 @@ void UIController::setupCustomDrawMatrices(UIScene *scene, CustomDrawData *custo
 	top = m_tileOriginY + (sceneHeight - customDrawRegion->mat[(1*4)+3]*sceneHeight)/2;
 	bottom = top + (sceneHeight * -customDrawRegion->mat[(1*4) + 1])/2 * customDrawRegion->y1;
 
-	m_customRenderingClearRect.left = min(m_customRenderingClearRect.left, left);
-	m_customRenderingClearRect.right = max(m_customRenderingClearRect.right, right);;
-	m_customRenderingClearRect.top = min(m_customRenderingClearRect.top, top);
-	m_customRenderingClearRect.bottom = max(m_customRenderingClearRect.bottom, bottom);
+	m_customRenderingClearRect.left = std::min(m_customRenderingClearRect.left, left);
+	m_customRenderingClearRect.right = std::max(m_customRenderingClearRect.right, right);;
+	m_customRenderingClearRect.top = std::min(m_customRenderingClearRect.top, top);
+	m_customRenderingClearRect.bottom = std::max(m_customRenderingClearRect.bottom, bottom);
 
 	if(!m_bScreenWidthSetup)
 	{
@@ -2385,7 +2385,7 @@ void UIController::ShowUIDebugMarketingGuide(bool show)
 #endif
 }
 
-void UIController::logDebugString(const string &text)
+void UIController::logDebugString(const std::string &text)
 {
 	if(m_uiDebugConsole) m_uiDebugConsole->addText(text);
 }

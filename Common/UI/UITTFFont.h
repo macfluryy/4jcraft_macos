@@ -7,6 +7,6 @@ private:
 	//DWORD dwDataSize;
 
 public:
-	UITTFFont(const string &path, S32 fallbackCharacter);
+	UITTFFont(const std::string &path, S32 fallbackCharacter);
 	~UITTFFont();
 };

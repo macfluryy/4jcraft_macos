@@ -23,7 +23,7 @@ UIControl_EnchantmentButton::UIControl_EnchantmentButton()
 	m_textDisabledColour = app.GetHTMLColour(eTextColor_EnchantDisabled);
 }
 
-bool UIControl_EnchantmentButton::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_EnchantmentButton::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eEnchantmentButton);
 	bool success = UIControl_Button::setupControl(scene,parent,controlName);

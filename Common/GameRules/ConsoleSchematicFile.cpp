@@ -153,7 +153,7 @@ void ConsoleSchematicFile::load(DataInputStream *dis)
 #ifdef _DEBUG
 				//app.DebugPrintf(1,"Loaded entity type %d at (%f,%f,%f)\n",(int)type,x,y,z);
 #endif
-				m_entities.push_back( pair<Vec3 *, CompoundTag *>(Vec3::newPermanent(x,y,z),(CompoundTag *)eTag->copy()));
+				m_entities.push_back( std::pair<Vec3 *, CompoundTag *>(Vec3::newPermanent(x,y,z),(CompoundTag *)eTag->copy()));
 			}
 		}
 		delete tag;
@@ -186,15 +186,15 @@ void ConsoleSchematicFile::save_tags(DataOutputStream *dos)
 
 __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
-	int xStart = max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
+	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
-	int zStart = max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
+	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
 
 #ifdef _DEBUG
 	app.DebugPrintf("Range is (%d,%d,%d) to (%d,%d,%d)\n",xStart,yStart,zStart,xEnd-1,yEnd-1,zEnd-1);
@@ -325,15 +325,15 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkB
 // we can do the sort of lighting that might propagate out of the chunk.
 __int64 ConsoleSchematicFile::applyLighting(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
-	int xStart = max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
+	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
-	int zStart = max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
+	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
 
 	int rowBlocksIncluded = (yEnd-yStart)*(zEnd-zStart);
 	int blocksIncluded = (xEnd-xStart)*rowBlocksIncluded;
@@ -778,12 +778,12 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk *chunk, byteArray *data, 
 	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
 	{
 		lowerY0 = y0;
-		lowerY1 = min(y1, compressedHeight);
+		lowerY1 = std::min(y1, compressedHeight);
 		bHasLower = true;
 	}
 	if(y1 >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
 	{
-		upperY0 = max(y0, compressedHeight) - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+		upperY0 = std::max(y0, compressedHeight) - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 		upperY1 = y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 		bHasUpper = true;
 	}
@@ -900,12 +900,12 @@ void ConsoleSchematicFile::setBlocksAndData(LevelChunk *chunk, byteArray blockDa
 	if(y0 < Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
 	{
 		lowerY0 = y0;
-		lowerY1 = min(y1, compressedHeight);
+		lowerY1 = std::min(y1, compressedHeight);
 		bHasLower = true;
 	}
 	if(y1 >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT)
 	{
-		upperY0 = max(y0, compressedHeight) - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+		upperY0 = std::max(y0, compressedHeight) - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 		upperY1 = y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
 		bHasUpper = true;
 	}

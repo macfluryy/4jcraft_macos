@@ -518,7 +518,7 @@ void UIScene::removeControl( UIControl_Base *control, bool centreScene)
 	IggyDataValue result;
 	IggyDataValue value[2];
 
-	string name = control->getControlName();
+	std::string name = control->getControlName();
 	IggyStringUTF8 stringVal;
 	stringVal.string = (char*)name.c_str();
 	stringVal.length = name.length();

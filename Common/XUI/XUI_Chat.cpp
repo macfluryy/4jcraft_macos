@@ -21,7 +21,7 @@ HRESULT CScene_Chat::OnTimer( XUIMessageTimer *pXUIMessageTimer, BOOL &bHandled)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	Gui *pGui = pMinecraft->gui;
 
-	//DWORD messagesToDisplay = min( CHAT_LINES_COUNT, pGui->getMessagesCount(m_iPad) );
+	//DWORD messagesToDisplay = std::min( CHAT_LINES_COUNT, pGui->getMessagesCount(m_iPad) );
 	for( unsigned int i = 0; i < CHAT_LINES_COUNT; ++i )
 	{
 		float opacity = pGui->getOpacity(m_iPad, i);

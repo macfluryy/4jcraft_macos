@@ -11,7 +11,7 @@ UIControl_SpaceIndicatorBar::UIControl_SpaceIndicatorBar()
 	m_currentOffset = 0.0f;
 }
 
-bool UIControl_SpaceIndicatorBar::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_SpaceIndicatorBar::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eProgress);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -65,7 +65,7 @@ void UIControl_SpaceIndicatorBar::addSave(__int64 size)
 {
 	float startPercent = (float)((m_currentTotal-m_min))/(m_max-m_min);
 
-	m_sizeAndOffsets.push_back( pair<__int64, float>(size, startPercent) );
+	m_sizeAndOffsets.push_back( std::pair<__int64, float>(size, startPercent) );
 
 	m_currentTotal += size;
 	setTotalSize(m_currentTotal);
@@ -75,7 +75,7 @@ void UIControl_SpaceIndicatorBar::selectSave(int index)
 {
 	if(index >= 0 && index < m_sizeAndOffsets.size())
 	{
-		pair<__int64,float> values = m_sizeAndOffsets[index];
+		std::pair<__int64,float> values = m_sizeAndOffsets[index];
 		setSaveSize(values.first);
 		setSaveGameOffset(values.second);
 	}

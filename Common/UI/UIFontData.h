@@ -17,7 +17,7 @@ public:
 
 public:
 	// Font name.
-	string				m_strFontName;
+	std::string				m_strFontName;
 
 	// Filename of the glyph archive.
 	std::wstring				m_wstrFilename;
@@ -96,7 +96,7 @@ protected:
 public:
 
 	// Accessor for the font name in the internal SFontData.
-	const string		getFontName();
+	const std::string		getFontName();
 
 	// Accessor for the hardcoded internal font data.
 	SFontData			*getFontData();

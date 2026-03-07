@@ -72,7 +72,7 @@ void UIScene_JoinMenu::tick()
 				else
 	#endif
 				{
-					string playerName(m_selectedSession->data.players[i].getOnlineID());
+					std::string playerName(m_selectedSession->data.players[i].getOnlineID());
 
 	#ifndef __PSVITA__
 					// Append guest number (any players in an online game not signed into PSN are guests)

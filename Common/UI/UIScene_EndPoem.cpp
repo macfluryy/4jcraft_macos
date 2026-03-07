@@ -63,7 +63,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer)
 	Random random(8124371);
 	int found=(int)noNoiseString.find(L"{*NOISE*}");
 	int length;
-	while (found!=string::npos)
+	while (found!=std::string::npos)
 	{
 		length = random.nextInt(4) + 3;
 		m_noiseLengths.push_back(length);
@@ -211,7 +211,7 @@ void UIScene_EndPoem::updateNoise()
 
 	AUTO_VAR(it, m_noiseLengths.begin());
 	int found=(int)noiseString.find(tag);
-	while (found!=string::npos && it != m_noiseLengths.end() )
+	while (found!=std::string::npos && it != m_noiseLengths.end() )
 	{
 		length = *it;
 		++it;

@@ -513,45 +513,45 @@ UIScene *UILayer::addComponent(int iPad, EUIScene scene, void *initData)
 	{
 	case eUIComponent_Panorama:
 		newScene = new UIComponent_Panorama(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_DebugUIConsole:
 		newScene = new UIComponent_DebugUIConsole(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_DebugUIMarketingGuide:
 		newScene = new UIComponent_DebugUIMarketingGuide(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_Logo:
 		newScene = new UIComponent_Logo(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_Tooltips:
 		newScene = new UIComponent_Tooltips(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_TutorialPopup:
 		newScene = new UIComponent_TutorialPopup(iPad, initData, this);
 		// Start hidden
-		m_componentRefCount[scene] = pair<int,bool>(1,false);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,false);
 		break;
 	case eUIScene_HUD:
 		newScene = new UIScene_HUD(iPad, initData, this);
 		// Start hidden
-		m_componentRefCount[scene] = pair<int,bool>(1,false);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,false);
 		break;
 	case eUIComponent_Chat:
 		newScene = new UIComponent_Chat(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_PressStartToPlay:
 		newScene = new UIComponent_PressStartToPlay(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	case eUIComponent_MenuBackground:
 		newScene = new UIComponent_MenuBackground(iPad, initData, this);
-		m_componentRefCount[scene] = pair<int,bool>(1,true);
+		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
 		break;
 	};
 

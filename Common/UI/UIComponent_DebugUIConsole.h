@@ -20,7 +20,7 @@ private:
 		UI_MAP_ELEMENT( m_labels[9], "consoleLine10")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	deque<string> m_textList;
+	std::deque<std::string> m_textList;
 
 	bool m_bTextChanged;
 
@@ -45,5 +45,5 @@ public:
 	// Returns true if lower scenes in this scenes layer, or in any layer below this scenes layers should be hidden
 	virtual bool hidesLowerScenes() { return false; }
 
-	void addText(const string &text);
+	void addText(const std::string &text);
 };

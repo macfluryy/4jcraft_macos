@@ -548,7 +548,7 @@ void CScene_Leaderboards::ReadStats(int startIndex)
 	else
 	{
 		m_newEntryIndex = (unsigned int)startIndex;
-		m_newReadSize	= min((int)READ_SIZE, (int)m_leaderboard.m_totalEntryCount-(startIndex-1));
+		m_newReadSize	= std::min((int)READ_SIZE, (int)m_leaderboard.m_totalEntryCount-(startIndex-1));
 	}
 
 	//Setup the spec structure for the read request
@@ -741,7 +741,7 @@ bool CScene_Leaderboards::RetrieveStats()
 			insertPosition = 0;
 
 			//Entry count is either max possible entries or current entry count + read size, whichever is smaller
-			m_leaderboard.m_currentEntryCount = min((int)NUM_ENTRIES, (int)(m_leaderboard.m_currentEntryCount+m_newReadSize));
+			m_leaderboard.m_currentEntryCount = std::min((int)NUM_ENTRIES, (int)(m_leaderboard.m_currentEntryCount+m_newReadSize));
 		}
 		//If the last new entry is at a greater position than the last possible entry
 		else if( m_newEntryIndex+m_newReadSize-1 >= m_leaderboard.m_entryStartIndex+NUM_ENTRIES )

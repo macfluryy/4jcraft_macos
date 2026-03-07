@@ -437,7 +437,7 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex)
 	else
 	{
 		m_newEntryIndex = (unsigned int)startIndex;
-		// m_newReadSize	= min((int)READ_SIZE, (int)m_leaderboard.m_totalEntryCount-(startIndex-1));
+		// m_newReadSize	= std::min((int)READ_SIZE, (int)m_leaderboard.m_totalEntryCount-(startIndex-1));
 	}
 
 	//app.DebugPrintf("Requesting stats read %d - %d - %d\n", m_currentLeaderboard, startIndex == -1 ? m_currentFilter : LeaderboardManager::eFM_TopRank, m_currentDifficulty);

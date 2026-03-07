@@ -37,8 +37,8 @@ File::File( const std::wstring& pathname ) //: parent( NULL )
 		m_abstractPathName = pathname;
 
 #ifdef _WINDOWS64
-	string path = wstringtofilename(m_abstractPathName);
-	string finalPath = StorageManager.GetMountedPath(path.c_str());
+	std::string path = wstringtofilename(m_abstractPathName);
+	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
 	if(finalPath.size() == 0) finalPath = path;
 	m_abstractPathName = convStringToWstring(finalPath);
 #elif defined(_DURANGO)

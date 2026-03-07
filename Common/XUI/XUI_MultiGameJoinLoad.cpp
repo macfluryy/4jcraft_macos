@@ -2190,7 +2190,7 @@ void CScene_MultiGameJoinLoad::UploadFile(CScene_MultiGameJoinLoad *pClass, char
 	{
 		File targetFileDir(L"GAME:\\FakeTMSPP");
 		if(!targetFileDir.exists()) targetFileDir.mkdir();
-		string path = string( std::wstringtofilename( targetFileDir.getPath() ) ).append("\\").append(filename);
+		std::string path = string( wstringtofilename( targetFileDir.getPath() ) ).append("\\").append(filename);
 		HANDLE hSaveFile = CreateFile( path.c_str(), GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
 
 		DWORD numberOfBytesWritten = 0;

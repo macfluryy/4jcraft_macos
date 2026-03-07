@@ -14,7 +14,7 @@ UIControl::UIControl()
 	m_eControlType = eNoControl;
 }
 
-bool UIControl::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	m_parentScene = scene;
 	m_controlName = controlName;

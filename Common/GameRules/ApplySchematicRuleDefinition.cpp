@@ -167,7 +167,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB *chunkBox, LevelChunk *
 	if(m_locationBox == NULL) updateLocationBox();
 	if(chunkBox->intersects( m_locationBox ))
 	{
-		m_locationBox->y1 = min((double)Level::maxBuildHeight, m_locationBox->y1 );
+		m_locationBox->y1 = std::min((double)Level::maxBuildHeight, m_locationBox->y1 );
 
 #ifdef _DEBUG
 		app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",m_schematicName.c_str(),chunk->x, chunk->z);
@@ -206,7 +206,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB *chunkBox, Leve
 	if(m_locationBox == NULL) updateLocationBox();
 	if(chunkBox->intersects( m_locationBox ))
 	{
-		m_locationBox->y1 = min((double)Level::maxBuildHeight, m_locationBox->y1 );
+		m_locationBox->y1 = std::min((double)Level::maxBuildHeight, m_locationBox->y1 );
 
 #ifdef _DEBUG
 		app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",m_schematicName.c_str(),chunk->x, chunk->z);

@@ -374,7 +374,7 @@ HRESULT CScene_Main::OnTransitionStart( XUIMessageTransition *pTransition, BOOL&
 
 		float diff = fWidth / (xuiRect.right+5);
 
-		diff = min(diff,MAIN_MENU_MAX_TEXT_SCALE);
+		diff = std::min(diff,MAIN_MENU_MAX_TEXT_SCALE);
 
 		// Resize
 		XuiElementGetBounds(m_Subtitle,&fWidth, &fHeight);

@@ -16,7 +16,7 @@ private:
 #ifdef __ORBIS__
 	std::unordered_map<EUIScene,std::pair<int,bool>,std::hash<int>> m_componentRefCount;
 #else
-	std::unordered_map<EUIScene,pair<int,bool> > m_componentRefCount;
+	std::unordered_map<EUIScene,std::pair<int,bool> > m_componentRefCount;
 #endif
 
 public:

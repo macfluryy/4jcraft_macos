@@ -32,7 +32,7 @@ public:
 	};
 	UIControl_LeaderboardList();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	void init(int id);
 	virtual void ReInit();

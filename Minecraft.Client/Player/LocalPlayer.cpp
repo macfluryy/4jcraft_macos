@@ -1159,7 +1159,7 @@ void LocalPlayer::mapPlayerChunk(const unsigned int flagTileType)
 	int pZ = ((int) floor(this->z)) %16;
 	int pX = ((int) floor(this->x)) %16;
 
-	cout<<"player in chunk ("<<cx<<","<<cz<<") at ("
+	std::cout <<"player in chunk ("<<cx<<","<<cz<<") at ("
 		<<this->x<<","<<this->y<<","<<this->z<<")\n";
 
 	for (int v = -1; v < 2; v++)
@@ -1170,19 +1170,19 @@ void LocalPlayer::mapPlayerChunk(const unsigned int flagTileType)
 				{
 					LevelChunk *cc = level->getChunk(cx+u, cz+v);
 					if ( x==pX && z==pZ && u==0 && v==0)
-						cout << "O";
+						std::cout << "O";
 					else for (unsigned int y = 127; y > 0; y--)
 					{
 						int t = cc->getTile(x,y,z);		
-						if (flagTileType != 0 && t == flagTileType)	{	cout << "@";	break; }
-						else if (t != 0 && t < 10)	{	cout << t;		break; }
-						else if (t > 0)			{	cout << "#";	break; }
+						if (flagTileType != 0 && t == flagTileType)	{	std::cout << "@";	break; }
+						else if (t != 0 && t < 10)	{	std::cout << t;		break; }
+						else if (t > 0)			{	std::cout << "#";	break; }
 					}
 				}
-			cout << "\n";
+			std::cout << "\n";
 		}
 
-	cout << "\n";
+	std::cout << "\n";
 }
 
 

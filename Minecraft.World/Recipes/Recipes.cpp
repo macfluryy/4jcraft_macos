@@ -1182,7 +1182,7 @@ std::shared_ptr<ItemInstance> Recipes::getItemFor(std::shared_ptr<CraftingContai
 	return nullptr;
 }
 
-vector <Recipy *> *Recipes::getRecipies() 
+std::vector <Recipy *> *Recipes::getRecipies() 
 {
 	return recipies;
 }
