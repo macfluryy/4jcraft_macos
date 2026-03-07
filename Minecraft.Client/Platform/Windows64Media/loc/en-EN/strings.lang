@@ -4,6 +4,66 @@
 		somehow, it can be generated using the available xmls at the root dir. Make a python script to do this shit later.
 	-->
 
+	<!-- Additional data hacked in, this is available for every other platform localisation but not this one but it is still needed for a compile -->
+	<data name="IDS_SAVETRANSFER_TITLE_GET">
+		<value>Retrieving Xbox 360 Save</value>
+	</data>	
+
+	<data name="IDS_SAVETRANSFER_STAGE_GET_DETAILS">
+		<value>Getting File Details</value>
+	</data>	
+
+	<data name="IDS_SAVETRANSFER_STAGE_GET_DATA">
+		<value>Downloading File Data (%.2fMB/%.2fMB)</value>
+	</data>	
+
+	<data name="IDS_SAVETRANSFER_STAGE_CONVERTING">
+		<value>Converting Data for Xbox One</value>
+	</data>	
+
+	<data name="IDS_SAVETRANSFER_STAGE_SAVING">
+		<value>Saving</value>
+	</data>	
+
+	<data name="IDS_SAVETRANSFER_NONE_FOUND">
+		<value>No Xbox 360 save was found</value>
+	</data>
+
+
+	<data name="IDS_SAVE_INCOMPLETE_TITLE">
+		<value>Saving incomplete</value>
+	</data>	
+
+	<data name="IDS_SAVE_INCOMPLETE_EXPLANATION_QUOTA">
+		<value>Minecraft: Xbox One Edition is out of space for save data. To make room, delete other Minecraft: Xbox One Edition worlds and press retry to continue, or select disable saving to continue without saving.</value>
+	</data>	
+
+	<data name="IDS_SAVE_INCOMPLETE_EXPLANATION_LOCAL_STORAGE">
+		<value>Select retry to reattempt saving, or select disable saving to continue without saving.</value>
+	</data>	
+
+	<data name="IDS_SAVE_INCOMPLETE_RETRY_SAVING">
+		<value>Retry saving</value>
+	</data>	
+
+	<data name="IDS_SAVE_INCOMPLETE_DISABLE_SAVING">
+		<value>Disable saving</value>
+	</data>	
+
+	<data name="IDS_SAVE_INCOMPLETE_DELETE_SAVES">
+		<value>Delete Saves</value>
+	</data>
+
+
+	<data name="IDS_CONTENT_RESTRICTION">
+		<value>Online service is disabled on your Sony Entertainment Network account due to parental control settings.</value>
+	</data>	
+
+	<data name="IDS_ONLINE_SERVICE_TITLE">
+		<value>Online Service</value>
+	</data>	
+	<!-- END: Addition data -->
+
 	<data name="IDS_NULL">
 		<value>Not Used</value>
 	</data>	
