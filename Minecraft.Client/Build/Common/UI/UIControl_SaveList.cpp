@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIControl_SaveList.h"
 
-bool UIControl_SaveList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_SaveList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eSaveList);
 	bool success = UIControl_ButtonList::setupControl(scene,parent,controlName);
@@ -18,7 +18,7 @@ void UIControl_SaveList::addItem(const std::wstring &label)
 	addItem(label, L"");
 }
 
-void UIControl_SaveList::addItem(const string &label)
+void UIControl_SaveList::addItem(const std::string &label)
 {
 	addItem(label, L"");
 }
@@ -28,12 +28,12 @@ void UIControl_SaveList::addItem(const std::wstring &label, int data)
 	addItem(label, L"", data);
 }
 
-void UIControl_SaveList::addItem(const string &label, int data)
+void UIControl_SaveList::addItem(const std::string &label, int data)
 {
 	addItem(label, L"", data);
 }
 
-void UIControl_SaveList::addItem(const string &label, const std::wstring &iconName)
+void UIControl_SaveList::addItem(const std::string &label, const std::wstring &iconName)
 {
 	addItem(label, iconName, m_itemCount);
 	++m_itemCount;
@@ -45,7 +45,7 @@ void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &
 	++m_itemCount;
 }
 
-void UIControl_SaveList::addItem(const string &label, const std::wstring &iconName, int data)
+void UIControl_SaveList::addItem(const std::string &label, const std::wstring &iconName, int data)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];

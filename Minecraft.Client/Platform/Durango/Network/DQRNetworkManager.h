@@ -404,7 +404,7 @@ private:
 	unsigned int														m_hostSessionAddress;						// For client
 
 	CRITICAL_SECTION													m_csHostGamertagResolveResults;
-	queue<HostGamertagResolveDetails *>									m_hostGamertagResolveResults;
+	std::queue<HostGamertagResolveDetails *>									m_hostGamertagResolveResults;
 
 	void																AddPlayerFailed(Platform::String ^xuid);
 	Platform::String^													RemoveBracesFromGuidString(__in Platform::String^ guid );

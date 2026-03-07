@@ -260,7 +260,7 @@ CFontData::CFontData(SFontData &sFontData, int *pbRawImage)
 
 		getPos(i, row, col);
 
-		string state = "ok";
+		std::string state = "ok";
 		if (i != getGlyphId(unicode))
 		{
 			state = "MISSMATCHED!";
@@ -279,7 +279,7 @@ void CFontData::release()
 	delete [] m_pbRawImage;
 }
 
-const string CFontData::getFontName()
+const std::string CFontData::getFontName()
 {
 	return m_sFontData->m_strFontName;
 }

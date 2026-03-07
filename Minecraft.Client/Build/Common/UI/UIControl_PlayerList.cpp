@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIControl_PlayerList.h"
 
-bool UIControl_PlayerList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_PlayerList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::ePlayerList);
 	bool success = UIControl_ButtonList::setupControl(scene,parent,controlName);

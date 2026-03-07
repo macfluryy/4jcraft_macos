@@ -10,7 +10,7 @@ private:
 public:
 	UIControl_DynamicLabel();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	virtual void addText(const std::wstring &text, bool bLastEntry);
 

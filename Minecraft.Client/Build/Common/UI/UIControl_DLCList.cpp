@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIControl_DLCList.h"
 
-bool UIControl_DLCList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_DLCList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eDLCList);
 	bool success = UIControl_ButtonList::setupControl(scene,parent,controlName);
@@ -13,7 +13,7 @@ bool UIControl_DLCList::setupControl(UIScene *scene, IggyValuePath *parent, cons
 	return success;
 }
 
-void UIControl_DLCList::addItem(const string &label, bool showTick, int iId)
+void UIControl_DLCList::addItem(const std::string &label, bool showTick, int iId)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];

@@ -19,7 +19,7 @@ UIAbstractBitmapFont::~UIAbstractBitmapFont()
 }
 
 
-UIAbstractBitmapFont::UIAbstractBitmapFont(const string &fontname)
+UIAbstractBitmapFont::UIAbstractBitmapFont(const std::string &fontname)
 {
 	m_fontname = fontname;
 
@@ -272,7 +272,7 @@ rrbool UIBitmapFont::GetGlyphBitmap(S32 glyph,F32 pixel_scale,IggyBitmapCharacte
 
 	struct DebugData 
 	{
-		string name;
+		std::string name;
 		long scale;
 		long mul;
 

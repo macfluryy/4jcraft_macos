@@ -8,10 +8,10 @@ private:
 	IggyName m_funcShowTick;
 
 public:
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	using UIControl_ButtonList::addItem;
-	void addItem(const string &label, bool showTick, int iId);
+	void addItem(const std::string &label, bool showTick, int iId);
 	void addItem(const std::wstring &label, bool showTick, int iId);
 	void showTick(int iId, bool showTick);
 };

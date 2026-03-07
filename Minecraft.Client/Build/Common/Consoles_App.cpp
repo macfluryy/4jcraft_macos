@@ -4053,7 +4053,7 @@ void CMinecraftApp::loadMediaArchive()
 		m_mediaArchive = new ArchiveFile( File(mediapath) );
 	}
 #if 0
-	string path = "Common\\media.arc";
+	std::string path = "Common\\media.arc";
 	HANDLE hFile = CreateFile(	path.c_str(),
 								GENERIC_READ,
 								FILE_SHARE_READ,
@@ -6691,7 +6691,7 @@ bool CMinecraftApp::GetDLCNameForPackID(const int iPackID,char **ppchKeyID)
 }
 DLC_INFO *CMinecraftApp::GetDLCInfo(char *pchDLCName)
 {
-	string tempString=pchDLCName;
+	std::string tempString=pchDLCName;
 
 	if(DLCInfo.size()>0)
 	{	

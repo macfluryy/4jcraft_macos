@@ -188,8 +188,8 @@ void IUIScene_TradingMenu::updateDisplay()
 			MerchantRecipe *recipe = *it;
 			if(!recipe->isDeprecated())
 			{
-				m_activeOffers.push_back( pair<MerchantRecipe *,int>(recipe,unfilteredIndex));
-				firstValidTrade = min(firstValidTrade,unfilteredIndex);
+				m_activeOffers.push_back( std::pair<MerchantRecipe *,int>(recipe,unfilteredIndex));
+				firstValidTrade = std::min(firstValidTrade,unfilteredIndex);
 			}
 			++unfilteredIndex;
 		}

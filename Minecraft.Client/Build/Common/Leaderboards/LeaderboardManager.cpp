@@ -85,7 +85,7 @@ void LeaderboardManager::printStats(ReadView &view)
 	{
 		ReadScore score = view.m_queries[i];
 
-		app.DebugPrintf( "\tname='%s'\n", std::wstringtofilename(std::wstring(score.m_name)) );
+		app.DebugPrintf( "\tname='%s'\n", wstringtofilename(std::wstring(score.m_name)) );
 		app.DebugPrintf( "\trank='%i'\n", score.m_rank );
 		
 		app.DebugPrintf( "\tstatsData=[" );

@@ -57,10 +57,10 @@ void DLCGameRulesHeader::addData(PBYTE pbData, DWORD dwBytes)
 
 						version_number, compression_type,
 
-						std::wstringtofilename(m_defaultSaveName),
-						std::wstringtofilename(m_displayName),
-						std::wstringtofilename(texturepackid),
-						std::wstringtofilename(m_grfPath)
+						wstringtofilename(m_defaultSaveName),
+						wstringtofilename(m_displayName),
+						wstringtofilename(texturepackid),
+						wstringtofilename(m_grfPath)
 					);
 
 	// Texture Pack.

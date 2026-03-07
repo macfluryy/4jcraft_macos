@@ -30,7 +30,7 @@
 
 void OreRecipies::_init()
 {
-	map = new vector <Object *> [MAX_ORE_RECIPES];
+	map = new std::vector <Object *> [MAX_ORE_RECIPES];
 
 	ADD_OBJECT(map[0],Tile::goldBlock);
 	ADD_OBJECT(map[0],new ItemInstance(Item::goldIngot, 9));

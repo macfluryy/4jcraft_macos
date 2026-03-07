@@ -28,7 +28,7 @@ void UIComponent_DebugUIConsole::tick()
 	}
 }
 
-void UIComponent_DebugUIConsole::addText(const string &text)
+void UIComponent_DebugUIConsole::addText(const std::string &text)
 {
 	if(!text.empty() && text.compare("\n") != 0)
 	{

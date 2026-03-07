@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIControl_BitmapIcon.h"
 
-bool UIControl_BitmapIcon::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_BitmapIcon::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eBitmapIcon);
 	bool success = UIControl::setupControl(scene,parent,controlName);

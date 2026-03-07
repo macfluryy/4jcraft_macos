@@ -10,14 +10,14 @@
 #ifdef __linux__
 #include <stdint.h>
 static const size_t DLC_WCHAR_BINARY = 2;
-static std::wstring dlc_read_std::wstring(const void *data)
+static std::wstring dlc_read_wstring(const void *data)
 {
     const uint16_t *p = (const uint16_t *)data;
     std::wstring s;
     while (*p) s += (wchar_t)*p++;
     return s;
 }
-#define DLC_WSTRING(ptr) dlc_read_std::wstring(ptr)
+#define DLC_WSTRING(ptr) dlc_read_wstring(ptr)
 #define DLC_PARAM_ADV(n) (sizeof(C4JStorage::DLC_FILE_PARAM) + (n) * DLC_WCHAR_BINARY)
 #define DLC_DETAIL_ADV(n) (sizeof(C4JStorage::DLC_FILE_DETAILS) + (n) * DLC_WCHAR_BINARY)
 #else
@@ -328,11 +328,11 @@ DWORD DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
 
 bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive)
 {
-	return readDLCDataFile( dwFilesProcessed, std::wstringtofilename(path), pack, fromArchive);
+	return readDLCDataFile( dwFilesProcessed, wstringtofilename(path), pack, fromArchive);
 }
 
 
-bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const string &path, DLCPack *pack, bool fromArchive)
+bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive)
 {
 	std::wstring wPath = convStringToWstring(path);
 	if (fromArchive && app.getArchiveFileSize(wPath) >= 0)
@@ -343,7 +343,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const string &path, DL
 	else if (fromArchive) return false;
 
 #ifdef _WINDOWS64
-	string finalPath = StorageManager.GetMountedPath(path.c_str());
+	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
 	if(finalPath.size() == 0) finalPath = path;
 	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #elif defined(_DURANGO)
@@ -544,13 +544,13 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	return true;
 }
 
-DWORD DLCManager::retrievePackIDFromDLCDataFile(const string &path, DLCPack *pack)
+DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
 {
 	DWORD packId = 0;
 	std::wstring wPath = convStringToWstring(path);
 
 #ifdef _WINDOWS64
-	string finalPath = StorageManager.GetMountedPath(path.c_str());
+	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
 	if(finalPath.size() == 0) finalPath = path;
 	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #elif defined(_DURANGO)

@@ -4,7 +4,7 @@
 #include "../../../../Minecraft.World/IO/Files/File.h"
 #include "UITTFFont.h"
 
-UITTFFont::UITTFFont(const string &path, S32 fallbackCharacter)
+UITTFFont::UITTFFont(const std::string &path, S32 fallbackCharacter)
 {
 	app.DebugPrintf("UITTFFont opening %s\n",path.c_str());
 

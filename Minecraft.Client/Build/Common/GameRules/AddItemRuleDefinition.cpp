@@ -99,7 +99,7 @@ bool AddItemRuleDefinition::addItemToContainer(std::shared_ptr<Container> contai
 	bool added = false;
 	if(Item::items[m_itemId] != NULL)
 	{
-		int quantity = min(m_quantity, Item::items[m_itemId]->getMaxStackSize());
+		int quantity = std::min(m_quantity, Item::items[m_itemId]->getMaxStackSize());
 		std::shared_ptr<ItemInstance> newItem = std::shared_ptr<ItemInstance>(new ItemInstance(m_itemId,quantity,m_auxValue) );
 		newItem->set4JData(m_dataTag);
 
@@ -118,9 +118,9 @@ bool AddItemRuleDefinition::addItemToContainer(std::shared_ptr<Container> contai
 			container->setItem( slotId, newItem );
 			added = true;
 		}
-		else if(dynamic_pointer_cast<Inventory>(container) != NULL)
+		else if(std::dynamic_pointer_cast<Inventory>(container) != NULL)
 		{
-			added = dynamic_pointer_cast<Inventory>(container)->add(newItem);
+			added = std::dynamic_pointer_cast<Inventory>(container)->add(newItem);
 		}
 	}
 	return added;

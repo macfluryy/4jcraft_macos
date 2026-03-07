@@ -227,7 +227,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId)
 			// buy the DLC
 
 			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
-			string teststring;
+			std::string teststring;
 			for(int i=0;i<childId;i++)
 			{
 				it++;
@@ -310,7 +310,7 @@ void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId)
 	{	
 		m_bIsSelected = true;
 		std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
-		string teststring;
+		std::string teststring;
 		for(int i=0;i<childId;i++)
 		{
 			it++;
@@ -361,7 +361,7 @@ void UIScene_DLCOffersMenu::tick()
 			}
 
 			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
-			string teststring;
+			std::string teststring;
 			bool bFirstItemSet=false;
 			for(int i=0;i<m_iTotalDLC;i++)
 			{
@@ -539,7 +539,7 @@ void UIScene_DLCOffersMenu::tick()
 
 
 			std::vector<SonyCommerce::ProductInfo >::iterator it = m_pvProductInfo->begin();
-			string teststring;
+			std::string teststring;
 			for(int i=0;i<m_iCurrentDLC;i++)
 			{
 				it++;

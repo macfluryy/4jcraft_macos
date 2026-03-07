@@ -856,7 +856,7 @@ private:
 	bool m_bResetNether;
 	DWORD m_dwRequiredTexturePackID;
 #ifdef _XBOX_ONE
-	vector <PBYTE> m_vTMSPPData;
+	std::vector <PBYTE> m_vTMSPPData;
 #endif
 
 #if ( defined __PS3__ || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)

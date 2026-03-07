@@ -378,7 +378,7 @@ int	CXuiCtrlSlotItemCtrlBase::GetEmptyStackSpace( HXUIOBJ hObj )
 			if ( bStackable )
 			{
 				iCount = pUserDataContainer->slot->getItem()->GetCount();
-				iMaxStackSize = min(pUserDataContainer->slot->getItem()->getMaxStackSize(), pUserDataContainer->slot->getMaxStackSize() );
+				iMaxStackSize = std::min(pUserDataContainer->slot->getItem()->getMaxStackSize(), pUserDataContainer->slot->getMaxStackSize() );
 
 				iResult = iMaxStackSize - iCount;
 

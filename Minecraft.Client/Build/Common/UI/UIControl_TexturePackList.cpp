@@ -6,7 +6,7 @@ UIControl_TexturePackList::UIControl_TexturePackList()
 {
 }
 
-bool UIControl_TexturePackList::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_TexturePackList::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eTexturePackList);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

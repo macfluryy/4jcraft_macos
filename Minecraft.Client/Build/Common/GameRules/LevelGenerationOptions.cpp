@@ -432,7 +432,7 @@ bool LevelGenerationOptions::isFeatureChunk(int chunkX, int chunkZ, StructureFea
 std::unordered_map<std::wstring, ConsoleSchematicFile *> *LevelGenerationOptions::getUnfinishedSchematicFiles()
 {
 	// Clean schematic rules.
-	unordered_set<std::wstring> usedFiles = unordered_set<std::wstring>();
+	std::unordered_set<std::wstring> usedFiles = std::unordered_set<std::wstring>();
 	for (AUTO_VAR(it, m_schematicRules.begin()); it!=m_schematicRules.end(); it++)
 		if ( !(*it)->isComplete() )
 			usedFiles.insert( (*it)->getSchematicName() );
@@ -441,7 +441,7 @@ std::unordered_map<std::wstring, ConsoleSchematicFile *> *LevelGenerationOptions
 	std::unordered_map<std::wstring, ConsoleSchematicFile *> *out 
 		= new std::unordered_map<std::wstring, ConsoleSchematicFile *>();
 	for (AUTO_VAR(it, usedFiles.begin()); it!=usedFiles.end(); it++)
-		out->insert( pair<std::wstring, ConsoleSchematicFile *>(*it, getSchematicFile(*it)) );
+		out->insert( std::pair<std::wstring, ConsoleSchematicFile *>(*it, getSchematicFile(*it)) );
 	
 	return out;		
 }

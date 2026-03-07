@@ -11,7 +11,7 @@ UIControl_Progress::UIControl_Progress()
 	m_showingBar = true;
 }
 
-bool UIControl_Progress::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Progress::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eProgress);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

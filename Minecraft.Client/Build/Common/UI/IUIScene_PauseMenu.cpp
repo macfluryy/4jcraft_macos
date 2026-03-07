@@ -224,7 +224,7 @@ int IUIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4
 
 				// retrieve the store name for the skin pack
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
-				const char *pchPackName=std::wstringtofilename(pDLCPack->getName());
+				const char *pchPackName=wstringtofilename(pDLCPack->getName());
 				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
 				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
 

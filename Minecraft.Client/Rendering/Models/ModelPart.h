@@ -17,8 +17,8 @@ public:
 	bool bMirror;
 	bool visible;
 	bool neverRender;
-    vector <Cube *> cubes;
-    vector <ModelPart *> children;
+    std::vector <Cube *> cubes;
+    std::vector <ModelPart *> children;
     static const float RAD;
 
 private:

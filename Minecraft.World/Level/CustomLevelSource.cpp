@@ -24,9 +24,9 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 
 #else
 #ifdef _WINDOWS64
-	string path = "GameRules\\heightmap.bin";
+	std::string path = "GameRules\\heightmap.bin";
 #else
-	string path = "GAME:\\GameRules\\heightmap.bin";
+	std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
 #endif
 	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -66,9 +66,9 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 
 #else
 #ifdef _WINDOWS64
-	string waterHeightPath = "GameRules\\waterheight.bin";
+	std::string waterHeightPath = "GameRules\\waterheight.bin";
 #else
-	string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
+	std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
 #endif
 #endif
 	file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);

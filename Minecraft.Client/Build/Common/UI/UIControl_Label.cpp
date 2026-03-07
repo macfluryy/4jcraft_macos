@@ -7,7 +7,7 @@ UIControl_Label::UIControl_Label()
 {
 }
 
-bool UIControl_Label::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Label::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eLabel);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -32,7 +32,7 @@ void UIControl_Label::init(const std::wstring &label)
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath() , m_initFunc , 1 , value );
 }
 
-void UIControl_Label::init(const string &label)
+void UIControl_Label::init(const std::string &label)
 {
 	m_label = convStringToWstring(label);
 	IggyDataValue result;

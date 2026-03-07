@@ -8,7 +8,7 @@ class IUIScene_TradingMenu
 protected:
 	MerchantMenu *m_menu;
 	std::shared_ptr<Merchant> m_merchant;
-	std::vector< pair<MerchantRecipe *,int> > m_activeOffers;
+	std::vector< std::pair<MerchantRecipe *,int> > m_activeOffers;
 
 	int m_validOffersCount;
 	int m_selectedSlot;

@@ -1665,7 +1665,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 
 			// retrieve the store name for the skin pack
 			std::wstring wStrPackName=pScene->m_currentPack->getName();
-			const char *pchPackName=std::wstringtofilename(wStrPackName);
+			const char *pchPackName=wstringtofilename(wStrPackName);
 			SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);
 
 			if (pSONYDLCInfo != NULL)

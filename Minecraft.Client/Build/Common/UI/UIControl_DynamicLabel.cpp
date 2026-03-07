@@ -6,7 +6,7 @@ UIControl_DynamicLabel::UIControl_DynamicLabel()
 {
 }
 
-bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eDynamicLabel);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

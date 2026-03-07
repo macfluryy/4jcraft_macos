@@ -18,7 +18,7 @@ class CFontData;
 class UIAbstractBitmapFont
 {
 protected:
-	string m_fontname;
+	std::string m_fontname;
 
 	IggyBitmapFontProvider *m_bitmapFontProvider;
 
@@ -27,7 +27,7 @@ protected:
 	unsigned int m_numGlyphs;
 
 public:
-	UIAbstractBitmapFont(const string &fontname);
+	UIAbstractBitmapFont(const std::string &fontname);
 	~UIAbstractBitmapFont();
 
 	void registerFont();

@@ -11,7 +11,7 @@ UIControl_Base::UIControl_Base()
 	m_id = 0;
 }
 
-bool UIControl_Base::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Base::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	bool success = UIControl::setupControl(scene,parent,controlName);
 
@@ -67,7 +67,7 @@ void UIControl_Base::setLabel(const std::wstring &label, bool instant, bool forc
 	}
 }
 
-void UIControl_Base::setLabel(const string &label)
+void UIControl_Base::setLabel(const std::string &label)
 {
 	std::wstring wlabel = convStringToWstring(label);
 	setLabel(wlabel);

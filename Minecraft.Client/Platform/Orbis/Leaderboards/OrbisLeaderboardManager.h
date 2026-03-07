@@ -38,7 +38,7 @@ private:
 	bool getScoreByRange();
 
 	bool setScore();
-	queue<RegisterScore> m_views;
+	std::queue<RegisterScore> m_views;
 
 	CRITICAL_SECTION m_csViewsLock;
 

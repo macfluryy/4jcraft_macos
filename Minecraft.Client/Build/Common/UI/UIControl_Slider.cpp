@@ -10,7 +10,7 @@ UIControl_Slider::UIControl_Slider()
 	m_current = 0;
 }
 
-bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eSlider);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);

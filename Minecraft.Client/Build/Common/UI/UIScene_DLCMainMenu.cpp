@@ -212,7 +212,7 @@ void UIScene_DLCMainMenu::tick()
 			// add a button in with the subcategory
 			category = (SonyCommerce::CategoryInfoSub)(*iter);
 
-			string teststring=category.categoryName;
+			std::string teststring=category.categoryName;
 			m_buttonListOffers.addItem(teststring,i);
 			
 			iter++;

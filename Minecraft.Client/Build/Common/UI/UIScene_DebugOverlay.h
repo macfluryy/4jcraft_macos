@@ -24,7 +24,7 @@ private:
 
 	std::vector<int> m_itemIds;
 	std::vector<eINSTANCEOF> m_mobFactories;
-	std::vector< pair<int,int> > m_enchantmentIdAndLevels;
+	std::vector< std::pair<int,int> > m_enchantmentIdAndLevels;
 public:
 	UIScene_DebugOverlay(int iPad, void *initData, UILayer *parentLayer);
 
