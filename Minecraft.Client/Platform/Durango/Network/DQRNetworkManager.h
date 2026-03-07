@@ -509,7 +509,7 @@ private:
 	int																	m_sessionResultCount;
 	bool																m_cancelJoinFromSearchResult;
 
-	map<std::wstring, std::wstring>												m_displayNames; // Player display names by gamertag
+	std::map<std::wstring, std::wstring>												m_displayNames; // Player display names by gamertag
 
 
 
