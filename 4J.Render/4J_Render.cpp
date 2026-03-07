@@ -34,7 +34,9 @@ static pthread_once_t s_glCtxKeyOnce = PTHREAD_ONCE_INIT;
 static void makeGLCtxKey() { pthread_key_create(&s_glCtxKey, nullptr); }
 
 // Pre-created pool of shared contexts for worker threads
-static const int MAX_SHARED_CONTEXTS = 8;
+
+// TODO: WAS MAX_SHARED_CONTEXTS = 8 but seems to no render well on AMD cards
+static const int MAX_SHARED_CONTEXTS = 3;
 static GLFWwindow *s_sharedContexts[MAX_SHARED_CONTEXTS] = {};
 static int s_sharedContextCount = 0;
 static int s_nextSharedContext = 0;
