@@ -1,0 +1,10 @@
+#pragma once
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_control_ListItem L"control_ListItem"
+#define IDC_GamePlayers L"GamePlayers"
+#define IDC_Title L"Title"
+#define IDC_Teleport L"Teleport"
