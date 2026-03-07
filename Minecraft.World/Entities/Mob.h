@@ -112,7 +112,7 @@ public:
 	int removeArrowTime;
 
 protected:
-	map<int, MobEffectInstance *> activeEffects;
+	std::map<int, MobEffectInstance *> activeEffects;
 
 private:
 	bool effectsDirty;

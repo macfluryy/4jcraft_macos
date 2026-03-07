@@ -25,7 +25,7 @@ private:
     ServerLevel *level;
 
 #ifdef _LARGE_WORLDS
-	deque<LevelChunk *> m_toDrop;
+	std::deque<LevelChunk *> m_toDrop;
 	LevelChunk **m_unloadedCache;
 #endif
 

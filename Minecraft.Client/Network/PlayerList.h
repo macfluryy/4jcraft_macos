@@ -30,9 +30,9 @@ private:
 
 	// 4J Added
 	std::vector<PlayerUID> m_bannedXuids;
-	deque<BYTE> m_smallIdsToKick;
+	std::deque<BYTE> m_smallIdsToKick;
 	CRITICAL_SECTION m_kickPlayersCS;
-	deque<BYTE> m_smallIdsToClose;
+	std::deque<BYTE> m_smallIdsToClose;
 	CRITICAL_SECTION m_closePlayersCS;
 /* 4J - removed
 	Set<String> bans = new HashSet<String>();

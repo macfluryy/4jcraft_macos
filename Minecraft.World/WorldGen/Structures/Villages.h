@@ -11,7 +11,7 @@ public:
 
 private:
 	Level *level;
-	deque<Pos *> queries;
+	std::deque<Pos *> queries;
 	std::vector<std::shared_ptr<DoorInfo> > unclustered;
 	std::vector<std::shared_ptr<Village> > villages;
 	int _tick;
