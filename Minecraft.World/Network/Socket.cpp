@@ -318,7 +318,7 @@ void Socket::SocketInputStreamLocal::close()
 {
 	m_streamOpen = false;
 	EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-	while(!s_hostQueue[m_queueIdx].empty()) s_hostQueue[m_queueIdx].pop();
+	std::queue<uint8_t>().swap(s_hostQueue[m_queueIdx]);
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
 }
 
@@ -366,7 +366,7 @@ void Socket::SocketOutputStreamLocal::close()
 {
 	m_streamOpen = false;
 	EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-	while(!s_hostQueue[m_queueIdx].empty()) s_hostQueue[m_queueIdx].pop();
+	std::queue<uint8_t>().swap(s_hostQueue[m_queueIdx]);
 	LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
 }
 

@@ -530,8 +530,7 @@ void Villager::addOffers(int addCount)
 	}
 
 	// shuffle the list to make it more interesting
-	std::random_device rd;
-	std::mt19937 g(rd());
+	static thread_local std::mt19937 g(std::random_device{}());
 	std::shuffle(newOffers->begin(), newOffers->end(), g);
 
 	if (offers == NULL)
