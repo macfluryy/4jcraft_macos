@@ -44,6 +44,8 @@ void ChunkStorageProfilerDecorator::tick()
 #ifndef _CONTENT_PACKAGE
 #ifdef __PSVITA__
 			sprintf(buf,"Average load time: %f (%lld)",0.000001 * (double) timeSpentLoading / (double) loadCount, loadCount);
+#elif defined(__linux__)
+			sprintf(buf,"Average load time: %f (%lld)",0.000001 * (double) timeSpentLoading / (double) loadCount, (long long)loadCount);
 #else
 			sprintf(buf,"Average load time: %f (%I64d)",0.000001 * (double) timeSpentLoading / (double) loadCount, loadCount);
 #endif
@@ -55,6 +57,8 @@ void ChunkStorageProfilerDecorator::tick()
 #ifndef _CONTENT_PACKAGE
 #ifdef __PSVITA__
 			sprintf(buf,"Average save time: %f (%lld)",0.000001 * (double) timeSpentSaving / (double) loadCount, loadCount);
+#elif defined(__linux__)
+			sprintf(buf,"Average save time: %f (%lld)",0.000001 * (double) timeSpentSaving / (double) loadCount, (long long)loadCount);
 #else
 			sprintf(buf,"Average save time: %f (%I64d)",0.000001 * (double) timeSpentSaving / (double) loadCount, loadCount);
 #endif
