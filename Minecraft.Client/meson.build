@@ -80,8 +80,8 @@ executable('Minecraft.Client',
 asset_dir = meson.current_source_dir() / 'Build/Assets'
 install_subdir(asset_dir / 'music', install_dir : '')
 
-install_data(asset_dir / 'levels/TrialLevel.mcs', install_dir : 'Common/Trial')
-install_data(asset_dir / 'levels/Tutorial', install_dir : 'Common/Tutorial') # This tutorial file might not be needed
+# Need to test on a modified windows build to force trial mode but I'm pretty sure that this is not referenced anywhere even if it should be
+# install_data(asset_dir / 'levels/TrialLevel.mcs', install_dir : 'Common/Trial')
 
 install_subdir(asset_dir / 'res', install_dir : 'Common')
 install_subdir(asset_dir / 'font', install_dir : 'Common/Media')
@@ -413,14 +413,14 @@ archive_sources_movies480 = [
   movies_path / 'TutorialPopup480.swf'
 ]
 archive_sources_moviesVita = [
-  # movies_path / 'skinGraphics.swf',
-  # movies_path / 'skinGraphicsHud.swf',
-  # movies_path / 'skinGraphicsLabels.swf',
-  # movies_path / 'skinGraphicsInGame.swf',
-  # movies_path / 'skin.swf',
-  # movies_path / 'skinHud.swf',
-  # movies_path / 'skinLabels.swf',
-  # movies_path / 'skinInGame.swf',
+  movies_path / 'skinGraphics.swf',
+  movies_path / 'skinGraphicsHud.swf',
+  movies_path / 'skinGraphicsLabels.swf',
+  movies_path / 'skinGraphicsInGame.swf',
+  movies_path / 'skin.swf',
+  movies_path / 'skinHud.swf',
+  movies_path / 'skinLabels.swf',
+  movies_path / 'skinInGame.swf',
   movies_path / 'AnvilMenuVita.swf',
   movies_path / 'BrewingStandMenuVita.swf',
   movies_path / 'ChestLargeMenuVita.swf',
@@ -477,17 +477,17 @@ archive_sources_moviesVita = [
   movies_path / 'ToolTipsVita.swf',
   movies_path / 'TradingMenuVita.swf',
   movies_path / 'TutorialPopupVita.swf',
-  # movies_path / 'DebugCreateSchematic720.swf',
-  # movies_path / 'DebugMenu720.swf',
-  # movies_path / 'DebugOptionsMenu720.swf',
-  # movies_path / 'DebugSetCamera720.swf',
-  # movies_path / 'DebugUIConsoleComponent720.swf',
-  # movies_path / 'DebugUIMarketingGuide720.swf'
+  movies_path / 'DebugCreateSchematic720.swf',
+  movies_path / 'DebugMenu720.swf',
+  movies_path / 'DebugOptionsMenu720.swf',
+  movies_path / 'DebugSetCamera720.swf',
+  movies_path / 'DebugUIConsoleComponent720.swf',
+  movies_path / 'DebugUIMarketingGuide720.swf'
 ]
 
 custom_target('Minecraft.Client_Archive',
   output : 'MediaWindows64.arc',
-  input : archive_sources + archive_sources_movies1080 + archive_sources_movies720 + archive_sources_movies480 + archive_sources_moviesVita,
+  input : archive_sources + archive_sources_movies1080 + archive_sources_movies720,
   command : [
     'python3', meson.project_source_root() / 'scripts/pack_arc.py',
     '@OUTPUT@',
