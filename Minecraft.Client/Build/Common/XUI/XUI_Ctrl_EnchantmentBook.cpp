@@ -306,7 +306,7 @@ HRESULT CXuiCtrlEnchantmentBook::OnRender(XUIMessageRender *pRenderData, BOOL &b
 void CXuiCtrlEnchantmentBook::tickBook()
 {
 	EnchantmentMenu *menu = m_containerScene->getMenu();
-	shared_ptr<ItemInstance> current = menu->getSlot(0)->getItem();
+	std::shared_ptr<ItemInstance> current = menu->getSlot(0)->getItem();
 	if (!ItemInstance::matches(current, last))
 	{
         last = current;

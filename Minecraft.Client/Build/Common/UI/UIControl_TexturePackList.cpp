@@ -23,7 +23,7 @@ bool UIControl_TexturePackList::setupControl(UIScene *scene, IggyValuePath *pare
 	return success;
 }
 
-void UIControl_TexturePackList::init(const wstring &label, int id)
+void UIControl_TexturePackList::init(const std::wstring &label, int id)
 {
 	m_label = label;
 	m_id = id;
@@ -55,7 +55,7 @@ void UIControl_TexturePackList::init(const wstring &label, int id)
 #endif
 }
 
-void UIControl_TexturePackList::addPack(int id, const wstring &textureName)
+void UIControl_TexturePackList::addPack(int id, const std::wstring &textureName)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

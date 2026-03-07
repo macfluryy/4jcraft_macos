@@ -88,7 +88,7 @@ HRESULT CScene_Main::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 		InputStreamReader *isr = new InputStreamReader( bais );
 		BufferedReader *br = new BufferedReader( isr );
 
-		wstring line = L"";
+		std::wstring line = L"";
 		while ( !(line = br->readLine()).empty() )
 		{
 			line = trimString( line );
@@ -350,7 +350,7 @@ HRESULT CScene_Main::OnTransitionStart( XUIMessageTransition *pTransition, BOOL&
 		//splashIndex = 197; // Very long string
 		//splashIndex = 296; // Coloured
 		//splashIndex = 297; // Noise
-		wstring splash = m_splashes.at( splashIndex );
+		std::wstring splash = m_splashes.at( splashIndex );
 		m_Subtitle.SetText(splash.c_str());
 		m_SubtitleMCFont.SetText(splash.c_str());
 
@@ -910,7 +910,7 @@ void CScene_Main::LoadTrial(void)
 	param->saveData = NULL;
 	param->settings = app.GetGameHostOption( eGameHostOption_Tutorial );
 
-	vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
+	std::vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
 	if (generators->empty())
 	{
 		app.DebugPrintf("XUI LoadTrial: no level generators available, cannot start tutorial\n");
@@ -1239,7 +1239,7 @@ int CScene_Main::TMSReadFileListReturned(void *pParam,int iPad,C4JStorage::PTMSP
 	// push the file details in to a unordered map if they are not already in there
 // 	for(int i=0;i<pTmsFileList->iCount;i++)
 // 	{
-// 		app.PutTMSPP_FileSize(filenametowstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
+// 		app.PutTMSPP_FileSize(filenametostd::wstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
 // 	}
 	return 0;
 }
@@ -1251,7 +1251,7 @@ int CScene_Main::TMSFileWriteReturned(void *pParam,int iPad,int iResult)
 	// push the file details in to a unordered map if they are not already in there
 	// 	for(int i=0;i<pTmsFileList->iCount;i++)
 	// 	{
-	// 		app.PutTMSPP_FileSize(filenametowstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
+	// 		app.PutTMSPP_FileSize(filenametostd::wstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
 	// 	}
 	return 0;
 }
@@ -1263,7 +1263,7 @@ int CScene_Main::TMSFileReadReturned(void *pParam,int iPad,C4JStorage::PTMSPP_FI
 	// push the file details in to a unordered map if they are not already in there
 	// 	for(int i=0;i<pTmsFileList->iCount;i++)
 	// 	{
-	// 		app.PutTMSPP_FileSize(filenametowstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
+	// 		app.PutTMSPP_FileSize(filenametostd::wstring(pTmsFileList->FileDetailsA[i].szFilename),pTmsFileList->FileDetailsA[i].iFileSize);
 	// 	}
 	return 0;
 }

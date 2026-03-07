@@ -37,7 +37,7 @@ UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void *_initData, UILaye
 	delete initData;
 }
 
-wstring UIScene_EnchantingMenu::getMoviePath()
+std::wstring UIScene_EnchantingMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

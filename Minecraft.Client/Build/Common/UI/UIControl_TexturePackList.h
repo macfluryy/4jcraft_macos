@@ -13,9 +13,9 @@ public:
 
 	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
 
-	void init(const wstring &label, int id);
+	void init(const std::wstring &label, int id);
 
-	void addPack(int id, const wstring &textureName);
+	void addPack(int id, const std::wstring &textureName);
 	void selectSlot(int id);
 	void clearSlots();
 

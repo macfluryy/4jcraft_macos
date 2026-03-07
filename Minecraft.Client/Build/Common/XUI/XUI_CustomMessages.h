@@ -14,7 +14,7 @@
 
 typedef struct
 {
-	shared_ptr<ItemInstance> item;
+	std::shared_ptr<ItemInstance> item;
 
 	// Legacy values for compatibility
 	int iDataBitField;

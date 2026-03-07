@@ -26,7 +26,7 @@ void XboxStructureActionPlaceBlock::writeAttributes(DataOutputStream *dos, UINT 
 }
 
 
-void XboxStructureActionPlaceBlock::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void XboxStructureActionPlaceBlock::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"x") == 0)
 	{

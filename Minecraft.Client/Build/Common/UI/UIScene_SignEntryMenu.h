@@ -17,7 +17,7 @@ private:
 		eControl_Confirm
 	};
 
-	shared_ptr<SignTileEntity> m_sign;
+	std::shared_ptr<SignTileEntity> m_sign;
 	int m_iEditingLine;
 	bool m_bConfirmed;
 	bool m_bIgnoreInput;
@@ -45,7 +45,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT

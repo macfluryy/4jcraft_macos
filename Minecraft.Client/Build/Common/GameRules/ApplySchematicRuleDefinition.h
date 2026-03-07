@@ -12,7 +12,7 @@ class ApplySchematicRuleDefinition : public GameRuleDefinition
 {
 private:
 	LevelGenerationOptions *m_levelGenOptions;
-	wstring m_schematicName;
+	std::wstring m_schematicName;
 	ConsoleSchematicFile *m_schematic;
 	Vec3 *m_location;
 	AABB *m_locationBox;
@@ -31,7 +31,7 @@ public:
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_ApplySchematic; }
 	
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttrs);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	void processSchematic(AABB *chunkBox, LevelChunk *chunk);
 	void processSchematicLighting(AABB *chunkBox, LevelChunk *chunk);
@@ -41,7 +41,7 @@ public:
 
 	bool isComplete() { return m_completed; }
 
-	wstring getSchematicName() { return m_schematicName; }
+	std::wstring getSchematicName() { return m_schematicName; }
 
 	/** 4J-JEV:
 	 *  This GameRuleDefinition contains limited game state.

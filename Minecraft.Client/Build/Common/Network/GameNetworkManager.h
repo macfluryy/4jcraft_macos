@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include <vector>
 #ifndef __linux__
 #include <qnet.h>
@@ -69,7 +69,7 @@ public:
 	INetworkPlayer	*GetPlayerByIndex(int playerIndex);
 	INetworkPlayer	*GetPlayerByXuid(PlayerUID xuid);
 	INetworkPlayer	*GetPlayerBySmallId(unsigned char smallId);
-	wstring			GetDisplayNameByGamertag(wstring gamertag);
+	std::wstring			GetDisplayNameByGamertag(std::wstring gamertag);
 	INetworkPlayer	*GetHostPlayer();
 	void			RegisterPlayerChangedCallback(int iPad, void (*callback)(void *callbackParam, INetworkPlayer *pPlayer, bool leaving), void *callbackParam);
 	void			UnRegisterPlayerChangedCallback(int iPad, void (*callback)(void *callbackParam, INetworkPlayer *pPlayer, bool leaving), void *callbackParam);
@@ -96,7 +96,7 @@ public:
 	// Client session discovery
 
 	bool			SessionHasSpace(unsigned int spaceRequired = 1);
-	vector<FriendSessionInfo *>	*GetSessionList(int iPad, int localPlayers, bool partyOnly);
+	std::vector<FriendSessionInfo *>	*GetSessionList(int iPad, int localPlayers, bool partyOnly);
 	bool			GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession);
 	void			SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam );
 	void			GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam );
@@ -157,9 +157,9 @@ public:
 #endif
 	// Debug output
 
-	wstring GatherStats();
+	std::wstring GatherStats();
 	void renderQueueMeter();
-	wstring GatherRTTStats();
+	std::wstring GatherRTTStats();
 
 	// GUI debug output
 

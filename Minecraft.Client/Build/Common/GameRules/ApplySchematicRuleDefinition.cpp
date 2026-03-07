@@ -53,7 +53,7 @@ void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream *dos, UINT n
 	}
 }
 
-void ApplySchematicRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void ApplySchematicRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"filename") == 0)
 	{

@@ -44,8 +44,8 @@ HRESULT CScene_SocialPost::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	m_EditCaption.SetTitleAndText(IDS_NAME_CAPTION,IDS_NAME_CAPTION_TEXT);
 	m_EditDesc.SetTitleAndText(IDS_NAME_DESC,IDS_NAME_DESC_TEXT);
 
-	wstring wCaption = m_EditCaption.GetText();
-	wstring wDesc = m_EditDesc.GetText();
+	std::wstring wCaption = m_EditCaption.GetText();
+	std::wstring wDesc = m_EditDesc.GetText();
 
 	// set the caret to the end of the default text
 	m_EditCaption.SetCaretPosition((int)wCaption.length());
@@ -67,16 +67,16 @@ HRESULT CScene_SocialPost::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 
 HRESULT CScene_SocialPost::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINotifyValueChanged* pValueChangedData, BOOL& rfHandled)
-{	wstring wCaption = m_EditCaption.GetText();
-wstring wDesc = m_EditDesc.GetText();
+{	std::wstring wCaption = m_EditCaption.GetText();
+std::wstring wDesc = m_EditDesc.GetText();
 
 
 	if(/*(hObjSource == m_EditTitle) || */(hObjSource == m_EditCaption) || (hObjSource == m_EditDesc))
 	{
 		//  Enable the done button when we have all of the necessary information
-		//wstring wTitle = m_EditTitle.GetText();
-		wstring wCaption = m_EditCaption.GetText();
-		wstring wDesc = m_EditDesc.GetText();
+		//std::wstring wTitle = m_EditTitle.GetText();
+		std::wstring wCaption = m_EditCaption.GetText();
+		std::wstring wDesc = m_EditDesc.GetText();
 
 		BOOL bHasAllText = /*( wTitle.length()!=0) &&*/ (wCaption.length()!=0) && (wDesc.length()!=0);
 		m_OK.SetEnable(bHasAllText);        

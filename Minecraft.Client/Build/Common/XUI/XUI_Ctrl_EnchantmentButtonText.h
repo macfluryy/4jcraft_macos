@@ -24,7 +24,7 @@ private:
 	float m_fRawWidth,m_fRawHeight;
 	
 	int m_lastCost;
-	wstring m_enchantmentString;
+	std::wstring m_enchantmentString;
 
 	unsigned int m_textColour, m_textFocusColour, m_textDisabledColour;
 
@@ -35,11 +35,11 @@ private:
 
 	private:
 		Random random;
-		vector<wstring> words;
+		std::vector<std::wstring> words;
 
 		EnchantmentNames();
 
 	public:
-		wstring getRandomName();
+		std::wstring getRandomName();
 	};
 };

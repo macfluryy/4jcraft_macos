@@ -31,8 +31,8 @@ typedef struct _UIVec2D
 // Brewing
 typedef struct _BrewingScreenInput
 {
-	shared_ptr<Inventory> inventory;
-	shared_ptr<BrewingStandTileEntity> brewingStand;
+	std::shared_ptr<Inventory> inventory;
+	std::shared_ptr<BrewingStandTileEntity> brewingStand;
 	int iPad;
 	bool bSplitscreen;
 } BrewingScreenInput;
@@ -40,8 +40,8 @@ typedef struct _BrewingScreenInput
 // Chest
 typedef struct _ContainerScreenInput
 {
-	shared_ptr<Container> inventory;
-	shared_ptr<Container> container;
+	std::shared_ptr<Container> inventory;
+	std::shared_ptr<Container> container;
 	int					  iPad;
 	bool bSplitscreen;
 } ContainerScreenInput;
@@ -49,8 +49,8 @@ typedef struct _ContainerScreenInput
 // Dispenser
 typedef struct _TrapScreenInput
 {
-	shared_ptr<Container> inventory;
-	shared_ptr<DispenserTileEntity> trap;
+	std::shared_ptr<Container> inventory;
+	std::shared_ptr<DispenserTileEntity> trap;
 	int iPad;
 	bool bSplitscreen;
 } TrapScreenInput;
@@ -58,7 +58,7 @@ typedef struct _TrapScreenInput
 // Inventory and creative inventory
 typedef struct _InventoryScreenInput
 {
-	shared_ptr<LocalPlayer> player;
+	std::shared_ptr<LocalPlayer> player;
 	bool bNavigateBack; // If we came here from the crafting screen, go back to it, rather than closing the xui menus
 	int iPad;
 	bool bSplitscreen;
@@ -67,7 +67,7 @@ typedef struct _InventoryScreenInput
 // Enchanting		
 typedef struct _EnchantingScreenInput
 {
-	shared_ptr<Inventory> inventory;
+	std::shared_ptr<Inventory> inventory;
 	Level *level;
 	int x;
 	int y;
@@ -79,8 +79,8 @@ typedef struct _EnchantingScreenInput
 // Furnace
 typedef struct _FurnaceScreenInput
 {
-	shared_ptr<Inventory> inventory;
-	shared_ptr<FurnaceTileEntity> furnace;
+	std::shared_ptr<Inventory> inventory;
+	std::shared_ptr<FurnaceTileEntity> furnace;
 	int iPad;
 	bool bSplitscreen;
 } FurnaceScreenInput;
@@ -88,7 +88,7 @@ typedef struct _FurnaceScreenInput
 // Crafting
 typedef struct _CraftingPanelScreenInput
 {
-	shared_ptr<LocalPlayer> player;
+	std::shared_ptr<LocalPlayer> player;
 	int						iContainerType; // RECIPE_TYPE_2x2 or RECIPE_TYPE_3x3
 	bool					bSplitscreen;
 	int						iPad;
@@ -101,8 +101,8 @@ CraftingPanelScreenInput;
 // Trading
 typedef struct _TradingScreenInput
 {
-	shared_ptr<Inventory> inventory;
-	shared_ptr<Merchant> trader;
+	std::shared_ptr<Inventory> inventory;
+	std::shared_ptr<Merchant> trader;
 	Level *level;
 	int iPad;
 	bool bSplitscreen;
@@ -112,7 +112,7 @@ TradingScreenInput;
 // Anvil
 typedef struct _AnvilScreenInput
 {
-	shared_ptr<Inventory> inventory;
+	std::shared_ptr<Inventory> inventory;
 	Level *level;
 	int x;
 	int y;
@@ -125,7 +125,7 @@ AnvilScreenInput;
 // Sign
 typedef struct _SignEntryScreenInput
 {
-	shared_ptr<SignTileEntity> sign;
+	std::shared_ptr<SignTileEntity> sign;
 	int iPad;
 } SignEntryScreenInput;
 
@@ -259,7 +259,7 @@ typedef struct _LaunchMoreOptionsMenuInitData
 
 	DWORD dwTexturePack;
 
-	wstring seed;
+	std::wstring seed;
 	int worldSize;
 	bool bDisableSaving;
 

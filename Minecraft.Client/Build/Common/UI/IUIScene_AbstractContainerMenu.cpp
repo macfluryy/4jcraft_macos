@@ -703,11 +703,11 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 	// Determine appropriate context sensitive tool tips, based on what is carried on the pointer and what is under the pointer.
 
 	// What are we carrying on pointer.
-	shared_ptr<LocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
-	shared_ptr<ItemInstance> carriedItem = nullptr;
+	std::shared_ptr<LocalPlayer> player = Minecraft::GetInstance()->localplayers[getPad()];
+	std::shared_ptr<ItemInstance> carriedItem = nullptr;
 	if(player != NULL) carriedItem = player->inventory->getCarried();
 
-	shared_ptr<ItemInstance> slotItem = nullptr;
+	std::shared_ptr<ItemInstance> slotItem = nullptr;
 	Slot *slot = NULL;
 	int slotIndex = 0;
 	if(bPointerIsOverSlot)
@@ -767,14 +767,14 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 
 	if( bPointerIsOverSlot && bSlotHasItem )
 	{
-		vector<wstring> unformattedStrings;
-		wstring desc = GetItemDescription( slot, unformattedStrings );
+		std::vector<std::wstring> unformattedStrings;
+		std::wstring desc = GetItemDescription( slot, unformattedStrings );
 		SetPointerText(desc, unformattedStrings, slot != m_lastPointerLabelSlot);
 		m_lastPointerLabelSlot = slot;
 	}
 	else
 	{
-		vector<wstring> unformattedStrings;
+		std::vector<std::wstring> unformattedStrings;
 		SetPointerText(L"", unformattedStrings, false);
 		m_lastPointerLabelSlot = NULL;
 	}
@@ -888,7 +888,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 
 			if((eSectionUnderPointer==eSectionInventoryUsing)||(eSectionUnderPointer==eSectionInventoryInventory))
 			{
-				shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
+				std::shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
 				ArmorRecipes::_eArmorType eArmourType=ArmorRecipes::GetArmorType(item->id);
 
 				if(eArmourType==ArmorRecipes::eArmorType_None)
@@ -951,7 +951,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			else if((eSectionUnderPointer==eSectionFurnaceUsing)||(eSectionUnderPointer==eSectionFurnaceInventory))
 			{
 				// Get the info on this item.
-				shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
+				std::shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
 				bool bValidFuel = FurnaceTileEntity::isFuel(item);
 				bool bValidIngredient = FurnaceRecipes::getInstance()->getResult(item->getItem()->id) != NULL;
 
@@ -961,7 +961,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 					if(!isSlotEmpty(eSectionFurnaceIngredient,0))
 					{
 						// is it the same as this item
-						shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionFurnaceIngredient,0);
+						std::shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionFurnaceIngredient,0);
 						if(IngredientItem->id == item->id)
 						{
 							buttonY = eToolTipQuickMoveIngredient;
@@ -990,7 +990,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 					if(!isSlotEmpty(eSectionFurnaceFuel,0))
 					{
 						// is it the same as this item
-						shared_ptr<ItemInstance> fuelItem = getSlotItem(eSectionFurnaceFuel,0);
+						std::shared_ptr<ItemInstance> fuelItem = getSlotItem(eSectionFurnaceFuel,0);
 						if(fuelItem->id == item->id)
 						{
 							buttonY = eToolTipQuickMoveFuel;
@@ -1001,7 +1001,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 							if(!isSlotEmpty(eSectionFurnaceIngredient,0))
 							{
 								// is it the same as this item
-								shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionFurnaceIngredient,0);
+								std::shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionFurnaceIngredient,0);
 								if(IngredientItem->id == item->id)
 								{
 									buttonY = eToolTipQuickMoveIngredient;
@@ -1043,7 +1043,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			else if((eSectionUnderPointer==eSectionBrewingUsing)||(eSectionUnderPointer==eSectionBrewingInventory))
 			{
 				// Get the info on this item.
-				shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
+				std::shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
 				int iId=item->id;
 
 				// valid ingredient?
@@ -1061,7 +1061,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 					if(!isSlotEmpty(eSectionBrewingIngredient,0))
 					{
 						// is it the same as this item
-						shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionBrewingIngredient,0);
+						std::shared_ptr<ItemInstance> IngredientItem = getSlotItem(eSectionBrewingIngredient,0);
 						if(IngredientItem->id == item->id)
 						{
 							buttonY = eToolTipQuickMoveIngredient;
@@ -1103,7 +1103,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			else if((eSectionUnderPointer==eSectionEnchantUsing)||(eSectionUnderPointer==eSectionEnchantInventory))
 			{
 				// Get the info on this item.
-				shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
+				std::shared_ptr<ItemInstance> item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
 				int iId=item->id;
 
 				// valid enchantable tool?
@@ -1198,7 +1198,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 		SetPointerOutsideMenu( false );
 	}
 
-	shared_ptr<ItemInstance> item = nullptr;
+	std::shared_ptr<ItemInstance> item = nullptr;
 	if(bPointerIsOverSlot && bSlotHasItem) item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
 	overrideTooltips(eSectionUnderPointer, item, bIsItemCarried, bSlotHasItem, bCarriedIsSameAsSlot, iSlotStackSizeRemaining, buttonA, buttonX, buttonY, buttonRT);
 
@@ -1409,7 +1409,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 				bool bSlotHasItem = !isSlotEmpty(m_eCurrSection, currentIndex);
 				if ( bSlotHasItem )
 				{
-					shared_ptr<ItemInstance> item = getSlotItem(m_eCurrSection, currentIndex);
+					std::shared_ptr<ItemInstance> item = getSlotItem(m_eCurrSection, currentIndex);
 					if( Minecraft::GetInstance()->localgameModes[iPad] != NULL )
 					{
 						Tutorial::PopupMessageDetails *message = new Tutorial::PopupMessageDetails;
@@ -1568,7 +1568,7 @@ int IUIScene_AbstractContainerMenu::getCurrentIndex(ESceneSection eSection)
 	return currentIndex + getSectionStartOffset(eSection);
 }
 
-bool IUIScene_AbstractContainerMenu::IsSameItemAs(shared_ptr<ItemInstance> itemA, shared_ptr<ItemInstance> itemB)
+bool IUIScene_AbstractContainerMenu::IsSameItemAs(std::shared_ptr<ItemInstance> itemA, std::shared_ptr<ItemInstance> itemB)
 {
 	if(itemA == NULL || itemB == NULL) return false;
 
@@ -1582,7 +1582,7 @@ int IUIScene_AbstractContainerMenu::GetEmptyStackSpace(Slot *slot)
 
 	if(slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> item = slot->getItem();
+		std::shared_ptr<ItemInstance> item = slot->getItem();
 		if ( item->isStackable() )
 		{
 			int iCount = item->GetCount();
@@ -1597,16 +1597,16 @@ int IUIScene_AbstractContainerMenu::GetEmptyStackSpace(Slot *slot)
 	return iResult;
 }
 
-wstring IUIScene_AbstractContainerMenu::GetItemDescription(Slot *slot, vector<wstring> &unformattedStrings)
+std::wstring IUIScene_AbstractContainerMenu::GetItemDescription(Slot *slot, std::vector<std::wstring> &unformattedStrings)
 {
 	if(slot == NULL) return L"";
 
-	wstring desc = L"";
-	vector<wstring> *strings = slot->getItem()->getHoverText(nullptr, false, unformattedStrings);
+	std::wstring desc = L"";
+	std::vector<std::wstring> *strings = slot->getItem()->getHoverText(nullptr, false, unformattedStrings);
 	bool firstLine = true;
 	for(AUTO_VAR(it, strings->begin()); it != strings->end(); ++it)
 	{
-		wstring thisString = *it;
+		std::wstring thisString = *it;
 		if(!firstLine)
 		{
 			desc.append( L"<br />" );

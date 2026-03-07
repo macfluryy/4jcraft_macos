@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "../media/xuiscene_craftingpanel_2x2.h"
 #include "XUI_Ctrl_MinecraftSlot.h"
@@ -182,13 +182,13 @@ protected:
 	virtual void hideAllHSlots();
 	virtual void hideAllVSlots();
 	virtual void hideAllIngredientsSlots();
-	virtual void setCraftHSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha);
-	virtual void setCraftVSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha);
-	virtual void setCraftingOutputSlotItem(int iPad, shared_ptr<ItemInstance> item);
+	virtual void setCraftHSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha);
+	virtual void setCraftVSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha);
+	virtual void setCraftingOutputSlotItem(int iPad, std::shared_ptr<ItemInstance> item);
 	virtual void setCraftingOutputSlotRedBox(bool show);
-	virtual void setIngredientSlotItem(int iPad, int index, shared_ptr<ItemInstance> item);
+	virtual void setIngredientSlotItem(int iPad, int index, std::shared_ptr<ItemInstance> item);
 	virtual void setIngredientSlotRedBox(int index, bool show);
-	virtual void setIngredientDescriptionItem(int iPad, int index, shared_ptr<ItemInstance> item);
+	virtual void setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item);
 	virtual void setIngredientDescriptionRedBox(int index, bool show);
 	virtual void setIngredientDescriptionText(int index, LPCWSTR text);
 	virtual void setShowCraftHSlot(int iIndex, bool show);

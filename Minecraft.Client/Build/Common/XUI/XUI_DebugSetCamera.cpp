@@ -109,7 +109,7 @@ HRESULT CScene_DebugSetCamera::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINoti
 	if (hObjSource == m_camX)
 	{
 		double iVal = 0;
-		wstring value = m_camX.GetText();
+		std::wstring value = m_camX.GetText();
 		if(!value.empty()) iVal = _fromString<double>( value );
 		currentPosition->m_camX = iVal;
 		bHandled = TRUE;
@@ -117,7 +117,7 @@ HRESULT CScene_DebugSetCamera::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINoti
 	else if (hObjSource == m_camY)
 	{
 		double iVal = 0;
-		wstring value = m_camY.GetText();
+		std::wstring value = m_camY.GetText();
 		if(!value.empty()) iVal = _fromString<double>( value );
 		currentPosition->m_camY = iVal - 1.62;
 		bHandled = TRUE;
@@ -125,7 +125,7 @@ HRESULT CScene_DebugSetCamera::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINoti
 	else if (hObjSource == m_camZ)
 	{
 		double iVal = 0;
-		wstring value = m_camZ.GetText();
+		std::wstring value = m_camZ.GetText();
 		if(!value.empty()) iVal = _fromString<double>( value );
 		currentPosition->m_camZ = iVal;
 		bHandled = TRUE;
@@ -133,7 +133,7 @@ HRESULT CScene_DebugSetCamera::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINoti
 	else if (hObjSource == m_yRot)
 	{
 		double iVal = 0;
-		wstring value = m_yRot.GetText();
+		std::wstring value = m_yRot.GetText();
 		if(!value.empty()) iVal = _fromString<double>( value );
 		currentPosition->m_yRot = iVal;
 		bHandled = TRUE;
@@ -141,7 +141,7 @@ HRESULT CScene_DebugSetCamera::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINoti
 	else if (hObjSource == m_elevation)
 	{
 		double iVal = 0;
-		wstring value = m_elevation.GetText();
+		std::wstring value = m_elevation.GetText();
 		if(!value.empty()) iVal = _fromString<double>( value );
 		currentPosition->m_elev = iVal;
 		bHandled = TRUE;

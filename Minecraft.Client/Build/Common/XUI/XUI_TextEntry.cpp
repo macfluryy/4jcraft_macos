@@ -56,7 +56,7 @@ HRESULT CScene_TextEntry::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINotifyVal
 		
 		if(pText)
 		{
-			wstring wText = pText;
+			std::wstring wText = pText;
 			InterpretString(wText);
 		}
 
@@ -80,7 +80,7 @@ HRESULT CScene_TextEntry::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled
 
 			if(pText)
 			{
-				wstring wText = pText;
+				std::wstring wText = pText;
 				InterpretString(wText);
 			}
 
@@ -99,9 +99,9 @@ HRESULT CScene_TextEntry::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled
 	return S_OK;
 }
 
-HRESULT CScene_TextEntry::InterpretString(wstring &wsText)
+HRESULT CScene_TextEntry::InterpretString(std::wstring &wsText)
 {
-	wstring wsFormat;
+	std::wstring wsFormat;
 	WCHAR wchCommand[40];
 	int iCommand=-1;
 	WCHAR wchSep[2];
@@ -158,7 +158,7 @@ HRESULT CScene_TextEntry::InterpretString(wstring &wsText)
 				app.DebugPrintf("eCommand_Give, item=%d count=%d\n",iItem,iCount);
 				Minecraft *pMinecraft=Minecraft::GetInstance();
 				for(int i=0;i<iCount;i++)
-				pMinecraft->localplayers[m_iPad]->drop(); // shared_ptr<ItemInstance>(new ItemInstance( iItem, 1, 0 )) );
+				pMinecraft->localplayers[m_iPad]->drop(); // std::shared_ptr<ItemInstance>(new ItemInstance( iItem, 1, 0 )) );
 			}
 
 			break;

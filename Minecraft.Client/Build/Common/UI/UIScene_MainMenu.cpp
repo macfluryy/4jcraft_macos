@@ -77,7 +77,7 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void *initData, UILayer *parentLaye
 
 	m_splash = L"";
 
-	wstring filename = L"splashes.txt";
+	std::wstring filename = L"splashes.txt";
 	if( app.hasArchiveFile(filename) )
 	{
 		byteArray splashesArray = app.getArchiveFile(filename);
@@ -85,7 +85,7 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void *initData, UILayer *parentLaye
 		InputStreamReader isr( &bais );
 		BufferedReader br( &isr );
 
-		wstring line = L"";
+		std::wstring line = L"";
 		while ( !(line = br.readLine()).empty() )
 		{
 			line = trimString( line );
@@ -218,7 +218,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack)
 	m_splash = m_splashes.at( splashIndex );
 }
 
-wstring UIScene_MainMenu::getMoviePath()
+std::wstring UIScene_MainMenu::getMoviePath()
 {
 	return L"MainMenu";
 }
@@ -2008,7 +2008,7 @@ void UIScene_MainMenu::LoadTrial(void)
 	param->saveData = NULL;
 	param->settings = app.GetGameHostOption( eGameHostOption_Tutorial ) | app.GetGameHostOption(eGameHostOption_DisableSaving);
 
-	vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
+	std::vector<LevelGenerationOptions *> *generators = app.getLevelGenerators();
 	if (generators->empty())
 	{
 		app.DebugPrintf("LoadTrial: no level generators available, cannot start tutorial\n");

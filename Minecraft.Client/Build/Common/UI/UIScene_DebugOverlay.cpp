@@ -109,7 +109,7 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void *initData, UILayer *pa
 	m_mobFactories.push_back(eTYPE_LAVASLIME);
 }
 
-wstring UIScene_DebugOverlay::getMoviePath()
+std::wstring UIScene_DebugOverlay::getMoviePath()
 {
 	return L"DebugMenu";
 }
@@ -127,7 +127,7 @@ void UIScene_DebugOverlay::customDraw(IggyCustomDrawCallbackRegion *region)
 	}
 	else
 	{
-		shared_ptr<ItemInstance> item = shared_ptr<ItemInstance>( new ItemInstance(itemId,1,0) );
+		std::shared_ptr<ItemInstance> item = std::shared_ptr<ItemInstance>( new ItemInstance(itemId,1,0) );
 		if(item != NULL) customDrawSlotControl(region,m_iPad,item,1.0f,false,false);
 	}
 }

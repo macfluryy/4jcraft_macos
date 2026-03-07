@@ -43,7 +43,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT
@@ -80,7 +80,7 @@ private:
 	}
 	SORTINDEXSTRUCT;
 
-	vector <wstring>m_vIconRetrieval;
+	vector <std::wstring>m_vIconRetrieval;
 	bool m_bSelectionChanged;
 
 #endif

@@ -136,7 +136,7 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 
 	m_EditWorldName.SetTextLimit(XCONTENT_MAX_DISPLAYNAME_LENGTH);
 	
-	wstring wWorldName = m_EditWorldName.GetText();
+	std::wstring wWorldName = m_EditWorldName.GetText();
 
 	// set the caret to the end of the default text
 	m_EditWorldName.SetCaretPosition((int)wWorldName.length());
@@ -627,7 +627,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINot
 	if(hObjSource == m_EditWorldName)
 	{
 		//  Enable the done button when we have all of the necessary information
-		wstring wWorldName = m_EditWorldName.GetText();
+		std::wstring wWorldName = m_EditWorldName.GetText();
 		BOOL bHasWorldName = ( wWorldName.length()!=0);
 		m_NewWorld.SetEnable(bHasWorldName);        
 	}
@@ -883,7 +883,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 	app.ClearTerrainFeaturePosition();
 
 	// create the world and launch
-	wstring wWorldName = pClass->m_EditWorldName.GetText();
+	std::wstring wWorldName = pClass->m_EditWorldName.GetText();
 		
 	StorageManager.ResetSaveData();
 	// Make our next save default to the name of the level
@@ -891,7 +891,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 
 	BOOL bHasSeed = (pClass->m_EditSeed.GetText() != NULL);
 
-	wstring wSeed;
+	std::wstring wSeed;
 	if(bHasSeed)
 	{
 		wSeed=pClass->m_EditSeed.GetText();

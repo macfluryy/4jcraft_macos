@@ -30,7 +30,7 @@ HRESULT CScene_Win::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	// Display the tooltips
 	ui.SetTooltips( m_iPad, -1, IDS_TOOLTIPS_CONTINUE);
 
-	wstring halfScreenLineBreaks;
+	std::wstring halfScreenLineBreaks;
 
 	if(RenderManager.IsHiDef())
 	{
@@ -81,7 +81,7 @@ HRESULT CScene_Win::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 	m_htmlControl.SetText(noiseString.c_str());
 
-	//wstring result = m_htmlControl.GetText();
+	//std::wstring result = m_htmlControl.GetText();
 
 	//wcout << result.c_str();
 
@@ -197,13 +197,13 @@ void CScene_Win::updateNoise()
 	
 	int length = 0;
 	wchar_t replacements[64];
-	wstring replaceString = L"";
+	std::wstring replaceString = L"";
 	wchar_t randomChar = L'a';
 	Random *random = pMinecraft->font->random;
 
 	bool darken = false;
 
-	wstring tag = L"{*NOISE*}";
+	std::wstring tag = L"{*NOISE*}";
 
 	AUTO_VAR(it, m_noiseLengths.begin());
 	int found=(int)noiseString.find_first_of(L"{");
@@ -217,7 +217,7 @@ void CScene_Win::updateNoise()
 		{
 			randomChar = SharedConstants::acceptableLetters[random->nextInt((int)SharedConstants::acceptableLetters.length())];
 			
-			wstring randomCharStr = L"";
+			std::wstring randomCharStr = L"";
 			randomCharStr.push_back(randomChar);
 			if(randomChar == L'<')
 			{

@@ -1,7 +1,7 @@
 #pragma once
 class Mob;
 class Options;
-using namespace std;
+//using namespace std;
 #include "../../../../Minecraft.World/Util/SoundTypes.h"
 
 enum eMUSICFILES
@@ -96,21 +96,21 @@ public:
 	void GetSoundName(char *szSoundName,int iSound);
 #endif
 	virtual void play(int iSound, float x, float y, float z, float volume, float pitch);
-	virtual void playStreaming(const wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay=true);
+	virtual void playStreaming(const std::wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay=true);
 	virtual void playUI(int iSound, float volume, float pitch);
 	virtual void playMusicTick();
 	virtual void updateMusicVolume(float fVal);
 	virtual void updateSystemMusicPlaying(bool isPlaying);
 	virtual void updateSoundEffectVolume(float fVal);
 	virtual void init(Options *);
-	virtual void tick(shared_ptr<Mob> *players, float a);	// 4J - updated to take array of local players rather than single one
-	virtual void add(const wstring& name, File *file);
-	virtual void addMusic(const wstring& name, File *file);
-	virtual void addStreaming(const wstring& name, File *file);
-	virtual char *ConvertSoundPathToName(const wstring& name, bool bConvertSpaces=false);
+	virtual void tick(std::shared_ptr<Mob> *players, float a);	// 4J - updated to take array of local players rather than single one
+	virtual void add(const std::wstring& name, File *file);
+	virtual void addMusic(const std::wstring& name, File *file);
+	virtual void addStreaming(const std::wstring& name, File *file);
+	virtual char *ConvertSoundPathToName(const std::wstring& name, bool bConvertSpaces=false);
 	bool isStreamingWavebankReady();		// 4J Added
 	int getMusicID(int iDomain);
-	int getMusicID(const wstring& name);
+	int getMusicID(const std::wstring& name);
 	void SetStreamingSounds(int iOverworldMin, int iOverWorldMax, int iNetherMin, int iNetherMax, int iEndMin, int iEndMax, int iCD1);
 	void updateMiles();			// AP added so Vita can update all the Miles functions during the mixer callback
 	void playMusicUpdate();
@@ -145,7 +145,7 @@ private:
 	int m_StreamState;
 	int m_MusicType;
 	AUDIO_INFO m_StreamingAudioInfo;
-	wstring m_CDMusic;
+	std::wstring m_CDMusic;
 	BOOL m_bSystemMusicPlaying;
 	float m_MasterMusicVolume;
 	float m_MasterEffectsVolume;

@@ -16,7 +16,7 @@ UIComponent_Panorama::UIComponent_Panorama(int iPad, void *initData, UILayer *pa
 	while(!m_hasTickedOnce) tick();
 }
 
-wstring UIComponent_Panorama::getMoviePath()
+std::wstring UIComponent_Panorama::getMoviePath()
 {
 	switch( m_parentLayer->getViewport() )
 	{

@@ -342,7 +342,7 @@ HRESULT CScene_MultiGameJoinLoad::GetSaveInfo(  )
 		for(unsigned int i=0;i<listItems;i++)
 		{
 
-			wstring wName = m_saves->at(i)->getName();
+			std::wstring wName = m_saves->at(i)->getName();
 			wchar_t *name = new wchar_t[wName.size()+1];
 			for(unsigned int j = 0; j < wName.size(); ++j)
 			{
@@ -1424,7 +1424,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList(DWORD dwNumResults, IQNetGameSear
 			{
 				sessionInfo->data = *(GameSessionData *)pxnqi->pbData;
 
-				wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
+				std::wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
 				swprintf(sessionInfo->displayLabel,L"%ls's Game", gamerName.c_str() );
 			}
 			else
@@ -2190,7 +2190,7 @@ void CScene_MultiGameJoinLoad::UploadFile(CScene_MultiGameJoinLoad *pClass, char
 	{
 		File targetFileDir(L"GAME:\\FakeTMSPP");
 		if(!targetFileDir.exists()) targetFileDir.mkdir();
-		string path = string( wstringtofilename( targetFileDir.getPath() ) ).append("\\").append(filename);
+		string path = string( std::wstringtofilename( targetFileDir.getPath() ) ).append("\\").append(filename);
 		HANDLE hSaveFile = CreateFile( path.c_str(), GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
 
 		DWORD numberOfBytesWritten = 0;

@@ -39,12 +39,12 @@ UIScene_DebugOptionsMenu::UIScene_DebugOptionsMenu(int iPad, void *initData, UIL
 	IggyValuePath *root = IggyPlayerRootPath ( getMovie() );
 	for(m_iTotalCheckboxElements = 0; m_iTotalCheckboxElements < eDebugSetting_Max && m_iTotalCheckboxElements < 21; ++m_iTotalCheckboxElements)
 	{
-		wstring label(m_DebugCheckboxTextA[m_iTotalCheckboxElements]);
+		std::wstring label(m_DebugCheckboxTextA[m_iTotalCheckboxElements]);
 		m_checkboxes[m_iTotalCheckboxElements].init(label,m_iTotalCheckboxElements,(uiDebugBitmask&(1<<m_iTotalCheckboxElements)) ? true : false);
 	}
 }
 
-wstring UIScene_DebugOptionsMenu::getMoviePath()
+std::wstring UIScene_DebugOptionsMenu::getMoviePath()
 {
 	return L"DebugOptionsMenu";
 }

@@ -22,9 +22,9 @@ private:
 		eControl_Items,
 	};
 
-	vector<int> m_itemIds;
-	vector<eINSTANCEOF> m_mobFactories;
-	vector< pair<int,int> > m_enchantmentIdAndLevels;
+	std::vector<int> m_itemIds;
+	std::vector<eINSTANCEOF> m_mobFactories;
+	std::vector< pair<int,int> > m_enchantmentIdAndLevels;
 public:
 	UIScene_DebugOverlay(int iPad, void *initData, UILayer *parentLayer);
 
@@ -49,7 +49,7 @@ protected:
 		UI_MAP_ELEMENT( m_buttonSetCamera, "setCamera")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	virtual void customDraw(IggyCustomDrawCallbackRegion *region);

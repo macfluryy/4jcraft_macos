@@ -3,7 +3,7 @@
 #include <string>
 #include <XuiApp.h>
 
-using namespace std;
+//using namespace std;
 
 //-----------------------------------------------------------------------------
 //  CXuiCtrlSplashPulser class

@@ -417,21 +417,21 @@ void CXuiSceneCraftingPanel::hideAllIngredientsSlots()
 	}
 }
 
-void CXuiSceneCraftingPanel::setCraftHSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha)
+void CXuiSceneCraftingPanel::setCraftHSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha)
 {
 	m_pHSlotsBrushImageControl[iIndex]->SetIcon(iPad, item, 9, uiAlpha, false);
 	//m_pHSlotsBrushImageControl[iIndex]->SetPassThroughDataAssociation(MAKE_SLOTDISPLAY_ITEM_BITMASK(item->id,item->getAuxValue(),item->isFoil()),MAKE_SLOTDISPLAY_DATA_BITMASK (iPad, uiAlpha, false, item->GetCount(), 9,0) );
 	//m_pHSlotsBrushImageControl[iIndex]->SetShow(TRUE);
 }
 
-void CXuiSceneCraftingPanel::setCraftVSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha)
+void CXuiSceneCraftingPanel::setCraftVSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha)
 {
 	m_pVSlotsBrushImageControl[iIndex]->SetIcon(iPad, item, 9, uiAlpha, false);
 	//m_pVSlotsBrushImageControl[iIndex]->SetPassThroughDataAssociation(MAKE_SLOTDISPLAY_ITEM_BITMASK(item->id,item->getAuxValue(),item->isFoil()),MAKE_SLOTDISPLAY_DATA_BITMASK (iPad, uiAlpha, false, item->GetCount(), 9,0) );
 	//m_pVSlotsBrushImageControl[iIndex]->SetShow(TRUE);
 }
 
-void CXuiSceneCraftingPanel::setCraftingOutputSlotItem(int iPad, shared_ptr<ItemInstance> item)
+void CXuiSceneCraftingPanel::setCraftingOutputSlotItem(int iPad, std::shared_ptr<ItemInstance> item)
 {
 	if(item == NULL)
 	{
@@ -448,7 +448,7 @@ void CXuiSceneCraftingPanel::setCraftingOutputSlotRedBox(bool show)
 	m_pCraftingOutput->SetRedBox(show?TRUE:FALSE);
 }
 
-void CXuiSceneCraftingPanel::setIngredientSlotItem(int iPad, int index, shared_ptr<ItemInstance> item)
+void CXuiSceneCraftingPanel::setIngredientSlotItem(int iPad, int index, std::shared_ptr<ItemInstance> item)
 {
 	if(item == NULL)
 	{
@@ -465,7 +465,7 @@ void CXuiSceneCraftingPanel::setIngredientSlotRedBox(int index, bool show)
 	m_pCraftingIngredientA[index]->SetRedBox(show?TRUE:FALSE);
 }
 
-void CXuiSceneCraftingPanel::setIngredientDescriptionItem(int iPad, int index, shared_ptr<ItemInstance> item)
+void CXuiSceneCraftingPanel::setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item)
 {
 	m_pCraftIngredientDescA[index]->SetIcon(iPad, item->id,item->getAuxValue(),item->GetCount(),8,31,TRUE,item->isFoil(),FALSE);
 }

@@ -186,7 +186,7 @@ HRESULT CScene_Debug::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 #ifdef _DEBUG
 	// testing the upload of the player custom skin
-//  	wstring wsTemp;
+//  	std::wstring wsTemp;
 //  
 // 	wsTemp=L"Deadmau5_Skin.png";
 // 	app.UploadFileToGlobalStorage(m_iPad,C4JStorage::eGlobalStorage_TitleUser,&wsTemp);

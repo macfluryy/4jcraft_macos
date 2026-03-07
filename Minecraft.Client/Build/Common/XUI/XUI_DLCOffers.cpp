@@ -18,7 +18,7 @@
 #define TIMER_ID_NAVIGATE_BACK 2
 // Constants
 
-//const wstring CScene_DLCOffers::DEFAULT_BANNER = L"Graphics/banner.png";
+//const std::wstring CScene_DLCOffers::DEFAULT_BANNER = L"Graphics/banner.png";
 
 // DLC Main
 
@@ -364,7 +364,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 			//if(Offer.dwOfferType==app.GetDLCContentType((eDLCContentType)m_iType))
 			if(pDLC->eDLCType==(eDLCContentType)m_iType)
 			{		
-				wstring wstrTemp=xOffer.wszOfferName;
+				std::wstring wstrTemp=xOffer.wszOfferName;
 
 				// If the string starts with Minecraft, removed that
 
@@ -493,7 +493,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		}
 
 		wchar_t formatting[40];
-		wstring wstrTemp = xOffer.wszSellText;
+		std::wstring wstrTemp = xOffer.wszSellText;
 		swprintf(formatting, 40, L"<font size=\"%d\">", m_bIsSD?12:14);
 		wstrTemp = formatting + wstrTemp;
 
@@ -503,7 +503,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		// set the price info	
 		m_PriceTag.SetShow(TRUE);
 // 		swprintf(formatting, 40, L"%d",xOffer.dwPointsPrice);
-// 		wstrTemp=wstring(formatting);
+// 		wstrTemp=std::wstring(formatting);
 // 		m_PriceTag.SetText(wstrTemp.c_str());
 		m_PriceTag.SetText(xOffer.wszCurrencyPrice);
 
@@ -517,7 +517,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		// set the default text
 
 		wchar_t formatting[40];
-		wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
+		std::wstring wstrTemp = app.GetString(IDS_NO_DLCOFFERS);
 		swprintf(formatting, 40, L"<font size=\"%d\">", m_bIsSD?12:14);
 		wstrTemp = formatting + wstrTemp;
 
@@ -681,16 +681,16 @@ HRESULT CScene_DLCOffers::OnNotifySelChanged(HXUIOBJ hObjSource, XUINotifySelCha
 
 
 		wchar_t formatting[40];
-		wstring wstrTemp=xOffer.wszSellText;
+		std::wstring wstrTemp=xOffer.wszSellText;
 		swprintf(formatting, 40, L"<font size=\"%d\">",m_bIsSD?12:14);
-		wstrTemp = wstring(formatting) + wstrTemp;
+		wstrTemp = std::wstring(formatting) + wstrTemp;
 
 		m_SellText.SetText(wstrTemp.c_str());
 
 		// set the price info	
  		m_PriceTag.SetShow(TRUE);
 // 		swprintf(formatting, 40, L"%d",xOffer.dwPointsPrice);
-// 		wstrTemp=wstring(formatting);
+// 		wstrTemp=std::wstring(formatting);
 // 		m_PriceTag.SetText(wstrTemp.c_str());
 		m_PriceTag.SetText(xOffer.wszCurrencyPrice);
 

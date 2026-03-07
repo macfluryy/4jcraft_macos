@@ -127,7 +127,7 @@ UIScene_PauseMenu::~UIScene_PauseMenu()
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
-wstring UIScene_PauseMenu::getMoviePath()
+std::wstring UIScene_PauseMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -1198,7 +1198,7 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4J
 
 				// retrieve the store name for the skin pack
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
-				const char *pchPackName=wstringtofilename(pDLCPack->getName());
+				const char *pchPackName=std::wstringtofilename(pDLCPack->getName());
 				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
 				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
 
@@ -1277,7 +1277,7 @@ int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void *pParam,bool bContinue
 
 				// retrieve the store name for the skin pack
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
-				const char *pchPackName=wstringtofilename(pDLCPack->getName());
+				const char *pchPackName=std::wstringtofilename(pDLCPack->getName());
 				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
 				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
 

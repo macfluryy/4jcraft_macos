@@ -12,7 +12,7 @@ protected:
 	IggyName m_funcCheckLabelWidths;
 
 	bool m_bLabelChanged;
-	wstring m_label;
+	std::wstring m_label;
 public:
 	UIControl_Base();
 
@@ -20,7 +20,7 @@ public:
 
 	virtual void tick();
 
-	virtual void setLabel(const wstring &label, bool instant = false, bool force = false);
+	virtual void setLabel(const std::wstring &label, bool instant = false, bool force = false);
 	virtual void setLabel(const string &label);
 	const wchar_t* getLabel();
 	virtual void setAllPossibleLabels(int labelCount, wchar_t labels[][256]);

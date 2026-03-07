@@ -14,7 +14,7 @@ TutorialHint::TutorialHint(eTutorial_Hint id, Tutorial *tutorial, int descriptio
 	tutorial->addMessage(descriptionId, type != e_Hint_NoIngredients);
 }
 
-int TutorialHint::startDestroyBlock(shared_ptr<ItemInstance> item, Tile *tile)
+int TutorialHint::startDestroyBlock(std::shared_ptr<ItemInstance> item, Tile *tile)
 {
 	int returnVal = -1;
 	switch(m_type)
@@ -59,7 +59,7 @@ int TutorialHint::destroyBlock(Tile *tile)
 	return returnVal;
 }
 
-int TutorialHint::attack(shared_ptr<ItemInstance> item, shared_ptr<Entity> entity)
+int TutorialHint::attack(std::shared_ptr<ItemInstance> item, std::shared_ptr<Entity> entity)
 {
 	/*
 	switch(m_type)
@@ -71,7 +71,7 @@ int TutorialHint::attack(shared_ptr<ItemInstance> item, shared_ptr<Entity> entit
 	return -1;
 }
 
-int TutorialHint::createItemSelected(shared_ptr<ItemInstance> item, bool canMake)
+int TutorialHint::createItemSelected(std::shared_ptr<ItemInstance> item, bool canMake)
 {
 	int returnVal = -1;
 	switch(m_type)
@@ -86,7 +86,7 @@ int TutorialHint::createItemSelected(shared_ptr<ItemInstance> item, bool canMake
 	return returnVal;
 }
 
-int TutorialHint::itemDamaged(shared_ptr<ItemInstance> item)
+int TutorialHint::itemDamaged(std::shared_ptr<ItemInstance> item)
 {
 	int returnVal = -1;
 	switch(m_type)
@@ -100,7 +100,7 @@ int TutorialHint::itemDamaged(shared_ptr<ItemInstance> item)
 	return returnVal;
 }
 
-bool TutorialHint::onTake( shared_ptr<ItemInstance> item )
+bool TutorialHint::onTake( std::shared_ptr<ItemInstance> item )
 {
 	return false;
 }

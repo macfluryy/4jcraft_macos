@@ -154,11 +154,11 @@ void CXuiSceneInventory::updateEffectsDisplay()
 {
 	// Update with the current effects
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<LocalPlayer> player = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<LocalPlayer> player = pMinecraft->localplayers[m_iPad];
 
 	if(player == NULL) return;
 
-	vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
+	std::vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
 
 	// Work out how to arrange the effects
 	int effectCount = (int)activeEffects->size();
@@ -194,10 +194,10 @@ void CXuiSceneInventory::updateEffectsDisplay()
 				m_hEffectDisplayA[i]->setIcon(mobEffect->getIcon());
             }
 
-			wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
+			std::wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
 			if (effect->getAmplifier() > 0)
 			{
-				wstring potencyString = L"";
+				std::wstring potencyString = L"";
 				switch(effect->getAmplifier())
 				{
 				case 1:
@@ -220,7 +220,7 @@ void CXuiSceneInventory::updateEffectsDisplay()
 			}
 			m_hEffectDisplayA[i]->setName(effectString);
 
-			wstring durationString = MobEffect::formatDuration(effect);
+			std::wstring durationString = MobEffect::formatDuration(effect);
 			m_hEffectDisplayA[i]->setDuration(durationString);
 
 			++it;

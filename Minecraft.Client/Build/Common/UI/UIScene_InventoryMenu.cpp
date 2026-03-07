@@ -52,7 +52,7 @@ UIScene_InventoryMenu::UIScene_InventoryMenu(int iPad, void *_initData, UILayer 
 	addTimer(INVENTORY_UPDATE_EFFECTS_TIMER_ID,INVENTORY_UPDATE_EFFECTS_TIMER_TIME);
 }
 
-wstring UIScene_InventoryMenu::getMoviePath()
+std::wstring UIScene_InventoryMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -251,11 +251,11 @@ void UIScene_InventoryMenu::updateEffectsDisplay()
 {
 	// Update with the current effects
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+	std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
 
 	if(player == NULL) return;
 
-	vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
+	std::vector<MobEffectInstance *> *activeEffects = player->getActiveEffects();
 
 	// 4J - TomK setup time update value array size to update the active effects
 	int iValue = 0;
@@ -267,10 +267,10 @@ void UIScene_InventoryMenu::updateEffectsDisplay()
 
 		if(effect->getDuration() >= m_bEffectTime[effect->getId()])
 		{
-			wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
+			std::wstring effectString = app.GetString( effect->getDescriptionId() );//I18n.get(effect.getDescriptionId()).trim();
 			if (effect->getAmplifier() > 0)
 			{
-				wstring potencyString = L"";
+				std::wstring potencyString = L"";
 				switch(effect->getAmplifier())
 				{
 				case 1:

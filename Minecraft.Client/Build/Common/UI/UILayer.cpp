@@ -17,7 +17,7 @@ UILayer::UILayer(UIGroup *parent)
 void UILayer::tick()
 {
 	// Delete old scenes - deleting a scene can cause a new scene to be deleted, so we need to make a copy of the scenes that we are going to try and destroy this tick
-	vector<UIScene *>scenesToDeleteCopy;
+	std::vector<UIScene *>scenesToDeleteCopy;
 	for( AUTO_VAR(it,m_scenesToDelete.begin()); it != m_scenesToDelete.end(); it++)
 	{
 		UIScene *scene = (*it);
@@ -620,7 +620,7 @@ void UILayer::removeScene(UIScene *scene)
 
 void UILayer::closeAllScenes()
 {
-	vector<UIScene *> temp;
+	std::vector<UIScene *> temp;
 	temp.insert(temp.end(), m_sceneStack.begin(), m_sceneStack.end());
 	m_sceneStack.clear();
 	for(AUTO_VAR(it, temp.begin()); it != temp.end(); ++it)

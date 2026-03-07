@@ -60,10 +60,10 @@ void ChangeStateConstraint::tick(int iPad)
 			{
 				// Send update settings packet to server
 				Minecraft *pMinecraft = Minecraft::GetInstance();				
-				shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
+				std::shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
 				if(player != NULL && player->connection && player->connection->getNetworkPlayer() != NULL)
 				{
-					player->connection->send( shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
+					player->connection->send( std::shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
 				}
 			}
 		}
@@ -101,10 +101,10 @@ void ChangeStateConstraint::tick(int iPad)
 				{
 					// Send update settings packet to server
 					Minecraft *pMinecraft = Minecraft::GetInstance();				
-					shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
+					std::shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
 					if(player != NULL && player->connection && player->connection->getNetworkPlayer() != NULL)
 					{
-						player->connection->send( shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
+						player->connection->send( std::shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
 					}
 				}
 			}
@@ -125,10 +125,10 @@ void ChangeStateConstraint::tick(int iPad)
 			{
 				// Send update settings packet to server
 				Minecraft *pMinecraft = Minecraft::GetInstance();				
-				shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
+				std::shared_ptr<MultiplayerLocalPlayer> player = minecraft->localplayers[iPad];
 				if(player != NULL && player->connection && player->connection->getNetworkPlayer() != NULL)
 				{
-					player->connection->send( shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
+					player->connection->send( std::shared_ptr<PlayerInfoPacket>( new PlayerInfoPacket( player->connection->getNetworkPlayer()->GetSmallId(), -1, playerPrivs) ) );
 				}
 			}
 		}

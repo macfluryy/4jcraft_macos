@@ -48,7 +48,7 @@ private:
 
 	int m_iState;
 
-	vector<File *> *m_saves;
+	std::vector<File *> *m_saves;
 	
 	bool m_bIgnoreInput;
 	bool m_bAllLoaded;
@@ -92,7 +92,7 @@ private:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 

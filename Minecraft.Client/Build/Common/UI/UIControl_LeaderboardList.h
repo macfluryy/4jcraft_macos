@@ -39,10 +39,10 @@ public:
 
 	void clearList();
 
-	void setupTitles(const wstring &rank, const wstring &gamertag);
+	void setupTitles(const std::wstring &rank, const std::wstring &gamertag);
 	void initLeaderboard(int iFirstFocus, int iTotalEntries, int iNumColumns);
 	void setColumnIcon(int iColumn, int iType);
-	void addDataSet(bool bLast, int iId, int iRank, const wstring &gamertag, bool bDisplayMessage, const wstring &col0, const wstring &col1, const wstring &col2, const wstring &col3, const wstring &col4, const wstring &col5, const wstring &col6);
+	void addDataSet(bool bLast, int iId, int iRank, const std::wstring &gamertag, bool bDisplayMessage, const std::wstring &col0, const std::wstring &col1, const std::wstring &col2, const std::wstring &col3, const std::wstring &col4, const std::wstring &col5, const std::wstring &col6);
 
 #ifdef __PSVITA__
 	void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);

@@ -125,7 +125,7 @@ extern "C" void __real_free(void *t);
 #endif
 
 __int64 UIController::iggyAllocCount = 0;
-static unordered_map<void *,size_t> allocations;
+static std::unordered_map<void *,size_t> allocations;
 static void * RADLINK AllocateFunction ( void * alloc_callback_user_data , size_t size_requested , size_t * size_returned )
 {
 	UIController *controller = (UIController *)alloc_callback_user_data;
@@ -419,7 +419,7 @@ void UIController::tick()
 
 void UIController::loadSkins()
 {
-	wstring platformSkinPath = L"";
+	std::wstring platformSkinPath = L"";
 
 #ifdef __PS3__
 	platformSkinPath = L"skinPS3.swf";
@@ -508,7 +508,7 @@ void UIController::loadSkins()
 #endif // HD platforms
 }
 
-IggyLibrary UIController::loadSkin(const wstring &skinPath, const wstring &skinName)
+IggyLibrary UIController::loadSkin(const std::wstring &skinPath, const std::wstring &skinName)
 {
 	IggyLibrary lib = IGGY_INVALID_LIBRARY;
 	// 4J Stu - We need to load the platformskin before the normal skin, as the normal skin requires some elements from the platform skin
@@ -650,7 +650,7 @@ void UIController::CleanUpSkinReload()
 	m_queuedMessageBoxData.clear();
 }
 
-byteArray UIController::getMovieData(const wstring &filename)
+byteArray UIController::getMovieData(const std::wstring &filename)
 {
 	// Cache everything we load in the current tick
 	__int64 targetTime = System::currentTimeMillis() + (1000LL * 60);
@@ -1383,7 +1383,7 @@ void RADLINK UIController::TextureSubstitutionDestroyCallback ( void * user_call
 	t->releaseTexture( id );
 }
 
-void UIController::registerSubstitutionTexture(const wstring &textureName, PBYTE pbData, DWORD dwLength)
+void UIController::registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength)
 {
 	// Remove it if it already exists
 	unregisterSubstitutionTexture(textureName,false);
@@ -1391,7 +1391,7 @@ void UIController::registerSubstitutionTexture(const wstring &textureName, PBYTE
 	m_substitutionTextures[textureName] = byteArray(pbData, dwLength);
 }
 
-void UIController::unregisterSubstitutionTexture(const wstring &textureName, bool deleteData)
+void UIController::unregisterSubstitutionTexture(const std::wstring &textureName, bool deleteData)
 {
 	AUTO_VAR(it,m_substitutionTextures.find(textureName));
 
@@ -2027,7 +2027,7 @@ void UIController::DisplayGamertag(unsigned int iPad, bool show)
 	}
 }
 
-void UIController::SetSelectedItem(unsigned int iPad, const wstring &name)
+void UIController::SetSelectedItem(unsigned int iPad, const std::wstring &name)
 {
 	EUIGroup group;
 

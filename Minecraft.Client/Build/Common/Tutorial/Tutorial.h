@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "TutorialTask.h"
 #include "TutorialConstraint.h"
 #include "TutorialHint.h"
@@ -27,9 +27,9 @@ public:
 		int m_messageId;
 		int m_promptId;
 		int m_titleId;
-		wstring m_messageString;
-		wstring m_promptString;
-		wstring m_titleString;
+		std::wstring m_messageString;
+		std::wstring m_promptString;
+		std::wstring m_titleString;
 		int m_icon;
 		int m_iAuxVal;
 		bool m_allowFade;
@@ -78,13 +78,13 @@ private:
 	int m_firstTickTime;
 
 protected:
-	unordered_map<int, TutorialMessage *> messages;
-	vector<TutorialConstraint *> m_globalConstraints;
-	vector<TutorialConstraint *> constraints[e_Tutorial_State_Max];
-	vector< pair<TutorialConstraint *, unsigned char> > constraintsToRemove[e_Tutorial_State_Max];
-	vector<TutorialTask *> tasks; // We store a copy of the tasks for the main gameplay tutorial so that we could display an overview menu
-	vector<TutorialTask *> activeTasks[e_Tutorial_State_Max];
-	vector<TutorialHint *> hints[e_Tutorial_State_Max];
+	std::unordered_map<int, TutorialMessage *> messages;
+	std::vector<TutorialConstraint *> m_globalConstraints;
+	std::vector<TutorialConstraint *> constraints[e_Tutorial_State_Max];
+	std::vector< pair<TutorialConstraint *, unsigned char> > constraintsToRemove[e_Tutorial_State_Max];
+	std::vector<TutorialTask *> tasks; // We store a copy of the tasks for the main gameplay tutorial so that we could display an overview menu
+	std::vector<TutorialTask *> activeTasks[e_Tutorial_State_Max];
+	std::vector<TutorialHint *> hints[e_Tutorial_State_Max];
 	TutorialTask *currentTask[e_Tutorial_State_Max];
 	TutorialConstraint *currentFailedConstraint[e_Tutorial_State_Max];
 
@@ -147,23 +147,23 @@ public:
 
 	bool setMessage(PopupMessageDetails *message);
 	bool setMessage(TutorialHint *hint, PopupMessageDetails *message);
-	bool setMessage(const wstring &message, int icon, int auxValue);
+	bool setMessage(const std::wstring &message, int icon, int auxValue);
 
 	void showTutorialPopup(bool show);
 
-	void useItemOn(Level *level, shared_ptr<ItemInstance> item, int x, int y, int z,bool bTestUseOnly=false);
-	void useItemOn(shared_ptr<ItemInstance> item, bool bTestUseOnly=false);
-	void completeUsingItem(shared_ptr<ItemInstance> item);
-	void startDestroyBlock(shared_ptr<ItemInstance> item, Tile *tile);
+	void useItemOn(Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z,bool bTestUseOnly=false);
+	void useItemOn(std::shared_ptr<ItemInstance> item, bool bTestUseOnly=false);
+	void completeUsingItem(std::shared_ptr<ItemInstance> item);
+	void startDestroyBlock(std::shared_ptr<ItemInstance> item, Tile *tile);
 	void destroyBlock(Tile *tile);
-	void attack(shared_ptr<Player> player, shared_ptr<Entity> entity);
-	void itemDamaged(shared_ptr<ItemInstance> item);
+	void attack(std::shared_ptr<Player> player, std::shared_ptr<Entity> entity);
+	void itemDamaged(std::shared_ptr<ItemInstance> item);
 
 	void handleUIInput(int iAction);
-	void createItemSelected(shared_ptr<ItemInstance> item, bool canMake);
-	void onCrafted(shared_ptr<ItemInstance> item);
-	void onTake(shared_ptr<ItemInstance> item, unsigned int invItemCountAnyAux, unsigned int invItemCountThisAux);
-	void onSelectedItemChanged(shared_ptr<ItemInstance> item);
+	void createItemSelected(std::shared_ptr<ItemInstance> item, bool canMake);
+	void onCrafted(std::shared_ptr<ItemInstance> item);
+	void onTake(std::shared_ptr<ItemInstance> item, unsigned int invItemCountAnyAux, unsigned int invItemCountThisAux);
+	void onSelectedItemChanged(std::shared_ptr<ItemInstance> item);
 	void onLookAt(int id, int iData=0);
 	void onLookAtEntity(eINSTANCEOF type);
 	void onEffectChanged(MobEffect *effect, bool bRemoved=false);
@@ -181,7 +181,7 @@ public:
 	int	GetTutorialDisplayMessageTime() {return m_iTutorialDisplayMessageTime;}
 
 	// Only for the main gameplay tutorial
-	vector<TutorialTask *> *getTasks();
+	std::vector<TutorialTask *> *getTasks();
 	unsigned int getCurrentTaskIndex();
 
 #ifdef _XBOX
@@ -193,7 +193,7 @@ public:
 
 	// These are required so that we have a consistent mapping of the completion bits stored in the profile data
 	static void staticCtor();
-	static vector<int> s_completableTasks;
+	static std::vector<int> s_completableTasks;
 
 	static void debugResetPlayerSavedProgress(int iPad);
 };

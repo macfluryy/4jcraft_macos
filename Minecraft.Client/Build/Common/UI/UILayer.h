@@ -1,6 +1,6 @@
 #pragma once
 #include "UIEnums.h"
-using namespace std;
+//using namespace std;
 class UIScene;
 class UIGroup;
 
@@ -8,15 +8,15 @@ class UIGroup;
 class UILayer
 {
 private:
-	vector<UIScene *> m_sceneStack; // Operates as a stack mainly, but we may wish to iterate over all elements
-	vector<UIScene *> m_components; // Other componenents in this scene that to do not conform the the user nav stack, and cannot take focus
-	vector<UIScene *> m_scenesToDelete; // A list of scenes to delete
-	vector<UIScene *> m_scenesToDestroy; // A list of scenes where we want to dump the swf
+	std::vector<UIScene *> m_sceneStack; // Operates as a stack mainly, but we may wish to iterate over all elements
+	std::vector<UIScene *> m_components; // Other componenents in this scene that to do not conform the the user nav stack, and cannot take focus
+	std::vector<UIScene *> m_scenesToDelete; // A list of scenes to delete
+	std::vector<UIScene *> m_scenesToDestroy; // A list of scenes where we want to dump the swf
 
 #ifdef __ORBIS__
-	unordered_map<EUIScene,std::pair<int,bool>,std::hash<int>> m_componentRefCount;
+	std::unordered_map<EUIScene,std::pair<int,bool>,std::hash<int>> m_componentRefCount;
 #else
-	unordered_map<EUIScene,pair<int,bool> > m_componentRefCount;
+	std::unordered_map<EUIScene,pair<int,bool> > m_componentRefCount;
 #endif
 
 public:

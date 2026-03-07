@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #define XBOX_SCHEMATIC_ORIGINAL_VERSION 1
 #define XBOX_SCHEMATIC_CURRENT_VERSION 2
@@ -55,8 +55,8 @@ public:
 	} XboxSchematicInitParam;
 private:
 	int m_xSize, m_ySize, m_zSize;
-	vector<shared_ptr<TileEntity> > m_tileEntities;
-	vector< pair<Vec3 *, CompoundTag *> > m_entities;
+	std::vector<std::shared_ptr<TileEntity> > m_tileEntities;
+	std::vector< pair<Vec3 *, CompoundTag *> > m_entities;
 
 public:	
 	byteArray m_data;
@@ -83,7 +83,7 @@ private:
 	void load_tags(DataInputStream *dis);
 
 	static void getBlocksAndData(LevelChunk *chunk, byteArray *data, int x0, int y0, int z0, int x1, int y1, int z1, int &blocksP, int &dataP, int &blockLightP, int &skyLightP);
-	static vector<shared_ptr<TileEntity> > *getTileEntitiesInRegion(LevelChunk *chunk, int x0, int y0, int z0, int x1, int y1, int z1);
+	static std::vector<std::shared_ptr<TileEntity> > *getTileEntitiesInRegion(LevelChunk *chunk, int x0, int y0, int z0, int x1, int y1, int z1);
 
 	void chunkCoordToSchematicCoord(AABB *destinationBox, int chunkX, int chunkZ, ESchematicRotation rot, int &schematicX, int &schematicZ);
 	void schematicCoordToChunkCoord(AABB *destinationBox, double schematicX, double schematicZ, ESchematicRotation rot, double &chunkX, double &chunkZ);

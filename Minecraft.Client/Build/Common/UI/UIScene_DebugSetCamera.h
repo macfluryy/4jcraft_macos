@@ -53,7 +53,7 @@ protected:
 		UI_MAP_ELEMENT( m_labelYRotElev, "LabelYRotElev")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT

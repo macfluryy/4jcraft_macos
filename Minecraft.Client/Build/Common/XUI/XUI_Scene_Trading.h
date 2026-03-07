@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../Media/xuiscene_trading.h"
 #include "../UI/IUIScene_TradingMenu.h"
 
@@ -112,17 +112,17 @@ protected:
 	virtual void showScrollRightArrow(bool show);
 	virtual void showScrollLeftArrow(bool show);
 	virtual void moveSelector(bool right);
-	virtual void setRequest1Name(const wstring &name);
-	virtual void setRequest2Name(const wstring &name);
-	virtual void setTitle(const wstring &name);
+	virtual void setRequest1Name(const std::wstring &name);
+	virtual void setRequest2Name(const std::wstring &name);
+	virtual void setTitle(const std::wstring &name);
 
 	virtual void setRequest1RedBox(bool show);
 	virtual void setRequest2RedBox(bool show);
 	virtual void setTradeRedBox(int index, bool show);
 
-	virtual void setRequest1Item(shared_ptr<ItemInstance> item);
-	virtual void setRequest2Item(shared_ptr<ItemInstance> item);
-	virtual void setTradeItem(int index, shared_ptr<ItemInstance> item);
+	virtual void setRequest1Item(std::shared_ptr<ItemInstance> item);
+	virtual void setRequest2Item(std::shared_ptr<ItemInstance> item);
+	virtual void setTradeItem(int index, std::shared_ptr<ItemInstance> item);
 	
-	virtual void setOfferDescription(const wstring &name, vector<wstring> &unformattedStrings);
+	virtual void setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings);
 };

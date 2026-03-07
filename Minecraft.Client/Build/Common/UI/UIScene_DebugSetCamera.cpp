@@ -57,7 +57,7 @@ UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void *initData, UILayer
 	m_labelYRotElev.init(L"Y-Rot & Elevation (Degs)");
 }
 
-wstring UIScene_DebugSetCamera::getMoviePath()
+std::wstring UIScene_DebugSetCamera::getMoviePath()
 {
 	return L"DebugSetCamera";
 }
@@ -125,7 +125,7 @@ int UIScene_DebugSetCamera::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
 
 	if(pchText[0]!=0)
 	{
-		wstring value = (wchar_t *)pchText;
+		std::wstring value = (wchar_t *)pchText;
 		double val = 0; 
 		if(!value.empty()) val = _fromString<double>( value );
 		switch(pClass->m_keyboardCallbackControl)

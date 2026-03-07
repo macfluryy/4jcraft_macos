@@ -171,7 +171,7 @@ HRESULT CScene_TutorialPopup::_SetDescription(CXuiScene *interactScene, LPCWSTR 
 
 		if(isReminder)
 		{
-			wstring text(app.GetString( IDS_TUTORIAL_REMINDER ));
+			std::wstring text(app.GetString( IDS_TUTORIAL_REMINDER ));
 			text.append( desc );
 			// set the text colour
 			wchar_t formatting[40];
@@ -182,7 +182,7 @@ HRESULT CScene_TutorialPopup::_SetDescription(CXuiScene *interactScene, LPCWSTR 
 		}
 		else
 		{
-			wstring text(desc);
+			std::wstring text(desc);
 			// set the text colour
 			wchar_t formatting[40];
 			swprintf(formatting, 40, L"<font color=\"#%08x\" size=\"%d\">",app.GetHTMLColour(eHTMLColor_White),m_textFontSize);
@@ -264,7 +264,7 @@ HRESULT CScene_TutorialPopup::SetDescription(int iPad, TutorialPopupInfo *info)
 		if (FAILED(hr))
 			return hr;
 
-		wstring parsed = pThis->_SetIcon(info->icon, info->iAuxVal, info->isFoil, info->desc);
+		std::wstring parsed = pThis->_SetIcon(info->icon, info->iAuxVal, info->isFoil, info->desc);
 		parsed = pThis->_SetImage( parsed );
 		parsed = CScene_TutorialPopup::ParseDescription(iPad, parsed);
 		if(parsed.empty())
@@ -280,24 +280,24 @@ HRESULT CScene_TutorialPopup::SetDescription(int iPad, TutorialPopupInfo *info)
 	return hr;
 }
 
-wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc)
+std::wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc)
 {
-	wstring temp(desc);
+	std::wstring temp(desc);
 
 	BOOL iconShowAtStart = m_pCraftingPic->IsShown();
 
 	if( icon != TUTORIAL_NO_ICON )
 	{
 		bool itemIsFoil = false;
-		itemIsFoil = (shared_ptr<ItemInstance>(new ItemInstance(icon,1,iAuxVal)))->isFoil();
+		itemIsFoil = (std::shared_ptr<ItemInstance>(new ItemInstance(icon,1,iAuxVal)))->isFoil();
 		if(!itemIsFoil) itemIsFoil = isFoil;
 
 		m_pCraftingPic->SetIcon(m_iPad, icon,iAuxVal,1,10,31,false,itemIsFoil);
 	}
 	else
 	{
-		wstring openTag(L"{*ICON*}");
-		wstring closeTag(L"{*/ICON*}");
+		std::wstring openTag(L"{*ICON*}");
+		std::wstring closeTag(L"{*/ICON*}");
 		int iconTagStartPos = (int)temp.find(openTag);
 		int iconStartPos = iconTagStartPos + (int)openTag.length();
 		if( iconTagStartPos > 0 && iconStartPos < (int)temp.length() )
@@ -306,9 +306,9 @@ wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWS
 
 			if(iconEndPos > iconStartPos && iconEndPos < (int)temp.length() )
 			{
-				wstring id = temp.substr(iconStartPos, iconEndPos - iconStartPos);
+				std::wstring id = temp.substr(iconStartPos, iconEndPos - iconStartPos);
 
-				vector<wstring> idAndAux = stringSplit(id,L':');
+				std::vector<std::wstring> idAndAux = stringSplit(id,L':');
 
 				int iconId = _fromString<int>(idAndAux[0]);
 
@@ -322,7 +322,7 @@ wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWS
 				}
 
 				bool itemIsFoil = false;
-				itemIsFoil = (shared_ptr<ItemInstance>(new ItemInstance(iconId,1,iAuxVal)))->isFoil();
+				itemIsFoil = (std::shared_ptr<ItemInstance>(new ItemInstance(iconId,1,iAuxVal)))->isFoil();
 				if(!itemIsFoil) itemIsFoil = isFoil;
 
 				m_pCraftingPic->SetIcon(m_iPad, iconId,iAuxVal,1,10,31,false,itemIsFoil);
@@ -332,75 +332,75 @@ wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWS
 		}
 	
 		// remove any icon text
-		else if(temp.find(L"{*CraftingTableIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*CraftingTableIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::workBench->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*SticksIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*SticksIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::stick->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*PlanksIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*PlanksIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::wood->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*WoodenShovelIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*WoodenShovelIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::shovel_wood->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*WoodenHatchetIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*WoodenHatchetIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::hatchet_wood->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*WoodenPickaxeIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*WoodenPickaxeIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::pickAxe_wood->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*FurnaceIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*FurnaceIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::furnace_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*WoodenDoorIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*WoodenDoorIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::door_wood->id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*TorchIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*TorchIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::torch_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*BoatIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*BoatIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::boat_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*FishingRodIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*FishingRodIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::fishingRod_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*FishIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*FishIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::fish_raw_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*MinecartIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*MinecartIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Item::minecart_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*RailIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*RailIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::rail_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*PoweredRailIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*PoweredRailIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::goldenRail_Id,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*StructuresIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*StructuresIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, XZP_ICON_STRUCTURES,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*ToolsIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*ToolsIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, XZP_ICON_TOOLS,0,1,10,31,false);
 		}
-		else if(temp.find(L"{*StoneIcon*}")!=wstring::npos)
+		else if(temp.find(L"{*StoneIcon*}")!=std::wstring::npos)
 		{
 			m_pCraftingPic->SetIcon(m_iPad, Tile::rock_Id,0,1,10,31,false);
 		}
@@ -436,13 +436,13 @@ wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWS
 	return temp;
 }
 
-wstring CScene_TutorialPopup::_SetImage(wstring &desc)
+std::wstring CScene_TutorialPopup::_SetImage(std::wstring &desc)
 {
 
 	BOOL imageShowAtStart = m_image.IsShown();
 
-	wstring openTag(L"{*IMAGE*}");
-	wstring closeTag(L"{*/IMAGE*}");
+	std::wstring openTag(L"{*IMAGE*}");
+	std::wstring closeTag(L"{*/IMAGE*}");
 	int imageTagStartPos = (int)desc.find(openTag);
 	int imageStartPos = imageTagStartPos + (int)openTag.length();
 	if( imageTagStartPos > 0 && imageStartPos < (int)desc.length() )
@@ -451,7 +451,7 @@ wstring CScene_TutorialPopup::_SetImage(wstring &desc)
 
 		if(imageEndPos > imageStartPos && imageEndPos < (int)desc.length() )
 		{
-			wstring id = desc.substr(imageStartPos, imageEndPos - imageStartPos);
+			std::wstring id = desc.substr(imageStartPos, imageEndPos - imageStartPos);
 			m_image.SetImagePath( id.c_str() );
 			m_image.SetShow( TRUE );
 
@@ -490,7 +490,7 @@ wstring CScene_TutorialPopup::_SetImage(wstring &desc)
 }
 
 
-wstring CScene_TutorialPopup::ParseDescription(int iPad, wstring &text)
+std::wstring CScene_TutorialPopup::ParseDescription(int iPad, std::wstring &text)
 {
 	text = replaceAll(text, L"{*CraftingTableIcon*}", L"");
 	text = replaceAll(text, L"{*SticksIcon*}", L"");

@@ -340,7 +340,7 @@ void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(INetworkPlayer *pN
 // 				m_hostGameSessionData.players[i] = ((NetworkPlayerXbox *)pNetworkPlayer)->GetUID();
 // 
 // 				char *temp;
-// 				temp = (char *)wstringtofilename( pNetworkPlayer->GetOnlineName() );
+// 				temp = (char *)std::wstringtofilename( pNetworkPlayer->GetOnlineName() );
 // 				memcpy(m_hostGameSessionData.szPlayers[i],temp,XUSER_NAME_SIZE);
 // 			}
 // 			else
@@ -476,14 +476,14 @@ bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer *pNetworkPlayer, 
 	return false;
 }
 
-wstring CPlatformNetworkManagerStub::GatherStats()
+std::wstring CPlatformNetworkManagerStub::GatherStats()
 {
 	return L"";
 }
 
-wstring CPlatformNetworkManagerStub::GatherRTTStats()
+std::wstring CPlatformNetworkManagerStub::GatherRTTStats()
 {
-	wstring stats(L"Rtt: ");
+	std::wstring stats(L"Rtt: ");
 
 	wchar_t stat[32];
 
@@ -520,9 +520,9 @@ void CPlatformNetworkManagerStub::SetSearchResultsReady(int resultCount)
 	m_searchResultsCount[m_lastSearchPad] = resultCount;
 }
 
-vector<FriendSessionInfo *> *CPlatformNetworkManagerStub::GetSessionList(int iPad, int localPlayers, bool partyOnly)
+std::vector<FriendSessionInfo *> *CPlatformNetworkManagerStub::GetSessionList(int iPad, int localPlayers, bool partyOnly)
 {
-	vector<FriendSessionInfo *> *filteredList = new vector<FriendSessionInfo *>();;
+	std::vector<FriendSessionInfo *> *filteredList = new std::vector<FriendSessionInfo *>();;
 	return filteredList;
 }
 

@@ -20,7 +20,7 @@ public:
 	virtual int getEndZ() { return m_z1; }
 
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttrs);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	bool generateBoxInLevel(StructurePiece *structure, Level *level, BoundingBox *chunkBB);
 };

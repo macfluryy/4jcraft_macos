@@ -94,7 +94,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 
 	// set the default text
 #ifdef _LARGE_WORLDS
-	wstring wsText=L"";
+	std::wstring wsText=L"";
 	if(m_params->bGenerateOptions)
 	{
 		wsText = app.GetString(IDS_GAMEOPTION_SEED);
@@ -104,7 +104,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(int iPad, void *ini
 		wsText = app.GetString(IDS_GAMEOPTION_ONLINE);
 	}
 #else
-	wstring wsText=app.GetString(IDS_GAMEOPTION_ONLINE);
+	std::wstring wsText=app.GetString(IDS_GAMEOPTION_ONLINE);
 #endif
 	EHTMLFontSize size = eHTMLSize_Normal;
 	if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
@@ -161,7 +161,7 @@ void UIScene_LaunchMoreOptionsMenu::updateComponents()
 #endif
 }
 
-wstring UIScene_LaunchMoreOptionsMenu::getMoviePath()
+std::wstring UIScene_LaunchMoreOptionsMenu::getMoviePath()
 {
 	return L"LaunchMoreOptionsMenu";
 }
@@ -360,7 +360,7 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId, F64 childId
 #endif
 	};
 
-	wstring wsText=app.GetString(stringId);	
+	std::wstring wsText=app.GetString(stringId);	
 	EHTMLFontSize size = eHTMLSize_Normal;
 	if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
 	{

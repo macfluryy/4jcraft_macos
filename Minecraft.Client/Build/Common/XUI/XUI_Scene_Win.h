@@ -44,11 +44,11 @@ private:
 	bool m_bIgnoreInput;
 	int m_iPad;
 	D3DXVECTOR3 m_OriginalPosition;
-	wstring noNoiseString;
-	wstring noiseString;
+	std::wstring noNoiseString;
+	std::wstring noiseString;
 	int m_scrollDir;
 
-	vector<int> m_noiseLengths;
+	std::vector<int> m_noiseLengths;
 
 	void updateNoise();
 

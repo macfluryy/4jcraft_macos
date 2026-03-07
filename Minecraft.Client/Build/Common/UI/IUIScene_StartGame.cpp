@@ -356,7 +356,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(void *pParam,int iPad,C4JStora
 		{	
 			if (ProfileManager.IsSignedInLive(iPad))
 			{
-				wstring ProductId;
+				std::wstring ProductId;
 				app.GetDLCFullOfferIDForPackID(pClass->m_MoreOptionsParams.dwTexturePack,ProductId);
 
 

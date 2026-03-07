@@ -27,7 +27,7 @@ UIComponent_DebugUIMarketingGuide::UIComponent_DebugUIMarketingGuide(int iPad, v
 	IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcSetPlatform , 1 , value );
 }
 
-wstring UIComponent_DebugUIMarketingGuide::getMoviePath()
+std::wstring UIComponent_DebugUIMarketingGuide::getMoviePath()
 {
 	return L"DebugUIMarketingGuide";
 }

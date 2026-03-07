@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "TutorialTask.h"
 
@@ -7,8 +7,8 @@ using namespace std;
 class ControllerTask : public TutorialTask
 {
 private:
-	unordered_map<int, bool> completedMappings;
-	unordered_map<int, bool> southpawCompletedMappings;
+	std::unordered_map<int, bool> completedMappings;
+	std::unordered_map<int, bool> southpawCompletedMappings;
 	bool m_bHasSouthpaw;
 	unsigned int m_uiCompletionMask;
 	int *m_iCompletionMaskA;

@@ -6,7 +6,7 @@
 #include "../../../Platform/Xbox/XML/xmlFilesCallback.h"
 #endif
 
-DLCAudioFile::DLCAudioFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Audio,path)
+DLCAudioFile::DLCAudioFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Audio,path)
 {	
 	m_pbData = NULL;
 	m_dwBytes = 0;
@@ -32,7 +32,7 @@ WCHAR *DLCAudioFile::wchTypeNamesA[]=
 	L"CREDIT",
 };
 
-DLCAudioFile::EAudioParameterType DLCAudioFile::getParameterType(const wstring &paramName)
+DLCAudioFile::EAudioParameterType DLCAudioFile::getParameterType(const std::wstring &paramName)
 {
 	EAudioParameterType type = e_AudioParamType_Invalid;
 
@@ -48,7 +48,7 @@ DLCAudioFile::EAudioParameterType DLCAudioFile::getParameterType(const wstring &
 	return type;
 }
 
-void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, const wstring &value)
+void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, const std::wstring &value)
 {
 	switch(ptype)
 	{
@@ -79,7 +79,7 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 					maximumChars = 35;
 					break;
 				}
-				wstring creditValue = value;
+				std::wstring creditValue = value;
 				while (creditValue.length() > maximumChars)
 				{
 					unsigned int i = 1;
@@ -122,7 +122,7 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 
 bool DLCAudioFile::processDLCDataFile(PBYTE pbData, DWORD dwLength)
 {
-	unordered_map<int, EAudioParameterType> parameterMapping;
+	std::unordered_map<int, EAudioParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
 
 	// File format defined in the AudioPacker
@@ -145,7 +145,7 @@ bool DLCAudioFile::processDLCDataFile(PBYTE pbData, DWORD dwLength)
 	for(unsigned int i=0;i<uiParameterTypeCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		wstring parameterName((WCHAR *)pParams->wchData);
+		std::wstring parameterName((WCHAR *)pParams->wchData);
 		EAudioParameterType type = getParameterType(parameterName);
 		if( type != e_AudioParamType_Invalid )
 		{
@@ -204,7 +204,7 @@ int DLCAudioFile::GetCountofType(DLCAudioFile::EAudioType eType)
 }
 
 
-wstring &DLCAudioFile::GetSoundName(int iIndex)
+std::wstring &DLCAudioFile::GetSoundName(int iIndex)
 {
 	int iWorldType=e_AudioType_Overworld;
 	while(iIndex>=m_parameters[iWorldType].size())

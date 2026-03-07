@@ -15,7 +15,7 @@ private:
 	BYTE m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
 	char m_playersVoiceState[MINECRAFT_NET_MAX_PLAYERS];
 	short m_playersColourState[MINECRAFT_NET_MAX_PLAYERS];
-	wstring m_playerNames[MINECRAFT_NET_MAX_PLAYERS];
+	std::wstring m_playerNames[MINECRAFT_NET_MAX_PLAYERS];
 
 	UIControl_PlayerList m_playerList;
 	UIControl_Label m_labelTitle;
@@ -35,7 +35,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT

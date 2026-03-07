@@ -10,7 +10,7 @@ private:
 	int m_max;
 	int m_current;
 
-	vector<wstring> m_allPossibleLabels;
+	std::vector<std::wstring> m_allPossibleLabels;
 
 	// 4J-TomK - function for setting slider position on touch
 	IggyName m_funcSetRelativeSliderPos;
@@ -21,7 +21,7 @@ public:
 
 	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
 
-	void init(const wstring &label, int id, int min, int max, int current);
+	void init(const std::wstring &label, int id, int min, int max, int current);
 
 	void handleSliderMove(int newValue);
 	void SetSliderTouchPos(float fTouchPos);

@@ -48,7 +48,7 @@ UIScene_SaveMessage::~UIScene_SaveMessage()
 	m_parentLayer->removeComponent(eUIComponent_Logo);
 }
 
-wstring UIScene_SaveMessage::getMoviePath()
+std::wstring UIScene_SaveMessage::getMoviePath()
 {
 	return L"SaveMessage";
 }

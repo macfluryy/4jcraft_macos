@@ -32,7 +32,7 @@ void SoundEngine::init(Options *pOptions)
 {
 }
 
-void SoundEngine::tick(shared_ptr<Mob> *players, float a)
+void SoundEngine::tick(std::shared_ptr<Mob> *players, float a)
 {
 }
 void SoundEngine::destroy() {}
@@ -40,16 +40,16 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 {
 	app.DebugPrintf("PlaySound - %d\n",iSound);
 }
-void SoundEngine::playStreaming(const wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay) {}
+void SoundEngine::playStreaming(const std::wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay) {}
 void SoundEngine::playUI(int iSound, float volume, float pitch) {}
 
 void SoundEngine::updateMusicVolume(float fVal) {}
 void SoundEngine::updateSoundEffectVolume(float fVal) {}
 
-void SoundEngine::add(const wstring& name, File *file) {}
-void SoundEngine::addMusic(const wstring& name, File *file) {}
-void SoundEngine::addStreaming(const wstring& name, File *file) {}
-char *SoundEngine::ConvertSoundPathToName(const wstring& name, bool bConvertSpaces) { return NULL; }
+void SoundEngine::add(const std::wstring& name, File *file) {}
+void SoundEngine::addMusic(const std::wstring& name, File *file) {}
+void SoundEngine::addStreaming(const std::wstring& name, File *file) {}
+char *SoundEngine::ConvertSoundPathToName(const std::wstring& name, bool bConvertSpaces) { return NULL; }
 bool SoundEngine::isStreamingWavebankReady() { return true; }
 void SoundEngine::playMusicTick() {};
 void SoundEngine::SetStreamingSounds(int, int, int, int, int, int, int) {}
@@ -631,7 +631,7 @@ static float fVal=0.0f;
 static S32 running = AIL_ms_count();
 #endif
 
-void SoundEngine::tick(shared_ptr<Mob> *players, float a)
+void SoundEngine::tick(std::shared_ptr<Mob> *players, float a)
 {
 #ifdef __DISABLE_MILES__
 	return;
@@ -749,7 +749,7 @@ void SoundEngine::destroy() {}
 void SoundEngine::GetSoundName(char *szSoundName,int iSound)
 {
 	strcpy((char *)szSoundName,"Minecraft/");
-	wstring name = wchSoundNames[iSound];
+	std::wstring name = wchSoundNames[iSound];
 	char *SoundName = (char *)ConvertSoundPathToName(name);
 	strcat((char *)szSoundName,SoundName);
 }
@@ -774,7 +774,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 	/*	// if we are already playing loads of this sounds ignore this one
 	if(CurrentSoundsPlaying[iSound+eSFX_MAX]>MAX_SAME_SOUNDS_PLAYING) 
 	{
-	// 		wstring name = wchSoundNames[iSound];
+	// 		std::wstring name = wchSoundNames[iSound];
 	// 		char *SoundName = (char *)ConvertSoundPathToName(name);
 	// 		app.DebugPrintf("Too many %s sounds playing!\n",SoundName);
 	return;
@@ -786,9 +786,9 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 	strcpy((char *)szSoundName,"Minecraft/");
 
 #ifdef DISTORTION_TEST
-	wstring name = wchSoundNames[eSoundType_MOB_ENDERDRAGON_GROWL];
+	std::wstring name = wchSoundNames[eSoundType_MOB_ENDERDRAGON_GROWL];
 #else
-	wstring name = wchSoundNames[iSound];
+	std::wstring name = wchSoundNames[iSound];
 #endif
 
 	char *SoundName = (char *)ConvertSoundPathToName(name);
@@ -822,7 +822,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume, floa
 void SoundEngine::playUI(int iSound, float volume, float pitch) 
 {
 	U8 szSoundName[256];
-	wstring name;
+	std::wstring name;
 	// we have some game sounds played as UI sounds...
 	// Not the best way to do this, but it seems to only be the portal sounds
 
@@ -881,7 +881,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch)
 //	playStreaming
 //
 /////////////////////////////////////////////
-void SoundEngine::playStreaming(const wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay)
+void SoundEngine::playStreaming(const std::wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay)
 {
 	// This function doesn't actually play a streaming sound, just sets states and an id for the music tick to play it
 	// Level audio will be played when a play with an empty name comes in
@@ -1059,7 +1059,7 @@ int SoundEngine::getMusicID(int iDomain)
 //
 /////////////////////////////////////////////
 // check what the CD is
-int SoundEngine::getMusicID(const wstring& name)
+int SoundEngine::getMusicID(const std::wstring& name)
 {
 	int iCD=0;
 	char *SoundName = (char *)ConvertSoundPathToName(name,true);
@@ -1126,9 +1126,9 @@ void SoundEngine::updateSoundEffectVolume(float fVal)
 	//AIL_set_variable_float(0,"UserEffectVol",fVal);
 }
 
-void SoundEngine::add(const wstring& name, File *file) {}
-void SoundEngine::addMusic(const wstring& name, File *file) {}
-void SoundEngine::addStreaming(const wstring& name, File *file) {}
+void SoundEngine::add(const std::wstring& name, File *file) {}
+void SoundEngine::addMusic(const std::wstring& name, File *file) {}
+void SoundEngine::addStreaming(const std::wstring& name, File *file) {}
 bool SoundEngine::isStreamingWavebankReady() { return true; }
 
 int SoundEngine::OpenStreamThreadProc( void* lpParameter )
@@ -1225,12 +1225,12 @@ void SoundEngine::playMusicUpdate()
 					m_StreamingAudioInfo.bIs3D=false;
 				
 #ifdef _XBOX_ONE
-					wstring &wstrSoundName=dlcAudioFile->GetSoundName(m_musicID);
-					wstring wstrFile=L"TPACK:\\Data\\" + wstrSoundName +L".binka";
+					std::wstring &wstrSoundName=dlcAudioFile->GetSoundName(m_musicID);
+					std::wstring wstrFile=L"TPACK:\\Data\\" + wstrSoundName +L".binka";
 					std::wstring mountedPath = StorageManager.GetMountedPath(wstrFile);
 					wcstombs(m_szStreamName,mountedPath.c_str(),255);
 #else
-					wstring &wstrSoundName=dlcAudioFile->GetSoundName(m_musicID);
+					std::wstring &wstrSoundName=dlcAudioFile->GetSoundName(m_musicID);
 					char szName[255];
 					wcstombs(szName,wstrSoundName.c_str(),255);
 
@@ -1323,7 +1323,7 @@ void SoundEngine::playMusicUpdate()
 #endif
 			}
 
-			// 			wstring name = m_szStreamFileA[m_musicID];
+			// 			std::wstring name = m_szStreamFileA[m_musicID];
 			// 			char *SoundName = (char *)ConvertSoundPathToName(name);
 			// 			strcat((char *)szStreamName,SoundName);
 
@@ -1632,7 +1632,7 @@ void SoundEngine::playMusicUpdate()
 //	ConvertSoundPathToName
 //
 /////////////////////////////////////////////
-char *SoundEngine::ConvertSoundPathToName(const wstring& name, bool bConvertSpaces)
+char *SoundEngine::ConvertSoundPathToName(const std::wstring& name, bool bConvertSpaces)
 {
 	static char buf[256];
 	assert(name.length()<256);

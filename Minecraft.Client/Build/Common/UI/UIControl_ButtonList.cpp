@@ -70,7 +70,7 @@ void UIControl_ButtonList::addItem(const string &label)
 	addItem(label, m_itemCount);
 }
 
-void UIControl_ButtonList::addItem(const wstring &label)
+void UIControl_ButtonList::addItem(const std::wstring &label)
 {
 	addItem(label, m_itemCount);
 }
@@ -93,7 +93,7 @@ void UIControl_ButtonList::addItem(const string &label, int data)
 	++m_itemCount;
 }
 
-void UIControl_ButtonList::addItem(const wstring &label, int data)
+void UIControl_ButtonList::addItem(const std::wstring &label, int data)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];
@@ -143,7 +143,7 @@ void UIControl_ButtonList::updateChildFocus(int iChild)
 	m_iCurrentSelection = iChild;
 }
 
-void UIControl_ButtonList::setButtonLabel(int iButtonId, const wstring &label)
+void UIControl_ButtonList::setButtonLabel(int iButtonId, const std::wstring &label)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

@@ -45,8 +45,8 @@ protected:
 	virtual bool doesSectionTreeHaveFocus(ESceneSection eSection) { return false; }
 	virtual void setSectionFocus(ESceneSection eSection, int iPad);
 	void setFocusToPointer(int iPad);
-	void SetPointerText(const wstring &description, vector<wstring> &unformattedStrings, bool newSlot);
-	virtual shared_ptr<ItemInstance> getSlotItem(ESceneSection eSection, int iSlot);
+	void SetPointerText(const std::wstring &description, std::vector<std::wstring> &unformattedStrings, bool newSlot);
+	virtual std::shared_ptr<ItemInstance> getSlotItem(ESceneSection eSection, int iSlot);
 	virtual bool isSlotEmpty(ESceneSection eSection, int iSlot);
 	virtual void adjustPointerForSafeZone();
 

@@ -28,7 +28,7 @@ UIScene_SettingsAudioMenu::~UIScene_SettingsAudioMenu()
 {
 }
 
-wstring UIScene_SettingsAudioMenu::getMoviePath()
+std::wstring UIScene_SettingsAudioMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

@@ -26,6 +26,6 @@ public:
 	virtual void SetSocket(Socket *pSocket) = 0;
 	virtual Socket *GetSocket() = 0;
 	virtual const wchar_t *GetOnlineName() = 0;
-	virtual wstring GetDisplayName() = 0;
+	virtual std::wstring GetDisplayName() = 0;
 	virtual PlayerUID GetUID() = 0;
 };

@@ -8,7 +8,7 @@ class InventoryMenu;
 class UIScene_BrewingStandMenu : public UIScene_AbstractContainerMenu, public IUIScene_BrewingMenu
 {
 private:
-	shared_ptr<BrewingStandTileEntity> m_brewingStand;
+	std::shared_ptr<BrewingStandTileEntity> m_brewingStand;
 
 public:
 	UIScene_BrewingStandMenu(int iPad, void *initData, UILayer *parentLayer);
@@ -33,7 +33,7 @@ protected:
 		UI_END_MAP_CHILD_ELEMENTS()
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	virtual void handleReload();
 
 	virtual void tick();

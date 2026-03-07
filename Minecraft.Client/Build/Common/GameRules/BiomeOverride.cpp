@@ -21,7 +21,7 @@ void BiomeOverride::writeAttributes(DataOutputStream *dos, UINT numAttrs)
 	dos->writeUTF(_toString(m_topTile));
 }
 
-void BiomeOverride::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void BiomeOverride::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"tileId") == 0)
 	{

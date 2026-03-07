@@ -143,7 +143,7 @@ void UIScene_SkinSelectMenu::updateComponents()
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
-wstring UIScene_SkinSelectMenu::getMoviePath()
+std::wstring UIScene_SkinSelectMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -746,8 +746,8 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 {
 	BOOL showPrevious = FALSE, showNext = FALSE;
 	DWORD previousIndex = 0, nextIndex = 0;
-	wstring skinName = L"";
-	wstring skinOrigin = L"";
+	std::wstring skinName = L"";
+	std::wstring skinOrigin = L"";
 	bool bSkinIsFree=false;
 	bool bLicensed=false;
 	DLCSkinFile *skinFile=NULL;
@@ -872,7 +872,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 	{
 		// add the boxes to the humanoid model, but only if we've not done this already
 
-		vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+		std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
 		if(pAdditionalModelParts==NULL)
 		{
 			pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),m_vAdditionalSkinBoxes);
@@ -892,9 +892,9 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 	nextIndex = getNextSkinIndex(m_skinIndex);
 	previousIndex = getPreviousSkinIndex(m_skinIndex);
 
-	wstring otherSkinPath = L"";
-	wstring otherCapePath = L"";
-	vector<SKIN_BOX *> *othervAdditionalSkinBoxes=NULL;
+	std::wstring otherSkinPath = L"";
+	std::wstring otherCapePath = L"";
+	std::vector<SKIN_BOX *> *othervAdditionalSkinBoxes=NULL;
 	wchar_t chars[256];
 
 	// turn off all displays
@@ -986,7 +986,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 			}
 			if(othervAdditionalSkinBoxes && othervAdditionalSkinBoxes->size()!=0)
 			{
-				vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+				std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
 				if(pAdditionalModelParts==NULL)
 				{
 					pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),othervAdditionalSkinBoxes);
@@ -1057,7 +1057,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 			}
 			if(othervAdditionalSkinBoxes && othervAdditionalSkinBoxes->size()!=0)
 			{
-				vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
+				std::vector<ModelPart *> *pAdditionalModelParts = app.GetAdditionalModelParts(skinFile->getSkinID());
 				if(pAdditionalModelParts==NULL)
 				{
 					pAdditionalModelParts = app.SetAdditionalSkinBoxes(skinFile->getSkinID(),othervAdditionalSkinBoxes);
@@ -1358,7 +1358,7 @@ void UIScene_SkinSelectMenu::setCharacterLocked(bool locked)
 	IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcSetCharacterLocked , 1 , value );
 }
 
-void UIScene_SkinSelectMenu::setLeftLabel(const wstring &label)
+void UIScene_SkinSelectMenu::setLeftLabel(const std::wstring &label)
 {
 	if(label.compare(m_leftLabel) != 0)
 	{
@@ -1377,7 +1377,7 @@ void UIScene_SkinSelectMenu::setLeftLabel(const wstring &label)
 	}
 }
 
-void UIScene_SkinSelectMenu::setCentreLabel(const wstring &label)
+void UIScene_SkinSelectMenu::setCentreLabel(const std::wstring &label)
 {
 	if(label.compare(m_centreLabel) != 0)
 	{
@@ -1396,7 +1396,7 @@ void UIScene_SkinSelectMenu::setCentreLabel(const wstring &label)
 	}
 }
 
-void UIScene_SkinSelectMenu::setRightLabel(const wstring &label)
+void UIScene_SkinSelectMenu::setRightLabel(const std::wstring &label)
 {
 	if(label.compare(m_rightLabel) != 0)
 	{
@@ -1664,8 +1664,8 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 			// need to get info on the pack to see if the user has already downloaded it
 
 			// retrieve the store name for the skin pack
-			wstring wStrPackName=pScene->m_currentPack->getName();
-			const char *pchPackName=wstringtofilename(wStrPackName);
+			std::wstring wStrPackName=pScene->m_currentPack->getName();
+			const char *pchPackName=std::wstringtofilename(wStrPackName);
 			SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);
 
 			if (pSONYDLCInfo != NULL)

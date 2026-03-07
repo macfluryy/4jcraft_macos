@@ -14,7 +14,7 @@ bool UIControl_PlayerList::setupControl(UIScene *scene, IggyValuePath *parent, c
 	return success;
 }
 
-void UIControl_PlayerList::addItem(const wstring &label, int iPlayerIcon, int iVOIPIcon)
+void UIControl_PlayerList::addItem(const std::wstring &label, int iPlayerIcon, int iVOIPIcon)
 {
 	IggyDataValue result;
 	IggyDataValue value[4];

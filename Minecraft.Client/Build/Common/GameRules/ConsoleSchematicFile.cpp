@@ -116,7 +116,7 @@ void ConsoleSchematicFile::load(DataInputStream *dis)
 			for (int i = 0; i < tileEntityTags->size(); i++)
 			{
 				CompoundTag *teTag = tileEntityTags->get(i);
-				shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
+				std::shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
 
 				if(te == NULL)
 				{
@@ -433,7 +433,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk *chunk, AABB *chunkBox, 
 {
 	for(AUTO_VAR(it, m_tileEntities.begin()); it != m_tileEntities.end();++it)
 	{
-		shared_ptr<TileEntity> te = *it;
+		std::shared_ptr<TileEntity> te = *it;
 
 		double targetX = te->x;
 		double targetY = te->y + destinationBox->y0;
@@ -444,7 +444,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk *chunk, AABB *chunkBox, 
 		Vec3 *pos = Vec3::newTemp(targetX,targetY,targetZ);
 		if( chunkBox->containsIncludingLowerBound(pos) )
 		{
-			shared_ptr<TileEntity> teCopy = chunk->getTileEntity( (int)targetX & 15, (int)targetY & 15, (int)targetZ & 15 );
+			std::shared_ptr<TileEntity> teCopy = chunk->getTileEntity( (int)targetX & 15, (int)targetY & 15, (int)targetZ & 15 );
 
 			if ( teCopy != NULL )
 			{				
@@ -495,11 +495,11 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk *chunk, AABB *chunkBox, 
 		}
 
 		CompoundTag *eTag = it->second;
-		shared_ptr<Entity> e = EntityIO::loadStatic(eTag, NULL);
+		std::shared_ptr<Entity> e = EntityIO::loadStatic(eTag, NULL);
 
 		if( e->GetType() == eTYPE_PAINTING )
 		{
-			shared_ptr<Painting> painting = dynamic_pointer_cast<Painting>(e);
+			std::shared_ptr<Painting> painting = dynamic_pointer_cast<Painting>(e);
 				
 			double tileX = painting->xTile;
 			double tileZ = painting->zTile;
@@ -512,7 +512,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk *chunk, AABB *chunkBox, 
 		}
 		else if( e->GetType() == eTYPE_ITEM_FRAME )
 		{
-			shared_ptr<ItemFrame> frame = dynamic_pointer_cast<ItemFrame>(e);
+			std::shared_ptr<ItemFrame> frame = dynamic_pointer_cast<ItemFrame>(e);
 				
 			double tileX = frame->xTile;
 			double tileZ = frame->zTile;
@@ -678,12 +678,12 @@ void ConsoleSchematicFile::generateSchematicFile(DataOutputStream *dos, Level *l
 	{
 		for (int zc = zc0; zc <= zc1; zc++)
 		{
-			vector<shared_ptr<TileEntity> > *tileEntities = getTileEntitiesInRegion(level->getChunk(xc, zc), xStart, yStart, zStart, xStart + xSize, yStart + ySize, zStart + zSize);
+			std::vector<std::shared_ptr<TileEntity> > *tileEntities = getTileEntitiesInRegion(level->getChunk(xc, zc), xStart, yStart, zStart, xStart + xSize, yStart + ySize, zStart + zSize);
 			for(AUTO_VAR(it, tileEntities->begin()); it != tileEntities->end(); ++it)
 			{
-				shared_ptr<TileEntity> te = *it;
+				std::shared_ptr<TileEntity> te = *it;
 				CompoundTag *teTag = new CompoundTag();
-				shared_ptr<TileEntity> teCopy = te->clone();
+				std::shared_ptr<TileEntity> teCopy = te->clone();
 
 				// Adjust the tileEntity position to schematic coords from world co-ords
 				teCopy->x -= xStart;
@@ -698,12 +698,12 @@ void ConsoleSchematicFile::generateSchematicFile(DataOutputStream *dos, Level *l
 	tag.put(L"TileEntities", tileEntitiesTag);
 
 	AABB *bb = AABB::newTemp(xStart,yStart,zStart,xEnd,yEnd,zEnd);
-	vector<shared_ptr<Entity> > *entities = level->getEntities(nullptr, bb);
+	std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(nullptr, bb);
 	ListTag<CompoundTag> *entitiesTag = new ListTag<CompoundTag>(L"entities");
 
 	for(AUTO_VAR(it, entities->begin()); it != entities->end(); ++it)
 	{
-		shared_ptr<Entity> e = *it;
+		std::shared_ptr<Entity> e = *it;
 
 		bool mobCanBeSaved = false;
 		if(bSaveMobs)
@@ -1005,12 +1005,12 @@ void ConsoleSchematicFile::setBlocksAndData(LevelChunk *chunk, byteArray blockDa
 	}
 }
 
-vector<shared_ptr<TileEntity> > *ConsoleSchematicFile::getTileEntitiesInRegion(LevelChunk *chunk, int x0, int y0, int z0, int x1, int y1, int z1)
+std::vector<std::shared_ptr<TileEntity> > *ConsoleSchematicFile::getTileEntitiesInRegion(LevelChunk *chunk, int x0, int y0, int z0, int x1, int y1, int z1)
 {
-	vector<shared_ptr<TileEntity> > *result = new vector<shared_ptr<TileEntity> >;
+	std::vector<std::shared_ptr<TileEntity> > *result = new std::vector<std::shared_ptr<TileEntity> >;
 	for (AUTO_VAR(it, chunk->tileEntities.begin()); it != chunk->tileEntities.end(); ++it)
 	{
-		shared_ptr<TileEntity> te = it->second;
+		std::shared_ptr<TileEntity> te = it->second;
 		if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 && te->y < y1 && te->z < z1)
 		{
 			result->push_back(te);

@@ -17,7 +17,7 @@ bool UIControl_Label::setupControl(UIScene *scene, IggyValuePath *parent, const 
 	return success;
 }
 
-void UIControl_Label::init(const wstring &label)
+void UIControl_Label::init(const std::wstring &label)
 {
 	m_label = label;
 

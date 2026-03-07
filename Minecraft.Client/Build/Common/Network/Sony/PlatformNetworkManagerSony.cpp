@@ -1064,7 +1064,7 @@ bool CPlatformNetworkManagerSony::SystemFlagGet(INetworkPlayer *pNetworkPlayer, 
 	return false;
 }
 
-wstring CPlatformNetworkManagerSony::GatherStats()
+std::wstring CPlatformNetworkManagerSony::GatherStats()
 {
 #if 0
 	return L"Queue messages: " + _toString(((NetworkPlayerXbox *)GetHostPlayer())->GetQNetPlayer()->GetSendQueueSize( NULL, QNET_GETSENDQUEUESIZE_MESSAGES ) )
@@ -1074,10 +1074,10 @@ wstring CPlatformNetworkManagerSony::GatherStats()
 #endif
 }
 
-wstring CPlatformNetworkManagerSony::GatherRTTStats()
+std::wstring CPlatformNetworkManagerSony::GatherRTTStats()
 {
 #if 0
-	wstring stats(L"Rtt: ");
+	std::wstring stats(L"Rtt: ");
 
 	wchar_t stat[32];
 
@@ -1141,9 +1141,9 @@ void CPlatformNetworkManagerSony::TickSearch()
 	}
 }
 
-vector<FriendSessionInfo *> *CPlatformNetworkManagerSony::GetSessionList(int iPad, int localPlayers, bool partyOnly)
+std::vector<FriendSessionInfo *> *CPlatformNetworkManagerSony::GetSessionList(int iPad, int localPlayers, bool partyOnly)
 {
-	vector<FriendSessionInfo *> *filteredList = new vector<FriendSessionInfo *>();
+	std::vector<FriendSessionInfo *> *filteredList = new std::vector<FriendSessionInfo *>();
 	for( int i = 0; i < m_searchResultsCount; i++ )
 	{
 		if( m_pSearchResults[i].m_extData )
@@ -1219,7 +1219,7 @@ bool CPlatformNetworkManagerSony::GetGameSessionInfo(int iPad, SessionID session
 				{
 					sessionInfo->data = *(GameSessionData *)pxnqi->pbData;
 
-					wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
+					std::wstring gamerName = convStringToWstring(sessionInfo->data.hostName);
 					swprintf(sessionInfo->displayLabel,app.GetString(IDS_GAME_HOST_NAME),L"MWWWWWWWWWWWWWWM");// gamerName.c_str() );
 				}
 				else

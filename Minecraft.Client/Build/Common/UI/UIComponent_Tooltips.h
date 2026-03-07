@@ -60,7 +60,7 @@ protected:
 		UI_MAP_NAME( m_funcUpdateLayout, L"UpdateLayout")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	
 	virtual F64 getSafeZoneHalfWidth();
 
@@ -99,7 +99,7 @@ public:
 
 private:
 	bool _SetTooltip(unsigned int iToolTip, int iTextID);
-	void _SetTooltip(unsigned int iToolTipId, const wstring &label, bool show, bool force = false);
+	void _SetTooltip(unsigned int iToolTipId, const std::wstring &label, bool show, bool force = false);
 	void _Relayout();
 
 	bool m_overrideSFX[XUSER_MAX_COUNT][ACTION_MAX_MENU];

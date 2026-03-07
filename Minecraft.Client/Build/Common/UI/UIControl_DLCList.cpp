@@ -34,7 +34,7 @@ void UIControl_DLCList::addItem(const string &label, bool showTick, int iId)
 	++m_itemCount;
 }
 
-void UIControl_DLCList::addItem(const wstring &label, bool showTick, int iId)
+void UIControl_DLCList::addItem(const std::wstring &label, bool showTick, int iId)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];

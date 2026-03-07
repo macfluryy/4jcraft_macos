@@ -530,7 +530,7 @@ UIScene_Credits::UIScene_Credits(int iPad, void *initData, UILayer *parentLayer)
 	}
 }
 
-wstring UIScene_Credits::getMoviePath()
+std::wstring UIScene_Credits::getMoviePath()
 {
 	return L"Credits";
 }
@@ -637,7 +637,7 @@ void UIScene_Credits::handleInput(int iPad, int key, bool repeat, bool pressed, 
 	}
 }
 
-void UIScene_Credits::setNextLabel(const wstring &label, ECreditTextTypes size)
+void UIScene_Credits::setNextLabel(const std::wstring &label, ECreditTextTypes size)
 {
 	IggyDataValue result;
 	IggyDataValue value[3];
