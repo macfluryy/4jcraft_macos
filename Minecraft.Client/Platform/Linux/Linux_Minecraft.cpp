@@ -672,7 +672,7 @@ app.loadStringTable();
     // fuck you
     ui.init(1920, 1080);
 // storage manager is needed for the trial key check
-StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,"");
+StorageManager.Init(0,app.GetString(IDS_DEFAULT_SAVENAME),(char*)"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app,(char*)"");
 
 ////////////////
 // Initialise //

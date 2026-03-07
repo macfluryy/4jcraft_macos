@@ -18,7 +18,7 @@ bool TheEndPortal::allowAnywhere()
 
 void TheEndPortal::allowAnywhere(bool set)
 {
-	TlsSetValue(tlsIdx,(LPVOID)(set?1:0));
+	TlsSetValue(tlsIdx,(LPVOID)(intptr_t)(set?1:0));
 }
 
 TheEndPortal::TheEndPortal(int id, Material *material) : EntityTile(id, material, isSolidRender())

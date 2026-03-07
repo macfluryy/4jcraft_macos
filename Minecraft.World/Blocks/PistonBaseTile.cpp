@@ -33,7 +33,7 @@ bool PistonBaseTile::ignoreUpdate()
 
 void PistonBaseTile::ignoreUpdate(bool set)
 {
-	TlsSetValue(tlsIdx,(LPVOID)(set?1:0));
+	TlsSetValue(tlsIdx,(LPVOID)(intptr_t)(set?1:0));
 }
 
 PistonBaseTile::PistonBaseTile(int id, bool isSticky) : Tile(id, Material::piston, isSolidRender() )

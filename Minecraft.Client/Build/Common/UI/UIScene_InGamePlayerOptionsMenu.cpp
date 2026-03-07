@@ -361,7 +361,7 @@ void UIScene_InGamePlayerOptionsMenu::handlePress(F64 controlId, F64 childId)
 int UIScene_InGamePlayerOptionsMenu::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
 	BYTE smallId = *(BYTE *)pParam;
-	delete pParam;
+	delete (BYTE*)pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		

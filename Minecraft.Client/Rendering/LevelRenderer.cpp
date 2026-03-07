@@ -2386,7 +2386,7 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1, Lev
 
 					dirtyChunksLockFreeStack.Push((int *)(index));
 #else
-					dirtyChunksLockFreeStack.Push((int *)(index + 2));		
+					dirtyChunksLockFreeStack.Push((int *)(intptr_t)(index + 2));		
 #endif
 
 #ifdef _XBOX
@@ -3599,7 +3599,7 @@ void LevelRenderer::staticCtor()
 	for(unsigned int i = 0; i < MAX_CHUNK_REBUILD_THREADS; ++i)
 	{
 		sprintf(threadName,"Rebuild Chunk Thread %d\n",i);
-		rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)i,threadName);
+		rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)(intptr_t)i,threadName);
 
 		s_activationEventA[i] = new C4JThread::Event();
 

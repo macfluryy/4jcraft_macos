@@ -7,7 +7,7 @@
 ControlsScreen::ControlsScreen(Screen *lastScreen, Options *options)
 {
 	// 4J - added initialisers
-	title == L"Controls";
+	title = L"Controls";
 	selectedKey = -1;
 
 	this->lastScreen = lastScreen;
