@@ -50,6 +50,14 @@ sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
 
 If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
 
+On Fedora/Nobara
+
+Meson 1.10.0 or higher ([RPM Find meson](https://fr2.rpmfind.net/linux/rpm2html/search.php?query=meson))
+
+```bash
+sudo dnf in gcc gcc-c++ make cmake glfw-devel mesa-libGL-devel mesa-libGLU-devel openal-soft-devel libvorbis-devel libpng-devel openssl-devel
+```
+
 On Docker:
 
 If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you - GCC 15, Meson, Ninja, lld, and all the libraries.
