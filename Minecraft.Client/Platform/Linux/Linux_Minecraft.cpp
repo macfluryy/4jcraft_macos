@@ -991,15 +991,53 @@ Vec3::resetPool();
 std::vector<uint8_t *> vRichPresenceStrings;
 
 // convert std::wstring to UTF-8 string
+// wchar_t is 32bit on all Linux systems, and interpreted as UTF-32
+// the code base stores all strings internally as UCS-2 (16bit, subset of UTF-16),
+// which, scince it only stores BMP code points, is trivially convertable
+// to UTF-32 as well as UTF-16. hence this parser simply parses UTF-32
+
+// all implementations of libc (including glibc, musl, uClibc...) implement
+// wchar_t as 4byte/32bit (scince around 1999), it would break the libc ABI, 
+// if this ever will get changed, hence this assert
+static_assert( sizeof(wchar_t) == 4, "Linux with non 32bit wchar_t")
+
 std::string wstring_to_utf8 (const std::wstring& str)
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
-    return myconv.to_bytes(str);
+	std::string result;
+	// generous pre allocation. will never need to resize.
+	// it well get destructed instantly in the function that it gets called
+	result.reserve(str.size() * 4);
+
+	for (size_t i = 0; i < str.size(); ++i) {
+		uint32_t cp = static_cast<uint32_t>(str[i]);
+
+		// outside of valid unicode range or preserved UTF-16LE surrogate pair
+		if (cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF)) {
+			cp = 0xFFFD; // unicode replacement character
+		}
+
+		if (cp < 0x80) {
+			// ASCII
+			result += static_cast<char>(cp);
+			// extract multibyte unicode into multiple bytes of UTF-8
+		} else if (cp < 0x800) {
+			result += static_cast<char>(0xC0 | (cp >> 6));
+			result += static_cast<char>(0x80 | (cp & 0x3F));
+		} else if (cp < 0x10000) {
+			result += static_cast<char>(0xE0 | (cp >> 12));
+			result += static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+			result += static_cast<char>(0x80 | (cp & 0x3F));
+		} else {
+			result += static_cast<char>(0xF0 | (cp >> 18));
+			result += static_cast<char>(0x80 | ((cp >> 12) & 0x3F));
+			result += static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+			result += static_cast<char>(0x80 | (cp & 0x3F));
+		}
+	}
 }
 
 uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)
 {
-    int result;
     LPCWSTR wchString=app.GetString(iID);
 
     std::wstring srcString = wchString;
