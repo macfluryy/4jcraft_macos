@@ -3250,9 +3250,12 @@ int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z, Level *level)
 int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z, int dimensionId)
 {
 	int dimIdx = getDimensionIndexFromId(dimensionId);
-	int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
-	int yy = y / CHUNK_SIZE;
-	int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	//int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	//int yy = y / CHUNK_SIZE;
+	//int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	int xx = ( Mth::intFloorDiv(x, CHUNK_XZSIZE)) + (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
+	int yy = Mth::intFloorDiv(y, CHUNK_SIZE);
+	int zz = ( Mth::intFloorDiv(x, CHUNK_XZSIZE)) + (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
 
 	if( ( xx < 0 ) || ( xx >= MAX_LEVEL_RENDER_SIZE[dimIdx] ) ) return -1;
 	if( ( zz < 0 ) || ( zz >= MAX_LEVEL_RENDER_SIZE[dimIdx] ) ) return -1;
