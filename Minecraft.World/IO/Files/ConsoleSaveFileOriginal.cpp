@@ -9,7 +9,7 @@
 #include "../../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Level/LevelData.h"
-#include "../../../Minecraft.Client/Build/Common/GameRules/LevelGenerationOptions.h"
+#include "../../../Common/GameRules/LevelGenerationOptions.h"
 #include "../../Headers/net.minecraft.world.level.chunk.storage.h"
 
 #ifdef _XBOX

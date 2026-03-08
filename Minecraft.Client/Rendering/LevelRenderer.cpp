@@ -518,7 +518,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	TileEntityRenderDispatcher::yOff = (player->yOld + (player->y - player->yOld) * a);
 	TileEntityRenderDispatcher::zOff = (player->zOld + (player->z - player->zOld) * a);
 
-	mc->gameRenderer->turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
 
 	std::vector<std::shared_ptr<Entity> > entities = level[playerIndex]->getAllEntities();
 	totalEntities = (int)entities.size();
@@ -600,7 +600,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 
 	LeaveCriticalSection(&m_csRenderableTileEntities);
 
-	mc->gameRenderer->turnOffLightLayer(a);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOffLightLayer(a);		// 4J - brought forward from 1.8.2
 }
 
 std::wstring LevelRenderer::gatherStats1()
@@ -710,6 +710,8 @@ int LevelRenderer::render(std::shared_ptr<Mob> player, int layer, double alpha, 
 		//		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(), DistanceChunkSorter(player));	// 4J - removed - not sorting our chunks anymore
 	}
 	Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
+	glColor4f(1, 1, 1, 1);
 
 	int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
 
@@ -740,8 +742,8 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 
 #if 1
 	// 4J - cut down version, we're not using offsetted render lists, or a sorted chunk list, anymore
-	mc->gameRenderer->turnOnLightLayer(alpha);		// 4J - brought forward from 1.8.2
-	std::shared_ptr<Mob> player = mc->cameraTargetPlayer;
+	// mc->gameRenderer->turnOnLightLayer(alpha);		// 4J - brought forward from 1.8.2
+	shared_ptr<Mob> player = mc->cameraTargetPlayer;
 	double xOff = player->xOld + (player->x - player->xOld) * alpha;
 	double yOff = player->yOld + (player->y - player->yOld) * alpha;
 	double zOff = player->zOld + (player->z - player->zOld) * alpha;
@@ -836,7 +838,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 #endif // __PS3__
 
 	glPopMatrix();
-	mc->gameRenderer->turnOffLightLayer(alpha);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOffLightLayer(alpha);		// 4J - brought forward from 1.8.2
 
 #else
 	_renderChunks.clear();
@@ -948,6 +950,7 @@ void LevelRenderer::renderSky(float alpha)
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
 
 
 		glDepthMask(false);
@@ -1020,6 +1023,7 @@ void LevelRenderer::renderSky(float alpha)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	Lighting::turnOff();
+	glColor4f(1, 1, 1, 1);
 
 	float *c = level[playerIndex]->dimension->getSunriseColor(level[playerIndex]->getTimeOfDay(alpha), alpha);
 	if (c != NULL)
@@ -2386,7 +2390,7 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1, Lev
 
 					dirtyChunksLockFreeStack.Push((int *)(index));
 #else
-					dirtyChunksLockFreeStack.Push((int *)(intptr_t)(index + 2));		
+					dirtyChunksLockFreeStack.Push((int *)(intptr_t)(uintptr_t)(index + 2));		
 #endif
 
 #ifdef _XBOX
@@ -3246,9 +3250,12 @@ int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z, Level *level)
 int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z, int dimensionId)
 {
 	int dimIdx = getDimensionIndexFromId(dimensionId);
-	int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
-	int yy = y / CHUNK_SIZE;
-	int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	//int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	//int yy = y / CHUNK_SIZE;
+	//int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
+	int xx = ( Mth::intFloorDiv(x, CHUNK_XZSIZE)) + (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
+	int yy = Mth::intFloorDiv(y, CHUNK_SIZE);
+	int zz = ( Mth::intFloorDiv(z, CHUNK_XZSIZE)) + (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
 
 	if( ( xx < 0 ) || ( xx >= MAX_LEVEL_RENDER_SIZE[dimIdx] ) ) return -1;
 	if( ( zz < 0 ) || ( zz >= MAX_LEVEL_RENDER_SIZE[dimIdx] ) ) return -1;
@@ -3626,12 +3633,13 @@ int LevelRenderer::rebuildChunkThreadProc(LPVOID lpParam)
 	IntCache::CreateNewThreadStorage();
 	Tesselator::CreateNewThreadStorage(1024*1024);
 	RenderManager.InitialiseContext();
-	Chunk::CreateNewThreadStorage();
-	Tile::CreateNewThreadStorage();
-
-	int index = (size_t)lpParam;
-
-	while(true)
+	        Chunk::CreateNewThreadStorage();
+	        Tile::CreateNewThreadStorage();
+	
+	        int index = (int)(uintptr_t)lpParam;
+	
+	        while(true)
+	
 	{
 		s_activationEventA[index]->WaitForSignal(INFINITE);
 

@@ -627,8 +627,13 @@ void GameRenderer::unZoomRegion()
 void GameRenderer::getFovAndAspect(float& fov, float& aspect, float a, bool applyEffects)
 {
 	// 4J - split out aspect ratio and fov here so we can adjust for viewports - we might need to revisit these as
-	// they are maybe be too generous for performance. 
-	aspect = mc->width / (float) mc->height;
+	// avoid pixel streching, its UGLEYYY 
+	{
+		int fbw = mc->width;
+		int fbh = mc->height;
+		RenderManager.GetFramebufferSize(fbw, fbh);
+		aspect = fbw / (float) fbh;
+	}
 	fov = getFov(a, applyEffects);
 
 	if( ( mc->player->m_iScreenSection == C4JRender::VIEWPORT_TYPE_SPLIT_TOP ) ||
@@ -838,9 +843,8 @@ void GameRenderer::turnOnLightLayer(double alpha)
         glActiveTexture(GL_TEXTURE0);
     }
 #endif
-	// Linux/PC: TextureBindVertex is a no-op (no vertex texture unit on desktop GL2.1).
-	// The glTexParameteri calls below MUST NOT execute — they would corrupt the currently
-	// bound terrain atlas on GL_TEXTURE0, replacing GL_NEAREST with GL_LINEAR every frame.
+	// update light texture
+	// todo: check implementation of getLightTexture.
 	RenderManager.TextureBindVertex(getLightTexture(mc->player->GetXboxPad(), mc->level));
 #if 0
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1000,6 +1004,7 @@ int GameRenderer::getLightTexture(int iPad, Level *level)
 
 void GameRenderer::render(float a, bool bFirst)
 {
+	a = 1; // juiceydev made this amazing line of code
 	if( _updateLightTexture && bFirst) updateLightTexture(a);
 	if (Display::isActive())
 	{
@@ -1054,12 +1059,15 @@ void GameRenderer::render(float a, bool bFirst)
 	if (mc->noRender) return;
 	GameRenderer::anaglyph3d = mc->options->anaglyph3d;
 
-	glViewport(0, 0, mc->width, mc->height);	// 4J - added
+{
+	int fbw, fbh;
+	RenderManager.GetFramebufferSize(fbw, fbh);
+	glViewport(0, 0, fbw, fbh);
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
 	int screenWidth = ssc.getWidth();
 	int screenHeight = ssc.getHeight();
-	int xMouse = Mouse::getX() * screenWidth / mc->width;
-	int yMouse = screenHeight - Mouse::getY() * screenHeight / mc->height - 1;
+	int xMouse = Mouse::getX() * screenWidth / fbw;
+	int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
 
 	int maxFps = getFpsCap(mc->options->framerateLimit);
 
@@ -1084,7 +1092,11 @@ void GameRenderer::render(float a, bool bFirst)
 	}
 	else
 	{
-		glViewport(0, 0, mc->width, mc->height);
+		{
+			int fbw, fbh;
+			RenderManager.GetFramebufferSize(fbw, fbh);
+			glViewport(0, 0, fbw, fbh);
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -1104,7 +1116,7 @@ void GameRenderer::render(float a, bool bFirst)
 	}
 
 }
-
+}
 void GameRenderer::renderLevel(float a)
 {
 	renderLevel(a, 0);
@@ -1292,7 +1304,11 @@ void GameRenderer::renderLevel(float a, __int64 until)
 		}
 
 
-		glViewport(0, 0, mc->width, mc->height);
+	{
+		int fbw, fbh;
+		RenderManager.GetFramebufferSize(fbw, fbh);
+		glViewport(0, 0, fbw, fbh);
+	}
 		setupClearColor(a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE);
@@ -1788,6 +1804,8 @@ void GameRenderer::renderSnowAndRain(float a)
 // 4J - added forceScale parameter
 void GameRenderer::setupGuiScreen(int forceScale /*=-1*/)
 {
+	int fbw, fbh;
+	RenderManager.GetFramebufferSize(fbw, fbh);
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height, forceScale);
 
 	glClear(GL_DEPTH_BUFFER_BIT);

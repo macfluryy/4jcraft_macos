@@ -1,0 +1,8 @@
+#pragma once
+#define IDC_XuiSlider L"XuiSlider"
+#define IDC_FocusSink L"FocusSink"
+#define IDC_XuiSliderSensitivityInMenu L"XuiSliderSensitivityInMenu"
+#define IDC_XuiSlider L"XuiSlider"
+#define IDC_FocusSink L"FocusSink"
+#define IDC_XuiSliderSensitivityInGame L"XuiSliderSensitivityInGame"
+#define IDC_SceneSettingsControl L"SceneSettingsControl"

@@ -4,9 +4,6 @@ builddir/
 .cache/
 .idea/
 build_meson/
-build_meson2/
-build_meson_new/
-build_meson_test/
 cmake-build-debug/
 
 # Final binaries and platform output
@@ -33,9 +30,7 @@ meson-logs/
 *.d
 compile_commands.json
 
-# ----- Runtime-created symlinks / scratch -----
-# Asset symlink created at runtime for working directory resolution
-Common
+
 
 # ----- Scratch / legacy -----
 oldimpl/

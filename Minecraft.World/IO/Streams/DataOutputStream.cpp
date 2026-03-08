@@ -24,6 +24,11 @@ void DataOutputStream::deleteChildStream()
 //b - the byte to be written.
 void DataOutputStream::write(unsigned int b)
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataOutputStream::write(unsigned int) called but underlying stream is NULL\n");
+		return;
+	}
 	stream->write( b );
 	// TODO 4J Stu - Exception handling?
 	written++;
@@ -31,6 +36,11 @@ void DataOutputStream::write(unsigned int b)
 
 void DataOutputStream::flush()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataOutputStream::flush() called but underlying stream is NULL\n");
+		return;
+	}
 	stream->flush();
 }
 
@@ -51,6 +61,11 @@ void DataOutputStream::write(byteArray b)
 //len - the number of bytes to write.
 void DataOutputStream::write(byteArray b, unsigned int offset, unsigned int length)
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataOutputStream::write(byteArray,...) called but underlying stream is NULL\n");
+		return;
+	}
 	stream->write(b, offset, length);
 	// TODO 4J Stu - Some form of error checking?
 	written += length;
@@ -60,6 +75,11 @@ void DataOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 //The close method of FilterOutputStream calls its flush method, and then calls the close method of its underlying output stream.
 void DataOutputStream::close()
 {
+	if (stream == NULL)
+	{
+		app.DebugPrintf("DataOutputStream::close() called but underlying stream is NULL\n");
+		return;
+	}
 	stream->close();
 }
 
