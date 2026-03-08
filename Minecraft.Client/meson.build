@@ -48,7 +48,7 @@ if host_machine.system() == 'linux'
 endif
 
 executable('Minecraft.Client',
-  client_sources + platform_sources + localisation[1],
+  client_sources + platform_sources + common_sources + localisation[1],
   include_directories : include_directories('Build'),
   dependencies : [
     render_dep,
