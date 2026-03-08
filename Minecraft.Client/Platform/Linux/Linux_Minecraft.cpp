@@ -999,19 +999,20 @@ std::vector<uint8_t *> vRichPresenceStrings;
 // all implementations of libc (including glibc, musl, uClibc...) implement
 // wchar_t as 4byte/32bit (scince around 1999), it would break the libc ABI, 
 // if this ever will get changed, hence this assert
-static_assert( sizeof(wchar_t) == 4, "Linux with non 32bit wchar_t")
+static_assert( sizeof(wchar_t) == 4, "Linux with non 32bit wchar_t");
 
 std::string wstring_to_utf8 (const std::wstring& str)
 {
 	std::string result;
-	// generous pre allocation. will never need to resize.
-	// it well get destructed instantly in the function that it gets called
+	// preallocation, so it will never need to resize. 
+	// same allocation size as for the 4byte wstring representation.
+	// it well get destructed instantly, in the function that it gets called from
 	result.reserve(str.size() * 4);
 
 	for (size_t i = 0; i < str.size(); ++i) {
 		uint32_t cp = static_cast<uint32_t>(str[i]);
 
-		// outside of valid unicode range or preserved UTF-16LE surrogate pair
+		// outside of valid unicode range or preserved UTF-16 surrogate pairs (just in case)
 		if (cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF)) {
 			cp = 0xFFFD; // unicode replacement character
 		}
