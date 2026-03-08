@@ -35,8 +35,10 @@ static void makeGLCtxKey() { pthread_key_create(&s_glCtxKey, nullptr); }
 
 // Pre-created pool of shared contexts for worker threads
 
-// TODO: WAS MAX_SHARED_CONTEXTS = 8 but seems to no render well on AMD cards
-static const int MAX_SHARED_CONTEXTS = 3;
+// AMD drivers (especially on Linux/Mesa) can be very sensitive to the number of shared contexts
+// and concurrent display list compilation. 8 was original, 4 was an attempt to fix it.
+// 6 covers the 5 concurrent worker threads (update + 3x rebuild + main thread).
+static const int MAX_SHARED_CONTEXTS = 6;
 static GLFWwindow *s_sharedContexts[MAX_SHARED_CONTEXTS] = {};
 static int s_sharedContextCount = 0;
 static int s_nextSharedContext = 0;
@@ -79,8 +81,6 @@ void C4JRender::Initialise()
     // opengl 2.1!!!
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_DEPTH_BITS, 24);
-    glfwWindowHint(GLFW_STENCIL_BITS, 8);
     glfwWindowHint(GLFW_DEPTH_BITS, 24);
     glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
@@ -130,10 +130,10 @@ void C4JRender::Initialise()
 
     // Pre-create shared GL contexts for worker threads (chunk builders etc.)
     // Must be done on the main thread because GLFW requires it.
+    // Ensure they are invisible so they don't interfere with the window manager.
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     for (int i = 0; i < MAX_SHARED_CONTEXTS; i++) {
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         s_sharedContexts[i] = glfwCreateWindow(1, 1, "", nullptr, s_window);
-        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
         if (s_sharedContexts[i]) {
             s_sharedContextCount++;
         } else {
@@ -141,6 +141,8 @@ void C4JRender::Initialise()
             break;
         }
     }
+    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
     // Ensure main thread still has the context
     glfwMakeContextCurrent(s_window);
     fprintf(stderr, "[4J_Render] Created %d shared GL contexts for worker threads\n", s_sharedContextCount);
@@ -175,12 +177,25 @@ void C4JRender::InitialiseContext()
     pthread_mutex_unlock(&s_sharedCtxMutex);
 
     if (!shared) {
-        fprintf(stderr, "[4J_Render] ERROR: no shared GL contexts left for worker thread!\n");
+        fprintf(stderr, "[4J_Render] ERROR: no shared GL contexts left for worker thread %lu!\n", (unsigned long)pthread_self());
+        fflush(stderr);
         return;
     }
     glfwMakeContextCurrent(shared);
+
+    // Initialize some basic state for this context to ensure consistent display list recording
+    ::glEnable(GL_TEXTURE_2D);
+    ::glEnable(GL_DEPTH_TEST);
+    ::glDepthFunc(GL_LEQUAL);
+    ::glAlphaFunc(GL_GREATER, 0.1f);
+    ::glEnable(GL_BLEND);
+    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    ::glShadeModel(GL_SMOOTH);
+    ::glEnable(GL_COLOR_MATERIAL);
+    ::glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
     pthread_setspecific(s_glCtxKey, shared);
-    fprintf(stderr, "[4J_Render] Assigned shared GL context %p to worker thread\n", (void*)shared);
+    fprintf(stderr, "[4J_Render] Assigned shared GL context %p to worker thread %lu\n", (void*)shared, (unsigned long)pthread_self());
     fflush(stderr);
 }
 
@@ -289,15 +304,23 @@ void C4JRender::Set_matrixDirty() {} // immediate-mode
 
 static GLenum mapPrimType(int pt)
 {
+    // Handle GL constants first
+    if (pt == GL_QUADS) return GL_QUADS;
+    if (pt == GL_TRIANGLES) return GL_TRIANGLES;
+    if (pt == GL_LINES) return GL_LINES;
+    if (pt == GL_LINE_STRIP) return GL_LINE_STRIP;
+    if (pt == GL_TRIANGLE_STRIP) return GL_TRIANGLE_STRIP;
+    if (pt == GL_TRIANGLE_FAN) return GL_TRIANGLE_FAN;
+
+    // Map from ePrimitiveType enum
     switch (pt) {
-    case 0:  return GL_TRIANGLES;      // C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST
-    case GL_LINES:          return GL_LINES;
-    case GL_LINE_STRIP:     return GL_LINE_STRIP;
-    case GL_TRIANGLES:      return GL_TRIANGLES;
-    case GL_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
-    case GL_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
-    case GL_QUADS:          return GL_QUADS;
-    default:                return GL_TRIANGLES;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST:  return GL_TRIANGLES;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
+    case C4JRender::PRIMITIVE_TYPE_QUAD_LIST:      return GL_QUADS;
+    case C4JRender::PRIMITIVE_TYPE_LINE_LIST:      return GL_LINES;
+    case C4JRender::PRIMITIVE_TYPE_LINE_STRIP:     return GL_LINE_STRIP;
+    default:                                       return GL_TRIANGLES;
     }
 }
 
@@ -332,8 +355,13 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             // Strip mipmap-disable flag: Tesselator adds +1.0 (= +8192) to u when mipmaps off
             if (fu >= 1.0f) fu -= 1.0f;
 
+            // Unit 1 (lightmap) UVs
+            float fu2 = (float)vert[6] / 256.0f;
+            float fv2 = (float)vert[7] / 256.0f;
+
             ::glColor3f(r, g, b);
             ::glTexCoord2f(fu, fv);
+            ::glMultiTexCoord2f(GL_TEXTURE1, fu2, fv2);
             ::glVertex3f(x, y, z);
         }
         ::glEnd();
@@ -354,19 +382,32 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             int8_t ny = (int8_t)((normalInt >>  8) & 0xFF);
             int8_t nz = (int8_t)((normalInt >> 16) & 0xFF);
 
-            ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
+            unsigned int tex2Int = idata[i * 8 + 7];
+
+            if (nx != 0 || ny != 0 || nz != 0) {
+                ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
+            }
+
             // Only override current GL color when the vertex actually carries one.
             // colorInt == 0 is the Tesselator sentinel for "no colour set"
-            // (alpha=0 with all channels zero).  Skipping glColor4ub here lets
-            // sky/fog colour set before glCallList() pass through unchanged.
             if (colorInt != 0) {
                 ::glColor4ub(cr, cg, cb, ca);
             }
+
             ::glTexCoord2f(fdata[3], fdata[4]);
+
+            // Unit 1 (lightmap) UVs - 0xfe00fe00 is sentinel for "no Unit 1 UVs"
+            if (tex2Int != 0xfe00fe00) {
+                float u2 = (float)(short)(tex2Int & 0xFFFF) / 256.0f;
+                float v2 = (float)(short)((tex2Int >> 16) & 0xFFFF) / 256.0f;
+                ::glMultiTexCoord2f(GL_TEXTURE1, u2, v2);
+            }
+
             ::glVertex3f(fdata[0], fdata[1], fdata[2]);
         }
         ::glEnd();
     }
+    ::glFlush();
 }
 
 
@@ -374,22 +415,34 @@ void C4JRender::CBuffLockStaticCreations() {}
 
 int C4JRender::CBuffCreate(int count)
 {
-    return (int)::glGenLists(count);
+    int id = (int)::glGenLists(count);
+    ::glFlush();
+    return id;
 }
 
 void C4JRender::CBuffDelete(int first, int count)
 {
-    if (first > 0 && count > 0) ::glDeleteLists(first, count);
+    if (first > 0 && count > 0) {
+        ::glDeleteLists(first, count);
+        ::glFlush();
+    }
 }
 
 void C4JRender::CBuffStart(int index, bool /*full*/)
 {
-    if (index > 0) ::glNewList(index, GL_COMPILE);
+    if (index > 0) {
+        ::glNewList(index, GL_COMPILE);
+        ::glFlush();
+    }
 }
 
 void C4JRender::CBuffClear(int index)
 {
-    if (index > 0) { ::glNewList(index, GL_COMPILE); ::glEndList(); }
+    if (index > 0) { 
+        ::glNewList(index, GL_COMPILE); 
+        ::glEndList(); 
+        ::glFlush();
+    }
 }
 
 int  C4JRender::CBuffSize(int /*index*/) { return 0; }
@@ -397,6 +450,7 @@ int  C4JRender::CBuffSize(int /*index*/) { return 0; }
 void C4JRender::CBuffEnd()
 {
     ::glEndList();
+    ::glFlush();
 }
 
 bool C4JRender::CBuffCall(int index, bool /*full*/)
@@ -435,7 +489,21 @@ void C4JRender::TextureBind(int idx)
 
 void C4JRender::TextureBindVertex(int idx)
 {
-    (void)idx;
+    // Unit 1 used for lightmapping in fixed-function or standard shaders
+    ::glActiveTexture(GL_TEXTURE1);
+    if (idx < 0) {
+        ::glBindTexture(GL_TEXTURE_2D, 0);
+        ::glDisable(GL_TEXTURE_2D);
+    } else {
+        ::glEnable(GL_TEXTURE_2D);
+        ::glBindTexture(GL_TEXTURE_2D, (GLuint)idx);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    }
+    ::glActiveTexture(GL_TEXTURE0);
+    ::glFlush();
 }
 
 void C4JRender::TextureSetTextureLevels(int levels)
@@ -457,6 +525,8 @@ void C4JRender::TextureData(int width, int height, void *data, int level,
                    width, height, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE, data);
 
+    ::glFlush();
+
     if (level == 0) {
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -470,6 +540,7 @@ void C4JRender::TextureDataUpdate(int xoffset, int yoffset,
 {
     ::glTexSubImage2D(GL_TEXTURE_2D, level, xoffset, yoffset,
                       width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    ::glFlush();
 }
 
 void C4JRender::TextureSetParam(int param, int value)
