@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Build/Common/Network/Sony/SonyCommerce.h"
+#include "../../../../Common/Network/Sony/SonyCommerce.h"
 #include <np_toolkit.h>
 #include <libsysmodule.h>
 #include <netcheck_dialog.h>

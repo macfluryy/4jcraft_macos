@@ -52,7 +52,7 @@ If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayl
 
 On Docker:
 
-If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you — GCC 15, Meson, Ninja, lld, and all the libraries.
+If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you - GCC 15, Meson, Ninja, lld, and all the libraries.
 
 Alternatively, you can build and use the container manually:
 
@@ -125,18 +125,4 @@ meson setup build
 
 ---
 
-## Running
-
-In order to run the compiled binary, you must obtain a copy of a Windows64 build `Common` folder containing compiled media assets. The `Common` folder should be placed at the current working directory when you run the `Minecraft.Client` executable.
-
-At this time, we don't have the necessary tools to build game resources without Visual Studio, so for the time being these can be obtained from the latest [MinecraftConsoles nightly](https://github.com/smartcmd/MinecraftConsoles/releases/tag/nightly).
-
-1. Download `LCEWindows64.zip` and extract.
-2. Copy the `Common` directory to your current working directory.
-3. Run `Minecraft.Client`.
-
----
-
-## Generative AI Policy
-
-Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.
+## whoever downloaded Common pls refetch & pull this there are updates

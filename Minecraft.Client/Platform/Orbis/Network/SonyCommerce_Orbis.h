@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Build/Common/Network/Sony/SonyCommerce.h"
+#include "../../../../Common/Network/Sony/SonyCommerce.h"
 class OrbisNPToolkit;
 	
 class SonyCommerce_Orbis : public SonyCommerce

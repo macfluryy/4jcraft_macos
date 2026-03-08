@@ -1,3 +1,5 @@
+
+// TODO: ADD BETTER COMMENTS.
 #include "4J_Render.h"
 #include <cstring>
 #include <cstdlib>  // getenv
@@ -32,7 +34,11 @@ static pthread_once_t s_glCtxKeyOnce = PTHREAD_ONCE_INIT;
 static void makeGLCtxKey() { pthread_key_create(&s_glCtxKey, nullptr); }
 
 // Pre-created pool of shared contexts for worker threads
-static const int MAX_SHARED_CONTEXTS = 8;
+
+// AMD drivers (especially on Linux/Mesa) can be very sensitive to the number of shared contexts
+// and concurrent display list compilation. 8 was original, 4 was an attempt to fix it.
+// 6 covers the 5 concurrent worker threads (update + 3x rebuild + main thread).
+static const int MAX_SHARED_CONTEXTS = 6;
 static GLFWwindow *s_sharedContexts[MAX_SHARED_CONTEXTS] = {};
 static int s_sharedContextCount = 0;
 static int s_nextSharedContext = 0;
@@ -42,26 +48,22 @@ static pthread_mutex_t s_sharedCtxMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t s_mainThread;
 static bool s_mainThreadSet = false;
 
+// viewport go brr
+static void onFramebufferResize(GLFWwindow * /*win*/, int w, int h)
+{
+    if (w < 1) w = 1;
+    if (h < 1) h = 1;
+    s_windowWidth  = w;
+    s_windowHeight = h;
+    ::glViewport(0, 0, w, h);
+}
+
 void C4JRender::Initialise()
 {
-#if defined(__linux__) && (GLFW_VERSION_MAJOR > 3 || (GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR >= 4))
-    // If the session is a native Wayland session, tell GLFW to use the Wayland
-    // backend instead of falling back to XWayland.  This enables proper cursor
-    // confine-and-hide (zwp_confined_pointer_v1 + zwp_relative_pointer_v1) which
-    // is required for correct first-person mouse input on Wayland compositors.
-    if (getenv("WAYLAND_DISPLAY")) {
-        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
-        fprintf(stderr, "[4J_Render] Wayland session detected — requesting native Wayland backend\n");
-    }
-#endif
-
     if (!glfwInit()) {
         fprintf(stderr, "[4J_Render] Failed to initialise GLFW\n");
         return;
     }
-
-    // Resolve window dimensions: use caller-requested size, or fall back to
-    // the primary monitor's native resolution so the window fits any display.
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *mode = primaryMonitor ? glfwGetVideoMode(primaryMonitor) : nullptr;
 
@@ -79,6 +81,8 @@ void C4JRender::Initialise()
     // opengl 2.1!!!
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
+    glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
     GLFWmonitor *fsMonitor = s_fullscreen ? primaryMonitor : nullptr;
     s_window = glfwCreateWindow(s_windowWidth, s_windowHeight,
@@ -91,6 +95,9 @@ void C4JRender::Initialise()
 
     glfwMakeContextCurrent(s_window);
     glfwSwapInterval(1);  // vsync
+
+    // Keep viewport in sync with OS-driven window resizes.
+    glfwSetFramebufferSizeCallback(s_window, onFramebufferResize);
 
     // init opengl
     ::glEnable(GL_TEXTURE_2D);
@@ -123,10 +130,10 @@ void C4JRender::Initialise()
 
     // Pre-create shared GL contexts for worker threads (chunk builders etc.)
     // Must be done on the main thread because GLFW requires it.
+    // Ensure they are invisible so they don't interfere with the window manager.
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     for (int i = 0; i < MAX_SHARED_CONTEXTS; i++) {
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         s_sharedContexts[i] = glfwCreateWindow(1, 1, "", nullptr, s_window);
-        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
         if (s_sharedContexts[i]) {
             s_sharedContextCount++;
         } else {
@@ -134,6 +141,8 @@ void C4JRender::Initialise()
             break;
         }
     }
+    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+
     // Ensure main thread still has the context
     glfwMakeContextCurrent(s_window);
     fprintf(stderr, "[4J_Render] Created %d shared GL contexts for worker threads\n", s_sharedContextCount);
@@ -168,12 +177,25 @@ void C4JRender::InitialiseContext()
     pthread_mutex_unlock(&s_sharedCtxMutex);
 
     if (!shared) {
-        fprintf(stderr, "[4J_Render] ERROR: no shared GL contexts left for worker thread!\n");
+        fprintf(stderr, "[4J_Render] ERROR: no shared GL contexts left for worker thread %lu!\n", (unsigned long)pthread_self());
+        fflush(stderr);
         return;
     }
     glfwMakeContextCurrent(shared);
+
+    // Initialize some basic state for this context to ensure consistent display list recording
+    ::glEnable(GL_TEXTURE_2D);
+    ::glEnable(GL_DEPTH_TEST);
+    ::glDepthFunc(GL_LEQUAL);
+    ::glAlphaFunc(GL_GREATER, 0.1f);
+    ::glEnable(GL_BLEND);
+    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    ::glShadeModel(GL_SMOOTH);
+    ::glEnable(GL_COLOR_MATERIAL);
+    ::glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
     pthread_setspecific(s_glCtxKey, shared);
-    fprintf(stderr, "[4J_Render] Assigned shared GL context %p to worker thread\n", (void*)shared);
+    fprintf(stderr, "[4J_Render] Assigned shared GL context %p to worker thread %lu\n", (void*)shared, (unsigned long)pthread_self());
     fflush(stderr);
 }
 
@@ -282,15 +304,23 @@ void C4JRender::Set_matrixDirty() {} // immediate-mode
 
 static GLenum mapPrimType(int pt)
 {
+    // Handle GL constants first
+    if (pt == GL_QUADS) return GL_QUADS;
+    if (pt == GL_TRIANGLES) return GL_TRIANGLES;
+    if (pt == GL_LINES) return GL_LINES;
+    if (pt == GL_LINE_STRIP) return GL_LINE_STRIP;
+    if (pt == GL_TRIANGLE_STRIP) return GL_TRIANGLE_STRIP;
+    if (pt == GL_TRIANGLE_FAN) return GL_TRIANGLE_FAN;
+
+    // Map from ePrimitiveType enum
     switch (pt) {
-    case 0:  return GL_TRIANGLES;      // C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST
-    case GL_LINES:          return GL_LINES;
-    case GL_LINE_STRIP:     return GL_LINE_STRIP;
-    case GL_TRIANGLES:      return GL_TRIANGLES;
-    case GL_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
-    case GL_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
-    case GL_QUADS:          return GL_QUADS;
-    default:                return GL_TRIANGLES;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST:  return GL_TRIANGLES;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_STRIP: return GL_TRIANGLE_STRIP;
+    case C4JRender::PRIMITIVE_TYPE_TRIANGLE_FAN:   return GL_TRIANGLE_FAN;
+    case C4JRender::PRIMITIVE_TYPE_QUAD_LIST:      return GL_QUADS;
+    case C4JRender::PRIMITIVE_TYPE_LINE_LIST:      return GL_LINES;
+    case C4JRender::PRIMITIVE_TYPE_LINE_STRIP:     return GL_LINE_STRIP;
+    default:                                       return GL_TRIANGLES;
     }
 }
 
@@ -304,9 +334,7 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
     GLenum mode = mapPrimType((int)PrimitiveType);
 
     if (vType == VERTEX_TYPE_COMPRESSED) {
-        // Compact terrain vertex: 8 × int16_t = 16 bytes per vertex
-        // Layout: [x*1024, y*1024, z*1024, RGB565-32768, u*8192, v*8192, tex2u, tex2v]
-        // Always use glBegin/glEnd — works correctly both inside and outside display lists.
+        // NO NEED TO REWRITE IT ALL YAY
         int16_t *sdata = (int16_t *)dataIn;
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {
@@ -327,20 +355,17 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             // Strip mipmap-disable flag: Tesselator adds +1.0 (= +8192) to u when mipmaps off
             if (fu >= 1.0f) fu -= 1.0f;
 
+            // Unit 1 (lightmap) UVs
+            float fu2 = (float)vert[6] / 256.0f;
+            float fv2 = (float)vert[7] / 256.0f;
+
             ::glColor3f(r, g, b);
             ::glTexCoord2f(fu, fv);
+            ::glMultiTexCoord2f(GL_TEXTURE1, fu2, fv2);
             ::glVertex3f(x, y, z);
         }
         ::glEnd();
     } else {
-        // Standard (non-compact) vertex: 8 × int32 = 32 bytes per vertex
-        // Layout: [x(f), y(f), z(f), u(f), v(f), color(RGBA packed), normal, tex2]
-        // Color byte-order fix for little-endian (x86/x64):
-        //   Console code stores color as int col = (r<<24)|(g<<16)|(b<<8)|a
-        //   In little-endian memory the bytes are: [a, b, g, r] at increasing addresses.
-        //   Read as: col[3]=r, col[2]=g, col[1]=b, col[0]=a.
-        // Always use glBegin/glEnd — safe for both display-list compilation and immediate mode.
-        // (glVertexPointer/glDrawArrays inside glNewList record a stale pointer, not the data.)
         unsigned int *idata = (unsigned int *)dataIn;
         ::glBegin(mode);
         for (int i = 0; i < count; i++) {
@@ -357,19 +382,32 @@ void C4JRender::DrawVertices(ePrimitiveType PrimitiveType, int count,
             int8_t ny = (int8_t)((normalInt >>  8) & 0xFF);
             int8_t nz = (int8_t)((normalInt >> 16) & 0xFF);
 
-            ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
+            unsigned int tex2Int = idata[i * 8 + 7];
+
+            if (nx != 0 || ny != 0 || nz != 0) {
+                ::glNormal3f(nx / 127.0f, ny / 127.0f, nz / 127.0f);
+            }
+
             // Only override current GL color when the vertex actually carries one.
             // colorInt == 0 is the Tesselator sentinel for "no colour set"
-            // (alpha=0 with all channels zero).  Skipping glColor4ub here lets
-            // sky/fog colour set before glCallList() pass through unchanged.
             if (colorInt != 0) {
                 ::glColor4ub(cr, cg, cb, ca);
             }
+
             ::glTexCoord2f(fdata[3], fdata[4]);
+
+            // Unit 1 (lightmap) UVs - 0xfe00fe00 is sentinel for "no Unit 1 UVs"
+            if (tex2Int != 0xfe00fe00) {
+                float u2 = (float)(short)(tex2Int & 0xFFFF) / 256.0f;
+                float v2 = (float)(short)((tex2Int >> 16) & 0xFFFF) / 256.0f;
+                ::glMultiTexCoord2f(GL_TEXTURE1, u2, v2);
+            }
+
             ::glVertex3f(fdata[0], fdata[1], fdata[2]);
         }
         ::glEnd();
     }
+    ::glFlush();
 }
 
 
@@ -377,22 +415,34 @@ void C4JRender::CBuffLockStaticCreations() {}
 
 int C4JRender::CBuffCreate(int count)
 {
-    return (int)::glGenLists(count);
+    int id = (int)::glGenLists(count);
+    ::glFlush();
+    return id;
 }
 
 void C4JRender::CBuffDelete(int first, int count)
 {
-    if (first > 0 && count > 0) ::glDeleteLists(first, count);
+    if (first > 0 && count > 0) {
+        ::glDeleteLists(first, count);
+        ::glFlush();
+    }
 }
 
 void C4JRender::CBuffStart(int index, bool /*full*/)
 {
-    if (index > 0) ::glNewList(index, GL_COMPILE);
+    if (index > 0) {
+        ::glNewList(index, GL_COMPILE);
+        ::glFlush();
+    }
 }
 
 void C4JRender::CBuffClear(int index)
 {
-    if (index > 0) { ::glNewList(index, GL_COMPILE); ::glEndList(); }
+    if (index > 0) { 
+        ::glNewList(index, GL_COMPILE); 
+        ::glEndList(); 
+        ::glFlush();
+    }
 }
 
 int  C4JRender::CBuffSize(int /*index*/) { return 0; }
@@ -400,6 +450,7 @@ int  C4JRender::CBuffSize(int /*index*/) { return 0; }
 void C4JRender::CBuffEnd()
 {
     ::glEndList();
+    ::glFlush();
 }
 
 bool C4JRender::CBuffCall(int index, bool /*full*/)
@@ -438,13 +489,21 @@ void C4JRender::TextureBind(int idx)
 
 void C4JRender::TextureBindVertex(int idx)
 {
-    // No-op on desktop OpenGL. On consoles this binds a lightmap to the vertex shader
-    // sampler. On desktop GL 2.1 fixed-function there is no vertex texture concept;
-    // lighting is handled via vertex colors. Binding anything here OVERRIDES GL_TEXTURE0
-    // after the call (because the game calls glTexParameteri on whatever is active),
-    // causing the terrain atlas filter params to be corrupted or the lightmap to appear
-    // on terrain instead of the atlas. Leave it as a no-op.
-    (void)idx;
+    // Unit 1 used for lightmapping in fixed-function or standard shaders
+    ::glActiveTexture(GL_TEXTURE1);
+    if (idx < 0) {
+        ::glBindTexture(GL_TEXTURE_2D, 0);
+        ::glDisable(GL_TEXTURE_2D);
+    } else {
+        ::glEnable(GL_TEXTURE_2D);
+        ::glBindTexture(GL_TEXTURE_2D, (GLuint)idx);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    }
+    ::glActiveTexture(GL_TEXTURE0);
+    ::glFlush();
 }
 
 void C4JRender::TextureSetTextureLevels(int levels)
@@ -466,13 +525,8 @@ void C4JRender::TextureData(int width, int height, void *data, int level,
                    width, height, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    // For the base level (0), force the texture to be non-mipmapped and pixel-crisp.
-    // glGenerateMipmap() was previously called here as a "safety net", but on Mesa/Nvidia
-    // drivers it silently resets GL_TEXTURE_MIN_FILTER to the OpenGL spec default
-    // (GL_NEAREST_MIPMAP_LINEAR), overriding the GL_NEAREST set before this call.
-    // Fix: set GL_TEXTURE_MAX_LEVEL=0 (only sample level 0) and re-enforce GL_NEAREST.
-    // The game manually uploads explicit mip levels 1..N-1 after this call anyway,
-    // so we don't need glGenerateMipmap() as a completeness safety net.
+    ::glFlush();
+
     if (level == 0) {
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -486,6 +540,7 @@ void C4JRender::TextureDataUpdate(int xoffset, int yoffset,
 {
     ::glTexSubImage2D(GL_TEXTURE_2D, level, xoffset, yoffset,
                       width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    ::glFlush();
 }
 
 void C4JRender::TextureSetParam(int param, int value)

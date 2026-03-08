@@ -2,6 +2,7 @@
 #include "ScreenSizeCalculator.h"
 #include "../GameState/Options.h"
 
+// who the fuck thought this was a good idea
 ScreenSizeCalculator::ScreenSizeCalculator(Options *options, int width, int height, int forceScale/*=-1*/)
 {
     w = width;
@@ -12,7 +13,7 @@ ScreenSizeCalculator::ScreenSizeCalculator(Options *options, int width, int heig
 
 		int maxScale = options->guiScale;
 		if (maxScale == 0) maxScale = 1000;
-		while (scale < maxScale && w / (scale + 1) >= 320 && h / (scale + 1) >= 240)
+		while (scale < maxScale && w / (scale + 1) >= 320 && h / (scale + 1) >= 240) // ughh
 		{
 			scale++;
 		}

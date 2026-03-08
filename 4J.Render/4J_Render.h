@@ -218,97 +218,97 @@ public:
 };
 
 
-const int GL_MODELVIEW_MATRIX = 0;
-const int GL_PROJECTION_MATRIX = 1;
-const int GL_MODELVIEW = 0;
-const int GL_PROJECTION = 1;
-const int GL_TEXTURE = 2;
+const int GL_MODELVIEW_MATRIX = 0x0BA6;
+const int GL_PROJECTION_MATRIX = 0x0BA7;
+const int GL_MODELVIEW = 0x1700;
+const int GL_PROJECTION = 0x1701;
+const int GL_TEXTURE = 0x1702;
 
 // These things required for tex gen
 
-const int GL_S = 0;
-const int GL_T = 1;
-const int GL_R = 2;
-const int GL_Q = 3;
+const int GL_S = 0x2000;
+const int GL_T = 0x2001;
+const int GL_R = 0x2002;
+const int GL_Q = 0x2003;
 
-const int GL_TEXTURE_GEN_S = 0;
-const int GL_TEXTURE_GEN_T = 1;
-const int GL_TEXTURE_GEN_Q = 2;
-const int GL_TEXTURE_GEN_R = 3;
+const int GL_TEXTURE_GEN_S = 0x0C60;
+const int GL_TEXTURE_GEN_T = 0x0C61;
+const int GL_TEXTURE_GEN_Q = 0x0C63;
+const int GL_TEXTURE_GEN_R = 0x0C62;
 
-const int GL_TEXTURE_GEN_MODE = 0;
-const int GL_OBJECT_LINEAR = 0;
-const int GL_EYE_LINEAR = 1;
-const int GL_OBJECT_PLANE = 0;
-const int GL_EYE_PLANE = 1;
+const int GL_TEXTURE_GEN_MODE = 0x2500;
+const int GL_OBJECT_LINEAR = 0x2401;
+const int GL_EYE_LINEAR = 0x2400;
+const int GL_OBJECT_PLANE = 0x2501;
+const int GL_EYE_PLANE = 0x2502;
 
 
 // These things are used by glEnable/glDisable so must be different and non-zero (zero is used by things we haven't assigned yet)
-const int GL_TEXTURE_2D = 1;
-const int GL_BLEND = 2;
-const int GL_CULL_FACE = 3;
-const int GL_ALPHA_TEST = 4;
-const int GL_DEPTH_TEST = 5;
-const int GL_FOG = 6;
-const int GL_LIGHTING = 7;
-const int GL_LIGHT0 = 8;
-const int GL_LIGHT1 = 9;
+const int GL_TEXTURE_2D = 0x0DE1;
+const int GL_BLEND = 0x0BE2;
+const int GL_CULL_FACE = 0x0B44;
+const int GL_ALPHA_TEST = 0x0BC0;
+const int GL_DEPTH_TEST = 0x0B71;
+const int GL_FOG = 0x0B60;
+const int GL_LIGHTING = 0x0B50;
+const int GL_LIGHT0 = 0x4000;
+const int GL_LIGHT1 = 0x4001;
 
-const int CLEAR_DEPTH_FLAG = 1;
-const int CLEAR_COLOUR_FLAG = 2;
+const int CLEAR_DEPTH_FLAG = 0x00000100;
+const int CLEAR_COLOUR_FLAG = 0x00004000;
 
 const int GL_DEPTH_BUFFER_BIT = CLEAR_DEPTH_FLAG;
 const int GL_COLOR_BUFFER_BIT = CLEAR_COLOUR_FLAG;
 
-const int GL_SRC_ALPHA = D3D11_BLEND_SRC_ALPHA;
-const int GL_ONE_MINUS_SRC_ALPHA = D3D11_BLEND_INV_SRC_ALPHA;
-const int GL_ONE = D3D11_BLEND_ONE;
-const int GL_ZERO = D3D11_BLEND_ZERO;
-const int GL_DST_ALPHA = D3D11_BLEND_DEST_ALPHA;
-const int GL_SRC_COLOR = D3D11_BLEND_SRC_COLOR;
-const int GL_DST_COLOR = D3D11_BLEND_DEST_COLOR;
-const int GL_ONE_MINUS_DST_COLOR = D3D11_BLEND_INV_DEST_COLOR;
-const int GL_ONE_MINUS_SRC_COLOR = D3D11_BLEND_INV_SRC_COLOR;
-const int GL_CONSTANT_ALPHA = D3D11_BLEND_BLEND_FACTOR;
-const int GL_ONE_MINUS_CONSTANT_ALPHA = D3D11_BLEND_INV_BLEND_FACTOR;
+const int GL_SRC_ALPHA = 0x0302;
+const int GL_ONE_MINUS_SRC_ALPHA = 0x0303;
+const int GL_ONE = 1;
+const int GL_ZERO = 0;
+const int GL_DST_ALPHA = 0x0304;
+const int GL_SRC_COLOR = 0x0300;
+const int GL_DST_COLOR = 0x0306;
+const int GL_ONE_MINUS_DST_COLOR = 0x0307;
+const int GL_ONE_MINUS_SRC_COLOR = 0x0301;
+const int GL_CONSTANT_ALPHA = 0x8003;
+const int GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004;
 
-const int GL_GREATER = D3D11_COMPARISON_GREATER;
-const int GL_EQUAL = D3D11_COMPARISON_EQUAL;
-const int GL_LEQUAL = D3D11_COMPARISON_LESS_EQUAL;
-const int GL_GEQUAL = D3D11_COMPARISON_GREATER_EQUAL;
-const int GL_ALWAYS = D3D11_COMPARISON_ALWAYS;
+const int GL_GREATER = 0x0204;
+const int GL_EQUAL = 0x0202;
+const int GL_LEQUAL = 0x0203;
+const int GL_GEQUAL = 0x0206;
+const int GL_ALWAYS = 0x0207;
 
-const int GL_TEXTURE_MIN_FILTER = 1;
-const int GL_TEXTURE_MAG_FILTER = 2;
-const int GL_TEXTURE_WRAP_S = 3;
-const int GL_TEXTURE_WRAP_T = 4;
+const int GL_TEXTURE_MIN_FILTER = 0x2801;
+const int GL_TEXTURE_MAG_FILTER = 0x2800;
+const int GL_TEXTURE_WRAP_S = 0x2802;
+const int GL_TEXTURE_WRAP_T = 0x2803;
 
-const int GL_NEAREST = 0;
-const int GL_LINEAR = 1;
-const int GL_EXP = 2;
-const int GL_NEAREST_MIPMAP_LINEAR = 0;	// TODO - mipmapping bit of this
+const int GL_NEAREST = 0x2600;
+const int GL_LINEAR = 0x2601;
+const int GL_EXP = 0x0800;
+const int GL_NEAREST_MIPMAP_LINEAR = 0x2702;	// TODO - mipmapping bit of this
 
-const int GL_CLAMP = 0;
-const int GL_REPEAT = 1;
+const int GL_CLAMP = 0x2900;
+const int GL_REPEAT = 0x2901;
 
-const int GL_FOG_START = 1;
-const int GL_FOG_END = 2;
-const int GL_FOG_MODE = 3;
-const int GL_FOG_DENSITY = 4;
-const int GL_FOG_COLOR = 5;
+const int GL_FOG_START = 0x0B63;
+const int GL_FOG_END = 0x0B64;
+const int GL_FOG_MODE = 0x0B65;
+const int GL_FOG_DENSITY = 0x0B62;
+const int GL_FOG_COLOR = 0x0B66;
 
-const int GL_POSITION = 1;
-const int GL_AMBIENT = 2;
-const int GL_DIFFUSE = 3;
-const int GL_SPECULAR = 4;
+const int GL_POSITION = 0x1203;
+const int GL_AMBIENT = 0x1200;
+const int GL_DIFFUSE = 0x1201;
+const int GL_SPECULAR = 0x1202;
 
-const int GL_LIGHT_MODEL_AMBIENT = 1;
+const int GL_LIGHT_MODEL_AMBIENT = 0x0B53;
 
-const int GL_LINES = C4JRender::PRIMITIVE_TYPE_LINE_LIST;
-const int GL_LINE_STRIP = C4JRender::PRIMITIVE_TYPE_LINE_STRIP;
-const int GL_QUADS = C4JRender::PRIMITIVE_TYPE_QUAD_LIST;
-const int GL_TRIANGLE_FAN = C4JRender::PRIMITIVE_TYPE_TRIANGLE_FAN;
-const int GL_TRIANGLE_STRIP = C4JRender::PRIMITIVE_TYPE_TRIANGLE_STRIP;
+const int GL_LINES = 0x0001;
+const int GL_LINE_STRIP = 0x0003;
+const int GL_QUADS = 0x0007;
+const int GL_TRIANGLE_FAN = 0x0006;
+const int GL_TRIANGLE_STRIP = 0x0005;
 
 // Singleton
 extern C4JRender RenderManager;

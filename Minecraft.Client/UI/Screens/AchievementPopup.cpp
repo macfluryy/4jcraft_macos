@@ -43,7 +43,11 @@ void AchievementPopup::permanent(Achievement *ach)
 
 void AchievementPopup::prepareWindow()
 {
-    glViewport(0, 0, mc->width, mc->height);
+    {
+        int fbw, fbh;
+        RenderManager.GetFramebufferSize(fbw, fbh);
+        glViewport(0, 0, fbw, fbh);
+    } // just future proofing
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);

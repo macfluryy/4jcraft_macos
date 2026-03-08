@@ -5,9 +5,9 @@
 #include "base64.h"
 
 #include "../PS3_App.h"
-#include "../../../Build/Common/Consoles_App.h"
+#include "../../../../Common/Consoles_App.h"
 
-#include "../../../Build/Common/Network/Sony/SQRNetworkManager.h"
+#include "../../../../Common/Network/Sony/SQRNetworkManager.h"
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 

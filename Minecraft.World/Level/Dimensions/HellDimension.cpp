@@ -6,7 +6,7 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../../Minecraft.Client/Minecraft.h"
-#include "../../../Minecraft.Client/Build/Common/Colours/ColourTable.h"
+#include "../../../Common/Colours/ColourTable.h"
 
 void HellDimension::init()
 {

@@ -12,7 +12,7 @@
 #include "../ps4__np_conf.h"
 #include "Orbis_NPToolkit.h"
 #include "SonyVoiceChat_Orbis.h"
-#include "../../../Build/Common/Network/Sony/SonyHttp.h"
+#include "../../../../Common/Network/Sony/SonyHttp.h"
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 
 
