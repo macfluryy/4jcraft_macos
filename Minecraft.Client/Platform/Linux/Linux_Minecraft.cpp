@@ -1035,6 +1035,8 @@ std::string wstring_to_utf8 (const std::wstring& str)
 			result += static_cast<char>(0x80 | (cp & 0x3F));
 		}
 	}
+
+	return result;
 }
 
 uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)
