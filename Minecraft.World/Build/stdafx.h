@@ -210,6 +210,9 @@ void MemSect(int sect);
 // This is generated at build time via scripts/pack_loc.py
 #include "strings.h"
 
+// This is generated at build time via scripts/pack_loc.py
+#include "strings.h"
+
 #ifdef _XBOX
 #include "../../Minecraft.Client/Platform/Xbox/Xbox_App.h"
 #include "../../Minecraft.Client/Platform/Xbox/Sentient/SentientTelemetryCommon.h"

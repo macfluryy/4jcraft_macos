@@ -238,6 +238,9 @@ typedef XUID GameSessionUID;
 // This is generated at build time via scripts/pack_loc.py
 #include "strings.h"
 
+// This is generated at build time via scripts/pack_loc.py
+#include "strings.h"
+
 #ifdef _XBOX
 	#include "../Platform/Xbox/Xbox_App.h"
 	#include "../Platform/Xbox/Sentient/MinecraftTelemetry.h"

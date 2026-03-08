@@ -3606,7 +3606,7 @@ void LevelRenderer::staticCtor()
 	for(unsigned int i = 0; i < MAX_CHUNK_REBUILD_THREADS; ++i)
 	{
 		sprintf(threadName,"Rebuild Chunk Thread %d\n",i);
-		rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)i,threadName);
+		rebuildThreads[i] = new C4JThread(rebuildChunkThreadProc,(void *)(intptr_t)i,threadName);
 
 		s_activationEventA[i] = new C4JThread::Event();
 
