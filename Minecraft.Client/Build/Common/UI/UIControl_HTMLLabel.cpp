@@ -6,7 +6,7 @@ UIControl_HTMLLabel::UIControl_HTMLLabel()
 {
 }
 
-bool UIControl_HTMLLabel::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_HTMLLabel::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eHTMLLabel);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -33,7 +33,7 @@ void UIControl_HTMLLabel::ReInit()
 	init(L"");
 }
 
-void UIControl_HTMLLabel::setLabel(const string &label)
+void UIControl_HTMLLabel::setLabel(const std::string &label)
 {
 	IggyDataValue result;
 	IggyDataValue value[1];

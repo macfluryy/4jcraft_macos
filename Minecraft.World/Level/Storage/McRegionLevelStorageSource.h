@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "DirectoryLevelStorageSource.h"
 #include "../../IO/Files/FileFilter.h"
@@ -14,21 +14,21 @@ public:
 	class ChunkFile;
 
 	McRegionLevelStorageSource(File dir);
-    virtual wstring getName();
-    virtual vector<LevelSummary *> *getLevelList();
+    virtual std::wstring getName();
+    virtual std::vector<LevelSummary *> *getLevelList();
     virtual void clearAll();
-    virtual shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir);
-    virtual bool isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId);
-    virtual bool requiresConversion(ConsoleSaveFile *saveFile, const wstring& levelId);
-    virtual bool convertLevel(ConsoleSaveFile *saveFile, const wstring& levelId, ProgressListener *progress);
+    virtual std::shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir);
+    virtual bool isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId);
+    virtual bool requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId);
+    virtual bool convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress);
 
 private:
 #if 0
 	// 4J - not required anymore
-	void addRegions(File &baseFolder, vector<ChunkFile *> *dest, vector<File *> *firstLevelFolders);
+	void addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders);
 #endif
-    void convertRegions(File &baseFolder, vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress);
-    void eraseFolders(vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress);
+    void convertRegions(File &baseFolder, std::vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress);
+    void eraseFolders(std::vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress);
 
 public:
 #if 0
@@ -44,7 +44,7 @@ public:
 	{
 	public:
 		static const std::tr1::wregex chunkFilePattern; // was Pattern
-        bool accept(File *dir, const wstring& name);
+        bool accept(File *dir, const std::wstring& name);
     };
 
     static class ChunkFile // implements Comparable<ChunkFile>

@@ -10,7 +10,7 @@ public:
 
 	Level *level;
 	Mob *mob; // Owner of this goal
-	weak_ptr<Mob> target;
+	std::weak_ptr<Mob> target;
 	int attackTime;
 	float speed;
 	int seeTime;

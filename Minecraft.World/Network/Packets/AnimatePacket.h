@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class AnimatePacket : public Packet, public enable_shared_from_this<AnimatePacket>
+class AnimatePacket : public Packet, public std::enable_shared_from_this<AnimatePacket>
 {
 public:
 	static const int SWING = 1;
@@ -18,7 +18,7 @@ public:
 	int action;
 
 	AnimatePacket();
-	AnimatePacket(shared_ptr<Entity> e, int action);
+	AnimatePacket(std::shared_ptr<Entity> e, int action);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -26,6 +26,6 @@ public:
 	virtual int getEstimatedSize();
 	
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new AnimatePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new AnimatePacket()); }
 	virtual int getId() { return 18; }
 };

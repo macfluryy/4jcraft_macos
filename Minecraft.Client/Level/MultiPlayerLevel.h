@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../../Minecraft.World/Util/HashExtension.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.h"
@@ -8,7 +8,7 @@ using namespace std;
 class ClientConnection;
 class MultiPlayerChunkCache;
 
-using namespace std;
+
 
 class MultiPlayerLevel : public Level
 {
@@ -22,7 +22,7 @@ private:
         ResetInfo(int x, int y, int z, int tile, int data);
     };
 
-	vector<ResetInfo> updatesToReset;	// 4J - was linked list but vector seems more appropriate
+	std::vector<ResetInfo> updatesToReset;	// 4J - was linked list but vector seems more appropriate
 	bool m_bEnableResetChanges; // 4J Added
 public:
 	void unshareChunkAt(int x, int z);	// 4J - added
@@ -34,7 +34,7 @@ private:
 	int unshareCheckZ;		// 4J - added
 	int compressCheckX;		// 4J - added
 	int compressCheckZ;		// 4J - added
-    vector<ClientConnection *> connections; // 4J Stu - Made this a vector as we can have more than one local connection
+    std::vector<ClientConnection *> connections; // 4J Stu - Made this a vector as we can have more than one local connection
     MultiPlayerChunkCache *chunkCache;
 	Minecraft *minecraft;
 
@@ -54,21 +54,21 @@ public:
     void setChunkVisible(int x, int z, bool visible);
 
 private:
-	unordered_map<int, shared_ptr<Entity>, IntKeyHash2, IntKeyEq> entitiesById;	// 4J - was IntHashMap
-    unordered_set<shared_ptr<Entity> > forced;
-    unordered_set<shared_ptr<Entity> > reEntries;
+	std::unordered_map<int, std::shared_ptr<Entity>, IntKeyHash2, IntKeyEq> entitiesById;	// 4J - was IntHashMap
+    std::unordered_set<std::shared_ptr<Entity> > forced;
+    std::unordered_set<std::shared_ptr<Entity> > reEntries;
 
 public:
-	virtual bool addEntity(shared_ptr<Entity> e);
-    virtual void removeEntity(shared_ptr<Entity> e);
+	virtual bool addEntity(std::shared_ptr<Entity> e);
+    virtual void removeEntity(std::shared_ptr<Entity> e);
 protected:
-	virtual void entityAdded(shared_ptr<Entity> e);
-    virtual void entityRemoved(shared_ptr<Entity> e);
+	virtual void entityAdded(std::shared_ptr<Entity> e);
+    virtual void entityRemoved(std::shared_ptr<Entity> e);
 public:
-	void putEntity(int id, shared_ptr<Entity> e);
-    shared_ptr<Entity> getEntity(int id);
-    shared_ptr<Entity> removeEntity(int id);
-	virtual void removeEntities(vector<shared_ptr<Entity> > *list); // 4J Added override
+	void putEntity(int id, std::shared_ptr<Entity> e);
+    std::shared_ptr<Entity> getEntity(int id);
+    std::shared_ptr<Entity> removeEntity(int id);
+	virtual void removeEntities(std::vector<std::shared_ptr<Entity> > *list); // 4J Added override
     virtual bool setDataNoUpdate(int x, int y, int z, int data);
     virtual bool setTileAndDataNoUpdate(int x, int y, int z, int tile, int data);
     virtual bool setTileNoUpdate(int x, int y, int z, int tile);
@@ -82,12 +82,12 @@ protected:
 
 public:
 	void animateTickDoWork();			// 4J added
-	unordered_set<int> chunksToAnimate;	// 4J added
+	std::unordered_set<int> chunksToAnimate;	// 4J added
 
 public:
 	void removeAllPendingEntityRemovals();
 
-	virtual void playSound(shared_ptr<Entity> entity, int iSound, float volume, float pitch);
+	virtual void playSound(std::shared_ptr<Entity> entity, int iSound, float volume, float pitch);
 
 	virtual void playLocalSound(double x, double y, double z, int iSound, float volume, float pitch, float fClipSoundDist=16.0f);
 

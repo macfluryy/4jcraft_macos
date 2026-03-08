@@ -12,7 +12,7 @@
 ArrowAttackGoal::ArrowAttackGoal(Mob *mob, float speed, int projectileType, int attackInterval)
 {
 	// 4J Init
-	target = weak_ptr<Mob>();
+	target = std::weak_ptr<Mob>();
 	attackTime = 0;
 	seeTime = 0;
 
@@ -26,9 +26,9 @@ ArrowAttackGoal::ArrowAttackGoal(Mob *mob, float speed, int projectileType, int 
 
 bool ArrowAttackGoal::canUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
-	target = weak_ptr<Mob>(bestTarget);
+	target = std::weak_ptr<Mob>(bestTarget);
 	return true;
 }
 
@@ -39,13 +39,13 @@ bool ArrowAttackGoal::canContinueToUse()
 
 void ArrowAttackGoal::stop()
 {
-	target = weak_ptr<Mob>();
+	target = std::weak_ptr<Mob>();
 }
 
 void ArrowAttackGoal::tick()
 {
 	double attackRadiusSqr = 10 * 10;
-	shared_ptr<Mob> tar = target.lock();
+	std::shared_ptr<Mob> tar = target.lock();
 	double targetDistSqr = mob->distanceToSqr(tar->x, tar->bb->y0, tar->z);
 	bool canSee = mob->getSensing()->canSee(tar);
 
@@ -60,7 +60,7 @@ void ArrowAttackGoal::tick()
 
 	mob->getLookControl()->setLookAt(tar, 30, 30);
 
-	attackTime = max(attackTime - 1, 0);
+	attackTime = std::max(attackTime - 1, 0);
 	if (attackTime > 0) return;
 	if (targetDistSqr > attackRadiusSqr || !canSee) return;
 	fireAtTarget();
@@ -69,16 +69,16 @@ void ArrowAttackGoal::tick()
 
 void ArrowAttackGoal::fireAtTarget()
 {
-	shared_ptr<Mob> tar = target.lock();
+	std::shared_ptr<Mob> tar = target.lock();
 	if (projectileType == ArrowType)
 	{
-		shared_ptr<Arrow> arrow = shared_ptr<Arrow>( new Arrow(level, dynamic_pointer_cast<Mob>(mob->shared_from_this()), tar, 1.60f, 12) );
+		std::shared_ptr<Arrow> arrow = std::shared_ptr<Arrow>( new Arrow(level, std::dynamic_pointer_cast<Mob>(mob->shared_from_this()), tar, 1.60f, 12) );
 		level->playSound(mob->shared_from_this(), eSoundType_RANDOM_BOW, 1.0f, 1 / (mob->getRandom()->nextFloat() * 0.4f + 0.8f));
 		level->addEntity(arrow);
 	}
 	else if (projectileType == SnowballType)
 	{
-		shared_ptr<Snowball> snowball = shared_ptr<Snowball>( new Snowball(level, dynamic_pointer_cast<Mob>(mob->shared_from_this())) );
+		std::shared_ptr<Snowball> snowball = std::shared_ptr<Snowball>( new Snowball(level, std::dynamic_pointer_cast<Mob>(mob->shared_from_this())) );
 		double xd = tar->x - mob->x;
 		double yd = (tar->y + tar->getHeadHeight() - 1.1f) - snowball->y;
 		double zd = tar->z - mob->z;

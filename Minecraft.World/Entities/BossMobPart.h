@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "Entity.h"
 
 class Level;
@@ -11,9 +11,9 @@ public:
 	eINSTANCEOF GetType() { return eTYPE_BOSS_MOB_PART; };
 public:
 	BossMob *bossMob;
-	const wstring id;
+	const std::wstring id;
 
-	BossMobPart(BossMob *bossMob, const wstring &id, float w, float h);
+	BossMobPart(BossMob *bossMob, const std::wstring &id, float w, float h);
 
 protected:
 	virtual void defineSynchedData();
@@ -23,5 +23,5 @@ protected:
 public:
 	virtual bool isPickable();
 	virtual bool hurt(DamageSource *source, int damage);
-	virtual bool is(shared_ptr<Entity> other);
+	virtual bool is(std::shared_ptr<Entity> other);
 };

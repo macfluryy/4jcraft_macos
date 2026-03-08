@@ -128,7 +128,7 @@ HRESULT CScene_DebugOverlay::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress
 			int id = m_itemIds[nIndex];
 			//app.SetXuiServerAction(pNotifyPressData->UserIndex, eXuiServerAction_DropItem, (void *)id);
 			ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-			conn->send( GiveItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), id) );
+			conn->send( GiveItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), id) );
 		}
     }
 	else if ( hObjPressed == m_mobs )
@@ -143,7 +143,7 @@ HRESULT CScene_DebugOverlay::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress
     {
         nIndex = m_enchantments.GetCurSel();
 		ClientConnection *conn = Minecraft::GetInstance()->getConnection(ProfileManager.GetPrimaryPad());
-		conn->send( EnchantItemCommand::preparePacket(dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIds[nIndex]) );
+		conn->send( EnchantItemCommand::preparePacket(std::dynamic_pointer_cast<Player>(Minecraft::GetInstance()->localplayers[ProfileManager.GetPrimaryPad()]), m_enchantmentIds[nIndex]) );
     }
 	/*else if( hObjPressed == m_saveToDisc ) // 4J-JEV: Doesn't look like we use this debug option anymore.
 	{
@@ -294,7 +294,7 @@ void CScene_DebugOverlay::SetSpawnToPlayerPos()
 #ifndef _CONTENT_PACKAGE
 void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 {
-	unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> newFileCache;
+	std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> newFileCache;
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
@@ -305,7 +305,7 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 
 	// TODO Make this only happen for the new save
 	//SetSpawnToPlayerPos();
-	FileEntry *origFileEntry = currentSave->createFile( wstring( L"level.dat" ) );
+	FileEntry *origFileEntry = currentSave->createFile( std::wstring( L"level.dat" ) );
 	byteArray levelData( origFileEntry->getFileSize() );
 	DWORD bytesRead;
 	currentSave->setFilePointer(origFileEntry,0,NULL,FILE_BEGIN);
@@ -316,7 +316,7 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
          &bytesRead // number of bytes read
 		 );
 
-	FileEntry *newFileEntry = newSave.createFile( wstring( L"level.dat" ) );
+	FileEntry *newFileEntry = newSave.createFile( std::wstring( L"level.dat" ) );
 	DWORD bytesWritten;
 	newSave.writeFile(	newFileEntry,
 					levelData.data, // data buffer
@@ -363,9 +363,9 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 }
 #endif
 
-RegionFile *CScene_DebugOverlay::getRegionFile(unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)		// 4J - TODO was synchronized
+RegionFile *CScene_DebugOverlay::getRegionFile(std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)		// 4J - TODO was synchronized
 {
-	File file( prefix + wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
+	File file( prefix + std::wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
 
 	RegionFile *ref = NULL;
 	AUTO_VAR(it, newFileCache.find(file));
@@ -383,7 +383,7 @@ RegionFile *CScene_DebugOverlay::getRegionFile(unordered_map<File, RegionFile *,
     return reg;
 }
 
-DataOutputStream *CScene_DebugOverlay::getChunkDataOutputStream(unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const wstring &prefix, int chunkX, int chunkZ)
+DataOutputStream *CScene_DebugOverlay::getChunkDataOutputStream(std::unordered_map<File, RegionFile *, FileKeyHash, FileKeyEq> &newFileCache, ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
 {
 	RegionFile *r = getRegionFile(newFileCache, saveFile, prefix, chunkX, chunkZ);
     return r->getChunkDataOutputStream(chunkX & 31, chunkZ & 31);

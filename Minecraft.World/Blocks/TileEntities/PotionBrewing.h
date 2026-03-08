@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class MobEffectInstance;
 
 class PotionBrewing
@@ -14,22 +14,22 @@ public:
 	static const int THROWABLE_BIT = 14;
 	static const int THROWABLE_MASK = (1 << THROWABLE_BIT);
 
-	static const wstring MOD_WATER;
-	static const wstring MOD_SUGAR;
-	static const wstring MOD_GHASTTEARS;
-	static const wstring MOD_SPIDEREYE;
-	static const wstring MOD_FERMENTEDEYE;
-	static const wstring MOD_SPECKLEDMELON;
-	static const wstring MOD_BLAZEPOWDER;
-	static const wstring MOD_MAGMACREAM;
-	static const wstring MOD_REDSTONE;
-	static const wstring MOD_GLOWSTONE;
-	static const wstring MOD_NETHERWART;
-	static const wstring MOD_GUNPOWDER;
-	static const wstring MOD_GOLDENCARROT;
+	static const std::wstring MOD_WATER;
+	static const std::wstring MOD_SUGAR;
+	static const std::wstring MOD_GHASTTEARS;
+	static const std::wstring MOD_SPIDEREYE;
+	static const std::wstring MOD_FERMENTEDEYE;
+	static const std::wstring MOD_SPECKLEDMELON;
+	static const std::wstring MOD_BLAZEPOWDER;
+	static const std::wstring MOD_MAGMACREAM;
+	static const std::wstring MOD_REDSTONE;
+	static const std::wstring MOD_GLOWSTONE;
+	static const std::wstring MOD_NETHERWART;
+	static const std::wstring MOD_GUNPOWDER;
+	static const std::wstring MOD_GOLDENCARROT;
 
 private:
-	typedef unordered_map<int, wstring> intStringMap;
+	typedef std::unordered_map<int, std::wstring> intStringMap;
 	static intStringMap potionEffectDuration;
 	static intStringMap potionEffectAmplifier;
 	
@@ -54,10 +54,10 @@ private:
 
 public:
 	static int getAppearanceValue(int brew);
-	static int getColorValue(vector<MobEffectInstance *> *effects);
+	static int getColorValue(std::vector<MobEffectInstance *> *effects);
 
 private:
-	static unordered_map<int, int> cachedColors;
+	static std::unordered_map<int, int> cachedColors;
 
 public:
 	static int getColorValue(int brew, bool includeDisabledEffects);
@@ -77,10 +77,10 @@ private:
 
 	static int constructParsedValue(bool isNot, bool hasMultiplier, bool isNeg, int countCompare, int valuePart, int multiplierPart, int brew);
 	static int countOnes(int brew);
-	static int parseEffectFormulaValue(const wstring &definition, int start, int end, int brew);
+	static int parseEffectFormulaValue(const std::wstring &definition, int start, int end, int brew);
 
 public:
-	static vector<MobEffectInstance *> *getEffects(int brew, bool includeDisabledEffects);
+	static std::vector<MobEffectInstance *> *getEffects(int brew, bool includeDisabledEffects);
 
 #if !(_SIMPLIFIED_BREWING)
 	static int boil(int brew);
@@ -92,10 +92,10 @@ private:
 	static int applyBrewBit(int currentBrew, int bit, bool isNeg, bool isNot, bool isRequired);
 
 public:
-	static int applyBrew(int currentBrew, const wstring &formula);
+	static int applyBrew(int currentBrew, const std::wstring &formula);
 	static int setBit(int brew, int position, bool onOff);
 	static int valueOf(int brew, int p1, int p2, int p3, int p4);
 	static int valueOf(int brew, int p1, int p2, int p3, int p4, int p5);
-	static wstring toString(int brew);
+	static std::wstring toString(int brew);
 	//static void main(String[] args);
 };

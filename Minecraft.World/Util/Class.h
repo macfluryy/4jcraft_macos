@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 class InputStream;
 
 // This file aims to provide functionality to mimic the subset of java's Class class that we require. Classes that require this

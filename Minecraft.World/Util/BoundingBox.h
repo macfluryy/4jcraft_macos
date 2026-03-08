@@ -27,5 +27,5 @@ public:
 	int getYCenter();
 	int getZCenter();
 
-	wstring toString();
+	std::wstring toString();
 };

@@ -51,7 +51,7 @@ public:
 	void RemoveLocalUser( __in Windows::Xbox::System::IUser^ user ); 
 	void EvaluateDevicesForUser(__in Windows::Xbox::System::IUser^ user );
 
-	vector<AddedUser *> m_addedUsers;
+	std::vector<AddedUser *> m_addedUsers;
 	CRITICAL_SECTION m_csAddedUsers;
 
 private:

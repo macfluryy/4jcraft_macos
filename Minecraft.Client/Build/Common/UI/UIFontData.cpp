@@ -143,7 +143,7 @@ unsigned short SFontData::Codepoints[FONTSIZE] =
 
 CFontData::CFontData()
 {
-	m_unicodeMap = unordered_map<unsigned int, unsigned short>();
+	m_unicodeMap = std::unordered_map<unsigned int, unsigned short>();
 
 	m_sFontData = NULL;
 	m_kerningTable = NULL;
@@ -181,7 +181,7 @@ CFontData::CFontData(SFontData &sFontData, int *pbRawImage)
 	// CREATE UNICODE MAP //
 	for (unsigned int i = 0; i < sFontData.m_uiGlyphCount; i++)
 	{
-		unordered_map<unsigned int, unsigned short>::value_type pair(sFontData.Codepoints[i], i);
+		std::unordered_map<unsigned int, unsigned short>::value_type pair(sFontData.Codepoints[i], i);
 		m_unicodeMap.insert( pair );
 	}
 
@@ -260,7 +260,7 @@ CFontData::CFontData(SFontData &sFontData, int *pbRawImage)
 
 		getPos(i, row, col);
 
-		string state = "ok";
+		std::string state = "ok";
 		if (i != getGlyphId(unicode))
 		{
 			state = "MISSMATCHED!";
@@ -279,7 +279,7 @@ void CFontData::release()
 	delete [] m_pbRawImage;
 }
 
-const string CFontData::getFontName()
+const std::string CFontData::getFontName()
 {
 	return m_sFontData->m_strFontName;
 }
@@ -291,7 +291,7 @@ SFontData *CFontData::getFontData()
 
 unsigned short CFontData::getGlyphId(unsigned int unicodepoint)
 {
-	unordered_map<unsigned int, unsigned short>::iterator out = m_unicodeMap.find(unicodepoint);
+	std::unordered_map<unsigned int, unsigned short>::iterator out = m_unicodeMap.find(unicodepoint);
 	if (out != m_unicodeMap.end())
 		return out->second;
 	return 0;

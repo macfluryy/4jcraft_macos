@@ -4,7 +4,7 @@
 #include "Definitions.h"
 
 class HitResult;
-using namespace std;
+
 
 class AABB 
 {
@@ -61,5 +61,5 @@ public:
 	bool containsY(Vec3 *v);
 	bool containsZ(Vec3 *v);
 	void set(AABB *b);
-	wstring toString();
+	std::wstring toString();
 };

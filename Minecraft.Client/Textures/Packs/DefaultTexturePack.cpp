@@ -45,7 +45,7 @@ void DefaultTexturePack::loadName()
 	texname = L"Minecraft";
 }
 
-bool DefaultTexturePack::hasFile(const wstring &name)
+bool DefaultTexturePack::hasFile(const std::wstring &name)
 {
 //	return DefaultTexturePack::class->getResourceAsStream(name) != null;
 	return true;
@@ -56,9 +56,9 @@ bool DefaultTexturePack::isTerrainUpdateCompatible()
 	return true;
 }
 
-InputStream *DefaultTexturePack::getResourceImplementation(const wstring &name)// throws FileNotFoundException
+InputStream *DefaultTexturePack::getResourceImplementation(const std::wstring &name)// throws FileNotFoundException
 {
-	wstring wDrive = L"";
+	std::wstring wDrive = L"";
 	// Make the content package point to to the UPDATE: drive is needed
 #ifdef _XBOX
 	#ifdef _TU_BUILD
@@ -84,14 +84,14 @@ InputStream *DefaultTexturePack::getResourceImplementation(const wstring &name)/
 	}
 
 
-	wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
 	wDrive = wstr + L"\\Common\\res\\TitleUpdate\\res";
 #elif __PSVITA__
 
 	/*
 	char *pchUsrDir=getUsrDirPath();
-	wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 	
 	wDrive = wstr + L"Common\\res\\TitleUpdate\\res";
 	*/

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Icon.h"
 
@@ -23,7 +23,7 @@ public:
 	float getV0(bool adjust = false) const;
 	float getV1(bool adjust = false) const;
 	float getV(double offset, bool adjust = false) const;
-	wstring getName() const;
+	std::wstring getName() const;
 	int getSourceWidth() const;
 	int getSourceHeight() const;
 	int getFlags() const;			// 4J added

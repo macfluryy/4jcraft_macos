@@ -6,7 +6,7 @@
 #include "StitchedTexture.h"
 #include "../TextureManager.h"
 
-StitchedTexture *StitchedTexture::create(const wstring &name)
+StitchedTexture *StitchedTexture::create(const std::wstring &name)
 {
 	// TODO: Generalize?
 	if (name.compare(L"clock") == 0)
@@ -23,7 +23,7 @@ StitchedTexture *StitchedTexture::create(const wstring &name)
 	}
 }
 
-StitchedTexture::StitchedTexture(const wstring &name) : name(name)
+StitchedTexture::StitchedTexture(const std::wstring &name) : name(name)
 {
 	// 4J Initialisers
 	source = NULL;
@@ -75,7 +75,7 @@ void StitchedTexture::initUVs(float U0, float V0, float U1, float V1)
 	v1 = V1;
 }
 
-void StitchedTexture::init(Texture *source, vector<Texture *> *frames, int x, int y, int width, int height, bool rotated)
+void StitchedTexture::init(Texture *source, std::vector<Texture *> *frames, int x, int y, int width, int height, bool rotated)
 {
 	this->source = source;
 	this->frames = frames;
@@ -170,7 +170,7 @@ float StitchedTexture::getV(double offset, bool adjust/*=false*/) const
 	return getV0(adjust) + (diff * ((float) offset / SharedConstants::WORLD_RESOLUTION));
 }
 
-wstring StitchedTexture::getName() const
+std::wstring StitchedTexture::getName() const
 {
 	return name;
 }
@@ -189,7 +189,7 @@ void StitchedTexture::cycleFrames()
 {
 	if (frameOverride != NULL)
 	{
-		pair<int, int> current = frameOverride->at(frame);
+		std::pair<int, int> current = frameOverride->at(frame);
 		subFrame++;
 		if (subFrame >= current.second)
 		{
@@ -256,7 +256,7 @@ void StitchedTexture::loadAnimationFrames(BufferedReader *bufferedReader)
 	intPairVector *results = new intPairVector();
 
 	//try {
-	wstring line = bufferedReader->readLine();
+	std::wstring line = bufferedReader->readLine();
 	while (!line.empty())
 	{
 		line = trimString(line);
@@ -266,7 +266,7 @@ void StitchedTexture::loadAnimationFrames(BufferedReader *bufferedReader)
 			//for (String token : tokens)
 			for(AUTO_VAR(it, tokens.begin()); it != tokens.end(); ++it)
 			{
-				wstring token = *it;
+				std::wstring token = *it;
 				int multiPos = token.find_first_of('*');
 				if (multiPos > 0)
 				{
@@ -297,7 +297,7 @@ void StitchedTexture::loadAnimationFrames(BufferedReader *bufferedReader)
 	}
 }
 
-void StitchedTexture::loadAnimationFrames(const wstring &string)
+void StitchedTexture::loadAnimationFrames(const std::wstring &string)
 {
 	if(frameOverride != NULL)
 	{
@@ -313,7 +313,7 @@ void StitchedTexture::loadAnimationFrames(const wstring &string)
 	//for (String token : tokens)
 	for(AUTO_VAR(it, tokens.begin()); it != tokens.end(); ++it)
 	{
-		wstring token = trimString(*it);
+		std::wstring token = trimString(*it);
 		int multiPos = token.find_first_of('*');
 		if (multiPos > 0)
 		{

@@ -755,12 +755,12 @@ bool RandomLevelSource::shouldSave()
 	return true;
 }
 
-wstring RandomLevelSource::gatherStats()
+std::wstring RandomLevelSource::gatherStats()
 {
 	return L"RandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *RandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *RandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     Biome *biome = level->getBiome(x, z);
     if (biome == NULL)
@@ -770,7 +770,7 @@ vector<Biome::MobSpawnerData *> *RandomLevelSource::getMobsAt(MobCategory *mobCa
     return biome->getMobs(mobCategory);
 }
 
-TilePos *RandomLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *RandomLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
     if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != NULL)
 	{

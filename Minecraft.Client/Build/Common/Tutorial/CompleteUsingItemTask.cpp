@@ -23,7 +23,7 @@ bool CompleteUsingItemTask::isCompleted()
 	return bIsCompleted;
 }
 
-void CompleteUsingItemTask::completeUsingItem(shared_ptr<ItemInstance> item)
+void CompleteUsingItemTask::completeUsingItem(std::shared_ptr<ItemInstance> item)
 {
 	if(!hasBeenActivated() && !isPreCompletionEnabled()) return;
 	for(int i=0;i<m_iValidItemsCount;i++)

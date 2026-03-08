@@ -42,11 +42,11 @@ MeleeAttackGoal::~MeleeAttackGoal()
 
 bool MeleeAttackGoal::canUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
 	if(!bestTarget->isAlive()) return false;
 	if (attackType != eTYPE_NOTSET && (attackType & bestTarget->GetType()) != attackType) return false;
-	target = weak_ptr<Mob>(bestTarget);
+	target = std::weak_ptr<Mob>(bestTarget);
 	delete path;
 	path = mob->getNavigation()->createPath(target.lock());
 	return path != NULL;
@@ -54,7 +54,7 @@ bool MeleeAttackGoal::canUse()
 
 bool MeleeAttackGoal::canContinueToUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
 	if (target.lock() == NULL || !target.lock()->isAlive()) return false;
 	if (!trackTarget) return !mob->getNavigation()->isDone();
@@ -71,7 +71,7 @@ void MeleeAttackGoal::start()
 
 void MeleeAttackGoal::stop()
 {
-	target = weak_ptr<Mob>();
+	target = std::weak_ptr<Mob>();
 	mob->getNavigation()->stop();
 }
 
@@ -87,7 +87,7 @@ void MeleeAttackGoal::tick()
 		}
 	}
 
-	attackTime = max(attackTime - 1, 0);
+	attackTime = std::max(attackTime - 1, 0);
 
 	double meleeRadiusSqr = (mob->bbWidth * 2) * (mob->bbWidth * 2);
 	if (mob->distanceToSqr(target.lock()->x, target.lock()->bb->y0, target.lock()->z) > meleeRadiusSqr) return;

@@ -11,10 +11,10 @@
 #include "../IO/Streams/IntBuffer.h"
 #include "../../Minecraft.Client/Rendering/Tesselator.h"
 
-const wstring RedStoneDustTile::TEXTURE_CROSS = L"redstoneDust_cross";
-const wstring RedStoneDustTile::TEXTURE_LINE = L"redstoneDust_line";
-const wstring RedStoneDustTile::TEXTURE_CROSS_OVERLAY = L"redstoneDust_cross_overlay";
-const wstring RedStoneDustTile::TEXTURE_LINE_OVERLAY = L"redstoneDust_line_overlay";
+const std::wstring RedStoneDustTile::TEXTURE_CROSS = L"redstoneDust_cross";
+const std::wstring RedStoneDustTile::TEXTURE_LINE = L"redstoneDust_line";
+const std::wstring RedStoneDustTile::TEXTURE_CROSS_OVERLAY = L"redstoneDust_cross_overlay";
+const std::wstring RedStoneDustTile::TEXTURE_LINE_OVERLAY = L"redstoneDust_line_overlay";
 
 RedStoneDustTile::RedStoneDustTile(int id) : Tile(id, Material::decoration,isSolidRender())
 {
@@ -78,7 +78,7 @@ void RedStoneDustTile::updatePowerStrength(Level *level, int x, int y, int z)
 {
 	updatePowerStrength(level, x, y, z, x, y, z);
 	
-	vector<TilePos> updates = vector<TilePos>(toUpdate.begin(), toUpdate.end());
+	std::vector<TilePos> updates = std::vector<TilePos>(toUpdate.begin(), toUpdate.end());
 	toUpdate.clear();
 
 	AUTO_VAR(itEnd, updates.end());
@@ -415,7 +415,7 @@ void RedStoneDustTile::registerIcons(IconRegister *iconRegister)
 	icon = iconCross;
 }
 
-Icon *RedStoneDustTile::getTexture(const wstring &name) 
+Icon *RedStoneDustTile::getTexture(const std::wstring &name) 
 {
 #ifdef __PSVITA__
 	// AP - alpha cut out is expensive on vita. Set the Alpha Cut out flag

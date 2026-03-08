@@ -1,7 +1,7 @@
 #pragma once
 // 4J-PB - remove the inherits via dominance warnings
 #pragma warning( disable : 4250 )
-using namespace std;
+//using namespace std;
 // A scene map directly to an Iggy movie (or more accurately a collection of different sized movies)
 
 #include "UIEnums.h"
@@ -49,8 +49,8 @@ private:
 	IggyName m_funcSetAlpha;
 
 	ItemRenderer *m_pItemRenderer;
-	unordered_map<wstring, IggyName> m_fastNames;
-	unordered_map<wstring, bool> m_registeredTextures;
+	std::unordered_map<std::wstring, IggyName> m_fastNames;
+	std::unordered_map<std::wstring, bool> m_registeredTextures;
 
 	typedef struct _TimerInfo
 	{
@@ -58,7 +58,7 @@ private:
 		int targetTime;
 		bool running;
 	} TimerInfo;
-	unordered_map<int,TimerInfo> m_timers;
+	std::unordered_map<int,TimerInfo> m_timers;
 
 	int m_iFocusControl, m_iFocusChild;
 	float m_lastOpacity;
@@ -86,7 +86,7 @@ protected:
 
 	int m_movieWidth, m_movieHeight;
 	int m_renderWidth, m_renderHeight;
-	vector<UIControl *> m_controls;
+	std::vector<UIControl *> m_controls;
 
 protected:
 	UILayer *m_parentLayer;
@@ -109,7 +109,7 @@ public:
 #ifdef __PSVITA__
 	UILayer *GetParentLayer() {return m_parentLayer;}
 	EUIGroup GetParentLayerGroup() {return m_parentLayer->m_parentGroup->GetGroup();}
-	vector<UIControl *> *GetControls() {return &m_controls;}
+	std::vector<UIControl *> *GetControls() {return &m_controls;}
 #endif
 
 protected:
@@ -117,14 +117,14 @@ protected:
 	virtual F64 getSafeZoneHalfWidth();
 	void setSafeZone(S32 top, S32 bottom, S32 left, S32 right);
 	void doHorizontalResizeCheck();
-	virtual wstring getMoviePath() = 0;
+	virtual std::wstring getMoviePath() = 0;
 
 	virtual bool mapElementsAndNames();
 	void initialiseMovie();
 	void loadMovie();
 
 private:
-	void getDebugMemoryUseRecursive(const wstring &moviePath, IggyMemoryUseInfo &memoryInfo);
+	void getDebugMemoryUseRecursive(const std::wstring &moviePath, IggyMemoryUseInfo &memoryInfo);
 
 public:
 	void PrintTotalMemoryUsage(__int64 &totalStatic, __int64 &totalDynamic);
@@ -138,7 +138,7 @@ public:
 
 	virtual void tick();
 
-	IggyName registerFastName(const wstring &name);
+	IggyName registerFastName(const std::wstring &name);
 #ifdef __PSVITA__
 	void SetFocusToElement(int iID); 
 	void UpdateSceneControls();
@@ -187,7 +187,7 @@ public:
 
 protected:
 	//void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, int iID, int iCount, int iAuxVal, float fAlpha, bool isFoil, bool bDecorations);
-	void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations);
+	void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations);
 	
 	bool m_cacheSlotRenders;
 	bool m_needsCacheRendered;
@@ -196,14 +196,14 @@ private:
 	typedef struct _CachedSlotDrawData
 	{
 		CustomDrawData *customDrawRegion;
-		shared_ptr<ItemInstance> item;
+		std::shared_ptr<ItemInstance> item;
 		float fAlpha;
 		bool isFoil;
 		bool bDecorations;
 	} CachedSlotDrawData;
-	vector<CachedSlotDrawData *> m_cachedSlotDraw;
+	std::vector<CachedSlotDrawData *> m_cachedSlotDraw;
 
-	void _customDrawSlotControl(CustomDrawData *region, int iPad, shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations, bool usingCommandBuffer);
+	void _customDrawSlotControl(CustomDrawData *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations, bool usingCommandBuffer);
 
 public:
 	// INPUT
@@ -251,8 +251,8 @@ public:
 #ifdef _XBOX_ONE
 	virtual void HandleDLCLicenseChange() {}
 #endif
-	void registerSubstitutionTexture(const wstring &textureName, PBYTE pbData, DWORD dwLength, bool deleteData = false);
-	bool hasRegisteredSubstitutionTexture(const wstring &textureName);
+	void registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength, bool deleteData = false);
+	bool hasRegisteredSubstitutionTexture(const std::wstring &textureName);
 
 	virtual void handleUnlockFullVersion() {}
 

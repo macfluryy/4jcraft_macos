@@ -1,6 +1,6 @@
 #pragma once
 #include "../Screen.h"
-using namespace std;
+
 class Options;
 
 class ControlsScreen : public Screen
@@ -8,7 +8,7 @@ class ControlsScreen : public Screen
 private:
 	Screen *lastScreen;
 protected:
-	wstring title;
+	std::wstring title;
 private:
 	Options *options;
     

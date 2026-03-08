@@ -61,19 +61,19 @@ Particle::Particle(Level *level, double x, double y, double z, double xa, double
     yd = yd / dd * speed * 0.4f + 0.1f;
     zd = zd / dd * speed * 0.4f;}
 
-shared_ptr<Particle> Particle::setPower(float power)
+std::shared_ptr<Particle> Particle::setPower(float power)
 {
     xd *= power;
     yd = (yd - 0.1f) * power + 0.1f;
     zd *= power;
-    return dynamic_pointer_cast<Particle>( shared_from_this() );
+    return std::dynamic_pointer_cast<Particle>( shared_from_this() );
 }
 
-shared_ptr<Particle> Particle::scale(float scale)
+std::shared_ptr<Particle> Particle::scale(float scale)
 {
     setSize(0.2f * scale, 0.2f * scale);
     size *= scale;
-    return dynamic_pointer_cast<Particle>( shared_from_this() );
+    return std::dynamic_pointer_cast<Particle>( shared_from_this() );
 }
 
 void Particle::setColor(float r, float g, float b)
@@ -240,7 +240,7 @@ bool Particle::isAttackable()
 }
 
 //@Override
-wstring Particle::toString()
+std::wstring Particle::toString()
 {
 	return L"A particle"; //getClass()->getSimpleName() + ", Pos (" + x + "," + y + "," + z + "), RGBA (" + rCol + "," + gCol + "," + bCol + "," + alpha + "), Age " + age;
 }

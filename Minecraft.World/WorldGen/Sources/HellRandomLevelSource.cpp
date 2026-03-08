@@ -228,7 +228,7 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks
 										// Place the nether wart on top of the soul sand
 										y += 1;
 										int genDepthMinusOne = Level::genDepthMinusOne; // Take into local int for PS4 as min takes a reference to the const int there and then needs the value to exist for the linker
-										y = min(y, genDepthMinusOne);
+										y = std::min(y, genDepthMinusOne);
 										runDepth += 1;
 										offs = (z * 16 + x) * Level::genDepth + y;
 									}
@@ -517,12 +517,12 @@ bool HellRandomLevelSource::shouldSave()
 	return true;
 }
 
-wstring HellRandomLevelSource::gatherStats()
+std::wstring HellRandomLevelSource::gatherStats()
 {
 	return L"HellRandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *HellRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *HellRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     // check if the coordinates is within a netherbridge
     if (mobCategory == MobCategory::monster && netherBridgeFeature->isInsideFeature(x, y, z))
@@ -538,7 +538,7 @@ vector<Biome::MobSpawnerData *> *HellRandomLevelSource::getMobsAt(MobCategory *m
     return biome->getMobs(mobCategory);
 }
 
-TilePos *HellRandomLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *HellRandomLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
 	return NULL;
 }

@@ -59,7 +59,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT
@@ -68,6 +68,6 @@ public:
 	virtual void handleRequestMoreData(F64 startIndex, bool up);
 
 private:
-	void setNextLabel(const wstring &label, ECreditTextTypes size);
+	void setNextLabel(const std::wstring &label, ECreditTextTypes size);
 	void addImage(ECreditIcons icon);
 };

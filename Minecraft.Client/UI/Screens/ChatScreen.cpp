@@ -4,7 +4,7 @@
 #include "../../../Minecraft.World/Util/SharedConstants.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 
-const wstring ChatScreen::allowedChars = SharedConstants::readAcceptableChars();
+const std::wstring ChatScreen::allowedChars = SharedConstants::readAcceptableChars();
 
 ChatScreen::ChatScreen()
 {
@@ -35,10 +35,10 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey)
     }
     if (eventKey == Keyboard::KEY_RETURN)
 	{
-        wstring msg = trimString(message);
+        std::wstring msg = trimString(message);
         if (msg.length() > 0)
 		{
-            wstring trim = trimString(message);
+            std::wstring trim = trimString(message);
             if (!minecraft->handleClientSideCommand(trim))
 			{
                 minecraft->player->chat(trim);

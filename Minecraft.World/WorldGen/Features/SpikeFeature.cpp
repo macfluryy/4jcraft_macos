@@ -50,7 +50,7 @@ bool SpikeFeature::place(Level *level, Random *random, int x, int y, int z)
         } else break;
     }
 
-    shared_ptr<EnderCrystal> enderCrystal = shared_ptr<EnderCrystal>(new EnderCrystal(level));
+    std::shared_ptr<EnderCrystal> enderCrystal = std::shared_ptr<EnderCrystal>(new EnderCrystal(level));
     enderCrystal->moveTo(x + 0.5f, y + hh, z + 0.5f, random->nextFloat() * 360, 0);
     level->addEntity(enderCrystal);
     level->setTile(x, y + hh, z, Tile::unbreakable_Id);
@@ -168,7 +168,7 @@ bool SpikeFeature::placeWithIndex(Level *level, Random *random, int x, int y, in
 		}
 	}
 
-    shared_ptr<EnderCrystal> enderCrystal = shared_ptr<EnderCrystal>(new EnderCrystal(level));
+    std::shared_ptr<EnderCrystal> enderCrystal = std::shared_ptr<EnderCrystal>(new EnderCrystal(level));
     enderCrystal->moveTo(x + 0.5f, y + hh, z + 0.5f, random->nextFloat() * 360, 0);
     level->addEntity(enderCrystal);
 	placeBlock(level, x, y + hh, z, Tile::unbreakable_Id, 0);

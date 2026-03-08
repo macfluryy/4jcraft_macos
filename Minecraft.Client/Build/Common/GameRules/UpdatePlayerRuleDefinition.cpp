@@ -56,7 +56,7 @@ void UpdatePlayerRuleDefinition::writeAttributes(DataOutputStream *dos, UINT num
 	}
 }
 
-void UpdatePlayerRuleDefinition::getChildren(vector<GameRuleDefinition *> *children)
+void UpdatePlayerRuleDefinition::getChildren(std::vector<GameRuleDefinition *> *children)
 {
 	GameRuleDefinition::getChildren(children);
 	for(AUTO_VAR(it, m_items.begin()); it!=m_items.end(); it++)
@@ -80,7 +80,7 @@ GameRuleDefinition *UpdatePlayerRuleDefinition::addChild(ConsoleGameRules::EGame
 	return rule;
 }
 
-void UpdatePlayerRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void UpdatePlayerRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"spawnX") == 0)
 	{
@@ -130,7 +130,7 @@ void UpdatePlayerRuleDefinition::addAttribute(const wstring &attributeName, cons
 	}
 }
 
-void UpdatePlayerRuleDefinition::postProcessPlayer(shared_ptr<Player> player)
+void UpdatePlayerRuleDefinition::postProcessPlayer(std::shared_ptr<Player> player)
 {
 	if(m_bUpdateHealth)
 	{

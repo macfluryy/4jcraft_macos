@@ -10,7 +10,7 @@
 #include "ArmorRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring ArmorRecipes::shapes[][4] = 
+std::wstring ArmorRecipes::shapes[][4] = 
 {
 	{L"XXX", //
 	L"X X",L""},//
@@ -40,7 +40,7 @@ ArmorRecipes::map[5] =
 
 void ArmorRecipes::_init()
 {
-	map = new vector <Object *> [MAX_ARMOUR_RECIPES];
+	map = new std::vector <Object *> [MAX_ARMOUR_RECIPES];
 
 	// 4J-PB - removing the chain armour, since we show all possible recipes in the xbox game, and it's not one you can make
 	ADD_OBJECT(map[0],Item::leather);

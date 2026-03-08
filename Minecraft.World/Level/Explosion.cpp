@@ -8,7 +8,7 @@
 #include "Explosion.h"
 #include "../Util/SoundTypes.h"
 
-Explosion::Explosion(Level *level, shared_ptr<Entity> source, double x, double y, double z, float r)
+Explosion::Explosion(Level *level, std::shared_ptr<Entity> source, double x, double y, double z, float r)
 {
 	fire = false;
 	random = new Random();
@@ -97,14 +97,14 @@ void Explosion::explode()
 	// Fix for 360 #123866 - [CRASH] TU13: Code: Compliance: Placing the TNT next to Ender Crystals will crash the title after a certain amount of time.
 	// If we explode something next to an EnderCrystal then it creates a new explosion that overwrites the shared vector in the level
 	// So copy it here instead of directly using the shared one
-	vector<shared_ptr<Entity> > *levelEntities = level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
-	vector<shared_ptr<Entity> > entities(levelEntities->begin(), levelEntities->end() );
+	std::vector<std::shared_ptr<Entity> > *levelEntities = level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
+	std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(), levelEntities->end() );
 	Vec3 *center = Vec3::newTemp(x, y, z);
 
 	AUTO_VAR(itEnd, entities.end());
 	for (AUTO_VAR(it, entities.begin()); it != itEnd; it++)
 	{
-		shared_ptr<Entity> e = *it; //entities->at(i);
+		std::shared_ptr<Entity> e = *it; //entities->at(i);
 
 		// 4J Stu - If the entity is not in a block that would be blown up, then they should not be damaged
 		// Fix for #46606 - TU5: Content: Gameplay: The player can be damaged and killed by explosions behind obsidian walls
@@ -149,7 +149,7 @@ void Explosion::explode()
 			e->yd += ya * push;
 			e->zd += za * push;					
 
-			shared_ptr<Player> player = dynamic_pointer_cast<Player>(e);
+			std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(e);
 			if (player != NULL)
 			{
 				//app.DebugPrintf("Adding player knockback (%f,%f,%f)\n", xa * pow, ya * pow, za * pow);
@@ -161,13 +161,13 @@ void Explosion::explode()
 }
 
 
-void Explosion::finalizeExplosion(bool generateParticles, vector<TilePos> *toBlowDirect/*=NULL*/)		// 4J - added toBlowDirect parameter
+void Explosion::finalizeExplosion(bool generateParticles, std::vector<TilePos> *toBlowDirect/*=NULL*/)		// 4J - added toBlowDirect parameter
 {
 	level->playSound(x, y, z, eSoundType_RANDOM_EXPLODE, 4, (1 + (level->random->nextFloat() - level->random->nextFloat()) * 0.2f) * 0.7f);
 	level->addParticle(eParticleType_hugeexplosion, x, y, z, 0, 0, 0);
 
 	// 4J - use pointer to vector directly passed in if this is available - used to speed up calling this from an incoming packet
-	vector<TilePos> *toBlowArray = toBlowDirect ? toBlowDirect : new vector<TilePos>( toBlow.begin(), toBlow.end() );
+	std::vector<TilePos> *toBlowArray = toBlowDirect ? toBlowDirect : new std::vector<TilePos>( toBlow.begin(), toBlow.end() );
 	//toBlowArray.addAll(toBlow);
 	// TODO 4J Stu - Reverse iterator
 	PIXBeginNamedEvent(0,"Finalizing explosion size %d",toBlow.size());
@@ -255,7 +255,7 @@ Explosion::playerVec3Map *Explosion::getHitPlayers()
 	return &hitPlayers;
 }
 
-Vec3 *Explosion::getHitPlayerKnockback( shared_ptr<Player> player )
+Vec3 *Explosion::getHitPlayerKnockback( std::shared_ptr<Player> player )
 {
 	AUTO_VAR(it, hitPlayers.find(player));
 

@@ -9,7 +9,7 @@
 #include "DLCManager.h"
 #include "DLCGameRulesHeader.h"
 
-DLCGameRulesHeader::DLCGameRulesHeader(const wstring &path) : DLCGameRules(DLCManager::e_DLCType_GameRulesHeader,path)
+DLCGameRulesHeader::DLCGameRulesHeader(const std::wstring &path) : DLCGameRules(DLCManager::e_DLCType_GameRulesHeader,path)
 {	
 	m_pbData = NULL;
 	m_dwBytes = 0;
@@ -35,7 +35,7 @@ void DLCGameRulesHeader::addData(PBYTE pbData, DWORD dwBytes)
 	// Init values.
 	int version_number;
 	byte compression_type;
-	wstring texturepackid;
+	std::wstring texturepackid;
 
 	// Read Datastream.
 	version_number = dis.readInt();

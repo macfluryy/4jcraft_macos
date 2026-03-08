@@ -190,11 +190,11 @@ Vec3 *Vec3::clipZ(Vec3 *b, double zt)
     return Vec3::newTemp(x + xd * d, y + yd * d, z + zd * d);
 }
 
-wstring Vec3::toString()
+std::wstring Vec3::toString()
 {
 	static wchar_t buf[128];
 	swprintf(buf, 128, L"(%f,%f,%f)",x,y,z);
-	return wstring(buf);
+	return std::wstring(buf);
 }
 
 Vec3 *Vec3::lerp(Vec3 *v, double a)

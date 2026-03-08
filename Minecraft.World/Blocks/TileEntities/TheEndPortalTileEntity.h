@@ -8,5 +8,5 @@ public:
 	static TileEntity *create() { return new TheEndPortalTileEntity(); }
 
 	// 4J Added
-	shared_ptr<TileEntity> clone();
+	std::shared_ptr<TileEntity> clone();
 };

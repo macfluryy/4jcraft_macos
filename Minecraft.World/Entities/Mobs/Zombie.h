@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Monster.h"
 #include "../../Util/SharedConstants.h"
@@ -64,9 +64,9 @@ protected:
 public:
 	virtual void addAdditonalSaveData(CompoundTag *tag);
 	virtual void readAdditionalSaveData(CompoundTag *tag);
-	void killed(shared_ptr<Mob> mob);
+	void killed(std::shared_ptr<Mob> mob);
 	virtual void finalizeMobSpawn();
-	bool interact(shared_ptr<Player> player);
+	bool interact(std::shared_ptr<Player> player);
 
 protected:
 	void startConverting(int time);

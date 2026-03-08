@@ -68,7 +68,7 @@ int MobEffectInstance::getAmplifier()
 * @param target
 * @return True if the effect is still active.
 */
-bool MobEffectInstance::tick(shared_ptr<Mob> target)
+bool MobEffectInstance::tick(std::shared_ptr<Mob> target)
 {
 	if (duration > 0)
 	{
@@ -86,7 +86,7 @@ int MobEffectInstance::tickDownDuration()
 	return --duration;
 }
 
-void MobEffectInstance::applyEffect(shared_ptr<Mob> mob)
+void MobEffectInstance::applyEffect(std::shared_ptr<Mob> mob)
 {
 	if (duration > 0)
 	{
@@ -113,10 +113,10 @@ int MobEffectInstance::hashCode()
 	return (id & 0xff) | ( (amplifier & 0xff) << 8) | ( (duration & 0xffff) << 16);
 }
 
-wstring MobEffectInstance::toString()
+std::wstring MobEffectInstance::toString()
 {
-	wstring result = L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
-	//wstring result = "";
+	std::wstring result = L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
+	//std::wstring result = "";
 	//if (getAmplifier() > 0)
 	//{
 	//	result = getDescriptionId() + " x " + (getAmplifier() + 1) + ", Duration: " + getDuration();

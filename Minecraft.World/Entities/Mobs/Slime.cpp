@@ -133,7 +133,7 @@ void Slime::tick()
 void Slime::serverAiStep() 
 {
 	checkDespawn();
-	shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 16);
+	std::shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 16);
 	if (player != NULL)
 	{
 		lookAt(player, 10, 20);
@@ -176,9 +176,9 @@ int Slime::getJumpDelay()
 	return random->nextInt(20) + 10;
 }
 
-shared_ptr<Slime> Slime::createChild()
+std::shared_ptr<Slime> Slime::createChild()
 {
-	return shared_ptr<Slime>( new Slime(level) );
+	return std::shared_ptr<Slime>( new Slime(level) );
 }
 
 void Slime::remove()
@@ -196,7 +196,7 @@ void Slime::remove()
 			{
 				float xd = (i % 2 - 0.5f) * size / 4.0f;
 				float zd = (i / 2 - 0.5f) * size / 4.0f;
-				shared_ptr<Slime> slime = createChild();
+				std::shared_ptr<Slime> slime = createChild();
 				slime->setSize(size / 2);
 				slime->moveTo(x + xd, y + 0.5, z + zd, random->nextFloat() * 360, 0);
 				level->addEntity(slime);
@@ -206,14 +206,14 @@ void Slime::remove()
 	Mob::remove();
 }
 
-void Slime::playerTouch(shared_ptr<Player> player)
+void Slime::playerTouch(std::shared_ptr<Player> player)
 {
 	if (isDealsDamage())
 	{
 		int size = getSize();
 		if (canSee(player) && this->distanceToSqr(player) < (0.6 * size) * (0.6 * size))
 		{
-			DamageSource *damageSource = DamageSource::mobAttack( dynamic_pointer_cast<Mob>( shared_from_this() ) );
+			DamageSource *damageSource = DamageSource::mobAttack( std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
 			if (player->hurt(damageSource, getAttackDamage()))
 			{
 				level->playSound(shared_from_this(), eSoundType_MOB_SLIME_ATTACK, 1, (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);

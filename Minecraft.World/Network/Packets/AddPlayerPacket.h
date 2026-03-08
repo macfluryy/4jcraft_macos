@@ -1,21 +1,21 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 #include "../../Entities/SyncedEntityData.h"
 
 class Player;
 
-class AddPlayerPacket : public Packet, public enable_shared_from_this<AddPlayerPacket>
+class AddPlayerPacket : public Packet, public std::enable_shared_from_this<AddPlayerPacket>
 {
 
 private:
-	shared_ptr<SynchedEntityData> entityData;
-    vector<shared_ptr<SynchedEntityData::DataItem> > *unpack;
+	std::shared_ptr<SynchedEntityData> entityData;
+    std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *unpack;
 
 public:
 	int id;
-    wstring name;
+    std::wstring name;
     int x, y, z;
     char yRot, xRot;
     int carriedItem;
@@ -29,15 +29,15 @@ public:
 
 	AddPlayerPacket();
 	~AddPlayerPacket();
-	AddPlayerPacket(shared_ptr<Player> player, PlayerUID xuid, PlayerUID OnlineXuid,int xp, int yp, int zp, int yRotp, int xRotp, int yHeadRotp);
+	AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid, PlayerUID OnlineXuid,int xp, int yp, int zp, int yRotp, int xRotp, int yHeadRotp);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 
-	vector<shared_ptr<SynchedEntityData::DataItem> > *getUnpackedData();
+	std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *getUnpackedData();
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new AddPlayerPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new AddPlayerPacket()); }
 	virtual int getId() { return 20; }
 };

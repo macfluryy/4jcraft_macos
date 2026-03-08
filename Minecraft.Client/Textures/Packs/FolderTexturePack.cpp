@@ -1,7 +1,7 @@
 #include "../../Build/stdafx.h"
 #include "FolderTexturePack.h"
 
-FolderTexturePack::FolderTexturePack(DWORD id, const wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
+FolderTexturePack::FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
 {
 	// 4J Stu - These calls need to be in the most derived version of the class
 	loadIcon();
@@ -11,7 +11,7 @@ FolderTexturePack::FolderTexturePack(DWORD id, const wstring &name, File *folder
 	bUILoaded = false;
 }
 
-InputStream *FolderTexturePack::getResourceImplementation(const wstring &name) //throws IOException
+InputStream *FolderTexturePack::getResourceImplementation(const std::wstring &name) //throws IOException
 {
 #if 0
 	final File file = new File(this.file, name.substring(1));
@@ -22,7 +22,7 @@ InputStream *FolderTexturePack::getResourceImplementation(const wstring &name) /
 	return new BufferedInputStream(new FileInputStream(file));
 #endif
 
-	wstring wDrive = L"";
+	std::wstring wDrive = L"";
 	// Make the content package point to to the UPDATE: drive is needed
 #ifdef _XBOX
 	wDrive=L"GAME:\\DummyTexturePack\\res";
@@ -40,7 +40,7 @@ InputStream *FolderTexturePack::getResourceImplementation(const wstring &name) /
 	return resource;
 }
 
-bool FolderTexturePack::hasFile(const wstring &name)
+bool FolderTexturePack::hasFile(const std::wstring &name)
 {
 	File file = File( getPath() + name);
 	return file.exists() && file.isFile();
@@ -58,9 +58,9 @@ bool FolderTexturePack::isTerrainUpdateCompatible()
 	return true;
 }
 
-wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
+std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
 {
-	wstring wDrive;
+	std::wstring wDrive;
 #ifdef _XBOX
 		wDrive=L"GAME:\\" + file->getPath() + L"\\";
 #else

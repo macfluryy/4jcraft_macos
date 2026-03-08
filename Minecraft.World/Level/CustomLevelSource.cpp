@@ -20,13 +20,13 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 	m_heightmapOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
 #ifdef _UNICODE
-	wstring path = L"GAME:\\GameRules\\heightmap.bin";
+	std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
 
 #else
 #ifdef _WINDOWS64
-	string path = "GameRules\\heightmap.bin";
+	std::string path = "GameRules\\heightmap.bin";
 #else
-	string path = "GAME:\\GameRules\\heightmap.bin";
+	std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
 #endif
 	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -62,13 +62,13 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 	m_waterheightOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
 #ifdef _UNICODE
-	wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
+	std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
 
 #else
 #ifdef _WINDOWS64
-	string waterHeightPath = "GameRules\\waterheight.bin";
+	std::string waterHeightPath = "GameRules\\waterheight.bin";
 #else
-	string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
+	std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
 #endif
 #endif
 	file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -609,12 +609,12 @@ bool CustomLevelSource::shouldSave()
 	return true;
 }
 
-wstring CustomLevelSource::gatherStats()
+std::wstring CustomLevelSource::gatherStats()
 {
 	return L"CustomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *CustomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *CustomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
 #ifdef _OVERRIDE_HEIGHTMAP
 	Biome *biome = level->getBiome(x, z);
@@ -628,7 +628,7 @@ vector<Biome::MobSpawnerData *> *CustomLevelSource::getMobsAt(MobCategory *mobCa
 #endif
 }
 
-TilePos *CustomLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *CustomLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
 #ifdef _OVERRIDE_HEIGHTMAP
 	if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != NULL)

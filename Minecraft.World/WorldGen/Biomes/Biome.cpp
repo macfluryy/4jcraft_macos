@@ -188,7 +188,7 @@ Biome *Biome::setSnowCovered()
     return this;
 }
 
-Biome *Biome::setName(const wstring &name)
+Biome *Biome::setName(const std::wstring &name)
 {
     this->m_name = name;
     return this;
@@ -217,7 +217,7 @@ int Biome::getSkyColor(float temp)
 	return Minecraft::GetInstance()->getColourTable()->getColor( m_skyColor );
 }
 
-vector<Biome::MobSpawnerData *> *Biome::getMobs(MobCategory *category)
+std::vector<Biome::MobSpawnerData *> *Biome::getMobs(MobCategory *category)
 {
     if (category == MobCategory::monster) return &enemies;
     if (category == MobCategory::creature) return &friendlies;

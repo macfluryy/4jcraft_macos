@@ -5,7 +5,7 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "LookAtPlayerGoal.h"
 
-LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance) : lookAtType(lookAtType)
+LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance) : lookAtType(lookAtType)
 {
 	this->mob = mob;
 	this->lookDistance = lookDistance;
@@ -15,7 +15,7 @@ LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float 
 	lookTime = 0;
 }
 
-LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance, float probability) : lookAtType(lookAtType)
+LookAtPlayerGoal::LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance, float probability) : lookAtType(lookAtType)
 {
 	this->mob = mob;
 	this->lookDistance = lookDistance;
@@ -29,7 +29,7 @@ bool LookAtPlayerGoal::canUse()
 {
 	if (mob->getRandom()->nextFloat() >= probability) return false;
 	if (lookAtType == typeid(Player)) lookAt = mob->level->getNearestPlayer(mob->shared_from_this(), lookDistance);
-	else lookAt = weak_ptr<Entity>(mob->level->getClosestEntityOfClass(lookAtType, mob->bb->grow(lookDistance, 3, lookDistance), mob->shared_from_this()));
+	else lookAt = std::weak_ptr<Entity>(mob->level->getClosestEntityOfClass(lookAtType, mob->bb->grow(lookDistance, 3, lookDistance), mob->shared_from_this()));
 	return lookAt.lock() != NULL;
 }
 
@@ -47,7 +47,7 @@ void LookAtPlayerGoal::start()
 
 void LookAtPlayerGoal::stop()
 {
-	lookAt = weak_ptr<Entity>();
+	lookAt = std::weak_ptr<Entity>();
 }
 
 void LookAtPlayerGoal::tick()

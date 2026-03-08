@@ -2,11 +2,11 @@
 
 // 4J ADDED THIS PACKET
 
-using namespace std;
+
 
 #include "Packet.h"
 
-class CraftItemPacket : public Packet, public enable_shared_from_this<CraftItemPacket>
+class CraftItemPacket : public Packet, public std::enable_shared_from_this<CraftItemPacket>
 {
 public:
 	int recipe;
@@ -22,6 +22,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new CraftItemPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new CraftItemPacket()); }
 	virtual int getId() { return 150; }
 };

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
@@ -7,7 +7,7 @@ using namespace std;
 #include <iostream>
 #include "PacketListener.h"
 
-class ContainerAckPacket : public Packet, public enable_shared_from_this<ContainerAckPacket>
+class ContainerAckPacket : public Packet, public std::enable_shared_from_this<ContainerAckPacket>
 {
 public:
 	int containerId;
@@ -23,7 +23,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ContainerAckPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ContainerAckPacket()); }
 	virtual int getId() { return 106; }
 };
 

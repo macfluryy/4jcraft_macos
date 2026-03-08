@@ -7,7 +7,7 @@ class Random;
 class HitResult;
 class ChunkRebuildData;
 
-using namespace std;
+
 
 class RailTile : public Tile
 {
@@ -32,7 +32,7 @@ private:
 		Level *level;
         int x, y, z;
         bool usesDataBit;
-        vector<TilePos *> connections;
+        std::vector<TilePos *> connections;
 		bool m_bValidRail; // 4J added
 
 	 public:
@@ -66,7 +66,7 @@ public:
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual HitResult *clip(Level *level, int xt, int yt, int zt, Vec3 *a, Vec3 *b);
-    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
+    virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
     virtual Icon *getTexture(int face, int data);
 	virtual bool isCubeShaped();
     virtual int getRenderShape();

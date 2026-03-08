@@ -111,7 +111,7 @@ bool StructureFeature::isInsideFeature(int cellX, int cellY, int cellZ)
 				return true;
 				}
 				*/
-				list<StructurePiece *> *pieces=pStructureStart->getPieces();
+				std::list<StructurePiece *> *pieces=pStructureStart->getPieces();
 
 				for ( AUTO_VAR(it2, pieces->begin()); it2 != pieces->end(); it2++ )
 				{
@@ -175,7 +175,7 @@ TilePos *StructureFeature::getNearestGeneratedFeature(Level *level, int cellX, i
 	} 
 	else 
 	{
-		vector<TilePos> *guesstimatedFeaturePositions = getGuesstimatedFeaturePositions();
+		std::vector<TilePos> *guesstimatedFeaturePositions = getGuesstimatedFeaturePositions();
 		if (guesstimatedFeaturePositions != NULL) 
 		{
  			TilePos *pSelectedPos = new TilePos(0,0,0);
@@ -202,7 +202,7 @@ TilePos *StructureFeature::getNearestGeneratedFeature(Level *level, int cellX, i
 	return NULL;
 }
 
-vector<TilePos> *StructureFeature::getGuesstimatedFeaturePositions() 
+std::vector<TilePos> *StructureFeature::getGuesstimatedFeaturePositions() 
 {
 	return NULL;
 }

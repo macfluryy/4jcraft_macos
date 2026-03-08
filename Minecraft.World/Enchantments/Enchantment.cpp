@@ -4,7 +4,7 @@
 
 //Enchantment *Enchantment::enchantments[256];
 EnchantmentArray Enchantment::enchantments = EnchantmentArray( 256 );
-vector<Enchantment *> Enchantment::validEnchantments;
+std::vector<Enchantment *> Enchantment::validEnchantments;
 
 Enchantment *Enchantment::allDamageProtection = NULL;
 Enchantment *Enchantment::fireProtection = NULL;
@@ -129,7 +129,7 @@ int Enchantment::getDamageProtection(int level, DamageSource *source)
 	return 0;
 }
 
-int Enchantment::getDamageBonus(int level, shared_ptr<Mob> target)
+int Enchantment::getDamageBonus(int level, std::shared_ptr<Mob> target)
 {
 	return 0;
 }
@@ -150,7 +150,7 @@ int Enchantment::getDescriptionId()
 	return descriptionId;
 }
 
-wstring Enchantment::getFullname(int level,wstring &unformatted)
+std::wstring Enchantment::getFullname(int level,std::wstring &unformatted)
 {
 	wchar_t formatted[256];
 	swprintf(formatted,256,L"%ls %ls",app.GetString( getDescriptionId() ), getLevelString(level).c_str());
@@ -159,13 +159,13 @@ wstring Enchantment::getFullname(int level,wstring &unformatted)
 	return formatted;
 }
 
-bool Enchantment::canEnchant(shared_ptr<ItemInstance> item)
+bool Enchantment::canEnchant(std::shared_ptr<ItemInstance> item)
 {
 	return category->canEnchant(item->getItem());
 }
 
 // 4J Added
-wstring Enchantment::getLevelString(int level)
+std::wstring Enchantment::getLevelString(int level)
 {
 	int stringId = IDS_ENCHANTMENT_LEVEL_1;
 	switch(level)

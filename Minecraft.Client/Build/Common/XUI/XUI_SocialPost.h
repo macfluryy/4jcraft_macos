@@ -13,7 +13,7 @@ class CScene_SocialPost : public CXuiSceneImpl
 	CXuiCtrl4JEdit m_EditCaption;
 	CXuiCtrl4JEdit m_EditDesc;
 	CXuiControl m_text, m_LabelCaption, m_LabelDescription;
-	wstring m_wTitle;
+	std::wstring m_wTitle;
 
 	// Message map. Here we tie messages to message handlers.
 	XUI_BEGIN_MSG_MAP()

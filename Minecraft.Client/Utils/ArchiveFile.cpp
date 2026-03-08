@@ -24,7 +24,7 @@ void ArchiveFile::_readHeader(DataInputStream *dis)
 		} 
 		else meta->isCompressed = false;
 
-		m_index.insert( pair<wstring,PMetaData>(meta->filename,meta) );
+		m_index.insert( std::pair<std::wstring,PMetaData>(meta->filename,meta) );
 	}
 }
 
@@ -74,9 +74,9 @@ ArchiveFile::~ArchiveFile()
 	delete m_cachedData;
 }
 
-vector<wstring> *ArchiveFile::getFileList()
+std::vector<std::wstring> *ArchiveFile::getFileList()
 {
-	vector<wstring> *out = new vector<wstring>();
+	std::vector<std::wstring> *out = new std::vector<std::wstring>();
 	
 	for (	AUTO_VAR(it, m_index.begin());
 			it != m_index.end();
@@ -87,17 +87,17 @@ vector<wstring> *ArchiveFile::getFileList()
 	return out;
 }
 
-bool ArchiveFile::hasFile(const wstring &filename)
+bool ArchiveFile::hasFile(const std::wstring &filename)
 {
 	return m_index.find(filename) != m_index.end();
 }
 
-int ArchiveFile::getFileSize(const wstring &filename)
+int ArchiveFile::getFileSize(const std::wstring &filename)
 {
 	return hasFile(filename) ? m_index.at(filename)->filesize : -1;
 }
 
-byteArray ArchiveFile::getFile(const wstring &filename)
+byteArray ArchiveFile::getFile(const std::wstring &filename)
 {
 	byteArray out;
 	AUTO_VAR(it,m_index.find(filename));

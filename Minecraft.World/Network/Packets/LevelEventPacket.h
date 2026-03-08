@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class LevelEventPacket : public Packet, public enable_shared_from_this<LevelEventPacket>
+class LevelEventPacket : public Packet, public std::enable_shared_from_this<LevelEventPacket>
 {
 public:
 	int type;
@@ -19,6 +19,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new LevelEventPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new LevelEventPacket()); }
 	virtual int getId() { return 61; }
 };

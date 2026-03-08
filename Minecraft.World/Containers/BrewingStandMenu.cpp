@@ -6,15 +6,15 @@
 #include "../Headers/net.minecraft.stats.h"
 #include "BrewingStandMenu.h"
 
-BrewingStandMenu::BrewingStandMenu(shared_ptr<Inventory> inventory, shared_ptr<BrewingStandTileEntity> brewingStand)
+BrewingStandMenu::BrewingStandMenu(std::shared_ptr<Inventory> inventory, std::shared_ptr<BrewingStandTileEntity> brewingStand)
 {
 	tc = 0;
 
 	this->brewingStand = brewingStand;
 
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 0, 56, 46));
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 1, 79, 53));
-	addSlot(new PotionSlot(dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 2, 102, 46));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 0, 56, 46));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 1, 79, 53));
+	addSlot(new PotionSlot(std::dynamic_pointer_cast<Player>( inventory->player->shared_from_this() ), brewingStand, 2, 102, 46));
 	ingredientSlot = addSlot(new IngredientsSlot(brewingStand, 3, 79, 17));
 
 	for (int y = 0; y < 3; y++)
@@ -57,14 +57,14 @@ void BrewingStandMenu::setData(int id, int value)
 	if (id == 0) brewingStand->setBrewTime(value);
 }
 
-bool BrewingStandMenu::stillValid(shared_ptr<Player> player)
+bool BrewingStandMenu::stillValid(std::shared_ptr<Player> player)
 {
 	return brewingStand->stillValid(player);
 }
 
-shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	Slot *IngredientSlot = slots->at(INGREDIENT_SLOT);
 	Slot *PotionSlot1 = slots->at(BOTTLE_SLOT_START);
@@ -73,7 +73,7 @@ shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(shared_ptr<Player> pla
 
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if ((slotIndex >= BOTTLE_SLOT_START && slotIndex <= BOTTLE_SLOT_END) || (slotIndex == INGREDIENT_SLOT))
@@ -173,12 +173,12 @@ shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(shared_ptr<Player> pla
 	return clicked;
 }
 
-BrewingStandMenu::PotionSlot::PotionSlot(shared_ptr<Player> player, shared_ptr<Container> container, int slot, int x, int y) : Slot(container, slot, x, y)
+BrewingStandMenu::PotionSlot::PotionSlot(std::shared_ptr<Player> player, std::shared_ptr<Container> container, int slot, int x, int y) : Slot(container, slot, x, y)
 {
 	this->player = player;
 }
 
-bool BrewingStandMenu::PotionSlot::mayPlace(shared_ptr<ItemInstance> item)
+bool BrewingStandMenu::PotionSlot::mayPlace(std::shared_ptr<ItemInstance> item)
 {
 	return mayPlaceItem(item);
 }
@@ -188,31 +188,31 @@ int BrewingStandMenu::PotionSlot::getMaxStackSize()
 	return 1;
 }
 
-void BrewingStandMenu::PotionSlot::onTake(shared_ptr<Player> player, shared_ptr<ItemInstance> carried)
+void BrewingStandMenu::PotionSlot::onTake(std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> carried)
 {
-	carried->onCraftedBy(this->player->level, dynamic_pointer_cast<Player>( this->player->shared_from_this() ), 1);
+	carried->onCraftedBy(this->player->level, std::dynamic_pointer_cast<Player>( this->player->shared_from_this() ), 1);
 	if (carried->id == Item::potion_Id && carried->getAuxValue() > 0)
 		this->player->awardStat(GenericStats::potion(),GenericStats::param_potion());
 	Slot::onTake(player, carried);
 }
 
-bool BrewingStandMenu::PotionSlot::mayCombine(shared_ptr<ItemInstance> second)
+bool BrewingStandMenu::PotionSlot::mayCombine(std::shared_ptr<ItemInstance> second)
 {
 	return false;
 }
 
-bool BrewingStandMenu::PotionSlot::mayPlaceItem(shared_ptr<ItemInstance> item)
+bool BrewingStandMenu::PotionSlot::mayPlaceItem(std::shared_ptr<ItemInstance> item)
 {
 	return item != NULL && (item->id == Item::potion_Id || item->id == Item::glassBottle_Id);
 }
 
 
 
-BrewingStandMenu::IngredientsSlot::IngredientsSlot(shared_ptr<Container> container, int slot, int x, int y) : Slot(container, slot, x ,y)
+BrewingStandMenu::IngredientsSlot::IngredientsSlot(std::shared_ptr<Container> container, int slot, int x, int y) : Slot(container, slot, x ,y)
 {
 }
 
-bool BrewingStandMenu::IngredientsSlot::mayPlace(shared_ptr<ItemInstance> item)
+bool BrewingStandMenu::IngredientsSlot::mayPlace(std::shared_ptr<ItemInstance> item)
 {
 	if (item != NULL)
 	{
@@ -228,7 +228,7 @@ bool BrewingStandMenu::IngredientsSlot::mayPlace(shared_ptr<ItemInstance> item)
 	return false;
 }
 
-bool BrewingStandMenu::IngredientsSlot::mayCombine(shared_ptr<ItemInstance> second)
+bool BrewingStandMenu::IngredientsSlot::mayCombine(std::shared_ptr<ItemInstance> second)
 {
 	return false;
 }

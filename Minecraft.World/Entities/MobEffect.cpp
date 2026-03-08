@@ -86,7 +86,7 @@ int MobEffect::getId()
 * @param mob
 * @param amplification
 */
-void MobEffect::applyEffectTick(shared_ptr<Mob> mob, int amplification)
+void MobEffect::applyEffectTick(std::shared_ptr<Mob> mob, int amplification)
 {
 
 	// Maybe move this to separate class implementations in the future?
@@ -104,11 +104,11 @@ void MobEffect::applyEffectTick(shared_ptr<Mob> mob, int amplification)
 			mob->hurt(DamageSource::magic, 1);
 		}
 	}
-	else if (id == hunger->id && dynamic_pointer_cast<Player>(mob) != NULL)
+	else if (id == hunger->id && std::dynamic_pointer_cast<Player>(mob) != NULL)
 	{
 		// every tick, cause the same amount of exhaustion as when removing
 		// a block, times amplification
-		dynamic_pointer_cast<Player>(mob)->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE * (amplification + 1));
+		std::dynamic_pointer_cast<Player>(mob)->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE * (amplification + 1));
 	}
 	else if ((id == heal->id && !mob->isInvertedHealAndHarm()) || (id == harm->id && mob->isInvertedHealAndHarm()))
 	{
@@ -120,7 +120,7 @@ void MobEffect::applyEffectTick(shared_ptr<Mob> mob, int amplification)
 	}
 }
 
-void MobEffect::applyInstantenousEffect(shared_ptr<Mob> source, shared_ptr<Mob> mob, int amplification, double scale)
+void MobEffect::applyInstantenousEffect(std::shared_ptr<Mob> source, std::shared_ptr<Mob> mob, int amplification, double scale)
 {
 	if ((id == heal->id && !mob->isInvertedHealAndHarm()) || (id == harm->id && mob->isInvertedHealAndHarm()))
 	{
@@ -217,7 +217,7 @@ bool MobEffect::isHarmful()
 	return _isHarmful;
 }
 
-wstring MobEffect::formatDuration(MobEffectInstance *instance)
+std::wstring MobEffect::formatDuration(MobEffectInstance *instance)
 {
 	int duration = instance->getDuration();
 

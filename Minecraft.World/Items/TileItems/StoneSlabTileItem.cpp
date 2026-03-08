@@ -27,12 +27,12 @@ int StoneSlabTileItem::getLevelDataForAuxValue(int auxValue)
 	return auxValue;
 }
 
-unsigned int StoneSlabTileItem::getDescriptionId(shared_ptr<ItemInstance> instance) 
+unsigned int StoneSlabTileItem::getDescriptionId(std::shared_ptr<ItemInstance> instance) 
 {
 	return halfTile->getAuxName(instance->getAuxValue());
 }
 
-bool StoneSlabTileItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
+bool StoneSlabTileItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
 {
 	if (isFull) 
 	{
@@ -74,7 +74,7 @@ bool StoneSlabTileItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Play
 }
 
 
-bool StoneSlabTileItem::mayPlace(Level *level, int x, int y, int z, int face,shared_ptr<Player> player, shared_ptr<ItemInstance> item) 
+bool StoneSlabTileItem::mayPlace(Level *level, int x, int y, int z, int face,std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item) 
 {
 	int ox = x, oy = y, oz = z;
 
@@ -108,7 +108,7 @@ bool StoneSlabTileItem::mayPlace(Level *level, int x, int y, int z, int face,sha
 	return TileItem::mayPlace(level, ox, oy, oz, face, player, item);
 }
 
-bool StoneSlabTileItem::tryConvertTargetTile(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly) 
+bool StoneSlabTileItem::tryConvertTargetTile(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly) 
 {
 	if (face == 0) y--;
 	if (face == 1) y++;

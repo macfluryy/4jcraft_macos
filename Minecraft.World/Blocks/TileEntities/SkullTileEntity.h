@@ -17,20 +17,20 @@ public:
 private:
 	int skullType;
 	int rotation;
-	wstring extraType;
+	std::wstring extraType;
 
 public:
 	SkullTileEntity();
 
 	void save(CompoundTag *tag);
 	void load(CompoundTag *tag);
-	shared_ptr<Packet> getUpdatePacket();
-	void setSkullType(int skullType, const wstring &extra);
+	std::shared_ptr<Packet> getUpdatePacket();
+	void setSkullType(int skullType, const std::wstring &extra);
 	int getSkullType();
 	int getRotation();
 	void setRotation(int rot);
-	wstring getExtraType();
+	std::wstring getExtraType();
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

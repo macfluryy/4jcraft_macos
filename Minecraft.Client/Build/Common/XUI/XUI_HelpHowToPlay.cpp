@@ -48,7 +48,7 @@ HRESULT CScene_HowToPlay::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 	MapChildControls();
 
-	wstring wsTemp, inventoryString = app.GetString(IDS_INVENTORY);
+	std::wstring wsTemp, inventoryString = app.GetString(IDS_INVENTORY);
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelCTItem],app.GetString(IDS_ITEM_HATCHET_WOOD));
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelCTGroup],app.GetString(IDS_GROUPNAME_TOOLS));
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelCTInventory3x3],inventoryString.c_str());
@@ -74,7 +74,7 @@ HRESULT CScene_HowToPlay::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelAnvil_Inventory], inventoryString.c_str());
 	
 	wsTemp = app.GetString(IDS_REPAIR_COST);
-	wsTemp.replace( wsTemp.find(L"%d"), 2, wstring(L"8") );
+	wsTemp.replace( wsTemp.find(L"%d"), 2, std::wstring(L"8") );
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelAnvil_Cost], wsTemp.c_str());
 
 	XuiControlSetText(m_aLabelControls[ eHowToPlay_LabelAnvil_ARepairAndName], app.GetString(IDS_REPAIR_AND_NAME));
@@ -176,7 +176,7 @@ void CScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 	if ( pDef->m_iTextControlIndex != eHowToPlay_TextNone )
 	{
 		// Replace button identifiers in the text with actual button images.
-		wstring replacedText = app.FormatHTMLString(m_iPad, app.GetString( pDef->m_iTextStringID ));
+		std::wstring replacedText = app.FormatHTMLString(m_iPad, app.GetString( pDef->m_iTextStringID ));
 
 		// 4J-PB - replace the title with the platform specific title, and the platform name
 		replacedText = replaceAll(replacedText,L"{*PLATFORM_NAME*}",app.GetString(IDS_PLATFORM_NAME));
@@ -184,7 +184,7 @@ void CScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 		replacedText = replaceAll(replacedText,L"{*DISABLES_ACHIEVEMENTS*}",app.GetString(IDS_HOST_OPTION_DISABLES_ACHIEVEMENTS));
 
 		// Set the text colour
-		wstring finalText(replacedText.c_str() );
+		std::wstring finalText(replacedText.c_str() );
 		wchar_t startTags[64];
 		swprintf(startTags,64,L"<font color=\"#%08x\">",app.GetHTMLColour(eHTMLColor_White));
 		finalText = startTags + finalText;

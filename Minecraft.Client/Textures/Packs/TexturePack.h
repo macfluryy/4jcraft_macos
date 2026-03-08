@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Build/Common/App_enums.h"
 
@@ -19,16 +19,16 @@ public:
 	virtual void loadData() {}
 	virtual void unload(Textures *textures) = 0;
     virtual void load(Textures *textures) = 0;
-    virtual InputStream *getResource(const wstring &name, bool allowFallback) = 0;// throws IOException;
-    //virtual InputStream *getResource(const wstring &name) = 0;// throws IOException;
+    virtual InputStream *getResource(const std::wstring &name, bool allowFallback) = 0;// throws IOException;
+    //virtual InputStream *getResource(const std::wstring &name) = 0;// throws IOException;
     virtual DWORD getId() = 0;
-    virtual wstring getName() = 0;
-    virtual wstring getDesc1() = 0;
-    virtual wstring getDesc2() = 0;
-    virtual bool hasFile(const wstring &name, bool allowFallback) = 0;
+    virtual std::wstring getName() = 0;
+    virtual std::wstring getDesc1() = 0;
+    virtual std::wstring getDesc2() = 0;
+    virtual bool hasFile(const std::wstring &name, bool allowFallback) = 0;
     virtual bool isTerrainUpdateCompatible() = 0;
 
-    virtual wstring getResource(const wstring& name)	// 4J - changed to just return a name rather than an input stream
+    virtual std::wstring getResource(const std::wstring& name)	// 4J - changed to just return a name rather than an input stream
 	{
 		/* 4J - TODO
         return TexturePack.class.getResourceAsStream(name);
@@ -39,13 +39,13 @@ public:
 
 
 	// 4J Added
-	virtual wstring getPath(bool bTitleUpdateTexture = false);
-	virtual wstring getAnimationString(const wstring &textureName, const wstring &path, bool allowFallback) = 0;
-	virtual BufferedImage *getImageResource(const wstring& File, bool filenameHasExtension = false, bool bTitleUpdateTexture=false, const wstring &drive =L"") = 0;
+	virtual std::wstring getPath(bool bTitleUpdateTexture = false);
+	virtual std::wstring getAnimationString(const std::wstring &textureName, const std::wstring &path, bool allowFallback) = 0;
+	virtual BufferedImage *getImageResource(const std::wstring& File, bool filenameHasExtension = false, bool bTitleUpdateTexture=false, const std::wstring &drive =L"") = 0;
 	virtual void loadColourTable() = 0;
 	virtual void loadUI() = 0;
 	virtual void unloadUI() = 0;
-	virtual wstring getXuiRootPath() = 0;
+	virtual std::wstring getXuiRootPath() = 0;
 	virtual PBYTE getPackIcon(DWORD &dwImageBytes) = 0;
 	virtual PBYTE getPackComparison(DWORD &dwImageBytes) = 0;
 	virtual unsigned int getDLCParentPackId() = 0;

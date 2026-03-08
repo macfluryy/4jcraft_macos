@@ -3,25 +3,25 @@
 class MerchantRecipe
 {
 private:
-	shared_ptr<ItemInstance> buyA;
-	shared_ptr<ItemInstance> buyB;
-	shared_ptr<ItemInstance> sell;
+	std::shared_ptr<ItemInstance> buyA;
+	std::shared_ptr<ItemInstance> buyB;
+	std::shared_ptr<ItemInstance> sell;
 	int uses;
 	int maxUses;
 
-	void _init(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell);
+	void _init(std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB, std::shared_ptr<ItemInstance> sell);
 
 public:
 	MerchantRecipe(CompoundTag *tag);
-	MerchantRecipe(shared_ptr<ItemInstance> buyA, shared_ptr<ItemInstance> buyB, shared_ptr<ItemInstance> sell, int uses = 0, int maxUses = 7);
-	MerchantRecipe(shared_ptr<ItemInstance> buy, shared_ptr<ItemInstance> sell);
-	MerchantRecipe(shared_ptr<ItemInstance> buy, Item *sell);
-	MerchantRecipe(shared_ptr<ItemInstance> buy, Tile *sell);
+	MerchantRecipe(std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB, std::shared_ptr<ItemInstance> sell, int uses = 0, int maxUses = 7);
+	MerchantRecipe(std::shared_ptr<ItemInstance> buy, std::shared_ptr<ItemInstance> sell);
+	MerchantRecipe(std::shared_ptr<ItemInstance> buy, Item *sell);
+	MerchantRecipe(std::shared_ptr<ItemInstance> buy, Tile *sell);
 
-	shared_ptr<ItemInstance> getBuyAItem();
-	shared_ptr<ItemInstance> getBuyBItem();
+	std::shared_ptr<ItemInstance> getBuyAItem();
+	std::shared_ptr<ItemInstance> getBuyBItem();
 	bool hasSecondaryBuyItem();
-	shared_ptr<ItemInstance> getSellItem();
+	std::shared_ptr<ItemInstance> getSellItem();
 	bool isSame(MerchantRecipe *other);
 	bool isSameSameButBetter(MerchantRecipe *other);
 	int getUses();

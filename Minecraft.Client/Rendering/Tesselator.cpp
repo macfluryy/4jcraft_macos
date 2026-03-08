@@ -1022,9 +1022,9 @@ uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z)
 	if (z<-1.0f || z>1.0f)	{ printf("Value (%5.3f) should be in range [-1..1].  Conversion will clamp to X11Y11Z10N.\n", z); }
 #endif
 
-	const uint32_t uX = ((int32_t(max(min(((x)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_X_MASK >> X11Y11Z10N_X_SHIFT)) << X11Y11Z10N_X_SHIFT);
-	const uint32_t uY = ((int32_t(max(min(((y)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_Y_MASK >> X11Y11Z10N_Y_SHIFT)) << X11Y11Z10N_Y_SHIFT);
-	const uint32_t uZ = ((int32_t(max(min(((z)*1023.f - 1.f)*0.5f,  511.f), -512.f )) & (X11Y11Z10N_Z_MASK >> X11Y11Z10N_Z_SHIFT)) << X11Y11Z10N_Z_SHIFT);
+	const uint32_t uX = ((int32_t(std::max(std::min(((x)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_X_MASK >> X11Y11Z10N_X_SHIFT)) << X11Y11Z10N_X_SHIFT);
+	const uint32_t uY = ((int32_t(std::max(std::min(((y)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_Y_MASK >> X11Y11Z10N_Y_SHIFT)) << X11Y11Z10N_Y_SHIFT);
+	const uint32_t uZ = ((int32_t(std::max(std::min(((z)*1023.f - 1.f)*0.5f,  511.f), -512.f )) & (X11Y11Z10N_Z_MASK >> X11Y11Z10N_Z_SHIFT)) << X11Y11Z10N_Z_SHIFT);
 	const uint32_t xyz = uX | uY | uZ;
 	return xyz;
 }

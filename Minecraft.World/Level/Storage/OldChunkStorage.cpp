@@ -75,7 +75,7 @@ File OldChunkStorage::getFile(int x, int z)
 	_itow(z & 63,path2,36);
 #endif
 	//sprintf(file,"%s\\%s",dir,path1);
-	File file( dir, wstring( path1 ) );
+	File file( dir, std::wstring( path1 ) );
 	if( !file.exists() )
 	{
 		if(create) file.mkdir();
@@ -87,7 +87,7 @@ File OldChunkStorage::getFile(int x, int z)
 
 	//strcat(file,"\\");
 	//strcat(file,path2);
-	file = File( file, wstring( path2 ) );
+	file = File( file, std::wstring( path2 ) );
 	if( !file.exists() )
 	{
 		if(create) file.mkdir();
@@ -100,7 +100,7 @@ File OldChunkStorage::getFile(int x, int z)
 	//strcat(file,"\\");
 	//strcat(file,name);
 	//sprintf(file,"%s\\%s",file,name);
-	file = File( file, wstring( name ) );
+	file = File( file, std::wstring( name ) );
 	if ( !file.exists() )
 	{
 		if (!create) 
@@ -211,9 +211,9 @@ bool OldChunkStorage::saveEntities(LevelChunk *lc, Level *level, CompoundTag *ta
 	for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++)
 	{
 		AUTO_VAR(itEnd, lc->entityBlocks[i]->end());
-		for( vector<shared_ptr<Entity> >::iterator it = lc->entityBlocks[i]->begin(); it != itEnd; it++ )
+		for( std::vector<std::shared_ptr<Entity> >::iterator it = lc->entityBlocks[i]->begin(); it != itEnd; it++ )
 		{
-			shared_ptr<Entity> e = *it;
+			std::shared_ptr<Entity> e = *it;
 			lc->lastSaveHadEntities = true;
 			CompoundTag *teTag = new CompoundTag();
 			if (e->save(teTag))
@@ -268,10 +268,10 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, DataOutputStream *dos)
 	ListTag<CompoundTag> *tileEntityTags = new ListTag<CompoundTag>();
 
 	AUTO_VAR(itEnd, lc->tileEntities.end());
-	for( unordered_map<TilePos, shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
+	for( std::unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
 		it != itEnd; it++)
 	{
-		shared_ptr<TileEntity> te = it->second;
+		std::shared_ptr<TileEntity> te = it->second;
 		CompoundTag *teTag = new CompoundTag();
 		te->save(teTag);
 		tileEntityTags->add(teTag);
@@ -280,7 +280,7 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, DataOutputStream *dos)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Saving tile tick data");
-	vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
+	std::vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
 	if (ticksInChunk != NULL)
 	{
 		__int64 levelTime = level->getTime();
@@ -357,10 +357,10 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, CompoundTag *tag)
 	ListTag<CompoundTag> *tileEntityTags = new ListTag<CompoundTag>();
 
 	AUTO_VAR(itEnd, lc->tileEntities.end());
-	for( unordered_map<TilePos, shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
+	for( std::unordered_map<TilePos, std::shared_ptr<TileEntity>, TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
 		it != itEnd; it++)
 	{
-		shared_ptr<TileEntity> te = it->second;
+		std::shared_ptr<TileEntity> te = it->second;
 		CompoundTag *teTag = new CompoundTag();
 		te->save(teTag);
 		tileEntityTags->add(teTag);
@@ -369,7 +369,7 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, CompoundTag *tag)
 	PIXEndNamedEvent();
 
 	PIXBeginNamedEvent(0,"Saving tile tick data");
-	vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
+	std::vector<TickNextTickData > *ticksInChunk = level->fetchTicksInChunk(lc, false);
 	if (ticksInChunk != NULL)
 	{
 		__int64 levelTime = level->getTime();
@@ -402,7 +402,7 @@ void OldChunkStorage::loadEntities(LevelChunk *lc, Level *level, CompoundTag *ta
 		for (int i = 0; i < entityTags->size(); i++)
 		{
 			CompoundTag *teTag = entityTags->get(i);
-			shared_ptr<Entity> te = EntityIO::loadStatic(teTag, level);
+			std::shared_ptr<Entity> te = EntityIO::loadStatic(teTag, level);
 			lc->lastSaveHadEntities = true;
 			if (te != NULL)
 			{
@@ -417,7 +417,7 @@ void OldChunkStorage::loadEntities(LevelChunk *lc, Level *level, CompoundTag *ta
 		for (int i = 0; i < tileEntityTags->size(); i++)
 		{
 			CompoundTag *teTag = tileEntityTags->get(i);
-			shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
+			std::shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
 			if (te != NULL)
 			{
 				lc->addTileEntity(te);

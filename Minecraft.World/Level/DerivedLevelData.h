@@ -15,7 +15,7 @@ protected:
 
 public:
 	CompoundTag *createTag();
-	CompoundTag *createTag(vector<shared_ptr<Player> > *players);
+	CompoundTag *createTag(std::vector<std::shared_ptr<Player> > *players);
 	__int64 getSeed();
 	int getXSpawn();
 	int getYSpawn();
@@ -23,7 +23,7 @@ public:
 	__int64 getTime();
 	__int64 getSizeOnDisk();
 	CompoundTag *getLoadedPlayerTag();
-	wstring getLevelName();
+	std::wstring getLevelName();
 	int getVersion();
 	__int64 getLastPlayed();
 	bool isThundering();
@@ -40,7 +40,7 @@ public:
 	void setLoadedPlayerTag(CompoundTag *loadedPlayerTag);
 	void setDimension(int dimension);
 	void setSpawn(int xSpawn, int ySpawn, int zSpawn);
-	void setLevelName(const wstring &levelName);
+	void setLevelName(const std::wstring &levelName);
 	void setVersion(int version);
 	void setThundering(bool thundering);
 	void setThunderTime(int thunderTime);

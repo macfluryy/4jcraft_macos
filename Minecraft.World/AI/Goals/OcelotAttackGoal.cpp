@@ -8,7 +8,7 @@
 
 OzelotAttackGoal::OzelotAttackGoal(Mob *mob)
 {
-	target = weak_ptr<Mob>();
+	target = std::weak_ptr<Mob>();
 	attackTime = 0;
 	speed = 0;
 	trackTarget = false;
@@ -20,9 +20,9 @@ OzelotAttackGoal::OzelotAttackGoal(Mob *mob)
 
 bool OzelotAttackGoal::canUse()
 {
-	shared_ptr<Mob> bestTarget = mob->getTarget();
+	std::shared_ptr<Mob> bestTarget = mob->getTarget();
 	if (bestTarget == NULL) return false;
-	target = weak_ptr<Mob>(bestTarget);
+	target = std::weak_ptr<Mob>(bestTarget);
 	return true;
 }
 
@@ -35,7 +35,7 @@ bool OzelotAttackGoal::canContinueToUse()
 
 void OzelotAttackGoal::stop()
 {
-	target = weak_ptr<Mob>();
+	target = std::weak_ptr<Mob>();
 	mob->getNavigation()->stop();
 }
 
@@ -52,7 +52,7 @@ void OzelotAttackGoal::tick()
 
 	mob->getNavigation()->moveTo(target.lock(), speed);
 
-	attackTime = max(attackTime - 1, 0);
+	attackTime = std::max(attackTime - 1, 0);
 
 	if (distSqr > meleeRadiusSqr) return;
 	if (attackTime > 0) return;

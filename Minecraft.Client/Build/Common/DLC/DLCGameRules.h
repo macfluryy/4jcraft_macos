@@ -6,5 +6,5 @@
 class DLCGameRules : public DLCFile
 {
 public:
-	DLCGameRules(DLCManager::EDLCType type, const wstring &path) : DLCFile(type,path) {}
+	DLCGameRules(DLCManager::EDLCType type, const std::wstring &path) : DLCFile(type,path) {}
 };

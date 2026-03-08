@@ -1,12 +1,12 @@
 #pragma once
-using namespace std;
+
 
 class GameType;
 
 class LevelSummary
 {
-	const wstring levelId;
-    const wstring levelName;
+	const std::wstring levelId;
+    const std::wstring levelName;
     const __int64 lastPlayed;
     const __int64 sizeOnDisk;
     const bool requiresConversion;
@@ -15,9 +15,9 @@ class LevelSummary
 	const bool _hasCheats;
 
 public:
-	LevelSummary(const wstring& levelId, const wstring& levelName, __int64 lastPlayed, __int64 sizeOnDisk,  GameType *gameMode, bool requiresConversion, bool hardcore, bool hasCheats);
-    wstring getLevelId();
-    wstring getLevelName();
+	LevelSummary(const std::wstring& levelId, const std::wstring& levelName, __int64 lastPlayed, __int64 sizeOnDisk,  GameType *gameMode, bool requiresConversion, bool hardcore, bool hasCheats);
+    std::wstring getLevelId();
+    std::wstring getLevelName();
     __int64 getSizeOnDisk();
     bool isRequiresConversion();
     __int64 getLastPlayed();

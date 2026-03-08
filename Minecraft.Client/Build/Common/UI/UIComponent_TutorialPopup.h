@@ -15,7 +15,7 @@ private:
 	bool m_lastSceneMovedLeft;
 	bool m_bAllowFade;
 	Tutorial *m_tutorial;
-	shared_ptr<ItemInstance> m_iconItem;
+	std::shared_ptr<ItemInstance> m_iconItem;
 	bool m_iconIsFoil;
 	//int m_iLocalPlayerC;
 
@@ -57,7 +57,7 @@ protected:
 		UI_MAP_NAME( m_funcSetupIconHolder, L"SetupIconHolder")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	virtual EUIScene getSceneType() { return eUIComponent_TutorialPopup;}
@@ -91,10 +91,10 @@ protected:
 	void handleTimerComplete(int id);
 
 private:
-	void _SetDescription(UIScene *interactScene, const wstring &desc, const wstring &title, bool allowFade, bool isReminder);
-	wstring _SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc);
-	wstring _SetImage(wstring &desc);
-	wstring ParseDescription(int iPad, wstring &text);
+	void _SetDescription(UIScene *interactScene, const std::wstring &desc, const std::wstring &title, bool allowFade, bool isReminder);
+	std::wstring _SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc);
+	std::wstring _SetImage(std::wstring &desc);
+	std::wstring ParseDescription(int iPad, std::wstring &text);
 	void UpdateInteractScenePosition(bool visible);
 
 	void setupIconHolder(EIcons icon);

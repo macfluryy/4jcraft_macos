@@ -1,7 +1,7 @@
 #pragma once
 #include "../../IO/Streams/Compression.h"
 #include "../../IO/Streams/InputOutputStream.h"
-using namespace std;
+
 
 class FileEntry;
 class ConsoleSaveFile;
@@ -29,7 +29,7 @@ private:
 
 	int *offsets;
 	int *chunkTimestamps;
-	vector<bool> *sectorFree;
+	std::vector<bool> *sectorFree;
 	int sizeDelta;
 	__int64 _lastModified;
 	bool m_bIsEmpty;			// 4J added

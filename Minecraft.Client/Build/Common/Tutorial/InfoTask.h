@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "TutorialTask.h"
 
@@ -7,7 +7,7 @@ using namespace std;
 class InfoTask : public TutorialTask
 {
 private:
-	unordered_map<int, bool> completedMappings;
+	std::unordered_map<int, bool> completedMappings;
 
 	ETelemetryChallenges m_eTelemetryEvent;
 

@@ -42,8 +42,8 @@ public:
 	}
 	INGREDIENTS_REQUIRED;
 	~Recipy() {}
-	virtual bool matches(shared_ptr<CraftingContainer> craftSlots, Level *level) = 0;
-	virtual shared_ptr<ItemInstance> assemble(shared_ptr<CraftingContainer> craftSlots) = 0;
+	virtual bool matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level) = 0;
+	virtual std::shared_ptr<ItemInstance> assemble(std::shared_ptr<CraftingContainer> craftSlots) = 0;
 	virtual int size() = 0;
 	virtual const ItemInstance *getResultItem() = 0;
 	virtual const int getGroup()	 = 0;		

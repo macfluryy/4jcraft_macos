@@ -23,7 +23,7 @@ bool DoorInteractGoal::canUse()
 	Path *path = pathNav->getPath();
 	if (path == NULL || path->isDone() || !pathNav->canOpenDoors()) return false;
 
-	for (int i = 0; i < min(path->getIndex() + 2, path->getSize()); ++i)
+	for (int i = 0; i < std::min(path->getIndex() + 2, path->getSize()); ++i)
 	{
 		Node *n = path->get(i);
 		doorX = n->x;

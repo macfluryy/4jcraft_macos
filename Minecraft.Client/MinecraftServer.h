@@ -24,8 +24,8 @@ typedef struct _LoadSaveDataThreadParam
 {
 	LPVOID data;
 	__int64 fileSize;
-	const wstring saveName;
-	_LoadSaveDataThreadParam(LPVOID data, __int64 filesize, const wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
+	const std::wstring saveName;
+	_LoadSaveDataThreadParam(LPVOID data, __int64 filesize, const std::wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
 } LoadSaveDataThreadParam;
 
 typedef struct _NetworkGameInitData
@@ -54,24 +54,24 @@ typedef struct _NetworkGameInitData
 	}
 } NetworkGameInitData;
 
-using namespace std;
+
 
 // 4J Stu - 1.0.1 updates the server to implement the ServerInterface class, but I don't think we will use any of the functions that defines so not implementing here
 class MinecraftServer : public ConsoleInputSource
 {
 public:
-	static const wstring VERSION;
+	static const std::wstring VERSION;
 	static const int TICK_STATS_SPAN = SharedConstants::TICKS_PER_SECOND * 5;
 
 //    static Logger logger = Logger.getLogger("Minecraft");
-    static unordered_map<wstring, int> ironTimers;
+    static std::unordered_map<std::wstring, int> ironTimers;
 
 private:
 	static const int DEFAULT_MINECRAFT_PORT = 25565;
 	static const int MS_PER_TICK = 1000 / SharedConstants::TICKS_PER_SECOND;
 
 	// 4J Stu - Added 1.0.1, Not needed
-	//wstring localIp;
+	//std::wstring localIp;
 	//int port;
 public:
 	ServerConnection *connection;
@@ -93,19 +93,19 @@ public:
     int tickCount;
 
 public:
-	wstring progressStatus;
+	std::wstring progressStatus;
     int progress;
 private:
-//	vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J - removed
+//	std::vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J - removed
 	CommandDispatcher *commandDispatcher;
-    vector<ConsoleInput *> consoleInput;	// 4J - was synchronizedList - TODO - investigate
+    std::vector<ConsoleInput *> consoleInput;	// 4J - was synchronizedList - TODO - investigate
 public:
     bool onlineMode;
     bool animals;
 	bool npcs;
     bool pvp;
     bool allowFlight;
-	wstring motd;
+	std::wstring motd;
 	int maxBuildHeight;
 
 private:
@@ -127,8 +127,8 @@ private:
 	// 4J Added - LoadSaveDataThreadParam
 	bool initServer(__int64 seed, NetworkGameInitData *initData, DWORD initSettings, bool findSeed);
 	void postProcessTerminate(ProgressRenderer *mcprogress);
-    bool loadLevel(LevelStorageSource *storageSource, const wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData);
-    void setProgress(const wstring& status, int progress);
+    bool loadLevel(LevelStorageSource *storageSource, const std::wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData);
+    void setProgress(const std::wstring& status, int progress);
     void endProgress();
     void saveAllChunks();
 	void saveGameRules();
@@ -162,16 +162,16 @@ public:
 private:
 	void tick();
 public:
-	void handleConsoleInput(const wstring& msg, ConsoleInputSource *source);
+	void handleConsoleInput(const std::wstring& msg, ConsoleInputSource *source);
     void handleConsoleInputs();
 //    void addTickable(Tickable tickable);	// 4J removed
     static void main(__int64 seed, void *lpParameter);
 	static void HaltServer(bool bPrimaryPlayerSignedOut=false);
 
-    File *getFile(const wstring& name);
-    void info(const wstring& string);
-    void warn(const wstring& string);
-    wstring getConsoleName();
+    File *getFile(const std::wstring& name);
+    void info(const std::wstring& string);
+    void warn(const std::wstring& string);
+    std::wstring getConsoleName();
     ServerLevel *getLevel(int dimension);
 	void setLevel(int dimension, ServerLevel *level);	// 4J added
 	static MinecraftServer *getInstance() { return server; }	// 4J added
@@ -204,7 +204,7 @@ private:
 		ChunkSource		*chunkSource;
 		postProcessRequest(int x, int z, ChunkSource *chunkSource) : x(x), z(z), chunkSource(chunkSource) {}
 	};
-	vector<postProcessRequest>	m_postProcessRequests;
+	std::vector<postProcessRequest>	m_postProcessRequests;
 	CRITICAL_SECTION		m_postProcessCS;
 public:
 	void					addPostProcessRequest(ChunkSource *chunkSource, int x, int z);

@@ -1,6 +1,6 @@
 #pragma once
 #include "TexturePack.h"
-using namespace std;
+
 
 class Minecraft;
 
@@ -18,10 +18,10 @@ private:
 	Minecraft *minecraft;
 	File workDir;
 	File multiplayerDir;
-	vector<TexturePack *> *texturePacks;
-	vector<TexturePack *> m_texturePacksToDelete;
+	std::vector<TexturePack *> *texturePacks;
+	std::vector<TexturePack *> m_texturePacksToDelete;
 
-	unordered_map<DWORD, TexturePack *> cacheById;
+	std::unordered_map<DWORD, TexturePack *> cacheById;
 
 	TexturePack *selected;
 	TexturePack *lastSelected;
@@ -37,10 +37,10 @@ private:
 public:
     bool selectSkin(TexturePack *skin);
 
-	void selectWebSkin(const wstring &url);
+	void selectWebSkin(const std::wstring &url);
 
 private:
-	void downloadWebSkin(const wstring &url, File file);
+	void downloadWebSkin(const std::wstring &url, File file);
 
 public:
 	bool isUsingWebSkin();
@@ -48,11 +48,11 @@ public:
     void updateList();
 
 private:
-	wstring getIdOrNull(File file);
-    vector<File> getWorkDirContents();
+	std::wstring getIdOrNull(File file);
+    std::vector<File> getWorkDirContents();
 
 public:
-    vector<TexturePack *> *getAll();
+    std::vector<TexturePack *> *getAll();
 
 	TexturePack *getSelected();
 	bool shouldPromptForWebSkin();
@@ -60,7 +60,7 @@ public:
 	bool isUsingDefaultSkin() { return selected == DEFAULT_TEXTURE_PACK; } // 4J Added
 	TexturePack *getDefault() { return DEFAULT_TEXTURE_PACK; } // 4J Added
 
-	vector< pair<DWORD,wstring> > *getTexturePackIdNames();
+	std::vector< std::pair<DWORD,std::wstring> > *getTexturePackIdNames();
 	bool selectTexturePackById(DWORD id); // 4J Added
 	TexturePack *getTexturePackById(DWORD id); // 4J Added
 

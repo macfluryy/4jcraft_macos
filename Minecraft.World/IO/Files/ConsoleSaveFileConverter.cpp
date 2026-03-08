@@ -59,7 +59,7 @@ void ConsoleSaveFileConverter::ProcessStandardRegionFile(ConsoleSaveFile *source
 void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile *sourceSave, ConsoleSaveFile *targetSave, ProgressListener *progress)
 {
 	// Process level.dat
-	ConsoleSavePath ldatPath( wstring(L"level.dat") );
+	ConsoleSavePath ldatPath( std::wstring(L"level.dat") );
 	FileEntry *sourceLdatFe = sourceSave->createFile( ldatPath );
 	FileEntry *targetLdatFe = targetSave->createFile( ldatPath );
 	printf("Processing level.dat\n");
@@ -79,9 +79,9 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile *sourceSave, ConsoleS
 
 	// MGH added - find any player data files and copy them across
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	vector<FileEntry *>* playerFiles = sourceSave->getValidPlayerDatFiles();
+	std::vector<FileEntry *>* playerFiles = sourceSave->getValidPlayerDatFiles();
 #else
-	vector<FileEntry *> *playerFiles = sourceSave->getFilesWithPrefix( DirectoryLevelStorage::getPlayerDir() );
+	std::vector<FileEntry *> *playerFiles = sourceSave->getFilesWithPrefix( DirectoryLevelStorage::getPlayerDir() );
 #endif
 
 	if(playerFiles != NULL)
@@ -267,14 +267,14 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile *sourceSave, ConsoleS
 #else
 	// 4J Stu - Old version that just changes the compression of chunks, not usable for XboxOne style split saves or compressed tile formats
 	// Process region files
-	vector<FileEntry *> *allFilesInSave = sourceSave->getFilesWithPrefix(wstring(L""));
+	std::vector<FileEntry *> *allFilesInSave = sourceSave->getFilesWithPrefix(std::wstring(L""));
 	for(AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end(); ++it)
 	{
 		FileEntry *fe = *it;
 		if( fe != sourceLdatFe )
 		{
-			wstring fName( fe->data.filename );
-			wstring suffix(L".mcr");
+			std::wstring fName( fe->data.filename );
+			std::wstring suffix(L".mcr");
 			if( fName.compare(fName.length() - suffix.length(), suffix.length(), suffix) == 0 )
 			{
 #ifndef _CONTENT_PACKAGE

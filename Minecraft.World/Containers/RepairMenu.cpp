@@ -6,10 +6,10 @@
 #include "../Headers/net.minecraft.world.item.enchantment.h"
 #include "RepairMenu.h"
 
-RepairMenu::RepairMenu(shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, shared_ptr<Player> player)
+RepairMenu::RepairMenu(std::shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, std::shared_ptr<Player> player)
 {
-	resultSlots = shared_ptr<ResultContainer>( new ResultContainer() );
-	repairSlots = shared_ptr<RepairContainer>( new RepairContainer(this,IDS_REPAIR_AND_NAME, 2) );
+	resultSlots = std::shared_ptr<ResultContainer>( new ResultContainer() );
+	repairSlots = std::shared_ptr<RepairContainer>( new RepairContainer(this,IDS_REPAIR_AND_NAME, 2) );
 	cost = 0;
 	repairItemCountCost = 0;
 
@@ -38,7 +38,7 @@ RepairMenu::RepairMenu(shared_ptr<Inventory> inventory, Level *level, int xt, in
 	}
 }
 
-void RepairMenu::slotsChanged(shared_ptr<Container> container)
+void RepairMenu::slotsChanged(std::shared_ptr<Container> container)
 {
 	AbstractContainerMenu::slotsChanged();
 
@@ -47,7 +47,7 @@ void RepairMenu::slotsChanged(shared_ptr<Container> container)
 
 void RepairMenu::createResult()
 {
-	shared_ptr<ItemInstance> input = repairSlots->getItem(INPUT_SLOT);
+	std::shared_ptr<ItemInstance> input = repairSlots->getItem(INPUT_SLOT);
 	cost = 0;
 	int price = 0;
 	int tax = 0;
@@ -63,9 +63,9 @@ void RepairMenu::createResult()
 	}
 	else
 	{
-		shared_ptr<ItemInstance> result = input->copy();
-		shared_ptr<ItemInstance> addition = repairSlots->getItem(ADDITIONAL_SLOT);
-		unordered_map<int,int> *enchantments = EnchantmentHelper::getEnchantments(result);
+		std::shared_ptr<ItemInstance> result = input->copy();
+		std::shared_ptr<ItemInstance> addition = repairSlots->getItem(ADDITIONAL_SLOT);
+		std::unordered_map<int,int> *enchantments = EnchantmentHelper::getEnchantments(result);
 		bool usingBook = false;
 
 		tax += input->getBaseRepairCost() + (addition == NULL ? 0 : addition->getBaseRepairCost());
@@ -82,7 +82,7 @@ void RepairMenu::createResult()
 
 			if (result->isDamageableItem() && Item::items[result->id]->isValidRepairItem(input, addition))
 			{
-				int repairAmount = min(result->getDamageValue(), result->getMaxDamage() / 4);
+				int repairAmount = std::min(result->getDamageValue(), result->getMaxDamage() / 4);
 				if (repairAmount <= 0)
 				{
 					resultSlots->setItem(0, nullptr);
@@ -96,9 +96,9 @@ void RepairMenu::createResult()
 					{
 						int resultDamage = result->getDamageValue() - repairAmount;
 						result->setAuxValue(resultDamage);
-						price += max(1, repairAmount / 100) + enchantments->size();
+						price += std::max(1, repairAmount / 100) + enchantments->size();
 
-						repairAmount = min(result->getDamageValue(), result->getMaxDamage() / 4);
+						repairAmount = std::min(result->getDamageValue(), result->getMaxDamage() / 4);
 						count++;
 					}
 					repairItemCountCost = count;
@@ -124,15 +124,15 @@ void RepairMenu::createResult()
 					if (resultDamage < result->getAuxValue())
 					{
 						result->setAuxValue(resultDamage);
-						price += max(1, additional / 100);
+						price += std::max(1, additional / 100);
 						if (DEBUG_COST)
 						{
-							app.DebugPrintf("Repairing; price is now %d (went up by %d)\n", price, max(1, additional / 100) );
+							app.DebugPrintf("Repairing; price is now %d (went up by %d)\n", price, std::max(1, additional / 100) );
 						}
 					}
 				}
 
-				unordered_map<int, int> *additionalEnchantments = EnchantmentHelper::getEnchantments(addition);
+				std::unordered_map<int, int> *additionalEnchantments = EnchantmentHelper::getEnchantments(addition);
 
 				for(AUTO_VAR(it, additionalEnchantments->begin()); it != additionalEnchantments->end(); ++it)
 				{
@@ -141,7 +141,7 @@ void RepairMenu::createResult()
 					AUTO_VAR(localIt, enchantments->find(id));
 					int current = localIt != enchantments->end() ? localIt->second : 0;
 					int level = it->second;
-					level = (current == level) ? level += 1 : max(level, current);
+					level = (current == level) ? level += 1 : std::max(level, current);
 					int extra = level - current;
 					bool compatible = enchantment->canEnchant(input);
 
@@ -183,7 +183,7 @@ void RepairMenu::createResult()
 						break;
 					}
 
-					if (usingBook) fee = max(1, fee / 2);
+					if (usingBook) fee = std::max(1, fee / 2);
 
 					price += fee * extra;
 					if (DEBUG_COST)
@@ -244,7 +244,7 @@ void RepairMenu::createResult()
 				break;
 			}
 
-			if (usingBook) fee = max(1, fee / 2);
+			if (usingBook) fee = std::max(1, fee / 2);
 
 			tax += count + level * fee;
 			if (DEBUG_COST)
@@ -253,7 +253,7 @@ void RepairMenu::createResult()
 			}
 		}
 
-		if (usingBook) tax = max(1, tax / 2);
+		if (usingBook) tax = std::max(1, tax / 2);
 
 		cost = tax + price;
 		if (price <= 0)
@@ -319,14 +319,14 @@ void RepairMenu::setData(int id, int value)
 	if (id == DATA_TOTAL_COST) cost = value;
 }
 
-void RepairMenu::removed(shared_ptr<Player> player)
+void RepairMenu::removed(std::shared_ptr<Player> player)
 {
 	AbstractContainerMenu::removed(player);
 	if (level->isClientSide) return;
 
 	for (int i = 0; i < repairSlots->getContainerSize(); i++)
 	{
-		shared_ptr<ItemInstance> item = repairSlots->removeItemNoUpdate(i);
+		std::shared_ptr<ItemInstance> item = repairSlots->removeItemNoUpdate(i);
 		if (item != NULL)
 		{
 			player->drop(item);
@@ -334,20 +334,20 @@ void RepairMenu::removed(shared_ptr<Player> player)
 	}
 }
 
-bool RepairMenu::stillValid(shared_ptr<Player> player)
+bool RepairMenu::stillValid(std::shared_ptr<Player> player)
 {
 	if (level->getTile(x, y, z) != Tile::anvil_Id) return false;
 	if (player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 8 * 8) return false;
 	return true;
 }
 
-shared_ptr<ItemInstance> RepairMenu::quickMoveStack(shared_ptr<Player> player, int slotIndex)
+std::shared_ptr<ItemInstance> RepairMenu::quickMoveStack(std::shared_ptr<Player> player, int slotIndex)
 {
-	shared_ptr<ItemInstance> clicked = nullptr;
+	std::shared_ptr<ItemInstance> clicked = nullptr;
 	Slot *slot = slots->at(slotIndex);
 	if (slot != NULL && slot->hasItem())
 	{
-		shared_ptr<ItemInstance> stack = slot->getItem();
+		std::shared_ptr<ItemInstance> stack = slot->getItem();
 		clicked = stack->copy();
 
 		if (slotIndex == RESULT_SLOT)
@@ -392,7 +392,7 @@ shared_ptr<ItemInstance> RepairMenu::quickMoveStack(shared_ptr<Player> player, i
 	return clicked;
 }
 
-void RepairMenu::setItemName(const wstring &name)
+void RepairMenu::setItemName(const std::wstring &name)
 {
 	this->itemName = name;
 	if (getSlot(RESULT_SLOT)->hasItem())

@@ -124,7 +124,7 @@ HRESULT CXuiCtrlEnchantmentButtonText::OnRender(XUIMessageRender *pRenderData, B
 	glColor4f(1, 1, 1, 1);
 	if (cost != 0)
 	{
-		wstring line = _toString<int>(cost);
+		std::wstring line = _toString<int>(cost);
 		Font *font = pMinecraft->altFont;
 		//int col = 0x685E4A;
 		unsigned int col = m_textColour;
@@ -167,15 +167,15 @@ CXuiCtrlEnchantmentButtonText::EnchantmentNames CXuiCtrlEnchantmentButtonText::E
 
 CXuiCtrlEnchantmentButtonText::EnchantmentNames::EnchantmentNames()
 {
-	wstring allWords = L"the elder scrolls klaatu berata niktu xyzzy bless curse light darkness fire air earth water hot dry cold wet ignite snuff embiggen twist shorten stretch fiddle destroy imbue galvanize enchant free limited range of towards inside sphere cube self other ball mental physical grow shrink demon elemental spirit animal creature beast humanoid undead fresh stale ";
+	std::wstring allWords = L"the elder scrolls klaatu berata niktu xyzzy bless curse light darkness fire air earth water hot dry cold wet ignite snuff embiggen twist shorten stretch fiddle destroy imbue galvanize enchant free limited range of towards inside sphere cube self other ball mental physical grow shrink demon elemental spirit animal creature beast humanoid undead fresh stale ";
 	std::wistringstream iss(allWords);
 	std::copy(std::istream_iterator< std::wstring, wchar_t, std::char_traits<wchar_t> >(iss), std::istream_iterator< std::wstring, wchar_t, std::char_traits<wchar_t> >(),std::back_inserter(words));
 }
 
-wstring CXuiCtrlEnchantmentButtonText::EnchantmentNames::getRandomName()
+std::wstring CXuiCtrlEnchantmentButtonText::EnchantmentNames::getRandomName()
 {
 	int wordCount = random.nextInt(2) + 3;
-	wstring word = L"";
+	std::wstring word = L"";
 	for (int i = 0; i < wordCount; i++)
 	{
 		if (i > 0) word += L" ";

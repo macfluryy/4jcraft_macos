@@ -1,7 +1,7 @@
 #pragma once
 #include "../Screen.h"
 class Options;
-using namespace std;
+
 
 class OptionsScreen : public Screen
 {
@@ -10,7 +10,7 @@ private:
     static const int VIDEO_BUTTON_ID = 101;
     Screen *lastScreen;
 protected:
-	wstring title;
+	std::wstring title;
 private:
 	Options *options;
 public:

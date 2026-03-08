@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class ContainerOpenPacket : public Packet, public enable_shared_from_this<ContainerOpenPacket>
+class ContainerOpenPacket : public Packet, public std::enable_shared_from_this<ContainerOpenPacket>
 {
 public:
 	static const int CONTAINER = 0;
@@ -30,7 +30,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ContainerOpenPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ContainerOpenPacket()); }
 	virtual int getId() { return 100; }
 };
 

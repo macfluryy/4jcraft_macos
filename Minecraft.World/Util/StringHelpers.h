@@ -1,11 +1,11 @@
 #pragma once
-using namespace std;
+//using namespace stdtd;
 
-wstring toLower(const wstring& a);
-wstring trimString(const wstring& a);
-wstring replaceAll(const wstring& in, const wstring& replace, const wstring& with);
+std::wstring toLower(const std::wstring& a);
+std::wstring trimString(const std::wstring& a);
+std::wstring replaceAll(const std::wstring& in, const std::wstring& replace, const std::wstring& with);
 
-bool equalsIgnoreCase(const wstring& a, const wstring& b);
+bool equalsIgnoreCase(const std::wstring& a, const std::wstring& b);
 // 4J-PB - for use in the ::toString 
 template <class T> std::wstring _toString(T t)
 {
@@ -28,13 +28,13 @@ template <class T> T _fromHEXString(const std::wstring& s)
     return t;
 }
 
-wstring convStringToWstring(const string& converting);
-const char *wstringtofilename(const wstring& name);
-wstring filenametowstring(const char *name);
+std::wstring convStringToWstring(const std::string& converting);
+const char *wstringtofilename(const std::wstring& name);
+std::wstring filenametowstring(const char *name);
 
 std::vector<std::wstring> &stringSplit(const std::wstring &s, wchar_t delim, std::vector<std::wstring> &elems);
 std::vector<std::wstring> stringSplit(const std::wstring &s, wchar_t delim);
 
-void stripWhitespaceForHtml(wstring &string, bool bRemoveNewline=true);
-wstring escapeXML(const wstring &in);
-wstring parseXMLSpecials(const wstring &in);
+void stripWhitespaceForHtml(std::wstring &string, bool bRemoveNewline=true);
+std::wstring escapeXML(const std::wstring &in);
+std::wstring parseXMLSpecials(const std::wstring &in);

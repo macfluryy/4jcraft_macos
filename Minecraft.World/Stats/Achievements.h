@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 
 class Achievement;
@@ -18,7 +18,7 @@ public:
 
     static int xMin, yMin, xMax, yMax;
 
-    static vector<Achievement *> *achievements;
+    static std::vector<Achievement *> *achievements;
 
     static Achievement *openInventory;
     static Achievement *mineWood;

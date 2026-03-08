@@ -9,10 +9,10 @@ class LiquidTile : public Tile
 {
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURE_LAVA_STILL;
-	static const wstring TEXTURE_WATER_STILL;
-	static const wstring TEXTURE_WATER_FLOW;
-	static const wstring TEXTURE_LAVA_FLOW;
+	static const std::wstring TEXTURE_LAVA_STILL;
+	static const std::wstring TEXTURE_WATER_STILL;
+	static const std::wstring TEXTURE_WATER_FLOW;
+	static const std::wstring TEXTURE_LAVA_FLOW;
 
 private:
 	Icon *icons[2];
@@ -42,7 +42,7 @@ public:
 private:
 	virtual Vec3 *getFlow(LevelSource *level, int x, int y, int z);
 public:
-	virtual void handleEntityInside(Level *level, int x, int y, int z, shared_ptr<Entity> e, Vec3 *current);
+	virtual void handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> e, Vec3 *current);
 	virtual int getTickDelay();
 	virtual int getLightColor(LevelSource *level, int x, int y, int z,  int tileId=-1);	// 4J - brought forward from 1.8.2
 	virtual float getBrightness(LevelSource *level, int x, int y, int z);
@@ -58,5 +58,5 @@ protected:
 
 public:
 	void registerIcons(IconRegister *iconRegister);
-	static Icon *getTexture(const wstring &name);
+	static Icon *getTexture(const std::wstring &name);
 };

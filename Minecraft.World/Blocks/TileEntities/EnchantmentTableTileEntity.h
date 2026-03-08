@@ -21,5 +21,5 @@ public:
     virtual void tick();
 
 	// 4J Added
-	virtual shared_ptr<TileEntity> clone();
+	virtual std::shared_ptr<TileEntity> clone();
 };

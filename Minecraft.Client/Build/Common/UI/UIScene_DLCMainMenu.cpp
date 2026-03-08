@@ -73,7 +73,7 @@ UIScene_DLCMainMenu::~UIScene_DLCMainMenu()
 #endif
 }
 
-wstring UIScene_DLCMainMenu::getMoviePath()
+std::wstring UIScene_DLCMainMenu::getMoviePath()
 {
 	return L"DLCMainMenu";
 }
@@ -212,7 +212,7 @@ void UIScene_DLCMainMenu::tick()
 			// add a button in with the subcategory
 			category = (SonyCommerce::CategoryInfoSub)(*iter);
 
-			string teststring=category.categoryName;
+			std::string teststring=category.categoryName;
 			m_buttonListOffers.addItem(teststring,i);
 			
 			iter++;

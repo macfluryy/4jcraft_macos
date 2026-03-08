@@ -64,7 +64,7 @@ int MinecraftServer::s_slowQueuePlayerIndex = 0;
 int MinecraftServer::s_slowQueueLastTime = 0;
 bool MinecraftServer::s_slowQueuePacketSent = false;
 
-unordered_map<wstring, int> MinecraftServer::ironTimers;
+std::unordered_map<std::wstring, int> MinecraftServer::ironTimers;
 
 MinecraftServer::MinecraftServer()
 {
@@ -77,7 +77,7 @@ MinecraftServer::MinecraftServer()
 	m_bLoaded = false;
 	stopped = false;
     tickCount = 0;
-	wstring progressStatus;
+	std::wstring progressStatus;
     progress = 0;
 	motd = L"";
 
@@ -203,8 +203,8 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 
         __int64 levelNanoTime = System::nanoTime();
 
-        wstring levelName = settings->getString(L"level-name", L"world");
-		wstring levelTypeString;
+        std::wstring levelName = settings->getString(L"level-name", L"world");
+		std::wstring levelTypeString;
 
 		bool gameRuleUseFlatWorld = false;
 		if(app.getLevelGenerationOptions() != NULL)
@@ -244,7 +244,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DW
 		//settings->setProperty(L"max-build-height", maxBuildHeight);
 
 #if 0
-        wstring levelSeedString = settings->getString(L"level-seed", L"");
+        std::wstring levelSeedString = settings->getString(L"level-seed", L"");
         __int64 levelSeed = (new Random())->nextLong();
         if (levelSeedString.length() > 0)
 		{
@@ -378,7 +378,7 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer *mcprogress)
 	DeleteCriticalSection(&m_postProcessCS);
 }
 
-bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData)
+bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData)
 {
 //	4J - TODO - do with new save stuff
 //    if (storageSource->requiresConversion(name))
@@ -398,7 +398,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	if( app.GetGameHostOption(eGameHostOption_BonusChest ) ) levelSettings->enableStartingBonusItems();
 
 	// 4J - temp - load existing level
-	shared_ptr<McRegionLevelStorage> storage = nullptr;
+	std::shared_ptr<McRegionLevelStorage> storage = nullptr;
 	bool levelChunksNeedConverted = false;
 	if( initData->saveData != NULL )
 	{
@@ -416,7 +416,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 			levelChunksNeedConverted = true;
 		pSave->ConvertToLocalPlatform(); // check if we need to convert this file from PS3->PS4
 
-		storage = shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(pSave, File(L"."), name, true));
+		storage = std::shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(pSave, File(L"."), name, true));
 	}
 	else
 	{
@@ -441,9 +441,9 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 			newFormatSave = new ConsoleSaveFileSplit( L"" );
 		}
 
-		storage = shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(newFormatSave, File(L"."), name, true));
+		storage = std::shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(newFormatSave, File(L"."), name, true));
 #else
-		storage = shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(new ConsoleSaveFileOriginal( L"" ), File(L"."), name, true));
+		storage = std::shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(new ConsoleSaveFileOriginal( L"" ), File(L"."), name, true));
 #endif
 	}
 
@@ -750,7 +750,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const wstring
 	return true;
 }
 
-void MinecraftServer::setProgress(const wstring& status, int progress)
+void MinecraftServer::setProgress(const std::wstring& status, int progress)
 {
     progressStatus = status;
     this->progress = progress;
@@ -1258,7 +1258,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 						players->saveAll(Minecraft::GetInstance()->progressRenderer);
 					}
 					
-					players->broadcastAll( shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(20) ) );
+					players->broadcastAll( std::shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(20) ) );
 
 					for (unsigned int j = 0; j < levels.length; j++)
 					{
@@ -1269,7 +1269,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 						ServerLevel *level = levels[levels.length - 1 - j];
 						level->save(true, Minecraft::GetInstance()->progressRenderer, (eAction==eXuiServerAction_AutoSaveGame));
 					
-						players->broadcastAll( shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(33 + (j*33) ) ) );
+						players->broadcastAll( std::shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(33 + (j*33) ) ) );
 					}
 					if( !s_bServerHalted )
 					{
@@ -1282,16 +1282,16 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 				case eXuiServerAction_DropItem:
 					// Find the player, and drop the id at their feet
 					{
-					shared_ptr<ServerPlayer> player = players->players.at(0);
+					std::shared_ptr<ServerPlayer> player = players->players.at(0);
 					size_t id = (size_t) param;
-					player->drop( shared_ptr<ItemInstance>( new ItemInstance(id, 1, 0 ) ) );
+					player->drop( std::shared_ptr<ItemInstance>( new ItemInstance(id, 1, 0 ) ) );
 					}
 					break;
 				case eXuiServerAction_SpawnMob:
 					{
-					shared_ptr<ServerPlayer> player = players->players.at(0);
+					std::shared_ptr<ServerPlayer> player = players->players.at(0);
 					eINSTANCEOF factory = (eINSTANCEOF)((size_t)param);
-					shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(factory,player->level ));
+					std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(factory,player->level ));
 					mob->moveTo(player->x+1, player->y, player->z+1, player->level->random->nextFloat() * 360, 0);
 					mob->setDespawnProtected();		// 4J added, default to being protected against despawning (has to be done after initial position is set)
 					player->level->addEntity(mob);
@@ -1319,20 +1319,20 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 					}
 					break;
 				case eXuiServerAction_ServerSettingChanged_Gamertags:
-					players->broadcastAll( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_OPTIONS, app.GetGameHostOption(eGameHostOption_Gamertags)) ) );
+					players->broadcastAll( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_OPTIONS, app.GetGameHostOption(eGameHostOption_Gamertags)) ) );
 					break;
 				case eXuiServerAction_ServerSettingChanged_BedrockFog:
-					players->broadcastAll( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, app.GetGameHostOption(eGameHostOption_All)) ) );
+					players->broadcastAll( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, app.GetGameHostOption(eGameHostOption_All)) ) );
 					break;
 
 				case eXuiServerAction_ServerSettingChanged_Difficulty:
-					players->broadcastAll( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_DIFFICULTY, Minecraft::GetInstance()->options->difficulty) ) );
+					players->broadcastAll( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_DIFFICULTY, Minecraft::GetInstance()->options->difficulty) ) );
 					break;
 				case eXuiServerAction_ExportSchematic:
 #ifndef _CONTENT_PACKAGE
 					app.EnterSaveNotificationSection();
 				
-					//players->broadcastAll( shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(20) ) );
+					//players->broadcastAll( std::shared_ptr<UpdateProgressPacket>( new UpdateProgressPacket(20) ) );
 
 					if( !s_bServerHalted )
 					{
@@ -1347,7 +1347,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 						wchar_t filename[128];
 						swprintf(filename,128,L"%ls%dx%dx%d.sch",initData->name,(initData->endX - initData->startX + 1), (initData->endY - initData->startY + 1), (initData->endZ - initData->startZ + 1));
 
-						File dataFile = File( targetFileDir, wstring(filename) );
+						File dataFile = File( targetFileDir, std::wstring(filename) );
 						if(dataFile.exists()) dataFile._delete();
 						FileOutputStream fos = FileOutputStream(dataFile);
 						DataOutputStream dos = DataOutputStream(&fos);				
@@ -1370,7 +1370,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 											pos->m_yRot, pos->m_elev 
 										);
 
-						shared_ptr<ServerPlayer> player = players->players.at(pos->player);
+						std::shared_ptr<ServerPlayer> player = players->players.at(pos->player);
 						player->debug_setPosition(	pos->m_camX, pos->m_camY, pos->m_camZ,
 													pos->m_yRot, pos->m_elev	);
 
@@ -1427,20 +1427,20 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 
 void MinecraftServer::broadcastStartSavingPacket()
 {
-	players->broadcastAll( shared_ptr<GameEventPacket>( new GameEventPacket(GameEventPacket::START_SAVING, 0) ) );;
+	players->broadcastAll( std::shared_ptr<GameEventPacket>( new GameEventPacket(GameEventPacket::START_SAVING, 0) ) );;
 }
 
 void MinecraftServer::broadcastStopSavingPacket()
 {
 	if( !s_bServerHalted )
 	{
-		players->broadcastAll( shared_ptr<GameEventPacket>( new GameEventPacket(GameEventPacket::STOP_SAVING, 0) ) );;
+		players->broadcastAll( std::shared_ptr<GameEventPacket>( new GameEventPacket(GameEventPacket::STOP_SAVING, 0) ) );;
 	}
 }
 
 void MinecraftServer::tick()
 {
-    vector<wstring> toRemove;
+    std::vector<std::wstring> toRemove;
     for (AUTO_VAR(it, ironTimers.begin()); it != ironTimers.end(); it++ )
 	{
         int t = it->second;
@@ -1469,7 +1469,7 @@ void MinecraftServer::tick()
 /*	if(m_lastSentDifficulty != pMinecraft->options->difficulty)
 	{
 		m_lastSentDifficulty = pMinecraft->options->difficulty;
-		players->broadcastAll( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_DIFFICULTY, pMinecraft->options->difficulty) ) );
+		players->broadcastAll( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_DIFFICULTY, pMinecraft->options->difficulty) ) );
 	}*/
 
     for (unsigned int i = 0; i < levels.length; i++)
@@ -1489,7 +1489,7 @@ void MinecraftServer::tick()
 
             if (tickCount % 20 == 0)
 			{
-                players->broadcastAll( shared_ptr<SetTimePacket>( new SetTimePacket(level->getTime() ) ), level->dimension->id);
+                players->broadcastAll( std::shared_ptr<SetTimePacket>( new SetTimePacket(level->getTime() ) ), level->dimension->id);
             }
 // #ifndef __PS3__
 			static __int64 stc = 0;
@@ -1561,7 +1561,7 @@ void MinecraftServer::tick()
 //    }
 }
 
-void MinecraftServer::handleConsoleInput(const wstring& msg, ConsoleInputSource *source)
+void MinecraftServer::handleConsoleInput(const std::wstring& msg, ConsoleInputSource *source)
 {
 	consoleInput.push_back(new ConsoleInput(msg, source));
 }
@@ -1599,20 +1599,20 @@ void MinecraftServer::HaltServer(bool bPrimaryPlayerSignedOut)
 	}
 }
 
-File *MinecraftServer::getFile(const wstring& name)
+File *MinecraftServer::getFile(const std::wstring& name)
 {
 	return new File(name);
 }
 
-void MinecraftServer::info(const wstring& string)
+void MinecraftServer::info(const std::wstring& string)
 {
 }
 
-void MinecraftServer::warn(const wstring& string)
+void MinecraftServer::warn(const std::wstring& string)
 {
 }
 
-wstring MinecraftServer::getConsoleName()
+std::wstring MinecraftServer::getConsoleName()
 {
 	return L"CONSOLE";
 }

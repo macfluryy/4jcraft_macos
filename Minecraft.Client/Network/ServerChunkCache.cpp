@@ -74,7 +74,7 @@ bool ServerChunkCache::hasChunk(int x, int z)
 	return true;
 }
 
-vector<LevelChunk *> *ServerChunkCache::getLoadedChunkList()
+std::vector<LevelChunk *> *ServerChunkCache::getLoadedChunkList()
 {
 	return &m_loadedChunkList;
 }
@@ -608,7 +608,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		// Created a roughly sorted list to match the order that the files were created in 	McRegionChunkStorage::McRegionChunkStorage.
 		// This is to minimise the amount of data that needs to be moved round when creating a new level.
 
-		vector<LevelChunk *> sortedChunkList;
+		std::vector<LevelChunk *> sortedChunkList;
 
 		for( int i = 0; i < m_loadedChunkList.size(); i++ )
 		{
@@ -693,7 +693,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		// Created a roughly sorted list to match the order that the files were created in 	McRegionChunkStorage::McRegionChunkStorage.
 		// This is to minimise the amount of data that needs to be moved round when creating a new level.
 
-		vector<LevelChunk *> sortedChunkList;
+		std::vector<LevelChunk *> sortedChunkList;
 
 		for( int i = 0; i < m_loadedChunkList.size(); i++ )
 		{
@@ -897,17 +897,17 @@ bool ServerChunkCache::shouldSave()
 	return !level->noSave;
 }
 
-wstring ServerChunkCache::gatherStats()
+std::wstring ServerChunkCache::gatherStats()
 {
 	 return L"ServerChunkCache: ";// + _toString<int>(loadedChunks.size()) + L" Drop: " + _toString<int>(toDrop.size());
 }
 
-vector<Biome::MobSpawnerData *> *ServerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *ServerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
 	return source->getMobsAt(mobCategory, x, y, z);
 }
 
-TilePos *ServerChunkCache::findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z)
+TilePos *ServerChunkCache::findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z)
 {
 	return source->findNearestMapFeature(level, featureName, x, y, z);
 }

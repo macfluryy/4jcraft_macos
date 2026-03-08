@@ -53,7 +53,7 @@ StructurePiece::~StructurePiece()
 	if(boundingBox != NULL) delete boundingBox;
 }
 
-void StructurePiece::addChildren( StructurePiece* startPiece, list< StructurePiece* > *pieces, Random* random )
+void StructurePiece::addChildren( StructurePiece* startPiece, std::list< StructurePiece* > *pieces, Random* random )
 {
 }
 
@@ -75,7 +75,7 @@ bool StructurePiece::isInChunk( ChunkPos* pos )
 	return boundingBox->intersects( cx, cz, cx + 15, cz + 15 );
 }
 
-StructurePiece* StructurePiece::findCollisionPiece( list< StructurePiece* > *pieces, BoundingBox* box )
+StructurePiece* StructurePiece::findCollisionPiece( std::list< StructurePiece* > *pieces, BoundingBox* box )
 {
 	for ( AUTO_VAR(it, pieces->begin()); it != pieces->end(); it++ )
 	{
@@ -781,7 +781,7 @@ bool StructurePiece::createChest( Level* level, BoundingBox* chunkBB, Random* ra
 		if ( level->getTile( worldX, worldY, worldZ ) != Tile::chest->id )
 		{
 			level->setTile( worldX, worldY, worldZ, Tile::chest->id );
-			shared_ptr<ChestTileEntity> chest = dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity( worldX, worldY, worldZ ));
+			std::shared_ptr<ChestTileEntity> chest = std::dynamic_pointer_cast<ChestTileEntity>(level->getTileEntity( worldX, worldY, worldZ ));
 			if ( chest != NULL ) WeighedTreasure::addChestItems( random, treasure, chest, numRolls );
 			return true;
 		}
@@ -800,7 +800,7 @@ bool StructurePiece::createDispenser(Level *level, BoundingBox *chunkBB, Random 
 		if (level->getTile(worldX, worldY, worldZ) != Tile::dispenser_Id)
 		{
 			level->setTileAndData(worldX, worldY, worldZ, Tile::dispenser_Id, getOrientationData(Tile::dispenser_Id, facing));
-			shared_ptr<DispenserTileEntity> dispenser = dynamic_pointer_cast<DispenserTileEntity>(level->getTileEntity(worldX, worldY, worldZ));
+			std::shared_ptr<DispenserTileEntity> dispenser = std::dynamic_pointer_cast<DispenserTileEntity>(level->getTileEntity(worldX, worldY, worldZ));
 			if (dispenser != NULL) WeighedTreasure::addDispenserItems(random, items, dispenser, numRolls);
 			return true;
 		}

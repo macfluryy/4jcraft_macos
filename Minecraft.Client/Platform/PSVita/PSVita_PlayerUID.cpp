@@ -35,7 +35,7 @@ PlayerUID::PlayerUID(int userID, SceNpOnlineId& onlineID, bool bSignedInPSN, int
 	setOnlineID(onlineID, bSignedInPSN);
 } 
 
-PlayerUID::PlayerUID(wstring fromString)
+PlayerUID::PlayerUID(std::wstring fromString)
 {
 	// create for the format 	P_5e7ff8372ea9_00000004_Mark_4J
 
@@ -47,16 +47,16 @@ PlayerUID::PlayerUID(wstring fromString)
 	// parse the mac address next
 	for(int i=0;i<6;i++)
 	{
-		wstring macDigit = fromString.substr(2+(i*2),2);
+		std::wstring macDigit = fromString.substr(2+(i*2),2);
 		m_macAddress[i] = _fromHEXString<int>(macDigit);
 	}
 
 	// parse the userID
-	wstring userIDDigits = fromString.substr(15,8);
+	std::wstring userIDDigits = fromString.substr(15,8);
 	m_userID = _fromString<int>(userIDDigits);
 
 	// finally, the onlineID, if there is one
-	wstring onlineID = fromString.substr(24);
+	std::wstring onlineID = fromString.substr(24);
 	if(onlineID.size() > 0)
 	{
 		wcstombs(m_onlineID, onlineID.c_str(), 16);

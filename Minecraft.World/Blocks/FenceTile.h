@@ -5,12 +5,12 @@
 class FenceTile : public Tile
 {
 private:
-	wstring texture;
+	std::wstring texture;
 
 public:
-	FenceTile(int id, const wstring &texture, Material *material);
+	FenceTile(int id, const std::wstring &texture, Material *material);
 	virtual AABB *getAABB(Level *level, int x, int y, int z);
-	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, shared_ptr<TileEntity> forceEntity = shared_ptr<TileEntity>()); // 4J added forceData, forceEntity param
+	virtual void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>()); // 4J added forceData, forceEntity param
 	virtual bool blocksLight();
 	virtual bool isSolidRender(bool isServerLevel = false);
 	virtual bool isCubeShaped();

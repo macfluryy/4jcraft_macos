@@ -5,7 +5,7 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.h"
 
-const wstring NetherStalkTile::TEXTURE_NAMES[] = { L"netherStalk_0", L"netherStalk_1", L"netherStalk_2" };
+const std::wstring NetherStalkTile::TEXTURE_NAMES[] = { L"netherStalk_0", L"netherStalk_1", L"netherStalk_2" };
 
 NetherStalkTile::NetherStalkTile(int id) : Bush(id)
 {
@@ -92,7 +92,7 @@ void NetherStalkTile::spawnResources(Level *level, int x, int y, int z, int data
 	}
 	for (int i = 0; i < count; i++)
 	{
-		popResource(level, x, y, z, shared_ptr<ItemInstance>(new ItemInstance(Item::netherStalkSeeds)));
+		popResource(level, x, y, z, std::shared_ptr<ItemInstance>(new ItemInstance(Item::netherStalkSeeds)));
 	}
 }
 

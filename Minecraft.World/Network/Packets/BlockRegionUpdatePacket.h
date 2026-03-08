@@ -1,11 +1,11 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
 class Level;
 
-class BlockRegionUpdatePacket : public Packet, public enable_shared_from_this<BlockRegionUpdatePacket>
+class BlockRegionUpdatePacket : public Packet, public std::enable_shared_from_this<BlockRegionUpdatePacket>
 {
 public:
     int x, y, z;
@@ -28,6 +28,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new BlockRegionUpdatePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new BlockRegionUpdatePacket()); }
 	virtual int getId() { return 51; }
 };

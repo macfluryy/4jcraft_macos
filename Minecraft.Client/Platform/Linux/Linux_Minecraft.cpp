@@ -567,7 +567,7 @@ int StartMinecraftThreadProc( void* lpParameter )
     AABB::UseDefaultThreadStorage();
     Tesselator::CreateNewThreadStorage(1024*1024);
     RenderManager.InitialiseContext();
-    Minecraft::start(wstring(),wstring());
+    Minecraft::start(std::wstring(),std::wstring());
     delete Tesselator::getInstance();
     return 0;
 }
@@ -988,9 +988,9 @@ Vec3::resetPool();
 //	g_pd3dDevice->Release();
 
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 
-// convert wstring to UTF-8 string
+// convert std::wstring to UTF-8 string
 std::string wstring_to_utf8 (const std::wstring& str)
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
@@ -1037,7 +1037,7 @@ void FreeRichPresenceStrings()
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-unordered_map<int,int> allocCounts;
+std::unordered_map<int,int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;

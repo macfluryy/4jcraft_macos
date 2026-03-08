@@ -2,7 +2,7 @@
 #include "DLCManager.h"
 #include "DLCCapeFile.h"
 
-DLCCapeFile::DLCCapeFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Cape,path)
+DLCCapeFile::DLCCapeFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Cape,path)
 {
 }
 

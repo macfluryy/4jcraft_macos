@@ -6,7 +6,7 @@ UIControl_DynamicLabel::UIControl_DynamicLabel()
 {
 }
 
-bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eDynamicLabel);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -20,7 +20,7 @@ bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent,
 	return success;
 }
 
-void UIControl_DynamicLabel::addText(const wstring &text, bool bLastEntry)
+void UIControl_DynamicLabel::addText(const std::wstring &text, bool bLastEntry)
 {
 	IggyDataValue result;
 	IggyDataValue value[2];

@@ -78,7 +78,7 @@ int StoneSlabTile::getAuxName(int auxValue)
 	return SLAB_NAMES[auxValue];//super.getDescriptionId() + "." + SLAB_NAMES[auxValue];
 }
 
-shared_ptr<ItemInstance> StoneSlabTile::getSilkTouchItemInstance(int data)
+std::shared_ptr<ItemInstance> StoneSlabTile::getSilkTouchItemInstance(int data)
 {
-	return shared_ptr<ItemInstance>(new ItemInstance(Tile::stoneSlabHalf_Id, 2, data & TYPE_MASK));
+	return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::stoneSlabHalf_Id, 2, data & TYPE_MASK));
 }

@@ -11,12 +11,12 @@ Model::Model()
 	texHeight=32;
 }	
 
-void Model::setMapTex(wstring id, int x, int y) 
+void Model::setMapTex(std::wstring id, int x, int y) 
 {
 	mappedTexOffs[id]=new TexOffs(x, y);
 }
 
-TexOffs *Model::getMapTex(wstring id) 
+TexOffs *Model::getMapTex(std::wstring id) 
 {
 	// 4J-PB - assuming there will always be this one
 	return mappedTexOffs[id];

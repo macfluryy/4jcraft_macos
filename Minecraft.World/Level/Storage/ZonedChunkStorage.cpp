@@ -29,7 +29,7 @@ ZonedChunkStorage::ZonedChunkStorage(File dir)
 	tickCount = 0;
 
 	//this->dir = dir;
-	this->dir = File( dir, wstring( L"data" ) );
+	this->dir = File( dir, std::wstring( L"data" ) );
 	if( !this->dir.exists() ) this->dir.mkdirs();
 }
 
@@ -58,7 +58,7 @@ ZoneFile *ZonedChunkStorage::getZoneFile(int x, int z, bool create)
 		wchar_t zRadix36[64];
 		_itow(x,xRadix36,36);
 		_itow(z,zRadix36,36);
-		File file = File(dir, wstring( L"zone_") +  _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+		File file = File(dir, std::wstring( L"zone_") +  _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
 
 		if ( !file.exists() )
 		{
@@ -67,7 +67,7 @@ ZoneFile *ZonedChunkStorage::getZoneFile(int x, int z, bool create)
 			CloseHandle(ch);
         }
 
-		File entityFile = File(dir, wstring( L"entities_") + _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+		File entityFile = File(dir, std::wstring( L"entities_") + _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
 
         zoneFiles[key] = new ZoneFile(key, file, entityFile);
     }
@@ -147,10 +147,10 @@ void ZonedChunkStorage::tick()
     tickCount++;
     if (tickCount % (20 * 10) == 4)
 	{
-		vector<__int64> toClose;
+		std::vector<__int64> toClose;
 
 		AUTO_VAR(itEndZF, zoneFiles.end());
-		for( unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEndZF; it++ )
+		for( std::unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEndZF; it++ )
 		{
 			ZoneFile *zoneFile = it->second;
             if (tickCount - zoneFile->lastUse > 20 * 60)
@@ -181,7 +181,7 @@ void ZonedChunkStorage::tick()
 void ZonedChunkStorage::flush()
 {
 	AUTO_VAR(itEnd, zoneFiles.end());
-	for( unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEnd; it++ )
+	for( std::unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEnd; it++ )
 	{
 		ZoneFile *zoneFile = it->second;
 		// 4J - removed try/catch
@@ -198,7 +198,7 @@ void ZonedChunkStorage::loadEntities(Level *level, LevelChunk *lc)
 {
     int slot = getSlot(lc->x, lc->z);
     ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
-    vector<CompoundTag *> *tags = zoneFile->entityFile->readAll(slot);
+    std::vector<CompoundTag *> *tags = zoneFile->entityFile->readAll(slot);
 
 	AUTO_VAR(itEnd, tags->end());
 	for (AUTO_VAR(it, tags->begin()); it != itEnd; it++)
@@ -207,12 +207,12 @@ void ZonedChunkStorage::loadEntities(Level *level, LevelChunk *lc)
         int type = tag->getInt(L"_TYPE");
         if (type == 0)
 		{
-            shared_ptr<Entity> e = EntityIO::loadStatic(tag, level);
+            std::shared_ptr<Entity> e = EntityIO::loadStatic(tag, level);
             if (e != NULL) lc->addEntity(e);
         }
 		else if (type == 1)
 		{
-            shared_ptr<TileEntity> te = TileEntity::loadStatic(tag);
+            std::shared_ptr<TileEntity> te = TileEntity::loadStatic(tag);
             if (te != NULL) lc->addTileEntity(te);
         }
     }
@@ -223,7 +223,7 @@ void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
     int slot = getSlot(lc->x, lc->z);
     ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
 
-    vector<CompoundTag *> tags;
+    std::vector<CompoundTag *> tags;
 
 #ifdef _ENTITIES_RW_SECTION
 	EnterCriticalRWSection(&lc->m_csEntities, true);
@@ -232,12 +232,12 @@ void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
 #endif
     for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++)
 	{
-        vector<shared_ptr<Entity> > *entities = lc->entityBlocks[i];
+        std::vector<std::shared_ptr<Entity> > *entities = lc->entityBlocks[i];
 
 		AUTO_VAR(itEndTags, entities->end());
 		for (AUTO_VAR(it, entities->begin()); it != itEndTags; it++)
 		{
-            shared_ptr<Entity> e = *it; //entities->at(j);
+            std::shared_ptr<Entity> e = *it; //entities->at(j);
             CompoundTag *cp = new CompoundTag();
             cp->putInt(L"_TYPE", 0);
             e->save(cp);
@@ -250,10 +250,10 @@ void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
 	LeaveCriticalSection(&lc->m_csEntities);
 #endif
 
-	for( unordered_map<TilePos, shared_ptr<TileEntity> , TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
+	for( std::unordered_map<TilePos, std::shared_ptr<TileEntity> , TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
 		it != lc->tileEntities.end(); it++)
 	{
-		shared_ptr<TileEntity> te = it->second;
+		std::shared_ptr<TileEntity> te = it->second;
         CompoundTag *cp = new CompoundTag();
         cp->putInt(L"_TYPE", 1);
         te->save(cp);

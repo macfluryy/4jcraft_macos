@@ -10,7 +10,7 @@ class Enchantment //implements Descriptive<Enchantment> {
 public :
 	//static Enchantment *enchantments[256];
 	static EnchantmentArray enchantments;
-	static vector<Enchantment *> validEnchantments;
+	static std::vector<Enchantment *> validEnchantments;
 
 	static const int FREQ_COMMON = 10;
 	static const int FREQ_UNCOMMON = 5;
@@ -74,14 +74,14 @@ public:
 	virtual int getMinCost(int level);
 	virtual int getMaxCost(int level);
 	virtual int getDamageProtection(int level, DamageSource *source);
-	virtual int getDamageBonus(int level, shared_ptr<Mob> target);
+	virtual int getDamageBonus(int level, std::shared_ptr<Mob> target);
 	virtual bool isCompatibleWith(Enchantment *other) const;
 	virtual Enchantment *setDescriptionId(int id);
 	virtual int getDescriptionId();
-	virtual wstring getFullname(int level,wstring &unformatted); // 4J Stu added unformatted
-	virtual bool canEnchant(shared_ptr<ItemInstance> item);
+	virtual std::wstring getFullname(int level,std::wstring &unformatted); // 4J Stu added unformatted
+	virtual bool canEnchant(std::shared_ptr<ItemInstance> item);
 
 private:
 	// 4J Added
-	wstring getLevelString(int level);
+	std::wstring getLevelString(int level);
 };

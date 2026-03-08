@@ -55,7 +55,7 @@ private:
 class CScene_DLCOffers : public CXuiSceneImpl
 {
 protected:
-	//static const wstring DEFAULT_BANNER;
+	//static const std::wstring DEFAULT_BANNER;
 
 	// Control and Element wrapper objects.
 	CXuiList	m_List;
@@ -120,7 +120,7 @@ public:
 
 private:
 	
-	//vector<int> offerIndexes;
+	//std::vector<int> offerIndexes;
 	CScene_DLCMain *pMain;
 	bool m_bIgnorePress;
 	int m_iPad;

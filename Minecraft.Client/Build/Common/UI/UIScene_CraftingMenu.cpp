@@ -224,7 +224,7 @@ EUIScene UIScene_CraftingMenu::getSceneType()
 	}
 }
 
-wstring UIScene_CraftingMenu::getMoviePath()
+std::wstring UIScene_CraftingMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -435,7 +435,7 @@ void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	shared_ptr<ItemInstance> item = nullptr;
+	std::shared_ptr<ItemInstance> item = nullptr;
 	int slotId = -1;
 	float alpha = 1.0f;
 	bool decorations = true;
@@ -606,21 +606,21 @@ void UIScene_CraftingMenu::hideAllIngredientsSlots()
 	}
 }
 
-void UIScene_CraftingMenu::setCraftHSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha)
+void UIScene_CraftingMenu::setCraftHSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha)
 {
 	m_hSlotsInfo[iIndex].item = item;
 	m_hSlotsInfo[iIndex].alpha = uiAlpha;
 	m_hSlotsInfo[iIndex].show = true;
 }
 
-void UIScene_CraftingMenu::setCraftVSlotItem(int iPad, int iIndex, shared_ptr<ItemInstance> item, unsigned int uiAlpha)
+void UIScene_CraftingMenu::setCraftVSlotItem(int iPad, int iIndex, std::shared_ptr<ItemInstance> item, unsigned int uiAlpha)
 {
 	m_vSlotsInfo[iIndex].item = item;
 	m_vSlotsInfo[iIndex].alpha = uiAlpha;
 	m_vSlotsInfo[iIndex].show = true;
 }
 
-void UIScene_CraftingMenu::setCraftingOutputSlotItem(int iPad, shared_ptr<ItemInstance> item)
+void UIScene_CraftingMenu::setCraftingOutputSlotItem(int iPad, std::shared_ptr<ItemInstance> item)
 {
 	m_craftingOutputSlotInfo.item = item;
 	m_craftingOutputSlotInfo.alpha = 31;
@@ -632,7 +632,7 @@ void UIScene_CraftingMenu::setCraftingOutputSlotRedBox(bool show)
 	m_slotListCraftingOutput.showSlotRedBox(0,show);
 }
 
-void UIScene_CraftingMenu::setIngredientSlotItem(int iPad, int index, shared_ptr<ItemInstance> item)
+void UIScene_CraftingMenu::setIngredientSlotItem(int iPad, int index, std::shared_ptr<ItemInstance> item)
 {
 	m_ingredientsSlotsInfo[index].item = item;
 	m_ingredientsSlotsInfo[index].alpha = 31;
@@ -644,7 +644,7 @@ void UIScene_CraftingMenu::setIngredientSlotRedBox(int index, bool show)
 	m_slotListIngredientsLayout.showSlotRedBox(index,show);
 }
 
-void UIScene_CraftingMenu::setIngredientDescriptionItem(int iPad, int index, shared_ptr<ItemInstance> item)
+void UIScene_CraftingMenu::setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item)
 {
 	m_ingredientsInfo[index].item = item;
 	m_ingredientsInfo[index].alpha = 31;

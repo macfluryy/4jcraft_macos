@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Monster.h"
 
@@ -45,7 +45,7 @@ protected:
 
 public:
 	virtual void die(DamageSource *source);
-	virtual bool doHurtTarget(shared_ptr<Entity> target);
+	virtual bool doHurtTarget(std::shared_ptr<Entity> target);
 	virtual bool isPowered();
     float getSwelling(float a);
 

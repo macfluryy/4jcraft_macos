@@ -5,14 +5,14 @@
 #include "../../Minecraft.World/Util/JavaIntHash.h"
 #include "../../Minecraft.World/Level/RandomLevelSource.h"
 #include "../../Minecraft.World/Util/C4JThread.h"
-using namespace std;
+
 class ServerLevel;
 
 class ServerChunkCache : public ChunkSource
 {
 
 private:
-//	unordered_set<int,IntKeyHash, IntKeyEq> toDrop;
+//	std::unordered_set<int,IntKeyHash, IntKeyEq> toDrop;
 private:
 	LevelChunk *emptyChunk;
     ChunkSource *source;
@@ -21,11 +21,11 @@ public:
 	bool autoCreate;
 private:
 	LevelChunk **cache;
-    vector<LevelChunk *> m_loadedChunkList;
+    std::vector<LevelChunk *> m_loadedChunkList;
     ServerLevel *level;
 
 #ifdef _LARGE_WORLDS
-	deque<LevelChunk *> m_toDrop;
+	std::deque<LevelChunk *> m_toDrop;
 	LevelChunk **m_unloadedCache;
 #endif
 
@@ -39,7 +39,7 @@ public:
 	ServerChunkCache(ServerLevel *level, ChunkStorage *storage, ChunkSource *source);
 	virtual ~ServerChunkCache();
     virtual bool hasChunk(int x, int z);
-	vector<LevelChunk *> *getLoadedChunkList();
+	std::vector<LevelChunk *> *getLoadedChunkList();
     void drop(int x, int z);
 	void dropAll();
     virtual LevelChunk *create(int x, int z);
@@ -80,10 +80,10 @@ public:
 	virtual bool save(bool force, ProgressListener *progressListener);
     virtual bool tick();
     virtual bool shouldSave();
-    virtual wstring gatherStats();
+    virtual std::wstring gatherStats();
 
-	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-	virtual TilePos *findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z);
+	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
+	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z);
 
 private:
 	typedef struct _SaveThreadData

@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "FenceTile.h"
 
-FenceTile::FenceTile(int id, const wstring &texture, Material *material) : Tile( id, material, isSolidRender())
+FenceTile::FenceTile(int id, const std::wstring &texture, Material *material) : Tile( id, material, isSolidRender())
 {
 	this->texture = texture;
 }
@@ -41,7 +41,7 @@ AABB *FenceTile::getAABB(Level *level, int x, int y, int z)
 	return AABB::newTemp(x + west, y, z + north, x + east, y + 1.5f, z + south);
 }
 
-void FenceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
+void FenceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
     bool n = connectsTo(level, x, y, z - 1);
     bool s = connectsTo(level, x, y, z + 1);

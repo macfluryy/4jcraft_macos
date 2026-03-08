@@ -3,7 +3,7 @@
 #include "../SmallButton.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
-ConfirmScreen::ConfirmScreen(Screen *parent, const wstring& title1, const wstring& title2, int id)
+ConfirmScreen::ConfirmScreen(Screen *parent, const std::wstring& title1, const std::wstring& title2, int id)
 {
     this->parent = parent;
     this->title1 = title1;
@@ -15,7 +15,7 @@ ConfirmScreen::ConfirmScreen(Screen *parent, const wstring& title1, const wstrin
     noButton = language->getElement(L"gui.no");
 }
 
-ConfirmScreen::ConfirmScreen(Screen *parent, const wstring& title1, const wstring& title2, const wstring& yesButton, const wstring& noButton, int id)
+ConfirmScreen::ConfirmScreen(Screen *parent, const std::wstring& title1, const std::wstring& title2, const std::wstring& yesButton, const std::wstring& noButton, int id)
 {
     this->parent = parent;
     this->title1 = title1;

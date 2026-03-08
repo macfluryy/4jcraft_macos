@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 class StitchSlot;
 class Texture;
@@ -16,8 +16,8 @@ public:
 	static const int MIN_TEXEL = 1 << MAX_MIPLEVEL;
 
 private:
-	set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
-	vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
+	std::set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
+	std::vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
 	int storageX;
 	int storageY;
 
@@ -28,20 +28,20 @@ private:
 
 	Texture *stitchedTexture;
 
-	wstring name;
+	std::wstring name;
 
-	void _init(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+	void _init(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
 
 public:
-	Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo);
-	Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo);
+	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
 
 	int getWidth();
 	int getHeight();
 	void addTexture(TextureHolder *textureHolder);
 	Texture *constructTexture(bool mipmap = true); // 4J Added mipmap param
 	void stitch();
-	vector<StitchSlot *> *gatherAreas();
+	std::vector<StitchSlot *> *gatherAreas();
 
 private:	
 	// Based on: http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2

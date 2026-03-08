@@ -3,7 +3,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.h"
 
-ThinFenceTile::ThinFenceTile(int id, const wstring &tex, const wstring &edgeTex, Material *material, bool dropsResources) : Tile(id, material,isSolidRender())
+ThinFenceTile::ThinFenceTile(int id, const std::wstring &tex, const std::wstring &edgeTex, Material *material, bool dropsResources) : Tile(id, material,isSolidRender())
 {
 	iconSide = NULL;
 	edgeTexture = edgeTex;
@@ -42,7 +42,7 @@ bool ThinFenceTile::shouldRenderFace(LevelSource *level, int x, int y, int z, in
     return Tile::shouldRenderFace(level, x, y, z, face);
 }
 
-void ThinFenceTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, shared_ptr<Entity> source)
+void ThinFenceTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source)
 {
     bool n = attachsTo(level->getTile(x, y, z - 1));
     bool s = attachsTo(level->getTile(x, y, z + 1));
@@ -86,7 +86,7 @@ void ThinFenceTile::updateDefaultShape()
 	setShape(0, 0, 0, 1, 1, 1);
 }
 
-void ThinFenceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
+void ThinFenceTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
     float minX = 7.0f / 16.0f;
     float maxX = 9.0f / 16.0f;
@@ -142,9 +142,9 @@ bool ThinFenceTile::isSilkTouchable()
 	return true;
 }
 
-shared_ptr<ItemInstance> ThinFenceTile::getSilkTouchItemInstance(int data)
+std::shared_ptr<ItemInstance> ThinFenceTile::getSilkTouchItemInstance(int data)
 {
-	return shared_ptr<ItemInstance>(new ItemInstance(id, 1, data));
+	return std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, data));
 }
 
 void ThinFenceTile::registerIcons(IconRegister *iconRegister)

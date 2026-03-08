@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Tile.h"
 
@@ -20,9 +20,9 @@ public:
 	static int SANDSTONE_NAMES[SANDSTONE_BLOCK_NAMES];
 
 private:
-	static const wstring TEXTURE_TOP;
-	static const wstring TEXTURE_BOTTOM;
-	static const wstring TEXTURE_NAMES[];
+	static const std::wstring TEXTURE_TOP;
+	static const std::wstring TEXTURE_BOTTOM;
+	static const std::wstring TEXTURE_NAMES[];
 	static const int SANDSTONE_TILE_TEXTURE_COUNT = 3;
 
 	Icon **icons;

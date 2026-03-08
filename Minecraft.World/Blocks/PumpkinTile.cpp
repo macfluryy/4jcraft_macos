@@ -8,8 +8,8 @@
 #include "../Entities/Mobs/SnowMan.h"
 #include "../Entities/MobCategory.h"
 
-const wstring PumpkinTile::TEXTURE_FACE = L"pumpkin_face";
-const wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";
+const std::wstring PumpkinTile::TEXTURE_FACE = L"pumpkin_face";
+const std::wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";
 
 PumpkinTile::PumpkinTile(int id, bool lit) : DirectionalTile(id, Material::vegetable)
 {
@@ -45,7 +45,7 @@ void PumpkinTile::onPlace(Level *level, int x, int y, int z)
 				level->setTileNoUpdate(x, y, z, 0);
 				level->setTileNoUpdate(x, y - 1, z, 0);
 				level->setTileNoUpdate(x, y - 2, z, 0);
-				shared_ptr<SnowMan> snowMan = shared_ptr<SnowMan>(new SnowMan(level));
+				std::shared_ptr<SnowMan> snowMan = std::shared_ptr<SnowMan>(new SnowMan(level));
 				snowMan->moveTo(x + 0.5, y - 1.95, z + 0.5, 0, 0);
 				level->addEntity(snowMan);
 
@@ -94,7 +94,7 @@ void PumpkinTile::onPlace(Level *level, int x, int y, int z)
 						level->setTileNoUpdate(x, y - 1, z + 1, 0);
 					}
 
-					shared_ptr<VillagerGolem> villagerGolem = shared_ptr<VillagerGolem>(new VillagerGolem(level));
+					std::shared_ptr<VillagerGolem> villagerGolem = std::shared_ptr<VillagerGolem>(new VillagerGolem(level));
 					villagerGolem->setPlayerCreated(true);
 					villagerGolem->moveTo(x + 0.5, y - 1.95, z + 0.5, 0, 0);
 					level->addEntity(villagerGolem);
@@ -155,7 +155,7 @@ bool PumpkinTile::mayPlace(Level *level, int x, int y, int z)
 
 }
 
-void PumpkinTile::setPlacedBy(Level *level, int x, int y, int z, shared_ptr<Mob> by)
+void PumpkinTile::setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by)
 {
     int dir = Mth::floor(by->yRot * 4 / (360) + 2.5) & 3;
     level->setData(x, y, z, dir);

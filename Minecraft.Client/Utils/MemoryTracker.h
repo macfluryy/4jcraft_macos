@@ -3,7 +3,7 @@
 class ByteBuffer;
 class IntBuffer;
 class FloatBuffer;
-using namespace std;
+
 
 /** Original comment
  * This class is used so we can release all memory (allocated on the graphics card on shutdown)
@@ -12,8 +12,8 @@ using namespace std;
 class MemoryTracker
 {
 private:
-	static unordered_map<int,int> GL_LIST_IDS;
-    static vector<int> TEXTURE_IDS;
+	static std::unordered_map<int,int> GL_LIST_IDS;
+    static std::vector<int> TEXTURE_IDS;
 
 public:
 	static int genLists(int count);

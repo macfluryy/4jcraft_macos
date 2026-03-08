@@ -41,7 +41,7 @@ protected:
 		UI_MAP_NAME(m_funcSetCostLabel, L"SetCostLabel")
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 	virtual void handleReload();
 
 	virtual void tick();
@@ -57,10 +57,10 @@ protected:
 
 	static int KeyboardCompleteCallback(LPVOID lpParam,bool bRes);
 	virtual void handleEditNamePressed();
-	virtual void setEditNameValue(const wstring &name);
+	virtual void setEditNameValue(const std::wstring &name);
 	virtual void setEditNameEditable(bool enabled);
 	virtual void handleDestroy();
 
-	void setCostLabel(const wstring &label, bool canAfford);
+	void setCostLabel(const std::wstring &label, bool canAfford);
 	void showCross(bool show);
 };

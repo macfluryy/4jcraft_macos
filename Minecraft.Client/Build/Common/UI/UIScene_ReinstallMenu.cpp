@@ -17,7 +17,7 @@ UIScene_ReinstallMenu::UIScene_ReinstallMenu(int iPad, void *initData, UILayer *
 #endif
 }
 
-wstring UIScene_ReinstallMenu::getMoviePath()
+std::wstring UIScene_ReinstallMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

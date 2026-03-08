@@ -757,7 +757,7 @@ int StartMinecraftThreadProc( void* lpParameter )
 	AABB::UseDefaultThreadStorage();
 	Tesselator::CreateNewThreadStorage(1024*1024);
 	RenderManager.InitialiseContext();
-	Minecraft::start(wstring(),wstring());
+	Minecraft::start(std::wstring(),std::wstring());
 	delete Tesselator::getInstance();
 	return 0;
 }
@@ -1460,10 +1460,10 @@ int main(int argc, const char *argv[] )
 }
 
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 
-// convert wstring to UTF-8 string
-std::string wstring_to_utf8 (const std::wstring& str)
+// convert std::wstring to UTF-8 string
+std::string std::wstring_to_utf8 (const std::wstring& str)
 {
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
 	return myconv.to_bytes(str);
@@ -1475,7 +1475,7 @@ uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)
 	LPCWSTR wchString=app.GetString(iID);
 
 	std::wstring srcString = wchString;
-	std::string dstString = wstring_to_utf8(srcString);
+	std::string dstString = std::wstring_to_utf8(srcString);
 
 	int dst_len = dstString.size()+1;
 	uint8_t *strUtf8=(uint8_t *)malloc(dst_len);
@@ -1509,7 +1509,7 @@ void FreeRichPresenceStrings()
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-unordered_map<int,int> allocCounts;
+std::unordered_map<int,int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;

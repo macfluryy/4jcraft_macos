@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Textures/Stitching/StitchedTexture.h"
 
@@ -7,5 +7,5 @@ using namespace std;
 class SimpleIcon : public StitchedTexture
 {
 public:
-	SimpleIcon(const wstring &name, float u0, float v0, float u1, float v1);
+	SimpleIcon(const std::wstring &name, float u0, float v0, float u1, float v1);
 };

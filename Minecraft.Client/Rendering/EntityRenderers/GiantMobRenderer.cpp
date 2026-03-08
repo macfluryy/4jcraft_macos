@@ -6,7 +6,7 @@ GiantMobRenderer::GiantMobRenderer(Model *model, float shadow, float _scale) : M
 	this->_scale = _scale;
 }
 
-void GiantMobRenderer::scale(shared_ptr<Mob> mob, float a)
+void GiantMobRenderer::scale(std::shared_ptr<Mob> mob, float a)
 {
 	glScalef(_scale, _scale, _scale);
 }

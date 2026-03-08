@@ -61,7 +61,7 @@ int ClothTileItem::getLevelDataForAuxValue(int auxValue)
 	return auxValue;
 }
 
-unsigned int ClothTileItem::getDescriptionId(shared_ptr<ItemInstance> instance) 
+unsigned int ClothTileItem::getDescriptionId(std::shared_ptr<ItemInstance> instance) 
 {
 	if(getTileId() == Tile::woolCarpet_Id) return CARPET_COLOR_DESCS[ClothTile::getTileDataForItemAuxValue(instance->getAuxValue())];
 	else return COLOR_DESCS[ClothTile::getTileDataForItemAuxValue(instance->getAuxValue())];

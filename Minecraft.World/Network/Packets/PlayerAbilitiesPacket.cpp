@@ -61,7 +61,7 @@ int PlayerAbilitiesPacket::getEstimatedSize()
 	return 2;
 }
 
-//wstring getDebugInfo()
+//std::wstring getDebugInfo()
 //{
 //	return String.format("invuln=%b, flying=%b, canfly=%b, instabuild=%b, flyspeed=%.4f, walkspped=%.4f", isInvulnerable(), isFlying(), canFly(), canInstabuild(), getFlyingSpeed(), getWalkingSpeed());
 //}
@@ -131,7 +131,7 @@ bool PlayerAbilitiesPacket::canBeInvalidated()
 	return true;
 }
 
-bool PlayerAbilitiesPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool PlayerAbilitiesPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

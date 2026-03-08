@@ -19,9 +19,9 @@ SkullTileRenderer::~SkullTileRenderer()
 	delete zombieModel;
 }
 
-void SkullTileRenderer::render(shared_ptr<TileEntity> _skull, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
+void SkullTileRenderer::render(std::shared_ptr<TileEntity> _skull, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
 {
-	shared_ptr<SkullTileEntity> skull = dynamic_pointer_cast<SkullTileEntity>(_skull);
+	std::shared_ptr<SkullTileEntity> skull = std::dynamic_pointer_cast<SkullTileEntity>(_skull);
 	renderSkull((float) x, (float) y, (float) z, skull->getData() & SkullTile::PLACEMENT_MASK, skull->getRotation() * 360 / 16.0f, skull->getSkullType(), skull->getExtraType());
 }
 
@@ -31,7 +31,7 @@ void SkullTileRenderer::init(TileEntityRenderDispatcher *tileEntityRenderDispatc
 	instance = this;
 }
 
-void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float rot, int type, const wstring &extra)
+void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float rot, int type, const std::wstring &extra)
 {
 	Model *model = skeletonModel;
 
@@ -47,7 +47,7 @@ void SkullTileRenderer::renderSkull(float x, float y, float z, int face, float r
 	case SkullTileEntity::TYPE_CHAR:
 		//if (!extra.empty())
 		//{
-		//	wstring url = "http://skins.minecraft.net/MinecraftSkins/" + StringUtil.stripColor(extra) + ".png";
+		//	std::wstring url = "http://skins.minecraft.net/MinecraftSkins/" + StringUtil.stripColor(extra) + ".png";
 
 		//	if (!instance->tileEntityRenderDispatcher->textures->hasHttpTexture(url))
 		//	{

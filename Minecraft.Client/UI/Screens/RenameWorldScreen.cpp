@@ -6,7 +6,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
 
-RenameWorldScreen::RenameWorldScreen(Screen *lastScreen, const wstring& levelId)
+RenameWorldScreen::RenameWorldScreen(Screen *lastScreen, const std::wstring& levelId)
 {
 	nameEdit = NULL;
     this->lastScreen = lastScreen;
@@ -31,7 +31,7 @@ void RenameWorldScreen::init()
 
     LevelStorageSource *levelSource = minecraft->getLevelSource();
     LevelData *levelData = levelSource->getDataTagFor(levelId);
-    wstring currentName = levelData->getLevelName();
+    std::wstring currentName = levelData->getLevelName();
 
     nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, currentName);
     nameEdit->inFocus = true;

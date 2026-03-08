@@ -7,7 +7,7 @@ UIControl_TextInput::UIControl_TextInput()
 	m_bHasFocus = false;
 }
 
-bool UIControl_TextInput::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_TextInput::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eTextInput);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -20,7 +20,7 @@ bool UIControl_TextInput::setupControl(UIScene *scene, IggyValuePath *parent, co
 	return success;
 }
 
-void UIControl_TextInput::init(const wstring &label, int id)
+void UIControl_TextInput::init(const std::wstring &label, int id)
 {
 	m_label = label;
 	m_id = id;

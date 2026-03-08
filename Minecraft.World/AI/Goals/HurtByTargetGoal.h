@@ -6,7 +6,7 @@ class HurtByTargetGoal : public TargetGoal
 {
 private:
 	bool alertSameType;
-	shared_ptr<Mob> oldHurtByMob;
+	std::shared_ptr<Mob> oldHurtByMob;
 
 public:
 	HurtByTargetGoal(Mob *mob, bool alertSameType);

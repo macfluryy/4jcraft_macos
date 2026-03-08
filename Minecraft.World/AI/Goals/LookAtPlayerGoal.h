@@ -11,17 +11,17 @@ private:
 	Mob *mob; // Owner of this goal
 
 protected:
-	weak_ptr<Entity> lookAt;
+	std::weak_ptr<Entity> lookAt;
 
 private:
 	float lookDistance;
 	int lookTime;
 	float probability;
-	const type_info& lookAtType;
+	const std::type_info& lookAtType;
 
 public:
-	LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance);
-	LookAtPlayerGoal(Mob *mob, const type_info& lookAtType, float lookDistance, float probability);
+	LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance);
+	LookAtPlayerGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance, float probability);
 	virtual ~LookAtPlayerGoal() {}
 
 	virtual bool canUse();

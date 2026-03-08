@@ -11,8 +11,8 @@ private:
 
 	static const int MAX_DEPTH = 8; // 1.2.3 change
 
-	static StructurePiece *createRandomShaftPiece(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
-	static StructurePiece *generateAndAddPiece(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
+	static StructurePiece *createRandomShaftPiece(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int genDepth);
+	static StructurePiece *generateAndAddPiece(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction, int depth);
 
 	/**
 	* 
@@ -22,13 +22,13 @@ public:
 	class MineShaftRoom : public StructurePiece
 	{
 	private:
-		list<BoundingBox *> childEntranceBoxes;
+		std::list<BoundingBox *> childEntranceBoxes;
 
 	public:
 		MineShaftRoom(int genDepth, Random *random, int west, int north);
 		~MineShaftRoom();
 
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 	};
 
@@ -47,8 +47,8 @@ public:
 	public:
 		MineShaftCorridor(int genDepth, Random *random, BoundingBox *corridorBox, int direction);
 
-		static BoundingBox *findCorridorSize(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
+		static BoundingBox *findCorridorSize(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 	};
 
@@ -65,8 +65,8 @@ public:
 	public:
 		MineShaftCrossing(int genDepth, Random *random, BoundingBox *crossingBox, int direction);
 
-		static BoundingBox *findCrossing(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
+		static BoundingBox *findCrossing(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 	};
 
@@ -79,8 +79,8 @@ public:
 	public:
 		MineShaftStairs(int genDepth, Random *random, BoundingBox *stairsBox, int direction);
 
-		static BoundingBox *findStairs(list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
-		virtual void addChildren(StructurePiece *startPiece, list<StructurePiece *> *pieces, Random *random);
+		static BoundingBox *findStairs(std::list<StructurePiece *> *pieces, Random *random, int footX, int footY, int footZ, int direction);
+		virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
 		virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
 
 	};

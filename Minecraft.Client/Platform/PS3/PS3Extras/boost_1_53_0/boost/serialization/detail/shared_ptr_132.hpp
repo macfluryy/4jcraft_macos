@@ -384,7 +384,7 @@ template<class T, class U> shared_ptr< T > const_pointer_cast(shared_ptr<U> cons
     return shared_ptr< T >(r, detail::const_cast_tag());
 }
 
-template<class T, class U> shared_ptr< T > dynamic_pointer_cast(shared_ptr<U> const & r)
+template<class T, class U> shared_ptr< T > std::dynamic_pointer_cast(shared_ptr<U> const & r)
 {
     return shared_ptr< T >(r, detail::dynamic_cast_tag());
 }

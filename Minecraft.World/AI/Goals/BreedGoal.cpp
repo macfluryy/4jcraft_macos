@@ -11,7 +11,7 @@
 
 BreedGoal::BreedGoal(Animal *animal, float speed)
 {
-	partner = weak_ptr<Animal>();
+	partner = std::weak_ptr<Animal>();
 	loveTime = 0;
 
 	this->animal = animal;
@@ -23,7 +23,7 @@ BreedGoal::BreedGoal(Animal *animal, float speed)
 bool BreedGoal::canUse()
 {
 	if (!animal->isInLove()) return false;
-	partner = weak_ptr<Animal>(getFreePartner());
+	partner = std::weak_ptr<Animal>(getFreePartner());
 	return partner.lock() != NULL;
 }
 
@@ -34,7 +34,7 @@ bool BreedGoal::canContinueToUse()
 
 void BreedGoal::stop()
 {
-	partner = weak_ptr<Animal>();
+	partner = std::weak_ptr<Animal>();
 	loveTime = 0;
 }
 
@@ -46,13 +46,13 @@ void BreedGoal::tick()
 	if (loveTime == 20 * 3) breed();
 }
 
-shared_ptr<Animal> BreedGoal::getFreePartner()
+std::shared_ptr<Animal> BreedGoal::getFreePartner()
 {
 	float r = 8;
-	vector<shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
+	std::vector<std::shared_ptr<Entity> > *others = level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
 	for(AUTO_VAR(it, others->begin()); it != others->end(); ++it)
 	{
-		shared_ptr<Animal> p = dynamic_pointer_cast<Animal>(*it);
+		std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);
 		if (animal->canMate(p))
 		{
 			delete others;
@@ -65,7 +65,7 @@ shared_ptr<Animal> BreedGoal::getFreePartner()
 
 void BreedGoal::breed()
 {
-	shared_ptr<AgableMob> offspring = animal->getBreedOffspring(partner.lock());
+	std::shared_ptr<AgableMob> offspring = animal->getBreedOffspring(partner.lock());
 	animal->setDespawnProtected();
 	partner.lock()->setDespawnProtected();
 	if (offspring == NULL)
@@ -76,7 +76,7 @@ void BreedGoal::breed()
 		return;
 	}
 
-	shared_ptr<Player> loveCause = animal->getLoveCause();
+	std::shared_ptr<Player> loveCause = animal->getLoveCause();
 	if (loveCause == NULL && partner.lock()->getLoveCause() != NULL)
 	{
 		loveCause = partner.lock()->getLoveCause();
@@ -112,5 +112,5 @@ void BreedGoal::breed()
 			* animal->bbWidth * 2 - animal->bbWidth, xa, ya, za);
 	}
 	// 4J-PB - Fix for 106869- Customer Encountered: TU12: Content: Gameplay: Breeding animals does not give any Experience Orbs.
-	level->addEntity( shared_ptr<ExperienceOrb>( new ExperienceOrb(level, animal->x, animal->y, animal->z, random->nextInt(7) + 1) ) );
+	level->addEntity( std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, animal->x, animal->y, animal->z, random->nextInt(7) + 1) ) );
 }

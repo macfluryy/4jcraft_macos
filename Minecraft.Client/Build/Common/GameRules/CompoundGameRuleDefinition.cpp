@@ -17,7 +17,7 @@ CompoundGameRuleDefinition::~CompoundGameRuleDefinition()
 	}
 }
 
-void CompoundGameRuleDefinition::getChildren(vector<GameRuleDefinition *> *children)
+void CompoundGameRuleDefinition::getChildren(std::vector<GameRuleDefinition *> *children)
 {
 	GameRuleDefinition::getChildren(children);
 	for (AUTO_VAR(it, m_children.begin()); it != m_children.end(); it++)
@@ -91,7 +91,7 @@ bool CompoundGameRuleDefinition::onUseTile(GameRule *rule, int tileId, int x, in
 	return statusChanged;
 }
 
-bool CompoundGameRuleDefinition::onCollectItem(GameRule *rule, shared_ptr<ItemInstance> item)
+bool CompoundGameRuleDefinition::onCollectItem(GameRule *rule, std::shared_ptr<ItemInstance> item)
 {
 	bool statusChanged = false;
 	for(AUTO_VAR(it, rule->m_parameters.begin()); it != rule->m_parameters.end(); ++it)
@@ -109,7 +109,7 @@ bool CompoundGameRuleDefinition::onCollectItem(GameRule *rule, shared_ptr<ItemIn
 	return statusChanged;
 }
 
-void CompoundGameRuleDefinition::postProcessPlayer(shared_ptr<Player> player)
+void CompoundGameRuleDefinition::postProcessPlayer(std::shared_ptr<Player> player)
 {
 	for(AUTO_VAR(it, m_children.begin()); it != m_children.end(); ++it)
 	{

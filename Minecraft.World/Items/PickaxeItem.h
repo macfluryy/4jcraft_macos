@@ -16,5 +16,5 @@ public: //
 
 public:
 	virtual bool canDestroySpecial(Tile *tile);
-	virtual float getDestroySpeed(shared_ptr<ItemInstance> itemInstance, Tile *tile);	// 4J - brought forward from 1.2.3
+	virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance, Tile *tile);	// 4J - brought forward from 1.2.3
 };

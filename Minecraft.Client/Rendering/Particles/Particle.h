@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../../Minecraft.World/Entities/Entity.h"
 #include "../../../Minecraft.World/Util/ParticleTypes.h"
@@ -28,8 +28,8 @@ protected:
 	Particle(Level *level, double x, double y, double z);
 public:
     Particle(Level *level, double x, double y, double z, double xa, double ya, double za);
-    virtual shared_ptr<Particle> setPower(float power);
-    virtual shared_ptr<Particle> scale(float scale);
+    virtual std::shared_ptr<Particle> setPower(float power);
+    virtual std::shared_ptr<Particle> scale(float scale);
 	void setColor(float r, float g, float b);
 	void setAlpha(float alpha);
 	float getRedCol();
@@ -49,5 +49,5 @@ public:
 	virtual void setMiscTex(int slotIndex);
 	virtual void setNextMiscAnimTex();
 	virtual bool isAttackable();
-	virtual wstring toString();
+	virtual std::wstring toString();
 };

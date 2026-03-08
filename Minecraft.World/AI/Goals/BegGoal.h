@@ -8,7 +8,7 @@ class BegGoal : public Goal
 {
 private:
 	Wolf *wolf; // Owner of this goal
-	weak_ptr<Player> player;
+	std::weak_ptr<Player> player;
 	Level *level;
 	float lookDistance;
 	int lookTime;
@@ -23,7 +23,7 @@ public:
 	virtual void tick();
 
 private:
-	bool playerHoldingInteresting(shared_ptr<Player> player);
+	bool playerHoldingInteresting(std::shared_ptr<Player> player);
 
 public:
 	// 4J Added override to update ai elements when loading entity from schematics

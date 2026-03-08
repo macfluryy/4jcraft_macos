@@ -98,7 +98,7 @@ const wchar_t *NetworkPlayerSony::GetOnlineName()
 	return m_sqrPlayer->GetName();
 }
 
-wstring NetworkPlayerSony::GetDisplayName()
+std::wstring NetworkPlayerSony::GetDisplayName()
 {
 	return m_sqrPlayer->GetName();
 }

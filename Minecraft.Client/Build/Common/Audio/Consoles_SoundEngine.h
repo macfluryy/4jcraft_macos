@@ -46,19 +46,19 @@ class ConsoleSoundEngine
 public:
 
 	ConsoleSoundEngine() : m_bIsPlayingStreamingCDMusic(false),m_bIsPlayingStreamingGameMusic(false), m_bIsPlayingEndMusic(false),m_bIsPlayingNetherMusic(false){};
-	virtual void tick(shared_ptr<Mob> *players, float a) =0;
+	virtual void tick(std::shared_ptr<Mob> *players, float a) =0;
 	virtual void destroy()=0;
 	virtual void play(int iSound, float x, float y, float z, float volume, float pitch) =0;
-	virtual void playStreaming(const wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay=true) =0;
+	virtual void playStreaming(const std::wstring& name, float x, float y , float z, float volume, float pitch, bool bMusicDelay=true) =0;
 	virtual void playUI(int iSound, float volume, float pitch) =0;
 	virtual void updateMusicVolume(float fVal) =0;
 	virtual void updateSystemMusicPlaying(bool isPlaying) = 0;
 	virtual void updateSoundEffectVolume(float fVal) =0;
 	virtual void init(Options *) =0 ;
-	virtual void add(const wstring& name, File *file) =0;
-	virtual void addMusic(const wstring& name, File *file) =0;
-	virtual void addStreaming(const wstring& name, File *file)  =0;
-	virtual char *ConvertSoundPathToName(const wstring& name, bool bConvertSpaces) =0;
+	virtual void add(const std::wstring& name, File *file) =0;
+	virtual void addMusic(const std::wstring& name, File *file) =0;
+	virtual void addStreaming(const std::wstring& name, File *file)  =0;
+	virtual char *ConvertSoundPathToName(const std::wstring& name, bool bConvertSpaces) =0;
 	virtual void playMusicTick() =0;
 
 	virtual bool GetIsPlayingStreamingCDMusic()				;

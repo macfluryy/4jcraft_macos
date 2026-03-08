@@ -1,7 +1,7 @@
 #include "../Build/stdafx.h"
 #include "WeighedRandom.h"
 
-int WeighedRandom::getTotalWeight(vector<WeighedRandomItem *> *items)
+int WeighedRandom::getTotalWeight(std::vector<WeighedRandomItem *> *items)
 {
     int totalWeight = 0;
 	for( AUTO_VAR(it, items->begin()); it != items->end(); it++ )
@@ -11,7 +11,7 @@ int WeighedRandom::getTotalWeight(vector<WeighedRandomItem *> *items)
     return totalWeight;
 }
 
-WeighedRandomItem *WeighedRandom::getRandomItem(Random *random, vector<WeighedRandomItem *> *items, int totalWeight)
+WeighedRandomItem *WeighedRandom::getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items, int totalWeight)
 {
     if (totalWeight <= 0)
 	{
@@ -31,7 +31,7 @@ WeighedRandomItem *WeighedRandom::getRandomItem(Random *random, vector<WeighedRa
     return NULL;
 }
 
-WeighedRandomItem *WeighedRandom::getRandomItem(Random *random, vector<WeighedRandomItem *> *items)
+WeighedRandomItem *WeighedRandom::getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items)
 {
 	return getRandomItem(random, items, getTotalWeight(items));
 }

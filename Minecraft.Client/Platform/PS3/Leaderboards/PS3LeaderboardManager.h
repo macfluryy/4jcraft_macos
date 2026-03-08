@@ -5,7 +5,7 @@
 
 #include "../Passphrase/ps3__np_conf.h"
 
-using namespace std;
+
 
 class PS3LeaderboardManager : public LeaderboardManager
 {
@@ -43,7 +43,7 @@ private:
 	bool getScoreByRange();
 
 	bool setScore();
-	queue<RegisterScore> m_views;
+	std::queue<RegisterScore> m_views;
 
 	CRITICAL_SECTION m_csViewsLock;
 

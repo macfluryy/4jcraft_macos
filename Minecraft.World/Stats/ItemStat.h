@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Stat.h"
 
@@ -9,6 +9,6 @@ private:
 	const int itemId;
 
 public:
-	ItemStat(int id, const wstring& name, int itemId);
+	ItemStat(int id, const std::wstring& name, int itemId);
     int getItemId();
 };

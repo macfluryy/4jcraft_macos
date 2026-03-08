@@ -3,7 +3,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../../Minecraft.World/Level/RandomLevelSource.h"
 
-using namespace std;
+
 class ServerChunkCache;
 
 // 4J - various alterations here to make this thread safe, and operate as a fixed sized cache
@@ -14,7 +14,7 @@ private:
 	LevelChunk *emptyChunk;
 	LevelChunk *waterChunk;
 
-	vector<LevelChunk *> loadedChunkList;
+	std::vector<LevelChunk *> loadedChunkList;
 
 	LevelChunk **cache;
 	// 4J - added for multithreaded support
@@ -38,9 +38,9 @@ public:
     virtual bool tick();
     virtual bool shouldSave();
     virtual void postProcess(ChunkSource *parent, int x, int z);
-    virtual wstring gatherStats();
-	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-	virtual TilePos *findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z);
+    virtual std::wstring gatherStats();
+	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
+	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z);
 	virtual void dataReceived(int x, int z);	// 4J added
 
 	virtual LevelChunk **getCache() { return cache; }		// 4J added

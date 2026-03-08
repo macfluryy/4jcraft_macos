@@ -108,7 +108,7 @@ HRESULT CScene_Teleport::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pN
 		INetworkPlayer *selectedPlayer = g_NetworkManager.GetPlayerBySmallId( m_players[ playersList.GetCurSel() ] );
 		INetworkPlayer *thisPlayer = g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
 		
-		shared_ptr<GameCommandPacket> packet;
+		std::shared_ptr<GameCommandPacket> packet;
 		if(m_teleportToPlayer)
 		{
 			packet = TeleportCommand::preparePacket(thisPlayer->GetUID(),selectedPlayer->GetUID());

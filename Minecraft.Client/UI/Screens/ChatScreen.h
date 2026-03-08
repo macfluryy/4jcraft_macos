@@ -1,11 +1,11 @@
 #pragma once
 #include "../Screen.h"
-using namespace std;
+
 
 class ChatScreen : public Screen
 {
 protected:
-	wstring message;
+	std::wstring message;
 private:
 	int frame;
 
@@ -15,7 +15,7 @@ public:
     virtual void removed();
     virtual void tick();
 private:
-	static const wstring allowedChars;
+	static const std::wstring allowedChars;
 protected:
 	void keyPressed(wchar_t ch, int eventKey);
 public:

@@ -62,15 +62,15 @@ public:
 
 private:
 	HRESULT _SetDescription(CXuiScene *interactScene, LPCWSTR desc, LPCWSTR title, bool allowFade, bool isReminder);
-	wstring _SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc);
-	wstring _SetImage(wstring &desc);
+	std::wstring _SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc);
+	std::wstring _SetImage(std::wstring &desc);
 	HRESULT _SetVisible(bool show);
 	bool _IsSceneVisible();
 	void UpdateInteractScenePosition(bool visible);
 
 public:
 	static HRESULT SetDescription(int iPad, TutorialPopupInfo *info);
-	static wstring ParseDescription(int iPad, wstring &text);
+	static std::wstring ParseDescription(int iPad, std::wstring &text);
 
 	static HRESULT SetSceneVisible(int iPad, bool show);
 	static bool IsSceneVisible(int iPad);

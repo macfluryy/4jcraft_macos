@@ -2,7 +2,7 @@
 #include "User.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
-vector<Tile *> User::allowedTiles;
+std::vector<Tile *> User::allowedTiles;
 
 void User::staticCtor()
 {
@@ -38,7 +38,7 @@ void User::staticCtor()
     allowedTiles.push_back(Tile::obsidian);
 }
 
-User::User(const wstring& name, const wstring& sessionId)
+User::User(const std::wstring& name, const std::wstring& sessionId)
 {
     this->name = name;
     this->sessionId = sessionId;

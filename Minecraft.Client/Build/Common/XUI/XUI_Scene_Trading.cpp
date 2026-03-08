@@ -215,17 +215,17 @@ void CXuiSceneTrading::moveSelector(bool right)
 	m_tradingSelector.SetPosition(&vec);
 }
 
-void CXuiSceneTrading::setTitle(const wstring &name)
+void CXuiSceneTrading::setTitle(const std::wstring &name)
 {
 	XuiControlSetText(m_villagerText,name.c_str());
 }
 
-void CXuiSceneTrading::setRequest1Name(const wstring &name)
+void CXuiSceneTrading::setRequest1Name(const std::wstring &name)
 {
 	m_request1Label.SetText(name.c_str());
 }
 
-void CXuiSceneTrading::setRequest2Name(const wstring &name)
+void CXuiSceneTrading::setRequest2Name(const std::wstring &name)
 {
 	m_request2Label.SetText(name.c_str());
 }
@@ -245,22 +245,22 @@ void CXuiSceneTrading::setTradeRedBox(int index, bool show)
 	m_tradeHSlots[index]->SetRedBox(show?TRUE:FALSE);
 }
 
-void CXuiSceneTrading::setRequest1Item(shared_ptr<ItemInstance> item)
+void CXuiSceneTrading::setRequest1Item(std::shared_ptr<ItemInstance> item)
 {
 	m_request1Control->SetIcon(getPad(), item, 12, 31, true);
 }
 
-void CXuiSceneTrading::setRequest2Item(shared_ptr<ItemInstance> item)
+void CXuiSceneTrading::setRequest2Item(std::shared_ptr<ItemInstance> item)
 {
 	m_request2Control->SetIcon(getPad(), item, 12, 31, true);
 }
 
-void CXuiSceneTrading::setTradeItem(int index, shared_ptr<ItemInstance> item)
+void CXuiSceneTrading::setTradeItem(int index, std::shared_ptr<ItemInstance> item)
 {
 	m_tradeHSlots[index]->SetIcon(getPad(), item, 12, 31, true);
 }
 
-void CXuiSceneTrading::setOfferDescription(const wstring &name, vector<wstring> &unformattedStrings)
+void CXuiSceneTrading::setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings)
 {
 	if(name.empty())
 	{
@@ -270,7 +270,7 @@ void CXuiSceneTrading::setOfferDescription(const wstring &name, vector<wstring> 
 	}
 
 	bool smallPointer = m_bSplitscreen || (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen());
-	wstring desc = L"<font size=\"" + _toString<int>(smallPointer ? 12 :14) + L"\">" + name + L"</font>";
+	std::wstring desc = L"<font size=\"" + _toString<int>(smallPointer ? 12 :14) + L"\">" + name + L"</font>";
 
 	XUIRect tempXuiRect, xuiRect;
 	HRESULT hr;

@@ -10,13 +10,13 @@ private:
 public:
 	UIControl_HTMLLabel();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	void startAutoScroll();
 	virtual void ReInit();
 
 	using UIControl_Base::setLabel;
-	void setLabel(const string &label);
+	void setLabel(const std::string &label);
 
 	virtual void SetupTouch();
 

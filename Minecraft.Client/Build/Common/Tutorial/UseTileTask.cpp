@@ -5,7 +5,7 @@
 #include "UseTileTask.h"
 
 UseTileTask::UseTileTask(const int tileId, int x, int y, int z, Tutorial *tutorial, int descriptionId,
-	bool enablePreCompletion, vector<TutorialConstraint *> *inConstraints, bool bShowMinimumTime, bool bAllowFade, bool bTaskReminders)
+	bool enablePreCompletion, std::vector<TutorialConstraint *> *inConstraints, bool bShowMinimumTime, bool bAllowFade, bool bTaskReminders)
 	: TutorialTask( tutorial, descriptionId, enablePreCompletion, inConstraints, bShowMinimumTime, bAllowFade, bTaskReminders ),
 	x( x ), y( y ), z( z ), tileId( tileId )
 {
@@ -13,7 +13,7 @@ UseTileTask::UseTileTask(const int tileId, int x, int y, int z, Tutorial *tutori
 }
 
 UseTileTask::UseTileTask(const int tileId, Tutorial *tutorial, int descriptionId,
-	bool enablePreCompletion, vector<TutorialConstraint *> *inConstraints, bool bShowMinimumTime, bool bAllowFade, bool bTaskReminders)
+	bool enablePreCompletion, std::vector<TutorialConstraint *> *inConstraints, bool bShowMinimumTime, bool bAllowFade, bool bTaskReminders)
 	: TutorialTask( tutorial, descriptionId, enablePreCompletion, inConstraints, bShowMinimumTime, bAllowFade, bTaskReminders ),
 	tileId( tileId )
 {
@@ -25,7 +25,7 @@ bool UseTileTask::isCompleted()
 	return bIsCompleted;
 }
 
-void UseTileTask::useItemOn(Level *level, shared_ptr<ItemInstance> item, int x, int y, int z,bool bTestUseOnly)
+void UseTileTask::useItemOn(Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z,bool bTestUseOnly)
 {
 	if(bTestUseOnly) return;
 

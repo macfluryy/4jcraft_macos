@@ -59,8 +59,8 @@ HRESULT CScene_DebugItemEditor::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfH
 			m_slot->set(m_item);
 
 			Minecraft *pMinecraft = Minecraft::GetInstance();
-			shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
-			if(player != NULL && player->connection) player->connection->send( shared_ptr<ContainerSetSlotPacket>( new ContainerSetSlotPacket(m_menu->containerId, m_slot->index, m_item) ) );
+			std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+			if(player != NULL && player->connection) player->connection->send( std::shared_ptr<ContainerSetSlotPacket>( new ContainerSetSlotPacket(m_menu->containerId, m_slot->index, m_item) ) );
 		}
 		// kill the crafting xui
 		app.NavigateBack(m_iPad);
@@ -76,11 +76,11 @@ HRESULT CScene_DebugItemEditor::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfH
 
 HRESULT CScene_DebugItemEditor::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINotifyValueChanged *pNotifyValueChangedData, BOOL &bHandled)
 {
-	if(m_item == NULL) m_item = shared_ptr<ItemInstance>( new ItemInstance(0,1,0) );
+	if(m_item == NULL) m_item = std::shared_ptr<ItemInstance>( new ItemInstance(0,1,0) );
 	if(hObjSource == m_itemId)
 	{
 		int id = 0;
-		wstring value = m_itemId.GetText();
+		std::wstring value = m_itemId.GetText();
 		if(!value.empty()) id = _fromString<int>( value );
 
 		// TODO Proper validation of the valid item ids
@@ -89,21 +89,21 @@ HRESULT CScene_DebugItemEditor::OnNotifyValueChanged( HXUIOBJ hObjSource, XUINot
 	else if(hObjSource == m_itemAuxValue)
 	{
 		int auxVal = 0;
-		wstring value = m_itemAuxValue.GetText();
+		std::wstring value = m_itemAuxValue.GetText();
 		if(!value.empty()) auxVal = _fromString<int>( value );
 		if(auxVal >= 0) m_item->setAuxValue( auxVal );
 	}
 	else if(hObjSource == m_itemCount)
 	{
 		int count = 0;
-		wstring value = m_itemCount.GetText();
+		std::wstring value = m_itemCount.GetText();
 		if(!value.empty()) count = _fromString<int>( value );
 		if(count > 0 && count <= Item::items[m_item->id]->getMaxStackSize()) m_item->count = count;
 	}
 	else if(hObjSource == m_item4JData)
 	{
 		int data = 0;
-		wstring value = m_item4JData.GetText();
+		std::wstring value = m_item4JData.GetText();
 		if(!value.empty()) data = _fromString<int>( value );
 		m_item->set4JData(data);
 	}

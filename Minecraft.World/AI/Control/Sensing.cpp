@@ -13,7 +13,7 @@ void Sensing::tick()
 	unseen.clear();
 }
 
-bool Sensing::canSee(shared_ptr<Entity> target)
+bool Sensing::canSee(std::shared_ptr<Entity> target)
 {
 	//if ( find(seen.begin(), seen.end(), target) != seen.end() ) return true;
 	//if ( find(unseen.begin(), unseen.end(), target) != unseen.end()) return false;
@@ -29,7 +29,7 @@ bool Sensing::canSee(shared_ptr<Entity> target)
 	//util.Timer.push("canSee");
 	bool canSee = mob->canSee(target);
 	//util.Timer.pop();
-	if (canSee) seen.push_back(weak_ptr<Entity>(target));
-	else unseen.push_back(weak_ptr<Entity>(target));
+	if (canSee) seen.push_back(std::weak_ptr<Entity>(target));
+	else unseen.push_back(std::weak_ptr<Entity>(target));
 	return canSee;
 }

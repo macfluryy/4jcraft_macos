@@ -10,7 +10,7 @@ UIControl_Slider::UIControl_Slider()
 	m_current = 0;
 }
 
-bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eSlider);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -22,7 +22,7 @@ bool UIControl_Slider::setupControl(UIScene *scene, IggyValuePath *parent, const
 	return success;
 }
 
-void UIControl_Slider::init(const wstring &label, int id, int min, int max, int current)
+void UIControl_Slider::init(const std::wstring &label, int id, int min, int max, int current)
 {
 	m_label = label;
 	m_id = id;

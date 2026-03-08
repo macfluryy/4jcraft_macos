@@ -46,25 +46,25 @@ void Monster::tick()
     if (!level->isClientSide && (level->difficulty == Difficulty::PEACEFUL || Minecraft::GetInstance()->isTutorial() ) ) remove();
 }
 
-shared_ptr<Entity> Monster::findAttackTarget()
+std::shared_ptr<Entity> Monster::findAttackTarget()
 {
 #ifndef _FINAL_BUILD
 	if(app.GetMobsDontAttackEnabled())
 	{
-		return shared_ptr<Player>();
+		return std::shared_ptr<Player>();
 	}
 #endif
 
-    shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 16);
+    std::shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 16);
 	if (player != NULL && canSee(player) ) return player;
-    return shared_ptr<Player>();
+    return std::shared_ptr<Player>();
 }
 
 bool Monster::hurt(DamageSource *source, int dmg)
 {
     if (PathfinderMob::hurt(source, dmg))
 	{
-		shared_ptr<Entity> sourceEntity = source->getEntity();
+		std::shared_ptr<Entity> sourceEntity = source->getEntity();
         if (rider.lock() == sourceEntity || riding == sourceEntity) return true;
 
         if (sourceEntity != shared_from_this()) 
@@ -82,7 +82,7 @@ bool Monster::hurt(DamageSource *source, int dmg)
 * @param target
 * @return
 */
-bool Monster::doHurtTarget(shared_ptr<Entity> target)
+bool Monster::doHurtTarget(std::shared_ptr<Entity> target)
 {
 	int dmg = attackDamage;
 	if (hasEffect(MobEffect::damageBoost))
@@ -94,19 +94,19 @@ bool Monster::doHurtTarget(shared_ptr<Entity> target)
 		dmg -= (2 << getEffect(MobEffect::weakness)->getAmplifier());
 	}
 
-	DamageSource *damageSource = DamageSource::mobAttack(dynamic_pointer_cast<Mob>( shared_from_this() ) );
+	DamageSource *damageSource = DamageSource::mobAttack(std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
 	bool didHurt = target->hurt(damageSource, dmg);
 	delete damageSource;
 
 	if (didHurt)
 	{
-		int fireAspect = EnchantmentHelper::getFireAspect(dynamic_pointer_cast<Mob>(shared_from_this()));
+		int fireAspect = EnchantmentHelper::getFireAspect(std::dynamic_pointer_cast<Mob>(shared_from_this()));
 		if (fireAspect > 0)
 		{
 			target->setOnFire(fireAspect * 4);
 		}
 
-		shared_ptr<Mob> mob = dynamic_pointer_cast<Mob>(target);
+		std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(target);
 		if (mob != NULL)
 		{
 			ThornsEnchantment::doThornsAfterAttack(shared_from_this(), mob, random);
@@ -116,7 +116,7 @@ bool Monster::doHurtTarget(shared_ptr<Entity> target)
 	return didHurt;
 }
 
-void Monster::checkHurtTarget(shared_ptr<Entity> target, float distance)
+void Monster::checkHurtTarget(std::shared_ptr<Entity> target, float distance)
 {
     if (attackTime <= 0 && distance < 2.0f && target->bb->y1 > bb->y0 && target->bb->y0 < bb->y1)
 	{

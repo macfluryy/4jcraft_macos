@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Build/System.h"
 
-VoronoiZoom::VoronoiZoom(__int64 seedMixup, shared_ptr<Layer>parent) : Layer(seedMixup)
+VoronoiZoom::VoronoiZoom(__int64 seedMixup, std::shared_ptr<Layer>parent) : Layer(seedMixup)
 {
 	this->parent = parent;
 }

@@ -83,7 +83,7 @@ UIScene_HelpAndOptionsMenu::~UIScene_HelpAndOptionsMenu()
 {
 }
 
-wstring UIScene_HelpAndOptionsMenu::getMoviePath()
+std::wstring UIScene_HelpAndOptionsMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

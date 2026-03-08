@@ -26,16 +26,16 @@ public:
 	FoodItem(int id, int nutrition, float saturationMod, bool isMeat);
 	FoodItem(int id, int nutrition, bool isMeat);
 
-	virtual shared_ptr<ItemInstance> useTimeDepleted(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> useTimeDepleted(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
 
 protected:
-	virtual void addEatEffect(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player);
+	virtual void addEatEffect(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
 
 public:
-	virtual int getUseDuration(shared_ptr<ItemInstance> itemInstance);
-	virtual UseAnim getUseAnimation(shared_ptr<ItemInstance> itemInstance);
+	virtual int getUseDuration(std::shared_ptr<ItemInstance> itemInstance);
+	virtual UseAnim getUseAnimation(std::shared_ptr<ItemInstance> itemInstance);
 
-	virtual shared_ptr<ItemInstance> use(shared_ptr<ItemInstance> instance, Level *level, shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> use(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
 
 	int getNutrition();
 	float getSaturationModifier();
@@ -45,5 +45,5 @@ public:
 	FoodItem *setCanAlwaysEat();
 
 	// 4J Added
-	bool canEat(shared_ptr<Player> player);
+	bool canEat(std::shared_ptr<Player> player);
 };

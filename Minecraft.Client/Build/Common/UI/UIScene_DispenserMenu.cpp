@@ -32,7 +32,7 @@ UIScene_DispenserMenu::UIScene_DispenserMenu(int iPad, void *_initData, UILayer 
 	delete initData;
 }
 
-wstring UIScene_DispenserMenu::getMoviePath()
+std::wstring UIScene_DispenserMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

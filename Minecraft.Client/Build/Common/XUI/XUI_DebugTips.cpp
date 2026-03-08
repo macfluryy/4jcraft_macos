@@ -18,7 +18,7 @@ HRESULT CScene_DebugTips::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	// Display the tooltips
 	//ui.SetTooltips( m_iPad, IDS_TOOLTIPS_SELECT);
 	// display the next tip
-	wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+	std::wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 	wchar_t startTags[64];
 	swprintf(startTags,64,L"<font color=\"#%08x\" size=14><DIV ALIGN=CENTER>",app.GetHTMLColour(eHTMLColor_White));
 	wsText= startTags + wsText + L"</DIV>";
@@ -41,7 +41,7 @@ HRESULT CScene_DebugTips::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled
 		
 		// next tip
 		// display the next tip
-		wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
+		std::wstring wsText=app.FormatHTMLString(m_iPad,app.GetString(app.GetNextTip()));
 		wchar_t startTags[64];
 		swprintf(startTags,64,L"<font color=\"#%08x\" size=14><DIV ALIGN=CENTER>",app.GetHTMLColour(eHTMLColor_White));
 		wsText= startTags + wsText + L"</DIV>";

@@ -11,7 +11,7 @@ int McRegionChunkStorage::s_runningThreadCount = 0;
 C4JThread *McRegionChunkStorage::s_saveThreads[3];
 
 
-McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstring &prefix) : m_prefix( prefix )
+McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const std::wstring &prefix) : m_prefix( prefix )
 {
 	m_saveFile = saveFile;
 
@@ -34,7 +34,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstr
 
 	
 #ifdef SPLIT_SAVES
-	ConsoleSavePath currentFile = ConsoleSavePath( m_prefix + wstring( L"entities.dat" ) );
+	ConsoleSavePath currentFile = ConsoleSavePath( m_prefix + std::wstring( L"entities.dat" ) );
 
 	if(m_saveFile->doesFileExist(currentFile))
 	{
@@ -293,7 +293,7 @@ void McRegionChunkStorage::flush()
 {
 #ifdef SPLIT_SAVES
 	PIXBeginNamedEvent(0, "Flushing entity data");
-	ConsoleSavePath currentFile = ConsoleSavePath( m_prefix + wstring( L"entities.dat" ) );
+	ConsoleSavePath currentFile = ConsoleSavePath( m_prefix + std::wstring( L"entities.dat" ) );
 	ConsoleSaveFileOutputStream fos = ConsoleSaveFileOutputStream( m_saveFile, currentFile );
 	BufferedOutputStream bos(&fos, 1024*1024);
 	DataOutputStream dos(&bos);

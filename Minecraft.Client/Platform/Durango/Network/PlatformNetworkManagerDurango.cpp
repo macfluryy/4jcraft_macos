@@ -744,12 +744,12 @@ bool CPlatformNetworkManagerDurango::SystemFlagGet(INetworkPlayer *pNetworkPlaye
 	return false;
 }
 
-wstring CPlatformNetworkManagerDurango::GatherStats()
+std::wstring CPlatformNetworkManagerDurango::GatherStats()
 {
 	return L"";
 }
 
-wstring CPlatformNetworkManagerDurango::GatherRTTStats()
+std::wstring CPlatformNetworkManagerDurango::GatherRTTStats()
 {
 	return L"";
 }
@@ -790,9 +790,9 @@ void CPlatformNetworkManagerDurango::TickSearch()
 	}
 }
 
-vector<FriendSessionInfo *> *CPlatformNetworkManagerDurango::GetSessionList(int iPad, int localPlayers, bool partyOnly)
+std::vector<FriendSessionInfo *> *CPlatformNetworkManagerDurango::GetSessionList(int iPad, int localPlayers, bool partyOnly)
 {
-	vector<FriendSessionInfo *> *filteredList = new vector<FriendSessionInfo *>();
+	std::vector<FriendSessionInfo *> *filteredList = new std::vector<FriendSessionInfo *>();
 	for( int i = 0; i < m_searchResultsCount; i++ )
 	{
 		GameSessionData *gameSessionData = (GameSessionData *)m_pSearchResults[i].m_extData;
@@ -883,7 +883,7 @@ INetworkPlayer * CPlatformNetworkManagerDurango::GetPlayerBySmallId(unsigned cha
 	return getNetworkPlayer(m_pDQRNet->GetPlayerBySmallId(smallId));
 }
 
-wstring CPlatformNetworkManagerDurango::GetDisplayNameByGamertag(wstring gamertag)
+std::wstring CPlatformNetworkManagerDurango::GetDisplayNameByGamertag(std::wstring gamertag)
 {
 	return m_pDQRNet->GetDisplayNameByGamertag(gamertag);
 }

@@ -4,7 +4,7 @@ class MobEffectInstance;
 
 #include "Packet.h"
 
-class RemoveMobEffectPacket : public Packet, public enable_shared_from_this<RemoveMobEffectPacket>
+class RemoveMobEffectPacket : public Packet, public std::enable_shared_from_this<RemoveMobEffectPacket>
 {
 	public:
 		int entityId;
@@ -18,6 +18,6 @@ class RemoveMobEffectPacket : public Packet, public enable_shared_from_this<Remo
 		virtual void handle(PacketListener *listener);
 		virtual int getEstimatedSize();
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new RemoveMobEffectPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new RemoveMobEffectPacket()); }
 	virtual int getId() { return 42; }
 };

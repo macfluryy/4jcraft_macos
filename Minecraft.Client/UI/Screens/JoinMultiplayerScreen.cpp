@@ -24,7 +24,7 @@ void JoinMultiplayerScreen::init()
     buttons.clear();
     buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + 12, language->getElement(L"multiplayer.connect")));
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + 12, language->getElement(L"gui.cancel")));
-    wstring ip = replaceAll(minecraft->options->lastMpIp,L"_", L":");
+    std::wstring ip = replaceAll(minecraft->options->lastMpIp,L"_", L":");
     buttons[0]->active = ip.length() > 0;
 
     ipEdit = new EditBox(this, font, width / 2 - 100, height / 4 - 10 + 50 + 18, 200, 20, ip);
@@ -47,19 +47,19 @@ void JoinMultiplayerScreen::buttonClicked(Button *button)
     }
 	else if (button->id == 0)
 	{
-        wstring ip = trimString(ipEdit->getValue());
+        std::wstring ip = trimString(ipEdit->getValue());
 
         minecraft->options->lastMpIp = replaceAll(ip,L":", L"_");
         minecraft->options->save();
 
-        vector<wstring> parts = stringSplit(ip,L'L');
+        std::vector<std::wstring> parts = stringSplit(ip,L'L');
         if (ip[0]==L'[')
 		{
             int pos = (int)ip.find(L"]");
-            if (pos != wstring::npos)
+            if (pos != std::wstring::npos)
 			{
-                wstring path = ip.substr(1, pos);
-                wstring port = trimString(ip.substr(pos + 1));
+                std::wstring path = ip.substr(1, pos);
+                std::wstring port = trimString(ip.substr(pos + 1));
                 if (port[0]==L':' && port.length() > 0)
 				{
                     port = port.substr(1);
@@ -86,7 +86,7 @@ void JoinMultiplayerScreen::buttonClicked(Button *button)
     }
 }
 
-int  JoinMultiplayerScreen::parseInt(const wstring& str, int def)
+int  JoinMultiplayerScreen::parseInt(const std::wstring& str, int def)
 {
 	return _fromString<int>(str);
 }

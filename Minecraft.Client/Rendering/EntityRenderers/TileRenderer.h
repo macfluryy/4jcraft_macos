@@ -46,7 +46,7 @@ class TileRenderer
 	bool smoothShapeLighting;
 	Minecraft *minecraft;
 	///////////////////////////////////////// Data caching
-	unordered_map<int,int> getLightColorCount;
+	std::unordered_map<int,int> getLightColorCount;
 	int xMin, yMin, zMin;
 	int xMin2, yMin2, zMin2;
 	int getLightColor( Tile *tt, LevelSource *level, int x, int y, int z);
@@ -79,9 +79,9 @@ public:
 
 	void tesselateInWorldFixedTexture( Tile* tile, int x, int y, int z, Icon *fixedTexture );	// 4J renamed to differentiate from tesselateInWorld
 	void tesselateInWorldNoCulling( Tile* tile, int x, int y, int z, int forceData = -1,
-									shared_ptr< TileEntity > forceEntity = shared_ptr< TileEntity >() );	// 4J added forceData, forceEntity param
-	bool tesselateInWorld( Tile* tt, int x, int y, int z, int forceData = -1, shared_ptr< TileEntity > forceEntity =
-						   shared_ptr< TileEntity >() );	// 4J added forceData, forceEntity param
+									std::shared_ptr< TileEntity > forceEntity = std::shared_ptr< TileEntity >() );	// 4J added forceData, forceEntity param
+	bool tesselateInWorld( Tile* tt, int x, int y, int z, int forceData = -1, std::shared_ptr< TileEntity > forceEntity =
+						   std::shared_ptr< TileEntity >() );	// 4J added forceData, forceEntity param
 
 	private:
 	bool tesselateAirPortalFrameInWorld(TheEndPortalFrameTile *tt, int x, int y, int z);

@@ -1,10 +1,10 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Util/BasicTypeContainers.h"
 #include "Packet.h"
 
-class RemoveEntitiesPacket : public Packet, public enable_shared_from_this<RemoveEntitiesPacket>
+class RemoveEntitiesPacket : public Packet, public std::enable_shared_from_this<RemoveEntitiesPacket>
 {
 public:
 	static const int MAX_PER_PACKET = Byte::MAX_VALUE;
@@ -21,7 +21,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new RemoveEntitiesPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new RemoveEntitiesPacket()); }
 	virtual int getId() { return 29; }
 };
 

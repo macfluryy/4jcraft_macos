@@ -18,7 +18,7 @@ GameRule::~GameRule()
 	}
 }
 
-GameRule::ValueType GameRule::getParameter(const wstring &parameterName)
+GameRule::ValueType GameRule::getParameter(const std::wstring &parameterName)
 {
 	if(m_parameters.find(parameterName) == m_parameters.end())
 	{
@@ -30,7 +30,7 @@ GameRule::ValueType GameRule::getParameter(const wstring &parameterName)
 	return m_parameters[parameterName];
 }
 
-void GameRule::setParameter(const wstring &parameterName,ValueType value)
+void GameRule::setParameter(const std::wstring &parameterName,ValueType value)
 {
 	if(m_parameters.find(parameterName) == m_parameters.end())
 	{
@@ -53,7 +53,7 @@ GameRuleDefinition *GameRule::getGameRuleDefinition()
 }
 
 void GameRule::onUseTile(int tileId, int x, int y, int z) { m_definition->onUseTile(this,tileId,x,y,z); }
-void GameRule::onCollectItem(shared_ptr<ItemInstance> item) { m_definition->onCollectItem(this,item); }
+void GameRule::onCollectItem(std::shared_ptr<ItemInstance> item) { m_definition->onCollectItem(this,item); }
 
 void GameRule::write(DataOutputStream *dos)
 {
@@ -61,7 +61,7 @@ void GameRule::write(DataOutputStream *dos)
 	dos->writeInt(m_parameters.size());
 	for (AUTO_VAR(it, m_parameters.begin()); it != m_parameters.end(); it++)
 	{
-		wstring pName = (*it).first;
+		std::wstring pName = (*it).first;
 		ValueType vType = (*it).second;
 		
 		dos->writeUTF( (*it).first );
@@ -79,7 +79,7 @@ void GameRule::read(DataInputStream *dis)
 	int savedParams = dis->readInt();
 	for (int i = 0; i < savedParams; i++)
 	{
-		wstring pNames = dis->readUTF();
+		std::wstring pNames = dis->readUTF();
 		
 		ValueType vType = getParameter(pNames);
 

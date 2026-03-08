@@ -36,7 +36,7 @@ void NamedAreaRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAtt
 	dos->writeUTF(_toString(m_area->z1));
 }
 
-void NamedAreaRuleDefinition::addAttribute(const wstring &attributeName, const wstring &attributeValue)
+void NamedAreaRuleDefinition::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
 {
 	if(attributeName.compare(L"name") == 0)
 	{

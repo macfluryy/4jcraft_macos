@@ -12,12 +12,12 @@ private:
 	public:
 		int maxSize;
 
-		vector<intArray> tcache;
-		vector<intArray> tallocated;
+		std::vector<intArray> tcache;
+		std::vector<intArray> tallocated;
 		
-		vector<intArray> cache;
-		vector<intArray> allocated;
-		vector<intArray> toosmall;	// 4J added
+		std::vector<intArray> cache;
+		std::vector<intArray> allocated;
+		std::vector<intArray> toosmall;	// 4J added
 		~ThreadStorage();
 	};
 	static DWORD tlsIdx;

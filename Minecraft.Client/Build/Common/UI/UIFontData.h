@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-using namespace std;
+//using namespace std;
 
 #define _DEBUG_BLOCK_CHARS 0
 
@@ -17,10 +17,10 @@ public:
 
 public:
 	// Font name.
-	string				m_strFontName;
+	std::string				m_strFontName;
 
 	// Filename of the glyph archive.
-	wstring				m_wstrFilename;
+	std::wstring				m_wstrFilename;
 
 	// Number of glyphs in the archive.
 	unsigned int		m_uiGlyphCount;
@@ -82,7 +82,7 @@ protected:
 	SFontData			*m_sFontData;
 
 	// Map Unicodepoints to glyph ids.
-	unordered_map<unsigned int, unsigned short> m_unicodeMap;
+	std::unordered_map<unsigned int, unsigned short> m_unicodeMap;
 
 	// Kerning value for each glyph.
 	unsigned short		*m_kerningTable;
@@ -96,7 +96,7 @@ protected:
 public:
 
 	// Accessor for the font name in the internal SFontData.
-	const string		getFontName();
+	const std::string		getFontName();
 
 	// Accessor for the hardcoded internal font data.
 	SFontData			*getFontData();

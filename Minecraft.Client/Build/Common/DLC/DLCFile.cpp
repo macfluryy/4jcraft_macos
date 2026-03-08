@@ -1,7 +1,7 @@
 #include "../../../../Minecraft.World/Build/stdafx.h"
 #include "DLCFile.h"
 
-DLCFile::DLCFile(DLCManager::EDLCType type, const wstring &path)
+DLCFile::DLCFile(DLCManager::EDLCType type, const std::wstring &path)
 {
 	m_type = type;
 	m_path = path;
@@ -11,7 +11,7 @@ DLCFile::DLCFile(DLCManager::EDLCType type, const wstring &path)
 
 	if(dlcSkin)
 	{
-		wstring skinValue = path.substr(7,path.size());
+		std::wstring skinValue = path.substr(7,path.size());
 		skinValue = skinValue.substr(0,skinValue.find_first_of(L'.'));
 		std::wstringstream ss;
 		ss << std::dec << skinValue.c_str();

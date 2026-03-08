@@ -55,7 +55,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : U
 #endif
 }
 
-wstring UIScene_Intro::getMoviePath()
+std::wstring UIScene_Intro::getMoviePath()
 {
 	return L"Intro";
 }

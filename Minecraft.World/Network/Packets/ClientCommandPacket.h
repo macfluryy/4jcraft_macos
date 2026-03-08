@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class ClientCommandPacket : public Packet, public enable_shared_from_this<ClientCommandPacket>
+class ClientCommandPacket : public Packet, public std::enable_shared_from_this<ClientCommandPacket>
 {
 public:
 	static const int LOGIN_COMPLETE = 0;
@@ -19,6 +19,6 @@ public:
 	int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ClientCommandPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ClientCommandPacket()); }
 	virtual int getId() { return 205; }
 };

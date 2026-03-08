@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 class ProgressListener
 {
@@ -11,5 +11,5 @@ public:
 	virtual void progressStage(int stringId) = 0;
 
 	// 4J-PB - added to display bytes retrieved of a save transfer
-	virtual void progressStage(wstring &wstrText) = 0;
+	virtual void progressStage(std::wstring &wstrText) = 0;
 };

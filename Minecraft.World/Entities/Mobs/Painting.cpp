@@ -73,10 +73,10 @@ Painting::Painting(Level *level, int xTile, int yTile, int zTile, int dir) : Han
 	// 4J Stu - If you use this ctor, then you need to call the PaintingPostConstructor
 }
 
-// 4J Stu - Added this so that we can use some shared_ptr functions that were needed in the ctor
+// 4J Stu - Added this so that we can use some std::shared_ptr functions that were needed in the ctor
 void Painting::PaintingPostConstructor(int dir)
 {
-	vector<Motive *> *survivableMotives = new vector<Motive *>();
+	std::vector<Motive *> *survivableMotives = new std::vector<Motive *>();
 	for (int i = 0 ; i < LAST_VALUE; i++)
 	{
 		this->motive = (Motive *)Motive::values[i];
@@ -93,7 +93,7 @@ void Painting::PaintingPostConstructor(int dir)
 	setDir(dir);
 }
 
-Painting::Painting(Level *level, int x, int y, int z, int dir, wstring motiveName) : HangingEntity( level , x, y, z, dir )
+Painting::Painting(Level *level, int x, int y, int z, int dir, std::wstring motiveName) : HangingEntity( level , x, y, z, dir )
 {
 	_init(level);
 
@@ -118,8 +118,8 @@ void Painting::addAdditonalSaveData(CompoundTag *tag)
 
 void Painting::readAdditionalSaveData(CompoundTag *tag)
 {
-	wstring motiveName = tag->getString(L"Motive");
-	vector<Motive *>::iterator it;
+	std::wstring motiveName = tag->getString(L"Motive");
+	std::vector<Motive *>::iterator it;
 	for (int i = 0 ; i < LAST_VALUE; i++)
 	{
 		if ( Motive::values[i]->name.compare(motiveName) == 0)
@@ -144,5 +144,5 @@ int Painting::getHeight()
 
 void Painting::dropItem() 
 {
-	spawnAtLocation(shared_ptr<ItemInstance>(new ItemInstance(Item::painting)), 0.0f);
+	spawnAtLocation(std::shared_ptr<ItemInstance>(new ItemInstance(Item::painting)), 0.0f);
 }

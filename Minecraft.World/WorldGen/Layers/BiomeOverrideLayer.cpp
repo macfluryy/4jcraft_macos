@@ -10,13 +10,13 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup)
 	m_biomeOverride = byteArray( width * height );
 
 #ifdef _UNICODE
-	wstring path = L"GAME:\\GameRules\\biomemap.bin";
+	std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
 	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #else
 #ifdef _WINDOWS64
-	string path = "GameRules\\biomemap.bin";
+	std::string path = "GameRules\\biomemap.bin";
 #else
-	string path = "GAME:\\GameRules\\biomemap.bin";
+	std::string path = "GAME:\\GameRules\\biomemap.bin";
 #endif
 	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 #endif

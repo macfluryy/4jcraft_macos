@@ -1,6 +1,6 @@
 #pragma once
 #include "GuiComponent.h"
-using namespace std;
+
 
 class Button : public GuiComponent
 {
@@ -9,14 +9,14 @@ protected:
     int h;
 public:
 	int x, y;
-    wstring msg;
+    std::wstring msg;
     int id;
     bool active;
     bool visible;
 
-    Button(int id, int x, int y, const wstring& msg);
-    Button(int id, int x, int y, int w, int h, const wstring& msg);
-	void init(int id, int x, int y, int w, int h, const wstring& msg);	// 4J - added
+    Button(int id, int x, int y, const std::wstring& msg);
+    Button(int id, int x, int y, int w, int h, const std::wstring& msg);
+	void init(int id, int x, int y, int w, int h, const std::wstring& msg);	// 4J - added
 protected:
 	virtual int getYImage(bool hovered);
 public:

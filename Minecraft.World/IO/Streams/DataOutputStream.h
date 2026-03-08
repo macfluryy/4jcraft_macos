@@ -29,9 +29,9 @@ public:
 	virtual void writeLong(__int64 a);
 	virtual void writeShort(short a);
 	virtual void writeChar(wchar_t a);
-	virtual void writeChars(const wstring& a);
+	virtual void writeChars(const std::wstring& a);
 	virtual void writeBoolean(bool b);	
-	virtual void writeUTF(const wstring& a);
+	virtual void writeUTF(const std::wstring& a);
 	virtual void writePlayerUID(PlayerUID player);
 	virtual void flush();
 };

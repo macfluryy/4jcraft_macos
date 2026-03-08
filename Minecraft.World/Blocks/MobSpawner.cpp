@@ -36,7 +36,7 @@ TilePos MobSpawner::getRandomPosWithin(Level *level, int cx, int cz)
 	// AP - See CustomMap.h for an explanation of this
 	CustomMap MobSpawner::chunksToPoll;
 #else
-	unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> MobSpawner::chunksToPoll;
+	std::unordered_map<ChunkPos,bool,ChunkPosKeyHash,ChunkPosKeyEq> MobSpawner::chunksToPoll;
 #endif
 
 const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFriendlies)
@@ -105,7 +105,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 	AUTO_VAR(itEnd, level->players.end());
 	for (AUTO_VAR(it, level->players.begin()); it != itEnd; it++)
 	{
-		shared_ptr<Player> player = *it; //level->players.at(i);
+		std::shared_ptr<Player> player = *it; //level->players.at(i);
 		int xx = Mth::floor(player->x / 16);
 		int zz = Mth::floor(player->z / 16);
 
@@ -125,7 +125,7 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
 	int *zz = new int[playerCount];
 	for (int i = 0; i < playerCount; i++)
 	{
-		shared_ptr<Player> player = level->players[i];
+		std::shared_ptr<Player> player = level->players[i];
 		xx[i] = Mth::floor(player->x / 16);
 		zz[i] = Mth::floor(player->z / 16);
 #ifdef __PSVITA__
@@ -288,13 +288,13 @@ const int MobSpawner::tick(ServerLevel *level, bool spawnEnemies, bool spawnFrie
                                 }
                             }
 
-						   shared_ptr<Mob> mob;
+						   std::shared_ptr<Mob> mob;
 						   // 4J - removed try/catch
 //						   try
 //						   {
 	MemSect(29);
 							   //mob = type.mobClass.getConstructor(Level.class).newInstance(level);
-							   mob = dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(currentMobType->mobClass, level));
+							   mob = std::dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(currentMobType->mobClass, level));
 	MemSect(0);
 //						   }
 //						   catch (exception e)
@@ -423,26 +423,26 @@ bool MobSpawner::isSpawnPositionOk(MobCategory *category, Level *level, int x, i
 }
 
 
-void MobSpawner::finalizeMobSettings(shared_ptr<Mob> mob, Level *level, float xx, float yy, float zz)
+void MobSpawner::finalizeMobSettings(std::shared_ptr<Mob> mob, Level *level, float xx, float yy, float zz)
 {
-	if (dynamic_pointer_cast<Spider>( mob ) != NULL && level->random->nextInt(100) == 0)
+	if (std::dynamic_pointer_cast<Spider>( mob ) != NULL && level->random->nextInt(100) == 0)
 	{
-		shared_ptr<Skeleton> skeleton = shared_ptr<Skeleton>( new Skeleton(level) );
+		std::shared_ptr<Skeleton> skeleton = std::shared_ptr<Skeleton>( new Skeleton(level) );
 		skeleton->moveTo(xx, yy, zz, mob->yRot, 0);
 		level->addEntity(skeleton);
 		skeleton->ride(mob);
 	}
-	else if (dynamic_pointer_cast<Sheep >( mob ) != NULL)
+	else if (std::dynamic_pointer_cast<Sheep >( mob ) != NULL)
 	{
-		(dynamic_pointer_cast<Sheep>( mob ))->setColor(Sheep::getSheepColor(level->random));
+		(std::dynamic_pointer_cast<Sheep>( mob ))->setColor(Sheep::getSheepColor(level->random));
 	}
-	else if (dynamic_pointer_cast<Ozelot >( mob ) != NULL)
+	else if (std::dynamic_pointer_cast<Ozelot >( mob ) != NULL)
 	{
 		if (level->random->nextInt(7) == 0)
 		{
 			for (int kitten = 0; kitten < 2; kitten++)
 			{
-				shared_ptr<Ozelot> ozelot = shared_ptr<Ozelot>(new Ozelot(level));
+				std::shared_ptr<Ozelot> ozelot = std::shared_ptr<Ozelot>(new Ozelot(level));
 				ozelot->moveTo(xx, yy, zz, mob->yRot, 0);
 				ozelot->setAge(-20 * 60 * 20);
 				level->addEntity(ozelot);
@@ -459,7 +459,7 @@ eINSTANCEOF MobSpawner::bedEnemies[bedEnemyCount] = {
 };
 
 
-bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> > *players)
+bool MobSpawner::attackSleepingPlayers(Level *level, std::vector<std::shared_ptr<Player> > *players)
 {
 
 	bool somebodyWokeUp = false;
@@ -469,7 +469,7 @@ bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> >
 	AUTO_VAR(itEnd, players->end());
 	for (AUTO_VAR(it, players->begin()); it != itEnd; it++)
 	{
-		shared_ptr<Player> player = (*it);
+		std::shared_ptr<Player> player = (*it);
 
 		bool nextPlayer = false;
 
@@ -514,13 +514,13 @@ bool MobSpawner::attackSleepingPlayers(Level *level, vector<shared_ptr<Player> >
 					float yy = (float) y;
 					float zz = z + 0.5f;
 
-					shared_ptr<Mob> mob;
+					std::shared_ptr<Mob> mob;
 // 4J - removed try/catch
 //					try
 //					{
 						//mob = classes[type].getConstructor(Level.class).newInstance(level);
 						// 4J - there was a classes array here which duplicated the bedEnemies array but have removed it
-						mob = dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(bedEnemies[type], level ));
+						mob = std::dynamic_pointer_cast<Mob>(EntityIO::newByEnumType(bedEnemies[type], level ));
 //					}
 //					catch (exception e)
 //					{
@@ -590,7 +590,7 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 {
 	// 4J - not for our version. Creates a few too many mobs.
 #if 0
-	vector<Biome::MobSpawnerData *> *mobs = biome->getMobs(MobCategory::creature);
+	std::vector<Biome::MobSpawnerData *> *mobs = biome->getMobs(MobCategory::creature);
 	if (mobs->empty())
 	{
 		return;
@@ -598,7 +598,7 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 
 	while (random->nextFloat() < biome->getCreatureProbability())
 	{
-		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((vector<WeighedRandomItem *> *)mobs));
+		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((std::vector<WeighedRandomItem *> *)mobs));
 		int count = type->minCount + random->nextInt(1 + type->maxCount - type->minCount);
 
 		int x = xo + random->nextInt(cellWidth);
@@ -619,9 +619,9 @@ void MobSpawner::postProcessSpawnMobs(Level *level, Biome *biome, int xo, int zo
 					float yy = (float)y;
 					float zz = z + 0.5f;
 
-					shared_ptr<Mob> mob;
+					std::shared_ptr<Mob> mob;
 					//try {
-					mob = dynamic_pointer_cast<Mob>( EntityIO::newByEnumType(type->mobClass, level ) );
+					mob = std::dynamic_pointer_cast<Mob>( EntityIO::newByEnumType(type->mobClass, level ) );
 					//} catch (Exception e) {
 					//	e.printStackTrace();
 					//	continue;

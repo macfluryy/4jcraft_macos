@@ -10,7 +10,7 @@
 #include "ToolRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring ToolRecipies::shapes[][4] = 
+std::wstring ToolRecipies::shapes[][4] = 
 {
 	{L"XXX", //
 	L" # ",//
@@ -42,7 +42,7 @@ wstring ToolRecipies::shapes[][4] =
 
 void ToolRecipies::_init()
 {
-	map = new vector <Object *> [MAX_TOOL_RECIPES];
+	map = new std::vector <Object *> [MAX_TOOL_RECIPES];
 
 	ADD_OBJECT(map[0],Tile::wood);
 	ADD_OBJECT(map[0],Tile::stoneBrick);

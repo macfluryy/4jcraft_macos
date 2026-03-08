@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace std;
+
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
 #define LOCALE_COUNT 21
@@ -15,8 +15,8 @@ class StringTable
 private:
 	bool isStatic;
 
-	unordered_map<wstring, wstring> m_stringsMap;
-	vector<wstring> m_stringsVec;
+	std::unordered_map<std::wstring, std::wstring> m_stringsMap;
+	std::vector<std::wstring> m_stringsVec;
 
 	byteArray src;
 
@@ -64,7 +64,7 @@ public:
 
 	void getData(PBYTE *ppbData, UINT *pdwSize);
 
-	LPCWSTR getString(const wstring &id);
+	LPCWSTR getString(const std::wstring &id);
 	LPCWSTR getString(int id);
 
 	//static LPCWSTR m_wchLocaleCode[LOCALE_COUNT];
@@ -72,7 +72,7 @@ public:
 
 
 private:
-	//wstring getLangId(DWORD dwLanguage=0);
+	//std::wstring getLangId(DWORD dwLanguage=0);
 
 };
 

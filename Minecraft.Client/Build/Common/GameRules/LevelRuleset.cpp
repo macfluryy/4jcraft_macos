@@ -17,7 +17,7 @@ LevelRuleset::~LevelRuleset()
 	}
 }
 
-void LevelRuleset::getChildren(vector<GameRuleDefinition *> *children)
+void LevelRuleset::getChildren(std::vector<GameRuleDefinition *> *children)
 {
 	CompoundGameRuleDefinition::getChildren(children);
 	for (AUTO_VAR(it, m_areas.begin()); it != m_areas.end(); it++)
@@ -44,7 +44,7 @@ void LevelRuleset::loadStringTable(StringTable *table)
 	m_stringTable = table;
 }
 
-LPCWSTR LevelRuleset::getString(const wstring &key)
+LPCWSTR LevelRuleset::getString(const std::wstring &key)
 {
 	if(m_stringTable == NULL)
 	{
@@ -56,7 +56,7 @@ LPCWSTR LevelRuleset::getString(const wstring &key)
 	}
 }
 
-AABB *LevelRuleset::getNamedArea(const wstring &areaName)
+AABB *LevelRuleset::getNamedArea(const std::wstring &areaName)
 {
 	AABB *area = NULL;
 	for(AUTO_VAR(it, m_areas.begin()); it != m_areas.end(); ++it)

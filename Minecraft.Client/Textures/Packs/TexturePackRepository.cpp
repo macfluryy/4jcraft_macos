@@ -18,7 +18,7 @@ TexturePackRepository::TexturePackRepository(File workingDirectory, Minecraft *m
 	// 4J - added
 	usingWeb = false;
 	selected = NULL;
-	texturePacks = new vector<TexturePack *>;
+	texturePacks = new std::vector<TexturePack *>;
 
     this->minecraft = minecraft;
 
@@ -105,7 +105,7 @@ bool TexturePackRepository::selectSkin(TexturePack *skin)
     return true;
 }
 
-void TexturePackRepository::selectWebSkin(const wstring &url)
+void TexturePackRepository::selectWebSkin(const std::wstring &url)
 {
 	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
@@ -117,7 +117,7 @@ void TexturePackRepository::selectWebSkin(const wstring &url)
 #endif
 }
 
-void TexturePackRepository::downloadWebSkin(const wstring &url, File file)
+void TexturePackRepository::downloadWebSkin(const std::wstring &url, File file)
 {
 	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
@@ -157,7 +157,7 @@ void TexturePackRepository::updateList()
 {
 	// 4J Stu - We don't ever want to completely refresh the lists, we keep them up-to-date as we go
 #if 0
-    vector<TexturePack *> *currentPacks = new vector<TexturePack *>;
+    std::vector<TexturePack *> *currentPacks = new std::vector<TexturePack *>;
 	currentPacks->push_back(DEFAULT_TEXTURE_PACK);
 	cacheById[DEFAULT_TEXTURE_PACK->getId()] = DEFAULT_TEXTURE_PACK;
 #ifndef _CONTENT_PACKAGE
@@ -195,9 +195,9 @@ void TexturePackRepository::updateList()
 
 	// 4J - was texturePacks.removeAll(currentPacks);
 	AUTO_VAR(itEnd, currentPacks->end());
-	for( vector<TexturePack *>::iterator it1 = currentPacks->begin(); it1 != itEnd; it1++ )
+	for( std::vector<TexturePack *>::iterator it1 = currentPacks->begin(); it1 != itEnd; it1++ )
 	{
-		for( vector<TexturePack *>::iterator it2 = texturePacks->begin(); it2 != texturePacks->end(); it2++ )
+		for( std::vector<TexturePack *>::iterator it2 = texturePacks->begin(); it2 != texturePacks->end(); it2++ )
 		{
 			if( *it1 == *it2 )
 			{
@@ -207,7 +207,7 @@ void TexturePackRepository::updateList()
 	}
 
 	itEnd = texturePacks->end();
-	for( vector<TexturePack *>::iterator it = texturePacks->begin(); it != itEnd; it++ )
+	for( std::vector<TexturePack *>::iterator it = texturePacks->begin(); it != itEnd; it++ )
 	{
 		TexturePack *pack = *it;
 		pack->unload(minecraft->textures);
@@ -219,7 +219,7 @@ void TexturePackRepository::updateList()
 #endif
 }
 
-wstring TexturePackRepository::getIdOrNull(File file)
+std::wstring TexturePackRepository::getIdOrNull(File file)
 {
 	app.DebugPrintf("TexturePackRepository::getIdOrNull is not implemented\n");
 #if 0
@@ -234,7 +234,7 @@ wstring TexturePackRepository::getIdOrNull(File file)
 	return L"";
 }
 
-vector<File> TexturePackRepository::getWorkDirContents()
+std::vector<File> TexturePackRepository::getWorkDirContents()
 {
 	app.DebugPrintf("TexturePackRepository::getWorkDirContents is not implemented\n");
 #if 0
@@ -244,10 +244,10 @@ vector<File> TexturePackRepository::getWorkDirContents()
 
 	return Collections.emptyList();
 #endif
-	return vector<File>();
+	return std::vector<File>();
 }
 
-vector<TexturePack *> *TexturePackRepository::getAll()
+std::vector<TexturePack *> *TexturePackRepository::getAll()
 {
 	// 4J - note that original constucted a copy of texturePacks here
 	return texturePacks;
@@ -291,14 +291,14 @@ bool TexturePackRepository::canUseWebSkin()
 	return false;
 }
 
-vector< pair<DWORD,wstring> > *TexturePackRepository::getTexturePackIdNames()
+std::vector< std::pair<DWORD,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
 {
-	vector< pair<DWORD,wstring> > *packList = new vector< pair<DWORD,wstring> >();
+	std::vector< std::pair<DWORD,std::wstring> > *packList = new std::vector< std::pair<DWORD,std::wstring> >();
 
 	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
 	{
 		TexturePack *pack = *it;
-		packList->push_back( pair<DWORD,wstring>(pack->getId(),pack->getName()) );
+		packList->push_back( std::pair<DWORD,std::wstring>(pack->getId(),pack->getName()) );
 	}
 	return packList;
 }

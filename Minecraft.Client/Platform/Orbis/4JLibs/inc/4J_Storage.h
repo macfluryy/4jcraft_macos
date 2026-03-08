@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include <save_data.h>
 
@@ -405,7 +405,7 @@ public:
 	void						SetDLCProductCode(const char* szProductCode);
 	void						SetProductUpgradeKey(const char* szKey);
 	bool						CheckForTrialUpgradeKey(void( *Func)(LPVOID, bool),LPVOID lpParam);
-	void						SetDLCInfoMap(unordered_map<wstring, SONYDLC *>* pSONYDLCMap);
+	void						SetDLCInfoMap(std::unordered_map<std::wstring, SONYDLC *>* pSONYDLCMap);
 };
 
 extern C4JStorage StorageManager;

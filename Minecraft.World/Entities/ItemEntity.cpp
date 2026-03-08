@@ -48,7 +48,7 @@ ItemEntity::ItemEntity(Level *level, double x, double y, double z) : Entity(leve
 	_init(level,x,y,z);
 }
 
-ItemEntity::ItemEntity(Level *level, double x, double y, double z, shared_ptr<ItemInstance> item) : Entity( level )
+ItemEntity::ItemEntity(Level *level, double x, double y, double z, std::shared_ptr<ItemInstance> item) : Entity( level )
 {
 	_init(level,x,y,z);
 	setItem(item);
@@ -134,32 +134,32 @@ void ItemEntity::tick()
 
 void ItemEntity::mergeWithNeighbours()
 {	
-	vector<shared_ptr<Entity> > *neighbours = level->getEntitiesOfClass(typeid(*this), bb->grow(0.5, 0, 0.5));
+	std::vector<std::shared_ptr<Entity> > *neighbours = level->getEntitiesOfClass(typeid(*this), bb->grow(0.5, 0, 0.5));
 	for(AUTO_VAR(it, neighbours->begin()); it != neighbours->end(); ++it)
 	{
-		shared_ptr<ItemEntity> entity = dynamic_pointer_cast<ItemEntity>(*it);
+		std::shared_ptr<ItemEntity> entity = std::dynamic_pointer_cast<ItemEntity>(*it);
 		merge(entity);
 	}
 	delete neighbours;
 }
 
-bool ItemEntity::merge(shared_ptr<ItemEntity> target)
+bool ItemEntity::merge(std::shared_ptr<ItemEntity> target)
 {
 	if (target == shared_from_this()) return false;
 	if (!target->isAlive() || !this->isAlive()) return false;
-	shared_ptr<ItemInstance> myItem = this->getItem();
-	shared_ptr<ItemInstance> targetItem = target->getItem();
+	std::shared_ptr<ItemInstance> myItem = this->getItem();
+	std::shared_ptr<ItemInstance> targetItem = target->getItem();
 
 	if (targetItem->getItem() != myItem->getItem()) return false;
 	if (targetItem->hasTag() ^ myItem->hasTag()) return false;
 	if (targetItem->hasTag() && !targetItem->getTag()->equals(myItem->getTag())) return false;
 	if (targetItem->getItem()->isStackedByData() && targetItem->getAuxValue() != myItem->getAuxValue()) return false;
-	if (targetItem->count < myItem->count) return target->merge(dynamic_pointer_cast<ItemEntity>(shared_from_this()));
+	if (targetItem->count < myItem->count) return target->merge(std::dynamic_pointer_cast<ItemEntity>(shared_from_this()));
 	if (targetItem->count + myItem->count > targetItem->getMaxStackSize()) return false;
 
 	targetItem->count += myItem->count;
-	target->throwTime = max(target->throwTime, this->throwTime);
-	target->age = min(target->age, this->age);
+	target->throwTime = std::max(target->throwTime, this->throwTime);
+	target->age = std::min(target->age, this->age);
 	target->setItem(targetItem);
 	remove();
 
@@ -216,11 +216,11 @@ void ItemEntity::readAdditionalSaveData(CompoundTag *tag)
 	if (getItem() == NULL) remove();
 }
 
-void ItemEntity::playerTouch(shared_ptr<Player> player)
+void ItemEntity::playerTouch(std::shared_ptr<Player> player)
 {
 	if (level->isClientSide) return;
 
-	shared_ptr<ItemInstance> item = getItem();
+	std::shared_ptr<ItemInstance> item = getItem();
 
 	// 4J Stu - Fix for duplication glitch
 	if(item->count <= 0)
@@ -243,7 +243,7 @@ void ItemEntity::playerTouch(shared_ptr<Player> player)
 #ifdef _EXTENDED_ACHIEVEMENTS
 			if ( getItem()->getItem()->id )
 			{
-				shared_ptr<Player> pThrower = level->getPlayerByName(getThrower());
+				std::shared_ptr<Player> pThrower = level->getPlayerByName(getThrower());
 				if ( (pThrower != nullptr) && (pThrower != player) )
 				{
 					pThrower->awardStat(GenericStats::diamondsToYou(), GenericStats::param_diamondsToYou());
@@ -261,15 +261,15 @@ void ItemEntity::playerTouch(shared_ptr<Player> player)
 	}
 }
 
-wstring ItemEntity::getAName()
+std::wstring ItemEntity::getAName()
 {
 	return L"";//L"item." + getItem()->getDescriptionId();
 	//return I18n.get("item." + item.getDescriptionId());
 }
 
-shared_ptr<ItemInstance> ItemEntity::getItem()
+std::shared_ptr<ItemInstance> ItemEntity::getItem()
 {
-	shared_ptr<ItemInstance> result = getEntityData()->getItemInstance(DATA_ITEM);
+	std::shared_ptr<ItemInstance> result = getEntityData()->getItemInstance(DATA_ITEM);
 
 	if (result == NULL)
 	{
@@ -278,13 +278,13 @@ shared_ptr<ItemInstance> ItemEntity::getItem()
 			app.DebugPrintf("Item entity %d has no item?!\n", entityId);
 			//level.getLogger().severe("Item entity " + entityId + " has no item?!");
 		}
-		return shared_ptr<ItemInstance>(new ItemInstance(Tile::rock));
+		return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::rock));
 	}
 
 	return result;
 }
 
-void ItemEntity::setItem(shared_ptr<ItemInstance> item)
+void ItemEntity::setItem(std::shared_ptr<ItemInstance> item)
 {
 	getEntityData()->set(DATA_ITEM, item);
 	getEntityData()->markDirty(DATA_ITEM);
@@ -295,12 +295,12 @@ bool ItemEntity::isAttackable()
 	return false;
 }
 
-void ItemEntity::setThrower(const wstring &thrower)
+void ItemEntity::setThrower(const std::wstring &thrower)
 {
 	this->thrower = thrower;
 }
 
-wstring ItemEntity::getThrower()
+std::wstring ItemEntity::getThrower()
 {
 	return this->thrower;
 }

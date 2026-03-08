@@ -8,14 +8,14 @@ class NetherBridgeFeature : public StructureFeature
 {
 
 private:
-	vector<Biome::MobSpawnerData *> bridgeEnemies;
+	std::vector<Biome::MobSpawnerData *> bridgeEnemies;
 	bool isSpotSelected;
 	ChunkPos *netherFortressPos;
 
 public:
 	NetherBridgeFeature();
 	~NetherBridgeFeature();
-    vector<Biome::MobSpawnerData *> *getBridgeEnemies();
+    std::vector<Biome::MobSpawnerData *> *getBridgeEnemies();
 protected:
 	virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat);
     virtual StructureStart *createStructureStart(int x, int z);

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "TutorialTask.h"
 
@@ -16,7 +16,7 @@ private:
 	EAreaTaskCompletionStates m_completionState;
 	eTutorial_State m_tutorialState;
 public:
-	AreaTask(eTutorial_State state, Tutorial *tutorial, vector<TutorialConstraint *> *inConstraints, int descriptionId = -1, EAreaTaskCompletionStates completionState = eAreaTaskCompletion_CompleteOnActivation);
+	AreaTask(eTutorial_State state, Tutorial *tutorial, std::vector<TutorialConstraint *> *inConstraints, int descriptionId = -1, EAreaTaskCompletionStates completionState = eAreaTaskCompletion_CompleteOnActivation);
 	virtual bool isCompleted();
 	virtual void setAsCurrentTask(bool active = true);
 	virtual void onStateChange(eTutorial_State newState);

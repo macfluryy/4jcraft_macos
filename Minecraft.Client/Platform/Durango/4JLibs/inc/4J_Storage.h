@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #define MAX_DISPLAYNAME_LENGTH 128 // SCE_SAVE_DATA_SUBTITLE_MAXSIZE on PS4
 #define MAX_SAVEFILENAME_LENGTH 32 // SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE
@@ -474,7 +474,7 @@ public:
 	eTitleStorageState			TMSPP_ReadFile(int iQuadrant,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPWSTR wszFilename,int( *Func)(LPVOID,int,int,LPVOID, WCHAR *),LPVOID lpParam, int iUserData);
 	eTitleStorageState			TMSPP_DeleteFile(int iQuadrant,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPWSTR wszFilename,int( *Func)(LPVOID,int,int),LPVOID lpParam, int iUserData);
 	eTitleStorageState			TMSPP_ReadFileList(int iPad,C4JStorage::eGlobalStorage eStorageFacility,int( *Func)(LPVOID,int,int,LPVOID,WCHAR *)=NULL,LPVOID lpParam=NULL, int iUserData=0);
-	bool						TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const wstring &Filename);
+	bool						TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const std::wstring &Filename);
 
 	eTitleStorageState			TMSPP_GetTitleStorageState(int iPad);
 	void						TMSPP_ClearTitleStorageState(int iPad);

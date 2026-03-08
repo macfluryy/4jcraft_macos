@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "LevelStorageSource.h"
 
@@ -7,15 +7,15 @@ class MemoryLevelStorageSource : public LevelStorageSource
 {
 public:
     MemoryLevelStorageSource();
-    wstring getName();
-    shared_ptr<LevelStorage> selectLevel(const wstring& levelId, bool createPlayerDir);
-    vector<LevelSummary *> *getLevelList();
+    std::wstring getName();
+    std::shared_ptr<LevelStorage> selectLevel(const std::wstring& levelId, bool createPlayerDir);
+    std::vector<LevelSummary *> *getLevelList();
     void clearAll();
-    LevelData *getDataTagFor(const wstring& levelId);
-    bool isNewLevelIdAcceptable(const wstring& levelId);
-    void deleteLevel(const wstring& levelId);
-    void renameLevel(const wstring& levelId, const wstring& newLevelName);
-    bool isConvertible(const wstring& levelId);
-    bool requiresConversion(const wstring& levelId);
-    bool convertLevel(const wstring& levelId, ProgressListener *progress);
+    LevelData *getDataTagFor(const std::wstring& levelId);
+    bool isNewLevelIdAcceptable(const std::wstring& levelId);
+    void deleteLevel(const std::wstring& levelId);
+    void renameLevel(const std::wstring& levelId, const std::wstring& newLevelName);
+    bool isConvertible(const std::wstring& levelId);
+    bool requiresConversion(const std::wstring& levelId);
+    bool convertLevel(const std::wstring& levelId, ProgressListener *progress);
 };

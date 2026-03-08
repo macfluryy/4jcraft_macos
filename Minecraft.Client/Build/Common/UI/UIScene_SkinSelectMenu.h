@@ -102,8 +102,8 @@ private:
 	DLCPack *m_currentPack;
 	DWORD m_packIndex, m_skinIndex;
 	DWORD m_originalSkinId;
-	wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
-	vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
+	std::wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
+	std::vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
 
 	bool m_bSlidingSkins, m_bAnimatingMove;
 	ESkinSelectNavigation m_currentNavigation;
@@ -112,7 +112,7 @@ private:
 	DWORD m_currentPackCount;
 	bool m_bIgnoreInput;
 	bool m_bSkinIndexChanged;
-	wstring m_leftLabel, m_centreLabel, m_rightLabel;
+	std::wstring m_leftLabel, m_centreLabel, m_rightLabel;
 
 	S32 m_iTouchXStart;
 	bool m_bTouchScrolled;
@@ -134,7 +134,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	// INPUT
@@ -157,9 +157,9 @@ private:
 	void setCharacterSelected(bool selected);
 	void setCharacterLocked(bool locked);
 
-	void setLeftLabel(const wstring &label);
-	void setCentreLabel(const wstring &label);
-	void setRightLabel(const wstring &label);
+	void setLeftLabel(const std::wstring &label);
+	void setCentreLabel(const std::wstring &label);
+	void setRightLabel(const std::wstring &label);
 
 	virtual void HandleDLCMountingComplete();
 	virtual void HandleDLCInstalled();

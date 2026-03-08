@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class SetExperiencePacket : public Packet, public enable_shared_from_this<SetExperiencePacket>
+class SetExperiencePacket : public Packet, public std::enable_shared_from_this<SetExperiencePacket>
 {
 public:
 	float experienceProgress;
@@ -17,10 +17,10 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 	virtual bool isAync();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new SetExperiencePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new SetExperiencePacket()); }
 	virtual int getId() { return 43; }
 };

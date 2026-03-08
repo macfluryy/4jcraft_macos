@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "LevelStorage.h"
 
@@ -18,10 +18,10 @@ public:
     LevelData *prepareLevel();
     void checkSession();
     ChunkStorage *createChunkStorage(Dimension *dimension);
-    void saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players);
+    void saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players);
     void saveLevelData(LevelData *levelData);
     PlayerIO *getPlayerIO();
     void closeAll();
-    ConsoleSavePath getDataFile(const wstring& id);
-	wstring getLevelId();
+    ConsoleSavePath getDataFile(const std::wstring& id);
+	std::wstring getLevelId();
 };

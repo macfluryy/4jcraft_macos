@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class PlayerInputPacket : public Packet, public enable_shared_from_this<PlayerInputPacket>
+class PlayerInputPacket : public Packet, public std::enable_shared_from_this<PlayerInputPacket>
 {
 
 private:
@@ -31,6 +31,6 @@ public:
 	bool isSneaking();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new PlayerInputPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new PlayerInputPacket()); }
 	virtual int getId() { return 27; }
 };

@@ -4,7 +4,7 @@
 #include "PacketListener.h"
 #include "Packet.h"
 
-class RotateHeadPacket : public Packet, public enable_shared_from_this<RotateHeadPacket>
+class RotateHeadPacket : public Packet, public std::enable_shared_from_this<RotateHeadPacket>
 {
 public:
 	int id;
@@ -18,10 +18,10 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 	virtual bool isAync();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new RotateHeadPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new RotateHeadPacket()); }
 	virtual int getId() { return 35; }
 };

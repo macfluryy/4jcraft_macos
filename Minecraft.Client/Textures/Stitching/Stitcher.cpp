@@ -6,7 +6,7 @@
 #include "StitchedTexture.h"
 #include "Stitcher.h"
 
-void Stitcher::_init(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
+void Stitcher::_init(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
 {
 	this->name = name;
 	this->maxWidth = maxWidth;
@@ -20,12 +20,12 @@ void Stitcher::_init(const wstring &name, int maxWidth, int maxHeight, bool forc
 	stitchedTexture = NULL;
 }
 
-Stitcher::Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo)
+Stitcher::Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo)
 {
 	_init(name, maxWidth, maxHeight, forcePowerOfTwo, 0);
 }
 
-Stitcher::Stitcher(const wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
+Stitcher::Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale)
 {
 	_init(name, maxWidth, maxHeight, forcePowerOfTwo, forcedScale);
 }
@@ -60,7 +60,7 @@ Texture *Stitcher::constructTexture(bool mipmap)
 	stitchedTexture = TextureManager::getInstance()->createTexture(name, Texture::TM_DYNAMIC, storageX, storageY, Texture::TFMT_RGBA, mipmap);
 	stitchedTexture->fill(stitchedTexture->getRect(), 0xffff0000);
 
-	vector<StitchSlot *> *slots = gatherAreas();
+	std::vector<StitchSlot *> *slots = gatherAreas();
 	for (int index = 0; index < slots->size(); index++)
 	{
 		StitchSlot *slot = slots->at(index);
@@ -96,9 +96,9 @@ void Stitcher::stitch()
 	}
 }
 
-vector<StitchSlot *> *Stitcher::gatherAreas()
+std::vector<StitchSlot *> *Stitcher::gatherAreas()
 {
-	vector<StitchSlot *> *result = new vector<StitchSlot *>();
+	std::vector<StitchSlot *> *result = new std::vector<StitchSlot *>();
 
 	//for (StitchSlot slot : storage)
 	for(AUTO_VAR(it, storage.begin()); it != storage.end(); ++it)
@@ -154,7 +154,7 @@ bool Stitcher::addToStorage(TextureHolder *textureHolder)
 */
 bool Stitcher::expand(TextureHolder *textureHolder)
 {
-	int minDistance = min(textureHolder->getHeight(), textureHolder->getWidth());
+	int minDistance = std::min(textureHolder->getHeight(), textureHolder->getWidth());
 	bool firstAddition = storageX == 0 && storageY == 0;
 
 	// It couldn't fit, decide which direction to grow to
@@ -175,7 +175,7 @@ bool Stitcher::expand(TextureHolder *textureHolder)
 		}
 
 		// Even if the smallest side fits the larger might not >.>
-		int maxDistance = max(textureHolder->getHeight(), textureHolder->getWidth());
+		int maxDistance = std::max(textureHolder->getHeight(), textureHolder->getWidth());
 		// TODO: This seems wrong ...
 		if (firstAddition && !xCanGrow && !(smallestEncompassingPowerOfTwo(storageY + maxDistance) <= maxHeight))
 		{

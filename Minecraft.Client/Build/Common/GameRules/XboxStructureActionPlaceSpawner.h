@@ -10,7 +10,7 @@ class GRFObject;
 class XboxStructureActionPlaceSpawner : public XboxStructureActionPlaceBlock
 {
 private:
-	wstring m_entityId;
+	std::wstring m_entityId;
 public:
 	XboxStructureActionPlaceSpawner();
 	~XboxStructureActionPlaceSpawner();
@@ -18,7 +18,7 @@ public:
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_PlaceSpawner; }
 	
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttrs);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	bool placeSpawnerInLevel(StructurePiece *structure, Level *level, BoundingBox *chunkBB);
 };

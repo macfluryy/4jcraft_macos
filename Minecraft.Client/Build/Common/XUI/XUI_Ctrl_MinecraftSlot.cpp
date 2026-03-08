@@ -188,7 +188,7 @@ HRESULT CXuiCtrlMinecraftSlot::OnRender(XUIMessageRender *pRenderData, BOOL &bHa
 	{
 		HXUIDC hDC = pRenderData->hDC;
 		CXuiControl xuiControl(m_hObj);
-		if(m_item == NULL) m_item = shared_ptr<ItemInstance>( new ItemInstance(m_iID, m_iCount, m_iAuxVal) );
+		if(m_item == NULL) m_item = std::shared_ptr<ItemInstance>( new ItemInstance(m_iID, m_iCount, m_iAuxVal) );
 
 		// build and render with the game call
 
@@ -253,7 +253,7 @@ HRESULT CXuiCtrlMinecraftSlot::OnRender(XUIMessageRender *pRenderData, BOOL &bHa
 
 		//Make sure that pMinecraft->player is the correct player so that player specific rendering
 		// eg clock and compass, are rendered correctly
-		shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
+		std::shared_ptr<MultiplayerLocalPlayer> oldPlayer = pMinecraft->player;
 
 		if( m_iPad >= 0 && m_iPad < XUSER_MAX_COUNT ) pMinecraft->player = pMinecraft->localplayers[m_iPad];
 
@@ -343,7 +343,7 @@ void CXuiCtrlMinecraftSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, i
 	XuiElementSetShow(m_hObj,bShow);
 }
 
-void CXuiCtrlMinecraftSlot::SetIcon(int iPad, shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
+void CXuiCtrlMinecraftSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
 {
 	m_item = item;
 	m_isFoil = item->isFoil();

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 // #pragma message("LevelGenerationOptions.h ")
 
@@ -24,20 +24,20 @@ public:
 
 	virtual bool requiresTexturePack()=0;
 	virtual UINT getRequiredTexturePackId()=0;
-	virtual wstring getDefaultSaveName()=0;
+	virtual std::wstring getDefaultSaveName()=0;
 	virtual LPCWSTR getWorldName()=0;
 	virtual LPCWSTR getDisplayName()=0;
-	virtual wstring getGrfPath()=0;
+	virtual std::wstring getGrfPath()=0;
 	virtual bool requiresBaseSave() = 0;
-	virtual wstring getBaseSavePath() = 0;
+	virtual std::wstring getBaseSavePath() = 0;
 
 	virtual void setRequiresTexturePack(bool)=0;
 	virtual void setRequiredTexturePackId(UINT)=0;
-	virtual void setDefaultSaveName(const wstring &)=0;
-	virtual void setWorldName(const wstring &)=0;
-	virtual void setDisplayName(const wstring &)=0;
-	virtual void setGrfPath(const wstring &)=0;
-	virtual void setBaseSavePath(const wstring &)=0;
+	virtual void setDefaultSaveName(const std::wstring &)=0;
+	virtual void setWorldName(const std::wstring &)=0;
+	virtual void setDisplayName(const std::wstring &)=0;
+	virtual void setGrfPath(const std::wstring &)=0;
+	virtual void setBaseSavePath(const std::wstring &)=0;
 
 	virtual bool ready()=0;
 
@@ -47,32 +47,32 @@ public:
 class JustGrSource : public GrSource
 {
 protected:
-	wstring m_worldName;
-	wstring m_displayName;
-	wstring m_defaultSaveName;
+	std::wstring m_worldName;
+	std::wstring m_displayName;
+	std::wstring m_defaultSaveName;
 	bool m_bRequiresTexturePack;
 	int m_requiredTexturePackId;
-	wstring m_grfPath;
-	wstring m_baseSavePath;
+	std::wstring m_grfPath;
+	std::wstring m_baseSavePath;
 	bool m_bRequiresBaseSave;
 
 public:
 	virtual bool requiresTexturePack();
 	virtual UINT getRequiredTexturePackId();
-	virtual wstring getDefaultSaveName();
+	virtual std::wstring getDefaultSaveName();
 	virtual LPCWSTR getWorldName();
 	virtual LPCWSTR getDisplayName();
-	virtual wstring getGrfPath();
+	virtual std::wstring getGrfPath();
 	virtual bool requiresBaseSave();
-	virtual wstring getBaseSavePath();
+	virtual std::wstring getBaseSavePath();
 
 	virtual void setRequiresTexturePack(bool x);
 	virtual void setRequiredTexturePackId(UINT x);
-	virtual void setDefaultSaveName(const wstring &x);
-	virtual void setWorldName(const wstring &x);
-	virtual void setDisplayName(const wstring &x);
-	virtual void setGrfPath(const wstring &x);
-	virtual void setBaseSavePath(const wstring &x);
+	virtual void setDefaultSaveName(const std::wstring &x);
+	virtual void setWorldName(const std::wstring &x);
+	virtual void setDisplayName(const std::wstring &x);
+	virtual void setGrfPath(const std::wstring &x);
+	virtual void setBaseSavePath(const std::wstring &x);
 
 	virtual bool ready();
 
@@ -117,22 +117,22 @@ public:
 
 	bool requiresTexturePack();
 	UINT getRequiredTexturePackId();
-	wstring getDefaultSaveName();
+	std::wstring getDefaultSaveName();
 	LPCWSTR getWorldName();
 	LPCWSTR getDisplayName();
-	wstring getGrfPath();
+	std::wstring getGrfPath();
 	bool requiresBaseSave();
-	wstring getBaseSavePath();
+	std::wstring getBaseSavePath();
 
 	void setGrSource(GrSource *grs);
 
 	void setRequiresTexturePack(bool x);
 	void setRequiredTexturePackId(UINT x);
-	void setDefaultSaveName(const wstring &x);
-	void setWorldName(const wstring &x);
-	void setDisplayName(const wstring &x);
-	void setGrfPath(const wstring &x);
-	void setBaseSavePath(const wstring &x);
+	void setDefaultSaveName(const std::wstring &x);
+	void setWorldName(const std::wstring &x);
+	void setDisplayName(const std::wstring &x);
+	void setGrfPath(const std::wstring &x);
+	void setBaseSavePath(const std::wstring &x);
 
 	bool ready();
 
@@ -149,13 +149,13 @@ private:
 	__int64 m_seed;
 	bool m_useFlatWorld;
 	Pos *m_spawnPos;
-	vector<ApplySchematicRuleDefinition *> m_schematicRules;
-	vector<ConsoleGenerateStructure *> m_structureRules;
+	std::vector<ApplySchematicRuleDefinition *> m_schematicRules;
+	std::vector<ConsoleGenerateStructure *> m_structureRules;
 	bool m_bHaveMinY;
 	int m_minY;
-	unordered_map<wstring, ConsoleSchematicFile *> m_schematics;
-	vector<BiomeOverride *> m_biomeOverrides;
-	vector<StartFeature *> m_features;
+	std::unordered_map<std::wstring, ConsoleSchematicFile *> m_schematics;
+	std::vector<BiomeOverride *> m_biomeOverrides;
+	std::vector<StartFeature *> m_features;
 
 	bool m_bRequiresGameRules;
 	LevelRuleset *m_requiredGameRules;
@@ -169,9 +169,9 @@ public:
 	virtual ConsoleGameRules::EGameRuleType getActionType();
 	
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
-	virtual void getChildren(vector<GameRuleDefinition *> *children);
+	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	__int64 getLevelSeed();
 	Pos *getSpawnPos();
@@ -186,11 +186,11 @@ private:
 	void clearSchematics();
 
 public:	
-	ConsoleSchematicFile *loadSchematicFile(const wstring &filename, PBYTE pbData, DWORD dwLen);
+	ConsoleSchematicFile *loadSchematicFile(const std::wstring &filename, PBYTE pbData, DWORD dwLen);
 
 public:
-	ConsoleSchematicFile *getSchematicFile(const wstring &filename);
-	void releaseSchematicFile(const wstring &filename);
+	ConsoleSchematicFile *getSchematicFile(const std::wstring &filename);
+	void releaseSchematicFile(const std::wstring &filename);
 
 	bool requiresGameRules();
 	void setRequiredGameRules(LevelRuleset *rules);
@@ -200,9 +200,9 @@ public:
 	bool isFeatureChunk(int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature);
 
 	void loadStringTable(StringTable *table);
-	LPCWSTR getString(const wstring &key);
+	LPCWSTR getString(const std::wstring &key);
 
-	unordered_map<wstring, ConsoleSchematicFile *> *getUnfinishedSchematicFiles();
+	std::unordered_map<std::wstring, ConsoleSchematicFile *> *getUnfinishedSchematicFiles();
 	
 	// 4J-JEV:
 	// ApplySchematicRules contain limited state

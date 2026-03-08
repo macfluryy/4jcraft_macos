@@ -1,12 +1,12 @@
 #pragma once
-using namespace std;
+
 
 class Particle;
 class Level;
 class Textures;
 class Entity;
 class Random;
-using namespace std;
+
 
 class ParticleEngine
 {
@@ -26,19 +26,19 @@ public:
 protected:
 	Level *level;
 private:
-	deque<shared_ptr<Particle> > particles[3][TEXTURE_COUNT];		// 4J made two arrays to cope with simultaneous two dimensions
+	std::deque<std::shared_ptr<Particle> > particles[3][TEXTURE_COUNT];		// 4J made two arrays to cope with simultaneous two dimensions
     Textures *textures;
     Random *random;
 
 public:
 	ParticleEngine(Level *level, Textures *textures);
 	~ParticleEngine();
-    void add(shared_ptr<Particle> p);
+    void add(std::shared_ptr<Particle> p);
     void tick();
-    void render(shared_ptr<Entity> player, float a);
-    void renderLit(shared_ptr<Entity> player, float a);
+    void render(std::shared_ptr<Entity> player, float a);
+    void renderLit(std::shared_ptr<Entity> player, float a);
     void setLevel(Level *level);
     void destroy(int x, int y, int z, int tid, int data);
     void crack(int x, int y, int z, int face);
-    wstring countParticles();
+    std::wstring countParticles();
 };

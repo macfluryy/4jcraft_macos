@@ -18,7 +18,7 @@ import net.minecraft.world.level.tile.Tile;
 #include "Recipy.h"
 
 #pragma once
-using namespace std;
+
 
 class CraftingContainer;
 class FireTile;
@@ -32,7 +32,7 @@ class ToolRecipies;
 class WeaponRecipies;
 class ShapedRecipy;
 
-typedef unordered_map<wchar_t, ItemInstance *> myMap;
+typedef std::unordered_map<wchar_t, ItemInstance *> myMap;
 
 #define ADD_OBJECT(a,b) a.push_back(new Object(b))
 
@@ -70,7 +70,7 @@ public:
 private: 
 	static Recipes *instance;
 
-	vector <Recipy *> *recipies;
+	std::vector <Recipy *> *recipies;
 
 public:
 	static void staticCtor();
@@ -89,11 +89,11 @@ public:
 	ShapedRecipy *addShapedRecipy(ItemInstance *, ... );
 	void addShapelessRecipy(ItemInstance *result,... ); 
 
-	shared_ptr<ItemInstance> getItemFor(shared_ptr<CraftingContainer> craftSlots, Level *level);
-	vector <Recipy *> *getRecipies();
+	std::shared_ptr<ItemInstance> getItemFor(std::shared_ptr<CraftingContainer> craftSlots, Level *level);
+	std::vector <Recipy *> *getRecipies();
 
 	// 4J-PB - Added all below for new Xbox 'crafting'
-	shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);
+	std::shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);
 	Recipy::INGREDIENTS_REQUIRED *getRecipeIngredientsArray();
 
 private:

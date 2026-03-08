@@ -39,7 +39,7 @@ void BodyControl::clientTick()
 	{
 		++timeStill;
 		static const int timeStillBeforeTurn = 10;
-		if (timeStill > timeStillBeforeTurn) clampAngle = max(1 - (timeStill - timeStillBeforeTurn) / 10.f, 0.0f) * maxClampAngle;
+		if (timeStill > timeStillBeforeTurn) clampAngle = std::max(1 - (timeStill - timeStillBeforeTurn) / 10.f, 0.0f) * maxClampAngle;
 	}
 
 	mob->yBodyRot = clamp(mob->yHeadRot, mob->yBodyRot, clampAngle);

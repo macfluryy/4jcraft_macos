@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 #include "../Media/xuiscene_brewingstand.h"
 #include "XUI_Scene_AbstractContainer.h"
 #include "../UI/IUIScene_BrewingMenu.h"

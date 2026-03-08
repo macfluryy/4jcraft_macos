@@ -13,6 +13,6 @@ namespace net_minecraft_world
 	{
 		friend class SimpleContainer;
 	private:
-		virtual void containerChanged(shared_ptr<SimpleContainer> simpleContainer) = 0;
+		virtual void containerChanged(std::shared_ptr<SimpleContainer> simpleContainer) = 0;
 	};
 }

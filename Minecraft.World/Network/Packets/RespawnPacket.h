@@ -1,12 +1,12 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
 class LevelType;
 class GameType;
 
-class RespawnPacket : public Packet, public enable_shared_from_this<RespawnPacket>
+class RespawnPacket : public Packet, public std::enable_shared_from_this<RespawnPacket>
 {
 public:
 	char dimension;
@@ -29,6 +29,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new RespawnPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new RespawnPacket()); }
 	virtual int getId() { return 9; }
 };

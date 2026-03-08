@@ -13,14 +13,14 @@ public:
 	static __int64 hashCode(int x, int z);
 	int hashCode();
 
-	double distanceToSqr(shared_ptr<Entity> e);
+	double distanceToSqr(std::shared_ptr<Entity> e);
 	double distanceToSqr(double px, double pz);	// 4J added
 
 	int getMiddleBlockX();
 	int getMiddleBlockZ();
 
 	TilePos getMiddleBlockPosition(int y);
-	wstring toString();
+	std::wstring toString();
 
 	static __int64 hash_fnct(const ChunkPos &k);
 	static bool eq_test(const ChunkPos &x, const ChunkPos &y);

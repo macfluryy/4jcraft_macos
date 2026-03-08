@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include <vector>
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 #include "../../../Build/Common/Network/NetworkPlayerInterface.h"
@@ -28,7 +28,7 @@ public:
 	virtual INetworkPlayer *GetPlayerByIndex(int playerIndex);
 	virtual INetworkPlayer * GetPlayerByXuid(PlayerUID xuid);
 	virtual INetworkPlayer * GetPlayerBySmallId(unsigned char smallId);
-	virtual wstring GetDisplayNameByGamertag(wstring gamertag);
+	virtual std::wstring GetDisplayNameByGamertag(std::wstring gamertag);
 	virtual bool ShouldMessageForFullSession();
 
 	virtual INetworkPlayer *GetHostPlayer();
@@ -71,7 +71,7 @@ private:
 
 	HANDLE m_notificationListener;
 
-	vector<DQRNetworkPlayer *> m_machineDQRPrimaryPlayers; // collection of players that we deem to be the main one for that system
+	std::vector<DQRNetworkPlayer *> m_machineDQRPrimaryPlayers; // collection of players that we deem to be the main one for that system
 
 	bool			m_bLeavingGame;
 	bool			m_bLeaveGameOnTick;
@@ -107,7 +107,7 @@ private:
 		PlayerFlags(INetworkPlayer *pNetworkPlayer, unsigned int count);
 		~PlayerFlags();
 	};
-	vector<PlayerFlags *> m_playerFlags;
+	std::vector<PlayerFlags *> m_playerFlags;
 	void SystemFlagAddPlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagRemovePlayer(INetworkPlayer *pNetworkPlayer);
 	void SystemFlagReset();
@@ -120,11 +120,11 @@ private:
 	float m_lastPlayerEventTimeStart;
 
 public:
-	wstring GatherStats();
-	wstring GatherRTTStats();
+	std::wstring GatherStats();
+	std::wstring GatherRTTStats();
 
 private:	
-	vector<FriendSessionInfo *> friendsSessions[XUSER_MAX_COUNT];
+	std::vector<FriendSessionInfo *> friendsSessions[XUSER_MAX_COUNT];
 	int m_searchResultsCount;
 	int m_lastSearchStartTime;
 
@@ -139,7 +139,7 @@ private:
 
 	void TickSearch();
 
-	vector<INetworkPlayer *>currentNetworkPlayers;
+	std::vector<INetworkPlayer *>currentNetworkPlayers;
 	INetworkPlayer *addNetworkPlayer(DQRNetworkPlayer *pDQRPlayer);
 	void removeNetworkPlayer(DQRNetworkPlayer *pDQRPlayer);
 	static INetworkPlayer *getNetworkPlayer(DQRNetworkPlayer *pDQRPlayer);
@@ -149,7 +149,7 @@ private:
 	virtual void Notify(int ID, ULONG_PTR Param);
 
 public:
-	virtual vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly);
+	virtual std::vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly);
 	virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession);
 	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam );
 	virtual void GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam );

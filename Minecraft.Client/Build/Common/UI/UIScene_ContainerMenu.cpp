@@ -40,7 +40,7 @@ UIScene_ContainerMenu::UIScene_ContainerMenu(int iPad, void *_initData, UILayer 
 	if(initData) delete initData;
 }
 
-wstring UIScene_ContainerMenu::getMoviePath()
+std::wstring UIScene_ContainerMenu::getMoviePath()
 {
 	if(m_bLargeChest)
 	{

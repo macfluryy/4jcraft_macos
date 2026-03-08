@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include "../Entity.h"
 #include "../HangingEntity.h"
 
@@ -30,12 +30,12 @@ protected:
 
 public:
 
-	shared_ptr<ItemInstance> getItem();
-	void setItem(shared_ptr<ItemInstance> item);
+	std::shared_ptr<ItemInstance> getItem();
+	void setItem(std::shared_ptr<ItemInstance> item);
 	int getRotation();
 	void setRotation(int rotation);
 
 	virtual void addAdditonalSaveData(CompoundTag *tag);
 	virtual void readAdditionalSaveData(CompoundTag *tag);
-	virtual bool interact(shared_ptr<Player> player);
+	virtual bool interact(std::shared_ptr<Player> player);
 };

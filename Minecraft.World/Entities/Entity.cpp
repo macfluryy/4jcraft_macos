@@ -257,7 +257,7 @@ void Entity::_init(bool useSmallId)
 	viewScale = 1.0;
 
 	blocksBuilding = false;
-	rider = weak_ptr<Entity>();
+	rider = std::weak_ptr<Entity>();
 	riding = nullptr;
 
 	//level = NULL; // Level is assigned to in the original c_tor code
@@ -314,7 +314,7 @@ void Entity::_init(bool useSmallId)
 	fireImmune = false;
 
 	// values that need to be sent to clients in SMP
-	entityData = shared_ptr<SynchedEntityData>(new SynchedEntityData());
+	entityData = std::shared_ptr<SynchedEntityData>(new SynchedEntityData());
 
 	xRideRotA = yRideRotA = 0.0;
 	inChunk = false;
@@ -355,7 +355,7 @@ Entity::~Entity()
 	delete bb;
 }
 
-shared_ptr<SynchedEntityData> Entity::getEntityData()
+std::shared_ptr<SynchedEntityData> Entity::getEntityData()
 {
 	return entityData;
 }
@@ -377,7 +377,7 @@ void Entity::resetPos()
 {
 	if (level == NULL) return;
 
-	shared_ptr<Entity> sharedThis = shared_from_this();
+	std::shared_ptr<Entity> sharedThis = shared_from_this();
 	while (true && y > 0)
 	{
 		setPos(x, y, z);
@@ -675,7 +675,7 @@ void Entity::move(double xa, double ya, double za, bool noEntityCubes)   // 4J -
 
 	AABB *bbOrg = bb->copy();
 
-	bool isPlayerSneaking = onGround && isSneaking() && dynamic_pointer_cast<Player>(shared_from_this()) != NULL;
+	bool isPlayerSneaking = onGround && isSneaking() && std::dynamic_pointer_cast<Player>(shared_from_this()) != NULL;
 
 	if (isPlayerSneaking)
 	{
@@ -1006,7 +1006,7 @@ void Entity::checkFallDamage(double ya, bool onGround)
 	{
 		if (fallDistance > 0)
 		{
-			if (dynamic_pointer_cast<Mob>(shared_from_this()) != NULL)
+			if (std::dynamic_pointer_cast<Mob>(shared_from_this()) != NULL)
 			{
 				int xt = Mth::floor(x);
 				int yt = Mth::floor(y - 0.2f - this->heightOffset);
@@ -1174,7 +1174,7 @@ void Entity::moveTo(double x, double y, double z, float yRot, float xRot)
 	this->setPos(this->x, this->y, this->z);
 }
 
-float Entity::distanceTo(shared_ptr<Entity> e)
+float Entity::distanceTo(std::shared_ptr<Entity> e)
 {
 	float xd = (float) (x - e->x);
 	float yd = (float) (y - e->y);
@@ -1198,7 +1198,7 @@ double Entity::distanceTo(double x2, double y2, double z2)
 	return sqrt(xd * xd + yd * yd + zd * zd);
 }
 
-double Entity::distanceToSqr(shared_ptr<Entity> e)
+double Entity::distanceToSqr(std::shared_ptr<Entity> e)
 {
 	double xd = x - e->x;
 	double yd = y - e->y;
@@ -1206,11 +1206,11 @@ double Entity::distanceToSqr(shared_ptr<Entity> e)
 	return xd * xd + yd * yd + zd * zd;
 }
 
-void Entity::playerTouch(shared_ptr<Player> player)
+void Entity::playerTouch(std::shared_ptr<Player> player)
 {
 }
 
-void Entity::push(shared_ptr<Entity> e)
+void Entity::push(std::shared_ptr<Entity> e)
 {
 	if (e->rider.lock().get() == this || e->riding.get() == this) return;
 
@@ -1282,7 +1282,7 @@ bool Entity::isShootable()
 	return false;
 }
 
-void Entity::awardKillScore(shared_ptr<Entity> victim, int score)
+void Entity::awardKillScore(std::shared_ptr<Entity> victim, int score)
 {
 }
 
@@ -1302,7 +1302,7 @@ bool Entity::shouldRenderAtSqrDistance(double distance)
 	return distance < size * size;
 }
 
-// 4J - used to be wstring return type, returning L""
+// 4J - used to be std::wstring return type, returning L""
 int Entity::getTexture()
 {
 	return -1;
@@ -1315,7 +1315,7 @@ bool Entity::isCreativeModeAllowed()
 
 bool Entity::save(CompoundTag *entityTag)
 {
-	wstring id = getEncodeId();
+	std::wstring id = getEncodeId();
 	if (removed || id.empty() )
 	{
 		return false;
@@ -1382,7 +1382,7 @@ void Entity::load(CompoundTag *tag)
 }
 
 
-const wstring Entity::getEncodeId()
+const std::wstring Entity::getEncodeId()
 {
 	return EntityIO::getEncodeId( shared_from_this() );
 }
@@ -1442,19 +1442,19 @@ float Entity::getShadowHeightOffs()
 	return bbHeight / 2;
 }
 
-shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count)
+std::shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count)
 {
 	return spawnAtLocation(resource, count, 0);
 }
 
-shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count, float yOffs)
+std::shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count, float yOffs)
 {
-	return spawnAtLocation(shared_ptr<ItemInstance>( new ItemInstance(resource, count, 0) ), yOffs);
+	return spawnAtLocation(std::shared_ptr<ItemInstance>( new ItemInstance(resource, count, 0) ), yOffs);
 }
 
-shared_ptr<ItemEntity> Entity::spawnAtLocation(shared_ptr<ItemInstance> itemInstance, float yOffs)
+std::shared_ptr<ItemEntity> Entity::spawnAtLocation(std::shared_ptr<ItemInstance> itemInstance, float yOffs)
 {
-	shared_ptr<ItemEntity> ie = shared_ptr<ItemEntity>( new ItemEntity(level, x, y + yOffs, z, itemInstance) );
+	std::shared_ptr<ItemEntity> ie = std::shared_ptr<ItemEntity>( new ItemEntity(level, x, y + yOffs, z, itemInstance) );
 	ie->throwTime = 10;
 	level->addEntity(ie);
 	return ie;
@@ -1483,12 +1483,12 @@ bool Entity::isInWall()
 	return false;
 }
 
-bool Entity::interact(shared_ptr<Player> player)
+bool Entity::interact(std::shared_ptr<Player> player)
 {
 	return false;
 }
 
-AABB *Entity::getCollideAgainstBox(shared_ptr<Entity> entity) 
+AABB *Entity::getCollideAgainstBox(std::shared_ptr<Entity> entity) 
 {
 	return NULL;
 }
@@ -1536,10 +1536,10 @@ void Entity::rideTick()
 
 void Entity::positionRider()
 {
-	shared_ptr<Entity> lockedRider = rider.lock();
+	std::shared_ptr<Entity> lockedRider = rider.lock();
 	if( lockedRider )
 	{
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(lockedRider);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(lockedRider);
 		if (!(player && player->isLocalPlayer()))
 		{
 			lockedRider->xOld = xOld;
@@ -1560,7 +1560,7 @@ double Entity::getRideHeight()
 	return bbHeight * .75;
 }
 
-void Entity::ride(shared_ptr<Entity> e)
+void Entity::ride(std::shared_ptr<Entity> e)
 {
 	xRideRotA = 0;
 	yRideRotA = 0;
@@ -1571,21 +1571,21 @@ void Entity::ride(shared_ptr<Entity> e)
 		{
 			// 4J Stu - Position should already be updated before the SetRidingPacket comes in
 			if(!level->isClientSide) moveTo(riding->x, riding->bb->y0 + riding->bbHeight, riding->z, yRot, xRot);
-			riding->rider = weak_ptr<Entity>();
+			riding->rider = std::weak_ptr<Entity>();
 		}
 		riding = nullptr;
 		return;
 	}
 	if (riding != NULL)
 	{
-		riding->rider = weak_ptr<Entity>();
+		riding->rider = std::weak_ptr<Entity>();
 	}
 	riding = e;
 	e->rider = shared_from_this();
 }
 
 // 4J Stu - Brought forward from 12w36 to fix #46282 - TU5: Gameplay: Exiting the minecart in a tight corridor damages the player
-void Entity::findStandUpPosition(shared_ptr<Entity> vehicle)
+void Entity::findStandUpPosition(std::shared_ptr<Entity> vehicle)
 {
 	AABB *boundingBox;
 	double fallbackX = vehicle->x;
@@ -1695,7 +1695,7 @@ ItemInstanceArray Entity::getEquipmentSlots() // ItemInstance[]
 }
 
 // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer Encountered: TU7: Content: Art: Aura of enchanted item is not displayed for other players in online game
-void Entity::setEquippedSlot(int slot, shared_ptr<ItemInstance> item)
+void Entity::setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item)
 {
 }
 
@@ -1744,7 +1744,7 @@ bool Entity::isInvisible()
 	return getSharedFlag(FLAG_INVISIBLE);
 }
 
-bool Entity::isInvisibleTo(shared_ptr<Player> plr)
+bool Entity::isInvisibleTo(std::shared_ptr<Player> plr)
 {
 	return isInvisible();
 }
@@ -1811,7 +1811,7 @@ void Entity::thunderHit(const LightningBolt *lightningBolt)
 	if (onFire == 0) setOnFire(8);
 }
 
-void Entity::killed(shared_ptr<Mob> mob)
+void Entity::killed(std::shared_ptr<Mob> mob)
 {
 }
 
@@ -1889,20 +1889,20 @@ void Entity::makeStuckInWeb()
 	fallDistance = 0;
 }
 
-wstring Entity::getAName()
+std::wstring Entity::getAName()
 {
-	wstring id = EntityIO::getEncodeId(shared_from_this());
+	std::wstring id = EntityIO::getEncodeId(shared_from_this());
 	if (id.empty()) id = L"generic";
 	return L"entity." + id + _toString(entityId);
 	//return I18n.get("entity." + id + ".name");
 }
 
-vector<shared_ptr<Entity> > *Entity::getSubEntities()
+std::vector<std::shared_ptr<Entity> > *Entity::getSubEntities()
 {
 	return NULL;
 }
 
-bool Entity::is(shared_ptr<Entity> other)
+bool Entity::is(std::shared_ptr<Entity> other)
 {
 	return shared_from_this() == other;
 }
@@ -1926,7 +1926,7 @@ bool Entity::isInvulnerable()
 	return false;
 }
 
-void Entity::copyPosition(shared_ptr<Entity> target)
+void Entity::copyPosition(std::shared_ptr<Entity> target)
 {
 	moveTo(target->x, target->y, target->z, target->yRot, target->xRot);
 }

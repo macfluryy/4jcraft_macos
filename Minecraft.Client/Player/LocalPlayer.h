@@ -13,7 +13,7 @@ class Input;
 class Stat;
 class Minecraft;
 
-using namespace std;
+
 
 // Time in seconds before the players presence is update to Idle
 #define PLAYER_IDLE_TIME 300
@@ -99,19 +99,19 @@ public:
     virtual void addAdditonalSaveData(CompoundTag *entityTag);
     virtual void readAdditionalSaveData(CompoundTag *entityTag);
     virtual void closeContainer();
-    virtual void openTextEdit(shared_ptr<SignTileEntity> sign);
-    virtual bool openContainer(shared_ptr<Container> container);		// 4J added bool return
+    virtual void openTextEdit(std::shared_ptr<SignTileEntity> sign);
+    virtual bool openContainer(std::shared_ptr<Container> container);		// 4J added bool return
     virtual bool startCrafting(int x, int y, int z);					// 4J added bool return
 	virtual bool startEnchanting(int x, int y, int z);					// 4J added bool return
 	virtual bool startRepairing(int x, int y, int z);
-    virtual bool openFurnace(shared_ptr<FurnaceTileEntity> furnace);	// 4J added bool return
-	virtual bool openBrewingStand(shared_ptr<BrewingStandTileEntity> brewingStand); // 4J added bool return
-    virtual bool openTrap(shared_ptr<DispenserTileEntity> trap);		// 4J added bool return
-	virtual bool openTrading(shared_ptr<Merchant> traderTarget);
-	virtual void crit(shared_ptr<Entity> e);
-	virtual void magicCrit(shared_ptr<Entity> e);
-    virtual void take(shared_ptr<Entity> e, int orgCount);
-    virtual void chat(const wstring& message);
+    virtual bool openFurnace(std::shared_ptr<FurnaceTileEntity> furnace);	// 4J added bool return
+	virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity> brewingStand); // 4J added bool return
+    virtual bool openTrap(std::shared_ptr<DispenserTileEntity> trap);		// 4J added bool return
+	virtual bool openTrading(std::shared_ptr<Merchant> traderTarget);
+	virtual void crit(std::shared_ptr<Entity> e);
+	virtual void magicCrit(std::shared_ptr<Entity> e);
+    virtual void take(std::shared_ptr<Entity> e, int orgCount);
+    virtual void chat(const std::wstring& message);
 	virtual bool isSneaking();
 	//virtual bool isIdle();
     virtual void hurtTo(int newHealth, ETelemetryChallenges damageSource);
@@ -159,7 +159,7 @@ public:
 	int   lastClickState;
 
 	// 4J Stu - Added to allow callback to tutorial to stay within Minecraft.Client
-	virtual void onCrafted(shared_ptr<ItemInstance> item);
+	virtual void onCrafted(std::shared_ptr<ItemInstance> item);
 
 	virtual void setAndBroadcastCustomSkin(DWORD skinId);
 	virtual void setAndBroadcastCustomCape(DWORD capeId);
@@ -189,11 +189,11 @@ public:
 
 	float getAndResetChangeDimensionTimer();
 
-	virtual void handleCollectItem(shared_ptr<ItemInstance> item);
-	void SetPlayerAdditionalModelParts(vector<ModelPart *>pAdditionalModelParts);
+	virtual void handleCollectItem(std::shared_ptr<ItemInstance> item);
+	void SetPlayerAdditionalModelParts(std::vector<ModelPart *>pAdditionalModelParts);
 
 private:
-	vector<ModelPart *> m_pAdditionalModelParts;
+	std::vector<ModelPart *> m_pAdditionalModelParts;
 };
 
 

@@ -29,7 +29,7 @@ int TextureManager::createTextureID()
 	return nextID++;
 }
 
-Texture *TextureManager::getTexture(const wstring &name)
+Texture *TextureManager::getTexture(const std::wstring &name)
 {
 	if (stringToIDMap.find(name) != stringToIDMap.end())
 	{
@@ -39,7 +39,7 @@ Texture *TextureManager::getTexture(const wstring &name)
 	return NULL;
 }
 
-void TextureManager::registerName(const wstring &name, Texture *texture)
+void TextureManager::registerName(const std::wstring &name, Texture *texture)
 {
 	stringToIDMap.insert( stringIntMap::value_type( name, texture->getManagerId() ) );
 
@@ -64,7 +64,7 @@ void TextureManager::registerTexture(Texture *texture)
 	idToTextureMap.insert( intTextureMap::value_type( texture->getManagerId(), texture ) );
 }
 
-void TextureManager::unregisterTexture(const wstring &name, Texture *texture)
+void TextureManager::unregisterTexture(const std::wstring &name, Texture *texture)
 {
 	AUTO_VAR(it, idToTextureMap.find(texture->getManagerId()));
 	if(it != idToTextureMap.end()) idToTextureMap.erase(it);
@@ -73,16 +73,16 @@ void TextureManager::unregisterTexture(const wstring &name, Texture *texture)
 	if(it2 != stringToIDMap.end()) stringToIDMap.erase(it2);
 }
 
-Stitcher *TextureManager::createStitcher(const wstring &name)
+Stitcher *TextureManager::createStitcher(const std::wstring &name)
 {
 	int maxTextureSize = Minecraft::maxSupportedTextureSize();
 
 	return new Stitcher(name, maxTextureSize, maxTextureSize, true);
 }
 
-vector<Texture *> *TextureManager::createTextures(const wstring &filename, bool mipmap)
+std::vector<Texture *> *TextureManager::createTextures(const std::wstring &filename, bool mipmap)
 {
-	vector<Texture *> *result = new vector<Texture *>();
+	std::vector<Texture *> *result = new std::vector<Texture *>();
 	TexturePack *texturePack = Minecraft::GetInstance()->skins->getSelected();
 	//try {
 	int mode = Texture::TM_CONTAINER; // Most important -- so it doesn't get uploaded to videoram
@@ -92,7 +92,7 @@ vector<Texture *> *TextureManager::createTextures(const wstring &filename, bool 
 	int magFilter = Texture::TFLT_NEAREST;
 
 	MemSect(32);
-	wstring drive = L"";
+	std::wstring drive = L"";
 
 
 	if(texturePack->hasFile(L"res/" + filename,false))
@@ -106,7 +106,7 @@ vector<Texture *> *TextureManager::createTextures(const wstring &filename, bool 
 		{
 			const char *pchTextureName=wstringtofilename(filename);
 			char *pchUsrDir = app.GetBDUsrDirPath(pchTextureName);
-			wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+			std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 			drive= wstr + L"\\Common\\res\\TitleUpdate\\";
 		}
 		else
@@ -123,7 +123,7 @@ vector<Texture *> *TextureManager::createTextures(const wstring &filename, bool 
 	int height = image->getHeight();
 	int width = image->getWidth();
 
-	wstring texName = getTextureNameFromPath(filename);
+	std::wstring texName = getTextureNameFromPath(filename);
 
 	if (isAnimation(filename, texturePack))
 	{
@@ -168,27 +168,27 @@ vector<Texture *> *TextureManager::createTextures(const wstring &filename, bool 
 	return result;
 }
 
-wstring TextureManager::getTextureNameFromPath(const wstring &filename)
+std::wstring TextureManager::getTextureNameFromPath(const std::wstring &filename)
 {
 	File file(filename);
 	return file.getName().substr(0, file.getName().find_last_of(L'.'));
 }
 
-bool TextureManager::isAnimation(const wstring &filename, TexturePack *texturePack)
+bool TextureManager::isAnimation(const std::wstring &filename, TexturePack *texturePack)
 {
-	wstring dataFileName = L"/" + filename.substr(0, filename.find_last_of(L'.')) + L".txt";
+	std::wstring dataFileName = L"/" + filename.substr(0, filename.find_last_of(L'.')) + L".txt";
 	bool hasOriginalImage = texturePack->hasFile(L"/" + filename, false);
 	return Minecraft::GetInstance()->skins->getSelected()->hasFile(dataFileName, !hasOriginalImage);
 }
 
-Texture *TextureManager::createTexture(const wstring &name, int mode, int width, int height, int wrap, int format, int minFilter, int magFilter, bool mipmap, BufferedImage *image)
+Texture *TextureManager::createTexture(const std::wstring &name, int mode, int width, int height, int wrap, int format, int minFilter, int magFilter, bool mipmap, BufferedImage *image)
 {
 	Texture *newTex = new Texture(name, mode, width, height, wrap, format, minFilter, magFilter, image, mipmap);
 	registerTexture(newTex);
 	return newTex;
 }
 
-Texture *TextureManager::createTexture(const wstring &name, int mode, int width, int height, int format, bool mipmap)
+Texture *TextureManager::createTexture(const std::wstring &name, int mode, int width, int height, int format, bool mipmap)
 {
 	// 4J Stu - Don't clamp as it causes issues with how we signal non-mipmmapped textures to the pixel shader
 	//return createTexture(name, mode, width, height, Texture::WM_CLAMP, format, Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap, NULL);

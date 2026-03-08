@@ -1,14 +1,14 @@
 #pragma once
 #include "../Screen.h"
 class Options;
-using namespace std;
+
 
 class VideoSettingsScreen : public Screen
 {
 private:
 	Screen *lastScreen;
 protected:
-	wstring title;
+	std::wstring title;
 private:
 	Options *options;
 

@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class SetCarriedItemPacket : public Packet, public enable_shared_from_this<SetCarriedItemPacket>
+class SetCarriedItemPacket : public Packet, public std::enable_shared_from_this<SetCarriedItemPacket>
 {
 public:
 	int slot;
@@ -16,9 +16,9 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new SetCarriedItemPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new SetCarriedItemPacket()); }
 	virtual int getId() { return 16; }
 };

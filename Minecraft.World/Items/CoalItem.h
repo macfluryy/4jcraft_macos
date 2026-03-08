@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Item.h"
 
@@ -13,5 +13,5 @@ public:
 
 	CoalItem(int id);
 
-	virtual unsigned int getDescriptionId(shared_ptr<ItemInstance> instance); 
+	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance); 
 };

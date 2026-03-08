@@ -41,7 +41,7 @@ HRESULT CXuiCtrlSplashPulser::OnRender(XUIMessageRender *pRenderData, BOOL &bHan
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 	Font *font = pMinecraft->font;
 
-	wstring splash( GetText() );
+	std::wstring splash( GetText() );
 
 	// build and render with the game call
 

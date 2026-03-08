@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Level/Storage/LevelSource.h"
 #include "../../Entities/Mob.h"
@@ -50,7 +50,7 @@ public:
 	static const int BIOME_COUNT = 23; // 4J Stu added
 
 public:
-	wstring m_name;
+	std::wstring m_name;
     int color;
     uint8_t topMaterial;
     uint8_t material;
@@ -81,12 +81,12 @@ public:
     };
 
 protected:
-    vector<MobSpawnerData *> enemies;
-    vector<MobSpawnerData *> friendlies;
-    vector<MobSpawnerData *> waterFriendlies;
-	vector<MobSpawnerData *> friendlies_chicken;
-	vector<MobSpawnerData *> friendlies_wolf;
-	vector<MobSpawnerData *> friendlies_mushroomcow;
+    std::vector<MobSpawnerData *> enemies;
+    std::vector<MobSpawnerData *> friendlies;
+    std::vector<MobSpawnerData *> waterFriendlies;
+	std::vector<MobSpawnerData *> friendlies_chicken;
+	std::vector<MobSpawnerData *> friendlies_wolf;
+	std::vector<MobSpawnerData *> friendlies_mushroomcow;
 	
 	Biome(int id);
 	~Biome();
@@ -122,7 +122,7 @@ public:
 
 protected:
 	Biome *setSnowCovered();
-    Biome *setName(const wstring &name);
+    Biome *setName(const std::wstring &name);
     Biome *setLeafColor(int leafColor);
     Biome *setColor(int color);
 
@@ -132,7 +132,7 @@ protected:
 public:
     virtual int getSkyColor(float temp);
 
-    vector<MobSpawnerData *> *getMobs(MobCategory *category);
+    std::vector<MobSpawnerData *> *getMobs(MobCategory *category);
 
     virtual bool hasSnow();
     virtual bool hasRain();

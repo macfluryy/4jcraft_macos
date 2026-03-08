@@ -46,7 +46,7 @@ class PsPlusUpsellWrapper;
 #undef linux
 #endif
 
-using namespace std;
+
 
 class Minecraft
 {
@@ -56,7 +56,7 @@ private:
 	};
 
 public:
-	static const wstring VERSION_STRING;
+	static const std::wstring VERSION_STRING;
 	Minecraft(Component *mouseComponent, Canvas *parent, MinecraftApplet *minecraftApplet, int width, int height, bool fullscreen);
 	void init();
 
@@ -94,11 +94,11 @@ public:
 
 	MultiPlayerLevel *level;
 	LevelRenderer *levelRenderer;
-	shared_ptr<MultiplayerLocalPlayer> player;
+	std::shared_ptr<MultiplayerLocalPlayer> player;
 
 	MultiPlayerLevelArray levels;
 
-	shared_ptr<MultiplayerLocalPlayer> localplayers[XUSER_MAX_COUNT];
+	std::shared_ptr<MultiplayerLocalPlayer> localplayers[XUSER_MAX_COUNT];
 	MultiPlayerGameMode *localgameModes[XUSER_MAX_COUNT];
 	int localPlayerIdx;
 	ItemInHandRenderer *localitemInHandRenderers[XUSER_MAX_COUNT];
@@ -114,7 +114,7 @@ public:
 	void addPendingLocalConnection(int idx, ClientConnection *connection);
 	void connectionDisconnected(int idx, DisconnectPacket::eDisconnectReason reason) { m_connectionFailed[idx] = true; m_connectionFailedReason[idx] = reason; }
 
-	shared_ptr<MultiplayerLocalPlayer> createExtraLocalPlayer(int idx, const wstring& name, int pad, int iDimension, ClientConnection *clientConnection = NULL,MultiPlayerLevel *levelpassedin=NULL);
+	std::shared_ptr<MultiplayerLocalPlayer> createExtraLocalPlayer(int idx, const std::wstring& name, int pad, int iDimension, ClientConnection *clientConnection = NULL,MultiPlayerLevel *levelpassedin=NULL);
 	void createPrimaryLocalPlayer(int iPad);
 	bool setLocalPlayerIdx(int idx);
 	int getLocalPlayerIdx();
@@ -123,10 +123,10 @@ public:
 	void updatePlayerViewportAssignments();
 	int unoccupiedQuadrant;	// 4J - added
 
-	shared_ptr<Mob> cameraTargetPlayer;
+	std::shared_ptr<Mob> cameraTargetPlayer;
 	ParticleEngine *particleEngine;
 	User *user;
-	wstring serverDomain;
+	std::wstring serverDomain;
 	Canvas *parent;
 	bool appletMode;
 
@@ -181,12 +181,12 @@ public:
 	StatsCounter* stats[4];
 
 private:
-	wstring connectToIp;
+	std::wstring connectToIp;
 	int connectToPort;
 
 public:
 	void clearConnectionFailed();
-	void connectTo(const wstring& server, int port);
+	void connectTo(const std::wstring& server, int port);
 
 private:
 	void renderLoadingScreen();
@@ -199,14 +199,14 @@ private:
 
 public:
 	static File getWorkingDirectory();
-	static File getWorkingDirectory(const wstring& applicationName);
+	static File getWorkingDirectory(const std::wstring& applicationName);
 private:
 	static OS getPlatform();
 public:
 	LevelStorageSource *getLevelSource();
 	void setScreen(Screen *screen);
 private:
-	void checkGlError(const wstring& string);
+	void checkGlError(const std::wstring& string);
 
 #ifdef __ORBIS__
 	PsPlusUpsellWrapper *m_pPsPlusUpsell;
@@ -215,7 +215,7 @@ private:
 public:
 	void destroy();
 	volatile bool running;
-	wstring fpsString;
+	std::wstring fpsString;
 	void run();
 	// 4J-PB - split the run into 3 parts so we can run it from our xbox game loop
 	static Minecraft *GetInstance();
@@ -269,36 +269,36 @@ private:
 	void reloadSound();
 public:
 	bool isClientSide();
-	void selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, const wstring& levelName, LevelSettings *levelSettings);
+	void selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, const std::wstring& levelName, LevelSettings *levelSettings);
 	//void toggleDimension(int targetDimension);
-	bool saveSlot(int slot, const wstring& name);
-	bool loadSlot(const wstring& userName, int slot);
+	bool saveSlot(int slot, const std::wstring& name);
+	bool loadSlot(const std::wstring& userName, int slot);
 	void releaseLevel(int message);
 	// 4J Stu - Added the doForceStatsSave param
 	//void setLevel(Level *level, bool doForceStatsSave = true);
-	//void setLevel(Level *level, const wstring& message, bool doForceStatsSave = true);
-	void setLevel(MultiPlayerLevel *level, int message = -1, shared_ptr<Player> forceInsertPlayer = nullptr, bool doForceStatsSave = true,bool bPrimaryPlayerSignedOut=false);
+	//void setLevel(Level *level, const std::wstring& message, bool doForceStatsSave = true);
+	void setLevel(MultiPlayerLevel *level, int message = -1, std::shared_ptr<Player> forceInsertPlayer = nullptr, bool doForceStatsSave = true,bool bPrimaryPlayerSignedOut=false);
 	// 4J-PB - added to force in the 'other' level when the main player creates the level at game load time
 	void forceaddLevel(MultiPlayerLevel *level);
 	void prepareLevel(int title);	// 4J - changed to public
-	void fileDownloaded(const wstring& name, File *file);
+	void fileDownloaded(const std::wstring& name, File *file);
 	//  OpenGLCapabilities getOpenGLCapabilities();	// 4J - removed
 
-	wstring gatherStats1();
-	wstring gatherStats2();
-	wstring gatherStats3();
-	wstring gatherStats4();
+	std::wstring gatherStats1();
+	std::wstring gatherStats2();
+	std::wstring gatherStats3();
+	std::wstring gatherStats4();
 
 	void respawnPlayer(int iPad,int dimension,int newEntityId);
-	static void start(const wstring& name, const wstring& sid);
-	static void startAndConnectTo(const wstring& name, const wstring& sid, const wstring& url);
+	static void start(const std::wstring& name, const std::wstring& sid);
+	static void startAndConnectTo(const std::wstring& name, const std::wstring& sid, const std::wstring& url);
 	ClientConnection *getConnection(int iPad); // 4J Stu added iPad param
 	static void main();
 	static bool renderNames();
 	static bool useFancyGraphics();
 	static bool useAmbientOcclusion();
 	static bool renderDebug();
-	bool handleClientSideCommand(const wstring& chatMessage);
+	bool handleClientSideCommand(const std::wstring& chatMessage);
 
 	static int maxSupportedTextureSize();
 	void delayTextureReload();
@@ -331,15 +331,15 @@ public:
 	Level *animateTickLevel;	// 4J added
 
 	// 4J - When a client requests a texture, it should add it to here while we are waiting for it
-	vector<wstring> m_pendingTextureRequests;
-	vector<wstring> m_pendingGeometryRequests; // additional skin box geometry
+	std::vector<std::wstring> m_pendingTextureRequests;
+	std::vector<std::wstring> m_pendingGeometryRequests; // additional skin box geometry
 
 	// 4J Added
-	bool addPendingClientTextureRequest(const wstring &textureName);
-	void handleClientTextureReceived(const wstring &textureName);
+	bool addPendingClientTextureRequest(const std::wstring &textureName);
+	void handleClientTextureReceived(const std::wstring &textureName);
 	void clearPendingClientTextureRequests() { m_pendingTextureRequests.clear(); }
-	bool addPendingClientGeometryRequest(const wstring &textureName);
-	void handleClientGeometryReceived(const wstring &textureName);
+	bool addPendingClientGeometryRequest(const std::wstring &textureName);
+	void handleClientGeometryReceived(const std::wstring &textureName);
 	void clearPendingClientGeometryRequests() { m_pendingGeometryRequests.clear(); }
 
 	unsigned int getCurrentTexturePackId();

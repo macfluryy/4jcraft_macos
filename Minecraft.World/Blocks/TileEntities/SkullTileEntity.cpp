@@ -26,14 +26,14 @@ void SkullTileEntity::load(CompoundTag *tag)
 	if (tag->contains(L"ExtraType")) extraType = tag->getString(L"ExtraType");
 }
 
-shared_ptr<Packet> SkullTileEntity::getUpdatePacket()
+std::shared_ptr<Packet> SkullTileEntity::getUpdatePacket()
 {
 	CompoundTag *tag = new CompoundTag();
 	save(tag);
-	return shared_ptr<TileEntityDataPacket>(new TileEntityDataPacket(x, y, z, TileEntityDataPacket::TYPE_SKULL, tag));
+	return std::shared_ptr<TileEntityDataPacket>(new TileEntityDataPacket(x, y, z, TileEntityDataPacket::TYPE_SKULL, tag));
 }
 
-void SkullTileEntity::setSkullType(int skullType, const wstring &extra)
+void SkullTileEntity::setSkullType(int skullType, const std::wstring &extra)
 {
 	this->skullType = skullType;
 	this->extraType = extra;
@@ -54,15 +54,15 @@ void SkullTileEntity::setRotation(int rot)
 	rotation = rot;
 }
 
-wstring SkullTileEntity::getExtraType()
+std::wstring SkullTileEntity::getExtraType()
 {
 	return extraType;
 }
 
 // 4J Added
-shared_ptr<TileEntity> SkullTileEntity::clone()
+std::shared_ptr<TileEntity> SkullTileEntity::clone()
 {
-	shared_ptr<SkullTileEntity> result = shared_ptr<SkullTileEntity>( new SkullTileEntity() );
+	std::shared_ptr<SkullTileEntity> result = std::shared_ptr<SkullTileEntity>( new SkullTileEntity() );
 	TileEntity::clone(result);
 	
 	result->skullType = skullType;

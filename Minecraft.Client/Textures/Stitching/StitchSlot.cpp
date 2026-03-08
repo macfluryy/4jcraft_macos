@@ -52,7 +52,7 @@ bool StitchSlot::add(TextureHolder *textureHolder)
 	// See if we're already divided before, if not, setup subSlots
 	if (subSlots == NULL)
 	{
-		subSlots = new vector<StitchSlot *>();
+		subSlots = new std::vector<StitchSlot *>();
 
 		// First slot is for the new texture
 		subSlots->push_back(new StitchSlot(originX, originY, textureWidth, textureHeight));
@@ -76,8 +76,8 @@ bool StitchSlot::add(TextureHolder *textureHolder)
 			// (In the case of this ASCII drawing, it's the 'right hand side' that should win)
 
 			// The 'fattest' area should be used (or when tied, the right hand one)
-			int right = max(height, spareWidth);
-			int bottom = max(width, spareHeight);
+			int right = std::max(height, spareWidth);
+			int bottom = std::max(width, spareHeight);
 			if (right >= bottom)
 			{
 				subSlots->push_back(new StitchSlot(originX, originY + textureHeight, textureWidth, spareHeight));
@@ -132,7 +132,7 @@ bool StitchSlot::add(TextureHolder *textureHolder)
 	return false;
 }
 
-void StitchSlot::collectAssignments(vector<StitchSlot *> *result)
+void StitchSlot::collectAssignments(std::vector<StitchSlot *> *result)
 {
 	if (textureHolder != NULL)
 	{
@@ -150,7 +150,7 @@ void StitchSlot::collectAssignments(vector<StitchSlot *> *result)
 }
 
 //@Override
-wstring StitchSlot::toString()
+std::wstring StitchSlot::toString()
 {
 	return L"Slot{originX=" + _toString(originX) + L", originY=" + _toString(originY) + L", width=" + _toString(width) + L", height=" + _toString(height) + L", texture=" + _toString(textureHolder) + L", subSlots=" + _toString(subSlots) + L'}';
 }

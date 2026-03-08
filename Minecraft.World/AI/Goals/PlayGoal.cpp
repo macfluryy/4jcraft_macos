@@ -11,7 +11,7 @@
 
 PlayGoal::PlayGoal(Villager *mob, float speed)
 {
-	followFriend = weak_ptr<Mob>();
+	followFriend = std::weak_ptr<Mob>();
 	wantedX = wantedY = wantedZ = 0.0;
 	playTime = 0;
 
@@ -25,26 +25,26 @@ bool PlayGoal::canUse()
 	if (mob->getAge() >= 0) return false;
 	if (mob->getRandom()->nextInt(400) != 0) return false;
 
-	vector<shared_ptr<Entity> > *children = mob->level->getEntitiesOfClass(typeid(Villager), mob->bb->grow(6, 3, 6));
+	std::vector<std::shared_ptr<Entity> > *children = mob->level->getEntitiesOfClass(typeid(Villager), mob->bb->grow(6, 3, 6));
 	double closestDistSqr = Double::MAX_VALUE;
 	//for (Entity c : children)
 	for(AUTO_VAR(it, children->begin()); it != children->end(); ++it)
 	{
-		shared_ptr<Entity> c = *it;
+		std::shared_ptr<Entity> c = *it;
 		if (c.get() == mob) continue;
-		shared_ptr<Villager> friendV = dynamic_pointer_cast<Villager>(c);
+		std::shared_ptr<Villager> friendV = std::dynamic_pointer_cast<Villager>(c);
 		if (friendV->isChasing()) continue;
 		if (friendV->getAge() >= 0) continue;
 		double distSqr = friendV->distanceToSqr(mob->shared_from_this());
 		if (distSqr > closestDistSqr) continue;
 		closestDistSqr = distSqr;
-		followFriend = weak_ptr<Mob>(friendV);
+		followFriend = std::weak_ptr<Mob>(friendV);
 	}
 	delete children;
 
 	if (followFriend.lock() == NULL)
 	{
-		Vec3 *pos = RandomPos::getPos(dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 3);
+		Vec3 *pos = RandomPos::getPos(std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 3);
 		if (pos == NULL) return false;
 	}
 	return true;
@@ -64,7 +64,7 @@ void PlayGoal::start()
 void PlayGoal::stop()
 {
 	mob->setChasing(false);
-	followFriend = weak_ptr<Mob>();
+	followFriend = std::weak_ptr<Mob>();
 }
 
 void PlayGoal::tick()
@@ -78,7 +78,7 @@ void PlayGoal::tick()
 	{
 		if (mob->getNavigation()->isDone())
 		{
-			Vec3 *pos = RandomPos::getPos(dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 3);
+			Vec3 *pos = RandomPos::getPos(std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 3);
 			if (pos == NULL) return;
 			mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, speed);
 		}

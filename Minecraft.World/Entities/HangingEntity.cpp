@@ -86,7 +86,7 @@ void HangingEntity::setDir(int dir)
 	float y1 = y + h + ss;
 	float z0 = z - d - ss;
 	float z1 = z + d + ss;
-	bb->set(min(x0,x1), min(y0,y1), min(z0,z1), max(x0,x1), max(y0,y1), max(z0,z1));
+	bb->set(std::min(x0,x1), std::min(y0,y1), std::min(z0,z1), std::max(x0,x1), std::max(y0,y1), std::max(z0,z1));
 }
 
 float HangingEntity::offs(int w) 
@@ -117,8 +117,8 @@ bool HangingEntity::survives()
 	} 
 	else 
 	{
-		int ws = max(1, getWidth() / 16);
-		int hs = max(1, getHeight() / 16);
+		int ws = std::max(1, getWidth() / 16);
+		int hs = std::max(1, getHeight() / 16);
 
 		int xt = xTile;
 		int yt = yTile;
@@ -148,15 +148,15 @@ bool HangingEntity::survives()
 				}
 			}
 
-			vector<shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
+			std::vector<std::shared_ptr<Entity> > *entities = level->getEntities(shared_from_this(), bb);
 
 			if (entities != NULL && entities->size() > 0)
 			{
 				AUTO_VAR(itEnd, entities->end());
 				for (AUTO_VAR(it, entities->begin()); it != itEnd; it++)
 				{
-					shared_ptr<Entity> e = (*it);
-					if(dynamic_pointer_cast<HangingEntity>(e) != NULL)
+					std::shared_ptr<Entity> e = (*it);
+					if(std::dynamic_pointer_cast<HangingEntity>(e) != NULL)
 					{
 						return false;
 					}
@@ -172,11 +172,11 @@ bool HangingEntity::isPickable()
 	return true;
 }
 
-bool HangingEntity::skipAttackInteraction(shared_ptr<Entity> source) 
+bool HangingEntity::skipAttackInteraction(std::shared_ptr<Entity> source) 
 {
 	if(source->GetType()==eTYPE_PLAYER)
 	{
-		return hurt(DamageSource::playerAttack(dynamic_pointer_cast<Player>( source)), 0);
+		return hurt(DamageSource::playerAttack(std::dynamic_pointer_cast<Player>( source)), 0);
 	}
 	return false;
 }
@@ -187,9 +187,9 @@ bool HangingEntity::hurt(DamageSource *source, int damage)
 	{
 		if (dynamic_cast<EntityDamageSource *>(source) != NULL)
 		{
-			shared_ptr<Entity> sourceEntity = source->getDirectEntity();
+			std::shared_ptr<Entity> sourceEntity = source->getDirectEntity();
 
-			if (dynamic_pointer_cast<Player>(sourceEntity) != NULL && !dynamic_pointer_cast<Player>(sourceEntity)->isAllowedToHurtEntity(shared_from_this()) )
+			if (std::dynamic_pointer_cast<Player>(sourceEntity) != NULL && !std::dynamic_pointer_cast<Player>(sourceEntity)->isAllowedToHurtEntity(shared_from_this()) )
 			{
 				return false;
 			}
@@ -198,11 +198,11 @@ bool HangingEntity::hurt(DamageSource *source, int damage)
 		remove();
 		markHurt();
 
-		shared_ptr<Player> player = nullptr;
-		shared_ptr<Entity> e = source->getEntity();
+		std::shared_ptr<Player> player = nullptr;
+		std::shared_ptr<Entity> e = source->getEntity();
 		if (e!=NULL && ((e->GetType() & eTYPE_PLAYER)!=0) ) // check if it's serverplayer or player
 		{
-			player = dynamic_pointer_cast<Player>( e );
+			player = std::dynamic_pointer_cast<Player>( e );
 		}
 
 		if (player != NULL && player->abilities.instabuild) 

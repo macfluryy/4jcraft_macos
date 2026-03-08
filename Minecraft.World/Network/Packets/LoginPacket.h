@@ -1,14 +1,14 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 class LevelType;
 
-class LoginPacket : public Packet, public enable_shared_from_this<LoginPacket>
+class LoginPacket : public Packet, public std::enable_shared_from_this<LoginPacket>
 {
 public:
 	int clientVersion;
-	wstring userName;
+	std::wstring userName;
 	__int64 seed;
 	char dimension;
 	PlayerUID m_offlineXuid, m_onlineXuid;			// 4J Added
@@ -31,8 +31,8 @@ public:
 	BYTE maxPlayers;
 
 	LoginPacket();
-	LoginPacket(const wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, BYTE mapHeight, BYTE maxPlayers, char difficulty, INT m_multiplayerInstanceId, BYTE playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale); // Server -> Client
-	LoginPacket(const wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid, bool friendsOnlyUGC, DWORD ugcPlayersVersion, DWORD skinId, DWORD capeId, bool isGuest); // Client -> Server
+	LoginPacket(const std::wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, BYTE mapHeight, BYTE maxPlayers, char difficulty, INT m_multiplayerInstanceId, BYTE playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale); // Server -> Client
+	LoginPacket(const std::wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid, bool friendsOnlyUGC, DWORD ugcPlayersVersion, DWORD skinId, DWORD capeId, bool isGuest); // Client -> Server
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -40,6 +40,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new LoginPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new LoginPacket()); }
 	virtual int getId() { return 1; }
 };

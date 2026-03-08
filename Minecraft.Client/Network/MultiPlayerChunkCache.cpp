@@ -275,17 +275,17 @@ void MultiPlayerChunkCache::postProcess(ChunkSource *parent, int x, int z)
 {
 }
 
-vector<Biome::MobSpawnerData *> *MultiPlayerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *MultiPlayerChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
 	return NULL;
 }
 
-TilePos *MultiPlayerChunkCache::findNearestMapFeature(Level *level, const wstring &featureName, int x, int y, int z)
+TilePos *MultiPlayerChunkCache::findNearestMapFeature(Level *level, const std::wstring &featureName, int x, int y, int z)
 {
 	return NULL;
 }
 
-wstring MultiPlayerChunkCache::gatherStats()
+std::wstring MultiPlayerChunkCache::gatherStats()
 {
 	EnterCriticalSection(&m_csLoadCreate);
 	int size = (int)loadedChunkList.size();

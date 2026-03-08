@@ -15,7 +15,7 @@ int Achievements::yMin = 4294967295; // 4J Stu Was 4294967296 which is 1 larger 
 int Achievements::xMax = 0;
 int Achievements::yMax = 0;
 
-vector<Achievement *> *Achievements::achievements = new vector<Achievement *>;
+std::vector<Achievement *> *Achievements::achievements = new std::vector<Achievement *>;
 
 Achievement *Achievements::openInventory = NULL;
 Achievement *Achievements::mineWood = NULL;

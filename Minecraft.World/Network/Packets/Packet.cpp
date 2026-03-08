@@ -144,17 +144,17 @@ void Packet::staticCtor()
 	map(255, true, true, true, false, typeid(DisconnectPacket), DisconnectPacket::create);
 }
 
-IllegalArgumentException::IllegalArgumentException(const wstring& information)
+IllegalArgumentException::IllegalArgumentException(const std::wstring& information)
 {
 	this->information = information;
 }
 
-IOException::IOException(const wstring& information)
+IOException::IOException(const std::wstring& information)
 {
 	this->information = information;
 }
 
-RuntimeException::RuntimeException(const wstring& /*information*/)
+RuntimeException::RuntimeException(const std::wstring& /*information*/)
 {
 }
 
@@ -163,26 +163,26 @@ Packet::Packet() : createTime( System::currentTimeMillis() )
 	shouldDelay = false;
 }
 
-unordered_map<int, packetCreateFn> Packet::idToCreateMap;
+std::unordered_map<int, packetCreateFn> Packet::idToCreateMap;
 
-unordered_set<int> Packet::clientReceivedPackets = unordered_set<int>();
-unordered_set<int> Packet::serverReceivedPackets = unordered_set<int>();
-unordered_set<int> Packet::sendToAnyClientPackets = unordered_set<int>();
+std::unordered_set<int> Packet::clientReceivedPackets = std::unordered_set<int>();
+std::unordered_set<int> Packet::serverReceivedPackets = std::unordered_set<int>();
+std::unordered_set<int> Packet::sendToAnyClientPackets = std::unordered_set<int>();
 
 // 4J Added
-unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = unordered_map<int, Packet::PacketStatistics *>();
-vector<Packet::PacketStatistics *> Packet::renderableStats = vector<Packet::PacketStatistics *>();
+std::unordered_map<int, Packet::PacketStatistics *> Packet::outgoingStatistics = std::unordered_map<int, Packet::PacketStatistics *>();
+std::vector<Packet::PacketStatistics *> Packet::renderableStats = std::vector<Packet::PacketStatistics *>();
 int Packet::renderPos = 0;
 
 // sendToAnyClient - true - send to anyone, false - Sends to one person per dimension per machine
-void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const type_info& clazz, packetCreateFn createFn)
+void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendToAnyClient, bool renderStats, const std::type_info& clazz, packetCreateFn createFn)
 {
 #if 0
-	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(wstring(L"Duplicate packet id:") + _toString<int>(id));
+	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(std::wstring(L"Duplicate packet id:") + _toString<int>(id));
 	if (classToIdMap.count(clazz) > 0) throw new IllegalArgumentException(L"Duplicate packet class:"); // TODO + clazz);
 #endif
 
-	idToCreateMap.insert( unordered_map<int, packetCreateFn>::value_type(id, createFn) );
+	idToCreateMap.insert( std::unordered_map<int, packetCreateFn>::value_type(id, createFn) );
 
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
@@ -211,7 +211,7 @@ void Packet::map(int id, bool receiveOnClient, bool receiveOnServer, bool sendTo
 }
 
 // 4J Added to record data for outgoing packets
-void Packet::recordOutgoingPacket(shared_ptr<Packet> packet)
+void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet)
 {
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
@@ -289,7 +289,7 @@ __int64 Packet::getIndexedStatValue(unsigned int samplePos, unsigned int rendera
 }
 
 
-shared_ptr<Packet> Packet::getPacket(int id) 
+std::shared_ptr<Packet> Packet::getPacket(int id) 
 {
 	// 4J - removed try/catch
 	//    try
@@ -330,7 +330,7 @@ byteArray Packet::readBytes(DataInputStream *datainputstream)
 }
 
 
-bool Packet::canSendToAnyClient(shared_ptr<Packet> packet)
+bool Packet::canSendToAnyClient(std::shared_ptr<Packet> packet)
 {
 	int packetId = packet->getId();
 
@@ -345,11 +345,11 @@ return id;
 }
 */
 
-unordered_map<int, Packet::PacketStatistics *> Packet::statistics = unordered_map<int, Packet::PacketStatistics *>();
+std::unordered_map<int, Packet::PacketStatistics *> Packet::statistics = std::unordered_map<int, Packet::PacketStatistics *>();
 
 //int Packet::nextPrint = 0;
 
-shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // throws IOException TODO 4J JEV, should this declare a throws?
+std::shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 	// N packet ID
 	static int s_clientPktHistory[64];
@@ -360,7 +360,7 @@ shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // th
 	static bool s_serverDesyncLogged = false;
 
 	int id = 0;
-	shared_ptr<Packet> packet = nullptr;
+	std::shared_ptr<Packet> packet = nullptr;
 
 	// 4J - removed try/catch
 	//    try
@@ -389,7 +389,7 @@ shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // th
 		// Close the stream to prevent further reads on a desynced stream
 		dis->close();
 		return nullptr;
-		//            throw new IOException(wstring(L"Bad packet id ") + _toString<int>(id));
+		//            throw new IOException(std::wstring(L"Bad packet id ") + _toString<int>(id));
 	}
 
 	// Record successfully read packet ID
@@ -430,14 +430,14 @@ shared_ptr<Packet> Packet::readPacket(DataInputStream *dis, bool isServer) // th
 	return packet;
 }
 
-void Packet::writePacket(shared_ptr<Packet> packet, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
+void Packet::writePacket(std::shared_ptr<Packet> packet, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 	//app.DebugPrintf("Writing packet %d\n", packet->getId());
 	dos->write(packet->getId());
 	packet->write(dos);
 }
 
-void Packet::writeUtf(const wstring& value, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
+void Packet::writeUtf(const std::wstring& value, DataOutputStream *dos) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 #if 0
 	if (value.length() > Short::MAX_VALUE) 
@@ -450,7 +450,7 @@ void Packet::writeUtf(const wstring& value, DataOutputStream *dos) // throws IOE
 	dos->writeChars(value);
 }
 
-wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOException TODO 4J JEV, should this declare a throws?
+std::wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOException TODO 4J JEV, should this declare a throws?
 {
 
 	short stringLength = dis->readShort();
@@ -465,7 +465,7 @@ wstring Packet::readUtf(DataInputStream *dis, int maxLength) // throws IOExcepti
 		return L"";
 	}
 
-	wstring builder = L"";
+	std::wstring builder = L"";
 	for (int i = 0; i < stringLength; i++) 
 	{
 		wchar_t rc = dis->readChar();
@@ -530,7 +530,7 @@ __int64 Packet::PacketStatistics::getCountSample(int samplePos)
 	return countSamples[samplePos] * 10;
 }
 
-wstring Packet::PacketStatistics::getLegendString()
+std::wstring Packet::PacketStatistics::getLegendString()
 {
 	static wchar_t string[128];
 	double bps = 0.0;
@@ -548,7 +548,7 @@ bool Packet::canBeInvalidated()
 	return false;
 }
 
-bool Packet::isInvalidatedBy(shared_ptr<Packet> packet)
+bool Packet::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return false;
 }
@@ -559,16 +559,16 @@ bool Packet::isAync()
 }
 
 // 4J Stu - Brought these functions forward for enchanting/game rules
-shared_ptr<ItemInstance> Packet::readItem(DataInputStream *dis)
+std::shared_ptr<ItemInstance> Packet::readItem(DataInputStream *dis)
 {
-	shared_ptr<ItemInstance> item = nullptr;
+	std::shared_ptr<ItemInstance> item = nullptr;
 	int id = dis->readShort();
 	if (id >= 0)
 	{
 		int count = dis->readByte();
 		int damage = dis->readShort();
 
-		item = shared_ptr<ItemInstance>( new ItemInstance(id, count, damage) );
+		item = std::shared_ptr<ItemInstance>( new ItemInstance(id, count, damage) );
 		// 4J Stu - Always read/write the tag
 		//if (Item.items[id].canBeDepleted() || Item.items[id].shouldOverrideMultiplayerNBT())
 		{
@@ -579,7 +579,7 @@ shared_ptr<ItemInstance> Packet::readItem(DataInputStream *dis)
 	return item;
 }
 
-void Packet::writeItem(shared_ptr<ItemInstance> item, DataOutputStream *dos)
+void Packet::writeItem(std::shared_ptr<ItemInstance> item, DataOutputStream *dos)
 {
 	if (item == NULL)
 	{

@@ -14,16 +14,16 @@
 class CompoundTag : public Tag    
 {
 private:
-	unordered_map<wstring, Tag *> tags;
+	std::unordered_map<std::wstring, Tag *> tags;
 
 public:
 	CompoundTag() : Tag(L"") {}
-	CompoundTag(const wstring &name) : Tag(name) {}
+	CompoundTag(const std::wstring &name) : Tag(name) {}
 
     void write(DataOutput *dos)
 	{
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<std::wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			Tag::writeNamedTag(it->second, dos);
 		}
@@ -42,13 +42,13 @@ public:
 		delete tag;
     }
 
-    vector<Tag *> *getAllTags()		// 4J - was collection
+    std::vector<Tag *> *getAllTags()		// 4J - was collection
 	{
 		// 4J - was return tags.values();
-		vector<Tag *> *ret = new vector<Tag *>;
+		std::vector<Tag *> *ret = new std::vector<Tag *>;
 		
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<std::wstring, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			ret->push_back(it->second);
 		}
@@ -62,7 +62,7 @@ public:
 
     void put(const wchar_t *name, Tag *tag)
 	{
-        tags[name] = tag->setName(wstring( name ));
+        tags[name] = tag->setName(std::wstring( name ));
     }
 
     void putByte(const wchar_t * name, uint8_t value)
@@ -95,7 +95,7 @@ public:
         tags[name] = (new DoubleTag(name,value));
     }
 
-    void putString(const wchar_t *name, const wstring& value)
+    void putString(const wchar_t *name, const std::wstring& value)
 	{
         tags[name] = (new StringTag(name,value));
     }
@@ -112,7 +112,7 @@ public:
 
     void putCompound(const wchar_t * name, CompoundTag *value)
 	{
-        tags[name] = value->setName( wstring( name ) );
+        tags[name] = value->setName( std::wstring( name ) );
     }
 
     void putBoolean(const wchar_t * string, bool val)
@@ -168,9 +168,9 @@ public:
         return ((DoubleTag *) tags[name])->data;
     }
 
-    wstring getString(const wchar_t * name)
+    std::wstring getString(const wchar_t * name)
 	{
-        if (tags.find(name) == tags.end()) return wstring( L"" );
+        if (tags.find(name) == tags.end()) return std::wstring( L"" );
         return ((StringTag *) tags[name])->data;
     }
 
@@ -203,38 +203,38 @@ public:
         return getByte(string) != static_cast<uint8_t>(0);
     }
 
-	void remove(const wstring &name)
+	void remove(const std::wstring &name)
 	{
 		AUTO_VAR(it, tags.find(name));
 		if(it != tags.end()) tags.erase(it);
 		//tags.remove(name);
 	}
 
-    wstring toString()
+    std::wstring toString()
 	{
 		static const int bufSize = 32;
 		static wchar_t buf[bufSize];
 		swprintf(buf,bufSize,L"%d entries",tags.size());
-		return wstring( buf );
+		return std::wstring( buf );
     }
 
-    void print(char *prefix, ostream out)
+    void print(char *prefix, std::ostream out)
 	{
 		/*
         Tag::print(prefix, out);
-		out << prefix << "{" << endl;
+		out << prefix << "{" << std::endl;
 
 		char *newPrefix = new char[ strlen(prefix) + 4 ];
 		strcpy( newPrefix, prefix);
 		strcat( newPrefix, "   ");
 		
 		AUTO_VAR(itEnd, tags.end());
-		for( unordered_map<string, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
+		for( std::unordered_map<string, Tag *>::iterator it = tags.begin(); it != itEnd; it++ )
 		{
 			it->second->print(newPrefix, out);
 		}
 		delete[] newPrefix;
-		out << prefix << "}" << endl;
+		out << prefix << "}" << std::endl;
 		*/
     }
 

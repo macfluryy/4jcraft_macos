@@ -5,11 +5,11 @@
 class ArmorDyeRecipe : public Recipy
 {
 public:
-	bool matches(shared_ptr<CraftingContainer> craftSlots, Level *level);
+	bool matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level);
 
 	// 4J Stu - Made static as we use this in a different way from the Java (but needs to be a different name otherwise Orbis compiler complains
-	static shared_ptr<ItemInstance> assembleDyedArmor(shared_ptr<CraftingContainer> craftSlots);
-	shared_ptr<ItemInstance> assemble(shared_ptr<CraftingContainer> craftSlots);
+	static std::shared_ptr<ItemInstance> assembleDyedArmor(std::shared_ptr<CraftingContainer> craftSlots);
+	std::shared_ptr<ItemInstance> assemble(std::shared_ptr<CraftingContainer> craftSlots);
 
 	int size();
 	const ItemInstance *getResultItem();

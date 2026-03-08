@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "TutorialTask.h"
 
@@ -16,5 +16,5 @@ public:
 	CompleteUsingItemTask(Tutorial *tutorial, int descriptionId, int itemIds[], unsigned int itemIdsLength, bool enablePreCompletion = false);
 	virtual ~CompleteUsingItemTask();
 	virtual bool isCompleted();
-	virtual void completeUsingItem(shared_ptr<ItemInstance> item);
+	virtual void completeUsingItem(std::shared_ptr<ItemInstance> item);
 };

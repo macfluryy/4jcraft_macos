@@ -12,9 +12,9 @@ OwnerHurtTargetGoal::OwnerHurtTargetGoal(TamableAnimal *tameAnimal) : TargetGoal
 bool OwnerHurtTargetGoal::canUse()
 {
 	if (!tameAnimal->isTame()) return false;
-	shared_ptr<Mob> owner = tameAnimal->getOwner();
+	std::shared_ptr<Mob> owner = tameAnimal->getOwner();
 	if (owner == NULL) return false;
-	ownerLastHurt = weak_ptr<Mob>(owner->getLastHurtMob());
+	ownerLastHurt = std::weak_ptr<Mob>(owner->getLastHurtMob());
 	return canAttack(ownerLastHurt.lock(), false);
 }
 

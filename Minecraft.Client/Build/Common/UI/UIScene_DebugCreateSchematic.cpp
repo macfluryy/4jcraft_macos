@@ -36,7 +36,7 @@ UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad, void *initD
 	m_data = new ConsoleSchematicFile::XboxSchematicInitParam();
 }
 
-wstring UIScene_DebugCreateSchematic::getMoviePath()
+std::wstring UIScene_DebugCreateSchematic::getMoviePath()
 {
 	return L"DebugCreateSchematic";
 }
@@ -144,7 +144,7 @@ int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(LPVOID lpParam,bool b
 
 	if(pchText[0]!=0)
 	{
-		wstring value = (wchar_t *)pchText;
+		std::wstring value = (wchar_t *)pchText;
 		int iVal = 0; 
 		if(!value.empty()) iVal = _fromString<int>( value );
 		switch(pClass->m_keyboardCallbackControl)

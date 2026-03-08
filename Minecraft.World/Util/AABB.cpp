@@ -334,7 +334,7 @@ void AABB::set(AABB *b)
     this->z1 = b->z1;
 }
 
-wstring AABB::toString() 
+std::wstring AABB::toString() 
 {
     return L"box[" + _toString<double>(x0) + L", " + _toString<double>(y0) + L", " + _toString<double>(z0) + L" -> " + 
 		_toString<double>(x1) + L", " + _toString<double>(y1) + L", " + _toString<double>(z1) + L"]";

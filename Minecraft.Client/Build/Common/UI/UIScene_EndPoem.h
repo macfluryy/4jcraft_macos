@@ -5,13 +5,13 @@
 class UIScene_EndPoem : public UIScene
 {
 private:
-	wstring noNoiseString;
-	wstring noiseString;
-	vector<int> m_noiseLengths;
+	std::wstring noNoiseString;
+	std::wstring noiseString;
+	std::vector<int> m_noiseLengths;
 	bool m_bIgnoreInput;
 	int m_requestedLabel;
 
-	vector<wstring> m_paragraphs;
+	std::vector<std::wstring> m_paragraphs;
 
 	IggyName m_funcSetNextLabel;
 	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
@@ -25,7 +25,7 @@ public:
 	virtual void updateTooltips();
 
 protected:
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	virtual void tick();

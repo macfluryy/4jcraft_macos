@@ -7,16 +7,16 @@ class Container;
 class ContainerMenu : public AbstractContainerMenu
 {
 private:
-	shared_ptr<Container> container;
+	std::shared_ptr<Container> container;
 	int containerRows;
 
 public:
-	ContainerMenu(shared_ptr<Container> inventory, shared_ptr<Container> container);
+	ContainerMenu(std::shared_ptr<Container> inventory, std::shared_ptr<Container> container);
 
-	virtual bool stillValid(shared_ptr<Player> player);
-	virtual shared_ptr<ItemInstance> quickMoveStack(shared_ptr<Player> player, int slotIndex);
-	void removed(shared_ptr<Player> player);
+	virtual bool stillValid(std::shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> quickMoveStack(std::shared_ptr<Player> player, int slotIndex);
+	void removed(std::shared_ptr<Player> player);
 
 	// 4J ADDED,
-	virtual shared_ptr<ItemInstance> clicked(int slotIndex, int buttonNum, int clickType, shared_ptr<Player> player);
+	virtual std::shared_ptr<ItemInstance> clicked(int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player);
 };

@@ -6,7 +6,7 @@
 //#include "../../Xbox/DLC/DLCSkinFile.h"
 #include "../../../Rendering/Models/Model.h"
 
-using namespace std;
+//using namespace std;
 
 class EntityRenderer;
 
@@ -42,8 +42,8 @@ public:
 	CXuiCtrlMinecraftSkinPreview();
 	virtual ~CXuiCtrlMinecraftSkinPreview() { };
 
-	void SetTexture(const wstring &url, TEXTURE_NAME backupTexture = TN_MOB_CHAR);
-	void SetCapeTexture(const wstring &url) { m_capeTextureUrl = url; }
+	void SetTexture(const std::wstring &url, TEXTURE_NAME backupTexture = TN_MOB_CHAR);
+	void SetCapeTexture(const std::wstring &url) { m_capeTextureUrl = url; }
 	void ResetRotation() { m_xRot = 0; m_yRot = 0; }
 	void IncrementYRotation() { m_yRot = (m_yRot+4); if(m_yRot >= 180) m_yRot = -180; }
 	void DecrementYRotation() { m_yRot = (m_yRot-4); if(m_yRot <= -180) m_yRot = 180; }
@@ -70,15 +70,15 @@ protected:
 
 private:
 	void render(EntityRenderer *renderer, double x, double y, double z, float rot, float a);
-	bool bindTexture(const wstring& urlTexture, int backupTexture);
-	bool bindTexture(const wstring& urlTexture, const wstring& backupTexture);
+	bool bindTexture(const std::wstring& urlTexture, int backupTexture);
+	bool bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture);
 
 	BOOL m_bDirty;
 	float m_fScale,m_fAlpha;
 
-	wstring m_customTextureUrl;
+	std::wstring m_customTextureUrl;
 	TEXTURE_NAME m_backupTexture;
-	wstring m_capeTextureUrl;
+	std::wstring m_capeTextureUrl;
 	unsigned int m_uiAnimOverrideBitmask;
 
 	float m_fScreenWidth,m_fScreenHeight;
@@ -101,6 +101,6 @@ private:
 	float m_swingTime;
 
 	ESkinPreviewAnimations m_currentAnimation;
-	//vector<Model::SKIN_BOX *> *m_pvAdditionalBoxes;
-	vector<ModelPart *> *m_pvAdditionalModelParts;
+	//std::vector<Model::SKIN_BOX *> *m_pvAdditionalBoxes;
+	std::vector<ModelPart *> *m_pvAdditionalModelParts;
 };

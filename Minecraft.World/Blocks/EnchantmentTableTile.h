@@ -6,9 +6,9 @@ class EnchantmentTableTile : public EntityTile
 {
 	friend class ChunkRebuildData;
 public:
-	static const wstring TEXTURE_SIDE;
-	static const wstring TEXTURE_TOP;
-	static const wstring TEXTURE_BOTTOM;
+	static const std::wstring TEXTURE_SIDE;
+	static const std::wstring TEXTURE_TOP;
+	static const std::wstring TEXTURE_BOTTOM;
 
 private:
 	Icon *iconTop;
@@ -22,8 +22,8 @@ public:
     void animateTick(Level *level, int x, int y, int z, Random *random);
     bool isSolidRender(bool isServerLevel = false);
     Icon *getTexture(int face, int data);
-    shared_ptr<TileEntity> newTileEntity(Level *level);
-    bool use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
+    std::shared_ptr<TileEntity> newTileEntity(Level *level);
+    bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
 	//@Override
 	void registerIcons(IconRegister *iconRegister);
 };

@@ -11,17 +11,17 @@ namespace MXSL = Microsoft::Xbox::Services::Leaderboard;
 class StatParam
 {
 private:
-	wstring m_base;
+	std::wstring m_base;
 	int m_numArgs;
 	
-	vector<int> m_args;
+	std::vector<int> m_args;
 
 public:
-	StatParam(const wstring &base);
+	StatParam(const std::wstring &base);
 
 	void addArgs(int v1, ...);
 
-	vector<wstring> *getStats();
+	std::vector<std::wstring> *getStats();
 
 };
 
@@ -65,9 +65,9 @@ protected:
 
 	DurangoStatsDebugger();
 
-	vector<StatParam *> m_stats;
+	std::vector<StatParam *> m_stats;
 
-	vector<wstring> *getStats();
+	std::vector<std::wstring> *getStats();
 
 public:
 	static DurangoStatsDebugger *Initialize();
@@ -75,20 +75,20 @@ public:
 	static void PrintStats(int iPad);
 
 private:
-	vector<wstring> m_printQueue;
+	std::vector<std::wstring> m_printQueue;
 
 	void retrieveStats(int iPad);
 
 	typedef struct 
 	{
 		int			m_iPad;
-		wstring		m_statName;
-		wstring		m_score;
+		std::wstring		m_statName;
+		std::wstring		m_score;
 	} StatResult;
 
 	CRITICAL_SECTION m_retrievedStatsLock;
 
-	vector<StatResult> m_retrievedStats;
+	std::vector<StatResult> m_retrievedStats;
 
 	void addRetrievedStat(StatResult result);
 };

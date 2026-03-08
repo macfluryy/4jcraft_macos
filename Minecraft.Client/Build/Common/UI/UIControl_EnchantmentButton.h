@@ -16,7 +16,7 @@ private:
 	EState m_lastState;
 	int m_lastCost;
 	int m_index;
-	wstring m_enchantmentString;
+	std::wstring m_enchantmentString;
 	bool m_bHasFocus;
 
 	IggyName m_funcChangeState;
@@ -30,18 +30,18 @@ private:
 
 	private:
 		Random random;
-		vector<wstring> words;
+		std::vector<std::wstring> words;
 
 		EnchantmentNames();
 
 	public:
-		wstring getRandomName();
+		std::wstring getRandomName();
 	};
 
 public:
 	UIControl_EnchantmentButton();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 
 	virtual void tick();
 

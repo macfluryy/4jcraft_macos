@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class TileDestructionPacket : public Packet, public enable_shared_from_this<TileDestructionPacket>
+class TileDestructionPacket : public Packet, public std::enable_shared_from_this<TileDestructionPacket>
 {
 private:
 	int id;
@@ -27,9 +27,9 @@ public:
 	int getState();
 
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new TileDestructionPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TileDestructionPacket()); }
 	virtual int getId() { return 55; }
 };

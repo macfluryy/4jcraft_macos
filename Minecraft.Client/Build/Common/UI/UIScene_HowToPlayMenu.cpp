@@ -98,7 +98,7 @@ UIScene_HowToPlayMenu::UIScene_HowToPlayMenu(int iPad, void *initData, UILayer *
 	}
 }
 
-wstring UIScene_HowToPlayMenu::getMoviePath()
+std::wstring UIScene_HowToPlayMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

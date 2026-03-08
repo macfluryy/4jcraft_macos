@@ -8,8 +8,8 @@
 
 
 
-TileEntity::idToCreateMapType TileEntity::idCreateMap = unordered_map<wstring, tileEntityCreateFn>();
-TileEntity::classToIdMapType TileEntity::classIdMap = unordered_map<eINSTANCEOF, wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
+TileEntity::idToCreateMapType TileEntity::idCreateMap = std::unordered_map<std::wstring, tileEntityCreateFn>();
+TileEntity::classToIdMapType TileEntity::classIdMap = std::unordered_map<eINSTANCEOF, std::wstring, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq>();
 
 void TileEntity::staticCtor()
 {
@@ -28,7 +28,7 @@ void TileEntity::staticCtor()
 	TileEntity::setId(SkullTileEntity::create,eTYPE_SKULLTILEENTITY, L"Skull");
 }
 
-void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas, wstring id)
+void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas, std::wstring id)
 {
 	// 4J Stu - Java has classIdMap.containsKey(id) which would never work as id is not of the type of the key in classIdMap
 	// I have changed to use idClassMap instead so that we can still search from the string key
@@ -89,14 +89,14 @@ void TileEntity::tick()
 {
 }
 
-shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag *tag)
+std::shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag *tag)
 {
-	shared_ptr<TileEntity> entity = nullptr;
+	std::shared_ptr<TileEntity> entity = nullptr;
 
 	//try
 	//{
 		AUTO_VAR(it, idCreateMap.find(tag->getString(L"id")));
-		if (it != idCreateMap.end() ) entity = shared_ptr<TileEntity>(it->second());
+		if (it != idCreateMap.end() ) entity = std::shared_ptr<TileEntity>(it->second());
 	//}
 	//catch (Exception e)
 	//{
@@ -152,7 +152,7 @@ Tile *TileEntity::getTile()
 	return tile;
 }
 
-shared_ptr<Packet> TileEntity::getUpdatePacket()
+std::shared_ptr<Packet> TileEntity::getUpdatePacket()
 {
 	return nullptr;
 }
@@ -200,7 +200,7 @@ void TileEntity::upgradeRenderRemoveStage()
 }
 
 // 4J Added
-void TileEntity::clone(shared_ptr<TileEntity> tileEntity)
+void TileEntity::clone(std::shared_ptr<TileEntity> tileEntity)
 {
 	tileEntity->level = this->level;
 	tileEntity->x = this->x;

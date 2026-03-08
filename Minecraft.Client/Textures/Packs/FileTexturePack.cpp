@@ -24,7 +24,7 @@ void FileTexturePack::unload(Textures *textures)
 #endif
 }
 
-InputStream *FileTexturePack::getResourceImplementation(const wstring &name) //throws IOException
+InputStream *FileTexturePack::getResourceImplementation(const std::wstring &name) //throws IOException
 {
 #if 0
 	loadZipFile();
@@ -39,7 +39,7 @@ InputStream *FileTexturePack::getResourceImplementation(const wstring &name) //t
 	return NULL;
 }
 
-bool FileTexturePack::hasFile(const wstring &name)
+bool FileTexturePack::hasFile(const std::wstring &name)
 {
 #if 0
 	try {

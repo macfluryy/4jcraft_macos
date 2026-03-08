@@ -31,7 +31,7 @@ UIScene_InGameHostOptionsMenu::UIScene_InGameHostOptionsMenu(int iPad, void *ini
 	}
 }
 
-wstring UIScene_InGameHostOptionsMenu::getMoviePath()
+std::wstring UIScene_InGameHostOptionsMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{
@@ -66,10 +66,10 @@ void UIScene_InGameHostOptionsMenu::handleInput(int iPad, int key, bool repeat, 
 			if(hostOptions != app.GetGameHostOption(eGameHostOption_All) )
 			{
 				Minecraft *pMinecraft = Minecraft::GetInstance();				
-				shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
+				std::shared_ptr<MultiplayerLocalPlayer> player = pMinecraft->localplayers[m_iPad];
 				if(player->connection)
 				{
-					player->connection->send( shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, hostOptions) ) );
+					player->connection->send( std::shared_ptr<ServerSettingsChangedPacket>( new ServerSettingsChangedPacket( ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS, hostOptions) ) );
 				}
 			}
 

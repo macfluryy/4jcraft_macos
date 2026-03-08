@@ -16,7 +16,7 @@ LevelData::LevelData(CompoundTag *tag)
 	m_pGenerator = LevelType::lvl_normal;
 	if (tag->contains(L"generatorName")) 
 	{
-		wstring generatorName = tag->getString(L"generatorName");
+		std::wstring generatorName = tag->getString(L"generatorName");
 		m_pGenerator = LevelType::getLevelType(generatorName);
 		if (m_pGenerator == NULL) 
 		{
@@ -112,11 +112,11 @@ LevelData::LevelData(CompoundTag *tag)
 	m_xzSize = tag->getInt(L"XZSize");
 	m_hellScale = tag->getInt(L"HellScale");
 	
-	m_xzSize = min(m_xzSize,LEVEL_MAX_WIDTH);
-	m_xzSize = max(m_xzSize,LEVEL_MIN_WIDTH);
+	m_xzSize = std::min(m_xzSize,LEVEL_MAX_WIDTH);
+	m_xzSize = std::max(m_xzSize,LEVEL_MIN_WIDTH);
 
-	m_hellScale = min(m_hellScale,HELL_LEVEL_MAX_SCALE);
-	m_hellScale = max(m_hellScale,HELL_LEVEL_MIN_SCALE);
+	m_hellScale = std::min(m_hellScale,HELL_LEVEL_MAX_SCALE);
+	m_hellScale = std::max(m_hellScale,HELL_LEVEL_MIN_SCALE);
 
 	int hellXZSize = m_xzSize / m_hellScale;
 	while(hellXZSize > HELL_LEVEL_MAX_WIDTH && m_hellScale < HELL_LEVEL_MAX_SCALE)
@@ -139,7 +139,7 @@ LevelData::LevelData(CompoundTag *tag)
 	dimension = 0;
 }
 
-LevelData::LevelData(LevelSettings *levelSettings, const wstring& levelName) 
+LevelData::LevelData(LevelSettings *levelSettings, const std::wstring& levelName) 
 {
     this->seed = levelSettings->getSeed();
     this->gameType = levelSettings->getGameType();
@@ -180,11 +180,11 @@ LevelData::LevelData(LevelSettings *levelSettings, const wstring& levelName)
 	m_xzSize = levelSettings->getXZSize();
 	m_hellScale = levelSettings->getHellScale();
 	
-	m_xzSize = min(m_xzSize,LEVEL_MAX_WIDTH);
-	m_xzSize = max(m_xzSize,LEVEL_MIN_WIDTH);
+	m_xzSize = std::min(m_xzSize,LEVEL_MAX_WIDTH);
+	m_xzSize = std::max(m_xzSize,LEVEL_MIN_WIDTH);
 
-	m_hellScale = min(m_hellScale,HELL_LEVEL_MAX_SCALE);
-	m_hellScale = max(m_hellScale,HELL_LEVEL_MIN_SCALE);
+	m_hellScale = std::min(m_hellScale,HELL_LEVEL_MAX_SCALE);
+	m_hellScale = std::max(m_hellScale,HELL_LEVEL_MIN_SCALE);
 
 	int hellXZSize = m_xzSize / m_hellScale;
 	while(hellXZSize > HELL_LEVEL_MAX_WIDTH && m_hellScale < HELL_LEVEL_MAX_SCALE)
@@ -243,7 +243,7 @@ CompoundTag *LevelData::createTag()
     return tag;
 }
 
-CompoundTag *LevelData::createTag(vector<shared_ptr<Player> > *players) 
+CompoundTag *LevelData::createTag(std::vector<std::shared_ptr<Player> > *players) 
 {
 	// 4J - removed all code for storing tags for players
 	return createTag();
@@ -440,12 +440,12 @@ void LevelData::setSpawn(int xSpawn, int ySpawn, int zSpawn)
     this->zSpawn = zSpawn;
 }
 
-wstring LevelData::getLevelName() 
+std::wstring LevelData::getLevelName() 
 {
     return levelName;
 }
 
-void LevelData::setLevelName(const wstring& levelName)
+void LevelData::setLevelName(const std::wstring& levelName)
 {
     this->levelName = levelName;
 }

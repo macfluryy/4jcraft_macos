@@ -10,7 +10,7 @@ class BreedGoal : public Goal
 private:
 	Animal *animal; // Owner of this goal
 	Level *level;
-	weak_ptr<Animal> partner;
+	std::weak_ptr<Animal> partner;
 	int loveTime;
 	float speed;
 
@@ -23,7 +23,7 @@ public:
 	virtual void tick();
 
 private:
-	shared_ptr<Animal> getFreePartner();
+	std::shared_ptr<Animal> getFreePartner();
 	void breed();
 
 public:

@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class InteractPacket : public Packet, public enable_shared_from_this<InteractPacket>
+class InteractPacket : public Packet, public std::enable_shared_from_this<InteractPacket>
 {
 public:
 	static const int INTERACT;
@@ -20,6 +20,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new InteractPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new InteractPacket()); }
 	virtual int getId() { return 7; }
 };

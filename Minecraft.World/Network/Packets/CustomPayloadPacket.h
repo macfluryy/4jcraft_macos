@@ -1,28 +1,28 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class CustomPayloadPacket : public Packet, public enable_shared_from_this<CustomPayloadPacket>
+class CustomPayloadPacket : public Packet, public std::enable_shared_from_this<CustomPayloadPacket>
 {
 public:
 
 	// Mojang-defined custom packets
-	static const wstring CUSTOM_BOOK_PACKET;
-	static const wstring CUSTOM_BOOK_SIGN_PACKET;
-	static const wstring TEXTURE_PACK_PACKET;
-	static const wstring TRADER_LIST_PACKET;
-	static const wstring TRADER_SELECTION_PACKET;
-	static const wstring SET_ADVENTURE_COMMAND_PACKET;
-	static const wstring SET_BEACON_PACKET;
-	static const wstring SET_ITEM_NAME_PACKET;
+	static const std::wstring CUSTOM_BOOK_PACKET;
+	static const std::wstring CUSTOM_BOOK_SIGN_PACKET;
+	static const std::wstring TEXTURE_PACK_PACKET;
+	static const std::wstring TRADER_LIST_PACKET;
+	static const std::wstring TRADER_SELECTION_PACKET;
+	static const std::wstring SET_ADVENTURE_COMMAND_PACKET;
+	static const std::wstring SET_BEACON_PACKET;
+	static const std::wstring SET_ITEM_NAME_PACKET;
 
-	wstring identifier;
+	std::wstring identifier;
 	int length;
 	byteArray data;
 
 	CustomPayloadPacket();
-	CustomPayloadPacket(const wstring &identifier, byteArray data);
+	CustomPayloadPacket(const std::wstring &identifier, byteArray data);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -30,6 +30,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new CustomPayloadPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new CustomPayloadPacket()); }
 	virtual int getId() { return 250; }
 };

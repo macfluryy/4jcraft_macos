@@ -62,7 +62,7 @@ float FlippedIcon::getV(double offset, bool adjust/*=false*/) const
 	return getV0(adjust) + (diff * ((float) offset / SharedConstants::WORLD_RESOLUTION));
 }
 
-wstring FlippedIcon::getName() const
+std::wstring FlippedIcon::getName() const
 {
 	return base->getName();
 }

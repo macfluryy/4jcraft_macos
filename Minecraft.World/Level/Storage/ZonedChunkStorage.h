@@ -5,7 +5,7 @@
 
 // 4J Stu - There are changes to this class for 1.8.2, but since we never use it anyway lets not worry about it
 
-using namespace std;
+
 
 class ZoneFile;
 class ZoneIo;
@@ -30,7 +30,7 @@ public:
     File dir;
 
 private:
-    unordered_map<__int64, ZoneFile *> zoneFiles;
+    std::unordered_map<__int64, ZoneFile *> zoneFiles;
     __int64 tickCount;
 
 public:

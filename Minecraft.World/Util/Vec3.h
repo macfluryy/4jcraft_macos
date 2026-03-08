@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 class AABB;
 
@@ -48,7 +48,7 @@ public:
     Vec3 *clipX(Vec3 *b, double xt);
     Vec3 *clipY(Vec3 *b, double yt);
     Vec3 *clipZ(Vec3 *b, double zt);
-    wstring toString();
+    std::wstring toString();
     Vec3 *lerp(Vec3 *v, double a);
     void xRot(float degs);
     void yRot(float degs);

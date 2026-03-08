@@ -1,6 +1,6 @@
 #pragma once
 #include "GuiComponent.h"
-using namespace std;
+
 class Font;
 class Screen;
 
@@ -12,7 +12,7 @@ private:
     int y;
     int width;
     int height;
-    wstring value;
+    std::wstring value;
     unsigned int maxLength;
     int frame;
 
@@ -23,9 +23,9 @@ private:
 	Screen *screen;
 
 public:
-	EditBox(Screen *screen, Font *font, int x, int y, int width, int height, const wstring& value);
-    void setValue(const wstring& value);
-    wstring getValue();
+	EditBox(Screen *screen, Font *font, int x, int y, int width, int height, const std::wstring& value);
+    void setValue(const std::wstring& value);
+    std::wstring getValue();
     void tick();
     void keyPressed(wchar_t ch, int eventKey);
     void mouseClicked(int mouseX, int mouseY, int buttonNum);

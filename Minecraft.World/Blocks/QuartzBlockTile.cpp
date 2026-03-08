@@ -12,11 +12,11 @@ int QuartzBlockTile::BLOCK_NAMES[QUARTZ_BLOCK_NAMES] = {
 	IDS_TILE_QUARTZ_BLOCK, IDS_TILE_QUARTZ_BLOCK_CHISELED, IDS_TILE_QUARTZ_BLOCK_LINES, IDS_TILE_QUARTZ_BLOCK_LINES, IDS_TILE_QUARTZ_BLOCK_LINES
 };
 
-const wstring QuartzBlockTile::TEXTURE_TOP = L"quartzblock_top";
-const wstring QuartzBlockTile::TEXTURE_CHISELED_TOP = L"quartzblock_chiseled_top";
-const wstring QuartzBlockTile::TEXTURE_LINES_TOP = L"quartzblock_lines_top";
-const wstring QuartzBlockTile::TEXTURE_BOTTOM = L"quartzblock_bottom";
-const wstring QuartzBlockTile::TEXTURE_NAMES[QUARTZ_BLOCK_TEXTURES] = {	L"quartzblock_side", L"quartzblock_chiseled", L"quartzblock_lines", L"", L""};
+const std::wstring QuartzBlockTile::TEXTURE_TOP = L"quartzblock_top";
+const std::wstring QuartzBlockTile::TEXTURE_CHISELED_TOP = L"quartzblock_chiseled_top";
+const std::wstring QuartzBlockTile::TEXTURE_LINES_TOP = L"quartzblock_lines_top";
+const std::wstring QuartzBlockTile::TEXTURE_BOTTOM = L"quartzblock_bottom";
+const std::wstring QuartzBlockTile::TEXTURE_NAMES[QUARTZ_BLOCK_TEXTURES] = {	L"quartzblock_side", L"quartzblock_chiseled", L"quartzblock_lines", L"", L""};
 
 QuartzBlockTile::QuartzBlockTile(int id) : Tile(id, Material::stone)
 {
@@ -89,9 +89,9 @@ int QuartzBlockTile::getSpawnResourcesAuxValue(int data)
 	return data;
 }
 
-shared_ptr<ItemInstance> QuartzBlockTile::getSilkTouchItemInstance(int data)
+std::shared_ptr<ItemInstance> QuartzBlockTile::getSilkTouchItemInstance(int data)
 {
-	if (data == TYPE_LINES_X || data == TYPE_LINES_Z) return shared_ptr<ItemInstance>(new ItemInstance(id, 1, TYPE_LINES_Y));
+	if (data == TYPE_LINES_X || data == TYPE_LINES_Z) return std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, TYPE_LINES_Y));
 	return Tile::getSilkTouchItemInstance(data);
 }
 

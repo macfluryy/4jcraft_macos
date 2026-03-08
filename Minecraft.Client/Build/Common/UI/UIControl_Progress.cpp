@@ -11,7 +11,7 @@ UIControl_Progress::UIControl_Progress()
 	m_showingBar = true;
 }
 
-bool UIControl_Progress::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_Progress::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eProgress);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -23,7 +23,7 @@ bool UIControl_Progress::setupControl(UIScene *scene, IggyValuePath *parent, con
 	return success;
 }
 
-void UIControl_Progress::init(const wstring &label, int id, int min, int max, int current)
+void UIControl_Progress::init(const std::wstring &label, int id, int min, int max, int current)
 {
 	m_label = label;
 	m_id = id;

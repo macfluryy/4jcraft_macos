@@ -36,8 +36,8 @@ public:
 
 	DWORD m_dwNestedBeginCount;
 
-	wstring m_fontName;
-	wstring m_fallbackFont;
+	std::wstring m_fontName;
+	std::wstring m_fallbackFont;
 	DWORD refCount;
 public:
 	float getScaleFactor() { return m_fScaleFactor; }
@@ -53,7 +53,7 @@ public:
       //  m_fXScaleFactor = m_fYScaleFactor = m_fScaleFactor;
     }
 
-	void SetFallbackFont(const wstring &fallbackFont) { m_fallbackFont = fallbackFont; }
+	void SetFallbackFont(const std::wstring &fallbackFont) { m_fallbackFont = fallbackFont; }
 	void IncRefCount() { ++refCount; }
 	void DecRefCount() { --refCount; }
 

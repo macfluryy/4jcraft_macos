@@ -5,14 +5,14 @@
 #include "../Headers/net.minecraft.world.item.crafting.h"
 #include "ArmorDyeRecipe.h"
 
-bool ArmorDyeRecipe::matches(shared_ptr<CraftingContainer> craftSlots, Level *level)
+bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level)
 {
-	shared_ptr<ItemInstance> target = nullptr;
-	vector<shared_ptr<ItemInstance> > dyes;
+	std::shared_ptr<ItemInstance> target = nullptr;
+	std::vector<std::shared_ptr<ItemInstance> > dyes;
 
 	for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
 	{
-		shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+		std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
 		if (item == NULL) continue;
 
 		ArmorItem *armor = dynamic_cast<ArmorItem *>(item->getItem());
@@ -40,9 +40,9 @@ bool ArmorDyeRecipe::matches(shared_ptr<CraftingContainer> craftSlots, Level *le
 	return target != NULL && !dyes.empty();
 }
 
-shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingContainer> craftSlots)
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(std::shared_ptr<CraftingContainer> craftSlots)
 {
-	shared_ptr<ItemInstance> target = nullptr;
+	std::shared_ptr<ItemInstance> target = nullptr;
 	int colorTotals[3];
 	colorTotals[0] = 0;
 	colorTotals[1] = 0;
@@ -55,7 +55,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 	{
 		for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
 		{
-			shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+			std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
 			if (item == NULL) continue;
 
 			armor = dynamic_cast<ArmorItem *>(item->getItem());
@@ -72,7 +72,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 						float green = (float) ((color >> 8) & 0xFF) / 0xFF;
 						float blue = (float) (color & 0xFF) / 0xFF;
 
-						intensityTotal += max(red, max(green, blue)) * 0xFF;
+						intensityTotal += std::max(red, std::max(green, blue)) * 0xFF;
 
 						colorTotals[0] += red * 0xFF;
 						colorTotals[1] += green * 0xFF;
@@ -92,7 +92,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 				int green = (int) (Sheep::COLOR[tileData][1] * 0xFF);
 				int blue = (int) (Sheep::COLOR[tileData][2] * 0xFF);
 
-				intensityTotal += max(red, max(green, blue));
+				intensityTotal += std::max(red, std::max(green, blue));
 
 				colorTotals[0] += red;
 				colorTotals[1] += green;
@@ -113,7 +113,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 	int blue = (colorTotals[2] / colourCounts);
 
 	float averageIntensity = (float) intensityTotal / colourCounts;
-	float resultIntensity = (float) max(red, max(green, blue));
+	float resultIntensity = (float) std::max(red, std::max(green, blue));
 	//        System.out.println(averageIntensity + ", " + resultIntensity);
 
 	red = (int) ((float) red * averageIntensity / resultIntensity);
@@ -128,7 +128,7 @@ shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(shared_ptr<CraftingCo
 	return target;
 }
 
-shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(shared_ptr<CraftingContainer> craftSlots)
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(std::shared_ptr<CraftingContainer> craftSlots)
 {
 	return ArmorDyeRecipe::assembleDyedArmor(craftSlots);
 }
@@ -177,7 +177,7 @@ void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED *pIngReq)
 #if 0
 	AUTO_VAR(citEnd, ingredients->end());
 
-	for (vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
+	for (std::vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
 	{
 		ItemInstance *expected = *ingredient;
 

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Build/System.h"
 
@@ -144,7 +144,7 @@ class FileHeader
 	friend class ConsoleSaveFileOriginal;
 	friend class ConsoleSaveFileSplit;
 private:
-	vector<FileEntry *> fileTable;
+	std::vector<FileEntry *> fileTable;
 	ESavePlatform	m_savePlatform;
 	ByteOrder		m_saveEndian;
 #if defined(__PS3__) || defined(_XBOX)
@@ -164,7 +164,7 @@ public:
 	~FileHeader();
 
 protected:
-	FileEntry *AddFile( const wstring &name, unsigned int length = 0 );
+	FileEntry *AddFile( const std::wstring &name, unsigned int length = 0 );
 	void RemoveFile( FileEntry * );
 	void WriteHeader( LPVOID saveMem );
 	void ReadHeader( LPVOID saveMem, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL );
@@ -175,18 +175,18 @@ protected:
 
 	void AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite, bool subtract = false);
 
-	bool fileExists( const wstring &name );
+	bool fileExists( const std::wstring &name );
 
-	vector<FileEntry *> *getFilesWithPrefix(const wstring &prefix);
+	std::vector<FileEntry *> *getFilesWithPrefix(const std::wstring &prefix);
 
-	vector<FileEntry *> *getValidPlayerDatFiles();
+	std::vector<FileEntry *> *getValidPlayerDatFiles();
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-	wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
-	wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
-	vector<FileEntry *> *getDatFilesWithOnlineID(const PlayerUID& pUID);
-	vector<FileEntry *> *getDatFilesWithMacAndUserID(const PlayerUID& pUID);
-	vector<FileEntry *> *getDatFilesWithPrimaryUser();
+	std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
+	std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
+	std::vector<FileEntry *> *getDatFilesWithOnlineID(const PlayerUID& pUID);
+	std::vector<FileEntry *> *getDatFilesWithMacAndUserID(const PlayerUID& pUID);
+	std::vector<FileEntry *> *getDatFilesWithPrimaryUser();
 #endif
 	
 	void setSaveVersion(int version) { m_saveVersion = version; }

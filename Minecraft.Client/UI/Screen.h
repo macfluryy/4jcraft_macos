@@ -3,7 +3,7 @@
 class Button;
 class GuiParticles;
 class Minecraft;
-using namespace std;
+
 
 class Screen : public GuiComponent
 {
@@ -13,7 +13,7 @@ public:
 	int width;
     int height;
 protected:
-	vector<Button *> buttons;
+	std::vector<Button *> buttons;
 public:
 	bool passEvents;
 protected:
@@ -26,8 +26,8 @@ public:
 protected:
 	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
 public:
-	static wstring getClipboard();
-    static void setClipboard(const wstring& str);
+	static std::wstring getClipboard();
+    static void setClipboard(const std::wstring& str);
 private:
 	Button *clickedButton;
 

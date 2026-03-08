@@ -2,11 +2,11 @@
 
 // 4J ADDED THIS PACKET
 
-using namespace std;
+
 
 #include "Packet.h"
 
-class XZPacket : public Packet, public enable_shared_from_this<XZPacket>
+class XZPacket : public Packet, public std::enable_shared_from_this<XZPacket>
 {
 public:
 	static const int STRONGHOLD;
@@ -25,6 +25,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new XZPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new XZPacket()); }
 	virtual int getId() { return 166; }
 };

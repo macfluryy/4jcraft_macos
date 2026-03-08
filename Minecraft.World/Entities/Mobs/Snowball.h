@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Throwable.h"
 
@@ -16,7 +16,7 @@ private:
 
 public:
 	Snowball(Level *level);
-	Snowball(Level *level, shared_ptr<Mob> mob);
+	Snowball(Level *level, std::shared_ptr<Mob> mob);
 	Snowball(Level *level, double x, double y, double z);
 
 protected:

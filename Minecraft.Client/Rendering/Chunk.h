@@ -7,7 +7,7 @@
 class Level;
 class TileEntity;
 class Entity;
-using namespace std;
+
 
 class ClipChunk
 {
@@ -52,7 +52,7 @@ public:
 
     int id;
 //public:
-//	vector<shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
+//	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;		// 4J - removed
     
 private:
 	LevelRenderer::rteMap			*globalRenderableTileEntities;
@@ -71,8 +71,8 @@ public:
 #ifdef __PS3__
 	void rebuild_SPU();
 #endif // __PS3__
-	float distanceToSqr(shared_ptr<Entity> player) const;
-    float squishedDistanceToSqr(shared_ptr<Entity> player);
+	float distanceToSqr(std::shared_ptr<Entity> player) const;
+    float squishedDistanceToSqr(std::shared_ptr<Entity> player);
     void reset();
     void _delete();
 

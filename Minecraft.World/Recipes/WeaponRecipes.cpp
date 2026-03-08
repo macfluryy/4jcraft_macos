@@ -7,7 +7,7 @@
 #include "WeaponRecipes.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
-wstring WeaponRecipies::shapes[][4] = 
+std::wstring WeaponRecipies::shapes[][4] = 
 {
 			{L"X", //
 			 L"X",//
@@ -23,7 +23,7 @@ wstring WeaponRecipies::shapes[][4] =
 
 void WeaponRecipies::_init()
 {
-	map = new vector <Object *> [MAX_WEAPON_RECIPES];
+	map = new std::vector <Object *> [MAX_WEAPON_RECIPES];
 
 	ADD_OBJECT(map[0],Tile::wood);
 	ADD_OBJECT(map[0],Tile::stoneBrick);

@@ -2,7 +2,7 @@
 #include "../GuiComponent.h"
 class Achievement;
 class ItemRenderer;
-using namespace std;
+
 
 class AchievementPopup : public GuiComponent
 {
@@ -10,8 +10,8 @@ private:
 	Minecraft *mc;
     int width, height;
 
-    wstring title;
-    wstring desc;
+    std::wstring title;
+    std::wstring desc;
     Achievement *ach;
     __int64 startTime;
     ItemRenderer *ir;

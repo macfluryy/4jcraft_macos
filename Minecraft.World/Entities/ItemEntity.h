@@ -15,7 +15,7 @@ private:
 
 	static const int LIFETIME = 5 * 60 * SharedConstants::TICKS_PER_SECOND; // Five miniutes.
 
-	wstring thrower;
+	std::wstring thrower;
 
 	// 4J Added
 	void _init();
@@ -32,7 +32,7 @@ public:
 	float bobOffs;
 	
 	ItemEntity(Level *level, double x, double y, double z);
-	ItemEntity(Level *level, double x, double y, double z, shared_ptr<ItemInstance> item);
+	ItemEntity(Level *level, double x, double y, double z, std::shared_ptr<ItemInstance> item);
 
 protected:
 	virtual bool makeStepSound();
@@ -50,7 +50,7 @@ private:
 	void mergeWithNeighbours();
 
 public:
-	bool merge(shared_ptr<ItemEntity> target);
+	bool merge(std::shared_ptr<ItemEntity> target);
 	void setShortLifeTime();
 	virtual bool updateInWaterState();
 
@@ -61,14 +61,14 @@ public:
 	virtual bool hurt(DamageSource *source, int damage);
 	virtual void addAdditonalSaveData(CompoundTag *entityTag);
 	virtual void readAdditionalSaveData(CompoundTag *tag);
-	virtual void playerTouch(shared_ptr<Player> player);
+	virtual void playerTouch(std::shared_ptr<Player> player);
 
-	virtual wstring getAName();
+	virtual std::wstring getAName();
 
-	shared_ptr<ItemInstance> getItem();
-	void setItem(shared_ptr<ItemInstance> item);
+	std::shared_ptr<ItemInstance> getItem();
+	void setItem(std::shared_ptr<ItemInstance> item);
 	virtual bool isAttackable();
 
-	void setThrower(const wstring &thrower);
-	wstring getThrower();
+	void setThrower(const std::wstring &thrower);
+	std::wstring getThrower();
 };

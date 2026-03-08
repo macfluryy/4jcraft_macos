@@ -30,12 +30,12 @@ void LevelType::staticCtor()
 	lvl_normal_1_1->setSelectableByUser(false);	
 }
 
-LevelType::LevelType(int id, wstring generatorName) 
+LevelType::LevelType(int id, std::wstring generatorName) 
 {
 	init(id, generatorName, 0);
 }
 
-LevelType::LevelType(int id, wstring generatorName, int version) 
+LevelType::LevelType(int id, std::wstring generatorName, int version) 
 {
 	m_generatorName = generatorName;
 	m_version = version;
@@ -44,7 +44,7 @@ LevelType::LevelType(int id, wstring generatorName, int version)
 }
 
 
-void LevelType::init(int id, wstring generatorName, int version) 
+void LevelType::init(int id, std::wstring generatorName, int version) 
 {
 	m_generatorName = generatorName;
 	m_version = version;
@@ -52,12 +52,12 @@ void LevelType::init(int id, wstring generatorName, int version)
 	levelTypes[id] = this;
 }
 
-wstring LevelType::getGeneratorName() 
+std::wstring LevelType::getGeneratorName() 
 {
 	return m_generatorName;
 }
 
-wstring LevelType::getDescriptionId() 
+std::wstring LevelType::getDescriptionId() 
 {
 	return L"generator." + m_generatorName;
 }
@@ -98,7 +98,7 @@ bool LevelType::hasReplacement()
 	return m_replacement;
 }
 
-LevelType *LevelType::getLevelType(wstring name) 
+LevelType *LevelType::getLevelType(std::wstring name) 
 {
 	if(name.length()>0)
 	{	

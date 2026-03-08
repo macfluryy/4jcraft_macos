@@ -35,12 +35,12 @@ bool Silverfish::makeStepSound()
 	return false;
 }
 
-shared_ptr<Entity> Silverfish::findAttackTarget()
+std::shared_ptr<Entity> Silverfish::findAttackTarget()
 {
 #ifndef _FINAL_BUILD
 	if(app.GetMobsDontAttackEnabled())
 	{
-		return shared_ptr<Player>();
+		return std::shared_ptr<Player>();
 	}
 #endif
 
@@ -77,14 +77,14 @@ bool Silverfish::hurt(DamageSource *source, int dmg)
 	return Monster::hurt(source, dmg);
 }
 
-void Silverfish::checkHurtTarget(shared_ptr<Entity> target, float d)
+void Silverfish::checkHurtTarget(std::shared_ptr<Entity> target, float d)
 {
 
 	//        super.checkHurtTarget(target, d);
 	if (attackTime <= 0 && d < 1.2f && target->bb->y1 > bb->y0 && target->bb->y0 < bb->y1)
 	{
 		attackTime = 20;
-		DamageSource *damageSource = DamageSource::mobAttack( dynamic_pointer_cast<Mob>( shared_from_this() ) );
+		DamageSource *damageSource = DamageSource::mobAttack( std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
 		target->hurt(damageSource, attackDamage);
 		delete damageSource;
 	}
@@ -197,7 +197,7 @@ bool Silverfish::canSpawn()
 {
 	if (Monster::canSpawn())
 	{
-		shared_ptr<Player> nearestPlayer = level->getNearestPlayer(shared_from_this(), 5.0);
+		std::shared_ptr<Player> nearestPlayer = level->getNearestPlayer(shared_from_this(), 5.0);
 		return nearestPlayer == NULL;
 	}
 	return false;

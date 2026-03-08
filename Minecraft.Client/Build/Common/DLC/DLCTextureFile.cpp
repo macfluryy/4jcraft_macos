@@ -2,7 +2,7 @@
 #include "DLCManager.h"
 #include "DLCTextureFile.h"
 
-DLCTextureFile::DLCTextureFile(const wstring &path) : DLCFile(DLCManager::e_DLCType_Texture,path)
+DLCTextureFile::DLCTextureFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Texture,path)
 {
 	m_bIsAnim = false;
 	m_animString = L"";
@@ -24,7 +24,7 @@ PBYTE DLCTextureFile::getData(DWORD &dwBytes)
 	return m_pbData;
 }
 
-void DLCTextureFile::addParameter(DLCManager::EDLCParameterType type, const wstring &value)
+void DLCTextureFile::addParameter(DLCManager::EDLCParameterType type, const std::wstring &value)
 {
 	switch(type)
 	{
@@ -36,7 +36,7 @@ void DLCTextureFile::addParameter(DLCManager::EDLCParameterType type, const wstr
 	}
 }
 
-wstring DLCTextureFile::getParameterAsString(DLCManager::EDLCParameterType type)
+std::wstring DLCTextureFile::getParameterAsString(DLCManager::EDLCParameterType type)
 {
 	switch(type)
 	{

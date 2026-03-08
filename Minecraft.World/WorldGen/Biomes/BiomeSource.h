@@ -13,15 +13,15 @@ class LevelType;
 class BiomeSource
 {
 private:
-	shared_ptr<Layer> layer;
-	shared_ptr<Layer> zoomedLayer;
+	std::shared_ptr<Layer> layer;
+	std::shared_ptr<Layer> zoomedLayer;
 public:
 	static const int CACHE_DIAMETER = 256;
 
 private:
 	BiomeCache *cache;
 
-	vector<Biome *> playerSpawnBiomes;
+	std::vector<Biome *> playerSpawnBiomes;
 
 protected:
 	void _init();
@@ -43,7 +43,7 @@ public:
 	~BiomeSource();
 
 public:
-	vector<Biome *> getPlayerSpawnBiomes() { return playerSpawnBiomes; }
+	std::vector<Biome *> getPlayerSpawnBiomes() { return playerSpawnBiomes; }
     virtual Biome *getBiome(ChunkPos *cp);
     virtual Biome *getBiome(int x, int z);
 
@@ -75,7 +75,7 @@ public:
 	* This is a bit of a rough check, to make it as fast as possible. To ensure
 	* NO other biomes, add a margin of at least four blocks to the radius
 	*/
-	virtual bool containsOnly(int x, int z, int r, vector<Biome *> allowed);
+	virtual bool containsOnly(int x, int z, int r, std::vector<Biome *> allowed);
 
 	/**
 	* Checks if an area around a block contains only the specified biome.
@@ -100,7 +100,7 @@ public:
 	* 
 	* Returns null if the biome wasn't found
 	*/
-	virtual TilePos *findBiome(int x, int z, int r, vector<Biome *> allowed, Random *random);
+	virtual TilePos *findBiome(int x, int z, int r, std::vector<Biome *> allowed, Random *random);
 
 	void update();
 };

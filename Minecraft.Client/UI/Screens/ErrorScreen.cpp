@@ -1,7 +1,7 @@
 #include "../../Build/stdafx.h"
 #include "ErrorScreen.h"
 
-ErrorScreen::ErrorScreen(const wstring& title, const wstring& message)
+ErrorScreen::ErrorScreen(const std::wstring& title, const std::wstring& message)
 {
     this->title = title;
     this->message = message;

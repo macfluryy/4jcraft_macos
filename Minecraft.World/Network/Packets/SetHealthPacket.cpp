@@ -60,7 +60,7 @@ bool SetHealthPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetHealthPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetHealthPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

@@ -244,7 +244,7 @@ void TileRenderer::tesselateInWorldFixedTexture( Tile* tile, int x, int y, int z
 }
 
 void TileRenderer::tesselateInWorldNoCulling( Tile* tile, int x, int y, int z, int forceData,
-											  shared_ptr< TileEntity > forceEntity )	// 4J added forceData, forceEntity param
+											  std::shared_ptr< TileEntity > forceEntity )	// 4J added forceData, forceEntity param
 {
 	noCulling = true;
 	tesselateInWorld( tile, x, y, z, forceData );
@@ -252,7 +252,7 @@ void TileRenderer::tesselateInWorldNoCulling( Tile* tile, int x, int y, int z, i
 }
 
 bool TileRenderer::tesselateInWorld( Tile* tt, int x, int y, int z, int forceData,
-									 shared_ptr< TileEntity > forceEntity )	// 4J added forceData, forceEntity param
+									 std::shared_ptr< TileEntity > forceEntity )	// 4J added forceData, forceEntity param
 {
 	Tesselator* t = Tesselator::getInstance();
 	int	shape = tt->getRenderShape();

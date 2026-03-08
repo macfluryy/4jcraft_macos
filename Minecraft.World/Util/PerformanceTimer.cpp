@@ -20,7 +20,7 @@ void PerformanceTimer::Reset()
 #endif
 }
 
-void PerformanceTimer::PrintElapsedTime(const wstring &description)
+void PerformanceTimer::PrintElapsedTime(const std::wstring &description)
 {
 #if !defined (__linux__)
 	LARGE_INTEGER qwNewTime, qwDeltaTime;

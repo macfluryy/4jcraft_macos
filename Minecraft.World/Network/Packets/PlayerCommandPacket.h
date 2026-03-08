@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class PlayerCommandPacket : public Packet, public enable_shared_from_this<PlayerCommandPacket>
+class PlayerCommandPacket : public Packet, public std::enable_shared_from_this<PlayerCommandPacket>
 {
 public:
 	static const int START_SNEAKING;
@@ -25,13 +25,13 @@ public:
     int action;
 
 	PlayerCommandPacket();
-	PlayerCommandPacket(shared_ptr<Entity> e, int action);
+	PlayerCommandPacket(std::shared_ptr<Entity> e, int action);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new PlayerCommandPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new PlayerCommandPacket()); }
 	virtual int getId() { return 19; }
 };

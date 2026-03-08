@@ -1,11 +1,11 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
 class Level;
 
-class ChunkTilesUpdatePacket : public Packet, public enable_shared_from_this<ChunkTilesUpdatePacket>
+class ChunkTilesUpdatePacket : public Packet, public std::enable_shared_from_this<ChunkTilesUpdatePacket>
 {
 public:
 	int xc, zc;
@@ -25,7 +25,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ChunkTilesUpdatePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ChunkTilesUpdatePacket()); }
 	virtual int getId() { return 52; }
 };
 

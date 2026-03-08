@@ -35,7 +35,7 @@ HRESULT CXuiSceneContainer::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 	ContainerMenu* menu = new ContainerMenu( initData->inventory, initData->container );
 
-	shared_ptr<Container> container = initData->container;
+	std::shared_ptr<Container> container = initData->container;
 	m_iPad=initData->iPad;
 	m_bSplitscreen=initData->bSplitscreen;
 

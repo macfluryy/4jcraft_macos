@@ -4,7 +4,7 @@
 
 class Abilities;
 
-class PlayerAbilitiesPacket : public Packet, public enable_shared_from_this<PlayerAbilitiesPacket>
+class PlayerAbilitiesPacket : public Packet, public std::enable_shared_from_this<PlayerAbilitiesPacket>
 {
 private:
 	static const int FLAG_INVULNERABLE = 1 << 0;
@@ -28,7 +28,7 @@ public:
 	void write(DataOutputStream *dos);
 	void handle(PacketListener *listener);
 	int getEstimatedSize();
-	//wstring getDebugInfo();
+	//std::wstring getDebugInfo();
 	bool isInvulnerable();
 	void setInvulnerable(bool invulnerable);
 	bool isFlying();
@@ -42,9 +42,9 @@ public:
 	float getWalkingSpeed();
 	void setWalkingSpeed(float walkingSpeed);
 	bool canBeInvalidated();
-	bool isInvalidatedBy(shared_ptr<Packet> packet);
+	bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new PlayerAbilitiesPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new PlayerAbilitiesPacket()); }
 	virtual int getId() { return 202; }
 };

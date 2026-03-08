@@ -386,7 +386,7 @@ void UIScene_LoadMenu::updateComponents()
 	}
 }
 
-wstring UIScene_LoadMenu::getMoviePath()
+std::wstring UIScene_LoadMenu::getMoviePath()
 {
 	return L"LoadMenu";
 }
@@ -932,7 +932,7 @@ void UIScene_LoadMenu::handleTimerComplete(int id)
 					if(pDLCInfo)
 					{
 						// retrieve the image - if we haven't already
-						wstring textureName = filenametowstring(pDLCInfo->chImageURL);
+						std::wstring textureName = filenametostd::wstring(pDLCInfo->chImageURL);
 
 						if(hasRegisteredSubstitutionTexture(textureName)==false)
 						{

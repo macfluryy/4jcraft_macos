@@ -1,14 +1,14 @@
 #pragma once
 #include "../Screen.h"
-using namespace std;
+
 
 class DisconnectedScreen : public Screen
 {
 private:
-	wstring title, reason;
+	std::wstring title, reason;
 
 public:
-	DisconnectedScreen(const wstring& title, const wstring reason, void *reasonObjects, ...);
+	DisconnectedScreen(const std::wstring& title, const std::wstring reason, void *reasonObjects, ...);
     virtual void tick();
 protected:
 	using Screen::keyPressed;

@@ -4,7 +4,7 @@
 class BufferedImage;
 class File;
 class Textures;
-using namespace std;
+
 
 class FileTexturePack : public AbstractTexturePack
 {
@@ -18,11 +18,11 @@ public:
 	void unload(Textures *textures);
 
 protected:
-	InputStream *getResourceImplementation(const wstring &name); //throws IOException
+	InputStream *getResourceImplementation(const std::wstring &name); //throws IOException
 
 public:
 	//@Override
-	bool hasFile(const wstring &name);
+	bool hasFile(const std::wstring &name);
 
 private:
 	void loadZipFile(); //throws IOException

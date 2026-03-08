@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "ChunkStorage.h"
 #include "../LevelChunk.h"
@@ -12,18 +12,18 @@ class ConsoleSaveFile;
 class McRegionChunkStorage : public ChunkStorage
 {
 private:
-	const wstring m_prefix;
+	const std::wstring m_prefix;
 	ConsoleSaveFile *m_saveFile;
 	static CRITICAL_SECTION		cs_memory;
 
-	unordered_map<__int64, byteArray> m_entityData;
+	std::unordered_map<__int64, byteArray> m_entityData;
 
 	static std::deque<DataOutputStream *> s_chunkDataQueue;
 	static int s_runningThreadCount;
 	static C4JThread *s_saveThreads[3];
 
 public:
-	McRegionChunkStorage(ConsoleSaveFile *saveFile, const wstring &prefix);
+	McRegionChunkStorage(ConsoleSaveFile *saveFile, const std::wstring &prefix);
 	~McRegionChunkStorage();
 	static void staticCtor();
 

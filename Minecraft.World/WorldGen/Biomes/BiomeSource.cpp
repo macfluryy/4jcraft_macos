@@ -275,7 +275,7 @@ void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z, int 
 * This is a bit of a rough check, to make it as fast as possible. To ensure
 * NO other biomes, add a margin of at least four blocks to the radius
 */
-bool BiomeSource::containsOnly(int x, int z, int r, vector<Biome *> allowed)
+bool BiomeSource::containsOnly(int x, int z, int r, std::vector<Biome *> allowed)
 {
 	int x0 = ((x - r) >> 2);
 	int z0 = ((z - r) >> 2);
@@ -365,7 +365,7 @@ TilePos *BiomeSource::findBiome(int x, int z, int r, Biome *toFind, Random *rand
 * 
 * Returns null if the biome wasn't found
 */
-TilePos *BiomeSource::findBiome(int x, int z, int r, vector<Biome *> allowed, Random *random)
+TilePos *BiomeSource::findBiome(int x, int z, int r, std::vector<Biome *> allowed, Random *random)
 {
 	int x0 = ((x - r) >> 2);
 	int z0 = ((z - r) >> 2);

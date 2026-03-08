@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 class Mob;
 class MobEffectInstance;
@@ -86,8 +86,8 @@ protected:
 
 public:
 	int getId();
-    void applyEffectTick(shared_ptr<Mob> mob, int amplification);
-	void applyInstantenousEffect(shared_ptr<Mob> source, shared_ptr<Mob> mob, int amplification, double scale);
+    void applyEffectTick(std::shared_ptr<Mob> mob, int amplification);
+	void applyInstantenousEffect(std::shared_ptr<Mob> source, std::shared_ptr<Mob> mob, int amplification, double scale);
     virtual bool isInstantenous();
     virtual bool isDurationEffectTick(int remainingDuration, int amplification);
 
@@ -101,7 +101,7 @@ public:
 	bool hasIcon();
 	EMobEffectIcon getIcon(); // 4J changed return type
 	bool isHarmful();
-	static wstring formatDuration(MobEffectInstance *instance);
+	static std::wstring formatDuration(MobEffectInstance *instance);
 
 protected:
 	MobEffect *setDurationModifier(double durationModifier);

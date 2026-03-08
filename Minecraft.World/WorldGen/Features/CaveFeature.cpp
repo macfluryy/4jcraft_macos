@@ -2,7 +2,7 @@
 #include "CaveFeature.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
-using namespace std;
+
 
  bool CaveFeature::place(Level *level, Random *random, int x, int y, int z)
  {
@@ -22,7 +22,7 @@ using namespace std;
 
     __int64 seed = random->nextLong();
     random->setSeed(seed);
-    vector<TilePos *> toRemove;
+    std::vector<TilePos *> toRemove;
 
     for (int d = 0; d <= 16; d++)
 	{

@@ -1,20 +1,20 @@
 #pragma once
 
-using namespace std;
+
 
 class WstringLookup
 {
 private:
 	UINT numIDs;
-	unordered_map<wstring, UINT> str2int;
-	vector<wstring> int2str;
+	std::unordered_map<std::wstring, UINT> str2int;
+	std::vector<std::wstring> int2str;
 
 public:
 	WstringLookup();
 
-	wstring lookup(UINT id);
+	std::wstring lookup(UINT id);
 	
-	UINT lookup(wstring);
+	UINT lookup(std::wstring);
 
-	VOID getTable(wstring **lookup, UINT *len);
+	VOID getTable(std::wstring **lookup, UINT *len);
 };

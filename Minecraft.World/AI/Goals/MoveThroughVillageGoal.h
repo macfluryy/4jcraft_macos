@@ -12,9 +12,9 @@ private:
 	PathfinderMob *mob;
 	float speed;
 	Path *path;
-	weak_ptr<DoorInfo> doorInfo;
+	std::weak_ptr<DoorInfo> doorInfo;
 	bool onlyAtNight;
-	vector< weak_ptr<DoorInfo> > visited;
+	std::vector< std::weak_ptr<DoorInfo> > visited;
 
 public:
 	MoveThroughVillageGoal(PathfinderMob *mob, float speed, bool onlyAtNight);
@@ -26,7 +26,7 @@ public:
 	virtual void stop();
 
 private:
-	shared_ptr<DoorInfo> getNextDoorInfo(shared_ptr<Village> village);
-	bool hasVisited(shared_ptr<DoorInfo> di);
+	std::shared_ptr<DoorInfo> getNextDoorInfo(std::shared_ptr<Village> village);
+	bool hasVisited(std::shared_ptr<DoorInfo> di);
 	void updateVisited();
 };

@@ -4,7 +4,7 @@ class Village
 {
 private:
 	Level *level;
-	vector<shared_ptr<DoorInfo> > doorInfos;
+	std::vector<std::shared_ptr<DoorInfo> > doorInfos;
 
 	Pos *accCenter;
 	Pos *center;
@@ -14,18 +14,18 @@ private:
 	int populationSize;
 	int noBreedTimer;
 
-	unordered_map<wstring, int> playerStanding;
+	std::unordered_map<std::wstring, int> playerStanding;
 
 	class Aggressor
 	{
 	public:
-		shared_ptr<Mob> mob;
+		std::shared_ptr<Mob> mob;
 		int timeStamp;
 
-		Aggressor(shared_ptr<Mob> mob, int timeStamp);
+		Aggressor(std::shared_ptr<Mob> mob, int timeStamp);
 	};
 
-	vector<Aggressor *> aggressors;
+	std::vector<Aggressor *> aggressors;
 	int golemCount;
 
 public:
@@ -50,16 +50,16 @@ public:
 	int getStableAge();
 	int getPopulationSize();
 	bool isInside(int xx, int yy, int zz);
-	vector<shared_ptr<DoorInfo> > *getDoorInfos();
-	shared_ptr<DoorInfo> getClosestDoorInfo(int x, int y, int z);
-	shared_ptr<DoorInfo> getBestDoorInfo(int x, int y, int z);
+	std::vector<std::shared_ptr<DoorInfo> > *getDoorInfos();
+	std::shared_ptr<DoorInfo> getClosestDoorInfo(int x, int y, int z);
+	std::shared_ptr<DoorInfo> getBestDoorInfo(int x, int y, int z);
 	bool hasDoorInfo(int x, int y, int z);
-	shared_ptr<DoorInfo> getDoorInfo(int x, int y, int z);
-	void addDoorInfo(shared_ptr<DoorInfo> di);
+	std::shared_ptr<DoorInfo> getDoorInfo(int x, int y, int z);
+	void addDoorInfo(std::shared_ptr<DoorInfo> di);
 	bool canRemove();
-	void addAggressor(shared_ptr<Mob> mob);
-	shared_ptr<Mob> getClosestAggressor(shared_ptr<Mob> from);
-	shared_ptr<Player> getClosestBadStandingPlayer(shared_ptr<Mob> from); // 4J Stu - Should be LivingEntity when we add that
+	void addAggressor(std::shared_ptr<Mob> mob);
+	std::shared_ptr<Mob> getClosestAggressor(std::shared_ptr<Mob> from);
+	std::shared_ptr<Player> getClosestBadStandingPlayer(std::shared_ptr<Mob> from); // 4J Stu - Should be LivingEntity when we add that
 
 private:
 	void updateAggressors();
@@ -68,11 +68,11 @@ private:
 	void calcInfo();
 
 public:
-	int getStanding(const wstring &playerName);
-	int modifyStanding(const wstring &playerName, int delta);
-	bool isGoodStanding(const wstring &playerName);
-	bool isBadStanding(const wstring &playerName);
-	bool isVeryBadStanding(const wstring playerName);
+	int getStanding(const std::wstring &playerName);
+	int modifyStanding(const std::wstring &playerName, int delta);
+	bool isGoodStanding(const std::wstring &playerName);
+	bool isBadStanding(const std::wstring &playerName);
+	bool isVeryBadStanding(const std::wstring playerName);
 	void readAdditionalSaveData(CompoundTag *tag);
 	void addAdditonalSaveData(CompoundTag *tag);
 	void resetNoBreedTimer();

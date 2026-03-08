@@ -41,7 +41,7 @@ bool SetCarriedItemPacket::canBeInvalidated()
 	return true;
 }
 
-bool SetCarriedItemPacket::isInvalidatedBy(shared_ptr<Packet> packet)
+bool SetCarriedItemPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
 {
 	return true;
 }

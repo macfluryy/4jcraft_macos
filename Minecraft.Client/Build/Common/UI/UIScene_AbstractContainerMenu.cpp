@@ -221,7 +221,7 @@ void UIScene_AbstractContainerMenu::customDraw(IggyCustomDrawCallbackRegion *reg
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	shared_ptr<ItemInstance> item = nullptr;
+	std::shared_ptr<ItemInstance> item = nullptr;
 	if(wcscmp((wchar_t *)region->name,L"pointerIcon")==0)
 	{		
 		m_cacheSlotRenders = false;
@@ -259,7 +259,7 @@ void UIScene_AbstractContainerMenu::handleInput(int iPad, int key, bool repeat, 
 	}
 }
 
-void UIScene_AbstractContainerMenu::SetPointerText(const wstring &description, vector<wstring> &unformattedStrings, bool newSlot)
+void UIScene_AbstractContainerMenu::SetPointerText(const std::wstring &description, std::vector<std::wstring> &unformattedStrings, bool newSlot)
 {
 	//app.DebugPrintf("Setting pointer text\n");
 	m_cursorPath.setLabel(description,false,newSlot);
@@ -287,7 +287,7 @@ void UIScene_AbstractContainerMenu::setFocusToPointer(int iPad)
 	m_focusSection = eSectionNone;
 }
 
-shared_ptr<ItemInstance> UIScene_AbstractContainerMenu::getSlotItem(ESceneSection eSection, int iSlot)
+std::shared_ptr<ItemInstance> UIScene_AbstractContainerMenu::getSlotItem(ESceneSection eSection, int iSlot)
 {
 	Slot *slot = m_menu->getSlot( getSectionStartOffset(eSection) + iSlot );
 	if(slot) return slot->getItem();

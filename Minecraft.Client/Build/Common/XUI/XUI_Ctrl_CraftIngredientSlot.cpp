@@ -92,7 +92,7 @@ void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCo
 	XuiElementSetShow(m_hObj,bShow);
 }
 
-void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
+void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
 {
 	if(item == NULL) SetIcon(iPad, 0,0,0,0,0,false,false,bShow);
 	else

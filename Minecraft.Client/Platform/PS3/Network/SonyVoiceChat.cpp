@@ -37,7 +37,7 @@ bool SonyVoiceChat::sm_bEnabled = true;
 uint8_t SonyVoiceChat::sm_micStatus = CELL_AVC2_MIC_STATUS_UNKNOWN;
 bool	SonyVoiceChat::sm_bLoaded = false;
 bool	SonyVoiceChat::sm_bUnloading = false;
-unordered_map<SceNpMatching2RoomMemberId, bool> SonyVoiceChat::sm_bTalkingMap;
+std::unordered_map<SceNpMatching2RoomMemberId, bool> SonyVoiceChat::sm_bTalkingMap;
 bool	SonyVoiceChat::sm_bCanStart = false;
 bool	SonyVoiceChat::sm_isChatRestricted = false;
 int		SonyVoiceChat::sm_currentBitrate = 28000;

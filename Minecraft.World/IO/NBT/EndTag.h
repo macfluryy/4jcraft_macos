@@ -5,13 +5,13 @@ class EndTag : public Tag
 {
 public:
 	EndTag() : Tag(L"") {}
-	EndTag(const wstring &name) : Tag(name) {}
+	EndTag(const std::wstring &name) : Tag(name) {}
 
 	void load(DataInput *dis) {};
 	void write(DataOutput *dos) {};
 
 	uint8_t getId() { return TAG_End; }
-	wstring toString() { return wstring( L"END" ); }
+	std::wstring toString() { return std::wstring( L"END" ); }
 
 	Tag *copy()
 	{

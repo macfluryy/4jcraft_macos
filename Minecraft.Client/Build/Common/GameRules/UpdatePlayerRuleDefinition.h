@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+//using namespace std;
 
 #include "GameRuleDefinition.h"
 
@@ -9,7 +9,7 @@ class Pos;
 class UpdatePlayerRuleDefinition : public GameRuleDefinition
 {
 private:
-	vector<AddItemRuleDefinition *> m_items;
+	std::vector<AddItemRuleDefinition *> m_items;
 
 	bool m_bUpdateHealth, m_bUpdateFood, m_bUpdateYRot, m_bUpdateInventory;
 	int m_health;
@@ -23,11 +23,11 @@ public:
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_UpdatePlayerRule; }
 	
-	virtual void getChildren(vector<GameRuleDefinition *> *children);
+	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 
 	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
-	virtual void addAttribute(const wstring &attributeName, const wstring &attributeValue);
+	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
-	virtual void postProcessPlayer(shared_ptr<Player> player);
+	virtual void postProcessPlayer(std::shared_ptr<Player> player);
 };

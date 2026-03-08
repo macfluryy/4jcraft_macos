@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Item.h"
 
@@ -12,7 +12,7 @@ class DyePowderItem : public Item
 public:
 	static const unsigned int COLOR_DESCS[];
 	static const unsigned int COLOR_USE_DESCS[];
-	static const wstring COLOR_TEXTURES[];
+	static const std::wstring COLOR_TEXTURES[];
 	static const int COLOR_RGB[];
 
 	static const int BLACK;
@@ -40,10 +40,10 @@ public:
 	DyePowderItem(int id);
 
 	virtual Icon *getIcon(int itemAuxValue);
-	virtual unsigned int getDescriptionId(shared_ptr<ItemInstance> itemInstance);
-	virtual unsigned int getUseDescriptionId(shared_ptr<ItemInstance> itemInstance);
-	virtual bool useOn(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
-	virtual bool interactEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob);
+	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> itemInstance);
+	virtual unsigned int getUseDescriptionId(std::shared_ptr<ItemInstance> itemInstance);
+	virtual bool useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
+	virtual bool interactEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob);
 
 	//@Override
     void registerIcons(IconRegister *iconRegister);

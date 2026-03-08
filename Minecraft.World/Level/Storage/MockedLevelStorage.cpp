@@ -21,7 +21,7 @@ ChunkStorage *MockedLevelStorage::createChunkStorage(Dimension *dimension)
     return NULL;
 }
 
-void MockedLevelStorage::saveLevelData(LevelData *levelData, vector<shared_ptr<Player> > *players)
+void MockedLevelStorage::saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players)
 {
 }
 
@@ -38,12 +38,12 @@ void MockedLevelStorage::closeAll()
 {
 }
 
-ConsoleSavePath MockedLevelStorage::getDataFile(const wstring& id)
+ConsoleSavePath MockedLevelStorage::getDataFile(const std::wstring& id)
 {
-    return ConsoleSavePath(wstring(L""));
+    return ConsoleSavePath(std::wstring(L""));
 }
 
-wstring MockedLevelStorage::getLevelId()
+std::wstring MockedLevelStorage::getLevelId()
 {
 	return L"none";
 }

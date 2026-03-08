@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 #include <xuirender.h>
 
 #include "../../../Build/Common/UI/UIFontData.h"
@@ -106,7 +106,7 @@ public:
 	int m_iFontTexture;
 
 private:
-	unordered_map<wchar_t, unsigned short> m_TranslatorMap;
+	std::unordered_map<wchar_t, unsigned short> m_TranslatorMap;
 
 	CharMetrics *m_characterMetrics;
 

@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class TakeItemEntityPacket : public Packet, public enable_shared_from_this<TakeItemEntityPacket>
+class TakeItemEntityPacket : public Packet, public std::enable_shared_from_this<TakeItemEntityPacket>
 {
 public:
 	int itemId, playerId;
@@ -17,6 +17,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new TakeItemEntityPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TakeItemEntityPacket()); }
 	virtual int getId() { return 22; }
 };

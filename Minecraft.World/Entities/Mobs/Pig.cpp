@@ -56,7 +56,7 @@ int Pig::getMaxHealth()
 
 bool Pig::canBeControlledByRider()
 {
-	shared_ptr<ItemInstance> item = dynamic_pointer_cast<Player>(rider.lock())->getCarriedItem();
+	std::shared_ptr<ItemInstance> item = std::dynamic_pointer_cast<Player>(rider.lock())->getCarriedItem();
 
 	return item != NULL && item->id == Item::carrotOnAStick_Id;
 }
@@ -94,7 +94,7 @@ int Pig::getDeathSound()
 	return eSoundType_MOB_PIG_DEATH;
 }
 
-bool Pig::interact(shared_ptr<Player> player)
+bool Pig::interact(std::shared_ptr<Player> player)
 {
 	if(!Animal::interact(player))
 	{
@@ -153,7 +153,7 @@ void Pig::setSaddle(bool value)
 void Pig::thunderHit(const LightningBolt *lightningBolt)
 {
 	if (level->isClientSide) return;
-	shared_ptr<PigZombie> pz = shared_ptr<PigZombie>( new PigZombie(level) );
+	std::shared_ptr<PigZombie> pz = std::shared_ptr<PigZombie>( new PigZombie(level) );
 	pz->moveTo(x, y, z, yRot, xRot);
 	level->addEntity(pz);
 	remove();
@@ -162,18 +162,18 @@ void Pig::thunderHit(const LightningBolt *lightningBolt)
 void Pig::causeFallDamage(float distance) 
 {
 	Animal::causeFallDamage(distance);
-	if (distance > 5 && dynamic_pointer_cast<Player>( rider.lock() ) != NULL)
+	if (distance > 5 && std::dynamic_pointer_cast<Player>( rider.lock() ) != NULL)
 	{
-		(dynamic_pointer_cast<Player>(rider.lock()))->awardStat(GenericStats::flyPig(),GenericStats::param_flyPig());
+		(std::dynamic_pointer_cast<Player>(rider.lock()))->awardStat(GenericStats::flyPig(),GenericStats::param_flyPig());
 	}
 }
 
-shared_ptr<AgableMob> Pig::getBreedOffspring(shared_ptr<AgableMob> target)
+std::shared_ptr<AgableMob> Pig::getBreedOffspring(std::shared_ptr<AgableMob> target)
 {
 	// 4J - added limit to number of animals that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
-		return shared_ptr<Pig>( new Pig(level) );
+		return std::shared_ptr<Pig>( new Pig(level) );
 	}
 	else
 	{
@@ -181,7 +181,7 @@ shared_ptr<AgableMob> Pig::getBreedOffspring(shared_ptr<AgableMob> target)
 	}
 }
 
-bool Pig::isFood(shared_ptr<ItemInstance> itemInstance)
+bool Pig::isFood(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return itemInstance != NULL && itemInstance->id == Item::carrots_Id;
 }

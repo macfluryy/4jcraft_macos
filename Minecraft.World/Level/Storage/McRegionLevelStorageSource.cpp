@@ -27,17 +27,17 @@ McRegionLevelStorageSource::McRegionLevelStorageSource(File dir) : DirectoryLeve
 {
 }
 
-wstring McRegionLevelStorageSource::getName()
+std::wstring McRegionLevelStorageSource::getName()
 {
 	return L"Scaevolus' McRegion";
 }
 
-vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
+std::vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
 {
 	// 4J Stu - We don't need to do directory lookups with the xbox save files
-	vector<LevelSummary *> *levels = new vector<LevelSummary *>;
+	std::vector<LevelSummary *> *levels = new std::vector<LevelSummary *>;
 #if 0
-	vector<File *> *subFolders = baseDir.listFiles();
+	std::vector<File *> *subFolders = baseDir.listFiles();
 	File *file;
 	AUTO_VAR(itEnd, subFolders->end());
 	for (AUTO_VAR(it, subFolders->begin()); it != itEnd; it++)
@@ -49,13 +49,13 @@ vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
 			continue;
 		}
 
-		wstring levelId = file->getName();
+		std::wstring levelId = file->getName();
 
 		LevelData *levelData = getDataTagFor(levelId);
 		if (levelData != NULL)
 		{
 			bool requiresConversion = levelData->getVersion() != McRegionLevelStorage::MCREGION_VERSION_ID;
-			wstring levelName = levelData->getLevelName();
+			std::wstring levelName = levelData->getLevelName();
 
 			if (levelName.empty()) // 4J Jev TODO: levelName can't be NULL? if (levelName == NULL || isEmpty(levelName))
 			{
@@ -74,13 +74,13 @@ void McRegionLevelStorageSource::clearAll()
 {
 }
 
-shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const wstring& levelId, bool createPlayerDir) 
+std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir) 
 {
 	//        return new LevelStorageProfilerDecorator(new McRegionLevelStorage(baseDir, levelId, createPlayerDir));
-	return shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
+	return std::shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
-bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const wstring& levelId) 
+bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId) 
 {
 	// check if there is old file format level data
 	LevelData *levelData = getDataTagFor(saveFile, levelId);
@@ -94,7 +94,7 @@ bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const 
 	return true;
 }
 
-bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const wstring& levelId)
+bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId)
 {
 	LevelData *levelData = getDataTagFor(saveFile, levelId);
 	if (levelData == NULL || levelData->getVersion() != 0)
@@ -107,7 +107,7 @@ bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, c
 	return true;
 }
 
-bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const wstring& levelId, ProgressListener *progress)
+bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress)
 {
 	assert(false);
 		// I removed this while updating the saves to use the single save file
@@ -117,10 +117,10 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 #if 0
 	progress->progressStagePercentage(0);
 
-	vector<ChunkFile *> *normalRegions = new vector<ChunkFile *>;
-	vector<File *> *normalBaseFolders = new vector<File *>;
-	vector<ChunkFile *> *netherRegions = new vector<ChunkFile *>;
-	vector<File *> *netherBaseFolders = new vector<File *>;
+	std::vector<ChunkFile *> *normalRegions = new std::vector<ChunkFile *>;
+	std::vector<File *> *normalBaseFolders = new std::vector<File *>;
+	std::vector<ChunkFile *> *netherRegions = new std::vector<ChunkFile *>;
+	std::vector<File *> *netherBaseFolders = new std::vector<File *>;
     ArrayList<ChunkFile> enderRegions = new ArrayList<ChunkFile>();
     ArrayList<File> enderBaseFolders = new ArrayList<File>();
 
@@ -173,13 +173,13 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const w
 
 #if 0
 // 4J - not required anymore
-void McRegionLevelStorageSource::addRegions(File &baseFolder, vector<ChunkFile *> *dest, vector<File *> *firstLevelFolders) 
+void McRegionLevelStorageSource::addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders) 
 {
 	FolderFilter folderFilter;
 	ChunkFilter chunkFilter;
 
 	File *folder1;
-	vector<File *> *folderLevel1 = baseFolder.listFiles((FileFilter *) &folderFilter);
+	std::vector<File *> *folderLevel1 = baseFolder.listFiles((FileFilter *) &folderFilter);
 	AUTO_VAR(itEnd, folderLevel1->end());
 	for (AUTO_VAR(it, folderLevel1->begin()); it != itEnd; it++)
 	{
@@ -189,13 +189,13 @@ void McRegionLevelStorageSource::addRegions(File &baseFolder, vector<ChunkFile *
 		firstLevelFolders->push_back(folder1);
 
 		File *folder2;
-		vector<File *> *folderLevel2 = folder1->listFiles(&folderFilter);
+		std::vector<File *> *folderLevel2 = folder1->listFiles(&folderFilter);
 		AUTO_VAR(itEnd2, folderLevel2->end());
 		for (AUTO_VAR(it2, folderLevel2->begin()); it2 != itEnd; it2++)
 		{
 			folder2 = *it2; //folderLevel2->at(i2);
 
-			vector<File *> *chunkFiles = folder2->listFiles((FileFilter *) &chunkFilter);
+			std::vector<File *> *chunkFiles = folder2->listFiles((FileFilter *) &chunkFilter);
 
 			File *chunk;
 			AUTO_VAR(itEndFile, chunkFiles->end());
@@ -210,7 +210,7 @@ void McRegionLevelStorageSource::addRegions(File &baseFolder, vector<ChunkFile *
 }
 #endif
 
-void McRegionLevelStorageSource::convertRegions(File &baseFolder, vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress) 
+void McRegionLevelStorageSource::convertRegions(File &baseFolder, std::vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress) 
 {
 	assert( false );
 
@@ -269,7 +269,7 @@ void McRegionLevelStorageSource::convertRegions(File &baseFolder, vector<ChunkFi
 
 }
 
-void McRegionLevelStorageSource::eraseFolders(vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress)
+void McRegionLevelStorageSource::eraseFolders(std::vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress)
 {
 	File *folder;
 	AUTO_VAR(itEnd, folders->end());
@@ -277,7 +277,7 @@ void McRegionLevelStorageSource::eraseFolders(vector<File *> *folders, int curre
 	{
 		folder = *it; //folders->at(i);
 
-		vector<File *> *files = folder->listFiles();
+		std::vector<File *> *files = folder->listFiles();
 		deleteRecursive(files);
 		folder->_delete();
 
@@ -300,7 +300,7 @@ bool McRegionLevelStorageSource::FolderFilter::accept(File *file)
 }
 
 
-bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const wstring& name) 
+bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const std::wstring& name) 
 {
 	Matcher matcher( chunkFilePattern, name );
 	return matcher.matches();

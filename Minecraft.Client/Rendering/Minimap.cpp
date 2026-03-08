@@ -98,7 +98,7 @@ void Minimap::reloadColours()
 }
 
 // 4J added entityId
-void Minimap::render(shared_ptr<Player> player, Textures *textures, shared_ptr<MapItemSavedData> data, int entityId)
+void Minimap::render(std::shared_ptr<Player> player, Textures *textures, std::shared_ptr<MapItemSavedData> data, int entityId)
 {
 	// 4J - only update every 8 renders, as an optimisation
 	// We don't want to use this for ItemFrame renders of maps, as then we can't have different maps together
@@ -147,12 +147,12 @@ void Minimap::render(shared_ptr<Player> player, Textures *textures, shared_ptr<M
 	AUTO_VAR(itEnd, data->decorations.end());
 
 #ifdef _LARGE_WORLDS
-	vector<MapItemSavedData::MapDecoration *> m_edgeIcons;
+	std::vector<MapItemSavedData::MapDecoration *> m_edgeIcons;
 #endif
 
 	// 4J-PB - stack the map icons
 	float fIconZ=-0.04f;// 4J - moved to -0.04 (was -0.02) to stop z fighting
-	for( vector<MapItemSavedData::MapDecoration *>::iterator it = data->decorations.begin(); it != itEnd; it++ )
+	for( std::vector<MapItemSavedData::MapDecoration *>::iterator it = data->decorations.begin(); it != itEnd; it++ )
 	{
 		MapItemSavedData::MapDecoration *dec = *it;
 

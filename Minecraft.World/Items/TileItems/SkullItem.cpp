@@ -9,7 +9,7 @@
 
 const unsigned int SkullItem::NAMES[SKULL_COUNT] = {IDS_ITEM_SKULL_SKELETON, IDS_ITEM_SKULL_WITHER, IDS_ITEM_SKULL_ZOMBIE, IDS_ITEM_SKULL_CHARACTER, IDS_ITEM_SKULL_CREEPER};
 
-wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {L"skull_skeleton", L"skull_wither", L"skull_zombie", L"skull_char", L"skull_creeper"};
+std::wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {L"skull_skeleton", L"skull_wither", L"skull_zombie", L"skull_char", L"skull_creeper"};
 
 SkullItem::SkullItem(int id) : Item(id)
 {
@@ -18,7 +18,7 @@ SkullItem::SkullItem(int id) : Item(id)
 	setStackedByData(true);
 }
 
-bool SkullItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) //float clickX, float clickY, float clickZ)
+bool SkullItem::useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) //float clickX, float clickY, float clickZ)
 {
 	if (face == 0) return false;
 	if (!level->getMaterial(x, y, z)->isSolid()) return false;
@@ -45,12 +45,12 @@ bool SkullItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> play
 			rot = Mth::floor(((player->yRot) * 16) / 360 + 0.5) & 15;
 		}
 
-		shared_ptr<TileEntity> skullTE = level->getTileEntity(x, y, z);
-		shared_ptr<SkullTileEntity> skull = dynamic_pointer_cast<SkullTileEntity>(skullTE);
+		std::shared_ptr<TileEntity> skullTE = level->getTileEntity(x, y, z);
+		std::shared_ptr<SkullTileEntity> skull = std::dynamic_pointer_cast<SkullTileEntity>(skullTE);
 
 		if (skull != NULL)
 		{
-			wstring extra = L"";
+			std::wstring extra = L"";
 			if (instance->hasTag() && instance->getTag()->contains(L"SkullOwner"))
 			{
 				extra = instance->getTag()->getString(L"SkullOwner");
@@ -65,7 +65,7 @@ bool SkullItem::useOn(shared_ptr<ItemInstance> instance, shared_ptr<Player> play
 	return true;
 }
 
-bool SkullItem::mayPlace(Level *level, int x, int y, int z, int face, shared_ptr<Player> player, shared_ptr<ItemInstance> item)
+bool SkullItem::mayPlace(Level *level, int x, int y, int z, int face, std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item)
 {
 	int currentTile = level->getTile(x, y, z);
 	if (currentTile == Tile::topSnow_Id)
@@ -108,7 +108,7 @@ unsigned int SkullItem::getDescriptionId(int iData)
 	return NAMES[iData];
 }
 
-unsigned int SkullItem::getDescriptionId(shared_ptr<ItemInstance> instance)
+unsigned int SkullItem::getDescriptionId(std::shared_ptr<ItemInstance> instance)
 {
 	int auxValue = instance->getAuxValue();
 	if (auxValue < 0 || auxValue >= SKULL_COUNT)
@@ -118,7 +118,7 @@ unsigned int SkullItem::getDescriptionId(shared_ptr<ItemInstance> instance)
 	return NAMES[auxValue];
 }
 
-wstring SkullItem::getHoverName(shared_ptr<ItemInstance> itemInstance)
+std::wstring SkullItem::getHoverName(std::shared_ptr<ItemInstance> itemInstance)
 {
 #if 0
 	if (itemInstance->getAuxValue() == SkullTileEntity::TYPE_CHAR && itemInstance->hasTag() && itemInstance->getTag()->contains(L"SkullOwner"))

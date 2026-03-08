@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class GetInfoPacket : public Packet, public enable_shared_from_this<GetInfoPacket>
+class GetInfoPacket : public Packet, public std::enable_shared_from_this<GetInfoPacket>
 {
 public:
 	virtual void read(DataInputStream *dis);
@@ -11,6 +11,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new GetInfoPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new GetInfoPacket()); }
 	virtual int getId() { return 254; }
 };

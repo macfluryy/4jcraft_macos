@@ -24,13 +24,13 @@ FileHeader::~FileHeader()
 	}
 }
 
-FileEntry *FileHeader::AddFile( const wstring &name, unsigned int length /* = 0 */ )
+FileEntry *FileHeader::AddFile( const std::wstring &name, unsigned int length /* = 0 */ )
 {
 	assert( name.length() < 64 );
 	
 	wchar_t filename[64];
 	memset( &filename, 0, sizeof( wchar_t ) * 64 );
-	memcpy( &filename, name.c_str(), min( sizeof( wchar_t ) * 64, sizeof( wchar_t ) * name.length() ) );
+	memcpy( &filename, name.c_str(), std::min( sizeof( wchar_t ) * 64, sizeof( wchar_t ) * name.length() ) );
 
 	// Would a map be more efficient? Our file tables probably won't be very big so better to avoid hashing all the time?
 	// Does the file exist?
@@ -350,7 +350,7 @@ void FileHeader::AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite
 	}
 }
 
-bool FileHeader::fileExists( const wstring &name )
+bool FileHeader::fileExists( const std::wstring &name )
 {
 	for( unsigned int i = 0; i < fileTable.size(); ++i )
 	{
@@ -363,9 +363,9 @@ bool FileHeader::fileExists( const wstring &name )
 	return false;
 }
 
-vector<FileEntry *> *FileHeader::getFilesWithPrefix(const wstring &prefix)
+std::vector<FileEntry *> *FileHeader::getFilesWithPrefix(const std::wstring &prefix)
 {
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 
 	for( unsigned int i = 0; i < fileTable.size(); ++i )
 	{
@@ -373,7 +373,7 @@ vector<FileEntry *> *FileHeader::getFilesWithPrefix(const wstring &prefix)
 		{
 			if( files == NULL )
 			{
-				files = new vector<FileEntry *>();
+				files = new std::vector<FileEntry *>();
 			}
 
 			files->push_back(fileTable[i]);
@@ -428,10 +428,10 @@ static wchar_t* findFilenameStart(wchar_t* str)
 	return filenameStart;
 }
 
-wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
+std::wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 {
-	wstring retVal = L"";
-	vector<FileEntry*>* pFiles = getDatFilesWithOnlineID(pUID);
+	std::wstring retVal = L"";
+	std::vector<FileEntry*>* pFiles = getDatFilesWithOnlineID(pUID);
 	if(!pFiles)
 	{
 		// we didn't find a matching online dat file, so look for an offline version
@@ -455,32 +455,32 @@ wstring FileHeader::getPlayerDataFilenameForLoad(const PlayerUID& pUID)
 	return retVal;
 }
 
-wstring FileHeader::getPlayerDataFilenameForSave(const PlayerUID& pUID)
+std::wstring FileHeader::getPlayerDataFilenameForSave(const PlayerUID& pUID)
 {
 	// check if we're online first
 	if(pUID.isSignedIntoPSN() == false)
 	{
 		// OK, we're not online, see if we can find another data file with matching mac and userID
-		vector<FileEntry*>* pFiles = getDatFilesWithMacAndUserID(pUID);
+		std::vector<FileEntry*>* pFiles = getDatFilesWithMacAndUserID(pUID);
 		if(pFiles)
 		{
 			// we've found a previous save, use the filename from it, as it might have the online part too
 // 			assert(pFiles->size() == 1);
-			wstring retVal = pFiles->at(0)->data.filename;
+			std::wstring retVal = pFiles->at(0)->data.filename;
 			delete pFiles;
 			return retVal;
 		}
 	}
 
 	// we're either online, or we can't find a previous save, so use the standard filename
-	wstring retVal = pUID.toString() + L".dat";
+	std::wstring retVal = pUID.toString() + L".dat";
 	return retVal;
 }
 
 
-vector<FileEntry *> *FileHeader::getValidPlayerDatFiles()
+std::vector<FileEntry *> *FileHeader::getValidPlayerDatFiles()
 {
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 
 	// find filenames that match this pattern
 	// P_5e7ff8372ea9_00000004_Mark_4J
@@ -512,7 +512,7 @@ vector<FileEntry *> *FileHeader::getValidPlayerDatFiles()
 		// if we get here, it must be a valid filename
 		if( files == NULL )
 		{
-			files = new vector<FileEntry *>();
+			files = new std::vector<FileEntry *>();
 		}
 		files->push_back(fileTable[i]);
 	}
@@ -522,12 +522,12 @@ vector<FileEntry *> *FileHeader::getValidPlayerDatFiles()
 
 
 
-vector<FileEntry *> *FileHeader::getDatFilesWithOnlineID(const PlayerUID& pUID)
+std::vector<FileEntry *> *FileHeader::getDatFilesWithOnlineID(const PlayerUID& pUID)
 {
 	if(pUID.isSignedIntoPSN() == false)
 		return NULL;
 
-	vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
+	std::vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
 	if(datFiles == NULL)
 		return NULL;
 
@@ -536,7 +536,7 @@ vector<FileEntry *> *FileHeader::getDatFilesWithOnlineID(const PlayerUID& pUID)
 	wchar_t onlineIDW[64];
 	mbstowcs(onlineIDW, pUID.getOnlineID(), 64);
 
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 	int onlineIDSize = wcslen(onlineIDW);
 	if(onlineIDSize == 0)
 		return NULL;
@@ -567,7 +567,7 @@ vector<FileEntry *> *FileHeader::getDatFilesWithOnlineID(const PlayerUID& pUID)
 			{	
 				if( files == NULL )
 				{
-					files = new vector<FileEntry *>();
+					files = new std::vector<FileEntry *>();
 				}
 				files->push_back(datFiles->at(i));
 			}
@@ -579,10 +579,10 @@ vector<FileEntry *> *FileHeader::getDatFilesWithOnlineID(const PlayerUID& pUID)
 	return files;
 }
 
-vector<FileEntry *> *FileHeader::getDatFilesWithMacAndUserID(const PlayerUID& pUID)
+std::vector<FileEntry *> *FileHeader::getDatFilesWithMacAndUserID(const PlayerUID& pUID)
 {
 
-	vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
+	std::vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
 	if(datFiles == NULL)
 		return NULL;
 
@@ -593,7 +593,7 @@ vector<FileEntry *> *FileHeader::getDatFilesWithMacAndUserID(const PlayerUID& pU
 	const wchar_t* pMacStr = macStr.c_str();
 	const wchar_t* pUserStr = userStr.c_str();
 
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 	static const int macAddrStart = 2;   // 2 characters into the filename
 	static const int userIDStart = 15;   // 15 characters into the filename
 
@@ -612,7 +612,7 @@ vector<FileEntry *> *FileHeader::getDatFilesWithMacAndUserID(const PlayerUID& pU
 			{
 				if( files == NULL )
 				{
-					files = new vector<FileEntry *>();
+					files = new std::vector<FileEntry *>();
 				}
 				files->push_back(datFiles->at(i));
 			}
@@ -624,16 +624,16 @@ vector<FileEntry *> *FileHeader::getDatFilesWithMacAndUserID(const PlayerUID& pU
 }
 
 
-vector<FileEntry *> *FileHeader::getDatFilesWithPrimaryUser()
+std::vector<FileEntry *> *FileHeader::getDatFilesWithPrimaryUser()
 {
 
-	vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
+	std::vector<FileEntry *>* datFiles = getValidPlayerDatFiles();
 	if(datFiles == NULL)
 		return NULL;
 
 	// we're just looking for filenames starting with "P_" in these types of filenames - 
 	// P_5e7ff8372ea9_00000004_Mark_4J
-	vector<FileEntry *> *files = NULL;
+	std::vector<FileEntry *> *files = NULL;
 
 	char tempStr[128];
 	for( unsigned int i = 0; i < datFiles->size(); ++i )
@@ -647,7 +647,7 @@ vector<FileEntry *> *FileHeader::getDatFilesWithPrimaryUser()
 		{	
 			if( files == NULL )
 			{
-				files = new vector<FileEntry *>();
+				files = new std::vector<FileEntry *>();
 			}
 			files->push_back(datFiles->at(i));
 		}

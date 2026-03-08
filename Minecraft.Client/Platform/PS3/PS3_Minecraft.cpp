@@ -951,7 +951,7 @@ int main()
 	// 4J-PB - TRC that we need to be able to see the BD in a different titled save from the digital game
 	if(StorageManager.GetBootTypeDisc())
 	{
-		wstring wsTemp = app.GetString(IDS_GAMENAME);
+		std::wstring wsTemp = app.GetString(IDS_GAMENAME);
 		WCHAR wchTemp[64];
 		wsTemp.append(L" (");
 		mbstowcs(wchTemp,app.GetDiscProductCode(),64);
@@ -991,7 +991,7 @@ int main()
 		delete [] baSaveImage.data;
 	}
 
-	wstring wsName=L"Graphics\\SaveChest.png";
+	std::wstring wsName=L"Graphics\\SaveChest.png";
 	byteArray baSaveLoadIcon = app.getArchiveFile(wsName);
 	if(baSaveLoadIcon.data!=NULL)
 	{
@@ -1362,7 +1362,7 @@ int main()
 	ShutdownManager::MainThreadHandleShutdown();
 }
 
-vector<uint8_t *> vRichPresenceStrings;
+std::vector<uint8_t *> vRichPresenceStrings;
 uint8_t * AddRichPresenceString(int iID)
 {
 	uint8_t *strUtf8 = mallocAndCreateUTF8ArrayFromString(iID);
@@ -1388,7 +1388,7 @@ void FreeRichPresenceStrings()
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-unordered_map<int,int> allocCounts;
+std::unordered_map<int,int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;

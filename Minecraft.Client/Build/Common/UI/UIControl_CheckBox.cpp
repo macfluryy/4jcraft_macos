@@ -6,7 +6,7 @@ UIControl_CheckBox::UIControl_CheckBox()
 {
 }
 
-bool UIControl_CheckBox::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl_CheckBox::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	UIControl::setControlType(UIControl::eCheckBox);
 	bool success = UIControl_Base::setupControl(scene,parent,controlName);
@@ -21,7 +21,7 @@ bool UIControl_CheckBox::setupControl(UIScene *scene, IggyValuePath *parent, con
 	return success;
 }
 
-void UIControl_CheckBox::init(const wstring &label, int id, bool checked)
+void UIControl_CheckBox::init(const std::wstring &label, int id, bool checked)
 {
 	m_label = label;
 	m_id = id;

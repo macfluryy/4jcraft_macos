@@ -84,14 +84,14 @@ void SignTileEntity::load(CompoundTag *tag)
 	setChanged();
 }
 
-shared_ptr<Packet> SignTileEntity::getUpdatePacket()
+std::shared_ptr<Packet> SignTileEntity::getUpdatePacket()
 {
-	wstring copy[MAX_SIGN_LINES];
+	std::wstring copy[MAX_SIGN_LINES];
 	for (int i = 0; i < MAX_SIGN_LINES; i++) 
 	{
 		copy[i] = m_wsmessages[i];
 	}
-	return shared_ptr<SignUpdatePacket>( new SignUpdatePacket(x, y, z, m_bVerified, m_bCensored, copy) );
+	return std::shared_ptr<SignUpdatePacket>( new SignUpdatePacket(x, y, z, m_bVerified, m_bCensored, copy) );
 }
 
 bool SignTileEntity::isEditable() 
@@ -149,7 +149,7 @@ void SignTileEntity::setChanged()
 }
 
 
-void SignTileEntity::SetMessage(int iIndex,wstring &wsText) 
+void SignTileEntity::SetMessage(int iIndex,std::wstring &wsText) 
 { 
 	m_wsmessages[iIndex]=wsText;
 
@@ -183,9 +183,9 @@ int SignTileEntity::StringVerifyCallback(LPVOID lpParam,STRING_VERIFY_RESPONSE *
 }
 
 // 4J Added
-shared_ptr<TileEntity> SignTileEntity::clone()
+std::shared_ptr<TileEntity> SignTileEntity::clone()
 {
-	shared_ptr<SignTileEntity> result = shared_ptr<SignTileEntity>( new SignTileEntity() );
+	std::shared_ptr<SignTileEntity> result = std::shared_ptr<SignTileEntity>( new SignTileEntity() );
 	TileEntity::clone(result);
 
 	result->m_wsmessages[0] = m_wsmessages[0];

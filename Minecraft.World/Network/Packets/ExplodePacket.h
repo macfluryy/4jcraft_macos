@@ -1,15 +1,15 @@
 #pragma once
-using namespace std;
+
 
 #include "../../Level/TilePos.h"
 #include "Packet.h"
 
-class ExplodePacket : public Packet, public enable_shared_from_this<ExplodePacket>
+class ExplodePacket : public Packet, public std::enable_shared_from_this<ExplodePacket>
 {
 public:
 	double x, y, z;
     float r;
-    vector<TilePos> toBlow;		// 4J - was an unorderedset but doesn't require any features of that apart from making it match the ctor toBlow type
+    std::vector<TilePos> toBlow;		// 4J - was an unorderedset but doesn't require any features of that apart from making it match the ctor toBlow type
 	bool m_bKnockbackOnly;
 	
 	private:
@@ -20,7 +20,7 @@ public:
 	public:
 
 	ExplodePacket();
-	ExplodePacket(double x, double y, double z, float r, unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> *toBlow, Vec3 *knockback, bool knockBackOnly);
+	ExplodePacket(double x, double y, double z, float r, std::unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> *toBlow, Vec3 *knockback, bool knockBackOnly);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -32,6 +32,6 @@ public:
 	float getKnockbackZ();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ExplodePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ExplodePacket()); }
 	virtual int getId() { return 60; }
 };

@@ -213,7 +213,7 @@ HRESULT CScene_MultiGameLaunchMoreOptions::OnNotifySetFocus( HXUIOBJ hObjSource,
 		stringId = IDS_GAMEOPTION_RESET_NETHER;
 	}
 
-	wstring wsText=app.GetString(stringId);
+	std::wstring wsText=app.GetString(stringId);
 	int size = 14;
 	if(!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())
 	{

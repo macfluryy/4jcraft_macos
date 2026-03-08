@@ -22,7 +22,7 @@ TexturePacket::~TexturePacket()
 // 	}
 }
 
-TexturePacket::TexturePacket(const wstring &textureName, PBYTE pbData, DWORD dwBytes) 
+TexturePacket::TexturePacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes) 
 {
 	this->textureName = textureName;
 	this->pbData = pbData;

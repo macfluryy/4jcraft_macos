@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 // 4J Stu - Represents java standard library class
 
 class FileFilter;
@@ -11,36 +11,36 @@ public:
 	static const wchar_t pathSeparator;
 
 	// 4J Jev, the start of the file root
-	static const wstring pathRoot;
+	static const std::wstring pathRoot;
 
 	File() { m_abstractPathName = L""; }
 
-	File( const File &parent, const wstring& child );
-	File( const wstring& pathname );
-	File( const wstring& parent, const wstring& child  );
+	File( const File &parent, const std::wstring& child );
+	File( const std::wstring& pathname );
+	File( const std::wstring& parent, const std::wstring& child  );
 	bool _delete();
 	bool mkdir() const;
 	bool mkdirs() const;
 	bool exists() const;
 	bool isFile() const;
 	bool renameTo(File dest);
-	vector<File *> *listFiles() const; // Array
-	vector<File *> *listFiles(FileFilter *filter) const;
+	std::vector<File *> *listFiles() const; // Array
+	std::vector<File *> *listFiles(FileFilter *filter) const;
 	bool isDirectory() const;
 	__int64 length();
 	__int64 lastModified();
-	const wstring getPath() const; // 4J Jev: TODO
-	wstring getName() const;
+	const std::wstring getPath() const; // 4J Jev: TODO
+	std::wstring getName() const;
 
 	static int hash_fnct(const File &k);
 	static bool eq_test(const File &x, const File &y);
 
 private:
 	void _init();
-	wstring m_abstractPathName;
+	std::wstring m_abstractPathName;
 
-	// 4J Jev, just helper functions, change between paths and vector<string>
-	//File(vector<wstring> *path);
+	// 4J Jev, just helper functions, change between paths and std::vector<string>
+	//File(std::vector<std::wstring> *path);
 };
 
 struct FileKeyHash

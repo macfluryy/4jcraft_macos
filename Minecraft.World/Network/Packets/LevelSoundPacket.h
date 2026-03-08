@@ -2,7 +2,7 @@
 
 #include "Packet.h"
 
-class LevelSoundPacket : public Packet, public enable_shared_from_this<LevelSoundPacket>
+class LevelSoundPacket : public Packet, public std::enable_shared_from_this<LevelSoundPacket>
 {
 public:
 	static const float PITCH_ACCURACY;
@@ -33,6 +33,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new LevelSoundPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new LevelSoundPacket()); }
 	virtual int getId() { return 62; }
 };

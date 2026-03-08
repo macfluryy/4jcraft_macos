@@ -17,8 +17,8 @@
 #include "Villager.h"
 #include <random>
 
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_VALUES;
-unordered_map<int, pair<int,int> > Villager::MIN_MAX_PRICES;
+std::unordered_map<int, std::pair<int,int> > Villager::MIN_MAX_VALUES;
+std::unordered_map<int, std::pair<int,int> > Villager::MIN_MAX_PRICES;
 
 void Villager::_init(int profession)
 {
@@ -37,9 +37,9 @@ void Villager::_init(int profession)
 	villageUpdateInterval = 0;
 	inLove = false;
 	chasing = false;
-	village = weak_ptr<Village>();
+	village = std::weak_ptr<Village>();
 
-	tradingPlayer = weak_ptr<Player>();
+	tradingPlayer = std::weak_ptr<Player>();
 	offers = NULL;
 	updateMerchantTimer = 0;
 	addRecipeOnUpdate = false;
@@ -95,7 +95,7 @@ void Villager::serverAiMobStep()
 		level->villages->queryUpdateAround(Mth::floor(x), Mth::floor(y), Mth::floor(z));
 		villageUpdateInterval = 70 + random->nextInt(50);
 
-		shared_ptr<Village> _village = level->villages->getClosestVillage(Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
+		std::shared_ptr<Village> _village = level->villages->getClosestVillage(Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
 		village = _village;
 		if (_village == NULL) clearRestriction();
 		else
@@ -146,10 +146,10 @@ void Villager::serverAiMobStep()
 	AgableMob::serverAiMobStep();
 }
 
-bool Villager::interact(shared_ptr<Player> player)
+bool Villager::interact(std::shared_ptr<Player> player)
 {
 	// [EB]: Truly dislike this code but I don't see another easy way
-	shared_ptr<ItemInstance> item = player->inventory->getSelected();
+	std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 	bool holdingSpawnEgg = item != NULL && item->id == Item::monsterPlacer_Id;
 
 	if (!holdingSpawnEgg && isAlive() && !isTrading() && !isBaby())
@@ -158,7 +158,7 @@ bool Villager::interact(shared_ptr<Player> player)
 		{
 			// note: stop() logic is controlled by trading ai goal
 			setTradingPlayer(player);
-			player->openTrading(dynamic_pointer_cast<Merchant>(shared_from_this()));
+			player->openTrading(std::dynamic_pointer_cast<Merchant>(shared_from_this()));
 		}
 		return true;
 	}
@@ -282,15 +282,15 @@ bool Villager::isChasing()
 	return chasing;
 }
 
-void Villager::setLastHurtByMob(shared_ptr<Mob> mob)
+void Villager::setLastHurtByMob(std::shared_ptr<Mob> mob)
 {
 	AgableMob::setLastHurtByMob(mob);
-	shared_ptr<Village> _village = village.lock();
+	std::shared_ptr<Village> _village = village.lock();
 	if (_village != NULL && mob != NULL)
 	{
 		_village->addAggressor(mob);
 
-		shared_ptr<Player> player = dynamic_pointer_cast<Player>(mob);
+		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(mob);
 		if (player)
 		{
 			int amount = -1;
@@ -309,15 +309,15 @@ void Villager::setLastHurtByMob(shared_ptr<Mob> mob)
 
 void Villager::die(DamageSource *source)
 {
-	shared_ptr<Village> _village = village.lock();
+	std::shared_ptr<Village> _village = village.lock();
 	if (_village != NULL)
 	{
-		shared_ptr<Entity> sourceEntity = source->getEntity();
+		std::shared_ptr<Entity> sourceEntity = source->getEntity();
 		if (sourceEntity != NULL)
 		{
 			if ((sourceEntity->GetType() & eTYPE_PLAYER) == eTYPE_PLAYER)
 			{
-				shared_ptr<Player> player = dynamic_pointer_cast<Player>(sourceEntity);
+				std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(sourceEntity);
 				_village->modifyStanding(player->getName(), -2);
 			}
 			else if ((sourceEntity->GetType() & eTYPE_ENEMY) == eTYPE_ENEMY)
@@ -329,7 +329,7 @@ void Villager::die(DamageSource *source)
 		{
 			// if the villager was killed by the world (such as lava or falling), blame
 			// the nearest player by not reproducing for a while
-			shared_ptr<Player> nearestPlayer = level->getNearestPlayer(shared_from_this(), 16.0f);
+			std::shared_ptr<Player> nearestPlayer = level->getNearestPlayer(shared_from_this(), 16.0f);
 			if (nearestPlayer != NULL)
 			{
 				_village->resetNoBreedTimer();
@@ -340,12 +340,12 @@ void Villager::die(DamageSource *source)
 	AgableMob::die(source);
 }
 
-void Villager::setTradingPlayer(shared_ptr<Player> player)
+void Villager::setTradingPlayer(std::shared_ptr<Player> player)
 {
-	tradingPlayer = weak_ptr<Player>(player);
+	tradingPlayer = std::weak_ptr<Player>(player);
 }
 
-shared_ptr<Player> Villager::getTradingPlayer()
+std::shared_ptr<Player> Villager::getTradingPlayer()
 {
 	return tradingPlayer.lock();
 }
@@ -382,7 +382,7 @@ void Villager::notifyTrade(MerchantRecipe *activeRecipe)
 	}
 }
 
-void Villager::notifyTradeUpdated(shared_ptr<ItemInstance> item)
+void Villager::notifyTradeUpdated(std::shared_ptr<ItemInstance> item)
 {
 	if (!level->isClientSide && (ambientSoundTime > (-getAmbientSoundInterval() + SharedConstants::TICKS_PER_SECOND)))
 	{
@@ -398,7 +398,7 @@ void Villager::notifyTradeUpdated(shared_ptr<ItemInstance> item)
 	}
 }
 
-MerchantRecipeList *Villager::getOffers(shared_ptr<Player> forPlayer)
+MerchantRecipeList *Villager::getOffers(std::shared_ptr<Player> forPlayer)
 {
 	if (offers == NULL)
 	{
@@ -437,7 +437,7 @@ void Villager::addOffers(int addCount)
 		addItemForPurchase(newOffers, Item::arrow_Id, random, getRecipeChance(.5f));
 		if (random->nextFloat() < .5f)
 		{
-			newOffers->push_back(new MerchantRecipe(shared_ptr<ItemInstance>( new ItemInstance(Tile::gravel, 10) ), shared_ptr<ItemInstance>( new ItemInstance(Item::emerald) ), shared_ptr<ItemInstance>( new ItemInstance(Item::flint_Id, 2 + random->nextInt(2), 0))));
+			newOffers->push_back(new MerchantRecipe(std::shared_ptr<ItemInstance>( new ItemInstance(Tile::gravel, 10) ), std::shared_ptr<ItemInstance>( new ItemInstance(Item::emerald) ), std::shared_ptr<ItemInstance>( new ItemInstance(Item::flint_Id, 2 + random->nextInt(2), 0))));
 		}
 		break;
 	case PROFESSION_BUTCHER:
@@ -494,10 +494,10 @@ void Villager::addOffers(int addCount)
 		{
 			Enchantment *enchantment = Enchantment::validEnchantments[random->nextInt(Enchantment::validEnchantments.size())];
 			int level = Mth::nextInt(random, enchantment->getMinLevel(), enchantment->getMaxLevel());
-			shared_ptr<ItemInstance> book = Item::enchantedBook->createForEnchantment(new EnchantmentInstance(enchantment, level));
+			std::shared_ptr<ItemInstance> book = Item::enchantedBook->createForEnchantment(new EnchantmentInstance(enchantment, level));
 			int cost = 2 + random->nextInt(5 + (level * 10)) + 3 * level;
 
-			newOffers->push_back(new MerchantRecipe(shared_ptr<ItemInstance>(new ItemInstance(Item::book)), shared_ptr<ItemInstance>(new ItemInstance(Item::emerald, cost)), book));
+			newOffers->push_back(new MerchantRecipe(std::shared_ptr<ItemInstance>(new ItemInstance(Item::book)), std::shared_ptr<ItemInstance>(new ItemInstance(Item::emerald, cost)), book));
 		}
 		break;
 	case PROFESSION_PRIEST:
@@ -515,9 +515,9 @@ void Villager::addOffers(int addCount)
 				int id = enchantItems[i];
 				if (random->nextFloat() < getRecipeChance(.05f))
 				{
-					newOffers->push_back(new MerchantRecipe(shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0)),
-						shared_ptr<ItemInstance>(new ItemInstance(Item::emerald, 2 + random->nextInt(3), 0)),
-						EnchantmentHelper::enchantItem(random, shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0)), 5 + random->nextInt(15))));
+					newOffers->push_back(new MerchantRecipe(std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0)),
+						std::shared_ptr<ItemInstance>(new ItemInstance(Item::emerald, 2 + random->nextInt(3), 0)),
+						EnchantmentHelper::enchantItem(random, std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0)), 5 + random->nextInt(15))));
 				}
 			}
 		}
@@ -555,71 +555,71 @@ void Villager::overrideOffers(MerchantRecipeList *recipeList)
 
 void Villager::staticCtor()
 {
-	MIN_MAX_VALUES[Item::coal_Id] = pair<int,int>(16, 24);
-	MIN_MAX_VALUES[Item::ironIngot_Id] = pair<int,int>(8, 10);
-	MIN_MAX_VALUES[Item::goldIngot_Id] = pair<int,int>(8, 10);
-	MIN_MAX_VALUES[Item::diamond_Id] = pair<int,int>(4, 6);
-	MIN_MAX_VALUES[Item::paper_Id] = pair<int,int>(24, 36);
-	MIN_MAX_VALUES[Item::book_Id] = pair<int,int>(11, 13);
-	//MIN_MAX_VALUES.insert(Item::writtenBook_Id, pair<int,int>(1, 1));
-	MIN_MAX_VALUES[Item::enderPearl_Id] = pair<int,int>(3, 4);
-	MIN_MAX_VALUES[Item::eyeOfEnder_Id] = pair<int,int>(2, 3);
-	MIN_MAX_VALUES[Item::porkChop_raw_Id] = pair<int,int>(14, 18);
-	MIN_MAX_VALUES[Item::beef_raw_Id] = pair<int,int>(14, 18);
-	MIN_MAX_VALUES[Item::chicken_raw_Id] = pair<int,int>(14, 18);
-	MIN_MAX_VALUES[Item::fish_cooked_Id] = pair<int,int>(9, 13);
-	MIN_MAX_VALUES[Item::seeds_wheat_Id] = pair<int,int>(34, 48);
-	MIN_MAX_VALUES[Item::seeds_melon_Id] = pair<int,int>(30, 38);
-	MIN_MAX_VALUES[Item::seeds_pumpkin_Id] = pair<int,int>(30, 38);
-	MIN_MAX_VALUES[Item::wheat_Id] = pair<int,int>(18, 22);
-	MIN_MAX_VALUES[Tile::cloth_Id] = pair<int,int>(14, 22);
-	MIN_MAX_VALUES[Item::rotten_flesh_Id] = pair<int,int>(36, 64);
+	MIN_MAX_VALUES[Item::coal_Id] = std::pair<int,int>(16, 24);
+	MIN_MAX_VALUES[Item::ironIngot_Id] = std::pair<int,int>(8, 10);
+	MIN_MAX_VALUES[Item::goldIngot_Id] = std::pair<int,int>(8, 10);
+	MIN_MAX_VALUES[Item::diamond_Id] = std::pair<int,int>(4, 6);
+	MIN_MAX_VALUES[Item::paper_Id] = std::pair<int,int>(24, 36);
+	MIN_MAX_VALUES[Item::book_Id] = std::pair<int,int>(11, 13);
+	//MIN_MAX_VALUES.insert(Item::writtenBook_Id, std::pair<int,int>(1, 1));
+	MIN_MAX_VALUES[Item::enderPearl_Id] = std::pair<int,int>(3, 4);
+	MIN_MAX_VALUES[Item::eyeOfEnder_Id] = std::pair<int,int>(2, 3);
+	MIN_MAX_VALUES[Item::porkChop_raw_Id] = std::pair<int,int>(14, 18);
+	MIN_MAX_VALUES[Item::beef_raw_Id] = std::pair<int,int>(14, 18);
+	MIN_MAX_VALUES[Item::chicken_raw_Id] = std::pair<int,int>(14, 18);
+	MIN_MAX_VALUES[Item::fish_cooked_Id] = std::pair<int,int>(9, 13);
+	MIN_MAX_VALUES[Item::seeds_wheat_Id] = std::pair<int,int>(34, 48);
+	MIN_MAX_VALUES[Item::seeds_melon_Id] = std::pair<int,int>(30, 38);
+	MIN_MAX_VALUES[Item::seeds_pumpkin_Id] = std::pair<int,int>(30, 38);
+	MIN_MAX_VALUES[Item::wheat_Id] = std::pair<int,int>(18, 22);
+	MIN_MAX_VALUES[Tile::cloth_Id] = std::pair<int,int>(14, 22);
+	MIN_MAX_VALUES[Item::rotten_flesh_Id] = std::pair<int,int>(36, 64);
 
-	MIN_MAX_PRICES[Item::flintAndSteel_Id] = pair<int,int>(3, 4);
-	MIN_MAX_PRICES[Item::shears_Id] = pair<int,int>(3, 4);
-	MIN_MAX_PRICES[Item::sword_iron_Id] = pair<int,int>(7, 11);
-	MIN_MAX_PRICES[Item::sword_diamond_Id] = pair<int,int>(12, 14);
-	MIN_MAX_PRICES[Item::hatchet_iron_Id] = pair<int,int>(6, 8);
-	MIN_MAX_PRICES[Item::hatchet_diamond_Id] = pair<int,int>(9, 12);
-	MIN_MAX_PRICES[Item::pickAxe_iron_Id] = pair<int,int>(7, 9);
-	MIN_MAX_PRICES[Item::pickAxe_diamond_Id] = pair<int,int>(10, 12);
-	MIN_MAX_PRICES[Item::shovel_iron_Id] = pair<int,int>(4, 6);
-	MIN_MAX_PRICES[Item::shovel_diamond_Id] = pair<int,int>(7, 8);
-	MIN_MAX_PRICES[Item::hoe_iron_Id] = pair<int,int>(4, 6);
-	MIN_MAX_PRICES[Item::hoe_diamond_Id] = pair<int,int>(7, 8);
-	MIN_MAX_PRICES[Item::boots_iron_Id] = pair<int,int>(4, 6);
-	MIN_MAX_PRICES[Item::boots_diamond_Id] = pair<int,int>(7, 8);
-	MIN_MAX_PRICES[Item::helmet_iron_Id] = pair<int,int>(4, 6);
-	MIN_MAX_PRICES[Item::helmet_diamond_Id] = pair<int,int>(7, 8);
-	MIN_MAX_PRICES[Item::chestplate_iron_Id] = pair<int,int>(10, 14);
-	MIN_MAX_PRICES[Item::chestplate_diamond_Id] = pair<int,int>(16, 19);
-	MIN_MAX_PRICES[Item::leggings_iron_Id] = pair<int,int>(8, 10);
-	MIN_MAX_PRICES[Item::leggings_diamond_Id] = pair<int,int>(11, 14);
-	MIN_MAX_PRICES[Item::boots_chain_Id] = pair<int,int>(5, 7);
-	MIN_MAX_PRICES[Item::helmet_chain_Id] = pair<int,int>(5, 7);
-	MIN_MAX_PRICES[Item::chestplate_chain_Id] = pair<int,int>(11, 15);
-	MIN_MAX_PRICES[Item::leggings_chain_Id] = pair<int,int>(9, 11);
-	MIN_MAX_PRICES[Item::bread_Id] = pair<int,int>(-4, -2);
-	MIN_MAX_PRICES[Item::melon_Id] = pair<int,int>(-8, -4);
-	MIN_MAX_PRICES[Item::apple_Id] = pair<int,int>(-8, -4);
-	MIN_MAX_PRICES[Item::cookie_Id] = pair<int,int>(-10, -7);
-	MIN_MAX_PRICES[Tile::glass_Id] = pair<int,int>(-5, -3);
-	MIN_MAX_PRICES[Tile::bookshelf_Id] = pair<int,int>(3, 4);
-	MIN_MAX_PRICES[Item::chestplate_cloth_Id] = pair<int,int>(4, 5);
-	MIN_MAX_PRICES[Item::boots_cloth_Id] = pair<int,int>(2, 4);
-	MIN_MAX_PRICES[Item::helmet_cloth_Id] = pair<int,int>(2, 4);
-	MIN_MAX_PRICES[Item::leggings_cloth_Id] = pair<int,int>(2, 4);
-	MIN_MAX_PRICES[Item::saddle_Id] = pair<int,int>(6, 8);
-	MIN_MAX_PRICES[Item::expBottle_Id] = pair<int,int>(-4, -1);
-	MIN_MAX_PRICES[Item::redStone_Id] = pair<int,int>(-4, -1);
-	MIN_MAX_PRICES[Item::compass_Id] = pair<int,int>(10, 12);
-	MIN_MAX_PRICES[Item::clock_Id] = pair<int,int>(10, 12);
-	MIN_MAX_PRICES[Tile::lightGem_Id] = pair<int,int>(-3, -1);
-	MIN_MAX_PRICES[Item::porkChop_cooked_Id] = pair<int,int>(-7, -5);
-	MIN_MAX_PRICES[Item::beef_cooked_Id] = pair<int,int>(-7, -5);
-	MIN_MAX_PRICES[Item::chicken_cooked_Id] = pair<int,int>(-8, -6);
-	MIN_MAX_PRICES[Item::eyeOfEnder_Id] = pair<int,int>(7, 11);
-	MIN_MAX_PRICES[Item::arrow_Id] = pair<int,int>(-12, -8);
+	MIN_MAX_PRICES[Item::flintAndSteel_Id] = std::pair<int,int>(3, 4);
+	MIN_MAX_PRICES[Item::shears_Id] = std::pair<int,int>(3, 4);
+	MIN_MAX_PRICES[Item::sword_iron_Id] = std::pair<int,int>(7, 11);
+	MIN_MAX_PRICES[Item::sword_diamond_Id] = std::pair<int,int>(12, 14);
+	MIN_MAX_PRICES[Item::hatchet_iron_Id] = std::pair<int,int>(6, 8);
+	MIN_MAX_PRICES[Item::hatchet_diamond_Id] = std::pair<int,int>(9, 12);
+	MIN_MAX_PRICES[Item::pickAxe_iron_Id] = std::pair<int,int>(7, 9);
+	MIN_MAX_PRICES[Item::pickAxe_diamond_Id] = std::pair<int,int>(10, 12);
+	MIN_MAX_PRICES[Item::shovel_iron_Id] = std::pair<int,int>(4, 6);
+	MIN_MAX_PRICES[Item::shovel_diamond_Id] = std::pair<int,int>(7, 8);
+	MIN_MAX_PRICES[Item::hoe_iron_Id] = std::pair<int,int>(4, 6);
+	MIN_MAX_PRICES[Item::hoe_diamond_Id] = std::pair<int,int>(7, 8);
+	MIN_MAX_PRICES[Item::boots_iron_Id] = std::pair<int,int>(4, 6);
+	MIN_MAX_PRICES[Item::boots_diamond_Id] = std::pair<int,int>(7, 8);
+	MIN_MAX_PRICES[Item::helmet_iron_Id] = std::pair<int,int>(4, 6);
+	MIN_MAX_PRICES[Item::helmet_diamond_Id] = std::pair<int,int>(7, 8);
+	MIN_MAX_PRICES[Item::chestplate_iron_Id] = std::pair<int,int>(10, 14);
+	MIN_MAX_PRICES[Item::chestplate_diamond_Id] = std::pair<int,int>(16, 19);
+	MIN_MAX_PRICES[Item::leggings_iron_Id] = std::pair<int,int>(8, 10);
+	MIN_MAX_PRICES[Item::leggings_diamond_Id] = std::pair<int,int>(11, 14);
+	MIN_MAX_PRICES[Item::boots_chain_Id] = std::pair<int,int>(5, 7);
+	MIN_MAX_PRICES[Item::helmet_chain_Id] = std::pair<int,int>(5, 7);
+	MIN_MAX_PRICES[Item::chestplate_chain_Id] = std::pair<int,int>(11, 15);
+	MIN_MAX_PRICES[Item::leggings_chain_Id] = std::pair<int,int>(9, 11);
+	MIN_MAX_PRICES[Item::bread_Id] = std::pair<int,int>(-4, -2);
+	MIN_MAX_PRICES[Item::melon_Id] = std::pair<int,int>(-8, -4);
+	MIN_MAX_PRICES[Item::apple_Id] = std::pair<int,int>(-8, -4);
+	MIN_MAX_PRICES[Item::cookie_Id] = std::pair<int,int>(-10, -7);
+	MIN_MAX_PRICES[Tile::glass_Id] = std::pair<int,int>(-5, -3);
+	MIN_MAX_PRICES[Tile::bookshelf_Id] = std::pair<int,int>(3, 4);
+	MIN_MAX_PRICES[Item::chestplate_cloth_Id] = std::pair<int,int>(4, 5);
+	MIN_MAX_PRICES[Item::boots_cloth_Id] = std::pair<int,int>(2, 4);
+	MIN_MAX_PRICES[Item::helmet_cloth_Id] = std::pair<int,int>(2, 4);
+	MIN_MAX_PRICES[Item::leggings_cloth_Id] = std::pair<int,int>(2, 4);
+	MIN_MAX_PRICES[Item::saddle_Id] = std::pair<int,int>(6, 8);
+	MIN_MAX_PRICES[Item::expBottle_Id] = std::pair<int,int>(-4, -1);
+	MIN_MAX_PRICES[Item::redStone_Id] = std::pair<int,int>(-4, -1);
+	MIN_MAX_PRICES[Item::compass_Id] = std::pair<int,int>(10, 12);
+	MIN_MAX_PRICES[Item::clock_Id] = std::pair<int,int>(10, 12);
+	MIN_MAX_PRICES[Tile::lightGem_Id] = std::pair<int,int>(-3, -1);
+	MIN_MAX_PRICES[Item::porkChop_cooked_Id] = std::pair<int,int>(-7, -5);
+	MIN_MAX_PRICES[Item::beef_cooked_Id] = std::pair<int,int>(-7, -5);
+	MIN_MAX_PRICES[Item::chicken_cooked_Id] = std::pair<int,int>(-8, -6);
+	MIN_MAX_PRICES[Item::eyeOfEnder_Id] = std::pair<int,int>(7, 11);
+	MIN_MAX_PRICES[Item::arrow_Id] = std::pair<int,int>(-12, -8);
 }
 
 /**
@@ -638,9 +638,9 @@ void Villager::addItemForTradeIn(MerchantRecipeList *list, int itemId, Random *r
 	}
 }
 
-shared_ptr<ItemInstance> Villager::getItemTradeInValue(int itemId, Random *random)
+std::shared_ptr<ItemInstance> Villager::getItemTradeInValue(int itemId, Random *random)
 {
-	return shared_ptr<ItemInstance>(new ItemInstance(itemId, getTradeInValue(itemId, random), 0));
+	return std::shared_ptr<ItemInstance>(new ItemInstance(itemId, getTradeInValue(itemId, random), 0));
 }
 
 int Villager::getTradeInValue(int itemId, Random *random)
@@ -650,7 +650,7 @@ int Villager::getTradeInValue(int itemId, Random *random)
 	{
 		return 1;
 	}
-	pair<int, int> minMax = it->second;
+	std::pair<int, int> minMax = it->second;
 	if (minMax.first >= minMax.second)
 	{
 		return minMax.first;
@@ -672,17 +672,17 @@ void Villager::addItemForPurchase(MerchantRecipeList *list, int itemId, Random *
 	if (random->nextFloat() < likelyHood)
 	{
 		int purchaseCost = getPurchaseCost(itemId, random);
-		shared_ptr<ItemInstance> rubyItem;
-		shared_ptr<ItemInstance> resultItem;
+		std::shared_ptr<ItemInstance> rubyItem;
+		std::shared_ptr<ItemInstance> resultItem;
 		if (purchaseCost < 0)
 		{
-			rubyItem = shared_ptr<ItemInstance>( new ItemInstance(Item::emerald_Id, 1, 0) );
-			resultItem = shared_ptr<ItemInstance>( new ItemInstance(itemId, -purchaseCost, 0) );
+			rubyItem = std::shared_ptr<ItemInstance>( new ItemInstance(Item::emerald_Id, 1, 0) );
+			resultItem = std::shared_ptr<ItemInstance>( new ItemInstance(itemId, -purchaseCost, 0) );
 		}
 		else
 		{
-			rubyItem = shared_ptr<ItemInstance>( new ItemInstance(Item::emerald_Id, purchaseCost, 0) );
-			resultItem = shared_ptr<ItemInstance>( new ItemInstance(itemId, 1, 0) );
+			rubyItem = std::shared_ptr<ItemInstance>( new ItemInstance(Item::emerald_Id, purchaseCost, 0) );
+			resultItem = std::shared_ptr<ItemInstance>( new ItemInstance(itemId, 1, 0) );
 		}
 		list->push_back(new MerchantRecipe(rubyItem, resultItem));
 	}
@@ -695,7 +695,7 @@ int Villager::getPurchaseCost(int itemId, Random *random)
 	{
 		return 1;
 	}
-	pair<int, int> minMax = it->second;
+	std::pair<int, int> minMax = it->second;
 	if (minMax.first >= minMax.second)
 	{
 		return minMax.first;
@@ -744,12 +744,12 @@ void Villager::setRewardPlayersInVillage()
 	rewardPlayersOnFirstVillage = true;
 }
 
-shared_ptr<AgableMob> Villager::getBreedOffspring(shared_ptr<AgableMob> target)
+std::shared_ptr<AgableMob> Villager::getBreedOffspring(std::shared_ptr<AgableMob> target)
 {
 	// 4J - added limit to villagers that can be bred
 	if(level->canCreateMore(GetType(), Level::eSpawnType_Breed) )
 	{
-		shared_ptr<Villager> villager = shared_ptr<Villager>(new Villager(level));
+		std::shared_ptr<Villager> villager = std::shared_ptr<Villager>(new Villager(level));
 		villager->finalizeMobSpawn();
 		return villager;
 	}

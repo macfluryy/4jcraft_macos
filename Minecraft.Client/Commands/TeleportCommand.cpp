@@ -14,7 +14,7 @@ EGameCommand TeleportCommand::getId()
 	return eGameCommand_Teleport;
 }
 
-void TeleportCommand::execute(shared_ptr<CommandSender> source, byteArray commandData)
+void TeleportCommand::execute(std::shared_ptr<CommandSender> source, byteArray commandData)
 {
 	ByteArrayInputStream bais(commandData);
 	DataInputStream dis(&bais);
@@ -26,8 +26,8 @@ void TeleportCommand::execute(shared_ptr<CommandSender> source, byteArray comman
 
 	PlayerList *players = MinecraftServer::getInstance()->getPlayerList();
 
-	shared_ptr<ServerPlayer> subject = players->getPlayer(subjectID);
-	shared_ptr<ServerPlayer> destination = players->getPlayer(destinationID);
+	std::shared_ptr<ServerPlayer> subject = players->getPlayer(subjectID);
+	std::shared_ptr<ServerPlayer> destination = players->getPlayer(destinationID);
 
 	if(subject != NULL && destination != NULL && subject->level->dimension->id == destination->level->dimension->id && subject->isAlive() )
 	{
@@ -78,7 +78,7 @@ void TeleportCommand::execute(shared_ptr<CommandSender> source, byteArray comman
 	//}
 }
 
-shared_ptr<GameCommandPacket> TeleportCommand::preparePacket(PlayerUID subject, PlayerUID destination)
+std::shared_ptr<GameCommandPacket> TeleportCommand::preparePacket(PlayerUID subject, PlayerUID destination)
 {
 	ByteArrayOutputStream baos;
 	DataOutputStream dos(&baos);
@@ -86,5 +86,5 @@ shared_ptr<GameCommandPacket> TeleportCommand::preparePacket(PlayerUID subject, 
 	dos.writePlayerUID(subject);
 	dos.writePlayerUID(destination);
 
-	return shared_ptr<GameCommandPacket>( new GameCommandPacket(eGameCommand_Teleport, baos.toByteArray() ));
+	return std::shared_ptr<GameCommandPacket>( new GameCommandPacket(eGameCommand_Teleport, baos.toByteArray() ));
 }

@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "../Entity.h"
 #include "../HangingEntity.h"
@@ -63,12 +63,12 @@ public:
 
 		static const int MAX_MOTIVE_NAME_LENGTH;
 
-		const wstring name;
+		const std::wstring name;
 		const int w, h;
 		const int uo, vo;
 
 	//private:
-		Motive(wstring name, int w, int h, int uo, int vo) : name( name ), w( w ), h( h ), uo( uo ), vo( vo ) {};
+		Motive(std::wstring name, int w, int h, int uo, int vo) : name( name ), w( w ), h( h ), uo( uo ), vo( vo ) {};
 	};
 
 public:
@@ -85,9 +85,9 @@ private:
 public:
 	Painting(Level *level);
 	Painting(Level *level, int xTile, int yTile, int zTile, int dir);
-	Painting(Level *level, int x, int y, int z, int dir, wstring motiveName);
+	Painting(Level *level, int x, int y, int z, int dir, std::wstring motiveName);
 
-	// 4J Stu - Added this so that we can use some shared_ptr functions that were needed in the ctor
+	// 4J Stu - Added this so that we can use some std::shared_ptr functions that were needed in the ctor
 	void PaintingPostConstructor(int dir);
 
 protected:

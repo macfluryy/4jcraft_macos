@@ -24,7 +24,7 @@ BoundingBox *StructureStart::getBoundingBox()
 	return boundingBox;
 }
 
-list<StructurePiece *> *StructureStart::getPieces()
+std::list<StructurePiece *> *StructureStart::getPieces()
 {
 	return &pieces;
 }

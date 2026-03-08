@@ -4,9 +4,9 @@
 class ErrorScreen : public Screen
 {
 private:
-	wstring title, message;
+	std::wstring title, message;
 public:
-	ErrorScreen(const wstring& title, const wstring& message);
+	ErrorScreen(const std::wstring& title, const std::wstring& message);
     virtual void init();
     virtual void render(int xm, int ym, float a);
 protected:

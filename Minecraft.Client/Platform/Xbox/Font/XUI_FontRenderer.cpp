@@ -239,7 +239,7 @@ HRESULT XUI_FontRenderer::DrawCharsToDevice( HFONTOBJ hFont, CharData * pCharDat
 #if 1
 	for( int i = 0; i < dwCount; i++ )
 	{
-		wstring string;
+		std::wstring string;
 		string.push_back(pCharData[i].wch);
 		lineYPos = pCharData[i].y;
 		lineXPos = pCharData[i].x;
@@ -257,7 +257,7 @@ HRESULT XUI_FontRenderer::DrawCharsToDevice( HFONTOBJ hFont, CharData * pCharDat
 	DWORD i = 0;
 	while( i < dwCount )
 	{
-		wstring string;
+		std::wstring string;
 		lineYPos = pCharData[i].y;
 		lineXPos = pCharData[i].x;
 		colour = pCharData[i].dwColor;

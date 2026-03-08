@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class KickPlayerPacket : public Packet, public enable_shared_from_this<KickPlayerPacket>
+class KickPlayerPacket : public Packet, public std::enable_shared_from_this<KickPlayerPacket>
 {
 public:
 	BYTE m_networkSmallId;
@@ -17,6 +17,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new KickPlayerPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new KickPlayerPacket()); }
 	virtual int getId() { return 159; }
 };

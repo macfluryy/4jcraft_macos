@@ -1,7 +1,7 @@
 #pragma once
 #include <ostream>
 #include "../Streams/InputOutputStream.h"
-using namespace std;
+
 
  
 class Tag
@@ -21,23 +21,23 @@ public:
 	static const uint8_t TAG_Int_Array = static_cast<uint8_t>(11);
 
 private:
-    wstring name;
+    std::wstring name;
 
 protected:
-	Tag(const wstring &name);
+	Tag(const std::wstring &name);
 
 public:
     virtual void write(DataOutput *dos) = 0;
     virtual void load(DataInput *dis)  = 0;
-    virtual wstring toString() = 0;
+    virtual std::wstring toString() = 0;
     virtual uint8_t getId() = 0;
-    void print(ostream out);
-    void print(char *prefix, wostream out);
-    wstring getName();
-    Tag *setName(const wstring& name);
+    void print(std::ostream out);
+    void print(char *prefix, std::wostream out);
+    std::wstring getName();
+    Tag *setName(const std::wstring& name);
     static Tag *readNamedTag(DataInput *dis);
     static void writeNamedTag(Tag *tag, DataOutput *dos);
-    static Tag *newTag(uint8_t type, const wstring &name);
+    static Tag *newTag(uint8_t type, const std::wstring &name);
     static const wchar_t *getTagName(uint8_t type);
 	virtual ~Tag() {}
 	virtual bool equals(Tag *obj); // 4J Brought forward from 1.2

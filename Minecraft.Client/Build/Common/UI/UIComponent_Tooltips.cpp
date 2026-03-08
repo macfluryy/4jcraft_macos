@@ -34,7 +34,7 @@ UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void *initData, UILayer *pa
 #endif
 }
 
-wstring UIComponent_Tooltips::getMoviePath()
+std::wstring UIComponent_Tooltips::getMoviePath()
 {
 	switch( m_parentLayer->getViewport() )
 	{
@@ -306,7 +306,7 @@ bool UIComponent_Tooltips::_SetTooltip(unsigned int iToolTip, int iTextID)
 	return changed;
 }
 
-void UIComponent_Tooltips::_SetTooltip(unsigned int iToolTipId, const wstring &label, bool show, bool force)
+void UIComponent_Tooltips::_SetTooltip(unsigned int iToolTipId, const std::wstring &label, bool show, bool force)
 {
 	if(!force && !show && !m_tooltipValues[iToolTipId].show)
 	{

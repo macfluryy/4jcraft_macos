@@ -1,15 +1,15 @@
 #pragma once
-using namespace std;
+
 
 class ConsoleSavePath
 {
 private:
-	wstring path;
+	std::wstring path;
 
 public:
-	ConsoleSavePath( const wstring &newPath ) { path = newPath; }
+	ConsoleSavePath( const std::wstring &newPath ) { path = newPath; }
 
-	wstring getName() const { return path; }
+	std::wstring getName() const { return path; }
 
-	wstring operator+( wstring &b ) { return path + b; }
+	std::wstring operator+( std::wstring &b ) { return path + b; }
 };

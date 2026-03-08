@@ -131,12 +131,12 @@ void Chicken::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
 	}
 }
 
-shared_ptr<AgableMob> Chicken::getBreedOffspring(shared_ptr<AgableMob> target)
+std::shared_ptr<AgableMob> Chicken::getBreedOffspring(std::shared_ptr<AgableMob> target)
 {
 	// 4J - added limit to chickens that can be bred
 	if( level->canCreateMore( GetType(), Level::eSpawnType_Breed) )
 	{
-		return shared_ptr<Chicken>(new Chicken(level));
+		return std::shared_ptr<Chicken>(new Chicken(level));
 	}
 	else
 	{
@@ -144,7 +144,7 @@ shared_ptr<AgableMob> Chicken::getBreedOffspring(shared_ptr<AgableMob> target)
 	}
 }
 
-bool Chicken::isFood(shared_ptr<ItemInstance> itemInstance)
+bool Chicken::isFood(std::shared_ptr<ItemInstance> itemInstance)
 {
 	return (itemInstance->id == Item::seeds_wheat_Id) || (itemInstance->id == Item::netherStalkSeeds_Id) || (itemInstance->id == Item::seeds_melon_Id) || (itemInstance->id == Item::seeds_pumpkin_Id);
 }

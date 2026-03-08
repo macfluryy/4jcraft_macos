@@ -45,7 +45,7 @@ public:
     bool save(bool force, ProgressListener *progressListener);
     bool tick();
     bool shouldSave();
-    wstring gatherStats();
-	virtual vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-    virtual TilePos *findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z);
+    std::wstring gatherStats();
+	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
+    virtual TilePos *findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z);
 };

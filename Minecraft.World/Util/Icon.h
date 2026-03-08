@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 
 class Icon
@@ -26,7 +26,7 @@ public:
 	virtual float getV0(bool adjust = false) const = 0;
 	virtual float getV1(bool adjust = false) const = 0;
 	virtual float getV(double offset, bool adjust = false) const = 0;
-	virtual wstring getName() const = 0;
+	virtual std::wstring getName() const = 0;
 	virtual int getSourceWidth() const = 0;
 	virtual int getSourceHeight() const = 0;
 	virtual int getFlags() const = 0;			// 4J added

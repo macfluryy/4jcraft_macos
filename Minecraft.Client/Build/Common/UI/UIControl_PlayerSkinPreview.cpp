@@ -105,7 +105,7 @@ void UIControl_PlayerSkinPreview::tick()
 	}
 }
 
-void UIControl_PlayerSkinPreview::SetTexture(const wstring &url, TEXTURE_NAME backupTexture)
+void UIControl_PlayerSkinPreview::SetTexture(const std::wstring &url, TEXTURE_NAME backupTexture)
 {
 	m_customTextureUrl = url;
 	m_backupTexture = backupTexture;
@@ -221,7 +221,7 @@ void UIControl_PlayerSkinPreview::render(IggyCustomDrawCallbackRegion *region)
 	if (renderer != NULL)
 	{
 		// 4J-PB - any additional parts to turn on for this player (skin dependent)
-		//vector<ModelPart *> *pAdditionalModelParts=mob->GetAdditionalModelParts();
+		//std::vector<ModelPart *> *pAdditionalModelParts=mob->GetAdditionalModelParts();
 
 		if(m_pvAdditionalModelParts && m_pvAdditionalModelParts->size()!=0)
 		{	
@@ -473,7 +473,7 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer *renderer, double x, dou
 	model->holdingLeftHand = false;
 }
 
-bool UIControl_PlayerSkinPreview::bindTexture(const wstring& urlTexture, int backupTexture)
+bool UIControl_PlayerSkinPreview::bindTexture(const std::wstring& urlTexture, int backupTexture)
 {
 	Textures *t = Minecraft::GetInstance()->textures;
 
@@ -493,7 +493,7 @@ bool UIControl_PlayerSkinPreview::bindTexture(const wstring& urlTexture, int bac
 	}
 }
 
-bool UIControl_PlayerSkinPreview::bindTexture(const wstring& urlTexture, const wstring& backupTexture)
+bool UIControl_PlayerSkinPreview::bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture)
 {
 	Textures *t = Minecraft::GetInstance()->textures;
 

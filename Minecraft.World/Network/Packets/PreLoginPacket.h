@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class PreLoginPacket : public Packet, public enable_shared_from_this<PreLoginPacket>
+class PreLoginPacket : public Packet, public std::enable_shared_from_this<PreLoginPacket>
 {
     // the login key is username client->server and sessionid server->client
 public:
@@ -21,11 +21,11 @@ public:
 	DWORD m_texturePackId;
 	SHORT m_netcodeVersion;
 
-	wstring loginKey;
+	std::wstring loginKey;
 
 	PreLoginPacket();
-	PreLoginPacket(wstring userName);
-	PreLoginPacket(wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId);
+	PreLoginPacket(std::wstring userName);
+	PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId);
 	~PreLoginPacket();
 
 	virtual void read(DataInputStream *dis);
@@ -34,6 +34,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new PreLoginPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new PreLoginPacket()); }
 	virtual int getId() { return 2; }
 };

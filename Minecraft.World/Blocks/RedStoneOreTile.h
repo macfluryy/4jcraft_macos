@@ -11,10 +11,10 @@ private:
 public:
 	RedStoneOreTile(int id, bool lit);
     virtual int getTickDelay();
-    virtual void attack(Level *level, int x, int y, int z, shared_ptr<Player> player);
-    virtual void stepOn(Level *level, int x, int y, int z, shared_ptr<Entity> entity);
+    virtual void attack(Level *level, int x, int y, int z, std::shared_ptr<Player> player);
+    virtual void stepOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity);
 	virtual bool TestUse();
-    virtual bool use(Level *level, int x, int y, int z, shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
+    virtual bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
 private:
 	virtual void interact(Level *level, int x, int y, int z);
 public:
@@ -30,5 +30,5 @@ public:
 private:
 	void poofParticles(Level *level, int x, int y, int z);
 protected:
-	virtual shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
+	virtual std::shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 };

@@ -12,15 +12,15 @@ private:
 	//static const int MAX_MESSAGE_WIDTH = 320;
 	static const int m_iMaxMessageWidth = 280;
     static ItemRenderer *itemRenderer;
-    vector<GuiMessage> guiMessages[XUSER_MAX_COUNT];
+    std::vector<GuiMessage> guiMessages[XUSER_MAX_COUNT];
     Random *random;
 
     Minecraft *minecraft;
 public:
-	wstring selectedName;
+	std::wstring selectedName;
 private:
 	int tickCount;
-    wstring overlayMessageString;
+    std::wstring overlayMessageString;
     int overlayMessageTime;
     bool animateOverlayMessageColor;
 
@@ -50,16 +50,16 @@ private:
 public:
 	void tick();
     void clearMessages(int iPad=-1);
-    void addMessage(const wstring& string, int iPad,bool bIsDeathMessage=false);
-    void setNowPlaying(const wstring& string);
+    void addMessage(const std::wstring& string, int iPad,bool bIsDeathMessage=false);
+    void setNowPlaying(const std::wstring& string);
     void displayClientMessage(int messageId, int iPad);
 
 	// 4J Added
 	DWORD getMessagesCount(int iPad) { return (int)guiMessages[iPad].size(); }
-	wstring getMessage(int iPad, DWORD index) { return guiMessages[iPad].at(index).string; }
+	std::wstring getMessage(int iPad, DWORD index) { return guiMessages[iPad].at(index).string; }
 	float getOpacity(int iPad, DWORD index);
 
-	wstring getJukeboxMessage(int iPad) { return overlayMessageString; }
+	std::wstring getJukeboxMessage(int iPad) { return overlayMessageString; }
 	float getJukeboxOpacity(int iPad);
 
 	// 4J Added

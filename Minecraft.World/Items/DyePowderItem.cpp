@@ -1,4 +1,4 @@
-using namespace std;
+
 
 #include "../Build/stdafx.h"
 #include "../Headers/com.mojang.nbt.h"
@@ -61,7 +61,7 @@ const unsigned int DyePowderItem::COLOR_USE_DESCS[] =
 	IDS_DESC_DYE_WHITE
 };
 
-const wstring DyePowderItem::COLOR_TEXTURES[] =
+const std::wstring DyePowderItem::COLOR_TEXTURES[] =
 { L"dyePowder_black", L"dyePowder_red", L"dyePowder_green", L"dyePowder_brown", L"dyePowder_blue", L"dyePowder_purple", L"dyePowder_cyan", L"dyePowder_silver", L"dyePowder_gray", L"dyePowder_pink",
 L"dyePowder_lime", L"dyePowder_yellow", L"dyePowder_lightBlue", L"dyePowder_magenta", L"dyePowder_orange", L"dyePowder_white"};
 
@@ -108,18 +108,18 @@ Icon *DyePowderItem::getIcon(int itemAuxValue)
 	return icons[colorValue];
 }
 
-unsigned int DyePowderItem::getDescriptionId(shared_ptr<ItemInstance> itemInstance) 
+unsigned int DyePowderItem::getDescriptionId(std::shared_ptr<ItemInstance> itemInstance) 
 {
 	int colorValue = Mth::clamp(itemInstance->getAuxValue(), 0, 15);
 	return COLOR_DESCS[colorValue];
 }
 
-unsigned int DyePowderItem::getUseDescriptionId(shared_ptr<ItemInstance> itemInstance) 
+unsigned int DyePowderItem::getUseDescriptionId(std::shared_ptr<ItemInstance> itemInstance) 
 {
 	return COLOR_USE_DESCS[itemInstance->getAuxValue()];
 }
 
-bool DyePowderItem::useOn(shared_ptr<ItemInstance> itemInstance, shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) 
+bool DyePowderItem::useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly) 
 {
 	if (!player->mayBuild(x, y, z)) return false;
 
@@ -289,11 +289,11 @@ mainloop: continue;
 	return false;
 }
 
-bool DyePowderItem::interactEnemy(shared_ptr<ItemInstance> itemInstance, shared_ptr<Mob> mob) 
+bool DyePowderItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Mob> mob) 
 {
-	if (dynamic_pointer_cast<Sheep>( mob ) != NULL) 
+	if (std::dynamic_pointer_cast<Sheep>( mob ) != NULL) 
 	{
-		shared_ptr<Sheep> sheep = dynamic_pointer_cast<Sheep>(mob);
+		std::shared_ptr<Sheep> sheep = std::dynamic_pointer_cast<Sheep>(mob);
 		// convert to tile-based color value (0 is white instead of black)
 		int newColor = ClothTile::getTileDataForItemAuxValue(itemInstance->getAuxValue());
 		if (!sheep->isSheared() && sheep->getColor() != newColor) 

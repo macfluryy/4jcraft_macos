@@ -1,16 +1,16 @@
 #pragma once
-using namespace std;
+
 #include "Tag.h"
 
 template <class T> class ListTag : public Tag
 {
 private:
-    vector<Tag *> list;
+    std::vector<Tag *> list;
     uint8_t type;
 
 public:
 	ListTag() : Tag(L"") {}
-	ListTag(const wstring &name) : Tag(name) {}
+	ListTag(const std::wstring &name) : Tag(name) {}
 
     void write(DataOutput *dos)
 	{
@@ -40,18 +40,18 @@ public:
 
 	uint8_t getId() { return TAG_List; }
 
-    wstring toString()
+    std::wstring toString()
 	{
 		static wchar_t buf[64];
 		swprintf(buf,64,L"%d entries of type %ls",list.size(),Tag::getTagName(type));
-		return wstring( buf );
+		return std::wstring( buf );
 	}
 
-    void print(char *prefix, ostream out)
+    void print(char *prefix, std::ostream out)
 	{
         printf(prefix);
 
-		out << prefix << "{" << endl;
+		out << prefix << "{" << std::endl;
 
 		char *newPrefix = new char[ strlen(prefix) + 4 ];
 		strcpy( newPrefix, prefix);
@@ -60,7 +60,7 @@ public:
         for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
             printf(newPrefix);
 		delete[] newPrefix;
-		out << prefix << "}" << endl;
+		out << prefix << "}" << std::endl;
 	}
 
     void add(T *tag)

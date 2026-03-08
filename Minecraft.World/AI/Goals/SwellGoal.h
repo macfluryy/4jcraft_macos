@@ -8,7 +8,7 @@ class SwellGoal : public Goal
 {
 private:
 	Creeper *creeper;
-	weak_ptr<Mob> target;
+	std::weak_ptr<Mob> target;
 
 public:
 	SwellGoal(Creeper *creeper);

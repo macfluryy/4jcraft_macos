@@ -6,7 +6,7 @@ private:
 	unsigned int m_colourValues[eMinecraftColour_COUNT];
 
 	static const wchar_t *ColourTableElements[eMinecraftColour_COUNT];
-	static unordered_map<wstring,eMinecraftColour> s_colourNamesMap;
+	static std::unordered_map<std::wstring,eMinecraftColour> s_colourNamesMap;
 
 public:
 	static void staticCtor();
@@ -18,6 +18,6 @@ public:
 	unsigned int getColor(eMinecraftColour id) { return getColour(id); }
 
 	void loadColoursFromData(PBYTE pbData, DWORD dwLength);
-	void setColour(const wstring &colourName, int value);
-	void setColour(const wstring &colourName, const wstring &value);
+	void setColour(const std::wstring &colourName, int value);
+	void setColour(const std::wstring &colourName, const std::wstring &value);
 };

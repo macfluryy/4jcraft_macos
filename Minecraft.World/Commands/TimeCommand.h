@@ -6,12 +6,12 @@ class TimeCommand : public Command
 {
 public:
 	virtual EGameCommand getId();
-	virtual void execute(shared_ptr<CommandSender> source, byteArray commandData);
+	virtual void execute(std::shared_ptr<CommandSender> source, byteArray commandData);
 
 protected:
-	void doSetTime(shared_ptr<CommandSender> source, int value);
-	void doAddTime(shared_ptr<CommandSender> source, int value);
+	void doSetTime(std::shared_ptr<CommandSender> source, int value);
+	void doAddTime(std::shared_ptr<CommandSender> source, int value);
 
 public:
-	static shared_ptr<GameCommandPacket> preparePacket(bool night);
+	static std::shared_ptr<GameCommandPacket> preparePacket(bool night);
 };

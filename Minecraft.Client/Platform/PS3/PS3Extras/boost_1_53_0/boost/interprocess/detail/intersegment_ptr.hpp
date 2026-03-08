@@ -886,7 +886,7 @@ boost::interprocess::intersegment_ptr<T> const_pointer_cast(const boost::interpr
 //!Simulation of dynamic_cast between pointers.
 //!Never throws.
 template<class T, class U> inline
-boost::interprocess::intersegment_ptr<T> dynamic_pointer_cast(const boost::interprocess::intersegment_ptr<U> &r)
+boost::interprocess::intersegment_ptr<T> std::dynamic_pointer_cast(const boost::interprocess::intersegment_ptr<U> &r)
 {  return boost::interprocess::intersegment_ptr<T>(r, boost::interprocess::ipcdetail::dynamic_cast_tag());  }
 
 //!Simulation of reinterpret_cast between pointers.

@@ -2,7 +2,7 @@
 #include "../Screen.h"
 class EditBox;
 class LevelStorageSource;
-using namespace std;
+
 
 class CreateWorldScreen : public Screen
 {
@@ -10,7 +10,7 @@ private:
 	Screen *lastScreen;
     EditBox *nameEdit;
     EditBox *seedEdit;
-    wstring resultFolder;
+    std::wstring resultFolder;
     bool done;
 
 public:
@@ -20,7 +20,7 @@ public:
 private:
 	void updateResultFolder();
 public:
-	static wstring findAvailableFolderName(LevelStorageSource *levelSource, const wstring& folder);
+	static std::wstring findAvailableFolderName(LevelStorageSource *levelSource, const std::wstring& folder);
     virtual void removed();
 protected:
 	virtual void buttonClicked(Button *button);

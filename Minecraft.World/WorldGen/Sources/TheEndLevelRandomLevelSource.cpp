@@ -399,12 +399,12 @@ bool TheEndLevelRandomLevelSource::shouldSave()
 	return true;
 }
 
-wstring TheEndLevelRandomLevelSource::gatherStats()
+std::wstring TheEndLevelRandomLevelSource::gatherStats()
 {
 	return L"RandomLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *TheEndLevelRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *TheEndLevelRandomLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
     Biome *biome = level->getBiome(x, z);
     if (biome == NULL)
@@ -414,7 +414,7 @@ vector<Biome::MobSpawnerData *> *TheEndLevelRandomLevelSource::getMobsAt(MobCate
     return biome->getMobs(mobCategory);
 }
 
-TilePos *TheEndLevelRandomLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *TheEndLevelRandomLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
 	return NULL;
 }

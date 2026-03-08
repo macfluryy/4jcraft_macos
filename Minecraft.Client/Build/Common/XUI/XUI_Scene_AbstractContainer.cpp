@@ -306,7 +306,7 @@ void CXuiSceneAbstractContainer::GetItemScreenData( ESceneSection eSection, int 
 	}
 }
 
-shared_ptr<ItemInstance> CXuiSceneAbstractContainer::getSlotItem(ESceneSection eSection, int iSlot)
+std::shared_ptr<ItemInstance> CXuiSceneAbstractContainer::getSlotItem(ESceneSection eSection, int iSlot)
 {
 	CXuiCtrlSlotItemListItem* pCXuiCtrlSlotItem;
 	GetSectionSlotList( eSection )->GetCXuiCtrlSlotItem( iSlot, &( pCXuiCtrlSlotItem ) );
@@ -377,7 +377,7 @@ void CXuiSceneAbstractContainer::setFocusToPointer(int iPad)
 	m_pointerControl->SetFocus( iPad );
 }
 
-void CXuiSceneAbstractContainer::SetPointerText(const wstring &description, vector<wstring> &unformattedStrings, bool newSlot)
+void CXuiSceneAbstractContainer::SetPointerText(const std::wstring &description, std::vector<std::wstring> &unformattedStrings, bool newSlot)
 {
 	if(description.empty())
 	{
@@ -388,7 +388,7 @@ void CXuiSceneAbstractContainer::SetPointerText(const wstring &description, vect
 	}
 
 	bool smallPointer = m_bSplitscreen || (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen());
-	wstring desc = L"<font size=\"" + _toString<int>(smallPointer ? 12 :14) + L"\">" + description + L"</font>";
+	std::wstring desc = L"<font size=\"" + _toString<int>(smallPointer ? 12 :14) + L"\">" + description + L"</font>";
 
 	XUIRect tempXuiRect, xuiRect;
 	HRESULT hr;

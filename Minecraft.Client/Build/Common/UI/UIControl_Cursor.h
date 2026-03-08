@@ -7,5 +7,5 @@ class UIControl_Cursor : public UIControl_Base
 public:
 	UIControl_Cursor();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName);
+	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
 };

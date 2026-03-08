@@ -9,8 +9,8 @@ private:
 	bool m_showingAutosaveTimer;
 	bool m_showingTrialTimer;
 	bool m_showingPressStart[XUSER_MAX_COUNT];
-	wstring m_trialTimer;
-	wstring m_autosaveTimer;
+	std::wstring m_trialTimer;
+	std::wstring m_autosaveTimer;
 
 protected:
 	UIControl_Label m_labelTrialTimer, m_labelPressStart, m_playerDisplayName;
@@ -33,7 +33,7 @@ public:
 
 protected:
 	// TODO: This should be pure virtual in this class
-	virtual wstring getMoviePath();
+	virtual std::wstring getMoviePath();
 
 public:
 	virtual EUIScene getSceneType() { return eUIComponent_PressStartToPlay;}
@@ -51,9 +51,9 @@ public:
 	virtual void handleTimerComplete(int id);
 
 	void showPressStart(int iPad, bool show);
-	void setTrialTimer(const wstring &label);
+	void setTrialTimer(const std::wstring &label);
 	void showTrialTimer(bool show);
-	void setAutosaveTimer(const wstring &label);
+	void setAutosaveTimer(const std::wstring &label);
 	void showAutosaveTimer(bool show);
 	void showSaveIcon(bool show);
 	void showPlayerDisplayName(bool show);

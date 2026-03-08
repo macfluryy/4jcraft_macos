@@ -57,7 +57,7 @@ bool CDurangoTelemetryManager::RecordPlayerSessionStart(int iPad)
 
 bool CDurangoTelemetryManager::RecordPlayerSessionExit(int iPad, int exitStatus)
 {
-	PlayerUID puid; shared_ptr<Player> plr;
+	PlayerUID puid; std::shared_ptr<Player> plr;
 	ProfileManager.GetXUID(iPad, &puid, true);
 	plr = Minecraft::GetInstance()->localplayers[iPad];
 
@@ -127,7 +127,7 @@ bool CDurangoTelemetryManager::RecordLevelStart(int iPad, ESen_FriendOrMatch fri
 	ULONG hr = 0;
 
 	// Grab player info.
-	PlayerUID puid; shared_ptr<Player> plr;
+	PlayerUID puid; std::shared_ptr<Player> plr;
 	ProfileManager.GetXUID(iPad, &puid, true);
 	plr = Minecraft::GetInstance()->localplayers[iPad];
 
@@ -971,9 +971,9 @@ DurangoStats *CDurangoTelemetryManager::durangoStats()
 	return (DurangoStats*) GenericStats::getInstance();
 }
 
-wstring CDurangoTelemetryManager::guid2str(LPCGUID guid)
+std::wstring CDurangoTelemetryManager::guid2str(LPCGUID guid)
 {
-	wstring out = L"GUID<";
+	std::wstring out = L"GUID<";
 	out += _toString<unsigned long>(guid->Data1);
 	out += L":";
 	out += _toString<unsigned short>(guid->Data2);

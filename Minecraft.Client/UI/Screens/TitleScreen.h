@@ -2,7 +2,7 @@
 #include "../Screen.h"
 class Random;
 class Button;
-using namespace std;
+
 
 class TitleScreen : public Screen
 {
@@ -11,7 +11,7 @@ private:
 
     float vo;
 
-    wstring splash;
+    std::wstring splash;
     Button *multiplayerButton;
 
 public:

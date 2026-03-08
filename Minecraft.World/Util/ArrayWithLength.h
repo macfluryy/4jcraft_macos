@@ -11,7 +11,7 @@ public:
 	T *data;
 	unsigned int length;
 	arrayWithLength() { data = NULL; length = 0; }
-	arrayWithLength(unsigned int elements, bool bClearArray=true) { assert(elements!=0); data = new T[elements];  if(bClearArray){ memset( data,0,sizeof(T)*elements); }  this->length = elements; }
+	arrayWithLength(unsigned int elements, bool bClearArray=true) { assert(elements!=0); data = new T[elements];  if(bClearArray){ memset( (void*)data,0,sizeof(T)*elements); }  this->length = elements; }
 
 	// 4J Stu Added this ctor so I static init arrays in the Item derivation tree
 	arrayWithLength( T data[], unsigned int elements) { this->data = data; this->length = elements; }
@@ -22,7 +22,7 @@ public:
 	{
 		assert( elements > length );
 		T *temp = new T[elements];
-		memset( temp,0,sizeof(T)*elements);
+		memset( (void*)temp,0,sizeof(T)*elements);
 
 		if( data != NULL )
 		{
@@ -105,11 +105,11 @@ typedef arrayWithLength<Level *> LevelArray;
 typedef arrayWithLength<LevelRenderer *> LevelRendererArray;
 typedef arrayWithLength<WeighedRandomItem *> WeighedRandomItemArray;
 typedef arrayWithLength<WeighedTreasure *> WeighedTreasureArray;
-typedef arrayWithLength< shared_ptr<Layer> > LayerArray;
+typedef arrayWithLength< std::shared_ptr<Layer> > LayerArray;
 //typedef arrayWithLength<Cube *> CubeArray;
 typedef arrayWithLength<ModelPart *> ModelPartArray;
 typedef arrayWithLength<Enchantment *> EnchantmentArray;
 typedef arrayWithLength<ClipChunk> ClipChunkArray;
 
 #include "../Items/ItemInstance.h"
-typedef arrayWithLength<shared_ptr<ItemInstance> > ItemInstanceArray;
+typedef arrayWithLength<std::shared_ptr<ItemInstance> > ItemInstanceArray;

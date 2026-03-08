@@ -13,7 +13,7 @@ bool ComplexItem::isComplex()
     return true;
 }
 
-shared_ptr<Packet> ComplexItem::getUpdatePacket(shared_ptr<ItemInstance> itemInstance, Level *level, shared_ptr<Player> player)
+std::shared_ptr<Packet> ComplexItem::getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance, Level *level, std::shared_ptr<Player> player)
 {
     return nullptr;
 }

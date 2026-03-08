@@ -132,12 +132,12 @@ bool FlatLevelSource::shouldSave()
 	return true;
 }
 
-wstring FlatLevelSource::gatherStats() 
+std::wstring FlatLevelSource::gatherStats() 
 {
 	return L"FlatLevelSource";
 }
 
-vector<Biome::MobSpawnerData *> *FlatLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
+std::vector<Biome::MobSpawnerData *> *FlatLevelSource::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
 {
  	Biome *biome = level->getBiome(x, z);
  	if (biome == NULL) 
@@ -147,7 +147,7 @@ vector<Biome::MobSpawnerData *> *FlatLevelSource::getMobsAt(MobCategory *mobCate
  	return biome->getMobs(mobCategory);
 }
 
-TilePos *FlatLevelSource::findNearestMapFeature(Level *level, const wstring& featureName, int x, int y, int z)
+TilePos *FlatLevelSource::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
 {
 	return NULL;
 }

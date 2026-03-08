@@ -1,11 +1,11 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
 class CompoundTag;
 
-class TileEntityDataPacket : public Packet, public enable_shared_from_this<TileEntityDataPacket>
+class TileEntityDataPacket : public Packet, public std::enable_shared_from_this<TileEntityDataPacket>
 {
 public:
 	static const int TYPE_MOB_SPAWNER = 1;
@@ -31,6 +31,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new TileEntityDataPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TileEntityDataPacket()); }
 	virtual int getId() { return 132; }
 };

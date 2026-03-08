@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class ChatPacket : public Packet, public enable_shared_from_this<ChatPacket>
+class ChatPacket : public Packet, public std::enable_shared_from_this<ChatPacket>
 {
     // longest allowed string is "<" + name + "> " + message
 private:
@@ -79,12 +79,12 @@ public:
 	};
 
 public:
-	vector<wstring> m_stringArgs;
-	vector<int> m_intArgs;
+	std::vector<std::wstring> m_stringArgs;
+	std::vector<int> m_intArgs;
 	EChatPacketMessage m_messageType;
 
 	ChatPacket();
-	ChatPacket(const wstring& message, EChatPacketMessage type = e_ChatCustom, int customData = -1, const wstring& additionalMessage = L"");
+	ChatPacket(const std::wstring& message, EChatPacketMessage type = e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"");
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -92,7 +92,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new ChatPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ChatPacket()); }
 	virtual int getId() { return 3; }
 };
 

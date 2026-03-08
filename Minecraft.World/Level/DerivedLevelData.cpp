@@ -17,7 +17,7 @@ CompoundTag *DerivedLevelData::createTag()
 	return wrapped->createTag();
 }
 
-CompoundTag *DerivedLevelData::createTag(vector<shared_ptr<Player> > *players)
+CompoundTag *DerivedLevelData::createTag(std::vector<std::shared_ptr<Player> > *players)
 {
 	return wrapped->createTag(players);
 }
@@ -58,7 +58,7 @@ CompoundTag *DerivedLevelData::getLoadedPlayerTag()
 	return wrapped->getLoadedPlayerTag();
 }
 
-wstring DerivedLevelData::getLevelName()
+std::wstring DerivedLevelData::getLevelName()
 {
 	return wrapped->getLevelName();
 }
@@ -134,7 +134,7 @@ void DerivedLevelData::setSpawn(int xSpawn, int ySpawn, int zSpawn)
 {
 }
 
-void DerivedLevelData::setLevelName(const wstring &levelName)
+void DerivedLevelData::setLevelName(const std::wstring &levelName)
 {
 }
 

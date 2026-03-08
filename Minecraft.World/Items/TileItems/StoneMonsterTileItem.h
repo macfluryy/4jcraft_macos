@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "TileItem.h"
 
@@ -12,5 +12,5 @@ public:
 
 	virtual int getLevelDataForAuxValue(int auxValue);
 	virtual Icon *getIcon(int itemAuxValue);
-	virtual unsigned int getDescriptionId(shared_ptr<ItemInstance> instance);
+	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
 };

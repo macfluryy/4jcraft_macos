@@ -127,7 +127,7 @@ UIScene_PauseMenu::~UIScene_PauseMenu()
 	m_parentLayer->showComponent(m_iPad,eUIComponent_Logo,false);
 }
 
-wstring UIScene_PauseMenu::getMoviePath()
+std::wstring UIScene_PauseMenu::getMoviePath()
 {
 	if(app.GetLocalPlayerCount() > 1)
 	{

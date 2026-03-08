@@ -2,11 +2,11 @@
 
 // 4J ADDED THIS PACKET
 
-using namespace std;
+
 
 #include "Packet.h"
 
-class DebugOptionsPacket : public Packet, public enable_shared_from_this<DebugOptionsPacket>
+class DebugOptionsPacket : public Packet, public std::enable_shared_from_this<DebugOptionsPacket>
 {
 public:
 	unsigned int m_uiVal;
@@ -21,6 +21,6 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new DebugOptionsPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new DebugOptionsPacket()); }
 	virtual int getId() { return 152; }
 };

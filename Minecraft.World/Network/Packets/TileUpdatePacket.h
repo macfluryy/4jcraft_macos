@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class TileUpdatePacket : public Packet, public enable_shared_from_this<TileUpdatePacket>
+class TileUpdatePacket : public Packet, public std::enable_shared_from_this<TileUpdatePacket>
 {
 public:
 	int x, y, z;
@@ -18,6 +18,6 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new TileUpdatePacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TileUpdatePacket()); }
 	virtual int getId() { return 53; }
 };

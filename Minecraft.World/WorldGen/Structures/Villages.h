@@ -5,19 +5,19 @@
 class Villages : public SavedData
 {
 public:
-	static const wstring VILLAGE_FILE_ID;
+	static const std::wstring VILLAGE_FILE_ID;
 
 	static const int MaxDoorDist = 32;
 
 private:
 	Level *level;
-	deque<Pos *> queries;
-	vector<shared_ptr<DoorInfo> > unclustered;
-	vector<shared_ptr<Village> > villages;
+	std::deque<Pos *> queries;
+	std::vector<std::shared_ptr<DoorInfo> > unclustered;
+	std::vector<std::shared_ptr<Village> > villages;
 	int _tick;
 
 public:
-	Villages(const wstring &id);
+	Villages(const std::wstring &id);
 	Villages(Level *level);
 	~Villages();
 
@@ -29,14 +29,14 @@ private:
 	void removeVillages();
 
 public:
-	vector<shared_ptr<Village> > *getVillages();
-	shared_ptr<Village> getClosestVillage(int x, int y, int z, int maxDist);
+	std::vector<std::shared_ptr<Village> > *getVillages();
+	std::shared_ptr<Village> getClosestVillage(int x, int y, int z, int maxDist);
 
 private:
 	void processNextQuery();
 	void cluster();
 	void addDoorInfos(Pos *pos);
-	shared_ptr<DoorInfo>getDoorInfo(int x, int y, int z);
+	std::shared_ptr<DoorInfo>getDoorInfo(int x, int y, int z);
 	void createDoorInfo(int x, int y, int z);
 	bool hasQuery(int x, int y, int z);
 	bool isDoor(int x, int y, int z);

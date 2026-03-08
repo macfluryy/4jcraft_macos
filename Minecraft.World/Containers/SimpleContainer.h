@@ -1,5 +1,5 @@
 #pragma once
-using namespace std;
+
 
 #include "Container.h"
 #include "../Headers/net.minecraft.world.ContainerListener.h"
@@ -10,7 +10,7 @@ private:
 	int name;
 	int size;
 	ItemInstanceArray *items;
-	vector<net_minecraft_world::ContainerListener *> *listeners;
+	std::vector<net_minecraft_world::ContainerListener *> *listeners;
 
 public:
 	SimpleContainer(int name, int size);
@@ -19,12 +19,12 @@ public:
 
 	void removeListener(net_minecraft_world::ContainerListener *listener);
 
-	shared_ptr<ItemInstance> getItem(unsigned int slot);
+	std::shared_ptr<ItemInstance> getItem(unsigned int slot);
 
-	shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
-	shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+	std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
+	std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
 
-	void setItem(unsigned int slot, shared_ptr<ItemInstance> item);
+	void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
 
 	unsigned int getContainerSize();
 
@@ -34,7 +34,7 @@ public:
 
 	void setChanged();
 
-	bool stillValid(shared_ptr<Player> player);
+	bool stillValid(std::shared_ptr<Player> player);
 
 	void startOpen() { } // TODO Auto-generated method stub
 	void stopOpen() { } // TODO Auto-generated method stub

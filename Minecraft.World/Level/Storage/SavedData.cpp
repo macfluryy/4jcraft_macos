@@ -3,7 +3,7 @@
 
 
 
-SavedData::SavedData(const wstring& id) : id( id )
+SavedData::SavedData(const std::wstring& id) : id( id )
 {
 	dirty = false;
 }

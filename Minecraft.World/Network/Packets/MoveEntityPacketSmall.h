@@ -1,9 +1,9 @@
 #pragma once
-using namespace std;
+
 
 #include "Packet.h"
 
-class MoveEntityPacketSmall : public Packet, public enable_shared_from_this<MoveEntityPacketSmall>
+class MoveEntityPacketSmall : public Packet, public std::enable_shared_from_this<MoveEntityPacketSmall>
 {
 
 	// 4J JEV, static inner/sub classes
@@ -24,10 +24,10 @@ public:
 	virtual void handle(PacketListener *listener);
 	virtual int getEstimatedSize();
 	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(shared_ptr<Packet> packet);
+	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new MoveEntityPacketSmall()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall()); }
 	virtual int getId() { return 162; }
 };
 
@@ -42,7 +42,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new MoveEntityPacketSmall::PosRot()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::PosRot()); }
 	virtual int getId() { return 165; }
 };
 
@@ -57,7 +57,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new MoveEntityPacketSmall::Pos()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Pos()); }
 	virtual int getId() { return 163; }
 
 };
@@ -73,7 +73,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new MoveEntityPacketSmall::Rot()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Rot()); }
 	virtual int getId() { return 164; }
 
 };

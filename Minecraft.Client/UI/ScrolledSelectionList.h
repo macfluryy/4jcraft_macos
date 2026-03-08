@@ -51,7 +51,7 @@ protected:
     void renderDecorations(int mouseX, int mouseY);
 public:
 	int getItemAtPosition(int x, int y);
-    void init(vector<Button *> *buttons, int upButtonId, int downButtonId);
+    void init(std::vector<Button *> *buttons, int upButtonId, int downButtonId);
 private:
 	void capYPosition();
 public:

@@ -2,7 +2,7 @@
 
 // 4J ADDED PACKET
 
-using namespace std;
+
 
 #include "Packet.h"
 
@@ -10,7 +10,7 @@ using namespace std;
 #include <iostream>
 #include "PacketListener.h"
 
-class TradeItemPacket : public Packet, public enable_shared_from_this<TradeItemPacket>
+class TradeItemPacket : public Packet, public std::enable_shared_from_this<TradeItemPacket>
 {
 public:
     int containerId;
@@ -25,7 +25,7 @@ public:
 	virtual int getEstimatedSize();
 
 public:
-	static shared_ptr<Packet> create() { return shared_ptr<Packet>(new TradeItemPacket()); }
+	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TradeItemPacket()); }
 	virtual int getId() { return 151; }
 };
 

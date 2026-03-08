@@ -17,19 +17,19 @@ public:
 
 private:
 	int id;
-	wstring name;
+	std::wstring name;
 
-	GameType(int id, const wstring &name);
+	GameType(int id, const std::wstring &name);
 
 public:
 	int getId();
-	wstring getName();
+	std::wstring getName();
 	void updatePlayerAbilities(Abilities *abilities);
 	bool isReadOnly();
 	bool isCreative();
 	bool isSurvival();
 	static GameType *byId(int id);
-	static GameType *byName(const wstring &name);
+	static GameType *byName(const std::wstring &name);
 };
 
 class LevelSettings

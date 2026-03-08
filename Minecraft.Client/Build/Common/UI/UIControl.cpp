@@ -14,7 +14,7 @@ UIControl::UIControl()
 	m_eControlType = eNoControl;
 }
 
-bool UIControl::setupControl(UIScene *scene, IggyValuePath *parent, const string &controlName)
+bool UIControl::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
 {
 	m_parentScene = scene;
 	m_controlName = controlName;
@@ -147,7 +147,7 @@ bool UIControl::getVisible()
 	return bVisible;
 }
 
-IggyName UIControl::registerFastName(const wstring &name)
+IggyName UIControl::registerFastName(const std::wstring &name)
 {
 	return m_parentScene->registerFastName(name);
 }

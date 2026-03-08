@@ -25,7 +25,7 @@ private:
 	int	m_iPad;
 	int m_index;
 	int m_lastCost;
-	wstring m_costString;
+	std::wstring m_costString;
 	CXuiSceneEnchant *m_containerScene;
 
 	float m_fScreenWidth,m_fScreenHeight;
