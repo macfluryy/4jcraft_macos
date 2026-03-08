@@ -518,7 +518,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 	TileEntityRenderDispatcher::yOff = (player->yOld + (player->y - player->yOld) * a);
 	TileEntityRenderDispatcher::zOff = (player->zOld + (player->z - player->zOld) * a);
 
-	mc->gameRenderer->turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
 
 	vector<shared_ptr<Entity> > entities = level[playerIndex]->getAllEntities();
 	totalEntities = (int)entities.size();
@@ -600,7 +600,7 @@ void LevelRenderer::renderEntities(Vec3 *cam, Culler *culler, float a)
 
 	LeaveCriticalSection(&m_csRenderableTileEntities);
 
-	mc->gameRenderer->turnOffLightLayer(a);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOffLightLayer(a);		// 4J - brought forward from 1.8.2
 }
 
 wstring LevelRenderer::gatherStats1()
@@ -742,7 +742,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 
 #if 1
 	// 4J - cut down version, we're not using offsetted render lists, or a sorted chunk list, anymore
-	mc->gameRenderer->turnOnLightLayer(alpha);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOnLightLayer(alpha);		// 4J - brought forward from 1.8.2
 	shared_ptr<Mob> player = mc->cameraTargetPlayer;
 	double xOff = player->xOld + (player->x - player->xOld) * alpha;
 	double yOff = player->yOld + (player->y - player->yOld) * alpha;
@@ -838,7 +838,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha)
 #endif // __PS3__
 
 	glPopMatrix();
-	mc->gameRenderer->turnOffLightLayer(alpha);		// 4J - brought forward from 1.8.2
+	// mc->gameRenderer->turnOffLightLayer(alpha);		// 4J - brought forward from 1.8.2
 
 #else
 	_renderChunks.clear();
