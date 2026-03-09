@@ -1,4 +1,6 @@
 #include "../../Platform/stdafx.h"
+#include <cstdint>
+#include <cstring>
 #include <iostream>
 #include "PacketListener.h"
 #include "PreLoginPacket.h"
@@ -32,7 +34,7 @@ PreLoginPacket::PreLoginPacket(std::wstring userName)
 	m_netcodeVersion = 0;
 }
 
-PreLoginPacket::PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId) 
+PreLoginPacket::PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, std::uint32_t texturePackId) 
 {
 	this->loginKey = userName;
 	m_playerXuids = playerXuids;
@@ -75,8 +77,8 @@ void PreLoginPacket::read(DataInputStream *dis) //throws IOException
 	m_serverSettings = dis->readInt();
 	m_hostIndex = dis->readByte();
 	
-	INT texturePackId = dis->readInt();
-	m_texturePackId = *(DWORD *)&texturePackId;
+	std::int32_t texturePackId = dis->readInt();
+	std::memcpy(&m_texturePackId, &texturePackId, sizeof(m_texturePackId));
 
 	// Set the name of the map so we can check it for players banned lists
 	app.SetUniqueMapName((char *)m_szUniqueSaveName);
@@ -103,7 +105,9 @@ void PreLoginPacket::write(DataOutputStream *dos) //throws IOException
 	}
 	dos->writeInt(m_serverSettings);
 	dos->writeByte(m_hostIndex);
-	dos->writeInt(m_texturePackId);
+	std::int32_t texturePackId = 0;
+	std::memcpy(&texturePackId, &m_texturePackId, sizeof(texturePackId));
+	dos->writeInt(texturePackId);
 }
 
 void PreLoginPacket::handle(PacketListener *listener) 

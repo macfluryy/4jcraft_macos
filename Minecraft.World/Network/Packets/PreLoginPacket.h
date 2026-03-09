@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "Packet.h"
 
@@ -18,14 +19,14 @@ public:
 	BYTE m_szUniqueSaveName[m_iSaveNameLen]; // added for checking if the level is in the ban list
 	DWORD m_serverSettings; // A bitfield of server settings constructed with the MAKE_SERVER_SETTINGS macro
 	BYTE m_hostIndex; // Rather than sending the xuid of the host again, send an index into the m_playerXuids array
-	DWORD m_texturePackId;
+	std::uint32_t m_texturePackId;
 	SHORT m_netcodeVersion;
 
 	std::wstring loginKey;
 
 	PreLoginPacket();
 	PreLoginPacket(std::wstring userName);
-	PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, DWORD texturePackId);
+	PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, std::uint32_t texturePackId);
 	~PreLoginPacket();
 
 	virtual void read(DataInputStream *dis);

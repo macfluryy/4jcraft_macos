@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+
 #include "Input/ConsoleInputSource.h"
 #include "../Minecraft.World/Util/ArrayWithLength.h"
 #include "../Minecraft.World/Util/SharedConstants.h"
@@ -34,7 +36,7 @@ typedef struct _NetworkGameInitData
 	LoadSaveDataThreadParam *saveData;
 	DWORD settings;
 	LevelGenerationOptions *levelGen;
-	DWORD texturePackId;
+	std::uint32_t texturePackId;
 	bool findSeed;
 	unsigned int xzSize;
 	unsigned char hellScale;
@@ -118,7 +120,7 @@ public:
 	DWORD m_ugcPlayersVersion;
 
 	// This value is used to store the texture pack id for the currently loaded world
-	DWORD m_texturePackId;
+	std::uint32_t m_texturePackId;
 
 public:
 	MinecraftServer();
