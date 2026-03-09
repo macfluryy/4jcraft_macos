@@ -69,7 +69,7 @@ void FileHeader::RemoveFile( FileEntry *file )
 	delete file;
 }
 
-void FileHeader::WriteHeader( LPVOID saveMem )
+void FileHeader::WriteHeader(void *saveMem)
 {
 	unsigned int headerOffset = GetStartOfNextData();
 
@@ -137,7 +137,7 @@ void FileHeader::WriteHeader( LPVOID saveMem )
 	}
 }
 
-void FileHeader::ReadHeader( LPVOID saveMem, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL */  )
+void FileHeader::ReadHeader(void *saveMem, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL */  )
 {
 	unsigned int headerOffset;
 	unsigned int headerSize;

@@ -166,8 +166,8 @@ public:
 protected:
 	FileEntry *AddFile( const std::wstring &name, unsigned int length = 0 );
 	void RemoveFile( FileEntry * );
-	void WriteHeader( LPVOID saveMem );
-	void ReadHeader( LPVOID saveMem, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL );
+	void WriteHeader(void *saveMem);
+	void ReadHeader(void *saveMem, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 
 	unsigned int GetStartOfNextData();
 
