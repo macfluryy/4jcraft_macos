@@ -40,14 +40,14 @@ void ConsoleSaveFileOutputStream::write(unsigned int b)
 
 	uint8_t value = (uint8_t) b;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&value, // data buffer
 		1, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -64,14 +64,14 @@ void ConsoleSaveFileOutputStream::write(byteArray b)
 {
 	unsigned int numberOfBytesWritten;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&b.data, // data buffer
 		b.length, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -93,14 +93,14 @@ void ConsoleSaveFileOutputStream::write(byteArray b, unsigned int offset, unsign
 
 	unsigned int numberOfBytesWritten;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&b[offset], // data buffer
 		length, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -119,7 +119,7 @@ void ConsoleSaveFileOutputStream::close()
 	{
 		bool result = m_saveFile->closeHandle( m_file );
 
-		if( result == 0 )
+		if( !result )
 		{
 			// TODO 4J Stu - Some kind of error handling
 		}

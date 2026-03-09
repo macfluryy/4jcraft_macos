@@ -28,14 +28,14 @@ int ConsoleSaveFileInputStream::read()
 	uint8_t byteRead = static_cast<uint8_t>(0);
 	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&byteRead, // data buffer
 		1, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -58,14 +58,14 @@ int ConsoleSaveFileInputStream::read(byteArray b)
 {
 	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&b.data, // data buffer
 		b.length, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -94,14 +94,14 @@ int ConsoleSaveFileInputStream::read(byteArray b, unsigned int offset, unsigned 
 
 	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&b[offset], // data buffer
 		length, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -123,7 +123,7 @@ void ConsoleSaveFileInputStream::close()
 	{
 		bool result = m_saveFile->closeHandle( m_file );
 
-		if( result == 0 )
+		if( !result )
 		{
 			// TODO 4J Stu - Some kind of error handling
 		}
