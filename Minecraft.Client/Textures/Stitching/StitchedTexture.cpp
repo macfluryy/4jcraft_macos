@@ -60,12 +60,10 @@ void StitchedTexture::freeFrameTextures()
 
 StitchedTexture::~StitchedTexture()
 {
-	// 4jcraft added null check, in PreStitchedTextures::stitch(), than ::loadUVs()
-	// all new SimpleIcons deriving from StitchedIcons are calling the
-	// constructor which does frames = NULL
-	// so the program breaks on delete oldClock in ::loadUVs()
-	// but scince "frames" is never allocated (StitchedTexture::init())
-	// not called, frames was never called (only the constructor)
+	// 4jcraft, added null check
+	// the constructor does not allocate the frames vector.
+	// in some scenarios the destructor/delete is called 
+	// without ever calling ::init() 
 	if(frames) {
 		for(AUTO_VAR(it, frames->begin()); it != frames->end(); ++it)
 		{
