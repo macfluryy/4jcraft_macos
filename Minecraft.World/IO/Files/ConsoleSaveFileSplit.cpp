@@ -380,7 +380,7 @@ FileEntry *ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex)
 	return newRef->fileEntry;
 }
 
-ConsoleSaveFileSplit::ConsoleSaveFileSplit(const std::wstring &fileName, LPVOID pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
+ConsoleSaveFileSplit::ConsoleSaveFileSplit(const std::wstring &fileName, void *pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
 	DWORD fileSize = dFileSize;
 
@@ -438,7 +438,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 	}
 }
 
-void ConsoleSaveFileSplit::_init(const std::wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat)
+void ConsoleSaveFileSplit::_init(const std::wstring &fileName, void *pvSaveData, DWORD fileSize, ESavePlatform plat)
 {
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
 

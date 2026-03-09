@@ -67,7 +67,7 @@ private:
 	static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
 	static const unsigned int MAX_PAGE_COUNT = 1024;
 #endif
-	LPVOID pvSaveMem;
+	void *pvSaveMem;
 
 	CRITICAL_SECTION m_lock;
 
@@ -83,10 +83,10 @@ public:
 	static int SaveRegionFilesCallback(LPVOID lpParam,bool bRes);
 	
 private:
-	void _init(const std::wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat);
+	void _init(const std::wstring &fileName, void *pvSaveData, DWORD fileSize, ESavePlatform plat);
 
 public:
-	ConsoleSaveFileSplit(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileSplit(const std::wstring &fileName, void *pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alreadySmallRegions = true, ProgressListener *progress = NULL);
 	virtual ~ConsoleSaveFileSplit();
 
