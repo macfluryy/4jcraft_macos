@@ -32,6 +32,7 @@
         libvorbis
       ];
       packages = with pkgs; [
+        python3
         gcc15
         lld
         cmake
