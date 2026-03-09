@@ -1,4 +1,4 @@
-#include "Build/stdafx.h"
+#include "Platform/stdafx.h"
 //#include "Minecraft.h"
 
 #include <ctime>
@@ -47,7 +47,7 @@
 #include "Network/ServerCommandDispatcher.h"
 #include "../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
 #include "Network/PlayerChunkMap.h"
-#include "Platform/Telemetry/TelemetryManager.h"
+#include "Platform/Common/Telemetry/TelemetryManager.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

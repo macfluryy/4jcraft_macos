@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "BoatRenderer.h"
 #include "../Models/BoatModel.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"

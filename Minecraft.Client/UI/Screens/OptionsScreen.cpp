@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "OptionsScreen.h"
 #include "../SmallButton.h"
 #include "../SlideButton.h"

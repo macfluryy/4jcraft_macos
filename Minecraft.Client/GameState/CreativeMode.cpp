@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "CreativeMode.h"
 #include "../Player/User.h"
 #include "../Player/LocalPlayer.h"

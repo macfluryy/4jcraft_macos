@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "StatsCounter.h"
 #include "../../Minecraft.World/Stats/Stat.h"
 #include "../../Minecraft.World/Stats/Stats.h"

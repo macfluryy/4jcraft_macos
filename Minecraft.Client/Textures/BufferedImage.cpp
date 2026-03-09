@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"	
+#include "../Platform/stdafx.h"	
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "Textures.h"
 #include "../../Minecraft.World/Util/ArrayWithLength.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TexturePack.h"
 
 std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)

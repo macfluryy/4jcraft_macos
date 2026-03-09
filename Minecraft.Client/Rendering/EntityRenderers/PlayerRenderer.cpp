@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "PlayerRenderer.h"
 #include "SkullTileRenderer.h"
 #include "../Models/HumanoidModel.h"

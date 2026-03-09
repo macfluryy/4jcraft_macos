@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "HumanoidModel.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "../../../Minecraft.World/Entities/Entity.h"

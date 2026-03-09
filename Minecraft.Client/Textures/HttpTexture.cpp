@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "HttpTexture.h"
 
 HttpTexture::HttpTexture(const std::wstring& _url, HttpTextureProcessor *processor)

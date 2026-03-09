@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ParticleEngine.h"
 #include "Particle.h"
 #include "../../Textures/Textures.h"

@@ -25,7 +25,7 @@
 #include "../../UI/Screens/ConnectScreen.h"
 #include "Social/SocialManager.h"
 #include "Leaderboards/XboxLeaderboardManager.h"
-#include "../../../Common/XUI/XUI_Scene_Container.h"
+#include "../Common/XUI/XUI_Scene_Container.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"
 #include "Sentient/SentientManager.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "InBedChatScreen.h"
 #include "../Button.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"

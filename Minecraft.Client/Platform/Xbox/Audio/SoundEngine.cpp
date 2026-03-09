@@ -8,7 +8,7 @@
 #include "SoundEngine.h"
 #include "../../../Textures/Packs/TexturePackRepository.h"
 #include "../../../Textures/Packs/TexturePack.h"
-#include "../../../../Common/DLC/DLCAudioFile.h"
+#include "../../Common/DLC/DLCAudioFile.h"
 #include "../../../Textures/Packs/DLCTexturePack.h"
 
 

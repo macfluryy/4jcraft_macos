@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Chunk.h"
 #include "EntityRenderers/TileRenderer.h"
 #include "EntityRenderers/TileEntityRenderDispatcher.h"

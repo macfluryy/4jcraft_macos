@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "FootstepParticle.h"
 #include "../../Textures/Textures.h"
 #include "../Tesselator.h"

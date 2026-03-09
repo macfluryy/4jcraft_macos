@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "GameRenderer.h"
 #include "EntityRenderers/ItemInHandRenderer.h"
 #include "LevelRenderer.h"

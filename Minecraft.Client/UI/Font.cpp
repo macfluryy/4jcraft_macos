@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Textures/Textures.h"
 #include "Font.h"
 #include "../GameState/Options.h"

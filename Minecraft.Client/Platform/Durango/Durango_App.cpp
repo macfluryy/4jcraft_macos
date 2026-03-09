@@ -1,5 +1,5 @@
 ﻿#include "../../../Minecraft.World/Platform/stdafx.h"
-#include "../../../Common/Consoles_App.h"
+#include "../Common/Consoles_App.h"
 #include "../../Player/User.h"
 #include "../../Minecraft.h"
 #include "../../MinecraftServer.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Tesselator.h"
 #include "../../Textures/Textures.h"
 #include "ProgressRenderer.h"

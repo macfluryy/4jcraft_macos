@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "WolfModel.h"
 #include "../../../Minecraft.World/Entities/Mobs/Wolf.h"
 #include "../../../Minecraft.World/Util/Mth.h"

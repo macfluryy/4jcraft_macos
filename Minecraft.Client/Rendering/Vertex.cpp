@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Vertex.h"
 
 Vertex::Vertex(float x, float y, float z, float u, float v)

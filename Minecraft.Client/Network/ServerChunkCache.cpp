@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ServerChunkCache.h"
 #include "../Level/ServerLevel.h"
 #include "../MinecraftServer.h"

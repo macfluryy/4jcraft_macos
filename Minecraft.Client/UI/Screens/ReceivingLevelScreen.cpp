@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ReceivingLevelScreen.h"
 #include "../../Network/ClientConnection.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"

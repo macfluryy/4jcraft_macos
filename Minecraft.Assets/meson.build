@@ -24,7 +24,7 @@ localisation = custom_target('Minecraft.Assets_Localisation',
 
 colour_table = custom_target('Minecraft.Assets_Colour_Table',
   output : 'HTMLColours.col',
-  input : meson.current_source_dir() / 'Common/HTMLColours.xml',
+  input : meson.current_source_dir() / 'Common/Media/HTMLColours.xml',
   command : [
     'python3', meson.project_source_root() / 'scripts/build_col.py',
     '@INPUT@',
@@ -35,7 +35,7 @@ colour_table = custom_target('Minecraft.Assets_Colour_Table',
 archive_sources = [ 
   localisation[0], # client_platform_path / 'Windows64Media/Media/languages.loc',
   colour_table,
-  'Common/splashes.txt',
+  'Common/Media/splashes.txt',
   'Common/Media/Graphics/SaveChest.png',
   'Common/Media/Graphics/MinecraftIcon.png',
   'Common/Media/Graphics/TexturePackIcon.png',

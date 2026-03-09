@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "FolderTexturePack.h"
 
 FolderTexturePack::FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)

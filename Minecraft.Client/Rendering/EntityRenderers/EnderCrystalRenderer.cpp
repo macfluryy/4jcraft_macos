@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Models/EnderCrystalModel.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"
 #include "EnderCrystalRenderer.h"

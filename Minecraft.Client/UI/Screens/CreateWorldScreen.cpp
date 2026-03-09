@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CreateWorldScreen.h"
 #include "../EditBox.h"
 #include "../Button.h"

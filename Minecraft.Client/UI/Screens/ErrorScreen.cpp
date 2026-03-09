@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ErrorScreen.h"
 
 ErrorScreen::ErrorScreen(const std::wstring& title, const std::wstring& message)

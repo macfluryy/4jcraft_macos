@@ -1,4 +1,4 @@
-#include "Build/stdafx.h"
+#include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
 #include "Utils/Timer.h"
@@ -65,8 +65,8 @@
 #ifdef _XBOX
 #include "Platform/Xbox/Network/NetworkPlayerXbox.h"
 #endif
-#include "Platform/UI/IUIScene_CreativeMenu.h"
-#include "Platform/UI/UIFontData.h"
+#include "Platform/Common/UI/IUIScene_CreativeMenu.h"
+#include "Platform/Common/UI/UIFontData.h"
 #include "Textures/Packs/DLCTexturePack.h"
 
 #ifdef __ORBIS__

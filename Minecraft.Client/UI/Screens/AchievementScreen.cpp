@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "AchievementScreen.h"
 #include "../SmallButton.h"
 #include "../../GameState/Options.h"

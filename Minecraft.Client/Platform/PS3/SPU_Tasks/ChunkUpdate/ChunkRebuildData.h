@@ -1,7 +1,7 @@
 
 #pragma once
 #ifndef SN_TARGET_PS3_SPU
-#include "../../../../Build/stdafx.h"
+#include "../../../../Platform/stdafx.h"
 #include "../../../../../Minecraft.World/Level/Storage/Region.h"
 #include "../../../../Rendering/Tesselator.h"
 #include "../../../../../Minecraft.World/Util/LightLayer.h"

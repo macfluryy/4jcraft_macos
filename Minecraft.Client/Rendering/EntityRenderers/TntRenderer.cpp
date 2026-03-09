@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TntRenderer.h"
 #include "TileRenderer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"

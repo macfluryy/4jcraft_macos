@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "GiantMobRenderer.h"	
 
 GiantMobRenderer::GiantMobRenderer(Model *model, float shadow, float _scale) : MobRenderer(model, shadow *_scale)

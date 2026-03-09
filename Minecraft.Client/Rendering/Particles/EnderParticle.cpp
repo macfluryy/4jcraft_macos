@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "EnderParticle.h"
 #include "../../../Minecraft.World/Util/JavaMath.h"
 #include "../../../Minecraft.World/Util/Random.h"

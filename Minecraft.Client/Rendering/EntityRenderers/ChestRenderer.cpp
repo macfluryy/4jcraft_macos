@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ChestRenderer.h"
 #include "../Models/ChestModel.h"
 #include "../Models/LargeChestModel.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "EntityRenderer.h"
 #include "../Models/HumanoidModel.h"
 #include "EntityRenderDispatcher.h"

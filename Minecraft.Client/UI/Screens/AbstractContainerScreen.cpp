@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "AbstractContainerScreen.h"
 #include "../../Rendering/EntityRenderers/ItemRenderer.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"

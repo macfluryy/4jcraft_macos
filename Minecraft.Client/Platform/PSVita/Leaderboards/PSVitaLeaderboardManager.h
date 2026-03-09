@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../Common/Leaderboards/LeaderboardManager.h"
+#include "../../Common/Leaderboards/LeaderboardManager.h"
 #include "../PSVitaExtras/Conf.h"
 
 class PSVitaLeaderboardManager : public LeaderboardManager

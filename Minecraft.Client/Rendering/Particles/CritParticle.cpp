@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CritParticle.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.h"
 #include "../../../Minecraft.World/Util/Random.h"

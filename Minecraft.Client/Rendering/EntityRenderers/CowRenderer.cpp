@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CowRenderer.h"
 
 CowRenderer::CowRenderer(Model *model, float shadow) : MobRenderer(model, shadow)

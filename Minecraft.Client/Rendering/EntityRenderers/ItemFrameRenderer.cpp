@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ItemRenderer.h"
 #include "TileRenderer.h"
 #include "EntityRenderDispatcher.h"

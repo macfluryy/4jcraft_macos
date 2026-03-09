@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "DisconnectedScreen.h"
 #include "TitleScreen.h"
 #include "../Button.h"

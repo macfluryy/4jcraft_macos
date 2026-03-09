@@ -3,7 +3,7 @@
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 #include "PlatformNetworkManagerXbox.h"
 #include "NetworkPlayerXbox.h"
-#include "../../../../Common/Network/GameNetworkManager.h"
+#include "../../Common/Network/GameNetworkManager.h"
 
 CPlatformNetworkManagerXbox *g_pPlatformNetworkManager;
 

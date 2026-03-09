@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Models/DragonModel.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"
 #include "../Tesselator.h"

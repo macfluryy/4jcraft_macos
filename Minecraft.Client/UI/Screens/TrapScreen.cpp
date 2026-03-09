@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TrapScreen.h"
 #include "../../Player/LocalPlayer.h"
 #include "../../Textures/Textures.h"
