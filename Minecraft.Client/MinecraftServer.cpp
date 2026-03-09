@@ -41,13 +41,13 @@
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
 #include "../Minecraft.World/IO/Streams/Compression.h"
 #ifdef _XBOX
-#include "../Common/XUI/XUI_DebugSetCamera.h"
+#include "Platform/Common/XUI/XUI_DebugSetCamera.h"
 #endif
 #include "Platform/PS3/PS3Extras/ShutdownManager.h"
 #include "Network/ServerCommandDispatcher.h"
 #include "../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
 #include "Network/PlayerChunkMap.h"
-#include "../Common/Telemetry/TelemetryManager.h"
+#include "Platform/Telemetry/TelemetryManager.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

@@ -5,7 +5,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../../Minecraft.Client/Minecraft.h"
-#include "../../../Common/Colours/ColourTable.h"
+#include "../../../Minecraft.Client/Platform/Common/Colours/ColourTable.h"
 
 void TheEndDimension::init()
 {

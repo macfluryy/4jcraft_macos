@@ -39,7 +39,7 @@
 #include "../../Minecraft.Client/Textures/Textures.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
-#include "../../Common/DLC/DLCPack.h"
+#include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 
 

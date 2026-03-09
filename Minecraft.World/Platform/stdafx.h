@@ -187,25 +187,25 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/Orbis/4JLibs/inc/4J_Input.h"
 #endif
 
-#include "../../Common/Network/GameNetworkManager.h"
+#include "../../Minecraft.Client/Platform/Common/Network/GameNetworkManager.h"
 
 // #ifdef _XBOX
-#include "../../Common/UI/UIEnums.h"
-#include "../../Common/App_Defines.h"
-#include "../../Common/App_enums.h"
-#include "../../Common/Tutorial/TutorialEnum.h"
-#include "../../Common/App_structs.h"
+#include "../../Minecraft.Client/Platform/Common/UI/UIEnums.h"
+#include "../../Minecraft.Client/Platform/Common/App_Defines.h"
+#include "../../Minecraft.Client/Platform/Common/App_enums.h"
+#include "../../Minecraft.Client/Platform/Common/Tutorial/TutorialEnum.h"
+#include "../../Minecraft.Client/Platform/Common/App_structs.h"
 //#endif
 
 #ifdef _XBOX
-#include "../../Common/XUI/XUI_Helper.h"
-#include "../../Common/XUI/XUI_Scene_Base.h"
+#include "../../Minecraft.Client/Platform/Common/XUI/XUI_Helper.h"
+#include "../../Minecraft.Client/Platform/Common/XUI/XUI_Scene_Base.h"
 #endif
-#include "../../Common/Consoles_App.h"
-#include "../../Common/Minecraft_Macros.h"
-#include "../../Common/Colours/ColourTable.h"
+#include "../../Minecraft.Client/Platform/Common/Consoles_App.h"
+#include "../../Minecraft.Client/Platform/Common/Minecraft_Macros.h"
+#include "../../Minecraft.Client/Platform/Common/Colours/ColourTable.h"
 
-#include "../../Common/BuildVer.h"
+#include "../../Minecraft.Client/Platform/Common/BuildVer.h"
 
 // This is generated at build time via scripts/pack_loc.py
 #include "strings.h"
@@ -254,10 +254,10 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/Orbis/Sentient/MinecraftTelemetry.h"
 #endif
 
-#include "../../Common/DLC/DLCSkinFile.h"
-#include "../../Common/Console_Awards_enum.h"
-#include "../../Common/Potion_Macros.h"
-#include "../../Common/Console_Debug_enum.h"
-#include "../../Common/GameRules/ConsoleGameRulesConstants.h"
-#include "../../Common/GameRules/ConsoleGameRules.h"
-#include "../../Common/Telemetry/TelemetryManager.h"
+#include "../../Minecraft.Client/Platform/Common/DLC/DLCSkinFile.h"
+#include "../../Minecraft.Client/Platform/Common/Console_Awards_enum.h"
+#include "../../Minecraft.Client/Platform/Common/Potion_Macros.h"
+#include "../../Minecraft.Client/Platform/Common/Console_Debug_enum.h"
+#include "../../Minecraft.Client/Platform/Common/GameRules/ConsoleGameRulesConstants.h"
+#include "../../Minecraft.Client/Platform/Common/GameRules/ConsoleGameRules.h"
+#include "../../Minecraft.Client/Platform/Common/Telemetry/TelemetryManager.h"

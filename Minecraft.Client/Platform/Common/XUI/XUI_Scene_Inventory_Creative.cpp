@@ -20,7 +20,7 @@
 #include "XUI_Ctrl_SlotList.h"
 #include "XUI_Ctrl_SlotItemListItem.h"
 
-#include "../../Common/Potion_macros.h"
+#include "../Platform/Common/Potion_macros.h"
 
 //--------------------------------------------------------------------------------------
 // Name: CXuiSceneInventoryCreative::OnInit

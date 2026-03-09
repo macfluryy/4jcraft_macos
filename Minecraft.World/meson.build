@@ -29,7 +29,7 @@ lib_world = static_library('Minecraft.World',
   include_directories : include_directories('Platform', 'Platform/x64headers'),
   dependencies : [ assets_localisation_dep ],
   cpp_args : global_cpp_args + global_cpp_defs + [
-    '-include', meson.current_source_dir() / 'Platform/stdafx.h',
+    '-include', 'Platform/stdafx.h',
   ],
 )
 
