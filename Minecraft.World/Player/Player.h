@@ -65,7 +65,7 @@ protected:
 	int jumpTriggerTime;
 
 public:
-	BYTE userType;
+	std::uint8_t userType;
 	int score;
 	float oBob, bob;
 	bool swinging;
