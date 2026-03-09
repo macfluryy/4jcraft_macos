@@ -3,7 +3,7 @@
 #
 
 install_subdir('Common/res', install_dir : get_option('prefix') / 'Common/res')
-install_subdir('Common/Trial', install_dir : get_option('prefix') / 'Trial')
+install_subdir('Common/Trial', install_dir : get_option('prefix') / 'Common/Trial')
 install_subdir('Common/music', install_dir : get_option('prefix'))
 install_subdir('DurangoMedia/Sound', install_dir : get_option('prefix'))
 # XXX: The DLC path is handled inside of 4JLibs but Windows64 expects a Windows64Media/DLC folder to exist to load DLC from
