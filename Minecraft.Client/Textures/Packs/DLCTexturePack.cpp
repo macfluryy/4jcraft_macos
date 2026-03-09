@@ -12,6 +12,7 @@
 #include "../../Utils/StringTable.h"
 #include "../../Platform/Common/DLC/DLCAudioFile.h"
 
+#include <cstdint>
 #include <limits>
 
 #if defined _XBOX || defined _WINDOWS64
@@ -21,7 +22,7 @@
 
 namespace
 {
-	bool ReadPortableBinaryFile(File &file, PBYTE &data, DWORD &size)
+	bool ReadPortableBinaryFile(File &file, uint8_t *&data, DWORD &size)
 	{
 		const __int64 fileLength = file.length();
 		if (fileLength < 0 || fileLength > static_cast<__int64>(std::numeric_limits<DWORD>::max()))
@@ -32,7 +33,7 @@ namespace
 		}
 
 		const std::size_t capacity = static_cast<std::size_t>(fileLength);
-		PBYTE buffer = new BYTE[capacity == 0 ? 1 : capacity];
+		uint8_t *buffer = new uint8_t[capacity == 0 ? 1 : capacity];
 		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFile(file.getPath(), buffer, capacity);
 		if (readResult.status != PortableFileIO::BinaryReadStatus::ok
 			|| readResult.fileSize > std::numeric_limits<DWORD>::max())
@@ -218,7 +219,7 @@ void DLCTexturePack::loadColourTable()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
@@ -338,7 +339,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 
 				if(xzpPath.exists())
 				{
-					PBYTE pbData = NULL;
+					uint8_t *pbData = NULL;
 					DWORD bytesRead = 0;
 					if( ReadPortableBinaryFile(xzpPath, pbData, bytesRead) )
 					{
@@ -369,7 +370,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							File grf( getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dlcFile->getGrfPath() ) );
 							if (grf.exists())
 							{
-								PBYTE pbData = NULL;
+								uint8_t *pbData = NULL;
 								DWORD dwFileSize = 0;
 								if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
 								{
@@ -392,7 +393,7 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						File grf(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), levelGen->getBaseSavePath() ));
 						if (grf.exists())
 						{
-							PBYTE pbData = NULL;
+							uint8_t *pbData = NULL;
 							DWORD dwFileSize = 0;
 							if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
 							{
@@ -476,7 +477,7 @@ void DLCTexturePack::loadUI()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
@@ -550,7 +551,7 @@ std::wstring DLCTexturePack::getXuiRootPath()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
