@@ -2,10 +2,12 @@
 # Asset copy
 #
 
-
-client_platform_path = meson.project_source_root() / 'Minecraft.Client/Platform'
-
-install_subdir('Common', install_dir : get_option('prefix'))
+install_subdir('Common/res', install_dir : get_option('prefix') / 'Common/res')
+install_subdir('Common/Trial', install_dir : get_option('prefix') / 'Trial')
+install_subdir('Common/music', install_dir : get_option('prefix'))
+install_subdir('DurangoMedia/Sound', install_dir : get_option('prefix'))
+# XXX: The DLC path is handled inside of 4JLibs but Windows64 expects a Windows64Media/DLC folder to exist to load DLC from
+# install_subdir('DurangoMedia/DLC', install_dir : get_option('prefix') / 'DurangoMedia') 
 
 #
 # Asset build
@@ -33,7 +35,7 @@ colour_table = custom_target('Minecraft.Assets_Colour_Table',
 )
 
 archive_sources = [ 
-  localisation[0], # client_platform_path / 'Windows64Media/Media/languages.loc',
+  localisation[0], # 'Windows64Media/Media/languages.loc',
   colour_table,
   'Common/Media/splashes.txt',
   'Common/Media/Graphics/SaveChest.png',
@@ -424,6 +426,6 @@ media_archive = custom_target('Minecraft.Media_Archive',
 
 assets_localisation_dep = declare_dependency(
   sources : localisation[1],
-  # sources : client_platform_path / 'Windows64Media/strings.h', 
+  # sources : 'Windows64Media/strings.h', 
   include_directories : include_directories('.')
 )
