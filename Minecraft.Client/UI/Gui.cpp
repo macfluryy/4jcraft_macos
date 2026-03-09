@@ -28,11 +28,12 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../../Minecraft.World/WorldGen/Biomes/Biome.h"
 
-#define RENDER_HUD 0
-//#ifndef _XBOX
-//#undef RENDER_HUD
-//#define RENDER_HUD 1
-//#endif
+#define RENDER_HUD 1
+
+// #ifndef _XBOX
+// #undef RENDER_HUD
+// #define RENDER_HUD 1
+// #endif
 
 float Gui::currentGuiBlendFactor = 1.0f;	// 4J added
 float Gui::currentGuiScaleFactor = 1.0f;	// 4J added
