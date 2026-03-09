@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "../../Platform/Common/App_enums.h"
 
@@ -46,8 +47,8 @@ public:
 	virtual void loadUI() = 0;
 	virtual void unloadUI() = 0;
 	virtual std::wstring getXuiRootPath() = 0;
-	virtual PBYTE getPackIcon(DWORD &dwImageBytes) = 0;
-	virtual PBYTE getPackComparison(DWORD &dwImageBytes) = 0;
+	virtual uint8_t *getPackIcon(DWORD &dwImageBytes) = 0;
+	virtual uint8_t *getPackComparison(DWORD &dwImageBytes) = 0;
 	virtual unsigned int getDLCParentPackId() = 0;
 	virtual unsigned char getDLCSubPackId() = 0;
 	virtual ColourTable *getColourTable() = 0;

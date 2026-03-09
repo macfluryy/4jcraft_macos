@@ -373,14 +373,14 @@ std::wstring AbstractTexturePack::getXuiRootPath()
 	return szResourceLocator;
 }
 
-PBYTE AbstractTexturePack::getPackIcon(DWORD &dwImageBytes)
+uint8_t *AbstractTexturePack::getPackIcon(DWORD &dwImageBytes)
 {
 	if(m_iconSize == 0 || m_iconData == NULL) loadIcon();
 	dwImageBytes = m_iconSize;
 	return m_iconData;
 }
 
-PBYTE AbstractTexturePack::getPackComparison(DWORD &dwImageBytes)
+uint8_t *AbstractTexturePack::getPackComparison(DWORD &dwImageBytes)
 {
 	if(m_comparisonSize == 0 || m_comparisonData == NULL) loadComparison();
 
