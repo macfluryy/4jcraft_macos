@@ -101,10 +101,9 @@ __int64 System::currentTimeMillis()
 #elif defined(__linux__)
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	long long unix_time = tv.tv_sec;
-	long long file_time = (unix_time + 11644473600LL) * 10000000LL + tv.tv_usec * 10;
-
-	return file_time;
+	// Convert to milliseconds since unix epoch instead of windows file time 
+	// time is expecting calculation to be between 10-30 ms.
+	return (int64_t)tv.tv_sec * 1000LL + tv.tv_sec / 1000;
 #else
 
 	SYSTEMTIME UTCSysTime;
