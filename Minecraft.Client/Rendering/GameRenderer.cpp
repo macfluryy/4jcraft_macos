@@ -1068,11 +1068,11 @@ void GameRenderer::render(float a, bool bFirst)
 	int xMouse = Mouse::getX() * screenWidth / fbw;
 	int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
 
-	int maxFps = getFpsCap(mc->options->framerateLimit);
+	int maxFps = 0;//getFpsCap(mc->options->framerateLimit);
 
 	if (mc->level != NULL)
 	{
-		if (mc->options->framerateLimit == 0)
+		if (maxFps == 0)
 		{
 			renderLevel(a, 0);
 		}
