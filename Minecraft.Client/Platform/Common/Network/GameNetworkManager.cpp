@@ -213,16 +213,6 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParame
 
 	static __int64 sseed = seed;	// Create static version so this will be valid until next call to this function & whilst thread is running
 
-	// 4J Fix: Ensure host-local socket streams (s_hostInStream / s_hostOutStream) are always
-	// created before any Socket or Connection objects are allocated.  Socket::Initialise normally
-	// runs on the server thread, but on certain builds the main thread can reach ClientConnection
-	// creation before that thread has a chance to execute, leaving the stream arrays NULL.
-	// Calling Initialise(NULL) here (with the server connection unknown yet) will create the
-	// stream objects on the very first call; all subsequent calls only reset the queue state.
-	// The server thread's later Initialise(connection) call will then correctly update
-	// s_serverConnection without touching the already-allocated stream objects.
-	Socket::Initialise(NULL);
-
 	ServerStoppedCreate(false);
 	if( g_NetworkManager.IsHost() )
 	{
