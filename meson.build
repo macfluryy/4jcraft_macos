@@ -12,6 +12,9 @@ pymod = import('python')
 python = pymod.find_installation('python3', required: true)
 
 cc = meson.get_compiler('cpp')
+buildtype = get_option('buildtype')
+#langs cant sadly be set before calling project
+langs = ['cpp', 'c']
 
 # system deps
 gl_dep     = dependency('gl')
@@ -20,6 +23,19 @@ glfw_dep   = dependency('glfw3')
 png_dep    = dependency('libpng')
 thread_dep = dependency('threads')
 dl_dep     = cc.find_library('dl')
+
+if buildtype.startswith('debug')
+    strAsan = '-fsanitize=address'
+    strLsan = '-fsanitize=leak'
+    if cc.has_argument(strAsan)
+        add_project_arguments(strAsan, language: langs)
+        add_project_link_arguments(strAsan, language: langs)
+    endif
+    if cc.has_argument(strLsan)
+        add_project_arguments(strLsan, language: langs)
+        add_project_link_arguments(strLsan, language: langs)
+    endif
+endif
 
 # compile flags (chagne ts juicey)
 global_cpp_args = [
