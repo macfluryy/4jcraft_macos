@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "../Entities/Mob.h"
 #include "../Util/Definitions.h"
@@ -396,14 +397,14 @@ public:
 	virtual int getTexture();		// 4J changed from std::wstring to int
 	void setPlayerDefaultSkin(EDefaultSkins skin);
 	EDefaultSkins getPlayerDefaultSkin()												{ return m_skinIndex; }
-	virtual void setCustomSkin(DWORD skinId);
-	DWORD getCustomSkin()																	{return m_dwSkinId; }
-	virtual void setCustomCape(DWORD capeId);
-	DWORD getCustomCape()																	{return m_dwCapeId; }
+	virtual void setCustomSkin(std::uint32_t skinId);
+	std::uint32_t getCustomSkin()															{return m_dwSkinId; }
+	virtual void setCustomCape(std::uint32_t capeId);
+	std::uint32_t getCustomCape()															{return m_dwCapeId; }
 
-	static DWORD getCapeIdFromPath(const std::wstring &cape);
-	static std::wstring getCapePathFromId(DWORD capeId);
-	static unsigned int getSkinAnimOverrideBitmask(DWORD skinId);
+	static std::uint32_t getCapeIdFromPath(const std::wstring &cape);
+	static std::wstring getCapePathFromId(std::uint32_t capeId);
+	static unsigned int getSkinAnimOverrideBitmask(std::uint32_t skinId);
 
 	// 4J Added
 	void setXuid(PlayerUID xuid);
@@ -436,7 +437,7 @@ protected:
 
 private:
 	EDefaultSkins m_skinIndex;
-	DWORD m_dwSkinId,m_dwCapeId;
+	std::uint32_t m_dwSkinId,m_dwCapeId;
 
 	// 4J Added - Used to show which colour the player is on the map/behind their name
 	DWORD m_playerIndex;

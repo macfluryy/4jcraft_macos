@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "../../Minecraft.World/Util/SmoothFloat.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../../Minecraft.World/Util/Pos.h"
@@ -161,8 +162,8 @@ public:
 	// 4J Stu - Added to allow callback to tutorial to stay within Minecraft.Client
 	virtual void onCrafted(std::shared_ptr<ItemInstance> item);
 
-	virtual void setAndBroadcastCustomSkin(DWORD skinId);
-	virtual void setAndBroadcastCustomCape(DWORD capeId);
+	virtual void setAndBroadcastCustomSkin(std::uint32_t skinId);
+	virtual void setAndBroadcastCustomCape(std::uint32_t capeId);
 
 private:
 	bool isSolidBlock(int x, int y, int z);
