@@ -17,8 +17,8 @@ public:
 	std::wstring getPath()				{ return m_path; }
 	DWORD getSkinID()				{ return m_dwSkinId; }
 
-	virtual void addData(uint8_t *pbData, DWORD dwBytes) {}
-	virtual uint8_t *getData(DWORD &dwBytes) { dwBytes = 0; return NULL; }
+	virtual void addData(uint8_t *pbData, std::uint32_t dataBytes) {}
+	virtual uint8_t *getData(std::uint32_t &dataBytes) { dataBytes = 0; return NULL; }
 	virtual void addParameter(DLCManager::EDLCParameterType type, const std::wstring &value) {}
 
 	virtual std::wstring getParameterAsString(DLCManager::EDLCParameterType type) { return L""; }

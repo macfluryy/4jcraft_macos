@@ -19,8 +19,8 @@ DLCColourTableFile::~DLCColourTableFile()
 	}
 }
 
-void DLCColourTableFile::addData(uint8_t *pbData, DWORD dwBytes)
+void DLCColourTableFile::addData(uint8_t *pbData, std::uint32_t dataBytes)
 {
 	ColourTable *defaultColourTable = Minecraft::GetInstance()->skins->getDefault()->getColourTable();
-	m_colourTable = new ColourTable(defaultColourTable, pbData, dwBytes);
+	m_colourTable = new ColourTable(defaultColourTable, pbData, dataBytes);
 }

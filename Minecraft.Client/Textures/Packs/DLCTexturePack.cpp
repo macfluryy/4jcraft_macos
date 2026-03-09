@@ -86,9 +86,9 @@ void DLCTexturePack::loadIcon()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"icon.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"icon.png");
-		DWORD iconSize = 0;
+		std::uint32_t iconSize = 0;
 		m_iconData = textureFile->getData(iconSize);
-		m_iconSize = static_cast<std::uint32_t>(iconSize);
+		m_iconSize = iconSize;
 	}
 	else
 	{
@@ -101,9 +101,9 @@ void DLCTexturePack::loadComparison()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"comparison.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"comparison.png");
-		DWORD comparisonSize = 0;
+		std::uint32_t comparisonSize = 0;
 		m_comparisonData = textureFile->getData(comparisonSize);
-		m_comparisonSize = static_cast<std::uint32_t>(comparisonSize);
+		m_comparisonSize = comparisonSize;
 	}
 }
 
@@ -222,7 +222,7 @@ void DLCTexturePack::loadColourTable()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
+		std::uint32_t dwSize = 0;
 		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
@@ -480,7 +480,7 @@ void DLCTexturePack::loadUI()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
+		std::uint32_t dwSize = 0;
 		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
@@ -554,7 +554,7 @@ std::wstring DLCTexturePack::getXuiRootPath()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
+		std::uint32_t dwSize = 0;
 		uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 

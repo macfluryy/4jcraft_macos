@@ -9,20 +9,20 @@
 DLCAudioFile::DLCAudioFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Audio,path)
 {	
 	m_pbData = NULL;
-	m_dwBytes = 0;
+	m_dataBytes = 0;
 }
 
-void DLCAudioFile::addData(uint8_t *pbData, DWORD dwBytes)
+void DLCAudioFile::addData(uint8_t *pbData, std::uint32_t dataBytes)
 {
 	m_pbData = pbData;
-	m_dwBytes = dwBytes;
+	m_dataBytes = dataBytes;
 
-	processDLCDataFile(pbData,dwBytes);
+	processDLCDataFile(pbData,dataBytes);
 }
 
-uint8_t *DLCAudioFile::getData(DWORD &dwBytes)
+uint8_t *DLCAudioFile::getData(std::uint32_t &dataBytes)
 {
-	dwBytes = m_dwBytes;
+	dataBytes = m_dataBytes;
 	return m_pbData;
 }
 
@@ -120,7 +120,7 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 	}
 }
 
-bool DLCAudioFile::processDLCDataFile(uint8_t *pbData, DWORD dwLength)
+bool DLCAudioFile::processDLCDataFile(uint8_t *pbData, std::uint32_t dataLength)
 {
 	std::unordered_map<int, EAudioParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
