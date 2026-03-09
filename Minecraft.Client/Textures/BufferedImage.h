@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 
 class Graphics;
@@ -17,7 +18,7 @@ public:
 	BufferedImage(int width,int height,int type);
 	BufferedImage(const std::wstring& File, bool filenameHasExtension = false, bool bTitleUpdateTexture=false, const std::wstring &drive =L"");	// 4J added
 	BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool filenameHasExtension = false ); // 4J Added
-	BufferedImage(BYTE *pbData, DWORD dwBytes);	// 4J added
+	BufferedImage(std::uint8_t *pbData, std::uint32_t dataBytes);	// 4J added
 	~BufferedImage();
 
 	int getWidth();	
