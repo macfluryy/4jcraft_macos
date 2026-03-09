@@ -1,7 +1,11 @@
 #pragma once
 // 4J Stu - Represents Java standard library class
 
+#include <cstdio>
+
 #include "../Streams/InputStream.h"
+
+class File;
 
 class FileInputStream : public InputStream
 {
@@ -15,6 +19,6 @@ public:
 	virtual __int64 skip(__int64 n);
 
 private:
-	HANDLE m_fileHandle;
+	std::FILE *m_fileHandle;
 
 };

@@ -2,10 +2,30 @@
 
 #include "File.h"
 #include "FileInputStream.h"
-#include <fcntl.h>
-#include <unistd.h> // for close()
+#include <algorithm>
 
 extern CConsoleMinecraftApp app;
+
+namespace
+{
+	__int64 FileTell(std::FILE *file)
+	{
+#if defined(_WIN32)
+		return _ftelli64(file);
+#else
+		return static_cast<__int64>(ftello(file));
+#endif
+	}
+
+	bool FileSeek(std::FILE *file, __int64 offset, int origin)
+	{
+#if defined(_WIN32)
+		return _fseeki64(file, offset, origin) == 0;
+#else
+		return fseeko(file, static_cast<off_t>(offset), origin) == 0;
+#endif
+	}
+}
 
 //Creates a FileInputStream by opening a connection to an actual file, the file named by the File object file in the file system.
 //A new FileDescriptor object is created to represent this file connection.
@@ -20,34 +40,16 @@ extern CConsoleMinecraftApp app;
 //FileNotFoundException - if the file does not exist, is a directory rather than a regular file, or for some other reason cannot be
 //opened for reading.
 //SecurityException - if a security manager exists and its checkRead method denies read access to the file.
-FileInputStream::FileInputStream(const File &file)
+FileInputStream::FileInputStream(const File &file) : m_fileHandle(NULL)
 {
-	const char *pchFilename=wstringtofilename(file.getPath());
-#ifdef _UNICODE
-	m_fileHandle = CreateFile(
-		file.getPath().c_str(), // file name
-		GENERIC_READ, // access mode
-		0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-		NULL, // Unused
-		OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-		FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-		NULL // Unsupported
-		);
-#elif defined(__linux__)
-	m_fileHandle = (HANDLE)(intptr_t)open(pchFilename, O_RDONLY);
+#if defined(_WIN32)
+	m_fileHandle = _wfopen(file.getPath().c_str(), L"rb");
 #else
-	m_fileHandle = CreateFile(
-		pchFilename, // file name
-		GENERIC_READ, // access mode
-		0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-		NULL, // Unused
-		OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-		FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-		NULL // Unsupported
-		);
+	const std::string nativePath = wstringtofilename(file.getPath());
+	m_fileHandle = std::fopen(nativePath.c_str(), "rb");
 #endif
 
-	if( m_fileHandle == INVALID_HANDLE_VALUE )
+	if( m_fileHandle == NULL )
 	{
 		// TODO 4J Stu - Any form of error/exception handling
 		//__debugbreak();
@@ -57,45 +59,26 @@ FileInputStream::FileInputStream(const File &file)
 
 FileInputStream::~FileInputStream()
 {
-	if( m_fileHandle != INVALID_HANDLE_VALUE )
-#ifndef __linux__
-		CloseHandle( m_fileHandle );
-#else
-		::close( (int)(intptr_t)m_fileHandle );
-#endif
-}
-
-#if defined(__linux__)
-ssize_t ReadFile(int fd, void* buffer, size_t byteRead, DWORD* numberOfBytesRead, int JustAddANULL) {
-	ssize_t result = read(fd, buffer, byteRead);
-
-	if (result == -1) {
-		perror("read failed");
-		return -1;
-	} else {
-		*numberOfBytesRead = result;
-		return 0;
+	if( m_fileHandle != NULL )
+	{
+		std::fclose( m_fileHandle );
 	}
 }
-#endif // __linux__
 
 //Reads a byte of data from this input stream. This method blocks if no input is yet available.
 //Returns:
 //the next byte of data, or -1 if the end of the file is reached.
 int FileInputStream::read()
 {
+	if( m_fileHandle == NULL )
+	{
+		return -1;
+	}
+
 	uint8_t byteRead = static_cast<uint8_t>(0);
-	DWORD numberOfBytesRead;
+	const size_t numberOfBytesRead = std::fread(&byteRead, 1, 1, m_fileHandle);
 
-	BOOL bSuccess = ReadFile(
-		m_fileHandle, // handle to file
-		&byteRead, // data buffer
-		1, // number of bytes to read
-		&numberOfBytesRead, // number of bytes read
-		NULL // overlapped buffer
-	);
-
-	if( bSuccess==FALSE )
+	if( std::ferror(m_fileHandle) != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		app.FatalLoadError();
@@ -117,17 +100,14 @@ int FileInputStream::read()
 //the total number of bytes read into the buffer, or -1 if there is no more data because the end of the file has been reached.
 int FileInputStream::read(byteArray b)
 {
-	DWORD numberOfBytesRead;
+	if( m_fileHandle == NULL )
+	{
+		return -1;
+	}
 
-	BOOL bSuccess = ReadFile(
-		m_fileHandle, // handle to file
-		b.data, // data buffer
-		b.length, // number of bytes to read
-		&numberOfBytesRead, // number of bytes read
-		NULL // overlapped buffer
-		);
+	const size_t numberOfBytesRead = std::fread(b.data, 1, b.length, m_fileHandle);
 
-	if( bSuccess==FALSE )
+	if( std::ferror(m_fileHandle) != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		app.FatalLoadError();
@@ -155,17 +135,14 @@ int FileInputStream::read(byteArray b, unsigned int offset, unsigned int length)
 	// 4J Stu - We don't want to read any more than the array buffer can hold
 	assert( length <= ( b.length - offset ) );
 
-	DWORD numberOfBytesRead;
+	if( m_fileHandle == NULL )
+	{
+		return -1;
+	}
 
-	BOOL bSuccess = ReadFile(
-		m_fileHandle, // handle to file
-		&b[offset], // data buffer
-		length, // number of bytes to read
-		&numberOfBytesRead, // number of bytes read
-		NULL // overlapped buffer
-		);
+	const size_t numberOfBytesRead = std::fread(&b[offset], 1, length, m_fileHandle);
 
-	if( bSuccess==FALSE )
+	if( std::ferror(m_fileHandle) != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		app.FatalLoadError();
@@ -184,21 +161,21 @@ int FileInputStream::read(byteArray b, unsigned int offset, unsigned int length)
 //If this stream has an associated channel then the channel is closed as well.
 void FileInputStream::close()
 {
-	if(m_fileHandle==INVALID_HANDLE_VALUE)
+	if(m_fileHandle==NULL)
 	{
 		//printf("\n\nFileInputStream::close - TRYING TO CLOSE AN INVALID FILE HANDLE\n\n");
 		return;
 	}	
 	
-	int result = ::close( (int)(intptr_t)m_fileHandle );
+	int result = std::fclose( m_fileHandle );
 
-	if( result == 0 )
+	if( result != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
 
 	// Stop the dtor from trying to close it again
-	m_fileHandle = INVALID_HANDLE_VALUE;
+	m_fileHandle = NULL;
 }
 
 
@@ -211,18 +188,34 @@ void FileInputStream::close()
 //the actual number of bytes skipped.
 __int64 FileInputStream::skip(__int64 n)
 {
-#ifdef _XBOX
-	LARGE_INTEGER li;
-	li.QuadPart = n;
-	li.LowPart = SetFilePointer(m_fileHandle, li.LowPart, &li.HighPart, FILE_CURRENT);
-
-	if (li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
+	if( m_fileHandle == NULL || n <= 0 )
 	{
-		li.QuadPart = 0;
+		return 0;
 	}
 
-	return li.QuadPart;
-#else
-	return 0;
-#endif
+	const __int64 start = FileTell(m_fileHandle);
+	if( start < 0 )
+	{
+		return 0;
+	}
+
+	if( !FileSeek(m_fileHandle, 0, SEEK_END) )
+	{
+		return 0;
+	}
+
+	const __int64 end = FileTell(m_fileHandle);
+	if( end < 0 )
+	{
+		return 0;
+	}
+
+	const __int64 offset = std::min(n, std::max<__int64>(0, end - start));
+	const __int64 target = start + offset;
+	if( !FileSeek(m_fileHandle, target, SEEK_SET) )
+	{
+		return 0;
+	}
+
+	return offset;
 }
