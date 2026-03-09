@@ -7,8 +7,8 @@
 
 void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile *sourceSave, FileEntry *sourceFileEntry, ConsoleSaveFile *targetSave, FileEntry *targetFileEntry)
 {
-	DWORD numberOfBytesRead = 0;
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
 
 	uint8_t *data = new uint8_t[sourceFileEntry->getFileSize()];
 
@@ -23,8 +23,8 @@ void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile *sourceSave, Fi
 
 void ConsoleSaveFileConverter::ProcessStandardRegionFile(ConsoleSaveFile *sourceSave, File sourceFile, ConsoleSaveFile *targetSave, File targetFile)
 {
-	DWORD numberOfBytesWritten = 0;
-	DWORD numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
 
 	RegionFile sourceRegionFile(sourceSave, &sourceFile);
 	RegionFile targetRegionFile(targetSave, &targetFile);

@@ -36,7 +36,7 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 //b - the byte to be written.
 void ConsoleSaveFileOutputStream::write(unsigned int b)
 {	
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
 	uint8_t value = (uint8_t) b;
 
@@ -62,7 +62,7 @@ void ConsoleSaveFileOutputStream::write(unsigned int b)
 //b - the data.
 void ConsoleSaveFileOutputStream::write(byteArray b)
 {
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
 	BOOL result = m_saveFile->writeFile(
 		m_file,
@@ -91,7 +91,7 @@ void ConsoleSaveFileOutputStream::write(byteArray b, unsigned int offset, unsign
 	// 4J Stu - We don't want to write any more than the array buffer holds
 	assert( length <= ( b.length - offset ) );
 
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
 	BOOL result = m_saveFile->writeFile(
 		m_file,

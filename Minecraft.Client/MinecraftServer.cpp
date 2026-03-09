@@ -535,7 +535,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::ws
 	ConsoleSaveFile *csf = getLevel(0)->getLevelStorage()->getSaveFile();
 	if( csf->doesFileExist(filepath) )
 	{
-		DWORD numberOfBytesRead;
+		unsigned int numberOfBytesRead;
 		byteArray ba_gameRules;
 
 		FileEntry *fe = csf->createFile(filepath);
@@ -810,7 +810,7 @@ void MinecraftServer::saveGameRules()
 			ConsoleSaveFile *csf = getLevel(0)->getLevelStorage()->getSaveFile();
 			FileEntry *fe = csf->createFile(ConsoleSavePath(GAME_RULE_SAVENAME));
 			csf->setFilePointer(fe, 0, NULL, FILE_BEGIN);
-			DWORD length;
+			unsigned int length;
 			csf->writeFile(fe, ba.data, ba.length, &length );
 
 			delete [] ba.data;

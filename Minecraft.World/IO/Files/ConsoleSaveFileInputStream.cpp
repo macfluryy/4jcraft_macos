@@ -26,7 +26,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 int ConsoleSaveFileInputStream::read()
 {
 	uint8_t byteRead = static_cast<uint8_t>(0);
-	DWORD numberOfBytesRead;
+	unsigned int numberOfBytesRead;
 
 	BOOL result = m_saveFile->readFile(
 		m_file,
@@ -56,7 +56,7 @@ int ConsoleSaveFileInputStream::read()
 //the total number of bytes read into the buffer, or -1 if there is no more data because the end of the file has been reached.
 int ConsoleSaveFileInputStream::read(byteArray b)
 {
-	DWORD numberOfBytesRead;
+	unsigned int numberOfBytesRead;
 
 	BOOL result = m_saveFile->readFile(
 		m_file,
@@ -92,7 +92,7 @@ int ConsoleSaveFileInputStream::read(byteArray b, unsigned int offset, unsigned 
 	// 4J Stu - We don't want to read any more than the array buffer can hold
 	assert( length <= ( b.length - offset ) );
 
-	DWORD numberOfBytesRead;
+	unsigned int numberOfBytesRead;
 
 	BOOL result = m_saveFile->readFile(
 		m_file,

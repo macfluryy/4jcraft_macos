@@ -709,7 +709,7 @@ void ConsoleSaveFileSplit::setFilePointer(FileEntry *file,LONG lDistanceToMove,P
 }
 
 // If this file needs to grow, move the data after along
-void ConsoleSaveFileSplit::PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite )
+void ConsoleSaveFileSplit::PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite )
 {
 	int bytesToGrowBy = ( (file->currentFilePointer - file->data.startOffset) + nNumberOfBytesToWrite) - file->getFileSize();
 	if( bytesToGrowBy <= 0 )
@@ -734,7 +734,7 @@ void ConsoleSaveFileSplit::PrepareForWrite( FileEntry *file, DWORD nNumberOfByte
 	finalizeWrite();
 }
 
-BOOL ConsoleSaveFileSplit::writeFile(FileEntry *file,const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileSplit::writeFile(FileEntry *file,const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -787,7 +787,7 @@ BOOL ConsoleSaveFileSplit::writeFile(FileEntry *file,const void *lpBuffer, DWORD
 	return 1;
 }
 
-BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -840,9 +840,9 @@ BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite
 	return 1;
 }
 
-BOOL ConsoleSaveFileSplit::readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
+BOOL ConsoleSaveFileSplit::readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead)
 {
-	DWORD actualBytesToRead;
+	unsigned int actualBytesToRead;
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
 	{
@@ -1037,13 +1037,13 @@ void ConsoleSaveFileSplit::finalizeWrite()
 	ReleaseSaveAccess();
 }
 
-void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite)
+void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite)
 {
-	DWORD numberOfBytesRead = 0;
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
 
-	const DWORD bufferSize = 4096;
-	DWORD amountToRead = bufferSize;
+	const unsigned int bufferSize = 4096;
+	unsigned int amountToRead = bufferSize;
 	//assert( nNumberOfBytesToWrite <= bufferSize );
 	static uint8_t buffer1[bufferSize];
 	static uint8_t buffer2[bufferSize];

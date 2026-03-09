@@ -58,8 +58,8 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	if ((fileEntry->getFileSize() & 0xfff) != 0)
 	{
 		//uint8_t zero = 0;
-		DWORD numberOfBytesWritten = 0;
-		DWORD bytesToWrite = 0x1000 - (fileEntry->getFileSize() & 0xfff);
+		unsigned int numberOfBytesWritten = 0;
+		unsigned int bytesToWrite = 0x1000 - (fileEntry->getFileSize() & 0xfff);
 		uint8_t *zeroBytes = new uint8_t[ bytesToWrite ];
 		ZeroMemory(zeroBytes, bytesToWrite);
 
@@ -95,7 +95,7 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	for (int i = 0; i < SECTOR_INTS; ++i)
 	{
 		unsigned int offset = 0;
-		DWORD numberOfBytesRead = 0;
+		unsigned int numberOfBytesRead = 0;
 		if( !m_bIsEmpty )		// 4J added condition, don't read back if we've just created an empty file as we don't immediately write this anymore
 		{
 			m_saveFile->readFile(fileEntry, &offset, 4, &numberOfBytesRead);
@@ -115,7 +115,7 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	for (int i = 0; i < SECTOR_INTS; ++i)
 	{
 		int lastModValue = 0;
-		DWORD numberOfBytesRead = 0;
+		unsigned int numberOfBytesRead = 0;
 		if( !m_bIsEmpty )		// 4J added condition, don't read back if we've just created an empty file as we don't immediately write this anymore
 		{
 			m_saveFile->readFile(fileEntry, &lastModValue, 4, &numberOfBytesRead);
@@ -138,7 +138,7 @@ void RegionFile::writeAllOffsets() // used for the file ConsoleSaveFile conversi
 		// save all the offsets and timestamps
 		m_saveFile->LockSaveAccess();
 
-		DWORD numberOfBytesWritten = 0;
+		unsigned int numberOfBytesWritten = 0;
 		m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_BEGIN );
 		m_saveFile->writeFile(fileEntry,offsets, SECTOR_BYTES ,&numberOfBytesWritten);
 
@@ -205,7 +205,7 @@ DataInputStream *RegionFile::getChunkDataInputStream(int x, int z) // TODO - was
 	unsigned int decompLength;
 	unsigned int readDecompLength;
 
-	DWORD numberOfBytesRead = 0;
+	unsigned int numberOfBytesRead = 0;
 
 	// 4J - this differs a bit from the java file format. Java has length stored as an int, then a type as a byte, then length-1 bytes of data
 	// We store length and decompression length as ints, then length bytes of xbox LZX compressed data
@@ -379,7 +379,7 @@ void RegionFile::write(int x, int z, uint8_t *data, int length)		// TODO - was s
 	#ifndef _CONTENT_PACAKGE
 				//wprintf(L"Writing chunk (%d,%d) in %ls from new sector %d to %d\n", x,z, fileEntry->data.filename, sectorNumber, sectorNumber + sectorsNeeded - 1);
 	#endif
-				DWORD numberOfBytesWritten = 0;
+				unsigned int numberOfBytesWritten = 0;
 				for (int i = 0; i < sectorsNeeded; ++i)
 				{
 					//WriteFile(file,emptySector.data,SECTOR_BYTES,&numberOfBytesWritten,NULL);
@@ -405,7 +405,7 @@ void RegionFile::write(int x, int z, uint8_t *data, int length)		// TODO - was s
 /* write a chunk data to the region file at specified sector number */
 void RegionFile::write(int sectorNumber, uint8_t *data, int length, unsigned int compLength)
 {
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
 	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, NULL, FILE_BEGIN );
 
@@ -424,7 +424,7 @@ void RegionFile::write(int sectorNumber, uint8_t *data, int length, unsigned int
 
 void RegionFile::zero(int sectorNumber, int length)
 {
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
 	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, NULL, FILE_BEGIN );
 	m_saveFile->zeroFile( fileEntry, length, &numberOfBytesWritten );
@@ -450,7 +450,7 @@ bool RegionFile::hasChunk(int x, int z)
 void RegionFile::insertInitialSectors()
 {
 	m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_BEGIN );
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 	uint8_t zeroBytes[ SECTOR_BYTES ];
 	ZeroMemory(zeroBytes, SECTOR_BYTES);
 
@@ -470,7 +470,7 @@ void RegionFile::setOffset(int x, int z, int offset)
 		insertInitialSectors();		// 4J added
 	}
 
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 	offsets[x + z * 32] = offset;
 	m_saveFile->setFilePointer( fileEntry, (x + z * 32) * 4, NULL, FILE_BEGIN );
 	
@@ -484,7 +484,7 @@ void RegionFile::setTimestamp(int x, int z, int value)
 		insertInitialSectors();		// 4J added
 	}
 
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 	chunkTimestamps[x + z * 32] = value;
 	m_saveFile->setFilePointer( fileEntry, SECTOR_BYTES + (x + z * 32) * 4, NULL, FILE_BEGIN );
 	

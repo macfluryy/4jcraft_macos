@@ -243,7 +243,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 #endif
 	if (!m_bHasLoadedMapDataMappings && !mapFile.getName().empty() && getSaveFile()->doesFileExist( mapFile ))
 	{
-		DWORD NumberOfBytesRead;
+		unsigned int NumberOfBytesRead;
 		FileEntry *fileEntry = getSaveFile()->createFile(mapFile);
 
 #ifdef __PS3__
@@ -681,7 +681,7 @@ void DirectoryLevelStorage::saveMapIdLookup()
 
 	if (!file.getName().empty())
 	{
-		DWORD NumberOfBytesWritten;
+		unsigned int NumberOfBytesWritten;
 		FileEntry *fileEntry = m_saveFile->createFile(file);
 		m_saveFile->setFilePointer(fileEntry,0,NULL, FILE_BEGIN);
 

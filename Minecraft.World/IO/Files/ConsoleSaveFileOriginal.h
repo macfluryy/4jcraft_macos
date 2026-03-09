@@ -28,8 +28,8 @@ private:
 
 	CRITICAL_SECTION m_lock;
 
-	void PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite );
-	void MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite);
+	void PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite );
+	void MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite);
 
 public:
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
@@ -44,9 +44,9 @@ public:
 	virtual void deleteFile( FileEntry *file );
 
 	virtual void setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod);
-	virtual BOOL writeFile(	FileEntry *file, const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten );
-	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten);
-	virtual BOOL readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead );
+	virtual BOOL writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten );
+	virtual BOOL zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten);
+	virtual BOOL readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead );
 	virtual bool closeHandle( FileEntry *file );
 
 	virtual void finalizeWrite();

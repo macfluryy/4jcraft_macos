@@ -314,7 +314,7 @@ void ConsoleSaveFileOriginal::setFilePointer(FileEntry *file,LONG lDistanceToMov
 }
 
 // If this file needs to grow, move the data after along
-void ConsoleSaveFileOriginal::PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite )
+void ConsoleSaveFileOriginal::PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite )
 {
 	int bytesToGrowBy = ( (file->currentFilePointer - file->data.startOffset) + nNumberOfBytesToWrite) - file->getFileSize();
 	if( bytesToGrowBy <= 0 )
@@ -337,7 +337,7 @@ void ConsoleSaveFileOriginal::PrepareForWrite( FileEntry *file, DWORD nNumberOfB
 	finalizeWrite();
 }
 
-BOOL ConsoleSaveFileOriginal::writeFile(FileEntry *file,const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileOriginal::writeFile(FileEntry *file,const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -374,7 +374,7 @@ BOOL ConsoleSaveFileOriginal::writeFile(FileEntry *file,const void *lpBuffer, DW
 	return 1;
 }
 
-BOOL ConsoleSaveFileOriginal::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileOriginal::zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -411,9 +411,9 @@ BOOL ConsoleSaveFileOriginal::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWr
 	return 1;
 }
 
-BOOL ConsoleSaveFileOriginal::readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
+BOOL ConsoleSaveFileOriginal::readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead)
 {
-	DWORD actualBytesToRead;
+	unsigned int actualBytesToRead;
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
 	{
@@ -467,13 +467,13 @@ void ConsoleSaveFileOriginal::finalizeWrite()
 	ReleaseSaveAccess();
 }
 
-void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite)
+void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite)
 {
-	DWORD numberOfBytesRead = 0;
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
 
-	const DWORD bufferSize = 4096;
-	DWORD amountToRead = bufferSize;
+	const unsigned int bufferSize = 4096;
+	unsigned int amountToRead = bufferSize;
 	//assert( nNumberOfBytesToWrite <= bufferSize );
 	static uint8_t buffer1[bufferSize];
 	static uint8_t buffer2[bufferSize];

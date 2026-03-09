@@ -71,8 +71,8 @@ private:
 
 	CRITICAL_SECTION m_lock;
 
-	void PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite );
-	void MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite);
+	void PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite );
+	void MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite);
 
 	bool GetNumericIdentifierFromName(const std::wstring &fileName, unsigned int *idOut);
 	std::wstring GetNameFromNumericIdentifier(unsigned int idIn);
@@ -96,9 +96,9 @@ public:
 	virtual void deleteFile( FileEntry *file );
 
 	virtual void setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod);
-	virtual BOOL writeFile(	FileEntry *file, const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten );
-	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten);
-	virtual BOOL readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead );
+	virtual BOOL writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten );
+	virtual BOOL zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten);
+	virtual BOOL readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead );
 	virtual bool closeHandle( FileEntry *file );
 
 	virtual void finalizeWrite();
