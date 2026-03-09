@@ -35,12 +35,14 @@ colour_table = custom_target('Minecraft.Assets_Colour_Table',
 )
 
 archive_sources = [ 
-  localisation[0], # 'Windows64Media/Media/languages.loc',
+  localisation[0],
   colour_table,
   'Common/Media/splashes.txt',
   'Common/Media/Graphics/SaveChest.png',
   'Common/Media/Graphics/MinecraftIcon.png',
   'Common/Media/Graphics/TexturePackIcon.png',
+]
+archive_sources_windows64 = [
   'Windows64Media/Media/Tutorial.pck',
   'Windows64Media/Media/skinWin.swf',
   'Windows64Media/Media/skinHDWin.swf',
@@ -406,10 +408,68 @@ archive_sources_moviesVita = [
   'Common/Media/DebugUIConsoleComponent720.swf',
   'Common/Media/DebugUIMarketingGuide720.swf'
 ]
+# Platform Media
+archive_sources_windows64 = [
+  # 'Windows64Media/Media/languages.loc',
+  'Windows64Media/Media/DLCOffersMenu1080.swf',
+  'Windows64Media/Media/DLCOffersMenu480.swf',
+  'Windows64Media/Media/DLCOffersMenu720.swf',
+  'Windows64Media/Media/DLCOffersMenuVita.swf',
+  'Windows64Media/Media/Tutorial.pck',
+  'Windows64Media/Media/skinHDWin.swf',
+  'Windows64Media/Media/skinWin.swf'
+]
+archive_sources_linux = [
+  # 'Windows64Media/Media/languages.loc',
+  'Windows64Media/Media/DLCOffersMenu1080.swf',
+  'Windows64Media/Media/DLCOffersMenu480.swf',
+  'Windows64Media/Media/DLCOffersMenu720.swf',
+  'Windows64Media/Media/DLCOffersMenuVita.swf',
+  'Windows64Media/Media/Tutorial.pck',
+  'Windows64Media/Media/skinHDWin.swf',
+  'Windows64Media/Media/skinWin.swf'
+]
+archive_sources_durango = [
+  # 'DurangoMedia/Media/languages.loc',
+  'DurangoMedia/Media/Tutorial.pck',
+  'DurangoMedia/Media/skinDurango.swf',
+  'DurangoMedia/Media/skinHDDurango.swf',
+  'DurangoMedia/Media/DLCOffersMenu1080.swf',
+  'DurangoMedia/Media/DefaultSaveThumbnail64x64.png'
+]
+archive_sources_orbis = [
+  # 'OrbisMedia/Media/languages.loc',
+  'OrbisMedia/Media/Tutorial.pck',
+  'OrbisMedia/Media/skinHDOrbis.swf',
+  'OrbisMedia/Media/skinOrbis.swf',
+  'OrbisMedia/Media/DefaultOptionsImage228x128.png',
+  'OrbisMedia/Media/DefaultSaveImage228x128.png',
+  'OrbisMedia/Media/DefaultSaveThumbnail64x64.png',
+  'OrbisMedia/Media/DLCOffersMenu1080.swf'
+]
+archive_sources_ps3 = [
+  # 'PS3Media/Media/languages.loc',
+  'PS3Media/Media/Tutorial.pck',
+  'PS3Media/Media/skinPS3.swf',
+  'PS3Media/Media/DLCOffersMenu480.swf',
+  'PS3Media/Media/DLCOffersMenu720.swf',
+  'PS3Media/Media/DefaultOptionsImage320x176.png',
+  'PS3Media/Media/DefaultSaveImage320x176.png',
+  'PS3Media/Media/DefaultSaveThumbnail64x64.png'
+]
+archive_sources_psvita = [
+  # 'PSVitaMedia/Media/languages.loc',
+  'PSVitaMedia/Media/Tutorial.pck',
+  'PSVitaMedia/Media/skinVita.swf',
+  'PSVitaMedia/Media/DLCOffersMenuVita.swf',
+  'PSVitaMedia/Media/DefaultOptionsImage320x176.png',
+  'PSVitaMedia/Media/DefaultSaveImage320x176.png',
+  'PSVitaMedia/Media/DefaultSaveThumbnail64x64.png'
+]
 
 media_archive = custom_target('Minecraft.Media_Archive',
   output : 'MediaLinux.arc',
-  input : archive_sources + archive_sources_movies1080 + archive_sources_movies720,
+  input : archive_sources + archive_sources_movies1080 + archive_sources_movies720 + archive_sources_linux,
   command : [
     python, meson.project_source_root() / 'scripts/pack_arc.py',
     '@OUTPUT@',
