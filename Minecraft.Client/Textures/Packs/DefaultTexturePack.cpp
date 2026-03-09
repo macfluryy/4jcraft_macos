@@ -31,7 +31,7 @@ void DefaultTexturePack::loadIcon()
 	{
 		byteArray ba = app.getArchiveFile(L"Graphics\\TexturePackIcon.png");
 		m_iconData = ba.data;
-		m_iconSize = ba.length;
+		m_iconSize = static_cast<std::uint32_t>(ba.length);
 	}
 #endif
 }

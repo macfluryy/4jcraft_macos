@@ -167,14 +167,14 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 		{
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t imageName[64];
 				swprintf(imageName,64,L"tpack%08x",tp->getId());
-				registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+				registerSubstitutionTexture(imageName, imageData, imageBytes);
 				m_texturePackList.addPack(i,imageName);
 			}
 		}

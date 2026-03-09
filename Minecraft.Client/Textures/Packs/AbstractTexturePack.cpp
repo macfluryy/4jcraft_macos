@@ -46,7 +46,7 @@ void AbstractTexturePack::loadIcon()
 
 	UINT size = 0;
 	HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_iconData, &size);
-	m_iconSize = size;
+	m_iconSize = static_cast<std::uint32_t>(size);
 #endif
 }
 
@@ -62,7 +62,7 @@ void AbstractTexturePack::loadComparison()
 
 	UINT size = 0;
 	HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_comparisonData, &size);
-	m_comparisonSize = size;
+	m_comparisonSize = static_cast<std::uint32_t>(size);
 #endif
 }
 
@@ -373,18 +373,18 @@ std::wstring AbstractTexturePack::getXuiRootPath()
 	return szResourceLocator;
 }
 
-uint8_t *AbstractTexturePack::getPackIcon(DWORD &dwImageBytes)
+uint8_t *AbstractTexturePack::getPackIcon(std::uint32_t &imageBytes)
 {
 	if(m_iconSize == 0 || m_iconData == NULL) loadIcon();
-	dwImageBytes = m_iconSize;
+	imageBytes = m_iconSize;
 	return m_iconData;
 }
 
-uint8_t *AbstractTexturePack::getPackComparison(DWORD &dwImageBytes)
+uint8_t *AbstractTexturePack::getPackComparison(std::uint32_t &imageBytes)
 {
 	if(m_comparisonSize == 0 || m_comparisonData == NULL) loadComparison();
 
-	dwImageBytes = m_comparisonSize;
+	imageBytes = m_comparisonSize;
 	return m_comparisonData;
 }
 

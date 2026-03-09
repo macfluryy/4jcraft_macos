@@ -184,10 +184,10 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 			ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				ListInfo.fEnabled = TRUE;	
 				DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
@@ -213,7 +213,7 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 				app.DebugPrintf(", sort index - %d\n",ListInfo.iSortIndex);
 #endif
 
-				hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+				hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 				m_pTexturePacksList->AddData(ListInfo,0,CXuiCtrl4JList::eSortList_Index);
 			}
@@ -1138,20 +1138,20 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 		m_texturePackTitle.SetText(tp->getName().c_str());
 		m_texturePackDescription.SetText(tp->getDesc1().c_str());
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackIconBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 
-		pbImageData = tp->getPackComparison(dwImageBytes);
+		imageData = tp->getPackComparison(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackComparisonBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
 		}
 		else
@@ -1287,13 +1287,13 @@ HRESULT CScene_MultiGameCreate::OnCustomMessage_DLCMountingComplete()
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 		ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			ListInfo.fEnabled = TRUE;			
-			hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+			hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 			DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
 			if(pDLCTexPack)

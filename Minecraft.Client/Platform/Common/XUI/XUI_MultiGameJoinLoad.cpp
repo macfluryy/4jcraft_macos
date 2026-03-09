@@ -295,13 +295,13 @@ void CScene_MultiGameJoinLoad::AddDefaultButtons()
 			// increment the count of the mash-up pack worlds in the save list
 			m_iMashUpButtonsC++;
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(levelGen->getRequiredTexturePackId());
-			DWORD dwImageBytes;	
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;	
+			uint8_t *imageData = tp->getPackIcon(imageBytes);
 			HXUIBRUSH hXuiBrush;
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
-				XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&hXuiBrush);
+				XuiCreateTextureBrushFromMemory(imageData,imageBytes,&hXuiBrush);
 				// the index inside the list item for this will be i+1 because they start at m_vListData.size(), so the first etry (tutorial) is 1
 				m_pSavesList->UpdateGraphic(iSavesListIndex+1,hXuiBrush);
 			}
@@ -1270,8 +1270,8 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 				TexturePack *tp = pMinecraft->skins->getTexturePackById(sessionInfo->data.texturePackParentId);
 				HRESULT hr;
 
-				DWORD dwImageBytes=0;
-				PBYTE pbImageData=NULL;
+				std::uint32_t imageBytes = 0;
+				uint8_t *imageData = NULL;
 
 				if(tp==NULL)
 				{
@@ -1280,19 +1280,21 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 					app.GetTPD(sessionInfo->data.texturePackParentId,&pbData,&dwBytes);
 
 					// is it in the tpd data ?
-					app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
-					if(dwImageBytes > 0 && pbImageData)
+					DWORD tpdImageBytes = 0;
+					app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&imageData,&tpdImageBytes );
+					imageBytes = static_cast<std::uint32_t>(tpdImageBytes);
+					if(imageBytes > 0 && imageData)
 					{	
-						hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&hXuiBrush);
+						hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&hXuiBrush);
 						m_pGamesList->UpdateGraphic(sessionIndex,hXuiBrush);
 					}
 				}
 				else
 				{
-					pbImageData = tp->getPackIcon(dwImageBytes);
-					if(dwImageBytes > 0 && pbImageData)
+					imageData = tp->getPackIcon(imageBytes);
+					if(imageBytes > 0 && imageData)
 					{			
-						hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&hXuiBrush);
+						hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&hXuiBrush);
 						m_pGamesList->UpdateGraphic(sessionIndex,hXuiBrush);
 					}
 				}

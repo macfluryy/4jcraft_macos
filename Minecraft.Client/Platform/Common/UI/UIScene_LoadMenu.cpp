@@ -173,14 +173,14 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 
 			// retrieve the save icon from the texture pack, if there is one
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(m_MoreOptionsParams.dwTexturePack);
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t textureName[64];
 				swprintf(textureName,64,L"loadsave");				
-				registerSubstitutionTexture(textureName,pbImageData,dwImageBytes);
+				registerSubstitutionTexture(textureName,imageData,imageBytes);
 				m_bitmapIcon.setTextureName( textureName );
 			}
 		}
@@ -259,14 +259,14 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 		{
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t imageName[64];
 				swprintf(imageName,64,L"tpack%08x",tp->getId());
-				registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+				registerSubstitutionTexture(imageName, imageData, imageBytes);
 				m_texturePackList.addPack(i,imageName);
 			}
 		}

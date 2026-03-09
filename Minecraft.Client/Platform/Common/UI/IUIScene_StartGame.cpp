@@ -29,14 +29,14 @@ void IUIScene_StartGame::HandleDLCMountingComplete()
 	{
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			wchar_t imageName[64];
 			swprintf(imageName,64,L"tpack%08x",tp->getId());
-			registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+			registerSubstitutionTexture(imageName, imageData, imageBytes);
 			m_texturePackList.addPack(i,imageName);
 		}
 	}
@@ -180,12 +180,12 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		m_labelTexturePackName.setLabel(tp->getName());
 		m_labelTexturePackDescription.setLabel(tp->getDesc1());
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		//if(dwImageBytes > 0 && pbImageData)
+		//if(imageBytes > 0 && imageData)
 		//{
-		//	registerSubstitutionTexture(L"texturePackIcon", pbImageData, dwImageBytes);
+		//	registerSubstitutionTexture(L"texturePackIcon", imageData, imageBytes);
 		//	m_bitmapTexturePackIcon.setTextureName(L"texturePackIcon");
 		//}
 
@@ -193,12 +193,12 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		swprintf(imageName,64,L"tpack%08x",tp->getId());
 		m_bitmapTexturePackIcon.setTextureName(imageName);
 
-		pbImageData = tp->getPackComparison(dwImageBytes);
+		imageData = tp->getPackComparison(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			swprintf(imageName,64,L"texturePackComparison%08x",tp->getId());
-			registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+			registerSubstitutionTexture(imageName, imageData, imageBytes);
 			m_bitmapComparison.setTextureName(imageName);
 		}
 		else

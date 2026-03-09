@@ -86,7 +86,9 @@ void DLCTexturePack::loadIcon()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"icon.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"icon.png");
-		m_iconData = textureFile->getData(m_iconSize);
+		DWORD iconSize = 0;
+		m_iconData = textureFile->getData(iconSize);
+		m_iconSize = static_cast<std::uint32_t>(iconSize);
 	}
 	else
 	{
@@ -99,7 +101,9 @@ void DLCTexturePack::loadComparison()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"comparison.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"comparison.png");
-		m_comparisonData = textureFile->getData(m_comparisonSize);
+		DWORD comparisonSize = 0;
+		m_comparisonData = textureFile->getData(comparisonSize);
+		m_comparisonSize = static_cast<std::uint32_t>(comparisonSize);
 	}
 }
 
