@@ -19,14 +19,19 @@ output_stamp = Path(sys.argv[5])
 #
 # this script doesn't handle copying the same way `meson install` does but it should be good enough
 dest_common = Path(client_build_dir / "Common")
+src_assets = Path(project_source_root / "Minecraft.Assets")
 
 # clear out any old assets
 if dest_common.exists():
     shutil.rmtree(dest_common)
+    shutil.rmtree(client_build_dir / "music")
+    shutil.rmtree(client_build_dir / "Sound")
+    # XXX: Check "copy DLC" bellow for info
+    # shutil.rmtree(client_build_dir / "DurangMedia")
 
 # copy `Minecraft.Assets/Common` into the build directory for the client.
 shutil.copytree(
-    project_source_root / "Minecraft.Assets" / "Common",
+    src_assets / "Common",
     dest_common,
 )
 
@@ -34,12 +39,25 @@ shutil.copytree(
 shutil.copy(media_archive, client_build_dir / "Common" / "Media")
 
 # copy music and Sound
-shutil.copytree(project_source_root / "Minecraft.Assets" / "Common" / "music", client_build_dir)
-shutil.copytree(project_source_root / "Minecraft.Assets" / "DurangoMedia" / "Sound", client_build_dir)
+shutil.copytree(
+    src_assets / "Common" / "music" / "music",
+    client_build_dir / "music"
+)
+shutil.copytree(
+    src_assets / "Common" / "music" / "cds",
+    client_build_dir / "music"
+)
+shutil.copy(
+    src_assets / "DurangoMedia" / "Sound" / "Minecraft.msscmp", 
+    client_build_dir / "Sound"
+)
 
 # copy DLC
 # XXX: The DLC path is handled inside of 4JLibs, the Windows64 build expects `DurangoMedia/DLC` to load DLC data from
-# shutil.copytree(project_source_root / "Minecraft.Assets" / "DurangoMedia" / "DLC", client_build_dir / "DurangoMedia")
+# shutil.copytree(
+#     src_assets / "DurangoMedia" / "DLC", 
+#     client_build_dir / "DurangoMedia"
+# )
 
 # modify the stamp so this only happens when client or media_archive targets are changed
 output_stamp.touch()
