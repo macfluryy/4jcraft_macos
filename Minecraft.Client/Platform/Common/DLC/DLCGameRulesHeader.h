@@ -8,7 +8,7 @@ class DLCGameRulesHeader : public DLCGameRules, public JustGrSource
 private:
 
 	// GR-Header 
-	PBYTE m_pbData;
+	uint8_t *m_pbData;
 	DWORD m_dwBytes;
 
 	bool m_hasData;
@@ -33,10 +33,10 @@ public:
 public:
 	DLCGameRulesHeader(const std::wstring &path);
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
-	virtual PBYTE getData(DWORD &dwBytes);
+	virtual void addData(uint8_t *pbData, DWORD dwBytes);
+	virtual uint8_t *getData(DWORD &dwBytes);
 
-	void setGrfData(PBYTE fData, DWORD fSize, StringTable *);
+	void setGrfData(uint8_t *fData, DWORD fSize, StringTable *);
 
 	virtual bool ready() { return m_hasData; }
 };

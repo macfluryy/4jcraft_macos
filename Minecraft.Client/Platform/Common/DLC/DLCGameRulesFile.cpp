@@ -8,13 +8,13 @@ DLCGameRulesFile::DLCGameRulesFile(const std::wstring &path) : DLCGameRules(DLCM
 	m_dwBytes = 0;
 }
 
-void DLCGameRulesFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCGameRulesFile::addData(uint8_t *pbData, DWORD dwBytes)
 {
 	m_pbData = pbData;
 	m_dwBytes = dwBytes;
 }
 
-PBYTE DLCGameRulesFile::getData(DWORD &dwBytes)
+uint8_t *DLCGameRulesFile::getData(DWORD &dwBytes)
 {
 	dwBytes = m_dwBytes;
 	return m_pbData;

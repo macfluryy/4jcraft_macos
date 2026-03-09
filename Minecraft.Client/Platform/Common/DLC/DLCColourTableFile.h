@@ -12,7 +12,7 @@ public:
 	DLCColourTableFile(const std::wstring &path);
 	~DLCColourTableFile();
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
+	virtual void addData(uint8_t *pbData, DWORD dwBytes);
 
 	ColourTable *getColourTable() { return m_colourTable; }
 };

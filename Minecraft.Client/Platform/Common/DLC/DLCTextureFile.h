@@ -8,14 +8,14 @@ private:
 	bool m_bIsAnim;
 	std::wstring m_animString;
 
-	PBYTE m_pbData;
+	uint8_t *m_pbData;
 	DWORD m_dwBytes;
 
 public:
 	DLCTextureFile(const std::wstring &path);
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
-	virtual PBYTE getData(DWORD &dwBytes);
+	virtual void addData(uint8_t *pbData, DWORD dwBytes);
+	virtual uint8_t *getData(DWORD &dwBytes);
 
 	virtual void addParameter(DLCManager::EDLCParameterType type, const std::wstring &value);
 

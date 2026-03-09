@@ -16,7 +16,7 @@ DLCSkinFile::DLCSkinFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCTy
 	m_uiAnimOverrideBitmask=0L;
 }
 
-void DLCSkinFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCSkinFile::addData(uint8_t *pbData, DWORD dwBytes)
 {
 	app.AddMemoryTextureFile(m_path,pbData,dwBytes);
 }

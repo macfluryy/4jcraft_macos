@@ -18,14 +18,14 @@ DLCUIDataFile::~DLCUIDataFile()
 	}
 }
 
-void DLCUIDataFile::addData(PBYTE pbData, DWORD dwBytes,bool canDeleteData)
+void DLCUIDataFile::addData(uint8_t *pbData, DWORD dwBytes,bool canDeleteData)
 {
 	m_pbData = pbData;
 	m_dwBytes = dwBytes;
 	m_canDeleteData = canDeleteData;
 }
 
-PBYTE DLCUIDataFile::getData(DWORD &dwBytes)
+uint8_t *DLCUIDataFile::getData(DWORD &dwBytes)
 {
 	dwBytes = m_dwBytes;
 	return m_pbData;

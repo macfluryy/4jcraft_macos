@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "DLCManager.h"
 
 class DLCFile
@@ -16,8 +17,8 @@ public:
 	std::wstring getPath()				{ return m_path; }
 	DWORD getSkinID()				{ return m_dwSkinId; }
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes) {}
-	virtual PBYTE getData(DWORD &dwBytes) { dwBytes = 0; return NULL; }
+	virtual void addData(uint8_t *pbData, DWORD dwBytes) {}
+	virtual uint8_t *getData(DWORD &dwBytes) { dwBytes = 0; return NULL; }
 	virtual void addParameter(DLCManager::EDLCParameterType type, const std::wstring &value) {}
 
 	virtual std::wstring getParameterAsString(DLCManager::EDLCParameterType type) { return L""; }

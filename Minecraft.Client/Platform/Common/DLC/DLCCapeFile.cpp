@@ -6,7 +6,7 @@ DLCCapeFile::DLCCapeFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCTy
 {
 }
 
-void DLCCapeFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCCapeFile::addData(uint8_t *pbData, DWORD dwBytes)
 {
 	app.AddMemoryTextureFile(m_path,pbData,dwBytes);
 }
