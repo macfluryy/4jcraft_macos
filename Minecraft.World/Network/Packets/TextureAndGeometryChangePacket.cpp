@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <cstring>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.world.entity.h"
@@ -31,14 +32,17 @@ TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(std::shared_ptr<E
 void TextureAndGeometryChangePacket::read(DataInputStream *dis) //throws IOException 
 {
 	id = dis->readInt();
-	dwSkinID = dis->readInt();
+	int skinId = dis->readInt();
+	std::memcpy(&dwSkinID, &skinId, sizeof(dwSkinID));
 	path = dis->readUTF();
 }
 
 void TextureAndGeometryChangePacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeInt(id);
-	dos->writeInt(dwSkinID);
+	int skinId = 0;
+	std::memcpy(&skinId, &dwSkinID, sizeof(dwSkinID));
+	dos->writeInt(skinId);
 	dos->writeUTF(path);
 }
 

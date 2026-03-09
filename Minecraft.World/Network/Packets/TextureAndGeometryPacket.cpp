@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <cstring>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
@@ -122,7 +123,8 @@ void TextureAndGeometryPacket::handle(PacketListener *listener)
 void TextureAndGeometryPacket::read(DataInputStream *dis) //throws IOException
 {
 	textureName = dis->readUTF();
-	dwSkinID = (DWORD)dis->readInt();
+	int skinId = dis->readInt();
+	std::memcpy(&dwSkinID, &skinId, sizeof(dwSkinID));
 	dwTextureBytes = (std::uint32_t)dis->readShort();
 
 	if(dwTextureBytes>0)
@@ -160,7 +162,9 @@ void TextureAndGeometryPacket::read(DataInputStream *dis) //throws IOException
 void TextureAndGeometryPacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeUTF(textureName);
-	dos->writeInt(dwSkinID);
+	int skinId = 0;
+	std::memcpy(&skinId, &dwSkinID, sizeof(dwSkinID));
+	dos->writeInt(skinId);
 	dos->writeShort((short)dwTextureBytes);
 	for(std::uint32_t i=0;i<dwTextureBytes;i++)
 	{

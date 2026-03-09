@@ -11,7 +11,7 @@ class TextureAndGeometryPacket : public Packet, public std::enable_shared_from_t
 {
 public:
 	std::wstring textureName;
-	DWORD dwSkinID;
+	std::uint32_t dwSkinID;
 	std::uint8_t *pbData;
 	std::uint32_t dwTextureBytes;
 	SKIN_BOX *BoxDataA;
