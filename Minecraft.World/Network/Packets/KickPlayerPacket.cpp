@@ -11,7 +11,7 @@ KickPlayerPacket::KickPlayerPacket()
 	m_networkSmallId = 0;
 }
 
-KickPlayerPacket::KickPlayerPacket(BYTE networkSmallId)
+KickPlayerPacket::KickPlayerPacket(std::uint8_t networkSmallId)
 {
 	m_networkSmallId = networkSmallId;
 }
@@ -23,7 +23,7 @@ void KickPlayerPacket::handle(PacketListener *listener)
 
 void KickPlayerPacket::read(DataInputStream *dis) //throws IOException 
 {
-	m_networkSmallId = (int)dis->readByte();
+	m_networkSmallId = static_cast<std::uint8_t>(dis->readByte());
 }
 
 void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException

@@ -847,7 +847,7 @@ void PlayerList::tick()
 	EnterCriticalSection(&m_closePlayersCS);
 	while(!m_smallIdsToClose.empty())
 	{
-		BYTE smallId = m_smallIdsToClose.front();
+		std::uint8_t smallId = m_smallIdsToClose.front();
 		m_smallIdsToClose.pop_front();
 
 		std::shared_ptr<ServerPlayer> player = nullptr;
@@ -873,7 +873,7 @@ void PlayerList::tick()
 	EnterCriticalSection(&m_kickPlayersCS);
 	while(!m_smallIdsToKick.empty())
 	{
-		BYTE smallId = m_smallIdsToKick.front();
+		std::uint8_t smallId = m_smallIdsToKick.front();
 		m_smallIdsToKick.pop_front();
 		INetworkPlayer *selectedPlayer = g_NetworkManager.GetPlayerBySmallId(smallId);
 		if( selectedPlayer != NULL )
@@ -1416,14 +1416,14 @@ bool PlayerList::canReceiveAllPackets(std::shared_ptr<ServerPlayer> player)
 	return false;
 }
 
-void PlayerList::kickPlayerByShortId(BYTE networkSmallId)
+void PlayerList::kickPlayerByShortId(std::uint8_t networkSmallId)
 {
 	EnterCriticalSection(&m_kickPlayersCS);
 	m_smallIdsToKick.push_back(networkSmallId);
 	LeaveCriticalSection(&m_kickPlayersCS);
 }
 
-void  PlayerList::closePlayerConnectionBySmallId(BYTE networkSmallId)
+void  PlayerList::closePlayerConnectionBySmallId(std::uint8_t networkSmallId)
 {
 	EnterCriticalSection(&m_closePlayersCS);
 	m_smallIdsToClose.push_back(networkSmallId);

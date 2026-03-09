@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #ifndef __linux__
 #include <xrnm.h>
 #include <qnet.h>
@@ -109,7 +110,7 @@ private:
 	// Host only connection class
 	static ServerConnection *s_serverConnection;
 
-	BYTE networkPlayerSmallId;
+	std::uint8_t networkPlayerSmallId;
 public:	
 	C4JThread::Event* m_socketClosedEvent;
 
@@ -133,5 +134,5 @@ public:
 	bool isLocal() { return m_hostLocal; }
 
 	bool isClosing() { return m_endClosed[SOCKET_CLIENT_END] || m_endClosed[SOCKET_SERVER_END]; }
-	BYTE getSmallId() { return networkPlayerSmallId; }
+	std::uint8_t getSmallId() { return networkPlayerSmallId; }
 };

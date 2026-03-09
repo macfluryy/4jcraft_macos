@@ -19,7 +19,7 @@ PlayerInfoPacket::PlayerInfoPacket()
 	m_entityId = -1;
 }
 
-PlayerInfoPacket::PlayerInfoPacket(BYTE networkSmallId, short playerColourIndex, unsigned int playerPrivileges)
+PlayerInfoPacket::PlayerInfoPacket(std::uint8_t networkSmallId, short playerColourIndex, unsigned int playerPrivileges)
 {
 	m_networkSmallId = networkSmallId;
 	m_playerColourIndex = playerColourIndex;
@@ -38,7 +38,7 @@ PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<ServerPlayer> player)
 
 void PlayerInfoPacket::read(DataInputStream *dis)
 {
-	m_networkSmallId = dis->readByte();
+	m_networkSmallId = static_cast<std::uint8_t>(dis->readByte());
 	m_playerColourIndex = dis->readShort();
 	m_playerPrivileges = dis->readInt();
 	m_entityId = dis->readInt();

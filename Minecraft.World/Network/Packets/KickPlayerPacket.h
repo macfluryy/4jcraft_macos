@@ -1,15 +1,16 @@
 #pragma once
 
+#include <cstdint>
 
 #include "Packet.h"
 
 class KickPlayerPacket : public Packet, public std::enable_shared_from_this<KickPlayerPacket>
 {
 public:
-	BYTE m_networkSmallId;
+	std::uint8_t m_networkSmallId;
 
 	KickPlayerPacket();
-	KickPlayerPacket(BYTE networkSmallId);
+	KickPlayerPacket(std::uint8_t networkSmallId);
 
 	virtual void handle(PacketListener *listener);
 	virtual void read(DataInputStream *dis);
