@@ -1,6 +1,7 @@
 #include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "SonyRemoteStorage_PS3.h"
+#include <cstdint>
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -341,7 +342,7 @@ bool SonyRemoteStorage_PS3::setDataInternal()
 	{
 		unsigned int uiHostOptions;
 		bool bHostOptionsRead;
-		DWORD uiTexturePack;
+		std::uint32_t uiTexturePack = 0;
 		char seed[22];
 		app.GetImageTextData(m_thumbnailData, m_thumbnailDataSize,(unsigned char *)seed, uiHostOptions, bHostOptionsRead, uiTexturePack);
 

@@ -7631,7 +7631,7 @@ unsigned int CMinecraftApp::FromBigEndian(unsigned int uiValue)
 #endif
 }
 
-void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsigned char *pszSeed,unsigned int &uiHostOptions,bool &bHostOptionsRead,DWORD &uiTexturePack)
+void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsigned char *pszSeed,unsigned int &uiHostOptions,bool &bHostOptionsRead,std::uint32_t &uiTexturePack)
 {
 	unsigned char *ucPtr=pbImageData;
 	unsigned int uiCount=0;

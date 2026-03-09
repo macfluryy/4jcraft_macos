@@ -2,6 +2,7 @@
 
 #include "SonyRemoteStorage_Vita.h"
 #include "SonyHttp_Vita.h"
+#include <cstdint>
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -313,7 +314,7 @@ bool SonyRemoteStorage_Vita::setDataInternal()
 	{
 		unsigned int uiHostOptions;
 		bool bHostOptionsRead;
-		DWORD uiTexturePack;
+		std::uint32_t uiTexturePack = 0;
 		char seed[22];
 		app.GetImageTextData(m_thumbnailData, m_thumbnailDataSize,(unsigned char *)seed, uiHostOptions, bHostOptionsRead, uiTexturePack);
 
