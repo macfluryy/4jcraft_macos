@@ -484,7 +484,7 @@ float C_4JInput::GetJoypadStick_RX(int /*iPad*/, bool /*bCheckMenuDisplay*/) {
 
 float C_4JInput::GetJoypadStick_RY(int /*iPad*/, bool /*bCheckMenuDisplay*/) {
     if (!s_mouseLocked) return 0.0f;
-    float raw = s_frameRelY * MOUSE_SCALE;
+    float raw = -s_frameRelY * MOUSE_SCALE;
     float absRaw = fabsf(raw);
     if (absRaw > 1.0f) absRaw = 1.0f;
     if (absRaw < 0.0001f) return 0.0f;

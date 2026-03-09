@@ -630,7 +630,11 @@ void CMinecraftApp::InitGameSettings()
 		C4JStorage::PROFILESETTINGS *pProfileSettings=StorageManager.GetDashboardProfileSettings(i);
 		// 4J-PB - don't cause an options write to happen here
 		SetDefaultOptions(pProfileSettings,i,false);
-
+#else
+		// Linux (and any other platform): profile data is zero-initialised, so explicitly apply defaults
+		C_4JProfile::PROFILESETTINGS *pProfileSettings=ProfileManager.GetDashboardProfileSettings(i);
+		memset(pProfileSettings,0,sizeof(C_4JProfile::PROFILESETTINGS));
+		SetDefaultOptions(pProfileSettings,i);
 #endif
 	}
 }
