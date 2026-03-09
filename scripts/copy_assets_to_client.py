@@ -27,7 +27,7 @@ if dest_common.exists():
     shutil.rmtree(client_build_dir / "music")
     shutil.rmtree(client_build_dir / "Sound")
     # XXX: Check "copy DLC" bellow for info
-    # shutil.rmtree(client_build_dir / "DurangMedia")
+    # shutil.rmtree(client_build_dir / "DurangoMedia")
 
 # copy `Minecraft.Assets/Common` into the build directory for the client.
 shutil.copytree(
@@ -40,15 +40,11 @@ shutil.copy(media_archive, client_build_dir / "Common" / "Media")
 
 # copy music and Sound
 shutil.copytree(
-    src_assets / "Common" / "music" / "music",
+    src_assets / "Common" / "music",
     client_build_dir / "music"
 )
 shutil.copytree(
-    src_assets / "Common" / "music" / "cds",
-    client_build_dir / "music"
-)
-shutil.copy(
-    src_assets / "DurangoMedia" / "Sound" / "Minecraft.msscmp", 
+    src_assets / "DurangoMedia" / "Sound", 
     client_build_dir / "Sound"
 )
 
@@ -56,7 +52,7 @@ shutil.copy(
 # XXX: The DLC path is handled inside of 4JLibs, the Windows64 build expects `DurangoMedia/DLC` to load DLC data from
 # shutil.copytree(
 #     src_assets / "DurangoMedia" / "DLC", 
-#     client_build_dir / "DurangoMedia"
+#     client_build_dir / "DurangoMedia" / "DLC"
 # )
 
 # modify the stamp so this only happens when client or media_archive targets are changed
