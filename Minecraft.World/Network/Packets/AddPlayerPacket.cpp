@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <cstring>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
@@ -55,7 +56,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 
 	this->xuid = xuid;
 	this->OnlineXuid = OnlineXuid;
-	m_playerIndex = (BYTE)player->getPlayerIndex();
+	m_playerIndex = static_cast<std::uint8_t>(player->getPlayerIndex());
 	m_skinId = player->getCustomSkin();
 	m_capeId = player->getCustomCape();
 	m_uiGamePrivileges = player->getAllPlayerGamePrivileges();
@@ -77,11 +78,11 @@ void AddPlayerPacket::read(DataInputStream *dis) //throws IOException
 	carriedItem = dis->readShort();
 	xuid = dis->readPlayerUID();
 	OnlineXuid = dis->readPlayerUID();
-	m_playerIndex = static_cast<BYTE>(dis->readByte());
-	INT skinId = dis->readInt();
-	m_skinId = *(DWORD *)&skinId;	
-	INT capeId = dis->readInt();
-	m_capeId = *(DWORD *)&capeId;
+	m_playerIndex = static_cast<std::uint8_t>(dis->readByte());
+	int skinId = dis->readInt();
+	std::memcpy(&m_skinId, &skinId, sizeof(m_skinId));
+	int capeId = dis->readInt();
+	std::memcpy(&m_capeId, &capeId, sizeof(m_capeId));
 	INT privileges = dis->readInt();
 	m_uiGamePrivileges = *(unsigned int *)&privileges;
 	MemSect(1);
@@ -103,8 +104,12 @@ void AddPlayerPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writePlayerUID(xuid);
 	dos->writePlayerUID(OnlineXuid);
 	dos->writeByte(static_cast<uint8_t>(m_playerIndex)); // 4J Added
-	dos->writeInt(m_skinId);
-	dos->writeInt(m_capeId);
+	int skinId = 0;
+	std::memcpy(&skinId, &m_skinId, sizeof(m_skinId));
+	dos->writeInt(skinId);
+	int capeId = 0;
+	std::memcpy(&capeId, &m_capeId, sizeof(m_capeId));
+	dos->writeInt(capeId);
 	dos->writeInt(m_uiGamePrivileges);
 	entityData->packAll(dos);
 
@@ -117,7 +122,7 @@ void AddPlayerPacket::handle(PacketListener *listener)
 
 int AddPlayerPacket::getEstimatedSize()
 {
-	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(BYTE) + sizeof(BYTE) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(BYTE) + sizeof(unsigned int) + sizeof(uint8_t);
+	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(std::uint8_t) + sizeof(std::uint8_t) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(std::uint8_t) + sizeof(unsigned int) + sizeof(uint8_t);
 
 	if( entityData != NULL )
 	{
