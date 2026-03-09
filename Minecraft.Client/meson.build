@@ -16,7 +16,7 @@ platform_sources = run_command(
   check : true,
 ).stdout().strip().split('\n')
 
-# some platform-specific sources that are for some stupid reason in Platform/Common
+# some platform-specific sources that are for some stupid reason in Common
 exclude_platform_common_sources = [
   ' ! -path "*/Network/Sony/*"',
   ' ! -path "*/XUI/*"',
