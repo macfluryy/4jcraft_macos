@@ -6,7 +6,7 @@
 #include <assert.h>
 //#include <system_service.h>
 #include <codecvt>
-#ifdef __linux__
+#if defined(__linux__) && defined(__GLIBC__)
 #include <signal.h>
 #include <execinfo.h>
 #include <unistd.h>
@@ -574,7 +574,7 @@ int StartMinecraftThreadProc( void* lpParameter )
 
 int main(int argc, const char *argv[] )
 {
-#ifdef __linux__
+#if defined(__linux__) && defined(__GLIBC__)
     struct sigaction sa;
     sa.sa_handler = sigsegv_handler;
     sigemptyset(&sa.sa_mask);
