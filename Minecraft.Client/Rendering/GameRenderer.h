@@ -145,7 +145,7 @@ public:
 
 #ifdef MULTITHREAD_ENABLE
 	static C4JThread*	m_updateThread;
-	static int runUpdate(LPVOID lpParam);
+	static int runUpdate(void *lpParam);
 	static C4JThread::EventArray* m_updateEvents;
 	enum EUpdateEvents
 	{

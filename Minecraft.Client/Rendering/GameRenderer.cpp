@@ -1158,7 +1158,7 @@ void GameRenderer::FinishedReassigning()
 	LeaveCriticalSection(&m_csDeleteStack);
 }
 
-int GameRenderer::runUpdate(LPVOID lpParam)
+int GameRenderer::runUpdate(void *lpParam)
 {
 	Minecraft *minecraft = Minecraft::GetInstance();
 	Vec3::CreateNewThreadStorage();
