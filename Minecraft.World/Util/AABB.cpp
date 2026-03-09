@@ -7,7 +7,7 @@
 #include "AABB.h"
 #include "HitResult.h"
 
-DWORD AABB::tlsIdx = 0;
+unsigned int AABB::tlsIdx = 0;
 AABB::ThreadStorage *AABB::tlsDefault = NULL;
 
 AABB::ThreadStorage::ThreadStorage()
