@@ -16,7 +16,7 @@
 #include "../../../Minecraft.Client/Platform/PS3/PS3Extras/EdgeZLib.h"
 #endif //__PS3__
 
-DWORD Compression::tlsIdx = 0;
+unsigned int Compression::tlsIdx = 0;
 Compression::ThreadStorage *Compression::tlsDefault = NULL;
 
 Compression::ThreadStorage::ThreadStorage()
