@@ -147,7 +147,7 @@ void Socket::setPlayer(INetworkPlayer *player)
 	}
 }
 
-void Socket::pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHost /*= true*/)
+void Socket::pushDataToQueue(const std::uint8_t *pbData, std::size_t dataSize, bool fromHost /*= true*/)
 {
 	int queueIdx = SOCKET_CLIENT_END;
 	if(!fromHost)
@@ -160,7 +160,7 @@ void Socket::pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHos
 	}
 
 	EnterCriticalSection(&m_queueLockNetwork[queueIdx]);
-	for( unsigned int i = 0; i < dwDataSize; i++ )
+	for(std::size_t i = 0; i < dataSize; ++i)
 	{
 		m_queueNetwork[queueIdx].push(*pbData++);
 	}

@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #ifndef __linux__
 #include <xrnm.h>
@@ -123,7 +124,7 @@ public:
 	Socket(bool response = false);								// 4J - Create a local socket, for end 0 or 1 of a connection
 	Socket(INetworkPlayer *player, bool response  = false, bool hostLocal = false);		// 4J - Create a socket for an INetworkPlayer
 	SocketAddress *getRemoteSocketAddress();
-	void pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHost = true);
+	void pushDataToQueue(const std::uint8_t *pbData, std::size_t dataSize, bool fromHost = true);
 	static void addIncomingSocket(Socket *socket);
 	InputStream *getInputStream(bool isServerConnection);
 	void setSoTimeout(int a );
