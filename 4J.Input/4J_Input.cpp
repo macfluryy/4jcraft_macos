@@ -468,8 +468,8 @@ float C_4JInput::GetJoypadStick_LX(int /*iPad*/, bool /*bCheckMenuDisplay*/) {
 float C_4JInput::GetJoypadStick_LY(int /*iPad*/, bool /*bCheckMenuDisplay*/) {
     if (!s_mouseLocked) return 0.0f;
     float v = 0.0f;
-    if (KDown(GLFW_KEY_W)) v -= 1.0f;  // W = forward = negative Y on consoles
-    if (KDown(GLFW_KEY_S)) v += 1.0f;
+    if (KDown(GLFW_KEY_W)) v += 1.0f;  // W = forward = negative Y on consoles
+    if (KDown(GLFW_KEY_S)) v -= 1.0f;
     return v;
 }
 
