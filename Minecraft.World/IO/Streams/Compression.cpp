@@ -354,7 +354,7 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 
 // MGH -  same as VirtualDecompress in PSVitaStubs, but for use on other platforms (so no virtual mem stuff)
 #ifndef _XBOX
-VOID Compression::VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize) // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
+void Compression::VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize) // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
 {
 	uint8_t *pSrc = (uint8_t *)pSource;
 	int Offset = 0;

@@ -46,7 +46,7 @@ public:
 	HRESULT CompressRLE(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 	HRESULT DecompressRLE(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 #ifndef _XBOX
-	static VOID VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
+	static void VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 #endif
 
 	void SetDecompressionType(ECompressionTypes type) { m_decompressType = type; }  // for loading a save from a different platform (Sony cloud storage cross play)
