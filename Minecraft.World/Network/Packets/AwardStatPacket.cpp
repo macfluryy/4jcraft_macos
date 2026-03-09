@@ -16,7 +16,12 @@ AwardStatPacket::AwardStatPacket(int statId, int count)
 {
 	this->statId = statId;
 
-	this->m_paramData.data = (uint8_t *) new int(count);
+	// 4jcraft, changed from new int(count); to new int[1];
+	// and initializing the array with count
+	// reason: .data needs to be delete with delete[] but its 
+	// allocated with new, not new T[]
+	this->m_paramData.data = (uint8_t *) new int[1];
+	((int*)this->m_paramData.data)[0] = count;
 	this->m_paramData.length = sizeof(int);
 }
 
@@ -30,7 +35,7 @@ AwardStatPacket::~AwardStatPacket()
 {
 	if (m_paramData.data != NULL) 
 	{
-		delete [] m_paramData.data;
+		delete[] m_paramData.data;
 		m_paramData.data = NULL;
 	}
 }

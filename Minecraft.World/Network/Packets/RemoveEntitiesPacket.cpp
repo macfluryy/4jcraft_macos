@@ -16,7 +16,7 @@ RemoveEntitiesPacket::RemoveEntitiesPacket(intArray ids)
 
 RemoveEntitiesPacket::~RemoveEntitiesPacket()
 {
-	delete ids.data;
+	delete[] ids.data; //4jcraft, changed to []
 }
 
 void RemoveEntitiesPacket::read(DataInputStream *dis) //throws IOException 

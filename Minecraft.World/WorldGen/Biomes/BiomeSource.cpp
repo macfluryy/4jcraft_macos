@@ -218,7 +218,7 @@ void BiomeSource::getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h, 
 	{
 		BiomeArray tmp = cache->getBiomeBlockAt(x, z);
 		System::arraycopy(tmp, 0, &biomes, 0, w * h);
-		delete tmp.data;	// MGH - added, the caching creates this array from the indices now.
+		delete[] tmp.data;	// MGH - added, the caching creates this array from the indices now. //4jcraft made it array delete
 		//return biomes;
 	}
 
