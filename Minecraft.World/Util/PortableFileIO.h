@@ -1,8 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include <fstream>
-#include <ios>
+#include <cstdio>
 #include <string>
 
 #include "StringHelpers.h"
@@ -24,31 +23,72 @@ namespace PortableFileIO
 		std::size_t fileSize;
 	};
 
+	inline std::FILE *OpenBinaryFileForRead(const std::wstring &path)
+	{
+#if defined(_WIN32)
+		return _wfopen(path.c_str(), L"rb");
+#else
+		const std::string nativePath = wstringtofilename(path);
+		return std::fopen(nativePath.c_str(), "rb");
+#endif
+	}
+
+	inline bool Seek(std::FILE *file, std::size_t offset, int origin)
+	{
+#if defined(_WIN32)
+		return _fseeki64(file, static_cast<__int64>(offset), origin) == 0;
+#else
+		return fseeko(file, static_cast<off_t>(offset), origin) == 0;
+#endif
+	}
+
+	inline __int64 Tell(std::FILE *file)
+	{
+#if defined(_WIN32)
+		return _ftelli64(file);
+#else
+		return static_cast<__int64>(ftello(file));
+#endif
+	}
+
 	inline BinaryReadResult ReadBinaryFile(const std::wstring &path, void *buffer, std::size_t capacity)
 	{
-		const std::string nativePath = wstringtofilename(path);
-		std::ifstream stream(nativePath.c_str(), std::ios::binary | std::ios::ate);
-		if (!stream.is_open())
+		std::FILE *stream = OpenBinaryFileForRead(path);
+		if (stream == NULL)
 		{
 			return { BinaryReadStatus::not_found, 0, 0 };
 		}
 
-		const std::streamoff endPosition = stream.tellg();
+		if (!Seek(stream, 0, SEEK_END))
+		{
+			std::fclose(stream);
+			return { BinaryReadStatus::read_error, 0, 0 };
+		}
+
+		const __int64 endPosition = Tell(stream);
 		if (endPosition < 0)
 		{
+			std::fclose(stream);
 			return { BinaryReadStatus::read_error, 0, 0 };
 		}
 
 		const std::size_t fileSize = static_cast<std::size_t>(endPosition);
 		if (fileSize > capacity)
 		{
+			std::fclose(stream);
 			return { BinaryReadStatus::too_large, 0, fileSize };
 		}
 
-		stream.seekg(0, std::ios::beg);
-		stream.read(reinterpret_cast<char *>(buffer), static_cast<std::streamsize>(fileSize));
-		const std::size_t bytesRead = static_cast<std::size_t>(stream.gcount());
-		if ((!stream && !stream.eof()) || bytesRead != fileSize)
+		if (!Seek(stream, 0, SEEK_SET))
+		{
+			std::fclose(stream);
+			return { BinaryReadStatus::read_error, 0, fileSize };
+		}
+
+		const std::size_t bytesRead = std::fread(buffer, 1, fileSize, stream);
+		const bool failed = std::ferror(stream) != 0;
+		std::fclose(stream);
+		if (failed || bytesRead != fileSize)
 		{
 			return { BinaryReadStatus::read_error, bytesRead, fileSize };
 		}
@@ -58,29 +98,42 @@ namespace PortableFileIO
 
 	inline BinaryReadResult ReadBinaryFileSegment(const std::wstring &path, std::size_t offset, void *buffer, std::size_t bytesToRead)
 	{
-		const std::string nativePath = wstringtofilename(path);
-		std::ifstream stream(nativePath.c_str(), std::ios::binary | std::ios::ate);
-		if (!stream.is_open())
+		std::FILE *stream = OpenBinaryFileForRead(path);
+		if (stream == NULL)
 		{
 			return { BinaryReadStatus::not_found, 0, 0 };
 		}
 
-		const std::streamoff endPosition = stream.tellg();
+		if (!Seek(stream, 0, SEEK_END))
+		{
+			std::fclose(stream);
+			return { BinaryReadStatus::read_error, 0, 0 };
+		}
+
+		const __int64 endPosition = Tell(stream);
 		if (endPosition < 0)
 		{
+			std::fclose(stream);
 			return { BinaryReadStatus::read_error, 0, 0 };
 		}
 
 		const std::size_t fileSize = static_cast<std::size_t>(endPosition);
 		if ((offset > fileSize) || (bytesToRead > (fileSize - offset)))
 		{
+			std::fclose(stream);
 			return { BinaryReadStatus::too_large, 0, fileSize };
 		}
 
-		stream.seekg(static_cast<std::streamoff>(offset), std::ios::beg);
-		stream.read(reinterpret_cast<char *>(buffer), static_cast<std::streamsize>(bytesToRead));
-		const std::size_t bytesRead = static_cast<std::size_t>(stream.gcount());
-		if ((!stream && !stream.eof()) || bytesRead != bytesToRead)
+		if (!Seek(stream, offset, SEEK_SET))
+		{
+			std::fclose(stream);
+			return { BinaryReadStatus::read_error, 0, fileSize };
+		}
+
+		const std::size_t bytesRead = std::fread(buffer, 1, bytesToRead, stream);
+		const bool failed = std::ferror(stream) != 0;
+		std::fclose(stream);
+		if (failed || bytesRead != bytesToRead)
 		{
 			return { BinaryReadStatus::read_error, bytesRead, fileSize };
 		}

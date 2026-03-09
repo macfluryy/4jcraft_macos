@@ -8,13 +8,46 @@
 #include "../../Platform/Common/DLC/DLCTextureFile.h"
 #include "../../Platform/Common/DLC/DLCLocalisationFile.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Utils/StringTable.h"
 #include "../../Platform/Common/DLC/DLCAudioFile.h"
+
+#include <limits>
 
 #if defined _XBOX || defined _WINDOWS64
 #include "../../Platform/Xbox/XML/ATGXmlParser.h"
 #include "../../Platform/Xbox/XML/xmlFilesCallback.h"
 #endif
+
+namespace
+{
+	bool ReadPortableBinaryFile(File &file, PBYTE &data, DWORD &size)
+	{
+		const __int64 fileLength = file.length();
+		if (fileLength < 0 || fileLength > static_cast<__int64>(std::numeric_limits<DWORD>::max()))
+		{
+			data = NULL;
+			size = 0;
+			return false;
+		}
+
+		const std::size_t capacity = static_cast<std::size_t>(fileLength);
+		PBYTE buffer = new BYTE[capacity == 0 ? 1 : capacity];
+		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFile(file.getPath(), buffer, capacity);
+		if (readResult.status != PortableFileIO::BinaryReadStatus::ok
+			|| readResult.fileSize > std::numeric_limits<DWORD>::max())
+		{
+			delete [] buffer;
+			data = NULL;
+			size = 0;
+			return false;
+		}
+
+		data = buffer;
+		size = static_cast<DWORD>(readResult.fileSize);
+		return true;
+	}
+}
 
 DLCTexturePack::DLCTexturePack(DWORD id, DLCPack *pack, TexturePack *fallback) : AbstractTexturePack(id, NULL, pack->getName(), fallback)
 {
@@ -305,30 +338,12 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 
 				if(xzpPath.exists())
 				{
-					const char *pchFilename=wstringtofilename(xzpPath.getPath());
-					HANDLE fileHandle = CreateFile(
-						pchFilename, // file name
-						GENERIC_READ, // access mode
-						0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-						NULL, // Unused
-						OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-						FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-						NULL // Unsupported
-						);
-
-					if( fileHandle != INVALID_HANDLE_VALUE )
+					PBYTE pbData = NULL;
+					DWORD bytesRead = 0;
+					if( ReadPortableBinaryFile(xzpPath, pbData, bytesRead) )
 					{
-						DWORD dwFileSize = xzpPath.length();
-						DWORD bytesRead;
-						PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-						BOOL success = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-						CloseHandle(fileHandle);
-						if(success)
-						{
-							DLCUIDataFile *uiDLCFile = (DLCUIDataFile *)texturePack->m_dlcDataPack->addFile(DLCManager::e_DLCType_UIData,L"TexturePack.xzp");
-							uiDLCFile->addData(pbData,bytesRead,true);
-						
-						}
+						DLCUIDataFile *uiDLCFile = (DLCUIDataFile *)texturePack->m_dlcDataPack->addFile(DLCManager::e_DLCType_UIData,L"TexturePack.xzp");
+						uiDLCFile->addData(pbData,bytesRead,true);
 					}
 				}
 #else
@@ -354,49 +369,20 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							File grf( getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dlcFile->getGrfPath() ) );
 							if (grf.exists())
 							{
-#if defined(_UNICODE) && !defined(__linux__)
-								std::wstring path = grf.getPath();
-								const WCHAR *pchFilename=path.c_str();
-								HANDLE fileHandle = CreateFile(
-									pchFilename, // file name
-									GENERIC_READ, // access mode
-									0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-									NULL, // Unused
-									OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-									FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-									NULL // Unsupported
-									);
-#else
-								const char *pchFilename=wstringtofilename(grf.getPath());
-								HANDLE fileHandle = CreateFile(
-									pchFilename, // file name
-									GENERIC_READ, // access mode
-									0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-									NULL, // Unused
-									OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-									FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-									NULL // Unsupported
-									);
-#endif
-
-								if( fileHandle != INVALID_HANDLE_VALUE )
+								PBYTE pbData = NULL;
+								DWORD dwFileSize = 0;
+								if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
 								{
-									DWORD dwFileSize = grf.length();
-									DWORD bytesRead;
-									PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-									BOOL bSuccess = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-									if(bSuccess==FALSE)
-									{
-										app.FatalLoadError();
-									}
-									CloseHandle(fileHandle);
-
 									// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
 									dlcFile->setGrfData(pbData, dwFileSize, texturePack->m_stringTable);
 
 									delete [] pbData;
 
 									app.m_gameRules.setLevelGenerationOptions( dlcFile->lgo );
+								}
+								else
+								{
+									app.FatalLoadError();
 								}
 							}
 						}
@@ -406,44 +392,16 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						File grf(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), levelGen->getBaseSavePath() ));
 						if (grf.exists())
 						{
-#if defined(_UNICODE) && !defined(__linux__)
-							std::wstring path = grf.getPath();
-							const WCHAR *pchFilename=path.c_str();
-							HANDLE fileHandle = CreateFile(
-								pchFilename, // file name
-								GENERIC_READ, // access mode
-								0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-								NULL, // Unused
-								OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-								FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-								NULL // Unsupported
-								);
-#else
-							const char *pchFilename=wstringtofilename(grf.getPath());
-							HANDLE fileHandle = CreateFile(
-								pchFilename, // file name
-								GENERIC_READ, // access mode
-								0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-								NULL, // Unused
-								OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-								FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-								NULL // Unsupported
-								);
-#endif
-
-							if( fileHandle != INVALID_HANDLE_VALUE )
+							PBYTE pbData = NULL;
+							DWORD dwFileSize = 0;
+							if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
 							{
-								DWORD bytesRead,dwFileSize = GetFileSize(fileHandle,NULL);
-								PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-								BOOL bSuccess = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-								if(bSuccess==FALSE)
-								{
-									app.FatalLoadError();
-								}
-								CloseHandle(fileHandle);
-
 								// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
 								levelGen->setBaseSaveData(pbData, dwFileSize);
+							}
+							else
+							{
+								app.FatalLoadError();
 							}
 						}
 					}
