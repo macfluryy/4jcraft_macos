@@ -414,8 +414,8 @@ public:
 	void setUUID(const std::wstring &UUID)															{ m_UUID = UUID; }
 	std::wstring getUUID()																			{ return m_UUID; }
 
-	void setPlayerIndex(DWORD dwIndex)														{ m_playerIndex = dwIndex; }
-	DWORD getPlayerIndex()																	{ return m_playerIndex; }
+	void setPlayerIndex(std::uint8_t index)													{ m_playerIndex = index; }
+	std::uint8_t getPlayerIndex()															{ return m_playerIndex; }
 
 	void setIsGuest(bool bVal)																{ m_bIsGuest = bVal; }
 	bool isGuest()																			{ return m_bIsGuest; }
@@ -440,7 +440,7 @@ private:
 	std::uint32_t m_dwSkinId,m_dwCapeId;
 
 	// 4J Added - Used to show which colour the player is on the map/behind their name
-	DWORD m_playerIndex;
+	std::uint8_t m_playerIndex;
 
 	// 4J-PB - to track debug options from the server player
 	unsigned int m_uiDebugOptions;
