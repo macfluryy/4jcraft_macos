@@ -4,7 +4,7 @@
 #include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include <assert.h>
-#include "../DurangoMedia/4J_strings.h"
+#include "../../../Minecraft.Assets/DurangoMedia/4J_strings.h"
 #include "Minecraft_Controller_Actions.h"
 #include "../Xbox/Xbox_App.h"
 #include "GameConfig/Minecraft.spa.h"
