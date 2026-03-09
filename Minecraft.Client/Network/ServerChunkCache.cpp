@@ -912,9 +912,9 @@ TilePos *ServerChunkCache::findNearestMapFeature(Level *level, const std::wstrin
 	return source->findNearestMapFeature(level, featureName, x, y, z);
 }
 
-int ServerChunkCache::runSaveThreadProc(LPVOID lpParam)
+int ServerChunkCache::runSaveThreadProc(void *lpParam)
 {
-	SaveThreadData *params = (SaveThreadData *)lpParam;
+	SaveThreadData *params = static_cast<SaveThreadData *>(lpParam);
 
 	if(params->useSharedThreadStorage)
 	{
