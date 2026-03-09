@@ -299,15 +299,22 @@ void ConsoleSaveFileOriginal::deleteFile( FileEntry *file )
 	ReleaseSaveAccess();
 }
 
-void ConsoleSaveFileOriginal::setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod)
+void ConsoleSaveFileOriginal::setFilePointer(FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin)
 {
 	LockSaveAccess();
 
-	file->currentFilePointer = file->data.startOffset + lDistanceToMove;
-
-	if( dwMoveMethod == FILE_END)
+	switch( seekOrigin )
 	{
-		file->currentFilePointer += file->getFileSize();
+	case SaveFileSeekOrigin::Current:
+		file->currentFilePointer += distanceToMove;
+		break;
+	case SaveFileSeekOrigin::End:
+		file->currentFilePointer = file->data.startOffset + file->getFileSize() + distanceToMove;
+		break;
+	case SaveFileSeekOrigin::Begin:
+	default:
+		file->currentFilePointer = file->data.startOffset + distanceToMove;
+		break;
 	}
 
 	ReleaseSaveAccess();

@@ -39,7 +39,7 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	*/
 
 	fileEntry = m_saveFile->createFile( fileName->getName() );
-	m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_END );
+	m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::End );
 
 	if ( fileEntry->getFileSize() < SECTOR_BYTES)
 	{
@@ -91,7 +91,7 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	sectorFree->at(0) = false; // chunk offset table
 	sectorFree->at(1) = false; // for the last modified info
 
-	m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::Begin );
 	for (int i = 0; i < SECTOR_INTS; ++i)
 	{
 		unsigned int offset = 0;
@@ -139,11 +139,11 @@ void RegionFile::writeAllOffsets() // used for the file ConsoleSaveFile conversi
 		m_saveFile->LockSaveAccess();
 
 		unsigned int numberOfBytesWritten = 0;
-		m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_BEGIN );
+		m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::Begin );
 		m_saveFile->writeFile(fileEntry,offsets, SECTOR_BYTES ,&numberOfBytesWritten);
 
 		numberOfBytesWritten = 0;
-		m_saveFile->setFilePointer( fileEntry, SECTOR_BYTES, NULL, FILE_BEGIN );
+		m_saveFile->setFilePointer( fileEntry, SECTOR_BYTES, SaveFileSeekOrigin::Begin );
 		m_saveFile->writeFile(fileEntry, chunkTimestamps, SECTOR_BYTES, &numberOfBytesWritten);
 
 		m_saveFile->ReleaseSaveAccess();
@@ -199,7 +199,7 @@ DataInputStream *RegionFile::getChunkDataInputStream(int x, int z) // TODO - was
 	m_saveFile->LockSaveAccess();
 
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
-	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, NULL, FILE_BEGIN);
+	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, SaveFileSeekOrigin::Begin);
 	
 	unsigned int length;
 	unsigned int decompLength;
@@ -373,7 +373,7 @@ void RegionFile::write(int x, int z, uint8_t *data, int length)		// TODO - was s
 					*/
 	//            debug("SAVE", x, z, length, "grow");
 				//SetFilePointer(file,0,0,FILE_END);			
-				m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_END );
+				m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::End );
 
 				sectorNumber = (int)sectorFree->size();
 	#ifndef _CONTENT_PACAKGE
@@ -407,7 +407,7 @@ void RegionFile::write(int sectorNumber, uint8_t *data, int length, unsigned int
 {
 	unsigned int numberOfBytesWritten = 0;
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
-	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, SaveFileSeekOrigin::Begin );
 
 	// 4J - this differs a bit from the java file format. Java has length stored as an int, then a type as a byte, then length-1 bytes of data
 	// We store length and decompression length as ints, then length bytes of xbox LZX compressed data
@@ -426,7 +426,7 @@ void RegionFile::zero(int sectorNumber, int length)
 {
 	unsigned int numberOfBytesWritten = 0;
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
-	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, sectorNumber * SECTOR_BYTES, SaveFileSeekOrigin::Begin );
 	m_saveFile->zeroFile( fileEntry, length, &numberOfBytesWritten );
 }
 
@@ -449,7 +449,7 @@ bool RegionFile::hasChunk(int x, int z)
 // 4J added - write the initial two sectors that used to be written in the ctor when the file was empty
 void RegionFile::insertInitialSectors()
 {
-	m_saveFile->setFilePointer( fileEntry, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::Begin );
 	unsigned int numberOfBytesWritten = 0;
 	uint8_t zeroBytes[ SECTOR_BYTES ];
 	ZeroMemory(zeroBytes, SECTOR_BYTES);
@@ -472,7 +472,7 @@ void RegionFile::setOffset(int x, int z, int offset)
 
 	unsigned int numberOfBytesWritten = 0;
 	offsets[x + z * 32] = offset;
-	m_saveFile->setFilePointer( fileEntry, (x + z * 32) * 4, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, (x + z * 32) * 4, SaveFileSeekOrigin::Begin );
 	
 	m_saveFile->writeFile(fileEntry,&offset,4,&numberOfBytesWritten);
 }
@@ -486,7 +486,7 @@ void RegionFile::setTimestamp(int x, int z, int value)
 
 	unsigned int numberOfBytesWritten = 0;
 	chunkTimestamps[x + z * 32] = value;
-	m_saveFile->setFilePointer( fileEntry, SECTOR_BYTES + (x + z * 32) * 4, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( fileEntry, SECTOR_BYTES + (x + z * 32) * 4, SaveFileSeekOrigin::Begin );
 	
 	m_saveFile->writeFile(fileEntry,&value,4,&numberOfBytesWritten);
 }

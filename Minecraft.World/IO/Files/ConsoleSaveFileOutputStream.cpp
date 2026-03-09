@@ -19,7 +19,7 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 
 	m_file = m_saveFile->createFile(file);
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFile, FileEntry *file)
@@ -28,7 +28,7 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 
 	m_file = file;
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 //Writes the specified byte to this file output stream. Implements the write method of OutputStream.

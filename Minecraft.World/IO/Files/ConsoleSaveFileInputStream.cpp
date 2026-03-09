@@ -9,7 +9,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 	m_saveFile = saveFile;
 	m_file = m_saveFile->createFile( file );
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile, FileEntry *file)
@@ -17,7 +17,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 	m_saveFile = saveFile;
 	m_file = file;
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 //Reads a byte of data from this input stream. This method blocks if no input is yet available.

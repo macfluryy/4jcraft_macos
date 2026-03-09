@@ -543,7 +543,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::ws
 		ba_gameRules.length = fe->getFileSize();
 		ba_gameRules.data = new BYTE[ ba_gameRules.length ];
 
-		csf->setFilePointer(fe,0,NULL,FILE_BEGIN);
+		csf->setFilePointer(fe, 0, SaveFileSeekOrigin::Begin);
 		csf->readFile(fe, ba_gameRules.data, ba_gameRules.length, &numberOfBytesRead);
 		assert(numberOfBytesRead == ba_gameRules.length);
 
@@ -809,7 +809,7 @@ void MinecraftServer::saveGameRules()
 		{
 			ConsoleSaveFile *csf = getLevel(0)->getLevelStorage()->getSaveFile();
 			FileEntry *fe = csf->createFile(ConsoleSavePath(GAME_RULE_SAVENAME));
-			csf->setFilePointer(fe, 0, NULL, FILE_BEGIN);
+			csf->setFilePointer(fe, 0, SaveFileSeekOrigin::Begin);
 			unsigned int length;
 			csf->writeFile(fe, ba.data, ba.length, &length );
 

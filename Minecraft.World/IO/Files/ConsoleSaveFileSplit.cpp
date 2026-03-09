@@ -423,7 +423,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 		for(AUTO_VAR(it, sourceFiles->begin()); it != sourceFiles->end(); ++it)
 		{
 			FileEntry *sourceEntry = *it;
-			sourceSave->setFilePointer(sourceEntry,0,NULL,FILE_BEGIN);
+			sourceSave->setFilePointer(sourceEntry, 0, SaveFileSeekOrigin::Begin);
 
 			FileEntry *targetEntry = createFile(ConsoleSavePath(sourceEntry->data.filename));
 
@@ -687,22 +687,29 @@ void ConsoleSaveFileSplit::deleteFile( FileEntry *file )
 	ReleaseSaveAccess();
 }
 
-void ConsoleSaveFileSplit::setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod)
+void ConsoleSaveFileSplit::setFilePointer(FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin)
 {
 	LockSaveAccess();
 
-	if( file->isRegionFile() )
+	if( seekOrigin == SaveFileSeekOrigin::Current )
 	{
-		file->currentFilePointer = lDistanceToMove;
+		file->currentFilePointer += distanceToMove;
 	}
 	else
 	{
-		file->currentFilePointer = file->data.startOffset + lDistanceToMove;
-	}
+		if( file->isRegionFile() )
+		{
+			file->currentFilePointer = distanceToMove;
+		}
+		else
+		{
+			file->currentFilePointer = file->data.startOffset + distanceToMove;
+		}
 
-	if( dwMoveMethod == FILE_END)
-	{
-		file->currentFilePointer += file->getFileSize();
+		if( seekOrigin == SaveFileSeekOrigin::End )
+		{
+			file->currentFilePointer += file->getFileSize();
+		}
 	}
 
 	ReleaseSaveAccess();

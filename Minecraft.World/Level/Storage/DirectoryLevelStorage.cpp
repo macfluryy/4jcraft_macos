@@ -270,7 +270,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 		else
 #endif
 		{
-			getSaveFile()->setFilePointer(fileEntry,0,NULL, FILE_BEGIN);
+			getSaveFile()->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
 
 #ifdef _LARGE_WORLDS
 			byteArray data(fileEntry->getFileSize());
@@ -683,7 +683,7 @@ void DirectoryLevelStorage::saveMapIdLookup()
 	{
 		unsigned int NumberOfBytesWritten;
 		FileEntry *fileEntry = m_saveFile->createFile(file);
-		m_saveFile->setFilePointer(fileEntry,0,NULL, FILE_BEGIN);
+		m_saveFile->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
 
 #ifdef _LARGE_WORLDS
 		ByteArrayOutputStream baos;

@@ -308,7 +308,7 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 	FileEntry *origFileEntry = currentSave->createFile( std::wstring( L"level.dat" ) );
 	byteArray levelData( origFileEntry->getFileSize() );
 	unsigned int bytesRead;
-	currentSave->setFilePointer(origFileEntry,0,NULL,FILE_BEGIN);
+	currentSave->setFilePointer(origFileEntry, 0, SaveFileSeekOrigin::Begin);
 	currentSave->readFile(
          origFileEntry,
          levelData.data, // data buffer

@@ -95,7 +95,7 @@ public:
 	virtual FileEntry *createFile( const ConsoleSavePath &fileName );
 	virtual void deleteFile( FileEntry *file );
 
-	virtual void setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod);
+	virtual void setFilePointer(FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin);
 	virtual bool writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten );
 	virtual bool zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten);
 	virtual bool readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead );
