@@ -337,7 +337,7 @@ void ConsoleSaveFileOriginal::PrepareForWrite( FileEntry *file, DWORD nNumberOfB
 	finalizeWrite();
 }
 
-BOOL ConsoleSaveFileOriginal::writeFile(FileEntry *file,LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileOriginal::writeFile(FileEntry *file,const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -411,7 +411,7 @@ BOOL ConsoleSaveFileOriginal::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWr
 	return 1;
 }
 
-BOOL ConsoleSaveFileOriginal::readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
+BOOL ConsoleSaveFileOriginal::readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
 {
 	DWORD actualBytesToRead;
 	assert( pvSaveMem != NULL );

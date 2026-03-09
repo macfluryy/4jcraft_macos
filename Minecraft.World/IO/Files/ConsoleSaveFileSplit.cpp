@@ -734,7 +734,7 @@ void ConsoleSaveFileSplit::PrepareForWrite( FileEntry *file, DWORD nNumberOfByte
 	finalizeWrite();
 }
 
-BOOL ConsoleSaveFileSplit::writeFile(FileEntry *file,LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
+BOOL ConsoleSaveFileSplit::writeFile(FileEntry *file,const void *lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten)
 {
 	assert( pvSaveMem != NULL );
 	if( pvSaveMem == NULL )
@@ -840,7 +840,7 @@ BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite
 	return 1;
 }
 
-BOOL ConsoleSaveFileSplit::readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
+BOOL ConsoleSaveFileSplit::readFile( FileEntry *file, void *lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead)
 {
 	DWORD actualBytesToRead;
 	assert( pvSaveMem != NULL );
