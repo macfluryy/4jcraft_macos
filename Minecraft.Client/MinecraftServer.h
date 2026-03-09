@@ -34,7 +34,7 @@ typedef struct _NetworkGameInitData
 {
 	__int64 seed;
 	LoadSaveDataThreadParam *saveData;
-	DWORD settings;
+	std::uint32_t settings;
 	LevelGenerationOptions *levelGen;
 	std::uint32_t texturePackId;
 	bool findSeed;
@@ -127,7 +127,7 @@ public:
 	~MinecraftServer();
 private:
 	// 4J Added - LoadSaveDataThreadParam
-	bool initServer(__int64 seed, NetworkGameInitData *initData, DWORD initSettings, bool findSeed);
+	bool initServer(__int64 seed, NetworkGameInitData *initData, std::uint32_t initSettings, bool findSeed);
 	void postProcessTerminate(ProgressRenderer *mcprogress);
     bool loadLevel(LevelStorageSource *storageSource, const std::wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData);
     void setProgress(const std::wstring& status, int progress);

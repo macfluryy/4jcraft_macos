@@ -99,7 +99,7 @@ MinecraftServer::~MinecraftServer()
 {
 }
 
-bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, DWORD initSettings, bool findSeed)
+bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, std::uint32_t initSettings, bool findSeed)
 {
 	// 4J - removed
 #if 0
@@ -1060,7 +1060,7 @@ extern int c0a, c0b, c1a, c1b, c1c, c2a, c2b;
 void MinecraftServer::run(__int64 seed, void *lpParameter)
 {
 	NetworkGameInitData *initData = NULL;
-	DWORD initSettings = 0;
+	std::uint32_t initSettings = 0;
 	bool findSeed = false;
 	if(lpParameter != NULL)
 	{
