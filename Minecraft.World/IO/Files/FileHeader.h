@@ -173,7 +173,7 @@ protected:
 
 	unsigned int GetFileSize();
 
-	void AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite, bool subtract = false);
+	void AdjustStartOffsets(FileEntry *file, unsigned int nNumberOfBytesToWrite, bool subtract = false);
 
 	bool fileExists( const std::wstring &name );
 

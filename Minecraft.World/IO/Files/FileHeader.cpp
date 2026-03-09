@@ -325,7 +325,7 @@ unsigned int FileHeader::GetFileSize()
 	return GetStartOfNextData() + ( sizeof(FileEntrySaveData) * (unsigned int)fileTable.size() );
 }
 
-void FileHeader::AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite, bool subtract /*= false*/)
+void FileHeader::AdjustStartOffsets(FileEntry *file, unsigned int nNumberOfBytesToWrite, bool subtract /*= false*/)
 {
 	bool found = false;
 	for( unsigned int i = 0; i < fileTable.size(); ++i )
