@@ -29,7 +29,7 @@ meson-logs/
 *.out
 *.d
 compile_commands.json
-
+.clangd
 
 
 # ----- Scratch / legacy -----
