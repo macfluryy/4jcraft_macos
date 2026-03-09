@@ -3,6 +3,8 @@
 
 // #pragma message("LevelGenerationOptions.h ")
 
+#include <cstdint>
+
 #include "GameRuleDefinition.h"
 #include "../../Minecraft.World/WorldGen/Features/StructureFeature.h"
 
@@ -23,16 +25,16 @@ public:
 	// completely different lifespans.
 
 	virtual bool requiresTexturePack()=0;
-	virtual UINT getRequiredTexturePackId()=0;
+	virtual std::uint32_t getRequiredTexturePackId()=0;
 	virtual std::wstring getDefaultSaveName()=0;
-	virtual LPCWSTR getWorldName()=0;
-	virtual LPCWSTR getDisplayName()=0;
+	virtual const wchar_t *getWorldName()=0;
+	virtual const wchar_t *getDisplayName()=0;
 	virtual std::wstring getGrfPath()=0;
 	virtual bool requiresBaseSave() = 0;
 	virtual std::wstring getBaseSavePath() = 0;
 
 	virtual void setRequiresTexturePack(bool)=0;
-	virtual void setRequiredTexturePackId(UINT)=0;
+	virtual void setRequiredTexturePackId(std::uint32_t)=0;
 	virtual void setDefaultSaveName(const std::wstring &)=0;
 	virtual void setWorldName(const std::wstring &)=0;
 	virtual void setDisplayName(const std::wstring &)=0;
@@ -51,23 +53,23 @@ protected:
 	std::wstring m_displayName;
 	std::wstring m_defaultSaveName;
 	bool m_bRequiresTexturePack;
-	int m_requiredTexturePackId;
+	std::uint32_t m_requiredTexturePackId;
 	std::wstring m_grfPath;
 	std::wstring m_baseSavePath;
 	bool m_bRequiresBaseSave;
 
 public:
 	virtual bool requiresTexturePack();
-	virtual UINT getRequiredTexturePackId();
+	virtual std::uint32_t getRequiredTexturePackId();
 	virtual std::wstring getDefaultSaveName();
-	virtual LPCWSTR getWorldName();
-	virtual LPCWSTR getDisplayName();
+	virtual const wchar_t *getWorldName();
+	virtual const wchar_t *getDisplayName();
 	virtual std::wstring getGrfPath();
 	virtual bool requiresBaseSave();
 	virtual std::wstring getBaseSavePath();
 
 	virtual void setRequiresTexturePack(bool x);
-	virtual void setRequiredTexturePackId(UINT x);
+	virtual void setRequiredTexturePackId(std::uint32_t x);
 	virtual void setDefaultSaveName(const std::wstring &x);
 	virtual void setWorldName(const std::wstring &x);
 	virtual void setDisplayName(const std::wstring &x);
@@ -116,10 +118,10 @@ public:
 	bool isFromDLC();
 
 	bool requiresTexturePack();
-	UINT getRequiredTexturePackId();
+	std::uint32_t getRequiredTexturePackId();
 	std::wstring getDefaultSaveName();
-	LPCWSTR getWorldName();
-	LPCWSTR getDisplayName();
+	const wchar_t *getWorldName();
+	const wchar_t *getDisplayName();
 	std::wstring getGrfPath();
 	bool requiresBaseSave();
 	std::wstring getBaseSavePath();
@@ -127,7 +129,7 @@ public:
 	void setGrSource(GrSource *grs);
 
 	void setRequiresTexturePack(bool x);
-	void setRequiredTexturePackId(UINT x);
+	void setRequiredTexturePackId(std::uint32_t x);
 	void setDefaultSaveName(const std::wstring &x);
 	void setWorldName(const std::wstring &x);
 	void setDisplayName(const std::wstring &x);

@@ -23,16 +23,16 @@ JustGrSource::JustGrSource()
 }
 
 bool JustGrSource::requiresTexturePack() {return m_bRequiresTexturePack;}
-UINT JustGrSource::getRequiredTexturePackId() {return m_requiredTexturePackId;}
+std::uint32_t JustGrSource::getRequiredTexturePackId() {return m_requiredTexturePackId;}
 std::wstring JustGrSource::getDefaultSaveName() {return m_defaultSaveName;}
-LPCWSTR JustGrSource::getWorldName() {return m_worldName.c_str();}
-LPCWSTR JustGrSource::getDisplayName() {return m_displayName.c_str();}
+const wchar_t *JustGrSource::getWorldName() {return m_worldName.c_str();}
+const wchar_t *JustGrSource::getDisplayName() {return m_displayName.c_str();}
 std::wstring JustGrSource::getGrfPath() {return m_grfPath;}
 bool JustGrSource::requiresBaseSave() { return m_bRequiresBaseSave; };
 std::wstring JustGrSource::getBaseSavePath() { return m_baseSavePath; };
 
 void JustGrSource::setRequiresTexturePack(bool x) {m_bRequiresTexturePack = x;}
-void JustGrSource::setRequiredTexturePackId(UINT x) {m_requiredTexturePackId = x;}
+void JustGrSource::setRequiredTexturePackId(std::uint32_t x) {m_requiredTexturePackId = x;}
 void JustGrSource::setDefaultSaveName(const std::wstring &x) {m_defaultSaveName = x;}
 void JustGrSource::setWorldName(const std::wstring &x) {m_worldName = x;}
 void JustGrSource::setDisplayName(const std::wstring &x) {m_displayName = x;}
@@ -477,10 +477,10 @@ bool LevelGenerationOptions::isFromSave() { return getSrc() == eSrc_fromSave; }
 bool LevelGenerationOptions::isFromDLC() { return getSrc() == eSrc_fromDLC; }
 
 bool LevelGenerationOptions::requiresTexturePack() { return info()->requiresTexturePack(); }
-UINT LevelGenerationOptions::getRequiredTexturePackId() { return info()->getRequiredTexturePackId(); }
+std::uint32_t LevelGenerationOptions::getRequiredTexturePackId() { return info()->getRequiredTexturePackId(); }
 std::wstring LevelGenerationOptions::getDefaultSaveName() { return info()->getDefaultSaveName(); }
-LPCWSTR LevelGenerationOptions::getWorldName() { return info()->getWorldName(); }
-LPCWSTR LevelGenerationOptions::getDisplayName() { return info()->getDisplayName(); }
+const wchar_t *LevelGenerationOptions::getWorldName() { return info()->getWorldName(); }
+const wchar_t *LevelGenerationOptions::getDisplayName() { return info()->getDisplayName(); }
 std::wstring LevelGenerationOptions::getGrfPath() {	return info()->getGrfPath(); }
 bool LevelGenerationOptions::requiresBaseSave() { return info()->requiresBaseSave(); }
 std::wstring LevelGenerationOptions::getBaseSavePath() { return info()->getBaseSavePath(); }
@@ -488,7 +488,7 @@ std::wstring LevelGenerationOptions::getBaseSavePath() { return info()->getBaseS
 void LevelGenerationOptions::setGrSource(GrSource *grs) { m_pSrc = grs; }
 
 void LevelGenerationOptions::setRequiresTexturePack(bool x) { info()->setRequiresTexturePack(x); }
-void LevelGenerationOptions::setRequiredTexturePackId(UINT x) { info()->setRequiredTexturePackId(x); }
+void LevelGenerationOptions::setRequiredTexturePackId(std::uint32_t x) { info()->setRequiredTexturePackId(x); }
 void LevelGenerationOptions::setDefaultSaveName(const std::wstring &x) { info()->setDefaultSaveName(x); }
 void LevelGenerationOptions::setWorldName(const std::wstring &x) { info()->setWorldName(x); }
 void LevelGenerationOptions::setDisplayName(const std::wstring &x) { info()->setDisplayName(x); }
