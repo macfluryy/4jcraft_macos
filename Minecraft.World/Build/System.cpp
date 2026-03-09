@@ -103,7 +103,7 @@ __int64 System::currentTimeMillis()
 	gettimeofday(&tv, NULL);
 	// Convert to milliseconds since unix epoch instead of windows file time 
 	// time is expecting calculation to be between 10-30 ms.
-	return (int64_t)tv.tv_sec * 1000LL + tv.tv_sec / 1000;
+	return (int64_t)tv.tv_sec * 1000LL + tv.tv_usec / 1000;
 #else
 
 	SYSTEMTIME UTCSysTime;
