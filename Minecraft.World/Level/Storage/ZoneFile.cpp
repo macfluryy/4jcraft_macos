@@ -3,6 +3,28 @@
 #include "../../IO/Files/File.h"
 #include "ZoneFile.h"
 
+namespace
+{
+	std::FILE *OpenBinaryFileForReadWrite(const File &file)
+	{
+#if defined(_WIN32)
+		std::FILE *stream = _wfopen(file.getPath().c_str(), L"r+b");
+		if (stream == NULL)
+		{
+			stream = _wfopen(file.getPath().c_str(), L"w+b");
+		}
+#else
+		const std::string nativePath = wstringtofilename(file.getPath());
+		std::FILE *stream = std::fopen(nativePath.c_str(), "r+b");
+		if (stream == NULL)
+		{
+			stream = std::fopen(nativePath.c_str(), "w+b");
+		}
+#endif
+		return stream;
+	}
+}
+
 
 const int ZoneFile::slotsLength = ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
 
@@ -23,7 +45,7 @@ ZoneFile::ZoneFile(__int64 key, File file, File entityFile) : slots(slotsLength)
 //        this.entityFile = new NbtSlotFile(entityFile);
 //    }
 
-    channel = CreateFile(wstringtofilename(file.getPath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    channel = OpenBinaryFileForReadWrite(file);
 	// 4J - try/catch removed
 //    try {
         readHeader();
@@ -71,7 +93,11 @@ void ZoneFile::writeHeader()
 
 void ZoneFile::close()
 {
-	CloseHandle(channel);
+	if (channel != NULL)
+	{
+		std::fclose(channel);
+		channel = NULL;
+	}
     entityFile->close();
 }
 

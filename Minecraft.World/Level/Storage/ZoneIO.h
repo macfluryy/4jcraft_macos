@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdio>
+
 #include "ZonedChunkStorage.h"
 
 class ByteBuffer;
@@ -6,11 +8,11 @@ class ByteBuffer;
 class ZoneIo
 {
 private:
-    HANDLE channel;
+    std::FILE *channel;
     __int64 pos;
 
 public:
-	ZoneIo(HANDLE channel, __int64 pos);
+	ZoneIo(std::FILE *channel, __int64 pos);
     void write(byteArray bb, int size);
     void write(ByteBuffer *bb, int size);
     ByteBuffer *read(int size);
