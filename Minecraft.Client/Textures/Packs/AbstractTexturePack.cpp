@@ -4,7 +4,7 @@
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 
-AbstractTexturePack::AbstractTexturePack(DWORD id, File *file, const std::wstring &name, TexturePack *fallback) : id(id), name(name)
+AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File *file, const std::wstring &name, TexturePack *fallback) : id(id), name(name)
 {
 	// 4J init
 	textureId = -1;
@@ -152,7 +152,7 @@ bool AbstractTexturePack::hasFile(const std::wstring &name, bool allowFallback)
 	return !hasFile && (allowFallback && fallback != NULL) ? fallback->hasFile(name, allowFallback) : hasFile;
 }
 
-DWORD AbstractTexturePack::getId()
+std::uint32_t AbstractTexturePack::getId()
 {
 	return id;
 }

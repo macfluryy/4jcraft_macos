@@ -291,19 +291,19 @@ bool TexturePackRepository::canUseWebSkin()
 	return false;
 }
 
-std::vector< std::pair<DWORD,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
+std::vector< std::pair<std::uint32_t,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
 {
-	std::vector< std::pair<DWORD,std::wstring> > *packList = new std::vector< std::pair<DWORD,std::wstring> >();
+	std::vector< std::pair<std::uint32_t,std::wstring> > *packList = new std::vector< std::pair<std::uint32_t,std::wstring> >();
 
 	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
 	{
 		TexturePack *pack = *it;
-		packList->push_back( std::pair<DWORD,std::wstring>(pack->getId(),pack->getName()) );
+		packList->push_back( std::pair<std::uint32_t,std::wstring>(pack->getId(),pack->getName()) );
 	}
 	return packList;
 }
 
-bool TexturePackRepository::selectTexturePackById(DWORD id)
+bool TexturePackRepository::selectTexturePackById(std::uint32_t id)
 {
 	bool bDidSelect = false;
 
@@ -352,7 +352,7 @@ bool TexturePackRepository::selectTexturePackById(DWORD id)
 	return bDidSelect;
 }
 
-TexturePack *TexturePackRepository::getTexturePackById(DWORD id)
+TexturePack *TexturePackRepository::getTexturePackById(std::uint32_t id)
 {
 	AUTO_VAR(it, cacheById.find(id));
 	if(it != cacheById.end())
@@ -363,27 +363,27 @@ TexturePack *TexturePackRepository::getTexturePackById(DWORD id)
 	return NULL;
 }
 
-TexturePack *TexturePackRepository::addTexturePackFromDLC(DLCPack *dlcPack, DWORD id)
+TexturePack *TexturePackRepository::addTexturePackFromDLC(DLCPack *dlcPack, std::uint32_t id)
 {
 	TexturePack *newPack = NULL;
 	// 4J-PB - The City texture pack went out with a child id for the texture pack of 1 instead of zero
 	// we need to mask off the child id here to deal with this
-	DWORD dwParentID=id&0xFFFFFF; // child id is <<24 and Or'd with parent
+	const std::uint32_t parentId = id & 0xFFFFFFu; // child id is <<24 and Or'd with parent
 
 	if(dlcPack != NULL)
 	{
-		newPack = new DLCTexturePack(dwParentID, dlcPack, DEFAULT_TEXTURE_PACK);
+		newPack = new DLCTexturePack(parentId, dlcPack, DEFAULT_TEXTURE_PACK);
 		texturePacks->push_back(newPack);
-		cacheById[dwParentID] = newPack;
+		cacheById[parentId] = newPack;
 
 #ifndef _CONTENT_PACKAGE
 		if(dlcPack->hasPurchasedFile(DLCManager::e_DLCType_TexturePack,L""))
 		{
-			wprintf(L"Added new FULL DLCTexturePack: %ls - id=%d\n", dlcPack->getName().c_str(),dwParentID );
+			wprintf(L"Added new FULL DLCTexturePack: %ls - id=%u\n", dlcPack->getName().c_str(), parentId );
 		}
 		else
 		{
-			wprintf(L"Added new TRIAL DLCTexturePack: %ls - id=%d\n", dlcPack->getName().c_str(),dwParentID );
+			wprintf(L"Added new TRIAL DLCTexturePack: %ls - id=%u\n", dlcPack->getName().c_str(), parentId );
 		}
 #endif
 	}
@@ -398,7 +398,7 @@ void TexturePackRepository::clearInvalidTexturePacks()
 	}
 }
 
-void TexturePackRepository::removeTexturePackById(DWORD id)
+void TexturePackRepository::removeTexturePackById(std::uint32_t id)
 {
 	AUTO_VAR(it, cacheById.find(id));
 	if(it != cacheById.end())
@@ -450,7 +450,7 @@ TexturePack *TexturePackRepository::getTexturePackByIndex(unsigned int index)
 	return pack;
 }
 
-unsigned int TexturePackRepository::getTexturePackIndex(unsigned int id)
+unsigned int TexturePackRepository::getTexturePackIndex(std::uint32_t id)
 {
 	int currentIndex = 0;
 	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)

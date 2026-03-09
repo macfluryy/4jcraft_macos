@@ -8,7 +8,7 @@ class BufferedImage;
 class AbstractTexturePack : public TexturePack
 {
 private:
-	const DWORD id;
+	const std::uint32_t id;
 	const std::wstring name;
 
 protected:
@@ -36,7 +36,7 @@ private:
 	int textureId;
 
 protected:
-	AbstractTexturePack(DWORD id, File *file, const std::wstring &name, TexturePack *fallback);
+	AbstractTexturePack(std::uint32_t id, File *file, const std::wstring &name, TexturePack *fallback);
 
 private:
 	static std::wstring trim(std::wstring line);
@@ -61,7 +61,7 @@ public:
 	virtual void load(Textures *textures);
 	virtual bool hasFile(const std::wstring &name, bool allowFallback);
 	virtual bool hasFile(const std::wstring &name) = 0;
-	virtual DWORD getId();
+	virtual std::uint32_t getId();
 	virtual std::wstring getName();
 	virtual std::wstring getDesc1();
 	virtual std::wstring getDesc2();

@@ -1,7 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "FolderTexturePack.h"
 
-FolderTexturePack::FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
+FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
 {
 	// 4J Stu - These calls need to be in the most derived version of the class
 	loadIcon();

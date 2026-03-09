@@ -22,7 +22,7 @@ public:
     virtual void load(Textures *textures) = 0;
     virtual InputStream *getResource(const std::wstring &name, bool allowFallback) = 0;// throws IOException;
     //virtual InputStream *getResource(const std::wstring &name) = 0;// throws IOException;
-    virtual DWORD getId() = 0;
+    virtual std::uint32_t getId() = 0;
     virtual std::wstring getName() = 0;
     virtual std::wstring getDesc1() = 0;
     virtual std::wstring getDesc2() = 0;

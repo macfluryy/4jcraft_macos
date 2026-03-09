@@ -50,7 +50,7 @@ namespace
 	}
 }
 
-DLCTexturePack::DLCTexturePack(DWORD id, DLCPack *pack, TexturePack *fallback) : AbstractTexturePack(id, NULL, pack->getName(), fallback)
+DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack *pack, TexturePack *fallback) : AbstractTexturePack(id, NULL, pack->getName(), fallback)
 {
 	m_dlcInfoPack = pack;
 	m_dlcDataPack = NULL;
@@ -305,7 +305,7 @@ void DLCTexturePack::loadData()
 
 
 
-std::wstring DLCTexturePack::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
+std::wstring DLCTexturePack::getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder)
 {
 	return app.getFilePath(packId,filename,bAddDataFolder);
 }
