@@ -839,8 +839,8 @@ public:
 	void SetBanListRead(int iPad,bool bVal) { m_bRead_BannedListA[iPad]=bVal;}
 	void ClearBanList(int iPad) { BannedListA[iPad].pBannedList=NULL;BannedListA[iPad].dwBytes=0;}
 
-	DWORD GetRequiredTexturePackID()	{return m_dwRequiredTexturePackID;}
-	void SetRequiredTexturePackID(DWORD dwID)	{m_dwRequiredTexturePackID=dwID;}
+	std::uint32_t GetRequiredTexturePackID() { return m_dwRequiredTexturePackID; }
+	void SetRequiredTexturePackID(std::uint32_t texturePackId) { m_dwRequiredTexturePackID = texturePackId; }
 
 	virtual void GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes ) {*ppbData = NULL; *pdwBytes = 0;}
 
@@ -854,7 +854,7 @@ private:
 
 
 	bool m_bResetNether;
-	DWORD m_dwRequiredTexturePackID;
+	std::uint32_t m_dwRequiredTexturePackID;
 #ifdef _XBOX_ONE
 	std::vector <PBYTE> m_vTMSPPData;
 #endif
