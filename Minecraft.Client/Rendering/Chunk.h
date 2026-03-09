@@ -32,7 +32,7 @@ private:
 #ifndef _LARGE_WORLDS
     static Tesselator *t;
 #else
-	static DWORD tlsIdx;
+	static unsigned int tlsIdx;
 public:
 	static void CreateNewThreadStorage();
 	static void ReleaseThreadStorage();
