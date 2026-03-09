@@ -1,5 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "../../Util/StringHelpers.h"
+#include "../../Util/PortableFileIO.h"
 #include "ConsoleSaveFileSplit.h"
 #include "ConsoleSaveFileConverter.h"
 #include "File.h"
@@ -1510,26 +1511,21 @@ void ConsoleSaveFileSplit::DebugFlushToFile(void *compressedData /*= NULL*/, uns
 	}
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
 
-#ifdef _UNICODE
-	std::wstring wtemp = targetFileDir.getPath() + std::wstring(fileName);
-	LPCWSTR lpFileName =  wtemp.c_str();
-#else
-	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + std::wstring(fileName) );
-#endif
-
-	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
+	const std::wstring outputPath = targetFileDir.getPath() + std::wstring(fileName);
+	bool writeSucceeded = false;
 
 	if(compressedData != NULL && compressedDataSize > 0)
 	{
-		WriteFile(hSaveFile,compressedData,compressedDataSize,&numberOfBytesWritten,NULL);
+		writeSucceeded = PortableFileIO::WriteBinaryFile(outputPath, compressedData, compressedDataSize);
+		numberOfBytesWritten = writeSucceeded ? compressedDataSize : 0;
 		assert(numberOfBytesWritten == compressedDataSize);
 	}
 	else
 	{
-		WriteFile(hSaveFile,pvSaveMem,fileSize,&numberOfBytesWritten,NULL);
+		writeSucceeded = PortableFileIO::WriteBinaryFile(outputPath, pvSaveMem, fileSize);
+		numberOfBytesWritten = writeSucceeded ? fileSize : 0;
 		assert(numberOfBytesWritten == fileSize);
 	}
-	CloseHandle( hSaveFile );
 
 	delete[] fileName;
 

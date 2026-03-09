@@ -140,4 +140,23 @@ namespace PortableFileIO
 
 		return { BinaryReadStatus::ok, bytesRead, fileSize };
 	}
+
+	inline bool WriteBinaryFile(const std::wstring &path, const void *buffer, std::size_t bytesToWrite)
+	{
+#if defined(_WIN32)
+		std::FILE *stream = _wfopen(path.c_str(), L"wb");
+#else
+		const std::string nativePath = wstringtofilename(path);
+		std::FILE *stream = std::fopen(nativePath.c_str(), "wb");
+#endif
+		if (stream == NULL)
+		{
+			return false;
+		}
+
+		const std::size_t bytesWritten = std::fwrite(buffer, 1, bytesToWrite, stream);
+		const bool failed = std::ferror(stream) != 0 || bytesWritten != bytesToWrite;
+		const bool closeFailed = std::fclose(stream) != 0;
+		return !failed && !closeFailed;
+	}
 }

@@ -1,5 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "../../Util/StringHelpers.h"
+#include "../../Util/PortableFileIO.h"
 #include "ConsoleSaveFileOriginal.h"
 #include "File.h"
 #include <xuiapp.h>
@@ -859,23 +860,19 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	}
 	swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH+1, L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs",VER_PRODUCTBUILD,cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond);
 
-#ifdef _UNICODE
-	std::wstring wtemp = targetFileDir.getPath() + std::wstring(fileName);
-	LPCWSTR lpFileName =  wtemp.c_str();
-#else
-	LPCSTR lpFileName = wstringtofilename( targetFileDir.getPath() + std::wstring(fileName) );
-#endif
+	const std::wstring outputPath = targetFileDir.getPath() + std::wstring(fileName);
 #ifndef __PSVITA__
-	HANDLE hSaveFile = CreateFile( lpFileName, GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
+	bool writeSucceeded = false;
 #endif
 
 	if(compressedData != NULL && compressedDataSize > 0)
 	{
 #ifdef __PSVITA__
 		// AP - Use the access function to save
-		VirtualWriteFile( lpFileName, compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
+		VirtualWriteFile( outputPath.c_str(), compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
 #else
-		WriteFile( hSaveFile,compressedData,compressedDataSize,&numberOfBytesWritten,NULL);
+		writeSucceeded = PortableFileIO::WriteBinaryFile(outputPath, compressedData, compressedDataSize);
+		numberOfBytesWritten = writeSucceeded ? compressedDataSize : 0;
 #endif
 		assert(numberOfBytesWritten == compressedDataSize);
 	}
@@ -883,15 +880,13 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 	{
 #ifdef __PSVITA__
 		// AP - Use the access function to save
-		VirtualWriteFile( lpFileName, compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
+		VirtualWriteFile( outputPath.c_str(), compressedData, compressedDataSize, &numberOfBytesWritten, NULL);
 #else
-		WriteFile(hSaveFile,pvSaveMem,fileSize,&numberOfBytesWritten,NULL);
+		writeSucceeded = PortableFileIO::WriteBinaryFile(outputPath, pvSaveMem, fileSize);
+		numberOfBytesWritten = writeSucceeded ? fileSize : 0;
 #endif
 		assert(numberOfBytesWritten == fileSize);
 	}
-#ifndef __PSVITA__
-	CloseHandle( hSaveFile );
-#endif
 
 	delete[] fileName;
 
