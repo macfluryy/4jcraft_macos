@@ -1,5 +1,6 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
 #include "DLCManager.h"
 
 class DLCFile;
@@ -28,7 +29,7 @@ private:
 	DWORD m_packId;
 	DWORD m_packVersion;
 
-	PBYTE m_data; // This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
+	uint8_t *m_data; // This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
 public:
 
 	DLCPack(const std::wstring &name,DWORD dwLicenseMask);
@@ -39,7 +40,7 @@ public:
 
 	std::wstring getFullDataPath() { return m_dataPath; }
 
-	void SetDataPointer(PBYTE pbData) { m_data = pbData; }
+	void SetDataPointer(uint8_t *pbData) { m_data = pbData; }
 
 	bool IsCorrupt() { return m_isCorrupt; }
 	void SetIsCorrupt(bool val) { m_isCorrupt = val; }

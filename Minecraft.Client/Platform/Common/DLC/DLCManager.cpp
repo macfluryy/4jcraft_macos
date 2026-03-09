@@ -363,7 +363,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 	}
 
 	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
+	uint8_t *pbData = new uint8_t[dwFileSize];
 	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
 	if(bSuccess==FALSE)
 	{
@@ -385,7 +385,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 	return processDLCDataFile(dwFilesProcessed, pbData, bytesRead, pack);
 }
 
-bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD dwLength, DLCPack *pack)
+bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, uint8_t *pbData, DWORD dwLength, DLCPack *pack)
 {
 	std::unordered_map<int, DLCManager::EDLCParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -439,7 +439,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
-	PBYTE pbTemp=((PBYTE )pFile);//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
+	uint8_t *pbTemp = reinterpret_cast<uint8_t *>(pFile);//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
 	for(unsigned int i=0;i<uiFileCount;i++)
@@ -566,7 +566,7 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	}
 
 	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
+	uint8_t *pbData = new uint8_t[dwFileSize];
 	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
 	if(bSuccess==FALSE)
 	{
@@ -590,7 +590,7 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	return packId;
 }
 
-DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
+DWORD DLCManager::retrievePackID(uint8_t *pbData, DWORD dwLength, DLCPack *pack)
 {
 	DWORD packId=0;
 	bool bPackIDSet=false;
@@ -643,7 +643,7 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
-	PBYTE pbTemp=((PBYTE )pFile);
+	uint8_t *pbTemp = reinterpret_cast<uint8_t *>(pFile);
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
 	for(unsigned int i=0;i<uiFileCount;i++)
