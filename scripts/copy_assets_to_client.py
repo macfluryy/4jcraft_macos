@@ -23,11 +23,11 @@ src_assets = Path(project_source_root / "Minecraft.Assets")
 
 # clear out any old assets
 if dest_common.exists():
-    shutil.rmtree(dest_common)
-    shutil.rmtree(client_build_dir / "music")
-    shutil.rmtree(client_build_dir / "Sound")
+    shutil.rmtree(dest_common, ignore_errors=True)
+    shutil.rmtree(client_build_dir / "music", ignore_errors=True)
+    shutil.rmtree(client_build_dir / "Sound", ignore_errors=True)
     # XXX: Check "copy DLC" bellow for info
-    # shutil.rmtree(client_build_dir / "DurangoMedia")
+    # shutil.rmtree(client_build_dir / "DurangoMedia", ignore_errors=True)
 
 # copy `Minecraft.Assets/Common` into the build directory for the client.
 shutil.copytree(
