@@ -311,6 +311,8 @@ void ItemInHandRenderer::renderItem3D(Tesselator *t, float u0, float v0, float u
 
 void ItemInHandRenderer::render(float a)
 {
+    if (!mc->player || !mc->level) return;
+
     float h = oHeight + (height - oHeight) * a;
     std::shared_ptr<Player> player = mc->player;
 
