@@ -24,7 +24,7 @@ private:
 	static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
 	static const unsigned int MAX_PAGE_COUNT = 1024;
 #endif
-	LPVOID pvSaveMem;
+	void *pvSaveMem;
 
 	CRITICAL_SECTION m_lock;
 
@@ -35,7 +35,7 @@ public:
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
 	static int SaveSaveDataCallback(LPVOID lpParam,bool bRes);
 #endif
-	ConsoleSaveFileOriginal(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	virtual ~ConsoleSaveFileOriginal();
 
 	// 4J Stu - Initial implementation is intended to have a similar interface to the standard Xbox file access functions
