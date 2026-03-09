@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include "../Util/PortableFileIO.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "../Headers/net.minecraft.world.level.levelgen.h"
@@ -19,86 +20,47 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 
 	m_heightmapOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
-#ifdef _UNICODE
-	std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
-
-#else
 #ifdef _WINDOWS64
-	std::string path = "GameRules\\heightmap.bin";
+	const std::wstring path = L"GameRules\\heightmap.bin";
 #else
-	std::string path = "GAME:\\GameRules\\heightmap.bin";
+	const std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
 #endif
-#endif
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if( file == INVALID_HANDLE_VALUE )
+	const PortableFileIO::BinaryReadResult heightmapReadResult = PortableFileIO::ReadBinaryFile(path, m_heightmapOverride.data, m_heightmapOverride.length);
+	if(heightmapReadResult.status == PortableFileIO::BinaryReadStatus::not_found)
 	{
 		app.FatalLoadError();
-		DWORD error = GetLastError();
 		assert(false);
 	}
-	else
+	else if(heightmapReadResult.status == PortableFileIO::BinaryReadStatus::too_large)
 	{
-
-#ifdef _DURANGO
-		__debugbreak();	// TODO
-		DWORD bytesRead,dwFileSize = 0;
-#else
-		DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-#endif
-		if(dwFileSize > m_heightmapOverride.length)
-		{
-			app.DebugPrintf("Heightmap binary is too large!!\n");
-			__debugbreak();
-		}
-		BOOL bSuccess = ReadFile(file,m_heightmapOverride.data,dwFileSize,&bytesRead,NULL);
-
-		if(bSuccess==FALSE)
-		{
-			app.FatalLoadError();
-		}
-		CloseHandle(file);
+		app.DebugPrintf("Heightmap binary is too large!!\n");
+		__debugbreak();
+	}
+	else if(heightmapReadResult.status != PortableFileIO::BinaryReadStatus::ok)
+	{
+		app.FatalLoadError();
 	}
 
 	m_waterheightOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
-#ifdef _UNICODE
-	std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
-
-#else
 #ifdef _WINDOWS64
-	std::string waterHeightPath = "GameRules\\waterheight.bin";
+	const std::wstring waterHeightPath = L"GameRules\\waterheight.bin";
 #else
-	std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
+	const std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
 #endif
-#endif
-	file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if( file == INVALID_HANDLE_VALUE )
+	const PortableFileIO::BinaryReadResult waterHeightReadResult = PortableFileIO::ReadBinaryFile(waterHeightPath, m_waterheightOverride.data, m_waterheightOverride.length);
+	if(waterHeightReadResult.status == PortableFileIO::BinaryReadStatus::not_found)
 	{
-		DWORD error = GetLastError();
-		//assert(false);
 		memset(m_waterheightOverride.data, level->seaLevel, m_waterheightOverride.length);
 	}
-	else
+	else if(waterHeightReadResult.status == PortableFileIO::BinaryReadStatus::too_large)
 	{
-
-#ifdef _DURANGO
-		__debugbreak();	// TODO
-		DWORD bytesRead,dwFileSize = 0;
-#else
-		DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-#endif
-		if(dwFileSize > m_waterheightOverride.length)
-		{
-			app.DebugPrintf("waterheight binary is too large!!\n");
-			__debugbreak();
-		}
-		BOOL bSuccess = ReadFile(file,m_waterheightOverride.data,dwFileSize,&bytesRead,NULL);
-
-		if(bSuccess==FALSE)
-		{
-			app.FatalLoadError();
-		}
-		CloseHandle(file);
+		app.DebugPrintf("waterheight binary is too large!!\n");
+		__debugbreak();
+	}
+	else if(waterHeightReadResult.status != PortableFileIO::BinaryReadStatus::ok)
+	{
+		app.FatalLoadError();
 	}
 
 	caveFeature = new LargeCaveFeature();
