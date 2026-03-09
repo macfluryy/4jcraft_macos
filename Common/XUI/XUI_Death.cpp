@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_Death.h"
 #include <assert.h>
 #include "../../Minecraft.World/Util/AABB.h"

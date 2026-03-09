@@ -5,7 +5,7 @@
 //
 
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SocialManager.h"
 #include <assert.h>
 #include <xgraphics.h>

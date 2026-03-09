@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Biomes/Biome.h"
 #include "NetherBridgeFeature.h"
 #include "../Structures/NetherBridgePieces.h"

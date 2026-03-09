@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../Minecraft.Client/Player/LocalPlayer.h"
 #include "../../Minecraft.World/Entities/Entity.h"

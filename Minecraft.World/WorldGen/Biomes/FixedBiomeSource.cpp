@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Util/Arrays.h"
 #include "FixedBiomeSource.h"
 

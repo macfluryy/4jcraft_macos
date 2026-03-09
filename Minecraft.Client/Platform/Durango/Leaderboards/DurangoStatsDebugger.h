@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 namespace P = Platform;
 namespace PC = Platform::Collections;

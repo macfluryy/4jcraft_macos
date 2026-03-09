@@ -1,6 +1,6 @@
 #include "../Build/stdafx.h"
 #include "Timer.h"
-#include "../../Minecraft.World/Build/System.h"
+#include "../../Minecraft.World/Platform/System.h"
 
 Timer::Timer(float ticksPerSecond)
 {

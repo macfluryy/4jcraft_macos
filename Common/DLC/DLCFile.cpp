@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "DLCFile.h"
 
 DLCFile::DLCFile(DLCManager::EDLCType type, const std::wstring &path)

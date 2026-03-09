@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "TutorialMessage.h"
 
 TutorialMessage::TutorialMessage(int messageId, bool limitRepeats /*= false*/, unsigned char numRepeats /*= TUTORIAL_MESSAGE_DEFAULT_SHOW*/)

@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_Ctrl_4JList.h"
 
 static bool TimeSortFn(const void *a, const void *b);

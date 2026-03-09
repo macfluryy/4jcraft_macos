@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_Ctrl_MobEffect.h"
 
 LPCWSTR CXuiCtrlMobEffect::iconFrameNames[MobEffect::e_MobEffectIcon_COUNT]=

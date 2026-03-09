@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "TrialMode.h"
 #include "../Tutorial/FullTutorial.h"
 

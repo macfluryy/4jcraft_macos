@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Util/SharedConstants.h"
 #include "../../Headers/net.minecraft.world.effect.h"
 #include "../../Headers/net.minecraft.world.level.h"

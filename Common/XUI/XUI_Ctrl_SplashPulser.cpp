@@ -1,11 +1,11 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/UI/ScreenSizeCalculator.h"
 #include "../../Minecraft.Client/Rendering/Lighting.h"
 #include "XUI_Ctrl_SplashPulser.h"
 #include "../../Minecraft.Client/UI/Font.h"
 #include "../../Minecraft.World/Util/Mth.h"
-#include "../../Minecraft.World/Build/System.h"
+#include "../../Minecraft.World/Platform/System.h"
 
 //-----------------------------------------------------------------------------
 //  CXuiCtrlSplashPulser class

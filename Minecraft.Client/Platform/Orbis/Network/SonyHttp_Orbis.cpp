@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SonyHttp_Orbis.h"
 
 static const int sc_SSLHeapSize   = (304 * 1024U);

@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.Client/MultiplayerLevel.h"
 #include "../../Minecraft.World/Blocks/TileEntities/SignTileEntity.h"
 #include "../../Minecraft.World/Entities/Entity.h"

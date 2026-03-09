@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TheEndDimension.h"
 #include "../../WorldGen/Biomes/FixedBiomeSource.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"

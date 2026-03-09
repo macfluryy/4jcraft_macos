@@ -425,7 +425,6 @@ assets_archive = custom_target('Minecraft.Assets_Archive',
   ],
   install : true,
   install_dir : 'Common/Media',
-  build_subdir : 'Common/Media',
   build_by_default : true
 )
 

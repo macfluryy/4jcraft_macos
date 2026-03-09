@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "ConsoleGenerateStructure.h"
 #include "ConsoleGameRules.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"

@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 
 #include "XUI_Ctrl_LoadingProgress.h"
 #include "../../Minecraft.Client/Minecraft.h"

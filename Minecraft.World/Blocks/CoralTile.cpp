@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "CoralTile.h"
 
 CoralTile::CoralTile(int id) : HalfTransparentTile(id, L"coral", Material::coral, true)

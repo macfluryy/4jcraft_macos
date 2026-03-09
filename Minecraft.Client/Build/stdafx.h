@@ -118,7 +118,7 @@ typedef XUID GameSessionUID;
 
 #include "../Minecraft.Client/xbox/network/extra.h"
 #else
-#include "../../Minecraft.World/Build/x64headers/extraX64.h"
+#include "../../Minecraft.World/Platform/x64headers/extraX64.h"
 #endif
 
 #ifdef __PS3__

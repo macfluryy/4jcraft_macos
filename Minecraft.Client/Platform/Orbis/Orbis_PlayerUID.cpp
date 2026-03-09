@@ -1,7 +1,7 @@
 
 
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Orbis_PlayerUID.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 

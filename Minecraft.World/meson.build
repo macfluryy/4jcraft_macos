@@ -26,10 +26,10 @@ world_sources = run_command(
 
 lib_world = static_library('Minecraft.World',
   world_sources,
-  include_directories : include_directories('Build', 'Build/x64headers'),
+  include_directories : include_directories('Platform', 'Platform/x64headers'),
   dependencies : [ assets_localisation_dep ],
   cpp_args : global_cpp_args + global_cpp_defs + [
-    '-include', meson.current_source_dir() / 'Build/stdafx.h',
+    '-include', meson.current_source_dir() / 'Platform/stdafx.h',
   ],
 )
 
@@ -39,5 +39,5 @@ dep_crypto = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 world_dep = declare_dependency(
   link_with : lib_world,
   dependencies : [dep_crypto, dep_zlib],
-  include_directories : include_directories('Build/x64headers'),
+  include_directories : include_directories('Platform/x64headers'),
 )

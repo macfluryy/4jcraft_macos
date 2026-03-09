@@ -26,7 +26,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.biome.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
-#include "../../Minecraft.World/Build/System.h"
+#include "../../Minecraft.World/Platform/System.h"
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "../../Minecraft.World/Util/ThreadName.h"
 #include "../../Minecraft.World/Level/Storage/SparseLightStorage.h"

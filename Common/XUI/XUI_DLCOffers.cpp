@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/IO/Streams/ByteArrayInputStream.h"
 #include "../../Minecraft.World/IO/Streams/BufferedReader.h"
 #include "../../Minecraft.World/IO/Streams/InputStreamReader.h"

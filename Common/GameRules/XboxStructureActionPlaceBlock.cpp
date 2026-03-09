@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XboxStructureActionPlaceBlock.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.levelgen.structure.h"

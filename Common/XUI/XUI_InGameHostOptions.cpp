@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_MultiGameCreate.h"
 #include "XUI_InGameHostOptions.h"
 #include "../../Minecraft.Client/Minecraft.h"

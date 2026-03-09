@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Util/Color.h"
 #include "../../../Minecraft.Client/Minecraft.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.feature.h"

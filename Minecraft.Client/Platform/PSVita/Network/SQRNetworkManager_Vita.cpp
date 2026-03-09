@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkManager_Vita.h"
 #include "SonyVoiceChat_Vita.h"
 #include "../../../../Common/Network/Sony/PlatformNetworkManagerSony.h"

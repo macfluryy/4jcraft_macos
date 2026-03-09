@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Util/JavaMath.h"
 #include "../../Util/BasicTypeContainers.h"
 #if 0

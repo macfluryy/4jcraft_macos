@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetCreativeModeSlotPacket.h"

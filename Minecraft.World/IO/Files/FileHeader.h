@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "../../Build/System.h"
+#include "../../Platform/System.h"
 
 // The first 4 bytes is the location of the header (the header itself is at the end of the file)
 // Then 4 bytes for the size of the header

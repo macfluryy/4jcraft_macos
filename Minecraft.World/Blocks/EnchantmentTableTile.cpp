@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "EnchantmentTableTile.h"
 #include "TileEntities/EnchantmentTableTileEntity.h"
 #include "../Headers/net.minecraft.world.level.h"

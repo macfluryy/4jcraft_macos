@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "../../../Rendering/Tesselator.h"
 #include "XUI_FontData.h"
 #include "XUI_Font.h"

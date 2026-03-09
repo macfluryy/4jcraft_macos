@@ -8,7 +8,7 @@
 #include "../../Textures/Textures.h"
 #include "../../GameState/StatsCounter.h"
 #include "../../Rendering/EntityRenderers/ItemRenderer.h"
-#include "../../../Minecraft.World/Build/System.h"
+#include "../../../Minecraft.World/Platform/System.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../../../Minecraft.World/Util/JavaMath.h"

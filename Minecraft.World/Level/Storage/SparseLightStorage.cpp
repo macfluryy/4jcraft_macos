@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "SparseLightStorage.h"
 
 // Note: See header for an overview of this class

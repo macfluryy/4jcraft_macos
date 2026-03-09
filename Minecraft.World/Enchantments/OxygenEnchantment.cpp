@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "OxygenEnchantment.h"
 
 OxygenEnchantment::OxygenEnchantment(int id, int frequency) : Enchantment(id, frequency, EnchantmentCategory::armor_head)

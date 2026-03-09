@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #define DURANGO_STUBBED
 //printf("missing function on Xbox One : %s\n", __FUNCTION__);

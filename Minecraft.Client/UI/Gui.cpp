@@ -17,7 +17,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Level/LevelData.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../../Minecraft.World/Build/System.h"
+#include "../../Minecraft.World/Platform/System.h"
 #include "../../Minecraft.World/Util/Language.h"
 #include "../Rendering/EntityRenderers/EntityRenderDispatcher.h"
 #include "../../Minecraft.World/Level/Dimensions/Dimension.h"

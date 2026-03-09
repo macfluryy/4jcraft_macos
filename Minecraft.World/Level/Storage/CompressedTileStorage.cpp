@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CompressedTileStorage.h"
 
 #ifdef __PSVITA__

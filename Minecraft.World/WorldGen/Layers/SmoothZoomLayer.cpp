@@ -1,6 +1,6 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
-#include "../../Build/System.h"
+#include "../../Platform/System.h"
 
 SmoothZoomLayer::SmoothZoomLayer(__int64 seedMixup, std::shared_ptr<Layer>parent) : Layer(seedMixup)
 {

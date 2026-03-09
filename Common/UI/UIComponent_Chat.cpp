@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
 #include "UIComponent_Chat.h"
 #include "../../Minecraft.Client/Minecraft.h"

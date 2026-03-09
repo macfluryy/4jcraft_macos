@@ -1,4 +1,4 @@
-#include "../../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../../Minecraft.World/Platform/stdafx.h"
 // gdraw_orbis.cpp - author: Fabian Giesen - copyright 2012 RAD Game Tools
 //
 // This implements the Iggy graphics driver layer for Orbis.

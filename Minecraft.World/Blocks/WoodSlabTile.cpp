@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "WoodSlabTile.h"
 #include "WoodTile.h"
 #include "TreeTile.h"

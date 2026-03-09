@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.entity.ai.control.h"
 #include "../../Headers/net.minecraft.world.entity.ai.util.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"

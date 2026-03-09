@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.structure.h"
 
 MineShaftStart::MineShaftStart(Level *level, Random *random, int chunkX, int chunkZ)

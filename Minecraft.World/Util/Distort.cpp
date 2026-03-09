@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Distort.h"
 
 Distort::Distort(Synth *source, Synth *distort)

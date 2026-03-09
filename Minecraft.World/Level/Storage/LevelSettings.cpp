@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "LevelSettings.h"
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "LevelType.h"

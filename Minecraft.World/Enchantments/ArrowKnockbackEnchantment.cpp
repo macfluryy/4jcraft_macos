@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ArrowKnockbackEnchantment.h"
 
 ArrowKnockbackEnchantment::ArrowKnockbackEnchantment(int id, int frequency) : Enchantment(id, frequency, EnchantmentCategory::bow)

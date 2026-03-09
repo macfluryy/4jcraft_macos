@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UI.h"

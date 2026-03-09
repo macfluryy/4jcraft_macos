@@ -1,8 +1,8 @@
-#include "../Build/stdafx.h"	
+#include "../Platform/stdafx.h"	
 #include "Random.h"
 #include <ctime>
 #include <cstdint> // for int64_t
-#include "../Build/System.h"
+#include "../Platform/System.h"
 
 Random::Random()
 {

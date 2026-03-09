@@ -2,7 +2,7 @@
 // ApplicationView.cpp -
 //
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "ApplicationView.h"
 #include "../../MinecraftServer.h"
 

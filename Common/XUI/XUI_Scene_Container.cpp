@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 
 #include "../../Minecraft.World/Containers/Container.h"
 #include "../../Minecraft.World/Containers/ContainerMenu.h"

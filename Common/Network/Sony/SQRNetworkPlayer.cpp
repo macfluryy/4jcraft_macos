@@ -1,4 +1,4 @@
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkPlayer.h"
 
 #ifdef __PS3__

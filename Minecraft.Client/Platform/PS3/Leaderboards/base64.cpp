@@ -25,7 +25,7 @@
 
 */
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "base64.h"
 #include <iostream>

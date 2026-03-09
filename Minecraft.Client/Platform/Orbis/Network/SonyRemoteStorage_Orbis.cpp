@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "SonyRemoteStorage_Orbis.h"
 #include "SonyHttp_Orbis.h"

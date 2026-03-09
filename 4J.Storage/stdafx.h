@@ -5,6 +5,6 @@
 #include "../Minecraft.Client/Platform/Linux/Stubs/LinuxStubs.h"
 #endif
 
-#include "../Minecraft.World/Build/x64headers/extraX64.h"
+#include "../Minecraft.World/Platform/x64headers/extraX64.h"
 
 #endif //_4J_STORAGE_STADAFX_H

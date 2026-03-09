@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "BlockDestructionProgress.h"
 
 BlockDestructionProgress::BlockDestructionProgress(int id, int x, int y, int z)

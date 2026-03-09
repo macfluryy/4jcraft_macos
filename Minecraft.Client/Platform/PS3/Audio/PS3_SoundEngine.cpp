@@ -1,4 +1,4 @@
-﻿#include "../../../../Minecraft.World/Build/stdafx.h"
+﻿#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include <sysutil/sysutil_sysparam.h>
 #include <cell/sysmodule.h>
 #include <sys/spu_initialize.h>

@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Items/ItemInstance.h"
 #if !(defined _XBOX) && !(defined __PSVITA__)
 #include "../UI/UI.h"

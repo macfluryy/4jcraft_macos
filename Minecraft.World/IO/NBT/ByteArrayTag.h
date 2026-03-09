@@ -1,6 +1,6 @@
 #pragma once
 #include "Tag.h"
-#include "../../Build/System.h"
+#include "../../Platform/System.h"
 
 class ByteArrayTag : public Tag
 {

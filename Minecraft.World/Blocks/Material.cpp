@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Material.h"
 #include "DecorationMaterial.h"
 #include "GasMaterial.h"

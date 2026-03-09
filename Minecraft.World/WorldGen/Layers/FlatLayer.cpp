@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 
 FlatLayer::FlatLayer(int val) : Layer(0)

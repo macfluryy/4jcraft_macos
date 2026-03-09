@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "PistonPieceTileEntity.h"
 #include "../PistonMovingTileEntity.h"

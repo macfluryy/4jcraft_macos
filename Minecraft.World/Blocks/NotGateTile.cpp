@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "NotGateTile.h"
 #include "../Util/SoundTypes.h"

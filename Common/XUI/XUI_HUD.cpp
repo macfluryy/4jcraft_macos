@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_HUD.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/UI/Gui.h"

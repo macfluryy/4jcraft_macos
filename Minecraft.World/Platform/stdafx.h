@@ -240,7 +240,7 @@ void MemSect(int sect);
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/SentientManager.h"
 #include "../../Minecraft.Client/Platform/PSVita/Sentient/MinecraftTelemetry.h"
 #elif defined(__linux__)
-	// Use Orbis-compatible headers on Linux (same as Minecraft.Client/Build/stdafx.h).
+	// Use Orbis-compatible headers on Linux (same as Minecraft.Client/Platform/stdafx.h).
 	// All Orbis Sentient headers have #pragma once, preventing double-inclusion
 	// when DLC/other Common files also pull in Minecraft.Client stdafx.h.
 	#include "../../Minecraft.Client/Platform/Linux/Linux_App.h"

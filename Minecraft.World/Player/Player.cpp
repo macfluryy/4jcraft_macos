@@ -6,7 +6,7 @@
 // dynamic_cast to find one of the classes that an object derives from, and not to find
 // the derived class itself (which should own the virtual GetType function)
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Util/JavaMath.h"
 #include "../Headers/net.minecraft.h"
 #include "../Headers/net.minecraft.world.h"

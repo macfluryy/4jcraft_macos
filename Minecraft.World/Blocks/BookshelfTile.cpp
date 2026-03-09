@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "BookshelfTile.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.h"

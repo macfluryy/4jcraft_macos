@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "XUI_Ctrl_BubblesProgress.h"

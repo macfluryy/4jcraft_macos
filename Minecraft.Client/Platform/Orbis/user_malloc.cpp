@@ -9,7 +9,7 @@ extern "C"
 #include <stdlib.h>
 #include <mspace.h>
 #include <kernel.h>
-#include "../../../Minecraft.World/Build/System.h"
+#include "../../../Minecraft.World/Platform/System.h"
 
 static size_t s_heapLength;
 static size_t s_memLength;

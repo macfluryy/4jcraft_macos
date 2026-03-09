@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 
 #include "XUI_Ctrl_CraftIngredientSlot.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"

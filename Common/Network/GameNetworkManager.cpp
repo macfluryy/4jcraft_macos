@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/Util/AABB.h"
 #include "../../Minecraft.World/Util/Vec3.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Rotate.h"
 
 Rotate::Rotate(Synth *synth, float angle)

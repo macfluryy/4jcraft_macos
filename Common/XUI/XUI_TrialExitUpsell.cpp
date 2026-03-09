@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_TrialExitUpsell.h"
 
 // wchImages[TRIAL_EXIT_UPSELL_IMAGE_COUNT]

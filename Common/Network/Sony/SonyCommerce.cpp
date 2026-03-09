@@ -1,4 +1,4 @@
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include "SonyCommerce.h"
 #include "../../../../Platform/PS3/PS3Extras/ShutdownManager.h"

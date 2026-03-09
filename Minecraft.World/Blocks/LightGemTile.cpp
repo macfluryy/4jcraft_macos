@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "LightGemTile.h"
 #include "../Headers/net.minecraft.world.item.h"
 

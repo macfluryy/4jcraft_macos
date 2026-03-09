@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #if defined(_WIN32)
 #include <xhash>
 #else

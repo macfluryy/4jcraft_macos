@@ -4,7 +4,7 @@
 #include "../Font.h"
 #include "../../Textures/Textures.h"
 #include "../../Rendering/Lighting.h"
-#include "../../../Minecraft.World/Build/System.h"
+#include "../../../Minecraft.World/Platform/System.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../../Minecraft.World/Util/SharedConstants.h"

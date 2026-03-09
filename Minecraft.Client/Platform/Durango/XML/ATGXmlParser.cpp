@@ -14,7 +14,7 @@
 //  Copyright (C) Microsoft Corporation. All rights reserved.
 //-------------------------------------------------------------------------------------
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "AtgXmlParser.h"
 
 namespace ATG

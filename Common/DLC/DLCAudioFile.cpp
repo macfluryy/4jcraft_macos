@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "DLCManager.h"
 #include "DLCAudioFile.h"
 #if defined _XBOX || defined _WINDOWS64

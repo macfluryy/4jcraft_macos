@@ -1,5 +1,5 @@
-#include "../../Build/stdafx.h"
-#include "../../Build/System.h"
+#include "../../Platform/stdafx.h"
+#include "../../Platform/System.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../IO/Files/File.h"
 #include "RegionFile.h"

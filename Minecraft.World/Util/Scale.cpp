@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Scale.h"
 
 Scale::Scale(Synth *synth, double xScale, double yScale)

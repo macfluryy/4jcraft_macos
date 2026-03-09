@@ -1,5 +1,5 @@
-#include "../Build/stdafx.h"
-#include "../Build/System.h"
+#include "../Platform/stdafx.h"
+#include "../Platform/System.h"
 #include "../Util/BasicTypeContainers.h"
 #include "../IO/Files/File.h"
 #include "../Util/ProgressListener.h"

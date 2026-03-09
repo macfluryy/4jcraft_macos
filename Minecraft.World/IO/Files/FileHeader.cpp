@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "FileHeader.h"
 
 //#define _DEBUG_FILE_HEADER

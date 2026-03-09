@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.Client/Utils/WstringLookup.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "ConsoleGameRules.h"

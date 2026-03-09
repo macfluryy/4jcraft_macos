@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "Include/SenClientMain.h"
 #include "Include/SenClientDynamicConfig.h"
 #include "DynamicConfigurations.h"

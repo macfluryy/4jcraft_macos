@@ -1,6 +1,6 @@
 
 
-#include "../../Minecraft.World/Build/stdafx.h"
+#include "../../Minecraft.World/Platform/stdafx.h"
  // #include "XUI_Ctrl_4JIcon.h"
 #include "XUI_NewUpdateMessage.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
