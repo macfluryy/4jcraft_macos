@@ -796,7 +796,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 {
 	// Both PlayerConnection and ClientConnection should handle this mostly the same way
 
-	if(packet->dwBytes==0)
+	if(packet->dataBytes==0)
 	{
 		// Request for texture
 #ifndef _CONTENT_PACKAGE
@@ -821,7 +821,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Server received custom texture %ls\n",packet->textureName.c_str());
 #endif
-		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dwBytes);
+		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dataBytes);
 		server->connection->handleTextureReceived(packet->textureName);
 	}
 }

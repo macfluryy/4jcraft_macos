@@ -2235,7 +2235,7 @@ void ClientConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 	// Server side also needs to store a list of those clients waiting to get a texture the server doesn't have yet
 	// so that it can send it out to them when it comes in
 
-	if(packet->dwBytes==0)
+	if(packet->dataBytes==0)
 	{
 		// Request for texture
 #ifndef _CONTENT_PACKAGE
@@ -2256,7 +2256,7 @@ void ClientConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 #ifndef _CONTENT_PACKAGE
 		wprintf(L"Client received custom texture %ls\n",packet->textureName.c_str());
 #endif
-		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dwBytes);
+		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dataBytes);
 		Minecraft::GetInstance()->handleClientTextureReceived(packet->textureName);
 	}
 }
