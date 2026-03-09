@@ -9395,7 +9395,7 @@ void CMinecraftApp::SetTickTMSDLCFiles(bool bVal)
 	m_bTickTMSDLCFiles=bVal;
 }
 
-std::wstring CMinecraftApp::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
+std::wstring CMinecraftApp::getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder)
 {
 #ifdef _XBOX
 	std::wstring path = getRootPath(packId, true, bAddDataFolder) + filename;
@@ -9431,7 +9431,7 @@ std::wstring titleUpdateTexturePackRoot = L"GAME:\\res\\TitleUpdate\\DLC\\";
 #endif
 #endif
 
-std::wstring CMinecraftApp::getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder)
+std::wstring CMinecraftApp::getRootPath(std::uint32_t packId, bool allowOverride, bool bAddDataFolder)
 {
 	std::wstring path = L"TPACK:";
 #ifdef _XBOX

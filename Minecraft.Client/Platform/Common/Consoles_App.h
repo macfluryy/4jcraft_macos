@@ -878,13 +878,13 @@ public:
 
 	void SetTickTMSDLCFiles(bool bVal);
 
-	std::wstring getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder);
+	std::wstring getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder);
 
 private:
 		std::unordered_map<int, std::wstring>m_localeA;
 		std::unordered_map<std::wstring, int>m_eMCLangA;
 		std::unordered_map<std::wstring, int>m_xcLangA;
-	std::wstring getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder);
+	std::wstring getRootPath(std::uint32_t packId, bool allowOverride, bool bAddDataFolder);
 public:
 
 #ifdef _XBOX
