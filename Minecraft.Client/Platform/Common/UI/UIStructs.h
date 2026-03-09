@@ -2,6 +2,8 @@
 
 // #pragma message("UIStructs.h")
 
+#include <cstdint>
+
 #include "UIEnums.h"
 
 class Container;
@@ -257,7 +259,7 @@ typedef struct _LaunchMoreOptionsMenuInitData
 
 	int iPad;
 
-	DWORD dwTexturePack;
+	std::uint32_t dwTexturePack;
 
 	std::wstring seed;
 	int worldSize;
