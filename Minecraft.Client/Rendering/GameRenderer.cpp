@@ -777,11 +777,14 @@ void GameRenderer::renderItemInHand(float a, int eye)
 	{
 		if (!mc->options->hideGui && !mc->gameMode->isCutScene()) 
 		{
-			turnOnLightLayer(a);
+			//turnOnLightLayer(a); // disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
 			PIXBeginNamedEvent(0,"Item in hand render");
-			itemInHandRenderer->render(a);
+			// add null pointer check to itemInHandRenderer to prevent a occasional seg fault
+			if (itemInHandRenderer != nullptr) {
+				itemInHandRenderer->render(a);
+			}
 			PIXEndNamedEvent();
-			turnOffLightLayer(a);
+			//turnOffLightLayer(a); // disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
 		}
 	}
 	glPopMatrix();
@@ -789,7 +792,10 @@ void GameRenderer::renderItemInHand(float a, int eye)
 	//if (!mc->options->thirdPersonView && !mc->cameraTargetPlayer->isSleeping())
 	if (!localplayer->ThirdPersonView() && !mc->cameraTargetPlayer->isSleeping())
 	{
-		itemInHandRenderer->renderScreenEffect(a);
+		// add null pointer check to itemInHandRenderer to prevent a occasional seg fault
+		if (itemInHandRenderer != nullptr) {
+			itemInHandRenderer->renderScreenEffect(a);
+		}
 		bobHurt(a);
 	}
 	// 4J-PB - changing this to be per player
