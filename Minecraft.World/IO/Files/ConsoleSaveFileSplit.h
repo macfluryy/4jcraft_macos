@@ -99,7 +99,7 @@ public:
 	virtual BOOL writeFile(	FileEntry *file, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten );
 	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten);
 	virtual BOOL readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead );
-	virtual BOOL closeHandle( FileEntry *file );
+	virtual bool closeHandle( FileEntry *file );
 
 	virtual void finalizeWrite();
 	virtual void tick();

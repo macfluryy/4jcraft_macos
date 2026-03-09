@@ -121,7 +121,7 @@ void ConsoleSaveFileInputStream::close()
 {
 	if( m_saveFile != NULL )
 	{
-		BOOL result = m_saveFile->closeHandle( m_file );
+		bool result = m_saveFile->closeHandle( m_file );
 
 		if( result == 0 )
 		{

@@ -14,7 +14,7 @@ public:
 	virtual BOOL writeFile(	FileEntry *file, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten) = 0;
 	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten) = 0;
 	virtual BOOL readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead ) = 0;
-	virtual BOOL closeHandle( FileEntry *file ) = 0;
+	virtual bool closeHandle( FileEntry *file ) = 0;
 	virtual void finalizeWrite() = 0;
 	virtual void tick() {};
 

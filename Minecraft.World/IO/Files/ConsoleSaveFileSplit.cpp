@@ -892,13 +892,13 @@ BOOL ConsoleSaveFileSplit::readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNu
 	return 1;
 }
 
-BOOL ConsoleSaveFileSplit::closeHandle( FileEntry *file )
+bool ConsoleSaveFileSplit::closeHandle( FileEntry *file )
 {
 	LockSaveAccess();
 	finalizeWrite();
 	ReleaseSaveAccess();
 
-	return TRUE;
+	return true;
 }
 
 // In this method, attempt to write any dirty region files, subject to maintaining a maximum write output rate. Writing is prioritised by time since the region was last written.

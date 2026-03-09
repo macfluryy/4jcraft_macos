@@ -451,13 +451,13 @@ BOOL ConsoleSaveFileOriginal::readFile( FileEntry *file, LPVOID lpBuffer, DWORD 
 	return 1;
 }
 
-BOOL ConsoleSaveFileOriginal::closeHandle( FileEntry *file )
+bool ConsoleSaveFileOriginal::closeHandle( FileEntry *file )
 {
 	LockSaveAccess();
 	finalizeWrite();
 	ReleaseSaveAccess();
 
-	return TRUE;
+	return true;
 }
 
 void ConsoleSaveFileOriginal::finalizeWrite()
