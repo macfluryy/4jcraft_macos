@@ -24,10 +24,10 @@ class CommandDispatcher;
 
 typedef struct _LoadSaveDataThreadParam
 {
-	LPVOID data;
+	void *data;
 	__int64 fileSize;
 	const std::wstring saveName;
-	_LoadSaveDataThreadParam(LPVOID data, __int64 filesize, const std::wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
+	_LoadSaveDataThreadParam(void *data, __int64 filesize, const std::wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
 } LoadSaveDataThreadParam;
 
 typedef struct _NetworkGameInitData
