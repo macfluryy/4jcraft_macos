@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include "GuiComponent.h"
 #include "GuiMessage.h"
 class Random;
@@ -55,9 +56,9 @@ public:
     void displayClientMessage(int messageId, int iPad);
 
 	// 4J Added
-	DWORD getMessagesCount(int iPad) { return (int)guiMessages[iPad].size(); }
-	std::wstring getMessage(int iPad, DWORD index) { return guiMessages[iPad].at(index).string; }
-	float getOpacity(int iPad, DWORD index);
+	std::size_t getMessagesCount(int iPad) { return guiMessages[iPad].size(); }
+	std::wstring getMessage(int iPad, std::size_t index) { return guiMessages[iPad].at(index).string; }
+	float getOpacity(int iPad, std::size_t index);
 
 	std::wstring getJukeboxMessage(int iPad) { return overlayMessageString; }
 	float getJukeboxOpacity(int iPad);
