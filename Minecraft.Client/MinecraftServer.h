@@ -117,7 +117,7 @@ private:
 public:
 	// 4J Stu - This value should be incremented every time the list of players with friends-only UGC settings changes
 	// It is sent with PreLoginPacket and compared when it comes back in the LoginPacket
-	DWORD m_ugcPlayersVersion;
+	std::uint32_t m_ugcPlayersVersion;
 
 	// This value is used to store the texture pack id for the currently loaded world
 	std::uint32_t m_texturePackId;
