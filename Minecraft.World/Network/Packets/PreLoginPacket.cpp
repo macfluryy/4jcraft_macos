@@ -34,7 +34,7 @@ PreLoginPacket::PreLoginPacket(std::wstring userName)
 	m_netcodeVersion = 0;
 }
 
-PreLoginPacket::PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, DWORD playerCount, BYTE friendsOnlyBits, DWORD ugcPlayersVersion,char *pszUniqueSaveName, DWORD serverSettings, BYTE hostIndex, std::uint32_t texturePackId) 
+PreLoginPacket::PreLoginPacket(std::wstring userName, PlayerUID *playerXuids, std::uint8_t playerCount, std::uint8_t friendsOnlyBits, std::uint32_t ugcPlayersVersion, const char *pszUniqueSaveName, std::uint32_t serverSettings, std::uint8_t hostIndex, std::uint32_t texturePackId) 
 {
 	this->loginKey = userName;
 	m_playerXuids = playerXuids;
@@ -59,23 +59,25 @@ void PreLoginPacket::read(DataInputStream *dis) //throws IOException
 
 	loginKey = readUtf(dis, 32);
 
-	m_friendsOnlyBits = dis->readByte();
-	m_ugcPlayersVersion = dis->readInt();
-	m_dwPlayerCount = dis->readByte();
+	m_friendsOnlyBits = static_cast<std::uint8_t>(dis->readByte());
+	std::int32_t ugcPlayersVersion = dis->readInt();
+	std::memcpy(&m_ugcPlayersVersion, &ugcPlayersVersion, sizeof(m_ugcPlayersVersion));
+	m_dwPlayerCount = static_cast<std::uint8_t>(dis->readByte());
 	if( m_dwPlayerCount > 0 )
 	{
 		m_playerXuids = new PlayerUID[m_dwPlayerCount];
-		for(DWORD i = 0; i < m_dwPlayerCount; ++i)
+		for(std::uint32_t i = 0; i < m_dwPlayerCount; ++i)
 		{
 			m_playerXuids[i] = dis->readPlayerUID();
 		}
 	}
-	for(DWORD i = 0; i < m_iSaveNameLen; ++i)
+	for(int i = 0; i < m_iSaveNameLen; ++i)
 	{
-		m_szUniqueSaveName[i]=dis->readByte();
+		m_szUniqueSaveName[i] = static_cast<char>(dis->readByte());
 	}
-	m_serverSettings = dis->readInt();
-	m_hostIndex = dis->readByte();
+	std::int32_t serverSettings = dis->readInt();
+	std::memcpy(&m_serverSettings, &serverSettings, sizeof(m_serverSettings));
+	m_hostIndex = static_cast<std::uint8_t>(dis->readByte());
 	
 	std::int32_t texturePackId = dis->readInt();
 	std::memcpy(&m_texturePackId, &texturePackId, sizeof(m_texturePackId));
@@ -91,19 +93,23 @@ void PreLoginPacket::write(DataOutputStream *dos) //throws IOException
 	writeUtf(loginKey, dos);
 	
 	dos->writeByte(m_friendsOnlyBits);
-	dos->writeInt(m_ugcPlayersVersion);
+	std::int32_t ugcPlayersVersion = 0;
+	std::memcpy(&ugcPlayersVersion, &m_ugcPlayersVersion, sizeof(m_ugcPlayersVersion));
+	dos->writeInt(ugcPlayersVersion);
 	dos->writeByte((uint8_t)m_dwPlayerCount);
-	for(DWORD i = 0; i < m_dwPlayerCount; ++i)
+	for(std::uint32_t i = 0; i < m_dwPlayerCount; ++i)
 	{
 		dos->writePlayerUID( m_playerXuids[i] );
 	}
 
 	app.DebugPrintf("*** PreLoginPacket::write - %s\n",m_szUniqueSaveName);
-	for(DWORD i = 0; i < m_iSaveNameLen; ++i)
+	for(int i = 0; i < m_iSaveNameLen; ++i)
 	{
-		dos->writeByte(m_szUniqueSaveName[i]);
+		dos->writeByte(static_cast<std::uint8_t>(m_szUniqueSaveName[i]));
 	}
-	dos->writeInt(m_serverSettings);
+	std::int32_t serverSettings = 0;
+	std::memcpy(&serverSettings, &m_serverSettings, sizeof(m_serverSettings));
+	dos->writeInt(serverSettings);
 	dos->writeByte(m_hostIndex);
 	std::int32_t texturePackId = 0;
 	std::memcpy(&texturePackId, &m_texturePackId, sizeof(texturePackId));
