@@ -3626,7 +3626,7 @@ void LevelRenderer::staticCtor()
 	}
 }
 
-int LevelRenderer::rebuildChunkThreadProc(LPVOID lpParam)
+int LevelRenderer::rebuildChunkThreadProc(void *lpParam)
 {
 	Vec3::CreateNewThreadStorage();
 	AABB::CreateNewThreadStorage();
