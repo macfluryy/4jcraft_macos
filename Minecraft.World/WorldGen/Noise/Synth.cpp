@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "Synth.h"
 
 doubleArray Synth::create(int width, int height)

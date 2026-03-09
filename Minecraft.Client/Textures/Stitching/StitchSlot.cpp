@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../TextureHolder.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "StitchSlot.h"

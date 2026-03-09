@@ -1,7 +1,7 @@
 #ifdef __PS3__
 
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include <libsn.h>
 #include <cell/cell_fs.h>
 #include <sys/vm.h>

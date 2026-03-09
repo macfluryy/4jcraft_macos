@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "SignRenderer.h"
 #include "../Models/SignModel.h"
 #include "../Models/ModelPart.h"

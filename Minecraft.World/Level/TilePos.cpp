@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 
 #include "TilePos.h"
 #include "../Util/Vec3.h"

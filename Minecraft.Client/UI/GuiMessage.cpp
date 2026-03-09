@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "GuiMessage.h"
 
 GuiMessage::GuiMessage(const std::wstring& string)

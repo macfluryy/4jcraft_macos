@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "PlayerList.h"
 #include "PlayerChunkMap.h"
 #include "../MinecraftServer.h"
@@ -27,7 +27,7 @@
 #ifdef _XBOX
 #include "../Platform/Xbox/Network/NetworkPlayerXbox.h"
 #elif defined(__PS3__) || defined(__ORBIS__)
-#include "../../Common/Network/Sony/NetworkPlayerSony.h"
+#include "../Platform/Common/Network/Sony/NetworkPlayerSony.h"
 #endif
 
 // 4J - this class is fairly substantially altered as there didn't seem any point in porting code for banning, whitelisting, ops etc.

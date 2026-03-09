@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "AirTile.h"
 
 AirTile::AirTile(int id) : Tile(id, Material::air)

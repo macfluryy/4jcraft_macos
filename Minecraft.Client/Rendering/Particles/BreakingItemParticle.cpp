@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "BreakingItemParticle.h"
 #include "../Tesselator.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"

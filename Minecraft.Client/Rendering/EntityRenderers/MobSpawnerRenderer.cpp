@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "MobSpawnerRenderer.h"
 #include "TileEntityRenderDispatcher.h"
 #include "EntityRenderDispatcher.h"

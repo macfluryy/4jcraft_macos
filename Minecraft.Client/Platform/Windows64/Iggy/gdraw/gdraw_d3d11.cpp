@@ -1,4 +1,4 @@
-#include "../../../../../Minecraft.World/Build/stdafx.h" // 4J
+#include "../../../../../Minecraft.World/Platform/stdafx.h" // 4J
 
 // gdraw_d3d11.cpp - author: Fabian Giesen - copyright 2011 RAD Game Tools
 //

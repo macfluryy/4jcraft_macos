@@ -1,4 +1,4 @@
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Durango_UIController.h"
 
 #define _ENABLEIGGY

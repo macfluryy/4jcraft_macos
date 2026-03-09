@@ -42,23 +42,22 @@ sudo apt install \
   libpng-dev libpthread-stubs0-dev
 ```
 
-On Arch/Manjaro:
+#### Arch/Manjaro
 
 ```bash
 sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
 ```
 
-If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
+> [!TIP]
+> If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
 
-On Fedora/Nobara
-
-Meson 1.10.0 or higher ([RPM Find meson](https://fr2.rpmfind.net/linux/rpm2html/search.php?query=meson))
+#### Fedora/Red Hat/Nobara
 
 ```bash
 sudo dnf in gcc gcc-c++ make cmake glfw-devel mesa-libGL-devel mesa-libGLU-devel openal-soft-devel libvorbis-devel libpng-devel openssl-devel
 ```
 
-On Docker:
+#### Docker
 
 If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you - GCC 15, Meson, Ninja, lld, and all the libraries.
 
@@ -71,10 +70,10 @@ docker run -it -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev 
 
 ### Configure & Build
 
+This project uses the [Meson](https://mesonbuild.com/) build system (with [Ninja](https://ninja-build.org/)).
+
 > [!IMPORTANT]
 > If you are using GCC, then GCC 15 or newer is currently *required* to build this project. Ubuntu installations in particular may have older versions preinstalled, so verify your compiler version with `gcc --version`.
-
-This project uses the [Meson](https://mesonbuild.com/) build system (with [Ninja](https://ninja-build.org/)).
 
 #### Install Tooling
 
@@ -133,4 +132,17 @@ meson setup build
 
 ---
 
-## whoever downloaded Common pls refetch & pull this there are updates
+## Running
+
+In order to run the compiled binary, you have a compiled copy of the game's assets in your current working directory. These assets are automatically copied to the `Minecraft.Client` folder in your build directory. To run the game, your current working directory must be in this folder.
+
+```sh
+cd build/Minecraft.Client
+./Minecraft.Client
+```
+
+---
+
+## Generative AI Policy
+
+Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.

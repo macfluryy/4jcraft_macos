@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "SlideButton.h"
 
 SlideButton::SlideButton(int id, int x, int y, const Options::Option *option, const std::wstring& msg, float value) : Button(id, x, y, 150, 20, msg)

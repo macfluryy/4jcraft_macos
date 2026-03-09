@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ConfirmScreen.h"
 #include "../SmallButton.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"

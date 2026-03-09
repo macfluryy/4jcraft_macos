@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "PistonBaseTile.h"
 #include "PistonMovingTileEntity.h"
 #include "TileEntities/PistonPieceTileEntity.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ClientConnection.h"
 #include "../Level/MultiPlayerLevel.h"
 #include "../Player/MultiPlayerLocalPlayer.h"
@@ -43,9 +43,9 @@
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "../Textures/Packs/TexturePackRepository.h"
 #ifdef _XBOX
-#include "../../Common/XUI/XUI_Scene_Trading.h"
+#include "../Platform/Common/XUI/XUI_Scene_Trading.h"
 #else
-#include "../../Common/UI/UI.h"
+#include "../Platform/Common/UI/UI.h"
 #endif
 #ifdef __PS3__
 #include "../Platform/PS3/Network/SonyVoiceChat.h"

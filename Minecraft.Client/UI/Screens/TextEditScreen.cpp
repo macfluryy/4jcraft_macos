@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TextEditScreen.h"	
 #include "../Button.h"
 #include "../../Rendering/EntityRenderers/TileEntityRenderDispatcher.h"

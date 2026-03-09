@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Screen.h"
 #include "Button.h"
 #include "../Rendering/Particles/GuiParticles.h"

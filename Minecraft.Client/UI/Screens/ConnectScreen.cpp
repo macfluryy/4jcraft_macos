@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ConnectScreen.h"
 #include "../../Network/ClientConnection.h"
 #include "TitleScreen.h"

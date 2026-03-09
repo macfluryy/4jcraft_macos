@@ -1,10 +1,10 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include <assert.h>
-#include "../DurangoMedia/4J_strings.h"
+#include "../../../Minecraft.Assets/DurangoMedia/4J_strings.h"
 #include "Minecraft_Controller_Actions.h"
 #include "../Xbox/Xbox_App.h"
 #include "GameConfig/Minecraft.spa.h"
@@ -27,8 +27,8 @@
 #include "../../GameState/StatsCounter.h"
 #include "../../UI/Screens/ConnectScreen.h"
 //#include "Social/SocialManager.h"
-//#include "../../../Common/Leaderboards/LeaderboardManager.h"
-//#include "../../../Common/XUI/XUI_Scene_Container.h"
+//#include "../Common/Leaderboards/LeaderboardManager.h"
+//#include "../Common/XUI/XUI_Scene_Container.h"
 //#include "QNetManager.h"
 #include "../../Rendering/Tesselator.h"
 #include "Xbox_Awards_enum.h"

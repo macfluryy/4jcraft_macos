@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
 #include "User.h"
 #include "../Input/Input.h"

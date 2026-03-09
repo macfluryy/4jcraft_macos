@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "SmallButton.h"
 
 SmallButton::SmallButton(int id, int x, int y, const std::wstring& msg) : Button(id, x, y, 150, 20, msg)

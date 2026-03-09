@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include <iostream>
 #include "../../Util/ArrayWithLength.h"
 #include "../../IO/Streams/InputOutputStream.h"

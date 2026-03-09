@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Util/NumberFormatters.h"
 #include "StatFormatter.h"
 #include "Stats.h"

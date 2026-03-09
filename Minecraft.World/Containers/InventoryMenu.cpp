@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.item.crafting.h"
 #include "../Headers/net.minecraft.world.entity.player.h"

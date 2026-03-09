@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CraftingScreen.h"
 #include "../../Textures/Textures.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"

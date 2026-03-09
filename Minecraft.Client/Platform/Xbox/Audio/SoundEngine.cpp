@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.h"
 #include "../../../../Minecraft.World/Util/Mth.h"
 #include "../../../../Minecraft.World/Util/Random.h"
@@ -8,7 +8,7 @@
 #include "SoundEngine.h"
 #include "../../../Textures/Packs/TexturePackRepository.h"
 #include "../../../Textures/Packs/TexturePack.h"
-#include "../../../../Common/DLC/DLCAudioFile.h"
+#include "../../Common/DLC/DLCAudioFile.h"
 #include "../../../Textures/Packs/DLCTexturePack.h"
 
 

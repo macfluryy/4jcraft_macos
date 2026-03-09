@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "QuadrupedModel.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "ModelPart.h"

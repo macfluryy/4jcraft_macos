@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ControlsScreen.h"
 #include "../../GameState/Options.h"
 #include "../SmallButton.h"

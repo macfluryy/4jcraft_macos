@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "../../../../Minecraft.World/Blocks/Tile.h"
 #include "../../../../Minecraft.World/Items/Item.h"
@@ -9,7 +9,7 @@
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
-#include "../../../../Common/Console_Awards_enum.h"
+#include "../../Common/Console_Awards_enum.h"
 
 #include "DurangoStatsDebugger.h"
 

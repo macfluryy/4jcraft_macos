@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 
 #ifdef __PS3__
 
@@ -80,11 +80,11 @@ char secureFileId[CELL_SAVEDATA_SECUREFILEID_SIZE] =
 #include "../../GameState/StatsCounter.h"
 #include "../../UI/Screens/ConnectScreen.h"
 //#include "Social/SocialManager.h"
-//#include "../../../Common/Leaderboards/LeaderboardManager.h"
-//#include "../../../Common/XUI/XUI_Scene_Container.h"
+//#include "../Common/Leaderboards/LeaderboardManager.h"
+//#include "../Common/XUI/XUI_Scene_Container.h"
 //#include "NetworkManager.h"
 #include "../../Rendering/Tesselator.h"
-#include "../../../Common/Console_Awards_enum.h"
+#include "../Common/Console_Awards_enum.h"
 #include "../../GameState/Options.h"
 #include "Sentient/SentientManager.h"
 #include "../../../Minecraft.World/Util/IntCache.h"
@@ -94,8 +94,8 @@ char secureFileId[CELL_SAVEDATA_SECUREFILEID_SIZE] =
 #include "../../../Minecraft.World/Level/Storage/OldChunkStorage.h"
 #include "PS3Extras/EdgeZLib.h"
 #include "PS3Extras/C4JThread_SPU.h"
-#include "../../../Common/Network/Sony/SQRNetworkManager.h"
-#include "../../../Common/UI/IUIScene_PauseMenu.h"
+#include "../Common/Network/Sony/SQRNetworkManager.h"
+#include "../Common/UI/IUIScene_PauseMenu.h"
 
 #include <cell/sysmodule.h>
 

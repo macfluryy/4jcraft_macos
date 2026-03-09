@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../AI/Navigation/Node.h"
-#include "../Build/System.h"
+#include "../Platform/System.h"
 #include "BasicTypeContainers.h"
 
 class BinaryHeap

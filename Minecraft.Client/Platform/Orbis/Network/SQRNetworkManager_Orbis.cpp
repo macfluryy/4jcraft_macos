@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkManager_Orbis.h"
 #include <net.h>
 #include <sys/socket.h>
@@ -12,7 +12,7 @@
 #include "../ps4__np_conf.h"
 #include "Orbis_NPToolkit.h"
 #include "SonyVoiceChat_Orbis.h"
-#include "../../../../Common/Network/Sony/SonyHttp.h"
+#include "../../Common/Network/Sony/SonyHttp.h"
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 
 

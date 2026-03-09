@@ -1,6 +1,6 @@
 ﻿
-#include "../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Common/Consoles_App.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
+#include "../Common/Consoles_App.h"
 #include "../../Player/User.h"
 #include "../../Minecraft.h"
 #include "../../MinecraftServer.h"
@@ -16,7 +16,7 @@
 #include "Network/SonyRemoteStorage_Orbis.h"
 
 #include <system_service.h>
-#include "../../../Common/Network/Sony/SonyRemoteStorage.h"
+#include "../Common/Network/Sony/SonyRemoteStorage.h"
 #include <save_data_dialog.h>
 #include <error_dialog.h>
 

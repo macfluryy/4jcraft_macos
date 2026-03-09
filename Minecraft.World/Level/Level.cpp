@@ -1,5 +1,5 @@
-#include "../Build/stdafx.h"
-#include "../Build/System.h"
+#include "../Platform/stdafx.h"
+#include "../Platform/System.h"
 #include "../Util/BasicTypeContainers.h"
 #include "../IO/Files/File.h"
 #include "../Util/ProgressListener.h"
@@ -39,7 +39,7 @@
 #include "../../Minecraft.Client/Textures/Textures.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
-#include "../../Common/DLC/DLCPack.h"
+#include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 
 

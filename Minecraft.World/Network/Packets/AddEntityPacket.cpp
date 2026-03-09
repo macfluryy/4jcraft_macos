@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include <exception>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"

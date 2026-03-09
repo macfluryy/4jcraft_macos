@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/IO/Streams/Compression.h"

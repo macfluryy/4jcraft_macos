@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include <xbdm.h>
 #include <assert.h>
 #include "GameConfig/Minecraft.spa.h"
@@ -25,7 +25,7 @@
 #include "../../UI/Screens/ConnectScreen.h"
 #include "Social/SocialManager.h"
 #include "Leaderboards/XboxLeaderboardManager.h"
-#include "../../../Common/XUI/XUI_Scene_Container.h"
+#include "../Common/XUI/XUI_Scene_Container.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"
 #include "Sentient/SentientManager.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TexturePackRepository.h"
 #include "DefaultTexturePack.h"
 #include "FileTexturePack.h"

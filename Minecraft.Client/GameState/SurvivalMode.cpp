@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "SurvivalMode.h"
 #include "DemoMode.h"
 #include "../Rendering/LevelRenderer.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "StatsCounter.h"
 #include "../../Minecraft.World/Stats/Stat.h"
 #include "../../Minecraft.World/Stats/Stats.h"
@@ -9,7 +9,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
-#include "../../Common/Leaderboards/LeaderboardManager.h"
+#include "../Platform/Common/Leaderboards/LeaderboardManager.h"
 
 Stat** StatsCounter::LARGE_STATS[] = {
 	&Stats::walkOneM,

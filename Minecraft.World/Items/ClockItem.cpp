@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ClockItem.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "FileFilter.h"
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"

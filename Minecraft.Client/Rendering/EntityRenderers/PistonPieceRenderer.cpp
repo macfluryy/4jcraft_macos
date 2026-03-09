@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "PistonPieceRenderer.h"
 #include "../Tesselator.h"
 #include "../Lighting.h"

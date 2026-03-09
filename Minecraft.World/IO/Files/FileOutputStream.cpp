@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "File.h"
 #include "FileOutputStream.h"
 #include <fcntl.h>

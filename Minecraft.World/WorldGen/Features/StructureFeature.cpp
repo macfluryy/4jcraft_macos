@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "StructureFeature.h"
 #include "../Structures/StructureStart.h"
 #include "../Structures/StructurePiece.h"

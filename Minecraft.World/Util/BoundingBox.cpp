@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "BoundingBox.h"
 #include "Direction.h"
 #include "JavaMath.h"

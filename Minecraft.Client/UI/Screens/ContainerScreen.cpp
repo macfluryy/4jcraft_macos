@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ContainerScreen.h"
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"

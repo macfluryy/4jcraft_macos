@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "NetherStalkTile.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.biome.h"

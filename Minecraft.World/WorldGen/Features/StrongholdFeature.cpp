@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "StrongholdFeature.h"
 #include "../Structures/StrongholdPieces.h"
 #include "../../Headers/net.minecraft.world.level.h"

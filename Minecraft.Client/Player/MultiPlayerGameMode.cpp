@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "MultiPlayerGameMode.h"
 #include "../GameState/CreativeMode.h"
 #include "MultiPlayerLocalPlayer.h"

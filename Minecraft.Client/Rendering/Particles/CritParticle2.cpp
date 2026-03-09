@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "CritParticle2.h"
 #include "../../../Minecraft.World/Util/JavaMath.h"
 

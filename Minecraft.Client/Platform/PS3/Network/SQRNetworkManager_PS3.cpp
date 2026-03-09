@@ -1,6 +1,6 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkManager_PS3.h"
-#include "../../../../Common/Network/Sony/SQRNetworkPlayer.h"
+#include "../../Common/Network/Sony/SQRNetworkPlayer.h"
 #ifdef __PS3__
 #include <sys/random_number.h>
 #include <sys/event.h>
@@ -13,7 +13,7 @@
 #include "../Passphrase/ps3__np_conf.h"
 #ifdef __PS3__
 #include "SonyVoiceChat.h"
-#include "../../../../Common/Network/Sony/SonyHttp.h"
+#include "../../Common/Network/Sony/SonyHttp.h"
 #endif
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 #include "../PS3Extras/PS3Strings.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../Headers/net.minecraft.h"
 #include "../Headers/net.minecraft.world.level.h"

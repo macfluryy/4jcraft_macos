@@ -1,8 +1,8 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Tesselator.h"
 #include "../../Textures/Textures.h"
 #include "ProgressRenderer.h"
-#include "../../../Minecraft.World/Build/System.h"
+#include "../../../Minecraft.World/Platform/System.h"
 
 CRITICAL_SECTION ProgressRenderer::s_progress;
 

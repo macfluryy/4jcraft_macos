@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "FileTexturePack.h"
 
 FileTexturePack::FileTexturePack(DWORD id, File *file, TexturePack *fallback) : AbstractTexturePack(id, file, file->getName(), fallback)

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../IO/Streams/InputOutputStream.h"
 #include "SocketAddress.h"
 #include "Socket.h"

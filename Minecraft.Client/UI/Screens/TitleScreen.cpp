@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Button.h"
 #include "OptionsScreen.h"
 #include "SelectWorldScreen.h"
@@ -8,7 +8,7 @@
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
-#include "../../../Minecraft.World/Build/System.h"
+#include "../../../Minecraft.World/Platform/System.h"
 #include "../../../Minecraft.World/Util/Random.h"
 #include "TitleScreen.h"
 

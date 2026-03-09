@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../IO/Files/File.h"
 #include "../LevelData.h"
 #include "LevelSummary.h"

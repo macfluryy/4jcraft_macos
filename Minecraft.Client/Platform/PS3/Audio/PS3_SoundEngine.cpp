@@ -1,12 +1,12 @@
-﻿#include "../../../../Minecraft.World/Build/stdafx.h"
+﻿#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include <sysutil/sysutil_sysparam.h>
 #include <cell/sysmodule.h>
 #include <sys/spu_initialize.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <cell/audio.h>
-#include "../../../../Common/Audio/SoundEngine.h"
-#include "../../../../Common/Consoles_App.h"
+#include "../../Common/Audio/SoundEngine.h"
+#include "../../Common/Consoles_App.h"
 #include "../Miles/include/mss.h"
 
 // This file has the platform specific functions required for PS3 audio

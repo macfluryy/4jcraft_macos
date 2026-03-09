@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Facing.h"
 
 const int Facing::OPPOSITE_FACING[6] =

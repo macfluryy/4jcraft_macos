@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "LootBonusEnchantment.h"
 
 LootBonusEnchantment::LootBonusEnchantment(int id, int frequency, const EnchantmentCategory *cat) : Enchantment(id, frequency, cat)

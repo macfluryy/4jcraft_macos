@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
@@ -7,7 +7,7 @@
 #include "../../../../Minecraft.World/Level/LevelData.h"
 #include "../../../../Minecraft.World/Level/Storage/LevelSettings.h"
 
-#include "../../../../Common/Network/GameNetworkManager.h"
+#include "../../Common/Network/GameNetworkManager.h"
 #include "../../../Player/MultiPlayerLocalPlayer.h"
 
 #include "../ServiceConfig/Events-XBLA.8-149E11AEEvents.h"

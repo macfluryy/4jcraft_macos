@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Options.h"
 #include "../Input/KeyMapping.h"
 #include "../Rendering/LevelRenderer.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
 #include "../UI/Rect2i.h"
 #include "TextureManager.h"

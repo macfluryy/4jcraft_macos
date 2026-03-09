@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Camera.h"
 #include "../Utils/MemoryTracker.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"

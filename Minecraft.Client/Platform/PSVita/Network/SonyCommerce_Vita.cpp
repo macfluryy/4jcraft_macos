@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "SonyCommerce_Vita.h"
 #include "../../Orbis/OrbisExtras/ShutdownManager.h"

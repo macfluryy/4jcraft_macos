@@ -1,6 +1,6 @@
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "PS3_UIController.h"
-#include "../../../Common/UI/UIController.h"
+#include "../Common/UI/UIController.h"
 #include <cell/gcm.h>
 
 // Temp

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "DerivedServerLevel.h"
 #include "../../Minecraft.World/Level/Storage/SavedDataStorage.h"
 #include "../../Minecraft.World/Level/DerivedLevelData.h"

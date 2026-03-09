@@ -9,6 +9,9 @@ project('4jcraft-chucklegrounds', ['cpp', 'c'],
   ],
 )
 
+pymod = import('python')
+python = pymod.find_installation('python3', required: true)
+
 cc = meson.get_compiler('cpp')
 
 # system deps

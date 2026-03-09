@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 
 std::wstring toLower(const std::wstring& a)
 {

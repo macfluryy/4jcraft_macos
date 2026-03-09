@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "StitchSlot.h"
 #include "../Texture.h"
 #include "../TextureHolder.h"

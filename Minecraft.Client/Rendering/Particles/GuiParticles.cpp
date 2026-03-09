@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "GuiParticles.h"
 #include "GuiParticle.h"
 #include "../../Textures/Textures.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "TakeAnimationParticle.h"
 #include "../EntityRenderers/EntityRenderDispatcher.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.item.h"

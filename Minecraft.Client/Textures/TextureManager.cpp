@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Stitching/Stitcher.h"
 #include "Texture.h"
 #include "Packs/TexturePack.h"

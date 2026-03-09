@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "KnockbackEnchantment.h"
 
 KnockbackEnchantment::KnockbackEnchantment(int id, int frequency) : Enchantment(id, frequency, EnchantmentCategory::weapon)

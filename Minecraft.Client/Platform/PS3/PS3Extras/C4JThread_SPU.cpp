@@ -1,6 +1,6 @@
 
 
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "C4JThread_SPU.h"
 #include "../SPU_Tasks/ChunkUpdate/ChunkRebuildData.h"

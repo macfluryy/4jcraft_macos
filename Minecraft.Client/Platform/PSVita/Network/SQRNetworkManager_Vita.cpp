@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkManager_Vita.h"
 #include "SonyVoiceChat_Vita.h"
-#include "../../../../Common/Network/Sony/PlatformNetworkManagerSony.h"
+#include "../../Common/Network/Sony/PlatformNetworkManagerSony.h"
 
 #include <np.h>
 #include <rudp.h>
@@ -10,7 +10,7 @@
 #include <netcheck_dialog.h>
 
 #include "../PSVitaExtras/Conf.h"
-#include "../../../../Common/Network/Sony/SonyHttp.h"
+#include "../../Common/Network/Sony/SonyHttp.h"
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 
 // image used for the invite gui, filesize must be smaller than SCE_NP_MESSAGE_DIALOG_MAX_INDEX_ICON_SIZE ( 64K )

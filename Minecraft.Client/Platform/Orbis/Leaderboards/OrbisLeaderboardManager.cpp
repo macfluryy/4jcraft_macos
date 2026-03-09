@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "OrbisLeaderboardManager.h"
 
 #include "base64.h"
 
 #include "../Orbis_App.h"
-#include "../../../../Common/Consoles_App.h"
+#include "../../Common/Consoles_App.h"
 
-#include "../../../../Common/Network/Sony/SQRNetworkManager.h"
+#include "../../Common/Network/Sony/SQRNetworkManager.h"
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 

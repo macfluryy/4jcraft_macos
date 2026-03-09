@@ -2,7 +2,7 @@
 
 #include "../../../../Minecraft.World/Stats/DurangoStats.h"
 
-#include "../../../../Common/Telemetry/TelemetryManager.h"
+#include "../../Common/Telemetry/TelemetryManager.h"
 
 class CDurangoTelemetryManager : public CTelemetryManager
 {

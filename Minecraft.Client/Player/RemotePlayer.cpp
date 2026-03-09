@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "RemotePlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../Minecraft.World/Util/Mth.h"

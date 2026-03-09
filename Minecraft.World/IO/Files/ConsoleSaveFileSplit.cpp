@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Util/StringHelpers.h"
 #include "ConsoleSaveFileSplit.h"
 #include "ConsoleSaveFileConverter.h"
@@ -10,7 +10,7 @@
 #include "../../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Level/LevelData.h"
-#include "../../../Common/GameRules/LevelGenerationOptions.h"
+#include "../../../Minecraft.Client/Platform/Common/GameRules/LevelGenerationOptions.h"
 #include "../../Headers/net.minecraft.world.level.chunk.storage.h"
 
 #define RESERVE_ALLOCATION  MEM_RESERVE

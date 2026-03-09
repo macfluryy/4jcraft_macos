@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "NameEntryScreen.h"
 #include "../Button.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"

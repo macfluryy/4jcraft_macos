@@ -3,7 +3,7 @@
 #include "TileEntities/EntityTile.h"
 #include "TileEntities/TileEntity.h"
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Material.h"
 
 class SignTile : public EntityTile

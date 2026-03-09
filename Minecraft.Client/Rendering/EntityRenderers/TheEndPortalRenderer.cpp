@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../../Minecraft.World/Util/Random.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../Tesselator.h"

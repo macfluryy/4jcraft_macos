@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../Textures.h"
 #include "AbstractTexturePack.h"
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"

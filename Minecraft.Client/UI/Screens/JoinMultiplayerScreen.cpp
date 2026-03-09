@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "JoinMultiplayerScreen.h"
 #include "../Button.h"
 #include "../EditBox.h"

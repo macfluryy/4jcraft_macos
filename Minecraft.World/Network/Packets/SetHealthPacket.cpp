@@ -1,9 +1,9 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetHealthPacket.h"
-#include "../../../Common/Telemetry/TelemetryManager.h"
+#include "../../../Minecraft.Client/Platform/Common/Telemetry/TelemetryManager.h"
 
 
 SetHealthPacket::SetHealthPacket()

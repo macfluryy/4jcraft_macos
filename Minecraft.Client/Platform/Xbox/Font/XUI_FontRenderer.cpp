@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_FontRenderer.h"
 #include "XUI_Font.h"
 #include "XUI_FontData.h"

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "WaterWorkerEnchantment.h"
 
 WaterWorkerEnchantment::WaterWorkerEnchantment(int id, int frequency) : Enchantment(id, frequency, EnchantmentCategory::armor_head)

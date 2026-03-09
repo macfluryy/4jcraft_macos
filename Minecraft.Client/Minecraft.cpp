@@ -1,4 +1,4 @@
-#include "Build/stdafx.h"
+#include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
 #include "Utils/Timer.h"
@@ -45,13 +45,13 @@
 #include "../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
 #include "../Minecraft.World/Headers/net.minecraft.h"
 #include "../Minecraft.World/Headers/net.minecraft.stats.h"
-#include "../Minecraft.World/Build/System.h"
+#include "../Minecraft.World/Platform/System.h"
 #include "../Minecraft.World/IO/Streams/ByteBuffer.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.item.h"
-#include "../Minecraft.World/Build/Minecraft.World.h"
+#include "../Minecraft.World/Platform/Minecraft.World.h"
 #include "Network/ClientConnection.h"
 #include "../Minecraft.World/WorldGen/Sources/HellRandomLevelSource.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
@@ -65,8 +65,8 @@
 #ifdef _XBOX
 #include "Platform/Xbox/Network/NetworkPlayerXbox.h"
 #endif
-#include "../Common/UI/IUIScene_CreativeMenu.h"
-#include "../Common/UI/UIFontData.h"
+#include "Platform/Common/UI/IUIScene_CreativeMenu.h"
+#include "Platform/Common/UI/UIFontData.h"
 #include "Textures/Packs/DLCTexturePack.h"
 
 #ifdef __ORBIS__

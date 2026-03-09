@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ServerPlayerGameMode.h"
 #include "../Level/ServerLevel.h"
 #include "ServerPlayer.h"

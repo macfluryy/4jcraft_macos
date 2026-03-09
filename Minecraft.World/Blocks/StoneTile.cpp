@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "StoneTile.h"
 
 StoneTile::StoneTile(int id) : Tile(id, Material::stone)

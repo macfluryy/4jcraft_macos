@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "EditBox.h"
 #include "../../Minecraft.World/Util/SharedConstants.h"
 

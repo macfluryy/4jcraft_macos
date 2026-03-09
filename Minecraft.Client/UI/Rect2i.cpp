@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Rect2i.h"
 
 Rect2i::Rect2i(int x, int y, int width, int height)

@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "DirtTile.h"
 
 DirtTile::DirtTile(int id) : Tile(id, Material::dirt)

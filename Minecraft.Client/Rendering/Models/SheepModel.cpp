@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
 #include "SheepModel.h"
 #include "ModelPart.h"

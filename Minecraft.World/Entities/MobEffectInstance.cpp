@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.effect.h"
 
 void MobEffectInstance::_init(int id, int duration, int amplifier)

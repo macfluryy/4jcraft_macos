@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.locale.h"
 #include "../Items/ItemInstance.h"
 #include "Achievements.h"

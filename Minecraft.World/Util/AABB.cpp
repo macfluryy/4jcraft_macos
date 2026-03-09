@@ -3,7 +3,7 @@
 //import java->util.ArrayList;
 //import java->util.List;
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "AABB.h"
 #include "HitResult.h"
 

@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include <stdlib.h>
 #include "EdgeZLib.h"
 #include "edge/zlib/edgezlib_ppu.h"

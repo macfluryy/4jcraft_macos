@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "LevelSummary.h"
 
 LevelSummary::LevelSummary(const std::wstring& levelId, const std::wstring& levelName, __int64 lastPlayed, __int64 sizeOnDisk,  GameType *gameMode, bool requiresConversion, bool hardcore, bool hasCheats) :

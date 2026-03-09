@@ -1,9 +1,9 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "ScrolledSelectionList.h"
 #include "Button.h"
 #include "../Rendering/Tesselator.h"
 #include "../Textures/Textures.h"
-#include "../../Minecraft.World/Build/System.h"
+#include "../../Minecraft.World/Platform/System.h"
 
 ScrolledSelectionList::ScrolledSelectionList(Minecraft *minecraft, int width, int height, int y0, int y1, int itemHeight)
 {

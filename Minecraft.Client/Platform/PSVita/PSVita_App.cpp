@@ -1,6 +1,6 @@
 ﻿
-#include "../../../Minecraft.World/Build/stdafx.h"
-#include "../../../Common/Consoles_App.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
+#include "../Common/Consoles_App.h"
 #include "../../Player/User.h"
 #include "../../Minecraft.h"
 #include "../../MinecraftServer.h"
@@ -13,7 +13,7 @@
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "Network/SonyRemoteStorage_Vita.h"
 #include "Network/SonyCommerce_Vita.h"
-#include "../../../Common/Network/Sony/SonyRemoteStorage.h"
+#include "../Common/Network/Sony/SonyRemoteStorage.h"
 #include "Network/PSVita_NPToolkit.h"
 #include <message_dialog.h>
 #include <savedata_dialog.h>

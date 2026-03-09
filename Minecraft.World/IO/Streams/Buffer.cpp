@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "Buffer.h"
 
 Buffer::Buffer( unsigned int capacity ) : m_capacity( capacity ), m_position( 0 ), m_limit( capacity ), hasBackingArray( false )

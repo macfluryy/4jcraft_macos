@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #ifdef __PS3__
 #ifndef SN_TARGET_PS3_SPU
-// 	#include "../../../../Build/stdafx.h"
+// 	#include "../../../../Platform/stdafx.h"
 #endif
 #endif 
 

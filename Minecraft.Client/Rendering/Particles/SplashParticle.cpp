@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "SplashParticle.h"
 
 SplashParticle::SplashParticle(Level *level, double x, double y, double z, double xa, double ya, double za) : WaterDropParticle(level, x, y, z)

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ItemInHandRenderer.h"
 #include "TileRenderer.h"
 #include "../Tesselator.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ItemSpriteRenderer.h"
 #include "EntityRenderDispatcher.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.projectile.h"

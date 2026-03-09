@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Util/JavaMath.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"

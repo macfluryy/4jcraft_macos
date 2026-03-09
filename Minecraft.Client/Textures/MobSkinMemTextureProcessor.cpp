@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "MobSkinMemTextureProcessor.h"
 
 BufferedImage *MobSkinMemTextureProcessor::process(BufferedImage *in)

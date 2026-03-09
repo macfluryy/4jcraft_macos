@@ -1,7 +1,7 @@
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Xbox_UIController.h"
-#include "../../../Common/XUI/XUI_Scene_Base.h"
-#include "../../../Common/XUI/XUI_Scene_Win.h"
+#include "../Common/XUI/XUI_Scene_Base.h"
+#include "../Common/XUI/XUI_Scene_Win.h"
 
 ConsoleUIController ui;
 

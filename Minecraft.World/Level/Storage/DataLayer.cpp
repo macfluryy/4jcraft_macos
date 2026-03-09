@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "DataLayer.h"
 
 DataLayer::DataLayer(int length, int depthBits) : depthBits(depthBits), depthBitsPlusFour(depthBits + 4)

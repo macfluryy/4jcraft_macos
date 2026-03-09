@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "MemTexture.h"
 
 MemTexture::MemTexture(const std::wstring& _url, PBYTE pbData,DWORD dwBytes, MemTextureProcessor *processor)

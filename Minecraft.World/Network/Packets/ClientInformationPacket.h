@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 
 class ClientInformationPacket : public Packet
 {

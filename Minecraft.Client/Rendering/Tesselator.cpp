@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Tesselator.h"
 #include "../../Minecraft.World/Util/BasicTypeContainers.h"
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"

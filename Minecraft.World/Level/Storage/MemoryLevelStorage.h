@@ -4,7 +4,7 @@
 #include "LevelStorage.h"
 #include "PlayerIO.h"
 
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.chunk.storage.h"

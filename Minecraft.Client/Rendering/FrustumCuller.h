@@ -1,5 +1,5 @@
 #pragma once
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Culling/Culler.h"
 #include "Frustum.h"
 

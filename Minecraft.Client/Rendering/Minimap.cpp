@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Minecraft.h"
 #include "Minimap.h"
 #include "../UI/Font.h"

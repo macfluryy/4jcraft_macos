@@ -1,4 +1,4 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "PS3Strings.h"
 
 uint8_t *mallocAndCreateUTF8ArrayFromString(int iID)

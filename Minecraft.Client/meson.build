@@ -1,40 +1,38 @@
-# sources that shouldn't be compiled for whatever reason
-exclude_sources = [
-  ' ! -path "*/Platform/*"',
-  ' ! -path "*/../Common/Network/Sony/*"',
-  ' ! -path "*/../Common/XUI/*"',
-  ' ! -path "*/../Common/zlib/*"',
-]
-
-# get all those files
+# all sources except ./Platform/*
 client_sources = run_command(
   'sh', '-c',
   'find "'
     + meson.current_source_dir()
-    + '" \\( -name "*.cpp" -o -name "*.c" \\) '
-    + ' '.join(exclude_sources),
+    + '" \\( -name "*.cpp" -o -name "*.c" \\) ! -path "*/Platform/*"',
   check : true,
 ).stdout().strip().split('\n')
 
-# Common/ sources (previously lived in Minecraft.Client/Build/Common/)
-common_exclude = [
-  ' ! -path "*/Network/Sony/*"',
-  ' ! -path "*/XUI/*"',
-  ' ! -path "*/zlib/*"',
-  ' ! -path "*/Media/*"',
-  ' ! -path "*/DummyTexturePack/*"',
-]
-
-common_sources = run_command(
+# all sources in ./Platform (top-level files only)
+platform_sources = run_command(
   'sh', '-c',
   'find "'
-    + meson.current_source_dir() / '../Common'
-    + '" \\( -name "*.cpp" -o -name "*.c" \\) '
-    + ' '.join(common_exclude),
+    + meson.current_source_dir() / 'Platform'
+    + '" -maxdepth 1 \\( -name "*.cpp" -o -name "*.c" \\)',
   check : true,
 ).stdout().strip().split('\n')
 
-platform_sources = []
+# some platform-specific sources that are for some stupid reason in Common
+exclude_platform_common_sources = [
+  ' ! -path "*/Network/Sony/*"',
+  ' ! -path "*/XUI/*"',
+  # we use system zlib instead, since this one is old as hell and isn't configured for linux correctly
+  ' ! -path "*/zlib/*"',
+]
+
+# all sources in in ./Platform/Common
+platform_sources += run_command(
+  'sh', '-c',
+  'find "'
+    + meson.current_source_dir() / 'Platform/Common'
+    + '" \\( -name "*.cpp" -o -name "*.c" \\)'
+    + ' '.join(exclude_platform_common_sources),
+  check : true,
+).stdout().strip().split('\n')
 
 # linux-specific files (everything in Platform/Linux)
 if host_machine.system() == 'linux'
@@ -47,9 +45,9 @@ if host_machine.system() == 'linux'
   ).stdout().strip().split('\n')
 endif
 
-executable('Minecraft.Client',
-  client_sources + platform_sources + common_sources + localisation[1],
-  include_directories : include_directories('Build'),
+client = executable('Minecraft.Client',
+  client_sources + platform_sources + localisation[1],
+  include_directories : include_directories('Platform'),
   dependencies : [
     render_dep,
     input_dep,
@@ -66,10 +64,26 @@ executable('Minecraft.Client',
   ],
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-DUNICODE', '-D_UNICODE',
-    '-include', meson.current_source_dir() / 'Build/stdafx.h',
+    '-include', meson.current_source_dir() / 'Platform/stdafx.h',
   ],
   c_args   : global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
   install  : true,
   install_dir : ''
 )
 
+# To support actually running the client from the build folder, we need to
+# copy the generated assets from Minecraft.Assets into the working directory
+# of the client.
+custom_target('copy_assets_to_client',
+  input: [client, media_archive],
+  output: 'assets.stamp', # using a stamp file to avoid copying assets every time
+  command : [
+    python, meson.project_source_root() / 'scripts/copy_assets_to_client.py',
+    meson.project_source_root(),
+    meson.build_root(),
+    meson.current_build_dir(),
+    '@INPUT1@',
+    '@OUTPUT@',
+  ],
+  build_by_default: true,
+)

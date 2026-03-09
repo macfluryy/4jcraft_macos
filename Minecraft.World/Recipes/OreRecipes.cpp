@@ -5,7 +5,7 @@
 // import net.minecraft.world.item.ItemInstance;
 // import net.minecraft.world.level.tile.Tile;
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Items/DyePowderItem.h"
 #include "../Blocks/Tile.h"

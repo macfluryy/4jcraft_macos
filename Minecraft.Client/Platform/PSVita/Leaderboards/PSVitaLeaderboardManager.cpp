@@ -1,13 +1,13 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 
 #include "PSVitaLeaderboardManager.h"
 
 #include "base64.h"
 
 #include "../PSVita_App.h"
-#include "../../../../Common/Consoles_App.h"
+#include "../../Common/Consoles_App.h"
 
-#include "../../../../Common/Network/Sony/SQRNetworkManager.h"
+#include "../../Common/Network/Sony/SQRNetworkManager.h"
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "TileEntity.h"
 #include "../../Level/Events/LevelEvent.h"

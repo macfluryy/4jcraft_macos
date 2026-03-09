@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "GhastRenderer.h"
 #include "../Models/GhastModel.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"

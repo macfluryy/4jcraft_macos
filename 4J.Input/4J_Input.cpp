@@ -4,7 +4,7 @@
 // avoiding a coupling dependency on 4J_Render.h.
 
 #include "4J_Input.h"
-#include "../Common/App_enums.h"
+#include "../Minecraft.Client/Platform/Common/App_enums.h"
 #include <GLFW/glfw3.h>
 #include <math.h>
 #include <string.h>

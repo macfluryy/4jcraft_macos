@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "../../Headers/net.minecraft.world.entity.ai.goal.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"

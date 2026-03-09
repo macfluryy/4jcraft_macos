@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "KeyMapping.h"
 
 KeyMapping::KeyMapping(const std::wstring& name, int key)

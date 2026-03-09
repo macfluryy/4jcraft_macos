@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Headers/net.minecraft.world.level.h"

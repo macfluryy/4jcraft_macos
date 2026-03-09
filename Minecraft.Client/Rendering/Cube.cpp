@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "Models/Model.h"
 #include "Models/ModelPart.h"
 #include "Cube.h"

@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "LightningBoltRenderer.h"
 #include "../Tesselator.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.global.h"

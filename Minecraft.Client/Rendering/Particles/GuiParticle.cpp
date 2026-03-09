@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "GuiParticle.h"
 #include "../../../Minecraft.World/Util/Random.h"
 

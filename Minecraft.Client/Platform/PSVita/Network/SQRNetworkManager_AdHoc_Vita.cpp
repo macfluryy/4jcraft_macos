@@ -1,7 +1,7 @@
-#include "../../../../Minecraft.World/Build/stdafx.h"
+#include "../../../../Minecraft.World/Platform/stdafx.h"
 #include "SQRNetworkManager_AdHoc_Vita.h"
 #include "SonyVoiceChat_Vita.h"
-#include "../../../../Common/Network/Sony/PlatformNetworkManagerSony.h"
+#include "../../Common/Network/Sony/PlatformNetworkManagerSony.h"
 
 #include <np.h>
 #include <rudp.h>
@@ -12,7 +12,7 @@
 #include <adhoc_matching.h>
 
 #include "../PSVitaExtras/Conf.h"
-#include "../../../../Common/Network/Sony/SonyHttp.h"
+#include "../../Common/Network/Sony/SonyHttp.h"
 #include "../../../../Minecraft.World/Util/C4JThread.h"
 
 

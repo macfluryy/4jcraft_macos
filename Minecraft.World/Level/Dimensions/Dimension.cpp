@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.storage.h"
@@ -11,7 +11,7 @@
 #include "TheEndDimension.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../../Minecraft.Client/Minecraft.h"
-#include "../../../Common/Colours/ColourTable.h"
+#include "../../../Minecraft.Client/Platform/Common/Colours/ColourTable.h"
 
 void Dimension::init(Level *level)
 {

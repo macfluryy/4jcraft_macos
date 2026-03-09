@@ -3,7 +3,7 @@
 // import net.minecraft.world.inventory.CraftingContainer;
 // import net.minecraft.world.item.ItemInstance;
 
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.inventory.h"
 #include "../Blocks/Tile.h"

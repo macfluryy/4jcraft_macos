@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "../../../Minecraft.World/Build/stdafx.h"
+#include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include <assert.h>
 //#include <system_service.h>
@@ -50,8 +50,8 @@ static void sigsegv_handler(int sig) {
 #include "../../GameState/StatsCounter.h"
 #include "../../UI/Screens/ConnectScreen.h"
 //#include "../Durango/Social/SocialManager.h"
-//#include "../../../Common/Leaderboards/LeaderboardManager.h"
-//#include "../../../Common/XUI/XUI_Scene_Container.h"
+//#include "../Common/Leaderboards/LeaderboardManager.h"
+//#include "../Common/XUI/XUI_Scene_Container.h"
 //#include "NetworkManager.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"

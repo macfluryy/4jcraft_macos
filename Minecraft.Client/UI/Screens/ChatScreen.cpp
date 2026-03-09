@@ -1,4 +1,4 @@
-#include "../../Build/stdafx.h"
+#include "../../Platform/stdafx.h"
 #include "ChatScreen.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../Minecraft.World/Util/SharedConstants.h"

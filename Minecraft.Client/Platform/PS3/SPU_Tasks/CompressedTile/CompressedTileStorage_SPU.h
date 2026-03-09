@@ -6,11 +6,11 @@
 #include "SparseDataStorage_SPU.h"
 
 #ifndef SN_TARGET_PS3_SPU
-#include "../../../../Build/stdafx.h"
+#include "../../../../Platform/stdafx.h"
 #include "../../../../../Minecraft.World/Level/Storage/Region.h"
 #endif // SN_TARGET_PS3_SPU
 
-//#include "../../../../../Minecraft.World/Build/x64headers/xmcore.h"
+//#include "../../../../../Minecraft.World/Platform/x64headers/xmcore.h"
 
 // This class is used for the compressed storage of tile data. Unlike the SparseLightingStorage class, data is split into 512 blocks of 4x4x4 tiles. Then within each block, the
 // data is compressed as described below, with a selection of bits per tile available, in a method similar to a palettised image.

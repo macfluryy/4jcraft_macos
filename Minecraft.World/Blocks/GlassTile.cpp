@@ -1,4 +1,4 @@
-#include "../Build/stdafx.h"
+#include "../Platform/stdafx.h"
 #include "GlassTile.h"
 
 GlassTile::GlassTile(int id, Material *material, bool allowSame) : HalfTransparentTile(id, L"glass", material, allowSame)
