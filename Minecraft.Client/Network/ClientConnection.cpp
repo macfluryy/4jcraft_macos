@@ -1619,11 +1619,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	fprintf(stderr, "[LOGIN-CLI] handlePreLogin entered, isHost=%d, userIdx=%d\n", (int)g_NetworkManager.IsHost(), m_userIndex);
 #if 1
 	// 4J - Check that we can play with all the players already in the game who have Friends-Only UGC set
-	BOOL canPlay = TRUE;
-	BOOL canPlayLocal = TRUE;
-	BOOL isAtLeastOneFriend = g_NetworkManager.IsHost();
-	BOOL isFriendsWithHost = TRUE;
-	BOOL cantPlayContentRestricted = FALSE;
+	bool canPlay = true;
+	bool canPlayLocal = true;
+	bool isAtLeastOneFriend = g_NetworkManager.IsHost();
+	bool isFriendsWithHost = true;
+	bool cantPlayContentRestricted = false;
 	
 	if(!g_NetworkManager.IsHost())
 	{
@@ -1783,10 +1783,10 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	}
 #else
 	// TODO - handle this kind of things for non-360 platforms
-	canPlay = TRUE;
-	canPlayLocal = TRUE;
-	isAtLeastOneFriend = TRUE;
-	cantPlayContentRestricted= FALSE;
+	canPlay = true;
+	canPlayLocal = true;
+	isAtLeastOneFriend = true;
+	cantPlayContentRestricted= false;
 
 #if ( defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
 
@@ -3243,7 +3243,7 @@ void ClientConnection::handleUpdateProgress(std::shared_ptr<UpdateProgressPacket
 
 void ClientConnection::handleUpdateGameRuleProgressPacket(std::shared_ptr<UpdateGameRuleProgressPacket> packet)
 {
-	LPCWSTR string = app.GetGameRulesString(packet->m_messageId);
+	const wchar_t *string = app.GetGameRulesString(packet->m_messageId);
 	if(string != NULL)
 	{
 		std::wstring message(string);
