@@ -34,10 +34,10 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void *initData, UILayer *pa
 		m_playerNames[i] = L"";
 	}
 
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -124,10 +124,10 @@ void UIScene_TeleportMenu::handleGainFocus(bool navBack)
 
 void UIScene_TeleportMenu::handleReload()
 {
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -185,7 +185,7 @@ void UIScene_TeleportMenu::tick()
 {
 	UIScene::tick();
 
-	for(DWORD i = 0; i < m_playersCount; ++i)
+	for(int i = 0; i < m_playersCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerBySmallId( m_players[i] );
 
