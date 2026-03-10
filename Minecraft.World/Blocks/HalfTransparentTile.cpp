@@ -3,7 +3,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "HalfTransparentTile.h"
 
-HalfTransparentTile::HalfTransparentTile(int id, const std::wstring &tex, Material *material, bool allowSame) : Tile(id,material,isSolidRender())
+HalfTransparentTile::HalfTransparentTile(int id, const std::wstring &tex, Material *material, bool allowSame) : Tile(id,material, false)
 {
 	this->allowSame = allowSame;
 	this->texture = tex;

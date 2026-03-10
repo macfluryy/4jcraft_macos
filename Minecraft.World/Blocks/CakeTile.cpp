@@ -9,7 +9,7 @@
 #include "CakeTile.h"
 
 
-CakeTile::CakeTile(int id) : Tile(id, Material::cake,isSolidRender())
+CakeTile::CakeTile(int id) : Tile(id, Material::cake, false)
 {
 	setTicking(true);
 

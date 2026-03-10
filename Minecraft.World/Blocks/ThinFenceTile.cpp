@@ -3,7 +3,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.h"
 
-ThinFenceTile::ThinFenceTile(int id, const std::wstring &tex, const std::wstring &edgeTex, Material *material, bool dropsResources) : Tile(id, material,isSolidRender())
+ThinFenceTile::ThinFenceTile(int id, const std::wstring &tex, const std::wstring &edgeTex, Material *material, bool dropsResources) : Tile(id, material, false)
 {
 	iconSide = NULL;
 	edgeTexture = edgeTex;

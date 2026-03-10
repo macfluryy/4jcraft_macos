@@ -10,7 +10,7 @@
 #include "../Util/Facing.h"
 #include "../Entities/Mobs/Ocelot.h"
 
-ChestTile::ChestTile(int id) : EntityTile(id, Material::wood, isSolidRender() )
+ChestTile::ChestTile(int id) : EntityTile(id, Material::wood, false)
 {
 	random = new Random();
 

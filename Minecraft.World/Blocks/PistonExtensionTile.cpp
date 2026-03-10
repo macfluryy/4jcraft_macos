@@ -4,7 +4,7 @@
 #include "../Util/Facing.h"
 #include "../Headers/net.minecraft.world.level.h"
 
-PistonExtensionTile::PistonExtensionTile(int id) : Tile(id, Material::piston,isSolidRender() )
+PistonExtensionTile::PistonExtensionTile(int id) : Tile(id, Material::piston, false)
 {
 	// 4J added initialiser
 	overrideTopTexture = NULL;

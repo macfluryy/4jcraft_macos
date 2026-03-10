@@ -6,7 +6,7 @@
 #include "FarmTile.h"
 
 
-FarmTile::FarmTile(int id) : Tile(id, Material::dirt,isSolidRender())
+FarmTile::FarmTile(int id) : Tile(id, Material::dirt, false)
 {
     iconWet = NULL;
 	iconDry = NULL;

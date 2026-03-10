@@ -11,7 +11,7 @@ UIGroup::UIGroup(EUIGroup group, int iPad)
 	m_bIgnoreAutosaveMenuDisplayed = false;
 	m_bIgnorePlayerJoinMenuDisplayed = false;
 	// 4jcraft, moved this to the top
-	// initialized memory was read.
+	// uninitialized memory was read.
 	m_viewportType = C4JRender::VIEWPORT_TYPE_FULLSCREEN;
 
 	m_updateFocusStateCountdown = 0;

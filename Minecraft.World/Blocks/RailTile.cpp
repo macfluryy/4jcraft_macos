@@ -363,7 +363,9 @@ bool RailTile::isRail(int id)
 	return id == Tile::rail_Id || id == Tile::goldenRail_Id || id == Tile::detectorRail_Id;
 }
 
-RailTile::RailTile(int id, bool usesDataBit) : Tile(id, Material::decoration, isSolidRender())
+// 4jcraft, changed from isSolidRender() to false, _init was changed by 4jstudios
+// to take in a bool to avoid calling isSolidRender before the vptr is set,
+RailTile::RailTile(int id, bool usesDataBit) : Tile(id, Material::decoration, false)
 {
 	this->usesDataBit = usesDataBit;
 	this->setShape(0, 0, 0, 1, 2 / 16.0f, 1);

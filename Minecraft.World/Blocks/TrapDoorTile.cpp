@@ -6,7 +6,7 @@
 #include "TrapDoorTile.h"
 
 
-TrapDoorTile::TrapDoorTile(int id, Material *material) : Tile(id, material,isSolidRender())
+TrapDoorTile::TrapDoorTile(int id, Material *material) : Tile(id, material, false)
 {
 	float r = 0.5f;
 	float h = 1.0f;

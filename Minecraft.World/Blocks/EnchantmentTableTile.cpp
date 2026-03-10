@@ -9,7 +9,7 @@ const std::wstring EnchantmentTableTile::TEXTURE_SIDE = L"enchantment_side";
 const std::wstring EnchantmentTableTile::TEXTURE_TOP = L"enchantment_top";
 const std::wstring EnchantmentTableTile::TEXTURE_BOTTOM = L"enchantment_bottom";
 
-EnchantmentTableTile::EnchantmentTableTile(int id) : EntityTile(id, Material::stone, isSolidRender())
+EnchantmentTableTile::EnchantmentTableTile(int id) : EntityTile(id, Material::stone, false)
 {
 	updateDefaultShape();
     setLightBlock(0);

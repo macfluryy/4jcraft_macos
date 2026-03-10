@@ -9,7 +9,7 @@
 const double DiodeTile::DELAY_RENDER_OFFSETS[4] = { -1.0f / 16.0f, 1.0f / 16.0f, 3.0f / 16.0f, 5.0f / 16.0f };
 const int DiodeTile::DELAYS[4] = { 1, 2, 3, 4 };
 
-DiodeTile::DiodeTile(int id, bool on) : DirectionalTile(id, Material::decoration,isSolidRender())
+DiodeTile::DiodeTile(int id, bool on) : DirectionalTile(id, Material::decoration, false)
 {
 	this->on = on;
 	updateDefaultShape();

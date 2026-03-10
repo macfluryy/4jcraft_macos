@@ -6,7 +6,7 @@
 #include "ButtonTile.h"
 #include "../Util/SoundTypes.h"
 
-ButtonTile::ButtonTile(int id, bool sensitive) : Tile(id, Material::decoration,isSolidRender())
+ButtonTile::ButtonTile(int id, bool sensitive) : Tile(id, Material::decoration, false)
 {
 	this->setTicking(true);
 	this->sensitive = sensitive;

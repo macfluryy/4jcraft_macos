@@ -10,7 +10,7 @@
 
 const std::wstring DoorTile::TEXTURES[] = { L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper" };
 
-DoorTile::DoorTile(int id, Material *material) : Tile(id, material,isSolidRender())
+DoorTile::DoorTile(int id, Material *material) : Tile(id, material, false)
 {
 	icons = NULL;
 

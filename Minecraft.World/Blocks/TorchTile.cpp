@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "TorchTile.h"
 
-TorchTile::TorchTile(int id) : Tile(id, Material::decoration,isSolidRender())
+TorchTile::TorchTile(int id) : Tile(id, Material::decoration, false)
 {
 	this->setTicking(true);
 }
