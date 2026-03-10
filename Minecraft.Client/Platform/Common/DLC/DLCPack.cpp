@@ -101,9 +101,9 @@ XCONTENTDEVICEID DLCPack::GetDLCDeviceID()
 
 void DLCPack::addChildPack(DLCPack *childPack)
 {
-	int packId = childPack->GetPackId();
+	const std::uint32_t packId = childPack->GetPackId();
 #ifndef _CONTENT_PACKAGE
-	if(packId < 0 || packId > 15)
+	if(packId > 15)
 	{
 		__debugbreak();
 	}
@@ -125,7 +125,7 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstrin
 	{
 	case DLCManager::e_DLCParamType_PackId:
 		{
-			DWORD packId = 0;
+			std::uint32_t packId = 0;
 
 			std::wstringstream ss;
 			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
@@ -137,7 +137,7 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstrin
 		break;
 	case DLCManager::e_DLCParamType_PackVersion:
 		{
-			DWORD version = 0;
+			std::uint32_t version = 0;
 
 			std::wstringstream ss;
 			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually

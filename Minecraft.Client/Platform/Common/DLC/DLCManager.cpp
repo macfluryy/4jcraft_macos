@@ -587,9 +587,9 @@ bool DLCManager::processDLCDataFile(unsigned int &dwFilesProcessed, std::uint8_t
 	return true;
 }
 
-DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
+std::uint32_t DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
 {
-	DWORD packId = 0;
+	std::uint32_t packId = 0;
 
 	unsigned int bytesRead = 0;
 	std::uint8_t *pbData = NULL;
@@ -603,9 +603,9 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	return packId;
 }
 
-DWORD DLCManager::retrievePackID(std::uint8_t *pbData, DWORD dwLength, DLCPack *pack)
+std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack)
 {
-	DWORD packId=0;
+	std::uint32_t packId=0;
 	bool bPackIDSet=false;
 	std::unordered_map<int, DLCManager::EDLCParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -650,7 +650,7 @@ DWORD DLCManager::retrievePackID(std::uint8_t *pbData, DWORD dwLength, DLCPack *
 	uiCurrentByte+=sizeof(int);
 	C4JStorage::DLC_FILE_DETAILS *pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
-	DWORD dwTemp=uiCurrentByte;
+	unsigned int dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
 		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);

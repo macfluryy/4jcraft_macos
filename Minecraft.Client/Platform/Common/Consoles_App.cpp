@@ -5211,7 +5211,7 @@ int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dw
 			if(( GetFileAttributes( szFullFilename ) & FILE_ATTRIBUTE_DIRECTORY) != FILE_ATTRIBUTE_DIRECTORY)
 			{
 #ifdef _XBOX
-				DWORD dwPackID=m_dlcManager.retrievePackIDFromDLCDataFile(szFullFilename,pack);
+				std::uint32_t dwPackID=m_dlcManager.retrievePackIDFromDLCDataFile(szFullFilename,pack);
 
 				// Do we need to override the TexturePack.pck with an updated version in a TU?
 				std::wstring wsTemp=getFilePath(dwPackID, std::wstring(L"TexturePack.pck"),false );

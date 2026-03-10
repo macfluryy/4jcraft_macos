@@ -26,8 +26,8 @@ private:
 	ULONGLONG m_ullFullOfferId;
 #endif
 	bool m_isCorrupt;
-	DWORD m_packId;
-	DWORD m_packVersion;
+	std::uint32_t m_packId;
+	std::uint32_t m_packVersion;
 
 	std::uint8_t *m_data; // This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
 public:
@@ -45,14 +45,14 @@ public:
 	bool IsCorrupt() { return m_isCorrupt; }
 	void SetIsCorrupt(bool val) { m_isCorrupt = val; }
 
-	void SetPackId(DWORD id) { m_packId = id; }
-	DWORD GetPackId() { return m_packId; }
+	void SetPackId(std::uint32_t id) { m_packId = id; }
+	std::uint32_t GetPackId() { return m_packId; }
 
-	void SetPackVersion(DWORD version) { m_packVersion = version; }
-	DWORD GetPackVersion() { return m_packVersion; }
+	void SetPackVersion(std::uint32_t version) { m_packVersion = version; }
+	std::uint32_t GetPackVersion() { return m_packVersion; }
 
 	DLCPack * GetParentPack() { return m_parentPack; }
-	DWORD GetParentPackId() { return m_parentPack->m_packId; }
+	std::uint32_t GetParentPackId() { return m_parentPack->m_packId; }
 
 	void SetDLCMountIndex(DWORD id) { m_dlcMountIndex = id; }
 	DWORD GetDLCMountIndex();
@@ -82,7 +82,7 @@ public:
 	DWORD getDLCItemsCount(DLCManager::EDLCType type = DLCManager::e_DLCType_All);	
 	DWORD getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found);
 	bool doesPackContainFile(DLCManager::EDLCType type, const std::wstring &path);
-	DWORD GetPackID() {return m_packId;}
+	std::uint32_t GetPackID() {return m_packId;}
 	
 	DWORD getSkinCount() { return getDLCItemsCount(DLCManager::e_DLCType_Skin); }
 	DWORD getSkinIndexAt(const std::wstring &path, bool &found) { return getFileIndexAt(DLCManager::e_DLCType_Skin, path, found); }

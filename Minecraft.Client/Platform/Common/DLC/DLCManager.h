@@ -91,10 +91,10 @@ public:
 
 	bool readDLCDataFile(unsigned int &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive = false);
 	bool readDLCDataFile(unsigned int &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive = false);
-	DWORD retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
+	std::uint32_t retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
 
 private:
 	bool processDLCDataFile(unsigned int &dwFilesProcessed, std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack);
 
-	DWORD retrievePackID(std::uint8_t *pbData, DWORD dwLength, DLCPack *pack);
+	std::uint32_t retrievePackID(std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack);
 };
