@@ -2019,7 +2019,7 @@ void UIScene_MainMenu::LoadTrial(void)
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
 	completionData->bShowBackground=TRUE;

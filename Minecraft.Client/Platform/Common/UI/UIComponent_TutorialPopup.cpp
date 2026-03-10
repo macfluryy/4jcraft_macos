@@ -334,7 +334,7 @@ std::wstring UIComponent_TutorialPopup::_SetImage(std::wstring &desc)
 {
 	// 4J Stu - Unused
 #if 0
-	BOOL imageShowAtStart = m_image.IsShown();
+	bool imageShowAtStart = m_image.IsShown();
 
 	std::wstring openTag(L"{*IMAGE*}");
 	std::wstring closeTag(L"{*/IMAGE*}");
@@ -348,7 +348,7 @@ std::wstring UIComponent_TutorialPopup::_SetImage(std::wstring &desc)
 		{
 			std::wstring id = desc.substr(imageStartPos, imageEndPos - imageStartPos);
 			m_image.SetImagePath( id.c_str() );
-			m_image.SetShow( TRUE );
+			m_image.SetShow( true );
 
 			desc.replace(imageTagStartPos, imageEndPos - imageTagStartPos + closeTag.length(), L"");
 		}
@@ -356,10 +356,10 @@ std::wstring UIComponent_TutorialPopup::_SetImage(std::wstring &desc)
 	else
 	{
 		// hide the icon slot
-		m_image.SetShow( FALSE );
+		m_image.SetShow( false );
 	}
 	
-	BOOL imageShowAtEnd = m_image.IsShown();
+	bool imageShowAtEnd = m_image.IsShown();
 	if(imageShowAtStart != imageShowAtEnd)
 	{
 		float fHeight, fWidth, fIconHeight, fDescHeight, fDescWidth;

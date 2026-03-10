@@ -1035,7 +1035,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
 #elif defined(_DURANGO)
         if(getControlFocus() == eControl_GamesList && m_buttonListGames.getItemCount() > 0)
         {
-            DWORD nIndex = m_buttonListGames.getCurrentSelection();
+            const int nIndex = m_buttonListGames.getCurrentSelection();
             FriendSessionInfo *pSelectedSession = m_currentSessions->at( nIndex );
 
             PlayerUID uid = pSelectedSession->searchResult.m_playerXuids[0];
@@ -1617,7 +1617,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
     FriendSessionInfo *pSelectedSession = NULL;
     if(DoesGamesListHaveFocus() && m_buttonListGames.getItemCount() > 0)
     {
-        unsigned int nIndex = m_buttonListGames.getCurrentSelection();
+        const int nIndex = m_buttonListGames.getCurrentSelection();
         pSelectedSession = m_currentSessions->at( nIndex );
     }
 
@@ -1641,7 +1641,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
     unsigned int xuiListSize = m_buttonListGames.getItemCount();
     unsigned int filteredListSize = (unsigned int)m_currentSessions->size();
 
-    BOOL gamesListHasFocus = DoesGamesListHaveFocus();
+    const bool gamesListHasFocus = DoesGamesListHaveFocus();
 
     if(filteredListSize > 0)
     {
@@ -2204,7 +2204,7 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(void *pParam,int iPad,C4JS
 				std::wstring ProductId;
 				app.GetDLCFullOfferIDForPackID(pClass->m_initData->selectedSession->data.texturePackParentId,ProductId);
 
-				StorageManager.InstallOffer(1,(WCHAR *)ProductId.c_str(),NULL,NULL);
+				StorageManager.InstallOffer(1, const_cast<wchar_t *>(ProductId.c_str()), NULL, NULL);
 			}
 			else
 			{	
