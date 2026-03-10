@@ -32,6 +32,8 @@ void CConsoleMinecraftApp::ExitGame()
 }
 void CConsoleMinecraftApp::FatalLoadError()
 {
+    app.DebugPrintf("CConsoleMinecraftApp::FatalLoadError - asserting 0 and dying...\n");
+    assert(0);
 }
 
 void CConsoleMinecraftApp::CaptureSaveThumbnail()
