@@ -238,24 +238,24 @@ typedef struct _JoinMenuInitData
 // More Options
 typedef struct _LaunchMoreOptionsMenuInitData
 {
-	BOOL bOnlineGame;
-	BOOL bInviteOnly;
-	BOOL bAllowFriendsOfFriends;
+	bool bOnlineGame;
+	bool bInviteOnly;
+	bool bAllowFriendsOfFriends;
 
-	BOOL bGenerateOptions;
-	BOOL bStructures;
-	BOOL bFlatWorld;
-	BOOL bBonusChest;
+	bool bGenerateOptions;
+	bool bStructures;
+	bool bFlatWorld;
+	bool bBonusChest;
 
-	BOOL bPVP;
-	BOOL bTrust;
-	BOOL bFireSpreads;
-	BOOL bTNT;
+	bool bPVP;
+	bool bTrust;
+	bool bFireSpreads;
+	bool bTNT;
 
-	BOOL bHostPrivileges;
-	BOOL bResetNether;
+	bool bHostPrivileges;
+	bool bResetNether;
 
-	BOOL bOnlineSettingChangedBySystem;
+	bool bOnlineSettingChangedBySystem;
 
 	int iPad;
 
@@ -268,11 +268,11 @@ typedef struct _LaunchMoreOptionsMenuInitData
 	_LaunchMoreOptionsMenuInitData()
 	{
 		memset((void*)this,0,sizeof(_LaunchMoreOptionsMenuInitData));
-		bOnlineGame = TRUE;
-		bAllowFriendsOfFriends = TRUE;
-		bPVP = TRUE;
-		bFireSpreads = TRUE;
-		bTNT = TRUE;
+		bOnlineGame = true;
+		bAllowFriendsOfFriends = true;
+		bPVP = true;
+		bFireSpreads = true;
+		bTNT = true;
 		iPad = -1;
 		worldSize = 3;
 		seed = L"";
