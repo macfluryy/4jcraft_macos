@@ -16,12 +16,13 @@ AwardStatPacket::AwardStatPacket(int statId, int count)
 {
 	this->statId = statId;
 
-	// 4jcraft, changed from new int(count); to new int[1];
-	// and initializing the array with count
-	// reason: .data needs to be delete with delete[] but its 
-	// allocated with new, not new T[]
-	this->m_paramData.data = (uint8_t *) new int[1];
-	((int*)this->m_paramData.data)[0] = count;
+	// 4jcraft, changed from (uint8_t*) new int(count); to:
+	//			 new uint8_t[sizeof(int)];
+	// and memcpy of the integer into the array
+	// reason: operator missmatch, array is deleted with delete[]
+	// and typesafety
+	this->m_paramData.data = new uint8_t[sizeof(int)];
+	memcpy(this->m_paramData.data, &count, sizeof(int));
 	this->m_paramData.length = sizeof(int);
 }
 
