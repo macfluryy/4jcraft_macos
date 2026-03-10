@@ -54,12 +54,12 @@ protected:
 
 	int iVSlotIndexA[3]; // index of the v slots currently displayed
 
-	static LPCWSTR m_GroupIconNameA[m_iMaxGroup3x3];
+	static const wchar_t *m_GroupIconNameA[m_iMaxGroup3x3];
 	static Recipy::_eGroupType m_GroupTypeMapping4GridA[m_iMaxGroup2x2];
 	static Recipy::_eGroupType m_GroupTypeMapping9GridA[m_iMaxGroup3x3];
 	Recipy::_eGroupType *m_pGroupA;
 
-	static LPCWSTR m_GroupTabNameA[3];	
+	static const wchar_t *m_GroupTabNameA[3];	
 	static _eGroupTab m_GroupTabBkgMapping2x2A[m_iMaxGroup2x2];
 	static _eGroupTab m_GroupTabBkgMapping3x3A[m_iMaxGroup3x3];
 	_eGroupTab *m_pGroupTabA;
@@ -78,7 +78,7 @@ public:
 	IUIScene_CraftingMenu();
 
 protected:
-	LPCWSTR GetGroupNameText(int iGroupType);
+	const wchar_t *GetGroupNameText(int iGroupType);
 
 	void CheckRecipesAvailable();
 	void UpdateHighlight();
@@ -104,12 +104,12 @@ protected:
 	virtual void setIngredientSlotRedBox(int index, bool show) = 0;
 	virtual void setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item) = 0;
 	virtual void setIngredientDescriptionRedBox(int index, bool show) = 0;
-	virtual void setIngredientDescriptionText(int index, LPCWSTR text) = 0;
+	virtual void setIngredientDescriptionText(int index, const wchar_t *text) = 0;
 	virtual void setShowCraftHSlot(int iIndex, bool show) = 0;
 	virtual void showTabHighlight(int iIndex, bool show) = 0;
-	virtual void setGroupText(LPCWSTR text) = 0;
-	virtual void setDescriptionText(LPCWSTR text) = 0;
-	virtual void setItemText(LPCWSTR text) = 0;
+	virtual void setGroupText(const wchar_t *text) = 0;
+	virtual void setDescriptionText(const wchar_t *text) = 0;
+	virtual void setItemText(const wchar_t *text) = 0;
 	virtual void scrollDescriptionUp() = 0;
 	virtual void scrollDescriptionDown() = 0;
 	virtual void updateHighlightAndScrollPositions() = 0;

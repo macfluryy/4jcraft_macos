@@ -51,7 +51,7 @@ public:
 		static const int MAX_SIZE = rows * columns;
 
 		// 4J JEV - Images
-		const LPCWSTR m_icon;
+		const wchar_t *m_icon;
 		const int m_descriptionId;
 		const int m_staticGroupsCount;
 		ECreative_Inventory_Groups *m_staticGroupsA;
@@ -64,7 +64,7 @@ public:
 		unsigned int m_staticItems;
 
 	public:
-		TabSpec( LPCWSTR icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups );
+		TabSpec( const wchar_t *icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups );
 		~TabSpec();
 
 		void populateMenu(AbstractContainerMenu *menu, int dynamicIndex, unsigned int page);

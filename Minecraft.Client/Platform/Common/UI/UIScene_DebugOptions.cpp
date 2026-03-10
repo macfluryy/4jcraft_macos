@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIScene_DebugOptions.h"
 
-LPCWSTR UIScene_DebugOptionsMenu::m_DebugCheckboxTextA[eDebugSetting_Max+1]=
+const wchar_t *UIScene_DebugOptionsMenu::m_DebugCheckboxTextA[eDebugSetting_Max+1]=
 {
 	L"Load Saves From Local Folder Mode",
 	L"Write Saves To Local Folder Mode",

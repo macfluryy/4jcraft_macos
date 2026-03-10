@@ -6,7 +6,7 @@
 class UIScene_DebugOptionsMenu : public UIScene
 {
 private:
-	static LPCWSTR m_DebugCheckboxTextA[eDebugSetting_Max+1];
+	static const wchar_t *m_DebugCheckboxTextA[eDebugSetting_Max+1];
 
 	int m_iTotalCheckboxElements;
 

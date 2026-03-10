@@ -199,7 +199,7 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene *interactScene, const st
 	}
 }
 
-std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc)
+std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, const wchar_t *desc)
 {
 	std::wstring temp(desc);
 

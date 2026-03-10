@@ -602,7 +602,7 @@ void IUIScene_CreativeMenu::switchTab(ECreativeInventoryTabs tab)
 
 // 4J JEV - Tab Spec Struct
 
-IUIScene_CreativeMenu::TabSpec::TabSpec(LPCWSTR icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups)
+IUIScene_CreativeMenu::TabSpec::TabSpec(const wchar_t *icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups)
 	: m_icon(icon), m_descriptionId(descriptionId), m_staticGroupsCount(staticGroupsCount), m_dynamicGroupsCount(dynamicGroupsCount)
 {
 	
