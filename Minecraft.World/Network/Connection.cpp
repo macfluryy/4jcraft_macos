@@ -606,7 +606,7 @@ int Connection::runWrite(void* lpParam)
 
 	// 4J Stu - Adding this to force us to run through the writeTick at least once after the event is fired
 	// Otherwise there is a race between the calling thread setting the running flag and this loop checking the condition
-	DWORD waitResult = WAIT_TIMEOUT;
+	unsigned int waitResult = WAIT_TIMEOUT;
 
 	while ((con->running || waitResult == 0 ) && ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads))
 	{
