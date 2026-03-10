@@ -1334,12 +1334,12 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 
 void CMinecraftApp::SetPlayerSkin(int iPad,const std::wstring &name)
 {
-	DWORD skinId = app.getSkinIdFromPath(name);
+	std::uint32_t skinId = app.getSkinIdFromPath(name);
 
 	SetPlayerSkin(iPad,skinId);
 }
 
-void CMinecraftApp::SetPlayerSkin(int iPad,DWORD dwSkinId)
+void CMinecraftApp::SetPlayerSkin(int iPad,std::uint32_t dwSkinId)
 {
 	DebugPrintf("Setting skin for %d to %08X\n", iPad, dwSkinId);
 
@@ -1357,12 +1357,12 @@ std::wstring CMinecraftApp::GetPlayerSkinName(int iPad)
 	return app.getSkinPathFromId(GameSettingsA[iPad]->dwSelectedSkin);
 }
 
-DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
+std::uint32_t CMinecraftApp::GetPlayerSkinId(int iPad)
 {
 	// 4J-PB -check the user has rights to use this skin - they may have had at some point but the entitlement has been removed.
 	DLCPack *Pack=NULL;
 	DLCSkinFile *skinFile=NULL;
-	DWORD dwSkin=GameSettingsA[iPad]->dwSelectedSkin;
+	std::uint32_t dwSkin=GameSettingsA[iPad]->dwSelectedSkin;
 	wchar_t chars[256];
 
 	if( GET_IS_DLC_SKIN_FROM_BITMASK(dwSkin) )
@@ -1402,12 +1402,12 @@ DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
 
 void CMinecraftApp::SetPlayerCape(int iPad,const std::wstring &name)
 {
-	DWORD capeId = Player::getCapeIdFromPath(name);
+	std::uint32_t capeId = Player::getCapeIdFromPath(name);
 
 	SetPlayerCape(iPad,capeId);
 }
 
-void CMinecraftApp::SetPlayerCape(int iPad,DWORD dwCapeId)
+void CMinecraftApp::SetPlayerCape(int iPad,std::uint32_t dwCapeId)
 {
 	DebugPrintf("Setting cape for %d to %08X\n", iPad, dwCapeId);
 
@@ -1424,7 +1424,7 @@ std::wstring CMinecraftApp::GetPlayerCapeName(int iPad)
 	return Player::getCapePathFromId(GameSettingsA[iPad]->dwSelectedCape);
 }
 
-DWORD CMinecraftApp::GetPlayerCapeId(int iPad)
+std::uint32_t CMinecraftApp::GetPlayerCapeId(int iPad)
 {
 	return GameSettingsA[iPad]->dwSelectedCape;
 }

@@ -234,9 +234,9 @@ public:
 	unsigned char	GetGameSettings(int iPad,eGameSetting eVal);
 	unsigned char	GetGameSettings(eGameSetting eVal); // for the primary pad
 	void			SetPlayerSkin(int iPad,const std::wstring &name);
-	void			SetPlayerSkin(int iPad,DWORD dwSkinId);
+	void			SetPlayerSkin(int iPad,std::uint32_t dwSkinId);
 	void			SetPlayerCape(int iPad,const std::wstring &name);
-	void			SetPlayerCape(int iPad,DWORD dwCapeId);
+	void			SetPlayerCape(int iPad,std::uint32_t dwCapeId);
 	void			SetPlayerFavoriteSkin(int iPad, int iIndex,unsigned int uiSkinID);
 	unsigned int	GetPlayerFavoriteSkin(int iPad,int iIndex);
 	unsigned char	GetPlayerFavoriteSkinsPos(int iPad);
@@ -261,9 +261,9 @@ public:
 
 public:
 	std::wstring			GetPlayerSkinName(int iPad);
-	DWORD			GetPlayerSkinId(int iPad);
+	std::uint32_t	GetPlayerSkinId(int iPad);
 	std::wstring			GetPlayerCapeName(int iPad);
-	DWORD			GetPlayerCapeId(int iPad);
+	std::uint32_t	GetPlayerCapeId(int iPad);
 	DWORD			GetAdditionalModelParts(int iPad);
 	void			CheckGameSettingsChanged(bool bOverride5MinuteTimer=false, int iPad=XUSER_INDEX_ANY);
 	void			ApplyGameSettingsChanged(int iPad);

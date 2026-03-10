@@ -62,7 +62,7 @@ typedef struct
 			// adding new flags for interim TU to 1.6.6
 
 			// A value that encodes the skin that the player has set as their default
-			DWORD dwSelectedSkin;
+			std::uint32_t dwSelectedSkin;
 
 			// In-Menu sensitivity
 			unsigned char ucMenuSensitivity;
@@ -92,7 +92,7 @@ typedef struct
 			unsigned int uiSpecialTutorialBitmask;
 
 			// A value that encodes the cape that the player has set
-			DWORD dwSelectedCape;
+			std::uint32_t dwSelectedCape;
 
 			unsigned int uiFavoriteSkinA[MAX_FAVORITE_SKINS];
 			unsigned char ucCurrentFavoriteSkinPos;
