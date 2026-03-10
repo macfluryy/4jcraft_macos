@@ -6,7 +6,7 @@
 #include <ces.h>
 #endif
 
-int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes)
 {
 	UIScene_InGameSaveManagementMenu *pClass= (UIScene_InGameSaveManagementMenu *)lpParam;
 
@@ -276,7 +276,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 			if(!m_bExitScene)
 			{
 				// convert to utf16
-				uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+				std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #ifdef _DURANGO
 				// Already utf16 on durango
 				memcpy(u16Message, m_saveDetails[m_iRequestingThumbnailId].UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -296,19 +296,19 @@ void UIScene_InGameSaveManagementMenu::tick()
 #ifdef __PS3
 				size_t srcmax,dstmax;
 #else
-				uint32_t srcmax,dstmax;
-				uint32_t srclen,dstlen;
+				std::uint32_t srcmax,dstmax;
+				std::uint32_t srclen,dstlen;
 #endif
 				srcmax=MAX_SAVEFILENAME_LENGTH;
 				dstmax=MAX_SAVEFILENAME_LENGTH;
 
 #if defined(__PS3__)
-				L10nResult lres= UTF8stoUTF16s((uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
+				L10nResult lres= UTF8stoUTF16s((std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
 #else
 				SceCesUcsContext context;
 				sceCesUcsContextInit(&context);
 
-				sceCesUtf8StrToUtf16Str(&context, (uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
+				sceCesUtf8StrToUtf16Str(&context, (std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
 #endif
 #endif
 				if( m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData )
@@ -481,7 +481,7 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(void *pParam,int 
 	return 0;
 }
 
-int UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned(void *lpParam,bool bRes)
 {
 	UIScene_InGameSaveManagementMenu* pClass = (UIScene_InGameSaveManagementMenu*)lpParam;
 
