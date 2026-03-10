@@ -1701,7 +1701,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
                     app.GetTPD(sessionInfo->data.texturePackParentId,&pbData,&dwBytes);
 
                     // is it in the tpd data ?
-                    DWORD tpdImageBytes = 0;
+                    unsigned int tpdImageBytes = 0;
                     app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&imageData,&tpdImageBytes );
                     imageBytes = static_cast<std::uint32_t>(tpdImageBytes);
                     if(imageBytes > 0 && imageData)

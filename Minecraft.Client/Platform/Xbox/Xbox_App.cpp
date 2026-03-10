@@ -2959,9 +2959,9 @@ WCHAR CConsoleMinecraftApp::m_wchTMSXZP[] = L"file://UPDATE:/res/TMS/TMSFiles.xz
 #endif
 
 
-void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes )
+void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes )
 {
-	PBYTE pbPos=pbData;
+	std::uint8_t *pbPos=pbData;
 	// icon is the second thing in the file
 	if(pbData && dwBytes>0)
 	{
@@ -2973,15 +2973,15 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Loc)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 		else
 		{
 			// skip over the data
-			pbPos=(PBYTE)&((unsigned int *)pbPos)[2];
+			pbPos=(std::uint8_t *)&((unsigned int *)pbPos)[2];
 			pbPos+=uiCompSize;
 		}
 
@@ -2992,15 +2992,15 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Icon)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 		else
 		{
 			// skip over the data
-			pbPos=(PBYTE)&((unsigned int *)pbPos)[2];
+			pbPos=(std::uint8_t *)&((unsigned int *)pbPos)[2];
 			pbPos+=uiCompSize;
 		}
 
@@ -3011,9 +3011,9 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Comparison)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 	}

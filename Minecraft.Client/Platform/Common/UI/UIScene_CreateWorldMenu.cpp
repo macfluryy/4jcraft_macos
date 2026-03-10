@@ -717,8 +717,8 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 					if(dwBytes > 0 && pbData)
 					{
-						DWORD dwImageBytes=0;
-						PBYTE pbImageData=NULL;
+						unsigned int dwImageBytes=0;
+						std::uint8_t *pbImageData=NULL;
 
 						app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
 						ListInfo.fEnabled = TRUE;	

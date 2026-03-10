@@ -141,9 +141,9 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		// this is probably a texture pack icon added from TMS
 
 		unsigned int dwBytes=0;
-		DWORD dwFileBytes=0;
+		unsigned int dwFileBytes=0;
 		std::uint8_t *pbData=NULL;
-		PBYTE pbFileData=NULL;
+		std::uint8_t *pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data
@@ -160,13 +160,13 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		}
 
 		app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		app.GetFileFromTPD(eTPDFileType_Comparison,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);

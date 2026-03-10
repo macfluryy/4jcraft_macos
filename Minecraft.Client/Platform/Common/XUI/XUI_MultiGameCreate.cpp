@@ -714,8 +714,8 @@ HRESULT CScene_MultiGameCreate::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 					if(dwBytes > 0 && pbData)
 					{
-						DWORD dwImageBytes=0;
-						PBYTE pbImageData=NULL;
+						unsigned int dwImageBytes=0;
+						std::uint8_t *pbImageData=NULL;
 
 						app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
 						ListInfo.fEnabled = TRUE;	
@@ -1100,9 +1100,9 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 		// this is probably a texture pack icon added from TMS
 
 		unsigned int dwBytes=0;
-		DWORD dwFileBytes=0;
+		unsigned int dwFileBytes=0;
 		std::uint8_t *pbData=NULL;
-		PBYTE pbFileData=NULL;
+		std::uint8_t *pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data
@@ -1119,13 +1119,13 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 		}
 
 		app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		app.GetFileFromTPD(eTPDFileType_Comparison,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);

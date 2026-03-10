@@ -185,7 +185,7 @@ public:
 	static TMS_FILE TMSFileA[TMS_COUNT];
 
 
-	virtual void GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes );
+	virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes );
 
 private:
 	static WCHAR m_wchTMSXZP[];

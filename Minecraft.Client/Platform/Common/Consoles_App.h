@@ -844,7 +844,7 @@ public:
 	std::uint32_t GetRequiredTexturePackID() { return m_dwRequiredTexturePackID; }
 	void SetRequiredTexturePackID(std::uint32_t texturePackId) { m_dwRequiredTexturePackID = texturePackId; }
 
-	virtual void GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes ) {*ppbData = NULL; *pdwBytes = 0;}
+	virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes ) {*ppbData = NULL; *pdwBytes = 0;}
 
 	//XTITLE_DEPLOYMENT_TYPE getDeploymentType() { return m_titleDeploymentType; }
 
