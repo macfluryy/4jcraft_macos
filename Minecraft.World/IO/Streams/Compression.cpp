@@ -426,8 +426,8 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 		if (pDestination != NULL)
 		{
 			// Read big-endian srcize from array
-			PBYTE pbDestSize = (PBYTE) pDestSize;
-			PBYTE pbSource = (PBYTE) pSource;
+			std::uint8_t* pbDestSize = reinterpret_cast<std::uint8_t*>(pDestSize);
+			std::uint8_t* pbSource = reinterpret_cast<std::uint8_t*>(pSource);
 			for (int i = 3; i >= 0; i--) {
 				pbDestSize[3-i] = pbSource[i];
 			}
@@ -442,7 +442,7 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 			strm.next_out = uncompr.data;
 			strm.avail_out = uncompr.length;
 			// Skip those first 4 bytes
-			strm.next_in = (PBYTE) pSource + 4;
+			strm.next_in = reinterpret_cast<std::uint8_t*>(pSource) + 4;
 			strm.avail_in = SrcSize - 4;
 
 			int hr = inflateInit2(&strm, -15);
@@ -548,5 +548,4 @@ void Compression::SetDecompressionType(ESavePlatform platform)
 }
 
 /*Compression gCompression;*/
-
 
