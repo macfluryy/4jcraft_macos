@@ -6,7 +6,7 @@ render_sources = files(
 lib_render = static_library('4J_Render',
   render_sources,
   include_directories : include_directories('.'),
-  dependencies : [png_dep, sdl2_dep, gl_dep, thread_dep],
+  dependencies : [sdl2_dep, gl_dep, thread_dep],
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-include', meson.current_source_dir() / 'stdafx.h',
   ],
