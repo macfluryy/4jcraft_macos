@@ -224,10 +224,10 @@ void Texture::fill(const Rect2i *rect, int color)
 		int line = y * width * 4;
 		for (int x = myRect->getX(); x < (myRect->getX() + myRect->getWidth()); x++)
 		{
-			data[0]->put(line + x * 4 + 0, (BYTE)((color >> 24) & 0x000000ff));
-			data[0]->put(line + x * 4 + 1, (BYTE)((color >> 16) & 0x000000ff));
-			data[0]->put(line + x * 4 + 2, (BYTE)((color >>  8) & 0x000000ff));
-			data[0]->put(line + x * 4 + 3, (BYTE)((color >>  0) & 0x000000ff));
+			data[0]->put(line + x * 4 + 0, static_cast<std::uint8_t>((color >> 24) & 0x000000ff));
+			data[0]->put(line + x * 4 + 1, static_cast<std::uint8_t>((color >> 16) & 0x000000ff));
+			data[0]->put(line + x * 4 + 2, static_cast<std::uint8_t>((color >>  8) & 0x000000ff));
+			data[0]->put(line + x * 4 + 3, static_cast<std::uint8_t>((color >>  0) & 0x000000ff));
 		}
 	}
 	delete myRect;
