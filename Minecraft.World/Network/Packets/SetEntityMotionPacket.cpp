@@ -17,9 +17,9 @@ void SetEntityMotionPacket::_init(int id, double xd, double yd, double zd)
 	if (xd > m) xd = m;
 	if (yd > m) yd = m;
 	if (zd > m) zd = m;
-	xa = (int) (xd * 8000.0);
-	ya = (int) (yd * 8000.0);
-	za = (int) (zd * 8000.0);
+    xa = (int16_t) (xd * 8000.0);
+    ya = (int16_t) (yd * 8000.0);
+    za = (int16_t) (zd * 8000.0);
 
     useBytes = false;
 }

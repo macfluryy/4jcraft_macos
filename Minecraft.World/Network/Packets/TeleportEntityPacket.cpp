@@ -17,7 +17,7 @@ TeleportEntityPacket::TeleportEntityPacket()
 	xRot = 0;
 }
 
-TeleportEntityPacket::TeleportEntityPacket(std::shared_ptr<Entity> e) 
+TeleportEntityPacket::TeleportEntityPacket(std::shared_ptr<Entity> e)
 {
 	id = e->entityId;
 	x = Mth::floor(e->x * 32);
@@ -27,7 +27,7 @@ TeleportEntityPacket::TeleportEntityPacket(std::shared_ptr<Entity> e)
 	xRot = (uint8_t) (e->xRot * 256 / 360);
 }
 
-TeleportEntityPacket::TeleportEntityPacket(int id, int x, int y, int z, uint8_t yRot, uint8_t xRot)
+TeleportEntityPacket::TeleportEntityPacket(int id, int32_t x, int32_t y, int32_t z, uint8_t yRot, uint8_t xRot)
 {
 	this->id = id;
 	this->x = x;
@@ -53,7 +53,7 @@ void TeleportEntityPacket::read(DataInputStream *dis) //throws IOException
 	xRot = (uint8_t) dis->read();
 }
 
-void TeleportEntityPacket::write(DataOutputStream *dos) //throws IOException 
+void TeleportEntityPacket::write(DataOutputStream *dos) //throws IOException
 {
 	dos->writeShort((short)id);
 	dos->writeInt(x);
@@ -63,12 +63,12 @@ void TeleportEntityPacket::write(DataOutputStream *dos) //throws IOException
 	dos->write(xRot);
 }
 
-void TeleportEntityPacket::handle(PacketListener *listener) 
+void TeleportEntityPacket::handle(PacketListener *listener)
 {
 	listener->handleTeleportEntity(shared_from_this());
 }
 
-int TeleportEntityPacket::getEstimatedSize() 
+int TeleportEntityPacket::getEstimatedSize()
 {
 	return 2 + 2 + 2 + 2 + 1 + 1;
 }
