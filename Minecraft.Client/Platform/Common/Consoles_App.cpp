@@ -2393,7 +2393,7 @@ void CMinecraftApp::HandleXuiActions(void)
 		case eAppAction_DisplayLavaMessage:
 			// Display a warning about placing lava in the spawn area
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				C4JStorage::EMessageResult result = ui.RequestMessageBox( IDS_CANT_PLACE_NEAR_SPAWN_TITLE, IDS_CANT_PLACE_NEAR_SPAWN_TEXT, uiIDA,1,XUSER_INDEX_ANY,NULL,NULL, app.GetStringTable());
 				if(result != C4JStorage::EMessage_Busy) SetGlobalXuiAction(eAppAction_Idle);
@@ -2479,7 +2479,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					{
 						// ask the player if they would like to upgrade, or they'll lose the level
 					
-						UINT uiIDA[2];
+						unsigned int uiIDA[2];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						uiIDA[1]=IDS_CONFIRM_CANCEL;
 						ui.RequestMessageBox(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2,i,&CMinecraftApp::UnlockFullSaveReturned,this,app.GetStringTable());
@@ -2888,7 +2888,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				else
 				{
 					// ask the player if they would like to upgrade, or they'll lose the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 					ui.RequestMessageBox(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2, i,&CMinecraftApp::UnlockFullExitReturned,this,app.GetStringTable());
@@ -3191,7 +3191,7 @@ void CMinecraftApp::HandleXuiActions(void)
 									// need to clear the player stats - can't assume it'll be done in setlevel - we may not be in the game
 									StatsCounter* pStats = Minecraft::GetInstance()->stats[ i ];
 									pStats->clear();
-									UINT uiIDA[1];
+									unsigned int uiIDA[1];
 									uiIDA[0]=IDS_CONFIRM_OK;
 
 									ui.RequestMessageBox(g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE), uiIDA, 1, i,&CMinecraftApp::EthernetDisconnectReturned,this, app.GetStringTable());
@@ -3209,7 +3209,7 @@ void CMinecraftApp::HandleXuiActions(void)
 							// need to clear the player stats - can't assume it'll be done in setlevel - we may not be in the game
 							StatsCounter* pStats = Minecraft::GetInstance()->stats[ i ];
 							pStats->clear();
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_CONFIRM_OK;
 
 							ui.RequestMessageBox(g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE), uiIDA, 1, i,&CMinecraftApp::EthernetDisconnectReturned,this, app.GetStringTable());
@@ -3303,7 +3303,7 @@ void CMinecraftApp::HandleXuiActions(void)
 			case eAppAction_TrialOver:
 				{		
 					SetAction(i,eAppAction_Idle);
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_UNLOCK_TITLE;
 					uiIDA[1]=IDS_EXIT_GAME;
 
@@ -3317,7 +3317,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					TelemetryManager->RecordUpsellPresented(i, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID);
 
 					SetAction(i,eAppAction_Idle);
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -3326,7 +3326,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_ExitAndJoinFromInvite:
 				{					
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					SetAction(i,eAppAction_Idle);
 					// Check the player really wants to do this
@@ -3520,7 +3520,7 @@ void CMinecraftApp::HandleXuiActions(void)
 						//return hr;
 
 						// 4J Stu - Copied this from XUI_FullScreenProgress to properly handle the fail case, as the thread will no longer be failing
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						ui.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_CONNECTION_LOST_SERVER, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			
@@ -3669,7 +3669,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_FailedToJoinNoPrivileges:
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					C4JStorage::EMessageResult result = ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 					if(result != C4JStorage::EMessage_Busy) SetAction(i,eAppAction_Idle);
@@ -3721,7 +3721,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_LevelInBanLevelList:
 				{			
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_BUTTON_REMOVE_FROM_BAN_LIST;
 					uiIDA[1]=IDS_EXIT_GAME;
 
@@ -3799,7 +3799,7 @@ void CMinecraftApp::HandleXuiActions(void)
 
 					TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 
 					uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 					uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -4317,7 +4317,7 @@ int CMinecraftApp::UnlockFullInviteReturned(void *pParam,int iPad,C4JStorage::EM
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4331,7 +4331,7 @@ int CMinecraftApp::UnlockFullInviteReturned(void *pParam,int iPad,C4JStorage::EM
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4362,7 +4362,7 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4376,7 +4376,7 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4390,14 +4390,14 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 			}
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable(), NULL, 0, false);
 			}
@@ -4427,7 +4427,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4445,7 +4445,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturnedExitTrial,&app, app.GetStringTable());
@@ -4459,7 +4459,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 				// still need to exit the trial or we'll be in the Pause menu with input ignored
@@ -4468,7 +4468,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &CMinecraftApp::MustSignInFullVersionPurchaseReturnedExitTrial,&app, app.GetStringTable(), NULL, 0, false);
 			}
@@ -4500,7 +4500,7 @@ int CMinecraftApp::TrialOverReturned(void *pParam,int iPad,C4JStorage::EMessageR
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4515,7 +4515,7 @@ int CMinecraftApp::TrialOverReturned(void *pParam,int iPad,C4JStorage::EMessageR
 #if defined(__PS3__)
 
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4620,7 +4620,7 @@ void CMinecraftApp::SignInChangeCallback(void *pParam,bool bPrimaryPlayerChanged
 
 				if( hasGuestIdChanged )
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_GUEST_ORDER_CHANGED_TITLE, IDS_GUEST_ORDER_CHANGED_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,NULL,app.GetStringTable());
 				}
@@ -4874,7 +4874,7 @@ void CMinecraftApp::UpsellReturnedCallback(void *pParam, eUpsellType type, eUpse
 	ESen_UpsellID senType;
 	ESen_UpsellOutcome senResponse;
 #ifdef __PS3__
-	UINT uiIDA[2];
+	unsigned int uiIDA[2];
 #endif
 
 	// Map the eUpsellResponse to the enum we use for sentient
@@ -5621,7 +5621,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 					TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -5639,7 +5639,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned,pClass, app.GetStringTable());
@@ -5657,7 +5657,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 		else
 		{
 			// been a few requests for a confirm on exit without saving
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned,pClass, app.GetStringTable());
@@ -5731,7 +5731,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(void *pParam,int iPad,C4
 				TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -7034,7 +7034,7 @@ void CMinecraftApp::ExitGameFromRemoteSave( void *lpParameter )
 {
 	int primaryPad = ProfileManager.GetPrimaryPad();
 	
-	UINT uiIDA[3];
+	unsigned int uiIDA[3];
 	uiIDA[0]=IDS_CONFIRM_CANCEL;
 	uiIDA[1]=IDS_CONFIRM_OK;
 

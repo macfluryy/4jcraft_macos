@@ -1172,7 +1172,7 @@ void ClientConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason, 
 		m_userIndex == ProfileManager.GetPrimaryPad() &&
 		!MinecraftServer::saveOnExitAnswered() )
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_EXITING_GAME, IDS_GENERIC_ERROR, uiIDA, 1, ProfileManager.GetPrimaryPad(),&ClientConnection::HostDisconnectReturned,NULL, app.GetStringTable());
 	}
@@ -1987,7 +1987,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 			else if(cantPlayContentRestricted) reason = DisconnectPacket::eDisconnect_ContentRestricted_Single_Local;
 
 			app.DebugPrintf("Exiting player %d on handling Pre-Login packet due UGC privileges: %d\n", m_userIndex, reason);
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			if(!isFriendsWithHost) ui.RequestMessageBox( IDS_CANTJOIN_TITLE, IDS_NOTALLOWED_FRIENDSOFFRIENDS, uiIDA,1,m_userIndex,NULL,NULL, app.GetStringTable());
 			else ui.RequestMessageBox( IDS_CANTJOIN_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL, uiIDA,1,m_userIndex,NULL,NULL, app.GetStringTable());
@@ -3291,7 +3291,7 @@ int ClientConnection::HostDisconnectReturned(void *pParam,int iPad,C4JStorage::E
 	// we need to ask if they are sure they want to overwrite the existing game
 	if(bSaveExists && StorageManager.GetSaveDisabled())
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&ClientConnection::ExitGameAndSaveReturned,NULL, app.GetStringTable());
@@ -3306,7 +3306,7 @@ int ClientConnection::HostDisconnectReturned(void *pParam,int iPad,C4JStorage::E
 	// we need to ask if they are sure they want to overwrite the existing game
 	if(bSaveExists)
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&ClientConnection::ExitGameAndSaveReturned,NULL, app.GetStringTable());
