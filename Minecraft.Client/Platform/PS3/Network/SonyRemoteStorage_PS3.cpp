@@ -85,12 +85,12 @@ int SonyRemoteStorage_PS3::initPreconditions()
 	return 0;
 }
 
-void SonyRemoteStorage_PS3::staticInternalCallback(const SceRemoteStorageEvent event, int32_t retCode, void * userData)
+void SonyRemoteStorage_PS3::staticInternalCallback(const SceRemoteStorageEvent event, std::int32_t retCode, void * userData)
 {
 	((SonyRemoteStorage_PS3*)userData)->internalCallback(event, retCode);
 }
 
-void SonyRemoteStorage_PS3::internalCallback(const SceRemoteStorageEvent event, int32_t retCode)
+void SonyRemoteStorage_PS3::internalCallback(const SceRemoteStorageEvent event, std::int32_t retCode)
 {
 	m_lastErrorCode = retCode;
 
@@ -452,7 +452,7 @@ int SonyRemoteStorage_PS3::LoadCompressCallback(void *pParam,bool bIsCorrupt, bo
 		// We add 4 bytes to the start so that we can signal compressed data
 		// And another 4 bytes to store the decompressed data size
 		unsigned int compLength = origFilesize+8;
-		uint8_t *compData = (uint8_t *)malloc( compLength );
+		std::uint8_t *compData = (std::uint8_t *)malloc( compLength );
 		Compression::UseDefaultThreadStorage();
 		Compression::getCompression()->Compress(compData+8,&compLength,pOrigSaveData,origFilesize);
 		ZeroMemory(compData,8);

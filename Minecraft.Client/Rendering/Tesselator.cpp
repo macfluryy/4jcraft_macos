@@ -329,7 +329,7 @@ void Tesselator::color(int r, int g, int b, int a)
     col = (r << 24) | (g << 16) | (b << 8) | (a);
 }
 
-void Tesselator::color(uint8_t r, uint8_t g, uint8_t b)
+void Tesselator::color(std::uint8_t r, std::uint8_t g, std::uint8_t b)
 {
 	color(r & 0xff, g & 0xff, b & 0xff);
 }
@@ -510,16 +510,16 @@ void Tesselator::tileQuad(float x1, float y1, float z1, float u1, float v1, floa
     count+=4;
 
 	// AP - alpha cut out is expensive on vita. This will choose the correct data buffer depending on cut out enabled
-	int16_t* pShortData;
+	std::int16_t* pShortData;
 	if( !alphaCutOutEnabled )
 	{
-		pShortData =  (int16_t*)&_array->data[p];
+		pShortData =  (std::int16_t*)&_array->data[p];
 		p += 16;
 		vertices+=4;
 	}
 	else
 	{
-		pShortData =  (int16_t*)&_array2->data[p2];
+		pShortData =  (std::int16_t*)&_array2->data[p2];
 		p2 += 16;
 		vertices2+=4;
 	}
@@ -784,25 +784,25 @@ void Tesselator::vertex(float x, float y, float z)
 
 #ifdef __PSVITA__
 		// AP - alpha cut out is expensive on vita. This will choose the correct data buffer depending on cut out enabled
-		int16_t* pShortData;
+		std::int16_t* pShortData;
 		if( !alphaCutOutEnabled )
 		{
-			pShortData =  (int16_t*)&_array->data[p];
+			pShortData =  (std::int16_t*)&_array->data[p];
 		}
 		else
 		{
-			pShortData =  (int16_t*)&_array2->data[p2];
+			pShortData =  (std::int16_t*)&_array2->data[p2];
 		}
 #else
-		int16_t* pShortData =  (int16_t*)&_array->data[p];
+		std::int16_t* pShortData =  (std::int16_t*)&_array->data[p];
 
 #endif
 
 
 
 #ifdef __PS3__
-		float tex2U = ((int16_t*)&_tex2)[1] + 8;
-		float tex2V = ((int16_t*)&_tex2)[0] + 8;
+		float tex2U = ((std::int16_t*)&_tex2)[1] + 8;
+		float tex2V = ((std::int16_t*)&_tex2)[0] + 8;
 		float colVal1 = ((col&0xff000000)>>24)/256.0f;
 		float colVal2 = ((col&0x00ff0000)>>16)/256.0f;
 		float colVal3 = ((col&0x0000ff00)>>8)/256.0f;
@@ -833,8 +833,8 @@ void Tesselator::vertex(float x, float y, float z)
 		pShortData[3] = ipackedcol;
 		pShortData[4] = (((int)(uu * 8192.0f))&0xffff);
 		pShortData[5] = (((int)(v * 8192.0f))&0xffff);
-		int16_t u2 = ((int16_t*)&_tex2)[0];
-		int16_t v2 = ((int16_t*)&_tex2)[1];
+		std::int16_t u2 = ((std::int16_t*)&_tex2)[0];
+		std::int16_t v2 = ((std::int16_t*)&_tex2)[1];
 #if defined _XBOX_ONE || defined __ORBIS__
 		// Optimisation - pack the second UVs into a single short (they could actually go in a byte), which frees up a short to store the x offset for this chunk in the vertex itself.
 		// This means that when rendering chunks, we don't need to update the vertex constants that specify the location for a chunk, when only the x offset has changed.
@@ -943,9 +943,9 @@ void Tesselator::vertex(float x, float y, float z)
 			_array->data[p + 7] = ( ( _tex2 >> 16 ) & 0xffff ) | ( _tex2 << 16 );
 #else
 	#ifdef __PS3__
-			int16_t tex2U = ((int16_t*)&_tex2)[1] + 8;
-			int16_t tex2V = ((int16_t*)&_tex2)[0] + 8;
-			int16_t* pShortArray = (int16_t*)&_array->data[p + 7];
+			std::int16_t tex2U = ((std::int16_t*)&_tex2)[1] + 8;
+			std::int16_t tex2V = ((std::int16_t*)&_tex2)[0] + 8;
+			std::int16_t* pShortArray = (std::int16_t*)&_array->data[p + 7];
 			pShortArray[0] = tex2U;
 			pShortArray[1] = tex2V;
 	#else
@@ -997,7 +997,7 @@ void Tesselator::noColor()
 }
 
 #ifdef __PS3__
-uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z)
+std::uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z)
 {
 	//                      11111111111 X 0x000007FF
 	//           1111111111100000000000 Y 0x003FF800
@@ -1022,10 +1022,10 @@ uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z)
 	if (z<-1.0f || z>1.0f)	{ printf("Value (%5.3f) should be in range [-1..1].  Conversion will clamp to X11Y11Z10N.\n", z); }
 #endif
 
-	const uint32_t uX = ((int32_t(std::max(std::min(((x)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_X_MASK >> X11Y11Z10N_X_SHIFT)) << X11Y11Z10N_X_SHIFT);
-	const uint32_t uY = ((int32_t(std::max(std::min(((y)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_Y_MASK >> X11Y11Z10N_Y_SHIFT)) << X11Y11Z10N_Y_SHIFT);
-	const uint32_t uZ = ((int32_t(std::max(std::min(((z)*1023.f - 1.f)*0.5f,  511.f), -512.f )) & (X11Y11Z10N_Z_MASK >> X11Y11Z10N_Z_SHIFT)) << X11Y11Z10N_Z_SHIFT);
-	const uint32_t xyz = uX | uY | uZ;
+	const std::uint32_t uX = ((std::int32_t(std::max(std::min(((x)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_X_MASK >> X11Y11Z10N_X_SHIFT)) << X11Y11Z10N_X_SHIFT);
+	const std::uint32_t uY = ((std::int32_t(std::max(std::min(((y)*2047.f - 1.f)*0.5f, 1023.f), -1024.f)) & (X11Y11Z10N_Y_MASK >> X11Y11Z10N_Y_SHIFT)) << X11Y11Z10N_Y_SHIFT);
+	const std::uint32_t uZ = ((std::int32_t(std::max(std::min(((z)*1023.f - 1.f)*0.5f,  511.f), -512.f )) & (X11Y11Z10N_Z_MASK >> X11Y11Z10N_Z_SHIFT)) << X11Y11Z10N_Z_SHIFT);
+	const std::uint32_t xyz = uX | uY | uZ;
 	return xyz;
 }
 #endif // __PS3__
@@ -1038,14 +1038,14 @@ void Tesselator::normal(float x, float y, float z)
 	_normal = _ConvertF32toX11Y11Z10N(x,y,z);
 #elif __PSVITA__
 	// AP - casting a negative value to 'byte' on Vita results in zero. changed to a signed 8 value
-	int8_t xx = (int8_t) (x * 127);
-	int8_t yy = (int8_t) (y * 127);
-	int8_t zz = (int8_t) (z * 127);
+	std::int8_t xx = (std::int8_t) (x * 127);
+	std::int8_t yy = (std::int8_t) (y * 127);
+	std::int8_t zz = (std::int8_t) (z * 127);
 	_normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
 #else
-	uint8_t xx = (uint8_t) (x * 127);
-	uint8_t yy = (uint8_t) (y * 127);
-	uint8_t zz = (uint8_t) (z * 127);
+	std::uint8_t xx = (std::uint8_t) (x * 127);
+	std::uint8_t yy = (std::uint8_t) (y * 127);
+	std::uint8_t zz = (std::uint8_t) (z * 127);
 	_normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
 #endif
 }

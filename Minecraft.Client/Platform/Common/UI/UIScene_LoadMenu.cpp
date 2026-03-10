@@ -174,7 +174,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 			// retrieve the save icon from the texture pack, if there is one
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(m_MoreOptionsParams.dwTexturePack);
 			std::uint32_t imageBytes = 0;
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 			if(imageBytes > 0 && imageData)
 			{
@@ -193,12 +193,12 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 
 #if defined(__PS3__) || defined(__ORBIS__)|| defined(_DURANGO) || defined (__PSVITA__)
 		// convert to utf16
-		uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+		std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 		size_t srclen,dstlen;
 		srclen=MAX_SAVEFILENAME_LENGTH;
 		dstlen=MAX_SAVEFILENAME_LENGTH;
 #ifdef __PS3__
-		L10nResult lres= UTF8stoUTF16s((uint8_t *)params->saveDetails->UTF8SaveFilename,&srclen,u16Message,&dstlen);
+		L10nResult lres= UTF8stoUTF16s((std::uint8_t *)params->saveDetails->UTF8SaveFilename,&srclen,u16Message,&dstlen);
 #elif defined(_DURANGO) 
 		// Already utf16 on durango
 		memcpy(u16Message,params->saveDetails->UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -206,8 +206,8 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 		{
 			SceCesUcsContext Context;
 			sceCesUcsContextInit( &Context );
-			uint32_t utf8Len, utf16Len;
-			sceCesUtf8StrToUtf16Str(&Context, (uint8_t *)params->saveDetails->UTF8SaveFilename, srclen, &utf8Len, u16Message, dstlen, &utf16Len);
+			std::uint32_t utf8Len, utf16Len;
+			sceCesUtf8StrToUtf16Str(&Context, (std::uint8_t *)params->saveDetails->UTF8SaveFilename, srclen, &utf8Len, u16Message, dstlen, &utf16Len);
 		}
 #endif
 		m_thumbnailName = (wchar_t *)u16Message;
@@ -260,7 +260,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
 			std::uint32_t imageBytes = 0;
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 			if(imageBytes > 0 && imageData)
 			{
@@ -1259,7 +1259,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1319,7 +1319,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1773,7 +1773,7 @@ int UIScene_LoadMenu::MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EM
 
 // int UIScene_LoadMenu::PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 // {
-// 	int32_t iResult;
+// 	std::int32_t iResult;
 // 	UIScene_LoadMenu *pClass = (UIScene_LoadMenu *)pParam;
 // 
 // 	// continue offline, or upsell PS Plus?

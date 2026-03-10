@@ -75,7 +75,7 @@ int FileInputStream::read()
 		return -1;
 	}
 
-	uint8_t byteRead = static_cast<uint8_t>(0);
+	std::uint8_t byteRead = static_cast<std::uint8_t>(0);
 	const size_t numberOfBytesRead = std::fread(&byteRead, 1, 1, m_fileHandle);
 
 	if( std::ferror(m_fileHandle) != 0 )

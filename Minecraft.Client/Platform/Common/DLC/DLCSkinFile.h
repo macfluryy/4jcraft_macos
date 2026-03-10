@@ -17,7 +17,7 @@ public:
 
 	DLCSkinFile(const std::wstring &path);
 
-	virtual void addData(uint8_t *pbData, std::uint32_t dataBytes);
+	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes);
 	virtual void addParameter(DLCManager::EDLCParameterType type, const std::wstring &value);
 
 	virtual std::wstring getParameterAsString(DLCManager::EDLCParameterType type);

@@ -168,7 +168,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
 			std::uint32_t imageBytes = 0;
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 			if(imageBytes > 0 && imageData)
 			{
@@ -759,8 +759,8 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bo
 	// 4J HEG - No reason to set value if keyboard was cancelled
 	if (bRes)
 	{
-		uint16_t pchText[128];
-		ZeroMemory(pchText, 128 * sizeof(uint16_t) );
+		std::uint16_t pchText[128];
+		ZeroMemory(pchText, 128 * sizeof(std::uint16_t) );
 		InputManager.GetText(pchText);
 
 		if(pchText[0]!=0)
@@ -783,11 +783,11 @@ int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bR
 	{
 #ifdef __PSVITA__
 		//CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
-		uint16_t pchText[2048];
-		ZeroMemory(pchText, 2048 * sizeof(uint16_t) );
+		std::uint16_t pchText[2048];
+		ZeroMemory(pchText, 2048 * sizeof(std::uint16_t) );
 #else
-		uint16_t pchText[128];
-		ZeroMemory(pchText, 128 * sizeof(uint16_t) );
+		std::uint16_t pchText[128];
+		ZeroMemory(pchText, 128 * sizeof(std::uint16_t) );
 #endif
 		InputManager.GetText(pchText);
 		pClass->m_editSeed.setLabel((wchar_t *)pchText);
@@ -896,7 +896,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 			// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 			// upsell psplus
-			int32_t iResult=sceNpCommerceDialogInitialize();
+			std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 			SceNpCommerceDialogParam param;
 			sceNpCommerceDialogParamInitialize(&param);
@@ -975,7 +975,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1023,7 +1023,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1421,14 +1421,14 @@ int UIScene_CreateWorldMenu::MustSignInReturnedPSN(void *pParam,int iPad,C4JStor
 
 // int UIScene_CreateWorldMenu::PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 // {
-// 	int32_t iResult;
+// 	std::int32_t iResult;
 // 	UIScene_CreateWorldMenu *pClass = (UIScene_CreateWorldMenu *)pParam;
 // 
 // 	// continue offline, or upsell PS Plus?
 // 	if(result==C4JStorage::EMessage_ResultDecline) 
 // 	{
 // 		// upsell psplus
-// 		int32_t iResult=sceNpCommerceDialogInitialize();
+// 		std::int32_t iResult=sceNpCommerceDialogInitialize();
 // 
 // 		SceNpCommerceDialogParam param;
 // 		sceNpCommerceDialogParamInitialize(&param);

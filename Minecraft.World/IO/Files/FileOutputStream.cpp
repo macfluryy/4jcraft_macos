@@ -51,7 +51,7 @@ void FileOutputStream::write(unsigned int b)
 		return;
 	}
 
-	uint8_t value = (uint8_t) b;
+	std::uint8_t value = (std::uint8_t) b;
 	const size_t numberOfBytesWritten = std::fwrite(&value, 1, 1, m_fileHandle);
 	const int result = std::ferror(m_fileHandle);
 

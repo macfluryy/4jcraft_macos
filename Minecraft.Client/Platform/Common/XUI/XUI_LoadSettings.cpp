@@ -131,7 +131,7 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 			// retrieve the save icon from the texture pack, if there is one
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(m_MoreOptionsParams.dwTexturePack);
 			std::uint32_t imageBytes = 0;
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 			if(imageBytes > 0 && imageData)
 			{
@@ -271,7 +271,7 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 
 			std::uint32_t imageBytes = 0;
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 			if(imageBytes > 0 && imageData)
 			{
@@ -1281,7 +1281,7 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 		m_texturePackDescription.SetText(tp->getDesc1().c_str());
 
 		std::uint32_t imageBytes = 0;
-		uint8_t *imageData = tp->getPackIcon(imageBytes);
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 		if(imageBytes > 0 && imageData)
 		{
@@ -1533,7 +1533,7 @@ HRESULT CScene_LoadGameSettings::OnCustomMessage_DLCMountingComplete()
 		ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
 		std::uint32_t imageBytes = 0;
-		uint8_t *imageData = tp->getPackIcon(imageBytes);
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 		if(imageBytes > 0 && imageData)
 		{

@@ -12,7 +12,7 @@ DLCAudioFile::DLCAudioFile(const std::wstring &path) : DLCFile(DLCManager::e_DLC
 	m_dataBytes = 0;
 }
 
-void DLCAudioFile::addData(uint8_t *pbData, std::uint32_t dataBytes)
+void DLCAudioFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	m_pbData = pbData;
 	m_dataBytes = dataBytes;
@@ -20,7 +20,7 @@ void DLCAudioFile::addData(uint8_t *pbData, std::uint32_t dataBytes)
 	processDLCDataFile(pbData,dataBytes);
 }
 
-uint8_t *DLCAudioFile::getData(std::uint32_t &dataBytes)
+std::uint8_t *DLCAudioFile::getData(std::uint32_t &dataBytes)
 {
 	dataBytes = m_dataBytes;
 	return m_pbData;
@@ -120,7 +120,7 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 	}
 }
 
-bool DLCAudioFile::processDLCDataFile(uint8_t *pbData, std::uint32_t dataLength)
+bool DLCAudioFile::processDLCDataFile(std::uint8_t *pbData, std::uint32_t dataLength)
 {
 	std::unordered_map<int, EAudioParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -164,7 +164,7 @@ bool DLCAudioFile::processDLCDataFile(uint8_t *pbData, std::uint32_t dataLength)
 		dwTemp+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
-	uint8_t *pbTemp = reinterpret_cast<uint8_t *>(pFile);
+	std::uint8_t *pbTemp = reinterpret_cast<std::uint8_t *>(pFile);
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
 	for(unsigned int i=0;i<uiFileCount;i++)

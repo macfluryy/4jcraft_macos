@@ -96,7 +96,7 @@ void PreLoginPacket::write(DataOutputStream *dos) //throws IOException
 	std::int32_t ugcPlayersVersion = 0;
 	std::memcpy(&ugcPlayersVersion, &m_ugcPlayersVersion, sizeof(m_ugcPlayersVersion));
 	dos->writeInt(ugcPlayersVersion);
-	dos->writeByte((uint8_t)m_dwPlayerCount);
+	dos->writeByte((std::uint8_t)m_dwPlayerCount);
 	for(std::uint32_t i = 0; i < m_dwPlayerCount; ++i)
 	{
 		dos->writePlayerUID( m_playerXuids[i] );

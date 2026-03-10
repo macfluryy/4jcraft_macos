@@ -30,7 +30,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete()
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
 		std::uint32_t imageBytes = 0;
-		uint8_t *imageData = tp->getPackIcon(imageBytes);
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 		if(imageBytes > 0 && imageData)
 		{
@@ -181,7 +181,7 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		m_labelTexturePackDescription.setLabel(tp->getDesc1());
 
 		std::uint32_t imageBytes = 0;
-		uint8_t *imageData = tp->getPackIcon(imageBytes);
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
 		//if(imageBytes > 0 && imageData)
 		//{

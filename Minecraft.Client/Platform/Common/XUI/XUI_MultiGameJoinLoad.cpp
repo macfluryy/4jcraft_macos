@@ -296,7 +296,7 @@ void CScene_MultiGameJoinLoad::AddDefaultButtons()
 			m_iMashUpButtonsC++;
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(levelGen->getRequiredTexturePackId());
 			std::uint32_t imageBytes = 0;	
-			uint8_t *imageData = tp->getPackIcon(imageBytes);
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 			HXUIBRUSH hXuiBrush;
 
 			if(imageBytes > 0 && imageData)
@@ -1271,7 +1271,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 				HRESULT hr;
 
 				std::uint32_t imageBytes = 0;
-				uint8_t *imageData = NULL;
+				std::uint8_t *imageData = NULL;
 
 				if(tp==NULL)
 				{

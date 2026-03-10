@@ -45,9 +45,9 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 	// 4J - changed - send current "previously sent" value of rotations to put this in sync with other clients
 	yRot = yRotp;
 	xRot = xRotp;
-	yHeadRot = static_cast<uint8_t>(yHeadRotp); // 4J Added
-	//    yRot = (uint8_t) (player->yRot * 256 / 360);
-	//    xRot = (uint8_t) (player->xRot * 256 / 360);
+	yHeadRot = static_cast<std::uint8_t>(yHeadRotp); // 4J Added
+	//    yRot = (std::uint8_t) (player->yRot * 256 / 360);
+	//    xRot = (std::uint8_t) (player->xRot * 256 / 360);
 
 	//printf("%d: New add player (%f,%f,%f) : (%d,%d,%d) : xRot %d, yRot %d\n",id,player->x,player->y,player->z,x,y,z,xRot,yRot);
 
@@ -97,13 +97,13 @@ void AddPlayerPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writeInt(x);
 	dos->writeInt(y);
 	dos->writeInt(z);
-	dos->writeByte(static_cast<uint8_t>(yRot));
-	dos->writeByte(static_cast<uint8_t>(xRot));
-	dos->writeByte(static_cast<uint8_t>(m_playerIndex)); // 4J Added
+	dos->writeByte(static_cast<std::uint8_t>(yRot));
+	dos->writeByte(static_cast<std::uint8_t>(xRot));
+	dos->writeByte(static_cast<std::uint8_t>(m_playerIndex)); // 4J Added
 	dos->writeShort(carriedItem);
 	dos->writePlayerUID(xuid);
 	dos->writePlayerUID(OnlineXuid);
-	dos->writeByte(static_cast<uint8_t>(m_playerIndex)); // 4J Added
+	dos->writeByte(static_cast<std::uint8_t>(m_playerIndex)); // 4J Added
 	int skinId = 0;
 	std::memcpy(&skinId, &m_skinId, sizeof(m_skinId));
 	dos->writeInt(skinId);
@@ -122,7 +122,7 @@ void AddPlayerPacket::handle(PacketListener *listener)
 
 int AddPlayerPacket::getEstimatedSize()
 {
-	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(std::uint8_t) + sizeof(std::uint8_t) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(std::uint8_t) + sizeof(unsigned int) + sizeof(uint8_t);
+	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(std::uint8_t) + sizeof(std::uint8_t) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(std::uint8_t) + sizeof(unsigned int) + sizeof(std::uint8_t);
 
 	if( entityData != NULL )
 	{

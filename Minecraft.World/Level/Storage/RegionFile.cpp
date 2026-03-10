@@ -57,10 +57,10 @@ RegionFile::RegionFile(ConsoleSaveFile *saveFile, File *path)
 	//if ((GetFileSize(file,NULL) & 0xfff) != 0)
 	if ((fileEntry->getFileSize() & 0xfff) != 0)
 	{
-		//uint8_t zero = 0;
+		//std::uint8_t zero = 0;
 		unsigned int numberOfBytesWritten = 0;
 		unsigned int bytesToWrite = 0x1000 - (fileEntry->getFileSize() & 0xfff);
-		uint8_t *zeroBytes = new uint8_t[ bytesToWrite ];
+		std::uint8_t *zeroBytes = new std::uint8_t[ bytesToWrite ];
 		ZeroMemory(zeroBytes, bytesToWrite);
 
 		/* the file size is not a multiple of 4KB, grow it */
@@ -233,8 +233,8 @@ DataInputStream *RegionFile::getChunkDataInputStream(int x, int z) // TODO - was
 	}
 
 	MemSect(50);
-	uint8_t *data = new uint8_t[length];
-	uint8_t *decomp = new uint8_t[decompLength];
+	std::uint8_t *data = new std::uint8_t[length];
+	std::uint8_t *decomp = new std::uint8_t[decompLength];
 	MemSect(0);
 	readDecompLength = decompLength;
 	m_saveFile->readFile(fileEntry,data,length,&numberOfBytesRead);
@@ -273,10 +273,10 @@ DataOutputStream *RegionFile::getChunkDataOutputStream(int x, int z)
 }
 
 /* write a chunk at (x,z) with length bytes of data to disk */
-void RegionFile::write(int x, int z, uint8_t *data, int length)		// TODO - was synchronized
+void RegionFile::write(int x, int z, std::uint8_t *data, int length)		// TODO - was synchronized
 {
 	// 4J Stu - Do the compression here so that we know how much space we need to store the compressed data
-	uint8_t *compData = new uint8_t[length + 2048];	// presuming compression is going to make this smaller...	UPDATE - for some really small things this isn't the case. Added 2K on here to cover those.
+	std::uint8_t *compData = new std::uint8_t[length + 2048];	// presuming compression is going to make this smaller...	UPDATE - for some really small things this isn't the case. Added 2K on here to cover those.
 	unsigned int compLength = length;
 	Compression::getCompression()->CompressLZXRLE(compData,&compLength,data,length);
 
@@ -403,7 +403,7 @@ void RegionFile::write(int x, int z, uint8_t *data, int length)		// TODO - was s
 }
 
 /* write a chunk data to the region file at specified sector number */
-void RegionFile::write(int sectorNumber, uint8_t *data, int length, unsigned int compLength)
+void RegionFile::write(int sectorNumber, std::uint8_t *data, int length, unsigned int compLength)
 {
 	unsigned int numberOfBytesWritten = 0;
 	//SetFilePointer(file,sectorNumber * SECTOR_BYTES,0,FILE_BEGIN);	
@@ -451,7 +451,7 @@ void RegionFile::insertInitialSectors()
 {
 	m_saveFile->setFilePointer( fileEntry, 0, SaveFileSeekOrigin::Begin );
 	unsigned int numberOfBytesWritten = 0;
-	uint8_t zeroBytes[ SECTOR_BYTES ];
+	std::uint8_t zeroBytes[ SECTOR_BYTES ];
 	ZeroMemory(zeroBytes, SECTOR_BYTES);
 
 	/* we need to write the chunk offset table */

@@ -21,7 +21,7 @@ DLCGameRulesHeader::DLCGameRulesHeader(const std::wstring &path) : DLCGameRules(
 	lgo = NULL;
 }
 
-void DLCGameRulesHeader::addData(uint8_t *pbData, std::uint32_t dataBytes)
+void DLCGameRulesHeader::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	m_pbData = pbData;
 	m_dataBytes = dataBytes;
@@ -73,13 +73,13 @@ void DLCGameRulesHeader::addData(uint8_t *pbData, std::uint32_t dataBytes)
 #endif
 }
 
-uint8_t *DLCGameRulesHeader::getData(std::uint32_t &dataBytes)
+std::uint8_t *DLCGameRulesHeader::getData(std::uint32_t &dataBytes)
 {
 	dataBytes = m_dataBytes;
 	return m_pbData;
 }
 
-void DLCGameRulesHeader::setGrfData(uint8_t *fData, std::uint32_t dataSize, StringTable *st)
+void DLCGameRulesHeader::setGrfData(std::uint8_t *fData, std::uint32_t dataSize, StringTable *st)
 {
 	if (!m_hasData)
 	{

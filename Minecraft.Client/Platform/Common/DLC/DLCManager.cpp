@@ -12,7 +12,7 @@
 static const size_t DLC_WCHAR_BINARY = 2;
 static std::wstring dlc_read_wstring(const void *data)
 {
-    const uint16_t *p = (const uint16_t *)data;
+    const std::uint16_t *p = (const std::uint16_t *)data;
     std::wstring s;
     while (*p) s += (wchar_t)*p++;
     return s;
@@ -363,7 +363,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 	}
 
 	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	uint8_t *pbData = new uint8_t[dwFileSize];
+	std::uint8_t *pbData = new std::uint8_t[dwFileSize];
 	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
 	if(bSuccess==FALSE)
 	{
@@ -385,7 +385,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 	return processDLCDataFile(dwFilesProcessed, pbData, bytesRead, pack);
 }
 
-bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, uint8_t *pbData, DWORD dwLength, DLCPack *pack)
+bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, std::uint8_t *pbData, DWORD dwLength, DLCPack *pack)
 {
 	std::unordered_map<int, DLCManager::EDLCParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -439,7 +439,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, uint8_t *pbData, DW
 		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
-	uint8_t *pbTemp = reinterpret_cast<uint8_t *>(pFile);//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
+	std::uint8_t *pbTemp = reinterpret_cast<std::uint8_t *>(pFile);//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
 	for(unsigned int i=0;i<uiFileCount;i++)
@@ -566,7 +566,7 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	}
 
 	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	uint8_t *pbData = new uint8_t[dwFileSize];
+	std::uint8_t *pbData = new std::uint8_t[dwFileSize];
 	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
 	if(bSuccess==FALSE)
 	{
@@ -590,7 +590,7 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	return packId;
 }
 
-DWORD DLCManager::retrievePackID(uint8_t *pbData, DWORD dwLength, DLCPack *pack)
+DWORD DLCManager::retrievePackID(std::uint8_t *pbData, DWORD dwLength, DLCPack *pack)
 {
 	DWORD packId=0;
 	bool bPackIDSet=false;
@@ -643,7 +643,7 @@ DWORD DLCManager::retrievePackID(uint8_t *pbData, DWORD dwLength, DLCPack *pack)
 		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
 		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
 	}
-	uint8_t *pbTemp = reinterpret_cast<uint8_t *>(pFile);
+	std::uint8_t *pbTemp = reinterpret_cast<std::uint8_t *>(pFile);
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
 	for(unsigned int i=0;i<uiFileCount;i++)

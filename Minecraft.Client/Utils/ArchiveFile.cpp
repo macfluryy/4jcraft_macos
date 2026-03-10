@@ -122,7 +122,7 @@ byteArray ArchiveFile::getFile(const std::wstring &filename)
 		memcpy( out.data, m_cachedData + data->ptr, data->filesize );
 #else
 		const unsigned int fileSize = static_cast<unsigned int>(data->filesize);
-		uint8_t *pbData = new uint8_t[fileSize == 0 ? 1 : fileSize];
+		std::uint8_t *pbData = new std::uint8_t[fileSize == 0 ? 1 : fileSize];
 		out = byteArray(pbData, fileSize);
 		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFileSegment(
 			m_sourcefile.getPath(),
@@ -151,7 +151,7 @@ byteArray ArchiveFile::getFile(const std::wstring &filename)
 			unsigned int decompressedSize = dis.readInt();
 			dis.close();
 
-			uint8_t *uncompressedBuffer = new uint8_t[decompressedSize];
+			std::uint8_t *uncompressedBuffer = new std::uint8_t[decompressedSize];
 			Compression::getCompression()->Decompress(uncompressedBuffer, &decompressedSize, out.data+4, out.length-4);
 
 			delete [] out.data;

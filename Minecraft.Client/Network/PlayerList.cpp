@@ -211,7 +211,7 @@ void PlayerList::placeNewPlayer(Connection *connection, std::shared_ptr<ServerPl
 		addPlayerToReceiving( player );
 
 		playerConnection->send( std::shared_ptr<LoginPacket>( new LoginPacket(L"", player->entityId, level->getLevelData()->getGenerator(), level->getSeed(), player->gameMode->getGameModeForPlayer()->getId(),
-																		(uint8_t) level->dimension->id, (uint8_t) level->getMaxBuildHeight(), (uint8_t) getMaxPlayers(),
+																		(std::uint8_t) level->dimension->id, (std::uint8_t) level->getMaxBuildHeight(), (std::uint8_t) getMaxPlayers(),
 																		level->difficulty, TelemetryManager->GetMultiplayerInstanceID(), playerIndex, level->useNewSeaLevel(), player->getAllPlayerGamePrivileges(),
 																		level->getLevelData()->getXZSize(), level->getLevelData()->getHellScale() ) ) );
         playerConnection->send( std::shared_ptr<SetSpawnPositionPacket>( new SetSpawnPositionPacket(spawnPos->x, spawnPos->y, spawnPos->z) ) );

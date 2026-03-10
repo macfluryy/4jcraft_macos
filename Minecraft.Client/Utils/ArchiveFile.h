@@ -13,7 +13,7 @@ class ArchiveFile
 {
 protected:
 	File m_sourcefile;
-	uint8_t *m_cachedData;
+	std::uint8_t *m_cachedData;
 
 	typedef struct _MetaData
 	{

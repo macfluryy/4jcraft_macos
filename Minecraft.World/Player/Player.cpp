@@ -183,8 +183,8 @@ void Player::defineSynchedData()
 {
 	this->Mob::defineSynchedData();
 
-	entityData->define(DATA_PLAYER_FLAGS_ID, (uint8_t) 0);
-	entityData->define(DATA_PLAYER_RUNNING_ID, (uint8_t) 0);
+	entityData->define(DATA_PLAYER_FLAGS_ID, (std::uint8_t) 0);
+	entityData->define(DATA_PLAYER_RUNNING_ID, (std::uint8_t) 0);
 }
 
 std::shared_ptr<ItemInstance> Player::getUseItem()
@@ -572,7 +572,7 @@ void Player::completeUsingItem()
 	}
 }
 
-void Player::handleEntityEvent(uint8_t id)
+void Player::handleEntityEvent(std::uint8_t id)
 {
 	if (id == EntityEvent::USE_ITEM_COMPLETE)
 	{
@@ -1979,14 +1979,14 @@ bool Player::getPlayerFlag(int flag)
 
 void Player::setPlayerFlag(int flag, bool value)
 {
-	uint8_t currentValue = entityData->getByte(DATA_PLAYER_FLAGS_ID);
+	std::uint8_t currentValue = entityData->getByte(DATA_PLAYER_FLAGS_ID);
 	if (value)
 	{
-		entityData->set(DATA_PLAYER_FLAGS_ID, (uint8_t) (currentValue | (1 << flag)));
+		entityData->set(DATA_PLAYER_FLAGS_ID, (std::uint8_t) (currentValue | (1 << flag)));
 	}
 	else
 	{
-		entityData->set(DATA_PLAYER_FLAGS_ID, (uint8_t) (currentValue & ~(1 << flag)));
+		entityData->set(DATA_PLAYER_FLAGS_ID, (std::uint8_t) (currentValue & ~(1 << flag)));
 	}
 }
 

@@ -7,7 +7,7 @@ StringTable::StringTable(void)
 }
 
 // Load string table from a binary blob, filling out with the current localisation data only
-StringTable::StringTable(uint8_t *pbData, unsigned int dataSize)
+StringTable::StringTable(std::uint8_t *pbData, unsigned int dataSize)
 {
 	src = byteArray(pbData, dataSize);
 
@@ -119,7 +119,7 @@ StringTable::~StringTable(void)
 	// delete src.data; TODO 4J-JEV: ?
 }
 
-void StringTable::getData(uint8_t **ppData, unsigned int *pSize)
+void StringTable::getData(std::uint8_t **ppData, unsigned int *pSize)
 {
 	*ppData = src.data;
 	*pSize = src.length;

@@ -1205,7 +1205,7 @@ void PlayerConnection::handleSetCreativeModeSlot(std::shared_ptr<SetCreativeMode
 			// 4J-PB - for Xbox maps, we'll centre them on the origin of the world, since we can fit the whole world in our map
 			data->x = centreXC;
 			data->z = centreZC;
-			data->dimension = (uint8_t) player->level->dimension->id;
+			data->dimension = (std::uint8_t) player->level->dimension->id;
 			data->setDirty();
 		}
 

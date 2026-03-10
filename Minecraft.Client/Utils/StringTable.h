@@ -61,10 +61,10 @@ public:
 // 	};
 
 	StringTable(void);
-	StringTable(uint8_t *pbData, unsigned int dataSize);
+	StringTable(std::uint8_t *pbData, unsigned int dataSize);
 	~StringTable(void);
 
-	void getData(uint8_t **ppData, unsigned int *pSize);
+	void getData(std::uint8_t **ppData, unsigned int *pSize);
 
 	const wchar_t *getString(const std::wstring &id);
 	const wchar_t *getString(int id);

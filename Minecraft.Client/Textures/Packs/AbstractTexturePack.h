@@ -19,10 +19,10 @@ protected:
 	std::wstring desc1;
 	std::wstring desc2;
 
-	uint8_t *m_iconData;
+	std::uint8_t *m_iconData;
 	std::uint32_t m_iconSize;
 
-	uint8_t *m_comparisonData;
+	std::uint8_t *m_comparisonData;
 	std::uint32_t m_comparisonSize;
 
 	TexturePack *fallback;
@@ -84,8 +84,8 @@ public:
 	virtual void loadUI();
 	virtual void unloadUI();
 	virtual std::wstring getXuiRootPath();
-	virtual uint8_t *getPackIcon(std::uint32_t &imageBytes);
-	virtual uint8_t *getPackComparison(std::uint32_t &imageBytes);
+	virtual std::uint8_t *getPackIcon(std::uint32_t &imageBytes);
+	virtual std::uint8_t *getPackComparison(std::uint32_t &imageBytes);
 	virtual unsigned int getDLCParentPackId();
 	virtual unsigned char getDLCSubPackId();
 	virtual ColourTable *getColourTable() { return m_colourTable; }

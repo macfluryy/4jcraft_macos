@@ -94,7 +94,7 @@ public:
 	DWORD retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
 
 private:
-	bool processDLCDataFile(DWORD &dwFilesProcessed, uint8_t *pbData, DWORD dwLength, DLCPack *pack);
+	bool processDLCDataFile(DWORD &dwFilesProcessed, std::uint8_t *pbData, DWORD dwLength, DLCPack *pack);
 
-	DWORD retrievePackID(uint8_t *pbData, DWORD dwLength, DLCPack *pack);
+	DWORD retrievePackID(std::uint8_t *pbData, DWORD dwLength, DLCPack *pack);
 };

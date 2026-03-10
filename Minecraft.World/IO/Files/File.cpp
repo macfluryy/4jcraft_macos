@@ -410,7 +410,7 @@ std::vector<File *> *File::listFiles() const
 	CellFsErrno err = cellFsOpendir(filePath , &fd);
 
 	CellFsDirectoryEntry de;
-	uint32_t count = 0;
+	std::uint32_t count = 0;
 	err = cellFsGetDirectoryEntries(fd, &de, sizeof(CellFsDirectoryEntry), &count);
 	if(count != 0)
 	{
@@ -572,7 +572,7 @@ std::vector<File *> *File::listFiles(FileFilter *filter) const
 	CellFsErrno err = cellFsOpendir(filePath, &fd);
 
 	CellFsDirectoryEntry de;
-	uint32_t count = 0;
+	std::uint32_t count = 0;
 	err = cellFsGetDirectoryEntries(fd, &de, sizeof(CellFsDirectoryEntry), &count);
 	if(count != 0)
 	{

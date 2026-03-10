@@ -38,7 +38,7 @@ void ConsoleSaveFileOutputStream::write(unsigned int b)
 {	
 	unsigned int numberOfBytesWritten;
 
-	uint8_t value = (uint8_t) b;
+	std::uint8_t value = (std::uint8_t) b;
 
 	bool result = m_saveFile->writeFile(
 		m_file,

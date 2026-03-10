@@ -10,7 +10,7 @@ void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile *sourceSave, Fi
 	unsigned int numberOfBytesRead = 0;
 	unsigned int numberOfBytesWritten = 0;
 
-	uint8_t *data = new uint8_t[sourceFileEntry->getFileSize()];
+	std::uint8_t *data = new std::uint8_t[sourceFileEntry->getFileSize()];
 
 	// Read from source
 	sourceSave->readFile(sourceFileEntry, data, sourceFileEntry->getFileSize(), &numberOfBytesRead);

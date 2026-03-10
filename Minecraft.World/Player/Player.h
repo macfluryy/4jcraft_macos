@@ -161,7 +161,7 @@ protected:
 	virtual void completeUsingItem();
 
 public:
-	virtual void handleEntityEvent(uint8_t id);
+	virtual void handleEntityEvent(std::uint8_t id);
 
 protected:
 	bool isImmobile();

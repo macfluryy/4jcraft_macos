@@ -26,7 +26,7 @@ public:
 	std::uint32_t m_skinId; // 4J Added
 	std::uint32_t m_capeId; // 4J Added
 	unsigned int m_uiGamePrivileges; // 4J Added
-	uint8_t yHeadRot; // 4J Added
+	std::uint8_t yHeadRot; // 4J Added
 
 	AddPlayerPacket();
 	~AddPlayerPacket();

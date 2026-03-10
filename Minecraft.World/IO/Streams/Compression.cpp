@@ -312,7 +312,7 @@ HRESULT Compression::Compress(void *pDestination, unsigned int *pDestSize, void 
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res == Z_OK ) ? S_OK : -1 );
 #elif defined __PS3__
-	uint32_t destSize = (uint32_t)(*pDestSize);
+	std::uint32_t destSize = (std::uint32_t)(*pDestSize);
 	bool res = EdgeZLib::Compress(pDestination, &destSize, pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res ) ? S_OK : -1 );
@@ -340,7 +340,7 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res == Z_OK ) ? S_OK : -1 );
 #elif defined __PS3__
-	uint32_t destSize = (uint32_t)(*pDestSize);
+	std::uint32_t destSize = (std::uint32_t)(*pDestSize);
 	bool res = EdgeZLib::Decompress(pDestination, &destSize, pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res ) ? S_OK : -1 );
@@ -356,11 +356,11 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 #ifndef _XBOX
 void Compression::VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize) // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
 {
-	uint8_t *pSrc = (uint8_t *)pSource;
+	std::uint8_t *pSrc = (std::uint8_t *)pSource;
 	int Offset = 0;
 	int Page = 0;
 	int Index = 0;
-	uint8_t* Data = (uint8_t*)pDestination;
+	std::uint8_t* Data = (std::uint8_t*)pDestination;
 	while( Index != SrcSize )
 	{
 		// is this a normal value

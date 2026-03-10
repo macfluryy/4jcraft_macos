@@ -657,7 +657,7 @@ void UIScene_LoadOrJoinMenu::tick()
             if(!m_bExitScene)
             {
                 // convert to utf16
-                uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+                std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #ifdef _DURANGO
                 // Already utf16 on durango
                 memcpy(u16Message, m_saveDetails[m_iRequestingThumbnailId].UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -675,19 +675,19 @@ void UIScene_LoadOrJoinMenu::tick()
 #ifdef __PS3
                 size_t srcmax,dstmax;
 #else
-                uint32_t srcmax,dstmax;
-                uint32_t srclen,dstlen;
+                std::uint32_t srcmax,dstmax;
+                std::uint32_t srclen,dstlen;
 #endif
                 srcmax=MAX_SAVEFILENAME_LENGTH;
                 dstmax=MAX_SAVEFILENAME_LENGTH;
 
 #if defined(__PS3__)
-                L10nResult lres= UTF8stoUTF16s((uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
+                L10nResult lres= UTF8stoUTF16s((std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
 #else
                 SceCesUcsContext context;
                 sceCesUcsContextInit(&context);
 
-                sceCesUtf8StrToUtf16Str(&context, (uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
+                sceCesUtf8StrToUtf16Str(&context, (std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
 #endif
 #endif
                 if( m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData )
@@ -928,7 +928,7 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons()
 			m_iMashUpButtonsC++;
             TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(levelGen->getRequiredTexturePackId());
             std::uint32_t imageBytes = 0;
-            uint8_t *imageData = tp->getPackIcon(imageBytes);
+            std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
             if(imageBytes > 0 && imageData)
             {
@@ -1172,8 +1172,8 @@ int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,boo
 	pClass->m_bIgnoreInput=false;
     if (bRes)
     {	
-        uint16_t ui16Text[128];
-        ZeroMemory(ui16Text, 128 * sizeof(uint16_t) );
+        std::uint16_t ui16Text[128];
+        ZeroMemory(ui16Text, 128 * sizeof(std::uint16_t) );
         InputManager.GetText(ui16Text);
 
         // check the name is valid
@@ -1453,7 +1453,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 			// PS Plus upsell
 			// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 			// upsell psplus
-			int32_t iResult=sceNpCommerceDialogInitialize();
+			std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 			SceNpCommerceDialogParam param;
 			sceNpCommerceDialogParamInitialize(&param);
@@ -1692,7 +1692,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
                 HRESULT hr;
 
                 std::uint32_t imageBytes = 0;
-                uint8_t *imageData = NULL;
+                std::uint8_t *imageData = NULL;
 
                 if(tp==NULL)
                 {
@@ -1727,7 +1727,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
                 TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(0);
 
                 std::uint32_t imageBytes = 0;
-                uint8_t *imageData = tp->getPackIcon(imageBytes);
+                std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
                 if(imageBytes > 0 && imageData)
                 {

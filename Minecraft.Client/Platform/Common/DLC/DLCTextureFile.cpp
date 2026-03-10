@@ -11,14 +11,14 @@ DLCTextureFile::DLCTextureFile(const std::wstring &path) : DLCFile(DLCManager::e
 	m_dataBytes = 0;
 }
 
-void DLCTextureFile::addData(uint8_t *pbData, std::uint32_t dataBytes)
+void DLCTextureFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	//app.AddMemoryTextureFile(m_path,pbData,dwBytes);
 	m_pbData = pbData;
 	m_dataBytes = dataBytes;
 }
 
-uint8_t *DLCTextureFile::getData(std::uint32_t &dataBytes)
+std::uint8_t *DLCTextureFile::getData(std::uint32_t &dataBytes)
 {
 	dataBytes = m_dataBytes;
 	return m_pbData;
