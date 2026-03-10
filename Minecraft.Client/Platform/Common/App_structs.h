@@ -216,13 +216,13 @@ typedef struct _TMSPPRequest
 	C4JStorage::eTMS_FILETYPEVAL eFileTypeVal;
 	//char szFilename[MAX_TMSFILENAME_SIZE];
 #ifdef _XBOX_ONE
-	int( *CallbackFunc)(LPVOID,int,int,LPVOID, WCHAR *);
+	int( *CallbackFunc)(void *,int,int,void *, WCHAR *);
 #else
-	int( *CallbackFunc)(LPVOID,int,int,C4JStorage::PTMSPP_FILEDATA, LPCSTR szFilename);
+	int( *CallbackFunc)(void *,int,int,C4JStorage::PTMSPP_FILEDATA, LPCSTR szFilename);
 #endif
  	WCHAR wchFilename[MAX_TMSFILENAME_SIZE];
 
-	LPVOID lpCallbackParam;
+	void *lpCallbackParam;
 } 
 TMSPPRequest;
 

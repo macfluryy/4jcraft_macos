@@ -126,7 +126,7 @@ public:
 
 	bool			IsAppPaused();
 	void			SetAppPaused(bool val);
-	static int		DisplaySavingMessage(LPVOID pParam,const C4JStorage::ESavingMessage eMsg, int iPad);
+	static int		DisplaySavingMessage(void *pParam,const C4JStorage::ESavingMessage eMsg, int iPad);
 	bool			GetGameStarted()																								{return m_bGameStarted;}
 	void			SetGameStarted(bool bVal)																						{ if(bVal) DebugPrintf("SetGameStarted - true\n"); else DebugPrintf("SetGameStarted - false\n"); m_bGameStarted = bVal; m_bIsAppPaused = !bVal;}
 	int				GetLocalPlayerCount(void);
@@ -208,23 +208,23 @@ public:
 	//void			GetPreviewImage(int iPad,XSOCIAL_PREVIEWIMAGE *preview);
 
 	void			InitGameSettings();
-	static int		OldProfileVersionCallback(LPVOID pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad);
+	static int		OldProfileVersionCallback(void *pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad);
 
 #if ( defined  __PS3__  || defined __ORBIS__ || defined _DURANGO || defined __PSVITA__ )
-	static int		DefaultOptionsCallback(LPVOID pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad);
+	static int		DefaultOptionsCallback(void *pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad);
 	int				SetDefaultOptions(C4JStorage::PROFILESETTINGS *pSettings,const int iPad,bool bWriteProfile=true);
 #ifdef __ORBIS__
-	static int		OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired);
+	static int		OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired);
 	int				GetOptionsBlocksRequired(int iPad);
 #else
-	static int		OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus);
+	static int		OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus);
 #endif
 
 	C4JStorage::eOptionsCallback GetOptionsCallbackStatus(int iPad);
 
 	void			SetOptionsCallbackStatus(int iPad, C4JStorage::eOptionsCallback eStatus);
 #else
-	static int		DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad);
+	static int		DefaultOptionsCallback(void *pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad);
 	int				SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,const int iPad);
 #endif
 	virtual void	SetRichPresenceContext(int iPad, int contextId) = 0;
@@ -277,7 +277,7 @@ public:
 	bool IsLocalMultiplayerAvailable();
 
 	// for sign in change monitoring
-	static void		SignInChangeCallback(LPVOID pParam, bool bVal, unsigned int uiSignInData);
+	static void		SignInChangeCallback(void *pParam, bool bVal, unsigned int uiSignInData);
 	static void ClearSignInChangeUsersMask();
 	static int SignoutExitWorldThreadProc( void* lpParameter );
 	static int PrimaryPlayerSignedOutReturned(void *pParam, int iPad, const C4JStorage::EMessageResult);
@@ -288,14 +288,14 @@ public:
 	virtual void FatalLoadError();
 
 	// Notifications from the game listener to be passed to the qnet listener
-	static void NotificationsCallback(LPVOID pParam,DWORD dwNotification, unsigned int uiParam);
+	static void NotificationsCallback(void *pParam,DWORD dwNotification, unsigned int uiParam);
 
 	// for the ethernet being disconnected
-	static void		LiveLinkChangeCallback(LPVOID pParam,BOOL bConnected);
+	static void		LiveLinkChangeCallback(void *pParam,BOOL bConnected);
 	bool		    GetLiveLinkRequired()																								{return m_bLiveLinkRequired;}
 	void			SetLiveLinkRequired(bool required)																					{m_bLiveLinkRequired=required;}
 
-	static void		UpsellReturnedCallback(LPVOID pParam, eUpsellType type, eUpsellResponse result, int iUserData);
+	static void		UpsellReturnedCallback(void *pParam, eUpsellType type, eUpsellResponse result, int iUserData);
 
 #if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
 	static int NowDisplayFullVersionPurchase(void *pParam, bool bContinue, int iPad);
@@ -316,16 +316,16 @@ public:
 
 	// Installed DLC
 	bool StartInstallDLCProcess(int iPad);
-	static int DLCInstalledCallback(LPVOID pParam,int iOfferC,int iPad);
+	static int DLCInstalledCallback(void *pParam,int iOfferC,int iPad);
 	void HandleDLCLicenseChange();
-	static int DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask);
+	static int DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask);
 	void MountNextDLC(int iPad);
 	//static int DLCReadCallback(LPVOID pParam,C4JStorage::DLC_FILE_DETAILS *pDLCData);
 	void HandleDLC(DLCPack *pack);
 	bool DLCInstallPending()	{return m_bDLCInstallPending;}
 	bool DLCInstallProcessCompleted()	{return m_bDLCInstallProcessCompleted;}
 	void ClearDLCInstalled()	{ m_bDLCInstallProcessCompleted=false;}
-	static int MarketplaceCountsCallback(LPVOID pParam,C4JStorage::DLC_TMS_DETAILS *,int iPad);
+	static int MarketplaceCountsCallback(void *pParam,C4JStorage::DLC_TMS_DETAILS *,int iPad);
 
 	bool AlreadySeenCreditText(const std::wstring &wstemp);
 
@@ -562,7 +562,7 @@ public:
 	void UpdateTrialPausedTimer() { mfTrialPausedTime+= m_Time.fElapsedTime;}
 
 	static int RemoteSaveThreadProc( void* lpParameter );
-	static void ExitGameFromRemoteSave( LPVOID lpParameter );
+	static void ExitGameFromRemoteSave( void *lpParameter );
 	static int ExitGameFromRemoteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 private:
 	UINT m_TipIDA[MAX_TIPS_GAMETIP+MAX_TIPS_TRIVIATIP];
@@ -759,10 +759,10 @@ public:
 #else
 
 #ifdef _XBOX_ONE
-	static int		TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,LPVOID, WCHAR *wchFilename);
+	static int		TMSPPFileReturned(void *pParam,int iPad,int iUserData,void *, WCHAR *wchFilename);
 	std::unordered_map<std::wstring,DLC_INFO * > *GetDLCInfo();
 #else
-	static int		TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename);
+	static int		TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename);
 #endif
 	DLC_INFO *GetDLCInfoTrialOffer(int iIndex);
 	DLC_INFO *GetDLCInfoFullOffer(int iIndex);

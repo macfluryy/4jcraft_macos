@@ -723,9 +723,9 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,con
 }
 
 #if ( defined  __PS3__  || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)
-int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad)
+int CMinecraftApp::DefaultOptionsCallback(void *pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad)
 #else
-int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad)
+int CMinecraftApp::DefaultOptionsCallback(void *pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad)
 #endif
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
@@ -746,7 +746,7 @@ int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETT
 #if ( defined  __PS3__  || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)
 
 #ifdef __ORBIS__
-int CMinecraftApp::OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired)
+int CMinecraftApp::OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired)
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
 	pApp->m_eOptionsStatusA[iPad]=eStatus;
@@ -760,7 +760,7 @@ int CMinecraftApp::GetOptionsBlocksRequired(int iPad)
 }
 
 #else
-int CMinecraftApp::OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus)
+int CMinecraftApp::OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus)
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
 	pApp->m_eOptionsStatusA[iPad]=eStatus;
@@ -779,7 +779,7 @@ void CMinecraftApp::SetOptionsCallbackStatus(int iPad, C4JStorage::eOptionsCallb
 }
 #endif
 
-int CMinecraftApp::OldProfileVersionCallback(LPVOID pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad)
+int CMinecraftApp::OldProfileVersionCallback(void *pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad)
 {
 	// check what needs to be done with this version to update to the current one
 
@@ -4569,7 +4569,7 @@ void CMinecraftApp::ClearSignInChangeUsersMask()
 		}
 	}
 }
-void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChanged,unsigned int uiSignInData)
+void CMinecraftApp::SignInChangeCallback(void *pParam,bool bPrimaryPlayerChanged,unsigned int uiSignInData)
 {
 #ifdef __PS3__
 	// this is normally set in the main menu, but we can go online in the create world screens, and the primary player name isn't updated
@@ -4744,7 +4744,7 @@ void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChange
 	}
 }
 
-void CMinecraftApp::NotificationsCallback(LPVOID pParam,DWORD dwNotification, unsigned int uiParam)
+void CMinecraftApp::NotificationsCallback(void *pParam,DWORD dwNotification, unsigned int uiParam)
 {
 	CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
@@ -4869,7 +4869,7 @@ int CMinecraftApp::NowDisplayFullVersionPurchase(void *pParam, bool bContinue, i
 	return 0;
 }
 #endif
-void CMinecraftApp::UpsellReturnedCallback(LPVOID pParam, eUpsellType type, eUpsellResponse result, int iUserData)
+void CMinecraftApp::UpsellReturnedCallback(void *pParam, eUpsellType type, eUpsellResponse result, int iUserData)
 {
 	ESen_UpsellID senType;
 	ESen_UpsellOutcome senResponse;
@@ -4963,7 +4963,7 @@ int CMinecraftApp::GetLocalPlayerCount(void)
 	return iPlayerC;
 }
 
-int CMinecraftApp::MarketplaceCountsCallback(LPVOID pParam,C4JStorage::DLC_TMS_DETAILS *pTMSDetails, int iPad)
+int CMinecraftApp::MarketplaceCountsCallback(void *pParam,C4JStorage::DLC_TMS_DETAILS *pTMSDetails, int iPad)
 {
 	app.DebugPrintf("Marketplace Counts= New - %d Total - %d\n",pTMSDetails->dwNewOffers,pTMSDetails->dwTotalOffers);
 
@@ -5008,7 +5008,7 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad)
 }
 
 // Installed DLC callback
-int CMinecraftApp::DLCInstalledCallback(LPVOID pParam,int iInstalledC,int iPad)
+int CMinecraftApp::DLCInstalledCallback(void *pParam,int iInstalledC,int iPad)
 {
 	app.DebugPrintf("--- CMinecraftApp::DLCInstalledCallback: totalDLC=%i, pad=%i.\n", iInstalledC, iPad);
 	app.m_iTotalDLC = iInstalledC;
@@ -5077,7 +5077,7 @@ void CMinecraftApp::MountNextDLC(int iPad)
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.wszDisplayName)
 #endif
 
-int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
+int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
 {
 #if defined(_XBOX) || defined(_DURANGO) || defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64)  || defined (__PSVITA__) //Chris TODO
 	app.DebugPrintf("--- CMinecraftApp::DLCMountedCallback\n");
@@ -7030,7 +7030,7 @@ int CMinecraftApp::RemoteSaveThreadProc( void* lpParameter )
 	return 0;
 }
 
-void CMinecraftApp::ExitGameFromRemoteSave( LPVOID lpParameter )
+void CMinecraftApp::ExitGameFromRemoteSave( void *lpParameter )
 {
 	int primaryPad = ProfileManager.GetPrimaryPad();
 	
@@ -8274,11 +8274,11 @@ bool CMinecraftApp::RetrieveNextDLCContent()
 
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 #ifdef _XBOX_ONE
-int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,LPVOID lpvData, WCHAR* wchFilename)
+int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,void *lpvData, WCHAR* wchFilename)
 {
 	C4JStorage::PTMSPP_FILEDATA pFileData=(C4JStorage::PTMSPP_FILEDATA)lpvData;
 #else
-int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename)
+int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename)
 {
 #endif
 
