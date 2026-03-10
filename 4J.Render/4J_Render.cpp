@@ -94,8 +94,8 @@ void C4JRender::Initialise()
     }
 
     glfwMakeContextCurrent(s_window);
-    glfwSwapInterval(0);  // vsync
-
+    glfwSwapInterval(1);  // vsync
+    
     // Keep viewport in sync with OS-driven window resizes.
     glfwSetFramebufferSizeCallback(s_window, onFramebufferResize);
 
