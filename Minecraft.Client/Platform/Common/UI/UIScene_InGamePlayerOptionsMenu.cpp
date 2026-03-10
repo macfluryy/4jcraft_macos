@@ -346,7 +346,7 @@ void UIScene_InGamePlayerOptionsMenu::handlePress(F64 controlId, F64 childId)
 	{
 	case eControl_Kick:
 		{
-			BYTE *smallId = new BYTE();
+			std::uint8_t *smallId = new std::uint8_t();
 			*smallId = m_networkSmallId;
 			UINT uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
@@ -360,8 +360,8 @@ void UIScene_InGamePlayerOptionsMenu::handlePress(F64 controlId, F64 childId)
 
 int UIScene_InGamePlayerOptionsMenu::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
-	BYTE smallId = *(BYTE *)pParam;
-	delete (BYTE*)pParam;
+	std::uint8_t smallId = *(std::uint8_t *)pParam;
+	delete (std::uint8_t *)pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		
