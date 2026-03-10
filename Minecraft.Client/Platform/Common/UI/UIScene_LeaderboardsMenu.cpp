@@ -741,7 +741,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(LeaderboardManager::ReadScor
 	for( unsigned int i=0 ; i<statsRow->m_statsSize ; i++ )
 	{
 		leaderboardEntry->m_columns[i] = statsRow->m_statsData[i];
-		ZeroMemory(leaderboardEntry->m_wcColumns[i],12*sizeof(WCHAR));
+		ZeroMemory(leaderboardEntry->m_wcColumns[i], 12 * sizeof(wchar_t));
 		if( !isDistanceLeaderboard )
 		{
 			unsigned int displayValue = leaderboardEntry->m_columns[i];

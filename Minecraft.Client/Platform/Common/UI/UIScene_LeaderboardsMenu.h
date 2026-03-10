@@ -36,11 +36,11 @@ private:
 		PlayerUID		m_xuid;
 		unsigned int m_row; // Row identifier for passing to Iggy as a unique identifier
 		unsigned int	m_rank;
-		WCHAR		m_wcRank[12];
-		WCHAR		m_gamerTag[XUSER_NAME_SIZE+1];
+		wchar_t		m_wcRank[12];
+		wchar_t		m_gamerTag[XUSER_NAME_SIZE+1];
 		//int			m_locale;
 		unsigned int	m_columns[7];
-		WCHAR		m_wcColumns[7][12];
+		wchar_t		m_wcColumns[7][12];
 		bool		m_bPlayer;				//Is the player
 		bool		m_bOnline;				//Is online
 		bool		m_bFriend;				//Is friend
