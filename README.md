@@ -48,11 +48,8 @@ sudo apt install \
 #### Arch/Manjaro
 
 ```bash
-sudo pacman -S base-devel gcc pkgconf cmake sdl2 mesa openal libvorbis glu
+sudo pacman -S base-devel gcc pkgconf cmake sdl2-compat mesa openal libvorbis glu
 ```
-
-> [!TIP]
-> SDL2 supports both X11 and Wayland backends; no package swap is necessary for Wayland!!!!!!!
 
 #### Fedora/Red Hat/Nobara
 

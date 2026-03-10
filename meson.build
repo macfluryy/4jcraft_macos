@@ -1,11 +1,10 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
   default_options : [
-    'warning_level=0',
-    'buildtype=debug',
-    'unity=on',         # merge source files per target → fewer compile units
-    'unity_size=8',     # files per unity batch (tune up for faster full builds)
-    'b_pch=true',       # precompiled headers
+    'buildtype=debug', # for now
+    'unity=on', # merge source files per target
+    'unity_size=8', # TODO: mess around with this
+    'b_pch=true', # precompiled headers
   ],
 )
 

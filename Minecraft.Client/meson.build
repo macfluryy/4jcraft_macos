@@ -80,7 +80,7 @@ custom_target('copy_assets_to_client',
   command : [
     python, meson.project_source_root() / 'scripts/copy_assets_to_client.py',
     meson.project_source_root(),
-    meson.build_root(),
+    meson.project_build_root(),
     meson.current_build_dir(),
     '@INPUT1@',
     '@OUTPUT@',
