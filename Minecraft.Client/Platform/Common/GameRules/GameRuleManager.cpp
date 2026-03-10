@@ -103,7 +103,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	for(int i = 0; i < gameRulesCount; ++i)
 	{
 		DLCGameRulesHeader *dlcHeader = (DLCGameRulesHeader *)pack->getFile(DLCManager::e_DLCType_GameRulesHeader, i);
-		DWORD dSize;
+		std::uint32_t dSize;
 		uint8_t *dData = dlcHeader->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
@@ -125,7 +125,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	{
 		DLCGameRulesFile *dlcFile = (DLCGameRulesFile *)pack->getFile(DLCManager::e_DLCType_GameRules, i);
 
-		DWORD dSize;
+		std::uint32_t dSize;
 		uint8_t *dData = dlcFile->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
@@ -170,7 +170,7 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, u
 
 	for (int i = 0; i < 8; i++) dis.readByte();
 	
-	BYTE compression_type = dis.readByte();
+	std::uint8_t compression_type = dis.readByte();
 
 	app.DebugPrintf("\tcompressionType=%d.\n", compression_type);
 
@@ -183,8 +183,8 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, u
 
 	// Decompress File Body
 
-	byteArray content(new BYTE[decomp_len], decomp_len), 
-				compr_content(new BYTE[compr_len], compr_len);
+	byteArray content(new std::uint8_t[decomp_len], decomp_len), 
+				compr_content(new std::uint8_t[compr_len], compr_len);
 	dis.read(compr_content);
 
 	Compression::getCompression()->SetDecompressionType( (Compression::ECompressionTypes)compression_type );
@@ -203,14 +203,14 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, u
 	// Read StringTable.
 	byteArray bStringTable;
 	bStringTable.length = dis2.readInt();
-	bStringTable.data = new BYTE[ bStringTable.length ];
+	bStringTable.data = new std::uint8_t[ bStringTable.length ];
 	dis2.read(bStringTable);
 	StringTable *strings = new StringTable(bStringTable.data, bStringTable.length);
 
 	// Read RuleFile.
 	byteArray bRuleFile;
 	bRuleFile.length = content.length - bStringTable.length;
-	bRuleFile.data = new BYTE[ bRuleFile.length ];
+	bRuleFile.data = new std::uint8_t[ bRuleFile.length ];
 	dis2.read(bRuleFile);
 
 	// 4J-JEV: I don't believe that the path-name is ever used.
@@ -306,7 +306,7 @@ void GameRuleManager::saveGameRules(uint8_t **dOut, unsigned int *dSize)
 	}
 
 	// Compress compr_dos and write to dos.
-	byteArray compr_ba(new BYTE[ compr_baos.buf.length ], compr_baos.buf.length);
+	byteArray compr_ba(new std::uint8_t[ compr_baos.buf.length ], compr_baos.buf.length);
 	Compression::getCompression()->CompressLZXRLE(	compr_ba.data, &compr_ba.length,
 												compr_baos.buf.data, compr_baos.buf.length );
 
@@ -380,8 +380,8 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, un
 	LevelGenerationOptions *levelGenerator = lgo;//new LevelGenerationOptions();
 	LevelRuleset *gameRules = new LevelRuleset();
 
-	//DWORD dwLen = 0;
-	//PBYTE pbData = dlcFile->getData(dwLen);
+	//std::uint32_t dataLength = 0;
+	//std::uint8_t *data = dlcFile->getData(dataLength);
 	//byteArray data(pbData,dwLen);
 	
 	byteArray data(dIn, dSize);
