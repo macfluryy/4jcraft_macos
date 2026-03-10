@@ -633,9 +633,9 @@ void UIController::CleanUpSkinReload()
 		if(!Minecraft::GetInstance()->skins->getSelected()->hasAudio())
 		{
 #ifdef _DURANGO			
-			DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+			const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-			DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+			const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 		}
 	}
@@ -1568,9 +1568,9 @@ void UIController::NavigateToHomeMenu()
 		// 			pDLCTexPack->m_pSoundBank->Destroy();
 		// 		}
 #ifdef _XBOX_ONE
-		DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+		const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-		DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+		const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 
 		app.DebugPrintf("Unmount result is %d\n",result);
@@ -2199,7 +2199,7 @@ void UIController::UpdatePlayerBasePositions()
 {
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+	for(int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 	{
 		if(pMinecraft->localplayers[idx] != NULL)
 		{
@@ -2254,7 +2254,7 @@ void UIController::SetTrialTimerLimitSecs(unsigned int uiSeconds)
 
 void UIController::UpdateTrialTimer(unsigned int iPad)
 {
-	WCHAR wcTime[20]; 
+	wchar_t wcTime[20];
 
 	std::uint32_t timeTicks = (std::uint32_t)app.getTrialTimer();
 
@@ -2316,7 +2316,7 @@ void UIController::ShowAutosaveCountdownTimer(bool show)
 void UIController::UpdateAutosaveCountdownTimer(unsigned int uiSeconds)
 {
 #if !(defined(_XBOX_ONE) || defined(__ORBIS__))
-	WCHAR wcAutosaveCountdown[100]; 
+	wchar_t wcAutosaveCountdown[100];
 	swprintf( wcAutosaveCountdown, 100, app.GetString(IDS_AUTOSAVE_COUNTDOWN),uiSeconds);
 	if(m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()) m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()->setTrialTimer(wcAutosaveCountdown);
 #endif
