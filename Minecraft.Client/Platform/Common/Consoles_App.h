@@ -369,9 +369,9 @@ public:
 private:
 	PlayerUID m_xuidNotch;
 #ifdef _DURANGO
-	std::unordered_map<PlayerUID, PBYTE, PlayerUID::Hash> m_GTS_Files;
+	std::unordered_map<PlayerUID, std::uint8_t *, PlayerUID::Hash> m_GTS_Files;
 #else
-	std::unordered_map<PlayerUID, PBYTE> m_GTS_Files;
+	std::unordered_map<PlayerUID, std::uint8_t *> m_GTS_Files;
 #endif
 
 	// for storing memory textures - player skin
@@ -858,7 +858,7 @@ private:
 	bool m_bResetNether;
 	std::uint32_t m_dwRequiredTexturePackID;
 #ifdef _XBOX_ONE
-	std::vector <PBYTE> m_vTMSPPData;
+	std::vector<std::uint8_t *> m_vTMSPPData;
 #endif
 
 #if ( defined __PS3__ || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)

@@ -8313,7 +8313,7 @@ int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStor
 				case e_DLC_TexturePackData:
 					{					
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
-						PBYTE pbData = new BYTE [pFileData->dwSize];
+						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
 						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
 
 						pClass->m_vTMSPPData.push_back(pbData);
@@ -8328,7 +8328,7 @@ int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStor
 					if(pFileData->pbData[0]==0x89)
 					{				
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
- 						PBYTE pbData = new BYTE [pFileData->dwSize];
+ 						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
  						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
  
  						pClass->m_vTMSPPData.push_back(pbData);
