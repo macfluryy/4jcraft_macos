@@ -1270,11 +1270,11 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 	case eGameSetting_Tooltips:
 		if((GameSettingsA[iPad]->usBitmaskValues&0x8000)!=0)
 		{
-			ui.SetEnableTooltips(iPad,TRUE);
+			ui.SetEnableTooltips(iPad, true);
 		}
 		else
 		{
-			ui.SetEnableTooltips(iPad,FALSE);
+			ui.SetEnableTooltips(iPad, false);
 		}
 		break;
 	case eGameSetting_Clouds:

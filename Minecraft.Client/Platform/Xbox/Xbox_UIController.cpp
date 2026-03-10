@@ -106,9 +106,9 @@ void ConsoleUIController::SetTooltipText( unsigned int iPad, unsigned int toolti
 	CXuiSceneBase::SetTooltipText(iPad,tooltip,iTextID);
 }
 
-void ConsoleUIController::SetEnableTooltips( unsigned int iPad, BOOL bVal )
+void ConsoleUIController::SetEnableTooltips( unsigned int iPad, bool bVal )
 {
-	CXuiSceneBase::SetEnableTooltips(iPad,bVal);
+	CXuiSceneBase::SetEnableTooltips(iPad, bVal ? TRUE : FALSE);
 }
 
 void ConsoleUIController::ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show )

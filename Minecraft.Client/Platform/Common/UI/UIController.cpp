@@ -1883,7 +1883,7 @@ void UIController::SetTooltipText( unsigned int iPad, unsigned int tooltip, int 
 	if(m_groups[(int)group]->getTooltips()) m_groups[(int)group]->getTooltips()->SetTooltipText(tooltip, iTextID);
 }
 
-void UIController::SetEnableTooltips( unsigned int iPad, BOOL bVal )
+void UIController::SetEnableTooltips( unsigned int iPad, bool bVal )
 {
 	EUIGroup group;
 	if( app.GetGameStarted() )

@@ -28,7 +28,7 @@ public:
 	virtual void AnimateKeyPress(int iPad, int dwKeyCode);
 
 	virtual void SetTooltipText( unsigned int iPad, unsigned int tooltip, int iTextID );
-	virtual void SetEnableTooltips( unsigned int iPad, BOOL bVal );
+	virtual void SetEnableTooltips( unsigned int iPad, bool bVal );
 	virtual void ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show );
 	virtual void SetTooltips( unsigned int iPad, int iA, int iB=-1, int iX=-1, int iY=-1 , int iLT=-1, int iRT=-1, int iLB=-1, int iRB=-1, int iLS=-1, bool forceUpdate = false);
 	virtual void EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
