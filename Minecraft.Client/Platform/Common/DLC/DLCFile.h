@@ -7,7 +7,7 @@ class DLCFile
 protected:
 	DLCManager::EDLCType m_type;
 	std::wstring m_path;
-	DWORD m_dwSkinId;
+	std::uint32_t m_dwSkinId;
 
 public:
 	DLCFile(DLCManager::EDLCType type, const std::wstring &path);
@@ -15,7 +15,7 @@ public:
 
 	DLCManager::EDLCType getType()	{ return m_type; }
 	std::wstring getPath()				{ return m_path; }
-	DWORD getSkinID()				{ return m_dwSkinId; }
+	std::uint32_t getSkinID()			{ return m_dwSkinId; }
 
 	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes) {}
 	virtual std::uint8_t *getData(std::uint32_t &dataBytes) { dataBytes = 0; return NULL; }

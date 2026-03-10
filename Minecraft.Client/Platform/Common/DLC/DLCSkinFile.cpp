@@ -157,7 +157,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::ws
 	case DLCManager::e_DLCParamType_Anim:
 		// 4J Stu - The Xbox version used swscanf_s which isn't available in GCC.
 		swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);
-		DWORD skinId = app.getSkinIdFromPath(m_path);
+		std::uint32_t skinId = app.getSkinIdFromPath(m_path);
 		app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
 		break;
 	}
