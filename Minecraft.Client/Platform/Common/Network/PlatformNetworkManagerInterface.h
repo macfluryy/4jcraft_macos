@@ -114,7 +114,7 @@ private:
 public:
 	virtual std::vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly) = 0;
 	virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession) = 0;
-	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam ) = 0;
+	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(void *pParam), void *pSearchParam ) = 0;
 	virtual void GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam ) = 0;
 	virtual void ForceFriendsSessionRefresh() = 0;
 

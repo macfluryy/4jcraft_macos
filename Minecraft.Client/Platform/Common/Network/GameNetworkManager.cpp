@@ -146,7 +146,7 @@ void CGameNetworkManager::DoWork()
 #endif
 }
 
-bool CGameNetworkManager::_RunNetworkGame(LPVOID lpParameter)
+bool CGameNetworkManager::_RunNetworkGame(void *lpParameter)
 {
 	bool success = true;
 
@@ -184,7 +184,7 @@ bool CGameNetworkManager::_RunNetworkGame(LPVOID lpParameter)
 	return success;
 }
 
-bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParameter)
+bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, void *lpParameter)
 {
 #ifdef _DURANGO
 	ProfileManager.SetDeferredSignoutEnabled(true);
@@ -645,7 +645,7 @@ bool CGameNetworkManager::GetGameSessionInfo(int iPad, SessionID sessionId,Frien
 	return s_pPlatformNetworkManager->GetGameSessionInfo( iPad, sessionId, foundSession );
 }
 
-void CGameNetworkManager::SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam )
+void CGameNetworkManager::SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(void *pParam), void *pSearchParam )
 {
 	s_pPlatformNetworkManager->SetSessionsUpdatedCallback( SessionsUpdatedCallback, pSearchParam );
 }
@@ -681,7 +681,7 @@ CGameNetworkManager::eJoinGameResult CGameNetworkManager::JoinGame(FriendSession
 	return (eJoinGameResult)(s_pPlatformNetworkManager->JoinGame( searchResult, localUsersMask, primaryUserIndex ));
 }
 
-void CGameNetworkManager::CancelJoinGame(LPVOID lpParam)
+void CGameNetworkManager::CancelJoinGame(void *lpParam)
 {
 #ifdef _XBOX_ONE
 	s_pPlatformNetworkManager->CancelJoinGame();

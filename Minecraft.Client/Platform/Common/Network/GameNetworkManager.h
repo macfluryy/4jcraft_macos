@@ -54,8 +54,8 @@ public:
 	void			Initialise();
 	void			Terminate();
 	void			DoWork();
-	bool			_RunNetworkGame(LPVOID lpParameter);
-	bool			StartNetworkGame(Minecraft *minecraft, LPVOID lpParameter);
+	bool			_RunNetworkGame(void *lpParameter);
+	bool			StartNetworkGame(Minecraft *minecraft, void *lpParameter);
 	int				CorrectErrorIDS(int IDS);
 
 	// Player management
@@ -98,7 +98,7 @@ public:
 	bool			SessionHasSpace(unsigned int spaceRequired = 1);
 	std::vector<FriendSessionInfo *>	*GetSessionList(int iPad, int localPlayers, bool partyOnly);
 	bool			GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession);
-	void			SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam );
+	void			SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(void *pParam), void *pSearchParam );
 	void			GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam );
 	void			ForceFriendsSessionRefresh();
 	
@@ -106,7 +106,7 @@ public:
 
 	bool			JoinGameFromInviteInfo( int userIndex, int userMask, const INVITE_INFO *pInviteInfo);
 	eJoinGameResult	JoinGame(FriendSessionInfo *searchResult, int localUsersMask);	
-	static void		CancelJoinGame(LPVOID lpParam); // Not part of the shared interface
+	static void		CancelJoinGame(void *lpParam); // Not part of the shared interface
 	bool			LeaveGame(bool bMigrateHost);
 	static int		JoinFromInvite_SignInReturned(void *pParam,bool bContinue, int iPad);
 	void			UpdateAndSetGameSessionData(INetworkPlayer *pNetworkPlayerLeaving = NULL);
