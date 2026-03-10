@@ -4,8 +4,11 @@
 #include "DLCPack.h"
 #include "DLCFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+
+#include <limits>
 
 #ifdef __linux__
 #include <stdint.h>
@@ -25,6 +28,77 @@ static std::wstring dlc_read_wstring(const void *data)
 #define DLC_PARAM_ADV(n) (sizeof(C4JStorage::DLC_FILE_PARAM) + sizeof(WCHAR) * (n))
 #define DLC_DETAIL_ADV(n) (sizeof(C4JStorage::DLC_FILE_DETAILS) + sizeof(WCHAR) * (n))
 #endif
+
+namespace
+{
+	std::wstring getMountedDlcReadPath(const std::string &path)
+	{
+		std::wstring readPath = convStringToWstring(path);
+
+#ifdef _WINDOWS64
+		const std::string mountedPath = StorageManager.GetMountedPath(path.c_str());
+		if(!mountedPath.empty())
+		{
+			readPath = convStringToWstring(mountedPath);
+		}
+#elif defined(_DURANGO)
+		const std::wstring mountedPath = StorageManager.GetMountedPath(readPath.c_str());
+		if(!mountedPath.empty())
+		{
+			readPath = mountedPath;
+		}
+#endif
+
+		return readPath;
+	}
+
+	bool readOwnedDlcFile(const std::string &path, std::uint8_t **ppData, unsigned int *pBytesRead)
+	{
+		*ppData = NULL;
+		*pBytesRead = 0;
+
+		const std::wstring readPath = getMountedDlcReadPath(path);
+		std::FILE *file = PortableFileIO::OpenBinaryFileForRead(readPath);
+		if(file == NULL)
+		{
+			return false;
+		}
+
+		if(!PortableFileIO::Seek(file, 0, SEEK_END))
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		const __int64 endPosition = PortableFileIO::Tell(file);
+		if(endPosition <= 0 || endPosition > std::numeric_limits<unsigned int>::max())
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		const unsigned int fileSize = static_cast<unsigned int>(endPosition);
+		if(!PortableFileIO::Seek(file, 0, SEEK_SET))
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		std::uint8_t *data = new std::uint8_t[fileSize];
+		const std::size_t bytesRead = std::fread(data, 1, fileSize, file);
+		const bool failed = std::ferror(file) != 0 || bytesRead != fileSize;
+		std::fclose(file);
+		if(failed)
+		{
+			delete[] data;
+			return false;
+		}
+
+		*ppData = data;
+		*pBytesRead = static_cast<unsigned int>(bytesRead);
+		return true;
+	}
+}
 
 const WCHAR *DLCManager::wchTypeNamesA[]=
 {
@@ -342,44 +416,13 @@ bool DLCManager::readDLCDataFile(unsigned int &dwFilesProcessed, const std::stri
 	}
 	else if (fromArchive) return false;
 
-#ifdef _WINDOWS64
-	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
-	if(finalPath.size() == 0) finalPath = path;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#elif defined(_DURANGO)
-	std::wstring finalPath = StorageManager.GetMountedPath(wPath.c_str());
-	if(finalPath.size() == 0) finalPath = wPath;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#else
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#endif
-	if( file == INVALID_HANDLE_VALUE )
+	unsigned int bytesRead = 0;
+	std::uint8_t *pbData = NULL;
+	if(!readOwnedDlcFile(path, &pbData, &bytesRead))
 	{
-		DWORD error = GetLastError();
-		app.DebugPrintf("Failed to open DLC data file with error code %d (%x)\n", error, error);
+		app.DebugPrintf("Failed to open DLC data file %s\n", path.c_str());
 		if( dwFilesProcessed == 0 ) removePack(pack);
 		assert(false);
-		return false;
-	}
-
-	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	std::uint8_t *pbData = new std::uint8_t[dwFileSize];
-	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
-	if(bSuccess==FALSE)
-	{
-		// need to treat the file as corrupt, and flag it, so can't call fatal error
-		//app.FatalLoadError();
-	}
-	else
-	{
-		CloseHandle(file);
-	}
-	if(bSuccess==FALSE)
-	{
-		// Corrupt or some other error. In any case treat as corrupt
-		app.DebugPrintf("Failed to read %s from DLC content package\n", path.c_str());
-		pack->SetIsCorrupt( true );
-		SetNeedsCorruptCheck(true);
 		return false;
 	}
 	return processDLCDataFile(dwFilesProcessed, pbData, bytesRead, pack);
@@ -547,41 +590,11 @@ bool DLCManager::processDLCDataFile(unsigned int &dwFilesProcessed, std::uint8_t
 DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
 {
 	DWORD packId = 0;
-	std::wstring wPath = convStringToWstring(path);
 
-#ifdef _WINDOWS64
-	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
-	if(finalPath.size() == 0) finalPath = path;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#elif defined(_DURANGO)
-	std::wstring finalPath = StorageManager.GetMountedPath(wPath.c_str());
-	if(finalPath.size() == 0) finalPath = wPath;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#else
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#endif
-	if( file == INVALID_HANDLE_VALUE )
+	unsigned int bytesRead = 0;
+	std::uint8_t *pbData = NULL;
+	if(!readOwnedDlcFile(path, &pbData, &bytesRead))
 	{
-		return 0;
-	}
-
-	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	std::uint8_t *pbData = new std::uint8_t[dwFileSize];
-	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
-	if(bSuccess==FALSE)
-	{
-		// need to treat the file as corrupt, and flag it, so can't call fatal error
-		//app.FatalLoadError();
-	}
-	else
-	{
-		CloseHandle(file);
-	}
-	if(bSuccess==FALSE)
-	{
-		// Corrupt or some other error. In any case treat as corrupt
-		app.DebugPrintf("Failed to read %s from DLC content package\n", path.c_str());
-		delete [] pbData;
 		return 0;
 	}
 	packId=retrievePackID(pbData, bytesRead, pack);
