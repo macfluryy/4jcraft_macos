@@ -55,16 +55,10 @@ void TeleportEntityPacket::read(DataInputStream *dis) //throws IOException
 
 void TeleportEntityPacket::write(DataOutputStream *dos) //throws IOException 
 {
-	dos->writeShort(id);
-#ifdef _LARGE_WORLDS
+	dos->writeShort((short)id);
 	dos->writeInt(x);
 	dos->writeInt(y);
 	dos->writeInt(z);
-#else
-	dos->writeShort(x);
-	dos->writeShort(y);
-	dos->writeShort(z);
-#endif
 	dos->write(yRot);
 	dos->write(xRot);
 }
