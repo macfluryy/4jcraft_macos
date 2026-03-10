@@ -32,7 +32,7 @@ private:
 
 	static const int UI_REPEAT_KEY_DELAY_MS = 300; // How long from press until the first repeat
 	static const int UI_REPEAT_KEY_REPEAT_RATE_MS = 100; // How long in between repeats	
-	DWORD m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU+1];
+	std::uint32_t m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU+1];
 
 	float m_fScreenWidth;
 	float m_fScreenHeight;
@@ -113,7 +113,7 @@ private:
 	C4JRender::eViewportType m_currentRenderViewport;
 	bool m_bCustomRenderPosition;
 	
-	static DWORD				m_dwTrialTimerLimitSecs;
+	static std::uint32_t		m_dwTrialTimerLimitSecs;
 
 	std::unordered_map<std::wstring, byteArray> m_substitutionTextures;
 

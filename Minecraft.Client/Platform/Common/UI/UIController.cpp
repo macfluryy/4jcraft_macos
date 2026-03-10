@@ -50,7 +50,7 @@
 CRITICAL_SECTION UIController::ms_reloadSkinCS;
 bool UIController::ms_bReloadSkinCSInitialised = false;
 
-DWORD UIController::m_dwTrialTimerLimitSecs=DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
+std::uint32_t UIController::m_dwTrialTimerLimitSecs = DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
 
 static void RADLINK WarningCallback(void *user_callback_data, Iggy *player, IggyResult code, const char *message)
 {
@@ -898,7 +898,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key)
 		else if (down)
 		{
 			// Check is enough time has elapsed to be a repeat key
-			DWORD currentTime = GetTickCount();
+			std::uint32_t currentTime = GetTickCount();
 			if(m_actionRepeatTimer[iPad][key] > 0 && currentTime > m_actionRepeatTimer[iPad][key])
 			{
 				repeat = true;
@@ -935,7 +935,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key)
 	else if (down)
 	{
 		// Check is enough time has elapsed to be a repeat key
-		DWORD currentTime = GetTickCount();
+		std::uint32_t currentTime = GetTickCount();
 		if(m_actionRepeatTimer[iPad][key] > 0 && currentTime > m_actionRepeatTimer[iPad][key])
 		{
 			repeat = true;
@@ -2256,24 +2256,24 @@ void UIController::UpdateTrialTimer(unsigned int iPad)
 {
 	WCHAR wcTime[20]; 
 
-	DWORD dwTimeTicks=(DWORD)app.getTrialTimer();
+	std::uint32_t timeTicks = (std::uint32_t)app.getTrialTimer();
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(timeTicks > m_dwTrialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		timeTicks = m_dwTrialTimerLimitSecs;
 	}
 
-	dwTimeTicks=m_dwTrialTimerLimitSecs-dwTimeTicks;
+	timeTicks = m_dwTrialTimerLimitSecs - timeTicks;
 
 #ifndef _CONTENT_PACKAGE
 	if(true)
 #else
 	// display the time - only if there's less than 3 minutes
-	if(dwTimeTicks<180)
+	if(timeTicks < 180)
 #endif
 	{
-		int iMins=dwTimeTicks/60;
-		int iSeconds=dwTimeTicks%60;
+		int iMins = timeTicks / 60;
+		int iSeconds = timeTicks % 60;
 		swprintf( wcTime, 20, L"%d:%02d",iMins,iSeconds);
 		if(m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()) m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()->setTrialTimer(wcTime);
 	}
@@ -2283,7 +2283,7 @@ void UIController::UpdateTrialTimer(unsigned int iPad)
 	}
 
 	// are we out of time?
-	if((dwTimeTicks==0))
+	if(timeTicks == 0)
 	{
 		// Trial over
 		// bring up the pause menu to stop the trial over message box being called again?
@@ -2298,14 +2298,14 @@ void UIController::UpdateTrialTimer(unsigned int iPad)
 
 void UIController::ReduceTrialTimerValue()
 {
-	DWORD dwTimeTicks=(int)app.getTrialTimer();
+	std::uint32_t timeTicks = (std::uint32_t)app.getTrialTimer();
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(timeTicks > m_dwTrialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		timeTicks = m_dwTrialTimerLimitSecs;
 	}
 
-	m_dwTrialTimerLimitSecs-=dwTimeTicks;
+	m_dwTrialTimerLimitSecs -= timeTicks;
 }
 
 void UIController::ShowAutosaveCountdownTimer(bool show)
