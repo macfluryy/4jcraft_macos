@@ -13,8 +13,8 @@ SkullTileEntity::SkullTileEntity()
 void SkullTileEntity::save(CompoundTag *tag)
 {
 	TileEntity::save(tag);
-	tag->putByte(L"SkullType", (BYTE) (skullType & 0xff));
-	tag->putByte(L"Rot", (BYTE) (rotation & 0xff));
+	tag->putByte(L"SkullType", static_cast<std::uint8_t>(skullType & 0xff));
+	tag->putByte(L"Rot", static_cast<std::uint8_t>(rotation & 0xff));
 	tag->putString(L"ExtraType", extraType);
 }
 

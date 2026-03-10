@@ -33,7 +33,7 @@ void TileUpdatePacket::read(DataInputStream *dis) //throws IOException
 	
 	block = (int)dis->readShort() & 0xffff;
 
-	BYTE dataLevel = dis->readByte();
+	std::uint8_t dataLevel = dis->readByte();
 	data = dataLevel & 0xf;
 	levelIdx = (dataLevel>>4) & 0xf;
 #else
@@ -61,7 +61,7 @@ void TileUpdatePacket::write(DataOutputStream *dos) //throws IOException
 	dos->writeInt(z);
 	dos->writeShort(block);
 
-	BYTE dataLevel = ((levelIdx & 0xf ) << 4) | (data & 0xf);
+	std::uint8_t dataLevel = ((levelIdx & 0xf ) << 4) | (data & 0xf);
 	dos->writeByte(dataLevel);
 #else
 	// 4J - for our fixed size map, we can pack x & z into 10 bits each (-512 -> 511), y into 8 bits (0 to 255)
