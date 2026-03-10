@@ -7816,7 +7816,7 @@ void CMinecraftApp::ClearTerrainFeaturePosition()
 	}
 }
 
-void CMinecraftApp::UpdatePlayerInfo(BYTE networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges)
+void CMinecraftApp::UpdatePlayerInfo(std::uint8_t networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges)
 {
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
 	{
@@ -7833,7 +7833,7 @@ void CMinecraftApp::UpdatePlayerInfo(BYTE networkSmallId, SHORT playerColourInde
 	}
 }
 
-short CMinecraftApp::GetPlayerColour(BYTE networkSmallId)
+short CMinecraftApp::GetPlayerColour(std::uint8_t networkSmallId)
 {
 	short index = -1;
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
@@ -7848,7 +7848,7 @@ short CMinecraftApp::GetPlayerColour(BYTE networkSmallId)
 }
 
 
-unsigned int CMinecraftApp::GetPlayerPrivileges(BYTE networkSmallId)
+unsigned int CMinecraftApp::GetPlayerPrivileges(std::uint8_t networkSmallId)
 {
 	unsigned int privileges = 0;
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)

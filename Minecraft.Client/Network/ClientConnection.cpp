@@ -305,7 +305,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 		//minecraft->setScreen(new ReceivingLevelScreen(this));
 		minecraft->player->entityId = packet->clientVersion;
 
-		BYTE networkSmallId = getSocket()->getSmallId();
+		std::uint8_t networkSmallId = getSocket()->getSmallId();
 		app.UpdatePlayerInfo(networkSmallId, packet->m_playerIndex, packet->m_uiGamePrivileges);
 		minecraft->player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_All, packet->m_uiGamePrivileges);
 
@@ -375,7 +375,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 		player->setCustomCape( app.GetPlayerCapeId(m_userIndex) );
 		
 
-		BYTE networkSmallId = getSocket()->getSmallId();
+		std::uint8_t networkSmallId = getSocket()->getSmallId();
 		app.UpdatePlayerInfo(networkSmallId, packet->m_playerIndex, packet->m_uiGamePrivileges);
 		player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_All, packet->m_uiGamePrivileges);
 

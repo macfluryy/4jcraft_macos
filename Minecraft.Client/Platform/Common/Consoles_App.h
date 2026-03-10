@@ -722,13 +722,13 @@ public:
 	const wchar_t *GetGameRulesString(const std::wstring &key);
 
 private:
-	BYTE m_playerColours[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
+	std::uint8_t m_playerColours[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
 	unsigned int m_playerGamePrivileges[MINECRAFT_NET_MAX_PLAYERS];
 
 public:
-	void UpdatePlayerInfo(BYTE networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges);
-	short GetPlayerColour(BYTE networkSmallId);
-	unsigned int GetPlayerPrivileges(BYTE networkSmallId);
+	void UpdatePlayerInfo(std::uint8_t networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges);
+	short GetPlayerColour(std::uint8_t networkSmallId);
+	unsigned int GetPlayerPrivileges(std::uint8_t networkSmallId);
 
 	std::wstring getEntityName(eINSTANCEOF type);
 
