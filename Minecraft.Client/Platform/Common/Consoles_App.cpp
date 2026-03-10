@@ -5172,7 +5172,7 @@ int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dw
 
  void CMinecraftApp::HandleDLC(DLCPack *pack)	
  {
-	 DWORD dwFilesProcessed = 0;
+	 unsigned int dwFilesProcessed = 0;
 #ifndef _XBOX
 #if defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64) || defined (__PSVITA__) || defined(__linux__)
 	 std::vector<std::string> dlcFilenames;

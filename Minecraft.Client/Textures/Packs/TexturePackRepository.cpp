@@ -59,7 +59,7 @@ void TexturePackRepository::addDebugPacks()
 		{
 			wprintf(L"Pack \"%ls\" is not installed, so adding it\n", L"DLCTestPack");
 			pack = new DLCPack(L"DLCTestPack",0xffffffff);
-			DWORD dwFilesProcessed = 0;
+			unsigned int dwFilesProcessed = 0;
 			if( app.m_dlcManager.readDLCDataFile(dwFilesProcessed, "GAME:\\DummyTexturePack\\TexturePack.pck",pack))
 			{
 				// 4J Stu - Don't need to do this, as the readDLCDataFile now adds texture packs

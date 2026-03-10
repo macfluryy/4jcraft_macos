@@ -663,7 +663,7 @@ void GameRuleManager::loadDefaultGameRules()
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		DWORD dwFilesProcessed = 0;
+		unsigned int dwFilesProcessed = 0;
 		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
 		{
 			app.m_dlcManager.addPack(pack);
@@ -720,7 +720,7 @@ bool GameRuleManager::loadGameRulesPack(File *path)
 	if(path->exists())
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		DWORD dwFilesProcessed = 0;
+		unsigned int dwFilesProcessed = 0;
 		if( app.m_dlcManager.readDLCDataFile(dwFilesProcessed, path->getPath(),pack))
 		{
 			app.m_dlcManager.addPack(pack);
