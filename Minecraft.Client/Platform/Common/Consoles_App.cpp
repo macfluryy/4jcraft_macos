@@ -101,7 +101,7 @@ CMinecraftApp::CMinecraftApp()
 	{
 		m_eTMSAction[i]=eTMSAction_Idle;
 		m_eXuiAction[i]=eAppAction_Idle;
-		m_eXuiActionParam[i] = NULL;
+		m_eXuiActionParam[i] = nullptr;
 		//m_dwAdditionalModelParts[i] = 0;
 		DebugPrintf("Player at index %d has guest number %d\n", i,m_currentSigninInfo[i].dwGuestNumber );
 
@@ -250,14 +250,14 @@ void CMinecraftApp::DebugPrintf(int user, const char *szFormat, ...)
 	va_end(ap);
 }
 
-LPCWSTR CMinecraftApp::GetString(int iID)
+const wchar_t *CMinecraftApp::GetString(int iID)
 {
 	//return L"Değişiklikler ve Yenilikler";
 	//return L"ÕÕÕÕÖÖÖÖ";
 	return app.m_stringTable->getString(iID);
 }
 
-void CMinecraftApp::SetAction(int iPad, eXuiAction action, LPVOID param)
+void CMinecraftApp::SetAction(int iPad, eXuiAction action, void *param)
 {
 	if(m_eXuiAction[iPad] == eAppAction_ExitWorldCapturedThumbnail && action != eAppAction_Idle)
 	{
@@ -733,7 +733,7 @@ int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETT
 	// flag the default options to be set
 
 	pApp->DebugPrintf("Setting default options for player %d", iPad);
-	pApp->SetAction(iPad,eAppAction_SetDefaultOptions, (LPVOID)pSettings);
+	pApp->SetAction(iPad,eAppAction_SetDefaultOptions, pSettings);
 	//pApp->SetDefaultOptions(pSettings,iPad);
 	
 	// if the profile data has been changed, then force a profile write
@@ -2369,7 +2369,7 @@ int CMinecraftApp::DisplaySavingMessage(void *pParam, C4JStorage::ESavingMessage
 	return 0;
 }
 
-void CMinecraftApp::SetActionConfirmed(LPVOID param)
+void CMinecraftApp::SetActionConfirmed(void *param)
 {
 	XuiActionParam *actionInfo = (XuiActionParam *)param;
 	app.SetAction(actionInfo->iPad, actionInfo->action);
@@ -2380,7 +2380,7 @@ void CMinecraftApp::HandleXuiActions(void)
 {
 	eXuiAction eAction;
 	eTMSAction eTMS;
-	LPVOID param;
+	void *param;
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 	std::shared_ptr<MultiplayerLocalPlayer> player;
 

@@ -148,7 +148,7 @@ public:
 
 	void			SetSpecialTutorialCompletionFlag(int iPad, int index);
 
- 	static			LPCWSTR			GetString(int iID);
+ 	static			const wchar_t *	GetString(int iID);
 
 	eGameMode		GetGameMode()																										{ return m_eGameMode;}
 	void			SetGameMode(eGameMode eMode)																						{ m_eGameMode=eMode;}
@@ -156,12 +156,12 @@ public:
 	eXuiAction      GetGlobalXuiAction()																								{return m_eGlobalXuiAction;}
 	void			SetGlobalXuiAction(eXuiAction action)																				{m_eGlobalXuiAction=action;}
 	eXuiAction      GetXuiAction(int iPad)																								{return m_eXuiAction[iPad];}
-	void			SetAction(int iPad, eXuiAction action, LPVOID param = NULL);
+	void			SetAction(int iPad, eXuiAction action, void *param = nullptr);
 	void			SetTMSAction(int iPad, eTMSAction action)																			{m_eTMSAction[iPad]=action; }	
 	eTMSAction      GetTMSAction(int iPad)																								{return m_eTMSAction[iPad];}
 	eXuiServerAction GetXuiServerAction(int iPad)																						{return m_eXuiServerAction[iPad];}
-	LPVOID			GetXuiServerActionParam(int iPad)																					{return m_eXuiServerActionParam[iPad];}
-	void			SetXuiServerAction(int iPad, eXuiServerAction action, LPVOID param = NULL)											{m_eXuiServerAction[iPad]=action; m_eXuiServerActionParam[iPad] = param;}
+	void *			GetXuiServerActionParam(int iPad)																					{return m_eXuiServerActionParam[iPad];}
+	void			SetXuiServerAction(int iPad, eXuiServerAction action, void *param = nullptr)										{m_eXuiServerAction[iPad]=action; m_eXuiServerActionParam[iPad] = param;}
 	eXuiServerAction GetGlobalXuiServerAction()																							{return m_eGlobalXuiServerAction;}
 	void			SetGlobalXuiServerAction(eXuiServerAction action)																			{m_eGlobalXuiServerAction=action;}
 	
@@ -176,7 +176,7 @@ public:
 
 
 	// 4J Stu - Added so that we can call this when a confirmation box is selected
-	static void		SetActionConfirmed(LPVOID param);
+	static void		SetActionConfirmed(void *param);
 	void			HandleXuiActions(void);
 
 	// 4J Stu - Functions used for Minecon and other promo work
@@ -505,10 +505,10 @@ private:
 	// we'll action these at the end of the game loop
 	eXuiAction m_eXuiAction[XUSER_MAX_COUNT];
 	eTMSAction m_eTMSAction[XUSER_MAX_COUNT];
-	LPVOID m_eXuiActionParam[XUSER_MAX_COUNT];
+	void *m_eXuiActionParam[XUSER_MAX_COUNT];
 	eXuiAction m_eGlobalXuiAction;	
 	eXuiServerAction m_eXuiServerAction[XUSER_MAX_COUNT];
-	LPVOID m_eXuiServerActionParam[XUSER_MAX_COUNT];
+	void *m_eXuiServerActionParam[XUSER_MAX_COUNT];
 	eXuiServerAction m_eGlobalXuiServerAction;
 
 	bool m_bLiveLinkRequired;
