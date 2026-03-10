@@ -53,6 +53,6 @@ public:
 
 protected:
 	void handlePress(F64 controlId, F64 childId);
-	static int KeyboardCompleteCallback(LPVOID lpParam,const bool bRes);
+	static int KeyboardCompleteCallback(void *lpParam,const bool bRes);
 	virtual void handleDestroy();
 };

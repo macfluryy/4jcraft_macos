@@ -64,6 +64,6 @@ protected:
 	virtual void handleCheckboxToggled(F64 controlId, bool selected);
 
 private:
-	static int KeyboardCompleteCallback(LPVOID lpParam,const bool bRes);
+	static int KeyboardCompleteCallback(void *lpParam,const bool bRes);
 };
 #endif

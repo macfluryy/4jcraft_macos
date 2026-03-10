@@ -306,7 +306,7 @@ UIControl *UIScene_AnvilMenu::getSection(ESceneSection eSection)
 	return control;
 }
 
-int UIScene_AnvilMenu::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_AnvilMenu::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	// 4J HEG - No reason to set value if keyboard was cancelled
 	UIScene_AnvilMenu *pClass=(UIScene_AnvilMenu *)lpParam;

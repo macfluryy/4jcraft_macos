@@ -116,7 +116,7 @@ void UIScene_DebugSetCamera::handleCheckboxToggled(F64 controlId, bool selected)
 	}
 }
 
-int UIScene_DebugSetCamera::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_DebugSetCamera::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	UIScene_DebugSetCamera *pClass=(UIScene_DebugSetCamera *)lpParam;
 	uint16_t pchText[2048];//[128];

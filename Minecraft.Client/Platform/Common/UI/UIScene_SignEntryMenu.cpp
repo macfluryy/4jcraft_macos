@@ -140,7 +140,7 @@ void UIScene_SignEntryMenu::handleInput(int iPad, int key, bool repeat, bool pre
 	}
 }
 
-int UIScene_SignEntryMenu::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_SignEntryMenu::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	// 4J HEG - No reason to set value if keyboard was cancelled
 	UIScene_SignEntryMenu *pClass=(UIScene_SignEntryMenu *)lpParam;

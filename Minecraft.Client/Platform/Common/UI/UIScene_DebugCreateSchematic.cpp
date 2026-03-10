@@ -134,7 +134,7 @@ void UIScene_DebugCreateSchematic::handleCheckboxToggled(F64 controlId, bool sel
 	}
 }
 
-int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	UIScene_DebugCreateSchematic *pClass=(UIScene_DebugCreateSchematic *)lpParam;
 
