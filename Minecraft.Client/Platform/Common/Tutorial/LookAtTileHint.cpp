@@ -10,7 +10,7 @@ LookAtTileHint::LookAtTileHint(eTutorial_Hint id, Tutorial *tutorial, int tiles[
 {
 	m_iTilesCount = tilesLength;
 
-	//TODO LEAK LEAK LEAK LEAKS EVERY WHERE AAAAAAAAAAAAAAAAH
+	//TODO: 4jcraft: allocating but never freeing mem, leak
 	m_iTiles= new int [m_iTilesCount];
 	for(unsigned int i=0;i<m_iTilesCount;i++)
 	{
