@@ -6,8 +6,8 @@
 class BiomeOverride : public GameRuleDefinition
 {
 private:
-	BYTE m_topTile;
-	BYTE m_tile;
+	std::uint8_t m_topTile;
+	std::uint8_t m_tile;
 	int m_biomeId;
 
 public:
@@ -19,5 +19,5 @@ public:
 	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	bool isBiome(int id);
-	void getTileValues(BYTE &tile, BYTE &topTile);
+	void getTileValues(std::uint8_t &tile, std::uint8_t &topTile);
 };

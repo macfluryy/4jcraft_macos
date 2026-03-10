@@ -400,7 +400,7 @@ LPCWSTR LevelGenerationOptions::getString(const std::wstring &key)
 	}
 }
 
-void LevelGenerationOptions::getBiomeOverride(int biomeId, BYTE &tile, BYTE &topTile)
+void LevelGenerationOptions::getBiomeOverride(int biomeId, std::uint8_t &tile, std::uint8_t &topTile)
 {
 	for(AUTO_VAR(it, m_biomeOverrides.begin()); it != m_biomeOverrides.end(); ++it)
 	{

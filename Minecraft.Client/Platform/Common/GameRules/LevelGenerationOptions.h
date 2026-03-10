@@ -198,7 +198,7 @@ public:
 	void setRequiredGameRules(LevelRuleset *rules);
 	LevelRuleset *getRequiredGameRules();
 
-	void getBiomeOverride(int biomeId, BYTE &tile, BYTE &topTile);
+	void getBiomeOverride(int biomeId, std::uint8_t &tile, std::uint8_t &topTile);
 	bool isFeatureChunk(int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature);
 
 	void loadStringTable(StringTable *table);
