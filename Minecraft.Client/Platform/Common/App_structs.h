@@ -7,8 +7,8 @@ typedef struct
 	wchar_t *wchFilename;
 	eFileExtensionType eEXT;
 	eTMSFileType eTMSType;
-	PBYTE pbData;
-	UINT uiSize;
+	std::uint8_t *pbData;
+	unsigned int uiSize;
 	int iConfig; // used for texture pack data files
 }
 TMS_FILE;
