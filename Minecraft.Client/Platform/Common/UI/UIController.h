@@ -225,7 +225,7 @@ public:
 	void setupRenderPosition(S32 xOrigin, S32 yOrigin);
 
 	void SetSysUIShowing(bool bVal);
-	static void SetSystemUIShowing(LPVOID lpParam,bool bVal);
+	static void SetSystemUIShowing(void *lpParam,bool bVal);
 
 protected:
 	virtual void setTileOrigin(S32 xPos, S32 yPos) = 0;

@@ -398,7 +398,7 @@ void UIScene_LaunchMoreOptionsMenu::handleTimerComplete(int id)
 	};*/
 }
 
-int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bRes)
+int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void *lpParam,bool bRes)
 {
 	UIScene_LaunchMoreOptionsMenu *pClass=(UIScene_LaunchMoreOptionsMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;

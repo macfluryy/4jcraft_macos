@@ -484,7 +484,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_CreateWorldMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_CreateWorldMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)lpParam;
 
@@ -752,7 +752,7 @@ void UIScene_CreateWorldMenu::handleGainFocus(bool navBack)
 	}
 }
 
-int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes)
+int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes)
 {
 	UIScene_CreateWorldMenu *pClass=(UIScene_CreateWorldMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;
@@ -774,7 +774,7 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bo
 	return 0;
 }
 
-int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bRes)
+int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(void *lpParam,bool bRes)
 {
 	UIScene_CreateWorldMenu *pClass=(UIScene_CreateWorldMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;
@@ -1061,7 +1061,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 }
 
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
-void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD dwLocalUsersMask)
+void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, int localUsersMask)
 {
 #if TO_BE_IMPLEMENTED
 	// stop the timer running that causes a check for new texture packs in TMS but not installed, since this will run all through the create game, and will crash if it tries to create an hbrush
@@ -1172,7 +1172,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 	app.SetGameHostOption(eGameHostOption_HostCanChangeHunger,pClass->m_MoreOptionsParams.bHostPrivileges);
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	param->settings = app.GetGameHostOption( eGameHostOption_All );
 
@@ -1243,7 +1243,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 			// bool isOnlineGame = pClass->m_MoreOptionsParams.bOnlineGame;
 			int primaryPad = ProfileManager.GetPrimaryPad();
 			bool noPrivileges = false;
-			DWORD dwLocalUsersMask = 0;
+			int localUsersMask = 0;
 			bool isSignedInLive = ProfileManager.IsSignedInLive(primaryPad);
 			int iPadNotSignedInLive = -1;
 			bool isLocalMultiplayerAvailable = app.IsLocalMultiplayerAvailable();
@@ -1259,7 +1259,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 					}
 
 					if( !ProfileManager.AllowedToPlayMultiplayer(i) ) noPrivileges = true;
-					dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
+					localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
 					isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(i);
 				}
 			}
@@ -1326,7 +1326,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 			else
 			{
 				// This is NOT called from a storage manager thread, and is in fact called from the main thread in the Profile library tick. Therefore we use the main threads IntCache.
-				CreateGame(pClass, dwLocalUsersMask);
+				CreateGame(pClass, localUsersMask);
 			}
 		}
 	}

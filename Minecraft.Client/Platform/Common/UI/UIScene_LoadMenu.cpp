@@ -31,7 +31,7 @@ int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4]=
 	IDS_DIFFICULTY_TITLE_HARD
 };
 
-int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes)
 {
 	UIScene_LoadMenu *pClass= (UIScene_LoadMenu *)lpParam;
 
@@ -680,7 +680,7 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_LoadMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_LoadMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)lpParam;
 
@@ -1290,10 +1290,10 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 					}
 				}
 #endif
-				DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+				int localUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 				// No guest problems so we don't need to force a sign-in of players here
-				StartGameFromSave(pClass, dwLocalUsersMask);
+				StartGameFromSave(pClass, localUsersMask);
 			}
 		}
 		else
@@ -1418,7 +1418,7 @@ int UIScene_LoadMenu::DeleteSaveDataReturned(void *pParam,bool bSuccess)
 }
 
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
-void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocalUsersMask)
+void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, int localUsersMask)
 {
 	INT saveOrCheckpointId = 0;
 	bool validSave = StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
@@ -1467,7 +1467,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 
 	app.SetGameHostOption(eGameHostOption_GameType,pClass->m_bGameModeSurvival?GameType::SURVIVAL->getId():GameType::CREATIVE->getId() );
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	param->settings = app.GetGameHostOption( eGameHostOption_All );
 
@@ -1542,9 +1542,9 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	}
 
-	DWORD dwLocalUsersMask = 0;
+	int localUsersMask = 0;
 
-	dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+	localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 	// Load data from disc
 	//File saveFile( L"Tutorial\\Tutorial" );
 	//LoadSaveFromDisk(&saveFile);
@@ -1555,7 +1555,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	bool isPrivate = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)>0)?true:false;
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	NetworkGameInitData *param = new NetworkGameInitData();
 	param->seed = 0;
@@ -1627,7 +1627,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 		{
 			int primaryPad = ProfileManager.GetPrimaryPad();
 			bool noPrivileges = false;
-			DWORD dwLocalUsersMask = 0;
+			int localUsersMask = 0;
 			bool isSignedInLive = ProfileManager.IsSignedInLive(primaryPad);
 			bool isOnlineGame = pClass->m_MoreOptionsParams.bOnlineGame;
 			int iPadNotSignedInLive = -1;
@@ -1644,7 +1644,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 					}
 
 					if( !ProfileManager.AllowedToPlayMultiplayer(i) ) noPrivileges = true;
-					dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
+					localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
 					isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(i);
 				}
 			}
@@ -1731,7 +1731,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				}
 #endif
 				// This is NOT called from a storage manager thread, and is in fact called from the main thread in the Profile library tick. Therefore we use the main threads IntCache.
-				StartGameFromSave(pClass, dwLocalUsersMask);
+				StartGameFromSave(pClass, localUsersMask);
 			}
 		}
 	}

@@ -235,7 +235,7 @@ void UIController::SetSysUIShowing(bool bVal)
 	m_bSystemUIShowing=bVal;
 }
 
-void UIController::SetSystemUIShowing(LPVOID lpParam,bool bVal)
+void UIController::SetSystemUIShowing(void *lpParam,bool bVal)
 {
 	UIController *pClass=(UIController *)lpParam;
 	pClass->SetSysUIShowing(bVal);
