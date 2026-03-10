@@ -9,6 +9,9 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
 #include "../../../Minecraft.World/Util/SharedConstants.h"
 #include "../../../Minecraft.World/Util/Random.h"
+#include "../../MinecraftServer.h"
+#include "../../GameState/Options.h" 
+#include <string>
 
 CreateWorldScreen::CreateWorldScreen(Screen *lastScreen)
 {
@@ -97,24 +100,132 @@ void CreateWorldScreen::buttonClicked(Button *button)
         if (done) return;
         done = true;
 
-        __int64 seedValue = (new Random())->nextLong();
+        MoreOptionsParams* moreOptionsParams = new MoreOptionsParams();
+        
+        // these r just the defaults from the createworldmenu UIscene
+        // i had higher ambitions for what id do with these but its not worth it for a temp ui
+        moreOptionsParams->bGenerateOptions = TRUE;
+        moreOptionsParams->bStructures = TRUE;
+        moreOptionsParams->bFlatWorld = FALSE;
+        moreOptionsParams->bBonusChest = FALSE;
+        moreOptionsParams->bPVP = TRUE;
+        moreOptionsParams->bTrust = TRUE;
+        moreOptionsParams->bFireSpreads = TRUE;
+        moreOptionsParams->bTNT = TRUE;
+        moreOptionsParams->bHostPrivileges = FALSE;
+        moreOptionsParams->bOnlineGame = FALSE;
+        moreOptionsParams->bInviteOnly = FALSE;
+        moreOptionsParams->bAllowFriendsOfFriends = FALSE;
+        moreOptionsParams->bOnlineSettingChangedBySystem = FALSE;
+        moreOptionsParams->iPad = 0;
+        
+        moreOptionsParams->worldName = nameEdit->getValue();
+        moreOptionsParams->seed = seedEdit->getValue();
+        
+        moreOptionsParams->dwTexturePack = 0;
+
+        bool bGameModeSurvival = true;
+        
+        std::wstring worldName = nameEdit->getValue();
+        if (worldName.empty())
+        {
+            worldName = L"2slimey";
+        }
+
+        StorageManager.ResetSaveData();
+        StorageManager.SetSaveTitle((wchar_t *)worldName.c_str());
+
         std::wstring seedString = seedEdit->getValue();
+        
+        __int64 seedValue = 0;
+        NetworkGameInitData *param = new NetworkGameInitData();
 
 		if (seedString.length() != 0)
 		{
             // try to convert it to a long first
 //            try {	// 4J - removed try/catch
             __int64 value = _fromString<__int64>(seedString);
+
+            bool isNumber = true;
+            for (unsigned int i = 0; i < seedString.length(); ++i)
+            {
+                if (seedString.at(i) < L'0' || seedString.at(i) > L'9')
+                {
+                    if (!(i == 0 && seedString.at(i) == L'-'))
+                    {
+                        isNumber = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isNumber)
+                value = _fromString<__int64>(seedString);
+
             if (value != 0)
 			{
                 seedValue = value;
+            }
+            else
+            {
+                int hashValue = 0;
+                for (unsigned int i = 0; i < seedString.length(); ++i)
+                    hashValue = 31 * hashValue + seedString.at(i);
+                seedValue = hashValue;
             }
  //           } catch (NumberFormatException e) {
  //               // not a number, fetch hash value
  //               seedValue = seedString.hashCode();
  //           }
         }
+        else
+        {
+            param->findSeed = true;
+        }
 
+        param->seed = seedValue;
+        param->saveData = NULL;
+        param->texturePackId = 0;
+        param->settings = 0;
+
+        app.SetGameHostOption(eGameHostOption_Difficulty, minecraft->options->difficulty);
+        app.SetGameHostOption(eGameHostOption_FriendsOfFriends, moreOptionsParams->bAllowFriendsOfFriends);
+        app.SetGameHostOption(eGameHostOption_Gamertags, 1);
+        app.SetGameHostOption(eGameHostOption_BedrockFog, 0);
+        app.SetGameHostOption(eGameHostOption_GameType, bGameModeSurvival ? GameType::SURVIVAL->getId() : GameType::CREATIVE->getId()); // TODO: gamemode switch
+        app.SetGameHostOption(eGameHostOption_LevelType, moreOptionsParams->bFlatWorld);
+        app.SetGameHostOption(eGameHostOption_Structures, moreOptionsParams->bStructures);
+        app.SetGameHostOption(eGameHostOption_BonusChest, moreOptionsParams->bBonusChest);
+        app.SetGameHostOption(eGameHostOption_PvP, moreOptionsParams->bPVP);
+        app.SetGameHostOption(eGameHostOption_TrustPlayers, moreOptionsParams->bTrust);
+        app.SetGameHostOption(eGameHostOption_FireSpreads, moreOptionsParams->bFireSpreads);
+        app.SetGameHostOption(eGameHostOption_TNT, moreOptionsParams->bTNT);
+        app.SetGameHostOption(eGameHostOption_HostCanFly, moreOptionsParams->bHostPrivileges);
+        app.SetGameHostOption(eGameHostOption_HostCanChangeHunger, moreOptionsParams->bHostPrivileges);
+        app.SetGameHostOption(eGameHostOption_HostCanBeInvisible, moreOptionsParams->bHostPrivileges);
+
+        param->settings = app.GetGameHostOption(eGameHostOption_All);
+        param->xzSize = LEVEL_MAX_WIDTH;
+        param->hellScale = HELL_LEVEL_MAX_SCALE;
+
+        g_NetworkManager.HostGame(0, false, false, MINECRAFT_NET_MAX_PLAYERS, 0);
+
+        g_NetworkManager.FakeLocalPlayerJoined();
+
+        LoadingInputParams *loadingParams = new LoadingInputParams();
+        loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
+        loadingParams->lpParam = (LPVOID)param;
+
+        app.SetAutosaveTimerTime();
+
+        UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
+        completionData->bShowBackground = TRUE;
+        completionData->bShowLogo = TRUE;
+        completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
+        completionData->iPad = 0;
+        loadingParams->completionData = completionData;
+
+        ui.NavigateToScene(0, eUIScene_FullscreenProgress, loadingParams);
 // 4J Stu - This screen is not used, so removing this to stop the build failing
 #if 0
         minecraft->gameMode = new SurvivalMode(minecraft);

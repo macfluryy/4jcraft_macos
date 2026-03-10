@@ -38,8 +38,8 @@ void InventoryScreen::render(int xm, int ym, float a)
 void InventoryScreen::renderBg(float a)
 {
 	// 4J Unused
-#if 0
-    int tex = minecraft->textures->loadTexture(L"/gui/inventory.png");
+#ifdef ENABLE_JAVA_GUIS
+    int tex = minecraft->textures->loadTexture(TN_GUI_INVENTORY);
     glColor4f(1, 1, 1, 1);
     minecraft->textures->bind(tex);
     int xo = (width - imageWidth) / 2;

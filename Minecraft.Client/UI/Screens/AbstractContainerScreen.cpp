@@ -33,7 +33,7 @@ void AbstractContainerScreen::init()
 void AbstractContainerScreen::render(int xm, int ym, float a)
 {
 	// 4J Stu - Not used
-#if 0
+#if ENABLE_JAVA_GUIS
     renderBackground();
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
@@ -96,7 +96,8 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
     if (inventory->getCarried() == NULL && hoveredSlot != NULL && hoveredSlot->hasItem())
 	{
 
-        std::wstring elementName = trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
+        // std::wstring elementName = trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
+        std::wstring elementName = L"";
 
         if (elementName.length() > 0)
 		{
@@ -125,23 +126,23 @@ void AbstractContainerScreen::renderLabels()
 void AbstractContainerScreen::renderSlot(Slot *slot)
 {
 	// 4J Unused
-#if 0
+#if ENABLE_JAVA_GUIS
     int x = slot->x;
     int y = slot->y;
     std::shared_ptr<ItemInstance> item = slot->getItem();
 
-    if (item == NULL)
-	{
-        int icon = slot->getNoItemIcon();
-        if (icon >= 0)
-		{
-            glDisable(GL_LIGHTING);
-            minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
-            blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
-            glEnable(GL_LIGHTING);
-            return;
-        }
-    }
+    // if (item == NULL)
+	// {
+    //     int icon = slot->getNoItemIcon();
+    //     if (icon >= 0)
+	// 	{
+    //         glDisable(GL_LIGHTING);
+    //         minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
+    //         blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
+    //         glEnable(GL_LIGHTING);
+    //         return;
+    //     }
+    // }
 
     itemRenderer->renderGuiItem(font, minecraft->textures, item, x, y);
     itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x, y);

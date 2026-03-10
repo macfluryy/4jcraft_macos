@@ -1809,8 +1809,10 @@ void UIScene_MainMenu::tick()
 		if(s_mainMenuTickCount % 60 == 1) { fprintf(stderr, "[MM] tick %d\n", s_mainMenuTickCount); fflush(stderr); }
 		if(s_mainMenuTickCount == 90) // ~3 seconds at 30fps
 		{
+#ifndef ENABLE_JAVA_GUIS
 			fprintf(stderr, "[Linux] Auto-starting trial world from MainMenu after %d ticks\n", s_mainMenuTickCount);
 			LoadTrial();
+#endif
 			return;
 		}
 	}

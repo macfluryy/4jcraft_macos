@@ -29,4 +29,36 @@ protected:
 public:
 	virtual void render(int xm, int ym, float a);
     virtual void tabPressed();
+
+private:
+    int m_iGameModeId;
+    bool m_bGameModeCreative;
+    
+    struct MoreOptionsParams
+    {
+        bool bGenerateOptions;
+        bool bStructures;
+        bool bFlatWorld;
+        bool bBonusChest;
+        bool bPVP;
+        bool bTrust;
+        bool bFireSpreads;
+        bool bHostPrivileges;
+        bool bTNT;
+        bool bMobGriefing;
+        bool bKeepInventory;
+        bool bDoMobSpawning;
+        bool bDoMobLoot;
+        bool bDoTileDrops;
+        bool bNaturalRegeneration;
+        bool bDoDaylightCycle;
+        bool bOnlineGame;
+        bool bInviteOnly;
+        bool bAllowFriendsOfFriends;
+        bool bOnlineSettingChangedBySystem;
+        int dwTexturePack;
+        int iPad;
+        std::wstring worldName;
+        std::wstring seed;
+    } m_MoreOptionsParams;
 };

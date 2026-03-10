@@ -1,6 +1,7 @@
 #include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
+#include "UI/Screens/PauseScreen.h"
 #include "Utils/Timer.h"
 #include "Rendering/EntityRenderers/ProgressRenderer.h"
 #include "Rendering/LevelRenderer.h"
@@ -423,7 +424,7 @@ void Minecraft::renderLoadingScreen()
 {
 	// 4J Unused
 	// testing stuff on vita just now
-#ifdef __PSVITA__
+#if (defined (__PSVITA__) || defined (ENABLE_JAVA_GUIS))
 	ScreenSizeCalculator ssc(options, width, height);
 
 	// xxx
@@ -464,7 +465,7 @@ void Minecraft::renderLoadingScreen()
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.1f);
 
-	Display::swapBuffers();
+	// Display::swapBuffers();
 	// xxx
 	RenderManager.Present();
 #endif
@@ -557,8 +558,9 @@ void Minecraft::setScreen(Screen *screen)
 	}
 	else if (player != NULL && !ui.GetMenuDisplayed(player->GetXboxPad()) && player->getHealth() <= 0)
 	{
-		//screen = new DeathScreen();
-
+#ifdef ENABLE_JAVA_GUIS
+		screen = new DeathScreen();
+#else
 		// 4J Stu - If we exit from the death screen then we are saved as being dead. In the Java
 		// game when you load the game you are still dead, but this is silly so only show the dead
 		// screen if we have died during gameplay
@@ -570,9 +572,10 @@ void Minecraft::setScreen(Screen *screen)
 		{
 			ui.NavigateToScene(player->GetXboxPad(),eUIScene_DeathMenu,NULL);
 		}
+#endif
 	}
 
-	if (dynamic_cast<TitleScreen *>(screen)!=NULL)
+	if (screen != NULL && dynamic_cast<TitleScreen *>(screen)!=NULL)
 	{
 		options->renderDebug = false;
 		gui->clearMessages();
@@ -595,29 +598,22 @@ void Minecraft::setScreen(Screen *screen)
 
 	// 4J-PB - if a screen has been set, go into menu mode
 	// it's possible that player doesn't exist here yet
-	/*if(screen!=NULL)
+#ifdef ENABLE_JAVA_GUIS
+	if (screen!=NULL)
 	{
-	if(player && player->GetXboxPad()!=-1)
-	{
-	InputManager.SetMenuDisplayed(player->GetXboxPad(),true);
+		if (player && player->GetXboxPad()!=-1)
+		{
+			InputManager.SetMenuDisplayed(player->GetXboxPad(),true);
+		}
 	}
 	else
 	{
-	// set all
-	//InputManager.SetMenuDisplayed(XUSER_INDEX_ANY,true);
+		if(player && player->GetXboxPad()!=-1)
+		{
+			InputManager.SetMenuDisplayed(player->GetXboxPad(),false);
+		}
 	}
-	}
-	else
-	{
-	if(player && player->GetXboxPad()!=-1)
-	{
-	InputManager.SetMenuDisplayed(player->GetXboxPad(),false);
-	}
-	else
-	{
-	//InputManager.SetMenuDisplayed(XUSER_INDEX_ANY,false);
-	}
-	}*/
+#endif
 }
 
 void Minecraft::checkGlError(const std::wstring& string)
@@ -1434,6 +1430,9 @@ void Minecraft::run_middle()
 					{
 						localplayers[i]->ullButtonsPressed|=1LL<<MINECRAFT_ACTION_PAUSEMENU;
 						app.DebugPrintf("PAUSE PRESSED - ipad = %d, Storing press\n",i);
+#ifdef ENABLE_JAVA_GUIS
+						pauseGame();
+#endif
 					}
 #ifdef _DURANGO
 					if(InputManager.ButtonPressed(i, ACTION_MENU_GTC_PAUSE))					localplayers[i]->ullButtonsPressed|=1LL<<ACTION_MENU_GTC_PAUSE;
@@ -1767,6 +1766,11 @@ void Minecraft::run_middle()
 					}
 				}
 
+				if (screen != NULL)
+				{
+					screen->updateEvents();
+				}
+
 				ui.HandleGameTick();
 
 				setLocalPlayerIdx(ProfileManager.GetPrimaryPad());
@@ -1948,8 +1952,11 @@ void Minecraft::run_middle()
 			MemSect(0);
 			frames++;
 			//pause = !isClientSide() && screen != NULL && screen->isPauseScreen();
-			//pause = g_NetworkManager.IsLocalGame() && g_NetworkManager.GetPlayerCount() == 1 && app.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad());
+#ifdef ENABLE_JAVA_GUIS
+			pause = g_NetworkManager.IsLocalGame() && g_NetworkManager.GetPlayerCount() == 1 && screen != nullptr && screen->isPauseScreen();
+#else
 			pause = app.IsAppPaused();
+#endif
 
 #ifndef _CONTENT_PACKAGE
 			while (System::nanoTime() >= lastTime + 1000000000)
@@ -2098,9 +2105,14 @@ void Minecraft::stop()
 
 void Minecraft::pauseGame()
 {
-	if (screen != NULL) return;
-
-	//    setScreen(new PauseScreen());	// 4J - TODO put back in
+	if (screen != NULL)
+	{
+		setScreen(NULL);
+		return;
+	}
+#ifdef ENABLE_JAVA_GUIS
+	    setScreen(new PauseScreen());	// 4J - TODO put back in
+#endif
 }
 
 void Minecraft::resize(int width, int height)
@@ -2161,7 +2173,9 @@ void Minecraft::levelTickThreadInitFunc()
 // 4J - added bUpdateTextures, which is true if the actual renderer textures are to be updated - this will be true for the last time this tick runs with bFirst true
 void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 {
-	int iPad=player->GetXboxPad();
+	int iPad = -1;
+	if (player)
+		iPad = player->GetXboxPad();
 	//OutputDebugString("Minecraft::tick\n");
 
 	//4J-PB - only tick this player's stats
@@ -2228,12 +2242,12 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 		setScreen(NULL);
 	}
 
-	if (screen != NULL)
-	{
-		player->missTime = 10000;
-		player->lastClickTick[0] = ticks + 10000;
-		player->lastClickTick[1] = ticks + 10000;
-	}
+	// if (screen != NULL)
+	// {
+	// 	player->missTime = 10000;
+	// 	player->lastClickTick[0] = ticks + 10000;
+	// 	player->lastClickTick[1] = ticks + 10000;
+	// }
 
 	if (screen != NULL)
 	{
@@ -3371,7 +3385,11 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 		{
 			std::shared_ptr<LocalPlayer> player = std::dynamic_pointer_cast<LocalPlayer>( Minecraft::GetInstance()->player );
 			ui.PlayUISFX(eSFX_Press);
+#ifdef ENABLE_JAVA_GUIS
+			setScreen(new InventoryScreen(player));
+#else
 			app.LoadInventoryMenu(iPad,player);
+#endif
 		}
 
 		if((player->ullButtonsPressed&(1LL<<MINECRAFT_ACTION_CRAFTING)) && gameMode->isInputAllowed(MINECRAFT_ACTION_CRAFTING))
@@ -3410,7 +3428,9 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 		{
 			app.DebugPrintf("PAUSE PRESS PROCESSING - ipad = %d, NavigateToScene\n",player->GetXboxPad());
 			ui.PlayUISFX(eSFX_Press);
+#ifndef ENABLE_JAVA_GUIS
 			ui.NavigateToScene(iPad, eUIScene_PauseMenu, NULL, eUILayer_Scene);
+#endif
 		}
 
 		if((player->ullButtonsPressed&(1LL<<MINECRAFT_ACTION_DROP)) && gameMode->isInputAllowed(MINECRAFT_ACTION_DROP))
@@ -3455,10 +3475,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 	else
 	{
 		// 4J-PB
-		if (InputManager.GetValue(iPad, ACTION_MENU_CANCEL) > 0 && gameMode->isInputAllowed(ACTION_MENU_CANCEL))
-		{
-			setScreen(NULL);
-		}
+		// if (InputManager.GetValue(iPad, ACTION_MENU_CANCEL) > 0 && gameMode->isInputAllowed(ACTION_MENU_CANCEL))
+		// {
+		// 	setScreen(NULL);
+		// }
 	}
 
 	// monitor for keyboard input

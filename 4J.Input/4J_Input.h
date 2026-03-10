@@ -131,6 +131,9 @@ public:
 	void CancelAllVerifyInProgress(void);
 
 	//bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);
+
+	float GetMouseX();
+	float GetMouseY();
 };
 
 // Singleton

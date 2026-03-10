@@ -28,8 +28,8 @@ void ContainerScreen::renderLabels()
 void ContainerScreen::renderBg(float a)
 {
 	// 4J Unused
-#if 0
-	int tex = minecraft->textures->loadTexture(L"/gui/container.png");
+#ifdef ENABLE_JAVA_GUIS
+	int tex = minecraft->textures->loadTexture(TN_GUI_CONTAINER);
 	glColor4f(1, 1, 1, 1);
 	minecraft->textures->bind(tex);
 	int xo = (width - imageWidth) / 2;

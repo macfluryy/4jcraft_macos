@@ -28,7 +28,11 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../../Minecraft.World/WorldGen/Biomes/Biome.h"
 
+#ifdef ENABLE_JAVA_GUIS
 #define RENDER_HUD 1
+#else
+#define RENDER_HUD 0
+#endif
 
 // #ifndef _XBOX
 // #undef RENDER_HUD
@@ -860,7 +864,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 	lastTickA = a;
 	// 4J Stu - This is now displayed in a xui scene
-#if 0
+#ifdef ENABLE_JAVA_GUIS
 	// Jukebox CD message
     if (overlayMessageTime > 0)
 	{
@@ -908,7 +912,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
     glDisable(GL_ALPHA_TEST);
 
 // 4J Stu - We have moved the chat text to a xui
-#if 0
+#ifdef ENABLE_JAVA_GUIS
     glPushMatrix();
 	// 4J-PB we need to move this up a bit because we've moved the quick select
 	//glTranslatef(0, ((float)screenHeight) - 48, 0);
@@ -1090,7 +1094,7 @@ void Gui::renderVignette(float br, int w, int h)
     if (br > 1) br = 1;
     tbr += (br - tbr) * 0.01f;
 
-#if 0  // 4J - removed - TODO put back when we have blend functions implemented
+#ifdef ENABLE_JAVA_GUIS  // 4J - removed - TODO put back when we have blend functions implemented
     glDisable(GL_DEPTH_TEST);
     glDepthMask(false);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);

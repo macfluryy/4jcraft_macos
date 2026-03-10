@@ -9,6 +9,8 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../Player/LocalPlayer.h"
+#include "../../Player/MultiPlayerLocalPlayer.h"
+#include "../../MinecraftServer.h"
 
 PauseScreen::PauseScreen()
 {
@@ -41,33 +43,34 @@ void PauseScreen::init()
 
 }
 
-void PauseScreen::buttonClicked(Button button)
+void PauseScreen::buttonClicked(Button* button)
 {
-    if (button.id == 0)
+    if (button->id == 0)
 	{
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
-    if (button.id == 1)
+    if (button->id == 1)
 	{
-        if (minecraft->isClientSide())
-		{
-            minecraft->level->disconnect();
-        }
+        // TODO: proper disconnects
+        // if (minecraft->isClientSide())
+		// {
+        //     minecraft->level->disconnect();
+        // }
 
-        minecraft->setLevel(NULL);
-        minecraft->setScreen(new TitleScreen());
+        // minecraft->setLevel(NULL);
+        // minecraft->setScreen(new TitleScreen());
     }
-    if (button.id == 4)
+    if (button->id == 4)
 	{
         minecraft->setScreen(NULL);
  //       minecraft->grabMouse();		// 4J - removed
     }
 
-    if (button.id == 5)
+    if (button->id == 5)
 	{
 //        minecraft->setScreen(new AchievementScreen(minecraft->stats));	// 4J TODO - put back
     }
-    if (button.id == 6)
+    if (button->id == 6)
 	{
 //        minecraft->setScreen(new StatsScreen(this, minecraft->stats));	// 4J TODO - put back
     }

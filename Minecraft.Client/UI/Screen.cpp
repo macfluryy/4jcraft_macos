@@ -5,6 +5,7 @@
 #include "../Rendering/Tesselator.h"
 #include "../Textures/Textures.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
+#include <GLFW/glfw3.h>
 
 
 
@@ -103,6 +104,47 @@ void Screen::init()
 
 void Screen::updateEvents()
 {
+// TODO: update for SDL if we ever get around to that
+#if (defined (ENABLE_JAVA_GUIS))
+    int fbw, fbh;
+    RenderManager.GetFramebufferSize(fbw, fbh);
+    glViewport(0, 0, fbw, fbh);
+    ScreenSizeCalculator ssc(minecraft->options, minecraft->width, minecraft->height);
+    int screenWidth = ssc.getWidth();
+    int screenHeight = ssc.getHeight();
+    
+    GLFWwindow* window = glfwGetCurrentContext();
+    if (!window) return;
+    
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+    
+    int xMouse = (int)xpos * screenWidth / fbw;
+    int yMouse = (int)ypos * screenHeight / fbh - 1;
+    
+    static bool prevLeftState = false;
+    static bool prevRightState = false;
+    
+    bool leftState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+    bool rightState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
+    
+    if (leftState && !prevLeftState) {
+        mouseClicked(xMouse, yMouse, 0);
+    }
+    else if (!leftState && prevLeftState) {
+        mouseReleased(xMouse, yMouse, 0);
+    }
+    
+    if (rightState && !prevRightState) {
+        mouseClicked(xMouse, yMouse, 1);
+    }
+    else if (!rightState && prevRightState) {
+        mouseReleased(xMouse, yMouse, 1);
+    }
+    
+    prevLeftState = leftState;
+    prevRightState = rightState;
+#else
 	/* 4J - TODO
     while (Mouse.next()) {
         mouseEvent();
@@ -112,7 +154,7 @@ void Screen::updateEvents()
         keyboardEvent();
     }
 	*/
-
+#endif
 }
 
 void Screen::mouseEvent()
@@ -171,6 +213,21 @@ void Screen::renderBackground(int vo)
 void Screen::renderDirtBackground(int vo)
 {
     // 4J Unused - Iggy Flash UI renders the background on consoles
+#ifdef ENABLE_JAVA_GUIS
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    Tesselator *t = Tesselator::getInstance();
+    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(TN_GUI_BACKGROUND));
+    glColor4f(1, 1, 1, 1);
+    float s = 32;
+    t->begin();
+    t->color(0x404040);
+    t->vertexUV(static_cast<float>(0), static_cast<float>(height), static_cast<float>(0), static_cast<float>(0), static_cast<float>(height / s + vo));
+    t->vertexUV(static_cast<float>(width), static_cast<float>(height), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(height / s + vo));
+    t->vertexUV(static_cast<float>(width), static_cast<float>(0), static_cast<float>(0), static_cast<float>(width / s), static_cast<float>(0 + vo));
+    t->vertexUV(static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0 + vo));
+    t->end();
+#endif
 }
 
 bool Screen::isPauseScreen()

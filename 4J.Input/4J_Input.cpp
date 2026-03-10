@@ -534,3 +534,11 @@ bool C_4JInput::VerifyStrings(WCHAR ** /*pwStringA*/, int /*iStringC*/,
                               int(*/*Func*/)(LPVOID, STRING_VERIFY_RESPONSE *), LPVOID /*lpParam*/) { return true; }
 void C_4JInput::CancelQueuedVerifyStrings(int(*/*Func*/)(LPVOID, STRING_VERIFY_RESPONSE *), LPVOID /*lpParam*/) {}
 void C_4JInput::CancelAllVerifyInProgress(void) {}
+
+float C_4JInput::GetMouseX() {
+    return (float)s_lastCursorX;
+}
+
+float C_4JInput::GetMouseY() {
+    return (float)s_lastCursorY;
+}

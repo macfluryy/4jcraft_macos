@@ -38,6 +38,10 @@ global_cpp_defs = [
   '-DDEBUG',
 ]
 
+if get_option('enable_java_guis')
+  global_cpp_defs += '-DENABLE_JAVA_GUIS'
+endif
+
 if host_machine.system() == 'linux'
   global_cpp_defs += [
     '-Dlinux',

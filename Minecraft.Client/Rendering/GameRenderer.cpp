@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "GameRenderer.h"
 #include "EntityRenderers/ItemInHandRenderer.h"
+#include "Input/Input.h"
 #include "LevelRenderer.h"
 #include "Frustum.h"
 #include "FrustumCuller.h"
@@ -1071,8 +1072,8 @@ void GameRenderer::render(float a, bool bFirst)
 	ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
 	int screenWidth = ssc.getWidth();
 	int screenHeight = ssc.getHeight();
-	int xMouse = Mouse::getX() * screenWidth / fbw;
-	int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
+	int xMouse = InputManager.GetMouseX() * screenWidth / fbw;
+	int yMouse = InputManager.GetMouseY() * screenHeight / fbh - 1;
 
 	int maxFps = 0;//getFpsCap(mc->options->framerateLimit);
 
@@ -1116,8 +1117,14 @@ void GameRenderer::render(float a, bool bFirst)
 	if (mc->screen != NULL)
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.01f);
 		mc->screen->render(xMouse, yMouse, a);
 		if (mc->screen != NULL && mc->screen->particles != NULL) mc->screen->particles->render(a);
+		glDisable(GL_BLEND);
+		glDisable(GL_ALPHA_TEST);
 	}
 
 }
