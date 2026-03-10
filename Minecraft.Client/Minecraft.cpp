@@ -2106,7 +2106,9 @@ void Minecraft::pauseGame()
 {
 	if (screen != NULL)
 	{
-		setScreen(NULL);
+		// 4jcraft: Pass the keypress to the screen
+		// normally this would've been done in updateEvents(), but it works better here (for now atleast)
+		screen->keyPressed(0, Keyboard::KEY_ESCAPE);
 		return;
 	}
 #ifdef ENABLE_JAVA_GUIS
