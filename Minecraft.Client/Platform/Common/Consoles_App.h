@@ -385,8 +385,8 @@ private:
 
 public:
 	// launch data
-	BYTE* m_pLaunchData;
-	DWORD m_dwLaunchDataSize;
+	std::uint8_t *m_pLaunchData;
+	unsigned int m_dwLaunchDataSize;
 
 public:
 	// BAN LIST
