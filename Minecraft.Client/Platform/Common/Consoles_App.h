@@ -264,7 +264,7 @@ public:
 	std::uint32_t	GetPlayerSkinId(int iPad);
 	std::wstring			GetPlayerCapeName(int iPad);
 	std::uint32_t	GetPlayerCapeId(int iPad);
-	DWORD			GetAdditionalModelParts(int iPad);
+	std::uint32_t	GetAdditionalModelParts(int iPad);
 	void			CheckGameSettingsChanged(bool bOverride5MinuteTimer=false, int iPad=XUSER_INDEX_ANY);
 	void			ApplyGameSettingsChanged(int iPad);
 	void			ClearGameSettingsChangedFlag(int iPad);
@@ -804,7 +804,7 @@ private:
 	CRITICAL_SECTION csAnimOverrideBitmask;
 	bool m_bCorruptSaveDeleted;
 
-	DWORD m_dwAdditionalModelParts[XUSER_MAX_COUNT];
+	std::uint32_t m_dwAdditionalModelParts[XUSER_MAX_COUNT];
 
 	BYTE *m_pBannedListFileBuffer;
 	DWORD m_dwBannedListFileSize;
@@ -818,15 +818,15 @@ public:
 // 	static int CallbackBannedListFileFromTMS(LPVOID lpParam, WCHAR *wchFilename, int iPad, bool bResult, int iAction);
 
 	// Storing additional model parts per skin texture
-	void SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, DWORD dwSkinBoxC);
-	std::vector<ModelPart *> * SetAdditionalSkinBoxes(DWORD dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA);
-	std::vector<ModelPart *> *GetAdditionalModelParts(DWORD dwSkinID);
-	std::vector<SKIN_BOX *> *GetAdditionalSkinBoxes(DWORD dwSkinID);
-	void SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOverrideBitmask);
-	unsigned int GetAnimOverrideBitmask(DWORD dwSkinID);
+	void SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX *SkinBoxA, unsigned int dwSkinBoxC);
+	std::vector<ModelPart *> * SetAdditionalSkinBoxes(std::uint32_t dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA);
+	std::vector<ModelPart *> *GetAdditionalModelParts(std::uint32_t dwSkinID);
+	std::vector<SKIN_BOX *> *GetAdditionalSkinBoxes(std::uint32_t dwSkinID);
+	void SetAnimOverrideBitmask(std::uint32_t dwSkinID,unsigned int uiAnimOverrideBitmask);
+	unsigned int GetAnimOverrideBitmask(std::uint32_t dwSkinID);
 
-	static DWORD getSkinIdFromPath(const std::wstring &skin);
-	static std::wstring getSkinPathFromId(DWORD skinId);
+	static std::uint32_t getSkinIdFromPath(const std::wstring &skin);
+	static std::wstring getSkinPathFromId(std::uint32_t skinId);
 
 	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile)=0;
 	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile, eFileExtensionType eExt)=0;
@@ -850,9 +850,9 @@ public:
 
 private:
 	// vector of additional skin model parts, indexed by the skin texture id
-	std::unordered_map<DWORD, std::vector<ModelPart *> *> m_AdditionalModelParts;
-	std::unordered_map<DWORD, std::vector<SKIN_BOX *> *> m_AdditionalSkinBoxes;
-	std::unordered_map<DWORD, unsigned int> m_AnimOverrides;
+	std::unordered_map<std::uint32_t, std::vector<ModelPart *> *> m_AdditionalModelParts;
+	std::unordered_map<std::uint32_t, std::vector<SKIN_BOX *> *> m_AdditionalSkinBoxes;
+	std::unordered_map<std::uint32_t, unsigned int> m_AnimOverrides;
 
 
 	bool m_bResetNether;

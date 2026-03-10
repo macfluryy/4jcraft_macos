@@ -1394,7 +1394,7 @@ std::uint32_t CMinecraftApp::GetPlayerSkinId(int iPad)
 	return dwSkin;
 }
 
- DWORD CMinecraftApp::GetAdditionalModelParts(int iPad)
+ std::uint32_t CMinecraftApp::GetAdditionalModelParts(int iPad)
  {
 	return m_dwAdditionalModelParts[iPad];
  }
@@ -8598,7 +8598,7 @@ bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType)
 	return false;
 }
 
-void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, DWORD dwSkinBoxC)
+void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX *SkinBoxA, unsigned int dwSkinBoxC)
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
@@ -8622,15 +8622,15 @@ void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, D
 	}
 
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
+	m_AdditionalModelParts.insert( std::pair<std::uint32_t, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<std::uint32_t, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
 	
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
 
 }
 
-std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA)
+std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA)
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
@@ -8650,8 +8650,8 @@ std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID,
 		}
 	}
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
+	m_AdditionalModelParts.insert( std::pair<std::uint32_t, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<std::uint32_t, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
 
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
@@ -8659,7 +8659,7 @@ std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID,
 }
 
 
-std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
+std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalModelParts );
 	std::vector<ModelPart *> *pvModelParts=NULL;
@@ -8676,7 +8676,7 @@ std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
 	return pvModelParts;
 }
 
-std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
+std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalSkinBoxes );
 	std::vector<SKIN_BOX *> *pvSkinBoxes=NULL;
@@ -8693,7 +8693,7 @@ std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
 	return pvSkinBoxes;
 }
 
-unsigned int CMinecraftApp::GetAnimOverrideBitmask(DWORD dwSkinID)
+unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAnimOverrideBitmask );
 	unsigned int uiAnimOverrideBitmask=0L;
@@ -8711,7 +8711,7 @@ unsigned int CMinecraftApp::GetAnimOverrideBitmask(DWORD dwSkinID)
 	return uiAnimOverrideBitmask;
 }
 
-void CMinecraftApp::SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOverrideBitmask)
+void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,unsigned int uiAnimOverrideBitmask)
 {
 	// Make thread safe
 	EnterCriticalSection( &csAnimOverrideBitmask );
@@ -8725,11 +8725,11 @@ void CMinecraftApp::SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOve
 			return; // already in here
 		}
 	}
-	m_AnimOverrides.insert( std::pair<DWORD, unsigned long>(dwSkinID, uiAnimOverrideBitmask) );
+	m_AnimOverrides.insert( std::pair<std::uint32_t, unsigned int>(dwSkinID, uiAnimOverrideBitmask) );
 	LeaveCriticalSection( &csAnimOverrideBitmask );
 }
 
-DWORD CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
+std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
 {
 	bool dlcSkin = false; 
 	unsigned int skinId = 0;
@@ -8755,7 +8755,7 @@ DWORD CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
 	return skinId;
 }
 
-std::wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
+std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId)
 {
 	// 4J Stu - This function maps the encoded DWORD we store in the player profile
 	// to a filename that is stored as a memory texture and shared between systems in game
@@ -8768,8 +8768,8 @@ std::wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
 	}
 	else
 	{
-		DWORD ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
-		DWORD defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
 		if( ugcSkinIndex == 0 )
 		{
 			swprintf(chars, 256, L"defskin%08X.png",defaultSkinIndex);
