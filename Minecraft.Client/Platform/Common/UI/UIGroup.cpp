@@ -10,6 +10,9 @@ UIGroup::UIGroup(EUIGroup group, int iPad)
 	m_bContainerMenuDisplayed = false;
 	m_bIgnoreAutosaveMenuDisplayed = false;
 	m_bIgnorePlayerJoinMenuDisplayed = false;
+	// 4jcraft, moved this to the top
+	// initialized memory was read.
+	m_viewportType = C4JRender::VIEWPORT_TYPE_FULLSCREEN;
 
 	m_updateFocusStateCountdown = 0;
 
@@ -38,8 +41,6 @@ UIGroup::UIGroup(EUIGroup group, int iPad)
 	{
 		m_pressStartToPlay = (UIComponent_PressStartToPlay *)m_layers[(int)eUILayer_Tooltips]->addComponent(0, eUIComponent_PressStartToPlay);
 	}
-
-	m_viewportType = C4JRender::VIEWPORT_TYPE_FULLSCREEN;
 
 	// 4J Stu - Pre-allocate this for cached rendering in scenes. It's horribly slow to do dynamically, but we should only need one
 	// per group as we will only be displaying one of these types of scenes at a time
