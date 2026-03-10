@@ -23,8 +23,8 @@ MEMDATA,*PMEMDATA;
 
 typedef struct 
 {
-	DWORD dwNotification;
-	UINT uiParam;
+	unsigned int dwNotification;
+	unsigned int uiParam;
 }
 NOTIFICATION,*PNOTIFICATION;
 
