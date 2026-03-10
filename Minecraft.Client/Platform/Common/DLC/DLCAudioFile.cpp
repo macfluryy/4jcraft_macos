@@ -36,7 +36,7 @@ DLCAudioFile::EAudioParameterType DLCAudioFile::getParameterType(const std::wstr
 {
 	EAudioParameterType type = e_AudioParamType_Invalid;
 
-	for(DWORD i = 0; i < e_AudioParamType_Max; ++i)
+	for(int i = 0; i < e_AudioParamType_Max; ++i)
 	{
 		if(paramName.compare(wchTypeNamesA[i]) == 0)
 		{
@@ -158,11 +158,11 @@ bool DLCAudioFile::processDLCDataFile(std::uint8_t *pbData, std::uint32_t dataLe
 	uiCurrentByte+=sizeof(int);
 	C4JStorage::DLC_FILE_DETAILS *pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
 
-	DWORD dwTemp=uiCurrentByte;
+	unsigned int tempByteOffset = uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
-		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
+		tempByteOffset += sizeof(C4JStorage::DLC_FILE_DETAILS) + pFile->dwWchCount * sizeof(WCHAR);
+		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[tempByteOffset];
 	}
 	std::uint8_t *pbTemp = reinterpret_cast<std::uint8_t *>(pFile);
 	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
