@@ -666,8 +666,8 @@ void Player::setCustomSkin(std::uint32_t skinId)
 
 	if(pDLCSkinFile!=NULL)
 	{
-	DWORD dwBoxC=pDLCSkinFile->getAdditionalBoxesCount();
-	if(dwBoxC!=0)
+		const int additionalBoxCount = pDLCSkinFile->getAdditionalBoxesCount();
+		if(additionalBoxCount != 0)
 	{
 	app.DebugPrintf("Got model parts from DLCskin for skin %X\n",m_dwSkinId);
 	pvModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());
@@ -2958,8 +2958,8 @@ std::vector<ModelPart *> *Player::GetAdditionalModelParts()
 
 			if(pDLCSkinFile!=NULL)
 			{
-				DWORD dwBoxC=pDLCSkinFile->getAdditionalBoxesCount();
-				if(dwBoxC!=0)
+				const int additionalBoxCount = pDLCSkinFile->getAdditionalBoxesCount();
+				if(additionalBoxCount != 0)
 				{
 					app.DebugPrintf("m_bCheckedForModelParts Got model parts from DLCskin for skin %X\n",m_dwSkinId);
 					m_ppAdditionalModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());

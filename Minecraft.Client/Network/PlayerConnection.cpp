@@ -932,7 +932,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(const std::wstring &text
 			else
 			{
 				// get the data from the app
-				DWORD dwSkinID = app.getSkinIdFromPath(textureName);
+				std::uint32_t dwSkinID = app.getSkinIdFromPath(textureName);
 				std::vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(dwSkinID);
 				unsigned int uiAnimOverrideBitmask= app.GetAnimOverrideBitmask(dwSkinID);
 
