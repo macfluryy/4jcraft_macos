@@ -7132,8 +7132,9 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid, char *ps
 
 	if(bWriteToTMS)
 	{	
-		DWORD dwDataBytes=(DWORD)(sizeof(BANNEDLISTDATA)*m_vBannedListA[iPad]->size());
-		PBANNEDLISTDATA pBannedList = (BANNEDLISTDATA *)(new CHAR [dwDataBytes]);
+		const std::size_t bannedListCount = m_vBannedListA[iPad]->size();
+		const unsigned int dataBytes = static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
+		PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
 		int iCount=0;
 		for(AUTO_VAR(it, m_vBannedListA[iPad]->begin()); it != m_vBannedListA[iPad]->end(); ++it)
 		{
@@ -7143,12 +7144,13 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid, char *ps
 
 		// 4J-PB - write to TMS++ now
 
-		//bool bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dwDataBytes);
+		//bool bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dataBytes);
 #ifdef _XBOX
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,C4JStorage::TMS_UGCTYPE_NONE,"BannedList",(PCHAR) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,C4JStorage::TMS_UGCTYPE_NONE,"BannedList",(PCHAR) pBannedList, dataBytes,NULL,NULL, 0);
 #elif defined _XBOX_ONE
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dataBytes,NULL,NULL, 0);
 #endif
+		delete[] pBannedList;
 	}
 	// update telemetry too
 }
@@ -7207,8 +7209,9 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 		}
 	}
 
-	DWORD dwDataBytes=(DWORD)(sizeof(BANNEDLISTDATA)*m_vBannedListA[iPad]->size());
-	if(dwDataBytes==0)
+	const std::size_t bannedListCount = m_vBannedListA[iPad]->size();
+	const unsigned int dataBytes = static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
+	if(dataBytes==0)
 	{
 		// wipe the file
 #ifdef _XBOX
@@ -7219,19 +7222,18 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 	}
 	else
 	{
-		PBANNEDLISTDATA pBannedList = (BANNEDLISTDATA *)(new BYTE [dwDataBytes]);
+		PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
 
-		int iSize=(int)m_vBannedListA[iPad]->size();
-		for(int i=0;i<iSize;i++)
+		for(std::size_t i = 0; i < bannedListCount; ++i)
 		{
 			PBANNEDLISTDATA pBannedListData =m_vBannedListA[iPad]->at(i);
 
 			memcpy(&pBannedList[i],pBannedListData,sizeof(BANNEDLISTDATA));
 		}
 #ifdef _XBOX
-		StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dwDataBytes);
+		StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dataBytes);
 #elif defined _XBOX_ONE
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dataBytes,NULL,NULL, 0);
 #endif
 		delete [] pBannedList;
 	}
