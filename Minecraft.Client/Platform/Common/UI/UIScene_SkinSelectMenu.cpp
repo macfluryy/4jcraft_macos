@@ -744,15 +744,15 @@ void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 
 void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 {
-	BOOL showPrevious = FALSE, showNext = FALSE;
-	DWORD previousIndex = 0, nextIndex = 0;
+	bool showPrevious = false, showNext = false;
+	int previousIndex = 0, nextIndex = 0;
 	std::wstring skinName = L"";
 	std::wstring skinOrigin = L"";
 	bool bSkinIsFree=false;
 	bool bLicensed=false;
 	DLCSkinFile *skinFile=NULL;
 	DLCPack *Pack=NULL;
-	BYTE sidePreviewControlsL,sidePreviewControlsR;
+	int sidePreviewControlsL, sidePreviewControlsR;
 	m_bNoSkinsToShow=false;
 
 	TEXTURE_NAME backupTexture = TN_MOB_CHAR;
@@ -887,8 +887,8 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 	m_characters[eCharacter_Current].SetTexture(m_selectedSkinPath, backupTexture);
 	m_characters[eCharacter_Current].SetCapeTexture(m_selectedCapePath);
 
-	showNext = TRUE;		
-	showPrevious = TRUE;
+	showNext = true;
+	showPrevious = true;
 	nextIndex = getNextSkinIndex(m_skinIndex);
 	previousIndex = getPreviousSkinIndex(m_skinIndex);
 
@@ -935,7 +935,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 		sidePreviewControlsL=sidePreviewControlsR=sidePreviewControls;
 	}
 
-	for(BYTE i = 0; i < sidePreviewControlsR; ++i)
+	for(int i = 0; i < sidePreviewControlsR; ++i)
 	{
 		if(showNext)
 		{
@@ -1006,7 +1006,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 
 
 
-	for(BYTE i = 0; i < sidePreviewControlsL; ++i)
+	for(int i = 0; i < sidePreviewControlsL; ++i)
 	{
 		if(showPrevious)
 		{
