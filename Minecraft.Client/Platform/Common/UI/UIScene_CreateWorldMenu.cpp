@@ -60,8 +60,8 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	m_labelTexturePackName.init(L"");
 	m_labelTexturePackDescription.init(L"");
 
-	WCHAR TempString[256];
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
 	m_MoreOptionsParams.bGenerateOptions = true;
@@ -628,7 +628,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow()
 
 void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
@@ -636,7 +636,7 @@ void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderDifficulty.handleSliderMove(value);
 
 		app.SetGameSettings(m_iPad,eGameSetting_Difficulty,value);
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));		
+		swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));
 		m_sliderDifficulty.setLabel(TempString);
 		break;
 	}

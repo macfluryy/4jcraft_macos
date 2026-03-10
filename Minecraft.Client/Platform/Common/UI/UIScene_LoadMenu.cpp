@@ -75,8 +75,8 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	m_labelTexturePackDescription.init(L"");
 
 	m_CurrentDifficulty=app.GetGameSettings(m_iPad,eGameSetting_Difficulty);
-	WCHAR TempString[256];
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
 	m_MoreOptionsParams.bGenerateOptions = false;
@@ -439,8 +439,8 @@ void UIScene_LoadMenu::tick()
 
 		if(szSeed[0]!=0)
 		{
-			WCHAR TempString[256];
-			swprintf( (WCHAR *)TempString, 256, L"%ls: %hs", app.GetString( IDS_SEED ),szSeed);	
+			wchar_t TempString[256];
+			swprintf(TempString, 256, L"%ls: %hs", app.GetString( IDS_SEED ),szSeed);
 			m_labelSeed.setLabel(TempString);
 		}
 		else
@@ -844,7 +844,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 
 void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
@@ -852,7 +852,7 @@ void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderDifficulty.handleSliderMove(value);
 
 		app.SetGameSettings(m_iPad,eGameSetting_Difficulty,value);
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));		
+		swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));
 		m_sliderDifficulty.setLabel(TempString);
 		break;
 	}
