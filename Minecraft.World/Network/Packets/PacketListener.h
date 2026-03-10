@@ -106,6 +106,7 @@ class GameCommandPacket;
 class PacketListener
 {
 public:
+	virtual ~PacketListener(){}
 	virtual bool isServerPacketListener() = 0;
 	virtual void handleBlockRegionUpdate(std::shared_ptr<BlockRegionUpdatePacket> packet);
 	virtual void onUnhandledPacket(std::shared_ptr<Packet> packet);

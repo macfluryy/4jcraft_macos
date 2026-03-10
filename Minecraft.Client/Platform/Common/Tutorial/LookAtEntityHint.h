@@ -14,7 +14,8 @@ private:
 
 public:
 	LookAtEntityHint(eTutorial_Hint id, Tutorial *tutorial, int descriptionId, int titleId, eINSTANCEOF type);
-	~LookAtEntityHint();
+	//TODO: LEAK LEKAFDSAKFDJ;SALKDJF;ASLKFJ ITS NEVER IMPLEMENTED
+	~LookAtEntityHint(){};
 
 	virtual bool onLookAtEntity(eINSTANCEOF type);
 };

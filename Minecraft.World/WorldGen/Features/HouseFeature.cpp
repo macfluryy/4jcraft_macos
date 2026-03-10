@@ -7,9 +7,9 @@
 
 bool HouseFeature::place(Level *level, Random *random, int x, int y, int z)
 {
-    while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion())
+    while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) {
         y--;
-
+    }
 	int w = random->nextInt(7) + 7;
 	int h = 4 + random->nextInt(3) / 2;
 	int d = random->nextInt(7) + 7;

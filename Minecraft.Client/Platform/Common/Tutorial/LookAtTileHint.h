@@ -16,7 +16,8 @@ private:
 
 public:
 	LookAtTileHint(eTutorial_Hint id, Tutorial *tutorial, int tiles[], unsigned int tilesLength, int iconOverride = -1, int iData=-1, int iDataOverride  = -1);
-	~LookAtTileHint();
+	//TODO
+	~LookAtTileHint(){};
 
 	virtual bool onLookAt(int id, int iData=0);
 };

@@ -63,7 +63,7 @@ private:
 	ItemInstance()	{ _init(-1,0,0); }
 
 public:
-	~ItemInstance();
+	virtual ~ItemInstance();
 	std::shared_ptr<ItemInstance> remove(int count);
 
 	Item *getItem() const;

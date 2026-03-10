@@ -7,6 +7,7 @@ class Player;
 class Container
 {
 public:
+	virtual ~Container(){}
     static const int LARGE_MAX_STACK_SIZE = 64;
 
     virtual unsigned int getContainerSize() = 0;
