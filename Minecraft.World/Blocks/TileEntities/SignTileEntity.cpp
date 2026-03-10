@@ -156,7 +156,7 @@ void SignTileEntity::SetMessage(int iIndex,std::wstring &wsText)
 }
 
 // 4J-PB - added for string verification
-int SignTileEntity::StringVerifyCallback(LPVOID lpParam,STRING_VERIFY_RESPONSE *pResults)
+int SignTileEntity::StringVerifyCallback(void *lpParam,STRING_VERIFY_RESPONSE *pResults)
 {
 	// results will be in m_pStringVerifyResponse
 	SignTileEntity *pClass=(SignTileEntity *)lpParam;

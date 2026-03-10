@@ -311,7 +311,7 @@ public:
 	bool			DebugSettingsOn()																									{ return false;}
 #endif
 	void			SetDebugSequence(const char *pchSeq);
-	static int		DebugInputCallback(LPVOID pParam);
+	static int		DebugInputCallback(void *pParam);
 	//bool			UploadFileToGlobalStorage(int iQuadrant, C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  );
 
 	// Installed DLC

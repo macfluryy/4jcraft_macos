@@ -42,7 +42,7 @@ public:
 	bool isEditable();
 	void setEditable(bool isEditable);
 	virtual void setChanged();
-	static int StringVerifyCallback(LPVOID lpParam,STRING_VERIFY_RESPONSE *pResults);
+	static int StringVerifyCallback(void *lpParam,STRING_VERIFY_RESPONSE *pResults);
 
 	// 4J Added
 	virtual std::shared_ptr<TileEntity> clone();

@@ -4926,7 +4926,7 @@ void CMinecraftApp::SetDebugSequence(const char *pchSeq)
 {
 	InputManager.SetDebugSequence(pchSeq,&CMinecraftApp::DebugInputCallback,this);
 }
-int CMinecraftApp::DebugInputCallback(LPVOID pParam)
+int CMinecraftApp::DebugInputCallback(void *pParam)
 {
 	CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 	//printf("sequence matched\n");

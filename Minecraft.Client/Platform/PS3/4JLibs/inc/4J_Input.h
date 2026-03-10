@@ -115,7 +115,7 @@ public:
 	void				SetJoypadStickAxisMap(int iPad,unsigned int uiFrom, unsigned int uiTo);
 	void				SetJoypadStickTriggerMap(int iPad,unsigned int uiFrom, unsigned int uiTo);
 	void				SetKeyRepeatRate(float fRepeatDelaySecs,float fRepeatRateSecs); 
-	void				SetDebugSequence( const char *chSequenceA,int( *Func)(LPVOID),LPVOID lpParam );
+	void				SetDebugSequence( const char *chSequenceA,int( *Func)(void *),void *lpParam );
 	FLOAT				GetIdleSeconds(int iPad);
 	bool				IsPadConnected(int iPad);
 	bool				IsCircleCrossSwapped();
@@ -153,8 +153,8 @@ public:
 	// 		Exemption It is not required to use the Xbox LIVE service to verify real-time text communication. An example of real-time text communication is in-game text chat.
 	// 
 	// 		Intent Protect players from inappropriate language.
- 	bool VerifyStrings(WCHAR **pwStringA,int iStringC,int( *Func)(LPVOID,STRING_VERIFY_RESPONSE *),LPVOID lpParam);
- 	void CancelQueuedVerifyStrings(int( *Func)(LPVOID,STRING_VERIFY_RESPONSE *),LPVOID lpParam);
+ 	bool VerifyStrings(wchar_t **pwStringA,int iStringC,int( *Func)(void *,STRING_VERIFY_RESPONSE *),void *lpParam);
+ 	void CancelQueuedVerifyStrings(int( *Func)(void *,STRING_VERIFY_RESPONSE *),void *lpParam);
  	void CancelAllVerifyInProgress(void);
 
 	//bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);

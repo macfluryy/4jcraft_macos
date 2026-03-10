@@ -512,7 +512,7 @@ void C_4JInput::SetJoypadSensitivity(int /*iPad*/, float /*fSensitivity*/) {}
 void C_4JInput::SetJoypadStickAxisMap(int /*iPad*/, unsigned int /*uiFrom*/, unsigned int /*uiTo*/) {}
 void C_4JInput::SetJoypadStickTriggerMap(int /*iPad*/, unsigned int /*uiFrom*/, unsigned int /*uiTo*/) {}
 void C_4JInput::SetKeyRepeatRate(float /*fRepeatDelaySecs*/, float /*fRepeatRateSecs*/) {}
-void C_4JInput::SetDebugSequence(const char * /*chSequenceA*/, int(*/*Func*/)(LPVOID), LPVOID /*lpParam*/) {}
+void C_4JInput::SetDebugSequence(const char * /*chSequenceA*/, int(*/*Func*/)(void *), void * /*lpParam*/) {}
 FLOAT C_4JInput::GetIdleSeconds(int /*iPad*/) { return 0.0f; }
 bool  C_4JInput::IsPadConnected(int iPad)     { return iPad == 0; }  // slot 0 = keyboard+mouse
 
@@ -530,7 +530,7 @@ EKeyboardResult C_4JInput::RequestKeyboard(const wchar_t * /*Title*/, const wcha
     return EKeyboard_Cancelled;
 }
 void C_4JInput::GetText(uint16_t *UTF16String) { if (UTF16String) UTF16String[0] = 0; }
-bool C_4JInput::VerifyStrings(WCHAR ** /*pwStringA*/, int /*iStringC*/,
-                              int(*/*Func*/)(LPVOID, STRING_VERIFY_RESPONSE *), LPVOID /*lpParam*/) { return true; }
-void C_4JInput::CancelQueuedVerifyStrings(int(*/*Func*/)(LPVOID, STRING_VERIFY_RESPONSE *), LPVOID /*lpParam*/) {}
+bool C_4JInput::VerifyStrings(wchar_t ** /*pwStringA*/, int /*iStringC*/,
+                              int(*/*Func*/)(void *, STRING_VERIFY_RESPONSE *), void * /*lpParam*/) { return true; }
+void C_4JInput::CancelQueuedVerifyStrings(int(*/*Func*/)(void *, STRING_VERIFY_RESPONSE *), void * /*lpParam*/) {}
 void C_4JInput::CancelAllVerifyInProgress(void) {}
