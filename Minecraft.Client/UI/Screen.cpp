@@ -106,32 +106,23 @@ void Screen::updateEvents()
 {
 // TODO: update for SDL if we ever get around to that
 #if (defined (ENABLE_JAVA_GUIS))
-    int fbw, fbh;
-    RenderManager.GetFramebufferSize(fbw, fbh);
-    glViewport(0, 0, fbw, fbh);
+	int fbw, fbh;
+	RenderManager.GetFramebufferSize(fbw, fbh);
+	glViewport(0, 0, fbw, fbh);
     ScreenSizeCalculator ssc(minecraft->options, minecraft->width, minecraft->height);
-    int screenWidth = ssc.getWidth();
-    int screenHeight = ssc.getHeight();
-    
-    GLFWwindow* window = glfwGetCurrentContext();
-    if (!window) return;
-    
-    float windowScaleX = 1;
-    float windowScaleY = 1;
-    glfwGetWindowContentScale(window, &windowScaleX, &windowScaleY);
-    
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
-    
-    int xMouse = (int)(xpos * windowScaleX) * screenWidth / fbw;
-    int yMouse = (int)(ypos * windowScaleY) * screenHeight / fbh - 1;
+	int screenWidth = ssc.getWidth();
+	int screenHeight = ssc.getHeight();
+	int xMouse = InputManager.GetMouseX() * screenWidth / fbw;
+	int yMouse = InputManager.GetMouseY() * screenHeight / fbh - 1;
     
     static bool prevLeftState = false;
     static bool prevRightState = false;
+
+    bool leftState = InputManager.ButtonDown(0, MINECRAFT_ACTION_ACTION);
+    bool rightState = InputManager.ButtonDown(0, MINECRAFT_ACTION_USE);
     
-    bool leftState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
-    bool rightState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
-    
+    printf("%d, %d\n", leftState, rightState);
+
     if (leftState && !prevLeftState) {
         mouseClicked(xMouse, yMouse, 0);
     }

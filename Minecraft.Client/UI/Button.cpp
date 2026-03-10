@@ -44,7 +44,6 @@ void Button::render(Minecraft *minecraft, int xm, int ym)
     glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(TN_GUI_GUI));	// 4J was L"/gui/gui.png"
     glColor4f(1, 1, 1, 1);
 
-
     bool hovered = xm >= x && ym >= y && xm < x + w && ym < y + h;
     int yImage = getYImage(hovered);
 
