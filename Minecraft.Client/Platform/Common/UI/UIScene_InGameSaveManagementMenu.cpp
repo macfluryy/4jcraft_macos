@@ -14,7 +14,7 @@ int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(LPVOID lpPar
 
 	if(pbThumbnail && dwThumbnailBytes)
 	{
-		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new BYTE[dwThumbnailBytes];
+		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
 		memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData, pbThumbnail, dwThumbnailBytes);
 		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].dwThumbnailSize = dwThumbnailBytes;
 	}

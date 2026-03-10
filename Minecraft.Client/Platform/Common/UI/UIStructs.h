@@ -188,8 +188,8 @@ CreateWorldMenuInitData;
 typedef struct _SaveListDetails
 {
 	int saveId;
-	PBYTE pbThumbnailData;
-	DWORD dwThumbnailSize;
+	std::uint8_t *pbThumbnailData;
+	unsigned int dwThumbnailSize;
 #ifdef _DURANGO
 	wchar_t UTF16SaveName[128];
 	wchar_t UTF16SaveFilename[MAX_SAVEFILENAME_LENGTH];

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "IUIScene_StartGame.h"
 
 class UIScene_LoadMenu : public IUIScene_StartGame
@@ -68,7 +70,7 @@ private:
 #endif
 	//int *m_iConfigA; // track the texture packs that we don't have installed
 
-	PBYTE m_pbThumbnailData;
+	std::uint8_t *m_pbThumbnailData;
 	unsigned int m_uiThumbnailSize;
 	std::wstring m_thumbnailName;
 

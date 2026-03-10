@@ -59,7 +59,7 @@ int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE p
 
     if(pbThumbnail && dwThumbnailBytes)
     {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new BYTE[dwThumbnailBytes];
+        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
         memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData, pbThumbnail, dwThumbnailBytes);
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].dwThumbnailSize = dwThumbnailBytes;
     }
