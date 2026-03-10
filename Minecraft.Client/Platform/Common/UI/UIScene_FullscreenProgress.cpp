@@ -189,7 +189,7 @@ void UIScene_FullscreenProgress::tick()
 				pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );*/
 				//app.NavigateBack(m_CompletionData->iPad);
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_FAILED), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_SERVER), uiIDA,1, XUSER_INDEX_ANY,NULL,NULL, app.GetStringTable());
 

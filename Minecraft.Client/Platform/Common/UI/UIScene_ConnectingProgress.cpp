@@ -186,7 +186,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id)
 		}
 		else
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( IDS_CONNECTION_FAILED, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			exitReasonStringId = -1;

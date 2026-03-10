@@ -226,7 +226,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat, 
 			UIControl_CheckBox *checkboxOnline = &m_checkboxes[eLaunchCheckbox_Online];
 			if ( pressed && controlHasFocus( checkboxOnline->getId()) && !checkboxOnline->IsEnabled() )
 			{
-				UINT uiIDA[1] = { IDS_CONFIRM_OK };
+				unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 			}
 		}
