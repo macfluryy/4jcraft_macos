@@ -1402,7 +1402,7 @@ void GameRenderer::renderLevel(float a, __int64 until)
 #endif
 			PIXEndNamedEvent();
 			PIXBeginNamedEvent(0,"Particle render");
-			turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
+			//turnOnLightLayer(a);		// 4J - brought forward from 1.8.2
 			particleEngine->renderLit(cameraEntity, a);
 			Lighting::turnOff();
 			setupFog(0, a);
@@ -1619,7 +1619,7 @@ void GameRenderer::renderSnowAndRain(float a)
 	// 4J - rain is relatively low poly, but high fill-rate - better to clip it
 	RenderManager.StateSetEnableViewportClipPlanes(true);
 
-	this->turnOnLightLayer(a);
+	//this->turnOnLightLayer(a);
 
     if (rainXa == NULL) 
 	{
