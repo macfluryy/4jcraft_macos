@@ -196,8 +196,8 @@ FEATURE_DATA;
 // banned list
 typedef struct 
 {
-	BYTE *pBannedList;
-	DWORD dwBytes;
+	std::uint8_t *pBannedList;
+	unsigned int dwBytes;
 }
 BANNEDLIST;
 

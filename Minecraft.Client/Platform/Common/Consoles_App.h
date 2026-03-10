@@ -806,8 +806,8 @@ private:
 
 	std::uint32_t m_dwAdditionalModelParts[XUSER_MAX_COUNT];
 
-	BYTE *m_pBannedListFileBuffer;
-	DWORD m_dwBannedListFileSize;
+	std::uint8_t *m_pBannedListFileBuffer;
+	unsigned int m_dwBannedListFileSize;
 
 public:
 	DWORD m_dwDLCFileSize;
