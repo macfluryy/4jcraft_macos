@@ -14,7 +14,7 @@ protected:
 
 public:
 	LargeFeature();
-	~LargeFeature();
+	virtual ~LargeFeature();
 
     virtual void apply(ChunkSource *ChunkSource, Level *level, int xOffs, int zOffs, byteArray blocks);
 

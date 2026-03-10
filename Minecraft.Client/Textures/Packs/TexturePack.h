@@ -12,6 +12,7 @@ class TexturePack
 public:
 
 	TexturePack() { m_bHasAudio=false;}
+	virtual ~TexturePack(){}
 	virtual bool hasData() = 0;
 	virtual bool hasAudio() { return m_bHasAudio;}
 	virtual void setHasAudio(bool bVal) {m_bHasAudio=bVal;}	

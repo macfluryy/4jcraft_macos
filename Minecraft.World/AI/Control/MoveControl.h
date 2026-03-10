@@ -22,6 +22,7 @@ private:
 
 public:
 	MoveControl(Mob *mob);
+	virtual ~MoveControl(){}
 
 	bool hasWanted();
 	float getSpeed();

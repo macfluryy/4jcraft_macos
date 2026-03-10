@@ -285,12 +285,12 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkB
 	PIXBeginNamedEvent(0,"Setting Block data");
 	chunk->setBlockData(blockData);
 	PIXEndNamedEvent();
-	delete blockData.data;
+	delete[] blockData.data; //4jcraft changed to array delete
 	chunk->recalcHeightmapOnly();
 	PIXBeginNamedEvent(0,"Setting Data data");
 	chunk->setDataData(dataData);
 	PIXEndNamedEvent();
-	delete dataData.data;
+	delete[] dataData.data; //4jcraft, same here
 
 	// A basic pass through to roughly do the lighting. At this point of post-processing, we don't have all the neighbouring chunks loaded in,
 	// so any lighting here should be things that won't propagate out of this chunk.

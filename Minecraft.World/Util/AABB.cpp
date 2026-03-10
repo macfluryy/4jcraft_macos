@@ -12,14 +12,14 @@ AABB::ThreadStorage *AABB::tlsDefault = NULL;
 
 AABB::ThreadStorage::ThreadStorage()
 {
-	pool = new AABB[POOL_SIZE];
+	pool = new AABB[POOL_SIZE]; //4jcraft, needs to be deleted with delete[]
 	poolPointer = 0;
 }
 
 
 AABB::ThreadStorage::~ThreadStorage()
 {
-	delete pool;
+	delete[] pool; //4jcraft, changed to []
 }
 
 void AABB::CreateNewThreadStorage()

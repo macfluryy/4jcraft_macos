@@ -32,7 +32,7 @@ public:
 		const int id;
 
 	public:
-		PacketStatistics(int id) : id( id ), count( 0 ), totalSize( 0 ), samplesPos( 0 ), firstSampleTime( 0 ) { countSamples[0] = 0; sizeSamples[0] = 0; }
+		PacketStatistics(int id) : count( 0 ), totalSize( 0 ), samplesPos( 0 ), firstSampleTime( 0 ), id( id ) { countSamples[0] = 0; sizeSamples[0] = 0; }
 		void addPacket(int bytes);
 		int getCount();
 		double getAverageSize();
@@ -61,6 +61,7 @@ public:
 	const __int64 createTime;
 
 	Packet();
+	virtual ~Packet(){}
 
 	static std::shared_ptr<Packet> getPacket(int id);
 

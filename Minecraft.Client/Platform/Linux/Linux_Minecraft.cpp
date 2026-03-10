@@ -699,10 +699,6 @@ ProfileManager.Initialise(TITLEID_MINECRAFT,
                           &app.uiGameDefinedDataChangedBitmask
 );
 
-byteArray baOptionsIcon = app.getArchiveFile(L"DefaultOptionsImage228x128.png");
-byteArray baSaveThumbnail = app.getArchiveFile(L"DefaultSaveThumbnail64x64.png");
-byteArray baSaveImage = app.getArchiveFile(L"DefaultSaveImage228x128.png");
-
 // set a function to be called when there's a sign in change, so we can exit a level if the primary player signs out
 ProfileManager.SetSignInChangeCallback(&CConsoleMinecraftApp::SignInChangeCallback,(LPVOID)&app);
 

@@ -123,7 +123,7 @@ public:
 	bool m_isFullTutorial;
 public:
 	Tutorial(int iPad, bool isFullTutorial = false);
-	~Tutorial();
+	virtual ~Tutorial();
 	void tick();
 
 	int getPad() { return m_iPad; }

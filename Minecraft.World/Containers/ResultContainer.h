@@ -10,6 +10,7 @@ private:
 public:
 	// 4J Stu Added a ctor to init items
 	ResultContainer();
+	virtual ~ResultContainer(){}
 
 	virtual unsigned int getContainerSize();
 	virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);

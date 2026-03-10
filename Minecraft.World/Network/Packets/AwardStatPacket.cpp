@@ -16,7 +16,13 @@ AwardStatPacket::AwardStatPacket(int statId, int count)
 {
 	this->statId = statId;
 
-	this->m_paramData.data = (uint8_t *) new int(count);
+	// 4jcraft, changed from (uint8_t*) new int(count); to:
+	//			 new uint8_t[sizeof(int)];
+	// and memcpy of the integer into the array
+	// reason: operator missmatch, array is deleted with delete[]
+	// and typesafety
+	this->m_paramData.data = new uint8_t[sizeof(int)];
+	memcpy(this->m_paramData.data, &count, sizeof(int));
 	this->m_paramData.length = sizeof(int);
 }
 
@@ -30,7 +36,7 @@ AwardStatPacket::~AwardStatPacket()
 {
 	if (m_paramData.data != NULL) 
 	{
-		delete [] m_paramData.data;
+		delete[] m_paramData.data;
 		m_paramData.data = NULL;
 	}
 }

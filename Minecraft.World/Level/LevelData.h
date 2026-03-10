@@ -71,6 +71,7 @@ protected:
 	virtual void setTagData(CompoundTag *tag);		// 4J - removed  CompoundTag *playerTag
 
 public:
+	virtual ~LevelData(){}
 	virtual  __int64 getSeed();
 	virtual  int getXSpawn();
 	virtual  int getYSpawn();

@@ -23,7 +23,7 @@ public:
 	using AbstractTexturePack::getResource;
 
 	DLCTexturePack(DWORD id, DLCPack *pack, TexturePack *fallback);
-	~DLCTexturePack();
+	~DLCTexturePack(){};
 
 	virtual std::wstring getResource(const std::wstring& name);
 	virtual DLCPack * getDLCPack();

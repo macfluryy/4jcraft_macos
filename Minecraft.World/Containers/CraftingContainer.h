@@ -13,7 +13,7 @@ private:
 
 public:
 	CraftingContainer(AbstractContainerMenu *menu, unsigned int w, unsigned int h);
-	~CraftingContainer();
+	virtual ~CraftingContainer();
 
 	virtual unsigned int getContainerSize();
 	virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);

@@ -160,7 +160,7 @@ TileRenderer::TileRenderer( LevelSource* level, int xMin, int yMin, int zMin, un
 
 TileRenderer::~TileRenderer()
 {
-	delete cache;
+	delete[] cache; //4jcraft, changed to []
 }
 
 TileRenderer::TileRenderer( LevelSource* level )
