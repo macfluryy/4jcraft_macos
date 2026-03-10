@@ -52,7 +52,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void *_initData, UILayer *parentL
 		}
 		else
 		{
-			LPCWSTR costString = app.GetString(IDS_REPAIR_COST);
+			const wchar_t *costString = app.GetString(IDS_REPAIR_COST);
 			wchar_t temp[256];
 			swprintf(temp, 256, costString, m_repairMenu->cost);
 			m_costString = temp;
