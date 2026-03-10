@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 typedef struct  
 {
 	wchar_t *wchFilename;
@@ -13,9 +15,9 @@ TMS_FILE;
 
 typedef struct 
 {
-	PBYTE pbData;
-	DWORD dwBytes;
-	BYTE ucRefCount;
+	std::uint8_t *pbData;
+	unsigned int dwBytes;
+	std::uint8_t ucRefCount;
 }
 MEMDATA,*PMEMDATA;
 

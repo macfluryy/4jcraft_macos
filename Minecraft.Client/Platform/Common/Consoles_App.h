@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 //using namespace std;
 
 #include "Audio/Consoles_SoundEngine.h"
@@ -339,9 +341,9 @@ public:
 	bool isXuidNotch(PlayerUID xuid);
 	bool isXuidDeadmau5(PlayerUID xuid);
 
-	void AddMemoryTextureFile(const std::wstring &wName, PBYTE pbData, DWORD dwBytes);
+	void AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int dwBytes);
 	void RemoveMemoryTextureFile(const std::wstring &wName);
-	void GetMemFileDetails(const std::wstring &wName,PBYTE *ppbData,DWORD *pdwBytes);
+	void GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pdwBytes);
 	bool IsFileInMemoryTextures(const std::wstring &wName);
 
 	// Texture Pack Data files (icon, banner, comparison shot & text)

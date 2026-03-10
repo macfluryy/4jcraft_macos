@@ -2241,8 +2241,8 @@ void ClientConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Client received request for custom texture %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwBytes);
 
 		if(dwBytes!=0)
@@ -2273,8 +2273,8 @@ void ClientConnection::handleTextureAndGeometry(std::shared_ptr<TextureAndGeomet
 #ifndef _CONTENT_PACKAGE
 		wprintf(L"Client received request for custom texture and geometry %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwBytes);
 		DLCSkinFile *pDLCSkinFile = app.m_dlcManager.getSkinFile(packet->textureName);
 

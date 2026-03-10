@@ -5318,7 +5318,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid)
 	return false;
 }
 
-void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName,PBYTE pbData,DWORD dwBytes)	
+void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int dwBytes)	
 {	
 	EnterCriticalSection(&csMemFilesLock);
 	// check it's not already in
@@ -5413,7 +5413,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring &wName)
 	return val;
 }
 
-void CMinecraftApp::GetMemFileDetails(const std::wstring &wName,PBYTE *ppbData,DWORD *pdwBytes)
+void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pdwBytes)
 {
 	EnterCriticalSection(&csMemFilesLock);
 	AUTO_VAR(it, m_MEM_Files.find(wName));

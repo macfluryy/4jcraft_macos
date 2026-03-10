@@ -855,8 +855,8 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(MARKETPLACE_CONTENTOFFER_INFO& xOffer)
 			{
 				if(hasRegisteredSubstitutionTexture(cString)==false)
 				{				
-					BYTE *pData=NULL;
-					DWORD dwSize=0;
+					std::uint8_t *pData=NULL;
+					unsigned int dwSize=0;
 					app.GetMemFileDetails(cString,&pData,&dwSize);
 					// set the image
 #ifdef _XBOX_ONE
