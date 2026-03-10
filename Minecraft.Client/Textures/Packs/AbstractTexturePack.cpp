@@ -4,6 +4,8 @@
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 
+#include <limits>
+
 AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File *file, const std::wstring &name, TexturePack *fallback) : id(id), name(name)
 {
 	// 4J init
@@ -257,14 +259,22 @@ void AbstractTexturePack::loadDefaultColourTable()
 
 	if(coloursFile.exists())
 	{
-		DWORD dwLength = coloursFile.length();
-		byteArray data(dwLength);
+		const __int64 colourTableLength = coloursFile.length();
+		if(colourTableLength < 0 || colourTableLength > static_cast<__int64>(std::numeric_limits<unsigned int>::max()))
+		{
+			app.DebugPrintf("Failed to load the default colours table\n");
+			app.FatalLoadError();
+			return;
+		}
+
+		const unsigned int dataLength = static_cast<unsigned int>(colourTableLength);
+		byteArray data(dataLength);
 
 		FileInputStream fis(coloursFile);
-		fis.read(data,0,dwLength);
+		fis.read(data,0,dataLength);
 		fis.close();
 		if(m_colourTable != NULL) delete m_colourTable;
-		m_colourTable = new ColourTable(data.data, dwLength);
+		m_colourTable = new ColourTable(data.data, dataLength);
 
 		delete [] data.data;
 	}
