@@ -387,8 +387,8 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 // Shared function to join the game that is the same whether we used the sign-in UI or not
 void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 {
-	DWORD dwSignedInUsers = 0;
 	bool noPrivileges = false;
+	int signedInUsers = 0;
 	int localUsersMask = 0;
 	bool isSignedInLive = true;
 	int iPadNotSignedInLive = -1;
@@ -402,6 +402,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		{
 			if(ProfileManager.IsSignedIn(index))
 			{
+				++signedInUsers;
 				if (isSignedInLive && !ProfileManager.IsSignedInLive(index))
 				{
 					// Record the first non signed in live pad
@@ -418,6 +419,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 	{
 		if(ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
 		{
+			++signedInUsers;
 			if( !ProfileManager.AllowedToPlayMultiplayer(ProfileManager.GetPrimaryPad()) ) noPrivileges = true;
 			localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
@@ -457,8 +459,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 
 	// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 	bool noUGC = false;
-	BOOL pccAllowed = TRUE;
-	BOOL pccFriendsAllowed = TRUE;
+	bool pccAllowed = true;
+	bool pccFriendsAllowed = true;
 
 #if defined(__PS3__) || defined(__PSVITA__)
 	if(isSignedInLive)
@@ -485,7 +487,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		pClass->m_bIgnoreInput=false;
 
 		int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-		if(dwSignedInUsers > 1) messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
+		if(signedInUsers > 1) messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
 
 		ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);
 	}
