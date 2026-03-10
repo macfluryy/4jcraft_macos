@@ -664,7 +664,6 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 		C4JThread::Event *wakeEvent[3]; // This sets off the threads that are waiting to continue
 		C4JThread::Event *notificationEvent[3]; // These are signalled by the threads to let us know they are complete
 		C4JThread *saveThreads[3];
-		DWORD threadId[3];
 		SaveThreadData threadData[3];
 		ZeroMemory(&threadData[0], sizeof(SaveThreadData));
 		ZeroMemory(&threadData[1], sizeof(SaveThreadData));
@@ -739,7 +738,7 @@ bool ServerChunkCache::save(bool force, ProgressListener *progressListener)
 						{
 							char threadName[256];
 							sprintf(threadName,"Save thread %d\n",j);
-							SetThreadName(threadId[j], threadName);
+							SetThreadName(0, threadName);
 
 							//saveThreads[j] = CreateThread(NULL,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
 							saveThreads[j] = new C4JThread(runSaveThreadProc,(void *)&threadData[j],threadName);

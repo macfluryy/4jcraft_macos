@@ -345,7 +345,7 @@ void McRegionChunkStorage::staticCtor()
 	}
 }
 
-int McRegionChunkStorage::runSaveThreadProc(LPVOID lpParam)
+int McRegionChunkStorage::runSaveThreadProc(void *lpParam)
 {
 	Compression::CreateNewThreadStorage();
 

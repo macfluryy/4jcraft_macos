@@ -33,9 +33,6 @@ void Connection::_init()
 	fakeLag = 0;
 	slowWriteDelay = 50;
 
-	saqThreadID = 0;
-	closeThreadID = 0;
-
 	tickCount = 0;
 
 }
@@ -380,7 +377,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
 	//	return( sum ? (sum / count) : 0 );
 
 
-//	CreateThread(NULL, 0, runClose, this, 0, &closeThreadID);
+//	CreateThread(NULL, 0, runClose, this, 0, NULL);
 
 	running = false;
 
@@ -525,7 +522,7 @@ void Connection::sendAndQuit()
 		close(DisconnectPacket::eDisconnect_Closed);
 	}
 #else
-	CreateThread(NULL, 0, runSendAndQuit, this, 0, &saqThreadID);
+	CreateThread(NULL, 0, runSendAndQuit, this, 0, NULL);
 #endif
 }
 
