@@ -113,7 +113,7 @@ void UIScene_DebugCreateSchematic::handlePress(F64 controlId, F64 childId)
 	case eControl_EndY:
 	case eControl_EndZ:
 		m_keyboardCallbackControl = (eControls)((int)controlId);	
-		InputManager.RequestKeyboard(L"Enter something",L"",(DWORD)0,25,&UIScene_DebugCreateSchematic::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+		InputManager.RequestKeyboard(L"Enter something",L"",0,25,&UIScene_DebugCreateSchematic::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 		break;
 	};
 }

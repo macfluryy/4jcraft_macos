@@ -191,7 +191,7 @@ public:
 
 	void				SetMenuDisplayed(int iPad, bool bVal);
 
-	C_4JInput::EKeyboardResult		RequestKeyboard(LPCWSTR Title, LPCWSTR Text, DWORD dwPad, UINT uiMaxChars, int( *Func)(LPVOID,const bool),LPVOID lpParam,C_4JInput::EKeyboardMode eMode);
+	C_4JInput::EKeyboardResult		RequestKeyboard(const wchar_t *Title, const wchar_t *Text, int iPad, unsigned int uiMaxChars, int( *Func)(void *,const bool), void *lpParam, C_4JInput::EKeyboardMode eMode);
 	void				DestroyKeyboard();
 	void				GetText(uint16_t *UTF16String);
 

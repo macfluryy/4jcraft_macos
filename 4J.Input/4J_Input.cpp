@@ -523,9 +523,9 @@ void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {
 // ---------------------------------------------------------------------------
 // Keyboard (text entry) / string verification stubs
 // ---------------------------------------------------------------------------
-EKeyboardResult C_4JInput::RequestKeyboard(LPCWSTR /*Title*/, LPCWSTR /*Text*/, DWORD /*dwPad*/,
-                                           UINT /*uiMaxChars*/,
-                                           int(*/*Func*/)(LPVOID, const bool), LPVOID /*lpParam*/,
+EKeyboardResult C_4JInput::RequestKeyboard(const wchar_t * /*Title*/, const wchar_t * /*Text*/, int /*iPad*/,
+                                           unsigned int /*uiMaxChars*/,
+                                           int(*/*Func*/)(void *, const bool), void * /*lpParam*/,
                                            C_4JInput::EKeyboardMode /*eMode*/) {
     return EKeyboard_Cancelled;
 }

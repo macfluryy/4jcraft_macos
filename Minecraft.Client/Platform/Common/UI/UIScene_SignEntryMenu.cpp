@@ -179,14 +179,14 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId)
 			case XC_LANGUAGE_JAPANESE:
 			case XC_LANGUAGE_KOREAN:
 			case XC_LANGUAGE_TCHINESE:
-				InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),(DWORD)m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Email);
+				InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Email);
 				break;
 			default:
-				InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),(DWORD)m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet);
+				InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet);
 				break;
 			}
 #else
-			InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),(DWORD)m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet);
+			InputManager.RequestKeyboard(app.GetString(IDS_SIGN_TITLE),m_textInputLines[m_iEditingLine].getLabel(),m_iPad,15,&UIScene_SignEntryMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet);
 #endif
 		}
 		break;

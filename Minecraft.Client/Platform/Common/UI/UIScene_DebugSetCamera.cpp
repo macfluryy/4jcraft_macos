@@ -101,7 +101,7 @@ void UIScene_DebugSetCamera::handlePress(F64 controlId, F64 childId)
 	case eControl_YRot:
 	case eControl_Elevation:
 		m_keyboardCallbackControl = (eControls)((int)controlId);	
-		InputManager.RequestKeyboard(L"Enter something",L"",(DWORD)0,25,&UIScene_DebugSetCamera::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+		InputManager.RequestKeyboard(L"Enter something",L"",0,25,&UIScene_DebugSetCamera::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 		break;
 	};
 }

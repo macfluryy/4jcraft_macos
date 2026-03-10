@@ -430,15 +430,15 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId)
 			case XC_LANGUAGE_JAPANESE:
 			case XC_LANGUAGE_KOREAN:
 			case XC_LANGUAGE_TCHINESE:
-				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
+				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
 				break;
 			default:
 				// 4J Stu - Use a different keyboard for non-asian languages so we don't have prediction on
-				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
+				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
 				break;
 			}
 #else
-			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
+			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
 #endif
 		}
 		break;

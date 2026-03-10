@@ -2116,7 +2116,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
 			pClass->m_bIgnoreInput=true;
 #ifdef _DURANGO
             // bring up a keyboard
-            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE), (pClass->m_saveDetails[pClass->m_iSaveListIndex-pClass->m_iDefaultButtonsC]).UTF16SaveName,(DWORD)0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
+            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE), (pClass->m_saveDetails[pClass->m_iSaveListIndex-pClass->m_iDefaultButtonsC]).UTF16SaveName,0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
 #else
             // bring up a keyboard
             wchar_t wSaveName[128];
@@ -2124,7 +2124,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
             ZeroMemory(wSaveName, 128 * sizeof(wchar_t) );
             mbstowcs(wSaveName, pClass->m_saveDetails[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC].UTF8SaveName, strlen(pClass->m_saveDetails->UTF8SaveName)+1); // plus null
             LPWSTR ptr = wSaveName;
-            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE),wSaveName,(DWORD)0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
+            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE),wSaveName,0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
 #endif
         }
         break;
