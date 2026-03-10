@@ -95,8 +95,7 @@ void CreateWorldScreen::buttonClicked(Button *button)
     }
 	else if (button->id == 0)
 	{
-        // note: code copied from SelectWorldScreen
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(new Screen()); // blank screen while the world loads
         if (done) return;
         done = true;
 

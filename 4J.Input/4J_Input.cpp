@@ -218,23 +218,6 @@ void C_4JInput::Tick(void) {
     // 6. Mouse buttons (only meaningful when locked in-game)
     s_mouseLeftCurrent  = (glfwGetMouseButton(w, GLFW_MOUSE_BUTTON_LEFT)  == GLFW_PRESS);
     s_mouseRightCurrent = (glfwGetMouseButton(w, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
-    // if (s_mouseLocked) {
-    //     printf("locked\n");
-    // } else {
-    //     // Not locked. Allow a left-click to re-lock (if not in a menu)
-    //     bool lclick = (glfwGetMouseButton(w, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
-    //     if (!menuNow && lclick) {
-    //         s_mouseLocked = true;
-    //         glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //         if (glfwRawMouseMotionSupported())
-    //             glfwSetInputMode(w, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-    //         s_mouseAccumX = s_mouseAccumY = 0.0f;
-    //         s_cursorInitialized = false;
-    //     }
-    //     s_mouseLeftCurrent  = false;
-    //     s_mouseRightCurrent = false;
-    //     s_frameRelX = s_frameRelY = 0.0f;
-    // }
 }
 
 // ---------------------------------------------------------------------------
