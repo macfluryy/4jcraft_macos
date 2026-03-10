@@ -139,8 +139,8 @@ typedef struct _ConnectionProgressParams
 	bool showTooltips;
 	bool setFailTimer;
 	int timerTime;
-	void (*cancelFunc)(LPVOID param);
-	LPVOID cancelFuncParam;
+	void (*cancelFunc)(void *param);
+	void *cancelFuncParam;
 
 	_ConnectionProgressParams()
 	{
@@ -157,20 +157,20 @@ typedef struct _ConnectionProgressParams
 // Fullscreen progress
 typedef struct _UIFullscreenProgressCompletionData
 {
-	BOOL bRequiresUserAction;
-	BOOL bShowBackground;
-	BOOL bShowLogo;
-	BOOL bShowTips;
+	bool bRequiresUserAction;
+	bool bShowBackground;
+	bool bShowLogo;
+	bool bShowTips;
 	ProgressionCompletionType type;
 	int iPad;
 	EUIScene scene;
 
 	_UIFullscreenProgressCompletionData()
 	{
-		bRequiresUserAction = FALSE;
-		bShowBackground = TRUE;
-		bShowLogo = TRUE;
-		bShowTips = TRUE;
+		bRequiresUserAction = false;
+		bShowBackground = true;
+		bShowLogo = true;
+		bShowTips = true;
 		type = e_ProgressCompletion_NoAction;
 	}
 } UIFullscreenProgressCompletionData;
@@ -178,8 +178,8 @@ typedef struct _UIFullscreenProgressCompletionData
 // Create world
 typedef struct _CreateWorldMenuInitData
 {
-	BOOL bOnline;
-	BOOL bIsPrivate;
+	bool bOnline;
+	bool bIsPrivate;
 	int iPad;
 } 
 CreateWorldMenuInitData;
@@ -284,14 +284,14 @@ LaunchMoreOptionsMenuInitData;
 typedef struct _LoadingInputParams
 {
 	C4JThreadStartFunc* func;
-	LPVOID lpParam;
+	void *lpParam;
 	UIFullscreenProgressCompletionData *completionData;
 
 	int cancelText;
-	void (*cancelFunc)(LPVOID param);
-	void (*completeFunc)(LPVOID param);
-	LPVOID m_cancelFuncParam;
-	LPVOID m_completeFuncParam;
+	void (*cancelFunc)(void *param);
+	void (*completeFunc)(void *param);
+	void *m_cancelFuncParam;
+	void *m_completeFuncParam;
 	bool waitForThreadToDelete;
 
 	_LoadingInputParams()
@@ -348,8 +348,8 @@ typedef struct _TutorialPopupInfo
 // Quadrant sign in
 typedef struct _SignInInfo
 {
-	int( *Func)(LPVOID,const bool, const int iPad);
-	LPVOID lpParam;
+	int( *Func)(void *,const bool, const int iPad);
+	void *lpParam;
 	bool requireOnline;
 } SignInInfo;
 
@@ -370,8 +370,8 @@ typedef struct _MessageBoxInfo
 	UINT *uiOptionA;
 	UINT uiOptionC;
 	DWORD dwPad;
-	int( *Func)(LPVOID,int,const C4JStorage::EMessageResult);
-	LPVOID lpParam;
+	int( *Func)(void *,int,const C4JStorage::EMessageResult);
+	void *lpParam;
 	//C4JStringTable *pStringTable; // 4J Stu - We don't need this for our internal message boxes
 	WCHAR *pwchFormatString;
 	DWORD dwFocusButton;
