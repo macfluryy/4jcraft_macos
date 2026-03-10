@@ -1642,12 +1642,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	{
 		if(m_userIndex == ProfileManager.GetPrimaryPad() )
 		{
-			for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+			for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 			{
 				if(ProfileManager.IsSignedIn(m_userIndex) && ProfileManager.IsGuest(idx))
 				{
-					canPlay = FALSE;
-					isFriendsWithHost = FALSE;
+					canPlay = false;
+					isFriendsWithHost = false;
 				}
 				else
 				{
@@ -1660,12 +1660,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					{
 						// Is this user friends with the host player?			
 						BOOL result;
-						DWORD error;
-						error = XUserAreUsersFriends(idx,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
+						const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
 						if(error == ERROR_SUCCESS && result != TRUE)
 						{
-							canPlay = FALSE;
-							isFriendsWithHost = FALSE;
+							canPlay = false;
+							isFriendsWithHost = false;
 						}
 					}
 				}
@@ -1676,8 +1675,8 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 		{
 			if(ProfileManager.IsSignedIn(m_userIndex) && ProfileManager.IsGuest(m_userIndex))
 			{
-				canPlay = FALSE;
-				isFriendsWithHost = FALSE;
+				canPlay = false;
+				isFriendsWithHost = false;
 			}
 			else
 			{
@@ -1690,12 +1689,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 				{
 					// Is this user friends with the host player?			
 					BOOL result;
-					DWORD error;
-					error = XUserAreUsersFriends(m_userIndex,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
+					const unsigned int error = XUserAreUsersFriends(m_userIndex,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
 					if(error == ERROR_SUCCESS && result != TRUE)
 					{
-						canPlay = FALSE;
-						isFriendsWithHost = FALSE;
+						canPlay = false;
+						isFriendsWithHost = false;
 					}
 				}
 			}
@@ -1704,10 +1702,10 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 
 	if( canPlay )
 	{
-		for(DWORD i = 0; i < packet->m_dwPlayerCount; ++i)
+		for(std::uint8_t i = 0; i < packet->m_dwPlayerCount; ++i)
 		{
 			bool localPlayer = false;
-			for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+			for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 			{
 				if( ProfileManager.IsSignedInLive(idx) )
 				{
@@ -1735,16 +1733,15 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 
 					// 4J Stu - Everyone joining needs to have at least one friend in the game
 					// Local players are implied friends
-					if( isAtLeastOneFriend != TRUE )
+					if(!isAtLeastOneFriend)
 					{
 						BOOL result;
-						DWORD error;
-						for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+						for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 						{
 							if( ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 							{
-								error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-								if(error == ERROR_SUCCESS && result == TRUE) isAtLeastOneFriend = TRUE;
+								const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
+								if(error == ERROR_SUCCESS && result == TRUE) isAtLeastOneFriend = true;
 							}
 						}
 					}
@@ -1766,13 +1763,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					if( m_userIndex == ProfileManager.GetPrimaryPad() ) thisQuadrantOnly = false;
 
 					BOOL result;
-					DWORD error;
-					for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+					for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 					{
 						if( (!thisQuadrantOnly || m_userIndex == idx) && ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 						{
-							error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-							if(error == ERROR_SUCCESS) canPlay &= result;
+							const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
+							if(error == ERROR_SUCCESS) canPlay &= (result == TRUE);
 						}
 						if(!canPlay) break;
 					}
@@ -2883,7 +2879,7 @@ void ClientConnection::handleGameEvent(std::shared_ptr<GameEventPacket> gameEven
 	}
 	else if (event == GameEventPacket::WIN_GAME)
 	{
-		ui.SetWinUserIndex( (BYTE)gameEventPacket->param );
+		ui.SetWinUserIndex(static_cast<unsigned int>(gameEventPacket->param));
 		
 #ifdef _XBOX
 
