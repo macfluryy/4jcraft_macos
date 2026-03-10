@@ -932,7 +932,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 	else
 	{
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -941,8 +941,8 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		//bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 		bool bContentRestricted = false;
 
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
@@ -1214,7 +1214,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, int lo
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave time
 	app.SetAutosaveTimerTime();
@@ -1300,8 +1300,8 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
@@ -1347,7 +1347,7 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStor
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1367,8 +1367,8 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStor
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
