@@ -178,7 +178,7 @@ void PreStitchedTextureMap::stitch()
 
 #ifdef __PSVITA__
 	// AP - alpha cut out is expensive on vita so we mark which icons actually require it
-	DWORD *data = (DWORD*) this->getStitchedTexture()->getData()->getBuffer();
+	std::uint32_t *data = reinterpret_cast<std::uint32_t*>(this->getStitchedTexture()->getData()->getBuffer());
 	int Width = this->getStitchedTexture()->getWidth();
 	int Height = this->getStitchedTexture()->getHeight();
 	for(AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end(); ++it)
