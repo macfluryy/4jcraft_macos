@@ -747,13 +747,13 @@ Item *Item::setDescriptionId(unsigned int id)
 	return this;
 }
 
-LPCWSTR Item::getDescription()
+const wchar_t *Item::getDescription()
 {
 	return app.GetString(getDescriptionId());
 	//return I18n::get(getDescriptionId());
 }
 
-LPCWSTR Item::getDescription(std::shared_ptr<ItemInstance> instance)
+const wchar_t *Item::getDescription(std::shared_ptr<ItemInstance> instance)
 {
 	return app.GetString(getDescriptionId(instance));
 	//return I18n::get(getDescriptionId(instance));
