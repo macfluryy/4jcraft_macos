@@ -170,8 +170,8 @@ typedef struct
 	std::wstring wsDisplayName;
 
 	// add a store for the local DLC image
-	PBYTE pbImageData;
-	DWORD dwImageBytes;
+	std::uint8_t *pbImageData;
+	unsigned int dwImageBytes;
 #else
 	ULONGLONG	ullOfferID_Full;
 	ULONGLONG	ullOfferID_Trial;
