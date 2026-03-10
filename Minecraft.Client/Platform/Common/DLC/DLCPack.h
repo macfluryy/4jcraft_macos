@@ -17,7 +17,7 @@ private:
 
 	std::wstring m_packName;
 	std::wstring m_dataPath;
-	DWORD m_dwLicenseMask;
+	std::uint32_t m_dwLicenseMask;
 	int m_dlcMountIndex;
 	XCONTENTDEVICEID m_dlcDeviceID;
 #ifdef _XBOX_ONE
@@ -32,9 +32,9 @@ private:
 	std::uint8_t *m_data; // This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
 public:
 
-	DLCPack(const std::wstring &name,DWORD dwLicenseMask);
+	DLCPack(const std::wstring &name,std::uint32_t dwLicenseMask);
 #ifdef _XBOX_ONE
-	DLCPack(const std::wstring &name,const std::wstring &productID,DWORD dwLicenseMask);
+	DLCPack(const std::wstring &name,const std::wstring &productID,std::uint32_t dwLicenseMask);
 #endif
 	~DLCPack();
 
@@ -54,8 +54,8 @@ public:
 	DLCPack * GetParentPack() { return m_parentPack; }
 	std::uint32_t GetParentPackId() { return m_parentPack->m_packId; }
 
-	void SetDLCMountIndex(DWORD id) { m_dlcMountIndex = id; }
-	DWORD GetDLCMountIndex();
+	void SetDLCMountIndex(int id) { m_dlcMountIndex = id; }
+	int GetDLCMountIndex();
 	void SetDLCDeviceID(XCONTENTDEVICEID deviceId) { m_dlcDeviceID = deviceId; }
 	XCONTENTDEVICEID GetDLCDeviceID();
 
@@ -65,8 +65,8 @@ public:
 	void addParameter(DLCManager::EDLCParameterType type, const std::wstring &value);
 	bool getParameterAsUInt(DLCManager::EDLCParameterType type, unsigned int &param);
 
-	void updateLicenseMask( DWORD dwLicenseMask ) { m_dwLicenseMask = dwLicenseMask; }
-	DWORD getLicenseMask( ) { return m_dwLicenseMask; }
+	void updateLicenseMask(std::uint32_t dwLicenseMask) { m_dwLicenseMask = dwLicenseMask; }
+	std::uint32_t getLicenseMask() { return m_dwLicenseMask; }
 	
 	std::wstring getName() { return m_packName; }
 #ifdef _XBOX_ONE

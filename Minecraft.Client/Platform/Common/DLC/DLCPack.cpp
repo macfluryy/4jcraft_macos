@@ -11,7 +11,7 @@
 #include "DLCColourTableFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-DLCPack::DLCPack(const std::wstring &name,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,std::uint32_t dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -35,7 +35,7 @@ DLCPack::DLCPack(const std::wstring &name,DWORD dwLicenseMask)
 }
 
 #ifdef _XBOX_ONE
-DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,std::uint32_t dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -81,7 +81,7 @@ DLCPack::~DLCPack()
 	}
 }
 
-DWORD DLCPack::GetDLCMountIndex()
+int DLCPack::GetDLCMountIndex()
 {
 	if(m_parentPack != NULL)
 	{
