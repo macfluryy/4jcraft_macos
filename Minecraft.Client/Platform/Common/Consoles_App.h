@@ -738,8 +738,8 @@ public:
 	bool			RetrieveNextDLCContent();
 	bool			CheckTMSDLCCanStop();
 	static int		DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, int iPad);
-	DWORD			GetDLCContentType(eDLCContentType eType) { return m_dwContentTypeA[eType];}
-	eDLCContentType	Find_eDLCContentType(DWORD dwType);
+	std::uint32_t	GetDLCContentType(eDLCContentType eType) { return m_dwContentTypeA[eType];}
+	eDLCContentType	Find_eDLCContentType(std::uint32_t dwType);
 	int				GetDLCOffersCount()	{ return m_iDLCOfferC;}
 	bool			DLCContentRetrieved(eDLCMarketplaceType eType);
 	void			TickDLCOffersRetrieved();
@@ -792,7 +792,7 @@ private:
 	//Request current_download;
 	std::vector<DLCRequest *> m_DLCDownloadQueue;
 	std::vector<TMSPPRequest *> m_TMSPPDownloadQueue;
-	static DWORD m_dwContentTypeA[e_Marketplace_MAX];
+	static std::uint32_t m_dwContentTypeA[e_Marketplace_MAX];
 	int m_iDLCOfferC;
 	bool m_bAllDLCContentRetrieved;
 	bool m_bAllTMSContentRetrieved;

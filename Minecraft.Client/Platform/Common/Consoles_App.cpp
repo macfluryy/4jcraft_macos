@@ -7907,7 +7907,7 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 	return L"";
 }
 
-DWORD CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX]=
+std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] =
 {
 	XMARKETPLACE_OFFERING_TYPE_CONTENT,		// e_DLC_SkinPack, e_DLC_TexturePacks, e_DLC_MashupPacks
 #ifndef _XBOX_ONE
@@ -8558,7 +8558,7 @@ int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, in
 		DLCRequest  *pCurrent = *it;
 
 		// avatar items are coming back as type Content, so we can't trust the type setting
-		if(pCurrent->dwType==dwType)
+		if(pCurrent->dwType == static_cast<std::uint32_t>(dwType))
 		{
 			pClass->m_iDLCOfferC = iOfferC;
 			app.DebugPrintf("DLCOffersReturned - type %d, count %d - setting to retrieved\n",dwType,iOfferC);
@@ -8570,7 +8570,7 @@ int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, in
 	return 0;
 }
 
-eDLCContentType CMinecraftApp::Find_eDLCContentType(DWORD dwType)
+eDLCContentType CMinecraftApp::Find_eDLCContentType(std::uint32_t dwType)
 {
 	for(int i=0;i<e_DLC_MAX;i++)
 	{

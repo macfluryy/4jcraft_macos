@@ -203,7 +203,7 @@ BANNEDLIST;
 
 typedef struct _DLCRequest
 { 
-	DWORD dwType;
+	std::uint32_t dwType;
 	eDLCContentState eState;
 } 
 DLCRequest;
