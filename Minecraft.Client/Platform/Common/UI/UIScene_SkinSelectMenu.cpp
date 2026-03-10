@@ -1729,7 +1729,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 	return 0;
 }
 
-int UIScene_SkinSelectMenu::RenableInput(LPVOID lpVoid, int, int)
+int UIScene_SkinSelectMenu::RenableInput(void *lpVoid, int, int)
 {
 	((UIScene_SkinSelectMenu*) lpVoid)->m_bIgnoreInput = false;
 	return 0;

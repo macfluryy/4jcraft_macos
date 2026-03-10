@@ -391,7 +391,7 @@ int IUIScene_PauseMenu::ExitWorldThreadProc( void* lpParameter )
 }
 
 // This function performs the meat of exiting from a level. It should be called from a thread other than the main thread.
-void IUIScene_PauseMenu::_ExitWorld(LPVOID lpParameter)
+void IUIScene_PauseMenu::_ExitWorld(void *lpParameter)
 {
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 

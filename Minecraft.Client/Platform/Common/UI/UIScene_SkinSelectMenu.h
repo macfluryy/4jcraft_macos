@@ -170,7 +170,7 @@ private:
 	void showNotOnlineDialog(int iPad);
 
 	static int UnlockSkinReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int RenableInput(LPVOID lpVoid, int, int);
+	static int RenableInput(void *lpVoid, int, int);
 	void AddFavoriteSkin(int iPad,int iSkinID);
 
 	void InputActionOK(unsigned int iPad);
