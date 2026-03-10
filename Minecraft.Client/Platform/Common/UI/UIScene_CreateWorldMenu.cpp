@@ -64,15 +64,15 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
-	m_MoreOptionsParams.bGenerateOptions=TRUE;
-	m_MoreOptionsParams.bStructures=TRUE;	
-	m_MoreOptionsParams.bFlatWorld=FALSE;
-	m_MoreOptionsParams.bBonusChest=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = true;
+	m_MoreOptionsParams.bStructures = true;	
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = iPad;
 
 	m_bGameModeSurvival=true;
@@ -97,23 +97,23 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed )
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -665,23 +665,23 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 				
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
@@ -915,7 +915,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 	}
 #endif
 
-	if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -1101,7 +1101,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 	}
 
 	// start the game
-	bool isFlat = (pClass->m_MoreOptionsParams.bFlatWorld==TRUE);
+	bool isFlat = pClass->m_MoreOptionsParams.bFlatWorld;
 	__int64 seedValue = 0;
 
 	NetworkGameInitData *param = new NetworkGameInitData();

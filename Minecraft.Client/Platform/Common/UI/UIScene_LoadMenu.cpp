@@ -79,12 +79,12 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
-	m_MoreOptionsParams.bGenerateOptions=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = iPad;
 
 	m_iSaveGameInfoIndex=params->iSaveGameInfoIndex;
@@ -112,23 +112,23 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -451,12 +451,12 @@ void UIScene_LoadMenu::tick()
 		// Setup all the text and checkboxes to match what the game was saved with on
 		if(bHostOptionsRead)
 		{
-			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions,eGameHostOption_PvP)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions,eGameHostOption_TrustPlayers)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions,eGameHostOption_FireSpreads)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions,eGameHostOption_TNT)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions,eGameHostOption_CheatsEnabled)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bDisableSaving = app.GetGameHostOption(uiHostOptions,eGameHostOption_DisableSaving)>0?TRUE:FALSE;
+			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions, eGameHostOption_PvP) > 0;
+			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions, eGameHostOption_TrustPlayers) > 0;
+			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions, eGameHostOption_FireSpreads) > 0;
+			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions, eGameHostOption_TNT) > 0;
+			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions, eGameHostOption_CheatsEnabled) > 0;
+			m_MoreOptionsParams.bDisableSaving = app.GetGameHostOption(uiHostOptions, eGameHostOption_DisableSaving) > 0;
 
 			// turn off creative mode on the save
 			// #ifdef _DEBUG
@@ -483,7 +483,7 @@ void UIScene_LoadMenu::tick()
 			bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_FriendsOfFriends) && !(m_bMultiplayerAllowed && bGameSetting_Online))
 			{
-				m_MoreOptionsParams.bAllowFriendsOfFriends = TRUE;
+				m_MoreOptionsParams.bAllowFriendsOfFriends = true;
 			}
 		}
 
@@ -828,7 +828,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 #endif
 
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
-	if(m_MoreOptionsParams.bResetNether==TRUE)
+	if(m_MoreOptionsParams.bResetNether)
 	{
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -887,23 +887,23 @@ void UIScene_LoadMenu::handleTimerComplete(int id)
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
 				if(getSceneResolution() == eSceneResolution_1080)
@@ -988,7 +988,7 @@ void UIScene_LoadMenu::LaunchGame(void)
 	killTimer(CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID);
 #endif
 
-	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -1461,7 +1461,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(pClass->m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1495,7 +1495,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 void UIScene_LoadMenu::checkStateAndStartGame()
 {
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
-	if(m_MoreOptionsParams.bResetNether==TRUE)
+	if(m_MoreOptionsParams.bResetNether)
 	{
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -1587,7 +1587,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1751,7 +1751,7 @@ void UIScene_LoadMenu::handleGainFocus(bool navBack)
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
 		if(getSceneResolution() == eSceneResolution_1080)
 		{
-			m_checkboxOnline.setChecked(m_MoreOptionsParams.bOnlineGame == TRUE);
+			m_checkboxOnline.setChecked(m_MoreOptionsParams.bOnlineGame);
 		}
 #endif
 	}
