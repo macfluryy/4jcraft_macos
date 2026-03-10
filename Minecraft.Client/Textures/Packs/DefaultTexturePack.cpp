@@ -17,13 +17,13 @@ void DefaultTexturePack::loadIcon()
 {
 #ifdef _XBOX
 	// 4J Stu - Temporary only	
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 	swprintf(szResourceLocator, LOCATOR_SIZE ,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/Graphics/TexturePackIcon.png");
 
-	UINT size = 0;
+	unsigned int size = 0;
 	HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_iconData, &size);
 	m_iconSize = size;
 #else
