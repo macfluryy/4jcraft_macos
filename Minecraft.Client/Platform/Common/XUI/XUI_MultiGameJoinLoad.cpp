@@ -1275,8 +1275,8 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 
 				if(tp==NULL)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					app.GetTPD(sessionInfo->data.texturePackParentId,&pbData,&dwBytes);
 
 					// is it in the tpd data ?
@@ -1744,8 +1744,8 @@ HRESULT CScene_MultiGameJoinLoad::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandl
 				{
 					if(m_iConfigA[i]!=-1)
 					{
-						DWORD dwBytes=0;
-						PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 						//app.DebugPrintf("Retrieving iConfig %d from TPD\n",m_iConfigA[i]);
 
 						app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);

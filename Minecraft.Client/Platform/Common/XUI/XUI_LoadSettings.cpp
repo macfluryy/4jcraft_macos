@@ -783,8 +783,8 @@ HRESULT CScene_LoadGameSettings::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandle
 			{
 				if(m_iConfigA[i]!=-1)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);
 
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
@@ -1241,8 +1241,10 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 	if(tp==NULL)
 	{
 		// this is probably a texture pack icon added from TMS
-		DWORD dwBytes=0,dwFileBytes=0;
-		PBYTE pbData=NULL,pbFileData=NULL;
+		unsigned int dwBytes=0;
+		DWORD dwFileBytes=0;
+		std::uint8_t *pbData=NULL;
+		PBYTE pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data

@@ -140,8 +140,10 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 #if TO_BE_IMPLEMENTED		
 		// this is probably a texture pack icon added from TMS
 
-		DWORD dwBytes=0,dwFileBytes=0;
-		PBYTE pbData=NULL,pbFileData=NULL;
+		unsigned int dwBytes=0;
+		DWORD dwFileBytes=0;
+		std::uint8_t *pbData=NULL;
+		PBYTE pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data

@@ -5426,7 +5426,7 @@ void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **
 	LeaveCriticalSection(&csMemFilesLock);
 }
 
-void CMinecraftApp::AddMemoryTPDFile(int iConfig,PBYTE pbData,DWORD dwBytes)	
+void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int dwBytes)	
 {	
 	EnterCriticalSection(&csMemTPDLock);
 	// check it's not already in
@@ -5515,7 +5515,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig)
 	return val;
 }
 
-void CMinecraftApp::GetTPD(int iConfig,PBYTE *ppbData,DWORD *pdwBytes)
+void CMinecraftApp::GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pdwBytes)
 {
 	EnterCriticalSection(&csMemTPDLock);
 	AUTO_VAR(it, m_MEM_TPD.find(iConfig));

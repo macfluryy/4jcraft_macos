@@ -347,10 +347,10 @@ public:
 	bool IsFileInMemoryTextures(const std::wstring &wName);
 
 	// Texture Pack Data files (icon, banner, comparison shot & text)
-	void AddMemoryTPDFile(int iConfig,PBYTE pbData,DWORD dwBytes);
+	void AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int dwBytes);
 	void RemoveMemoryTPDFile(int iConfig);	
 	bool IsFileInTPD(int iConfig);
-	void GetTPD(int iConfig,PBYTE *ppbData,DWORD *pdwBytes);
+	void GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pdwBytes);
 	int GetTPDSize() {return m_MEM_TPD.size();}
 #ifndef __PS3__
 	int GetTPConfigVal(WCHAR *pwchDataFile);

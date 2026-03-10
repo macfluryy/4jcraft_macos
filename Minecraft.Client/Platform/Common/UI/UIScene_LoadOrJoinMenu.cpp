@@ -1696,8 +1696,8 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
 
                 if(tp==NULL)
                 {
-                    DWORD dwBytes=0;
-                    PBYTE pbData=NULL;
+                    unsigned int dwBytes=0;
+                    std::uint8_t *pbData=NULL;
                     app.GetTPD(sessionInfo->data.texturePackParentId,&pbData,&dwBytes);
 
                     // is it in the tpd data ?

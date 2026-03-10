@@ -708,8 +708,8 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 			{
 				if(m_iConfigA[i]!=-1)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					//app.DebugPrintf("Retrieving iConfig %d from TPD\n",m_iConfigA[i]);
 
 					app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);
