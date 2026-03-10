@@ -777,14 +777,14 @@ void GameRenderer::renderItemInHand(float a, int eye)
 	{
 		if (!mc->options->hideGui && !mc->gameMode->isCutScene()) 
 		{
-			//turnOnLightLayer(a); // disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
+			//turnOnLightLayer(a); // 4jcraft: disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
 			PIXBeginNamedEvent(0,"Item in hand render");
-			// add null pointer check to itemInHandRenderer to prevent a occasional seg fault
+			// 4jcraft: add null pointer check to itemInHandRenderer to prevent a occasional seg fault
 			if (itemInHandRenderer != nullptr) {
 				itemInHandRenderer->render(a);
 			}
 			PIXEndNamedEvent();
-			//turnOffLightLayer(a); // disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
+			//turnOffLightLayer(a); // 4jcraft: disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
 		}
 	}
 	glPopMatrix();
@@ -792,7 +792,7 @@ void GameRenderer::renderItemInHand(float a, int eye)
 	//if (!mc->options->thirdPersonView && !mc->cameraTargetPlayer->isSleeping())
 	if (!localplayer->ThirdPersonView() && !mc->cameraTargetPlayer->isSleeping())
 	{
-		// add null pointer check to itemInHandRenderer to prevent a occasional seg fault
+		// 4jcraft: add null pointer check to itemInHandRenderer to prevent a occasional seg fault
 		if (itemInHandRenderer != nullptr) {
 			itemInHandRenderer->renderScreenEffect(a);
 		}
@@ -1074,7 +1074,7 @@ void GameRenderer::render(float a, bool bFirst)
 	int xMouse = Mouse::getX() * screenWidth / fbw;
 	int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
 
-	int maxFps = 0;//getFpsCap(mc->options->framerateLimit);
+	int maxFps = getFpsCap(mc->options->framerateLimit);
 
 	if (mc->level != NULL)
 	{
