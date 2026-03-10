@@ -16,5 +16,5 @@ public:
 	TutorialMessage(int messageId, bool limitRepeats = false, unsigned char numRepeats = TUTORIAL_MESSAGE_DEFAULT_SHOW);
 
 	bool canDisplay();
-	LPCWSTR getMessageForDisplay();
+	const wchar_t *getMessageForDisplay();
 };

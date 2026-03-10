@@ -11,7 +11,7 @@ bool TutorialMessage::canDisplay()
 	return !limitRepeats || (timesShown < numRepeats);
 }
 
-LPCWSTR TutorialMessage::getMessageForDisplay()
+const wchar_t *TutorialMessage::getMessageForDisplay()
 {
 	if(!canDisplay())
 		return L"";
