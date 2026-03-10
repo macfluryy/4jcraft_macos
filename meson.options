@@ -1,4 +1,4 @@
 option('enable_java_guis', 
   type : 'boolean', 
-  value : false, 
+  value : true, 
   description : 'Re-enable the Java UI remnants in the code (for testing only)')
