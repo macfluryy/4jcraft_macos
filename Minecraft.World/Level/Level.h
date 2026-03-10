@@ -9,6 +9,9 @@
 #include "../Util/ParticleTypes.h"
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
+#if !defined(_WIN32)
+#include <pthread.h>
+#endif
 
 #ifdef __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"
@@ -77,8 +80,13 @@ public:
 	int seaLevel;
 
 	// 4J - added, making instaTick flag use TLS so we can set it in the chunk rebuilding thread without upsetting the main game thread
+#if defined(_WIN32)
 	static DWORD tlsIdx;
 	static DWORD tlsIdxLightCache;
+#else
+	static pthread_key_t tlsIdx;
+	static pthread_key_t tlsIdxLightCache;
+#endif
 	static void enableLightingCache();
 	static void destroyLightingCache();
 	static bool getCacheTestEnabled();
