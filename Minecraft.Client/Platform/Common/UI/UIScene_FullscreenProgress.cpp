@@ -99,7 +99,7 @@ void UIScene_FullscreenProgress::updateTooltips()
 void UIScene_FullscreenProgress::handleDestroy()
 {
 	int code = thread->GetExitCode();
-	DWORD exitcode = *((DWORD *)&code);
+	const unsigned int exitcode = static_cast<unsigned int>(code);
 
 	// If we're active, have a cancel func, and haven't already cancelled, call cancel func
 	if( exitcode == STILL_ACTIVE && m_cancelFunc != NULL && !m_bWasCancelled)
@@ -152,10 +152,10 @@ void UIScene_FullscreenProgress::tick()
 
 
 	int code = thread->GetExitCode();
-	DWORD exitcode = *((DWORD *)&code);
+	const unsigned int exitcode = static_cast<unsigned int>(code);
 
 	static int s_FPTickCount = 0;
-	if(s_FPTickCount % 60 == 0) app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n", s_FPTickCount, exitcode, (DWORD)STILL_ACTIVE);
+	if(s_FPTickCount % 60 == 0) app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n", s_FPTickCount, exitcode, static_cast<unsigned int>(STILL_ACTIVE));
 	s_FPTickCount++;
 
 	//app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
