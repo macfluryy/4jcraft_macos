@@ -719,7 +719,7 @@ public:
 	void setLevelGenerationOptions(LevelGenerationOptions *levelGen);
 	LevelRuleset *getGameRuleDefinitions() { return m_gameRules.getGameRuleDefinitions(); }
 	LevelGenerationOptions *getLevelGenerationOptions() { return m_gameRules.getLevelGenerationOptions(); }
-	LPCWSTR	GetGameRulesString(const std::wstring &key);
+	const wchar_t *GetGameRulesString(const std::wstring &key);
 
 private:
 	BYTE m_playerColours[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's

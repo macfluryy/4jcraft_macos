@@ -7605,7 +7605,7 @@ void CMinecraftApp::setLevelGenerationOptions(LevelGenerationOptions *levelGen)
 	m_gameRules.setLevelGenerationOptions(levelGen);
 }
 
-LPCWSTR	CMinecraftApp::GetGameRulesString(const std::wstring &key)
+const wchar_t *CMinecraftApp::GetGameRulesString(const std::wstring &key)
 {
 	return m_gameRules.GetGameRulesString(key);
 }

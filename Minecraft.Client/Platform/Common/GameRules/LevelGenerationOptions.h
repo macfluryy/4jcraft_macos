@@ -202,7 +202,7 @@ public:
 	bool isFeatureChunk(int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature);
 
 	void loadStringTable(StringTable *table);
-	LPCWSTR getString(const std::wstring &key);
+	const wchar_t *getString(const std::wstring &key);
 
 	std::unordered_map<std::wstring, ConsoleSchematicFile *> *getUnfinishedSchematicFiles();
 	

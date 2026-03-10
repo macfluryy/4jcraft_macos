@@ -749,7 +749,7 @@ void GameRuleManager::setLevelGenerationOptions(LevelGenerationOptions *levelGen
 		m_currentLevelGenerationOptions->reset_start();
 }
 
-LPCWSTR	GameRuleManager::GetGameRulesString(const std::wstring &key)
+const wchar_t *GameRuleManager::GetGameRulesString(const std::wstring &key)
 {
 	if(m_currentGameRuleDefinitions != NULL && !key.empty() )
 	{

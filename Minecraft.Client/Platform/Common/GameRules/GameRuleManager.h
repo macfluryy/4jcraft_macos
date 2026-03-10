@@ -72,7 +72,7 @@ public:
 	void setLevelGenerationOptions(LevelGenerationOptions *levelGen);
 	LevelRuleset *getGameRuleDefinitions() { return m_currentGameRuleDefinitions; }
 	LevelGenerationOptions *getLevelGenerationOptions() { return m_currentLevelGenerationOptions; }
-	LPCWSTR	GetGameRulesString(const std::wstring &key);
+	const wchar_t *GetGameRulesString(const std::wstring &key);
 
 	// 4J-JEV:
 	// Properly cleans-up and unloads the current set of gameRules.

@@ -388,7 +388,7 @@ void LevelGenerationOptions::loadStringTable(StringTable *table)
 	m_stringTable = table;
 }
 
-LPCWSTR LevelGenerationOptions::getString(const std::wstring &key)
+const wchar_t *LevelGenerationOptions::getString(const std::wstring &key)
 {
 	if(m_stringTable == NULL)
 	{

@@ -44,7 +44,7 @@ void LevelRuleset::loadStringTable(StringTable *table)
 	m_stringTable = table;
 }
 
-LPCWSTR LevelRuleset::getString(const std::wstring &key)
+const wchar_t *LevelRuleset::getString(const std::wstring &key)
 {
 	if(m_stringTable == NULL)
 	{

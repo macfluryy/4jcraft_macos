@@ -19,7 +19,7 @@ public:
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_LevelRules; }
 
 	void loadStringTable(StringTable *table);
-	LPCWSTR getString(const std::wstring &key);
+	const wchar_t *getString(const std::wstring &key);
 
 	AABB *getNamedArea(const std::wstring &areaName);
 
