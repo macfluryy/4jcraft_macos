@@ -42,7 +42,7 @@ At this time, we are trying to stay as close to the vanilla game as close as pos
 
 ### Bugfixes should be clearly commented.
 
-If you are submitting a bugfix or a minor addition to *game-relevant code*, clearly comment the purpose of this fix in a comment starting with `// 4jcraft:`. This indicates a patch over the original game code and lets us keep track of what has been modified in case it needs to be reverted later.
+If you are submitting a minor addition to *game-relevant code*, clearly comment the purpose of this in a comment starting with `// 4jcraft:`. This indicates a patch over the original game code and lets us keep track of what has been modified in case it needs to be reverted later.
 
 > **Example:**
 >
@@ -53,6 +53,8 @@ If you are submitting a bugfix or a minor addition to *game-relevant code*, clea
 > // FIXME: find the root cause of this, since there shouldn't be more than 4095 entities.
 > dos->writeShort((id & 0x07FF) | 0x800);
 > ```
+
+This rule may not apply to contributions fixing *trivially incorrect* 4J code that affects all platforms, such as instances of undefined behavior.
 
 ### Try to fix the cause, not the effect.
 
