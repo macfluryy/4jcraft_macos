@@ -8,7 +8,45 @@
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "../../IO/Files/FileHeader.h"
 #include "OldChunkStorage.h"
-DWORD OldChunkStorage::tlsIdx = 0;
+#if defined(_WIN32)
+namespace
+{
+	inline void *OldChunkStorageTlsGetValue(DWORD key)
+	{
+		return TlsGetValue(key);
+	}
+
+	inline void OldChunkStorageTlsSetValue(DWORD key, void *value)
+	{
+		TlsSetValue(key, value);
+	}
+}
+
+DWORD OldChunkStorage::tlsIdx = TlsAlloc();
+#else
+namespace
+{
+	pthread_key_t CreateOldChunkStorageTlsKey()
+	{
+		pthread_key_t key;
+		const int result = pthread_key_create(&key, nullptr);
+		assert(result == 0);
+		return key;
+	}
+
+	inline void *OldChunkStorageTlsGetValue(pthread_key_t key)
+	{
+		return pthread_getspecific(key);
+	}
+
+	inline void OldChunkStorageTlsSetValue(pthread_key_t key, void *value)
+	{
+		pthread_setspecific(key, value);
+	}
+}
+
+pthread_key_t OldChunkStorage::tlsIdx = CreateOldChunkStorageTlsKey();
+#endif
 OldChunkStorage::ThreadStorage *OldChunkStorage::tlsDefault = NULL;
 
 OldChunkStorage::ThreadStorage::ThreadStorage()
@@ -32,20 +70,19 @@ void OldChunkStorage::CreateNewThreadStorage()
 	ThreadStorage *tls = new ThreadStorage();
 	if(tlsDefault == NULL )
 	{
-		tlsIdx = TlsAlloc();
 		tlsDefault = tls;
 	}
-	TlsSetValue(tlsIdx, tls);
+	OldChunkStorageTlsSetValue(tlsIdx, tls);
 }
 
 void OldChunkStorage::UseDefaultThreadStorage()
 {
-	TlsSetValue(tlsIdx, tlsDefault);
+	OldChunkStorageTlsSetValue(tlsIdx, tlsDefault);
 }
 
 void OldChunkStorage::ReleaseThreadStorage()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(tlsIdx);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(OldChunkStorageTlsGetValue(tlsIdx));
 	if( tls == tlsDefault ) return;
 
 	delete tls;
@@ -321,7 +358,7 @@ void OldChunkStorage::save(LevelChunk *lc, Level *level, CompoundTag *tag)
 	// Will be fine so long as we only actually create tags for once chunk at a time.
 
 	// 4J Stu - As we now save on multiple threads, the static data has been moved to TLS
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(tlsIdx);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(OldChunkStorageTlsGetValue(tlsIdx));
 
 	PIXBeginNamedEvent(0,"Getting block data");
 	//static byteArray blockData = byteArray(32768);
