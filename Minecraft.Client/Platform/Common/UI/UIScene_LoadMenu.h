@@ -118,7 +118,6 @@ private:
 	static int LoadSaveDataReturned(void *pParam,bool bIsCorrupt, bool bIsOwner);
 	static int TrophyDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int LoadDataComplete(void *pParam);
-	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes);
 	static int CheckResetNetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDataReturned(void *pParam,bool bSuccess);
@@ -129,5 +128,6 @@ private:
 #endif
 
 public:
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
 	static int StartGame_SignInReturned(void *pParam, bool, int);
 };

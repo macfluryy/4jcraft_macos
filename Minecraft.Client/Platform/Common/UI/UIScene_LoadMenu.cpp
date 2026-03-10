@@ -23,6 +23,14 @@
 #define CHECKFORAVAILABLETEXTUREPACKS_TIMER_TIME 50
 #endif
 
+namespace
+{
+int LoadSaveDataThumbnailReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes)
+{
+	return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(lpParam, reinterpret_cast<std::uint8_t *>(pbThumbnail), dwThumbnailBytes);
+}
+}
+
 int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4]=
 {
 	IDS_DIFFICULTY_TITLE_PEACEFUL,
@@ -31,7 +39,7 @@ int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4]=
 	IDS_DIFFICULTY_TITLE_HARD
 };
 
-int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes)
+int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
 	UIScene_LoadMenu *pClass= (UIScene_LoadMenu *)lpParam;
 
@@ -225,9 +233,9 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 #ifdef _DURANGO
 			// On Durango, we have an extra flag possible with LoadSaveDataThumbnail, which if true will force the loading of this thumbnail even if the save data isn't sync'd from
 			// the cloud at this stage. This could mean that there could be a pretty large delay before the callback happens, in this case.
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturned,this,true);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturnedThunk,this,true);
 #else
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturned,this);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturnedThunk,this);
 #endif
 			m_bShowTimer = true;
 		}

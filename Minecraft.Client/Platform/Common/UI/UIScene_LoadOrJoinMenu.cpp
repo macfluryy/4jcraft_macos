@@ -51,7 +51,15 @@ C4JStorage::SAVETRANSFER_FILE_DETAILS UIScene_LoadOrJoinMenu::m_debugTransferDet
 #endif
 #endif
 
-int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes)
+namespace
+{
+int LoadSaveDataThumbnailReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes)
+{
+	return UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(lpParam, reinterpret_cast<std::uint8_t *>(pbThumbnail), dwThumbnailBytes);
+}
+}
+
+int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
     UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
 
@@ -639,7 +647,7 @@ void UIScene_LoadOrJoinMenu::tick()
                 app.DebugPrintf("Requesting the first thumbnail\n");
                 // set the save to load
                 PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-                C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+                C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturnedThunk,this);
 
                 if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
                 {
@@ -702,7 +710,7 @@ void UIScene_LoadOrJoinMenu::tick()
                     app.DebugPrintf("Requesting another thumbnail\n");
                     // set the save to load
                     PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-                    C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+                    C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturnedThunk,this);
                     if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
                     {
                         // something went wrong

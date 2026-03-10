@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class LevelGenerationOptions;
@@ -145,7 +147,7 @@ protected:
 
 public:
 
-	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes);
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
 	static int LoadSaveCallback(void *lpParam,bool bRes);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int SaveOptionsDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class UIScene_QuadrantSignin : public UIScene
@@ -99,7 +101,6 @@ public:
 
 private:
 	static int SignInReturned(void *pParam,bool bContinue, int iPad);
-	static int AvatarReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes);
 
 	void updateState();
 	void setControllerState(int iPad, EControllerStatus state);
@@ -107,4 +108,7 @@ private:
 #ifdef _DURANGO
 	static void checkAllPrivilegesCallback(void *lpParam, bool hasPrivileges, int iPad);
 #endif
+
+public:
+	static int AvatarReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
 };
