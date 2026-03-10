@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIControl.h"
 #include "../../Minecraft.Client/Textures/Textures.h"
 
@@ -23,7 +25,7 @@ private:
 		e_SkinPreviewAnimation_Count,
 	};
 
-	BOOL m_bDirty;
+	bool m_bDirty;
 	float m_fScale,m_fAlpha;
 
 	std::wstring m_customTextureUrl;
@@ -43,7 +45,7 @@ private:
 	float m_walkAnimPos;
 
 	bool m_bAutoRotate, m_bRotatingLeft;
-	BYTE m_rotateTick;
+	std::uint8_t m_rotateTick;
 	float m_fTargetRotation, m_fOriginalRotation;
 	int m_framesAnimatingRotation;
 	bool m_bAnimatingToFacing;

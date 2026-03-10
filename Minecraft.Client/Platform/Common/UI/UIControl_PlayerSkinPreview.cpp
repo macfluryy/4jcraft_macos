@@ -16,7 +16,7 @@
 UIControl_PlayerSkinPreview::UIControl_PlayerSkinPreview()
 {
 	UIControl::setControlType(UIControl::ePlayerSkinPreview);
-	m_bDirty = FALSE;
+	m_bDirty = false;
 	m_fScale = 1.0f;
 	m_fAlpha = 1.0f;
 
