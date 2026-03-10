@@ -810,8 +810,8 @@ private:
 	unsigned int m_dwBannedListFileSize;
 
 public:
-	DWORD m_dwDLCFileSize;
-	BYTE *m_pDLCFileBuffer;
+	unsigned int m_dwDLCFileSize;
+	std::uint8_t *m_pDLCFileBuffer;
 
 // 	static int CallbackReadXuidsFileFromTMS(LPVOID lpParam, WCHAR *wchFilename, int iPad, bool bResult, int iAction);
 // 	static int CallbackDLCFileFromTMS(LPVOID lpParam, WCHAR *wchFilename, int iPad, bool bResult, int iAction);
