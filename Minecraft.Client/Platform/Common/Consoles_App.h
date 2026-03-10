@@ -875,8 +875,8 @@ public:
 
 	void LocaleAndLanguageInit();
 	void getLocale(std::vector<std::wstring> &vecWstrLocales);
-	DWORD get_eMCLang(WCHAR *pwchLocale);
-	DWORD get_xcLang(WCHAR *pwchLocale);
+	int get_eMCLang(WCHAR *pwchLocale);
+	int get_xcLang(WCHAR *pwchLocale);
 
 	void SetTickTMSDLCFiles(bool bVal);
 

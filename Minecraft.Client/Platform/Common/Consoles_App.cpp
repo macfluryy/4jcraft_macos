@@ -9185,13 +9185,13 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 	}
 }
 
-DWORD CMinecraftApp::get_eMCLang(WCHAR *pwchLocale)
+int CMinecraftApp::get_eMCLang(WCHAR *pwchLocale)
 {
 	return m_eMCLangA[pwchLocale];
 }
 
 
-DWORD CMinecraftApp::get_xcLang(WCHAR *pwchLocale)
+int CMinecraftApp::get_xcLang(WCHAR *pwchLocale)
 {
 	return m_xcLangA[pwchLocale];
 }
