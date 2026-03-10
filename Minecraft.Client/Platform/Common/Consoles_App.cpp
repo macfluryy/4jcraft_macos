@@ -1243,7 +1243,7 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 		break;
 
 	case eGameSetting_DisplaySplitscreenGamertags:
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			if(pMinecraft->localplayers[idx] != NULL)
 			{
@@ -3437,9 +3437,9 @@ void CMinecraftApp::HandleXuiActions(void)
 						}
 #endif
 #ifdef _DURANGO
-						DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+						const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-						DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+						const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 						app.DebugPrintf("Unmount result is %d\n",result);
 					}
@@ -4604,7 +4604,7 @@ void CMinecraftApp::SignInChangeCallback(void *pParam,bool bPrimaryPlayerChanged
 				bool hasGuestIdChanged = false;
 				for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 				{
-					DWORD guestNumber = 0;
+					unsigned int guestNumber = 0;
 					if(ProfileManager.IsSignedIn(i))
 					{
 						XUSER_SIGNIN_INFO info;
@@ -4813,7 +4813,7 @@ void CMinecraftApp::NotificationsCallback(void *pParam,DWORD dwNotification, uns
 					{
 						pDLCTexPack->m_pSoundBank->Destroy();
 					}
-					DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+					const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 					app.DebugPrintf("Unmount result is %d\n",result);
 				}
 			}
@@ -8915,7 +8915,7 @@ float CMinecraftApp::getTrialTimer(void)
 
 bool CMinecraftApp::IsLocalMultiplayerAvailable()
 {
-	DWORD connectedControllers = 0;
+	unsigned int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -8955,12 +8955,12 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 {
 	std::vector<eMCLang> locales;
 	
-	DWORD dwSystemLanguage = XGetLanguage( );
+	const unsigned int systemLanguage = XGetLanguage( );
 
 	// 4J-PB - restrict the 360 language until we're ready to have them in
 
 #ifdef _XBOX
-	switch(dwSystemLanguage)
+	switch(systemLanguage)
 	{
 	case XC_LANGUAGE_FRENCH             :
 		locales.push_back(eMCLang_frFR);
@@ -8992,7 +8992,7 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 		break;
 	}
 #else
-	switch(dwSystemLanguage)
+	switch(systemLanguage)
 	{
 
 	case XC_LANGUAGE_ENGLISH:
