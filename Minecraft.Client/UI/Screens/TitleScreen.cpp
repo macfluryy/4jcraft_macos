@@ -21,7 +21,7 @@ TitleScreen::TitleScreen()
 	vo = 0;
 	multiplayerButton = NULL;
 
-    splash = L"4JCraft!";
+    splash = L"missingno";
 //    try {	// 4J - removed try/catch
     std::vector<std::wstring> splashes;
 
