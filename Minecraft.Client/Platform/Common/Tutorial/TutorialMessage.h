@@ -10,7 +10,6 @@ private:
 	bool limitRepeats;
 	unsigned char numRepeats;
 	unsigned char timesShown;
-	DWORD lastDisplayed;
 
 public:
 	TutorialMessage(int messageId, bool limitRepeats = false, unsigned char numRepeats = TUTORIAL_MESSAGE_DEFAULT_SHOW);
