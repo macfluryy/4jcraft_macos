@@ -59,7 +59,6 @@ client = executable('Minecraft.Client',
     glu_dep,
     thread_dep,
     thread_dep,
-    dl_dep,
     dependency('zlib'),
   ],
   cpp_args : global_cpp_args + global_cpp_defs + [
