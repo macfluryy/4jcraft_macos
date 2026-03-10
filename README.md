@@ -38,23 +38,19 @@ At the moment, we're aiming to support the following platforms:
 Install the following packages before building (Debian/Ubuntu names shown):
 
 ```bash
-sudo apt install \
-  build-essential cmake \
-  libsdl2-dev libgl-dev libglu1-mesa-dev \
-  libopenal-dev libvorbis-dev \
-  libpng-dev libpthread-stubs0-dev
+sudo apt-get install -y build-essential python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
 ```
 
 #### Arch/Manjaro
 
 ```bash
-sudo pacman -S base-devel gcc pkgconf cmake sdl2-compat mesa openal libvorbis glu
+sudo pacman -S base-devel gcc pkgconf cmake sdl2-compat mesa glu
 ```
 
 #### Fedora/Red Hat/Nobara
 
 ```bash
-sudo dnf in gcc gcc-c++ make cmake SDL2-devel mesa-libGL-devel mesa-libGLU-devel openal-soft-devel libvorbis-devel libpng-devel openssl-devel
+sudo dnf in gcc gcc-c++ make cmake SDL2-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel
 ```
 
 #### Docker

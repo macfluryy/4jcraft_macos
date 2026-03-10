@@ -26,13 +26,10 @@
         libGL
         libGLU
         sdl2
-        libpng
         zlib
-        openal
-        libvorbis
       ];
       packages = with pkgs; [
-        gcc15
+        clang
         lld
         cmake
         gnumake
