@@ -329,7 +329,7 @@ void UIScene_JoinMenu::handleFocusChange(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_JoinMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_JoinMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)lpParam;
 
@@ -389,7 +389,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 {
 	DWORD dwSignedInUsers = 0;
 	bool noPrivileges = false;
-	DWORD dwLocalUsersMask = 0;
+	int localUsersMask = 0;
 	bool isSignedInLive = true;
 	int iPadNotSignedInLive = -1;
 
@@ -409,7 +409,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 				}
 
 				if( !ProfileManager.AllowedToPlayMultiplayer(index) ) noPrivileges = true;
-				dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(index);
+				localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(index);
 				isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(index);
 			}
 		}
@@ -419,7 +419,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		if(ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
 		{
 			if( !ProfileManager.AllowedToPlayMultiplayer(ProfileManager.GetPrimaryPad()) ) noPrivileges = true;
-			dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+			localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 			isSignedInLive = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
 #ifdef __PSVITA__
@@ -507,7 +507,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 			ProfileManager.DisplaySystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, ProfileManager.GetPrimaryPad() );
 		}
 #endif
-		CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame( pClass->m_selectedSession, dwLocalUsersMask );
+		CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame( pClass->m_selectedSession, localUsersMask );
 
 		// Alert the app the we no longer want to be informed of ethernet connections
 		app.SetLiveLinkRequired( false );

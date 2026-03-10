@@ -51,7 +51,7 @@ C4JStorage::SAVETRANSFER_FILE_DETAILS UIScene_LoadOrJoinMenu::m_debugTransferDet
 #endif
 #endif
 
-int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes)
 {
     UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
 
@@ -74,7 +74,7 @@ int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE p
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::LoadSaveCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::LoadSaveCallback(void *lpParam,bool bRes)
 {
     //UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
     // Get the save data now
@@ -1165,7 +1165,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
     }
 }
 
-int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes)
 {
     // 4J HEG - No reason to set value if keyboard was cancelled
     UIScene_LoadOrJoinMenu *pClass=(UIScene_LoadOrJoinMenu *)lpParam;
@@ -1224,7 +1224,7 @@ void UIScene_LoadOrJoinMenu::handleFocusChange(F64 controlId, F64 childId)
 
 
 #ifdef SONY_REMOTE_STORAGE_DOWNLOAD
-void UIScene_LoadOrJoinMenu::remoteStorageGetSaveCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::remoteStorageGetSaveCallback(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     app.DebugPrintf("remoteStorageGetCallback err : 0x%08x\n", error_code);
     assert(error_code == 0);
@@ -1590,7 +1590,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_FullscreenProgress, loadingParams);
 }
 
-void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(LPVOID pParam)
+void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(void *pParam)
 {
     if(pParam != NULL)
     {
@@ -2041,7 +2041,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(void *pParam,int iPad,C4JSt
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(void *lpParam,bool bRes)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
@@ -2062,7 +2062,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
 }
 
 
-int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(void *lpParam,bool bRes)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
 

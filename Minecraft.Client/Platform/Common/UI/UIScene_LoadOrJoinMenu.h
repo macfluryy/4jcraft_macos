@@ -124,7 +124,7 @@ public:
 
 	virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu;}
 
-	static void UpdateGamesListCallback(LPVOID pParam);
+	static void UpdateGamesListCallback(void *pParam);
 #ifdef _XBOX_ONE
 	void HandleDLCLicenseChange();
 #endif
@@ -145,14 +145,14 @@ protected:
 
 public:
 
-	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
-	static int LoadSaveCallback(LPVOID lpParam,bool bRes);
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, DWORD dwThumbnailBytes);
+	static int LoadSaveCallback(void *lpParam,bool bRes);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int SaveOptionsDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int TexturePackDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);	
-	static int DeleteSaveDataReturned(LPVOID lpParam,bool bRes);
-	static int RenameSaveDataReturned(LPVOID lpParam,bool bRes);
-	static int KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes);
+	static int DeleteSaveDataReturned(void *lpParam,bool bRes);
+	static int RenameSaveDataReturned(void *lpParam,bool bRes);
+	static int KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes);
 protected:
 	void handlePress(F64 controlId, F64 childId);
 	void LoadLevelGen(LevelGenerationOptions *levelGen);
@@ -172,7 +172,7 @@ private:
 #if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
 	static int MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int PSN_SignInReturned(void *pParam,bool bContinue, int iPad);
-	static void remoteStorageGetSaveCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code);
+	static void remoteStorageGetSaveCallback(void *lpParam, SonyRemoteStorage::Status s, int error_code);
 #endif
  
 #ifdef __ORBIS__
