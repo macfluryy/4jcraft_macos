@@ -51,20 +51,20 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 	m_params = (LoadMenuInitData *)pInitData->pvInitData;
 
-	m_MoreOptionsParams.bGenerateOptions=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bTNT = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bResetNether = FALSE;
+	m_MoreOptionsParams.bGenerateOptions = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bTNT = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bResetNether = false;
 	m_MoreOptionsParams.iPad = m_params->iPad;
 
 	// 4J-JEV: Fix for:
 	// TU12: Content: Gameplay: New "Mass Effect World" remembers and uses the settings of another - lately created - World.
-	m_MoreOptionsParams.bBonusChest = FALSE;
-	m_MoreOptionsParams.bFlatWorld = FALSE;
-	m_MoreOptionsParams.bStructures = TRUE;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bStructures = true;
 
 	m_iPad=m_params->iPad;
 	m_iSaveGameInfoIndex=m_params->iSaveGameInfoIndex;
@@ -84,23 +84,23 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -195,11 +195,11 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 		// Setup all the text and checkboxes to match what the game was saved with on
 		if(bHostOptionsRead)
 		{
-			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions,eGameHostOption_PvP)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions,eGameHostOption_TrustPlayers)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions,eGameHostOption_FireSpreads)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions,eGameHostOption_TNT)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions,eGameHostOption_CheatsEnabled)>0?TRUE:FALSE;
+			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions, eGameHostOption_PvP) > 0;
+			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions, eGameHostOption_TrustPlayers) > 0;
+			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions, eGameHostOption_FireSpreads) > 0;
+			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions, eGameHostOption_TNT) > 0;
+			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions, eGameHostOption_CheatsEnabled) > 0;
 
 			m_bHasBeenInCreative = app.GetGameHostOption(uiHostOptions,eGameHostOption_HasBeenInCreative)>0;
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_HasBeenInCreative)>0)
@@ -219,7 +219,7 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_FriendsOfFriends) && !(m_bMultiplayerAllowed && bGameSetting_Online))
 			{
-				m_MoreOptionsParams.bAllowFriendsOfFriends = TRUE;
+				m_MoreOptionsParams.bAllowFriendsOfFriends = true;
 			}
 		}
 
@@ -389,7 +389,7 @@ HRESULT CScene_LoadGameSettings::LaunchGame(void)
 	// stop the timer running that causes a check for new texture packs in TMS but not installed, since this will run all through the load game, and will crash if it tries to create an hbrush
 	XuiKillTimer(m_hObj,CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID);
 
-	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -628,7 +628,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 		XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 
 		// Check if they have the Reset Nether flag set, and confirm they want to do this
-		if(m_MoreOptionsParams.bResetNether==TRUE)
+		if(m_MoreOptionsParams.bResetNether)
 		{
 			UINT uiIDA[2];
 			uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -748,23 +748,23 @@ HRESULT CScene_LoadGameSettings::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandle
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 
 				m_bMultiplayerAllowed = bMultiplayerAllowed;
@@ -973,7 +973,7 @@ void CScene_LoadGameSettings::StartGameFromSave(CScene_LoadGameSettings* pClass,
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(pClass->m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1474,7 +1474,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 

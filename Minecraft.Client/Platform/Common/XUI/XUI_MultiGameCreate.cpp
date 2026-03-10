@@ -54,15 +54,15 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 
 	CreateWorldMenuInitData *params = (CreateWorldMenuInitData *)pInitData->pvInitData;
 
-	m_MoreOptionsParams.bGenerateOptions=TRUE;
-	m_MoreOptionsParams.bStructures=TRUE;	
-	m_MoreOptionsParams.bFlatWorld=FALSE;
-	m_MoreOptionsParams.bBonusChest=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = true;
+	m_MoreOptionsParams.bStructures = true;	
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = params->iPad;
 	m_iPad=params->iPad;
 	delete params;
@@ -75,23 +75,23 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -442,7 +442,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 			}		
 		}
 
-		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges == TRUE)
+		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 		{			
 			UINT uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
@@ -670,23 +670,23 @@ HRESULT CScene_MultiGameCreate::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 
 				m_bMultiplayerAllowed = bMultiplayerAllowed;
@@ -903,7 +903,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 	}
 
 	// start the game
-	bool isFlat = (pClass->m_MoreOptionsParams.bFlatWorld==TRUE);
+	bool isFlat = pClass->m_MoreOptionsParams.bFlatWorld;
 	__int64 seedValue = 0; //BiomeSource::findSeed(isFlat?LevelType::lvl_flat:LevelType::lvl_normal);	// 4J - was (new Random())->nextLong() - now trying to actually find a seed to suit our requirements
 
 	if (wSeed.length() != 0)
