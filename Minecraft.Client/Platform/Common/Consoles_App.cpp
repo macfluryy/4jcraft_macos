@@ -5868,7 +5868,7 @@ void CMinecraftApp::InitialiseTips()
 {
 	// We'll randomise the tips at start up based on their priority
 
-	ZeroMemory(m_TipIDA,sizeof(UINT)*MAX_TIPS_GAMETIP+MAX_TIPS_TRIVIATIP);
+	ZeroMemory(m_TipIDA, sizeof(m_TipIDA));
 
 	// Make the first tip tell you that you can play splitscreen in HD modes if you are in SD
 	if(!RenderManager.IsHiDef())
@@ -5932,7 +5932,7 @@ void CMinecraftApp::InitialiseTips()
 	m_uiCurrentTip=0;
 }
 
-UINT CMinecraftApp::GetNextTip()
+int CMinecraftApp::GetNextTip()
 {
 	static bool bShowSkinDLCTip=true;
 	// don't display the DLC tip in the trial game

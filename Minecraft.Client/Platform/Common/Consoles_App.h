@@ -549,7 +549,7 @@ protected:
 	static Random *TipRandom;
 public:
 	void InitialiseTips();
-	UINT GetNextTip();
+	int GetNextTip();
 	int GetHTMLColour(eMinecraftColour colour);
 	int GetHTMLColor(eMinecraftColour colour) { return GetHTMLColour(colour); }
 	int GetHTMLFontSize(EHTMLFontSize size);
@@ -565,8 +565,8 @@ public:
 	static void ExitGameFromRemoteSave( void *lpParameter );
 	static int ExitGameFromRemoteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 private:
-	UINT m_TipIDA[MAX_TIPS_GAMETIP+MAX_TIPS_TRIVIATIP];
-	UINT m_uiCurrentTip;
+	int m_TipIDA[MAX_TIPS_GAMETIP+MAX_TIPS_TRIVIATIP];
+	unsigned int m_uiCurrentTip;
 	static int TipsSortFunction(const void* a, const void* b);
 
 	// XML

@@ -144,7 +144,7 @@ XuiActionParam;
 typedef struct 
 {    
 	int iSortValue;
-	UINT uiStringID;
+	int uiStringID;
 }
 TIPSTRUCT;
 
