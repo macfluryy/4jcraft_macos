@@ -1672,8 +1672,8 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 	// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 	bool noUGC = false;
 	bool bContentRestricted=false;
-	BOOL pccAllowed = TRUE;
-	BOOL pccFriendsAllowed = TRUE;
+	bool pccAllowed = true;
+	bool pccFriendsAllowed = true;
 #if defined(__PS3__) || defined(__PSVITA__)
 	ProfileManager.GetChatAndContentRestrictions(userIndex,false,&noUGC,&bContentRestricted,NULL);
 #else
@@ -1840,11 +1840,11 @@ void CGameNetworkManager::HandleInviteWhenInMenus( int userIndex, const INVITE_I
 		{
 			// the FromInvite will make the lib decide how many panes to display based on connected pads/signed in players
 #ifdef _XBOX
-			ProfileManager.RequestSignInUI(true, false, false, false, false,&CGameNetworkManager::JoinFromInvite_SignInReturned, (LPVOID)pInviteInfo,userIndex);
+			ProfileManager.RequestSignInUI(true, false, false, false, false,&CGameNetworkManager::JoinFromInvite_SignInReturned, (void *)pInviteInfo,userIndex);
 #else
 			SignInInfo info;
 			info.Func = &CGameNetworkManager::JoinFromInvite_SignInReturned;
-			info.lpParam = (LPVOID)pInviteInfo;
+			info.lpParam = (void *)pInviteInfo;
 			info.requireOnline = true;
 			app.DebugPrintf("Using fullscreen layer\n");
 			ui.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_QuadrantSignin,&info,eUILayer_Alert,eUIGroup_Fullscreen);
