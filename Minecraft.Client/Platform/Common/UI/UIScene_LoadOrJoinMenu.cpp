@@ -2438,10 +2438,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				mbstowcs(wSaveName, pNameUTF8, strlen(pNameUTF8)+1); // plus null
 				StorageManager.SetSaveTitle(wSaveName);
 				std::uint8_t *pbThumbnailData = NULL;
-				DWORD dwThumbnailDataSize=0;
+				unsigned int dwThumbnailDataSize = 0;
 
 				std::uint8_t *pbDataSaveImage = NULL;
-				DWORD dwDataSizeSaveImage=0;
+				unsigned int dwDataSizeSaveImage = 0;
 
 				StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 				StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
@@ -2473,7 +2473,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				// we can't cancel here, we need the saves info so we can delete the file
 				if(pClass->m_saveTransferDownloadCancelled)
 				{	
-					WCHAR wcTemp[256];
+					wchar_t wcTemp[256];
 					swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 					m_wstrStageText=wcTemp;
 					pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2488,7 +2488,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 		case eSaveTransfer_GettingSavesInfo:
 			if(pClass->m_saveTransferDownloadCancelled)
 			{	
-				WCHAR wcTemp[256];
+				wchar_t wcTemp[256];
 				swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 				m_wstrStageText=wcTemp;
 				pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2523,7 +2523,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 
         case eSaveTransfer_GettingFileData:
             {
-                WCHAR wcTemp[256];
+                wchar_t wcTemp[256];
 
                 int dataProgress = app.getRemoteStorage()->getDataProgress();
                 pMinecraft->progressRenderer->progressStagePercentage(dataProgress);
@@ -2598,10 +2598,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
                 StorageManager.ResetSaveData();
 				{
 					std::uint8_t *pbThumbnailData = NULL;
-					DWORD dwThumbnailDataSize=0;
+					unsigned int dwThumbnailDataSize = 0;
 
 					std::uint8_t *pbDataSaveImage = NULL;
-					DWORD dwDataSizeSaveImage=0;
+					unsigned int dwDataSizeSaveImage = 0;
 
 					StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 					StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
@@ -2686,7 +2686,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				{
 					if(pClass->m_saveTransferDownloadCancelled)
 					{	
-						WCHAR wcTemp[256];
+						wchar_t wcTemp[256];
 					swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 						m_wstrStageText=wcTemp;
 						pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2867,7 +2867,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void *lpParameter)
             break;
         case eSaveUpload_UploadingFileData:
             {
-                WCHAR wcTemp[256];
+                wchar_t wcTemp[256];
                 int dataProgress = app.getRemoteStorage()->getDataProgress();
                 pMinecraft->progressRenderer->progressStagePercentage(dataProgress);
 
@@ -3176,7 +3176,7 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void *lpParameter)
 
     if(pStateContainer->m_bSaveTransferCancelled)
     {
-        WCHAR wcTemp[256];
+        wchar_t wcTemp[256];
 
         pStateContainer->m_bSaveTransferCancelled=false;
         swprintf(wcTemp,app.GetString(IDS_SAVE_TRANSFER_DOWNLOAD_CANCELLED));
@@ -3228,7 +3228,7 @@ void UIScene_LoadOrJoinMenu::RequestFileSize( SaveTransferStateContainer *pClass
 void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass, wchar_t *filename )
 {
     Minecraft *pMinecraft=Minecraft::GetInstance();
-    WCHAR wcTemp[256];
+    wchar_t wcTemp[256];
 
     pMinecraft->progressRenderer->progressStagePercentage(0);
 
@@ -3293,7 +3293,7 @@ int UIScene_LoadOrJoinMenu::SaveTransferReturned(void *lpParam, C4JStorage::SAVE
 
 int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(void *lpParam, unsigned long ulBytesReceived)
 {
-    WCHAR wcTemp[256];
+    wchar_t wcTemp[256];
 
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     Minecraft *pMinecraft=Minecraft::GetInstance();
