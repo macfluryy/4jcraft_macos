@@ -22,7 +22,7 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup)
 #endif
 	if( file == INVALID_HANDLE_VALUE )
 	{
-		DWORD error = GetLastError();
+		// DWORD error = GetLastError();
 		//assert(false);
 		app.DebugPrintf("Biome override not found, using plains as default\n");
 

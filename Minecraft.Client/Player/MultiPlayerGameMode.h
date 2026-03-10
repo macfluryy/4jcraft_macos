@@ -23,6 +23,7 @@ protected:
 
 public:
 	MultiPlayerGameMode(Minecraft *minecraft, ClientConnection *connection);
+	virtual ~MultiPlayerGameMode(){}
 	static void creativeDestroyBlock(Minecraft *minecraft, MultiPlayerGameMode *gameMode, int x, int y, int z, int face);
 	void adjustPlayer(std::shared_ptr<Player> player);
 	bool isCutScene();

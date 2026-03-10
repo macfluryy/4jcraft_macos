@@ -7,6 +7,7 @@ class Player;
 class Merchant
 {
 public:
+	virtual ~Merchant(){}
 	virtual void setTradingPlayer(std::shared_ptr<Player> player) = 0;
 	virtual std::shared_ptr<Player> getTradingPlayer() = 0;
 	virtual MerchantRecipeList *getOffers(std::shared_ptr<Player> forPlayer) = 0;

@@ -24,6 +24,8 @@ protected:
 
 public:
 	BiomeDecorator(Biome *biome);
+	virtual ~BiomeDecorator(){}
+
 
 	void decorate(Level *level, Random *random, int xo, int zo);
 

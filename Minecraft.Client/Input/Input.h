@@ -12,6 +12,7 @@ public:
     bool sneaking;
     
 	Input();	// 4J - added
+	virtual ~Input(){}
 
     virtual void tick(LocalPlayer *player);
 

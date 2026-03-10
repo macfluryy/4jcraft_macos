@@ -5,9 +5,9 @@ class TreeFeature : public Feature
 {
 private:
 	const int baseHeight;
-	const bool addJungleFeatures;
 	const int trunkType;
 	const int leafType;
+	const bool addJungleFeatures;
 
 public:
 	TreeFeature(bool doUpdate);

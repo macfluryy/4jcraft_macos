@@ -60,11 +60,17 @@ void StitchedTexture::freeFrameTextures()
 
 StitchedTexture::~StitchedTexture()
 {
-	for(AUTO_VAR(it, frames->begin()); it != frames->end(); ++it)
-	{
-		delete *it;
+	// 4jcraft, added null check
+	// the constructor does not allocate the frames vector.
+	// in some scenarios the destructor/delete is called 
+	// without ever calling ::init() 
+	if(frames) {
+		for(AUTO_VAR(it, frames->begin()); it != frames->end(); ++it)
+		{
+			delete *it;
+		}
+		delete frames;
 	}
-	delete frames;
 }
 
 void StitchedTexture::initUVs(float U0, float V0, float U1, float V1)

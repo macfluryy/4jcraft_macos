@@ -152,7 +152,7 @@ public:
     LevelChunk(Level *level, int x, int z);
     LevelChunk(Level *level, byteArray blocks, int x, int z);
 	LevelChunk(Level *level, int x, int z, LevelChunk *lc);
-	~LevelChunk();
+	virtual ~LevelChunk();
 
     virtual bool isAt(int x, int z);
 

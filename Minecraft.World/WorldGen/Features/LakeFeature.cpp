@@ -13,8 +13,9 @@ bool LakeFeature::place(Level *level, Random *random, int x, int y, int z)
 {
     x -= 8;
     z -= 8;
-    while (y > 5 && level->isEmptyTile(x, y, z))
+    while (y > 5 && level->isEmptyTile(x, y, z)) {
         y--;
+    }
 	if (y <= 4)
 	{
 		return false;
