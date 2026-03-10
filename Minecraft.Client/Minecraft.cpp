@@ -1899,7 +1899,6 @@ void Minecraft::run_middle()
 			Sleep(10);
 			}
 			*/
-			renderFpsMeter(tickDuraction);
 			if (options->renderDebug)
 			{
 				
