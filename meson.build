@@ -1,10 +1,11 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
   default_options : [
-    'buildtype=debug', # for now
-    'unity=on', # merge source files per target
-    'unity_size=8', # TODO: mess around with this
-    'b_pch=true', # precompiled headers
+    'warning_level=0',
+    'buildtype=debug',
+    'unity=on',         # merge source files per target → fewer compile units
+    'unity_size=8',     # files per unity batch (tune up for faster full builds)
+    'b_pch=true',       # precompiled headers
   ],
 )
 
@@ -16,7 +17,8 @@ cc = meson.get_compiler('cpp')
 # system deps
 gl_dep     = dependency('gl')
 glu_dep    = dependency('glu')
-glfw_dep   = dependency('glfw3')
+sdl2_dep   = dependency('sdl2') # Yes.. i know sdl3 is out, but there's not point upgrading right now except when
+                                # someone is gonna ask me "Hey juicey can you make it SDL3?" and i'd be like fuck you and still do it.
 png_dep    = dependency('libpng')
 thread_dep = dependency('threads')
 dl_dep     = cc.find_library('dl')

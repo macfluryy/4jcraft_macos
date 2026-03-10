@@ -21,18 +21,17 @@
   {
     devShells = forAllSystems ({ pkgs }:
       let
-      libs = with pkgs; [
+        libs = with pkgs; [
         openssl.dev
         libGL
         libGLU
-        glfw
+        sdl2
         libpng
         zlib
         openal
         libvorbis
       ];
       packages = with pkgs; [
-        python3
         gcc15
         lld
         cmake
