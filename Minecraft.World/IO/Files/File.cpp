@@ -160,17 +160,17 @@ bool File::_delete()
 	return true;
 #endif
 #elif defined _UNICODE
-	BOOL result = DeleteFile( getPath().c_str() );
+	const bool result = DeleteFile( getPath().c_str() ) != 0;
 #elif defined(__linux__)
 	// FIXME
-	BOOL result = 0;
+	const bool result = false;
 #else
-	BOOL result = DeleteFile( wstringtofilename(getPath()) );
+	const bool result = DeleteFile( wstringtofilename(getPath()) ) != 0;
 #endif
-	if( result == 0 )
+	if( !result )
 	{
 #if !defined(__linux__)
-		DWORD error = GetLastError();
+		const unsigned int error = GetLastError();
 #ifndef _CONTENT_PACKAGE
 		printf( "File::_delete - Error code %d (%#0.8X)\n", error, error );
 #endif
@@ -257,8 +257,8 @@ bool File::mkdirs() const
 #ifdef _UNICODE
 		if( GetFileAttributes(  pathToHere.c_str() ) == -1 )
 		{
-			DWORD result = CreateDirectory( pathToHere.c_str(),  NULL);
-			if( result == 0 )
+			const bool result = CreateDirectory( pathToHere.c_str(),  NULL) != 0;
+			if( !result )
 			{
 				// Failed to create
 				return false;
@@ -275,8 +275,8 @@ bool File::mkdirs() const
 #else
 		if( GetFileAttributes(  wstringtofilename(pathToHere) ) == -1 )
 		{
-			DWORD result = CreateDirectory( wstringtofilename(pathToHere),  NULL);
-			if( result == 0 )
+			const bool result = CreateDirectory( wstringtofilename(pathToHere),  NULL) != 0;
+			if( !result )
 			{
 				// Failed to create
 				return false;
@@ -496,7 +496,6 @@ std::vector<File *> *File::listFiles() const
 		int count = 0;
 		do
 		{
-			//if( !(wfd.dwFileAttributes & dwAttr) )
 			vOutput->push_back( new File( *this, wfd.cFileName  ) );
 		} 
 		while( FindNextFile( hFind, &wfd) );
@@ -514,7 +513,6 @@ std::vector<File *> *File::listFiles() const
 		//int count = 0;
 		do
 		{
-			//if( !(wfd.dwFileAttributes & dwAttr) )
 			vOutput->push_back( new File( *this, filenametowstring( wfd.cFileName ) ) );
 		} 
 		while( FindNextFile( hFind, &wfd) );
@@ -594,7 +592,6 @@ std::vector<File *> *File::listFiles(FileFilter *filter) const
 
 	WCHAR path[MAX_PATH];
 	WIN32_FIND_DATA wfd;
-	DWORD dwAttr = FILE_ATTRIBUTE_DIRECTORY;
 
 	swprintf( path, L"%ls\\*", getPath().c_str() );
 	HANDLE hFind = FindFirstFile( path, &wfd);
@@ -618,7 +615,6 @@ std::vector<File *> *File::listFiles(FileFilter *filter) const
 #else
 	char path[MAX_PATH];
 	WIN32_FIND_DATA wfd;
-	//DWORD dwAttr = FILE_ATTRIBUTE_DIRECTORY;
 
 	sprintf( path, "%s\\*", wstringtofilename( getPath() ) );
 	HANDLE hFind = FindFirstFile( path, &wfd);
@@ -746,20 +742,20 @@ __int64 File::length()
 #else
 	WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
 #ifdef _UNICODE
-	BOOL result = GetFileAttributesEx(
+	const bool result = GetFileAttributesEx(
 		getPath().c_str(), // file or directory name
 		GetFileExInfoStandard, // attribute 
 		&fileInfoBuffer // attribute information 
-		);
+		) != 0;
 #else
-	BOOL result = GetFileAttributesEx(
+	const bool result = GetFileAttributesEx(
 		wstringtofilename(getPath()), // file or directory name
 		GetFileExInfoStandard, // attribute 
 		&fileInfoBuffer // attribute information 
-		);
+		) != 0;
 #endif
 
-	if( result != 0 && !( (fileInfoBuffer.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY) )
+	if( result && !( (fileInfoBuffer.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY) )
 	{
 		// Success
 		LARGE_INTEGER liFileSize;
@@ -799,20 +795,20 @@ __int64 File::lastModified()
 #elif !defined(__linux__)
 	WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
 #ifdef _UNICODE
-	BOOL result = GetFileAttributesEx(
+	const bool result = GetFileAttributesEx(
 		getPath().c_str(), // file or directory name
 		GetFileExInfoStandard, // attribute 
 		&fileInfoBuffer // attribute information 
-		);
+		) != 0;
 #else
-	BOOL result = GetFileAttributesEx(
+	const bool result = GetFileAttributesEx(
 		wstringtofilename(getPath()), // file or directory name
 		GetFileExInfoStandard, // attribute 
 		&fileInfoBuffer // attribute information 
-		);
+		) != 0;
 #endif
 
-	if( result != 0 && !( (fileInfoBuffer.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY) )
+	if( result && !( (fileInfoBuffer.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY) )
 	{
 		// Success
 		LARGE_INTEGER liLastModified;
