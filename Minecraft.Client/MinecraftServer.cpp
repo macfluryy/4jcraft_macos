@@ -262,7 +262,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData *initData, st
 		// 4J delete passed in save data now - this is only required for the tutorial which is loaded by passing data directly in rather than using the storage manager
 		if( initData->saveData )
 		{
-			delete[] (BYTE*)initData->saveData->data;
+			delete[] reinterpret_cast<std::uint8_t *>(initData->saveData->data);
 			initData->saveData->data = 0;
 			initData->saveData->fileSize = 0;
 		}
@@ -349,7 +349,7 @@ void	MinecraftServer::addPostProcessRequest(ChunkSource *chunkSource, int x, int
 
 void MinecraftServer::postProcessTerminate(ProgressRenderer *mcprogress)
 {
-	DWORD status = 0;
+	std::uint32_t status = 0;
 
 	EnterCriticalSection(&server->m_postProcessCS);
 	size_t postProcessItemCount = server->m_postProcessRequests.size();
@@ -541,7 +541,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::ws
 		FileEntry *fe = csf->createFile(filepath);
 
 		ba_gameRules.length = fe->getFileSize();
-		ba_gameRules.data = new BYTE[ ba_gameRules.length ];
+		ba_gameRules.data = new std::uint8_t[ ba_gameRules.length ];
 
 		csf->setFilePointer(fe, 0, SaveFileSeekOrigin::Begin);
 		csf->readFile(fe, ba_gameRules.data, ba_gameRules.length, &numberOfBytesRead);
@@ -1194,7 +1194,7 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 
 			// Process delayed actions			
 			eXuiServerAction eAction;
-			LPVOID param;
+			void *param;
 			for(int i=0;i<XUSER_MAX_COUNT;i++)
 			{
 				eAction = app.GetXuiServerAction(i);
@@ -1653,7 +1653,7 @@ void MinecraftServer::cycleSlowQueueIndex()
 
 	int startingIndex = s_slowQueuePlayerIndex;
 	INetworkPlayer *currentPlayer = NULL;
-	DWORD currentPlayerCount = 0;
+	int currentPlayerCount = 0;
 	do
 	{
 		currentPlayerCount = g_NetworkManager.GetPlayerCount();
