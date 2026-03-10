@@ -54,7 +54,7 @@ void Screen::mouseClicked(int x, int y, int buttonNum)
 {
     if (buttonNum == 0)
 	{
-		AUTO_VAR(itEnd, buttons.end());
+        AUTO_VAR(itEnd, buttons.end());
 		for (AUTO_VAR(it, buttons.begin()); it != itEnd; it++)
 		{
             Button *button = *it; //buttons[i];
@@ -116,11 +116,15 @@ void Screen::updateEvents()
     GLFWwindow* window = glfwGetCurrentContext();
     if (!window) return;
     
+    float windowScaleX = 1;
+    float windowScaleY = 1;
+    glfwGetWindowContentScale(window, &windowScaleX, &windowScaleY);
+    
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
     
-    int xMouse = (int)xpos * screenWidth / fbw;
-    int yMouse = (int)ypos * screenHeight / fbh - 1;
+    int xMouse = (int)(xpos * windowScaleX) * screenWidth / fbw;
+    int yMouse = (int)(ypos * windowScaleY) * screenHeight / fbh - 1;
     
     static bool prevLeftState = false;
     static bool prevRightState = false;
