@@ -38,7 +38,7 @@ At the moment, we're aiming to support the following platforms:
 Install the following packages before building (Debian/Ubuntu names shown):
 
 ```bash
-sudo apt-get install -y build-essential python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
+sudo apt-get install -y build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
 ```
 
 #### Arch/Manjaro
