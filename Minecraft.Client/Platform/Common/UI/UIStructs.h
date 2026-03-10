@@ -388,7 +388,7 @@ DLCOffersParam;
 typedef struct _InGamePlayerOptionsInitData
 {
 	int iPad;
-	BYTE networkSmallId;
+	std::uint8_t networkSmallId;
 	unsigned int playerPrivileges;
 } InGamePlayerOptionsInitData;
 
