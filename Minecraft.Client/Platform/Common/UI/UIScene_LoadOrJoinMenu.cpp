@@ -2437,10 +2437,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 				const char* pNameUTF8 = app.getRemoteStorage()->getSaveNameUTF8();
 				mbstowcs(wSaveName, pNameUTF8, strlen(pNameUTF8)+1); // plus null
 				StorageManager.SetSaveTitle(wSaveName);
-				PBYTE pbThumbnailData=NULL;
+				std::uint8_t *pbThumbnailData = NULL;
 				DWORD dwThumbnailDataSize=0;
 
-				PBYTE pbDataSaveImage=NULL;
+				std::uint8_t *pbDataSaveImage = NULL;
 				DWORD dwDataSizeSaveImage=0;
 
 				StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
@@ -2597,10 +2597,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 
                 StorageManager.ResetSaveData();
 				{
-					PBYTE pbThumbnailData=NULL;
+					std::uint8_t *pbThumbnailData = NULL;
 					DWORD dwThumbnailDataSize=0;
 
-					PBYTE pbDataSaveImage=NULL;
+					std::uint8_t *pbDataSaveImage = NULL;
 					DWORD dwDataSizeSaveImage=0;
 
 					StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
