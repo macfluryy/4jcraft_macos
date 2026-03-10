@@ -25,9 +25,6 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    concurrency:
-      group: build-linux-${{ github.ref }}
-      cancel-in-progress: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -77,17 +74,7 @@ jobs:
           export CCACHE_DIR="$CCACHE_DIR"
           meson setup build_meson --wipe --buildtype=release
 
-      - name: Configure Meson (debug)
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          mkdir -p "$CCACHE_DIR"
-          export CCACHE_DIR="$CCACHE_DIR"
-          meson setup build_debug --wipe --buildtype=debug
-
-      - name: Build with Ninja
+      - name: Build with Meson
         env:
           CC: "ccache clang"
           CXX: "ccache clang++"
@@ -95,16 +82,7 @@ jobs:
         run: |
           export CCACHE_DIR="${{ runner.temp }}/ccache"
           # Use all available cores for faster parallel builds
-          ninja -C build_meson -j$(nproc) -v
-
-      - name: Build Debug with Ninja
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          export CCACHE_DIR="${{ runner.temp }}/ccache"
-          ninja -C build_debug -j$(nproc) -v
+          meson compile -C build_meson -j $(nproc) -v Minecraft.Client
 
       - name: Install patchelf
         run: sudo apt-get install -y patchelf
@@ -185,47 +163,76 @@ jobs:
           echo "Bundle ready: $BUNDLE"
           ls -lh "$BUNDLE" "$BUNDLE/lib"
 
-      - name: Bundle debug executable + libraries
-        env:
-          GITHUB_SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          EXE_PATH=build_debug/Minecraft.Client/Minecraft.Client
-          if [ ! -f "$EXE_PATH" ]; then
-            echo "ERROR: expected debug executable at $EXE_PATH" >&2
-            ls -la build_debug || true
-            exit 1
-          fi
-
-          SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c1-8)
-          BUNDLE=out/minecraft-client-linux-${SHORT_SHA}-debug
-          mkdir -p "$BUNDLE/lib"
-
-          # Copy the binary
-          cp "$EXE_PATH" "$BUNDLE/Minecraft.Client.debug"
-
-          # Collect non-system shared library dependencies and copy them in.
-          ldd "$EXE_PATH" \
-            | awk '/=>/ { print $3 }' \
-            | grep -v '^(' \
-            | grep -Ev '/(libc|libm|libdl|libpthread|librt|libgcc_s|libstdc\+\+|ld-linux)[^/]*\.so' \
-            | sort -u \
-            | while read -r lib; do
-                [ -f "$lib" ] && cp "$lib" "$BUNDLE/lib/" || true
-              done
-
-          # Patch the binary RPATH so it finds libs in ./lib at runtime
-          patchelf --set-rpath '$ORIGIN/lib' "$BUNDLE/Minecraft.Client.debug"
-
-          # Keep a copy of the unstripped debug binary (symbols are already present in debug build)
-          echo "Debug bundle ready: $BUNDLE"
-          ls -lh "$BUNDLE" "$BUNDLE/lib"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
-          path: |
-            out/minecraft-client-linux-*/
-            out/minecraft-client-linux-*-debug/
+          path: out/minecraft-client-linux-*/
+          retention-days: 7
+  build-linux-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 python3-pip python3-setuptools libgl1-mesa-dev libglu1-mesa-dev libglfw3-dev libpng-dev pkg-config clang lld ccache libssl-dev
+          # Set a reasonable ccache size
+          ccache -M 5G || true
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/build-linux.yml') }}
+
+      - name: Install Meson and Ninja (pip)
+        run: |
+          python -m pip install --upgrade pip
+          pip install meson ninja
+
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-debug-${{ hashFiles('**/meson.build') }}
+
+      - name: Restore meson cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/meson
+          key: ${{ runner.os }}-meson-debug-${{ hashFiles('**/meson.build') }}
+
+      - name: Configure Meson (debug)
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          mkdir -p "$CCACHE_DIR"
+          export CCACHE_DIR="$CCACHE_DIR"
+          meson setup build_debug --wipe --buildtype=debug
+
+      - name: Build Debug with Meson
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          export CCACHE_DIR="${{ runner.temp }}/ccache"
+          # Use all available cores for faster parallel builds
+          meson compile -C build_debug -j $(nproc) -v Minecraft.Client
+
+      - name: Upload debug executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: minecraft-client-linux-debug_exe-${{ github.sha }}
+          path: build_debug/Minecraft.Client/Minecraft.Client
           retention-days: 7
