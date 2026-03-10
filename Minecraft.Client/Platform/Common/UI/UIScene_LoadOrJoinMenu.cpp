@@ -9,6 +9,7 @@
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFile.h"
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFileOriginal.h"
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFileSplit.h"
+#include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
@@ -3251,17 +3252,24 @@ void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass
         File targetFile( std::wstring(L"FakeTMSPP\\").append(filename) );
         if(targetFile.exists())
         {
-            HANDLE hSaveFile = CreateFile( targetFile.getPath().c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
+            const std::size_t fileLength = static_cast<std::size_t>(m_debugTransferDetails.ulFileLen);
+            m_debugTransferDetails.pbData = new std::uint8_t[fileLength];
 
-            m_debugTransferDetails.pbData = new BYTE[m_debugTransferDetails.ulFileLen];
+            const PortableFileIO::BinaryReadResult readResult =
+                PortableFileIO::ReadBinaryFile(targetFile.getPath(), m_debugTransferDetails.pbData, fileLength);
 
-            DWORD numberOfBytesRead = 0;
-            ReadFile( hSaveFile,m_debugTransferDetails.pbData,m_debugTransferDetails.ulFileLen,&numberOfBytesRead,NULL);
-            assert(numberOfBytesRead == m_debugTransferDetails.ulFileLen);
+            assert(readResult.status == PortableFileIO::BinaryReadStatus::ok);
+            assert(readResult.bytesRead == fileLength);
 
-            CloseHandle(hSaveFile);
-
-            SaveTransferReturned(pClass,&m_debugTransferDetails);
+            if ((readResult.status == PortableFileIO::BinaryReadStatus::ok) && (readResult.bytesRead == fileLength))
+            {
+                SaveTransferReturned(pClass,&m_debugTransferDetails);
+            }
+            else
+            {
+                delete[] m_debugTransferDetails.pbData;
+                m_debugTransferDetails.pbData = NULL;
+            }
         }
     }
     else
