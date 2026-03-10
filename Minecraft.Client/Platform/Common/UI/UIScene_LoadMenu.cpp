@@ -936,7 +936,7 @@ void UIScene_LoadMenu::handleTimerComplete(int id)
 
 						if(hasRegisteredSubstitutionTexture(textureName)==false)
 						{
-							PBYTE pbImageData;
+							std::uint8_t *pbImageData = NULL;
 							int iImageDataBytes=0;
 							SonyHttp::getDataFromURL(pDLCInfo->chImageURL,(void **)&pbImageData,&iImageDataBytes);
 
