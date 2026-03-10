@@ -1578,7 +1578,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -1934,7 +1934,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(File *saveFile, ESavePlatform save
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -1999,7 +1999,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud()
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2029,7 +2029,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(void *pParam,int iPad,C4JSt
         }
         else
         {
-			StorageManager.DeleteSaveData(&pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC], UIScene_LoadOrJoinMenu::DeleteSaveDataReturned, (LPVOID)pClass->GetCallbackUniqueId());
+			StorageManager.DeleteSaveData(&pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC], UIScene_LoadOrJoinMenu::DeleteSaveDataReturned, reinterpret_cast<void *>(pClass->GetCallbackUniqueId()));
             pClass->m_controlSavesTimer.setVisible( true );
         }
     }
@@ -2284,7 +2284,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 {
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc;
-    loadingParams->lpParam = (LPVOID)this;
+    loadingParams->lpParam = this;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2303,7 +2303,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
 
 
-int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(void *lpParam, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	if(bRes)
@@ -2319,7 +2319,7 @@ int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(LPVOID lpParam,bool bRes
 	return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback(LPVOID lpParam, SAVE_DETAILS *pSaveDetails, bool bRes)
+int UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback(void *lpParam, SAVE_DETAILS *pSaveDetails, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	if(bRes)
@@ -2358,7 +2358,7 @@ int UIScene_LoadOrJoinMenu::CrossSaveFinishedCallback(void *pParam,int iPad,C4JS
 }
 
 
-int UIScene_LoadOrJoinMenu::CrossSaveDeleteOnErrorReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::CrossSaveDeleteOnErrorReturned(void *lpParam, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_eSaveTransferState = eSaveTransfer_ErrorMesssage;
@@ -2377,7 +2377,7 @@ int UIScene_LoadOrJoinMenu::RemoteSaveNotFoundCallback(void *pParam,int iPad,C4J
 bool g_bForceVitaSaveWipe = false;
 
 
-int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 {
     Compression::UseDefaultThreadStorage();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParameter;
@@ -2769,7 +2769,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 
 }
 
-void UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::SaveTransferReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 
@@ -2789,7 +2789,7 @@ ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert()
     return NULL;
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void *lpParam)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_saveTransferDownloadCancelled = true;
@@ -2806,7 +2806,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveUpload()
 {
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc;
-    loadingParams->lpParam = (LPVOID)this;
+    loadingParams->lpParam = this;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2833,7 +2833,7 @@ int UIScene_LoadOrJoinMenu::CrossSaveUploadFinishedCallback(void *pParam,int iPa
 }
 
 
-int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void *lpParameter)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParameter;
 	pClass->m_saveTransferUploadCancelled = false;
@@ -2922,7 +2922,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc( LPVOID lpParameter )
 
 }
 
-void UIScene_LoadOrJoinMenu::SaveUploadReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::SaveUploadReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 
@@ -2941,7 +2941,7 @@ void UIScene_LoadOrJoinMenu::SaveUploadReturned(LPVOID lpParam, SonyRemoteStorag
 	}
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveUploadCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveUploadCallback(void *lpParam)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_saveTransferUploadCancelled = true;
@@ -2984,7 +2984,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc;
-    loadingParams->lpParam = (LPVOID)stateContainer;
+    loadingParams->lpParam = stateContainer;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -3003,7 +3003,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
 
 
-int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void *lpParameter)
 {
     Compression::UseDefaultThreadStorage();
 
@@ -3270,7 +3270,7 @@ void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass
     }
 }
 
-int UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam,C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails)
+int UIScene_LoadOrJoinMenu::SaveTransferReturned(void *lpParam, C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     app.DebugPrintf("Save Transfer - size is %d\n",pSaveTransferDetails->ulFileLen);
@@ -3291,7 +3291,7 @@ int UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam,C4JStorage::SAVE
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(LPVOID lpParam,unsigned long ulBytesReceived)
+int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(void *lpParam, unsigned long ulBytesReceived)
 {
     WCHAR wcTemp[256];
 
@@ -3318,7 +3318,7 @@ int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(LPVOID lpParam,unsigned l
     return 0;
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void *lpParam)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
 
@@ -3331,7 +3331,7 @@ void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
     //pClass->m_bSaveTransferInProgress=false;
 }
 
-int UIScene_LoadOrJoinMenu::CancelSaveTransferCompleteCallback(LPVOID lpParam)
+int UIScene_LoadOrJoinMenu::CancelSaveTransferCompleteCallback(void *lpParam)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     // change the state to idle to get the download thread to terminate
@@ -3379,7 +3379,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDialogReturned(void *pParam,int iPad,C4JStor
 	{
 
 		LoadingInputParams *loadingParams = new LoadingInputParams();
-		void *uniqueId = (LPVOID)pClass->GetCallbackUniqueId();
+		void *uniqueId = reinterpret_cast<void *>(pClass->GetCallbackUniqueId());
 		loadingParams->func = &UIScene_LoadOrJoinMenu::CopySaveThreadProc;
 		loadingParams->lpParam = uniqueId;
 		loadingParams->waitForThreadToDelete = true;
@@ -3405,7 +3405,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDialogReturned(void *pParam,int iPad,C4JStor
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CopySaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::CopySaveThreadProc(void *lpParameter)
 {
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 	pMinecraft->progressRenderer->progressStart(IDS_PROGRESS_COPYING_SAVE);
@@ -3446,7 +3446,7 @@ int UIScene_LoadOrJoinMenu::CopySaveThreadProc( LPVOID lpParameter )
 	return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CopySaveDataReturned(LPVOID lpParam, bool success, C4JStorage::ESaveGameState stat)
+int UIScene_LoadOrJoinMenu::CopySaveDataReturned(void *lpParam, bool success, C4JStorage::ESaveGameState stat)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
@@ -3495,7 +3495,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDataReturned(LPVOID lpParam, bool success, C
 	return 0;
 }
 
-bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(LPVOID lpParam, int percent)
+bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(void *lpParam, int percent)
 {
 	bool bContinue = false;
 	ui.EnterCallbackIdCriticalSection();
@@ -3511,7 +3511,7 @@ bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(LPVOID lpParam, int percent)
 	return bContinue;
 }
 
-void UIScene_LoadOrJoinMenu::CancelCopySaveCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelCopySaveCallback(void *lpParam)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
