@@ -1,5 +1,7 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
+
 #include "IUIController.h"
 #include "UIEnums.h"
 #include "UIGroup.h"
@@ -256,7 +258,7 @@ protected:
 	virtual void destroySubstitutionTexture(void *destroyCallBackData, GDrawTexture *handle) {}
 
 public:
-	void registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength);
+	void registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength);
 	void unregisterSubstitutionTexture(const std::wstring &textureName, bool deleteData);
 
 public:

@@ -1383,7 +1383,7 @@ void RADLINK UIController::TextureSubstitutionDestroyCallback ( void * user_call
 	t->releaseTexture( id );
 }
 
-void UIController::registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength)
+void UIController::registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength)
 {
 	// Remove it if it already exists
 	unregisterSubstitutionTexture(textureName,false);

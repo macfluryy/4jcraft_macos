@@ -4,6 +4,8 @@
 //using namespace std;
 // A scene map directly to an Iggy movie (or more accurately a collection of different sized movies)
 
+#include <cstdint>
+
 #include "UIEnums.h"
 #include "UIControl_Base.h"
 
@@ -251,7 +253,7 @@ public:
 #ifdef _XBOX_ONE
 	virtual void HandleDLCLicenseChange() {}
 #endif
-	void registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength, bool deleteData = false);
+	void registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength, bool deleteData = false);
 	bool hasRegisteredSubstitutionTexture(const std::wstring &textureName);
 
 	virtual void handleUnlockFullVersion() {}
