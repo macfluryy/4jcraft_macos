@@ -77,7 +77,10 @@ void SetEntityMotionPacket::write(DataOutputStream *dos) //throws IOException
 {
 	if( useBytes )
 	{
-		// Masking the id to 11 bits before writing to account for large entitty ids.
+		// 4jcraft: masking the id to 11 bits before writing to account for entity ids > 4095.
+		// This fixes a connection drop when loading the tutorial world on linux.
+		//
+		// FIXME: find the root cause of this, since there shouldn't be more than 4095 entities.
 		dos->writeShort((id & 0x07FF) | 0x800);
 		dos->writeByte(xa/16);
 		dos->writeByte(ya/16);
@@ -85,7 +88,7 @@ void SetEntityMotionPacket::write(DataOutputStream *dos) //throws IOException
 	}
 	else
 	{
-		// same thing as line 80 here
+		// 4jcraft: same thing as line 80 here
 		dos->writeShort((id & 0x07FF));
 		dos->writeShort(xa);
 		dos->writeShort(ya);

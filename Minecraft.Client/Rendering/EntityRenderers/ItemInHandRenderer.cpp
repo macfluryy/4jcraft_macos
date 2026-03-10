@@ -311,6 +311,8 @@ void ItemInHandRenderer::renderItem3D(Tesselator *t, float u0, float v0, float u
 
 void ItemInHandRenderer::render(float a)
 {
+    // 4jcraft: null checks here fix player hand rendering on linux
+    // TOOD: determine why these are null in the first place
     if (!mc->player || !mc->level) return;
 
     float h = oHeight + (height - oHeight) * a;
