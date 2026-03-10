@@ -33,7 +33,9 @@ void Random::setSeed(__int64 s)
 
 int Random::next(int bits)
 {
-    seed = (seed * 0x5DEECE66DLL + 0xBLL) & ((1LL << 48) - 1);
+	// 4jcraft, cast to uint64_t for modulo arithmethic
+	// overflow of int undefined, and its guaranteed here.
+    seed = ((uint64_t) seed * 0x5DEECE66DLL + 0xBLL) & ((1LL << 48) - 1);
     return (int)(seed >> (48 - bits));
 }
 
