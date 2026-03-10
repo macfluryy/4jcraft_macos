@@ -58,7 +58,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete()
 		char *pchName=app.GetDLCInfoTextures(i);
 		pDLCInfo=app.GetDLCInfo(pchName);
 #elif defined _XBOX_ONE
-		pDLCInfo=app.GetDLCInfoForFullOfferID((WCHAR *)app.GetDLCInfoTexturesFullOffer(i).c_str());
+		pDLCInfo=app.GetDLCInfoForFullOfferID(const_cast<wchar_t *>(app.GetDLCInfoTexturesFullOffer(i).c_str()));
 #else
 		ULONGLONG ull=app.GetDLCInfoTexturesFullOffer(i);
 		pDLCInfo=app.GetDLCInfoForFullOfferID(ull);
@@ -362,7 +362,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(void *pParam,int iPad,C4JStora
 				app.GetDLCFullOfferIDForPackID(pClass->m_MoreOptionsParams.dwTexturePack,ProductId);
 
 
-				StorageManager.InstallOffer(1,(WCHAR *)ProductId.c_str(),NULL,NULL);
+				StorageManager.InstallOffer(1, const_cast<wchar_t *>(ProductId.c_str()), NULL, NULL);
 
 				// the license change coming in when the offer has been installed will cause this scene to refresh	
 			}

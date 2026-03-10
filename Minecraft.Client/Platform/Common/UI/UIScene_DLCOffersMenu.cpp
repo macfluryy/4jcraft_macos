@@ -738,8 +738,7 @@ void UIScene_DLCOffersMenu::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 				if(wcsncmp(L"Minecraft ",wstrTemp.c_str(),10)==0)
 				{
 					app.DebugPrintf("Removing Minecraft from name\n");
-					WCHAR *pwchNewName=(WCHAR *)wstrTemp.c_str();
-					wstrTemp=&pwchNewName[10];
+					wstrTemp = wstrTemp.substr(10);
 				}
 
 #ifdef _XBOX_ONE
@@ -822,7 +821,7 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(MARKETPLACE_CONTENTOFFER_INFO& xOffer)
 
 	if (dlc != NULL)
 	{
-		WCHAR *cString = dlc->wchBanner;
+		wchar_t *cString = dlc->wchBanner;
 
 
 		// is the file in the local DLC images?
