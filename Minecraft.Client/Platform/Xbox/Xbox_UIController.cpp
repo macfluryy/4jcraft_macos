@@ -313,13 +313,13 @@ void ConsoleUIController::SetWinUserIndex(unsigned int iPad)
 	CScene_Win::setWinUserIndex( iPad );
 }
 
-C4JStorage::EMessageResult ConsoleUIController::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, CXuiStringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton,bool bIsError)
+C4JStorage::EMessageResult ConsoleUIController::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult), void *lpParam, CXuiStringTable *pStringTable, wchar_t *pwchFormatString, unsigned int dwFocusButton, bool bIsError)
 {
 	return StorageManager.RequestMessageBox(uiTitle, uiText, uiOptionA, uiOptionC, dwPad, Func, lpParam, pStringTable, pwchFormatString, dwFocusButton);
 }
 
-C4JStorage::EMessageResult ConsoleUIController::RequestUGCMessageBox(UINT title/* = -1 */, UINT message/* = -1 */, int iPad/* = -1*/, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)/* = NULL*/, LPVOID lpParam/* = NULL*/)
+C4JStorage::EMessageResult ConsoleUIController::RequestUGCMessageBox(int title/* = -1 */, int message/* = -1 */, int iPad/* = -1*/, int( *Func)(void *,int,const C4JStorage::EMessageResult)/* = NULL*/, void *lpParam/* = NULL*/)
 {
 	// Default title / messages
 	if (title == -1)
@@ -335,7 +335,7 @@ C4JStorage::EMessageResult ConsoleUIController::RequestUGCMessageBox(UINT title/
 	// Default pad to primary player
 	if (iPad == -1) iPad = ProfileManager.GetPrimaryPad();
 
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox(title, message, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 }

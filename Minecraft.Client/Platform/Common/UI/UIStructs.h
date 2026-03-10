@@ -365,16 +365,16 @@ SCreditTextItemDef;
 // Message box
 typedef struct _MessageBoxInfo
 {
-	UINT uiTitle;
-	UINT uiText;
-	UINT *uiOptionA;
-	UINT uiOptionC;
-	DWORD dwPad;
+	unsigned int uiTitle;
+	unsigned int uiText;
+	unsigned int *uiOptionA;
+	unsigned int uiOptionC;
+	unsigned int dwPad;
 	int( *Func)(void *,int,const C4JStorage::EMessageResult);
 	void *lpParam;
 	//C4JStringTable *pStringTable; // 4J Stu - We don't need this for our internal message boxes
-	WCHAR *pwchFormatString;
-	DWORD dwFocusButton;
+	wchar_t *pwchFormatString;
+	unsigned int dwFocusButton;
 } MessageBoxInfo;
 
 typedef struct _DLCOffersParam

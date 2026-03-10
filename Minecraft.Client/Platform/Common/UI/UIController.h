@@ -345,15 +345,15 @@ public:
 
 	// 4J Stu - Only because of the different StringTable type, should really fix the libraries
 #ifndef __PS3__
-	virtual C4JStorage::EMessageResult RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, C4JStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0, bool bIsError = true);
+	virtual C4JStorage::EMessageResult RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL, void *lpParam=NULL, C4JStringTable *pStringTable=NULL, wchar_t *pwchFormatString=NULL, unsigned int dwFocusButton=0, bool bIsError = true);
 #else
-	virtual C4JStorage::EMessageResult RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, StringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0, bool bIsError = true);
+	virtual C4JStorage::EMessageResult RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL, void *lpParam=NULL, StringTable *pStringTable=NULL, wchar_t *pwchFormatString=NULL, unsigned int dwFocusButton=0, bool bIsError = true);
 #endif
 
-	C4JStorage::EMessageResult RequestUGCMessageBox(UINT title = -1, UINT message = -1, int iPad = -1, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult) = NULL, LPVOID lpParam = NULL);
-	C4JStorage::EMessageResult RequestContentRestrictedMessageBox(UINT title = -1, UINT message = -1, int iPad = -1, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult) = NULL, LPVOID lpParam = NULL);
+	C4JStorage::EMessageResult RequestUGCMessageBox(int title = -1, int message = -1, int iPad = -1, int( *Func)(void *,int,const C4JStorage::EMessageResult) = NULL, void *lpParam = NULL);
+	C4JStorage::EMessageResult RequestContentRestrictedMessageBox(int title = -1, int message = -1, int iPad = -1, int( *Func)(void *,int,const C4JStorage::EMessageResult) = NULL, void *lpParam = NULL);
 
 	virtual void SetWinUserIndex(unsigned int iPad);
 	unsigned int GetWinUserIndex();

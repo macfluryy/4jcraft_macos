@@ -2414,11 +2414,11 @@ void UIController::ClearPressStart()
 
 // 4J Stu - For the different StringTable classes. Should really fix the libraries.
 #ifndef __PS3__
-C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad,
-														   int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton, bool bIsError)
+C4JStorage::EMessageResult UIController::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad,
+														   int( *Func)(void *,int,const C4JStorage::EMessageResult), void *lpParam, C4JStringTable *pStringTable, wchar_t *pwchFormatString, unsigned int dwFocusButton, bool bIsError)
 #else
-C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad,
-														   int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, StringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton, bool bIsError)
+C4JStorage::EMessageResult UIController::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad,
+														   int( *Func)(void *,int,const C4JStorage::EMessageResult), void *lpParam, StringTable *pStringTable, wchar_t *pwchFormatString, unsigned int dwFocusButton, bool bIsError)
 #endif
 {
 	MessageBoxInfo param;
@@ -2440,8 +2440,8 @@ C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT ui
 		// Queue this message box
 		QueuedMessageBoxData *queuedData = new QueuedMessageBoxData();
 		queuedData->info = param;
-		queuedData->info.uiOptionA = new UINT[param.uiOptionC];
-		memcpy(queuedData->info.uiOptionA, param.uiOptionA, param.uiOptionC * sizeof(UINT));
+		queuedData->info.uiOptionA = new unsigned int[param.uiOptionC];
+		memcpy(queuedData->info.uiOptionA, param.uiOptionA, param.uiOptionC * sizeof(unsigned int));
 		queuedData->iPad = dwPad;
 		queuedData->layer = eUILayer_Error; // Ensures that these don't get wiped out by a CloseAllScenes call
 		m_queuedMessageBoxData.push_back(queuedData);
@@ -2462,7 +2462,7 @@ C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT ui
 	}
 }
 
-C4JStorage::EMessageResult UIController::RequestUGCMessageBox(UINT title/* = -1 */, UINT message/* = -1 */, int iPad/* = -1*/, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)/* = NULL*/, LPVOID lpParam/* = NULL*/)
+C4JStorage::EMessageResult UIController::RequestUGCMessageBox(int title/* = -1 */, int message/* = -1 */, int iPad/* = -1*/, int( *Func)(void *,int,const C4JStorage::EMessageResult)/* = NULL*/, void *lpParam/* = NULL*/)
 {
 	// Default title / messages
 	if (title == -1)
@@ -2484,17 +2484,17 @@ C4JStorage::EMessageResult UIController::RequestUGCMessageBox(UINT title/* = -1 
 	return C4JStorage::EMessage_ResultAccept; 
 #elif defined(__PSVITA__)
 	ProfileManager.ShowSystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, iPad );
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, IDS_CHAT_RESTRICTION_UGC, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #else
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, message, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #endif
 }
 
-C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(UINT title/* = -1 */, UINT message/* = -1 */, int iPad/* = -1*/, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)/* = NULL*/, LPVOID lpParam/* = NULL*/)
+C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(int title/* = -1 */, int message/* = -1 */, int iPad/* = -1*/, int( *Func)(void *,int,const C4JStorage::EMessageResult)/* = NULL*/, void *lpParam/* = NULL*/)
 {
 	// Default title / messages
 	if (title == -1)
@@ -2522,7 +2522,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(UINT
 	ProfileManager.ShowSystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_AGE_RESTRICTION, iPad );
 	return C4JStorage::EMessage_ResultAccept;
 #else
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, message, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #endif
