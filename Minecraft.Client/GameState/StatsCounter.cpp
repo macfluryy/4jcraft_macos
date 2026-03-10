@@ -142,9 +142,9 @@ void StatsCounter::parse(void* data)
 	assert( stats.size() == 0 );
 
 	//Pointer to current position in stat array
-	PBYTE pbData=(PBYTE)data;
-	pbData+=sizeof(GAME_SETTINGS);
-	unsigned short* statData = (unsigned short*)pbData;//data + (STAT_DATA_OFFSET/sizeof(unsigned short));
+	std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(data);
+	pbData += sizeof(GAME_SETTINGS);
+	unsigned short* statData = reinterpret_cast<unsigned short*>(pbData);//data + (STAT_DATA_OFFSET/sizeof(unsigned short));
 
 	//Value being read
 	StatContainer newVal;
@@ -215,15 +215,15 @@ void StatsCounter::save(int player, bool force)
 
 	//Retrieve the data pointer from the profile
 #if ( defined __PS3__ || defined __ORBIS__ || defined _DURANGO || defined __PSVITA__ )
-	PBYTE pbData = (PBYTE)StorageManager.GetGameDefinedProfileData(player);
+	std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(StorageManager.GetGameDefinedProfileData(player));
 #else
-	PBYTE pbData = (PBYTE)ProfileManager.GetGameDefinedProfileData(player);
+	std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(ProfileManager.GetGameDefinedProfileData(player));
 #endif
-	pbData+=sizeof(GAME_SETTINGS);
+	pbData += sizeof(GAME_SETTINGS);
 	
 	//Pointer to current position in stat array
 	//unsigned short* statData = (unsigned short*)data + (STAT_DATA_OFFSET/sizeof(unsigned short));
-	unsigned short* statData = (unsigned short*)pbData;
+	unsigned short* statData = reinterpret_cast<unsigned short*>(pbData);
 
 	//Reset all the data to 0 (we're going to replace it with the map data)
 	memset(statData, 0, CConsoleMinecraftApp::GAME_DEFINED_PROFILE_DATA_BYTES-sizeof(GAME_SETTINGS));
@@ -283,7 +283,7 @@ void StatsCounter::save(int player, bool force)
 }
 
 #ifdef _XBOX
-void StatsCounter::setLeaderboardProperty(XUSER_PROPERTY* prop, DWORD id, unsigned int value)
+void StatsCounter::setLeaderboardProperty(XUSER_PROPERTY* prop, std::uint32_t id, unsigned int value)
 {
 	app.DebugPrintf("Setting property id: %d to value %d\n", id, value);
 	prop->dwPropertyId 	= id;
