@@ -198,7 +198,7 @@ int UIScene_QuadrantSignin::SignInReturned(void *pParam,bool bContinue, int iPad
 }
 
 #ifdef _DURANGO
-void UIScene_QuadrantSignin::checkAllPrivilegesCallback(LPVOID lpParam, bool hasPrivileges, int iPad)
+void UIScene_QuadrantSignin::checkAllPrivilegesCallback(void *lpParam, bool hasPrivileges, int iPad)
 {
 	UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)lpParam;
 
@@ -269,7 +269,7 @@ void UIScene_QuadrantSignin::setControllerState(int iPad, EControllerStatus stat
 	}
 }
 
-int UIScene_QuadrantSignin::AvatarReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_QuadrantSignin::AvatarReturned(void *lpParam, std::uint8_t *pbThumbnail,DWORD dwThumbnailBytes)
 {
 	UIScene_QuadrantSignin *pClass = (UIScene_QuadrantSignin *)lpParam;
 	app.DebugPrintf(app.USER_SR,"AvatarReturned callback\n");

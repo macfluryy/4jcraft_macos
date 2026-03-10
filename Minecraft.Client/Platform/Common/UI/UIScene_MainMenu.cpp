@@ -281,7 +281,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 {
 	int primaryPad = ProfileManager.GetPrimaryPad();
 	
-	int (*signInReturnedFunc) (LPVOID,const bool, const int iPad) = NULL;
+	int (*signInReturnedFunc) (void *,const bool, const int iPad) = NULL;
 
 	switch((int)controlId)
 	{
@@ -1042,7 +1042,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_PlayGame(void *
 
 	UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
-	int (*signInReturnedFunc) (LPVOID,const bool, const int iPad) = NULL;
+	int (*signInReturnedFunc) (void *,const bool, const int iPad) = NULL;
 
 	// 4J-PB - Check if there is a patch for the game
 	pClass->m_errorCode = ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());
@@ -1131,7 +1131,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_Leaderboards(vo
 
 	UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
-	int (*signInReturnedFunc) (LPVOID,const bool, const int iPad) = NULL;
+	int (*signInReturnedFunc) (void *,const bool, const int iPad) = NULL;
 
 	// 4J-PB - Check if there is a patch for the game
 	pClass->m_errorCode = ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());
