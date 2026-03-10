@@ -703,8 +703,8 @@ public:
 	bool			CanRecordStatsAndAchievements();
 
 	// World seed from png image
-	void GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsigned char *pszSeed,unsigned int &uiHostOptions,bool &bHostOptionsRead,std::uint32_t &uiTexturePack);
-	unsigned int CreateImageTextData(PBYTE bTextMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId);
+	void GetImageTextData(std::uint8_t *imageData, unsigned int imageBytes, unsigned char *seedText, unsigned int &uiHostOptions, bool &bHostOptionsRead, std::uint32_t &uiTexturePack);
+	unsigned int CreateImageTextData(std::uint8_t *textMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId);
 
 	// Game rules
 	GameRuleManager m_gameRules;

@@ -2446,7 +2446,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 				StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 				StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
 
-				BYTE bTextMetadata[88];
+				std::uint8_t bTextMetadata[88];
 				ZeroMemory(bTextMetadata,88);
 				int iTextMetadataBytes = app.CreateImageTextData(bTextMetadata, app.getRemoteStorage()->getSaveSeed(), true, app.getRemoteStorage()->getSaveHostOptions(), app.getRemoteStorage()->getSaveTexturePack() );
 
@@ -2606,7 +2606,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 					StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 					StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
 
-					BYTE bTextMetadata[88];
+					std::uint8_t bTextMetadata[88];
 					ZeroMemory(bTextMetadata,88);
 					int iTextMetadataBytes = app.CreateImageTextData(bTextMetadata, app.getRemoteStorage()->getSaveSeed(), true, app.getRemoteStorage()->getSaveHostOptions(), app.getRemoteStorage()->getSaveTexturePack() );
 

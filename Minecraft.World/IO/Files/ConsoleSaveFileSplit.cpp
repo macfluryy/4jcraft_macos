@@ -1426,7 +1426,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail)
 			app.GetSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize,&pbDataSaveImage,&dwDataSizeSaveImage);
 #endif
 
-			BYTE bTextMetadata[88];
+			std::uint8_t bTextMetadata[88];
 			ZeroMemory(bTextMetadata,88);
 
 			__int64 seed = 0;

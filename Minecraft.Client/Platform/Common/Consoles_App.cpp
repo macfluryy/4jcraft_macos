@@ -7631,9 +7631,9 @@ unsigned int CMinecraftApp::FromBigEndian(unsigned int uiValue)
 #endif
 }
 
-void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsigned char *pszSeed,unsigned int &uiHostOptions,bool &bHostOptionsRead,std::uint32_t &uiTexturePack)
+void CMinecraftApp::GetImageTextData(std::uint8_t *imageData, unsigned int imageBytes, unsigned char *seedText, unsigned int &uiHostOptions, bool &bHostOptionsRead, std::uint32_t &uiTexturePack)
 {
-	unsigned char *ucPtr=pbImageData;
+	std::uint8_t *ucPtr = imageData;
 	unsigned int uiCount=0;
 	unsigned int uiChunkLen;
 	unsigned int uiChunkType;
@@ -7648,7 +7648,7 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 
 	uiCount+=8;
 
-	while(uiCount<dwImageBytes)
+	while(uiCount < imageBytes)
 	{	
 		uiChunkLen=*(unsigned int *)&ucPtr[uiCount];
 		uiChunkLen=FromBigEndian(uiChunkLen);
@@ -7677,10 +7677,10 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 					unsigned int uiValueC=0;
 					while(*pszKeyword!=0 && (pszKeyword < ucPtr + uiCount + uiChunkLen) )
 					{
-						pszSeed[uiValueC++]=*pszKeyword;
+						seedText[uiValueC++]=*pszKeyword;
 						pszKeyword++;
 					}
-					//memcpy(pszSeed,pszKeyword,uiChunkLen-8);
+					//memcpy(seedText,pszKeyword,uiChunkLen-8);
 				}
 				else if(strcmp(szKeyword,"4J_HOSTOPTIONS")==0)
 				{
@@ -7727,33 +7727,33 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 	return;
 }
 
-unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId)
+unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t *textMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId)
 {
 	int iTextMetadataBytes = 0;
 	if(hasSeed)
 	{
-		strcpy((char *)bTextMetadata,"4J_SEED");
-		snprintf((char *)&bTextMetadata[8], 42, "%lld", (long long)seed);
+		strcpy((char *)textMetadata,"4J_SEED");
+		snprintf((char *)&textMetadata[8], 42, "%lld", (long long)seed);
 
 		// get the length
 		iTextMetadataBytes+=8;
-		while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+		while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 		++iTextMetadataBytes; // Add a null terminator at the end of the seed value
 	}
 
 	// Save the host options that this world was last played with
-	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_HOSTOPTIONS");
-	snprintf( (char *)&bTextMetadata[iTextMetadataBytes + 15], 9, "%X", uiHostOptions);
+	strcpy((char *)&textMetadata[iTextMetadataBytes],"4J_HOSTOPTIONS");
+	snprintf( (char *)&textMetadata[iTextMetadataBytes + 15], 9, "%X", uiHostOptions);
 
 	iTextMetadataBytes += 15;
-	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+	while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 	++iTextMetadataBytes; // Add a null terminator at the end of the host options value
 
 	// Save the texture pack id
-	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_TEXTUREPACK");
+	strcpy((char *)&textMetadata[iTextMetadataBytes],"4J_TEXTUREPACK");
 
 	iTextMetadataBytes += 15;
-	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+	while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 
 	return iTextMetadataBytes;
 }
