@@ -20,10 +20,10 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void *initData, UILayer
 		m_playerNames[i] = L"";
 	}
 
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -196,10 +196,10 @@ void UIScene_InGameInfoMenu::handleGainFocus(bool navBack)
 
 void UIScene_InGameInfoMenu::handleReload()
 {
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -270,7 +270,7 @@ void UIScene_InGameInfoMenu::tick()
 {
 	UIScene::tick();
 
-	for(DWORD i = 0; i < m_playersCount; ++i)
+	for(int i = 0; i < m_playersCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
