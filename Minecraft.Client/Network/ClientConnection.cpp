@@ -197,8 +197,8 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 
 	if(iUserID!=-1)
 	{
-		BYTE *pBuffer=NULL;
-		DWORD dwSize=0;
+		std::uint8_t *pBuffer = NULL;
+		unsigned int dwSize = 0;
 		bool bRes;
 
 		// if there's a special skin or cloak for this player, add it in
@@ -1659,9 +1659,9 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					if( playerXuid != INVALID_XUID )
 					{
 						// Is this user friends with the host player?			
-						BOOL result;
+						int result = 0;
 						const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
-						if(error == ERROR_SUCCESS && result != TRUE)
+						if(error == ERROR_SUCCESS && result == 0)
 						{
 							canPlay = false;
 							isFriendsWithHost = false;
@@ -1688,9 +1688,9 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 				if( playerXuid != INVALID_XUID )
 				{
 					// Is this user friends with the host player?			
-					BOOL result;
+					int result = 0;
 					const unsigned int error = XUserAreUsersFriends(m_userIndex,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
-					if(error == ERROR_SUCCESS && result != TRUE)
+					if(error == ERROR_SUCCESS && result == 0)
 					{
 						canPlay = false;
 						isFriendsWithHost = false;
@@ -1735,13 +1735,13 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					// Local players are implied friends
 					if(!isAtLeastOneFriend)
 					{
-						BOOL result;
+						int result = 0;
 						for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 						{
 							if( ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 							{
 								const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-								if(error == ERROR_SUCCESS && result == TRUE) isAtLeastOneFriend = true;
+								if(error == ERROR_SUCCESS && result != 0) isAtLeastOneFriend = true;
 							}
 						}
 					}
@@ -1762,13 +1762,13 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					bool thisQuadrantOnly = true;
 					if( m_userIndex == ProfileManager.GetPrimaryPad() ) thisQuadrantOnly = false;
 
-					BOOL result;
+					int result = 0;
 					for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 					{
 						if( (!thisQuadrantOnly || m_userIndex == idx) && ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 						{
 							const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-							if(error == ERROR_SUCCESS) canPlay &= (result == TRUE);
+							if(error == ERROR_SUCCESS) canPlay &= (result != 0);
 						}
 						if(!canPlay) break;
 					}
@@ -2052,11 +2052,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 			// All other players we use their offline XUID so that they can play the game offline
  			ProfileManager.GetXUID(m_userIndex,&offlineXUID,false);
 		}
-		BOOL allAllowed, friendsAllowed;
+		bool allAllowed = false;
+		bool friendsAllowed = false;
 		ProfileManager.AllowedPlayerCreatedContent(m_userIndex,true,&allAllowed,&friendsAllowed);
 		fprintf(stderr, "[LOGIN] Sending LoginPacket: user=%ls netVer=%d userIdx=%d isHost=%d\n",
 			minecraft->user->name.c_str(), SharedConstants::NETWORK_PROTOCOL_VERSION, m_userIndex, (int)g_NetworkManager.IsHost());
-		send( std::shared_ptr<LoginPacket>( new LoginPacket(minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION, offlineXUID, onlineXUID, (allAllowed!=TRUE && friendsAllowed==TRUE), 
+		send( std::shared_ptr<LoginPacket>( new LoginPacket(minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION, offlineXUID, onlineXUID, (!allAllowed && friendsAllowed), 
 			packet->m_ugcPlayersVersion, app.GetPlayerSkinId(m_userIndex), app.GetPlayerCapeId(m_userIndex), ProfileManager.IsGuest( m_userIndex ))));
 		fprintf(stderr, "[LOGIN] LoginPacket sent successfully\n");
 
