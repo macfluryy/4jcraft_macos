@@ -105,8 +105,8 @@ private:
 
 	bool m_hasLoadedData;
 
-	PBYTE m_pbBaseSaveData;
-	DWORD m_dwBaseSaveSize;
+	std::uint8_t *m_pbBaseSaveData;
+	unsigned int m_baseSaveSize;
 
 public:
 
@@ -138,8 +138,8 @@ public:
 
 	bool ready();
 
-	void setBaseSaveData(PBYTE pbData, DWORD dwSize);
-	PBYTE getBaseSaveData(DWORD &size);
+	void setBaseSaveData(std::uint8_t *pbData, unsigned int dataSize);
+	std::uint8_t *getBaseSaveData(unsigned int &size);
 	bool hasBaseSaveData();
 	void deleteBaseSaveData();
 
@@ -188,7 +188,7 @@ private:
 	void clearSchematics();
 
 public:	
-	ConsoleSchematicFile *loadSchematicFile(const std::wstring &filename, PBYTE pbData, DWORD dwLen);
+	ConsoleSchematicFile *loadSchematicFile(const std::wstring &filename, std::uint8_t *pbData, unsigned int dataLength);
 
 public:
 	ConsoleSchematicFile *getSchematicFile(const std::wstring &filename);

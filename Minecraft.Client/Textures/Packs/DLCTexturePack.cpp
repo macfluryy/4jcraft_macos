@@ -22,10 +22,10 @@
 
 namespace
 {
-	bool ReadPortableBinaryFile(File &file, uint8_t *&data, DWORD &size)
+	bool ReadPortableBinaryFile(File &file, std::uint8_t *&data, unsigned int &size)
 	{
 		const __int64 fileLength = file.length();
-		if (fileLength < 0 || fileLength > static_cast<__int64>(std::numeric_limits<DWORD>::max()))
+		if (fileLength < 0 || fileLength > static_cast<__int64>(std::numeric_limits<unsigned int>::max()))
 		{
 			data = NULL;
 			size = 0;
@@ -33,10 +33,10 @@ namespace
 		}
 
 		const std::size_t capacity = static_cast<std::size_t>(fileLength);
-		uint8_t *buffer = new uint8_t[capacity == 0 ? 1 : capacity];
+		std::uint8_t *buffer = new std::uint8_t[capacity == 0 ? 1 : capacity];
 		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFile(file.getPath(), buffer, capacity);
 		if (readResult.status != PortableFileIO::BinaryReadStatus::ok
-			|| readResult.fileSize > std::numeric_limits<DWORD>::max())
+			|| readResult.fileSize > std::numeric_limits<unsigned int>::max())
 		{
 			delete [] buffer;
 			data = NULL;
@@ -45,7 +45,7 @@ namespace
 		}
 
 		data = buffer;
-		size = static_cast<DWORD>(readResult.fileSize);
+		size = static_cast<unsigned int>(readResult.fileSize);
 		return true;
 	}
 }
@@ -223,7 +223,7 @@ void DLCTexturePack::loadColourTable()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		std::uint32_t dwSize = 0;
-		uint8_t *pbData = dataFile->getData(dwSize);
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
@@ -343,8 +343,8 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 
 				if(xzpPath.exists())
 				{
-					uint8_t *pbData = NULL;
-					DWORD bytesRead = 0;
+					std::uint8_t *pbData = NULL;
+					unsigned int bytesRead = 0;
 					if( ReadPortableBinaryFile(xzpPath, pbData, bytesRead) )
 					{
 						DLCUIDataFile *uiDLCFile = (DLCUIDataFile *)texturePack->m_dlcDataPack->addFile(DLCManager::e_DLCType_UIData,L"TexturePack.xzp");
@@ -374,12 +374,12 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							File grf( getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dlcFile->getGrfPath() ) );
 							if (grf.exists())
 							{
-								uint8_t *pbData = NULL;
-								DWORD dwFileSize = 0;
-								if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
+								std::uint8_t *pbData = NULL;
+								unsigned int fileSize = 0;
+								if( ReadPortableBinaryFile(grf, pbData, fileSize) )
 								{
 									// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
-									dlcFile->setGrfData(pbData, dwFileSize, texturePack->m_stringTable);
+									dlcFile->setGrfData(pbData, fileSize, texturePack->m_stringTable);
 
 									delete [] pbData;
 
@@ -397,12 +397,12 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						File grf(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), levelGen->getBaseSavePath() ));
 						if (grf.exists())
 						{
-							uint8_t *pbData = NULL;
-							DWORD dwFileSize = 0;
-							if( ReadPortableBinaryFile(grf, pbData, dwFileSize) )
+							std::uint8_t *pbData = NULL;
+							unsigned int fileSize = 0;
+							if( ReadPortableBinaryFile(grf, pbData, fileSize) )
 							{
 								// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
-								levelGen->setBaseSaveData(pbData, dwFileSize);
+								levelGen->setBaseSaveData(pbData, fileSize);
 							}
 							else
 							{
@@ -481,7 +481,7 @@ void DLCTexturePack::loadUI()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		std::uint32_t dwSize = 0;
-		uint8_t *pbData = dataFile->getData(dwSize);
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
@@ -555,7 +555,7 @@ std::wstring DLCTexturePack::getXuiRootPath()
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
 		std::uint32_t dwSize = 0;
-		uint8_t *pbData = dataFile->getData(dwSize);
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
 		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];

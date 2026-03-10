@@ -54,7 +54,7 @@ void ConsoleSaveFileSplit::RegionFileReference::Compress()
 	unsigned char *dataIn = data;
 	unsigned char *dataInLast = data + fileEntry->data.length;
 
-//	int64_t startTime = System::currentTimeMillis();
+//	std::int64_t startTime = System::currentTimeMillis();
 
 	// One pass through to work out storage space required for compressed data
 	unsigned int outputSize = 4;		// 4 bytes required to store the uncompressed size for faster decompression
@@ -189,14 +189,14 @@ void ConsoleSaveFileSplit::RegionFileReference::Compress()
 	}
 	assert(( dataOut - dataCompressed ) == outputSize );
 	dataCompressedSize = outputSize;
-//	int64_t endTime = System::currentTimeMillis();
+//	std::int64_t endTime = System::currentTimeMillis();
 //	app.DebugPrintf("Compressing region file 0x%.8x from %d to %d bytes - %dms\n", fileEntry->data.regionIndex, fileEntry->data.length, dataCompressedSize, endTime - startTime);
 }
 
 // Decompress from dataCompressed -> data. See comment in Compress method for format
 void ConsoleSaveFileSplit::RegionFileReference::Decompress()
 {
-//	int64_t startTime = System::currentTimeMillis();
+//	std::int64_t startTime = System::currentTimeMillis();
 	fileEntry->data.length = *((unsigned int *)dataCompressed);
 
 	// If this is unusually large, then test how big it would be when expanded before trying to allocate. Matching the expanded size
@@ -285,7 +285,7 @@ void ConsoleSaveFileSplit::RegionFileReference::Decompress()
 		data = NULL;
 		assert(0);
 	}
-//	int64_t endTime = System::currentTimeMillis();
+//	std::int64_t endTime = System::currentTimeMillis();
 //	app.DebugPrintf("Decompressing region file from 0x%.8x %d to %d bytes - %dms\n", fileEntry->data.regionIndex, dataCompressedSize, fileEntry->data.length, endTime - startTime);//
 }
 
@@ -380,9 +380,9 @@ FileEntry *ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex)
 	return newRef->fileEntry;
 }
 
-ConsoleSaveFileSplit::ConsoleSaveFileSplit(const std::wstring &fileName, void *pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
+ConsoleSaveFileSplit::ConsoleSaveFileSplit(const std::wstring &fileName, void *pvSaveData /*= NULL*/, unsigned int initialFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
-	DWORD fileSize = dFileSize;
+	unsigned int fileSize = initialFileSize;
 
 	// Load a save from the game rules
 	bool bLevelGenBaseSave = false;
@@ -419,7 +419,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 
 		std::vector<FileEntry *> *sourceFiles = sourceSave->getFilesWithPrefix(L"");
 
-		DWORD bytesWritten;
+		unsigned int bytesWritten = 0;
 		for(AUTO_VAR(it, sourceFiles->begin()); it != sourceFiles->end(); ++it)
 		{
 			FileEntry *sourceEntry = *it;
@@ -438,7 +438,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alr
 	}
 }
 
-void ConsoleSaveFileSplit::_init(const std::wstring &fileName, void *pvSaveData, DWORD fileSize, ESavePlatform plat)
+void ConsoleSaveFileSplit::_init(const std::wstring &fileName, void *pvSaveData, unsigned int fileSize, ESavePlatform plat)
 {
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
 
@@ -479,7 +479,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring &fileName, void *pvSaveData,
 		regionFiles[regionIndex] = regionFileRef;
 	}
 
-	DWORD heapSize = std::max( fileSize, (DWORD)(1024 * 1024 * 2)); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
+	unsigned int heapSize = std::max(fileSize, 1024u * 1024u * 2u); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
 
 	// Initially committ enough room to store headSize bytes (using CSF_PAGE_SIZE pages, so rounding up here). We should only ever have one save file at a time,
 	// and the pages should be decommitted in the dtor, so pages committed should always be zero at this point.
@@ -538,9 +538,9 @@ void ConsoleSaveFileSplit::_init(const std::wstring &fileName, void *pvSaveData,
 				{
 
 					// Only ReAlloc if we need to (we might already have enough) and align to 512 byte boundaries
-					DWORD currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
+					unsigned int currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
 
-					DWORD desiredSize = decompSize;
+					unsigned int desiredSize = decompSize;
 
 					if( desiredSize > currentHeapSize )
 					{
@@ -637,13 +637,13 @@ void ConsoleSaveFileSplit::deleteFile( FileEntry *file )
 
 	LockSaveAccess();
 
-	DWORD numberOfBytesRead = 0;
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
 
 	const int bufferSize = 4096;
 	int amountToRead = bufferSize;
-	uint8_t buffer[bufferSize];
-	DWORD bufferDataSize = 0;
+	std::uint8_t buffer[bufferSize];
+	unsigned int bufferDataSize = 0;
 
 
 	char *readStartOffset = (char *)pvSaveMem + file->data.startOffset + file->getFileSize();
@@ -911,7 +911,7 @@ bool ConsoleSaveFileSplit::closeHandle( FileEntry *file )
 // In this method, attempt to write any dirty region files, subject to maintaining a maximum write output rate. Writing is prioritised by time since the region was last written.
 void ConsoleSaveFileSplit::tick()
 {
-	int64_t currentTime = System::currentTimeMillis();
+	std::int64_t currentTime = System::currentTimeMillis();
 
 	// Don't do anything if the save system is up to something...
 	if( StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle )
@@ -1052,15 +1052,15 @@ void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry *file, unsigned int nNumberO
 	const unsigned int bufferSize = 4096;
 	unsigned int amountToRead = bufferSize;
 	//assert( nNumberOfBytesToWrite <= bufferSize );
-	static uint8_t buffer1[bufferSize];
-	static uint8_t buffer2[bufferSize];
-	DWORD buffer1Size = 0;
-	DWORD buffer2Size = 0;
+	static std::uint8_t buffer1[bufferSize];
+	static std::uint8_t buffer2[bufferSize];
+	unsigned int buffer1Size = 0;
+	unsigned int buffer2Size = 0;
 
 	// Only ReAlloc if we need to (we might already have enough) and align to 512 byte boundaries
-	DWORD currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
+	unsigned int currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
 	
-	DWORD desiredSize = header.GetFileSize() + nNumberOfBytesToWrite;
+	unsigned int desiredSize = header.GetFileSize() + nNumberOfBytesToWrite;
 
 	if( desiredSize > currentHeapSize )
 	{
@@ -1142,7 +1142,7 @@ void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry *file, unsigned int nNumberO
 			// Fill buffer 1 from file
 			if( (readStartOffset - bufferSize) < spaceStartOffset )
 			{
-				amountToRead = (DWORD)(readStartOffset - spaceStartOffset);
+				amountToRead = static_cast<unsigned int>(readStartOffset - spaceStartOffset);
 			}
 			else
 			{
@@ -1360,7 +1360,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail)
 
 	// Attempt to allocate the required memory
 	// We do not own this, it belongs to the StorageManager
-	uint8_t *compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
+	std::uint8_t *compData = (std::uint8_t *)StorageManager.AllocateSaveData( compLength );
 
 	// If we failed to allocate then compData will be NULL
 	// Pre-calculate the compressed data size so that we can attempt to allocate a smaller buffer
@@ -1387,7 +1387,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail)
 		compLength = compLength+8;
 
 		// Attempt to allocate the required memory
-		compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
+		compData = (std::uint8_t *)StorageManager.AllocateSaveData( compLength );
 	}
 	
 	if(compData != NULL)
@@ -1464,7 +1464,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail)
 	}
 }
 
-int ConsoleSaveFileSplit::SaveSaveDataCallback(LPVOID lpParam,bool bRes)
+int ConsoleSaveFileSplit::SaveSaveDataCallback(void *lpParam, bool bRes)
 {
 	ConsoleSaveFileSplit *pClass=(ConsoleSaveFileSplit *)lpParam;
 	
@@ -1477,7 +1477,7 @@ int ConsoleSaveFileSplit::SaveSaveDataCallback(LPVOID lpParam,bool bRes)
 	return 0;
 }
 
-int ConsoleSaveFileSplit::SaveRegionFilesCallback(LPVOID lpParam,bool bRes)
+int ConsoleSaveFileSplit::SaveRegionFilesCallback(void *lpParam, bool bRes)
 {
 	ConsoleSaveFileSplit *pClass=(ConsoleSaveFileSplit *)lpParam;
 	
@@ -1496,7 +1496,7 @@ void ConsoleSaveFileSplit::DebugFlushToFile(void *compressedData /*= NULL*/, uns
 
 	unsigned int fileSize = header.GetFileSize();
 
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 
 	File targetFileDir(L"Saves");
 
@@ -1649,8 +1649,8 @@ void ConsoleSaveFileSplit::setEndian(ByteOrder endian)
 
 void ConsoleSaveFileSplit::ConvertRegionFile(File sourceFile)
 {
-	DWORD numberOfBytesWritten = 0;
-	DWORD numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
 
 	RegionFile sourceRegionFile(this, &sourceFile);
 

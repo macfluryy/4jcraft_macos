@@ -55,7 +55,7 @@ LevelGenerationOptions::LevelGenerationOptions()
 	m_bRequiresGameRules = false;
 
 	m_pbBaseSaveData = NULL;
-	m_dwBaseSaveSize = 0;
+	m_baseSaveSize = 0;
 }
 
 LevelGenerationOptions::~LevelGenerationOptions()
@@ -331,7 +331,7 @@ void LevelGenerationOptions::clearSchematics()
 	m_schematics.clear();
 }
 
-ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstring &filename, PBYTE pbData, DWORD dwLen)
+ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstring &filename, std::uint8_t *pbData, unsigned int dataLength)
 {
 	// If we have already loaded this, just return
 	AUTO_VAR(it, m_schematics.find(filename));
@@ -345,7 +345,7 @@ ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstri
 	}
 
 	ConsoleSchematicFile *schematic = NULL;
-	byteArray data(pbData,dwLen);
+	byteArray data(pbData, dataLength);
 	ByteArrayInputStream bais(data);
 	DataInputStream dis(&bais);
 	schematic = new ConsoleSchematicFile();
@@ -497,10 +497,10 @@ void LevelGenerationOptions::setBaseSavePath(const std::wstring &x) { info()->se
 
 bool LevelGenerationOptions::ready() { return info()->ready(); }
 
-void LevelGenerationOptions::setBaseSaveData(PBYTE pbData, DWORD dwSize) { m_pbBaseSaveData = pbData; m_dwBaseSaveSize = dwSize; }
-PBYTE LevelGenerationOptions::getBaseSaveData(DWORD &size) { size = m_dwBaseSaveSize; return m_pbBaseSaveData; }
-bool LevelGenerationOptions::hasBaseSaveData() { return m_dwBaseSaveSize > 0 && m_pbBaseSaveData != NULL; }
-void LevelGenerationOptions::deleteBaseSaveData() { if(m_pbBaseSaveData) delete m_pbBaseSaveData; m_pbBaseSaveData = NULL; m_dwBaseSaveSize = 0; }
+void LevelGenerationOptions::setBaseSaveData(std::uint8_t *pbData, unsigned int dataSize) { m_pbBaseSaveData = pbData; m_baseSaveSize = dataSize; }
+std::uint8_t *LevelGenerationOptions::getBaseSaveData(unsigned int &size) { size = m_baseSaveSize; return m_pbBaseSaveData; }
+bool LevelGenerationOptions::hasBaseSaveData() { return m_baseSaveSize > 0 && m_pbBaseSaveData != NULL; }
+void LevelGenerationOptions::deleteBaseSaveData() { delete[] m_pbBaseSaveData; m_pbBaseSaveData = NULL; m_baseSaveSize = 0; }
 
 bool LevelGenerationOptions::hasLoadedData() { return m_hasLoadedData; }
 void LevelGenerationOptions::setLoadedData() { m_hasLoadedData = true; }

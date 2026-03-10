@@ -426,8 +426,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource *storageSource, const std::ws
 		LevelGenerationOptions *levelGen = app.getLevelGenerationOptions();
 		if( levelGen != NULL && levelGen->requiresBaseSave())
 		{
-			DWORD fileSize = 0;
-			LPVOID pvSaveData = levelGen->getBaseSaveData(fileSize);
+			unsigned int fileSize = 0;
+			std::uint8_t *pvSaveData = levelGen->getBaseSaveData(fileSize);
 			if(pvSaveData && fileSize != 0) bLevelGenBaseSave = true;
 		}
 		ConsoleSaveFileSplit *newFormatSave = NULL;

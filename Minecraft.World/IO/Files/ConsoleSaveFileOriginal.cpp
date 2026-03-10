@@ -24,7 +24,7 @@
 unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
 void *ConsoleSaveFileOriginal::pvHeap = NULL;
 
-ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData /*= NULL*/, DWORD dFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
+ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData /*= NULL*/, unsigned int initialFileSize /*= 0*/, bool forceCleanSave /*= false*/, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/)
 {
 	InitializeCriticalSectionAndSpinCount(&m_lock,5120);
 
@@ -44,7 +44,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, v
 	pvSaveMem = pvHeap;
 	m_fileName = fileName;
 
-	DWORD fileSize = dFileSize;
+	unsigned int fileSize = initialFileSize;
 
 	// Load a save from the game rules
 	bool bLevelGenBaseSave = false;
@@ -61,7 +61,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, v
 	if( forceCleanSave )
 		fileSize = 0;
 
-	DWORD heapSize = std::max( fileSize, (DWORD)(1024 * 1024 * 2)); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
+	unsigned int heapSize = std::max(fileSize, 1024u * 1024u * 2u); // 4J Stu - Our files are going to be bigger than 2MB so allocate high to start with
 
 	// Initially committ enough room to store headSize bytes (using CSF_PAGE_SIZE pages, so rounding up here). We should only ever have one save file at a time,
 	// and the pages should be decommitted in the dtor, so pages committed should always be zero at this point.
@@ -173,9 +173,9 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(const std::wstring &fileName, v
 					}
 
 					// Only ReAlloc if we need to (we might already have enough) and align to 512 byte boundaries
-					DWORD currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
+					unsigned int currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
 
-					DWORD desiredSize = decompSize;
+					unsigned int desiredSize = decompSize;
 
 					if( desiredSize > currentHeapSize )
 					{
@@ -239,13 +239,13 @@ void ConsoleSaveFileOriginal::deleteFile( FileEntry *file )
 
 	LockSaveAccess();
 
-	DWORD numberOfBytesRead = 0;
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
 
 	const int bufferSize = 4096;
 	int amountToRead = bufferSize;
-	uint8_t buffer[bufferSize];
-	DWORD bufferDataSize = 0;
+	std::uint8_t buffer[bufferSize];
+	unsigned int bufferDataSize = 0;
 
 
 	char *readStartOffset = (char *)pvSaveMem + file->data.startOffset + file->getFileSize();
@@ -482,15 +482,15 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, unsigned int nNumb
 	const unsigned int bufferSize = 4096;
 	unsigned int amountToRead = bufferSize;
 	//assert( nNumberOfBytesToWrite <= bufferSize );
-	static uint8_t buffer1[bufferSize];
-	static uint8_t buffer2[bufferSize];
-	DWORD buffer1Size = 0;
-	DWORD buffer2Size = 0;
+	static std::uint8_t buffer1[bufferSize];
+	static std::uint8_t buffer2[bufferSize];
+	unsigned int buffer1Size = 0;
+	unsigned int buffer2Size = 0;
 
 	// Only ReAlloc if we need to (we might already have enough) and align to 512 byte boundaries
-	DWORD currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
+	unsigned int currentHeapSize = pagesCommitted * CSF_PAGE_SIZE;
 
-	DWORD desiredSize = header.GetFileSize() + nNumberOfBytesToWrite;
+	unsigned int desiredSize = header.GetFileSize() + nNumberOfBytesToWrite;
 
 	if( desiredSize > currentHeapSize )
 	{
@@ -577,7 +577,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(FileEntry *file, unsigned int nNumb
 			// Fill buffer 1 from file
 			if( (readStartOffset - bufferSize) < spaceStartOffset )
 			{
-				amountToRead = (DWORD)(readStartOffset - spaceStartOffset);
+				amountToRead = static_cast<unsigned int>(readStartOffset - spaceStartOffset);
 			}
 			else
 			{
@@ -674,11 +674,11 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 	// On PS3, don't compress the data as we can't really afford the extra memory this requires for the output buffer. Instead we'll be writing
 	// directly from the save data.
 	StorageManager.SetSaveData(pvSaveMem,fileSize);
-	uint8_t *compData = (uint8_t *)pvSaveMem;
+	std::uint8_t *compData = (std::uint8_t *)pvSaveMem;
 #else
 	// Attempt to allocate the required memory
 	// We do not own this, it belongs to the StorageManager
-	uint8_t *compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
+	std::uint8_t *compData = (std::uint8_t *)StorageManager.AllocateSaveData( compLength );
 
 #ifdef __PSVITA__
 	// AP - make sure we always allocate just what is needed so it will only SAVE what is needed.
@@ -716,7 +716,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 		compLength = compLength+8;
 
 		// Attempt to allocate the required memory
-		compData = (uint8_t *)StorageManager.AllocateSaveData( compLength );
+		compData = (std::uint8_t *)StorageManager.AllocateSaveData( compLength );
 	}
 #endif
 
@@ -824,7 +824,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail )
 
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
 
-int ConsoleSaveFileOriginal::SaveSaveDataCallback(LPVOID lpParam,bool bRes)
+int ConsoleSaveFileOriginal::SaveSaveDataCallback(void *lpParam, bool bRes)
 {
 	ConsoleSaveFile *pClass=(ConsoleSaveFile *)lpParam;
 
@@ -842,7 +842,7 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(void *compressedData /*= NULL*/, 
 
 	unsigned int fileSize = header.GetFileSize();
 
-	DWORD numberOfBytesWritten = 0;
+	unsigned int numberOfBytesWritten = 0;
 #ifdef _XBOX
 	File targetFileDir(L"GAME:\\Saves");
 #else
@@ -999,8 +999,8 @@ bool ConsoleSaveFileOriginal::isLocalEndianDifferent( ESavePlatform plat )
 
 void ConsoleSaveFileOriginal::ConvertRegionFile(File sourceFile)
 {
-	DWORD numberOfBytesWritten = 0;
-	DWORD numberOfBytesRead = 0;
+	unsigned int numberOfBytesWritten = 0;
+	unsigned int numberOfBytesRead = 0;
 
 	RegionFile sourceRegionFile(this, &sourceFile);
 

@@ -33,9 +33,9 @@ private:
 
 public:
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
-	static int SaveSaveDataCallback(LPVOID lpParam,bool bRes);
+	static int SaveSaveDataCallback(void *lpParam, bool bRes);
 #endif
-	ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData = NULL, unsigned int fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	virtual ~ConsoleSaveFileOriginal();
 
 	// 4J Stu - Initial implementation is intended to have a similar interface to the standard Xbox file access functions
