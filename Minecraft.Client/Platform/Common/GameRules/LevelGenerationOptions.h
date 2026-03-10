@@ -43,7 +43,7 @@ public:
 
 	virtual bool ready()=0;
 
-	//virtual void getGrfData(PBYTE &pData, DWORD &pSize)=0;
+	//virtual void getGrfData(std::uint8_t *&pData, unsigned int &pSize)=0;
 };
 
 class JustGrSource : public GrSource
