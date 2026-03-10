@@ -170,7 +170,7 @@ public:
 
 	virtual ConsoleGameRules::EGameRuleType getActionType();
 	
-	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
 	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);

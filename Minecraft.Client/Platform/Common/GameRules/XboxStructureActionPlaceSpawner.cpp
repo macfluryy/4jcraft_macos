@@ -15,7 +15,7 @@ XboxStructureActionPlaceSpawner::~XboxStructureActionPlaceSpawner()
 {
 }
 
-void XboxStructureActionPlaceSpawner::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void XboxStructureActionPlaceSpawner::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	XboxStructureActionPlaceBlock::writeAttributes(dos, numAttrs + 1);
 

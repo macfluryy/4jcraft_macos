@@ -8,7 +8,7 @@ UseTileRuleDefinition::UseTileRuleDefinition()
 	m_useCoords = false;
 }
 
-void UseTileRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void UseTileRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttributes + 5);
 

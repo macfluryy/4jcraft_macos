@@ -9,7 +9,7 @@ StartFeature::StartFeature()
 	m_feature = StructureFeature::eFeature_Temples;
 }
 
-void StartFeature::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void StartFeature::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 3);
 

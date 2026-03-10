@@ -29,7 +29,7 @@ void GameRuleDefinition::write(DataOutputStream *dos)
 		(*it)->write(dos);
 }
 
-void GameRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void GameRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	dos->writeInt(numAttributes + 3);
 

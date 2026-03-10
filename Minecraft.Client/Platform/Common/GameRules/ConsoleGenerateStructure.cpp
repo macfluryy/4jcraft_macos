@@ -55,7 +55,7 @@ GameRuleDefinition *ConsoleGenerateStructure::addChild(ConsoleGameRules::EGameRu
 	return rule;
 }
 
-void ConsoleGenerateStructure::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void ConsoleGenerateStructure::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 

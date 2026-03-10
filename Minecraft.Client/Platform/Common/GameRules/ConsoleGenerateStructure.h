@@ -23,7 +23,7 @@ public:
 	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 	
-	virtual void writeAttributes(DataOutputStream *dos, UINT numAttrs);
+	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttrs);
 	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
 	// StructurePiece

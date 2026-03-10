@@ -21,7 +21,7 @@ XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer()
 }
 
 // 4J-JEV: Super class handles attr-facing fine.
-//void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+//void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 	
 
 void XboxStructureActionPlaceContainer::getChildren(std::vector<GameRuleDefinition *> *children)

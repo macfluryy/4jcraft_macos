@@ -9,7 +9,7 @@ XboxStructureActionGenerateBox::XboxStructureActionGenerateBox()
 	m_skipAir = false;
 }
 
-void XboxStructureActionGenerateBox::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void XboxStructureActionGenerateBox::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	ConsoleGenerateStructureAction::writeAttributes(dos, numAttrs + 9);
 

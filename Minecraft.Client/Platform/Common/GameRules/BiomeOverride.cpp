@@ -9,7 +9,7 @@ BiomeOverride::BiomeOverride()
 	m_biomeId = 0;
 }
 
-void BiomeOverride::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void BiomeOverride::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 3);
 

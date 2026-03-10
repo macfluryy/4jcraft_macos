@@ -90,7 +90,7 @@ LevelGenerationOptions::~LevelGenerationOptions()
 
 ConsoleGameRules::EGameRuleType LevelGenerationOptions::getActionType() { return ConsoleGameRules::eGameRuleType_LevelGenerationOptions; }
 
-void LevelGenerationOptions::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void LevelGenerationOptions::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 		

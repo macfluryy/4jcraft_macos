@@ -21,7 +21,7 @@ public:
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 	
 	// 4J-JEV: Super class handles attr-facing fine.
-	//virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+	//virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
 	
 	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
 
