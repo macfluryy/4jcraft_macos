@@ -181,17 +181,17 @@ protected:
 	// 4J - WESTY  - Added for pointer prototype.
 	void SetPointerOutsideMenu( bool bOutside )		{ m_bPointerOutsideMenu = bOutside; }
 	
-	void Initialize(int m_iPad, AbstractContainerMenu* menu, bool autoDeleteMenu, int startIndex,ESceneSection firstSection,ESceneSection maxSection, bool bNavigateBack=FALSE);
+	void Initialize(int m_iPad, AbstractContainerMenu* menu, bool autoDeleteMenu, int startIndex,ESceneSection firstSection,ESceneSection maxSection, bool bNavigateBack=false);
 	virtual void PlatformInitialize(int iPad, int startIndex) = 0;
 	virtual void InitDataAssociations(int iPad, AbstractContainerMenu *menu, int startIndex = 0) = 0;
 
 	void onMouseTick();
 	bool handleKeyDown(int iPad, int iAction, bool bRepeat);
-	virtual bool handleValidKeyPress(int iUserIndex, int buttonNum, BOOL quickKeyHeld);
-	virtual void handleOutsideClicked(int iPad, int buttonNum, BOOL quickKeyHeld);
+	virtual bool handleValidKeyPress(int iUserIndex, int buttonNum, bool quickKeyHeld);
+	virtual void handleOutsideClicked(int iPad, int buttonNum, bool quickKeyHeld);
 	virtual void handleOtherClicked(int iPad, ESceneSection eSection, int buttonNum, bool quickKey);
 	virtual void handleAdditionalKeyPress(int iAction);
-	virtual void handleSlotListClicked(ESceneSection eSection, int buttonNum, BOOL quickKeyHeld);
+	virtual void handleSlotListClicked(ESceneSection eSection, int buttonNum, bool quickKeyHeld);
 	virtual void handleSectionClick(ESceneSection eSection) = 0;
 	void slotClicked(int slotId, int buttonNum, bool quickKey);
 	int getCurrentIndex(ESceneSection eSection);
