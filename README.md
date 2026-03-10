@@ -23,7 +23,7 @@ At the moment, we're aiming to support the following platforms:
 - Android (not started)
 
 > [!WARNING]
-> There NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
+> There is NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
 
 > All efforts are focused towards a native Linux port, OpenGL rendering pipeline, and modernizing the existing LCE codebase/tooling to make future platform ports easier.
 > 
