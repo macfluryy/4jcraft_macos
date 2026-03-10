@@ -73,7 +73,7 @@ public:
 	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize) {}; // NOT USED
 	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize, std::uint8_t **saveImageData, unsigned int *saveImageSize);
 	virtual void ReleaseSaveThumbnail();
-	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize);
+	virtual void GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize);
 
 	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile);
 	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile, eFileExtensionType eExt);

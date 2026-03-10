@@ -610,7 +610,7 @@ public:
 	virtual void CaptureSaveThumbnail() =0;
 	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)=0;
 	virtual void ReleaseSaveThumbnail()=0;
-	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)=0;
+	virtual void GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize)=0;
 
 	virtual void ReadBannedList(int iPad, eTMSAction action=(eTMSAction)0, bool bCallback=false)=0;
 

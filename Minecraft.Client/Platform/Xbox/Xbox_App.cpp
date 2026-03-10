@@ -1472,14 +1472,14 @@ void CConsoleMinecraftApp::ReleaseSaveThumbnail()
 	}
 }
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize)
 {
 	// on a save caused by a create world, the thumbnail capture won't have happened
 	if(m_ScreenshotBuffer[iPad]!=NULL)
 	{
-		*pbData= new BYTE [m_ScreenshotBuffer[iPad]->GetBufferSize()];
-		*pdwSize=m_ScreenshotBuffer[iPad]->GetBufferSize();
-		memcpy(*pbData,m_ScreenshotBuffer[iPad]->GetBufferPointer(),*pdwSize);
+		*screenshotData = new std::uint8_t[m_ScreenshotBuffer[iPad]->GetBufferSize()];
+		*screenshotSize = static_cast<unsigned int>(m_ScreenshotBuffer[iPad]->GetBufferSize());
+		memcpy(*screenshotData, m_ScreenshotBuffer[iPad]->GetBufferPointer(), *screenshotSize);
 		m_ScreenshotBuffer[iPad]->Release();
 		m_ScreenshotBuffer[iPad]=NULL;
 	}

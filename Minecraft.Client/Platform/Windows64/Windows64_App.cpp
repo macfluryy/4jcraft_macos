@@ -44,7 +44,7 @@ void CConsoleMinecraftApp::ReleaseSaveThumbnail()
 {
 }
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize)
 {
 }
 
