@@ -8,7 +8,7 @@
 class UIScene_SkinSelectMenu : public UIScene
 {
 private:
-	static const WCHAR *wchDefaultNamesA[eDefaultSkins_Count];
+	static const wchar_t *wchDefaultNamesA[eDefaultSkins_Count];
 
 	// 4J Stu - How many to show on each side of the main control
 	static const int sidePreviewControls = 4;

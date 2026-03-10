@@ -13,7 +13,7 @@
 //#define SKIN_SELECT_PACK_PLAYER_CUSTOM 1
 #define SKIN_SELECT_MAX_DEFAULTS 2
 
-const WCHAR *UIScene_SkinSelectMenu::wchDefaultNamesA[]=
+const wchar_t *UIScene_SkinSelectMenu::wchDefaultNamesA[]=
 {
 	L"USE LOCALISED VERSION", // Server selected
 	L"Steve",
@@ -1712,7 +1712,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 				pScene->m_bIgnoreInput = false;
 			}
 #elif defined _XBOX_ONE
-			StorageManager.InstallOffer(1,(WCHAR *)(pScene->m_currentPack->getPurchaseOfferId().c_str()), &RenableInput, pScene, NULL);
+			StorageManager.InstallOffer(1, const_cast<wchar_t *>(pScene->m_currentPack->getPurchaseOfferId().c_str()), &RenableInput, pScene, NULL);
 #endif		
 		}
 		else // Is signed in, but not live.
