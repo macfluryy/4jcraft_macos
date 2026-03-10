@@ -146,7 +146,7 @@ private:
 	int m_MusicType;
 	AUDIO_INFO m_StreamingAudioInfo;
 	std::wstring m_CDMusic;
-	BOOL m_bSystemMusicPlaying;
+	bool m_bSystemMusicPlaying;
 	float m_MasterMusicVolume;
 	float m_MasterEffectsVolume;
 
