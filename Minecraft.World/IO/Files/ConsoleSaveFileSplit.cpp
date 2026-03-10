@@ -1414,11 +1414,11 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail)
 
 		if(updateThumbnail)
 		{
-			PBYTE pbThumbnailData=NULL;
-			DWORD dwThumbnailDataSize=0;
+			std::uint8_t *pbThumbnailData = NULL;
+			unsigned int dwThumbnailDataSize = 0;
 
-			PBYTE pbDataSaveImage=NULL;
-			DWORD dwDataSizeSaveImage=0;
+			std::uint8_t *pbDataSaveImage = NULL;
+			unsigned int dwDataSizeSaveImage = 0;
 
 #if ( defined _XBOX || defined _DURANGO )
 			app.GetSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);

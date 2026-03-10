@@ -1448,16 +1448,16 @@ void CConsoleMinecraftApp::CaptureSaveThumbnail()
 	RenderManager.CaptureThumbnail(&m_ThumbnailBuffer);
 	MemSect(0);
 }
-void CConsoleMinecraftApp::GetSaveThumbnail(PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)
 {
 	// on a save caused by a create world, the thumbnail capture won't have happened
 	if(m_ThumbnailBuffer!=NULL)
 	{
-		if( pbData )
+		if( thumbnailData )
 		{
-			*pbData= new BYTE [m_ThumbnailBuffer->GetBufferSize()];
-			*pdwSize=m_ThumbnailBuffer->GetBufferSize();
-			memcpy(*pbData,m_ThumbnailBuffer->GetBufferPointer(),*pdwSize);
+			*thumbnailData = new std::uint8_t[m_ThumbnailBuffer->GetBufferSize()];
+			*thumbnailSize = static_cast<unsigned int>(m_ThumbnailBuffer->GetBufferSize());
+			memcpy(*thumbnailData, m_ThumbnailBuffer->GetBufferPointer(), *thumbnailSize);
 		}
 		m_ThumbnailBuffer->Release();
 		m_ThumbnailBuffer=NULL;

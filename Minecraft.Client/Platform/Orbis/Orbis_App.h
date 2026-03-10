@@ -68,8 +68,8 @@ public:
 	virtual void FatalLoadError();
 
 	virtual void CaptureSaveThumbnail();
-	virtual void GetSaveThumbnail(PBYTE*,DWORD*) {}; // NOT USED
-	virtual void GetSaveThumbnail(PBYTE *ppbThumbnailData,DWORD *pdwThumbnailSize,PBYTE *ppbDataImage,DWORD *pdwSizeImage);
+	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize) {}; // NOT USED
+	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize, std::uint8_t **saveImageData, unsigned int *saveImageSize);
 	virtual void ReleaseSaveThumbnail();
 	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize);
 

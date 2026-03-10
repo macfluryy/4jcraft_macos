@@ -39,7 +39,7 @@ void CConsoleMinecraftApp::FatalLoadError()
 void CConsoleMinecraftApp::CaptureSaveThumbnail()
 {
 }
-void CConsoleMinecraftApp::GetSaveThumbnail(PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)
 {
 }
 void CConsoleMinecraftApp::ReleaseSaveThumbnail()

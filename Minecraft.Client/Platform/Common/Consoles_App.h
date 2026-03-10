@@ -608,7 +608,7 @@ public:
 
 	// images for save thumbnail/social post
 	virtual void CaptureSaveThumbnail() =0;
-	virtual void GetSaveThumbnail(PBYTE*,DWORD*)=0;
+	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)=0;
 	virtual void ReleaseSaveThumbnail()=0;
 	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)=0;
 

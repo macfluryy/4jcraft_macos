@@ -50,7 +50,7 @@ public:
 
 	virtual void CaptureScreenshot(int iPad);
 	virtual void CaptureSaveThumbnail();
-	virtual void GetSaveThumbnail(PBYTE*,DWORD*);
+	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize);
 	virtual void ReleaseSaveThumbnail();
 	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize);
 
