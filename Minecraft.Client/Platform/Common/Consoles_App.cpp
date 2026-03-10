@@ -7240,7 +7240,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 }
 
 // function to add credits for the DLC packs
-void CMinecraftApp::AddCreditText(LPCWSTR lpStr)
+void CMinecraftApp::AddCreditText(const wchar_t *lpStr)
 {
 	DebugPrintf("ADDING CREDIT - %ls\n",lpStr);
 	// add a string from the DLC to a credits vector

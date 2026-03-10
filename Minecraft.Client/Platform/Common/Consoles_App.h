@@ -364,7 +364,7 @@ public:
 	void ProcessInvite(DWORD dwUserIndex, DWORD dwLocalUsersMask, const INVITE_INFO * pInviteInfo);
 
 	// Add credits for DLC installed
-	void AddCreditText(LPCWSTR lpStr);
+	void AddCreditText(const wchar_t *lpStr);
 
 private:
 	PlayerUID m_xuidNotch;
