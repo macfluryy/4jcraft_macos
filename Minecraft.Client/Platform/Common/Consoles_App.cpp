@@ -5568,7 +5568,7 @@ void CMinecraftApp::ExitGame()
 
 // Invites
 
-void CMinecraftApp::ProcessInvite(DWORD dwUserIndex, DWORD dwLocalUsersMask, const INVITE_INFO * pInviteInfo)
+void CMinecraftApp::ProcessInvite(std::uint32_t dwUserIndex, std::uint32_t dwLocalUsersMask, const INVITE_INFO * pInviteInfo)
 {
 	m_InviteData.dwUserIndex=dwUserIndex;
 	m_InviteData.dwLocalUsersMask=dwLocalUsersMask;

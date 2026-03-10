@@ -30,8 +30,8 @@
 
 typedef struct _JoinFromInviteData
 {
-	DWORD dwUserIndex; // dwUserIndex
-	DWORD dwLocalUsersMask;   // dwUserMask
+	std::uint32_t dwUserIndex; // dwUserIndex
+	std::uint32_t dwLocalUsersMask;   // dwUserMask
 	const INVITE_INFO *pInviteInfo;  // pInviteInfo
 } 
 JoinFromInviteData;
@@ -361,7 +361,7 @@ public:
 
 	// invites
 	//void ProcessInvite(JoinFromInviteData *pJoinData);
-	void ProcessInvite(DWORD dwUserIndex, DWORD dwLocalUsersMask, const INVITE_INFO * pInviteInfo);
+	void ProcessInvite(std::uint32_t dwUserIndex, std::uint32_t dwLocalUsersMask, const INVITE_INFO * pInviteInfo);
 
 	// Add credits for DLC installed
 	void AddCreditText(const wchar_t *lpStr);
