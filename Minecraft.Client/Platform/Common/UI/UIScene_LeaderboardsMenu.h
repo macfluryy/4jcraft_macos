@@ -35,7 +35,7 @@ private:
 	struct LeaderboardEntry {
 		PlayerUID		m_xuid;
 		unsigned int m_row; // Row identifier for passing to Iggy as a unique identifier
-		DWORD		m_rank;
+		unsigned int	m_rank;
 		WCHAR		m_wcRank[12];
 		WCHAR		m_gamerTag[XUSER_NAME_SIZE+1];
 		//int			m_locale;
@@ -49,9 +49,9 @@ private:
 	};
 
 	struct Leaderboard {
-		DWORD						m_totalEntryCount;		//Either total number of entries in leaderboard, or total number of results for a friends query
+		unsigned int				m_totalEntryCount;		//Either total number of entries in leaderboard, or total number of results for a friends query
 		std::vector<LeaderboardEntry>	m_entries;
-		DWORD						m_numColumns;
+		unsigned int				m_numColumns;
 	};
 
 	Leaderboard m_leaderboard;				//All leaderboard data for the currently selected filter
