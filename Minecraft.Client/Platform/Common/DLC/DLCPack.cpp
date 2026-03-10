@@ -278,7 +278,7 @@ bool DLCPack::doesPackContainFile(DLCManager::EDLCType type, const std::wstring 
 	return hasFile;
 }
 
-DLCFile *DLCPack::getFile(DLCManager::EDLCType type, DWORD index)
+DLCFile *DLCPack::getFile(DLCManager::EDLCType type, unsigned int index)
 {
 	DLCFile *file = NULL;
 	if(type == DLCManager::e_DLCType_All)
@@ -333,9 +333,9 @@ DLCFile *DLCPack::getFile(DLCManager::EDLCType type, const std::wstring &path)
 	return file;
 }
 
-DWORD DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/)
+unsigned int DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/)
 {
-	DWORD count = 0;
+	unsigned int count = 0;
 
 	switch(type)
 	{
@@ -346,13 +346,13 @@ DWORD DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCT
 		}
 		break;
 	default:
-		count = (DWORD)m_files[(int)type].size();
+		count = static_cast<unsigned int>(m_files[(int)type].size());
 		break;
 	};
 	return count;
 };
 
-DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
+unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
 {
 	if(type == DLCManager::e_DLCType_All)
 	{
@@ -363,9 +363,9 @@ DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &pat
 		return 0;
 	}
 
-	DWORD foundIndex = 0;
+	unsigned int foundIndex = 0;
 	found = false;
-	DWORD index = 0;
+	unsigned int index = 0;
 	for(AUTO_VAR(it, m_files[type].begin()); it != m_files[type].end(); ++it)
 	{
 		if(path.compare((*it)->getPath()) == 0)

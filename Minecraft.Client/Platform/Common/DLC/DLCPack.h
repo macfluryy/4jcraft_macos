@@ -76,18 +76,18 @@ public:
 #endif
 
 	DLCFile *addFile(DLCManager::EDLCType type, const std::wstring &path);
-	DLCFile *getFile(DLCManager::EDLCType type, DWORD index);
+	DLCFile *getFile(DLCManager::EDLCType type, unsigned int index);
 	DLCFile *getFile(DLCManager::EDLCType type, const std::wstring &path);
 
-	DWORD getDLCItemsCount(DLCManager::EDLCType type = DLCManager::e_DLCType_All);	
-	DWORD getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found);
+	unsigned int getDLCItemsCount(DLCManager::EDLCType type = DLCManager::e_DLCType_All);	
+	unsigned int getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found);
 	bool doesPackContainFile(DLCManager::EDLCType type, const std::wstring &path);
 	std::uint32_t GetPackID() {return m_packId;}
 	
-	DWORD getSkinCount() { return getDLCItemsCount(DLCManager::e_DLCType_Skin); }
-	DWORD getSkinIndexAt(const std::wstring &path, bool &found) { return getFileIndexAt(DLCManager::e_DLCType_Skin, path, found); }
+	unsigned int getSkinCount() { return getDLCItemsCount(DLCManager::e_DLCType_Skin); }
+	unsigned int getSkinIndexAt(const std::wstring &path, bool &found) { return getFileIndexAt(DLCManager::e_DLCType_Skin, path, found); }
 	DLCSkinFile *getSkinFile(const std::wstring &path) { return (DLCSkinFile *)getFile(DLCManager::e_DLCType_Skin, path); }
-	DLCSkinFile *getSkinFile(DWORD index) { return (DLCSkinFile *)getFile(DLCManager::e_DLCType_Skin, index); }
+	DLCSkinFile *getSkinFile(unsigned int index) { return (DLCSkinFile *)getFile(DLCManager::e_DLCType_Skin, index); }
 	bool doesPackContainSkin(const std::wstring &path) { return doesPackContainFile(DLCManager::e_DLCType_Skin, path); }
 
 	bool hasPurchasedFile(DLCManager::EDLCType type, const std::wstring &path);
