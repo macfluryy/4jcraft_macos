@@ -321,8 +321,8 @@ typedef struct _TutorialPopupInfo
 #else
 	UIScene *interactScene;
 #endif
-	LPCWSTR desc;
-	LPCWSTR title;
+	const wchar_t *desc;
+	const wchar_t *title;
 	int icon;
 	int iAuxVal /* = 0 */;
 	bool isFoil /* = false */;
@@ -356,7 +356,7 @@ typedef struct _SignInInfo
 // Credits
 typedef struct 
 {
-	LPCWSTR				m_Text;				// Should contain string, optionally with %s to add in translated string ... e.g. "Andy West - %s"
+	const wchar_t *	m_Text;				// Should contain string, optionally with %s to add in translated string ... e.g. "Andy West - %s"
 	int					m_iStringID[2];		// May be NO_TRANSLATED_STRING if we do not require to add any translated string.
 	ECreditTextTypes	m_eType;
 }
