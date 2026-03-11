@@ -17,22 +17,14 @@ void SetEntityMotionPacket::_init(int id, double xd, double yd, double zd)
 	if (xd > m) xd = m;
 	if (yd > m) yd = m;
 	if (zd > m) zd = m;
-	xa = (int) (xd * 8000.0);
-	ya = (int) (yd * 8000.0);
-	za = (int) (zd * 8000.0);
-	// 4J - if we could transmit this as bytes (in 1/16 accuracy) then flag to do so
-	if( ( xa >= (-128 * 16 ) ) && ( ya >= (-128 * 16 ) ) && ( za >= (-128 * 16 ) ) &&
-		( xa < (128 * 16 ) ) && ( ya < (128 * 16 ) ) && ( za < (128 * 16 ) ) )
-	{
-		useBytes = true;
-	}
-	else
-	{
-		useBytes = false;
-	}
+    xa = (int16_t) (xd * 8000.0);
+    ya = (int16_t) (yd * 8000.0);
+    za = (int16_t) (zd * 8000.0);
+
+    useBytes = false;
 }
 
-SetEntityMotionPacket::SetEntityMotionPacket() 
+SetEntityMotionPacket::SetEntityMotionPacket()
 {
 	_init(0, 0.0f, 0.0f, 0.0f);
 }
@@ -44,56 +36,27 @@ SetEntityMotionPacket::SetEntityMotionPacket(std::shared_ptr<Entity> e)
 
 SetEntityMotionPacket::SetEntityMotionPacket(int id, double xd, double yd, double zd)
 {
-	_init(id, xd, yd, zd);   
+	_init(id, xd, yd, zd);
 }
 
-void SetEntityMotionPacket::read(DataInputStream *dis) //throws IOException 
+void SetEntityMotionPacket::read(DataInputStream *dis) //throws IOException
 {
-	short idAndFlag = dis->readShort();
-	id = idAndFlag & 0x07ff;
-	if( idAndFlag & 0x0800 )
-	{
-		xa = (int)dis->readByte();
-		ya = (int)dis->readByte();
-		za = (int)dis->readByte();
-		xa = ( xa << 24 ) >> 24;
-		ya = ( ya << 24 ) >> 24;
-		za = ( za << 24 ) >> 24;
-		xa *= 16;
-		ya *= 16;
-		za *= 16;
-		useBytes = true;
-	}
-	else
-	{
-		xa = dis->readShort();
-		ya = dis->readShort();
-		za = dis->readShort();
-		useBytes = false;
-	}
+	id = dis->readShort();
+
+	xa = dis->readShort();
+    ya = dis->readShort();
+	za = dis->readShort();
+
+	useBytes = false;
 }
 
 void SetEntityMotionPacket::write(DataOutputStream *dos) //throws IOException
 {
-	if( useBytes )
-	{
-		// 4jcraft: masking the id to 11 bits before writing to account for entity ids > 4095.
-		// This fixes a connection drop when loading the tutorial world on linux.
-		//
-		// FIXME: find the root cause of this, since there shouldn't be more than 4095 entities.
-		dos->writeShort((id & 0x07FF) | 0x800);
-		dos->writeByte(xa/16);
-		dos->writeByte(ya/16);
-		dos->writeByte(za/16);
-	}
-	else
-	{
-		// 4jcraft: same thing as line 80 here
-		dos->writeShort((id & 0x07FF));
-		dos->writeShort(xa);
-		dos->writeShort(ya);
-		dos->writeShort(za);
-	}
+    dos->writeShort(id);
+
+    dos->writeShort(xa);
+    dos->writeShort(ya);
+    dos->writeShort(za);
 }
 
 void SetEntityMotionPacket::handle(PacketListener *listener)
@@ -103,7 +66,7 @@ void SetEntityMotionPacket::handle(PacketListener *listener)
 
 int SetEntityMotionPacket::getEstimatedSize()
 {
-	return useBytes ? 5 : 8;
+	return 8;
 }
 
 bool SetEntityMotionPacket::canBeInvalidated()
