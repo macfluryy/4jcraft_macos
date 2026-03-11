@@ -58,6 +58,8 @@ void InventoryScreen::renderBg(float a)
     float oybr = minecraft->player->yBodyRot;
     float oyr = minecraft->player->yRot;
     float oxr = minecraft->player->xRot;
+    float oyh = minecraft->player->yHeadRot;
+    float oyhp = minecraft->player->yHeadRotO;
 
     float xd = (xo + 51) - xMouse;
     float yd = (yo + 75 - 50) - yMouse;
@@ -71,12 +73,16 @@ void InventoryScreen::renderBg(float a)
     minecraft->player->yBodyRot = (float) atan(xd / 40.0f) * 20;
     minecraft->player->yRot = (float) atan(xd / 40.0f) * 40;
     minecraft->player->xRot = -(float) atan(yd / 40.0f) * 20;
+    minecraft->player->yHeadRot = (float) atan(xd / 40.0f) * 40;
+    minecraft->player->yHeadRotO = (float) atan(xd / 40.0f) * 40;
     glTranslatef(0, minecraft->player->heightOffset, 0);
     EntityRenderDispatcher::instance->playerRotY = 180;
     EntityRenderDispatcher::instance->render(minecraft->player, 0, 0, 0, 0, 1);
     minecraft->player->yBodyRot = oybr;
     minecraft->player->yRot = oyr;
     minecraft->player->xRot = oxr;
+    minecraft->player->yHeadRot = oyh;
+    minecraft->player->yHeadRotO = oyhp;
     glPopMatrix();
     Lighting::turnOff();
     glDisable(GL_RESCALE_NORMAL);
