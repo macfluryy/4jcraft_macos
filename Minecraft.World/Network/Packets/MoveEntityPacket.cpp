@@ -71,22 +71,22 @@ MoveEntityPacket::PosRot::PosRot()
 
 MoveEntityPacket::PosRot::PosRot(int id, int8_t xa, int8_t ya, int8_t za, int8_t yRot, int8_t xRot) : MoveEntityPacket( id )
 {
-    this->xa = (int)(int8_t)xa;
-    this->ya = (int)(int8_t)ya;
-    this->za = (int)(int8_t)za;
-    this->yRot = (int)(int8_t)yRot;
-    this->xRot = (int)(int8_t)xRot;
+    this->xa = xa;
+    this->ya = ya;
+    this->za = za;
+    this->yRot = yRot;
+    this->xRot = xRot;
 	hasRot = true;
 }
 
 void MoveEntityPacket::PosRot::read(DataInputStream *dis) //throws IOException
 {
 	MoveEntityPacket::read(dis);
-    xa = (int)(int8_t)dis->readByte();
-    ya = (int)(int8_t)dis->readByte();
-    za = (int)(int8_t)dis->readByte();
-    yRot = (int)(int8_t)dis->readByte();
-    xRot = (int)(int8_t)dis->readByte();
+    xa = (int8_t)dis->readByte();
+    ya = (int8_t)dis->readByte();
+    za = (int8_t)dis->readByte();
+    yRot = (int8_t)dis->readByte();
+    xRot = (int8_t)dis->readByte();
 }
 
 void MoveEntityPacket::PosRot::write(DataOutputStream *dos) //throws IOException
@@ -118,9 +118,9 @@ MoveEntityPacket::Pos::Pos(int id, int8_t xa, int8_t ya, int8_t za) : MoveEntity
 void MoveEntityPacket::Pos::read(DataInputStream *dis) //throws IOException
 {
 	MoveEntityPacket::read(dis);
-    xa = (int)(int8_t)dis->readByte();
-    ya = (int)(int8_t)dis->readByte();
-    za = (int)(int8_t)dis->readByte();
+    xa = (int8_t)dis->readByte();
+    ya = (int8_t)dis->readByte();
+    za = (int8_t)dis->readByte();
 }
 
 void MoveEntityPacket::Pos::write(DataOutputStream *dos) //throws IOException
@@ -151,8 +151,8 @@ MoveEntityPacket::Rot::Rot(int id, int8_t yRot, int8_t xRot) : MoveEntityPacket(
 void MoveEntityPacket::Rot::read(DataInputStream *dis) //throws IOException
 {
 	MoveEntityPacket::read(dis);
-    yRot = (int)(int8_t)dis->readByte();
-    xRot = (int)(int8_t)dis->readByte();
+    yRot = (int8_t)dis->readByte();
+    xRot = (int8_t)dis->readByte();
 }
 
 void MoveEntityPacket::Rot::write(DataOutputStream *dos) //throws IOException
