@@ -44,12 +44,9 @@ int Entity::getSmallId()
 	// for final notification to the client that the entities are removed. We can't go re-using these small Ids yet, as otherwise we will
 	// potentially end up telling the client that the entity has been removed After we have already re-used its Id and created a new entity.
 	// This ends up with newly created client-side entities being removed by accident, causing invisible mobs.
-#ifdef _WIN32
-	if( ((size_t)TlsGetValue(tlsIdx) != 0 ) )
-#else
-	pthread_key_create(&tlsIdx, nullptr);
+
+	//4jcraft - i have no idea what 4j was cooking here ngl
 	if ( ((size_t)pthread_getspecific(tlsIdx) != 0) )
-#endif
 	{
 		MinecraftServer *server = MinecraftServer::getInstance();
 		if( server )
