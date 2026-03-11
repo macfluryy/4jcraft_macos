@@ -70,6 +70,9 @@ static void onFramebufferResize(int w, int h)
     ::glViewport(0, 0, w, h);
 }
 
+// V-Sync  
+
+
 // Initialize OpenGL & The SDL window.
 void C4JRender::Initialise()
 {
@@ -121,8 +124,14 @@ void C4JRender::Initialise()
         SDL_Quit();
         return;
     }
-    SDL_GL_SetSwapInterval(0); // V-Sync Off Please.
 
+    // 4JCraft VSync/V-Sync
+    #ifdef ENABLE_VSYNC
+        SDL_GL_SetSwapInterval(1); // V-Sync On Please.        
+    #else
+        SDL_GL_SetSwapInterval(0); // V-Sync Off Please. 
+    #endif  
+    
     int fw, fh; SDL_GetWindowSize(s_window, &fw, &fh); onFramebufferResize(fw, fh);
 
     // We initialize the OpenGL states. Touching those values makes some funny artifacts appear.
@@ -560,7 +569,7 @@ void C4JRender::TextureBind(int idx)
     }
 }
 
-void C4JRender::TextureBindVertex(int idx)
+void C4JRender::TextureBindVertex(int idx, bool scaleLight)
 {
     // Unit 1 used for lightmapping in fixed-function or standard shaders
     ::glActiveTexture(GL_TEXTURE1);
@@ -574,7 +583,20 @@ void C4JRender::TextureBindVertex(int idx)
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+        // 4jcraft: jank workaround for entities
+        // referenced from the disabled code in GameRenderer::turnOnLightLayer
+        if (scaleLight)
+        {
+            ::glMatrixMode(GL_TEXTURE);
+            ::glLoadIdentity();
+            float s = 1 / 16.0f / 15.0f * 15 / 16;
+            ::glScalef(s, s, s);
+            ::glTranslatef(8.0f, 8.0f, 8.0f);
+            ::glMatrixMode(GL_MODELVIEW);
+        }
     }
+    
     ::glActiveTexture(GL_TEXTURE0);
     ::glFlush();
 }

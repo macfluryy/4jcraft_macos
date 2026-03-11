@@ -10,6 +10,7 @@ public:
     bool wasJumping;
     bool jumping;
     bool sneaking;
+    bool sprintKey;
     
 	Input();	// 4J - added
 	virtual ~Input(){}

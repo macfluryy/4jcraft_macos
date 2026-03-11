@@ -7,7 +7,7 @@ class SetEntityMotionPacket : public Packet, public std::enable_shared_from_this
 {
 public:
 	int id;
-    int xa, ya, za;
+	int16_t xa, ya, za;
 	bool useBytes;		// 4J added
 
 private:
