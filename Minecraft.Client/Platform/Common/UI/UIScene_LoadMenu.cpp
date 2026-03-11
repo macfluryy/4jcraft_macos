@@ -25,9 +25,9 @@
 
 namespace
 {
-int LoadSaveDataThumbnailReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes)
+int LoadSaveDataThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
 {
-	return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(lpParam, reinterpret_cast<std::uint8_t *>(pbThumbnail), dwThumbnailBytes);
+	return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
 }
 }
 

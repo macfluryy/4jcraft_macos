@@ -54,9 +54,9 @@ C4JStorage::SAVETRANSFER_FILE_DETAILS UIScene_LoadOrJoinMenu::m_debugTransferDet
 
 namespace
 {
-int LoadSaveDataThumbnailReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes)
+int LoadSaveDataThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
 {
-	return UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(lpParam, reinterpret_cast<std::uint8_t *>(pbThumbnail), dwThumbnailBytes);
+	return UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
 }
 }
 

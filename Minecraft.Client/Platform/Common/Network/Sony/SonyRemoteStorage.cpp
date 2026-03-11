@@ -238,7 +238,7 @@ bool SonyRemoteStorage::setData( PSAVE_INFO info, CallbackFunc cb, LPVOID lpPara
 	return true;
 }
 
-int SonyRemoteStorage::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int SonyRemoteStorage::LoadSaveDataThumbnailReturned(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes)
 {
 	SonyRemoteStorage *pClass= (SonyRemoteStorage *)lpParam;
 
@@ -250,10 +250,10 @@ int SonyRemoteStorage::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThum
 
 	app.DebugPrintf("Received data for a thumbnail\n");
 
-	if(pbThumbnail && dwThumbnailBytes)
+	if(thumbnailData && thumbnailBytes)
 	{
-		pClass->m_thumbnailData = pbThumbnail;
-		pClass->m_thumbnailDataSize = dwThumbnailBytes;
+		pClass->m_thumbnailData = thumbnailData;
+		pClass->m_thumbnailDataSize = thumbnailBytes;
 	}
 	else
 	{

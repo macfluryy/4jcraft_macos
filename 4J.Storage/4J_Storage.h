@@ -278,7 +278,7 @@ public:
 	C4JStorage::ESaveGameState	GetSavesInfo(int iPad,int ( *Func)(void *lpParam,SAVE_DETAILS *pSaveDetails,const bool),void *lpParam,char *pszSavePackName);
 	PSAVE_DETAILS				ReturnSavesInfo();
 	void						ClearSavesInfo();	// Clears results
-	C4JStorage::ESaveGameState	LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo,int( *Func)(void *lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), void *lpParam);	// Get the thumbnail for an individual save referenced by pSaveInfo
+	C4JStorage::ESaveGameState	LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo,int( *Func)(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes), void *lpParam);	// Get the thumbnail for an individual save referenced by pSaveInfo
 
 	void								GetSaveCacheFileInfo(DWORD dwFile,XCONTENT_DATA &xContentData);
 	void								GetSaveCacheFileInfo(DWORD dwFile,	PBYTE *ppbImageData, DWORD *pdwImageBytes);

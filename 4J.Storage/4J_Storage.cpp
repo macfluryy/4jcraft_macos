@@ -45,7 +45,7 @@ void C4JStorage::SetSaveMessageVPosition(float fY) {}
 C4JStorage::ESaveGameState C4JStorage::GetSavesInfo(int iPad, int(*Func)(void *lpParam, SAVE_DETAILS *pSaveDetails, const bool), void *lpParam, char *pszSavePackName) { return ESaveGame_Idle; }
 PSAVE_DETAILS C4JStorage::ReturnSavesInfo() { return nullptr; }
 void C4JStorage::ClearSavesInfo() {}
-C4JStorage::ESaveGameState C4JStorage::LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo, int(*Func)(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes), void *lpParam) { return ESaveGame_Idle; }
+C4JStorage::ESaveGameState C4JStorage::LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo, int(*Func)(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes), void *lpParam) { return ESaveGame_Idle; }
 void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile, XCONTENT_DATA &xContentData) { memset(&xContentData, 0, sizeof(xContentData)); }
 void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile, PBYTE *ppbImageData, DWORD *pdwImageBytes) { if (ppbImageData) *ppbImageData = nullptr; if (pdwImageBytes) *pdwImageBytes = 0; }
 C4JStorage::ESaveGameState C4JStorage::LoadSaveData(PSAVE_INFO pSaveInfo, int(*Func)(void *lpParam, const bool, const bool), void *lpParam) { return ESaveGame_Idle; }
