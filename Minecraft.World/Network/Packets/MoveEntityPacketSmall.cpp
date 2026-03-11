@@ -1,6 +1,5 @@
 #include "../../Platform/stdafx.h"
 #include <iostream>
-#include <limits>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "MoveEntityPacketSmall.h"
@@ -20,19 +19,30 @@ MoveEntityPacketSmall::MoveEntityPacketSmall()
 
 MoveEntityPacketSmall::MoveEntityPacketSmall(int id)
 {
+	if( (id < 0 ) || (id >= 2048 ) )
+	{
+		// We shouln't be tracking an entity that doesn't have a short type of id
+		__debugbreak();
+	}
+
 	this->id = id;
 	hasRot = false;
-	xa = ya = za = yRot = xRot = 0;
+
+	xa = 0;
+	ya = 0;
+	za = 0;
+	yRot = 0;
+	xRot = 0;
 }
 
-void MoveEntityPacketSmall::read(DataInputStream *dis) //throws IOException
+void MoveEntityPacketSmall::read(DataInputStream *dis) //throws IOException 
 {
 	id = dis->readShort();
 }
 
 void MoveEntityPacketSmall::write(DataOutputStream *dos) //throws IOException
 {
-	if(id < 0 || id > std::numeric_limits<int16_t>::max() )
+	if( (id < 0 ) || (id >= 2048 ) )
 	{
 		// We shouln't be tracking an entity that doesn't have a short type of id
 		__debugbreak();
@@ -45,7 +55,7 @@ void MoveEntityPacketSmall::handle(PacketListener *listener)
 	listener->handleMoveEntitySmall(shared_from_this());
 }
 
-int MoveEntityPacketSmall::getEstimatedSize()
+int MoveEntityPacketSmall::getEstimatedSize() 
 {
 	return 2;
 }
@@ -66,7 +76,7 @@ MoveEntityPacketSmall::PosRot::PosRot()
 	hasRot = true;
 }
 
-MoveEntityPacketSmall::PosRot::PosRot(int id, int8_t xa, int8_t ya, int8_t za, int8_t yRot, int8_t xRot) : MoveEntityPacketSmall( id )
+MoveEntityPacketSmall::PosRot::PosRot(int id, char xa, char ya, char za, char yRot, char xRot) : MoveEntityPacketSmall( id )
 {
 	this->xa = xa;
 	this->ya = ya;
@@ -76,69 +86,80 @@ MoveEntityPacketSmall::PosRot::PosRot(int id, int8_t xa, int8_t ya, int8_t za, i
 	hasRot = true;
 }
 
-void MoveEntityPacketSmall::PosRot::read(DataInputStream *dis) //throws IOException
+void MoveEntityPacketSmall::PosRot::read(DataInputStream *dis) //throws IOException 
 {
-    MoveEntityPacketSmall::read(dis);
-    xa = (int8_t)dis->readByte();
-    ya = (int8_t)dis->readByte();
-    za = (int8_t)dis->readByte();
-    yRot = (int8_t)dis->readByte();
-    xRot = (int8_t)dis->readByte();
+	int idAndRot = dis->readShort();
+	this->id = idAndRot & 0x07ff;
+	this->yRot = idAndRot >> 11;
+	int xAndYAndZ = (int)dis->readShort();
+	this->xa = xAndYAndZ >> 11; 
+	this->ya = (xAndYAndZ << 21 ) >> 26;
+	this->za = (xAndYAndZ << 27 ) >> 27;
 }
 
-void MoveEntityPacketSmall::PosRot::write(DataOutputStream *dos) //throws IOException
+void MoveEntityPacketSmall::PosRot::write(DataOutputStream *dos) //throws IOException 
 {
-    MoveEntityPacketSmall::write(dos);
-    dos->writeByte((uint8_t)(xa & 0xFF));
-    dos->writeByte((uint8_t)(ya & 0xFF));
-    dos->writeByte((uint8_t)(za & 0xFF));
-    dos->writeByte((uint8_t)(yRot & 0xFF));
-    dos->writeByte((uint8_t)(xRot & 0xFF));
+	if( (id < 0 ) || (id >= 2048 ) )
+	{
+		// We shouln't be tracking an entity that doesn't have a short type of id
+		__debugbreak();
+	}
+	short idAndRot = id | yRot << 11;
+	dos->writeShort(idAndRot);
+	short xAndYAndZ = ( xa << 11 ) | ( ( ya & 0x3f ) << 5 ) | ( za & 0x1f );
+	dos->writeShort(xAndYAndZ);
 }
 
-int MoveEntityPacketSmall::PosRot::getEstimatedSize()
+int MoveEntityPacketSmall::PosRot::getEstimatedSize() 
 {
-	return 2+5;
+	return 4;
 }
 
-MoveEntityPacketSmall::Pos::Pos()
+MoveEntityPacketSmall::Pos::Pos() 
 {
 }
 
-MoveEntityPacketSmall::Pos::Pos(int id, int8_t xa, int8_t ya, int8_t za) : MoveEntityPacketSmall(id)
+MoveEntityPacketSmall::Pos::Pos(int id, char xa, char ya, char za) : MoveEntityPacketSmall(id)
 {
 	this->xa = xa;
 	this->ya = ya;
 	this->za = za;
 }
 
-void MoveEntityPacketSmall::Pos::read(DataInputStream *dis) //throws IOException
+void MoveEntityPacketSmall::Pos::read(DataInputStream *dis) //throws IOException 
 {
-    MoveEntityPacketSmall::read(dis);
-    xa = (int8_t)dis->readByte();
-    ya = (int8_t)dis->readByte();
-    za = (int8_t)dis->readByte();
+	int idAndY = dis->readShort();
+	this->id = idAndY & 0x07ff;
+	this->ya = idAndY >> 11;
+	int XandZ = (int)((signed char)(dis->readByte()));
+	xa = XandZ >> 4;
+	za = ( XandZ << 28 ) >> 28;
 }
 
 void MoveEntityPacketSmall::Pos::write(DataOutputStream *dos) //throws IOException
 {
-	MoveEntityPacketSmall::write(dos);
-	dos->writeByte((uint8_t)(xa & 0xFF));
-	dos->writeByte((uint8_t)(ya & 0xFF));
-	dos->writeByte((uint8_t)(za & 0xFF));
+	if( (id < 0 ) || (id >= 2048 ) )
+	{
+		// We shouln't be tracking an entity that doesn't have a short type of id
+		__debugbreak();
+	}
+	short idAndY = id | ya << 11;
+	dos->writeShort(idAndY);
+	char XandZ = ( xa << 4 ) | ( za & 0x0f );
+	dos->writeByte((uint8_t)XandZ);
 }
 
 int MoveEntityPacketSmall::Pos::getEstimatedSize()
 {
-	return 2+3;
+	return 3;
 }
 
-MoveEntityPacketSmall::Rot::Rot()
+MoveEntityPacketSmall::Rot::Rot() 
 {
 	hasRot = true;
 }
 
-MoveEntityPacketSmall::Rot::Rot(int id, int8_t yRot, int8_t xRot) : MoveEntityPacketSmall(id)
+MoveEntityPacketSmall::Rot::Rot(int id, char yRot, char xRot) : MoveEntityPacketSmall(id)
 {
 
 	this->yRot = yRot;
@@ -146,19 +167,25 @@ MoveEntityPacketSmall::Rot::Rot(int id, int8_t yRot, int8_t xRot) : MoveEntityPa
 	hasRot = true;
 }
 
-void MoveEntityPacketSmall::Rot::read(DataInputStream *dis) //throws IOException
+void MoveEntityPacketSmall::Rot::read(DataInputStream *dis) //throws IOException 
 {
-    MoveEntityPacketSmall::read(dis);
-    yRot = (int8_t)dis->readByte();
+	int idAndRot = (int)dis->readShort();
+	this->id = idAndRot & 0x07ff;
+	this->yRot = idAndRot >> 11;
 }
 
-void MoveEntityPacketSmall::Rot::write(DataOutputStream *dos) //throws IOException
+void MoveEntityPacketSmall::Rot::write(DataOutputStream *dos) //throws IOException 
 {
-	MoveEntityPacketSmall::write(dos);
-	dos->writeByte((uint8_t)(yRot & 0xFF));
+	if( (id < 0 ) || (id >= 2048 ) )
+	{
+		// We shouln't be tracking an entity that doesn't have a short type of id
+		__debugbreak();
+	}
+	short idAndRot = id | yRot << 11;
+	dos->writeShort(idAndRot);
 }
 
 int MoveEntityPacketSmall::Rot::getEstimatedSize()
 {
-	return 2+1;
+	return 2;
 }

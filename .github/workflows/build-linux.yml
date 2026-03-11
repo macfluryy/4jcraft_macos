@@ -32,7 +32,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
+          sudo apt-get install -y build-essential ccache python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
           # Set a reasonable ccache size
           ccache -M 5G || true
 
@@ -86,7 +86,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
+          sudo apt-get install -y build-essential ccache python3 ninja-build meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
           # Set a reasonable ccache size
           ccache -M 5G || true
 
