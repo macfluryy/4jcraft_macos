@@ -8,7 +8,7 @@
 
 namespace
 {
-int LoadSaveDataThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+int InGameSaveManagementThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
 {
 	return UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
 }
@@ -266,7 +266,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 				app.DebugPrintf("Requesting the first thumbnail\n");
 				// set the save to load
 				PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-				C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturnedThunk,this);
+				C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&InGameSaveManagementThumbnailReturnedThunk,this);
 
 				if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
 				{
@@ -331,7 +331,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 					app.DebugPrintf("Requesting another thumbnail\n");
 					// set the save to load
 					PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-					C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturnedThunk,this);
+					C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&InGameSaveManagementThumbnailReturnedThunk,this);
 					if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
 					{
 						// something went wrong

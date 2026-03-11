@@ -25,7 +25,7 @@
 
 namespace
 {
-int LoadSaveDataThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+int LoadMenuThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
 {
 	return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
 }
@@ -233,9 +233,9 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 #ifdef _DURANGO
 			// On Durango, we have an extra flag possible with LoadSaveDataThumbnail, which if true will force the loading of this thumbnail even if the save data isn't sync'd from
 			// the cloud at this stage. This could mean that there could be a pretty large delay before the callback happens, in this case.
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturnedThunk,this,true);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadMenuThumbnailReturnedThunk,this,true);
 #else
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturnedThunk,this);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadMenuThumbnailReturnedThunk,this);
 #endif
 			m_bShowTimer = true;
 		}
