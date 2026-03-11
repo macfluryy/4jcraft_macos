@@ -21,30 +21,6 @@
 #define true 1
 #define false 0
 
-// Iggy GDraw support functions - normally in the Iggy library, stubbed here
-void * IggyGDrawMallocAnnotated(SINTa size, const char *file, int line) {
-    (void)file; (void)line;
-    return malloc((size_t)size);
-}
-
-void IggyGDrawFree(void *ptr) {
-    free(ptr);
-}
-
-void IggyGDrawSendWarning(Iggy *f, char const *message, ...) {
-    (void)f;
-    va_list args;
-    va_start(args, message);
-    fprintf(stderr, "[Iggy GDraw Warning] ");
-    vfprintf(stderr, message, args);
-    fprintf(stderr, "\n");
-    va_end(args);
-}
-
-void IggyDiscardVertexBufferCallback(void *owner, void *buf) {
-    (void)owner; (void)buf;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Extensions (we map to GL 2.0 function names for a uniform interface

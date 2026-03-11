@@ -283,7 +283,7 @@ void UIScene::loadMovie()
 #elif defined __PSVITA__
 	moviePath.append(L"Vita.swf");
 	m_loadedResolution = eSceneResolution_Vita;
-#elif defined _WINDOWS64
+#elif defined _WINDOWS64 || defined __linux__
 	if(ui.getScreenHeight() == 720)
 	{
 		moviePath.append(L"720.swf");
