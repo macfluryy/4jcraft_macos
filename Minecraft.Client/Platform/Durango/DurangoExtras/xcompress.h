@@ -27,8 +27,8 @@ extern "C"
 {
 #endif
 
-#pragma warning(push)
-#pragma warning(disable: 4200) // zero-sized array
+
+
 
 typedef enum _XMEMCODEC_TYPE
 {
@@ -244,7 +244,7 @@ typedef struct _XCOMPRESS_BLOCK_HEADER_LZXNATIVE
     BYTE                                    pCompressedData[0];
 } XCOMPRESS_BLOCK_HEADER_LZXNATIVE;
 
-#pragma warning(pop)
+
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,6 @@
 #pragma once
 // 4J-PB - remove the inherits via dominance warnings
-#pragma warning( disable : 4250 )
+
 //using namespace std;
 // A scene map directly to an Iggy movie (or more accurately a collection of different sized movies)
 

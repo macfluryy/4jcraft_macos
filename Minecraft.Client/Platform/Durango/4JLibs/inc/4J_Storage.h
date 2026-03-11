@@ -460,7 +460,7 @@ public:
 	bool						Suspended();
 
 	///////////////////////////////////////////////////////////////////////////// Unimplemented stubs /////////////////////////////////////////////////////////////////////////////////
-#pragma warning(disable: 4100)
+
 	void						SetSaveDeviceSelected(unsigned int uiPad,bool bSelected) {}
 	bool						GetSaveDeviceSelected(unsigned int iPad) { return true; }
 	void						ClearDLCOffers();

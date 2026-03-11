@@ -63,9 +63,9 @@ namespace Sentient
 	{
 		SenUGCMetaData()
 		{
-#pragma warning ( disable : 4996 )	// @TODO - Removed once Int16 Descriptors are deprecated
+
 			memset(descriptors, 0, sizeof(SenUGCDescriptor) * NrUgcDescriptors);
-#pragma warning ( default : 4996 )
+
 			memset(descriptors2, 0, sizeof(__int64) * NrUgcDescriptors);
 		}
 
