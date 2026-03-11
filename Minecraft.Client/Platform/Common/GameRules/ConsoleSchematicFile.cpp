@@ -334,14 +334,15 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkB
 __int64 ConsoleSchematicFile::applyLighting(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
 	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	// 4jcraft changed >>4<<4 to & ~15
+	int xEnd = std::min(destinationBox->x1, (double)(xStart & ~15) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
 	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zEnd = std::min(destinationBox->z1, (double)(zStart & ~15) + 16);
 
 	int rowBlocksIncluded = (yEnd-yStart)*(zEnd-zStart);
 	int blocksIncluded = (xEnd-xStart)*rowBlocksIncluded;
