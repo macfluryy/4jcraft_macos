@@ -161,14 +161,16 @@ void C_4JInput::Tick() {
 int C_4JInput::GetHotbarSlotPressed(int iPad) {
     if (iPad != 0) return -1;
 
-    static const int sc[10] = {
+    constexpr size_t NUM_HOTBAR_SLOTS = 9;
+
+    static const int sc[NUM_HOTBAR_SLOTS] = {
         SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
         SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
         SDL_SCANCODE_9,
     };
-    static bool s_wasDown[10] = {};
+    static bool s_wasDown[NUM_HOTBAR_SLOTS] = {};
 
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < NUM_HOTBAR_SLOTS; ++i) {
         bool down = KDown(sc[i]);
         bool pressed = down && !s_wasDown[i];
         s_wasDown[i] = down;
