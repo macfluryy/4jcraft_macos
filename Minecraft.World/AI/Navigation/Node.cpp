@@ -30,7 +30,8 @@ hash(createHash(x, y, z))
 
 int Node::createHash(const int x, const int y, const int z) 
 {
-	return (y & 0xff) | ((x & 0x7fff) << 8) | ((z & 0x7fff) << 24) | ((x < 0) ? 0x0080000000 : 0) | ((z < 0) ? 0x0000008000 : 0);
+	// 4jcraft added cast to higher value to be representable after shift
+	return (y & 0xff) | (((int64_t)x & 0x7fff) << 8) | (((int64_t)z & 0x7fff) << 24) | ((x < 0) ? 0x0080000000 : 0) | ((z < 0) ? 0x0000008000 : 0);
 }
 
 float Node::distanceTo(Node *to) 

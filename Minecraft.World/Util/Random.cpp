@@ -88,7 +88,7 @@ int Random::nextInt(int n)
 
 
     if ((n & -n) == n)  // i.e., n is a power of 2
-	// 4jcraft added casts to unsigned
+	// 4jcraft added casts to unsigned (and uint64)
         return (unsigned int)(((__uint64)next(31) * n) >> 31); // 4J Stu - Made __int64 instead of long
 
     int bits, val;
@@ -96,7 +96,8 @@ int Random::nextInt(int n)
 	{
         bits = next(31);
         val = bits % n;
-    } while(bits - val + (n-1) < 0);
+	// 4jcraft added a cast to prevent overflow
+    } while((int64_t) bits - val + (n-1) < 0);
     return val;
 }
 
