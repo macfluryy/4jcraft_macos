@@ -21,6 +21,7 @@ static bool s_prevMenuDisplayed = false;
 static bool s_snapTaken = false;
 static float s_accumRelX = 0, s_accumRelY = 0;
 static float s_snapRelX  = 0, s_snapRelY  = 0;
+static int s_mouseX  = 0, s_mouseY  = 0;
 
 static int   s_scrollTicksForButtonPressed = 0;
 static int   s_scrollTicksForGetValue      = 0;
@@ -143,7 +144,7 @@ void C_4JInput::Tick() {
         if (sc > 0 && sc < KEY_COUNT) s_keysCurrent[sc] = state[sc] != 0;
     }
 
-    Uint32 btns = SDL_GetMouseState(NULL, NULL);
+    Uint32 btns = SDL_GetMouseState(&s_mouseX, &s_mouseY);
     s_mouseLeftCurrent  = (btns & SDL_BUTTON(SDL_BUTTON_LEFT))  != 0;
     s_mouseRightCurrent = (btns & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
 
@@ -300,6 +301,15 @@ float C_4JInput::GetJoypadStick_RY(int, bool) {
 
 unsigned char C_4JInput::GetJoypadLTrigger(int, bool) { return s_mouseRightCurrent ? 255 : 0; }
 unsigned char C_4JInput::GetJoypadRTrigger(int, bool) { return s_mouseLeftCurrent  ? 255 : 0; }
+
+int C_4JInput::GetMouseX() {
+    return s_mouseX;
+}
+int C_4JInput::GetMouseY() {
+    return s_mouseY;
+}
+
+
 // We detect if a Menu is visible on the player's screen to the mouse being stuck.
 void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {
     if (iPad >= 0 && iPad < 4) s_menuDisplayed[iPad] = bVal;

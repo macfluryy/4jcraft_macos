@@ -134,8 +134,8 @@ public:
 
 	//bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);
 
-	float GetMouseX();
-	float GetMouseY();
+	int GetMouseX();
+	int GetMouseY();
 };
 
 // Singleton

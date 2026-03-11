@@ -121,8 +121,6 @@ void Screen::updateEvents()
     bool leftState = InputManager.ButtonDown(0, MINECRAFT_ACTION_ACTION);
     bool rightState = InputManager.ButtonDown(0, MINECRAFT_ACTION_USE);
     
-    printf("%d, %d\n", leftState, rightState);
-
     if (leftState && !prevLeftState) {
         mouseClicked(xMouse, yMouse, 0);
     }
