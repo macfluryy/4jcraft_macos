@@ -37,6 +37,12 @@ global_cpp_defs = [
   '-DDEBUG',
 ]
 
+if get_option('enable_vsync')
+    global_cpp_defs += '-DENABLE_VSYNC'
+    message('v-sync enabled')
+endif
+
+
 if host_machine.system() == 'linux'
   global_cpp_defs += [
     '-Dlinux',

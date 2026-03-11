@@ -70,6 +70,9 @@ static void onFramebufferResize(int w, int h)
     ::glViewport(0, 0, w, h);
 }
 
+// V-Sync  
+
+
 // Initialize OpenGL & The SDL window.
 void C4JRender::Initialise()
 {
@@ -121,8 +124,14 @@ void C4JRender::Initialise()
         SDL_Quit();
         return;
     }
-    SDL_GL_SetSwapInterval(0); // V-Sync Off Please.
 
+    // 4JCraft VSync/V-Sync
+    #ifdef ENABLE_VSYNC
+        SDL_GL_SetSwapInterval(1); // V-Sync On Please.        
+    #else
+        SDL_GL_SetSwapInterval(0); // V-Sync Off Please. 
+    #endif  
+    
     int fw, fh; SDL_GetWindowSize(s_window, &fw, &fh); onFramebufferResize(fw, fh);
 
     // We initialize the OpenGL states. Touching those values makes some funny artifacts appear.
