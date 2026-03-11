@@ -122,7 +122,7 @@ meson setup build --reconfigure
 ...or to hard reset the build directory:
 
 ```bash
-rm -rf ./build
+rm -r ./build
 meson setup build
 ```
 

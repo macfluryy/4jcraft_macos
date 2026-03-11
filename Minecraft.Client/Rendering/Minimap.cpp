@@ -79,7 +79,7 @@ void Minimap::reloadColours()
 			int b = ((color) & 0xff) * br / 255;
 
 			// 4J - changed byte order to save having to reorder later
-#if ( defined _DURANGO || defined _WIN64 || __PSVITA__ )
+#if ( defined _DURANGO || defined _WIN64 || __PSVITA__ || __linux__ )
 			LUT[i] =  255 << 24 | b << 16 | g << 8 | r;
 #elif defined _XBOX
 			LUT[i] =  255 << 24 | r << 16 | g << 8 | b;
