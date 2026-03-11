@@ -473,8 +473,8 @@ UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(void *,const boo
 void				C_4JProfile::SetPrimaryPlayerChanged(bool bVal) {}
 bool				C_4JProfile::QuerySigninStatus(void) { return true; }
 void				C_4JProfile::GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid) {*pXuid = 0xe000d45248242f2e; }
-BOOL				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return false; }
-BOOL				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
+bool				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return false; }
+bool				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
 bool				C_4JProfile::AllowedToPlayMultiplayer(int iProf) { return true; }
 
 #if defined(__ORBIS__)
@@ -488,9 +488,9 @@ bool				C_4JProfile::GetChatAndContentRestrictions(int iPad, bool thisQuadrantOn
 #endif
 
 void				C_4JProfile::StartTrialGame() {}
-void				C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, BOOL *allAllowed, BOOL *friendsAllowed) {}
-BOOL				C_4JProfile::CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount ) { return true; }
-bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), LPVOID lpParam) { return false; }
+void				C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed) {}
+bool				C_4JProfile::CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, unsigned int xuidCount) { return true; }
+bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes), void *lpParam) { return false; }
 void				C_4JProfile::CancelProfileAvatarRequest() {}
 int					C_4JProfile::GetPrimaryPad() { return 0; }
 void				C_4JProfile::SetPrimaryPad(int iPad) {}

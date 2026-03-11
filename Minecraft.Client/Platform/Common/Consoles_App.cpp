@@ -5298,7 +5298,7 @@ bool CMinecraftApp::isXuidNotch(PlayerUID xuid)
 {
 	if(m_xuidNotch != INVALID_XUID && xuid != INVALID_XUID)
 	{
-		return ProfileManager.AreXUIDSEqual(xuid, m_xuidNotch) == TRUE;
+		return ProfileManager.AreXUIDSEqual(xuid, m_xuidNotch);
 	}
 	return false;
 }

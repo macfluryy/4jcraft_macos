@@ -8,7 +8,7 @@
 
 namespace
 {
-int AvatarReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes);
+int AvatarReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes);
 }
 
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void *_initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
@@ -258,9 +258,9 @@ void UIScene_QuadrantSignin::updateState()
 
 namespace
 {
-int AvatarReturnedThunk(void *lpParam, PBYTE pbThumbnail, DWORD dwThumbnailBytes)
+int AvatarReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
 {
-	return UIScene_QuadrantSignin::AvatarReturned(lpParam, reinterpret_cast<std::uint8_t *>(pbThumbnail), dwThumbnailBytes);
+	return UIScene_QuadrantSignin::AvatarReturned(lpParam, thumbnailData, thumbnailBytes);
 }
 }
 

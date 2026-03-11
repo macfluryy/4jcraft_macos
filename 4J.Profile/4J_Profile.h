@@ -62,15 +62,15 @@ public:
 	void				SetPrimaryPlayerChanged(bool bVal);								
 	bool				QuerySigninStatus(void);
 	void				GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid);
-	BOOL				AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2);
-	BOOL				XUIDIsGuest(PlayerUID xuid);
+	bool				AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2);
+	bool				XUIDIsGuest(PlayerUID xuid);
 	bool				AllowedToPlayMultiplayer(int iProf);
 	bool				GetChatAndContentRestrictions(int iPad,bool *pbChatRestricted,bool *pbContentRestricted,int *piAge);
 	void				StartTrialGame(); // disables saves and leaderboard, and change state to readyforgame from pregame
-	void				AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, BOOL *allAllowed, BOOL *friendsAllowed);
-	BOOL				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount );
+	void				AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed);
+	bool				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, unsigned int xuidCount);
 	void				ShowProfileCard(int iPad, PlayerUID targetUid);
-	bool				GetProfileAvatar(int iPad,int( *Func)(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), LPVOID lpParam);
+	bool				GetProfileAvatar(int iPad,int( *Func)(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes), void *lpParam);
 	void				CancelProfileAvatarRequest();
 
 				
