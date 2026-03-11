@@ -106,6 +106,8 @@ public:
 	unsigned char		GetJoypadRTrigger(int iPad, bool bCheckMenuDisplay=true);
 
 	void				SetMenuDisplayed(int iPad, bool bVal);
+	int 				GetHotbarSlotPressed(int iPad);
+	int					GetScrollDelta();
 
 // 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
 // 	EKeyboardResult		RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const bool),LPVOID lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
