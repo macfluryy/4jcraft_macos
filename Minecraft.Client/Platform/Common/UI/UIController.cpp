@@ -566,7 +566,7 @@ void UIController::ReloadSkin()
 		m_iggyLibraries[i] = IGGY_INVALID_LIBRARY;
 	}
 
-#ifdef _WINDOWS64 || defined(__linux__))
+#if defined _WINDOWS64 || defined __linux__
 	// 4J Stu - Don't load on a thread on windows. I haven't investigated this in detail, so a quick fix
 	reloadSkinThreadProc(this);
 #else
@@ -613,7 +613,7 @@ int UIController::reloadSkinThreadProc(void* lpParam)
 	controller->m_groups[eUIGroup_Fullscreen]->ReloadAll();
 
 	// 4J Stu - Don't do this on windows, as we never navigated forwards to start with
-#ifndef _WINDOW64
+#if ! (defined _WINDOWS64 || defined __linux__)
 	controller->NavigateBack(0, false, eUIScene_COUNT, eUILayer_Tooltips);
 #endif
 	LeaveCriticalSection(&ms_reloadSkinCS);
@@ -2546,7 +2546,7 @@ void UIController::setFontCachingCalculationBuffer(int length)
 	draw call is not large enough, Iggy will crash or otherwise behave
 	incorrectly.
 	*/
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64
+#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __linux__
 	static const int CHAR_SIZE = 24;
 #else
 	static const int CHAR_SIZE = 16;
