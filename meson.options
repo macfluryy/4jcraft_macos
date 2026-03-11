@@ -2,3 +2,8 @@ option('enable_java_guis',
   type : 'boolean', 
   value : true, 
   description : 'Re-enable the Java UI remnants in the code (for testing only)')
+
+option('enable_vsync', 
+  type : 'boolean', 
+  value : true, 
+  description : 'Toggles whether V-Sync will be toggle on or off.')

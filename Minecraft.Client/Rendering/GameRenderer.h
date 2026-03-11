@@ -104,7 +104,7 @@ public:
 	float blg;
 	float blgt;
 	void turnOffLightLayer(double alpha);
-	void turnOnLightLayer(double alpha);
+	void turnOnLightLayer(double alpha, bool scaleLight = false);
 private:
 	void tickLightTexture();
 	void updateLightTexture(float a);

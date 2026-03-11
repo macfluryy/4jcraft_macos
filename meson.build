@@ -41,6 +41,10 @@ if get_option('enable_java_guis')
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
+if get_option('enable_vsync')
+  global_cpp_defs += '-DENABLE_VSYNC'
+endif
+
 if host_machine.system() == 'linux'
   global_cpp_defs += [
     '-Dlinux',

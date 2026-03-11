@@ -778,14 +778,14 @@ void GameRenderer::renderItemInHand(float a, int eye)
 	{
 		if (!mc->options->hideGui && !mc->gameMode->isCutScene()) 
 		{
-			//turnOnLightLayer(a); // 4jcraft: disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
+			turnOnLightLayer(a, true);
 			PIXBeginNamedEvent(0,"Item in hand render");
 			// 4jcraft: add null pointer check to itemInHandRenderer to prevent a occasional seg fault
 			if (itemInHandRenderer != nullptr) {
 				itemInHandRenderer->render(a);
 			}
 			PIXEndNamedEvent();
-			//turnOffLightLayer(a); // 4jcraft: disable light layer on handrenderer similarly to how it was done on the chunk render (this makes the hand look proper)
+			turnOffLightLayer(a);
 		}
 	}
 	glPopMatrix();
@@ -807,21 +807,26 @@ void GameRenderer::renderItemInHand(float a, int eye)
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha)
 {	// 4J - TODO
-#if 0	
+	// 4jcraft: manually handle this in order to ensure that the light layer is turned off correctly
+#if 1
     if (SharedConstants::TEXTURE_LIGHTING)
 	{
         glClientActiveTexture(GL_TEXTURE1);
         glActiveTexture(GL_TEXTURE1);
+		glMatrixMode(GL_TEXTURE);
+		glLoadIdentity();
+		glMatrixMode(GL_MODELVIEW);
         glDisable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
         glClientActiveTexture(GL_TEXTURE0);
         glActiveTexture(GL_TEXTURE0);
     }
 #endif
-	RenderManager.TextureBindVertex(-1);
+	//RenderManager.TextureBindVertex(-1);
 }
 
 // 4J - change brought forward from 1.8.2
-void GameRenderer::turnOnLightLayer(double alpha)
+void GameRenderer::turnOnLightLayer(double alpha, bool scaleLight)
 {	// 4J - TODO
 #if 0
     if (SharedConstants::TEXTURE_LIGHTING)
@@ -852,7 +857,7 @@ void GameRenderer::turnOnLightLayer(double alpha)
 #endif
 	// update light texture
 	// todo: check implementation of getLightTexture.
-	RenderManager.TextureBindVertex(getLightTexture(mc->player->GetXboxPad(), mc->level));
+	RenderManager.TextureBindVertex(getLightTexture(mc->player->GetXboxPad(), mc->level), scaleLight);
 #if 0
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -972,7 +977,7 @@ void GameRenderer::updateLightTexture(float a)
 			int g = (int) (_g * 255);
 			int b = (int) (_b * 255);
 
-#if ( defined _DURANGO || defined _WIN64 || __PSVITA__ )
+#if ( defined _DURANGO || defined _WIN64 || __PSVITA__ || __linux__ )
 			lightPixels[j][i] = a << 24 | b << 16 | g << 8 | r;
 #elif ( defined _XBOX || defined __ORBIS__ )
 			lightPixels[j][i] = a << 24 | r << 16 | g << 8 | b;
@@ -2196,6 +2201,9 @@ int GameRenderer::getFpsCap(int option)
 	int maxFps = 200;
 	if (option == 1) maxFps = 120;
 	if (option == 2) maxFps = 35;
+  #ifndef ENABLE_VSYNC
+  if (option == 3) maxFps = 0;
+  #endif
 	return maxFps;
 }
 

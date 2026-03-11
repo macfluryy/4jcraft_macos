@@ -942,9 +942,15 @@ void Tesselator::vertex(float x, float y, float z)
 #ifdef _XBOX
 			_array->data[p + 7] = ( ( _tex2 >> 16 ) & 0xffff ) | ( _tex2 << 16 );
 #else
-	#ifdef __PS3__
+	// 4jcraft: we will be lighting the blocks right in here
+	#if defined(__PS3__) || defined (__linux__)
+			#ifdef __PS3__
 			int16_t tex2U = ((int16_t*)&_tex2)[1] + 8;
 			int16_t tex2V = ((int16_t*)&_tex2)[0] + 8;
+			#else
+			int16_t tex2U = ((int16_t*)&_tex2)[0] + 8;
+			int16_t tex2V = ((int16_t*)&_tex2)[1] + 8;
+			#endif
 			int16_t* pShortArray = (int16_t*)&_array->data[p + 7];
 			pShortArray[0] = tex2U;
 			pShortArray[1] = tex2V;
