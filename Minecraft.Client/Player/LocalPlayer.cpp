@@ -336,7 +336,6 @@ void LocalPlayer::aiStep()
 	//if (isSprinting() && (input->ya < runTreshold || horizontalCollision || !enoughFoodToSprint))
 	if (isSprinting() && ((input->ya < runTreshold && !input->sprintKey) || !enoughFoodToSprint))
 	{
-		printf("setSprinting false\n");
 		setSprinting(false);
 	}
 
