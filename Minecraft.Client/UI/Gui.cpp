@@ -318,12 +318,12 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 			
 				// 4J-PB - move into the safe zone, and account for 2 player splitscreen
 				blit(iWidthOffset + (screenWidth - quickSelectWidth)/2, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset , 0, 0, 182, 22);
-				blit(iWidthOffset + (screenWidth - quickSelectWidth)/2 - 1 + inventory->selected * 20, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset  - 1, 0, 22, 24, 22);
+				blit(iWidthOffset + (screenWidth - quickSelectWidth)/2 - 1 + inventory->selected * 20, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset  - 1, 0, 22, 24, 24);
 			}
 			else
 			{
 				blit(iWidthOffset + screenWidth / 2 - quickSelectWidth / 2, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset , 0, 0, 182, 22);
-				blit(iWidthOffset + screenWidth / 2 - quickSelectWidth / 2 - 1 + inventory->selected * 20, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset  - 1, 0, 22, 24, 22);
+				blit(iWidthOffset + screenWidth / 2 - quickSelectWidth / 2 - 1 + inventory->selected * 20, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset  - 1, 0, 22, 24, 24);
 			}
 
 
