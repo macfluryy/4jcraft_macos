@@ -18,10 +18,14 @@ static bool s_mouseLeftCurrent  = false, s_mouseLeftPrev  = false;
 static bool s_mouseRightCurrent = false, s_mouseRightPrev = false;
 static bool s_menuDisplayed[4]  = {};
 static bool s_prevMenuDisplayed = false;
-static bool s_snapTaken = false, s_scrollSnapTaken = false;
+static bool s_snapTaken = false;
 static float s_accumRelX = 0, s_accumRelY = 0;
 static float s_snapRelX  = 0, s_snapRelY  = 0;
-static float s_scrollAccum = 0, s_scrollSnap = 0;
+
+static int   s_scrollTicksForButtonPressed = 0;
+static int   s_scrollTicksForGetValue      = 0;
+static int   s_scrollTicksSnap = 0;
+static bool  s_scrollSnapTaken = false;
 
 // We set all the watched keys
 // I don't know if I'll need to change this if we add chat support soon.
@@ -36,7 +40,7 @@ static const int s_watchedKeys[] = {
     SDL_SCANCODE_TAB, SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL,
     SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
     SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
-    SDL_SCANCODE_9,
+    SDL_SCANCODE_9, SDL_SCANCODE_0,
 };
 static const int s_watchedKeyCount = (int)(sizeof(s_watchedKeys) / sizeof(s_watchedKeys[0]));
 
@@ -51,10 +55,38 @@ static inline bool MouseRDown    () { return  s_mouseRightCurrent; }
 static inline bool MouseRPressed () { return  s_mouseRightCurrent && !s_mouseRightPrev; }
 static inline bool MouseRReleased() { return !s_mouseRightCurrent &&  s_mouseRightPrev; }
 
-// Snap the scroll value so that it doesn't go crazy!
-static float ScrollSnap() {
-    if (!s_scrollSnapTaken) { s_scrollSnap = s_scrollAccum; s_scrollAccum = 0; s_scrollSnapTaken = true; }
-    return s_scrollSnap;
+// get directly into SDL events before the game queue can steal them.
+// this took me a while.
+static int SDLCALL EventWatcher(void*, SDL_Event* e) {
+    if (e->type == SDL_MOUSEWHEEL) {
+        int y = e->wheel.y;
+        if (e->wheel.direction == SDL_MOUSEWHEEL_FLIPPED) {
+            y = -y;
+        }
+        s_scrollTicksForGetValue += y;
+        s_scrollTicksForButtonPressed += y;
+    } else if (e->type == SDL_MOUSEBUTTONDOWN) {
+        if (e->button.button == 4) {
+            s_scrollTicksForGetValue++;
+            s_scrollTicksForButtonPressed++;
+        } else if (e->button.button == 5) {
+            s_scrollTicksForGetValue--;
+            s_scrollTicksForButtonPressed--;
+        }
+    } else if (e->type == SDL_MOUSEMOTION) {
+        s_accumRelX += (float)e->motion.xrel;
+        s_accumRelY += (float)e->motion.yrel;
+    }
+    return 1;
+}
+
+static int ScrollSnap() {
+    if (!s_scrollSnapTaken) {
+        s_scrollTicksSnap = s_scrollTicksForButtonPressed;
+        s_scrollTicksForButtonPressed = 0;
+        s_scrollSnapTaken = true;
+    }
+    return s_scrollTicksSnap;
 }
 
 static void TakeSnapIfNeeded() {
@@ -64,11 +96,14 @@ static void TakeSnapIfNeeded() {
         s_snapTaken = true;
     }
 }
-
 // We initialize the SDL input
 void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
     if (!s_sdlInitialized) {
-        s_sdlInitialized = SDL_Init(SDL_INIT_VIDEO) == 0;
+        if (SDL_WasInit(SDL_INIT_VIDEO) == 0) {
+            SDL_Init(SDL_INIT_VIDEO);
+        }
+        SDL_AddEventWatch(EventWatcher, NULL);
+        s_sdlInitialized = true;
     }
 
     memset(s_keysCurrent,   0, sizeof(s_keysCurrent));
@@ -77,14 +112,13 @@ void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
 
     s_mouseLeftCurrent = s_mouseLeftPrev = s_mouseRightCurrent = s_mouseRightPrev = false;
     s_accumRelX = s_accumRelY = s_snapRelX = s_snapRelY = 0;
-    s_scrollAccum = s_scrollSnap = 0;
+    // i really gotta name these vars better..
+    s_scrollTicksForButtonPressed = s_scrollTicksForGetValue = s_scrollTicksSnap = 0;
     s_snapTaken = s_scrollSnapTaken = s_prevMenuDisplayed = false;
 
-    if (s_sdlInitialized) {
+    if (s_sdlInitialized)
         SDL_SetRelativeMouseMode(SDL_TRUE);
-    }
 }
-
 // Each tick we update the input state by polling SDL, this is where we get the kbd and mouse state.
 void C_4JInput::Tick() {
     if (!s_sdlInitialized) return;
@@ -92,41 +126,57 @@ void C_4JInput::Tick() {
     memcpy(s_keysPrev, s_keysCurrent, sizeof(s_keysCurrent));
     s_mouseLeftPrev  = s_mouseLeftCurrent;
     s_mouseRightPrev = s_mouseRightCurrent;
-    s_snapTaken = s_scrollSnapTaken = false;
-    s_snapRelX = s_snapRelY = s_scrollSnap = 0;
+    s_snapTaken       = false;
+    s_scrollSnapTaken = false;
+    s_snapRelX = s_snapRelY = 0;
+    s_scrollTicksSnap = 0;
 
     SDL_PumpEvents();
-    // Keyboard State.
+
+    if (s_menuDisplayed[0]) {
+        s_scrollTicksForGetValue = 0;
+    }
+
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     for (int i = 0; i < s_watchedKeyCount; ++i) {
         int sc = s_watchedKeys[i];
         if (sc > 0 && sc < KEY_COUNT) s_keysCurrent[sc] = state[sc] != 0;
     }
-    // Scroll Wheel events. It's a bit weird, but it works.
-    SDL_Event ev;
-    while (SDL_PeepEvents(&ev, 1, SDL_GETEVENT, SDL_MOUSEWHEEL, SDL_MOUSEWHEEL) > 0)
-        s_scrollAccum += (float)ev.wheel.y;
-
-    int dx = 0, dy = 0;
-    while (SDL_PeepEvents(&ev, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEMOTION) > 0) {
-        dx += ev.motion.xrel; dy += ev.motion.yrel;
-    }
-    // Mouse Position & Button Events.
-    if (dx == 0 && dy == 0 && SDL_GetRelativeMouseMode())
-        SDL_GetRelativeMouseState(&dx, &dy);
-    s_accumRelX += (float)dx;
-    s_accumRelY += (float)dy;
 
     Uint32 btns = SDL_GetMouseState(NULL, NULL);
     s_mouseLeftCurrent  = (btns & SDL_BUTTON(SDL_BUTTON_LEFT))  != 0;
     s_mouseRightCurrent = (btns & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+
+    if (!SDL_GetRelativeMouseMode()) {
+        s_accumRelX = 0;
+        s_accumRelY = 0;
+    }
 
     if (!SDL_GetKeyboardFocus()) {
         SDL_Window *mf = SDL_GetMouseFocus();
         if (mf) { SDL_RaiseWindow(mf); SDL_SetWindowGrab(mf, SDL_TRUE); }
     }
 }
-// been a while i haven't used cases
+
+int C_4JInput::GetHotbarSlotPressed(int iPad) {
+    if (iPad != 0) return -1;
+
+    static const int sc[10] = {
+        SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
+        SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
+        SDL_SCANCODE_9, SDL_SCANCODE_0
+    };
+    static bool s_wasDown[10] = {};
+
+    for (int i = 0; i < 10; ++i) {
+        bool down = KDown(sc[i]);
+        bool pressed = down && !s_wasDown[i];
+        s_wasDown[i] = down;
+        if (pressed) return i;
+    }
+    return -1;
+}
+
 #define ACTION_CASES(FN) \
 case ACTION_MENU_UP:                      return FN(SDL_SCANCODE_UP); \
 case ACTION_MENU_DOWN:                    return FN(SDL_SCANCODE_DOWN); \
@@ -153,22 +203,21 @@ case MINECRAFT_ACTION_DPAD_UP:            return FN(SDL_SCANCODE_UP); \
 case MINECRAFT_ACTION_DPAD_DOWN:          return FN(SDL_SCANCODE_DOWN); \
 default:                                   return false;
 
-// The part that handles Pressing a button.
 bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
     if (iPad != 0) return false;
     if (ucAction == 255) {
         for (int i = 0; i < s_watchedKeyCount; ++i)
             if (s_keysCurrent[s_watchedKeys[i]]) return true;
-            return s_mouseLeftCurrent || s_mouseRightCurrent;
+        return s_mouseLeftCurrent || s_mouseRightCurrent;
     }
     switch (ucAction) {
-        case MINECRAFT_ACTION_ACTION:        return MouseLDown() || KDown(SDL_SCANCODE_RETURN);
-        case MINECRAFT_ACTION_USE:           return MouseRDown() || KDown(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE:  return KDown(SDL_SCANCODE_LSHIFT) || KDown(SDL_SCANCODE_RSHIFT) || KDown(SDL_SCANCODE_LCTRL) || KDown(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_ACTION:       return MouseLDown() || KDown(SDL_SCANCODE_RETURN);
+        case MINECRAFT_ACTION_USE:          return MouseRDown() || KDown(SDL_SCANCODE_F);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KDown(SDL_SCANCODE_LSHIFT) || KDown(SDL_SCANCODE_RSHIFT) || KDown(SDL_SCANCODE_LCTRL) || KDown(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
-        case ACTION_MENU_LEFT_SCROLL:        return ScrollSnap() >  0.1f;
+        case ACTION_MENU_LEFT_SCROLL:       return ScrollSnap() > 0;
         case MINECRAFT_ACTION_RIGHT_SCROLL:
-        case ACTION_MENU_RIGHT_SCROLL:       return ScrollSnap() < -0.1f;
+        case ACTION_MENU_RIGHT_SCROLL:      return ScrollSnap() < 0;
         ACTION_CASES(KDown)
     }
 }
@@ -176,13 +225,13 @@ bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
 bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
     if (iPad != 0 || ucAction == 255) return false;
     switch (ucAction) {
-        case MINECRAFT_ACTION_ACTION:        return MouseLPressed() || KPressed(SDL_SCANCODE_RETURN);
-        case MINECRAFT_ACTION_USE:           return MouseRPressed() || KPressed(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE:  return KPressed(SDL_SCANCODE_LSHIFT) || KPressed(SDL_SCANCODE_RSHIFT) || KPressed(SDL_SCANCODE_LCTRL) || KPressed(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_ACTION:       return MouseLPressed() || KPressed(SDL_SCANCODE_RETURN);
+        case MINECRAFT_ACTION_USE:          return MouseRPressed() || KPressed(SDL_SCANCODE_F);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KPressed(SDL_SCANCODE_LSHIFT) || KPressed(SDL_SCANCODE_RSHIFT) || KPressed(SDL_SCANCODE_LCTRL) || KPressed(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
-        case ACTION_MENU_LEFT_SCROLL:        return ScrollSnap() >  0.1f;
+        case ACTION_MENU_LEFT_SCROLL:       return ScrollSnap() > 0;
         case MINECRAFT_ACTION_RIGHT_SCROLL:
-        case ACTION_MENU_RIGHT_SCROLL:       return ScrollSnap() < -0.1f;
+        case ACTION_MENU_RIGHT_SCROLL:      return ScrollSnap() < 0;
         ACTION_CASES(KPressed)
     }
 }
@@ -190,18 +239,35 @@ bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
 bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
     if (iPad != 0 || ucAction == 255) return false;
     switch (ucAction) {
-        case MINECRAFT_ACTION_ACTION:        return MouseLReleased() || KReleased(SDL_SCANCODE_RETURN);
-        case MINECRAFT_ACTION_USE:           return MouseRReleased() || KReleased(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE:  return KReleased(SDL_SCANCODE_LSHIFT) || KReleased(SDL_SCANCODE_RSHIFT) || KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_ACTION:       return MouseLReleased() || KReleased(SDL_SCANCODE_RETURN);
+        case MINECRAFT_ACTION_USE:          return MouseRReleased() || KReleased(SDL_SCANCODE_F);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KReleased(SDL_SCANCODE_LSHIFT) || KReleased(SDL_SCANCODE_RSHIFT) || KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
         case ACTION_MENU_LEFT_SCROLL:
         case MINECRAFT_ACTION_RIGHT_SCROLL:
-        case ACTION_MENU_RIGHT_SCROLL:       return false;
+        case ACTION_MENU_RIGHT_SCROLL:      return false;
         ACTION_CASES(KReleased)
     }
 }
 
 unsigned int C_4JInput::GetValue(int iPad, unsigned char ucAction, bool) {
+    if (iPad != 0) return 0;
+    if (ucAction == MINECRAFT_ACTION_LEFT_SCROLL) {
+        if (s_scrollTicksForGetValue > 0) {
+            unsigned int v = (unsigned int)s_scrollTicksForGetValue;
+            s_scrollTicksForGetValue = 0;
+            return v;
+        }
+        return 0u;
+    }
+    if (ucAction == MINECRAFT_ACTION_RIGHT_SCROLL) {
+        if (s_scrollTicksForGetValue < 0) {
+            unsigned int v = (unsigned int)(-s_scrollTicksForGetValue);
+            s_scrollTicksForGetValue = 0;
+            return v;
+        }
+        return 0u;
+    }
     return ButtonDown(iPad, ucAction) ? 1u : 0u;
 }
 // Left stick movement, the one that moves the player around or selects menu options. (Soon be tested.)
@@ -211,11 +277,10 @@ float C_4JInput::GetJoypadStick_LX(int, bool) {
 float C_4JInput::GetJoypadStick_LY(int, bool) {
     return (KDown(SDL_SCANCODE_W) ? 1.f : 0.f) - (KDown(SDL_SCANCODE_S) ? 1.f : 0.f);
 }
-
 // We use mouse movement and convert it into a Right Stick output using logarithmic scaling
 // This is the most important mouse part. Yet it's so small.
 static float MouseAxis(float raw) {
-    if (fabsf(raw) < 0.0001f) return 0.f; // from glfw previous code
+    if (fabsf(raw) < 0.0001f) return 0.f; // from 4j previous code
     return (raw >= 0.f ? 1.f : -1.f) * sqrtf(fabsf(raw));
 }
 // We apply the Stick movement on the R(Right) X(2D Position)
@@ -239,6 +304,12 @@ void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {
     if (!s_sdlInitialized || bVal == s_prevMenuDisplayed) return;
     SDL_SetRelativeMouseMode(bVal ? SDL_FALSE : SDL_TRUE);
     s_prevMenuDisplayed = bVal;
+}
+
+int C_4JInput::GetScrollDelta() { 
+    int v = s_scrollTicksForButtonPressed;
+    s_scrollTicksForButtonPressed = 0;
+    return v;
 }
 
 void          C_4JInput::SetDeadzoneAndMovementRange(unsigned int, unsigned int){}
