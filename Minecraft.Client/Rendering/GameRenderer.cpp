@@ -2189,6 +2189,8 @@ int GameRenderer::getFpsCap(int option)
 	int maxFps = 200;
 	if (option == 1) maxFps = 120;
 	if (option == 2) maxFps = 35;
+  if (option == 3) maxFps = 0;
+
 	return maxFps;
 }
 
