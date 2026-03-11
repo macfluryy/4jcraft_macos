@@ -467,9 +467,9 @@ void				C_4JProfile::SetLockedProfile(int iProf) {}
 bool				C_4JProfile::IsSignedIn(int iQuadrant) { return ( iQuadrant == 0); }
 bool				C_4JProfile::IsSignedInLive(int iProf) { return true; }
 bool				C_4JProfile::IsGuest(int iQuadrant) { return false; }
-UINT				C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant) { return 0; }
-UINT				C_4JProfile::DisplayOfflineProfile(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant)  { return 0; }
-UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant) { return 0; }
+UINT				C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
+UINT				C_4JProfile::DisplayOfflineProfile(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant)  { return 0; }
+UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
 void				C_4JProfile::SetPrimaryPlayerChanged(bool bVal) {}
 bool				C_4JProfile::QuerySigninStatus(void) { return true; }
 void				C_4JProfile::GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid) {*pXuid = 0xe000d45248242f2e; }
@@ -503,22 +503,22 @@ char*				C_4JProfile::GetGamertag(int iPad){ return "PlayerName"; }
 std::wstring				C_4JProfile::GetDisplayName(int iPad){ return L"PlayerName"; }
 #endif
 bool				C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }
-void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(LPVOID, bool, unsigned int),LPVOID lpParam) {}
-void				C_4JProfile::SetNotificationsCallback(void ( *Func)(LPVOID, DWORD, unsigned int),LPVOID lpParam) {}
+void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(void *, bool, unsigned int),void *lpParam) {}
+void				C_4JProfile::SetNotificationsCallback(void ( *Func)(void *, std::uint32_t, unsigned int),void *lpParam) {}
 bool				C_4JProfile::RegionIsNorthAmerica(void) { return false; }
 bool				C_4JProfile::LocaleIsUSorCanada(void) { return false; }
 HRESULT				C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
 bool				C_4JProfile::IsSystemUIDisplayed() { return false; }
-void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(LPVOID), LPVOID lpParam) {}
-int( *defaultOptionsCallback)(LPVOID,C_4JProfile::PROFILESETTINGS *, const int iPad) = NULL;
-LPVOID lpProfileParam = NULL;
-int					C_4JProfile::SetDefaultOptionsCallback(int( *Func)(LPVOID,PROFILESETTINGS *, const int iPad),LPVOID lpParam)
+void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(void *), void *lpParam) {}
+int( *defaultOptionsCallback)(void *,C_4JProfile::PROFILESETTINGS *, const int iPad) = NULL;
+void *lpProfileParam = NULL;
+int					C_4JProfile::SetDefaultOptionsCallback(int( *Func)(void *,PROFILESETTINGS *, const int iPad),void *lpParam)
 {
 	defaultOptionsCallback = Func;
 	lpProfileParam = lpParam;
 	return 0;
 }
-int					C_4JProfile::SetOldProfileVersionCallback(int( *Func)(LPVOID,unsigned char *, const unsigned short,const int),LPVOID lpParam) { return 0; }
+int					C_4JProfile::SetOldProfileVersionCallback(int( *Func)(void *,unsigned char *, const unsigned short,const int),void *lpParam) { return 0; }
 
 // To store the dashboard preferences for controller flipped, etc.
 C_4JProfile::PROFILESETTINGS ProfileSettingsA[XUSER_MAX_COUNT];
@@ -548,7 +548,7 @@ void				C_4JProfile::RegisterRichPresenceContext(int iGameConfigContextID) {}
 void				C_4JProfile::SetRichPresenceContextValue(int iPad,int iContextID, int iVal) {}
 void				C_4JProfile::SetCurrentGameActivity(int iPad,int iNewPresence, bool bSetOthersToIdle) {}
 void				C_4JProfile::DisplayFullVersionPurchase(bool bRequired, int iQuadrant, int iUpsellParam) {}
-void				C_4JProfile::SetUpsellCallback(void ( *Func)(LPVOID lpParam, eUpsellType type, eUpsellResponse response, int iUserData),LPVOID lpParam) {}
+void				C_4JProfile::SetUpsellCallback(void ( *Func)(void *lpParam, eUpsellType type, eUpsellResponse response, int iUserData),void *lpParam) {}
 void				C_4JProfile::SetDebugFullOverride(bool bVal) {s_bProfileIsFullVersion = bVal;}
 void				C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 

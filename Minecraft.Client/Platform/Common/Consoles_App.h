@@ -288,7 +288,7 @@ public:
 	virtual void FatalLoadError();
 
 	// Notifications from the game listener to be passed to the qnet listener
-	static void NotificationsCallback(void *pParam,DWORD dwNotification, unsigned int uiParam);
+	static void NotificationsCallback(void *pParam,std::uint32_t dwNotification, unsigned int uiParam);
 
 	// for the ethernet being disconnected
 	static void		LiveLinkChangeCallback(void *pParam,BOOL bConnected);

@@ -4744,7 +4744,7 @@ void CMinecraftApp::SignInChangeCallback(void *pParam,bool bPrimaryPlayerChanged
 	}
 }
 
-void CMinecraftApp::NotificationsCallback(void *pParam,DWORD dwNotification, unsigned int uiParam)
+void CMinecraftApp::NotificationsCallback(void *pParam,std::uint32_t dwNotification, unsigned int uiParam)
 {
 	CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
