@@ -6,7 +6,7 @@
 #include "../../Textures/Textures.h"
 
 // GDraw GL backend for Linux
-#include "Iggy/gdraw/gdraw_glfw.h"
+#include "Iggy/gdraw/gdraw_sdl.h"
 
 #define _ENABLEIGGY
 
