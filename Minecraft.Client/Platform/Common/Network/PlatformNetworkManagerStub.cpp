@@ -119,6 +119,7 @@ bool CPlatformNetworkManagerStub::Initialise(CGameNetworkManager *pGameNetworkMa
 	m_pGameNetworkManager = pGameNetworkManager;
 	m_flagIndexSize = flagIndexSize;
 	g_pPlatformNetworkManager = this;
+	m_pIQNet = new IQNet();
 	for( int i = 0; i < XUSER_MAX_COUNT; i++ )
 	{
 		playerChangedCallback[ i ] = NULL;
@@ -154,6 +155,7 @@ bool CPlatformNetworkManagerStub::Initialise(CGameNetworkManager *pGameNetworkMa
 
 void CPlatformNetworkManagerStub::Terminate()
 {
+	//TODO: 4jcraft, no release of ressources
 }
 
 int CPlatformNetworkManagerStub::GetJoiningReadyPercentage()
