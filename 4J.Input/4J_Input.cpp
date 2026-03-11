@@ -215,7 +215,8 @@ bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:       return MouseLDown() || KDown(SDL_SCANCODE_RETURN);
         case MINECRAFT_ACTION_USE:          return MouseRDown() || KDown(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KDown(SDL_SCANCODE_LSHIFT) || KDown(SDL_SCANCODE_RSHIFT) || KDown(SDL_SCANCODE_LCTRL) || KDown(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KDown(SDL_SCANCODE_LSHIFT) || KDown(SDL_SCANCODE_RSHIFT);
+        case MINECRAFT_ACTION_SPRINT:       return KDown(SDL_SCANCODE_LCTRL) || KDown(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
         case ACTION_MENU_LEFT_SCROLL:       return ScrollSnap() > 0;
         case MINECRAFT_ACTION_RIGHT_SCROLL:
@@ -229,7 +230,8 @@ bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:       return MouseLPressed() || KPressed(SDL_SCANCODE_RETURN);
         case MINECRAFT_ACTION_USE:          return MouseRPressed() || KPressed(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KPressed(SDL_SCANCODE_LSHIFT) || KPressed(SDL_SCANCODE_RSHIFT) || KPressed(SDL_SCANCODE_LCTRL) || KPressed(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KPressed(SDL_SCANCODE_LSHIFT) || KPressed(SDL_SCANCODE_RSHIFT);
+        case MINECRAFT_ACTION_SPRINT: return KPressed(SDL_SCANCODE_LCTRL) || KPressed(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
         case ACTION_MENU_LEFT_SCROLL:       return ScrollSnap() > 0;
         case MINECRAFT_ACTION_RIGHT_SCROLL:
@@ -243,7 +245,8 @@ bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:       return MouseLReleased() || KReleased(SDL_SCANCODE_RETURN);
         case MINECRAFT_ACTION_USE:          return MouseRReleased() || KReleased(SDL_SCANCODE_F);
-        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KReleased(SDL_SCANCODE_LSHIFT) || KReleased(SDL_SCANCODE_RSHIFT) || KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
+        case MINECRAFT_ACTION_SNEAK_TOGGLE: return KReleased(SDL_SCANCODE_LSHIFT) || KReleased(SDL_SCANCODE_RSHIFT);
+        case MINECRAFT_ACTION_SPRINT: KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
         case ACTION_MENU_LEFT_SCROLL:
         case MINECRAFT_ACTION_RIGHT_SCROLL:
