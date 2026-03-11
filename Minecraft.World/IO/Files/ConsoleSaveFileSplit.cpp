@@ -1221,7 +1221,7 @@ bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(const std::wstring &file
 	swscanf_s(body, L"%d.%d.mcr", &x, &z );
 
 	// Pack full id
-	id |= ( ( x << 8 ) & 0x0000ff00 );
+	id |= ( ( (unsigned int) x << 8 ) & 0x0000ff00 );
 	id |= ( z & 0x000000ff );
 
 	*idOut = id;

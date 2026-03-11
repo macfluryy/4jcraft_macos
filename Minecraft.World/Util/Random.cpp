@@ -88,7 +88,8 @@ int Random::nextInt(int n)
 
 
     if ((n & -n) == n)  // i.e., n is a power of 2
-        return (int)(((__int64)next(31) * n) >> 31); // 4J Stu - Made __int64 instead of long
+	// 4jcraft added casts to unsigned
+        return (unsigned int)(((__uint64)next(31) * n) >> 31); // 4J Stu - Made __int64 instead of long
 
     int bits, val;
     do
@@ -106,7 +107,8 @@ float Random::nextFloat()
 
 __int64 Random::nextLong()
 {
-	return ((__int64)next(32) << 32) + next(32);
+	// 4jcraft added casts to unsigned
+	return (__uint64)((__uint64)next(32) << 32) + next(32);
 }
 
 bool Random::nextBoolean()

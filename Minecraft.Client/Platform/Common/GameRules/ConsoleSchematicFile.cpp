@@ -194,14 +194,15 @@ void ConsoleSchematicFile::save_tags(DataOutputStream *dos)
 __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
 	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	// 4jcraft added cast to u
+	int xEnd = std::min(destinationBox->x1, (double)((unsigned) (xStart>>4)<<4) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
 	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zEnd = std::min(destinationBox->z1, (double)(((unsigned) zStart>>4)<<4) + 16);
 
 #ifdef _DEBUG
 	app.DebugPrintf("Range is (%d,%d,%d) to (%d,%d,%d)\n",xStart,yStart,zStart,xEnd-1,yEnd-1,zEnd-1);
@@ -333,14 +334,14 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkB
 __int64 ConsoleSchematicFile::applyLighting(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
 	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	int xEnd = std::min(destinationBox->x1, (double)(((unsigned) xStart>>4)<<4) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
 	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zEnd = std::min(destinationBox->z1, (double)(((unsigned) zStart>>4)<<4) + 16);
 
 	int rowBlocksIncluded = (yEnd-yStart)*(zEnd-zStart);
 	int blocksIncluded = (xEnd-xStart)*rowBlocksIncluded;

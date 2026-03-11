@@ -28,8 +28,8 @@ void LargeFeature::apply(ChunkSource *ChunkSource, Level *level, int xOffs, int 
 	{
         for (int z = zOffs - r; z <= zOffs + r; z++)
 		{
-            __int64 xx = x * xScale;
-            __int64 zz = z * zScale;
+            __int64 xx = (uint64_t) x * xScale;
+            __int64 zz = (uint64_t) z * zScale;
             random->setSeed(xx ^ zz ^ level->getSeed());
             addFeature(level, x, z, xOffs, zOffs, blocks);
         }
