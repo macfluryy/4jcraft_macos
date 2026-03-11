@@ -155,7 +155,7 @@ public:
 	int TextureCreate();
 	void TextureFree(int idx);
 	void TextureBind(int idx);
-	void TextureBindVertex(int idx);
+	void TextureBindVertex(int idx, bool scaleLight = false);
 	void TextureSetTextureLevels(int levels);
 	int  TextureGetTextureLevels();
 	void TextureData(int width, int height, void *data, int level, eTextureFormat format = TEXTURE_FORMAT_RxGyBzAw);
