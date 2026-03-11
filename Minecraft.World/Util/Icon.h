@@ -16,6 +16,8 @@ public:
 	static const int  IS_ALPHA_CUT_OUT = 4;
 #endif
 
+	virtual ~Icon() {} // added by 4jcraft, needed for abstract class
+
 	virtual int getX() const = 0;
 	virtual int getY() const = 0;
 	virtual int getWidth() const = 0;

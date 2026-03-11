@@ -15,7 +15,11 @@ lib_input = static_library('4J_Input',
   ],
 )
 
+# We import SDL2 but not SDL3.. which is a bit sad,
+sdl_dep = dependency('sdl2', required : false)
+
 input_dep = declare_dependency(
   link_with : lib_input,
+  dependencies : [sdl_dep],
   include_directories : include_directories('.'),
 )

@@ -22,6 +22,7 @@ public:
 	// was being mixed in with all the game information as they have 
 	// completely different lifespans.
 
+	virtual ~GrSource(){}
 	virtual bool requiresTexturePack()=0;
 	virtual UINT getRequiredTexturePackId()=0;
 	virtual std::wstring getDefaultSaveName()=0;

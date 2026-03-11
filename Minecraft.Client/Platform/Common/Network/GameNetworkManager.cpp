@@ -1108,7 +1108,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc( void* lpParam )
 	app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_PauseServer,(void *)TRUE);
 
 	// wait for the server to be in a non-ticking state
-	pServer->m_serverPausedEvent->WaitForSignal(INFINITY);
+	pServer->m_serverPausedEvent->WaitForSignal(INFINITE);
 	
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
 	// Swap these two messages around as one is too long to display at 480
@@ -1926,7 +1926,7 @@ void CGameNetworkManager::ServerReadyWait()
 {
 	if (m_hServerReadyEvent != NULL)
 	{
-		m_hServerReadyEvent->WaitForSignal(INFINITY);
+		m_hServerReadyEvent->WaitForSignal(INFINITE);
 	}
 	else
 	{
@@ -1990,7 +1990,7 @@ void CGameNetworkManager::ServerStoppedWait()
 	{
 		if (m_hServerStoppedEvent != NULL)
 		{
-			m_hServerStoppedEvent->WaitForSignal(INFINITY);
+			m_hServerStoppedEvent->WaitForSignal(INFINITE);
 		}
 		else
 		{

@@ -33,7 +33,7 @@ PlayerChunkMap::PlayerChunk::PlayerChunk(int x, int z, PlayerChunkMap *pcm) : po
 
 PlayerChunkMap::PlayerChunk::~PlayerChunk()
 {
-	delete changedTiles.data;
+	delete[] changedTiles.data; //4jcraft, changed to []
 }
 
 // 4J added - construct an an array of flags that indicate which entities are still waiting to have network packets sent out to say that they have been removed

@@ -342,6 +342,6 @@ std::shared_ptr<Packet> MapItem::getUpdatePacket(std::shared_ptr<ItemInstance> i
 	if (data.data == NULL || data.length == 0) return nullptr;
 
 	std::shared_ptr<Packet> retval = std::shared_ptr<Packet>(new ComplexItemDataPacket((short) Item::map->id, (short) itemInstance->getAuxValue(), data));
-	delete data.data;
+	delete[] data.data; //4jcraft, changed to []
 	return retval;
 }

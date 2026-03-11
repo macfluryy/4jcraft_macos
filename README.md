@@ -23,7 +23,7 @@ At the moment, we're aiming to support the following platforms:
 - Android (not started)
 
 > [!WARNING]
-> There NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
+> There is NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
 
 > All efforts are focused towards a native Linux port, OpenGL rendering pipeline, and modernizing the existing LCE codebase/tooling to make future platform ports easier.
 > 
@@ -38,26 +38,19 @@ At the moment, we're aiming to support the following platforms:
 Install the following packages before building (Debian/Ubuntu names shown):
 
 ```bash
-sudo apt install \
-  build-essential cmake \
-  libglfw3-dev libgl-dev libglu1-mesa-dev \
-  libopenal-dev libvorbis-dev \
-  libpng-dev libpthread-stubs0-dev
+sudo apt-get install -y build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
 ```
 
 #### Arch/Manjaro
 
 ```bash
-sudo pacman -S base-devel gcc pkgconf cmake glfw-x11 mesa openal libvorbis glu
+sudo pacman -S base-devel gcc pkgconf cmake sdl2-compat mesa glu
 ```
-
-> [!TIP]
-> If you are on wayland, you may swap `glfw-x11` to `glfw-wayland` for native wayland windowing instead of xwayland.
 
 #### Fedora/Red Hat/Nobara
 
 ```bash
-sudo dnf in gcc gcc-c++ make cmake glfw-devel mesa-libGL-devel mesa-libGLU-devel openal-soft-devel libvorbis-devel libpng-devel openssl-devel
+sudo dnf in gcc gcc-c++ make cmake SDL2-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel
 ```
 
 #### Docker
