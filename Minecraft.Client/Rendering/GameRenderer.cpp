@@ -1619,7 +1619,7 @@ void GameRenderer::renderSnowAndRain(float a)
 	// 4J - rain is relatively low poly, but high fill-rate - better to clip it
 	RenderManager.StateSetEnableViewportClipPlanes(true);
 
-	//this->turnOnLightLayer(a);
+	this->turnOnLightLayer(a);
 
     if (rainXa == NULL) 
 	{
