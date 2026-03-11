@@ -9,8 +9,6 @@ const std::wstring LeaderboardManager::filterNames[eNumFilterModes] =
 		L"Friends", L"MyScore", L"TopRank"
 	};
 
-LeaderboardManager *LeaderboardManager::m_instance = NULL;
-
 void LeaderboardManager::DeleteInstance()
 {
 	delete m_instance;
