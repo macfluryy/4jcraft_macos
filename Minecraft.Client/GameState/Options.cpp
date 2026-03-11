@@ -116,7 +116,13 @@ void Options::init()
     bobView = true;
     anaglyph3d = false;
     advancedOpengl = false;
+    
+    //4JCRAFT V-Sync / VSync 
+    #ifdef ENABLE_VSYNC
     framerateLimit = 2;
+    #else
+    framerateLimit = 3;
+    #endif
     fancyGraphics = true;
     ambientOcclusion = true;
 	renderClouds = true;
