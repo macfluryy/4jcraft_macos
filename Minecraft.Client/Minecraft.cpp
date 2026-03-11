@@ -3439,7 +3439,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 #endif
 		{
 			int hotbarSlot = InputManager.GetHotbarSlotPressed(iPad);
-			if (hotbarSlot >= 0 && hotbarSlot <= 9)
+			if (hotbarSlot > 0 && hotbarSlot < 10)
 			{
 				player->inventory->selected = hotbarSlot;
 				selected = true;
