@@ -25,13 +25,13 @@ void Mth::init()
 float Mth::sin(float i)
 {
 	if(_sin == NULL) init();		// 4J - added
-	return _sin[(int) (i * sinScale) & 65535];
+	return _sin[(int)fmodf(i * sinScale, 65536.0f) & 65535];
 }
 
 float Mth::cos(float i)
 {
 	if(_sin == NULL) init();		// 4J - added
-	return _sin[(int) (i * sinScale + 65536 / 4) & 65535];
+	return _sin[(int)fmodf(i * sinScale + 16384.0f, 65536.0f) & 65535];
 }
 
 float Mth::sqrt(float x)
