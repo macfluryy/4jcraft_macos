@@ -626,15 +626,16 @@ void Textures::loadTexture(BufferedImage *img, int id, bool blur, bool clamp)
 						int c3 = pixels->getInt(((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
 #ifndef _XBOX
 						// 4J - convert our RGBA texels to ARGB that crispBlend is expecting
-						c0 = ( ( c0 >> 8 ) & 0x00ffffff ) | ( c0 << 24 );
-						c1 = ( ( c1 >> 8 ) & 0x00ffffff ) | ( c1 << 24 );
-						c2 = ( ( c2 >> 8 ) & 0x00ffffff ) | ( c2 << 24 );
-						c3 = ( ( c3 >> 8 ) & 0x00ffffff ) | ( c3 << 24 );
+						// 4jcraft, added uint cast to pervent shift of neg int
+						c0 = ( ( c0 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c0 << 24 );
+						c1 = ( ( c1 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c1 << 24 );
+						c2 = ( ( c2 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c2 << 24 );
+						c3 = ( ( c3 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c3 << 24 );
 #endif
 						int col = Texture::crispBlend(Texture::crispBlend(c0, c1), Texture::crispBlend(c2, c3));
 #ifndef _XBOX
 						// 4J - and back from ARGB -> RGBA
-						col = ( col << 8 ) | (( col >> 24 ) & 0xff);
+						col = ( (unsigned int) col << 8 ) | (( col >> 24 ) & 0xff);
 #endif
 						tempData[x + y * ww] = col;
 					}
