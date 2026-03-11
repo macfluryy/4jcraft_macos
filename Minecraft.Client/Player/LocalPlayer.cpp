@@ -316,7 +316,6 @@ void LocalPlayer::aiStep()
 			{
 				if( sprintTriggerRegisteredReturn )
 				{
-					printf("setSprinting true\n");
 					setSprinting(true);
 					sprintTriggerTime = 0;
 					sprintTriggerRegisteredReturn = false;
@@ -329,7 +328,6 @@ void LocalPlayer::aiStep()
 		}
 		else if (input->sprintKey)
 		{
-			printf("setSprinting true\n");
 			setSprinting(true);
 		}
 	}
