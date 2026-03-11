@@ -1559,15 +1559,16 @@ void LevelRenderer::renderAdvancedClouds(float alpha)
 	// This is because the complex sort of rendering is really there so that the clouds seem more solid when you might be in them, but it has more risk of artifacts so
 	// we don't want to do it when not necessary
 
-	bool noBFCMode = ( (yy > -h - 1) && (yy <= h + 1) );
-	if( noBFCMode )
-	{
-		glDisable(GL_CULL_FACE);
-	}
-	else
-	{
-		glEnable(GL_CULL_FACE);
-	}
+	// 4jcraft: not needed for the tesselator-based implementation
+	// bool noBFCMode = ( (yy > -h - 1) && (yy <= h + 1) );
+	// if( noBFCMode )
+	// {
+	// 	glDisable(GL_CULL_FACE);
+	// }
+	// else
+	// {
+	// 	glEnable(GL_CULL_FACE);
+	// }
 
 	MemSect(31);
 	textures->bindTexture(TN_ENVIRONMENT_CLOUDS);	// 4J was L"/environment/clouds.png"
@@ -1632,7 +1633,9 @@ void LevelRenderer::renderAdvancedClouds(float alpha)
 			{
 				// 4J - reimplemented the clouds with full cube-per-texel geometry to get rid of seams. This is a huge amount more quads to render, so
 				// now using command buffers to render each section to cut CPU hit.
-#if 1
+
+				// 4jcraft: switch back to the tesselator-based implementation of cloud renders
+#if 0
 				float xx = (float)(xPos * D);
 				float zz = (float)(zPos * D);
 				float xp = xx - xoffs;
@@ -1707,7 +1710,7 @@ void LevelRenderer::renderAdvancedClouds(float alpha)
 				glLoadIdentity();
 				glMatrixMode(GL_MODELVIEW);
 #else
-
+				glDisable(GL_CULL_FACE);
 				t->begin();
 				float xx = (float)(xPos * D);
 				float zz = (float)(zPos * D);
