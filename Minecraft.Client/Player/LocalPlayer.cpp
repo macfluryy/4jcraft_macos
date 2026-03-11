@@ -305,7 +305,7 @@ void LocalPlayer::aiStep()
 	// 4J - altered this slightly to make sure that the joypad returns to below returnTreshold in between registering two movements up to runThreshold
 	if (onGround && !isSprinting() && enoughFoodToSprint && !isUsingItem() && !hasEffect(MobEffect::blindness))
 	{
-		if( !wasRunning && input->ya >= runTreshold )
+		if( !wasRunning && (input->ya >= runTreshold) )
 		{
 			if (sprintTriggerTime == 0)
 			{
@@ -316,6 +316,7 @@ void LocalPlayer::aiStep()
 			{
 				if( sprintTriggerRegisteredReturn )
 				{
+					printf("setSprinting true\n");
 					setSprinting(true);
 					sprintTriggerTime = 0;
 					sprintTriggerRegisteredReturn = false;
@@ -326,14 +327,20 @@ void LocalPlayer::aiStep()
 		{
 			sprintTriggerRegisteredReturn = true;
 		}
+		else if (input->sprintKey)
+		{
+			printf("setSprinting true\n");
+			setSprinting(true);
+		}
 	}
 	if (isSneaking()) sprintTriggerTime = 0;
 	// 4J-PB - try not stopping sprint on collision
 	//if (isSprinting() && (input->ya < runTreshold || horizontalCollision || !enoughFoodToSprint))
-	if (isSprinting() && (input->ya < runTreshold || !enoughFoodToSprint))
+	if (isSprinting() && ((input->ya < runTreshold && !input->sprintKey) || !enoughFoodToSprint))
 	{
+		printf("setSprinting false\n");
 		setSprinting(false);
-	}	
+	}
 
 	// 4J Stu - Fix for #52705 - Customer Encountered: Player can fly in bed while being in Creative mode.
 	if (!isSleeping() && (abilities.mayfly || isAllowedToFly() ))
