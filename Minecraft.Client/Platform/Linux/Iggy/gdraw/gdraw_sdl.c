@@ -21,11 +21,11 @@
 
 // Say hi to sdl
 
-void *IggyGDrawMallocAnnotated(SINTa size, const char *file, int line)
-{
-    (void)file; (void)line;
-    return malloc((size_t)size);
-}
+// void *IggyGDrawMallocAnnotated(SINTa size, const char *file, int line)
+// {
+//     (void)file; (void)line;
+//     return malloc((size_t)size);
+// }
 
 // void IggyGDrawFree(void *ptr)
 // {
