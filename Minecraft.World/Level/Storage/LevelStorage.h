@@ -18,6 +18,7 @@ public:
 	static const std::wstring NETHER_FOLDER;
 	static const std::wstring ENDER_FOLDER;
 
+	virtual ~LevelStorage(){}
     virtual LevelData *prepareLevel() = 0;
     virtual void checkSession() = 0;
     virtual ChunkStorage *createChunkStorage(Dimension *dimension) = 0;

@@ -40,7 +40,7 @@ public:
 #else
 	static __int64 findSeed(LevelType *generator);	// 4J added
 #endif
-	~BiomeSource();
+	virtual ~BiomeSource();
 
 public:
 	std::vector<Biome *> getPlayerSpawnBiomes() { return playerSpawnBiomes; }

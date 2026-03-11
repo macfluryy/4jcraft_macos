@@ -13,7 +13,8 @@ private:
 
 public:
 	TakeItemHint(eTutorial_Hint id, Tutorial *tutorial, int items[], unsigned int itemsLength);
-	~TakeItemHint();
+	//TODO: 4jcraft, added, it was never implemented
+	virtual ~TakeItemHint(){};
 
 	virtual bool onTake( std::shared_ptr<ItemInstance> item );
 };

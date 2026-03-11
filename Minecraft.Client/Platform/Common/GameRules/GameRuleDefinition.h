@@ -27,6 +27,7 @@ protected:
 
 public:
 	GameRuleDefinition();
+	virtual ~GameRuleDefinition(){}
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() = 0;
 

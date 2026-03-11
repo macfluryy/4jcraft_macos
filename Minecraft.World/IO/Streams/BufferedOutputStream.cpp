@@ -15,7 +15,11 @@ BufferedOutputStream::BufferedOutputStream(OutputStream *out, int size)
 
 BufferedOutputStream::~BufferedOutputStream()
 {
-	delete buf.data;
+	//4jcraft, changed to [], deallocates internal buffer
+	//TODO: ArrayWithLength.h doesnt have a destructor.
+	//this wouldnt need to be done manually.
+	//but for some reason the destructor is commented out in the source code?
+	delete[] buf.data; 
 }
 
 //Flushes this buffered output stream. This forces any buffered output bytes to be written out to the underlying output stream.

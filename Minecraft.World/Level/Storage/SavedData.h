@@ -15,6 +15,7 @@ private:
 
 public:
 	SavedData(const std::wstring& id);
+	virtual ~SavedData(){}
 
 	virtual void load(CompoundTag *tag) = 0;
 	virtual void save(CompoundTag *tag) = 0;

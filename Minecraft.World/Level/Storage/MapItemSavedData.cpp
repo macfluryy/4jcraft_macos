@@ -123,7 +123,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(std::shared_ptr<Item
 			memcpy(lastSentDecorations.data, data.data, data.length);
 			return data;
 		}
-		delete data.data;
+		delete[] data.data; //4jcraft, changed to []
 	}
 	std::shared_ptr<ServerPlayer> servPlayer = std::dynamic_pointer_cast<ServerPlayer>(player);
 	for (int d = 0; d < 10; d++)

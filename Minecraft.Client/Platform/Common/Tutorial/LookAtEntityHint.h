@@ -14,7 +14,8 @@ private:
 
 public:
 	LookAtEntityHint(eTutorial_Hint id, Tutorial *tutorial, int descriptionId, int titleId, eINSTANCEOF type);
-	~LookAtEntityHint();
+	//TODO: 4jcraft added, this was not implemented
+	~LookAtEntityHint(){};
 
 	virtual bool onLookAtEntity(eINSTANCEOF type);
 };

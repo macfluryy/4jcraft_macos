@@ -19,6 +19,7 @@ public:
 	int texHeight;
 
 	Model();		// 4J added
+	virtual ~Model(){}
 	virtual void render(std::shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled) {}
 	virtual void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0) {}
 	virtual void prepareMobModel(std::shared_ptr<Mob> mob, float time, float r, float a) {}
