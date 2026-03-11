@@ -6,6 +6,9 @@ builddir/
 build_meson/
 cmake-build-debug/
 
+# Nix flake output
+result
+
 # Final binaries and platform output
 /Linux/
 /x64/
