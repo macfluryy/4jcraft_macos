@@ -1,0 +1,4 @@
+option('enable_vsync', 
+  type : 'boolean', 
+  value : true, 
+  description : 'Toggles weather V-Sync will be toggle on or off.')
