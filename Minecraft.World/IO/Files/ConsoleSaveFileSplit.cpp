@@ -794,6 +794,15 @@ BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite
 		return 0;
 	}
 
+	// 4jcraft added: memset(NULL + 0, 0, 0); was called
+	// no bytes need to be written, hence there you go
+	if(nNumberOfBytesToWrite == 0) {
+		if(lpNumberOfBytesWritten) { 
+			*lpNumberOfBytesWritten = 0;
+		}
+		return 1;
+	}
+
 	LockSaveAccess();
 
 	if( file->isRegionFile() )
