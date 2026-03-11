@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <cstdint>
 #include <vector>
 //#include <xtms.h>
 
@@ -299,7 +300,7 @@ public:
 
 	C4JStorage::EDLCStatus				GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam);
 	XCONTENT_DATA&						GetDLC(DWORD dw);
-	DWORD								MountInstalledDLC(int iPad,DWORD dwDLC,int( *Func)(LPVOID, int, DWORD,DWORD),LPVOID lpParam,LPCSTR szMountDrive=NULL);
+	std::uint32_t						MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,LPCSTR szMountDrive=NULL);
 	DWORD								UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
 	void								GetMountedDLCFileList(const char* szMountDrive, std::vector<std::string>& fileList);
 	std::string							GetMountedPath(std::string szMount);

@@ -318,7 +318,7 @@ public:
 	bool StartInstallDLCProcess(int iPad);
 	static int DLCInstalledCallback(void *pParam,int iOfferC,int iPad);
 	void HandleDLCLicenseChange();
-	static int DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask);
+	static int DLCMountedCallback(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask);
 	void MountNextDLC(int iPad);
 	//static int DLCReadCallback(LPVOID pParam,C4JStorage::DLC_FILE_DETAILS *pDLCData);
 	void HandleDLC(DLCPack *pack);

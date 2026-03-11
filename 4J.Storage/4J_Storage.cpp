@@ -61,7 +61,7 @@ DWORD C4JStorage::InstallOffer(int iOfferIDC, __uint64 *ullOfferIDA, int(*Func)(
 DWORD C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
 C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad, int(*Func)(LPVOID, int, int), LPVOID lpParam) { return EDLC_NoInstalledDLC; }
 XCONTENT_DATA& C4JStorage::GetDLC(DWORD dw) { return s_dummyContentData; }
-DWORD C4JStorage::MountInstalledDLC(int iPad, DWORD dwDLC, int(*Func)(LPVOID, int, DWORD, DWORD), LPVOID lpParam, LPCSTR szMountDrive) { return 0; }
+std::uint32_t C4JStorage::MountInstalledDLC(int iPad, std::uint32_t dwDLC, int(*Func)(void *, int, std::uint32_t, std::uint32_t), void *lpParam, LPCSTR szMountDrive) { return 0; }
 DWORD C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
 void C4JStorage::GetMountedDLCFileList(const char *szMountDrive, std::vector<std::string> &fileList) { fileList.clear(); }
 std::string C4JStorage::GetMountedPath(std::string szMount) { return ""; }

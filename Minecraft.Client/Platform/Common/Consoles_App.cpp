@@ -5077,7 +5077,7 @@ void CMinecraftApp::MountNextDLC(int iPad)
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.wszDisplayName)
 #endif
 
-int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
+int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask)
 {
 #if defined(_XBOX) || defined(_DURANGO) || defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64)  || defined (__PSVITA__) //Chris TODO
 	app.DebugPrintf("--- CMinecraftApp::DLCMountedCallback\n");
@@ -5085,7 +5085,7 @@ int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dw
 	if(dwErr!=ERROR_SUCCESS)
 	{
 		// corrupt DLC
-		app.DebugPrintf("Failed to mount DLC for pad %d: %d\n",iPad,dwErr);
+		app.DebugPrintf("Failed to mount DLC for pad %d: %u\n",iPad,dwErr);
 		app.m_dlcManager.incrementUnnamedCorruptCount();
 	}
 	else
@@ -5126,7 +5126,7 @@ int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,DWORD dwErr,DWORD dw
 		}
 		else
 		{
-			app.DebugPrintf("Pack \"%ls\" is already installed. Updating license to %d\n", CONTENT_DATA_DISPLAY_NAME(ContentData), dwLicenceMask);
+			app.DebugPrintf("Pack \"%ls\" is already installed. Updating license to %u\n", CONTENT_DATA_DISPLAY_NAME(ContentData), dwLicenceMask);
 
 			pack->SetDLCMountIndex(app.m_iTotalDLCInstalled);
 			pack->SetDLCDeviceID(ContentData.DeviceID);

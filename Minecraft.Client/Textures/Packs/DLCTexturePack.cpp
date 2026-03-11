@@ -310,14 +310,14 @@ std::wstring DLCTexturePack::getFilePath(std::uint32_t packId, std::wstring file
 	return app.getFilePath(packId,filename,bAddDataFolder);
 }
 
-int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
+int DLCTexturePack::packMounted(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask)
 {
-	DLCTexturePack *texturePack = (DLCTexturePack *)pParam;
+	DLCTexturePack *texturePack = static_cast<DLCTexturePack *>(pParam);
 	texturePack->m_bLoadingData = false;
 	if(dwErr!=ERROR_SUCCESS)
 	{
 		// corrupt DLC
-		app.DebugPrintf("Failed to mount DLC for pad %d: %d\n",iPad,dwErr);
+		app.DebugPrintf("Failed to mount DLC for pad %d: %u\n",iPad,dwErr);
 	}
 	else
 	{
