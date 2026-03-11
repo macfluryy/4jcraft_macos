@@ -40,7 +40,7 @@ static const int s_watchedKeys[] = {
     SDL_SCANCODE_TAB, SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL,
     SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
     SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
-    SDL_SCANCODE_9, SDL_SCANCODE_0,
+    SDL_SCANCODE_9,
 };
 static const int s_watchedKeyCount = (int)(sizeof(s_watchedKeys) / sizeof(s_watchedKeys[0]));
 
@@ -164,7 +164,7 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
     static const int sc[10] = {
         SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
         SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
-        SDL_SCANCODE_9, SDL_SCANCODE_0
+        SDL_SCANCODE_9,
     };
     static bool s_wasDown[10] = {};
 
