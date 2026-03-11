@@ -24,11 +24,7 @@
 
 
 int Entity::entityCounter = 2048;		// 4J - changed initialiser to 2048, as we are using range 0 - 2047 as special unique smaller ids for things that need network tracked
-#ifdef _WIN32
 DWORD Entity::tlsIdx = TlsAlloc();
-#else
-pthread_key_t Entity::tlsIdx = 0;
-#endif
 
 // 4J - added getSmallId & freeSmallId methods
 unsigned int Entity::entityIdUsedFlags[2048/32] = {0};
@@ -51,6 +47,7 @@ int Entity::getSmallId()
 #ifdef _WIN32
 	if( ((size_t)TlsGetValue(tlsIdx) != 0 ) )
 #else
+	pthread_key_create(&tlsIdx, nullptr);
 	if ( ((size_t)pthread_getspecific(tlsIdx) != 0) )
 #endif
 	{
@@ -154,16 +151,7 @@ void Entity::freeSmallId(int index)
 
 void Entity::useSmallIds()
 {
-#ifdef _WIN32
-	TlsSetValue(tlsIdx, (LPVOID)1);
-#else
-	static bool keyCreated = false;
-	if (!keyCreated) {
-		pthread_key_create(&tlsIdx, nullptr);
-		keyCreated = true;
-	}
-	pthread_setspecific(tlsIdx,(void*)1);
-#endif
+	pthread_setspecific(tlsIdx,(LPVOID)1);
 }
 
 // Things also added here to be able to manage the concept of a number of extra "wandering" entities - normally path finding entities aren't allowed to
