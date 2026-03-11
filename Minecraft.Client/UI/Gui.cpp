@@ -28,7 +28,7 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../../Minecraft.World/WorldGen/Biomes/Biome.h"
 
-#define RENDER_HUD 1
+#define RENDER_HUD 0
 
 // #ifndef _XBOX
 // #undef RENDER_HUD
