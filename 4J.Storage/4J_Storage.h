@@ -243,31 +243,31 @@ public:
 
 	// Messages
 	C4JStorage::EMessageResult			RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-		int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, C4JStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0);
+		int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL,void *lpParam=NULL, C4JStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0);
 
 
 	C4JStorage::EMessageResult			GetMessageBoxResult();
 
 	// save device
-	bool								SetSaveDevice(int( *Func)(LPVOID,const bool),LPVOID lpParam, bool bForceResetOfSaveDevice=false);
+	bool								SetSaveDevice(int( *Func)(void *,const bool),void *lpParam, bool bForceResetOfSaveDevice=false);
 
 	// savegame
-	void						Init(unsigned int uiSaveVersion,LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize,int( *Func)(LPVOID, const ESavingMessage, int),LPVOID lpParam,LPCSTR szGroupID);
+	void						Init(unsigned int uiSaveVersion,LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize,int( *Func)(void *, const ESavingMessage, int),void *lpParam,LPCSTR szGroupID);
 	void						ResetSaveData(); // Call before a new save to clear out stored save file name
 	void						SetDefaultSaveNameForKeyboardDisplay(LPCWSTR pwchDefaultSaveName);
 	void						SetSaveTitle(LPCWSTR pwchDefaultSaveName);
 	bool						GetSaveUniqueNumber(INT *piVal);
 	bool						GetSaveUniqueFilename(char *pszName);
 	void						SetSaveUniqueFilename(char *szFilename);
-	void						SetState(ESaveGameControlState eControlState,int( *Func)(LPVOID,const bool),LPVOID lpParam);
+	void						SetState(ESaveGameControlState eControlState,int( *Func)(void *,const bool),void *lpParam);
 	void						SetSaveDisabled(bool bDisable);
 	bool						GetSaveDisabled(void);
 	unsigned int				GetSaveSize();
 	void						GetSaveData(void *pvData,unsigned int *puiBytes);
 	PVOID						AllocateSaveData(unsigned int uiBytes);
 	void						SetSaveImages( PBYTE pbThumbnail,DWORD dwThumbnailBytes,PBYTE pbImage,DWORD dwImageBytes, PBYTE pbTextData ,DWORD dwTextDataBytes);					// Sets the thumbnail & image for the save, optionally setting the metadata in the png
-	C4JStorage::ESaveGameState	SaveSaveData(int( *Func)(LPVOID ,const bool),LPVOID lpParam);
-	void						CopySaveDataToNewSave(PBYTE pbThumbnail,DWORD cbThumbnail,WCHAR *wchNewName,int ( *Func)(LPVOID lpParam, bool), LPVOID lpParam);
+	C4JStorage::ESaveGameState	SaveSaveData(int( *Func)(void * ,const bool),void *lpParam);
+	void						CopySaveDataToNewSave(PBYTE pbThumbnail,DWORD cbThumbnail,WCHAR *wchNewName,int ( *Func)(void *lpParam, bool), void *lpParam);
 	void						SetSaveDeviceSelected(unsigned int uiPad,bool bSelected);	
 	bool						GetSaveDeviceSelected(unsigned int iPad);
 	C4JStorage::ESaveGameState	DoesSaveExist(bool *pbExists);
@@ -275,30 +275,30 @@ public:
 
 	void								SetSaveMessageVPosition(float fY); // The 'Saving' message will display at a default position unless changed
 	// Get the info for the saves
-	C4JStorage::ESaveGameState	GetSavesInfo(int iPad,int ( *Func)(LPVOID lpParam,SAVE_DETAILS *pSaveDetails,const bool),LPVOID lpParam,char *pszSavePackName);
+	C4JStorage::ESaveGameState	GetSavesInfo(int iPad,int ( *Func)(void *lpParam,SAVE_DETAILS *pSaveDetails,const bool),void *lpParam,char *pszSavePackName);
 	PSAVE_DETAILS				ReturnSavesInfo();
 	void						ClearSavesInfo();	// Clears results
-	C4JStorage::ESaveGameState	LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), LPVOID lpParam);	// Get the thumbnail for an individual save referenced by pSaveInfo
+	C4JStorage::ESaveGameState	LoadSaveDataThumbnail(PSAVE_INFO pSaveInfo,int( *Func)(void *lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), void *lpParam);	// Get the thumbnail for an individual save referenced by pSaveInfo
 
 	void								GetSaveCacheFileInfo(DWORD dwFile,XCONTENT_DATA &xContentData);
 	void								GetSaveCacheFileInfo(DWORD dwFile,	PBYTE *ppbImageData, DWORD *pdwImageBytes);
 
 	// Load the save. Need to call GetSaveData once the callback is called
-	C4JStorage::ESaveGameState			LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool, const bool), LPVOID lpParam);
-	C4JStorage::ESaveGameState		DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool), LPVOID lpParam);
+	C4JStorage::ESaveGameState			LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(void *lpParam,const bool, const bool), void *lpParam);
+	C4JStorage::ESaveGameState		DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(void *lpParam,const bool), void *lpParam);
 
 	// DLC
-	void								RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam );
+	void								RegisterMarketplaceCountsCallback(int ( *Func)(void *lpParam, C4JStorage::DLC_TMS_DETAILS *, int), void *lpParam );
 	void								SetDLCPackageRoot(char *pszDLCRoot);
-	C4JStorage::EDLCStatus				GetDLCOffers(int iPad,int( *Func)(LPVOID, int, DWORD, int),LPVOID lpParam, DWORD dwOfferTypesBitmask=XMARKETPLACE_OFFERING_TYPE_CONTENT);	
+	C4JStorage::EDLCStatus				GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, DWORD dwOfferTypesBitmask=XMARKETPLACE_OFFERING_TYPE_CONTENT);	
 	DWORD								CancelGetDLCOffers();
 	void								ClearDLCOffers();
 	XMARKETPLACE_CONTENTOFFER_INFO&		GetOffer(DWORD dw);
 	int									GetOfferCount();
-	DWORD								InstallOffer(int iOfferIDC, __uint64 *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial=false);
+	DWORD								InstallOffer(int iOfferIDC, __uint64 *ullOfferIDA,int( *Func)(void *, int, int),void *lpParam, bool bTrial=false);
 	DWORD								GetAvailableDLCCount( int iPad);
 
-	C4JStorage::EDLCStatus				GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam);
+	C4JStorage::EDLCStatus				GetInstalledDLC(int iPad,int( *Func)(void *, int, int),void *lpParam);
 	XCONTENT_DATA&						GetDLC(DWORD dw);
 	std::uint32_t						MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,LPCSTR szMountDrive=NULL);
 	DWORD								UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
@@ -307,7 +307,7 @@ public:
 
 	// Global title storage
 	C4JStorage::ETMSStatus				ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType,
-											WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(LPVOID, WCHAR *,int, bool, int)=NULL,LPVOID lpParam=NULL, int iAction=0);
+											WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(void *, WCHAR *,int, bool, int)=NULL,void *lpParam=NULL, int iAction=0);
 	bool								WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,BYTE *pBuffer,DWORD dwBufferSize);
 	bool								DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename);
 	void								StoreTMSPathName(WCHAR *pwchName=NULL);
@@ -320,7 +320,7 @@ public:
 
 	// 	C4JStorage::ETMSStatus				TMSPP_WriteFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,C4JStorage::eTMS_UGCTYPE eUGCType,CHAR *pchFilePath,CHAR *pchBuffer,DWORD dwBufferSize,int( *Func)(LPVOID,int,int)=NULL,LPVOID lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_GetUserQuotaInfo(int iPad,TMSCLIENT_CALLBACK Func,LPVOID lpParam, int iUserData=0);
-	C4JStorage::ETMSStatus				TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)=NULL,LPVOID lpParam=NULL, int iUserData=0);
+	C4JStorage::ETMSStatus				TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(void *,int,int,PTMSPP_FILEDATA, LPCSTR)=NULL,void *lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_ReadFileList(int iPad,C4JStorage::eGlobalStorage eStorageFacility,CHAR *pchFilePath,int( *Func)(LPVOID,int,int,PTMSPP_FILE_LIST)=NULL,LPVOID lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_DeleteFile(int iPad,LPCSTR szFilePath,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,int( *Func)(LPVOID,int,int),LPVOID lpParam=NULL, int iUserData=0);
 	// 	bool								TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const std::wstring &Filename);

@@ -593,7 +593,7 @@ PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}
 
 void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam ) {}
 void								C4JStorage::SetDLCPackageRoot(char *pszDLCRoot) {}
-C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(LPVOID, int, DWORD, int),LPVOID lpParam, DWORD dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
+C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, DWORD dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
 DWORD								C4JStorage::CancelGetDLCOffers() { return 0; }
 void								C4JStorage::ClearDLCOffers() {}
 XMARKETPLACE_CONTENTOFFER_INFO&		C4JStorage::GetOffer(DWORD dw) { static XMARKETPLACE_CONTENTOFFER_INFO retval = {0}; return retval; }

@@ -8547,7 +8547,7 @@ void  CMinecraftApp::ClearTMSPPFilesRetrieved()
 	LeaveCriticalSection(&csTMSPPDownloadQueue);
 }
 
-int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, int iPad)
+int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, std::uint32_t dwType, int iPad)
 {
 	CMinecraftApp* pClass = (CMinecraftApp *) pParam;
 
@@ -8561,7 +8561,7 @@ int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, in
 		if(pCurrent->dwType == static_cast<std::uint32_t>(dwType))
 		{
 			pClass->m_iDLCOfferC = iOfferC;
-			app.DebugPrintf("DLCOffersReturned - type %d, count %d - setting to retrieved\n",dwType,iOfferC);
+			app.DebugPrintf("DLCOffersReturned - type %u, count %d - setting to retrieved\n",dwType,iOfferC);
 			pCurrent->eState=e_DLC_ContentState_Retrieved;
 			break;
 		}

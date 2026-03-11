@@ -737,7 +737,7 @@ public:
 	unsigned int	AddDLCRequest(eDLCMarketplaceType eContentType, bool bPromote=false);
 	bool			RetrieveNextDLCContent();
 	bool			CheckTMSDLCCanStop();
-	static int		DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, int iPad);
+	static int		DLCOffersReturned(void *pParam, int iOfferC, std::uint32_t dwType, int iPad);
 	std::uint32_t	GetDLCContentType(eDLCContentType eType) { return m_dwContentTypeA[eType];}
 	eDLCContentType	Find_eDLCContentType(std::uint32_t dwType);
 	int				GetDLCOffersCount()	{ return m_iDLCOfferC;}
