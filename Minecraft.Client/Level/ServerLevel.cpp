@@ -631,9 +631,9 @@ std::vector<TickNextTickData> *ServerLevel::fetchTicksInChunk(LevelChunk *chunk,
     std::vector<TickNextTickData> *results = new std::vector<TickNextTickData>;
 
     ChunkPos *pos = chunk->getPos();
-    int west = pos->x << 4;
+    int west = (unsigned) pos->x << 4;
     int east = west + 16;
-    int north = pos->z << 4;
+    int north =(unsigned)  pos->z << 4;
     int south = north + 16;
 	delete pos;
 
