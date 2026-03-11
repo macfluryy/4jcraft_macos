@@ -5861,7 +5861,21 @@ Random *CMinecraftApp::TipRandom = new Random();
 
 int CMinecraftApp::TipsSortFunction(const void* a, const void* b)
 {
-	return ((TIPSTRUCT*)a)->iSortValue - ((TIPSTRUCT*)b)->iSortValue;
+	// 4jcraft, scince the sortvalues can be negative, i changed it
+	// to a three way comparison,
+	// scince subtracting of signed integers can cause overflow.
+	
+	int s1 = ((TIPSTRUCT*)a)->iSortValue; 
+	int s2 = ((TIPSTRUCT*)b)->iSortValue;
+
+	if(s1 > s2) {
+		return 1;
+
+	} else if (s1 == s2) {
+		return 0;
+	}
+
+	return -1;
 }
 
 void CMinecraftApp::InitialiseTips()
