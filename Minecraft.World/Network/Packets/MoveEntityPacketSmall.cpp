@@ -1,6 +1,5 @@
 #include "../../Platform/stdafx.h"
 #include <iostream>
-#include <limits>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "MoveEntityPacketSmall.h"
@@ -32,7 +31,7 @@ void MoveEntityPacketSmall::read(DataInputStream *dis) //throws IOException
 
 void MoveEntityPacketSmall::write(DataOutputStream *dos) //throws IOException
 {
-	if(id < 0 || id > std::numeric_limits<int16_t>::max() )
+	if(id < 0 || id > 32767 )
 	{
 		// We shouln't be tracking an entity that doesn't have a short type of id
 		__debugbreak();
@@ -66,7 +65,7 @@ MoveEntityPacketSmall::PosRot::PosRot()
 	hasRot = true;
 }
 
-MoveEntityPacketSmall::PosRot::PosRot(int id, int8_t xa, int8_t ya, int8_t za, int8_t yRot, int8_t xRot) : MoveEntityPacketSmall( id )
+MoveEntityPacketSmall::PosRot::PosRot(int id, char xa, char ya, char za, char yRot, char xRot) : MoveEntityPacketSmall( id )
 {
 	this->xa = xa;
 	this->ya = ya;
@@ -78,22 +77,22 @@ MoveEntityPacketSmall::PosRot::PosRot(int id, int8_t xa, int8_t ya, int8_t za, i
 
 void MoveEntityPacketSmall::PosRot::read(DataInputStream *dis) //throws IOException
 {
-    MoveEntityPacketSmall::read(dis);
-    xa = (int8_t)dis->readByte();
-    ya = (int8_t)dis->readByte();
-    za = (int8_t)dis->readByte();
-    yRot = (int8_t)dis->readByte();
-    xRot = (int8_t)dis->readByte();
+	MoveEntityPacketSmall::read(dis);
+	xa = (signed char)dis->readByte();
+	ya = (signed char)dis->readByte();
+	za = (signed char)dis->readByte();
+	yRot = (signed char)dis->readByte();
+	xRot = (signed char)dis->readByte();
 }
 
 void MoveEntityPacketSmall::PosRot::write(DataOutputStream *dos) //throws IOException
 {
-    MoveEntityPacketSmall::write(dos);
-    dos->writeByte((uint8_t)(xa & 0xFF));
-    dos->writeByte((uint8_t)(ya & 0xFF));
-    dos->writeByte((uint8_t)(za & 0xFF));
-    dos->writeByte((uint8_t)(yRot & 0xFF));
-    dos->writeByte((uint8_t)(xRot & 0xFF));
+	MoveEntityPacketSmall::write(dos);
+	dos->writeByte((uint8_t)(xa & 0xFF));
+	dos->writeByte((uint8_t)(ya & 0xFF));
+	dos->writeByte((uint8_t)(za & 0xFF));
+	dos->writeByte((uint8_t)(yRot & 0xFF));
+	dos->writeByte((uint8_t)(xRot & 0xFF));
 }
 
 int MoveEntityPacketSmall::PosRot::getEstimatedSize()
@@ -105,7 +104,7 @@ MoveEntityPacketSmall::Pos::Pos()
 {
 }
 
-MoveEntityPacketSmall::Pos::Pos(int id, int8_t xa, int8_t ya, int8_t za) : MoveEntityPacketSmall(id)
+MoveEntityPacketSmall::Pos::Pos(int id, char xa, char ya, char za) : MoveEntityPacketSmall(id)
 {
 	this->xa = xa;
 	this->ya = ya;
@@ -114,10 +113,10 @@ MoveEntityPacketSmall::Pos::Pos(int id, int8_t xa, int8_t ya, int8_t za) : MoveE
 
 void MoveEntityPacketSmall::Pos::read(DataInputStream *dis) //throws IOException
 {
-    MoveEntityPacketSmall::read(dis);
-    xa = (int8_t)dis->readByte();
-    ya = (int8_t)dis->readByte();
-    za = (int8_t)dis->readByte();
+	MoveEntityPacketSmall::read(dis);
+	xa = (signed char)dis->readByte();
+	ya = (signed char)dis->readByte();
+	za = (signed char)dis->readByte();
 }
 
 void MoveEntityPacketSmall::Pos::write(DataOutputStream *dos) //throws IOException
@@ -138,7 +137,7 @@ MoveEntityPacketSmall::Rot::Rot()
 	hasRot = true;
 }
 
-MoveEntityPacketSmall::Rot::Rot(int id, int8_t yRot, int8_t xRot) : MoveEntityPacketSmall(id)
+MoveEntityPacketSmall::Rot::Rot(int id, char yRot, char xRot) : MoveEntityPacketSmall(id)
 {
 
 	this->yRot = yRot;
@@ -148,8 +147,8 @@ MoveEntityPacketSmall::Rot::Rot(int id, int8_t yRot, int8_t xRot) : MoveEntityPa
 
 void MoveEntityPacketSmall::Rot::read(DataInputStream *dis) //throws IOException
 {
-    MoveEntityPacketSmall::read(dis);
-    yRot = (int8_t)dis->readByte();
+	MoveEntityPacketSmall::read(dis);
+	yRot = (signed char)dis->readByte();
 }
 
 void MoveEntityPacketSmall::Rot::write(DataOutputStream *dos) //throws IOException
