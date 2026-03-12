@@ -516,14 +516,9 @@ IggyLibrary UIController::loadSkin(const std::wstring &skinPath, const std::wstr
 	{
 		byteArray baFile = app.getArchiveFile(skinPath);
 
-		// Copy 32-bit wchar_t to 16-bit IggyUTF16
-		std::vector<IggyUTF16> utf16Name(skinName.length() + 1);
-		for(size_t i = 0; i < skinName.length(); ++i) {
-			utf16Name[i] = static_cast<IggyUTF16>(skinName[i]);
-		}
-		utf16Name[skinName.length()] = 0; // null terminator
+		const std::u16string convSkinName = convWstringToU16string(skinName);
 
-		lib = IggyLibraryCreateFromMemoryUTF16( utf16Name.data() , (void *)baFile.data, baFile.length, NULL );
+		lib = IggyLibraryCreateFromMemoryUTF16( convSkinName.data() , (void *)baFile.data, baFile.length, NULL );
 
 		delete[] baFile.data;
 		#ifdef _DEBUG
