@@ -40,7 +40,8 @@ static const int s_watchedKeys[] = {
     SDL_SCANCODE_TAB, SDL_SCANCODE_LCTRL, SDL_SCANCODE_RCTRL,
     SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
     SDL_SCANCODE_5, SDL_SCANCODE_6, SDL_SCANCODE_7, SDL_SCANCODE_8,
-    SDL_SCANCODE_9,
+    SDL_SCANCODE_9, SDL_SCANCODE_Z, SDL_SCANCODE_X, SDL_SCANCODE_C,
+    SDL_SCANCODE_V
 };
 static const int s_watchedKeyCount = (int)(sizeof(s_watchedKeys) / sizeof(s_watchedKeys[0]));
 
@@ -188,6 +189,10 @@ case ACTION_MENU_PAGEUP:                  return FN(SDL_SCANCODE_PAGEUP); \
 case ACTION_MENU_PAGEDOWN:                return FN(SDL_SCANCODE_PAGEDOWN); \
 case ACTION_MENU_OK:                      return FN(SDL_SCANCODE_RETURN); \
 case ACTION_MENU_CANCEL:                  return FN(SDL_SCANCODE_ESCAPE); \
+case ACTION_MENU_A:                       return FN(SDL_SCANCODE_Z); \
+case ACTION_MENU_B:                       return FN(SDL_SCANCODE_X); \
+case ACTION_MENU_X:                       return FN(SDL_SCANCODE_C); \
+case ACTION_MENU_Y:                       return FN(SDL_SCANCODE_V); \
 case MINECRAFT_ACTION_JUMP:               return FN(SDL_SCANCODE_SPACE); \
 case MINECRAFT_ACTION_FORWARD:            return FN(SDL_SCANCODE_W); \
 case MINECRAFT_ACTION_BACKWARD:           return FN(SDL_SCANCODE_S); \
@@ -198,12 +203,12 @@ case MINECRAFT_ACTION_PAUSEMENU:          return FN(SDL_SCANCODE_ESCAPE); \
 case MINECRAFT_ACTION_DROP:               return FN(SDL_SCANCODE_Q); \
 case MINECRAFT_ACTION_CRAFTING:           return FN(SDL_SCANCODE_C); \
 case MINECRAFT_ACTION_RENDER_THIRD_PERSON:return FN(SDL_SCANCODE_F5); \
-case MINECRAFT_ACTION_GAME_INFO:          return FN(SDL_SCANCODE_F3); \
+case MINECRAFT_ACTION_RENDER_DEBUG:       return FN(SDL_SCANCODE_F3); \
 case MINECRAFT_ACTION_DPAD_LEFT:          return FN(SDL_SCANCODE_LEFT); \
 case MINECRAFT_ACTION_DPAD_RIGHT:         return FN(SDL_SCANCODE_RIGHT); \
 case MINECRAFT_ACTION_DPAD_UP:            return FN(SDL_SCANCODE_UP); \
 case MINECRAFT_ACTION_DPAD_DOWN:          return FN(SDL_SCANCODE_DOWN); \
-default:                                   return false;
+default:                                  return false;
 
 bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
     if (iPad != 0) return false;
