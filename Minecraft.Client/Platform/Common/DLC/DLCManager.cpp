@@ -411,7 +411,7 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 }
 
 // a bunch of makros to reduce memcpy and offset boilerplate
-#define DLC_READ_UINT(out, buf, off) memcpy(out, (buf) + (off), sizeof(unsigned int))
+#define DLC_READ_UINT(out, buf, off) memcpy((out), (buf) + (off), sizeof(unsigned int))
 
 #define DLC_READ_PARAM(out, buf, off) memcpy((out), (buf) + (off), sizeof(C4JStorage::DLC_FILE_PARAM))
 
