@@ -35,7 +35,7 @@ void UIControl_TexturePackList::init(const std::wstring &label, int id)
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.string = convLabel.c_str();
 	stringVal.length = convLabel.length();
 	value[0].string16 = stringVal;
 
@@ -69,7 +69,7 @@ void UIControl_TexturePackList::addPack(int id, const std::wstring &textureName)
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)convName.c_str();
+	stringVal.string = convName.c_str();
 	stringVal.length = convName.length();
 	value[1].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_addPackFunc ,2 , value );

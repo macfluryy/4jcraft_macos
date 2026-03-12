@@ -312,7 +312,7 @@ void UIScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 	{
 		conv.push_back(convWstringToU16string(paragraphs[i]));
 
-		stringVal[i].string = (IggyUTF16 *)conv[i].c_str();
+		stringVal[i].string = conv[i].c_str();
 		stringVal[i].length = conv[i].length();
 		value[i+1].type = IGGY_DATATYPE_string_UTF16;
 		value[i+1].string16 = stringVal[i];

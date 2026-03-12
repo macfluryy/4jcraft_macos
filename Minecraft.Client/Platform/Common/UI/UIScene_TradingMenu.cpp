@@ -261,7 +261,7 @@ void UIScene_TradingMenu::setOfferDescription(const std::wstring &name, std::vec
 	IggyDataValue value[1];
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convName.c_str();
+	stringVal.string = convName.c_str();
 	stringVal.length = convName.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;

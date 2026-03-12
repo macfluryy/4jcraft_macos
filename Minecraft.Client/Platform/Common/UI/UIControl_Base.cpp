@@ -39,7 +39,7 @@ void UIControl_Base::tick()
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		IggyStringUTF16 stringVal;
 
-		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.string = convLabel.c_str();
 		stringVal.length = convLabel.length();
 		value[0].string16 = stringVal;
 
@@ -63,7 +63,7 @@ void UIControl_Base::setLabel(const std::wstring &label, bool instant, bool forc
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		IggyStringUTF16 stringVal;
 
-		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.string = convLabel.c_str();
 		stringVal.length = convLabel.length();
 		value[0].string16 = stringVal;
 
@@ -101,7 +101,7 @@ void UIControl_Base::setAllPossibleLabels(int labelCount, wchar_t labels[][256])
 
 	for (int i = 0; i < labelCount; ++i) {
 		conv.push_back(convWstringToU16string(labels[i]));
-		stringVal[i].string = (IggyUTF16*)conv[i].c_str();
+		stringVal[i].string = conv[i].c_str();
 		stringVal[i].length = (S32)conv[i].length();
 		value[i].type = IGGY_DATATYPE_string_UTF16;
 		value[i].string16 = stringVal[i];

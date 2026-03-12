@@ -62,7 +62,7 @@ void UIControl_SaveList::addItem(const std::string &label, const std::wstring &i
 	const std::u16string convName = convWstringToU16string(iconName);
 
 	IggyStringUTF16 stringVal2;
-	stringVal2.string = (IggyUTF16*)convName.c_str();
+	stringVal2.string = convName.c_str();
 	stringVal2.length = convName.length();
 	value[2].type = IGGY_DATATYPE_string_UTF16;
 	value[2].string16 = stringVal2;
@@ -77,7 +77,7 @@ void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &
 	const std::u16string convLabel = convWstringToU16string(label);
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.string = convLabel.c_str();
 	stringVal.length = (S32)convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
@@ -88,7 +88,7 @@ void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &
 	const std::u16string convName = convWstringToU16string(iconName);
 
 	IggyStringUTF16 stringVal2;
-	stringVal2.string = (IggyUTF16*)convName.c_str();
+	stringVal2.string = convName.c_str();
 	stringVal2.length = convName.length();
 	value[2].type = IGGY_DATATYPE_string_UTF16;
 	value[2].string16 = stringVal2;
@@ -106,7 +106,7 @@ void UIControl_SaveList::setTextureName(int iId, const std::wstring &iconName)
 	const std::u16string convName = convWstringToU16string(iconName);
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convName.c_str();
+	stringVal.string = convName.c_str();
 	stringVal.length = convName.length();
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	value[1].string16 = stringVal;

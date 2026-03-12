@@ -304,7 +304,7 @@ void UIScene_InventoryMenu::updateEffectsDisplay()
 
 			const std::u16string convString = convWstringToU16string(effectString);
 			IggyStringUTF16 stringVal;
-			stringVal.string = (IggyUTF16*)convString.c_str();
+			stringVal.string = convString.c_str();
 			stringVal.length = convString.length();
 			value[1].type = IGGY_DATATYPE_string_UTF16;
 			value[1].string16 = stringVal;

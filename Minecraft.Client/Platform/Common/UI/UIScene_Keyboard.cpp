@@ -27,7 +27,7 @@ UIScene_Keyboard::UIScene_Keyboard(int iPad, void *initData, UILayer *parentLaye
 	std::wstring label = L"Abc";
 	IggyStringUTF16 stringVal;
 	const std::u16string convLabel = convWstringToU16string(label);
-	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.string = convLabel.c_str();
 	stringVal.length = convLabel.length();
 	
 	IggyDataValue result;

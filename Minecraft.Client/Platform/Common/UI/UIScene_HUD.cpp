@@ -536,7 +536,7 @@ void UIScene_HUD::SetDragonLabel(const std::wstring &label)
 	IggyDataValue value[1];
 	const std::u16string convLabel = convWstringToU16string(label);
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.string = convLabel.c_str();
 	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
@@ -567,7 +567,7 @@ void UIScene_HUD::SetSelectedLabel(const std::wstring &label)
 	IggyDataValue value[1];
 	const std::u16string convLabel = convWstringToU16string(label);
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.string = convLabel.c_str();
 	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
@@ -742,7 +742,7 @@ void UIScene_HUD::SetDisplayName(const std::wstring &displayName)
 		IggyDataValue value[1];
 		IggyStringUTF16 stringVal;
 		const std::u16string convName = convWstringToU16string(displayName);
-		stringVal.string = (IggyUTF16*)convName.c_str();
+		stringVal.string = convName.c_str();
 		stringVal.length = convName.length();
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;

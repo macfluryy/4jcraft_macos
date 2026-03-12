@@ -1370,7 +1370,7 @@ void UIScene_SkinSelectMenu::setLeftLabel(const std::wstring &label)
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.string = convLabel.c_str();
 		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
@@ -1391,7 +1391,7 @@ void UIScene_SkinSelectMenu::setCentreLabel(const std::wstring &label)
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.string = convLabel.c_str();
 		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
@@ -1412,7 +1412,7 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring &label)
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.string = convLabel.c_str();
 		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;

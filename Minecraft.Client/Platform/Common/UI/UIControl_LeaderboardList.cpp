@@ -56,7 +56,7 @@ void UIControl_LeaderboardList::setupTitles(const std::wstring &rank, const std:
 	const std::u16string convRank = convWstringToU16string(rank);
 
 	IggyStringUTF16 stringVal0;
-	stringVal0.string = (IggyUTF16*)convRank.c_str();
+	stringVal0.string = convRank.c_str();
 	stringVal0.length = convRank.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal0;
@@ -64,7 +64,7 @@ void UIControl_LeaderboardList::setupTitles(const std::wstring &rank, const std:
 	const std::u16string convGamertag = convWstringToU16string(gamertag);
 
 	IggyStringUTF16 stringVal1;
-	stringVal1.string = (IggyUTF16*)convGamertag.c_str();
+	stringVal1.string = convGamertag.c_str();
 	stringVal1.length = convGamertag.length();
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	value[1].string16 = stringVal1;
@@ -132,7 +132,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 	const std::u16string convGamertag = convWstringToU16string(gamertag);
 
 	IggyStringUTF16 stringVal0;
-	stringVal0.string = (IggyUTF16*)convGamertag.c_str();
+	stringVal0.string = convGamertag.c_str();
 	stringVal0.length = convGamertag.length();
 	value[3].type = IGGY_DATATYPE_string_UTF16;
 	value[3].string16 = stringVal0;
@@ -143,7 +143,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 	const std::u16string convCol0 = convWstringToU16string(col0);
 
 	IggyStringUTF16 stringVal1;
-	stringVal1.string = (IggyUTF16*)convCol0.c_str();
+	stringVal1.string = convCol0.c_str();
 	stringVal1.length = convCol0.length();
 	value[5].type = IGGY_DATATYPE_string_UTF16;
 	value[5].string16 = stringVal1;
@@ -157,7 +157,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol1 = convWstringToU16string(col1);
 
 		IggyStringUTF16 stringVal2;
-		stringVal2.string = (IggyUTF16*)convCol1.c_str();
+		stringVal2.string = convCol1.c_str();
 		stringVal2.length = convCol1.length();
 		value[6].type = IGGY_DATATYPE_string_UTF16;
 		value[6].string16 = stringVal2;
@@ -172,7 +172,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol2 = convWstringToU16string(col2);
 
 		IggyStringUTF16 stringVal3;
-		stringVal3.string = (IggyUTF16*)convCol2.c_str();
+		stringVal3.string = convCol2.c_str();
 		stringVal3.length = convCol2.length();
 		value[7].type = IGGY_DATATYPE_string_UTF16;
 		value[7].string16 = stringVal3;
@@ -187,7 +187,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol3 = convWstringToU16string(col3);
 
 		IggyStringUTF16 stringVal4;
-		stringVal4.string = (IggyUTF16*)convCol3.c_str();
+		stringVal4.string = convCol3.c_str();
 		stringVal4.length = convCol3.length();
 		value[8].type = IGGY_DATATYPE_string_UTF16;
 		value[8].string16 = stringVal4;
@@ -202,7 +202,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol4 = convWstringToU16string(col4);
 
 		IggyStringUTF16 stringVal5;
-		stringVal5.string = (IggyUTF16*)convCol4.c_str();
+		stringVal5.string = convCol4.c_str();
 		stringVal5.length = convCol4.length();
 		value[9].type = IGGY_DATATYPE_string_UTF16;
 		value[9].string16 = stringVal5;
@@ -217,7 +217,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol5 = convWstringToU16string(col5);
 
 		IggyStringUTF16 stringVal6;
-		stringVal6.string = (IggyUTF16*)convCol5.c_str();
+		stringVal6.string = convCol5.c_str();
 		stringVal6.length = convCol5.length();
 		value[10].type = IGGY_DATATYPE_string_UTF16;
 		value[10].string16 = stringVal6;
@@ -232,7 +232,7 @@ void UIControl_LeaderboardList::addDataSet(bool bLast, int iId, int iRank, const
 		const std::u16string convCol6 = convWstringToU16string(col6);
 
 		IggyStringUTF16 stringVal7;
-		stringVal7.string = (IggyUTF16*)convCol6.c_str();
+		stringVal7.string = convCol6.c_str();
 		stringVal7.length = convCol6.length();
 		value[11].type = IGGY_DATATYPE_string_UTF16;
 		value[11].string16 = stringVal7;

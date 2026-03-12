@@ -28,7 +28,7 @@ void UIControl_DynamicLabel::addText(const std::wstring &text, bool bLastEntry)
 	IggyDataValue value[2];
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)convText.c_str();
+	stringVal.string = convText.c_str();
 	stringVal.length = convText.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
