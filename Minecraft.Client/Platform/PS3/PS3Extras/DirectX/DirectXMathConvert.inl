@@ -24,8 +24,8 @@
 #if defined(_XM_NO_INTRINSICS_) || defined(_XM_SSE_INTRINSICS_) || defined(_XM_ARM_NEON_INTRINSICS_)
 // For VMX128, these routines are all defines in the main header
 
-#pragma warning(push)
-#pragma warning(disable:4701) // Prevent warnings about 'Result' potentially being used without having been initialized
+
+
 
 inline XMVECTOR XMConvertVectorIntToFloat
 (
@@ -220,7 +220,7 @@ inline XMVECTOR XMConvertVectorFloatToUInt
 #endif
 }
 
-#pragma warning(pop)
+
 
 #endif // _XM_NO_INTRINSICS_ || _XM_SSE_INTRINSICS_ || _XM_ARM_NEON_INTRINSICS_
 
