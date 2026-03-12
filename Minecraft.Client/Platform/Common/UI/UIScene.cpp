@@ -283,7 +283,7 @@ void UIScene::loadMovie()
 #elif defined __PSVITA__
 	moviePath.append(L"Vita.swf");
 	m_loadedResolution = eSceneResolution_Vita;
-#elif defined _WINDOWS64 || defined __linux__
+#elif defined _WINDOWS64
 	if(ui.getScreenHeight() == 720)
 	{
 		moviePath.append(L"720.swf");
@@ -994,8 +994,7 @@ bool UIScene::allowRepeat(int key)
 
 void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 {
-	if(wcscmp((wchar_t *)call->function_name.string,L"handlePress")==0)
-	{
+	if(std::char_traits<char16_t>::compare(call->function_name.string, u"handlePress", 12) == 0) {
 		if(call->num_arguments != 2)
 		{
 			app.DebugPrintf("Callback for handlePress did not have the correct number of arguments\n");
@@ -1014,7 +1013,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handlePress(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleFocusChange")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleFocusChange", 18) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1034,7 +1033,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		_handleFocusChange(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleInitFocus")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleInitFocus", 16) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1054,7 +1053,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		_handleInitFocus(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleCheckboxToggled")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleCheckboxToggled", 22) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1074,7 +1073,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleCheckboxToggled(call->arguments[0].number, call->arguments[1].boolval);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleSliderMove")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleSliderMove", 17) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1094,7 +1093,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleSliderMove(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleAnimationEnd")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleAnimationEnd", 19) == 0)
 	{
 		if(call->num_arguments != 0)
 		{
@@ -1106,7 +1105,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleAnimationEnd();
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleSelectionChanged")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleSelectionChanged", 23) == 0)
 	{
 		if(call->num_arguments != 1)
 		{
@@ -1126,7 +1125,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleSelectionChanged(call->arguments[0].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleRequestMoreData")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleRequestMoreData", 22) == 0)
 	{
 		if(call->num_arguments == 0)
 		{
@@ -1153,7 +1152,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 			handleRequestMoreData(call->arguments[0].number, call->arguments[1].boolval);
 		}
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleTouchBoxRebuild")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleTouchBoxRebuild", 22) == 0)
 	{
 		handleTouchBoxRebuild();
 	}
@@ -1247,4 +1246,26 @@ size_t UIScene::GetCallbackUniqueId()
 bool UIScene::isReadyToDelete()
 {
 	return true;
+}
+
+static int UIScene::parseSlotId(const char16_t *s) {
+	// must be nonnull, must start with 'slot_', first char after the underscore must be a digit
+	if (!s ||
+		(s[0] != u's' || s[1] != u'l' || s[2] != u'o' || s[3] != u't' ||
+		s[4] != u'_') ||
+		(s[5] < u'0' || s[5] > u'9')) {
+		return -1;
+	}
+
+	int i = 5;
+	int id = 0;
+
+	// keep consuming digits until we reach a non-digit. each digit scales the existing id value
+	// by 10 plus the actual digit value. (this is referred to as a 'number' by the way) 
+	while (s[i] >= u'0' && s[i] <= u'9') {
+		id = id * 10 + (s[i] - u'0');
+		i++;
+	}
+
+	return id;
 }

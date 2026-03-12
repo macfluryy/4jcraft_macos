@@ -148,8 +148,7 @@ void UIScene_TradingMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
 	std::shared_ptr<ItemInstance> item = nullptr;
-	int slotId = -1;
-	swscanf((wchar_t*)region->name,L"slot_%d",&slotId);
+	int slotId = parseSlotId(region->name);
 
 	if(slotId < MerchantMenu::USE_ROW_SLOT_END)
 	{			

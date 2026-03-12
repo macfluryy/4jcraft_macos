@@ -222,7 +222,7 @@ void UIScene_InventoryMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	if(wcscmp((wchar_t *)region->name,L"player")==0)
+	if(std::char_traits<char16_t>::compare(region->name, u"player", 6) == 0)
 	{
 		// Setup GDraw, normal game render states and matrices
 		CustomDrawData *customDrawRegion = ui.setupCustomDraw(this,region);

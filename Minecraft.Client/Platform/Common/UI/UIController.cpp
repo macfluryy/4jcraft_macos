@@ -1203,6 +1203,8 @@ void UIController::setupCustomDrawGameState()
 	RenderManager.StartFrame();
 #elif defined __PSVITA__
 	RenderManager.StartFrame();
+#elif defined __linux__
+	RenderManager.StartFrame();
 #elif defined __ORBIS__
 	RenderManager.StartFrame(false);
 	// Set up a viewport for the render that matches Iggy's own viewport, apart form using an opengl-style z-range (Iggy uses a DX-style range on PS4), so
