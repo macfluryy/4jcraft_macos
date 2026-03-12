@@ -20,8 +20,8 @@ static SDL_Window *s_window = nullptr;
 static SDL_GLContext s_glContext = nullptr;
 static bool s_shouldClose = false;
 static int s_textureLevels = 1;
-static int s_windowWidth  = 0;
-static int s_windowHeight = 0;
+static int s_windowWidth  = 1920;
+static int s_windowHeight = 1080;
 
 // We set Window size with the monitor's res, so that I can get rid of ugly values.
 static void SetInitialWindowSize()
@@ -35,11 +35,11 @@ static void SetInitialWindowSize()
         }
     }
     if (w > 0 && h > 0) { s_windowWidth = w; s_windowHeight = h; }
-    else { s_windowWidth = 1280; s_windowHeight = 720; }
+    else { s_windowWidth = 1920; s_windowHeight = 1080; }
 }
 // (can't believe i had to rewrite this, i literally did it TODAY.)
-static int s_reqWidth     = 0;
-static int s_reqHeight    = 0;
+static int s_reqWidth     = 1920;
+static int s_reqHeight    = 1080;
 // When we'll have a settings system in order, we'll set bool to that value, right now it's hardcoded.
 static bool s_fullscreen  = false;
 
