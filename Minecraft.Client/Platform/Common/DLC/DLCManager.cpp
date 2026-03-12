@@ -411,13 +411,13 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 }
 
 // a bunch of makros to reduce memcpy and offset boilerplate
-#define DLC_READ_DWORD(buf, off) ({ DWORD _temp; memcpy(&_temp, (buf) + (off), sizeof(DWORD)); _temp; })
+#define DLC_READ_UINT(out, buf, off) memcpy(out, (buf) + (off), sizeof(unsigned int))
 
 #define DLC_READ_PARAM(out, buf, off) memcpy((out), (buf) + (off), sizeof(C4JStorage::DLC_FILE_PARAM))
 
 #define DLC_READ_DETAIL(out, buf, off) memcpy((out), (buf) + (off), sizeof(C4JStorage::DLC_FILE_DETAILS))
 
-// for details, read below in the function below
+// for details, read in the function below
 #define DLC_PARAM_WSTR(buf, off) DLC_WSTRING((buf) + (off) + offsetof(C4JStorage::DLC_FILE_PARAM, wchData))
 
 #define DLC_DETAIL_WSTR(buf, off) DLC_WSTRING((buf) + (off) + offsetof(C4JStorage::DLC_FILE_DETAILS, wchFile))
@@ -445,16 +445,13 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	// (scince bufferoffset after advancing by variable string length is not 
 	// guaranteed to be properly aligned, so casting to a scalar/struct is UB)
 	
-	// those casts are dangerous and will crash on ARM cpus when the pointers are
-	// not properly aligned at the offset. this includes for casting into the storage
-	// structs and casting into an unsigned integer
-	// everything else is aquivalent. i did not concern myself with the fact that
-	// EOF was not checked a single time. the lion doesnt bother with making code safe.
+	// those casts coult be dangerous on e.g. ARM, because it doesnt handle
+	// missaligned loads, like x86/x64, so it would crash
 	
 	// WHO TF USES HUNGARIAN NOTATION
 
-	// safe, offset 0, aligned
-	unsigned int uiVersion=*(unsigned int *)pbData;
+	unsigned int uiVersion;
+	DLC_READ_UINT(&uiVersion, pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	if(uiVersion < CURRENT_DLC_VERSION_NUM)
@@ -465,7 +462,8 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	}
 	pack->SetDataPointer(pbData);
 	// safe, offset 4, aligned
-	unsigned int uiParameterCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiParameterCount;
+	DLC_READ_UINT(&uiParameterCount, pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	C4JStorage::DLC_FILE_PARAM parBuf;
@@ -485,7 +483,8 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	}
 	//ulCurrentByte+=ulParameterCount * sizeof(C4JStorage::DLC_FILE_PARAM);
 
-	unsigned int uiFileCount = DLC_READ_DWORD(pbData, uiCurrentByte);
+	unsigned int uiFileCount;
+	DLC_READ_UINT(&uiFileCount, pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	C4JStorage::DLC_FILE_DETAILS fileBuf;
@@ -497,7 +496,7 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 		dwTemp+=DLC_DETAIL_ADV(fileBuf.dwWchCount);
 		DLC_READ_DETAIL(&fileBuf, pbData, dwTemp);
 	}
-	PBYTE pbTemp=&pbData[dwTemp];//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
+	PBYTE pbTemp = &pbData[dwTemp];//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
 	DLC_READ_DETAIL(&fileBuf, pbData, uiCurrentByte);
 
 	for(unsigned int i=0;i<uiFileCount;i++)
@@ -517,7 +516,8 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 		}
 
 		// Params
-		unsigned int uiParamCount = DLC_READ_DWORD(pbTemp, 0);
+		unsigned int uiParamCount;
+		DLC_READ_UINT(&uiParamCount, pbTemp, 0);
 		pbTemp+=sizeof(int);
 
 		DLC_READ_PARAM(&parBuf, pbTemp, 0);

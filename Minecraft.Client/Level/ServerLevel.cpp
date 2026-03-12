@@ -632,6 +632,7 @@ std::vector<TickNextTickData> *ServerLevel::fetchTicksInChunk(LevelChunk *chunk,
     std::vector<TickNextTickData> *results = new std::vector<TickNextTickData>;
 
     ChunkPos *pos = chunk->getPos();
+    // 4jcraft added cast to unsigned
     int west = (unsigned) pos->x << 4;
     int east = west + 16;
     int north =(unsigned)  pos->z << 4;

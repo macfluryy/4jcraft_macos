@@ -21,7 +21,7 @@ void Mth::init()
     _sin = new float[SIN_TAB_CNT];
     for (int i = 0; i < SIN_TAB_CNT; i++)
 	{
-        _sin[i] = (float) ::sin(i * PI * 2 / 65536.0f);
+        _sin[i] = (float) ::sin(i * PI * 2 / (float) SIN_TAB_CNT);
     }
 }
 
@@ -44,7 +44,7 @@ float Mth::cos(float i)
 	// which is aquivalent to shift by pi / 2
 	// and again the same modulo logic to cramp and map it onto the computed table
 	
-	return _sin[(int32_t) fmodf(i * sinScale + ((float) SIN_TAB_CNT / 4), (float)SIN_TAB_CNT) & (SIN_TAB_CNT - 1)];
+	return _sin[(int32_t) fmodf(i * sinScale + ((float) SIN_TAB_CNT / 4), (float) SIN_TAB_CNT) & (SIN_TAB_CNT - 1)];
 }
 
 

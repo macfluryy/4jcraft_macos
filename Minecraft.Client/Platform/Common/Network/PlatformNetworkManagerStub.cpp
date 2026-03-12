@@ -119,6 +119,7 @@ bool CPlatformNetworkManagerStub::Initialise(CGameNetworkManager *pGameNetworkMa
 	m_pGameNetworkManager = pGameNetworkManager;
 	m_flagIndexSize = flagIndexSize;
 	g_pPlatformNetworkManager = this;
+	// 4jcraft added this, as it was never called
 	m_pIQNet = new IQNet();
 	for( int i = 0; i < XUSER_MAX_COUNT; i++ )
 	{

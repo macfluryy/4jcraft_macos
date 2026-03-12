@@ -244,6 +244,7 @@ void LevelGenerationOptions::processSchematics(LevelChunk *chunk)
 		rule->processSchematic(chunkBox, chunk);
 	}
 
+	// 4jcraft added cast to unsigned
 	int cx = ((unsigned)chunk->x << 4);
 	int cz = ((unsigned)chunk->z << 4);
 
