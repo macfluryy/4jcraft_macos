@@ -31,13 +31,15 @@ void UIControl_Progress::init(const std::wstring &label, int id, int min, int ma
 	m_max = max;
 	m_current = current;
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].string16 = stringVal;
 
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath() , m_initFunc , 1 , value );

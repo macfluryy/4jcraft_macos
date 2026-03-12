@@ -59,9 +59,11 @@ void UIControl_SaveList::addItem(const std::string &label, const std::wstring &i
 	value[1].type = IGGY_DATATYPE_number;
 	value[1].number = m_itemCount;
 
+	const std::u16string convName = convWstringToU16string(iconName);
+
 	IggyStringUTF16 stringVal2;
-	stringVal2.string = (IggyUTF16*)iconName.c_str();
-	stringVal2.length = iconName.length();
+	stringVal2.string = (IggyUTF16*)convName.c_str();
+	stringVal2.length = convName.length();
 	value[2].type = IGGY_DATATYPE_string_UTF16;
 	value[2].string16 = stringVal2;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_addNewItemFunc , 3 , value );
@@ -72,18 +74,22 @@ void UIControl_SaveList::addItem(const std::wstring &label, const std::wstring &
 	IggyDataValue result;
 	IggyDataValue value[3];
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = (S32)label.length();
+	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.length = (S32)convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 
 	value[1].type = IGGY_DATATYPE_number;
 	value[1].number = m_itemCount;
 
+	const std::u16string convName = convWstringToU16string(iconName);
+
 	IggyStringUTF16 stringVal2;
-	stringVal2.string = (IggyUTF16*)iconName.c_str();
-	stringVal2.length = iconName.length();
+	stringVal2.string = (IggyUTF16*)convName.c_str();
+	stringVal2.length = convName.length();
 	value[2].type = IGGY_DATATYPE_string_UTF16;
 	value[2].string16 = stringVal2;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_addNewItemFunc , 3 , value );
@@ -97,9 +103,11 @@ void UIControl_SaveList::setTextureName(int iId, const std::wstring &iconName)
 	value[0].type = IGGY_DATATYPE_number;
 	value[0].number = iId;
 
+	const std::u16string convName = convWstringToU16string(iconName);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)iconName.c_str();
-	stringVal.length = iconName.length();
+	stringVal.string = (IggyUTF16*)convName.c_str();
+	stringVal.length = convName.length();
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	value[1].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath(), m_funcSetTextureName , 2 , value );

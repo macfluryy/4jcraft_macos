@@ -255,12 +255,14 @@ void UIScene_TradingMenu::setTradeRedBox(int index, bool show)
 
 void UIScene_TradingMenu::setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings)
 {
+	const std::u16string convName = convWstringToU16string(name);
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)name.c_str();
-	stringVal.length = name.length();
+	stringVal.string = (IggyUTF16*)convName.c_str();
+	stringVal.length = convName.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

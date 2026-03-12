@@ -21,13 +21,15 @@ void UIControl_Label::init(const std::wstring &label)
 {
 	m_label = label;
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = (IggyUTF16*)convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath() , m_initFunc , 1 , value );
 }
@@ -35,6 +37,7 @@ void UIControl_Label::init(const std::wstring &label)
 void UIControl_Label::init(const std::string &label)
 {
 	m_label = convStringToWstring(label);
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 	value[0].type = IGGY_DATATYPE_string_UTF8;

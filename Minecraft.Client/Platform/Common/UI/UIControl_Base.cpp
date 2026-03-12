@@ -32,13 +32,15 @@ void UIControl_Base::tick()
 		//app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
 		m_bLabelChanged = false;
 
+		const std::u16string convLabel = convWstringToU16string(m_label);
+
 		IggyDataValue result;
 		IggyDataValue value[1];
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		IggyStringUTF16 stringVal;
 
-		stringVal.string = (IggyUTF16*)m_label.c_str();
-		stringVal.length = m_label.length();
+		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.length = convLabel.length();
 		value[0].string16 = stringVal;
 
 		IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath() , m_setLabelFunc , 1 , value );
@@ -54,13 +56,15 @@ void UIControl_Base::setLabel(const std::wstring &label, bool instant, bool forc
 	{
 		m_bLabelChanged = false;
 
+		const std::u16string convLabel = convWstringToU16string(m_label);
+
 		IggyDataValue result;
 		IggyDataValue value[1];
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		IggyStringUTF16 stringVal;
 
-		stringVal.string = (IggyUTF16*)m_label.c_str();
-		stringVal.length = m_label.length();
+		stringVal.string = (IggyUTF16*)convLabel.c_str();
+		stringVal.length = convLabel.length();
 		value[0].string16 = stringVal;
 
 		IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie() , &result, getIggyValuePath() , m_setLabelFunc , 1 , value );
@@ -92,10 +96,13 @@ void UIControl_Base::setAllPossibleLabels(int labelCount, wchar_t labels[][256])
 	IggyDataValue *value = new IggyDataValue[labelCount];
 	IggyStringUTF16 * stringVal = new IggyStringUTF16[labelCount];
 
-	for(unsigned int i = 0; i < labelCount; ++i)
-	{
-		stringVal[i].string = (IggyUTF16 *)labels[i];
-		stringVal[i].length = wcslen(labels[i]);
+	std::vector<std::u16string> conv;
+	conv.reserve(labelCount);
+
+	for (int i = 0; i < labelCount; ++i) {
+		conv.push_back(convWstringToU16string(labels[i]));
+		stringVal[i].string = (IggyUTF16*)conv[i].c_str();
+		stringVal[i].length = (S32)conv[i].length();
 		value[i].type = IGGY_DATATYPE_string_UTF16;
 		value[i].string16 = stringVal[i];
 	}

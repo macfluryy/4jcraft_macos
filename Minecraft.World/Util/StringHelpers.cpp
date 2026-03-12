@@ -46,6 +46,38 @@ std::wstring convStringToWstring(const std::string& converting)
 	return converted;
 }
 
+std::u16string convWstringToU16string(const std::wstring& converting) {
+    std::u16string out;
+    out.reserve(converting.size());
+
+    if constexpr (sizeof(wchar_t) == sizeof(char16_t)) {
+        // wchar_t is UTF-16: direct copy
+        out.assign(converting.begin(), converting.end());
+    } else {
+        // wchar_t is UTF-32: encode to UTF-16
+        for (wchar_t wc : converting) {
+            uint32_t cp = static_cast<uint32_t>(wc);
+
+            if (cp <= 0xFFFF) {
+                // Avoid producing UTF-16 surrogate code points directly
+                if (cp >= 0xD800 && cp <= 0xDFFF) {
+                    out.push_back(u'\uFFFD'); // replacement char
+                } else {
+                    out.push_back(static_cast<char16_t>(cp));
+                }
+            } else if (cp <= 0x10FFFF) {
+                cp -= 0x10000;
+                out.push_back(static_cast<char16_t>(0xD800 + (cp >> 10)));
+                out.push_back(static_cast<char16_t>(0xDC00 + (cp & 0x3FF)));
+            } else {
+                out.push_back(u'\uFFFD'); // invalid code point
+            }
+        }
+    }
+
+    return out;
+}
+
 // Convert for filename std::wstrings to a straight character pointer for Xbox APIs. The returned string is only valid until
 // this function is called again, and it isn't thread-safe etc. as I'm just storing the returned name in a local static
 // to save having to clear it up everywhere this is used.

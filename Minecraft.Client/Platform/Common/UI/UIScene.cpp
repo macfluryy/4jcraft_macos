@@ -507,7 +507,9 @@ IggyName UIScene::registerFastName(const std::wstring &name)
 	}
 	else
 	{
-		var = IggyPlayerCreateFastName ( getMovie() , (IggyUTF16 *)name.c_str() , -1 );
+		const std::u16string convName = convWstringToU16string(name);
+		var = IggyPlayerCreateFastName ( getMovie() , (IggyUTF16 *)convName.c_str() , -1 );
+
 		m_fastNames[name] = var;
 	}
 	return var;
