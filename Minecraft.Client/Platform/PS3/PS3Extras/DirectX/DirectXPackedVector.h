@@ -26,8 +26,8 @@ namespace PackedVector
 #pragma bitfield_order(lsb_to_msb)
 #endif
 
-#pragma warning(push)
-#pragma warning(disable:4201 4365 4324)
+
+
 
 //------------------------------------------------------------------------------
 // ARGB Color; 8-8-8-8 bit unsigned normalized integer components packed into
@@ -865,7 +865,7 @@ struct XMU555
 };
 
 
-#pragma warning(pop)
+
 
 #ifdef _XM_BIGENDIAN_
 #pragma bitfield_order(pop)
@@ -977,8 +977,8 @@ void            XMStoreU555(_Out_ XMU555* pDestination, _In_ FXMVECTOR V);
  *
  ****************************************************************************/
 
-#pragma warning(push)
-#pragma warning(disable:4068 4214 4204 4365 4616 6001)
+
+
 
 #pragma prefast(push)
 #pragma prefast(disable : 25000, "FXMVECTOR is 16 bytes")
@@ -986,7 +986,7 @@ void            XMStoreU555(_Out_ XMU555* pDestination, _In_ FXMVECTOR V);
 #include "DirectXPackedVector.inl"
 
 #pragma prefast(pop)
-#pragma warning(pop)
+
 
 }; // namespace PackedVector
 

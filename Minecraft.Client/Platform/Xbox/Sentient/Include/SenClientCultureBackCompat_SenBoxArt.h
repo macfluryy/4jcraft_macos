@@ -5,7 +5,7 @@
 
 namespace Sentient
 {
-#pragma warning(disable:4996)
+
 
 	__declspec(deprecated("This function is deprecated. See the function body for an example of using the new API.")) 
 	__inline HRESULT SenBoxArtDownloadExtraInfo(
@@ -40,5 +40,5 @@ namespace Sentient
 		return SenBoxArtXMLGetDescription(senXML, bufferLengthMax, out_bufferLength, out_buffer);
 	}
 
-#pragma warning(default:4996)
+
 }
