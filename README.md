@@ -16,9 +16,11 @@ Join our community:
 
 At the moment, we're aiming to support the following platforms:
 
-- Linux (~85%, *rough estimate*)
-- Emscripten (not started)
-- macOS (not started)
+Please note that these percentages are **estimates** and do not necessarily reflect the final playability of the game on each platform.
+
+- Linux (~85%)
+- Emscripten (~10%) [[Check the Emscripten Branch](https://github.com/4jcraft/4jcraft/tree/feat/emscripten)]
+- macOS (not started) [No official support but people has been able to run the game on MacOS]
 - iOS (not started)
 - Android (not started)
 
