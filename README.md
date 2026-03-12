@@ -20,7 +20,7 @@ Please note that these percentages are **estimates** and do not necessarily refl
 
 - Linux (~85%)
 - Emscripten (~10%) [[Check the Emscripten Branch](https://github.com/4jcraft/4jcraft/tree/feat/emscripten)]
-- macOS (not started) [No official support but people has been able to run the game on MacOS]
+- macOS (not started) [No official support but people have been able to run the game on MacOS]
 - iOS (not started)
 - Android (not started)
 
