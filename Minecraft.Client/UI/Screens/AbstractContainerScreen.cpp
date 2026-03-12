@@ -42,7 +42,6 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
 
     glPushMatrix();
     glRotatef(120, 1, 0, 0);
-    Lighting::turnOn();
     glPopMatrix();
 
     glPushMatrix();
@@ -50,6 +49,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
 
     glColor4f(1, 1, 1, 1);
     glEnable(GL_RESCALE_NORMAL);
+    Lighting::turnOnGui();
 
     Slot *hoveredSlot = NULL;
 	
@@ -85,8 +85,8 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
         itemRenderer->renderGuiItemDecorations(font, minecraft->textures, inventory->getCarried(), xm - xo - 8, ym - yo - 8);
         // carriedSlot = old;
     }
-    glDisable(GL_RESCALE_NORMAL);
     Lighting::turnOff();
+    glDisable(GL_RESCALE_NORMAL);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
