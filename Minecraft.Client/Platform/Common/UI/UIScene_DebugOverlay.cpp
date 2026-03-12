@@ -120,7 +120,7 @@ void UIScene_DebugOverlay::customDraw(IggyCustomDrawCallbackRegion *region)
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
 	int itemId = -1;
-	// 4jcraft: TODO: UB on our platform since this casts char16_t* to wchar_t*
+	// 4jcraft TODO: UB on our platform since this casts char16_t* to wchar_t*
 	swscanf((wchar_t*)region->name,L"item_%d",&itemId);
 	if (itemId == -1 || itemId > Item::ITEM_NUM_COUNT || Item::items[itemId] == NULL)
 	{

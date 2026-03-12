@@ -1248,7 +1248,7 @@ bool UIScene::isReadyToDelete()
 	return true;
 }
 
-static int UIScene::parseSlotId(const char16_t *s) {
+int UIScene::parseSlotId(const char16_t *s) {
 	// must be nonnull, must start with 'slot_', first char after the underscore must be a digit
 	if (!s ||
 		(s[0] != u's' || s[1] != u'l' || s[2] != u'o' || s[3] != u't' ||

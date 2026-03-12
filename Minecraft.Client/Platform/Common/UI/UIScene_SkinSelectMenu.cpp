@@ -714,6 +714,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 {
 	int characterId = -1;
+	// 4jcraft TODO: undefined behavior
 	swscanf((wchar_t*)region->name,L"Character%d",&characterId);
 	if (characterId == -1)
 	{
