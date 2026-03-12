@@ -5,7 +5,6 @@
 #include "../Rendering/Tesselator.h"
 #include "../Textures/Textures.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
-#include <GLFW/glfw3.h>
 
 
 
