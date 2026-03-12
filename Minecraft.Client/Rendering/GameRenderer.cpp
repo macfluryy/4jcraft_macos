@@ -1756,7 +1756,8 @@ void GameRenderer::renderSnowAndRain(float a)
                     t->color(br, br, br, ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
                     t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s, yy0 * s / 4.0f + ra * s);
                     t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s, yy0 * s / 4.0f + ra * s);
-					t->color(br, br, br, 0.0f);														// 4J - added to soften the top visible edge of the rain
+					// 4jcraft: this color call made rain invisible
+					// t->color(br, br, br, 0.0f);														// 4J - added to soften the top visible edge of the rain
                     t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s, yy1 * s / 4.0f + ra * s);
 					t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s, yy1 * s / 4.0f + ra * s);
 #endif
