@@ -1332,6 +1332,10 @@ void GameRenderer::renderLevel(float a, __int64 until)
 			setupFog(-1, a);
 			levelRenderer->renderSky(a);
 			if(mc->skins->getSelected()->getId() == 1026 ) levelRenderer->renderHaloRing(a);
+		} else {
+			// 4jcraft: needs to be enabled for proper transparent texturing on low render dists
+			// this was done in renderSky() for the far and normal dists but was missing here,
+			glEnable(GL_ALPHA_TEST);
 		}
 		glEnable(GL_FOG);
 		setupFog(1, a);
