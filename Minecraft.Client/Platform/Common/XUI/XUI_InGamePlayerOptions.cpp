@@ -357,7 +357,7 @@ void CScene_InGamePlayerOptions::OnPlayerChanged(void *callbackParam, INetworkPl
 
 	HXUIOBJ hBackScene = scene->GetBackScene();
 	CScene_InGameInfo* infoScene;
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( hBackScene, &pObj );
 	infoScene = (CScene_InGameInfo *)pObj;
 	if(infoScene != NULL) CScene_InGameInfo::OnPlayerChanged(infoScene,pPlayer,leaving);

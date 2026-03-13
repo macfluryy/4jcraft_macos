@@ -93,7 +93,7 @@ HRESULT CScene_MultiGameJoinLoad::OnInit( XUIMessageInit* pInitData, BOOL& bHand
 	
 	m_iSaveInfoC=0;
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SavesList, &pObj );
 	m_pSavesList = (CXuiCtrl4JList *)pObj;
 
@@ -2512,7 +2512,7 @@ HRESULT CScene_MultiGameJoinLoad::OnCustomMessage_DLCInstalled()
 HRESULT CScene_MultiGameJoinLoad::OnCustomMessage_DLCMountingComplete()
 {	
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SavesList, &pObj );
 	m_pSavesList = (CXuiCtrl4JList *)pObj;
 

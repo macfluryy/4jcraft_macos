@@ -163,7 +163,7 @@ HRESULT CScene_Controls::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	}
 
 	// fill out the layouts list
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SchemeList, &pObj );
 	m_pLayoutList = (CXuiCtrl4JList *)pObj;
 	CXuiCtrl4JList::LIST_ITEM_INFO ListInfo[3];

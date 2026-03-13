@@ -37,7 +37,7 @@ HRESULT CScene_DLCMain::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 		m_Timer.SetShow(FALSE);
 		m_bIgnoreInput=false;
 
-		VOID *pObj;
+		void *pObj;
 		XuiObjectFromHandle( xList, &pObj );
 		list = (CXuiCtrl4JList *) pObj;
 
@@ -222,7 +222,7 @@ HRESULT CScene_DLCOffers::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 	m_bIgnorePress=true;
 
-	VOID *pObj;
+	void *pObj;
 	m_hXuiBrush=NULL;
 
 	XuiObjectFromHandle( m_List, &pObj );

@@ -904,7 +904,7 @@ void CScene_Leaderboards::PopulateLeaderboard(bool noResults)
 
 	if(m_pHTitleIconSlots[0]==NULL)
 	{	
-		VOID *pObj;
+		void *pObj;
 		HXUIOBJ button;
 		D3DXVECTOR3 vPos;
 

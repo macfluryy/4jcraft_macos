@@ -439,7 +439,7 @@ HRESULT CScene_Credits::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 			HXUIOBJ text;
 			GetChildById( idString, &text );
 
-			VOID* pTextObj;
+			void *pTextObj;
 			XuiObjectFromHandle( text, &pTextObj );
 			m_aTextTypes[ i ].m_appTextElements[ j ] = (CXuiControl *)pTextObj;
 			m_aTextTypes[ i ].m_appTextElements[ j ]->SetShow( false );
