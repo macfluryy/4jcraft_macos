@@ -40,7 +40,7 @@ void AbstractTexturePack::loadIcon()
 {
 #ifdef _XBOX
 	// 4J Stu - Temporary only	
-	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
@@ -56,7 +56,7 @@ void AbstractTexturePack::loadComparison()
 {
 #ifdef _XBOX
 	// 4J Stu - Temporary only	
-	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
@@ -232,7 +232,7 @@ void AbstractTexturePack::loadDefaultUI()
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
 	// Load new skin
-	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	swprintf(szResourceLocator, LOCATOR_SIZE,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/skin_Minecraft.xur");
@@ -291,7 +291,7 @@ void AbstractTexturePack::loadDefaultHTMLColourTable()
 	// load from the .xzp file
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
-	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	// Try and load the HTMLColours.col based off the common XML first, before the deprecated xuiscene_colourtable	
@@ -376,7 +376,7 @@ std::wstring AbstractTexturePack::getXuiRootPath()
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
 	// Load new skin
-	static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	swprintf(szResourceLocator, LOCATOR_SIZE,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/");

@@ -38,7 +38,7 @@ PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<ServerPlayer> player)
 
 void PlayerInfoPacket::read(DataInputStream *dis)
 {
-	m_networkSmallId = static_cast<std::uint8_t>(dis->readByte());
+	m_networkSmallId = dis->readByte();
 	m_playerColourIndex = dis->readShort();
 	m_playerPrivileges = dis->readInt();
 	m_entityId = dis->readInt();

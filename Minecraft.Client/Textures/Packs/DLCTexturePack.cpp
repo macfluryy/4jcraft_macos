@@ -225,7 +225,7 @@ void DLCTexturePack::loadColourTable()
 		std::uint32_t dwSize = 0;
 		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		
 		// Try and load the HTMLColours.col based off the common XML first, before the deprecated xuiscene_colourtable	
@@ -483,7 +483,7 @@ void DLCTexturePack::loadUI()
 		std::uint32_t dwSize = 0;
 		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"memory://%08X,%04X#skin_Minecraft.xur",pbData, dwSize);
 
@@ -557,7 +557,7 @@ std::wstring DLCTexturePack::getXuiRootPath()
 		std::uint32_t dwSize = 0;
 		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"memory://%08X,%04X#",pbData, dwSize);
 		path = szResourceLocator;

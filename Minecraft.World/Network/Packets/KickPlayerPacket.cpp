@@ -23,7 +23,7 @@ void KickPlayerPacket::handle(PacketListener *listener)
 
 void KickPlayerPacket::read(DataInputStream *dis) //throws IOException 
 {
-	m_networkSmallId = static_cast<std::uint8_t>(dis->readByte());
+	m_networkSmallId = dis->readByte();
 }
 
 void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException

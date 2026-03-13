@@ -59,10 +59,9 @@ void PreLoginPacket::read(DataInputStream *dis) //throws IOException
 
 	loginKey = readUtf(dis, 32);
 
-	m_friendsOnlyBits = static_cast<std::uint8_t>(dis->readByte());
-	std::int32_t ugcPlayersVersion = dis->readInt();
-	std::memcpy(&m_ugcPlayersVersion, &ugcPlayersVersion, sizeof(m_ugcPlayersVersion));
-	m_dwPlayerCount = static_cast<std::uint8_t>(dis->readByte());
+	m_friendsOnlyBits = dis->readByte();
+	m_ugcPlayersVersion = static_cast<std::uint32_t>(dis->readInt());
+	m_dwPlayerCount = dis->readByte();
 	if( m_dwPlayerCount > 0 )
 	{
 		m_playerXuids = new PlayerUID[m_dwPlayerCount];
@@ -75,12 +74,10 @@ void PreLoginPacket::read(DataInputStream *dis) //throws IOException
 	{
 		m_szUniqueSaveName[i] = static_cast<char>(dis->readByte());
 	}
-	std::int32_t serverSettings = dis->readInt();
-	std::memcpy(&m_serverSettings, &serverSettings, sizeof(m_serverSettings));
-	m_hostIndex = static_cast<std::uint8_t>(dis->readByte());
+	m_serverSettings = static_cast<std::uint32_t>(dis->readInt());
+	m_hostIndex = dis->readByte();
 	
-	std::int32_t texturePackId = dis->readInt();
-	std::memcpy(&m_texturePackId, &texturePackId, sizeof(m_texturePackId));
+	m_texturePackId = static_cast<std::uint32_t>(dis->readInt());
 
 	// Set the name of the map so we can check it for players banned lists
 	app.SetUniqueMapName((char *)m_szUniqueSaveName);
@@ -93,9 +90,7 @@ void PreLoginPacket::write(DataOutputStream *dos) //throws IOException
 	writeUtf(loginKey, dos);
 	
 	dos->writeByte(m_friendsOnlyBits);
-	std::int32_t ugcPlayersVersion = 0;
-	std::memcpy(&ugcPlayersVersion, &m_ugcPlayersVersion, sizeof(m_ugcPlayersVersion));
-	dos->writeInt(ugcPlayersVersion);
+	dos->writeInt(static_cast<int>(m_ugcPlayersVersion));
 	dos->writeByte((std::uint8_t)m_dwPlayerCount);
 	for(std::uint32_t i = 0; i < m_dwPlayerCount; ++i)
 	{
@@ -107,13 +102,9 @@ void PreLoginPacket::write(DataOutputStream *dos) //throws IOException
 	{
 		dos->writeByte(static_cast<std::uint8_t>(m_szUniqueSaveName[i]));
 	}
-	std::int32_t serverSettings = 0;
-	std::memcpy(&serverSettings, &m_serverSettings, sizeof(m_serverSettings));
-	dos->writeInt(serverSettings);
+	dos->writeInt(static_cast<int>(m_serverSettings));
 	dos->writeByte(m_hostIndex);
-	std::int32_t texturePackId = 0;
-	std::memcpy(&texturePackId, &m_texturePackId, sizeof(texturePackId));
-	dos->writeInt(texturePackId);
+	dos->writeInt(static_cast<int>(m_texturePackId));
 }
 
 void PreLoginPacket::handle(PacketListener *listener) 

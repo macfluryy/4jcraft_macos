@@ -79,7 +79,7 @@ void FolderTexturePack::loadUI()
 	// Load new skin
 	if(hasFile(L"TexturePack.xzp"))
 	{
-		static const int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"file://%lsTexturePack.xzp#skin_Minecraft.xur",getPath().c_str());

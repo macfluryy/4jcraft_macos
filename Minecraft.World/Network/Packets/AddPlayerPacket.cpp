@@ -78,11 +78,9 @@ void AddPlayerPacket::read(DataInputStream *dis) //throws IOException
 	carriedItem = dis->readShort();
 	xuid = dis->readPlayerUID();
 	OnlineXuid = dis->readPlayerUID();
-	m_playerIndex = static_cast<std::uint8_t>(dis->readByte());
-	int skinId = dis->readInt();
-	std::memcpy(&m_skinId, &skinId, sizeof(m_skinId));
-	int capeId = dis->readInt();
-	std::memcpy(&m_capeId, &capeId, sizeof(m_capeId));
+	m_playerIndex = dis->readByte();
+	m_skinId = static_cast<std::uint32_t>(dis->readInt());
+	m_capeId = static_cast<std::uint32_t>(dis->readInt());
 	INT privileges = dis->readInt();
 	m_uiGamePrivileges = *(unsigned int *)&privileges;
 	MemSect(1);
@@ -104,12 +102,8 @@ void AddPlayerPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writePlayerUID(xuid);
 	dos->writePlayerUID(OnlineXuid);
 	dos->writeByte(static_cast<std::uint8_t>(m_playerIndex)); // 4J Added
-	int skinId = 0;
-	std::memcpy(&skinId, &m_skinId, sizeof(m_skinId));
-	dos->writeInt(skinId);
-	int capeId = 0;
-	std::memcpy(&capeId, &m_capeId, sizeof(m_capeId));
-	dos->writeInt(capeId);
+	dos->writeInt(static_cast<int>(m_skinId));
+	dos->writeInt(static_cast<int>(m_capeId));
 	dos->writeInt(m_uiGamePrivileges);
 	entityData->packAll(dos);
 

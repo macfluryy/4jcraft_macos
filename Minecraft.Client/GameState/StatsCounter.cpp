@@ -10,6 +10,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
 #include "../Platform/Common/Leaderboards/LeaderboardManager.h"
+#include <cstring>
 
 Stat** StatsCounter::LARGE_STATS[] = {
 	&Stats::walkOneM,
@@ -144,7 +145,7 @@ void StatsCounter::parse(void* data)
 	//Pointer to current position in stat array
 	std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(data);
 	pbData += sizeof(GAME_SETTINGS);
-	unsigned short* statData = reinterpret_cast<unsigned short*>(pbData);//data + (STAT_DATA_OFFSET/sizeof(unsigned short));
+	std::uint8_t* statData = pbData;
 
 	//Value being read
 	StatContainer newVal;
@@ -157,19 +158,22 @@ void StatsCounter::parse(void* data)
 		{
 			if( !isLargeStat(*iter) )
 			{
-				if( statData[0] != 0 || statData[1] != 0 || statData[2] != 0 || statData[3] != 0 )
+				std::uint16_t difficultyStats[eDifficulty_Max] = {};
+				std::memcpy(difficultyStats, statData, sizeof(difficultyStats));
+				if( difficultyStats[0] != 0 || difficultyStats[1] != 0 || difficultyStats[2] != 0 || difficultyStats[3] != 0 )
 				{
-					newVal.stats[0] = statData[0];
-					newVal.stats[1] = statData[1];
-					newVal.stats[2] = statData[2];
-					newVal.stats[3] = statData[3];
+					newVal.stats[0] = difficultyStats[0];
+					newVal.stats[1] = difficultyStats[1];
+					newVal.stats[2] = difficultyStats[2];
+					newVal.stats[3] = difficultyStats[3];
 					stats.insert( std::make_pair(*iter, newVal) );
 				}
-				statData += 4;
+				statData += sizeof(difficultyStats);
 			}
 			else
 			{
-				unsigned int* largeStatData = (unsigned int*)statData;
+				std::uint32_t largeStatData[eDifficulty_Max] = {};
+				std::memcpy(largeStatData, statData, sizeof(largeStatData));
 				if( largeStatData[0] != 0 || largeStatData[1] != 0 || largeStatData[2] != 0 || largeStatData[3] != 0 )
 				{
 					newVal.stats[0] = largeStatData[0];
@@ -178,21 +182,22 @@ void StatsCounter::parse(void* data)
 					newVal.stats[3] = largeStatData[3];
 					stats.insert( std::make_pair(*iter, newVal) );
 				}
-				largeStatData += 4;
-				statData = (unsigned short*)largeStatData;
+				statData += sizeof(largeStatData);
 			}
 		}
 		else
 		{
-			if( statData[0] != 0 )
+			std::uint16_t achievementValue = 0;
+			std::memcpy(&achievementValue, statData, sizeof(achievementValue));
+			if( achievementValue != 0 )
 			{
-				newVal.stats[0] = statData[0];
+				newVal.stats[0] = achievementValue;
 				newVal.stats[1] = 0;
 				newVal.stats[2] = 0;
 				newVal.stats[3] = 0;
 				stats.insert( std::make_pair(*iter, newVal) );
 			}
-			++statData;
+			statData += sizeof(achievementValue);
 		}
 	}
 
@@ -222,8 +227,7 @@ void StatsCounter::save(int player, bool force)
 	pbData += sizeof(GAME_SETTINGS);
 	
 	//Pointer to current position in stat array
-	//unsigned short* statData = (unsigned short*)data + (STAT_DATA_OFFSET/sizeof(unsigned short));
-	unsigned short* statData = reinterpret_cast<unsigned short*>(pbData);
+	std::uint8_t* statData = pbData;
 
 	//Reset all the data to 0 (we're going to replace it with the map data)
 	memset(statData, 0, CConsoleMinecraftApp::GAME_DEFINED_PROFILE_DATA_BYTES-sizeof(GAME_SETTINGS));
@@ -239,18 +243,20 @@ void StatsCounter::save(int player, bool force)
 		{
 			if( !isLargeStat(*iter) )
 			{
+				std::uint16_t difficultyStats[eDifficulty_Max] = {};
 				if( val != stats.end() )
 				{
-					statData[0] = val->second.stats[0];
-					statData[1] = val->second.stats[1];
-					statData[2] = val->second.stats[2];
-					statData[3] = val->second.stats[3];
+					difficultyStats[0] = static_cast<std::uint16_t>(val->second.stats[0]);
+					difficultyStats[1] = static_cast<std::uint16_t>(val->second.stats[1]);
+					difficultyStats[2] = static_cast<std::uint16_t>(val->second.stats[2]);
+					difficultyStats[3] = static_cast<std::uint16_t>(val->second.stats[3]);
 				}
-				statData += 4;
+				std::memcpy(statData, difficultyStats, sizeof(difficultyStats));
+				statData += sizeof(difficultyStats);
 			}
 			else
 			{
-				unsigned int* largeStatData = (unsigned int*)statData;
+				std::uint32_t largeStatData[eDifficulty_Max] = {};
 				if( val != stats.end() )
 				{
 					largeStatData[0] = val->second.stats[0];
@@ -258,17 +264,19 @@ void StatsCounter::save(int player, bool force)
 					largeStatData[2] = val->second.stats[2];
 					largeStatData[3] = val->second.stats[3];
 				}
-				largeStatData += 4;
-				statData = (unsigned short*)largeStatData;
+				std::memcpy(statData, largeStatData, sizeof(largeStatData));
+				statData += sizeof(largeStatData);
 			}
 		}
 		else
 		{
+			std::uint16_t achievementValue = 0;
 			if( val != stats.end() )
 			{
-				statData[0] = val->second.stats[0];
+				achievementValue = static_cast<std::uint16_t>(val->second.stats[0]);
 			}
-			++statData;
+			std::memcpy(statData, &achievementValue, sizeof(achievementValue));
+			statData += sizeof(achievementValue);
 		}
 	}
 
