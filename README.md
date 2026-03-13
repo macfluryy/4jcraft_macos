@@ -1,5 +1,5 @@
 # <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50"> 4JCraft
-
+[![Build (Linux, x86_64)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml) [![Documentation](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml)
 
 
 > Ported version of Minecraft Legacy Console edition to other systems
