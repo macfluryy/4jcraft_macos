@@ -173,7 +173,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 		else
 		{
 			// get them to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			StorageManager.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_Main::MustSignInReturned,this, app.GetStringTable());
@@ -192,7 +192,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 			// get them to sign in
 			//ProfileManager.RequestSignInUI(false, false, true,false,true, &CScene_Main::Leaderboards_SignInReturned, this);
 			// get them to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			StorageManager.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_Main::MustSignInReturned,this, app.GetStringTable());
@@ -210,7 +210,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 			// get them to sign in
 			//ProfileManager.RequestSignInUI(false, false, true,false,true,&CScene_Main::Achievements_SignInReturned,this );
 			// get them to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			StorageManager.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_Main::MustSignInReturned,this, app.GetStringTable());
@@ -232,7 +232,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 			// get them to sign in
 			//ProfileManager.RequestSignInUI(false, false, true,false,true,&CScene_Main::HelpAndOptions_SignInReturned,this );
 			// get them to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			StorageManager.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_Main::MustSignInReturned,this, app.GetStringTable());
@@ -254,7 +254,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 			else
 			{		
 				// get them to sign in
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 				StorageManager.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_Main::MustSignInReturned,this, app.GetStringTable());
@@ -264,7 +264,7 @@ HRESULT CScene_Main::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNotif
 	case BUTTON_EXITGAME:
 		if( ProfileManager.IsFullVersion() )
 		{				
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CANCEL;
 			uiIDA[1]=IDS_OK;
 			StorageManager.RequestMessageBox(IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2, XUSER_INDEX_ANY,&CScene_Main::ExitGameReturned,this);
@@ -559,7 +559,7 @@ int CScene_Main::CreateLoad_SignInReturned(void *pParam,bool bContinue, int iPad
 
 	if(bContinue==true)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 
 		if(ProfileManager.IsGuest(ProfileManager.GetPrimaryPad()))
@@ -727,7 +727,7 @@ int CScene_Main::Leaderboards_SignInReturned(void *pParam,bool bContinue,int iPa
 
 	if(bContinue==true)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 		// guests can't look at leaderboards
 		if(ProfileManager.IsGuest(ProfileManager.GetPrimaryPad()))
@@ -945,7 +945,7 @@ void CScene_Main::RunPlayGame(int iPad)
 
 	if(ProfileManager.IsGuest(iPad))
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 
 		StorageManager.RequestMessageBox(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
@@ -1061,7 +1061,7 @@ HRESULT CScene_Main::OnTMSBanFileRetrieved()
 
 void CScene_Main::RunLeaderboards(int iPad)
 {
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
 	// guests can't look at leaderboards
@@ -1084,7 +1084,7 @@ void CScene_Main::RunLeaderboards(int iPad)
 }
 void CScene_Main::RunAchievements(int iPad)
 {
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
 	// guests can't look at achievements
@@ -1101,7 +1101,7 @@ void CScene_Main::RunHelpAndOptions(int iPad)
 {
 	if(ProfileManager.IsGuest(iPad))
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 		StorageManager.RequestMessageBox(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
 	}
@@ -1155,7 +1155,7 @@ HRESULT CScene_Main::OnTMSDLCFileRetrieved( )
 
 void CScene_Main::RunUnlockOrDLC(int iPad)
 {
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
 	// Check if this means downloadable content

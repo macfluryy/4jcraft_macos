@@ -549,7 +549,7 @@ void UIScene_LoadMenu::tick()
 			else
 			{
 				// continue offline?
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_PRO_NOTONLINE_DECLINE;
 
 				// Give the player a warning about the texture pack missing
@@ -606,7 +606,7 @@ void UIScene_LoadMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 #if defined _XBOX_ONE
 		if ( pressed && controlHasFocus(m_checkboxOnline.getId()) && !m_checkboxOnline.IsEnabled() )
 		{
-			UINT uiIDA[1] = { IDS_CONFIRM_OK };
+			unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 		}
 #endif
@@ -730,7 +730,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 			TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 
 			uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 			//uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -773,7 +773,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 			// We need to allow people to use a trial texture pack if they are offline - we only need them online if they want to buy it.
 
 			/*
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 
 			if(!ProfileManager.IsSignedInLive(m_iPad))
@@ -805,12 +805,12 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 
 #if defined(_WINDOWS64) || defined(_DURANGO)
 				// trial pack warning
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_USING_TRIAL_TEXUREPACK_WARNING, uiIDA, 1, m_iPad,&TrialTexturePackWarningReturned,this,app.GetStringTable(),NULL,0,false);
 #elif defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
 				// trial pack warning
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 				ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_USING_TRIAL_TEXUREPACK_WARNING, uiIDA, 2, m_iPad,&TrialTexturePackWarningReturned,this,app.GetStringTable(),NULL,0,false);
@@ -838,7 +838,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
 	if(m_MoreOptionsParams.bResetNether)
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
 		uiIDA[1]=IDS_RESET_NETHER;
 
@@ -998,7 +998,7 @@ void UIScene_LoadMenu::LaunchGame(void)
 
 	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		uiIDA[1]=IDS_CONFIRM_CANCEL;
 		if(m_bGameModeSurvival != true || m_bHasBeenInCreative)
@@ -1038,7 +1038,7 @@ void UIScene_LoadMenu::LaunchGame(void)
 							// disable saving 
 							StorageManager.SetSaveDisabled(true);
 							StorageManager.SetSaveDeviceSelected(m_iPad,false);
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_OK;
 							ui.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
 
@@ -1079,7 +1079,7 @@ void UIScene_LoadMenu::LaunchGame(void)
 				// disable saving 
 				StorageManager.SetSaveDisabled(true);
 				StorageManager.SetSaveDeviceSelected(m_iPad,false);
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
 			}
@@ -1138,7 +1138,7 @@ int UIScene_LoadMenu::ConfirmLoadReturned(void *pParam,int iPad,C4JStorage::EMes
 				// disable saving 
 				StorageManager.SetSaveDisabled(true);
 				StorageManager.SetSaveDeviceSelected(m_iPad,false);
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
 			}
@@ -1189,14 +1189,14 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 			{
 				pClass->m_bIgnoreInput = false;
 				// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 			}
 			else
 			{
 				pClass->m_bIgnoreInput=true;
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				uiIDA[1] = IDS_CANCEL;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, iPadNotSignedInLive, &UIScene_LoadMenu::MustSignInReturnedPSN, pClass, app.GetStringTable(), NULL, 0, false);
@@ -1204,7 +1204,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 		return 0;
 #else
 			pClass->m_bIgnoreInput=false;
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 			return 0;
@@ -1277,7 +1277,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				iResult=sceNpCommerceDialogOpen(&param);
 
-// 				UINT uiIDA[2];
+// 				unsigned int uiIDA[2];
 // 				uiIDA[0]=IDS_PLAY_OFFLINE;
 // 				uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 // 				ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_LoadMenu::PSPlusReturned,pClass, app.GetStringTable(),NULL,0,false);
@@ -1337,7 +1337,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				iResult=sceNpCommerceDialogOpen(&param);
 
-// 				UINT uiIDA[2];
+// 				unsigned int uiIDA[2];
 // 				uiIDA[0]=IDS_PLAY_OFFLINE;
 // 				uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 // 				ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_LoadMenu::PSPlusReturned,pClass, app.GetStringTable(),NULL,0,false);
@@ -1355,7 +1355,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 		pClass->m_bIgnoreInput=false;
 
 		// give the option to delete the save
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_CORRUPT_OR_DAMAGED_SAVE_TITLE, IDS_CORRUPT_OR_DAMAGED_SAVE_TEXT, uiIDA, 2, pClass->m_iPad,&UIScene_LoadMenu::DeleteSaveDialogReturned,pClass, app.GetStringTable(),NULL,0,false);
@@ -1381,7 +1381,7 @@ int UIScene_LoadMenu::LoadSaveDataReturned(void *pParam,bool bIsCorrupt, bool bI
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__)
 		// show the message that trophies are disabled
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_SAVEDATA_COPIED_TITLE, IDS_SAVEDATA_COPIED_TEXT, uiIDA, 1, 
 			pClass->m_iPad,&UIScene_LoadMenu::TrophyDialogReturned,pClass, app.GetStringTable());
@@ -1505,7 +1505,7 @@ void UIScene_LoadMenu::checkStateAndStartGame()
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
 	if(m_MoreOptionsParams.bResetNether)
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
 		uiIDA[1]=IDS_RESET_NETHER;
 
@@ -1542,7 +1542,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 		if(isClientSide && noUGC )
 		{
 			m_bIgnoreInput=false;
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 			return;
@@ -1669,14 +1669,14 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				{
 					pClass->m_bIgnoreInput = false;
 					// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 				}
 				else
 				{
 					pClass->m_bIgnoreInput=true;
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 					uiIDA[1] = IDS_CANCEL;
 					ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, iPadNotSignedInLive, &UIScene_LoadMenu::MustSignInReturnedPSN, pClass, app.GetStringTable(), NULL, 0, false);
@@ -1684,7 +1684,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				return 0;
 #else
 				pClass->m_bIgnoreInput=false;
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				return 0;
@@ -1705,7 +1705,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->setVisible( true );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				}
@@ -1713,7 +1713,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->setVisible( true );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_HOST_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				}

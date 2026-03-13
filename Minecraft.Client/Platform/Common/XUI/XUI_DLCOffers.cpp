@@ -102,7 +102,7 @@ HRESULT CScene_DLCMain::OnTimer(XUIMessageTimer *pData,BOOL& rfHandled)
 	{	
 		if(ProfileManager.GetLiveConnectionStatus()!=XONLINE_S_LOGON_CONNECTION_ESTABLISHED)
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 
 			StorageManager.ClearDLCOffers();
@@ -777,7 +777,7 @@ HRESULT CScene_DLCOffers::OnTimer(XUIMessageTimer *pData,BOOL& rfHandled)
 
 	if(ProfileManager.GetLiveConnectionStatus()!=XONLINE_S_LOGON_CONNECTION_ESTABLISHED)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		m_pOffersList->RemoveAllData();

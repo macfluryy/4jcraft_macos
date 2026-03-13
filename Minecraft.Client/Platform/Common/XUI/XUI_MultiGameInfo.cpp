@@ -296,7 +296,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 	{
 		pClass->SetShow( TRUE );
 		pClass->m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
@@ -309,7 +309,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 	{
 		pClass->SetShow( TRUE );
 		pClass->m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		StorageManager.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 	}
@@ -336,7 +336,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 			}
 			else
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_CONNECTION_FAILED, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				exitReasonStringId = -1;

@@ -302,7 +302,7 @@ HRESULT CScene_InGamePlayerOptions::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINoti
 	{
 		BYTE *smallId = new BYTE();
 		*smallId = m_networkSmallId;
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		uiIDA[1]=IDS_CONFIRM_CANCEL;
 

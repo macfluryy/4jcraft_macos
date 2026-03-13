@@ -244,7 +244,7 @@ HRESULT CScene_SkinSelect::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandle
 					if(!m_currentPack->hasPurchasedFile( DLCManager::e_DLCType_Skin, skinFile->getPath() ))
 					{
 						// no
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_OK;
 
 						// We need to upsell the full version
@@ -278,7 +278,7 @@ HRESULT CScene_SkinSelect::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandle
 							// tell sentient about the upsell of the full version of the skin pack
 							TelemetryManager->RecordUpsellPresented(pInputData->UserIndex, eSet_UpsellID_Skin_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-							UINT uiIDA[2];
+							unsigned int uiIDA[2];
 							uiIDA[0]=IDS_CONFIRM_OK;
 							uiIDA[1]=IDS_CONFIRM_CANCEL;
 

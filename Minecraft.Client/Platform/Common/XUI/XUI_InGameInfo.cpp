@@ -211,7 +211,7 @@ HRESULT CScene_InGameInfo::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 				// Only ops will hit this, can kick anyone not local and not local to the host
 				BYTE *smallId = new BYTE();
 				*smallId = m_players[playersList.GetCurSel()];
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 

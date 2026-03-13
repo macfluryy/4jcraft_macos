@@ -782,7 +782,7 @@ void UIScene_LoadOrJoinMenu::tick()
 #ifdef _XBOX_ONE
 	if(g_NetworkManager.ShouldMessageForFullSession())
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_IN_PARTY_SESSION_FULL, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 	}
@@ -1012,7 +1012,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			int npAvailability = ProfileManager.getNPAvailability(iPad);
 			if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 
@@ -1024,7 +1024,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
             if(!ProfileManager.IsSignedInLive(iPad))
             {
                 // get them to sign in to online
-                UINT uiIDA[2];
+                unsigned int uiIDA[2];
                 uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
                 uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
                 ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(), &UIScene_LoadOrJoinMenu::MustSignInReturnedPSN, this, app.GetStringTable(),NULL,0,false);
@@ -1067,7 +1067,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
                 {
                     // delete the save game
                     // Have to ask the player if they are sure they want to delete this game
-                    UINT uiIDA[2];
+                    unsigned int uiIDA[2];
                     uiIDA[0]=IDS_CONFIRM_CANCEL;
                     uiIDA[1]=IDS_CONFIRM_OK;
                     ui.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, iPad,&UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1076,7 +1076,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
                 {
                     if(StorageManager.EnoughSpaceForAMinSaveGame())
                     {
-                        UINT uiIDA[4];
+                        unsigned int uiIDA[4];
                         uiIDA[0]=IDS_CONFIRM_CANCEL;
                         uiIDA[1]=IDS_TITLE_RENAMESAVE;
                         uiIDA[2]=IDS_TOOLTIPS_DELETESAVE;
@@ -1098,7 +1098,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
                     {
                         // delete the save game
                         // Have to ask the player if they are sure they want to delete this game
-                        UINT uiIDA[2];
+                        unsigned int uiIDA[2];
                         uiIDA[0]=IDS_CONFIRM_CANCEL;
                         uiIDA[1]=IDS_CONFIRM_OK;
                         ui.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2,iPad,&UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1299,7 +1299,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId)
                 if(pSaveInfo->thumbnailData == NULL && pSaveInfo->modifiedTime == 0)		// no thumbnail data and time of zero and zero blocks useset for corrupt files
                 {
                     // give the option to delete the save
-                    UINT uiIDA[2];
+                    unsigned int uiIDA[2];
                     uiIDA[0]=IDS_CONFIRM_CANCEL;
                     uiIDA[1]=IDS_CONFIRM_OK;
                     ui.RequestMessageBox(IDS_CORRUPT_OR_DAMAGED_SAVE_TITLE, IDS_CORRUPT_OR_DAMAGED_SAVE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1417,7 +1417,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 		{
 			// not allowed to join
 #ifndef __PSVITA__
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			// Not allowed to play online
 			ui.RequestMessageBox(IDS_ONLINE_GAME, IDS_CHAT_RESTRICTION_UGC, uiIDA, 1, m_iPad,NULL,this,app.GetStringTable(),NULL,0,false);
@@ -1440,7 +1440,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 		// If this is an online game but not all players are signed in to Live, stop!
 		else if (!isSignedInLive)
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 
 			// Check if PSN is unavailable because of age restriction
@@ -1472,7 +1472,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 
 			iResult=sceNpCommerceDialogOpen(&param);
 
-			//                     UINT uiIDA[2];
+			//                     unsigned int uiIDA[2];
 			//                     uiIDA[0]=IDS_CONFIRM_OK;
 			//                     uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 			//                     ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_LoadOrJoinMenu::PSPlusReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1515,7 +1515,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 
 				TelemetryManager->RecordUpsellPresented(m_iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 
 				uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 				//uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -2133,7 +2133,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
         {
             // delete the save game
             // Have to ask the player if they are sure they want to delete this game
-            UINT uiIDA[2];
+            unsigned int uiIDA[2];
             uiIDA[0]=IDS_CONFIRM_CANCEL;
             uiIDA[1]=IDS_CONFIRM_OK;
             ui.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, iPad,&UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned,pClass, app.GetStringTable(),NULL,0,false);
@@ -2143,7 +2143,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
 #ifdef SONY_REMOTE_STORAGE_UPLOAD
     case C4JStorage::EMessage_ResultFourthOption: // upload to cloud
         {
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -2154,7 +2154,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
 #if defined _XBOX_ONE  || defined __ORBIS__
     case C4JStorage::EMessage_ResultFourthOption: // copy save
         {
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -2218,7 +2218,7 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(void *pParam,int iPad,C4JS
 			else
 			{	
 				// 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no active network connection user is unable to convert from Trial to Full texture pack and is not messaged why.
-				UINT uiIDA[1] = { IDS_CONFIRM_OK };
+				unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 			}
 		}
@@ -2432,7 +2432,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				else
 				{
 					// no save available, inform the user about the functionality
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD, IDS_SAVE_TRANSFER_NOT_AVAILABLE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),RemoteSaveNotFoundCallback,pClass, app.GetStringTable(),NULL,0,false);
 				}
@@ -2676,7 +2676,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				// if we've arrived here, the save has been created successfully
 				pClass->m_iState=e_SavesRepopulate;
 				pClass->updateTooltips();
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				app.getRemoteStorage()->waitForStorageManagerIdle();	// wait for everything to complete before we hand control back to the player
 				ui.RequestMessageBox( IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD, IDS_SAVE_TRANSFER_DOWNLOADCOMPLETE, uiIDA,1,ProfileManager.GetPrimaryPad(),CrossSaveFinishedCallback,pClass, app.GetStringTable());			
@@ -2752,7 +2752,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 				}
 				else
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD, IDS_SAVE_TRANSFER_DOWNLOADFAILED, uiIDA,1,ProfileManager.GetPrimaryPad(),CrossSaveFinishedCallback,pClass, app.GetStringTable());			
 					pClass->m_eSaveTransferState = eSaveTransfer_Finished;
@@ -2896,7 +2896,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void *lpParameter)
             break;
 		case eSaveUpload_FileDataUploaded:
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_TOOLTIPS_SAVETRANSFER_UPLOAD, IDS_SAVE_TRANSFER_UPLOADCOMPLETE, uiIDA,1,ProfileManager.GetPrimaryPad(),CrossSaveUploadFinishedCallback,pClass, app.GetStringTable());			
 				pClass->m_eSaveUploadState = esaveUpload_Finished;
@@ -2913,7 +2913,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void *lpParameter)
 				}
 				else
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_TOOLTIPS_SAVETRANSFER_UPLOAD, IDS_SAVE_TRANSFER_UPLOADFAILED, uiIDA,1,ProfileManager.GetPrimaryPad(),CrossSaveUploadFinishedCallback,pClass, app.GetStringTable());			
 					pClass->m_eSaveUploadState = esaveUpload_Finished;
@@ -2937,7 +2937,7 @@ void UIScene_LoadOrJoinMenu::SaveUploadReturned(void *lpParam, SonyRemoteStorage
 
 	if(pClass->m_saveTransferUploadCancelled)
 	{
-		UINT uiIDA[1] = { IDS_CONFIRM_OK };
+		unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 		ui.RequestMessageBox( IDS_CANCEL_UPLOAD_TITLE, IDS_CANCEL_UPLOAD_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), CrossSaveUploadFinishedCallback, pClass, app.GetStringTable() );
 		pClass->m_eSaveUploadState=esaveUpload_Finished;
 	}
@@ -3479,7 +3479,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDataReturned(void *lpParam, bool success, C4
 		else
 		{
 #ifdef __ORBIS__
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			// you cancelled the save on exit after choosing exit and save? You go back to the Exit choices then.
 			uiIDA[0]=IDS_OK;
 

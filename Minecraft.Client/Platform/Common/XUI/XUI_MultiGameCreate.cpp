@@ -341,7 +341,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				{			
 					TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 					DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);
@@ -403,7 +403,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				if(m_pDLCPack && !m_pDLCPack->hasPurchasedFile( DLCManager::e_DLCType_Texture, L"" ))
 				{
 					// no
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 
 					if(!ProfileManager.IsSignedInLive(pNotifyPressData->UserIndex))
@@ -431,7 +431,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 						// tell sentient about the upsell of the full version of the skin pack
 						TelemetryManager->RecordUpsellPresented(pNotifyPressData->UserIndex, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_CONFIRM_OK;
 
 						// Give the player a warning about the trial version of the texture pack
@@ -444,7 +444,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 
 		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 		{			
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			if(m_bGameModeSurvival != true)
@@ -483,7 +483,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				{
 					m_bIgnoreInput = false;
 					SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -586,7 +586,7 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(void *pParam,int iPa
 
 		if(isClientSide && noUGC )
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 		}
@@ -785,7 +785,7 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(void *pParam,int iPad,C4JStora
 			{
 				pClass->m_bIgnoreInput = false;
 				pClass->SetShow( TRUE );
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			}
@@ -842,7 +842,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -850,7 +850,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_HOST_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -1186,7 +1186,7 @@ void CScene_MultiGameCreate::UpdateCurrentTexturePack()
 
 		TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-		UINT uiIDA[3];
+		unsigned int uiIDA[3];
 
 		// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 		DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);

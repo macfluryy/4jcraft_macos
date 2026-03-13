@@ -1,4 +1,4 @@
-﻿
+
 #include "../Minecraft.World/Platform/stdafx.h"
 
 #include "../Minecraft.World/Recipes/Recipy.h"
@@ -3129,7 +3129,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					pStats->clear();
 
 					// 4J-PB - the libs will display the Returned to Title screen
-// 					UINT uiIDA[1];
+// 					unsigned int uiIDA[1];
 // 					uiIDA[0]=IDS_CONFIRM_OK;
 // 
 // 					ui.RequestMessageBox(IDS_RETURNEDTOMENU_TITLE, IDS_RETURNEDTOTITLESCREEN_TEXT, uiIDA, 1, i,&CMinecraftApp::PrimaryPlayerSignedOutReturned,this,app.GetStringTable());

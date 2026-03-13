@@ -165,7 +165,7 @@ HRESULT CScene_SettingsAll::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress*
 	case BUTTON_ALL_RESETTODEFAULTS:
 		{
 			// check they really want to do this
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 
