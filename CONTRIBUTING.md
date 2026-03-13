@@ -32,7 +32,9 @@ Commit names should clearly describe what was changed in the commit. [Convention
 
 ### Keep code clean and readable.
 
-At this time, we do not have a style guide or rules for how code should be formatted. In general, code should be readable and try to match the styling and conventions of whatever is around it.
+Code formatting is defined by the repository's [`.clang-format`](./.clang-format) file. If you are touching C or C++ source, format the files you changed before opening or updating a pull request.
+
+CI checks formatting on changed C and C++ files, so local formatting mismatches will fail the relevant workflow.
 
 ### Avoid changing in-game behavior.
 
