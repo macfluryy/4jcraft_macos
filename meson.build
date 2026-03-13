@@ -1,6 +1,7 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
   default_options : [
+    'warning_level=0',
     'buildtype=debug', # for now
     'unity=on', # merge source files per target
     'unity_size=8', # TODO: mess around with this
