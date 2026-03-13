@@ -58,7 +58,7 @@ HRESULT CScene_SkinSelect::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	m_packRight.SetEnable(FALSE);
 
 
-	for(BYTE i = 0; i < sidePreviewControls; ++i)
+	for(int i = 0; i < sidePreviewControls; ++i)
 	{
 		//m_previewNextControl->SetAutoRotate(true);
 		m_previewNextControls[i]->SetFacing(CXuiCtrlMinecraftSkinPreview::e_SkinPreviewFacing_Left);
@@ -403,7 +403,7 @@ HRESULT CScene_SkinSelect::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandle
 			{
 				ui.AnimateKeyPress(pInputData->UserIndex, pInputData->dwKeyCode);
 				CXuiSceneBase::PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getPreviousPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -440,7 +440,7 @@ HRESULT CScene_SkinSelect::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandle
 			{
 				ui.AnimateKeyPress(pInputData->UserIndex, pInputData->dwKeyCode);
 				CXuiSceneBase::PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getNextPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -621,14 +621,14 @@ HRESULT CScene_SkinSelect::OnBasePositionChanged()
 void CScene_SkinSelect::handleSkinIndexChanged()
 {
 	BOOL showPrevious = FALSE, showNext = FALSE;
-	DWORD previousIndex = 0, nextIndex = 0;
+	int previousIndex = 0, nextIndex = 0;
 	std::wstring skinName = L"";
 	std::wstring skinOrigin = L"";
 	bool bSkinIsFree=false;
 	bool bLicensed=false;
 	DLCSkinFile *skinFile=NULL;
 	DLCPack *Pack=NULL;
-	BYTE sidePreviewControlsL,sidePreviewControlsR;
+	int sidePreviewControlsL,sidePreviewControlsR;
 	bool bNoSkinsToShow=false;
 
 	TEXTURE_NAME backupTexture = TN_MOB_CHAR;
@@ -778,7 +778,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 	wchar_t chars[256];
 
 	// turn off all displays
-	for(BYTE i = 0; i < sidePreviewControls; ++i)
+	for(int i = 0; i < sidePreviewControls; ++i)
 	{
 		m_previewNextControls[i]->SetShow(FALSE);
 		m_previewPreviousControls[i]->SetShow(FALSE);
@@ -816,7 +816,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 		sidePreviewControlsL=sidePreviewControlsR=sidePreviewControls;
 	}
 
-	for(BYTE i = 0; i < sidePreviewControlsR; ++i)
+	for(int i = 0; i < sidePreviewControlsR; ++i)
 	{
 		if(showNext)
 		{
@@ -888,7 +888,7 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 
 
 
-	for(BYTE i = 0; i < sidePreviewControlsL; ++i)
+	for(int i = 0; i < sidePreviewControlsL; ++i)
 	{
 		if(showPrevious)
 		{
@@ -1017,11 +1017,11 @@ void CScene_SkinSelect::handlePackIndexChanged()
 		case SKIN_SELECT_PACK_DEFAULT:
 			if( !GET_IS_DLC_SKIN_FROM_BITMASK(m_originalSkinId) )
 			{	
-				DWORD ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(m_originalSkinId);
-				DWORD defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(m_originalSkinId);
+				unsigned int ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(m_originalSkinId);
+				unsigned int defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(m_originalSkinId);
 				if( ugcSkinIndex == 0 )
 				{
-					m_skinIndex = (EDefaultSkins) defaultSkinIndex;
+					m_skinIndex = static_cast<int>(defaultSkinIndex);
 				}
 			}	
 			break;
@@ -1176,7 +1176,7 @@ TEXTURE_NAME CScene_SkinSelect::getTextureId(int skinIndex)
 	return texture;
 }
 
-int CScene_SkinSelect::getNextSkinIndex(DWORD sourceIndex)
+int CScene_SkinSelect::getNextSkinIndex(int sourceIndex)
 {
 	int nextSkin = sourceIndex;
 
@@ -1210,7 +1210,7 @@ int CScene_SkinSelect::getNextSkinIndex(DWORD sourceIndex)
 	return nextSkin;
 }
 
-int CScene_SkinSelect::getPreviousSkinIndex(DWORD sourceIndex)
+int CScene_SkinSelect::getPreviousSkinIndex(int sourceIndex)
 {
 	int previousSkin = sourceIndex;
 	switch(m_packIndex)
@@ -1249,7 +1249,7 @@ int CScene_SkinSelect::getPreviousSkinIndex(DWORD sourceIndex)
 	return previousSkin;
 }
 
-int CScene_SkinSelect::getNextPackIndex(DWORD sourceIndex)
+int CScene_SkinSelect::getNextPackIndex(int sourceIndex)
 {
 	int nextPack = sourceIndex;
 	++nextPack;
@@ -1261,7 +1261,7 @@ int CScene_SkinSelect::getNextPackIndex(DWORD sourceIndex)
 	return nextPack;
 }
 
-int CScene_SkinSelect::getPreviousPackIndex(DWORD sourceIndex)
+int CScene_SkinSelect::getPreviousPackIndex(int sourceIndex)
 {
 	int previousPack = sourceIndex;
 	if(previousPack == SKIN_SELECT_PACK_DEFAULT)
