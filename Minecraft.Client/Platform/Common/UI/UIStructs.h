@@ -238,45 +238,32 @@ typedef struct _JoinMenuInitData
 // More Options
 typedef struct _LaunchMoreOptionsMenuInitData
 {
-	bool bOnlineGame;
-	bool bInviteOnly;
-	bool bAllowFriendsOfFriends;
+	bool bOnlineGame = true;
+	bool bInviteOnly = false;
+	bool bAllowFriendsOfFriends = true;
 
-	bool bGenerateOptions;
-	bool bStructures;
-	bool bFlatWorld;
-	bool bBonusChest;
+	bool bGenerateOptions = false;
+	bool bStructures = false;
+	bool bFlatWorld = false;
+	bool bBonusChest = false;
 
-	bool bPVP;
-	bool bTrust;
-	bool bFireSpreads;
-	bool bTNT;
+	bool bPVP = true;
+	bool bTrust = false;
+	bool bFireSpreads = true;
+	bool bTNT = true;
 
-	bool bHostPrivileges;
-	bool bResetNether;
+	bool bHostPrivileges = false;
+	bool bResetNether = false;
 
-	bool bOnlineSettingChangedBySystem;
+	bool bOnlineSettingChangedBySystem = false;
 
-	int iPad;
+	int iPad = -1;
 
-	std::uint32_t dwTexturePack;
+	std::uint32_t dwTexturePack = 0;
 
-	std::wstring seed;
-	int worldSize;
-	bool bDisableSaving;
-
-	_LaunchMoreOptionsMenuInitData()
-	{
-		bOnlineGame = true;
-		bAllowFriendsOfFriends = true;
-		bPVP = true;
-		bFireSpreads = true;
-		bTNT = true;
-		iPad = -1;
-		worldSize = 3;
-		seed = L"";
-		bDisableSaving = false;
-	}
+	std::wstring seed = L"";
+	int worldSize = 3;
+	bool bDisableSaving = false;
 } 
 LaunchMoreOptionsMenuInitData;
 
