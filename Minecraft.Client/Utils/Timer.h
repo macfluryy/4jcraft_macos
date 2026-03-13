@@ -1,17 +1,17 @@
 #pragma once
 
-class Timer
-{
+class Timer {
 private:
-	static const int MAX_TICKS_PER_UPDATE = 10;
+    static const int MAX_TICKS_PER_UPDATE = 10;
 
 public:
     float ticksPerSecond;
 
 private:
     double lastTime;
+
 public:
-	int ticks;
+    int ticks;
     float a;
     float timeScale;
     float passedTime;
@@ -21,10 +21,10 @@ private:
     __int64 lastMsSysTime;
     __int64 accumMs;
 
-	double adjustTime;
+    double adjustTime;
 
 public:
-	Timer(float ticksPerSecond);
+    Timer(float ticksPerSecond);
     void advanceTime();
     void advanceTimeQuickly();
     void skipTime();

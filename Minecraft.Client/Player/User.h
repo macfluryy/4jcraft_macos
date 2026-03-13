@@ -1,14 +1,12 @@
 #pragma once
 
-
-class User
-{
+class User {
 public:
-	static std::vector<Tile *> allowedTiles;
-	static void staticCtor();
-	std::wstring name;
-	std::wstring sessionId;
-	std::wstring mpPassword;
+    static std::vector<Tile*> allowedTiles;
+    static void staticCtor();
+    std::wstring name;
+    std::wstring sessionId;
+    std::wstring mpPassword;
 
-	User(const std::wstring& name, const std::wstring& sessionId);
+    User(const std::wstring& name, const std::wstring& sessionId);
 };

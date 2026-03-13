@@ -1,9 +1,8 @@
 #pragma once
 
-class TexOffs 
-{
+class TexOffs {
 public:
-	const int x, y;
+    const int x, y;
 
-	TexOffs(int x, int y);
+    TexOffs(int x, int y);
 };

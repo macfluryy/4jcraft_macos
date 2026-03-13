@@ -4,14 +4,14 @@
 
 class Model;
 
-class EnderCrystalRenderer : public EntityRenderer
-{
+class EnderCrystalRenderer : public EntityRenderer {
 private:
-	int currentModel;
-	Model *model;
+    int currentModel;
+    Model* model;
 
 public:
-	EnderCrystalRenderer();
+    EnderCrystalRenderer();
 
-	virtual void render(std::shared_ptr<Entity> _crystal, double x, double y, double z, float rot, float a);
+    virtual void render(std::shared_ptr<Entity> _crystal, double x, double y,
+                        double z, float rot, float a);
 };

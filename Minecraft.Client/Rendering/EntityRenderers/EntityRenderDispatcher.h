@@ -4,46 +4,53 @@
 #include "../../../Minecraft.World/Util/JavaIntHash.h"
 class font;
 
-
-class EntityRenderDispatcher
-{
+class EntityRenderDispatcher {
 public:
-	static void staticCtor();	// 4J added
+    static void staticCtor();  // 4J added
 private:
-	typedef std::unordered_map<eINSTANCEOF, EntityRenderer *, eINSTANCEOFKeyHash, eINSTANCEOFKeyEq> classToRendererMap;
-	classToRendererMap renderers;
-	// 4J - was:
-//	Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers = new HashMap<Class<? extends Entity>, EntityRenderer<? extends Entity>>();
+    typedef std::unordered_map<eINSTANCEOF, EntityRenderer*, eINSTANCEOFKeyHash,
+                               eINSTANCEOFKeyEq>
+        classToRendererMap;
+    classToRendererMap renderers;
+    // 4J - was:
+    //	Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers
+    //= new HashMap<Class<? extends Entity>, EntityRenderer<? extends
+    //Entity>>();
 
 public:
-	static EntityRenderDispatcher *instance;
+    static EntityRenderDispatcher* instance;
+
 private:
-	Font *font;
+    Font* font;
 
 public:
-	static double xOff, yOff, zOff;
+    static double xOff, yOff, zOff;
 
-    Textures *textures;
-    ItemInHandRenderer *itemInHandRenderer;
-    Level *level;
+    Textures* textures;
+    ItemInHandRenderer* itemInHandRenderer;
+    Level* level;
     std::shared_ptr<Mob> cameraEntity;
     float playerRotY;
     float playerRotX;
-    Options *options;
-	bool isGuiRender;		// 4J added
+    Options* options;
+    bool isGuiRender;  // 4J added
 
     double xPlayer, yPlayer, zPlayer;
 
 private:
-	EntityRenderDispatcher();
+    EntityRenderDispatcher();
+
 public:
-	EntityRenderer *getRenderer(eINSTANCEOF e);
-    EntityRenderer *getRenderer(std::shared_ptr<Entity> e);
-    void prepare(Level *level, Textures *textures, Font *font, std::shared_ptr<Mob> player, Options *options, float a);
+    EntityRenderer* getRenderer(eINSTANCEOF e);
+    EntityRenderer* getRenderer(std::shared_ptr<Entity> e);
+    void prepare(Level* level, Textures* textures, Font* font,
+                 std::shared_ptr<Mob> player, Options* options, float a);
     void render(std::shared_ptr<Entity> entity, float a);
-    void render(std::shared_ptr<Entity> entity, double x, double y, double z, float rot, float a, bool bItemFrame = false, bool bRenderPlayerShadow = true);
-    void setLevel(Level *level);
+    void render(std::shared_ptr<Entity> entity, double x, double y, double z,
+                float rot, float a, bool bItemFrame = false,
+                bool bRenderPlayerShadow = true);
+    void setLevel(Level* level);
     double distanceToSqr(double x, double y, double z);
-    Font *getFont();
-	void registerTerrainTextures(IconRegister *iconRegister);
+    Font* getFont();
+    void registerTerrainTextures(IconRegister* iconRegister);
 };

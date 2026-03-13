@@ -2,17 +2,16 @@
 
 class IntBuffer;
 
-class OffsettedRenderList
-{
+class OffsettedRenderList {
 private:
-	int x, y, z;
+    int x, y, z;
     float xOff, yOff, zOff;
-    IntBuffer *lists;
+    IntBuffer* lists;
     bool inited;
-    bool rendered ;
+    bool rendered;
 
 public:
-	OffsettedRenderList();	 // 4J added
+    OffsettedRenderList();  // 4J added
     void init(int x, int y, int z, double xOff, double yOff, double zOff);
     bool isAt(int x, int y, int z);
     void add(int list);

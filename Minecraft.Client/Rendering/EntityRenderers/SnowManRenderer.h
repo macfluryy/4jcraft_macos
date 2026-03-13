@@ -4,14 +4,13 @@
 
 class SnowManModel;
 
-class SnowManRenderer : public MobRenderer
-{
+class SnowManRenderer : public MobRenderer {
 private:
-	SnowManModel *model;
+    SnowManModel* model;
 
 public:
-	SnowManRenderer();
+    SnowManRenderer();
 
 protected:
-	virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
+    virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
 };

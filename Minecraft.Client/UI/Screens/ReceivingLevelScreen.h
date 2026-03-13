@@ -2,23 +2,26 @@
 #include "../Screen.h"
 class ClientConnection;
 
-class ReceivingLevelScreen : public Screen
-{
+class ReceivingLevelScreen : public Screen {
 private:
-	ClientConnection *connection;
+    ClientConnection* connection;
     int tickCount;
 
 public:
-	ReceivingLevelScreen(ClientConnection *connection);
-protected:
-	using Screen::keyPressed;
+    ReceivingLevelScreen(ClientConnection* connection);
 
-	virtual void keyPressed(char eventCharacter, int eventKey);
-public:
-	virtual void init();
-    virtual void tick();
 protected:
-	virtual void buttonClicked(Button *button);
+    using Screen::keyPressed;
+
+    virtual void keyPressed(char eventCharacter, int eventKey);
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void init();
+    virtual void tick();
+
+protected:
+    virtual void buttonClicked(Button* button);
+
+public:
+    virtual void render(int xm, int ym, float a);
 };

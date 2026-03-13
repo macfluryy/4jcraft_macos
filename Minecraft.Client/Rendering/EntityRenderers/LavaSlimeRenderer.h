@@ -2,16 +2,16 @@
 
 #include "MobRenderer.h"
 
-class LavaSlimeRenderer : public MobRenderer
-{
+class LavaSlimeRenderer : public MobRenderer {
 private:
-	int modelVersion;
+    int modelVersion;
 
 public:
-	LavaSlimeRenderer();
+    LavaSlimeRenderer();
 
-	virtual void render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a);
+    virtual void render(std::shared_ptr<Entity> _mob, double x, double y,
+                        double z, float rot, float a);
 
 protected:
-	virtual void scale(std::shared_ptr<Mob> _slime, float a);
+    virtual void scale(std::shared_ptr<Mob> _slime, float a);
 };

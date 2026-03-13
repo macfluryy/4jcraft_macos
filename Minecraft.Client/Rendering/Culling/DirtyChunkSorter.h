@@ -2,13 +2,13 @@
 class Chunk;
 class Mob;
 
-class DirtyChunkSorter
-{
+class DirtyChunkSorter {
 private:
-	std::shared_ptr<Mob> cameraEntity;
-	int playerIndex; // 4J added
+    std::shared_ptr<Mob> cameraEntity;
+    int playerIndex;  // 4J added
 
 public:
-    DirtyChunkSorter(std::shared_ptr<Mob> cameraEntity, int playerIndex);	// 4J - added player index
-	bool operator()(const Chunk *a, const Chunk *b) const;
+    DirtyChunkSorter(std::shared_ptr<Mob> cameraEntity,
+                     int playerIndex);  // 4J - added player index
+    bool operator()(const Chunk* a, const Chunk* b) const;
 };

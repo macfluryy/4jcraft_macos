@@ -1,11 +1,10 @@
 #pragma once
 #include "MobRenderer.h"
 
-class GhastRenderer : public MobRenderer
-{
+class GhastRenderer : public MobRenderer {
 public:
-	GhastRenderer();
+    GhastRenderer();
 
 protected:
-	virtual void scale(std::shared_ptr<Mob> mob, float a);
+    virtual void scale(std::shared_ptr<Mob> mob, float a);
 };

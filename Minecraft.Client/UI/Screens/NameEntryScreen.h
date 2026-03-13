@@ -1,27 +1,33 @@
 #pragma once
 #include "../Screen.h"
 
-class NameEntryScreen : public Screen
-{
+class NameEntryScreen : public Screen {
 private:
-	Screen *lastScreen;
+    Screen* lastScreen;
+
 protected:
-	std::wstring title;
+    std::wstring title;
+
 private:
-	int slot;
+    int slot;
     std::wstring name;
     int frame;
+
 public:
-	NameEntryScreen(Screen *lastScreen, const std::wstring& oldName, int slot);
+    NameEntryScreen(Screen* lastScreen, const std::wstring& oldName, int slot);
     virtual void init();
     virtual void removed();
     virtual void tick();
+
 protected:
-	virtual void buttonClicked(Button button);
+    virtual void buttonClicked(Button button);
+
 private:
-	static const std::wstring allowedChars;
+    static const std::wstring allowedChars;
+
 protected:
-	virtual void keyPressed(wchar_t ch, int eventKey);
+    virtual void keyPressed(wchar_t ch, int eventKey);
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a);
 };

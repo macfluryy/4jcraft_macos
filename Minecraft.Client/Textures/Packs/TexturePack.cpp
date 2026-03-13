@@ -1,70 +1,57 @@
 #include "../../Platform/stdafx.h"
 #include "TexturePack.h"
 
-std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
-{
-	std::wstring wDrive;
+std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
+    std::wstring wDrive;
 #ifdef _XBOX
-	if(bTitleUpdateTexture)
-	{
-		// Make the content package point to to the UPDATE: drive is needed
+    if (bTitleUpdateTexture) {
+        // Make the content package point to to the UPDATE: drive is needed
 #ifdef _TU_BUILD
-		wDrive=L"UPDATE:\\";
+        wDrive = L"UPDATE:\\";
 #else
 
-		wDrive=L"GAME:\\res\\TitleUpdate\\";
+        wDrive = L"GAME:\\res\\TitleUpdate\\";
 #endif
-	}
-	else
-	{
-		wDrive=L"GAME:\\";
-	}
+    } else {
+        wDrive = L"GAME:\\";
+    }
 #else
 
 #ifdef __PS3__
 
-	// 4J-PB - we need to check for a BD patch - this is going to be an issue for full DLC texture packs (Halloween)
+    // 4J-PB - we need to check for a BD patch - this is going to be an issue
+    // for full DLC texture packs (Halloween)
 
-	char *pchUsrDir=getUsrDirPath();
-	
-	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+    char* pchUsrDir = getUsrDirPath();
 
-	if(bTitleUpdateTexture)
-	{
-		// Make the content package point to to the UPDATE: drive is needed
-		wDrive= wstr + L"\\Common\\res\\TitleUpdate\\";
-	}
-	else
-	{
-		wDrive= wstr + L"/Common/";
-	}			
+    std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
 
+    if (bTitleUpdateTexture) {
+        // Make the content package point to to the UPDATE: drive is needed
+        wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
+    } else {
+        wDrive = wstr + L"/Common/";
+    }
 
 #elif __PSVITA__
-	char *pchUsrDir="";//getUsrDirPath();
-	std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+    char* pchUsrDir = "";  // getUsrDirPath();
+    std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
 
-	if(bTitleUpdateTexture)
-	{
-		// Make the content package point to to the UPDATE: drive is needed
-		wDrive= wstr + L"Common\\res\\TitleUpdate\\";
-	}
-	else
-	{
-		wDrive= wstr + L"Common\\";
-	}
+    if (bTitleUpdateTexture) {
+        // Make the content package point to to the UPDATE: drive is needed
+        wDrive = wstr + L"Common\\res\\TitleUpdate\\";
+    } else {
+        wDrive = wstr + L"Common\\";
+    }
 #else
-	if(bTitleUpdateTexture)
-	{
-		// Make the content package point to to the UPDATE: drive is needed
-		wDrive=L"Common\\res\\TitleUpdate\\";
-	}
-	else
-	{
-		wDrive=L"Common/";
-	}
+    if (bTitleUpdateTexture) {
+        // Make the content package point to to the UPDATE: drive is needed
+        wDrive = L"Common\\res\\TitleUpdate\\";
+    } else {
+        wDrive = L"Common/";
+    }
 #endif
 #endif
 
-	return wDrive;
+    return wDrive;
 }

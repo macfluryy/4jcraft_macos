@@ -5,37 +5,38 @@
 class VillagerZombieModel;
 class Zombie;
 
-class ZombieRenderer : public HumanoidMobRenderer
-{
+class ZombieRenderer : public HumanoidMobRenderer {
 private:
-	HumanoidModel *defaultModel;
-	VillagerZombieModel *villagerModel;
+    HumanoidModel* defaultModel;
+    VillagerZombieModel* villagerModel;
 
 protected:
-	HumanoidModel *defaultArmorParts1;
-	HumanoidModel *defaultArmorParts2;
-	HumanoidModel *villagerArmorParts1;
-	HumanoidModel *villagerArmorParts2;
+    HumanoidModel* defaultArmorParts1;
+    HumanoidModel* defaultArmorParts2;
+    HumanoidModel* villagerArmorParts1;
+    HumanoidModel* villagerArmorParts2;
 
 private:
-	int modelVersion;
+    int modelVersion;
 
 public:
-	ZombieRenderer();
+    ZombieRenderer();
 
 protected:
-	void createArmorParts();
-	int prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a);
+    void createArmorParts();
+    int prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a);
 
 public:
-	void render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a);
+    void render(std::shared_ptr<Entity> _mob, double x, double y, double z,
+                float rot, float a);
 
 protected:
-	void additionalRendering(std::shared_ptr<Mob> _mob, float a);
+    void additionalRendering(std::shared_ptr<Mob> _mob, float a);
 
 private:
-	void swapArmor(std::shared_ptr<Zombie> mob);
+    void swapArmor(std::shared_ptr<Zombie> mob);
 
 protected:
-	void setupRotations(std::shared_ptr<Mob> _mob, float bob, float bodyRot, float a);
+    void setupRotations(std::shared_ptr<Mob> _mob, float bob, float bodyRot,
+                        float a);
 };

@@ -1,9 +1,4 @@
 #include "../Platform/stdafx.h"
 #include "TexOffs.h"
 
-TexOffs::TexOffs(int x, int y) :
-x(x),
-y(y)
-{
-
-}
+TexOffs::TexOffs(int x, int y) : x(x), y(y) {}
