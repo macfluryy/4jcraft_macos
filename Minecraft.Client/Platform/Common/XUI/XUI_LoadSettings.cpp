@@ -847,7 +847,7 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -872,7 +872,7 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 			}
 			else
 			{
-				DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+				unsigned int dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 				// No guest problems so we don't need to force a sign-in of players here
 				StartGameFromSave(pClass, dwLocalUsersMask);
@@ -1007,7 +1007,7 @@ int CScene_LoadGameSettings::StartGame_SignInReturned(void *pParam,bool bContinu
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noPrivileges = false;
@@ -1397,7 +1397,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 	bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 
 	// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-	DWORD connectedControllers = 0;
+	int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1423,7 +1423,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 		}
 	}
 
-	DWORD dwLocalUsersMask = 0;
+	unsigned int dwLocalUsersMask = 0;
 
 	dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 	// Load data from disc

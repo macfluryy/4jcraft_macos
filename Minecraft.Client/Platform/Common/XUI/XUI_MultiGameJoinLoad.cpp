@@ -455,7 +455,7 @@ HRESULT CScene_MultiGameJoinLoad::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotify
 	{
 		m_bIgnoreInput=true;
 
-		DWORD nIndex = m_pGamesList->GetCurSel();
+		int nIndex = m_pGamesList->GetCurSel();
 
 		if( m_pGamesList->GetItemCount() > 0 && nIndex < currentSessions.size() )
 		{
@@ -645,7 +645,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 	case VK_PAD_Y:
 		if(m_pGamesList->TreeHasFocus() && m_pGamesList->GetItemCount() > 0)
 		{
-			DWORD nIndex = m_pGamesList->GetCurSel();
+			int nIndex = m_pGamesList->GetCurSel();
 			FriendSessionInfo *pSelectedSession = currentSessions.at( nIndex );
 
 			PlayerUID xuid = pSelectedSession->data.hostPlayerUID;
@@ -659,7 +659,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 			if(ProfileManager.IsSignedInLive( m_iPad ))
 			{	
 				// 4J-PB - required for a delete of the save if it's found to be a corrupted save
-				DWORD nIndex = m_pSavesList->GetCurSel();
+				int nIndex = m_pSavesList->GetCurSel();
 				m_iChangingSaveGameInfoIndex=m_pSavesList->GetData(nIndex).iIndex;
 
 				unsigned int uiIDA[2];
@@ -1133,7 +1133,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 		return;
 	}
 
-	DWORD nIndex = -1;
+	int nIndex = -1;
 	FriendSessionInfo *pSelectedSession = NULL;
 	if(m_pGamesList->TreeHasFocus() && m_pGamesList->GetItemCount() > 0)
 	{
@@ -1216,7 +1216,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 	unsigned int xuiListSize = m_pGamesList->GetItemCount();
 	unsigned int filteredListSize = (unsigned int)currentSessions.size();
 
-	BOOL gamesListHasFocus = m_pGamesList->TreeHasFocus();
+	bool gamesListHasFocus = m_pGamesList->TreeHasFocus() != FALSE;
 
 	if(filteredListSize > 0)
 	{
@@ -1790,7 +1790,7 @@ int CScene_MultiGameJoinLoad::LoadSaveDataReturned(void *pParam,bool bContinue)
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1798,7 +1798,7 @@ int CScene_MultiGameJoinLoad::LoadSaveDataReturned(void *pParam,bool bContinue)
 
 		if(!isClientSide || connectedControllers == 1 || !RenderManager.IsHiDef())
 		{
-			DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+			unsigned int dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 			// No guest problems so we don't need to force a sign-in of players here
 			StartGameFromSave(pClass, dwLocalUsersMask);
@@ -1825,7 +1825,7 @@ int CScene_MultiGameJoinLoad::StartGame_SignInReturned(void *pParam,bool bContin
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 
 			for(unsigned int index = 0; index < XUSER_MAX_COUNT; ++index)
 			{

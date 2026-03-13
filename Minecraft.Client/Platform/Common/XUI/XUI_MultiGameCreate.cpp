@@ -459,7 +459,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 		else
 		{
 			// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-			DWORD connectedControllers = 0;
+			int connectedControllers = 0;
 			for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 			{
 				if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -565,7 +565,7 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(void *pParam,int iPa
 
 
 	// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-	DWORD connectedControllers = 0;
+	int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -628,7 +628,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINot
 	{
 		//  Enable the done button when we have all of the necessary information
 		std::wstring wWorldName = m_EditWorldName.GetText();
-		BOOL bHasWorldName = ( wWorldName.length()!=0);
+		bool bHasWorldName = ( wWorldName.length()!=0);
 		m_NewWorld.SetEnable(bHasWorldName);        
 	}
 	else if(hObjSource==m_SliderDifficulty.GetSlider() )
@@ -761,7 +761,7 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(void *pParam,int iPad,C4JStora
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -815,7 +815,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 			
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noPrivileges = false;
@@ -889,7 +889,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 	// Make our next save default to the name of the level
 	StorageManager.SetSaveTitle((wchar_t *)wWorldName.c_str());
 
-	BOOL bHasSeed = (pClass->m_EditSeed.GetText() != NULL);
+	bool bHasSeed = (pClass->m_EditSeed.GetText() != NULL);
 
 	std::wstring wSeed;
 	if(bHasSeed)
