@@ -13,12 +13,30 @@ private:
     std::wstring resultFolder;
     bool done;
 
+    bool moreOptions;
+    std::wstring gameMode;
+    bool generateStructures;
+    bool bonusChest;
+    bool cheatsEnabled;
+    bool flatWorld;
+
+    Button *gameModeButton;
+    Button *moreWorldOptionsButton;
+    Button *generateStructuresButton;
+    Button *bonusChestButton;
+    Button *worldTypeButton;
+    Button *cheatsEnabledButton;
+
+    std::wstring gameModeDescriptionLine1;
+    std::wstring gameModeDescriptionLine2;
+    std::wstring seed;
 public:
 	CreateWorldScreen(Screen *lastScreen);
     virtual void tick();
     virtual void init();
 private:
 	void updateResultFolder();
+    void updateStrings();
 public:
 	static std::wstring findAvailableFolderName(LevelStorageSource *levelSource, const std::wstring& folder);
     virtual void removed();
@@ -56,6 +74,7 @@ private:
         bool bInviteOnly;
         bool bAllowFriendsOfFriends;
         bool bOnlineSettingChangedBySystem;
+        bool bCheatsEnabled;
         int dwTexturePack;
         int iPad;
         std::wstring worldName;

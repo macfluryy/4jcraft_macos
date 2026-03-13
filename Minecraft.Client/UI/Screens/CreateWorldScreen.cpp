@@ -16,13 +16,19 @@
 CreateWorldScreen::CreateWorldScreen(Screen *lastScreen)
 {
 	done = false;	// 4J added
+    moreOptions = false;
+    gameMode = L"survival";
+    generateStructures = true;
+    bonusChest = false;
+    cheatsEnabled = false;
+    flatWorld = false;
 	this->lastScreen = lastScreen;
 }
 
 void CreateWorldScreen::tick()
 {
     nameEdit->tick();
-    seedEdit->tick();
+    if (moreOptions) seedEdit->tick();
 
 	// 4J - debug code - to be removed
 	static int count = 0;
@@ -35,16 +41,53 @@ void CreateWorldScreen::init()
 
     Keyboard::enableRepeatEvents(true);
     buttons.clear();
-    buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + 12, language->getElement(L"selectWorld.create")));
-    buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + 12, language->getElement(L"gui.cancel")));
+    buttons.push_back(new Button(0, width / 2 - 155, height - 28, 150, 20, language->getElement(L"selectWorld.create")));
+    buttons.push_back(new Button(1, width / 2 + 5, height - 28, 150, 20, language->getElement(L"gui.cancel")));
 
     nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, language->getElement(L"testWorld")); // 4J - test - should be L"selectWorld.newWorld"
     nameEdit->inFocus = true;
     nameEdit->setMaxLength(32);
 
-    seedEdit = new EditBox(this, font, width / 2 - 100, 116, 200, 20, L"");
+    seedEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, L"");
 
+    buttons.push_back(gameModeButton = new Button(2, width / 2 - 75, 100, 150, 20, language->getElement(L"selectWorld.gameMode")));
+    buttons.push_back(moreWorldOptionsButton = new Button(3, width / 2 - 75, 172, 150, 20, language->getElement(L"selectWorld.moreWorldOptions")));
+    buttons.push_back(generateStructuresButton = new Button(4, width / 2 - 155, 100, 150, 20, language->getElement(L"selectWorld.mapFeatures")));
+    generateStructuresButton->visible = false;
+    generateStructuresButton->active = false;
+    buttons.push_back(bonusChestButton = new Button(7, width / 2 + 5, 136, 150, 20, language->getElement(L"selectWorld.bonusItems")));
+    bonusChestButton->visible = false;
+    bonusChestButton->active = false;
+    buttons.push_back(worldTypeButton = new Button(5, width / 2 + 5, 100, 150, 20, language->getElement(L"selectWorld.mapType")));
+    worldTypeButton->visible = false;
+    worldTypeButton->active = false;
+    buttons.push_back(cheatsEnabledButton = new Button(6, width / 2 - 155, 136, 150, 20, language->getElement(L"selectWorld.allowCommands")));
+    cheatsEnabledButton->visible = false;
+    cheatsEnabledButton->active = false;
+
+    updateStrings();
     updateResultFolder();
+}
+
+// 4jcraft: referenced from func_73914_h in MCP 7.1 fr those wondering
+void CreateWorldScreen::updateStrings()
+{
+    Language *language = Language::getInstance();
+
+    gameModeButton->msg = language->getElement(L"selectWorld.gameMode") + L" " + language->getElement(L"selectWorld.gameMode." + gameMode);
+
+    std::wstring line1Key = L"selectWorld.gameMode." + gameMode + L".line1";
+    std::wstring line2Key = L"selectWorld.gameMode." + gameMode + L".line2";
+    gameModeDescriptionLine1 = language->getElement(line1Key);
+    gameModeDescriptionLine2 = language->getElement(line2Key);
+
+    generateStructuresButton->msg = language->getElement(L"selectWorld.mapFeatures") + L" " + (generateStructures ? language->getElement(L"options.on") : language->getElement(L"options.off"));
+
+    bonusChestButton->msg = language->getElement(L"selectWorld.bonusItems") + L" " + (bonusChest ? language->getElement(L"options.on") : language->getElement(L"options.off"));
+
+    worldTypeButton->msg = language->getElement(L"selectWorld.mapType") + L" " + (flatWorld ? language->getElement(L"selectWorld.mapType.flat") : language->getElement(L"selectWorld.mapType.normal"));
+
+    cheatsEnabledButton->msg = language->getElement(L"selectWorld.allowCommands") + L" " + (cheatsEnabled ? language->getElement(L"options.on") : language->getElement(L"options.off"));
 }
 
 void CreateWorldScreen::updateResultFolder()
@@ -104,9 +147,9 @@ void CreateWorldScreen::buttonClicked(Button *button)
         // these r just the defaults from the createworldmenu UIscene
         // i had higher ambitions for what id do with these but its not worth it for a temp ui
         moreOptionsParams->bGenerateOptions = TRUE;
-        moreOptionsParams->bStructures = TRUE;
-        moreOptionsParams->bFlatWorld = FALSE;
-        moreOptionsParams->bBonusChest = FALSE;
+        moreOptionsParams->bStructures = generateStructures;
+        moreOptionsParams->bFlatWorld = flatWorld;
+        moreOptionsParams->bBonusChest = bonusChest;
         moreOptionsParams->bPVP = TRUE;
         moreOptionsParams->bTrust = TRUE;
         moreOptionsParams->bFireSpreads = TRUE;
@@ -116,14 +159,13 @@ void CreateWorldScreen::buttonClicked(Button *button)
         moreOptionsParams->bInviteOnly = FALSE;
         moreOptionsParams->bAllowFriendsOfFriends = FALSE;
         moreOptionsParams->bOnlineSettingChangedBySystem = FALSE;
+        moreOptionsParams->bCheatsEnabled = cheatsEnabled;
         moreOptionsParams->iPad = 0;
         
         moreOptionsParams->worldName = nameEdit->getValue();
         moreOptionsParams->seed = seedEdit->getValue();
         
         moreOptionsParams->dwTexturePack = 0;
-
-        bool bGameModeSurvival = true;
         
         std::wstring worldName = nameEdit->getValue();
         if (worldName.empty())
@@ -191,7 +233,7 @@ void CreateWorldScreen::buttonClicked(Button *button)
         app.SetGameHostOption(eGameHostOption_FriendsOfFriends, moreOptionsParams->bAllowFriendsOfFriends);
         app.SetGameHostOption(eGameHostOption_Gamertags, 1);
         app.SetGameHostOption(eGameHostOption_BedrockFog, 0);
-        app.SetGameHostOption(eGameHostOption_GameType, bGameModeSurvival ? GameType::SURVIVAL->getId() : GameType::CREATIVE->getId()); // TODO: gamemode switch
+        app.SetGameHostOption(eGameHostOption_GameType, (gameMode == L"survival") ? GameType::SURVIVAL->getId() : GameType::CREATIVE->getId());
         app.SetGameHostOption(eGameHostOption_LevelType, moreOptionsParams->bFlatWorld);
         app.SetGameHostOption(eGameHostOption_Structures, moreOptionsParams->bStructures);
         app.SetGameHostOption(eGameHostOption_BonusChest, moreOptionsParams->bBonusChest);
@@ -202,6 +244,7 @@ void CreateWorldScreen::buttonClicked(Button *button)
         app.SetGameHostOption(eGameHostOption_HostCanFly, moreOptionsParams->bHostPrivileges);
         app.SetGameHostOption(eGameHostOption_HostCanChangeHunger, moreOptionsParams->bHostPrivileges);
         app.SetGameHostOption(eGameHostOption_HostCanBeInvisible, moreOptionsParams->bHostPrivileges);
+        app.SetGameHostOption(eGameHostOption_CheatsEnabled, moreOptionsParams->bHostPrivileges);
 
         param->settings = app.GetGameHostOption(eGameHostOption_All);
         param->xzSize = LEVEL_MAX_WIDTH;
@@ -232,12 +275,61 @@ void CreateWorldScreen::buttonClicked(Button *button)
         minecraft->setScreen(NULL);
 #endif
     }
-
+    else if (button->id == 2)
+    {
+        if (gameMode == L"survival") gameMode = L"creative";
+        else gameMode = L"survival";
+        updateStrings();
+    }
+    else if (button->id == 3)
+    {
+        moreOptions = !moreOptions;
+        gameModeButton->visible = !moreOptions;
+        gameModeButton->active = !moreOptions;
+        generateStructuresButton->visible = moreOptions;
+        generateStructuresButton->active = moreOptions;
+        bonusChestButton->visible = moreOptions;
+        bonusChestButton->active = moreOptions;
+        worldTypeButton->visible = moreOptions;
+        worldTypeButton->active = moreOptions;
+        cheatsEnabledButton->visible = moreOptions;
+        cheatsEnabledButton->active = moreOptions;
+        
+        Language *language = Language::getInstance();
+        if (moreOptions)
+        {
+            moreWorldOptionsButton->msg = language->getElement(L"gui.done");
+        }
+        else
+        {
+            moreWorldOptionsButton->msg = language->getElement(L"selectWorld.moreWorldOptions");
+        }
+    }
+    else if (button->id == 4)
+    {
+        generateStructures = !generateStructures;
+        updateStrings();
+    }
+    else if (button->id == 7)
+    {
+        bonusChest = !bonusChest;
+        updateStrings();
+    }
+    else if (button->id == 5)
+    {
+        flatWorld = !flatWorld;
+        updateStrings();
+    }
+    else if (button->id == 6)
+    {
+        cheatsEnabled = !cheatsEnabled;
+        updateStrings();
+    }
 }
 
 void CreateWorldScreen::keyPressed(wchar_t ch, int eventKey)
 {
-    if (nameEdit->inFocus) nameEdit->keyPressed(ch, eventKey);
+    if (nameEdit->inFocus && !moreOptions) nameEdit->keyPressed(ch, eventKey);
     else seedEdit->keyPressed(ch, eventKey);
 
     if (ch == 13)
@@ -253,8 +345,8 @@ void CreateWorldScreen::mouseClicked(int x, int y, int buttonNum)
 {
     Screen::mouseClicked(x, y, buttonNum);
 
-    nameEdit->mouseClicked(x, y, buttonNum);
-    seedEdit->mouseClicked(x, y, buttonNum);
+    if (!moreOptions) nameEdit->mouseClicked(x, y, buttonNum);
+    else seedEdit->mouseClicked(x, y, buttonNum);
 }
 
 void CreateWorldScreen::render(int xm, int ym, float a)
@@ -264,15 +356,26 @@ void CreateWorldScreen::render(int xm, int ym, float a)
 	// fill(0, 0, width, height, 0x40000000);
 	renderBackground();
 
-	drawCenteredString(font, language->getElement(L"selectWorld.create"), width / 2, height / 4 - 60 + 20, 0xffffff);
-	drawString(font, language->getElement(L"selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
-	drawString(font, language->getElement(L"selectWorld.resultFolder") + L" " + resultFolder, width / 2 - 100, 85, 0xa0a0a0);
+	drawCenteredString(font, language->getElement(L"selectWorld.create"), width / 2, 20, 0xffffff);
+    if (!moreOptions)
+    {
+        drawString(font, language->getElement(L"selectWorld.enterName"), width / 2 - 100, 47, 0xa0a0a0);
+        drawString(font, language->getElement(L"selectWorld.resultFolder") + L" " + resultFolder, width / 2 - 100, 85, 0xa0a0a0);
 
-	drawString(font, language->getElement(L"selectWorld.enterSeed"), width / 2 - 100, 104, 0xa0a0a0);
-	drawString(font, language->getElement(L"selectWorld.seedInfo"), width / 2 - 100, 140, 0xa0a0a0);
+        nameEdit->render();
 
-	nameEdit->render();
-	seedEdit->render();
+        drawString(font, gameModeDescriptionLine1, width / 2 - 100, 122, 0xa0a0a0);
+        drawString(font, gameModeDescriptionLine2, width / 2 - 100, 134, 0xa0a0a0);
+    }
+    else
+    {
+        drawString(font, language->getElement(L"selectWorld.enterSeed"), width / 2 - 100, 47, 0xa0a0a0);
+        drawString(font, language->getElement(L"selectWorld.seedInfo"), width / 2 - 100, 85, 0xa0a0a0);
+        drawString(font, language->getElement(L"selectWorld.mapFeatures.info"), width / 2 - 150, 122, 0xa0a0a0);
+        drawString(font, language->getElement(L"selectWorld.allowCommands.info"), width / 2 - 150, 157, 0xa0a0a0);
+
+        seedEdit->render();
+    }
 
 	Screen::render(xm, ym, a);
 
@@ -280,6 +383,8 @@ void CreateWorldScreen::render(int xm, int ym, float a)
 
 void CreateWorldScreen::tabPressed()
 {
+    if (!moreOptions) return;
+
     if (nameEdit->inFocus)
 	{
         nameEdit->focus(false);
