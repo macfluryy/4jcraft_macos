@@ -260,7 +260,8 @@ void Options::toggle(const Options::Option *option, int dir)
     if (option == Option::ADVANCED_OPENGL)
 	{
         advancedOpengl = !advancedOpengl;
-        minecraft->levelRenderer->allChanged();
+		// 4jcraft: ensure level exists before applying
+        if(minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option ==  Option::ANAGLYPH)
 	{
