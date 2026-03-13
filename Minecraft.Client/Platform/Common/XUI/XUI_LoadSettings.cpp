@@ -940,7 +940,7 @@ int CScene_LoadGameSettings::DeviceRemovedDialogReturned(void *pParam,int iPad,C
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
 void CScene_LoadGameSettings::StartGameFromSave(CScene_LoadGameSettings* pClass, DWORD dwLocalUsersMask)
 {
-	INT saveOrCheckpointId = 0;
+	int saveOrCheckpointId = 0;
 	bool validSave = StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
 	TelemetryManager->RecordLevelResume(pClass->m_iPad, eSen_FriendOrMatch_Playing_With_Invited_Friends, eSen_CompeteOrCoop_Coop_and_Competitive, app.GetGameSettings(pClass->m_iPad,eGameSetting_Difficulty), app.GetLocalPlayerCount(), g_NetworkManager.GetOnlinePlayerCount(), saveOrCheckpointId);
 

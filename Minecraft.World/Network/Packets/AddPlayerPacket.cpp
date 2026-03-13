@@ -81,7 +81,7 @@ void AddPlayerPacket::read(DataInputStream *dis) //throws IOException
 	m_playerIndex = dis->readByte();
 	m_skinId = static_cast<std::uint32_t>(dis->readInt());
 	m_capeId = static_cast<std::uint32_t>(dis->readInt());
-	INT privileges = dis->readInt();
+	int privileges = dis->readInt();
 	m_uiGamePrivileges = static_cast<unsigned int>(privileges);
 	MemSect(1);
 	unpack = SynchedEntityData::unpack(dis);

@@ -5709,7 +5709,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(void *pParam,int iPad,C4
 	// results switched for this dialog
 	if(result==C4JStorage::EMessage_ResultDecline) 
 	{
-		INT saveOrCheckpointId = 0;
+		int saveOrCheckpointId = 0;
 
 		// Check they have the full texture pack if they are using one
 		// 4J-PB - Is the player trying to save but they are using a trial texturepack ?

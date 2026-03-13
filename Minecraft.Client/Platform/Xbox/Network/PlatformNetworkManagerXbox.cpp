@@ -1298,10 +1298,11 @@ void CPlatformNetworkManagerXbox::SearchForGames()
 		return;
 	}
 
-	DWORD sessionIDCount = std::min( XSESSION_SEARCH_MAX_IDS, friendsSessions[m_lastSearchPad].size() );
+	unsigned int sessionIDCount = static_cast<unsigned int>(std::min<std::size_t>(XSESSION_SEARCH_MAX_IDS, friendsSessions[m_lastSearchPad].size()));
+	DWORD xboxSessionIDCount = sessionIDCount;
 	SessionID *sessionIDList = new SessionID[sessionIDCount];
 
-	for(DWORD i = 0; i < sessionIDCount; ++i)
+	for(unsigned int i = 0; i < sessionIDCount; ++i)
 	{
 		sessionIDList[i] = friendsSessions[m_lastSearchPad].at(i)->sessionId;
 	}
@@ -1313,7 +1314,7 @@ void CPlatformNetworkManagerXbox::SearchForGames()
 	// size.
 
 	dwStatus = XSessionSearchByIds(
-		sessionIDCount,
+		xboxSessionIDCount,
 		sessionIDList,
 		g_NetworkManager.GetPrimaryPad(),
 		&cbResults,         // Pass in the address of the size variable
@@ -1344,7 +1345,7 @@ void CPlatformNetworkManagerXbox::SearchForGames()
 		// this time use the modified buffer size and a pointer to a buffer that
 		// matches it.
 		dwStatus = XSessionSearchByIds(
-			sessionIDCount,
+			xboxSessionIDCount,
 			sessionIDList,
 			g_NetworkManager.GetPrimaryPad(),
 			&cbResults,       // Pass in the address of the size variable
@@ -1388,12 +1389,13 @@ int CPlatformNetworkManagerXbox::SearchForGamesThreadProc( void* lpParameter )
 {
 	SearchForGamesData *threadData = (SearchForGamesData *)lpParameter;
 
-	DWORD sessionIDCount = threadData->sessionIDCount;
+	unsigned int sessionIDCount = threadData->sessionIDCount;
+	DWORD xboxSessionIDCount = sessionIDCount;
 
 	XOVERLAPPED *pOverlapped = threadData->pOverlapped;
 
 	DWORD   dwStatus = ERROR_SUCCESS;
-    DWORD   cbResults = sessionIDCount;
+    DWORD   cbResults = xboxSessionIDCount;
 	XSESSION_SEARCHRESULT_HEADER *pSearchResults = (XSESSION_SEARCHRESULT_HEADER *)threadData->searchBuffer;
 
 	while( !XHasOverlappedIoCompleted(pOverlapped) )
@@ -1415,7 +1417,7 @@ int CPlatformNetworkManagerXbox::SearchForGamesThreadProc( void* lpParameter )
 	const XNKEY *QoSxnkey[XSESSION_SEARCH_MAX_IDS];// = new XNKEY*[sessionIDCount];
 
 
-	for(DWORD i = 0; i < pSearchResults->dwSearchResults; ++i)
+	for(unsigned int i = 0; i < pSearchResults->dwSearchResults; ++i)
 	{
 		QoSxnaddr[i] = &pSearchResults->pResults[i].info.hostAddress;
 		QoSxnkid[i] = &pSearchResults->pResults[i].info.sessionID;
