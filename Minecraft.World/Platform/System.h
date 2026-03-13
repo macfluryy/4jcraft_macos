@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "../Util/ArrayWithLength.h"
 
@@ -35,5 +36,5 @@ public:
 };
 
 #define MAKE_FOURCC(ch0, ch1, ch2, ch3)                              \
-	((DWORD)(BYTE)(ch0) | ((DWORD)(BYTE)(ch1) << 8) |       \
-	((DWORD)(BYTE)(ch2) << 16) | ((DWORD)(BYTE)(ch3) << 24 ))
+	(static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch0)) | (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch1)) << 8) |       \
+	(static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch2)) << 16) | (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch3)) << 24))
