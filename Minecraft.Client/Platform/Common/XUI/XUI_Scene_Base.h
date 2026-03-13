@@ -359,7 +359,7 @@ private:
 	HRESULT						_SetPlayerBaseScenePosition( unsigned int iPad, EBaseScenePosition position );
 	void						_UpdateSelectedItemPos( unsigned int iPad);
 	EBaseScenePosition			_GetPlayerBasePosition(int iPad);
-	HRESULT						_AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode);
+	HRESULT						_AnimateKeyPress(unsigned int userIndex, unsigned int keyCode);
 	HXUIOBJ						_GetPlayerBaseScene(int iPad) {return m_BasePlayerScene[iPad].m_hObj;}
 	HRESULT						_PlayUISFX(ESoundEffect eSound);
 	void						_SetEmptyQuadrantLogo(int iPad,EBaseScenePosition ePos);
@@ -381,7 +381,7 @@ private:
 	unsigned int				m_uiSelectedItemOpacityCountDown[XUSER_MAX_COUNT];
 
 public:
-	static DWORD				m_dwTrialTimerLimitSecs;
+	static unsigned int			m_trialTimerLimitSecs;
 
 public:
 	static CXuiSceneBase		*GetInstance() { return Instance; }
@@ -393,7 +393,7 @@ public:
 	static HRESULT				RefreshTooltips( unsigned int iPad);
 	static HRESULT				EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
 	static HRESULT				SetTooltipsEnabled( unsigned int iPad, bool bA = true, bool bB = true, bool bX = true, bool bY = true, bool bLT = true, bool bRT = true, bool bLB = true, bool bRB=true, bool bLS=true);
-	static HRESULT				AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode);
+	static HRESULT				AnimateKeyPress(unsigned int userIndex, unsigned int keyCode);
 	static HRESULT				ShowSavingMessage( unsigned int iPad, C4JStorage::ESavingMessage eVal);
 	static HRESULT				ShowBackground( unsigned int iPad, BOOL bShow );
 	static HRESULT				ShowDarkOverlay( unsigned int iPad, BOOL bShow );

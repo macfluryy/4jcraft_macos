@@ -23,7 +23,7 @@
 #define PRESS_START_TIMER 0
 
 CXuiSceneBase *CXuiSceneBase::Instance = NULL;
-DWORD CXuiSceneBase::m_dwTrialTimerLimitSecs=DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
+unsigned int CXuiSceneBase::m_trialTimerLimitSecs = DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
 //----------------------------------------------------------------------------------
 // Performs initialization tasks - retrieves controls.
 //----------------------------------------------------------------------------------
@@ -771,13 +771,13 @@ HRESULT CXuiSceneBase::_EnableTooltip( unsigned int iPad, unsigned int tooltip, 
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::_AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode)
+HRESULT CXuiSceneBase::_AnimateKeyPress(unsigned int userIndex, unsigned int keyCode)
 {
 	if(m_playerBaseScenePosition[userIndex] == e_BaseScene_NotSet)
 	{
 		userIndex = DEFAULT_XUI_MENU_USER;
 	}
-	switch(dwKeyCode)
+	switch(keyCode)
 	{
 		case VK_PAD_A:
 			m_Buttons[userIndex][BUTTON_TOOLTIP_A].Press();
@@ -976,24 +976,24 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 {
 	WCHAR wcTime[20]; 
 
-	DWORD dwTimeTicks=(DWORD)app.getTrialTimer();
+	unsigned int trialTimeTicks = static_cast<unsigned int>(app.getTrialTimer());
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(trialTimeTicks > m_trialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		trialTimeTicks = m_trialTimerLimitSecs;
 	}
 	
-	dwTimeTicks=m_dwTrialTimerLimitSecs-dwTimeTicks;
+	trialTimeTicks = m_trialTimerLimitSecs - trialTimeTicks;
 
 #ifndef _CONTENT_PACKAGE
 	if(true)
 #else
 	// display the time - only if there's less than 3 minutes
-	if(dwTimeTicks<180)
+	if(trialTimeTicks < 180)
 #endif
 	{
-		int iMins=dwTimeTicks/60;
-		int iSeconds=dwTimeTicks%60;
+		int iMins = trialTimeTicks / 60;
+		int iSeconds = trialTimeTicks % 60;
 		swprintf( wcTime, 20, L"%d:%02d",iMins,iSeconds);
 		m_TrialTimer.SetText(wcTime);
 	}
@@ -1003,7 +1003,7 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 	}
 
 	// are we out of time?
-	if(dwTimeTicks==0)
+	if(trialTimeTicks == 0)
 	{
 		// Trial over
 		app.SetAction(iPad,eAppAction_TrialOver);
@@ -1014,14 +1014,14 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 
 void CXuiSceneBase::_ReduceTrialTimerValue()
 {
-	DWORD dwTimeTicks=(int)app.getTrialTimer();
+	unsigned int trialTimeTicks = static_cast<unsigned int>(app.getTrialTimer());
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(trialTimeTicks > m_trialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		trialTimeTicks = m_trialTimerLimitSecs;
 	}
 
-	m_dwTrialTimerLimitSecs-=dwTimeTicks;
+	m_trialTimerLimitSecs -= trialTimeTicks;
 }
 
 HRESULT CXuiSceneBase::_ShowTrialTimer(BOOL bVal)
@@ -1971,9 +1971,9 @@ HRESULT CXuiSceneBase::EnableTooltip( unsigned int iPad, unsigned int tooltip, b
 	return CXuiSceneBase::Instance->_EnableTooltip(iPad, tooltip, enable);
 }
 
-HRESULT CXuiSceneBase::AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode)
+HRESULT CXuiSceneBase::AnimateKeyPress(unsigned int userIndex, unsigned int keyCode)
 {
-	return CXuiSceneBase::Instance->_AnimateKeyPress(userIndex, dwKeyCode );
+	return CXuiSceneBase::Instance->_AnimateKeyPress(userIndex, keyCode);
 }
 
 HRESULT CXuiSceneBase::ShowSavingMessage( unsigned int iPad, C4JStorage::ESavingMessage eVal )
@@ -2080,7 +2080,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 	// If the game is not started (or is being held paused for a bit) then display all scenes fullscreen
 	if( pMinecraft == NULL )
 	{
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			padPositions[idx] = e_BaseScene_Fullscreen;
 		}
@@ -2093,7 +2093,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 		padPositions[primaryPad] = e_BaseScene_Fullscreen;
 
 		// May need to turn off the player who just left
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			DisplayGamertag(idx,FALSE);
 		}
@@ -2103,7 +2103,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 	else
 	{
 
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			if(pMinecraft->localplayers[idx] != NULL)
 			{
