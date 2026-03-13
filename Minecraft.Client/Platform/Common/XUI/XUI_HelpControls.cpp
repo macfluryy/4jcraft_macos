@@ -196,10 +196,10 @@ HRESULT CScene_Controls::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	delete [] layoutString;
 
 	// Set check box initial states.
-	BOOL bInvertLook = app.GetGameSettings(m_iPad,eGameSetting_ControlInvertLook);
+	bool bInvertLook = app.GetGameSettings(m_iPad,eGameSetting_ControlInvertLook) != 0;
 	m_InvertLook.SetCheck( bInvertLook );
 
-	BOOL bSouthPaw = app.GetGameSettings(m_iPad,eGameSetting_ControlSouthPaw);
+	bool bSouthPaw = app.GetGameSettings(m_iPad,eGameSetting_ControlSouthPaw) != 0;
 	m_SouthPaw.SetCheck( bSouthPaw );
 
 	return S_OK;
@@ -531,12 +531,12 @@ HRESULT CScene_Controls::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pN
 	// Handle check box changes.
 	if ( hObjPressed == m_InvertLook.m_hObj )
 	{
-		BOOL bIsChecked = m_InvertLook.IsChecked();
+		bool bIsChecked = m_InvertLook.IsChecked() != FALSE;
 		app.SetGameSettings(m_iPad,eGameSetting_ControlInvertLook,(unsigned char)( bIsChecked ) );
 	}
 	else if ( hObjPressed == m_SouthPaw.m_hObj )
 	{
-		BOOL bIsChecked = m_SouthPaw.IsChecked();
+		bool bIsChecked = m_SouthPaw.IsChecked() != FALSE;
 		app.SetGameSettings(m_iPad,eGameSetting_ControlSouthPaw,(unsigned char)( bIsChecked ) );
 		PositionAllText(m_iPad);
 	}

@@ -51,7 +51,7 @@ HRESULT CScene_SocialPost::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	m_EditCaption.SetCaretPosition((int)wCaption.length());
 	m_EditDesc.SetCaretPosition((int)wDesc.length());
 	
-	BOOL bHasAllText = /*( wTitle.length()!=0) && */(wCaption.length()!=0) && (wDesc.length()!=0);
+	bool bHasAllText = /*( wTitle.length()!=0) && */(wCaption.length()!=0) && (wDesc.length()!=0);
 
 	m_OK.SetEnable(bHasAllText); 
 
@@ -78,7 +78,7 @@ std::wstring wDesc = m_EditDesc.GetText();
 		std::wstring wCaption = m_EditCaption.GetText();
 		std::wstring wDesc = m_EditDesc.GetText();
 
-		BOOL bHasAllText = /*( wTitle.length()!=0) &&*/ (wCaption.length()!=0) && (wDesc.length()!=0);
+		bool bHasAllText = /*( wTitle.length()!=0) &&*/ (wCaption.length()!=0) && (wDesc.length()!=0);
 		m_OK.SetEnable(bHasAllText);        
 	}
 

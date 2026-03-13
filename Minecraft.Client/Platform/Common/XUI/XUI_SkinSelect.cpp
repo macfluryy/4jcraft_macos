@@ -620,7 +620,8 @@ HRESULT CScene_SkinSelect::OnBasePositionChanged()
 
 void CScene_SkinSelect::handleSkinIndexChanged()
 {
-	BOOL showPrevious = FALSE, showNext = FALSE;
+	bool showPrevious = false;
+	bool showNext = false;
 	int previousIndex = 0, nextIndex = 0;
 	std::wstring skinName = L"";
 	std::wstring skinOrigin = L"";
@@ -767,8 +768,8 @@ void CScene_SkinSelect::handleSkinIndexChanged()
 	m_previewControl->SetTexture(m_selectedSkinPath, backupTexture);
 	m_previewControl->SetCapeTexture(m_selectedCapePath);
 	
-	showNext = TRUE;		
-	showPrevious = TRUE;
+	showNext = true;
+	showPrevious = true;
 	nextIndex = getNextSkinIndex(m_skinIndex);
 	previousIndex = getPreviousSkinIndex(m_skinIndex);
 
