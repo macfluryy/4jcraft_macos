@@ -29,21 +29,21 @@ UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void *initData, UILayer
 		currentPosition->m_elev = pMinecraft->localplayers[playerNo]->xRot;
 	}
 
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 
-	swprintf( (WCHAR *)TempString, 256, L"%f", currentPosition->m_camX);
+	swprintf(TempString, 256, L"%f", currentPosition->m_camX);
 	m_textInputX.init(TempString, eControl_CamX);
 
-	swprintf( (WCHAR *)TempString, 256, L"%f", currentPosition->m_camY);
+	swprintf(TempString, 256, L"%f", currentPosition->m_camY);
 	m_textInputY.init(TempString, eControl_CamY);
 
-	swprintf( (WCHAR *)TempString, 256, L"%f", currentPosition->m_camZ);
+	swprintf(TempString, 256, L"%f", currentPosition->m_camZ);
 	m_textInputZ.init(TempString, eControl_CamZ);
 
-	swprintf( (WCHAR *)TempString, 256, L"%f", currentPosition->m_yRot);
+	swprintf(TempString, 256, L"%f", currentPosition->m_yRot);
 	m_textInputYRot.init(TempString, eControl_YRot);
 
-	swprintf( (WCHAR *)TempString, 256, L"%f", currentPosition->m_elev);
+	swprintf(TempString, 256, L"%f", currentPosition->m_elev);
 	m_textInputElevation.init(TempString, eControl_Elevation);
 
 	m_checkboxLockPlayer.init(L"Lock Player", eControl_LockPlayer, app.GetFreezePlayers());
@@ -101,7 +101,7 @@ void UIScene_DebugSetCamera::handlePress(F64 controlId, F64 childId)
 	case eControl_YRot:
 	case eControl_Elevation:
 		m_keyboardCallbackControl = (eControls)((int)controlId);	
-		InputManager.RequestKeyboard(L"Enter something",L"",(DWORD)0,25,&UIScene_DebugSetCamera::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+		InputManager.RequestKeyboard(L"Enter something",L"",0,25,&UIScene_DebugSetCamera::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 		break;
 	};
 }
@@ -116,7 +116,7 @@ void UIScene_DebugSetCamera::handleCheckboxToggled(F64 controlId, bool selected)
 	}
 }
 
-int UIScene_DebugSetCamera::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_DebugSetCamera::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	UIScene_DebugSetCamera *pClass=(UIScene_DebugSetCamera *)lpParam;
 	uint16_t pchText[2048];//[128];

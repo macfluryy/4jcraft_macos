@@ -99,7 +99,7 @@ void UIScene_FullscreenProgress::updateTooltips()
 void UIScene_FullscreenProgress::handleDestroy()
 {
 	int code = thread->GetExitCode();
-	DWORD exitcode = *((DWORD *)&code);
+	const unsigned int exitcode = static_cast<unsigned int>(code);
 
 	// If we're active, have a cancel func, and haven't already cancelled, call cancel func
 	if( exitcode == STILL_ACTIVE && m_cancelFunc != NULL && !m_bWasCancelled)
@@ -152,10 +152,10 @@ void UIScene_FullscreenProgress::tick()
 
 
 	int code = thread->GetExitCode();
-	DWORD exitcode = *((DWORD *)&code);
+	const unsigned int exitcode = static_cast<unsigned int>(code);
 
 	static int s_FPTickCount = 0;
-	if(s_FPTickCount % 60 == 0) app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n", s_FPTickCount, exitcode, (DWORD)STILL_ACTIVE);
+	if(s_FPTickCount % 60 == 0) app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n", s_FPTickCount, exitcode, static_cast<unsigned int>(STILL_ACTIVE));
 	s_FPTickCount++;
 
 	//app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
@@ -189,7 +189,7 @@ void UIScene_FullscreenProgress::tick()
 				pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );*/
 				//app.NavigateBack(m_CompletionData->iPad);
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_FAILED), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_SERVER), uiIDA,1, XUSER_INDEX_ANY,NULL,NULL, app.GetStringTable());
 

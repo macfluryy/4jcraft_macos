@@ -1007,7 +1007,7 @@ void CScene_SkinSelect::handlePackIndexChanged()
 	if(m_currentPack != NULL)
 	{
 		bool found;
-		DWORD currentSkinIndex = m_currentPack->getSkinIndexAt(m_currentSkinPath, found);
+		unsigned int currentSkinIndex = m_currentPack->getSkinIndexAt(m_currentSkinPath, found);
 		if(found) m_skinIndex = currentSkinIndex;
 	}
 	else
@@ -1036,7 +1036,7 @@ void CScene_SkinSelect::handlePackIndexChanged()
 				DLCPack *Pack=app.m_dlcManager.getPackContainingSkin(chars);	
 				if(Pack)
 				{
-					DWORD currentSkinIndex = Pack->getSkinIndexAt(m_currentSkinPath, found);
+					unsigned int currentSkinIndex = Pack->getSkinIndexAt(m_currentSkinPath, found);
 					if(found) m_skinIndex = app.GetPlayerFavoriteSkinsPos(m_iPad);
 				}
 			}

@@ -30,7 +30,7 @@ TextureAndGeometryPacket::~TextureAndGeometryPacket()
 // 	}
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes) 
 {
 	this->textureName = textureName;
 
@@ -41,13 +41,13 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	ss >> this->dwSkinID;
 	this->dwSkinID = MAKE_SKIN_BITMASK(true, this->dwSkinID);
 	this->pbData = pbData;
-	this->dwTextureBytes = dwBytes;
+	this->dwTextureBytes = dataBytes;
 	this->dwBoxC = 0;
 	this->BoxDataA=NULL;
 	this->uiAnimOverrideBitmask=0;
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes, DLCSkinFile *pDLCSkinFile) 
 {
 	this->textureName = textureName;
 
@@ -59,7 +59,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	this->dwSkinID = MAKE_SKIN_BITMASK(true, this->dwSkinID);
 
 	this->pbData = pbData;
-	this->dwTextureBytes = dwBytes;
+	this->dwTextureBytes = dataBytes;
 	this->uiAnimOverrideBitmask = pDLCSkinFile->getAnimOverrideBitmask();
 	this->dwBoxC = pDLCSkinFile->getAdditionalBoxesCount();
 	if(this->dwBoxC!=0)
@@ -80,7 +80,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	}
 }
 
-TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes,std::vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
+TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes,std::vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask) 
 {
 	this->textureName = textureName;
 
@@ -92,7 +92,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	this->dwSkinID = MAKE_SKIN_BITMASK(true, this->dwSkinID);
 
 	this->pbData = pbData;
-	this->dwTextureBytes = dwBytes;
+	this->dwTextureBytes = dataBytes;
 	this->uiAnimOverrideBitmask = uiAnimOverrideBitmask;
 	if(pvSkinBoxes==NULL)
 	{
@@ -101,7 +101,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(const std::wstring &textureNa
 	}
 	else
 	{
-		this->dwBoxC = (DWORD)pvSkinBoxes->size();
+		this->dwBoxC = (std::uint32_t)pvSkinBoxes->size();
 		this->BoxDataA= new SKIN_BOX [this->dwBoxC];
 		int iCount=0;
 
@@ -122,28 +122,28 @@ void TextureAndGeometryPacket::handle(PacketListener *listener)
 void TextureAndGeometryPacket::read(DataInputStream *dis) //throws IOException
 {
 	textureName = dis->readUTF();
-	dwSkinID = (DWORD)dis->readInt();
-	dwTextureBytes = (DWORD)dis->readShort();
+	dwSkinID = static_cast<std::uint32_t>(dis->readInt());
+	dwTextureBytes = (std::uint32_t)dis->readShort();
 
 	if(dwTextureBytes>0)
 	{
-		this->pbData= new BYTE [dwTextureBytes];
+		this->pbData= new std::uint8_t [dwTextureBytes];
 
-		for(DWORD i=0;i<dwTextureBytes;i++)
+		for(std::uint32_t i=0;i<dwTextureBytes;i++)
 		{
 			this->pbData[i] = dis->readByte();
 		}
 	}
 	uiAnimOverrideBitmask = dis->readInt();
 
-	dwBoxC = (DWORD)dis->readShort();
+	dwBoxC = (std::uint32_t)dis->readShort();
 
 	if(dwBoxC>0)
 	{
 		this->BoxDataA= new SKIN_BOX [dwBoxC];
 	}
 
-	for(DWORD i=0;i<dwBoxC;i++)
+	for(std::uint32_t i=0;i<dwBoxC;i++)
 	{
 		this->BoxDataA[i].ePart = (eBodyPart) dis->readShort();
 		this->BoxDataA[i].fX = dis->readFloat();
@@ -160,16 +160,16 @@ void TextureAndGeometryPacket::read(DataInputStream *dis) //throws IOException
 void TextureAndGeometryPacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeUTF(textureName);
-	dos->writeInt(dwSkinID);
+	dos->writeInt(static_cast<int>(dwSkinID));
 	dos->writeShort((short)dwTextureBytes);
-	for(DWORD i=0;i<dwTextureBytes;i++)
+	for(std::uint32_t i=0;i<dwTextureBytes;i++)
 	{
 		dos->writeByte(this->pbData[i]);
 	}
 	dos->writeInt(uiAnimOverrideBitmask);
 
 	dos->writeShort((short)dwBoxC);
-	for(DWORD i=0;i<dwBoxC;i++)
+	for(std::uint32_t i=0;i<dwBoxC;i++)
 	{
 		dos->writeShort((short)this->BoxDataA[i].ePart);
 		dos->writeFloat(this->BoxDataA[i].fX);

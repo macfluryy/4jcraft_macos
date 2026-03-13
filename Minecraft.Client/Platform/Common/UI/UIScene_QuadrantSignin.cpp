@@ -6,6 +6,11 @@
 #include "../Network/Sony/SonyHttp.h"
 #endif
 
+namespace
+{
+int AvatarReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes);
+}
+
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void *_initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {
 	// Setup all the Iggy references we need for this scene
@@ -198,7 +203,7 @@ int UIScene_QuadrantSignin::SignInReturned(void *pParam,bool bContinue, int iPad
 }
 
 #ifdef _DURANGO
-void UIScene_QuadrantSignin::checkAllPrivilegesCallback(LPVOID lpParam, bool hasPrivileges, int iPad)
+void UIScene_QuadrantSignin::checkAllPrivilegesCallback(void *lpParam, bool hasPrivileges, int iPad)
 {
 	UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)lpParam;
 
@@ -226,7 +231,7 @@ void UIScene_QuadrantSignin::updateState()
 			if(!m_iconRequested[i])
 			{
 				app.DebugPrintf(app.USER_SR, "Requesting avatar for %d\n", i);
-				if(ProfileManager.GetProfileAvatar(i, &UIScene_QuadrantSignin::AvatarReturned, this))
+				if(ProfileManager.GetProfileAvatar(i, &AvatarReturnedThunk, this))
 				{
 					m_iconRequested[i] = true;
 					m_lastRequestedAvatar = i;
@@ -251,6 +256,14 @@ void UIScene_QuadrantSignin::updateState()
 	}
 }
 
+namespace
+{
+int AvatarReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+{
+	return UIScene_QuadrantSignin::AvatarReturned(lpParam, thumbnailData, thumbnailBytes);
+}
+}
+
 void UIScene_QuadrantSignin::setControllerState(int iPad, EControllerStatus state)
 {
 	if(m_controllerStatus[iPad] != state)
@@ -269,7 +282,7 @@ void UIScene_QuadrantSignin::setControllerState(int iPad, EControllerStatus stat
 	}
 }
 
-int UIScene_QuadrantSignin::AvatarReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_QuadrantSignin::AvatarReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
 	UIScene_QuadrantSignin *pClass = (UIScene_QuadrantSignin *)lpParam;
 	app.DebugPrintf(app.USER_SR,"AvatarReturned callback\n");

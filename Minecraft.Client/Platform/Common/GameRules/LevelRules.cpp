@@ -6,7 +6,7 @@ LevelRules::LevelRules()
 {
 }
 
-void LevelRules::addLevelRule(const std::wstring &displayName, PBYTE pbData, DWORD dwLen)
+void LevelRules::addLevelRule(const std::wstring &displayName, std::uint8_t *pbData, unsigned int dataLength)
 {
 }
 

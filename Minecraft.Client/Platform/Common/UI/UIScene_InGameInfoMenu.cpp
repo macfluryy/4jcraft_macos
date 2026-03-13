@@ -20,10 +20,10 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void *initData, UILayer
 		m_playerNames[i] = L"";
 	}
 
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -196,10 +196,10 @@ void UIScene_InGameInfoMenu::handleGainFocus(bool navBack)
 
 void UIScene_InGameInfoMenu::handleReload()
 {
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -270,7 +270,7 @@ void UIScene_InGameInfoMenu::tick()
 {
 	UIScene::tick();
 
-	for(DWORD i = 0; i < m_playersCount; ++i)
+	for(int i = 0; i < m_playersCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -455,7 +455,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId)
 			else if(selectedPlayer->IsLocal() != TRUE && selectedPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) != TRUE)
 			{
 				// Only ops will hit this, can kick anyone not local and not local to the host
-				BYTE *smallId = new BYTE();
+				std::uint8_t *smallId = new std::uint8_t();
 				*smallId = m_players[currentSelection];
 				UINT uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
@@ -550,8 +550,8 @@ void UIScene_InGameInfoMenu::OnPlayerChanged(void *callbackParam, INetworkPlayer
 
 int UIScene_InGameInfoMenu::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
-	BYTE smallId = *(BYTE *)pParam;
-	delete (BYTE*)pParam;
+	std::uint8_t smallId = *(std::uint8_t *)pParam;
+	delete (std::uint8_t *)pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)
 	{		

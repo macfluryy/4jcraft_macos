@@ -18,6 +18,7 @@
 #include "../../UI/SimpleIcon.h"
 #include "../CompassTexture.h"
 #include "../ClockTexture.h"
+#include <cstring>
 
 const std::wstring PreStitchedTextureMap::NAME_MISSING_TEXTURE = L"missingno";
 
@@ -178,7 +179,7 @@ void PreStitchedTextureMap::stitch()
 
 #ifdef __PSVITA__
 	// AP - alpha cut out is expensive on vita so we mark which icons actually require it
-	DWORD *data = (DWORD*) this->getStitchedTexture()->getData()->getBuffer();
+	const std::uint8_t *data = this->getStitchedTexture()->getData()->getBuffer();
 	int Width = this->getStitchedTexture()->getWidth();
 	int Height = this->getStitchedTexture()->getHeight();
 	for(AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end(); ++it)
@@ -196,8 +197,10 @@ void PreStitchedTextureMap::stitch()
 		{
 			for( int u = u0;u < u1; u+= 1 )
 			{
+				std::uint32_t pixel = 0;
+				std::memcpy(&pixel, data + ((v * Width + u) * sizeof(pixel)), sizeof(pixel));
 				// is this texel alpha value < 0.1
-				if( (data[v * Width + u] & 0xff000000) < 0x20000000 )
+				if( (pixel & 0xff000000) < 0x20000000 )
 				{
 					// this texel is transparent. Mark the icon as such and bail
 					preStitched->setFlags(Icon::IS_ALPHA_CUT_OUT);

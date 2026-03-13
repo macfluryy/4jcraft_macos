@@ -8,7 +8,7 @@ DLCLocalisationFile::DLCLocalisationFile(const std::wstring &path) : DLCFile(DLC
 	m_strings = NULL;
 }
 
-void DLCLocalisationFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCLocalisationFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
-	m_strings = new StringTable(pbData, dwBytes);
+	m_strings = new StringTable(pbData, dataBytes);
 }

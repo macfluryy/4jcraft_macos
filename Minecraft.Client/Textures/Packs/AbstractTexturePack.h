@@ -8,7 +8,7 @@ class BufferedImage;
 class AbstractTexturePack : public TexturePack
 {
 private:
-	const DWORD id;
+	const std::uint32_t id;
 	const std::wstring name;
 
 protected:
@@ -19,11 +19,11 @@ protected:
 	std::wstring desc1;
 	std::wstring desc2;
 
-	PBYTE m_iconData;
-	DWORD m_iconSize;
+	std::uint8_t *m_iconData;
+	std::uint32_t m_iconSize;
 
-	PBYTE m_comparisonData;
-	DWORD m_comparisonSize;
+	std::uint8_t *m_comparisonData;
+	std::uint32_t m_comparisonSize;
 
 	TexturePack *fallback;
 
@@ -36,7 +36,7 @@ private:
 	int textureId;
 
 protected:
-	AbstractTexturePack(DWORD id, File *file, const std::wstring &name, TexturePack *fallback);
+	AbstractTexturePack(std::uint32_t id, File *file, const std::wstring &name, TexturePack *fallback);
 
 private:
 	static std::wstring trim(std::wstring line);
@@ -61,7 +61,7 @@ public:
 	virtual void load(Textures *textures);
 	virtual bool hasFile(const std::wstring &name, bool allowFallback);
 	virtual bool hasFile(const std::wstring &name) = 0;
-	virtual DWORD getId();
+	virtual std::uint32_t getId();
 	virtual std::wstring getName();
 	virtual std::wstring getDesc1();
 	virtual std::wstring getDesc2();
@@ -84,8 +84,8 @@ public:
 	virtual void loadUI();
 	virtual void unloadUI();
 	virtual std::wstring getXuiRootPath();
-	virtual PBYTE getPackIcon(DWORD &dwImageBytes);
-	virtual PBYTE getPackComparison(DWORD &dwImageBytes);
+	virtual std::uint8_t *getPackIcon(std::uint32_t &imageBytes);
+	virtual std::uint8_t *getPackComparison(std::uint32_t &imageBytes);
 	virtual unsigned int getDLCParentPackId();
 	virtual unsigned char getDLCSubPackId();
 	virtual ColourTable *getColourTable() { return m_colourTable; }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class UIScene_InGamePlayerOptionsMenu : public UIScene
@@ -27,7 +29,7 @@ private:
 
 	bool m_bShouldNavBack;
 	bool m_editingSelf;
-	BYTE m_networkSmallId;
+	std::uint8_t m_networkSmallId;
 	unsigned int m_playerPrivileges;
 	
 	UIControl_Label m_labelGamertag;

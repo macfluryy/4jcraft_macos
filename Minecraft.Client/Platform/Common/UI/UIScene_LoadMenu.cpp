@@ -23,6 +23,14 @@
 #define CHECKFORAVAILABLETEXTUREPACKS_TIMER_TIME 50
 #endif
 
+namespace
+{
+int LoadMenuThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+{
+	return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
+}
+}
+
 int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4]=
 {
 	IDS_DIFFICULTY_TITLE_PEACEFUL,
@@ -31,7 +39,7 @@ int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4]=
 	IDS_DIFFICULTY_TITLE_HARD
 };
 
-int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
 	UIScene_LoadMenu *pClass= (UIScene_LoadMenu *)lpParam;
 
@@ -75,16 +83,16 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	m_labelTexturePackDescription.init(L"");
 
 	m_CurrentDifficulty=app.GetGameSettings(m_iPad,eGameSetting_Difficulty);
-	WCHAR TempString[256];
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
-	m_MoreOptionsParams.bGenerateOptions=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = iPad;
 
 	m_iSaveGameInfoIndex=params->iSaveGameInfoIndex;
@@ -112,23 +120,23 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -173,14 +181,14 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 
 			// retrieve the save icon from the texture pack, if there is one
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(m_MoreOptionsParams.dwTexturePack);
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t textureName[64];
 				swprintf(textureName,64,L"loadsave");				
-				registerSubstitutionTexture(textureName,pbImageData,dwImageBytes);
+				registerSubstitutionTexture(textureName,imageData,imageBytes);
 				m_bitmapIcon.setTextureName( textureName );
 			}
 		}
@@ -193,12 +201,12 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 
 #if defined(__PS3__) || defined(__ORBIS__)|| defined(_DURANGO) || defined (__PSVITA__)
 		// convert to utf16
-		uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+		std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 		size_t srclen,dstlen;
 		srclen=MAX_SAVEFILENAME_LENGTH;
 		dstlen=MAX_SAVEFILENAME_LENGTH;
 #ifdef __PS3__
-		L10nResult lres= UTF8stoUTF16s((uint8_t *)params->saveDetails->UTF8SaveFilename,&srclen,u16Message,&dstlen);
+		L10nResult lres= UTF8stoUTF16s((std::uint8_t *)params->saveDetails->UTF8SaveFilename,&srclen,u16Message,&dstlen);
 #elif defined(_DURANGO) 
 		// Already utf16 on durango
 		memcpy(u16Message,params->saveDetails->UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -206,8 +214,8 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 		{
 			SceCesUcsContext Context;
 			sceCesUcsContextInit( &Context );
-			uint32_t utf8Len, utf16Len;
-			sceCesUtf8StrToUtf16Str(&Context, (uint8_t *)params->saveDetails->UTF8SaveFilename, srclen, &utf8Len, u16Message, dstlen, &utf16Len);
+			std::uint32_t utf8Len, utf16Len;
+			sceCesUtf8StrToUtf16Str(&Context, (std::uint8_t *)params->saveDetails->UTF8SaveFilename, srclen, &utf8Len, u16Message, dstlen, &utf16Len);
 		}
 #endif
 		m_thumbnailName = (wchar_t *)u16Message;
@@ -225,9 +233,9 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 #ifdef _DURANGO
 			// On Durango, we have an extra flag possible with LoadSaveDataThumbnail, which if true will force the loading of this thumbnail even if the save data isn't sync'd from
 			// the cloud at this stage. This could mean that there could be a pretty large delay before the callback happens, in this case.
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturned,this,true);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadMenuThumbnailReturnedThunk,this,true);
 #else
-			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadSaveDataThumbnailReturned,this);
+			C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],&LoadMenuThumbnailReturnedThunk,this);
 #endif
 			m_bShowTimer = true;
 		}
@@ -259,14 +267,14 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void *initData, UILayer *parentLaye
 		{
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t imageName[64];
 				swprintf(imageName,64,L"tpack%08x",tp->getId());
-				registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+				registerSubstitutionTexture(imageName, imageData, imageBytes);
 				m_texturePackList.addPack(i,imageName);
 			}
 		}
@@ -439,8 +447,8 @@ void UIScene_LoadMenu::tick()
 
 		if(szSeed[0]!=0)
 		{
-			WCHAR TempString[256];
-			swprintf( (WCHAR *)TempString, 256, L"%ls: %hs", app.GetString( IDS_SEED ),szSeed);	
+			wchar_t TempString[256];
+			swprintf(TempString, 256, L"%ls: %hs", app.GetString( IDS_SEED ),szSeed);
 			m_labelSeed.setLabel(TempString);
 		}
 		else
@@ -451,12 +459,12 @@ void UIScene_LoadMenu::tick()
 		// Setup all the text and checkboxes to match what the game was saved with on
 		if(bHostOptionsRead)
 		{
-			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions,eGameHostOption_PvP)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions,eGameHostOption_TrustPlayers)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions,eGameHostOption_FireSpreads)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions,eGameHostOption_TNT)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions,eGameHostOption_CheatsEnabled)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bDisableSaving = app.GetGameHostOption(uiHostOptions,eGameHostOption_DisableSaving)>0?TRUE:FALSE;
+			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions, eGameHostOption_PvP) > 0;
+			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions, eGameHostOption_TrustPlayers) > 0;
+			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions, eGameHostOption_FireSpreads) > 0;
+			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions, eGameHostOption_TNT) > 0;
+			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions, eGameHostOption_CheatsEnabled) > 0;
+			m_MoreOptionsParams.bDisableSaving = app.GetGameHostOption(uiHostOptions, eGameHostOption_DisableSaving) > 0;
 
 			// turn off creative mode on the save
 			// #ifdef _DEBUG
@@ -483,7 +491,7 @@ void UIScene_LoadMenu::tick()
 			bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_FriendsOfFriends) && !(m_bMultiplayerAllowed && bGameSetting_Online))
 			{
-				m_MoreOptionsParams.bAllowFriendsOfFriends = TRUE;
+				m_MoreOptionsParams.bAllowFriendsOfFriends = true;
 			}
 		}
 
@@ -680,7 +688,7 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_LoadMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_LoadMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)lpParam;
 
@@ -828,7 +836,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 #endif
 
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
-	if(m_MoreOptionsParams.bResetNether==TRUE)
+	if(m_MoreOptionsParams.bResetNether)
 	{
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -844,7 +852,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow()
 
 void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
@@ -852,7 +860,7 @@ void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderDifficulty.handleSliderMove(value);
 
 		app.SetGameSettings(m_iPad,eGameSetting_Difficulty,value);
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));		
+		swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));
 		m_sliderDifficulty.setLabel(TempString);
 		break;
 	}
@@ -887,23 +895,23 @@ void UIScene_LoadMenu::handleTimerComplete(int id)
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
 				if(getSceneResolution() == eSceneResolution_1080)
@@ -936,7 +944,7 @@ void UIScene_LoadMenu::handleTimerComplete(int id)
 
 						if(hasRegisteredSubstitutionTexture(textureName)==false)
 						{
-							PBYTE pbImageData;
+							std::uint8_t *pbImageData = NULL;
 							int iImageDataBytes=0;
 							SonyHttp::getDataFromURL(pDLCInfo->chImageURL,(void **)&pbImageData,&iImageDataBytes);
 
@@ -988,7 +996,7 @@ void UIScene_LoadMenu::LaunchGame(void)
 	killTimer(CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID);
 #endif
 
-	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -1205,8 +1213,8 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 		bool bContentRestricted = false;
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 #if defined(__PS3__) || defined(__PSVITA__)
@@ -1259,7 +1267,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1290,10 +1298,10 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 					}
 				}
 #endif
-				DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+				int localUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 				// No guest problems so we don't need to force a sign-in of players here
-				StartGameFromSave(pClass, dwLocalUsersMask);
+				StartGameFromSave(pClass, localUsersMask);
 			}
 		}
 		else
@@ -1319,7 +1327,7 @@ int UIScene_LoadMenu::LoadDataComplete(void *pParam)
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1418,7 +1426,7 @@ int UIScene_LoadMenu::DeleteSaveDataReturned(void *pParam,bool bSuccess)
 }
 
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
-void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocalUsersMask)
+void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, int localUsersMask)
 {
 	INT saveOrCheckpointId = 0;
 	bool validSave = StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
@@ -1461,13 +1469,13 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(pClass->m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
 	app.SetGameHostOption(eGameHostOption_GameType,pClass->m_bGameModeSurvival?GameType::SURVIVAL->getId():GameType::CREATIVE->getId() );
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	param->settings = app.GetGameHostOption( eGameHostOption_All );
 
@@ -1477,7 +1485,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave time
 	app.SetAutosaveTimerTime();
@@ -1495,7 +1503,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocal
 void UIScene_LoadMenu::checkStateAndStartGame()
 {
 	// Check if they have the Reset Nether flag set, and confirm they want to do this
-	if(m_MoreOptionsParams.bResetNether==TRUE)
+	if(m_MoreOptionsParams.bResetNether)
 	{
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -1514,7 +1522,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 	bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 
 	// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-	DWORD connectedControllers = 0;
+	int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1525,8 +1533,8 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 		if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
@@ -1542,9 +1550,9 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	}
 
-	DWORD dwLocalUsersMask = 0;
+	int localUsersMask = 0;
 
-	dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+	localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 	// Load data from disc
 	//File saveFile( L"Tutorial\\Tutorial" );
 	//LoadSaveFromDisk(&saveFile);
@@ -1555,7 +1563,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	bool isPrivate = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)>0)?true:false;
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	NetworkGameInitData *param = new NetworkGameInitData();
 	param->seed = 0;
@@ -1587,7 +1595,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1601,7 +1609,7 @@ void UIScene_LoadMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave time
 	app.SetAutosaveTimerTime();
@@ -1627,7 +1635,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 		{
 			int primaryPad = ProfileManager.GetPrimaryPad();
 			bool noPrivileges = false;
-			DWORD dwLocalUsersMask = 0;
+			int localUsersMask = 0;
 			bool isSignedInLive = ProfileManager.IsSignedInLive(primaryPad);
 			bool isOnlineGame = pClass->m_MoreOptionsParams.bOnlineGame;
 			int iPadNotSignedInLive = -1;
@@ -1644,7 +1652,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 					}
 
 					if( !ProfileManager.AllowedToPlayMultiplayer(i) ) noPrivileges = true;
-					dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
+					localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
 					isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(i);
 				}
 			}
@@ -1685,8 +1693,8 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
@@ -1731,7 +1739,7 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 				}
 #endif
 				// This is NOT called from a storage manager thread, and is in fact called from the main thread in the Profile library tick. Therefore we use the main threads IntCache.
-				StartGameFromSave(pClass, dwLocalUsersMask);
+				StartGameFromSave(pClass, localUsersMask);
 			}
 		}
 	}
@@ -1751,7 +1759,7 @@ void UIScene_LoadMenu::handleGainFocus(bool navBack)
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
 		if(getSceneResolution() == eSceneResolution_1080)
 		{
-			m_checkboxOnline.setChecked(m_MoreOptionsParams.bOnlineGame == TRUE);
+			m_checkboxOnline.setChecked(m_MoreOptionsParams.bOnlineGame);
 		}
 #endif
 	}
@@ -1773,7 +1781,7 @@ int UIScene_LoadMenu::MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EM
 
 // int UIScene_LoadMenu::PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 // {
-// 	int32_t iResult;
+// 	std::int32_t iResult;
 // 	UIScene_LoadMenu *pClass = (UIScene_LoadMenu *)pParam;
 // 
 // 	// continue offline, or upsell PS Plus?

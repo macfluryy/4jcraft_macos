@@ -63,7 +63,7 @@ void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
 	std::wstring msg;
 	// need to send the new data
 	// Get the current language setting from the console
-	DWORD dwLanguage = XGetLanguage( );
+	std::uint32_t dwLanguage = XGetLanguage( );
 
     for (int i = 0; i < MAX_SIGN_LINES; i++)		// 4J - was sign.messages.length
 	{

@@ -24,18 +24,18 @@ private:
 	static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
 	static const unsigned int MAX_PAGE_COUNT = 1024;
 #endif
-	LPVOID pvSaveMem;
+	void *pvSaveMem;
 
 	CRITICAL_SECTION m_lock;
 
-	void PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite );
-	void MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite);
+	void PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite );
+	void MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite);
 
 public:
 #if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || defined _WINDOWS64)
-	static int SaveSaveDataCallback(LPVOID lpParam,bool bRes);
+	static int SaveSaveDataCallback(void *lpParam, bool bRes);
 #endif
-	ConsoleSaveFileOriginal(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileOriginal(const std::wstring &fileName, void *pvSaveData = NULL, unsigned int fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	virtual ~ConsoleSaveFileOriginal();
 
 	// 4J Stu - Initial implementation is intended to have a similar interface to the standard Xbox file access functions
@@ -43,11 +43,11 @@ public:
 	virtual FileEntry *createFile( const ConsoleSavePath &fileName );
 	virtual void deleteFile( FileEntry *file );
 
-	virtual void setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod);
-	virtual BOOL writeFile(	FileEntry *file, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten );
-	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten);
-	virtual BOOL readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead );
-	virtual BOOL closeHandle( FileEntry *file );
+	virtual void setFilePointer(FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin);
+	virtual bool writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten );
+	virtual bool zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten);
+	virtual bool readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead );
+	virtual bool closeHandle( FileEntry *file );
 
 	virtual void finalizeWrite();
 

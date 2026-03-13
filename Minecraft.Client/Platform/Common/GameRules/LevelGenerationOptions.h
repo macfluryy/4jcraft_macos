@@ -3,6 +3,8 @@
 
 // #pragma message("LevelGenerationOptions.h ")
 
+#include <cstdint>
+
 #include "GameRuleDefinition.h"
 #include "../../Minecraft.World/WorldGen/Features/StructureFeature.h"
 
@@ -24,16 +26,16 @@ public:
 
 	virtual ~GrSource(){}
 	virtual bool requiresTexturePack()=0;
-	virtual UINT getRequiredTexturePackId()=0;
+	virtual std::uint32_t getRequiredTexturePackId()=0;
 	virtual std::wstring getDefaultSaveName()=0;
-	virtual LPCWSTR getWorldName()=0;
-	virtual LPCWSTR getDisplayName()=0;
+	virtual const wchar_t *getWorldName()=0;
+	virtual const wchar_t *getDisplayName()=0;
 	virtual std::wstring getGrfPath()=0;
 	virtual bool requiresBaseSave() = 0;
 	virtual std::wstring getBaseSavePath() = 0;
 
 	virtual void setRequiresTexturePack(bool)=0;
-	virtual void setRequiredTexturePackId(UINT)=0;
+	virtual void setRequiredTexturePackId(std::uint32_t)=0;
 	virtual void setDefaultSaveName(const std::wstring &)=0;
 	virtual void setWorldName(const std::wstring &)=0;
 	virtual void setDisplayName(const std::wstring &)=0;
@@ -42,7 +44,7 @@ public:
 
 	virtual bool ready()=0;
 
-	//virtual void getGrfData(PBYTE &pData, DWORD &pSize)=0;
+	//virtual void getGrfData(std::uint8_t *&pData, unsigned int &pSize)=0;
 };
 
 class JustGrSource : public GrSource
@@ -52,23 +54,23 @@ protected:
 	std::wstring m_displayName;
 	std::wstring m_defaultSaveName;
 	bool m_bRequiresTexturePack;
-	int m_requiredTexturePackId;
+	std::uint32_t m_requiredTexturePackId;
 	std::wstring m_grfPath;
 	std::wstring m_baseSavePath;
 	bool m_bRequiresBaseSave;
 
 public:
 	virtual bool requiresTexturePack();
-	virtual UINT getRequiredTexturePackId();
+	virtual std::uint32_t getRequiredTexturePackId();
 	virtual std::wstring getDefaultSaveName();
-	virtual LPCWSTR getWorldName();
-	virtual LPCWSTR getDisplayName();
+	virtual const wchar_t *getWorldName();
+	virtual const wchar_t *getDisplayName();
 	virtual std::wstring getGrfPath();
 	virtual bool requiresBaseSave();
 	virtual std::wstring getBaseSavePath();
 
 	virtual void setRequiresTexturePack(bool x);
-	virtual void setRequiredTexturePackId(UINT x);
+	virtual void setRequiredTexturePackId(std::uint32_t x);
 	virtual void setDefaultSaveName(const std::wstring &x);
 	virtual void setWorldName(const std::wstring &x);
 	virtual void setDisplayName(const std::wstring &x);
@@ -104,8 +106,8 @@ private:
 
 	bool m_hasLoadedData;
 
-	PBYTE m_pbBaseSaveData;
-	DWORD m_dwBaseSaveSize;
+	std::uint8_t *m_pbBaseSaveData;
+	unsigned int m_baseSaveSize;
 
 public:
 
@@ -117,10 +119,10 @@ public:
 	bool isFromDLC();
 
 	bool requiresTexturePack();
-	UINT getRequiredTexturePackId();
+	std::uint32_t getRequiredTexturePackId();
 	std::wstring getDefaultSaveName();
-	LPCWSTR getWorldName();
-	LPCWSTR getDisplayName();
+	const wchar_t *getWorldName();
+	const wchar_t *getDisplayName();
 	std::wstring getGrfPath();
 	bool requiresBaseSave();
 	std::wstring getBaseSavePath();
@@ -128,7 +130,7 @@ public:
 	void setGrSource(GrSource *grs);
 
 	void setRequiresTexturePack(bool x);
-	void setRequiredTexturePackId(UINT x);
+	void setRequiredTexturePackId(std::uint32_t x);
 	void setDefaultSaveName(const std::wstring &x);
 	void setWorldName(const std::wstring &x);
 	void setDisplayName(const std::wstring &x);
@@ -137,8 +139,8 @@ public:
 
 	bool ready();
 
-	void setBaseSaveData(PBYTE pbData, DWORD dwSize);
-	PBYTE getBaseSaveData(DWORD &size);
+	void setBaseSaveData(std::uint8_t *pbData, unsigned int dataSize);
+	std::uint8_t *getBaseSaveData(unsigned int &size);
 	bool hasBaseSaveData();
 	void deleteBaseSaveData();
 
@@ -169,7 +171,7 @@ public:
 
 	virtual ConsoleGameRules::EGameRuleType getActionType();
 	
-	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
 	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
 	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
@@ -187,7 +189,7 @@ private:
 	void clearSchematics();
 
 public:	
-	ConsoleSchematicFile *loadSchematicFile(const std::wstring &filename, PBYTE pbData, DWORD dwLen);
+	ConsoleSchematicFile *loadSchematicFile(const std::wstring &filename, std::uint8_t *pbData, unsigned int dataLength);
 
 public:
 	ConsoleSchematicFile *getSchematicFile(const std::wstring &filename);
@@ -197,11 +199,11 @@ public:
 	void setRequiredGameRules(LevelRuleset *rules);
 	LevelRuleset *getRequiredGameRules();
 
-	void getBiomeOverride(int biomeId, BYTE &tile, BYTE &topTile);
+	void getBiomeOverride(int biomeId, std::uint8_t &tile, std::uint8_t &topTile);
 	bool isFeatureChunk(int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature);
 
 	void loadStringTable(StringTable *table);
-	LPCWSTR getString(const std::wstring &key);
+	const wchar_t *getString(const std::wstring &key);
 
 	std::unordered_map<std::wstring, ConsoleSchematicFile *> *getUnfinishedSchematicFiles();
 	

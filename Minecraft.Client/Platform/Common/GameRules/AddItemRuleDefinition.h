@@ -18,7 +18,7 @@ private:
 public:
 	AddItemRuleDefinition();
 
-	virtual void writeAttributes(DataOutputStream *, UINT numAttributes);
+	virtual void writeAttributes(DataOutputStream *, unsigned int numAttributes);
 	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_AddItem; }

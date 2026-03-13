@@ -1637,7 +1637,7 @@ bool Tutorial::setMessage(TutorialHint *hint, PopupMessageDetails *message)
 	bool hintsOn = m_isFullTutorial || (app.GetGameSettings(m_iPad,eGameSetting_Hints) && app.GetGameSettings(m_iPad,eGameSetting_DisplayHUD));
 
 	bool messageShown = false;
-	DWORD time = GetTickCount();
+	std::uint32_t time = GetTickCount();
 	if(message != NULL && (message->m_forceDisplay || hintsOn) &&
 		(!message->m_delay || 
 		(

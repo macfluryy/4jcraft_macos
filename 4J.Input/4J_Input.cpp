@@ -326,16 +326,16 @@ void          C_4JInput::SetJoypadSensitivity(int, float){}
 void          C_4JInput::SetJoypadStickAxisMap(int, unsigned int, unsigned int){}
 void          C_4JInput::SetJoypadStickTriggerMap(int, unsigned int, unsigned int){}
 void          C_4JInput::SetKeyRepeatRate(float, float){}
-void          C_4JInput::SetDebugSequence(const char*, int(*)(LPVOID), LPVOID){}
+void          C_4JInput::SetDebugSequence(const char*, int(*)(void *), void *){}
 FLOAT         C_4JInput::GetIdleSeconds(int){ return 0.f; }
 bool          C_4JInput::IsPadConnected(int iPad){ return iPad == 0; }
 
 // Silly check, we check if we have a keyboard.
-EKeyboardResult C_4JInput::RequestKeyboard(LPCWSTR, LPCWSTR, DWORD, UINT,
-                                           int(*)(LPVOID, const bool), LPVOID, C_4JInput::EKeyboardMode)
+EKeyboardResult C_4JInput::RequestKeyboard(const wchar_t *, const wchar_t *, int, unsigned int,
+                                           int(*)(void *, const bool), void *, C_4JInput::EKeyboardMode)
 { return EKeyboard_Cancelled; }
 
 void C_4JInput::GetText(uint16_t *s){ if (s) s[0] = 0; }
-bool C_4JInput::VerifyStrings(WCHAR**, int, int(*)(LPVOID, STRING_VERIFY_RESPONSE*), LPVOID){ return true; }
-void C_4JInput::CancelQueuedVerifyStrings(int(*)(LPVOID, STRING_VERIFY_RESPONSE*), LPVOID){}
+bool C_4JInput::VerifyStrings(wchar_t **, int, int(*)(void *, STRING_VERIFY_RESPONSE *), void *){ return true; }
+void C_4JInput::CancelQueuedVerifyStrings(int(*)(void *, STRING_VERIFY_RESPONSE *), void *){}
 void C_4JInput::CancelAllVerifyInProgress(){}

@@ -35,7 +35,7 @@ public:
 
 	virtual void write(DataOutputStream *);
 
-	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
 	virtual void getChildren(std::vector<GameRuleDefinition *> *);
 
 	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);

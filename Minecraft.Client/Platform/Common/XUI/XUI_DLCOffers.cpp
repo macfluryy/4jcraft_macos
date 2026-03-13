@@ -449,9 +449,9 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		DLC_INFO *dlc = app.GetDLCInfoForFullOfferID(xOffer.qwOfferID);
 		if (dlc != NULL)
 		{
-			BYTE *pData=NULL;
+			std::uint8_t *pData=NULL;
 			UINT uiSize=0;
-			DWORD dwSize=0;
+			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;
 			// is the file in the TMS XZP?	 
@@ -702,9 +702,9 @@ HRESULT CScene_DLCOffers::OnNotifySelChanged(HXUIOBJ hObjSource, XUINotifySelCha
 
 		if (dlc != NULL)
 		{
-			BYTE *pImage=NULL;
+			std::uint8_t *pImage=NULL;
 			UINT uiSize=0;
-			DWORD dwSize=0;
+			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;
 
@@ -811,8 +811,8 @@ HRESULT CScene_DLCOffers::OnTimer(XUIMessageTimer *pData,BOOL& rfHandled)
 
 		if(bPresent)
 		{
-			BYTE *pImage=NULL;
-			DWORD dwSize=0;
+			std::uint8_t *pImage=NULL;
+			unsigned int dwSize=0;
 
 			if(m_hXuiBrush!=NULL)
 			{

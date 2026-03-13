@@ -5,7 +5,9 @@
 #include "../IO/NBT/FloatTag.h"
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
+#if !defined(_WIN32)
 #include <pthread.h>
+#endif
 
 class Mob;
 class LightningBolt;

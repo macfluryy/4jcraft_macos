@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 #include "Packet.h"
 
@@ -8,7 +9,7 @@ class UpdateMobEffectPacket : public Packet, public std::enable_shared_from_this
 {
 public:
 	int entityId;
-	BYTE effectId;
+	std::uint8_t effectId;
 	char effectAmplifier;
 	short effectDurationTicks;
 

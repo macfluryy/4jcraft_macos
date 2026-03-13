@@ -97,5 +97,5 @@ private:
 	} SaveThreadData;
 
 public:
-	static int runSaveThreadProc(LPVOID lpParam);
+	static int runSaveThreadProc(void *lpParam);
 };

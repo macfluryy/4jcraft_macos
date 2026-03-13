@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include "../Util/PortableFileIO.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "../Headers/net.minecraft.world.level.levelgen.h"
@@ -19,86 +20,47 @@ CustomLevelSource::CustomLevelSource(Level *level, __int64 seed, bool generateSt
 
 	m_heightmapOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
-#ifdef _UNICODE
-	std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
-
-#else
 #ifdef _WINDOWS64
-	std::string path = "GameRules\\heightmap.bin";
+	const std::wstring path = L"GameRules\\heightmap.bin";
 #else
-	std::string path = "GAME:\\GameRules\\heightmap.bin";
+	const std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
 #endif
-#endif
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if( file == INVALID_HANDLE_VALUE )
+	const PortableFileIO::BinaryReadResult heightmapReadResult = PortableFileIO::ReadBinaryFile(path, m_heightmapOverride.data, m_heightmapOverride.length);
+	if(heightmapReadResult.status == PortableFileIO::BinaryReadStatus::not_found)
 	{
 		app.FatalLoadError();
-		DWORD error = GetLastError();
 		assert(false);
 	}
-	else
+	else if(heightmapReadResult.status == PortableFileIO::BinaryReadStatus::too_large)
 	{
-
-#ifdef _DURANGO
-		__debugbreak();	// TODO
-		DWORD bytesRead,dwFileSize = 0;
-#else
-		DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-#endif
-		if(dwFileSize > m_heightmapOverride.length)
-		{
-			app.DebugPrintf("Heightmap binary is too large!!\n");
-			__debugbreak();
-		}
-		BOOL bSuccess = ReadFile(file,m_heightmapOverride.data,dwFileSize,&bytesRead,NULL);
-
-		if(bSuccess==FALSE)
-		{
-			app.FatalLoadError();
-		}
-		CloseHandle(file);
+		app.DebugPrintf("Heightmap binary is too large!!\n");
+		__debugbreak();
+	}
+	else if(heightmapReadResult.status != PortableFileIO::BinaryReadStatus::ok)
+	{
+		app.FatalLoadError();
 	}
 
 	m_waterheightOverride = byteArray( (m_XZSize*16) * (m_XZSize*16) );
 
-#ifdef _UNICODE
-	std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
-
-#else
 #ifdef _WINDOWS64
-	std::string waterHeightPath = "GameRules\\waterheight.bin";
+	const std::wstring waterHeightPath = L"GameRules\\waterheight.bin";
 #else
-	std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
+	const std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
 #endif
-#endif
-	file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if( file == INVALID_HANDLE_VALUE )
+	const PortableFileIO::BinaryReadResult waterHeightReadResult = PortableFileIO::ReadBinaryFile(waterHeightPath, m_waterheightOverride.data, m_waterheightOverride.length);
+	if(waterHeightReadResult.status == PortableFileIO::BinaryReadStatus::not_found)
 	{
-		DWORD error = GetLastError();
-		//assert(false);
 		memset(m_waterheightOverride.data, level->seaLevel, m_waterheightOverride.length);
 	}
-	else
+	else if(waterHeightReadResult.status == PortableFileIO::BinaryReadStatus::too_large)
 	{
-
-#ifdef _DURANGO
-		__debugbreak();	// TODO
-		DWORD bytesRead,dwFileSize = 0;
-#else
-		DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-#endif
-		if(dwFileSize > m_waterheightOverride.length)
-		{
-			app.DebugPrintf("waterheight binary is too large!!\n");
-			__debugbreak();
-		}
-		BOOL bSuccess = ReadFile(file,m_waterheightOverride.data,dwFileSize,&bytesRead,NULL);
-
-		if(bSuccess==FALSE)
-		{
-			app.FatalLoadError();
-		}
-		CloseHandle(file);
+		app.DebugPrintf("waterheight binary is too large!!\n");
+		__debugbreak();
+	}
+	else if(waterHeightReadResult.status != PortableFileIO::BinaryReadStatus::ok)
+	{
+		app.FatalLoadError();
 	}
 
 	caveFeature = new LargeCaveFeature();
@@ -202,11 +164,11 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
 							// 4J - this comparison used to just be with 0.0f but is now varied by block above
 							if (yc * CHUNK_HEIGHT + y < mapHeight)
 							{
-								tileId = (uint8_t) Tile::rock_Id;
+								tileId = (std::uint8_t) Tile::rock_Id;
 							}
 							else if (yc * CHUNK_HEIGHT + y < waterHeight)
 							{
-								tileId = (uint8_t) Tile::calmWater_Id;
+								tileId = (std::uint8_t) Tile::calmWater_Id;
 							}
 
 							// 4J - more extra code to make sure that the column at the edge of the world is just water & rock, to match the infinite sea that
@@ -264,8 +226,8 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 
 			int run = -1;
 
-			uint8_t top = b->topMaterial;
-			uint8_t material = b->material;
+			std::uint8_t top = b->topMaterial;
+			std::uint8_t material = b->material;
 
 			LevelGenerationOptions *lgo = app.getLevelGenerationOptions();
 			if(lgo != NULL)
@@ -288,7 +250,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 				if (y <= 1 + random->nextInt(2))	// 4J - changed to make the bedrock not have bits you can get stuck in
 					//                if (y <= 0 + random->nextInt(5))
 				{
-					blocks[offs] = (uint8_t) Tile::unbreakable_Id;
+					blocks[offs] = (std::uint8_t) Tile::unbreakable_Id;
 				}
 				else
 				{
@@ -305,7 +267,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 							if (runDepth <= 0)
 							{
 								top = 0;
-								material = (uint8_t) Tile::rock_Id;
+								material = (std::uint8_t) Tile::rock_Id;
 							}
 							else if (y >= waterHeight - 4 && y <= waterHeight + 1)
 							{
@@ -319,8 +281,8 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 
 							if (y < waterHeight && top == 0)
 							{
-								if (temp < 0.15f) top = (uint8_t) Tile::ice_Id;
-								else top = (uint8_t) Tile::calmWater_Id;
+								if (temp < 0.15f) top = (std::uint8_t) Tile::ice_Id;
+								else top = (std::uint8_t) Tile::calmWater_Id;
 							}
 
 							run = runDepth;
@@ -337,7 +299,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, Bi
 							if (run == 0 && material == Tile::sand_Id)
 							{
 								run = random->nextInt(4);
-								material = (uint8_t) Tile::sandStone_Id;
+								material = (std::uint8_t) Tile::sandStone_Id;
 							}
 						}
 					}
@@ -366,7 +328,7 @@ LevelChunk *CustomLevelSource::getChunk(int xOffs, int zOffs)
 
 	// 4J - now allocating this with a physical alloc & bypassing general memory management so that it will get cleanly freed
 	int blocksSize = Level::maxBuildHeight * 16 * 16;
-	uint8_t *tileData = (uint8_t *)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
+	std::uint8_t *tileData = (std::uint8_t *)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
 	XMemSet128(tileData,0,blocksSize);
 	byteArray blocks = byteArray(tileData,blocksSize);
 	//    byteArray blocks = byteArray(16 * level->depth * 16);

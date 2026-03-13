@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "Packet.h"
 #include "../../Entities/SyncedEntityData.h"
@@ -18,14 +19,14 @@ public:
     std::wstring name;
     int x, y, z;
     char yRot, xRot;
-    int carriedItem;
+	int carriedItem;
 	PlayerUID xuid; // 4J Added
 	PlayerUID OnlineXuid; // 4J Added
-	BYTE m_playerIndex; // 4J Added
-	DWORD m_skinId; // 4J Added
-	DWORD m_capeId; // 4J Added
+	std::uint8_t m_playerIndex; // 4J Added
+	std::uint32_t m_skinId; // 4J Added
+	std::uint32_t m_capeId; // 4J Added
 	unsigned int m_uiGamePrivileges; // 4J Added
-	uint8_t yHeadRot; // 4J Added
+	std::uint8_t yHeadRot; // 4J Added
 
 	AddPlayerPacket();
 	~AddPlayerPacket();

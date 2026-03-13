@@ -329,7 +329,7 @@ void UIScene_ControlsMenu::PositionText(int iPad,int iTextID, unsigned char ucAc
 
 void UIScene_ControlsMenu::PositionTextDirect(int iPad,int iTextID, int iControlDetailsIndex, bool bShow)
 {
-	LPCWSTR text = app.GetString(iTextID);
+	const wchar_t *text = app.GetString(iTextID);
 
 	m_labelsPad[iControlDetailsIndex].setLabel(text);
 	m_controlLines[iControlDetailsIndex].setVisible(bShow);

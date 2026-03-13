@@ -16,9 +16,9 @@ DLCSkinFile::DLCSkinFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCTy
 	m_uiAnimOverrideBitmask=0L;
 }
 
-void DLCSkinFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCSkinFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
-	app.AddMemoryTextureFile(m_path,pbData,dwBytes);
+	app.AddMemoryTextureFile(m_path,pbData,dataBytes);
 }
 
 void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::wstring &value)
@@ -157,7 +157,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::ws
 	case DLCManager::e_DLCParamType_Anim:
 		// 4J Stu - The Xbox version used swscanf_s which isn't available in GCC.
 		swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);
-		DWORD skinId = app.getSkinIdFromPath(m_path);
+		std::uint32_t skinId = app.getSkinIdFromPath(m_path);
 		app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
 		break;
 	}

@@ -19,7 +19,7 @@ _MapDataMappings::_MapDataMappings()
 #ifndef _DURANGO
 	ZeroMemory(xuids,sizeof(PlayerUID)*MAXIMUM_MAP_SAVE_DATA);
 #endif
-	ZeroMemory(dimensions,sizeof(uint8_t)*(MAXIMUM_MAP_SAVE_DATA/4));
+	ZeroMemory(dimensions,sizeof(std::uint8_t)*(MAXIMUM_MAP_SAVE_DATA/4));
 }
 
 int _MapDataMappings::getDimension(int id)
@@ -84,7 +84,7 @@ _MapDataMappings_old::_MapDataMappings_old()
 #ifndef _DURANGO
 	ZeroMemory(xuids,sizeof(PlayerUID)*MAXIMUM_MAP_SAVE_DATA);
 #endif
-	ZeroMemory(dimensions,sizeof(uint8_t)*(MAXIMUM_MAP_SAVE_DATA/8));
+	ZeroMemory(dimensions,sizeof(std::uint8_t)*(MAXIMUM_MAP_SAVE_DATA/8));
 }
 
 int _MapDataMappings_old::getDimension(int id)
@@ -243,7 +243,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 #endif
 	if (!m_bHasLoadedMapDataMappings && !mapFile.getName().empty() && getSaveFile()->doesFileExist( mapFile ))
 	{
-		DWORD NumberOfBytesRead;
+		unsigned int NumberOfBytesRead;
 		FileEntry *fileEntry = getSaveFile()->createFile(mapFile);
 
 #ifdef __PS3__
@@ -270,7 +270,7 @@ LevelData *DirectoryLevelStorage::prepareLevel()
 		else
 #endif
 		{
-			getSaveFile()->setFilePointer(fileEntry,0,NULL, FILE_BEGIN);
+			getSaveFile()->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
 
 #ifdef _LARGE_WORLDS
 			byteArray data(fileEntry->getFileSize());
@@ -681,9 +681,9 @@ void DirectoryLevelStorage::saveMapIdLookup()
 
 	if (!file.getName().empty())
 	{
-		DWORD NumberOfBytesWritten;
+		unsigned int NumberOfBytesWritten;
 		FileEntry *fileEntry = m_saveFile->createFile(file);
-		m_saveFile->setFilePointer(fileEntry,0,NULL, FILE_BEGIN);
+		m_saveFile->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
 
 #ifdef _LARGE_WORLDS
 		ByteArrayOutputStream baos;

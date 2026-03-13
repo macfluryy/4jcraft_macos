@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+
 #include "Input/ConsoleInputSource.h"
 #include "../Minecraft.World/Util/ArrayWithLength.h"
 #include "../Minecraft.World/Util/SharedConstants.h"
@@ -22,19 +24,19 @@ class CommandDispatcher;
 
 typedef struct _LoadSaveDataThreadParam
 {
-	LPVOID data;
+	void *data;
 	__int64 fileSize;
 	const std::wstring saveName;
-	_LoadSaveDataThreadParam(LPVOID data, __int64 filesize, const std::wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
+	_LoadSaveDataThreadParam(void *data, __int64 filesize, const std::wstring &saveName) : data( data ), fileSize( filesize ), saveName( saveName ) {}
 } LoadSaveDataThreadParam;
 
 typedef struct _NetworkGameInitData
 {
 	__int64 seed;
 	LoadSaveDataThreadParam *saveData;
-	DWORD settings;
+	std::uint32_t settings;
 	LevelGenerationOptions *levelGen;
-	DWORD texturePackId;
+	std::uint32_t texturePackId;
 	bool findSeed;
 	unsigned int xzSize;
 	unsigned char hellScale;
@@ -115,17 +117,17 @@ private:
 public:
 	// 4J Stu - This value should be incremented every time the list of players with friends-only UGC settings changes
 	// It is sent with PreLoginPacket and compared when it comes back in the LoginPacket
-	DWORD m_ugcPlayersVersion;
+	std::uint32_t m_ugcPlayersVersion;
 
 	// This value is used to store the texture pack id for the currently loaded world
-	DWORD m_texturePackId;
+	std::uint32_t m_texturePackId;
 
 public:
 	MinecraftServer();
 	~MinecraftServer();
 private:
 	// 4J Added - LoadSaveDataThreadParam
-	bool initServer(__int64 seed, NetworkGameInitData *initData, DWORD initSettings, bool findSeed);
+	bool initServer(__int64 seed, NetworkGameInitData *initData, std::uint32_t initSettings, bool findSeed);
 	void postProcessTerminate(ProgressRenderer *mcprogress);
     bool loadLevel(LevelStorageSource *storageSource, const std::wstring& name, __int64 levelSeed, LevelType *pLevelType, NetworkGameInitData *initData);
     void setProgress(const std::wstring& status, int progress);

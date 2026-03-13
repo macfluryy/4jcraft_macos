@@ -8,19 +8,19 @@ DLCTextureFile::DLCTextureFile(const std::wstring &path) : DLCFile(DLCManager::e
 	m_animString = L"";
 	
 	m_pbData = NULL;
-	m_dwBytes = 0;
+	m_dataBytes = 0;
 }
 
-void DLCTextureFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCTextureFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	//app.AddMemoryTextureFile(m_path,pbData,dwBytes);
 	m_pbData = pbData;
-	m_dwBytes = dwBytes;
+	m_dataBytes = dataBytes;
 }
 
-PBYTE DLCTextureFile::getData(DWORD &dwBytes)
+std::uint8_t *DLCTextureFile::getData(std::uint32_t &dataBytes)
 {
-	dwBytes = m_dwBytes;
+	dataBytes = m_dataBytes;
 	return m_pbData;
 }
 

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
+
 class UITTFFont
 {
 private:
-	PBYTE pbData;
+	std::uint8_t *pbData;
 	//DWORD dwDataSize;
 
 public:

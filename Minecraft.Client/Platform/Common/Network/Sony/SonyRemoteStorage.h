@@ -3,6 +3,8 @@
 
 #include "sceRemoteStorage/header/sceRemoteStorage.h"
 
+#include <cstdint>
+
 class SonyRemoteStorage
 {
 public:
@@ -94,7 +96,7 @@ public:
 
 
 	bool setData( PSAVE_INFO info, CallbackFunc cb, LPVOID lpParam );
-	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
+	static int LoadSaveDataThumbnailReturned(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes);
 	static int setDataThread(void* lpParam);
 
 	SonyRemoteStorage() : m_memPoolBuffer(NULL), m_bInitialised(false),m_getInfoStatus(e_noInfoFound) {} 
@@ -107,7 +109,7 @@ protected:
 	int m_dataProgress;
 	char *m_pchServiceID;
 
-	PBYTE m_thumbnailData;
+	std::uint8_t *m_thumbnailData;
 	unsigned int m_thumbnailDataSize;
 	C4JThread* m_SetDataThread;
 	PSAVE_INFO m_setDataSaveInfo;

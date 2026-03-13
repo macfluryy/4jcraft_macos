@@ -7,18 +7,55 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
 #include "../Headers/net.minecraft.world.h"
+#include <cstdint>
 
+namespace
+{
+#if defined(_WIN32)
+	inline void *TheEndPortalTlsGetValue(DWORD key)
+	{
+		return TlsGetValue(key);
+	}
+
+	inline void TheEndPortalTlsSetValue(DWORD key, void *value)
+	{
+		TlsSetValue(key, value);
+	}
+#else
+	pthread_key_t CreateTheEndPortalTlsKey()
+	{
+		pthread_key_t key;
+		pthread_key_create(&key, NULL);
+		return key;
+	}
+
+	inline void *TheEndPortalTlsGetValue(pthread_key_t key)
+	{
+		return pthread_getspecific(key);
+	}
+
+	inline void TheEndPortalTlsSetValue(pthread_key_t key, void *value)
+	{
+		pthread_setspecific(key, value);
+	}
+#endif
+}
+
+#if defined(_WIN32)
 DWORD TheEndPortal::tlsIdx = TlsAlloc();
+#else
+pthread_key_t TheEndPortal::tlsIdx = CreateTheEndPortalTlsKey();
+#endif
 
 // 4J - allowAnywhere is a static in java, implementing as TLS here to make thread safe
 bool TheEndPortal::allowAnywhere()
 {
-	return (TlsGetValue(tlsIdx) != NULL);
+	return TheEndPortalTlsGetValue(tlsIdx) != NULL;
 }
 
 void TheEndPortal::allowAnywhere(bool set)
 {
-	TlsSetValue(tlsIdx,(LPVOID)(intptr_t)(set?1:0));
+	TheEndPortalTlsSetValue(tlsIdx, reinterpret_cast<void *>(static_cast<intptr_t>(set ? 1 : 0)));
 }
 
 TheEndPortal::TheEndPortal(int id, Material *material) : EntityTile(id, material, false)

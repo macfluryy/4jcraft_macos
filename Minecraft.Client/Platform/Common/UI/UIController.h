@@ -1,5 +1,7 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
+
 #include "IUIController.h"
 #include "UIEnums.h"
 #include "UIGroup.h"
@@ -30,7 +32,7 @@ private:
 
 	static const int UI_REPEAT_KEY_DELAY_MS = 300; // How long from press until the first repeat
 	static const int UI_REPEAT_KEY_REPEAT_RATE_MS = 100; // How long in between repeats	
-	DWORD m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU+1];
+	std::uint32_t m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU+1];
 
 	float m_fScreenWidth;
 	float m_fScreenHeight;
@@ -111,7 +113,7 @@ private:
 	C4JRender::eViewportType m_currentRenderViewport;
 	bool m_bCustomRenderPosition;
 	
-	static DWORD				m_dwTrialTimerLimitSecs;
+	static std::uint32_t		m_dwTrialTimerLimitSecs;
 
 	std::unordered_map<std::wstring, byteArray> m_substitutionTextures;
 
@@ -223,7 +225,7 @@ public:
 	void setupRenderPosition(S32 xOrigin, S32 yOrigin);
 
 	void SetSysUIShowing(bool bVal);
-	static void SetSystemUIShowing(LPVOID lpParam,bool bVal);
+	static void SetSystemUIShowing(void *lpParam,bool bVal);
 
 protected:
 	virtual void setTileOrigin(S32 xPos, S32 yPos) = 0;
@@ -256,7 +258,7 @@ protected:
 	virtual void destroySubstitutionTexture(void *destroyCallBackData, GDrawTexture *handle) {}
 
 public:
-	void registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength);
+	void registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength);
 	void unregisterSubstitutionTexture(const std::wstring &textureName, bool deleteData);
 
 public:
@@ -293,7 +295,7 @@ public:
 
 	// TOOLTIPS
 	virtual void SetTooltipText( unsigned int iPad, unsigned int tooltip, int iTextID );
-	virtual void SetEnableTooltips( unsigned int iPad, BOOL bVal );
+	virtual void SetEnableTooltips( unsigned int iPad, bool bVal );
 	virtual void ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show );
 	virtual void SetTooltips( unsigned int iPad, int iA, int iB=-1, int iX=-1, int iY=-1 , int iLT=-1, int iRT=-1, int iLB=-1, int iRB=-1, int iLS=-1, bool forceUpdate = false);
 	virtual void EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
@@ -343,15 +345,15 @@ public:
 
 	// 4J Stu - Only because of the different StringTable type, should really fix the libraries
 #ifndef __PS3__
-	virtual C4JStorage::EMessageResult RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, C4JStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0, bool bIsError = true);
+	virtual C4JStorage::EMessageResult RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL, void *lpParam=NULL, C4JStringTable *pStringTable=NULL, wchar_t *pwchFormatString=NULL, unsigned int dwFocusButton=0, bool bIsError = true);
 #else
-	virtual C4JStorage::EMessageResult RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, StringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0, bool bIsError = true);
+	virtual C4JStorage::EMessageResult RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL, void *lpParam=NULL, StringTable *pStringTable=NULL, wchar_t *pwchFormatString=NULL, unsigned int dwFocusButton=0, bool bIsError = true);
 #endif
 
-	C4JStorage::EMessageResult RequestUGCMessageBox(UINT title = -1, UINT message = -1, int iPad = -1, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult) = NULL, LPVOID lpParam = NULL);
-	C4JStorage::EMessageResult RequestContentRestrictedMessageBox(UINT title = -1, UINT message = -1, int iPad = -1, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult) = NULL, LPVOID lpParam = NULL);
+	C4JStorage::EMessageResult RequestUGCMessageBox(int title = -1, int message = -1, int iPad = -1, int( *Func)(void *,int,const C4JStorage::EMessageResult) = NULL, void *lpParam = NULL);
+	C4JStorage::EMessageResult RequestContentRestrictedMessageBox(int title = -1, int message = -1, int iPad = -1, int( *Func)(void *,int,const C4JStorage::EMessageResult) = NULL, void *lpParam = NULL);
 
 	virtual void SetWinUserIndex(unsigned int iPad);
 	unsigned int GetWinUserIndex();

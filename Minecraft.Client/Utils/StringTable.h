@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
@@ -59,13 +61,13 @@ public:
 // 	};
 
 	StringTable(void);
-	StringTable(PBYTE pbData, DWORD dwSize);
+	StringTable(std::uint8_t *pbData, unsigned int dataSize);
 	~StringTable(void);
 
-	void getData(PBYTE *ppbData, UINT *pdwSize);
+	void getData(std::uint8_t **ppData, unsigned int *pSize);
 
-	LPCWSTR getString(const std::wstring &id);
-	LPCWSTR getString(int id);
+	const wchar_t *getString(const std::wstring &id);
+	const wchar_t *getString(int id);
 
 	//static LPCWSTR m_wchLocaleCode[LOCALE_COUNT];
 

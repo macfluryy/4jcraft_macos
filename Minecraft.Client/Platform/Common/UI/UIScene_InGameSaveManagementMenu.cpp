@@ -6,7 +6,15 @@
 #include <ces.h>
 #endif
 
-int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+namespace
+{
+int InGameSaveManagementThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+{
+	return UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
+}
+}
+
+int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
 	UIScene_InGameSaveManagementMenu *pClass= (UIScene_InGameSaveManagementMenu *)lpParam;
 
@@ -14,7 +22,7 @@ int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(LPVOID lpPar
 
 	if(pbThumbnail && dwThumbnailBytes)
 	{
-		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new BYTE[dwThumbnailBytes];
+		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
 		memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData, pbThumbnail, dwThumbnailBytes);
 		pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].dwThumbnailSize = dwThumbnailBytes;
 	}
@@ -258,7 +266,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 				app.DebugPrintf("Requesting the first thumbnail\n");
 				// set the save to load
 				PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-				C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+				C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&InGameSaveManagementThumbnailReturnedThunk,this);
 
 				if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
 				{
@@ -276,7 +284,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 			if(!m_bExitScene)
 			{
 				// convert to utf16
-				uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+				std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #ifdef _DURANGO
 				// Already utf16 on durango
 				memcpy(u16Message, m_saveDetails[m_iRequestingThumbnailId].UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -296,19 +304,19 @@ void UIScene_InGameSaveManagementMenu::tick()
 #ifdef __PS3
 				size_t srcmax,dstmax;
 #else
-				uint32_t srcmax,dstmax;
-				uint32_t srclen,dstlen;
+				std::uint32_t srcmax,dstmax;
+				std::uint32_t srclen,dstlen;
 #endif
 				srcmax=MAX_SAVEFILENAME_LENGTH;
 				dstmax=MAX_SAVEFILENAME_LENGTH;
 
 #if defined(__PS3__)
-				L10nResult lres= UTF8stoUTF16s((uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
+				L10nResult lres= UTF8stoUTF16s((std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
 #else
 				SceCesUcsContext context;
 				sceCesUcsContextInit(&context);
 
-				sceCesUtf8StrToUtf16Str(&context, (uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
+				sceCesUtf8StrToUtf16Str(&context, (std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
 #endif
 #endif
 				if( m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData )
@@ -323,7 +331,7 @@ void UIScene_InGameSaveManagementMenu::tick()
 					app.DebugPrintf("Requesting another thumbnail\n");
 					// set the save to load
 					PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-					C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+					C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&InGameSaveManagementThumbnailReturnedThunk,this);
 					if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
 					{
 						// something went wrong
@@ -481,7 +489,7 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(void *pParam,int 
 	return 0;
 }
 
-int UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned(void *lpParam,bool bRes)
 {
 	UIScene_InGameSaveManagementMenu* pClass = (UIScene_InGameSaveManagementMenu*)lpParam;
 

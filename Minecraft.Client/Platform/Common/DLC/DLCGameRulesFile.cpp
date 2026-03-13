@@ -5,17 +5,17 @@
 DLCGameRulesFile::DLCGameRulesFile(const std::wstring &path) : DLCGameRules(DLCManager::e_DLCType_GameRules,path)
 {	
 	m_pbData = NULL;
-	m_dwBytes = 0;
+	m_dataBytes = 0;
 }
 
-void DLCGameRulesFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCGameRulesFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	m_pbData = pbData;
-	m_dwBytes = dwBytes;
+	m_dataBytes = dataBytes;
 }
 
-PBYTE DLCGameRulesFile::getData(DWORD &dwBytes)
+std::uint8_t *DLCGameRulesFile::getData(std::uint32_t &dataBytes)
 {
-	dwBytes = m_dwBytes;
+	dataBytes = m_dataBytes;
 	return m_pbData;
 }

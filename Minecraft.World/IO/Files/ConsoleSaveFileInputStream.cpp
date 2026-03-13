@@ -9,7 +9,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 	m_saveFile = saveFile;
 	m_file = m_saveFile->createFile( file );
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile, FileEntry *file)
@@ -17,7 +17,7 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 	m_saveFile = saveFile;
 	m_file = file;
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 //Reads a byte of data from this input stream. This method blocks if no input is yet available.
@@ -25,17 +25,17 @@ ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(ConsoleSaveFile *saveFile
 //the next byte of data, or -1 if the end of the file is reached.
 int ConsoleSaveFileInputStream::read()
 {
-	uint8_t byteRead = static_cast<uint8_t>(0);
-	DWORD numberOfBytesRead;
+	std::uint8_t byteRead = static_cast<std::uint8_t>(0);
+	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&byteRead, // data buffer
 		1, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -56,16 +56,16 @@ int ConsoleSaveFileInputStream::read()
 //the total number of bytes read into the buffer, or -1 if there is no more data because the end of the file has been reached.
 int ConsoleSaveFileInputStream::read(byteArray b)
 {
-	DWORD numberOfBytesRead;
+	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&b.data, // data buffer
 		b.length, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -92,16 +92,16 @@ int ConsoleSaveFileInputStream::read(byteArray b, unsigned int offset, unsigned 
 	// 4J Stu - We don't want to read any more than the array buffer can hold
 	assert( length <= ( b.length - offset ) );
 
-	DWORD numberOfBytesRead;
+	unsigned int numberOfBytesRead;
 
-	BOOL result = m_saveFile->readFile(
+	bool result = m_saveFile->readFile(
 		m_file,
 		&b[offset], // data buffer
 		length, // number of bytes to read
 		&numberOfBytesRead // number of bytes read
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 		return -1;
@@ -121,9 +121,9 @@ void ConsoleSaveFileInputStream::close()
 {
 	if( m_saveFile != NULL )
 	{
-		BOOL result = m_saveFile->closeHandle( m_file );
+		bool result = m_saveFile->closeHandle( m_file );
 
-		if( result == 0 )
+		if( !result )
 		{
 			// TODO 4J Stu - Some kind of error handling
 		}

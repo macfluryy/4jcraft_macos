@@ -796,14 +796,14 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 {
 	// Both PlayerConnection and ClientConnection should handle this mostly the same way
 
-	if(packet->dwBytes==0)
+	if(packet->dataBytes==0)
 	{
 		// Request for texture
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Server received request for custom texture %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwBytes);
 
 		if(dwBytes!=0)
@@ -821,7 +821,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Server received custom texture %ls\n",packet->textureName.c_str());
 #endif
-		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dwBytes);
+		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dataBytes);
 		server->connection->handleTextureReceived(packet->textureName);
 	}
 }
@@ -836,8 +836,8 @@ void PlayerConnection::handleTextureAndGeometry(std::shared_ptr<TextureAndGeomet
 #ifndef _CONTENT_PACKAGE
 		wprintf(L"Server received request for custom texture %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwTextureBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwTextureBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwTextureBytes);
 		DLCSkinFile *pDLCSkinFile = app.m_dlcManager.getSkinFile(packet->textureName);
 
@@ -900,8 +900,8 @@ void PlayerConnection::handleTextureReceived(const std::wstring &textureName)
 	AUTO_VAR(it, find( m_texturesRequested.begin(), m_texturesRequested.end(), textureName ));
 	if( it != m_texturesRequested.end() )
 	{
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(textureName,&pbData,&dwBytes);
 
 		if(dwBytes!=0)
@@ -918,8 +918,8 @@ void PlayerConnection::handleTextureAndGeometryReceived(const std::wstring &text
 	AUTO_VAR(it, find( m_texturesRequested.begin(), m_texturesRequested.end(), textureName ));
 	if( it != m_texturesRequested.end() )
 	{
-		PBYTE pbData=NULL;
-		DWORD dwTextureBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwTextureBytes=0;		
 		app.GetMemFileDetails(textureName,&pbData,&dwTextureBytes);
 		DLCSkinFile *pDLCSkinFile=app.m_dlcManager.getSkinFile(textureName);
 
@@ -932,7 +932,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(const std::wstring &text
 			else
 			{
 				// get the data from the app
-				DWORD dwSkinID = app.getSkinIdFromPath(textureName);
+				std::uint32_t dwSkinID = app.getSkinIdFromPath(textureName);
 				std::vector<SKIN_BOX *> *pvSkinBoxes = app.GetAdditionalSkinBoxes(dwSkinID);
 				unsigned int uiAnimOverrideBitmask= app.GetAnimOverrideBitmask(dwSkinID);
 
@@ -1205,7 +1205,7 @@ void PlayerConnection::handleSetCreativeModeSlot(std::shared_ptr<SetCreativeMode
 			// 4J-PB - for Xbox maps, we'll centre them on the origin of the world, since we can fit the whole world in our map
 			data->x = centreXC;
 			data->z = centreZC;
-			data->dimension = (uint8_t) player->level->dimension->id;
+			data->dimension = (std::uint8_t) player->level->dimension->id;
 			data->setDirty();
 		}
 

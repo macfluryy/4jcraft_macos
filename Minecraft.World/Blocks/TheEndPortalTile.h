@@ -1,10 +1,18 @@
 #pragma once
 #include "TileEntities/EntityTile.h"
 
+#if !defined(_WIN32)
+#include <pthread.h>
+#endif
+
 class TheEndPortal : public EntityTile
 {
 public:
+#if defined(_WIN32)
 	static DWORD tlsIdx;
+#else
+	static pthread_key_t tlsIdx;
+#endif
 	// 4J - was just a static but implemented with TLS for our version
     static bool allowAnywhere();	
 	static void allowAnywhere(bool set);	

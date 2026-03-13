@@ -1097,7 +1097,7 @@ void Mob::addAdditonalSaveData(CompoundTag *entityTag)
 			MobEffectInstance *effect = it->second;
 
 			CompoundTag *tag = new CompoundTag();
-			tag->putByte(L"Id", (BYTE) effect->getId());
+			tag->putByte(L"Id", static_cast<std::uint8_t>(effect->getId()));
 			tag->putByte(L"Amplifier", (char) effect->getAmplifier());
 			tag->putInt(L"Duration", effect->getDuration());
 			listTag->add(tag);

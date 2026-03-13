@@ -1,14 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "File.h"
 #include "FileOutputStream.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <cwchar>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <cstring>
 
 //Creates a file output stream to write to the file represented by the specified File object. A new FileDescriptor object is
 //created to represent this file connection.
@@ -19,7 +11,7 @@
 //
 //Parameters:
 //file - the file to be opened for writing.
-FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HANDLE_VALUE )
+FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( NULL )
 {
 	if( file.exists() && file.isDirectory())
 	{
@@ -27,46 +19,26 @@ FileOutputStream::FileOutputStream(const File &file) : m_fileHandle( INVALID_HAN
 		return;
 	}
 
-#ifdef _DURANGO
-	m_fileHandle = CreateFile(
-		file.getPath().c_str() , // file name
-		GENERIC_WRITE, // access mode
-		0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-		NULL, // Unused
-		OPEN_ALWAYS , // how to create
-		FILE_ATTRIBUTE_NORMAL , // file attributes
-		NULL // Unsupported
-		);
-#elif defined(__linux__)
-	std::wstring path = file.getPath();
-	char* convertedPath = new char[path.size() + 1];
-	std::wcstombs(convertedPath, path.c_str(), path.size() + 1);
-
-	m_fileHandle = (HANDLE)(intptr_t)open(convertedPath, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-	delete[] convertedPath;
+#if defined(_WIN32)
+	m_fileHandle = _wfopen(file.getPath().c_str(), L"wb");
 #else
-	m_fileHandle = CreateFile(
-		wstringtofilename(file.getPath()) , // file name
-		GENERIC_WRITE, // access mode
-		0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-		NULL, // Unused
-		OPEN_ALWAYS , // how to create
-		FILE_ATTRIBUTE_NORMAL , // file attributes
-		NULL // Unsupported
-		);
+	const std::string nativePath = wstringtofilename(file.getPath());
+	m_fileHandle = std::fopen(nativePath.c_str(), "wb");
 #endif
 
-	if( m_fileHandle == INVALID_HANDLE_VALUE )
+	if( m_fileHandle == NULL )
 	{
 		// TODO 4J Stu - Any form of error/exception handling
-		DWORD error = GetLastError();
+		perror("FileOutputStream::FileOutputStream");
 	}
 }
 
 FileOutputStream::~FileOutputStream()
 {
-	if( m_fileHandle != INVALID_HANDLE_VALUE )
-		::close( (int)(intptr_t)m_fileHandle );
+	if( m_fileHandle != NULL )
+	{
+		std::fclose( m_fileHandle );
+	}
 }
 
 //Writes the specified byte to this file output stream. Implements the write method of OutputStream.
@@ -74,23 +46,16 @@ FileOutputStream::~FileOutputStream()
 //b - the byte to be written.
 void FileOutputStream::write(unsigned int b)
 {	
-	uint8_t value = (uint8_t) b;
+	if( m_fileHandle == NULL )
+	{
+		return;
+	}
 
-#if defined(_WIN32)
-	BOOL result = WriteFile(
-		m_fileHandle, // handle to file
-		&value, // data buffer
-		1, // number of bytes to write
-		&numberOfBytesWritten, // number of bytes written
-		NULL // overlapped buffer
-		);
-#else // LINUX
-	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
-	ssize_t numberOfBytesWritten = ::write(fileDescriptor, &value, 1);
-	int result = static_cast<int>(numberOfBytesWritten);
-#endif // _WIN32
+	std::uint8_t value = (std::uint8_t) b;
+	const size_t numberOfBytesWritten = std::fwrite(&value, 1, 1, m_fileHandle);
+	const int result = std::ferror(m_fileHandle);
 
-	if( result == 0 )
+	if( result != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -105,21 +70,15 @@ void FileOutputStream::write(unsigned int b)
 //b - the data.
 void FileOutputStream::write(byteArray b)
 {
-#if defined(_WIN32)
-	BOOL result = WriteFile(
-		m_fileHandle, // handle to file
-		&b.data, // data buffer
-		b.length, // number of bytes to write
-		&numberOfBytesWritten, // number of bytes written
-		NULL // overlapped buffer
-		);
-#else // Linux
-	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
-	ssize_t numberOfBytesWritten = ::write(fileDescriptor, static_cast<const void*>(b.data), b.length);
-	int result = static_cast<int>(numberOfBytesWritten);
-#endif // _WIN32
+	if( m_fileHandle == NULL )
+	{
+		return;
+	}
 
-	if( result == 0 )
+	const size_t numberOfBytesWritten = std::fwrite(b.data, 1, b.length, m_fileHandle);
+	const int result = std::ferror(m_fileHandle);
+
+	if( result != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -139,23 +98,15 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 	// 4J Stu - We don't want to write any more than the array buffer holds
 	assert( length <= ( b.length - offset ) );
 
-#if defined(_WIN32)
-	DWORD numberOfBytesWritten;
+	if( m_fileHandle == NULL )
+	{
+		return;
+	}
 
-	BOOL result = WriteFile(
-		m_fileHandle, // handle to file
-		&b[offset], // data buffer
-		length, // number of bytes to write
-		&numberOfBytesWritten, // number of bytes written
-		NULL // overlapped buffer
-		);
-#else
-	int fileDescriptor = (int)(intptr_t)(m_fileHandle);
-	ssize_t numberOfBytesWritten = ::write(fileDescriptor, static_cast<const void*>(&b[offset]), length);
-	int result = static_cast<int>(numberOfBytesWritten);
-#endif // _WIN32
+	const size_t numberOfBytesWritten = std::fwrite(&b[offset], 1, length, m_fileHandle);
+	const int result = std::ferror(m_fileHandle);
 
-	if( result == 0 )
+	if( result != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -170,16 +121,25 @@ void FileOutputStream::write(byteArray b, unsigned int offset, unsigned int leng
 //If this stream has an associated channel then the channel is closed as well.
 void FileOutputStream::close()
 {
-#ifdef _WIN32
-	BOOL result = CloseHandle( m_fileHandle );
-#else // __linux__
-	int result = ::close( (int)(intptr_t)m_fileHandle );
-#endif // _WIN32
-	if( result == 0 )
+	if( m_fileHandle == NULL )
+	{
+		return;
+	}
+
+	int result = std::fclose( m_fileHandle );
+	if( result != 0 )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
 
 	// Stop the dtor from trying to close it again
-	m_fileHandle = INVALID_HANDLE_VALUE;
+	m_fileHandle = NULL;
+}
+
+void FileOutputStream::flush()
+{
+	if( m_fileHandle != NULL )
+	{
+		std::fflush( m_fileHandle );
+	}
 }

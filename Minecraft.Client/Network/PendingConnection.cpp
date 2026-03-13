@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include <cstdint>
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
 #include "ServerConnection.h"
@@ -94,9 +95,9 @@ void PendingConnection::sendPreLoginResponse()
 {
 	// 4J Stu - Calculate the players with UGC privileges set
 	PlayerUID *ugcXuids = new PlayerUID[MINECRAFT_NET_MAX_PLAYERS];
-	DWORD ugcXuidCount = 0;
-	DWORD hostIndex = 0;
-	BYTE ugcFriendsOnlyBits = 0;
+	std::uint8_t ugcXuidCount = 0;
+	std::uint8_t hostIndex = 0;
+	std::uint8_t ugcFriendsOnlyBits = 0;
 	char szUniqueMapName[14];
 
 	StorageManager.GetSaveUniqueFilename(szUniqueMapName);

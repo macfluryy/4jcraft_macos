@@ -1,7 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "FileTexturePack.h"
 
-FileTexturePack::FileTexturePack(DWORD id, File *file, TexturePack *fallback) : AbstractTexturePack(id, file, file->getName(), fallback)
+FileTexturePack::FileTexturePack(std::uint32_t id, File *file, TexturePack *fallback) : AbstractTexturePack(id, file, file->getName(), fallback)
 {
 	// 4J Stu - These calls need to be in the most derived version of the class
 	loadIcon();

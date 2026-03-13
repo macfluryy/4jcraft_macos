@@ -12,7 +12,7 @@ AddItemRuleDefinition::AddItemRuleDefinition()
 	m_slot = -1;
 }
 
-void AddItemRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void AddItemRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 

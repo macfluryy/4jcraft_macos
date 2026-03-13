@@ -183,8 +183,8 @@ void Player::defineSynchedData()
 {
 	this->Mob::defineSynchedData();
 
-	entityData->define(DATA_PLAYER_FLAGS_ID, (uint8_t) 0);
-	entityData->define(DATA_PLAYER_RUNNING_ID, (uint8_t) 0);
+	entityData->define(DATA_PLAYER_FLAGS_ID, (std::uint8_t) 0);
+	entityData->define(DATA_PLAYER_RUNNING_ID, (std::uint8_t) 0);
 }
 
 std::shared_ptr<ItemInstance> Player::getUseItem()
@@ -572,7 +572,7 @@ void Player::completeUsingItem()
 	}
 }
 
-void Player::handleEntityEvent(uint8_t id)
+void Player::handleEntityEvent(std::uint8_t id)
 {
 	if (id == EntityEvent::USE_ITEM_COMPLETE)
 	{
@@ -620,7 +620,7 @@ void Player::setPlayerDefaultSkin(EDefaultSkins skin)
 	m_skinIndex = skin;
 }
 
-void Player::setCustomSkin(DWORD skinId)
+void Player::setCustomSkin(std::uint32_t skinId)
 {
 #ifndef _CONTENT_PACKAGE
 	wprintf(L"Attempting to set skin to %08X for player %ls\n", skinId, name.c_str() );
@@ -634,8 +634,8 @@ void Player::setCustomSkin(DWORD skinId)
 	if( !GET_IS_DLC_SKIN_FROM_BITMASK(skinId) )
 	{	
 		// GET_UGC_SKIN_ID_FROM_BITMASK will always be zero - this was for a possible custom skin editor skin 
-		DWORD ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
-		DWORD defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
 		if( ugcSkinIndex == 0 && defaultSkinIndex > 0 )
 		{
 			playerSkin = (EDefaultSkins) defaultSkinIndex;
@@ -666,8 +666,8 @@ void Player::setCustomSkin(DWORD skinId)
 
 	if(pDLCSkinFile!=NULL)
 	{
-	DWORD dwBoxC=pDLCSkinFile->getAdditionalBoxesCount();
-	if(dwBoxC!=0)
+		const int additionalBoxCount = pDLCSkinFile->getAdditionalBoxesCount();
+		if(additionalBoxCount != 0)
 	{
 	app.DebugPrintf("Got model parts from DLCskin for skin %X\n",m_dwSkinId);
 	pvModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());
@@ -699,7 +699,7 @@ void Player::setCustomSkin(DWORD skinId)
 
 }
 
-unsigned int Player::getSkinAnimOverrideBitmask(DWORD skinId)
+unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId)
 {
 	unsigned long bitmask = 0L;
 	if( GET_IS_DLC_SKIN_FROM_BITMASK(skinId) )
@@ -751,7 +751,7 @@ void Player::setXuid(PlayerUID xuid)
 #endif
 }
 
-void Player::setCustomCape(DWORD capeId)
+void Player::setCustomCape(std::uint32_t capeId)
 {
 #ifndef _CONTENT_PACKAGE
 	wprintf(L"Attempting to set cape to %08X for player %s\n", capeId, name.c_str() );
@@ -801,10 +801,10 @@ void Player::setCustomCape(DWORD capeId)
 	}
 }
 
-DWORD Player::getCapeIdFromPath(const std::wstring &cape)
+std::uint32_t Player::getCapeIdFromPath(const std::wstring &cape)
 {
 	bool dlcCape = false; 
-	unsigned int capeId = 0;
+	std::uint32_t capeId = 0;
 
 	if(cape.size() >= 14)
 	{
@@ -827,7 +827,7 @@ DWORD Player::getCapeIdFromPath(const std::wstring &cape)
 	return capeId;
 }
 
-std::wstring Player::getCapePathFromId(DWORD capeId)
+std::wstring Player::getCapePathFromId(std::uint32_t capeId)
 {
 	// 4J Stu - This function maps the encoded DWORD we store in the player profile
 	// to a filename that is stored as a memory texture and shared between systems in game
@@ -840,8 +840,8 @@ std::wstring Player::getCapePathFromId(DWORD capeId)
 	}
 	else
 	{
-		DWORD ugcCapeIndex = GET_UGC_SKIN_ID_FROM_BITMASK(capeId);
-		DWORD defaultCapeIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(capeId);
+		std::uint32_t ugcCapeIndex = GET_UGC_SKIN_ID_FROM_BITMASK(capeId);
+		std::uint32_t defaultCapeIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(capeId);
 		if( ugcCapeIndex == 0 )
 		{
 			swprintf(chars,256,L"defcape%08X.png",defaultCapeIndex);
@@ -1979,14 +1979,14 @@ bool Player::getPlayerFlag(int flag)
 
 void Player::setPlayerFlag(int flag, bool value)
 {
-	uint8_t currentValue = entityData->getByte(DATA_PLAYER_FLAGS_ID);
+	std::uint8_t currentValue = entityData->getByte(DATA_PLAYER_FLAGS_ID);
 	if (value)
 	{
-		entityData->set(DATA_PLAYER_FLAGS_ID, (uint8_t) (currentValue | (1 << flag)));
+		entityData->set(DATA_PLAYER_FLAGS_ID, (std::uint8_t) (currentValue | (1 << flag)));
 	}
 	else
 	{
-		entityData->set(DATA_PLAYER_FLAGS_ID, (uint8_t) (currentValue & ~(1 << flag)));
+		entityData->set(DATA_PLAYER_FLAGS_ID, (std::uint8_t) (currentValue & ~(1 << flag)));
 	}
 }
 
@@ -2958,8 +2958,8 @@ std::vector<ModelPart *> *Player::GetAdditionalModelParts()
 
 			if(pDLCSkinFile!=NULL)
 			{
-				DWORD dwBoxC=pDLCSkinFile->getAdditionalBoxesCount();
-				if(dwBoxC!=0)
+				const int additionalBoxCount = pDLCSkinFile->getAdditionalBoxesCount();
+				if(additionalBoxCount != 0)
 				{
 					app.DebugPrintf("m_bCheckedForModelParts Got model parts from DLCskin for skin %X\n",m_dwSkinId);
 					m_ppAdditionalModelParts=app.SetAdditionalSkinBoxes(m_dwSkinId,pDLCSkinFile->getAdditionalBoxes());

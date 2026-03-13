@@ -2,6 +2,7 @@
 
 #include "SonyRemoteStorage_Vita.h"
 #include "SonyHttp_Vita.h"
+#include <cstdint>
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -24,12 +25,12 @@
 static 	SceRemoteStorageData s_getDataOutput;
 
 
-void SonyRemoteStorage_Vita::staticInternalCallback(const SceRemoteStorageEvent event, int32_t retCode, void * userData)
+void SonyRemoteStorage_Vita::staticInternalCallback(const SceRemoteStorageEvent event, std::int32_t retCode, void * userData)
 {
 	((SonyRemoteStorage_Vita*)userData)->internalCallback(event, retCode);
 }
 
-void SonyRemoteStorage_Vita::internalCallback(const SceRemoteStorageEvent event, int32_t retCode)
+void SonyRemoteStorage_Vita::internalCallback(const SceRemoteStorageEvent event, std::int32_t retCode)
 {
 	m_lastErrorCode = retCode;
 
@@ -313,7 +314,7 @@ bool SonyRemoteStorage_Vita::setDataInternal()
 	{
 		unsigned int uiHostOptions;
 		bool bHostOptionsRead;
-		DWORD uiTexturePack;
+		std::uint32_t uiTexturePack = 0;
 		char seed[22];
 		app.GetImageTextData(m_thumbnailData, m_thumbnailDataSize,(unsigned char *)seed, uiHostOptions, bHostOptionsRead, uiTexturePack);
 

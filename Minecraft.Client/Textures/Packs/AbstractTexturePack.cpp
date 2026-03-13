@@ -4,7 +4,9 @@
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 
-AbstractTexturePack::AbstractTexturePack(DWORD id, File *file, const std::wstring &name, TexturePack *fallback) : id(id), name(name)
+#include <limits>
+
+AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File *file, const std::wstring &name, TexturePack *fallback) : id(id), name(name)
 {
 	// 4J init
 	textureId = -1;
@@ -38,15 +40,15 @@ void AbstractTexturePack::loadIcon()
 {
 #ifdef _XBOX
 	// 4J Stu - Temporary only	
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 	swprintf(szResourceLocator, LOCATOR_SIZE ,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/Graphics/TexturePackIcon.png");
 
-	UINT size = 0;
+	unsigned int size = 0;
 	HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_iconData, &size);
-	m_iconSize = size;
+	m_iconSize = static_cast<std::uint32_t>(size);
 #endif
 }
 
@@ -54,15 +56,15 @@ void AbstractTexturePack::loadComparison()
 {
 #ifdef _XBOX
 	// 4J Stu - Temporary only	
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 	swprintf(szResourceLocator, LOCATOR_SIZE ,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/Graphics/DefaultPack_Comparison.png");
 
-	UINT size = 0;
+	unsigned int size = 0;
 	HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_comparisonData, &size);
-	m_comparisonSize = size;
+	m_comparisonSize = static_cast<std::uint32_t>(size);
 #endif
 }
 
@@ -152,7 +154,7 @@ bool AbstractTexturePack::hasFile(const std::wstring &name, bool allowFallback)
 	return !hasFile && (allowFallback && fallback != NULL) ? fallback->hasFile(name, allowFallback) : hasFile;
 }
 
-DWORD AbstractTexturePack::getId()
+std::uint32_t AbstractTexturePack::getId()
 {
 	return id;
 }
@@ -230,7 +232,7 @@ void AbstractTexturePack::loadDefaultUI()
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
 	// Load new skin
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	swprintf(szResourceLocator, LOCATOR_SIZE,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/skin_Minecraft.xur");
@@ -257,14 +259,22 @@ void AbstractTexturePack::loadDefaultColourTable()
 
 	if(coloursFile.exists())
 	{
-		DWORD dwLength = coloursFile.length();
-		byteArray data(dwLength);
+		const __int64 colourTableLength = coloursFile.length();
+		if(colourTableLength < 0 || colourTableLength > static_cast<__int64>(std::numeric_limits<unsigned int>::max()))
+		{
+			app.DebugPrintf("Failed to load the default colours table\n");
+			app.FatalLoadError();
+			return;
+		}
+
+		const unsigned int dataLength = static_cast<unsigned int>(colourTableLength);
+		byteArray data(dataLength);
 
 		FileInputStream fis(coloursFile);
-		fis.read(data,0,dwLength);
+		fis.read(data,0,dataLength);
 		fis.close();
 		if(m_colourTable != NULL) delete m_colourTable;
-		m_colourTable = new ColourTable(data.data, dwLength);
+		m_colourTable = new ColourTable(data.data, dataLength);
 
 		delete [] data.data;
 	}
@@ -281,13 +291,13 @@ void AbstractTexturePack::loadDefaultHTMLColourTable()
 	// load from the .xzp file
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	// Try and load the HTMLColours.col based off the common XML first, before the deprecated xuiscene_colourtable	
 	wsprintfW(szResourceLocator,L"section://%X,%s#%s",c_ModuleHandle,L"media", L"media/HTMLColours.col");
-	BYTE *data;
-	UINT dataLength;
+	std::uint8_t *data;
+	unsigned int dataLength;
 	if(XuiResourceLoadAll(szResourceLocator, &data, &dataLength) == S_OK)
 	{
 		m_colourTable->loadColoursFromData(data,dataLength);
@@ -366,25 +376,25 @@ std::wstring AbstractTexturePack::getXuiRootPath()
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
 	// Load new skin
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	swprintf(szResourceLocator, LOCATOR_SIZE,L"section://%X,%ls#%ls",c_ModuleHandle,L"media", L"media/");
 	return szResourceLocator;
 }
 
-PBYTE AbstractTexturePack::getPackIcon(DWORD &dwImageBytes)
+std::uint8_t *AbstractTexturePack::getPackIcon(std::uint32_t &imageBytes)
 {
 	if(m_iconSize == 0 || m_iconData == NULL) loadIcon();
-	dwImageBytes = m_iconSize;
+	imageBytes = m_iconSize;
 	return m_iconData;
 }
 
-PBYTE AbstractTexturePack::getPackComparison(DWORD &dwImageBytes)
+std::uint8_t *AbstractTexturePack::getPackComparison(std::uint32_t &imageBytes)
 {
 	if(m_comparisonSize == 0 || m_comparisonData == NULL) loadComparison();
 
-	dwImageBytes = m_comparisonSize;
+	imageBytes = m_comparisonSize;
 	return m_comparisonData;
 }
 

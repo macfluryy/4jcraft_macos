@@ -1,4 +1,7 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
 #include "DLCManager.h"
 #include "DLCAudioFile.h"
 #if defined _XBOX || defined _WINDOWS64
@@ -6,23 +9,81 @@
 #include "../../Minecraft.Client/Platform/Xbox/XML/xmlFilesCallback.h"
 #endif
 
+namespace
+{
+	constexpr std::size_t AUDIO_DLC_WCHAR_BIN_SIZE = 2;
+
+#if WCHAR_MAX > 0xFFFF
+	static std::wstring ReadAudioDlcWString(const void *data)
+	{
+		const std::uint16_t *chars = static_cast<const std::uint16_t *>(data);
+		const std::uint16_t *end = chars;
+		while(*end != 0)
+		{
+			++end;
+		}
+
+		std::wstring out(static_cast<std::size_t>(end - chars), 0);
+		for(std::size_t i = 0; i < out.size(); ++i)
+		{
+			out[i] = static_cast<wchar_t>(chars[i]);
+		}
+		return out;
+	}
+#else
+	static std::wstring ReadAudioDlcWString(const void *data)
+	{
+		return std::wstring(static_cast<const wchar_t *>(data));
+	}
+#endif
+
+	template <typename T>
+	T ReadAudioDlcValue(const std::uint8_t *data, unsigned int offset = 0)
+	{
+		T value;
+		std::memcpy(&value, data + offset, sizeof(value));
+		return value;
+	}
+
+	template <typename T>
+	void ReadAudioDlcStruct(T *out, const std::uint8_t *data, unsigned int offset = 0)
+	{
+		std::memcpy(out, data + offset, sizeof(*out));
+	}
+
+	inline unsigned int AudioParamAdvance(unsigned int wcharCount)
+	{
+		return static_cast<unsigned int>(sizeof(C4JStorage::DLC_FILE_PARAM) + wcharCount * AUDIO_DLC_WCHAR_BIN_SIZE);
+	}
+
+	inline unsigned int AudioDetailAdvance(unsigned int wcharCount)
+	{
+		return static_cast<unsigned int>(sizeof(C4JStorage::DLC_FILE_DETAILS) + wcharCount * AUDIO_DLC_WCHAR_BIN_SIZE);
+	}
+
+	inline std::wstring ReadAudioParamString(const std::uint8_t *data, unsigned int offset)
+	{
+		return ReadAudioDlcWString(data + offset + offsetof(C4JStorage::DLC_FILE_PARAM, wchData));
+	}
+}
+
 DLCAudioFile::DLCAudioFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_Audio,path)
 {	
 	m_pbData = NULL;
-	m_dwBytes = 0;
+	m_dataBytes = 0;
 }
 
-void DLCAudioFile::addData(PBYTE pbData, DWORD dwBytes)
+void DLCAudioFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	m_pbData = pbData;
-	m_dwBytes = dwBytes;
+	m_dataBytes = dataBytes;
 
-	processDLCDataFile(pbData,dwBytes);
+	processDLCDataFile(pbData,dataBytes);
 }
 
-PBYTE DLCAudioFile::getData(DWORD &dwBytes)
+std::uint8_t *DLCAudioFile::getData(std::uint32_t &dataBytes)
 {
-	dwBytes = m_dwBytes;
+	dataBytes = m_dataBytes;
 	return m_pbData;
 }
 
@@ -36,7 +97,7 @@ DLCAudioFile::EAudioParameterType DLCAudioFile::getParameterType(const std::wstr
 {
 	EAudioParameterType type = e_AudioParamType_Invalid;
 
-	for(DWORD i = 0; i < e_AudioParamType_Max; ++i)
+	for(int i = 0; i < e_AudioParamType_Max; ++i)
 	{
 		if(paramName.compare(wchTypeNamesA[i]) == 0)
 		{
@@ -120,7 +181,7 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 	}
 }
 
-bool DLCAudioFile::processDLCDataFile(PBYTE pbData, DWORD dwLength)
+bool DLCAudioFile::processDLCDataFile(std::uint8_t *pbData, std::uint32_t dataLength)
 {
 	std::unordered_map<int, EAudioParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -128,7 +189,7 @@ bool DLCAudioFile::processDLCDataFile(PBYTE pbData, DWORD dwLength)
 	// File format defined in the AudioPacker
 	// File format: Version 1
 
-	unsigned int uiVersion=*(unsigned int *)pbData;
+	unsigned int uiVersion = ReadAudioDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	if(uiVersion < CURRENT_AUDIO_VERSION_NUM)
@@ -138,60 +199,62 @@ bool DLCAudioFile::processDLCDataFile(PBYTE pbData, DWORD dwLength)
 		return false;
 	}
 	
-	unsigned int uiParameterTypeCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiParameterTypeCount = ReadAudioDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_PARAM *pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_PARAM paramBuf;
+	ReadAudioDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	
 	for(unsigned int i=0;i<uiParameterTypeCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		std::wstring parameterName((WCHAR *)pParams->wchData);
+		std::wstring parameterName = ReadAudioParamString(pbData, uiCurrentByte);
 		EAudioParameterType type = getParameterType(parameterName);
 		if( type != e_AudioParamType_Invalid )
 		{
-			parameterMapping[pParams->dwType] = type;
+			parameterMapping[paramBuf.dwType] = type;
 		}
-		uiCurrentByte+= sizeof(C4JStorage::DLC_FILE_PARAM)+(pParams->dwWchCount*sizeof(WCHAR));
-		pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+		uiCurrentByte += AudioParamAdvance(paramBuf.dwWchCount);
+		ReadAudioDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	}
-	unsigned int uiFileCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiFileCount = ReadAudioDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_DETAILS *pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_DETAILS fileBuf;
+	ReadAudioDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
-	DWORD dwTemp=uiCurrentByte;
+	unsigned int tempByteOffset = uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
-		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
+		tempByteOffset += AudioDetailAdvance(fileBuf.dwWchCount);
+		ReadAudioDlcStruct(&fileBuf, pbData, tempByteOffset);
 	}
-	PBYTE pbTemp=((PBYTE )pFile);
-	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	std::uint8_t *pbTemp = &pbData[tempByteOffset];
+	ReadAudioDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		EAudioType type = (EAudioType)pFile->dwType;
+		EAudioType type = (EAudioType)fileBuf.dwType;
 		// Params
-		unsigned int uiParameterCount=*(unsigned int *)pbTemp;
+		unsigned int uiParameterCount = ReadAudioDlcValue<unsigned int>(pbTemp);
 		pbTemp+=sizeof(int);
-		pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+		ReadAudioDlcStruct(&paramBuf, pbTemp);
 		for(unsigned int j=0;j<uiParameterCount;j++)
 		{
 			//EAudioParameterType paramType = e_AudioParamType_Invalid;
 
-			AUTO_VAR(it, parameterMapping.find( pParams->dwType ));
+			AUTO_VAR(it, parameterMapping.find(paramBuf.dwType));
 
 			if(it != parameterMapping.end() )
 			{
- 				addParameter(type,(EAudioParameterType)pParams->dwType,(WCHAR *)pParams->wchData);
+				addParameter(type, (EAudioParameterType)paramBuf.dwType, ReadAudioParamString(pbTemp, 0));
 			}
-			pbTemp+=sizeof(C4JStorage::DLC_FILE_PARAM)+(sizeof(WCHAR)*pParams->dwWchCount);
-			pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+			pbTemp += AudioParamAdvance(paramBuf.dwWchCount);
+			ReadAudioDlcStruct(&paramBuf, pbTemp);
 		}
 		// Move the pointer to the start of the next files data;
-		pbTemp+=pFile->uiFileSize;
-		uiCurrentByte+=sizeof(C4JStorage::DLC_FILE_DETAILS)+pFile->dwWchCount*sizeof(WCHAR);
+		pbTemp += fileBuf.uiFileSize;
+		uiCurrentByte += AudioDetailAdvance(fileBuf.dwWchCount);
 
-		pFile=(C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+		ReadAudioDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
 	}
 

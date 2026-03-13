@@ -40,10 +40,10 @@ public:
 
 	void loadGameRules(DLCPack *);
 
-	LevelGenerationOptions *loadGameRules(uint8_t *dIn, UINT dSize);
-	void loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize);
+	LevelGenerationOptions *loadGameRules(uint8_t *dIn, unsigned int dSize);
+	void loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, unsigned int dSize);
 
-	void saveGameRules(uint8_t **dOut, UINT *dSize); 
+	void saveGameRules(uint8_t **dOut, unsigned int *dSize); 
 
 private:
 	LevelGenerationOptions *readHeader(DLCGameRulesHeader *grh);
@@ -51,7 +51,7 @@ private:
 	void writeRuleFile(DataOutputStream *dos);
 
 public:
-	bool readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize, StringTable *strings); //(DLCGameRulesFile *dlcFile, StringTable *strings);
+	bool readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, unsigned int dSize, StringTable *strings); //(DLCGameRulesFile *dlcFile, StringTable *strings);
 
 private:
 	void readAttributes(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, GameRuleDefinition *rule);
@@ -72,7 +72,7 @@ public:
 	void setLevelGenerationOptions(LevelGenerationOptions *levelGen);
 	LevelRuleset *getGameRuleDefinitions() { return m_currentGameRuleDefinitions; }
 	LevelGenerationOptions *getLevelGenerationOptions() { return m_currentLevelGenerationOptions; }
-	LPCWSTR	GetGameRulesString(const std::wstring &key);
+	const wchar_t *GetGameRulesString(const std::wstring &key);
 
 	// 4J-JEV:
 	// Properly cleans-up and unloads the current set of gameRules.

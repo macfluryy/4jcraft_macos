@@ -314,20 +314,20 @@ void ColourTable::staticCtor()
 	}
 }
 
-ColourTable::ColourTable(PBYTE pbData, DWORD dwLength)
+ColourTable::ColourTable(std::uint8_t *pbData, std::uint32_t dataLength)
 {
-	loadColoursFromData(pbData, dwLength);
+	loadColoursFromData(pbData, dataLength);
 }
 
-ColourTable::ColourTable(ColourTable *defaultColours, PBYTE pbData, DWORD dwLength)
+ColourTable::ColourTable(ColourTable *defaultColours, std::uint8_t *pbData, std::uint32_t dataLength)
 {
 	// 4J Stu - Default the colours that of the table passed in
 	XMemCpy( (void *)m_colourValues, (void *)defaultColours->m_colourValues, sizeof(int) * eMinecraftColour_COUNT);
-	loadColoursFromData(pbData, dwLength);
+	loadColoursFromData(pbData, dataLength);
 }
-void ColourTable::loadColoursFromData(PBYTE pbData, DWORD dwLength)
+void ColourTable::loadColoursFromData(std::uint8_t *pbData, std::uint32_t dataLength)
 {
-	byteArray src(pbData, dwLength);
+	byteArray src(pbData, dataLength);
 
 	ByteArrayInputStream bais(src);
 	DataInputStream dis(&bais);

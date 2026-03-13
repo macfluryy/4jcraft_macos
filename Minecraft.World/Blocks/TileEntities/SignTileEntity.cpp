@@ -36,7 +36,7 @@ SignTileEntity::~SignTileEntity()
 {
 	// TODO ORBIS_STUBBED;
 #ifndef __ORBIS__
-	// 4J-PB - we don't need to verify strings anymore - InputManager.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback,(LPVOID)this);
+	// 4J-PB - we don't need to verify strings anymore - InputManager.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback, this);
 #endif
 }
 
@@ -129,7 +129,7 @@ void SignTileEntity::setChanged()
 			m_bVerified=true;
 #else
 
-		if(!InputManager.VerifyStrings((WCHAR**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,(LPVOID)this))
+		if(!InputManager.VerifyStrings((WCHAR**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback, this))
 		{
 			// Nothing to verify
 			m_bVerified=true;
@@ -156,7 +156,7 @@ void SignTileEntity::SetMessage(int iIndex,std::wstring &wsText)
 }
 
 // 4J-PB - added for string verification
-int SignTileEntity::StringVerifyCallback(LPVOID lpParam,STRING_VERIFY_RESPONSE *pResults)
+int SignTileEntity::StringVerifyCallback(void *lpParam,STRING_VERIFY_RESPONSE *pResults)
 {
 	// results will be in m_pStringVerifyResponse
 	SignTileEntity *pClass=(SignTileEntity *)lpParam;

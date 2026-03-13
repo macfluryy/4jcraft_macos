@@ -22,12 +22,12 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void *initData, UILayer *pa
 	initialiseMovie();
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
-	WCHAR TempString[256];
-	swprintf( (WCHAR *)TempString, 256, L"Set fov (%d)", (int)pMinecraft->gameRenderer->GetFovVal());
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"Set fov (%d)", (int)pMinecraft->gameRenderer->GetFovVal());
 	m_sliderFov.init(TempString,eControl_FOV,0,100,(int)pMinecraft->gameRenderer->GetFovVal());
 
 	float currentTime = pMinecraft->level->getLevelData()->getTime() % 24000;
-	swprintf( (WCHAR *)TempString, 256, L"Set time (unsafe) (%d)", (int)currentTime);
+	swprintf(TempString, 256, L"Set time (unsafe) (%d)", (int)currentTime);
 	m_sliderTime.init(TempString,eControl_Time,0,240,currentTime/100);
 
 	m_buttonRain.init(L"Toggle Rain",eControl_Rain);
@@ -244,9 +244,9 @@ void UIScene_DebugOverlay::handleSliderMove(F64 sliderId, F64 currentValue)
 			MinecraftServer::SetTime(currentValue * 100);
 			pMinecraft->level->getLevelData()->setTime(currentValue * 100);
 
-			WCHAR TempString[256];
+			wchar_t TempString[256];
 			float currentTime = currentValue * 100;
-			swprintf( (WCHAR *)TempString, 256, L"Set time (unsafe) (%d)", (int)currentTime);
+			swprintf(TempString, 256, L"Set time (unsafe) (%d)", (int)currentTime);
 			m_sliderTime.setLabel(TempString);
 		}
 		break;
@@ -255,8 +255,8 @@ void UIScene_DebugOverlay::handleSliderMove(F64 sliderId, F64 currentValue)
 			Minecraft *pMinecraft = Minecraft::GetInstance();
 			pMinecraft->gameRenderer->SetFovVal((float)currentValue);
 
-			WCHAR TempString[256];
-			swprintf( (WCHAR *)TempString, 256, L"Set fov (%d)", (int)currentValue);
+			wchar_t TempString[256];
+			swprintf(TempString, 256, L"Set fov (%d)", (int)currentValue);
 			m_sliderFov.setLabel(TempString);
 		}
 		break;

@@ -19,7 +19,7 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 
 	m_file = m_saveFile->createFile(file);
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFile, FileEntry *file)
@@ -28,7 +28,7 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 
 	m_file = file;
 
-	m_saveFile->setFilePointer( m_file, 0, NULL, FILE_BEGIN );
+	m_saveFile->setFilePointer( m_file, 0, SaveFileSeekOrigin::Begin );
 }
 
 //Writes the specified byte to this file output stream. Implements the write method of OutputStream.
@@ -36,18 +36,18 @@ ConsoleSaveFileOutputStream::ConsoleSaveFileOutputStream(ConsoleSaveFile *saveFi
 //b - the byte to be written.
 void ConsoleSaveFileOutputStream::write(unsigned int b)
 {	
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
-	uint8_t value = (uint8_t) b;
+	std::uint8_t value = (std::uint8_t) b;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&value, // data buffer
 		1, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -62,16 +62,16 @@ void ConsoleSaveFileOutputStream::write(unsigned int b)
 //b - the data.
 void ConsoleSaveFileOutputStream::write(byteArray b)
 {
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&b.data, // data buffer
 		b.length, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -91,16 +91,16 @@ void ConsoleSaveFileOutputStream::write(byteArray b, unsigned int offset, unsign
 	// 4J Stu - We don't want to write any more than the array buffer holds
 	assert( length <= ( b.length - offset ) );
 
-	DWORD numberOfBytesWritten;
+	unsigned int numberOfBytesWritten;
 
-	BOOL result = m_saveFile->writeFile(
+	bool result = m_saveFile->writeFile(
 		m_file,
 		&b[offset], // data buffer
 		length, // number of bytes to write
 		&numberOfBytesWritten // number of bytes written
 		);
 
-	if( result == 0 )
+	if( !result )
 	{
 		// TODO 4J Stu - Some kind of error handling
 	}
@@ -117,9 +117,9 @@ void ConsoleSaveFileOutputStream::close()
 {
 	if( m_saveFile != NULL )
 	{
-		BOOL result = m_saveFile->closeHandle( m_file );
+		bool result = m_saveFile->closeHandle( m_file );
 
-		if( result == 0 )
+		if( !result )
 		{
 			// TODO 4J Stu - Some kind of error handling
 		}

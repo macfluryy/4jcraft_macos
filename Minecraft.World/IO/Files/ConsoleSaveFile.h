@@ -3,6 +3,13 @@
 #include "FileHeader.h"
 #include "ConsoleSavePath.h"
 
+enum class SaveFileSeekOrigin
+{
+	Begin,
+	Current,
+	End
+};
+
 class ConsoleSaveFile
 {
 public:
@@ -10,11 +17,11 @@ public:
 
 	virtual FileEntry *createFile( const ConsoleSavePath &fileName ) = 0;
 	virtual void deleteFile( FileEntry *file ) = 0;
-	virtual void setFilePointer( FileEntry *file,LONG lDistanceToMove, PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod) = 0;
-	virtual BOOL writeFile(	FileEntry *file, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten) = 0;
-	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten) = 0;
-	virtual BOOL readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead ) = 0;
-	virtual BOOL closeHandle( FileEntry *file ) = 0;
+	virtual void setFilePointer( FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin ) = 0;
+	virtual bool writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten) = 0;
+	virtual bool zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten) = 0;
+	virtual bool readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead ) = 0;
+	virtual bool closeHandle( FileEntry *file ) = 0;
 	virtual void finalizeWrite() = 0;
 	virtual void tick() {};
 

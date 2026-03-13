@@ -51,20 +51,20 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 	m_params = (LoadMenuInitData *)pInitData->pvInitData;
 
-	m_MoreOptionsParams.bGenerateOptions=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bTNT = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bResetNether = FALSE;
+	m_MoreOptionsParams.bGenerateOptions = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bTNT = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bResetNether = false;
 	m_MoreOptionsParams.iPad = m_params->iPad;
 
 	// 4J-JEV: Fix for:
 	// TU12: Content: Gameplay: New "Mass Effect World" remembers and uses the settings of another - lately created - World.
-	m_MoreOptionsParams.bBonusChest = FALSE;
-	m_MoreOptionsParams.bFlatWorld = FALSE;
-	m_MoreOptionsParams.bStructures = TRUE;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bStructures = true;
 
 	m_iPad=m_params->iPad;
 	m_iSaveGameInfoIndex=m_params->iSaveGameInfoIndex;
@@ -84,23 +84,23 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -130,12 +130,12 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 			// retrieve the save icon from the texture pack, if there is one
 			TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(m_MoreOptionsParams.dwTexturePack);
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
-				XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hXuiBrush);
+				XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hXuiBrush);
 			}
 
 			// Set this level as created in creative mode, so that people can't use the themed worlds as an easy way to get achievements
@@ -195,11 +195,11 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 		// Setup all the text and checkboxes to match what the game was saved with on
 		if(bHostOptionsRead)
 		{
-			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions,eGameHostOption_PvP)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions,eGameHostOption_TrustPlayers)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions,eGameHostOption_FireSpreads)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions,eGameHostOption_TNT)>0?TRUE:FALSE;
-			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions,eGameHostOption_CheatsEnabled)>0?TRUE:FALSE;
+			m_MoreOptionsParams.bPVP = app.GetGameHostOption(uiHostOptions, eGameHostOption_PvP) > 0;
+			m_MoreOptionsParams.bTrust = app.GetGameHostOption(uiHostOptions, eGameHostOption_TrustPlayers) > 0;
+			m_MoreOptionsParams.bFireSpreads = app.GetGameHostOption(uiHostOptions, eGameHostOption_FireSpreads) > 0;
+			m_MoreOptionsParams.bTNT = app.GetGameHostOption(uiHostOptions, eGameHostOption_TNT) > 0;
+			m_MoreOptionsParams.bHostPrivileges = app.GetGameHostOption(uiHostOptions, eGameHostOption_CheatsEnabled) > 0;
 
 			m_bHasBeenInCreative = app.GetGameHostOption(uiHostOptions,eGameHostOption_HasBeenInCreative)>0;
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_HasBeenInCreative)>0)
@@ -219,7 +219,7 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 
 			if(app.GetGameHostOption(uiHostOptions,eGameHostOption_FriendsOfFriends) && !(m_bMultiplayerAllowed && bGameSetting_Online))
 			{
-				m_MoreOptionsParams.bAllowFriendsOfFriends = TRUE;
+				m_MoreOptionsParams.bAllowFriendsOfFriends = true;
 			}
 		}
 
@@ -270,10 +270,10 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 			ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				ListInfo.fEnabled = TRUE;			
 				DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
@@ -297,7 +297,7 @@ HRESULT CScene_LoadGameSettings::OnInit( XUIMessageInit* pInitData, BOOL& bHandl
 				OutputDebugStringW(tp->getName().c_str());
 				app.DebugPrintf(", sort index - %d\n",ListInfo.iSortIndex);
 #endif				
-				hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+				hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 				m_pTexturePacksList->AddData(ListInfo,0,CXuiCtrl4JList::eSortList_Index);
 			}
@@ -389,7 +389,7 @@ HRESULT CScene_LoadGameSettings::LaunchGame(void)
 	// stop the timer running that causes a check for new texture packs in TMS but not installed, since this will run all through the load game, and will crash if it tries to create an hbrush
 	XuiKillTimer(m_hObj,CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID);
 
-	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -628,7 +628,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 		XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 
 		// Check if they have the Reset Nether flag set, and confirm they want to do this
-		if(m_MoreOptionsParams.bResetNether==TRUE)
+		if(m_MoreOptionsParams.bResetNether)
 		{
 			UINT uiIDA[2];
 			uiIDA[0]=IDS_DONT_RESET_NETHER;
@@ -748,23 +748,23 @@ HRESULT CScene_LoadGameSettings::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandle
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 
 				m_bMultiplayerAllowed = bMultiplayerAllowed;
@@ -783,15 +783,15 @@ HRESULT CScene_LoadGameSettings::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandle
 			{
 				if(m_iConfigA[i]!=-1)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);
 
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 					if(dwBytes > 0 && pbData)
 					{
-						DWORD dwImageBytes=0;
-						PBYTE pbImageData=NULL;
+						unsigned int dwImageBytes=0;
+						std::uint8_t *pbImageData=NULL;
 
 						app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
 						ListInfo.fEnabled = TRUE;	
@@ -857,8 +857,8 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 		{
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 			
@@ -973,7 +973,7 @@ void CScene_LoadGameSettings::StartGameFromSave(CScene_LoadGameSettings* pClass,
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((pClass->m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(pClass->m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1022,8 +1022,8 @@ int CScene_LoadGameSettings::StartGame_SignInReturned(void *pParam,bool bContinu
 
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(), false, &pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
@@ -1241,8 +1241,10 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 	if(tp==NULL)
 	{
 		// this is probably a texture pack icon added from TMS
-		DWORD dwBytes=0,dwFileBytes=0;
-		PBYTE pbData=NULL,pbFileData=NULL;
+		unsigned int dwBytes=0;
+		unsigned int dwFileBytes=0;
+		std::uint8_t *pbData=NULL;
+		std::uint8_t *pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data
@@ -1259,13 +1261,13 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 		}
 
 		app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		app.GetFileFromTPD(eTPDFileType_Comparison,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
@@ -1280,12 +1282,12 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 		m_texturePackTitle.SetText(tp->getName().c_str());
 		m_texturePackDescription.SetText(tp->getDesc1().c_str());
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackIconBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		else
@@ -1293,11 +1295,11 @@ void CScene_LoadGameSettings::UpdateTexturePackDescription(int index)
 			m_texturePackIcon->UseBrush(NULL);
 		}
 
-		pbImageData = tp->getPackComparison(dwImageBytes);
+		imageData = tp->getPackComparison(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackComparisonBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
 		}
 		else
@@ -1405,8 +1407,8 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 	{
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 		if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
@@ -1472,7 +1474,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,m_MoreOptionsParams.bHostPrivileges );
 
 	// flag if the user wants to reset the Nether to force a Fortress with netherwart etc.
-	app.SetResetNether((m_MoreOptionsParams.bResetNether==TRUE)?true:false);
+	app.SetResetNether(m_MoreOptionsParams.bResetNether);
 	// clear out the app's terrain features list
 	app.ClearTerrainFeaturePosition();
 
@@ -1532,13 +1534,13 @@ HRESULT CScene_LoadGameSettings::OnCustomMessage_DLCMountingComplete()
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 		ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			ListInfo.fEnabled = TRUE;			
-			hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+			hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 			DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
 			if(pDLCTexPack)

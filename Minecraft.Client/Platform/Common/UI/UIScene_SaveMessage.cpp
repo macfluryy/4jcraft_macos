@@ -156,7 +156,7 @@ void UIScene_SaveMessage::handleTimerComplete(int id)
 				app.SetOptionsCallbackStatus(0,C4JStorage::eOptions_Callback_Read_CorruptDeletePending);
 				m_bIgnoreInput=false;
 				// give the option to delete the save
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_CORRUPT_FILE, IDS_CORRUPT_OPTIONS, uiIDA, 1, 
 					0,&UIScene_SaveMessage::DeleteOptionsDialogReturned,this, app.GetStringTable());

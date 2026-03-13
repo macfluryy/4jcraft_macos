@@ -459,8 +459,8 @@ bool CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DW
 
 	bool bResult = false;
 
-	PBYTE pbData=NULL;
-	DWORD dwDataSize;
+	std::uint8_t *pbData = NULL;
+	unsigned int dwDataSize = 0;
 
 	app.GetScreenshot(dwUserIndex,&pbData,&dwDataSize);
 	app.GetPreviewImage(dwUserIndex,&m_PostPreviewImage);

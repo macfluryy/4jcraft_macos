@@ -12,7 +12,7 @@ private:
 	//ZipFile *zipFile;
 
 public:
-	FileTexturePack(DWORD id, File *file, TexturePack *fallback);
+	FileTexturePack(std::uint32_t id, File *file, TexturePack *fallback);
 
 	//@Override
 	void unload(Textures *textures);

@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+
 #include "../../Minecraft.World/Util/Definitions.h"
 #include "UIScene.h"
 #include "UIControl_PlayerSkinPreview.h"
@@ -6,10 +8,10 @@
 class UIScene_SkinSelectMenu : public UIScene
 {
 private:
-	static const WCHAR *wchDefaultNamesA[eDefaultSkins_Count];
+	static const wchar_t *wchDefaultNamesA[eDefaultSkins_Count];
 
 	// 4J Stu - How many to show on each side of the main control
-	static const BYTE sidePreviewControls = 4;
+	static const int sidePreviewControls = 4;
 
 #ifdef __PSVITA__
 	enum ETouchInput
@@ -100,8 +102,8 @@ private:
 	UI_END_MAP_ELEMENTS_AND_NAMES()
 
 	DLCPack *m_currentPack;
-	DWORD m_packIndex, m_skinIndex;
-	DWORD m_originalSkinId;
+	int m_packIndex, m_skinIndex;
+	std::uint32_t m_originalSkinId;
 	std::wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
 	std::vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
 
@@ -109,7 +111,7 @@ private:
 	ESkinSelectNavigation m_currentNavigation;
 
 	bool m_bNoSkinsToShow;
-	DWORD m_currentPackCount;
+	int m_currentPackCount;
 	bool m_bIgnoreInput;
 	bool m_bSkinIndexChanged;
 	std::wstring m_leftLabel, m_centreLabel, m_rightLabel;
@@ -144,15 +146,15 @@ public:
 
 private:
 	void handleSkinIndexChanged();
-	int getNextSkinIndex(DWORD sourceIndex);
-	int getPreviousSkinIndex(DWORD sourceIndex);
+	int getNextSkinIndex(int sourceIndex);
+	int getPreviousSkinIndex(int sourceIndex);
 
 	TEXTURE_NAME getTextureId(int skinIndex);
 	
 	void handlePackIndexChanged();
 	void updatePackDisplay();
-	int getNextPackIndex(DWORD sourceIndex);
-	int getPreviousPackIndex(DWORD sourceIndex);
+	int getNextPackIndex(int sourceIndex);
+	int getPreviousPackIndex(int sourceIndex);
 
 	void setCharacterSelected(bool selected);
 	void setCharacterLocked(bool locked);
@@ -170,7 +172,7 @@ private:
 	void showNotOnlineDialog(int iPad);
 
 	static int UnlockSkinReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int RenableInput(LPVOID lpVoid, int, int);
+	static int RenableInput(void *lpVoid, int, int);
 	void AddFavoriteSkin(int iPad,int iSkinID);
 
 	void InputActionOK(unsigned int iPad);

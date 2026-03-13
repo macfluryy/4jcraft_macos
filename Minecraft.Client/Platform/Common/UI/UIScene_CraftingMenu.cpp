@@ -666,7 +666,7 @@ void UIScene_CraftingMenu::setIngredientDescriptionRedBox(int index, bool show)
 	m_slotListIngredients[index].showSlotRedBox(0,show);
 }
 
-void UIScene_CraftingMenu::setIngredientDescriptionText(int index, LPCWSTR text)
+void UIScene_CraftingMenu::setIngredientDescriptionText(int index, const wchar_t *text)
 {
 	m_labelIngredientsDesc[index].setLabel(text);
 }
@@ -690,17 +690,17 @@ void UIScene_CraftingMenu::showTabHighlight(int iIndex, bool show)
 	}
 }
 
-void UIScene_CraftingMenu::setGroupText(LPCWSTR text)
+void UIScene_CraftingMenu::setGroupText(const wchar_t *text)
 {
 	m_labelGroupName.setLabel(text);
 }
 
-void UIScene_CraftingMenu::setDescriptionText(LPCWSTR text)
+void UIScene_CraftingMenu::setDescriptionText(const wchar_t *text)
 {
 	m_labelDescription.setLabel(text);
 }
 
-void UIScene_CraftingMenu::setItemText(LPCWSTR text)
+void UIScene_CraftingMenu::setItemText(const wchar_t *text)
 {
 	m_labelItemName.setLabel(text);
 }

@@ -50,7 +50,7 @@
 CRITICAL_SECTION UIController::ms_reloadSkinCS;
 bool UIController::ms_bReloadSkinCSInitialised = false;
 
-DWORD UIController::m_dwTrialTimerLimitSecs=DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
+std::uint32_t UIController::m_dwTrialTimerLimitSecs = DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
 
 static void RADLINK WarningCallback(void *user_callback_data, Iggy *player, IggyResult code, const char *message)
 {
@@ -235,7 +235,7 @@ void UIController::SetSysUIShowing(bool bVal)
 	m_bSystemUIShowing=bVal;
 }
 
-void UIController::SetSystemUIShowing(LPVOID lpParam,bool bVal)
+void UIController::SetSystemUIShowing(void *lpParam,bool bVal)
 {
 	UIController *pClass=(UIController *)lpParam;
 	pClass->SetSysUIShowing(bVal);
@@ -633,9 +633,9 @@ void UIController::CleanUpSkinReload()
 		if(!Minecraft::GetInstance()->skins->getSelected()->hasAudio())
 		{
 #ifdef _DURANGO			
-			DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+			const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-			DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+			const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 		}
 	}
@@ -898,7 +898,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key)
 		else if (down)
 		{
 			// Check is enough time has elapsed to be a repeat key
-			DWORD currentTime = GetTickCount();
+			std::uint32_t currentTime = GetTickCount();
 			if(m_actionRepeatTimer[iPad][key] > 0 && currentTime > m_actionRepeatTimer[iPad][key])
 			{
 				repeat = true;
@@ -935,7 +935,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key)
 	else if (down)
 	{
 		// Check is enough time has elapsed to be a repeat key
-		DWORD currentTime = GetTickCount();
+		std::uint32_t currentTime = GetTickCount();
 		if(m_actionRepeatTimer[iPad][key] > 0 && currentTime > m_actionRepeatTimer[iPad][key])
 		{
 			repeat = true;
@@ -1383,7 +1383,7 @@ void RADLINK UIController::TextureSubstitutionDestroyCallback ( void * user_call
 	t->releaseTexture( id );
 }
 
-void UIController::registerSubstitutionTexture(const std::wstring &textureName, PBYTE pbData, DWORD dwLength)
+void UIController::registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength)
 {
 	// Remove it if it already exists
 	unregisterSubstitutionTexture(textureName,false);
@@ -1568,9 +1568,9 @@ void UIController::NavigateToHomeMenu()
 		// 			pDLCTexPack->m_pSoundBank->Destroy();
 		// 		}
 #ifdef _XBOX_ONE
-		DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+		const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-		DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+		const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 
 		app.DebugPrintf("Unmount result is %d\n",result);
@@ -1883,7 +1883,7 @@ void UIController::SetTooltipText( unsigned int iPad, unsigned int tooltip, int 
 	if(m_groups[(int)group]->getTooltips()) m_groups[(int)group]->getTooltips()->SetTooltipText(tooltip, iTextID);
 }
 
-void UIController::SetEnableTooltips( unsigned int iPad, BOOL bVal )
+void UIController::SetEnableTooltips( unsigned int iPad, bool bVal )
 {
 	EUIGroup group;
 	if( app.GetGameStarted() )
@@ -2199,7 +2199,7 @@ void UIController::UpdatePlayerBasePositions()
 {
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+	for(int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 	{
 		if(pMinecraft->localplayers[idx] != NULL)
 		{
@@ -2254,26 +2254,26 @@ void UIController::SetTrialTimerLimitSecs(unsigned int uiSeconds)
 
 void UIController::UpdateTrialTimer(unsigned int iPad)
 {
-	WCHAR wcTime[20]; 
+	wchar_t wcTime[20];
 
-	DWORD dwTimeTicks=(DWORD)app.getTrialTimer();
+	std::uint32_t timeTicks = (std::uint32_t)app.getTrialTimer();
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(timeTicks > m_dwTrialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		timeTicks = m_dwTrialTimerLimitSecs;
 	}
 
-	dwTimeTicks=m_dwTrialTimerLimitSecs-dwTimeTicks;
+	timeTicks = m_dwTrialTimerLimitSecs - timeTicks;
 
 #ifndef _CONTENT_PACKAGE
 	if(true)
 #else
 	// display the time - only if there's less than 3 minutes
-	if(dwTimeTicks<180)
+	if(timeTicks < 180)
 #endif
 	{
-		int iMins=dwTimeTicks/60;
-		int iSeconds=dwTimeTicks%60;
+		int iMins = timeTicks / 60;
+		int iSeconds = timeTicks % 60;
 		swprintf( wcTime, 20, L"%d:%02d",iMins,iSeconds);
 		if(m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()) m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()->setTrialTimer(wcTime);
 	}
@@ -2283,7 +2283,7 @@ void UIController::UpdateTrialTimer(unsigned int iPad)
 	}
 
 	// are we out of time?
-	if((dwTimeTicks==0))
+	if(timeTicks == 0)
 	{
 		// Trial over
 		// bring up the pause menu to stop the trial over message box being called again?
@@ -2298,14 +2298,14 @@ void UIController::UpdateTrialTimer(unsigned int iPad)
 
 void UIController::ReduceTrialTimerValue()
 {
-	DWORD dwTimeTicks=(int)app.getTrialTimer();
+	std::uint32_t timeTicks = (std::uint32_t)app.getTrialTimer();
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(timeTicks > m_dwTrialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		timeTicks = m_dwTrialTimerLimitSecs;
 	}
 
-	m_dwTrialTimerLimitSecs-=dwTimeTicks;
+	m_dwTrialTimerLimitSecs -= timeTicks;
 }
 
 void UIController::ShowAutosaveCountdownTimer(bool show)
@@ -2316,7 +2316,7 @@ void UIController::ShowAutosaveCountdownTimer(bool show)
 void UIController::UpdateAutosaveCountdownTimer(unsigned int uiSeconds)
 {
 #if !(defined(_XBOX_ONE) || defined(__ORBIS__))
-	WCHAR wcAutosaveCountdown[100]; 
+	wchar_t wcAutosaveCountdown[100];
 	swprintf( wcAutosaveCountdown, 100, app.GetString(IDS_AUTOSAVE_COUNTDOWN),uiSeconds);
 	if(m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()) m_groups[(int)eUIGroup_Fullscreen]->getPressStartToPlay()->setTrialTimer(wcAutosaveCountdown);
 #endif
@@ -2414,11 +2414,11 @@ void UIController::ClearPressStart()
 
 // 4J Stu - For the different StringTable classes. Should really fix the libraries.
 #ifndef __PS3__
-C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad,
-														   int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton, bool bIsError)
+C4JStorage::EMessageResult UIController::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad,
+														   int( *Func)(void *,int,const C4JStorage::EMessageResult), void *lpParam, C4JStringTable *pStringTable, wchar_t *pwchFormatString, unsigned int dwFocusButton, bool bIsError)
 #else
-C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad,
-														   int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, StringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton, bool bIsError)
+C4JStorage::EMessageResult UIController::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad,
+														   int( *Func)(void *,int,const C4JStorage::EMessageResult), void *lpParam, StringTable *pStringTable, wchar_t *pwchFormatString, unsigned int dwFocusButton, bool bIsError)
 #endif
 {
 	MessageBoxInfo param;
@@ -2440,8 +2440,8 @@ C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT ui
 		// Queue this message box
 		QueuedMessageBoxData *queuedData = new QueuedMessageBoxData();
 		queuedData->info = param;
-		queuedData->info.uiOptionA = new UINT[param.uiOptionC];
-		memcpy(queuedData->info.uiOptionA, param.uiOptionA, param.uiOptionC * sizeof(UINT));
+		queuedData->info.uiOptionA = new unsigned int[param.uiOptionC];
+		memcpy(queuedData->info.uiOptionA, param.uiOptionA, param.uiOptionC * sizeof(unsigned int));
 		queuedData->iPad = dwPad;
 		queuedData->layer = eUILayer_Error; // Ensures that these don't get wiped out by a CloseAllScenes call
 		m_queuedMessageBoxData.push_back(queuedData);
@@ -2462,7 +2462,7 @@ C4JStorage::EMessageResult UIController::RequestMessageBox(UINT uiTitle, UINT ui
 	}
 }
 
-C4JStorage::EMessageResult UIController::RequestUGCMessageBox(UINT title/* = -1 */, UINT message/* = -1 */, int iPad/* = -1*/, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)/* = NULL*/, LPVOID lpParam/* = NULL*/)
+C4JStorage::EMessageResult UIController::RequestUGCMessageBox(int title/* = -1 */, int message/* = -1 */, int iPad/* = -1*/, int( *Func)(void *,int,const C4JStorage::EMessageResult)/* = NULL*/, void *lpParam/* = NULL*/)
 {
 	// Default title / messages
 	if (title == -1)
@@ -2484,17 +2484,17 @@ C4JStorage::EMessageResult UIController::RequestUGCMessageBox(UINT title/* = -1 
 	return C4JStorage::EMessage_ResultAccept; 
 #elif defined(__PSVITA__)
 	ProfileManager.ShowSystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, iPad );
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, IDS_CHAT_RESTRICTION_UGC, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #else
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, message, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #endif
 }
 
-C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(UINT title/* = -1 */, UINT message/* = -1 */, int iPad/* = -1*/, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)/* = NULL*/, LPVOID lpParam/* = NULL*/)
+C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(int title/* = -1 */, int message/* = -1 */, int iPad/* = -1*/, int( *Func)(void *,int,const C4JStorage::EMessageResult)/* = NULL*/, void *lpParam/* = NULL*/)
 {
 	// Default title / messages
 	if (title == -1)
@@ -2522,7 +2522,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(UINT
 	ProfileManager.ShowSystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_AGE_RESTRICTION, iPad );
 	return C4JStorage::EMessage_ResultAccept;
 #else
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	return ui.RequestMessageBox( title, message, uiIDA, 1, iPad, Func, lpParam, app.GetStringTable(), NULL, 0, false);
 #endif

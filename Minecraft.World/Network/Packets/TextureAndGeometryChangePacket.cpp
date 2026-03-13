@@ -31,14 +31,14 @@ TextureAndGeometryChangePacket::TextureAndGeometryChangePacket(std::shared_ptr<E
 void TextureAndGeometryChangePacket::read(DataInputStream *dis) //throws IOException 
 {
 	id = dis->readInt();
-	dwSkinID = dis->readInt();
+	dwSkinID = static_cast<std::uint32_t>(dis->readInt());
 	path = dis->readUTF();
 }
 
 void TextureAndGeometryChangePacket::write(DataOutputStream *dos) //throws IOException 
 {
 	dos->writeInt(id);
-	dos->writeInt(dwSkinID);
+	dos->writeInt(static_cast<int>(dwSkinID));
 	dos->writeUTF(path);
 }
 

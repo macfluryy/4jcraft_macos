@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "IUIScene_StartGame.h"
 
 class UIScene_LoadMenu : public IUIScene_StartGame
@@ -68,7 +70,7 @@ private:
 #endif
 	//int *m_iConfigA; // track the texture packs that we don't have installed
 
-	PBYTE m_pbThumbnailData;
+	std::uint8_t *m_pbThumbnailData;
 	unsigned int m_uiThumbnailSize;
 	std::wstring m_thumbnailName;
 
@@ -108,15 +110,14 @@ private:
 	void LaunchGame(void);
 
 #ifdef _DURANGO
-	static void checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad);
+	static void checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad);
 #endif
 	
 	static int ConfirmLoadReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static void StartGameFromSave(UIScene_LoadMenu* pClass, DWORD dwLocalUsersMask);
+	static void StartGameFromSave(UIScene_LoadMenu* pClass, int localUsersMask);
 	static int LoadSaveDataReturned(void *pParam,bool bIsCorrupt, bool bIsOwner);
 	static int TrophyDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int LoadDataComplete(void *pParam);
-	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
 	static int CheckResetNetherReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int DeleteSaveDataReturned(void *pParam,bool bSuccess);
@@ -127,5 +128,6 @@ private:
 #endif
 
 public:
-	static int StartGame_SignInReturned(LPVOID pParam, bool, int);
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
+	static int StartGame_SignInReturned(void *pParam, bool, int);
 };

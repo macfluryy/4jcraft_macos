@@ -20,7 +20,7 @@ private:
 		std::vector<intArray> toosmall;	// 4J added
 		~ThreadStorage();
 	};
-	static DWORD tlsIdx;
+	static unsigned int tlsIdx;
 
 	static const int TINY_CUTOFF = 256;
 

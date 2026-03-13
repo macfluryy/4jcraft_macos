@@ -10,9 +10,9 @@ private:
 
 public:
 	DLCLocalisationFile(const std::wstring &path);
-	DLCLocalisationFile(PBYTE pbData, DWORD dwBytes); // when we load in a texture pack details file from TMS++
+	DLCLocalisationFile(std::uint8_t *pbData, std::uint32_t dataBytes); // when we load in a texture pack details file from TMS++
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
+	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes);
 
 	StringTable *getStringTable() { return m_strings; }
 };

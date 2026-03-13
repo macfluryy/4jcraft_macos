@@ -4,8 +4,8 @@
 class DLCUIDataFile : public DLCFile
 {
 private:
-	PBYTE m_pbData;
-	DWORD m_dwBytes;
+	std::uint8_t *m_pbData;
+	std::uint32_t m_dataBytes;
 	bool m_canDeleteData;
 
 public:
@@ -15,6 +15,6 @@ public:
 	using DLCFile::addData;
 	using DLCFile::addParameter;
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes,bool canDeleteData = false);
-	virtual PBYTE getData(DWORD &dwBytes);
+	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes,bool canDeleteData = false);
+	virtual std::uint8_t *getData(std::uint32_t &dataBytes);
 };

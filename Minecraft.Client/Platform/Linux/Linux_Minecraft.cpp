@@ -700,10 +700,10 @@ ProfileManager.Initialise(TITLEID_MINECRAFT,
 );
 
 // set a function to be called when there's a sign in change, so we can exit a level if the primary player signs out
-ProfileManager.SetSignInChangeCallback(&CConsoleMinecraftApp::SignInChangeCallback,(LPVOID)&app);
+ProfileManager.SetSignInChangeCallback(&CConsoleMinecraftApp::SignInChangeCallback, &app);
 
 // Set a callback for when there is a read error on profile data
-//StorageManager.SetProfileReadErrorCallback(&CConsoleMinecraftApp::ProfileReadErrorCallback,(LPVOID)&app);
+//StorageManager.SetProfileReadErrorCallback(&CConsoleMinecraftApp::ProfileReadErrorCallback, &app);
 
 
 // QNet needs to be setup after profile manager, as we do not want its Notify listener to handle

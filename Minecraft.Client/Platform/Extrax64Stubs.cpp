@@ -467,14 +467,14 @@ void				C_4JProfile::SetLockedProfile(int iProf) {}
 bool				C_4JProfile::IsSignedIn(int iQuadrant) { return ( iQuadrant == 0); }
 bool				C_4JProfile::IsSignedInLive(int iProf) { return true; }
 bool				C_4JProfile::IsGuest(int iQuadrant) { return false; }
-UINT				C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant) { return 0; }
-UINT				C_4JProfile::DisplayOfflineProfile(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant)  { return 0; }
-UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant) { return 0; }
+UINT				C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
+UINT				C_4JProfile::DisplayOfflineProfile(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant)  { return 0; }
+UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
 void				C_4JProfile::SetPrimaryPlayerChanged(bool bVal) {}
 bool				C_4JProfile::QuerySigninStatus(void) { return true; }
 void				C_4JProfile::GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid) {*pXuid = 0xe000d45248242f2e; }
-BOOL				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return false; }
-BOOL				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
+bool				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return false; }
+bool				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
 bool				C_4JProfile::AllowedToPlayMultiplayer(int iProf) { return true; }
 
 #if defined(__ORBIS__)
@@ -488,9 +488,9 @@ bool				C_4JProfile::GetChatAndContentRestrictions(int iPad, bool thisQuadrantOn
 #endif
 
 void				C_4JProfile::StartTrialGame() {}
-void				C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, BOOL *allAllowed, BOOL *friendsAllowed) {}
-BOOL				C_4JProfile::CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount ) { return true; }
-bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), LPVOID lpParam) { return false; }
+void				C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed) {}
+bool				C_4JProfile::CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, unsigned int xuidCount) { return true; }
+bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes), void *lpParam) { return false; }
 void				C_4JProfile::CancelProfileAvatarRequest() {}
 int					C_4JProfile::GetPrimaryPad() { return 0; }
 void				C_4JProfile::SetPrimaryPad(int iPad) {}
@@ -503,22 +503,22 @@ char*				C_4JProfile::GetGamertag(int iPad){ return "PlayerName"; }
 std::wstring				C_4JProfile::GetDisplayName(int iPad){ return L"PlayerName"; }
 #endif
 bool				C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }
-void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(LPVOID, bool, unsigned int),LPVOID lpParam) {}
-void				C_4JProfile::SetNotificationsCallback(void ( *Func)(LPVOID, DWORD, unsigned int),LPVOID lpParam) {}
+void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(void *, bool, unsigned int),void *lpParam) {}
+void				C_4JProfile::SetNotificationsCallback(void ( *Func)(void *, std::uint32_t, unsigned int),void *lpParam) {}
 bool				C_4JProfile::RegionIsNorthAmerica(void) { return false; }
 bool				C_4JProfile::LocaleIsUSorCanada(void) { return false; }
 HRESULT				C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
 bool				C_4JProfile::IsSystemUIDisplayed() { return false; }
-void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(LPVOID), LPVOID lpParam) {}
-int( *defaultOptionsCallback)(LPVOID,C_4JProfile::PROFILESETTINGS *, const int iPad) = NULL;
-LPVOID lpProfileParam = NULL;
-int					C_4JProfile::SetDefaultOptionsCallback(int( *Func)(LPVOID,PROFILESETTINGS *, const int iPad),LPVOID lpParam)
+void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(void *), void *lpParam) {}
+int( *defaultOptionsCallback)(void *,C_4JProfile::PROFILESETTINGS *, const int iPad) = NULL;
+void *lpProfileParam = NULL;
+int					C_4JProfile::SetDefaultOptionsCallback(int( *Func)(void *,PROFILESETTINGS *, const int iPad),void *lpParam)
 {
 	defaultOptionsCallback = Func;
 	lpProfileParam = lpParam;
 	return 0;
 }
-int					C_4JProfile::SetOldProfileVersionCallback(int( *Func)(LPVOID,unsigned char *, const unsigned short,const int),LPVOID lpParam) { return 0; }
+int					C_4JProfile::SetOldProfileVersionCallback(int( *Func)(void *,unsigned char *, const unsigned short,const int),void *lpParam) { return 0; }
 
 // To store the dashboard preferences for controller flipped, etc.
 C_4JProfile::PROFILESETTINGS ProfileSettingsA[XUSER_MAX_COUNT];
@@ -548,7 +548,7 @@ void				C_4JProfile::RegisterRichPresenceContext(int iGameConfigContextID) {}
 void				C_4JProfile::SetRichPresenceContextValue(int iPad,int iContextID, int iVal) {}
 void				C_4JProfile::SetCurrentGameActivity(int iPad,int iNewPresence, bool bSetOthersToIdle) {}
 void				C_4JProfile::DisplayFullVersionPurchase(bool bRequired, int iQuadrant, int iUpsellParam) {}
-void				C_4JProfile::SetUpsellCallback(void ( *Func)(LPVOID lpParam, eUpsellType type, eUpsellResponse response, int iUserData),LPVOID lpParam) {}
+void				C_4JProfile::SetUpsellCallback(void ( *Func)(void *lpParam, eUpsellType type, eUpsellResponse response, int iUserData),void *lpParam) {}
 void				C_4JProfile::SetDebugFullOverride(bool bVal) {s_bProfileIsFullVersion = bVal;}
 void				C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 
@@ -593,7 +593,7 @@ PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}
 
 void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam ) {}
 void								C4JStorage::SetDLCPackageRoot(char *pszDLCRoot) {}
-C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(LPVOID, int, DWORD, int),LPVOID lpParam, DWORD dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
+C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, DWORD dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
 DWORD								C4JStorage::CancelGetDLCOffers() { return 0; }
 void								C4JStorage::ClearDLCOffers() {}
 XMARKETPLACE_CONTENTOFFER_INFO&		C4JStorage::GetOffer(DWORD dw) { static XMARKETPLACE_CONTENTOFFER_INFO retval = {0}; return retval; }
@@ -602,7 +602,7 @@ DWORD								C4JStorage::InstallOffer(int iOfferIDC,ULONGLONG *ullOfferIDA,int( 
 DWORD								C4JStorage::GetAvailableDLCCount( int iPad) { return 0; }
 XCONTENT_DATA&						C4JStorage::GetDLC(DWORD dw) { static XCONTENT_DATA retval = {0}; return retval; }
 C4JStorage::EDLCStatus				C4JStorage::GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam) { return C4JStorage::EDLC_Idle; }
-DWORD								C4JStorage::MountInstalledDLC(int iPad,DWORD dwDLC,int( *Func)(LPVOID, int, DWORD,DWORD),LPVOID lpParam,LPCSTR szMountDrive) { return 0; }
+std::uint32_t						C4JStorage::MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,LPCSTR szMountDrive) { return 0; }
 DWORD								C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
 C4JStorage::ETMSStatus				C4JStorage::ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType, WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(LPVOID, WCHAR *,int, bool, int),LPVOID lpParam, int iAction) { return C4JStorage::ETMSStatus_Idle; }
 bool								C4JStorage::WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,BYTE *pBuffer,DWORD dwBufferSize) { return true; }

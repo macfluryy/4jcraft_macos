@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+
 #include "../Media/xuiscene_ingame_player_options.h"
 
 class CScene_InGamePlayerOptions : public CXuiSceneImpl
@@ -79,7 +81,7 @@ public:
 private:
 	bool m_editingSelf;
 	int m_iPad;
-	BYTE m_networkSmallId;
+	std::uint8_t m_networkSmallId;
 	unsigned int m_playerPrivileges;
 	D3DXVECTOR3 m_OriginalPosition;
 

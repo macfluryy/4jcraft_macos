@@ -23,16 +23,16 @@ JustGrSource::JustGrSource()
 }
 
 bool JustGrSource::requiresTexturePack() {return m_bRequiresTexturePack;}
-UINT JustGrSource::getRequiredTexturePackId() {return m_requiredTexturePackId;}
+std::uint32_t JustGrSource::getRequiredTexturePackId() {return m_requiredTexturePackId;}
 std::wstring JustGrSource::getDefaultSaveName() {return m_defaultSaveName;}
-LPCWSTR JustGrSource::getWorldName() {return m_worldName.c_str();}
-LPCWSTR JustGrSource::getDisplayName() {return m_displayName.c_str();}
+const wchar_t *JustGrSource::getWorldName() {return m_worldName.c_str();}
+const wchar_t *JustGrSource::getDisplayName() {return m_displayName.c_str();}
 std::wstring JustGrSource::getGrfPath() {return m_grfPath;}
 bool JustGrSource::requiresBaseSave() { return m_bRequiresBaseSave; };
 std::wstring JustGrSource::getBaseSavePath() { return m_baseSavePath; };
 
 void JustGrSource::setRequiresTexturePack(bool x) {m_bRequiresTexturePack = x;}
-void JustGrSource::setRequiredTexturePackId(UINT x) {m_requiredTexturePackId = x;}
+void JustGrSource::setRequiredTexturePackId(std::uint32_t x) {m_requiredTexturePackId = x;}
 void JustGrSource::setDefaultSaveName(const std::wstring &x) {m_defaultSaveName = x;}
 void JustGrSource::setWorldName(const std::wstring &x) {m_worldName = x;}
 void JustGrSource::setDisplayName(const std::wstring &x) {m_displayName = x;}
@@ -55,7 +55,7 @@ LevelGenerationOptions::LevelGenerationOptions()
 	m_bRequiresGameRules = false;
 
 	m_pbBaseSaveData = NULL;
-	m_dwBaseSaveSize = 0;
+	m_baseSaveSize = 0;
 }
 
 LevelGenerationOptions::~LevelGenerationOptions()
@@ -90,7 +90,7 @@ LevelGenerationOptions::~LevelGenerationOptions()
 
 ConsoleGameRules::EGameRuleType LevelGenerationOptions::getActionType() { return ConsoleGameRules::eGameRuleType_LevelGenerationOptions; }
 
-void LevelGenerationOptions::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void LevelGenerationOptions::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 		
@@ -332,7 +332,7 @@ void LevelGenerationOptions::clearSchematics()
 	m_schematics.clear();
 }
 
-ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstring &filename, PBYTE pbData, DWORD dwLen)
+ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstring &filename, std::uint8_t *pbData, unsigned int dataLength)
 {
 	// If we have already loaded this, just return
 	AUTO_VAR(it, m_schematics.find(filename));
@@ -346,7 +346,7 @@ ConsoleSchematicFile *LevelGenerationOptions::loadSchematicFile(const std::wstri
 	}
 
 	ConsoleSchematicFile *schematic = NULL;
-	byteArray data(pbData,dwLen);
+	byteArray data(pbData, dataLength);
 	ByteArrayInputStream bais(data);
 	DataInputStream dis(&bais);
 	schematic = new ConsoleSchematicFile();
@@ -389,7 +389,7 @@ void LevelGenerationOptions::loadStringTable(StringTable *table)
 	m_stringTable = table;
 }
 
-LPCWSTR LevelGenerationOptions::getString(const std::wstring &key)
+const wchar_t *LevelGenerationOptions::getString(const std::wstring &key)
 {
 	if(m_stringTable == NULL)
 	{
@@ -401,7 +401,7 @@ LPCWSTR LevelGenerationOptions::getString(const std::wstring &key)
 	}
 }
 
-void LevelGenerationOptions::getBiomeOverride(int biomeId, BYTE &tile, BYTE &topTile)
+void LevelGenerationOptions::getBiomeOverride(int biomeId, std::uint8_t &tile, std::uint8_t &topTile)
 {
 	for(AUTO_VAR(it, m_biomeOverrides.begin()); it != m_biomeOverrides.end(); ++it)
 	{
@@ -478,10 +478,10 @@ bool LevelGenerationOptions::isFromSave() { return getSrc() == eSrc_fromSave; }
 bool LevelGenerationOptions::isFromDLC() { return getSrc() == eSrc_fromDLC; }
 
 bool LevelGenerationOptions::requiresTexturePack() { return info()->requiresTexturePack(); }
-UINT LevelGenerationOptions::getRequiredTexturePackId() { return info()->getRequiredTexturePackId(); }
+std::uint32_t LevelGenerationOptions::getRequiredTexturePackId() { return info()->getRequiredTexturePackId(); }
 std::wstring LevelGenerationOptions::getDefaultSaveName() { return info()->getDefaultSaveName(); }
-LPCWSTR LevelGenerationOptions::getWorldName() { return info()->getWorldName(); }
-LPCWSTR LevelGenerationOptions::getDisplayName() { return info()->getDisplayName(); }
+const wchar_t *LevelGenerationOptions::getWorldName() { return info()->getWorldName(); }
+const wchar_t *LevelGenerationOptions::getDisplayName() { return info()->getDisplayName(); }
 std::wstring LevelGenerationOptions::getGrfPath() {	return info()->getGrfPath(); }
 bool LevelGenerationOptions::requiresBaseSave() { return info()->requiresBaseSave(); }
 std::wstring LevelGenerationOptions::getBaseSavePath() { return info()->getBaseSavePath(); }
@@ -489,7 +489,7 @@ std::wstring LevelGenerationOptions::getBaseSavePath() { return info()->getBaseS
 void LevelGenerationOptions::setGrSource(GrSource *grs) { m_pSrc = grs; }
 
 void LevelGenerationOptions::setRequiresTexturePack(bool x) { info()->setRequiresTexturePack(x); }
-void LevelGenerationOptions::setRequiredTexturePackId(UINT x) { info()->setRequiredTexturePackId(x); }
+void LevelGenerationOptions::setRequiredTexturePackId(std::uint32_t x) { info()->setRequiredTexturePackId(x); }
 void LevelGenerationOptions::setDefaultSaveName(const std::wstring &x) { info()->setDefaultSaveName(x); }
 void LevelGenerationOptions::setWorldName(const std::wstring &x) { info()->setWorldName(x); }
 void LevelGenerationOptions::setDisplayName(const std::wstring &x) { info()->setDisplayName(x); }
@@ -498,10 +498,10 @@ void LevelGenerationOptions::setBaseSavePath(const std::wstring &x) { info()->se
 
 bool LevelGenerationOptions::ready() { return info()->ready(); }
 
-void LevelGenerationOptions::setBaseSaveData(PBYTE pbData, DWORD dwSize) { m_pbBaseSaveData = pbData; m_dwBaseSaveSize = dwSize; }
-PBYTE LevelGenerationOptions::getBaseSaveData(DWORD &size) { size = m_dwBaseSaveSize; return m_pbBaseSaveData; }
-bool LevelGenerationOptions::hasBaseSaveData() { return m_dwBaseSaveSize > 0 && m_pbBaseSaveData != NULL; }
-void LevelGenerationOptions::deleteBaseSaveData() { if(m_pbBaseSaveData) delete m_pbBaseSaveData; m_pbBaseSaveData = NULL; m_dwBaseSaveSize = 0; }
+void LevelGenerationOptions::setBaseSaveData(std::uint8_t *pbData, unsigned int dataSize) { m_pbBaseSaveData = pbData; m_baseSaveSize = dataSize; }
+std::uint8_t *LevelGenerationOptions::getBaseSaveData(unsigned int &size) { size = m_baseSaveSize; return m_pbBaseSaveData; }
+bool LevelGenerationOptions::hasBaseSaveData() { return m_baseSaveSize > 0 && m_pbBaseSaveData != NULL; }
+void LevelGenerationOptions::deleteBaseSaveData() { delete[] m_pbBaseSaveData; m_pbBaseSaveData = NULL; m_baseSaveSize = 0; }
 
 bool LevelGenerationOptions::hasLoadedData() { return m_hasLoadedData; }
 void LevelGenerationOptions::setLoadedData() { m_hasLoadedData = true; }

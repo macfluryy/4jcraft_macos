@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class UIScene_TeleportMenu : public UIScene
@@ -12,7 +14,7 @@ private:
 	
 	bool m_teleportToPlayer;
 	int m_playersCount;
-	BYTE m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
+	std::uint8_t m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
 	char m_playersVoiceState[MINECRAFT_NET_MAX_PLAYERS];
 	short m_playersColourState[MINECRAFT_NET_MAX_PLAYERS];
 	std::wstring m_playerNames[MINECRAFT_NET_MAX_PLAYERS];

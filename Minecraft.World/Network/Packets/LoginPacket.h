@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "Packet.h"
 class LevelType;
@@ -14,10 +15,10 @@ public:
 	PlayerUID m_offlineXuid, m_onlineXuid;			// 4J Added
 	char difficulty;	// 4J Added	
 	bool m_friendsOnlyUGC; // 4J Added
-	DWORD m_ugcPlayersVersion; // 4J Added
-	INT m_multiplayerInstanceId; //4J Added for sentient
-	BYTE m_playerIndex; // 4J Added
-	DWORD m_playerSkinId, m_playerCapeId; // 4J Added
+	std::uint32_t m_ugcPlayersVersion; // 4J Added
+	int m_multiplayerInstanceId; //4J Added for sentient
+	std::uint8_t m_playerIndex; // 4J Added
+	std::uint32_t m_playerSkinId, m_playerCapeId; // 4J Added
 	bool m_isGuest; // 4J Added
 	bool m_newSeaLevel; // 4J Added
 	LevelType *m_pLevelType;
@@ -27,12 +28,12 @@ public:
 
 	// 1.8.2
 	int gameType;
-	BYTE mapHeight;
-	BYTE maxPlayers;
+	std::uint8_t mapHeight;
+	std::uint8_t maxPlayers;
 
 	LoginPacket();
-	LoginPacket(const std::wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, BYTE mapHeight, BYTE maxPlayers, char difficulty, INT m_multiplayerInstanceId, BYTE playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale); // Server -> Client
-	LoginPacket(const std::wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid, bool friendsOnlyUGC, DWORD ugcPlayersVersion, DWORD skinId, DWORD capeId, bool isGuest); // Client -> Server
+	LoginPacket(const std::wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, std::uint8_t mapHeight, std::uint8_t maxPlayers, char difficulty, int m_multiplayerInstanceId, std::uint8_t playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale); // Server -> Client
+	LoginPacket(const std::wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid, bool friendsOnlyUGC, std::uint32_t ugcPlayersVersion, std::uint32_t skinId, std::uint32_t capeId, bool isGuest); // Client -> Server
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

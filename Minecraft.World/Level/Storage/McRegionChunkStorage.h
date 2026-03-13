@@ -39,5 +39,5 @@ public:
 private:
 	static void WaitForAllSaves();
 	static void WaitForSaves();
-	static int runSaveThreadProc(LPVOID lpParam);
+	static int runSaveThreadProc(void *lpParam);
 };

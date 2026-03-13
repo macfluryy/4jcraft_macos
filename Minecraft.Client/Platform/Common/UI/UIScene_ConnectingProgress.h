@@ -10,8 +10,8 @@ private:
 	bool m_showTooltips;
 	bool m_removeLocalPlayer;
 	bool m_showingButton;
-	void (*m_cancelFunc)(LPVOID param);
-	LPVOID m_cancelFuncParam;
+	void (*m_cancelFunc)(void *param);
+	void *m_cancelFuncParam;
 
 	enum EControls
 	{

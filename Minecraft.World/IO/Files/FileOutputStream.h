@@ -1,7 +1,11 @@
 #pragma once
 // 4J Stu - Represents Java standard lib abstract
 
+#include <cstdio>
+
 #include "../Streams/OutputStream.h"
+
+class File;
 
 class FileOutputStream : public OutputStream
 {
@@ -12,8 +16,8 @@ public:
 	virtual void write(byteArray b);
 	virtual void write(byteArray b, unsigned int offset, unsigned int length);
 	virtual void close();
-	virtual void flush() {}
+	virtual void flush();
 
 private:
-	HANDLE m_fileHandle;
+	std::FILE *m_fileHandle;
 };

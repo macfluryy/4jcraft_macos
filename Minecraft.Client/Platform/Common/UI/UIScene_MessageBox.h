@@ -15,8 +15,8 @@ private:
 		eControl_COUNT
 	};
 
-	int( *m_Func)(LPVOID,int,const C4JStorage::EMessageResult);
-	LPVOID m_lpParam;
+	int( *m_Func)(void *,int,const C4JStorage::EMessageResult);
+	void *m_lpParam;
 	int m_buttonCount;
 
 	UIControl_Button m_buttonButtons[eControl_COUNT];

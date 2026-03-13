@@ -37,7 +37,7 @@ void ConsoleSchematicFile::save(DataOutputStream *dos)
 		dos->writeInt(m_ySize);
 		dos->writeInt(m_zSize);
 
-		byteArray ba(new BYTE[ m_data.length ], m_data.length);
+		byteArray ba(new std::uint8_t[ m_data.length ], m_data.length);
 		Compression::getCompression()->CompressLZXRLE(	ba.data, &ba.length, 
 													m_data.data, m_data.length);
 

@@ -1415,7 +1415,7 @@ void Minecraft::run_middle()
 					}
 					else
 					{
-						UINT uiIDA[1] = { IDS_OK };
+						unsigned int uiIDA[1] = { IDS_OK };
 						ui.RequestMessageBox( IDS_CANTJOIN_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA, 1, i, NULL, NULL, app.GetStringTable() );
 					}
 				}
@@ -1610,14 +1610,14 @@ void Minecraft::run_middle()
 											// Check if PSN is unavailable because of age restriction
 											if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 											{
-												UINT uiIDA[1];
+												unsigned int uiIDA[1];
 												uiIDA[0] = IDS_OK;
 												ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, i, NULL, NULL, app.GetStringTable());
 											}
 											else if (ProfileManager.IsSignedIn(i) && !ProfileManager.IsSignedInLive(i))
 											{
 												// You're not signed in to PSN!
-												UINT uiIDA[2];
+												unsigned int uiIDA[2];
 												uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 												uiIDA[1] = IDS_CANCEL;
 												ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, i,&Minecraft::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
@@ -1625,7 +1625,7 @@ void Minecraft::run_middle()
 											else
 #endif
 											{
-												UINT uiIDA[1];
+												unsigned int uiIDA[1];
 												uiIDA[0]=IDS_CONFIRM_OK;
 												ui.RequestMessageBox(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1, i, NULL, NULL, app.GetStringTable());
 											}
@@ -3894,7 +3894,7 @@ void Minecraft::setLevel(MultiPlayerLevel *level, int message /*=-1*/, std::shar
 			// The level renderer needs to have it's stored level set to NULL so that it doesn't break next time we set one
 			if (levelRenderer != NULL)
 			{
-				for(DWORD p = 0; p < XUSER_MAX_COUNT; ++p)
+				for(unsigned int p = 0; p < XUSER_MAX_COUNT; ++p)
 				{
 					levelRenderer->setLevel(p, NULL);
 				}
@@ -4225,7 +4225,7 @@ void Minecraft::respawnPlayer(int iPad, int dimension, int newEntityId)
 	}
 
 	// Set the animation override if the skin has one
-	DWORD dwSkinID=app.getSkinIdFromPath(player->customTextureUrl);
+	std::uint32_t dwSkinID = app.getSkinIdFromPath(player->customTextureUrl);
 	if(GET_IS_DLC_SKIN_FROM_BITMASK(dwSkinID))
 	{
 		player->setAnimOverrideBitmask(player->getSkinAnimOverrideBitmask(dwSkinID));
@@ -4703,7 +4703,7 @@ void Minecraft::playerLeftTutorial(int iPad)
 
 		// 4J Stu -This telemetry event means something different on XboxOne, so we don't call it for simple state changes like this
 #ifndef _XBOX_ONE
-		for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			if(localplayers[idx] != NULL)
 			{
@@ -4715,7 +4715,7 @@ void Minecraft::playerLeftTutorial(int iPad)
 }
 
 #ifdef _DURANGO
-void Minecraft::inGameSignInCheckAllPrivilegesCallback(LPVOID lpParam, bool hasPrivileges, int iPad)
+void Minecraft::inGameSignInCheckAllPrivilegesCallback(void *lpParam, bool hasPrivileges, int iPad)
 {
 	Minecraft* pClass = (Minecraft*)lpParam;
 
@@ -4727,7 +4727,7 @@ void Minecraft::inGameSignInCheckAllPrivilegesCallback(LPVOID lpParam, bool hasP
 	{
 		if( !g_NetworkManager.SessionHasSpace() )
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_MULTIPLAYER_FULL_TITLE, IDS_MULTIPLAYER_FULL_TEXT, uiIDA, 1);
 			ProfileManager.RemoveGamepadFromGame(iPad);
@@ -4784,7 +4784,7 @@ int Minecraft::InGame_SignInReturned(void *pParam,bool bContinue, int iPad)
 #endif
 			if( !g_NetworkManager.SessionHasSpace() )
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_MULTIPLAYER_FULL_TITLE, IDS_MULTIPLAYER_FULL_TEXT, uiIDA, 1);
 #ifdef _DURANGO
@@ -4828,7 +4828,7 @@ int Minecraft::InGame_SignInReturned(void *pParam,bool bContinue, int iPad)
 				// 4J Stu - Don't allow converting to guests as we don't allow any guest sign-in while in the game
 				// Fix for #66516 - TCR #124: MPS Guest Support ; #001: BAS Game Stability: TU8: The game crashes when second Guest signs-in on console which takes part in Xbox LIVE multiplayer session.
 				//ProfileManager.RequestConvertOfflineToGuestUI( &Minecraft::InGame_SignInReturned, pMinecraftClass,iPad);
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,iPad,NULL,NULL, app.GetStringTable());
 #ifdef _DURANGO

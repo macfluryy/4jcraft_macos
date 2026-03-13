@@ -1015,8 +1015,8 @@ MemTexture *Textures::addMemTexture(const std::wstring& name,MemTextureProcessor
 	if(texture == NULL)
 	{
 		// can we find it in the app mem files?
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(name,&pbData,&dwBytes);
 
 		if(dwBytes!=0)

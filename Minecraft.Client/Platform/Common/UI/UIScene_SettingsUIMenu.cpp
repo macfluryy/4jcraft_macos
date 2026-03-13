@@ -16,12 +16,12 @@ UIScene_SettingsUIMenu::UIScene_SettingsUIMenu(int iPad, void *initData, UILayer
 	m_checkboxSplitscreen.init(app.GetString(IDS_CHECKBOX_VERTICAL_SPLIT_SCREEN),eControl_Splitscreen,(app.GetGameSettings(m_iPad,eGameSetting_SplitScreenVertical)!=0));
 	m_checkboxShowSplitscreenGamertags.init(app.GetString(IDS_CHECKBOX_DISPLAY_SPLITSCREENGAMERTAGS),eControl_ShowSplitscreenGamertags,(app.GetGameSettings(m_iPad,eGameSetting_DisplaySplitscreenGamertags)!=0));
 
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZE ),app.GetGameSettings(m_iPad,eGameSetting_UISize)+1);	
+	swprintf(TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZE ),app.GetGameSettings(m_iPad,eGameSetting_UISize)+1);
 	m_sliderUISize.init(TempString,eControl_UISize,1,3,app.GetGameSettings(m_iPad,eGameSetting_UISize)+1);
 
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZESPLITSCREEN ),app.GetGameSettings(m_iPad,eGameSetting_UISizeSplitscreen)+1);	
+	swprintf(TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZESPLITSCREEN ),app.GetGameSettings(m_iPad,eGameSetting_UISizeSplitscreen)+1);
 	m_sliderUISizeSplitscreen.init(TempString,eControl_UISizeSplitscreen,1,3,app.GetGameSettings(m_iPad,eGameSetting_UISizeSplitscreen)+1);
 
 	doHorizontalResizeCheck();
@@ -145,14 +145,14 @@ void UIScene_SettingsUIMenu::handleInput(int iPad, int key, bool repeat, bool pr
 
 void UIScene_SettingsUIMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
 	case eControl_UISize:
 		m_sliderUISize.handleSliderMove(value);
 
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZE ),value);		
+		swprintf(TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZE ),value);
 		m_sliderUISize.setLabel(TempString);
 
 		// is this different from the current value?
@@ -167,7 +167,7 @@ void UIScene_SettingsUIMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 	case eControl_UISizeSplitscreen:
 		m_sliderUISizeSplitscreen.handleSliderMove(value);
 
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZESPLITSCREEN ),value);			
+		swprintf(TempString, 256, L"%ls: %d", app.GetString( IDS_SLIDER_UISIZESPLITSCREEN ),value);
 		m_sliderUISizeSplitscreen.setLabel(TempString);
 
 		if(value != app.GetGameSettings(m_iPad,eGameSetting_UISizeSplitscreen)+1)

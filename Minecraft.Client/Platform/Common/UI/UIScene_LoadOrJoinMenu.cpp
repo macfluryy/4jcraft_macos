@@ -9,6 +9,7 @@
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFile.h"
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFileOriginal.h"
 #include "../../Minecraft.World/IO/Files/ConsoleSaveFileSplit.h"
+#include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.Client/Rendering/EntityRenderers/ProgressRenderer.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
@@ -51,7 +52,15 @@ C4JStorage::SAVETRANSFER_FILE_DETAILS UIScene_LoadOrJoinMenu::m_debugTransferDet
 #endif
 #endif
 
-int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes)
+namespace
+{
+int LoadOrJoinThumbnailReturnedThunk(void *lpParam, std::uint8_t *thumbnailData, unsigned int thumbnailBytes)
+{
+	return UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(lpParam, thumbnailData, thumbnailBytes);
+}
+}
+
+int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int dwThumbnailBytes)
 {
     UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
 
@@ -59,7 +68,7 @@ int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE p
 
     if(pbThumbnail && dwThumbnailBytes)
     {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new BYTE[dwThumbnailBytes];
+        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
         memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].pbThumbnailData, pbThumbnail, dwThumbnailBytes);
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId].dwThumbnailSize = dwThumbnailBytes;
     }
@@ -74,7 +83,7 @@ int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE p
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::LoadSaveCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::LoadSaveCallback(void *lpParam,bool bRes)
 {
     //UIScene_LoadOrJoinMenu *pClass= (UIScene_LoadOrJoinMenu *)lpParam;
     // Get the save data now
@@ -639,7 +648,7 @@ void UIScene_LoadOrJoinMenu::tick()
                 app.DebugPrintf("Requesting the first thumbnail\n");
                 // set the save to load
                 PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-                C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+                C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadOrJoinThumbnailReturnedThunk,this);
 
                 if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
                 {
@@ -657,7 +666,7 @@ void UIScene_LoadOrJoinMenu::tick()
             if(!m_bExitScene)
             {
                 // convert to utf16
-                uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
+                std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
 #ifdef _DURANGO
                 // Already utf16 on durango
                 memcpy(u16Message, m_saveDetails[m_iRequestingThumbnailId].UTF16SaveFilename, MAX_SAVEFILENAME_LENGTH);
@@ -675,19 +684,19 @@ void UIScene_LoadOrJoinMenu::tick()
 #ifdef __PS3
                 size_t srcmax,dstmax;
 #else
-                uint32_t srcmax,dstmax;
-                uint32_t srclen,dstlen;
+                std::uint32_t srcmax,dstmax;
+                std::uint32_t srclen,dstlen;
 #endif
                 srcmax=MAX_SAVEFILENAME_LENGTH;
                 dstmax=MAX_SAVEFILENAME_LENGTH;
 
 #if defined(__PS3__)
-                L10nResult lres= UTF8stoUTF16s((uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
+                L10nResult lres= UTF8stoUTF16s((std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,&srcmax,u16Message,&dstmax);
 #else
                 SceCesUcsContext context;
                 sceCesUcsContextInit(&context);
 
-                sceCesUtf8StrToUtf16Str(&context, (uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
+                sceCesUtf8StrToUtf16Str(&context, (std::uint8_t *)m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,srcmax,&srclen,u16Message,dstmax,&dstlen);
 #endif
 #endif
                 if( m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData )
@@ -702,7 +711,7 @@ void UIScene_LoadOrJoinMenu::tick()
                     app.DebugPrintf("Requesting another thumbnail\n");
                     // set the save to load
                     PSAVE_DETAILS pSaveDetails=StorageManager.ReturnSavesInfo();
-                    C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadSaveDataThumbnailReturned,this);
+                    C4JStorage::ESaveGameState eLoadStatus=StorageManager.LoadSaveDataThumbnail(&pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],&LoadOrJoinThumbnailReturnedThunk,this);
                     if(eLoadStatus!=C4JStorage::ESaveGame_GetSaveThumbnail)
                     {
                         // something went wrong
@@ -927,14 +936,14 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons()
 			// increment the count of the mash-up pack worlds in the save list
 			m_iMashUpButtonsC++;
             TexturePack *tp = Minecraft::GetInstance()->skins->getTexturePackById(levelGen->getRequiredTexturePackId());
-            DWORD dwImageBytes;
-            PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+            std::uint32_t imageBytes = 0;
+            std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-            if(dwImageBytes > 0 && pbImageData)
+            if(imageBytes > 0 && imageData)
             {
                 wchar_t imageName[64];
                 swprintf(imageName,64,L"tpack%08x",tp->getId());
-                registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+                registerSubstitutionTexture(imageName, imageData, imageBytes);
                 m_buttonListSaves.setTextureName( m_buttonListSaves.getItemCount() - 1, imageName );
             }
         }
@@ -1035,7 +1044,7 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
 #elif defined(_DURANGO)
         if(getControlFocus() == eControl_GamesList && m_buttonListGames.getItemCount() > 0)
         {
-            DWORD nIndex = m_buttonListGames.getCurrentSelection();
+            const int nIndex = m_buttonListGames.getCurrentSelection();
             FriendSessionInfo *pSelectedSession = m_currentSessions->at( nIndex );
 
             PlayerUID uid = pSelectedSession->searchResult.m_playerXuids[0];
@@ -1165,15 +1174,15 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pr
     }
 }
 
-int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes)
 {
     // 4J HEG - No reason to set value if keyboard was cancelled
     UIScene_LoadOrJoinMenu *pClass=(UIScene_LoadOrJoinMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;
     if (bRes)
     {	
-        uint16_t ui16Text[128];
-        ZeroMemory(ui16Text, 128 * sizeof(uint16_t) );
+        std::uint16_t ui16Text[128];
+        ZeroMemory(ui16Text, 128 * sizeof(std::uint16_t) );
         InputManager.GetText(ui16Text);
 
         // check the name is valid
@@ -1224,7 +1233,7 @@ void UIScene_LoadOrJoinMenu::handleFocusChange(F64 controlId, F64 childId)
 
 
 #ifdef SONY_REMOTE_STORAGE_DOWNLOAD
-void UIScene_LoadOrJoinMenu::remoteStorageGetSaveCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::remoteStorageGetSaveCallback(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     app.DebugPrintf("remoteStorageGetCallback err : 0x%08x\n", error_code);
     assert(error_code == 0);
@@ -1453,7 +1462,7 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex)
 			// PS Plus upsell
 			// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 			// upsell psplus
-			int32_t iResult=sceNpCommerceDialogInitialize();
+			std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 			SceNpCommerceDialogParam param;
 			sceNpCommerceDialogParamInitialize(&param);
@@ -1578,7 +1587,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -1590,7 +1599,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions *levelGen)
     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_FullscreenProgress, loadingParams);
 }
 
-void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(LPVOID pParam)
+void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(void *pParam)
 {
     if(pParam != NULL)
     {
@@ -1617,7 +1626,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
     FriendSessionInfo *pSelectedSession = NULL;
     if(DoesGamesListHaveFocus() && m_buttonListGames.getItemCount() > 0)
     {
-        unsigned int nIndex = m_buttonListGames.getCurrentSelection();
+        const int nIndex = m_buttonListGames.getCurrentSelection();
         pSelectedSession = m_currentSessions->at( nIndex );
     }
 
@@ -1641,7 +1650,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
     unsigned int xuiListSize = m_buttonListGames.getItemCount();
     unsigned int filteredListSize = (unsigned int)m_currentSessions->size();
 
-    BOOL gamesListHasFocus = DoesGamesListHaveFocus();
+    const bool gamesListHasFocus = DoesGamesListHaveFocus();
 
     if(filteredListSize > 0)
     {
@@ -1691,30 +1700,32 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
                 TexturePack *tp = pMinecraft->skins->getTexturePackById(sessionInfo->data.texturePackParentId);
                 HRESULT hr;
 
-                DWORD dwImageBytes=0;
-                PBYTE pbImageData=NULL;
+                std::uint32_t imageBytes = 0;
+                std::uint8_t *imageData = NULL;
 
                 if(tp==NULL)
                 {
-                    DWORD dwBytes=0;
-                    PBYTE pbData=NULL;
+                    unsigned int dwBytes=0;
+                    std::uint8_t *pbData=NULL;
                     app.GetTPD(sessionInfo->data.texturePackParentId,&pbData,&dwBytes);
 
                     // is it in the tpd data ?
-                    app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
-                    if(dwImageBytes > 0 && pbImageData)
+                    unsigned int tpdImageBytes = 0;
+                    app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&imageData,&tpdImageBytes );
+                    imageBytes = static_cast<std::uint32_t>(tpdImageBytes);
+                    if(imageBytes > 0 && imageData)
                     {
                         swprintf(textureName,64,L"%ls",sessionInfo->displayLabel);
-                        registerSubstitutionTexture(textureName,pbImageData,dwImageBytes);
+                        registerSubstitutionTexture(textureName,imageData,imageBytes);
                     }
                 }
                 else
                 {
-                    pbImageData = tp->getPackIcon(dwImageBytes);
-                    if(dwImageBytes > 0 && pbImageData)
+                    imageData = tp->getPackIcon(imageBytes);
+                    if(imageBytes > 0 && imageData)
                     {
                         swprintf(textureName,64,L"%ls",sessionInfo->displayLabel);
-                        registerSubstitutionTexture(textureName,pbImageData,dwImageBytes);
+                        registerSubstitutionTexture(textureName,imageData,imageBytes);
                     }
                 }
             }
@@ -1724,13 +1735,13 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList()
                 Minecraft *pMinecraft = Minecraft::GetInstance();
                 TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(0);
 
-                DWORD dwImageBytes;
-                PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+                std::uint32_t imageBytes = 0;
+                std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-                if(dwImageBytes > 0 && pbImageData)
+                if(imageBytes > 0 && imageData)
                 {
                     swprintf(textureName,64,L"%ls",sessionInfo->displayLabel);
-                    registerSubstitutionTexture(textureName,pbImageData,dwImageBytes);
+                    registerSubstitutionTexture(textureName,imageData,imageBytes);
                 }
             }
 
@@ -1848,7 +1859,7 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id)
 
                         if(hasRegisteredSubstitutionTexture(textureName)==false)
                         {
-                            PBYTE pbImageData;
+                            std::uint8_t *pbImageData = NULL;
                             int iImageDataBytes=0;
                             SonyHttp::getDataFromURL(pDLCInfo->chImageURL,(void **)&pbImageData,&iImageDataBytes);
 
@@ -1932,7 +1943,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(File *saveFile, ESavePlatform save
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -1997,7 +2008,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud()
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-    loadingParams->lpParam = (LPVOID)param;
+    loadingParams->lpParam = param;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2027,7 +2038,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(void *pParam,int iPad,C4JSt
         }
         else
         {
-			StorageManager.DeleteSaveData(&pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC], UIScene_LoadOrJoinMenu::DeleteSaveDataReturned, (LPVOID)pClass->GetCallbackUniqueId());
+			StorageManager.DeleteSaveData(&pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC], UIScene_LoadOrJoinMenu::DeleteSaveDataReturned, reinterpret_cast<void *>(pClass->GetCallbackUniqueId()));
             pClass->m_controlSavesTimer.setVisible( true );
         }
     }
@@ -2039,7 +2050,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(void *pParam,int iPad,C4JSt
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(void *lpParam,bool bRes)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
@@ -2060,7 +2071,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(LPVOID lpParam,bool bRes)
 }
 
 
-int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(void *lpParam,bool bRes)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
 
@@ -2105,7 +2116,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
 			pClass->m_bIgnoreInput=true;
 #ifdef _DURANGO
             // bring up a keyboard
-            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE), (pClass->m_saveDetails[pClass->m_iSaveListIndex-pClass->m_iDefaultButtonsC]).UTF16SaveName,(DWORD)0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
+            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE), (pClass->m_saveDetails[pClass->m_iSaveListIndex-pClass->m_iDefaultButtonsC]).UTF16SaveName,0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
 #else
             // bring up a keyboard
             wchar_t wSaveName[128];
@@ -2113,7 +2124,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(void *pParam,int iPad,C4JS
             ZeroMemory(wSaveName, 128 * sizeof(wchar_t) );
             mbstowcs(wSaveName, pClass->m_saveDetails[pClass->m_iSaveListIndex - pClass->m_iDefaultButtonsC].UTF8SaveName, strlen(pClass->m_saveDetails->UTF8SaveName)+1); // plus null
             LPWSTR ptr = wSaveName;
-            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE),wSaveName,(DWORD)0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
+            InputManager.RequestKeyboard(app.GetString(IDS_RENAME_WORLD_TITLE),wSaveName,0,25,&UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,pClass,C_4JInput::EKeyboardMode_Default);
 #endif
         }
         break;
@@ -2202,7 +2213,7 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(void *pParam,int iPad,C4JS
 				std::wstring ProductId;
 				app.GetDLCFullOfferIDForPackID(pClass->m_initData->selectedSession->data.texturePackParentId,ProductId);
 
-				StorageManager.InstallOffer(1,(WCHAR *)ProductId.c_str(),NULL,NULL);
+				StorageManager.InstallOffer(1, const_cast<wchar_t *>(ProductId.c_str()), NULL, NULL);
 			}
 			else
 			{	
@@ -2282,7 +2293,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 {
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc;
-    loadingParams->lpParam = (LPVOID)this;
+    loadingParams->lpParam = this;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2301,7 +2312,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
 
 
-int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(void *lpParam, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	if(bRes)
@@ -2317,7 +2328,7 @@ int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(LPVOID lpParam,bool bRes
 	return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback(LPVOID lpParam, SAVE_DETAILS *pSaveDetails, bool bRes)
+int UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback(void *lpParam, SAVE_DETAILS *pSaveDetails, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	if(bRes)
@@ -2356,7 +2367,7 @@ int UIScene_LoadOrJoinMenu::CrossSaveFinishedCallback(void *pParam,int iPad,C4JS
 }
 
 
-int UIScene_LoadOrJoinMenu::CrossSaveDeleteOnErrorReturned(LPVOID lpParam,bool bRes)
+int UIScene_LoadOrJoinMenu::CrossSaveDeleteOnErrorReturned(void *lpParam, bool bRes)
 {
 	UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_eSaveTransferState = eSaveTransfer_ErrorMesssage;
@@ -2375,7 +2386,7 @@ int UIScene_LoadOrJoinMenu::RemoteSaveNotFoundCallback(void *pParam,int iPad,C4J
 bool g_bForceVitaSaveWipe = false;
 
 
-int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void *lpParameter)
 {
     Compression::UseDefaultThreadStorage();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParameter;
@@ -2435,16 +2446,16 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 				const char* pNameUTF8 = app.getRemoteStorage()->getSaveNameUTF8();
 				mbstowcs(wSaveName, pNameUTF8, strlen(pNameUTF8)+1); // plus null
 				StorageManager.SetSaveTitle(wSaveName);
-				PBYTE pbThumbnailData=NULL;
-				DWORD dwThumbnailDataSize=0;
+				std::uint8_t *pbThumbnailData = NULL;
+				unsigned int dwThumbnailDataSize = 0;
 
-				PBYTE pbDataSaveImage=NULL;
-				DWORD dwDataSizeSaveImage=0;
+				std::uint8_t *pbDataSaveImage = NULL;
+				unsigned int dwDataSizeSaveImage = 0;
 
 				StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 				StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
 
-				BYTE bTextMetadata[88];
+				std::uint8_t bTextMetadata[88];
 				ZeroMemory(bTextMetadata,88);
 				int iTextMetadataBytes = app.CreateImageTextData(bTextMetadata, app.getRemoteStorage()->getSaveSeed(), true, app.getRemoteStorage()->getSaveHostOptions(), app.getRemoteStorage()->getSaveTexturePack() );
 
@@ -2471,7 +2482,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 				// we can't cancel here, we need the saves info so we can delete the file
 				if(pClass->m_saveTransferDownloadCancelled)
 				{	
-					WCHAR wcTemp[256];
+					wchar_t wcTemp[256];
 					swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 					m_wstrStageText=wcTemp;
 					pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2486,7 +2497,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 		case eSaveTransfer_GettingSavesInfo:
 			if(pClass->m_saveTransferDownloadCancelled)
 			{	
-				WCHAR wcTemp[256];
+				wchar_t wcTemp[256];
 				swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 				m_wstrStageText=wcTemp;
 				pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2521,7 +2532,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 
         case eSaveTransfer_GettingFileData:
             {
-                WCHAR wcTemp[256];
+                wchar_t wcTemp[256];
 
                 int dataProgress = app.getRemoteStorage()->getDataProgress();
                 pMinecraft->progressRenderer->progressStagePercentage(dataProgress);
@@ -2595,16 +2606,16 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 
                 StorageManager.ResetSaveData();
 				{
-					PBYTE pbThumbnailData=NULL;
-					DWORD dwThumbnailDataSize=0;
+					std::uint8_t *pbThumbnailData = NULL;
+					unsigned int dwThumbnailDataSize = 0;
 
-					PBYTE pbDataSaveImage=NULL;
-					DWORD dwDataSizeSaveImage=0;
+					std::uint8_t *pbDataSaveImage = NULL;
+					unsigned int dwDataSizeSaveImage = 0;
 
 					StorageManager.GetDefaultSaveImage(&pbDataSaveImage, &dwDataSizeSaveImage);			// Get the default save thumbnail (as set by SetDefaultImages) for use on saving games t
 					StorageManager.GetDefaultSaveThumbnail(&pbThumbnailData,&dwThumbnailDataSize);		// Get the default save image (as set by SetDefaultImages) for use on saving games that 
 
-					BYTE bTextMetadata[88];
+					std::uint8_t bTextMetadata[88];
 					ZeroMemory(bTextMetadata,88);
 					int iTextMetadataBytes = app.CreateImageTextData(bTextMetadata, app.getRemoteStorage()->getSaveSeed(), true, app.getRemoteStorage()->getSaveHostOptions(), app.getRemoteStorage()->getSaveTexturePack() );
 
@@ -2684,7 +2695,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 				{
 					if(pClass->m_saveTransferDownloadCancelled)
 					{	
-						WCHAR wcTemp[256];
+						wchar_t wcTemp[256];
 					swprintf(wcTemp,256, app.GetString(IDS_CANCEL));		// MGH - should change this string to "cancelling download"
 						m_wstrStageText=wcTemp;
 						pMinecraft->progressRenderer->progressStage( m_wstrStageText );
@@ -2767,7 +2778,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc( LPVOID lpParameter 
 
 }
 
-void UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::SaveTransferReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 
@@ -2787,7 +2798,7 @@ ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert()
     return NULL;
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void *lpParam)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_saveTransferDownloadCancelled = true;
@@ -2804,7 +2815,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveUpload()
 {
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc;
-    loadingParams->lpParam = (LPVOID)this;
+    loadingParams->lpParam = this;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -2831,7 +2842,7 @@ int UIScene_LoadOrJoinMenu::CrossSaveUploadFinishedCallback(void *pParam,int iPa
 }
 
 
-int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void *lpParameter)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParameter;
 	pClass->m_saveTransferUploadCancelled = false;
@@ -2865,7 +2876,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc( LPVOID lpParameter )
             break;
         case eSaveUpload_UploadingFileData:
             {
-                WCHAR wcTemp[256];
+                wchar_t wcTemp[256];
                 int dataProgress = app.getRemoteStorage()->getDataProgress();
                 pMinecraft->progressRenderer->progressStagePercentage(dataProgress);
 
@@ -2920,7 +2931,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc( LPVOID lpParameter )
 
 }
 
-void UIScene_LoadOrJoinMenu::SaveUploadReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void UIScene_LoadOrJoinMenu::SaveUploadReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 
@@ -2939,7 +2950,7 @@ void UIScene_LoadOrJoinMenu::SaveUploadReturned(LPVOID lpParam, SonyRemoteStorag
 	}
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveUploadCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveUploadCallback(void *lpParam)
 {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu *) lpParam;
 	pClass->m_saveTransferUploadCancelled = true;
@@ -2982,7 +2993,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
     LoadingInputParams *loadingParams = new LoadingInputParams();
     loadingParams->func = &UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc;
-    loadingParams->lpParam = (LPVOID)stateContainer;
+    loadingParams->lpParam = stateContainer;
 
     UIFullscreenProgressCompletionData *completionData = new UIFullscreenProgressCompletionData();
     completionData->bShowBackground=TRUE;
@@ -3001,7 +3012,7 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer()
 
 
 
-int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void *lpParameter)
 {
     Compression::UseDefaultThreadStorage();
 
@@ -3174,7 +3185,7 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc( LPVOID lpParameter )
 
     if(pStateContainer->m_bSaveTransferCancelled)
     {
-        WCHAR wcTemp[256];
+        wchar_t wcTemp[256];
 
         pStateContainer->m_bSaveTransferCancelled=false;
         swprintf(wcTemp,app.GetString(IDS_SAVE_TRANSFER_DOWNLOAD_CANCELLED));
@@ -3226,7 +3237,7 @@ void UIScene_LoadOrJoinMenu::RequestFileSize( SaveTransferStateContainer *pClass
 void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass, wchar_t *filename )
 {
     Minecraft *pMinecraft=Minecraft::GetInstance();
-    WCHAR wcTemp[256];
+    wchar_t wcTemp[256];
 
     pMinecraft->progressRenderer->progressStagePercentage(0);
 
@@ -3241,17 +3252,24 @@ void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass
         File targetFile( std::wstring(L"FakeTMSPP\\").append(filename) );
         if(targetFile.exists())
         {
-            HANDLE hSaveFile = CreateFile( targetFile.getPath().c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
+            const std::size_t fileLength = static_cast<std::size_t>(m_debugTransferDetails.ulFileLen);
+            m_debugTransferDetails.pbData = new std::uint8_t[fileLength];
 
-            m_debugTransferDetails.pbData = new BYTE[m_debugTransferDetails.ulFileLen];
+            const PortableFileIO::BinaryReadResult readResult =
+                PortableFileIO::ReadBinaryFile(targetFile.getPath(), m_debugTransferDetails.pbData, fileLength);
 
-            DWORD numberOfBytesRead = 0;
-            ReadFile( hSaveFile,m_debugTransferDetails.pbData,m_debugTransferDetails.ulFileLen,&numberOfBytesRead,NULL);
-            assert(numberOfBytesRead == m_debugTransferDetails.ulFileLen);
+            assert(readResult.status == PortableFileIO::BinaryReadStatus::ok);
+            assert(readResult.bytesRead == fileLength);
 
-            CloseHandle(hSaveFile);
-
-            SaveTransferReturned(pClass,&m_debugTransferDetails);
+            if ((readResult.status == PortableFileIO::BinaryReadStatus::ok) && (readResult.bytesRead == fileLength))
+            {
+                SaveTransferReturned(pClass,&m_debugTransferDetails);
+            }
+            else
+            {
+                delete[] m_debugTransferDetails.pbData;
+                m_debugTransferDetails.pbData = NULL;
+            }
         }
     }
     else
@@ -3268,7 +3286,7 @@ void UIScene_LoadOrJoinMenu::RequestFileData( SaveTransferStateContainer *pClass
     }
 }
 
-int UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam,C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails)
+int UIScene_LoadOrJoinMenu::SaveTransferReturned(void *lpParam, C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     app.DebugPrintf("Save Transfer - size is %d\n",pSaveTransferDetails->ulFileLen);
@@ -3289,9 +3307,9 @@ int UIScene_LoadOrJoinMenu::SaveTransferReturned(LPVOID lpParam,C4JStorage::SAVE
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(LPVOID lpParam,unsigned long ulBytesReceived)
+int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(void *lpParam, unsigned long ulBytesReceived)
 {
-    WCHAR wcTemp[256];
+    wchar_t wcTemp[256];
 
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     Minecraft *pMinecraft=Minecraft::GetInstance();
@@ -3316,7 +3334,7 @@ int UIScene_LoadOrJoinMenu::SaveTransferUpdateProgress(LPVOID lpParam,unsigned l
     return 0;
 }
 
-void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void *lpParam)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
 
@@ -3329,7 +3347,7 @@ void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(LPVOID lpParam)
     //pClass->m_bSaveTransferInProgress=false;
 }
 
-int UIScene_LoadOrJoinMenu::CancelSaveTransferCompleteCallback(LPVOID lpParam)
+int UIScene_LoadOrJoinMenu::CancelSaveTransferCompleteCallback(void *lpParam)
 {
     SaveTransferStateContainer* pClass = (SaveTransferStateContainer *) lpParam;
     // change the state to idle to get the download thread to terminate
@@ -3377,7 +3395,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDialogReturned(void *pParam,int iPad,C4JStor
 	{
 
 		LoadingInputParams *loadingParams = new LoadingInputParams();
-		void *uniqueId = (LPVOID)pClass->GetCallbackUniqueId();
+		void *uniqueId = reinterpret_cast<void *>(pClass->GetCallbackUniqueId());
 		loadingParams->func = &UIScene_LoadOrJoinMenu::CopySaveThreadProc;
 		loadingParams->lpParam = uniqueId;
 		loadingParams->waitForThreadToDelete = true;
@@ -3403,7 +3421,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDialogReturned(void *pParam,int iPad,C4JStor
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CopySaveThreadProc( LPVOID lpParameter )
+int UIScene_LoadOrJoinMenu::CopySaveThreadProc(void *lpParameter)
 {
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 	pMinecraft->progressRenderer->progressStart(IDS_PROGRESS_COPYING_SAVE);
@@ -3444,7 +3462,7 @@ int UIScene_LoadOrJoinMenu::CopySaveThreadProc( LPVOID lpParameter )
 	return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CopySaveDataReturned(LPVOID lpParam, bool success, C4JStorage::ESaveGameState stat)
+int UIScene_LoadOrJoinMenu::CopySaveDataReturned(void *lpParam, bool success, C4JStorage::ESaveGameState stat)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
@@ -3493,7 +3511,7 @@ int UIScene_LoadOrJoinMenu::CopySaveDataReturned(LPVOID lpParam, bool success, C
 	return 0;
 }
 
-bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(LPVOID lpParam, int percent)
+bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(void *lpParam, int percent)
 {
 	bool bContinue = false;
 	ui.EnterCallbackIdCriticalSection();
@@ -3509,7 +3527,7 @@ bool UIScene_LoadOrJoinMenu::CopySaveDataProgress(LPVOID lpParam, int percent)
 	return bContinue;
 }
 
-void UIScene_LoadOrJoinMenu::CancelCopySaveCallback(LPVOID lpParam)
+void UIScene_LoadOrJoinMenu::CancelCopySaveCallback(void *lpParam)
 {
 	ui.EnterCallbackIdCriticalSection();
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);

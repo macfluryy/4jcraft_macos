@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
 #include "../../Platform/Common/App_enums.h"
 
@@ -22,7 +23,7 @@ public:
     virtual void load(Textures *textures) = 0;
     virtual InputStream *getResource(const std::wstring &name, bool allowFallback) = 0;// throws IOException;
     //virtual InputStream *getResource(const std::wstring &name) = 0;// throws IOException;
-    virtual DWORD getId() = 0;
+    virtual std::uint32_t getId() = 0;
     virtual std::wstring getName() = 0;
     virtual std::wstring getDesc1() = 0;
     virtual std::wstring getDesc2() = 0;
@@ -47,8 +48,8 @@ public:
 	virtual void loadUI() = 0;
 	virtual void unloadUI() = 0;
 	virtual std::wstring getXuiRootPath() = 0;
-	virtual PBYTE getPackIcon(DWORD &dwImageBytes) = 0;
-	virtual PBYTE getPackComparison(DWORD &dwImageBytes) = 0;
+	virtual std::uint8_t *getPackIcon(std::uint32_t &imageBytes) = 0;
+	virtual std::uint8_t *getPackComparison(std::uint32_t &imageBytes) = 0;
 	virtual unsigned int getDLCParentPackId() = 0;
 	virtual unsigned char getDLCSubPackId() = 0;
 	virtual ColourTable *getColourTable() = 0;

@@ -113,7 +113,7 @@ void UIScene_DebugCreateSchematic::handlePress(F64 controlId, F64 childId)
 	case eControl_EndY:
 	case eControl_EndZ:
 		m_keyboardCallbackControl = (eControls)((int)controlId);	
-		InputManager.RequestKeyboard(L"Enter something",L"",(DWORD)0,25,&UIScene_DebugCreateSchematic::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+		InputManager.RequestKeyboard(L"Enter something",L"",0,25,&UIScene_DebugCreateSchematic::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 		break;
 	};
 }
@@ -134,7 +134,7 @@ void UIScene_DebugCreateSchematic::handleCheckboxToggled(F64 controlId, bool sel
 	}
 }
 
-int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	UIScene_DebugCreateSchematic *pClass=(UIScene_DebugCreateSchematic *)lpParam;
 

@@ -9,7 +9,7 @@ AddEnchantmentRuleDefinition::AddEnchantmentRuleDefinition()
 	m_enchantmentId = m_enchantmentLevel = 0;
 }
 
-void AddEnchantmentRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void AddEnchantmentRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttributes + 2);
 

@@ -51,7 +51,7 @@ public:
 		static const int MAX_SIZE = rows * columns;
 
 		// 4J JEV - Images
-		const LPCWSTR m_icon;
+		const wchar_t *m_icon;
 		const int m_descriptionId;
 		const int m_staticGroupsCount;
 		ECreative_Inventory_Groups *m_staticGroupsA;
@@ -64,7 +64,7 @@ public:
 		unsigned int m_staticItems;
 
 	public:
-		TabSpec( LPCWSTR icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups );
+		TabSpec( const wchar_t *icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups );
 		~TabSpec();
 
 		void populateMenu(AbstractContainerMenu *menu, int dynamicIndex, unsigned int page);
@@ -108,10 +108,10 @@ protected:
 	virtual void updateTabHighlightAndText(ECreativeInventoryTabs tab) = 0;
 	virtual void updateScrollCurrentPage(int currentPage, int pageCount) = 0;
 	virtual ESceneSection GetSectionAndSlotInDirection( ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY );
-	virtual bool handleValidKeyPress(int iUserIndex, int buttonNum, BOOL quickKeyHeld);
-	virtual void handleOutsideClicked(int iPad, int buttonNum, BOOL quickKeyHeld);
+	virtual bool handleValidKeyPress(int iUserIndex, int buttonNum, bool quickKeyHeld);
+	virtual void handleOutsideClicked(int iPad, int buttonNum, bool quickKeyHeld);
 	virtual void handleAdditionalKeyPress(int iAction);
-	virtual void handleSlotListClicked(ESceneSection eSection, int buttonNum, BOOL quickKeyHeld);
+	virtual void handleSlotListClicked(ESceneSection eSection, int buttonNum, bool quickKeyHeld);
 	bool getEmptyInventorySlot(std::shared_ptr<ItemInstance> item, int &slotX);
 	int getSectionStartOffset(ESceneSection eSection);
 	virtual bool IsSectionSlotList( ESceneSection eSection );

@@ -114,25 +114,30 @@ void CConsoleMinecraftApp::CaptureSaveThumbnail()
 {
 	RenderManager.CaptureThumbnail(&m_ThumbnailBuffer);
 }
-void CConsoleMinecraftApp::GetSaveThumbnail(PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)
 {
 	// on a save caused by a create world, the thumbnail capture won't have happened
 	if(m_ThumbnailBuffer.Allocated())
 	{
-		if( pbData )
+		if( thumbnailData )
 		{
-			*pbData= new BYTE [m_ThumbnailBuffer.GetBufferSize()];
-			*pdwSize=m_ThumbnailBuffer.GetBufferSize();
-			memcpy(*pbData,m_ThumbnailBuffer.GetBufferPointer(),*pdwSize);
+			*thumbnailData = new std::uint8_t[m_ThumbnailBuffer.GetBufferSize()];
+			*thumbnailSize = static_cast<unsigned int>(m_ThumbnailBuffer.GetBufferSize());
+			memcpy(*thumbnailData, m_ThumbnailBuffer.GetBufferPointer(), *thumbnailSize);
 		}
 		m_ThumbnailBuffer.Release();
 	}
 	else
 	{
-		if( pbData )
+		if( thumbnailData )
 		{
 			// use the default image
-			StorageManager.GetDefaultSaveThumbnail(pbData,pdwSize);
+			DWORD defaultSize = 0;
+			StorageManager.GetDefaultSaveThumbnail(thumbnailData, &defaultSize);
+			if (thumbnailSize)
+			{
+				*thumbnailSize = static_cast<unsigned int>(defaultSize);
+			}
 		}
 	}
 }
@@ -141,7 +146,7 @@ void CConsoleMinecraftApp::ReleaseSaveThumbnail()
 
 }
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize)
 {
 
 }

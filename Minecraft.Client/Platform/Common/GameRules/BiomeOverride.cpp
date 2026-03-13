@@ -9,7 +9,7 @@ BiomeOverride::BiomeOverride()
 	m_biomeId = 0;
 }
 
-void BiomeOverride::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void BiomeOverride::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 3);
 
@@ -52,8 +52,8 @@ bool BiomeOverride::isBiome(int id)
 	return m_biomeId == id;
 }
 
-void BiomeOverride::getTileValues(BYTE &tile, BYTE &topTile)
+void BiomeOverride::getTileValues(std::uint8_t &tile, std::uint8_t &topTile)
 {
-	if(m_tile != 0) tile = (BYTE)m_tile;
-	if(m_topTile != 0) topTile = (BYTE)m_topTile;
+	if(m_tile != 0) tile = m_tile;
+	if(m_topTile != 0) topTile = m_topTile;
 }

@@ -4,12 +4,17 @@
 #include "DLCPack.h"
 #include "DLCFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include <cstring>
+#include <limits>
+#include <cstddef>
+#include <cstdint>
 
 // 4jcraft, this is the size of wchar_t on disk
 // the DLC was created on windows, with wchar_t beeing 2 bytes and UTF-16
-static const size_t DLC_WCHAR_BIN_SIZE = 2;
+static const std::size_t DLC_WCHAR_BIN_SIZE = 2;
 
 #if WCHAR_MAX > 0xFFFF
 // than sizeof(WCHAR) != DLC_WCHAR_BIN_SIZE
@@ -18,22 +23,22 @@ static_assert( sizeof(wchar_t) == 4, "wchar_t is not 4bytes but larger than 2byt
 
 static inline std::wstring dlc_read_wstring(const void *data)
 {
-	const uint16_t* p = (const uint16_t *)data;
+	const std::uint16_t* p = static_cast<const std::uint16_t *>(data);
 	// find the end (nullterminated)
-	const uint16_t* end = p;
+	const std::uint16_t* end = p;
 	while(*end) {
-		++end;	
+		++end;
 	}
 
-	size_t len =  end -  p;
+	std::size_t len = static_cast<std::size_t>(end - p);
 
 	// allocate wstring with length len
 	// it will be nullterminated internally, do not worry.
 	std::wstring out(len, 0);
 
 	// and copy them into thje string
-	for(size_t i = 0; i < len; ++i) {
-		out[i] = (wchar_t) p[i];
+	for(std::size_t i = 0; i < len; ++i) {
+		out[i] = static_cast<wchar_t>(p[i]);
 	}
 
 	return out;
@@ -50,6 +55,91 @@ static_assert( sizeof(wchar_t) == 2, "How did we get here? wide char smaller tha
 
 #define DLC_PARAM_ADV(n) (sizeof(C4JStorage::DLC_FILE_PARAM) + (n) * DLC_WCHAR_BIN_SIZE)
 #define DLC_DETAIL_ADV(n) (sizeof(C4JStorage::DLC_FILE_DETAILS) + (n) * DLC_WCHAR_BIN_SIZE)
+
+namespace
+{
+	template <typename T>
+	T ReadDlcValue(const std::uint8_t *data, unsigned int offset = 0)
+	{
+		T value;
+		std::memcpy(&value, data + offset, sizeof(value));
+		return value;
+	}
+
+	template <typename T>
+	void ReadDlcStruct(T *out, const std::uint8_t *data, unsigned int offset = 0)
+	{
+		std::memcpy(out, data + offset, sizeof(*out));
+	}
+
+	std::wstring getMountedDlcReadPath(const std::string &path)
+	{
+		std::wstring readPath = convStringToWstring(path);
+
+#ifdef _WINDOWS64
+		const std::string mountedPath = StorageManager.GetMountedPath(path.c_str());
+		if(!mountedPath.empty())
+		{
+			readPath = convStringToWstring(mountedPath);
+		}
+#elif defined(_DURANGO)
+		const std::wstring mountedPath = StorageManager.GetMountedPath(readPath.c_str());
+		if(!mountedPath.empty())
+		{
+			readPath = mountedPath;
+		}
+#endif
+
+		return readPath;
+	}
+
+	bool readOwnedDlcFile(const std::string &path, std::uint8_t **ppData, unsigned int *pBytesRead)
+	{
+		*ppData = NULL;
+		*pBytesRead = 0;
+
+		const std::wstring readPath = getMountedDlcReadPath(path);
+		std::FILE *file = PortableFileIO::OpenBinaryFileForRead(readPath);
+		if(file == NULL)
+		{
+			return false;
+		}
+
+		if(!PortableFileIO::Seek(file, 0, SEEK_END))
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		const __int64 endPosition = PortableFileIO::Tell(file);
+		if(endPosition <= 0 || endPosition > std::numeric_limits<unsigned int>::max())
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		const unsigned int fileSize = static_cast<unsigned int>(endPosition);
+		if(!PortableFileIO::Seek(file, 0, SEEK_SET))
+		{
+			std::fclose(file);
+			return false;
+		}
+
+		std::uint8_t *data = new std::uint8_t[fileSize];
+		const std::size_t bytesRead = std::fread(data, 1, fileSize, file);
+		const bool failed = std::ferror(file) != 0 || bytesRead != fileSize;
+		std::fclose(file);
+		if(failed)
+		{
+			delete[] data;
+			return false;
+		}
+
+		*ppData = data;
+		*pBytesRead = static_cast<unsigned int>(bytesRead);
+		return true;
+	}
+}
 
 const WCHAR *DLCManager::wchTypeNamesA[]=
 {
@@ -87,7 +177,7 @@ DLCManager::EDLCParameterType DLCManager::getParameterType(const std::wstring &p
 {
 	EDLCParameterType type = e_DLCParamType_Invalid;
 
-	for(DWORD i = 0; i < e_DLCParamType_Max; ++i)
+	for(unsigned int i = 0; i < e_DLCParamType_Max; ++i)
 	{
 		if(paramName.compare(wchTypeNamesA[i]) == 0)
 		{
@@ -99,9 +189,9 @@ DLCManager::EDLCParameterType DLCManager::getParameterType(const std::wstring &p
 	return type;
 }
 
-DWORD DLCManager::getPackCount(EDLCType type /*= e_DLCType_All*/)
+unsigned int DLCManager::getPackCount(EDLCType type /*= e_DLCType_All*/)
 {
-	DWORD packCount = 0;
+	unsigned int packCount = 0;
 	if( type != e_DLCType_All )
 	{
 		for(AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it)
@@ -115,7 +205,7 @@ DWORD DLCManager::getPackCount(EDLCType type /*= e_DLCType_All*/)
 	}
 	else
 	{
-		packCount = (DWORD)m_packs.size();
+		packCount = static_cast<unsigned int>(m_packs.size());
 	}
 	return packCount;
 }
@@ -175,12 +265,12 @@ DLCPack *DLCManager::getPackFromProductID(const std::wstring &productID)
 }
 #endif
 
-DLCPack *DLCManager::getPack(DWORD index, EDLCType type /*= e_DLCType_All*/)
+DLCPack *DLCManager::getPack(unsigned int index, EDLCType type /*= e_DLCType_All*/)
 {
 	DLCPack *pack = NULL;
 	if( type != e_DLCType_All )
 	{
-		DWORD currentIndex = 0;
+		unsigned int currentIndex = 0;
 		DLCPack *currentPack = NULL;
 		for(AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it)
 		{
@@ -209,9 +299,9 @@ DLCPack *DLCManager::getPack(DWORD index, EDLCType type /*= e_DLCType_All*/)
 	return pack;
 }
 
-DWORD DLCManager::getPackIndex(DLCPack *pack, bool &found, EDLCType type /*= e_DLCType_All*/)
+unsigned int DLCManager::getPackIndex(DLCPack *pack, bool &found, EDLCType type /*= e_DLCType_All*/)
 {
-	DWORD foundIndex = 0;
+	unsigned int foundIndex = 0;
 	found = false;
 	if(pack == NULL)
 	{
@@ -221,7 +311,7 @@ DWORD DLCManager::getPackIndex(DLCPack *pack, bool &found, EDLCType type /*= e_D
 	}
 	if( type != e_DLCType_All )
 	{
-		DWORD index = 0;
+		unsigned int index = 0;
 		for(AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it)
 		{
 			DLCPack *thisPack = *it;
@@ -239,7 +329,7 @@ DWORD DLCManager::getPackIndex(DLCPack *pack, bool &found, EDLCType type /*= e_D
 	}
 	else
 	{
-		DWORD index = 0;
+		unsigned int index = 0;
 		for(AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it)
 		{
 			DLCPack *thisPack = *it;
@@ -255,11 +345,11 @@ DWORD DLCManager::getPackIndex(DLCPack *pack, bool &found, EDLCType type /*= e_D
 	return foundIndex;
 }
 
-DWORD DLCManager::getPackIndexContainingSkin(const std::wstring &path, bool &found)
+unsigned int DLCManager::getPackIndexContainingSkin(const std::wstring &path, bool &found)
 {
-	DWORD foundIndex = 0;
+	unsigned int foundIndex = 0;
 	found = false;
-	DWORD index = 0;
+	unsigned int index = 0;
 	for(AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it)
 	{
 		DLCPack *pack = *it;
@@ -310,9 +400,9 @@ DLCSkinFile *DLCManager::getSkinFile(const std::wstring &path)
 	return foundSkinfile;
 }
 
-DWORD DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
+unsigned int DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
 {
-	DWORD corruptDLCCount = m_dwUnnamedCorruptDLCCount;	
+	unsigned int corruptDLCCount = m_dwUnnamedCorruptDLCCount;	
 	DLCPack *pack = NULL;
 	DLCPack *firstCorruptPack = NULL;
 
@@ -329,7 +419,7 @@ DWORD DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
 	// gotta fix this someday
 	if(corruptDLCCount > 0 && showMessage)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		if(corruptDLCCount == 1 && firstCorruptPack != NULL)
 		{
@@ -351,13 +441,13 @@ DWORD DLCManager::checkForCorruptDLCAndAlert(bool showMessage /*= true*/)
 	return corruptDLCCount;
 }
 
-bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive)
+bool DLCManager::readDLCDataFile(unsigned int &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive)
 {
 	return readDLCDataFile( dwFilesProcessed, wstringtofilename(path), pack, fromArchive);
 }
 
 
-bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive)
+bool DLCManager::readDLCDataFile(unsigned int &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive)
 {
 	std::wstring wPath = convStringToWstring(path);
 	if (fromArchive && app.getArchiveFileSize(wPath) >= 0)
@@ -367,49 +457,19 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 	}
 	else if (fromArchive) return false;
 
-#ifdef _WINDOWS64
-	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
-	if(finalPath.size() == 0) finalPath = path;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#elif defined(_DURANGO)
-	std::wstring finalPath = StorageManager.GetMountedPath(wPath.c_str());
-	if(finalPath.size() == 0) finalPath = wPath;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#else
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#endif
-	if( file == INVALID_HANDLE_VALUE )
+	unsigned int bytesRead = 0;
+	std::uint8_t *pbData = NULL;
+	if(!readOwnedDlcFile(path, &pbData, &bytesRead))
 	{
-		DWORD error = GetLastError();
-		app.DebugPrintf("Failed to open DLC data file with error code %d (%x)\n", error, error);
-		if( dwFilesProcessed == 0 ) removePack(pack);
-		assert(false);
-		return false;
-	}
-
-	DWORD bytesRead,dwFileSize = GetFileSize(file,NULL);
-	PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
-	if(bSuccess==FALSE)
-	{
-		// need to treat the file as corrupt, and flag it, so can't call fatal error
-		//app.FatalLoadError();
-	}
-	else
-	{
-		CloseHandle(file);
-	}
-	if(bSuccess==FALSE)
-	{
-		// Corrupt or some other error. In any case treat as corrupt
-		app.DebugPrintf("Failed to read %s from DLC content package\n", path.c_str());
-		pack->SetIsCorrupt( true );
+		app.DebugPrintf("Failed to open DLC data file %s\n", path.c_str());
+		pack->SetIsCorrupt(true);
 		SetNeedsCorruptCheck(true);
 		return false;
 	}
 	return processDLCDataFile(dwFilesProcessed, pbData, bytesRead, pack);
 }
 
+bool DLCManager::processDLCDataFile(unsigned int &dwFilesProcessed, std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack)
 // a bunch of makros to reduce memcpy and offset boilerplate
 #define DLC_READ_UINT(out, buf, off) memcpy((out), (buf) + (off), sizeof(unsigned int))
 
@@ -421,8 +481,6 @@ bool DLCManager::readDLCDataFile(DWORD &dwFilesProcessed, const std::string &pat
 #define DLC_PARAM_WSTR(buf, off) DLC_WSTRING((buf) + (off) + offsetof(C4JStorage::DLC_FILE_PARAM, wchData))
 
 #define DLC_DETAIL_WSTR(buf, off) DLC_WSTRING((buf) + (off) + offsetof(C4JStorage::DLC_FILE_DETAILS, wchFile))
-
-bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD dwLength, DLCPack *pack)
 {
 	std::unordered_map<int, DLCManager::EDLCParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -438,16 +496,16 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	// // unsigned long, p = number of parameters
 	// // p * DLC_FILE_PARAM describing each parameter for this file
 	// // ulFileSize bytes of data blob of the file added
-	
+
 	// 4jcraft, some parts of this code changed, specifically:
 	// instead of casting a goddamn raw byte pointer and dereferencing it
-	// use memcpy, and access WSTRING with propper offset 
-	// (scince bufferoffset after advancing by variable string length is not 
+	// use memcpy, and access WSTRING with propper offset
+	// (scince bufferoffset after advancing by variable string length is not
 	// guaranteed to be properly aligned, so casting to a scalar/struct is UB)
-	
+
 	// those casts coult be dangerous on e.g. ARM, because it doesnt handle
 	// missaligned loads, like x86/x64, so it would crash
-	
+
 	// WHO TF USES HUNGARIAN NOTATION
 
 	unsigned int uiVersion;
@@ -490,13 +548,13 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	C4JStorage::DLC_FILE_DETAILS fileBuf;
 	DLC_READ_DETAIL(&fileBuf, pbData, uiCurrentByte);
 
-	DWORD dwTemp=uiCurrentByte;
+	unsigned int dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
 		dwTemp+=DLC_DETAIL_ADV(fileBuf.dwWchCount);
 		DLC_READ_DETAIL(&fileBuf, pbData, dwTemp);
 	}
-	PBYTE pbTemp = &pbData[dwTemp];//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
+	std::uint8_t *pbTemp = &pbData[dwTemp];//+ sizeof(C4JStorage::DLC_FILE_DETAILS)*ulFileCount;
 	DLC_READ_DETAIL(&fileBuf, pbData, uiCurrentByte);
 
 	for(unsigned int i=0;i<uiFileCount;i++)
@@ -546,8 +604,8 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 
 		if(dlcTexturePack != NULL)
 		{
-			DWORD texturePackFilesProcessed = 0;
-			bool validPack = processDLCDataFile(texturePackFilesProcessed,pbTemp,fileBuf.uiFileSize,dlcTexturePack);
+			unsigned int texturePackFilesProcessed = 0;
+	bool validPack = processDLCDataFile(texturePackFilesProcessed, pbTemp, fileBuf.uiFileSize, dlcTexturePack);
 			pack->SetDataPointer(NULL); // If it's a child pack, it doesn't own the data
 			if(!validPack || texturePackFilesProcessed == 0)
 			{
@@ -603,45 +661,14 @@ bool DLCManager::processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD
 	return true;
 }
 
-DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
+std::uint32_t DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack)
 {
-	DWORD packId = 0;
-	std::wstring wPath = convStringToWstring(path);
+	std::uint32_t packId = 0;
 
-#ifdef _WINDOWS64
-	std::string finalPath = StorageManager.GetMountedPath(path.c_str());
-	if(finalPath.size() == 0) finalPath = path;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#elif defined(_DURANGO)
-	std::wstring finalPath = StorageManager.GetMountedPath(wPath.c_str());
-	if(finalPath.size() == 0) finalPath = wPath;
-	HANDLE file = CreateFile(finalPath.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#else
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#endif
-	if( file == INVALID_HANDLE_VALUE )
+	unsigned int bytesRead = 0;
+	std::uint8_t *pbData = NULL;
+	if(!readOwnedDlcFile(path, &pbData, &bytesRead))
 	{
-		return 0;
-	}
-
-	DWORD bytesRead;
-	DWORD dwFileSize = GetFileSize(file,NULL);
-	PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-	BOOL bSuccess = ReadFile(file,pbData,dwFileSize,&bytesRead,NULL);
-	if(bSuccess==FALSE)
-	{
-		// need to treat the file as corrupt, and flag it, so can't call fatal error
-		//app.FatalLoadError();
-	}
-	else
-	{
-		CloseHandle(file);
-	}
-	if(bSuccess==FALSE)
-	{
-		// Corrupt or some other error. In any case treat as corrupt
-		app.DebugPrintf("Failed to read %s from DLC content package\n", path.c_str());
-		delete [] pbData;
 		return 0;
 	}
 	packId=retrievePackID(pbData, bytesRead, pack);
@@ -650,9 +677,9 @@ DWORD DLCManager::retrievePackIDFromDLCDataFile(const std::string &path, DLCPack
 	return packId;
 }
 
-DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
+std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack)
 {
-	DWORD packId=0;
+	std::uint32_t packId=0;
 	bool bPackIDSet=false;
 	std::unordered_map<int, DLCManager::EDLCParameterType> parameterMapping;
 	unsigned int uiCurrentByte=0;
@@ -668,7 +695,7 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 	// // unsigned long, p = number of parameters
 	// // p * DLC_FILE_PARAM describing each parameter for this file
 	// // ulFileSize bytes of data blob of the file added
-	unsigned int uiVersion=*(unsigned int *)pbData;
+	unsigned int uiVersion = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	if(uiVersion < CURRENT_DLC_VERSION_NUM)
@@ -677,46 +704,48 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 		return 0;
 	}
 	pack->SetDataPointer(pbData);
-	unsigned int uiParameterCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiParameterCount = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_PARAM *pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_PARAM paramBuf;
+	ReadDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	for(unsigned int i=0;i<uiParameterCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		std::wstring parameterName = DLC_WSTRING(pParams->wchData);
+		std::wstring parameterName = DLC_PARAM_WSTR(pbData, uiCurrentByte);
 		DLCManager::EDLCParameterType type = DLCManager::getParameterType(parameterName);
 		if( type != DLCManager::e_DLCParamType_Invalid )
 		{
-			parameterMapping[pParams->dwType] = type;
+			parameterMapping[paramBuf.dwType] = type;
 		}
-		uiCurrentByte+= DLC_PARAM_ADV(pParams->dwWchCount);
-		pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+		uiCurrentByte += DLC_PARAM_ADV(paramBuf.dwWchCount);
+		ReadDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	}
 
-	unsigned int uiFileCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiFileCount = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_DETAILS *pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_DETAILS fileBuf;
+	ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
-	DWORD dwTemp=uiCurrentByte;
+	unsigned int dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
-		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
+		dwTemp += DLC_DETAIL_ADV(fileBuf.dwWchCount);
+		ReadDlcStruct(&fileBuf, pbData, dwTemp);
 	}
-	PBYTE pbTemp=((PBYTE )pFile);
-	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	std::uint8_t *pbTemp = &pbData[dwTemp];
+	ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		DLCManager::EDLCType type = (DLCManager::EDLCType)pFile->dwType;
+		DLCManager::EDLCType type = (DLCManager::EDLCType)fileBuf.dwType;
 
 		// Params
-		uiParameterCount=*(unsigned int *)pbTemp;
+		uiParameterCount = ReadDlcValue<unsigned int>(pbTemp);
 		pbTemp+=sizeof(int);
-		pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+		ReadDlcStruct(&paramBuf, pbTemp);
 		for(unsigned int j=0;j<uiParameterCount;j++)
 		{
-			AUTO_VAR(it, parameterMapping.find( pParams->dwType ));
+			AUTO_VAR(it, parameterMapping.find(paramBuf.dwType));
 
 			if(it != parameterMapping.end() )
 			{
@@ -724,7 +753,7 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 				{
 					if(it->second==e_DLCParamType_PackId)
 					{				
-						std::wstring wsTemp = DLC_WSTRING(pParams->wchData);
+						std::wstring wsTemp = DLC_PARAM_WSTR(pbTemp, 0);
 						std::wstringstream ss;
 						// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
 						ss << std::dec << wsTemp.c_str();
@@ -734,16 +763,16 @@ DWORD DLCManager::retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack)
 					}
 				}
 			}
-			pbTemp+=DLC_PARAM_ADV(pParams->dwWchCount);
-			pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+			pbTemp += DLC_PARAM_ADV(paramBuf.dwWchCount);
+			ReadDlcStruct(&paramBuf, pbTemp);
 		}
 
 		if(bPackIDSet) break;
 		// Move the pointer to the start of the next files data;
-		pbTemp+=pFile->uiFileSize;
-		uiCurrentByte+=DLC_DETAIL_ADV(pFile->dwWchCount);
+		pbTemp += fileBuf.uiFileSize;
+		uiCurrentByte += DLC_DETAIL_ADV(fileBuf.dwWchCount);
 
-		pFile=(C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+		ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 	}
 
 	parameterMapping.clear();

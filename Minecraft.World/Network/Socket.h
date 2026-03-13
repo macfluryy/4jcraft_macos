@@ -1,4 +1,6 @@
 #pragma once
+#include <cstddef>
+#include <cstdint>
 #ifndef __linux__
 #include <xrnm.h>
 #include <qnet.h>
@@ -95,12 +97,12 @@ private:
 
 	// For local connections between the host player and the server
 	static CRITICAL_SECTION s_hostQueueLock[2]; 
-	static std::queue<uint8_t> s_hostQueue[2];
+	static std::queue<std::uint8_t> s_hostQueue[2];
 	static SocketOutputStreamLocal *s_hostOutStream[2];
 	static SocketInputStreamLocal *s_hostInStream[2];
 
 	// For network connections
-	std::queue<uint8_t> m_queueNetwork[2];		// For input data
+	std::queue<std::uint8_t> m_queueNetwork[2];		// For input data
 	CRITICAL_SECTION m_queueLockNetwork[2];  // For input data
 	SocketInputStreamNetwork *m_inputStream[2];
 	SocketOutputStreamNetwork *m_outputStream[2];
@@ -109,7 +111,7 @@ private:
 	// Host only connection class
 	static ServerConnection *s_serverConnection;
 
-	BYTE networkPlayerSmallId;
+	std::uint8_t networkPlayerSmallId;
 public:	
 	C4JThread::Event* m_socketClosedEvent;
 
@@ -122,7 +124,7 @@ public:
 	Socket(bool response = false);								// 4J - Create a local socket, for end 0 or 1 of a connection
 	Socket(INetworkPlayer *player, bool response  = false, bool hostLocal = false);		// 4J - Create a socket for an INetworkPlayer
 	SocketAddress *getRemoteSocketAddress();
-	void pushDataToQueue(const BYTE * pbData, DWORD dwDataSize, bool fromHost = true);
+	void pushDataToQueue(const std::uint8_t *pbData, std::size_t dataSize, bool fromHost = true);
 	static void addIncomingSocket(Socket *socket);
 	InputStream *getInputStream(bool isServerConnection);
 	void setSoTimeout(int a );
@@ -133,5 +135,5 @@ public:
 	bool isLocal() { return m_hostLocal; }
 
 	bool isClosing() { return m_endClosed[SOCKET_CLIENT_END] || m_endClosed[SOCKET_SERVER_END]; }
-	BYTE getSmallId() { return networkPlayerSmallId; }
+	std::uint8_t getSmallId() { return networkPlayerSmallId; }
 };

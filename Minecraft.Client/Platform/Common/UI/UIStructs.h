@@ -2,6 +2,8 @@
 
 // #pragma message("UIStructs.h")
 
+#include <cstdint>
+
 #include "UIEnums.h"
 
 class Container;
@@ -137,8 +139,8 @@ typedef struct _ConnectionProgressParams
 	bool showTooltips;
 	bool setFailTimer;
 	int timerTime;
-	void (*cancelFunc)(LPVOID param);
-	LPVOID cancelFuncParam;
+	void (*cancelFunc)(void *param);
+	void *cancelFuncParam;
 
 	_ConnectionProgressParams()
 	{
@@ -155,20 +157,20 @@ typedef struct _ConnectionProgressParams
 // Fullscreen progress
 typedef struct _UIFullscreenProgressCompletionData
 {
-	BOOL bRequiresUserAction;
-	BOOL bShowBackground;
-	BOOL bShowLogo;
-	BOOL bShowTips;
+	bool bRequiresUserAction;
+	bool bShowBackground;
+	bool bShowLogo;
+	bool bShowTips;
 	ProgressionCompletionType type;
 	int iPad;
 	EUIScene scene;
 
 	_UIFullscreenProgressCompletionData()
 	{
-		bRequiresUserAction = FALSE;
-		bShowBackground = TRUE;
-		bShowLogo = TRUE;
-		bShowTips = TRUE;
+		bRequiresUserAction = false;
+		bShowBackground = true;
+		bShowLogo = true;
+		bShowTips = true;
 		type = e_ProgressCompletion_NoAction;
 	}
 } UIFullscreenProgressCompletionData;
@@ -176,8 +178,8 @@ typedef struct _UIFullscreenProgressCompletionData
 // Create world
 typedef struct _CreateWorldMenuInitData
 {
-	BOOL bOnline;
-	BOOL bIsPrivate;
+	bool bOnline;
+	bool bIsPrivate;
 	int iPad;
 } 
 CreateWorldMenuInitData;
@@ -186,8 +188,8 @@ CreateWorldMenuInitData;
 typedef struct _SaveListDetails
 {
 	int saveId;
-	PBYTE pbThumbnailData;
-	DWORD dwThumbnailSize;
+	std::uint8_t *pbThumbnailData;
+	unsigned int dwThumbnailSize;
 #ifdef _DURANGO
 	wchar_t UTF16SaveName[128];
 	wchar_t UTF16SaveFilename[MAX_SAVEFILENAME_LENGTH];
@@ -236,28 +238,28 @@ typedef struct _JoinMenuInitData
 // More Options
 typedef struct _LaunchMoreOptionsMenuInitData
 {
-	BOOL bOnlineGame;
-	BOOL bInviteOnly;
-	BOOL bAllowFriendsOfFriends;
+	bool bOnlineGame;
+	bool bInviteOnly;
+	bool bAllowFriendsOfFriends;
 
-	BOOL bGenerateOptions;
-	BOOL bStructures;
-	BOOL bFlatWorld;
-	BOOL bBonusChest;
+	bool bGenerateOptions;
+	bool bStructures;
+	bool bFlatWorld;
+	bool bBonusChest;
 
-	BOOL bPVP;
-	BOOL bTrust;
-	BOOL bFireSpreads;
-	BOOL bTNT;
+	bool bPVP;
+	bool bTrust;
+	bool bFireSpreads;
+	bool bTNT;
 
-	BOOL bHostPrivileges;
-	BOOL bResetNether;
+	bool bHostPrivileges;
+	bool bResetNether;
 
-	BOOL bOnlineSettingChangedBySystem;
+	bool bOnlineSettingChangedBySystem;
 
 	int iPad;
 
-	DWORD dwTexturePack;
+	std::uint32_t dwTexturePack;
 
 	std::wstring seed;
 	int worldSize;
@@ -266,11 +268,11 @@ typedef struct _LaunchMoreOptionsMenuInitData
 	_LaunchMoreOptionsMenuInitData()
 	{
 		memset((void*)this,0,sizeof(_LaunchMoreOptionsMenuInitData));
-		bOnlineGame = TRUE;
-		bAllowFriendsOfFriends = TRUE;
-		bPVP = TRUE;
-		bFireSpreads = TRUE;
-		bTNT = TRUE;
+		bOnlineGame = true;
+		bAllowFriendsOfFriends = true;
+		bPVP = true;
+		bFireSpreads = true;
+		bTNT = true;
 		iPad = -1;
 		worldSize = 3;
 		seed = L"";
@@ -282,14 +284,14 @@ LaunchMoreOptionsMenuInitData;
 typedef struct _LoadingInputParams
 {
 	C4JThreadStartFunc* func;
-	LPVOID lpParam;
+	void *lpParam;
 	UIFullscreenProgressCompletionData *completionData;
 
 	int cancelText;
-	void (*cancelFunc)(LPVOID param);
-	void (*completeFunc)(LPVOID param);
-	LPVOID m_cancelFuncParam;
-	LPVOID m_completeFuncParam;
+	void (*cancelFunc)(void *param);
+	void (*completeFunc)(void *param);
+	void *m_cancelFuncParam;
+	void *m_completeFuncParam;
 	bool waitForThreadToDelete;
 
 	_LoadingInputParams()
@@ -319,8 +321,8 @@ typedef struct _TutorialPopupInfo
 #else
 	UIScene *interactScene;
 #endif
-	LPCWSTR desc;
-	LPCWSTR title;
+	const wchar_t *desc;
+	const wchar_t *title;
 	int icon;
 	int iAuxVal /* = 0 */;
 	bool isFoil /* = false */;
@@ -346,15 +348,15 @@ typedef struct _TutorialPopupInfo
 // Quadrant sign in
 typedef struct _SignInInfo
 {
-	int( *Func)(LPVOID,const bool, const int iPad);
-	LPVOID lpParam;
+	int( *Func)(void *,const bool, const int iPad);
+	void *lpParam;
 	bool requireOnline;
 } SignInInfo;
 
 // Credits
 typedef struct 
 {
-	LPCWSTR				m_Text;				// Should contain string, optionally with %s to add in translated string ... e.g. "Andy West - %s"
+	const wchar_t *	m_Text;				// Should contain string, optionally with %s to add in translated string ... e.g. "Andy West - %s"
 	int					m_iStringID[2];		// May be NO_TRANSLATED_STRING if we do not require to add any translated string.
 	ECreditTextTypes	m_eType;
 }
@@ -363,16 +365,16 @@ SCreditTextItemDef;
 // Message box
 typedef struct _MessageBoxInfo
 {
-	UINT uiTitle;
-	UINT uiText;
-	UINT *uiOptionA;
-	UINT uiOptionC;
-	DWORD dwPad;
-	int( *Func)(LPVOID,int,const C4JStorage::EMessageResult);
-	LPVOID lpParam;
+	unsigned int uiTitle;
+	unsigned int uiText;
+	unsigned int *uiOptionA;
+	unsigned int uiOptionC;
+	unsigned int dwPad;
+	int( *Func)(void *,int,const C4JStorage::EMessageResult);
+	void *lpParam;
 	//C4JStringTable *pStringTable; // 4J Stu - We don't need this for our internal message boxes
-	WCHAR *pwchFormatString;
-	DWORD dwFocusButton;
+	wchar_t *pwchFormatString;
+	unsigned int dwFocusButton;
 } MessageBoxInfo;
 
 typedef struct _DLCOffersParam
@@ -386,7 +388,7 @@ DLCOffersParam;
 typedef struct _InGamePlayerOptionsInitData
 {
 	int iPad;
-	BYTE networkSmallId;
+	std::uint8_t networkSmallId;
 	unsigned int playerPrivileges;
 } InGamePlayerOptionsInitData;
 

@@ -50,9 +50,9 @@ public:
 
 	virtual void CaptureScreenshot(int iPad);
 	virtual void CaptureSaveThumbnail();
-	virtual void GetSaveThumbnail(PBYTE*,DWORD*);
+	virtual void GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize);
 	virtual void ReleaseSaveThumbnail();
-	virtual void GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize);
+	virtual void GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize);
 
 	virtual void RunFrame();
 
@@ -185,7 +185,7 @@ public:
 	static TMS_FILE TMSFileA[TMS_COUNT];
 
 
-	virtual void GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes );
+	virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes );
 
 private:
 	static WCHAR m_wchTMSXZP[];

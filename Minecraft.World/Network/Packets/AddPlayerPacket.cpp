@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <cstring>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
@@ -44,9 +45,9 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 	// 4J - changed - send current "previously sent" value of rotations to put this in sync with other clients
 	yRot = yRotp;
 	xRot = xRotp;
-	yHeadRot = static_cast<uint8_t>(yHeadRotp); // 4J Added
-	//    yRot = (uint8_t) (player->yRot * 256 / 360);
-	//    xRot = (uint8_t) (player->xRot * 256 / 360);
+	yHeadRot = static_cast<std::uint8_t>(yHeadRotp); // 4J Added
+	//    yRot = (std::uint8_t) (player->yRot * 256 / 360);
+	//    xRot = (std::uint8_t) (player->xRot * 256 / 360);
 
 	//printf("%d: New add player (%f,%f,%f) : (%d,%d,%d) : xRot %d, yRot %d\n",id,player->x,player->y,player->z,x,y,z,xRot,yRot);
 
@@ -55,7 +56,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 
 	this->xuid = xuid;
 	this->OnlineXuid = OnlineXuid;
-	m_playerIndex = (BYTE)player->getPlayerIndex();
+	m_playerIndex = static_cast<std::uint8_t>(player->getPlayerIndex());
 	m_skinId = player->getCustomSkin();
 	m_capeId = player->getCustomCape();
 	m_uiGamePrivileges = player->getAllPlayerGamePrivileges();
@@ -77,13 +78,11 @@ void AddPlayerPacket::read(DataInputStream *dis) //throws IOException
 	carriedItem = dis->readShort();
 	xuid = dis->readPlayerUID();
 	OnlineXuid = dis->readPlayerUID();
-	m_playerIndex = static_cast<BYTE>(dis->readByte());
-	INT skinId = dis->readInt();
-	m_skinId = *(DWORD *)&skinId;	
-	INT capeId = dis->readInt();
-	m_capeId = *(DWORD *)&capeId;
+	m_playerIndex = dis->readByte();
+	m_skinId = static_cast<std::uint32_t>(dis->readInt());
+	m_capeId = static_cast<std::uint32_t>(dis->readInt());
 	INT privileges = dis->readInt();
-	m_uiGamePrivileges = *(unsigned int *)&privileges;
+	m_uiGamePrivileges = static_cast<unsigned int>(privileges);
 	MemSect(1);
 	unpack = SynchedEntityData::unpack(dis);
 	MemSect(0);
@@ -96,15 +95,15 @@ void AddPlayerPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writeInt(x);
 	dos->writeInt(y);
 	dos->writeInt(z);
-	dos->writeByte(static_cast<uint8_t>(yRot));
-	dos->writeByte(static_cast<uint8_t>(xRot));
-	dos->writeByte(static_cast<uint8_t>(m_playerIndex)); // 4J Added
+	dos->writeByte(static_cast<std::uint8_t>(yRot));
+	dos->writeByte(static_cast<std::uint8_t>(xRot));
+	dos->writeByte(static_cast<std::uint8_t>(m_playerIndex)); // 4J Added
 	dos->writeShort(carriedItem);
 	dos->writePlayerUID(xuid);
 	dos->writePlayerUID(OnlineXuid);
-	dos->writeByte(static_cast<uint8_t>(m_playerIndex)); // 4J Added
-	dos->writeInt(m_skinId);
-	dos->writeInt(m_capeId);
+	dos->writeByte(static_cast<std::uint8_t>(m_playerIndex)); // 4J Added
+	dos->writeInt(static_cast<int>(m_skinId));
+	dos->writeInt(static_cast<int>(m_capeId));
 	dos->writeInt(m_uiGamePrivileges);
 	entityData->packAll(dos);
 
@@ -117,7 +116,7 @@ void AddPlayerPacket::handle(PacketListener *listener)
 
 int AddPlayerPacket::getEstimatedSize()
 {
-	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(BYTE) + sizeof(BYTE) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(BYTE) + sizeof(unsigned int) + sizeof(uint8_t);
+	int iSize= sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(std::uint8_t) + sizeof(std::uint8_t) +sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) + sizeof(int) + sizeof(std::uint8_t) + sizeof(unsigned int) + sizeof(std::uint8_t);
 
 	if( entityData != NULL )
 	{

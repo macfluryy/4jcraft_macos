@@ -5,7 +5,7 @@
 DLCUIDataFile::DLCUIDataFile(const std::wstring &path) : DLCFile(DLCManager::e_DLCType_UIData,path)
 {	
 	m_pbData = NULL;
-	m_dwBytes = 0;
+	m_dataBytes = 0;
 	m_canDeleteData = false;
 }
 
@@ -18,15 +18,15 @@ DLCUIDataFile::~DLCUIDataFile()
 	}
 }
 
-void DLCUIDataFile::addData(PBYTE pbData, DWORD dwBytes,bool canDeleteData)
+void DLCUIDataFile::addData(std::uint8_t *pbData, std::uint32_t dataBytes,bool canDeleteData)
 {
 	m_pbData = pbData;
-	m_dwBytes = dwBytes;
+	m_dataBytes = dataBytes;
 	m_canDeleteData = canDeleteData;
 }
 
-PBYTE DLCUIDataFile::getData(DWORD &dwBytes)
+std::uint8_t *DLCUIDataFile::getData(std::uint32_t &dataBytes)
 {
-	dwBytes = m_dwBytes;
+	dataBytes = m_dataBytes;
 	return m_pbData;
 }

@@ -4,6 +4,9 @@
 #include "../../IO/Files/File.h"
 #include "../../IO/NBT/CompoundTag.h"
 #include "../../Headers/com.mojang.nbt.h"
+#if !defined(_WIN32)
+#include <pthread.h>
+#endif
 
 class Level;
 
@@ -22,7 +25,11 @@ private:
 		ThreadStorage();
 		~ThreadStorage();
 	};
+#if defined(_WIN32)
 	static DWORD tlsIdx;
+#else
+	static pthread_key_t tlsIdx;
+#endif
 	static ThreadStorage *tlsDefault;
 public:
 	// Each new thread that needs to use Compression will need to call one of the following 2 functions, to either create its own

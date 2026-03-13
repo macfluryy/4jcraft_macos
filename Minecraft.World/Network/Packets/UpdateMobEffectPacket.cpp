@@ -17,7 +17,7 @@ UpdateMobEffectPacket::UpdateMobEffectPacket()
 UpdateMobEffectPacket::UpdateMobEffectPacket(int entityId, MobEffectInstance *effect)
 {
 	this->entityId = entityId;
-	this->effectId = (BYTE) (effect->getId() & 0xff);
+	this->effectId = static_cast<std::uint8_t>(effect->getId() & 0xff);
 	this->effectAmplifier = (char) (effect->getAmplifier() & 0xff);
 	this->effectDurationTicks = (short) effect->getDuration();
 }

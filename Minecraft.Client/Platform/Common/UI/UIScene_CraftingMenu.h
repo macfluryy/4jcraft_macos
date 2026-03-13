@@ -190,12 +190,12 @@ protected:
 	virtual void setIngredientSlotRedBox(int index, bool show);
 	virtual void setIngredientDescriptionItem(int iPad, int index, std::shared_ptr<ItemInstance> item);
 	virtual void setIngredientDescriptionRedBox(int index, bool show);
-	virtual void setIngredientDescriptionText(int index, LPCWSTR text);
+	virtual void setIngredientDescriptionText(int index, const wchar_t *text);
 	virtual void setShowCraftHSlot(int iIndex, bool show);
 	virtual void showTabHighlight(int iIndex, bool show);
-	virtual void setGroupText(LPCWSTR text);
-	virtual void setDescriptionText(LPCWSTR text);
-	virtual void setItemText(LPCWSTR text);
+	virtual void setGroupText(const wchar_t *text);
+	virtual void setDescriptionText(const wchar_t *text);
+	virtual void setItemText(const wchar_t *text);
 	virtual void scrollDescriptionUp();
 	virtual void scrollDescriptionDown();
 	virtual void updateHighlightAndScrollPositions();
