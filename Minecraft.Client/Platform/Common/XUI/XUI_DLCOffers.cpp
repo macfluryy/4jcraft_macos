@@ -262,7 +262,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 	CXuiCtrl4JList::LIST_ITEM_INFO *pListInfo=NULL;
 	//XMARKETPLACE_CONTENTOFFER_INFO xOffer;
 	XMARKETPLACE_CURRENCY_CONTENTOFFER_INFO xOffer;
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 	ZeroMemory(szResourceLocator,sizeof(WCHAR)*LOCATOR_SIZE);
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);

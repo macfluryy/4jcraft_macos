@@ -48,7 +48,7 @@ HRESULT CScene_MultiGameJoinLoad::OnInit( XUIMessageInit* pInitData, BOOL& bHand
 	XuiControlSetText(m_SavesList,app.GetString(IDS_START_GAME));
 
 
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
@@ -2700,7 +2700,7 @@ bool CScene_MultiGameJoinLoad::GetSavesInfoCallback(LPVOID pParam,int iTotalSave
 			else
 			{
 				// we could put in a damaged save icon here
-				const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+				constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 				WCHAR szResourceLocator[ LOCATOR_SIZE ];
 				const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 

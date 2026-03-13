@@ -68,7 +68,7 @@ HRESULT CScene_Main::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	CXuiSceneBase::ShowBackground( DEFAULT_XUI_MENU_USER, TRUE );
 	CXuiSceneBase::ShowLogo( DEFAULT_XUI_MENU_USER, TRUE );
 
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	// load from the .xzp file
