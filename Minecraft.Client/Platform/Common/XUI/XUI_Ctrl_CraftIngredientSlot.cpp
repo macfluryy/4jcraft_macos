@@ -55,19 +55,19 @@ HRESULT CXuiCtrlCraftIngredientSlot::OnGetSourceText(XUIMessageGetSourceText *pG
 	return S_OK;
 }
 
-void CXuiCtrlCraftIngredientSlot::SetRedBox(BOOL bVal)
+void CXuiCtrlCraftIngredientSlot::SetRedBox(bool show)
 {
 	HRESULT hr=S_OK;
 
 	HXUIOBJ hObj,hObjChild;
 	hr=GetVisual(&hObj);
 	XuiElementGetChildById(hObj,L"BoxRed",&hObjChild);
-	XuiElementSetShow(hObjChild,bVal);
+	XuiElementSetShow(hObjChild,show);
 	XuiElementGetChildById(hObj,L"Exclaim",&hObjChild);
-	XuiElementSetShow(hObjChild,bVal);
+	XuiElementSetShow(hObjChild,show);
 }
 
-void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,bool isFoil, BOOL bShow)
+void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,bool isFoil, bool bShow)
 {
 	m_item = nullptr;
 	m_iID=iId;
@@ -92,7 +92,7 @@ void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCo
 	XuiElementSetShow(m_hObj,bShow);
 }
 
-void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
+void CXuiCtrlCraftIngredientSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, bool bShow)
 {
 	if(item == NULL) SetIcon(iPad, 0,0,0,0,0,false,false,bShow);
 	else

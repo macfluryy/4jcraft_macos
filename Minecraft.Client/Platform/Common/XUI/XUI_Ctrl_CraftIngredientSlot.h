@@ -14,9 +14,9 @@ public:
 
 	CXuiCtrlCraftIngredientSlot();
 	virtual ~CXuiCtrlCraftIngredientSlot() { };
-	void SetRedBox(BOOL bVal);
-	void SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha, bool bDecorations, bool isFoil = false, BOOL bShow=TRUE);
-	void SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow=TRUE);
+	void SetRedBox(bool show);
+	void SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha, bool bDecorations, bool isFoil = false, bool bShow=true);
+	void SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, bool bShow=true);
 	void SetDescription(LPCWSTR Desc);
 protected:
 

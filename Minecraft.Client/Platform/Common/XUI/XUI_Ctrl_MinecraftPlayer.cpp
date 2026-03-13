@@ -15,7 +15,7 @@
 
 //-----------------------------------------------------------------------------
 CXuiCtrlMinecraftPlayer::CXuiCtrlMinecraftPlayer() :
-	m_bDirty(FALSE),
+	m_bDirty(false),
 	m_fScale(1.0f),
 	m_fAlpha(1.0f)
 {
@@ -45,7 +45,7 @@ HRESULT CXuiCtrlMinecraftPlayer::OnInit(XUIMessageInit* pInitData, BOOL& rfHandl
 
 	assert( parent != NULL );
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( parent, &pObj );
 	m_containerScene = (CXuiSceneInventory *)pObj;
 
@@ -185,6 +185,5 @@ HRESULT CXuiCtrlMinecraftPlayer::OnRender(XUIMessageRender *pRenderData, BOOL &b
 	return S_OK;
 
 }
-
 
 

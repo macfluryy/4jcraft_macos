@@ -16,14 +16,14 @@ class CXuiCtrlMinecraftSlot : public CXuiControlImpl
 public:
 	XUI_IMPLEMENT_CLASS(CXuiCtrlMinecraftSlot, L"CXuiCtrlMinecraftSlot", XUI_CLASS_LABEL)
 
-	VOID SetPassThroughDataAssociation(unsigned int iID, unsigned int iData);
+	void SetPassThroughDataAssociation(unsigned int iID, unsigned int iData);
 	CXuiCtrlMinecraftSlot();
 	virtual ~CXuiCtrlMinecraftSlot();
 
 	void renderGuiItem(Font *font, Textures *textures,ItemInstance *item, int x, int y);
 	void RenderItem();
-	void SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,BOOL bShow, bool isFoil);
-	void SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow=TRUE);
+	void SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,bool bShow, bool isFoil);
+	void SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, bool bShow=true);
 
 protected:
 

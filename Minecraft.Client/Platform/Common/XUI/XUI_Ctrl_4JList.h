@@ -40,10 +40,10 @@ public:
 	void UpdateGraphic(int iItem,HXUIBRUSH hXuiBrush );
 	void UpdateGraphic(FILETIME *pfTime,HXUIBRUSH hXuiBrush );
 	void UpdateGraphicFromiData(int iData,HXUIBRUSH hXuiBrush );
-	LIST_ITEM_INFO&	GetData(DWORD dw);
+	LIST_ITEM_INFO&	GetData(int index);
 	LIST_ITEM_INFO&	GetData(FILETIME *pFileTime); 
 	LIST_ITEM_INFO&	GetDataiData(int iData); 
-	HRESULT SetBorder(DWORD dw,BOOL bShow); // for a highlight around the current selected item in the controls layout
+	HRESULT SetBorder(int index, bool show); // for a highlight around the current selected item in the controls layout
 	void SetSelectionChangedHandle(HXUIOBJ hObj);
 protected:
 

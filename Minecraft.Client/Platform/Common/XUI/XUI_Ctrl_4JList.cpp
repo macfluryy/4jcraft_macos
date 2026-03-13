@@ -16,41 +16,41 @@ void CXuiCtrl4JList::AddData( const LIST_ITEM_INFO& ItemInfo , int iSortListFrom
 {
 	// need to allocate memory for the structure and its strings
 	// and remap the string pointers	
-	DWORD dwBytes=0;
-	DWORD dwLen1=0;
-	DWORD dwLen2=0;
+	std::size_t totalBytes = 0;
+	std::size_t textBytes = 0;
+	std::size_t imageBytes = 0;
 
 	if(ItemInfo.pwszText)
 	{
-		dwLen1=(int)wcslen(ItemInfo.pwszText)*sizeof(WCHAR);
-		dwBytes+=dwLen1+sizeof(WCHAR);
+		textBytes = wcslen(ItemInfo.pwszText) * sizeof(WCHAR);
+		totalBytes += textBytes + sizeof(WCHAR);
 	}
 
 	if(ItemInfo.pwszImage)
 	{
-		dwLen2=(int)(wcslen(ItemInfo.pwszImage))*sizeof(WCHAR);
-		dwBytes+=dwLen2+sizeof(WCHAR);
+		imageBytes = wcslen(ItemInfo.pwszImage) * sizeof(WCHAR);
+		totalBytes += imageBytes + sizeof(WCHAR);
 	}
 
-	dwBytes+=sizeof( LIST_ITEM_INFO );
-	LIST_ITEM_INFO *pItemInfo = (LIST_ITEM_INFO *)new BYTE[dwBytes];
-	ZeroMemory(pItemInfo,dwBytes);
+	totalBytes += sizeof(LIST_ITEM_INFO);
+	LIST_ITEM_INFO *pItemInfo = reinterpret_cast<LIST_ITEM_INFO *>(new unsigned char[totalBytes]);
+	ZeroMemory(pItemInfo, totalBytes);
 
 	XMemCpy( pItemInfo, &ItemInfo, sizeof( LIST_ITEM_INFO ) );
-	if(dwLen1!=0) 
+	if(textBytes != 0)
 	{
-		XMemCpy( &pItemInfo[1], ItemInfo.pwszText, dwLen1 );
+		XMemCpy( &pItemInfo[1], ItemInfo.pwszText, textBytes );
 		pItemInfo->pwszText=(LPCWSTR)&pItemInfo[1];
-		if(dwLen2!=0)
+		if(imageBytes != 0)
 		{
-			BYTE *pwszImage = ((BYTE *)&pItemInfo[1])+dwLen1+sizeof(WCHAR);
-			XMemCpy( pwszImage, ItemInfo.pwszImage, dwLen2 );
-			pItemInfo->pwszImage=(LPCWSTR)pwszImage;
+			unsigned char *imageText = reinterpret_cast<unsigned char *>(&pItemInfo[1]) + textBytes + sizeof(WCHAR);
+			XMemCpy( imageText, ItemInfo.pwszImage, imageBytes );
+			pItemInfo->pwszImage = reinterpret_cast<LPCWSTR>(imageText);
 		}
 	}
-	else if(dwLen2!=0)
+	else if(imageBytes != 0)
 	{
-		XMemCpy( &pItemInfo[1], ItemInfo.pwszImage, dwLen2 );
+		XMemCpy( &pItemInfo[1], ItemInfo.pwszImage, imageBytes );
 		pItemInfo->pwszImage=(LPCWSTR)&pItemInfo[1];
 	}
 
@@ -162,9 +162,9 @@ int CXuiCtrl4JList::GetIndexByUserData(int iData)
 	return 0;
 }
 
-CXuiCtrl4JList::LIST_ITEM_INFO&	CXuiCtrl4JList::GetData(DWORD dw) 
+CXuiCtrl4JList::LIST_ITEM_INFO&	CXuiCtrl4JList::GetData(int index)
 { 
-	return *m_vListData[dw]; 
+	return *m_vListData[index];
 }
 
 CXuiCtrl4JList::LIST_ITEM_INFO&	CXuiCtrl4JList::GetDataiData(int iData) 
@@ -356,14 +356,14 @@ HRESULT CXuiCtrl4JList::OnGetItemEnable(XUIMessageGetItemEnable *pGetItemEnableD
 }
 
 
-HRESULT CXuiCtrl4JList::SetBorder(DWORD dw,BOOL bShow) 
+HRESULT CXuiCtrl4JList::SetBorder(int index, bool show)
 { 
 	CXuiControl Control;
 	HXUIOBJ hVisual,hBorder;
-	GetItemControl(dw,&Control);
+	GetItemControl(index,&Control);
 	Control.GetVisual(&hVisual);
 	XuiElementGetChildById(hVisual,L"Border",&hBorder);
-	return XuiElementSetShow(hBorder,bShow);	
+	return XuiElementSetShow(hBorder,show);
 }
 
 void CXuiCtrl4JList::SetSelectionChangedHandle(HXUIOBJ hObj)
@@ -383,7 +383,7 @@ HRESULT CXuiCtrl4JList::OnDestroy()
 			{
 				XuiDestroyBrush( m_vListData[i]->hXuiBrush );
 			}
-			delete [] (BYTE *)m_vListData[i];
+			delete [] reinterpret_cast<unsigned char *>(m_vListData[i]);
 		}
 	}
 	return S_OK;
