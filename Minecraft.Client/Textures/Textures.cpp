@@ -47,6 +47,10 @@ const wchar_t *Textures::preLoaded[TN_COUNT] =
 	L"gui/container",
 	L"gui/crafting",
 	L"gui/furnace",
+	L"gui/creative_inventory/tabs",
+	L"gui/creative_inventory/tab_items",
+	L"gui/creative_inventory/tab_inventory",
+	L"gui/creative_inventory/tab_item_search",
 	L"title/mclogo",
 #endif
 	L"gui/icons",

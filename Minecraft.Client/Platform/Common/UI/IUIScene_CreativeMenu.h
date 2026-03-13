@@ -4,9 +4,12 @@
 // 4J Stu - This class is for code that is common between XUI and Iggy
 
 class SimpleContainer;
+class CreativeInventoryScreen;
 
 class IUIScene_CreativeMenu : public virtual IUIScene_AbstractContainerMenu
 {
+	friend class CreativeInventoryScreen;
+	
 public:
 	// 4J Stu - These map directly to the tabs seenon the screen
 	enum ECreativeInventoryTabs
