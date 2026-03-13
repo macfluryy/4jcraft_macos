@@ -36,7 +36,20 @@ double Math::random()
 //the value of the argument rounded to the nearest long value.
 __int64 Math::round( double d )
 {
-	return (__int64)floor( d + 0.5 );
+	// 4jcraft fixes the fact that if double is a huge
+	// number than the cast of d to int64_t overflows
+
+	d = floor( d + 0.5 );
+
+	// if smaller or bigger than representable int64 than return the max
+	if(d >= (double)INT64_MAX) {
+		return INT64_MAX;
+
+	} else if (d <= (double)INT64_MIN) {
+		return INT64_MIN;
+	}
+
+	return (int64_t) d;
 }
 
 int Math::_max(int a, int b)

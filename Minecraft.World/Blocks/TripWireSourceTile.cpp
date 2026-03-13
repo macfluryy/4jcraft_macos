@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "TripWireSourceTile.h"
 
-TripWireSourceTile::TripWireSourceTile(int id) : Tile(id, Material::decoration, isSolidRender())
+TripWireSourceTile::TripWireSourceTile(int id) : Tile(id, Material::decoration, false)
 {
 	this->setTicking(true);
 }

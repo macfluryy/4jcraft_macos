@@ -375,7 +375,8 @@ void TheEndLevelRandomLevelSource::postProcess(ChunkSource *parent, int xt, int 
 	pprandom->setSeed(level->getSeed());
 	__int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
 	__int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
-	pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
+	// 4jcraft added cast to higher int and unsigned
+	pprandom->setSeed((((uint64_t)xt * xScale) + ((uint64_t)zt * zScale)) ^ level->getSeed());
 
     Biome *biome = level->getBiome(xo + 16, zo + 16);
     biome->decorate(level, pprandom, xo, zo);		// 4J - passing pprandom rather than level->random here to make this consistent with our parallel world generation

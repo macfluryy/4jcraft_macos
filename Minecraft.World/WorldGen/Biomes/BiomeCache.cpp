@@ -18,7 +18,8 @@ BiomeCache::Block::Block(int x, int z, BiomeCache *parent)
 // 	parent->source->getTemperatureBlock(temps, x << ZONE_SIZE_BITS, z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE);
 // 	parent->source->getDownfallBlock(downfall, x << ZONE_SIZE_BITS, z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE);
 // 	parent->source->getBiomeBlock(biomes, x << ZONE_SIZE_BITS, z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false);
-	parent->source->getBiomeIndexBlock(biomeIndices, x << ZONE_SIZE_BITS, z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false);
+	// 4jcraft added cast to unsigned
+	parent->source->getBiomeIndexBlock(biomeIndices, (unsigned) x << ZONE_SIZE_BITS, (unsigned) z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false);
 
 }
 

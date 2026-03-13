@@ -9,12 +9,12 @@ void Bush::_init()
     updateDefaultShape();
 }
 
-Bush::Bush(int id, Material *material) : Tile(id, material, isSolidRender())
+Bush::Bush(int id, Material *material) : Tile(id, material, false)
 {
     _init();
 }
 
-Bush::Bush(int id) : Tile(id, Material::plant, isSolidRender())
+Bush::Bush(int id) : Tile(id, Material::plant, false)
 {
 	_init();
 }

@@ -98,7 +98,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z,bool bIsSuperflat)
 				int selectedX = (int) (Math::round(cos(angle) * dist));
 				int selectedZ = (int) (Math::round(sin(angle) * dist));
 
-				TilePos *position = level->getBiomeSource()->findBiome((selectedX << 4) + 8, (selectedZ << 4) + 8, 7 << 4, allowedBiomes, &random);
+				TilePos *position = level->getBiomeSource()->findBiome(((unsigned int) selectedX << 4) + 8, ((unsigned int) selectedZ << 4) + 8, 7 << 4, allowedBiomes, &random);
 				if (position != NULL)
 				{
 					selectedX = position->x >> 4;

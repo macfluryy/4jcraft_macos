@@ -16,7 +16,7 @@ const std::wstring RedStoneDustTile::TEXTURE_LINE = L"redstoneDust_line";
 const std::wstring RedStoneDustTile::TEXTURE_CROSS_OVERLAY = L"redstoneDust_cross_overlay";
 const std::wstring RedStoneDustTile::TEXTURE_LINE_OVERLAY = L"redstoneDust_line_overlay";
 
-RedStoneDustTile::RedStoneDustTile(int id) : Tile(id, Material::decoration,isSolidRender())
+RedStoneDustTile::RedStoneDustTile(int id) : Tile(id, Material::decoration, false)
 {
 	shouldSignal = true;
 

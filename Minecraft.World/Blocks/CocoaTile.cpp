@@ -8,7 +8,7 @@
 
 const std::wstring CocoaTile::TEXTURE_AGES[] = {	L"cocoa_0", L"cocoa_1", L"cocoa_2"};
 
-CocoaTile::CocoaTile(int id) : DirectionalTile(id, Material::plant, isSolidRender() )
+CocoaTile::CocoaTile(int id) : DirectionalTile(id, Material::plant, false)
 {
 	setTicking(true);
 }

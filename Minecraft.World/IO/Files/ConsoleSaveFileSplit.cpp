@@ -794,6 +794,15 @@ BOOL ConsoleSaveFileSplit::zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite
 		return 0;
 	}
 
+	// 4jcraft added: memset(NULL + 0, 0, 0); was called
+	// no bytes need to be written, hence there you go
+	if(nNumberOfBytesToWrite == 0) {
+		if(lpNumberOfBytesWritten) { 
+			*lpNumberOfBytesWritten = 0;
+		}
+		return 1;
+	}
+
 	LockSaveAccess();
 
 	if( file->isRegionFile() )
@@ -1221,7 +1230,8 @@ bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(const std::wstring &file
 	swscanf_s(body, L"%d.%d.mcr", &x, &z );
 
 	// Pack full id
-	id |= ( ( x << 8 ) & 0x0000ff00 );
+	// 4jcraft added cast to unsigned
+	id |= ( ( (unsigned int) x << 8 ) & 0x0000ff00 );
 	id |= ( z & 0x000000ff );
 
 	*idOut = id;

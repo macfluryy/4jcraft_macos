@@ -16,7 +16,7 @@
 const std::wstring FireTile::TEXTURE_FIRST = L"fire_0";
 const std::wstring FireTile::TEXTURE_SECOND = L"fire_1";
 
-FireTile::FireTile(int id) : Tile(id, Material::fire,isSolidRender())
+FireTile::FireTile(int id) : Tile(id, Material::fire, false)
 {
 	flameOdds = new int[256];
 	memset( flameOdds,0,sizeof(int)*256);

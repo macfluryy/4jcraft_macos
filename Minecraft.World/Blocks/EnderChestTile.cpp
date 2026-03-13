@@ -7,7 +7,7 @@
 #include "../Headers/net.minecraft.h"
 #include "EnderChestTile.h"
 
-EnderChestTile::EnderChestTile(int id) : EntityTile(id, Material::stone, isSolidRender())
+EnderChestTile::EnderChestTile(int id) : EntityTile(id, Material::stone, false) 
 {
 	updateDefaultShape();
 }

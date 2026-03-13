@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "FenceTile.h"
 
-FenceTile::FenceTile(int id, const std::wstring &texture, Material *material) : Tile( id, material, isSolidRender())
+FenceTile::FenceTile(int id, const std::wstring &texture, Material *material) : Tile( id, material, false)
 {
 	this->texture = texture;
 }

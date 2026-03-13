@@ -111,38 +111,41 @@ Layer::Layer(__int64 seedMixup)
 {
 	parent = nullptr;
 
+	// 4jcraft added casts to prevent signed int overflow
 	this->seedMixup = seedMixup;
-	this->seedMixup *= this->seedMixup * 6364136223846793005l + 1442695040888963407l;
-	this->seedMixup += seedMixup;
-	this->seedMixup *= this->seedMixup * 6364136223846793005l + 1442695040888963407l;
-	this->seedMixup += seedMixup;
-	this->seedMixup *= this->seedMixup * 6364136223846793005l + 1442695040888963407l;
-	this->seedMixup += seedMixup;
+	this->seedMixup *= (uint64_t) this->seedMixup * 6364136223846793005l + 1442695040888963407l;
+	this->seedMixup = (uint64_t) this->seedMixup + seedMixup;
+	this->seedMixup *= (uint64_t) this->seedMixup * 6364136223846793005l + 1442695040888963407l;
+	this->seedMixup = (uint64_t) this->seedMixup + seedMixup;
+	this->seedMixup *= (uint64_t) this->seedMixup * 6364136223846793005l + 1442695040888963407l;
+	this->seedMixup = (uint64_t) this->seedMixup + seedMixup;
 }
 
 void Layer::init(__int64 seed)
 {
 	this->seed = seed;
 	if (parent != NULL) parent->init(seed);
-	this->seed *= this->seed * 6364136223846793005l + 1442695040888963407l;
-	this->seed += seedMixup;
-	this->seed *= this->seed * 6364136223846793005l + 1442695040888963407l;
-	this->seed += seedMixup;
-	this->seed *= this->seed * 6364136223846793005l + 1442695040888963407l;
-	this->seed += seedMixup;
+	// 4jcraft added casts to prevent signed int overflow
+	this->seed *= (uint64_t) this->seed * 6364136223846793005l + 1442695040888963407l;
+	this->seed = (uint64_t) this->seed + seedMixup;
+	this->seed *= (uint64_t) this->seed * 6364136223846793005l + 1442695040888963407l;
+	this->seed = (uint64_t) this->seed + seedMixup;
+	this->seed *= (uint64_t) this->seed * 6364136223846793005l + 1442695040888963407l;
+	this->seed = (uint64_t) this->seed + seedMixup;
 }
 
 void Layer::initRandom(__int64 x, __int64 y)
 {
 	rval = seed;
-	rval *= rval * 6364136223846793005l + 1442695040888963407l;
-	rval += x;
-	rval *= rval * 6364136223846793005l + 1442695040888963407l;
-	rval += y;
-	rval *= rval * 6364136223846793005l + 1442695040888963407l;
-	rval += x;
-	rval *= rval * 6364136223846793005l + 1442695040888963407l;
-	rval += y;
+	// 4jcraft added casts to prevent signed int overflow
+	rval *= (uint64_t) rval * 6364136223846793005l + 1442695040888963407l;
+	rval += (uint64_t) x;
+	rval *= (uint64_t) rval * 6364136223846793005l + 1442695040888963407l;
+	rval += (uint64_t) y;
+	rval *= (uint64_t) rval * 6364136223846793005l + 1442695040888963407l;
+	rval += (uint64_t) x;
+	rval *= (uint64_t) rval * 6364136223846793005l + 1442695040888963407l;
+	rval += (uint64_t) y;
 }
 
 int Layer::nextRandom(int max)
@@ -193,7 +196,8 @@ int Layer::nextRandom(int max)
 #endif
 
 	if (result < 0) result += max;
-	rval *= rval * 6364136223846793005l + 1442695040888963407l;
-	rval += seed;
+	// 4jcraft added cast to unsigned
+	rval *= (uint64_t) rval * 6364136223846793005l + 1442695040888963407l;
+	rval += (uint64_t) seed;
 	return result;
 }

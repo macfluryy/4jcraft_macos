@@ -6,7 +6,7 @@
 #include "../Util/Facing.h"
 #include "../Util/AABB.h"
 
-PistonMovingPiece::PistonMovingPiece(int id) : EntityTile(id, Material::piston, isSolidRender() )
+PistonMovingPiece::PistonMovingPiece(int id) : EntityTile(id, Material::piston, false )
 {
 	setDestroyTime(INDESTRUCTIBLE_DESTROY_TIME);
 }

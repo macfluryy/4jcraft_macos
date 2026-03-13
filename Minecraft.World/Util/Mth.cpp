@@ -10,29 +10,43 @@ const float Mth::RADDEG = 180.0f / PI;
 
 float *Mth::_sin = NULL;
 
+// 4jcraft for clarity
+constexpr size_t SIN_TAB_CNT = 65536;
+
 const float Mth::sinScale = 65536.0f / (float) (PI * 2);
 
 // 4J - added - was in static constructor
 void Mth::init()
 {
-    _sin = new float[65536];
-    for (int i = 0; i < 65536; i++)
+    _sin = new float[SIN_TAB_CNT];
+    for (int i = 0; i < SIN_TAB_CNT; i++)
 	{
-        _sin[i] = (float) ::sin(i * PI * 2 / 65536.0f);
+        _sin[i] = (float) ::sin(i * PI * 2 / (float) SIN_TAB_CNT);
     }
 }
 
 float Mth::sin(float i)
 {
+	
 	if(_sin == NULL) init();		// 4J - added
-	return _sin[(int) (i * sinScale) & 65535];
+
+	// 4jcraft changed, what ever this was, it was not safe
+	// fmodf returns between -65536 and 65536 (casted)
+	// last end is there to shift it into 0 to 65535
+	
+	return _sin[(int32_t) fmodf(i * sinScale, (float) SIN_TAB_CNT) & (SIN_TAB_CNT - 1)];
 }
 
 float Mth::cos(float i)
 {
 	if(_sin == NULL) init();		// 4J - added
-	return _sin[(int) (i * sinScale + 65536 / 4) & 65535];
+	// 4jcraft same thing as ::sin but shift by SIN_TAB_CNT / 4 
+	// which is aquivalent to shift by pi / 2
+	// and again the same modulo logic to cramp and map it onto the computed table
+	
+	return _sin[(int32_t) fmodf(i * sinScale + ((float) SIN_TAB_CNT / 4), (float) SIN_TAB_CNT) & (SIN_TAB_CNT - 1)];
 }
+
 
 float Mth::sqrt(float x)
 {

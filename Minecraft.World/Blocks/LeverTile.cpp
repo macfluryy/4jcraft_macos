@@ -4,7 +4,7 @@
 #include "LeverTile.h"
 #include "../Util/SoundTypes.h"
 
-LeverTile::LeverTile(int id) : Tile(id, Material::decoration,isSolidRender())
+LeverTile::LeverTile(int id) : Tile(id, Material::decoration, false)
 {
 }
 

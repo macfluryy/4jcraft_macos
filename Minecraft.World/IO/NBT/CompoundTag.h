@@ -194,8 +194,11 @@ public:
 
     ListTag<Tag> *getList(const wchar_t * name)
 	{
-        if (tags.find(name) == tags.end()) return new ListTag<Tag>(name);
-        return (ListTag<Tag> *) tags[name];
+	// 4jcraft changed this function to not do a c style cast
+	// of a templated class
+	auto it = tags.find(name);
+	if(it == tags.end()) return new ListTag<Tag>(name);
+	return dynamic_cast<ListTag<Tag>*>(it->second);
     }
 
     bool getBoolean(const wchar_t *string)

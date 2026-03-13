@@ -6,7 +6,7 @@
 
 const std::wstring TheEndPortalFrameTile::TEXTURE_EYE = L"endframe_eye";
 
-TheEndPortalFrameTile::TheEndPortalFrameTile(int id) : Tile(id, Material::glass, isSolidRender() )
+TheEndPortalFrameTile::TheEndPortalFrameTile(int id) : Tile(id, Material::glass, false )
 {
 	iconTop = NULL;
 	iconEye = NULL;

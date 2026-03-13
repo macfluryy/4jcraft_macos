@@ -33,7 +33,9 @@ void Random::setSeed(__int64 s)
 
 int Random::next(int bits)
 {
-    seed = (seed * 0x5DEECE66DLL + 0xBLL) & ((1LL << 48) - 1);
+	// 4jcraft, cast to uint64_t for modulo arithmethic
+	// overflow of int undefined, and its guaranteed here.
+    seed = ((uint64_t) seed * 0x5DEECE66DLL + 0xBLL) & ((1LL << 48) - 1);
     return (int)(seed >> (48 - bits));
 }
 
@@ -86,14 +88,16 @@ int Random::nextInt(int n)
 
 
     if ((n & -n) == n)  // i.e., n is a power of 2
-        return (int)(((__int64)next(31) * n) >> 31); // 4J Stu - Made __int64 instead of long
+	// 4jcraft added casts to unsigned (and uint64_t)
+        return (int)(((uint64_t)next(31) * n) >> 31); // 4J Stu - Made __int64 instead of long
 
     int bits, val;
     do
 	{
         bits = next(31);
         val = bits % n;
-    } while(bits - val + (n-1) < 0);
+	// 4jcraft added a cast to prevent overflow
+    } while((int64_t) bits - val + (n-1) < 0);
     return val;
 }
 
@@ -104,7 +108,8 @@ float Random::nextFloat()
 
 __int64 Random::nextLong()
 {
-	return ((__int64)next(32) << 32) + next(32);
+	// 4jcraft added casts to unsigned
+	return (int64_t)((uint64_t) next(32) << 32) + next(32);
 }
 
 bool Random::nextBoolean()

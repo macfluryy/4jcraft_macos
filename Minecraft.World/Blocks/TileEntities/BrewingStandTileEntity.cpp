@@ -283,12 +283,13 @@ void BrewingStandTileEntity::load(CompoundTag *base)
 {
     TileEntity::load(base);
 
-    ListTag<CompoundTag> *inventoryList = (ListTag<CompoundTag> *) base->getList(L"Items");
-	delete [] items.data;
+    ListTag<Tag> *inventoryList = base->getList(L"Items");
+
+    delete [] items.data;
     items = ItemInstanceArray(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++)
 	{
-        CompoundTag *tag = inventoryList->get(i);
+        CompoundTag *tag = (CompoundTag*) inventoryList->get(i);
         int slot = tag->getByte(L"Slot");
         if (slot >= 0 && slot < items.length) items[slot] = ItemInstance::fromTag(tag);
     }

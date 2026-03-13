@@ -8,7 +8,7 @@
 
 const std::wstring BrewingStandTile::TEXTURE_BASE = L"brewingStand_base";
 
-BrewingStandTile::BrewingStandTile(int id) : EntityTile(id, Material::metal, isSolidRender())
+BrewingStandTile::BrewingStandTile(int id) : EntityTile(id, Material::metal, false)
 {
 	random = new Random();
 	iconBase = NULL;

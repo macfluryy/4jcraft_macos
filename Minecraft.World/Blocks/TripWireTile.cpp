@@ -5,7 +5,7 @@
 #include "../Headers/net.minecraft.world.phys.h"
 #include "TripWireTile.h"
 
-TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, isSolidRender())
+TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) 
 {
 	setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);
 	this->setTicking(true);

@@ -109,13 +109,15 @@ void ConsoleSchematicFile::load(DataInputStream *dis)
 		}
 
 		// READ TAGS //
+		// 4jcraft, fixed cast of templated List to get the tag list
+		// and cast it to CompoundTag inside the loop
 		CompoundTag *tag = NbtIo::read(dis);
-		ListTag<CompoundTag> *tileEntityTags = (ListTag<CompoundTag> *) tag->getList(L"TileEntities");
+		ListTag<Tag> *tileEntityTags = tag->getList(L"TileEntities");
 		if (tileEntityTags != NULL)
 		{
 			for (int i = 0; i < tileEntityTags->size(); i++)
 			{
-				CompoundTag *teTag = tileEntityTags->get(i);
+				CompoundTag *teTag = (CompoundTag*) tileEntityTags->get(i);
 				std::shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
 
 				if(te == NULL)
@@ -131,18 +133,23 @@ void ConsoleSchematicFile::load(DataInputStream *dis)
 				}
 			}
 		}
-		ListTag<CompoundTag> *entityTags = (ListTag<CompoundTag> *) tag->getList(L"Entities");
+
+		// 4jcraft, fixed cast of templated List to get the tag list
+		// and cast it to CompoundTag inside the loop
+		ListTag<Tag> *entityTags = tag->getList(L"Entities");
 		if (entityTags != NULL)
 		{
 			for (int i = 0; i < entityTags->size(); i++)
 			{
-				CompoundTag *eTag = entityTags->get(i);
+				CompoundTag *eTag = (CompoundTag*) entityTags->get(i);
 				eINSTANCEOF type = EntityIO::getType(eTag->getString(L"id"));
-				ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) eTag->getList(L"Pos");
 
-				double x = pos->get(0)->data;
-				double y = pos->get(1)->data;
-				double z = pos->get(2)->data;
+				// 4jcraft, same here
+				ListTag<Tag> *pos = eTag->getList(L"Pos");
+
+				double x = ((DoubleTag*) pos->get(0))->data;
+				double y = ((DoubleTag*) pos->get(1))->data;
+				double z = ((DoubleTag*) pos->get(2))->data;
 
 				if( type == eTYPE_PAINTING || type == eTYPE_ITEM_FRAME )
 				{					
@@ -187,14 +194,15 @@ void ConsoleSchematicFile::save_tags(DataOutputStream *dos)
 __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
 	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	// 4jcraft changed from (xStart>>4)<<4 to (xStart & ~15)
+	int xEnd = std::min(destinationBox->x1, (double)((xStart & ~15) + 16));
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
 	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zEnd = std::min(destinationBox->z1, (double)(zStart & ~15) + 16);
 
 #ifdef _DEBUG
 	app.DebugPrintf("Range is (%d,%d,%d) to (%d,%d,%d)\n",xStart,yStart,zStart,xEnd-1,yEnd-1,zEnd-1);
@@ -326,14 +334,15 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk *chunk, AABB *chunkB
 __int64 ConsoleSchematicFile::applyLighting(LevelChunk *chunk, AABB *chunkBox, AABB *destinationBox, ESchematicRotation rot)
 {
 	int xStart = std::max(destinationBox->x0, (double)chunk->x*16);
-	int xEnd = std::min(destinationBox->x1, (double)((xStart>>4)<<4) + 16);
+	// 4jcraft changed >>4<<4 to & ~15
+	int xEnd = std::min(destinationBox->x1, (double)(xStart & ~15) + 16);
 
 	int yStart = destinationBox->y0;
 	int yEnd = destinationBox->y1;
 	if(yEnd > Level::maxBuildHeight) yEnd = Level::maxBuildHeight;
 
 	int zStart = std::max(destinationBox->z0, (double)chunk->z*16);
-	int zEnd = std::min(destinationBox->z1, (double)((zStart>>4)<<4) + 16);
+	int zEnd = std::min(destinationBox->z1, (double)(zStart & ~15) + 16);
 
 	int rowBlocksIncluded = (yEnd-yStart)*(zEnd-zStart);
 	int blocksIncluded = (xEnd-xStart)*rowBlocksIncluded;

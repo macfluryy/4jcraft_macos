@@ -15,7 +15,7 @@ const unsigned int WallTile::COBBLE_NAMES[2] = { IDS_TILE_COBBLESTONE_WALL,
 	IDS_TILE_COBBLESTONE_WALL_MOSSY,
 };
 
-WallTile::WallTile(int id, Tile *baseTile) : Tile(id, baseTile->material, isSolidRender())
+WallTile::WallTile(int id, Tile *baseTile) : Tile(id, baseTile->material, false) 
 {
 	setDestroyTime(baseTile->destroySpeed);
 	setExplodeable(baseTile->explosionResistance / 3);
