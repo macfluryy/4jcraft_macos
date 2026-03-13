@@ -39,9 +39,9 @@ protected:
 
 private:
 	std::shared_ptr<ItemInstance> m_item;
-	BOOL m_bDirty;
-	INT m_iPassThroughDataAssociation;
-	INT m_iPassThroughIdAssociation;
+	bool m_bDirty;
+	int m_iPassThroughDataAssociation;
+	int m_iPassThroughIdAssociation;
 	float m_fScale,m_fAlpha;
 	int m_iPad;
 	int m_iID;

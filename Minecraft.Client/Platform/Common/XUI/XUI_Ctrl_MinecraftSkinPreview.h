@@ -73,7 +73,7 @@ private:
 	bool bindTexture(const std::wstring& urlTexture, int backupTexture);
 	bool bindTexture(const std::wstring& urlTexture, const std::wstring& backupTexture);
 
-	BOOL m_bDirty;
+	bool m_bDirty;
 	float m_fScale,m_fAlpha;
 
 	std::wstring m_customTextureUrl;
@@ -93,7 +93,7 @@ private:
 	float m_walkAnimPos;
 
 	bool m_bAutoRotate, m_bRotatingLeft;
-	BYTE m_rotateTick;
+	int m_rotateTick;
 	float m_fTargetRotation, m_fOriginalRotation;
 	int m_framesAnimatingRotation;
 	bool m_bAnimatingToFacing;

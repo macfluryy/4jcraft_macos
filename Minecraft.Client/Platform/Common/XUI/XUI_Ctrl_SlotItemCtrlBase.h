@@ -24,7 +24,7 @@ class CXuiCtrlSlotItemCtrlBase
 {
 private:
 	// 4J WESTY : Pointer Prototype : Added to support prototype only.
-	BOOL	m_bSkipDefaultNavigation;
+	bool	m_bSkipDefaultNavigation;
 
 public:
 	// We define a lot of functions as virtual. These should be implemented to call the protected version by
@@ -56,7 +56,7 @@ public:
 	int	 GetObjectCount( HXUIOBJ hObj );
 
 	// 4J WESTY : Pointer Prototype : Added to support prototype only.
-	void	SetSkipsDefaultNavigation( BOOL bSkipDefaultNavigation )			{ m_bSkipDefaultNavigation = bSkipDefaultNavigation; }
+	void	SetSkipsDefaultNavigation( bool bSkipDefaultNavigation )			{ m_bSkipDefaultNavigation = bSkipDefaultNavigation; }
 
 	// 4J WESTY : Pointer Prototype : Added to support prototype only.
 	int		GetEmptyStackSpace( HXUIOBJ hObj );		// Returns number of items that can still be stacked into this slot.

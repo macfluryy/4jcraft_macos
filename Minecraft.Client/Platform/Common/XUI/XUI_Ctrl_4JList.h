@@ -17,8 +17,8 @@ public:
 		LPCWSTR pwszText;
 		LPCWSTR pwszImage;
 		HXUIBRUSH hXuiBrush;
-		BOOL fChecked;
-		BOOL fEnabled;
+		bool fChecked;
+		bool fEnabled;
 		bool bIsDamaged; // damaged save
 		FILETIME fTime;
 		int iData; // user data
