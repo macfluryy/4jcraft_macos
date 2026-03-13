@@ -500,7 +500,6 @@ HRESULT CScene_Credits::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled)
 HRESULT CScene_Credits::OnControlNavigate(XUIMessageControlNavigate *pControlNavigateData, BOOL& bHandled)
 {
 	// ignore any joypads other than the main
-	BYTE bFocusUser=XuiElementGetFocusUser(pControlNavigateData->hObjSource);
 	// get the user from the control
 	/*if(!=ProfileManager.GetLockedProfile())
 	{

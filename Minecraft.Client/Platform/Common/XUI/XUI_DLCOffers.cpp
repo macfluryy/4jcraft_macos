@@ -371,7 +371,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 				// Bug 49249 - JPN: Code Defect: Missing Text: String 'Minecraft' is missing in contents download screen.
 				// Looks like we shouldn't be removing this text for Japanese, and probably Chinese & Korean
 
-				DWORD dwLanguage = XGetLanguage( );
+				unsigned int dwLanguage = XGetLanguage();
 				switch(dwLanguage)
 				{
 				case XC_LANGUAGE_KOREAN:	
@@ -450,7 +450,6 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		if (dlc != NULL)
 		{
 			std::uint8_t *pData=NULL;
-			UINT uiSize=0;
 			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;
@@ -703,7 +702,6 @@ HRESULT CScene_DLCOffers::OnNotifySelChanged(HXUIOBJ hObjSource, XUINotifySelCha
 		if (dlc != NULL)
 		{
 			std::uint8_t *pImage=NULL;
-			UINT uiSize=0;
 			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;

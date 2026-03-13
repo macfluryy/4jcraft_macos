@@ -155,7 +155,7 @@ private:
 	std::vector<LevelGenerationOptions *> *m_generators;
 	JoinMenuInitData *m_initData;
 
-	UINT m_DefaultMinecraftIconSize;
+	unsigned int m_DefaultMinecraftIconSize;
 	PBYTE m_DefaultMinecraftIconData;
 	int *m_iConfigA; // track the texture packs that we don't have installed
 	int m_iTexturePacksNotInstalled;
