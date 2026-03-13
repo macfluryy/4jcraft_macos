@@ -485,49 +485,41 @@ void Minecraft::blit(int x, int y, int sx, int sy, int w, int h)
 
 File Minecraft::getWorkingDirectory()
 {
-	if (workDir.getPath().empty()) workDir = getWorkingDirectory(L"minecraft");
+	if (workDir.getPath().empty()) workDir = getWorkingDirectory(L"4jcraft");
 	return workDir;
 }
 
 File Minecraft::getWorkingDirectory(const std::wstring& applicationName)
 {
-#if 0
 	// 4J - original version
-	final String userHome = System.getProperty("user.home", ".");
-	final File workingDirectory;
-	switch (getPlatform()) {
-	case linux:
-	case solaris:
-		workingDirectory = new File(userHome, '.' + applicationName + '/');
-		break;
-	case windows:
-		final String applicationData = System.getenv("APPDATA");
-		if (applicationData != null) workingDirectory = new File(applicationData, "." + applicationName + '/');
-		else workingDirectory = new File(userHome, '.' + applicationName + '/');
-		break;
-	case macos:
-		workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
-		break;
-	default:
-		workingDirectory = new File(userHome, applicationName + '/');
+	// 4jcraft: ported to C++
+	std::wstring userHome = convStringToWstring(getenv("HOME"));
+	File *workingDirectory;
+#if defined(__linux__)
+	workingDirectory = new File(userHome, L'.' + applicationName + L'/');
+#elif defined(_WINDOWS64)
+	std::string applicationData = getenv("APPDATA");
+	if (!applicationData.empty())
+	{
+		workingDirectory = new File(convStringToWstring(applicationData), L'.' + applicationName + L'/');
 	}
-	if (!workingDirectory.exists()) if (!workingDirectory.mkdirs()) throw new RuntimeException("The working directory could not be created: " + workingDirectory);
-	return workingDirectory;
+	else
+	{
+		workingDirectory = new File(userHome, L'.' + applicationName + L'/');
+	}
+//#elif defined(_MACOS)
+//		workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
 #else
-	std::wstring userHome = L"home";	// 4J - TODO
-	File workingDirectory(userHome, applicationName);
-	// 4J Removed
-	//if (!workingDirectory.exists())
-	//{
-	//	workingDirectory.mkdirs();
-	//}
-	return workingDirectory;
+	workingDirectory = new File(userHome, applicationName + L'/');
 #endif
-}
-
-Minecraft::OS Minecraft::getPlatform()
-{
-	return xbox;
+	if (!workingDirectory->exists()){
+		if (!workingDirectory->mkdirs()) {
+			app.DebugPrintf("The working directory could not be created");
+			assert(0);
+			//throw new RuntimeException(L"The working directory could not be created: " + workingDirectory);
+		}
+	}
+	return *workingDirectory;
 }
 
 LevelStorageSource *Minecraft::getLevelSource()

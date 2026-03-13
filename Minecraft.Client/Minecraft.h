@@ -50,11 +50,6 @@ class PsPlusUpsellWrapper;
 
 class Minecraft
 {
-private:
-	enum  OS{
-		linux, solaris, windows, macos, unknown, xbox
-	};
-
 public:
 	static const std::wstring VERSION_STRING;
 	Minecraft(Component *mouseComponent, Canvas *parent, MinecraftApplet *minecraftApplet, int width, int height, bool fullscreen);
@@ -200,8 +195,6 @@ private:
 public:
 	static File getWorkingDirectory();
 	static File getWorkingDirectory(const std::wstring& applicationName);
-private:
-	static OS getPlatform();
 public:
 	LevelStorageSource *getLevelSource();
 	void setScreen(Screen *screen);

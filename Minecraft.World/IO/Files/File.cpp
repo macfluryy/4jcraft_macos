@@ -15,7 +15,8 @@
 #include <fios2.h>
 #endif
 
-const wchar_t File::pathSeparator = L'\\';
+const wchar_t File::pathSeparator = L'/';
+
 #ifdef _XBOX
 const std::wstring File::pathRoot = L"GAME:"; // Path root after pathSeparator has been removed
 #else
