@@ -279,12 +279,14 @@ void Options::toggle(const Options::Option *option, int dir)
     if (option ==  Option::GRAPHICS)
 	{
         fancyGraphics = !fancyGraphics;
-        minecraft->levelRenderer->allChanged();
+		// 4jcraft: ensure level exists before applying
+        if(minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::AMBIENT_OCCLUSION)
 	{
         ambientOcclusion = !ambientOcclusion;
-        minecraft->levelRenderer->allChanged();
+		// 4jcraft: ensure level exists before applying
+        if(minecraft->level) minecraft->levelRenderer->allChanged();
     }
 
 	// 4J-PB - don't do the file save on the xbox
