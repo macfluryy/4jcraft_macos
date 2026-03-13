@@ -334,34 +334,15 @@ close("disconnect.genericReason", "Internal exception: " + e.toString());
 }*/
 
 
-void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
+void Connection::close(DisconnectPacket::eDisconnectReason reason)
 {
 	fprintf(stderr, "[CONN] close called with reason=%d on connection=%p\n", reason, (void*)this);
 	if (!running) return;
 	fprintf(stderr, "[CONN] close proceeding (was running) on connection=%p\n", (void*)this);
 	disconnected = true;
 
-	va_list input;
-	va_start( input, reason );
-
-	disconnectReason = reason;//va_arg( input, const std::wstring );
-
-	std::vector<void *> objs = std::vector<void *>();
-	void *i = NULL;
-	while (i != NULL)
-	{
-		i = va_arg( input, void* );
-		objs.push_back(i);
-	}
-
-	if( objs.size() )
-	{
-		disconnectReasonObjects = &objs[0];
-	}
-	else
-	{
-		disconnectReasonObjects = NULL;
-	}
+	disconnectReason = reason;
+	disconnectReasonObjects = NULL;
 
 	//	int count = 0, sum = 0, i = first;
 	//	va_list marker;

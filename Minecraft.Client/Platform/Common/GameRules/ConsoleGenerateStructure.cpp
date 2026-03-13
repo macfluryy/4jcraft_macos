@@ -164,6 +164,8 @@ bool ConsoleGenerateStructure::postProcess(Level *level, Random *random, Boundin
 				pPlaceSpawner->placeSpawnerInLevel(this,level,chunkBB);
 			}
 			break;
+		default:
+			break;
 		};
 	}
 

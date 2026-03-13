@@ -194,9 +194,14 @@ void UIScene_InventoryMenu::setSectionSelectedSlot(ESceneSection eSection, int x
 	case eSectionInventoryUsing:
 		slotList = &m_slotListHotbar;
 		break;
+	default:
+		break;
 	}
 
-	slotList->setHighlightSlot(index);
+	if (slotList != NULL)
+	{
+		slotList->setHighlightSlot(index);
+	}
 }
 
 UIControl *UIScene_InventoryMenu::getSection(ESceneSection eSection)
@@ -212,6 +217,8 @@ UIControl *UIScene_InventoryMenu::getSection(ESceneSection eSection)
 		break;
 	case eSectionInventoryUsing:
 		control = &m_slotListHotbar;
+		break;
+	default:
 		break;
 	}
 	return control;

@@ -490,11 +490,11 @@ void ItemRenderer::renderAndDecorateItem(Font *font, Textures *textures, const s
 		if((fScaleX!=1.0f) ||(fScaleY!=1.0f))
 		{
 			// 4J Stu - Scales were multiples of 20, making 16 to not overlap in xui scenes
-			blitGlint(x * 431278612 + y * 32178161, x - 2, y - 2, 16 * fScaleX, 16 * fScaleY);
+			blitGlint(x * 431278612.0f + y * 32178161.0f, x - 2, y - 2, 16 * fScaleX, 16 * fScaleY);
 		}
 		else
 		{
-			blitGlint(x * 431278612 + y * 32178161, x - 2, y - 2, 20, 20);
+			blitGlint(x * 431278612.0f + y * 32178161.0f, x - 2, y - 2, 20, 20);
 		}
 		glColor4f(1.0f, 1.0f, 1.0f, 1);	// 4J added
 		if( !isConstantBlended ) glDisable(GL_BLEND);

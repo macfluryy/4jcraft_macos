@@ -401,7 +401,8 @@ void Animal::resetLove() {
 bool Animal::canMate(std::shared_ptr<Animal> partner)
 {
 	if (partner == shared_from_this()) return false;
-	if (typeid(*partner) != typeid(*this)) return false;
+	Animal *partnerPtr = partner.get();
+	if (partnerPtr == NULL || typeid(*partnerPtr) != typeid(*this)) return false;
 	return isInLove() && partner->isInLove();
 }
 

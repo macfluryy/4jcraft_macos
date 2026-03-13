@@ -178,6 +178,8 @@ void DLCAudioFile::addParameter(EAudioType type, EAudioParameterType ptype, cons
 			m_parameters[type].push_back(value);
 			//m_parameters[(int)type] = value;
 			break;
+		default:
+			break;
 	}
 }
 

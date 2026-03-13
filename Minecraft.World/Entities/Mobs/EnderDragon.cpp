@@ -932,6 +932,8 @@ void EnderDragon::findNewTarget()
 #endif
 		m_actionTicks = 0;
 		break;
+	default:
+		break;
 	};
 
 	newTarget = false;
@@ -1347,6 +1349,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_LandingApproach:
 				validTransition = true;
 				break;
+			default:
+				break;
 		};
 		break;
 	case e_EnderdragonAction_StrafePlayer:
@@ -1356,6 +1360,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_LandingApproach:
 				validTransition = true;
 				break;
+			default:
+				break;
 		};
 		break;
 	case e_EnderdragonAction_LandingApproach:
@@ -1363,6 +1369,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 		{
 			case e_EnderdragonAction_Landing:
 				validTransition = true;
+				break;
+			default:
 				break;
 		};
 		break;
@@ -1373,6 +1381,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_Sitting_Scanning:
 				validTransition = true;
 				break;
+			default:
+				break;
 		};
 		break;
 	case e_EnderdragonAction_Takeoff:
@@ -1380,6 +1390,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 		{
 			case e_EnderdragonAction_HoldingPattern:
 				validTransition = true;
+				break;
+			default:
 				break;
 		};
 		break;
@@ -1391,6 +1403,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_Takeoff:
 				validTransition = true;
 				break;
+			default:
+				break;
 		};
 		break;
 	case e_EnderdragonAction_Sitting_Scanning:
@@ -1400,6 +1414,8 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_Sitting_Attacking:
 			case e_EnderdragonAction_Takeoff:
 				validTransition = true;
+				break;
+			default:
 				break;
 		};
 		break;
@@ -1411,7 +1427,11 @@ bool EnderDragon::setSynchedAction(EEnderdragonAction action, bool force /*= fal
 			case e_EnderdragonAction_Takeoff:
 				validTransition = true;
 				break;
+			default:
+				break;
 		};
+		break;
+	default:
 		break;
 	};
 

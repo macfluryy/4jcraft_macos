@@ -128,6 +128,8 @@ void ChoiceTask::sendTelemetry()
 			firstPlay = !tutorial->getCompleted( eTutorial_Telemetry_Halfway );
 			tutorial->setCompleted( eTutorial_Telemetry_Halfway );
 			break;
+		default:
+			break;
 		};
 
 		TelemetryManager->RecordEnemyKilledOrOvercome(pMinecraft->player->GetXboxPad(), 0, 0, 0, 0, 0, 0, m_eTelemetryEvent);

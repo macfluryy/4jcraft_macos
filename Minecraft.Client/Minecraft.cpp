@@ -1845,6 +1845,8 @@ void Minecraft::run_middle()
 								// capture the save thumbnail
 								app.CaptureSaveThumbnail();
 								break;
+							default:
+								break;
 							}
 						}
 					}
@@ -4907,4 +4909,3 @@ int Minecraft::MustSignInReturnedPSN(void *pParam, int iPad, C4JStorage::EMessag
     return 0;
 }
 #endif
-

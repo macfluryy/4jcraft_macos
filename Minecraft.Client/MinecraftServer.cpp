@@ -1202,6 +1202,8 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 
 				switch(eAction)
 				{
+				case eXuiServerAction_Idle:
+					break;
 				case eXuiServerAction_AutoSaveGame:
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 					{
@@ -1379,6 +1381,8 @@ void MinecraftServer::run(__int64 seed, void *lpParameter)
 						//player->absMoveTo(pos->m_camX, pos->m_camY, pos->m_camZ, pos->m_yRot, pos->m_elev);
 					}
 #endif
+					break;
+				default:
 					break;
 				}
 				

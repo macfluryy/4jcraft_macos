@@ -86,8 +86,6 @@ CustomLevelSource::~CustomLevelSource()
 	delete mineShaftFeature;
 	delete canyonFeature;
 
-	this->level = level;
-
 	delete random;
     delete perlinNoise3;
 #endif

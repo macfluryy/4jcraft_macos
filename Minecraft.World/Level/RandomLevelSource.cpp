@@ -69,8 +69,6 @@ RandomLevelSource::~RandomLevelSource()
 	delete scatteredFeature;
 	delete canyonFeature;
 
-    this->level = level;
-
     delete random;;
     delete lperlinNoise1;
     delete lperlinNoise2;

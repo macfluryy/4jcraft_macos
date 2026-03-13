@@ -138,6 +138,8 @@ void IUIScene_EnchantingMenu::handleOtherClicked(int iPad, ESceneSection eSectio
 	case eSectionEnchantButton3:
 		index = 2;
 		break;
+	default:
+		break;
 	};
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if (index >= 0 && m_menu->clickMenuButton(std::dynamic_pointer_cast<Player>(pMinecraft->localplayers[iPad]), index))
@@ -175,6 +177,8 @@ bool IUIScene_EnchantingMenu::IsSectionSlotList( ESceneSection eSection )
 		case eSectionEnchantUsing:
 		case eSectionEnchantSlot:
 			return true;
+		default:
+			break;
 	}
 	return false;
 }

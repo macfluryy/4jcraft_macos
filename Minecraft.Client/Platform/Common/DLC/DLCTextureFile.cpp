@@ -33,6 +33,8 @@ void DLCTextureFile::addParameter(DLCManager::EDLCParameterType type, const std:
 		m_bIsAnim = true;
 
 		break;
+	default:
+		break;
 	}
 }
 
