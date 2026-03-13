@@ -769,7 +769,7 @@ void Player::setCustomCape(std::uint32_t capeId)
 		if(pMojangData) 
 		{
 			// Cape
-			if(pMojangData->wchCape)
+			if(pMojangData->wchCape[0] != 0)
 			{
 				this->customTextureUrl2= pMojangData->wchCape;
 			}
@@ -884,7 +884,7 @@ void Player::prepareCustomTextures()
 	if(pMojangData) 
 	{
 		// Skin
-		if(pMojangData->wchSkin)
+		if(pMojangData->wchSkin[0] != 0)
 		{
 			this->customTextureUrl= pMojangData->wchSkin;
 		}
@@ -2275,6 +2275,8 @@ void Player::killed(std::shared_ptr<Mob> mob)
 		case eTYPE_ENDERDRAGON:
 			awardStat(GenericStats::killsEnderdragon(), GenericStats::param_noArgs());
 			break;
+		default:
+			break;
 		}
 	}
 	else if( mob->GetType() == eTYPE_COW )
@@ -2644,6 +2646,8 @@ void Player::setPlayerGamePrivilege(unsigned int &uiGamePrivileges, EPlayerGameP
 				Player::setPlayerGamePrivilege(uiGamePrivileges,ePlayerGamePrivilege_CanToggleClassicHunger,0);
 				Player::setPlayerGamePrivilege(uiGamePrivileges,ePlayerGamePrivilege_CanTeleport,0);
 				break;
+			default:
+				break;
 			}
 			// off
 			uiGamePrivileges&=~(1<<privilege);
@@ -2670,6 +2674,8 @@ bool Player::isAllowedToUse(Tile *tile)
 			case Tile::trapdoor_Id:
 				allowed = true;
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -2687,6 +2693,8 @@ bool Player::isAllowedToUse(Tile *tile)
 			case Tile::anvil_Id:
 			case Tile::enderChest_Id:
 				allowed = true;
+				break;
+			default:
 				break;
 			}
 		}
@@ -2759,6 +2767,8 @@ bool Player::isAllowedToUse(std::shared_ptr<ItemInstance> item)
 		case Item::sword_stone_Id:
 		case Item::sword_wood_Id:
 			allowed = true;
+			break;
+		default:
 			break;
 		}
 	}
@@ -2849,6 +2859,8 @@ bool Player::isAllowedToHurtEntity(std::shared_ptr<Entity> target)
 		case eTYPE_MINECART:
 
 			allowed = false;
+			break;
+		default:
 			break;
 		};
 	}

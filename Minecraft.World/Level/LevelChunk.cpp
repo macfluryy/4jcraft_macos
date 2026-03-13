@@ -1643,7 +1643,11 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB *bb, std::vec
 			else if ( ec == typeid(Mob) )  { if( std::dynamic_pointer_cast<Mob>(e) != NULL )  isAssignableFrom = true; }
 			else if ( ec == typeid(Monster) )  { if( std::dynamic_pointer_cast<Monster>(e) != NULL )  isAssignableFrom = true; }
 			else if ( ec == typeid(Zombie) )  { if( std::dynamic_pointer_cast<Zombie>(e) != NULL )  isAssignableFrom = true; }
-			else if(e != NULL && ec == typeid(*(e.get())) ) isAssignableFrom = true;
+			else
+			{
+				Entity *entityPtr = e.get();
+				if(entityPtr != NULL && ec == typeid(*entityPtr)) isAssignableFrom = true;
+			}
             if (isAssignableFrom && e->bb->intersects(bb)) es.push_back(e);
 			// 4J - note needs to be equivalent to baseClass.isAssignableFrom(e.getClass())
         }

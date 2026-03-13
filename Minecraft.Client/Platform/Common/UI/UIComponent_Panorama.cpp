@@ -90,6 +90,8 @@ void UIComponent_Panorama::render(S32 width, S32 height, C4JRender::eViewportTyp
 		case C4JRender::VIEWPORT_TYPE_SPLIT_RIGHT:
 			xPos = (S32)(ui.getScreenWidth() / 2);
 			break;
+		default:
+			break;
 		}
 		ui.setupRenderPosition(xPos, yPos);
 

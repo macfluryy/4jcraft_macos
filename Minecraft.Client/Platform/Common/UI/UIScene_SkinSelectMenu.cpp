@@ -411,6 +411,8 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			case eSkinNavigation_Skin:
 				m_currentNavigation = eSkinNavigation_Pack;
 				break;
+			default:
+				break;
 			};
 			sendInputToMovie(key, repeat, pressed, released);
 		}

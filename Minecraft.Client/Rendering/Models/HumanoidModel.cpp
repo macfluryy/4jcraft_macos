@@ -30,6 +30,9 @@ ModelPart * HumanoidModel::AddOrRetrievePart(SKIN_BOX *pBox)
 	case eBodyPart_Leg1:
 		pAttachTo=leg1;
 		break;
+	case eBodyPart_Unknown:
+	default:
+		return NULL;
 	}
 
 	// first check this box doesn't already exist

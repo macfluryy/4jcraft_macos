@@ -52,6 +52,8 @@ void UIComponent_MenuBackground::render(S32 width, S32 height, C4JRender::eViewp
 			xPos = (S32)(ui.getScreenWidth() / 2);
 			yPos = (S32)(ui.getScreenHeight() / 2);
 			break;
+		default:
+			break;
 		}
 		ui.setupRenderPosition(xPos, yPos);
 
@@ -79,6 +81,8 @@ void UIComponent_MenuBackground::render(S32 width, S32 height, C4JRender::eViewp
 		case C4JRender::VIEWPORT_TYPE_QUADRANT_BOTTOM_LEFT:
 		case C4JRender::VIEWPORT_TYPE_QUADRANT_BOTTOM_RIGHT:
 			tileYStart = (S32)(m_movieHeight / 2);
+			break;
+		default:
 			break;
 		}
 

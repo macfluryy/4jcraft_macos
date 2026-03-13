@@ -3083,6 +3083,8 @@ void ClientConnection::displayPrivilegeChanges(std::shared_ptr<MultiplayerLocalP
 					if(privOn) message = app.GetString(IDS_PRIV_ATTACK_PLAYER_TOGGLE_ON);
 					else message = app.GetString(IDS_PRIV_ATTACK_PLAYER_TOGGLE_OFF);
 					break;
+				default:
+					break;
 				};
 			}
 			switch(priv)
@@ -3090,6 +3092,8 @@ void ClientConnection::displayPrivilegeChanges(std::shared_ptr<MultiplayerLocalP
 			case Player::ePlayerGamePrivilege_Op:
 				if(privOn) message = app.GetString(IDS_PRIV_MODERATOR_TOGGLE_ON);
 				else message = app.GetString(IDS_PRIV_MODERATOR_TOGGLE_OFF);
+				break;
+			default:
 				break;
 			};
 			if(app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0)
@@ -3127,6 +3131,8 @@ void ClientConnection::displayPrivilegeChanges(std::shared_ptr<MultiplayerLocalP
 				case Player::ePlayerGamePrivilege_CanTeleport:
 					if(privOn) message = app.GetString(IDS_PRIV_CAN_TELEPORT_TOGGLE_ON);
 					else message = app.GetString(IDS_PRIV_CAN_TELEPORT_TOGGLE_OFF);
+					break;
+				default:
 					break;
 				};
 			}

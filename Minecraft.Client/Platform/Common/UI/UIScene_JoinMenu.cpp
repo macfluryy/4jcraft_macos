@@ -522,6 +522,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 			case CGameNetworkManager::JOINGAME_FAIL_SERVER_FULL:
 				exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
 				break;
+			default:
+				break;
 			}
 
 			if( exitReasonStringId == -1 )

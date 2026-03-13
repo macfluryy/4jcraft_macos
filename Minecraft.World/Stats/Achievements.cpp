@@ -2,6 +2,7 @@
 #include "../Headers/net.minecraft.stats.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
+#include <limits>
 #include "Achievement.h"
 #include "Achievements.h"
 
@@ -10,8 +11,8 @@ const int Achievements::ACHIEVEMENT_OFFSET = 0x500000;
 
 // maximum position of achievements (min and max)
 
-int Achievements::xMin = 4294967295; // 4J Stu Was 4294967296 which is 1 larger than maxint. Hopefully no side effects
-int Achievements::yMin = 4294967295; // 4J Stu Was 4294967296 which is 1 larger than maxint. Hopefully no side effects
+int Achievements::xMin = std::numeric_limits<int>::max();
+int Achievements::yMin = std::numeric_limits<int>::max();
 int Achievements::xMax = 0;
 int Achievements::yMax = 0;
 
@@ -182,4 +183,3 @@ void Achievements::staticCtor()
 void Achievements::init()
 {
 }
-

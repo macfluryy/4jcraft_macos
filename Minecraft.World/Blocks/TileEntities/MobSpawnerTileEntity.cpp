@@ -92,7 +92,8 @@ void MobSpawnerTileEntity::tick()
 			std::shared_ptr<Mob> entity = std::dynamic_pointer_cast<Mob> (EntityIO::newEntity(entityId, level));
 			if (entity == NULL) return;
 
-			std::vector<std::shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entity), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
+			Mob *entityPtr = entity.get();
+			std::vector<std::shared_ptr<Entity> > *vecNearby = level->getEntitiesOfClass(typeid(*entityPtr), AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)->grow(8, 4, 8));
 			int nearBy = (int)vecNearby->size(); //4J - IB, TODO, Mob contains no getClass
 			delete vecNearby;
 

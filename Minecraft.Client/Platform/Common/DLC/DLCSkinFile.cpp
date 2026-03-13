@@ -70,6 +70,8 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::ws
 			case XC_LANGUAGE_KOREAN:
 				maximumChars = 35;
 				break;
+			default:
+				break;
 			}
 			std::wstring creditValue = value;
 			while (creditValue.length() > maximumChars)
@@ -155,10 +157,14 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type, const std::ws
 		}
 		break;
 	case DLCManager::e_DLCParamType_Anim:
-		// 4J Stu - The Xbox version used swscanf_s which isn't available in GCC.
-		swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);
-		std::uint32_t skinId = app.getSkinIdFromPath(m_path);
-		app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
+		{
+			// 4J Stu - The Xbox version used swscanf_s which isn't available in GCC.
+			swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);
+			std::uint32_t skinId = app.getSkinIdFromPath(m_path);
+			app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
+		}
+		break;
+	default:
 		break;
 	}
 }
