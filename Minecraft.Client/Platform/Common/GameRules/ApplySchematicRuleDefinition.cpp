@@ -30,7 +30,7 @@ ApplySchematicRuleDefinition::~ApplySchematicRuleDefinition()
 	delete m_location;
 }
 
-void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 

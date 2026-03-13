@@ -197,8 +197,8 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 
 	if(iUserID!=-1)
 	{
-		BYTE *pBuffer=NULL;
-		DWORD dwSize=0;
+		std::uint8_t *pBuffer = NULL;
+		unsigned int dwSize = 0;
 		bool bRes;
 
 		// if there's a special skin or cloak for this player, add it in
@@ -305,7 +305,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 		//minecraft->setScreen(new ReceivingLevelScreen(this));
 		minecraft->player->entityId = packet->clientVersion;
 
-		BYTE networkSmallId = getSocket()->getSmallId();
+		std::uint8_t networkSmallId = getSocket()->getSmallId();
 		app.UpdatePlayerInfo(networkSmallId, packet->m_playerIndex, packet->m_uiGamePrivileges);
 		minecraft->player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_All, packet->m_uiGamePrivileges);
 
@@ -375,7 +375,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet)
 		player->setCustomCape( app.GetPlayerCapeId(m_userIndex) );
 		
 
-		BYTE networkSmallId = getSocket()->getSmallId();
+		std::uint8_t networkSmallId = getSocket()->getSmallId();
 		app.UpdatePlayerInfo(networkSmallId, packet->m_playerIndex, packet->m_uiGamePrivileges);
 		player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_All, packet->m_uiGamePrivileges);
 
@@ -1172,7 +1172,7 @@ void ClientConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason, 
 		m_userIndex == ProfileManager.GetPrimaryPad() &&
 		!MinecraftServer::saveOnExitAnswered() )
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_EXITING_GAME, IDS_GENERIC_ERROR, uiIDA, 1, ProfileManager.GetPrimaryPad(),&ClientConnection::HostDisconnectReturned,NULL, app.GetStringTable());
 	}
@@ -1619,11 +1619,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	fprintf(stderr, "[LOGIN-CLI] handlePreLogin entered, isHost=%d, userIdx=%d\n", (int)g_NetworkManager.IsHost(), m_userIndex);
 #if 1
 	// 4J - Check that we can play with all the players already in the game who have Friends-Only UGC set
-	BOOL canPlay = TRUE;
-	BOOL canPlayLocal = TRUE;
-	BOOL isAtLeastOneFriend = g_NetworkManager.IsHost();
-	BOOL isFriendsWithHost = TRUE;
-	BOOL cantPlayContentRestricted = FALSE;
+	bool canPlay = true;
+	bool canPlayLocal = true;
+	bool isAtLeastOneFriend = g_NetworkManager.IsHost();
+	bool isFriendsWithHost = true;
+	bool cantPlayContentRestricted = false;
 	
 	if(!g_NetworkManager.IsHost())
 	{
@@ -1642,12 +1642,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	{
 		if(m_userIndex == ProfileManager.GetPrimaryPad() )
 		{
-			for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+			for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 			{
 				if(ProfileManager.IsSignedIn(m_userIndex) && ProfileManager.IsGuest(idx))
 				{
-					canPlay = FALSE;
-					isFriendsWithHost = FALSE;
+					canPlay = false;
+					isFriendsWithHost = false;
 				}
 				else
 				{
@@ -1659,13 +1659,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					if( playerXuid != INVALID_XUID )
 					{
 						// Is this user friends with the host player?			
-						BOOL result;
-						DWORD error;
-						error = XUserAreUsersFriends(idx,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
-						if(error == ERROR_SUCCESS && result != TRUE)
+						int result = 0;
+						const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
+						if(error == ERROR_SUCCESS && result == 0)
 						{
-							canPlay = FALSE;
-							isFriendsWithHost = FALSE;
+							canPlay = false;
+							isFriendsWithHost = false;
 						}
 					}
 				}
@@ -1676,8 +1675,8 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 		{
 			if(ProfileManager.IsSignedIn(m_userIndex) && ProfileManager.IsGuest(m_userIndex))
 			{
-				canPlay = FALSE;
-				isFriendsWithHost = FALSE;
+				canPlay = false;
+				isFriendsWithHost = false;
 			}
 			else
 			{
@@ -1689,13 +1688,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 				if( playerXuid != INVALID_XUID )
 				{
 					// Is this user friends with the host player?			
-					BOOL result;
-					DWORD error;
-					error = XUserAreUsersFriends(m_userIndex,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
-					if(error == ERROR_SUCCESS && result != TRUE)
+					int result = 0;
+					const unsigned int error = XUserAreUsersFriends(m_userIndex,&packet->m_playerXuids[packet->m_hostIndex],1,&result,NULL);
+					if(error == ERROR_SUCCESS && result == 0)
 					{
-						canPlay = FALSE;
-						isFriendsWithHost = FALSE;
+						canPlay = false;
+						isFriendsWithHost = false;
 					}
 				}
 			}
@@ -1704,10 +1702,10 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 
 	if( canPlay )
 	{
-		for(DWORD i = 0; i < packet->m_dwPlayerCount; ++i)
+		for(std::uint8_t i = 0; i < packet->m_dwPlayerCount; ++i)
 		{
 			bool localPlayer = false;
-			for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+			for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 			{
 				if( ProfileManager.IsSignedInLive(idx) )
 				{
@@ -1735,16 +1733,15 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 
 					// 4J Stu - Everyone joining needs to have at least one friend in the game
 					// Local players are implied friends
-					if( isAtLeastOneFriend != TRUE )
+					if(!isAtLeastOneFriend)
 					{
-						BOOL result;
-						DWORD error;
-						for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+						int result = 0;
+						for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 						{
 							if( ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 							{
-								error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-								if(error == ERROR_SUCCESS && result == TRUE) isAtLeastOneFriend = TRUE;
+								const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
+								if(error == ERROR_SUCCESS && result != 0) isAtLeastOneFriend = true;
 							}
 						}
 					}
@@ -1765,14 +1762,13 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 					bool thisQuadrantOnly = true;
 					if( m_userIndex == ProfileManager.GetPrimaryPad() ) thisQuadrantOnly = false;
 
-					BOOL result;
-					DWORD error;
-					for(DWORD idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+					int result = 0;
+					for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 					{
 						if( (!thisQuadrantOnly || m_userIndex == idx) && ProfileManager.IsSignedIn(idx) && !ProfileManager.IsGuest(idx) )
 						{
-							error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
-							if(error == ERROR_SUCCESS) canPlay &= result;
+							const unsigned int error = XUserAreUsersFriends(idx,&packet->m_playerXuids[i],1,&result,NULL);
+							if(error == ERROR_SUCCESS) canPlay &= (result != 0);
 						}
 						if(!canPlay) break;
 					}
@@ -1783,10 +1779,10 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 	}
 #else
 	// TODO - handle this kind of things for non-360 platforms
-	canPlay = TRUE;
-	canPlayLocal = TRUE;
-	isAtLeastOneFriend = TRUE;
-	cantPlayContentRestricted= FALSE;
+	canPlay = true;
+	canPlayLocal = true;
+	isAtLeastOneFriend = true;
+	cantPlayContentRestricted= false;
 
 #if ( defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
 
@@ -1987,7 +1983,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 			else if(cantPlayContentRestricted) reason = DisconnectPacket::eDisconnect_ContentRestricted_Single_Local;
 
 			app.DebugPrintf("Exiting player %d on handling Pre-Login packet due UGC privileges: %d\n", m_userIndex, reason);
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			if(!isFriendsWithHost) ui.RequestMessageBox( IDS_CANTJOIN_TITLE, IDS_NOTALLOWED_FRIENDSOFFRIENDS, uiIDA,1,m_userIndex,NULL,NULL, app.GetStringTable());
 			else ui.RequestMessageBox( IDS_CANTJOIN_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL, uiIDA,1,m_userIndex,NULL,NULL, app.GetStringTable());
@@ -2056,11 +2052,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet)
 			// All other players we use their offline XUID so that they can play the game offline
  			ProfileManager.GetXUID(m_userIndex,&offlineXUID,false);
 		}
-		BOOL allAllowed, friendsAllowed;
+		bool allAllowed = false;
+		bool friendsAllowed = false;
 		ProfileManager.AllowedPlayerCreatedContent(m_userIndex,true,&allAllowed,&friendsAllowed);
 		fprintf(stderr, "[LOGIN] Sending LoginPacket: user=%ls netVer=%d userIdx=%d isHost=%d\n",
 			minecraft->user->name.c_str(), SharedConstants::NETWORK_PROTOCOL_VERSION, m_userIndex, (int)g_NetworkManager.IsHost());
-		send( std::shared_ptr<LoginPacket>( new LoginPacket(minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION, offlineXUID, onlineXUID, (allAllowed!=TRUE && friendsAllowed==TRUE), 
+		send( std::shared_ptr<LoginPacket>( new LoginPacket(minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION, offlineXUID, onlineXUID, (!allAllowed && friendsAllowed), 
 			packet->m_ugcPlayersVersion, app.GetPlayerSkinId(m_userIndex), app.GetPlayerCapeId(m_userIndex), ProfileManager.IsGuest( m_userIndex ))));
 		fprintf(stderr, "[LOGIN] LoginPacket sent successfully\n");
 
@@ -2235,14 +2232,14 @@ void ClientConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 	// Server side also needs to store a list of those clients waiting to get a texture the server doesn't have yet
 	// so that it can send it out to them when it comes in
 
-	if(packet->dwBytes==0)
+	if(packet->dataBytes==0)
 	{
 		// Request for texture
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Client received request for custom texture %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwBytes);
 
 		if(dwBytes!=0)
@@ -2256,7 +2253,7 @@ void ClientConnection::handleTexture(std::shared_ptr<TexturePacket> packet)
 #ifndef _CONTENT_PACKAGE
 		wprintf(L"Client received custom texture %ls\n",packet->textureName.c_str());
 #endif
-		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dwBytes);
+		app.AddMemoryTextureFile(packet->textureName,packet->pbData,packet->dataBytes);
 		Minecraft::GetInstance()->handleClientTextureReceived(packet->textureName);
 	}
 }
@@ -2273,8 +2270,8 @@ void ClientConnection::handleTextureAndGeometry(std::shared_ptr<TextureAndGeomet
 #ifndef _CONTENT_PACKAGE
 		wprintf(L"Client received request for custom texture and geometry %ls\n",packet->textureName.c_str());
 #endif
-		PBYTE pbData=NULL;
-		DWORD dwBytes=0;		
+		std::uint8_t *pbData=NULL;
+		unsigned int dwBytes=0;		
 		app.GetMemFileDetails(packet->textureName,&pbData,&dwBytes);
 		DLCSkinFile *pDLCSkinFile = app.m_dlcManager.getSkinFile(packet->textureName);
 
@@ -2883,7 +2880,7 @@ void ClientConnection::handleGameEvent(std::shared_ptr<GameEventPacket> gameEven
 	}
 	else if (event == GameEventPacket::WIN_GAME)
 	{
-		ui.SetWinUserIndex( (BYTE)gameEventPacket->param );
+		ui.SetWinUserIndex(static_cast<unsigned int>(gameEventPacket->param));
 		
 #ifdef _XBOX
 
@@ -3243,7 +3240,7 @@ void ClientConnection::handleUpdateProgress(std::shared_ptr<UpdateProgressPacket
 
 void ClientConnection::handleUpdateGameRuleProgressPacket(std::shared_ptr<UpdateGameRuleProgressPacket> packet)
 {
-	LPCWSTR string = app.GetGameRulesString(packet->m_messageId);
+	const wchar_t *string = app.GetGameRulesString(packet->m_messageId);
 	if(string != NULL)
 	{
 		std::wstring message(string);
@@ -3291,7 +3288,7 @@ int ClientConnection::HostDisconnectReturned(void *pParam,int iPad,C4JStorage::E
 	// we need to ask if they are sure they want to overwrite the existing game
 	if(bSaveExists && StorageManager.GetSaveDisabled())
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&ClientConnection::ExitGameAndSaveReturned,NULL, app.GetStringTable());
@@ -3306,7 +3303,7 @@ int ClientConnection::HostDisconnectReturned(void *pParam,int iPad,C4JStorage::E
 	// we need to ask if they are sure they want to overwrite the existing game
 	if(bSaveExists)
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&ClientConnection::ExitGameAndSaveReturned,NULL, app.GetStringTable());

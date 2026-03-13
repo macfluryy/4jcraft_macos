@@ -28,7 +28,7 @@ public:
 	virtual void AnimateKeyPress(int iPad, int dwKeyCode);
 
 	virtual void SetTooltipText( unsigned int iPad, unsigned int tooltip, int iTextID );
-	virtual void SetEnableTooltips( unsigned int iPad, BOOL bVal );
+	virtual void SetEnableTooltips( unsigned int iPad, bool bVal );
 	virtual void ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show );
 	virtual void SetTooltips( unsigned int iPad, int iA, int iB=-1, int iX=-1, int iY=-1 , int iLT=-1, int iRT=-1, int iLB=-1, int iRB=-1, int iLS=-1, bool forceUpdate = false);
 	virtual void EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
@@ -70,10 +70,10 @@ public:
 
 	virtual void SetWinUserIndex(unsigned int iPad);
 
-	virtual C4JStorage::EMessageResult RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-						int( *Func)(LPVOID,int,const C4JStorage::EMessageResult)=NULL,LPVOID lpParam=NULL, CXuiStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0, bool bIsError = true);
+	virtual C4JStorage::EMessageResult RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA, unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+						int( *Func)(void *,int,const C4JStorage::EMessageResult)=NULL, void *lpParam=NULL, CXuiStringTable *pStringTable=NULL, wchar_t *pwchFormatString=NULL, unsigned int dwFocusButton=0, bool bIsError = true);
 
-	C4JStorage::EMessageResult RequestUGCMessageBox(UINT title = -1, UINT message = -1, int iPad = -1, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult) = NULL, LPVOID lpParam = NULL);
+	C4JStorage::EMessageResult RequestUGCMessageBox(int title = -1, int message = -1, int iPad = -1, int( *Func)(void *,int,const C4JStorage::EMessageResult) = NULL, void *lpParam = NULL);
 };
 
 extern ConsoleUIController ui;

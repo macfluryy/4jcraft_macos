@@ -1494,7 +1494,7 @@ int ServerPlayer::getPlayerViewDistanceModifier()
 
 		if( player != NULL )
 		{
-			DWORD rtt = player->GetCurrentRtt();
+			int rtt = player->GetCurrentRtt();
 
 			value = rtt >> 6;
 

@@ -18,7 +18,7 @@ class AABB
 		ThreadStorage();
 		~ThreadStorage();
 	};
-	static DWORD tlsIdx;
+	static unsigned int tlsIdx;
 	static ThreadStorage *tlsDefault;
 public:
 	// Each new thread that needs to use Vec3 pools will need to call one of the following 2 functions, to either create its own

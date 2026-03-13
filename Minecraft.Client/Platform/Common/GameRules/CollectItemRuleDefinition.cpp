@@ -17,7 +17,7 @@ CollectItemRuleDefinition::~CollectItemRuleDefinition()
 {
 }
 
-void CollectItemRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void CollectItemRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttributes + 3);
 

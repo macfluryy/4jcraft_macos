@@ -32,18 +32,18 @@ public:
 
 	DLCAudioFile(const std::wstring &path);
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
-	virtual PBYTE getData(DWORD &dwBytes);
+	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes);
+	virtual std::uint8_t *getData(std::uint32_t &dataBytes);
 
-	bool processDLCDataFile(PBYTE pbData, DWORD dwLength);
+	bool processDLCDataFile(std::uint8_t *pbData, std::uint32_t dataLength);
 	int GetCountofType(DLCAudioFile::EAudioType ptype);
 	std::wstring &GetSoundName(int iIndex);
 
 private:
 	using DLCFile::addParameter;
 
-	PBYTE m_pbData;
-	DWORD m_dwBytes;
+	std::uint8_t *m_pbData;
+	std::uint32_t m_dataBytes;
 	static const int CURRENT_AUDIO_VERSION_NUM=1;
 	//std::unordered_map<int, std::wstring> m_parameters;
 	std::vector<std::wstring> m_parameters[e_AudioType_Max];

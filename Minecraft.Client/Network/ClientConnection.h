@@ -41,7 +41,7 @@ public:
 	Socket *getSocket() { return connection->getSocket(); } // 4J Added
 
 private:
-	DWORD m_userIndex; // 4J Added
+	int m_userIndex; // 4J Added
 public:
 	SavedDataStorage *savedDataStorage;
     ClientConnection(Minecraft *minecraft, const std::wstring& ip, int port);

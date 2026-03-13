@@ -348,9 +348,9 @@ void MultiplayerLocalPlayer::StopSleeping()
 }
 
 // 4J Added
-void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(DWORD skinId)
+void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId)
 {
-	DWORD oldSkinIndex = getCustomSkin();
+	std::uint32_t oldSkinIndex = getCustomSkin();
 	LocalPlayer::setCustomSkin(skinId);
 #ifndef _CONTENT_PACKAGE
 	wprintf(L"Skin for local player %ls has changed to %ls (%d)\n", name.c_str(), customTextureUrl.c_str(), getPlayerDefaultSkin() );
@@ -358,9 +358,9 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(DWORD skinId)
 	if(getCustomSkin() != oldSkinIndex) connection->send( std::shared_ptr<TextureAndGeometryChangePacket>( new TextureAndGeometryChangePacket( shared_from_this(), app.GetPlayerSkinName(GetXboxPad()) ) ) );
 }
 
-void MultiplayerLocalPlayer::setAndBroadcastCustomCape(DWORD capeId)
+void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId)
 {
-	DWORD oldCapeIndex = getCustomCape();
+	std::uint32_t oldCapeIndex = getCustomCape();
 	LocalPlayer::setCustomCape(capeId);
 #ifndef _CONTENT_PACKAGE
 	wprintf(L"Cape for local player %ls has changed to %ls\n", name.c_str(), customTextureUrl2.c_str());

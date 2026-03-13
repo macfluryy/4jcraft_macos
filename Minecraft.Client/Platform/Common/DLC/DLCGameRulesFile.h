@@ -4,12 +4,12 @@
 class DLCGameRulesFile : public DLCGameRules
 {
 private:
-	PBYTE m_pbData;
-	DWORD m_dwBytes;
+	std::uint8_t *m_pbData;
+	std::uint32_t m_dataBytes;
 
 public:
 	DLCGameRulesFile(const std::wstring &path);
 
-	virtual void addData(PBYTE pbData, DWORD dwBytes);
-	virtual PBYTE getData(DWORD &dwBytes);
+	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes);
+	virtual std::uint8_t *getData(std::uint32_t &dataBytes);
 };

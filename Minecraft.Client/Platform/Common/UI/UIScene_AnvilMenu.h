@@ -55,7 +55,7 @@ protected:
 
 	virtual UIControl *getSection(ESceneSection eSection);
 
-	static int KeyboardCompleteCallback(LPVOID lpParam,bool bRes);
+	static int KeyboardCompleteCallback(void *lpParam,bool bRes);
 	virtual void handleEditNamePressed();
 	virtual void setEditNameValue(const std::wstring &name);
 	virtual void setEditNameEditable(bool enabled);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class UIScene_InGameSaveManagementMenu : public UIScene
@@ -96,9 +98,9 @@ protected:
 
 public:
 
-	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int DeleteSaveDataReturned(LPVOID lpParam,bool bRes);
+	static int DeleteSaveDataReturned(void *lpParam,bool bRes);
 protected:
 	void handlePress(F64 controlId, F64 childId);
 };

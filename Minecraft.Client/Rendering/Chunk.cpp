@@ -20,7 +20,7 @@
 int Chunk::updates = 0;
 
 #ifdef _LARGE_WORLDS
-DWORD Chunk::tlsIdx = TlsAlloc();
+unsigned int Chunk::tlsIdx = TlsAlloc();
 
 void Chunk::CreateNewThreadStorage()
 {

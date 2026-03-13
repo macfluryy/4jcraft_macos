@@ -16,7 +16,7 @@
 #include "../../../Minecraft.Client/Platform/PS3/PS3Extras/EdgeZLib.h"
 #endif //__PS3__
 
-DWORD Compression::tlsIdx = 0;
+unsigned int Compression::tlsIdx = 0;
 Compression::ThreadStorage *Compression::tlsDefault = NULL;
 
 Compression::ThreadStorage::ThreadStorage()
@@ -312,7 +312,7 @@ HRESULT Compression::Compress(void *pDestination, unsigned int *pDestSize, void 
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res == Z_OK ) ? S_OK : -1 );
 #elif defined __PS3__
-	uint32_t destSize = (uint32_t)(*pDestSize);
+	std::uint32_t destSize = (std::uint32_t)(*pDestSize);
 	bool res = EdgeZLib::Compress(pDestination, &destSize, pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res ) ? S_OK : -1 );
@@ -340,7 +340,7 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res == Z_OK ) ? S_OK : -1 );
 #elif defined __PS3__
-	uint32_t destSize = (uint32_t)(*pDestSize);
+	std::uint32_t destSize = (std::uint32_t)(*pDestSize);
 	bool res = EdgeZLib::Decompress(pDestination, &destSize, pSource, SrcSize);
 	*pDestSize = (unsigned int)destSize;
 	return ( ( res ) ? S_OK : -1 );
@@ -354,13 +354,13 @@ HRESULT Compression::Decompress(void *pDestination, unsigned int *pDestSize, voi
 
 // MGH -  same as VirtualDecompress in PSVitaStubs, but for use on other platforms (so no virtual mem stuff)
 #ifndef _XBOX
-VOID Compression::VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize) // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
+void Compression::VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize) // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
 {
-	uint8_t *pSrc = (uint8_t *)pSource;
+	std::uint8_t *pSrc = (std::uint8_t *)pSource;
 	int Offset = 0;
 	int Page = 0;
 	int Index = 0;
-	uint8_t* Data = (uint8_t*)pDestination;
+	std::uint8_t* Data = (std::uint8_t*)pDestination;
 	while( Index != SrcSize )
 	{
 		// is this a normal value
@@ -426,8 +426,8 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 		if (pDestination != NULL)
 		{
 			// Read big-endian srcize from array
-			PBYTE pbDestSize = (PBYTE) pDestSize;
-			PBYTE pbSource = (PBYTE) pSource;
+			std::uint8_t* pbDestSize = reinterpret_cast<std::uint8_t*>(pDestSize);
+			std::uint8_t* pbSource = reinterpret_cast<std::uint8_t*>(pSource);
 			for (int i = 3; i >= 0; i--) {
 				pbDestSize[3-i] = pbSource[i];
 			}
@@ -442,7 +442,7 @@ HRESULT Compression::DecompressWithType(void *pDestination, unsigned int *pDestS
 			strm.next_out = uncompr.data;
 			strm.avail_out = uncompr.length;
 			// Skip those first 4 bytes
-			strm.next_in = (PBYTE) pSource + 4;
+			strm.next_in = reinterpret_cast<std::uint8_t*>(pSource) + 4;
 			strm.avail_in = SrcSize - 4;
 
 			int hr = inflateInit2(&strm, -15);
@@ -548,5 +548,4 @@ void Compression::SetDecompressionType(ESavePlatform platform)
 }
 
 /*Compression gCompression;*/
-
 

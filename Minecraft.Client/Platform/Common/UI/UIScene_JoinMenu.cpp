@@ -329,7 +329,7 @@ void UIScene_JoinMenu::handleFocusChange(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_JoinMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_JoinMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)lpParam;
 
@@ -387,9 +387,9 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void *pParam,bool bContinue, int 
 // Shared function to join the game that is the same whether we used the sign-in UI or not
 void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 {
-	DWORD dwSignedInUsers = 0;
 	bool noPrivileges = false;
-	DWORD dwLocalUsersMask = 0;
+	int signedInUsers = 0;
+	int localUsersMask = 0;
 	bool isSignedInLive = true;
 	int iPadNotSignedInLive = -1;
 
@@ -402,6 +402,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		{
 			if(ProfileManager.IsSignedIn(index))
 			{
+				++signedInUsers;
 				if (isSignedInLive && !ProfileManager.IsSignedInLive(index))
 				{
 					// Record the first non signed in live pad
@@ -409,7 +410,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 				}
 
 				if( !ProfileManager.AllowedToPlayMultiplayer(index) ) noPrivileges = true;
-				dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(index);
+				localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(index);
 				isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(index);
 			}
 		}
@@ -418,8 +419,9 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 	{
 		if(ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
 		{
+			++signedInUsers;
 			if( !ProfileManager.AllowedToPlayMultiplayer(ProfileManager.GetPrimaryPad()) ) noPrivileges = true;
-			dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+			localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 			isSignedInLive = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
 #ifdef __PSVITA__
@@ -457,8 +459,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 
 	// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 	bool noUGC = false;
-	BOOL pccAllowed = TRUE;
-	BOOL pccFriendsAllowed = TRUE;
+	bool pccAllowed = true;
+	bool pccFriendsAllowed = true;
 
 #if defined(__PS3__) || defined(__PSVITA__)
 	if(isSignedInLive)
@@ -485,7 +487,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		pClass->m_bIgnoreInput=false;
 
 		int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-		if(dwSignedInUsers > 1) messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
+		if(signedInUsers > 1) messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
 
 		ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);
 	}
@@ -507,7 +509,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 			ProfileManager.DisplaySystemMessage( SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, ProfileManager.GetPrimaryPad() );
 		}
 #endif
-		CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame( pClass->m_selectedSession, dwLocalUsersMask );
+		CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame( pClass->m_selectedSession, localUsersMask );
 
 		// Alert the app the we no longer want to be informed of ethernet connections
 		app.SetLiveLinkRequired( false );

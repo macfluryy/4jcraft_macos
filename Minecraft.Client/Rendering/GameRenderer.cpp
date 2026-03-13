@@ -58,7 +58,7 @@ C4JThread*		GameRenderer::m_updateThread;
 C4JThread::EventArray* GameRenderer::m_updateEvents;
 bool GameRenderer::nearThingsToDo = false;
 bool GameRenderer::updateRunning = false;
-std::vector<uint8_t *> GameRenderer::m_deleteStackByte;
+std::vector<std::uint8_t *> GameRenderer::m_deleteStackByte;
 std::vector<SparseLightStorage *> GameRenderer::m_deleteStackSparseLightStorage;
 std::vector<CompressedTileStorage *> GameRenderer::m_deleteStackCompressedTileStorage;
 std::vector<SparseDataStorage *> GameRenderer::m_deleteStackSparseDataStorage;
@@ -1141,7 +1141,7 @@ void GameRenderer::renderLevel(float a)
 
 #ifdef MULTITHREAD_ENABLE
 // Request that an item be deleted, when it is safe to do so
-void GameRenderer::AddForDelete(uint8_t *deleteThis)
+void GameRenderer::AddForDelete(std::uint8_t *deleteThis)
 {
 	EnterCriticalSection(&m_csDeleteStack);
 	m_deleteStackByte.push_back(deleteThis);
@@ -1170,7 +1170,7 @@ void GameRenderer::FinishedReassigning()
 	LeaveCriticalSection(&m_csDeleteStack);
 }
 
-int GameRenderer::runUpdate(LPVOID lpParam)
+int GameRenderer::runUpdate(void *lpParam)
 {
 	Minecraft *minecraft = Minecraft::GetInstance();
 	Vec3::CreateNewThreadStorage();
@@ -1339,11 +1339,11 @@ void GameRenderer::renderLevel(float a, __int64 until)
 			setupFog(-1, a);
 			levelRenderer->renderSky(a);
 			if(mc->skins->getSelected()->getId() == 1026 ) levelRenderer->renderHaloRing(a);
-		} else {
-			// 4jcraft: needs to be enabled for proper transparent texturing on low render dists
-			// this was done in renderSky() for the far and normal dists but was missing here,
-			glEnable(GL_ALPHA_TEST);
 		}
+		// 4jcraft: needs to be enabled for proper transparent texturing on low render dists
+		// this was done in renderSky() for the far and normal dists but was missing here,
+		// UPDATE: Also needed for the nether, so just enable it unconditionally
+		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_FOG);
 		setupFog(1, a);
 
@@ -1909,9 +1909,9 @@ void GameRenderer::setupClearColor(float a)
 	{
 		
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Water_Clear_Colour );
-		uint8_t redComponent = ((colour>>16)&0xFF);
-		uint8_t greenComponent = ((colour>>8)&0xFF);
-		uint8_t blueComponent = ((colour)&0xFF);
+		std::uint8_t redComponent = ((colour>>16)&0xFF);
+		std::uint8_t greenComponent = ((colour>>8)&0xFF);
+		std::uint8_t blueComponent = ((colour)&0xFF);
 
 		fr = (float)redComponent/256;//0.02f;
 		fg = (float)greenComponent/256;//0.02f;
@@ -1921,9 +1921,9 @@ void GameRenderer::setupClearColor(float a)
 	{
 		
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Lava_Clear_Colour );
-		uint8_t redComponent = ((colour>>16)&0xFF);
-		uint8_t greenComponent = ((colour>>8)&0xFF);
-		uint8_t blueComponent = ((colour)&0xFF);
+		std::uint8_t redComponent = ((colour>>16)&0xFF);
+		std::uint8_t greenComponent = ((colour>>8)&0xFF);
+		std::uint8_t blueComponent = ((colour)&0xFF);
 
 		fr = (float)redComponent/256;//0.6f;
 		fg = (float)greenComponent/256;//0.1f;
@@ -2065,9 +2065,9 @@ void GameRenderer::setupFog(int i, float alpha)
 		glFogf(GL_FOG_DENSITY, 0.1f); // was 0.06
 		
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_In_Cloud_Fog_Colour );
-		uint8_t redComponent = ((colour>>16)&0xFF);
-		uint8_t greenComponent = ((colour>>8)&0xFF);
-		uint8_t blueComponent = ((colour)&0xFF);
+		std::uint8_t redComponent = ((colour>>16)&0xFF);
+		std::uint8_t greenComponent = ((colour>>8)&0xFF);
+		std::uint8_t blueComponent = ((colour)&0xFF);
 
 		float rr = (float)redComponent/256;//1.0f;
 		float gg = (float)greenComponent/256;//1.0f;
@@ -2097,9 +2097,9 @@ void GameRenderer::setupFog(int i, float alpha)
 		}
 		
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Water_Fog_Colour );
-		uint8_t redComponent = ((colour>>16)&0xFF);
-		uint8_t greenComponent = ((colour>>8)&0xFF);
-		uint8_t blueComponent = ((colour)&0xFF);
+		std::uint8_t redComponent = ((colour>>16)&0xFF);
+		std::uint8_t greenComponent = ((colour>>8)&0xFF);
+		std::uint8_t blueComponent = ((colour)&0xFF);
 
 		float rr = (float)redComponent/256;//0.4f;
 		float gg = (float)greenComponent/256;//0.4f;
@@ -2122,9 +2122,9 @@ void GameRenderer::setupFog(int i, float alpha)
 		glFogf(GL_FOG_DENSITY, 2.0f); // was 0.06
 		
 		unsigned int colour = Minecraft::GetInstance()->getColourTable()->getColor( eMinecraftColour_Under_Lava_Fog_Colour );
-		uint8_t redComponent = ((colour>>16)&0xFF);
-		uint8_t greenComponent = ((colour>>8)&0xFF);
-		uint8_t blueComponent = ((colour)&0xFF);
+		std::uint8_t redComponent = ((colour>>16)&0xFF);
+		std::uint8_t greenComponent = ((colour>>8)&0xFF);
+		std::uint8_t blueComponent = ((colour)&0xFF);
 
 		float rr = (float)redComponent/256;//0.4f;
 		float gg = (float)greenComponent/256;//0.3f;

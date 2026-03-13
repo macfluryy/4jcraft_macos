@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "UIScene.h"
 
 class LevelGenerationOptions;
@@ -124,7 +126,7 @@ public:
 
 	virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu;}
 
-	static void UpdateGamesListCallback(LPVOID pParam);
+	static void UpdateGamesListCallback(void *pParam);
 #ifdef _XBOX_ONE
 	void HandleDLCLicenseChange();
 #endif
@@ -145,14 +147,14 @@ protected:
 
 public:
 
-	static int LoadSaveDataThumbnailReturned(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes);
-	static int LoadSaveCallback(LPVOID lpParam,bool bRes);
+	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
+	static int LoadSaveCallback(void *lpParam,bool bRes);
 	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int SaveOptionsDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int TexturePackDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);	
-	static int DeleteSaveDataReturned(LPVOID lpParam,bool bRes);
-	static int RenameSaveDataReturned(LPVOID lpParam,bool bRes);
-	static int KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes);
+	static int DeleteSaveDataReturned(void *lpParam,bool bRes);
+	static int RenameSaveDataReturned(void *lpParam,bool bRes);
+	static int KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes);
 protected:
 	void handlePress(F64 controlId, F64 childId);
 	void LoadLevelGen(LevelGenerationOptions *levelGen);
@@ -172,7 +174,7 @@ private:
 #if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
 	static int MustSignInReturnedPSN(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int PSN_SignInReturned(void *pParam,bool bContinue, int iPad);
-	static void remoteStorageGetSaveCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code);
+	static void remoteStorageGetSaveCallback(void *lpParam, SonyRemoteStorage::Status s, int error_code);
 #endif
  
 #ifdef __ORBIS__
@@ -205,14 +207,14 @@ private:
 #endif
 
 	void LaunchSaveTransfer();
-	static int DownloadXbox360SaveThreadProc( LPVOID lpParameter );
+	static int DownloadXbox360SaveThreadProc(void *lpParameter);
 	static void RequestFileSize( SaveTransferStateContainer *pClass, wchar_t *filename );
 	static void RequestFileData( SaveTransferStateContainer *pClass, wchar_t *filename );
-	static int SaveTransferReturned(LPVOID lpParam,C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails);
-	static int SaveTransferUpdateProgress(LPVOID lpParam,unsigned long ulBytesReceived);
-	static void CancelSaveTransferCallback(LPVOID lpParam);
+	static int SaveTransferReturned(void *lpParam, C4JStorage::SAVETRANSFER_FILE_DETAILS *pSaveTransferDetails);
+	static int SaveTransferUpdateProgress(void *lpParam, unsigned long ulBytesReceived);
+	static void CancelSaveTransferCallback(void *lpParam);
 	static int NeedSyncMessageReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int CancelSaveTransferCompleteCallback(LPVOID lpParam);
+	static int CancelSaveTransferCompleteCallback(void *lpParam);
 
 #endif
 
@@ -254,17 +256,17 @@ private:
 	char m_downloadedUniqueFilename[64];//SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE];
 	bool m_saveTransferDownloadCancelled;
 	void LaunchSaveTransfer();
-	static int CreateDummySaveDataCallback(LPVOID lpParam,bool bRes);
-	static int CrossSaveGetSavesInfoCallback(LPVOID lpParam, SAVE_DETAILS *pSaveDetails,bool bRes);
+	static int CreateDummySaveDataCallback(void *lpParam, bool bRes);
+	static int CrossSaveGetSavesInfoCallback(void *lpParam, SAVE_DETAILS *pSaveDetails, bool bRes);
 	static int LoadCrossSaveDataCallback(void *pParam,bool bIsCorrupt, bool bIsOwner);
 	static int CrossSaveFinishedCallback(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int CrossSaveDeleteOnErrorReturned(LPVOID lpParam,bool bRes);
+	static int CrossSaveDeleteOnErrorReturned(void *lpParam, bool bRes);
 	static int RemoteSaveNotFoundCallback(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int DownloadSonyCrossSaveThreadProc( LPVOID lpParameter );
-	static void SaveTransferReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code);
+	static int DownloadSonyCrossSaveThreadProc(void *lpParameter);
+	static void SaveTransferReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code);
 	static ConsoleSaveFile* SonyCrossSaveConvert();
 
-	static void CancelSaveTransferCallback(LPVOID lpParam);
+	static void CancelSaveTransferCallback(void *lpParam);
 #endif
 
 #ifdef SONY_REMOTE_STORAGE_UPLOAD
@@ -282,19 +284,19 @@ private:
 	bool m_saveTransferUploadCancelled;
 
 	void LaunchSaveUpload();
-	static int UploadSonyCrossSaveThreadProc( LPVOID lpParameter );
-	static void SaveUploadReturned(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code);
-	static void CancelSaveUploadCallback(LPVOID lpParam);
+	static int UploadSonyCrossSaveThreadProc(void *lpParameter);
+	static void SaveUploadReturned(void *lpParam, SonyRemoteStorage::Status s, int error_code);
+	static void CancelSaveUploadCallback(void *lpParam);
 	static int SaveTransferDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
 	static int CrossSaveUploadFinishedCallback(void *pParam,int iPad,C4JStorage::EMessageResult result);
 #endif
 
 #if defined _XBOX_ONE || defined __ORBIS__
 	static int CopySaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int CopySaveThreadProc( LPVOID lpParameter );
-	static int CopySaveDataReturned( LPVOID lpParameter, bool success, C4JStorage::ESaveGameState state );
-	static bool CopySaveDataProgress(LPVOID lpParam, int percent);
-	static void CancelCopySaveCallback(LPVOID lpParam);
+	static int CopySaveThreadProc(void *lpParameter);
+	static int CopySaveDataReturned(void *lpParameter, bool success, C4JStorage::ESaveGameState state);
+	static bool CopySaveDataProgress(void *lpParam, int percent);
+	static void CancelCopySaveCallback(void *lpParam);
 	static int CopySaveErrorDialogFinishedCallback(void *pParam,int iPad,C4JStorage::EMessageResult result);
 #endif
 };

@@ -33,7 +33,7 @@ ChunkStorage *McRegionLevelStorage::createChunkStorage(Dimension *dimension)
 			std::vector<FileEntry *> *netherFiles = m_saveFile->getRegionFilesByDimension(1);
 			if(netherFiles!=NULL)
 			{
-				DWORD bytesWritten = 0;
+				unsigned int bytesWritten = 0;
 				for(AUTO_VAR(it, netherFiles->begin()); it != netherFiles->end(); ++it)
 				{
 					m_saveFile->zeroFile(*it, (*it)->getFileSize(), &bytesWritten);

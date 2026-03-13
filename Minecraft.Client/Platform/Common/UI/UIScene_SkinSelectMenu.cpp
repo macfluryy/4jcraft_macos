@@ -13,7 +13,7 @@
 //#define SKIN_SELECT_PACK_PLAYER_CUSTOM 1
 #define SKIN_SELECT_MAX_DEFAULTS 2
 
-const WCHAR *UIScene_SkinSelectMenu::wchDefaultNamesA[]=
+const wchar_t *UIScene_SkinSelectMenu::wchDefaultNamesA[]=
 {
 	L"USE LOCALISED VERSION", // Server selected
 	L"Steve",
@@ -442,7 +442,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			{
 				ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 				ui.PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getPreviousPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -477,7 +477,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			{
 				ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 				ui.PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getNextPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -744,15 +744,15 @@ void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 
 void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 {
-	BOOL showPrevious = FALSE, showNext = FALSE;
-	DWORD previousIndex = 0, nextIndex = 0;
+	bool showPrevious = false, showNext = false;
+	int previousIndex = 0, nextIndex = 0;
 	std::wstring skinName = L"";
 	std::wstring skinOrigin = L"";
 	bool bSkinIsFree=false;
 	bool bLicensed=false;
 	DLCSkinFile *skinFile=NULL;
 	DLCPack *Pack=NULL;
-	BYTE sidePreviewControlsL,sidePreviewControlsR;
+	int sidePreviewControlsL, sidePreviewControlsR;
 	m_bNoSkinsToShow=false;
 
 	TEXTURE_NAME backupTexture = TN_MOB_CHAR;
@@ -887,8 +887,8 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 	m_characters[eCharacter_Current].SetTexture(m_selectedSkinPath, backupTexture);
 	m_characters[eCharacter_Current].SetCapeTexture(m_selectedCapePath);
 
-	showNext = TRUE;		
-	showPrevious = TRUE;
+	showNext = true;
+	showPrevious = true;
 	nextIndex = getNextSkinIndex(m_skinIndex);
 	previousIndex = getPreviousSkinIndex(m_skinIndex);
 
@@ -935,7 +935,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 		sidePreviewControlsL=sidePreviewControlsR=sidePreviewControls;
 	}
 
-	for(BYTE i = 0; i < sidePreviewControlsR; ++i)
+	for(int i = 0; i < sidePreviewControlsR; ++i)
 	{
 		if(showNext)
 		{
@@ -1006,7 +1006,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged()
 
 
 
-	for(BYTE i = 0; i < sidePreviewControlsL; ++i)
+	for(int i = 0; i < sidePreviewControlsL; ++i)
 	{
 		if(showPrevious)
 		{
@@ -1113,7 +1113,7 @@ TEXTURE_NAME UIScene_SkinSelectMenu::getTextureId(int skinIndex)
 	return texture;
 }
 
-int UIScene_SkinSelectMenu::getNextSkinIndex(DWORD sourceIndex)
+int UIScene_SkinSelectMenu::getNextSkinIndex(int sourceIndex)
 {
 	int nextSkin = sourceIndex;
 
@@ -1147,7 +1147,7 @@ int UIScene_SkinSelectMenu::getNextSkinIndex(DWORD sourceIndex)
 	return nextSkin;
 }
 
-int UIScene_SkinSelectMenu::getPreviousSkinIndex(DWORD sourceIndex)
+int UIScene_SkinSelectMenu::getPreviousSkinIndex(int sourceIndex)
 {
 	int previousSkin = sourceIndex;
 	switch(m_packIndex)
@@ -1200,7 +1200,7 @@ void UIScene_SkinSelectMenu::handlePackIndexChanged()
 	if(m_currentPack != NULL)
 	{
 		bool found;
-		DWORD currentSkinIndex = m_currentPack->getSkinIndexAt(m_currentSkinPath, found);
+		int currentSkinIndex = m_currentPack->getSkinIndexAt(m_currentSkinPath, found);
 		if(found) m_skinIndex = currentSkinIndex;
 	}
 	else
@@ -1210,8 +1210,8 @@ void UIScene_SkinSelectMenu::handlePackIndexChanged()
 		case SKIN_SELECT_PACK_DEFAULT:
 			if( !GET_IS_DLC_SKIN_FROM_BITMASK(m_originalSkinId) )
 			{	
-				DWORD ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(m_originalSkinId);
-				DWORD defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(m_originalSkinId);
+				std::uint32_t ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(m_originalSkinId);
+				std::uint32_t defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(m_originalSkinId);
 				if( ugcSkinIndex == 0 )
 				{
 					m_skinIndex = (EDefaultSkins) defaultSkinIndex;
@@ -1229,7 +1229,7 @@ void UIScene_SkinSelectMenu::handlePackIndexChanged()
 				DLCPack *Pack=app.m_dlcManager.getPackContainingSkin(chars);	
 				if(Pack)
 				{
-					DWORD currentSkinIndex = Pack->getSkinIndexAt(m_currentSkinPath, found);
+					int currentSkinIndex = Pack->getSkinIndexAt(m_currentSkinPath, found);
 					if(found) m_skinIndex = app.GetPlayerFavoriteSkinsPos(m_iPad);
 				}
 			}
@@ -1304,7 +1304,7 @@ void UIScene_SkinSelectMenu::updatePackDisplay()
 
 }
 
-int UIScene_SkinSelectMenu::getNextPackIndex(DWORD sourceIndex)
+int UIScene_SkinSelectMenu::getNextPackIndex(int sourceIndex)
 {
 	int nextPack = sourceIndex;
 	++nextPack;
@@ -1316,12 +1316,12 @@ int UIScene_SkinSelectMenu::getNextPackIndex(DWORD sourceIndex)
 	return nextPack;
 }
 
-int UIScene_SkinSelectMenu::getPreviousPackIndex(DWORD sourceIndex)
+int UIScene_SkinSelectMenu::getPreviousPackIndex(int sourceIndex)
 {
 	int previousPack = sourceIndex;
 	if (previousPack == SKIN_SELECT_PACK_DEFAULT)
 	{
-		DWORD packCount = app.m_dlcManager.getPackCount(DLCManager::e_DLCType_Skin);
+		int packCount = app.m_dlcManager.getPackCount(DLCManager::e_DLCType_Skin);
 		
 		if (packCount > 0)
 		{
@@ -1523,7 +1523,7 @@ void UIScene_SkinSelectMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y, i
 			if( m_currentNavigation == eSkinNavigation_Pack )
 			{
 				ui.PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getPreviousPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -1535,7 +1535,7 @@ void UIScene_SkinSelectMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y, i
 			if( m_currentNavigation == eSkinNavigation_Pack )
 			{
 				ui.PlayUISFX(eSFX_Scroll);
-				DWORD startingIndex = m_packIndex;
+				int startingIndex = m_packIndex;
 				m_packIndex = getNextPackIndex(m_packIndex);
 				if(startingIndex != m_packIndex)
 				{
@@ -1712,7 +1712,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 				pScene->m_bIgnoreInput = false;
 			}
 #elif defined _XBOX_ONE
-			StorageManager.InstallOffer(1,(WCHAR *)(pScene->m_currentPack->getPurchaseOfferId().c_str()), &RenableInput, pScene, NULL);
+			StorageManager.InstallOffer(1, const_cast<wchar_t *>(pScene->m_currentPack->getPurchaseOfferId().c_str()), &RenableInput, pScene, NULL);
 #endif		
 		}
 		else // Is signed in, but not live.
@@ -1729,7 +1729,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(void *pParam,int iPad,C4JStorage:
 	return 0;
 }
 
-int UIScene_SkinSelectMenu::RenableInput(LPVOID lpVoid, int, int)
+int UIScene_SkinSelectMenu::RenableInput(void *lpVoid, int, int)
 {
 	((UIScene_SkinSelectMenu*) lpVoid)->m_bIgnoreInput = false;
 	return 0;

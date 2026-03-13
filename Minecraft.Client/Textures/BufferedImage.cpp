@@ -193,8 +193,8 @@ BufferedImage::BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool fi
 {
 	HRESULT hr;
 	std::wstring filePath = File;
-	BYTE *pbData = NULL;
-	DWORD dwBytes = 0;
+	std::uint8_t *pbData = NULL;
+	std::uint32_t dataBytes = 0;
 
 	for( int l = 0 ; l < 10; l++ )
 	{
@@ -229,8 +229,8 @@ BufferedImage::BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool fi
 		}
 
 		DLCFile *dlcFile = dlcPack->getFile(DLCManager::e_DLCType_All, name);
-		pbData = dlcFile->getData(dwBytes);
-		if(pbData == NULL || dwBytes == 0)
+		pbData = dlcFile->getData(dataBytes);
+		if(pbData == NULL || dataBytes == 0)
 		{	
 			// 4J - If we haven't loaded the non-mipmap version then exit the game
 			if( l == 0 )
@@ -242,7 +242,7 @@ BufferedImage::BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool fi
 
 		D3DXIMAGE_INFO ImageInfo;
 		ZeroMemory(&ImageInfo,sizeof(D3DXIMAGE_INFO));
-		hr=RenderManager.LoadTextureData(pbData,dwBytes,&ImageInfo,&data[l]);
+		hr=RenderManager.LoadTextureData(pbData,dataBytes,&ImageInfo,&data[l]);
 
 
 		if(hr!=ERROR_SUCCESS) 
@@ -264,7 +264,7 @@ BufferedImage::BufferedImage(DLCPack *dlcPack, const std::wstring& File, bool fi
 }
 
 
-BufferedImage::BufferedImage(BYTE *pbData, DWORD dwBytes)
+BufferedImage::BufferedImage(std::uint8_t *pbData, std::uint32_t dataBytes)
 {
 	int iCurrentByte=0;
 	for( int l = 0 ; l < 10; l++ )
@@ -274,7 +274,7 @@ BufferedImage::BufferedImage(BYTE *pbData, DWORD dwBytes)
 
 	D3DXIMAGE_INFO ImageInfo;
 	ZeroMemory(&ImageInfo,sizeof(D3DXIMAGE_INFO));
-	HRESULT hr=RenderManager.LoadTextureData(pbData,dwBytes,&ImageInfo,&data[0]);
+	HRESULT hr=RenderManager.LoadTextureData(pbData,dataBytes,&ImageInfo,&data[0]);
 
 	if(hr==ERROR_SUCCESS) 
 	{

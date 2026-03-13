@@ -8,7 +8,7 @@ XboxStructureActionPlaceBlock::XboxStructureActionPlaceBlock()
 	m_x = m_y = m_z = m_tile = m_data = 0;
 }
 
-void XboxStructureActionPlaceBlock::writeAttributes(DataOutputStream *dos, UINT numAttrs)
+void XboxStructureActionPlaceBlock::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
 {
 	ConsoleGenerateStructureAction::writeAttributes(dos, numAttrs + 5);
 

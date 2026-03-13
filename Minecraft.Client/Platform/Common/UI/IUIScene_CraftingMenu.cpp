@@ -28,7 +28,7 @@ Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping9GridA[IUIScene_Cra
 };
 
 
-LPCWSTR IUIScene_CraftingMenu::m_GroupIconNameA[m_iMaxGroup3x3]=
+const wchar_t *IUIScene_CraftingMenu::m_GroupIconNameA[m_iMaxGroup3x3]=
 {
 	L"Structures",//Recipy::eGroupType_Structure,
 	L"Tools",//Recipy::eGroupType_Tool,
@@ -118,7 +118,7 @@ IUIScene_CraftingMenu::IUIScene_CraftingMenu()
 	m_iIngredientsC=0;
 }
 
-LPCWSTR IUIScene_CraftingMenu::GetGroupNameText(int iGroupType)
+const wchar_t *IUIScene_CraftingMenu::GetGroupNameText(int iGroupType)
 {
 	switch(iGroupType)
 	{
@@ -907,7 +907,7 @@ void IUIScene_CraftingMenu::UpdateHighlight()
 
 		// special case for the torch coal/charcoal
 		int id=pTempItemInstAdditional->getDescriptionId();
-		LPCWSTR itemstring;
+		const wchar_t *itemstring;
 
 		switch(id)
 		{

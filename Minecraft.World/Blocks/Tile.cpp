@@ -16,6 +16,39 @@
 #include "../Headers/net.minecraft.h"
 #include "Tile.h"
 
+namespace
+{
+#if defined(_WIN32)
+	inline void *TileTlsGetValue(DWORD key)
+	{
+		return TlsGetValue(key);
+	}
+
+	inline void TileTlsSetValue(DWORD key, void *value)
+	{
+		TlsSetValue(key, value);
+	}
+#else
+	pthread_key_t CreateTileTlsKey()
+	{
+		pthread_key_t key;
+		const int result = pthread_key_create(&key, nullptr);
+		assert(result == 0);
+		return key;
+	}
+
+	inline void *TileTlsGetValue(pthread_key_t key)
+	{
+		return pthread_getspecific(key);
+	}
+
+	inline void TileTlsSetValue(pthread_key_t key, void *value)
+	{
+		pthread_setspecific(key, value);
+	}
+#endif
+}
+
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile."; 
 
 const float Tile::INDESTRUCTIBLE_DESTROY_TIME = -1.0f;
@@ -201,7 +234,11 @@ Tile *Tile::stairs_quartz = NULL;
 
 Tile *Tile::woolCarpet = NULL;
 
+#if defined(_WIN32)
 DWORD Tile::tlsIdxShape = TlsAlloc();
+#else
+pthread_key_t Tile::tlsIdxShape = CreateTileTlsKey();
+#endif
 
 Tile::ThreadStorage::ThreadStorage()
 {
@@ -212,12 +249,12 @@ Tile::ThreadStorage::ThreadStorage()
 void Tile::CreateNewThreadStorage()
 {
 	ThreadStorage *tls = new ThreadStorage();
-	TlsSetValue(Tile::tlsIdxShape, tls);
+	TileTlsSetValue(Tile::tlsIdxShape, tls);
 }
 
 void Tile::ReleaseThreadStorage()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	delete tls;
 }
 
@@ -650,7 +687,7 @@ Tile *Tile::disableMipmap()
 
 void Tile::setShape(float x0, float y0, float z0, float x1, float y1, float z1)
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	tls->xx0 = x0;
 	tls->yy0 = y0;
 	tls->zz0 = z0;
@@ -700,7 +737,7 @@ bool Tile::isFaceVisible(Level *level, int x, int y, int z, int f)
 
 bool Tile::shouldRenderFace(LevelSource *level, int x, int y, int z, int face)
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	if (face == 0 && tls->yy0 > 0) return true;
@@ -717,7 +754,7 @@ int Tile::getFaceFlags(LevelSource *level, int x, int y, int z)
 {
 	int faceFlags = 0;
 
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 
@@ -792,7 +829,7 @@ Icon *Tile::getTexture(int face)
 
 AABB *Tile::getTileAABB(Level *level, int x, int y, int z)
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1, y + tls->yy1, z + tls->zz1);
@@ -806,7 +843,7 @@ void Tile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxe
 
 AABB *Tile::getAABB(Level *level, int x, int y, int z)
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1, y + tls->yy1, z + tls->zz1);
@@ -941,7 +978,7 @@ HitResult *Tile::clip(Level *level, int xt, int yt, int zt, Vec3 *a, Vec3 *b)
 	a = a->add(-xt, -yt, -zt);
 	b = b->add(-xt, -yt, -zt);
 
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	Vec3 *xh0 = a->clipX(b, tls->xx0);
 	Vec3 *xh1 = a->clipX(b, tls->xx1);
 
@@ -978,7 +1015,7 @@ bool Tile::containsX(Vec3 *v)
 {
 	if( v == NULL) return false;
 	
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return v->y >= tls->yy0 && v->y <= tls->yy1 && v->z >= tls->zz0 && v->z <= tls->zz1;
@@ -988,7 +1025,7 @@ bool Tile::containsY(Vec3 *v)
 {
 	if( v == NULL) return false;
 
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return v->x >= tls->xx0 && v->x <= tls->xx1 && v->z >= tls->zz0 && v->z <= tls->zz1;
@@ -998,7 +1035,7 @@ bool Tile::containsZ(Vec3 *v)
 {
 	if( v == NULL) return false;
 
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return v->x >= tls->xx0 && v->x <= tls->xx1 && v->y >= tls->yy0 && v->y <= tls->yy1;
@@ -1063,14 +1100,14 @@ void Tile::handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr
 
 void Tile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 }
 
 double Tile::getShapeX0()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->xx0;
@@ -1078,7 +1115,7 @@ double Tile::getShapeX0()
 
 double Tile::getShapeX1()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->xx1;
@@ -1086,7 +1123,7 @@ double Tile::getShapeX1()
 
 double Tile::getShapeY0()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->yy0;
@@ -1094,7 +1131,7 @@ double Tile::getShapeY0()
 
 double Tile::getShapeY1()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->yy1;
@@ -1102,7 +1139,7 @@ double Tile::getShapeY1()
 
 double Tile::getShapeZ0()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->zz0;
@@ -1110,7 +1147,7 @@ double Tile::getShapeZ0()
 
 double Tile::getShapeZ1()
 {
-	ThreadStorage *tls = (ThreadStorage *)TlsGetValue(Tile::tlsIdxShape);
+	ThreadStorage *tls = static_cast<ThreadStorage *>(TileTlsGetValue(Tile::tlsIdxShape));
 	// 4J Stu - Added this so that the TLS shape is correct for this tile
 	if(tls->tileId != this->id) updateDefaultShape();
 	return tls->zz1;
@@ -1630,3 +1667,4 @@ const int Tile::quartzBlock_Id;
 const int Tile::stairs_quartz_Id;
 const int Tile::woolCarpet_Id;
 #endif
+

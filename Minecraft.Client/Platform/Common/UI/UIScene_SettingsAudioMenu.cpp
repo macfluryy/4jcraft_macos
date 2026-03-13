@@ -7,11 +7,11 @@ UIScene_SettingsAudioMenu::UIScene_SettingsAudioMenu(int iPad, void *initData, U
 	// Setup all the Iggy references we need for this scene
 	initialiseMovie();
 
-	WCHAR TempString[256];	
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),app.GetGameSettings(m_iPad,eGameSetting_MusicVolume));	
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),app.GetGameSettings(m_iPad,eGameSetting_MusicVolume));
 	m_sliderMusic.init(TempString,eControl_Music,0,100,app.GetGameSettings(m_iPad,eGameSetting_MusicVolume));
 	
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),app.GetGameSettings(m_iPad,eGameSetting_SoundFXVolume));	
+	swprintf(TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),app.GetGameSettings(m_iPad,eGameSetting_SoundFXVolume));
 	m_sliderSound.init(TempString,eControl_Sound,0,100,app.GetGameSettings(m_iPad,eGameSetting_SoundFXVolume));
 
 	doHorizontalResizeCheck();
@@ -92,7 +92,7 @@ void UIScene_SettingsAudioMenu::handleInput(int iPad, int key, bool repeat, bool
 
 void UIScene_SettingsAudioMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
@@ -100,7 +100,7 @@ void UIScene_SettingsAudioMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderMusic.handleSliderMove(value);
 		
 		app.SetGameSettings(m_iPad,eGameSetting_MusicVolume,value);	
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),value);	
+		swprintf(TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_MUSIC ),value);
 		m_sliderMusic.setLabel(TempString);
 
 		break;
@@ -108,7 +108,7 @@ void UIScene_SettingsAudioMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderSound.handleSliderMove(value);
 		
 		app.SetGameSettings(m_iPad,eGameSetting_SoundFXVolume,value);
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),value);
+		swprintf(TempString, 256, L"%ls: %d%%", app.GetString( IDS_SLIDER_SOUND ),value);
 		m_sliderSound.setLabel(TempString);
 
 		break;

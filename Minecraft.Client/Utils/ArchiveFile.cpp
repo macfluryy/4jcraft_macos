@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 
 #include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.World/IO/Streams/Compression.h"
 
 #include "ArchiveFile.h"
@@ -120,66 +121,18 @@ byteArray ArchiveFile::getFile(const std::wstring &filename)
 
 		memcpy( out.data, m_cachedData + data->ptr, data->filesize );
 #else
+		const unsigned int fileSize = static_cast<unsigned int>(data->filesize);
+		std::uint8_t *pbData = new std::uint8_t[fileSize == 0 ? 1 : fileSize];
+		out = byteArray(pbData, fileSize);
+		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFileSegment(
+			m_sourcefile.getPath(),
+			static_cast<std::size_t>(data->ptr),
+			out.data,
+			static_cast<std::size_t>(data->filesize));
 
-#if defined(_UNICODE) && !defined(__linux__)
-		HANDLE hfile = CreateFile(	m_sourcefile.getPath().c_str(), 
-			GENERIC_READ,
-			0,
-			NULL,
-			OPEN_EXISTING,
-			FILE_ATTRIBUTE_NORMAL,
-			NULL
-			);
-#else
-		app.DebugPrintf("Createfile archive\n");
-		HANDLE hfile = CreateFile(	wstringtofilename(m_sourcefile.getPath()), 
-			GENERIC_READ,
-			0,
-			NULL,
-			OPEN_EXISTING,
-			FILE_ATTRIBUTE_NORMAL,
-			NULL
-			);
-#endif
-
-		if (hfile != INVALID_HANDLE_VALUE)
+		if (readResult.status != PortableFileIO::BinaryReadStatus::ok)
 		{
-			app.DebugPrintf("hfile ok\n");
-			DWORD ok = SetFilePointer(	hfile,
-				data->ptr,
-				NULL,
-				FILE_BEGIN
-				);
-
-			if (ok != INVALID_SET_FILE_POINTER)
-			{
-				PBYTE pbData = new BYTE[ data->filesize ];
-
-				DWORD bytesRead = -1;
-				BOOL bSuccess = ReadFile(	hfile,
-					(LPVOID) pbData,
-					data->filesize,
-					&bytesRead,
-					NULL
-					);
-
-				if(bSuccess==FALSE)
-				{
-					app.FatalLoadError();
-				}
-				assert(bytesRead == data->filesize);
-				out = byteArray(pbData, data->filesize);
-			}
-			else
-			{
-				app.FatalLoadError();
-			}
-
-			CloseHandle(hfile);
-		}
-		else
-		{
-			app.DebugPrintf("bad hfile\n");
+			app.DebugPrintf("Failed to read archive file segment\n");
 			app.FatalLoadError();
 		}
 #endif
@@ -198,7 +151,7 @@ byteArray ArchiveFile::getFile(const std::wstring &filename)
 			unsigned int decompressedSize = dis.readInt();
 			dis.close();
 
-			PBYTE uncompressedBuffer = new BYTE[decompressedSize];
+			std::uint8_t *uncompressedBuffer = new std::uint8_t[decompressedSize];
 			Compression::getCompression()->Decompress(uncompressedBuffer, &decompressedSize, out.data+4, out.length-4);
 
 			delete [] out.data;

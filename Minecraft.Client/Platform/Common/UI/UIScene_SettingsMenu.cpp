@@ -138,7 +138,7 @@ void UIScene_SettingsMenu::handlePress(F64 controlId, F64 childId)
 	case BUTTON_ALL_RESETTODEFAULTS:
 		{
 			// check they really want to do this
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 

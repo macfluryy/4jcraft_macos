@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include <cstdint>
 #include "PistonBaseTile.h"
 #include "PistonMovingTileEntity.h"
 #include "TileEntities/PistonPieceTileEntity.h"
@@ -19,7 +20,43 @@ const std::wstring PistonBaseTile::INSIDE_TEX = L"piston_inner_top";
 
 const float PistonBaseTile::PLATFORM_THICKNESS = 4.0f;
 
+namespace
+{
+#if defined(_WIN32)
+	inline void *PistonTlsGetValue(DWORD key)
+	{
+		return TlsGetValue(key);
+	}
+
+	inline void PistonTlsSetValue(DWORD key, void *value)
+	{
+		TlsSetValue(key, value);
+	}
+#else
+	pthread_key_t CreatePistonTlsKey()
+	{
+		pthread_key_t key;
+		pthread_key_create(&key, NULL);
+		return key;
+	}
+
+	inline void *PistonTlsGetValue(pthread_key_t key)
+	{
+		return pthread_getspecific(key);
+	}
+
+	inline void PistonTlsSetValue(pthread_key_t key, void *value)
+	{
+		pthread_setspecific(key, value);
+	}
+#endif
+}
+
+#if defined(_WIN32)
 DWORD PistonBaseTile::tlsIdx = TlsAlloc();
+#else
+pthread_key_t PistonBaseTile::tlsIdx = CreatePistonTlsKey();
+#endif
 
 // 4J - NOTE - this ignoreUpdate stuff has been removed from the java version, but I'm not currently sure how the java version does without it... there must be
 // some other mechanism that we don't have that stops the event from one piston being processed, from causing neighbours to have extra events created for them.
@@ -28,12 +65,12 @@ DWORD PistonBaseTile::tlsIdx = TlsAlloc();
 // 4J - ignoreUpdate is a static in java, implementing as TLS here to make thread safe
 bool PistonBaseTile::ignoreUpdate()
 {
-	return (TlsGetValue(tlsIdx) != NULL);
+	return PistonTlsGetValue(tlsIdx) != NULL;
 }
 
 void PistonBaseTile::ignoreUpdate(bool set)
 {
-	TlsSetValue(tlsIdx,(LPVOID)(intptr_t)(set?1:0));
+	PistonTlsSetValue(tlsIdx, reinterpret_cast<void *>(static_cast<intptr_t>(set ? 1 : 0)));
 }
 
 PistonBaseTile::PistonBaseTile(int id, bool isSticky) : Tile(id, Material::piston, false)

@@ -11,7 +11,7 @@
 #include "DLCColourTableFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-DLCPack::DLCPack(const std::wstring &name,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,std::uint32_t dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -35,7 +35,7 @@ DLCPack::DLCPack(const std::wstring &name,DWORD dwLicenseMask)
 }
 
 #ifdef _XBOX_ONE
-DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,DWORD dwLicenseMask)
+DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,std::uint32_t dwLicenseMask)
 {
 	m_dataPath = L"";
 	m_packName = name;
@@ -81,7 +81,7 @@ DLCPack::~DLCPack()
 	}
 }
 
-DWORD DLCPack::GetDLCMountIndex()
+int DLCPack::GetDLCMountIndex()
 {
 	if(m_parentPack != NULL)
 	{
@@ -101,9 +101,9 @@ XCONTENTDEVICEID DLCPack::GetDLCDeviceID()
 
 void DLCPack::addChildPack(DLCPack *childPack)
 {
-	int packId = childPack->GetPackId();
+	const std::uint32_t packId = childPack->GetPackId();
 #ifndef _CONTENT_PACKAGE
-	if(packId < 0 || packId > 15)
+	if(packId > 15)
 	{
 		__debugbreak();
 	}
@@ -125,7 +125,7 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstrin
 	{
 	case DLCManager::e_DLCParamType_PackId:
 		{
-			DWORD packId = 0;
+			std::uint32_t packId = 0;
 
 			std::wstringstream ss;
 			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
@@ -137,7 +137,7 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstrin
 		break;
 	case DLCManager::e_DLCParamType_PackVersion:
 		{
-			DWORD version = 0;
+			std::uint32_t version = 0;
 
 			std::wstringstream ss;
 			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
@@ -278,7 +278,7 @@ bool DLCPack::doesPackContainFile(DLCManager::EDLCType type, const std::wstring 
 	return hasFile;
 }
 
-DLCFile *DLCPack::getFile(DLCManager::EDLCType type, DWORD index)
+DLCFile *DLCPack::getFile(DLCManager::EDLCType type, unsigned int index)
 {
 	DLCFile *file = NULL;
 	if(type == DLCManager::e_DLCType_All)
@@ -333,9 +333,9 @@ DLCFile *DLCPack::getFile(DLCManager::EDLCType type, const std::wstring &path)
 	return file;
 }
 
-DWORD DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/)
+unsigned int DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/)
 {
-	DWORD count = 0;
+	unsigned int count = 0;
 
 	switch(type)
 	{
@@ -346,13 +346,13 @@ DWORD DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCT
 		}
 		break;
 	default:
-		count = (DWORD)m_files[(int)type].size();
+		count = static_cast<unsigned int>(m_files[(int)type].size());
 		break;
 	};
 	return count;
 };
 
-DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
+unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
 {
 	if(type == DLCManager::e_DLCType_All)
 	{
@@ -363,9 +363,9 @@ DWORD DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &pat
 		return 0;
 	}
 
-	DWORD foundIndex = 0;
+	unsigned int foundIndex = 0;
 	found = false;
-	DWORD index = 0;
+	unsigned int index = 0;
 	for(AUTO_VAR(it, m_files[type].begin()); it != m_files[type].end(); ++it)
 	{
 		if(path.compare((*it)->getPath()) == 0)

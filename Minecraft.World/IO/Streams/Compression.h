@@ -27,7 +27,7 @@ private:
 		ThreadStorage();
 		~ThreadStorage();
 	};
-	static DWORD tlsIdx;
+	static unsigned int tlsIdx;
 	static ThreadStorage *tlsDefault;
 public:
 	// Each new thread that needs to use Compression will need to call one of the following 2 functions, to either create its own
@@ -46,7 +46,7 @@ public:
 	HRESULT CompressRLE(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 	HRESULT DecompressRLE(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 #ifndef _XBOX
-	static VOID VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
+	static void VitaVirtualDecompress(void *pDestination, unsigned int *pDestSize, void *pSource, unsigned int SrcSize);
 #endif
 
 	void SetDecompressionType(ECompressionTypes type) { m_decompressType = type; }  // for loading a save from a different platform (Sony cloud storage cross play)

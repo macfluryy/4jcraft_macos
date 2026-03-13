@@ -60,19 +60,19 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	m_labelTexturePackName.init(L"");
 	m_labelTexturePackDescription.init(L"");
 
-	WCHAR TempString[256];
-	swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));	
+	wchar_t TempString[256];
+	swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[app.GetGameSettings(m_iPad,eGameSetting_Difficulty)]));
 	m_sliderDifficulty.init(TempString,eControl_Difficulty,0,3,app.GetGameSettings(m_iPad,eGameSetting_Difficulty));
 
-	m_MoreOptionsParams.bGenerateOptions=TRUE;
-	m_MoreOptionsParams.bStructures=TRUE;	
-	m_MoreOptionsParams.bFlatWorld=FALSE;
-	m_MoreOptionsParams.bBonusChest=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = true;
+	m_MoreOptionsParams.bStructures = true;	
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = iPad;
 
 	m_bGameModeSurvival=true;
@@ -97,23 +97,23 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed )
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -167,14 +167,14 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void *initData, UILay
 		{
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				wchar_t imageName[64];
 				swprintf(imageName,64,L"tpack%08x",tp->getId());
-				registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+				registerSubstitutionTexture(imageName, imageData, imageBytes);
 				m_texturePackList.addPack(i,imageName);
 			}
 		}
@@ -420,7 +420,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 	case eControl_EditWorldName:
 		{
 			m_bIgnoreInput=true;
-			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD),m_editWorldName.getLabel(),(DWORD)0,25,&UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback,this,C_4JInput::EKeyboardMode_Default);
+			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD),m_editWorldName.getLabel(),0,25,&UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback,this,C_4JInput::EKeyboardMode_Default);
 		}
 		break;
 	case eControl_EditSeed:
@@ -433,15 +433,15 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 			case XC_LANGUAGE_JAPANESE:
 			case XC_LANGUAGE_KOREAN:
 			case XC_LANGUAGE_TCHINESE:
-				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
+				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
 				break;
 			default:
 				// 4J Stu - Use a different keyboard for non-asian languages so we don't have prediction on
-				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
+				InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
 				break;
 			}
 #else
-			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),(DWORD)0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
+			InputManager.RequestKeyboard(app.GetString(IDS_CREATE_NEW_WORLD_SEED),m_editSeed.getLabel(),0,60,&UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback,this,C_4JInput::EKeyboardMode_Default);
 #endif
 		}
 		break;
@@ -484,7 +484,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId)
 }
 
 #ifdef _DURANGO
-void UIScene_CreateWorldMenu::checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad)
+void UIScene_CreateWorldMenu::checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad)
 {
 	UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)lpParam;
 
@@ -628,7 +628,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow()
 
 void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
+	wchar_t TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{
@@ -636,7 +636,7 @@ void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 		m_sliderDifficulty.handleSliderMove(value);
 
 		app.SetGameSettings(m_iPad,eGameSetting_Difficulty,value);
-		swprintf( (WCHAR *)TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));		
+		swprintf(TempString, 256, L"%ls: %ls", app.GetString( IDS_SLIDER_DIFFICULTY ),app.GetString(m_iDifficultyTitleSettingA[value]));
 		m_sliderDifficulty.setLabel(TempString);
 		break;
 	}
@@ -665,23 +665,23 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 				
 #if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
@@ -708,8 +708,8 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 			{
 				if(m_iConfigA[i]!=-1)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					//app.DebugPrintf("Retrieving iConfig %d from TPD\n",m_iConfigA[i]);
 
 					app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);
@@ -717,8 +717,8 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id)
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 					if(dwBytes > 0 && pbData)
 					{
-						DWORD dwImageBytes=0;
-						PBYTE pbImageData=NULL;
+						unsigned int dwImageBytes=0;
+						std::uint8_t *pbImageData=NULL;
 
 						app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
 						ListInfo.fEnabled = TRUE;	
@@ -752,15 +752,15 @@ void UIScene_CreateWorldMenu::handleGainFocus(bool navBack)
 	}
 }
 
-int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bool bRes)
+int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void *lpParam,bool bRes)
 {
 	UIScene_CreateWorldMenu *pClass=(UIScene_CreateWorldMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;
 	// 4J HEG - No reason to set value if keyboard was cancelled
 	if (bRes)
 	{
-		uint16_t pchText[128];
-		ZeroMemory(pchText, 128 * sizeof(uint16_t) );
+		std::uint16_t pchText[128];
+		ZeroMemory(pchText, 128 * sizeof(std::uint16_t) );
 		InputManager.GetText(pchText);
 
 		if(pchText[0]!=0)
@@ -774,7 +774,7 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(LPVOID lpParam,bo
 	return 0;
 }
 
-int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bRes)
+int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(void *lpParam,bool bRes)
 {
 	UIScene_CreateWorldMenu *pClass=(UIScene_CreateWorldMenu *)lpParam;
 	pClass->m_bIgnoreInput=false;
@@ -783,11 +783,11 @@ int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(LPVOID lpParam,bool bR
 	{
 #ifdef __PSVITA__
 		//CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
-		uint16_t pchText[2048];
-		ZeroMemory(pchText, 2048 * sizeof(uint16_t) );
+		std::uint16_t pchText[2048];
+		ZeroMemory(pchText, 2048 * sizeof(std::uint16_t) );
 #else
-		uint16_t pchText[128];
-		ZeroMemory(pchText, 128 * sizeof(uint16_t) );
+		std::uint16_t pchText[128];
+		ZeroMemory(pchText, 128 * sizeof(std::uint16_t) );
 #endif
 		InputManager.GetText(pchText);
 		pClass->m_editSeed.setLabel((wchar_t *)pchText);
@@ -896,7 +896,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 			// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 			// upsell psplus
-			int32_t iResult=sceNpCommerceDialogInitialize();
+			std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 			SceNpCommerceDialogParam param;
 			sceNpCommerceDialogParamInitialize(&param);
@@ -915,7 +915,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 	}
 #endif
 
-	if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges == TRUE)
+	if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 	{			
 		UINT uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
@@ -932,7 +932,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 	else
 	{
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -941,8 +941,8 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		//bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 		bool bContentRestricted = false;
 
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
@@ -975,7 +975,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1023,7 +1023,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 				// 4J-PB - we're not allowed to show the text Playstation Plus - have to call the upsell all the time!
 				// upsell psplus
-				int32_t iResult=sceNpCommerceDialogInitialize();
+				std::int32_t iResult=sceNpCommerceDialogInitialize();
 
 				SceNpCommerceDialogParam param;
 				sceNpCommerceDialogParamInitialize(&param);
@@ -1061,7 +1061,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 }
 
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
-void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD dwLocalUsersMask)
+void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, int localUsersMask)
 {
 #if TO_BE_IMPLEMENTED
 	// stop the timer running that causes a check for new texture packs in TMS but not installed, since this will run all through the create game, and will crash if it tries to create an hbrush
@@ -1101,7 +1101,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 	}
 
 	// start the game
-	bool isFlat = (pClass->m_MoreOptionsParams.bFlatWorld==TRUE);
+	bool isFlat = pClass->m_MoreOptionsParams.bFlatWorld;
 	__int64 seedValue = 0;
 
 	NetworkGameInitData *param = new NetworkGameInitData();
@@ -1172,7 +1172,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 	app.SetGameHostOption(eGameHostOption_HostCanChangeHunger,pClass->m_MoreOptionsParams.bHostPrivileges);
 	app.SetGameHostOption(eGameHostOption_HostCanBeInvisible,pClass->m_MoreOptionsParams.bHostPrivileges );
 
-	g_NetworkManager.HostGame(dwLocalUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
+	g_NetworkManager.HostGame(localUsersMask,isClientSide,isPrivate,MINECRAFT_NET_MAX_PLAYERS,0);
 
 	param->settings = app.GetGameHostOption( eGameHostOption_All );
 
@@ -1214,7 +1214,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass, DWORD 
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave time
 	app.SetAutosaveTimerTime();
@@ -1243,7 +1243,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 			// bool isOnlineGame = pClass->m_MoreOptionsParams.bOnlineGame;
 			int primaryPad = ProfileManager.GetPrimaryPad();
 			bool noPrivileges = false;
-			DWORD dwLocalUsersMask = 0;
+			int localUsersMask = 0;
 			bool isSignedInLive = ProfileManager.IsSignedInLive(primaryPad);
 			int iPadNotSignedInLive = -1;
 			bool isLocalMultiplayerAvailable = app.IsLocalMultiplayerAvailable();
@@ -1259,7 +1259,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 					}
 
 					if( !ProfileManager.AllowedToPlayMultiplayer(i) ) noPrivileges = true;
-					dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
+					localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(i);
 					isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(i);
 				}
 			}
@@ -1300,8 +1300,8 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
@@ -1326,7 +1326,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 			else
 			{
 				// This is NOT called from a storage manager thread, and is in fact called from the main thread in the Profile library tick. Therefore we use the main threads IntCache.
-				CreateGame(pClass, dwLocalUsersMask);
+				CreateGame(pClass, localUsersMask);
 			}
 		}
 	}
@@ -1347,7 +1347,7 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStor
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1367,8 +1367,8 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStor
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
@@ -1421,14 +1421,14 @@ int UIScene_CreateWorldMenu::MustSignInReturnedPSN(void *pParam,int iPad,C4JStor
 
 // int UIScene_CreateWorldMenu::PSPlusReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 // {
-// 	int32_t iResult;
+// 	std::int32_t iResult;
 // 	UIScene_CreateWorldMenu *pClass = (UIScene_CreateWorldMenu *)pParam;
 // 
 // 	// continue offline, or upsell PS Plus?
 // 	if(result==C4JStorage::EMessage_ResultDecline) 
 // 	{
 // 		// upsell psplus
-// 		int32_t iResult=sceNpCommerceDialogInitialize();
+// 		std::int32_t iResult=sceNpCommerceDialogInitialize();
 // 
 // 		SceNpCommerceDialogParam param;
 // 		sceNpCommerceDialogParamInitialize(&param);

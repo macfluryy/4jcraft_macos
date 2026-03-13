@@ -90,7 +90,7 @@ protected:
 	void StartSharedLaunchFlow();
 
 #ifdef _DURANGO
-	static void checkPrivilegeCallback(LPVOID lpParam, bool hasPrivilege, int iPad);
+	static void checkPrivilegeCallback(void *lpParam, bool hasPrivilege, int iPad);
 #endif
 	
 	static int StartGame_SignInReturned(void *pParam, bool, int);

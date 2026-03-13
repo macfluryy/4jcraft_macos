@@ -33,9 +33,6 @@ void Connection::_init()
 	fakeLag = 0;
 	slowWriteDelay = 50;
 
-	saqThreadID = 0;
-	closeThreadID = 0;
-
 	tickCount = 0;
 
 }
@@ -380,7 +377,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason, ...)
 	//	return( sum ? (sum / count) : 0 );
 
 
-//	CreateThread(NULL, 0, runClose, this, 0, &closeThreadID);
+//	CreateThread(NULL, 0, runClose, this, 0, NULL);
 
 	running = false;
 
@@ -525,7 +522,7 @@ void Connection::sendAndQuit()
 		close(DisconnectPacket::eDisconnect_Closed);
 	}
 #else
-	CreateThread(NULL, 0, runSendAndQuit, this, 0, &saqThreadID);
+	CreateThread(NULL, 0, runSendAndQuit, this, 0, NULL);
 #endif
 }
 
@@ -606,7 +603,7 @@ int Connection::runWrite(void* lpParam)
 
 	// 4J Stu - Adding this to force us to run through the writeTick at least once after the event is fired
 	// Otherwise there is a race between the calling thread setting the running flag and this loop checking the condition
-	DWORD waitResult = WAIT_TIMEOUT;
+	unsigned int waitResult = WAIT_TIMEOUT;
 
 	while ((con->running || waitResult == 0 ) && ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads))
 	{

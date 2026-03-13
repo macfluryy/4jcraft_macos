@@ -18,10 +18,10 @@ private:
 	UIFullscreenProgressCompletionData *m_CompletionData;
 	bool m_threadCompleted;
 	int m_iPad;
-	void (*m_cancelFunc)(LPVOID param);
-	void (*m_completeFunc)(LPVOID param);
-	LPVOID m_cancelFuncParam;
-	LPVOID m_completeFuncParam;
+	void (*m_cancelFunc)(void *param);
+	void (*m_completeFunc)(void *param);
+	void *m_cancelFuncParam;
+	void *m_completeFuncParam;
 	bool m_bWaitForThreadToDelete;
 
 	std::wstring m_titleText, m_statusText;

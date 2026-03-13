@@ -305,7 +305,7 @@ public:
 	static __int64 currentTimeMillis();
 
 #ifdef _DURANGO
-	static void inGameSignInCheckAllPrivilegesCallback(LPVOID lpParam, bool hasPrivileges, int iPad);
+	static void inGameSignInCheckAllPrivilegesCallback(void *lpParam, bool hasPrivileges, int iPad);
 #endif
 	static int InGame_SignInReturned(void *pParam,bool bContinue, int iPad);
 	// 4J-PB
@@ -317,7 +317,7 @@ public:
 	CRITICAL_SECTION	m_setLevelCS;
 private:
 	// A bit field that store whether a particular quadrant is in the full tutorial or not
-	BYTE m_inFullTutorialBits;
+	std::uint8_t m_inFullTutorialBits;
 public:
 	bool isTutorial();
 	void playerStartedTutorial(int iPad);

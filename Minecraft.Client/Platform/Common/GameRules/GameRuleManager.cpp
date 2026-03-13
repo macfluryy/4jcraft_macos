@@ -103,7 +103,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	for(int i = 0; i < gameRulesCount; ++i)
 	{
 		DLCGameRulesHeader *dlcHeader = (DLCGameRulesHeader *)pack->getFile(DLCManager::e_DLCType_GameRulesHeader, i);
-		DWORD dSize;
+		std::uint32_t dSize;
 		uint8_t *dData = dlcHeader->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
@@ -125,7 +125,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	{
 		DLCGameRulesFile *dlcFile = (DLCGameRulesFile *)pack->getFile(DLCManager::e_DLCType_GameRules, i);
 
-		DWORD dSize;
+		std::uint32_t dSize;
 		uint8_t *dData = dlcFile->getData(dSize);
 
 		LevelGenerationOptions *createdLevelGenerationOptions = new LevelGenerationOptions();
@@ -142,7 +142,7 @@ void GameRuleManager::loadGameRules(DLCPack *pack)
 	}
 }
 
-LevelGenerationOptions *GameRuleManager::loadGameRules(uint8_t *dIn, UINT dSize)
+LevelGenerationOptions *GameRuleManager::loadGameRules(uint8_t *dIn, unsigned int dSize)
 {
 	LevelGenerationOptions *lgo = new LevelGenerationOptions();
 	lgo->setGrSource( new JustGrSource() );
@@ -153,7 +153,7 @@ LevelGenerationOptions *GameRuleManager::loadGameRules(uint8_t *dIn, UINT dSize)
 }
 
 // 4J-JEV: Reverse of saveGameRules.
-void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize)
+void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, unsigned int dSize)
 {
 	app.DebugPrintf("GameRuleManager::LoadingGameRules:\n");
 
@@ -170,11 +170,11 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, U
 
 	for (int i = 0; i < 8; i++) dis.readByte();
 	
-	BYTE compression_type = dis.readByte();
+	std::uint8_t compression_type = dis.readByte();
 
 	app.DebugPrintf("\tcompressionType=%d.\n", compression_type);
 
-	UINT compr_len, decomp_len;
+	unsigned int compr_len, decomp_len;
 	compr_len = dis.readInt();
 	decomp_len = dis.readInt();
 
@@ -183,8 +183,8 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, U
 
 	// Decompress File Body
 
-	byteArray content(new BYTE[decomp_len], decomp_len), 
-				compr_content(new BYTE[compr_len], compr_len);
+	byteArray content(new std::uint8_t[decomp_len], decomp_len), 
+				compr_content(new std::uint8_t[compr_len], compr_len);
 	dis.read(compr_content);
 
 	Compression::getCompression()->SetDecompressionType( (Compression::ECompressionTypes)compression_type );
@@ -203,14 +203,14 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, U
 	// Read StringTable.
 	byteArray bStringTable;
 	bStringTable.length = dis2.readInt();
-	bStringTable.data = new BYTE[ bStringTable.length ];
+	bStringTable.data = new std::uint8_t[ bStringTable.length ];
 	dis2.read(bStringTable);
 	StringTable *strings = new StringTable(bStringTable.data, bStringTable.length);
 
 	// Read RuleFile.
 	byteArray bRuleFile;
 	bRuleFile.length = content.length - bStringTable.length;
-	bRuleFile.data = new BYTE[ bRuleFile.length ];
+	bRuleFile.data = new std::uint8_t[ bRuleFile.length ];
 	dis2.read(bRuleFile);
 
 	// 4J-JEV: I don't believe that the path-name is ever used.
@@ -240,7 +240,7 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions *lgo, uint8_t *dIn, U
 }
 
 // 4J-JEV: Reverse of loadGameRules.
-void GameRuleManager::saveGameRules(uint8_t **dOut, UINT *dSize)
+void GameRuleManager::saveGameRules(uint8_t **dOut, unsigned int *dSize)
 {
 	if (m_currentGameRuleDefinitions == NULL &&
 		m_currentLevelGenerationOptions == NULL)
@@ -264,7 +264,7 @@ void GameRuleManager::saveGameRules(uint8_t **dOut, UINT *dSize)
 
 	// Write 8 bytes of empty space in case we need them later.
 	// Mainly useful for the ones we save embedded in game saves.
-	for (UINT i = 0; i < 8; i++)
+	for (unsigned int i = 0; i < 8; i++)
 		dos.writeByte(0x0);
 
 	dos.writeByte(APPROPRIATE_COMPRESSION_TYPE); // m_compressionType
@@ -306,7 +306,7 @@ void GameRuleManager::saveGameRules(uint8_t **dOut, UINT *dSize)
 	}
 
 	// Compress compr_dos and write to dos.
-	byteArray compr_ba(new BYTE[ compr_baos.buf.length ], compr_baos.buf.length);
+	byteArray compr_ba(new std::uint8_t[ compr_baos.buf.length ], compr_baos.buf.length);
 	Compression::getCompression()->CompressLZXRLE(	compr_ba.data, &compr_ba.length,
 												compr_baos.buf.data, compr_baos.buf.length );
 
@@ -373,15 +373,15 @@ void GameRuleManager::writeRuleFile(DataOutputStream *dos)
 	m_currentGameRuleDefinitions->write(dos);
 }
 
-bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UINT dSize, StringTable *strings) //(DLCGameRulesFile *dlcFile, StringTable *strings)
+bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, unsigned int dSize, StringTable *strings) //(DLCGameRulesFile *dlcFile, StringTable *strings)
 {
 	bool levelGenAdded = false;
 	bool gameRulesAdded = false;
 	LevelGenerationOptions *levelGenerator = lgo;//new LevelGenerationOptions();
 	LevelRuleset *gameRules = new LevelRuleset();
 
-	//DWORD dwLen = 0;
-	//PBYTE pbData = dlcFile->getData(dwLen);
+	//std::uint32_t dataLength = 0;
+	//std::uint8_t *data = dlcFile->getData(dataLength);
 	//byteArray data(pbData,dwLen);
 	
 	byteArray data(dIn, dSize);
@@ -469,15 +469,15 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 	}
 
 	// string lookup.
-	UINT numStrings = contentDis->readInt();
+	unsigned int numStrings = contentDis->readInt();
 	std::vector<std::wstring> tagsAndAtts;
-	for (UINT i = 0; i < numStrings; i++)
+	for (unsigned int i = 0; i < numStrings; i++)
 		tagsAndAtts.push_back( contentDis->readUTF() );
 
 	std::unordered_map<int, ConsoleGameRules::EGameRuleType> tagIdMap;
 	for(int type = (int)ConsoleGameRules::eGameRuleType_Root; type < (int)ConsoleGameRules::eGameRuleType_Count; ++type)
 	{
-		for(UINT i = 0; i < numStrings; ++i)
+		for(unsigned int i = 0; i < numStrings; ++i)
 		{
 			if(tagsAndAtts[i].compare(wchTagNameA[type]) == 0)
 			{
@@ -492,7 +492,7 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 	std::unordered_map<int, ConsoleGameRules::EGameRuleAttr> attrIdMap;
 	for(int attr = (int)ConsoleGameRules::eGameRuleAttr_descriptionName; attr < (int)ConsoleGameRules::eGameRuleAttr_Count; ++attr)
 	{
-		for (UINT i = 0; i < numStrings; i++)
+		for (unsigned int i = 0; i < numStrings; i++)
 		{
 			if (tagsAndAtts[i].compare(wchAttrNameA[attr]) == 0)
 			{
@@ -503,8 +503,8 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 	}*/
 
 	// subfile 
-	UINT numFiles = contentDis->readInt();
-	for (UINT i = 0; i < numFiles; i++)
+	unsigned int numFiles = contentDis->readInt();
+	for (unsigned int i = 0; i < numFiles; i++)
 	{
 		std::wstring sFilename = contentDis->readUTF();
 		int length = contentDis->readInt();
@@ -519,8 +519,8 @@ bool GameRuleManager::readRuleFile(LevelGenerationOptions *lgo, uint8_t *dIn, UI
 	LEVEL_GEN_ID lgoID = LEVEL_GEN_ID_NULL;
 
 	// xml objects
-	UINT numObjects = contentDis->readInt();
-	for(UINT i = 0; i < numObjects; ++i)
+	unsigned int numObjects = contentDis->readInt();
+	for(unsigned int i = 0; i < numObjects; ++i)
 	{
 		int tagId = contentDis->readInt();
 		ConsoleGameRules::EGameRuleType tagVal = ConsoleGameRules::eGameRuleType_Invalid;
@@ -584,7 +584,7 @@ LevelGenerationOptions *GameRuleManager::readHeader(DLCGameRulesHeader *grh)
 void GameRuleManager::readAttributes(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, GameRuleDefinition *rule)
 {
 	int numAttrs = dis->readInt();
-	for (UINT att = 0; att < numAttrs; ++att)
+	for (unsigned int att = 0; att < static_cast<unsigned int>(numAttrs); ++att)
 	{
 		int attID = dis->readInt();
 		std::wstring value = dis->readUTF();
@@ -596,7 +596,7 @@ void GameRuleManager::readAttributes(DataInputStream *dis, std::vector<std::wstr
 void GameRuleManager::readChildren(DataInputStream *dis, std::vector<std::wstring> *tagsAndAtts, std::unordered_map<int, ConsoleGameRules::EGameRuleType> *tagIdMap, GameRuleDefinition *rule)
 {
 	int numChildren = dis->readInt();
-	for(UINT child = 0; child < numChildren; ++child)
+	for(unsigned int child = 0; child < static_cast<unsigned int>(numChildren); ++child)
 	{
 		int tagId = dis->readInt();
 		ConsoleGameRules::EGameRuleType tagVal = ConsoleGameRules::eGameRuleType_Invalid;
@@ -663,7 +663,7 @@ void GameRuleManager::loadDefaultGameRules()
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		DWORD dwFilesProcessed = 0;
+		unsigned int dwFilesProcessed = 0;
 		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
 		{
 			app.m_dlcManager.addPack(pack);
@@ -720,7 +720,7 @@ bool GameRuleManager::loadGameRulesPack(File *path)
 	if(path->exists())
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		DWORD dwFilesProcessed = 0;
+		unsigned int dwFilesProcessed = 0;
 		if( app.m_dlcManager.readDLCDataFile(dwFilesProcessed, path->getPath(),pack))
 		{
 			app.m_dlcManager.addPack(pack);
@@ -749,7 +749,7 @@ void GameRuleManager::setLevelGenerationOptions(LevelGenerationOptions *levelGen
 		m_currentLevelGenerationOptions->reset_start();
 }
 
-LPCWSTR	GameRuleManager::GetGameRulesString(const std::wstring &key)
+const wchar_t *GameRuleManager::GetGameRulesString(const std::wstring &key)
 {
 	if(m_currentGameRuleDefinitions != NULL && !key.empty() )
 	{

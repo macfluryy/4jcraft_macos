@@ -1448,16 +1448,16 @@ void CConsoleMinecraftApp::CaptureSaveThumbnail()
 	RenderManager.CaptureThumbnail(&m_ThumbnailBuffer);
 	MemSect(0);
 }
-void CConsoleMinecraftApp::GetSaveThumbnail(PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t **thumbnailData, unsigned int *thumbnailSize)
 {
 	// on a save caused by a create world, the thumbnail capture won't have happened
 	if(m_ThumbnailBuffer!=NULL)
 	{
-		if( pbData )
+		if( thumbnailData )
 		{
-			*pbData= new BYTE [m_ThumbnailBuffer->GetBufferSize()];
-			*pdwSize=m_ThumbnailBuffer->GetBufferSize();
-			memcpy(*pbData,m_ThumbnailBuffer->GetBufferPointer(),*pdwSize);
+			*thumbnailData = new std::uint8_t[m_ThumbnailBuffer->GetBufferSize()];
+			*thumbnailSize = static_cast<unsigned int>(m_ThumbnailBuffer->GetBufferSize());
+			memcpy(*thumbnailData, m_ThumbnailBuffer->GetBufferPointer(), *thumbnailSize);
 		}
 		m_ThumbnailBuffer->Release();
 		m_ThumbnailBuffer=NULL;
@@ -1472,14 +1472,14 @@ void CConsoleMinecraftApp::ReleaseSaveThumbnail()
 	}
 }
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,PBYTE *pbData,DWORD *pdwSize)
+void CConsoleMinecraftApp::GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize)
 {
 	// on a save caused by a create world, the thumbnail capture won't have happened
 	if(m_ScreenshotBuffer[iPad]!=NULL)
 	{
-		*pbData= new BYTE [m_ScreenshotBuffer[iPad]->GetBufferSize()];
-		*pdwSize=m_ScreenshotBuffer[iPad]->GetBufferSize();
-		memcpy(*pbData,m_ScreenshotBuffer[iPad]->GetBufferPointer(),*pdwSize);
+		*screenshotData = new std::uint8_t[m_ScreenshotBuffer[iPad]->GetBufferSize()];
+		*screenshotSize = static_cast<unsigned int>(m_ScreenshotBuffer[iPad]->GetBufferSize());
+		memcpy(*screenshotData, m_ScreenshotBuffer[iPad]->GetBufferPointer(), *screenshotSize);
 		m_ScreenshotBuffer[iPad]->Release();
 		m_ScreenshotBuffer[iPad]=NULL;
 	}
@@ -2959,9 +2959,9 @@ WCHAR CConsoleMinecraftApp::m_wchTMSXZP[] = L"file://UPDATE:/res/TMS/TMSFiles.xz
 #endif
 
 
-void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD dwBytes,PBYTE *ppbData,DWORD *pdwBytes )
+void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes )
 {
-	PBYTE pbPos=pbData;
+	std::uint8_t *pbPos=pbData;
 	// icon is the second thing in the file
 	if(pbData && dwBytes>0)
 	{
@@ -2973,15 +2973,15 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Loc)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 		else
 		{
 			// skip over the data
-			pbPos=(PBYTE)&((unsigned int *)pbPos)[2];
+			pbPos=(std::uint8_t *)&((unsigned int *)pbPos)[2];
 			pbPos+=uiCompSize;
 		}
 
@@ -2992,15 +2992,15 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Icon)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 		else
 		{
 			// skip over the data
-			pbPos=(PBYTE)&((unsigned int *)pbPos)[2];
+			pbPos=(std::uint8_t *)&((unsigned int *)pbPos)[2];
 			pbPos+=uiCompSize;
 		}
 
@@ -3011,9 +3011,9 @@ void CConsoleMinecraftApp::GetFileFromTPD(eTPDFileType eType,PBYTE pbData,DWORD 
 		if(eType==eTPDFileType_Comparison)
 		{
 			*pdwBytes= uiDecompSize;
-			*ppbData = new BYTE [uiDecompSize];
+			*ppbData = new std::uint8_t[uiDecompSize];
 
-			Compression::getCompression()->Decompress(*ppbData,(UINT *)pdwBytes,&((unsigned int *)pbPos)[2],uiCompSize);
+			Compression::getCompression()->Decompress(*ppbData, pdwBytes, &((unsigned int *)pbPos)[2], uiCompSize);
 			return;
 		}
 	}

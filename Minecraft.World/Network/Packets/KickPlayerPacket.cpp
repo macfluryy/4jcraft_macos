@@ -11,7 +11,7 @@ KickPlayerPacket::KickPlayerPacket()
 	m_networkSmallId = 0;
 }
 
-KickPlayerPacket::KickPlayerPacket(BYTE networkSmallId)
+KickPlayerPacket::KickPlayerPacket(std::uint8_t networkSmallId)
 {
 	m_networkSmallId = networkSmallId;
 }
@@ -23,12 +23,12 @@ void KickPlayerPacket::handle(PacketListener *listener)
 
 void KickPlayerPacket::read(DataInputStream *dis) //throws IOException 
 {
-	m_networkSmallId = (int)dis->readByte();
+	m_networkSmallId = dis->readByte();
 }
 
 void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException
 {
-	dos->writeByte((uint8_t)m_networkSmallId);
+	dos->writeByte((std::uint8_t)m_networkSmallId);
 }
 
 int KickPlayerPacket::getEstimatedSize() 

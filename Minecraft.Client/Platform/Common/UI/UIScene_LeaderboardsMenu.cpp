@@ -702,7 +702,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(LeaderboardManager::ReadScor
 
 	// Copy the rank
 	leaderboardEntry->m_rank = statsRow->m_rank;
-	DWORD displayRank = leaderboardEntry->m_rank;
+	unsigned int displayRank = leaderboardEntry->m_rank;
 	if(displayRank > 9999999) displayRank = 9999999;
 	swprintf(leaderboardEntry->m_wcRank, 12, L"%u", displayRank);
 
@@ -741,10 +741,10 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(LeaderboardManager::ReadScor
 	for( unsigned int i=0 ; i<statsRow->m_statsSize ; i++ )
 	{
 		leaderboardEntry->m_columns[i] = statsRow->m_statsData[i];
-		ZeroMemory(leaderboardEntry->m_wcColumns[i],12*sizeof(WCHAR));
+		ZeroMemory(leaderboardEntry->m_wcColumns[i], 12 * sizeof(wchar_t));
 		if( !isDistanceLeaderboard )
 		{
-			DWORD displayValue = leaderboardEntry->m_columns[i];
+			unsigned int displayValue = leaderboardEntry->m_columns[i];
 			if(displayValue > 99999) displayValue = 99999;
 			swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%u",displayValue);
 #ifdef _DEBUG
@@ -869,7 +869,7 @@ void UIScene_LeaderboardsMenu::PopulateLeaderboard(LeaderboardManager::eStatsRet
 		int startIndex = m_newEntryIndex;
 		int entryCount = m_newEntriesCount;
 
-		for(DWORD i = startIndex; i < (startIndex + entryCount); ++i)
+		for(unsigned int i = startIndex; i < (startIndex + entryCount); ++i)
 		{
 			bool isLast = i == ((startIndex + entryCount) - 1);
 

@@ -1,5 +1,6 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
 #include <vector>
 class DLCPack;
 class DLCSkinFile;
@@ -54,14 +55,14 @@ private:
 	std::vector<DLCPack *> m_packs;
 	//bool m_bNeedsUpdated;
 	bool m_bNeedsCorruptCheck;
-	DWORD m_dwUnnamedCorruptDLCCount;
+	unsigned int m_dwUnnamedCorruptDLCCount;
 public:
 	DLCManager();
 	~DLCManager();
 
 	static EDLCParameterType getParameterType(const std::wstring &paramName);
 
-	DWORD getPackCount(EDLCType type = e_DLCType_All);
+	unsigned int getPackCount(EDLCType type = e_DLCType_All);
 
 	//bool NeedsUpdated() { return m_bNeedsUpdated; }
 	//void SetNeedsUpdated(bool val) { m_bNeedsUpdated = val; }
@@ -79,21 +80,21 @@ public:
 #ifdef _XBOX_ONE
 	DLCPack *DLCManager::getPackFromProductID(const std::wstring &productID);
 #endif
-	DLCPack *getPack(DWORD index, EDLCType type = e_DLCType_All);
-	DWORD getPackIndex(DLCPack *pack, bool &found, EDLCType type = e_DLCType_All);
+	DLCPack *getPack(unsigned int index, EDLCType type = e_DLCType_All);
+	unsigned int getPackIndex(DLCPack *pack, bool &found, EDLCType type = e_DLCType_All);
 	DLCSkinFile *getSkinFile(const std::wstring &path); // Will hunt all packs of type skin to find the right skinfile
 
 	DLCPack *getPackContainingSkin(const std::wstring &path);
-	DWORD getPackIndexContainingSkin(const std::wstring &path, bool &found);
+	unsigned int getPackIndexContainingSkin(const std::wstring &path, bool &found);
 
-	DWORD checkForCorruptDLCAndAlert(bool showMessage = true);
+	unsigned int checkForCorruptDLCAndAlert(bool showMessage = true);
 
-	bool readDLCDataFile(DWORD &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive = false);
-	bool readDLCDataFile(DWORD &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive = false);
-	DWORD retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
+	bool readDLCDataFile(unsigned int &dwFilesProcessed, const std::wstring &path, DLCPack *pack, bool fromArchive = false);
+	bool readDLCDataFile(unsigned int &dwFilesProcessed, const std::string &path, DLCPack *pack, bool fromArchive = false);
+	std::uint32_t retrievePackIDFromDLCDataFile(const std::string &path, DLCPack *pack);
 
 private:
-	bool processDLCDataFile(DWORD &dwFilesProcessed, PBYTE pbData, DWORD dwLength, DLCPack *pack);
+	bool processDLCDataFile(unsigned int &dwFilesProcessed, std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack);
 
-	DWORD retrievePackID(PBYTE pbData, DWORD dwLength, DLCPack *pack);
+	std::uint32_t retrievePackID(std::uint8_t *pbData, unsigned int dwLength, DLCPack *pack);
 };

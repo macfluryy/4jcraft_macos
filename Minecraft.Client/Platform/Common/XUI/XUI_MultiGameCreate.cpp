@@ -54,15 +54,15 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 
 	CreateWorldMenuInitData *params = (CreateWorldMenuInitData *)pInitData->pvInitData;
 
-	m_MoreOptionsParams.bGenerateOptions=TRUE;
-	m_MoreOptionsParams.bStructures=TRUE;	
-	m_MoreOptionsParams.bFlatWorld=FALSE;
-	m_MoreOptionsParams.bBonusChest=FALSE;
-	m_MoreOptionsParams.bPVP = TRUE;
-	m_MoreOptionsParams.bTrust = TRUE;
-	m_MoreOptionsParams.bFireSpreads = TRUE;
-	m_MoreOptionsParams.bHostPrivileges = FALSE;
-	m_MoreOptionsParams.bTNT = TRUE;
+	m_MoreOptionsParams.bGenerateOptions = true;
+	m_MoreOptionsParams.bStructures = true;	
+	m_MoreOptionsParams.bFlatWorld = false;
+	m_MoreOptionsParams.bBonusChest = false;
+	m_MoreOptionsParams.bPVP = true;
+	m_MoreOptionsParams.bTrust = true;
+	m_MoreOptionsParams.bFireSpreads = true;
+	m_MoreOptionsParams.bHostPrivileges = false;
+	m_MoreOptionsParams.bTNT = true;
 	m_MoreOptionsParams.iPad = params->iPad;
 	m_iPad=params->iPad;
 	delete params;
@@ -75,23 +75,23 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	// Set the text for friends of friends, and default to on
 	if( m_bMultiplayerAllowed)
 	{
-		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+		m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 		if(bGameSetting_Online)
 		{
-			m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+			m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 		}
 		else
 		{
-			m_MoreOptionsParams.bInviteOnly = FALSE;
-			m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+			m_MoreOptionsParams.bInviteOnly = false;
+			m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		}
 	}
 	else
 	{
-		m_MoreOptionsParams.bOnlineGame = FALSE;
-		m_MoreOptionsParams.bInviteOnly = FALSE;
-		m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+		m_MoreOptionsParams.bOnlineGame = false;
+		m_MoreOptionsParams.bInviteOnly = false;
+		m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 		if(bGameSetting_Online)
 		{
 			// The profile settings say Online, but either the player is offline, or they are not allowed to play online
@@ -184,10 +184,10 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 			TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 			ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
-			DWORD dwImageBytes;
-			PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+			std::uint32_t imageBytes = 0;
+			std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-			if(dwImageBytes > 0 && pbImageData)
+			if(imageBytes > 0 && imageData)
 			{
 				ListInfo.fEnabled = TRUE;	
 				DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
@@ -213,7 +213,7 @@ HRESULT CScene_MultiGameCreate::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 				app.DebugPrintf(", sort index - %d\n",ListInfo.iSortIndex);
 #endif
 
-				hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+				hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 				m_pTexturePacksList->AddData(ListInfo,0,CXuiCtrl4JList::eSortList_Index);
 			}
@@ -442,7 +442,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 			}		
 		}
 
-		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges == TRUE)
+		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 		{			
 			UINT uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
@@ -474,8 +474,8 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 				//bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 				bool noUGC = false;
-				BOOL pccAllowed = TRUE;
-				BOOL pccFriendsAllowed = TRUE;
+				bool pccAllowed = true;
+				bool pccFriendsAllowed = true;
 				ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 				if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 			
@@ -579,8 +579,8 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(void *pParam,int iPa
 	{
 		// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 		bool noUGC = false;
-		BOOL pccAllowed = TRUE;
-		BOOL pccFriendsAllowed = TRUE;
+		bool pccAllowed = true;
+		bool pccFriendsAllowed = true;
 		ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 		if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
@@ -670,23 +670,23 @@ HRESULT CScene_MultiGameCreate::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled
 				if( bMultiplayerAllowed )
 				{
 					bool bGameSetting_Online=(app.GetGameSettings(m_iPad,eGameSetting_Online)!=0);
-					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online?TRUE:FALSE;
+					m_MoreOptionsParams.bOnlineGame = bGameSetting_Online;
 					if(bGameSetting_Online)
 					{
-						m_MoreOptionsParams.bInviteOnly = (app.GetGameSettings(m_iPad,eGameSetting_InviteOnly)!=0)?TRUE:FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = (app.GetGameSettings(m_iPad,eGameSetting_FriendsOfFriends)!=0)?TRUE:FALSE;
+						m_MoreOptionsParams.bInviteOnly = app.GetGameSettings(m_iPad, eGameSetting_InviteOnly) != 0;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = app.GetGameSettings(m_iPad, eGameSetting_FriendsOfFriends) != 0;
 					}
 					else
 					{
-						m_MoreOptionsParams.bInviteOnly = FALSE;
-						m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+						m_MoreOptionsParams.bInviteOnly = false;
+						m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 					}
 				}
 				else
 				{
-					m_MoreOptionsParams.bOnlineGame = FALSE;
-					m_MoreOptionsParams.bInviteOnly = FALSE;
-					m_MoreOptionsParams.bAllowFriendsOfFriends = FALSE;
+					m_MoreOptionsParams.bOnlineGame = false;
+					m_MoreOptionsParams.bInviteOnly = false;
+					m_MoreOptionsParams.bAllowFriendsOfFriends = false;
 				}
 
 				m_bMultiplayerAllowed = bMultiplayerAllowed;
@@ -705,8 +705,8 @@ HRESULT CScene_MultiGameCreate::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled
 			{
 				if(m_iConfigA[i]!=-1)
 				{
-					DWORD dwBytes=0;
-					PBYTE pbData=NULL;
+					unsigned int dwBytes=0;
+					std::uint8_t *pbData=NULL;
 					//app.DebugPrintf("Retrieving iConfig %d from TPD\n",m_iConfigA[i]);
 
 					app.GetTPD(m_iConfigA[i],&pbData,&dwBytes);
@@ -714,8 +714,8 @@ HRESULT CScene_MultiGameCreate::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled
 					ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 					if(dwBytes > 0 && pbData)
 					{
-						DWORD dwImageBytes=0;
-						PBYTE pbImageData=NULL;
+						unsigned int dwImageBytes=0;
+						std::uint8_t *pbImageData=NULL;
 
 						app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbImageData,&dwImageBytes );
 						ListInfo.fEnabled = TRUE;	
@@ -776,8 +776,8 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(void *pParam,int iPad,C4JStora
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 			
@@ -831,8 +831,8 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 
 			// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 			bool noUGC = false;
-			BOOL pccAllowed = TRUE;
-			BOOL pccFriendsAllowed = TRUE;
+			bool pccAllowed = true;
+			bool pccFriendsAllowed = true;
 			ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 			if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 			
@@ -903,7 +903,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 	}
 
 	// start the game
-	bool isFlat = (pClass->m_MoreOptionsParams.bFlatWorld==TRUE);
+	bool isFlat = pClass->m_MoreOptionsParams.bFlatWorld;
 	__int64 seedValue = 0; //BiomeSource::findSeed(isFlat?LevelType::lvl_flat:LevelType::lvl_normal);	// 4J - was (new Random())->nextLong() - now trying to actually find a seed to suit our requirements
 
 	if (wSeed.length() != 0)
@@ -1099,8 +1099,10 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 	{
 		// this is probably a texture pack icon added from TMS
 
-		DWORD dwBytes=0,dwFileBytes=0;
-		PBYTE pbData=NULL,pbFileData=NULL;
+		unsigned int dwBytes=0;
+		unsigned int dwFileBytes=0;
+		std::uint8_t *pbData=NULL;
+		std::uint8_t *pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data
@@ -1117,13 +1119,13 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 		}
 
 		app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		app.GetFileFromTPD(eTPDFileType_Comparison,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
@@ -1138,20 +1140,20 @@ void CScene_MultiGameCreate::UpdateTexturePackDescription(int index)
 		m_texturePackTitle.SetText(tp->getName().c_str());
 		m_texturePackDescription.SetText(tp->getDesc1().c_str());
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackIconBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 
-		pbImageData = tp->getPackComparison(dwImageBytes);
+		imageData = tp->getPackComparison(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
-			XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&m_hTexturePackComparisonBrush);
+			XuiCreateTextureBrushFromMemory(imageData,imageBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
 		}
 		else
@@ -1287,13 +1289,13 @@ HRESULT CScene_MultiGameCreate::OnCustomMessage_DLCMountingComplete()
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 		ZeroMemory(&ListInfo,sizeof(CXuiCtrl4JList::LIST_ITEM_INFO));
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			ListInfo.fEnabled = TRUE;			
-			hr=XuiCreateTextureBrushFromMemory(pbImageData,dwImageBytes,&ListInfo.hXuiBrush);
+			hr=XuiCreateTextureBrushFromMemory(imageData,imageBytes,&ListInfo.hXuiBrush);
 
 			DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tp;
 			if(pDLCTexPack)

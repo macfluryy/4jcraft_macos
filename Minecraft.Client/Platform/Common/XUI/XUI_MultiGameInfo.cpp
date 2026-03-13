@@ -287,8 +287,8 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 
 	// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 	bool noUGC = false;
-	BOOL pccAllowed = TRUE;
-	BOOL pccFriendsAllowed = TRUE;
+	bool pccAllowed = true;
+	bool pccFriendsAllowed = true;
 	ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),false,&pccAllowed,&pccFriendsAllowed);
 	if(!pccAllowed && !pccFriendsAllowed) noUGC = true;
 

@@ -29,14 +29,14 @@ void IUIScene_StartGame::HandleDLCMountingComplete()
 	{
 		TexturePack *tp = pMinecraft->skins->getTexturePackByIndex(i);
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			wchar_t imageName[64];
 			swprintf(imageName,64,L"tpack%08x",tp->getId());
-			registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+			registerSubstitutionTexture(imageName, imageData, imageBytes);
 			m_texturePackList.addPack(i,imageName);
 		}
 	}
@@ -58,7 +58,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete()
 		char *pchName=app.GetDLCInfoTextures(i);
 		pDLCInfo=app.GetDLCInfo(pchName);
 #elif defined _XBOX_ONE
-		pDLCInfo=app.GetDLCInfoForFullOfferID((WCHAR *)app.GetDLCInfoTexturesFullOffer(i).c_str());
+		pDLCInfo=app.GetDLCInfoForFullOfferID(const_cast<wchar_t *>(app.GetDLCInfoTexturesFullOffer(i).c_str()));
 #else
 		ULONGLONG ull=app.GetDLCInfoTexturesFullOffer(i);
 		pDLCInfo=app.GetDLCInfoForFullOfferID(ull);
@@ -140,8 +140,10 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 #if TO_BE_IMPLEMENTED		
 		// this is probably a texture pack icon added from TMS
 
-		DWORD dwBytes=0,dwFileBytes=0;
-		PBYTE pbData=NULL,pbFileData=NULL;
+		unsigned int dwBytes=0;
+		unsigned int dwFileBytes=0;
+		std::uint8_t *pbData=NULL;
+		std::uint8_t *pbFileData=NULL;
 
 		CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
 		// get the current index of the list, and then get the data
@@ -158,13 +160,13 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		}
 
 		app.GetFileFromTPD(eTPDFileType_Icon,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackIconBrush);
 			m_texturePackIcon->UseBrush(m_hTexturePackIconBrush);
 		}
 		app.GetFileFromTPD(eTPDFileType_Comparison,pbData,dwBytes,&pbFileData,&dwFileBytes );
-		if(dwFileBytes >= 0 && pbFileData)
+		if(dwFileBytes > 0 && pbFileData)
 		{
 			XuiCreateTextureBrushFromMemory(pbFileData,dwFileBytes,&m_hTexturePackComparisonBrush);
 			m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
@@ -180,12 +182,12 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		m_labelTexturePackName.setLabel(tp->getName());
 		m_labelTexturePackDescription.setLabel(tp->getDesc1());
 
-		DWORD dwImageBytes;
-		PBYTE pbImageData = tp->getPackIcon(dwImageBytes);
+		std::uint32_t imageBytes = 0;
+		std::uint8_t *imageData = tp->getPackIcon(imageBytes);
 
-		//if(dwImageBytes > 0 && pbImageData)
+		//if(imageBytes > 0 && imageData)
 		//{
-		//	registerSubstitutionTexture(L"texturePackIcon", pbImageData, dwImageBytes);
+		//	registerSubstitutionTexture(L"texturePackIcon", imageData, imageBytes);
 		//	m_bitmapTexturePackIcon.setTextureName(L"texturePackIcon");
 		//}
 
@@ -193,12 +195,12 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index)
 		swprintf(imageName,64,L"tpack%08x",tp->getId());
 		m_bitmapTexturePackIcon.setTextureName(imageName);
 
-		pbImageData = tp->getPackComparison(dwImageBytes);
+		imageData = tp->getPackComparison(imageBytes);
 
-		if(dwImageBytes > 0 && pbImageData)
+		if(imageBytes > 0 && imageData)
 		{
 			swprintf(imageName,64,L"texturePackComparison%08x",tp->getId());
-			registerSubstitutionTexture(imageName, pbImageData, dwImageBytes);
+			registerSubstitutionTexture(imageName, imageData, imageBytes);
 			m_bitmapComparison.setTextureName(imageName);
 		}
 		else
@@ -360,7 +362,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(void *pParam,int iPad,C4JStora
 				app.GetDLCFullOfferIDForPackID(pClass->m_MoreOptionsParams.dwTexturePack,ProductId);
 
 
-				StorageManager.InstallOffer(1,(WCHAR *)ProductId.c_str(),NULL,NULL);
+				StorageManager.InstallOffer(1, const_cast<wchar_t *>(ProductId.c_str()), NULL, NULL);
 
 				// the license change coming in when the offer has been installed will cause this scene to refresh	
 			}

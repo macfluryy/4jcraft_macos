@@ -69,7 +69,7 @@ void FileHeader::RemoveFile( FileEntry *file )
 	delete file;
 }
 
-void FileHeader::WriteHeader( LPVOID saveMem )
+void FileHeader::WriteHeader(void *saveMem)
 {
 	unsigned int headerOffset = GetStartOfNextData();
 
@@ -137,7 +137,7 @@ void FileHeader::WriteHeader( LPVOID saveMem )
 	}
 }
 
-void FileHeader::ReadHeader( LPVOID saveMem, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL */  )
+void FileHeader::ReadHeader(void *saveMem, ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL */  )
 {
 	unsigned int headerOffset;
 	unsigned int headerSize;
@@ -325,7 +325,7 @@ unsigned int FileHeader::GetFileSize()
 	return GetStartOfNextData() + ( sizeof(FileEntrySaveData) * (unsigned int)fileTable.size() );
 }
 
-void FileHeader::AdjustStartOffsets(FileEntry *file, DWORD nNumberOfBytesToWrite, bool subtract /*= false*/)
+void FileHeader::AdjustStartOffsets(FileEntry *file, unsigned int nNumberOfBytesToWrite, bool subtract /*= false*/)
 {
 	bool found = false;
 	for( unsigned int i = 0; i < fileTable.size(); ++i )

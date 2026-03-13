@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 class ColourTable
 {
@@ -11,13 +12,13 @@ private:
 public:
 	static void staticCtor();
 
-	ColourTable(PBYTE pbData, DWORD dwLength);
-	ColourTable(ColourTable *defaultColours, PBYTE pbData, DWORD dwLength);
+	ColourTable(std::uint8_t *pbData, std::uint32_t dataLength);
+	ColourTable(ColourTable *defaultColours, std::uint8_t *pbData, std::uint32_t dataLength);
 
 	unsigned int getColour(eMinecraftColour id);
 	unsigned int getColor(eMinecraftColour id) { return getColour(id); }
 
-	void loadColoursFromData(PBYTE pbData, DWORD dwLength);
+	void loadColoursFromData(std::uint8_t *pbData, std::uint32_t dataLength);
 	void setColour(const std::wstring &colourName, int value);
 	void setColour(const std::wstring &colourName, const std::wstring &value);
 };

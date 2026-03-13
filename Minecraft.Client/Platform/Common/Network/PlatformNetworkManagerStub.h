@@ -134,8 +134,8 @@ private:
 	int m_lastSearchPad;
 	bool m_bSearchResultsReady;
 	bool m_bSearchPending;
-	LPVOID m_pSearchParam;
-	void (*m_SessionsUpdatedCallback)(LPVOID pParam);
+	void *m_pSearchParam;
+	void (*m_SessionsUpdatedCallback)(void *pParam);
 
 	C4JThread* m_SearchingThread;
 
@@ -157,7 +157,7 @@ private:
 public:
 	virtual std::vector<FriendSessionInfo *> *GetSessionList(int iPad, int localPlayers, bool partyOnly);
 	virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,FriendSessionInfo *foundSession);
-	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam );
+	virtual void SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(void *pParam), void *pSearchParam );
 	virtual void GetFullFriendSessionInfo( FriendSessionInfo *foundSession, void (* FriendSessionUpdatedFn)(bool success, void *pParam), void *pParam );
 	virtual void ForceFriendsSessionRefresh();
 

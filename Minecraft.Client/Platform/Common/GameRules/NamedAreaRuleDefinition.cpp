@@ -14,7 +14,7 @@ NamedAreaRuleDefinition::~NamedAreaRuleDefinition()
 	delete m_area;
 }
 
-void NamedAreaRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void NamedAreaRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	GameRuleDefinition::writeAttributes(dos, numAttributes + 7);
 

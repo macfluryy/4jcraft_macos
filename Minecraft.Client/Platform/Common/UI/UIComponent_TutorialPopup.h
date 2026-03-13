@@ -92,7 +92,7 @@ protected:
 
 private:
 	void _SetDescription(UIScene *interactScene, const std::wstring &desc, const std::wstring &title, bool allowFade, bool isReminder);
-	std::wstring _SetIcon(int icon, int iAuxVal, bool isFoil, LPCWSTR desc);
+	std::wstring _SetIcon(int icon, int iAuxVal, bool isFoil, const wchar_t *desc);
 	std::wstring _SetImage(std::wstring &desc);
 	std::wstring ParseDescription(int iPad, std::wstring &text);
 	void UpdateInteractScenePosition(bool visible);

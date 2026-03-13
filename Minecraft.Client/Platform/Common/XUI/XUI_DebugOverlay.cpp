@@ -307,8 +307,8 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 	//SetSpawnToPlayerPos();
 	FileEntry *origFileEntry = currentSave->createFile( std::wstring( L"level.dat" ) );
 	byteArray levelData( origFileEntry->getFileSize() );
-	DWORD bytesRead;
-	currentSave->setFilePointer(origFileEntry,0,NULL,FILE_BEGIN);
+	unsigned int bytesRead;
+	currentSave->setFilePointer(origFileEntry, 0, SaveFileSeekOrigin::Begin);
 	currentSave->readFile(
          origFileEntry,
          levelData.data, // data buffer
@@ -317,7 +317,7 @@ void CScene_DebugOverlay::SaveLimitedFile(int chunkRadius)
 		 );
 
 	FileEntry *newFileEntry = newSave.createFile( std::wstring( L"level.dat" ) );
-	DWORD bytesWritten;
+	unsigned int bytesWritten;
 	newSave.writeFile(	newFileEntry,
 					levelData.data, // data buffer
 					origFileEntry->getFileSize(), // number of bytes to write

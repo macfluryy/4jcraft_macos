@@ -24,7 +24,7 @@ UpdatePlayerRuleDefinition::~UpdatePlayerRuleDefinition()
 	}
 }
 
-void UpdatePlayerRuleDefinition::writeAttributes(DataOutputStream *dos, UINT numAttributes)
+void UpdatePlayerRuleDefinition::writeAttributes(DataOutputStream *dos, unsigned int numAttributes)
 {
 	int attrCount = 3;
 	if(m_bUpdateHealth) ++attrCount;

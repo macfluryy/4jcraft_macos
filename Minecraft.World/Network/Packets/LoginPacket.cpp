@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <cstring>
 #include <iostream>
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
@@ -36,7 +37,7 @@ LoginPacket::LoginPacket()
 }
 
 // Client -> Server
-LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid,  bool friendsOnlyUGC, DWORD ugcPlayersVersion, DWORD skinId, DWORD capeId, bool isGuest)
+LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion, PlayerUID offlineXuid, PlayerUID onlineXuid,  bool friendsOnlyUGC, std::uint32_t ugcPlayersVersion, std::uint32_t skinId, std::uint32_t capeId, bool isGuest)
 {
 	this->userName = userName;
 	this->clientVersion = clientVersion;
@@ -65,7 +66,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion, Player
 }
 
 // Server -> Client
-LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, BYTE mapHeight, BYTE maxPlayers, char difficulty, INT multiplayerInstanceId, BYTE playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale) 
+LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion, LevelType *pLevelType, __int64 seed, int gameType, char dimension, std::uint8_t mapHeight, std::uint8_t maxPlayers, char difficulty, int multiplayerInstanceId, std::uint8_t playerIndex, bool newSeaLevel, unsigned int uiGamePrivileges, int xzSize, int hellScale) 
 {
 	this->userName = userName;
 	this->clientVersion = clientVersion;
@@ -106,19 +107,17 @@ void LoginPacket::read(DataInputStream *dis) //throws IOException
 	seed = dis->readLong();
 	gameType = dis->readInt();
 	dimension = (int)dis->readByte();
-	mapHeight = (int)dis->readByte();
-	maxPlayers = (int)dis->readByte();
+	mapHeight = dis->readByte();
+	maxPlayers = dis->readByte();
 	m_offlineXuid = dis->readPlayerUID();
 	m_onlineXuid = dis->readPlayerUID();
 	m_friendsOnlyUGC = dis->readBoolean();
-	m_ugcPlayersVersion = dis->readInt();
+	m_ugcPlayersVersion = static_cast<std::uint32_t>(dis->readInt());
 	difficulty = (int)dis->readByte();
 	m_multiplayerInstanceId = dis->readInt();
-	m_playerIndex = (int)dis->readByte();
-	INT skinId = dis->readInt();
-	m_playerSkinId = *(DWORD *)&skinId;
-	INT capeId = dis->readInt();
-	m_playerCapeId = *(DWORD *)&capeId;
+	m_playerIndex = dis->readByte();
+	m_playerSkinId = static_cast<std::uint32_t>(dis->readInt());
+	m_playerCapeId = static_cast<std::uint32_t>(dis->readInt());
 	m_isGuest = dis->readBoolean();
 	m_newSeaLevel = dis->readBoolean();
 	m_uiGamePrivileges = dis->readInt();
@@ -144,18 +143,18 @@ void LoginPacket::write(DataOutputStream *dos) //throws IOException
 	}
 	dos->writeLong(seed);
 	dos->writeInt(gameType);
-	dos->writeByte((uint8_t)dimension);
-	dos->writeByte((uint8_t)mapHeight);
-	dos->writeByte((uint8_t)maxPlayers);
+	dos->writeByte((std::uint8_t)dimension);
+	dos->writeByte((std::uint8_t)mapHeight);
+	dos->writeByte((std::uint8_t)maxPlayers);
 	dos->writePlayerUID(m_offlineXuid);
 	dos->writePlayerUID(m_onlineXuid);
 	dos->writeBoolean(m_friendsOnlyUGC);
-	dos->writeInt(m_ugcPlayersVersion);
-	dos->writeByte((uint8_t)difficulty);
+	dos->writeInt(static_cast<int>(m_ugcPlayersVersion));
+	dos->writeByte((std::uint8_t)difficulty);
 	dos->writeInt(m_multiplayerInstanceId);
-	dos->writeByte((uint8_t)m_playerIndex);
-	dos->writeInt(m_playerSkinId);
-	dos->writeInt(m_playerCapeId);
+	dos->writeByte((std::uint8_t)m_playerIndex);
+	dos->writeInt(static_cast<int>(m_playerSkinId));
+	dos->writeInt(static_cast<int>(m_playerCapeId));
 	dos->writeBoolean(m_isGuest);
 	dos->writeBoolean(m_newSeaLevel);
 	dos->writeInt(m_uiGamePrivileges);
@@ -178,5 +177,5 @@ int LoginPacket::getEstimatedSize()
 		length = (int)m_pLevelType->getGeneratorName().length();
 	}
 
-	return (int)(sizeof(int) + userName.length() + 4 + 6 + sizeof(__int64) + sizeof(char) + sizeof(int) + (2*sizeof(PlayerUID)) +1 + sizeof(char) + sizeof(BYTE) + sizeof(bool) + sizeof(bool) + length + sizeof(unsigned int));
+	return (int)(sizeof(int) + userName.length() + 4 + 6 + sizeof(__int64) + sizeof(char) + sizeof(int) + (2*sizeof(PlayerUID)) + 1 + sizeof(char) + sizeof(std::uint8_t) + sizeof(bool) + sizeof(bool) + length + sizeof(unsigned int));
 }

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstdint>
 
 #include "Packet.h"
 
@@ -9,7 +9,7 @@ public:
 
     int id;
 	std::wstring path;
-	DWORD dwSkinID;
+	std::uint32_t dwSkinID;
 
 	TextureAndGeometryChangePacket();
 	TextureAndGeometryChangePacket(std::shared_ptr<Entity> e, const std::wstring &path);

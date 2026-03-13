@@ -7,9 +7,9 @@ StringTable::StringTable(void)
 }
 
 // Load string table from a binary blob, filling out with the current localisation data only
-StringTable::StringTable(PBYTE pbData, DWORD dwSize)
+StringTable::StringTable(std::uint8_t *pbData, unsigned int dataSize)
 {
-	src = byteArray(pbData, dwSize);
+	src = byteArray(pbData, dataSize);
 
 	ByteArrayInputStream bais(src);
 	DataInputStream dis(&bais);
@@ -31,7 +31,7 @@ StringTable::StringTable(PBYTE pbData, DWORD dwSize)
 
 	bool foundLang = false;
 	__int64 bytesToSkip = 0;
-	int dataSize = 0;
+	int selectedDataSize = 0;
 
 	//
 	for(	AUTO_VAR(it_locales, locales.begin());
@@ -46,7 +46,7 @@ StringTable::StringTable(PBYTE pbData, DWORD dwSize)
 			if(it->first.compare(*it_locales) == 0)
 			{
 				app.DebugPrintf("StringTable:: Found language '%ls'.\n", it_locales->c_str());
-				dataSize = it->second;
+				selectedDataSize = it->second;
 				foundLang = true;
 				break;
 			}
@@ -62,7 +62,7 @@ StringTable::StringTable(PBYTE pbData, DWORD dwSize)
 	{
 		dis.skip(bytesToSkip);
 
-		byteArray langData(dataSize);
+		byteArray langData(selectedDataSize);
 		dis.read(langData);
 
 		dis.close();
@@ -119,13 +119,13 @@ StringTable::~StringTable(void)
 	// delete src.data; TODO 4J-JEV: ?
 }
 
-void StringTable::getData(PBYTE *ppData, UINT *pSize)
+void StringTable::getData(std::uint8_t **ppData, unsigned int *pSize)
 {
 	*ppData = src.data;
 	*pSize = src.length;
 }
 
-LPCWSTR StringTable::getString(const std::wstring &id)
+const wchar_t *StringTable::getString(const std::wstring &id)
 {
 #ifndef _CONTENT_PACKAGE
 	if (isStatic)
@@ -147,7 +147,7 @@ LPCWSTR StringTable::getString(const std::wstring &id)
 	}
 }
 
-LPCWSTR StringTable::getString(int id)
+const wchar_t *StringTable::getString(int id)
 {
 #ifndef _CONTENT_PACKAGE
 	if (!isStatic)
@@ -159,7 +159,7 @@ LPCWSTR StringTable::getString(int id)
 
 	if (id < m_stringsVec.size())
 	{
-		LPCWSTR pwchString=m_stringsVec.at(id).c_str();
+		const wchar_t *pwchString = m_stringsVec.at(id).c_str();
 		return pwchString;
 	}
 	else

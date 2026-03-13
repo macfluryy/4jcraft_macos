@@ -3,33 +3,17 @@
 
 PerformanceTimer::PerformanceTimer()
 {
-#if !defined (__linux__)
-	// Get the frequency of the timer
-	LARGE_INTEGER qwTicksPerSec;
-	QueryPerformanceFrequency( &qwTicksPerSec );
-	m_fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
-	
 	Reset();
-#endif
 }
 
 void PerformanceTimer::Reset()
 {
-#if !defined (__linux__)
-	QueryPerformanceCounter( &m_qwStartTime );
-#endif
+	m_startTime = std::chrono::steady_clock::now();
 }
 
 void PerformanceTimer::PrintElapsedTime(const std::wstring &description)
 {
-#if !defined (__linux__)
-	LARGE_INTEGER qwNewTime, qwDeltaTime;
+	const std::chrono::duration<float> elapsedTime = std::chrono::steady_clock::now() - m_startTime;
 
-	QueryPerformanceCounter( &qwNewTime );
-
-	qwDeltaTime.QuadPart = qwNewTime.QuadPart - m_qwStartTime.QuadPart;
-	float fElapsedTime = m_fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
-
-	app.DebugPrintf("TIMER: %ls: Elapsed time %f\n", description.c_str(), fElapsedTime);
-#endif
+	app.DebugPrintf("TIMER: %ls: Elapsed time %f\n", description.c_str(), elapsedTime.count());
 }

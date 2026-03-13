@@ -2,7 +2,7 @@
 #include "Vec3.h"
 #include "AABB.h"
 
-DWORD Vec3::tlsIdx = 0;
+unsigned int Vec3::tlsIdx = 0;
 Vec3::ThreadStorage *Vec3::tlsDefault = NULL;
 
 Vec3::ThreadStorage::ThreadStorage()

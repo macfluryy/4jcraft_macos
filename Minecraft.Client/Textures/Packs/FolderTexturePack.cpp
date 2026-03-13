@@ -1,7 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "FolderTexturePack.h"
 
-FolderTexturePack::FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
+FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
 {
 	// 4J Stu - These calls need to be in the most derived version of the class
 	loadIcon();
@@ -79,7 +79,7 @@ void FolderTexturePack::loadUI()
 	// Load new skin
 	if(hasFile(L"TexturePack.xzp"))
 	{
-		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"file://%lsTexturePack.xzp#skin_Minecraft.xur",getPath().c_str());

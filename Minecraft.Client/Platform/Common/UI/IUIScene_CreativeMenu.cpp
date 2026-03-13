@@ -602,7 +602,7 @@ void IUIScene_CreativeMenu::switchTab(ECreativeInventoryTabs tab)
 
 // 4J JEV - Tab Spec Struct
 
-IUIScene_CreativeMenu::TabSpec::TabSpec(LPCWSTR icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups)
+IUIScene_CreativeMenu::TabSpec::TabSpec(const wchar_t *icon, int descriptionId, int staticGroupsCount, ECreative_Inventory_Groups *staticGroups, int dynamicGroupsCount, ECreative_Inventory_Groups *dynamicGroups)
 	: m_icon(icon), m_descriptionId(descriptionId), m_staticGroupsCount(staticGroupsCount), m_dynamicGroupsCount(dynamicGroupsCount)
 {
 	
@@ -786,7 +786,7 @@ IUIScene_AbstractContainerMenu::ESceneSection IUIScene_CreativeMenu::GetSectionA
 	return newSection;
 }
 
-bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum, BOOL quickKeyHeld)
+bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum, bool quickKeyHeld)
 {
 	// 4J Added - Make pressing the X button clear the hotbar
 	if(buttonNum == 1)
@@ -808,7 +808,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum, BOOL qu
 	return false;
 }
 
-void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum, BOOL quickKeyHeld)
+void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum, bool quickKeyHeld)
 {
 	// Drop items.
 	Minecraft *pMinecraft = Minecraft::GetInstance();
@@ -882,7 +882,7 @@ void IUIScene_CreativeMenu::handleAdditionalKeyPress(int iAction)
 	}
 }
 
-void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection, int buttonNum, BOOL quickKeyHeld)
+void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection, int buttonNum, bool quickKeyHeld)
 {
 	int currentIndex = getCurrentIndex(eSection);
 
@@ -901,7 +901,7 @@ void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection, int bu
 			{
 				playerInventory->setCarried(ItemInstance::clone(clicked));
 				carried = playerInventory->getCarried();
-				if (quickKeyHeld == TRUE)
+				if(quickKeyHeld)
 				{
 					carried->count = carried->getMaxStackSize();
 				}
@@ -925,7 +925,7 @@ void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection, int bu
 			setSectionSelectedSlot(eSectionInventoryCreativeUsing,m_iCurrSlotX,m_iCurrSlotY);
 			currentIndex = getCurrentIndex(eSectionInventoryCreativeUsing);
 			buttonNum = 0;
-			quickKeyHeld = FALSE;
+			quickKeyHeld = false;
 		}
 		m_menu->clicked(currentIndex, buttonNum, quickKeyHeld?AbstractContainerMenu::CLICK_QUICK_MOVE:AbstractContainerMenu::CLICK_PICKUP, pMinecraft->localplayers[getPad()]);
 		std::shared_ptr<ItemInstance> newItem = m_menu->getSlot(currentIndex)->getItem();

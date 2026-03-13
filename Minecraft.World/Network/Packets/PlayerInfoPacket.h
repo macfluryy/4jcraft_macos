@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 #include "Packet.h"
 
@@ -11,14 +12,14 @@ class PlayerInfoPacket : public Packet, public std::enable_shared_from_this<Play
 		//std::wstring name;
 		//bool add;
 		//int latency;
-		short m_networkSmallId;
+		std::uint8_t m_networkSmallId;
 		short m_playerColourIndex;
 		unsigned int m_playerPrivileges;
 		int m_entityId;
 
 		PlayerInfoPacket();
 		//PlayerInfoPacket(const std::wstring &name, bool add, int latency);
-		PlayerInfoPacket(BYTE networkSmallId, short playerColourIndex, unsigned int playerPrivileges = 0);
+		PlayerInfoPacket(std::uint8_t networkSmallId, short playerColourIndex, unsigned int playerPrivileges = 0);
 		PlayerInfoPacket(std::shared_ptr<ServerPlayer> player);
 
 		virtual void read(DataInputStream *dis);

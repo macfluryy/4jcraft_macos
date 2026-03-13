@@ -221,7 +221,6 @@ void UIScene_SettingsOptionsMenu::handleInput(int iPad, int key, bool repeat, bo
 
 void UIScene_SettingsOptionsMenu::handleSliderMove(F64 sliderId, F64 currentValue)
 {
-	WCHAR TempString[256];
 	int value = (int)currentValue;
 	switch((int)sliderId)
 	{

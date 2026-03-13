@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <string>
 #include <functional>
+#include <cstdint>
+#include <limits>
 
 #include "../../../Minecraft.Client/Rendering/Models/SkinBox.h"
 
@@ -17,11 +19,14 @@ const int XUSER_INDEX_FOCUS = 254;
 
 #ifdef __PSVITA__
 const int XUSER_MAX_COUNT = 1;
-const int MINECRAFT_NET_MAX_PLAYERS = 4;
+constexpr int MINECRAFT_NET_MAX_PLAYERS = 4;
 #else
 const int XUSER_MAX_COUNT = 4;
-const int MINECRAFT_NET_MAX_PLAYERS = 8;
+constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
 #endif
+
+static_assert(MINECRAFT_NET_MAX_PLAYERS <= std::numeric_limits<std::uint8_t>::max(),
+			  "MINECRAFT_NET_MAX_PLAYERS must fit in the 8-bit network protocol");
 
 #ifdef __ORBIS__
 #include <net.h>

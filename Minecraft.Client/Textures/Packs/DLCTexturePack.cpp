@@ -8,15 +8,49 @@
 #include "../../Platform/Common/DLC/DLCTextureFile.h"
 #include "../../Platform/Common/DLC/DLCLocalisationFile.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
+#include "../../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Utils/StringTable.h"
 #include "../../Platform/Common/DLC/DLCAudioFile.h"
+
+#include <cstdint>
+#include <limits>
 
 #if defined _XBOX || defined _WINDOWS64
 #include "../../Platform/Xbox/XML/ATGXmlParser.h"
 #include "../../Platform/Xbox/XML/xmlFilesCallback.h"
 #endif
 
-DLCTexturePack::DLCTexturePack(DWORD id, DLCPack *pack, TexturePack *fallback) : AbstractTexturePack(id, NULL, pack->getName(), fallback)
+namespace
+{
+	bool ReadPortableBinaryFile(File &file, std::uint8_t *&data, unsigned int &size)
+	{
+		const __int64 fileLength = file.length();
+		if (fileLength < 0 || fileLength > static_cast<__int64>(std::numeric_limits<unsigned int>::max()))
+		{
+			data = NULL;
+			size = 0;
+			return false;
+		}
+
+		const std::size_t capacity = static_cast<std::size_t>(fileLength);
+		std::uint8_t *buffer = new std::uint8_t[capacity == 0 ? 1 : capacity];
+		const PortableFileIO::BinaryReadResult readResult = PortableFileIO::ReadBinaryFile(file.getPath(), buffer, capacity);
+		if (readResult.status != PortableFileIO::BinaryReadStatus::ok
+			|| readResult.fileSize > std::numeric_limits<unsigned int>::max())
+		{
+			delete [] buffer;
+			data = NULL;
+			size = 0;
+			return false;
+		}
+
+		data = buffer;
+		size = static_cast<unsigned int>(readResult.fileSize);
+		return true;
+	}
+}
+
+DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack *pack, TexturePack *fallback) : AbstractTexturePack(id, NULL, pack->getName(), fallback)
 {
 	m_dlcInfoPack = pack;
 	m_dlcDataPack = NULL;
@@ -52,7 +86,9 @@ void DLCTexturePack::loadIcon()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"icon.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"icon.png");
-		m_iconData = textureFile->getData(m_iconSize);
+		std::uint32_t iconSize = 0;
+		m_iconData = textureFile->getData(iconSize);
+		m_iconSize = iconSize;
 	}
 	else
 	{
@@ -65,7 +101,9 @@ void DLCTexturePack::loadComparison()
 	if(m_dlcInfoPack->doesPackContainFile(DLCManager::e_DLCType_Texture, L"comparison.png"))
 	{
 		DLCTextureFile *textureFile = (DLCTextureFile *)m_dlcInfoPack->getFile(DLCManager::e_DLCType_Texture, L"comparison.png");
-		m_comparisonData = textureFile->getData(m_comparisonSize);
+		std::uint32_t comparisonSize = 0;
+		m_comparisonData = textureFile->getData(comparisonSize);
+		m_comparisonSize = comparisonSize;
 	}
 }
 
@@ -184,16 +222,16 @@ void DLCTexturePack::loadColourTable()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		std::uint32_t dwSize = 0;
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		
 		// Try and load the HTMLColours.col based off the common XML first, before the deprecated xuiscene_colourtable	
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"memory://%08X,%04X#HTMLColours.col",pbData, dwSize);
-		BYTE *data;
-		UINT dataLength;
+		std::uint8_t *data;
+		unsigned int dataLength;
 		if(XuiResourceLoadAll(szResourceLocator, &data, &dataLength) == S_OK)
 		{
 			m_colourTable->loadColoursFromData(data,dataLength);
@@ -267,26 +305,26 @@ void DLCTexturePack::loadData()
 
 
 
-std::wstring DLCTexturePack::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
+std::wstring DLCTexturePack::getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder)
 {
 	return app.getFilePath(packId,filename,bAddDataFolder);
 }
 
-int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
+int DLCTexturePack::packMounted(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask)
 {
-	DLCTexturePack *texturePack = (DLCTexturePack *)pParam;
+	DLCTexturePack *texturePack = static_cast<DLCTexturePack *>(pParam);
 	texturePack->m_bLoadingData = false;
 	if(dwErr!=ERROR_SUCCESS)
 	{
 		// corrupt DLC
-		app.DebugPrintf("Failed to mount DLC for pad %d: %d\n",iPad,dwErr);
+		app.DebugPrintf("Failed to mount DLC for pad %d: %u\n",iPad,dwErr);
 	}
 	else
 	{
 		app.DebugPrintf("Mounted DLC for texture pack, attempting to load data\n");
 		texturePack->m_dlcDataPack = new DLCPack(texturePack->m_dlcInfoPack->getName(), dwLicenceMask);
 		texturePack->setHasAudio(false);
-		DWORD dwFilesProcessed = 0;
+		unsigned int dwFilesProcessed = 0;
 		// Load the DLC textures
 		std::wstring dataFilePath = texturePack->m_dlcInfoPack->getFullDataPath();
 		if(!dataFilePath.empty())
@@ -305,30 +343,12 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 
 				if(xzpPath.exists())
 				{
-					const char *pchFilename=wstringtofilename(xzpPath.getPath());
-					HANDLE fileHandle = CreateFile(
-						pchFilename, // file name
-						GENERIC_READ, // access mode
-						0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-						NULL, // Unused
-						OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-						FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-						NULL // Unsupported
-						);
-
-					if( fileHandle != INVALID_HANDLE_VALUE )
+					std::uint8_t *pbData = NULL;
+					unsigned int bytesRead = 0;
+					if( ReadPortableBinaryFile(xzpPath, pbData, bytesRead) )
 					{
-						DWORD dwFileSize = xzpPath.length();
-						DWORD bytesRead;
-						PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-						BOOL success = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-						CloseHandle(fileHandle);
-						if(success)
-						{
-							DLCUIDataFile *uiDLCFile = (DLCUIDataFile *)texturePack->m_dlcDataPack->addFile(DLCManager::e_DLCType_UIData,L"TexturePack.xzp");
-							uiDLCFile->addData(pbData,bytesRead,true);
-						
-						}
+						DLCUIDataFile *uiDLCFile = (DLCUIDataFile *)texturePack->m_dlcDataPack->addFile(DLCManager::e_DLCType_UIData,L"TexturePack.xzp");
+						uiDLCFile->addData(pbData,bytesRead,true);
 					}
 				}
 #else
@@ -354,49 +374,20 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 							File grf( getFilePath(texturePack->m_dlcInfoPack->GetPackID(), dlcFile->getGrfPath() ) );
 							if (grf.exists())
 							{
-#if defined(_UNICODE) && !defined(__linux__)
-								std::wstring path = grf.getPath();
-								const WCHAR *pchFilename=path.c_str();
-								HANDLE fileHandle = CreateFile(
-									pchFilename, // file name
-									GENERIC_READ, // access mode
-									0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-									NULL, // Unused
-									OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-									FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-									NULL // Unsupported
-									);
-#else
-								const char *pchFilename=wstringtofilename(grf.getPath());
-								HANDLE fileHandle = CreateFile(
-									pchFilename, // file name
-									GENERIC_READ, // access mode
-									0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-									NULL, // Unused
-									OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-									FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-									NULL // Unsupported
-									);
-#endif
-
-								if( fileHandle != INVALID_HANDLE_VALUE )
+								std::uint8_t *pbData = NULL;
+								unsigned int fileSize = 0;
+								if( ReadPortableBinaryFile(grf, pbData, fileSize) )
 								{
-									DWORD dwFileSize = grf.length();
-									DWORD bytesRead;
-									PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-									BOOL bSuccess = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-									if(bSuccess==FALSE)
-									{
-										app.FatalLoadError();
-									}
-									CloseHandle(fileHandle);
-
 									// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
-									dlcFile->setGrfData(pbData, dwFileSize, texturePack->m_stringTable);
+									dlcFile->setGrfData(pbData, fileSize, texturePack->m_stringTable);
 
 									delete [] pbData;
 
 									app.m_gameRules.setLevelGenerationOptions( dlcFile->lgo );
+								}
+								else
+								{
+									app.FatalLoadError();
 								}
 							}
 						}
@@ -406,44 +397,16 @@ int DLCTexturePack::packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicen
 						File grf(getFilePath(texturePack->m_dlcInfoPack->GetPackID(), levelGen->getBaseSavePath() ));
 						if (grf.exists())
 						{
-#if defined(_UNICODE) && !defined(__linux__)
-							std::wstring path = grf.getPath();
-							const WCHAR *pchFilename=path.c_str();
-							HANDLE fileHandle = CreateFile(
-								pchFilename, // file name
-								GENERIC_READ, // access mode
-								0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-								NULL, // Unused
-								OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-								FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-								NULL // Unsupported
-								);
-#else
-							const char *pchFilename=wstringtofilename(grf.getPath());
-							HANDLE fileHandle = CreateFile(
-								pchFilename, // file name
-								GENERIC_READ, // access mode
-								0, // share mode // TODO 4J Stu - Will we need to share file? Probably not but...
-								NULL, // Unused
-								OPEN_EXISTING , // how to create // TODO 4J Stu - Assuming that the file already exists if we are opening to read from it
-								FILE_FLAG_SEQUENTIAL_SCAN, // file attributes
-								NULL // Unsupported
-								);
-#endif
-
-							if( fileHandle != INVALID_HANDLE_VALUE )
+							std::uint8_t *pbData = NULL;
+							unsigned int fileSize = 0;
+							if( ReadPortableBinaryFile(grf, pbData, fileSize) )
 							{
-								DWORD bytesRead,dwFileSize = GetFileSize(fileHandle,NULL);
-								PBYTE pbData =  (PBYTE) new BYTE[dwFileSize];
-								BOOL bSuccess = ReadFile(fileHandle,pbData,dwFileSize,&bytesRead,NULL);
-								if(bSuccess==FALSE)
-								{
-									app.FatalLoadError();
-								}
-								CloseHandle(fileHandle);
-
 								// 4J-PB - is it possible that we can get here after a read fail and it's not an error?
-								levelGen->setBaseSaveData(pbData, dwFileSize);
+								levelGen->setBaseSaveData(pbData, fileSize);
+							}
+							else
+							{
+								app.FatalLoadError();
 							}
 						}
 					}
@@ -517,10 +480,10 @@ void DLCTexturePack::loadUI()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		std::uint32_t dwSize = 0;
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"memory://%08X,%04X#skin_Minecraft.xur",pbData, dwSize);
 
@@ -591,10 +554,10 @@ std::wstring DLCTexturePack::getXuiRootPath()
 	{
 		DLCUIDataFile *dataFile = (DLCUIDataFile *)m_dlcDataPack->getFile(DLCManager::e_DLCType_UIData, L"TexturePack.xzp");
 
-		DWORD dwSize = 0;
-		PBYTE pbData = dataFile->getData(dwSize);
+		std::uint32_t dwSize = 0;
+		std::uint8_t *pbData = dataFile->getData(dwSize);
 
-		const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 		WCHAR szResourceLocator[ LOCATOR_SIZE ];
 		swprintf(szResourceLocator, LOCATOR_SIZE,L"memory://%08X,%04X#",pbData, dwSize);
 		path = szResourceLocator;

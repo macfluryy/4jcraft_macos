@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstdint>
 
 #include "Packet.h"
 #include "../../../Minecraft.Client/Rendering/Models/Model.h"
@@ -11,18 +11,18 @@ class TextureAndGeometryPacket : public Packet, public std::enable_shared_from_t
 {
 public:
 	std::wstring textureName;
-	DWORD dwSkinID;
-	PBYTE pbData;
-	DWORD dwTextureBytes;
+	std::uint32_t dwSkinID;
+	std::uint8_t *pbData;
+	std::uint32_t dwTextureBytes;
 	SKIN_BOX *BoxDataA;
-	DWORD dwBoxC;
+	std::uint32_t dwBoxC;
 	unsigned int uiAnimOverrideBitmask;
 
 	TextureAndGeometryPacket();
 	~TextureAndGeometryPacket();
-	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes); 
-	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, DLCSkinFile *pDLCSkinFile); 
-	TextureAndGeometryPacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes, std::vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask); 
+	TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes); 
+	TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes, DLCSkinFile *pDLCSkinFile); 
+	TextureAndGeometryPacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes, std::vector<SKIN_BOX *> *pvSkinBoxes, unsigned int uiAnimOverrideBitmask); 
 
 	virtual void handle(PacketListener *listener);
 	virtual void read(DataInputStream *dis);

@@ -278,9 +278,9 @@ int IUIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4
 
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();
 
-				DLC_INFO *pDLCInfo=app.GetDLCInfoForProductName((WCHAR *)pDLCPack->getName().c_str());
+				DLC_INFO *pDLCInfo = app.GetDLCInfoForProductName(const_cast<wchar_t *>(pDLCPack->getName().c_str()));
 
-				StorageManager.InstallOffer(1,(WCHAR *)pDLCInfo->wsProductId.c_str(),NULL,NULL);
+				StorageManager.InstallOffer(1, const_cast<wchar_t *>(pDLCInfo->wsProductId.c_str()), NULL, NULL);
 
 				// the license change coming in when the offer has been installed will cause this scene to refresh	
 			}
@@ -330,7 +330,7 @@ int IUIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4
 }
 
 
-int IUIScene_PauseMenu::SaveWorldThreadProc( LPVOID lpParameter )
+int IUIScene_PauseMenu::SaveWorldThreadProc(void *lpParameter)
 {
 	bool bAutosave=(bool)lpParameter;
 	if(bAutosave)
@@ -391,7 +391,7 @@ int IUIScene_PauseMenu::ExitWorldThreadProc( void* lpParameter )
 }
 
 // This function performs the meat of exiting from a level. It should be called from a thread other than the main thread.
-void IUIScene_PauseMenu::_ExitWorld(LPVOID lpParameter)
+void IUIScene_PauseMenu::_ExitWorld(void *lpParameter)
 {
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 

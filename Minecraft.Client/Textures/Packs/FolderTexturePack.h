@@ -8,7 +8,7 @@ private:
 	bool bUILoaded;
 
 public:
-	FolderTexturePack(DWORD id, const std::wstring &name, File *folder, TexturePack *fallback);
+	FolderTexturePack(std::uint32_t id, const std::wstring &name, File *folder, TexturePack *fallback);
 
 protected:
 	//@Override

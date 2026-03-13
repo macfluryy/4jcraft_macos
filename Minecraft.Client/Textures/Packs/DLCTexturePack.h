@@ -22,7 +22,7 @@ private:
 public:
 	using AbstractTexturePack::getResource;
 
-	DLCTexturePack(DWORD id, DLCPack *pack, TexturePack *fallback);
+	DLCTexturePack(std::uint32_t id, DLCPack *pack, TexturePack *fallback);
 	~DLCTexturePack(){};
 
 	virtual std::wstring getResource(const std::wstring& name);
@@ -54,11 +54,11 @@ public:
 	virtual bool isLoadingData() { return m_bLoadingData; }
 
 private:
-	static std::wstring getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder);
-	static std::wstring getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder=true);
+	static std::wstring getRootPath(std::uint32_t packId, bool allowOverride, bool bAddDataFolder);
+	static std::wstring getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder=true);
 
 public:
-	static int packMounted(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask);
+	static int packMounted(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask);
 	virtual void loadData();
 	virtual void loadUI();
 	virtual void unloadUI();

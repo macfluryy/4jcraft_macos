@@ -204,7 +204,7 @@ void IUIScene_AbstractContainerMenu::SetToolTip( EToolTipButton eButton, EToolTi
 void IUIScene_AbstractContainerMenu::UpdateTooltips()
 {
 	// Table gives us text id for tooltip.
-	static const DWORD kaToolTipextIds[ eNumToolTips ] = 
+	static const int kaToolTipextIds[ eNumToolTips ] = 
 	{
 		IDS_TOOLTIPS_PICKUPPLACE,			//eToolTipPickupPlace_OLD
 		IDS_TOOLTIPS_EXIT,					// eToolTipExit
@@ -231,18 +231,18 @@ void IUIScene_AbstractContainerMenu::UpdateTooltips()
 		IDS_TOOLTIPS_REPAIR,				// eToolTipRepair
 	};
 
-	BYTE focusUser = getPad();
+	int focusUser = getPad();
 
 	for ( int i = 0; i < eToolTipNumButtons; ++i )
 	{
 		if ( m_aeToolTipSettings[ i ] == eToolTipNone )
 		{
-			ui.ShowTooltip( focusUser, i, FALSE );
+			ui.ShowTooltip( focusUser, i, false );
 		}
 		else
 		{
 			ui.SetTooltipText( focusUser, i, kaToolTipextIds[ m_aeToolTipSettings[ i ] ] );
-			ui.ShowTooltip( focusUser, i, TRUE );
+			ui.ShowTooltip( focusUser, i, true );
 		}
 	}
 }
@@ -1274,9 +1274,9 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 #endif
 
 	int buttonNum=0; // 0 = LeftMouse, 1 = RightMouse
-	BOOL quickKeyHeld=FALSE; // Represents shift key on PC
+	bool quickKeyHeld = false; // Represents shift key on PC
 
-	BOOL validKeyPress = FALSE;
+	bool validKeyPress = false;
 	//BOOL itemEditorKeyPress = FALSE;
 
 	// Ignore input from other players
@@ -1297,22 +1297,22 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 #endif
 		if(!bRepeat)
 		{
-			validKeyPress = TRUE;
+			validKeyPress = true;
 
 			// Standard left click
 			buttonNum = 0;
-			quickKeyHeld = FALSE;
+			quickKeyHeld = false;
 			ui.PlayUISFX(eSFX_Press);
 		}
 		break;
 	case ACTION_MENU_X:
 		if(!bRepeat)
 		{
-			validKeyPress = TRUE;
+			validKeyPress = true;
 
 			// Standard right click
 			buttonNum = 1;
-			quickKeyHeld = FALSE;
+			quickKeyHeld = false;
 			ui.PlayUISFX(eSFX_Press);
 		}
 		break;
@@ -1327,11 +1327,11 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 			// No quick move tooltip is shown if something is carried, so disable the action as well
 			//if(!bIsItemCarried)
 			{
-				validKeyPress = TRUE;
+				validKeyPress = true;
 
 				// Shift and left click
 				buttonNum = 0;
-				quickKeyHeld = TRUE;
+				quickKeyHeld = true;
 				ui.PlayUISFX(eSFX_Press);
 			}
 		}
@@ -1428,12 +1428,12 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 					}
 				}
 			}
-			bHandled = TRUE;
+				bHandled = true;
 		}
 		break;
 	};
 
-	if( validKeyPress == TRUE )
+	if(validKeyPress)
 	{
 		if(handleValidKeyPress(iPad,buttonNum,quickKeyHeld))
 		{
@@ -1482,7 +1482,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 		if( XuiIsInstanceOf( hFocusObjectParent, hClassCXuiCtrlSlotList ) )
 		{
 			CXuiCtrlSlotList* slotList;
-			VOID *pObj;
+			void *pObj;
 			XuiObjectFromHandle( hFocusObjectParent, &pObj );
 			slotList = (CXuiCtrlSlotList *)pObj;
 
@@ -1517,12 +1517,12 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction, bool b
 	return bHandled;
 }
 
-bool IUIScene_AbstractContainerMenu::handleValidKeyPress(int iUserIndex, int buttonNum, BOOL quickKeyHeld)
+bool IUIScene_AbstractContainerMenu::handleValidKeyPress(int iUserIndex, int buttonNum, bool quickKeyHeld)
 {
 	return false;
 }
 
-void IUIScene_AbstractContainerMenu::handleOutsideClicked(int iPad, int buttonNum, BOOL quickKeyHeld)
+void IUIScene_AbstractContainerMenu::handleOutsideClicked(int iPad, int buttonNum, bool quickKeyHeld)
 {
 	// Drop items.
 
@@ -1540,7 +1540,7 @@ void IUIScene_AbstractContainerMenu::handleAdditionalKeyPress(int iAction)
 	// Do nothing
 }
 
-void IUIScene_AbstractContainerMenu::handleSlotListClicked(ESceneSection eSection, int buttonNum, BOOL quickKeyHeld)
+void IUIScene_AbstractContainerMenu::handleSlotListClicked(ESceneSection eSection, int buttonNum, bool quickKeyHeld)
 {
 	int currentIndex = getCurrentIndex(eSection);
 

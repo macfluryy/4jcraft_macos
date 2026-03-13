@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstdint>
 
 #include "Packet.h"
 
@@ -7,12 +7,12 @@ class TexturePacket : public Packet, public std::enable_shared_from_this<Texture
 {
 public:
 	std::wstring textureName;
-	PBYTE pbData;
-	DWORD dwBytes;
+	std::uint8_t *pbData;
+	std::uint32_t dataBytes;
 
 	TexturePacket();
 	~TexturePacket(); 
-	TexturePacket(const std::wstring &textureName, PBYTE pbData, DWORD dwBytes);
+	TexturePacket(const std::wstring &textureName, std::uint8_t *pbData, std::uint32_t dataBytes);
 
 	virtual void handle(PacketListener *listener);
 	virtual void read(DataInputStream *dis);

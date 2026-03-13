@@ -5,16 +5,16 @@
 class WstringLookup
 {
 private:
-	UINT numIDs;
-	std::unordered_map<std::wstring, UINT> str2int;
+	unsigned int numIDs;
+	std::unordered_map<std::wstring, unsigned int> str2int;
 	std::vector<std::wstring> int2str;
 
 public:
 	WstringLookup();
 
-	std::wstring lookup(UINT id);
+	std::wstring lookup(unsigned int id);
 	
-	UINT lookup(std::wstring);
+	unsigned int lookup(std::wstring);
 
-	VOID getTable(std::wstring **lookup, UINT *len);
+	void getTable(std::wstring **lookup, unsigned int *len);
 };

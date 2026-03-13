@@ -19,14 +19,14 @@ private:
 	class WriteHistory
 	{
 	public:
-		int64_t			writeTime;
+		std::int64_t			writeTime;
 		unsigned int	writeSize;
 	} ;
 
 	class DirtyRegionFile
 	{
 	public:
-		int64_t			lastWritten;
+		std::int64_t			lastWritten;
 		unsigned int	fileRef;
 		bool			operator<(const DirtyRegionFile& rhs) const { return lastWritten < rhs.lastWritten; }
 	};
@@ -46,11 +46,11 @@ private:
 		unsigned int	dataCompressedSize;
 		int				index;
 		bool			dirty;
-		int64_t			lastWritten;
+		std::int64_t			lastWritten;
 	};
 	std::unordered_map<unsigned int, RegionFileReference *> regionFiles;
 	std::vector<WriteHistory> writeHistory;
-	int64_t				m_lastTickTime;
+	std::int64_t				m_lastTickTime;
 
 	FileEntry *GetRegionFileEntry(unsigned int regionIndex);
 
@@ -67,26 +67,26 @@ private:
 	static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
 	static const unsigned int MAX_PAGE_COUNT = 1024;
 #endif
-	LPVOID pvSaveMem;
+	void *pvSaveMem;
 
 	CRITICAL_SECTION m_lock;
 
-	void PrepareForWrite( FileEntry *file, DWORD nNumberOfBytesToWrite );
-	void MoveDataBeyond(FileEntry *file, DWORD nNumberOfBytesToWrite);
+	void PrepareForWrite( FileEntry *file, unsigned int nNumberOfBytesToWrite );
+	void MoveDataBeyond(FileEntry *file, unsigned int nNumberOfBytesToWrite);
 
 	bool GetNumericIdentifierFromName(const std::wstring &fileName, unsigned int *idOut);
 	std::wstring GetNameFromNumericIdentifier(unsigned int idIn);
 	void processSubfilesForWrite();
 	void processSubfilesAfterWrite();
 public:
-	static int SaveSaveDataCallback(LPVOID lpParam,bool bRes);
-	static int SaveRegionFilesCallback(LPVOID lpParam,bool bRes);
+	static int SaveSaveDataCallback(void *lpParam, bool bRes);
+	static int SaveRegionFilesCallback(void *lpParam, bool bRes);
 	
 private:
-	void _init(const std::wstring &fileName, LPVOID pvSaveData, DWORD fileSize, ESavePlatform plat);
+	void _init(const std::wstring &fileName, void *pvSaveData, unsigned int fileSize, ESavePlatform plat);
 
 public:
-	ConsoleSaveFileSplit(const std::wstring &fileName, LPVOID pvSaveData = NULL, DWORD fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
+	ConsoleSaveFileSplit(const std::wstring &fileName, void *pvSaveData = NULL, unsigned int fileSize = 0, bool forceCleanSave = false, ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
 	ConsoleSaveFileSplit(ConsoleSaveFile *sourceSave, bool alreadySmallRegions = true, ProgressListener *progress = NULL);
 	virtual ~ConsoleSaveFileSplit();
 
@@ -95,11 +95,11 @@ public:
 	virtual FileEntry *createFile( const ConsoleSavePath &fileName );
 	virtual void deleteFile( FileEntry *file );
 
-	virtual void setFilePointer(FileEntry *file,LONG lDistanceToMove,PLONG lpDistanceToMoveHigh,DWORD dwMoveMethod);
-	virtual BOOL writeFile(	FileEntry *file, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten );
-	virtual BOOL zeroFile(FileEntry *file, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten);
-	virtual BOOL readFile( FileEntry *file, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead );
-	virtual BOOL closeHandle( FileEntry *file );
+	virtual void setFilePointer(FileEntry *file, unsigned int distanceToMove, SaveFileSeekOrigin seekOrigin);
+	virtual bool writeFile(	FileEntry *file, const void *lpBuffer, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten );
+	virtual bool zeroFile(FileEntry *file, unsigned int nNumberOfBytesToWrite, unsigned int *lpNumberOfBytesWritten);
+	virtual bool readFile( FileEntry *file, void *lpBuffer, unsigned int nNumberOfBytesToRead, unsigned int *lpNumberOfBytesRead );
+	virtual bool closeHandle( FileEntry *file );
 
 	virtual void finalizeWrite();
 	virtual void tick();

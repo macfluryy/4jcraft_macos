@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "LocalPlayer.h"
 #include "../../Minecraft.World/Util/SharedConstants.h"
 
@@ -68,6 +69,6 @@ public:
 	virtual void StopSleeping();
 
 	// 4J Added
-	virtual void setAndBroadcastCustomSkin(DWORD skinId);
-	virtual void setAndBroadcastCustomCape(DWORD capeId);
+	virtual void setAndBroadcastCustomSkin(std::uint32_t skinId);
+	virtual void setAndBroadcastCustomCape(std::uint32_t capeId);
 };

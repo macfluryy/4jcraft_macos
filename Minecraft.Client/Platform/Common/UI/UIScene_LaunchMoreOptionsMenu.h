@@ -116,7 +116,7 @@ public:
 	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
 	virtual void handleFocusChange(F64 controlId, F64 childId);
 	virtual void handleTimerComplete(int id);
-	static int KeyboardCompleteSeedCallback(LPVOID lpParam,const bool bRes);
+	static int KeyboardCompleteSeedCallback(void *lpParam,const bool bRes);
 	virtual void handlePress(F64 controlId, F64 childId);
 	virtual void handleSliderMove(F64 sliderId, F64 currentValue);
 

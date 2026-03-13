@@ -38,6 +38,7 @@
 #include "../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../Minecraft.World/Level/Storage/LevelSettings.h"
 #include "../Minecraft.Client/Player/User.h"
+#include <cstring>
 #include "../Minecraft.World/Level/LevelData.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"
@@ -101,7 +102,7 @@ CMinecraftApp::CMinecraftApp()
 	{
 		m_eTMSAction[i]=eTMSAction_Idle;
 		m_eXuiAction[i]=eAppAction_Idle;
-		m_eXuiActionParam[i] = NULL;
+		m_eXuiActionParam[i] = nullptr;
 		//m_dwAdditionalModelParts[i] = 0;
 		DebugPrintf("Player at index %d has guest number %d\n", i,m_currentSigninInfo[i].dwGuestNumber );
 
@@ -250,14 +251,14 @@ void CMinecraftApp::DebugPrintf(int user, const char *szFormat, ...)
 	va_end(ap);
 }
 
-LPCWSTR CMinecraftApp::GetString(int iID)
+const wchar_t *CMinecraftApp::GetString(int iID)
 {
 	//return L"Değişiklikler ve Yenilikler";
 	//return L"ÕÕÕÕÖÖÖÖ";
 	return app.m_stringTable->getString(iID);
 }
 
-void CMinecraftApp::SetAction(int iPad, eXuiAction action, LPVOID param)
+void CMinecraftApp::SetAction(int iPad, eXuiAction action, void *param)
 {
 	if(m_eXuiAction[iPad] == eAppAction_ExitWorldCapturedThumbnail && action != eAppAction_Idle)
 	{
@@ -723,9 +724,9 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS *pSettings,con
 }
 
 #if ( defined  __PS3__  || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)
-int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad)
+int CMinecraftApp::DefaultOptionsCallback(void *pParam,C4JStorage::PROFILESETTINGS *pSettings, const int iPad)
 #else
-int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad)
+int CMinecraftApp::DefaultOptionsCallback(void *pParam,C_4JProfile::PROFILESETTINGS *pSettings, const int iPad)
 #endif
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
@@ -733,7 +734,7 @@ int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETT
 	// flag the default options to be set
 
 	pApp->DebugPrintf("Setting default options for player %d", iPad);
-	pApp->SetAction(iPad,eAppAction_SetDefaultOptions, (LPVOID)pSettings);
+	pApp->SetAction(iPad,eAppAction_SetDefaultOptions, pSettings);
 	//pApp->SetDefaultOptions(pSettings,iPad);
 	
 	// if the profile data has been changed, then force a profile write
@@ -746,7 +747,7 @@ int CMinecraftApp::DefaultOptionsCallback(LPVOID pParam,C_4JProfile::PROFILESETT
 #if ( defined  __PS3__  || defined __ORBIS__ || defined _DURANGO  || defined __PSVITA__)
 
 #ifdef __ORBIS__
-int CMinecraftApp::OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired)
+int CMinecraftApp::OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus,int iBlocksRequired)
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
 	pApp->m_eOptionsStatusA[iPad]=eStatus;
@@ -760,7 +761,7 @@ int CMinecraftApp::GetOptionsBlocksRequired(int iPad)
 }
 
 #else
-int CMinecraftApp::OptionsDataCallback(LPVOID pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus)
+int CMinecraftApp::OptionsDataCallback(void *pParam,int iPad,unsigned short usVersion,C4JStorage::eOptionsCallback eStatus)
 {
 	CMinecraftApp *pApp=(CMinecraftApp *)pParam;
 	pApp->m_eOptionsStatusA[iPad]=eStatus;
@@ -779,7 +780,7 @@ void CMinecraftApp::SetOptionsCallbackStatus(int iPad, C4JStorage::eOptionsCallb
 }
 #endif
 
-int CMinecraftApp::OldProfileVersionCallback(LPVOID pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad)
+int CMinecraftApp::OldProfileVersionCallback(void *pParam,unsigned char *pucData, const unsigned short usVersion, const int iPad)
 {
 	// check what needs to be done with this version to update to the current one
 
@@ -1243,7 +1244,7 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 		break;
 
 	case eGameSetting_DisplaySplitscreenGamertags:
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(std::uint8_t idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			if(pMinecraft->localplayers[idx] != NULL)
 			{
@@ -1270,11 +1271,11 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 	case eGameSetting_Tooltips:
 		if((GameSettingsA[iPad]->usBitmaskValues&0x8000)!=0)
 		{
-			ui.SetEnableTooltips(iPad,TRUE);
+			ui.SetEnableTooltips(iPad, true);
 		}
 		else
 		{
-			ui.SetEnableTooltips(iPad,FALSE);
+			ui.SetEnableTooltips(iPad, false);
 		}
 		break;
 	case eGameSetting_Clouds:
@@ -1334,12 +1335,12 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 
 void CMinecraftApp::SetPlayerSkin(int iPad,const std::wstring &name)
 {
-	DWORD skinId = app.getSkinIdFromPath(name);
+	std::uint32_t skinId = app.getSkinIdFromPath(name);
 
 	SetPlayerSkin(iPad,skinId);
 }
 
-void CMinecraftApp::SetPlayerSkin(int iPad,DWORD dwSkinId)
+void CMinecraftApp::SetPlayerSkin(int iPad,std::uint32_t dwSkinId)
 {
 	DebugPrintf("Setting skin for %d to %08X\n", iPad, dwSkinId);
 
@@ -1357,12 +1358,12 @@ std::wstring CMinecraftApp::GetPlayerSkinName(int iPad)
 	return app.getSkinPathFromId(GameSettingsA[iPad]->dwSelectedSkin);
 }
 
-DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
+std::uint32_t CMinecraftApp::GetPlayerSkinId(int iPad)
 {
 	// 4J-PB -check the user has rights to use this skin - they may have had at some point but the entitlement has been removed.
 	DLCPack *Pack=NULL;
 	DLCSkinFile *skinFile=NULL;
-	DWORD dwSkin=GameSettingsA[iPad]->dwSelectedSkin;
+	std::uint32_t dwSkin=GameSettingsA[iPad]->dwSelectedSkin;
 	wchar_t chars[256];
 
 	if( GET_IS_DLC_SKIN_FROM_BITMASK(dwSkin) )
@@ -1394,7 +1395,7 @@ DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
 	return dwSkin;
 }
 
- DWORD CMinecraftApp::GetAdditionalModelParts(int iPad)
+ std::uint32_t CMinecraftApp::GetAdditionalModelParts(int iPad)
  {
 	return m_dwAdditionalModelParts[iPad];
  }
@@ -1402,12 +1403,12 @@ DWORD CMinecraftApp::GetPlayerSkinId(int iPad)
 
 void CMinecraftApp::SetPlayerCape(int iPad,const std::wstring &name)
 {
-	DWORD capeId = Player::getCapeIdFromPath(name);
+	std::uint32_t capeId = Player::getCapeIdFromPath(name);
 
 	SetPlayerCape(iPad,capeId);
 }
 
-void CMinecraftApp::SetPlayerCape(int iPad,DWORD dwCapeId)
+void CMinecraftApp::SetPlayerCape(int iPad,std::uint32_t dwCapeId)
 {
 	DebugPrintf("Setting cape for %d to %08X\n", iPad, dwCapeId);
 
@@ -1424,7 +1425,7 @@ std::wstring CMinecraftApp::GetPlayerCapeName(int iPad)
 	return Player::getCapePathFromId(GameSettingsA[iPad]->dwSelectedCape);
 }
 
-DWORD CMinecraftApp::GetPlayerCapeId(int iPad)
+std::uint32_t CMinecraftApp::GetPlayerCapeId(int iPad)
 {
 	return GameSettingsA[iPad]->dwSelectedCape;
 }
@@ -2369,7 +2370,7 @@ int CMinecraftApp::DisplaySavingMessage(void *pParam, C4JStorage::ESavingMessage
 	return 0;
 }
 
-void CMinecraftApp::SetActionConfirmed(LPVOID param)
+void CMinecraftApp::SetActionConfirmed(void *param)
 {
 	XuiActionParam *actionInfo = (XuiActionParam *)param;
 	app.SetAction(actionInfo->iPad, actionInfo->action);
@@ -2380,7 +2381,7 @@ void CMinecraftApp::HandleXuiActions(void)
 {
 	eXuiAction eAction;
 	eTMSAction eTMS;
-	LPVOID param;
+	void *param;
 	Minecraft *pMinecraft=Minecraft::GetInstance();
 	std::shared_ptr<MultiplayerLocalPlayer> player;
 
@@ -2393,7 +2394,7 @@ void CMinecraftApp::HandleXuiActions(void)
 		case eAppAction_DisplayLavaMessage:
 			// Display a warning about placing lava in the spawn area
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				C4JStorage::EMessageResult result = ui.RequestMessageBox( IDS_CANT_PLACE_NEAR_SPAWN_TITLE, IDS_CANT_PLACE_NEAR_SPAWN_TEXT, uiIDA,1,XUSER_INDEX_ANY,NULL,NULL, app.GetStringTable());
 				if(result != C4JStorage::EMessage_Busy) SetGlobalXuiAction(eAppAction_Idle);
@@ -2479,7 +2480,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					{
 						// ask the player if they would like to upgrade, or they'll lose the level
 					
-						UINT uiIDA[2];
+						unsigned int uiIDA[2];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						uiIDA[1]=IDS_CONFIRM_CANCEL;
 						ui.RequestMessageBox(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2,i,&CMinecraftApp::UnlockFullSaveReturned,this,app.GetStringTable());
@@ -2888,7 +2889,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				else
 				{
 					// ask the player if they would like to upgrade, or they'll lose the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 					ui.RequestMessageBox(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2, i,&CMinecraftApp::UnlockFullExitReturned,this,app.GetStringTable());
@@ -3191,7 +3192,7 @@ void CMinecraftApp::HandleXuiActions(void)
 									// need to clear the player stats - can't assume it'll be done in setlevel - we may not be in the game
 									StatsCounter* pStats = Minecraft::GetInstance()->stats[ i ];
 									pStats->clear();
-									UINT uiIDA[1];
+									unsigned int uiIDA[1];
 									uiIDA[0]=IDS_CONFIRM_OK;
 
 									ui.RequestMessageBox(g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE), uiIDA, 1, i,&CMinecraftApp::EthernetDisconnectReturned,this, app.GetStringTable());
@@ -3209,7 +3210,7 @@ void CMinecraftApp::HandleXuiActions(void)
 							// need to clear the player stats - can't assume it'll be done in setlevel - we may not be in the game
 							StatsCounter* pStats = Minecraft::GetInstance()->stats[ i ];
 							pStats->clear();
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_CONFIRM_OK;
 
 							ui.RequestMessageBox(g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST), g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE), uiIDA, 1, i,&CMinecraftApp::EthernetDisconnectReturned,this, app.GetStringTable());
@@ -3303,7 +3304,7 @@ void CMinecraftApp::HandleXuiActions(void)
 			case eAppAction_TrialOver:
 				{		
 					SetAction(i,eAppAction_Idle);
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_UNLOCK_TITLE;
 					uiIDA[1]=IDS_EXIT_GAME;
 
@@ -3317,7 +3318,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					TelemetryManager->RecordUpsellPresented(i, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID);
 
 					SetAction(i,eAppAction_Idle);
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -3326,7 +3327,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_ExitAndJoinFromInvite:
 				{					
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					SetAction(i,eAppAction_Idle);
 					// Check the player really wants to do this
@@ -3437,9 +3438,9 @@ void CMinecraftApp::HandleXuiActions(void)
 						}
 #endif
 #ifdef _DURANGO
-						DWORD result = StorageManager.UnmountInstalledDLC(L"TPACK");
+						const unsigned int result = StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
-						DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+						const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 #endif
 						app.DebugPrintf("Unmount result is %d\n",result);
 					}
@@ -3520,7 +3521,7 @@ void CMinecraftApp::HandleXuiActions(void)
 						//return hr;
 
 						// 4J Stu - Copied this from XUI_FullScreenProgress to properly handle the fail case, as the thread will no longer be failing
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						ui.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_CONNECTION_LOST_SERVER, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			
@@ -3669,7 +3670,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_FailedToJoinNoPrivileges:
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					C4JStorage::EMessageResult result = ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 					if(result != C4JStorage::EMessage_Busy) SetAction(i,eAppAction_Idle);
@@ -3721,7 +3722,7 @@ void CMinecraftApp::HandleXuiActions(void)
 				break;
 			case eAppAction_LevelInBanLevelList:
 				{			
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_BUTTON_REMOVE_FROM_BAN_LIST;
 					uiIDA[1]=IDS_EXIT_GAME;
 
@@ -3799,7 +3800,7 @@ void CMinecraftApp::HandleXuiActions(void)
 
 					TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 
 					uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 					uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -4317,7 +4318,7 @@ int CMinecraftApp::UnlockFullInviteReturned(void *pParam,int iPad,C4JStorage::EM
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4331,7 +4332,7 @@ int CMinecraftApp::UnlockFullInviteReturned(void *pParam,int iPad,C4JStorage::EM
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4362,7 +4363,7 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4376,7 +4377,7 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4390,14 +4391,14 @@ int CMinecraftApp::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::EMes
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 			}
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable(), NULL, 0, false);
 			}
@@ -4427,7 +4428,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4445,7 +4446,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 		else
 		{
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturnedExitTrial,&app, app.GetStringTable());
@@ -4459,7 +4460,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 				// still need to exit the trial or we'll be in the Pause menu with input ignored
@@ -4468,7 +4469,7 @@ int CMinecraftApp::UnlockFullExitReturned(void *pParam,int iPad,C4JStorage::EMes
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &CMinecraftApp::MustSignInFullVersionPurchaseReturnedExitTrial,&app, app.GetStringTable(), NULL, 0, false);
 			}
@@ -4500,7 +4501,7 @@ int CMinecraftApp::TrialOverReturned(void *pParam,int iPad,C4JStorage::EMessageR
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,&app, app.GetStringTable());
 			}
@@ -4515,7 +4516,7 @@ int CMinecraftApp::TrialOverReturned(void *pParam,int iPad,C4JStorage::EMessageR
 #if defined(__PS3__)
 
 			// you're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::MustSignInFullVersionPurchaseReturned,&app, app.GetStringTable());
@@ -4569,7 +4570,7 @@ void CMinecraftApp::ClearSignInChangeUsersMask()
 		}
 	}
 }
-void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChanged,unsigned int uiSignInData)
+void CMinecraftApp::SignInChangeCallback(void *pParam,bool bPrimaryPlayerChanged,unsigned int uiSignInData)
 {
 #ifdef __PS3__
 	// this is normally set in the main menu, but we can go online in the create world screens, and the primary player name isn't updated
@@ -4604,7 +4605,7 @@ void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChange
 				bool hasGuestIdChanged = false;
 				for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 				{
-					DWORD guestNumber = 0;
+					unsigned int guestNumber = 0;
 					if(ProfileManager.IsSignedIn(i))
 					{
 						XUSER_SIGNIN_INFO info;
@@ -4620,7 +4621,7 @@ void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChange
 
 				if( hasGuestIdChanged )
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_GUEST_ORDER_CHANGED_TITLE, IDS_GUEST_ORDER_CHANGED_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,NULL,app.GetStringTable());
 				}
@@ -4744,7 +4745,7 @@ void CMinecraftApp::SignInChangeCallback(LPVOID pParam,bool bPrimaryPlayerChange
 	}
 }
 
-void CMinecraftApp::NotificationsCallback(LPVOID pParam,DWORD dwNotification, unsigned int uiParam)
+void CMinecraftApp::NotificationsCallback(void *pParam,std::uint32_t dwNotification, unsigned int uiParam)
 {
 	CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
@@ -4813,7 +4814,7 @@ void CMinecraftApp::NotificationsCallback(LPVOID pParam,DWORD dwNotification, un
 					{
 						pDLCTexPack->m_pSoundBank->Destroy();
 					}
-					DWORD result = StorageManager.UnmountInstalledDLC("TPACK");
+					const unsigned int result = StorageManager.UnmountInstalledDLC("TPACK");
 					app.DebugPrintf("Unmount result is %d\n",result);
 				}
 			}
@@ -4869,12 +4870,12 @@ int CMinecraftApp::NowDisplayFullVersionPurchase(void *pParam, bool bContinue, i
 	return 0;
 }
 #endif
-void CMinecraftApp::UpsellReturnedCallback(LPVOID pParam, eUpsellType type, eUpsellResponse result, int iUserData)
+void CMinecraftApp::UpsellReturnedCallback(void *pParam, eUpsellType type, eUpsellResponse result, int iUserData)
 {
 	ESen_UpsellID senType;
 	ESen_UpsellOutcome senResponse;
 #ifdef __PS3__
-	UINT uiIDA[2];
+	unsigned int uiIDA[2];
 #endif
 
 	// Map the eUpsellResponse to the enum we use for sentient
@@ -4926,7 +4927,7 @@ void CMinecraftApp::SetDebugSequence(const char *pchSeq)
 {
 	InputManager.SetDebugSequence(pchSeq,&CMinecraftApp::DebugInputCallback,this);
 }
-int CMinecraftApp::DebugInputCallback(LPVOID pParam)
+int CMinecraftApp::DebugInputCallback(void *pParam)
 {
 	CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 	//printf("sequence matched\n");
@@ -4963,7 +4964,7 @@ int CMinecraftApp::GetLocalPlayerCount(void)
 	return iPlayerC;
 }
 
-int CMinecraftApp::MarketplaceCountsCallback(LPVOID pParam,C4JStorage::DLC_TMS_DETAILS *pTMSDetails, int iPad)
+int CMinecraftApp::MarketplaceCountsCallback(void *pParam,C4JStorage::DLC_TMS_DETAILS *pTMSDetails, int iPad)
 {
 	app.DebugPrintf("Marketplace Counts= New - %d Total - %d\n",pTMSDetails->dwNewOffers,pTMSDetails->dwTotalOffers);
 
@@ -5008,7 +5009,7 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad)
 }
 
 // Installed DLC callback
-int CMinecraftApp::DLCInstalledCallback(LPVOID pParam,int iInstalledC,int iPad)
+int CMinecraftApp::DLCInstalledCallback(void *pParam,int iInstalledC,int iPad)
 {
 	app.DebugPrintf("--- CMinecraftApp::DLCInstalledCallback: totalDLC=%i, pad=%i.\n", iInstalledC, iPad);
 	app.m_iTotalDLC = iInstalledC;
@@ -5077,7 +5078,7 @@ void CMinecraftApp::MountNextDLC(int iPad)
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.wszDisplayName)
 #endif
 
-int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD dwLicenceMask)
+int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,std::uint32_t dwErr,std::uint32_t dwLicenceMask)
 {
 #if defined(_XBOX) || defined(_DURANGO) || defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64)  || defined (__PSVITA__) //Chris TODO
 	app.DebugPrintf("--- CMinecraftApp::DLCMountedCallback\n");
@@ -5085,7 +5086,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 	if(dwErr!=ERROR_SUCCESS)
 	{
 		// corrupt DLC
-		app.DebugPrintf("Failed to mount DLC for pad %d: %d\n",iPad,dwErr);
+		app.DebugPrintf("Failed to mount DLC for pad %d: %u\n",iPad,dwErr);
 		app.m_dlcManager.incrementUnnamedCorruptCount();
 	}
 	else
@@ -5126,7 +5127,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 		}
 		else
 		{
-			app.DebugPrintf("Pack \"%ls\" is already installed. Updating license to %d\n", CONTENT_DATA_DISPLAY_NAME(ContentData), dwLicenceMask);
+			app.DebugPrintf("Pack \"%ls\" is already installed. Updating license to %u\n", CONTENT_DATA_DISPLAY_NAME(ContentData), dwLicenceMask);
 
 			pack->SetDLCMountIndex(app.m_iTotalDLCInstalled);
 			pack->SetDLCDeviceID(ContentData.DeviceID);
@@ -5172,7 +5173,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 
  void CMinecraftApp::HandleDLC(DLCPack *pack)	
  {
-	 DWORD dwFilesProcessed = 0;
+	 unsigned int dwFilesProcessed = 0;
 #ifndef _XBOX
 #if defined(__PS3__) || defined(__ORBIS__) || defined(_WINDOWS64) || defined (__PSVITA__) || defined(__linux__)
 	 std::vector<std::string> dlcFilenames;
@@ -5211,7 +5212,7 @@ int CMinecraftApp::DLCMountedCallback(LPVOID pParam,int iPad,DWORD dwErr,DWORD d
 			if(( GetFileAttributes( szFullFilename ) & FILE_ATTRIBUTE_DIRECTORY) != FILE_ATTRIBUTE_DIRECTORY)
 			{
 #ifdef _XBOX
-				DWORD dwPackID=m_dlcManager.retrievePackIDFromDLCDataFile(szFullFilename,pack);
+				std::uint32_t dwPackID=m_dlcManager.retrievePackIDFromDLCDataFile(szFullFilename,pack);
 
 				// Do we need to override the TexturePack.pck with an updated version in a TU?
 				std::wstring wsTemp=getFilePath(dwPackID, std::wstring(L"TexturePack.pck"),false );
@@ -5298,7 +5299,7 @@ bool CMinecraftApp::isXuidNotch(PlayerUID xuid)
 {
 	if(m_xuidNotch != INVALID_XUID && xuid != INVALID_XUID)
 	{
-		return ProfileManager.AreXUIDSEqual(xuid, m_xuidNotch) == TRUE;
+		return ProfileManager.AreXUIDSEqual(xuid, m_xuidNotch);
 	}
 	return false;
 }
@@ -5318,7 +5319,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid)
 	return false;
 }
 
-void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName,PBYTE pbData,DWORD dwBytes)	
+void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int dwBytes)	
 {	
 	EnterCriticalSection(&csMemFilesLock);
 	// check it's not already in
@@ -5413,7 +5414,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring &wName)
 	return val;
 }
 
-void CMinecraftApp::GetMemFileDetails(const std::wstring &wName,PBYTE *ppbData,DWORD *pdwBytes)
+void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pdwBytes)
 {
 	EnterCriticalSection(&csMemFilesLock);
 	AUTO_VAR(it, m_MEM_Files.find(wName));
@@ -5426,7 +5427,7 @@ void CMinecraftApp::GetMemFileDetails(const std::wstring &wName,PBYTE *ppbData,D
 	LeaveCriticalSection(&csMemFilesLock);
 }
 
-void CMinecraftApp::AddMemoryTPDFile(int iConfig,PBYTE pbData,DWORD dwBytes)	
+void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int dwBytes)	
 {	
 	EnterCriticalSection(&csMemTPDLock);
 	// check it's not already in
@@ -5515,7 +5516,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig)
 	return val;
 }
 
-void CMinecraftApp::GetTPD(int iConfig,PBYTE *ppbData,DWORD *pdwBytes)
+void CMinecraftApp::GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pdwBytes)
 {
 	EnterCriticalSection(&csMemTPDLock);
 	AUTO_VAR(it, m_MEM_TPD.find(iConfig));
@@ -5568,7 +5569,7 @@ void CMinecraftApp::ExitGame()
 
 // Invites
 
-void CMinecraftApp::ProcessInvite(DWORD dwUserIndex, DWORD dwLocalUsersMask, const INVITE_INFO * pInviteInfo)
+void CMinecraftApp::ProcessInvite(std::uint32_t dwUserIndex, std::uint32_t dwLocalUsersMask, const INVITE_INFO * pInviteInfo)
 {
 	m_InviteData.dwUserIndex=dwUserIndex;
 	m_InviteData.dwLocalUsersMask=dwLocalUsersMask;
@@ -5621,7 +5622,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 					TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -5639,7 +5640,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned,pClass, app.GetStringTable());
@@ -5657,7 +5658,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(void *pParam,int iPad
 		else
 		{
 			// been a few requests for a confirm on exit without saving
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned,pClass, app.GetStringTable());
@@ -5731,7 +5732,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(void *pParam,int iPad,C4
 				TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -5882,7 +5883,7 @@ void CMinecraftApp::InitialiseTips()
 {
 	// We'll randomise the tips at start up based on their priority
 
-	ZeroMemory(m_TipIDA,sizeof(UINT)*MAX_TIPS_GAMETIP+MAX_TIPS_TRIVIATIP);
+	ZeroMemory(m_TipIDA, sizeof(m_TipIDA));
 
 	// Make the first tip tell you that you can play splitscreen in HD modes if you are in SD
 	if(!RenderManager.IsHiDef())
@@ -5946,7 +5947,7 @@ void CMinecraftApp::InitialiseTips()
 	m_uiCurrentTip=0;
 }
 
-UINT CMinecraftApp::GetNextTip()
+int CMinecraftApp::GetNextTip()
 {
 	static bool bShowSkinDLCTip=true;
 	// don't display the DLC tip in the trial game
@@ -7044,11 +7045,11 @@ int CMinecraftApp::RemoteSaveThreadProc( void* lpParameter )
 	return 0;
 }
 
-void CMinecraftApp::ExitGameFromRemoteSave( LPVOID lpParameter )
+void CMinecraftApp::ExitGameFromRemoteSave( void *lpParameter )
 {
 	int primaryPad = ProfileManager.GetPrimaryPad();
 	
-	UINT uiIDA[3];
+	unsigned int uiIDA[3];
 	uiIDA[0]=IDS_CONFIRM_CANCEL;
 	uiIDA[1]=IDS_CONFIRM_OK;
 
@@ -7146,8 +7147,9 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid, char *ps
 
 	if(bWriteToTMS)
 	{	
-		DWORD dwDataBytes=(DWORD)(sizeof(BANNEDLISTDATA)*m_vBannedListA[iPad]->size());
-		PBANNEDLISTDATA pBannedList = (BANNEDLISTDATA *)(new CHAR [dwDataBytes]);
+		const std::size_t bannedListCount = m_vBannedListA[iPad]->size();
+		const unsigned int dataBytes = static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
+		PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
 		int iCount=0;
 		for(AUTO_VAR(it, m_vBannedListA[iPad]->begin()); it != m_vBannedListA[iPad]->end(); ++it)
 		{
@@ -7157,12 +7159,13 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid, char *ps
 
 		// 4J-PB - write to TMS++ now
 
-		//bool bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dwDataBytes);
+		//bool bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dataBytes);
 #ifdef _XBOX
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,C4JStorage::TMS_UGCTYPE_NONE,"BannedList",(PCHAR) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,C4JStorage::TMS_UGCTYPE_NONE,"BannedList",(PCHAR) pBannedList, dataBytes,NULL,NULL, 0);
 #elif defined _XBOX_ONE
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dataBytes,NULL,NULL, 0);
 #endif
+		delete[] pBannedList;
 	}
 	// update telemetry too
 }
@@ -7221,8 +7224,9 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 		}
 	}
 
-	DWORD dwDataBytes=(DWORD)(sizeof(BANNEDLISTDATA)*m_vBannedListA[iPad]->size());
-	if(dwDataBytes==0)
+	const std::size_t bannedListCount = m_vBannedListA[iPad]->size();
+	const unsigned int dataBytes = static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
+	if(dataBytes==0)
 	{
 		// wipe the file
 #ifdef _XBOX
@@ -7233,19 +7237,18 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 	}
 	else
 	{
-		PBANNEDLISTDATA pBannedList = (BANNEDLISTDATA *)(new BYTE [dwDataBytes]);
+		PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
 
-		int iSize=(int)m_vBannedListA[iPad]->size();
-		for(int i=0;i<iSize;i++)
+		for(std::size_t i = 0; i < bannedListCount; ++i)
 		{
 			PBANNEDLISTDATA pBannedListData =m_vBannedListA[iPad]->at(i);
 
 			memcpy(&pBannedList[i],pBannedListData,sizeof(BANNEDLISTDATA));
 		}
 #ifdef _XBOX
-		StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dwDataBytes);
+		StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList, dataBytes);
 #elif defined _XBOX_ONE
-		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dwDataBytes,NULL,NULL, 0);
+		StorageManager.TMSPP_WriteFile(iPad,C4JStorage::eGlobalStorage_TitleUser,C4JStorage::TMS_FILETYPE_BINARY,L"BannedList",(PBYTE) pBannedList, dataBytes,NULL,NULL, 0);
 #endif
 		delete [] pBannedList;
 	}
@@ -7254,7 +7257,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid, cha
 }
 
 // function to add credits for the DLC packs
-void CMinecraftApp::AddCreditText(LPCWSTR lpStr)
+void CMinecraftApp::AddCreditText(const wchar_t *lpStr)
 {
 	DebugPrintf("ADDING CREDIT - %ls\n",lpStr);
 	// add a string from the DLC to a credits vector
@@ -7619,7 +7622,7 @@ void CMinecraftApp::setLevelGenerationOptions(LevelGenerationOptions *levelGen)
 	m_gameRules.setLevelGenerationOptions(levelGen);
 }
 
-LPCWSTR	CMinecraftApp::GetGameRulesString(const std::wstring &key)
+const wchar_t *CMinecraftApp::GetGameRulesString(const std::wstring &key)
 {
 	return m_gameRules.GetGameRulesString(key);
 }
@@ -7645,9 +7648,16 @@ unsigned int CMinecraftApp::FromBigEndian(unsigned int uiValue)
 #endif
 }
 
-void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsigned char *pszSeed,unsigned int &uiHostOptions,bool &bHostOptionsRead,DWORD &uiTexturePack)
+void CMinecraftApp::GetImageTextData(std::uint8_t *imageData, unsigned int imageBytes, unsigned char *seedText, unsigned int &uiHostOptions, bool &bHostOptionsRead, std::uint32_t &uiTexturePack)
 {
-	unsigned char *ucPtr=pbImageData;
+	auto readPngUInt32 = [](const std::uint8_t *data) -> unsigned int
+	{
+		unsigned int value = 0;
+		std::memcpy(&value, data, sizeof(value));
+		return value;
+	};
+
+	std::uint8_t *ucPtr = imageData;
 	unsigned int uiCount=0;
 	unsigned int uiChunkLen;
 	unsigned int uiChunkType;
@@ -7662,13 +7672,11 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 
 	uiCount+=8;
 
-	while(uiCount<dwImageBytes)
+	while(uiCount < imageBytes)
 	{	
-		uiChunkLen=*(unsigned int *)&ucPtr[uiCount];
-		uiChunkLen=FromBigEndian(uiChunkLen);
+		uiChunkLen = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
-		uiChunkType=*(unsigned int *)&ucPtr[uiCount];
-		uiChunkType=FromBigEndian(uiChunkType);
+		uiChunkType = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
 
 		if(uiChunkType==PNG_TAG_tEXt) // tEXt
@@ -7691,10 +7699,10 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 					unsigned int uiValueC=0;
 					while(*pszKeyword!=0 && (pszKeyword < ucPtr + uiCount + uiChunkLen) )
 					{
-						pszSeed[uiValueC++]=*pszKeyword;
+						seedText[uiValueC++]=*pszKeyword;
 						pszKeyword++;
 					}
-					//memcpy(pszSeed,pszKeyword,uiChunkLen-8);
+					//memcpy(seedText,pszKeyword,uiChunkLen-8);
 				}
 				else if(strcmp(szKeyword,"4J_HOSTOPTIONS")==0)
 				{
@@ -7733,41 +7741,40 @@ void CMinecraftApp::GetImageTextData(PBYTE pbImageData, DWORD dwImageBytes,unsig
 			}
 		}
 		uiCount+=uiChunkLen;
-		uiCRC=*(unsigned int*)&ucPtr[uiCount];
-		uiCRC=FromBigEndian(uiCRC);
+		uiCRC = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
 	}
 
 	return;
 }
 
-unsigned int CMinecraftApp::CreateImageTextData(PBYTE bTextMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId)
+unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t *textMetadata, __int64 seed, bool hasSeed, unsigned int uiHostOptions, unsigned int uiTexturePackId)
 {
 	int iTextMetadataBytes = 0;
 	if(hasSeed)
 	{
-		strcpy((char *)bTextMetadata,"4J_SEED");
-		snprintf((char *)&bTextMetadata[8], 42, "%lld", (long long)seed);
+		strcpy((char *)textMetadata,"4J_SEED");
+		snprintf((char *)&textMetadata[8], 42, "%lld", (long long)seed);
 
 		// get the length
 		iTextMetadataBytes+=8;
-		while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+		while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 		++iTextMetadataBytes; // Add a null terminator at the end of the seed value
 	}
 
 	// Save the host options that this world was last played with
-	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_HOSTOPTIONS");
-	snprintf( (char *)&bTextMetadata[iTextMetadataBytes + 15], 9, "%X", uiHostOptions);
+	strcpy((char *)&textMetadata[iTextMetadataBytes],"4J_HOSTOPTIONS");
+	snprintf( (char *)&textMetadata[iTextMetadataBytes + 15], 9, "%X", uiHostOptions);
 
 	iTextMetadataBytes += 15;
-	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+	while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 	++iTextMetadataBytes; // Add a null terminator at the end of the host options value
 
 	// Save the texture pack id
-	strcpy((char *)&bTextMetadata[iTextMetadataBytes],"4J_TEXTUREPACK");
+	strcpy((char *)&textMetadata[iTextMetadataBytes],"4J_TEXTUREPACK");
 
 	iTextMetadataBytes += 15;
-	while(bTextMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
+	while(textMetadata[iTextMetadataBytes]!=0) iTextMetadataBytes++;
 
 	return iTextMetadataBytes;
 }
@@ -7830,7 +7837,7 @@ void CMinecraftApp::ClearTerrainFeaturePosition()
 	}
 }
 
-void CMinecraftApp::UpdatePlayerInfo(BYTE networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges)
+void CMinecraftApp::UpdatePlayerInfo(std::uint8_t networkSmallId, SHORT playerColourIndex, unsigned int playerGamePrivileges)
 {
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
 	{
@@ -7847,7 +7854,7 @@ void CMinecraftApp::UpdatePlayerInfo(BYTE networkSmallId, SHORT playerColourInde
 	}
 }
 
-short CMinecraftApp::GetPlayerColour(BYTE networkSmallId)
+short CMinecraftApp::GetPlayerColour(std::uint8_t networkSmallId)
 {
 	short index = -1;
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
@@ -7862,7 +7869,7 @@ short CMinecraftApp::GetPlayerColour(BYTE networkSmallId)
 }
 
 
-unsigned int CMinecraftApp::GetPlayerPrivileges(BYTE networkSmallId)
+unsigned int CMinecraftApp::GetPlayerPrivileges(std::uint8_t networkSmallId)
 {
 	unsigned int privileges = 0;
 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
@@ -7919,7 +7926,7 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 	return L"";
 }
 
-DWORD CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX]=
+std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] =
 {
 	XMARKETPLACE_OFFERING_TYPE_CONTENT,		// e_DLC_SkinPack, e_DLC_TexturePacks, e_DLC_MashupPacks
 #ifndef _XBOX_ONE
@@ -8288,11 +8295,11 @@ bool CMinecraftApp::RetrieveNextDLCContent()
 
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 #ifdef _XBOX_ONE
-int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,LPVOID lpvData, WCHAR* wchFilename)
+int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,void *lpvData, WCHAR* wchFilename)
 {
 	C4JStorage::PTMSPP_FILEDATA pFileData=(C4JStorage::PTMSPP_FILEDATA)lpvData;
 #else
-int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename)
+int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStorage::PTMSPP_FILEDATA pFileData, LPCSTR szFilename)
 {
 #endif
 
@@ -8327,7 +8334,7 @@ int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,C4JSto
 				case e_DLC_TexturePackData:
 					{					
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
-						PBYTE pbData = new BYTE [pFileData->dwSize];
+						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
 						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
 
 						pClass->m_vTMSPPData.push_back(pbData);
@@ -8342,7 +8349,7 @@ int CMinecraftApp::TMSPPFileReturned(LPVOID pParam,int iPad,int iUserData,C4JSto
 					if(pFileData->pbData[0]==0x89)
 					{				
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
- 						PBYTE pbData = new BYTE [pFileData->dwSize];
+ 						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
  						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
  
  						pClass->m_vTMSPPData.push_back(pbData);
@@ -8559,7 +8566,7 @@ void  CMinecraftApp::ClearTMSPPFilesRetrieved()
 	LeaveCriticalSection(&csTMSPPDownloadQueue);
 }
 
-int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, int iPad)
+int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, std::uint32_t dwType, int iPad)
 {
 	CMinecraftApp* pClass = (CMinecraftApp *) pParam;
 
@@ -8570,10 +8577,10 @@ int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, in
 		DLCRequest  *pCurrent = *it;
 
 		// avatar items are coming back as type Content, so we can't trust the type setting
-		if(pCurrent->dwType==dwType)
+		if(pCurrent->dwType == static_cast<std::uint32_t>(dwType))
 		{
 			pClass->m_iDLCOfferC = iOfferC;
-			app.DebugPrintf("DLCOffersReturned - type %d, count %d - setting to retrieved\n",dwType,iOfferC);
+			app.DebugPrintf("DLCOffersReturned - type %u, count %d - setting to retrieved\n",dwType,iOfferC);
 			pCurrent->eState=e_DLC_ContentState_Retrieved;
 			break;
 		}
@@ -8582,7 +8589,7 @@ int CMinecraftApp::DLCOffersReturned(void *pParam, int iOfferC, DWORD dwType, in
 	return 0;
 }
 
-eDLCContentType CMinecraftApp::Find_eDLCContentType(DWORD dwType)
+eDLCContentType CMinecraftApp::Find_eDLCContentType(std::uint32_t dwType)
 {
 	for(int i=0;i<e_DLC_MAX;i++)
 	{
@@ -8612,7 +8619,7 @@ bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType)
 	return false;
 }
 
-void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, DWORD dwSkinBoxC)
+void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX *SkinBoxA, unsigned int dwSkinBoxC)
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
@@ -8636,15 +8643,15 @@ void CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, SKIN_BOX *SkinBoxA, D
 	}
 
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
+	m_AdditionalModelParts.insert( std::pair<std::uint32_t, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<std::uint32_t, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxes) );
 	
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
 
 }
 
-std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA)
+std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID, std::vector<SKIN_BOX *> *pvSkinBoxA)
 {
 	EntityRenderer *renderer = EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
 	Model *pModel = renderer->getModel();
@@ -8664,8 +8671,8 @@ std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID,
 		}
 	}
 
-	m_AdditionalModelParts.insert( std::pair<DWORD, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
-	m_AdditionalSkinBoxes.insert( std::pair<DWORD, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
+	m_AdditionalModelParts.insert( std::pair<std::uint32_t, std::vector<ModelPart *> *>(dwSkinID, pvModelPart) );
+	m_AdditionalSkinBoxes.insert( std::pair<std::uint32_t, std::vector<SKIN_BOX *> *>(dwSkinID, pvSkinBoxA) );
 
 	LeaveCriticalSection( &csAdditionalSkinBoxes );
 	LeaveCriticalSection( &csAdditionalModelParts );
@@ -8673,7 +8680,7 @@ std::vector<ModelPart *> * CMinecraftApp::SetAdditionalSkinBoxes(DWORD dwSkinID,
 }
 
 
-std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
+std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalModelParts );
 	std::vector<ModelPart *> *pvModelParts=NULL;
@@ -8690,7 +8697,7 @@ std::vector<ModelPart *> *CMinecraftApp::GetAdditionalModelParts(DWORD dwSkinID)
 	return pvModelParts;
 }
 
-std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
+std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAdditionalSkinBoxes );
 	std::vector<SKIN_BOX *> *pvSkinBoxes=NULL;
@@ -8707,7 +8714,7 @@ std::vector<SKIN_BOX *> *CMinecraftApp::GetAdditionalSkinBoxes(DWORD dwSkinID)
 	return pvSkinBoxes;
 }
 
-unsigned int CMinecraftApp::GetAnimOverrideBitmask(DWORD dwSkinID)
+unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID)
 {
 	EnterCriticalSection( &csAnimOverrideBitmask );
 	unsigned int uiAnimOverrideBitmask=0L;
@@ -8725,7 +8732,7 @@ unsigned int CMinecraftApp::GetAnimOverrideBitmask(DWORD dwSkinID)
 	return uiAnimOverrideBitmask;
 }
 
-void CMinecraftApp::SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOverrideBitmask)
+void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,unsigned int uiAnimOverrideBitmask)
 {
 	// Make thread safe
 	EnterCriticalSection( &csAnimOverrideBitmask );
@@ -8739,11 +8746,11 @@ void CMinecraftApp::SetAnimOverrideBitmask(DWORD dwSkinID,unsigned int uiAnimOve
 			return; // already in here
 		}
 	}
-	m_AnimOverrides.insert( std::pair<DWORD, unsigned long>(dwSkinID, uiAnimOverrideBitmask) );
+	m_AnimOverrides.insert( std::pair<std::uint32_t, unsigned int>(dwSkinID, uiAnimOverrideBitmask) );
 	LeaveCriticalSection( &csAnimOverrideBitmask );
 }
 
-DWORD CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
+std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
 {
 	bool dlcSkin = false; 
 	unsigned int skinId = 0;
@@ -8769,7 +8776,7 @@ DWORD CMinecraftApp::getSkinIdFromPath(const std::wstring &skin)
 	return skinId;
 }
 
-std::wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
+std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId)
 {
 	// 4J Stu - This function maps the encoded DWORD we store in the player profile
 	// to a filename that is stored as a memory texture and shared between systems in game
@@ -8782,8 +8789,8 @@ std::wstring CMinecraftApp::getSkinPathFromId(DWORD skinId)
 	}
 	else
 	{
-		DWORD ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
-		DWORD defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t ugcSkinIndex = GET_UGC_SKIN_ID_FROM_BITMASK(skinId);
+		std::uint32_t defaultSkinIndex = GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
 		if( ugcSkinIndex == 0 )
 		{
 			swprintf(chars, 256, L"defskin%08X.png",defaultSkinIndex);
@@ -8927,7 +8934,7 @@ float CMinecraftApp::getTrialTimer(void)
 
 bool CMinecraftApp::IsLocalMultiplayerAvailable()
 {
-	DWORD connectedControllers = 0;
+	unsigned int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -8967,12 +8974,12 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 {
 	std::vector<eMCLang> locales;
 	
-	DWORD dwSystemLanguage = XGetLanguage( );
+	const unsigned int systemLanguage = XGetLanguage( );
 
 	// 4J-PB - restrict the 360 language until we're ready to have them in
 
 #ifdef _XBOX
-	switch(dwSystemLanguage)
+	switch(systemLanguage)
 	{
 	case XC_LANGUAGE_FRENCH             :
 		locales.push_back(eMCLang_frFR);
@@ -9004,7 +9011,7 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 		break;
 	}
 #else
-	switch(dwSystemLanguage)
+	switch(systemLanguage)
 	{
 
 	case XC_LANGUAGE_ENGLISH:
@@ -9197,13 +9204,13 @@ void CMinecraftApp::getLocale(std::vector<std::wstring> &vecWstrLocales)
 	}
 }
 
-DWORD CMinecraftApp::get_eMCLang(WCHAR *pwchLocale)
+int CMinecraftApp::get_eMCLang(WCHAR *pwchLocale)
 {
 	return m_eMCLangA[pwchLocale];
 }
 
 
-DWORD CMinecraftApp::get_xcLang(WCHAR *pwchLocale)
+int CMinecraftApp::get_xcLang(WCHAR *pwchLocale)
 {
 	return m_xcLangA[pwchLocale];
 }
@@ -9409,7 +9416,7 @@ void CMinecraftApp::SetTickTMSDLCFiles(bool bVal)
 	m_bTickTMSDLCFiles=bVal;
 }
 
-std::wstring CMinecraftApp::getFilePath(DWORD packId, std::wstring filename, bool bAddDataFolder)
+std::wstring CMinecraftApp::getFilePath(std::uint32_t packId, std::wstring filename, bool bAddDataFolder)
 {
 #ifdef _XBOX
 	std::wstring path = getRootPath(packId, true, bAddDataFolder) + filename;
@@ -9445,7 +9452,7 @@ std::wstring titleUpdateTexturePackRoot = L"GAME:\\res\\TitleUpdate\\DLC\\";
 #endif
 #endif
 
-std::wstring CMinecraftApp::getRootPath(DWORD packId, bool allowOverride, bool bAddDataFolder)
+std::wstring CMinecraftApp::getRootPath(std::uint32_t packId, bool allowOverride, bool bAddDataFolder)
 {
 	std::wstring path = L"TPACK:";
 #ifdef _XBOX

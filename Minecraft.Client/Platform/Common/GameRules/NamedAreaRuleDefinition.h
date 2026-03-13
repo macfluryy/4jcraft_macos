@@ -12,7 +12,7 @@ public:
 	NamedAreaRuleDefinition();
 	~NamedAreaRuleDefinition();
 
-	virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
 
 	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_NamedArea; }
 	

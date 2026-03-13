@@ -19,7 +19,7 @@ PlayerInfoPacket::PlayerInfoPacket()
 	m_entityId = -1;
 }
 
-PlayerInfoPacket::PlayerInfoPacket(BYTE networkSmallId, short playerColourIndex, unsigned int playerPrivileges)
+PlayerInfoPacket::PlayerInfoPacket(std::uint8_t networkSmallId, short playerColourIndex, unsigned int playerPrivileges)
 {
 	m_networkSmallId = networkSmallId;
 	m_playerColourIndex = playerColourIndex;

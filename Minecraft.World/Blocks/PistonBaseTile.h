@@ -1,6 +1,10 @@
 #pragma once
 #include "Tile.h"
 
+#if !defined(_WIN32)
+#include <pthread.h>
+#endif
+
 class PistonBaseTile : public Tile
 {
 public:
@@ -25,7 +29,11 @@ private:
 	Icon *iconBack;
 	Icon *iconPlatform;
 
+#if defined(_WIN32)
 	static DWORD tlsIdx;
+#else
+	static pthread_key_t tlsIdx;
+#endif
 	// 4J - was just a static but implemented with TLS for our version
     static bool ignoreUpdate();	
 	static void ignoreUpdate(bool set);	

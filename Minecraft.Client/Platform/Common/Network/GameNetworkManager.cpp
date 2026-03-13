@@ -146,7 +146,7 @@ void CGameNetworkManager::DoWork()
 #endif
 }
 
-bool CGameNetworkManager::_RunNetworkGame(LPVOID lpParameter)
+bool CGameNetworkManager::_RunNetworkGame(void *lpParameter)
 {
 	bool success = true;
 
@@ -184,7 +184,7 @@ bool CGameNetworkManager::_RunNetworkGame(LPVOID lpParameter)
 	return success;
 }
 
-bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, LPVOID lpParameter)
+bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, void *lpParameter)
 {
 #ifdef _DURANGO
 	ProfileManager.SetDeferredSignoutEnabled(true);
@@ -645,7 +645,7 @@ bool CGameNetworkManager::GetGameSessionInfo(int iPad, SessionID sessionId,Frien
 	return s_pPlatformNetworkManager->GetGameSessionInfo( iPad, sessionId, foundSession );
 }
 
-void CGameNetworkManager::SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(LPVOID pParam), LPVOID pSearchParam )
+void CGameNetworkManager::SetSessionsUpdatedCallback( void (*SessionsUpdatedCallback)(void *pParam), void *pSearchParam )
 {
 	s_pPlatformNetworkManager->SetSessionsUpdatedCallback( SessionsUpdatedCallback, pSearchParam );
 }
@@ -681,7 +681,7 @@ CGameNetworkManager::eJoinGameResult CGameNetworkManager::JoinGame(FriendSession
 	return (eJoinGameResult)(s_pPlatformNetworkManager->JoinGame( searchResult, localUsersMask, primaryUserIndex ));
 }
 
-void CGameNetworkManager::CancelJoinGame(LPVOID lpParam)
+void CGameNetworkManager::CancelJoinGame(void *lpParam)
 {
 #ifdef _XBOX_ONE
 	s_pPlatformNetworkManager->CancelJoinGame();
@@ -705,7 +705,7 @@ int CGameNetworkManager::JoinFromInvite_SignInReturned(void *pParam,bool bContin
 		int npAvailability = ProfileManager.getNPAvailability(iPad);
 		if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 
@@ -749,7 +749,7 @@ int CGameNetworkManager::JoinFromInvite_SignInReturned(void *pParam,bool bContin
 			}
 			else if(noPrivileges)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			}
@@ -924,7 +924,7 @@ int	CGameNetworkManager::ExitAndJoinFromInviteThreadProc( void* lpParam )
 	}
 	else
 	{
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 		uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 		ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CGameNetworkManager::MustSignInReturned_0,lpParam, app.GetStringTable());
@@ -1060,7 +1060,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc( void* lpParam )
 	MinecraftServer *pServer = MinecraftServer::getInstance();
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_CONFIRM_OK;
 	if( g_NetworkManager.m_bLastDisconnectWasLostRoomOnly )
 	{
@@ -1084,7 +1084,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc( void* lpParam )
 #elif defined(_XBOX_ONE)
 	if( g_NetworkManager.m_bFullSessionMessageOnNextSessionChange )
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		C4JStorage::EMessageResult result = ui.RequestMessageBox( IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME, IDS_IN_PARTY_SESSION_FULL, uiIDA,1,ProfileManager.GetPrimaryPad());
 		pMinecraft->progressRenderer->progressStartNoAbort( IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME );
@@ -1583,7 +1583,7 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 		if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 		{
 			// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 		}
@@ -1592,14 +1592,14 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 			// Signed in to PSN but not connected (no internet access)
 			assert(!ProfileManager.isConnectedToPSN(iPadNotSignedInLive));
 
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_OK;
 			ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 		}
 		else
 		{		
 			// Not signed in to PSN
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPadNotSignedInLive, &CGameNetworkManager::MustSignInReturned_1, (void *)pInviteInfo, app.GetStringTable(), NULL, 0, false);
 		}
@@ -1633,14 +1633,14 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 // 		if (ProfileManager.IsSignedInPSN(ProfileManager.GetPrimaryPad()))
 // 		{
 // 			// Signed in to PSN but not connected (no internet access)
-// 			UINT uiIDA[1];
+// 			unsigned int uiIDA[1];
 // 			uiIDA[0] = IDS_OK;
 // 			ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, ProfileManager.GetPrimaryPad(), NULL, NULL, app.GetStringTable());
 // 		}
 // 		else
 		{		
 			// Not signed in to PSN
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &CGameNetworkManager::MustSignInReturned_1, (void *)pInviteInfo, app.GetStringTable(), NULL, 0, false);
 		}
@@ -1672,8 +1672,8 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 	// Check if user-created content is allowed, as we cannot play multiplayer if it's not
 	bool noUGC = false;
 	bool bContentRestricted=false;
-	BOOL pccAllowed = TRUE;
-	BOOL pccFriendsAllowed = TRUE;
+	bool pccAllowed = true;
+	bool pccFriendsAllowed = true;
 #if defined(__PS3__) || defined(__PSVITA__)
 	ProfileManager.GetChatAndContentRestrictions(userIndex,false,&noUGC,&bContentRestricted,NULL);
 #else
@@ -1684,7 +1684,7 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 #if defined(_XBOX) || defined(__PS3__)
 	if(joiningUsers > 1 && !RenderManager.IsHiDef() && userIndex != ProfileManager.GetPrimaryPad())
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		// 4J-PB - it's possible there is no primary pad here, when accepting an invite from the dashboard
@@ -1711,7 +1711,7 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 #endif
 	else if(noPrivileges)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		// 4J-PB - it's possible there is no primary pad here, when accepting an invite from the dashboard
@@ -1740,7 +1740,7 @@ void CGameNetworkManager::GameInviteReceived( int userIndex, const INVITE_INFO *
 			}
 			else
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 				uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&CGameNetworkManager::MustSignInReturned_1,(void *)pInviteInfo, app.GetStringTable());
@@ -1806,7 +1806,7 @@ void CGameNetworkManager::HandleInviteWhenInMenus( int userIndex, const INVITE_I
 
 			if(noPrivileges)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			}
@@ -1840,11 +1840,11 @@ void CGameNetworkManager::HandleInviteWhenInMenus( int userIndex, const INVITE_I
 		{
 			// the FromInvite will make the lib decide how many panes to display based on connected pads/signed in players
 #ifdef _XBOX
-			ProfileManager.RequestSignInUI(true, false, false, false, false,&CGameNetworkManager::JoinFromInvite_SignInReturned, (LPVOID)pInviteInfo,userIndex);
+			ProfileManager.RequestSignInUI(true, false, false, false, false,&CGameNetworkManager::JoinFromInvite_SignInReturned, (void *)pInviteInfo,userIndex);
 #else
 			SignInInfo info;
 			info.Func = &CGameNetworkManager::JoinFromInvite_SignInReturned;
-			info.lpParam = (LPVOID)pInviteInfo;
+			info.lpParam = (void *)pInviteInfo;
 			info.requireOnline = true;
 			app.DebugPrintf("Using fullscreen layer\n");
 			ui.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_QuadrantSignin,&info,eUILayer_Alert,eUIGroup_Fullscreen);

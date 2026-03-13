@@ -1,28 +1,30 @@
 #pragma once
 
+#include <cstdint>
+
 typedef struct  
 {
 	wchar_t *wchFilename;
 	eFileExtensionType eEXT;
 	eTMSFileType eTMSType;
-	PBYTE pbData;
-	UINT uiSize;
+	std::uint8_t *pbData;
+	unsigned int uiSize;
 	int iConfig; // used for texture pack data files
 }
 TMS_FILE;
 
 typedef struct 
 {
-	PBYTE pbData;
-	DWORD dwBytes;
-	BYTE ucRefCount;
+	std::uint8_t *pbData;
+	unsigned int dwBytes;
+	std::uint8_t ucRefCount;
 }
 MEMDATA,*PMEMDATA;
 
 typedef struct 
 {
-	DWORD dwNotification;
-	UINT uiParam;
+	unsigned int dwNotification;
+	unsigned int uiParam;
 }
 NOTIFICATION,*PNOTIFICATION;
 
@@ -60,7 +62,7 @@ typedef struct
 			// adding new flags for interim TU to 1.6.6
 
 			// A value that encodes the skin that the player has set as their default
-			DWORD dwSelectedSkin;
+			std::uint32_t dwSelectedSkin;
 
 			// In-Menu sensitivity
 			unsigned char ucMenuSensitivity;
@@ -90,7 +92,7 @@ typedef struct
 			unsigned int uiSpecialTutorialBitmask;
 
 			// A value that encodes the cape that the player has set
-			DWORD dwSelectedCape;
+			std::uint32_t dwSelectedCape;
 
 			unsigned int uiFavoriteSkinA[MAX_FAVORITE_SKINS];
 			unsigned char ucCurrentFavoriteSkinPos;
@@ -142,7 +144,7 @@ XuiActionParam;
 typedef struct 
 {    
 	int iSortValue;
-	UINT uiStringID;
+	int uiStringID;
 }
 TIPSTRUCT;
 
@@ -168,8 +170,8 @@ typedef struct
 	std::wstring wsDisplayName;
 
 	// add a store for the local DLC image
-	PBYTE pbImageData;
-	DWORD dwImageBytes;
+	std::uint8_t *pbImageData;
+	unsigned int dwImageBytes;
 #else
 	ULONGLONG	ullOfferID_Full;
 	ULONGLONG	ullOfferID_Trial;
@@ -194,14 +196,14 @@ FEATURE_DATA;
 // banned list
 typedef struct 
 {
-	BYTE *pBannedList;
-	DWORD dwBytes;
+	std::uint8_t *pBannedList;
+	unsigned int dwBytes;
 }
 BANNEDLIST;
 
 typedef struct _DLCRequest
 { 
-	DWORD dwType;
+	std::uint32_t dwType;
 	eDLCContentState eState;
 } 
 DLCRequest;
@@ -214,13 +216,13 @@ typedef struct _TMSPPRequest
 	C4JStorage::eTMS_FILETYPEVAL eFileTypeVal;
 	//char szFilename[MAX_TMSFILENAME_SIZE];
 #ifdef _XBOX_ONE
-	int( *CallbackFunc)(LPVOID,int,int,LPVOID, WCHAR *);
+	int( *CallbackFunc)(void *,int,int,void *, WCHAR *);
 #else
-	int( *CallbackFunc)(LPVOID,int,int,C4JStorage::PTMSPP_FILEDATA, LPCSTR szFilename);
+	int( *CallbackFunc)(void *,int,int,C4JStorage::PTMSPP_FILEDATA, LPCSTR szFilename);
 #endif
  	WCHAR wchFilename[MAX_TMSFILENAME_SIZE];
 
-	LPVOID lpCallbackParam;
+	void *lpCallbackParam;
 } 
 TMSPPRequest;
 

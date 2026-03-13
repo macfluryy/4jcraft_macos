@@ -52,7 +52,7 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void *_initData, UILayer *parentL
 		}
 		else
 		{
-			LPCWSTR costString = app.GetString(IDS_REPAIR_COST);
+			const wchar_t *costString = app.GetString(IDS_REPAIR_COST);
 			wchar_t temp[256];
 			swprintf(temp, 256, costString, m_repairMenu->cost);
 			m_costString = temp;
@@ -306,7 +306,7 @@ UIControl *UIScene_AnvilMenu::getSection(ESceneSection eSection)
 	return control;
 }
 
-int UIScene_AnvilMenu::KeyboardCompleteCallback(LPVOID lpParam,bool bRes)
+int UIScene_AnvilMenu::KeyboardCompleteCallback(void *lpParam,bool bRes)
 {
 	// 4J HEG - No reason to set value if keyboard was cancelled
 	UIScene_AnvilMenu *pClass=(UIScene_AnvilMenu *)lpParam;
@@ -334,15 +334,15 @@ void UIScene_AnvilMenu::handleEditNamePressed()
 	case XC_LANGUAGE_JAPANESE:
 	case XC_LANGUAGE_KOREAN:
 	case XC_LANGUAGE_TCHINESE:
-		InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),(DWORD)m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+		InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 		break;
 	default:
 		// 4J Stu - Use a different keyboard for non-asian languages so we don't have prediction on
-		InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),(DWORD)m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
+		InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Alphabet_Extended);
 		break;
 	}
 #else
-	InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),(DWORD)m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
+	InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),m_textInputAnvil.getLabel(),m_iPad,30,&UIScene_AnvilMenu::KeyboardCompleteCallback,this,C_4JInput::EKeyboardMode_Default);
 #endif
 }
 

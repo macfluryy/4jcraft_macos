@@ -2,7 +2,19 @@
 #include "../../IO/Streams/ByteBuffer.h"
 #include "ZoneIO.h"
 
-ZoneIo::ZoneIo(HANDLE channel, __int64 pos)
+namespace
+{
+	bool SeekFile(std::FILE *file, __int64 offset)
+	{
+#if defined(_WIN32)
+		return _fseeki64(file, offset, SEEK_SET) == 0;
+#else
+		return fseeko(file, static_cast<off_t>(offset), SEEK_SET) == 0;
+#endif
+	}
+}
+
+ZoneIo::ZoneIo(std::FILE *channel, __int64 pos)
 {
 	this->channel = channel;
 	this->pos = pos;
@@ -21,23 +33,21 @@ void ZoneIo::write(byteArray bb, int size)
 
 void ZoneIo::write(ByteBuffer *bb, int size)
 {
-	DWORD numberOfBytesWritten;
-	SetFilePointer(channel,(int)pos,NULL,NULL);
-	WriteFile(channel,bb->getBuffer(), bb->getSize(),&numberOfBytesWritten,NULL);
+	SeekFile(channel, pos);
+	std::fwrite(bb->getBuffer(), 1, bb->getSize(), channel);
     pos += size;
 }
 
 ByteBuffer *ZoneIo::read(int size)
 {
-	DWORD numberOfBytesRead;
     byteArray bb = byteArray(size);
-	SetFilePointer(channel,(int)pos,NULL,NULL);
+	SeekFile(channel, pos);
     ByteBuffer *buff = ByteBuffer::wrap(bb);
 	// 4J - to investigate - why is this buffer flipped before anything goes in it?
     buff->order(ZonedChunkStorage::BYTEORDER);
     buff->position(size);
     buff->flip();
-	ReadFile(channel, buff->getBuffer(), buff->getSize(), &numberOfBytesRead, NULL);
+	std::fread(buff->getBuffer(), 1, buff->getSize(), channel);
     pos += size;
     return buff;
 }

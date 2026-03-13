@@ -1,7 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "MemTexture.h"
 
-MemTexture::MemTexture(const std::wstring& _url, PBYTE pbData,DWORD dwBytes, MemTextureProcessor *processor)
+MemTexture::MemTexture(const std::wstring& _url, std::uint8_t *pbData, std::uint32_t dataBytes, MemTextureProcessor *processor)
 {
 	// 4J - added
     count = 1;
@@ -14,7 +14,7 @@ MemTexture::MemTexture(const std::wstring& _url, PBYTE pbData,DWORD dwBytes, Mem
 	// load the texture, and process it
 	//loadedImage=Textures::getTexture()
 	// 4J - remember to add deletes in here for any created BufferedImages when implemented
-	loadedImage = new BufferedImage(pbData,dwBytes);
+	loadedImage = new BufferedImage(pbData,dataBytes);
 	if(processor==NULL)
 	{
 
