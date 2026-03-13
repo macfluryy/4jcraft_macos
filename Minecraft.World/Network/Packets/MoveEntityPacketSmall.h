@@ -13,8 +13,8 @@ public:
 	class Rot;
 
 	int id;
-    int8_t xa, ya, za, yRot, xRot;
-    bool hasRot;
+    char xa, ya, za, yRot, xRot;
+	bool hasRot;
 
 	MoveEntityPacketSmall();
 	MoveEntityPacketSmall(int id);
@@ -34,8 +34,8 @@ public:
 class MoveEntityPacketSmall::PosRot : public MoveEntityPacketSmall
 {
 public:
-    PosRot();
-    PosRot(int id, int8_t xa, int8_t ya, int8_t za, int8_t yRot, int8_t xRot);
+	PosRot();
+	PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -50,7 +50,7 @@ class MoveEntityPacketSmall::Pos : public MoveEntityPacketSmall
 {
 public:
 	Pos();
-    Pos(int id, int8_t xa, int8_t ya, int8_t za);
+	Pos(int id, char xa, char ya, char za);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -66,7 +66,7 @@ class MoveEntityPacketSmall::Rot : public MoveEntityPacketSmall
 {
 public:
 	Rot();
-    Rot(int id, int8_t yRot, int8_t xRot);
+	Rot(int id, char yRot, char xRot);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);

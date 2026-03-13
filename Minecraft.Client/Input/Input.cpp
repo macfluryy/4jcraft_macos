@@ -15,6 +15,7 @@ Input::Input()
 	wasJumping = false;
 	jumping = false;
 	sneaking = false;
+	sprintKey = false;
 
 	lReset = false;
     rReset = false;
@@ -103,12 +104,8 @@ void Input::tick(LocalPlayer *player)
         
     //jumping = controller.isButtonPressed(0);
 
-	
-	unsigned int jump = InputManager.GetValue(iPad, MINECRAFT_ACTION_JUMP);
-	if( jump > 0 && pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_JUMP) )
-		jumping = true;
-	else
- 		jumping = false;
+	sprintKey = InputManager.GetValue(iPad, MINECRAFT_ACTION_SPRINT) && pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_SPRINT);
+	jumping = InputManager.GetValue(iPad, MINECRAFT_ACTION_JUMP) && pMinecraft->localgameModes[iPad]->isInputAllowed(MINECRAFT_ACTION_JUMP);
 
 #ifndef _CONTENT_PACKAGE
 	if (app.GetFreezePlayers())	jumping = false;

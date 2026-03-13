@@ -13,7 +13,7 @@ public:
 	class Rot;
 
 	int id;
-	int8_t xa, ya, za, yRot, xRot;
+	char xa, ya, za, yRot, xRot;
 	bool hasRot;
 
 	MoveEntityPacket();
@@ -35,7 +35,7 @@ class MoveEntityPacket::PosRot : public MoveEntityPacket
 {
 public:
 	PosRot();
-	PosRot(int id, int8_t xa, int8_t ya, int8_t za, int8_t yRot, int8_t xRot);
+	PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -50,7 +50,7 @@ class MoveEntityPacket::Pos : public MoveEntityPacket
 {
 public:
 	Pos();
-	Pos(int id, int8_t xa, int8_t ya, int8_t za);
+	Pos(int id, char xa, char ya, char za);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
@@ -65,7 +65,7 @@ class MoveEntityPacket::Rot : public MoveEntityPacket
 {
 public:
 	Rot();
-	Rot(int id, int8_t yRot, int8_t xRot);
+	Rot(int id, char yRot, char xRot);
 
 	virtual void read(DataInputStream *dis);
 	virtual void write(DataOutputStream *dos);
