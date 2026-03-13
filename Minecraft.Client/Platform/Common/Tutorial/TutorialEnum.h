@@ -1,14 +1,16 @@
 #pragma once
 
+#include <cstdint>
+
 typedef struct {
-	WORD index;
-	DWORD diffsSize;
-	BYTE *diffs;
-	DWORD lastByteChanged;
+	std::uint16_t index;
+	std::uint32_t diffsSize;
+	std::uint8_t *diffs;
+	std::uint32_t lastByteChanged;
 } TutorialDiff_Chunk;
 
 typedef struct {
-	DWORD diffCount;
+	std::uint32_t diffCount;
 	TutorialDiff_Chunk *diffs;
 } TutorialDiff_File;
 
