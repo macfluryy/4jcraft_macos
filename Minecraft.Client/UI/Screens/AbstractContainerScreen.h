@@ -22,10 +22,12 @@ public:
 protected:
 	virtual void renderLabels();
     virtual void renderBg(float a) = 0;
+	// 4jcraft: promoted from private to protected so CreativeInventoryScreen can
+	// call findSlot() and isHovering() directly for its custom click handling.
+	virtual Slot *findSlot(int x, int y);
+    virtual bool isHovering(Slot *slot, int xm, int ym);
 private:
 	virtual void renderSlot(Slot *slot);
-    virtual Slot *findSlot(int x, int y);
-    virtual bool isHovering(Slot *slot, int xm, int ym);
 protected:
 	virtual void mouseClicked(int x, int y, int buttonNum);
     virtual void mouseReleased(int x, int y, int buttonNum);

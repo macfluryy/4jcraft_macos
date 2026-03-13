@@ -29,6 +29,9 @@
 #include "UI/Screens/ErrorScreen.h"
 #include "UI/Screens/TitleScreen.h"
 #include "UI/Screens/InventoryScreen.h"
+#ifdef ENABLE_JAVA_GUIS
+#include "UI/Screens/CreativeInventoryScreen.h"
+#endif
 #include "UI/Screens/InBedChatScreen.h"
 #include "UI/Screens/AchievementPopup.h"
 #include "Input/Input.h"
@@ -3385,7 +3388,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures)
 			std::shared_ptr<LocalPlayer> player = std::dynamic_pointer_cast<LocalPlayer>( Minecraft::GetInstance()->player );
 			ui.PlayUISFX(eSFX_Press);
 #ifdef ENABLE_JAVA_GUIS
-			setScreen(new InventoryScreen(player));
+			if(gameMode->hasInfiniteItems())
+				setScreen(new CreativeInventoryScreen(player));
+			else
+				setScreen(new InventoryScreen(player));
 #else
 			app.LoadInventoryMenu(iPad,player);
 #endif
