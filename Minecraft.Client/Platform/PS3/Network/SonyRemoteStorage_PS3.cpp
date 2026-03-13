@@ -200,7 +200,7 @@ void SonyRemoteStorage_PS3::internalCallback(const SceRemoteStorageEvent event, 
 	}
 }
 
-bool SonyRemoteStorage_PS3::init(CallbackFunc cb, LPVOID lpParam)
+bool SonyRemoteStorage_PS3::init(CallbackFunc cb, void* lpParam)
 {
 	m_callbackFunc = cb;
 	m_callbackParam = lpParam;
@@ -270,7 +270,7 @@ bool SonyRemoteStorage_PS3::init(CallbackFunc cb, LPVOID lpParam)
 
 
 
-bool SonyRemoteStorage_PS3::getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam)
+bool SonyRemoteStorage_PS3::getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam)
 {
 	m_callbackFunc = cb;
 	m_callbackParam = lpParam;
@@ -392,7 +392,7 @@ bool SonyRemoteStorage_PS3::setDataInternal()
 	}
 }
 
-bool SonyRemoteStorage_PS3::getData( const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam )
+bool SonyRemoteStorage_PS3::getData( const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam )
 {
 	m_callbackFunc = cb;
 	m_callbackParam = lpParam;
@@ -429,7 +429,7 @@ void SonyRemoteStorage_PS3::runCallback()
 	m_lastErrorCode = ERROR_SUCCESS;
 }
 
-int SonyRemoteStorage_PS3::SaveCompressCallback(LPVOID lpParam,bool bRes)
+int SonyRemoteStorage_PS3::SaveCompressCallback(void* lpParam,bool bRes)
 {
 	SonyRemoteStorage_PS3* pRS = (SonyRemoteStorage_PS3*)lpParam;
 	pRS->m_compressedSaveState = e_state_Idle;
@@ -516,4 +516,3 @@ void SonyRemoteStorage_PS3::CompressSaveData()
 	app.DebugPrintf("done\n");
 	assert(m_compressedSaveState == e_state_Idle);
 }
-

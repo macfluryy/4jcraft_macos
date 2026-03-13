@@ -141,7 +141,7 @@ void SonyRemoteStorage_Orbis::internalCallback(const SceRemoteStorageEvent event
 	}
 }
 
-bool SonyRemoteStorage_Orbis::init(CallbackFunc cb, LPVOID lpParam)
+bool SonyRemoteStorage_Orbis::init(CallbackFunc cb, void* lpParam)
 {
 
 	int ret = 0;
@@ -248,7 +248,7 @@ bool SonyRemoteStorage_Orbis::init(CallbackFunc cb, LPVOID lpParam)
 
 
 
-bool SonyRemoteStorage_Orbis::getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam)
+bool SonyRemoteStorage_Orbis::getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam)
 {
 	m_callbackFunc = cb;
 	m_callbackParam = lpParam;
@@ -287,7 +287,7 @@ void SonyRemoteStorage_Orbis::abort()
 }
 
 
-bool SonyRemoteStorage_Orbis::setData( PSAVE_INFO info, CallbackFunc cb, LPVOID lpParam )
+bool SonyRemoteStorage_Orbis::setData( PSAVE_INFO info, CallbackFunc cb, void* lpParam )
 {
 	assert(0);
 	return false;
@@ -328,7 +328,7 @@ bool SonyRemoteStorage_Orbis::setData( PSAVE_INFO info, CallbackFunc cb, LPVOID 
 // 	}
 }
 
-bool SonyRemoteStorage_Orbis::getData( const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam )
+bool SonyRemoteStorage_Orbis::getData( const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam )
 {
 	m_callbackFunc = cb;
 	m_callbackParam = lpParam;

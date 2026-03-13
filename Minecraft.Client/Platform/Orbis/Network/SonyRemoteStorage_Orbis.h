@@ -8,11 +8,11 @@ class SonyRemoteStorage_Orbis : public SonyRemoteStorage
 public:
 
 
-	virtual bool init(CallbackFunc cb, LPVOID lpParam);
-	virtual bool setData(PSAVE_INFO info, CallbackFunc cb, LPVOID lpParam);
+	virtual bool init(CallbackFunc cb, void* lpParam);
+	virtual bool setData(PSAVE_INFO info, CallbackFunc cb, void* lpParam);
 
-	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam);
-	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam);
+	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam);
+	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam);
 
 	virtual void abort();
 	virtual bool setDataInternal(){ assert(0); }
@@ -39,4 +39,3 @@ private:
 
 	void runCallback();
 };
-
