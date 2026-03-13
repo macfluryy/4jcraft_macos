@@ -38,6 +38,7 @@
 #include "../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../Minecraft.World/Level/Storage/LevelSettings.h"
 #include "../Minecraft.Client/Player/User.h"
+#include <cstring>
 #include "../Minecraft.World/Level/LevelData.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"
@@ -7649,6 +7650,13 @@ unsigned int CMinecraftApp::FromBigEndian(unsigned int uiValue)
 
 void CMinecraftApp::GetImageTextData(std::uint8_t *imageData, unsigned int imageBytes, unsigned char *seedText, unsigned int &uiHostOptions, bool &bHostOptionsRead, std::uint32_t &uiTexturePack)
 {
+	auto readPngUInt32 = [](const std::uint8_t *data) -> unsigned int
+	{
+		unsigned int value = 0;
+		std::memcpy(&value, data, sizeof(value));
+		return value;
+	};
+
 	std::uint8_t *ucPtr = imageData;
 	unsigned int uiCount=0;
 	unsigned int uiChunkLen;
@@ -7666,11 +7674,9 @@ void CMinecraftApp::GetImageTextData(std::uint8_t *imageData, unsigned int image
 
 	while(uiCount < imageBytes)
 	{	
-		uiChunkLen=*(unsigned int *)&ucPtr[uiCount];
-		uiChunkLen=FromBigEndian(uiChunkLen);
+		uiChunkLen = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
-		uiChunkType=*(unsigned int *)&ucPtr[uiCount];
-		uiChunkType=FromBigEndian(uiChunkType);
+		uiChunkType = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
 
 		if(uiChunkType==PNG_TAG_tEXt) // tEXt
@@ -7735,8 +7741,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t *imageData, unsigned int image
 			}
 		}
 		uiCount+=uiChunkLen;
-		uiCRC=*(unsigned int*)&ucPtr[uiCount];
-		uiCRC=FromBigEndian(uiCRC);
+		uiCRC = FromBigEndian(readPngUInt32(&ucPtr[uiCount]));
 		uiCount+=sizeof(int);
 	}
 

@@ -7,6 +7,7 @@
 #include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
+#include <cstring>
 #include <limits>
 #include <cstddef>
 #include <cstdint>
@@ -57,6 +58,20 @@ static_assert( sizeof(wchar_t) == 2, "How did we get here? wide char smaller tha
 
 namespace
 {
+	template <typename T>
+	T ReadDlcValue(const std::uint8_t *data, unsigned int offset = 0)
+	{
+		T value;
+		std::memcpy(&value, data + offset, sizeof(value));
+		return value;
+	}
+
+	template <typename T>
+	void ReadDlcStruct(T *out, const std::uint8_t *data, unsigned int offset = 0)
+	{
+		std::memcpy(out, data + offset, sizeof(*out));
+	}
+
 	std::wstring getMountedDlcReadPath(const std::string &path)
 	{
 		std::wstring readPath = convStringToWstring(path);
@@ -680,7 +695,7 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLe
 	// // unsigned long, p = number of parameters
 	// // p * DLC_FILE_PARAM describing each parameter for this file
 	// // ulFileSize bytes of data blob of the file added
-	unsigned int uiVersion=*(unsigned int *)pbData;
+	unsigned int uiVersion = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
 
 	if(uiVersion < CURRENT_DLC_VERSION_NUM)
@@ -689,46 +704,48 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLe
 		return 0;
 	}
 	pack->SetDataPointer(pbData);
-	unsigned int uiParameterCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiParameterCount = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_PARAM *pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_PARAM paramBuf;
+	ReadDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	for(unsigned int i=0;i<uiParameterCount;i++)
 	{
 		// Map DLC strings to application strings, then store the DLC index mapping to application index
-		std::wstring parameterName = DLC_WSTRING(pParams->wchData);
+		std::wstring parameterName = DLC_PARAM_WSTR(pbData, uiCurrentByte);
 		DLCManager::EDLCParameterType type = DLCManager::getParameterType(parameterName);
 		if( type != DLCManager::e_DLCParamType_Invalid )
 		{
-			parameterMapping[pParams->dwType] = type;
+			parameterMapping[paramBuf.dwType] = type;
 		}
-		uiCurrentByte+= DLC_PARAM_ADV(pParams->dwWchCount);
-		pParams = (C4JStorage::DLC_FILE_PARAM *)&pbData[uiCurrentByte];
+		uiCurrentByte += DLC_PARAM_ADV(paramBuf.dwWchCount);
+		ReadDlcStruct(&paramBuf, pbData, uiCurrentByte);
 	}
 
-	unsigned int uiFileCount=*(unsigned int *)&pbData[uiCurrentByte];
+	unsigned int uiFileCount = ReadDlcValue<unsigned int>(pbData, uiCurrentByte);
 	uiCurrentByte+=sizeof(int);
-	C4JStorage::DLC_FILE_DETAILS *pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	C4JStorage::DLC_FILE_DETAILS fileBuf;
+	ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
 	unsigned int dwTemp=uiCurrentByte;
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		dwTemp+=DLC_DETAIL_ADV(pFile->dwWchCount);
-		pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[dwTemp];
+		dwTemp += DLC_DETAIL_ADV(fileBuf.dwWchCount);
+		ReadDlcStruct(&fileBuf, pbData, dwTemp);
 	}
-	std::uint8_t *pbTemp = reinterpret_cast<std::uint8_t *>(pFile);
-	pFile = (C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+	std::uint8_t *pbTemp = &pbData[dwTemp];
+	ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 
 	for(unsigned int i=0;i<uiFileCount;i++)
 	{
-		DLCManager::EDLCType type = (DLCManager::EDLCType)pFile->dwType;
+		DLCManager::EDLCType type = (DLCManager::EDLCType)fileBuf.dwType;
 
 		// Params
-		uiParameterCount=*(unsigned int *)pbTemp;
+		uiParameterCount = ReadDlcValue<unsigned int>(pbTemp);
 		pbTemp+=sizeof(int);
-		pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+		ReadDlcStruct(&paramBuf, pbTemp);
 		for(unsigned int j=0;j<uiParameterCount;j++)
 		{
-			AUTO_VAR(it, parameterMapping.find( pParams->dwType ));
+			AUTO_VAR(it, parameterMapping.find(paramBuf.dwType));
 
 			if(it != parameterMapping.end() )
 			{
@@ -736,7 +753,7 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLe
 				{
 					if(it->second==e_DLCParamType_PackId)
 					{				
-						std::wstring wsTemp = DLC_WSTRING(pParams->wchData);
+						std::wstring wsTemp = DLC_PARAM_WSTR(pbTemp, 0);
 						std::wstringstream ss;
 						// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
 						ss << std::dec << wsTemp.c_str();
@@ -746,16 +763,16 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t *pbData, unsigned int dwLe
 					}
 				}
 			}
-			pbTemp+=DLC_PARAM_ADV(pParams->dwWchCount);
-			pParams = (C4JStorage::DLC_FILE_PARAM *)pbTemp;
+			pbTemp += DLC_PARAM_ADV(paramBuf.dwWchCount);
+			ReadDlcStruct(&paramBuf, pbTemp);
 		}
 
 		if(bPackIDSet) break;
 		// Move the pointer to the start of the next files data;
-		pbTemp+=pFile->uiFileSize;
-		uiCurrentByte+=DLC_DETAIL_ADV(pFile->dwWchCount);
+		pbTemp += fileBuf.uiFileSize;
+		uiCurrentByte += DLC_DETAIL_ADV(fileBuf.dwWchCount);
 
-		pFile=(C4JStorage::DLC_FILE_DETAILS *)&pbData[uiCurrentByte];
+		ReadDlcStruct(&fileBuf, pbData, uiCurrentByte);
 	}
 
 	parameterMapping.clear();
