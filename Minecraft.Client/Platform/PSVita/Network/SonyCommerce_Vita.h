@@ -88,7 +88,7 @@ class SonyCommerce_Vita : public SonyCommerce
 // 	static SceNpCommerce2SessionInfo	m_sessionInfo;
 	static State						m_state;
 	static int							m_errorCode;
-	static LPVOID						m_callbackParam;
+	static void*						m_callbackParam;
 	static Event						m_event;
 	static Message						m_message;
 	// 	static uint32_t						m_requestID;
@@ -107,7 +107,7 @@ class SonyCommerce_Vita : public SonyCommerce
 	static bool							m_bUpgradingTrial;
 	static C4JThread*					m_tickThread;
 	static CallbackFunc					m_trialUpgradeCallbackFunc;
-	static LPVOID						m_trialUpgradeCallbackParam;
+	static void*						m_trialUpgradeCallbackParam;
 	static CRITICAL_SECTION				m_queueLock;
 	static bool							m_bLicenseInstalled;
 	static bool							m_bDownloadsPending;
@@ -126,7 +126,7 @@ class SonyCommerce_Vita : public SonyCommerce
 			func(m_callbackParam, m_errorCode);
 		m_errorCode = SCE_OK;
 	}
-	static void setCallback(CallbackFunc cb,LPVOID lpParam)
+	static void setCallback(CallbackFunc cb, void* lpParam)
 	{
 		assert(m_callbackFunc == NULL);
 		m_callbackFunc = cb;
@@ -158,14 +158,14 @@ class SonyCommerce_Vita : public SonyCommerce
 	static int checkout_game(CheckoutInputParams &params);
 	static int downloadList_game(DownloadListInputParams &params);
 	static int installContent();
-	static void UpgradeTrialCallback1(LPVOID lpParam,int err);
-	static void UpgradeTrialCallback2(LPVOID lpParam,int err);
+	static void UpgradeTrialCallback1(void* lpParam,int err);
+	static void UpgradeTrialCallback2(void* lpParam,int err);
 	static void Delete();
 	static void copyCategoryInfo(CategoryInfo *pInfo, sce::Toolkit::NP::CategoryInfo *pNPInfo);
 	static void copyProductList(std::vector<ProductInfo>* pProductList, std::vector<sce::Toolkit::NP::ProductInfo>* pNPProductList);
 	static void copyDetailedProductInfo(ProductInfoDetailed *pInfo, sce::Toolkit::NP::ProductInfoDetailed* pNPInfo);
 	static void copyAddDetailedProductInfo(ProductInfo *pInfo, sce::Toolkit::NP::ProductInfoDetailed* pNPInfo);
-	static void InstallContentCallback(LPVOID lpParam,int err);
+	static void InstallContentCallback(void* lpParam,int err);
 
 	static int commerceEnd();
 	// 	static int upgradeTrial();
@@ -176,25 +176,25 @@ class SonyCommerce_Vita : public SonyCommerce
 	static void Init();
 	static int Shutdown();
 
-	static void CheckForTrialUpgradeKey_Callback(LPVOID param, bool bFullVersion);
+	static void CheckForTrialUpgradeKey_Callback(void* param, bool bFullVersion);
 
 public:
 	static void checkBackgroundDownloadStatus();
 
-	virtual void CreateSession(CallbackFunc cb, LPVOID lpParam);
+	virtual void CreateSession(CallbackFunc cb, void* lpParam);
 	virtual void CloseSession();
 
-	virtual void GetCategoryInfo(CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId);
-	virtual void GetProductList(CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId);
-	virtual void GetDetailedProductInfo(CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfoDetailed, const char *productId, const char *categoryId);
-	virtual void AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId );
-	virtual void Checkout(CallbackFunc cb, LPVOID lpParam, const char* skuID);
-	virtual void Checkout(CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo);
-	virtual void DownloadAlreadyPurchased(CallbackFunc cb, LPVOID lpParam, const char* skuID);
-	virtual void Checkout_Game(CallbackFunc cb, LPVOID lpParam, const char* skuID);
-	virtual void DownloadAlreadyPurchased_Game(CallbackFunc cb, LPVOID lpParam, const char* skuID);
-	static void InstallContent(CallbackFunc cb, LPVOID lpParam);
-	virtual void UpgradeTrial(CallbackFunc cb, LPVOID lpParam);
+	virtual void GetCategoryInfo(CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId);
+	virtual void GetProductList(CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId);
+	virtual void GetDetailedProductInfo(CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfoDetailed, const char *productId, const char *categoryId);
+	virtual void AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId );
+	virtual void Checkout(CallbackFunc cb, void* lpParam, const char* skuID);
+	virtual void Checkout(CallbackFunc cb, void* lpParam, ProductInfo* productInfo);
+	virtual void DownloadAlreadyPurchased(CallbackFunc cb, void* lpParam, const char* skuID);
+	virtual void Checkout_Game(CallbackFunc cb, void* lpParam, const char* skuID);
+	virtual void DownloadAlreadyPurchased_Game(CallbackFunc cb, void* lpParam, const char* skuID);
+	static void InstallContent(CallbackFunc cb, void* lpParam);
+	virtual void UpgradeTrial(CallbackFunc cb, void* lpParam);
 	virtual void CheckForTrialUpgradeKey();
 	virtual bool LicenseChecked();
 

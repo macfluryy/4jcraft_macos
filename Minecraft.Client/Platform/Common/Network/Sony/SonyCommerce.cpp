@@ -9,7 +9,7 @@ bool									SonyCommerce::m_bCommerceInitialised = false;
 SceNpCommerce2SessionInfo				SonyCommerce::m_sessionInfo;
 SonyCommerce::State						SonyCommerce::m_state = e_state_noSession;
 int										SonyCommerce::m_errorCode = 0;
-LPVOID									SonyCommerce::m_callbackParam = NULL;
+void*									SonyCommerce::m_callbackParam = NULL;
 
 void*									SonyCommerce::m_receiveBuffer = NULL;
 SonyCommerce::Event						SonyCommerce::m_event;
@@ -29,7 +29,7 @@ sys_memory_container_t					SonyCommerce::m_memContainer = SYS_MEMORY_CONTAINER_I
 bool									SonyCommerce::m_bUpgradingTrial = false;
 
 SonyCommerce::CallbackFunc				SonyCommerce::m_trialUpgradeCallbackFunc;
-LPVOID									SonyCommerce::m_trialUpgradeCallbackParam;
+void*									SonyCommerce::m_trialUpgradeCallbackParam;
 
 CRITICAL_SECTION						SonyCommerce::m_queueLock;
 
@@ -81,7 +81,7 @@ void SonyCommerce::Init()
 
 
 
-void SonyCommerce::CheckForTrialUpgradeKey_Callback(LPVOID param, bool bFullVersion)
+void SonyCommerce::CheckForTrialUpgradeKey_Callback(void* param, bool bFullVersion)
 {
 	ProfileManager.SetFullVersion(bFullVersion);
 	if(ProfileManager.IsFullVersion())
@@ -798,7 +798,7 @@ int SonyCommerce::downloadList(DownloadListInputParams &params)
 	return CELL_OK;	
 }
 
-void SonyCommerce::UpgradeTrialCallback2(LPVOID lpParam,int err)
+void SonyCommerce::UpgradeTrialCallback2(void* lpParam,int err)
 {
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback2 : err : 0x%08x\n", err);
 	SonyCommerce::CheckForTrialUpgradeKey();
@@ -811,7 +811,7 @@ void SonyCommerce::UpgradeTrialCallback2(LPVOID lpParam,int err)
 	m_trialUpgradeCallbackFunc(m_trialUpgradeCallbackParam, m_errorCode);
 }
 
-void SonyCommerce::UpgradeTrialCallback1(LPVOID lpParam,int err)
+void SonyCommerce::UpgradeTrialCallback1(void* lpParam,int err)
 {
 
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback1 : err : 0x%08x\n", err);
@@ -847,7 +847,7 @@ void SonyCommerce_UpgradeTrial()
 	app.UpgradeTrial();
 }
 
-void SonyCommerce::UpgradeTrial(CallbackFunc cb, LPVOID lpParam)
+void SonyCommerce::UpgradeTrial(CallbackFunc cb, void* lpParam)
 {
 	m_trialUpgradeCallbackFunc = cb;
 	m_trialUpgradeCallbackParam = lpParam;
@@ -1383,7 +1383,7 @@ int SonyCommerce::commerceEnd()
 	return ret;
 }
 
-void SonyCommerce::CreateSession( CallbackFunc cb, LPVOID lpParam )
+void SonyCommerce::CreateSession( CallbackFunc cb, void* lpParam )
 {
 	Init();
 	EnterCriticalSection(&m_queueLock);
@@ -1406,7 +1406,7 @@ void SonyCommerce::CloseSession()
 	Shutdown();
 }
 
-void SonyCommerce::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
+void SonyCommerce::GetProductList( CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1416,7 +1416,7 @@ void SonyCommerce::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vector<
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce::GetDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1428,7 +1428,7 @@ void SonyCommerce::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, Prod
 }
 
 // 4J-PB - fill out the long description and the price for the product
-void SonyCommerce::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce::AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1438,7 +1438,7 @@ void SonyCommerce::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, Prod
 	m_messageQueue.push(e_message_commerceAddDetailedProductInfo);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId )
+void SonyCommerce::GetCategoryInfo( CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1448,7 +1448,7 @@ void SonyCommerce::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, CategoryInf
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce::Checkout( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce::Checkout( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	if(m_memContainer != SYS_MEMORY_CONTAINER_ID_INVALID)
 	{
@@ -1469,7 +1469,7 @@ void SonyCommerce::Checkout( CallbackFunc cb, LPVOID lpParam, const char* skuID 
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce::DownloadAlreadyPurchased( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	if(m_memContainer != SYS_MEMORY_CONTAINER_ID_INVALID)
 		return;
@@ -1487,6 +1487,5 @@ void SonyCommerce::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam, co
 	m_messageQueue.push(e_message_commerceDownloadList);
 	LeaveCriticalSection(&m_queueLock);
 }
-
 
 
