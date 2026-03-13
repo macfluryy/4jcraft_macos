@@ -19,8 +19,9 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h)
 	int ph = (h >> bits) + 3;
 	intArray p = parent->getArea(px, py, pw, ph);
 
-	int ww = pw << bits;
-	int hh = ph << bits;
+	// 4jcraft added all those casts to unsigned
+	int ww = (unsigned) pw << bits;
+	int hh = (unsigned) ph << bits;
 	intArray tmp = IntCache::allocate(ww * hh);
 	for (int y = 0; y < ph - 1; y++)
 	{
@@ -29,16 +30,16 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h)
 		for (int x = 0; x < pw - 1; x++)
 		{
 			double s = ss * 0.9;
-			initRandom((x + px) << bits, (y + py) << bits);
+			initRandom((unsigned) (x + px) << bits, (unsigned) (y + py) << bits);
 			double x0 = (nextRandom(1024) / 1024.0 - 0.5) * s;
 			double y0 = (nextRandom(1024) / 1024.0 - 0.5) * s;
-			initRandom((x + px + 1) << bits, (y + py) << bits);
+			initRandom((unsigned) (x + px + 1) << bits, (unsigned) (y + py) << bits);
 			double x1 = (nextRandom(1024) / 1024.0 - 0.5) * s + ss;
 			double y1 = (nextRandom(1024) / 1024.0 - 0.5) * s;
-			initRandom((x + px) << bits, (y + py + 1) << bits);
+			initRandom((unsigned) (x + px) << bits, (unsigned) (y + py + 1) << bits);
 			double x2 = (nextRandom(1024) / 1024.0 - 0.5) * s;
 			double y2 = (nextRandom(1024) / 1024.0 - 0.5) * s + ss;
-			initRandom((x + px + 1) << bits, (y + py + 1) << bits);
+			initRandom((unsigned) (x + px + 1) << bits, (unsigned) (y + py + 1) << bits);
 			double x3 = (nextRandom(1024) / 1024.0 - 0.5) * s + ss;
 			double y3 = (nextRandom(1024) / 1024.0 - 0.5) * s + ss;
 
@@ -47,7 +48,7 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h)
 
 			for (int yy = 0; yy < ss; yy++)
 			{
-				int pp = ((y << bits) + yy) * ww + ((x << bits));
+				int pp = ((unsigned) (y << bits) + yy) * ww + ((unsigned) (x << bits));
 				for (int xx = 0; xx < ss; xx++)
 				{
 					double d0 = ((yy - y0) * (yy - y0) + (xx - x0) * (xx - x0));
@@ -81,7 +82,7 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h)
 	intArray result = IntCache::allocate(w * h);
 	for (int y = 0; y < h; y++)
 	{
-		System::arraycopy(tmp, (y + (yo & (ss - 1))) * (pw << bits) + (xo & (ss - 1)), &result, y * w, w);
+		System::arraycopy(tmp, (y + (yo & (ss - 1))) * ((unsigned) pw << bits) + (xo & (ss - 1)), &result, y * w, w);
 	}
 	return result;
 }

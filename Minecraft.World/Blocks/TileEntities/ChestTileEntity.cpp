@@ -95,7 +95,11 @@ int ChestTileEntity::getName()
 void ChestTileEntity::load(CompoundTag *base)
 {
 	TileEntity::load(base);
-	ListTag<CompoundTag> *inventoryList = (ListTag<CompoundTag> *) base->getList(L"Items");
+
+	// 4jcraft, fixed cast of templated List to get the tag list
+	// and cast it to CompoundTag inside the loop
+	ListTag<Tag> *inventoryList = base->getList(L"Items");
+
 	if( items )
 	{
 		delete [] items->data;
@@ -104,7 +108,7 @@ void ChestTileEntity::load(CompoundTag *base)
 	items = new ItemInstanceArray(getContainerSize());
 	for (int i = 0; i < inventoryList->size(); i++)
 	{
-		CompoundTag *tag = inventoryList->get(i);
+		CompoundTag *tag = (CompoundTag*) inventoryList->get(i);
 		unsigned int slot = tag->getByte(L"Slot") & 0xff;
 		if (slot >= 0 && slot < items->length) (*items)[slot] = ItemInstance::fromTag(tag);
 	}

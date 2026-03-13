@@ -459,7 +459,7 @@ bool LevelChunk::isAt(int x, int z)
 
 int LevelChunk::getHeightmap(int x, int z)
 {
-    return heightmap[z << 4 | x] & 0xff;
+    return heightmap[(unsigned) z << 4 | x] & 0xff;
 }
 
 int LevelChunk::getHighestSectionPosition()
@@ -492,12 +492,12 @@ void LevelChunk::recalcHeightmapOnly()
 	for (int x = 0; x < 16; x++)
 		for (int z = 0; z < 16; z++)
 		{
-			rainHeights[x + (z << 4)] = 255; // 4J - changed from int to unsigned char & this special value changed from -999 to 255
+			rainHeights[x + ((unsigned) z << 4)] = 255; // 4J - changed from int to unsigned char & this special value changed from -999 to 255
 
 			int y = Level::maxBuildHeight - 1;
 			//            int p = x << level->depthBitsPlusFour | z << level->depthBits;		// 4J - removed
 #ifdef __PSVITA__
-			int Index = ( x << 11 ) + ( z << 7 );
+			int Index = ( (unsigned) x << 11 ) + ( (unsigned) z << 7 );
 			int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
             y = 127;
 			while (y > 0 && Tile::lightBlock[blockData[Index + offset + (y - 1)]] == 0)		// 4J - was blocks->get() was blocks[p + y - 1]
@@ -525,7 +525,7 @@ void LevelChunk::recalcHeightmapOnly()
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
 			}
 #endif
-			heightmap[z << 4 | x] = (uint8_t) y;
+			heightmap[(unsigned) z << 4 | x] = (uint8_t) y;
 			if (y < min) min = y;
 		}
 
@@ -553,7 +553,7 @@ void LevelChunk::recalcHeightmap()
 //            int p = x << level->depthBitsPlusFour | z << level->depthBits;			// 4J - removed
 			
 #ifdef __PSVITA__
-			int Index = ( x << 11 ) + ( z << 7 );
+			int Index = ( (unsigned) x << 11 ) + ( (unsigned) z << 7 );
 			int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
             y = 127;
 			while (y > 0 && Tile::lightBlock[blockData[Index + offset + (y - 1)]] == 0)		// 4J - was blocks->get() was blocks[p + y - 1]
@@ -581,7 +581,7 @@ void LevelChunk::recalcHeightmap()
 				blocks = (y-1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT?upperBlocks : lowerBlocks;
 			}
 #endif
-            heightmap[z << 4 | x] = (uint8_t) y;
+            heightmap[(unsigned) z << 4 | x] = (uint8_t) y;
             if (y < min) min = y;
 
             if (!level->dimension->hasCeiling)
@@ -788,7 +788,7 @@ void LevelChunk::lightGap(int x, int z, int y1, int y2)
 
 void LevelChunk::recalcHeight(int x, int yStart, int z)
 {
-    int yOld = heightmap[z << 4 | x] & 0xff;
+    int yOld = heightmap[(unsigned) z << 4 | x] & 0xff;
     int y = yOld;
     if (yStart > yOld) y = yStart;
 
@@ -803,7 +803,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z)
     if (y == yOld) return;
 
 //    level->lightColumnChanged(x, z, y, yOld);		// 4J - this call moved below & corrected - see comment further down
-    heightmap[z << 4 | x] = (uint8_t) y;
+    heightmap[(unsigned) z << 4 | x] = (uint8_t) y;
 
     if (y < minHeight)
 	{
@@ -815,7 +815,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z)
         for (int _x = 0; _x < 16; _x++)
             for (int _z = 0; _z < 16; _z++)
 			{
-                if ((heightmap[_z << 4 | _x] & 0xff) < min) min = (heightmap[_z << 4 | _x] & 0xff);
+                if ((heightmap[(unsigned) _z << 4 | _x] & 0xff) < min) min = (heightmap[(unsigned) _z << 4 | _x] & 0xff);
             }
         this->minHeight = min;
     }
@@ -865,7 +865,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z)
 	level->lightColumnChanged(xOffs, zOffs, y, yOld);
 
 	// 4J -  lighting changes brought forward from 1.8.2
-    int height = heightmap[z << 4 | x];
+    int height = heightmap[(unsigned) z << 4 | x];
     int y1 = yOld;
     int y2 = height;
     if (y2 < y1)
@@ -913,7 +913,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data)
     uint8_t tile = (uint8_t) _tile;
 
 	// Optimisation brought forward from 1.8.2, change from int to unsigned char & this special value changed from -999 to 255
-    int slot = z << 4 | x;
+    int slot = (unsigned) z << 4 | x;
 
     if (y >= ((int)rainHeights[slot]) - 1)
 	{
@@ -1246,7 +1246,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc)
 
 bool LevelChunk::isSkyLit(int x, int y, int z)
 {
-    return y >= (heightmap[z << 4 | x] & 0xff);
+    return y >= (heightmap[(unsigned) z << 4 | x] & 0xff);
 }
 
 void LevelChunk::skyBrightnessChanged()
@@ -1979,12 +1979,13 @@ bool LevelChunk::isYSpaceEmpty(int y1, int y2)
 
 Biome *LevelChunk::getBiome(int x, int z, BiomeSource *biomeSource)
 {
-	int value = biomes[(z << 4) | x] & 0xff;
+	int value = biomes[((unsigned) z << 4) | x] & 0xff;
 	if (value == 0xff)
 	{
-		Biome *biome = biomeSource->getBiome((this->x << 4) + x, (this->z << 4) + z);
+		// 4jcraft added casts to u
+		Biome *biome = biomeSource->getBiome(((unsigned) this->x << 4) + x, ((unsigned) this->z << 4) + z);
 		value = biome->id;
-		biomes[(z << 4) | x] = (uint8_t) (value & 0xff);
+		biomes[((unsigned) z << 4) | x] = (uint8_t) (value & 0xff);
 	}
 	if (Biome::biomes[value] == NULL)
 	{
@@ -2007,7 +2008,7 @@ void LevelChunk::setBiomes(byteArray biomes)
 // 4J - optimisation brought forward from 1.8.2
 int LevelChunk::getTopRainBlock(int x, int z)
 {
-    int slot = x | (z << 4);
+    int slot = x | ((unsigned) z << 4);
     int h = rainHeights[slot];
 
     if (h == 255)

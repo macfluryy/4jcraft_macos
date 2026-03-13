@@ -4,7 +4,7 @@
 #include "../Util/SharedConstants.h"
 #include "WoolCarpetTile.h"
 
-WoolCarpetTile::WoolCarpetTile(int id) : Tile(id, Material::clothDecoration, isSolidRender() )
+WoolCarpetTile::WoolCarpetTile(int id) : Tile(id, Material::clothDecoration, false)
 {
 	setShape(0, 0, 0, 1, 1 / 16.0f, 1);
 	setTicking(true);

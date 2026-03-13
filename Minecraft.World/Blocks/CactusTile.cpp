@@ -8,7 +8,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "CactusTile.h"
 
-CactusTile::CactusTile(int id) : Tile(id, Material::cactus,isSolidRender())
+CactusTile::CactusTile(int id) : Tile(id, Material::cactus, false)
 {
 	setTicking(true);
 	iconTop = NULL;

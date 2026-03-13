@@ -702,12 +702,12 @@ void MultiPlayerLevel::animateTickDoWork()
 		for( AUTO_VAR(it, chunksToAnimate.begin()); it != chunksToAnimate.end(); it++ )
 		{
 			int packed = *it;
-			int cx = ( packed << 8 ) >> 24;
-			int cy = ( packed << 16 ) >> 24;
-			int cz = ( packed << 24 ) >> 24;
-			cx <<= 3;
-			cy <<= 3;
-			cz <<= 3;
+			// 4jcraft changed the extraction logic to be safe
+			// constantly shifting a signed integer
+			int cx = (int8_t)(packed >> 16) * 8;
+			int cy = (int8_t)(packed >> 8) * 8;
+			int cz = (int8_t)packed * 8;
+
 			int x = cx + random->nextInt(8);
 			int y = cy + random->nextInt(8);
 			int z = cz + random->nextInt(8);

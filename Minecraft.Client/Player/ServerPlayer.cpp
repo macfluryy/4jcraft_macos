@@ -45,6 +45,9 @@ ServerPlayer::ServerPlayer(MinecraftServer *server, Level *level, const std::wst
 	m_enteredEndExitPortal = false;
 	lastCarried = ItemInstanceArray(5);
 	viewDistance = 10;
+	
+	// 4jcraft added (0 initialized)
+	m_lastDamageSource = eTelemetryChallenges_Unknown;
 
 //    gameMode->player = this;		// 4J - removed to avoid use of shared_from_this in ctor, now set up externally
     this->gameMode = gameMode;
@@ -540,7 +543,7 @@ void ServerPlayer::doTickB(bool ignorePortal)
 
     if (getHealth() != lastSentHealth || lastSentFood != foodData.getFoodLevel() || ((foodData.getSaturationLevel() == 0) != lastFoodSaturationZero))
 	{
-		// 4J Stu - Added m_lastDamageSource for telemetry
+		// 4J Stu - Added m_lastDamageSource for telemetry //4jcraft, nice but you never initialized it
 		connection->send( std::shared_ptr<SetHealthPacket>( new SetHealthPacket(getHealth(), foodData.getFoodLevel(), foodData.getSaturationLevel(), m_lastDamageSource) ) );
         lastSentHealth = getHealth();
 		lastSentFood = foodData.getFoodLevel();

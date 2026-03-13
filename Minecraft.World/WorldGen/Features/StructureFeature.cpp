@@ -42,8 +42,8 @@ bool StructureFeature::postProcess(Level *level, Random *random, int chunkX, int
 	// Normal feature generation offsets generation by half a chunk to ensure that it can generate the entire feature in chunks already created
 	// Structure features don't need this, as the PlaceBlock function only places blocks inside the BoundingBox specified, and parts
 	// of a struture piece can be added in more than one post-process call
-    int cx = (chunkX << 4); // + 8;
-    int cz = (chunkZ << 4); // + 8;
+    int cx = ((unsigned) chunkX << 4); // + 8;
+    int cz = ((unsigned)chunkZ << 4); // + 8;
 
     bool intersection = false;
 	for( AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end(); it++ )

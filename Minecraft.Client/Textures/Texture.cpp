@@ -660,10 +660,11 @@ void Texture::transferFromImage(BufferedImage *image)
 						int c3 = data[level - 1]->getInt(((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
 #ifndef _XBOX
 						// 4J - convert our RGBA texels to ARGB that crispBlend is expecting
-						c0 = ( ( c0 >> 8 ) & 0x00ffffff ) | ( c0 << 24 );
-						c1 = ( ( c1 >> 8 ) & 0x00ffffff ) | ( c1 << 24 );
-						c2 = ( ( c2 >> 8 ) & 0x00ffffff ) | ( c2 << 24 );
-						c3 = ( ( c3 >> 8 ) & 0x00ffffff ) | ( c3 << 24 );
+						// 4jcraft, added uint cast to pervent shift of neg int
+						c0 = ( ( c0 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c0 << 24 );
+						c1 = ( ( c1 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c1 << 24 );
+						c2 = ( ( c2 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c2 << 24 );
+						c3 = ( ( c3 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c3 << 24 );
 #endif
 						int col = crispBlend(crispBlend(c0, c1), crispBlend(c2, c3));
 						// 4J - and back from ARGB -> RGBA

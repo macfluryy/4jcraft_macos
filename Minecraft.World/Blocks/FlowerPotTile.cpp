@@ -5,7 +5,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "FlowerPotTile.h"
 
-FlowerPotTile::FlowerPotTile(int id) : Tile(id, Material::decoration, isSolidRender() )
+FlowerPotTile::FlowerPotTile(int id) : Tile(id, Material::decoration, false)
 {
 	updateDefaultShape();
 	sendTileData();

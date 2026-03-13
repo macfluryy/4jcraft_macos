@@ -475,7 +475,8 @@ void ServerLevel::tickTiles()
 		// 4J - changes here brought forrward from 1.2.3
 		if (random->nextInt(16) == 0)
 		{
-            randValue = randValue * 3 + addend;
+			//4jcraft added cast to unsigned
+            randValue = (unsigned)randValue * 3 + (unsigned)addend;
             int val = (randValue >> 2);
             int x = (val & 15);
             int z = ((val >> 8) & 15);
@@ -631,9 +632,10 @@ std::vector<TickNextTickData> *ServerLevel::fetchTicksInChunk(LevelChunk *chunk,
     std::vector<TickNextTickData> *results = new std::vector<TickNextTickData>;
 
     ChunkPos *pos = chunk->getPos();
-    int west = pos->x << 4;
+    // 4jcraft added cast to unsigned
+    int west = (unsigned) pos->x << 4;
     int east = west + 16;
-    int north = pos->z << 4;
+    int north =(unsigned)  pos->z << 4;
     int south = north + 16;
 	delete pos;
 
@@ -1414,7 +1416,8 @@ int ServerLevel::runUpdate(void* lpParam)
 
 				for (int j = 0; j < 80; j++)
 				{
-					m_randValue[iLev] = m_randValue[iLev] * 3 + m_level[iLev]->addend;
+					// 4jcraft added cast to unsigned
+					m_randValue[iLev] = (unsigned) m_randValue[iLev] * 3 + (unsigned) m_level[iLev]->addend;
 					int val = (m_randValue[iLev] >> 2);
 					int x = (val & 15);
 					if( ( x < minx ) || ( x > maxx ) ) continue;

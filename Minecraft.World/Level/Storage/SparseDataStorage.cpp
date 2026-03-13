@@ -39,9 +39,9 @@ SparseDataStorage::SparseDataStorage()
 	XMemSet(data, 0, 128 * 127);
 
 	// Data and count packs together the pointer to our data and the count of planes allocated - 127 planes allocated in this case
-#pragma warning ( disable : 4826 )
+
 	dataAndCount = 0x007F000000000000L | (( (__int64) planeIndices ) & 0x0000ffffffffffffL);
-#pragma warning ( default : 4826 )
+
 #ifdef DATA_COMPRESSION_STATS
 	count = 128;
 #endif
@@ -58,9 +58,9 @@ SparseDataStorage::SparseDataStorage(bool isUpper)
 	}
 
 	// Data and count packs together the pointer to our data and the count of planes allocated - 127 planes allocated in this case
-#pragma warning ( disable : 4826 )
+
 	dataAndCount = 0x0000000000000000L | (( (__int64) planeIndices ) & 0x0000ffffffffffffL);
-#pragma warning ( default : 4826 )
+
 #ifdef DATA_COMPRESSION_STATS
 	count = 128;
 #endif
@@ -96,9 +96,9 @@ SparseDataStorage::SparseDataStorage(SparseDataStorage *copyFrom)
 
 	// AP - I've moved this to be before the memcpy because of a very strange bug on vita. Sometimes dataAndCount wasn't valid in time when ::get was called.
 	// This should never happen and this isn't a proper solution but fixes it for now.
-#pragma warning ( disable : 4826 )
+
 	dataAndCount = ( sourceDataAndCount & 0xffff000000000000L ) | ( ((__int64) destIndicesAndData ) & 0x0000ffffffffffffL );
-#pragma warning ( default : 4826 )
+
 
 	XMemCpy( destIndicesAndData, sourceIndicesAndData, sourceCount * 128 + 128 );
 
@@ -175,9 +175,9 @@ void SparseDataStorage::setData(byteArray dataIn, unsigned int inOffset)
 	}
 
 	// Get new data and count packed info
-#pragma warning ( disable : 4826 )
+
 	__int64 newDataAndCount = ((__int64) planeIndices) & 0x0000ffffffffffffL;
-#pragma warning ( default : 4826 )
+
 	newDataAndCount |= ((__int64)allocatedPlaneCount) << 48;
 
 	updateDataAndCount( newDataAndCount );
@@ -400,9 +400,9 @@ void SparseDataStorage::addNewPlane(int y)
 		dataPointer[y] = lastLinesUsed;
 
 		// Get new data and count packed info
-#pragma warning ( disable : 4826 )
+
 		__int64 newDataAndCount = ((__int64) dataPointer) & 0x0000ffffffffffffL;
-#pragma warning ( default : 4826 )
+
 		newDataAndCount |= ((__int64)linesUsed) << 48;
 
 		// Attempt to update the data & count atomically. This command will Only succeed if the data stored at
@@ -557,9 +557,9 @@ int SparseDataStorage::compress()
 		}
 
 		// Get new data and count packed info
-#pragma warning ( disable : 4826 )
+
 		__int64 newDataAndCount = ((__int64) newIndicesAndData) & 0x0000ffffffffffffL;
-#pragma warning ( default : 4826 )
+
 		newDataAndCount |= ((__int64)planesToAlloc) << 48;
 
 		// Attempt to update the data & count atomically. This command will Only succeed if the data stored at
@@ -616,9 +616,9 @@ void SparseDataStorage::read(DataInputStream *dis)
 	byteArray wrapper(dataPointer, count * 128 + 128);
 	dis->readFully(wrapper);
 
-#pragma warning ( disable : 4826 )
+
 	__int64 newDataAndCount = ((__int64) dataPointer) & 0x0000ffffffffffffL;
-#pragma warning ( default : 4826 )
+
 	newDataAndCount |= ((__int64)count) << 48;
 
 	updateDataAndCount(newDataAndCount);

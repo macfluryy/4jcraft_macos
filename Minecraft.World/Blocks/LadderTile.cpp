@@ -3,7 +3,7 @@
 #include "LadderTile.h"
 
 
-LadderTile::LadderTile(int id) : Tile(id, Material::decoration,isSolidRender())
+LadderTile::LadderTile(int id) : Tile(id, Material::decoration, false)
 {
 }
 

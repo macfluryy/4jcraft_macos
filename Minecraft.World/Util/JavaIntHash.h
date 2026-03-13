@@ -9,11 +9,12 @@ struct IntKeyHash
 {
 	int operator() (const int &k) const
 	{
-		int h = k;
+		// 4jcraft added h to be unsigned, to not cast it later
+	unsigned int h = k;
         h += ~(h << 9);
-        h ^=  (((unsigned int)h) >> 14);
+        h ^=  (h >> 14);
         h +=  (h << 4);
-        h ^=  (((unsigned int)h) >> 10);
+        h ^=  (h >> 10);
 		return h;
 	}
 };

@@ -17,8 +17,9 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
 
     glPushMatrix();
 	
-	__int64 seed = cart->entityId * 493286711l;
-	seed = seed * seed * 4392167121l + seed * 98761;
+    // 4jcraft added a bunch of casts to prever overflow
+    int64_t seed = (int64_t)((uint64_t)cart->entityId * 493286711ULL);
+    seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 4392167121ULL) + ((uint64_t)seed * 98761ULL));
 
 	float xo = ((((seed >> 16) & 0x7) + 0.5f) / 8.0f - 0.5f) * 0.004f;
 	float yo = ((((seed >> 20) & 0x7) + 0.5f) / 8.0f - 0.5f) * 0.004f;
