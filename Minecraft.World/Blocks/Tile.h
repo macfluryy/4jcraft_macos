@@ -3,6 +3,7 @@
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
 #include "../Util/SoundTypes.h"
+#include <cstdint>
 #if !defined(_WIN32)
 #include <pthread.h>
 #endif
@@ -49,6 +50,13 @@ class Tile
 	friend class ChunkRebuildData;
 	friend class WallTile;
 
+public:
+#if defined(_WIN32)
+	using TlsKey = std::uint32_t;
+#else
+	using TlsKey = pthread_key_t;
+#endif
+
 protected:
 	// 4J added so we can have separate shapes for different threads
 	class ThreadStorage
@@ -58,11 +66,7 @@ protected:
 		int tileId;
 		ThreadStorage();
 	};
-#if defined(_WIN32)
-	static DWORD tlsIdxShape;
-#else
-	static pthread_key_t tlsIdxShape;
-#endif
+	static TlsKey tlsIdxShape;
 public:	
 	// Each new thread that needs to use Vec3 pools will need to call one of the following 2 functions, to either create its own
 	// local storage, or share the default storage already allocated by the main thread

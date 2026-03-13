@@ -12,12 +12,12 @@
 namespace
 {
 #if defined(_WIN32)
-	inline void *TheEndPortalTlsGetValue(DWORD key)
+	inline void *TheEndPortalTlsGetValue(TheEndPortal::TlsKey key)
 	{
 		return TlsGetValue(key);
 	}
 
-	inline void TheEndPortalTlsSetValue(DWORD key, void *value)
+	inline void TheEndPortalTlsSetValue(TheEndPortal::TlsKey key, void *value)
 	{
 		TlsSetValue(key, value);
 	}
@@ -42,9 +42,9 @@ namespace
 }
 
 #if defined(_WIN32)
-DWORD TheEndPortal::tlsIdx = TlsAlloc();
+TheEndPortal::TlsKey TheEndPortal::tlsIdx = TlsAlloc();
 #else
-pthread_key_t TheEndPortal::tlsIdx = CreateTheEndPortalTlsKey();
+TheEndPortal::TlsKey TheEndPortal::tlsIdx = CreateTheEndPortalTlsKey();
 #endif
 
 // 4J - allowAnywhere is a static in java, implementing as TLS here to make thread safe

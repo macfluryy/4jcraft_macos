@@ -1,5 +1,6 @@
 #pragma once
 #include "TileEntities/EntityTile.h"
+#include <cstdint>
 
 #if !defined(_WIN32)
 #include <pthread.h>
@@ -9,10 +10,12 @@ class TheEndPortal : public EntityTile
 {
 public:
 #if defined(_WIN32)
-	static DWORD tlsIdx;
+	using TlsKey = std::uint32_t;
 #else
-	static pthread_key_t tlsIdx;
+	using TlsKey = pthread_key_t;
 #endif
+
+	static TlsKey tlsIdx;
 	// 4J - was just a static but implemented with TLS for our version
     static bool allowAnywhere();	
 	static void allowAnywhere(bool set);	

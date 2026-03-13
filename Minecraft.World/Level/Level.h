@@ -9,6 +9,7 @@
 #include "../Util/ParticleTypes.h"
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
+#include <cstdint>
 #if !defined(_WIN32)
 #include <pthread.h>
 #endif
@@ -48,6 +49,12 @@ class VillageSiege;
 class Level : public LevelSource
 {
 public:
+#if defined(_WIN32)
+	using TlsKey = std::uint32_t;
+#else
+	using TlsKey = pthread_key_t;
+#endif
+
 	static const int MAX_TICK_TILES_PER_TICK = 1000;
 
 	// 4J Added
@@ -80,13 +87,8 @@ public:
 	int seaLevel;
 
 	// 4J - added, making instaTick flag use TLS so we can set it in the chunk rebuilding thread without upsetting the main game thread
-#if defined(_WIN32)
-	static DWORD tlsIdx;
-	static DWORD tlsIdxLightCache;
-#else
-	static pthread_key_t tlsIdx;
-	static pthread_key_t tlsIdxLightCache;
-#endif
+	static TlsKey tlsIdx;
+	static TlsKey tlsIdxLightCache;
 	static void enableLightingCache();
 	static void destroyLightingCache();
 	static bool getCacheTestEnabled();

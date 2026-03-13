@@ -47,12 +47,12 @@
 namespace
 {
 #if defined(_WIN32)
-	inline void *LevelTlsGetValue(DWORD key)
+	inline void *LevelTlsGetValue(Level::TlsKey key)
 	{
 		return TlsGetValue(key);
 	}
 
-	inline void LevelTlsSetValue(DWORD key, void *value)
+	inline void LevelTlsSetValue(Level::TlsKey key, void *value)
 	{
 		TlsSetValue(key, value);
 	}
@@ -77,11 +77,11 @@ namespace
 }
 
 #if defined(_WIN32)
-DWORD Level::tlsIdx = TlsAlloc();
-DWORD Level::tlsIdxLightCache = TlsAlloc();
+Level::TlsKey Level::tlsIdx = TlsAlloc();
+Level::TlsKey Level::tlsIdxLightCache = TlsAlloc();
 #else
-pthread_key_t Level::tlsIdx = CreateLevelTlsKey();
-pthread_key_t Level::tlsIdxLightCache = CreateLevelTlsKey();
+Level::TlsKey Level::tlsIdx = CreateLevelTlsKey();
+Level::TlsKey Level::tlsIdxLightCache = CreateLevelTlsKey();
 #endif
 
 // 4J : WESTY : Added for time played stats.
