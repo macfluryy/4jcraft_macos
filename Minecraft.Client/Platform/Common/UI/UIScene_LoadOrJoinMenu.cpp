@@ -955,10 +955,10 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons()
 
 void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled)
 {
-    // if(m_bIgnoreInput) return;
+    if(m_bIgnoreInput) return;
 
     // if we're retrieving save info, ignore key presses
-    // if(!m_bSavesDisplayed) return;
+    if(!m_bSavesDisplayed) return;
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

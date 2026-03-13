@@ -272,10 +272,10 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, void *lpParamet
 	app.DebugPrintf("[NET] DLC check: completed=%d pending=%d\n", app.DLCInstallProcessCompleted(), app.DLCInstallPending());
 	// 4J Stu - Wait a while to make sure that DLC is loaded. This is the last point before the network communication starts
 	// so the latest we can check this
-	// while( !app.DLCInstallProcessCompleted() && app.DLCInstallPending() && !g_NetworkManager.IsLeavingGame() )
-	// {
-	// 	Sleep( 10 );
-	// }
+	while( !app.DLCInstallProcessCompleted() && app.DLCInstallPending() && !g_NetworkManager.IsLeavingGame() )
+	{
+		Sleep( 10 );
+	}
 	if( g_NetworkManager.IsLeavingGame() )
 	{
 		MinecraftServer::HaltServer();
