@@ -365,7 +365,9 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 
 // 		if (false) //(true) 
 // 		{
-// 			renderBossHealth();
+#ifdef ENABLE_JAVA_GUIS
+		renderBossHealth();
+#endif
 // 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -1028,39 +1030,39 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse)
 }
 
 // Moved to the xui base scene
-// void Gui::renderBossHealth(void)
-// {
-// 	if (EnderDragonRenderer::bossInstance == NULL) return;
-// 
-// 	std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
-// 	EnderDragonRenderer::bossInstance = NULL;
-// 
-// 	Minecraft *pMinecraft=Minecraft::GetInstance();
-// 
-// 	Font *font = pMinecraft->font;
-// 
-// 	ScreenSizeCalculator ssc(pMinecraft->options, pMinecraft->width_phys, pMinecraft->height_phys);
-// 	int screenWidth = ssc.getWidth();
-// 
-// 	int w = 182;
-// 	int xLeft = screenWidth / 2 - w / 2;
-// 
-// 	int progress = (int) (boss->getSynchedHealth() / (float) boss->getMaxHealth() * (float) (w + 1));
-// 
-// 	int yo = 12;
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	if (progress > 0) 
-// 	{
-// 		blit(xLeft, yo, 0, 79, progress, 5);
-// 	}
-// 
-// 	std::wstring msg = L"Boss health - NON LOCALISED";
-// 	font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10, 0xff00ff);
-// 	glColor4f(1, 1, 1, 1);
-// 	glBindTexture(GL_TEXTURE_2D, pMinecraft->textures->loadTexture(TN_GUI_ICONS) );//"/gui/icons.png"));
-// 
-// }
+void Gui::renderBossHealth(void)
+{
+	if (EnderDragonRenderer::bossInstance == NULL) return;
+
+	std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
+	EnderDragonRenderer::bossInstance = NULL;
+
+	Minecraft *pMinecraft=Minecraft::GetInstance();
+
+	Font *font = pMinecraft->font;
+
+	ScreenSizeCalculator ssc(pMinecraft->options, pMinecraft->width_phys, pMinecraft->height_phys);
+	int screenWidth = ssc.getWidth();
+
+	int w = 182;
+	int xLeft = screenWidth / 2 - w / 2;
+
+	int progress = (int) (boss->getSynchedHealth() / (float) boss->getMaxHealth() * (float) (w + 1));
+
+	int yo = 12;
+	blit(xLeft, yo, 0, 74, w, 5);
+	blit(xLeft, yo, 0, 74, w, 5);
+	if (progress > 0) 
+	{
+		blit(xLeft, yo, 0, 79, progress, 5);
+	}
+
+	std::wstring msg = L"Boss health"/*L"Boss health - NON LOCALISED"*/;
+	font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10, 0xff00ff);
+	glColor4f(1, 1, 1, 1);
+	glBindTexture(GL_TEXTURE_2D, pMinecraft->textures->loadTexture(TN_GUI_ICONS) );//"/gui/icons.png"));
+
+}
 
 void Gui::renderPumpkin(int w, int h)
 {
