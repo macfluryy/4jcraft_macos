@@ -36,8 +36,8 @@ struct BoundingBox;
 struct BoundingOrientedBox;
 struct BoundingFrustum;
 
-#pragma warning(push)
-#pragma warning(disable:4324 4820)
+
+
 
 //-------------------------------------------------------------------------------------
 // Bounding sphere
@@ -316,7 +316,7 @@ namespace TriangleTests
         // Test a triangle against six planes at once (see BoundingFrustum::GetPlanes)
 };
 
-#pragma warning(pop)
+
 
 /****************************************************************************
  *
@@ -324,8 +324,8 @@ namespace TriangleTests
  *
  ****************************************************************************/
 
-#pragma warning(push)
-#pragma warning(disable : 4068 4616 6001)
+
+
 
 #pragma prefast(push)
 #pragma prefast(disable : 25000, "FXMVECTOR is 16 bytes")
@@ -333,7 +333,7 @@ namespace TriangleTests
 #include "DirectXCollision.inl"
 
 #pragma prefast(pop)
-#pragma warning(pop)
+
 
 }; // namespace DirectX
 

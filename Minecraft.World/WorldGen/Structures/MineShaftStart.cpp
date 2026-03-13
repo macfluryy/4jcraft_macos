@@ -3,7 +3,8 @@
 
 MineShaftStart::MineShaftStart(Level *level, Random *random, int chunkX, int chunkZ)
 {
-	MineShaftPieces::MineShaftRoom *mineShaftRoom = new MineShaftPieces::MineShaftRoom(0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+	// 4jcraft added to unsigned
+	MineShaftPieces::MineShaftRoom *mineShaftRoom = new MineShaftPieces::MineShaftRoom(0, random, ((unsigned) chunkX << 4) + 2, ((unsigned) chunkZ << 4) + 2);
 	pieces.push_back(mineShaftRoom);
 	mineShaftRoom->addChildren(mineShaftRoom, &pieces, random);
 

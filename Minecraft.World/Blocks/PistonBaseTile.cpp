@@ -73,7 +73,7 @@ void PistonBaseTile::ignoreUpdate(bool set)
 	PistonTlsSetValue(tlsIdx, reinterpret_cast<void *>(static_cast<intptr_t>(set ? 1 : 0)));
 }
 
-PistonBaseTile::PistonBaseTile(int id, bool isSticky) : Tile(id, Material::piston, isSolidRender() )
+PistonBaseTile::PistonBaseTile(int id, bool isSticky) : Tile(id, Material::piston, false)
 {
 	// 4J - added initialiser
 	ignoreUpdate(false);

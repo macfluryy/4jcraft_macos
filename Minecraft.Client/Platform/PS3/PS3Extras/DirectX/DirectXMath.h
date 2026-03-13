@@ -49,12 +49,12 @@
 #endif
 #endif // !_XM_ARM_NEON_INTRINSICS_ && !_XM_SSE_INTRINSICS_ && !_XM_VMX128_INTRINSICS_ && !_XM_NO_INTRINSICS_
 
-#pragma warning(push)
-#pragma warning(disable:4514 4820 4985)
+
+
 #include <cmath>
 #include <float.h>
 // MGH - #include <malloc.h>
-#pragma warning(pop)
+
 
 
 #if defined(_XM_SSE_INTRINSICS_)
@@ -76,10 +76,10 @@
 #include <assert.h>
 
 
-#pragma warning(push)
-#pragma warning(disable : 4005 4668)
+
+
 #include <stdint.h>
-#pragma warning(pop)
+
 
 
 namespace DirectX
@@ -184,8 +184,8 @@ inline bool XMComparisonAnyOutOfBounds(uint32_t CR) { return (((CR) & XM_CRMASK_
  *
  ****************************************************************************/
 
-#pragma warning(push)
-#pragma warning(disable:4068 4201 4365 4324 4820)
+
+
 
 #pragma prefast(push)
 #pragma prefast(disable : 25000, "FXMVECTOR is 16 bytes")
@@ -703,7 +703,7 @@ __declspec(align(16)) struct XMFLOAT4X4A : public XMFLOAT4X4
 #endif
 
 #pragma prefast(pop)
-#pragma warning(pop)
+
 
 /****************************************************************************
  *
@@ -1746,8 +1746,8 @@ XMGLOBALCONST XMVECTORF32 g_XMsrgbA1            = { 1.055f, 1.055f, 1.055f, 1.0f
  *
  ****************************************************************************/
 
-#pragma warning(push)
-#pragma warning(disable:4068 4214 4204 4365 4616 4640 6001)
+
+
 
 #pragma prefast(push)
 #pragma prefast(disable : 25000, "FXMVECTOR is 16 bytes")
@@ -1855,7 +1855,7 @@ inline XMVECTOR XMVectorSplatConstantInt(int32_t IntConstant)
 
 
 #pragma prefast(pop)
-#pragma warning(pop)
+
 
 }; // namespace DirectX
 

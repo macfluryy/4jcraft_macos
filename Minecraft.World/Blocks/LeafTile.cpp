@@ -15,7 +15,11 @@ const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {	IDS_TILE_LEAVES_O
 
 const std::wstring LeafTile::TEXTURES[2][4] = { {L"leaves", L"leaves_spruce", L"leaves", L"leaves_jungle"}, {L"leaves_opaque", L"leaves_spruce_opaque", L"leaves_opaque", L"leaves_jungle_opaque"},};
 
-LeafTile::LeafTile(int id) : TransparentTile(id, Material::leaves, false, isSolidRender())
+// 4jcraft, this is the unitinialized vpointer fiassco of isSolidRender()
+// isSolidRender() returns !allowSame if !isServerLevel, else true
+// scince allowSame for TransparentTile right here is set to false
+// setting isSolidRender to true by default totally correct.
+LeafTile::LeafTile(int id) : TransparentTile(id, Material::leaves, false, true) 
 {
 	checkBuffer = NULL;
     fancyTextureSet = 0;

@@ -4,7 +4,7 @@
 
 class LevelType;
 
-#ifndef _CONTENT_PACAKGE
+#ifndef _CONTENT_PACKAGE
 #define _BIOME_OVERRIDE
 #endif
 

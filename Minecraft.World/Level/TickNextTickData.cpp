@@ -30,7 +30,8 @@ bool TickNextTickData::equals(const void *o) const
 
 int TickNextTickData::hashCode() const
 {
-	return (((x * 1024 * 1024) + (z * 1024) + y) * 256) + tileId;
+	// 4jcraft added cast to unsigned
+	return ((((unsigned) x * 1024 * 1024) + ((unsigned) z * 1024) + (unsigned) y) * 256) + tileId;
 }
 
 TickNextTickData *TickNextTickData::delay(__int64 l)

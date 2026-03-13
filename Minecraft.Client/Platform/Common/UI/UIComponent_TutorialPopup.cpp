@@ -23,6 +23,9 @@ UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void *initData, U
 	m_bSplitscreenGamertagVisible = false;
 
 	m_labelDescription.init(L"");
+
+	// 4jcraft added
+	m_tutorial = NULL;
 }
 
 std::wstring UIComponent_TutorialPopup::getMoviePath()
@@ -68,6 +71,9 @@ void UIComponent_TutorialPopup::handleReload()
 void UIComponent_TutorialPopup::SetTutorialDescription(TutorialPopupInfo *info)
 {
 	m_interactScene = info->interactScene;
+
+	// 4jcraft added
+	m_tutorial = info->tutorial;
 
 	std::wstring parsed = _SetIcon(info->icon, info->iAuxVal, info->isFoil, info->desc);
 	parsed = _SetImage( parsed );

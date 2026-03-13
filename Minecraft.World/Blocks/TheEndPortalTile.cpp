@@ -58,7 +58,7 @@ void TheEndPortal::allowAnywhere(bool set)
 	TheEndPortalTlsSetValue(tlsIdx, reinterpret_cast<void *>(static_cast<intptr_t>(set ? 1 : 0)));
 }
 
-TheEndPortal::TheEndPortal(int id, Material *material) : EntityTile(id, material, isSolidRender())
+TheEndPortal::TheEndPortal(int id, Material *material) : EntityTile(id, material, false)
 {
     this->setLightEmission(1.0f);
 }

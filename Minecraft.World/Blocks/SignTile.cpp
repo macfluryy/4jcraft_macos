@@ -5,7 +5,7 @@
 #include "TileEntities/SignTileEntity.h"
 #include "SignTile.h"
 
-SignTile::SignTile(int id, eINSTANCEOF clas, bool onGround) : EntityTile(id, Material::wood, isSolidRender())
+SignTile::SignTile(int id, eINSTANCEOF clas, bool onGround) : EntityTile(id, Material::wood, false)
 {
 	this->onGround = onGround;
 	this->clas = clas;

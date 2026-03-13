@@ -6,7 +6,7 @@
 #include "../Headers/net.minecraft.world.phys.h"
 #include "ReedTile.h"
 
-ReedTile::ReedTile(int id) : Tile( id, Material::plant,isSolidRender() )
+ReedTile::ReedTile(int id) : Tile( id, Material::plant, false)
 {
 	this->updateDefaultShape();
 	this->setTicking(true);

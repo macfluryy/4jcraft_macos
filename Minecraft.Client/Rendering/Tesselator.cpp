@@ -1049,9 +1049,10 @@ void Tesselator::normal(float x, float y, float z)
 	std::int8_t zz = (std::int8_t) (z * 127);
 	_normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
 #else
-	std::uint8_t xx = (std::uint8_t) (x * 127);
-	std::uint8_t yy = (std::uint8_t) (y * 127);
-	std::uint8_t zz = (std::uint8_t) (z * 127);
+	// 4jcraft copied the PSVITA branch, read comment above
+	std::int8_t xx = (std::int8_t) (x * 127);
+	std::int8_t yy = (std::int8_t) (y * 127);
+	std::int8_t zz = (std::int8_t) (z * 127);
 	_normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
 #endif
 }

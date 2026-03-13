@@ -144,7 +144,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)
 
                     for (int x = 0; x < CHUNK_WIDTH; x++)
 					{
-                        int offs = (x + xc * CHUNK_WIDTH) << Level::genDepthBitsPlusFour | (0 + zc * CHUNK_WIDTH) << Level::genDepthBits | (yc * CHUNK_HEIGHT + y);
+                        int offs = (unsigned) (x + (unsigned) xc * CHUNK_WIDTH) << Level::genDepthBitsPlusFour | ((unsigned) zc * CHUNK_WIDTH) << Level::genDepthBits | (yc * CHUNK_HEIGHT + y);
                         int step = 1 << Level::genDepthBits;
 						offs -= step;
                         double zStep = 1 / (double) CHUNK_WIDTH;
@@ -654,7 +654,8 @@ void RandomLevelSource::postProcess(ChunkSource *parent, int xt, int zt)
 	pprandom->setSeed(level->getSeed());
 	__int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
 	__int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
-	pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
+	// 4jcraft added casts to a higher int and unsigned
+	pprandom->setSeed((((uint64_t)xt * (uint64_t)xScale) + ((uint64_t)zt * (uint64_t)zScale)) ^ level->getSeed());
 
 	bool hasVillage = false;
 

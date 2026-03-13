@@ -54,8 +54,9 @@ void ChunkTilesUpdatePacket::read(DataInputStream *dis) //throws IOException
 #ifdef _LARGE_WORLDS
 	xc = dis->readShort();
 	zc = dis->readShort();
-	xc = ( xc << 16 ) >> 16;
-	zc = ( zc << 16 ) >> 16;
+	// 4jcraft changed shift back and forth to a down cast
+	xc = (int16_t) xc;
+	zc = (int16_t) zc;
 #else
 	xc = dis->read();
 	zc = dis->read();

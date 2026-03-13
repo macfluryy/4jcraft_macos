@@ -258,7 +258,8 @@ void Font::draw(const std::wstring& str, int x, int y, int color, bool dropShado
 		// if not set
 
 		if (dropShadow) // divide RGB by 4, preserve alpha
-			color = (color & 0xfcfcfc) >> 2 | (color & (-1 << 24));
+				// 4jcraft changed -1 << 24 to the value of 1 (0xFF FF FF FF)
+			color = (color & 0xfcfcfc) >> 2 | (color & (0xFFFFFFFF << 24));
 
 		glColor4f((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, (color >> 24 & 255) / 255.0F);
 

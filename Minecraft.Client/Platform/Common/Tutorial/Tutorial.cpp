@@ -343,6 +343,9 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad( iPad )
 	m_bHasTickedOnce = false;
 	m_firstTickTime = 0;
 
+	// 4jcraft added, not initialized
+	m_bSceneIsSplitscreen = false;
+
 	m_lastMessage = NULL;
 
 	lastMessageTime = 0;
@@ -1258,7 +1261,7 @@ void Tutorial::tick()
 	else
 	{
 		// if we've changed mode, we may need to change scene
-		if(m_bSceneIsSplitscreen!=(app.GetLocalPlayerCount()>1))
+		if(m_bSceneIsSplitscreen != (app.GetLocalPlayerCount() > 1))
 		{
 #ifdef _XBOX
 			app.TutorialSceneNavigateBack(m_iPad);

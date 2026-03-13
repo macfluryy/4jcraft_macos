@@ -1375,13 +1375,15 @@ void Entity::saveWithoutId(CompoundTag *entityTag)
 
 void Entity::load(CompoundTag *tag)
 {
-	ListTag<DoubleTag> *pos = (ListTag<DoubleTag> *) tag->getList(L"Pos");
-	ListTag<DoubleTag> *motion = (ListTag<DoubleTag> *) tag->getList(L"Motion");
-	ListTag<FloatTag> *rotation = (ListTag<FloatTag> *) tag->getList(L"Rotation");
+	// 4jcraft changed c style cast of templated class
+	// to getting the actual type and casting when needed
+	ListTag<Tag> *pos = tag->getList(L"Pos");
+	ListTag<Tag> *motion = tag->getList(L"Motion");
+	ListTag<Tag> *rotation = tag->getList(L"Rotation");
 
-	xd = motion->get(0)->data;
-	yd = motion->get(1)->data;
-	zd = motion->get(2)->data;
+	xd = ((DoubleTag*)motion->get(0))->data;
+	yd = ((DoubleTag*)motion->get(1))->data;
+	zd = ((DoubleTag*)motion->get(2))->data;
 
 	if (abs(xd) > 10.0)
 	{
@@ -1396,12 +1398,12 @@ void Entity::load(CompoundTag *tag)
 		zd = 0;
 	}
 
-	xo = xOld = x = pos->get(0)->data;
-	yo = yOld = y = pos->get(1)->data;
-	zo = zOld = z = pos->get(2)->data;
+	xo = xOld = x = ((DoubleTag*)pos->get(0))->data;
+	yo = yOld = y = ((DoubleTag*)pos->get(1))->data;
+	zo = zOld = z = ((DoubleTag*)pos->get(2))->data;
 
-	yRotO = yRot = rotation->get(0)->data;
-	xRotO = xRot = rotation->get(1)->data;
+	yRotO = yRot = ((FloatTag*)rotation->get(0))->data;
+	xRotO = xRot = ((FloatTag*)rotation->get(1))->data;
 
 	fallDistance = tag->getFloat(L"FallDistance");
 	onFire = tag->getShort(L"Fire");

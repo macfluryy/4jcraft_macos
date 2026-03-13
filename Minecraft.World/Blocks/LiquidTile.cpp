@@ -12,7 +12,7 @@ const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
 const std::wstring LiquidTile::TEXTURE_WATER_FLOW = L"water_flow";
 const std::wstring LiquidTile::TEXTURE_LAVA_FLOW = L"lava_flow";
 
-LiquidTile::LiquidTile(int id, Material *material) : Tile(id, material,isSolidRender())
+LiquidTile::LiquidTile(int id, Material *material) : Tile(id, material, false)
 {
     float yo = 0;
     float e = 0;

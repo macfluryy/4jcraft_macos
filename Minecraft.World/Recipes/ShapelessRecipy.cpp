@@ -128,7 +128,8 @@ void ShapelessRecipy::requires(INGREDIENTS_REQUIRED *pIngReq)
 		if (expected!=NULL) 
 		{			
 			int iAuxVal = (*ingredient)->getAuxValue();
-			TempIngReq.uiGridA[iCount++]=expected->id | iAuxVal<<24;
+			//4jcraft, added cast to uint, shift of negative int is undefined
+			TempIngReq.uiGridA[iCount++]=expected->id | (unsigned int) iAuxVal<<24;
 			// 4J-PB - put the ingredients in boxes 1,2,4,5 so we can see them in a 2x2 crafting screen
 			if(iCount==2) iCount=3;
 			bFound=false;

@@ -78,7 +78,9 @@ LevelChunk *McRegionChunkStorage::load(Level *level, int x, int z)
 	// If we can't find the chunk in the save file, then we should remove any entities we might have for that chunk
 	if(regionChunkInputStream == NULL)
 	{
-		__int64 index = ((__int64)(x) << 32) | (((__int64)(z))&0x00000000FFFFFFFF);
+		// 4jcraft fixed cast from int to int64 and taking the mask of the upper bits
+		// and cast to unsigned
+		uint64_t index = ((uint64_t)(uint32_t)(x) << 32) | (((uint64_t)(uint32_t)(z)));
 
 		AUTO_VAR(it, m_entityData.find(index));
 		if(it != m_entityData.end())
@@ -235,7 +237,8 @@ void McRegionChunkStorage::saveEntities(Level *level, LevelChunk *levelChunk)
 {
 #ifdef SPLIT_SAVES
 	PIXBeginNamedEvent(0,"Saving entities");
-	__int64 index = ((__int64)(levelChunk->x) << 32) | (((__int64)(levelChunk->z))&0x00000000FFFFFFFF);
+	// 4j added cast to unsigned and changed index to u
+	uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) | (((uint64_t)(uint32_t)(levelChunk->z)));
 
 	delete m_entityData[index].data;
 

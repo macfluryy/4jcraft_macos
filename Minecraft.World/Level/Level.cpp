@@ -3266,7 +3266,7 @@ void Level::tickClientSideTiles(int xo, int zo, LevelChunk *lc)
 
 	if (delayUntilNextMoodSound == 0)
 	{
-		randValue = randValue * 3 + addend;
+		randValue = (unsigned) randValue * 3 + (unsigned) addend;
 		int val = (randValue >> 2);
 		int x = (val & 15);
 		int z = ((val >> 8) & 15);

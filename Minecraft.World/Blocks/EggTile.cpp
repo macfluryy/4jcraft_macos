@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.entity.item.h"
 
-EggTile::EggTile(int id) : Tile(id, Material::egg, isSolidRender())
+EggTile::EggTile(int id) : Tile(id, Material::egg, false) 
 {
 }
 

@@ -8,7 +8,7 @@
 #include "../Headers/net.minecraft.stats.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 
-VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, isSolidRender() )
+VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, false)
 {
     setTicking(true);
 }
