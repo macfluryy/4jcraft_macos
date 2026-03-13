@@ -1,10 +1,17 @@
-#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.locale.h"
 #include "../Items/ItemInstance.h"
-#include "Achievements.h"
+#include "../Platform/stdafx.h"
 #include "../Util/DescFormatter.h"
 #include "Achievement.h"
+#include "Achievements.h"
 
+/**
+ * @brief Performs internal initialization for the achievement.
+ *
+ * Updates the global achievement grid bounds.
+ * These bounds are used for rendering the
+ * achievement UI.
+ */
 void Achievement::_init() {
     isGoldenVar = false;
 
@@ -14,6 +21,16 @@ void Achievement::_init() {
     if (y > Achievements::yMax) Achievements::yMax = y;
 }
 
+/**
+ * @brief Creates an achievement with an item icon.
+ *
+ * @param id Local achievement ID
+ * @param name Internal achievement name used for localization
+ * @param x X position in the achievement tree
+ * @param y Y position in the achievement tree
+ * @param icon Item used as the achievement icon
+ * @param requires Achievement object that is required to unlock this one
+ */
 Achievement::Achievement(int id, const std::wstring& name, int x, int y,
                          Item* icon, Achievement* requires)
     : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
@@ -48,16 +65,52 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       y(y),
       requires(requires) {}
 
-          Achievement
-          * Achievement::setAwardLocallyOnly() {
+/**
+ * @brief Sets the decription formatter (DescFormatter)
+ * @param descFormatter Pointer to the DescFormatter formatting the description text.
+ * @return self
+**/
+Achievement* Achievement::setDescFormatter(DescFormatter* descFormatter) {
+    this->descFormatter = descFormatter;
+    return this;
+}
+
+
+/**
+ * @brief Returns whether the Achivement is golden
+ * @return boolean
+ */
+bool Achievement::isGolden() { return isGoldenVar; }
+
+int Achievement::getAchievementID() {
+    return id - Achievements::ACHIEVEMENT_OFFSET;
+}
+
+/**
+ * @brief Marks the achievement as locally awarded only.
+ * @return self
+ */
+Achievement* Achievement::setAwardLocallyOnly() {
     awardLocallyOnly = true;
     return this;
 }
 
+/**
+ * @brief Marks the achievement as a golden achievement.
+ *
+ * Golden achievements are rendered differently
+ * in the achievement UI.
+ *
+ * @return self
+ */
 Achievement* Achievement::setGolden() {
     isGoldenVar = true;
     return this;
 }
+/**
+ * @brief Adds the achievement to the global achievement registry.
+ * @return This achievement instance
+ */
 
 Achievement* Achievement::postConstruct() {
     Stat::postConstruct();
@@ -67,22 +120,20 @@ Achievement* Achievement::postConstruct() {
     return this;
 }
 
+/**
+ * @brief Indicates that this stat represents an achievement.
+ *
+ * @return Always true
+ */
 bool Achievement::isAchievement() { return true; }
 
+/**
+ * @brief Gets the description of an Achivement according to it's DescFormatter'
+ * @return wstring
+ **/
 std::wstring Achievement::getDescription() {
     if (descFormatter != NULL) {
         return descFormatter->format(desc);
     }
     return desc;
-}
-
-Achievement* Achievement::setDescFormatter(DescFormatter* descFormatter) {
-    this->descFormatter = descFormatter;
-    return this;
-}
-
-bool Achievement::isGolden() { return isGoldenVar; }
-
-int Achievement::getAchievementID() {
-    return id - Achievements::ACHIEVEMENT_OFFSET;
 }
