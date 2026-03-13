@@ -1,8 +1,6 @@
 #pragma once
 
-class ClothDyeRecipes 
-{
-
+class ClothDyeRecipes {
 public:
-	void addRecipes(Recipes *r);
+    void addRecipes(Recipes* r);
 };

@@ -2,59 +2,58 @@
 
 #include "../Entity.h"
 
-class ExperienceOrb :  public Entity
-{
+class ExperienceOrb : public Entity {
 public:
-	virtual eINSTANCEOF GetType() { return eTYPE_EXPERIENCEORB; }
-	static Entity *create(Level *level) { return new ExperienceOrb(level); }
+    virtual eINSTANCEOF GetType() { return eTYPE_EXPERIENCEORB; }
+    static Entity* create(Level* level) { return new ExperienceOrb(level); }
 
 private:
-	static const int LIFETIME;
+    static const int LIFETIME;
 
 public:
-	int tickCount;
-	int age;
+    int tickCount;
+    int age;
 
-	int throwTime;
+    int throwTime;
 
 private:
-	int health;
-	int value;
-	std::shared_ptr<Player> followingPlayer;
-	int followingTime;
+    int health;
+    int value;
+    std::shared_ptr<Player> followingPlayer;
+    int followingTime;
 
-	void _init();
+    void _init();
 
 public:
-	ExperienceOrb(Level *level, double x, double y, double z, int count);
+    ExperienceOrb(Level* level, double x, double y, double z, int count);
 
 protected:
-	virtual bool makeStepSound();
+    virtual bool makeStepSound();
 
 public:
-	ExperienceOrb(Level *level);
+    ExperienceOrb(Level* level);
 
 protected:
-	virtual void defineSynchedData();
+    virtual void defineSynchedData();
 
 public:
-	virtual int getLightColor(float a);
-	virtual void tick();
-	virtual bool updateInWaterState();
+    virtual int getLightColor(float a);
+    virtual void tick();
+    virtual bool updateInWaterState();
 
 protected:
-	virtual void burn(int dmg);
+    virtual void burn(int dmg);
 
 public:
-	virtual bool hurt(DamageSource *source, int damage);
-	virtual void addAdditonalSaveData(CompoundTag *entityTag);
-	virtual void readAdditionalSaveData(CompoundTag *tag);
-	virtual void playerTouch(std::shared_ptr<Player> player);
-	int getValue();
-	int getIcon();
+    virtual bool hurt(DamageSource* source, int damage);
+    virtual void addAdditonalSaveData(CompoundTag* entityTag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
+    virtual void playerTouch(std::shared_ptr<Player> player);
+    int getValue();
+    int getIcon();
 
-	static int getExperienceValue(int maxValue);
-	virtual bool isAttackable();
+    static int getExperienceValue(int maxValue);
+    virtual bool isAttackable();
 
-	virtual bool shouldRender(Vec3 *c);	// 4J added
+    virtual bool shouldRender(Vec3* c);  // 4J added
 };

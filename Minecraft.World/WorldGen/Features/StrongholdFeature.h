@@ -5,7 +5,6 @@ class Biome;
 
 #include "../Structures/StructureStart.h"
 
-
 #include "../../Level/ChunkPos.h"
 
 // 4J Stu Added
@@ -16,30 +15,31 @@ class Biome;
 #define MAX_STRONGHOLD_ATTEMPTS 10
 #endif
 
-class StrongholdFeature : public StructureFeature
-{
+class StrongholdFeature : public StructureFeature {
 public:
-	static void staticCtor();
+    static void staticCtor();
+
 private:
-	static std::vector<Biome *> allowedBiomes;
+    static std::vector<Biome*> allowedBiomes;
 
     bool isSpotSelected;
-	static const int strongholdPos_length = 1;// Java game has 3, but xbox game only has 1 because of the world size;	// 4J added
-    ChunkPos *strongholdPos[strongholdPos_length];
+    static const int strongholdPos_length =
+        1;  // Java game has 3, but xbox game only has 1 because of the world
+            // size;	// 4J added
+    ChunkPos* strongholdPos[strongholdPos_length];
 
 public:
-	StrongholdFeature();
-	~StrongholdFeature();
+    StrongholdFeature();
+    ~StrongholdFeature();
 
 protected:
-	virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat=false);
-	std::vector<TilePos> *getGuesstimatedFeaturePositions();
-    virtual StructureStart *createStructureStart(int x, int z);
+    virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat = false);
+    std::vector<TilePos>* getGuesstimatedFeaturePositions();
+    virtual StructureStart* createStructureStart(int x, int z);
 
 private:
-	class StrongholdStart : public StructureStart
-	{
-	public:
-		StrongholdStart(Level *level, Random *random, int chunkX, int chunkZ);
+    class StrongholdStart : public StructureStart {
+    public:
+        StrongholdStart(Level* level, Random* random, int chunkX, int chunkZ);
     };
 };

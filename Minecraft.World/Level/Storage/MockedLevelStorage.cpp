@@ -7,43 +7,25 @@
 
 #include "../../IO/Files/ConsoleSaveFileIO.h"
 
-LevelData *MockedLevelStorage::prepareLevel() 
-{
+LevelData* MockedLevelStorage::prepareLevel() { return NULL; }
+
+void MockedLevelStorage::checkSession() {}
+
+ChunkStorage* MockedLevelStorage::createChunkStorage(Dimension* dimension) {
     return NULL;
 }
 
-void MockedLevelStorage::checkSession()
-{
-}
+void MockedLevelStorage::saveLevelData(
+    LevelData* levelData, std::vector<std::shared_ptr<Player> >* players) {}
 
-ChunkStorage *MockedLevelStorage::createChunkStorage(Dimension *dimension)
-{
-    return NULL;
-}
+void MockedLevelStorage::saveLevelData(LevelData* levelData) {}
 
-void MockedLevelStorage::saveLevelData(LevelData *levelData, std::vector<std::shared_ptr<Player> > *players)
-{
-}
+PlayerIO* MockedLevelStorage::getPlayerIO() { return NULL; }
 
-void MockedLevelStorage::saveLevelData(LevelData *levelData)
-{
-}
+void MockedLevelStorage::closeAll() {}
 
-PlayerIO *MockedLevelStorage::getPlayerIO()
-{
-    return NULL;
-}
-
-void MockedLevelStorage::closeAll() 
-{
-}
-
-ConsoleSavePath MockedLevelStorage::getDataFile(const std::wstring& id)
-{
+ConsoleSavePath MockedLevelStorage::getDataFile(const std::wstring& id) {
     return ConsoleSavePath(std::wstring(L""));
 }
 
-std::wstring MockedLevelStorage::getLevelId()
-{
-	return L"none";
-}
+std::wstring MockedLevelStorage::getLevelId() { return L"none"; }

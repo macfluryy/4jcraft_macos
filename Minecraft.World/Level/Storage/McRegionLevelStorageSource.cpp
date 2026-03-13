@@ -23,19 +23,16 @@ const std::tr1::wregex McRegionLevelStorageSource::FolderFilter::chunkFolderPatt
 const std::tr1::wregex McRegionLevelStorageSource::ChunkFilter::chunkFilePattern = std::tr1::wregex(L"c\\.(-?[0-9a-z]+)\\.(-?[0-9a-z]+)\\.dat");
 #endif
 
-McRegionLevelStorageSource::McRegionLevelStorageSource(File dir) : DirectoryLevelStorageSource(dir)
-{
+McRegionLevelStorageSource::McRegionLevelStorageSource(File dir)
+    : DirectoryLevelStorageSource(dir) {}
+
+std::wstring McRegionLevelStorageSource::getName() {
+    return L"Scaevolus' McRegion";
 }
 
-std::wstring McRegionLevelStorageSource::getName()
-{
-	return L"Scaevolus' McRegion";
-}
-
-std::vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
-{
-	// 4J Stu - We don't need to do directory lookups with the xbox save files
-	std::vector<LevelSummary *> *levels = new std::vector<LevelSummary *>;
+std::vector<LevelSummary*>* McRegionLevelStorageSource::getLevelList() {
+    // 4J Stu - We don't need to do directory lookups with the xbox save files
+    std::vector<LevelSummary*>* levels = new std::vector<LevelSummary*>;
 #if 0
 	std::vector<File *> *subFolders = baseDir.listFiles();
 	File *file;
@@ -67,53 +64,53 @@ std::vector<LevelSummary *> *McRegionLevelStorageSource::getLevelList()
 		}
 	}
 #endif
-	return levels;
+    return levels;
 }
 
-void McRegionLevelStorageSource::clearAll()
-{
+void McRegionLevelStorageSource::clearAll() {}
+
+std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(
+    ConsoleSaveFile* saveFile, const std::wstring& levelId,
+    bool createPlayerDir) {
+    //        return new LevelStorageProfilerDecorator(new
+    //        McRegionLevelStorage(baseDir, levelId, createPlayerDir));
+    return std::shared_ptr<LevelStorage>(
+        new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }
 
-std::shared_ptr<LevelStorage> McRegionLevelStorageSource::selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir) 
-{
-	//        return new LevelStorageProfilerDecorator(new McRegionLevelStorage(baseDir, levelId, createPlayerDir));
-	return std::shared_ptr<LevelStorage>(new McRegionLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
+bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile* saveFile,
+                                               const std::wstring& levelId) {
+    // check if there is old file format level data
+    LevelData* levelData = getDataTagFor(saveFile, levelId);
+    if (levelData == NULL || levelData->getVersion() != 0) {
+        delete levelData;
+        return false;
+    }
+    delete levelData;
+
+    return true;
 }
 
-bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId) 
-{
-	// check if there is old file format level data
-	LevelData *levelData = getDataTagFor(saveFile, levelId);
-	if (levelData == NULL || levelData->getVersion() != 0)
-	{
-		delete levelData;
-		return false;
-	}
-	delete levelData;
+bool McRegionLevelStorageSource::requiresConversion(
+    ConsoleSaveFile* saveFile, const std::wstring& levelId) {
+    LevelData* levelData = getDataTagFor(saveFile, levelId);
+    if (levelData == NULL || levelData->getVersion() != 0) {
+        delete levelData;
+        return false;
+    }
+    delete levelData;
 
-	return true;
+    return true;
 }
 
-bool McRegionLevelStorageSource::requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId)
-{
-	LevelData *levelData = getDataTagFor(saveFile, levelId);
-	if (levelData == NULL || levelData->getVersion() != 0)
-	{
-		delete levelData;
-		return false;
-	}
-	delete levelData;
-
-	return true;
-}
-
-bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress)
-{
-	assert(false);
-		// I removed this while updating the saves to use the single save file
-		// Will we ever use this convertLevel function anyway? The main issue is the check
-		// for the hellFolder.exists() which would require a slight change to the way our
-		// save files are structured
+bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile* saveFile,
+                                              const std::wstring& levelId,
+                                              ProgressListener* progress) {
+    assert(false);
+    // I removed this while updating the saves to use the single save file
+    // Will we ever use this convertLevel function anyway? The main issue is the
+    // check for the hellFolder.exists() which would require a slight change to
+    // the way our save files are structured
 #if 0
 	progress->progressStagePercentage(0);
 
@@ -168,7 +165,7 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile *saveFile, const s
 		eraseFolders(netherBaseFolders, normalRegions->size() + netherRegions->size() + normalBaseFolders->size(), totalCount, progress);
 	}
 #endif
-	return true;
+    return true;
 }
 
 #if 0
@@ -210,11 +207,12 @@ void McRegionLevelStorageSource::addRegions(File &baseFolder, std::vector<ChunkF
 }
 #endif
 
-void McRegionLevelStorageSource::convertRegions(File &baseFolder, std::vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress) 
-{
-	assert( false );
+void McRegionLevelStorageSource::convertRegions(
+    File& baseFolder, std::vector<ChunkFile*>* chunkFiles, int currentCount,
+    int totalCount, ProgressListener* progress) {
+    assert(false);
 
-	// 4J Stu - Removed, see comment in convertLevel above
+    // 4J Stu - Removed, see comment in convertLevel above
 #if 0
 	//Collections::sort(chunkFiles);
 	std::sort( chunkFiles->begin(), chunkFiles->end() );
@@ -266,25 +264,25 @@ void McRegionLevelStorageSource::convertRegions(File &baseFolder, std::vector<Ch
 	}
 	RegionFileCache::clear();
 #endif
-
 }
 
-void McRegionLevelStorageSource::eraseFolders(std::vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress)
-{
-	File *folder;
-	AUTO_VAR(itEnd, folders->end());
-	for (AUTO_VAR(it, folders->begin()); it != itEnd; it++)
-	{
-		folder = *it; //folders->at(i);
+void McRegionLevelStorageSource::eraseFolders(std::vector<File*>* folders,
+                                              int currentCount, int totalCount,
+                                              ProgressListener* progress) {
+    File* folder;
+    AUTO_VAR(itEnd, folders->end());
+    for (AUTO_VAR(it, folders->begin()); it != itEnd; it++) {
+        folder = *it;  // folders->at(i);
 
-		std::vector<File *> *files = folder->listFiles();
-		deleteRecursive(files);
-		folder->_delete();
+        std::vector<File*>* files = folder->listFiles();
+        deleteRecursive(files);
+        folder->_delete();
 
-		currentCount++;
-		int percent = (int) Math::round(100.0 * (double) currentCount / (double) totalCount);
-		progress->progressStagePercentage(percent);
-	}
+        currentCount++;
+        int percent =
+            (int)Math::round(100.0 * (double)currentCount / (double)totalCount);
+        progress->progressStagePercentage(percent);
+    }
 }
 
 #if 0

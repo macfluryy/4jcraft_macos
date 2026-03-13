@@ -1,13 +1,12 @@
 #pragma once
 #include "../WorldGen/Noise/Synth.h"
 
-class Emboss: public Synth
-{
+class Emboss : public Synth {
 private:
-    Synth *synth;
+    Synth* synth;
 
 public:
-    Emboss(Synth *synth);
+    Emboss(Synth* synth);
 
     virtual double getValue(double x, double y);
 };

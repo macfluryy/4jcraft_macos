@@ -2,20 +2,19 @@
 
 class Random;
 
-class PortalForcer
-{
+class PortalForcer {
 private:
-	Random *random;
+    Random* random;
 
 public:
-	// 4J Stu Added - Java has no ctor, but we need to initialise random
-	PortalForcer();
+    // 4J Stu Added - Java has no ctor, but we need to initialise random
+    PortalForcer();
 
-	void force(Level *level, std::shared_ptr<Entity> e);
-
-public:
-	bool findPortal(Level *level, std::shared_ptr<Entity> e);
+    void force(Level* level, std::shared_ptr<Entity> e);
 
 public:
-	bool createPortal(Level *level, std::shared_ptr<Entity> e);
+    bool findPortal(Level* level, std::shared_ptr<Entity> e);
+
+public:
+    bool createPortal(Level* level, std::shared_ptr<Entity> e);
 };

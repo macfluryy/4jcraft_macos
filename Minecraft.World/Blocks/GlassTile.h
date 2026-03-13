@@ -3,15 +3,14 @@
 
 class Random;
 
-class GlassTile : public HalfTransparentTile
-{
+class GlassTile : public HalfTransparentTile {
 public:
-	using HalfTransparentTile::isSolidRender;
+    using HalfTransparentTile::isSolidRender;
 
-	GlassTile(int id, Material *material, bool allowSame);
-	virtual int getResourceCount(Random *random);
-	virtual int getRenderLayer();
-	virtual bool isSolidRender();
-	virtual bool isCubeShaped();
-	virtual bool isSilkTouchable();
+    GlassTile(int id, Material* material, bool allowSame);
+    virtual int getResourceCount(Random* random);
+    virtual int getRenderLayer();
+    virtual bool isSolidRender();
+    virtual bool isCubeShaped();
+    virtual bool isSilkTouchable();
 };

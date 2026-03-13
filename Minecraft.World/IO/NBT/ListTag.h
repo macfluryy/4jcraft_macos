@@ -2,104 +2,89 @@
 
 #include "Tag.h"
 
-template <class T> class ListTag : public Tag
-{
+template <class T>
+class ListTag : public Tag {
 private:
-    std::vector<Tag *> list;
+    std::vector<Tag*> list;
     uint8_t type;
 
 public:
-	ListTag() : Tag(L"") {}
-	ListTag(const std::wstring &name) : Tag(name) {}
+    ListTag() : Tag(L"") {}
+    ListTag(const std::wstring& name) : Tag(name) {}
 
-    void write(DataOutput *dos)
-	{
-        if (list.size() > 0) type = (list[0])->getId();
-        else type = static_cast<uint8_t>(1);
+    void write(DataOutput* dos) {
+        if (list.size() > 0)
+            type = (list[0])->getId();
+        else
+            type = static_cast<uint8_t>(1);
 
         dos->writeByte(type);
         dos->writeInt((int)list.size());
 
-		AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
-            (*it)->write(dos);
-	}
-    void load(DataInput *dis)
-	{
+        AUTO_VAR(itEnd, list.end());
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) (*it)->write(dos);
+    }
+    void load(DataInput* dis) {
         type = dis->readByte();
         int size = dis->readInt();
 
         list.clear();
-        for (int i = 0; i < size; i++)
-		{
-            Tag *tag = Tag::newTag(type, L"");
+        for (int i = 0; i < size; i++) {
+            Tag* tag = Tag::newTag(type, L"");
             tag->load(dis);
             list.push_back(tag);
         }
-	}
+    }
 
-	uint8_t getId() { return TAG_List; }
+    uint8_t getId() { return TAG_List; }
 
-    std::wstring toString()
-	{
-		static wchar_t buf[64];
-		swprintf(buf,64,L"%d entries of type %ls",list.size(),Tag::getTagName(type));
-		return std::wstring( buf );
-	}
+    std::wstring toString() {
+        static wchar_t buf[64];
+        swprintf(buf, 64, L"%d entries of type %ls", list.size(),
+                 Tag::getTagName(type));
+        return std::wstring(buf);
+    }
 
-    void print(char *prefix, std::ostream out)
-	{
+    void print(char* prefix, std::ostream out) {
         printf(prefix);
 
-		out << prefix << "{" << std::endl;
+        out << prefix << "{" << std::endl;
 
-		char *newPrefix = new char[ strlen(prefix) + 4 ];
-		strcpy( newPrefix, prefix);
-		strcat( newPrefix, "   ");
-		AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
-            printf(newPrefix);
-		delete[] newPrefix;
-		out << prefix << "}" << std::endl;
-	}
+        char* newPrefix = new char[strlen(prefix) + 4];
+        strcpy(newPrefix, prefix);
+        strcat(newPrefix, "   ");
+        AUTO_VAR(itEnd, list.end());
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) printf(newPrefix);
+        delete[] newPrefix;
+        out << prefix << "}" << std::endl;
+    }
 
-    void add(T *tag)
-	{
+    void add(T* tag) {
         type = tag->getId();
         list.push_back(tag);
-	}
+    }
 
-    T *get(int index)
-	{
-		return (T *) list[index];
-	}
+    T* get(int index) { return (T*)list[index]; }
 
-    int size()
-	{
-		return (int)list.size();
-	}
+    int size() { return (int)list.size(); }
 
-	virtual ~ListTag()
-	{
-		AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
-		{
-			delete *it;
-		}
-	}
+    virtual ~ListTag() {
+        AUTO_VAR(itEnd, list.end());
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+            delete *it;
+        }
+    }
 
-	Tag *copy()
-	{
-		ListTag<T> *res = new ListTag<T>(getName());
-		res->type = type;
-		AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
-		{
-			T *copy = (T *) (*it)->copy();
-			res->list.push_back(copy);
-		}
-		return res;
-	}
+    Tag* copy() {
+        ListTag<T>* res = new ListTag<T>(getName());
+        res->type = type;
+        AUTO_VAR(itEnd, list.end());
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+            T* copy = (T*)(*it)->copy();
+            res->list.push_back(copy);
+        }
+        return res;
+    }
 
 #if 0
 	bool equals(Object obj)

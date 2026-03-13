@@ -1,9 +1,8 @@
 #pragma once
 
-enum MobType
-{
-	UNDEFINED,
+enum MobType {
+    UNDEFINED,
 
-	UNDEAD,
-	ARTHROPOD
+    UNDEAD,
+    ARTHROPOD
 };

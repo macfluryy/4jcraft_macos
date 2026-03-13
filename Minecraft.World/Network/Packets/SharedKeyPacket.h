@@ -2,8 +2,7 @@
 
 #include "Packet.h"
 
-class SharedKeyPacket : public Packet
-{
+class SharedKeyPacket : public Packet {
 #if 0
 	private byte[] keybytes = new uint8_t[]{};
 	private byte[] nonce = new uint8_t[]{};

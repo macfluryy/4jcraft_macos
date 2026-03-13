@@ -4,15 +4,14 @@
 
 class LevelType;
 
-class BiomeOverrideLayer : public Layer
-{
+class BiomeOverrideLayer : public Layer {
 private:
-	static const unsigned int width = 216;
-	static const unsigned int height = 216;
+    static const unsigned int width = 216;
+    static const unsigned int height = 216;
 
-	byteArray m_biomeOverride;
+    byteArray m_biomeOverride;
 
 public:
-	BiomeOverrideLayer(int seedMixup);
-	intArray getArea(int xo, int yo, int w, int h);
+    BiomeOverrideLayer(int seedMixup);
+    intArray getArea(int xo, int yo, int w, int h);
 };

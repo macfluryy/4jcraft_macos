@@ -5,60 +5,44 @@
 #include "PacketListener.h"
 #include "SetEntityDataPacket.h"
 
-
-
-SetEntityDataPacket::SetEntityDataPacket() 
-{
-	id = -1;
-	packedItems = NULL;
+SetEntityDataPacket::SetEntityDataPacket() {
+    id = -1;
+    packedItems = NULL;
 }
 
-SetEntityDataPacket::~SetEntityDataPacket()
-{
-	delete packedItems;
+SetEntityDataPacket::~SetEntityDataPacket() { delete packedItems; }
+
+SetEntityDataPacket::SetEntityDataPacket(
+    int id, std::shared_ptr<SynchedEntityData> entityData, bool notJustDirty) {
+    this->id = id;
+    if (notJustDirty) {
+        this->packedItems = entityData->getAll();
+    } else {
+        this->packedItems = entityData->packDirty();
+    }
 }
 
-SetEntityDataPacket::SetEntityDataPacket(int id, std::shared_ptr<SynchedEntityData> entityData, bool notJustDirty) 
+void SetEntityDataPacket::read(DataInputStream* dis)  // throws IOException
 {
-	this->id = id;
-	if(notJustDirty)
-	{
-		this->packedItems = entityData->getAll();
-	}
-	else
-	{
-		this->packedItems = entityData->packDirty();
-	}
+    id = dis->readInt();
+    packedItems = SynchedEntityData::unpack(dis);
 }
 
-void SetEntityDataPacket::read(DataInputStream *dis) //throws IOException
+void SetEntityDataPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	id = dis->readInt();
-	packedItems = SynchedEntityData::unpack(dis);
+    dos->writeInt(id);
+    SynchedEntityData::pack(packedItems, dos);
 }
 
-void SetEntityDataPacket::write(DataOutputStream *dos) //throws IOException 
-{
-	dos->writeInt(id);
-	SynchedEntityData::pack(packedItems, dos);
+void SetEntityDataPacket::handle(PacketListener* listener) {
+    listener->handleSetEntityData(shared_from_this());
 }
 
-void SetEntityDataPacket::handle(PacketListener *listener)
-{
-	listener->handleSetEntityData(shared_from_this());
-}
+int SetEntityDataPacket::getEstimatedSize() { return 5; }
 
-int SetEntityDataPacket::getEstimatedSize() 
-{
-	return 5;
-}
+bool SetEntityDataPacket::isAync() { return true; }
 
-bool SetEntityDataPacket::isAync()
-{
-	return true;
-}
-
-std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *SetEntityDataPacket::getUnpackedData()
-{
-	return packedItems;
+std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
+SetEntityDataPacket::getUnpackedData() {
+    return packedItems;
 }

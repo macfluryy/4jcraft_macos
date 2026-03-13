@@ -5,18 +5,17 @@
 class PathfinderMob;
 class DoorInfo;
 
-class RestrictOpenDoorGoal : public Goal
-{
+class RestrictOpenDoorGoal : public Goal {
 private:
-	PathfinderMob *mob;
-	std::weak_ptr<DoorInfo> doorInfo;
+    PathfinderMob* mob;
+    std::weak_ptr<DoorInfo> doorInfo;
 
 public:
-	RestrictOpenDoorGoal(PathfinderMob *mob);
+    RestrictOpenDoorGoal(PathfinderMob* mob);
 
-	virtual bool canUse();
-	virtual bool canContinueToUse();
-	virtual void start();
-	virtual void stop();
-	virtual void tick();
+    virtual bool canUse();
+    virtual bool canContinueToUse();
+    virtual void start();
+    virtual void stop();
+    virtual void tick();
 };

@@ -1,5 +1,3 @@
 #pragma once
 
-class TownFeature : public LargeFeature
-{
-};
+class TownFeature : public LargeFeature {};

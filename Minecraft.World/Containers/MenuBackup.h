@@ -3,19 +3,19 @@
 class AbstractContainerMenu;
 class Inventory;
 
-class MenuBackup
-{
+class MenuBackup {
 private:
-	std::unordered_map<short, ItemInstanceArray *> *backups;
-	std::shared_ptr<Inventory> inventory;
-	AbstractContainerMenu *menu;
+    std::unordered_map<short, ItemInstanceArray*>* backups;
+    std::shared_ptr<Inventory> inventory;
+    AbstractContainerMenu* menu;
 
 public:
-	MenuBackup(std::shared_ptr<Inventory> inventory, AbstractContainerMenu *menu);
+    MenuBackup(std::shared_ptr<Inventory> inventory,
+               AbstractContainerMenu* menu);
 
-	void save(short changeUid);
+    void save(short changeUid);
 
-	// Cannot use delete as function name as it is a reserved keyword
-	void deleteBackup(short changeUid);
-	void rollback(short changeUid);
+    // Cannot use delete as function name as it is a reserved keyword
+    void deleteBackup(short changeUid);
+    void rollback(short changeUid);
 };

@@ -2,52 +2,49 @@
 #include "Tag.h"
 #include "../../Platform/System.h"
 
-class ByteArrayTag : public Tag
-{
+class ByteArrayTag : public Tag {
 public:
-	byteArray data;
-	
-	ByteArrayTag(const std::wstring &name) : Tag(name) { }
-	ByteArrayTag(const std::wstring &name, byteArray data) : Tag(name) {this->data = data; }			// 4J - added ownData param
-	
-	void write(DataOutput *dos)
-	{
-		dos->writeInt(data.length);
-		dos->write(data);
-	}
+    byteArray data;
 
-	void load(DataInput *dis)
-	{
-		int length = dis->readInt();
-		
-		if ( data.data ) delete[] data.data;
-		data  = byteArray(length);
-		dis->readFully(data);
-	}
+    ByteArrayTag(const std::wstring& name) : Tag(name) {}
+    ByteArrayTag(const std::wstring& name, byteArray data) : Tag(name) {
+        this->data = data;
+    }  // 4J - added ownData param
 
-	uint8_t getId() { return TAG_Byte_Array; }
+    void write(DataOutput* dos) {
+        dos->writeInt(data.length);
+        dos->write(data);
+    }
 
-	std::wstring toString()
-	{
-		static wchar_t buf[32];
-		swprintf(buf, 32, L"[%d bytes]",data.length);
-		return std::wstring( buf );
-	}
+    void load(DataInput* dis) {
+        int length = dis->readInt();
 
-	bool equals(Tag *obj)
-	{
-		if (Tag::equals(obj))
-		{
-			ByteArrayTag *o = (ByteArrayTag *) obj;
-			return ((data.data == NULL && o->data.data == NULL) || (data.data != NULL && data.length == o->data.length && memcmp(data.data, o->data.data, data.length) == 0) );
-		}
-		return false;
-	}
+        if (data.data) delete[] data.data;
+        data = byteArray(length);
+        dis->readFully(data);
+    }
 
-	Tag *copy()
-	{
-		byteArray cp = byteArray(data.length);
-		System::arraycopy(data, 0, &cp, 0, data.length);
-		return new ByteArrayTag(getName(), cp);
-	}
+    uint8_t getId() { return TAG_Byte_Array; }
+
+    std::wstring toString() {
+        static wchar_t buf[32];
+        swprintf(buf, 32, L"[%d bytes]", data.length);
+        return std::wstring(buf);
+    }
+
+    bool equals(Tag* obj) {
+        if (Tag::equals(obj)) {
+            ByteArrayTag* o = (ByteArrayTag*)obj;
+            return ((data.data == NULL && o->data.data == NULL) ||
+                    (data.data != NULL && data.length == o->data.length &&
+                     memcmp(data.data, o->data.data, data.length) == 0));
+        }
+        return false;
+    }
+
+    Tag* copy() {
+        byteArray cp = byteArray(data.length);
+        System::arraycopy(data, 0, &cp, 0, data.length);
+        return new ByteArrayTag(getName(), cp);
+    }
 };

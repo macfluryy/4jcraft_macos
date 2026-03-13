@@ -19,7 +19,6 @@ import net.minecraft.world.level.tile.Tile;
 
 #pragma once
 
-
 class CraftingContainer;
 class FireTile;
 
@@ -32,80 +31,89 @@ class ToolRecipies;
 class WeaponRecipies;
 class ShapedRecipy;
 
-typedef std::unordered_map<wchar_t, ItemInstance *> myMap;
+typedef std::unordered_map<wchar_t, ItemInstance*> myMap;
 
-#define ADD_OBJECT(a,b) a.push_back(new Object(b))
+#define ADD_OBJECT(a, b) a.push_back(new Object(b))
 
-class Object
-{
+class Object {
 public:
-	union
-	{
-		Tile *tile;
-		FireTile *firetile;
-		Item *item;
-		MapItem *mapitem;
-		ItemInstance *iteminstance;
-	};
+    union {
+        Tile* tile;
+        FireTile* firetile;
+        Item* item;
+        MapItem* mapitem;
+        ItemInstance* iteminstance;
+    };
 
-	Object()			{ eType=eTYPE_NOTSET;}
-	Object(Tile *t)		{ eType=eType_TILE;tile=t;}
-	Object(FireTile *t)	{ eType=eType_FIRETILE;firetile=t;}
-	Object(Item *i)		{ eType=eType_ITEM; item=i;}
-	Object(MapItem *i)	{ eType=eType_MAPITEM;mapitem=i;}
-	Object(ItemInstance *i)	{ eType=eType_ITEMINSTANCE;iteminstance=i;}
+    Object() { eType = eTYPE_NOTSET; }
+    Object(Tile* t) {
+        eType = eType_TILE;
+        tile = t;
+    }
+    Object(FireTile* t) {
+        eType = eType_FIRETILE;
+        firetile = t;
+    }
+    Object(Item* i) {
+        eType = eType_ITEM;
+        item = i;
+    }
+    Object(MapItem* i) {
+        eType = eType_MAPITEM;
+        mapitem = i;
+    }
+    Object(ItemInstance* i) {
+        eType = eType_ITEMINSTANCE;
+        iteminstance = i;
+    }
 
-	eINSTANCEOF instanceof()	{ return eType;}
-	eINSTANCEOF GetType()		{ return eType; };
+    eINSTANCEOF instanceof() { return eType; }
+    eINSTANCEOF GetType() { return eType; };
 
 private:
-	eINSTANCEOF eType;
+    eINSTANCEOF eType;
 };
 
-class Recipes 
-{
+class Recipes {
 public:
-	static const int ANY_AUX_VALUE = -1;
-
-private: 
-	static Recipes *instance;
-
-	std::vector <Recipy *> *recipies;
-
-public:
-	static void staticCtor();
-
-public: 
-	static Recipes *getInstance() 
-	{
-		return instance;
-	}
-
-private: 
-	void _init(); // 4J add
-	Recipes();
-
-public:
-	ShapedRecipy *addShapedRecipy(ItemInstance *, ... );
-	void addShapelessRecipy(ItemInstance *result,... ); 
-
-	std::shared_ptr<ItemInstance> getItemFor(std::shared_ptr<CraftingContainer> craftSlots, Level *level);
-	std::vector <Recipy *> *getRecipies();
-
-	// 4J-PB - Added all below for new Xbox 'crafting'
-	std::shared_ptr<ItemInstance> getItemForRecipe(Recipy *r);
-	Recipy::INGREDIENTS_REQUIRED *getRecipeIngredientsArray();
+    static const int ANY_AUX_VALUE = -1;
 
 private:
-	void buildRecipeIngredientsArray();
-	Recipy::INGREDIENTS_REQUIRED *m_pRecipeIngredientsRequired;
+    static Recipes* instance;
 
+    std::vector<Recipy*>* recipies;
 
-	static ToolRecipies			*pToolRecipies;
-	static WeaponRecipies		*pWeaponRecipies;
-	static StructureRecipies	*pStructureRecipies;
-	static OreRecipies			*pOreRecipies;
-	static FoodRecipies			*pFoodRecipies;
-	static ClothDyeRecipes		*pClothDyeRecipes;
-	static ArmorRecipes			*pArmorRecipes;
+public:
+    static void staticCtor();
+
+public:
+    static Recipes* getInstance() { return instance; }
+
+private:
+    void _init();  // 4J add
+    Recipes();
+
+public:
+    ShapedRecipy* addShapedRecipy(ItemInstance*, ...);
+    void addShapelessRecipy(ItemInstance* result, ...);
+
+    std::shared_ptr<ItemInstance> getItemFor(
+        std::shared_ptr<CraftingContainer> craftSlots, Level* level);
+    std::vector<Recipy*>* getRecipies();
+
+    // 4J-PB - Added all below for new Xbox 'crafting'
+    std::shared_ptr<ItemInstance> getItemForRecipe(Recipy* r);
+    Recipy::INGREDIENTS_REQUIRED* getRecipeIngredientsArray();
+
+private:
+    void buildRecipeIngredientsArray();
+    Recipy::INGREDIENTS_REQUIRED* m_pRecipeIngredientsRequired;
+
+    static ToolRecipies* pToolRecipies;
+    static WeaponRecipies* pWeaponRecipies;
+    static StructureRecipies* pStructureRecipies;
+    static OreRecipies* pOreRecipies;
+    static FoodRecipies* pFoodRecipies;
+    static ClothDyeRecipes* pClothDyeRecipes;
+    static ArmorRecipes* pArmorRecipes;
 };

@@ -4,22 +4,10 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "RestrictSunGoal.h"
 
-RestrictSunGoal::RestrictSunGoal(PathfinderMob *mob)
-{
-	this->mob = mob;
-}
+RestrictSunGoal::RestrictSunGoal(PathfinderMob* mob) { this->mob = mob; }
 
-bool RestrictSunGoal::canUse()
-{
-	return mob->level->isDay();
-}
+bool RestrictSunGoal::canUse() { return mob->level->isDay(); }
 
-void RestrictSunGoal::start()
-{
-	mob->getNavigation()->setAvoidSun(true);
-}
+void RestrictSunGoal::start() { mob->getNavigation()->setAvoidSun(true); }
 
-void RestrictSunGoal::stop()
-{
-	mob->getNavigation()->setAvoidSun(false);
-}
+void RestrictSunGoal::stop() { mob->getNavigation()->setAvoidSun(false); }

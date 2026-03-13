@@ -4,15 +4,14 @@
 
 class TamableAnimal;
 
-class OwnerHurtTargetGoal : public TargetGoal
-{
+class OwnerHurtTargetGoal : public TargetGoal {
 private:
-	TamableAnimal *tameAnimal; // Owner of this goal
-	std::weak_ptr<Mob> ownerLastHurt;
+    TamableAnimal* tameAnimal;  // Owner of this goal
+    std::weak_ptr<Mob> ownerLastHurt;
 
 public:
-	OwnerHurtTargetGoal(TamableAnimal *tameAnimal);
+    OwnerHurtTargetGoal(TamableAnimal* tameAnimal);
 
-	bool canUse();
-	void start();
+    bool canUse();
+    void start();
 };

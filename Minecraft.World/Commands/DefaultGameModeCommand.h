@@ -4,12 +4,12 @@
 
 class GameType;
 
-class DefaultGameModeCommand : public GameModeCommand
-{
+class DefaultGameModeCommand : public GameModeCommand {
 public:
-	virtual EGameCommand getId();
-	virtual void execute(std::shared_ptr<CommandSender> source, byteArray commandData);
+    virtual EGameCommand getId();
+    virtual void execute(std::shared_ptr<CommandSender> source,
+                         byteArray commandData);
 
 protected:
-	void doSetGameType(GameType *newGameType);
+    void doSetGameType(GameType* newGameType);
 };

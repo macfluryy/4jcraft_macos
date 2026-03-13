@@ -4,54 +4,47 @@
 #include "PacketListener.h"
 #include "ComplexItemDataPacket.h"
 
+ComplexItemDataPacket::~ComplexItemDataPacket() { delete[] data.data; }
 
-
-ComplexItemDataPacket::~ComplexItemDataPacket()
-{
-	delete [] data.data;
+ComplexItemDataPacket::ComplexItemDataPacket() {
+    shouldDelay = true;
+    itemType = 0;
 }
 
-ComplexItemDataPacket::ComplexItemDataPacket()
-{
-	shouldDelay = true;
-	itemType = 0;
+ComplexItemDataPacket::ComplexItemDataPacket(short itemType, short itemId,
+                                             charArray data) {
+    shouldDelay = true;
+    this->itemType = itemType;
+    this->itemId = itemId;
+    // Take copy of array passed in as we want the packets to have full
+    // ownership of any data they reference
+    this->data = charArray(data.length);
+    memcpy(this->data.data, data.data, data.length);
 }
 
-ComplexItemDataPacket::ComplexItemDataPacket(short itemType, short itemId, charArray data)
+void ComplexItemDataPacket::read(DataInputStream* dis)  // throws IOException
 {
-	shouldDelay = true;
-	this->itemType = itemType;
-	this->itemId = itemId;
-	// Take copy of array passed in as we want the packets to have full ownership of any data they reference
-	this->data = charArray(data.length);
-	memcpy(this->data.data, data.data, data.length);
+    itemType = dis->readShort();
+    itemId = dis->readShort();
+
+    data = charArray(dis->readShort() & 0xffff);
+    dis->readFully(data);
 }
 
-void ComplexItemDataPacket::read(DataInputStream *dis) //throws IOException
+void ComplexItemDataPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	itemType = dis->readShort();
-	itemId = dis->readShort();
+    dos->writeShort(itemType);
+    dos->writeShort(itemId);
+    dos->writeShort(data.length);
 
-	data = charArray(dis->readShort() & 0xffff);
-	dis->readFully(data);
+    byteArray ba((uint8_t*)data.data, data.length);
+    dos->write(ba);
 }
 
-void ComplexItemDataPacket::write(DataOutputStream *dos) //throws IOException
-{
-	dos->writeShort(itemType);
-	dos->writeShort(itemId);
-	dos->writeShort(data.length);
-
-	byteArray ba( (uint8_t*)data.data, data.length );
-	dos->write(ba);
+void ComplexItemDataPacket::handle(PacketListener* listener) {
+    listener->handleComplexItemData(shared_from_this());
 }
 
-void ComplexItemDataPacket::handle(PacketListener *listener)
-{
-	listener->handleComplexItemData( shared_from_this() );
-}
-
-int ComplexItemDataPacket::getEstimatedSize()
-{
-	return 2+2+2+ data.length;
+int ComplexItemDataPacket::getEstimatedSize() {
+    return 2 + 2 + 2 + data.length;
 }

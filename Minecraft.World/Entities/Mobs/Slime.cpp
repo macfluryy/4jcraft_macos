@@ -14,274 +14,219 @@
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "../../Util/SoundTypes.h"
 
+void Slime::_init() {
+    jumpDelay = 0;
 
-
-void Slime::_init()
-{
-	jumpDelay = 0;
-
-	targetSquish = 0;
-	squish = 0;
-	oSquish = 0;
+    targetSquish = 0;
+    squish = 0;
+    oSquish = 0;
 }
 
-Slime::Slime(Level *level) : Mob( level )
-{
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
-	this->defineSynchedData();
+Slime::Slime(Level* level) : Mob(level) {
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called
+    this->defineSynchedData();
 
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that the derived version of the function is called
-	health = getMaxHealth();
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called
+    health = getMaxHealth();
 
-	_init();
+    _init();
 
-	this->textureIdx = TN_MOB_SLIME; // 4J was L"/mob/slime.png";
-	int size = 1 << (random->nextInt(3));
-	this->heightOffset = 0;
-	jumpDelay = random->nextInt(20) + 10;
-	setSize(size);
+    this->textureIdx = TN_MOB_SLIME;  // 4J was L"/mob/slime.png";
+    int size = 1 << (random->nextInt(3));
+    this->heightOffset = 0;
+    jumpDelay = random->nextInt(20) + 10;
+    setSize(size);
 }
 
-void Slime::defineSynchedData()
-{
-	Mob::defineSynchedData();
+void Slime::defineSynchedData() {
+    Mob::defineSynchedData();
 
-	entityData->define(ID_SIZE, (uint8_t) 1);
+    entityData->define(ID_SIZE, (uint8_t)1);
 }
 
-void Slime::setSize(int size)
-{
-	entityData->set(ID_SIZE, (uint8_t) size);
-	Mob::setSize(0.6f * size, 0.6f * size);
-	this->setPos(x, y, z);
-	setHealth(getMaxHealth());
-	xpReward = size;
+void Slime::setSize(int size) {
+    entityData->set(ID_SIZE, (uint8_t)size);
+    Mob::setSize(0.6f * size, 0.6f * size);
+    this->setPos(x, y, z);
+    setHealth(getMaxHealth());
+    xpReward = size;
 }
 
-int Slime::getMaxHealth()
-{
-	int size = getSize();
-	return size * size;
+int Slime::getMaxHealth() {
+    int size = getSize();
+    return size * size;
 }
 
-int Slime::getSize()
-{
-	return entityData->getByte(ID_SIZE);
+int Slime::getSize() { return entityData->getByte(ID_SIZE); }
+
+void Slime::addAdditonalSaveData(CompoundTag* tag) {
+    Mob::addAdditonalSaveData(tag);
+    tag->putInt(L"Size", getSize() - 1);
 }
 
-void Slime::addAdditonalSaveData(CompoundTag *tag)
-{
-	Mob::addAdditonalSaveData(tag);
-	tag->putInt(L"Size", getSize() - 1);
+void Slime::readAdditionalSaveData(CompoundTag* tag) {
+    Mob::readAdditionalSaveData(tag);
+    setSize(tag->getInt(L"Size") + 1);
 }
 
-void Slime::readAdditionalSaveData(CompoundTag *tag)
-{
-	Mob::readAdditionalSaveData(tag);
-	setSize(tag->getInt(L"Size") + 1);
+ePARTICLE_TYPE Slime::getParticleName() { return eParticleType_slime; }
+
+int Slime::getSquishSound() { return eSoundType_MOB_SLIME; }
+
+void Slime::tick() {
+    if (!level->isClientSide && level->difficulty == Difficulty::PEACEFUL &&
+        getSize() > 0) {
+        removed = true;
+    }
+
+    squish = squish + (targetSquish - squish) * .5f;
+
+    oSquish = squish;
+    bool wasOnGround = this->onGround;
+    Mob::tick();
+    if (onGround && !wasOnGround) {
+        int size = getSize();
+        for (int i = 0; i < size * 8; i++) {
+            float dir = random->nextFloat() * PI * 2;
+            float d = random->nextFloat() * 0.5f + 0.5f;
+            float xd = Mth::sin(dir) * size * 0.5f * d;
+            float zd = Mth::cos(dir) * size * 0.5f * d;
+            level->addParticle(getParticleName(), x + xd, bb->y0, z + zd, 0, 0,
+                               0);
+        }
+
+        if (doPlayLandSound()) {
+            level->playSound(
+                shared_from_this(), getSquishSound(), getSoundVolume(),
+                ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) /
+                    0.8f);
+        }
+        targetSquish = -0.5f;
+    }
+    // 4J Stu - Brought forward from 1.3 in TU7 to fix lava slime render
+    else if (!onGround && wasOnGround) {
+        targetSquish = 1;
+    }
+    decreaseSquish();
 }
 
-ePARTICLE_TYPE Slime::getParticleName()
-{
-	return eParticleType_slime;
+void Slime::serverAiStep() {
+    checkDespawn();
+    std::shared_ptr<Player> player =
+        level->getNearestAttackablePlayer(shared_from_this(), 16);
+    if (player != NULL) {
+        lookAt(player, 10, 20);
+    }
+    if (onGround && jumpDelay-- <= 0) {
+        jumpDelay = getJumpDelay();
+        if (player != NULL) {
+            jumpDelay /= 3;
+        }
+        jumping = true;
+        if (doPlayJumpSound()) {
+            level->playSound(
+                shared_from_this(), getSquishSound(), getSoundVolume(),
+                ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) *
+                    0.8f);
+        }
+
+        // 4J Removed TU7 to bring forward change to fix lava slime render in MP
+        // targetSquish = 1;
+        xxa = 1 - random->nextFloat() * 2;
+        yya = (float)1 * getSize();
+    } else {
+        jumping = false;
+        if (onGround) {
+            xxa = yya = 0;
+        }
+    }
 }
 
-int Slime::getSquishSound()
-{
-	return eSoundType_MOB_SLIME;
+void Slime::decreaseSquish() { targetSquish = targetSquish * 0.6f; }
+
+int Slime::getJumpDelay() { return random->nextInt(20) + 10; }
+
+std::shared_ptr<Slime> Slime::createChild() {
+    return std::shared_ptr<Slime>(new Slime(level));
 }
 
-void Slime::tick()
-{
-	if (!level->isClientSide && level->difficulty == Difficulty::PEACEFUL && getSize() > 0)
-	{
-		removed = true;
-	}
-
-	squish = squish + (targetSquish - squish) * .5f;
-
-	oSquish = squish;
-	bool wasOnGround = this->onGround;
-	Mob::tick();
-	if (onGround && !wasOnGround)
-	{
-		int size = getSize();
-		for (int i = 0; i < size * 8; i++)
-		{
-			float dir = random->nextFloat() * PI * 2;
-			float d = random->nextFloat() * 0.5f + 0.5f;
-			float xd = Mth::sin(dir) * size * 0.5f * d;
-			float zd = Mth::cos(dir) * size * 0.5f * d;
-			level->addParticle(getParticleName(), x + xd, bb->y0, z + zd, 0, 0, 0);
-		}
-
-		if (doPlayLandSound()) 
-		{
-			level->playSound(shared_from_this(), getSquishSound(), getSoundVolume(), ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) / 0.8f);
-		}
-		targetSquish = -0.5f;
-	}
-	// 4J Stu - Brought forward from 1.3 in TU7 to fix lava slime render
-	else if (!onGround && wasOnGround)
-	{
-		targetSquish = 1;
-	}
-	decreaseSquish();
+void Slime::remove() {
+    int size = getSize();
+    if (!level->isClientSide && size > 1 && getHealth() <= 0) {
+        int count = 2 + random->nextInt(3);
+        for (int i = 0; i < count; i++) {
+            // The mob spawner can currently make a maximum of 25 slimes
+            // (limited to 50% of the total amount of monsters which is 50) and
+            // so limit to slightly more than this so we have some head room to
+            // make a few spawned children. Also always create at least one new
+            // slime since we are getting rid of this one anyway.
+            if (i == 0 || level->countInstanceOf(eTYPE_SLIME, true) < 35) {
+                float xd = (i % 2 - 0.5f) * size / 4.0f;
+                float zd = (i / 2 - 0.5f) * size / 4.0f;
+                std::shared_ptr<Slime> slime = createChild();
+                slime->setSize(size / 2);
+                slime->moveTo(x + xd, y + 0.5, z + zd,
+                              random->nextFloat() * 360, 0);
+                level->addEntity(slime);
+            }
+        }
+    }
+    Mob::remove();
 }
 
-void Slime::serverAiStep() 
-{
-	checkDespawn();
-	std::shared_ptr<Player> player = level->getNearestAttackablePlayer(shared_from_this(), 16);
-	if (player != NULL)
-	{
-		lookAt(player, 10, 20);
-	}
-	if (onGround && jumpDelay-- <= 0) 
-	{
-		jumpDelay = getJumpDelay();
-		if (player != NULL)
-		{
-			jumpDelay /= 3;
-		}
-		jumping = true;
-		if (doPlayJumpSound())
-		{
-			level->playSound(shared_from_this(), getSquishSound(), getSoundVolume(), ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) * 0.8f);
-		}
-
-		// 4J Removed TU7 to bring forward change to fix lava slime render in MP
-		//targetSquish = 1;
-		xxa = 1 - random->nextFloat() * 2;
-		yya = (float) 1 * getSize();
-	} 
-	else
-	{
-		jumping = false;
-		if (onGround)
-		{
-			xxa = yya = 0;
-		}
-	}
+void Slime::playerTouch(std::shared_ptr<Player> player) {
+    if (isDealsDamage()) {
+        int size = getSize();
+        if (canSee(player) &&
+            this->distanceToSqr(player) < (0.6 * size) * (0.6 * size)) {
+            DamageSource* damageSource = DamageSource::mobAttack(
+                std::dynamic_pointer_cast<Mob>(shared_from_this()));
+            if (player->hurt(damageSource, getAttackDamage())) {
+                level->playSound(
+                    shared_from_this(), eSoundType_MOB_SLIME_ATTACK, 1,
+                    (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
+            }
+            delete damageSource;
+        }
+    }
 }
 
-void Slime::decreaseSquish()
-{
-	targetSquish = targetSquish * 0.6f;
+bool Slime::isDealsDamage() { return getSize() > 1; }
+
+int Slime::getAttackDamage() { return getSize(); }
+
+int Slime::getHurtSound() { return eSoundType_MOB_SLIME; }
+
+int Slime::getDeathSound() { return eSoundType_MOB_SLIME; }
+
+int Slime::getDeathLoot() {
+    if (getSize() == 1) return Item::slimeBall->id;
+    return 0;
 }
 
-int Slime::getJumpDelay()
-{
-	return random->nextInt(20) + 10;
+bool Slime::canSpawn() {
+    LevelChunk* lc = level->getChunkAt(Mth::floor(x), Mth::floor(z));
+    if (level->getLevelData()->getGenerator() == LevelType::lvl_flat &&
+        random->nextInt(4) != 1) {
+        return false;
+    }
+    Random* lcr =
+        lc->getRandom(987234911l);  // 4J - separated out so we can delete
+    if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL) &&
+        random->nextInt(10) == 0 && lcr->nextInt(10) == 0 && y < 40) {
+        delete lcr;
+        return Mob::canSpawn();
+    }
+    delete lcr;
+    return false;
 }
 
-std::shared_ptr<Slime> Slime::createChild()
-{
-	return std::shared_ptr<Slime>( new Slime(level) );
-}
+float Slime::getSoundVolume() { return 0.4f * getSize(); }
 
-void Slime::remove()
-{
-	int size = getSize();
-	if (!level->isClientSide && size > 1 && getHealth() <= 0)
-	{
-		int count = 2 + random->nextInt(3);
-		for (int i = 0; i < count; i++)
-		{
-			// The mob spawner can currently make a maximum of 25 slimes (limited to 50% of the total amount of monsters which is 50)
-			// and so limit to slightly more than this so we have some head room to make a few spawned children. Also always create at least one
-			// new slime since we are getting rid of this one anyway.
-			if( i == 0 || level->countInstanceOf( eTYPE_SLIME, true) < 35 )
-			{
-				float xd = (i % 2 - 0.5f) * size / 4.0f;
-				float zd = (i / 2 - 0.5f) * size / 4.0f;
-				std::shared_ptr<Slime> slime = createChild();
-				slime->setSize(size / 2);
-				slime->moveTo(x + xd, y + 0.5, z + zd, random->nextFloat() * 360, 0);
-				level->addEntity(slime);
-			}
-		}
-	}
-	Mob::remove();
-}
+int Slime::getMaxHeadXRot() { return 0; }
 
-void Slime::playerTouch(std::shared_ptr<Player> player)
-{
-	if (isDealsDamage())
-	{
-		int size = getSize();
-		if (canSee(player) && this->distanceToSqr(player) < (0.6 * size) * (0.6 * size))
-		{
-			DamageSource *damageSource = DamageSource::mobAttack( std::dynamic_pointer_cast<Mob>( shared_from_this() ) );
-			if (player->hurt(damageSource, getAttackDamage()))
-			{
-				level->playSound(shared_from_this(), eSoundType_MOB_SLIME_ATTACK, 1, (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
-			}
-			delete damageSource;
-		}
-	}
-}
+bool Slime::doPlayJumpSound() { return getSize() > 1; }
 
-bool Slime::isDealsDamage()
-{
-	return getSize() > 1;
-}
-
-int Slime::getAttackDamage()
-{
-	return getSize();
-}
-
-int Slime::getHurtSound() 
-{
-	return eSoundType_MOB_SLIME;
-}
-
-int Slime::getDeathSound()
-{
-	return eSoundType_MOB_SLIME;
-}
-
-int Slime::getDeathLoot()
-{
-	if (getSize() == 1) return Item::slimeBall->id;
-	return 0;
-}
-
-bool Slime::canSpawn()
-{
-	LevelChunk *lc = level->getChunkAt( Mth::floor(x), Mth::floor(z));
-	if (level->getLevelData()->getGenerator() == LevelType::lvl_flat && random->nextInt(4) != 1)
-	{
-		return false;
-	}
-	Random *lcr = lc->getRandom(987234911l);	// 4J - separated out so we can delete
-	if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL) && random->nextInt(10) == 0 && lcr->nextInt(10) == 0 && y < 40)
-	{
-		delete lcr;
-		return Mob::canSpawn();
-	}
-	delete lcr;
-	return false;
-}
-
-float Slime::getSoundVolume() 
-{
-	return 0.4f * getSize();
-}
-
-int Slime::getMaxHeadXRot()
-{
-	return 0;
-}
-
-bool Slime::doPlayJumpSound()
-{
-	return getSize() > 1;
-}
-
-bool Slime::doPlayLandSound()
-{
-	return getSize() > 2;
-}
+bool Slime::doPlayLandSound() { return getSize() > 2; }

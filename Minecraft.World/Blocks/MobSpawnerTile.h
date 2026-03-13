@@ -3,17 +3,19 @@
 
 class Random;
 
-class MobSpawnerTile : public EntityTile
-{
-	friend class Tile;
+class MobSpawnerTile : public EntityTile {
+    friend class Tile;
+
 protected:
-	MobSpawnerTile(int id);
+    MobSpawnerTile(int id);
+
 public:
-    virtual std::shared_ptr<TileEntity> newTileEntity(Level *level);
-	virtual int getResource(int data, Random *random, int playerBonusLevel);
-    virtual int getResourceCount(Random *random);
+    virtual std::shared_ptr<TileEntity> newTileEntity(Level* level);
+    virtual int getResource(int data, Random* random, int playerBonusLevel);
+    virtual int getResourceCount(Random* random);
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool blocksLight();
-	virtual void spawnResources(Level *level, int x, int y, int z, int data, float odds, int playerBonusLevel);
-	virtual int cloneTileId(Level *level, int x, int y, int z);
+    virtual void spawnResources(Level* level, int x, int y, int z, int data,
+                                float odds, int playerBonusLevel);
+    virtual int cloneTileId(Level* level, int x, int y, int z);
 };

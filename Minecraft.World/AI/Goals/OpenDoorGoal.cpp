@@ -3,33 +3,28 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "OpenDoorGoal.h"
 
-OpenDoorGoal::OpenDoorGoal(Mob *mob, bool closeDoorAfter) : DoorInteractGoal(mob)
-{
-	this->mob = mob;
-	this->closeDoor = closeDoorAfter;
+OpenDoorGoal::OpenDoorGoal(Mob* mob, bool closeDoorAfter)
+    : DoorInteractGoal(mob) {
+    this->mob = mob;
+    this->closeDoor = closeDoorAfter;
 }
 
-bool OpenDoorGoal::canContinueToUse()
-{
-	return closeDoor && forgetTime > 0 && DoorInteractGoal::canContinueToUse();
+bool OpenDoorGoal::canContinueToUse() {
+    return closeDoor && forgetTime > 0 && DoorInteractGoal::canContinueToUse();
 }
 
-void OpenDoorGoal::start()
-{
-	forgetTime = 20;
-	doorTile->setOpen(mob->level, doorX, doorY, doorZ, true);
+void OpenDoorGoal::start() {
+    forgetTime = 20;
+    doorTile->setOpen(mob->level, doorX, doorY, doorZ, true);
 }
 
-void OpenDoorGoal::stop()
-{
-	if (closeDoor)
-	{
-		doorTile->setOpen(mob->level, doorX, doorY, doorZ, false);
-	}
+void OpenDoorGoal::stop() {
+    if (closeDoor) {
+        doorTile->setOpen(mob->level, doorX, doorY, doorZ, false);
+    }
 }
 
-void OpenDoorGoal::tick()
-{
-	--forgetTime;
-	DoorInteractGoal::tick();
+void OpenDoorGoal::tick() {
+    --forgetTime;
+    DoorInteractGoal::tick();
 }

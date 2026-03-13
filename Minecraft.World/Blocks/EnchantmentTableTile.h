@@ -2,28 +2,30 @@
 #include "TileEntities/EntityTile.h"
 
 class ChunkRebuildData;
-class EnchantmentTableTile : public EntityTile
-{
-	friend class ChunkRebuildData;
+class EnchantmentTableTile : public EntityTile {
+    friend class ChunkRebuildData;
+
 public:
-	static const std::wstring TEXTURE_SIDE;
-	static const std::wstring TEXTURE_TOP;
-	static const std::wstring TEXTURE_BOTTOM;
+    static const std::wstring TEXTURE_SIDE;
+    static const std::wstring TEXTURE_TOP;
+    static const std::wstring TEXTURE_BOTTOM;
 
 private:
-	Icon *iconTop;
-	Icon *iconBottom;
+    Icon* iconTop;
+    Icon* iconBottom;
 
 public:
-	EnchantmentTableTile(int id);
-	
-    virtual void updateDefaultShape(); // 4J Added override
-	bool isCubeShaped();
-    void animateTick(Level *level, int x, int y, int z, Random *random);
+    EnchantmentTableTile(int id);
+
+    virtual void updateDefaultShape();  // 4J Added override
+    bool isCubeShaped();
+    void animateTick(Level* level, int x, int y, int z, Random* random);
     bool isSolidRender(bool isServerLevel = false);
-    Icon *getTexture(int face, int data);
-    std::shared_ptr<TileEntity> newTileEntity(Level *level);
-    bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
-	//@Override
-	void registerIcons(IconRegister *iconRegister);
+    Icon* getTexture(int face, int data);
+    std::shared_ptr<TileEntity> newTileEntity(Level* level);
+    bool use(Level* level, int x, int y, int z, std::shared_ptr<Player> player,
+             int clickedFace, float clickX, float clickY, float clickZ,
+             bool soundOnly = false);  // 4J added soundOnly param
+    //@Override
+    void registerIcons(IconRegister* iconRegister);
 };

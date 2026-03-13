@@ -2,12 +2,12 @@
 
 #include "MultiTextureTileItem.h"
 
-class AnvilTileItem : public MultiTextureTileItem
-{
+class AnvilTileItem : public MultiTextureTileItem {
 public:
-	AnvilTileItem(Tile *tile);
+    AnvilTileItem(Tile* tile);
 
-	int getLevelDataForAuxValue(int auxValue);
-	virtual unsigned int getDescriptionId(int iData);
+    int getLevelDataForAuxValue(int auxValue);
+    virtual unsigned int getDescriptionId(int iData);
+
 private:
 };

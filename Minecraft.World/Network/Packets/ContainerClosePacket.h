@@ -1,24 +1,24 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class ContainerClosePacket : public Packet, public std::enable_shared_from_this<ContainerClosePacket>
-{
+class ContainerClosePacket
+    : public Packet,
+      public std::enable_shared_from_this<ContainerClosePacket> {
 public:
-	int containerId;
+    int containerId;
 
-	ContainerClosePacket();
-	ContainerClosePacket(int containerId);
+    ContainerClosePacket();
+    ContainerClosePacket(int containerId);
 
-	virtual void handle(PacketListener *listener);
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void handle(PacketListener* listener);
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ContainerClosePacket()); }
-	virtual int getId() { return 101; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new ContainerClosePacket());
+    }
+    virtual int getId() { return 101; }
 };
-
-

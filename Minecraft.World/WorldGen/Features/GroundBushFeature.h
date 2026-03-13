@@ -2,14 +2,13 @@
 
 #include "Feature.h"
 
-class GroundBushFeature : public Feature
-{
+class GroundBushFeature : public Feature {
 private:
-	int leafTileType;
-	int trunkTileType;
+    int leafTileType;
+    int trunkTileType;
 
 public:
-	GroundBushFeature(int trunkType, int leafType);
+    GroundBushFeature(int trunkType, int leafType);
 
-	virtual bool place(Level *level, Random *random, int x, int y, int z);
+    virtual bool place(Level* level, Random* random, int x, int y, int z);
 };

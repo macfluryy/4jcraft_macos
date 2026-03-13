@@ -4,10 +4,9 @@
 
 class Random;
 
-class ClayTile : public Tile
-{
+class ClayTile : public Tile {
 public:
     ClayTile(int id);
-    virtual int getResource(int data, Random *random, int playerBonusLevel);
-    virtual int getResourceCount(Random *random);
+    virtual int getResource(int data, Random* random, int playerBonusLevel);
+    virtual int getResourceCount(Random* random);
 };

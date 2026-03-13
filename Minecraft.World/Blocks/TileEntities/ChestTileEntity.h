@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include "TileEntity.h"
 #include "../../Containers/Container.h"
 
@@ -10,47 +8,48 @@
 class Player;
 class CompoundTag;
 
-class ChestTileEntity : public TileEntity, public Container
-{
+class ChestTileEntity : public TileEntity, public Container {
 public:
-	eINSTANCEOF GetType() { return eTYPE_CHESTTILEENTITY; }
-	static TileEntity *create() { return new ChestTileEntity(); }
+    eINSTANCEOF GetType() { return eTYPE_CHESTTILEENTITY; }
+    static TileEntity* create() { return new ChestTileEntity(); }
 
-using TileEntity::setChanged;
+    using TileEntity::setChanged;
 
 public:
-	ChestTileEntity(bool isBonusChest = false);		// 4J added param
-	virtual ~ChestTileEntity();
+    ChestTileEntity(bool isBonusChest = false);  // 4J added param
+    virtual ~ChestTileEntity();
 
 private:
-	ItemInstanceArray *items;
+    ItemInstanceArray* items;
 
 public:
-	bool isBonusChest;					// 4J added
-	bool hasCheckedNeighbors;
+    bool isBonusChest;  // 4J added
+    bool hasCheckedNeighbors;
     std::weak_ptr<ChestTileEntity> n;
     std::weak_ptr<ChestTileEntity> e;
     std::weak_ptr<ChestTileEntity> w;
     std::weak_ptr<ChestTileEntity> s;
 
-	float openness, oOpenness;
-	int openCount;
+    float openness, oOpenness;
+    int openCount;
+
 private:
-	int tickInterval;
+    int tickInterval;
 
 public:
-	virtual unsigned int getContainerSize();
-	virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
-	virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
-	virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
-	virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
-	virtual int getName();
-	virtual void load(CompoundTag *base);
-	virtual void save(CompoundTag *base);
-	virtual int getMaxStackSize();
-	virtual bool stillValid(std::shared_ptr<Player> player);
-	virtual void setChanged();
-	virtual void clearCache();
+    virtual unsigned int getContainerSize();
+    virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
+    virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot,
+                                                     int count);
+    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
+    virtual int getName();
+    virtual void load(CompoundTag* base);
+    virtual void save(CompoundTag* base);
+    virtual int getMaxStackSize();
+    virtual bool stillValid(std::shared_ptr<Player> player);
+    virtual void setChanged();
+    virtual void clearCache();
     virtual void checkNeighbors();
     virtual void tick();
     virtual void triggerEvent(int b0, int b1);
@@ -58,6 +57,6 @@ public:
     virtual void stopOpen();
     virtual void setRemoved();
 
-	// 4J Added
-	virtual std::shared_ptr<TileEntity> clone();
+    // 4J Added
+    virtual std::shared_ptr<TileEntity> clone();
 };

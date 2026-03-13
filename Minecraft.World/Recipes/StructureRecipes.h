@@ -1,7 +1,6 @@
 #pragma once
 
-class StructureRecipies 
-{
+class StructureRecipies {
 public:
-	void addRecipes(Recipes *r);
+    void addRecipes(Recipes* r);
 };

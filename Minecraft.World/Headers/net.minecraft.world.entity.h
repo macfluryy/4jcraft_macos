@@ -19,7 +19,7 @@
 // 1.0.1
 #include "../Entities/MobType.h"
 
-// TU9 
+// TU9
 #include "../Entities/Mobs/ItemFrame.h"
 
 // 1.2.3

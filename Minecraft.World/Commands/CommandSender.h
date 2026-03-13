@@ -3,10 +3,12 @@
 #include "CommandsEnum.h"
 #include "../Network/Packets/ChatPacket.h"
 
-class CommandSender
-{
+class CommandSender {
 public:
-	//virtual int getUID() = 0;
-	virtual void sendMessage(const std::wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"") = 0;
-	virtual bool hasPermission(EGameCommand command) = 0;
+    // virtual int getUID() = 0;
+    virtual void sendMessage(
+        const std::wstring& message,
+        ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,
+        int customData = -1, const std::wstring& additionalMessage = L"") = 0;
+    virtual bool hasPermission(EGameCommand command) = 0;
 };

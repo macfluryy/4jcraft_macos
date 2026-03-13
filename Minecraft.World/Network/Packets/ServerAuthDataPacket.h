@@ -2,8 +2,7 @@
 
 #include "Packet.h"
 
-class ServerAuthDataPacket : public Packet
-{
+class ServerAuthDataPacket : public Packet {
 #if 0
 	private String serverId;
 	private PublicKey publicKey;

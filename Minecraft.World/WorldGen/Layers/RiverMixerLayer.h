@@ -2,15 +2,15 @@
 
 #include "Layer.h"
 
-class RiverMixerLayer : public Layer
-{
+class RiverMixerLayer : public Layer {
 private:
-	std::shared_ptr<Layer>biomes;
-	std::shared_ptr<Layer>rivers;
+    std::shared_ptr<Layer> biomes;
+    std::shared_ptr<Layer> rivers;
 
 public:
-	RiverMixerLayer(__int64 seed, std::shared_ptr<Layer>biomes, std::shared_ptr<Layer>rivers);
+    RiverMixerLayer(__int64 seed, std::shared_ptr<Layer> biomes,
+                    std::shared_ptr<Layer> rivers);
 
-	virtual void init(__int64 seed);
-	virtual intArray getArea(int xo, int yo, int w, int h);
+    virtual void init(__int64 seed);
+    virtual intArray getArea(int xo, int yo, int w, int h);
 };

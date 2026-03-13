@@ -4,12 +4,12 @@
 
 class RepairMenu;
 
-class RepairContainer : public SimpleContainer, public std::enable_shared_from_this<RepairContainer>
-{
+class RepairContainer : public SimpleContainer,
+                        public std::enable_shared_from_this<RepairContainer> {
 private:
-	RepairMenu *m_menu;
+    RepairMenu* m_menu;
 
 public:
-	RepairContainer(RepairMenu *menu, int name, int size);
-	void setChanged();
+    RepairContainer(RepairMenu* menu, int name, int size);
+    void setChanged();
 };
