@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["dev"]
+    pull_request:
+      branches: ["dev"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+      - name: Update doxygen-awesome
+        run: git submodule update --init --recursive
+      - name: Generate Docs
+        run: cd docs && doxygen
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+      - name: Upload Pages Artifacts
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./docs/html
+  deploy:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Github Pages
+        uses: actions/deploy-pages@v4
+        id: deployment

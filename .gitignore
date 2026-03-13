@@ -46,3 +46,6 @@ oldimpl/
 *.swp
 *.swo
 *~
+
+# ----- Documentation -----
+docs/
