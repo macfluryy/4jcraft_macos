@@ -182,12 +182,12 @@ void UIScene_Intro::tick()
 	// Auto-skip the intro after 60 ticks (~2 seconds at 30fps)
 	// since we have no SWF renderer to play the intro animation
 	s_introTickCount++;
-	if(s_introTickCount == 60 && !m_bIgnoreNavigate)
-	{
-		fprintf(stderr, "[Linux] Auto-skipping intro -> MainMenu after %d ticks\n", s_introTickCount);
-		m_bIgnoreNavigate = true;
-		// Skip straight to MainMenu, bypassing SaveMessage (no SWF interaction possible)
-		ui.NavigateToScene(0, eUIScene_MainMenu);
-	}
+	// if(s_introTickCount == 60 && !m_bIgnoreNavigate)
+	// {
+	// 	fprintf(stderr, "[Linux] Auto-skipping intro -> MainMenu after %d ticks\n", s_introTickCount);
+	// 	m_bIgnoreNavigate = true;
+	// 	// Skip straight to MainMenu, bypassing SaveMessage (no SWF interaction possible)
+	// 	ui.NavigateToScene(0, eUIScene_MainMenu);
+	// }
 }
 #endif

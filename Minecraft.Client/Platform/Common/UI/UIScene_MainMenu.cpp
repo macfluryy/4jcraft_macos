@@ -1804,15 +1804,15 @@ void UIScene_MainMenu::tick()
 
 #ifdef __linux__
 	{
-		static int s_mainMenuTickCount = 0;
-		s_mainMenuTickCount++;
-		if(s_mainMenuTickCount % 60 == 1) { fprintf(stderr, "[MM] tick %d\n", s_mainMenuTickCount); fflush(stderr); }
-		if(s_mainMenuTickCount == 90) // ~3 seconds at 30fps
-		{
-			fprintf(stderr, "[Linux] Auto-starting trial world from MainMenu after %d ticks\n", s_mainMenuTickCount);
-			LoadTrial();
-			return;
-		}
+		// static int s_mainMenuTickCount = 0;
+		// s_mainMenuTickCount++;
+		// if(s_mainMenuTickCount % 60 == 1) { fprintf(stderr, "[MM] tick %d\n", s_mainMenuTickCount); fflush(stderr); }
+		// if(s_mainMenuTickCount == 90) // ~3 seconds at 30fps
+		// {
+		// 	fprintf(stderr, "[Linux] Auto-starting trial world from MainMenu after %d ticks\n", s_mainMenuTickCount);
+		// 	LoadTrial();
+		// 	return;
+		// }
 	}
 #endif
 

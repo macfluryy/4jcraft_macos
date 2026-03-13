@@ -267,7 +267,6 @@ typedef struct _LaunchMoreOptionsMenuInitData
 
 	_LaunchMoreOptionsMenuInitData()
 	{
-		memset((void*)this,0,sizeof(_LaunchMoreOptionsMenuInitData));
 		bOnlineGame = true;
 		bAllowFriendsOfFriends = true;
 		bPVP = true;
