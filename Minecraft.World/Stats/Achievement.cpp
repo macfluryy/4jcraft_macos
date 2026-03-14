@@ -109,7 +109,7 @@ Achievement* Achievement::setGolden() {
 }
 /**
  * @brief Adds the achievement to the global achievement registry.
- * @return This achievement instance
+ * @return self
  */
 
 Achievement* Achievement::postConstruct() {
