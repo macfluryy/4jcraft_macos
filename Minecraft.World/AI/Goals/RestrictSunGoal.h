@@ -2,15 +2,14 @@
 
 #include "Goal.h"
 
-class RestrictSunGoal : public Goal
-{
+class RestrictSunGoal : public Goal {
 private:
-	PathfinderMob *mob;
+    PathfinderMob* mob;
 
 public:
-	RestrictSunGoal(PathfinderMob *mob);
+    RestrictSunGoal(PathfinderMob* mob);
 
-	bool canUse();
-	void start();
-	void stop();
+    bool canUse();
+    void start();
+    void stop();
 };

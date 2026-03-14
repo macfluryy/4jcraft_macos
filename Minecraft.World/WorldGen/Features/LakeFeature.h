@@ -2,13 +2,12 @@
 #include "Feature.h"
 #include "../../Blocks/Material.h"
 
-class LakeFeature : public Feature
-{
+class LakeFeature : public Feature {
 private:
-	int tile;
+    int tile;
 
 public:
-	LakeFeature (int tile);
+    LakeFeature(int tile);
 
-	virtual bool place(Level *level, Random *random, int x, int y, int z);
+    virtual bool place(Level* level, Random* random, int x, int y, int z);
 };

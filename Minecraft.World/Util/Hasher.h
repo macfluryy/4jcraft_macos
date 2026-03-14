@@ -1,12 +1,10 @@
 #pragma once
 
-
-class Hasher
-{
+class Hasher {
 private:
-	std::wstring salt;
+    std::wstring salt;
 
 public:
-	Hasher(std::wstring &salt);
-	std::wstring getHash(std::wstring &name);
+    Hasher(std::wstring& salt);
+    std::wstring getHash(std::wstring& name);
 };

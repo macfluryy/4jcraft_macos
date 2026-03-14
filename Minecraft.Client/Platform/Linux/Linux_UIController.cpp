@@ -12,115 +12,105 @@
 
 ConsoleUIController ui;
 
-void ConsoleUIController::init(S32 w, S32 h)
-{
+void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
-	// Shared init
-	preInit(w, h);
+    // Shared init
+    preInit(w, h);
 
-	//init
-	gdraw_funcs = gdraw_GL_CreateContext(w, h, 0);
+    // init
+    gdraw_funcs = gdraw_GL_CreateContext(w, h, 0);
 
-	if (!gdraw_funcs)
-	{
-		app.DebugPrintf("Failed to initialise GDraw GL!\n");
-		fprintf(stderr, "[Linux_UIController] Failed to initialise GDraw GL!\n");
-		// nott fatal for now
-	}
-	else
-	{
+    if (!gdraw_funcs) {
+        app.DebugPrintf("Failed to initialise GDraw GL!\n");
+        fprintf(stderr,
+                "[Linux_UIController] Failed to initialise GDraw GL!\n");
+        // nott fatal for now
+    } else {
+        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000,
+                                   16 * 1024 * 1024);
+        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
+                                   128 * 1024 * 1024);
+        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
+                                   32 * 1024 * 1024);
 
-		gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000, 16 * 1024 * 1024);
-		gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000, 128 * 1024 * 1024);
-		gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10, 32 * 1024 * 1024);
+        IggySetGDraw(gdraw_funcs);
+    }
 
-		IggySetGDraw(gdraw_funcs);
-	}
-
-	postInit();
+    postInit();
 #endif
 }
 
-void ConsoleUIController::render()
-{
+void ConsoleUIController::render() {
 #ifdef _ENABLEIGGY
-	if (!gdraw_funcs)
-		return;
+    if (!gdraw_funcs) return;
 
-	gdraw_GL_SetTileOrigin(0, 0, 0);
+    gdraw_GL_SetTileOrigin(0, 0, 0);
 
-	// render 
-	renderScenes();
+    // render
+    renderScenes();
 
-	gdraw_GL_NoMoreGDrawThisFrame();
+    gdraw_GL_NoMoreGDrawThisFrame();
 #endif
 }
 
-void ConsoleUIController::beginIggyCustomDraw4J(IggyCustomDrawCallbackRegion *region, CustomDrawData *customDrawRegion)
-{
-	gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
+void ConsoleUIController::beginIggyCustomDraw4J(
+    IggyCustomDrawCallbackRegion* region, CustomDrawData* customDrawRegion) {
+    gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
 }
 
-CustomDrawData *ConsoleUIController::setupCustomDraw(UIScene *scene, IggyCustomDrawCallbackRegion *region)
-{
-	CustomDrawData *customDrawRegion = new CustomDrawData();
-	customDrawRegion->x0 = region->x0;
-	customDrawRegion->x1 = region->x1;
-	customDrawRegion->y0 = region->y0;
-	customDrawRegion->y1 = region->y1;
+CustomDrawData* ConsoleUIController::setupCustomDraw(
+    UIScene* scene, IggyCustomDrawCallbackRegion* region) {
+    CustomDrawData* customDrawRegion = new CustomDrawData();
+    customDrawRegion->x0 = region->x0;
+    customDrawRegion->x1 = region->x1;
+    customDrawRegion->y0 = region->y0;
+    customDrawRegion->y1 = region->y1;
 
-	
-	gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
+    gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
 
-	setupCustomDrawGameStateAndMatrices(scene, customDrawRegion);
+    setupCustomDrawGameStateAndMatrices(scene, customDrawRegion);
 
-	return customDrawRegion;
+    return customDrawRegion;
 }
 
-CustomDrawData *ConsoleUIController::calculateCustomDraw(IggyCustomDrawCallbackRegion *region)
-{
-	CustomDrawData *customDrawRegion = new CustomDrawData();
-	customDrawRegion->x0 = region->x0;
-	customDrawRegion->x1 = region->x1;
-	customDrawRegion->y0 = region->y0;
-	customDrawRegion->y1 = region->y1;
+CustomDrawData* ConsoleUIController::calculateCustomDraw(
+    IggyCustomDrawCallbackRegion* region) {
+    CustomDrawData* customDrawRegion = new CustomDrawData();
+    customDrawRegion->x0 = region->x0;
+    customDrawRegion->x1 = region->x1;
+    customDrawRegion->y0 = region->y0;
+    customDrawRegion->y1 = region->y1;
 
-	gdraw_GL_CalculateCustomDraw_4J(region, customDrawRegion->mat);
+    gdraw_GL_CalculateCustomDraw_4J(region, customDrawRegion->mat);
 
-	return customDrawRegion;
+    return customDrawRegion;
 }
 
-void ConsoleUIController::endCustomDraw(IggyCustomDrawCallbackRegion *region)
-{
-	endCustomDrawGameStateAndMatrices();
+void ConsoleUIController::endCustomDraw(IggyCustomDrawCallbackRegion* region) {
+    endCustomDrawGameStateAndMatrices();
 
-	gdraw_GL_EndCustomDraw(region);
+    gdraw_GL_EndCustomDraw(region);
 }
 
-void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos)
-{
-	gdraw_GL_SetTileOrigin(xPos, yPos, 0);
+void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos) {
+    gdraw_GL_SetTileOrigin(xPos, yPos, 0);
 }
 
-GDrawTexture *ConsoleUIController::getSubstitutionTexture(int textureId)
-{
-	// todo impl
-	return nullptr;
+GDrawTexture* ConsoleUIController::getSubstitutionTexture(int textureId) {
+    // todo impl
+    return nullptr;
 }
 
-void ConsoleUIController::destroySubstitutionTexture(void *destroyCallBackData, GDrawTexture *handle)
-{
-	if (handle)
-		gdraw_GL_WrappedTextureDestroy(handle);
+void ConsoleUIController::destroySubstitutionTexture(void* destroyCallBackData,
+                                                     GDrawTexture* handle) {
+    if (handle) gdraw_GL_WrappedTextureDestroy(handle);
 }
 
-void ConsoleUIController::shutdown()
-{
+void ConsoleUIController::shutdown() {
 #ifdef _ENABLEIGGY
-	if (gdraw_funcs)
-	{
-		gdraw_GL_DestroyContext();
-		gdraw_funcs = nullptr;
-	}
+    if (gdraw_funcs) {
+        gdraw_GL_DestroyContext();
+        gdraw_funcs = nullptr;
+    }
 #endif
 }

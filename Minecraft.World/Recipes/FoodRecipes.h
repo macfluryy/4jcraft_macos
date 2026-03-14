@@ -1,7 +1,6 @@
 #pragma once
 
-class FoodRecipies 
-{
+class FoodRecipies {
 public:
-	void addRecipes(Recipes *r);
+    void addRecipes(Recipes* r);
 };

@@ -4,15 +4,14 @@
 
 class VillagerGolem;
 
-class DefendVillageTargetGoal : public TargetGoal
-{
+class DefendVillageTargetGoal : public TargetGoal {
 private:
-	VillagerGolem *golem; // Owner of this goal
-	std::weak_ptr<Mob> potentialTarget;
+    VillagerGolem* golem;  // Owner of this goal
+    std::weak_ptr<Mob> potentialTarget;
 
 public:
-	DefendVillageTargetGoal(VillagerGolem *golem);
+    DefendVillageTargetGoal(VillagerGolem* golem);
 
-	bool canUse();
-	void start();
+    bool canUse();
+    void start();
 };

@@ -1,25 +1,26 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class InteractPacket : public Packet, public std::enable_shared_from_this<InteractPacket>
-{
+class InteractPacket : public Packet,
+                       public std::enable_shared_from_this<InteractPacket> {
 public:
-	static const int INTERACT;
+    static const int INTERACT;
     static const int ATTACK;
 
     int source, target, action;
 
-	InteractPacket();
-	InteractPacket(int source, int target, int action);
+    InteractPacket();
+    InteractPacket(int source, int target, int action);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new InteractPacket()); }
-	virtual int getId() { return 7; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new InteractPacket());
+    }
+    virtual int getId() { return 7; }
 };

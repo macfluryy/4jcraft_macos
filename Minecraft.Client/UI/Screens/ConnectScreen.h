@@ -3,22 +3,24 @@
 class ClientConnection;
 class Minecraft;
 
-
-
-class ConnectScreen : public Screen
-{
+class ConnectScreen : public Screen {
 private:
-	ClientConnection *connection;
+    ClientConnection* connection;
     bool aborted;
+
 public:
-	ConnectScreen(Minecraft *minecraft, const std::wstring& ip, int port);
+    ConnectScreen(Minecraft* minecraft, const std::wstring& ip, int port);
     virtual void tick();
+
 protected:
-	virtual void keyPressed(char eventCharacter, int eventKey);
+    virtual void keyPressed(char eventCharacter, int eventKey);
+
 public:
-	virtual void init();
+    virtual void init();
+
 protected:
-	virtual void buttonClicked(Button *button);
+    virtual void buttonClicked(Button* button);
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a);
 };

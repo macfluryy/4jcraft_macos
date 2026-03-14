@@ -1,13 +1,14 @@
 #pragma once
 
-
 #include "Item.h"
 
-class ShearsItem : public Item 
-{
+class ShearsItem : public Item {
 public:
-	ShearsItem(int itemId);
-	virtual bool mineBlock(std::shared_ptr<ItemInstance> itemInstance, Level *level, int tile, int x, int y, int z, std::shared_ptr<Mob> owner);
-	virtual bool canDestroySpecial(Tile *tile);
-	virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance, Tile *tile);
+    ShearsItem(int itemId);
+    virtual bool mineBlock(std::shared_ptr<ItemInstance> itemInstance,
+                           Level* level, int tile, int x, int y, int z,
+                           std::shared_ptr<Mob> owner);
+    virtual bool canDestroySpecial(Tile* tile);
+    virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
+                                  Tile* tile);
 };

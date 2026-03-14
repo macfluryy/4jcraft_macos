@@ -1,18 +1,17 @@
 #pragma once
 
-
 #include "TileItem.h"
 
-class TreeTileItem : public TileItem 
-{
+class TreeTileItem : public TileItem {
 private:
-	Tile *parentTile;
+    Tile* parentTile;
 
 public:
-	TreeTileItem(int id, Tile *parentTile);
+    TreeTileItem(int id, Tile* parentTile);
 
-	virtual Icon *getIcon(int itemAuxValue);
-	virtual int getLevelDataForAuxValue(int auxValue);
+    virtual Icon* getIcon(int itemAuxValue);
+    virtual int getLevelDataForAuxValue(int auxValue);
 
-	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
+    virtual unsigned int getDescriptionId(
+        std::shared_ptr<ItemInstance> instance);
 };

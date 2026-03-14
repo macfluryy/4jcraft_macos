@@ -2,194 +2,171 @@
 #include "../Headers/net.minecraft.world.item.trading.h"
 #include "MerchantRecipeList.h"
 
-MerchantRecipeList::MerchantRecipeList()
-{
+MerchantRecipeList::MerchantRecipeList() {}
+
+MerchantRecipeList::MerchantRecipeList(CompoundTag* tag) { load(tag); }
+
+MerchantRecipeList::~MerchantRecipeList() {
+    for (AUTO_VAR(it, m_recipes.begin()); it != m_recipes.end(); ++it) {
+        delete (*it);
+    }
 }
 
-MerchantRecipeList::MerchantRecipeList(CompoundTag *tag)
-{
-	load(tag);
+MerchantRecipe* MerchantRecipeList::getRecipeFor(
+    std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB,
+    int selectionHint) {
+    if (selectionHint > 0 && selectionHint < m_recipes.size()) {
+        // attempt to match vs the hint
+        MerchantRecipe* r = m_recipes.at(selectionHint);
+        if (buyA->id == r->getBuyAItem()->id &&
+            ((buyB == NULL && !r->hasSecondaryBuyItem()) ||
+             (r->hasSecondaryBuyItem() && buyB != NULL &&
+              r->getBuyBItem()->id == buyB->id))) {
+            if (buyA->count >= r->getBuyAItem()->count &&
+                (!r->hasSecondaryBuyItem() ||
+                 buyB->count >= r->getBuyBItem()->count)) {
+                return r;
+            }
+        }
+        return NULL;
+    }
+    for (int i = 0; i < m_recipes.size(); i++) {
+        MerchantRecipe* r = m_recipes.at(i);
+        if (buyA->id == r->getBuyAItem()->id &&
+            buyA->count >= r->getBuyAItem()->count &&
+            ((!r->hasSecondaryBuyItem() && buyB == NULL) ||
+             (r->hasSecondaryBuyItem() && buyB != NULL &&
+              r->getBuyBItem()->id == buyB->id &&
+              buyB->count >= r->getBuyBItem()->count))) {
+            return r;
+        }
+    }
+    return NULL;
 }
 
-MerchantRecipeList::~MerchantRecipeList()
-{
-	for(AUTO_VAR(it, m_recipes.begin()); it != m_recipes.end(); ++it)
-	{
-		delete (*it);
-	}
+bool MerchantRecipeList::addIfNewOrBetter(MerchantRecipe* recipe) {
+    bool added = false;
+    for (int i = 0; i < m_recipes.size(); i++) {
+        MerchantRecipe* r = m_recipes.at(i);
+        if (recipe->isSame(r)) {
+            if (recipe->isSameSameButBetter(r)) {
+                delete m_recipes[i];
+                m_recipes[i] = recipe;
+                added = true;
+            }
+            return added;
+        }
+    }
+    m_recipes.push_back(recipe);
+    return true;
 }
 
-MerchantRecipe *MerchantRecipeList::getRecipeFor(std::shared_ptr<ItemInstance> buyA, std::shared_ptr<ItemInstance> buyB, int selectionHint)
-{
-	if (selectionHint > 0 && selectionHint < m_recipes.size())
-	{
-		// attempt to match vs the hint
-		MerchantRecipe *r = m_recipes.at(selectionHint);
-		if (buyA->id == r->getBuyAItem()->id && ((buyB == NULL && !r->hasSecondaryBuyItem()) || (r->hasSecondaryBuyItem() && buyB != NULL && r->getBuyBItem()->id == buyB->id)))
-		{
-			if (buyA->count >= r->getBuyAItem()->count && (!r->hasSecondaryBuyItem() || buyB->count >= r->getBuyBItem()->count))
-			{
-				return r;
-			}
-		}
-		return NULL;
-	}
-	for (int i = 0; i < m_recipes.size(); i++)
-	{
-		MerchantRecipe *r = m_recipes.at(i);
-		if (buyA->id == r->getBuyAItem()->id && buyA->count >= r->getBuyAItem()->count
-			&& ((!r->hasSecondaryBuyItem() && buyB == NULL) || (r->hasSecondaryBuyItem() && buyB != NULL && r->getBuyBItem()->id == buyB->id && buyB->count >= r->getBuyBItem()->count)))
-		{
-			return r;
-		}
-	}
-	return NULL;
+MerchantRecipe* MerchantRecipeList::getMatchingRecipeFor(
+    std::shared_ptr<ItemInstance> buy, std::shared_ptr<ItemInstance> buyB,
+    std::shared_ptr<ItemInstance> sell) {
+    for (int i = 0; i < m_recipes.size(); i++) {
+        MerchantRecipe* r = m_recipes.at(i);
+        if (buy->id == r->getBuyAItem()->id &&
+            buy->count >= r->getBuyAItem()->count &&
+            sell->id == r->getSellItem()->id) {
+            if (!r->hasSecondaryBuyItem() ||
+                (buyB != NULL && buyB->id == r->getBuyBItem()->id &&
+                 buyB->count >= r->getBuyBItem()->count)) {
+                return r;
+            }
+        }
+    }
+    return NULL;
 }
 
-bool MerchantRecipeList::addIfNewOrBetter(MerchantRecipe *recipe)
-{
-	bool added = false;
-	for (int i = 0; i < m_recipes.size(); i++)
-	{
-		MerchantRecipe *r = m_recipes.at(i);
-		if (recipe->isSame(r))
-		{
-			if (recipe->isSameSameButBetter(r))
-			{
-				delete m_recipes[i];
-				m_recipes[i] = recipe;
-				added = true;
-			}
-			return added;
-		}
-	}
-	m_recipes.push_back(recipe);
-	return true;
+void MerchantRecipeList::writeToStream(DataOutputStream* stream) {
+    stream->writeByte((uint8_t)(m_recipes.size() & 0xff));
+    for (int i = 0; i < m_recipes.size(); i++) {
+        MerchantRecipe* r = m_recipes.at(i);
+        Packet::writeItem(r->getBuyAItem(), stream);
+        Packet::writeItem(r->getSellItem(), stream);
+
+        std::shared_ptr<ItemInstance> buyBItem = r->getBuyBItem();
+        stream->writeBoolean(buyBItem != NULL);
+        if (buyBItem != NULL) {
+            Packet::writeItem(buyBItem, stream);
+        }
+        stream->writeBoolean(r->isDeprecated());
+        stream->writeInt(r->getUses());
+        stream->writeInt(r->getMaxUses());
+    }
 }
 
-MerchantRecipe *MerchantRecipeList::getMatchingRecipeFor(std::shared_ptr<ItemInstance> buy, std::shared_ptr<ItemInstance> buyB, std::shared_ptr<ItemInstance> sell)
-{
-	for (int i = 0; i < m_recipes.size(); i++)
-	{
-		MerchantRecipe *r = m_recipes.at(i);
-		if (buy->id == r->getBuyAItem()->id && buy->count >= r->getBuyAItem()->count && sell->id == r->getSellItem()->id)
-		{
-			if (!r->hasSecondaryBuyItem() || (buyB != NULL && buyB->id == r->getBuyBItem()->id && buyB->count >= r->getBuyBItem()->count))
-			{
-				return r;
-			}
-		}
-	}
-	return NULL;
+MerchantRecipeList* MerchantRecipeList::createFromStream(
+    DataInputStream* stream) {
+    MerchantRecipeList* list = new MerchantRecipeList();
+
+    int count = (int)(stream->readByte() & 0xff);
+    for (int i = 0; i < count; i++) {
+        std::shared_ptr<ItemInstance> buy = Packet::readItem(stream);
+        std::shared_ptr<ItemInstance> sell = Packet::readItem(stream);
+
+        std::shared_ptr<ItemInstance> buyB = nullptr;
+        if (stream->readBoolean()) {
+            buyB = Packet::readItem(stream);
+        }
+        bool isDeprecated = stream->readBoolean();
+        int uses = stream->readInt();
+        int maxUses = stream->readInt();
+
+        MerchantRecipe* recipe =
+            new MerchantRecipe(buy, buyB, sell, uses, maxUses);
+        if (isDeprecated) {
+            recipe->enforceDeprecated();
+        }
+        list->push_back(recipe);
+    }
+    return list;
 }
 
-void MerchantRecipeList::writeToStream(DataOutputStream *stream)
-{
-	stream->writeByte((uint8_t) (m_recipes.size() & 0xff));
-	for (int i = 0; i < m_recipes.size(); i++)
-	{
-		MerchantRecipe *r = m_recipes.at(i);
-		Packet::writeItem(r->getBuyAItem(), stream);
-		Packet::writeItem(r->getSellItem(), stream);
+void MerchantRecipeList::load(CompoundTag* tag) {
+    ListTag<Tag>* list = tag->getList(L"Recipes");
 
-		std::shared_ptr<ItemInstance> buyBItem = r->getBuyBItem();
-		stream->writeBoolean(buyBItem != NULL);
-		if (buyBItem != NULL)
-		{
-			Packet::writeItem(buyBItem, stream);
-		}
-		stream->writeBoolean(r->isDeprecated());
-		stream->writeInt(r->getUses());
-		stream->writeInt(r->getMaxUses());
-	}
+    for (int i = 0; i < list->size(); i++) {
+        CompoundTag* recipeTag = (CompoundTag*)list->get(i);
+        m_recipes.push_back(new MerchantRecipe(recipeTag));
+    }
 }
 
-MerchantRecipeList *MerchantRecipeList::createFromStream(DataInputStream *stream)
-{
-	MerchantRecipeList *list = new MerchantRecipeList();
+CompoundTag* MerchantRecipeList::createTag() {
+    CompoundTag* tag = new CompoundTag();
 
-	int count = (int) (stream->readByte() & 0xff);
-	for (int i = 0; i < count; i++)
-	{
-		std::shared_ptr<ItemInstance> buy = Packet::readItem(stream);
-		std::shared_ptr<ItemInstance> sell = Packet::readItem(stream);
+    ListTag<CompoundTag>* list = new ListTag<CompoundTag>(L"Recipes");
+    for (int i = 0; i < m_recipes.size(); i++) {
+        MerchantRecipe* merchantRecipe = m_recipes.at(i);
+        list->add(merchantRecipe->createTag());
+    }
+    tag->put(L"Recipes", list);
 
-		std::shared_ptr<ItemInstance> buyB = nullptr;
-		if (stream->readBoolean())
-		{
-			buyB = Packet::readItem(stream);
-		}
-		bool isDeprecated = stream->readBoolean();
-		int uses = stream->readInt();
-		int maxUses = stream->readInt();
-
-		MerchantRecipe *recipe = new MerchantRecipe(buy, buyB, sell, uses, maxUses);
-		if (isDeprecated)
-		{
-			recipe->enforceDeprecated();
-		}
-		list->push_back(recipe);
-	}
-	return list;
+    return tag;
 }
 
-void MerchantRecipeList::load(CompoundTag *tag)
-{
-	ListTag<Tag> *list = tag->getList(L"Recipes");
-
-	for (int i = 0; i < list->size(); i++)
-	{
-		CompoundTag *recipeTag = (CompoundTag*) list->get(i);
-		m_recipes.push_back(new MerchantRecipe(recipeTag));
-	}
+void MerchantRecipeList::push_back(MerchantRecipe* recipe) {
+    m_recipes.push_back(recipe);
 }
 
-CompoundTag *MerchantRecipeList::createTag()
-{
-	CompoundTag *tag = new CompoundTag();
-
-	ListTag<CompoundTag> *list = new ListTag<CompoundTag>(L"Recipes");
-	for (int i = 0; i < m_recipes.size(); i++)
-	{
-		MerchantRecipe *merchantRecipe = m_recipes.at(i);
-		list->add(merchantRecipe->createTag());
-	}
-	tag->put(L"Recipes", list);
-
-	return tag;
+MerchantRecipe* MerchantRecipeList::at(size_t index) {
+    return m_recipes.at(index);
 }
 
-void MerchantRecipeList::push_back(MerchantRecipe *recipe)
-{
-	m_recipes.push_back(recipe);
+std::vector<MerchantRecipe*>::iterator MerchantRecipeList::begin() {
+    return m_recipes.begin();
 }
 
-MerchantRecipe *MerchantRecipeList::at(size_t index)
-{
-	return m_recipes.at(index);
+std::vector<MerchantRecipe*>::iterator MerchantRecipeList::end() {
+    return m_recipes.end();
 }
 
-std::vector<MerchantRecipe *>::iterator MerchantRecipeList::begin()
-{
-	return m_recipes.begin();
+std::vector<MerchantRecipe*>::iterator MerchantRecipeList::erase(
+    std::vector<MerchantRecipe*>::iterator it) {
+    return m_recipes.erase(it);
 }
 
-std::vector<MerchantRecipe *>::iterator MerchantRecipeList::end()
-{
-	return m_recipes.end();
-}
+size_t MerchantRecipeList::size() { return m_recipes.size(); }
 
-std::vector<MerchantRecipe *>::iterator MerchantRecipeList::erase(std::vector<MerchantRecipe *>::iterator it)
-{
-	return m_recipes.erase(it);
-}
-
-size_t MerchantRecipeList::size()
-{
-	return m_recipes.size();
-}
-
-bool MerchantRecipeList::empty()
-{
-	return m_recipes.empty();
-}
+bool MerchantRecipeList::empty() { return m_recipes.empty(); }

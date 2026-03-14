@@ -4,30 +4,39 @@
 
 class Input;
 
-class RemotePlayer : public Player
-{
+class RemotePlayer : public Player {
 private:
-	bool hasStartedUsingItem;
+    bool hasStartedUsingItem;
+
 public:
-	Input *input;
-    RemotePlayer(Level *level, const std::wstring& name);
+    Input* input;
+    RemotePlayer(Level* level, const std::wstring& name);
+
 protected:
-	virtual void setDefaultHeadHeight();
+    virtual void setDefaultHeadHeight();
+
 public:
-	virtual bool hurt(DamageSource *source, int dmg);
+    virtual bool hurt(DamageSource* source, int dmg);
+
 private:
-	int lSteps;
+    int lSteps;
     double lx, ly, lz, lyr, lxr;
 
 public:
-	virtual void lerpTo(double x, double y, double z, float yRot, float xRot, int steps);
+    virtual void lerpTo(double x, double y, double z, float yRot, float xRot,
+                        int steps);
     float fallTime;
 
     virtual void tick();
     virtual float getShadowHeightOffs();
     virtual void aiStep();
-    virtual void setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item);// 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer Encountered: TU7: Content: Art: Aura of enchanted item is not displayed for other players in online game
+    virtual void setEquippedSlot(
+        int slot, std::shared_ptr<ItemInstance>
+                      item);  // 4J Stu - Brought forward change from 1.3 to fix
+                              // #64688 - Customer Encountered: TU7: Content:
+                              // Art: Aura of enchanted item is not displayed
+                              // for other players in online game
     virtual void animateRespawn();
-	virtual float getHeadHeight();
-	bool hasPermission(EGameCommand command) { return false; }
+    virtual float getHeadHeight();
+    bool hasPermission(EGameCommand command) { return false; }
 };

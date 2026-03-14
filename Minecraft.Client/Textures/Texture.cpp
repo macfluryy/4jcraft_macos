@@ -8,243 +8,229 @@
 #include "../Platform/PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
 #include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
 static const int sc_maxTextureBlits = 256;
-static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits] __attribute__((__aligned__(16)));
+static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits]
+    __attribute__((__aligned__(16)));
 static int g_currentTexBlit = 0;
 C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
-#endif //__PS3__
+#endif  //__PS3__
 
 #define MAX_MIP_LEVELS 5
 
-Texture::Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
-{
-	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, mipMap);
+Texture::Texture(const std::wstring& name, int mode, int width, int height,
+                 int depth, int wrapMode, int format, int minFilter,
+                 int magFilter, bool mipMap) {
+    _init(name, mode, width, height, depth, wrapMode, format, minFilter,
+          magFilter, mipMap);
 }
 
-void Texture::_init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, bool mipMap)
-{
+void Texture::_init(const std::wstring& name, int mode, int width, int height,
+                    int depth, int wrapMode, int format, int minFilter,
+                    int magFilter, bool mipMap) {
 #ifdef __PS3__
-	if(g_texBlitJobQueuePort == NULL)
-		g_texBlitJobQueuePort = new C4JSpursJobQueue::Port("C4JSpursJob_Texture_blit");
+    if (g_texBlitJobQueuePort == NULL)
+        g_texBlitJobQueuePort =
+            new C4JSpursJobQueue::Port("C4JSpursJob_Texture_blit");
 #endif
-	this->name = name;
-	this->mode = mode;
-	this->width = width;
-	this->height = height;
-	this->depth = depth;
-	this->format = format;
-	this->minFilter = minFilter;
-	this->magFilter = magFilter;
-	this->wrapMode = wrapMode;	
-	immediateUpdate = false;
-	m_bInitialised = false;
-	for( int i = 0 ; i < 10; i++ )
-	{
-		data[i] = NULL;
-	}
+    this->name = name;
+    this->mode = mode;
+    this->width = width;
+    this->height = height;
+    this->depth = depth;
+    this->format = format;
+    this->minFilter = minFilter;
+    this->magFilter = magFilter;
+    this->wrapMode = wrapMode;
+    immediateUpdate = false;
+    m_bInitialised = false;
+    for (int i = 0; i < 10; i++) {
+        data[i] = NULL;
+    }
 
-	rect = new Rect2i(0, 0, width, height);
-	// 4J Removed 1D and 3D
-	//if (height == 1 && depth == 1)
-	//{
-	//	type = GL_TEXTURE_1D;
-	//}
-	//else if(depth == 1)
-	//{
-		type = GL_TEXTURE_2D;
-	//}
-	//else
-	//{
-	//	type = GL_TEXTURE_3D;
-	//}
+    rect = new Rect2i(0, 0, width, height);
+    // 4J Removed 1D and 3D
+    // if (height == 1 && depth == 1)
+    //{
+    //	type = GL_TEXTURE_1D;
+    //}
+    // else if(depth == 1)
+    //{
+    type = GL_TEXTURE_2D;
+    //}
+    // else
+    //{
+    //	type = GL_TEXTURE_3D;
+    //}
 
-	mipmapped = mipMap || (minFilter != GL_NEAREST && minFilter != GL_LINEAR) ||
-		(magFilter != GL_NEAREST && magFilter != GL_LINEAR);
-	m_iMipLevels=1;
-	
-	if(mipmapped)
-	{
-		// 4J-PB - In the new XDK, the CreateTexture will fail if the number of mipmaps is higher than the width & height passed in will allow!
-		int iWidthMips=1;
-		int iHeightMips=1;
-		while((8<<iWidthMips)<width) iWidthMips++;
-		while((8<<iHeightMips)<height) iHeightMips++;
+    mipmapped = mipMap || (minFilter != GL_NEAREST && minFilter != GL_LINEAR) ||
+                (magFilter != GL_NEAREST && magFilter != GL_LINEAR);
+    m_iMipLevels = 1;
 
-		m_iMipLevels=(iWidthMips<iHeightMips)?iWidthMips:iHeightMips;
-	
-		// TODO - The render libs currently limit max mip map levels to 5
-		if(m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
-	}
+    if (mipmapped) {
+        // 4J-PB - In the new XDK, the CreateTexture will fail if the number of
+        // mipmaps is higher than the width & height passed in will allow!
+        int iWidthMips = 1;
+        int iHeightMips = 1;
+        while ((8 << iWidthMips) < width) iWidthMips++;
+        while ((8 << iHeightMips) < height) iHeightMips++;
+
+        m_iMipLevels = (iWidthMips < iHeightMips) ? iWidthMips : iHeightMips;
+
+        // TODO - The render libs currently limit max mip map levels to 5
+        if (m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
+    }
 
 #ifdef __PSVITA__
-	// vita doesn't have a mipmap conditional shader because it's too slow so make sure this texture don't look awful at the lower mips
-	if( name == L"terrain" )
-	{
-		m_iMipLevels = 3;
-	}
+    // vita doesn't have a mipmap conditional shader because it's too slow so
+    // make sure this texture don't look awful at the lower mips
+    if (name == L"terrain") {
+        m_iMipLevels = 3;
+    }
 #endif
 
-	if (mode != TM_CONTAINER)
-	{
-		glId = glGenTextures();
+    if (mode != TM_CONTAINER) {
+        glId = glGenTextures();
 
-		glBindTexture(type, glId);
-		glTexParameteri(type, GL_TEXTURE_MIN_FILTER, minFilter);
-		glTexParameteri(type, GL_TEXTURE_MAG_FILTER, magFilter);
-		glTexParameteri(type, GL_TEXTURE_WRAP_S, wrapMode);
-		glTexParameteri(type, GL_TEXTURE_WRAP_T, wrapMode);
-	}
-	else
-	{
-		glId = -1;
-	}
+        glBindTexture(type, glId);
+        glTexParameteri(type, GL_TEXTURE_MIN_FILTER, minFilter);
+        glTexParameteri(type, GL_TEXTURE_MAG_FILTER, magFilter);
+        glTexParameteri(type, GL_TEXTURE_WRAP_S, wrapMode);
+        glTexParameteri(type, GL_TEXTURE_WRAP_T, wrapMode);
+    } else {
+        glId = -1;
+    }
 
-	managerId = TextureManager::getInstance()->createTextureID();
+    managerId = TextureManager::getInstance()->createTextureID();
 }
 
-void Texture::_init(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
-{
-	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, mipMap);
-	if (image == NULL)
-	{
-		if (width == -1 || height == -1)
-		{
-			valid = false;
-		}
-		else
-		{
-			byteArray tempBytes = byteArray(width * height * depth * 4);
-			for (int index = 0; index < tempBytes.length; index++)
-			{
-				tempBytes[index] = 0;
-			}
+void Texture::_init(const std::wstring& name, int mode, int width, int height,
+                    int depth, int wrapMode, int format, int minFilter,
+                    int magFilter, BufferedImage* image, bool mipMap) {
+    _init(name, mode, width, height, depth, wrapMode, format, minFilter,
+          magFilter, mipMap);
+    if (image == NULL) {
+        if (width == -1 || height == -1) {
+            valid = false;
+        } else {
+            byteArray tempBytes = byteArray(width * height * depth * 4);
+            for (int index = 0; index < tempBytes.length; index++) {
+                tempBytes[index] = 0;
+            }
 #ifdef __PS3__
-			data[0] = new ByteBuffer_IO(tempBytes.length);
+            data[0] = new ByteBuffer_IO(tempBytes.length);
 #else
-			data[0] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif // __{S3__
-			data[0]->clear();
-			data[0]->put(tempBytes);
-			data[0]->position(0)->limit(tempBytes.length);
+            data[0] = ByteBuffer::allocateDirect(tempBytes.length);
+#endif  // __{S3__
+            data[0]->clear();
+            data[0]->put(tempBytes);
+            data[0]->position(0)->limit(tempBytes.length);
 
-			delete [] tempBytes.data;
+            delete[] tempBytes.data;
 
-			if(mipmapped)
-			{
-				for(unsigned int level = 1; level < m_iMipLevels; ++level)
-				{
-					int ww = width >> level;
-					int hh = height >> level;
+            if (mipmapped) {
+                for (unsigned int level = 1; level < m_iMipLevels; ++level) {
+                    int ww = width >> level;
+                    int hh = height >> level;
 
-					byteArray tempBytes = byteArray(ww * hh * depth * 4);
-					for (int index = 0; index < tempBytes.length; index++)
-					{
-						tempBytes[index] = 0;
-					}
+                    byteArray tempBytes = byteArray(ww * hh * depth * 4);
+                    for (int index = 0; index < tempBytes.length; index++) {
+                        tempBytes[index] = 0;
+                    }
 
 #ifdef __PS3__
-					data[level] = new ByteBuffer_IO(tempBytes.length);
+                    data[level] = new ByteBuffer_IO(tempBytes.length);
 #else
-					data[level] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif // __PS3__
-					data[level]->clear();
-					data[level]->put(tempBytes);
-					data[level]->position(0)->limit(tempBytes.length);
+                    data[level] = ByteBuffer::allocateDirect(tempBytes.length);
+#endif  // __PS3__
+                    data[level]->clear();
+                    data[level]->put(tempBytes);
+                    data[level]->position(0)->limit(tempBytes.length);
 
-					delete [] tempBytes.data;
-				}
-			}
+                    delete[] tempBytes.data;
+                }
+            }
 
-			if (immediateUpdate)
-			{
-				updateOnGPU();
-			}
-			else
-			{
-				updated = false;
-			}
-		}
-	}
-	else
-	{
-		valid = true;
+            if (immediateUpdate) {
+                updateOnGPU();
+            } else {
+                updated = false;
+            }
+        }
+    } else {
+        valid = true;
 
-		transferFromImage(image);
+        transferFromImage(image);
 
-		if (mode != TM_CONTAINER)
-		{
-			updateOnGPU();
-			immediateUpdate = false;
-		}
-	}
+        if (mode != TM_CONTAINER) {
+            updateOnGPU();
+            immediateUpdate = false;
+        }
+    }
 }
 
-Texture::Texture(const std::wstring &name, int mode, int width, int height, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
-{
-	_init(name, mode, width, height, 1, wrapMode, format, minFilter, magFilter, image, mipMap);
+Texture::Texture(const std::wstring& name, int mode, int width, int height,
+                 int wrapMode, int format, int minFilter, int magFilter,
+                 BufferedImage* image, bool mipMap) {
+    _init(name, mode, width, height, 1, wrapMode, format, minFilter, magFilter,
+          image, mipMap);
 }
 
-Texture::Texture(const std::wstring &name, int mode, int width, int height, int depth, int wrapMode, int format, int minFilter, int magFilter, BufferedImage *image, bool mipMap)
-{
-	_init(name, mode, width, height, depth, wrapMode, format, minFilter, magFilter, image, mipMap);
+Texture::Texture(const std::wstring& name, int mode, int width, int height,
+                 int depth, int wrapMode, int format, int minFilter,
+                 int magFilter, BufferedImage* image, bool mipMap) {
+    _init(name, mode, width, height, depth, wrapMode, format, minFilter,
+          magFilter, image, mipMap);
 }
 
-Texture::~Texture()
-{
-	delete rect;
-	
-	for(int i  = 0; i < 10; i++ )
-	{
-		if(data[i] != NULL) delete data[i];
-	}
+Texture::~Texture() {
+    delete rect;
 
-	if(glId >= 0)
-	{
-		glDeleteTextures(glId);
-	}
+    for (int i = 0; i < 10; i++) {
+        if (data[i] != NULL) delete data[i];
+    }
+
+    if (glId >= 0) {
+        glDeleteTextures(glId);
+    }
 }
 
-const Rect2i *Texture::getRect()
-{
-	return rect;
+const Rect2i* Texture::getRect() { return rect; }
+
+void Texture::fill(const Rect2i* rect, int color) {
+    // 4J Remove 3D
+    // if (type == GL_TEXTURE_3D)
+    //{
+    //	return;
+    //}
+
+    Rect2i* myRect = new Rect2i(0, 0, width, height);
+    myRect->intersect(rect);
+    data[0]->position(0);
+    for (int y = myRect->getY(); y < (myRect->getY() + myRect->getHeight());
+         y++) {
+        int line = y * width * 4;
+        for (int x = myRect->getX(); x < (myRect->getX() + myRect->getWidth());
+             x++) {
+            data[0]->put(line + x * 4 + 0,
+                         static_cast<std::uint8_t>((color >> 24) & 0x000000ff));
+            data[0]->put(line + x * 4 + 1,
+                         static_cast<std::uint8_t>((color >> 16) & 0x000000ff));
+            data[0]->put(line + x * 4 + 2,
+                         static_cast<std::uint8_t>((color >> 8) & 0x000000ff));
+            data[0]->put(line + x * 4 + 3,
+                         static_cast<std::uint8_t>((color >> 0) & 0x000000ff));
+        }
+    }
+    delete myRect;
+
+    if (immediateUpdate) {
+        updateOnGPU();
+    } else {
+        updated = false;
+    }
 }
 
-void Texture::fill(const Rect2i *rect, int color)
-{
-	// 4J Remove 3D
-	//if (type == GL_TEXTURE_3D)
-	//{
-	//	return;
-	//}
-
-	Rect2i *myRect = new Rect2i(0, 0, width, height);
-	myRect->intersect(rect);
-	data[0]->position(0);
-	for (int y = myRect->getY(); y < (myRect->getY() + myRect->getHeight()); y++)
-	{
-		int line = y * width * 4;
-		for (int x = myRect->getX(); x < (myRect->getX() + myRect->getWidth()); x++)
-		{
-			data[0]->put(line + x * 4 + 0, static_cast<std::uint8_t>((color >> 24) & 0x000000ff));
-			data[0]->put(line + x * 4 + 1, static_cast<std::uint8_t>((color >> 16) & 0x000000ff));
-			data[0]->put(line + x * 4 + 2, static_cast<std::uint8_t>((color >>  8) & 0x000000ff));
-			data[0]->put(line + x * 4 + 3, static_cast<std::uint8_t>((color >>  0) & 0x000000ff));
-		}
-	}
-	delete myRect;
-
-	if (immediateUpdate)
-	{
-		updateOnGPU();
-	}
-	else
-	{
-		updated = false;
-	}
-}
-
-void Texture::writeAsBMP(const std::wstring &name)
-{
-	// 4J Don't need
+void Texture::writeAsBMP(const std::wstring& name) {
+    // 4J Don't need
 #if 0
 	if (type == GL_TEXTURE_3D)
 	{
@@ -329,9 +315,8 @@ void Texture::writeAsBMP(const std::wstring &name)
 #endif
 }
 
-void Texture::writeAsPNG(const std::wstring &filename)
-{
-	// 4J Don't need
+void Texture::writeAsPNG(const std::wstring& filename) {
+    // 4J Don't need
 #if 0
 	BufferedImage *image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	ByteBuffer *buffer = this->getData();
@@ -366,535 +351,507 @@ void Texture::writeAsPNG(const std::wstring &filename)
 #endif
 }
 
-void Texture::blit(int x, int y, Texture *source)
-{
-	blit(x, y, source, false);
-}
+void Texture::blit(int x, int y, Texture* source) { blit(x, y, source, false); }
 
-void Texture::blit(int x, int y, Texture *source, bool rotated)
-{
-	// 4J Remove 3D
-	//if (type == GL_TEXTURE_3D)
-	//{
-	//	return;
-	//}
+void Texture::blit(int x, int y, Texture* source, bool rotated) {
+    // 4J Remove 3D
+    // if (type == GL_TEXTURE_3D)
+    //{
+    //	return;
+    //}
 
-	for(unsigned int level = 0; level < m_iMipLevels; ++level)
-	{
-		ByteBuffer *srcBuffer = source->getData(level);
+    for (unsigned int level = 0; level < m_iMipLevels; ++level) {
+        ByteBuffer* srcBuffer = source->getData(level);
 
-		if(srcBuffer == NULL) break;
+        if (srcBuffer == NULL) break;
 
-		int yy = y >> level;
-		int xx = x >> level;
-		int hh = height >> level;
-		int ww = width >> level;
-		int shh = source->getHeight() >> level;
-		int sww = source->getWidth() >> level;
+        int yy = y >> level;
+        int xx = x >> level;
+        int hh = height >> level;
+        int ww = width >> level;
+        int shh = source->getHeight() >> level;
+        int sww = source->getWidth() >> level;
 
-		data[level]->position(0);
-		srcBuffer->position(0);
+        data[level]->position(0);
+        srcBuffer->position(0);
 
 #if defined __PS3__ && !defined DISABLE_SPU_CODE
-		if(g_texBlitJobQueuePort->hasCompleted())
-		{
-			// all outstanding blits have completed, so reset to the start of the blit list
-			g_currentTexBlit = 0;
-		}
-		Texture_blit_DataIn& dataIn = g_textureBlitDataIn[g_currentTexBlit];
-		g_currentTexBlit++;
-		if(g_currentTexBlit >= sc_maxTextureBlits)
-		{
-			app.DebugPrintf("ran out of tex blit slots, stalling for completion\n");
-			g_texBlitJobQueuePort->waitForCompletion();
-			g_currentTexBlit = 0;
-		}
-		dataIn.pSrcData = srcBuffer->getBuffer();
-		dataIn.pDstData = data[level]->getBuffer();
-		dataIn.yy = yy;
-		dataIn.xx = xx;
-		dataIn.hh = hh;
-		dataIn.ww = ww;
-		dataIn.shh = shh;
-		dataIn.sww = sww;
-		dataIn.rotated = rotated;
+        if (g_texBlitJobQueuePort->hasCompleted()) {
+            // all outstanding blits have completed, so reset to the start of
+            // the blit list
+            g_currentTexBlit = 0;
+        }
+        Texture_blit_DataIn& dataIn = g_textureBlitDataIn[g_currentTexBlit];
+        g_currentTexBlit++;
+        if (g_currentTexBlit >= sc_maxTextureBlits) {
+            app.DebugPrintf(
+                "ran out of tex blit slots, stalling for completion\n");
+            g_texBlitJobQueuePort->waitForCompletion();
+            g_currentTexBlit = 0;
+        }
+        dataIn.pSrcData = srcBuffer->getBuffer();
+        dataIn.pDstData = data[level]->getBuffer();
+        dataIn.yy = yy;
+        dataIn.xx = xx;
+        dataIn.hh = hh;
+        dataIn.ww = ww;
+        dataIn.shh = shh;
+        dataIn.sww = sww;
+        dataIn.rotated = rotated;
 
-		C4JSpursJob_Texture_blit blitJob(&dataIn);
-		g_texBlitJobQueuePort->submitJob(&blitJob);
-// 		p.waitForCompletion();
+        C4JSpursJob_Texture_blit blitJob(&dataIn);
+        g_texBlitJobQueuePort->submitJob(&blitJob);
+        // 		p.waitForCompletion();
 
 #elif __PSVITA__
-		unsigned int *src = (unsigned int *) srcBuffer->getBuffer();
-		unsigned int *dst = (unsigned int *) data[level]->getBuffer();
+        unsigned int* src = (unsigned int*)srcBuffer->getBuffer();
+        unsigned int* dst = (unsigned int*)data[level]->getBuffer();
 
-		for (int srcY = 0; srcY < shh; srcY++)
-		{
-			int dstY = yy + srcY;
-			int srcLine = srcY * sww;
-			int dstLine = dstY * ww;
+        for (int srcY = 0; srcY < shh; srcY++) {
+            int dstY = yy + srcY;
+            int srcLine = srcY * sww;
+            int dstLine = dstY * ww;
 
-			if (rotated)
-			{
-				dstY = yy + (shh - srcY);
-			}
+            if (rotated) {
+                dstY = yy + (shh - srcY);
+            }
 
-			if (!rotated)
-			{
-				memcpy(dst + dstLine + xx, src + srcLine, sww * 4);
-			}
-			else
-			{
-				for (int srcX = 0; srcX < sww; srcX++)
-				{
-					int dstPos = dstLine + (srcX + xx);
-					int srcPos = srcLine + srcX;
+            if (!rotated) {
+                memcpy(dst + dstLine + xx, src + srcLine, sww * 4);
+            } else {
+                for (int srcX = 0; srcX < sww; srcX++) {
+                    int dstPos = dstLine + (srcX + xx);
+                    int srcPos = srcLine + srcX;
 
-					if (rotated)
-					{
-						dstPos = (xx + srcX * ww) + dstY;
-					}
+                    if (rotated) {
+                        dstPos = (xx + srcX * ww) + dstY;
+                    }
 
-					dst[dstPos] = src[srcPos];
-				}
-			}
-		}
+                    dst[dstPos] = src[srcPos];
+                }
+            }
+        }
 #else
 
-		for (int srcY = 0; srcY < shh; srcY++)
-		{
-			int dstY = yy + srcY;
-			int srcLine = srcY * sww * 4;
-			int dstLine = dstY * ww * 4;
+        for (int srcY = 0; srcY < shh; srcY++) {
+            int dstY = yy + srcY;
+            int srcLine = srcY * sww * 4;
+            int dstLine = dstY * ww * 4;
 
-			if (rotated)
-			{
-				dstY = yy + (shh - srcY);
-			}
+            if (rotated) {
+                dstY = yy + (shh - srcY);
+            }
 
-			for (int srcX = 0; srcX < sww; srcX++)
-			{
-				int dstPos = dstLine + (srcX + xx) * 4;
-				int srcPos = srcLine + srcX * 4;
+            for (int srcX = 0; srcX < sww; srcX++) {
+                int dstPos = dstLine + (srcX + xx) * 4;
+                int srcPos = srcLine + srcX * 4;
 
-				if (rotated)
-				{
-					dstPos = (xx + srcX * ww * 4) + dstY * 4;
-				}
+                if (rotated) {
+                    dstPos = (xx + srcX * ww * 4) + dstY * 4;
+                }
 
-				data[level]->put(dstPos + 0, srcBuffer->get(srcPos + 0));
-				data[level]->put(dstPos + 1, srcBuffer->get(srcPos + 1));
-				data[level]->put(dstPos + 2, srcBuffer->get(srcPos + 2));
-				data[level]->put(dstPos + 3, srcBuffer->get(srcPos + 3));
-			}
-		}
-		// Don't delete this, as it belongs to the source texture
-		//delete srcBuffer;
+                data[level]->put(dstPos + 0, srcBuffer->get(srcPos + 0));
+                data[level]->put(dstPos + 1, srcBuffer->get(srcPos + 1));
+                data[level]->put(dstPos + 2, srcBuffer->get(srcPos + 2));
+                data[level]->put(dstPos + 3, srcBuffer->get(srcPos + 3));
+            }
+        }
+        // Don't delete this, as it belongs to the source texture
+        // delete srcBuffer;
 #endif
-		data[level]->position(ww * hh * 4);
-	}
+        data[level]->position(ww * hh * 4);
+    }
 
-	if (immediateUpdate)
-	{
-		updateOnGPU();
-	}
-	else
-	{
-		updated = false;
-	}
+    if (immediateUpdate) {
+        updateOnGPU();
+    } else {
+        updated = false;
+    }
 }
 
-void Texture::transferFromBuffer(intArray buffer)
-{
-	if (depth == 1)
-	{
-		return;
-	}
+void Texture::transferFromBuffer(intArray buffer) {
+    if (depth == 1) {
+        return;
+    }
 
-// #ifdef __PS3__
-// 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
-// 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
-// #else
-	int byteRemapRGBA[] = { 0, 1, 2, 3 };
-	int byteRemapBGRA[] = { 2, 1, 0, 3 };
-// #endif
-	int *byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
+    // #ifdef __PS3__
+    // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
+    // 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
+    // #else
+    int byteRemapRGBA[] = {0, 1, 2, 3};
+    int byteRemapBGRA[] = {2, 1, 0, 3};
+    // #endif
+    int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
-	for (int z = 0; z < depth; z++)
-	{
-		int plane = z * height * width * 4;
-		for (int y = 0; y < height; y++)
-		{
-			int column = plane + y * width * 4;
-			for (int x = 0; x < width; x++)
-			{
-				int texel = column + x * 4;
-				data[0]->position(0);
-				data[0]->put(texel + byteRemap[0], (uint8_t)((buffer[texel >> 2] >> 24) & 0xff));
-				data[0]->put(texel + byteRemap[1], (uint8_t)((buffer[texel >> 2] >> 16) & 0xff));
-				data[0]->put(texel + byteRemap[2], (uint8_t)((buffer[texel >> 2] >>  8) & 0xff));
-				data[0]->put(texel + byteRemap[3], (uint8_t)((buffer[texel >> 2] >>  0) & 0xff));
-			}
-		}
-	}
+    for (int z = 0; z < depth; z++) {
+        int plane = z * height * width * 4;
+        for (int y = 0; y < height; y++) {
+            int column = plane + y * width * 4;
+            for (int x = 0; x < width; x++) {
+                int texel = column + x * 4;
+                data[0]->position(0);
+                data[0]->put(texel + byteRemap[0],
+                             (uint8_t)((buffer[texel >> 2] >> 24) & 0xff));
+                data[0]->put(texel + byteRemap[1],
+                             (uint8_t)((buffer[texel >> 2] >> 16) & 0xff));
+                data[0]->put(texel + byteRemap[2],
+                             (uint8_t)((buffer[texel >> 2] >> 8) & 0xff));
+                data[0]->put(texel + byteRemap[3],
+                             (uint8_t)((buffer[texel >> 2] >> 0) & 0xff));
+            }
+        }
+    }
 
-	data[0]->position(width * height * depth * 4);
+    data[0]->position(width * height * depth * 4);
 
-	updateOnGPU();
+    updateOnGPU();
 }
 
-void Texture::transferFromImage(BufferedImage *image)
-{
-	// 4J Remove 3D
-	//if (type == GL_TEXTURE_3D)
-	//{
-	//	return;
-	//}
+void Texture::transferFromImage(BufferedImage* image) {
+    // 4J Remove 3D
+    // if (type == GL_TEXTURE_3D)
+    //{
+    //	return;
+    //}
 
-	int imgWidth = image->getWidth();
-	int imgHeight = image->getHeight();
-	if (imgWidth > width || imgHeight > height)
-	{
-		//Minecraft::GetInstance().getLogger().warning("transferFromImage called with a BufferedImage with dimensions (" +
-		//	imgWidth + ", " + imgHeight + ") larger than the Texture dimensions (" + width +
-		//	", " + height + "). Ignoring.");
-		app.DebugPrintf("transferFromImage called with a BufferedImage with dimensions (%d, %d) larger than the Texture dimensions (%d, %d). Ignoring.\n", imgWidth, imgHeight, width, height);
-		return;
-	}
+    int imgWidth = image->getWidth();
+    int imgHeight = image->getHeight();
+    if (imgWidth > width || imgHeight > height) {
+        // Minecraft::GetInstance().getLogger().warning("transferFromImage
+        // called with a BufferedImage with dimensions (" + 	imgWidth + ", " +
+        //imgHeight + ") larger than the Texture dimensions (" + width +
+        //	", " + height + "). Ignoring.");
+        app.DebugPrintf(
+            "transferFromImage called with a BufferedImage with dimensions "
+            "(%d, %d) larger than the Texture dimensions (%d, %d). Ignoring.\n",
+            imgWidth, imgHeight, width, height);
+        return;
+    }
 
 // #ifdef __PS3__
 // 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
 // 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
 // #else
 #ifdef _XBOX
-	int byteRemapRGBA[] = { 0, 1, 2, 3 };
+    int byteRemapRGBA[] = {0, 1, 2, 3};
 #else
-	int byteRemapRGBA[] = { 3, 0, 1, 2 };
+    int byteRemapRGBA[] = {3, 0, 1, 2};
 #endif
-	int byteRemapBGRA[] = { 3, 2, 1, 0 };
-// #endif
-	int *byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
+    int byteRemapBGRA[] = {3, 2, 1, 0};
+    // #endif
+    int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
-	intArray tempPixels = intArray(width * height);
-	int transparency = image->getTransparency();
-	image->getRGB(0, 0, width, height, tempPixels, 0, imgWidth);
+    intArray tempPixels = intArray(width * height);
+    int transparency = image->getTransparency();
+    image->getRGB(0, 0, width, height, tempPixels, 0, imgWidth);
 
-	byteArray tempBytes = byteArray(width * height * 4);
-	for (int y = 0; y < height; y++)
-	{
-		for (int x = 0; x < width; x++)
-		{
-			int intIndex = y * width + x;
-			int byteIndex = intIndex * 4;
+    byteArray tempBytes = byteArray(width * height * 4);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int intIndex = y * width + x;
+            int byteIndex = intIndex * 4;
 
-			// Pull ARGB bytes into either RGBA or BGRA depending on format
+            // Pull ARGB bytes into either RGBA or BGRA depending on format
 
-			tempBytes[byteIndex + byteRemap[0]] = (uint8_t)((tempPixels[intIndex] >> 24) & 0xff);
-			tempBytes[byteIndex + byteRemap[1]] = (uint8_t)((tempPixels[intIndex] >> 16) & 0xff);
-			tempBytes[byteIndex + byteRemap[2]] = (uint8_t)((tempPixels[intIndex] >>  8) & 0xff);
-			tempBytes[byteIndex + byteRemap[3]] = (uint8_t)((tempPixels[intIndex] >>  0) & 0xff);
-		}
-	}
+            tempBytes[byteIndex + byteRemap[0]] =
+                (uint8_t)((tempPixels[intIndex] >> 24) & 0xff);
+            tempBytes[byteIndex + byteRemap[1]] =
+                (uint8_t)((tempPixels[intIndex] >> 16) & 0xff);
+            tempBytes[byteIndex + byteRemap[2]] =
+                (uint8_t)((tempPixels[intIndex] >> 8) & 0xff);
+            tempBytes[byteIndex + byteRemap[3]] =
+                (uint8_t)((tempPixels[intIndex] >> 0) & 0xff);
+        }
+    }
 
-	for(int i  = 0; i < 10; i++ )
-	{
-		if(data[i] != NULL)
-		{
-			delete data[i];
-			data[i] = NULL;
-		}
-	}
+    for (int i = 0; i < 10; i++) {
+        if (data[i] != NULL) {
+            delete data[i];
+            data[i] = NULL;
+        }
+    }
 
-	MemSect(51);
+    MemSect(51);
 #ifdef __PS3__
-	data[0] = new ByteBuffer_IO(tempBytes.length);
+    data[0] = new ByteBuffer_IO(tempBytes.length);
 #else
-	data[0] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif // __{S3__
-	MemSect(0);
-	data[0]->clear();
-	data[0]->put(tempBytes);
-	data[0]->limit(tempBytes.length);
+    data[0] = ByteBuffer::allocateDirect(tempBytes.length);
+#endif  // __{S3__
+    MemSect(0);
+    data[0]->clear();
+    data[0]->put(tempBytes);
+    data[0]->limit(tempBytes.length);
 
-	delete [] tempBytes.data;
+    delete[] tempBytes.data;
 
-	if(mipmapped || image->getData(1) != NULL)
-	{
-		mipmapped = true;
-		for(unsigned int level = 1; level < MAX_MIP_LEVELS; ++level)
-		{
-			int ww = width >> level;
-			int hh = height >> level;
+    if (mipmapped || image->getData(1) != NULL) {
+        mipmapped = true;
+        for (unsigned int level = 1; level < MAX_MIP_LEVELS; ++level) {
+            int ww = width >> level;
+            int hh = height >> level;
 
-			byteArray tempBytes = byteArray(ww * hh * 4);
-			unsigned int *tempData = new unsigned int[ww * hh];
+            byteArray tempBytes = byteArray(ww * hh * 4);
+            unsigned int* tempData = new unsigned int[ww * hh];
 
-			if( image->getData( level ) )
-			{
-				memcpy( tempData, image->getData( level ), ww * hh * 4);
-				for (int y = 0; y < hh; y++)
-				{
-					for (int x = 0; x < ww; x++)
-					{
-						int intIndex = y * ww + x;
-						int byteIndex = intIndex * 4;
+            if (image->getData(level)) {
+                memcpy(tempData, image->getData(level), ww * hh * 4);
+                for (int y = 0; y < hh; y++) {
+                    for (int x = 0; x < ww; x++) {
+                        int intIndex = y * ww + x;
+                        int byteIndex = intIndex * 4;
 
-						// Pull ARGB bytes into either RGBA or BGRA depending on format
+                        // Pull ARGB bytes into either RGBA or BGRA depending on
+                        // format
 
-						tempBytes[byteIndex + byteRemap[0]] = (uint8_t)((tempData[intIndex] >> 24) & 0xff);
-						tempBytes[byteIndex + byteRemap[1]] = (uint8_t)((tempData[intIndex] >> 16) & 0xff);
-						tempBytes[byteIndex + byteRemap[2]] = (uint8_t)((tempData[intIndex] >>  8) & 0xff);
-						tempBytes[byteIndex + byteRemap[3]] = (uint8_t)((tempData[intIndex] >>  0) & 0xff);
-					}
-				}
-			}
-			else
-			{
-				int ow = width >> (level - 1);
-				
-				for (int x = 0; x < ww; x++)
-					for (int y = 0; y < hh; y++)
-					{						
-						int c0 = data[level - 1]->getInt(((x * 2 + 0) + (y * 2 + 0) * ow) * 4);
-						int c1 = data[level - 1]->getInt(((x * 2 + 1) + (y * 2 + 0) * ow) * 4);
-						int c2 = data[level - 1]->getInt(((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
-						int c3 = data[level - 1]->getInt(((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
+                        tempBytes[byteIndex + byteRemap[0]] =
+                            (uint8_t)((tempData[intIndex] >> 24) & 0xff);
+                        tempBytes[byteIndex + byteRemap[1]] =
+                            (uint8_t)((tempData[intIndex] >> 16) & 0xff);
+                        tempBytes[byteIndex + byteRemap[2]] =
+                            (uint8_t)((tempData[intIndex] >> 8) & 0xff);
+                        tempBytes[byteIndex + byteRemap[3]] =
+                            (uint8_t)((tempData[intIndex] >> 0) & 0xff);
+                    }
+                }
+            } else {
+                int ow = width >> (level - 1);
+
+                for (int x = 0; x < ww; x++)
+                    for (int y = 0; y < hh; y++) {
+                        int c0 = data[level - 1]->getInt(
+                            ((x * 2 + 0) + (y * 2 + 0) * ow) * 4);
+                        int c1 = data[level - 1]->getInt(
+                            ((x * 2 + 1) + (y * 2 + 0) * ow) * 4);
+                        int c2 = data[level - 1]->getInt(
+                            ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
+                        int c3 = data[level - 1]->getInt(
+                            ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
 #ifndef _XBOX
-						// 4J - convert our RGBA texels to ARGB that crispBlend is expecting
-						// 4jcraft, added uint cast to pervent shift of neg int
-						c0 = ( ( c0 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c0 << 24 );
-						c1 = ( ( c1 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c1 << 24 );
-						c2 = ( ( c2 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c2 << 24 );
-						c3 = ( ( c3 >> 8 ) & 0x00ffffff ) | ( (unsigned int) c3 << 24 );
+                        // 4J - convert our RGBA texels to ARGB that crispBlend
+                        // is expecting 4jcraft, added uint cast to pervent
+                        // shift of neg int
+                        c0 =
+                            ((c0 >> 8) & 0x00ffffff) | ((unsigned int)c0 << 24);
+                        c1 =
+                            ((c1 >> 8) & 0x00ffffff) | ((unsigned int)c1 << 24);
+                        c2 =
+                            ((c2 >> 8) & 0x00ffffff) | ((unsigned int)c2 << 24);
+                        c3 =
+                            ((c3 >> 8) & 0x00ffffff) | ((unsigned int)c3 << 24);
 #endif
-						int col = crispBlend(crispBlend(c0, c1), crispBlend(c2, c3));
-						// 4J - and back from ARGB -> RGBA
-						//col = ( col << 8 ) | (( col >> 24 ) & 0xff);
-						//tempData[x + y * ww] = col;
+                        int col =
+                            crispBlend(crispBlend(c0, c1), crispBlend(c2, c3));
+                        // 4J - and back from ARGB -> RGBA
+                        // col = ( col << 8 ) | (( col >> 24 ) & 0xff);
+                        // tempData[x + y * ww] = col;
 
-						int intIndex = y * ww + x;
-						int byteIndex = intIndex * 4;
+                        int intIndex = y * ww + x;
+                        int byteIndex = intIndex * 4;
 
-						// Pull ARGB bytes into either RGBA or BGRA depending on format
+                        // Pull ARGB bytes into either RGBA or BGRA depending on
+                        // format
 
-						tempBytes[byteIndex + byteRemap[0]] = (uint8_t)((col >> 24) & 0xff);
-						tempBytes[byteIndex + byteRemap[1]] = (uint8_t)((col >> 16) & 0xff);
-						tempBytes[byteIndex + byteRemap[2]] = (uint8_t)((col >>  8) & 0xff);
-						tempBytes[byteIndex + byteRemap[3]] = (uint8_t)((col >>  0) & 0xff);
-					}
-			}
+                        tempBytes[byteIndex + byteRemap[0]] =
+                            (uint8_t)((col >> 24) & 0xff);
+                        tempBytes[byteIndex + byteRemap[1]] =
+                            (uint8_t)((col >> 16) & 0xff);
+                        tempBytes[byteIndex + byteRemap[2]] =
+                            (uint8_t)((col >> 8) & 0xff);
+                        tempBytes[byteIndex + byteRemap[3]] =
+                            (uint8_t)((col >> 0) & 0xff);
+                    }
+            }
 
-			MemSect(51);
+            MemSect(51);
 #ifdef __PS3__
-			data[level] = new ByteBuffer_IO(tempBytes.length);
+            data[level] = new ByteBuffer_IO(tempBytes.length);
 #else
-			data[level] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif // __{S3__
-			MemSect(0);
-			data[level]->clear();
-			data[level]->put(tempBytes);
-			data[level]->limit(tempBytes.length);
-			delete [] tempBytes.data;
-			delete [] tempData;
-		}
-	}	
+            data[level] = ByteBuffer::allocateDirect(tempBytes.length);
+#endif  // __{S3__
+            MemSect(0);
+            data[level]->clear();
+            data[level]->put(tempBytes);
+            data[level]->limit(tempBytes.length);
+            delete[] tempBytes.data;
+            delete[] tempData;
+        }
+    }
 
-	delete [] tempPixels.data;
+    delete[] tempPixels.data;
 
-	if (immediateUpdate)
-	{
-		updateOnGPU();
-	}
-	else
-	{
-		updated = false;
-	}
+    if (immediateUpdate) {
+        updateOnGPU();
+    } else {
+        updated = false;
+    }
 }
 
-// 4J Kept from older versions for where we create mip-maps for levels that do not have pre-made graphics
-int Texture::crispBlend(int c0, int c1)
-{
-	int a0 = (int) (((c0 & 0xff000000) >> 24)) & 0xff;
-	int a1 = (int) (((c1 & 0xff000000) >> 24)) & 0xff;
+// 4J Kept from older versions for where we create mip-maps for levels that do
+// not have pre-made graphics
+int Texture::crispBlend(int c0, int c1) {
+    int a0 = (int)(((c0 & 0xff000000) >> 24)) & 0xff;
+    int a1 = (int)(((c1 & 0xff000000) >> 24)) & 0xff;
 
-	int a = 255;
-	if (a0 + a1 < 255)
-	{
-		a = 0;
-		a0 = 1;
-		a1 = 1;
-	}
-	else if (a0 > a1)
-	{
-		a0 = 255;
-		a1 = 1;
-	}
-	else
-	{
-		a0 = 1;
-		a1 = 255;
+    int a = 255;
+    if (a0 + a1 < 255) {
+        a = 0;
+        a0 = 1;
+        a1 = 1;
+    } else if (a0 > a1) {
+        a0 = 255;
+        a1 = 1;
+    } else {
+        a0 = 1;
+        a1 = 255;
+    }
 
-	}
+    int r0 = ((c0 >> 16) & 0xff) * a0;
+    int g0 = ((c0 >> 8) & 0xff) * a0;
+    int b0 = ((c0) & 0xff) * a0;
 
-	int r0 = ((c0 >> 16) & 0xff) * a0;
-	int g0 = ((c0 >> 8) & 0xff) * a0;
-	int b0 = ((c0) & 0xff) * a0;
+    int r1 = ((c1 >> 16) & 0xff) * a1;
+    int g1 = ((c1 >> 8) & 0xff) * a1;
+    int b1 = ((c1) & 0xff) * a1;
 
-	int r1 = ((c1 >> 16) & 0xff) * a1;
-	int g1 = ((c1 >> 8) & 0xff) * a1;
-	int b1 = ((c1) & 0xff) * a1;
+    int r = (r0 + r1) / (a0 + a1);
+    int g = (g0 + g1) / (a0 + a1);
+    int b = (b0 + b1) / (a0 + a1);
 
-	int r = (r0 + r1) / (a0 + a1);
-	int g = (g0 + g1) / (a0 + a1);
-	int b = (b0 + b1) / (a0 + a1);
-
-	return (a << 24) | (r << 16) | (g << 8) | b;
+    return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
-int Texture::getManagerId()
-{
-	return managerId;
+int Texture::getManagerId() { return managerId; }
+
+int Texture::getGlId() { return glId; }
+
+int Texture::getWidth() { return width; }
+
+int Texture::getHeight() { return height; }
+
+std::wstring Texture::getName() { return name; }
+
+void Texture::setImmediateUpdate(bool immediateUpdate) {
+    this->immediateUpdate = immediateUpdate;
 }
 
-int Texture::getGlId()
-{
-	return glId;
+void Texture::bind(int mipMapIndex) {
+    // 4J Removed 3D
+    // if (depth == 1)
+    //{
+    glEnable(GL_TEXTURE_2D);
+    //}
+    // else
+    //{
+    //	glEnable(GL_TEXTURE_3D);
+    //}
+
+    glActiveTexture(GL_TEXTURE0 + mipMapIndex);
+    glBindTexture(type, glId);
+    if (!updated) {
+        updateOnGPU();
+    }
 }
 
-int Texture::getWidth()
-{
-	return width;
-}
+void Texture::updateOnGPU() {
+    data[0]->flip();
+    if (mipmapped) {
+        for (int level = 1; level < m_iMipLevels; level++) {
+            if (data[level] == NULL) break;
 
-int Texture::getHeight()
-{
-	return height;
-}
-
-std::wstring Texture::getName()
-{
-	return name;
-}
-
-void Texture::setImmediateUpdate(bool immediateUpdate)
-{
-	this->immediateUpdate = immediateUpdate;
-}
-
-void Texture::bind(int mipMapIndex)
-{
-	// 4J Removed 3D
-	//if (depth == 1)
-	//{
-		glEnable(GL_TEXTURE_2D);
-	//}
-	//else
-	//{
-	//	glEnable(GL_TEXTURE_3D);
-	//}
-
-	glActiveTexture(GL_TEXTURE0 + mipMapIndex);
-	glBindTexture(type, glId);
-	if (!updated)
-	{
-		updateOnGPU();
-	}
-}
-
-void Texture::updateOnGPU()
-{
-	data[0]->flip();
-	if(mipmapped)
-	{
-		for (int level = 1; level < m_iMipLevels; level++)
-		{
-			if(data[level] == NULL) break;
-		
-			data[level]->flip();
-		}
-	}
-	// 4J remove 3D and 1D
-	//if (height != 1 && depth != 1)
-	//{
-	//	glTexImage3D(type, 0, format, width, height, depth, 0, format, GL_UNSIGNED_BYTE, data);
-	//}
-	//else if(height != 1)
-	//{
-		// 4J Added check so we can differentiate between which RenderManager function to call
-		if(!m_bInitialised)
-		{			
-			RenderManager.TextureSetTextureLevels(m_iMipLevels);	// 4J added
+            data[level]->flip();
+        }
+    }
+    // 4J remove 3D and 1D
+    // if (height != 1 && depth != 1)
+    //{
+    //	glTexImage3D(type, 0, format, width, height, depth, 0, format,
+    //GL_UNSIGNED_BYTE, data);
+    //}
+    // else if(height != 1)
+    //{
+    // 4J Added check so we can differentiate between which RenderManager
+    // function to call
+    if (!m_bInitialised) {
+        RenderManager.TextureSetTextureLevels(m_iMipLevels);  // 4J added
 
 #ifdef __PSVITA__
-			// AP - replace the dynamic ram buffer to one that points to a newly allocated video ram texture buffer. This means we don't have to memcpy
-			// the ram based buffer to it any more inside RenderManager.TextureDataUpdate
-			unsigned char *newData = RenderManager.TextureData(width,height,data[0]->getBuffer(),0,C4JRender::TEXTURE_FORMAT_RxGyBzAw);
-			ByteBuffer *oldBuffer = data[0];
-			data[0] = new ByteBuffer(data[0]->getSize(), (uint8_t*) newData);
-			delete oldBuffer;
-			newData += width * height * 4;
+        // AP - replace the dynamic ram buffer to one that points to a newly
+        // allocated video ram texture buffer. This means we don't have to
+        // memcpy the ram based buffer to it any more inside
+        // RenderManager.TextureDataUpdate
+        unsigned char* newData =
+            RenderManager.TextureData(width, height, data[0]->getBuffer(), 0,
+                                      C4JRender::TEXTURE_FORMAT_RxGyBzAw);
+        ByteBuffer* oldBuffer = data[0];
+        data[0] = new ByteBuffer(data[0]->getSize(), (uint8_t*)newData);
+        delete oldBuffer;
+        newData += width * height * 4;
 #else
-			RenderManager.TextureData(width,height,data[0]->getBuffer(),0,C4JRender::TEXTURE_FORMAT_RxGyBzAw);
+        RenderManager.TextureData(width, height, data[0]->getBuffer(), 0,
+                                  C4JRender::TEXTURE_FORMAT_RxGyBzAw);
 #endif
 
-			if(mipmapped)
-			{
-				for (int level = 1; level < m_iMipLevels; level++)
-				{
-					int levelWidth = width >> level;
-					int levelHeight = height >> level;
+        if (mipmapped) {
+            for (int level = 1; level < m_iMipLevels; level++) {
+                int levelWidth = width >> level;
+                int levelHeight = height >> level;
 
 #ifdef __PSVITA__
-					// AP - replace the dynamic ram buffer to one that points to a newly allocated video ram texture buffer. This means we don't have to memcpy
-					// the ram based buffer to it any more inside RenderManager.TextureDataUpdate
-					RenderManager.TextureDataUpdate(0, 0,levelWidth,levelHeight,data[level]->getBuffer(),level);
-					ByteBuffer *oldBuffer = data[level];
-					data[level] = new ByteBuffer(data[level]->getSize(), (uint8_t*) newData);
-					delete oldBuffer;
-					newData += levelWidth * levelHeight * 4;
+                // AP - replace the dynamic ram buffer to one that points to a
+                // newly allocated video ram texture buffer. This means we don't
+                // have to memcpy the ram based buffer to it any more inside
+                // RenderManager.TextureDataUpdate
+                RenderManager.TextureDataUpdate(0, 0, levelWidth, levelHeight,
+                                                data[level]->getBuffer(),
+                                                level);
+                ByteBuffer* oldBuffer = data[level];
+                data[level] =
+                    new ByteBuffer(data[level]->getSize(), (uint8_t*)newData);
+                delete oldBuffer;
+                newData += levelWidth * levelHeight * 4;
 #else
-					RenderManager.TextureData(levelWidth,levelHeight,data[level]->getBuffer(),level,C4JRender::TEXTURE_FORMAT_RxGyBzAw);
+                RenderManager.TextureData(levelWidth, levelHeight,
+                                          data[level]->getBuffer(), level,
+                                          C4JRender::TEXTURE_FORMAT_RxGyBzAw);
 #endif
-				}
-			}
+            }
+        }
 
-			m_bInitialised = true;
-		}
-		else
-		{
+        m_bInitialised = true;
+    } else {
 #ifdef _XBOX
-			RenderManager.TextureDataUpdate(data[0]->getBuffer(),0);
+        RenderManager.TextureDataUpdate(data[0]->getBuffer(), 0);
 #else
-			RenderManager.TextureDataUpdate(0, 0,width,height,data[0]->getBuffer(),0);
+        RenderManager.TextureDataUpdate(0, 0, width, height,
+                                        data[0]->getBuffer(), 0);
 #endif
 
-			if(mipmapped)
-			{
-				if (RenderManager.TextureGetTextureLevels() > 1)
-				{
-					for (int level = 1; level < m_iMipLevels; level++)
-					{
-						int levelWidth = width >> level;
-						int levelHeight = height >> level;
-					
+        if (mipmapped) {
+            if (RenderManager.TextureGetTextureLevels() > 1) {
+                for (int level = 1; level < m_iMipLevels; level++) {
+                    int levelWidth = width >> level;
+                    int levelHeight = height >> level;
+
 #ifdef _XBOX
-						RenderManager.TextureDataUpdate(data[level]->getBuffer(),level);
+                    RenderManager.TextureDataUpdate(data[level]->getBuffer(),
+                                                    level);
 #else
-						RenderManager.TextureDataUpdate(0, 0,levelWidth,levelHeight,data[level]->getBuffer(),level);
+                    RenderManager.TextureDataUpdate(
+                        0, 0, levelWidth, levelHeight, data[level]->getBuffer(),
+                        level);
 #endif
-					}
-				}
-			}
-		}
-		//glTexImage2D(type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-	//}
-	//else
-	//{
-	//	glTexImage1D(type, 0, format, width, 0, format, GL_UNSIGNED_BYTE, data);
-	//}
-	updated = true;
+                }
+            }
+        }
+    }
+    // glTexImage2D(type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE,
+    // data);
+    //}
+    // else
+    //{
+    //	glTexImage1D(type, 0, format, width, 0, format, GL_UNSIGNED_BYTE, data);
+    //}
+    updated = true;
 }
 
-ByteBuffer *Texture::getData(unsigned int level)
-{
-	return data[level];
-}
+ByteBuffer* Texture::getData(unsigned int level) { return data[level]; }

@@ -5,174 +5,146 @@
 #include "../Headers/net.minecraft.world.item.crafting.h"
 #include "ArmorDyeRecipe.h"
 
-bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots, Level *level)
-{
-	std::shared_ptr<ItemInstance> target = nullptr;
-	std::vector<std::shared_ptr<ItemInstance> > dyes;
+bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
+                             Level* level) {
+    std::shared_ptr<ItemInstance> target = nullptr;
+    std::vector<std::shared_ptr<ItemInstance> > dyes;
 
-	for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
-	{
-		std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-		if (item == NULL) continue;
+    for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
+        std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+        if (item == NULL) continue;
 
-		ArmorItem *armor = dynamic_cast<ArmorItem *>(item->getItem());
-		if (armor)
-		{
-			if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH && target == NULL)
-			{
-				target = item;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else if (item->id == Item::dye_powder_Id)
-		{
-			dyes.push_back(item);
-		}
-		else
-		{
-			return false;
-		}
-	}
+        ArmorItem* armor = dynamic_cast<ArmorItem*>(item->getItem());
+        if (armor) {
+            if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH &&
+                target == NULL) {
+                target = item;
+            } else {
+                return false;
+            }
+        } else if (item->id == Item::dye_powder_Id) {
+            dyes.push_back(item);
+        } else {
+            return false;
+        }
+    }
 
-	return target != NULL && !dyes.empty();
+    return target != NULL && !dyes.empty();
 }
 
-std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(std::shared_ptr<CraftingContainer> craftSlots)
-{
-	std::shared_ptr<ItemInstance> target = nullptr;
-	int colorTotals[3];
-	colorTotals[0] = 0;
-	colorTotals[1] = 0;
-	colorTotals[2] = 0;
-	int intensityTotal = 0;
-	int colourCounts = 0;
-	ArmorItem *armor = NULL;
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
+    std::shared_ptr<CraftingContainer> craftSlots) {
+    std::shared_ptr<ItemInstance> target = nullptr;
+    int colorTotals[3];
+    colorTotals[0] = 0;
+    colorTotals[1] = 0;
+    colorTotals[2] = 0;
+    int intensityTotal = 0;
+    int colourCounts = 0;
+    ArmorItem* armor = NULL;
 
-	if(craftSlots != NULL)
-	{
-		for (int slot = 0; slot < craftSlots->getContainerSize(); slot++)
-		{
-			std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-			if (item == NULL) continue;
+    if (craftSlots != NULL) {
+        for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
+            std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
+            if (item == NULL) continue;
 
-			armor = dynamic_cast<ArmorItem *>(item->getItem());
-			if (armor)
-			{
-				if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH && target == NULL)
-				{
-					target = item->copy();
+            armor = dynamic_cast<ArmorItem*>(item->getItem());
+            if (armor) {
+                if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH &&
+                    target == NULL) {
+                    target = item->copy();
 
-					if (armor->hasCustomColor(item))
-					{
-						int color = armor->getColor(target);
-						float red = (float) ((color >> 16) & 0xFF) / 0xFF;
-						float green = (float) ((color >> 8) & 0xFF) / 0xFF;
-						float blue = (float) (color & 0xFF) / 0xFF;
+                    if (armor->hasCustomColor(item)) {
+                        int color = armor->getColor(target);
+                        float red = (float)((color >> 16) & 0xFF) / 0xFF;
+                        float green = (float)((color >> 8) & 0xFF) / 0xFF;
+                        float blue = (float)(color & 0xFF) / 0xFF;
 
-						intensityTotal += std::max(red, std::max(green, blue)) * 0xFF;
+                        intensityTotal +=
+                            std::max(red, std::max(green, blue)) * 0xFF;
 
-						colorTotals[0] += red * 0xFF;
-						colorTotals[1] += green * 0xFF;
-						colorTotals[2] += blue * 0xFF;
-						colourCounts++;
-					}
-				}
-				else
-				{
-					return nullptr;
-				}
-			}
-			else if (item->id == Item::dye_powder_Id)
-			{
-				int tileData = ClothTile::getTileDataForItemAuxValue(item->getAuxValue());
-				int red = (int) (Sheep::COLOR[tileData][0] * 0xFF);
-				int green = (int) (Sheep::COLOR[tileData][1] * 0xFF);
-				int blue = (int) (Sheep::COLOR[tileData][2] * 0xFF);
+                        colorTotals[0] += red * 0xFF;
+                        colorTotals[1] += green * 0xFF;
+                        colorTotals[2] += blue * 0xFF;
+                        colourCounts++;
+                    }
+                } else {
+                    return nullptr;
+                }
+            } else if (item->id == Item::dye_powder_Id) {
+                int tileData =
+                    ClothTile::getTileDataForItemAuxValue(item->getAuxValue());
+                int red = (int)(Sheep::COLOR[tileData][0] * 0xFF);
+                int green = (int)(Sheep::COLOR[tileData][1] * 0xFF);
+                int blue = (int)(Sheep::COLOR[tileData][2] * 0xFF);
 
-				intensityTotal += std::max(red, std::max(green, blue));
+                intensityTotal += std::max(red, std::max(green, blue));
 
-				colorTotals[0] += red;
-				colorTotals[1] += green;
-				colorTotals[2] += blue;
-				colourCounts++;
-			}
-			else
-			{
-				return nullptr;
-			}
-		}
-	}
+                colorTotals[0] += red;
+                colorTotals[1] += green;
+                colorTotals[2] += blue;
+                colourCounts++;
+            } else {
+                return nullptr;
+            }
+        }
+    }
 
-	if (armor == NULL) return nullptr;
+    if (armor == NULL) return nullptr;
 
-	int red = (colorTotals[0] / colourCounts);
-	int green = (colorTotals[1] / colourCounts);
-	int blue = (colorTotals[2] / colourCounts);
+    int red = (colorTotals[0] / colourCounts);
+    int green = (colorTotals[1] / colourCounts);
+    int blue = (colorTotals[2] / colourCounts);
 
-	float averageIntensity = (float) intensityTotal / colourCounts;
-	float resultIntensity = (float) std::max(red, std::max(green, blue));
-	//        System.out.println(averageIntensity + ", " + resultIntensity);
+    float averageIntensity = (float)intensityTotal / colourCounts;
+    float resultIntensity = (float)std::max(red, std::max(green, blue));
+    //        System.out.println(averageIntensity + ", " + resultIntensity);
 
-	red = (int) ((float) red * averageIntensity / resultIntensity);
-	green = (int) ((float) green * averageIntensity / resultIntensity);
-	blue = (int) ((float) blue * averageIntensity / resultIntensity);
+    red = (int)((float)red * averageIntensity / resultIntensity);
+    green = (int)((float)green * averageIntensity / resultIntensity);
+    blue = (int)((float)blue * averageIntensity / resultIntensity);
 
-	int rgb = red;
-	rgb = (rgb << 8) + green;
-	rgb = (rgb << 8) + blue;
+    int rgb = red;
+    rgb = (rgb << 8) + green;
+    rgb = (rgb << 8) + blue;
 
-	armor->setColor(target, rgb);
-	return target;
+    armor->setColor(target, rgb);
+    return target;
 }
 
-std::shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(std::shared_ptr<CraftingContainer> craftSlots)
-{
-	return ArmorDyeRecipe::assembleDyedArmor(craftSlots);
+std::shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(
+    std::shared_ptr<CraftingContainer> craftSlots) {
+    return ArmorDyeRecipe::assembleDyedArmor(craftSlots);
 }
 
-int ArmorDyeRecipe::size()
-{
-	return 10;
-}
+int ArmorDyeRecipe::size() { return 10; }
 
-const ItemInstance *ArmorDyeRecipe::getResultItem()
-{
-	return NULL;
-}
+const ItemInstance* ArmorDyeRecipe::getResultItem() { return NULL; }
 
-const int ArmorDyeRecipe::getGroup()
-{
-	return ShapedRecipy::eGroupType_Armour;
-}
+const int ArmorDyeRecipe::getGroup() { return ShapedRecipy::eGroupType_Armour; }
 
 // 4J-PB
-bool ArmorDyeRecipe::requires(int iRecipe)
-{
-	return false;
-}
+bool ArmorDyeRecipe::requires(int iRecipe) { return false; }
 
-void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED *pIngReq)
-{
-	//int iCount=0;
-	//bool bFound;
-	//int j;
-	INGREDIENTS_REQUIRED TempIngReq;
+void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED* pIngReq) {
+    // int iCount=0;
+    // bool bFound;
+    // int j;
+    INGREDIENTS_REQUIRED TempIngReq;
 
-	// shapeless doesn't have the 3x3 shape, but we'll just use this to store the ingredients anyway
-	TempIngReq.iIngC=0;
-	TempIngReq.iType = RECIPE_TYPE_2x2; // all the dyes can be made in a 2x2
-	TempIngReq.uiGridA = new unsigned int [9];
-	TempIngReq.iIngIDA= new int [3*3];
-	TempIngReq.iIngValA = new int [3*3];
-	TempIngReq.iIngAuxValA = new int [3*3];
+    // shapeless doesn't have the 3x3 shape, but we'll just use this to store
+    // the ingredients anyway
+    TempIngReq.iIngC = 0;
+    TempIngReq.iType = RECIPE_TYPE_2x2;  // all the dyes can be made in a 2x2
+    TempIngReq.uiGridA = new unsigned int[9];
+    TempIngReq.iIngIDA = new int[3 * 3];
+    TempIngReq.iIngValA = new int[3 * 3];
+    TempIngReq.iIngAuxValA = new int[3 * 3];
 
-	ZeroMemory(TempIngReq.iIngIDA,sizeof(int)*9);
-	ZeroMemory(TempIngReq.iIngValA,sizeof(int)*9);
-	memset(TempIngReq.iIngAuxValA,Recipes::ANY_AUX_VALUE,sizeof(int)*9);
-	ZeroMemory(TempIngReq.uiGridA,sizeof(unsigned int)*9);
+    ZeroMemory(TempIngReq.iIngIDA, sizeof(int) * 9);
+    ZeroMemory(TempIngReq.iIngValA, sizeof(int) * 9);
+    memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
+    ZeroMemory(TempIngReq.uiGridA, sizeof(unsigned int) * 9);
 
 #if 0
 	AUTO_VAR(citEnd, ingredients->end());
@@ -210,31 +182,32 @@ void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED *pIngReq)
 	}
 #endif
 
-	pIngReq->iIngIDA = new int [TempIngReq.iIngC];
-	pIngReq->iIngValA = new int [TempIngReq.iIngC];
-	pIngReq->iIngAuxValA = new int [TempIngReq.iIngC];
-	pIngReq->uiGridA = new unsigned int [9];
+    pIngReq->iIngIDA = new int[TempIngReq.iIngC];
+    pIngReq->iIngValA = new int[TempIngReq.iIngC];
+    pIngReq->iIngAuxValA = new int[TempIngReq.iIngC];
+    pIngReq->uiGridA = new unsigned int[9];
 
-	pIngReq->pRecipy=this;
+    pIngReq->pRecipy = this;
 
-	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
-	{
-		pIngReq->bCanMake[i]=false;
-	}
+    for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
+        pIngReq->bCanMake[i] = false;
+    }
 
-	pIngReq->iIngC=TempIngReq.iIngC;
-	pIngReq->iType=TempIngReq.iType;
+    pIngReq->iIngC = TempIngReq.iIngC;
+    pIngReq->iType = TempIngReq.iType;
 
-	if(pIngReq->iIngC!=0)
-	{
-		memcpy(pIngReq->iIngIDA,TempIngReq.iIngIDA,sizeof(int)*TempIngReq.iIngC);
-		memcpy(pIngReq->iIngValA,TempIngReq.iIngValA,sizeof(int)*TempIngReq.iIngC);
-		memcpy(pIngReq->iIngAuxValA,TempIngReq.iIngAuxValA,sizeof(int)*TempIngReq.iIngC);
-	}
-	memcpy(pIngReq->uiGridA,TempIngReq.uiGridA,sizeof(unsigned int) *9);
+    if (pIngReq->iIngC != 0) {
+        memcpy(pIngReq->iIngIDA, TempIngReq.iIngIDA,
+               sizeof(int) * TempIngReq.iIngC);
+        memcpy(pIngReq->iIngValA, TempIngReq.iIngValA,
+               sizeof(int) * TempIngReq.iIngC);
+        memcpy(pIngReq->iIngAuxValA, TempIngReq.iIngAuxValA,
+               sizeof(int) * TempIngReq.iIngC);
+    }
+    memcpy(pIngReq->uiGridA, TempIngReq.uiGridA, sizeof(unsigned int) * 9);
 
-	delete [] TempIngReq.iIngIDA;
-	delete [] TempIngReq.iIngValA;
-	delete [] TempIngReq.iIngAuxValA;
-	delete [] TempIngReq.uiGridA;
+    delete[] TempIngReq.iIngIDA;
+    delete[] TempIngReq.iIngValA;
+    delete[] TempIngReq.iIngAuxValA;
+    delete[] TempIngReq.uiGridA;
 }

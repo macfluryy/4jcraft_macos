@@ -2,11 +2,9 @@
 
 #include "Feature.h"
 
-class VinesFeature : public Feature
-{
-
+class VinesFeature : public Feature {
 public:
-	VinesFeature();
+    VinesFeature();
 
-	bool place(Level *level, Random *random, int x, int y, int z);
+    bool place(Level* level, Random* random, int x, int y, int z);
 };

@@ -5,30 +5,28 @@
 #include "EnderPearlItem.h"
 #include "../Util/SoundTypes.h"
 
-EnderpearlItem::EnderpearlItem(int id) : Item(id)
-{
-	this->maxStackSize = 16;
+EnderpearlItem::EnderpearlItem(int id) : Item(id) { this->maxStackSize = 16; }
+
+bool EnderpearlItem::TestUse(Level* level, std::shared_ptr<Player> player) {
+    return true;
 }
 
-bool EnderpearlItem::TestUse(Level *level, std::shared_ptr<Player> player)
-{
-	return true;
-}
+std::shared_ptr<ItemInstance> EnderpearlItem::use(
+    std::shared_ptr<ItemInstance> instance, Level* level,
+    std::shared_ptr<Player> player) {
+    // 4J-PB - Not sure why this was disabled for creative mode, so commenting
+    // out
+    // if (player->abilities.instabuild) return instance;
+    if (player->riding != NULL) return instance;
+    if (!player->abilities.instabuild) {
+        instance->count--;
+    }
 
-std::shared_ptr<ItemInstance> EnderpearlItem::use(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player)
-{
-	// 4J-PB - Not sure why this was disabled for creative mode, so commenting out
-	//if (player->abilities.instabuild) return instance;
-	if (player->riding != NULL) return instance;
-	if (!player->abilities.instabuild)
-	{
-		instance->count--;
-	}
-
-	level->playSound(player, eSoundType_RANDOM_BOW, 0.5f, 0.4f / (random->nextFloat() * 0.4f + 0.8f));
-	if (!level->isClientSide) 
-	{
-		level->addEntity( std::shared_ptr<ThrownEnderpearl>( new ThrownEnderpearl(level, player) ) );
-	}
-	return instance;
+    level->playSound(player, eSoundType_RANDOM_BOW, 0.5f,
+                     0.4f / (random->nextFloat() * 0.4f + 0.8f));
+    if (!level->isClientSide) {
+        level->addEntity(std::shared_ptr<ThrownEnderpearl>(
+            new ThrownEnderpearl(level, player)));
+    }
+    return instance;
 }

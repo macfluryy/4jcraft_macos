@@ -6,45 +6,45 @@
 class Random;
 class ChunkRebuildData;
 
-class Sapling : public Bush
-{	
-	friend class Tile;
-	friend class ChunkRebuildData;
+class Sapling : public Bush {
+    friend class Tile;
+    friend class ChunkRebuildData;
+
 public:
-	static const int TYPE_DEFAULT = LeafTile::NORMAL_LEAF;
-	static const int TYPE_EVERGREEN = LeafTile::EVERGREEN_LEAF;
-	static const int TYPE_BIRCH = LeafTile::BIRCH_LEAF;
-	static const int TYPE_JUNGLE = LeafTile::JUNGLE_LEAF;
+    static const int TYPE_DEFAULT = LeafTile::NORMAL_LEAF;
+    static const int TYPE_EVERGREEN = LeafTile::EVERGREEN_LEAF;
+    static const int TYPE_BIRCH = LeafTile::BIRCH_LEAF;
+    static const int TYPE_JUNGLE = LeafTile::JUNGLE_LEAF;
 
-	static const int SAPLING_NAMES_SIZE = 4;
+    static const int SAPLING_NAMES_SIZE = 4;
 
-	static const unsigned int SAPLING_NAMES[SAPLING_NAMES_SIZE];
+    static const unsigned int SAPLING_NAMES[SAPLING_NAMES_SIZE];
 
 private:
-	static const std::wstring TEXTURE_NAMES[];
+    static const std::wstring TEXTURE_NAMES[];
 
-	Icon **icons;
+    Icon** icons;
 
-	static const int TYPE_MASK = 3;
-	static const int AGE_BIT = 8;
-
-protected:
-	Sapling(int id);
-
-public:
-    virtual void updateDefaultShape(); // 4J Added override
-	void tick(Level *level, int x, int y, int z, Random *random);
-
-	Icon *getTexture(int face, int data);
-
-	void growTree(Level *level, int x, int y, int z, Random *random);
-
-	virtual unsigned int getDescriptionId(int iData = -1);
-	bool isSapling(Level *level, int x, int y, int z, int type);
+    static const int TYPE_MASK = 3;
+    static const int AGE_BIT = 8;
 
 protected:
-	int getSpawnResourcesAuxValue(int data);
+    Sapling(int id);
 
 public:
-	void registerIcons(IconRegister *iconRegister);
+    virtual void updateDefaultShape();  // 4J Added override
+    void tick(Level* level, int x, int y, int z, Random* random);
+
+    Icon* getTexture(int face, int data);
+
+    void growTree(Level* level, int x, int y, int z, Random* random);
+
+    virtual unsigned int getDescriptionId(int iData = -1);
+    bool isSapling(Level* level, int x, int y, int z, int type);
+
+protected:
+    int getSpawnResourcesAuxValue(int data);
+
+public:
+    void registerIcons(IconRegister* iconRegister);
 };

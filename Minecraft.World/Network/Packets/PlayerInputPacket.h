@@ -1,13 +1,12 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class PlayerInputPacket : public Packet, public std::enable_shared_from_this<PlayerInputPacket>
-{
-
+class PlayerInputPacket
+    : public Packet,
+      public std::enable_shared_from_this<PlayerInputPacket> {
 private:
-	float xa;
+    float xa;
     float ya;
     bool isJumpingVar;
     bool isSneakingVar;
@@ -15,22 +14,25 @@ private:
     float yRot;
 
 public:
-	PlayerInputPacket();
-	PlayerInputPacket(float xa, float ya, bool isJumpingVar, bool isSneakingVar, float xRot, float yRot);
+    PlayerInputPacket();
+    PlayerInputPacket(float xa, float ya, bool isJumpingVar, bool isSneakingVar,
+                      float xRot, float yRot);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
 
-	float getXa();
-	float getXRot();
-	float getYa();
-	float getYRot();
-	bool isJumping();
-	bool isSneaking();
+    float getXa();
+    float getXRot();
+    float getYa();
+    float getYRot();
+    bool isJumping();
+    bool isSneaking();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new PlayerInputPacket()); }
-	virtual int getId() { return 27; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new PlayerInputPacket());
+    }
+    virtual int getId() { return 27; }
 };

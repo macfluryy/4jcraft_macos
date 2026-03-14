@@ -2,50 +2,49 @@
 
 #include "../Monster.h"
 
-class Blaze : public Monster
-{
+class Blaze : public Monster {
 public:
-	eINSTANCEOF GetType() { return eTYPE_BLAZE; }
-	static Entity *create(Level *level) { return new Blaze(level); }
+    eINSTANCEOF GetType() { return eTYPE_BLAZE; }
+    static Entity* create(Level* level) { return new Blaze(level); }
 
-	//    private int nextBurnNeighborsTick;
+    //    private int nextBurnNeighborsTick;
 private:
-	float allowedHeightOffset;
-	int nextHeightOffsetChangeTick;
-	int attackCounter;
+    float allowedHeightOffset;
+    int nextHeightOffsetChangeTick;
+    int attackCounter;
 
-	static const int DATA_FLAGS_ID = 16;
-
-public:
-	Blaze(Level *level);
-	virtual int getMaxHealth();
-
-protected:
-	virtual void defineSynchedData();
-	virtual int getAmbientSound();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
+    static const int DATA_FLAGS_ID = 16;
 
 public:
-	virtual int getLightColor(float a);
-	virtual float getBrightness(float a);
-	virtual void aiStep();
+    Blaze(Level* level);
+    virtual int getMaxHealth();
 
 protected:
-	virtual void checkHurtTarget(std::shared_ptr<Entity> target, float d);
-	virtual void causeFallDamage(float distance);
-	virtual int getDeathLoot();
+    virtual void defineSynchedData();
+    virtual int getAmbientSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
 
 public:
-	virtual bool isOnFire();
+    virtual int getLightColor(float a);
+    virtual float getBrightness(float a);
+    virtual void aiStep();
 
 protected:
-	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
+    virtual void checkHurtTarget(std::shared_ptr<Entity> target, float d);
+    virtual void causeFallDamage(float distance);
+    virtual int getDeathLoot();
 
 public:
-	bool isCharged();
-	void setCharged(bool value);
+    virtual bool isOnFire();
 
 protected:
-	bool isDarkEnoughToSpawn();
+    virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
+
+public:
+    bool isCharged();
+    void setCharged(bool value);
+
+protected:
+    bool isDarkEnoughToSpawn();
 };

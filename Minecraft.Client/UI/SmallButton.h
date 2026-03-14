@@ -2,14 +2,15 @@
 #include "Button.h"
 #include "../GameState/Options.h"
 
-class SmallButton : public Button
-{
+class SmallButton : public Button {
 private:
-	const Options::Option *option;
+    const Options::Option* option;
 
 public:
-	SmallButton(int id, int x, int y, const std::wstring& msg);
-    SmallButton(int id, int x, int y, int width, int height, const std::wstring& msg);
-    SmallButton(int id, int x, int y, const Options::Option *item, const std::wstring& msg);
-    const Options::Option *getOption();
+    SmallButton(int id, int x, int y, const std::wstring& msg);
+    SmallButton(int id, int x, int y, int width, int height,
+                const std::wstring& msg);
+    SmallButton(int id, int x, int y, const Options::Option* item,
+                const std::wstring& msg);
+    const Options::Option* getOption();
 };

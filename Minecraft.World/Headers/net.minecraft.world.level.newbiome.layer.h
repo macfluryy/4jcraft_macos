@@ -21,7 +21,7 @@
 #include "../WorldGen/Layers/TemperatureMixerLayer.h"
 #include "../WorldGen/Layers/VoronoiZoom.h"
 #include "../WorldGen/Layers/ZoomLayer.h"
-#include "../WorldGen/Layers/GrowMushroomIslandLayer.h" // 4J added
+#include "../WorldGen/Layers/GrowMushroomIslandLayer.h"  // 4J added
 
 // 1.1.
 #include "../WorldGen/Layers/RegionHillsLayer.h"

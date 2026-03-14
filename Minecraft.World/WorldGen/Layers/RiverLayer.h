@@ -2,9 +2,8 @@
 
 #include "Layer.h"
 
-class RiverLayer : public Layer
-{
+class RiverLayer : public Layer {
 public:
-	RiverLayer(__int64 seedMixup, std::shared_ptr<Layer>parent);
-	intArray getArea(int xo, int yo, int w, int h);
+    RiverLayer(__int64 seedMixup, std::shared_ptr<Layer> parent);
+    intArray getArea(int xo, int yo, int w, int h);
 };

@@ -11,43 +11,37 @@
 const std::wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
 const std::wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";
 
-CauldronTile::CauldronTile(int id) : Tile(id, Material::metal, false)
-{
+CauldronTile::CauldronTile(int id) : Tile(id, Material::metal, false) {
     iconInner = NULL;
     iconTop = NULL;
     iconBottom = NULL;
 }
 
-Icon *CauldronTile::getTexture(int face, int data)
-{
-	if (face == Facing::UP)
-	{
-		return iconTop;
-	}
-	if (face == Facing::DOWN)
-	{
-		return iconBottom;
-	}
-	return icon;
+Icon* CauldronTile::getTexture(int face, int data) {
+    if (face == Facing::UP) {
+        return iconTop;
+    }
+    if (face == Facing::DOWN) {
+        return iconBottom;
+    }
+    return icon;
 }
 
-void CauldronTile::registerIcons(IconRegister *iconRegister)
-{
-	iconInner = iconRegister->registerIcon(L"cauldron_inner");
-	iconTop = iconRegister->registerIcon(L"cauldron_top");
-	iconBottom = iconRegister->registerIcon(L"cauldron_bottom");
-	icon = iconRegister->registerIcon(L"cauldron_side");
+void CauldronTile::registerIcons(IconRegister* iconRegister) {
+    iconInner = iconRegister->registerIcon(L"cauldron_inner");
+    iconTop = iconRegister->registerIcon(L"cauldron_top");
+    iconBottom = iconRegister->registerIcon(L"cauldron_bottom");
+    icon = iconRegister->registerIcon(L"cauldron_side");
 }
 
-Icon *CauldronTile::getTexture(const std::wstring &name)
-{
-	if (name.compare(TEXTURE_INSIDE) == 0) return Tile::cauldron->iconInner;
-	if (name.compare(TEXTURE_BOTTOM) == 0) return Tile::cauldron->iconBottom;
-	return NULL;
+Icon* CauldronTile::getTexture(const std::wstring& name) {
+    if (name.compare(TEXTURE_INSIDE) == 0) return Tile::cauldron->iconInner;
+    if (name.compare(TEXTURE_BOTTOM) == 0) return Tile::cauldron->iconBottom;
+    return NULL;
 }
 
-void CauldronTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source)
-{
+void CauldronTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
+                            AABBList* boxes, std::shared_ptr<Entity> source) {
     setShape(0, 0, 0, 1, 5.0f / 16.0f, 1);
     Tile::addAABBs(level, x, y, z, box, boxes, source);
     float thickness = 2.0f / 16.0f;
@@ -63,115 +57,95 @@ void CauldronTile::addAABBs(Level *level, int x, int y, int z, AABB *box, AABBLi
     updateDefaultShape();
 }
 
-void CauldronTile::updateDefaultShape()
-{
-	setShape(0, 0, 0, 1, 1, 1);
-}
+void CauldronTile::updateDefaultShape() { setShape(0, 0, 0, 1, 1, 1); }
 
-bool CauldronTile::isSolidRender(bool isServerLevel)
-{
-	return false;
-}
+bool CauldronTile::isSolidRender(bool isServerLevel) { return false; }
 
-int CauldronTile::getRenderShape()
-{
-	return SHAPE_CAULDRON;
-}
+int CauldronTile::getRenderShape() { return SHAPE_CAULDRON; }
 
-bool CauldronTile::isCubeShaped()
-{
-	return false;
-}
+bool CauldronTile::isCubeShaped() { return false; }
 
-bool CauldronTile::use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly/*=false*/) // 4J added soundOnly param
+bool CauldronTile::use(Level* level, int x, int y, int z,
+                       std::shared_ptr<Player> player, int clickedFace,
+                       float clickX, float clickY, float clickZ,
+                       bool soundOnly /*=false*/)  // 4J added soundOnly param
 {
-	if(soundOnly) return false;
+    if (soundOnly) return false;
 
-    if (level->isClientSide)
-	{
+    if (level->isClientSide) {
         return true;
     }
 
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item == NULL)
-	{
+    if (item == NULL) {
         return true;
     }
 
     int currentData = level->getData(x, y, z);
 
-    if (item->id == Item::bucket_water_Id)
-	{
-        if (currentData < 3)
-		{
-            if (!player->abilities.instabuild)
-			{
-                player->inventory->setItem(player->inventory->selected, std::shared_ptr<ItemInstance>(new ItemInstance(Item::bucket_empty)));
+    if (item->id == Item::bucket_water_Id) {
+        if (currentData < 3) {
+            if (!player->abilities.instabuild) {
+                player->inventory->setItem(
+                    player->inventory->selected,
+                    std::shared_ptr<ItemInstance>(
+                        new ItemInstance(Item::bucket_empty)));
             }
 
             level->setData(x, y, z, 3);
         }
         return true;
-    }
-	else if (item->id == Item::glassBottle_Id)
-	{
-        if (currentData > 0)
-		{
-            std::shared_ptr<ItemInstance> potion = std::shared_ptr<ItemInstance>(new ItemInstance(Item::potion, 1, 0));
-            if (!player->inventory->add(potion))
-			{
-                level->addEntity(std::shared_ptr<ItemEntity>(new ItemEntity(level, x + 0.5, y + 1.5, z + 0.5, potion)));
+    } else if (item->id == Item::glassBottle_Id) {
+        if (currentData > 0) {
+            std::shared_ptr<ItemInstance> potion =
+                std::shared_ptr<ItemInstance>(
+                    new ItemInstance(Item::potion, 1, 0));
+            if (!player->inventory->add(potion)) {
+                level->addEntity(std::shared_ptr<ItemEntity>(
+                    new ItemEntity(level, x + 0.5, y + 1.5, z + 0.5, potion)));
             }
-			// 4J Stu - Brought forward change to update inventory when filling bottles with water
-			else if (std::dynamic_pointer_cast<ServerPlayer>( player ) != NULL)
-			{
-				std::dynamic_pointer_cast<ServerPlayer>( player )->refreshContainer(player->inventoryMenu);
-			}
-			// 4J-PB - don't lose the water in creative mode
-			if (player->abilities.instabuild==false)
-			{
-				item->count--;
-				if (item->count <= 0)
-				{
-					player->inventory->setItem(player->inventory->selected, nullptr);
-				}
-			}
+            // 4J Stu - Brought forward change to update inventory when filling
+            // bottles with water
+            else if (std::dynamic_pointer_cast<ServerPlayer>(player) != NULL) {
+                std::dynamic_pointer_cast<ServerPlayer>(player)
+                    ->refreshContainer(player->inventoryMenu);
+            }
+            // 4J-PB - don't lose the water in creative mode
+            if (player->abilities.instabuild == false) {
+                item->count--;
+                if (item->count <= 0) {
+                    player->inventory->setItem(player->inventory->selected,
+                                               nullptr);
+                }
+            }
             level->setData(x, y, z, currentData - 1);
         }
-	}
-	else if (currentData > 0)
-	{
-		ArmorItem *armor = dynamic_cast<ArmorItem *>(item->getItem());
-		if(armor && armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH)
-		{
-			armor->clearColor(item);
-			level->setData(x, y, z, currentData - 1);
-			return true;
-		}
-	}
+    } else if (currentData > 0) {
+        ArmorItem* armor = dynamic_cast<ArmorItem*>(item->getItem());
+        if (armor && armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH) {
+            armor->clearColor(item);
+            level->setData(x, y, z, currentData - 1);
+            return true;
+        }
+    }
 
     return true;
-
 }
 
-void CauldronTile::handleRain(Level *level, int x, int y, int z)
-{
-	if (level->random->nextInt(20) != 1) return;
+void CauldronTile::handleRain(Level* level, int x, int y, int z) {
+    if (level->random->nextInt(20) != 1) return;
 
-	int data = level->getData(x, y, z);
+    int data = level->getData(x, y, z);
 
-	if (data < 3)
-	{
-		level->setData(x, y, z, data + 1);
-	}
+    if (data < 3) {
+        level->setData(x, y, z, data + 1);
+    }
 }
 
-int CauldronTile::getResource(int data, Random *random, int playerBonusLevel)
-{
-	return Item::cauldron_Id;
+int CauldronTile::getResource(int data, Random* random, int playerBonusLevel) {
+    return Item::cauldron_Id;
 }
 
-int CauldronTile::cloneTileId(Level *level, int x, int y, int z)
-{
-	return Item::cauldron_Id;
+int CauldronTile::cloneTileId(Level* level, int x, int y, int z) {
+    return Item::cauldron_Id;
 }

@@ -3,37 +3,45 @@
 class Entity;
 class TilePos;
 
-class ChunkPos
-{
+class ChunkPos {
 public:
-	int x, z;	// 4J - these were const but needed to make an assignment operator so we could make a vector of ChunkPos
+    int x, z;  // 4J - these were const but needed to make an assignment
+               // operator so we could make a vector of ChunkPos
 
-	ChunkPos(int x, int z);
+    ChunkPos(int x, int z);
 
-	static __int64 hashCode(int x, int z);
-	int hashCode();
+    static __int64 hashCode(int x, int z);
+    int hashCode();
 
-	double distanceToSqr(std::shared_ptr<Entity> e);
-	double distanceToSqr(double px, double pz);	// 4J added
+    double distanceToSqr(std::shared_ptr<Entity> e);
+    double distanceToSqr(double px, double pz);  // 4J added
 
-	int getMiddleBlockX();
-	int getMiddleBlockZ();
+    int getMiddleBlockX();
+    int getMiddleBlockZ();
 
-	TilePos getMiddleBlockPosition(int y);
-	std::wstring toString();
+    TilePos getMiddleBlockPosition(int y);
+    std::wstring toString();
 
-	static __int64 hash_fnct(const ChunkPos &k);
-	static bool eq_test(const ChunkPos &x, const ChunkPos &y);
-	bool operator == (const ChunkPos &k) const { return (this->x == k.x) && ( this->z == k.z); }
-	ChunkPos & operator= (const ChunkPos & other) { x = other.x; z = other.z; return *this; }
+    static __int64 hash_fnct(const ChunkPos& k);
+    static bool eq_test(const ChunkPos& x, const ChunkPos& y);
+    bool operator==(const ChunkPos& k) const {
+        return (this->x == k.x) && (this->z == k.z);
+    }
+    ChunkPos& operator=(const ChunkPos& other) {
+        x = other.x;
+        z = other.z;
+        return *this;
+    }
 };
 
-struct ChunkPosKeyHash
-{
-	__int64 operator() (const ChunkPos &k) const { return ChunkPos::hash_fnct(k); }
+struct ChunkPosKeyHash {
+    __int64 operator()(const ChunkPos& k) const {
+        return ChunkPos::hash_fnct(k);
+    }
 };
 
-struct ChunkPosKeyEq
-{
-	bool operator() (const ChunkPos &x, const ChunkPos &y) const { return ChunkPos::eq_test(x, y); }
+struct ChunkPosKeyEq {
+    bool operator()(const ChunkPos& x, const ChunkPos& y) const {
+        return ChunkPos::eq_test(x, y);
+    }
 };

@@ -5,52 +5,41 @@
 #include "PacketListener.h"
 #include "RemoveEntitiesPacket.h"
 
-RemoveEntitiesPacket::RemoveEntitiesPacket()
-{
+RemoveEntitiesPacket::RemoveEntitiesPacket() {}
+
+RemoveEntitiesPacket::RemoveEntitiesPacket(intArray ids) { this->ids = ids; }
+
+RemoveEntitiesPacket::~RemoveEntitiesPacket() {
+    delete[] ids.data;  // 4jcraft, changed to []
 }
 
-RemoveEntitiesPacket::RemoveEntitiesPacket(intArray ids) 
+void RemoveEntitiesPacket::read(DataInputStream* dis)  // throws IOException
 {
-	this->ids = ids;
+    ids = intArray(dis->readByte());
+    for (unsigned int i = 0; i < ids.length; ++i) {
+        ids[i] = dis->readInt();
+    }
 }
 
-RemoveEntitiesPacket::~RemoveEntitiesPacket()
+void RemoveEntitiesPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	delete[] ids.data; //4jcraft, changed to []
+    dos->writeByte(ids.length);
+    for (unsigned int i = 0; i < ids.length; ++i) {
+        dos->writeInt(ids[i]);
+    }
 }
 
-void RemoveEntitiesPacket::read(DataInputStream *dis) //throws IOException 
-{
-	ids = intArray(dis->readByte());
-	for(unsigned int i = 0; i < ids.length; ++i)
-	{
-		ids[i] = dis->readInt();
-	}
+void RemoveEntitiesPacket::handle(PacketListener* listener) {
+    listener->handleRemoveEntity(shared_from_this());
 }
 
-void RemoveEntitiesPacket::write(DataOutputStream *dos) //throws IOException 
-{
-	dos->writeByte(ids.length);
-	for(unsigned int i = 0; i < ids.length; ++i)
-	{
-		dos->writeInt(ids[i]);
-	}
-}
-
-void RemoveEntitiesPacket::handle(PacketListener *listener)
-{
-	listener->handleRemoveEntity(shared_from_this());
-}
-
-int RemoveEntitiesPacket::getEstimatedSize()
-{
-	return 1 + (ids.length * 4);
-}
+int RemoveEntitiesPacket::getEstimatedSize() { return 1 + (ids.length * 4); }
 
 /*
-	4J: These are necesary on the PS3.
-		(and 4).
+        4J: These are necesary on the PS3.
+                (and 4).
 */
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined __linux__)
+#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
+     defined __linux__)
 const int RemoveEntitiesPacket::MAX_PER_PACKET;
 #endif

@@ -4,27 +4,26 @@
 
 class DamageSource;
 
-class DelayedRelease : public Entity
-{
+class DelayedRelease : public Entity {
 public:
-	virtual eINSTANCEOF GetType() { return eTYPE_DELAYEDRELEASE; }
+    virtual eINSTANCEOF GetType() { return eTYPE_DELAYEDRELEASE; }
 
 private:
-	std::shared_ptr<Entity> toRelease;
-	int delay;
+    std::shared_ptr<Entity> toRelease;
+    int delay;
 
 public:
-	DelayedRelease(Level *level, std::shared_ptr<Entity> toRelease, int delay);
+    DelayedRelease(Level* level, std::shared_ptr<Entity> toRelease, int delay);
 
 protected:
-	virtual bool makeStepSound();
+    virtual bool makeStepSound();
 
 public:
-	virtual void tick();
-	virtual bool hurt(DamageSource *source, int damage);
+    virtual void tick();
+    virtual bool hurt(DamageSource* source, int damage);
 
 protected:
-	virtual void defineSynchedData();
-	virtual void readAdditionalSaveData(CompoundTag *tag);
-	virtual void addAdditonalSaveData(CompoundTag *tag);
+    virtual void defineSynchedData();
+    virtual void readAdditionalSaveData(CompoundTag* tag);
+    virtual void addAdditonalSaveData(CompoundTag* tag);
 };

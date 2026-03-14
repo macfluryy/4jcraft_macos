@@ -2,25 +2,26 @@
 
 #include "AbstractTexturePack.h"
 
-class FolderTexturePack : public AbstractTexturePack
-{
+class FolderTexturePack : public AbstractTexturePack {
 private:
-	bool bUILoaded;
+    bool bUILoaded;
 
 public:
-	FolderTexturePack(std::uint32_t id, const std::wstring &name, File *folder, TexturePack *fallback);
+    FolderTexturePack(std::uint32_t id, const std::wstring& name, File* folder,
+                      TexturePack* fallback);
 
 protected:
-	//@Override
-	InputStream *getResourceImplementation(const std::wstring &name); //throws IOException
+    //@Override
+    InputStream* getResourceImplementation(
+        const std::wstring& name);  // throws IOException
 
 public:
-	//@Override
-	bool hasFile(const std::wstring &name);
-	bool isTerrainUpdateCompatible();
+    //@Override
+    bool hasFile(const std::wstring& name);
+    bool isTerrainUpdateCompatible();
 
-	// 4J Added
-	virtual std::wstring getPath(bool bTitleUpdateTexture = false);
-	virtual void loadUI();
-	virtual void unloadUI();
+    // 4J Added
+    virtual std::wstring getPath(bool bTitleUpdateTexture = false);
+    virtual void loadUI();
+    virtual void unloadUI();
 };

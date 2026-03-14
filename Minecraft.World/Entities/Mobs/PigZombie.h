@@ -1,60 +1,58 @@
 #pragma once
 
-
 #include "Zombie.h"
 
 class DamageSource;
 
-// SKIN BY XaPhobia Chris Beidler  
-class PigZombie : public Zombie
-{
+// SKIN BY XaPhobia Chris Beidler
+class PigZombie : public Zombie {
 public:
-	eINSTANCEOF GetType() { return eTYPE_PIGZOMBIE; }
-	static Entity *create(Level *level) { return new PigZombie(level); }
+    eINSTANCEOF GetType() { return eTYPE_PIGZOMBIE; }
+    static Entity* create(Level* level) { return new PigZombie(level); }
 
 private:
-	int angerTime;
+    int angerTime;
     int playAngrySoundIn;
 
-	void _init();
+    void _init();
 
 public:
-	PigZombie(Level *level);
+    PigZombie(Level* level);
 
 protected:
-	bool useNewAi();
+    bool useNewAi();
 
 public:
-	virtual int getTexture();
+    virtual int getTexture();
     virtual void tick();
     virtual bool canSpawn();
-    virtual void addAdditonalSaveData(CompoundTag *tag);
-    virtual void readAdditionalSaveData(CompoundTag *tag);
+    virtual void addAdditonalSaveData(CompoundTag* tag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
-	virtual std::shared_ptr<Entity> findAttackTarget();
+    virtual std::shared_ptr<Entity> findAttackTarget();
 
 public:
-    virtual bool hurt(DamageSource *source, int dmg);
+    virtual bool hurt(DamageSource* source, int dmg);
 
 private:
-	void alert(std::shared_ptr<Entity> target);
+    void alert(std::shared_ptr<Entity> target);
 
 protected:
-	virtual int getAmbientSound();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
-	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
-	virtual void dropRareDeathLoot(int rareLootLevel);
+    virtual int getAmbientSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
+    virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
+    virtual void dropRareDeathLoot(int rareLootLevel);
     virtual int getDeathLoot();
 
 private:
-	static std::shared_ptr<ItemInstance> sword;
+    static std::shared_ptr<ItemInstance> sword;
 
 public:
-	virtual void finalizeMobSpawn();
+    virtual void finalizeMobSpawn();
 
-	std::shared_ptr<ItemInstance> getCarriedItem();
+    std::shared_ptr<ItemInstance> getCarriedItem();
 
-	static void staticCtor();
+    static void staticCtor();
 };

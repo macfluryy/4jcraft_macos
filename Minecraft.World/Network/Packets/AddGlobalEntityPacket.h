@@ -2,24 +2,27 @@
 
 #include "Packet.h"
 
-class AddGlobalEntityPacket : public Packet, public std::enable_shared_from_this<AddGlobalEntityPacket>
-{
+class AddGlobalEntityPacket
+    : public Packet,
+      public std::enable_shared_from_this<AddGlobalEntityPacket> {
 public:
-	static const int LIGHTNING;
+    static const int LIGHTNING;
 
     int id;
     int x, y, z;
     int type;
 
-	AddGlobalEntityPacket();
-	AddGlobalEntityPacket(std::shared_ptr<Entity> e);
+    AddGlobalEntityPacket();
+    AddGlobalEntityPacket(std::shared_ptr<Entity> e);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new AddGlobalEntityPacket()); }
-	virtual int getId() { return 71; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new AddGlobalEntityPacket());
+    }
+    virtual int getId() { return 71; }
 };

@@ -1,28 +1,30 @@
 #pragma once
-// 4J - this WeighedRandomItem class was a nested static class within WeighedRandom, but we need to be able to refer to it externally
+// 4J - this WeighedRandomItem class was a nested static class within
+// WeighedRandom, but we need to be able to refer to it externally
 
-class WeighedRandomItem
-{
-	friend class WeighedRandom;
+class WeighedRandomItem {
+    friend class WeighedRandom;
+
 protected:
-	int randomWeight;
+    int randomWeight;
 
 public:
-	WeighedRandomItem(int randomWeight)
-	{
-        this->randomWeight = randomWeight;
-    }
+    WeighedRandomItem(int randomWeight) { this->randomWeight = randomWeight; }
 };
 
-class WeighedRandom
-{
+class WeighedRandom {
 public:
-	// 4J - vectors here were Collection<? extends WeighedRandomItem>
-	static int getTotalWeight(std::vector<WeighedRandomItem *> *items);	
-	static WeighedRandomItem *getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items, int totalWeight);
-	static WeighedRandomItem *getRandomItem(Random *random, std::vector<WeighedRandomItem *> *items);
-	static int getTotalWeight(WeighedRandomItemArray items);
-	static WeighedRandomItem *getRandomItem(Random *random, WeighedRandomItemArray items, int totalWeight);
-	static WeighedRandomItem *getRandomItem(Random *random, WeighedRandomItemArray items);
-
+    // 4J - vectors here were Collection<? extends WeighedRandomItem>
+    static int getTotalWeight(std::vector<WeighedRandomItem*>* items);
+    static WeighedRandomItem* getRandomItem(
+        Random* random, std::vector<WeighedRandomItem*>* items,
+        int totalWeight);
+    static WeighedRandomItem* getRandomItem(
+        Random* random, std::vector<WeighedRandomItem*>* items);
+    static int getTotalWeight(WeighedRandomItemArray items);
+    static WeighedRandomItem* getRandomItem(Random* random,
+                                            WeighedRandomItemArray items,
+                                            int totalWeight);
+    static WeighedRandomItem* getRandomItem(Random* random,
+                                            WeighedRandomItemArray items);
 };

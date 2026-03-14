@@ -3,9 +3,11 @@
 #include "FoodConstants.h"
 
 const int FoodConstants::MAX_FOOD = 20;
-const float FoodConstants::MAX_SATURATION = (float) FoodConstants::MAX_FOOD;
-const float FoodConstants::START_SATURATION = (float) FoodConstants::MAX_SATURATION / 4.0f;
-const float FoodConstants::SATURATION_FLOOR = FoodConstants::MAX_SATURATION / 8.0f;
+const float FoodConstants::MAX_SATURATION = (float)FoodConstants::MAX_FOOD;
+const float FoodConstants::START_SATURATION =
+    (float)FoodConstants::MAX_SATURATION / 4.0f;
+const float FoodConstants::SATURATION_FLOOR =
+    FoodConstants::MAX_SATURATION / 8.0f;
 
 // this value modifies how quickly food is dropped
 const float FoodConstants::EXHAUSTION_DROP = 4.0f;
@@ -26,10 +28,12 @@ const float FoodConstants::FOOD_SATURATION_SUPERNATURAL = 1.2f;
 
 // some exhaustion guidelines
 const float FoodConstants::EXHAUSTION_JUMP = .2f;
-const float FoodConstants::EXHAUSTION_SPRINT_JUMP = FoodConstants::EXHAUSTION_JUMP * 4;
+const float FoodConstants::EXHAUSTION_SPRINT_JUMP =
+    FoodConstants::EXHAUSTION_JUMP * 4;
 const float FoodConstants::EXHAUSTION_MINE = .025f;
 const float FoodConstants::EXHAUSTION_ATTACK = .3f;
 const float FoodConstants::EXHAUSTION_DAMAGE = .1f;
 const float FoodConstants::EXHAUSTION_WALK = .010f;
-const float FoodConstants::EXHAUSTION_SPRINT = FoodConstants::EXHAUSTION_WALK * 10;
+const float FoodConstants::EXHAUSTION_SPRINT =
+    FoodConstants::EXHAUSTION_WALK * 10;
 const float FoodConstants::EXHAUSTION_SWIM = .015f;

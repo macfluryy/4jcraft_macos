@@ -2,9 +2,8 @@
 #include "Timer.h"
 #include "../../Minecraft.World/Platform/System.h"
 
-Timer::Timer(float ticksPerSecond)
-{
-	// 4J - added initialisers
+Timer::Timer(float ticksPerSecond) {
+    // 4J - added initialisers
     lastTime = 0;
     ticks = 0;
     a = 0;
@@ -18,37 +17,28 @@ Timer::Timer(float ticksPerSecond)
     lastMsSysTime = System::nanoTime() / 1000000;
 }
 
-void Timer::advanceTime()
-{
+void Timer::advanceTime() {
     __int64 nowMs = System::currentTimeMillis();
     __int64 passedMs = nowMs - lastMs;
     __int64 msSysTime = System::nanoTime() / 1000000;
     double now = msSysTime / 1000.0;
 
-
-    if (passedMs > 1000)
-	{
+    if (passedMs > 1000) {
         lastTime = now;
-    }
-	else if (passedMs < 0)
-	{
+    } else if (passedMs < 0) {
         lastTime = now;
-    }
-	else
-	{
+    } else {
         accumMs += passedMs;
-        if (accumMs > 1000)
-		{
+        if (accumMs > 1000) {
             __int64 passedMsSysTime = msSysTime - lastMsSysTime;
 
-            double adjustTimeT = accumMs / (double) passedMsSysTime;
+            double adjustTimeT = accumMs / (double)passedMsSysTime;
             adjustTime += (adjustTimeT - adjustTime) * 0.2f;
 
             lastMsSysTime = msSysTime;
             accumMs = 0;
         }
-        if (accumMs < 0)
-		{
+        if (accumMs < 0) {
             lastMsSysTime = msSysTime;
         }
     }
@@ -60,68 +50,57 @@ void Timer::advanceTime()
     if (passedSeconds < 0) passedSeconds = 0;
     if (passedSeconds > 1) passedSeconds = 1;
 
-    passedTime = (float)( passedTime + (passedSeconds * timeScale * ticksPerSecond));
+    passedTime =
+        (float)(passedTime + (passedSeconds * timeScale * ticksPerSecond));
 
-    ticks = (int) passedTime;
+    ticks = (int)passedTime;
     passedTime -= ticks;
 
     if (ticks > MAX_TICKS_PER_UPDATE) ticks = MAX_TICKS_PER_UPDATE;
 
     a = passedTime;
-
 }
 
-void Timer::advanceTimeQuickly()
-{
+void Timer::advanceTimeQuickly() {
+    double passedSeconds =
+        (double)MAX_TICKS_PER_UPDATE / (double)ticksPerSecond;
 
-    double passedSeconds = (double) MAX_TICKS_PER_UPDATE / (double) ticksPerSecond;
-
-    passedTime = (float)(passedTime + (passedSeconds * timeScale * ticksPerSecond));
-    ticks = (int) passedTime;
+    passedTime =
+        (float)(passedTime + (passedSeconds * timeScale * ticksPerSecond));
+    ticks = (int)passedTime;
     passedTime -= ticks;
     a = passedTime;
 
     lastMs = System::currentTimeMillis();
     lastMsSysTime = System::nanoTime() / 1000000;
-
 }
 
-void Timer::skipTime()
-{
+void Timer::skipTime() {
     __int64 nowMs = System::currentTimeMillis();
     __int64 passedMs = nowMs - lastMs;
     __int64 msSysTime = System::nanoTime() / 1000000;
     double now = msSysTime / 1000.0;
 
-
-    if (passedMs > 1000)
-	{
+    if (passedMs > 1000) {
         lastTime = now;
-    }
-	else if (passedMs < 0)
-	{
+    } else if (passedMs < 0) {
         lastTime = now;
-    }
-	else
-	{
+    } else {
         accumMs += passedMs;
-        if (accumMs > 1000)
-		{
+        if (accumMs > 1000) {
             __int64 passedMsSysTime = msSysTime - lastMsSysTime;
 
-            double adjustTimeT = accumMs / (double) passedMsSysTime;
+            double adjustTimeT = accumMs / (double)passedMsSysTime;
             adjustTime += (adjustTimeT - adjustTime) * 0.2f;
 
             lastMsSysTime = msSysTime;
             accumMs = 0;
         }
-        if (accumMs < 0)
-		{
+        if (accumMs < 0) {
             lastMsSysTime = msSysTime;
         }
     }
     lastMs = nowMs;
-
 
     double passedSeconds = (now - lastTime) * adjustTime;
     lastTime = now;
@@ -129,10 +108,10 @@ void Timer::skipTime()
     if (passedSeconds < 0) passedSeconds = 0;
     if (passedSeconds > 1) passedSeconds = 1;
 
-    passedTime = (float)(passedTime + (passedSeconds * timeScale * ticksPerSecond));
+    passedTime =
+        (float)(passedTime + (passedSeconds * timeScale * ticksPerSecond));
 
-    ticks = (int) 0;
+    ticks = (int)0;
     if (ticks > MAX_TICKS_PER_UPDATE) ticks = MAX_TICKS_PER_UPDATE;
     passedTime -= ticks;
-
 }

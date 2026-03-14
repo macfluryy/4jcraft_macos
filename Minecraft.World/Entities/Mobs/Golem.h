@@ -6,20 +6,19 @@
 class Level;
 class CompoundTag;
 
-class Golem : public PathfinderMob, public Creature
-{
+class Golem : public PathfinderMob, public Creature {
 public:
-	Golem(Level *level);
+    Golem(Level* level);
 
 protected:
-	virtual void causeFallDamage(float distance);
-	virtual int getAmbientSound();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
+    virtual void causeFallDamage(float distance);
+    virtual int getAmbientSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
 
 public:
-	virtual int getAmbientSoundInterval();
+    virtual int getAmbientSoundInterval();
 
 protected:
-	virtual bool removeWhenFarAway();
+    virtual bool removeWhenFarAway();
 };

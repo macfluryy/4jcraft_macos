@@ -7,34 +7,41 @@ class Mob;
 class TileRenderer;
 class Tesselator;
 
-class ItemInHandRenderer
-{
+class ItemInHandRenderer {
 private:
-	Minecraft *mc;
+    Minecraft* mc;
     std::shared_ptr<ItemInstance> selectedItem;
     float height;
     float oHeight;
-    TileRenderer *tileRenderer;
-	static int list, listGlint;
+    TileRenderer* tileRenderer;
+    static int list, listGlint;
 
 public:
-	// 4J Stu - Made public so we can use it from ItemFramRenderer
-    Minimap *minimap;
+    // 4J Stu - Made public so we can use it from ItemFramRenderer
+    Minimap* minimap;
 
 public:
-	ItemInHandRenderer(Minecraft *mc, bool optimisedMinimap = true); // 4J Added optimisedMinimap param
-    void renderItem(std::shared_ptr<Mob> mob, std::shared_ptr<ItemInstance> item, int layer, bool setColor = true);	// 4J added setColor parameter
-	static void renderItem3D(Tesselator *t, float u0, float v0, float u1, float v1, int width, int height, float depth, bool isGlint);	// 4J added isGlint parameter
+    ItemInHandRenderer(
+        Minecraft* mc,
+        bool optimisedMinimap = true);  // 4J Added optimisedMinimap param
+    void renderItem(std::shared_ptr<Mob> mob,
+                    std::shared_ptr<ItemInstance> item, int layer,
+                    bool setColor = true);  // 4J added setColor parameter
+    static void renderItem3D(Tesselator* t, float u0, float v0, float u1,
+                             float v1, int width, int height, float depth,
+                             bool isGlint);  // 4J added isGlint parameter
 public:
     void render(float a);
     void renderScreenEffect(float a);
+
 private:
-	void renderTex(float a, Icon *slot);
+    void renderTex(float a, Icon* slot);
     void renderWater(float a);
     void renderFire(float a);
     int lastSlot;
+
 public:
-	void tick();
+    void tick();
     void itemPlaced();
     void itemUsed();
 };

@@ -2,13 +2,12 @@
 
 #include "Enchantment.h"
 
-class DiggingEnchantment : public Enchantment
-{
+class DiggingEnchantment : public Enchantment {
 public:
-	DiggingEnchantment(int id, int frequency);
+    DiggingEnchantment(int id, int frequency);
 
-	virtual int getMinCost(int level);
-	virtual int getMaxCost(int level);
-	virtual int getMaxLevel();
-	virtual bool canEnchant(std::shared_ptr<ItemInstance> item);
+    virtual int getMinCost(int level);
+    virtual int getMaxCost(int level);
+    virtual int getMaxLevel();
+    virtual bool canEnchant(std::shared_ptr<ItemInstance> item);
 };

@@ -4,10 +4,9 @@
 class Font;
 class Screen;
 
-class EditBox : public GuiComponent
-{
+class EditBox : public GuiComponent {
 private:
-	Font *font;
+    Font* font;
     int x;
     int y;
     int width;
@@ -17,13 +16,15 @@ private:
     int frame;
 
 public:
-	bool inFocus;
+    bool inFocus;
     bool active;
+
 private:
-	Screen *screen;
+    Screen* screen;
 
 public:
-	EditBox(Screen *screen, Font *font, int x, int y, int width, int height, const std::wstring& value);
+    EditBox(Screen* screen, Font* font, int x, int y, int width, int height,
+            const std::wstring& value);
     void setValue(const std::wstring& value);
     std::wstring getValue();
     void tick();

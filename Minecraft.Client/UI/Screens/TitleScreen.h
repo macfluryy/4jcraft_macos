@@ -3,26 +3,28 @@
 class Random;
 class Button;
 
-
-class TitleScreen : public Screen
-{
+class TitleScreen : public Screen {
 private:
-	static Random *random;
+    static Random* random;
 
     float vo;
 
     std::wstring splash;
-    Button *multiplayerButton;
+    Button* multiplayerButton;
 
 public:
-	TitleScreen();
+    TitleScreen();
     virtual void tick();
+
 protected:
-	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+
 public:
-	virtual void init();
+    virtual void init();
+
 protected:
-	virtual void buttonClicked(Button *button);
+    virtual void buttonClicked(Button* button);
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a);
 };

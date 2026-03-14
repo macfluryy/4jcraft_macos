@@ -11,48 +11,43 @@ const int PlayerActionPacket::GET_UPDATED_BLOCK = 3;
 const int PlayerActionPacket::DROP_ITEM = 4;
 const int PlayerActionPacket::RELEASE_USE_ITEM = 5;
 
-PlayerActionPacket::PlayerActionPacket()
-{
-	x = 0;
-	y = 0;
-	z = 0;
-	face = 0;
-	action = 0;
+PlayerActionPacket::PlayerActionPacket() {
+    x = 0;
+    y = 0;
+    z = 0;
+    face = 0;
+    action = 0;
 }
 
-PlayerActionPacket::PlayerActionPacket(int action, int x, int y, int z, int face)
-{
-	this->action = action;
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->face = face;
+PlayerActionPacket::PlayerActionPacket(int action, int x, int y, int z,
+                                       int face) {
+    this->action = action;
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->face = face;
 }
 
-void PlayerActionPacket::read(DataInputStream *dis) //throws IOException 
+void PlayerActionPacket::read(DataInputStream* dis)  // throws IOException
 {
-	action = dis->read();
-	x = dis->readInt();
-	y = dis->read();
-	z = dis->readInt();
-	face = dis->read();
+    action = dis->read();
+    x = dis->readInt();
+    y = dis->read();
+    z = dis->readInt();
+    face = dis->read();
 }
 
-void PlayerActionPacket::write(DataOutputStream *dos) //throws IOException 
+void PlayerActionPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	dos->write(action);
-	dos->writeInt(x);
-	dos->write(y);
-	dos->writeInt(z);
-	dos->write(face);
+    dos->write(action);
+    dos->writeInt(x);
+    dos->write(y);
+    dos->writeInt(z);
+    dos->write(face);
 }
 
-void PlayerActionPacket::handle(PacketListener *listener) 
-{
-	listener->handlePlayerAction(shared_from_this());
+void PlayerActionPacket::handle(PacketListener* listener) {
+    listener->handlePlayerAction(shared_from_this());
 }
 
-int PlayerActionPacket::getEstimatedSize()
-{
-	return 11;
-}
+int PlayerActionPacket::getEstimatedSize() { return 11; }

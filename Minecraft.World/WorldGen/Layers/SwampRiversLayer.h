@@ -2,10 +2,9 @@
 
 #include "Layer.h"
 
-class SwampRiversLayer : public Layer
-{
+class SwampRiversLayer : public Layer {
 public:
-	SwampRiversLayer(__int64 seed, std::shared_ptr<Layer> parent);
+    SwampRiversLayer(__int64 seed, std::shared_ptr<Layer> parent);
 
-	intArray getArea(int xo, int yo, int w, int h);
+    intArray getArea(int xo, int yo, int w, int h);
 };

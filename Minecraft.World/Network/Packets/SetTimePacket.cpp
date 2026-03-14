@@ -4,49 +4,30 @@
 #include "PacketListener.h"
 #include "SetTimePacket.h"
 
+SetTimePacket::SetTimePacket() { time = 0; }
 
+SetTimePacket::SetTimePacket(__int64 time) { this->time = time; }
 
-SetTimePacket::SetTimePacket() 
+void SetTimePacket::read(DataInputStream* dis)  // throws IOException
 {
-	time = 0;
+    time = dis->readLong();
 }
 
-SetTimePacket::SetTimePacket(__int64 time)
+void SetTimePacket::write(DataOutputStream* dos)  // throws IOException
 {
-	this->time = time;
+    dos->writeLong(time);
 }
 
-void SetTimePacket::read(DataInputStream *dis) //throws IOException
-{
-	time = dis->readLong();
+void SetTimePacket::handle(PacketListener* listener) {
+    listener->handleSetTime(shared_from_this());
 }
 
-void SetTimePacket::write(DataOutputStream *dos) //throws IOException 
-{
-	dos->writeLong(time);
+int SetTimePacket::getEstimatedSize() { return 8; }
+
+bool SetTimePacket::canBeInvalidated() { return true; }
+
+bool SetTimePacket::isInvalidatedBy(std::shared_ptr<Packet> packet) {
+    return true;
 }
 
-void SetTimePacket::handle(PacketListener *listener)
-{
-	listener->handleSetTime(shared_from_this());
-}
-
-int SetTimePacket::getEstimatedSize()
-{
-	return 8;
-}
-
-bool SetTimePacket::canBeInvalidated()
-{
-	return true;
-}
-
-bool SetTimePacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
-{
-	return true;
-}
-
-bool SetTimePacket::isAync()
-{
-	return true;
-}
+bool SetTimePacket::isAync() { return true; }

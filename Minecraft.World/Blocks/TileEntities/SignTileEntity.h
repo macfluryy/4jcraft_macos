@@ -1,49 +1,49 @@
 #pragma once
 
-
 #include "TileEntity.h"
 
 #define MAX_SIGN_LINES 4
 
-class SignTileEntity : public TileEntity
-{
+class SignTileEntity : public TileEntity {
 public:
-	eINSTANCEOF GetType() { return eTYPE_SIGNTILEENTITY; }
-	static TileEntity *create() { return new SignTileEntity(); }
-public:
-	static const int MAX_LINE_LENGTH;
+    eINSTANCEOF GetType() { return eTYPE_SIGNTILEENTITY; }
+    static TileEntity* create() { return new SignTileEntity(); }
 
 public:
-	SignTileEntity();
-	virtual ~SignTileEntity();
-	std::wstring GetMessage(int i)								{ return m_wsmessages[i];}
-	std::wstring *GetMessages()									{ return m_wsmessages;}
-	void SetMessage(int iIndex,std::wstring &wsText);
-	int GetSelectedLine()									{return m_iSelectedLine;}
-	void SetSelectedLine(int iLine)							{m_iSelectedLine=iLine;}
-	bool IsVerified()										{return m_bVerified;}
-	void SetVerified(bool bVerified)						{m_bVerified=bVerified;}
-	bool IsCensored()										{return m_bCensored;}
-	void SetCensored(bool bCensored)						{m_bCensored=bCensored;}
-public:
+    static const int MAX_LINE_LENGTH;
 
+public:
+    SignTileEntity();
+    virtual ~SignTileEntity();
+    std::wstring GetMessage(int i) { return m_wsmessages[i]; }
+    std::wstring* GetMessages() { return m_wsmessages; }
+    void SetMessage(int iIndex, std::wstring& wsText);
+    int GetSelectedLine() { return m_iSelectedLine; }
+    void SetSelectedLine(int iLine) { m_iSelectedLine = iLine; }
+    bool IsVerified() { return m_bVerified; }
+    void SetVerified(bool bVerified) { m_bVerified = bVerified; }
+    bool IsCensored() { return m_bCensored; }
+    void SetCensored(bool bCensored) { m_bCensored = bCensored; }
+
+public:
 private:
-	bool _isEditable;
-	bool m_bVerified;
-	bool m_bCensored;
-	int m_iSelectedLine;
+    bool _isEditable;
+    bool m_bVerified;
+    bool m_bCensored;
+    int m_iSelectedLine;
 
-	std::wstring m_wsmessages[MAX_SIGN_LINES];
+    std::wstring m_wsmessages[MAX_SIGN_LINES];
 
 public:
-	virtual void save(CompoundTag *tag);
-	virtual void load(CompoundTag *tag);
-	virtual std::shared_ptr<Packet> getUpdatePacket();
-	bool isEditable();
-	void setEditable(bool isEditable);
-	virtual void setChanged();
-	static int StringVerifyCallback(void *lpParam,STRING_VERIFY_RESPONSE *pResults);
+    virtual void save(CompoundTag* tag);
+    virtual void load(CompoundTag* tag);
+    virtual std::shared_ptr<Packet> getUpdatePacket();
+    bool isEditable();
+    void setEditable(bool isEditable);
+    virtual void setChanged();
+    static int StringVerifyCallback(void* lpParam,
+                                    STRING_VERIFY_RESPONSE* pResults);
 
-	// 4J Added
-	virtual std::shared_ptr<TileEntity> clone();
+    // 4J Added
+    virtual std::shared_ptr<TileEntity> clone();
 };

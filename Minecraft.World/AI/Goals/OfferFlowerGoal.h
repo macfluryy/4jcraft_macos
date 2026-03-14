@@ -4,22 +4,21 @@
 
 class VillagerGolem;
 
-class OfferFlowerGoal : public Goal
-{
+class OfferFlowerGoal : public Goal {
 public:
-	static const int OFFER_TICKS = 400;
+    static const int OFFER_TICKS = 400;
 
 private:
-	VillagerGolem *golem;
-	std::weak_ptr<Villager> villager;
-	int _tick;
+    VillagerGolem* golem;
+    std::weak_ptr<Villager> villager;
+    int _tick;
 
 public:
-	OfferFlowerGoal(VillagerGolem *golem);
+    OfferFlowerGoal(VillagerGolem* golem);
 
-	virtual bool canUse();
-	virtual bool canContinueToUse();
-	virtual void start();
-	virtual void stop();
-	virtual void tick();
+    virtual bool canUse();
+    virtual bool canContinueToUse();
+    virtual void start();
+    virtual void stop();
+    virtual void tick();
 };

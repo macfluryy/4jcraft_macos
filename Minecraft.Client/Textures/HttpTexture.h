@@ -2,13 +2,12 @@
 class BufferedImage;
 class HttpTextureProcessor;
 
-
 class HttpTexture {
 public:
-	BufferedImage *loadedImage;
+    BufferedImage* loadedImage;
     int count;
     int id;
     bool isLoaded;
 
-    HttpTexture(const std::wstring& _url, HttpTextureProcessor *processor);
+    HttpTexture(const std::wstring& _url, HttpTextureProcessor* processor);
 };

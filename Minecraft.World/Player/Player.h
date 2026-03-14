@@ -29,523 +29,583 @@ class Merchant;
 class PlayerEnderChestContainer;
 class GameType;
 
-class Player : public Mob, public CommandSender
-{
+class Player : public Mob, public CommandSender {
 public:
-	static const int MAX_NAME_LENGTH = 16 + 4;
-	static const int MAX_HEALTH = 20;
-	static const int SWING_DURATION = 6;
-	static const int SLEEP_DURATION = 100;
-	static const int WAKE_UP_DURATION = 10;
+    static const int MAX_NAME_LENGTH = 16 + 4;
+    static const int MAX_HEALTH = 20;
+    static const int SWING_DURATION = 6;
+    static const int SLEEP_DURATION = 100;
+    static const int WAKE_UP_DURATION = 10;
 
-	static const int CHAT_VISIBILITY_FULL = 0;
-	static const int CHAT_VISIBILITY_SYSTEM = 1;
-	static const int CHAT_VISIBILITY_HIDDEN = 2;
+    static const int CHAT_VISIBILITY_FULL = 0;
+    static const int CHAT_VISIBILITY_SYSTEM = 1;
+    static const int CHAT_VISIBILITY_HIDDEN = 2;
 
-	// 4J-PB - added for a red death fade in the gui
-	static const int DEATHFADE_DURATION = 21;
-private:
-	static const int FLY_ACHIEVEMENT_SPEED = 25;
-
-	static const int DATA_PLAYER_FLAGS_ID = 16;
-	static const int DATA_PLAYER_RUNNING_ID = 17;
-
-public:
-	std::shared_ptr<Inventory> inventory;
+    // 4J-PB - added for a red death fade in the gui
+    static const int DEATHFADE_DURATION = 21;
 
 private:
-	std::shared_ptr<PlayerEnderChestContainer> enderChestInventory;
+    static const int FLY_ACHIEVEMENT_SPEED = 25;
+
+    static const int DATA_PLAYER_FLAGS_ID = 16;
+    static const int DATA_PLAYER_RUNNING_ID = 17;
 
 public:
-	AbstractContainerMenu *inventoryMenu;
-	AbstractContainerMenu *containerMenu;
-
-protected:
-	FoodData foodData;
-	int jumpTriggerTime;
-
-public:
-	std::uint8_t userType;
-	int score;
-	float oBob, bob;
-	bool swinging;
-	int swingTime;
-
-	std::wstring name;
-	int dimension;
-	int takeXpDelay;
-
-	// 4J-PB - track custom skin
-	unsigned int m_uiPlayerCurrentSkin;
-	void ChangePlayerSkin();
-
-	// 4J-PB - not needed, since cutomtextureurl2 is the same thing std::wstring cloakTexture;
-
-	double xCloakO, yCloakO, zCloakO;
-	double xCloak, yCloak, zCloak;
-
-	// 4J-HEG - store display name, added for Xbox One
-	std::wstring displayName;
-
-protected:
-	// player sleeping in bed?
-	bool m_isSleeping;
-
-public:
-	Pos *bedPosition;
+    std::shared_ptr<Inventory> inventory;
 
 private:
-	int sleepCounter; // animation timer
-	int deathFadeCounter; // animation timer
+    std::shared_ptr<PlayerEnderChestContainer> enderChestInventory;
 
 public:
-	float bedOffsetX, bedOffsetY, bedOffsetZ;
-	Stats *stats;
+    AbstractContainerMenu* inventoryMenu;
+    AbstractContainerMenu* containerMenu;
+
+protected:
+    FoodData foodData;
+    int jumpTriggerTime;
+
+public:
+    std::uint8_t userType;
+    int score;
+    float oBob, bob;
+    bool swinging;
+    int swingTime;
+
+    std::wstring name;
+    int dimension;
+    int takeXpDelay;
+
+    // 4J-PB - track custom skin
+    unsigned int m_uiPlayerCurrentSkin;
+    void ChangePlayerSkin();
+
+    // 4J-PB - not needed, since cutomtextureurl2 is the same thing std::wstring
+    // cloakTexture;
+
+    double xCloakO, yCloakO, zCloakO;
+    double xCloak, yCloak, zCloak;
+
+    // 4J-HEG - store display name, added for Xbox One
+    std::wstring displayName;
+
+protected:
+    // player sleeping in bed?
+    bool m_isSleeping;
+
+public:
+    Pos* bedPosition;
 
 private:
-	Pos *respawnPosition;
-	Pos *minecartAchievementPos;
-
-	//4J Gordon: These are in cms, every time they go > 1m they are entered into the stats
-	int distanceWalk, distanceSwim, distanceFall, distanceClimb, distanceMinecart, distanceBoat, distancePig;
+    int sleepCounter;      // animation timer
+    int deathFadeCounter;  // animation timer
 
 public:
-	int changingDimensionDelay;
-
-protected:
-	bool isInsidePortal;
-
-public:
-	float portalTime, oPortalTime;
-
-	Abilities abilities;
-
-	int experienceLevel, totalExperience;
-	float experienceProgress;
-
-	// 4J Stu - Made protected so that we can access it from MultiPlayerLocalPlayer
-protected:
-	std::shared_ptr<ItemInstance> useItem;
-	int useItemDuration;
-
-protected:
-	float defaultWalkSpeed;
-	float defaultFlySpeed;
-
-public:
-
-	eINSTANCEOF GetType() { return eTYPE_PLAYER; }
-
-	// 4J Added to default init
-	void _init();
-
-	Player(Level *level);
-	virtual ~Player();
-
-	virtual int getMaxHealth();
-protected:
-	virtual void defineSynchedData();
-
-public:
-	std::shared_ptr<ItemInstance> getUseItem();
-	int getUseItemDuration();
-	bool isUsingItem();	int getTicksUsingItem();
-	void releaseUsingItem();
-	void stopUsingItem();
-	virtual bool isBlocking();
-
-	virtual void tick();
-
-protected:
-	void spawnEatParticles(std::shared_ptr<ItemInstance> useItem, int count);
-	virtual void completeUsingItem();
-
-public:
-	virtual void handleEntityEvent(std::uint8_t id);
-
-protected:
-	bool isImmobile();
-	virtual void closeContainer();
-
-public:
-	virtual void ride(std::shared_ptr<Entity> e);
-	void prepareCustomTextures();
-	virtual void rideTick();
-	virtual void resetPos();
+    float bedOffsetX, bedOffsetY, bedOffsetZ;
+    Stats* stats;
 
 private:
-	int getCurrentSwingDuration();
+    Pos* respawnPosition;
+    Pos* minecartAchievementPos;
 
-protected:
-	virtual void serverAiStep();
+    // 4J Gordon: These are in cms, every time they go > 1m they are entered
+    // into the stats
+    int distanceWalk, distanceSwim, distanceFall, distanceClimb,
+        distanceMinecart, distanceBoat, distancePig;
 
 public:
-	virtual void aiStep();
+    int changingDimensionDelay;
+
+protected:
+    bool isInsidePortal;
+
+public:
+    float portalTime, oPortalTime;
+
+    Abilities abilities;
+
+    int experienceLevel, totalExperience;
+    float experienceProgress;
+
+    // 4J Stu - Made protected so that we can access it from
+    // MultiPlayerLocalPlayer
+protected:
+    std::shared_ptr<ItemInstance> useItem;
+    int useItemDuration;
+
+protected:
+    float defaultWalkSpeed;
+    float defaultFlySpeed;
+
+public:
+    eINSTANCEOF GetType() { return eTYPE_PLAYER; }
+
+    // 4J Added to default init
+    void _init();
+
+    Player(Level* level);
+    virtual ~Player();
+
+    virtual int getMaxHealth();
+
+protected:
+    virtual void defineSynchedData();
+
+public:
+    std::shared_ptr<ItemInstance> getUseItem();
+    int getUseItemDuration();
+    bool isUsingItem();
+    int getTicksUsingItem();
+    void releaseUsingItem();
+    void stopUsingItem();
+    virtual bool isBlocking();
+
+    virtual void tick();
+
+protected:
+    void spawnEatParticles(std::shared_ptr<ItemInstance> useItem, int count);
+    virtual void completeUsingItem();
+
+public:
+    virtual void handleEntityEvent(std::uint8_t id);
+
+protected:
+    bool isImmobile();
+    virtual void closeContainer();
+
+public:
+    virtual void ride(std::shared_ptr<Entity> e);
+    void prepareCustomTextures();
+    virtual void rideTick();
+    virtual void resetPos();
 
 private:
-	virtual void touch(std::shared_ptr<Entity> entity);
-
-public:
-	//bool addResource(int resource); // 4J - Removed 1.0.1
-	int getScore();
-	virtual void die(DamageSource *source);
-	void awardKillScore(std::shared_ptr<Entity> victim, int score);
+    int getCurrentSwingDuration();
 
 protected:
-	virtual int decreaseAirSupply(int currentSupply);
+    virtual void serverAiStep();
 
 public:
-	virtual bool isShootable();
-	bool isCreativeModeAllowed();
-	virtual std::shared_ptr<ItemEntity> drop();
-	std::shared_ptr<ItemEntity> drop(std::shared_ptr<ItemInstance> item);
-	std::shared_ptr<ItemEntity> drop(std::shared_ptr<ItemInstance> item, bool randomly);
-
-protected:
-	virtual void reallyDrop(std::shared_ptr<ItemEntity> thrownItem);
-
-public:
-	float getDestroySpeed(Tile *tile);
-	bool canDestroy(Tile *tile);
-	virtual void readAdditionalSaveData(CompoundTag *entityTag);
-	virtual void addAdditonalSaveData(CompoundTag *entityTag);
-	static Pos *getRespawnPosition(Level *level, CompoundTag *entityTag);
-	virtual bool openContainer(std::shared_ptr<Container> container);	// 4J - added bool return
-	virtual bool startEnchanting(int x, int y, int z);				// 4J - added bool return
-	virtual bool startRepairing(int x, int y, int z);				// 4J - added bool return
-	virtual bool startCrafting(int x, int y, int z);				// 4J - added boo return
-	virtual void take(std::shared_ptr<Entity> e, int orgCount);
-	virtual float getHeadHeight();
-
-	// 4J-PB - added to keep the code happy with the change to make the third person view per player
-	virtual int ThirdPersonView()	{return 0;}
-	virtual void SetThirdPersonView(int val)	{}
-
-protected:
-	virtual void setDefaultHeadHeight();
-
-public:
-	std::shared_ptr<FishingHook> fishing;
-
-	virtual bool hurt(DamageSource *source, int dmg);
-
-protected:
-	virtual int getDamageAfterMagicAbsorb(DamageSource *damageSource, int damage);
-	virtual bool isPlayerVersusPlayer();
-	void directAllTameWolvesOnTarget(std::shared_ptr<Mob> target, bool skipSitting);
-	virtual void hurtArmor(int damage);
-
-public:
-	virtual int getArmorValue();
-	float getArmorCoverPercentage();
-
-protected:
-	virtual void actuallyHurt(DamageSource *source, int dmg);
-
-public:
-	using Entity::interact;
-
-	virtual bool openFurnace(std::shared_ptr<FurnaceTileEntity> container);		// 4J - added bool return
-	virtual bool openTrap(std::shared_ptr<DispenserTileEntity> container);		// 4J - added bool return
-	virtual void openTextEdit(std::shared_ptr<SignTileEntity> sign);
-	virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity> brewingStand); // 4J - added bool return
-	virtual bool openTrading(std::shared_ptr<Merchant> traderTarget); // 4J - added bool return
-	virtual void openItemInstanceGui(std::shared_ptr<ItemInstance> itemInstance);
-	virtual bool interact(std::shared_ptr<Entity> entity);
-	virtual std::shared_ptr<ItemInstance> getSelectedItem();
-	void removeSelectedItem();
-	virtual double getRidingHeight();
-	virtual void swing();
-	virtual void attack(std::shared_ptr<Entity> entity);
-	virtual void crit(std::shared_ptr<Entity> entity);
-	virtual void magicCrit(std::shared_ptr<Entity> entity);
-	virtual void respawn();
-
-protected:
-	static void animateRespawn(std::shared_ptr<Player> player, Level *level);
-
-public:
-	Slot *getInventorySlot(int slotId);
-	virtual void remove();
-	virtual bool isInWall();
-	virtual bool isLocalPlayer();
-
-	enum BedSleepingResult
-	{
-		OK, NOT_POSSIBLE_HERE, NOT_POSSIBLE_NOW, TOO_FAR_AWAY, OTHER_PROBLEM, NOT_SAFE
-	};
-
-	virtual BedSleepingResult startSleepInBed(int x, int y, int z, bool bTestUse = false);
+    virtual void aiStep();
 
 private:
-	void setBedOffset(int bedDirection);
+    virtual void touch(std::shared_ptr<Entity> entity);
 
 public:
-	/**
-	* 
-	* @param forcefulWakeUp
-	*            If the player has been forced to wake up. When this happens,
-	*            the client will skip the wake-up animation. For example, when
-	*            the player is hurt or the bed is destroyed.
-	* @param updateLevelList
-	*            If the level's sleeping player list needs to be updated. This
-	*            is usually the case.
-	* @param saveRespawnPoint
-	*            TODO
-	*/
-	virtual void stopSleepInBed(bool forcefulWakeUp, bool updateLevelList, bool saveRespawnPoint);
-
-private:
-	bool checkBed();
-
-public:
-	static Pos *checkBedValidRespawnPosition(Level *level, Pos *pos);
-	float getSleepRotation();
-	bool isSleeping();
-	bool isSleepingLongEnough();
-	int getSleepTimer();
-	int getDeathFadeTimer();
+    // bool addResource(int resource); // 4J - Removed 1.0.1
+    int getScore();
+    virtual void die(DamageSource* source);
+    void awardKillScore(std::shared_ptr<Entity> victim, int score);
 
 protected:
-	bool getPlayerFlag(int flag);
-	void setPlayerFlag(int flag, bool value);
+    virtual int decreaseAirSupply(int currentSupply);
 
 public:
-	/**
-	* This method is currently only relevant to client-side players. It will
-	* try to load the messageId from the language file and display it to the
-	* client.
-	*/
-	virtual void displayClientMessage(int messageId);
-	Pos *getRespawnPosition();
-	void setRespawnPosition(Pos *respawnPosition);
-	virtual void awardStat(Stat *stat, byteArray param);
+    virtual bool isShootable();
+    bool isCreativeModeAllowed();
+    virtual std::shared_ptr<ItemEntity> drop();
+    std::shared_ptr<ItemEntity> drop(std::shared_ptr<ItemInstance> item);
+    std::shared_ptr<ItemEntity> drop(std::shared_ptr<ItemInstance> item,
+                                     bool randomly);
 
 protected:
-	void jumpFromGround();
+    virtual void reallyDrop(std::shared_ptr<ItemEntity> thrownItem);
 
 public:
-	void travel(float xa, float ya);
-	void checkMovementStatistiscs(double dx, double dy, double dz);
+    float getDestroySpeed(Tile* tile);
+    bool canDestroy(Tile* tile);
+    virtual void readAdditionalSaveData(CompoundTag* entityTag);
+    virtual void addAdditonalSaveData(CompoundTag* entityTag);
+    static Pos* getRespawnPosition(Level* level, CompoundTag* entityTag);
+    virtual bool openContainer(
+        std::shared_ptr<Container> container);  // 4J - added bool return
+    virtual bool startEnchanting(int x, int y,
+                                 int z);               // 4J - added bool return
+    virtual bool startRepairing(int x, int y, int z);  // 4J - added bool return
+    virtual bool startCrafting(int x, int y, int z);   // 4J - added boo return
+    virtual void take(std::shared_ptr<Entity> e, int orgCount);
+    virtual float getHeadHeight();
 
-private:
-	void checkRidingStatistiscs(double dx, double dy, double dz);
-
-	bool m_bAwardedOnARail;
+    // 4J-PB - added to keep the code happy with the change to make the third
+    // person view per player
+    virtual int ThirdPersonView() { return 0; }
+    virtual void SetThirdPersonView(int val) {}
 
 protected:
-	virtual void causeFallDamage(float distance);
+    virtual void setDefaultHeadHeight();
 
 public:
-	virtual void killed(std::shared_ptr<Mob> mob);
-	virtual Icon *getItemInHandIcon(std::shared_ptr<ItemInstance> item, int layer);
-	virtual std::shared_ptr<ItemInstance> getArmor(int pos);
-	virtual void handleInsidePortal();
+    std::shared_ptr<FishingHook> fishing;
 
-	void increaseXp(int i);
-	virtual void withdrawExperienceLevels(int amount);
-	int getXpNeededForNextLevel();
-
-private:
-	void levelUp();
-
-public:
-	void causeFoodExhaustion(float amount);
-	FoodData *getFoodData();
-	bool canEat(bool magicalItem);
-	bool isHurt();
-	virtual void startUsingItem(std::shared_ptr<ItemInstance> instance, int duration);
-	bool mayBuild(int x, int y, int z);
+    virtual bool hurt(DamageSource* source, int dmg);
 
 protected:
-	virtual int getExperienceReward(std::shared_ptr<Player> killedBy);
-	virtual bool isAlwaysExperienceDropper();
+    virtual int getDamageAfterMagicAbsorb(DamageSource* damageSource,
+                                          int damage);
+    virtual bool isPlayerVersusPlayer();
+    void directAllTameWolvesOnTarget(std::shared_ptr<Mob> target,
+                                     bool skipSitting);
+    virtual void hurtArmor(int damage);
 
 public:
-	virtual std::wstring getAName();
-
-	virtual void changeDimension(int i);
-	virtual void restoreFrom(std::shared_ptr<Player> oldPlayer, bool restoreAll);
+    virtual int getArmorValue();
+    float getArmorCoverPercentage();
 
 protected:
-	bool makeStepSound();
+    virtual void actuallyHurt(DamageSource* source, int dmg);
 
 public:
-	void onUpdateAbilities();
-	void setGameMode(GameType *mode);
-	std::wstring getName();
-	std::wstring getDisplayName(); // 4J added
+    using Entity::interact;
 
-	//Language getLanguage() { return Language.getInstance(); }
-	//String localize(String key, Object... args) { return getLanguage().getElement(key, args); }
-
-	std::shared_ptr<PlayerEnderChestContainer> getEnderChestInventory();
-
-public:
-	virtual std::shared_ptr<ItemInstance> getCarriedItem();
-
-	virtual bool isInvisibleTo(std::shared_ptr<Player> player);
-
-	static int hash_fnct(const std::shared_ptr<Player> k);
-	static bool eq_test(const std::shared_ptr<Player> x, const std::shared_ptr<Player> y);
-
-	// 4J Stu - Added to allow callback to tutorial to stay within Minecraft.Client
-	// Overidden in LocalPlayer
-	virtual void onCrafted(std::shared_ptr<ItemInstance> item) {}
-
-	// 4J Overriding this so that we can have some different default skins
-	virtual int getTexture();		// 4J changed from std::wstring to int
-	void setPlayerDefaultSkin(EDefaultSkins skin);
-	EDefaultSkins getPlayerDefaultSkin()												{ return m_skinIndex; }
-	virtual void setCustomSkin(std::uint32_t skinId);
-	std::uint32_t getCustomSkin()															{return m_dwSkinId; }
-	virtual void setCustomCape(std::uint32_t capeId);
-	std::uint32_t getCustomCape()															{return m_dwCapeId; }
-
-	static std::uint32_t getCapeIdFromPath(const std::wstring &cape);
-	static std::wstring getCapePathFromId(std::uint32_t capeId);
-	static unsigned int getSkinAnimOverrideBitmask(std::uint32_t skinId);
-
-	// 4J Added
-	void setXuid(PlayerUID xuid);
-	PlayerUID getXuid()																			{ return m_xuid; }
-	void setOnlineXuid(PlayerUID xuid)															{ m_OnlineXuid = xuid; }
-	PlayerUID getOnlineXuid()																	{ return m_OnlineXuid; }
-	void setUUID(const std::wstring &UUID)															{ m_UUID = UUID; }
-	std::wstring getUUID()																			{ return m_UUID; }
-
-	void setPlayerIndex(std::uint8_t index)													{ m_playerIndex = index; }
-	std::uint8_t getPlayerIndex()															{ return m_playerIndex; }
-
-	void setIsGuest(bool bVal)																{ m_bIsGuest = bVal; }
-	bool isGuest()																			{ return m_bIsGuest; }
-
-	void setShowOnMaps(bool bVal)															{ m_bShownOnMaps = bVal; }
-	bool canShowOnMaps()																	{ return m_bShownOnMaps && !getPlayerGamePrivilege(ePlayerGamePrivilege_Invisible); }
-	
-	virtual void sendMessage(const std::wstring& message, ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom, int customData = -1, const std::wstring& additionalMessage = L"") { }
-private:
-	PlayerUID m_xuid;
-	PlayerUID m_OnlineXuid;
+    virtual bool openFurnace(std::shared_ptr<FurnaceTileEntity>
+                                 container);  // 4J - added bool return
+    virtual bool openTrap(std::shared_ptr<DispenserTileEntity>
+                              container);  // 4J - added bool return
+    virtual void openTextEdit(std::shared_ptr<SignTileEntity> sign);
+    virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity>
+                                      brewingStand);  // 4J - added bool return
+    virtual bool openTrading(
+        std::shared_ptr<Merchant> traderTarget);  // 4J - added bool return
+    virtual void openItemInstanceGui(
+        std::shared_ptr<ItemInstance> itemInstance);
+    virtual bool interact(std::shared_ptr<Entity> entity);
+    virtual std::shared_ptr<ItemInstance> getSelectedItem();
+    void removeSelectedItem();
+    virtual double getRidingHeight();
+    virtual void swing();
+    virtual void attack(std::shared_ptr<Entity> entity);
+    virtual void crit(std::shared_ptr<Entity> entity);
+    virtual void magicCrit(std::shared_ptr<Entity> entity);
+    virtual void respawn();
 
 protected:
-	std::wstring m_UUID; // 4J Added
+    static void animateRespawn(std::shared_ptr<Player> player, Level* level);
 
-	bool m_bShownOnMaps;
+public:
+    Slot* getInventorySlot(int slotId);
+    virtual void remove();
+    virtual bool isInWall();
+    virtual bool isLocalPlayer();
 
-	bool m_bIsGuest;
+    enum BedSleepingResult {
+        OK,
+        NOT_POSSIBLE_HERE,
+        NOT_POSSIBLE_NOW,
+        TOO_FAR_AWAY,
+        OTHER_PROBLEM,
+        NOT_SAFE
+    };
+
+    virtual BedSleepingResult startSleepInBed(int x, int y, int z,
+                                              bool bTestUse = false);
 
 private:
-	EDefaultSkins m_skinIndex;
-	std::uint32_t m_dwSkinId,m_dwCapeId;
-
-	// 4J Added - Used to show which colour the player is on the map/behind their name
-	std::uint8_t m_playerIndex;
-
-	// 4J-PB - to track debug options from the server player
-	unsigned int m_uiDebugOptions;
+    void setBedOffset(int bedDirection);
 
 public:
-	void SetDebugOptions(unsigned int uiVal)	{ m_uiDebugOptions=uiVal;}
-	unsigned int GetDebugOptions(void)			{ return m_uiDebugOptions;}
+    /**
+     *
+     * @param forcefulWakeUp
+     *            If the player has been forced to wake up. When this happens,
+     *            the client will skip the wake-up animation. For example, when
+     *            the player is hurt or the bed is destroyed.
+     * @param updateLevelList
+     *            If the level's sleeping player list needs to be updated. This
+     *            is usually the case.
+     * @param saveRespawnPoint
+     *            TODO
+     */
+    virtual void stopSleepInBed(bool forcefulWakeUp, bool updateLevelList,
+                                bool saveRespawnPoint);
 
-	void StopSleeping() {}
-
-public:
-	// If you add things here, you should also add a message to ClientConnection::displayPrivilegeChanges to alert players to changes
-	enum EPlayerGamePrivileges
-	{
-		ePlayerGamePrivilege_CannotMine = 0, // Only checked if trust system is on
-		ePlayerGamePrivilege_CannotBuild, // Only checked if trust system is on
-		ePlayerGamePrivilege_CannotAttackMobs, // Only checked if trust system is on
-		ePlayerGamePrivilege_CannotAttackPlayers, //Only checked if trust system is on
-		ePlayerGamePrivilege_Op,
-		ePlayerGamePrivilege_CanFly,
-		ePlayerGamePrivilege_ClassicHunger,
-		ePlayerGamePrivilege_Invisible,
-		ePlayerGamePrivilege_Invulnerable,
-
-		ePlayerGamePrivilege_CreativeMode, // Used only to transfer across network, should never be used to determine if a player is in creative mode
-
-		ePlayerGamePrivilege_CannotAttackAnimals, // Only checked if trust system is on
-		ePlayerGamePrivilege_CanUseDoorsAndSwitches, // Only checked if trust system is on
-		ePlayerGamePrivilege_CanUseContainers, // Only checked if trust system is on
-
-		ePlayerGamePrivilege_CanToggleInvisible,
-		ePlayerGamePrivilege_CanToggleFly,
-		ePlayerGamePrivilege_CanToggleClassicHunger,
-		ePlayerGamePrivilege_CanTeleport,
-
-		// Currently enum is used to bitshift into an unsigned int
-		ePlayerGamePrivilege_MAX = 32,
-		ePlayerGamePrivilege_All = 33,
-		ePlayerGamePrivilege_HOST,
-	};
 private:
-	// 4J Added - Used to track what actions players have been allowed to perform by the host
-	unsigned int m_uiGamePrivileges;
-
-	unsigned int getPlayerGamePrivilege(EPlayerGamePrivileges privilege);
-public:
-	unsigned int getAllPlayerGamePrivileges() { return getPlayerGamePrivilege(ePlayerGamePrivilege_All); }
-
-	static unsigned int getPlayerGamePrivilege(unsigned int uiGamePrivileges, EPlayerGamePrivileges privilege);
-	void setPlayerGamePrivilege(EPlayerGamePrivileges privilege, unsigned int value);
-	static void setPlayerGamePrivilege(unsigned int &uiGamePrivileges, EPlayerGamePrivileges privilege, unsigned int value);
-
-	bool isAllowedToUse(Tile *tile);
-	bool isAllowedToUse(std::shared_ptr<ItemInstance> item);
-	bool isAllowedToInteract(std::shared_ptr<Entity> target);
-	bool isAllowedToMine();
-	bool isAllowedToAttackPlayers();
-	bool isAllowedToAttackAnimals();
-	bool isAllowedToHurtEntity(std::shared_ptr<Entity> target);
-	bool isAllowedToFly();
-	bool isAllowedToIgnoreExhaustion();
-	bool isAllowedToTeleport();
-	bool hasInvisiblePrivilege();
-	bool hasInvulnerablePrivilege();
-	bool isModerator();
-
-	static void enableAllPlayerPrivileges(unsigned int &uigamePrivileges, bool enable);
-	void enableAllPlayerPrivileges(bool enable);
-
-	virtual bool canCreateParticles();
+    bool checkBed();
 
 public:
-	// 4J Stu - Added hooks for the game rules
-	virtual void handleCollectItem(std::shared_ptr<ItemInstance> item) {}
+    static Pos* checkBedValidRespawnPosition(Level* level, Pos* pos);
+    float getSleepRotation();
+    bool isSleeping();
+    bool isSleepingLongEnough();
+    int getSleepTimer();
+    int getDeathFadeTimer();
 
-	std::vector<ModelPart *> *GetAdditionalModelParts();
-	void SetAdditionalModelParts(std::vector<ModelPart *> *ppAdditionalModelParts);
+protected:
+    bool getPlayerFlag(int flag);
+    void setPlayerFlag(int flag, bool value);
+
+public:
+    /**
+     * This method is currently only relevant to client-side players. It will
+     * try to load the messageId from the language file and display it to the
+     * client.
+     */
+    virtual void displayClientMessage(int messageId);
+    Pos* getRespawnPosition();
+    void setRespawnPosition(Pos* respawnPosition);
+    virtual void awardStat(Stat* stat, byteArray param);
+
+protected:
+    void jumpFromGround();
+
+public:
+    void travel(float xa, float ya);
+    void checkMovementStatistiscs(double dx, double dy, double dz);
+
+private:
+    void checkRidingStatistiscs(double dx, double dy, double dz);
+
+    bool m_bAwardedOnARail;
+
+protected:
+    virtual void causeFallDamage(float distance);
+
+public:
+    virtual void killed(std::shared_ptr<Mob> mob);
+    virtual Icon* getItemInHandIcon(std::shared_ptr<ItemInstance> item,
+                                    int layer);
+    virtual std::shared_ptr<ItemInstance> getArmor(int pos);
+    virtual void handleInsidePortal();
+
+    void increaseXp(int i);
+    virtual void withdrawExperienceLevels(int amount);
+    int getXpNeededForNextLevel();
+
+private:
+    void levelUp();
+
+public:
+    void causeFoodExhaustion(float amount);
+    FoodData* getFoodData();
+    bool canEat(bool magicalItem);
+    bool isHurt();
+    virtual void startUsingItem(std::shared_ptr<ItemInstance> instance,
+                                int duration);
+    bool mayBuild(int x, int y, int z);
+
+protected:
+    virtual int getExperienceReward(std::shared_ptr<Player> killedBy);
+    virtual bool isAlwaysExperienceDropper();
+
+public:
+    virtual std::wstring getAName();
+
+    virtual void changeDimension(int i);
+    virtual void restoreFrom(std::shared_ptr<Player> oldPlayer,
+                             bool restoreAll);
+
+protected:
+    bool makeStepSound();
+
+public:
+    void onUpdateAbilities();
+    void setGameMode(GameType* mode);
+    std::wstring getName();
+    std::wstring getDisplayName();  // 4J added
+
+    // Language getLanguage() { return Language.getInstance(); }
+    // String localize(String key, Object... args) { return
+    // getLanguage().getElement(key, args); }
+
+    std::shared_ptr<PlayerEnderChestContainer> getEnderChestInventory();
+
+public:
+    virtual std::shared_ptr<ItemInstance> getCarriedItem();
+
+    virtual bool isInvisibleTo(std::shared_ptr<Player> player);
+
+    static int hash_fnct(const std::shared_ptr<Player> k);
+    static bool eq_test(const std::shared_ptr<Player> x,
+                        const std::shared_ptr<Player> y);
+
+    // 4J Stu - Added to allow callback to tutorial to stay within
+    // Minecraft.Client Overidden in LocalPlayer
+    virtual void onCrafted(std::shared_ptr<ItemInstance> item) {}
+
+    // 4J Overriding this so that we can have some different default skins
+    virtual int getTexture();  // 4J changed from std::wstring to int
+    void setPlayerDefaultSkin(EDefaultSkins skin);
+    EDefaultSkins getPlayerDefaultSkin() { return m_skinIndex; }
+    virtual void setCustomSkin(std::uint32_t skinId);
+    std::uint32_t getCustomSkin() { return m_dwSkinId; }
+    virtual void setCustomCape(std::uint32_t capeId);
+    std::uint32_t getCustomCape() { return m_dwCapeId; }
+
+    static std::uint32_t getCapeIdFromPath(const std::wstring& cape);
+    static std::wstring getCapePathFromId(std::uint32_t capeId);
+    static unsigned int getSkinAnimOverrideBitmask(std::uint32_t skinId);
+
+    // 4J Added
+    void setXuid(PlayerUID xuid);
+    PlayerUID getXuid() { return m_xuid; }
+    void setOnlineXuid(PlayerUID xuid) { m_OnlineXuid = xuid; }
+    PlayerUID getOnlineXuid() { return m_OnlineXuid; }
+    void setUUID(const std::wstring& UUID) { m_UUID = UUID; }
+    std::wstring getUUID() { return m_UUID; }
+
+    void setPlayerIndex(std::uint8_t index) { m_playerIndex = index; }
+    std::uint8_t getPlayerIndex() { return m_playerIndex; }
+
+    void setIsGuest(bool bVal) { m_bIsGuest = bVal; }
+    bool isGuest() { return m_bIsGuest; }
+
+    void setShowOnMaps(bool bVal) { m_bShownOnMaps = bVal; }
+    bool canShowOnMaps() {
+        return m_bShownOnMaps &&
+               !getPlayerGamePrivilege(ePlayerGamePrivilege_Invisible);
+    }
+
+    virtual void sendMessage(
+        const std::wstring& message,
+        ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,
+        int customData = -1, const std::wstring& additionalMessage = L"") {}
+
+private:
+    PlayerUID m_xuid;
+    PlayerUID m_OnlineXuid;
+
+protected:
+    std::wstring m_UUID;  // 4J Added
+
+    bool m_bShownOnMaps;
+
+    bool m_bIsGuest;
+
+private:
+    EDefaultSkins m_skinIndex;
+    std::uint32_t m_dwSkinId, m_dwCapeId;
+
+    // 4J Added - Used to show which colour the player is on the map/behind
+    // their name
+    std::uint8_t m_playerIndex;
+
+    // 4J-PB - to track debug options from the server player
+    unsigned int m_uiDebugOptions;
+
+public:
+    void SetDebugOptions(unsigned int uiVal) { m_uiDebugOptions = uiVal; }
+    unsigned int GetDebugOptions(void) { return m_uiDebugOptions; }
+
+    void StopSleeping() {}
+
+public:
+    // If you add things here, you should also add a message to
+    // ClientConnection::displayPrivilegeChanges to alert players to changes
+    enum EPlayerGamePrivileges {
+        ePlayerGamePrivilege_CannotMine =
+            0,                             // Only checked if trust system is on
+        ePlayerGamePrivilege_CannotBuild,  // Only checked if trust system is on
+        ePlayerGamePrivilege_CannotAttackMobs,  // Only checked if trust system
+                                                // is on
+        ePlayerGamePrivilege_CannotAttackPlayers,  // Only checked if trust
+                                                   // system is on
+        ePlayerGamePrivilege_Op,
+        ePlayerGamePrivilege_CanFly,
+        ePlayerGamePrivilege_ClassicHunger,
+        ePlayerGamePrivilege_Invisible,
+        ePlayerGamePrivilege_Invulnerable,
+
+        ePlayerGamePrivilege_CreativeMode,  // Used only to transfer across
+                                            // network, should never be used to
+                                            // determine if a player is in
+                                            // creative mode
+
+        ePlayerGamePrivilege_CannotAttackAnimals,     // Only checked if trust
+                                                      // system is on
+        ePlayerGamePrivilege_CanUseDoorsAndSwitches,  // Only checked if trust
+                                                      // system is on
+        ePlayerGamePrivilege_CanUseContainers,  // Only checked if trust system
+                                                // is on
+
+        ePlayerGamePrivilege_CanToggleInvisible,
+        ePlayerGamePrivilege_CanToggleFly,
+        ePlayerGamePrivilege_CanToggleClassicHunger,
+        ePlayerGamePrivilege_CanTeleport,
+
+        // Currently enum is used to bitshift into an unsigned int
+        ePlayerGamePrivilege_MAX = 32,
+        ePlayerGamePrivilege_All = 33,
+        ePlayerGamePrivilege_HOST,
+    };
+
+private:
+    // 4J Added - Used to track what actions players have been allowed to
+    // perform by the host
+    unsigned int m_uiGamePrivileges;
+
+    unsigned int getPlayerGamePrivilege(EPlayerGamePrivileges privilege);
+
+public:
+    unsigned int getAllPlayerGamePrivileges() {
+        return getPlayerGamePrivilege(ePlayerGamePrivilege_All);
+    }
+
+    static unsigned int getPlayerGamePrivilege(unsigned int uiGamePrivileges,
+                                               EPlayerGamePrivileges privilege);
+    void setPlayerGamePrivilege(EPlayerGamePrivileges privilege,
+                                unsigned int value);
+    static void setPlayerGamePrivilege(unsigned int& uiGamePrivileges,
+                                       EPlayerGamePrivileges privilege,
+                                       unsigned int value);
+
+    bool isAllowedToUse(Tile* tile);
+    bool isAllowedToUse(std::shared_ptr<ItemInstance> item);
+    bool isAllowedToInteract(std::shared_ptr<Entity> target);
+    bool isAllowedToMine();
+    bool isAllowedToAttackPlayers();
+    bool isAllowedToAttackAnimals();
+    bool isAllowedToHurtEntity(std::shared_ptr<Entity> target);
+    bool isAllowedToFly();
+    bool isAllowedToIgnoreExhaustion();
+    bool isAllowedToTeleport();
+    bool hasInvisiblePrivilege();
+    bool hasInvulnerablePrivilege();
+    bool isModerator();
+
+    static void enableAllPlayerPrivileges(unsigned int& uigamePrivileges,
+                                          bool enable);
+    void enableAllPlayerPrivileges(bool enable);
+
+    virtual bool canCreateParticles();
+
+public:
+    // 4J Stu - Added hooks for the game rules
+    virtual void handleCollectItem(std::shared_ptr<ItemInstance> item) {}
+
+    std::vector<ModelPart*>* GetAdditionalModelParts();
+    void SetAdditionalModelParts(
+        std::vector<ModelPart*>* ppAdditionalModelParts);
 
 #if defined(__PS3__) || defined(__ORBIS__)
-	enum ePlayerNameValidState
-	{
-		ePlayerNameValid_NotSet=0,
-		ePlayerNameValid_True,
-		ePlayerNameValid_False
-	};
+    enum ePlayerNameValidState {
+        ePlayerNameValid_NotSet = 0,
+        ePlayerNameValid_True,
+        ePlayerNameValid_False
+    };
 
-	ePlayerNameValidState GetPlayerNameValidState();
-	void SetPlayerNameValidState(bool bState);
+    ePlayerNameValidState GetPlayerNameValidState();
+    void SetPlayerNameValidState(bool bState);
 #endif
 private:
-	std::vector<ModelPart *> *m_ppAdditionalModelParts;
-	bool m_bCheckedForModelParts;
-	bool m_bCheckedDLCForModelParts;
+    std::vector<ModelPart*>* m_ppAdditionalModelParts;
+    bool m_bCheckedForModelParts;
+    bool m_bCheckedDLCForModelParts;
 
 #if defined(__PS3__) || defined(__ORBIS__)
-	ePlayerNameValidState m_ePlayerNameValidState; // 4J-PB - to ensure we have the characters for this name in our font, or display a player number instead
+    ePlayerNameValidState
+        m_ePlayerNameValidState;  // 4J-PB - to ensure we have the characters
+                                  // for this name in our font, or display a
+                                  // player number instead
 #endif
 };
 
-struct PlayerKeyHash
-{
-	int operator() (const std::shared_ptr<Player> k) const { return Player::hash_fnct (k); }
+struct PlayerKeyHash {
+    int operator()(const std::shared_ptr<Player> k) const {
+        return Player::hash_fnct(k);
+    }
 };
 
-struct PlayerKeyEq
-{
-	bool operator() (const std::shared_ptr<Player> x, const std::shared_ptr<Player> y) const { return Player::eq_test (x, y); }
+struct PlayerKeyEq {
+    bool operator()(const std::shared_ptr<Player> x,
+                    const std::shared_ptr<Player> y) const {
+        return Player::eq_test(x, y);
+    }
 };

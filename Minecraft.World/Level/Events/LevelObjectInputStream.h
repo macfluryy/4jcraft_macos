@@ -20,7 +20,8 @@ class LevelObjectInputStream : ObjectInputStream
     }
 
 protected:
-	ObjectStreamClass readClassDescriptor() // 4J - throws IOException, ClassNotFoundException
+        ObjectStreamClass readClassDescriptor() // 4J - throws IOException,
+ClassNotFoundException
     {
         ObjectStreamClass osc = super.readClassDescriptor();
 

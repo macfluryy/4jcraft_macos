@@ -3,16 +3,16 @@
 class BufferedImage;
 class MemTextureProcessor;
 
-
 class MemTexture {
 public:
-	BufferedImage *loadedImage;
+    BufferedImage* loadedImage;
     int count;
     int id;
     bool isLoaded;
-	int ticksSinceLastUse;
-	static const int UNUSED_TICKS_TO_FREE = 20;
+    int ticksSinceLastUse;
+    static const int UNUSED_TICKS_TO_FREE = 20;
 
-    MemTexture(const std::wstring& _name, std::uint8_t *pbData, std::uint32_t dataBytes, MemTextureProcessor *processor);
-	~MemTexture();
+    MemTexture(const std::wstring& _name, std::uint8_t* pbData,
+               std::uint32_t dataBytes, MemTextureProcessor* processor);
+    ~MemTexture();
 };

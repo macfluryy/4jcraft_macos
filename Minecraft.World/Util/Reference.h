@@ -1,10 +1,11 @@
 #pragma once
 
-template<class T> class Reference
-{
+template <class T>
+class Reference {
 private:
-	T *obj;
+    T* obj;
+
 public:
-	T *get() { return obj; }
-	Reference(T *i) { obj = i; }
+    T* get() { return obj; }
+    Reference(T* i) { obj = i; }
 };

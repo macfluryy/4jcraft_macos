@@ -3,45 +3,58 @@
 #include "Direction.h"
 #include "JavaMath.h"
 
-BoundingBox::BoundingBox()
-{
-	// 4J added initialisers
-	x0 = 0;
-	y0 = 0;
-	z0 = 0;
-	x1 = 0;
-	y1 = 0;
-	z1 = 0;
+BoundingBox::BoundingBox() {
+    // 4J added initialisers
+    x0 = 0;
+    y0 = 0;
+    z0 = 0;
+    x1 = 0;
+    y1 = 0;
+    z1 = 0;
 }
 
-BoundingBox *BoundingBox::getUnknownBox()
-{
-	return new BoundingBox(INT_MAX, INT_MAX, INT_MAX, INT_MIN, INT_MIN, INT_MIN );
+BoundingBox* BoundingBox::getUnknownBox() {
+    return new BoundingBox(INT_MAX, INT_MAX, INT_MAX, INT_MIN, INT_MIN,
+                           INT_MIN);
 }
 
-BoundingBox *BoundingBox::orientBox(int footX, int footY, int footZ, int offX, int offY, int offZ, int width, int height, int depth, int orientation)
-{
-    switch (orientation)
-	{
-    default:
-        return new BoundingBox(footX + offX, footY + offY, footZ + offZ, footX + width - 1 + offX, footY + height - 1 + offY, footZ + depth - 1 + offZ);
-	case Direction::NORTH:
-        // foot is at x0, y0, z1
-        return new BoundingBox(footX + offX, footY + offY, footZ - depth + 1 + offZ, footX + width - 1 + offX, footY + height - 1 + offY, footZ + offZ);
-	case Direction::SOUTH:
-        // foot is at x0, y0, z0
-        return new BoundingBox(footX + offX, footY + offY, footZ + offZ, footX + width - 1 + offX, footY + height - 1 + offY, footZ + depth - 1 + offZ);
-	case Direction::WEST:
-        // foot is at x1, y0, z0, but width and depth are flipped
-        return new BoundingBox(footX - depth + 1 + offZ, footY + offY, footZ + offX, footX + offZ, footY + height - 1 + offY, footZ + width - 1 + offX);
-	case Direction::EAST:
-        // foot is at x0, y0, z0, but width and depth are flipped
-        return new BoundingBox(footX + offZ, footY + offY, footZ + offX, footX + depth - 1 + offZ, footY + height - 1 + offY, footZ + width - 1 + offX);
+BoundingBox* BoundingBox::orientBox(int footX, int footY, int footZ, int offX,
+                                    int offY, int offZ, int width, int height,
+                                    int depth, int orientation) {
+    switch (orientation) {
+        default:
+            return new BoundingBox(footX + offX, footY + offY, footZ + offZ,
+                                   footX + width - 1 + offX,
+                                   footY + height - 1 + offY,
+                                   footZ + depth - 1 + offZ);
+        case Direction::NORTH:
+            // foot is at x0, y0, z1
+            return new BoundingBox(footX + offX, footY + offY,
+                                   footZ - depth + 1 + offZ,
+                                   footX + width - 1 + offX,
+                                   footY + height - 1 + offY, footZ + offZ);
+        case Direction::SOUTH:
+            // foot is at x0, y0, z0
+            return new BoundingBox(footX + offX, footY + offY, footZ + offZ,
+                                   footX + width - 1 + offX,
+                                   footY + height - 1 + offY,
+                                   footZ + depth - 1 + offZ);
+        case Direction::WEST:
+            // foot is at x1, y0, z0, but width and depth are flipped
+            return new BoundingBox(footX - depth + 1 + offZ, footY + offY,
+                                   footZ + offX, footX + offZ,
+                                   footY + height - 1 + offY,
+                                   footZ + width - 1 + offX);
+        case Direction::EAST:
+            // foot is at x0, y0, z0, but width and depth are flipped
+            return new BoundingBox(footX + offZ, footY + offY, footZ + offX,
+                                   footX + depth - 1 + offZ,
+                                   footY + height - 1 + offY,
+                                   footZ + width - 1 + offX);
     }
 }
 
-BoundingBox::BoundingBox(BoundingBox *other)
-{
+BoundingBox::BoundingBox(BoundingBox* other) {
     this->x0 = other->x0;
     this->y0 = other->y0;
     this->z0 = other->z0;
@@ -50,8 +63,7 @@ BoundingBox::BoundingBox(BoundingBox *other)
     this->z1 = other->z1;
 }
 
-BoundingBox::BoundingBox(int x0, int y0, int z0, int x1, int y1, int z1)
-{
+BoundingBox::BoundingBox(int x0, int y0, int z0, int x1, int y1, int z1) {
     this->x0 = x0;
     this->y0 = y0;
     this->z0 = z0;
@@ -60,36 +72,34 @@ BoundingBox::BoundingBox(int x0, int y0, int z0, int x1, int y1, int z1)
     this->z1 = z1;
 }
 
-BoundingBox::BoundingBox(int x0, int z0, int x1, int z1)
-{
+BoundingBox::BoundingBox(int x0, int z0, int x1, int z1) {
     this->x0 = x0;
     this->z0 = z0;
     this->x1 = x1;
     this->z1 = z1;
 
-	// the bounding box for this constructor is limited to world size,
-	// excluding bedrock level
-	this->y0 = 1;
-	this->y1 = 512;
+    // the bounding box for this constructor is limited to world size,
+    // excluding bedrock level
+    this->y0 = 1;
+    this->y1 = 512;
 }
 
-bool BoundingBox::intersects(BoundingBox *other)
-{
-	return !(this->x1 < other->x0 || this->x0 > other->x1 || this->z1 < other->z0 || this->z0 > other->z1 || this->y1 < other->y0 || this->y0 > other->y1);
+bool BoundingBox::intersects(BoundingBox* other) {
+    return !(this->x1 < other->x0 || this->x0 > other->x1 ||
+             this->z1 < other->z0 || this->z0 > other->z1 ||
+             this->y1 < other->y0 || this->y0 > other->y1);
 }
 
-bool BoundingBox::intersects(int x0, int y0, int z0, int x1, int y1, int z1)
-{
-	return !(this->x1 < x0 || this->x0 > x1 || this->z1 < z0 || this->z0 > z1 || this->y1 < y0 || this->y0 > y1);
+bool BoundingBox::intersects(int x0, int y0, int z0, int x1, int y1, int z1) {
+    return !(this->x1 < x0 || this->x0 > x1 || this->z1 < z0 || this->z0 > z1 ||
+             this->y1 < y0 || this->y0 > y1);
 }
 
-bool BoundingBox::intersects(int x0, int z0, int x1, int z1)
-{
-	return !(this->x1 < x0 || this->x0 > x1 || this->z1 < z0 || this->z0 > z1);
+bool BoundingBox::intersects(int x0, int z0, int x1, int z1) {
+    return !(this->x1 < x0 || this->x0 > x1 || this->z1 < z0 || this->z0 > z1);
 }
 
-void BoundingBox::expand(BoundingBox *other)
-{
+void BoundingBox::expand(BoundingBox* other) {
     this->x0 = Math::_min(this->x0, other->x0);
     this->y0 = Math::_min(this->y0, other->y0);
     this->z0 = Math::_min(this->z0, other->z0);
@@ -98,13 +108,11 @@ void BoundingBox::expand(BoundingBox *other)
     this->z1 = Math::_max(this->z1, other->z1);
 }
 
-BoundingBox *BoundingBox::getIntersection(BoundingBox *other)
-{
-    if (!intersects(other))
-	{
+BoundingBox* BoundingBox::getIntersection(BoundingBox* other) {
+    if (!intersects(other)) {
         return NULL;
     }
-    BoundingBox *result = new BoundingBox();
+    BoundingBox* result = new BoundingBox();
     result->x0 = Math::_max(this->x0, other->x0);
     result->y0 = Math::_max(this->y0, other->y0);
     result->z0 = Math::_max(this->z0, other->z0);
@@ -115,8 +123,7 @@ BoundingBox *BoundingBox::getIntersection(BoundingBox *other)
     return result;
 }
 
-void BoundingBox::move(int dx, int dy, int dz)
-{
+void BoundingBox::move(int dx, int dy, int dz) {
     x0 += dx;
     y0 += dy;
     z0 += dz;
@@ -125,42 +132,24 @@ void BoundingBox::move(int dx, int dy, int dz)
     z1 += dz;
 }
 
-bool BoundingBox::isInside(int x, int y, int z)
-{
-	return (x >= x0 && x <= x1 && z >= z0 && z <= z1 && y >= y0 && y <= y1);
+bool BoundingBox::isInside(int x, int y, int z) {
+    return (x >= x0 && x <= x1 && z >= z0 && z <= z1 && y >= y0 && y <= y1);
 }
 
-int BoundingBox::getXSpan()
-{
-	return x1 - x0 + 1;
-}
+int BoundingBox::getXSpan() { return x1 - x0 + 1; }
 
-int BoundingBox::getYSpan()
-{
-	return y1 - y0 + 1;
-}
+int BoundingBox::getYSpan() { return y1 - y0 + 1; }
 
-int BoundingBox::getZSpan()
-{
-	return z1 - z0 + 1;
-}
+int BoundingBox::getZSpan() { return z1 - z0 + 1; }
 
-int BoundingBox::getXCenter()
-{
-	return x0 + (x1 - x0 + 1) / 2;
-}
+int BoundingBox::getXCenter() { return x0 + (x1 - x0 + 1) / 2; }
 
-int BoundingBox::getYCenter()
-{
-	return y0 + (y1 - y0 + 1) / 2;
-}
+int BoundingBox::getYCenter() { return y0 + (y1 - y0 + 1) / 2; }
 
-int BoundingBox::getZCenter()
-{
-	return z0 + (z1 - z0 + 1) / 2;
-}
+int BoundingBox::getZCenter() { return z0 + (z1 - z0 + 1) / 2; }
 
-std::wstring BoundingBox::toString()
-{
-	return L"(" + _toString<int>(x0) + L", " + _toString<int>(y0) + L", " + _toString<int>(z0) + L"; " + _toString<int>(x1) + L", " + _toString<int>(y1) + L", " + _toString<int>(z1) + L")";
+std::wstring BoundingBox::toString() {
+    return L"(" + _toString<int>(x0) + L", " + _toString<int>(y0) + L", " +
+           _toString<int>(z0) + L"; " + _toString<int>(x1) + L", " +
+           _toString<int>(y1) + L", " + _toString<int>(z1) + L")";
 }

@@ -2,10 +2,10 @@
 #include "Particle.h"
 class Entity;
 
-class TakeAnimationParticle : public Particle
-{
+class TakeAnimationParticle : public Particle {
 public:
-	virtual eINSTANCEOF GetType() { return eType_TAKEANIMATIONPARTICLE; }
+    virtual eINSTANCEOF GetType() { return eType_TAKEANIMATIONPARTICLE; }
+
 private:
     std::shared_ptr<Entity> item;
     std::shared_ptr<Entity> target;
@@ -14,9 +14,11 @@ private:
     float yOffs;
 
 public:
-	TakeAnimationParticle(Level *level, std::shared_ptr<Entity> item, std::shared_ptr<Entity> target, float yOffs);
-	~TakeAnimationParticle();
-    virtual void render(Tesselator *t, float a, float xa, float ya, float za, float xa2, float za2);
+    TakeAnimationParticle(Level* level, std::shared_ptr<Entity> item,
+                          std::shared_ptr<Entity> target, float yOffs);
+    ~TakeAnimationParticle();
+    virtual void render(Tesselator* t, float a, float xa, float ya, float za,
+                        float xa2, float za2);
     virtual void tick();
     virtual int getParticleTexture();
 };
