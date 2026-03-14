@@ -1,14 +1,15 @@
 #pragma once
 
-class Language
-{
+class Language {
 private:
-	static Language *singleton;
+    static Language* singleton;
+    std::unordered_map<std::wstring, std::wstring> translateTable;
+
 public:
-	Language();
-    static Language *getInstance();
+    Language();
+    static Language* getInstance();
     std::wstring getElement(std::wstring elementId, ...);
-	std::wstring getElement(const std::wstring& elementId, va_list args);
+    std::wstring getElement(const std::wstring& elementId, va_list args);
     std::wstring getElementName(const std::wstring& elementId);
     std::wstring getElementDescription(const std::wstring& elementId);
 };
