@@ -41,6 +41,9 @@ void ConsoleUIController::render() {
     if (!gdraw_funcs) return;
 
     gdraw_GL_SetTileOrigin(0, 0, 0);
+    if (!app.GetGameStarted() && gdraw_funcs->ClearID) {
+        gdraw_funcs->ClearID();
+    }
 
     // render
     renderScenes();
