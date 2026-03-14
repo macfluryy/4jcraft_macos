@@ -229,7 +229,7 @@ GDrawFunctions *gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples)
 void gdraw_GL_BeginCustomDraw_4J(IggyCustomDrawCallbackRegion *region, F32 *matrix)
 {
     clear_renderstate();
-    gdraw_GetObjectSpaceMatrix(matrix, region->o2w, gdraw->projection, depth_from_id(0), 1);
+    gdraw_GetObjectSpaceMatrix(matrix, region->o2w, gdraw->projection, depth_from_id(0), 0);
 }
 
 void gdraw_GL_CalculateCustomDraw_4J(IggyCustomDrawCallbackRegion *region, F32 *matrix)
