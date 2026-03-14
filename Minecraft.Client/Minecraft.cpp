@@ -1704,7 +1704,7 @@ void Minecraft::run_middle()
 				timer->advanceTime();
 			}
 
-			__int64 beforeTickTime = System::nanoTime();
+			//__int64 beforeTickTime = System::nanoTime();
 			for (int i = 0; i < timer->ticks; i++)
 			{
 				bool bLastTimerTick = ( i == ( timer->ticks - 1 ) );
@@ -1790,7 +1790,7 @@ void Minecraft::run_middle()
 // 				CompressedTileStorage::tick();	// 4J added
 // 				SparseDataStorage::tick();		// 4J added
 			}
-			__int64 tickDuraction = System::nanoTime() - beforeTickTime;
+			//__int64 tickDuraction = System::nanoTime() - beforeTickTime;
 			MemSect(31);
 			checkGlError(L"Pre render");
 			MemSect(0);
@@ -1822,6 +1822,7 @@ void Minecraft::run_middle()
 				int iPrimaryPad=ProfileManager.GetPrimaryPad();
 				for( int i = 0; i < XUSER_MAX_COUNT; i++ )
 				{
+
 					if( setLocalPlayerIdx(i) )
 					{
 						PIXBeginNamedEvent(0,"Game render player idx %d",i);
@@ -1849,16 +1850,19 @@ void Minecraft::run_middle()
 						}
 					}
 				}
-#ifdef __linux__
-				// On Linux, Iggy Flash UI is not available. If no players were rendered
-				// (menu / title-screen state), call GameRenderer directly so mc->screen draws.
-				if (bFirst)
-				{
-					localPlayerIdx = 0;
-					RenderManager.StateSetViewport(C4JRender::VIEWPORT_TYPE_FULLSCREEN);
-					gameRenderer->render(timer->a, true);
-				}
-#endif
+
+// #ifdef __linux__
+// 				// On Linux, Iggy Flash UI is not available. If no players were rendered
+// 				// (menu / title-screen state), call GameRenderer directly so mc->screen draws.
+// 				if (bFirst)
+// 				{
+// 					localPlayerIdx = 0;
+// 					RenderManager.StateSetViewport(C4JRender::VIEWPORT_TYPE_FULLSCREEN);
+// 					gameRenderer->render(timer->a, true);
+// 				}
+// #endif
+
+				
 				// If there's an unoccupied quadrant, then clear that to black
 				if( unoccupiedQuadrant > -1 )
 				{
@@ -1895,9 +1899,10 @@ void Minecraft::run_middle()
 			Sleep(10);
 			}
 			*/
+
 			if (options->renderDebug)
 			{
-				
+				//renderFpsMeter(tickDuraction);
 
 #if DEBUG_RENDER_SHOWS_PACKETS
 				// To show data for only one packet type
@@ -1986,6 +1991,7 @@ void Minecraft::run_middle()
 	}
 	LeaveCriticalSection(&m_setLevelCS);
 }
+
 
 void Minecraft::run_end()
 {
