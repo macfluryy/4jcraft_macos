@@ -1,9 +1,9 @@
+#include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.locale.h"
 #include "../Items/ItemInstance.h"
-#include "../Platform/stdafx.h"
+#include "Achievements.h"
 #include "../Util/DescFormatter.h"
 #include "Achievement.h"
-#include "Achievements.h"
 
 /**
  * @brief Performs internal initialization for the achievement.
