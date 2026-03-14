@@ -2039,10 +2039,6 @@ void Minecraft::run_middle() {
 			}
 			*/
 
-			if (options->renderDebug)
-			{
-				//renderFpsMeter(tickDuraction);
-
             /*	4J - removed
             if (!Display::isActive())
             {
