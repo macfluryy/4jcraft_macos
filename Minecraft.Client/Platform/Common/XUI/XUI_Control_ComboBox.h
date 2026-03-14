@@ -10,8 +10,8 @@ public:
 		LPCWSTR pwszText;
 		LPCWSTR pwszImage;
 		HXUIBRUSH hXuiBrush;
-		bool fChecked;
-		bool fEnabled;
+		BOOL fChecked;
+		BOOL fEnabled;
 	} 
 	LIST_ITEM_INFO;
 
