@@ -1,5 +1,5 @@
 # <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50"> 4JCraft
-[![Build (Linux, x86_64)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml) [![Documentation](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml)
+[![Build (Linux, x86_64)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-linux.yml) [![Documentation](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml/badge.svg)](https://github.com/Liriosha/4jcraft/actions/workflows/build-doxygen.yml) [![GitHub latest commit](https://badgen.net/github/last-commit/4jcraft/4jcraft)](https://GitHub.com/4jcraft/4jcraft/commit/) [![GitHub commits](https://badgen.net/github/commits/4jcraft/4jcraft)](https://GitHub.com/4jcraft/4jcraft/commit/)[![4JCraft Discord](https://badgen.net/discord/members/zFCwRWkkUg)](https://discord.gg/zFCwRWkkUg)
 
 
 > Ported version of Minecraft Legacy Console edition to other systems
