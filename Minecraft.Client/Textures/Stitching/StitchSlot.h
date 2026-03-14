@@ -1,28 +1,26 @@
 #pragma once
 
-
 class TextureHolder;
 
-class StitchSlot
-{
+class StitchSlot {
 private:
-	const int originX;
-	const int originY;
+    const int originX;
+    const int originY;
 
-	const int width;
-	const int height;
-	std::vector<StitchSlot *> *subSlots;
-	TextureHolder *textureHolder;
+    const int width;
+    const int height;
+    std::vector<StitchSlot*>* subSlots;
+    TextureHolder* textureHolder;
 
 public:
-	StitchSlot(int originX, int originY, int width, int height);
+    StitchSlot(int originX, int originY, int width, int height);
 
-	TextureHolder *getHolder();
-	int getX();
-	int getY();
-	bool add(TextureHolder *textureHolder);
-	void collectAssignments(std::vector<StitchSlot *> *result);
+    TextureHolder* getHolder();
+    int getX();
+    int getY();
+    bool add(TextureHolder* textureHolder);
+    void collectAssignments(std::vector<StitchSlot*>* result);
 
-	//@Override
-	std::wstring toString();
+    //@Override
+    std::wstring toString();
 };

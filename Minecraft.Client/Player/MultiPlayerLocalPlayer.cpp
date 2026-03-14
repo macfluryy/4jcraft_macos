@@ -1,5 +1,5 @@
 #include "../Platform/stdafx.h"
-//#include "../../Minecraft.World/Util/JavaMath.h"
+// #include "../../Minecraft.World/Util/JavaMath.h"
 #include "MultiPlayerLocalPlayer.h"
 #include "../Network/ClientConnection.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
@@ -13,91 +13,107 @@
 #include "../../Minecraft.World/Level/LevelData.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
 
-
-
-
-MultiplayerLocalPlayer::MultiplayerLocalPlayer(Minecraft *minecraft, Level *level, User *user, ClientConnection *connection) : LocalPlayer(minecraft, level, user, level->dimension->id)
-{
-	// 4J - added initialisers
+MultiplayerLocalPlayer::MultiplayerLocalPlayer(Minecraft* minecraft,
+                                               Level* level, User* user,
+                                               ClientConnection* connection)
+    : LocalPlayer(minecraft, level, user, level->dimension->id) {
+    // 4J - added initialisers
     flashOnSetHealth = false;
-	xLast = yLast1 = yLast2 = zLast = 0;
+    xLast = yLast1 = yLast2 = zLast = 0;
     yRotLast = xRotLast = 0;
-	lastOnGround = false;
+    lastOnGround = false;
     lastSneaked = false;
-	lastIdle = false;
-	lastSprinting = false;
+    lastIdle = false;
+    lastSprinting = false;
     positionReminder = 0;
 
     this->connection = connection;
 }
 
-bool MultiplayerLocalPlayer::hurt(DamageSource *source, int dmg)
-{
-	return false;
+bool MultiplayerLocalPlayer::hurt(DamageSource* source, int dmg) {
+    return false;
 }
 
-void MultiplayerLocalPlayer::heal(int heal)
-{
-}
+void MultiplayerLocalPlayer::heal(int heal) {}
 
-void MultiplayerLocalPlayer::tick()
-{
-	// 4J Added
-	// 4J-PB - changing this to a game host option ot hide gamertags
-	//bool bIsisPrimaryHost=g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad()==m_iPad);
+void MultiplayerLocalPlayer::tick() {
+    // 4J Added
+    // 4J-PB - changing this to a game host option ot hide gamertags
+    // bool bIsisPrimaryHost=g_NetworkManager.IsHost() &&
+    // (ProfileManager.GetPrimaryPad()==m_iPad);
 
-	/*if((app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0) != m_bShownOnMaps)
-	{
-		m_bShownOnMaps = (app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0);
-		if (m_bShownOnMaps) connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::SHOW_ON_MAPS) ) );
-        else connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::HIDE_ON_MAPS) ) );
-	}*/
+    /*if((app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0) !=
+    m_bShownOnMaps)
+    {
+            m_bShownOnMaps =
+    (app.GetGameSettings(m_iPad,eGameSetting_PlayerVisibleInMap)!=0); if
+    (m_bShownOnMaps) connection->send( std::shared_ptr<PlayerCommandPacket>( new
+    PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::SHOW_ON_MAPS) )
+    ); else connection->send( std::shared_ptr<PlayerCommandPacket>( new
+    PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::HIDE_ON_MAPS) )
+    );
+    }*/
 
-	if (!level->hasChunkAt(Mth::floor(x), 0, Mth::floor(z))) return;
+    if (!level->hasChunkAt(Mth::floor(x), 0, Mth::floor(z))) return;
 
-	double tempX = x, tempY = y, tempZ = z;
+    double tempX = x, tempY = y, tempZ = z;
     LocalPlayer::tick();
-	
-	//if( !minecraft->localgameModes[m_iPad]->isTutorial() || minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(tempX, tempY, tempZ, x, y, z) )
-	if(minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(tempX, tempY, tempZ, x, y, z))
-	{		
-		sendPosition();
-	}
-	else
-	{
-		//app.Debugprintf("Cannot move to position (%f, %f, %f), falling back to (%f, %f, %f)\n", x, y, z, tempX, y, tempZ);
-		this->setPos(tempX, y, tempZ);
-	}
+
+    // if( !minecraft->localgameModes[m_iPad]->isTutorial() ||
+    // minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(tempX,
+    // tempY, tempZ, x, y, z) )
+    if (minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(
+            tempX, tempY, tempZ, x, y, z)) {
+        sendPosition();
+    } else {
+        // app.Debugprintf("Cannot move to position (%f, %f, %f), falling back
+        // to (%f, %f, %f)\n", x, y, z, tempX, y, tempZ);
+        this->setPos(tempX, y, tempZ);
+    }
 }
 
-void MultiplayerLocalPlayer::sendPosition()
-{
-	bool sprinting = isSprinting();
-	if (sprinting != lastSprinting)
-	{
-		if (sprinting) connection->send(std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::START_SPRINTING)));
-		else connection->send(std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::STOP_SPRINTING)));
+void MultiplayerLocalPlayer::sendPosition() {
+    bool sprinting = isSprinting();
+    if (sprinting != lastSprinting) {
+        if (sprinting)
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::START_SPRINTING)));
+        else
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::STOP_SPRINTING)));
 
-		lastSprinting = sprinting;
-	}
+        lastSprinting = sprinting;
+    }
 
     bool sneaking = isSneaking();
-    if (sneaking != lastSneaked)
-	{
-        if (sneaking) connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::START_SNEAKING) ) );
-        else connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::STOP_SNEAKING) ) );
+    if (sneaking != lastSneaked) {
+        if (sneaking)
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::START_SNEAKING)));
+        else
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::STOP_SNEAKING)));
 
         lastSneaked = sneaking;
     }
 
-	bool idle = isIdle();
-	if (idle != lastIdle)
-	{
-		if (idle) connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::START_IDLEANIM) ) );
-		else connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM) ) );
+    bool idle = isIdle();
+    if (idle != lastIdle) {
+        if (idle)
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::START_IDLEANIM)));
+        else
+            connection->send(
+                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+                    shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM)));
 
-		lastIdle = idle;
-	}
+        lastIdle = idle;
+    }
 
     double xdd = x - xLast;
     double ydd1 = bb->y0 - yLast1;
@@ -106,266 +122,244 @@ void MultiplayerLocalPlayer::sendPosition()
     double rydd = yRot - yRotLast;
     double rxdd = xRot - xRotLast;
 
-	bool move = (xdd * xdd + ydd1 * ydd1 + zdd * zdd) > 0.03 * 0.03 || positionReminder >= POSITION_REMINDER_INTERVAL;
+    bool move = (xdd * xdd + ydd1 * ydd1 + zdd * zdd) > 0.03 * 0.03 ||
+                positionReminder >= POSITION_REMINDER_INTERVAL;
     bool rot = rydd != 0 || rxdd != 0;
-    if (riding != NULL)
-	{
-		connection->send( std::shared_ptr<MovePlayerPacket>( new MovePlayerPacket::PosRot(xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying) ) );
+    if (riding != NULL) {
+        connection->send(
+            std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
+                xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying)));
         move = false;
-    }
-	else
-	{
-        if (move && rot)
-		{
-            connection->send( std::shared_ptr<MovePlayerPacket>( new MovePlayerPacket::PosRot(x, bb->y0, y, z, yRot, xRot, onGround, abilities.flying) ) );
-        }
-		else if (move)
-		{
-            connection->send( std::shared_ptr<MovePlayerPacket>( new MovePlayerPacket::Pos(x, bb->y0, y, z, onGround, abilities.flying) ) );
-        }
-		else if (rot)
-		{
-            connection->send( std::shared_ptr<MovePlayerPacket>( new MovePlayerPacket::Rot(yRot, xRot, onGround, abilities.flying) ) );
-        }
-		else
-		{
-		  connection->send( std::shared_ptr<MovePlayerPacket>( new MovePlayerPacket(onGround, abilities.flying) ) );
+    } else {
+        if (move && rot) {
+            connection->send(
+                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
+                    x, bb->y0, y, z, yRot, xRot, onGround, abilities.flying)));
+        } else if (move) {
+            connection->send(
+                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Pos(
+                    x, bb->y0, y, z, onGround, abilities.flying)));
+        } else if (rot) {
+            connection->send(
+                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Rot(
+                    yRot, xRot, onGround, abilities.flying)));
+        } else {
+            connection->send(std::shared_ptr<MovePlayerPacket>(
+                new MovePlayerPacket(onGround, abilities.flying)));
         }
     }
 
-	positionReminder++;
+    positionReminder++;
     lastOnGround = onGround;
 
-    if (move)
-	{
+    if (move) {
         xLast = x;
         yLast1 = bb->y0;
         yLast2 = y;
         zLast = z;
-		positionReminder = 0;
+        positionReminder = 0;
     }
-    if (rot)
-	{
+    if (rot) {
         yRotLast = yRot;
         xRotLast = xRot;
     }
-
 }
 
-std::shared_ptr<ItemEntity> MultiplayerLocalPlayer::drop()
-{
-	connection->send( std::shared_ptr<PlayerActionPacket>( new PlayerActionPacket(PlayerActionPacket::DROP_ITEM, 0, 0, 0, 0) ) );
-	return nullptr;
+std::shared_ptr<ItemEntity> MultiplayerLocalPlayer::drop() {
+    connection->send(std::shared_ptr<PlayerActionPacket>(
+        new PlayerActionPacket(PlayerActionPacket::DROP_ITEM, 0, 0, 0, 0)));
+    return nullptr;
 }
 
-void MultiplayerLocalPlayer::reallyDrop(std::shared_ptr<ItemEntity> itemEntity)
-{
+void MultiplayerLocalPlayer::reallyDrop(
+    std::shared_ptr<ItemEntity> itemEntity) {}
+
+void MultiplayerLocalPlayer::chat(const std::wstring& message) {
+    connection->send(std::shared_ptr<ChatPacket>(new ChatPacket(message)));
 }
 
-void MultiplayerLocalPlayer::chat(const std::wstring& message)
-{
-	connection->send( std::shared_ptr<ChatPacket>( new ChatPacket(message) ) );
+void MultiplayerLocalPlayer::swing() {
+    LocalPlayer::swing();
+    connection->send(std::shared_ptr<AnimatePacket>(
+        new AnimatePacket(shared_from_this(), AnimatePacket::SWING)));
 }
 
-void MultiplayerLocalPlayer::swing()
-{
-	LocalPlayer::swing();
-	connection->send( std::shared_ptr<AnimatePacket>( new AnimatePacket(shared_from_this(), AnimatePacket::SWING) ) );
-
+void MultiplayerLocalPlayer::respawn() {
+    connection->send(std::shared_ptr<ClientCommandPacket>(
+        new ClientCommandPacket(ClientCommandPacket::PERFORM_RESPAWN)));
 }
 
-void MultiplayerLocalPlayer::respawn()
-{
-	connection->send( std::shared_ptr<ClientCommandPacket>( new ClientCommandPacket(ClientCommandPacket::PERFORM_RESPAWN)));
-}
-
-
-void MultiplayerLocalPlayer::actuallyHurt(DamageSource *source, int dmg)
-{
-	setHealth(getHealth() - dmg);
+void MultiplayerLocalPlayer::actuallyHurt(DamageSource* source, int dmg) {
+    setHealth(getHealth() - dmg);
 }
 
 // 4J Added override to capture event for tutorial messages
-void MultiplayerLocalPlayer::completeUsingItem()
-{
-	Minecraft *pMinecraft = Minecraft::GetInstance();
-	if(useItem != NULL && pMinecraft->localgameModes[m_iPad] != NULL )
-	{
-		TutorialMode *gameMode = (TutorialMode *)pMinecraft->localgameModes[m_iPad];
-		Tutorial *tutorial = gameMode->getTutorial();
-		tutorial->completeUsingItem(useItem);
-	}
-	Player::completeUsingItem();
+void MultiplayerLocalPlayer::completeUsingItem() {
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+    if (useItem != NULL && pMinecraft->localgameModes[m_iPad] != NULL) {
+        TutorialMode* gameMode =
+            (TutorialMode*)pMinecraft->localgameModes[m_iPad];
+        Tutorial* tutorial = gameMode->getTutorial();
+        tutorial->completeUsingItem(useItem);
+    }
+    Player::completeUsingItem();
 }
 
-void MultiplayerLocalPlayer::onEffectAdded(MobEffectInstance *effect)
-{
-	Minecraft *pMinecraft = Minecraft::GetInstance();
-	if(pMinecraft->localgameModes[m_iPad] != NULL )
-	{
-		TutorialMode *gameMode = (TutorialMode *)pMinecraft->localgameModes[m_iPad];
-		Tutorial *tutorial = gameMode->getTutorial();
-		tutorial->onEffectChanged(MobEffect::effects[effect->getId()]);
-	}
-	Player::onEffectAdded(effect);
+void MultiplayerLocalPlayer::onEffectAdded(MobEffectInstance* effect) {
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+        TutorialMode* gameMode =
+            (TutorialMode*)pMinecraft->localgameModes[m_iPad];
+        Tutorial* tutorial = gameMode->getTutorial();
+        tutorial->onEffectChanged(MobEffect::effects[effect->getId()]);
+    }
+    Player::onEffectAdded(effect);
 }
 
-
-void MultiplayerLocalPlayer::onEffectUpdated(MobEffectInstance *effect)
-{
-	Minecraft *pMinecraft = Minecraft::GetInstance();
-	if(pMinecraft->localgameModes[m_iPad] != NULL )
-	{
-		TutorialMode *gameMode = (TutorialMode *)pMinecraft->localgameModes[m_iPad];
-		Tutorial *tutorial = gameMode->getTutorial();
-		tutorial->onEffectChanged(MobEffect::effects[effect->getId()]);
-	}
-	Player::onEffectUpdated(effect);
+void MultiplayerLocalPlayer::onEffectUpdated(MobEffectInstance* effect) {
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+        TutorialMode* gameMode =
+            (TutorialMode*)pMinecraft->localgameModes[m_iPad];
+        Tutorial* tutorial = gameMode->getTutorial();
+        tutorial->onEffectChanged(MobEffect::effects[effect->getId()]);
+    }
+    Player::onEffectUpdated(effect);
 }
 
-
-void MultiplayerLocalPlayer::onEffectRemoved(MobEffectInstance *effect)
-{
-	Minecraft *pMinecraft = Minecraft::GetInstance();
-	if(pMinecraft->localgameModes[m_iPad] != NULL )
-	{
-		TutorialMode *gameMode = (TutorialMode *)pMinecraft->localgameModes[m_iPad];
-		Tutorial *tutorial = gameMode->getTutorial();
-		tutorial->onEffectChanged(MobEffect::effects[effect->getId()],true);
-	}
-	Player::onEffectRemoved(effect);
+void MultiplayerLocalPlayer::onEffectRemoved(MobEffectInstance* effect) {
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+        TutorialMode* gameMode =
+            (TutorialMode*)pMinecraft->localgameModes[m_iPad];
+        Tutorial* tutorial = gameMode->getTutorial();
+        tutorial->onEffectChanged(MobEffect::effects[effect->getId()], true);
+    }
+    Player::onEffectRemoved(effect);
 }
 
-void MultiplayerLocalPlayer::closeContainer()
-{
-    connection->send( std::shared_ptr<ContainerClosePacket>( new ContainerClosePacket(containerMenu->containerId) ) );
+void MultiplayerLocalPlayer::closeContainer() {
+    connection->send(std::shared_ptr<ContainerClosePacket>(
+        new ContainerClosePacket(containerMenu->containerId)));
     inventory->setCarried(nullptr);
     LocalPlayer::closeContainer();
 }
 
-void MultiplayerLocalPlayer::hurtTo(int newHealth, ETelemetryChallenges damageSource)
-{
-	if (flashOnSetHealth)
-	{
-		LocalPlayer::hurtTo(newHealth, damageSource);
-	}
-	else
-	{
-		setHealth(newHealth);
-		flashOnSetHealth = true;
-	}
+void MultiplayerLocalPlayer::hurtTo(int newHealth,
+                                    ETelemetryChallenges damageSource) {
+    if (flashOnSetHealth) {
+        LocalPlayer::hurtTo(newHealth, damageSource);
+    } else {
+        setHealth(newHealth);
+        flashOnSetHealth = true;
+    }
 }
 
-void MultiplayerLocalPlayer::awardStat(Stat *stat, byteArray param)
-{
-    if (stat == NULL)
-	{
-		delete [] param.data;
+void MultiplayerLocalPlayer::awardStat(Stat* stat, byteArray param) {
+    if (stat == NULL) {
+        delete[] param.data;
         return;
     }
 
-    if (stat->awardLocallyOnly)
-	{
-		LocalPlayer::awardStat(stat, param);
-	}
-	else
-	{
-		delete [] param.data;
+    if (stat->awardLocallyOnly) {
+        LocalPlayer::awardStat(stat, param);
+    } else {
+        delete[] param.data;
         return;
     }
 }
 
-void MultiplayerLocalPlayer::awardStatFromServer(Stat *stat, byteArray param)
-{
-	if ( stat != NULL && !stat->awardLocallyOnly )
-	{
-		LocalPlayer::awardStat(stat, param);
-	}
-	else delete [] param.data;
+void MultiplayerLocalPlayer::awardStatFromServer(Stat* stat, byteArray param) {
+    if (stat != NULL && !stat->awardLocallyOnly) {
+        LocalPlayer::awardStat(stat, param);
+    } else
+        delete[] param.data;
 }
 
-void MultiplayerLocalPlayer::onUpdateAbilities()
-{
-	connection->send(std::shared_ptr<PlayerAbilitiesPacket>(new PlayerAbilitiesPacket(&abilities)));
+void MultiplayerLocalPlayer::onUpdateAbilities() {
+    connection->send(std::shared_ptr<PlayerAbilitiesPacket>(
+        new PlayerAbilitiesPacket(&abilities)));
 }
 
-bool MultiplayerLocalPlayer::isLocalPlayer()
-{
-	return true;
+bool MultiplayerLocalPlayer::isLocalPlayer() { return true; }
+
+void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
+    bool wasRiding = riding != NULL;
+    LocalPlayer::ride(e);
+    bool isRiding = riding != NULL;
+
+    if (isRiding) {
+        ETelemetryChallenges eventType = eTelemetryChallenges_Unknown;
+        if (this->riding != NULL) {
+            switch (riding->GetType()) {
+                case eTYPE_BOAT:
+                    eventType = eTelemetryInGame_Ride_Boat;
+                    break;
+                case eTYPE_MINECART:
+                    eventType = eTelemetryInGame_Ride_Minecart;
+                    break;
+                case eTYPE_PIG:
+                    eventType = eTelemetryInGame_Ride_Pig;
+                    break;
+                default:
+                    break;
+            };
+        }
+        TelemetryManager->RecordEnemyKilledOrOvercome(GetXboxPad(), 0, y, 0, 0,
+                                                      0, 0, eventType);
+    }
+
+    updateRichPresence();
+
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+
+    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+        TutorialMode* gameMode =
+            (TutorialMode*)pMinecraft->localgameModes[m_iPad];
+        if (wasRiding && !isRiding) {
+            gameMode->getTutorial()->changeTutorialState(
+                e_Tutorial_State_Gameplay);
+        } else if (!wasRiding && isRiding) {
+            if (std::dynamic_pointer_cast<Minecart>(e) != NULL)
+                gameMode->getTutorial()->changeTutorialState(
+                    e_Tutorial_State_Riding_Minecart);
+            else if (std::dynamic_pointer_cast<Boat>(e) != NULL)
+                gameMode->getTutorial()->changeTutorialState(
+                    e_Tutorial_State_Riding_Boat);
+        }
+    }
 }
 
-void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e)
-{
-	bool wasRiding = riding != NULL;
-	LocalPlayer::ride(e);
-	bool isRiding = riding != NULL;
-
-	if( isRiding )
-	{
-		ETelemetryChallenges eventType = eTelemetryChallenges_Unknown;
-		if( this->riding != NULL )
-		{
-			switch(riding->GetType())
-			{
-			case eTYPE_BOAT:
-				eventType = eTelemetryInGame_Ride_Boat;
-				break;
-			case eTYPE_MINECART:
-				eventType = eTelemetryInGame_Ride_Minecart;
-				break;
-			case eTYPE_PIG:
-				eventType = eTelemetryInGame_Ride_Pig;
-				break;
-			default:
-				break;
-			};
-		}
-		TelemetryManager->RecordEnemyKilledOrOvercome(GetXboxPad(), 0, y, 0, 0, 0, 0, eventType);
-	}
-
-	updateRichPresence();
-
-	Minecraft *pMinecraft = Minecraft::GetInstance();
-	
-	if( pMinecraft->localgameModes[m_iPad] != NULL )
-	{
-		TutorialMode *gameMode = (TutorialMode *)pMinecraft->localgameModes[m_iPad];
-		if(wasRiding && !isRiding)
-		{
-			gameMode->getTutorial()->changeTutorialState(e_Tutorial_State_Gameplay);
-		}
-		else if (!wasRiding && isRiding)
-		{
-			if(std::dynamic_pointer_cast<Minecart>(e) != NULL)
-				gameMode->getTutorial()->changeTutorialState(e_Tutorial_State_Riding_Minecart);
-			else if(std::dynamic_pointer_cast<Boat>(e) != NULL)
-				gameMode->getTutorial()->changeTutorialState(e_Tutorial_State_Riding_Boat);
-		}
-	}
-}
-
-void MultiplayerLocalPlayer::StopSleeping()
-{
-	connection->send( std::shared_ptr<PlayerCommandPacket>( new PlayerCommandPacket(shared_from_this(), PlayerCommandPacket::STOP_SLEEPING) ) );
+void MultiplayerLocalPlayer::StopSleeping() {
+    connection->send(
+        std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+            shared_from_this(), PlayerCommandPacket::STOP_SLEEPING)));
 }
 
 // 4J Added
-void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId)
-{
-	std::uint32_t oldSkinIndex = getCustomSkin();
-	LocalPlayer::setCustomSkin(skinId);
+void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId) {
+    std::uint32_t oldSkinIndex = getCustomSkin();
+    LocalPlayer::setCustomSkin(skinId);
 #ifndef _CONTENT_PACKAGE
-	wprintf(L"Skin for local player %ls has changed to %ls (%d)\n", name.c_str(), customTextureUrl.c_str(), getPlayerDefaultSkin() );
+    wprintf(L"Skin for local player %ls has changed to %ls (%d)\n",
+            name.c_str(), customTextureUrl.c_str(), getPlayerDefaultSkin());
 #endif
-	if(getCustomSkin() != oldSkinIndex) connection->send( std::shared_ptr<TextureAndGeometryChangePacket>( new TextureAndGeometryChangePacket( shared_from_this(), app.GetPlayerSkinName(GetXboxPad()) ) ) );
+    if (getCustomSkin() != oldSkinIndex)
+        connection->send(std::shared_ptr<TextureAndGeometryChangePacket>(
+            new TextureAndGeometryChangePacket(
+                shared_from_this(), app.GetPlayerSkinName(GetXboxPad()))));
 }
 
-void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId)
-{
-	std::uint32_t oldCapeIndex = getCustomCape();
-	LocalPlayer::setCustomCape(capeId);
+void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
+    std::uint32_t oldCapeIndex = getCustomCape();
+    LocalPlayer::setCustomCape(capeId);
 #ifndef _CONTENT_PACKAGE
-	wprintf(L"Cape for local player %ls has changed to %ls\n", name.c_str(), customTextureUrl2.c_str());
+    wprintf(L"Cape for local player %ls has changed to %ls\n", name.c_str(),
+            customTextureUrl2.c_str());
 #endif
-	if(getCustomCape() != oldCapeIndex) connection->send( std::shared_ptr<TextureChangePacket>( new TextureChangePacket( shared_from_this(), TextureChangePacket::e_TextureChange_Cape, app.GetPlayerCapeName(GetXboxPad()) ) ) );
+    if (getCustomCape() != oldCapeIndex)
+        connection->send(
+            std::shared_ptr<TextureChangePacket>(new TextureChangePacket(
+                shared_from_this(), TextureChangePacket::e_TextureChange_Cape,
+                app.GetPlayerCapeName(GetXboxPad()))));
 }

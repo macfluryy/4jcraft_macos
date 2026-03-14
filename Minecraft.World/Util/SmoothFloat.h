@@ -1,13 +1,13 @@
 #pragma once
 
-class SmoothFloat
-{
+class SmoothFloat {
 private:
-	float targetValue;
+    float targetValue;
     float remainingValue;
     float lastAmount;
+
 public:
-	SmoothFloat();	// 4J added
-	float getNewDeltaValue(float deltaValue, float accelerationAmount);
+    SmoothFloat();  // 4J added
+    float getNewDeltaValue(float deltaValue, float accelerationAmount);
     float getTargetValue();
 };

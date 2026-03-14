@@ -2,12 +2,13 @@
 
 #include "HumanoidModel.h"
 
-class EndermanModel : public HumanoidModel
-{
+class EndermanModel : public HumanoidModel {
 public:
-	bool carrying;
-	bool creepy;
+    bool carrying;
+    bool creepy;
 
-	EndermanModel();
-	virtual void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0);
+    EndermanModel();
+    virtual void setupAnim(float time, float r, float bob, float yRot,
+                           float xRot, float scale,
+                           unsigned int uiBitmaskOverrideAnim = 0);
 };

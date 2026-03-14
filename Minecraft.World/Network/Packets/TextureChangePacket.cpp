@@ -5,42 +5,36 @@
 #include "PacketListener.h"
 #include "TextureChangePacket.h"
 
-
-
-TextureChangePacket::TextureChangePacket()
-{
-	id = -1;
-	action = e_TextureChange_Skin;
-	path = L"";
+TextureChangePacket::TextureChangePacket() {
+    id = -1;
+    action = e_TextureChange_Skin;
+    path = L"";
 }
 
-TextureChangePacket::TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action, const std::wstring &path)
-{
-	id = e->entityId;
-	this->action = action;
-	this->path = path;
+TextureChangePacket::TextureChangePacket(std::shared_ptr<Entity> e,
+                                         ETextureChangeType action,
+                                         const std::wstring& path) {
+    id = e->entityId;
+    this->action = action;
+    this->path = path;
 }
 
-void TextureChangePacket::read(DataInputStream *dis) //throws IOException 
+void TextureChangePacket::read(DataInputStream* dis)  // throws IOException
 {
-	id = dis->readInt();
-	action = (ETextureChangeType)dis->readByte();
-	path = dis->readUTF();
+    id = dis->readInt();
+    action = (ETextureChangeType)dis->readByte();
+    path = dis->readUTF();
 }
 
-void TextureChangePacket::write(DataOutputStream *dos) //throws IOException 
+void TextureChangePacket::write(DataOutputStream* dos)  // throws IOException
 {
-	dos->writeInt(id);
-	dos->writeByte(action);
-	dos->writeUTF(path);
+    dos->writeInt(id);
+    dos->writeByte(action);
+    dos->writeUTF(path);
 }
 
-void TextureChangePacket::handle(PacketListener *listener) 
-{
-	listener->handleTextureChange(shared_from_this());
+void TextureChangePacket::handle(PacketListener* listener) {
+    listener->handleTextureChange(shared_from_this());
 }
 
-int TextureChangePacket::getEstimatedSize() 
-{
-	return 5 + (int)path.size();
-}
+int TextureChangePacket::getEstimatedSize() { return 5 + (int)path.size(); }

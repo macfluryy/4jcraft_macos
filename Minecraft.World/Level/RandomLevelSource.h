@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "ChunkSource.h"
 
 class ProgressListener;
@@ -11,8 +10,7 @@ class MineShaftFeature;
 class PerlinNoise;
 class RandomScatteredLargeFeature;
 
-class RandomLevelSource : public ChunkSource
-{
+class RandomLevelSource : public ChunkSource {
 public:
     static const double SNOW_CUTOFF;
     static const double SNOW_SCALE;
@@ -21,72 +19,78 @@ public:
     static const int CHUNK_WIDTH = 4;
 
 private:
-    Random *random;
-	Random *pprandom;	// 4J - added
+    Random* random;
+    Random* pprandom;  // 4J - added
 
-    PerlinNoise *lperlinNoise1;
-    PerlinNoise *lperlinNoise2;
-    PerlinNoise *perlinNoise1;
-    PerlinNoise *perlinNoise3;
+    PerlinNoise* lperlinNoise1;
+    PerlinNoise* lperlinNoise2;
+    PerlinNoise* perlinNoise1;
+    PerlinNoise* perlinNoise3;
 
 public:
-    PerlinNoise *scaleNoise;
-    PerlinNoise *depthNoise;
+    PerlinNoise* scaleNoise;
+    PerlinNoise* depthNoise;
 
 private:
-    PerlinNoise *floatingIslandScale;
-    PerlinNoise *floatingIslandNoise;
+    PerlinNoise* floatingIslandScale;
+    PerlinNoise* floatingIslandNoise;
 
 public:
-    PerlinNoise *forestNoise;
+    PerlinNoise* forestNoise;
 
 private:
-	Level *level;
-	const bool generateStructures;
+    Level* level;
+    const bool generateStructures;
 
-	floatArray pows;
-
-public:
-	RandomLevelSource(Level *level, __int64 seed, bool generateStructures);
-	~RandomLevelSource();
+    floatArray pows;
 
 public:
-	void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    RandomLevelSource(Level* level, __int64 seed, bool generateStructures);
+    ~RandomLevelSource();
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes);
+    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+
+public:
+    void buildSurfaces(int xOffs, int zOffs, byteArray blocks,
+                       BiomeArray biomes);
 
 private:
-	LargeFeature *caveFeature;
-	StrongholdFeature *strongholdFeature;
-	VillageFeature *villageFeature;
-	MineShaftFeature *mineShaftFeature;
-	RandomScatteredLargeFeature *scatteredFeature;
-	LargeFeature *canyonFeature;
-private:
-    virtual LevelChunk *create(int x, int z);
-
-public:
-    virtual LevelChunk *getChunk(int xOffs, int zOffs);
-	virtual void lightChunk(LevelChunk *lc);	// 4J added
+    LargeFeature* caveFeature;
+    StrongholdFeature* strongholdFeature;
+    VillageFeature* villageFeature;
+    MineShaftFeature* mineShaftFeature;
+    RandomScatteredLargeFeature* scatteredFeature;
+    LargeFeature* canyonFeature;
 
 private:
-	doubleArray getHeights(doubleArray buffer, int x, int y, int z, int xSize, int ySize, int zSize, BiomeArray& biomes);
+    virtual LevelChunk* create(int x, int z);
 
 public:
-	virtual bool hasChunk(int x, int y);
+    virtual LevelChunk* getChunk(int xOffs, int zOffs);
+    virtual void lightChunk(LevelChunk* lc);  // 4J added
 
 private:
-	void calcWaterDepths(ChunkSource *parent, int xt, int zt);
+    doubleArray getHeights(doubleArray buffer, int x, int y, int z, int xSize,
+                           int ySize, int zSize, BiomeArray& biomes);
 
 public:
-    virtual void postProcess(ChunkSource *parent, int xt, int zt);
-    virtual bool save(bool force, ProgressListener *progressListener);
+    virtual bool hasChunk(int x, int y);
+
+private:
+    void calcWaterDepths(ChunkSource* parent, int xt, int zt);
+
+public:
+    virtual void postProcess(ChunkSource* parent, int xt, int zt);
+    virtual bool save(bool force, ProgressListener* progressListener);
     virtual bool tick();
     virtual bool shouldSave();
     virtual std::wstring gatherStats();
 
 public:
-	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z); 
+    virtual std::vector<Biome::MobSpawnerData*>* getMobsAt(
+        MobCategory* mobCategory, int x, int y, int z);
+    virtual TilePos* findNearestMapFeature(Level* level,
+                                           const std::wstring& featureName,
+                                           int x, int y, int z);
 };

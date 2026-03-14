@@ -5,51 +5,34 @@
 #include "../../Util/JavaMath.h"
 #include "ThrownExpBottle.h"
 
+ThrownExpBottle::ThrownExpBottle(Level* level) : Throwable(level) {}
 
+ThrownExpBottle::ThrownExpBottle(Level* level, std::shared_ptr<Mob> mob)
+    : Throwable(level, mob) {}
 
-ThrownExpBottle::ThrownExpBottle(Level *level) : Throwable(level)
-{
-}
+ThrownExpBottle::ThrownExpBottle(Level* level, double x, double y, double z)
+    : Throwable(level, x, y, z) {}
 
-ThrownExpBottle::ThrownExpBottle(Level *level, std::shared_ptr<Mob> mob) : Throwable(level,mob)
-{
-}
+float ThrownExpBottle::getGravity() { return 0.07f; }
 
-ThrownExpBottle::ThrownExpBottle(Level *level, double x, double y, double z) : Throwable(level, x, y, z)
-{
-}
+float ThrownExpBottle::getThrowPower() { return 0.7f; }
 
+float ThrownExpBottle::getThrowUpAngleOffset() { return -20; }
 
-float ThrownExpBottle::getGravity()
-{
-	return 0.07f;
-}
+void ThrownExpBottle::onHit(HitResult* res) {
+    if (!level->isClientSide) {
+        level->levelEvent(LevelEvent::PARTICLES_POTION_SPLASH,
+                          (int)Math::round(x), (int)Math::round(y),
+                          (int)Math::round(z), 0);
 
-float ThrownExpBottle::getThrowPower()
-{
-	return 0.7f;
-}
+        int xpCount = 3 + level->random->nextInt(5) + level->random->nextInt(5);
+        while (xpCount > 0) {
+            int newCount = ExperienceOrb::getExperienceValue(xpCount);
+            xpCount -= newCount;
+            level->addEntity(std::shared_ptr<ExperienceOrb>(
+                new ExperienceOrb(level, x, y, z, newCount)));
+        }
 
-float ThrownExpBottle::getThrowUpAngleOffset()
-{
-	return -20;
-}
-
-void ThrownExpBottle::onHit(HitResult *res)
-{
-
-	if (!level->isClientSide)
-	{
-		level->levelEvent(LevelEvent::PARTICLES_POTION_SPLASH, (int) Math::round(x), (int) Math::round(y), (int) Math::round(z), 0);
-
-		int xpCount = 3 + level->random->nextInt(5) + level->random->nextInt(5);
-		while (xpCount > 0)
-		{
-			int newCount = ExperienceOrb::getExperienceValue(xpCount);
-			xpCount -= newCount;
-			level->addEntity(std::shared_ptr<ExperienceOrb>( new ExperienceOrb(level, x, y, z, newCount) ) );
-		}
-
-		remove();
-	}
+        remove();
+    }
 }

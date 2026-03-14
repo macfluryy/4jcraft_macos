@@ -1,30 +1,28 @@
 #pragma once
 
-class FurnaceRecipes 
-{
+class FurnaceRecipes {
+private:
+    static FurnaceRecipes* instance;
+
+public:
+    static void staticCtor();
 
 private:
-	static FurnaceRecipes *instance;
+    // Map<Integer, ItemInstance> recipies = new HashMap<Integer,
+    // ItemInstance>();
+    std::unordered_map<int, ItemInstance*> recipies;
+    std::unordered_map<int, float> recipeValue;
 
 public:
-	static void staticCtor();
-
-private:
-	//Map<Integer, ItemInstance> recipies = new HashMap<Integer, ItemInstance>();
-	std::unordered_map<int, ItemInstance *> recipies;
-	std::unordered_map<int, float> recipeValue;
+    static FurnaceRecipes* getInstance();
 
 public:
-	static FurnaceRecipes *getInstance();
+    FurnaceRecipes();
 
 public:
-	FurnaceRecipes();
-
-public:
-	void addFurnaceRecipy(int itemId, ItemInstance *result, float value);
-	bool isFurnaceItem(int itemId);
-	ItemInstance *getResult(int itemId);
-	std::unordered_map<int, ItemInstance *> *getRecipies();
-	float getRecipeValue(int itemId);
-
+    void addFurnaceRecipy(int itemId, ItemInstance* result, float value);
+    bool isFurnaceItem(int itemId);
+    ItemInstance* getResult(int itemId);
+    std::unordered_map<int, ItemInstance*>* getRecipies();
+    float getRecipeValue(int itemId);
 };

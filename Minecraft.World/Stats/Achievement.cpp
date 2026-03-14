@@ -5,78 +5,84 @@
 #include "../Util/DescFormatter.h"
 #include "Achievement.h"
 
-void Achievement::_init()
-{
-	isGoldenVar = false;
+void Achievement::_init() {
+    isGoldenVar = false;
 
-	if (x < Achievements::xMin) Achievements::xMin = x;
-	if (y < Achievements::yMin) Achievements::yMin = y;
-	if (x > Achievements::xMax) Achievements::xMax = x;
-	if (y > Achievements::yMax) Achievements::yMax = y;
+    if (x < Achievements::xMin) Achievements::xMin = x;
+    if (y < Achievements::yMin) Achievements::yMin = y;
+    if (x > Achievements::xMax) Achievements::xMax = x;
+    if (y > Achievements::yMax) Achievements::yMax = y;
 }
 
-Achievement::Achievement(int id, const std::wstring& name, int x, int y, Item *icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
-{
+Achievement::Achievement(int id, const std::wstring& name, int x, int y,
+                         Item* icon, Achievement* requires)
+    : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
+           I18n::get(std::wstring(L"achievement.").append(name))),
+      desc(I18n::get(
+          std::wstring(L"achievement.").append(name).append(L".desc"))),
+      icon(new ItemInstance(icon)),
+      x(x),
+      y(y),
+      requires(requires) {}
+
+      Achievement::Achievement(int id, const std::wstring& name, int x, int y,
+                               Tile* icon, Achievement* requires)
+    : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
+           I18n::get(std::wstring(L"achievement.").append(name))),
+      desc(I18n::get(
+          std::wstring(L"achievement.").append(name).append(L".desc"))),
+      icon(new ItemInstance(icon)),
+      x(x),
+      y(y),
+      requires(requires) {}
+
+      Achievement::Achievement(int id, const std::wstring& name, int x, int y,
+                               std::shared_ptr<ItemInstance> icon,
+                               Achievement* requires)
+    : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
+           I18n::get(std::wstring(L"achievement.").append(name))),
+      desc(I18n::get(
+          std::wstring(L"achievement.").append(name).append(L".desc"))),
+      icon(icon),
+      x(x),
+      y(y),
+      requires(requires) {}
+
+          Achievement
+          * Achievement::setAwardLocallyOnly() {
+    awardLocallyOnly = true;
+    return this;
 }
 
-Achievement::Achievement(int id, const std::wstring& name, int x, int y, Tile *icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon( new ItemInstance(icon) ), x(x), y(y), requires(requires)
-{
+Achievement* Achievement::setGolden() {
+    isGoldenVar = true;
+    return this;
 }
 
-Achievement::Achievement(int id, const std::wstring& name, int x, int y, std::shared_ptr<ItemInstance> icon, Achievement *requires)
-	: Stat( Achievements::ACHIEVEMENT_OFFSET + id, I18n::get(std::wstring(L"achievement.").append(name)) ), desc( I18n::get(std::wstring(L"achievement.").append(name).append(L".desc"))), icon(icon), x(x), y(y), requires(requires)
-{
+Achievement* Achievement::postConstruct() {
+    Stat::postConstruct();
+
+    Achievements::achievements->push_back(this);
+
+    return this;
 }
 
-Achievement *Achievement::setAwardLocallyOnly()
-{
-	awardLocallyOnly = true;
-	return this;
+bool Achievement::isAchievement() { return true; }
+
+std::wstring Achievement::getDescription() {
+    if (descFormatter != NULL) {
+        return descFormatter->format(desc);
+    }
+    return desc;
 }
 
-Achievement *Achievement::setGolden() 
-{
-	isGoldenVar = true;
-	return this;
+Achievement* Achievement::setDescFormatter(DescFormatter* descFormatter) {
+    this->descFormatter = descFormatter;
+    return this;
 }
 
-Achievement *Achievement::postConstruct()
-{
-	Stat::postConstruct();
+bool Achievement::isGolden() { return isGoldenVar; }
 
-	Achievements::achievements->push_back(this);
-
-	return this;
-}
-
-bool Achievement::isAchievement() 
-{
-	return true;
-}
-
-std::wstring Achievement::getDescription() 
-{
-	if (descFormatter != NULL) 
-	{
-		return descFormatter->format(desc);
-	}
-	return desc;
-}
-
-Achievement *Achievement::setDescFormatter(DescFormatter *descFormatter)
-{
-	this->descFormatter = descFormatter;
-	return this;
-}
-
-bool Achievement::isGolden()
-{
-	return isGoldenVar;
-}
-
-int Achievement::getAchievementID()
-{
-	return id - Achievements::ACHIEVEMENT_OFFSET;
+int Achievement::getAchievementID() {
+    return id - Achievements::ACHIEVEMENT_OFFSET;
 }

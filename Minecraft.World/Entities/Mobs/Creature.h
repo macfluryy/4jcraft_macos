@@ -3,8 +3,7 @@
 
 class Level;
 
-class Creature
-{
+class Creature {
 public:
-	Creature() {}
+    Creature() {}
 };

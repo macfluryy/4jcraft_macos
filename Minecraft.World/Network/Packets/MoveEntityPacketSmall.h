@@ -1,79 +1,81 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class MoveEntityPacketSmall : public Packet, public std::enable_shared_from_this<MoveEntityPacketSmall>
-{
-
-	// 4J JEV, static inner/sub classes
+class MoveEntityPacketSmall
+    : public Packet,
+      public std::enable_shared_from_this<MoveEntityPacketSmall> {
+    // 4J JEV, static inner/sub classes
 public:
-	class PosRot;
-	class Pos;
-	class Rot;
+    class PosRot;
+    class Pos;
+    class Rot;
 
-	int id;
+    int id;
     char xa, ya, za, yRot, xRot;
-	bool hasRot;
+    bool hasRot;
 
-	MoveEntityPacketSmall();
-	MoveEntityPacketSmall(int id);
+    MoveEntityPacketSmall();
+    MoveEntityPacketSmall(int id);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
-	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
+    virtual bool canBeInvalidated();
+    virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall()); }
-	virtual int getId() { return 162; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacketSmall());
+    }
+    virtual int getId() { return 162; }
 };
 
-class MoveEntityPacketSmall::PosRot : public MoveEntityPacketSmall
-{
+class MoveEntityPacketSmall::PosRot : public MoveEntityPacketSmall {
 public:
-	PosRot();
-	PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
+    PosRot();
+    PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::PosRot()); }
-	virtual int getId() { return 165; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacketSmall::PosRot());
+    }
+    virtual int getId() { return 165; }
 };
 
-class MoveEntityPacketSmall::Pos : public MoveEntityPacketSmall
-{
+class MoveEntityPacketSmall::Pos : public MoveEntityPacketSmall {
 public:
-	Pos();
-	Pos(int id, char xa, char ya, char za);
+    Pos();
+    Pos(int id, char xa, char ya, char za);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Pos()); }
-	virtual int getId() { return 163; }
-
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Pos());
+    }
+    virtual int getId() { return 163; }
 };
 
-class MoveEntityPacketSmall::Rot : public MoveEntityPacketSmall
-{
+class MoveEntityPacketSmall::Rot : public MoveEntityPacketSmall {
 public:
-	Rot();
-	Rot(int id, char yRot, char xRot);
+    Rot();
+    Rot(int id, char yRot, char xRot);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Rot()); }
-	virtual int getId() { return 164; }
-
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacketSmall::Rot());
+    }
+    virtual int getId() { return 164; }
 };

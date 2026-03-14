@@ -4,23 +4,22 @@
 #include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 
-TheEndBiome::TheEndBiome(int id) : Biome(id)
-{
+TheEndBiome::TheEndBiome(int id) : Biome(id) {
     enemies.clear();
     friendlies.clear();
-	friendlies_chicken.clear();	// 4J added
-	friendlies_wolf.clear(); 	// 4J added
+    friendlies_chicken.clear();  // 4J added
+    friendlies_wolf.clear();     // 4J added
     waterFriendlies.clear();
 
     enemies.push_back(new MobSpawnerData(eTYPE_ENDERMAN, 10, 4, 4));
-    topMaterial = (uint8_t) Tile::dirt_Id;
-    this->material = (uint8_t) Tile::dirt_Id;
+    topMaterial = (uint8_t)Tile::dirt_Id;
+    this->material = (uint8_t)Tile::dirt_Id;
 
     decorator = new TheEndBiomeDecorator(this);
 }
 
 // 4J Stu - Don't need override
-//int TheEndBiome::getSkyColor(float temp)
+// int TheEndBiome::getSkyColor(float temp)
 //{
 //	return 0x000000;
 //}

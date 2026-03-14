@@ -2,14 +2,13 @@
 #include "DiggerItem.h"
 
 #define SHOVEL_DIGGABLES 10
-class ShovelItem : public DiggerItem
-{
+class ShovelItem : public DiggerItem {
 private:
-	static TileArray *diggables;
+    static TileArray* diggables;
 
 public:
-	static void staticCtor();
-	ShovelItem(int id, const Tier *tier);
+    static void staticCtor();
+    ShovelItem(int id, const Tier* tier);
 
-	bool canDestroySpecial(Tile *tile);
+    bool canDestroySpecial(Tile* tile);
 };

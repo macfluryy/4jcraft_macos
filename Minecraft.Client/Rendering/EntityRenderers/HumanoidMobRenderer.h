@@ -3,20 +3,22 @@
 class HumanoidModel;
 class Giant;
 
-class HumanoidMobRenderer : public MobRenderer
-{
+class HumanoidMobRenderer : public MobRenderer {
 protected:
-	HumanoidModel *humanoidModel;
-	float _scale;	
-	HumanoidModel *armorParts1;
-	HumanoidModel *armorParts2;
+    HumanoidModel* humanoidModel;
+    float _scale;
+    HumanoidModel* armorParts1;
+    HumanoidModel* armorParts2;
 
-	void _init(HumanoidModel *humanoidModel, float scale);
+    void _init(HumanoidModel* humanoidModel, float scale);
+
 public:
-	HumanoidMobRenderer(HumanoidModel *humanoidModel, float shadow);
-	HumanoidMobRenderer(HumanoidModel *humanoidModel, float shadow, float scale);
+    HumanoidMobRenderer(HumanoidModel* humanoidModel, float shadow);
+    HumanoidMobRenderer(HumanoidModel* humanoidModel, float shadow,
+                        float scale);
+
 protected:
-	virtual void createArmorParts();
-	virtual void additionalRendering(std::shared_ptr<Mob> mob, float a);
-	void scale(std::shared_ptr<Mob> mob, float a);
+    virtual void createArmorParts();
+    virtual void additionalRendering(std::shared_ptr<Mob> mob, float a);
+    void scale(std::shared_ptr<Mob> mob, float a);
 };

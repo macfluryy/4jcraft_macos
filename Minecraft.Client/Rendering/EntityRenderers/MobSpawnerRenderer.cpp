@@ -5,21 +5,25 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.h"
 
-void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled)
-{
-	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<MobSpawnerTileEntity> spawner = std::dynamic_pointer_cast<MobSpawnerTileEntity>(_spawner);
+void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x,
+                                double y, double z, float a, bool setColor,
+                                float alpha, bool useCompiled) {
+    // 4J - dynamic cast required because we aren't using templates/generics in
+    // our version
+    std::shared_ptr<MobSpawnerTileEntity> spawner =
+        std::dynamic_pointer_cast<MobSpawnerTileEntity>(_spawner);
 
-	glPushMatrix();
-    glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
+    glPushMatrix();
+    glTranslatef((float)x + 0.5f, (float)y, (float)z + 0.5f);
 
     std::shared_ptr<Entity> e = spawner->getDisplayEntity();
-    if (e != NULL)
-	{
+    if (e != NULL) {
         e->setLevel(spawner->level);
         float s = 7 / 16.0f;
         glTranslatef(0, 0.4f, 0);
-        glRotatef((float) (spawner->oSpin + (spawner->spin - spawner->oSpin) * a) * 10, 0, 1, 0);
+        glRotatef(
+            (float)(spawner->oSpin + (spawner->spin - spawner->oSpin) * a) * 10,
+            0, 1, 0);
         glRotatef(-30, 1, 0, 0);
         glTranslatef(0, -0.4f, 0);
         glScalef(s, s, s);

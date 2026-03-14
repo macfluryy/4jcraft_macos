@@ -10,7 +10,7 @@ class ChestTileEntity;
 class TilePos;
 
 /**
- * 
+ *
  * A structure piece is a construction or room, located somewhere in the world
  * with a given orientatino (out of Direction.java). Structure pieces have a
  * bounding box that says where the piece is located and its bounds, and the
@@ -37,59 +37,67 @@ class TilePos;
  * box. Failing to check this will cause the level generator to create new
  * chunks, leading to infinite loops and other errors.
  */
-class StructurePiece
-{
+class StructurePiece {
 public:
-    class BlockSelector
-	{
-
-	protected:
-		int nextId;
+    class BlockSelector {
+    protected:
+        int nextId;
         int nextData;
 
-	public:
-		virtual void next(Random *random, int worldX, int worldY, int worldZ, bool isEdge) {}
+    public:
+        virtual void next(Random* random, int worldX, int worldY, int worldZ,
+                          bool isEdge) {}
 
-		virtual int getNextId() { return nextId; }
-		virtual int getNextData() { return nextData; }
+        virtual int getNextId() { return nextId; }
+        virtual int getNextData() { return nextData; }
     };
 
-public:		// 4J is protected in java, but accessed from VillagePieces, not sure how
-	BoundingBox *boundingBox;
+public
+    :  // 4J is protected in java, but accessed from VillagePieces, not sure how
+    BoundingBox* boundingBox;
+
 protected:
-	int orientation;
-	int genDepth;
+    int orientation;
+    int genDepth;
 
     StructurePiece(int genDepth);
+
 public:
-	virtual ~StructurePiece();
+    virtual ~StructurePiece();
 
-	virtual void addChildren(StructurePiece *startPiece, std::list<StructurePiece *> *pieces, Random *random);
-	virtual bool postProcess(Level *level, Random *random, BoundingBox *chunkBB) = 0;
+    virtual void addChildren(StructurePiece* startPiece,
+                             std::list<StructurePiece*>* pieces,
+                             Random* random);
+    virtual bool postProcess(Level* level, Random* random,
+                             BoundingBox* chunkBB) = 0;
 
-    virtual BoundingBox *getBoundingBox();
+    virtual BoundingBox* getBoundingBox();
 
     int getGenDepth();
 
 public:
-	bool isInChunk(ChunkPos *pos);
-    static StructurePiece *findCollisionPiece(std::list<StructurePiece *> *pieces, BoundingBox *box);
-	virtual TilePos *getLocatorPosition();
+    bool isInChunk(ChunkPos* pos);
+    static StructurePiece* findCollisionPiece(
+        std::list<StructurePiece*>* pieces, BoundingBox* box);
+    virtual TilePos* getLocatorPosition();
+
 protected:
-	bool edgesLiquid(Level *level, BoundingBox *chunkBB);
+    bool edgesLiquid(Level* level, BoundingBox* chunkBB);
+
 public:
-	// 4J Stu - Made these public to use in game rules
-	int getWorldX(int x, int z);
-	int getWorldY(int y);
-	int getWorldZ(int x, int z);
-	int getOrientationData(int tile, int data);
-	virtual void placeBlock(Level *level, int block, int data, int x, int y, int z, BoundingBox *chunkBB);
+    // 4J Stu - Made these public to use in game rules
+    int getWorldX(int x, int z);
+    int getWorldY(int y);
+    int getWorldZ(int x, int z);
+    int getOrientationData(int tile, int data);
+    virtual void placeBlock(Level* level, int block, int data, int x, int y,
+                            int z, BoundingBox* chunkBB);
 
     /**
      * The purpose of this method is to wrap the getTile call on Level, in order
      * to prevent the level from generating chunks that shouldn't be loaded yet.
      * Returns 0 if the call is out of bounds.
-     * 
+     *
      * @param level
      * @param x
      * @param y
@@ -97,21 +105,49 @@ public:
      * @param chunkPosition
      * @return
      */
-    virtual int getBlock(Level *level, int x, int y, int z, BoundingBox *chunkBB);
-	virtual void generateAirBox(Level *level, BoundingBox *chunkBB, int x0, int y0, int z0, int x1, int y1, int z1);
-    virtual void generateBox(Level *level, BoundingBox *chunkBB, int x0, int y0, int z0, int x1, int y1, int z1, int edgeTile, int fillTile, bool skipAir);
-	virtual void generateBox(Level *level, BoundingBox *chunkBB, int x0, int y0, int z0, int x1, int y1, int z1, int edgeTile, int edgeData, int fillTile, int fillData, bool skipAir);
-    virtual void generateBox(Level *level, BoundingBox *chunkBB, BoundingBox *boxBB, int edgeTile, int fillTile, bool skipAir);
-    virtual void generateBox(Level *level, BoundingBox *chunkBB, int x0, int y0, int z0, int x1, int y1, int z1, bool skipAir, Random *random, BlockSelector *selector);
-    virtual void generateBox(Level *level, BoundingBox *chunkBB, BoundingBox *boxBB, bool skipAir, Random *random, BlockSelector *selector);
-    virtual void generateMaybeBox(Level *level, BoundingBox *chunkBB, Random *random, float probability, int x0, int y0, int z0, int x1, int y1, int z1, int edgeTile, int fillTile, bool skipAir);
-    virtual void maybeGenerateBlock(Level *level, BoundingBox *chunkBB, Random *random, float probability, int x, int y, int z, int tile, int data);
-    virtual void generateUpperHalfSphere(Level *level, BoundingBox *chunkBB, int x0, int y0, int z0, int x1, int y1, int z1, int fillTile, bool skipAir);
-    virtual void generateAirColumnUp(Level *level, int x, int startY, int z, BoundingBox *chunkBB);
-    virtual void fillColumnDown(Level *level, int tile, int tileData, int x, int startY, int z, BoundingBox *chunkBB);
-    virtual bool createChest(Level *level, BoundingBox *chunkBB, Random *random, int x, int y, int z, WeighedTreasureArray treasure, int numRolls);
-	virtual bool createDispenser(Level *level, BoundingBox *chunkBB, Random *random, int x, int y, int z, int facing, WeighedTreasureArray items, int numRolls);
+    virtual int getBlock(Level* level, int x, int y, int z,
+                         BoundingBox* chunkBB);
+    virtual void generateAirBox(Level* level, BoundingBox* chunkBB, int x0,
+                                int y0, int z0, int x1, int y1, int z1);
+    virtual void generateBox(Level* level, BoundingBox* chunkBB, int x0, int y0,
+                             int z0, int x1, int y1, int z1, int edgeTile,
+                             int fillTile, bool skipAir);
+    virtual void generateBox(Level* level, BoundingBox* chunkBB, int x0, int y0,
+                             int z0, int x1, int y1, int z1, int edgeTile,
+                             int edgeData, int fillTile, int fillData,
+                             bool skipAir);
+    virtual void generateBox(Level* level, BoundingBox* chunkBB,
+                             BoundingBox* boxBB, int edgeTile, int fillTile,
+                             bool skipAir);
+    virtual void generateBox(Level* level, BoundingBox* chunkBB, int x0, int y0,
+                             int z0, int x1, int y1, int z1, bool skipAir,
+                             Random* random, BlockSelector* selector);
+    virtual void generateBox(Level* level, BoundingBox* chunkBB,
+                             BoundingBox* boxBB, bool skipAir, Random* random,
+                             BlockSelector* selector);
+    virtual void generateMaybeBox(Level* level, BoundingBox* chunkBB,
+                                  Random* random, float probability, int x0,
+                                  int y0, int z0, int x1, int y1, int z1,
+                                  int edgeTile, int fillTile, bool skipAir);
+    virtual void maybeGenerateBlock(Level* level, BoundingBox* chunkBB,
+                                    Random* random, float probability, int x,
+                                    int y, int z, int tile, int data);
+    virtual void generateUpperHalfSphere(Level* level, BoundingBox* chunkBB,
+                                         int x0, int y0, int z0, int x1, int y1,
+                                         int z1, int fillTile, bool skipAir);
+    virtual void generateAirColumnUp(Level* level, int x, int startY, int z,
+                                     BoundingBox* chunkBB);
+    virtual void fillColumnDown(Level* level, int tile, int tileData, int x,
+                                int startY, int z, BoundingBox* chunkBB);
+    virtual bool createChest(Level* level, BoundingBox* chunkBB, Random* random,
+                             int x, int y, int z, WeighedTreasureArray treasure,
+                             int numRolls);
+    virtual bool createDispenser(Level* level, BoundingBox* chunkBB,
+                                 Random* random, int x, int y, int z,
+                                 int facing, WeighedTreasureArray items,
+                                 int numRolls);
 
 protected:
-	void createDoor(Level *level, BoundingBox *chunkBB, Random *random, int x, int y, int z, int orientation);
+    void createDoor(Level* level, BoundingBox* chunkBB, Random* random, int x,
+                    int y, int z, int orientation);
 };

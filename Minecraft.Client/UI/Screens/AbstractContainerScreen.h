@@ -5,33 +5,37 @@ class AbstractContainerMenu;
 class Slot;
 class Container;
 
-class AbstractContainerScreen : public Screen
-{
+class AbstractContainerScreen : public Screen {
 private:
-	static ItemRenderer *itemRenderer;
-protected:
-	int imageWidth;
-    int imageHeight;
-	//int leftPos, topPos;
-public:
-	AbstractContainerMenu *menu;
+    static ItemRenderer* itemRenderer;
 
-    AbstractContainerScreen(AbstractContainerMenu *menu);
+protected:
+    int imageWidth;
+    int imageHeight;
+    // int leftPos, topPos;
+public:
+    AbstractContainerMenu* menu;
+
+    AbstractContainerScreen(AbstractContainerMenu* menu);
     virtual void init();
     virtual void render(int xm, int ym, float a);
+
 protected:
-	virtual void renderLabels();
+    virtual void renderLabels();
     virtual void renderBg(float a) = 0;
+
 private:
-	virtual void renderSlot(Slot *slot);
-    virtual Slot *findSlot(int x, int y);
-    virtual bool isHovering(Slot *slot, int xm, int ym);
+    virtual void renderSlot(Slot* slot);
+    virtual Slot* findSlot(int x, int y);
+    virtual bool isHovering(Slot* slot, int xm, int ym);
+
 protected:
-	virtual void mouseClicked(int x, int y, int buttonNum);
+    virtual void mouseClicked(int x, int y, int buttonNum);
     virtual void mouseReleased(int x, int y, int buttonNum);
     virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+
 public:
-	virtual void removed();
+    virtual void removed();
     virtual void slotsChanged(std::shared_ptr<Container> container);
     virtual bool isPauseScreen();
     virtual void tick();

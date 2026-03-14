@@ -2,9 +2,10 @@
 
 #include "LookAtPlayerGoal.h"
 
-class InteractGoal : public LookAtPlayerGoal
-{
+class InteractGoal : public LookAtPlayerGoal {
 public:
-	InteractGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance);
-	InteractGoal(Mob *mob, const std::type_info& lookAtType, float lookDistance, float probability);
+    InteractGoal(Mob* mob, const std::type_info& lookAtType,
+                 float lookDistance);
+    InteractGoal(Mob* mob, const std::type_info& lookAtType, float lookDistance,
+                 float probability);
 };

@@ -2,21 +2,23 @@
 #include "../Screen.h"
 class Options;
 
+class VideoSettingsScreen : public Screen {
+private:
+    Screen* lastScreen;
 
-class VideoSettingsScreen : public Screen
-{
-private:
-	Screen *lastScreen;
 protected:
-	std::wstring title;
+    std::wstring title;
+
 private:
-	Options *options;
+    Options* options;
 
 public:
-	VideoSettingsScreen(Screen *lastScreen, Options *options);
+    VideoSettingsScreen(Screen* lastScreen, Options* options);
     virtual void init();
+
 protected:
-	virtual void buttonClicked(Button *button);
+    virtual void buttonClicked(Button* button);
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a);
 };

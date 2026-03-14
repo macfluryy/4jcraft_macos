@@ -7,68 +7,80 @@ class ClientConnection;
 class Minecraft;
 class Level;
 
-class MultiplayerLocalPlayer : public LocalPlayer
-{
+class MultiplayerLocalPlayer : public LocalPlayer {
 private:
-	static const int POSITION_REMINDER_INTERVAL = SharedConstants::TICKS_PER_SECOND;
+    static const int POSITION_REMINDER_INTERVAL =
+        SharedConstants::TICKS_PER_SECOND;
+
 public:
-	ClientConnection *connection;
+    ClientConnection* connection;
+
 private:
     bool flashOnSetHealth;
+
 public:
-	MultiplayerLocalPlayer(Minecraft *minecraft, Level *level, User *user, ClientConnection *connection);
+    MultiplayerLocalPlayer(Minecraft* minecraft, Level* level, User* user,
+                           ClientConnection* connection);
+
 private:
-	double xLast, yLast1, yLast2, zLast;
+    double xLast, yLast1, yLast2, zLast;
     float yRotLast, xRotLast;
+
 public:
-	virtual bool hurt(DamageSource *source, int dmg);
+    virtual bool hurt(DamageSource* source, int dmg);
     virtual void heal(int heal);
     virtual void tick();
-private:
-	bool lastOnGround;
-    bool lastSneaked;
-	bool lastIdle;
-	bool lastSprinting;
-    int positionReminder;
-public:
-	void sendPosition();
 
-	using Player::drop;
-    virtual std::shared_ptr<ItemEntity> drop();
-protected:
-	virtual void reallyDrop(std::shared_ptr<ItemEntity> itemEntity);
+private:
+    bool lastOnGround;
+    bool lastSneaked;
+    bool lastIdle;
+    bool lastSprinting;
+    int positionReminder;
+
 public:
-	virtual void chat(const std::wstring& message);
+    void sendPosition();
+
+    using Player::drop;
+    virtual std::shared_ptr<ItemEntity> drop();
+
+protected:
+    virtual void reallyDrop(std::shared_ptr<ItemEntity> itemEntity);
+
+public:
+    virtual void chat(const std::wstring& message);
     virtual void swing();
     virtual void respawn();
+
 protected:
-	virtual void actuallyHurt(DamageSource *source, int dmg);
+    virtual void actuallyHurt(DamageSource* source, int dmg);
 
-	// 4J Added override to capture event for tutorial messages
-	virtual void completeUsingItem();
+    // 4J Added override to capture event for tutorial messages
+    virtual void completeUsingItem();
 
-	// 4J Added overrides to capture events for tutorial
-	virtual void onEffectAdded(MobEffectInstance *effect);
-	virtual void onEffectUpdated(MobEffectInstance *effect);
-	virtual void onEffectRemoved(MobEffectInstance *effect);
+    // 4J Added overrides to capture events for tutorial
+    virtual void onEffectAdded(MobEffectInstance* effect);
+    virtual void onEffectUpdated(MobEffectInstance* effect);
+    virtual void onEffectRemoved(MobEffectInstance* effect);
+
 public:
-	virtual void closeContainer();
+    virtual void closeContainer();
     virtual void hurtTo(int newHealth, ETelemetryChallenges damageSource);
-    virtual void awardStat(Stat *stat, byteArray param);
-    void awardStatFromServer(Stat *stat, byteArray param);
-	void onUpdateAbilities();
-	bool isLocalPlayer();
+    virtual void awardStat(Stat* stat, byteArray param);
+    void awardStatFromServer(Stat* stat, byteArray param);
+    void onUpdateAbilities();
+    bool isLocalPlayer();
 
-	// 4J - send the custom skin texture data if there is one
-	//void CustomSkin(PBYTE pbData, DWORD dwBytes);
+    // 4J - send the custom skin texture data if there is one
+    // void CustomSkin(PBYTE pbData, DWORD dwBytes);
 
-	// 4J Overriding this so we can flag an event for the tutorial
-	virtual void ride(std::shared_ptr<Entity> e);
+    // 4J Overriding this so we can flag an event for the tutorial
+    virtual void ride(std::shared_ptr<Entity> e);
 
-	// 4J - added for the Stop Sleeping
-	virtual void StopSleeping();
+    // 4J - added for the Stop Sleeping
+    virtual void StopSleeping();
 
-	// 4J Added
-	virtual void setAndBroadcastCustomSkin(std::uint32_t skinId);
-	virtual void setAndBroadcastCustomCape(std::uint32_t capeId);
+    // 4J Added
+    virtual void setAndBroadcastCustomSkin(std::uint32_t skinId);
+    virtual void setAndBroadcastCustomCape(std::uint32_t capeId);
 };

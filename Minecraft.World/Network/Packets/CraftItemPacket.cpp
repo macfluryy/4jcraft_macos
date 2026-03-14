@@ -5,42 +5,32 @@
 #include "PacketListener.h"
 #include "CraftItemPacket.h"
 
+CraftItemPacket::~CraftItemPacket() {}
 
-
-CraftItemPacket::~CraftItemPacket()
-{
+CraftItemPacket::CraftItemPacket() {
+    recipe = -1;
+    uid = 0;
 }
 
-CraftItemPacket::CraftItemPacket()
-{
-	recipe = -1;
-	uid = 0;
+CraftItemPacket::CraftItemPacket(int recipe, short uid) {
+    this->recipe = recipe;
+    this->uid = uid;
 }
 
-CraftItemPacket::CraftItemPacket(int recipe, short uid)
-{
-	this->recipe = recipe;
-	this->uid = uid;
+void CraftItemPacket::handle(PacketListener* listener) {
+    listener->handleCraftItem(shared_from_this());
 }
 
-void CraftItemPacket::handle(PacketListener *listener)
+void CraftItemPacket::read(DataInputStream* dis)  // throws IOException
 {
-	listener->handleCraftItem(shared_from_this());
+    uid = dis->readShort();
+    recipe = dis->readInt();
 }
 
-void CraftItemPacket::read(DataInputStream *dis) //throws IOException
+void CraftItemPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	uid = dis->readShort();
-	recipe = dis->readInt();
+    dos->writeShort(uid);
+    dos->writeInt(recipe);
 }
 
-void CraftItemPacket::write(DataOutputStream *dos) // throws IOException
-{
-	dos->writeShort(uid);
-	dos->writeInt(recipe);
-}
-
-int CraftItemPacket::getEstimatedSize() 
-{
-	return 2 + 4;
-}
+int CraftItemPacket::getEstimatedSize() { return 2 + 4; }

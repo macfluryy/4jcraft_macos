@@ -3,62 +3,47 @@
 #include "../Headers/net.minecraft.world.inventory.h"
 #include "ClientSideMerchant.h"
 
-ClientSideMerchant::ClientSideMerchant(std::shared_ptr<Player> source, int name)
-{
-	this->source = source;
-	// 4J Stu - Need to do this after creating as a std::shared_ptr
-	container = NULL; //new MerchantContainer(source, this);
-	currentOffers = NULL;
-	m_name = name;
+ClientSideMerchant::ClientSideMerchant(std::shared_ptr<Player> source,
+                                       int name) {
+    this->source = source;
+    // 4J Stu - Need to do this after creating as a std::shared_ptr
+    container = NULL;  // new MerchantContainer(source, this);
+    currentOffers = NULL;
+    m_name = name;
 }
 
-ClientSideMerchant::~ClientSideMerchant()
-{
-	delete container;
-	delete currentOffers;
+ClientSideMerchant::~ClientSideMerchant() {
+    delete container;
+    delete currentOffers;
 }
 
-void ClientSideMerchant::createContainer()
-{
-	container = new MerchantContainer(source, shared_from_this());
+void ClientSideMerchant::createContainer() {
+    container = new MerchantContainer(source, shared_from_this());
 }
 
-Container *ClientSideMerchant::getContainer()
-{
-	return container;
+Container* ClientSideMerchant::getContainer() { return container; }
+
+std::shared_ptr<Player> ClientSideMerchant::getTradingPlayer() {
+    return source;
 }
 
-std::shared_ptr<Player> ClientSideMerchant::getTradingPlayer()
-{
-	return source;
+void ClientSideMerchant::setTradingPlayer(std::shared_ptr<Player> player) {}
+
+MerchantRecipeList* ClientSideMerchant::getOffers(
+    std::shared_ptr<Player> forPlayer) {
+    return currentOffers;
 }
 
-void ClientSideMerchant::setTradingPlayer(std::shared_ptr<Player> player)
-{
-
+void ClientSideMerchant::overrideOffers(MerchantRecipeList* recipeList) {
+    delete currentOffers;
+    currentOffers = recipeList;
 }
 
-MerchantRecipeList *ClientSideMerchant::getOffers(std::shared_ptr<Player> forPlayer)
-{
-	return currentOffers;
+void ClientSideMerchant::notifyTrade(MerchantRecipe* activeRecipe) {
+    activeRecipe->increaseUses();
 }
 
-void ClientSideMerchant::overrideOffers(MerchantRecipeList *recipeList)
-{
-	delete currentOffers;
-	currentOffers = recipeList;
-}
+void ClientSideMerchant::notifyTradeUpdated(
+    std::shared_ptr<ItemInstance> item) {}
 
-void ClientSideMerchant::notifyTrade(MerchantRecipe *activeRecipe)
-{
-	activeRecipe->increaseUses();
-}
-
-void ClientSideMerchant::notifyTradeUpdated(std::shared_ptr<ItemInstance> item)
-{
-}
-
-int ClientSideMerchant::getDisplayName()
-{
-	return m_name;
-}
+int ClientSideMerchant::getDisplayName() { return m_name; }

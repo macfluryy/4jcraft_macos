@@ -4,73 +4,73 @@
 
 class TemptGoal;
 
-class Ozelot : public TamableAnimal
-{
+class Ozelot : public TamableAnimal {
 public:
-	eINSTANCEOF GetType() { return eTYPE_OZELOT; }
-	static Entity *create(Level *level) { return new Ozelot(level); }
+    eINSTANCEOF GetType() { return eTYPE_OZELOT; }
+    static Entity* create(Level* level) { return new Ozelot(level); }
 
 public:
-	static const float SNEAK_SPEED;
-	static const float WALK_SPEED;
-	static const float FOLLOW_SPEED;
-	static const float SPRINT_SPEED;
+    static const float SNEAK_SPEED;
+    static const float WALK_SPEED;
+    static const float FOLLOW_SPEED;
+    static const float SPRINT_SPEED;
 
 private:
-	static const int DATA_TYPE_ID;
+    static const int DATA_TYPE_ID;
 
-	static const int TYPE_OZELOT;
-	static const int TYPE_BLACK;
-	static const int TYPE_RED;
-	static const int TYPE_SIAMESE;
+    static const int TYPE_OZELOT;
+    static const int TYPE_BLACK;
+    static const int TYPE_RED;
+    static const int TYPE_SIAMESE;
 
-	TemptGoal *temptGoal;
+    TemptGoal* temptGoal;
 
 public:
-	Ozelot(Level *level);
+    Ozelot(Level* level);
 
 protected:
-	virtual void defineSynchedData();
+    virtual void defineSynchedData();
 
 public:
-	virtual void serverAiMobStep();
+    virtual void serverAiMobStep();
 
 protected:
-	virtual bool removeWhenFarAway();
+    virtual bool removeWhenFarAway();
 
 public:
-	virtual int getTexture();
-	virtual bool useNewAi();
-	virtual int getMaxHealth();
+    virtual int getTexture();
+    virtual bool useNewAi();
+    virtual int getMaxHealth();
 
 protected:
-	virtual void causeFallDamage(float distance);
+    virtual void causeFallDamage(float distance);
 
 public:
-	virtual void addAdditonalSaveData(CompoundTag *tag);
-	virtual void readAdditionalSaveData(CompoundTag *tag);
+    virtual void addAdditonalSaveData(CompoundTag* tag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
-	virtual int getAmbientSound();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
-	virtual float getSoundVolume();
-	virtual int getDeathLoot();
+    virtual int getAmbientSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
+    virtual float getSoundVolume();
+    virtual int getDeathLoot();
 
 public:
-	virtual bool doHurtTarget(std::shared_ptr<Entity> target);
-	virtual bool hurt(DamageSource *source, int dmg);
+    virtual bool doHurtTarget(std::shared_ptr<Entity> target);
+    virtual bool hurt(DamageSource* source, int dmg);
 
 protected:
-	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
+    virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 public:
-	virtual bool interact(std::shared_ptr<Player> player);
-	virtual std::shared_ptr<AgableMob> getBreedOffspring(std::shared_ptr<AgableMob> target);
-	virtual bool isFood(std::shared_ptr<ItemInstance> itemInstance);
-	virtual bool canMate(std::shared_ptr<Animal> animal);
-	virtual int getCatType();
-	virtual void setCatType(int type);
-	virtual bool canSpawn();
-	virtual std::wstring getAName();
+    virtual bool interact(std::shared_ptr<Player> player);
+    virtual std::shared_ptr<AgableMob> getBreedOffspring(
+        std::shared_ptr<AgableMob> target);
+    virtual bool isFood(std::shared_ptr<ItemInstance> itemInstance);
+    virtual bool canMate(std::shared_ptr<Animal> animal);
+    virtual int getCatType();
+    virtual void setCatType(int type);
+    virtual bool canSpawn();
+    virtual std::wstring getAName();
 };

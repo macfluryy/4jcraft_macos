@@ -4,8 +4,7 @@
 
 class Level;
 
-class Npc : public Creature
-{
+class Npc : public Creature {
 public:
-	Npc() {}
+    Npc() {}
 };

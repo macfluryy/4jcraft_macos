@@ -2,16 +2,19 @@
 
 #include "Item.h"
 
-class MilkBucketItem : public Item
-{
+class MilkBucketItem : public Item {
 private:
-	static const int DRINK_DURATION = (int) (20 * 1.6);
+    static const int DRINK_DURATION = (int)(20 * 1.6);
 
 public:
-	MilkBucketItem(int id);
+    MilkBucketItem(int id);
 
-	virtual std::shared_ptr<ItemInstance> useTimeDepleted(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
-	virtual int getUseDuration(std::shared_ptr<ItemInstance> itemInstance);
-	virtual UseAnim getUseAnimation(std::shared_ptr<ItemInstance> itemInstance);
-	virtual std::shared_ptr<ItemInstance> use(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
+    virtual std::shared_ptr<ItemInstance> useTimeDepleted(
+        std::shared_ptr<ItemInstance> instance, Level* level,
+        std::shared_ptr<Player> player);
+    virtual int getUseDuration(std::shared_ptr<ItemInstance> itemInstance);
+    virtual UseAnim getUseAnimation(std::shared_ptr<ItemInstance> itemInstance);
+    virtual std::shared_ptr<ItemInstance> use(
+        std::shared_ptr<ItemInstance> instance, Level* level,
+        std::shared_ptr<Player> player);
 };

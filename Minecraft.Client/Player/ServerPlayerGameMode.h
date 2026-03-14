@@ -6,17 +6,16 @@ class ServerLevel;
 class GameRulesInstance;
 class GameType;
 
-class ServerPlayerGameMode
-{
+class ServerPlayerGameMode {
 public:
-	Level *level;
-	std::shared_ptr<ServerPlayer> player;
+    Level* level;
+    std::shared_ptr<ServerPlayer> player;
 
 private:
-	GameType *gameModeForPlayer;
+    GameType* gameModeForPlayer;
 
 private:
-	bool isDestroyingBlock;
+    bool isDestroyingBlock;
     int destroyProgressStart;
     int xDestroyBlock, yDestroyBlock, zDestroyBlock;
     int gameTicks;
@@ -24,24 +23,25 @@ private:
     bool hasDelayedDestroy;
     int delayedDestroyX, delayedDestroyY, delayedDestroyZ;
     int delayedTickStart;
-	int lastSentState;
+    int lastSentState;
 
 private:
-	// 4J Added
-	GameRulesInstance *m_gameRules;
-public:
-	void setGameRules(GameRulesInstance *rules);
-	GameRulesInstance *getGameRules() { return m_gameRules; }
+    // 4J Added
+    GameRulesInstance* m_gameRules;
 
 public:
-	ServerPlayerGameMode(Level *level);
-	~ServerPlayerGameMode();
+    void setGameRules(GameRulesInstance* rules);
+    GameRulesInstance* getGameRules() { return m_gameRules; }
 
-	void setGameModeForPlayer(GameType *gameModeForPlayer);
-	GameType *getGameModeForPlayer();
-	bool isSurvival();
-	bool isCreative();
-	void updateGameMode(GameType *gameType);
+public:
+    ServerPlayerGameMode(Level* level);
+    ~ServerPlayerGameMode();
+
+    void setGameModeForPlayer(GameType* gameModeForPlayer);
+    GameType* getGameModeForPlayer();
+    bool isSurvival();
+    bool isCreative();
+    void updateGameMode(GameType* gameType);
 
     void tick();
     void startDestroyBlock(int x, int y, int z, int face);
@@ -53,8 +53,12 @@ private:
 
 public:
     bool destroyBlock(int x, int y, int z);
-    bool useItem(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, bool bTestUseOnly=false);
-    bool useItemOn(std::shared_ptr<Player> player, Level *level, std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false, bool *pbUsedItem=NULL);
+    bool useItem(std::shared_ptr<Player> player, Level* level,
+                 std::shared_ptr<ItemInstance> item, bool bTestUseOnly = false);
+    bool useItemOn(std::shared_ptr<Player> player, Level* level,
+                   std::shared_ptr<ItemInstance> item, int x, int y, int z,
+                   int face, float clickX, float clickY, float clickZ,
+                   bool bTestUseOnOnly = false, bool* pbUsedItem = NULL);
 
-	void setLevel(ServerLevel *newLevel);
+    void setLevel(ServerLevel* newLevel);
 };

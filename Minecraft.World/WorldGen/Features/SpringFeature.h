@@ -1,14 +1,12 @@
 #pragma once
 #include "Feature.h"
 
-
-class SpringFeature : public Feature
-{
+class SpringFeature : public Feature {
 private:
-	int tile;
+    int tile;
 
 public:
-	SpringFeature(int tile);
+    SpringFeature(int tile);
 
-    virtual bool place(Level *level, Random *random, int x, int y, int z);
+    virtual bool place(Level* level, Random* random, int x, int y, int z);
 };

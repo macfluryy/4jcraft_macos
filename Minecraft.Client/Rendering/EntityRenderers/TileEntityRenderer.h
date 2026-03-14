@@ -5,19 +5,27 @@ class TileEntity;
 class Level;
 class Font;
 
-class TileEntityRenderer
-{
+class TileEntityRenderer {
 protected:
-	TileEntityRenderDispatcher *tileEntityRenderDispatcher;
+    TileEntityRenderDispatcher* tileEntityRenderDispatcher;
+
 public:
-	virtual void render(std::shared_ptr<TileEntity> entity, double x, double y, double z, float a, bool setColor, float alpha, bool useCompiled) = 0;		// 4J added setColor param and alpha and useCompiled
-	virtual void onNewLevel(Level *level) {}
+    virtual void render(std::shared_ptr<TileEntity> entity, double x, double y,
+                        double z, float a, bool setColor, float alpha,
+                        bool useCompiled) = 0;  // 4J added setColor param and
+                                                // alpha and useCompiled
+    virtual void onNewLevel(Level* level) {}
+
 protected:
-	void bindTexture(int resourceName);		// 4J - changed from std::wstring to int
-    void bindTexture(const std::wstring& urlTexture, int backupTexture);	// 4J - changed from std::wstring to int
+    void bindTexture(
+        int resourceName);  // 4J - changed from std::wstring to int
+    void bindTexture(
+        const std::wstring& urlTexture,
+        int backupTexture);  // 4J - changed from std::wstring to int
 private:
-	Level *getLevel();
+    Level* getLevel();
+
 public:
-	virtual void init(TileEntityRenderDispatcher *tileEntityRenderDispatcher);
-    Font *getFont();
+    virtual void init(TileEntityRenderDispatcher* tileEntityRenderDispatcher);
+    Font* getFont();
 };

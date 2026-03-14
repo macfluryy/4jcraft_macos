@@ -4,57 +4,42 @@
 #include "PacketListener.h"
 #include "SetSpawnPositionPacket.h"
 
-
-
-SetSpawnPositionPacket::SetSpawnPositionPacket() 
-{
-	x = 0;
-	y = 0;
-	z = 0;
+SetSpawnPositionPacket::SetSpawnPositionPacket() {
+    x = 0;
+    y = 0;
+    z = 0;
 }
 
-SetSpawnPositionPacket::SetSpawnPositionPacket(int x, int y, int z)
-{
-	this->x = x;
-	this->y = y;
-	this->z = z;
+SetSpawnPositionPacket::SetSpawnPositionPacket(int x, int y, int z) {
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
-void SetSpawnPositionPacket::read(DataInputStream *dis) //throws IOException
+void SetSpawnPositionPacket::read(DataInputStream* dis)  // throws IOException
 {
-	x = dis->readInt();
-	y = dis->readInt();
-	z = dis->readInt();
+    x = dis->readInt();
+    y = dis->readInt();
+    z = dis->readInt();
 }
 
-void SetSpawnPositionPacket::write(DataOutputStream *dos) //throws IOException 
+void SetSpawnPositionPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	dos->writeInt(x);
-	dos->writeInt(y);
-	dos->writeInt(z);
+    dos->writeInt(x);
+    dos->writeInt(y);
+    dos->writeInt(z);
 }
 
-void SetSpawnPositionPacket::handle(PacketListener *listener) 
-{
-	listener->handleSetSpawn(shared_from_this());
+void SetSpawnPositionPacket::handle(PacketListener* listener) {
+    listener->handleSetSpawn(shared_from_this());
 }
 
-int SetSpawnPositionPacket::getEstimatedSize() 
-{
-	return 3*4;
+int SetSpawnPositionPacket::getEstimatedSize() { return 3 * 4; }
+
+bool SetSpawnPositionPacket::canBeInvalidated() { return true; }
+
+bool SetSpawnPositionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet) {
+    return true;
 }
 
-bool SetSpawnPositionPacket::canBeInvalidated()
-{
-	return true;
-}
-
-bool SetSpawnPositionPacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
-{
-	return true;
-}
-
-bool SetSpawnPositionPacket::isAync()
-{
-	return false;
-}
+bool SetSpawnPositionPacket::isAync() { return false; }

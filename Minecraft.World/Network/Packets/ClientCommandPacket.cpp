@@ -2,32 +2,21 @@
 #include "PacketListener.h"
 #include "ClientCommandPacket.h"
 
-ClientCommandPacket::ClientCommandPacket()
-{
-	action = 0;
+ClientCommandPacket::ClientCommandPacket() { action = 0; }
+
+ClientCommandPacket::ClientCommandPacket(int action) { this->action = action; }
+
+void ClientCommandPacket::read(DataInputStream* dis) {
+    action = (int)dis->readByte();
 }
 
-ClientCommandPacket::ClientCommandPacket(int action)
-{
-	this->action = action;
+void ClientCommandPacket::write(DataOutputStream* dos) {
+    dos->writeByte((uint8_t)action & (uint8_t)0xff);
 }
 
-void ClientCommandPacket::read(DataInputStream *dis)
-{
-	action = (int)dis->readByte();
+void ClientCommandPacket::handle(PacketListener* listener) {
+    listener->handleClientCommand(
+        std::dynamic_pointer_cast<ClientCommandPacket>(shared_from_this()));
 }
 
-void ClientCommandPacket::write(DataOutputStream *dos)
-{
-	dos->writeByte((uint8_t)action & (uint8_t)0xff);
-}
-
-void ClientCommandPacket::handle(PacketListener *listener)
-{
-	listener->handleClientCommand(std::dynamic_pointer_cast<ClientCommandPacket>(shared_from_this()));
-}
-
-int ClientCommandPacket::getEstimatedSize()
-{
-	return 1;
-}
+int ClientCommandPacket::getEstimatedSize() { return 1; }

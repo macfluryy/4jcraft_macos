@@ -4,17 +4,18 @@
 
 #define PICKAXE_DIGGABLES 22
 
-class PickaxeItem : public DiggerItem
-{
+class PickaxeItem : public DiggerItem {
 private:
-	static TileArray *diggables;
+    static TileArray* diggables;
 
-public: // 
-	static void staticCtor();
+public:  //
+    static void staticCtor();
 
-	PickaxeItem(int id, const Tier *tier);
+    PickaxeItem(int id, const Tier* tier);
 
 public:
-	virtual bool canDestroySpecial(Tile *tile);
-	virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance, Tile *tile);	// 4J - brought forward from 1.2.3
+    virtual bool canDestroySpecial(Tile* tile);
+    virtual float getDestroySpeed(
+        std::shared_ptr<ItemInstance> itemInstance,
+        Tile* tile);  // 4J - brought forward from 1.2.3
 };

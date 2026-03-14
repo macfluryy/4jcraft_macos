@@ -1,36 +1,31 @@
 #pragma once
 #include "Tag.h"
 
-class LongTag : public Tag
-{
+class LongTag : public Tag {
 public:
-	__int64 data;
-	LongTag(const std::wstring &name) : Tag(name) {}
-	LongTag(const std::wstring &name, __int64 data) : Tag(name) {this->data = data; }
-	
-	void write(DataOutput *dos) { dos->writeLong(data); }
-	void load(DataInput *dis) { data = dis->readLong(); }
+    __int64 data;
+    LongTag(const std::wstring& name) : Tag(name) {}
+    LongTag(const std::wstring& name, __int64 data) : Tag(name) {
+        this->data = data;
+    }
 
-	uint8_t getId() { return TAG_Long; }
-	std::wstring toString()
-	{
-		static wchar_t buf[32];
-		swprintf(buf,32,L"%I64d",data);
-		return std::wstring(buf);
-	}
+    void write(DataOutput* dos) { dos->writeLong(data); }
+    void load(DataInput* dis) { data = dis->readLong(); }
 
-	Tag *copy()
-	{
-		return new LongTag(getName(), data);
-	}
+    uint8_t getId() { return TAG_Long; }
+    std::wstring toString() {
+        static wchar_t buf[32];
+        swprintf(buf, 32, L"%I64d", data);
+        return std::wstring(buf);
+    }
 
-	bool equals(Tag *obj)
-	{
-		if (Tag::equals(obj))
-		{
-			LongTag *o = (LongTag *) obj;
-			return data == o->data;
-		}
-		return false;
-	}
+    Tag* copy() { return new LongTag(getName(), data); }
+
+    bool equals(Tag* obj) {
+        if (Tag::equals(obj)) {
+            LongTag* o = (LongTag*)obj;
+            return data == o->data;
+        }
+        return false;
+    }
 };

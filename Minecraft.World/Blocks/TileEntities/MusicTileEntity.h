@@ -1,26 +1,24 @@
 #pragma once
 
-
 #include "TileEntity.h"
 
-class MusicTileEntity :  public TileEntity
-{
+class MusicTileEntity : public TileEntity {
 public:
-	eINSTANCEOF GetType() { return eTYPE_MUSICTILEENTITY; }
-	static TileEntity *create() { return new MusicTileEntity(); }
+    eINSTANCEOF GetType() { return eTYPE_MUSICTILEENTITY; }
+    static TileEntity* create() { return new MusicTileEntity(); }
 
 public:
-	uint8_t note;
+    uint8_t note;
 
-	bool on;
+    bool on;
 
-	MusicTileEntity();
+    MusicTileEntity();
 
-	virtual void save(CompoundTag *tag);
-	virtual void load(CompoundTag *tag);
-	void tune();
-	void playNote(Level *level, int x, int y, int z);
+    virtual void save(CompoundTag* tag);
+    virtual void load(CompoundTag* tag);
+    void tune();
+    void playNote(Level* level, int x, int y, int z);
 
-	// 4J Added
-	virtual std::shared_ptr<TileEntity> clone();
+    // 4J Added
+    virtual std::shared_ptr<TileEntity> clone();
 };

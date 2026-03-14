@@ -4,15 +4,14 @@
 
 class Villager;
 
-class TradeWithPlayerGoal : public Goal
-{
+class TradeWithPlayerGoal : public Goal {
 private:
-	Villager *mob; // This is the owner of the goal
+    Villager* mob;  // This is the owner of the goal
 
 public:
-	TradeWithPlayerGoal(Villager *mob);
+    TradeWithPlayerGoal(Villager* mob);
 
-	bool canUse();
-	void start();
-	void stop();
+    bool canUse();
+    void start();
+    void stop();
 };

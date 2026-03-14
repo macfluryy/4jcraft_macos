@@ -32,4 +32,4 @@
 #include "xbox_stubs.h"
 #include "iggy_stubs.h"
 
-#endif // STUBS_H
+#endif  // STUBS_H

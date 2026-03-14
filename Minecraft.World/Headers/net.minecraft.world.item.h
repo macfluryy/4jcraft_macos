@@ -23,7 +23,7 @@
 #include "../Items/TileItems/LeafTileItem.h"
 #include "../Items/MapItem.h"
 #include "../Items/MinecartItem.h"
-//#include "PaintingItem.h"
+// #include "PaintingItem.h"
 #include "../Items/PickaxeItem.h"
 #include "../Items/TileItems/PistonTileItem.h"
 #include "../Items/RecordingItem.h"
@@ -56,8 +56,8 @@
 #include "../Items/PotionItem.h"
 #include "../Util/Rarity.h"
 #include "../Items/TileItems/WaterLilyTileItem.h"
-#include "../Items/ExperienceItem.h" // 4J Stu brought forward
-#include "../Items/TileItems/SmoothStoneBrickTileItem.h" // 4J Stu brought forward
+#include "../Items/ExperienceItem.h"  // 4J Stu brought forward
+#include "../Items/TileItems/SmoothStoneBrickTileItem.h"  // 4J Stu brought forward
 
 // TU9
 #include "../Items/FireChargeItem.h"

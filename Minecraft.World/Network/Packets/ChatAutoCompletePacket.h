@@ -2,8 +2,7 @@
 
 #include "Packet.h"
 
-class ChatAutoCompletePacket : public Packet
-{
+class ChatAutoCompletePacket : public Packet {
 #if 0
 	private String message;
 

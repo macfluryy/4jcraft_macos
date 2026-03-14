@@ -3,18 +3,21 @@
 class Player;
 class Button;
 
-class InventoryScreen : public AbstractContainerScreen
-{
+class InventoryScreen : public AbstractContainerScreen {
 public:
-	InventoryScreen(std::shared_ptr<Player> player);
+    InventoryScreen(std::shared_ptr<Player> player);
     virtual void init();
+
 protected:
-	virtual void renderLabels();
+    virtual void renderLabels();
+
 private:
-	float xMouse, yMouse;
+    float xMouse, yMouse;
+
 public:
-	virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a);
+
 protected:
-	virtual void renderBg(float a);
-	virtual void buttonClicked(Button *button);
+    virtual void renderBg(float a);
+    virtual void buttonClicked(Button* button);
 };

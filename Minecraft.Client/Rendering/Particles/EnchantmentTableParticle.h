@@ -4,18 +4,18 @@
 
 class Level;
 
-class EchantmentTableParticle : public Particle
-{
+class EchantmentTableParticle : public Particle {
 private:
-	float oSize;
-	double xStart, yStart, zStart;
+    float oSize;
+    double xStart, yStart, zStart;
 
 public:
-	virtual eINSTANCEOF GetType() { return eTYPE_ENCHANTMENTTABLEPARTICLE; }
+    virtual eINSTANCEOF GetType() { return eTYPE_ENCHANTMENTTABLEPARTICLE; }
 
-	EchantmentTableParticle(Level *level, double x, double y, double z, double xd, double yd, double zd);
+    EchantmentTableParticle(Level* level, double x, double y, double z,
+                            double xd, double yd, double zd);
 
-	virtual int getLightColor(float a);
-	virtual float getBrightness(float a);
-	virtual void tick();
+    virtual int getLightColor(float a);
+    virtual float getBrightness(float a);
+    virtual void tick();
 };

@@ -2,23 +2,20 @@
 #include "Button.h"
 #include "../Textures/Textures.h"
 
-Button::Button(int id, int x, int y, const std::wstring& msg)
-{
-	init(id, x, y, 200, 20, msg);
+Button::Button(int id, int x, int y, const std::wstring& msg) {
+    init(id, x, y, 200, 20, msg);
 }
 
-Button::Button(int id, int x, int y, int w, int h, const std::wstring& msg)
-{
-	init(id, x, y, w, h, msg);
+Button::Button(int id, int x, int y, int w, int h, const std::wstring& msg) {
+    init(id, x, y, w, h, msg);
 }
 
 // 4J - added
-void Button::init(int id, int x, int y, int w, int h, const std::wstring& msg)
-{
-	active = true;
-	visible = true;
+void Button::init(int id, int x, int y, int w, int h, const std::wstring& msg) {
+    active = true;
+    visible = true;
 
-	// this bit of code from original ctor
+    // this bit of code from original ctor
     this->id = id;
     this->x = x;
     this->y = y;
@@ -27,23 +24,23 @@ void Button::init(int id, int x, int y, int w, int h, const std::wstring& msg)
     this->msg = msg;
 }
 
-int Button::getYImage(bool hovered)
-{
+int Button::getYImage(bool hovered) {
     int res = 1;
-    if (!active) res = 0;
-    else if (hovered) res = 2;
+    if (!active)
+        res = 0;
+    else if (hovered)
+        res = 2;
     return res;
 }
 
-void Button::render(Minecraft *minecraft, int xm, int ym)
-{
+void Button::render(Minecraft* minecraft, int xm, int ym) {
     if (!visible) return;
 
-    Font *font = minecraft->font;
+    Font* font = minecraft->font;
 
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(TN_GUI_GUI));	// 4J was L"/gui/gui.png"
+    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(
+                                     TN_GUI_GUI));  // 4J was L"/gui/gui.png"
     glColor4f(1, 1, 1, 1);
-
 
     bool hovered = xm >= x && ym >= y && xm < x + w && ym < y + h;
     int yImage = getYImage(hovered);
@@ -53,33 +50,21 @@ void Button::render(Minecraft *minecraft, int xm, int ym)
 
     renderBg(minecraft, xm, ym);
 
-    if (!active)
-	{
+    if (!active) {
         drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, 0xffa0a0a0);
-    }
-	else
-	{
-        if (hovered)
-		{
+    } else {
+        if (hovered) {
             drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, 0xffffa0);
-        }
-		else
-		{
+        } else {
             drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, 0xe0e0e0);
         }
     }
-
 }
 
-void Button::renderBg(Minecraft *minecraft, int xm, int ym)
-{
-}
+void Button::renderBg(Minecraft* minecraft, int xm, int ym) {}
 
-void Button::released(int mx, int my)
-{
-}
+void Button::released(int mx, int my) {}
 
-bool Button::clicked(Minecraft *minecraft, int mx, int my)
-{
-	return active && mx >= x && my >= y && mx < x + w && my < y + h;
+bool Button::clicked(Minecraft* minecraft, int mx, int my) {
+    return active && mx >= x && my >= y && mx < x + w && my < y + h;
 }

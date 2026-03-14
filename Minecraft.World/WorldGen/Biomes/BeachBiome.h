@@ -2,8 +2,7 @@
 
 #include "Biome.h"
 
-class BeachBiome : public Biome
-{
+class BeachBiome : public Biome {
 public:
-	BeachBiome(int id);
+    BeachBiome(int id);
 };

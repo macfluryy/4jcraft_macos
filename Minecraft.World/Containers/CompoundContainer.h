@@ -1,36 +1,35 @@
 #pragma once
 
-
 #include "Container.h"
 
 class Player;
 
-class CompoundContainer : public Container
-{
+class CompoundContainer : public Container {
 private:
-	int name;
-	std::shared_ptr<Container> c1, c2;
+    int name;
+    std::shared_ptr<Container> c1, c2;
 
 public:
-	CompoundContainer(int name, std::shared_ptr<Container> c1, std::shared_ptr<Container> c2);
+    CompoundContainer(int name, std::shared_ptr<Container> c1,
+                      std::shared_ptr<Container> c2);
 
-	unsigned int getContainerSize();
+    unsigned int getContainerSize();
 
-	int getName();
+    int getName();
 
-	std::shared_ptr<ItemInstance> getItem(unsigned int slot);
+    std::shared_ptr<ItemInstance> getItem(unsigned int slot);
 
-	std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int i);
-	std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int i);
+    std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
 
-	void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
+    void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
 
-	int getMaxStackSize();
+    int getMaxStackSize();
 
-	void setChanged();
+    void setChanged();
 
-	bool stillValid(std::shared_ptr<Player> player);
+    bool stillValid(std::shared_ptr<Player> player);
 
-	virtual void startOpen();
-	virtual void stopOpen();
+    virtual void startOpen();
+    virtual void stopOpen();
 };

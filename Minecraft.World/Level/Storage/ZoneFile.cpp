@@ -3,116 +3,103 @@
 #include "../../IO/Files/File.h"
 #include "ZoneFile.h"
 
-namespace
-{
-	std::FILE *OpenBinaryFileForReadWrite(const File &file)
-	{
+namespace {
+std::FILE* OpenBinaryFileForReadWrite(const File& file) {
 #if defined(_WIN32)
-		std::FILE *stream = _wfopen(file.getPath().c_str(), L"r+b");
-		if (stream == NULL)
-		{
-			stream = _wfopen(file.getPath().c_str(), L"w+b");
-		}
+    std::FILE* stream = _wfopen(file.getPath().c_str(), L"r+b");
+    if (stream == NULL) {
+        stream = _wfopen(file.getPath().c_str(), L"w+b");
+    }
 #else
-		const std::string nativePath = wstringtofilename(file.getPath());
-		std::FILE *stream = std::fopen(nativePath.c_str(), "r+b");
-		if (stream == NULL)
-		{
-			stream = std::fopen(nativePath.c_str(), "w+b");
-		}
+    const std::string nativePath = wstringtofilename(file.getPath());
+    std::FILE* stream = std::fopen(nativePath.c_str(), "r+b");
+    if (stream == NULL) {
+        stream = std::fopen(nativePath.c_str(), "w+b");
+    }
 #endif
-		return stream;
-	}
+    return stream;
 }
+}  // namespace
 
+const int ZoneFile::slotsLength =
+    ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
 
-const int ZoneFile::slotsLength = ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
+ZoneFile::ZoneFile(__int64 key, File file, File entityFile)
+    : slots(slotsLength) {
+    lastUse = 0;
 
-ZoneFile::ZoneFile(__int64 key, File file, File entityFile) : slots(slotsLength)
-{
-	lastUse = 0;
+    this->key = key;
+    this->file = file;
 
-	this->key = key;
-	this->file = file;
-
-	// 4J - try/catch removed
-//    try {
+    // 4J - try/catch removed
+    //    try {
     this->entityFile = new NbtSlotFile(entityFile);
-//    } catch (Exception e) {
-//        System.out.println("Broken entity file: " + entityFile + " (" + e.toString() + "), replacing..");
-//        entityFile.delete();
-//        entityFile.createNewFile();
-//        this.entityFile = new NbtSlotFile(entityFile);
-//    }
+    //    } catch (Exception e) {
+    //        System.out.println("Broken entity file: " + entityFile + " (" +
+    //        e.toString() + "), replacing.."); entityFile.delete();
+    //        entityFile.createNewFile();
+    //        this.entityFile = new NbtSlotFile(entityFile);
+    //    }
 
     channel = OpenBinaryFileForReadWrite(file);
-	// 4J - try/catch removed
-//    try {
-        readHeader();
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//        throw new IOException("Broken zone file: " + file + ": " + e);
-//    }
+    // 4J - try/catch removed
+    //    try {
+    readHeader();
+    //    } catch (Exception e) {
+    //        e.printStackTrace();
+    //        throw new IOException("Broken zone file: " + file + ": " + e);
+    //    }
 }
 
-ZoneFile::~ZoneFile()
-{
-	delete [] slots.data;
-}
+ZoneFile::~ZoneFile() { delete[] slots.data; }
 
-void ZoneFile::readHeader()
-{
-    ZoneIo *zoneIo = new ZoneIo(channel, 0);
-    ByteBuffer *bb = zoneIo->read(FILE_HEADER_SIZE);
+void ZoneFile::readHeader() {
+    ZoneIo* zoneIo = new ZoneIo(channel, 0);
+    ByteBuffer* bb = zoneIo->read(FILE_HEADER_SIZE);
     bb->flip();
     if (bb->remaining() < 5) return;
     int magic = bb->getInt();
-//    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: " + magic);		// 4J - TODO
+    //    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: "
+    //    + magic);		// 4J - TODO
     short version = bb->getShort();
-//    if (version != 0) throw new IOException("Bad version number: " + version);	// 4J - TODO
+    //    if (version != 0) throw new IOException("Bad version number: " +
+    //    version);	// 4J - TODO
 
     slotCount = bb->getShort();
     bb->getShortArray(slots);
     bb->position(bb->position() + slotsLength * 2);
 }
 
-void ZoneFile::writeHeader()
-{
-    ZoneIo *zoneIo = new ZoneIo(channel, 0);
+void ZoneFile::writeHeader() {
+    ZoneIo* zoneIo = new ZoneIo(channel, 0);
 
-    ByteBuffer *bb = ByteBuffer::allocate(FILE_HEADER_SIZE);
+    ByteBuffer* bb = ByteBuffer::allocate(FILE_HEADER_SIZE);
     bb->order(ZonedChunkStorage::BYTEORDER);
     bb->putInt(MAGIC_NUMBER);
-    bb->putShort((short) 0);
-    bb->putShort((short) slotCount);
+    bb->putShort((short)0);
+    bb->putShort((short)slotCount);
     bb->putShortArray(slots);
     bb->position(bb->position() + slots.length * 2);
     bb->flip();
     zoneIo->write(bb, FILE_HEADER_SIZE);
 }
 
-void ZoneFile::close()
-{
-	if (channel != NULL)
-	{
-		std::fclose(channel);
-		channel = NULL;
-	}
+void ZoneFile::close() {
+    if (channel != NULL) {
+        std::fclose(channel);
+        channel = NULL;
+    }
     entityFile->close();
 }
 
-ZoneIo *ZoneFile::getZoneIo(int slot)
-{
-    if (slots[slot] == 0)
-	{
+ZoneIo* ZoneFile::getZoneIo(int slot) {
+    if (slots[slot] == 0) {
         slots[slot] = ++slotCount;
         writeHeader();
     }
-    int byteOffs = (slots[slot] - 1) * ZonedChunkStorage::CHUNK_SIZE_BYTES + FILE_HEADER_SIZE;
+    int byteOffs = (slots[slot] - 1) * ZonedChunkStorage::CHUNK_SIZE_BYTES +
+                   FILE_HEADER_SIZE;
     return new ZoneIo(channel, byteOffs);
 }
 
-bool ZoneFile::containsSlot(int slot)
-{
-	return slots[slot] > 0;
-}
+bool ZoneFile::containsSlot(int slot) { return slots[slot] > 0; }

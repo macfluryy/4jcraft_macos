@@ -1,16 +1,17 @@
 #pragma once
 #include "HumanoidModel.h"
 
-class ZombieModel : public HumanoidModel
-{
+class ZombieModel : public HumanoidModel {
 public:
-	ZombieModel();
+    ZombieModel();
 
 protected:
-	ZombieModel(float g, float yOffset, int texWidth, int texHeight);
+    ZombieModel(float g, float yOffset, int texWidth, int texHeight);
 
 public:
-	ZombieModel(float g, bool isArmor);
+    ZombieModel(float g, bool isArmor);
 
-	virtual void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0);
+    virtual void setupAnim(float time, float r, float bob, float yRot,
+                           float xRot, float scale,
+                           unsigned int uiBitmaskOverrideAnim = 0);
 };

@@ -2,54 +2,56 @@
 
 #include "AbstractContainerMenu.h"
 
-class RepairMenu : public AbstractContainerMenu
-{
-	friend class RepairResultSlot;
-private:
-	static const bool DEBUG_COST = false;
-
-public:
-	static const int INPUT_SLOT = 0;
-	static const int ADDITIONAL_SLOT = 1;
-	static const int RESULT_SLOT = 2;
-
-	static const int INV_SLOT_START = RESULT_SLOT + 1;
-	static const int INV_SLOT_END = INV_SLOT_START + 9 * 3;
-	static const int USE_ROW_SLOT_START = INV_SLOT_END;
-	static const int USE_ROW_SLOT_END = USE_ROW_SLOT_START + 9;
-
-public:
-	static const int DATA_TOTAL_COST = 0;
+class RepairMenu : public AbstractContainerMenu {
+    friend class RepairResultSlot;
 
 private:
-	std::shared_ptr<Container> resultSlots;
-
-	// 4J Stu - anonymous class here now RepairContainer
-	std::shared_ptr<Container> repairSlots;
-
-	Level *level;
-	int x, y, z;
+    static const bool DEBUG_COST = false;
 
 public:
-	int cost;
+    static const int INPUT_SLOT = 0;
+    static const int ADDITIONAL_SLOT = 1;
+    static const int RESULT_SLOT = 2;
+
+    static const int INV_SLOT_START = RESULT_SLOT + 1;
+    static const int INV_SLOT_END = INV_SLOT_START + 9 * 3;
+    static const int USE_ROW_SLOT_START = INV_SLOT_END;
+    static const int USE_ROW_SLOT_END = USE_ROW_SLOT_START + 9;
+
+public:
+    static const int DATA_TOTAL_COST = 0;
 
 private:
-	int repairItemCountCost;
-	std::wstring itemName;
-	std::shared_ptr<Player> player;
+    std::shared_ptr<Container> resultSlots;
+
+    // 4J Stu - anonymous class here now RepairContainer
+    std::shared_ptr<Container> repairSlots;
+
+    Level* level;
+    int x, y, z;
 
 public:
-	using AbstractContainerMenu::slotsChanged;
+    int cost;
 
-	RepairMenu(std::shared_ptr<Inventory> inventory, Level *level, int xt, int yt, int zt, std::shared_ptr<Player> player);
+private:
+    int repairItemCountCost;
+    std::wstring itemName;
+    std::shared_ptr<Player> player;
 
-	void slotsChanged(std::shared_ptr<Container> container);
-	void createResult();
-	void sendData(int id, int value);
-	void addSlotListener(ContainerListener *listener);
-	void setData(int id, int value);
-	void removed(std::shared_ptr<Player> player);
-	bool stillValid(std::shared_ptr<Player> player);
-	std::shared_ptr<ItemInstance> quickMoveStack(std::shared_ptr<Player> player, int slotIndex);
-	void setItemName(const std::wstring &name);
+public:
+    using AbstractContainerMenu::slotsChanged;
+
+    RepairMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
+               int yt, int zt, std::shared_ptr<Player> player);
+
+    void slotsChanged(std::shared_ptr<Container> container);
+    void createResult();
+    void sendData(int id, int value);
+    void addSlotListener(ContainerListener* listener);
+    void setData(int id, int value);
+    void removed(std::shared_ptr<Player> player);
+    bool stillValid(std::shared_ptr<Player> player);
+    std::shared_ptr<ItemInstance> quickMoveStack(std::shared_ptr<Player> player,
+                                                 int slotIndex);
+    void setItemName(const std::wstring& name);
 };

@@ -6,25 +6,24 @@
 #include "../../../Minecraft.World/Util/Random.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 
-PaintingRenderer::PaintingRenderer()
-{
-	random = new Random();
-}
+PaintingRenderer::PaintingRenderer() { random = new Random(); }
 
-void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x, double y, double z, float rot, float a)
-{
-	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Painting> painting = std::dynamic_pointer_cast<Painting>(_painting);
-	
+void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x,
+                              double y, double z, float rot, float a) {
+    // 4J - dynamic cast required because we aren't using templates/generics in
+    // our version
+    std::shared_ptr<Painting> painting =
+        std::dynamic_pointer_cast<Painting>(_painting);
+
     random->setSeed(187);
 
     glPushMatrix();
     glTranslatef((float)x, (float)y, (float)z);
     glRotatef(rot, 0, 1, 0);
     glEnable(GL_RESCALE_NORMAL);
-    bindTexture(TN_ART_KZ);	// 4J was L"/art/kz.png"
+    bindTexture(TN_ART_KZ);  // 4J was L"/art/kz.png"
 
-    Painting::Motive *motive = painting->motive;
+    Painting::Motive* motive = painting->motive;
 
     float s = 1 / 16.0f;
     glScalef(s, s, s);
@@ -33,8 +32,8 @@ void PaintingRenderer::render(std::shared_ptr<Entity> _painting, double x, doubl
     glPopMatrix();
 }
 
-void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w, int h, int uo, int vo)
-{
+void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
+                                      int h, int uo, int vo) {
     float xx0 = -w / 2.0f;
     float yy0 = -h / 2.0f;
 
@@ -42,8 +41,7 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
     float z1 = +0.5f;
 
     for (int xs = 0; xs < w / 16; xs++)
-        for (int ys = 0; ys < h / 16; ys++)
-		{
+        for (int ys = 0; ys < h / 16; ys++) {
             float x0 = xx0 + (xs + 1) * 16;
             float x1 = xx0 + (xs) * 16;
             float y0 = yy0 + (ys + 1) * 16;
@@ -71,57 +69,80 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
             float sv0 = (0) / 256.0f;
             float sv1 = (0 + 16) / 256.0f;
 
-            Tesselator *t = Tesselator::getInstance();
+            Tesselator* t = Tesselator::getInstance();
             t->begin();
             t->normal(0, 0, -1);
-            t->vertexUV((float)(x0), (float)( y1), (float)( z0), (float)( fu1), (float)( fv0));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z0), (float)( fu0), (float)( fv0));
-            t->vertexUV((float)(x1), (float)( y0), (float)( z0), (float)( fu0), (float)( fv1));
-            t->vertexUV((float)(x0), (float)( y0), (float)( z0), (float)( fu1), (float)( fv1));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z0), (float)(fu1),
+                        (float)(fv0));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z0), (float)(fu0),
+                        (float)(fv0));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z0), (float)(fu0),
+                        (float)(fv1));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z0), (float)(fu1),
+                        (float)(fv1));
 
             t->normal(0, 0, 1);
-            t->vertexUV((float)(x0), (float)( y0), (float)( z1), (float)( bu0), (float)( bv0));
-            t->vertexUV((float)(x1), (float)( y0), (float)( z1), (float)( bu1), (float)( bv0));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z1), (float)( bu1), (float)( bv1));
-            t->vertexUV((float)(x0), (float)( y1), (float)( z1), (float)( bu0), (float)( bv1));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z1), (float)(bu0),
+                        (float)(bv0));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z1), (float)(bu1),
+                        (float)(bv0));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z1), (float)(bu1),
+                        (float)(bv1));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z1), (float)(bu0),
+                        (float)(bv1));
 
             t->normal(0, 1, 0);
-            t->vertexUV((float)(x0), (float)( y0), (float)( z0), (float)( uu0), (float)( uv0));
-            t->vertexUV((float)(x1), (float)( y0), (float)( z0), (float)( uu1), (float)( uv0));
-            t->vertexUV((float)(x1), (float)( y0), (float)( z1), (float)( uu1), (float)( uv1));
-            t->vertexUV((float)(x0), (float)( y0), (float)( z1), (float)( uu0), (float)( uv1));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z0), (float)(uu0),
+                        (float)(uv0));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z0), (float)(uu1),
+                        (float)(uv0));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z1), (float)(uu1),
+                        (float)(uv1));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z1), (float)(uu0),
+                        (float)(uv1));
 
             t->normal(0, -1, 0);
-            t->vertexUV((float)(x0), (float)( y1), (float)( z1), (float)( uu0), (float)( uv0));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z1), (float)( uu1), (float)( uv0));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z0), (float)( uu1), (float)( uv1));
-            t->vertexUV((float)(x0), (float)( y1), (float)( z0), (float)( uu0), (float)( uv1));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z1), (float)(uu0),
+                        (float)(uv0));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z1), (float)(uu1),
+                        (float)(uv0));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z0), (float)(uu1),
+                        (float)(uv1));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z0), (float)(uu0),
+                        (float)(uv1));
 
             t->normal(-1, 0, 0);
-            t->vertexUV((float)(x0), (float)( y0), (float)( z1), (float)( su1), (float)( sv0));
-            t->vertexUV((float)(x0), (float)( y1), (float)( z1), (float)( su1), (float)( sv1));
-            t->vertexUV((float)(x0), (float)( y1), (float)( z0), (float)( su0), (float)( sv1));
-            t->vertexUV((float)(x0), (float)( y0), (float)( z0), (float)( su0), (float)( sv0));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z1), (float)(su1),
+                        (float)(sv0));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z1), (float)(su1),
+                        (float)(sv1));
+            t->vertexUV((float)(x0), (float)(y1), (float)(z0), (float)(su0),
+                        (float)(sv1));
+            t->vertexUV((float)(x0), (float)(y0), (float)(z0), (float)(su0),
+                        (float)(sv0));
 
             t->normal(1, 0, 0);
-            t->vertexUV((float)(x1), (float)( y0), (float)( z0), (float)( su1), (float)( sv0));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z0), (float)( su1), (float)( sv1));
-            t->vertexUV((float)(x1), (float)( y1), (float)( z1), (float)( su0), (float)( sv1));
-            t->vertexUV((float)(x1), (float)( y0), (float)( z1), (float)( su0), (float)( sv0));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z0), (float)(su1),
+                        (float)(sv0));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z0), (float)(su1),
+                        (float)(sv1));
+            t->vertexUV((float)(x1), (float)(y1), (float)(z1), (float)(su0),
+                        (float)(sv1));
+            t->vertexUV((float)(x1), (float)(y0), (float)(z1), (float)(su0),
+                        (float)(sv0));
             t->end();
         }
-
 }
 
-void PaintingRenderer::setBrightness(std::shared_ptr<Painting> painting, float ss, float ya)
-{
+void PaintingRenderer::setBrightness(std::shared_ptr<Painting> painting,
+                                     float ss, float ya) {
     int x = Mth::floor(painting->x);
-    int y = Mth::floor(painting->y + ya/16.0f);
+    int y = Mth::floor(painting->y + ya / 16.0f);
     int z = Mth::floor(painting->z);
-    if (painting->dir == 0) x = Mth::floor(painting->x + ss/16.0f);
-    if (painting->dir == 1) z = Mth::floor(painting->z - ss/16.0f);
-    if (painting->dir == 2) x = Mth::floor(painting->x - ss/16.0f);
-    if (painting->dir == 3) z = Mth::floor(painting->z + ss/16.0f);
+    if (painting->dir == 0) x = Mth::floor(painting->x + ss / 16.0f);
+    if (painting->dir == 1) z = Mth::floor(painting->z - ss / 16.0f);
+    if (painting->dir == 2) x = Mth::floor(painting->x - ss / 16.0f);
+    if (painting->dir == 3) z = Mth::floor(painting->z + ss / 16.0f);
 
     int col = this->entityRenderDispatcher->level->getLightColor(x, y, z, 0);
     int u = col % 65536;

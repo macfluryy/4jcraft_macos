@@ -5,4 +5,4 @@
 #include "../Minecraft.Client/Platform/Linux/Stubs/LinuxStubs.h"
 #endif
 
-#endif //_4J_RENDER_STADAFX_H
+#endif  //_4J_RENDER_STADAFX_H

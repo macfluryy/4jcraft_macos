@@ -5,7 +5,4 @@
 
 const int RANGE = 2;
 
-
-Sponge::Sponge(int id) : Tile(id, Material::sponge)
-{
-}
+Sponge::Sponge(int id) : Tile(id, Material::sponge) {}

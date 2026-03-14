@@ -2,13 +2,13 @@
 
 #include "MobRenderer.h"
 
-class MushroomCowRenderer : public MobRenderer
-{
+class MushroomCowRenderer : public MobRenderer {
 public:
-	MushroomCowRenderer(Model *model, float shadow);
+    MushroomCowRenderer(Model* model, float shadow);
 
-	virtual void render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a);
+    virtual void render(std::shared_ptr<Entity> _mob, double x, double y,
+                        double z, float rot, float a);
 
 protected:
-	virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
+    virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
 };

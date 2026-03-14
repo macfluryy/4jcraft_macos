@@ -4,14 +4,13 @@
 
 class Mob;
 
-class FloatGoal : public Goal
-{
+class FloatGoal : public Goal {
 private:
-	Mob *mob;
+    Mob* mob;
 
 public:
-	FloatGoal(Mob *mob);
+    FloatGoal(Mob* mob);
 
-	virtual bool canUse();
-	virtual void tick();
+    virtual bool canUse();
+    virtual void tick();
 };

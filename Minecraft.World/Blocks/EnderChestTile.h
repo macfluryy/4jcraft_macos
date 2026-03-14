@@ -3,27 +3,29 @@
 #include "TileEntities/EntityTile.h"
 #include "ChestTile.h"
 
-class EnderChestTile : public EntityTile
-{
+class EnderChestTile : public EntityTile {
 public:
-	static const int EVENT_SET_OPEN_COUNT = ChestTile::EVENT_SET_OPEN_COUNT;
+    static const int EVENT_SET_OPEN_COUNT = ChestTile::EVENT_SET_OPEN_COUNT;
 
-	EnderChestTile(int id);
-    virtual void updateDefaultShape(); // 4J Added override
+    EnderChestTile(int id);
+    virtual void updateDefaultShape();  // 4J Added override
 
-	bool isSolidRender(bool isServerLevel = false);
-	bool isCubeShaped();
-	int getRenderShape();
-	int getResource(int data, Random *random, int playerBonusLevel);
-	int getResourceCount(Random *random);
+    bool isSolidRender(bool isServerLevel = false);
+    bool isCubeShaped();
+    int getRenderShape();
+    int getResource(int data, Random* random, int playerBonusLevel);
+    int getResourceCount(Random* random);
 
 protected:
-	bool isSilkTouchable();
+    bool isSilkTouchable();
 
 public:
-	void setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by);
-	bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false);
-	std::shared_ptr<TileEntity> newTileEntity(Level *level);
-	void animateTick(Level *level, int xt, int yt, int zt, Random *random);
-	virtual void registerIcons(IconRegister *iconRegister);
+    void setPlacedBy(Level* level, int x, int y, int z,
+                     std::shared_ptr<Mob> by);
+    bool use(Level* level, int x, int y, int z, std::shared_ptr<Player> player,
+             int clickedFace, float clickX, float clickY, float clickZ,
+             bool soundOnly = false);
+    std::shared_ptr<TileEntity> newTileEntity(Level* level);
+    void animateTick(Level* level, int xt, int yt, int zt, Random* random);
+    virtual void registerIcons(IconRegister* iconRegister);
 };

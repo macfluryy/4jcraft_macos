@@ -6,20 +6,19 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../../Minecraft.World/Blocks/TileEntities/FurnaceTileEntity.h"
 
-FurnaceScreen::FurnaceScreen(std::shared_ptr<Inventory> inventory, std::shared_ptr<FurnaceTileEntity> furnace) : AbstractContainerScreen(new FurnaceMenu(inventory, furnace))
-{
-	this->furnace = furnace;
+FurnaceScreen::FurnaceScreen(std::shared_ptr<Inventory> inventory,
+                             std::shared_ptr<FurnaceTileEntity> furnace)
+    : AbstractContainerScreen(new FurnaceMenu(inventory, furnace)) {
+    this->furnace = furnace;
 }
 
-void FurnaceScreen::renderLabels()
-{
-	font->draw(L"Furnace", 16 + 4 + 40, 2 + 2 + 2, 0x404040);
-	font->draw(L"Inventory", 8, imageHeight - 96 + 2, 0x404040);
+void FurnaceScreen::renderLabels() {
+    font->draw(L"Furnace", 16 + 4 + 40, 2 + 2 + 2, 0x404040);
+    font->draw(L"Inventory", 8, imageHeight - 96 + 2, 0x404040);
 }
 
-void FurnaceScreen::renderBg(float a)
-{
-	// 4J Unused
+void FurnaceScreen::renderBg(float a) {
+    // 4J Unused
 #if 0
 	int tex = minecraft->textures->loadTexture(L"/gui/furnace.png");
 	glColor4f(1, 1, 1, 1);

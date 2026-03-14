@@ -2,16 +2,15 @@
 
 #include "TargetGoal.h"
 
-class HurtByTargetGoal : public TargetGoal
-{
+class HurtByTargetGoal : public TargetGoal {
 private:
-	bool alertSameType;
-	std::shared_ptr<Mob> oldHurtByMob;
+    bool alertSameType;
+    std::shared_ptr<Mob> oldHurtByMob;
 
 public:
-	HurtByTargetGoal(Mob *mob, bool alertSameType);
+    HurtByTargetGoal(Mob* mob, bool alertSameType);
 
-	bool canUse();
-	void start();
-	void tick();
+    bool canUse();
+    void start();
+    void tick();
 };

@@ -4,20 +4,20 @@
 
 class Silverfish;
 
-class SilverfishRenderer : public MobRenderer
-{
+class SilverfishRenderer : public MobRenderer {
 private:
-	//int modelVersion;
+    // int modelVersion;
 
 public:
-	SilverfishRenderer();
+    SilverfishRenderer();
 
 protected:
-	float getFlipDegrees(std::shared_ptr<Silverfish> spider);
+    float getFlipDegrees(std::shared_ptr<Silverfish> spider);
 
 public:
-	void render(std::shared_ptr<Entity> _mob, double x, double y, double z, float rot, float a);
+    void render(std::shared_ptr<Entity> _mob, double x, double y, double z,
+                float rot, float a);
 
 protected:
-	int prepareArmor(std::shared_ptr<Mob> _silverfish, int layer, float a);
+    int prepareArmor(std::shared_ptr<Mob> _silverfish, int layer, float a);
 };

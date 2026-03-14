@@ -4,26 +4,25 @@
 
 class DoorTile;
 
-class DoorInteractGoal : public Goal
-{
+class DoorInteractGoal : public Goal {
 protected:
-	Mob *mob; // Owner of this goal
-	int doorX, doorY, doorZ;
-	DoorTile *doorTile;
+    Mob* mob;  // Owner of this goal
+    int doorX, doorY, doorZ;
+    DoorTile* doorTile;
 
 private:
-	bool passed;
-	float doorOpenDirX, doorOpenDirZ;
+    bool passed;
+    float doorOpenDirX, doorOpenDirZ;
 
 public:
-	DoorInteractGoal(Mob *mob);
-	virtual ~DoorInteractGoal() {}
+    DoorInteractGoal(Mob* mob);
+    virtual ~DoorInteractGoal() {}
 
-	virtual bool canUse();
-	virtual bool canContinueToUse();
-	virtual void start();
-	virtual void tick();
+    virtual bool canUse();
+    virtual bool canContinueToUse();
+    virtual void start();
+    virtual void tick();
 
 private:
-	DoorTile *getDoorTile(int x, int y, int z);
+    DoorTile* getDoorTile(int x, int y, int z);
 };

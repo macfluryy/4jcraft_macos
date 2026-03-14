@@ -1,12 +1,10 @@
 #pragma once
 #include "ConsoleInputSource.h"
 
-
-class ConsoleInput
-{
+class ConsoleInput {
 public:
-	std::wstring msg;
-	ConsoleInputSource *source;
+    std::wstring msg;
+    ConsoleInputSource* source;
 
-	ConsoleInput(const std::wstring& msg, ConsoleInputSource *source);
+    ConsoleInput(const std::wstring& msg, ConsoleInputSource* source);
 };
