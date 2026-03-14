@@ -7,130 +7,133 @@
 class Player;
 class CompoundTag;
 
-class Inventory : public Container
-{
+class Inventory : public Container {
 public:
-	static const int POP_TIME_DURATION ;
-	static const int MAX_INVENTORY_STACK_SIZE;
+    static const int POP_TIME_DURATION;
+    static const int MAX_INVENTORY_STACK_SIZE;
 
 private:
-	static const int INVENTORY_SIZE;
-	static const int SELECTION_SIZE;
+    static const int INVENTORY_SIZE;
+    static const int SELECTION_SIZE;
 
 public:
-	ItemInstanceArray items;
-	ItemInstanceArray armor;
+    ItemInstanceArray items;
+    ItemInstanceArray armor;
 
-	int selected;
-	Player *player; // This is owned by std::shared_ptrs, but we are owned by it
+    int selected;
+    Player*
+        player;  // This is owned by std::shared_ptrs, but we are owned by it
 
 private:
-	std::shared_ptr<ItemInstance> heldItem;
-	std::shared_ptr<ItemInstance> carried;
+    std::shared_ptr<ItemInstance> heldItem;
+    std::shared_ptr<ItemInstance> carried;
 
 public:
-	bool changed;
+    bool changed;
 
-	Inventory(Player *player);
-	~Inventory();
+    Inventory(Player* player);
+    ~Inventory();
 
-	std::shared_ptr<ItemInstance> getSelected();
-	// 4J-PB - Added for the in-game tooltips
-	bool IsHeldItem();
+    std::shared_ptr<ItemInstance> getSelected();
+    // 4J-PB - Added for the in-game tooltips
+    bool IsHeldItem();
 
-	static int getSelectionSize();
+    static int getSelectionSize();
 
 private:
-	int getSlot(int tileId);
-	int getSlot(int tileId, int data);
+    int getSlot(int tileId);
+    int getSlot(int tileId, int data);
 
-	int getSlotWithRemainingSpace(std::shared_ptr<ItemInstance> item);
-	
+    int getSlotWithRemainingSpace(std::shared_ptr<ItemInstance> item);
+
 public:
-	int getFreeSlot();
+    int getFreeSlot();
 
-	void grabTexture(int id, int data, bool checkData, bool mayReplace);
+    void grabTexture(int id, int data, bool checkData, bool mayReplace);
 
-	void swapPaint(int wheel);
+    void swapPaint(int wheel);
 
-	void clearInventory();
+    void clearInventory();
 
-	void replaceSlot(Item *item, int data);
+    void replaceSlot(Item* item, int data);
 
 private:
-	int addResource(std::shared_ptr<ItemInstance> itemInstance);
+    int addResource(std::shared_ptr<ItemInstance> itemInstance);
 
 public:
-	void tick();
+    void tick();
 
-	bool removeResource(int type);
+    bool removeResource(int type);
 
-	// 4J-PB added to get the right resource from the inventory for removal
-	bool removeResource(int type,int iAuxVal);
-	void removeResources(std::shared_ptr<ItemInstance> item); // 4J Added for trading
-	
-	// 4J-Stu added to the get the item that would be affected by the removeResource functions
-	std::shared_ptr<ItemInstance> getResourceItem(int type);
-	std::shared_ptr<ItemInstance> getResourceItem(int type,int iAuxVal);
+    // 4J-PB added to get the right resource from the inventory for removal
+    bool removeResource(int type, int iAuxVal);
+    void removeResources(
+        std::shared_ptr<ItemInstance> item);  // 4J Added for trading
 
-	bool hasResource(int type);
+    // 4J-Stu added to the get the item that would be affected by the
+    // removeResource functions
+    std::shared_ptr<ItemInstance> getResourceItem(int type);
+    std::shared_ptr<ItemInstance> getResourceItem(int type, int iAuxVal);
 
-	void swapSlots(int from, int to);
+    bool hasResource(int type);
 
-	bool add(std::shared_ptr<ItemInstance> item);
+    void swapSlots(int from, int to);
 
-	std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
-	virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    bool add(std::shared_ptr<ItemInstance> item);
 
-	void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
+    std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
+    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
 
-	float getDestroySpeed(Tile *tile);
+    void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
 
-	ListTag<CompoundTag> *save(ListTag<CompoundTag> *listTag);
+    float getDestroySpeed(Tile* tile);
 
-	void load(ListTag<CompoundTag> *inventoryList);
+    ListTag<CompoundTag>* save(ListTag<CompoundTag>* listTag);
 
-	unsigned int getContainerSize();
+    void load(ListTag<CompoundTag>* inventoryList);
 
-	std::shared_ptr<ItemInstance> getItem(unsigned int slot);
+    unsigned int getContainerSize();
 
-	int getName();
+    std::shared_ptr<ItemInstance> getItem(unsigned int slot);
 
-	int getMaxStackSize();
+    int getName();
 
-	int getAttackDamage(std::shared_ptr<Entity> entity);
+    int getMaxStackSize();
 
-	bool canDestroy(Tile *tile);
+    int getAttackDamage(std::shared_ptr<Entity> entity);
 
-	std::shared_ptr<ItemInstance> getArmor(int layer);
+    bool canDestroy(Tile* tile);
 
-	int getArmorValue();
+    std::shared_ptr<ItemInstance> getArmor(int layer);
 
-	void hurtArmor(int dmg);
+    int getArmorValue();
 
-	void dropAll();
+    void hurtArmor(int dmg);
 
-	void setChanged();
+    void dropAll();
 
-	bool isSame(std::shared_ptr<Inventory> copy);
+    void setChanged();
+
+    bool isSame(std::shared_ptr<Inventory> copy);
 
 private:
-	bool isSame(std::shared_ptr<ItemInstance> a, std::shared_ptr<ItemInstance> b);
+    bool isSame(std::shared_ptr<ItemInstance> a,
+                std::shared_ptr<ItemInstance> b);
 
 public:
-	std::shared_ptr<Inventory> copy();
+    std::shared_ptr<Inventory> copy();
 
-	void setCarried(std::shared_ptr<ItemInstance> carried);
+    void setCarried(std::shared_ptr<ItemInstance> carried);
 
-	std::shared_ptr<ItemInstance> getCarried();
+    std::shared_ptr<ItemInstance> getCarried();
 
-	bool stillValid(std::shared_ptr<Player> player);
+    bool stillValid(std::shared_ptr<Player> player);
 
-	bool contains(std::shared_ptr<ItemInstance> itemInstance);
+    bool contains(std::shared_ptr<ItemInstance> itemInstance);
 
-	virtual void startOpen();
-	virtual void stopOpen();
-	void replaceWith(std::shared_ptr<Inventory> other);
+    virtual void startOpen();
+    virtual void stopOpen();
+    void replaceWith(std::shared_ptr<Inventory> other);
 
-	int countMatches(std::shared_ptr<ItemInstance> itemInstance); // 4J Added
+    int countMatches(std::shared_ptr<ItemInstance> itemInstance);  // 4J Added
 };

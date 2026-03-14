@@ -5,10 +5,11 @@
 class Player;
 class Level;
 
-class BowlFoodItem : public FoodItem
-{
+class BowlFoodItem : public FoodItem {
 public:
-	BowlFoodItem(int id, int nutrition);
+    BowlFoodItem(int id, int nutrition);
 
-	std::shared_ptr<ItemInstance> useTimeDepleted(std::shared_ptr<ItemInstance> instance, Level *level, std::shared_ptr<Player> player);
+    std::shared_ptr<ItemInstance> useTimeDepleted(
+        std::shared_ptr<ItemInstance> instance, Level* level,
+        std::shared_ptr<Player> player);
 };

@@ -1,9 +1,9 @@
 #pragma once
 #include "Tile.h"
 
-class DirtTile : public Tile
-{
-	friend class Tile;
+class DirtTile : public Tile {
+    friend class Tile;
+
 protected:
-	DirtTile(int id);
+    DirtTile(int id);
 };

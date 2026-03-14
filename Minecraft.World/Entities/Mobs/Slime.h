@@ -1,78 +1,76 @@
 #pragma once
 
-
 #include "../Mob.h"
 #include "../Enemy.h"
 #include "../../Util/ParticleTypes.h"
 
-class Slime : public Mob, public Enemy
-{
+class Slime : public Mob, public Enemy {
 public:
-	eINSTANCEOF GetType() { return eTYPE_SLIME; }
-	static Entity *create(Level *level) { return new Slime(level); }
+    eINSTANCEOF GetType() { return eTYPE_SLIME; }
+    static Entity* create(Level* level) { return new Slime(level); }
 
 private:
-	static const int ID_SIZE = 16;
+    static const int ID_SIZE = 16;
 
 public:
-	float targetSquish;
-	float squish;
-	float oSquish;
+    float targetSquish;
+    float squish;
+    float oSquish;
 
 private:
-	int jumpDelay;
+    int jumpDelay;
 
-	void _init();
-
-public:
-	Slime(Level *level);
-
-protected: 
-	virtual void defineSynchedData();
+    void _init();
 
 public:
-	using Entity::setSize;
-
-	virtual void setSize(int size);
-	virtual int getMaxHealth();
-	virtual int getSize();
-	virtual void addAdditonalSaveData(CompoundTag *tag);
-	virtual void readAdditionalSaveData(CompoundTag *tag);
+    Slime(Level* level);
 
 protected:
-	virtual ePARTICLE_TYPE getParticleName();
-	virtual int getSquishSound();
+    virtual void defineSynchedData();
 
 public:
-	virtual void tick();
+    using Entity::setSize;
+
+    virtual void setSize(int size);
+    virtual int getMaxHealth();
+    virtual int getSize();
+    virtual void addAdditonalSaveData(CompoundTag* tag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
-	virtual void serverAiStep();
-	virtual void decreaseSquish();
-	virtual int getJumpDelay();
-	virtual std::shared_ptr<Slime> createChild();
+    virtual ePARTICLE_TYPE getParticleName();
+    virtual int getSquishSound();
 
 public:
-	virtual void remove();
-	virtual void playerTouch(std::shared_ptr<Player> player);
+    virtual void tick();
 
 protected:
-	virtual bool isDealsDamage();
-	virtual int getAttackDamage();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
-	virtual int getDeathLoot();
+    virtual void serverAiStep();
+    virtual void decreaseSquish();
+    virtual int getJumpDelay();
+    virtual std::shared_ptr<Slime> createChild();
 
 public:
-	virtual bool canSpawn();
+    virtual void remove();
+    virtual void playerTouch(std::shared_ptr<Player> player);
 
 protected:
-	virtual float getSoundVolume();
+    virtual bool isDealsDamage();
+    virtual int getAttackDamage();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
+    virtual int getDeathLoot();
 
 public:
-	virtual int getMaxHeadXRot();
+    virtual bool canSpawn();
 
 protected:
-	virtual bool doPlayJumpSound();
-	virtual bool doPlayLandSound();
+    virtual float getSoundVolume();
+
+public:
+    virtual int getMaxHeadXRot();
+
+protected:
+    virtual bool doPlayJumpSound();
+    virtual bool doPlayLandSound();
 };

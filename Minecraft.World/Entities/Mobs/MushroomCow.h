@@ -2,16 +2,16 @@
 
 #include "Cow.h"
 
-class MushroomCow : public Cow
-{
+class MushroomCow : public Cow {
 public:
-	eINSTANCEOF GetType() { return eTYPE_MUSHROOMCOW; }
-	static Entity *create(Level *level) { return new MushroomCow(level); }
+    eINSTANCEOF GetType() { return eTYPE_MUSHROOMCOW; }
+    static Entity* create(Level* level) { return new MushroomCow(level); }
 
 public:
-	MushroomCow(Level *level);
+    MushroomCow(Level* level);
 
-	virtual bool interact(std::shared_ptr<Player> player);
-	virtual bool canSpawn();	// 4J added
-	virtual std::shared_ptr<AgableMob> getBreedOffspring(std::shared_ptr<AgableMob> target);
+    virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool canSpawn();  // 4J added
+    virtual std::shared_ptr<AgableMob> getBreedOffspring(
+        std::shared_ptr<AgableMob> target);
 };

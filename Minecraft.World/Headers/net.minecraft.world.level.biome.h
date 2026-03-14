@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "../WorldGen/Biomes/Biome.h"
 #include "../WorldGen/Biomes/ForestBiome.h"
 #include "../WorldGen/Biomes/HellBiome.h"
@@ -28,5 +27,5 @@
 // 1.1
 #include "../WorldGen/Biomes/BeachBiome.h"
 
-//1.2.3
+// 1.2.3
 #include "../WorldGen/Biomes/JungleBiome.h"

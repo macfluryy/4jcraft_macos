@@ -1,22 +1,21 @@
-//package net.minecraft.world.item.crafting;
+// package net.minecraft.world.item.crafting;
 
-//import net.minecraft.world.item.*;
-//import net.minecraft.world.level.tile.Tile;
+// import net.minecraft.world.item.*;
+// import net.minecraft.world.level.tile.Tile;
 
 #pragma once
 
 #define MAX_WEAPON_RECIPES 2
-class WeaponRecipies 
-{
+class WeaponRecipies {
 public:
-	// 4J - added for common ctor code
-	void _init();
-	WeaponRecipies()			{_init();}
+    // 4J - added for common ctor code
+    void _init();
+    WeaponRecipies() { _init(); }
 
 private:
-	static std::wstring shapes[][4];
-	std::vector <Object *> *map;
-	
+    static std::wstring shapes[][4];
+    std::vector<Object*>* map;
+
 public:
-	void addRecipes(Recipes *r);
+    void addRecipes(Recipes* r);
 };

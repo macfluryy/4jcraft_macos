@@ -6,33 +6,32 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "MoveTowardsRestrictionGoal.h"
 
-MoveTowardsRestrictionGoal::MoveTowardsRestrictionGoal(PathfinderMob *mob, float speed)
-{
-	wantedX = wantedY = wantedZ = 0.0;
+MoveTowardsRestrictionGoal::MoveTowardsRestrictionGoal(PathfinderMob* mob,
+                                                       float speed) {
+    wantedX = wantedY = wantedZ = 0.0;
 
-	this->mob = mob;
-	this->speed = speed;
-	setRequiredControlFlags(Control::MoveControlFlag);
+    this->mob = mob;
+    this->speed = speed;
+    setRequiredControlFlags(Control::MoveControlFlag);
 }
 
-bool MoveTowardsRestrictionGoal::canUse()
-{
-	if (mob->isWithinRestriction()) return false;
-	Pos *towards = mob->getRestrictCenter();
-	Vec3 *pos = RandomPos::getPosTowards(std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16, 7, Vec3::newTemp(towards->x, towards->y, towards->z));
-	if (pos == NULL) return false;
-	wantedX = pos->x;
-	wantedY = pos->y;
-	wantedZ = pos->z;
-	return true;
+bool MoveTowardsRestrictionGoal::canUse() {
+    if (mob->isWithinRestriction()) return false;
+    Pos* towards = mob->getRestrictCenter();
+    Vec3* pos = RandomPos::getPosTowards(
+        std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
+        7, Vec3::newTemp(towards->x, towards->y, towards->z));
+    if (pos == NULL) return false;
+    wantedX = pos->x;
+    wantedY = pos->y;
+    wantedZ = pos->z;
+    return true;
 }
 
-bool MoveTowardsRestrictionGoal::canContinueToUse()
-{
-	return !mob->getNavigation()->isDone();
+bool MoveTowardsRestrictionGoal::canContinueToUse() {
+    return !mob->getNavigation()->isDone();
 }
 
-void MoveTowardsRestrictionGoal::start()
-{
-	mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speed);
+void MoveTowardsRestrictionGoal::start() {
+    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speed);
 }

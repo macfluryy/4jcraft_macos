@@ -4,19 +4,14 @@
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "FloatGoal.h"
 
-FloatGoal::FloatGoal(Mob *mob)
-{
-	this->mob = mob;
-	setRequiredControlFlags(Control::JumpControlFlag);
-	mob->getNavigation()->setCanFloat(true);
+FloatGoal::FloatGoal(Mob* mob) {
+    this->mob = mob;
+    setRequiredControlFlags(Control::JumpControlFlag);
+    mob->getNavigation()->setCanFloat(true);
 }
 
-bool FloatGoal::canUse()
-{
-	return (mob->isInWater() || mob->isInLava());
-}
+bool FloatGoal::canUse() { return (mob->isInWater() || mob->isInLava()); }
 
-void FloatGoal::tick()
-{
-	if (mob->getRandom()->nextFloat() < 0.8f) mob->getJumpControl()->jump();
+void FloatGoal::tick() {
+    if (mob->getRandom()->nextFloat() < 0.8f) mob->getJumpControl()->jump();
 }

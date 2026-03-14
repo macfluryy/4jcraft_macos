@@ -496,6 +496,8 @@ void UIComponent_TutorialPopup::render(S32 width, S32 height, C4JRender::eViewpo
 			xPos = (S32)(ui.getScreenWidth() / 2);
 			yPos = (S32)(ui.getScreenHeight() / 2);
 			break;
+		default:
+			break;
 		}
 		//Adjust for safezone
 		switch( viewport )
@@ -507,6 +509,8 @@ void UIComponent_TutorialPopup::render(S32 width, S32 height, C4JRender::eViewpo
 			case C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_RIGHT:
 				yPos += getSafeZoneHalfHeight();
 				break;
+			default:
+				break;
 		}
 		switch( viewport )
 		{
@@ -516,6 +520,8 @@ void UIComponent_TutorialPopup::render(S32 width, S32 height, C4JRender::eViewpo
 			case C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_RIGHT:
 			case C4JRender::VIEWPORT_TYPE_QUADRANT_BOTTOM_RIGHT:
 				xPos -= getSafeZoneHalfWidth();
+				break;
+			default:
 				break;
 		}
 		ui.setupRenderPosition(xPos, yPos);

@@ -2,42 +2,36 @@
 #include "SmoothStoneBrickTile.h"
 #include "../Headers/net.minecraft.world.h"
 
-const std::wstring SmoothStoneBrickTile::TEXTURE_NAMES[] = {L"stonebricksmooth", L"stonebricksmooth_mossy", L"stonebricksmooth_cracked", L"stonebricksmooth_carved"};
+const std::wstring SmoothStoneBrickTile::TEXTURE_NAMES[] = {
+    L"stonebricksmooth", L"stonebricksmooth_mossy", L"stonebricksmooth_cracked",
+    L"stonebricksmooth_carved"};
 
-const unsigned int SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES[SMOOTH_STONE_BRICK_NAMES_LENGTH] = {	IDS_TILE_STONE_BRICK_SMOOTH,
-													IDS_TILE_STONE_BRICK_SMOOTH_MOSSY,
-													IDS_TILE_STONE_BRICK_SMOOTH_CRACKED,
-													IDS_TILE_STONE_BRICK_SMOOTH_CHISELED
-												};
+const unsigned int SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES
+    [SMOOTH_STONE_BRICK_NAMES_LENGTH] = {IDS_TILE_STONE_BRICK_SMOOTH,
+                                         IDS_TILE_STONE_BRICK_SMOOTH_MOSSY,
+                                         IDS_TILE_STONE_BRICK_SMOOTH_CRACKED,
+                                         IDS_TILE_STONE_BRICK_SMOOTH_CHISELED};
 
-SmoothStoneBrickTile::SmoothStoneBrickTile(int id) : Tile(id, Material::stone)
-{
-	icons = NULL;
+SmoothStoneBrickTile::SmoothStoneBrickTile(int id) : Tile(id, Material::stone) {
+    icons = NULL;
 }
 
-Icon *SmoothStoneBrickTile::getTexture(int face, int data)
-{
-	if (data < 0 || data >= SMOOTH_STONE_BRICK_NAMES_LENGTH) data = 0;
-	return icons[data];
+Icon* SmoothStoneBrickTile::getTexture(int face, int data) {
+    if (data < 0 || data >= SMOOTH_STONE_BRICK_NAMES_LENGTH) data = 0;
+    return icons[data];
 }
 
-int SmoothStoneBrickTile::getSpawnResourcesAuxValue(int data)
-{
-	return data;
+int SmoothStoneBrickTile::getSpawnResourcesAuxValue(int data) { return data; }
+
+unsigned int SmoothStoneBrickTile::getDescriptionId(int iData /*= -1*/) {
+    if (iData < 0) iData = 0;
+    return SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES[iData];
 }
 
-unsigned int SmoothStoneBrickTile::getDescriptionId(int iData /*= -1*/)
-{
-	if(iData < 0 ) iData = 0;
-	return SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES[iData];
-}
+void SmoothStoneBrickTile::registerIcons(IconRegister* iconRegister) {
+    icons = new Icon*[SMOOTH_STONE_BRICK_NAMES_LENGTH];
 
-void SmoothStoneBrickTile::registerIcons(IconRegister *iconRegister)
-{
-	icons = new Icon*[SMOOTH_STONE_BRICK_NAMES_LENGTH];
-
-	for (int i = 0; i < SMOOTH_STONE_BRICK_NAMES_LENGTH; i++)
-	{
-		icons[i] = iconRegister->registerIcon(TEXTURE_NAMES[i]);
-	}
+    for (int i = 0; i < SMOOTH_STONE_BRICK_NAMES_LENGTH; i++) {
+        icons[i] = iconRegister->registerIcon(TEXTURE_NAMES[i]);
+    }
 }

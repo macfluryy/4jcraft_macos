@@ -9,54 +9,54 @@ class LevelType;
 #include "../../Util/Vec3.h"
 #include "../../Util/Pos.h"
 
-class Dimension
-{
+class Dimension {
 public:
-    Level *level;
-	LevelType *levelType;
-    BiomeSource *biomeSource;
-    bool ultraWarm ;
+    Level* level;
+    LevelType* levelType;
+    BiomeSource* biomeSource;
+    bool ultraWarm;
     bool hasCeiling;
-    float *brightnessRamp;
+    float* brightnessRamp;
     int id;
 
-    virtual void init(Level *level);
+    virtual void init(Level* level);
 
 protected:
     virtual void updateLightRamp();
     virtual void init();
 
 public:
-	Dimension();
-	virtual ~Dimension();
-	virtual ChunkSource *createRandomLevelSource() const;
-	virtual ChunkSource *createFlatLevelSource() const;
-    virtual ChunkStorage *createStorage(File dir);
+    Dimension();
+    virtual ~Dimension();
+    virtual ChunkSource* createRandomLevelSource() const;
+    virtual ChunkSource* createFlatLevelSource() const;
+    virtual ChunkStorage* createStorage(File dir);
 
     virtual bool isValidSpawn(int x, int z) const;
 
     virtual float getTimeOfDay(__int64 time, float a) const;
-	virtual int getMoonPhase(__int64 time, float a) const;
-	virtual bool isNaturalDimension();
+    virtual int getMoonPhase(__int64 time, float a) const;
+    virtual bool isNaturalDimension();
+
 private:
     static const int fogColor = 0xc0d8ff;
 
     float sunriseCol[4];
 
 public:
-    virtual float *getSunriseColor(float td, float a);
-    virtual Vec3 *getFogColor(float td, float a) const;
+    virtual float* getSunriseColor(float td, float a);
+    virtual Vec3* getFogColor(float td, float a) const;
     virtual bool mayRespawn() const;
-    static Dimension *getNew(int id);
+    static Dimension* getNew(int id);
     virtual float getCloudHeight();
     virtual bool hasGround();
-	virtual Pos *getSpawnPos();
+    virtual Pos* getSpawnPos();
 
-	int getSpawnYPosition();
-	virtual bool hasBedrockFog(); 
-	double getClearColorScale();
-	virtual bool isFoggyAt(int x, int z);
+    int getSpawnYPosition();
+    virtual bool hasBedrockFog();
+    double getClearColorScale();
+    virtual bool isFoggyAt(int x, int z);
 
-	// 4J Added
-	virtual int getXZSize();
+    // 4J Added
+    virtual int getXZSize();
 };

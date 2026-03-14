@@ -7,205 +7,185 @@
 #include "PressurePlateTile.h"
 #include "../Util/SoundTypes.h"
 
-PressurePlateTile::PressurePlateTile(int id, const std::wstring &tex, Material *material, Sensitivity sensitivity) : Tile(id, material, false) 
-{
-	this->sensitivity = sensitivity;
-	this->setTicking(true);
-	this->texture = tex;
+PressurePlateTile::PressurePlateTile(int id, const std::wstring& tex,
+                                     Material* material,
+                                     Sensitivity sensitivity)
+    : Tile(id, material, false) {
+    this->sensitivity = sensitivity;
+    this->setTicking(true);
+    this->texture = tex;
 
-	float o = 1 / 16.0f;
-	setShape(o, 0, o, 1 - o, 0.5f / 16.0f, 1 - o);
+    float o = 1 / 16.0f;
+    setShape(o, 0, o, 1 - o, 0.5f / 16.0f, 1 - o);
 }
 
-int PressurePlateTile::getTickDelay()
-{
-	return 20;
+int PressurePlateTile::getTickDelay() { return 20; }
+
+AABB* PressurePlateTile::getAABB(Level* level, int x, int y, int z) {
+    return NULL;
 }
 
-AABB *PressurePlateTile::getAABB(Level *level, int x, int y, int z)
-{
-	return NULL;
+bool PressurePlateTile::isSolidRender(bool isServerLevel) { return false; }
+
+bool PressurePlateTile::blocksLight() { return false; }
+
+bool PressurePlateTile::isCubeShaped() { return false; }
+
+bool PressurePlateTile::isPathfindable(LevelSource* level, int x, int y,
+                                       int z) {
+    return true;
 }
 
-bool PressurePlateTile::isSolidRender(bool isServerLevel)
-{
-	return false;
+bool PressurePlateTile::mayPlace(Level* level, int x, int y, int z) {
+    return level->isTopSolidBlocking(x, y - 1, z) ||
+           FenceTile::isFence(level->getTile(x, y - 1, z));
 }
 
-bool PressurePlateTile::blocksLight()
-{
-	return false;
-}
-
-bool PressurePlateTile::isCubeShaped()
-{
-	return false;
-}
-
-bool PressurePlateTile::isPathfindable(LevelSource *level, int x, int y, int z)
-{
-	return true;
-}
-
-bool PressurePlateTile::mayPlace(Level *level, int x, int y, int z)
-{
-	return level->isTopSolidBlocking(x, y - 1, z) || FenceTile::isFence(level->getTile(x, y - 1, z));
-}
-
-void PressurePlateTile::neighborChanged(Level *level, int x, int y, int z, int type)
-{
+void PressurePlateTile::neighborChanged(Level* level, int x, int y, int z,
+                                        int type) {
     bool replace = false;
 
-   if (!level->isTopSolidBlocking(x, y - 1, z) && !FenceTile::isFence(level->getTile(x, y - 1, z))) replace = true;
+    if (!level->isTopSolidBlocking(x, y - 1, z) &&
+        !FenceTile::isFence(level->getTile(x, y - 1, z)))
+        replace = true;
 
-    if (replace)
-	{
+    if (replace) {
         this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
         level->setTile(x, y, z, 0);
     }
 }
 
-void PressurePlateTile::tick(Level *level, int x, int y, int z, Random *random)
-{
+void PressurePlateTile::tick(Level* level, int x, int y, int z,
+                             Random* random) {
     if (level->isClientSide) return;
-    if (level->getData(x, y, z) == 0)
-	{
+    if (level->getData(x, y, z) == 0) {
         return;
     }
 
     checkPressed(level, x, y, z);
 }
 
-void PressurePlateTile::entityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity)
-{
+void PressurePlateTile::entityInside(Level* level, int x, int y, int z,
+                                     std::shared_ptr<Entity> entity) {
     if (level->isClientSide) return;
 
-    if (level->getData(x, y, z) == 1)
-	{
+    if (level->getData(x, y, z) == 1) {
         return;
     }
 
     checkPressed(level, x, y, z);
 }
 
-void PressurePlateTile::checkPressed(Level *level, int x, int y, int z)
-{
+void PressurePlateTile::checkPressed(Level* level, int x, int y, int z) {
     bool wasPressed = level->getData(x, y, z) == 1;
     bool shouldBePressed = false;
 
     float b = 2 / 16.0f;
-    std::vector<std::shared_ptr<Entity> > *entities = NULL;
+    std::vector<std::shared_ptr<Entity> >* entities = NULL;
 
-	bool entitiesToBeFreed = false;
-    if (sensitivity == PressurePlateTile::everything) entities = level->getEntities(nullptr, AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
+    bool entitiesToBeFreed = false;
+    if (sensitivity == PressurePlateTile::everything)
+        entities = level->getEntities(
+            nullptr,
+            AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
 
-    if (sensitivity == PressurePlateTile::mobs)
-	{
-		entities = level->getEntitiesOfClass(typeid(Mob), AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
-		entitiesToBeFreed = true;
-	}
-    if (sensitivity == PressurePlateTile::players)
-	{
-		entities = level->getEntitiesOfClass(typeid(Player), AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
-		entitiesToBeFreed = true;
-	}
+    if (sensitivity == PressurePlateTile::mobs) {
+        entities = level->getEntitiesOfClass(
+            typeid(Mob),
+            AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
+        entitiesToBeFreed = true;
+    }
+    if (sensitivity == PressurePlateTile::players) {
+        entities = level->getEntitiesOfClass(
+            typeid(Player),
+            AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b));
+        entitiesToBeFreed = true;
+    }
 
-    if (!entities->empty())
-	{
+    if (!entities->empty()) {
         shouldBePressed = true;
     }
 
-    if (shouldBePressed && !wasPressed)
-	{
+    if (shouldBePressed && !wasPressed) {
         level->setData(x, y, z, 1);
         level->updateNeighborsAt(x, y, z, id);
         level->updateNeighborsAt(x, y - 1, z, id);
         level->setTilesDirty(x, y, z, x, y, z);
 
-        level->playSound(x + 0.5, y + 0.1, z + 0.5, eSoundType_RANDOM_CLICK, 0.3f, 0.6f);
+        level->playSound(x + 0.5, y + 0.1, z + 0.5, eSoundType_RANDOM_CLICK,
+                         0.3f, 0.6f);
     }
-    if (!shouldBePressed && wasPressed)
-	{
+    if (!shouldBePressed && wasPressed) {
         level->setData(x, y, z, 0);
         level->updateNeighborsAt(x, y, z, id);
         level->updateNeighborsAt(x, y - 1, z, id);
         level->setTilesDirty(x, y, z, x, y, z);
 
-        level->playSound(x + 0.5, y + 0.1, z + 0.5, eSoundType_RANDOM_CLICK, 0.3f, 0.5f);
+        level->playSound(x + 0.5, y + 0.1, z + 0.5, eSoundType_RANDOM_CLICK,
+                         0.3f, 0.5f);
     }
 
-    if (shouldBePressed)
-	{
+    if (shouldBePressed) {
         level->addToTickNextTick(x, y, z, id, getTickDelay());
     }
 
-	if( entitiesToBeFreed )
-	{
-		delete entities;
-	}
+    if (entitiesToBeFreed) {
+        delete entities;
+    }
 }
 
-void PressurePlateTile::onRemove(Level *level, int x, int y, int z, int id, int data)
-{
-    if (data > 0)
-	{
+void PressurePlateTile::onRemove(Level* level, int x, int y, int z, int id,
+                                 int data) {
+    if (data > 0) {
         level->updateNeighborsAt(x, y, z, this->id);
         level->updateNeighborsAt(x, y - 1, z, this->id);
     }
     Tile::onRemove(level, x, y, z, id, data);
 }
 
-void PressurePlateTile::updateShape(LevelSource *level, int x, int y, int z, int forceData, std::shared_ptr<TileEntity> forceEntity) // 4J added forceData, forceEntity param
+void PressurePlateTile::updateShape(
+    LevelSource* level, int x, int y, int z, int forceData,
+    std::shared_ptr<TileEntity>
+        forceEntity)  // 4J added forceData, forceEntity param
 {
     bool pressed = level->getData(x, y, z) == 1;
 
     float o = 1 / 16.0f;
-    if (pressed)
-	{
+    if (pressed) {
         this->setShape(o, 0, o, 1 - o, 0.5f / 16.0f, 1 - o);
-    }
-	else
-	{
+    } else {
         setShape(o, 0, o, 1 - o, 1 / 16.0f, 1 - o);
     }
 }
 
-bool PressurePlateTile::getSignal(LevelSource *level, int x, int y, int z, int dir)
-{
-	return (level->getData(x, y, z)) > 0;
+bool PressurePlateTile::getSignal(LevelSource* level, int x, int y, int z,
+                                  int dir) {
+    return (level->getData(x, y, z)) > 0;
 }
 
-bool PressurePlateTile::getDirectSignal(Level *level, int x, int y, int z, int dir)
-{
+bool PressurePlateTile::getDirectSignal(Level* level, int x, int y, int z,
+                                        int dir) {
     if (level->getData(x, y, z) == 0) return false;
     return (dir == 1);
 }
 
-bool PressurePlateTile::isSignalSource()
-{
-	return true;
-}
+bool PressurePlateTile::isSignalSource() { return true; }
 
-void PressurePlateTile::updateDefaultShape()
-{
+void PressurePlateTile::updateDefaultShape() {
     float x = 8 / 16.0f;
     float y = 2 / 16.0f;
     float z = 8 / 16.0f;
     setShape(0.5f - x, 0.5f - y, 0.5f - z, 0.5f + x, 0.5f + y, 0.5f + z);
-
 }
 
-bool PressurePlateTile::shouldTileTick(Level *level, int x,int y,int z)
-{
+bool PressurePlateTile::shouldTileTick(Level* level, int x, int y, int z) {
     return level->getData(x, y, z) != 0;
 }
 
-int PressurePlateTile::getPistonPushReaction()
-{
-	return Material::PUSH_DESTROY;
+int PressurePlateTile::getPistonPushReaction() {
+    return Material::PUSH_DESTROY;
 }
 
-void PressurePlateTile::registerIcons(IconRegister *iconRegister)
-{
-	icon = iconRegister->registerIcon(texture);
+void PressurePlateTile::registerIcons(IconRegister* iconRegister) {
+    icon = iconRegister->registerIcon(texture);
 }

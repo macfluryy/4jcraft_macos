@@ -1,9 +1,8 @@
 #pragma once
 
-class BlockReplacements
-{
+class BlockReplacements {
 public:
-	static void staticCtor();
+    static void staticCtor();
 
 private:
     static byteArray replacements;

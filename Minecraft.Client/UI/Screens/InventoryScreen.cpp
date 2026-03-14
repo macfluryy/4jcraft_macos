@@ -10,34 +10,29 @@
 #include "StatsScreen.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.stats.h"
 
-InventoryScreen::InventoryScreen(std::shared_ptr<Player> player) : AbstractContainerScreen(player->inventoryMenu)
-{
-	xMouse = yMouse = 0.0f; // 4J added
+InventoryScreen::InventoryScreen(std::shared_ptr<Player> player)
+    : AbstractContainerScreen(player->inventoryMenu) {
+    xMouse = yMouse = 0.0f;  // 4J added
 
     this->passEvents = true;
-    player->awardStat(GenericStats::openInventory(), GenericStats::param_noArgs());
+    player->awardStat(GenericStats::openInventory(),
+                      GenericStats::param_noArgs());
 }
 
-void InventoryScreen::init()
-{
-	buttons.clear();
+void InventoryScreen::init() { buttons.clear(); }
+
+void InventoryScreen::renderLabels() {
+    font->draw(L"Crafting", 84 + 2, 8 * 2, 0x404040);
 }
 
-void InventoryScreen::renderLabels()
-{
-	font->draw(L"Crafting", 84 + 2, 8 * 2, 0x404040);
-}
-
-void InventoryScreen::render(int xm, int ym, float a)
-{
+void InventoryScreen::render(int xm, int ym, float a) {
     AbstractContainerScreen::render(xm, ym, a);
     this->xMouse = (float)xm;
     this->yMouse = (float)ym;
 }
 
-void InventoryScreen::renderBg(float a)
-{
-	// 4J Unused
+void InventoryScreen::renderBg(float a) {
+    // 4J Unused
 #if 0
     int tex = minecraft->textures->loadTexture(L"/gui/inventory.png");
     glColor4f(1, 1, 1, 1);
@@ -83,14 +78,13 @@ void InventoryScreen::renderBg(float a)
 #endif
 }
 
-void InventoryScreen::buttonClicked(Button *button)
-{
-    if (button->id == 0)
-	{
-		minecraft->setScreen(new AchievementScreen(minecraft->stats[minecraft->player->GetXboxPad()]));
+void InventoryScreen::buttonClicked(Button* button) {
+    if (button->id == 0) {
+        minecraft->setScreen(new AchievementScreen(
+            minecraft->stats[minecraft->player->GetXboxPad()]));
     }
-    if (button->id == 1)
-	{
-        minecraft->setScreen(new StatsScreen(this, minecraft->stats[minecraft->player->GetXboxPad()]));
+    if (button->id == 1) {
+        minecraft->setScreen(new StatsScreen(
+            this, minecraft->stats[minecraft->player->GetXboxPad()]));
     }
 }

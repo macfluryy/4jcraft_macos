@@ -1,12 +1,10 @@
 #pragma once
 
-
 #include "TileItem.h"
 
-class PistonTileItem : public TileItem 
-{
+class PistonTileItem : public TileItem {
 public:
-	PistonTileItem(int id);
+    PistonTileItem(int id);
 
-	virtual int getLevelDataForAuxValue(int auxValue);
+    virtual int getLevelDataForAuxValue(int auxValue);
 };

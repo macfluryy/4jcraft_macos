@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "ChunkSource.h"
 
 #ifndef _CONTENT_PACKAGE
@@ -13,8 +12,7 @@ class StrongholdFeature;
 class VillageFeature;
 class MineShaftFeature;
 
-class CustomLevelSource : public ChunkSource
-{
+class CustomLevelSource : public ChunkSource {
 public:
     static const double SNOW_CUTOFF;
     static const double SNOW_SCALE;
@@ -23,57 +21,59 @@ public:
     static const int CHUNK_WIDTH = 4;
 
 private:
-
 #ifdef _OVERRIDE_HEIGHTMAP
-	Random *random;
-	Random *pprandom;	// 4J - added
-    PerlinNoise *perlinNoise3;
-	LargeFeature *caveFeature;
- 	StrongholdFeature *strongholdFeature;
- 	VillageFeature *villageFeature;
- 	MineShaftFeature *mineShaftFeature;
- 	LargeFeature *canyonFeature;
-	Level *level;
+    Random* random;
+    Random* pprandom;  // 4J - added
+    PerlinNoise* perlinNoise3;
+    LargeFeature* caveFeature;
+    StrongholdFeature* strongholdFeature;
+    VillageFeature* villageFeature;
+    MineShaftFeature* mineShaftFeature;
+    LargeFeature* canyonFeature;
+    Level* level;
 #endif
 
-	byteArray m_heightmapOverride;
-	byteArray m_waterheightOverride;
+    byteArray m_heightmapOverride;
+    byteArray m_waterheightOverride;
 
 private:
-
-	const bool generateStructures;
-
-public:
-	CustomLevelSource(Level *level, __int64 seed, bool generateStructures);
-	~CustomLevelSource();
+    const bool generateStructures;
 
 public:
-	void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    CustomLevelSource(Level* level, __int64 seed, bool generateStructures);
+    ~CustomLevelSource();
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes);
+    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+
+public:
+    void buildSurfaces(int xOffs, int zOffs, byteArray blocks,
+                       BiomeArray biomes);
 
 private:
-    virtual LevelChunk *create(int x, int z);
+    virtual LevelChunk* create(int x, int z);
 
 public:
-    virtual LevelChunk *getChunk(int xOffs, int zOffs);
-	virtual void lightChunk(LevelChunk *lc);	// 4J added
+    virtual LevelChunk* getChunk(int xOffs, int zOffs);
+    virtual void lightChunk(LevelChunk* lc);  // 4J added
 
 public:
-	virtual bool hasChunk(int x, int y);
+    virtual bool hasChunk(int x, int y);
 
 private:
-	void calcWaterDepths(ChunkSource *parent, int xt, int zt);
+    void calcWaterDepths(ChunkSource* parent, int xt, int zt);
 
 public:
-    virtual void postProcess(ChunkSource *parent, int xt, int zt);
-    virtual bool save(bool force, ProgressListener *progressListener);
+    virtual void postProcess(ChunkSource* parent, int xt, int zt);
+    virtual bool save(bool force, ProgressListener* progressListener);
     virtual bool tick();
     virtual bool shouldSave();
     virtual std::wstring gatherStats();
 
 public:
-	virtual std::vector<Biome::MobSpawnerData *> *getMobsAt(MobCategory *mobCategory, int x, int y, int z);
-	virtual TilePos *findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z); 
+    virtual std::vector<Biome::MobSpawnerData*>* getMobsAt(
+        MobCategory* mobCategory, int x, int y, int z);
+    virtual TilePos* findNearestMapFeature(Level* level,
+                                           const std::wstring& featureName,
+                                           int x, int y, int z);
 };

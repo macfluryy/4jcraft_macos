@@ -6,30 +6,32 @@ class Textures;
 class Player;
 class MapItemSavedData;
 
-class Minimap
-{
+class Minimap {
 private:
-	static const int w = MapItem::IMAGE_WIDTH;
+    static const int w = MapItem::IMAGE_WIDTH;
     static const int h = MapItem::IMAGE_HEIGHT;
 #ifdef __ORBIS__
-	static short LUT[256];	// 4J added
+    static short LUT[256];  // 4J added
 #else
-	static int LUT[256];	// 4J added
+    static int LUT[256];  // 4J added
 #endif
-	static bool genLUT;		// 4J added
-	int renderCount;		// 4J added
-	bool m_optimised;		// 4J Added
+    static bool genLUT;  // 4J added
+    int renderCount;     // 4J added
+    bool m_optimised;    // 4J Added
 #ifdef __ORBIS__
-	shortArray pixels;
+    shortArray pixels;
 #else
     intArray pixels;
 #endif
     int mapTexture;
-    Options *options;
-    Font *font;
+    Options* options;
+    Font* font;
 
 public:
-	Minimap(Font *font, Options *options, Textures *textures, bool optimised = true); // 4J Added optimised param
-	static void reloadColours();
-    void render(std::shared_ptr<Player> player, Textures *textures, std::shared_ptr<MapItemSavedData> data, int entityId); // 4J added entityId param
+    Minimap(Font* font, Options* options, Textures* textures,
+            bool optimised = true);  // 4J Added optimised param
+    static void reloadColours();
+    void render(std::shared_ptr<Player> player, Textures* textures,
+                std::shared_ptr<MapItemSavedData> data,
+                int entityId);  // 4J added entityId param
 };

@@ -123,6 +123,8 @@ int TutorialHint::tick()
 	case e_Hint_SwimUp:
 		if( Minecraft::GetInstance()->localplayers[m_tutorial->getPad()]->isUnderLiquid(Material::water) ) returnVal = m_descriptionId; 
 		break;
+	default:
+		break;
 	}
 	return returnVal;
 }

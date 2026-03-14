@@ -5,38 +5,26 @@
 #include "PacketListener.h"
 #include "DebugOptionsPacket.h"
 
+DebugOptionsPacket::~DebugOptionsPacket() {}
 
+DebugOptionsPacket::DebugOptionsPacket() { m_uiVal = 0L; }
 
-DebugOptionsPacket::~DebugOptionsPacket()
-{
+DebugOptionsPacket::DebugOptionsPacket(unsigned int uiVal) {
+    this->m_uiVal = uiVal;
 }
 
-DebugOptionsPacket::DebugOptionsPacket()
-{
-	m_uiVal = 0L;
+void DebugOptionsPacket::handle(PacketListener* listener) {
+    listener->handleDebugOptions(shared_from_this());
 }
 
-DebugOptionsPacket::DebugOptionsPacket(unsigned int uiVal)
+void DebugOptionsPacket::read(DataInputStream* dis)  // throws IOException
 {
-	this->m_uiVal = uiVal;
+    m_uiVal = (unsigned int)dis->readInt();
 }
 
-void DebugOptionsPacket::handle(PacketListener *listener)
+void DebugOptionsPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	listener->handleDebugOptions(shared_from_this());
+    dos->writeInt((int)m_uiVal);
 }
 
-void DebugOptionsPacket::read(DataInputStream *dis) //throws IOException
-{
-	m_uiVal = (unsigned int)dis->readInt();
-}
-
-void DebugOptionsPacket::write(DataOutputStream *dos) // throws IOException
-{
-	dos->writeInt((int)m_uiVal);
-}
-
-int DebugOptionsPacket::getEstimatedSize() 
-{
-	return sizeof(int);
-}
+int DebugOptionsPacket::getEstimatedSize() { return sizeof(int); }

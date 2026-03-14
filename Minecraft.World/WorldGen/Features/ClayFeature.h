@@ -4,14 +4,13 @@
 
 class Level;
 
-class ClayFeature : public Feature
-{
+class ClayFeature : public Feature {
 private:
-	int tile;
-	int radius;
+    int tile;
+    int radius;
 
 public:
-	ClayFeature (int radius);
+    ClayFeature(int radius);
 
-	virtual bool place(Level *level, Random *random, int x, int y, int z);
+    virtual bool place(Level* level, Random* random, int x, int y, int z);
 };

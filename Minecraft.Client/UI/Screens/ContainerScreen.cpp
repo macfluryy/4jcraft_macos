@@ -3,31 +3,29 @@
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
-ContainerScreen::ContainerScreen(std::shared_ptr<Container> inventory, std::shared_ptr<Container> container) : AbstractContainerScreen(new ContainerMenu(inventory, container))
-{
-	this->inventory = inventory;
-	this->container = container;
-	this->passEvents = false;
+ContainerScreen::ContainerScreen(std::shared_ptr<Container> inventory,
+                                 std::shared_ptr<Container> container)
+    : AbstractContainerScreen(new ContainerMenu(inventory, container)) {
+    this->inventory = inventory;
+    this->container = container;
+    this->passEvents = false;
 
-	int defaultHeight = 222;
-	int noRowHeight = defaultHeight - 6 * 18;
-	containerRows = container->getContainerSize() / 9;
+    int defaultHeight = 222;
+    int noRowHeight = defaultHeight - 6 * 18;
+    containerRows = container->getContainerSize() / 9;
 
-	imageHeight = noRowHeight + containerRows * 18;
-
+    imageHeight = noRowHeight + containerRows * 18;
 }
 
-void ContainerScreen::renderLabels()
-{
+void ContainerScreen::renderLabels() {
 #if 0
 	font->draw(container->getName(), 8, 2 + 2 + 2, 0x404040);
 	font->draw(inventory->getName(), 8, imageHeight - 96 + 2, 0x404040);
 #endif
 }
 
-void ContainerScreen::renderBg(float a)
-{
-	// 4J Unused
+void ContainerScreen::renderBg(float a) {
+    // 4J Unused
 #if 0
 	int tex = minecraft->textures->loadTexture(L"/gui/container.png");
 	glColor4f(1, 1, 1, 1);

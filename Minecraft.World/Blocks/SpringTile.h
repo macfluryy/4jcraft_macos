@@ -2,16 +2,15 @@
 
 #include "Tile.h"
 
-class SpringTile : public Tile
-{
+class SpringTile : public Tile {
 private:
-	int liquidTileId;
+    int liquidTileId;
 
 protected:
-	SpringTile(int id, int liquidTileId);
+    SpringTile(int id, int liquidTileId);
 
 public:
-	void onPlace(Level *level, int x, int y, int z);
+    void onPlace(Level* level, int x, int y, int z);
 
-	void tick(Level *level, int x, int y, int z, Random *random);
+    void tick(Level* level, int x, int y, int z, Random* random);
 };

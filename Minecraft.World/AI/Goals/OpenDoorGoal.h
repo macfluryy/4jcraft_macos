@@ -2,17 +2,16 @@
 
 #include "DoorInteractGoal.h"
 
-class OpenDoorGoal : public DoorInteractGoal
-{
+class OpenDoorGoal : public DoorInteractGoal {
 private:
-	bool closeDoor;
-	int forgetTime;
+    bool closeDoor;
+    int forgetTime;
 
 public:
-	OpenDoorGoal(Mob *mob, bool closeDoorAfter);
+    OpenDoorGoal(Mob* mob, bool closeDoorAfter);
 
-	virtual bool canContinueToUse();
-	virtual void start();
-	virtual void stop();
-	virtual void tick();
+    virtual bool canContinueToUse();
+    virtual void start();
+    virtual void stop();
+    virtual void tick();
 };

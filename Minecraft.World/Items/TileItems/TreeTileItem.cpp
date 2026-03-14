@@ -2,30 +2,24 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "TreeTileItem.h"
 
-TreeTileItem::TreeTileItem(int id, Tile *parentTile) : TileItem(id)
-{
-	this->parentTile = parentTile;
+TreeTileItem::TreeTileItem(int id, Tile* parentTile) : TileItem(id) {
+    this->parentTile = parentTile;
 
-	setMaxDamage(0);
-	setStackedByData(true);
+    setMaxDamage(0);
+    setStackedByData(true);
 }
 
-Icon *TreeTileItem::getIcon(int itemAuxValue)
-{
-	return parentTile->getTexture(2, itemAuxValue);
+Icon* TreeTileItem::getIcon(int itemAuxValue) {
+    return parentTile->getTexture(2, itemAuxValue);
 }
 
-int TreeTileItem::getLevelDataForAuxValue(int auxValue) 
-{
-	return auxValue;
-}
+int TreeTileItem::getLevelDataForAuxValue(int auxValue) { return auxValue; }
 
-unsigned int TreeTileItem::getDescriptionId(std::shared_ptr<ItemInstance> instance)
-{
-	int auxValue = instance->getAuxValue();
-	if (auxValue < 0 || auxValue >= TreeTile::TREE_NAMES_LENGTH)
-	{
-		auxValue = 0;
-	}
-	return TreeTile::TREE_NAMES[auxValue];
+unsigned int TreeTileItem::getDescriptionId(
+    std::shared_ptr<ItemInstance> instance) {
+    int auxValue = instance->getAuxValue();
+    if (auxValue < 0 || auxValue >= TreeTile::TREE_NAMES_LENGTH) {
+        auxValue = 0;
+    }
+    return TreeTile::TREE_NAMES[auxValue];
 }

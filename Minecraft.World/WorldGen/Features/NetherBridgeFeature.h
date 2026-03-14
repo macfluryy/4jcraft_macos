@@ -4,27 +4,27 @@
 #include "../Biomes/Biome.h"
 class Random;
 
-class NetherBridgeFeature : public StructureFeature
-{
-
+class NetherBridgeFeature : public StructureFeature {
 private:
-	std::vector<Biome::MobSpawnerData *> bridgeEnemies;
-	bool isSpotSelected;
-	ChunkPos *netherFortressPos;
+    std::vector<Biome::MobSpawnerData*> bridgeEnemies;
+    bool isSpotSelected;
+    ChunkPos* netherFortressPos;
 
 public:
-	NetherBridgeFeature();
-	~NetherBridgeFeature();
-    std::vector<Biome::MobSpawnerData *> *getBridgeEnemies();
+    NetherBridgeFeature();
+    ~NetherBridgeFeature();
+    std::vector<Biome::MobSpawnerData*>* getBridgeEnemies();
+
 protected:
-	virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat);
-    virtual StructureStart *createStructureStart(int x, int z);
+    virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat);
+    virtual StructureStart* createStructureStart(int x, int z);
+
 public:
-	void clearCachedBuildings();
+    void clearCachedBuildings();
+
 private:
-	class NetherBridgeStart : public StructureStart
-	{
-	public:
-		NetherBridgeStart(Level *level, Random *random, int chunkX, int chunkZ);
+    class NetherBridgeStart : public StructureStart {
+    public:
+        NetherBridgeStart(Level* level, Random* random, int chunkX, int chunkZ);
     };
 };

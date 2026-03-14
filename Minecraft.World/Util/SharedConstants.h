@@ -2,30 +2,31 @@
 
 #include "Class.h"
 
-class SharedConstants
-{
-	public:
-		static void staticCtor();
-		static const std::wstring VERSION_STRING;
-		static const int NETWORK_PROTOCOL_VERSION = 39;
-		
-		// NOT texture resolution. How many sub-blocks each block face is made up of.
-		// 4J Added for texture packs
-		static const int WORLD_RESOLUTION = 16;
+class SharedConstants {
+public:
+    static void staticCtor();
+    static const std::wstring VERSION_STRING;
+    static const int NETWORK_PROTOCOL_VERSION = 39;
 
-		static bool isAllowedChatCharacter(char ch);
-		// why private??????????
-		static std::wstring readAcceptableChars();
+    // NOT texture resolution. How many sub-blocks each block face is made up
+    // of. 4J Added for texture packs
+    static const int WORLD_RESOLUTION = 16;
 
-	public:
-		static const int maxChatLength = 100;
-		static std::wstring acceptableLetters;
+    static bool isAllowedChatCharacter(char ch);
+    // why private??????????
+    static std::wstring readAcceptableChars();
 
-		static const int ILLEGAL_FILE_CHARACTERS_LENGTH = 15;
-		static const wchar_t ILLEGAL_FILE_CHARACTERS[ILLEGAL_FILE_CHARACTERS_LENGTH];
+public:
+    static const int maxChatLength = 100;
+    static std::wstring acceptableLetters;
 
-		static const bool TEXTURE_LIGHTING;		// 4J - change brought forward from 1.8.2
-		static const int TICKS_PER_SECOND = 20;
+    static const int ILLEGAL_FILE_CHARACTERS_LENGTH = 15;
+    static const wchar_t
+        ILLEGAL_FILE_CHARACTERS[ILLEGAL_FILE_CHARACTERS_LENGTH];
 
-		static const int FULLBRIGHT_LIGHTVALUE = 15 << 20 | 15 << 4;
+    static const bool
+        TEXTURE_LIGHTING;  // 4J - change brought forward from 1.8.2
+    static const int TICKS_PER_SECOND = 20;
+
+    static const int FULLBRIGHT_LIGHTVALUE = 15 << 20 | 15 << 4;
 };

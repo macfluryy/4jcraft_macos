@@ -4,13 +4,11 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 
-CreeperRenderer::CreeperRenderer() : MobRenderer( new CreeperModel(), 0.5f )
-{
-	armorModel = new CreeperModel(2);
+CreeperRenderer::CreeperRenderer() : MobRenderer(new CreeperModel(), 0.5f) {
+    armorModel = new CreeperModel(2);
 }
 
-void CreeperRenderer::scale(std::shared_ptr<Mob> mob, float a)
-{
+void CreeperRenderer::scale(std::shared_ptr<Mob> mob, float a) {
     std::shared_ptr<Creeper> creeper = std::dynamic_pointer_cast<Creeper>(mob);
 
     float g = creeper->getSwelling(a);
@@ -25,15 +23,17 @@ void CreeperRenderer::scale(std::shared_ptr<Mob> mob, float a)
     glScalef(s, hs, s);
 }
 
-int CreeperRenderer::getOverlayColor(std::shared_ptr<Mob> mob, float br, float a)
-{
-	std::shared_ptr<Creeper> creeper = std::dynamic_pointer_cast<Creeper>(mob);
+int CreeperRenderer::getOverlayColor(std::shared_ptr<Mob> mob, float br,
+                                     float a) {
+    std::shared_ptr<Creeper> creeper = std::dynamic_pointer_cast<Creeper>(mob);
 
     float step = creeper->getSwelling(a);
 
-    if ((int) (step * 10) % 2 == 0) return 0;
+    if ((int)(step * 10) % 2 == 0) return 0;
 
-    int _a = (int) (step * 0.2f * 255) + 25;	// 4J - added 25 here as our entities are rendered with alpha test still enabled, and so anything less is invisible
+    int _a = (int)(step * 0.2f * 255) +
+             25;  // 4J - added 25 here as our entities are rendered with alpha
+                  // test still enabled, and so anything less is invisible
     if (_a < 0) _a = 0;
     if (_a > 255) _a = 255;
 
@@ -44,19 +44,20 @@ int CreeperRenderer::getOverlayColor(std::shared_ptr<Mob> mob, float br, float a
     return (_a << 24) | (r << 16) | (g << 8) | b;
 }
 
-int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a)
-{
-	// 4J - dynamic cast required because we aren't using templates/generics in our version
-	std::shared_ptr<Creeper> mob = std::dynamic_pointer_cast<Creeper>(_mob);
-    if (mob->isPowered())
-	{
-		if (mob->isInvisible())	glDepthMask(false);
-		else					glDepthMask(true);
+int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
+                                  float a) {
+    // 4J - dynamic cast required because we aren't using templates/generics in
+    // our version
+    std::shared_ptr<Creeper> mob = std::dynamic_pointer_cast<Creeper>(_mob);
+    if (mob->isPowered()) {
+        if (mob->isInvisible())
+            glDepthMask(false);
+        else
+            glDepthMask(true);
 
-        if (layer == 1)
-		{
+        if (layer == 1) {
             float time = mob->tickCount + a;
-            bindTexture(TN_POWERED_CREEPER);// was L"/armor/power.png");
+            bindTexture(TN_POWERED_CREEPER);  // was L"/armor/power.png");
             glMatrixMode(GL_TEXTURE);
             glLoadIdentity();
             float uo = time * 0.01f;
@@ -71,8 +72,7 @@ int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a)
             glBlendFunc(GL_ONE, GL_ONE);
             return 1;
         }
-        if (layer == 2)
-		{
+        if (layer == 2) {
             glMatrixMode(GL_TEXTURE);
             glLoadIdentity();
             glMatrixMode(GL_MODELVIEW);
@@ -81,10 +81,9 @@ int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a)
         }
     }
     return -1;
-
 }
 
-int CreeperRenderer::prepareArmorOverlay(std::shared_ptr<Mob> mob, int layer, float a)
-{
-	return -1;
+int CreeperRenderer::prepareArmorOverlay(std::shared_ptr<Mob> mob, int layer,
+                                         float a) {
+    return -1;
 }

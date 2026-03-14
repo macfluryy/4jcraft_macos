@@ -5,102 +5,113 @@
 class Mob;
 class Player;
 
-class StairTile : public Tile
-{
-	friend class Tile;
+class StairTile : public Tile {
+    friend class Tile;
 
 private:
-	static const int DEAD_SPACE_COLUMN_COUNT = 2;
-	static int DEAD_SPACES[8][DEAD_SPACE_COLUMN_COUNT];
+    static const int DEAD_SPACE_COLUMN_COUNT = 2;
+    static int DEAD_SPACES[8][DEAD_SPACE_COLUMN_COUNT];
 
 public:
-	static const int UPSIDEDOWN_BIT = 4;
+    static const int UPSIDEDOWN_BIT = 4;
 
-	// the direction is the way going up (for normal non-upsidedown stairs)
-	static const int DIR_EAST = 0;
-	static const int DIR_WEST = 1;
-	static const int DIR_SOUTH = 2;
-	static const int DIR_NORTH = 3;
+    // the direction is the way going up (for normal non-upsidedown stairs)
+    static const int DIR_EAST = 0;
+    static const int DIR_WEST = 1;
+    static const int DIR_SOUTH = 2;
+    static const int DIR_NORTH = 3;
 
 private:
-	Tile *base;
-	int basedata;
-	bool isClipping;
-	int clipStep;
+    Tile* base;
+    int basedata;
+    bool isClipping;
+    int clipStep;
 
 protected:
-	StairTile(int id, Tile *base, int basedata);
+    StairTile(int id, Tile* base, int basedata);
 
 public:
-	void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
-	bool isSolidRender(bool isServerLevel = false);
+    void updateShape(LevelSource* level, int x, int y, int z,
+                     int forceData = -1,
+                     std::shared_ptr<TileEntity> forceEntity =
+                         std::shared_ptr<TileEntity>());  // 4J added forceData,
+                                                          // forceEntity param
+    bool isSolidRender(bool isServerLevel = false);
 
-	bool isCubeShaped();
+    bool isCubeShaped();
 
-	int getRenderShape();
+    int getRenderShape();
 
-	void setBaseShape(LevelSource *level, int x, int y, int z);
-	static bool isStairs(int id);
+    void setBaseShape(LevelSource* level, int x, int y, int z);
+    static bool isStairs(int id);
 
 private:
-	bool isLockAttached(LevelSource *level, int x, int y, int z, int data);
+    bool isLockAttached(LevelSource* level, int x, int y, int z, int data);
 
 public:
-	bool setStepShape(LevelSource *level, int x, int y, int z);
-	bool setInnerPieceShape(LevelSource *level, int x, int y, int z);
+    bool setStepShape(LevelSource* level, int x, int y, int z);
+    bool setInnerPieceShape(LevelSource* level, int x, int y, int z);
 
-	void addAABBs(Level *level, int x, int y, int z, AABB *box, AABBList *boxes, std::shared_ptr<Entity> source);
+    void addAABBs(Level* level, int x, int y, int z, AABB* box, AABBList* boxes,
+                  std::shared_ptr<Entity> source);
 
-
-	/** DELEGATES: **/
+    /** DELEGATES: **/
 public:
-	void addLights(Level *level, int x, int y, int z);
+    void addLights(Level* level, int x, int y, int z);
 
-	void animateTick(Level *level, int x, int y, int z, Random *random);
+    void animateTick(Level* level, int x, int y, int z, Random* random);
 
-	void attack(Level *level, int x, int y, int z, std::shared_ptr<Player> player);
+    void attack(Level* level, int x, int y, int z,
+                std::shared_ptr<Player> player);
 
-	void destroy(Level *level, int x, int y, int z, int data);
+    void destroy(Level* level, int x, int y, int z, int data);
 
-	int getLightColor(LevelSource *level, int x, int y, int z, int tileId = -1);
-	float getBrightness(LevelSource *level, int x, int y, int z);
+    int getLightColor(LevelSource* level, int x, int y, int z, int tileId = -1);
+    float getBrightness(LevelSource* level, int x, int y, int z);
 
-	float getExplosionResistance(std::shared_ptr<Entity> source);
+    float getExplosionResistance(std::shared_ptr<Entity> source);
 
-	int getRenderLayer();
+    int getRenderLayer();
 
-	Icon *getTexture(int face, int data);
+    Icon* getTexture(int face, int data);
 
-	int getTickDelay();
+    int getTickDelay();
 
-	AABB *getTileAABB(Level *level, int x, int y, int z);
+    AABB* getTileAABB(Level* level, int x, int y, int z);
 
-	void handleEntityInside(Level *level, int x, int y, int z, std::shared_ptr<Entity> e, Vec3 *current);
+    void handleEntityInside(Level* level, int x, int y, int z,
+                            std::shared_ptr<Entity> e, Vec3* current);
 
-	bool mayPick();
+    bool mayPick();
 
-	bool mayPick(int data, bool liquid);
+    bool mayPick(int data, bool liquid);
 
-	bool mayPlace(Level *level, int x, int y, int z);
+    bool mayPlace(Level* level, int x, int y, int z);
 
-	void onPlace(Level *level, int x, int y, int z);
+    void onPlace(Level* level, int x, int y, int z);
 
-	void onRemove(Level *level, int x, int y, int z, int id, int data);
+    void onRemove(Level* level, int x, int y, int z, int id, int data);
 
-	void prepareRender(Level *level, int x, int y, int z);
+    void prepareRender(Level* level, int x, int y, int z);
 
-	void stepOn(Level *level, int x, int y, int z, std::shared_ptr<Entity> entity);
+    void stepOn(Level* level, int x, int y, int z,
+                std::shared_ptr<Entity> entity);
 
-	void tick(Level *level, int x, int y, int z, Random *random);
+    void tick(Level* level, int x, int y, int z, Random* random);
 
-	bool use(Level *level, int x, int y, int z, std::shared_ptr<Player> player, int clickedFace, float clickX, float clickY, float clickZ, bool soundOnly = false); // 4J added soundOnly param
+    bool use(Level* level, int x, int y, int z, std::shared_ptr<Player> player,
+             int clickedFace, float clickX, float clickY, float clickZ,
+             bool soundOnly = false);  // 4J added soundOnly param
 
-	void wasExploded(Level *level, int x, int y, int z);
+    void wasExploded(Level* level, int x, int y, int z);
 
-	void setPlacedBy(Level *level, int x, int y, int z, std::shared_ptr<Mob> by);
-	int getPlacedOnFaceDataValue(Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, int itemValue);
+    void setPlacedBy(Level* level, int x, int y, int z,
+                     std::shared_ptr<Mob> by);
+    int getPlacedOnFaceDataValue(Level* level, int x, int y, int z, int face,
+                                 float clickX, float clickY, float clickZ,
+                                 int itemValue);
 
-	HitResult *clip(Level *level, int xt, int yt, int zt, Vec3 *a, Vec3 *b);
+    HitResult* clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b);
 
-	virtual void registerIcons(IconRegister *iconRegister);
+    virtual void registerIcons(IconRegister* iconRegister);
 };

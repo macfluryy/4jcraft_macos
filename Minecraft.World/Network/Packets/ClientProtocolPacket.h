@@ -2,8 +2,7 @@
 
 #include "Packet.h"
 
-class ClientProtocolPacket : public Packet
-{
+class ClientProtocolPacket : public Packet {
 #if 0
 	private int protocolVersion;
 	private String userName;

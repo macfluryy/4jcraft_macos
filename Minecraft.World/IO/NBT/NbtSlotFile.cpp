@@ -2,217 +2,194 @@
 #include "../Files/File.h"
 #include "NbtSlotFile.h"
 
-namespace
-{
-	std::FILE *OpenBinaryFileForReadWrite(const File &file)
-	{
+namespace {
+std::FILE* OpenBinaryFileForReadWrite(const File& file) {
 #if defined(_WIN32)
-		std::FILE *stream = _wfopen(file.getPath().c_str(), L"r+b");
-		if (stream == NULL)
-		{
-			stream = _wfopen(file.getPath().c_str(), L"w+b");
-		}
+    std::FILE* stream = _wfopen(file.getPath().c_str(), L"r+b");
+    if (stream == NULL) {
+        stream = _wfopen(file.getPath().c_str(), L"w+b");
+    }
 #else
-		const std::string nativePath = wstringtofilename(file.getPath());
-		std::FILE *stream = std::fopen(nativePath.c_str(), "r+b");
-		if (stream == NULL)
-		{
-			stream = std::fopen(nativePath.c_str(), "w+b");
-		}
+    const std::string nativePath = wstringtofilename(file.getPath());
+    std::FILE* stream = std::fopen(nativePath.c_str(), "r+b");
+    if (stream == NULL) {
+        stream = std::fopen(nativePath.c_str(), "w+b");
+    }
 #endif
-		return stream;
-	}
-
-	bool SeekFile(std::FILE *file, __int64 offset)
-	{
-#if defined(_WIN32)
-		return _fseeki64(file, offset, SEEK_SET) == 0;
-#else
-		return fseeko(file, static_cast<off_t>(offset), SEEK_SET) == 0;
-#endif
-	}
-
-	bool ReadExact(std::FILE *file, void *buffer, std::size_t size)
-	{
-		return std::fread(buffer, 1, size, file) == size;
-	}
-
-	bool WriteExact(std::FILE *file, const void *buffer, std::size_t size)
-	{
-		return std::fwrite(buffer, 1, size, file) == size;
-	}
+    return stream;
 }
 
+bool SeekFile(std::FILE* file, __int64 offset) {
+#if defined(_WIN32)
+    return _fseeki64(file, offset, SEEK_SET) == 0;
+#else
+    return fseeko(file, static_cast<off_t>(offset), SEEK_SET) == 0;
+#endif
+}
 
-byteArray NbtSlotFile::READ_BUFFER(1024*1024);
+bool ReadExact(std::FILE* file, void* buffer, std::size_t size) {
+    return std::fread(buffer, 1, size, file) == size;
+}
+
+bool WriteExact(std::FILE* file, const void* buffer, std::size_t size) {
+    return std::fwrite(buffer, 1, size, file) == size;
+}
+}  // namespace
+
+byteArray NbtSlotFile::READ_BUFFER(1024 * 1024);
 __int64 NbtSlotFile::largest = 0;
 
-NbtSlotFile::NbtSlotFile(File file)
-{
-	totalFileSlots = 0;
-	fileSlotMapLength = ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
-	fileSlotMap = new std::vector<int> *[fileSlotMapLength];
+NbtSlotFile::NbtSlotFile(File file) {
+    totalFileSlots = 0;
+    fileSlotMapLength =
+        ZonedChunkStorage::CHUNKS_PER_ZONE * ZonedChunkStorage::CHUNKS_PER_ZONE;
+    fileSlotMap = new std::vector<int>*[fileSlotMapLength];
 
-	if ( !file.exists() || file.length() )
-	{
-		raf = OpenBinaryFileForReadWrite(file);
+    if (!file.exists() || file.length()) {
+        raf = OpenBinaryFileForReadWrite(file);
         writeHeader();
-    }
-	else
-	{
-		raf = OpenBinaryFileForReadWrite(file);
+    } else {
+        raf = OpenBinaryFileForReadWrite(file);
     }
 
     readHeader();
 
-    for (int i = 0; i < fileSlotMapLength; i++)
-	{
+    for (int i = 0; i < fileSlotMapLength; i++) {
         fileSlotMap[i] = new std::vector<int>;
     }
 
-    for (int fileSlot = 0; fileSlot < totalFileSlots; fileSlot++)
-	{
+    for (int fileSlot = 0; fileSlot < totalFileSlots; fileSlot++) {
         seekSlotHeader(fileSlot);
-		short slot;
-		ReadExact(raf, &slot, sizeof(slot));
-        if (slot == 0)
-		{
-			freeFileSlots.push_back(fileSlot);
-        } else if (slot < 0)
-		{
-			fileSlotMap[(-slot) - 1]->push_back(fileSlot);
+        short slot;
+        ReadExact(raf, &slot, sizeof(slot));
+        if (slot == 0) {
+            freeFileSlots.push_back(fileSlot);
+        } else if (slot < 0) {
+            fileSlotMap[(-slot) - 1]->push_back(fileSlot);
         } else {
             fileSlotMap[slot - 1]->push_back(fileSlot);
         }
     }
 }
 
-void NbtSlotFile::readHeader()
-{
-	SeekFile(raf, 0);
+void NbtSlotFile::readHeader() {
+    SeekFile(raf, 0);
     int magic;
-	ReadExact(raf, &magic, sizeof(magic));
-//    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: " + magic);		// 4J - TODO
+    ReadExact(raf, &magic, sizeof(magic));
+    //    if (magic != MAGIC_NUMBER) throw new IOException("Bad magic number: "
+    //    + magic);		// 4J - TODO
     short version;
-	ReadExact(raf, &version, sizeof(version));
-//    if (version != 0) throw new IOException("Bad version number: " + version);		// 4J - TODO
-	ReadExact(raf, &totalFileSlots, sizeof(totalFileSlots));
+    ReadExact(raf, &version, sizeof(version));
+    //    if (version != 0) throw new IOException("Bad version number: " +
+    //    version);		// 4J - TODO
+    ReadExact(raf, &totalFileSlots, sizeof(totalFileSlots));
 }
 
-void NbtSlotFile::writeHeader()
-{
-	short version = 0;
-	SeekFile(raf, 0);
-	WriteExact(raf, &MAGIC_NUMBER, sizeof(MAGIC_NUMBER));
-	WriteExact(raf, &version, sizeof(version));
-	WriteExact(raf, &totalFileSlots, sizeof(totalFileSlots));
+void NbtSlotFile::writeHeader() {
+    short version = 0;
+    SeekFile(raf, 0);
+    WriteExact(raf, &MAGIC_NUMBER, sizeof(MAGIC_NUMBER));
+    WriteExact(raf, &version, sizeof(version));
+    WriteExact(raf, &totalFileSlots, sizeof(totalFileSlots));
 }
 
-void NbtSlotFile::seekSlotHeader(int fileSlot)
-{
-    int target = FILE_HEADER_SIZE + fileSlot * (FILE_SLOT_SIZE + FILE_SLOT_HEADER_SIZE);
-	SeekFile(raf, target);
+void NbtSlotFile::seekSlotHeader(int fileSlot) {
+    int target =
+        FILE_HEADER_SIZE + fileSlot * (FILE_SLOT_SIZE + FILE_SLOT_HEADER_SIZE);
+    SeekFile(raf, target);
 }
 
-void NbtSlotFile::seekSlot(int fileSlot)
-{
-    int target = FILE_HEADER_SIZE + fileSlot * (FILE_SLOT_SIZE + FILE_SLOT_HEADER_SIZE);
-	SeekFile(raf, target + FILE_SLOT_HEADER_SIZE);
+void NbtSlotFile::seekSlot(int fileSlot) {
+    int target =
+        FILE_HEADER_SIZE + fileSlot * (FILE_SLOT_SIZE + FILE_SLOT_HEADER_SIZE);
+    SeekFile(raf, target + FILE_SLOT_HEADER_SIZE);
 }
 
-std::vector<CompoundTag *> *NbtSlotFile::readAll(int slot)
-{
-    std::vector<CompoundTag *> *tags = new std::vector<CompoundTag *>;
-    std::vector<int> *fileSlots = fileSlotMap[slot];
+std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
+    std::vector<CompoundTag*>* tags = new std::vector<CompoundTag*>;
+    std::vector<int>* fileSlots = fileSlotMap[slot];
     int skipped = 0;
 
-	AUTO_VAR(itEnd, fileSlots->end());
-	for (AUTO_VAR(it, fileSlots->begin()); it != itEnd; it++)
-	{
-        int c = *it; //fileSlots->at(i);
+    AUTO_VAR(itEnd, fileSlots->end());
+    for (AUTO_VAR(it, fileSlots->begin()); it != itEnd; it++) {
+        int c = *it;  // fileSlots->at(i);
 
         int pos = 0;
         int continuesAt = -1;
         int expectedSlot = slot + 1;
-        do
-		{
+        do {
             seekSlotHeader(c);
             short oldSlot;
-			ReadExact(raf, &oldSlot, sizeof(oldSlot));
+            ReadExact(raf, &oldSlot, sizeof(oldSlot));
             short size;
-			ReadExact(raf, &size, sizeof(size));
-			ReadExact(raf, &continuesAt, sizeof(continuesAt));
-			int lastSlot;
-			ReadExact(raf, &lastSlot, sizeof(lastSlot));
+            ReadExact(raf, &size, sizeof(size));
+            ReadExact(raf, &continuesAt, sizeof(continuesAt));
+            int lastSlot;
+            ReadExact(raf, &lastSlot, sizeof(lastSlot));
 
             seekSlot(c);
-            if (expectedSlot > 0 && oldSlot == -expectedSlot)
-			{
+            if (expectedSlot > 0 && oldSlot == -expectedSlot) {
                 skipped++;
-                goto fileSlotLoop;	// 4J - used to be continue fileSlotLoop, with for loop labelled as fileSlotLoop
+                goto fileSlotLoop;  // 4J - used to be continue fileSlotLoop,
+                                    // with for loop labelled as fileSlotLoop
             }
 
-//            if (oldSlot != expectedSlot) throw new IOException("Wrong slot! Got " + oldSlot + ", expected " + expectedSlot);	// 4J - TODO
+            //            if (oldSlot != expectedSlot) throw new
+            //            IOException("Wrong slot! Got " + oldSlot + ", expected
+            //            " + expectedSlot);	// 4J - TODO
 
-			ReadExact(raf, READ_BUFFER.data + pos, size);
+            ReadExact(raf, READ_BUFFER.data + pos, size);
 
-            if (continuesAt >= 0)
-			{
+            if (continuesAt >= 0) {
                 pos += size;
                 c = continuesAt;
                 expectedSlot = -slot - 1;
             }
         } while (continuesAt >= 0);
         tags->push_back(NbtIo::decompress(READ_BUFFER));
-fileSlotLoop:
-		continue;
+    fileSlotLoop:
+        continue;
     }
 
     return tags;
-
 }
 
-int NbtSlotFile::getFreeSlot()
-{    int fileSlot;
+int NbtSlotFile::getFreeSlot() {
+    int fileSlot;
 
-// 4J - removed - don't see how toReplace can ever have anything in here, and might not be initialised
-//    if (toReplace->size() > 0)
-//	{
-//		fileSlot = toReplace->back();
-//		toReplace->pop_back();
-//    } else
-		
-	if (freeFileSlots.size() > 0)
-	{
+    // 4J - removed - don't see how toReplace can ever have anything in here,
+    // and might not be initialised
+    //    if (toReplace->size() > 0)
+    //	{
+    //		fileSlot = toReplace->back();
+    //		toReplace->pop_back();
+    //    } else
+
+    if (freeFileSlots.size() > 0) {
         fileSlot = freeFileSlots.back();
-		freeFileSlots.pop_back();
-    } 
-	else
-	{
+        freeFileSlots.pop_back();
+    } else {
         fileSlot = totalFileSlots++;
         writeHeader();
     }
 
     return fileSlot;
-
 }
-void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag *> *tags)
-{
-	toReplace = fileSlotMap[slot];
+void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
+    toReplace = fileSlotMap[slot];
     fileSlotMap[slot] = new std::vector<int>();
-	
-	AUTO_VAR(itEndTags, tags->end());
-	for (AUTO_VAR(it, tags->begin()); it != itEndTags; it++)
-	{
-        CompoundTag *tag = *it; //tags->at(i);
+
+    AUTO_VAR(itEndTags, tags->end());
+    for (AUTO_VAR(it, tags->begin()); it != itEndTags; it++) {
+        CompoundTag* tag = *it;  // tags->at(i);
         byteArray compressed = NbtIo::compress(tag);
-        if (compressed.length > largest)
-		{
-			wchar_t buf[256];
+        if (compressed.length > largest) {
+            wchar_t buf[256];
             largest = compressed.length;
 #ifndef _CONTENT_PACKAGE
-			swprintf(buf, 256, L"New largest: %I64d (%ls)\n",largest,tag->getString(L"id").c_str() );
-			OutputDebugStringW(buf);
+            swprintf(buf, 256, L"New largest: %I64d (%ls)\n", largest,
+                     tag->getString(L"id").c_str());
+            OutputDebugStringW(buf);
 #endif
         }
 
@@ -224,67 +201,57 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag *> *tags)
         short currentSlot = slot + 1;
         int lastFileSlot = -1;
 
-        while (remaining > 0)
-		{
+        while (remaining > 0) {
             int fileSlot = nextFileSlot;
             fileSlotMap[slot]->push_back(fileSlot);
 
             short toWrite = remaining;
-            if (toWrite > FILE_SLOT_SIZE)
-			{
+            if (toWrite > FILE_SLOT_SIZE) {
                 toWrite = FILE_SLOT_SIZE;
             }
 
             remaining -= toWrite;
-            if (remaining > 0)
-			{
+            if (remaining > 0) {
                 nextFileSlot = getFreeSlot();
-            }
-			else
-			{
+            } else {
                 nextFileSlot = -1;
             }
 
             seekSlotHeader(fileSlot);
-			WriteExact(raf, &currentSlot, sizeof(currentSlot));
-			WriteExact(raf, &toWrite, sizeof(toWrite));
-			WriteExact(raf, &nextFileSlot, sizeof(nextFileSlot));
-			WriteExact(raf, &lastFileSlot, sizeof(lastFileSlot));
+            WriteExact(raf, &currentSlot, sizeof(currentSlot));
+            WriteExact(raf, &toWrite, sizeof(toWrite));
+            WriteExact(raf, &nextFileSlot, sizeof(nextFileSlot));
+            WriteExact(raf, &lastFileSlot, sizeof(lastFileSlot));
 
             seekSlot(fileSlot);
-			WriteExact(raf, compressed.data + pos, toWrite);
+            WriteExact(raf, compressed.data + pos, toWrite);
 
-            if (remaining > 0)
-			{
+            if (remaining > 0) {
                 lastFileSlot = fileSlot;
                 pos += toWrite;
                 currentSlot = -slot - 1;
             }
         }
-		delete[] compressed.data;
+        delete[] compressed.data;
     }
-	
-	AUTO_VAR(itEndToRep, toReplace->end());
-	for (AUTO_VAR(it, toReplace->begin()); it != itEndToRep; it++)
-	{
-        int c = *it; //toReplace->at(i);
 
-		freeFileSlots.push_back(c);
+    AUTO_VAR(itEndToRep, toReplace->end());
+    for (AUTO_VAR(it, toReplace->begin()); it != itEndToRep; it++) {
+        int c = *it;  // toReplace->at(i);
+
+        freeFileSlots.push_back(c);
 
         seekSlotHeader(c);
-		short zero = 0;
-		WriteExact(raf, &zero, sizeof(zero));
+        short zero = 0;
+        WriteExact(raf, &zero, sizeof(zero));
     }
 
     toReplace->clear();
-
 }
 
-void NbtSlotFile::close()
-{
-	if (raf != NULL)
-	{
-		std::fclose(raf);
-		raf = NULL;
-	}
+void NbtSlotFile::close() {
+    if (raf != NULL) {
+        std::fclose(raf);
+        raf = NULL;
+    }
 }

@@ -2,25 +2,26 @@
 
 #include "Model.h"
 
-class SilverfishModel : public Model
-{
+class SilverfishModel : public Model {
+private:
+    static const int BODY_COUNT = 7;
 
 private:
-	static const int BODY_COUNT = 7;
+    ModelPartArray bodyParts;
+    ModelPartArray bodyLayers;
+    float zPlacement[BODY_COUNT];
 
-private:
-	ModelPartArray bodyParts;
-	ModelPartArray bodyLayers;
-	float zPlacement[BODY_COUNT];
+    static const int BODY_SIZES[BODY_COUNT][3];
 
-	static const int BODY_SIZES[BODY_COUNT][3];
-
-	static const int BODY_TEXS[BODY_COUNT][2];
+    static const int BODY_TEXS[BODY_COUNT][2];
 
 public:
-	SilverfishModel();
+    SilverfishModel();
 
-	int modelVersion();
-	void render(std::shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled);
-	virtual void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0);
+    int modelVersion();
+    void render(std::shared_ptr<Entity> entity, float time, float r, float bob,
+                float yRot, float xRot, float scale, bool usecompiled);
+    virtual void setupAnim(float time, float r, float bob, float yRot,
+                           float xRot, float scale,
+                           unsigned int uiBitmaskOverrideAnim = 0);
 };

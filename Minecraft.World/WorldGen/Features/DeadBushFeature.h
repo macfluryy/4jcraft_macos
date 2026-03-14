@@ -3,13 +3,12 @@
 
 class Level;
 
-class DeadBushFeature : public Feature
-{
+class DeadBushFeature : public Feature {
 private:
-	int tile;
+    int tile;
 
 public:
-	DeadBushFeature (int tile);
+    DeadBushFeature(int tile);
 
-	virtual bool place(Level *level, Random *random, int x, int y, int z);
+    virtual bool place(Level* level, Random* random, int x, int y, int z);
 };

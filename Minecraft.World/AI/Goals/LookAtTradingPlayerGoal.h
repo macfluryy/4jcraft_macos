@@ -4,13 +4,12 @@
 
 class Villager;
 
-class LookAtTradingPlayerGoal : public LookAtPlayerGoal
-{
+class LookAtTradingPlayerGoal : public LookAtPlayerGoal {
 private:
-	Villager *villager; // This is the owner of this goal
+    Villager* villager;  // This is the owner of this goal
 
 public:
-	LookAtTradingPlayerGoal(Villager *villager);
+    LookAtTradingPlayerGoal(Villager* villager);
 
-	virtual bool canUse();
+    virtual bool canUse();
 };

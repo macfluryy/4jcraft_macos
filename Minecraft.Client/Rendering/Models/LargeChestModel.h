@@ -2,8 +2,7 @@
 
 #include "ChestModel.h"
 
-class LargeChestModel : public ChestModel
-{
+class LargeChestModel : public ChestModel {
 public:
-	LargeChestModel();
+    LargeChestModel();
 };

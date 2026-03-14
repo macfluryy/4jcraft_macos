@@ -3,98 +3,75 @@
 #include "ReadOnlyChunkCache.h"
 #include "../../WorldGen/Biomes/Biome.h"
 
-ReadOnlyChunkCache::ReadOnlyChunkCache(Level *level, ChunkStorage *storage)
-{
-	chunks = LevelChunkArray(LEN * LEN);
-	emptyPixels = byteArray(Level::CHUNK_TILE_COUNT);
+ReadOnlyChunkCache::ReadOnlyChunkCache(Level* level, ChunkStorage* storage) {
+    chunks = LevelChunkArray(LEN * LEN);
+    emptyPixels = byteArray(Level::CHUNK_TILE_COUNT);
 
     this->level = level;
     this->storage = storage;
 }
 
-ReadOnlyChunkCache::~ReadOnlyChunkCache()
-{	
-	for(unsigned int i = 0; i < chunks.length; ++i)
-		delete chunks[i];
+ReadOnlyChunkCache::~ReadOnlyChunkCache() {
+    for (unsigned int i = 0; i < chunks.length; ++i) delete chunks[i];
 
-	delete[] chunks.data;
+    delete[] chunks.data;
 
-	delete[] emptyPixels.data;
+    delete[] emptyPixels.data;
 }
 
-bool ReadOnlyChunkCache::hasChunk(int x, int z)
-{
+bool ReadOnlyChunkCache::hasChunk(int x, int z) {
     int slot = (x & LEN_MASK) | ((z & LEN_MASK) * LEN);
     return chunks[slot] != NULL && (chunks[slot]->isAt(x, z));
 }
 
-LevelChunk *ReadOnlyChunkCache::create(int x, int z)
-{
-	return getChunk(x, z);
-}
+LevelChunk* ReadOnlyChunkCache::create(int x, int z) { return getChunk(x, z); }
 
-LevelChunk *ReadOnlyChunkCache::getChunk(int x, int z)
-{
+LevelChunk* ReadOnlyChunkCache::getChunk(int x, int z) {
     int slot = (x & LEN_MASK) | ((z & LEN_MASK) * LEN);
-	// 4J - removed try/catch
-//    try {
-        if (!hasChunk(x, z))
-		{
-            LevelChunk *newChunk = load(x, z);
-            if (newChunk == NULL)
-			{
-                newChunk = new EmptyLevelChunk(level, emptyPixels, x, z);
-            }
-            chunks[slot] = newChunk;
+    // 4J - removed try/catch
+    //    try {
+    if (!hasChunk(x, z)) {
+        LevelChunk* newChunk = load(x, z);
+        if (newChunk == NULL) {
+            newChunk = new EmptyLevelChunk(level, emptyPixels, x, z);
         }
-        return chunks[slot];
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//        return null;
-//    }
+        chunks[slot] = newChunk;
+    }
+    return chunks[slot];
+    //    } catch (Exception e) {
+    //        e.printStackTrace();
+    //        return null;
+    //    }
 }
 
-LevelChunk *ReadOnlyChunkCache::load(int x, int z)
-{
-	// 4J - remove try/catch
-//    try {
-        return storage->load(level, x, z);
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//        return null;
-//    }
+LevelChunk* ReadOnlyChunkCache::load(int x, int z) {
+    // 4J - remove try/catch
+    //    try {
+    return storage->load(level, x, z);
+    //    } catch (IOException e) {
+    //        e.printStackTrace();
+    //        return null;
+    //    }
 }
-	// 4J - TODO - was synchronized
-void ReadOnlyChunkCache::postProcess(ChunkSource *parent, int x, int z)
-{
+// 4J - TODO - was synchronized
+void ReadOnlyChunkCache::postProcess(ChunkSource* parent, int x, int z) {}
+
+bool ReadOnlyChunkCache::save(bool force, ProgressListener* progressListener) {
+    return true;
 }
 
-bool ReadOnlyChunkCache::save(bool force, ProgressListener *progressListener)
-{
-	return true;
+bool ReadOnlyChunkCache::tick() { return false; }
+
+bool ReadOnlyChunkCache::shouldSave() { return false; }
+
+std::wstring ReadOnlyChunkCache::gatherStats() { return L"ReadOnlyChunkCache"; }
+
+std::vector<Biome::MobSpawnerData*>* ReadOnlyChunkCache::getMobsAt(
+    MobCategory* mobCategory, int x, int y, int z) {
+    return NULL;
 }
 
-bool ReadOnlyChunkCache::tick()
-{
-	return false;
-}
-
-bool ReadOnlyChunkCache::shouldSave()
-{
-	return false;
-}
-
-std::wstring ReadOnlyChunkCache::gatherStats()
-{
-	return L"ReadOnlyChunkCache";
-}
-
-std::vector<Biome::MobSpawnerData *> *ReadOnlyChunkCache::getMobsAt(MobCategory *mobCategory, int x, int y, int z)
-{
-	return NULL;
-}
-
-TilePos *ReadOnlyChunkCache::findNearestMapFeature(Level *level, const std::wstring& featureName, int x, int y, int z)
-{
-	return NULL;
+TilePos* ReadOnlyChunkCache::findNearestMapFeature(
+    Level* level, const std::wstring& featureName, int x, int y, int z) {
+    return NULL;
 }

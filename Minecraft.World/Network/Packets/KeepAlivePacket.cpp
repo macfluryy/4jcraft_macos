@@ -4,49 +4,30 @@
 #include "PacketListener.h"
 #include "KeepAlivePacket.h"
 
+KeepAlivePacket::KeepAlivePacket() { id = 0; }
 
+KeepAlivePacket::KeepAlivePacket(int id) { this->id = id; }
 
-KeepAlivePacket::KeepAlivePacket()
-{
-	id = 0;
+void KeepAlivePacket::handle(PacketListener* listener) {
+    listener->handleKeepAlive(shared_from_this());
 }
 
-KeepAlivePacket::KeepAlivePacket(int id)
+void KeepAlivePacket::read(DataInputStream* dis)  // throws IOException
 {
-	this->id = id;
+    id = dis->readInt();
 }
 
-void KeepAlivePacket::handle(PacketListener *listener)
+void KeepAlivePacket::write(DataOutputStream* dos)  // throws IOException
 {
-	listener->handleKeepAlive(shared_from_this());
+    dos->writeInt(id);
 }
 
-void KeepAlivePacket::read(DataInputStream *dis) //throws IOException 
-{
-	id = dis->readInt();
+int KeepAlivePacket::getEstimatedSize() { return 4; }
+
+bool KeepAlivePacket::canBeInvalidated() { return true; }
+
+bool KeepAlivePacket::isInvalidatedBy(std::shared_ptr<Packet> packet) {
+    return true;
 }
 
-void KeepAlivePacket::write(DataOutputStream *dos) //throws IOException
-{
-	dos->writeInt(id);
-}
-
-int KeepAlivePacket::getEstimatedSize() 
-{
-	return 4;
-}
-
-bool KeepAlivePacket::canBeInvalidated()
-{
-	return true;
-}
-
-bool KeepAlivePacket::isInvalidatedBy(std::shared_ptr<Packet> packet)
-{
-	return true;
-}
-
-bool KeepAlivePacket::isAync()
-{
-	return true;
-}
+bool KeepAlivePacket::isAync() { return true; }

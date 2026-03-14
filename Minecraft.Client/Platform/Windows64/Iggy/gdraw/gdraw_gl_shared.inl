@@ -1421,11 +1421,12 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
 
    if (fvars[VAR_cmul] >= 0)
       glUniform4f(fvars[VAR_cmul], r->color[0], r->color[1], r->color[2], r->color[3]);
-   if (fvars[VAR_cadd] >= 0)
+   if (fvars[VAR_cadd] >= 0) {
       if (r->cxf_add)
          glUniform4f(fvars[VAR_cadd], r->cxf_add[0]/255.0f, r->cxf_add[1]/255.0f, r->cxf_add[2]/255.0f, r->cxf_add[3]/255.0f);
       else
          glUniform4f(fvars[VAR_cadd], 0,0,0,0);
+   }
    if (fvars[VAR_focal] >= 0)
       glUniform4fv(fvars[VAR_focal], 1, r->focal_point);
 
@@ -2425,4 +2426,3 @@ void gdraw_GLx_(DestroyContext)(void)
    opengl_check();
    free_gdraw();
 }
-

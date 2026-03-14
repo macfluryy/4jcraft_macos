@@ -9,21 +9,19 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../../Minecraft.World/Util/SharedConstants.h"
 
-AchievementPopup::AchievementPopup(Minecraft *mc)
-{
-	// 4J - added initialisers
-	width = 0;
-	height = 0;
-	ach = NULL;
-	startTime = 0;
-	isHelper = false;
+AchievementPopup::AchievementPopup(Minecraft* mc) {
+    // 4J - added initialisers
+    width = 0;
+    height = 0;
+    ach = NULL;
+    startTime = 0;
+    isHelper = false;
 
     this->mc = mc;
     ir = new ItemRenderer();
 }
 
-void AchievementPopup::popup(Achievement *ach)
-{
+void AchievementPopup::popup(Achievement* ach) {
     title = I18n::get(L"achievement.get");
     desc = ach->name;
     startTime = System::currentTimeMillis();
@@ -31,8 +29,7 @@ void AchievementPopup::popup(Achievement *ach)
     isHelper = false;
 }
 
-void AchievementPopup::permanent(Achievement *ach)
-{
+void AchievementPopup::permanent(Achievement* ach) {
     title = ach->name;
     desc = ach->getDescription();
 
@@ -41,13 +38,12 @@ void AchievementPopup::permanent(Achievement *ach)
     isHelper = true;
 }
 
-void AchievementPopup::prepareWindow()
-{
+void AchievementPopup::prepareWindow() {
     {
         int fbw, fbh;
         RenderManager.GetFramebufferSize(fbw, fbh);
         glViewport(0, 0, fbw, fbh);
-    } // just future proofing
+    }  // just future proofing
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
@@ -67,11 +63,9 @@ void AchievementPopup::prepareWindow()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(0, 0, -2000);
-
 }
 
-void AchievementPopup::render()
-{
+void AchievementPopup::render() {
 // 4J Unused
 #if 0
     if (Minecraft::warezTime > 0)

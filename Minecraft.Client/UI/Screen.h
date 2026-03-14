@@ -4,39 +4,46 @@ class Button;
 class GuiParticles;
 class Minecraft;
 
-
-class Screen : public GuiComponent
-{
+class Screen : public GuiComponent {
 protected:
-	Minecraft *minecraft;
+    Minecraft* minecraft;
+
 public:
-	int width;
+    int width;
     int height;
-protected:
-	std::vector<Button *> buttons;
-public:
-	bool passEvents;
-protected:
-	Font *font;
-public:
-	GuiParticles *particles;
 
-	Screen();		// 4J added
+protected:
+    std::vector<Button*> buttons;
+
+public:
+    bool passEvents;
+
+protected:
+    Font* font;
+
+public:
+    GuiParticles* particles;
+
+    Screen();  // 4J added
     virtual void render(int xm, int ym, float a);
-protected:
-	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
-public:
-	static std::wstring getClipboard();
-    static void setClipboard(const std::wstring& str);
-private:
-	Button *clickedButton;
 
 protected:
-	virtual void mouseClicked(int x, int y, int buttonNum);
-    virtual void mouseReleased(int x, int y, int buttonNum);
-    virtual void buttonClicked(Button *button);
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+
 public:
-	virtual void init(Minecraft *minecraft, int width, int height);
+    static std::wstring getClipboard();
+    static void setClipboard(const std::wstring& str);
+
+private:
+    Button* clickedButton;
+
+protected:
+    virtual void mouseClicked(int x, int y, int buttonNum);
+    virtual void mouseReleased(int x, int y, int buttonNum);
+    virtual void buttonClicked(Button* button);
+
+public:
+    virtual void init(Minecraft* minecraft, int width, int height);
     virtual void setSize(int width, int height);
     virtual void init();
     virtual void updateEvents();
@@ -51,4 +58,3 @@ public:
     virtual void confirmResult(bool result, int id);
     virtual void tabPressed();
 };
-

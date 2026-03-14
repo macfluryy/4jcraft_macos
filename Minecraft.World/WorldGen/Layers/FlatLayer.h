@@ -2,12 +2,11 @@
 
 #include "Layer.h"
 
-class FlatLayer : public Layer
-{
+class FlatLayer : public Layer {
 private:
-	int val;
+    int val;
 
 public:
-	FlatLayer(int val);
-	intArray getArea(int xo, int yo, int w, int h);
+    FlatLayer(int val);
+    intArray getArea(int xo, int yo, int w, int h);
 };

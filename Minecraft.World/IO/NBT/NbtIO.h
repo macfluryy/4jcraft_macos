@@ -5,13 +5,12 @@
 
 class InputStream;
 
-class NbtIo
-{
+class NbtIo {
 public:
-    static CompoundTag *readCompressed(InputStream *in);
-    static void writeCompressed(CompoundTag *tag, OutputStream *out);
-    static CompoundTag *decompress(byteArray buffer);
-    static byteArray compress(CompoundTag *tag);
-    static CompoundTag *read(DataInput *dis);
-    static void write(CompoundTag *tag, DataOutput *dos);
+    static CompoundTag* readCompressed(InputStream* in);
+    static void writeCompressed(CompoundTag* tag, OutputStream* out);
+    static CompoundTag* decompress(byteArray buffer);
+    static byteArray compress(CompoundTag* tag);
+    static CompoundTag* read(DataInput* dis);
+    static void write(CompoundTag* tag, DataOutput* dos);
 };

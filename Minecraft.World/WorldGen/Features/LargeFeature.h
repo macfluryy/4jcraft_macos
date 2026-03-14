@@ -3,21 +3,23 @@
 
 class Level;
 
-class LargeFeature
-{
+class LargeFeature {
 public:
-	static const std::wstring STRONGHOLD;
+    static const std::wstring STRONGHOLD;
+
 protected:
     int radius;
-    Random *random;
-	Level *level;
+    Random* random;
+    Level* level;
 
 public:
-	LargeFeature();
-	virtual ~LargeFeature();
+    LargeFeature();
+    virtual ~LargeFeature();
 
-    virtual void apply(ChunkSource *ChunkSource, Level *level, int xOffs, int zOffs, byteArray blocks);
+    virtual void apply(ChunkSource* ChunkSource, Level* level, int xOffs,
+                       int zOffs, byteArray blocks);
 
 protected:
-	virtual void addFeature(Level *level, int x, int z, int xOffs, int zOffs, byteArray blocks) {}
+    virtual void addFeature(Level* level, int x, int z, int xOffs, int zOffs,
+                            byteArray blocks) {}
 };

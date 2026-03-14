@@ -2,35 +2,37 @@
 
 class Texture;
 
-class TextureHolder //implements Comparable<TextureHolder> {
+class TextureHolder  // implements Comparable<TextureHolder> {
 {
 private:
-	Texture *texture;
-	int width;
-	int height;
-	bool rotated;
-	float scale;
+    Texture* texture;
+    int width;
+    int height;
+    bool rotated;
+    float scale;
 
 public:
-	TextureHolder(Texture *texture);
+    TextureHolder(Texture* texture);
 
-	Texture *getTexture();
-	int getWidth() const;
-	int getHeight() const;
-	void rotate();
-	bool isRotated();
+    Texture* getTexture();
+    int getWidth() const;
+    int getHeight() const;
+    void rotate();
+    bool isRotated();
 
 private:
-	int smallestFittingMinTexel(int input) const;
+    int smallestFittingMinTexel(int input) const;
 
 public:
-	void setForcedScale(int targetSize);
-	//@Override
-	std::wstring toString();
-	int compareTo(const TextureHolder *other) const;
+    void setForcedScale(int targetSize);
+    //@Override
+    std::wstring toString();
+    int compareTo(const TextureHolder* other) const;
 };
 
-struct TextureHolderLessThan
-{
-	bool operator() (const TextureHolder *first, const TextureHolder *second) const { return first->compareTo(second) >= 0; }
+struct TextureHolderLessThan {
+    bool operator()(const TextureHolder* first,
+                    const TextureHolder* second) const {
+        return first->compareTo(second) >= 0;
+    }
 };

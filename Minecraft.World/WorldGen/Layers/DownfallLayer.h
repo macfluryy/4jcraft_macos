@@ -2,9 +2,8 @@
 
 #include "Layer.h"
 
-class DownfallLayer : public Layer
-{
+class DownfallLayer : public Layer {
 public:
-	DownfallLayer(std::shared_ptr<Layer>parent);
-	intArray getArea(int xo, int yo, int w, int h);
+    DownfallLayer(std::shared_ptr<Layer> parent);
+    intArray getArea(int xo, int yo, int w, int h);
 };

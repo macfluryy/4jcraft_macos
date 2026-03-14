@@ -1,78 +1,80 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class MoveEntityPacket : public Packet, public std::enable_shared_from_this<MoveEntityPacket>
-{
-
-	// 4J JEV, static inner/sub classes
+class MoveEntityPacket : public Packet,
+                         public std::enable_shared_from_this<MoveEntityPacket> {
+    // 4J JEV, static inner/sub classes
 public:
-	class PosRot;
-	class Pos;
-	class Rot;
+    class PosRot;
+    class Pos;
+    class Rot;
 
-	int id;
-	char xa, ya, za, yRot, xRot;
-	bool hasRot;
+    int id;
+    char xa, ya, za, yRot, xRot;
+    bool hasRot;
 
-	MoveEntityPacket();
-	MoveEntityPacket(int id);
+    MoveEntityPacket();
+    MoveEntityPacket(int id);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
-	virtual bool canBeInvalidated();
-	virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
+    virtual bool canBeInvalidated();
+    virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacket()); }
-	virtual int getId() { return 30; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacket());
+    }
+    virtual int getId() { return 30; }
 };
 
-class MoveEntityPacket::PosRot : public MoveEntityPacket
-{
+class MoveEntityPacket::PosRot : public MoveEntityPacket {
 public:
-	PosRot();
-	PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
+    PosRot();
+    PosRot(int id, char xa, char ya, char za, char yRot, char xRot);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacket::PosRot()); }
-	virtual int getId() { return 33; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacket::PosRot());
+    }
+    virtual int getId() { return 33; }
 };
 
-class MoveEntityPacket::Pos : public MoveEntityPacket
-{
+class MoveEntityPacket::Pos : public MoveEntityPacket {
 public:
-	Pos();
-	Pos(int id, char xa, char ya, char za);
+    Pos();
+    Pos(int id, char xa, char ya, char za);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacket::Pos()); }
-	virtual int getId() { return 31; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacket::Pos());
+    }
+    virtual int getId() { return 31; }
 };
 
-class MoveEntityPacket::Rot : public MoveEntityPacket
-{
+class MoveEntityPacket::Rot : public MoveEntityPacket {
 public:
-	Rot();
-	Rot(int id, char yRot, char xRot);
+    Rot();
+    Rot(int id, char yRot, char xRot);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new MoveEntityPacket::Rot()); }
-	virtual int getId() { return 32; }
-
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new MoveEntityPacket::Rot());
+    }
+    virtual int getId() { return 32; }
 };

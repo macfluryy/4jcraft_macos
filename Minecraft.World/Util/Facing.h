@@ -1,7 +1,6 @@
 #pragma once
 
-class Facing
-{
+class Facing {
 public:
     static const int DOWN = 0;
     static const int UP = 1;
@@ -10,8 +9,8 @@ public:
     static const int WEST = 4;
     static const int EAST = 5;
 
-	static const int OPPOSITE_FACING[6];
-	static const int STEP_X[6];
-	static const int STEP_Y[6];
-	static const int STEP_Z[6];
+    static const int OPPOSITE_FACING[6];
+    static const int STEP_X[6];
+    static const int STEP_Y[6];
+    static const int STEP_Z[6];
 };

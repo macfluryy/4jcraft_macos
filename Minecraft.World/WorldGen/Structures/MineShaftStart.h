@@ -2,8 +2,7 @@
 
 #include "StructureStart.h"
 
-class MineShaftStart : public StructureStart
-{
+class MineShaftStart : public StructureStart {
 public:
-	MineShaftStart(Level *level, Random *random, int chunkX, int chunkZ);
+    MineShaftStart(Level* level, Random* random, int chunkX, int chunkZ);
 };

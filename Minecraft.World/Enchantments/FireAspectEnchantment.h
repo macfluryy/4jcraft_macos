@@ -2,12 +2,11 @@
 
 #include "Enchantment.h"
 
-class FireAspectEnchantment : public Enchantment
-{
+class FireAspectEnchantment : public Enchantment {
 public:
-	FireAspectEnchantment(int id, int frequency);
+    FireAspectEnchantment(int id, int frequency);
 
-	virtual int getMinCost(int level);
-	virtual int getMaxCost(int level);
-	virtual int getMaxLevel();
+    virtual int getMinCost(int level);
+    virtual int getMaxCost(int level);
+    virtual int getMaxLevel();
 };

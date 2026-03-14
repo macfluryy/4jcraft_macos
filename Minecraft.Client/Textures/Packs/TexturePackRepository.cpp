@@ -9,77 +9,76 @@
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Rendering/Minimap.h"
 
-TexturePack *TexturePackRepository::DEFAULT_TEXTURE_PACK = NULL;
+TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = NULL;
 
-TexturePackRepository::TexturePackRepository(File workingDirectory, Minecraft *minecraft)
-{
-	if(!DEFAULT_TEXTURE_PACK) DEFAULT_TEXTURE_PACK = new DefaultTexturePack();
+TexturePackRepository::TexturePackRepository(File workingDirectory,
+                                             Minecraft* minecraft) {
+    if (!DEFAULT_TEXTURE_PACK) DEFAULT_TEXTURE_PACK = new DefaultTexturePack();
 
-	// 4J - added
-	usingWeb = false;
-	selected = NULL;
-	texturePacks = new std::vector<TexturePack *>;
+    // 4J - added
+    usingWeb = false;
+    selected = NULL;
+    texturePacks = new std::vector<TexturePack*>;
 
     this->minecraft = minecraft;
 
-	texturePacks->push_back(DEFAULT_TEXTURE_PACK);
-	cacheById[DEFAULT_TEXTURE_PACK->getId()] = DEFAULT_TEXTURE_PACK;
+    texturePacks->push_back(DEFAULT_TEXTURE_PACK);
+    cacheById[DEFAULT_TEXTURE_PACK->getId()] = DEFAULT_TEXTURE_PACK;
     selected = DEFAULT_TEXTURE_PACK;
 
-	DEFAULT_TEXTURE_PACK->loadColourTable();
+    DEFAULT_TEXTURE_PACK->loadColourTable();
 
-	m_dummyTexturePack = NULL;
-	m_dummyDLCTexturePack = NULL;
-	lastSelected = NULL;
+    m_dummyTexturePack = NULL;
+    m_dummyDLCTexturePack = NULL;
+    lastSelected = NULL;
 
     updateList();
 }
 
-void TexturePackRepository::addDebugPacks()
-{
+void TexturePackRepository::addDebugPacks() {
 #ifndef _CONTENT_PACKAGE
-	//File *file = new File(L"DummyTexturePack"); // Path to the test texture pack
-	//m_dummyTexturePack = new FolderTexturePack(FOLDER_TEST_TEXTURE_PACK_ID, L"FolderTestPack", file, DEFAULT_TEXTURE_PACK);
-	//texturePacks->push_back(m_dummyTexturePack);	
-	//cacheById[m_dummyTexturePack->getId()] = m_dummyTexturePack;
+    // File *file = new File(L"DummyTexturePack"); // Path to the test texture
+    // pack m_dummyTexturePack = new
+    // FolderTexturePack(FOLDER_TEST_TEXTURE_PACK_ID, L"FolderTestPack", file,
+    // DEFAULT_TEXTURE_PACK); texturePacks->push_back(m_dummyTexturePack);
+    // cacheById[m_dummyTexturePack->getId()] = m_dummyTexturePack;
 
 #ifdef _XBOX
-	File packedTestFile(L"GAME:\\DummyTexturePack\\TexturePack.pck");
-	if(packedTestFile.exists())
-	{
-		DLCPack *pack = app.m_dlcManager.getPack(L"DLCTestPack");
+    File packedTestFile(L"GAME:\\DummyTexturePack\\TexturePack.pck");
+    if (packedTestFile.exists()) {
+        DLCPack* pack = app.m_dlcManager.getPack(L"DLCTestPack");
 
-		if( pack != NULL && pack->IsCorrupt() )
-		{
-			app.m_dlcManager.removePack(pack);
-			pack = NULL;
-		}
+        if (pack != NULL && pack->IsCorrupt()) {
+            app.m_dlcManager.removePack(pack);
+            pack = NULL;
+        }
 
-		if(pack == NULL)
-		{
-			wprintf(L"Pack \"%ls\" is not installed, so adding it\n", L"DLCTestPack");
-			pack = new DLCPack(L"DLCTestPack",0xffffffff);
-			unsigned int dwFilesProcessed = 0;
-			if( app.m_dlcManager.readDLCDataFile(dwFilesProcessed, "GAME:\\DummyTexturePack\\TexturePack.pck",pack))
-			{
-				// 4J Stu - Don't need to do this, as the readDLCDataFile now adds texture packs
-				//m_dummyDLCTexturePack = addTexturePackFromDLC(pack, DLC_TEST_TEXTURE_PACK_ID); //new DLCTexturePack(0xFFFFFFFE, L"DLCTestPack", pack, DEFAULT_TEXTURE_PACK);
-				app.m_dlcManager.addPack(pack);
-			}
-			else
-			{
-				delete pack;
-			}
-		}
-	}
+        if (pack == NULL) {
+            wprintf(L"Pack \"%ls\" is not installed, so adding it\n",
+                    L"DLCTestPack");
+            pack = new DLCPack(L"DLCTestPack", 0xffffffff);
+            unsigned int dwFilesProcessed = 0;
+            if (app.m_dlcManager.readDLCDataFile(
+                    dwFilesProcessed,
+                    "GAME:\\DummyTexturePack\\TexturePack.pck", pack)) {
+                // 4J Stu - Don't need to do this, as the readDLCDataFile now
+                // adds texture packs
+                // m_dummyDLCTexturePack = addTexturePackFromDLC(pack,
+                // DLC_TEST_TEXTURE_PACK_ID); //new DLCTexturePack(0xFFFFFFFE,
+                // L"DLCTestPack", pack, DEFAULT_TEXTURE_PACK);
+                app.m_dlcManager.addPack(pack);
+            } else {
+                delete pack;
+            }
+        }
+    }
 
-#endif // _XBOX
-#endif // _CONTENT_PACKAGE
+#endif  // _XBOX
+#endif  // _CONTENT_PACKAGE
 }
 
-void TexturePackRepository::createWorkingDirecoryUnlessExists()
-{
-	// 4J Unused
+void TexturePackRepository::createWorkingDirecoryUnlessExists() {
+    // 4J Unused
 #if 0
 	if (!workDir.isDirectory()) {
 		workDir.delete();
@@ -93,21 +92,20 @@ void TexturePackRepository::createWorkingDirecoryUnlessExists()
 #endif
 }
 
-bool TexturePackRepository::selectSkin(TexturePack *skin)
-{
-    if (skin==selected) return false;
-    
-	lastSelected = selected;
+bool TexturePackRepository::selectSkin(TexturePack* skin) {
+    if (skin == selected) return false;
+
+    lastSelected = selected;
     usingWeb = false;
     selected = skin;
-    //minecraft->options->skin = skin->getName();
-    //minecraft->options->save();
+    // minecraft->options->skin = skin->getName();
+    // minecraft->options->save();
     return true;
 }
 
-void TexturePackRepository::selectWebSkin(const std::wstring &url)
-{
-	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
+void TexturePackRepository::selectWebSkin(const std::wstring& url) {
+    app.DebugPrintf(
+        "TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
 	String filename = url.substring(url.lastIndexOf("/") + 1);
 	if (filename.contains("?")) filename = filename.substring(0, filename.indexOf("?"));
@@ -117,9 +115,10 @@ void TexturePackRepository::selectWebSkin(const std::wstring &url)
 #endif
 }
 
-void TexturePackRepository::downloadWebSkin(const std::wstring &url, File file)
-{
-	app.DebugPrintf("TexturePackRepository::selectWebSkin is not implemented\n");
+void TexturePackRepository::downloadWebSkin(const std::wstring& url,
+                                            File file) {
+    app.DebugPrintf(
+        "TexturePackRepository::selectWebSkin is not implemented\n");
 #if 0
 	Map<String, String> headers = new HashMap<String, String>();
 	final ProgressScreen listener = new ProgressScreen();
@@ -141,21 +140,17 @@ void TexturePackRepository::downloadWebSkin(const std::wstring &url, File file)
 #endif
 }
 
-bool TexturePackRepository::isUsingWebSkin()
-{
-	return usingWeb;
+bool TexturePackRepository::isUsingWebSkin() { return usingWeb; }
+
+void TexturePackRepository::resetWebSkin() {
+    usingWeb = false;
+    updateList();
+    minecraft->delayTextureReload();
 }
 
-void TexturePackRepository::resetWebSkin()
-{
-	usingWeb = false;
-	updateList();
-	minecraft->delayTextureReload();
-}
-
-void TexturePackRepository::updateList()
-{
-	// 4J Stu - We don't ever want to completely refresh the lists, we keep them up-to-date as we go
+void TexturePackRepository::updateList() {
+    // 4J Stu - We don't ever want to completely refresh the lists, we keep them
+    // up-to-date as we go
 #if 0
     std::vector<TexturePack *> *currentPacks = new std::vector<TexturePack *>;
 	currentPacks->push_back(DEFAULT_TEXTURE_PACK);
@@ -219,9 +214,8 @@ void TexturePackRepository::updateList()
 #endif
 }
 
-std::wstring TexturePackRepository::getIdOrNull(File file)
-{
-	app.DebugPrintf("TexturePackRepository::getIdOrNull is not implemented\n");
+std::wstring TexturePackRepository::getIdOrNull(File file) {
+    app.DebugPrintf("TexturePackRepository::getIdOrNull is not implemented\n");
 #if 0
 	if (file.isFile() && file.getName().toLowerCase().endsWith(".zip")) {
 		return file.getName() + ":" + file.length() + ":" + file.lastModified();
@@ -231,12 +225,12 @@ std::wstring TexturePackRepository::getIdOrNull(File file)
 
 	return NULL;
 #endif
-	return L"";
+    return L"";
 }
 
-std::vector<File> TexturePackRepository::getWorkDirContents()
-{
-	app.DebugPrintf("TexturePackRepository::getWorkDirContents is not implemented\n");
+std::vector<File> TexturePackRepository::getWorkDirContents() {
+    app.DebugPrintf(
+        "TexturePackRepository::getWorkDirContents is not implemented\n");
 #if 0
 	if (workDir.exists() && workDir.isDirectory()) {
 		return Arrays.asList(workDir.listFiles());
@@ -244,24 +238,24 @@ std::vector<File> TexturePackRepository::getWorkDirContents()
 
 	return Collections.emptyList();
 #endif
-	return std::vector<File>();
+    return std::vector<File>();
 }
 
-std::vector<TexturePack *> *TexturePackRepository::getAll()
-{
-	// 4J - note that original constucted a copy of texturePacks here
-	return texturePacks;
+std::vector<TexturePack*>* TexturePackRepository::getAll() {
+    // 4J - note that original constucted a copy of texturePacks here
+    return texturePacks;
 }
 
-TexturePack *TexturePackRepository::getSelected()
-{
-	if(selected->hasData())	return selected;
-	else return DEFAULT_TEXTURE_PACK;
+TexturePack* TexturePackRepository::getSelected() {
+    if (selected->hasData())
+        return selected;
+    else
+        return DEFAULT_TEXTURE_PACK;
 }
 
-bool TexturePackRepository::shouldPromptForWebSkin()
-{
-	app.DebugPrintf("TexturePackRepository::shouldPromptForWebSkin is not implemented\n");
+bool TexturePackRepository::shouldPromptForWebSkin() {
+    app.DebugPrintf(
+        "TexturePackRepository::shouldPromptForWebSkin is not implemented\n");
 #if 0
 	if (!minecraft.options.serverTextures) return false;
 	ServerData data = minecraft.getCurrentServer();
@@ -272,12 +266,12 @@ bool TexturePackRepository::shouldPromptForWebSkin()
 		return data.promptOnTextures();
 	}
 #endif
-	return false;
+    return false;
 }
 
-bool TexturePackRepository::canUseWebSkin()
-{
-	app.DebugPrintf("TexturePackRepository::canUseWebSkin is not implemented\n");
+bool TexturePackRepository::canUseWebSkin() {
+    app.DebugPrintf(
+        "TexturePackRepository::canUseWebSkin is not implemented\n");
 #if 0
 	if (!minecraft.options.serverTextures) return false;
 	ServerData data = minecraft.getCurrentServer();
@@ -288,177 +282,158 @@ bool TexturePackRepository::canUseWebSkin()
 		return data.allowTextures();
 	}
 #endif
-	return false;
+    return false;
 }
 
-std::vector< std::pair<std::uint32_t,std::wstring> > *TexturePackRepository::getTexturePackIdNames()
-{
-	std::vector< std::pair<std::uint32_t,std::wstring> > *packList = new std::vector< std::pair<std::uint32_t,std::wstring> >();
+std::vector<std::pair<std::uint32_t, std::wstring> >*
+TexturePackRepository::getTexturePackIdNames() {
+    std::vector<std::pair<std::uint32_t, std::wstring> >* packList =
+        new std::vector<std::pair<std::uint32_t, std::wstring> >();
 
-	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
-	{
-		TexturePack *pack = *it;
-		packList->push_back( std::pair<std::uint32_t,std::wstring>(pack->getId(),pack->getName()) );
-	}
-	return packList;
+    for (AUTO_VAR(it, texturePacks->begin()); it != texturePacks->end(); ++it) {
+        TexturePack* pack = *it;
+        packList->push_back(std::pair<std::uint32_t, std::wstring>(
+            pack->getId(), pack->getName()));
+    }
+    return packList;
 }
 
-bool TexturePackRepository::selectTexturePackById(std::uint32_t id)
-{
-	bool bDidSelect = false;
+bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
+    bool bDidSelect = false;
 
-	//4J-PB - add in a store of the texture pack required, so that join from invite games
-	// (where they don't have the texture pack) can check this when the texture pack is installed
-	app.SetRequiredTexturePackID(id);
+    // 4J-PB - add in a store of the texture pack required, so that join from
+    // invite games
+    //  (where they don't have the texture pack) can check this when the texture
+    //  pack is installed
+    app.SetRequiredTexturePackID(id);
 
-	AUTO_VAR(it, cacheById.find(id));
-	if(it != cacheById.end())
-	{
-		TexturePack *newPack = it->second;
-		if(newPack != selected)
-		{
-			selectSkin(newPack);
+    AUTO_VAR(it, cacheById.find(id));
+    if (it != cacheById.end()) {
+        TexturePack* newPack = it->second;
+        if (newPack != selected) {
+            selectSkin(newPack);
 
-			if(newPack->hasData())
-			{
-				app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ReloadTexturePack);
-			}
-			else
-			{
-				newPack->loadData();
-			}
-			//Minecraft *pMinecraft = Minecraft::GetInstance();
-			//pMinecraft->textures->reloadAll();
-		}
-		else
-		{
-			app.DebugPrintf("TexturePack with id %d is already selected\n",id);
-		}
-		bDidSelect = true;
-	}
-	else
-	{
-		app.DebugPrintf("Failed to select texture pack %d as it is not in the list\n", id);
+            if (newPack->hasData()) {
+                app.SetAction(ProfileManager.GetPrimaryPad(),
+                              eAppAction_ReloadTexturePack);
+            } else {
+                newPack->loadData();
+            }
+            // Minecraft *pMinecraft = Minecraft::GetInstance();
+            // pMinecraft->textures->reloadAll();
+        } else {
+            app.DebugPrintf("TexturePack with id %d is already selected\n", id);
+        }
+        bDidSelect = true;
+    } else {
+        app.DebugPrintf(
+            "Failed to select texture pack %d as it is not in the list\n", id);
 #ifndef _CONTENT_PACKAGE
-		// TODO - 4J Stu: We should report this to the player in some way
-		//__debugbreak();
+        // TODO - 4J Stu: We should report this to the player in some way
+        //__debugbreak();
 #endif
-		// Fail safely
-		if( selectSkin( DEFAULT_TEXTURE_PACK ) )
-		{
-			app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ReloadTexturePack);
-		}
-	}
-	return bDidSelect;
+        // Fail safely
+        if (selectSkin(DEFAULT_TEXTURE_PACK)) {
+            app.SetAction(ProfileManager.GetPrimaryPad(),
+                          eAppAction_ReloadTexturePack);
+        }
+    }
+    return bDidSelect;
 }
 
-TexturePack *TexturePackRepository::getTexturePackById(std::uint32_t id)
-{
-	AUTO_VAR(it, cacheById.find(id));
-	if(it != cacheById.end())
-	{
-		return it->second;
-	}
+TexturePack* TexturePackRepository::getTexturePackById(std::uint32_t id) {
+    AUTO_VAR(it, cacheById.find(id));
+    if (it != cacheById.end()) {
+        return it->second;
+    }
 
-	return NULL;
+    return NULL;
 }
 
-TexturePack *TexturePackRepository::addTexturePackFromDLC(DLCPack *dlcPack, std::uint32_t id)
-{
-	TexturePack *newPack = NULL;
-	// 4J-PB - The City texture pack went out with a child id for the texture pack of 1 instead of zero
-	// we need to mask off the child id here to deal with this
-	const std::uint32_t parentId = id & 0xFFFFFFu; // child id is <<24 and Or'd with parent
+TexturePack* TexturePackRepository::addTexturePackFromDLC(DLCPack* dlcPack,
+                                                          std::uint32_t id) {
+    TexturePack* newPack = NULL;
+    // 4J-PB - The City texture pack went out with a child id for the texture
+    // pack of 1 instead of zero we need to mask off the child id here to deal
+    // with this
+    const std::uint32_t parentId =
+        id & 0xFFFFFFu;  // child id is <<24 and Or'd with parent
 
-	if(dlcPack != NULL)
-	{
-		newPack = new DLCTexturePack(parentId, dlcPack, DEFAULT_TEXTURE_PACK);
-		texturePacks->push_back(newPack);
-		cacheById[parentId] = newPack;
+    if (dlcPack != NULL) {
+        newPack = new DLCTexturePack(parentId, dlcPack, DEFAULT_TEXTURE_PACK);
+        texturePacks->push_back(newPack);
+        cacheById[parentId] = newPack;
 
 #ifndef _CONTENT_PACKAGE
-		if(dlcPack->hasPurchasedFile(DLCManager::e_DLCType_TexturePack,L""))
-		{
-			wprintf(L"Added new FULL DLCTexturePack: %ls - id=%u\n", dlcPack->getName().c_str(), parentId );
-		}
-		else
-		{
-			wprintf(L"Added new TRIAL DLCTexturePack: %ls - id=%u\n", dlcPack->getName().c_str(), parentId );
-		}
+        if (dlcPack->hasPurchasedFile(DLCManager::e_DLCType_TexturePack, L"")) {
+            wprintf(L"Added new FULL DLCTexturePack: %ls - id=%u\n",
+                    dlcPack->getName().c_str(), parentId);
+        } else {
+            wprintf(L"Added new TRIAL DLCTexturePack: %ls - id=%u\n",
+                    dlcPack->getName().c_str(), parentId);
+        }
 #endif
-	}
-	return newPack;
+    }
+    return newPack;
 }
 
-void TexturePackRepository::clearInvalidTexturePacks()
-{
-	for(AUTO_VAR(it, m_texturePacksToDelete.begin()); it != m_texturePacksToDelete.end(); ++it)
-	{
-		delete *it;
-	}
+void TexturePackRepository::clearInvalidTexturePacks() {
+    for (AUTO_VAR(it, m_texturePacksToDelete.begin());
+         it != m_texturePacksToDelete.end(); ++it) {
+        delete *it;
+    }
 }
 
-void TexturePackRepository::removeTexturePackById(std::uint32_t id)
-{
-	AUTO_VAR(it, cacheById.find(id));
-	if(it != cacheById.end())
-	{
-		TexturePack *oldPack = it->second;
+void TexturePackRepository::removeTexturePackById(std::uint32_t id) {
+    AUTO_VAR(it, cacheById.find(id));
+    if (it != cacheById.end()) {
+        TexturePack* oldPack = it->second;
 
-		AUTO_VAR(it2, find(texturePacks->begin(), texturePacks->end(),oldPack) );
-		if(it2 != texturePacks->end())
-		{
-			texturePacks->erase(it2);
-			if(lastSelected == oldPack)
-			{
-				lastSelected = NULL;
-			}
-		}
-		m_texturePacksToDelete.push_back(oldPack);
-	}
+        AUTO_VAR(it2,
+                 find(texturePacks->begin(), texturePacks->end(), oldPack));
+        if (it2 != texturePacks->end()) {
+            texturePacks->erase(it2);
+            if (lastSelected == oldPack) {
+                lastSelected = NULL;
+            }
+        }
+        m_texturePacksToDelete.push_back(oldPack);
+    }
 }
 
-void TexturePackRepository::updateUI()
-{
-	if(lastSelected != NULL && lastSelected != selected)
-	{
-		lastSelected->unloadUI();
-		selected->loadUI();
-		Minimap::reloadColours();
-		ui.StartReloadSkinThread();
-		lastSelected = NULL;
-	}
+void TexturePackRepository::updateUI() {
+    if (lastSelected != NULL && lastSelected != selected) {
+        lastSelected->unloadUI();
+        selected->loadUI();
+        Minimap::reloadColours();
+        ui.StartReloadSkinThread();
+        lastSelected = NULL;
+    }
 }
 
-bool TexturePackRepository::needsUIUpdate()
-{
-	return lastSelected != NULL && lastSelected != selected;
+bool TexturePackRepository::needsUIUpdate() {
+    return lastSelected != NULL && lastSelected != selected;
 }
 
-unsigned int TexturePackRepository::getTexturePackCount()
-{
-	return texturePacks->size();
+unsigned int TexturePackRepository::getTexturePackCount() {
+    return texturePacks->size();
 }
 
-TexturePack *TexturePackRepository::getTexturePackByIndex(unsigned int index)
-{
-	TexturePack *pack = NULL;
-	if(index < texturePacks->size())
-	{
-		pack = texturePacks->at(index);
-	}
-	return pack;
+TexturePack* TexturePackRepository::getTexturePackByIndex(unsigned int index) {
+    TexturePack* pack = NULL;
+    if (index < texturePacks->size()) {
+        pack = texturePacks->at(index);
+    }
+    return pack;
 }
 
-unsigned int TexturePackRepository::getTexturePackIndex(std::uint32_t id)
-{
-	int currentIndex = 0;
-	for(AUTO_VAR(it,texturePacks->begin()); it != texturePacks->end(); ++it)
-	{
-		TexturePack *pack = *it;
-		if(pack->getId() == id) break;
-		++currentIndex;
-	}
-	if(currentIndex >= texturePacks->size()) currentIndex = 0;
-	return currentIndex;
+unsigned int TexturePackRepository::getTexturePackIndex(std::uint32_t id) {
+    int currentIndex = 0;
+    for (AUTO_VAR(it, texturePacks->begin()); it != texturePacks->end(); ++it) {
+        TexturePack* pack = *it;
+        if (pack->getId() == id) break;
+        ++currentIndex;
+    }
+    if (currentIndex >= texturePacks->size()) currentIndex = 0;
+    return currentIndex;
 }

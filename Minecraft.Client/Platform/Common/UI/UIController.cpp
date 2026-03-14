@@ -526,12 +526,12 @@ IggyLibrary UIController::loadSkin(const std::wstring &skinPath, const std::wstr
 		rrbool res;
 		int iteration = 0;
 		__int64 totalStatic = 0;
-		while(res = IggyDebugGetMemoryUseInfo ( NULL ,
+		while((res = IggyDebugGetMemoryUseInfo ( NULL ,
 			lib ,
 			"" ,
 			0 ,
 			iteration ,
-			&memoryInfo ))
+			&memoryInfo )))
 		{
 			totalStatic += memoryInfo.static_allocation_bytes;
 			app.DebugPrintf(app.USER_SR, "%ls - %.*s, static: %dB, dynamic: %dB\n", skinPath.c_str(), memoryInfo.subcategory_stringlen, memoryInfo.subcategory, memoryInfo.static_allocation_bytes, memoryInfo.dynamic_allocation_bytes);

@@ -5,17 +5,16 @@
 
 class ByteBuffer;
 
-class ZoneIo
-{
+class ZoneIo {
 private:
-    std::FILE *channel;
+    std::FILE* channel;
     __int64 pos;
 
 public:
-	ZoneIo(std::FILE *channel, __int64 pos);
+    ZoneIo(std::FILE* channel, __int64 pos);
     void write(byteArray bb, int size);
-    void write(ByteBuffer *bb, int size);
-    ByteBuffer *read(int size);
+    void write(ByteBuffer* bb, int size);
+    ByteBuffer* read(int size);
 
     void flush();
 };

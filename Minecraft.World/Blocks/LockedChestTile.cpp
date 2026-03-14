@@ -2,21 +2,16 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "LockedChestTile.h"
 
-LockedChestTile::LockedChestTile(int id) : Tile(id, Material::wood)
-{
+LockedChestTile::LockedChestTile(int id) : Tile(id, Material::wood) {}
+
+bool LockedChestTile::mayPlace(Level* level, int x, int y, int z) {
+    return true;
 }
 
-bool LockedChestTile::mayPlace(Level *level, int x, int y, int z)
-{
-	return true;
+void LockedChestTile::tick(Level* level, int x, int y, int z, Random* random) {
+    level->setTile(x, y, z, 0);
 }
 
-void LockedChestTile::tick(Level *level, int x, int y, int z, Random *random)
-{
-	level->setTile(x,y,z,0);
-}
-
-void LockedChestTile::registerIcons(IconRegister *iconRegister)
-{
-	// None
+void LockedChestTile::registerIcons(IconRegister* iconRegister) {
+    // None
 }

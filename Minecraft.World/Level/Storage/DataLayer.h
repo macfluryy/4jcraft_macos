@@ -1,18 +1,17 @@
 #pragma once
 
-class DataLayer
-{
+class DataLayer {
 public:
     byteArray data;
 
 private:
-	const int depthBits;
-	const int depthBitsPlusFour;
+    const int depthBits;
+    const int depthBitsPlusFour;
 
 public:
     DataLayer(int length, int depthBits);
     DataLayer(byteArray data, int depthBits);
-	~DataLayer();
+    ~DataLayer();
 
     int get(int x, int y, int z);
 

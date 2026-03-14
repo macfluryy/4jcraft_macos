@@ -4,14 +4,13 @@
 
 class Tile;
 
-class AuxDataTileItem : public TileItem
-{
+class AuxDataTileItem : public TileItem {
 private:
-	Tile *parentTile;
+    Tile* parentTile;
 
 public:
-	AuxDataTileItem(int id, Tile *parentTile);
+    AuxDataTileItem(int id, Tile* parentTile);
 
-	Icon *getIcon(int itemAuxValue);
-	int getLevelDataForAuxValue(int auxValue);
+    Icon* getIcon(int itemAuxValue);
+    int getLevelDataForAuxValue(int auxValue);
 };

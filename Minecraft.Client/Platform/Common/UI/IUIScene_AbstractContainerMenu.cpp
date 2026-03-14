@@ -374,6 +374,8 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			case eTapNone:
 				/// Nothing to do, input is not a tap.
 				break;
+			default:
+				break;
 			}
 #endif // TAP_DETECTION
 
@@ -631,6 +633,8 @@ void IUIScene_AbstractContainerMenu::onMouseTick()
 			case eTapStateJump:
 				iDesiredSlotX = m_iCurrSlotX;
 				iDesiredSlotY = m_iCurrSlotY;
+				break;
+			default:
 				break;
 			}
 

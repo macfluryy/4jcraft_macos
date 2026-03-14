@@ -5,29 +5,22 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"
 
-void SkyIslandDimension::init()
-{
+void SkyIslandDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::sky, 0.5f, 0);
     id = 1;
 }
 
-ChunkSource *SkyIslandDimension::createRandomLevelSource() const
-{
-	return new SkyIslandRandomLevelSource(level, level->getSeed());
+ChunkSource* SkyIslandDimension::createRandomLevelSource() const {
+    return new SkyIslandRandomLevelSource(level, level->getSeed());
 }
 
-float SkyIslandDimension::getTimeOfDay(__int64 time, float a) const
-{
-	return 0.0f;
+float SkyIslandDimension::getTimeOfDay(__int64 time, float a) const {
+    return 0.0f;
 }
 
-float *SkyIslandDimension::getSunriseColor(float td, float a)
-{
-	return NULL;
-}
+float* SkyIslandDimension::getSunriseColor(float td, float a) { return NULL; }
 
-Vec3 *SkyIslandDimension::getFogColor(float td, float a) const
-{
+Vec3* SkyIslandDimension::getFogColor(float td, float a) const {
     int fogColor = 0x8080a0;
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
@@ -43,18 +36,11 @@ Vec3 *SkyIslandDimension::getFogColor(float td, float a) const
     return Vec3::newTemp(r, g, b);
 }
 
-bool SkyIslandDimension::hasGround()
-{
-	return false;
-}
+bool SkyIslandDimension::hasGround() { return false; }
 
-float SkyIslandDimension::getCloudHeight()
-{
-	return 8;
-}
+float SkyIslandDimension::getCloudHeight() { return 8; }
 
-bool SkyIslandDimension::isValidSpawn(int x, int z) const
-{
+bool SkyIslandDimension::isValidSpawn(int x, int z) const {
     int topTile = level->getTopTile(x, z);
 
     if (topTile == 0) return false;

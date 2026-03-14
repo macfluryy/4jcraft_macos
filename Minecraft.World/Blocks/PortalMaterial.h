@@ -1,12 +1,11 @@
 #pragma once
 #include "Material.h"
 
-class PortalMaterial : public Material
-{
+class PortalMaterial : public Material {
 public:
-	PortalMaterial(MaterialColor *color) : Material(color) { }
+    PortalMaterial(MaterialColor* color) : Material(color) {}
 
-	virtual bool isSolid() { return false; }
-	virtual bool blocksLight() { return false; }
-	virtual bool blocksMotion() { return false; }
+    virtual bool isSolid() { return false; }
+    virtual bool blocksLight() { return false; }
+    virtual bool blocksMotion() { return false; }
 };

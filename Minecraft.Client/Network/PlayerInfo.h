@@ -1,15 +1,12 @@
 #pragma once
 
-
-class PlayerInfo
-{
+class PlayerInfo {
 public:
-	std::wstring name;
-	int latency;
+    std::wstring name;
+    int latency;
 
-	PlayerInfo(const std::wstring &name)
-	{
-		this->name = name;
-		latency = 0;
-	}
+    PlayerInfo(const std::wstring& name) {
+        this->name = name;
+        latency = 0;
+    }
 };

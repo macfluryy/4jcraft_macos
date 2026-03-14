@@ -4,36 +4,29 @@
 #include "../../Headers/net.minecraft.h"
 #include "VinesFeature.h"
 
+VinesFeature::VinesFeature() {}
 
-VinesFeature::VinesFeature()
-{
-}
+bool VinesFeature::place(Level* level, Random* random, int x, int y, int z) {
+    int ox = x;
+    int oz = z;
 
-bool VinesFeature::place(Level *level, Random *random, int x, int y, int z)
-{
-	int ox = x;
-	int oz = z;
+    while (y < 128) {
+        if (level->isEmptyTile(x, y, z)) {
+            for (int face = Facing::NORTH; face <= Facing::EAST; face++) {
+                if (Tile::vine->mayPlace(level, x, y, z, face)) {
+                    level->setTileAndDataNoUpdate(
+                        x, y, z, Tile::vine_Id,
+                        1 << Direction::FACING_DIRECTION
+                                [Facing::OPPOSITE_FACING[face]]);
+                    break;
+                }
+            }
+        } else {
+            x = ox + random->nextInt(4) - random->nextInt(4);
+            z = oz + random->nextInt(4) - random->nextInt(4);
+        }
+        y++;
+    }
 
-	while (y < 128)
-	{
-		if (level->isEmptyTile(x, y, z))
-		{
-			for (int face = Facing::NORTH; face <= Facing::EAST; face++)
-			{
-				if (Tile::vine->mayPlace(level, x, y, z, face))
-				{
-					level->setTileAndDataNoUpdate(x, y, z, Tile::vine_Id, 1 << Direction::FACING_DIRECTION[Facing::OPPOSITE_FACING[face]]);
-					break;
-				}
-			}
-		}
-		else
-		{
-			x = ox + random->nextInt(4) - random->nextInt(4);
-			z = oz + random->nextInt(4) - random->nextInt(4);
-		}
-		y++;
-	}
-
-	return true;
+    return true;
 }

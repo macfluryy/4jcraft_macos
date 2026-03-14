@@ -1,31 +1,35 @@
 #pragma once
 
-
 #include "Packet.h"
 #include "../../Entities/SyncedEntityData.h"
 
-class SetEntityDataPacket : public Packet, public std::enable_shared_from_this<SetEntityDataPacket>
-{
+class SetEntityDataPacket
+    : public Packet,
+      public std::enable_shared_from_this<SetEntityDataPacket> {
 public:
-	int id;
+    int id;
 
 private:
-	std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *packedItems;
+    std::vector<std::shared_ptr<SynchedEntityData::DataItem> >* packedItems;
 
 public:
-	SetEntityDataPacket();
-	~SetEntityDataPacket();
-	SetEntityDataPacket(int id, std::shared_ptr<SynchedEntityData>, bool notJustDirty);
+    SetEntityDataPacket();
+    ~SetEntityDataPacket();
+    SetEntityDataPacket(int id, std::shared_ptr<SynchedEntityData>,
+                        bool notJustDirty);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
-	virtual bool isAync();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
+    virtual bool isAync();
 
-	std::vector<std::shared_ptr<SynchedEntityData::DataItem> > *getUnpackedData();
+    std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
+    getUnpackedData();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new SetEntityDataPacket()); }
-	virtual int getId() { return 40; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new SetEntityDataPacket());
+    }
+    virtual int getId() { return 40; }
 };

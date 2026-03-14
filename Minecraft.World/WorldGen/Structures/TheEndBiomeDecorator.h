@@ -1,25 +1,22 @@
 #pragma once
 #include "../Biomes/BiomeDecorator.h"
 
-class TheEndBiomeDecorator : public BiomeDecorator
-{
+class TheEndBiomeDecorator : public BiomeDecorator {
 public:
-	typedef struct  
-	{
-		int iChunkX;
-		int iChunkZ;
-		int x;
-		int z;
-		int radius;
-	}
-	SPIKE;	
-	
-	TheEndBiomeDecorator(Biome *biome);
+    typedef struct {
+        int iChunkX;
+        int iChunkZ;
+        int x;
+        int z;
+        int radius;
+    } SPIKE;
+
+    TheEndBiomeDecorator(Biome* biome);
+
 protected:
-	Feature *spikeFeature;
-	Feature *endPodiumFeature;
-	virtual void decorate();
+    Feature* spikeFeature;
+    Feature* endPodiumFeature;
+    virtual void decorate();
 
-
-	static SPIKE SpikeValA[8];
+    static SPIKE SpikeValA[8];
 };

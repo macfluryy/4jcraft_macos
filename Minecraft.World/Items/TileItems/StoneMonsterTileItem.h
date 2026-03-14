@@ -1,16 +1,16 @@
 #pragma once
 
-
 #include "TileItem.h"
 
-// 4J Stu - Class brought forward from 12w36 to fix stacking problem with silverfish stones
+// 4J Stu - Class brought forward from 12w36 to fix stacking problem with
+// silverfish stones
 
-class StoneMonsterTileItem : public TileItem
-{
+class StoneMonsterTileItem : public TileItem {
 public:
-	StoneMonsterTileItem(int id);
+    StoneMonsterTileItem(int id);
 
-	virtual int getLevelDataForAuxValue(int auxValue);
-	virtual Icon *getIcon(int itemAuxValue);
-	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
+    virtual int getLevelDataForAuxValue(int auxValue);
+    virtual Icon* getIcon(int itemAuxValue);
+    virtual unsigned int getDescriptionId(
+        std::shared_ptr<ItemInstance> instance);
 };

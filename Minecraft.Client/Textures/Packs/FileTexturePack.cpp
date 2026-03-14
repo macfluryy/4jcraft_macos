@@ -1,16 +1,16 @@
 #include "../../Platform/stdafx.h"
 #include "FileTexturePack.h"
 
-FileTexturePack::FileTexturePack(std::uint32_t id, File *file, TexturePack *fallback) : AbstractTexturePack(id, file, file->getName(), fallback)
-{
-	// 4J Stu - These calls need to be in the most derived version of the class
-	loadIcon();
-	loadName();
-	loadDescription();
+FileTexturePack::FileTexturePack(std::uint32_t id, File* file,
+                                 TexturePack* fallback)
+    : AbstractTexturePack(id, file, file->getName(), fallback) {
+    // 4J Stu - These calls need to be in the most derived version of the class
+    loadIcon();
+    loadName();
+    loadDescription();
 }
 
-void FileTexturePack::unload(Textures *textures)
-{
+void FileTexturePack::unload(Textures* textures) {
 #if 0
 	super.unload(textures);
 
@@ -24,7 +24,8 @@ void FileTexturePack::unload(Textures *textures)
 #endif
 }
 
-InputStream *FileTexturePack::getResourceImplementation(const std::wstring &name) //throws IOException
+InputStream* FileTexturePack::getResourceImplementation(
+    const std::wstring& name)  // throws IOException
 {
 #if 0
 	loadZipFile();
@@ -36,11 +37,10 @@ InputStream *FileTexturePack::getResourceImplementation(const std::wstring &name
 
 	return zipFile.getInputStream(entry);
 #endif
-	return NULL;
+    return NULL;
 }
 
-bool FileTexturePack::hasFile(const std::wstring &name)
-{
+bool FileTexturePack::hasFile(const std::wstring& name) {
 #if 0
 	try {
 		loadZipFile();
@@ -50,10 +50,10 @@ bool FileTexturePack::hasFile(const std::wstring &name)
 		return false;
 	}
 #endif
-	return false;
+    return false;
 }
 
-void FileTexturePack::loadZipFile() //throws IOException
+void FileTexturePack::loadZipFile()  // throws IOException
 {
 #if 0
 	if (zipFile != null) {
@@ -64,8 +64,7 @@ void FileTexturePack::loadZipFile() //throws IOException
 #endif
 }
 
-bool FileTexturePack::isTerrainUpdateCompatible()
-{
+bool FileTexturePack::isTerrainUpdateCompatible() {
 #if 0
 	try {
 		loadZipFile();
@@ -82,5 +81,5 @@ bool FileTexturePack::isTerrainUpdateCompatible()
 	boolean hasOldFiles = hasFile("terrain.png") || hasFile("gui/items.png");
 	return !hasOldFiles;
 #endif
-	return false;
+    return false;
 }

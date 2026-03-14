@@ -3,10 +3,8 @@
 #include "HellFireFeature.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 
-bool HellFireFeature::place(Level *level, Random *random, int x, int y, int z)
-{
-    for (int i = 0; i < 64; i++)
-	{
+bool HellFireFeature::place(Level* level, Random* random, int x, int y, int z) {
+    for (int i = 0; i < 64; i++) {
         int x2 = x + random->nextInt(8) - random->nextInt(8);
         int y2 = y + random->nextInt(4) - random->nextInt(4);
         int z2 = z + random->nextInt(8) - random->nextInt(8);

@@ -955,6 +955,8 @@ bool IUIScene_CreativeMenu::IsSectionSlotList( ESceneSection eSection )
 		case eSectionInventoryCreativeUsing:
 		case eSectionInventoryCreativeSelector:
 			return true;
+		default:
+			break;
 	}
 	return false;
 }
@@ -966,6 +968,8 @@ bool IUIScene_CreativeMenu::CanHaveFocus( ESceneSection eSection )
 		case eSectionInventoryCreativeUsing:
 		case eSectionInventoryCreativeSelector:
 			return true;
+		default:
+			break;
 	}
 	return false;
 }

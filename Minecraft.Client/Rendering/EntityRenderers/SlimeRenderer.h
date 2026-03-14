@@ -1,13 +1,14 @@
 #pragma once
 #include "MobRenderer.h"
 
-class SlimeRenderer : public MobRenderer
-{
+class SlimeRenderer : public MobRenderer {
 private:
-	Model *armor;
+    Model* armor;
+
 public:
-	SlimeRenderer(Model *model, Model *armor, float shadow);
+    SlimeRenderer(Model* model, Model* armor, float shadow);
+
 protected:
-	virtual int prepareArmor(std::shared_ptr<Mob> _slime, int layer, float a);
+    virtual int prepareArmor(std::shared_ptr<Mob> _slime, int layer, float a);
     virtual void scale(std::shared_ptr<Mob> _slime, float a);
 };

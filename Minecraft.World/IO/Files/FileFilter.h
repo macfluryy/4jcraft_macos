@@ -3,8 +3,7 @@
 class File;
 
 // 4J Jev, java library interface.
-class FileFilter
-{
+class FileFilter {
 public:
-	virtual bool accept(File *dir) = 0;
+    virtual bool accept(File* dir) = 0;
 };

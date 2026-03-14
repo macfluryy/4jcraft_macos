@@ -4,63 +4,69 @@
 
 class Player;
 
-class TopSnowTile : public Tile
-{
-	friend class Tile;
+class TopSnowTile : public Tile {
+    friend class Tile;
+
 public:
-	static const int MAX_HEIGHT;
-	static const int HEIGHT_MASK;
+    static const int MAX_HEIGHT;
+    static const int HEIGHT_MASK;
 
 protected:
-	TopSnowTile(int id);
+    TopSnowTile(int id);
 
 public:
-	void registerIcons(IconRegister *iconRegister);
-	AABB *getAABB(Level *level, int x, int y, int z);
+    void registerIcons(IconRegister* iconRegister);
+    AABB* getAABB(Level* level, int x, int y, int z);
 
 public:
-	static float getHeight(Level *level, int x, int y, int z);
+    static float getHeight(Level* level, int x, int y, int z);
 
 public:
-	bool blocksLight();
+    bool blocksLight();
 
 public:
-	bool isSolidRender(bool isServerLevel = false);
+    bool isSolidRender(bool isServerLevel = false);
 
 public:
-	bool isCubeShaped();
+    bool isCubeShaped();
 
 public:
-	void updateDefaultShape();
-	void updateShape(LevelSource *level, int x, int y, int z, int forceData = -1, std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<TileEntity>());	// 4J added forceData, forceEntity param
+    void updateDefaultShape();
+    void updateShape(LevelSource* level, int x, int y, int z,
+                     int forceData = -1,
+                     std::shared_ptr<TileEntity> forceEntity =
+                         std::shared_ptr<TileEntity>());  // 4J added forceData,
+                                                          // forceEntity param
 
 protected:
-	void updateShape(int data);
+    void updateShape(int data);
 
 public:
-	bool mayPlace(Level *level, int x, int y, int z);
+    bool mayPlace(Level* level, int x, int y, int z);
 
 public:
-	void neighborChanged(Level *level, int x, int y, int z, int type);
+    void neighborChanged(Level* level, int x, int y, int z, int type);
 
 private:
-	bool checkCanSurvive(Level *level, int x, int y, int z);
+    bool checkCanSurvive(Level* level, int x, int y, int z);
 
 public:
-	void playerDestroy(Level *level, std::shared_ptr<Player> player, int x, int y, int z, int data);
+    void playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
+                       int y, int z, int data);
 
 public:
-	int getResource(int data, Random *random, int playerBonusLevel);
+    int getResource(int data, Random* random, int playerBonusLevel);
 
 public:
-	int getResourceCount(Random *random);
+    int getResourceCount(Random* random);
 
 public:
-	void tick(Level *level, int x, int y, int z, Random *random);
+    void tick(Level* level, int x, int y, int z, Random* random);
 
 public:
-	bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
-	
-	// 4J Added so we can check before we try to add a tile to the tick list if it's actually going to do seomthing
-	virtual bool shouldTileTick(Level *level, int x,int y,int z);
+    bool shouldRenderFace(LevelSource* level, int x, int y, int z, int face);
+
+    // 4J Added so we can check before we try to add a tile to the tick list if
+    // it's actually going to do seomthing
+    virtual bool shouldTileTick(Level* level, int x, int y, int z);
 };

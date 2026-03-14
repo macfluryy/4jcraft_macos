@@ -1,17 +1,19 @@
 #include "../../Platform/stdafx.h"
 #include "FolderTexturePack.h"
 
-FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring &name, File *folder, TexturePack *fallback) : AbstractTexturePack(id, folder, name, fallback)
-{
-	// 4J Stu - These calls need to be in the most derived version of the class
-	loadIcon();
-	loadName();
-	loadDescription();
+FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring& name,
+                                     File* folder, TexturePack* fallback)
+    : AbstractTexturePack(id, folder, name, fallback) {
+    // 4J Stu - These calls need to be in the most derived version of the class
+    loadIcon();
+    loadName();
+    loadDescription();
 
-	bUILoaded = false;
+    bUILoaded = false;
 }
 
-InputStream *FolderTexturePack::getResourceImplementation(const std::wstring &name) //throws IOException
+InputStream* FolderTexturePack::getResourceImplementation(
+    const std::wstring& name)  // throws IOException
 {
 #if 0
 	final File file = new File(this.file, name.substring(1));
@@ -22,89 +24,86 @@ InputStream *FolderTexturePack::getResourceImplementation(const std::wstring &na
 	return new BufferedInputStream(new FileInputStream(file));
 #endif
 
-	std::wstring wDrive = L"";
-	// Make the content package point to to the UPDATE: drive is needed
+    std::wstring wDrive = L"";
+    // Make the content package point to to the UPDATE: drive is needed
 #ifdef _XBOX
-	wDrive=L"GAME:\\DummyTexturePack\\res";
+    wDrive = L"GAME:\\DummyTexturePack\\res";
 #else
-	wDrive = L"Common\\DummyTexturePack\\res";
+    wDrive = L"Common\\DummyTexturePack\\res";
 #endif
-	InputStream *resource = InputStream::getResourceAsStream(wDrive + name);
-	//InputStream *stream = DefaultTexturePack::class->getResourceAsStream(name);
-	//if (stream == NULL)
-	//{
-	//	throw new FileNotFoundException(name);
-	//}
+    InputStream* resource = InputStream::getResourceAsStream(wDrive + name);
+    // InputStream *stream =
+    // DefaultTexturePack::class->getResourceAsStream(name); if (stream == NULL)
+    //{
+    //	throw new FileNotFoundException(name);
+    // }
 
-	//return stream;
-	return resource;
+    // return stream;
+    return resource;
 }
 
-bool FolderTexturePack::hasFile(const std::wstring &name)
-{
-	File file = File( getPath() + name);
-	return file.exists() && file.isFile();
-	//return true;
+bool FolderTexturePack::hasFile(const std::wstring& name) {
+    File file = File(getPath() + name);
+    return file.exists() && file.isFile();
+    // return true;
 }
 
-bool FolderTexturePack::isTerrainUpdateCompatible()
-{
+bool FolderTexturePack::isTerrainUpdateCompatible() {
 #if 0
 	final File dir = new File(this.file, "textures/");
 	final boolean hasTexturesFolder = dir.exists() && dir.isDirectory();
 	final boolean hasOldFiles = hasFile("terrain.png") || hasFile("gui/items.png");
 	return hasTexturesFolder || !hasOldFiles;
 #endif
-	return true;
+    return true;
 }
 
-std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/)
-{
-	std::wstring wDrive;
+std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
+    std::wstring wDrive;
 #ifdef _XBOX
-		wDrive=L"GAME:\\" + file->getPath() + L"\\";
+    wDrive = L"GAME:\\" + file->getPath() + L"\\";
 #else
-		wDrive=L"Common\\" + file->getPath() + L"\\";
+    wDrive = L"Common\\" + file->getPath() + L"\\";
 #endif
-	return wDrive;
+    return wDrive;
 }
 
-void FolderTexturePack::loadUI()
-{
+void FolderTexturePack::loadUI() {
 #ifdef _XBOX
-	//"file://" + Drive + PathToXZP + "#" + PathInsideXZP
+    //"file://" + Drive + PathToXZP + "#" + PathInsideXZP
 
-	//L"file://game:/ui.xzp#skin_default.xur"
+    // L"file://game:/ui.xzp#skin_default.xur"
 
-	// Load new skin
-	if(hasFile(L"TexturePack.xzp"))
-	{
-		constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
-		WCHAR szResourceLocator[ LOCATOR_SIZE ];
+    // Load new skin
+    if (hasFile(L"TexturePack.xzp")) {
+        constexpr int LOCATOR_SIZE =
+            256;  // Use this to allocate space to hold a ResourceLocator string
+        WCHAR szResourceLocator[LOCATOR_SIZE];
 
-		swprintf(szResourceLocator, LOCATOR_SIZE,L"file://%lsTexturePack.xzp#skin_Minecraft.xur",getPath().c_str());
+        swprintf(szResourceLocator, LOCATOR_SIZE,
+                 L"file://%lsTexturePack.xzp#skin_Minecraft.xur",
+                 getPath().c_str());
 
-		XuiFreeVisuals(L"");
-		app.LoadSkin(szResourceLocator,NULL);//L"TexturePack");
-		bUILoaded = true;
-		//CXuiSceneBase::GetInstance()->SetVisualPrefix(L"TexturePack");
-	}
+        XuiFreeVisuals(L"");
+        app.LoadSkin(szResourceLocator, NULL);  // L"TexturePack");
+        bUILoaded = true;
+        // CXuiSceneBase::GetInstance()->SetVisualPrefix(L"TexturePack");
+    }
 
-	AbstractTexturePack::loadUI();
+    AbstractTexturePack::loadUI();
 #endif
 }
 
-void FolderTexturePack::unloadUI()
-{
+void FolderTexturePack::unloadUI() {
 #ifdef _XBOX
-	// Unload skin
-	if(bUILoaded)
-	{
-		XuiFreeVisuals(L"TexturePack");
-		XuiFreeVisuals(L"");
-		CXuiSceneBase::GetInstance()->SetVisualPrefix(L"");
-		CXuiSceneBase::GetInstance()->SkinChanged(CXuiSceneBase::GetInstance()->m_hObj);
-	}
-	AbstractTexturePack::unloadUI();
+    // Unload skin
+    if (bUILoaded) {
+        XuiFreeVisuals(L"TexturePack");
+        XuiFreeVisuals(L"");
+        CXuiSceneBase::GetInstance()->SetVisualPrefix(L"");
+        CXuiSceneBase::GetInstance()->SkinChanged(
+            CXuiSceneBase::GetInstance()->m_hObj);
+    }
+    AbstractTexturePack::unloadUI();
 #endif
 }

@@ -3,22 +3,21 @@
 #include "TileEntityRenderDispatcher.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 
-EntityTileRenderer *EntityTileRenderer::instance = new EntityTileRenderer;
+EntityTileRenderer* EntityTileRenderer::instance = new EntityTileRenderer;
 
-EntityTileRenderer::EntityTileRenderer()
-{
-	chest = std::shared_ptr<ChestTileEntity>(new ChestTileEntity());
-	enderChest = std::shared_ptr<EnderChestTileEntity>(new EnderChestTileEntity());
+EntityTileRenderer::EntityTileRenderer() {
+    chest = std::shared_ptr<ChestTileEntity>(new ChestTileEntity());
+    enderChest =
+        std::shared_ptr<EnderChestTileEntity>(new EnderChestTileEntity());
 }
 
-void EntityTileRenderer::render(Tile *tile, int data, float brightness, float alpha, bool setColor, bool useCompiled)
-{
-	if (tile->id == Tile::enderChest_Id)
-	{
-		TileEntityRenderDispatcher::instance->render(enderChest, 0, 0, 0, 0, setColor, alpha, useCompiled);
-	}
-	else
-	{
-		TileEntityRenderDispatcher::instance->render(chest, 0, 0, 0, 0, setColor, alpha, useCompiled);
-	}
+void EntityTileRenderer::render(Tile* tile, int data, float brightness,
+                                float alpha, bool setColor, bool useCompiled) {
+    if (tile->id == Tile::enderChest_Id) {
+        TileEntityRenderDispatcher::instance->render(
+            enderChest, 0, 0, 0, 0, setColor, alpha, useCompiled);
+    } else {
+        TileEntityRenderDispatcher::instance->render(
+            chest, 0, 0, 0, 0, setColor, alpha, useCompiled);
+    }
 }

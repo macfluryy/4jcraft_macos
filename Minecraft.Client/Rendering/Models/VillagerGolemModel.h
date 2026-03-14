@@ -4,27 +4,29 @@
 
 class ModelPart;
 
-class VillagerGolemModel : public Model
-{
+class VillagerGolemModel : public Model {
 public:
-	ModelPart *head, *body, *arm0, *arm1, *leg0, *leg1;
+    ModelPart *head, *body, *arm0, *arm1, *leg0, *leg1;
 
-	//VillagerGolemModel()
-	//{
-	//	this(0);
-	//}
+    // VillagerGolemModel()
+    //{
+    //	this(0);
+    // }
 
-	//VillagerGolemModel(float g)
-	//{
-	//	this(g, -7);
-	//}
+    // VillagerGolemModel(float g)
+    //{
+    //	this(g, -7);
+    // }
 
-	VillagerGolemModel(float g = 0.0f, float yOffset = -7.0f);
+    VillagerGolemModel(float g = 0.0f, float yOffset = -7.0f);
 
-	void render(std::shared_ptr<Entity> entity, float time, float r, float bob, float yRot, float xRot, float scale, bool usecompiled);
-	void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0);
-	void prepareMobModel(std::shared_ptr<Mob> mob, float time, float r, float a);
+    void render(std::shared_ptr<Entity> entity, float time, float r, float bob,
+                float yRot, float xRot, float scale, bool usecompiled);
+    void setupAnim(float time, float r, float bob, float yRot, float xRot,
+                   float scale, unsigned int uiBitmaskOverrideAnim = 0);
+    void prepareMobModel(std::shared_ptr<Mob> mob, float time, float r,
+                         float a);
 
 private:
-	float triangleWave(float bob, float period);
+    float triangleWave(float bob, float period);
 };

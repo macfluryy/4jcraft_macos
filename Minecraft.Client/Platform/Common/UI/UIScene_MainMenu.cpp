@@ -419,6 +419,8 @@ void UIScene_MainMenu::RunAction(int iPad)
 		Windows::Xbox::ApplicationModel::Help::Show(user);
 		break;
 #endif
+	default:
+		break;
 	}
 }
 
@@ -500,6 +502,8 @@ int UIScene_MainMenu::MustSignInReturned(void *pParam, int iPad, C4JStorage::EMe
 #ifdef _DURANGO						 					  
 		case eAction_RunXboxHelp:		ProfileManager.RequestSignInUI(false, false,  true, false, true, &UIScene_MainMenu::XboxHelp_SignInReturned,		pClass,	iPad ); break;
 #endif
+		default:
+			break;
 		}
 	}
 	else

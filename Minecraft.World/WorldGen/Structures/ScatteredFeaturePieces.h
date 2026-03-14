@@ -2,66 +2,64 @@
 
 #include "StructurePiece.h"
 
-class ScatteredFeaturePieces
-{
+class ScatteredFeaturePieces {
 private:
-	class ScatteredFeaturePiece : public StructurePiece
-	{
-	protected:
-		int width;
-		int height;
-		int depth;
+    class ScatteredFeaturePiece : public StructurePiece {
+    protected:
+        int width;
+        int height;
+        int depth;
 
-		int heightPosition;
+        int heightPosition;
 
-		ScatteredFeaturePiece(Random *random, int west, int floor, int north, int width, int height, int depth);
+        ScatteredFeaturePiece(Random* random, int west, int floor, int north,
+                              int width, int height, int depth);
 
-		bool updateAverageGroundHeight(Level *level, BoundingBox *chunkBB, int offset);
-	};
+        bool updateAverageGroundHeight(Level* level, BoundingBox* chunkBB,
+                                       int offset);
+    };
 
 public:
-	class DesertPyramidPiece : public ScatteredFeaturePiece
-	{
-	public:
-		static const int TREASURE_ITEMS_COUNT = 6;
-	private:
-		bool hasPlacedChest[4];
-		static WeighedTreasure *treasureItems[TREASURE_ITEMS_COUNT];
+    class DesertPyramidPiece : public ScatteredFeaturePiece {
+    public:
+        static const int TREASURE_ITEMS_COUNT = 6;
 
-	public:
-		DesertPyramidPiece(Random *random, int west, int north);
+    private:
+        bool hasPlacedChest[4];
+        static WeighedTreasure* treasureItems[TREASURE_ITEMS_COUNT];
 
-		bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
+    public:
+        DesertPyramidPiece(Random* random, int west, int north);
 
-	};
+        bool postProcess(Level* level, Random* random, BoundingBox* chunkBB);
+    };
 
-	class JunglePyramidPiece : public ScatteredFeaturePiece
-	{
-	public:
-		static const int TREASURE_ITEMS_COUNT = 6;
-		static const int DISPENSER_ITEMS_COUNT = 1;
-	private:
-		bool placedMainChest;
-		bool placedHiddenChest;
-		bool placedTrap1;
-		bool placedTrap2;
+    class JunglePyramidPiece : public ScatteredFeaturePiece {
+    public:
+        static const int TREASURE_ITEMS_COUNT = 6;
+        static const int DISPENSER_ITEMS_COUNT = 1;
 
-		static WeighedTreasure *treasureItems[TREASURE_ITEMS_COUNT];
-		static WeighedTreasure *dispenserItems[DISPENSER_ITEMS_COUNT];
+    private:
+        bool placedMainChest;
+        bool placedHiddenChest;
+        bool placedTrap1;
+        bool placedTrap2;
 
-	public:
-		JunglePyramidPiece(Random *random, int west, int north);
+        static WeighedTreasure* treasureItems[TREASURE_ITEMS_COUNT];
+        static WeighedTreasure* dispenserItems[DISPENSER_ITEMS_COUNT];
 
-		bool postProcess(Level *level, Random *random, BoundingBox *chunkBB);
+    public:
+        JunglePyramidPiece(Random* random, int west, int north);
 
-	private:
-		class MossStoneSelector : public BlockSelector
-		{
-		public:
-			void next(Random *random, int worldX, int worldY, int worldZ, bool isEdge);
-		};
+        bool postProcess(Level* level, Random* random, BoundingBox* chunkBB);
 
-		static MossStoneSelector stoneSelector;
+    private:
+        class MossStoneSelector : public BlockSelector {
+        public:
+            void next(Random* random, int worldX, int worldY, int worldZ,
+                      bool isEdge);
+        };
 
-	};
+        static MossStoneSelector stoneSelector;
+    };
 };
