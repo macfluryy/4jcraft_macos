@@ -12,6 +12,43 @@
 
 ConsoleUIController ui;
 
+static void restoreFixedFunctionStateAfterIggy() {
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDepthMask(GL_TRUE);
+
+    glDisable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glShadeModel(GL_SMOOTH);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
     // Shared init
@@ -49,6 +86,7 @@ void ConsoleUIController::render() {
     renderScenes();
 
     gdraw_GL_NoMoreGDrawThisFrame();
+    restoreFixedFunctionStateAfterIggy();
 #endif
 }
 
