@@ -12,6 +12,32 @@
 
 ConsoleUIController ui;
 
+static void restoreFixedFunctionStateAfterIggy() {
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
     // Shared init
@@ -49,6 +75,7 @@ void ConsoleUIController::render() {
     renderScenes();
 
     gdraw_GL_NoMoreGDrawThisFrame();
+    restoreFixedFunctionStateAfterIggy();
 #endif
 }
 
