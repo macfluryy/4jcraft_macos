@@ -3450,8 +3450,8 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
 	{
 		QueryPerformanceCounter( &qwNewTime );
 		qwDeltaTime2.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-		fElapsedTime1 = fSecsPerTick * ((FLOAT)(qwDeltaTime1.QuadPart));
-		fElapsedTime2 = fSecsPerTick * ((FLOAT)(qwDeltaTime2.QuadPart));
+		fElapsedTime1 = fSecsPerTick * static_cast<float>(qwDeltaTime1.QuadPart);
+		fElapsedTime2 = fSecsPerTick * static_cast<float>(qwDeltaTime2.QuadPart);
 		if( ( darktcc > 0 ) | ( tcc > 0 ) )
 		{
 			printf("%d %d %d %f + %f = %f\n", darktcc, tcc, darktcc + tcc, fElapsedTime1 * 1000.0f, fElapsedTime2 * 1000.0f, ( fElapsedTime1 + fElapsedTime2 ) * 1000.0f);

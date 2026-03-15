@@ -13,10 +13,11 @@ C4JStorage::C4JStorage() : m_pStringTable(nullptr) {}
 void C4JStorage::Tick(void) {}
 
 C4JStorage::EMessageResult C4JStorage::RequestMessageBox(
-    UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
+    unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+    unsigned int uiOptionC, unsigned int pad,
     int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
     C4JStringTable* pStringTable, WCHAR* pwchFormatString,
-    DWORD dwFocusButton) {
+    unsigned int focusButton) {
     return EMessage_ResultAccept;
 }
 
@@ -57,15 +58,19 @@ void C4JStorage::GetSaveData(void* pvData, unsigned int* puiBytes) {
 PVOID C4JStorage::AllocateSaveData(unsigned int uiBytes) {
     return malloc(uiBytes);
 }
-void C4JStorage::SetSaveImages(PBYTE pbThumbnail, DWORD dwThumbnailBytes,
-                               PBYTE pbImage, DWORD dwImageBytes,
-                               PBYTE pbTextData, DWORD dwTextDataBytes) {}
+void C4JStorage::SetSaveImages(std::uint8_t* pbThumbnail,
+                               unsigned int thumbnailBytes,
+                               std::uint8_t* pbImage,
+                               unsigned int imageBytes,
+                               std::uint8_t* pbTextData,
+                               unsigned int textDataBytes) {}
 C4JStorage::ESaveGameState C4JStorage::SaveSaveData(int (*Func)(void*,
                                                                 const bool),
                                                     void* lpParam) {
     return ESaveGame_Idle;
 }
-void C4JStorage::CopySaveDataToNewSave(PBYTE pbThumbnail, DWORD cbThumbnail,
+void C4JStorage::CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
+                                       unsigned int cbThumbnail,
                                        WCHAR* wchNewName,
                                        int (*Func)(void* lpParam, bool),
                                        void* lpParam) {}
@@ -92,14 +97,15 @@ C4JStorage::ESaveGameState C4JStorage::LoadSaveDataThumbnail(
     void* lpParam) {
     return ESaveGame_Idle;
 }
-void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile,
+void C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,
                                       XCONTENT_DATA& xContentData) {
     memset(&xContentData, 0, sizeof(xContentData));
 }
-void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile, PBYTE* ppbImageData,
-                                      DWORD* pdwImageBytes) {
+void C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,
+                                      std::uint8_t** ppbImageData,
+                                      unsigned int* pImageBytes) {
     if (ppbImageData) *ppbImageData = nullptr;
-    if (pdwImageBytes) *pdwImageBytes = 0;
+    if (pImageBytes) *pImageBytes = 0;
 }
 C4JStorage::ESaveGameState C4JStorage::LoadSaveData(
     PSAVE_INFO pSaveInfo, int (*Func)(void* lpParam, const bool, const bool),
@@ -118,34 +124,34 @@ void C4JStorage::RegisterMarketplaceCountsCallback(
 void C4JStorage::SetDLCPackageRoot(char* pszDLCRoot) {}
 C4JStorage::EDLCStatus C4JStorage::GetDLCOffers(
     int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
-    DWORD dwOfferTypesBitmask) {
+    std::uint32_t dwOfferTypesBitmask) {
     return EDLC_NoOffers;
 }
-DWORD C4JStorage::CancelGetDLCOffers() { return 0; }
+unsigned int C4JStorage::CancelGetDLCOffers() { return 0; }
 void C4JStorage::ClearDLCOffers() {}
-XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(DWORD dw) {
+XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) {
     return s_dummyOffer;
 }
 int C4JStorage::GetOfferCount() { return 0; }
-DWORD C4JStorage::InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
-                               int (*Func)(void*, int, int), void* lpParam,
-                               bool bTrial) {
+unsigned int C4JStorage::InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+                                      int (*Func)(void*, int, int),
+                                      void* lpParam, bool bTrial) {
     return 0;
 }
-DWORD C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
+unsigned int C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
 C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad,
                                                    int (*Func)(void*, int, int),
                                                    void* lpParam) {
     return EDLC_NoInstalledDLC;
 }
-XCONTENT_DATA& C4JStorage::GetDLC(DWORD dw) { return s_dummyContentData; }
+XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) { return s_dummyContentData; }
 std::uint32_t C4JStorage::MountInstalledDLC(
     int iPad, std::uint32_t dwDLC,
     int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
     LPCSTR szMountDrive) {
     return 0;
 }
-DWORD C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
+unsigned int C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
 void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
                                        std::vector<std::string>& fileList) {
     fileList.clear();
@@ -153,14 +159,14 @@ void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
 std::string C4JStorage::GetMountedPath(std::string szMount) { return ""; }
 C4JStorage::ETMSStatus C4JStorage::ReadTMSFile(
     int iQuadrant, eGlobalStorage eStorageFacility,
-    C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename, BYTE** ppBuffer,
-    DWORD* pdwBufferSize, int (*Func)(void*, WCHAR*, int, bool, int),
-    void* lpParam, int iAction) {
+    C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
+    std::uint8_t** ppBuffer, unsigned int* pBufferSize,
+    int (*Func)(void*, WCHAR*, int, bool, int), void* lpParam, int iAction) {
     return ETMSStatus_Fail;
 }
 bool C4JStorage::WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                              WCHAR* pwchFilename, BYTE* pBuffer,
-                              DWORD dwBufferSize) {
+                              WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                              unsigned int bufferSize) {
     return false;
 }
 bool C4JStorage::DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,

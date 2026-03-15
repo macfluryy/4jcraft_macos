@@ -16,7 +16,7 @@ TMS_FILE;
 typedef struct 
 {
 	std::uint8_t *pbData;
-	unsigned int dwBytes;
+	unsigned int byteCount;
 	std::uint8_t ucRefCount;
 }
 MEMDATA,*PMEMDATA;
@@ -197,7 +197,7 @@ FEATURE_DATA;
 typedef struct 
 {
 	std::uint8_t *pBannedList;
-	unsigned int dwBytes;
+	unsigned int byteCount;
 }
 BANNEDLIST;
 
