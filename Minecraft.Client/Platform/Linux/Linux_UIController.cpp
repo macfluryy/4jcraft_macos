@@ -57,9 +57,8 @@ void ConsoleUIController::init(S32 w, S32 h) {
                                32 * 1024 * 1024);
 
     IggySetGDraw(gdraw_funcs);
-
-    postInit();
 #endif
+    postInit();
 }
 
 void ConsoleUIController::render() {
