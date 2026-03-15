@@ -30,8 +30,8 @@ void PauseScreen::init()
     }
 
 
-    buttons.push_back(new Button(4, width / 2 - 100, height / 4 + 24 * 1 + yo, L"LBack to game"));
-    buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + yo, L"LOptions..."));
+    buttons.push_back(new Button(4, width / 2 - 100, height / 4 + 24 * 1 + yo, I18n::get(L"menu.returnToGame")));
+    buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + yo, I18n::get(L"menu.options")));
 
     buttons.push_back(new Button(5, width / 2 - 100, height / 4 + 24 * 2 + yo, 98, 20, I18n::get(L"gui.achievements")));
     buttons.push_back(new Button(6, width / 2 + 2, height / 4 + 24 * 2 + yo, 98, 20, I18n::get(L"gui.stats")));
