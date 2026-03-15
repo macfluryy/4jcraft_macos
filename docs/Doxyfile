@@ -43,16 +43,15 @@ HTML_EXTRA_FILES = \
 USE_MDFILE_AS_MAINPAGE = doxymain.md
 HTML_HEADER            = header.html
 HTML_COLORSTYLE        = LIGHT
-
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
 #---------------------------------------------------------------------------
 SOURCE_BROWSER         = YES
 VERBATIM_HEADERS       = YES
-CLANG_ASSISTED_PARSING = YES
 
 #---------------------------------------------------------------------------
 # Misc
 #---------------------------------------------------------------------------
 # Disable LaTEX output since we literally dont care
 GENERATE_LATEX         = FALSE
+GENERATE_TREEVIEW = YES
