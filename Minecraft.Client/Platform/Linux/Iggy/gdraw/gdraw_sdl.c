@@ -21,32 +21,34 @@
 
 // Say hi to sdl
 
-// void *IggyGDrawMallocAnnotated(SINTa size, const char *file, int line)
-// {
-//     (void)file; (void)line;
-//     return malloc((size_t)size);
-// }
+#ifndef _ENABLEIGGY
+void *IggyGDrawMallocAnnotated(SINTa size, const char *file, int line)
+{
+    (void)file; (void)line;
+    return malloc((size_t)size);
+}
 
-// void IggyGDrawFree(void *ptr)
-// {
-//     free(ptr);
-// }
+void IggyGDrawFree(void *ptr)
+{
+    free(ptr);
+}
 
-// void IggyGDrawSendWarning(Iggy *f, char const *message, ...)
-// {
-//     (void)f;
-//     va_list args;
-//     va_start(args, message);
-//     fprintf(stderr, "[Iggy GDraw Warning] ");
-//     vfprintf(stderr, message, args);
-//     fprintf(stderr, "\n");
-//     va_end(args);
-// }
+void IggyGDrawSendWarning(Iggy *f, char const *message, ...)
+{
+    (void)f;
+    va_list args;
+    va_start(args, message);
+    fprintf(stderr, "[Iggy GDraw Warning] ");
+    vfprintf(stderr, message, args);
+    fprintf(stderr, "\n");
+    va_end(args);
+}
 
-// void IggyDiscardVertexBufferCallback(void *owner, void *buf)
-// {
-//     (void)owner; (void)buf;
-// }
+void IggyDiscardVertexBufferCallback(void *owner, void *buf)
+{
+    (void)owner; (void)buf;
+}
+#endif
 
 // glActiveTexture and glCompressedTexImage2D are core GL 1.3+ on Linux and
 // are declared directly in <GL/gl.h>, so they are omitted from this list.
