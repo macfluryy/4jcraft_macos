@@ -720,10 +720,21 @@ void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, std::shar
 	float scaleX = bwidth / 16.0f;
 	float scaleY = bheight / 16.0f;	
 
+    // 4jcraft: make sure we cull the back to not make transparent blocks (like
+    // leaves) look weird
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    // 4jcraft: needed for transparency in the item renders (like in the
+    // crafting menu)
+    if (fAlpha < 1) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 	glEnable(GL_RESCALE_NORMAL);
 	glPushMatrix();
+    Lighting::turnOnGui();
 	glRotatef(120, 1, 0, 0);
-	Lighting::turnOn();
 	glPopMatrix();
 
 	float pop = item->popTime;
@@ -770,6 +781,10 @@ void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, std::shar
 
 	Lighting::turnOff();
 	glDisable(GL_RESCALE_NORMAL);
+    glDisable(GL_CULL_FACE);
+    if (fAlpha < 1) {
+        glDisable(GL_BLEND);
+    }
 }
 
 // 4J Stu - Not threadsafe
