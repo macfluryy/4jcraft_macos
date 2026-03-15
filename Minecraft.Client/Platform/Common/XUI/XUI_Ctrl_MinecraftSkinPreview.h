@@ -93,7 +93,7 @@ private:
 	float m_walkAnimPos;
 
 	bool m_bAutoRotate, m_bRotatingLeft;
-	int m_rotateTick;
+	std::uint8_t m_rotateTick;
 	float m_fTargetRotation, m_fOriginalRotation;
 	int m_framesAnimatingRotation;
 	bool m_bAnimatingToFacing;
