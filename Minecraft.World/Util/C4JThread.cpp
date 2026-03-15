@@ -383,7 +383,7 @@ void C4JThread::SetPriority(int priority) {
 #endif  // __PS3__
 }
 
-DWORD C4JThread::WaitForCompletion(int timeoutMs) {
+std::uint32_t C4JThread::WaitForCompletion(int timeoutMs) {
 #ifdef __PS3__
     if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
     return m_completionFlag->WaitForSignal(timeoutMs);
@@ -543,7 +543,7 @@ void C4JThread::Event::Clear() {
 #endif  //__PS3__
 }
 
-DWORD C4JThread::Event::WaitForSignal(int timeoutMs) {
+std::uint32_t C4JThread::Event::WaitForSignal(int timeoutMs) {
 #ifdef __PS3__
     if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
     int timoutMicrosecs = timeoutMs * 1000;
@@ -685,8 +685,8 @@ void C4JThread::EventArray::ClearAll() {
     for (int i = 0; i < m_size; i++) Clear(i);
 }
 
-DWORD C4JThread::EventArray::WaitForSingle(int index, int timeoutMs) {
-    DWORD retVal;
+std::uint32_t C4JThread::EventArray::WaitForSingle(int index, int timeoutMs) {
+    std::uint32_t retVal;
 #ifdef __PS3__
     int timeoutMicrosecs;
     if (timeoutMs == INFINITE)
@@ -777,8 +777,8 @@ DWORD C4JThread::EventArray::WaitForSingle(int index, int timeoutMs) {
     return retVal;
 }
 
-DWORD C4JThread::EventArray::WaitForAll(int timeoutMs) {
-    DWORD retVal;
+std::uint32_t C4JThread::EventArray::WaitForAll(int timeoutMs) {
+    std::uint32_t retVal;
 #ifdef __PS3__
     if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
     int timoutMicrosecs = timeoutMs * 1000;
@@ -871,7 +871,7 @@ DWORD C4JThread::EventArray::WaitForAll(int timeoutMs) {
     return retVal;
 }
 
-DWORD C4JThread::EventArray::WaitForAny(int timeoutMs) {
+std::uint32_t C4JThread::EventArray::WaitForAny(int timeoutMs) {
 #ifdef __PS3__
     if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
     int timoutMicrosecs = timeoutMs * 1000;
@@ -1015,7 +1015,7 @@ void C4JThread::EventQueue::threadPoll() {
     if (m_threadInitFunc) m_threadInitFunc();
 
     while (ShutdownManager::ShouldRun(ShutdownManager::eEventQueueThreads)) {
-        DWORD err = m_startEvent->WaitForAny(INFINITE);
+        std::uint32_t err = m_startEvent->WaitForAny(INFINITE);
         if (err == WAIT_OBJECT_0) {
             bool bListEmpty = true;
             do {
