@@ -189,7 +189,7 @@ public:
     } TMSPP_FILE_LIST, *PTMSPP_FILE_LIST;
 
     typedef struct {
-        unsigned int dwSize;
+        unsigned int size;
         std::uint8_t* pbData;
     } TMSPP_FILEDATA, *PTMSPP_FILEDATA;
 
@@ -200,10 +200,10 @@ public:
     // Messages
     C4JStorage::EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
-        unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
+        unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
         void* lpParam = NULL, C4JStringTable* pStringTable = NULL,
-        WCHAR* pwchFormatString = NULL, unsigned int dwFocusButton = 0);
+        WCHAR* pwchFormatString = NULL, unsigned int focusButton = 0);
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
@@ -231,10 +231,10 @@ public:
     void GetSaveData(void* pvData, unsigned int* puiBytes);
     PVOID AllocateSaveData(unsigned int uiBytes);
     void SetSaveImages(
-        std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes,
-        std::uint8_t* pbImage, unsigned int dwImageBytes,
+        std::uint8_t* pbThumbnail, unsigned int thumbnailBytes,
+        std::uint8_t* pbImage, unsigned int imageBytes,
         std::uint8_t* pbTextData,
-        unsigned int dwTextDataBytes);  // Sets the thumbnail & image for the
+        unsigned int textDataBytes);  // Sets the thumbnail & image for the
                                         // save, optionally setting the
                                         // metadata in the png
     C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
@@ -264,10 +264,10 @@ public:
         void* lpParam);  // Get the thumbnail for an individual save referenced
                          // by pSaveInfo
 
-    void GetSaveCacheFileInfo(unsigned int dwFile, XCONTENT_DATA& xContentData);
-    void GetSaveCacheFileInfo(unsigned int dwFile,
+    void GetSaveCacheFileInfo(unsigned int fileIndex, XCONTENT_DATA& xContentData);
+    void GetSaveCacheFileInfo(unsigned int fileIndex,
                               std::uint8_t** ppbImageData,
-                              unsigned int* pdwImageBytes);
+                              unsigned int* pImageBytes);
 
     // Load the save. Need to call GetSaveData once the callback is called
     C4JStorage::ESaveGameState LoadSaveData(PSAVE_INFO pSaveInfo,
@@ -314,12 +314,12 @@ public:
     C4JStorage::ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
-        std::uint8_t** ppBuffer, unsigned int* pdwBufferSize,
+        std::uint8_t** ppBuffer, unsigned int* pBufferSize,
         int (*Func)(void*, WCHAR*, int, bool, int) = NULL, void* lpParam = NULL,
         int iAction = 0);
     bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                       WCHAR* pwchFilename, std::uint8_t* pBuffer,
-                      unsigned int dwBufferSize);
+                      unsigned int bufferSize);
     bool DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                        WCHAR* pwchFilename);
     void StoreTMSPathName(WCHAR* pwchName = NULL);
@@ -329,7 +329,7 @@ public:
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, CHAR* pchFilePath, CHAR* pchBuffer,
-        unsigned int dwBufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
+        unsigned int bufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
     HRESULT GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
 #endif
 

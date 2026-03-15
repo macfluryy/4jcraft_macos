@@ -171,7 +171,7 @@ public:
     void TextureDynamicUpdateEnd();
     HRESULT LoadTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
                             int** ppDataOut);
-    HRESULT LoadTextureData(std::uint8_t* pbData, std::uint32_t dwBytes,
+    HRESULT LoadTextureData(std::uint8_t* pbData, std::uint32_t byteCount,
                             D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut);
     HRESULT SaveTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
                             int* ppDataOut);

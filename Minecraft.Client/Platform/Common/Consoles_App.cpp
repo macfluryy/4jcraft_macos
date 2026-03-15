@@ -5319,7 +5319,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid)
 	return false;
 }
 
-void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int dwBytes)	
+void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int byteCount)	
 {	
 	EnterCriticalSection(&csMemFilesLock);
 	// check it's not already in
@@ -5332,13 +5332,13 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t
 #endif
 		pData = (*it).second;
 
-		if(pData->dwBytes == 0 && dwBytes != 0)
+		if(pData->byteCount == 0 && byteCount != 0)
 		{
-			// This should never be NULL if dwBytes is 0
+			// This should never be NULL if byteCount is 0
 			if(pData->pbData!=NULL) delete [] pData->pbData;
 
 			pData->pbData=pbData;
-			pData->dwBytes=dwBytes;
+			pData->byteCount=byteCount;
 		}
 
 		++pData->ucRefCount;
@@ -5355,7 +5355,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t
 
 	pData = new MEMDATA();
 	pData->pbData=pbData;
-	pData->dwBytes=dwBytes;
+	pData->byteCount=byteCount;
 	pData->ucRefCount = 1;
 
 	// use the xuid to access the skin data
@@ -5413,7 +5413,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring &wName)
 	return val;
 }
 
-void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pdwBytes)
+void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pByteCount)
 {
 	EnterCriticalSection(&csMemFilesLock);
 	AUTO_VAR(it, m_MEM_Files.find(wName));
@@ -5421,12 +5421,12 @@ void CMinecraftApp::GetMemFileDetails(const std::wstring &wName, std::uint8_t **
 	{
 		PMEMDATA pData = (*it).second;
 		*ppbData=pData->pbData;
-		*pdwBytes=pData->dwBytes;
+		*pByteCount=pData->byteCount;
 	}
 	LeaveCriticalSection(&csMemFilesLock);
 }
 
-void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int dwBytes)	
+void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int byteCount)	
 {	
 	EnterCriticalSection(&csMemTPDLock);
 	// check it's not already in
@@ -5436,7 +5436,7 @@ void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned
 	{	
 		pData = new MEMDATA();
 		pData->pbData=pbData;
-		pData->dwBytes=dwBytes;
+		pData->byteCount=byteCount;
 		pData->ucRefCount = 1;
 
 		m_MEM_TPD[iConfig]=pData;
@@ -5514,7 +5514,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig)
 	return val;
 }
 
-void CMinecraftApp::GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pdwBytes)
+void CMinecraftApp::GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pByteCount)
 {
 	EnterCriticalSection(&csMemTPDLock);
 	AUTO_VAR(it, m_MEM_TPD.find(iConfig));
@@ -5522,7 +5522,7 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pd
 	{
 		PMEMDATA pData = (*it).second;
 		*ppbData=pData->pbData;
-		*pdwBytes=pData->dwBytes;
+		*pByteCount=pData->byteCount;
 	}
 	LeaveCriticalSection(&csMemTPDLock);
 }
@@ -8332,14 +8332,14 @@ int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStor
 				case e_DLC_TexturePackData:
 					{					
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
-						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
-						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
+						std::uint8_t *pbData = new std::uint8_t[pFileData->size];
+						memcpy(pbData,pFileData->pbData,pFileData->size);
 
 						pClass->m_vTMSPPData.push_back(pbData);
 						app.DebugPrintf("Got texturepack data\n");
 						// get the config value for the texture pack
 						int iConfig=app.GetTPConfigVal(pCurrent->wchFilename);
-						app.AddMemoryTPDFile(iConfig, pbData, pFileData->dwSize);					
+						app.AddMemoryTPDFile(iConfig, pbData, pFileData->size);					
 					}
 					break;
 				default:
@@ -8347,12 +8347,12 @@ int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStor
 					if(pFileData->pbData[0]==0x89)
 					{				
 						// 4J-PB - we need to allocate memory for the file data and copy into it, since the current data is a reference into the blob download memory
- 						std::uint8_t *pbData = new std::uint8_t[pFileData->dwSize];
- 						memcpy(pbData,pFileData->pbData,pFileData->dwSize);
+ 						std::uint8_t *pbData = new std::uint8_t[pFileData->size];
+ 						memcpy(pbData,pFileData->pbData,pFileData->size);
  
  						pClass->m_vTMSPPData.push_back(pbData);
 						app.DebugPrintf("Got image data - %ls\n",pCurrent->wchFilename);
-						app.AddMemoryTextureFile(pCurrent->wchFilename, pbData, pFileData->dwSize);
+						app.AddMemoryTextureFile(pCurrent->wchFilename, pbData, pFileData->size);
 					}
 					else
 					{
@@ -8369,12 +8369,12 @@ int CMinecraftApp::TMSPPFileReturned(void *pParam,int iPad,int iUserData,C4JStor
 						app.DebugPrintf("--- Got texturepack data %ls\n",pCurrent->wchFilename);
 						// get the config value for the texture pack
 						int iConfig=app.GetTPConfigVal(pCurrent->wchFilename);
-						app.AddMemoryTPDFile(iConfig, pFileData->pbData, pFileData->dwSize);					
+						app.AddMemoryTPDFile(iConfig, pFileData->pbData, pFileData->size);					
 					}
 					break;
 				default:
 					app.DebugPrintf("--- Got image data - %ls\n",pCurrent->wchFilename);
-					app.AddMemoryTextureFile(pCurrent->wchFilename, pFileData->pbData, pFileData->dwSize);
+					app.AddMemoryTextureFile(pCurrent->wchFilename, pFileData->pbData, pFileData->size);
 					break;
 				}
 #endif
