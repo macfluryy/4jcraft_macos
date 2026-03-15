@@ -24,7 +24,7 @@ HRESULT CScene_TransferToXboxOne::OnInit( XUIMessageInit* pInitData, BOOL& bHand
 	m_bIgnoreInput=false;
 	MapChildControls();
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SavesSlotList, &pObj );
 	m_pSavesSlotList = (CXuiCtrl4JList *)pObj;
 
@@ -565,5 +565,4 @@ HRESULT CScene_TransferToXboxOne::OnNotifyKillFocus(HXUIOBJ hObjSource, XUINotif
 {
 	return S_OK;
 }
-
 

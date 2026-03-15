@@ -25,9 +25,9 @@
 
 namespace {
 #if defined(_WIN32)
-inline void* EntityTlsGetValue(DWORD key) { return TlsGetValue(key); }
+inline void* EntityTlsGetValue(Entity::TlsKey key) { return TlsGetValue(key); }
 
-inline void EntityTlsSetValue(DWORD key, void* value) {
+inline void EntityTlsSetValue(Entity::TlsKey key, void* value) {
     TlsSetValue(key, value);
 }
 #else
@@ -52,9 +52,9 @@ int Entity::entityCounter =
     2048;  // 4J - changed initialiser to 2048, as we are using range 0 - 2047
            // as special unique smaller ids for things that need network tracked
 #if defined(_WIN32)
-DWORD Entity::tlsIdx = TlsAlloc();
+Entity::TlsKey Entity::tlsIdx = TlsAlloc();
 #else
-pthread_key_t Entity::tlsIdx = CreateEntityTlsKey();
+Entity::TlsKey Entity::tlsIdx = CreateEntityTlsKey();
 #endif
 
 // 4J - added getSmallId & freeSmallId methods

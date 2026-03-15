@@ -242,7 +242,7 @@ HRESULT CScene_FullscreenProgress::OnTimer( XUIMessageTimer *pTimer, BOOL& bHand
 				pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );*/
 				//app.NavigateBack(m_CompletionData->iPad);
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_CONNECTION_LOST_SERVER, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			

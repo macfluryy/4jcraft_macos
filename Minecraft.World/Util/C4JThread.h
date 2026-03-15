@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <queue>
 
 typedef int(C4JThreadStartFunc)(void* lpThreadParameter);
@@ -215,4 +216,4 @@ private:
     static DWORD WINAPI entryPoint(LPVOID lpParam);
 #endif
 };
-void SetThreadName(DWORD dwThreadID, LPCSTR szThreadName);
+void SetThreadName(std::uint32_t threadId, const char* threadName);

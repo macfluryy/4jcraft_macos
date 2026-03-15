@@ -73,7 +73,7 @@ CXuiCtrlMinecraftSlot::~CXuiCtrlMinecraftSlot()
 	delete m_pItemRenderer;
 }
 
-VOID CXuiCtrlMinecraftSlot::SetPassThroughDataAssociation(unsigned int iID, unsigned int iData)
+void CXuiCtrlMinecraftSlot::SetPassThroughDataAssociation(unsigned int iID, unsigned int iData)
 {
 	m_item = nullptr;
 	m_iPassThroughIdAssociation = iID;
@@ -309,7 +309,7 @@ HRESULT CXuiCtrlMinecraftSlot::OnRender(XUIMessageRender *pRenderData, BOOL &bHa
 }
 
 
-void CXuiCtrlMinecraftSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,BOOL bShow, bool isFoil)
+void CXuiCtrlMinecraftSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, int iScale, unsigned int uiAlpha,bool bDecorations,bool bShow, bool isFoil)
 {
 	m_item = nullptr;
 	m_iID=iId;
@@ -343,7 +343,7 @@ void CXuiCtrlMinecraftSlot::SetIcon(int iPad, int iId,int iAuxVal, int iCount, i
 	XuiElementSetShow(m_hObj,bShow);
 }
 
-void CXuiCtrlMinecraftSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, BOOL bShow)
+void CXuiCtrlMinecraftSlot::SetIcon(int iPad, std::shared_ptr<ItemInstance> item, int iScale, unsigned int uiAlpha,bool bDecorations, bool bShow)
 {
 	m_item = item;
 	m_isFoil = item->isFoil();

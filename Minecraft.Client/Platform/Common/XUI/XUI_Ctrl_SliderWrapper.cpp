@@ -5,7 +5,7 @@
 
 HRESULT CXuiCtrlSliderWrapper::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 {
-	VOID *pObj;
+	void *pObj;
 	HXUIOBJ hObjChild;
 
 	XuiElementGetChildById(m_hObj,L"FocusSink",&hObjChild);
@@ -17,8 +17,8 @@ HRESULT CXuiCtrlSliderWrapper::OnInit( XUIMessageInit* pInitData, BOOL& bHandled
 	m_pSlider = (CXuiSlider *)pObj;
 
 	m_sliderActive = false;
-	m_bDisplayVal=true;
-	m_bPlaySound=false; // make this false to avoid a sound being played in the first setting of the slider value in a scene
+	m_bDisplayVal = true;
+	m_bPlaySound = false; // make this false to avoid a sound being played in the first setting of the slider value in a scene
 	XuiSetTimer( m_hObj,NO_SOUND_TIMER,50);
 	bHandled = TRUE;
 	return S_OK;
@@ -66,7 +66,7 @@ HRESULT CXuiCtrlSliderWrapper::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINoti
 	
 	if(m_bPlaySound)
 	{
-		m_bPlaySound=false;
+		m_bPlaySound = false;
 		CXuiSceneBase::PlayUISFX(eSFX_Scroll);
 		XuiSetTimer( m_hObj,NO_SOUND_TIMER,150);
 	}
@@ -108,7 +108,7 @@ HRESULT CXuiCtrlSliderWrapper::SetValue( int nValue )
 	return S_OK;
 }
 
-HRESULT CXuiCtrlSliderWrapper::SetValueDisplay( BOOL bShow )
+HRESULT CXuiCtrlSliderWrapper::SetValueDisplay(bool show)
 {
 	CXuiCtrlSliderWrapper *pThis;
 	HXUIOBJ hVisual,hText;
@@ -121,7 +121,7 @@ HRESULT CXuiCtrlSliderWrapper::SetValueDisplay( BOOL bShow )
 
 	if(hText!=NULL)
 	{
-		XuiElementSetShow(hText,bShow);
+		XuiElementSetShow(hText,show);
 	}
 
 	return S_OK;

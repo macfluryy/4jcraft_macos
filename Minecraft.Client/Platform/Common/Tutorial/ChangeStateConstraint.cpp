@@ -9,7 +9,7 @@
 #include "../../Minecraft.Client/Network/ClientConnection.h"
 #include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
 
-ChangeStateConstraint::ChangeStateConstraint( Tutorial *tutorial, eTutorial_State targetState, eTutorial_State sourceStates[], DWORD sourceStatesCount,
+ChangeStateConstraint::ChangeStateConstraint( Tutorial *tutorial, eTutorial_State targetState, eTutorial_State sourceStates[], std::size_t sourceStatesCount,
 	double x0, double y0, double z0, double x1, double y1, double z1, bool contains /*= true*/, bool changeGameMode /*= false*/, GameType *targetGameMode /*= 0*/ )
 	: TutorialConstraint( -1 )
 {
@@ -73,7 +73,7 @@ void ChangeStateConstraint::tick(int iPad)
 
 	bool inASourceState = false;
 	Minecraft *minecraft = Minecraft::GetInstance();
-	for(DWORD i = 0; i < m_sourceStatesCount; ++i)
+	for(std::size_t i = 0; i < m_sourceStatesCount; ++i)
 	{
 		if(m_sourceStates[i] == m_tutorial->getCurrentState())
 		{

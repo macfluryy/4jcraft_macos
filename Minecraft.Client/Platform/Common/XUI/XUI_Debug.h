@@ -35,7 +35,7 @@ private:
 	typedef struct  
 	{
 		HXUIOBJ hXuiObj;
-		VOID *pvData;
+		void *pvData;
 	}
 	DEBUGDATA;	
 

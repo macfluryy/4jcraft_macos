@@ -197,10 +197,10 @@ public:
 	void			SetFreezePlayers(bool bVal)																							{ m_bFreezePlayers = bVal; }
 
 	// debug -0 show safe area
-	void			ShowSafeArea(BOOL bShow)
+	void			ShowSafeArea(bool show)
 	{
 #ifdef _XBOX
-		CXuiSceneBase::ShowSafeArea( bShow );
+		CXuiSceneBase::ShowSafeArea(show);
 #endif
 	}
 	// 4J-PB - to capture the social post screenshot
@@ -485,7 +485,7 @@ public:
 
 
 
-	static const DWORD m_dwOfferID = 0x00000001;
+	static constexpr unsigned int m_dwOfferID = 0x00000001;
 
 // timer
 	void InitTime();

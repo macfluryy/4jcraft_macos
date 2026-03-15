@@ -9,7 +9,7 @@ bool									SonyCommerce_PS3::m_bCommerceInitialised = false;
 SceNpCommerce2SessionInfo				SonyCommerce_PS3::m_sessionInfo;
 SonyCommerce_PS3::State						SonyCommerce_PS3::m_state = e_state_noSession;
 int										SonyCommerce_PS3::m_errorCode = 0;
-LPVOID									SonyCommerce_PS3::m_callbackParam = NULL;
+void*									SonyCommerce_PS3::m_callbackParam = NULL;
 
 void*									SonyCommerce_PS3::m_receiveBuffer = NULL;
 SonyCommerce_PS3::Event						SonyCommerce_PS3::m_event;
@@ -29,7 +29,7 @@ sys_memory_container_t					SonyCommerce_PS3::m_memContainer = SYS_MEMORY_CONTAIN
 bool									SonyCommerce_PS3::m_bUpgradingTrial = false;
 
 SonyCommerce_PS3::CallbackFunc				SonyCommerce_PS3::m_trialUpgradeCallbackFunc;
-LPVOID									SonyCommerce_PS3::m_trialUpgradeCallbackParam;
+void*									SonyCommerce_PS3::m_trialUpgradeCallbackParam;
 
 CRITICAL_SECTION						SonyCommerce_PS3::m_queueLock;
 
@@ -81,7 +81,7 @@ void SonyCommerce_PS3::Init()
 
 
 
-void SonyCommerce_PS3::CheckForTrialUpgradeKey_Callback(LPVOID param, bool bFullVersion)
+void SonyCommerce_PS3::CheckForTrialUpgradeKey_Callback(void* param, bool bFullVersion)
 {
 	ProfileManager.SetFullVersion(bFullVersion);
 	if(ProfileManager.IsFullVersion())
@@ -806,7 +806,7 @@ int SonyCommerce_PS3::downloadList(DownloadListInputParams &params)
 	return CELL_OK;	
 }
 
-void SonyCommerce_PS3::UpgradeTrialCallback2(LPVOID lpParam,int err)
+void SonyCommerce_PS3::UpgradeTrialCallback2(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback2 : err : 0x%08x\n", err);
@@ -820,7 +820,7 @@ void SonyCommerce_PS3::UpgradeTrialCallback2(LPVOID lpParam,int err)
 	m_trialUpgradeCallbackFunc(m_trialUpgradeCallbackParam, m_errorCode);
 }
 
-void SonyCommerce_PS3::UpgradeTrialCallback1(LPVOID lpParam,int err)
+void SonyCommerce_PS3::UpgradeTrialCallback1(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback1 : err : 0x%08x\n", err);
@@ -856,7 +856,7 @@ void SonyCommerce_UpgradeTrial()
 	app.UpgradeTrial();
 }
 
-void SonyCommerce_PS3::UpgradeTrial(CallbackFunc cb, LPVOID lpParam)
+void SonyCommerce_PS3::UpgradeTrial(CallbackFunc cb, void* lpParam)
 {
 	m_trialUpgradeCallbackFunc = cb;
 	m_trialUpgradeCallbackParam = lpParam;
@@ -1396,7 +1396,7 @@ int SonyCommerce_PS3::commerceEnd()
 	return ret;
 }
 
-void SonyCommerce_PS3::CreateSession( CallbackFunc cb, LPVOID lpParam )
+void SonyCommerce_PS3::CreateSession( CallbackFunc cb, void* lpParam )
 {
 	// 4J-PB - reset any previous error code
 	// I had this happen when I was offline on Vita, and accepted the PSN sign-in
@@ -1427,7 +1427,7 @@ void SonyCommerce_PS3::CloseSession()
 	Shutdown();
 }
 
-void SonyCommerce_PS3::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
+void SonyCommerce_PS3::GetProductList( CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1437,7 +1437,7 @@ void SonyCommerce_PS3::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vec
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_PS3::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_PS3::GetDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1449,7 +1449,7 @@ void SonyCommerce_PS3::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, 
 }
 
 // 4J-PB - fill out the long description and the price for the product
-void SonyCommerce_PS3::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_PS3::AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1459,7 +1459,7 @@ void SonyCommerce_PS3::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, 
 	m_messageQueue.push(e_message_commerceAddDetailedProductInfo);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce_PS3::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId )
+void SonyCommerce_PS3::GetCategoryInfo( CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1469,7 +1469,7 @@ void SonyCommerce_PS3::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, Categor
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_PS3::Checkout( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_PS3::Checkout( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	if(m_memContainer != SYS_MEMORY_CONTAINER_ID_INVALID)
 	{
@@ -1490,7 +1490,7 @@ void SonyCommerce_PS3::Checkout( CallbackFunc cb, LPVOID lpParam, const char* sk
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_PS3::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_PS3::DownloadAlreadyPurchased( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	if(m_memContainer != SYS_MEMORY_CONTAINER_ID_INVALID)
 		return;
@@ -1508,6 +1508,5 @@ void SonyCommerce_PS3::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam
 	m_messageQueue.push(e_message_commerceDownloadList);
 	LeaveCriticalSection(&m_queueLock);
 }
-
 
 

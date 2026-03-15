@@ -1,5 +1,7 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
+
 #include "../media/xuiscene_ingameinfo.h"
 #include "XUI_CustomMessages.h"
 
@@ -74,7 +76,7 @@ private:
 	D3DXVECTOR3 m_OriginalPosition;
 
 	int m_playersCount;
-	BYTE m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
+	std::uint8_t m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
 	bool m_bIgnoreKeyPresses;
 
 	void updateTooltips();

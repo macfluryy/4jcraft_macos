@@ -102,7 +102,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId)
 				// is it the primary player exiting?
 				if(m_iPad==ProfileManager.GetPrimaryPad())
 				{
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 					int playTime = -1;
 					if( pMinecraft->localplayers[m_iPad] != NULL )
 					{
@@ -172,7 +172,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId)
 					ui.ReduceTrialTimerValue();
 
 					// exit the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST, uiIDA, 2, m_iPad,&IUIScene_PauseMenu::ExitGameDialogReturned,this, app.GetStringTable(), 0, 0, false);

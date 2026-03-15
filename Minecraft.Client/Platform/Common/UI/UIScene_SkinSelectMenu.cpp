@@ -303,7 +303,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 #endif
 
 						// no
-						UINT uiIDA[1] = { IDS_OK };
+						unsigned int uiIDA[1] = { IDS_OK };
 #ifdef __ORBIS__
 						// Check if PSN is unavailable because of age restriction
 						int npAvailability = ProfileManager.getNPAvailability(iPad);
@@ -351,7 +351,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 							{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 								// you can't see the store
-								UINT uiIDA[1] = { IDS_CONFIRM_OK };
+								unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 								ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad,NULL,this, app.GetStringTable(),NULL,0,false);
 #endif
 							}
@@ -364,7 +364,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 								{
 									this->m_bIgnoreInput = true;
 
-									UINT uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
+									unsigned int uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
 									ui.RequestMessageBox(IDS_UNLOCK_DLC_TITLE, IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,&UIScene_SkinSelectMenu::UnlockSkinReturned,this,app.GetStringTable(),NULL,0,false);
 								}
 							}
@@ -617,7 +617,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 				if(!m_currentPack->hasPurchasedFile( DLCManager::e_DLCType_Skin, skinFile->getPath() ))
 				{
 					// no
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 
 					// We need to upsell the full version
@@ -660,7 +660,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 						{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 							// you can't see the store
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_CONFIRM_OK;
 							ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,this, app.GetStringTable(),NULL,0,false);
 #endif
@@ -675,7 +675,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 								m_bIgnoreInput = true;
 								renableInputAfterOperation = false;
 
-								UINT uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
+								unsigned int uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
 								ui.RequestMessageBox(IDS_UNLOCK_DLC_TITLE, IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,&UIScene_SkinSelectMenu::UnlockSkinReturned,this,app.GetStringTable(),NULL,0,false);
 							}
 						}
@@ -1653,7 +1653,7 @@ void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad)
 
 #elif defined(_DURANGO)
 
-	UINT uiIDA[1] = { IDS_CONFIRM_OK };
+	unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 	ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable() );
 
 #endif

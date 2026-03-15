@@ -10,7 +10,7 @@ bool											SonyCommerce_Vita::m_bCommerceInitialised = false;
 // SceNpCommerce2SessionInfo					SonyCommerce_Vita::m_sessionInfo;
 SonyCommerce_Vita::State						SonyCommerce_Vita::m_state = e_state_noSession;
 int												SonyCommerce_Vita::m_errorCode = 0;
-LPVOID											SonyCommerce_Vita::m_callbackParam = NULL;
+void*											SonyCommerce_Vita::m_callbackParam = NULL;
 
 void*											SonyCommerce_Vita::m_receiveBuffer = NULL;
 SonyCommerce_Vita::Event						SonyCommerce_Vita::m_event;
@@ -30,7 +30,7 @@ SonyCommerce_Vita::CallbackFunc				SonyCommerce_Vita::m_callbackFunc = NULL;
 bool											SonyCommerce_Vita::m_bUpgradingTrial = false;
 
 SonyCommerce_Vita::CallbackFunc				SonyCommerce_Vita::m_trialUpgradeCallbackFunc;
-LPVOID											SonyCommerce_Vita::m_trialUpgradeCallbackParam;
+void*											SonyCommerce_Vita::m_trialUpgradeCallbackParam;
 
 CRITICAL_SECTION								SonyCommerce_Vita::m_queueLock;
 
@@ -84,7 +84,7 @@ void SonyCommerce_Vita::Init()
 
 
 
-void SonyCommerce_Vita::CheckForTrialUpgradeKey_Callback(LPVOID param, bool bFullVersion)
+void SonyCommerce_Vita::CheckForTrialUpgradeKey_Callback(void* param, bool bFullVersion)
 {
 	ProfileManager.SetFullVersion(bFullVersion);
 	if(ProfileManager.IsFullVersion())
@@ -126,7 +126,7 @@ int SonyCommerce_Vita::Shutdown()
 	return ret;
 }
  
-void SonyCommerce_Vita::InstallContentCallback(LPVOID lpParam,int err)
+void SonyCommerce_Vita::InstallContentCallback(void* lpParam,int err)
 {
 	m_iClearDLCCountdown = 30;
 	m_bInstallingContent = false;
@@ -582,7 +582,7 @@ int SonyCommerce_Vita::installContent()
 }
 
 
-void SonyCommerce_Vita::UpgradeTrialCallback2(LPVOID lpParam,int err)
+void SonyCommerce_Vita::UpgradeTrialCallback2(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback2 : err : 0x%08x\n", err);
@@ -596,7 +596,7 @@ void SonyCommerce_Vita::UpgradeTrialCallback2(LPVOID lpParam,int err)
 	m_trialUpgradeCallbackFunc(m_trialUpgradeCallbackParam, m_errorCode);
 }
 
-void SonyCommerce_Vita::UpgradeTrialCallback1(LPVOID lpParam,int err)
+void SonyCommerce_Vita::UpgradeTrialCallback1(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback1 : err : 0x%08x\n", err);
@@ -632,7 +632,7 @@ void SonyCommerce_UpgradeTrial()
 	app.UpgradeTrial();
 }
 
-void SonyCommerce_Vita::UpgradeTrial(CallbackFunc cb, LPVOID lpParam)
+void SonyCommerce_Vita::UpgradeTrial(CallbackFunc cb, void* lpParam)
 {
 	m_trialUpgradeCallbackFunc = cb;
 	m_trialUpgradeCallbackParam = lpParam;
@@ -1304,7 +1304,7 @@ int SonyCommerce_Vita::commerceEnd()
 	return ret;
 }
 
-void SonyCommerce_Vita::CreateSession( CallbackFunc cb, LPVOID lpParam )
+void SonyCommerce_Vita::CreateSession( CallbackFunc cb, void* lpParam )
 {
 	// 4J-PB - reset any previous error code
 	// I had this happen when I was offline on Vita, and accepted the PSN sign-in
@@ -1343,7 +1343,7 @@ void SonyCommerce_Vita::CloseSession()
 	Shutdown();
 }
 
-void SonyCommerce_Vita::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
+void SonyCommerce_Vita::GetProductList( CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1353,7 +1353,7 @@ void SonyCommerce_Vita::GetProductList( CallbackFunc cb, LPVOID lpParam, std::ve
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Vita::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_Vita::GetDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1365,7 +1365,7 @@ void SonyCommerce_Vita::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam,
 }
 
 // 4J-PB - fill out the long description and the price for the product
-void SonyCommerce_Vita::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_Vita::AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1375,7 +1375,7 @@ void SonyCommerce_Vita::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam,
 	m_messageQueue.push(e_message_commerceAddDetailedProductInfo);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce_Vita::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId )
+void SonyCommerce_Vita::GetCategoryInfo( CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1385,7 +1385,7 @@ void SonyCommerce_Vita::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, Catego
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Vita::Checkout( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo )
+void SonyCommerce_Vita::Checkout( CallbackFunc cb, void* lpParam, ProductInfo* productInfo )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1399,12 +1399,12 @@ void SonyCommerce_Vita::Checkout( CallbackFunc cb, LPVOID lpParam, ProductInfo* 
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Vita::Checkout( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Vita::Checkout( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	assert(0);
 }
 
-void SonyCommerce_Vita::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Vita::DownloadAlreadyPurchased( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1414,7 +1414,7 @@ void SonyCommerce_Vita::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpPara
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Vita::Checkout_Game( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Vita::Checkout_Game( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1423,7 +1423,7 @@ void SonyCommerce_Vita::Checkout_Game( CallbackFunc cb, LPVOID lpParam, const ch
 	m_messageQueue.push(e_message_commerceCheckout_Game);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce_Vita::DownloadAlreadyPurchased_Game( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Vita::DownloadAlreadyPurchased_Game( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1433,7 +1433,7 @@ void SonyCommerce_Vita::DownloadAlreadyPurchased_Game( CallbackFunc cb, LPVOID l
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Vita::InstallContent( CallbackFunc cb, LPVOID lpParam )
+void SonyCommerce_Vita::InstallContent( CallbackFunc cb, void* lpParam )
 {
 	if(m_callbackFunc == NULL && m_messageQueue.size() == 0)		// wait till other processes have finished
 	{
@@ -1472,7 +1472,7 @@ std::vector<SonyCommerce::ProductInfo> g_productInfo;
 SonyCommerce::CategoryInfo g_categoryInfo2;
 SonyCommerce::ProductInfoDetailed g_productInfoDetailed;
 
-void testCallback(LPVOID lpParam, int error_code)
+void testCallback(void* lpParam, int error_code)
 {
 	app.DebugPrintf("Callback hit, error 0x%08x\n", error_code);
 }

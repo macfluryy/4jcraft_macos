@@ -200,7 +200,7 @@ HRESULT CScene_ConnectingProgress::OnTimer( XUIMessageTimer *pTimer, BOOL& bHand
 		}
 		else
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 #ifdef _XBOX
 			StorageManager.RequestMessageBox( IDS_CONNECTION_FAILED, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());

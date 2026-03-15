@@ -5,6 +5,7 @@
 #include "../IO/NBT/FloatTag.h"
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
+#include <cstdint>
 #if !defined(_WIN32)
 #include <pthread.h>
 #endif
@@ -38,6 +39,12 @@ class Entity : public std::enable_shared_from_this<Entity> {
                        // functions and constants, without making them publicly
                        // available to everything
 public:
+#if defined(_WIN32)
+    using TlsKey = std::uint32_t;
+#else
+    using TlsKey = pthread_key_t;
+#endif
+
     // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
     virtual eINSTANCEOF GetType() = 0;
 
@@ -401,11 +408,7 @@ private:
     static int extraWanderIds[EXTRA_WANDER_MAX];
     static int extraWanderCount;
     static int extraWanderTicks;
-#if defined(_WIN32)
-    static DWORD tlsIdx;
-#else
-    static pthread_key_t tlsIdx;
-#endif
+    static TlsKey tlsIdx;
 public:
     static void tickExtraWandering();
     static void countFlagsForPIX();

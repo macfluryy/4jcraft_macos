@@ -23,7 +23,7 @@
 #define PRESS_START_TIMER 0
 
 CXuiSceneBase *CXuiSceneBase::Instance = NULL;
-DWORD CXuiSceneBase::m_dwTrialTimerLimitSecs=DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
+unsigned int CXuiSceneBase::m_trialTimerLimitSecs = DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
 //----------------------------------------------------------------------------------
 // Performs initialization tasks - retrieves controls.
 //----------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ HRESULT CXuiSceneBase::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 	{
 		for( unsigned int i = 0; i < BUTTONS_TOOLTIP_MAX; ++i )
 		{
-			m_visible[idx][ i ] = FALSE;
+			m_visible[idx][ i ] = false;
 			m_iCurrentTooltipTextID[idx][i]=-1;
 			hTooltipText[idx][i]=NULL;
 			hTooltipTextSmall[idx][i]=NULL;
@@ -63,7 +63,7 @@ HRESULT CXuiSceneBase::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 		m_bCrouching[idx]=false;
 		m_uiSelectedItemOpacityCountDown[idx] =0;
-		m_bossHealthVisible[idx] = FALSE;
+		m_bossHealthVisible[idx] = false;
 
 		switch(idx)
 		{
@@ -368,14 +368,14 @@ void CXuiSceneBase::_TickAllBaseScenes()
 
 				m_pBossHealthProgress[i].SetRange(0, boss->getMaxHealth() );
 				m_pBossHealthProgress[i].SetValue( boss->getSynchedHealth() );
-				m_bossHealthVisible[i] = TRUE;
+				m_bossHealthVisible[i] = true;
 
 				_UpdateSelectedItemPos(i);
 			}
-			else if( m_bossHealthVisible[i] == TRUE)
+			else if(m_bossHealthVisible[i])
 			{
 				m_BossHealthGroup[i].SetShow(FALSE);
-				m_bossHealthVisible[i] = FALSE;
+				m_bossHealthVisible[i] = false;
 
 				_UpdateSelectedItemPos(i);
 			}
@@ -388,7 +388,7 @@ void CXuiSceneBase::_TickAllBaseScenes()
 		if( m_ticksWithNoBoss > 20 )
 		{
 			m_BossHealthGroup[i].SetShow(FALSE);
-			m_bossHealthVisible[i] = FALSE;
+			m_bossHealthVisible[i] = false;
 
 			_UpdateSelectedItemPos(i);
 		}
@@ -481,12 +481,12 @@ void CXuiSceneBase::_TickAllBaseScenes()
 	}
 }
 
-HRESULT CXuiSceneBase::_SetEnableTooltips( unsigned int iPad, BOOL bVal )
+HRESULT CXuiSceneBase::_SetEnableTooltips( unsigned int iPad, bool enabled )
 {
 	for(int i=0;i<BUTTONS_TOOLTIP_MAX;i++)
 	{
-		//XuiElementSetShow(m_Buttons[iPad][i].m_hObj,bVal);
-		XuiControlSetEnable(m_Buttons[iPad][i].m_hObj,bVal);
+		//XuiElementSetShow(m_Buttons[iPad][i].m_hObj,enabled);
+		XuiControlSetEnable(m_Buttons[iPad][i].m_hObj,enabled);
 	}
 	return S_OK;
 }
@@ -711,9 +711,9 @@ HRESULT CXuiSceneBase::_ShowTooltip( unsigned int iPad, unsigned int tooltip, bo
 	return hr;
 }
 
-HRESULT CXuiSceneBase::_ShowSafeArea( BOOL bShow )
+HRESULT CXuiSceneBase::_ShowSafeArea(bool show)
 {
-	return m_SafeArea.SetShow(bShow);
+	return m_SafeArea.SetShow(show);
 }
 
 HRESULT CXuiSceneBase::_ShowOtherPlayersBaseScene(int iPad, bool show)
@@ -771,13 +771,13 @@ HRESULT CXuiSceneBase::_EnableTooltip( unsigned int iPad, unsigned int tooltip, 
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::_AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode)
+HRESULT CXuiSceneBase::_AnimateKeyPress(unsigned int userIndex, unsigned int keyCode)
 {
 	if(m_playerBaseScenePosition[userIndex] == e_BaseScene_NotSet)
 	{
 		userIndex = DEFAULT_XUI_MENU_USER;
 	}
-	switch(dwKeyCode)
+	switch(keyCode)
 	{
 		case VK_PAD_A:
 			m_Buttons[userIndex][BUTTON_TOOLTIP_A].Press();
@@ -845,7 +845,7 @@ HRESULT CXuiSceneBase::_ShowSavingMessage( unsigned int iPad, C4JStorage::ESavin
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::_ShowBackground( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::_ShowBackground( unsigned int iPad, bool show )
 {
 	HRESULT hr;
 	Minecraft *pMinecraft=Minecraft::GetInstance();
@@ -858,7 +858,7 @@ HRESULT CXuiSceneBase::_ShowBackground( unsigned int iPad, BOOL bShow )
 		hr=XuiElementGetChildById(hVisual,L"NightGroup",&hNight);
 		hr=XuiElementGetChildById(hVisual,L"DayGroup",&hDay);
 
-		if(bShow && pMinecraft->level!=NULL)
+		if(show && pMinecraft->level!=NULL)
 		{
 			__int64 i64TimeOfDay =0;
 			// are we in the Nether? - Leave the time as 0 if we are, so we show daylight
@@ -884,19 +884,19 @@ HRESULT CXuiSceneBase::_ShowBackground( unsigned int iPad, BOOL bShow )
 			hr=XuiElementSetShow(hDay,TRUE);
 		}
 	}
-	hr=XuiElementSetShow(m_Background[iPad],bShow);
+	hr=XuiElementSetShow(m_Background[iPad],show);
 
 	return hr;
 }
 
-HRESULT CXuiSceneBase::_ShowDarkOverlay( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::_ShowDarkOverlay( unsigned int iPad, bool show )
 {
-	return XuiElementSetShow(m_DarkOverlay[iPad],bShow);
+	return XuiElementSetShow(m_DarkOverlay[iPad],show);
 }
 
-HRESULT CXuiSceneBase::_ShowLogo( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::_ShowLogo( unsigned int iPad, bool show )
 {
-	return XuiElementSetShow(m_Logo[iPad],bShow);
+	return XuiElementSetShow(m_Logo[iPad],show);
 }
 
 HRESULT CXuiSceneBase::_ShowPressStart(unsigned int iPad)
@@ -966,9 +966,9 @@ HRESULT CXuiSceneBase::_UpdateAutosaveCountdownTimer(unsigned int uiSeconds)
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::_ShowAutosaveCountdownTimer(BOOL bVal)
+HRESULT CXuiSceneBase::_ShowAutosaveCountdownTimer(bool show)
 {
-	m_TrialTimer.SetShow(bVal);
+	m_TrialTimer.SetShow(show);
 	return S_OK;
 }
 
@@ -976,24 +976,24 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 {
 	WCHAR wcTime[20]; 
 
-	DWORD dwTimeTicks=(DWORD)app.getTrialTimer();
+	unsigned int trialTimeTicks = static_cast<unsigned int>(app.getTrialTimer());
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(trialTimeTicks > m_trialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		trialTimeTicks = m_trialTimerLimitSecs;
 	}
 	
-	dwTimeTicks=m_dwTrialTimerLimitSecs-dwTimeTicks;
+	trialTimeTicks = m_trialTimerLimitSecs - trialTimeTicks;
 
 #ifndef _CONTENT_PACKAGE
 	if(true)
 #else
 	// display the time - only if there's less than 3 minutes
-	if(dwTimeTicks<180)
+	if(trialTimeTicks < 180)
 #endif
 	{
-		int iMins=dwTimeTicks/60;
-		int iSeconds=dwTimeTicks%60;
+		int iMins = trialTimeTicks / 60;
+		int iSeconds = trialTimeTicks % 60;
 		swprintf( wcTime, 20, L"%d:%02d",iMins,iSeconds);
 		m_TrialTimer.SetText(wcTime);
 	}
@@ -1003,7 +1003,7 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 	}
 
 	// are we out of time?
-	if(dwTimeTicks==0)
+	if(trialTimeTicks == 0)
 	{
 		// Trial over
 		app.SetAction(iPad,eAppAction_TrialOver);
@@ -1014,19 +1014,19 @@ HRESULT CXuiSceneBase::_UpdateTrialTimer(unsigned int iPad)
 
 void CXuiSceneBase::_ReduceTrialTimerValue()
 {
-	DWORD dwTimeTicks=(int)app.getTrialTimer();
+	unsigned int trialTimeTicks = static_cast<unsigned int>(app.getTrialTimer());
 
-	if(dwTimeTicks>m_dwTrialTimerLimitSecs)
+	if(trialTimeTicks > m_trialTimerLimitSecs)
 	{
-		dwTimeTicks=m_dwTrialTimerLimitSecs;
+		trialTimeTicks = m_trialTimerLimitSecs;
 	}
 
-	m_dwTrialTimerLimitSecs-=dwTimeTicks;
+	m_trialTimerLimitSecs -= trialTimeTicks;
 }
 
-HRESULT CXuiSceneBase::_ShowTrialTimer(BOOL bVal)
+HRESULT CXuiSceneBase::_ShowTrialTimer(bool show)
 {
-	m_TrialTimer.SetShow(bVal);
+	m_TrialTimer.SetShow(show);
 	return S_OK;
 }
 
@@ -1595,7 +1595,7 @@ HRESULT CXuiSceneBase::_PlayUISFX(ESoundEffect eSound)
 }
 
 
-HRESULT CXuiSceneBase::_DisplayGamertag( unsigned int iPad, BOOL bDisplay )
+HRESULT CXuiSceneBase::_DisplayGamertag( unsigned int iPad, bool display )
 {
 
 	if(app.DebugSettingsOn() && (app.GetGameSettingsDebugMask()&(1L<<eDebugSetting_DebugLeaderboards)))
@@ -1622,10 +1622,10 @@ HRESULT CXuiSceneBase::_DisplayGamertag( unsigned int iPad, BOOL bDisplay )
 	// The host decides whether these are on or off
 	if(app.GetGameSettings(ProfileManager.GetPrimaryPad(),eGameSetting_DisplaySplitscreenGamertags)!=0)
 	{		
-		XuiElementSetShow(m_hGamerTagA[iPad],bDisplay);
+		XuiElementSetShow(m_hGamerTagA[iPad],display);
 
 		// set the opacity of the gamertag
-		if((bDisplay==TRUE) &&(ProfileManager.GetLockedProfile()!=-1))
+		if(display && (ProfileManager.GetLockedProfile()!=-1))
 		{
 			unsigned char ucAlpha=app.GetGameSettings(ProfileManager.GetPrimaryPad(),eGameSetting_InterfaceOpacity);
 			float fVal;
@@ -1870,11 +1870,11 @@ void CXuiSceneBase::TickAllBaseScenes()
 	}
 }
 
-HRESULT CXuiSceneBase::SetEnableTooltips( unsigned int iPad, BOOL bVal )
+HRESULT CXuiSceneBase::SetEnableTooltips( unsigned int iPad, bool enabled )
 {
 	if( CXuiSceneBase::Instance != NULL )
 	{
-		return CXuiSceneBase::Instance->_SetEnableTooltips(iPad, bVal );
+		return CXuiSceneBase::Instance->_SetEnableTooltips(iPad, enabled);
 	}
 	return S_OK;
 }
@@ -1906,11 +1906,11 @@ HRESULT CXuiSceneBase::ShowTooltip( unsigned int iPad, unsigned int tooltip, boo
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::ShowSafeArea( BOOL bShow )
+HRESULT CXuiSceneBase::ShowSafeArea(bool show)
 {
 	if( CXuiSceneBase::Instance != NULL )
 	{
-		return CXuiSceneBase::Instance->_ShowSafeArea(bShow );
+		return CXuiSceneBase::Instance->_ShowSafeArea(show);
 	}
 	return S_OK;
 }
@@ -1971,9 +1971,9 @@ HRESULT CXuiSceneBase::EnableTooltip( unsigned int iPad, unsigned int tooltip, b
 	return CXuiSceneBase::Instance->_EnableTooltip(iPad, tooltip, enable);
 }
 
-HRESULT CXuiSceneBase::AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode)
+HRESULT CXuiSceneBase::AnimateKeyPress(unsigned int userIndex, unsigned int keyCode)
 {
-	return CXuiSceneBase::Instance->_AnimateKeyPress(userIndex, dwKeyCode );
+	return CXuiSceneBase::Instance->_AnimateKeyPress(userIndex, keyCode);
 }
 
 HRESULT CXuiSceneBase::ShowSavingMessage( unsigned int iPad, C4JStorage::ESavingMessage eVal )
@@ -1986,19 +1986,19 @@ HRESULT CXuiSceneBase::ShowSavingMessage( unsigned int iPad, C4JStorage::ESaving
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::ShowBackground( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::ShowBackground( unsigned int iPad, bool show )
 {
-	return CXuiSceneBase::Instance->_ShowBackground(iPad, bShow );
+	return CXuiSceneBase::Instance->_ShowBackground(iPad, show);
 }
 
-HRESULT CXuiSceneBase::ShowDarkOverlay( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::ShowDarkOverlay( unsigned int iPad, bool show )
 {
-	return CXuiSceneBase::Instance->_ShowDarkOverlay(iPad, bShow );
+	return CXuiSceneBase::Instance->_ShowDarkOverlay(iPad, show);
 }
 
-HRESULT CXuiSceneBase::ShowLogo( unsigned int iPad, BOOL bShow )
+HRESULT CXuiSceneBase::ShowLogo( unsigned int iPad, bool show )
 {
-	return CXuiSceneBase::Instance->_ShowLogo(iPad, bShow );
+	return CXuiSceneBase::Instance->_ShowLogo(iPad, show);
 }
 
 HRESULT CXuiSceneBase::ShowPressStart(unsigned int iPad)
@@ -2019,9 +2019,9 @@ HRESULT CXuiSceneBase::UpdateAutosaveCountdownTimer(unsigned int uiSeconds)
 	return S_OK;
 }
 
-HRESULT CXuiSceneBase::ShowAutosaveCountdownTimer(BOOL bVal)
+HRESULT CXuiSceneBase::ShowAutosaveCountdownTimer(bool show)
 {
-	CXuiSceneBase::Instance->_ShowAutosaveCountdownTimer(bVal);
+	CXuiSceneBase::Instance->_ShowAutosaveCountdownTimer(show);
 	return S_OK;
 }
 
@@ -2030,9 +2030,9 @@ HRESULT CXuiSceneBase::UpdateTrialTimer(unsigned int iPad)
 	CXuiSceneBase::Instance->_UpdateTrialTimer(iPad);
 	return S_OK;
 }
-HRESULT CXuiSceneBase::ShowTrialTimer(BOOL bVal)
+HRESULT CXuiSceneBase::ShowTrialTimer(bool show)
 {
-	CXuiSceneBase::Instance->_ShowTrialTimer(bVal);
+	CXuiSceneBase::Instance->_ShowTrialTimer(show);
 	return S_OK;
 }
 
@@ -2080,7 +2080,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 	// If the game is not started (or is being held paused for a bit) then display all scenes fullscreen
 	if( pMinecraft == NULL )
 	{
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			padPositions[idx] = e_BaseScene_Fullscreen;
 		}
@@ -2093,7 +2093,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 		padPositions[primaryPad] = e_BaseScene_Fullscreen;
 
 		// May need to turn off the player who just left
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			DisplayGamertag(idx,FALSE);
 		}
@@ -2103,7 +2103,7 @@ HRESULT CXuiSceneBase::UpdatePlayerBasePositions()
 	else
 	{
 
-		for( BYTE idx = 0; idx < XUSER_MAX_COUNT; ++idx)
+		for(unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx)
 		{
 			if(pMinecraft->localplayers[idx] != NULL)
 			{
@@ -2210,10 +2210,10 @@ void CXuiSceneBase::SetEmptyQuadrantLogo(int iScreenSection)
 	CXuiSceneBase::Instance->_SetEmptyQuadrantLogo(iPad,ePos);
 }
 
-HRESULT CXuiSceneBase::DisplayGamertag( unsigned int iPad, BOOL bDisplay )
+HRESULT CXuiSceneBase::DisplayGamertag( unsigned int iPad, bool display )
 {
 
-	CXuiSceneBase::Instance->_DisplayGamertag(iPad,bDisplay);
+	CXuiSceneBase::Instance->_DisplayGamertag(iPad, display);
 	return S_OK;
 }
 

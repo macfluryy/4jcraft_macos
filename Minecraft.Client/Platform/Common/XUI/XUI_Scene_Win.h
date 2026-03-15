@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "../media/xuiscene_Win.h"
 #include "XUI_CustomMessages.h"
 
@@ -53,6 +55,6 @@ private:
 	void updateNoise();
 
 public:
-	static BYTE s_winUserIndex;
-	static void setWinUserIndex(BYTE winUserIndex) { s_winUserIndex = winUserIndex; }
+	static std::uint8_t s_winUserIndex;
+	static void setWinUserIndex(std::uint8_t winUserIndex) { s_winUserIndex = winUserIndex; }
 };

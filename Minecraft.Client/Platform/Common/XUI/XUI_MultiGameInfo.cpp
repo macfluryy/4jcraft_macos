@@ -149,7 +149,7 @@ HRESULT CScene_MultiGameInfo::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPres
 		m_bIgnoreInput=true;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -258,9 +258,9 @@ int CScene_MultiGameInfo::StartGame_SignInReturned(void *pParam,bool bContinue, 
 // Shared function to join the game that is the same whether we used the sign-in UI or not
 void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 {
-	DWORD dwLocalUsersMask = 0;
+	unsigned int dwLocalUsersMask = 0;
 	bool noPrivileges = false;
-	DWORD dwSignedInUsers = 0;
+	unsigned int dwSignedInUsers = 0;
 
 	// if we're in SD mode, then only the primary player gets to play
 	if(RenderManager.IsHiDef())
@@ -296,7 +296,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 	{
 		pClass->SetShow( TRUE );
 		pClass->m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
@@ -309,7 +309,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 	{
 		pClass->SetShow( TRUE );
 		pClass->m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		StorageManager.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 	}
@@ -336,7 +336,7 @@ void CScene_MultiGameInfo::JoinGame(CScene_MultiGameInfo* pClass)
 			}
 			else
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_CONNECTION_FAILED, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				exitReasonStringId = -1;
@@ -388,5 +388,4 @@ HRESULT CScene_MultiGameInfo::OnTimer( XUIMessageTimer *pTimer, BOOL& bHandled )
 
 	return S_OK;
 }
-
 

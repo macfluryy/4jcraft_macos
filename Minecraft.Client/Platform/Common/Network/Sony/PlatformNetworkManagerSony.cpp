@@ -712,7 +712,7 @@ bool CPlatformNetworkManagerSony::LeaveGame(bool bMigrateHost)
 		if( socket != NULL )
 		{
 			//printf("Waiting for socket closed event\n");
-			DWORD result = socket->m_socketClosedEvent->WaitForSignal(INFINITE);
+			socket->m_socketClosedEvent->WaitForSignal(INFINITE);
 
 			// The session might be gone once the socket releases
 			if( IsInSession() )
@@ -1185,9 +1185,9 @@ bool CPlatformNetworkManagerSony::GetGameSessionInfo(int iPad, SessionID session
 	if( m_currentSearchResultsCount[iPad] > 0 )
 	{
 		// Loop through all the results.
-		for( DWORD dwResult = 0; dwResult < m_currentSearchResultsCount[iPad]; dwResult++ )
+		for( int resultIndex = 0; resultIndex < m_currentSearchResultsCount[iPad]; ++resultIndex )
 		{
-			pSearchResult = &m_pCurrentSearchResults[iPad]->pResults[dwResult];
+			pSearchResult = &m_pCurrentSearchResults[iPad]->pResults[resultIndex];
 
 			if(memcmp( &pSearchResult->info.sessionID, &sessionId, sizeof(SessionID) ) != 0) continue;
 
@@ -1211,7 +1211,7 @@ bool CPlatformNetworkManagerSony::GetGameSessionInfo(int iPad, SessionID session
 			if(!foundSession) break;
 
 			// See if this result was contacted successfully via QoS probes.
-			pxnqi = &m_pCurrentQoSResult[iPad]->axnqosinfo[dwResult];
+			pxnqi = &m_pCurrentQoSResult[iPad]->axnqosinfo[resultIndex];
 			if( pxnqi->bFlags & XNET_XNQOSINFO_TARGET_CONTACTED )
 			{
 

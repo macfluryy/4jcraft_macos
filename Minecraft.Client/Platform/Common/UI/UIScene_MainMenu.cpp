@@ -262,7 +262,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 	case ACTION_MENU_X:
 		if(pressed && ProfileManager.IsFullVersion()) 
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS__NETWORK_PSN;
 			uiIDA[1]=IDS_NETWORK_ADHOC;
 			ui.RequestMessageBox(IDS_SELECT_NETWORK_MODE_TITLE, IDS_SELECT_NETWORK_MODE_TEXT, uiIDA, 2, XUSER_INDEX_ANY, &UIScene_MainMenu::SelectNetworkModeReturned,this);
@@ -338,7 +338,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 	case eControl_Exit:
 		if( ProfileManager.IsFullVersion() )
 		{				
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CANCEL;
 			uiIDA[1]=IDS_OK;
 			ui.RequestMessageBox(IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2, XUSER_INDEX_ANY,&UIScene_MainMenu::ExitGameReturned,this);
@@ -384,7 +384,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 		else
 		{
 			// Ask user to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			ui.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, primaryPad, &UIScene_MainMenu::MustSignInReturned, this, app.GetStringTable());
@@ -681,7 +681,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void *pParam, bool bContinue, in
 		// 4J-JEV: We only need to update rich-presence if the sign-in status changes.
 		ProfileManager.SetCurrentGameActivity(iPad, CONTEXT_PRESENCE_MENUS, false);
 
-		UINT uiIDA[1] = { IDS_OK };
+		unsigned int uiIDA[1] = { IDS_OK };
 
 		if(ProfileManager.IsGuest(ProfileManager.GetPrimaryPad()))
 		{
@@ -879,7 +879,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void *pParam,bool bContinue,in
 		// 4J-JEV: We only need to update rich-presence if the sign-in status changes.
 		ProfileManager.SetCurrentGameActivity(iPad, CONTEXT_PRESENCE_MENUS, false);
 
-		UINT uiIDA[1] = { IDS_OK };
+		unsigned int uiIDA[1] = { IDS_OK };
 
 		// guests can't look at leaderboards
 		if(ProfileManager.IsGuest(ProfileManager.GetPrimaryPad()))
@@ -903,7 +903,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void *pParam,bool bContinue,in
 				pClass->m_bIgnorePress=false;
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 				// you can't see leaderboards
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 #endif
@@ -1087,7 +1087,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_PlayGame(void *
 			return;
 		}
 
-// 		UINT uiIDA[1];
+// 		unsigned int uiIDA[1];
 // 		uiIDA[0]=IDS_OK;
 // 		ui.RequestMessageBox(IDS_PATCH_AVAILABLE_TITLE, IDS_PATCH_AVAILABLE_TEXT, uiIDA, 1, XUSER_INDEX_ANY,NULL,pClass);
 	}
@@ -1095,7 +1095,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_PlayGame(void *
 	// Check if PSN is unavailable because of age restriction
 	if (pClass->m_errorCode == SCE_NP_ERROR_AGE_RESTRICTION)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_PRO_NOTONLINE_DECLINE;
 		ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::PlayOfflineReturned, pClass, app.GetStringTable());
 
@@ -1121,7 +1121,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_PlayGame(void *
 		else
 		{
 			// Ask user to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			ui.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, primaryPad, &UIScene_MainMenu::MustSignInReturned, pClass, app.GetStringTable());
@@ -1174,7 +1174,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_Leaderboards(vo
 			}
 		}
 
-// 		UINT uiIDA[1];
+// 		unsigned int uiIDA[1];
 // 		uiIDA[0]=IDS_OK;
 // 		ui.RequestMessageBox(IDS_PATCH_AVAILABLE_TITLE, IDS_PATCH_AVAILABLE_TEXT, uiIDA, 1, XUSER_INDEX_ANY,NULL,pClass);
 	}
@@ -1187,7 +1187,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_Leaderboards(vo
 	// Check if PSN is unavailable because of age restriction
 	if (pClass->m_errorCode == SCE_NP_ERROR_AGE_RESTRICTION)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0] = IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr, pClass, app.GetStringTable());
 
@@ -1211,7 +1211,7 @@ void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_Leaderboards(vo
 		else
 		{
 			// Ask user to sign in
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			ui.RequestMessageBox(IDS_MUST_SIGN_IN_TITLE, IDS_MUST_SIGN_IN_TEXT, uiIDA, 2, primaryPad, &UIScene_MainMenu::MustSignInReturned, pClass, app.GetStringTable());
@@ -1254,7 +1254,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 
 	if(ProfileManager.IsGuest(iPad))
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 		
 		m_bIgnorePress=false;
@@ -1300,7 +1300,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 
 				m_eAction=eAction_RunGamePSN;
 				// get them to sign in to online
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 				uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 
@@ -1320,7 +1320,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 						m_eAction=eAction_RunGame;
 						// Signed in to PSN but not connected (no internet access)
 
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0] = IDS_PRO_NOTONLINE_DECLINE;
 						ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, UIScene_MainMenu::PlayOfflineReturned, this, app.GetStringTable());
 					}
@@ -1348,7 +1348,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 					// Signed in to PSN but not connected (no internet access)
 					assert(!ProfileManager.isConnectedToPSN(iPad));
 
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_PRO_NOTONLINE_DECLINE;
 					ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, UIScene_MainMenu::PlayOfflineReturned, this, app.GetStringTable());
 				}
@@ -1356,7 +1356,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 				{		
 					m_eAction=eAction_RunGamePSN;
 					// Not signed in to PSN
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 					uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
 					ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, iPad, &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
@@ -1477,7 +1477,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad)
 
 void UIScene_MainMenu::RunLeaderboards(int iPad)
 {
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 	
 	// guests can't look at leaderboards
@@ -1490,7 +1490,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 #if defined __PS3__ || defined __PSVITA__
 		m_eAction=eAction_RunLeaderboardsPSN;
 		// get them to sign in to online
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 		ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_MainMenu::MustSignInReturnedPSN,this, app.GetStringTable());
 
@@ -1501,14 +1501,14 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 		if (ProfileManager.IsSignedInPSN(iPad))
 		{
 			// Signed in to PSN but not connected (no internet access)
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox(IDS_PRO_CURRENTLY_NOT_ONLINE_TITLE, IDS_PRO_PSNOFFLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable());
 		}
 		else
 		{		
 			// Not signed in to PSN
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable());
 			return;
@@ -1521,14 +1521,14 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 			// Signed in to PSN but not connected (no internet access)
 			assert(!ProfileManager.isConnectedToPSN(iPad));
 
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_OK;
 			ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 		}
 		else
 		{		
 			// Not signed in to PSN
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable());
 			return;
@@ -1554,7 +1554,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 		{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 			// you can't see leaderboards
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,this, app.GetStringTable());
 #endif
@@ -1574,7 +1574,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad)
 }
 void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 {
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
 	// Check if this means downloadable content
@@ -1615,7 +1615,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 				}
 			}
 
-// 			UINT uiIDA[1];
+// 			unsigned int uiIDA[1];
 // 			uiIDA[0]=IDS_OK;
 // 			ui.RequestMessageBox(IDS_PATCH_AVAILABLE_TITLE, IDS_PATCH_AVAILABLE_TEXT, uiIDA, 1, XUSER_INDEX_ANY,NULL,this);
 			return;
@@ -1625,7 +1625,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 		if (m_errorCode == SCE_NP_ERROR_AGE_RESTRICTION)
 		{
 			m_bIgnorePress=false;
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr, this, app.GetStringTable());
 
@@ -1659,7 +1659,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 						m_bIgnorePress=false;
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 						// you can't see the store
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,this, app.GetStringTable());
 #endif
@@ -1708,7 +1708,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 #if defined(__PS3__) || defined(__PSVITA__)
 			m_eAction=eAction_RunUnlockOrDLCPSN;
 			// get them to sign in to online
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			//uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_MainMenu::MustSignInReturnedPSN,this, app.GetStringTable());
@@ -1721,20 +1721,20 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 			}
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable());
 				return;
 			}
 #else
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
 #endif
@@ -1753,7 +1753,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 #if defined(__PS3__) || defined(__PSVITA__)
 			m_eAction=eAction_RunUnlockOrDLCPSN;
 			// get them to sign in to online
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_MainMenu::MustSignInReturnedPSN,this, app.GetStringTable());
 #elif defined __ORBIS__
@@ -1765,20 +1765,20 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad)
 				// Signed in to PSN but not connected (no internet access)
 				assert(!ProfileManager.isConnectedToPSN(iPad));
 
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_OK;
 				ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 			}
 			else
 			{		
 				// Not signed in to PSN
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable());
 				return;
 			}
 #else
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
 #endif
@@ -1822,7 +1822,7 @@ void UIScene_MainMenu::tick()
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,this, app.GetStringTable());
 			}
@@ -1858,7 +1858,7 @@ void UIScene_MainMenu::tick()
 
 	if(g_NetworkManager.ShouldMessageForFullSession())
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_IN_PARTY_SESSION_FULL, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 	}
@@ -1881,7 +1881,7 @@ void UIScene_MainMenu::tick()
 				m_eAction = eAction_RunGame;
 
 				// give the option of continuing offline
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_PRO_NOTONLINE_DECLINE;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION_PATCH_AVAILABLE, uiIDA, 1, ProfileManager.GetPrimaryPad(), &UIScene_MainMenu::PlayOfflineReturned, this, app.GetStringTable());
 
@@ -1902,7 +1902,7 @@ void UIScene_MainMenu::tick()
 void UIScene_MainMenu::RunAchievements(int iPad)
 {
 #if TO_BE_IMPLEMENTED
-	UINT uiIDA[1];
+	unsigned int uiIDA[1];
 	uiIDA[0]=IDS_OK;
 
 	// guests can't look at achievements
@@ -1921,7 +1921,7 @@ void UIScene_MainMenu::RunHelpAndOptions(int iPad)
 {
 	if(ProfileManager.IsGuest(iPad))
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_OK;
 		ui.RequestMessageBox(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
 	}

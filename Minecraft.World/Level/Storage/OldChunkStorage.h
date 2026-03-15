@@ -4,6 +4,7 @@
 #include "../../IO/Files/File.h"
 #include "../../IO/NBT/CompoundTag.h"
 #include "../../Headers/com.mojang.nbt.h"
+#include <cstdint>
 #if !defined(_WIN32)
 #include <pthread.h>
 #endif
@@ -11,6 +12,13 @@
 class Level;
 
 class OldChunkStorage : public ChunkStorage {
+public:
+#if defined(_WIN32)
+    using TlsKey = std::uint32_t;
+#else
+    using TlsKey = pthread_key_t;
+#endif
+
 private:
     // 4J added so we can have separate storage arrays for different threads
     class ThreadStorage {
@@ -23,11 +31,7 @@ private:
         ThreadStorage();
         ~ThreadStorage();
     };
-#if defined(_WIN32)
-    static DWORD tlsIdx;
-#else
-    static pthread_key_t tlsIdx;
-#endif
+    static TlsKey tlsIdx;
     static ThreadStorage* tlsDefault;
 
 public:

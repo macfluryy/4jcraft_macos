@@ -18,9 +18,11 @@
 
 namespace {
 #if defined(_WIN32)
-inline void* TileTlsGetValue(DWORD key) { return TlsGetValue(key); }
+inline void* TileTlsGetValue(Tile::TlsKey key) { return TlsGetValue(key); }
 
-inline void TileTlsSetValue(DWORD key, void* value) { TlsSetValue(key, value); }
+inline void TileTlsSetValue(Tile::TlsKey key, void* value) {
+    TlsSetValue(key, value);
+}
 #else
 pthread_key_t CreateTileTlsKey() {
     pthread_key_t key;
@@ -227,9 +229,9 @@ Tile* Tile::stairs_quartz = NULL;
 Tile* Tile::woolCarpet = NULL;
 
 #if defined(_WIN32)
-DWORD Tile::tlsIdxShape = TlsAlloc();
+Tile::TlsKey Tile::tlsIdxShape = TlsAlloc();
 #else
-pthread_key_t Tile::tlsIdxShape = CreateTileTlsKey();
+Tile::TlsKey Tile::tlsIdxShape = CreateTileTlsKey();
 #endif
 
 Tile::ThreadStorage::ThreadStorage() {

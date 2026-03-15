@@ -22,9 +22,11 @@ const float PistonBaseTile::PLATFORM_THICKNESS = 4.0f;
 
 namespace {
 #if defined(_WIN32)
-inline void* PistonTlsGetValue(DWORD key) { return TlsGetValue(key); }
+inline void* PistonTlsGetValue(PistonBaseTile::TlsKey key) {
+    return TlsGetValue(key);
+}
 
-inline void PistonTlsSetValue(DWORD key, void* value) {
+inline void PistonTlsSetValue(PistonBaseTile::TlsKey key, void* value) {
     TlsSetValue(key, value);
 }
 #else
@@ -45,9 +47,9 @@ inline void PistonTlsSetValue(pthread_key_t key, void* value) {
 }  // namespace
 
 #if defined(_WIN32)
-DWORD PistonBaseTile::tlsIdx = TlsAlloc();
+PistonBaseTile::TlsKey PistonBaseTile::tlsIdx = TlsAlloc();
 #else
-pthread_key_t PistonBaseTile::tlsIdx = CreatePistonTlsKey();
+PistonBaseTile::TlsKey PistonBaseTile::tlsIdx = CreatePistonTlsKey();
 #endif
 
 // 4J - NOTE - this ignoreUpdate stuff has been removed from the java version,
