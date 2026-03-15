@@ -5353,8 +5353,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring &wName, std::uint8_t
 
 	// add this texture to the list of memory texture files - it will then be picked up by the level renderer's AddEntity
 
-	pData = (PMEMDATA)new BYTE[sizeof(MEMDATA)];
-	ZeroMemory( pData, sizeof(MEMDATA) );
+	pData = new MEMDATA();
 	pData->pbData=pbData;
 	pData->dwBytes=dwBytes;
 	pData->ucRefCount = 1;
@@ -5382,7 +5381,7 @@ void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring &wName)
 #ifndef _CONTENT_PACKAGE
 			wprintf(L"Erasing the memory texture file data for %ls\n", wName.c_str());
 #endif
-			delete [] pData;
+			delete pData;
 			m_MEM_Files.erase(wName);
 		}
 	}
@@ -5435,8 +5434,7 @@ void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned
 	AUTO_VAR(it, m_MEM_TPD.find(iConfig));
 	if(it == m_MEM_TPD.end())
 	{	
-		pData = (PMEMDATA)new BYTE[sizeof(MEMDATA)];
-		ZeroMemory( pData, sizeof(MEMDATA) );
+		pData = new MEMDATA();
 		pData->pbData=pbData;
 		pData->dwBytes=dwBytes;
 		pData->ucRefCount = 1;
@@ -5456,7 +5454,7 @@ void CMinecraftApp::RemoveMemoryTPDFile(int iConfig)
 	if(it != m_MEM_TPD.end())
 	{
 		pData=m_MEM_TPD[iConfig];
-		delete [] pData;
+		delete pData;
 		m_MEM_TPD.erase(iConfig);
 	}
 
