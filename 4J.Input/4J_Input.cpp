@@ -48,7 +48,8 @@ static const int s_watchedKeys[] = {
     SDL_SCANCODE_1,      SDL_SCANCODE_2,      SDL_SCANCODE_3,
     SDL_SCANCODE_4,      SDL_SCANCODE_5,      SDL_SCANCODE_6,
     SDL_SCANCODE_7,      SDL_SCANCODE_8,      SDL_SCANCODE_9,
-};
+    SDL_SCANCODE_Z,      SDL_SCANCODE_X,      SDL_SCANCODE_C,
+    SDL_SCANCODE_V};
 static const int s_watchedKeyCount =
     (int)(sizeof(s_watchedKeys) / sizeof(s_watchedKeys[0]));
 
@@ -352,13 +353,13 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
     case ACTION_MENU_PAGEDOWN:                                                 \
         return KFN(SDL_SCANCODE_PAGEDOWN);                                     \
     case ACTION_MENU_OK:                                                       \
-        return KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);       \
+        return KFN(SDL_SCANCODE_RETURN) || KFN(SDL_SCANCODE_Z) || CFN(SDL_CONTROLLER_BUTTON_A);       \
     case ACTION_MENU_CANCEL:                                                   \
-        return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);       \
+        return KFN(SDL_SCANCODE_ESCAPE) || KFN(SDL_SCANCODE_X) || CFN(SDL_CONTROLLER_BUTTON_B);       \
     case ACTION_MENU_A:                                                        \
-        return KFN(SDL_SCANCODE_Z) || CFN(SDL_CONTROLLER_BUTTON_A);            \
+        return KFN(SDL_SCANCODE_Z) || KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);            \
     case ACTION_MENU_B:                                                        \
-        return KFN(SDL_SCANCODE_X) || CFN(SDL_CONTROLLER_BUTTON_B);            \
+        return KFN(SDL_SCANCODE_X) || KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);            \
     case ACTION_MENU_X:                                                        \
         return KFN(SDL_SCANCODE_C) || CFN(SDL_CONTROLLER_BUTTON_X);            \
     case ACTION_MENU_Y:                                                        \

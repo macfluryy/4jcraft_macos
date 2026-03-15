@@ -28,7 +28,7 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../../Minecraft.World/WorldGen/Biomes/Biome.h"
 
-#define RENDER_HUD 1
+#define RENDER_HUD 0
 
 // #ifndef _XBOX
 // #undef RENDER_HUD
@@ -496,7 +496,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                     int y0 = 0;
                     // 4J-PB - no hardcore in xbox
                     // 					if
-                    // (minecraft.level.getLevelData().isHardcore()) { 						y0 = 5;
+                    // (minecraft.level.getLevelData().isHardcore()) {
+                    // y0 = 5;
                     // 					}
                     blit(xo, yo, 16 + bg * 9, 9 * 0, 9, 9);
                     if (blink) {
@@ -571,7 +572,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         ////////////////////////////
         if (bDisplayGui) {
             //		glDisable(GL_BLEND);		4J - removed - we want
-            //to be able to fade our gui
+            // to be able to fade our gui
 
             glEnable(GL_RESCALE_NORMAL);
 

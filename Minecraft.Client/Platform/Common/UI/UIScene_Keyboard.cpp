@@ -26,8 +26,9 @@ UIScene_Keyboard::UIScene_Keyboard(int iPad, void *initData, UILayer *parentLaye
 	// Initialise function keyboard Buttons and set alternative symbol button string
 	std::wstring label = L"Abc";
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	const std::u16string convLabel = convWstringToU16string(label);
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	
 	IggyDataValue result;
 	IggyDataValue value[1];

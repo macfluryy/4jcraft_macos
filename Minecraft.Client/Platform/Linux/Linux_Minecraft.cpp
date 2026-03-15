@@ -936,11 +936,8 @@ return -1;
         PIXEndNamedEvent();
 
         // Render game graphics.
-        // On Linux, always call run_middle() so mc->screen (TitleScreen etc.)
-        // renders even when the game session has not yet started (Iggy Flash UI
-        // is unavailable).
-        pMinecraft->run_middle();
         if (app.GetGameStarted()) {
+            pMinecraft->run_middle();
             app.SetAppPaused(
                 g_NetworkManager.IsLocalGame() &&
                 g_NetworkManager.GetPlayerCount() == 1 &&

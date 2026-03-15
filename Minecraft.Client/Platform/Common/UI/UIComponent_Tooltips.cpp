@@ -323,11 +323,13 @@ void UIComponent_Tooltips::_SetTooltip(unsigned int iToolTipId, const std::wstri
 	value[0].type = IGGY_DATATYPE_number;
 	value[0].number = iToolTipId;
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[1].string16 = stringVal;
 
 	value[2].type = IGGY_DATATYPE_boolean;

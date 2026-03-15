@@ -148,8 +148,7 @@ void UIScene_TradingMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
 	std::shared_ptr<ItemInstance> item = nullptr;
-	int slotId = -1;
-	swscanf((wchar_t*)region->name,L"slot_%d",&slotId);
+	int slotId = parseSlotId(region->name);
 
 	if(slotId < MerchantMenu::USE_ROW_SLOT_END)
 	{			
@@ -255,12 +254,14 @@ void UIScene_TradingMenu::setTradeRedBox(int index, bool show)
 
 void UIScene_TradingMenu::setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings)
 {
+	const std::u16string convName = convWstringToU16string(name);
+
 	IggyDataValue result;
 	IggyDataValue value[1];
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)name.c_str();
-	stringVal.length = name.length();
+	stringVal.string = convName.c_str();
+	stringVal.length = convName.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

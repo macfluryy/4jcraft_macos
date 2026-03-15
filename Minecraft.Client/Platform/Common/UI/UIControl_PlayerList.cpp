@@ -19,9 +19,11 @@ void UIControl_PlayerList::addItem(const std::wstring &label, int iPlayerIcon, i
 	IggyDataValue result;
 	IggyDataValue value[4];
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = (S32)label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = (S32)convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

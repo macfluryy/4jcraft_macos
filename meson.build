@@ -1,5 +1,6 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
+  meson_version: '>= 1.1',
   default_options : [
     'warning_level=0',
     'buildtype=debug', # for now
@@ -37,12 +38,6 @@ global_cpp_defs = [
   '-D_DEBUG',
   '-DDEBUG',
 ]
-
-if get_option('enable_vsync')
-    global_cpp_defs += '-DENABLE_VSYNC'
-    message('v-sync enabled')
-endif
-
 
 if host_machine.system() == 'linux'
   global_cpp_defs += [

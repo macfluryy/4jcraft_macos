@@ -1,4 +1,9 @@
 option('enable_vsync', 
   type : 'boolean', 
   value : true, 
-  description : 'Toggles weather V-Sync will be toggle on or off.')
+  description : 'Toggles V-Sync and adds options to unlock maximum in-game framerate.')
+
+option('enable_shiggy', 
+  type : 'boolean', 
+  value : true, 
+  description : 'Toggles shimmed PS4 Iggy binaries and UI for x86_64 Linux.')

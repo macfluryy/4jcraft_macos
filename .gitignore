@@ -4,39 +4,18 @@ builddir/
 .cache/
 .idea/
 build_meson/
-cmake-build-debug/
+
+# meson subprojects (git clone'd on build)
+/subprojects/*
+!/subprojects/*.wrap
 
 # Nix flake output
 result
-
-# Final binaries and platform output
-/Linux/
-/x64/
-
-# CMake generated artifacts
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-Makefile
 
 # Meson generated artifacts (inside source tree, e.g. per-subdir)
 meson-private/
 meson-info/
 meson-logs/
-
-# Compiler/linker intermediates
-*.o
-*.a
-*.so
-*.so.*
-*.out
-*.d
-compile_commands.json
-.clangd
-
-
-# ----- Scratch / legacy -----
-oldimpl/
 
 # ----- IDE / editor -----
 .cache/

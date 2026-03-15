@@ -716,6 +716,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 {
 	int characterId = -1;
+	// 4jcraft TODO: undefined behavior
 	swscanf((wchar_t*)region->name,L"Character%d",&characterId);
 	if (characterId == -1)
 	{
@@ -1364,14 +1365,16 @@ void UIScene_SkinSelectMenu::setLeftLabel(const std::wstring &label)
 {
 	if(label.compare(m_leftLabel) != 0)
 	{
-		m_leftLabel = label;	
+		m_leftLabel = label;
+
+		const std::u16string convLabel = convWstringToU16string(label);
 
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
@@ -1383,14 +1386,16 @@ void UIScene_SkinSelectMenu::setCentreLabel(const std::wstring &label)
 {
 	if(label.compare(m_centreLabel) != 0)
 	{
-		m_centreLabel = label;	
+		m_centreLabel = label;
+
+		const std::u16string convLabel = convWstringToU16string(label);
 
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
@@ -1404,12 +1409,14 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring &label)
 	{
 		m_rightLabel = label;	
 
+		const std::u16string convLabel = convWstringToU16string(label);
+
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;

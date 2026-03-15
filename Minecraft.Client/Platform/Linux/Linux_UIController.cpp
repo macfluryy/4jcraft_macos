@@ -6,11 +6,35 @@
 #include "../../Textures/Textures.h"
 
 // GDraw GL backend for Linux
-#include "Iggy/gdraw/gdraw_glfw.h"
-
-#define _ENABLEIGGY
+#include "Iggy/gdraw/gdraw_sdl.h"
 
 ConsoleUIController ui;
+
+static void restoreFixedFunctionStateAfterIggy() {
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+}
 
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
@@ -22,22 +46,19 @@ void ConsoleUIController::init(S32 w, S32 h) {
 
     if (!gdraw_funcs) {
         app.DebugPrintf("Failed to initialise GDraw GL!\n");
-        fprintf(stderr,
-                "[Linux_UIController] Failed to initialise GDraw GL!\n");
-        // nott fatal for now
-    } else {
-        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000,
-                                   16 * 1024 * 1024);
-        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
-                                   128 * 1024 * 1024);
-        gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
-                                   32 * 1024 * 1024);
-
-        IggySetGDraw(gdraw_funcs);
+        app.FatalLoadError();
     }
 
-    postInit();
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000,
+                               16 * 1024 * 1024);
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
+                               128 * 1024 * 1024);
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
+                               32 * 1024 * 1024);
+
+    IggySetGDraw(gdraw_funcs);
 #endif
+    postInit();
 }
 
 void ConsoleUIController::render() {
@@ -45,11 +66,15 @@ void ConsoleUIController::render() {
     if (!gdraw_funcs) return;
 
     gdraw_GL_SetTileOrigin(0, 0, 0);
+    if (!app.GetGameStarted() && gdraw_funcs->ClearID) {
+        gdraw_funcs->ClearID();
+    }
 
     // render
     renderScenes();
 
     gdraw_GL_NoMoreGDrawThisFrame();
+    restoreFixedFunctionStateAfterIggy();
 #endif
 }
 

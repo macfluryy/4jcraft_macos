@@ -324,7 +324,7 @@ void Minecraft::init() {
     // if (options.languageCode != null) {
     //	Language.getInstance().loadLanguage(options.languageCode);
     //	//
-    //font.setEnforceUnicodeSheet("true".equalsIgnoreCase(I18n.get("language.enforceUnicode")));
+    // font.setEnforceUnicodeSheet("true".equalsIgnoreCase(I18n.get("language.enforceUnicode")));
     //	font.setEnforceUnicodeSheet(Language.getInstance().isSelectedLanguageIsUnicode());
     //	font.setBidirectional(Language.isBidirectional(options.languageCode));
     // }
@@ -507,7 +507,7 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     }
 // #elif defined(_MACOS)
 //		workingDirectory = new File(userHome, "Library/Application
-//Support/" + applicationName);
+// Support/" + applicationName);
 #else
     workingDirectory = new File(userHome, applicationName + L'/');
 #endif
@@ -1079,7 +1079,7 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
         // loaded "Mass Effect World". Move this check to
         // ClientConnection::handleMovePlayer
         //		// 4J-PB - can't call this when this function is called
-        //from the qnet thread (GetGameStarted will be false)
+        // from the qnet thread (GetGameStarted will be false)
         //		if(app.GetGameStarted())
         //		{
         //			ui.CloseUIScenes(idx);
@@ -1839,7 +1839,7 @@ void Minecraft::run_middle() {
                 timer->advanceTime();
             }
 
-            __int64 beforeTickTime = System::nanoTime();
+            //__int64 beforeTickTime = System::nanoTime();
             for (int i = 0; i < timer->ticks; i++) {
                 bool bLastTimerTick = (i == (timer->ticks - 1));
                 // 4J-PB - the tick here can run more than once, and this is a
@@ -1923,7 +1923,7 @@ void Minecraft::run_middle() {
                 // 				SparseDataStorage::tick();
                 // // 4J added
             }
-            __int64 tickDuraction = System::nanoTime() - beforeTickTime;
+            //__int64 tickDuraction = System::nanoTime() - beforeTickTime;
             MemSect(31);
             checkGlError(L"Pre render");
             MemSect(0);
@@ -1981,13 +1981,12 @@ void Minecraft::run_middle() {
                                     // capture the save thumbnail
                                     app.CaptureSaveThumbnail();
                                     break;
-                                default:
-                                    break;
                             }
                         }
                     }
                 }
-#ifdef __linux__
+
+#ifdef _ENABLEIGGY
                 // On Linux, Iggy Flash UI is not available. If no players were
                 // rendered (menu / title-screen state), call GameRenderer
                 // directly so mc->screen draws.
@@ -1998,6 +1997,7 @@ void Minecraft::run_middle() {
                     gameRenderer->render(timer->a, true);
                 }
 #endif
+
                 // If there's an unoccupied quadrant, then clear that to black
                 if (unoccupiedQuadrant > -1) {
                     // render a logo
@@ -2028,6 +2028,17 @@ void Minecraft::run_middle() {
 #endif
             }
             glFlush();
+
+            /*	4J - removed
+            if (!Display::isActive())
+            {
+            if (fullscreen)
+            {
+            this->toggleFullScreen();
+            }
+            Sleep(10);
+            }
+            */
 
             /*	4J - removed
             if (!Display::isActive())
@@ -4596,8 +4607,8 @@ void Minecraft::main() {
     //	if(Item::items[i] != NULL)
     //	{
     //		wprintf(L"<xs:enumeration
-    //value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
-    //i, app.GetString( Item::items[i]->getDescriptionId() ));
+    // value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
+    // i, app.GetString( Item::items[i]->getDescriptionId() ));
     //	}
     //}
 
@@ -4608,8 +4619,8 @@ void Minecraft::main() {
     //	if(Tile::tiles[i] != NULL)
     //	{
     //		wprintf(L"<xs:enumeration
-    //value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
-    //i, app.GetString( Tile::tiles[i]->getDescriptionId() ));
+    // value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
+    // i, app.GetString( Tile::tiles[i]->getDescriptionId() ));
     //	}
     // }
     //__debugbreak();
@@ -4704,9 +4715,10 @@ int Minecraft::maxSupportedTextureSize() {
 
     // for (int texSize = 16384; texSize > 0; texSize >>= 1) {
     //	GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, texSize,
-    //texSize, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null); 	final
-    //int width = GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D, 0,
-    //GL11.GL_TEXTURE_WIDTH); 	if (width != 0) { 		return texSize;
+    // texSize, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
+    // final int width = GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D,
+    // 0, GL11.GL_TEXTURE_WIDTH); 	if (width != 0) { 		return
+    // texSize;
     //	}
     // }
     // return -1;
@@ -4716,7 +4728,7 @@ void Minecraft::delayTextureReload() { reloadTextures = true; }
 
 __int64 Minecraft::currentTimeMillis() {
     return System::currentTimeMillis();  //(Sys.getTime() * 1000) /
-                                         //Sys.getTimerResolution();
+                                         // Sys.getTimerResolution();
 }
 
 /*void Minecraft::handleMouseDown(int button, bool down)

@@ -360,9 +360,11 @@ void UIScene_AnvilMenu::setCostLabel(const std::wstring &label, bool canAfford)
 	IggyDataValue result;
 	IggyDataValue value[2];
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

@@ -30,6 +30,7 @@ T _fromHEXString(const std::wstring& s) {
 }
 
 std::wstring convStringToWstring(const std::string& converting);
+std::u16string convWstringToU16string(const std::wstring& converting);
 const char* wstringtofilename(const std::wstring& name);
 std::wstring filenametowstring(const char* name);
 

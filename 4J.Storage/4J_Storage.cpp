@@ -142,6 +142,9 @@ unsigned int C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
 C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad,
                                                    int (*Func)(void*, int, int),
                                                    void* lpParam) {
+    if (Func) {
+        Func(lpParam, 0, iPad);
+    }
     return EDLC_NoInstalledDLC;
 }
 XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) { return s_dummyContentData; }

@@ -426,7 +426,7 @@ void UIScene_MainMenu::RunAction(int iPad)
 
 void UIScene_MainMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 {
-	if(wcscmp((wchar_t *)region->name,L"Splash")==0)
+	if(std::char_traits<char16_t>::compare(region->name, u"Splash", 6) == 0)
 	{
 		PIXBeginNamedEvent(0,"Custom draw splash");
 		customDrawSplash(region);
@@ -1806,7 +1806,7 @@ void UIScene_MainMenu::tick()
 {
 	UIScene::tick();
 
-#ifdef __linux__
+#ifndef _ENABLEIGGY
 	{
 		static int s_mainMenuTickCount = 0;
 		s_mainMenuTickCount++;

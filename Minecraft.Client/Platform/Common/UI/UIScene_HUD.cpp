@@ -182,8 +182,7 @@ void UIScene_HUD::customDraw(IggyCustomDrawCallbackRegion *region)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	int slot = -1;
-	swscanf((wchar_t*)region->name,L"slot_%d",&slot);
+	int slot = parseSlotId(region->name);
 	if (slot == -1)
 	{
 		app.DebugPrintf("This is not the control we are looking for\n");
@@ -534,9 +533,10 @@ void UIScene_HUD::SetDragonLabel(const std::wstring &label)
 {
 	IggyDataValue result;
 	IggyDataValue value[1];
+	const std::u16string convLabel = convWstringToU16string(label);
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcSetDragonLabel , 1 , value );
@@ -564,9 +564,10 @@ void UIScene_HUD::SetSelectedLabel(const std::wstring &label)
 
 	IggyDataValue result;
 	IggyDataValue value[1];
+	const std::u16string convLabel = convWstringToU16string(label);
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcSetSelectedLabel , 1 , value );
@@ -745,8 +746,9 @@ void UIScene_HUD::SetDisplayName(const std::wstring &displayName)
 		IggyDataValue result;
 		IggyDataValue value[1];
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)displayName.c_str();
-		stringVal.length = displayName.length();
+		const std::u16string convName = convWstringToU16string(displayName);
+		stringVal.string = convName.c_str();
+		stringVal.length = convName.length();
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
 		IggyResult out = IggyPlayerCallMethodRS ( getMovie() , &result, IggyPlayerRootPath( getMovie() ), m_funcSetDisplayName , 1 , value );
