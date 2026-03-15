@@ -31,4 +31,8 @@
 #include "d3d11_stubs.h"
 #include "xbox_stubs.h"
 
+#ifndef _ENABLEIGGY
+#include "iggy_stubs.h"
+#endif
+
 #endif  // STUBS_H

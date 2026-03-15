@@ -1,5 +1,6 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
+  meson_version: '>= 1.1',
   default_options : [
     'warning_level=0',
     'buildtype=debug', # for now
