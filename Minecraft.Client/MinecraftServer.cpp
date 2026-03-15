@@ -903,7 +903,7 @@ void MinecraftServer::Suspend() {
     QueryPerformanceCounter(&qwNewTime);
 
     qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-    fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
+    fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
 
     // 4J-JEV: Flush stats and call PlayerSessionExit.
     for (int iPad = 0; iPad < XUSER_MAX_COUNT; iPad++) {
@@ -1272,7 +1272,7 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                         qwDeltaTime.QuadPart =
                             qwNewTime.QuadPart - qwTime.QuadPart;
                         fElapsedTime =
-                            fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
+                            fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
                         app.DebugPrintf("Autosave: Elapsed time %f\n",
                                         fElapsedTime);
                     } break;

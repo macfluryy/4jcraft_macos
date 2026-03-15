@@ -1344,7 +1344,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         QueryPerformanceCounter(&qwNewTime);
 
         qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-        fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
+        fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
@@ -1367,7 +1367,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         QueryPerformanceCounter(&qwNewTime);
 
         qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-        fElapsedTime = fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
+        fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
