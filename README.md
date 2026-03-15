@@ -1,14 +1,14 @@
-# <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50"> 4JCraft
+# <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50" style="vertical-align: middle;"> 4JCraft
 
-> Ported version of Minecraft Legacy Console edition to other systems
-
+![](.github-assets/transrights.png) ![](.github-assets/progress.png) ![](.github-assets/internetarchive.gif) ![](.github-assets//ieget-an.gif) ![](.github-assets/minecraft.gif) ![](.github-assets/powered-llvm.gif)
+![](.github-assets/opengl.gif) ![](.github-assets/adobe_getflash2.gif) ![](.github-assets/flash_get_20010813.gif) ![](.github-assets/SiliconValley_7479_English_imagens_get_flashplayer.gif)
 ---
 
 4JCraft is a modified version of the Minecraft Console Legacy Edition aimed on porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.) and refactoring the codebase to improve organization and use modern C++ features.
 
 Join our community:
-* Discord: https://discord.gg/zFCwRWkkUg
-* Steam: https://steamcommunity.com/groups/4JCraft
+* **Discord:** https://discord.gg/zFCwRWkkUg
+* **Steam:** https://steamcommunity.com/groups/4JCraft
 
 ## Scope & Platform Support
 

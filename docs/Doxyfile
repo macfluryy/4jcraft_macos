@@ -19,15 +19,14 @@ EXCLUDE_PATTERNS = \
     */dinput*.h \
     */xaudio*.h \
     */xinput*.h \
-    */boost/*
+    */boost/* \
+    */Platform/Durango/* \
+    */Platform/Orbis/* \
+    */Platform/PS3/* \
+    */Platform/PSVita/* \
+    */Platform/Windows64/* \
+    */Platform/Xbox/*
 # Excluding all platform specific code except for Linux since the doc compiler runs on it so it wont shit itself
-EXCLUDE = ../Minecraft.Client/Platform/Durango \
-          ../Minecraft.Client/Platform/Orbis \
-          ../Minecraft.Client/Platform/PS3 \
-          ../Minecraft.Client/Platform/Orbis \
-          ../Minecraft.Client/Platform/PSVita \
-          ../Minecraft.Client/Platform/Windows64 \
-          ../Minecraft.Client/Platform/Xbox \
 #---------------------------------------------------------------------------
 # HTML Config shit
 #---------------------------------------------------------------------------
