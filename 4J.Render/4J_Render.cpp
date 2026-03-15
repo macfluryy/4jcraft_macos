@@ -695,7 +695,8 @@ HRESULT C4JRender::LoadTextureData(const char* szFilename,
     return hr;
 }
 
-HRESULT C4JRender::LoadTextureData(BYTE* pbData, DWORD dwBytes,
+HRESULT C4JRender::LoadTextureData(std::uint8_t* pbData,
+                                   std::uint32_t dwBytes,
                                    D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
     int width, height, channels;
 

@@ -30,10 +30,10 @@ typedef struct {
 } D3DXIMAGE_INFO;
 
 typedef struct _XSOCIAL_PREVIEWIMAGE {
-    BYTE* pBytes;
-    DWORD Pitch;
-    DWORD Width;
-    DWORD Height;
+    std::uint8_t* pBytes;
+    std::uint32_t Pitch;
+    std::uint32_t Width;
+    std::uint32_t Height;
     //    D3DFORMAT Format;
 } XSOCIAL_PREVIEWIMAGE, *PXSOCIAL_PREVIEWIMAGE;
 
@@ -171,7 +171,7 @@ public:
     void TextureDynamicUpdateEnd();
     HRESULT LoadTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
                             int** ppDataOut);
-    HRESULT LoadTextureData(BYTE* pbData, DWORD dwBytes,
+    HRESULT LoadTextureData(std::uint8_t* pbData, std::uint32_t dwBytes,
                             D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut);
     HRESULT SaveTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
                             int* ppDataOut);
