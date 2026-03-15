@@ -45,15 +45,7 @@ if host_machine.system() == 'linux'
   ).stdout().strip().split('\n')
 endif
 
-shiggy_dep = dependency(
-  'shiggy',
-  fallback : ['shiggy', 'shiggy_dep'],
-)
-
-client = executable('Minecraft.Client',
-  client_sources + platform_sources + localisation[1],
-  include_directories : include_directories('Platform', 'Platform/Linux/Iggy/include'),
-  dependencies : [
+client_dependencies = [
     render_dep,
     input_dep,
     profile_dep,
@@ -64,9 +56,27 @@ client = executable('Minecraft.Client',
     glu_dep,
     thread_dep,
     thread_dep,
-    shiggy_dep,
     dependency('zlib'),
-  ],
+]
+
+if get_option('enable_vsync')
+    global_cpp_defs += '-DENABLE_VSYNC'
+endif
+
+if get_option('enable_shiggy')
+    shiggy_dep = dependency(
+      'shiggy',
+      fallback : ['shiggy', 'shiggy_dep'],
+    )
+
+    global_cpp_defs += '-D_ENABLEIGGY'
+    client_dependencies += shiggy_dep
+endif
+
+client = executable('Minecraft.Client',
+  client_sources + platform_sources + localisation[1],
+  include_directories : include_directories('Platform', 'Platform/Linux/Iggy/include'),
+  dependencies : client_dependencies,
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-DUNICODE', '-D_UNICODE',
     '-include', meson.current_source_dir() / 'Platform/stdafx.h',

@@ -38,14 +38,6 @@ global_cpp_defs = [
   '-DDEBUG',
 ]
 
-if get_option('enable_vsync')
-    global_cpp_defs += '-DENABLE_VSYNC'
-endif
-
-if get_option('enable_iggy')
-    global_cpp_defs += '-D_ENABLEIGGY'
-endif
-
 if host_machine.system() == 'linux'
   global_cpp_defs += [
     '-Dlinux',
