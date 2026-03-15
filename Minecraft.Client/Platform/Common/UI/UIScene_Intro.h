@@ -49,4 +49,7 @@ public:
 	virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId, bool bPressed, bool bRepeat, bool bReleased);
 #endif
 
+#ifndef _ENABLEIGGY
+	virtual void tick();
+#endif
 };

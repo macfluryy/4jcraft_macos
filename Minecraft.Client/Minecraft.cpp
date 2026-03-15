@@ -324,7 +324,7 @@ void Minecraft::init() {
     // if (options.languageCode != null) {
     //	Language.getInstance().loadLanguage(options.languageCode);
     //	//
-    //font.setEnforceUnicodeSheet("true".equalsIgnoreCase(I18n.get("language.enforceUnicode")));
+    // font.setEnforceUnicodeSheet("true".equalsIgnoreCase(I18n.get("language.enforceUnicode")));
     //	font.setEnforceUnicodeSheet(Language.getInstance().isSelectedLanguageIsUnicode());
     //	font.setBidirectional(Language.isBidirectional(options.languageCode));
     // }
@@ -507,7 +507,7 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     }
 // #elif defined(_MACOS)
 //		workingDirectory = new File(userHome, "Library/Application
-//Support/" + applicationName);
+// Support/" + applicationName);
 #else
     workingDirectory = new File(userHome, applicationName + L'/');
 #endif
@@ -1079,7 +1079,7 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
         // loaded "Mass Effect World". Move this check to
         // ClientConnection::handleMovePlayer
         //		// 4J-PB - can't call this when this function is called
-        //from the qnet thread (GetGameStarted will be false)
+        // from the qnet thread (GetGameStarted will be false)
         //		if(app.GetGameStarted())
         //		{
         //			ui.CloseUIScenes(idx);
@@ -1839,16 +1839,16 @@ void Minecraft::run_middle() {
                 timer->advanceTime();
             }
 
-			//__int64 beforeTickTime = System::nanoTime();
-			for (int i = 0; i < timer->ticks; i++)
-			{
-				bool bLastTimerTick = ( i == ( timer->ticks - 1 ) );
-				// 4J-PB - the tick here can run more than once, and this is a problem for our input, which would see the a key press twice with the same time - let's tick the inputmanager again
-				if(i!=0)
-				{
-					InputManager.Tick();
-					app.HandleButtonPresses();
-				}
+            //__int64 beforeTickTime = System::nanoTime();
+            for (int i = 0; i < timer->ticks; i++) {
+                bool bLastTimerTick = (i == (timer->ticks - 1));
+                // 4J-PB - the tick here can run more than once, and this is a
+                // problem for our input, which would see the a key press twice
+                // with the same time - let's tick the inputmanager again
+                if (i != 0) {
+                    InputManager.Tick();
+                    app.HandleButtonPresses();
+                }
 
                 ticks++;
                 //            try {		// 4J - try/catch removed
@@ -1913,19 +1913,20 @@ void Minecraft::run_middle() {
                     }
                 }
 
-				//            } catch (LevelConflictException e) {
-				//                this.level = null;
-				//                setLevel(null);
-				//                setScreen(new LevelConflictScreen());
-				//            }
-// 				SparseLightStorage::tick();	// 4J added
-// 				CompressedTileStorage::tick();	// 4J added
-// 				SparseDataStorage::tick();		// 4J added
-			}
-			//__int64 tickDuraction = System::nanoTime() - beforeTickTime;
-			MemSect(31);
-			checkGlError(L"Pre render");
-			MemSect(0);
+                //            } catch (LevelConflictException e) {
+                //                this.level = null;
+                //                setLevel(null);
+                //                setScreen(new LevelConflictScreen());
+                //            }
+                // 				SparseLightStorage::tick();
+                // // 4J added 				CompressedTileStorage::tick();	// 4J added
+                // 				SparseDataStorage::tick();
+                // // 4J added
+            }
+            //__int64 tickDuraction = System::nanoTime() - beforeTickTime;
+            MemSect(31);
+            checkGlError(L"Pre render");
+            MemSect(0);
 
             TileRenderer::fancy = options->fancyGraphics;
 
@@ -1951,20 +1952,17 @@ void Minecraft::run_middle() {
             if (player != NULL && player->isInWall())
                 player->SetThirdPersonView(0);
 
-			if (!noRender)
-			{
-				bool bFirst = true;
-				int iPrimaryPad=ProfileManager.GetPrimaryPad();
-				for( int i = 0; i < XUSER_MAX_COUNT; i++ )
-				{
-
-					if( setLocalPlayerIdx(i) )
-					{
-						PIXBeginNamedEvent(0,"Game render player idx %d",i);
-						RenderManager.StateSetViewport((C4JRender::eViewportType)player->m_iScreenSection);
-						gameRenderer->render(timer->a, bFirst);
-						bFirst = false;
-						PIXEndNamedEvent();
+            if (!noRender) {
+                bool bFirst = true;
+                int iPrimaryPad = ProfileManager.GetPrimaryPad();
+                for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+                    if (setLocalPlayerIdx(i)) {
+                        PIXBeginNamedEvent(0, "Game render player idx %d", i);
+                        RenderManager.StateSetViewport(
+                            (C4JRender::eViewportType)player->m_iScreenSection);
+                        gameRenderer->render(timer->a, bFirst);
+                        bFirst = false;
+                        PIXEndNamedEvent();
 
                         if (i == iPrimaryPad) {
 #ifdef __ORBIS__
@@ -1974,39 +1972,42 @@ void Minecraft::run_middle() {
                             // point in the frame to do it.
                             RenderManager.InternalScreenCapture();
 #endif
-							// check to see if we need to capture a screenshot for the save game thumbnail
-							switch(app.GetXuiAction(i))
-							{
-							case eAppAction_ExitWorldCapturedThumbnail:
-							case eAppAction_SaveGameCapturedThumbnail:
-							case eAppAction_AutosaveSaveGameCapturedThumbnail:
-								// capture the save thumbnail
-								app.CaptureSaveThumbnail();
-								break;
-							}
-						}
-					}
-				}
+                            // check to see if we need to capture a screenshot
+                            // for the save game thumbnail
+                            switch (app.GetXuiAction(i)) {
+                                case eAppAction_ExitWorldCapturedThumbnail:
+                                case eAppAction_SaveGameCapturedThumbnail:
+                                case eAppAction_AutosaveSaveGameCapturedThumbnail:
+                                    // capture the save thumbnail
+                                    app.CaptureSaveThumbnail();
+                                    break;
+                            }
+                        }
+                    }
+                }
 
-// #ifdef __linux__
-// 				// On Linux, Iggy Flash UI is not available. If no players were rendered
-// 				// (menu / title-screen state), call GameRenderer directly so mc->screen draws.
-// 				if (bFirst)
-// 				{
-// 					localPlayerIdx = 0;
-// 					RenderManager.StateSetViewport(C4JRender::VIEWPORT_TYPE_FULLSCREEN);
-// 					gameRenderer->render(timer->a, true);
-// 				}
-// #endif
+#ifdef _ENABLEIGGY
+                // On Linux, Iggy Flash UI is not available. If no players were
+                // rendered (menu / title-screen state), call GameRenderer
+                // directly so mc->screen draws.
+                if (bFirst) {
+                    localPlayerIdx = 0;
+                    RenderManager.StateSetViewport(
+                        C4JRender::VIEWPORT_TYPE_FULLSCREEN);
+                    gameRenderer->render(timer->a, true);
+                }
+#endif
 
-				
-				// If there's an unoccupied quadrant, then clear that to black
-				if( unoccupiedQuadrant > -1 )
-				{
-					// render a logo
-					RenderManager.StateSetViewport((C4JRender::eViewportType)(C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT + unoccupiedQuadrant));
-					glClearColor(0, 0, 0, 0);
-					glClear(GL_COLOR_BUFFER_BIT);
+                // If there's an unoccupied quadrant, then clear that to black
+                if (unoccupiedQuadrant > -1) {
+                    // render a logo
+                    RenderManager.StateSetViewport((
+                        C4JRender::
+                            eViewportType)(C4JRender::
+                                               VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                                           unoccupiedQuadrant));
+                    glClearColor(0, 0, 0, 0);
+                    glClear(GL_COLOR_BUFFER_BIT);
 
                     ui.SetEmptyQuadrantLogo(
                         C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
@@ -2025,19 +2026,19 @@ void Minecraft::run_middle() {
                     }
                 }
 #endif
-			}
-			glFlush();
+            }
+            glFlush();
 
-			/*	4J - removed
-			if (!Display::isActive())
-			{
-			if (fullscreen)
-			{
-			this->toggleFullScreen();
-			}
-			Sleep(10);
-			}
-			*/
+            /*	4J - removed
+            if (!Display::isActive())
+            {
+            if (fullscreen)
+            {
+            this->toggleFullScreen();
+            }
+            Sleep(10);
+            }
+            */
 
             /*	4J - removed
             if (!Display::isActive())
@@ -2140,11 +2141,7 @@ void Minecraft::run_middle() {
     LeaveCriticalSection(&m_setLevelCS);
 }
 
-
-void Minecraft::run_end()
-{
-	destroy();
-}
+void Minecraft::run_end() { destroy(); }
 
 void Minecraft::renderFpsMeter(__int64 tickTime) {
     int nsPer60Fps = 1000000000l / 60;
@@ -4602,8 +4599,8 @@ void Minecraft::main() {
     //	if(Item::items[i] != NULL)
     //	{
     //		wprintf(L"<xs:enumeration
-    //value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
-    //i, app.GetString( Item::items[i]->getDescriptionId() ));
+    // value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
+    // i, app.GetString( Item::items[i]->getDescriptionId() ));
     //	}
     //}
 
@@ -4614,8 +4611,8 @@ void Minecraft::main() {
     //	if(Tile::tiles[i] != NULL)
     //	{
     //		wprintf(L"<xs:enumeration
-    //value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
-    //i, app.GetString( Tile::tiles[i]->getDescriptionId() ));
+    // value=\"%d\"><xs:annotation><xs:documentation>%ls</xs:documentation></xs:annotation></xs:enumeration>\n",
+    // i, app.GetString( Tile::tiles[i]->getDescriptionId() ));
     //	}
     // }
     //__debugbreak();
@@ -4710,9 +4707,10 @@ int Minecraft::maxSupportedTextureSize() {
 
     // for (int texSize = 16384; texSize > 0; texSize >>= 1) {
     //	GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, texSize,
-    //texSize, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null); 	final
-    //int width = GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D, 0,
-    //GL11.GL_TEXTURE_WIDTH); 	if (width != 0) { 		return texSize;
+    // texSize, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
+    // final int width = GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D,
+    // 0, GL11.GL_TEXTURE_WIDTH); 	if (width != 0) { 		return
+    // texSize;
     //	}
     // }
     // return -1;
@@ -4722,7 +4720,7 @@ void Minecraft::delayTextureReload() { reloadTextures = true; }
 
 __int64 Minecraft::currentTimeMillis() {
     return System::currentTimeMillis();  //(Sys.getTime() * 1000) /
-                                         //Sys.getTimerResolution();
+                                         // Sys.getTimerResolution();
 }
 
 /*void Minecraft::handleMouseDown(int button, bool down)

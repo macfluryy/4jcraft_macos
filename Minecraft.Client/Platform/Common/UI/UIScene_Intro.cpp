@@ -2,12 +2,19 @@
 #include "UI.h"
 #include "UIScene_Intro.h"
 
+#ifndef _ENABLEIGGY
+static int s_introTickCount = 0;
+#endif
+
 UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {
 	// Setup all the Iggy references we need for this scene
 	initialiseMovie();
 	m_bIgnoreNavigate = false;
 	m_bAnimationEnded = false;
+#ifndef _ENABLEIGGY
+	s_introTickCount = 0;
+#endif
 
 	bool bSkipESRB = false;
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
@@ -163,3 +170,22 @@ void UIScene_Intro::handleGainFocus(bool navBack)
 		ui.NavigateToScene(0,eUIScene_MainMenu);
 	}
 }
+
+#ifndef _ENABLEIGGY
+void UIScene_Intro::tick()
+{
+	// Call base tick first (processes Iggy ticking)
+	UIScene::tick();
+
+	// Auto-skip the intro after 60 ticks (~2 seconds at 30fps)
+	// since we have no SWF renderer to play the intro animation
+	s_introTickCount++;
+	if(s_introTickCount == 60 && !m_bIgnoreNavigate)
+	{
+		fprintf(stderr, "[Linux] Auto-skipping intro -> MainMenu after %d ticks\n", s_introTickCount);
+		m_bIgnoreNavigate = true;
+		// Skip straight to MainMenu, bypassing SaveMessage (no SWF interaction possible)
+		ui.NavigateToScene(0, eUIScene_MainMenu);
+	}
+}
+#endif
