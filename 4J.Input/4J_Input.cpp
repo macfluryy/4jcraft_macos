@@ -355,6 +355,14 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
         return KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);       \
     case ACTION_MENU_CANCEL:                                                   \
         return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);       \
+    case ACTION_MENU_A:                                                        \
+        return KFN(SDL_SCANCODE_Z) || CFN(SDL_CONTROLLER_BUTTON_A);            \
+    case ACTION_MENU_B:                                                        \
+        return KFN(SDL_SCANCODE_X) || CFN(SDL_CONTROLLER_BUTTON_B);            \
+    case ACTION_MENU_X:                                                        \
+        return KFN(SDL_SCANCODE_C) || CFN(SDL_CONTROLLER_BUTTON_X);            \
+    case ACTION_MENU_Y:                                                        \
+        return KFN(SDL_SCANCODE_V) || CFN(SDL_CONTROLLER_BUTTON_Y);            \
     case MINECRAFT_ACTION_JUMP:                                                \
         return KFN(SDL_SCANCODE_SPACE) || CFN(SDL_CONTROLLER_BUTTON_A);        \
     case MINECRAFT_ACTION_FORWARD:                                             \
