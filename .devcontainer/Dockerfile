@@ -15,7 +15,7 @@ RUN apt-get update \
         libsdl2-dev \
         libgl-dev \
         libglu1-mesa-dev \
-        libpthread-stubs0-dev
+        libpthread-stubs0-dev \
     # Clean up lol
     && apt-get autoremove -y \
     && apt-get clean -y \
