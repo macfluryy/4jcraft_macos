@@ -113,8 +113,10 @@ C4JThread::C4JThread(C4JThreadStartFunc* startFunc, void* param,
 #else
     m_threadID = 0;
     m_threadHandle = 0;
+    DWORD threadID = 0;
     m_threadHandle = CreateThread(NULL, m_stackSize, entryPoint, this,
-                                  CREATE_SUSPENDED, &m_threadID);
+                                  CREATE_SUSPENDED, &threadID);
+    m_threadID = threadID;
 #endif
     EnterCriticalSection(&ms_threadListCS);
     ms_threadList.push_back(this);
@@ -454,7 +456,7 @@ C4JThread* C4JThread::getCurrentThread() {
 #elif defined __PSVITA__
     SceUID currThreadID = sceKernelGetThreadId();
 #else
-    DWORD currThreadID = GetCurrentThreadId();
+    std::uint32_t currThreadID = GetCurrentThreadId();
 #endif  //__PS3__
     EnterCriticalSection(&ms_threadListCS);
 

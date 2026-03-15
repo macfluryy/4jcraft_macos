@@ -210,7 +210,7 @@ private:
     int m_priority;
     static SceInt32 entryPoint(SceSize argSize, void* pArgBlock);
 #else
-    DWORD m_threadID;
+    std::uint32_t m_threadID;
     HANDLE m_threadHandle;
     Event* m_completionFlag;
     static DWORD WINAPI entryPoint(LPVOID lpParam);
