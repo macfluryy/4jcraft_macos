@@ -57,15 +57,19 @@ void C4JStorage::GetSaveData(void* pvData, unsigned int* puiBytes) {
 PVOID C4JStorage::AllocateSaveData(unsigned int uiBytes) {
     return malloc(uiBytes);
 }
-void C4JStorage::SetSaveImages(PBYTE pbThumbnail, DWORD dwThumbnailBytes,
-                               PBYTE pbImage, DWORD dwImageBytes,
-                               PBYTE pbTextData, DWORD dwTextDataBytes) {}
+void C4JStorage::SetSaveImages(std::uint8_t* pbThumbnail,
+                               unsigned int dwThumbnailBytes,
+                               std::uint8_t* pbImage,
+                               unsigned int dwImageBytes,
+                               std::uint8_t* pbTextData,
+                               unsigned int dwTextDataBytes) {}
 C4JStorage::ESaveGameState C4JStorage::SaveSaveData(int (*Func)(void*,
                                                                 const bool),
                                                     void* lpParam) {
     return ESaveGame_Idle;
 }
-void C4JStorage::CopySaveDataToNewSave(PBYTE pbThumbnail, DWORD cbThumbnail,
+void C4JStorage::CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
+                                       unsigned int cbThumbnail,
                                        WCHAR* wchNewName,
                                        int (*Func)(void* lpParam, bool),
                                        void* lpParam) {}
@@ -153,14 +157,14 @@ void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
 std::string C4JStorage::GetMountedPath(std::string szMount) { return ""; }
 C4JStorage::ETMSStatus C4JStorage::ReadTMSFile(
     int iQuadrant, eGlobalStorage eStorageFacility,
-    C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename, BYTE** ppBuffer,
-    DWORD* pdwBufferSize, int (*Func)(void*, WCHAR*, int, bool, int),
-    void* lpParam, int iAction) {
+    C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
+    std::uint8_t** ppBuffer, unsigned int* pdwBufferSize,
+    int (*Func)(void*, WCHAR*, int, bool, int), void* lpParam, int iAction) {
     return ETMSStatus_Fail;
 }
 bool C4JStorage::WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                              WCHAR* pwchFilename, BYTE* pBuffer,
-                              DWORD dwBufferSize) {
+                              WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                              unsigned int dwBufferSize) {
     return false;
 }
 bool C4JStorage::DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,

@@ -20,7 +20,7 @@ typedef struct {
     char UTF8SaveFilename[MAX_SAVEFILENAME_LENGTH];
     char UTF8SaveTitle[MAX_DISPLAYNAME_LENGTH];
     CONTAINER_METADATA metaData;
-    PBYTE thumbnailData;
+    std::uint8_t* thumbnailData;
 } SAVE_INFO, *PSAVE_INFO;
 
 typedef struct {
@@ -40,14 +40,14 @@ public:
     // Structs defined in the DLC_Creator, but added here to be used in the app
     typedef struct {
         unsigned int uiFileSize;
-        DWORD dwType;
-        DWORD dwWchCount;  // count of WCHAR in next array
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of WCHAR in next array
         WCHAR wchFile[1];
     } DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
 
     typedef struct {
-        DWORD dwType;
-        DWORD dwWchCount;  // count of WCHAR in next array;
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of WCHAR in next array;
         WCHAR wchData[1];  // will be an array of size dwBytes
     } DLC_FILE_PARAM, *PDLC_FILE_PARAM;
     // End of DLC_Creator structs
@@ -55,17 +55,18 @@ public:
     typedef struct {
         WCHAR wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
         CHAR szFileName[XCONTENT_MAX_FILENAME_LENGTH];
-        DWORD dwImageOffset;
-        DWORD dwImageBytes;
+        std::uint32_t dwImageOffset;
+        std::uint32_t dwImageBytes;
     } CACHEINFOSTRUCT;
 
     // structure to hold DLC info in TMS
     typedef struct {
-        DWORD dwVersion;
-        DWORD dwNewOffers;
-        DWORD dwTotalOffers;
-        DWORD dwInstalledTotalOffers;
-        BYTE bPadding[1024 - sizeof(DWORD) * 4];  // future expansion
+        std::uint32_t dwVersion;
+        std::uint32_t dwNewOffers;
+        std::uint32_t dwTotalOffers;
+        std::uint32_t dwInstalledTotalOffers;
+        std::uint8_t bPadding[1024 - sizeof(std::uint32_t) * 4];
+        // future expansion
     } DLC_TMS_DETAILS;
 
     enum eGTS_FileTypes { eGTS_Type_Skin = 0, eGTS_Type_Cape, eGTS_Type_MAX };
@@ -188,8 +189,8 @@ public:
     } TMSPP_FILE_LIST, *PTMSPP_FILE_LIST;
 
     typedef struct {
-        DWORD dwSize;
-        PBYTE pbData;
+        unsigned int dwSize;
+        std::uint8_t* pbData;
     } TMSPP_FILEDATA, *PTMSPP_FILEDATA;
 
     C4JStorage();
@@ -230,14 +231,16 @@ public:
     void GetSaveData(void* pvData, unsigned int* puiBytes);
     PVOID AllocateSaveData(unsigned int uiBytes);
     void SetSaveImages(
-        PBYTE pbThumbnail, DWORD dwThumbnailBytes, PBYTE pbImage,
-        DWORD dwImageBytes, PBYTE pbTextData,
-        DWORD dwTextDataBytes);  // Sets the thumbnail & image for the save,
-                                 // optionally setting the metadata in the png
+        std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes,
+        std::uint8_t* pbImage, unsigned int dwImageBytes,
+        std::uint8_t* pbTextData,
+        unsigned int dwTextDataBytes);  // Sets the thumbnail & image for the
+                                        // save, optionally setting the
+                                        // metadata in the png
     C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
                                             void* lpParam);
-    void CopySaveDataToNewSave(PBYTE pbThumbnail, DWORD cbThumbnail,
-                               WCHAR* wchNewName,
+    void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
+                               unsigned int cbThumbnail, WCHAR* wchNewName,
                                int (*Func)(void* lpParam, bool), void* lpParam);
     void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected);
     bool GetSaveDeviceSelected(unsigned int iPad);
@@ -309,11 +312,12 @@ public:
     C4JStorage::ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
-        BYTE** ppBuffer, DWORD* pdwBufferSize,
+        std::uint8_t** ppBuffer, unsigned int* pdwBufferSize,
         int (*Func)(void*, WCHAR*, int, bool, int) = NULL, void* lpParam = NULL,
         int iAction = 0);
     bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                      WCHAR* pwchFilename, BYTE* pBuffer, DWORD dwBufferSize);
+                      WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                      unsigned int dwBufferSize);
     bool DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                        WCHAR* pwchFilename);
     void StoreTMSPathName(WCHAR* pwchName = NULL);
