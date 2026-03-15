@@ -8,8 +8,6 @@
 // GDraw GL backend for Linux
 #include "Iggy/gdraw/gdraw_sdl.h"
 
-#define _ENABLEIGGY
-
 ConsoleUIController ui;
 
 static void restoreFixedFunctionStateAfterIggy() {
