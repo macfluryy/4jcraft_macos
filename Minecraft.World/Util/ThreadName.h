@@ -1,3 +1,4 @@
 #pragma once
+#include <cstdint>
 
-void SetThreadName(DWORD dwThreadID, LPCSTR szThreadName);
+void SetThreadName(std::uint32_t threadId, const char* threadName);

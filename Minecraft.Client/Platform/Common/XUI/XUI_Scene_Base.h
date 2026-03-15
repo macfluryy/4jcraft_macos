@@ -109,8 +109,8 @@ protected:
 	CXuiControl m_selectedItemA[XUSER_MAX_COUNT];
 	CXuiControl m_selectedItemSmallA[XUSER_MAX_COUNT];
 
-	BOOL m_visible[XUSER_MAX_COUNT][BUTTONS_TOOLTIP_MAX];
-	BOOL m_bossHealthVisible[XUSER_MAX_COUNT];
+	bool m_visible[XUSER_MAX_COUNT][BUTTONS_TOOLTIP_MAX];
+	bool m_bossHealthVisible[XUSER_MAX_COUNT];
 	int m_iWrongTexturePackTickC;
 
 	// Message map. Here we tie messages to message handlers.
@@ -337,33 +337,33 @@ public:
 private:
 	void						_TickAllBaseScenes();
 	HRESULT						_SetTooltipText( unsigned int iPad, unsigned int tooltip, int iTextID );
-	HRESULT						_SetEnableTooltips( unsigned int iPad, BOOL bVal );
+	HRESULT						_SetEnableTooltips( unsigned int iPad, bool enabled );
 	HRESULT						_ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show );
 	HRESULT						_SetTooltipsEnabled( unsigned int iPad, bool bA = true, bool bB = true, bool bX = true, bool bY = true, bool bLT = true, bool bRT = true,  bool bLB=true, bool bRB = true, bool bLS = true);
 	HRESULT						_RefreshTooltips( unsigned int iPad);
 	HRESULT						_EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
 	HRESULT						_ShowSavingMessage( unsigned int iPad, C4JStorage::ESavingMessage eVal );
-	HRESULT						_ShowBackground( unsigned int iPad, BOOL bShow );
-	HRESULT						_ShowDarkOverlay( unsigned int iPad, BOOL bShow );
-	HRESULT						_ShowLogo( unsigned int iPad, BOOL bShow );
+	HRESULT						_ShowBackground( unsigned int iPad, bool show );
+	HRESULT						_ShowDarkOverlay( unsigned int iPad, bool show );
+	HRESULT						_ShowLogo( unsigned int iPad, bool show );
 	HRESULT						_ShowPressStart(unsigned int iPad);
 	HRESULT						_UpdateAutosaveCountdownTimer(unsigned int uiSeconds);
-	HRESULT 					_ShowAutosaveCountdownTimer(BOOL bVal);
+	HRESULT 					_ShowAutosaveCountdownTimer(bool show);
 	HRESULT						_UpdateTrialTimer(unsigned int iPad);
-	HRESULT						_ShowTrialTimer(BOOL bVal);
+	HRESULT						_ShowTrialTimer(bool show);
 	void						_ReduceTrialTimerValue();
 	HRESULT						_HidePressStart();
-	HRESULT						_ShowSafeArea( BOOL bShow );
+	HRESULT						_ShowSafeArea( bool show );
 	HRESULT						_ShowOtherPlayersBaseScene(int iPad, bool show);
 	bool						_PressStartPlaying(unsigned int iPad);
 	HRESULT						_SetPlayerBaseScenePosition( unsigned int iPad, EBaseScenePosition position );
 	void						_UpdateSelectedItemPos( unsigned int iPad);
 	EBaseScenePosition			_GetPlayerBasePosition(int iPad);
-	HRESULT						_AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode);
+	HRESULT						_AnimateKeyPress(unsigned int userIndex, unsigned int keyCode);
 	HXUIOBJ						_GetPlayerBaseScene(int iPad) {return m_BasePlayerScene[iPad].m_hObj;}
 	HRESULT						_PlayUISFX(ESoundEffect eSound);
 	void						_SetEmptyQuadrantLogo(int iPad,EBaseScenePosition ePos);
-	HRESULT						_DisplayGamertag( unsigned int iPad, BOOL bDisplay );
+	HRESULT						_DisplayGamertag( unsigned int iPad, bool display );
 	void						_SetSelectedItem( unsigned int iPad, const std::wstring& name);
 	void						_HideAllGameUIElements();
 	bool						_GetBaseSceneSafeZone( unsigned int iPad, D3DXVECTOR2 &origin, float &width, float &height);
@@ -381,30 +381,30 @@ private:
 	unsigned int				m_uiSelectedItemOpacityCountDown[XUSER_MAX_COUNT];
 
 public:
-	static DWORD				m_dwTrialTimerLimitSecs;
+	static unsigned int			m_trialTimerLimitSecs;
 
 public:
 	static CXuiSceneBase		*GetInstance() { return Instance; }
 	static void					TickAllBaseScenes();
 	static HRESULT				SetTooltipText( unsigned int iPad, unsigned int tooltip, int iTextID );
-	static HRESULT				SetEnableTooltips( unsigned int iPad, BOOL bVal );
+	static HRESULT				SetEnableTooltips( unsigned int iPad, bool enabled );
 	static HRESULT				ShowTooltip( unsigned int iPad, unsigned int tooltip, bool show );
 	static HRESULT				SetTooltips( unsigned int iPad, int iA, int iB=-1, int iX=-1, int iY=-1 , int iLT=-1, int iRT=-1, int iLB=-1, int iRB=-1, int iLS=-1, bool forceUpdate = false);
 	static HRESULT				RefreshTooltips( unsigned int iPad);
 	static HRESULT				EnableTooltip( unsigned int iPad, unsigned int tooltip, bool enable );
 	static HRESULT				SetTooltipsEnabled( unsigned int iPad, bool bA = true, bool bB = true, bool bX = true, bool bY = true, bool bLT = true, bool bRT = true, bool bLB = true, bool bRB=true, bool bLS=true);
-	static HRESULT				AnimateKeyPress(DWORD userIndex, DWORD dwKeyCode);
+	static HRESULT				AnimateKeyPress(unsigned int userIndex, unsigned int keyCode);
 	static HRESULT				ShowSavingMessage( unsigned int iPad, C4JStorage::ESavingMessage eVal);
-	static HRESULT				ShowBackground( unsigned int iPad, BOOL bShow );
-	static HRESULT				ShowDarkOverlay( unsigned int iPad, BOOL bShow );
-	static HRESULT				ShowLogo( unsigned int iPad, BOOL bShow );
+	static HRESULT				ShowBackground( unsigned int iPad, bool show );
+	static HRESULT				ShowDarkOverlay( unsigned int iPad, bool show );
+	static HRESULT				ShowLogo( unsigned int iPad, bool show );
 	static HRESULT				UpdateAutosaveCountdownTimer(unsigned int uiSeconds);
-	static HRESULT 				ShowAutosaveCountdownTimer(BOOL bVal);
+	static HRESULT 				ShowAutosaveCountdownTimer(bool show);
 	static HRESULT				UpdateTrialTimer(unsigned int iPad);
-	static HRESULT				ShowTrialTimer(BOOL bVal);
+	static HRESULT				ShowTrialTimer(bool show);
 	static void					ReduceTrialTimerValue();
 	static HRESULT				HidePressStart();
-	static HRESULT				ShowSafeArea( BOOL bShow );
+	static HRESULT				ShowSafeArea( bool show );
 	static HRESULT				ShowOtherPlayersBaseScene(int iPad, bool show);
 
 	static HRESULT				ShowPressStart(unsigned int iPad);
@@ -419,7 +419,7 @@ public:
 	static HXUIOBJ				GetPlayerBaseScene(int iPad);
 	static HRESULT				PlayUISFX(ESoundEffect eSound);
 	static void					SetEmptyQuadrantLogo(int iSection);
-	static HRESULT				DisplayGamertag( unsigned int iPad, BOOL bDisplay );
+	static HRESULT				DisplayGamertag( unsigned int iPad, bool display );
 	static void					SetSelectedItem( unsigned int iPad, const std::wstring &name);
 	static void					HideAllGameUIElements();
 

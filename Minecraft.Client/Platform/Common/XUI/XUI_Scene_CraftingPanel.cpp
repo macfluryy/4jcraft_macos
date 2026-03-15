@@ -39,7 +39,7 @@ HRESULT CXuiSceneCraftingPanel::OnInit( XUIMessageInit* pInitData, BOOL& bHandle
 	m_bIgnoreKeyPresses=true;
 
 	D3DXVECTOR3 vec;
-	VOID *pObj;
+	void *pObj;
 	CraftingPanelScreenInput* pCraftingPanelData = (CraftingPanelScreenInput*)pInitData->pvInitData;
 	m_iContainerType=pCraftingPanelData->iContainerType;
 	m_pPlayer=pCraftingPanelData->player;

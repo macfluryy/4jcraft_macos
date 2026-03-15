@@ -342,7 +342,7 @@ bool	CGameNetworkManager::StartNetworkGame(Minecraft *minecraft, void *lpParamet
 	else
 	{
 		// 4J Stu - Host needs to generate a unique multiplayer id for sentient telemetry reporting
-		INT multiplayerInstanceId = TelemetryManager->GenerateMultiplayerInstanceId();
+		int multiplayerInstanceId = TelemetryManager->GenerateMultiplayerInstanceId();
 		TelemetryManager->SetMultiplayerInstanceId(multiplayerInstanceId);
 	}
 	TexturePack *tPack = Minecraft::GetInstance()->skins->getSelected();

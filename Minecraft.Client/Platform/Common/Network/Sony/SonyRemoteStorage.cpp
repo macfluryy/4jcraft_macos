@@ -21,12 +21,12 @@ static SceRemoteStorageStatus statParams;
 
 
 
-// void remoteStorageGetCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+// void remoteStorageGetCallback(void* lpParam, SonyRemoteStorage::Status s, int error_code)
 // {
 // 	app.DebugPrintf("remoteStorageGetCallback err : 0x%08x\n");
 // }
 // 
-// void remoteStorageCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+// void remoteStorageCallback(void* lpParam, SonyRemoteStorage::Status s, int error_code)
 // {
 // 	app.DebugPrintf("remoteStorageCallback err : 0x%08x\n");
 // 
@@ -40,7 +40,7 @@ static SceRemoteStorageStatus statParams;
 
 
 
-void getSaveInfoReturnCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+void getSaveInfoReturnCallback(void* lpParam, SonyRemoteStorage::Status s, int error_code)
 {
 	SonyRemoteStorage* pRemoteStorage = (SonyRemoteStorage*)lpParam;
 	app.DebugPrintf("remoteStorageGetInfoCallback err : 0x%08x\n", error_code);
@@ -65,7 +65,7 @@ void getSaveInfoReturnCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int 
 
 
 
-static void getSaveInfoInitCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+static void getSaveInfoInitCallback(void* lpParam, SonyRemoteStorage::Status s, int error_code)
 {
 	SonyRemoteStorage* pRemoteStorage = (SonyRemoteStorage*)lpParam;
 	if(error_code != 0)
@@ -101,7 +101,7 @@ void SonyRemoteStorage::getSaveInfo()
 		m_getInfoStatus = e_noInfoFound;
 }
 
-bool SonyRemoteStorage::getSaveData( const char* localDirname, CallbackFunc cb, LPVOID lpParam )
+bool SonyRemoteStorage::getSaveData( const char* localDirname, CallbackFunc cb, void* lpParam )
 {
 	m_startTime = System::currentTimeMillis();
 	m_dataProgress = 0;
@@ -109,7 +109,7 @@ bool SonyRemoteStorage::getSaveData( const char* localDirname, CallbackFunc cb, 
 }
 
 
-static void setSaveDataInitCallback(LPVOID lpParam, SonyRemoteStorage::Status s, int error_code)
+static void setSaveDataInitCallback(void* lpParam, SonyRemoteStorage::Status s, int error_code)
 {
 	SonyRemoteStorage* pRemoteStorage = (SonyRemoteStorage*)lpParam;
 	if(error_code != 0)
@@ -227,7 +227,7 @@ int SonyRemoteStorage::getSaveFilesize()
 }
 
 
-bool SonyRemoteStorage::setData( PSAVE_INFO info, CallbackFunc cb, LPVOID lpParam )
+bool SonyRemoteStorage::setData( PSAVE_INFO info, CallbackFunc cb, void* lpParam )
 {
 	m_setDataSaveInfo = info;
 	m_callbackFunc = cb;

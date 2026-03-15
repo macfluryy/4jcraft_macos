@@ -10,14 +10,17 @@
 #include "OldChunkStorage.h"
 #if defined(_WIN32)
 namespace {
-inline void* OldChunkStorageTlsGetValue(DWORD key) { return TlsGetValue(key); }
+inline void* OldChunkStorageTlsGetValue(OldChunkStorage::TlsKey key) {
+    return TlsGetValue(key);
+}
 
-inline void OldChunkStorageTlsSetValue(DWORD key, void* value) {
+inline void OldChunkStorageTlsSetValue(OldChunkStorage::TlsKey key,
+                                       void* value) {
     TlsSetValue(key, value);
 }
 }  // namespace
 
-DWORD OldChunkStorage::tlsIdx = TlsAlloc();
+OldChunkStorage::TlsKey OldChunkStorage::tlsIdx = TlsAlloc();
 #else
 namespace {
 pthread_key_t CreateOldChunkStorageTlsKey() {
@@ -36,7 +39,7 @@ inline void OldChunkStorageTlsSetValue(pthread_key_t key, void* value) {
 }
 }  // namespace
 
-pthread_key_t OldChunkStorage::tlsIdx = CreateOldChunkStorageTlsKey();
+OldChunkStorage::TlsKey OldChunkStorage::tlsIdx = CreateOldChunkStorageTlsKey();
 #endif
 OldChunkStorage::ThreadStorage* OldChunkStorage::tlsDefault = NULL;
 

@@ -50,24 +50,24 @@ protected:
 
 	float m_fLevelStartTime[XUSER_MAX_COUNT];
 
-	INT m_multiplayerInstanceID;
-	DWORD m_levelInstanceID;
+	int m_multiplayerInstanceID;
+	int m_levelInstanceID;
 
 	// Helper functions to get the various common settings
-	INT GetSecondsSinceInitialize();
-	INT GetMode(DWORD dwUserId);
-	INT GetSubMode(DWORD dwUserId);
-	INT GetLevelId(DWORD dwUserId);
-	INT GetSubLevelId(DWORD dwUserId);
-	INT GetTitleBuildId();
-	INT GetLevelInstanceID();
-	INT GetSingleOrMultiplayer();
-	INT GetDifficultyLevel(INT diff);
-	INT GetLicense();
-	INT GetDefaultGameControls();
-	INT GetAudioSettings(DWORD dwUserId);
-	INT GetLevelExitProgressStat1();
-	INT GetLevelExitProgressStat2();
+	int GetSecondsSinceInitialize();
+	int GetMode(int userId);
+	int GetSubMode(int userId);
+	int GetLevelId(int userId);
+	int GetSubLevelId(int userId);
+	int GetTitleBuildId();
+	int GetLevelInstanceID();
+	int GetSingleOrMultiplayer();
+	int GetDifficultyLevel(int diff);
+	int GetLicense();
+	int GetDefaultGameControls();
+	int GetAudioSettings(int userId);
+	int GetLevelExitProgressStat1();
+	int GetLevelExitProgressStat2();
 };
 
 extern CTelemetryManager *TelemetryManager;

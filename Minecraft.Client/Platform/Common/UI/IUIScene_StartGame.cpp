@@ -233,7 +233,7 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot)
 
 		TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-		UINT uiIDA[3];
+		unsigned int uiIDA[3];
 
 		uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 		uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -369,7 +369,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(void *pParam,int iPad,C4JStora
 			else
 			{	
 				// 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no active network connection user is unable to convert from Trial to Full texture pack and is not messaged why.
-				UINT uiIDA[1] = { IDS_CONFIRM_OK };
+				unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 			}
 		}

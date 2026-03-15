@@ -99,7 +99,7 @@ HRESULT CScene_Death::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNoti
 			// Check if it's the trial version
 			if(ProfileManager.IsFullVersion())
 			{	
-				UINT uiIDA[3];
+				unsigned int uiIDA[3];
 			
 				// is it the primary player exiting?
 				if(pNotifyPressData->UserIndex==ProfileManager.GetPrimaryPad())
@@ -155,7 +155,7 @@ HRESULT CScene_Death::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* pNoti
 					CXuiSceneBase::ReduceTrialTimerValue();
 
 					// exit the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST, uiIDA, 2, pNotifyPressData->UserIndex,&UIScene_PauseMenu::ExitGameDialogReturned,this, app.GetStringTable());

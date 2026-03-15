@@ -27,7 +27,7 @@ protected:
 	HRESULT OnRender(XUIMessageRender *pRenderData, BOOL &rfHandled);
 
 private:
-	BOOL m_bDirty;
+	bool m_bDirty;
 	float m_fScale,m_fAlpha;
 
 	float m_fScreenWidth,m_fScreenHeight;

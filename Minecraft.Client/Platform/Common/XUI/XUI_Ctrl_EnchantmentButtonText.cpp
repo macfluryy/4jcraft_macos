@@ -42,7 +42,7 @@ HRESULT CXuiCtrlEnchantmentButtonText::OnInit(XUIMessageInit* pInitData, BOOL& r
 
 	assert( parent != NULL );
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( parent, &pObj );
 	m_parentControl = (CXuiCtrlEnchantmentButton *)pObj;
 

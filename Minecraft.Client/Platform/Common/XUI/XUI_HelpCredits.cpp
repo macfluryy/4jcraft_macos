@@ -439,7 +439,7 @@ HRESULT CScene_Credits::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 			HXUIOBJ text;
 			GetChildById( idString, &text );
 
-			VOID* pTextObj;
+			void *pTextObj;
 			XuiObjectFromHandle( text, &pTextObj );
 			m_aTextTypes[ i ].m_appTextElements[ j ] = (CXuiControl *)pTextObj;
 			m_aTextTypes[ i ].m_appTextElements[ j ]->SetShow( false );
@@ -500,7 +500,6 @@ HRESULT CScene_Credits::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled)
 HRESULT CScene_Credits::OnControlNavigate(XUIMessageControlNavigate *pControlNavigateData, BOOL& bHandled)
 {
 	// ignore any joypads other than the main
-	BYTE bFocusUser=XuiElementGetFocusUser(pControlNavigateData->hObjSource);
 	// get the user from the control
 	/*if(!=ProfileManager.GetLockedProfile())
 	{

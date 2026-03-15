@@ -44,10 +44,10 @@ HRESULT CScene_Teleport::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 		app.AdjustSplitscreenScene(m_hObj,&m_OriginalPosition,m_iPad);
 	}
 
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 

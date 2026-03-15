@@ -391,7 +391,7 @@ HRESULT CScene_LoadGameSettings::LaunchGame(void)
 
 	if( (m_bGameModeSurvival != true || m_bHasBeenInCreative) || m_MoreOptionsParams.bHostPrivileges)
 	{			
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		uiIDA[1]=IDS_CONFIRM_CANCEL;
 		if(m_bGameModeSurvival != true || m_bHasBeenInCreative)
@@ -424,7 +424,7 @@ HRESULT CScene_LoadGameSettings::LaunchGame(void)
 							// disable saving 
 							StorageManager.SetSaveDisabled(true);
 							StorageManager.SetSaveDeviceSelected(m_iPad,false);
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_OK;
 							StorageManager.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
 
@@ -458,7 +458,7 @@ HRESULT CScene_LoadGameSettings::LaunchGame(void)
 				// disable saving 
 				StorageManager.SetSaveDisabled(true);
 				StorageManager.SetSaveDeviceSelected(m_iPad,false);
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				StorageManager.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,this);
 			}
@@ -523,7 +523,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 					// tell sentient about the upsell of the full version of the skin pack				
 					TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 					DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);
@@ -584,7 +584,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 				if(m_pDLCPack && !m_pDLCPack->hasPurchasedFile( DLCManager::e_DLCType_Texture, L"" ))
 				{
 					// no
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 
 					if(!ProfileManager.IsSignedInLive(pNotifyPressData->UserIndex))
@@ -612,7 +612,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 						// tell sentient about the upsell of the full version of the texture pack
 						TelemetryManager->RecordUpsellPresented(pNotifyPressData->UserIndex, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-						UINT uiIDA[2];
+						unsigned int uiIDA[2];
 						uiIDA[0]=IDS_CONFIRM_OK;
 						uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -630,7 +630,7 @@ HRESULT CScene_LoadGameSettings::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyP
 		// Check if they have the Reset Nether flag set, and confirm they want to do this
 		if(m_MoreOptionsParams.bResetNether)
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_DONT_RESET_NETHER;
 			uiIDA[1]=IDS_RESET_NETHER;
 
@@ -720,7 +720,7 @@ int CScene_LoadGameSettings::ConfirmLoadReturned(void *pParam,int iPad,C4JStorag
 				// disable saving 
 				StorageManager.SetSaveDisabled(true);
 				StorageManager.SetSaveDeviceSelected(pClass->m_iPad,false);
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				StorageManager.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, pClass->m_iPad,&CScene_LoadGameSettings::DeviceRemovedDialogReturned,pClass);
 			}		
@@ -847,7 +847,7 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -866,13 +866,13 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 			{
 				pClass->SetShow( TRUE );
 				pClass->m_bIgnoreInput=false;
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			}
 			else
 			{
-				DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+				unsigned int dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 				// No guest problems so we don't need to force a sign-in of players here
 				StartGameFromSave(pClass, dwLocalUsersMask);
@@ -891,7 +891,7 @@ int CScene_LoadGameSettings::LoadSaveDataReturned(void *pParam,bool bContinue)
 		pClass->m_bIgnoreInput=false;
 
 		// give the option to delete the save
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		StorageManager.RequestMessageBox(IDS_CORRUPT_OR_DAMAGED_SAVE_TITLE, IDS_CORRUPT_OR_DAMAGED_SAVE_TEXT, uiIDA, 2, 
@@ -940,7 +940,7 @@ int CScene_LoadGameSettings::DeviceRemovedDialogReturned(void *pParam,int iPad,C
 // 4J Stu - Shared functionality that is the same whether we needed a quadrant sign-in or not
 void CScene_LoadGameSettings::StartGameFromSave(CScene_LoadGameSettings* pClass, DWORD dwLocalUsersMask)
 {
-	INT saveOrCheckpointId = 0;
+	int saveOrCheckpointId = 0;
 	bool validSave = StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
 	TelemetryManager->RecordLevelResume(pClass->m_iPad, eSen_FriendOrMatch_Playing_With_Invited_Friends, eSen_CompeteOrCoop_Coop_and_Competitive, app.GetGameSettings(pClass->m_iPad,eGameSetting_Difficulty), app.GetLocalPlayerCount(), g_NetworkManager.GetOnlinePlayerCount(), saveOrCheckpointId);
 
@@ -1007,7 +1007,7 @@ int CScene_LoadGameSettings::StartGame_SignInReturned(void *pParam,bool bContinu
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noPrivileges = false;
@@ -1034,7 +1034,7 @@ int CScene_LoadGameSettings::StartGame_SignInReturned(void *pParam,bool bContinu
 					pClass->SetShow( TRUE );
 					pClass->m_bIgnoreInput=false;
 					//pClass->m_bAbortSearch=false;
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -1043,7 +1043,7 @@ int CScene_LoadGameSettings::StartGame_SignInReturned(void *pParam,bool bContinu
 					pClass->SetShow( TRUE );
 					pClass->m_bIgnoreInput=false;
 					//pClass->m_bAbortSearch=false;
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_HOST_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -1340,7 +1340,7 @@ void CScene_LoadGameSettings::UpdateCurrentTexturePack()
 
 		TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-		UINT uiIDA[3];
+		unsigned int uiIDA[3];
 
 		// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 		DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);
@@ -1397,7 +1397,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 	bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && m_MoreOptionsParams.bOnlineGame;
 
 	// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-	DWORD connectedControllers = 0;
+	int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1416,14 +1416,14 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 		{
 			SetShow( TRUE );
 			m_bIgnoreInput=false;
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			return;
 		}
 	}
 
-	DWORD dwLocalUsersMask = 0;
+	unsigned int dwLocalUsersMask = 0;
 
 	dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 	// Load data from disc

@@ -3,6 +3,8 @@
 #include "TutorialEnum.h"
 #include "TutorialConstraint.h"
 
+#include <cstddef>
+
 class AABB;
 class Tutorial;
 class GameType;
@@ -18,7 +20,7 @@ private:
 
 	eTutorial_State m_targetState;
 	eTutorial_State *m_sourceStates;
-	DWORD m_sourceStatesCount;
+	std::size_t m_sourceStatesCount;
 
 	bool m_bHasChanged;
 	eTutorial_State m_changedFromState;
@@ -30,7 +32,7 @@ private:
 public:
 	virtual ConstraintType getType() { return e_ConstraintChangeState; }
 
-	ChangeStateConstraint( Tutorial *tutorial, eTutorial_State targetState, eTutorial_State sourceStates[], DWORD sourceStatesCount, double x0, double y0, double z0, double x1, double y1, double z1, bool contains = true, bool changeGameMode = false, GameType *targetGameMode = NULL );
+	ChangeStateConstraint( Tutorial *tutorial, eTutorial_State targetState, eTutorial_State sourceStates[], std::size_t sourceStatesCount, double x0, double y0, double z0, double x1, double y1, double z1, bool contains = true, bool changeGameMode = false, GameType *targetGameMode = NULL );
 	~ChangeStateConstraint();
 
 	virtual void tick(int iPad);

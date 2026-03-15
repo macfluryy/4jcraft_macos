@@ -37,10 +37,10 @@ HRESULT CScene_InGameInfo::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 		app.AdjustSplitscreenScene(m_hObj,&m_OriginalPosition,m_iPad);
 	}
 
-	DWORD playerCount = g_NetworkManager.GetPlayerCount();
+	int playerCount = g_NetworkManager.GetPlayerCount();
 
 	m_playersCount = 0;
-	for(DWORD i = 0; i < playerCount; ++i)
+	for(int i = 0; i < playerCount; ++i)
 	{
 		INetworkPlayer *player = g_NetworkManager.GetPlayerByIndex( i );
 
@@ -209,9 +209,9 @@ HRESULT CScene_InGameInfo::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 			else if(selectedPlayer->IsLocal() != TRUE && selectedPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) != TRUE)
 			{
 				// Only ops will hit this, can kick anyone not local and not local to the host
-				BYTE *smallId = new BYTE();
+				std::uint8_t *smallId = new std::uint8_t();
 				*smallId = m_players[playersList.GetCurSel()];
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -520,7 +520,7 @@ HRESULT CScene_InGameInfo::OnCustomMessage_Splitscreenplayer(bool bJoining, BOOL
 
 int CScene_InGameInfo::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
-	BYTE smallId = *(BYTE *)pParam;
+	std::uint8_t smallId = *static_cast<std::uint8_t *>(pParam);
 	delete pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)

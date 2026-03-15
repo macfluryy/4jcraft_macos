@@ -7,12 +7,12 @@
 // Desc: Internal helper function
 //--------------------------------------------------------------------------------------
 #ifndef _CONTENT_PACKAGE
-static VOID DebugSpewV( const CHAR* strFormat, va_list pArgList )
+static void DebugSpewV(const char* strFormat, va_list pArgList)
 {
 #if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined(__linux__)
 	assert(0);
 #else
-	CHAR str[2048];
+	char str[2048];
 	// Use the secure CRT to avoid buffer overruns. Specify a count of
 	// _TRUNCATE so that too long strings will be silently truncated
 	// rather than triggering an error.
@@ -27,9 +27,9 @@ static VOID DebugSpewV( const CHAR* strFormat, va_list pArgList )
 // Desc: Prints formatted debug spew
 //--------------------------------------------------------------------------------------
 #ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-VOID CDECL DebugSpew( _In_z_ _Printf_format_string_ const CHAR* strFormat, ... )
+void CDECL DebugSpew(_In_z_ _Printf_format_string_ const char* strFormat, ...)
 #else
-VOID CDECL DebugPrintf( const CHAR* strFormat, ... )
+void CDECL DebugPrintf(const char* strFormat, ...)
 #endif
 {
 #ifndef _CONTENT_PACKAGE
@@ -39,4 +39,3 @@ VOID CDECL DebugPrintf( const CHAR* strFormat, ... )
 	va_end( pArgList );
 #endif
 }
-

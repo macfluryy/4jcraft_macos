@@ -197,7 +197,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 
 	case BUTTON_PAUSE_LEADERBOARDS:
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 		
 			//4J Gordon: Being used for the leaderboards proper now
@@ -220,7 +220,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 		// guests can't look at achievements
 		if(ProfileManager.IsGuest(pNotifyPressData->UserIndex))
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			StorageManager.RequestMessageBox(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
 		}
@@ -263,7 +263,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 					// tell sentient about the upsell of the full version of the texture pack
 					TelemetryManager->RecordUpsellPresented(pNotifyPressData->UserIndex, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -281,7 +281,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 			if(result == C4JStorage::ELoadGame_DeviceRemoved)
 			{
 				// this will be a tester trying to be clever
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_SELECTANEWDEVICE;
 				uiIDA[1]=IDS_NODEVICE_DECLINE;
 
@@ -292,7 +292,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 				// we need to ask if they are sure they want to overwrite the existing game
 				if(bSaveExists)
 				{
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, pNotifyPressData->UserIndex,&UIScene_PauseMenu::SaveGameDialogReturned,this, app.GetStringTable());
@@ -311,7 +311,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 			// Check if it's the trial version
 			if(ProfileManager.IsFullVersion())
 			{	
-				UINT uiIDA[3];
+				unsigned int uiIDA[3];
 			
 				// is it the primary player exiting?
 				if(pNotifyPressData->UserIndex==ProfileManager.GetPrimaryPad())
@@ -384,7 +384,7 @@ HRESULT UIScene_PauseMenu::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPress* 
 					CXuiSceneBase::ReduceTrialTimerValue();
 
 					// exit the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST, uiIDA, 2, pNotifyPressData->UserIndex,&UIScene_PauseMenu::ExitGameDialogReturned,this, app.GetStringTable());
@@ -492,7 +492,7 @@ HRESULT UIScene_PauseMenu::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandle
 	case VK_PAD_RSHOULDER:
 		if( bDisplayBanTip )
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			StorageManager.RequestMessageBox(IDS_ACTION_BAN_LEVEL_TITLE, IDS_ACTION_BAN_LEVEL_DESCRIPTION, uiIDA, 2, pInputData->UserIndex,&UIScene_PauseMenu::BanGameDialogReturned,this, app.GetStringTable());
@@ -832,7 +832,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 					TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -850,7 +850,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&UIScene_PauseMenu::ExitGameAndSaveReturned,pClass, app.GetStringTable());
@@ -864,7 +864,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 		else
 		{
 			// been a few requests for a confirm on exit without saving
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&UIScene_PauseMenu::ExitGameDeclineSaveReturned, dynamic_cast<IUIScene_PauseMenu*>(pClass), app.GetStringTable());
@@ -891,7 +891,7 @@ int UIScene_PauseMenu::ExitGameDeclineSaveReturned(void *pParam,int iPad,C4JStor
 		if(ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()))
 		{
 			IUIScene_PauseMenu* pClass = (IUIScene_PauseMenu*)pParam;
-			UINT uiIDA[3];
+			unsigned int uiIDA[3];
 			// you cancelled the save on exit after choosing exit and save? You go back to the Exit choices then.
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_EXIT_GAME_SAVE;
@@ -928,7 +928,7 @@ int UIScene_PauseMenu::ExitGameAndSaveReturned(void *pParam,int iPad,C4JStorage:
 		if(ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()))
 		{
 			UIScene_PauseMenu* pClass = (UIScene_PauseMenu*)pParam;
-			UINT uiIDA[3];
+			unsigned int uiIDA[3];
 			// you cancelled the save on exit after choosing exit and save? You go back to the Exit choices then.
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_EXIT_GAME_SAVE;
@@ -1100,7 +1100,7 @@ void UIScene_PauseMenu::_ExitWorld(LPVOID lpParameter)
 			}
 			//pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );
 
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			// 4J Stu - Fix for #48669 - TU5: Code: Compliance: TCR #15: Incorrect/misleading messages after signing out a profile during online game session.
 			// If the primary player is signed out, then that is most likely the cause of the disconnection so don't display a message box. This will allow the message box requested by the libraries to be brought up
@@ -1178,7 +1178,7 @@ void UIScene_PauseMenu::_ExitWorld(LPVOID lpParameter)
 			}
 			//pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );
 
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( exitReasonTitleId, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			exitReasonStringId = -1;

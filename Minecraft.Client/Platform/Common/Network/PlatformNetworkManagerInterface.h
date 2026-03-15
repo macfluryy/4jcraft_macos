@@ -21,7 +21,7 @@ class CGameNetworkManager;
 
 typedef struct _SearchForGamesData
 {
-	DWORD sessionIDCount;
+	unsigned int sessionIDCount;
 	XSESSION_SEARCHRESULT_HEADER *searchBuffer;
 	XNQOS **ppQos;
 	SessionID *sessionIDList;

@@ -48,7 +48,7 @@ HRESULT CScene_MultiGameJoinLoad::OnInit( XUIMessageInit* pInitData, BOOL& bHand
 	XuiControlSetText(m_SavesList,app.GetString(IDS_START_GAME));
 
 
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
@@ -93,7 +93,7 @@ HRESULT CScene_MultiGameJoinLoad::OnInit( XUIMessageInit* pInitData, BOOL& bHand
 	
 	m_iSaveInfoC=0;
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SavesList, &pObj );
 	m_pSavesList = (CXuiCtrl4JList *)pObj;
 
@@ -455,7 +455,7 @@ HRESULT CScene_MultiGameJoinLoad::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotify
 	{
 		m_bIgnoreInput=true;
 
-		DWORD nIndex = m_pGamesList->GetCurSel();
+		int nIndex = m_pGamesList->GetCurSel();
 
 		if( m_pGamesList->GetItemCount() > 0 && nIndex < currentSessions.size() )
 		{
@@ -489,7 +489,7 @@ HRESULT CScene_MultiGameJoinLoad::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotify
 
 					TelemetryManager->RecordUpsellPresented(pNotifyPressData->UserIndex, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 					DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);
@@ -576,7 +576,7 @@ HRESULT CScene_MultiGameJoinLoad::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotify
 			if(m_pSavesList->GetData(iIndex).bIsDamaged)
 			{
 				// give the option to delete the save
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox(IDS_CORRUPT_OR_DAMAGED_SAVE_TITLE, IDS_CORRUPT_OR_DAMAGED_SAVE_TEXT, uiIDA, 2, pNotifyPressData->UserIndex,&CScene_MultiGameJoinLoad::DeleteSaveDialogReturned,this, app.GetStringTable());
@@ -645,7 +645,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 	case VK_PAD_Y:
 		if(m_pGamesList->TreeHasFocus() && m_pGamesList->GetItemCount() > 0)
 		{
-			DWORD nIndex = m_pGamesList->GetCurSel();
+			int nIndex = m_pGamesList->GetCurSel();
 			FriendSessionInfo *pSelectedSession = currentSessions.at( nIndex );
 
 			PlayerUID xuid = pSelectedSession->data.hostPlayerUID;
@@ -659,10 +659,10 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 			if(ProfileManager.IsSignedInLive( m_iPad ))
 			{	
 				// 4J-PB - required for a delete of the save if it's found to be a corrupted save
-				DWORD nIndex = m_pSavesList->GetCurSel();
+				int nIndex = m_pSavesList->GetCurSel();
 				m_iChangingSaveGameInfoIndex=m_pSavesList->GetData(nIndex).iIndex;
 
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_UPLOAD_SAVE;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -683,7 +683,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 			{
 				// delete the save game
 				// Have to ask the player if they are sure they want to delete this game
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, pInputData->UserIndex,&CScene_MultiGameJoinLoad::DeleteSaveDialogReturned,this, app.GetStringTable());
@@ -692,7 +692,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 			{
 				if(StorageManager.EnoughSpaceForAMinSaveGame())
 				{
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_TITLE_RENAMESAVE;
 					uiIDA[2]=IDS_TOOLTIPS_DELETESAVE;
@@ -702,7 +702,7 @@ HRESULT CScene_MultiGameJoinLoad::OnKeyDown(XUIMessageInput* pInputData, BOOL& r
 				{
 					// delete the save game
 					// Have to ask the player if they are sure they want to delete this game
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, pInputData->UserIndex,&CScene_MultiGameJoinLoad::DeleteSaveDialogReturned,this, app.GetStringTable());
@@ -1133,7 +1133,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 		return;
 	}
 
-	DWORD nIndex = -1;
+	int nIndex = -1;
 	FriendSessionInfo *pSelectedSession = NULL;
 	if(m_pGamesList->TreeHasFocus() && m_pGamesList->GetItemCount() > 0)
 	{
@@ -1216,7 +1216,7 @@ void CScene_MultiGameJoinLoad::UpdateGamesList()
 	unsigned int xuiListSize = m_pGamesList->GetItemCount();
 	unsigned int filteredListSize = (unsigned int)currentSessions.size();
 
-	BOOL gamesListHasFocus = m_pGamesList->TreeHasFocus();
+	bool gamesListHasFocus = m_pGamesList->TreeHasFocus() != FALSE;
 
 	if(filteredListSize > 0)
 	{
@@ -1790,7 +1790,7 @@ int CScene_MultiGameJoinLoad::LoadSaveDataReturned(void *pParam,bool bContinue)
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -1798,7 +1798,7 @@ int CScene_MultiGameJoinLoad::LoadSaveDataReturned(void *pParam,bool bContinue)
 
 		if(!isClientSide || connectedControllers == 1 || !RenderManager.IsHiDef())
 		{
-			DWORD dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
+			unsigned int dwLocalUsersMask = CGameNetworkManager::GetLocalPlayerMask(ProfileManager.GetPrimaryPad());
 
 			// No guest problems so we don't need to force a sign-in of players here
 			StartGameFromSave(pClass, dwLocalUsersMask);
@@ -1825,7 +1825,7 @@ int CScene_MultiGameJoinLoad::StartGame_SignInReturned(void *pParam,bool bContin
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 
 			for(unsigned int index = 0; index < XUSER_MAX_COUNT; ++index)
 			{
@@ -2249,7 +2249,7 @@ int CScene_MultiGameJoinLoad::SaveOptionsDialogReturned(void *pParam,int iPad,C4
 		{
 			// delete the save game
 			// Have to ask the player if they are sure they want to delete this game
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			StorageManager.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, iPad,&CScene_MultiGameJoinLoad::DeleteSaveDialogReturned,pClass, app.GetStringTable());
@@ -2301,7 +2301,7 @@ int CScene_MultiGameJoinLoad::LoadSaveDataReturned(void *pParam,bool bContinue)
 		pClass->m_bIgnoreInput=false;
 
 		// give the option to delete the save
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		StorageManager.RequestMessageBox(IDS_CORRUPT_OR_DAMAGED_SAVE_TITLE, IDS_CORRUPT_OR_DAMAGED_SAVE_TEXT, uiIDA, 2, 
@@ -2331,7 +2331,7 @@ int CScene_MultiGameJoinLoad::TransferComplete(void *pParam,int iPad, int iResul
 	{
 		// There was a transfer fail
 		// Display a dialog
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		StorageManager.RequestMessageBox(IDS_SAVE_TRANSFER_TITLE, IDS_SAVE_TRANSFER_UPLOADFAILED, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,NULL,app.GetStringTable());
 		pClass->m_bTransferFail=true;
@@ -2371,7 +2371,7 @@ int CScene_MultiGameJoinLoad::KeyboardReturned(void *pParam,bool bSet)
 			// disable saving 
 			StorageManager.SetSaveDisabled(true);
 			StorageManager.SetSaveDeviceSelected(ProfileManager.GetPrimaryPad(),false);
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			StorageManager.RequestMessageBox(IDS_STORAGEDEVICEPROBLEM_TITLE, IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),&CScene_MultiGameJoinLoad::DeviceRemovedDialogReturned,pClass);
 		}
@@ -2512,7 +2512,7 @@ HRESULT CScene_MultiGameJoinLoad::OnCustomMessage_DLCInstalled()
 HRESULT CScene_MultiGameJoinLoad::OnCustomMessage_DLCMountingComplete()
 {	
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( m_SavesList, &pObj );
 	m_pSavesList = (CXuiCtrl4JList *)pObj;
 
@@ -2700,7 +2700,7 @@ bool CScene_MultiGameJoinLoad::GetSavesInfoCallback(LPVOID pParam,int iTotalSave
 			else
 			{
 				// we could put in a damaged save icon here
-				const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+				constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 				WCHAR szResourceLocator[ LOCATOR_SIZE ];
 				const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
@@ -2753,7 +2753,7 @@ void CScene_MultiGameJoinLoad::CancelSaveUploadCallback(LPVOID lpParam)
 // 	app.getRemoteStorage()->abort();
 // 	pClass->m_eSaveUploadState = eSaveUpload_Idle;
 
-	UINT uiIDA[1] = { IDS_CONFIRM_OK };
+	unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 	ui.RequestMessageBox(IDS_XBONE_CANCEL_UPLOAD_TITLE, IDS_XBONE_CANCEL_UPLOAD_TEXT, uiIDA, 1, pClass->m_iPad, NULL, NULL, app.GetStringTable());
 }
 
