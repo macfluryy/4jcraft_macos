@@ -79,51 +79,62 @@ static inline bool MouseRReleased() {
     return !s_mouseRightCurrent && s_mouseRightPrev;
 }
 
-//holds controller object
+// holds controller object
 static SDL_GameController* controller = nullptr;
 
-//Watched controller buttons set
+// Watched controller buttons set
 static const SDL_GameControllerButton s_watchedBtns[] = {
-    SDL_CONTROLLER_BUTTON_A,                SDL_CONTROLLER_BUTTON_B,
-    SDL_CONTROLLER_BUTTON_X,                SDL_CONTROLLER_BUTTON_Y,
-    SDL_CONTROLLER_BUTTON_BACK,             SDL_CONTROLLER_BUTTON_GUIDE,
-    SDL_CONTROLLER_BUTTON_START,            SDL_CONTROLLER_BUTTON_LEFTSTICK,
-    SDL_CONTROLLER_BUTTON_RIGHTSTICK,       SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-    SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,    SDL_CONTROLLER_BUTTON_DPAD_UP,
-    SDL_CONTROLLER_BUTTON_DPAD_DOWN,        SDL_CONTROLLER_BUTTON_DPAD_LEFT,
-    SDL_CONTROLLER_BUTTON_DPAD_RIGHT
-};
-static const int s_watchedBtnsCount = (int)(sizeof(s_watchedBtns) / sizeof(s_watchedBtns[0]));
+    SDL_CONTROLLER_BUTTON_A,
+    SDL_CONTROLLER_BUTTON_B,
+    SDL_CONTROLLER_BUTTON_X,
+    SDL_CONTROLLER_BUTTON_Y,
+    SDL_CONTROLLER_BUTTON_BACK,
+    SDL_CONTROLLER_BUTTON_GUIDE,
+    SDL_CONTROLLER_BUTTON_START,
+    SDL_CONTROLLER_BUTTON_LEFTSTICK,
+    SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+    SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    SDL_CONTROLLER_BUTTON_DPAD_UP,
+    SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+    SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    SDL_CONTROLLER_BUTTON_DPAD_RIGHT};
+static const int s_watchedBtnsCount =
+    (int)(sizeof(s_watchedBtns) / sizeof(s_watchedBtns[0]));
 
-static inline bool CDown (int cb) {
-    return (cb >= 0 && cb < BTN_COUNT) ?  s_btnsCurrent[cb] : false;
+static inline bool CDown(int cb) {
+    return (cb >= 0 && cb < BTN_COUNT) ? s_btnsCurrent[cb] : false;
 }
-static inline bool CPressed (int cb) {
-    return (cb >= 0 && cb < BTN_COUNT) ? !s_btnsPrev[cb] && s_btnsCurrent[cb]  : false;
+static inline bool CPressed(int cb) {
+    return (cb >= 0 && cb < BTN_COUNT) ? !s_btnsPrev[cb] && s_btnsCurrent[cb]
+                                       : false;
 }
 static inline bool CReleased(int cb) {
-    return (cb >= 0 && cb < BTN_COUNT) ?  s_btnsPrev[cb] && !s_btnsCurrent[cb] : false;
+    return (cb >= 0 && cb < BTN_COUNT) ? s_btnsPrev[cb] && !s_btnsCurrent[cb]
+                                       : false;
 }
 
-//Sets controller dead zone
+// Sets controller dead zone
 static int deadZone = 8000;
 
-//Watched controller axes set
+// Watched controller axes set
 static const SDL_GameControllerAxis s_watchedAxis[] = {
-    SDL_CONTROLLER_AXIS_LEFTX,          SDL_CONTROLLER_AXIS_LEFTY,
-    SDL_CONTROLLER_AXIS_RIGHTX,         SDL_CONTROLLER_AXIS_RIGHTY,
-    SDL_CONTROLLER_AXIS_TRIGGERLEFT,    SDL_CONTROLLER_AXIS_TRIGGERRIGHT
-};
-static const int s_watchedAxisCount = (int)(sizeof(s_watchedAxis) / sizeof(s_watchedAxis[0]));
+    SDL_CONTROLLER_AXIS_LEFTX,       SDL_CONTROLLER_AXIS_LEFTY,
+    SDL_CONTROLLER_AXIS_RIGHTX,      SDL_CONTROLLER_AXIS_RIGHTY,
+    SDL_CONTROLLER_AXIS_TRIGGERLEFT, SDL_CONTROLLER_AXIS_TRIGGERRIGHT};
+static const int s_watchedAxisCount =
+    (int)(sizeof(s_watchedAxis) / sizeof(s_watchedAxis[0]));
 
-static inline bool ADown (int ca) {
-    return (ca >= 0 && ca < AXS_COUNT) ?  s_axisCurrent[ca] : false;
+static inline bool ADown(int ca) {
+    return (ca >= 0 && ca < AXS_COUNT) ? s_axisCurrent[ca] : false;
 }
-static inline bool APressed (int ca) {
-    return (ca >= 0 && ca < AXS_COUNT) ? !s_axisPrev[ca] && s_axisCurrent[ca]  : false;
+static inline bool APressed(int ca) {
+    return (ca >= 0 && ca < AXS_COUNT) ? !s_axisPrev[ca] && s_axisCurrent[ca]
+                                       : false;
 }
 static inline bool AReleased(int ca) {
-    return (ca >= 0 && ca < AXS_COUNT) ?  s_axisPrev[ca] && !s_axisCurrent[ca] : false;
+    return (ca >= 0 && ca < AXS_COUNT) ? s_axisPrev[ca] && !s_axisCurrent[ca]
+                                       : false;
 }
 
 // get directly into SDL events before the game queue can steal them.
@@ -147,14 +158,15 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
     } else if (e->type == SDL_MOUSEMOTION) {
         s_accumRelX += (float)e->motion.xrel;
         s_accumRelY += (float)e->motion.yrel;
-    } else if (e->type == SDL_CONTROLLERDEVICEADDED) { //Will search for controller if none
+    } else if (e->type == SDL_CONTROLLERDEVICEADDED) {  // Will search for
+                                                        // controller if none
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 controller = SDL_GameControllerOpen(i);
                 break;
             }
         }
-    } else if (controller) { //only checks when a controller exists
+    } else if (controller) {  // only checks when a controller exists
         if (e->type == SDL_CONTROLLERDEVICEREMOVED) {
             SDL_Joystick* joy = SDL_GameControllerGetJoystick(controller);
             if (SDL_JoystickInstanceID(joy) == e->cdevice.which) {
@@ -165,7 +177,8 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
             if (e->cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER) {
                 s_scrollTicksForGetValue++;
                 s_scrollTicksForButtonPressed++;
-            } else if(e->cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
+            } else if (e->cbutton.button ==
+                       SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) {
                 s_scrollTicksForGetValue--;
                 s_scrollTicksForButtonPressed--;
             }
@@ -224,7 +237,7 @@ void C_4JInput::Initialise(int, unsigned char, unsigned char, unsigned char) {
     if (s_sdlInitialized) {
         SDL_SetRelativeMouseMode(SDL_TRUE);
 
-        //looks for controller
+        // looks for controller
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 controller = SDL_GameControllerOpen(i);
@@ -277,23 +290,25 @@ void C_4JInput::Tick() {
         }
     }
 
-    //If there is a controller update the buttons and sticks
-    if (controller){
+    // If there is a controller update the buttons and sticks
+    if (controller) {
         for (int i = 0; i < s_watchedBtnsCount; ++i) {
             int cb = s_watchedBtns[i];
             if (cb >= 0 && cb < BTN_COUNT)
-                s_btnsCurrent[cb] = SDL_GameControllerGetButton(controller, s_watchedBtns[i]);
+                s_btnsCurrent[cb] =
+                    SDL_GameControllerGetButton(controller, s_watchedBtns[i]);
         }
         for (int i = 0; i < s_watchedAxisCount; ++i) {
             int ca = s_watchedAxis[i];
             if (ca >= 0 && ca < AXS_COUNT) {
-                int aVal = SDL_GameControllerGetAxis(controller, s_watchedAxis[i]);
+                int aVal =
+                    SDL_GameControllerGetAxis(controller, s_watchedAxis[i]);
                 if (s_watchedAxis[i] == SDL_CONTROLLER_AXIS_TRIGGERLEFT ||
                     s_watchedAxis[i] == SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
                     s_axisCurrent[ca] = aVal > deadZone;
                 else {
                     s_axisCurrent[ca] = (aVal > deadZone || aVal < -deadZone);
-                    axisVal[ca] = aVal/32768.0f;
+                    axisVal[ca] = aVal / 32768.0f;
                 }
             }
         }
@@ -321,56 +336,58 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
     return -1;
 }
 
-//KFN = Keyboard functions, CFN = Controller functions, AFN = Axis functions
-#define ACTION_CASES(KFN,CFN,AFN)                                                   \
-case ACTION_MENU_UP:                                                            \
-    return KFN(SDL_SCANCODE_UP) || CFN(SDL_CONTROLLER_BUTTON_DPAD_UP);          \
-case ACTION_MENU_DOWN:                                                          \
-    return KFN(SDL_SCANCODE_DOWN) || CFN(SDL_CONTROLLER_BUTTON_DPAD_DOWN);      \
-case ACTION_MENU_LEFT:                                                          \
-    return KFN(SDL_SCANCODE_LEFT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_LEFT);      \
-case ACTION_MENU_RIGHT:                                                         \
-    return KFN(SDL_SCANCODE_RIGHT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);    \
-case ACTION_MENU_PAGEUP:                                                        \
-    return KFN(SDL_SCANCODE_PAGEUP);                                            \
-case ACTION_MENU_PAGEDOWN:                                                      \
-    return KFN(SDL_SCANCODE_PAGEDOWN);                                          \
-case ACTION_MENU_OK:                                                            \
-    return KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);            \
-case ACTION_MENU_CANCEL:                                                        \
-    return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);            \
-case MINECRAFT_ACTION_JUMP:                                                     \
-    return KFN(SDL_SCANCODE_SPACE) || CFN(SDL_CONTROLLER_BUTTON_A);             \
-case MINECRAFT_ACTION_FORWARD:                                                  \
-    return KFN(SDL_SCANCODE_W) || AFN(SDL_CONTROLLER_AXIS_LEFTY);               \
-case MINECRAFT_ACTION_BACKWARD:                                                 \
-    return KFN(SDL_SCANCODE_S) || AFN(SDL_CONTROLLER_AXIS_LEFTY);               \
-case MINECRAFT_ACTION_LEFT:                                                     \
-    return KFN(SDL_SCANCODE_A) || AFN(SDL_CONTROLLER_AXIS_LEFTX);               \
-case MINECRAFT_ACTION_RIGHT:                                                    \
-    return KFN(SDL_SCANCODE_D) || AFN(SDL_CONTROLLER_AXIS_LEFTX);               \
-case MINECRAFT_ACTION_INVENTORY:                                                \
-    return KFN(SDL_SCANCODE_E) || CFN(SDL_CONTROLLER_BUTTON_Y);                 \
-case MINECRAFT_ACTION_PAUSEMENU:                                                \
-    return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_START);        \
-case MINECRAFT_ACTION_DROP:                                                     \
-    return KFN(SDL_SCANCODE_Q) || CFN(SDL_CONTROLLER_BUTTON_B);                 \
-case MINECRAFT_ACTION_CRAFTING:                                                 \
-    return KFN(SDL_SCANCODE_C) || CFN(SDL_CONTROLLER_BUTTON_X);                 \
-case MINECRAFT_ACTION_RENDER_THIRD_PERSON:                                      \
-    return KFN(SDL_SCANCODE_F5) || CFN(SDL_CONTROLLER_BUTTON_LEFTSTICK);        \
-case MINECRAFT_ACTION_GAME_INFO:                                                \
-    return KFN(SDL_SCANCODE_F3);                                                \
-case MINECRAFT_ACTION_DPAD_LEFT:                                                \
-    return KFN(SDL_SCANCODE_LEFT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_LEFT);      \
-case MINECRAFT_ACTION_DPAD_RIGHT:                                               \
-    return KFN(SDL_SCANCODE_RIGHT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);    \
-case MINECRAFT_ACTION_DPAD_UP:                                                  \
-    return KFN(SDL_SCANCODE_UP) || CFN(SDL_CONTROLLER_BUTTON_DPAD_UP);          \
-case MINECRAFT_ACTION_DPAD_DOWN:                                                \
-    return KFN(SDL_SCANCODE_DOWN) || CFN(SDL_CONTROLLER_BUTTON_DPAD_DOWN);      \
-default:                                                                        \
-    return false;
+// KFN = Keyboard functions, CFN = Controller functions, AFN = Axis functions
+#define ACTION_CASES(KFN, CFN, AFN)                                            \
+    case ACTION_MENU_UP:                                                       \
+        return KFN(SDL_SCANCODE_UP) || CFN(SDL_CONTROLLER_BUTTON_DPAD_UP);     \
+    case ACTION_MENU_DOWN:                                                     \
+        return KFN(SDL_SCANCODE_DOWN) || CFN(SDL_CONTROLLER_BUTTON_DPAD_DOWN); \
+    case ACTION_MENU_LEFT:                                                     \
+        return KFN(SDL_SCANCODE_LEFT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_LEFT); \
+    case ACTION_MENU_RIGHT:                                                    \
+        return KFN(SDL_SCANCODE_RIGHT) ||                                      \
+               CFN(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);                          \
+    case ACTION_MENU_PAGEUP:                                                   \
+        return KFN(SDL_SCANCODE_PAGEUP);                                       \
+    case ACTION_MENU_PAGEDOWN:                                                 \
+        return KFN(SDL_SCANCODE_PAGEDOWN);                                     \
+    case ACTION_MENU_OK:                                                       \
+        return KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);       \
+    case ACTION_MENU_CANCEL:                                                   \
+        return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);       \
+    case MINECRAFT_ACTION_JUMP:                                                \
+        return KFN(SDL_SCANCODE_SPACE) || CFN(SDL_CONTROLLER_BUTTON_A);        \
+    case MINECRAFT_ACTION_FORWARD:                                             \
+        return KFN(SDL_SCANCODE_W) || AFN(SDL_CONTROLLER_AXIS_LEFTY);          \
+    case MINECRAFT_ACTION_BACKWARD:                                            \
+        return KFN(SDL_SCANCODE_S) || AFN(SDL_CONTROLLER_AXIS_LEFTY);          \
+    case MINECRAFT_ACTION_LEFT:                                                \
+        return KFN(SDL_SCANCODE_A) || AFN(SDL_CONTROLLER_AXIS_LEFTX);          \
+    case MINECRAFT_ACTION_RIGHT:                                               \
+        return KFN(SDL_SCANCODE_D) || AFN(SDL_CONTROLLER_AXIS_LEFTX);          \
+    case MINECRAFT_ACTION_INVENTORY:                                           \
+        return KFN(SDL_SCANCODE_E) || CFN(SDL_CONTROLLER_BUTTON_Y);            \
+    case MINECRAFT_ACTION_PAUSEMENU:                                           \
+        return KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_START);   \
+    case MINECRAFT_ACTION_DROP:                                                \
+        return KFN(SDL_SCANCODE_Q) || CFN(SDL_CONTROLLER_BUTTON_B);            \
+    case MINECRAFT_ACTION_CRAFTING:                                            \
+        return KFN(SDL_SCANCODE_C) || CFN(SDL_CONTROLLER_BUTTON_X);            \
+    case MINECRAFT_ACTION_RENDER_THIRD_PERSON:                                 \
+        return KFN(SDL_SCANCODE_F5) || CFN(SDL_CONTROLLER_BUTTON_LEFTSTICK);   \
+    case MINECRAFT_ACTION_GAME_INFO:                                           \
+        return KFN(SDL_SCANCODE_F3);                                           \
+    case MINECRAFT_ACTION_DPAD_LEFT:                                           \
+        return KFN(SDL_SCANCODE_LEFT) || CFN(SDL_CONTROLLER_BUTTON_DPAD_LEFT); \
+    case MINECRAFT_ACTION_DPAD_RIGHT:                                          \
+        return KFN(SDL_SCANCODE_RIGHT) ||                                      \
+               CFN(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);                          \
+    case MINECRAFT_ACTION_DPAD_UP:                                             \
+        return KFN(SDL_SCANCODE_UP) || CFN(SDL_CONTROLLER_BUTTON_DPAD_UP);     \
+    case MINECRAFT_ACTION_DPAD_DOWN:                                           \
+        return KFN(SDL_SCANCODE_DOWN) || CFN(SDL_CONTROLLER_BUTTON_DPAD_DOWN); \
+    default:                                                                   \
+        return false;
 
 bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
     if (iPad != 0) return false;
@@ -382,14 +399,13 @@ bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:
             return MouseLDown() || KDown(SDL_SCANCODE_RETURN) ||
-            ADown(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+                   ADown(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
         case MINECRAFT_ACTION_USE:
             return MouseRDown() || KDown(SDL_SCANCODE_F) ||
-            ADown(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+                   ADown(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         case MINECRAFT_ACTION_SNEAK_TOGGLE:
-            return KDown(SDL_SCANCODE_LSHIFT) ||
-            KDown(SDL_SCANCODE_RSHIFT) ||
-            CDown(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+            return KDown(SDL_SCANCODE_LSHIFT) || KDown(SDL_SCANCODE_RSHIFT) ||
+                   CDown(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         case MINECRAFT_ACTION_SPRINT:
             return KDown(SDL_SCANCODE_LCTRL) || KDown(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
@@ -398,7 +414,7 @@ bool C_4JInput::ButtonDown(int iPad, unsigned char ucAction) {
         case MINECRAFT_ACTION_RIGHT_SCROLL:
         case ACTION_MENU_RIGHT_SCROLL:
             return ScrollSnap() < 0;
-            ACTION_CASES(KDown,CDown,ADown)
+            ACTION_CASES(KDown, CDown, ADown)
     }
 }
 // The part that handles completing the action of pressing a button.
@@ -407,14 +423,14 @@ bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:
             return MouseLPressed() || KPressed(SDL_SCANCODE_RETURN) ||
-            APressed(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+                   APressed(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
         case MINECRAFT_ACTION_USE:
             return MouseRPressed() || KPressed(SDL_SCANCODE_F) ||
-            APressed(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+                   APressed(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         case MINECRAFT_ACTION_SNEAK_TOGGLE:
             return KPressed(SDL_SCANCODE_LSHIFT) ||
-            KPressed(SDL_SCANCODE_RSHIFT) ||
-            CPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+                   KPressed(SDL_SCANCODE_RSHIFT) ||
+                   CPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         case MINECRAFT_ACTION_SPRINT:
             return KPressed(SDL_SCANCODE_LCTRL) || KPressed(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
@@ -423,7 +439,7 @@ bool C_4JInput::ButtonPressed(int iPad, unsigned char ucAction) {
         case MINECRAFT_ACTION_RIGHT_SCROLL:
         case ACTION_MENU_RIGHT_SCROLL:
             return ScrollSnap() < 0;
-            ACTION_CASES(KPressed,CPressed,APressed)
+            ACTION_CASES(KPressed, CPressed, APressed)
     }
 }
 // The part that handles Releasing a button.
@@ -432,14 +448,14 @@ bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
     switch (ucAction) {
         case MINECRAFT_ACTION_ACTION:
             return MouseLReleased() || KReleased(SDL_SCANCODE_RETURN) ||
-            AReleased(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+                   AReleased(SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
         case MINECRAFT_ACTION_USE:
             return MouseRReleased() || KReleased(SDL_SCANCODE_F) ||
-            AReleased(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+                   AReleased(SDL_CONTROLLER_AXIS_TRIGGERLEFT);
         case MINECRAFT_ACTION_SNEAK_TOGGLE:
             return KReleased(SDL_SCANCODE_LSHIFT) ||
-            KReleased(SDL_SCANCODE_RSHIFT) ||
-            CReleased(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+                   KReleased(SDL_SCANCODE_RSHIFT) ||
+                   CReleased(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         case MINECRAFT_ACTION_SPRINT:
             KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
@@ -447,7 +463,7 @@ bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
         case MINECRAFT_ACTION_RIGHT_SCROLL:
         case ACTION_MENU_RIGHT_SCROLL:
             return false;
-            ACTION_CASES(KReleased,CReleased,AReleased)
+            ACTION_CASES(KReleased, CReleased, AReleased)
     }
 }
 
@@ -474,12 +490,14 @@ unsigned int C_4JInput::GetValue(int iPad, unsigned char ucAction, bool) {
 // Left stick movement, the one that moves the player around or selects menu
 // options. (Soon be tested.)
 float C_4JInput::GetJoypadStick_LX(int, bool) {
-    if (ADown(SDL_CONTROLLER_AXIS_LEFTX)) return axisVal[SDL_CONTROLLER_AXIS_LEFTX];
+    if (ADown(SDL_CONTROLLER_AXIS_LEFTX))
+        return axisVal[SDL_CONTROLLER_AXIS_LEFTX];
     return (KDown(SDL_SCANCODE_D) ? 1.f : 0.f) -
            (KDown(SDL_SCANCODE_A) ? 1.f : 0.f);
 }
 float C_4JInput::GetJoypadStick_LY(int, bool) {
-    if (ADown(SDL_CONTROLLER_AXIS_LEFTY)) return -axisVal[SDL_CONTROLLER_AXIS_LEFTY];
+    if (ADown(SDL_CONTROLLER_AXIS_LEFTY))
+        return -axisVal[SDL_CONTROLLER_AXIS_LEFTY];
     return (KDown(SDL_SCANCODE_W) ? 1.f : 0.f) -
            (KDown(SDL_SCANCODE_S) ? 1.f : 0.f);
 }
@@ -491,24 +509,32 @@ static float MouseAxis(float raw) {
 }
 // We apply the Stick movement on the R(Right) X(2D Position)
 float C_4JInput::GetJoypadStick_RX(int, bool) {
-    if (ADown(SDL_CONTROLLER_AXIS_RIGHTX)) return axisVal[SDL_CONTROLLER_AXIS_RIGHTX];
+    if (ADown(SDL_CONTROLLER_AXIS_RIGHTX))
+        return axisVal[SDL_CONTROLLER_AXIS_RIGHTX];
     if (!SDL_GetRelativeMouseMode()) return 0.f;
     TakeSnapIfNeeded();
     return MouseAxis(s_snapRelX * MOUSE_SCALE);
 }
 // Bis. but with Y(2D Position)
 float C_4JInput::GetJoypadStick_RY(int, bool) {
-    if (ADown(SDL_CONTROLLER_AXIS_RIGHTY)) return -axisVal[SDL_CONTROLLER_AXIS_RIGHTY];
+    if (ADown(SDL_CONTROLLER_AXIS_RIGHTY))
+        return -axisVal[SDL_CONTROLLER_AXIS_RIGHTY];
     if (!SDL_GetRelativeMouseMode()) return 0.f;
     TakeSnapIfNeeded();
     return MouseAxis(-s_snapRelY * MOUSE_SCALE);
 }
 
 unsigned char C_4JInput::GetJoypadLTrigger(int, bool) {
-    return (s_mouseRightCurrent || s_axisCurrent[SDL_CONTROLLER_AXIS_TRIGGERLEFT]) ? 255 : 0;
+    return (s_mouseRightCurrent ||
+            s_axisCurrent[SDL_CONTROLLER_AXIS_TRIGGERLEFT])
+               ? 255
+               : 0;
 }
 unsigned char C_4JInput::GetJoypadRTrigger(int, bool) {
-    return (s_mouseLeftCurrent || s_axisCurrent[SDL_CONTROLLER_AXIS_TRIGGERRIGHT]) ? 255 : 0;
+    return (s_mouseLeftCurrent ||
+            s_axisCurrent[SDL_CONTROLLER_AXIS_TRIGGERRIGHT])
+               ? 255
+               : 0;
 }
 // We detect if a Menu is visible on the player's screen to the mouse being
 // stuck.
