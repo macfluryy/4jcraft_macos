@@ -159,7 +159,8 @@ void FixedBiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
 /**
  * @brief Fills a BiomeArray with the fixed biome for a region (raw version).
  * @note 4J-PB Added in beyond 1.8.2
- * @note 4J - Caller is responsible for deleting biomes array, plus any optional arrays output if pointers are passed in (_temperatures, _downfalls)
+ * @note 4J - Caller is responsible for deleting biomes array, plus any optional
+ * arrays output if pointers are passed in (_temperatures, _downfalls)
  */
 void FixedBiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
                                         int h) const {
@@ -170,10 +171,11 @@ void FixedBiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
 }
 
 /**
- * @brief Returns a raw BiomeArray. 
+ * @brief Returns a raw BiomeArray.
  * @note 4J-PB Added in beyond 1.8.2
- * @note 4J - caller is responsible for deleting biomes array, plus any optionalarrays
- * arrays output if pointers are passed in (_temperatures, _downfalls)
+ * @note 4J - caller is responsible for deleting biomes array, plus any
+ * optional arrays output if pointers are passed in (_temperatures,
+ * _downfalls)
  */
 BiomeArray FixedBiomeSource::getRawBiomeBlock(int x, int z, int w,
                                               int h) const {
