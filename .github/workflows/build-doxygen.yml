@@ -3,8 +3,15 @@ name: CI
 on:
   push:
     branches: ["dev"]
-    pull_request:
-      branches: ["dev"]
+    paths:
+      - "4J.Input/**"
+      - "4J.Profile/**"
+      - "4J.Render/**"
+      - "4J.Storage/**"
+      - "Minecraft.Assets/**"
+      - "Minecraft.Client/**"
+      - "Minecraft.World/**"
+      - "docs/**"
 
 jobs:
   build:
@@ -14,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Doxygen
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
       - name: Update doxygen-awesome
         run: git submodule update --init --recursive
       - name: Generate Docs
