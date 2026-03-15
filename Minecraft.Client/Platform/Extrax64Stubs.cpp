@@ -395,12 +395,12 @@ DWORD XEnableGuestSignin(BOOL fEnable) { return 0; }
 #ifdef _WINDOWS64
 static void *profileData[4];
 static bool s_bProfileIsFullVersion;
-void				C_4JProfile::Initialise( DWORD dwTitleID,
-								DWORD dwOfferID,
+void				C_4JProfile::Initialise( std::uint32_t dwTitleID,
+								std::uint32_t dwOfferID,
 								unsigned short usProfileVersion,
-								UINT uiProfileValuesC,
-								UINT uiProfileSettingsC,
-								DWORD *pdwProfileSettingsA, 
+								unsigned int uiProfileValuesC,
+								unsigned int uiProfileSettingsC,
+								std::uint32_t *pdwProfileSettingsA,
 								int iGameDefinedDataSizeX4,
 								unsigned int *puiGameDefinedDataChangedBitmask)
 {
@@ -467,9 +467,9 @@ void				C_4JProfile::SetLockedProfile(int iProf) {}
 bool				C_4JProfile::IsSignedIn(int iQuadrant) { return ( iQuadrant == 0); }
 bool				C_4JProfile::IsSignedInLive(int iProf) { return true; }
 bool				C_4JProfile::IsGuest(int iQuadrant) { return false; }
-UINT				C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
-UINT				C_4JProfile::DisplayOfflineProfile(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant)  { return 0; }
-UINT				C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
+unsigned int		C_4JProfile::RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
+unsigned int		C_4JProfile::DisplayOfflineProfile(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant)  { return 0; }
+unsigned int		C_4JProfile::RequestConvertOfflineToGuestUI(int( *Func)(void *,const bool, const int iPad),void *lpParam,int iQuadrant) { return 0; }
 void				C_4JProfile::SetPrimaryPlayerChanged(bool bVal) {}
 bool				C_4JProfile::QuerySigninStatus(void) { return true; }
 void				C_4JProfile::GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid) {*pXuid = 0xe000d45248242f2e; }

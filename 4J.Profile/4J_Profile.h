@@ -36,9 +36,11 @@ public:
     // 4 players have game defined data, puiGameDefinedDataChangedBitmask needs
     // to be checked by the game side to see if there's an update needed - it'll
     // have the bits set for players to be updated
-    void Initialise(DWORD dwTitleID, DWORD dwOfferID,
-                    unsigned short usProfileVersion, UINT uiProfileValuesC,
-                    UINT uiProfileSettingsC, DWORD* pdwProfileSettingsA,
+    void Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
+                    unsigned short usProfileVersion,
+                    unsigned int uiProfileValuesC,
+                    unsigned int uiProfileSettingsC,
+                    std::uint32_t* pdwProfileSettingsA,
                     int iGameDefinedDataSizeX4,
                     unsigned int* puiGameDefinedDataChangedBitmask);
     void SetTrialTextStringTable(CXuiStringTable* pStringTable, int iAccept,
@@ -50,17 +52,18 @@ public:
     bool IsSignedIn(int iQuadrant);
     bool IsSignedInLive(int iProf);
     bool IsGuest(int iQuadrant);
-    UINT RequestSignInUI(bool bFromInvite, bool bLocalGame,
-                         bool bNoGuestsAllowed, bool bMultiplayerSignIn,
-                         bool bAddUser,
-                         int (*Func)(void*, const bool, const int iPad),
-                         void* lpParam, int iQuadrant = XUSER_INDEX_ANY);
-    UINT DisplayOfflineProfile(int (*Func)(void*, const bool, const int iPad),
-                               void* lpParam, int iQuadrant = XUSER_INDEX_ANY);
-    UINT RequestConvertOfflineToGuestUI(int (*Func)(void*, const bool,
-                                                    const int iPad),
-                                        void* lpParam,
-                                        int iQuadrant = XUSER_INDEX_ANY);
+    unsigned int RequestSignInUI(bool bFromInvite, bool bLocalGame,
+                                 bool bNoGuestsAllowed,
+                                 bool bMultiplayerSignIn, bool bAddUser,
+                                 int (*Func)(void*, const bool, const int iPad),
+                                 void* lpParam,
+                                 int iQuadrant = XUSER_INDEX_ANY);
+    unsigned int DisplayOfflineProfile(
+        int (*Func)(void*, const bool, const int iPad), void* lpParam,
+        int iQuadrant = XUSER_INDEX_ANY);
+    unsigned int RequestConvertOfflineToGuestUI(
+        int (*Func)(void*, const bool, const int iPad), void* lpParam,
+        int iQuadrant = XUSER_INDEX_ANY);
     void SetPrimaryPlayerChanged(bool bVal);
     bool QuerySigninStatus(void);
     void GetXUID(int iPad, PlayerUID* pXuid, bool bOnlineXuid);
