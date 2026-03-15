@@ -124,34 +124,34 @@ void C4JStorage::RegisterMarketplaceCountsCallback(
 void C4JStorage::SetDLCPackageRoot(char* pszDLCRoot) {}
 C4JStorage::EDLCStatus C4JStorage::GetDLCOffers(
     int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
-    DWORD dwOfferTypesBitmask) {
+    std::uint32_t dwOfferTypesBitmask) {
     return EDLC_NoOffers;
 }
-DWORD C4JStorage::CancelGetDLCOffers() { return 0; }
+unsigned int C4JStorage::CancelGetDLCOffers() { return 0; }
 void C4JStorage::ClearDLCOffers() {}
-XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(DWORD dw) {
+XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) {
     return s_dummyOffer;
 }
 int C4JStorage::GetOfferCount() { return 0; }
-DWORD C4JStorage::InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
-                               int (*Func)(void*, int, int), void* lpParam,
-                               bool bTrial) {
+unsigned int C4JStorage::InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+                                      int (*Func)(void*, int, int),
+                                      void* lpParam, bool bTrial) {
     return 0;
 }
-DWORD C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
+unsigned int C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
 C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad,
                                                    int (*Func)(void*, int, int),
                                                    void* lpParam) {
     return EDLC_NoInstalledDLC;
 }
-XCONTENT_DATA& C4JStorage::GetDLC(DWORD dw) { return s_dummyContentData; }
+XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) { return s_dummyContentData; }
 std::uint32_t C4JStorage::MountInstalledDLC(
     int iPad, std::uint32_t dwDLC,
     int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
     LPCSTR szMountDrive) {
     return 0;
 }
-DWORD C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
+unsigned int C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
 void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
                                        std::vector<std::string>& fileList) {
     fileList.clear();

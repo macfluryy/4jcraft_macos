@@ -593,17 +593,17 @@ PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}
 
 void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam ) {}
 void								C4JStorage::SetDLCPackageRoot(char *pszDLCRoot) {}
-C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, DWORD dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
-DWORD								C4JStorage::CancelGetDLCOffers() { return 0; }
+C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, std::uint32_t dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
+unsigned int						C4JStorage::CancelGetDLCOffers() { return 0; }
 void								C4JStorage::ClearDLCOffers() {}
-XMARKETPLACE_CONTENTOFFER_INFO&		C4JStorage::GetOffer(DWORD dw) { static XMARKETPLACE_CONTENTOFFER_INFO retval = {0}; return retval; }
+XMARKETPLACE_CONTENTOFFER_INFO&		C4JStorage::GetOffer(unsigned int dw) { static XMARKETPLACE_CONTENTOFFER_INFO retval = {0}; return retval; }
 int									C4JStorage::GetOfferCount() { return 0; }
-DWORD								C4JStorage::InstallOffer(int iOfferIDC,ULONGLONG *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial) { return 0; }
-DWORD								C4JStorage::GetAvailableDLCCount( int iPad) { return 0; }
-XCONTENT_DATA&						C4JStorage::GetDLC(DWORD dw) { static XCONTENT_DATA retval = {0}; return retval; }
+unsigned int						C4JStorage::InstallOffer(int iOfferIDC,ULONGLONG *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial) { return 0; }
+unsigned int						C4JStorage::GetAvailableDLCCount( int iPad) { return 0; }
+XCONTENT_DATA&						C4JStorage::GetDLC(unsigned int dw) { static XCONTENT_DATA retval = {0}; return retval; }
 C4JStorage::EDLCStatus				C4JStorage::GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam) { return C4JStorage::EDLC_Idle; }
 std::uint32_t						C4JStorage::MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,LPCSTR szMountDrive) { return 0; }
-DWORD								C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
+unsigned int						C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
 C4JStorage::ETMSStatus				C4JStorage::ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType, WCHAR *pwchFilename,std::uint8_t **ppBuffer,unsigned int *pdwBufferSize,int( *Func)(LPVOID, WCHAR *,int, bool, int),LPVOID lpParam, int iAction) { return C4JStorage::ETMSStatus_Idle; }
 bool								C4JStorage::WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,std::uint8_t *pBuffer,unsigned int dwBufferSize) { return true; }
 bool								C4JStorage::DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename) { return true; }

@@ -286,25 +286,26 @@ public:
     void SetDLCPackageRoot(char* pszDLCRoot);
     C4JStorage::EDLCStatus GetDLCOffers(
         int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
-        DWORD dwOfferTypesBitmask = XMARKETPLACE_OFFERING_TYPE_CONTENT);
-    DWORD CancelGetDLCOffers();
+        std::uint32_t dwOfferTypesBitmask =
+            XMARKETPLACE_OFFERING_TYPE_CONTENT);
+    unsigned int CancelGetDLCOffers();
     void ClearDLCOffers();
-    XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(DWORD dw);
+    XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw);
     int GetOfferCount();
-    DWORD InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
-                       int (*Func)(void*, int, int), void* lpParam,
-                       bool bTrial = false);
-    DWORD GetAvailableDLCCount(int iPad);
+    unsigned int InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+                              int (*Func)(void*, int, int), void* lpParam,
+                              bool bTrial = false);
+    unsigned int GetAvailableDLCCount(int iPad);
 
     C4JStorage::EDLCStatus GetInstalledDLC(int iPad,
                                            int (*Func)(void*, int, int),
                                            void* lpParam);
-    XCONTENT_DATA& GetDLC(DWORD dw);
+    XCONTENT_DATA& GetDLC(unsigned int dw);
     std::uint32_t MountInstalledDLC(int iPad, std::uint32_t dwDLC,
                                     int (*Func)(void*, int, std::uint32_t,
                                                 std::uint32_t),
                                     void* lpParam, LPCSTR szMountDrive = NULL);
-    DWORD UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
+    unsigned int UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
     void GetMountedDLCFileList(const char* szMountDrive,
                                std::vector<std::string>& fileList);
     std::string GetMountedPath(std::string szMount);
