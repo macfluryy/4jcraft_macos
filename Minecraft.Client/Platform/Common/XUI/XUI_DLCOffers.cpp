@@ -37,7 +37,7 @@ HRESULT CScene_DLCMain::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 		m_Timer.SetShow(FALSE);
 		m_bIgnoreInput=false;
 
-		VOID *pObj;
+		void *pObj;
 		XuiObjectFromHandle( xList, &pObj );
 		list = (CXuiCtrl4JList *) pObj;
 
@@ -102,7 +102,7 @@ HRESULT CScene_DLCMain::OnTimer(XUIMessageTimer *pData,BOOL& rfHandled)
 	{	
 		if(ProfileManager.GetLiveConnectionStatus()!=XONLINE_S_LOGON_CONNECTION_ESTABLISHED)
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 
 			StorageManager.ClearDLCOffers();
@@ -222,7 +222,7 @@ HRESULT CScene_DLCOffers::OnInit( XUIMessageInit* pInitData, BOOL& bHandled )
 
 	m_bIgnorePress=true;
 
-	VOID *pObj;
+	void *pObj;
 	m_hXuiBrush=NULL;
 
 	XuiObjectFromHandle( m_List, &pObj );
@@ -262,7 +262,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 	CXuiCtrl4JList::LIST_ITEM_INFO *pListInfo=NULL;
 	//XMARKETPLACE_CONTENTOFFER_INFO xOffer;
 	XMARKETPLACE_CURRENCY_CONTENTOFFER_INFO xOffer;
-	const DWORD LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string 
+	constexpr int LOCATOR_SIZE = 256; // Use this to allocate space to hold a ResourceLocator string
 	WCHAR szResourceLocator[ LOCATOR_SIZE ];
 	ZeroMemory(szResourceLocator,sizeof(WCHAR)*LOCATOR_SIZE);
 	const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
@@ -371,7 +371,7 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 				// Bug 49249 - JPN: Code Defect: Missing Text: String 'Minecraft' is missing in contents download screen.
 				// Looks like we shouldn't be removing this text for Japanese, and probably Chinese & Korean
 
-				DWORD dwLanguage = XGetLanguage( );
+				unsigned int dwLanguage = XGetLanguage();
 				switch(dwLanguage)
 				{
 				case XC_LANGUAGE_KOREAN:	
@@ -450,7 +450,6 @@ HRESULT CScene_DLCOffers::GetDLCInfo( int iOfferC, bool bUpdateOnly )
 		if (dlc != NULL)
 		{
 			std::uint8_t *pData=NULL;
-			UINT uiSize=0;
 			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;
@@ -703,7 +702,6 @@ HRESULT CScene_DLCOffers::OnNotifySelChanged(HXUIOBJ hObjSource, XUINotifySelCha
 		if (dlc != NULL)
 		{
 			std::uint8_t *pImage=NULL;
-			UINT uiSize=0;
 			unsigned int dwSize=0;
 
 			WCHAR *cString = dlc->wchBanner;
@@ -777,7 +775,7 @@ HRESULT CScene_DLCOffers::OnTimer(XUIMessageTimer *pData,BOOL& rfHandled)
 
 	if(ProfileManager.GetLiveConnectionStatus()!=XONLINE_S_LOGON_CONNECTION_ESTABLISHED)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		m_pOffersList->RemoveAllData();

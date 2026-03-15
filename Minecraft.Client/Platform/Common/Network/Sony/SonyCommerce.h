@@ -43,7 +43,7 @@ class SonyCommerce
 {
 
 public:
-	typedef void (*CallbackFunc)(LPVOID lpParam, int error_code);
+	typedef void (*CallbackFunc)(void* lpParam, int error_code);
 
 
 	/// @brief
@@ -153,20 +153,20 @@ public:
 
 
 public:
-	virtual void CreateSession(CallbackFunc cb, LPVOID lpParam) = 0;
+	virtual void CreateSession(CallbackFunc cb, void* lpParam) = 0;
 	virtual void CloseSession() = 0;
 
-	virtual void GetCategoryInfo(CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId) = 0;
-	virtual void GetProductList(CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId) = 0;
-	virtual void GetDetailedProductInfo(CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfoDetailed, const char *productId, const char *categoryId) = 0;
-	virtual void AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId ) = 0;
-	virtual void Checkout(CallbackFunc cb, LPVOID lpParam, const char* skuID) = 0;
-	virtual void DownloadAlreadyPurchased(CallbackFunc cb, LPVOID lpParam, const char* skuID) = 0;
+	virtual void GetCategoryInfo(CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId) = 0;
+	virtual void GetProductList(CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId) = 0;
+	virtual void GetDetailedProductInfo(CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfoDetailed, const char *productId, const char *categoryId) = 0;
+	virtual void AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId ) = 0;
+	virtual void Checkout(CallbackFunc cb, void* lpParam, const char* skuID) = 0;
+	virtual void DownloadAlreadyPurchased(CallbackFunc cb, void* lpParam, const char* skuID) = 0;
 #if defined(__ORBIS__) || defined( __PSVITA__)
-	virtual void Checkout_Game(CallbackFunc cb, LPVOID lpParam, const char* skuID) = 0;
-	virtual void DownloadAlreadyPurchased_Game(CallbackFunc cb, LPVOID lpParam, const char* skuID) = 0;
+	virtual void Checkout_Game(CallbackFunc cb, void* lpParam, const char* skuID) = 0;
+	virtual void DownloadAlreadyPurchased_Game(CallbackFunc cb, void* lpParam, const char* skuID) = 0;
 #endif
-	virtual void UpgradeTrial(CallbackFunc cb, LPVOID lpParam) = 0;
+	virtual void UpgradeTrial(CallbackFunc cb, void* lpParam) = 0;
 	virtual void CheckForTrialUpgradeKey() = 0;
 	virtual bool LicenseChecked() = 0;
 

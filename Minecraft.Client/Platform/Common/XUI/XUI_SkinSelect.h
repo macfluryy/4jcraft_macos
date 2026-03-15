@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "../media/xuiscene_skinselect.h"
 #include "XUI_CustomMessages.h"
 #include "../../Minecraft.World/Util/Definitions.h"
@@ -15,7 +17,7 @@ private:
 	static WCHAR *wchDefaultNamesA[eDefaultSkins_Count];
 
 	// 4J Stu - How many to show on each side of the main control
-	static const BYTE sidePreviewControls = 4;
+	static constexpr int sidePreviewControls = 4;
 
 	enum ESkinSelectNavigation
 	{
@@ -112,10 +114,10 @@ protected:
 	std::wstring m_currentSkinPath, m_selectedSkinPath, m_selectedCapePath;
 	std::vector<SKIN_BOX *> *m_vAdditionalSkinBoxes;
 	//std::vector<ModelPart *> *m_vAdditionalModelParts;
-	DWORD m_originalSkinId;
+	std::uint32_t m_originalSkinId;
 
 	DLCPack *m_currentPack;
-	DWORD m_packIndex, m_skinIndex;
+	int m_packIndex, m_skinIndex;
 public:
 
 	// Define the class. The class name must match the ClassOverride property
@@ -129,11 +131,11 @@ private:
 	void updateCurrentFocus();
 	TEXTURE_NAME getTextureId(int skinIndex);
 
-	int getNextSkinIndex(DWORD sourceIndex);
-	int getPreviousSkinIndex(DWORD sourceIndex);
+	int getNextSkinIndex(int sourceIndex);
+	int getPreviousSkinIndex(int sourceIndex);
 
-	int getNextPackIndex(DWORD sourceIndex);
-	int getPreviousPackIndex(DWORD sourceIndex);
+	int getNextPackIndex(int sourceIndex);
+	int getPreviousPackIndex(int sourceIndex);
 
 	void updateClipping();
 	
@@ -143,7 +145,7 @@ private:
 
 	bool m_bSlidingSkins, m_bAnimatingMove;
 
-	DWORD currentPackCount;
+	int currentPackCount;
 
 	ESkinSelectNavigation m_currentNavigation;
 	bool m_bIgnoreInput;

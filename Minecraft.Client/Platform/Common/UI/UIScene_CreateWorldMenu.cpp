@@ -319,7 +319,7 @@ void UIScene_CreateWorldMenu::tick()
 			else
 			{
 				// continue offline?
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_PRO_NOTONLINE_DECLINE;
 
 				// Give the player a warning about the texture pack missing
@@ -373,7 +373,7 @@ void UIScene_CreateWorldMenu::handleInput(int iPad, int key, bool repeat, bool p
 #if defined _XBOX_ONE
 		if ( pressed && controlHasFocus(m_checkboxOnline.getId()) && !m_checkboxOnline.IsEnabled() )
 		{
-			UINT uiIDA[1] = { IDS_CONFIRM_OK };
+			unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 		}
 #endif
@@ -526,7 +526,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow()
 			TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 
 			uiIDA[0]=IDS_TEXTUREPACK_FULLVERSION;
 			//uiIDA[1]=IDS_TEXTURE_PACK_TRIALVERSION;
@@ -569,7 +569,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow()
 			// We need to allow people to use a trial texture pack if they are offline - we only need them online if they want to buy it.
 
 			/*
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 
 			if(!ProfileManager.IsSignedInLive(m_iPad))
@@ -601,12 +601,12 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow()
 
 #if defined(_DURANGO) || defined(_WINDOWS64)
 				// trial pack warning
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_USING_TRIAL_TEXUREPACK_WARNING, uiIDA, 1, m_iPad,&TrialTexturePackWarningReturned,this,app.GetStringTable(),NULL,0,false);
 #elif defined __PS3__ || defined __ORBIS__ || defined(__PSVITA__)
 				// trial pack warning
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 				ui.RequestMessageBox(IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE, IDS_USING_TRIAL_TEXUREPACK_WARNING, uiIDA, 2, m_iPad,&TrialTexturePackWarningReturned,this,app.GetStringTable(),NULL,0,false);	
@@ -830,14 +830,14 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 		{
 			m_bIgnoreInput = false;
 			// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 		}
 		else
 		{
 			m_bIgnoreInput = true;
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1] = IDS_CANCEL;
 			ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, iPadNotSignedInLive, &UIScene_CreateWorldMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
@@ -850,21 +850,21 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 		if (ProfileManager.IsSignedInPSN(ProfileManager.GetPrimaryPad()))
 		{
 			// Signed in to PSN but not connected (no internet access)
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_PRO_CURRENTLY_NOT_ONLINE_TITLE, IDS_PRO_PSNOFFLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), NULL,NULL, app.GetStringTable());
 		}
 		else
 		{		
 			// Not signed in to PSN
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0] = IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(), NULL,NULL, app.GetStringTable());
 			return;
 		}*/
 #else
 		m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 		return;
@@ -906,7 +906,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 			iResult=sceNpCommerceDialogOpen(&param);
 
-// 			UINT uiIDA[2];
+// 			unsigned int uiIDA[2];
 // 			uiIDA[0]=IDS_PLAY_OFFLINE;
 // 			uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 // 			ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_CreateWorldMenu::PSPlusReturned,this, app.GetStringTable(),NULL,0,false);
@@ -917,7 +917,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 	if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 	{			
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		uiIDA[1]=IDS_CONFIRM_CANCEL;
 		if(m_bGameModeSurvival != true)
@@ -984,7 +984,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 				param.userId = ProfileManager.getUserID(iPadWithNoPlaystationPlus);
 
 				iResult=sceNpCommerceDialogOpen(&param);
-// 				UINT uiIDA[2];
+// 				unsigned int uiIDA[2];
 // 				uiIDA[0]=IDS_PLAY_OFFLINE;
 // 				uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 // 				ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_CreateWorldMenu::PSPlusReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1033,7 +1033,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame()
 
 				iResult=sceNpCommerceDialogOpen(&param);
 
-// 				UINT uiIDA[2];
+// 				unsigned int uiIDA[2];
 // 				uiIDA[0]=IDS_PLAY_OFFLINE;
 // 				uiIDA[1]=IDS_PLAYSTATIONPLUS_SIGNUP;
 // 				ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,2,ProfileManager.GetPrimaryPad(),&UIScene_CreateWorldMenu::PSPlusReturned,this, app.GetStringTable(),NULL,0,false);
@@ -1276,14 +1276,14 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 				{
 					pClass->m_bIgnoreInput = false;
 					// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 				}
 				else
 				{
 					pClass->m_bIgnoreInput=true;
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 					uiIDA[1] = IDS_CANCEL;
 					ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, iPadNotSignedInLive, &UIScene_CreateWorldMenu::MustSignInReturnedPSN, pClass, app.GetStringTable(), NULL, 0, false);
@@ -1291,7 +1291,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 				return 0;
 #else
 				pClass->m_bIgnoreInput=false;
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				return 0;
@@ -1311,14 +1311,14 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void *pParam,bool bContinu
 				if( noUGC )
 				{
 					pClass->m_bIgnoreInput = false;
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				}
 				else
 				{
 					pClass->m_bIgnoreInput = false;
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_HOST_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 				}
@@ -1376,7 +1376,7 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(void *pParam,int iPad,C4JStor
 			if(isClientSide && noUGC )
 			{
 				pClass->m_bIgnoreInput = false;
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(),NULL,0,false);
 			}

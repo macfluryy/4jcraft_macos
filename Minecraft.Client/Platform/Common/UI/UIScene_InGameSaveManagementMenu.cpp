@@ -453,7 +453,7 @@ void UIScene_InGameSaveManagementMenu::handlePress(F64 controlId, F64 childId)
 
 			// delete the save game
 			// Have to ask the player if they are sure they want to delete this game
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2,m_iPad,&UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned,this, app.GetStringTable(),NULL,0,true);

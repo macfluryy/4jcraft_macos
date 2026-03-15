@@ -326,7 +326,7 @@ HRESULT CScene_HelpAndOptions::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHa
 
 	case VK_PAD_B:
 	case VK_ESCAPE:
-		BYTE userIndex = pInputData->UserIndex;
+		int userIndex = pInputData->UserIndex;
 		if( !app.IsPauseMenuDisplayed(userIndex) )
 		{
 			// If we are not from a pause menu, then we are from the main menu

@@ -11,7 +11,7 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "XUI_Scene_Win.h"
 
-BYTE CScene_Win::s_winUserIndex = 0;
+std::uint8_t CScene_Win::s_winUserIndex = 0;
 
 const float CScene_Win::AUTO_SCROLL_SPEED = 1.0f;
 const float CScene_Win::PLAYER_SCROLL_SPEED = 3.0f;

@@ -473,7 +473,7 @@ HRESULT CScene_Leaderboards::OnKeyDown(XUIMessageInput* pInputData, BOOL& bHandl
 	case VK_PAD_B:
 	case VK_ESCAPE:
 		{
-			BYTE userIndex = pInputData->UserIndex;
+			int userIndex = pInputData->UserIndex;
 			if( !app.IsPauseMenuDisplayed(userIndex) )
 			{
 				// If we are not from a pause menu, then we are from the main menu
@@ -904,7 +904,7 @@ void CScene_Leaderboards::PopulateLeaderboard(bool noResults)
 
 	if(m_pHTitleIconSlots[0]==NULL)
 	{	
-		VOID *pObj;
+		void *pObj;
 		HXUIOBJ button;
 		D3DXVECTOR3 vPos;
 

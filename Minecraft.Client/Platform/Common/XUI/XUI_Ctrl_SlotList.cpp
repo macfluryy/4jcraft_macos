@@ -224,8 +224,7 @@ void CXuiCtrlSlotList::Clicked()
 void CXuiCtrlSlotList::GetCXuiCtrlSlotItem(int itemIndex, CXuiCtrlSlotItemListItem** CXuiCtrlSlotItem)
 {
 	HXUIOBJ itemControl = this->GetItemControl(itemIndex);
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( itemControl, &pObj );
 	*CXuiCtrlSlotItem = (CXuiCtrlSlotItemListItem *)pObj;
 }
-

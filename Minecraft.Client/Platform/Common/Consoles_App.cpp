@@ -1,4 +1,4 @@
-﻿
+
 #include "../Minecraft.World/Platform/stdafx.h"
 
 #include "../Minecraft.World/Recipes/Recipy.h"
@@ -3129,7 +3129,7 @@ void CMinecraftApp::HandleXuiActions(void)
 					pStats->clear();
 
 					// 4J-PB - the libs will display the Returned to Title screen
-// 					UINT uiIDA[1];
+// 					unsigned int uiIDA[1];
 // 					uiIDA[0]=IDS_CONFIRM_OK;
 // 
 // 					ui.RequestMessageBox(IDS_RETURNEDTOMENU_TITLE, IDS_RETURNEDTOTITLESCREEN_TEXT, uiIDA, 1, i,&CMinecraftApp::PrimaryPlayerSignedOutReturned,this,app.GetStringTable());
@@ -5709,7 +5709,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(void *pParam,int iPad,C4
 	// results switched for this dialog
 	if(result==C4JStorage::EMessage_ResultDecline) 
 	{
-		INT saveOrCheckpointId = 0;
+		int saveOrCheckpointId = 0;
 
 		// Check they have the full texture pack if they are using one
 		// 4J-PB - Is the player trying to save but they are using a trial texturepack ?

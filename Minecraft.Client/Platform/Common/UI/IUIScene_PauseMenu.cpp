@@ -57,7 +57,7 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStor
 					TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -75,7 +75,7 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStor
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(), &IUIScene_PauseMenu::ExitGameAndSaveReturned, scene, app.GetStringTable(), NULL, 0, false);
@@ -92,7 +92,7 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStor
 		else
 		{
 			// been a few requests for a confirm on exit without saving
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(), &IUIScene_PauseMenu::ExitGameDeclineSaveReturned, scene, app.GetStringTable(), NULL, 0, false);
@@ -131,7 +131,7 @@ int IUIScene_PauseMenu::ExitGameAndSaveReturned(void *pParam,int iPad,C4JStorage
 		// has someone disconnected the ethernet here, causing the pause menu to shut?
 		if(ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()))
 		{
-			UINT uiIDA[3];
+			unsigned int uiIDA[3];
 			// you cancelled the save on exit after choosing exit and save? You go back to the Exit choices then.
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_EXIT_GAME_SAVE;
@@ -173,7 +173,7 @@ int IUIScene_PauseMenu::ExitGameDeclineSaveReturned(void *pParam,int iPad,C4JSto
 		// has someone disconnected the ethernet here, causing the pause menu to shut?
 		if(ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()))
 		{
-			UINT uiIDA[3];
+			unsigned int uiIDA[3];
 			// you cancelled the save on exit after choosing exit and save? You go back to the Exit choices then.
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_EXIT_GAME_SAVE;
@@ -212,7 +212,7 @@ int IUIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4
 			ProfileManager.GetChatAndContentRestrictions(iPad,true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad,NULL,&app, app.GetStringTable(), NULL, 0, false);
 			}
@@ -287,7 +287,7 @@ int IUIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4
 			else
 			{	
 				// 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no active network connection user is unable to convert from Trial to Full texture pack and is not messaged why.
-				UINT uiIDA[1] = { IDS_CONFIRM_OK };
+				unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable()); 
 			}
 		}
@@ -494,7 +494,7 @@ void IUIScene_PauseMenu::_ExitWorld(void *lpParameter)
 			}
 			//pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );
 			
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			// 4J Stu - Fix for #48669 - TU5: Code: Compliance: TCR #15: Incorrect/misleading messages after signing out a profile during online game session.
 			// If the primary player is signed out, then that is most likely the cause of the disconnection so don't display a message box. This will allow the message box requested by the libraries to be brought up
@@ -594,7 +594,7 @@ void IUIScene_PauseMenu::_ExitWorld(void *lpParameter)
 			}
 			//pMinecraft->progressRenderer->progressStartNoAbort( exitReasonStringId );
 			
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( exitReasonTitleId, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			exitReasonStringId = -1;
@@ -641,7 +641,7 @@ int IUIScene_PauseMenu::SaveGameDialogReturned(void *pParam,int iPad,C4JStorage:
 	if(result==C4JStorage::EMessage_ResultDecline) 
 	{
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_CANCEL;
 		uiIDA[1]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox(IDS_TITLE_ENABLE_AUTOSAVE, IDS_CONFIRM_ENABLE_AUTOSAVE, uiIDA, 2, iPad,&IUIScene_PauseMenu::EnableAutosaveDialogReturned,pParam, app.GetStringTable(), NULL, 0, false);

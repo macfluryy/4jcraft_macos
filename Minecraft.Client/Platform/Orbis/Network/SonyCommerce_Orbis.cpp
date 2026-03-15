@@ -9,7 +9,7 @@ bool											SonyCommerce_Orbis::m_bCommerceInitialised = false;
 // SceNpCommerce2SessionInfo					SonyCommerce_Orbis::m_sessionInfo;
 SonyCommerce_Orbis::State						SonyCommerce_Orbis::m_state = e_state_noSession;
 int												SonyCommerce_Orbis::m_errorCode = 0;
-LPVOID											SonyCommerce_Orbis::m_callbackParam = NULL;
+void*											SonyCommerce_Orbis::m_callbackParam = NULL;
 
 void*											SonyCommerce_Orbis::m_receiveBuffer = NULL;
 SonyCommerce_Orbis::Event						SonyCommerce_Orbis::m_event;
@@ -29,7 +29,7 @@ SonyCommerce_Orbis::CallbackFunc				SonyCommerce_Orbis::m_callbackFunc = NULL;
 bool											SonyCommerce_Orbis::m_bUpgradingTrial = false;
 
 SonyCommerce_Orbis::CallbackFunc				SonyCommerce_Orbis::m_trialUpgradeCallbackFunc;
-LPVOID											SonyCommerce_Orbis::m_trialUpgradeCallbackParam;
+void*											SonyCommerce_Orbis::m_trialUpgradeCallbackParam;
 
 CRITICAL_SECTION								SonyCommerce_Orbis::m_queueLock;
 
@@ -73,7 +73,7 @@ void SonyCommerce_Orbis::Init()
 
 
 
-void SonyCommerce_Orbis::CheckForTrialUpgradeKey_Callback(LPVOID param, bool bFullVersion)
+void SonyCommerce_Orbis::CheckForTrialUpgradeKey_Callback(void* param, bool bFullVersion)
 {
 	ProfileManager.SetFullVersion(bFullVersion);
 	if(ProfileManager.IsFullVersion())
@@ -498,7 +498,7 @@ int SonyCommerce_Orbis::downloadList_game(DownloadListInputParams &params)
 	return ret;	
 }
 
-void SonyCommerce_Orbis::UpgradeTrialCallback2(LPVOID lpParam,int err)
+void SonyCommerce_Orbis::UpgradeTrialCallback2(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback2 : err : 0x%08x\n", err);
@@ -512,7 +512,7 @@ void SonyCommerce_Orbis::UpgradeTrialCallback2(LPVOID lpParam,int err)
 	m_trialUpgradeCallbackFunc(m_trialUpgradeCallbackParam, m_errorCode);
 }
 
-void SonyCommerce_Orbis::UpgradeTrialCallback1(LPVOID lpParam,int err)
+void SonyCommerce_Orbis::UpgradeTrialCallback1(void* lpParam,int err)
 {
 	SonyCommerce* pCommerce = (SonyCommerce*)lpParam;
 	app.DebugPrintf(4,"SonyCommerce_UpgradeTrialCallback1 : err : 0x%08x\n", err);
@@ -551,7 +551,7 @@ void SonyCommerce_UpgradeTrial()
 	app.UpgradeTrial();
 }
 
-void SonyCommerce_Orbis::UpgradeTrial(CallbackFunc cb, LPVOID lpParam)
+void SonyCommerce_Orbis::UpgradeTrial(CallbackFunc cb, void* lpParam)
 {
 	m_trialUpgradeCallbackFunc = cb;
 	m_trialUpgradeCallbackParam = lpParam;
@@ -1130,7 +1130,7 @@ int SonyCommerce_Orbis::commerceEnd()
 	return ret;
 }
 
-void SonyCommerce_Orbis::CreateSession( CallbackFunc cb, LPVOID lpParam )
+void SonyCommerce_Orbis::CreateSession( CallbackFunc cb, void* lpParam )
 {
 	// 4J-PB - reset any previous error code
 	// I had this happen when I was offline on Vita, and accepted the PSN sign-in
@@ -1172,7 +1172,7 @@ void SonyCommerce_Orbis::CloseSession()
 	//Shutdown();
 }
 
-void SonyCommerce_Orbis::GetProductList( CallbackFunc cb, LPVOID lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
+void SonyCommerce_Orbis::GetProductList( CallbackFunc cb, void* lpParam, std::vector<ProductInfo>* productList, const char *categoryId)
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1182,7 +1182,7 @@ void SonyCommerce_Orbis::GetProductList( CallbackFunc cb, LPVOID lpParam, std::v
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Orbis::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_Orbis::GetDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfoDetailed* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1194,7 +1194,7 @@ void SonyCommerce_Orbis::GetDetailedProductInfo( CallbackFunc cb, LPVOID lpParam
 }
 
 // 4J-PB - fill out the long description and the price for the product
-void SonyCommerce_Orbis::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
+void SonyCommerce_Orbis::AddDetailedProductInfo( CallbackFunc cb, void* lpParam, ProductInfo* productInfo, const char *productId, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1204,7 +1204,7 @@ void SonyCommerce_Orbis::AddDetailedProductInfo( CallbackFunc cb, LPVOID lpParam
 	m_messageQueue.push(e_message_commerceAddDetailedProductInfo);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce_Orbis::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, CategoryInfo *info, const char *categoryId )
+void SonyCommerce_Orbis::GetCategoryInfo( CallbackFunc cb, void* lpParam, CategoryInfo *info, const char *categoryId )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1214,7 +1214,7 @@ void SonyCommerce_Orbis::GetCategoryInfo( CallbackFunc cb, LPVOID lpParam, Categ
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Orbis::Checkout( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Orbis::Checkout( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1224,7 +1224,7 @@ void SonyCommerce_Orbis::Checkout( CallbackFunc cb, LPVOID lpParam, const char* 
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Orbis::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Orbis::DownloadAlreadyPurchased( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1234,7 +1234,7 @@ void SonyCommerce_Orbis::DownloadAlreadyPurchased( CallbackFunc cb, LPVOID lpPar
 	LeaveCriticalSection(&m_queueLock);
 }
 
-void SonyCommerce_Orbis::Checkout_Game( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Orbis::Checkout_Game( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1243,7 +1243,7 @@ void SonyCommerce_Orbis::Checkout_Game( CallbackFunc cb, LPVOID lpParam, const c
 	m_messageQueue.push(e_message_commerceCheckout_Game);
 	LeaveCriticalSection(&m_queueLock);
 }
-void SonyCommerce_Orbis::DownloadAlreadyPurchased_Game( CallbackFunc cb, LPVOID lpParam, const char* skuID )
+void SonyCommerce_Orbis::DownloadAlreadyPurchased_Game( CallbackFunc cb, void* lpParam, const char* skuID )
 {
 	EnterCriticalSection(&m_queueLock);
 	setCallback(cb,lpParam);
@@ -1267,7 +1267,7 @@ std::vector<SonyCommerce::ProductInfo> g_productInfo;
 SonyCommerce::CategoryInfo g_categoryInfo2;
 SonyCommerce::ProductInfoDetailed g_productInfoDetailed;
 
-void testCallback(LPVOID lpParam, int error_code)
+void testCallback(void* lpParam, int error_code)
 {
 	app.DebugPrintf("Callback hit, error 0x%08x\n", error_code);
 }

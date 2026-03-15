@@ -20,7 +20,7 @@ typedef struct
 	int iDataBitField;
 	int iItemBitField;
 	LPCWSTR szPath;
-	BOOL bDirty;
+	bool bDirty;
 }
 CustomMessage_GetSlotItem_Struct;
 

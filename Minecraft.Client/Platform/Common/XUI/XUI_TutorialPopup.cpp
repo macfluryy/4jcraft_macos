@@ -79,8 +79,8 @@ void CScene_TutorialPopup::UpdateInteractScenePosition(bool visible)
 	HXUICLASS brewingClass = XuiFindClass( L"CXuiSceneBrewingStand" );
 	HXUICLASS anvilClass = XuiFindClass( L"CXuiSceneAnvil" );
 	HXUICLASS tradingClass = XuiFindClass( L"CXuiSceneTrading" );
-	BOOL isCraftingScene = XuiClassDerivesFrom( sceneClass, craftingClass );
-	BOOL isCreativeScene = XuiClassDerivesFrom( sceneClass, creativeInventoryClass );
+	bool isCraftingScene = XuiClassDerivesFrom( sceneClass, craftingClass ) != FALSE;
+	bool isCreativeScene = XuiClassDerivesFrom( sceneClass, creativeInventoryClass ) != FALSE;
 
 	switch(Minecraft::GetInstance()->localplayers[m_iPad]->m_iScreenSection)
 	{
@@ -115,7 +115,7 @@ void CScene_TutorialPopup::UpdateInteractScenePosition(bool visible)
 			XuiClassDerivesFrom( sceneClass, anvilClass ) ||
 			XuiClassDerivesFrom( sceneClass, tradingClass ) ||
 			isCreativeScene ||
-			isCraftingScene == TRUE )
+			isCraftingScene )
 		{
 			XuiElementGetTimeline( m_interactScene->m_hObj, &timeline);
 			if(visible)
@@ -194,7 +194,7 @@ HRESULT CScene_TutorialPopup::_SetDescription(CXuiScene *interactScene, LPCWSTR 
 		D3DXVECTOR3 titlePos;
 		hr = XuiElementGetPosition( m_title, &titlePos );
 
-		BOOL titleShowAtStart = m_title.IsShown();
+		bool titleShowAtStart = m_title.IsShown() != FALSE;
 		if( title != NULL && title[0] != 0 )
 		{
 			m_title.SetText( title );
@@ -205,7 +205,7 @@ HRESULT CScene_TutorialPopup::_SetDescription(CXuiScene *interactScene, LPCWSTR 
 			m_title.SetText( L"" );
 			m_title.SetShow(FALSE);
 		}
-		BOOL titleShowAtEnd = m_title.IsShown();
+		bool titleShowAtEnd = m_title.IsShown() != FALSE;
 		if(titleShowAtStart != titleShowAtEnd)
 		{
 			float fHeight, fWidth, fTitleHeight, fDescHeight, fDescWidth;
@@ -284,7 +284,7 @@ std::wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, 
 {
 	std::wstring temp(desc);
 
-	BOOL iconShowAtStart = m_pCraftingPic->IsShown();
+	bool iconShowAtStart = m_pCraftingPic->IsShown() != FALSE;
 
 	if( icon != TUTORIAL_NO_ICON )
 	{
@@ -411,7 +411,7 @@ std::wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, 
 		}
 	}
 	
-	BOOL iconShowAtEnd = m_pCraftingPic->IsShown();
+	bool iconShowAtEnd = m_pCraftingPic->IsShown() != FALSE;
 	if(iconShowAtStart != iconShowAtEnd)
 	{
 		float fHeight, fWidth, fIconHeight, fDescHeight, fDescWidth;
@@ -439,7 +439,7 @@ std::wstring CScene_TutorialPopup::_SetIcon(int icon, int iAuxVal, bool isFoil, 
 std::wstring CScene_TutorialPopup::_SetImage(std::wstring &desc)
 {
 
-	BOOL imageShowAtStart = m_image.IsShown();
+	bool imageShowAtStart = m_image.IsShown() != FALSE;
 
 	std::wstring openTag(L"{*IMAGE*}");
 	std::wstring closeTag(L"{*/IMAGE*}");
@@ -464,7 +464,7 @@ std::wstring CScene_TutorialPopup::_SetImage(std::wstring &desc)
 		m_image.SetShow( FALSE );
 	}
 	
-	BOOL imageShowAtEnd = m_image.IsShown();
+	bool imageShowAtEnd = m_image.IsShown() != FALSE;
 	if(imageShowAtStart != imageShowAtEnd)
 	{
 		float fHeight, fWidth, fIconHeight, fDescHeight, fDescWidth;
