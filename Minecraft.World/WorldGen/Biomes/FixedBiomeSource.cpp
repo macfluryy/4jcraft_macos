@@ -62,14 +62,15 @@ void FixedBiomeSource::getTemperatureBlock(floatArray& temperatures, int x,
     }
     Arrays::fill(temperatures, 0, w * h, temperature);
 }
-
 /**
- * @brief Convenience overload: returns a floatArray filled with temperatures.
+ * @brief Returns a floatArray filled with temperatures.
  *
  * @param x Starting X coordinate
  * @param z Starting Z coordinate
  * @param w Width of the region
  * @param h Height of the region
+ * @note 4J - Caller is responsible for deleting returned array.
+ * @note 4J - Temperatures array is for output only
  * @return floatArray Filled with temperature values
  */
 floatArray FixedBiomeSource::getTemperatureBlock(int x, int z, int w,
@@ -157,6 +158,8 @@ void FixedBiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
 
 /**
  * @brief Fills a BiomeArray with the fixed biome for a region (raw version).
+ * @note 4J-PB Added in beyond 1.8.2
+ * @note 4J - Caller is responsible for deleting biomes array, plus any optional arrays output if pointers are passed in (_temperatures, _downfalls)
  */
 void FixedBiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
                                         int h) const {
@@ -167,7 +170,10 @@ void FixedBiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
 }
 
 /**
- * @brief Convenience overload returning a raw BiomeArray.
+ * @brief Returns a raw BiomeArray. 
+ * @note 4J-PB Added in beyond 1.8.2
+ * @note 4J - caller is responsible for deleting biomes array, plus any optionalarrays
+ * arrays output if pointers are passed in (_temperatures, _downfalls)
  */
 BiomeArray FixedBiomeSource::getRawBiomeBlock(int x, int z, int w,
                                               int h) const {
