@@ -572,7 +572,7 @@ void C_4JInput::SetJoypadStickAxisMap(int, unsigned int, unsigned int) {}
 void C_4JInput::SetJoypadStickTriggerMap(int, unsigned int, unsigned int) {}
 void C_4JInput::SetKeyRepeatRate(float, float) {}
 void C_4JInput::SetDebugSequence(const char*, int (*)(void*), void*) {}
-FLOAT C_4JInput::GetIdleSeconds(int) { return 0.f; }
+float C_4JInput::GetIdleSeconds(int) { return 0.f; }
 bool C_4JInput::IsPadConnected(int iPad) { return iPad == 0; }
 
 // Silly check, we check if we have a keyboard.

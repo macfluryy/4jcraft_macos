@@ -291,7 +291,7 @@ public:
 	static void NotificationsCallback(void *pParam,std::uint32_t dwNotification, unsigned int uiParam);
 
 	// for the ethernet being disconnected
-	static void		LiveLinkChangeCallback(void *pParam,BOOL bConnected);
+	static void		LiveLinkChangeCallback(void *pParam, bool bConnected);
 	bool		    GetLiveLinkRequired()																								{return m_bLiveLinkRequired;}
 	void			SetLiveLinkRequired(bool required)																					{m_bLiveLinkRequired=required;}
 
@@ -341,16 +341,16 @@ public:
 	bool isXuidNotch(PlayerUID xuid);
 	bool isXuidDeadmau5(PlayerUID xuid);
 
-	void AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int dwBytes);
+	void AddMemoryTextureFile(const std::wstring &wName, std::uint8_t *pbData, unsigned int byteCount);
 	void RemoveMemoryTextureFile(const std::wstring &wName);
-	void GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pdwBytes);
+	void GetMemFileDetails(const std::wstring &wName, std::uint8_t **ppbData, unsigned int *pByteCount);
 	bool IsFileInMemoryTextures(const std::wstring &wName);
 
 	// Texture Pack Data files (icon, banner, comparison shot & text)
-	void AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int dwBytes);
+	void AddMemoryTPDFile(int iConfig, std::uint8_t *pbData, unsigned int byteCount);
 	void RemoveMemoryTPDFile(int iConfig);	
 	bool IsFileInTPD(int iConfig);
-	void GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pdwBytes);
+	void GetTPD(int iConfig, std::uint8_t **ppbData, unsigned int *pByteCount);
 	int GetTPDSize() {return m_MEM_TPD.size();}
 #ifndef __PS3__
 	int GetTPConfigVal(WCHAR *pwchDataFile);
@@ -839,12 +839,12 @@ public:
 
 	bool GetBanListRead(int iPad) { return m_bRead_BannedListA[iPad];}
 	void SetBanListRead(int iPad,bool bVal) { m_bRead_BannedListA[iPad]=bVal;}
-	void ClearBanList(int iPad) { BannedListA[iPad].pBannedList=NULL;BannedListA[iPad].dwBytes=0;}
+	void ClearBanList(int iPad) { BannedListA[iPad].pBannedList=NULL;BannedListA[iPad].byteCount=0;}
 
 	std::uint32_t GetRequiredTexturePackID() { return m_dwRequiredTexturePackID; }
 	void SetRequiredTexturePackID(std::uint32_t texturePackId) { m_dwRequiredTexturePackID = texturePackId; }
 
-	virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int dwBytes, std::uint8_t **ppbData, unsigned int *pdwBytes ) {*ppbData = NULL; *pdwBytes = 0;}
+	virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t *pbData, unsigned int byteCount, std::uint8_t **ppbData, unsigned int *pByteCount ) {*ppbData = NULL; *pByteCount = 0;}
 
 	//XTITLE_DEPLOYMENT_TYPE getDeploymentType() { return m_titleDeploymentType; }
 

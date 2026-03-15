@@ -53,7 +53,7 @@ enum EKeyboardResult {
 };
 
 typedef struct _STRING_VERIFY_RESPONSE {
-    WORD wNumStrings;
+    std::uint16_t wNumStrings;
     HRESULT* pStringResult;
 } STRING_VERIFY_RESPONSE;
 
@@ -96,7 +96,7 @@ public:
     void SetKeyRepeatRate(float fRepeatDelaySecs, float fRepeatRateSecs);
     void SetDebugSequence(const char* chSequenceA, int (*Func)(void*),
                           void* lpParam);
-    FLOAT GetIdleSeconds(int iPad);
+    float GetIdleSeconds(int iPad);
     bool IsPadConnected(int iPad);
 
     // In-Game values which may have been remapped due to Southpaw, swap

@@ -20,7 +20,7 @@ typedef struct {
     char UTF8SaveFilename[MAX_SAVEFILENAME_LENGTH];
     char UTF8SaveTitle[MAX_DISPLAYNAME_LENGTH];
     CONTAINER_METADATA metaData;
-    PBYTE thumbnailData;
+    std::uint8_t* thumbnailData;
 } SAVE_INFO, *PSAVE_INFO;
 
 typedef struct {
@@ -40,14 +40,14 @@ public:
     // Structs defined in the DLC_Creator, but added here to be used in the app
     typedef struct {
         unsigned int uiFileSize;
-        DWORD dwType;
-        DWORD dwWchCount;  // count of WCHAR in next array
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of WCHAR in next array
         WCHAR wchFile[1];
     } DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
 
     typedef struct {
-        DWORD dwType;
-        DWORD dwWchCount;  // count of WCHAR in next array;
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of WCHAR in next array;
         WCHAR wchData[1];  // will be an array of size dwBytes
     } DLC_FILE_PARAM, *PDLC_FILE_PARAM;
     // End of DLC_Creator structs
@@ -55,17 +55,18 @@ public:
     typedef struct {
         WCHAR wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
         CHAR szFileName[XCONTENT_MAX_FILENAME_LENGTH];
-        DWORD dwImageOffset;
-        DWORD dwImageBytes;
+        std::uint32_t dwImageOffset;
+        std::uint32_t dwImageBytes;
     } CACHEINFOSTRUCT;
 
     // structure to hold DLC info in TMS
     typedef struct {
-        DWORD dwVersion;
-        DWORD dwNewOffers;
-        DWORD dwTotalOffers;
-        DWORD dwInstalledTotalOffers;
-        BYTE bPadding[1024 - sizeof(DWORD) * 4];  // future expansion
+        std::uint32_t dwVersion;
+        std::uint32_t dwNewOffers;
+        std::uint32_t dwTotalOffers;
+        std::uint32_t dwInstalledTotalOffers;
+        std::uint8_t bPadding[1024 - sizeof(std::uint32_t) * 4];
+        // future expansion
     } DLC_TMS_DETAILS;
 
     enum eGTS_FileTypes { eGTS_Type_Skin = 0, eGTS_Type_Cape, eGTS_Type_MAX };
@@ -188,8 +189,8 @@ public:
     } TMSPP_FILE_LIST, *PTMSPP_FILE_LIST;
 
     typedef struct {
-        DWORD dwSize;
-        PBYTE pbData;
+        unsigned int size;
+        std::uint8_t* pbData;
     } TMSPP_FILEDATA, *PTMSPP_FILEDATA;
 
     C4JStorage();
@@ -198,11 +199,11 @@ public:
 
     // Messages
     C4JStorage::EMessageResult RequestMessageBox(
-        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
-        DWORD dwPad = XUSER_INDEX_ANY,
+        unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+        unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
         void* lpParam = NULL, C4JStringTable* pStringTable = NULL,
-        WCHAR* pwchFormatString = NULL, DWORD dwFocusButton = 0);
+        WCHAR* pwchFormatString = NULL, unsigned int focusButton = 0);
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
@@ -230,14 +231,16 @@ public:
     void GetSaveData(void* pvData, unsigned int* puiBytes);
     PVOID AllocateSaveData(unsigned int uiBytes);
     void SetSaveImages(
-        PBYTE pbThumbnail, DWORD dwThumbnailBytes, PBYTE pbImage,
-        DWORD dwImageBytes, PBYTE pbTextData,
-        DWORD dwTextDataBytes);  // Sets the thumbnail & image for the save,
-                                 // optionally setting the metadata in the png
+        std::uint8_t* pbThumbnail, unsigned int thumbnailBytes,
+        std::uint8_t* pbImage, unsigned int imageBytes,
+        std::uint8_t* pbTextData,
+        unsigned int textDataBytes);  // Sets the thumbnail & image for the
+                                        // save, optionally setting the
+                                        // metadata in the png
     C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
                                             void* lpParam);
-    void CopySaveDataToNewSave(PBYTE pbThumbnail, DWORD cbThumbnail,
-                               WCHAR* wchNewName,
+    void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
+                               unsigned int cbThumbnail, WCHAR* wchNewName,
                                int (*Func)(void* lpParam, bool), void* lpParam);
     void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected);
     bool GetSaveDeviceSelected(unsigned int iPad);
@@ -261,9 +264,10 @@ public:
         void* lpParam);  // Get the thumbnail for an individual save referenced
                          // by pSaveInfo
 
-    void GetSaveCacheFileInfo(DWORD dwFile, XCONTENT_DATA& xContentData);
-    void GetSaveCacheFileInfo(DWORD dwFile, PBYTE* ppbImageData,
-                              DWORD* pdwImageBytes);
+    void GetSaveCacheFileInfo(unsigned int fileIndex, XCONTENT_DATA& xContentData);
+    void GetSaveCacheFileInfo(unsigned int fileIndex,
+                              std::uint8_t** ppbImageData,
+                              unsigned int* pImageBytes);
 
     // Load the save. Need to call GetSaveData once the callback is called
     C4JStorage::ESaveGameState LoadSaveData(PSAVE_INFO pSaveInfo,
@@ -282,25 +286,26 @@ public:
     void SetDLCPackageRoot(char* pszDLCRoot);
     C4JStorage::EDLCStatus GetDLCOffers(
         int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
-        DWORD dwOfferTypesBitmask = XMARKETPLACE_OFFERING_TYPE_CONTENT);
-    DWORD CancelGetDLCOffers();
+        std::uint32_t dwOfferTypesBitmask =
+            XMARKETPLACE_OFFERING_TYPE_CONTENT);
+    unsigned int CancelGetDLCOffers();
     void ClearDLCOffers();
-    XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(DWORD dw);
+    XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw);
     int GetOfferCount();
-    DWORD InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
-                       int (*Func)(void*, int, int), void* lpParam,
-                       bool bTrial = false);
-    DWORD GetAvailableDLCCount(int iPad);
+    unsigned int InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+                              int (*Func)(void*, int, int), void* lpParam,
+                              bool bTrial = false);
+    unsigned int GetAvailableDLCCount(int iPad);
 
     C4JStorage::EDLCStatus GetInstalledDLC(int iPad,
                                            int (*Func)(void*, int, int),
                                            void* lpParam);
-    XCONTENT_DATA& GetDLC(DWORD dw);
+    XCONTENT_DATA& GetDLC(unsigned int dw);
     std::uint32_t MountInstalledDLC(int iPad, std::uint32_t dwDLC,
                                     int (*Func)(void*, int, std::uint32_t,
                                                 std::uint32_t),
                                     void* lpParam, LPCSTR szMountDrive = NULL);
-    DWORD UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
+    unsigned int UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
     void GetMountedDLCFileList(const char* szMountDrive,
                                std::vector<std::string>& fileList);
     std::string GetMountedPath(std::string szMount);
@@ -309,11 +314,12 @@ public:
     C4JStorage::ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
-        BYTE** ppBuffer, DWORD* pdwBufferSize,
+        std::uint8_t** ppBuffer, unsigned int* pBufferSize,
         int (*Func)(void*, WCHAR*, int, bool, int) = NULL, void* lpParam = NULL,
         int iAction = 0);
     bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                      WCHAR* pwchFilename, BYTE* pBuffer, DWORD dwBufferSize);
+                      WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                      unsigned int bufferSize);
     bool DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                        WCHAR* pwchFilename);
     void StoreTMSPathName(WCHAR* pwchName = NULL);
@@ -323,7 +329,7 @@ public:
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, CHAR* pchFilePath, CHAR* pchBuffer,
-        DWORD dwBufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
+        unsigned int bufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
     HRESULT GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
 #endif
 
