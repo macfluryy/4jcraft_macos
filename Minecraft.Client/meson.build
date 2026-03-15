@@ -35,7 +35,6 @@ platform_sources += run_command(
 ).stdout().strip().split('\n')
 
 # linux-specific files (everything in Platform/Linux)
-linux_objects = []
 if host_machine.system() == 'linux'
   platform_sources += run_command(
     'sh', '-c',
@@ -44,22 +43,15 @@ if host_machine.system() == 'linux'
       + '" \\( -name "*.cpp" -o -name "*.c" \\) ',
       check : true,
   ).stdout().strip().split('\n')
-
-  _linux_objects_str = run_command(
-    'sh', '-c',
-    'find "'
-      + meson.current_source_dir() / 'Platform/Linux'
-      + '" -name "*.o"',
-    check : true,
-  ).stdout().strip()
-  if _linux_objects_str != ''
-    linux_objects += _linux_objects_str.split('\n')
-  endif
 endif
+
+shiggy_dep = dependency(
+  'shiggy',
+  fallback : ['shiggy', 'shiggy_dep'],
+)
 
 client = executable('Minecraft.Client',
   client_sources + platform_sources + localisation[1],
-  objects : linux_objects,
   include_directories : include_directories('Platform', 'Platform/Linux/Iggy/include'),
   dependencies : [
     render_dep,
@@ -72,6 +64,7 @@ client = executable('Minecraft.Client',
     glu_dep,
     thread_dep,
     thread_dep,
+    shiggy_dep,
     dependency('zlib'),
   ],
   cpp_args : global_cpp_args + global_cpp_defs + [
