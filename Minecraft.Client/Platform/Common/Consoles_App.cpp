@@ -5285,8 +5285,8 @@ int CMinecraftApp::DLCMountedCallback(void *pParam,int iPad,std::uint32_t dwErr,
 	 m_Time.qwAppTime.QuadPart += qwDeltaTime.QuadPart;    
 	 m_Time.qwTime.QuadPart     = qwNewTime.QuadPart;
 
-	 m_Time.fElapsedTime      = m_Time.fSecsPerTick * ((FLOAT)(qwDeltaTime.QuadPart));
-	 m_Time.fAppTime          = m_Time.fSecsPerTick * ((FLOAT)(m_Time.qwAppTime.QuadPart));    
+	 m_Time.fElapsedTime      = m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+	 m_Time.fAppTime          = m_Time.fSecsPerTick * static_cast<float>(m_Time.qwAppTime.QuadPart);
  }
 
 
@@ -6099,7 +6099,7 @@ std::wstring CMinecraftApp::FormatHTMLString(int iPad, const std::wstring &desc,
 #endif // _XBOX
 
 	// Fix for #8903 - UI: Localization: KOR/JPN/CHT: Button Icons are rendered with padding space, which looks no good	
-	DWORD dwLanguage = XGetLanguage( );
+	std::uint32_t dwLanguage = XGetLanguage( );
 	switch(dwLanguage)
 	{
 	case XC_LANGUAGE_KOREAN:	

@@ -291,7 +291,7 @@ public:
 	static void NotificationsCallback(void *pParam,std::uint32_t dwNotification, unsigned int uiParam);
 
 	// for the ethernet being disconnected
-	static void		LiveLinkChangeCallback(void *pParam,BOOL bConnected);
+	static void		LiveLinkChangeCallback(void *pParam, bool bConnected);
 	bool		    GetLiveLinkRequired()																								{return m_bLiveLinkRequired;}
 	void			SetLiveLinkRequired(bool required)																					{m_bLiveLinkRequired=required;}
 

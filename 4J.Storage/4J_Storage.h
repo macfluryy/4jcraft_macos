@@ -329,7 +329,7 @@ public:
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, CHAR* pchFilePath, CHAR* pchBuffer,
-        DWORD dwBufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
+        unsigned int dwBufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
     HRESULT GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
 #endif
 
