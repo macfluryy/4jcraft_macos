@@ -2143,6 +2143,14 @@ void Minecraft::run_middle() {
 
 void Minecraft::run_end() { destroy(); }
 
+void Minecraft::emergencySave() {
+    // 4J - lots of try/catches removed here, and garbage collector things
+    levelRenderer->clear();
+    AABB::clearPool();
+    Vec3::clearPool();
+    setLevel(NULL);
+}
+
 void Minecraft::renderFpsMeter(__int64 tickTime) {
     int nsPer60Fps = 1000000000l / 60;
     if (lastTimer == -1) {
