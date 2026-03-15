@@ -46,19 +46,21 @@ void ConsoleUIController::init(S32 w, S32 h) {
     // init
     gdraw_funcs = gdraw_GL_CreateContext(w, h, 0);
 
-	if (!gdraw_funcs)
-	{
-		app.DebugPrintf("Failed to initialise GDraw GL!\n");
-		app.FatalLoadError();
-	}
+    if (!gdraw_funcs) {
+        app.DebugPrintf("Failed to initialise GDraw GL!\n");
+        app.FatalLoadError();
+    }
 
-	gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000, 16 * 1024 * 1024);
-	gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000, 128 * 1024 * 1024);
-	gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10, 32 * 1024 * 1024);
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000,
+                               16 * 1024 * 1024);
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
+                               128 * 1024 * 1024);
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
+                               32 * 1024 * 1024);
 
-	IggySetGDraw(gdraw_funcs);
+    IggySetGDraw(gdraw_funcs);
 
-	postInit();
+    postInit();
 #endif
 }
 

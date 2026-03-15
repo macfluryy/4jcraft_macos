@@ -31,4 +31,4 @@
 #include "d3d11_stubs.h"
 #include "xbox_stubs.h"
 
-#endif // STUBS_H
+#endif  // STUBS_H
