@@ -558,7 +558,7 @@ void				C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 #if defined(__linux__)
 C4JStorage::C4JStorage() {}
 void								C4JStorage::Tick() {}
-C4JStorage::EMessageResult			C4JStorage::RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,DWORD dwFocusButton) { return C4JStorage::EMessage_Undefined; }
+C4JStorage::EMessageResult			C4JStorage::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA,unsigned int uiOptionC, unsigned int dwPad, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,unsigned int dwFocusButton) { return C4JStorage::EMessage_Undefined; }
 C4JStorage::EMessageResult			C4JStorage::GetMessageBoxResult()  { return C4JStorage::EMessage_Undefined; }
 bool								C4JStorage::SetSaveDevice(int( *Func)(LPVOID,const bool),LPVOID lpParam, bool bForceResetOfSaveDevice) { return true; }
 void								C4JStorage::Init(LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize, int( *Func)(LPVOID, const ESavingMessage, int),LPVOID lpParam) {}
@@ -585,8 +585,8 @@ void								C4JStorage::SetSaveMessageVPosition(float fY) {}
 //C4JStorage::ESGIStatus				C4JStorage::GetSavesInfo(int iPad,bool ( *Func)(LPVOID, int, CACHEINFOSTRUCT *, int, HRESULT),LPVOID lpParam,char *pszSavePackName) { return C4JStorage::ESGIStatus_Idle; }
 C4JStorage::ESaveGameState			C4JStorage::GetSavesInfo(int iPad,int ( *Func)(LPVOID lpParam,SAVE_DETAILS *pSaveDetails,const bool),LPVOID lpParam,char *pszSavePackName) { return C4JStorage::ESaveGame_Idle; }
 
-void								C4JStorage::GetSaveCacheFileInfo(DWORD dwFile,XCONTENT_DATA &xContentData) {}
-void								C4JStorage::GetSaveCacheFileInfo(DWORD dwFile,	PBYTE *ppbImageData, DWORD *pdwImageBytes) {}
+void								C4JStorage::GetSaveCacheFileInfo(unsigned int dwFile,XCONTENT_DATA &xContentData) {}
+void								C4JStorage::GetSaveCacheFileInfo(unsigned int dwFile,	std::uint8_t * *ppbImageData, unsigned int *pdwImageBytes) {}
 C4JStorage::ESaveGameState			C4JStorage::LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool, const bool), LPVOID lpParam) {return C4JStorage::ESaveGame_Idle;}
 C4JStorage::EDeleteGameStatus		C4JStorage::DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool), LPVOID lpParam) { return C4JStorage::EDeleteGame_Idle; }
 PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}

@@ -199,11 +199,11 @@ public:
 
     // Messages
     C4JStorage::EMessageResult RequestMessageBox(
-        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
-        DWORD dwPad = XUSER_INDEX_ANY,
+        unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+        unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
         void* lpParam = NULL, C4JStringTable* pStringTable = NULL,
-        WCHAR* pwchFormatString = NULL, DWORD dwFocusButton = 0);
+        WCHAR* pwchFormatString = NULL, unsigned int dwFocusButton = 0);
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
@@ -264,9 +264,10 @@ public:
         void* lpParam);  // Get the thumbnail for an individual save referenced
                          // by pSaveInfo
 
-    void GetSaveCacheFileInfo(DWORD dwFile, XCONTENT_DATA& xContentData);
-    void GetSaveCacheFileInfo(DWORD dwFile, PBYTE* ppbImageData,
-                              DWORD* pdwImageBytes);
+    void GetSaveCacheFileInfo(unsigned int dwFile, XCONTENT_DATA& xContentData);
+    void GetSaveCacheFileInfo(unsigned int dwFile,
+                              std::uint8_t** ppbImageData,
+                              unsigned int* pdwImageBytes);
 
     // Load the save. Need to call GetSaveData once the callback is called
     C4JStorage::ESaveGameState LoadSaveData(PSAVE_INFO pSaveInfo,

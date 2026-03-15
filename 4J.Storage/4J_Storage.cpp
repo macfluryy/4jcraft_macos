@@ -13,10 +13,11 @@ C4JStorage::C4JStorage() : m_pStringTable(nullptr) {}
 void C4JStorage::Tick(void) {}
 
 C4JStorage::EMessageResult C4JStorage::RequestMessageBox(
-    UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
+    unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+    unsigned int uiOptionC, unsigned int dwPad,
     int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
     C4JStringTable* pStringTable, WCHAR* pwchFormatString,
-    DWORD dwFocusButton) {
+    unsigned int dwFocusButton) {
     return EMessage_ResultAccept;
 }
 
@@ -96,12 +97,13 @@ C4JStorage::ESaveGameState C4JStorage::LoadSaveDataThumbnail(
     void* lpParam) {
     return ESaveGame_Idle;
 }
-void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile,
+void C4JStorage::GetSaveCacheFileInfo(unsigned int dwFile,
                                       XCONTENT_DATA& xContentData) {
     memset(&xContentData, 0, sizeof(xContentData));
 }
-void C4JStorage::GetSaveCacheFileInfo(DWORD dwFile, PBYTE* ppbImageData,
-                                      DWORD* pdwImageBytes) {
+void C4JStorage::GetSaveCacheFileInfo(unsigned int dwFile,
+                                      std::uint8_t** ppbImageData,
+                                      unsigned int* pdwImageBytes) {
     if (ppbImageData) *ppbImageData = nullptr;
     if (pdwImageBytes) *pdwImageBytes = 0;
 }
