@@ -6,6 +6,17 @@
 #include "Achievement.h"
 
 /**
+ * @class Achievement
+ * @brief Represents a Minecraft achievement.
+ *
+ * Achievements are stat objects that can be unlocked by the player.
+ * Each achievement has a position in the achievement tree
+ * a description and an optional icon and prerequisite.
+ *
+ * Use postConstruct() to register the achievement globally.
+ */
+
+/**
  * @brief Performs internal initialization for the achievement.
  *
  * Updates the global achievement grid bounds.
@@ -65,16 +76,17 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       y(y),
       requires(requires) {}
 
-/**
- * @brief Sets the decription formatter (DescFormatter)
- * @param descFormatter Pointer to the DescFormatter formatting the description text.
- * @return self
-**/
-Achievement* Achievement::setDescFormatter(DescFormatter* descFormatter) {
+          /**
+           * @brief Sets the decription formatter (DescFormatter)
+           * @param descFormatter Pointer to the DescFormatter formatting the
+           * description text.
+           * @return self
+           **/
+          Achievement
+          * Achievement::setDescFormatter(DescFormatter * descFormatter) {
     this->descFormatter = descFormatter;
     return this;
 }
-
 
 /**
  * @brief Returns whether the Achivement is golden
