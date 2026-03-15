@@ -106,7 +106,7 @@ static inline bool CReleased(int cb) {
 }
 
 //Sets controller dead zone
-int deadZone = 8000;
+static int deadZone = 8000;
 
 //Watched controller axes set
 static const SDL_GameControllerAxis s_watchedAxis[] = {
@@ -154,7 +154,7 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
                 break;
             }
         }
-    } else if (controller) { //takes controller input only when controller exists
+    } else if (controller) { //only checks when a controller exists
         if (e->type == SDL_CONTROLLERDEVICEREMOVED) {
             SDL_Joystick* joy = SDL_GameControllerGetJoystick(controller);
             if (SDL_JoystickInstanceID(joy) == e->cdevice.which) {
@@ -284,7 +284,6 @@ void C_4JInput::Tick() {
             if (cb >= 0 && cb < BTN_COUNT)
                 s_btnsCurrent[cb] = SDL_GameControllerGetButton(controller, s_watchedBtns[i]);
         }
-
         for (int i = 0; i < s_watchedAxisCount; ++i) {
             int ca = s_watchedAxis[i];
             if (ca >= 0 && ca < AXS_COUNT) {
