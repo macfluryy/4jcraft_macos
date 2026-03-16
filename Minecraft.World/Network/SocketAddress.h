@@ -1,6 +1,3 @@
 #pragma once
 
-class SocketAddress
-{
-
-};
+class SocketAddress {};

@@ -1,42 +1,39 @@
 #pragma once
 
-
 #include "Container.h"
 #include "../Headers/net.minecraft.world.ContainerListener.h"
 
-class SimpleContainer : public Container
-{
+class SimpleContainer : public Container {
 private:
-	int name;
-	int size;
-	ItemInstanceArray *items;
-	std::vector<net_minecraft_world::ContainerListener *> *listeners;
+    int name;
+    int size;
+    ItemInstanceArray* items;
+    std::vector<net_minecraft_world::ContainerListener*>* listeners;
 
 public:
-	SimpleContainer(int name, int size);
+    SimpleContainer(int name, int size);
 
-	void addListener(net_minecraft_world::ContainerListener *listener);
+    void addListener(net_minecraft_world::ContainerListener* listener);
 
-	void removeListener(net_minecraft_world::ContainerListener *listener);
+    void removeListener(net_minecraft_world::ContainerListener* listener);
 
-	std::shared_ptr<ItemInstance> getItem(unsigned int slot);
+    std::shared_ptr<ItemInstance> getItem(unsigned int slot);
 
-	std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
-	std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int count);
+    std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
 
-	void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
+    void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
 
-	unsigned int getContainerSize();
+    unsigned int getContainerSize();
 
-	int getName();
+    int getName();
 
-	int getMaxStackSize();
+    int getMaxStackSize();
 
-	void setChanged();
+    void setChanged();
 
-	bool stillValid(std::shared_ptr<Player> player);
+    bool stillValid(std::shared_ptr<Player> player);
 
-	void startOpen() { } // TODO Auto-generated method stub
-	void stopOpen() { } // TODO Auto-generated method stub
-
+    void startOpen() {}  // TODO Auto-generated method stub
+    void stopOpen() {}   // TODO Auto-generated method stub
 };

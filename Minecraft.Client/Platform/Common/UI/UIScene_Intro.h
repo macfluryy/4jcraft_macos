@@ -45,12 +45,11 @@ public:
 	virtual void handleAnimationEnd();
 	virtual void handleGainFocus(bool navBack);
 
-#ifdef __linux__
-	virtual void tick();
-#endif
-
 #ifdef __PSVITA__
 	virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId, bool bPressed, bool bRepeat, bool bReleased);
 #endif
 
+#ifndef _ENABLEIGGY
+	virtual void tick();
+#endif
 };

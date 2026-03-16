@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "DirectoryLevelStorageSource.h"
 #include "../../IO/Files/FileFilter.h"
 #include "../../IO/Files/FilenameFilter.h"
@@ -8,27 +7,35 @@
 class ProgressListener;
 class LevelStorage;
 
-class McRegionLevelStorageSource : public DirectoryLevelStorageSource
-{
+class McRegionLevelStorageSource : public DirectoryLevelStorageSource {
 public:
-	class ChunkFile;
+    class ChunkFile;
 
-	McRegionLevelStorageSource(File dir);
+    McRegionLevelStorageSource(File dir);
     virtual std::wstring getName();
-    virtual std::vector<LevelSummary *> *getLevelList();
+    virtual std::vector<LevelSummary*>* getLevelList();
     virtual void clearAll();
-    virtual std::shared_ptr<LevelStorage> selectLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, bool createPlayerDir);
-    virtual bool isConvertible(ConsoleSaveFile *saveFile, const std::wstring& levelId);
-    virtual bool requiresConversion(ConsoleSaveFile *saveFile, const std::wstring& levelId);
-    virtual bool convertLevel(ConsoleSaveFile *saveFile, const std::wstring& levelId, ProgressListener *progress);
+    virtual std::shared_ptr<LevelStorage> selectLevel(
+        ConsoleSaveFile* saveFile, const std::wstring& levelId,
+        bool createPlayerDir);
+    virtual bool isConvertible(ConsoleSaveFile* saveFile,
+                               const std::wstring& levelId);
+    virtual bool requiresConversion(ConsoleSaveFile* saveFile,
+                                    const std::wstring& levelId);
+    virtual bool convertLevel(ConsoleSaveFile* saveFile,
+                              const std::wstring& levelId,
+                              ProgressListener* progress);
 
 private:
 #if 0
 	// 4J - not required anymore
 	void addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders);
 #endif
-    void convertRegions(File &baseFolder, std::vector<ChunkFile *> *chunkFiles, int currentCount, int totalCount, ProgressListener *progress);
-    void eraseFolders(std::vector<File *> *folders, int currentCount, int totalCount, ProgressListener *progress);
+    void convertRegions(File& baseFolder, std::vector<ChunkFile*>* chunkFiles,
+                        int currentCount, int totalCount,
+                        ProgressListener* progress);
+    void eraseFolders(std::vector<File*>* folders, int currentCount,
+                      int totalCount, ProgressListener* progress);
 
 public:
 #if 0

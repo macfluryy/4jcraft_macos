@@ -1,13 +1,16 @@
 #pragma once
 #include "QuadrupedModel.h"
 
-class SheepModel : public QuadrupedModel
-{
+class SheepModel : public QuadrupedModel {
 private:
-	float headXRot;
-public:
-	SheepModel();
+    float headXRot;
 
-	virtual void prepareMobModel(std::shared_ptr<Mob> mob, float time, float r, float a);
-	virtual void setupAnim(float time, float r, float bob, float yRot, float xRot, float scale, unsigned int uiBitmaskOverrideAnim=0);
+public:
+    SheepModel();
+
+    virtual void prepareMobModel(std::shared_ptr<Mob> mob, float time, float r,
+                                 float a);
+    virtual void setupAnim(float time, float r, float bob, float yRot,
+                           float xRot, float scale,
+                           unsigned int uiBitmaskOverrideAnim = 0);
 };

@@ -31,7 +31,7 @@ protected:
 	HRESULT OnRender(XUIMessageRender *pRenderData, BOOL &rfHandled);
 
 private:
-	BOOL m_bDirty;
+	bool m_bDirty;
 	float m_fScale,m_fAlpha;
 	int	m_iPad;
 	CXuiSceneInventory *m_containerScene;

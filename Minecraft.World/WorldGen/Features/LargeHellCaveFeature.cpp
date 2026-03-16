@@ -3,39 +3,38 @@
 #include "LargeHellCaveFeature.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 
-void LargeHellCaveFeature::addRoom(int xOffs, int zOffs, byteArray blocks, double xRoom, double yRoom, double zRoom)
-{
-        addTunnel(xOffs, zOffs, blocks, xRoom, yRoom, zRoom, 1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
+void LargeHellCaveFeature::addRoom(int xOffs, int zOffs, byteArray blocks,
+                                   double xRoom, double yRoom, double zRoom) {
+    addTunnel(xOffs, zOffs, blocks, xRoom, yRoom, zRoom,
+              1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
 }
 
-void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, double xCave, double yCave, double zCave, float thickness, float yRot, float xRot, int step, int dist, double yScale)
-{
+void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
+                                     double xCave, double yCave, double zCave,
+                                     float thickness, float yRot, float xRot,
+                                     int step, int dist, double yScale) {
     double xMid = xOffs * 16 + 8;
     double zMid = zOffs * 16 + 8;
 
     float yRota = 0;
     float xRota = 0;
-    Random *random = new Random(this->random->nextLong());
+    Random* random = new Random(this->random->nextLong());
 
-    if (dist <= 0)
-	{
+    if (dist <= 0) {
         int max = radius * 16 - 16;
         dist = max - random->nextInt(max / 4);
     }
     bool singleStep = false;
 
-    if (step == -1)
-	{
+    if (step == -1) {
         step = dist / 2;
         singleStep = true;
     }
 
-
     int splitPoint = random->nextInt(dist / 2) + dist / 4;
     bool steep = random->nextInt(6) == 0;
 
-    for (; step < dist; step++)
-	{
+    for (; step < dist; step++) {
         double rad = 1.5 + (Mth::sin(step * PI / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
@@ -45,12 +44,9 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
         yCave += xs;
         zCave += Mth::sin(yRot) * xc;
 
-        if (steep)
-		{
+        if (steep) {
             xRot *= 0.92f;
-        }
-		else
-		{
+        } else {
             xRot *= 0.7f;
         }
         xRot += xRota * 0.1f;
@@ -58,15 +54,19 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
 
         xRota *= 0.90f;
         yRota *= 0.75f;
-        xRota += (random->nextFloat() - random->nextFloat()) * random->nextFloat() * 2;
-        yRota += (random->nextFloat() - random->nextFloat()) * random->nextFloat() * 4;
+        xRota += (random->nextFloat() - random->nextFloat()) *
+                 random->nextFloat() * 2;
+        yRota += (random->nextFloat() - random->nextFloat()) *
+                 random->nextFloat() * 4;
 
-
-        if (!singleStep && step == splitPoint && thickness > 1)
-		{
-            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave, random->nextFloat() * 0.5f + 0.5f, yRot - PI / 2, xRot / 3, step, dist, 1.0);
-            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave, random->nextFloat() * 0.5f + 0.5f, yRot + PI / 2, xRot / 3, step, dist, 1.0);
-			delete random;
+        if (!singleStep && step == splitPoint && thickness > 1) {
+            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
+                      random->nextFloat() * 0.5f + 0.5f, yRot - PI / 2,
+                      xRot / 3, step, dist, 1.0);
+            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
+                      random->nextFloat() * 0.5f + 0.5f, yRot + PI / 2,
+                      xRot / 3, step, dist, 1.0);
+            delete random;
             return;
         }
         if (!singleStep && random->nextInt(4) == 0) continue;
@@ -76,14 +76,15 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
             double zd = zCave - zMid;
             double remaining = dist - step;
             double rr = (thickness + 2) + 16;
-            if (xd * xd + zd * zd - (remaining * remaining) > rr * rr)
-			{
-				delete random;
+            if (xd * xd + zd * zd - (remaining * remaining) > rr * rr) {
+                delete random;
                 return;
             }
         }
 
-        if (xCave < xMid - 16 - rad * 2 || zCave < zMid - 16 - rad * 2 || xCave > xMid + 16 + rad * 2 || zCave > zMid + 16 + rad * 2) continue;
+        if (xCave < xMid - 16 - rad * 2 || zCave < zMid - 16 - rad * 2 ||
+            xCave > xMid + 16 + rad * 2 || zCave > zMid + 16 + rad * 2)
+            continue;
 
         int x0 = Mth::floor(xCave - rad) - xOffs * 16 - 1;
         int x1 = Mth::floor(xCave + rad) - xOffs * 16 + 1;
@@ -104,20 +105,17 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
         if (z1 > 16) z1 = 16;
 
         bool detectedWater = false;
-        for (int xx = x0; !detectedWater && xx < x1; xx++)
-		{
-            for (int zz = z0; !detectedWater && zz < z1; zz++)
-			{
-                for (int yy = y1 + 1; !detectedWater && yy >= y0 - 1; yy--)
-				{
+        for (int xx = x0; !detectedWater && xx < x1; xx++) {
+            for (int zz = z0; !detectedWater && zz < z1; zz++) {
+                for (int yy = y1 + 1; !detectedWater && yy >= y0 - 1; yy--) {
                     int p = (xx * 16 + zz) * Level::genDepth + yy;
                     if (yy < 0 || yy >= Level::genDepth) continue;
-                    if (blocks[p] == Tile::lava_Id || blocks[p] == Tile::calmLava_Id)
-					{
+                    if (blocks[p] == Tile::lava_Id ||
+                        blocks[p] == Tile::calmLava_Id) {
                         detectedWater = true;
                     }
-                    if (yy != y0 - 1 && xx != x0 && xx != x1 - 1 && zz != z0 && zz != z1 - 1)
-					{
+                    if (yy != y0 - 1 && xx != x0 && xx != x1 - 1 && zz != z0 &&
+                        zz != z1 - 1) {
                         yy = y0;
                     }
                 }
@@ -125,22 +123,18 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
         }
         if (detectedWater) continue;
 
-        for (int xx = x0; xx < x1; xx++)
-		{
+        for (int xx = x0; xx < x1; xx++) {
             double xd = ((xx + xOffs * 16 + 0.5) - xCave) / rad;
-            for (int zz = z0; zz < z1; zz++)
-			{
+            for (int zz = z0; zz < z1; zz++) {
                 double zd = ((zz + zOffs * 16 + 0.5) - zCave) / rad;
                 int p = (xx * 16 + zz) * Level::genDepth + y1;
-                for (int yy = y1 - 1; yy >= y0; yy--)
-				{
+                for (int yy = y1 - 1; yy >= y0; yy--) {
                     double yd = (yy + 0.5 - yCave) / yRad;
-                    if (yd > -0.7 && xd * xd + yd * yd + zd * zd < 1)
-					{
+                    if (yd > -0.7 && xd * xd + yd * yd + zd * zd < 1) {
                         int block = blocks[p];
-                        if (block == Tile::hellRock_Id || block == Tile::dirt_Id || block == Tile::grass_Id)
-						{
-                            blocks[p] = (uint8_t) 0;
+                        if (block == Tile::hellRock_Id ||
+                            block == Tile::dirt_Id || block == Tile::grass_Id) {
+                            blocks[p] = (uint8_t)0;
                         }
                     }
                     p--;
@@ -149,17 +143,15 @@ void LargeHellCaveFeature::addTunnel(int xOffs, int zOffs, byteArray blocks, dou
         }
         if (singleStep) break;
     }
-	delete random;
+    delete random;
 }
 
-
-void LargeHellCaveFeature::addFeature(Level *level, int x, int z, int xOffs, int zOffs, byteArray blocks)
-{
+void LargeHellCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
+                                      int zOffs, byteArray blocks) {
     int caves = random->nextInt(random->nextInt(random->nextInt(10) + 1) + 1);
     if (random->nextInt(5) != 0) caves = 0;
 
-    for (int cave = 0; cave < caves; cave++)
-	{
+    for (int cave = 0; cave < caves; cave++) {
         double xCave = x * 16 + random->nextInt(16);
         double yCave = random->nextInt(Level::genDepth);
         double zCave = z * 16 + random->nextInt(16);
@@ -171,14 +163,12 @@ void LargeHellCaveFeature::addFeature(Level *level, int x, int z, int xOffs, int
         }
 
         for (int i = 0; i < tunnels; i++) {
-
             float yRot = random->nextFloat() * PI * 2;
             float xRot = ((random->nextFloat() - 0.5f) * 2) / 8;
             float thickness = random->nextFloat() * 2 + random->nextFloat();
 
-            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave, thickness*2, yRot, xRot, 0, 0, 0.5);
+            addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave, thickness * 2,
+                      yRot, xRot, 0, 0, 0.5);
         }
     }
 }
-
-

@@ -22,7 +22,7 @@ public:
 		e_getStatusInProgress,
 		e_getStatusSucceeded
 	};
-	typedef void (*CallbackFunc)(LPVOID lpParam, Status s, int error_code);
+	typedef void (*CallbackFunc)(void* lpParam, Status s, int error_code);
 
 	enum GetInfoStatus
 	{
@@ -66,7 +66,7 @@ public:
 	bool saveIsAvailable();
 
 	int getSaveFilesize();
-	bool getSaveData(const char* localDirname, CallbackFunc cb, LPVOID lpParam);
+	bool getSaveData(const char* localDirname, CallbackFunc cb, void* lpParam);
 
 	bool setSaveData(PSAVE_INFO info, CallbackFunc cb, void* lpParam);
 	bool waitingForSetData() { return (m_setDataStatus == e_settingData); }
@@ -80,9 +80,9 @@ public:
 
 	void SetServiceID(char *pchServiceID) { m_pchServiceID=pchServiceID; }
 
-	virtual bool init(CallbackFunc cb, LPVOID lpParam) = 0;
-	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam) = 0;
-	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam) = 0;
+	virtual bool init(CallbackFunc cb, void* lpParam) = 0;
+	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam) = 0;
+	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam) = 0;
 	virtual void abort() = 0;
 	virtual bool shutdown();
 	virtual bool setDataInternal() = 0;
@@ -95,7 +95,7 @@ public:
 
 
 
-	bool setData( PSAVE_INFO info, CallbackFunc cb, LPVOID lpParam );
+	bool setData( PSAVE_INFO info, CallbackFunc cb, void* lpParam );
 	static int LoadSaveDataThumbnailReturned(void *lpParam,std::uint8_t *thumbnailData,unsigned int thumbnailBytes);
 	static int setDataThread(void* lpParam);
 
@@ -119,4 +119,3 @@ protected:
 	bool m_bTransferStarted;
 
 };
-

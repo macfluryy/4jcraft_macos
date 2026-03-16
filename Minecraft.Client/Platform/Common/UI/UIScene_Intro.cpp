@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIScene_Intro.h"
 
-#ifdef __linux__
+#ifndef _ENABLEIGGY
 static int s_introTickCount = 0;
 #endif
 
@@ -12,7 +12,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : U
 	initialiseMovie();
 	m_bIgnoreNavigate = false;
 	m_bAnimationEnded = false;
-#ifdef __linux__
+#ifndef _ENABLEIGGY
 	s_introTickCount = 0;
 #endif
 
@@ -36,8 +36,6 @@ UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : U
 	int platformIdx = 4;
 #elif defined(__PSVITA__)
 	int platformIdx = 5;
-#elif defined(__linux__)
-	int platformIdx = 0;
 #endif
 
 	IggyDataValue result;
@@ -173,7 +171,7 @@ void UIScene_Intro::handleGainFocus(bool navBack)
 	}
 }
 
-#ifdef __linux__
+#ifndef _ENABLEIGGY
 void UIScene_Intro::tick()
 {
 	// Call base tick first (processes Iggy ticking)

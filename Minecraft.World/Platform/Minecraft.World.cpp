@@ -45,60 +45,60 @@
 #include "../Stats/CommonStats.h"
 #endif
 
-void MinecraftWorld_RunStaticCtors()
-{
-	// The ordering of these static ctors can be important. If they are within statement blocks then
-	// DO NOT CHANGE the ordering - 4J Stu
+void MinecraftWorld_RunStaticCtors() {
+    // The ordering of these static ctors can be important. If they are within
+    // statement blocks then DO NOT CHANGE the ordering - 4J Stu
 
-	Packet::staticCtor();
+    Packet::staticCtor();
 
-	{
-		MaterialColor::staticCtor();
-		Material::staticCtor();
-		Tile::staticCtor();
-		HatchetItem::staticCtor();
-		PickaxeItem::staticCtor();
-		ShovelItem::staticCtor();
-		BlockReplacements::staticCtor();
-		Biome::staticCtor();	
-		Item::staticCtor();
-		FurnaceRecipes::staticCtor();
-		Recipes::staticCtor();	
+    {
+        MaterialColor::staticCtor();
+        Material::staticCtor();
+        Tile::staticCtor();
+        HatchetItem::staticCtor();
+        PickaxeItem::staticCtor();
+        ShovelItem::staticCtor();
+        BlockReplacements::staticCtor();
+        Biome::staticCtor();
+        Item::staticCtor();
+        FurnaceRecipes::staticCtor();
+        Recipes::staticCtor();
 #ifdef _DURANGO
-		GenericStats::setInstance(new DurangoStats());
+        GenericStats::setInstance(new DurangoStats());
 #else
-		GenericStats::setInstance(new CommonStats());
-		Stats::staticCtor();
+        GenericStats::setInstance(new CommonStats());
+        Stats::staticCtor();
 #endif
-		//Achievements::staticCtor(); // 4J Stu - This is now called from within the Stats::staticCtor()
-		Skeleton::staticCtor();
-		PigZombie::staticCtor();
-		TileEntity::staticCtor();
-		EntityIO::staticCtor();
-		MobCategory::staticCtor();
+        // Achievements::staticCtor(); // 4J Stu - This is now called from
+        // within the Stats::staticCtor()
+        Skeleton::staticCtor();
+        PigZombie::staticCtor();
+        TileEntity::staticCtor();
+        EntityIO::staticCtor();
+        MobCategory::staticCtor();
 
-		Item::staticInit();
-		LevelChunk::staticCtor();
+        Item::staticInit();
+        LevelChunk::staticCtor();
 
-		LevelType::staticCtor();
+        LevelType::staticCtor();
 
-		MineShaftPieces::staticCtor();
-		StrongholdFeature::staticCtor();
-		VillagePieces::Smithy::staticCtor();
-		VillageFeature::staticCtor();
-		RandomScatteredLargeFeature::staticCtor();
-	}
-	EnderMan::staticCtor();
-	PotionBrewing::staticCtor();
-	Enchantment::staticCtor();
+        MineShaftPieces::staticCtor();
+        StrongholdFeature::staticCtor();
+        VillagePieces::Smithy::staticCtor();
+        VillageFeature::staticCtor();
+        RandomScatteredLargeFeature::staticCtor();
+    }
+    EnderMan::staticCtor();
+    PotionBrewing::staticCtor();
+    Enchantment::staticCtor();
 
-	SharedConstants::staticCtor();
+    SharedConstants::staticCtor();
 
-	ServerLevel::staticCtor();
-	SparseLightStorage::staticCtor();
-	CompressedTileStorage::staticCtor();
-	SparseDataStorage::staticCtor();
-	McRegionChunkStorage::staticCtor();
-	Villager::staticCtor();
-	GameType::staticCtor();
+    ServerLevel::staticCtor();
+    SparseLightStorage::staticCtor();
+    CompressedTileStorage::staticCtor();
+    SparseDataStorage::staticCtor();
+    McRegionChunkStorage::staticCtor();
+    Villager::staticCtor();
+    GameType::staticCtor();
 }

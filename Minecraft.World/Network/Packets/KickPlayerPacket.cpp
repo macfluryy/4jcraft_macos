@@ -4,34 +4,24 @@
 #include "PacketListener.h"
 #include "KickPlayerPacket.h"
 
+KickPlayerPacket::KickPlayerPacket() { m_networkSmallId = 0; }
 
-
-KickPlayerPacket::KickPlayerPacket()
-{
-	m_networkSmallId = 0;
+KickPlayerPacket::KickPlayerPacket(std::uint8_t networkSmallId) {
+    m_networkSmallId = networkSmallId;
 }
 
-KickPlayerPacket::KickPlayerPacket(std::uint8_t networkSmallId)
-{
-	m_networkSmallId = networkSmallId;
+void KickPlayerPacket::handle(PacketListener* listener) {
+    listener->handleKickPlayer(shared_from_this());
 }
 
-void KickPlayerPacket::handle(PacketListener *listener)
+void KickPlayerPacket::read(DataInputStream* dis)  // throws IOException
 {
-	listener->handleKickPlayer(shared_from_this());
+    m_networkSmallId = dis->readByte();
 }
 
-void KickPlayerPacket::read(DataInputStream *dis) //throws IOException 
+void KickPlayerPacket::write(DataOutputStream* dos)  // throws IOException
 {
-	m_networkSmallId = dis->readByte();
+    dos->writeByte((std::uint8_t)m_networkSmallId);
 }
 
-void KickPlayerPacket::write(DataOutputStream *dos) //throws IOException
-{
-	dos->writeByte((std::uint8_t)m_networkSmallId);
-}
-
-int KickPlayerPacket::getEstimatedSize() 
-{
-	return 1;
-}
+int KickPlayerPacket::getEstimatedSize() { return 1; }

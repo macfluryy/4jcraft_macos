@@ -1,7 +1,6 @@
 #pragma once
 
-class FoodConstants
-{
+class FoodConstants {
 public:
     static const int MAX_FOOD;
     static const float MAX_SATURATION;

@@ -1,24 +1,34 @@
 #pragma once
 
-
 #include "TileItem.h"
 #include "../../Blocks/HalfSlabTile.h"
 
-class StoneSlabTileItem : public TileItem
-{
+class StoneSlabTileItem : public TileItem {
 private:
-	bool isFull;
-	HalfSlabTile *halfTile;
-	HalfSlabTile *fullTile;
+    bool isFull;
+    HalfSlabTile* halfTile;
+    HalfSlabTile* fullTile;
+
 public:
-	StoneSlabTileItem(int id, HalfSlabTile *halfTile, HalfSlabTile *fullTile, bool full);
+    StoneSlabTileItem(int id, HalfSlabTile* halfTile, HalfSlabTile* fullTile,
+                      bool full);
 
-	virtual Icon *getIcon(int itemAuxValue);
-	virtual int getLevelDataForAuxValue(int auxValue);
-	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
-	virtual bool useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
+    virtual Icon* getIcon(int itemAuxValue);
+    virtual int getLevelDataForAuxValue(int auxValue);
+    virtual unsigned int getDescriptionId(
+        std::shared_ptr<ItemInstance> instance);
+    virtual bool useOn(std::shared_ptr<ItemInstance> instance,
+                       std::shared_ptr<Player> player, Level* level, int x,
+                       int y, int z, int face, float clickX, float clickY,
+                       float clickZ, bool bTestUseOnOnly = false);
 
-	virtual bool mayPlace(Level *level, int x, int y, int z, int face,std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item);
+    virtual bool mayPlace(Level* level, int x, int y, int z, int face,
+                          std::shared_ptr<Player> player,
+                          std::shared_ptr<ItemInstance> item);
+
 private:
-	bool tryConvertTargetTile(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, bool bTestUseOnOnly);
+    bool tryConvertTargetTile(std::shared_ptr<ItemInstance> instance,
+                              std::shared_ptr<Player> player, Level* level,
+                              int x, int y, int z, int face,
+                              bool bTestUseOnOnly);
 };

@@ -3,16 +3,16 @@
 #include "WaterColor.h"
 
 // 4J Stu - Not using this any more
-//intArray WaterColor::pixels;
+// intArray WaterColor::pixels;
 //
-//void WaterColor::init(intArray pixels)
+// void WaterColor::init(intArray pixels)
 //{
 //	int *oldData = WaterColor::pixels.data;
 //	WaterColor::pixels = pixels;
 //	delete [] oldData;
 //}
 //
-//int WaterColor::get(double temp, double rain)
+// int WaterColor::get(double temp, double rain)
 //{
 //	rain *= temp;
 //	int x = (int) ((1 - temp) * 255);

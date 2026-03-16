@@ -5,50 +5,41 @@
 #include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "SwellGoal.h"
 
-SwellGoal::SwellGoal(Creeper *creeper)
-{
-	target = std::weak_ptr<Mob>();
+SwellGoal::SwellGoal(Creeper* creeper) {
+    target = std::weak_ptr<Mob>();
 
-	this->creeper = creeper;
-	setRequiredControlFlags(Control::MoveControlFlag);
+    this->creeper = creeper;
+    setRequiredControlFlags(Control::MoveControlFlag);
 }
 
-bool SwellGoal::canUse()
-{
-	std::shared_ptr<Mob> target = creeper->getTarget();
-	return creeper->getSwellDir() > 0 || (target != NULL && (creeper->distanceToSqr(target) < 3 * 3));
+bool SwellGoal::canUse() {
+    std::shared_ptr<Mob> target = creeper->getTarget();
+    return creeper->getSwellDir() > 0 ||
+           (target != NULL && (creeper->distanceToSqr(target) < 3 * 3));
 }
 
-void SwellGoal::start()
-{
-	creeper->getNavigation()->stop();
-	target = std::weak_ptr<Mob>(creeper->getTarget());
+void SwellGoal::start() {
+    creeper->getNavigation()->stop();
+    target = std::weak_ptr<Mob>(creeper->getTarget());
 }
 
-void SwellGoal::stop()
-{
-	target = std::weak_ptr<Mob>();
-}
+void SwellGoal::stop() { target = std::weak_ptr<Mob>(); }
 
-void SwellGoal::tick()
-{
-	if (target.lock() == NULL)
-	{
-		creeper->setSwellDir(-1);
-		return;
-	}
+void SwellGoal::tick() {
+    if (target.lock() == NULL) {
+        creeper->setSwellDir(-1);
+        return;
+    }
 
-	if (creeper->distanceToSqr(target.lock()) > 7 * 7)
-	{
-		creeper->setSwellDir(-1);
-		return;
-	}
+    if (creeper->distanceToSqr(target.lock()) > 7 * 7) {
+        creeper->setSwellDir(-1);
+        return;
+    }
 
-	if (!creeper->getSensing()->canSee(target.lock()))
-	{
-		creeper->setSwellDir(-1);
-		return;
-	}
+    if (!creeper->getSensing()->canSee(target.lock())) {
+        creeper->setSwellDir(-1);
+        return;
+    }
 
-	creeper->setSwellDir(1);
+    creeper->setSwellDir(1);
 }

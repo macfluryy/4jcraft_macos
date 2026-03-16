@@ -1,5 +1,7 @@
 #pragma once
 //using namespace std;
+#include <cstdint>
+
 #include "../media/xuiscene_teleportmenu.h"
 #include "XUI_CustomMessages.h"
 
@@ -60,5 +62,5 @@ private:
 	bool m_teleportToPlayer;
 
 	int m_playersCount;
-	BYTE m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
+	std::uint8_t m_players[MINECRAFT_NET_MAX_PLAYERS]; // An array of QNet small-id's
 };

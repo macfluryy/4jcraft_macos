@@ -8,10 +8,10 @@ class SonyRemoteStorage_Vita : public SonyRemoteStorage
 public:
 
 
-	virtual bool init(CallbackFunc cb, LPVOID lpParam);
+	virtual bool init(CallbackFunc cb, void* lpParam);
 
-	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam);
-	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam);
+	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam);
+	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam);
 
 	virtual void abort();
 	virtual bool setDataInternal();
@@ -40,4 +40,3 @@ private:
 
 
 };
-

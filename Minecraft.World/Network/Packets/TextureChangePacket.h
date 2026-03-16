@@ -1,30 +1,32 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class TextureChangePacket : public Packet, public std::enable_shared_from_this<TextureChangePacket>
-{
+class TextureChangePacket
+    : public Packet,
+      public std::enable_shared_from_this<TextureChangePacket> {
 public:
-	enum ETextureChangeType
-	{
-		e_TextureChange_Skin = 0,
-		e_TextureChange_Cape,
-	};
+    enum ETextureChangeType {
+        e_TextureChange_Skin = 0,
+        e_TextureChange_Cape,
+    };
 
     int id;
     ETextureChangeType action;
-	std::wstring path;
+    std::wstring path;
 
-	TextureChangePacket();
-	TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action, const std::wstring &path);
+    TextureChangePacket();
+    TextureChangePacket(std::shared_ptr<Entity> e, ETextureChangeType action,
+                        const std::wstring& path);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new TextureChangePacket()); }
-	virtual int getId() { return 157; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new TextureChangePacket());
+    }
+    virtual int getId() { return 157; }
 };

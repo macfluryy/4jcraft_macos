@@ -5,8 +5,7 @@
 #include "../../Level/Storage/ZonedChunkStorage.h"
 #include "../../Headers/com.mojang.nbt.h"
 
-class NbtSlotFile
-{
+class NbtSlotFile {
 private:
     static byteArray READ_BUFFER;
 
@@ -16,9 +15,9 @@ private:
     static const int FILE_SLOT_HEADER_SIZE = 12;
     static const int FILE_SLOT_SIZE = 500;
 
-    std::FILE *raf;
-    std::vector<int> **fileSlotMap;
-	int fileSlotMapLength;
+    std::FILE* raf;
+    std::vector<int>** fileSlotMap;
+    int fileSlotMapLength;
     std::vector<int> freeFileSlots;
     int totalFileSlots;
     static __int64 largest;
@@ -33,14 +32,14 @@ private:
     void seekSlot(int fileSlot);
 
 public:
-    std::vector<CompoundTag *> *readAll(int slot);
+    std::vector<CompoundTag*>* readAll(int slot);
 
 private:
-    std::vector<int> *toReplace;
+    std::vector<int>* toReplace;
 
     int getFreeSlot();
 
 public:
-    void replaceSlot(int slot, std::vector<CompoundTag *> *tags);
+    void replaceSlot(int slot, std::vector<CompoundTag*>* tags);
     void close();
 };

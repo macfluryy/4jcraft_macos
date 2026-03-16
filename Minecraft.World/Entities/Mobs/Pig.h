@@ -1,58 +1,57 @@
 #pragma once
 
-
-
 #include "Animal.h"
 
 class Player;
 class LightningBolt;
 class ControlledByPlayerGoal;
 
-class Pig : public Animal
-{
+class Pig : public Animal {
 public:
-	eINSTANCEOF GetType() { return eTYPE_PIG; }
-	static Entity *create(Level *level) { return new Pig(level); }
+    eINSTANCEOF GetType() { return eTYPE_PIG; }
+    static Entity* create(Level* level) { return new Pig(level); }
+
 private:
-	static const int DATA_SADDLE_ID = 16;
-	ControlledByPlayerGoal *controlGoal;
+    static const int DATA_SADDLE_ID = 16;
+    ControlledByPlayerGoal* controlGoal;
 
 public:
-	Pig(Level *level);
+    Pig(Level* level);
 
-	virtual bool useNewAi();
-	virtual int getMaxHealth();
-	virtual bool canBeControlledByRider();
+    virtual bool useNewAi();
+    virtual int getMaxHealth();
+    virtual bool canBeControlledByRider();
 
 protected:
-	virtual void defineSynchedData();
+    virtual void defineSynchedData();
 
 public:
-	virtual void addAdditonalSaveData(CompoundTag *tag);
-	virtual void readAdditionalSaveData(CompoundTag *tag);
+    virtual void addAdditonalSaveData(CompoundTag* tag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
-	virtual int getAmbientSound();
-	virtual int getHurtSound();
-	virtual int getDeathSound();
+    virtual int getAmbientSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
 
 public:
-	virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool interact(std::shared_ptr<Player> player);
 
 protected:
-	virtual int getDeathLoot();
-	virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
+    virtual int getDeathLoot();
+    virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 public:
-	bool hasSaddle();
-	void setSaddle(bool value);
-	virtual void thunderHit(const LightningBolt *lightningBolt);
+    bool hasSaddle();
+    void setSaddle(bool value);
+    virtual void thunderHit(const LightningBolt* lightningBolt);
 
 protected:
-	virtual void causeFallDamage(float distance);
+    virtual void causeFallDamage(float distance);
 
 public:
-	virtual std::shared_ptr<AgableMob> getBreedOffspring(std::shared_ptr<AgableMob> target);
-	bool isFood(std::shared_ptr<ItemInstance> itemInstance);
-	ControlledByPlayerGoal *getControlGoal();
+    virtual std::shared_ptr<AgableMob> getBreedOffspring(
+        std::shared_ptr<AgableMob> target);
+    bool isFood(std::shared_ptr<ItemInstance> itemInstance);
+    ControlledByPlayerGoal* getControlGoal();
 };

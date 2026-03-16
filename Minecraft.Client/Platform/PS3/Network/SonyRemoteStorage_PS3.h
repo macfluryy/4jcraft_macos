@@ -8,10 +8,10 @@ class SonyRemoteStorage_PS3 : public SonyRemoteStorage
 public:
 
 
-	virtual bool init(CallbackFunc cb, LPVOID lpParam);
+	virtual bool init(CallbackFunc cb, void* lpParam);
 
-	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, LPVOID lpParam);
-	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, LPVOID lpParam);
+	virtual bool getRemoteFileInfo(SceRemoteStorageStatus* pInfo, CallbackFunc cb, void* lpParam);
+	virtual bool getData(const char* remotePath, const char* localPath, CallbackFunc cb, void* lpParam);
 
 	virtual void abort();
 	virtual bool setDataInternal();
@@ -56,9 +56,8 @@ private:
 	virtual void runCallback();
 
 
-	static int SaveCompressCallback(LPVOID lpParam,bool bRes);
+	static int SaveCompressCallback(void* lpParam,bool bRes);
 	static int LoadCompressCallback(void *pParam,bool bIsCorrupt, bool bIsOwner);
 
 
 };
-

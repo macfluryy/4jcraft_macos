@@ -426,7 +426,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat, bool pressed
 				if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 				{
 					// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive is the npAvailability isn't SCE_OK
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 				}
@@ -437,20 +437,20 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat, bool pressed
 						// Signed in to PSN but not connected (no internet access)
 						assert(!ProfileManager.isConnectedToPSN(iPad));
 
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0] = IDS_OK;
 						ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 					}
 					else
 					{		
 						// Not signed in to PSN
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 						ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
 					}				
 #else // __PS3__
 					// get them to sign in to online
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 					uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
 #endif
@@ -490,7 +490,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat, bool pressed
 	case ACTION_MENU_RIGHT_SCROLL:
 		if( bDisplayBanTip )
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_ACTION_BAN_LEVEL_TITLE, IDS_ACTION_BAN_LEVEL_DESCRIPTION, uiIDA, 2, iPad,&UIScene_PauseMenu::BanGameDialogReturned,this, app.GetStringTable(), NULL, 0, false);
@@ -517,7 +517,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 		break;
 	case BUTTON_PAUSE_LEADERBOARDS:
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 
 			//4J Gordon: Being used for the leaderboards proper now
@@ -539,7 +539,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 				// Check if PSN is unavailable because of age restriction
 				if (errorCode == SCE_NP_ERROR_AGE_RESTRICTION)
 				{
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, m_iPad, NULL, NULL, app.GetStringTable());
 
@@ -551,7 +551,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 #if defined __PS3__ || __PSVITA__
 				// get them to sign in to online
 				m_eAction=eAction_ViewLeaderboardsPSN;
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, ProfileManager.GetPrimaryPad(),&UIScene_PauseMenu::MustSignInReturnedPSN,this, app.GetStringTable(), NULL, 0, false);
 #elif defined(__ORBIS__)
@@ -560,7 +560,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 				if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 				{
 					// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive is the npAvailability isn't SCE_OK
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, m_iPad, NULL, NULL, app.GetStringTable());
 				}
@@ -573,19 +573,19 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 						// Id
 						assert(!ProfileManager.isConnectedToPSN(m_iPad));
 
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0] = IDS_OK;
 						ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, m_iPad, NULL, NULL, app.GetStringTable());
 					}
 					else
 					{		
 						// Not signed in to PSN
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 						ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, m_iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
 					}
 #else
-			UINT uiIDA[1] = { IDS_OK };
+			unsigned int uiIDA[1] = { IDS_OK };
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, m_iPad);
 #endif
 			}
@@ -599,7 +599,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 				{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 					// you can't see leaderboards
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, m_iPad,NULL,this, app.GetStringTable(), NULL, 0, false);
 #endif
@@ -625,7 +625,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 		// guests can't look at achievements
 		if(ProfileManager.IsGuest(pNotifyPressData->UserIndex))
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_PRO_GUESTPROFILE_TITLE, IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable(), NULL, 0, false);
 		}
@@ -648,7 +648,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 			// Check if it's the trial version
 			if(ProfileManager.IsFullVersion())
 			{	
-				UINT uiIDA[3];
+				unsigned int uiIDA[3];
 
 				// is it the primary player exiting?
 				if(m_iPad==ProfileManager.GetPrimaryPad())
@@ -750,7 +750,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 					ui.ReduceTrialTimerValue();
 
 					// exit the level
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_CANCEL;
 					uiIDA[1]=IDS_CONFIRM_OK;
 					ui.RequestMessageBox(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST, uiIDA, 2, m_iPad,&IUIScene_PauseMenu::ExitGameDialogReturned, dynamic_cast<IUIScene_PauseMenu*>(this), app.GetStringTable(), NULL, 0, false);
@@ -790,7 +790,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 		{
 #if defined(__PS3__)
 			m_eAction=eAction_SaveGamePSN;
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 2, ProfileManager.GetPrimaryPad(),&UIScene_PauseMenu::MustSignInReturnedPSN,this, app.GetStringTable(), NULL, 0, false);
@@ -800,7 +800,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 			if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 			{
 				// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive is the npAvailability isn't SCE_OK
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, m_iPad, NULL, NULL, app.GetStringTable());
 			}
@@ -811,14 +811,14 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 					// Signed in to PSN but not connected (no internet access)
 					assert(!ProfileManager.isConnectedToPSN(m_iPad));
 
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_OK;
 					ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, m_iPad, NULL, NULL, app.GetStringTable());
 				}
 				else
 				{		
 					// Not signed in to PSN
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 					ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, m_iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, this, app.GetStringTable(), NULL, 0, false);
 				}
@@ -826,7 +826,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 		}
 		else
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			ui.RequestMessageBox(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2,m_iPad,&UIScene_PauseMenu::UnlockFullSaveReturned,this,app.GetStringTable(), NULL, 0, false);
@@ -856,7 +856,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 			// tell sentient about the upsell of the full version of the texture pack
 			TelemetryManager->RecordUpsellPresented(m_iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -884,7 +884,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 	if(result == C4JStorage::ELoadGame_DeviceRemoved)
 	{
 		// this will be a tester trying to be clever
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_SELECTANEWDEVICE;
 		uiIDA[1]=IDS_NODEVICE_DECLINE;
 
@@ -896,7 +896,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 		if(!m_savesDisabled)
 		{
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DISABLE_AUTOSAVE, IDS_CONFIRM_DISABLE_AUTOSAVE, uiIDA, 2, m_iPad,&IUIScene_PauseMenu::DisableAutosaveDialogReturned,this, app.GetStringTable(), NULL, 0, false);
@@ -906,7 +906,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, m_iPad,&IUIScene_PauseMenu::SaveGameDialogReturned,this, app.GetStringTable(), NULL, 0, false);
@@ -914,7 +914,7 @@ void UIScene_PauseMenu::PerformActionSaveGame()
 			else
 			{
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_ENABLE_AUTOSAVE, IDS_CONFIRM_ENABLE_AUTOSAVE, uiIDA, 2, m_iPad,&IUIScene_PauseMenu::EnableAutosaveDialogReturned,this, app.GetStringTable(), NULL, 0, false);
@@ -983,7 +983,7 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(void *pParam,int iPad,C4JStorage::
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,pClass, app.GetStringTable(), NULL, 0, false);
 			}
@@ -1099,7 +1099,7 @@ int UIScene_PauseMenu::ViewLeaderboards_SignInReturned(void *pParam,bool bContin
 
 	if(bContinue==true)
 	{
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 
 		// guests can't look at leaderboards
@@ -1148,7 +1148,7 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4J
 			if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION)
 			{
 				// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive is the npAvailability isn't SCE_OK
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 			}
@@ -1159,19 +1159,19 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4J
 					// Signed in to PSN but not connected (no internet access)
 					assert(!ProfileManager.isConnectedToPSN(iPad));
 
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_OK;
 					ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable());
 				}
 				else
 				{		
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
 					ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, pClass, app.GetStringTable(), NULL, 0, false);
 				}
 #else // __PS3__
 			// You're not signed in to PSN!
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 			uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 			ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 2, iPad,&UIScene_PauseMenu::MustSignInReturnedPSN,pClass, app.GetStringTable(), NULL, 0, false);
@@ -1185,7 +1185,7 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(void *pParam,int iPad,C4J
 			ProfileManager.GetChatAndContentRestrictions(ProfileManager.GetPrimaryPad(),true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad,NULL,pClass, app.GetStringTable(), NULL, 0, false);
 			}
@@ -1264,7 +1264,7 @@ int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void *pParam,bool bContinue
 			ProfileManager.GetChatAndContentRestrictions(iPad,true,NULL,&bContentRestricted,NULL);
 			if(bContentRestricted)
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad,NULL,pClass, app.GetStringTable(), NULL, 0, false);
 			}
@@ -1378,7 +1378,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 					TelemetryManager->RecordUpsellPresented(iPad, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-					UINT uiIDA[2];
+					unsigned int uiIDA[2];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -1396,7 +1396,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 			// we need to ask if they are sure they want to overwrite the existing game
 			if(bSaveExists)
 			{
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_CANCEL;
 				uiIDA[1]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&IUIScene_PauseMenu::ExitGameAndSaveReturned, dynamic_cast<IUIScene_PauseMenu*>(pClass), app.GetStringTable(), NULL, 0, false);
@@ -1413,7 +1413,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(void *pParam,int iPad,C4JStora
 		else
 		{
 			// been a few requests for a confirm on exit without saving
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_CANCEL;
 			uiIDA[1]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox(IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME, uiIDA, 2, ProfileManager.GetPrimaryPad(),&IUIScene_PauseMenu::ExitGameDeclineSaveReturned, dynamic_cast<IUIScene_PauseMenu*>(pClass), app.GetStringTable(), NULL, 0, false);

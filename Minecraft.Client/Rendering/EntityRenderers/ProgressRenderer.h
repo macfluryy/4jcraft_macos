@@ -1,43 +1,42 @@
 #pragma once
 #include "../../../Minecraft.World/Util/ProgressListener.h"
 
-class ProgressRenderer : public ProgressListener
-{
+class ProgressRenderer : public ProgressListener {
 public:
-	enum eProgressStringType
-	{
-		eProgressStringType_ID,
-		eProgressStringType_String, // 4J-PB added for updating the bytes read on a save transfer
-	};
+    enum eProgressStringType {
+        eProgressStringType_ID,
+        eProgressStringType_String,  // 4J-PB added for updating the bytes read
+                                     // on a save transfer
+    };
 
-	static CRITICAL_SECTION s_progress;
+    static CRITICAL_SECTION s_progress;
 
-	int getCurrentPercent();
-	int getCurrentTitle();
-	int getCurrentStatus();
-	std::wstring& getProgressString(void);
-	ProgressRenderer::eProgressStringType getType();
-
-private:
-	int lastPercent;
+    int getCurrentPercent();
+    int getCurrentTitle();
+    int getCurrentStatus();
+    std::wstring& getProgressString(void);
+    ProgressRenderer::eProgressStringType getType();
 
 private:
-	int status;
-    Minecraft *minecraft;
+    int lastPercent;
+
+private:
+    int status;
+    Minecraft* minecraft;
     int title;
     __int64 lastTime;
     bool noAbort;
-	std::wstring m_wstrText;
-	eProgressStringType m_eType;
+    std::wstring m_wstrText;
+    eProgressStringType m_eType;
 
-	void setType(eProgressStringType eType);
+    void setType(eProgressStringType eType);
 
 public:
-	ProgressRenderer(Minecraft *minecraft);
+    ProgressRenderer(Minecraft* minecraft);
     virtual void progressStart(int title);
     virtual void progressStartNoAbort(int string);
     void _progressStart(int title);
-	virtual void progressStage(int status);
-	virtual void progressStage(std::wstring &wstrText);
+    virtual void progressStage(int status);
+    virtual void progressStage(std::wstring& wstrText);
     virtual void progressStagePercentage(int i);
 };

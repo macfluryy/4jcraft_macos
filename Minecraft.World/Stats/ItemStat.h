@@ -1,14 +1,12 @@
 #pragma once
 
-
 #include "Stat.h"
 
-class ItemStat : public Stat
-{
+class ItemStat : public Stat {
 private:
-	const int itemId;
+    const int itemId;
 
 public:
-	ItemStat(int id, const std::wstring& name, int itemId);
+    ItemStat(int id, const std::wstring& name, int itemId);
     int getItemId();
 };

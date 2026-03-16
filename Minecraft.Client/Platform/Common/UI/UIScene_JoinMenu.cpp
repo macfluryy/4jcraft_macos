@@ -206,7 +206,7 @@ void UIScene_JoinMenu::tick()
 
 		// Show a generic network error message, not always safe to assume the error was host quitting
 		// without bubbling more info up from the network manager so this is the best we can do
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0] = IDS_CONFIRM_OK;
 #ifdef _XBOX_ONE
 		ui.RequestMessageBox( IDS_CONNECTION_FAILED, IDS_DISCONNECTED_SERVER_QUIT, uiIDA,1,m_iPad,ErrorDialogReturned,this, app.GetStringTable());
@@ -442,7 +442,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 		{
 			pClass->m_bIgnoreInput = false;
 			// 4J Stu - This is a bit messy and is due to the library incorrectly returning false for IsSignedInLive if the npAvailability isn't SCE_OK
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_OK;
 			ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
 		}
@@ -450,7 +450,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 #endif
 		{
 			pClass->m_bIgnoreInput=false;
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			ui.RequestMessageBox( IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 		}
@@ -495,7 +495,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 	{
  		pClass->setVisible( true );
 		pClass->m_bIgnoreInput=false;
-		UINT uiIDA[1];
+		unsigned int uiIDA[1];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		ui.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 	}
@@ -522,6 +522,8 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 			case CGameNetworkManager::JOINGAME_FAIL_SERVER_FULL:
 				exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
 				break;
+			default:
+				break;
 			}
 
 			if( exitReasonStringId == -1 )
@@ -530,7 +532,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass)
 			}
 			else
 			{
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				ui.RequestMessageBox( IDS_CONNECTION_FAILED, exitReasonStringId, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				exitReasonStringId = -1;

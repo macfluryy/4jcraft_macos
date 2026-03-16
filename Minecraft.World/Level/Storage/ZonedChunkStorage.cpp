@@ -8,34 +8,37 @@
 #include "ZonedChunkStorage.h"
 #include "ZoneFile.h"
 
-// 4J Stu - There are changes to this class for 1.8.2, but since we never use it anyway lets not worry about it
+// 4J Stu - There are changes to this class for 1.8.2, but since we never use it
+// anyway lets not worry about it
 
 const int ZonedChunkStorage::BIT_TERRAIN_POPULATED = 0x0000001;
-		   
-const int ZonedChunkStorage::CHUNKS_PER_ZONE_BITS = 5; // = 32
-const int ZonedChunkStorage::CHUNKS_PER_ZONE = 1 << ZonedChunkStorage::CHUNKS_PER_ZONE_BITS; // ^2
+
+const int ZonedChunkStorage::CHUNKS_PER_ZONE_BITS = 5;  // = 32
+const int ZonedChunkStorage::CHUNKS_PER_ZONE =
+    1 << ZonedChunkStorage::CHUNKS_PER_ZONE_BITS;  // ^2
 
 const int ZonedChunkStorage::CHUNK_WIDTH = 16;
 
 const int ZonedChunkStorage::CHUNK_HEADER_SIZE = 256;
-const int ZonedChunkStorage::CHUNK_SIZE = ZonedChunkStorage::CHUNK_WIDTH * ZonedChunkStorage::CHUNK_WIDTH * Level::DEPTH;
+const int ZonedChunkStorage::CHUNK_SIZE = ZonedChunkStorage::CHUNK_WIDTH *
+                                          ZonedChunkStorage::CHUNK_WIDTH *
+                                          Level::DEPTH;
 const int ZonedChunkStorage::CHUNK_LAYERS = 3;
-const int ZonedChunkStorage::CHUNK_SIZE_BYTES = ZonedChunkStorage::CHUNK_SIZE * ZonedChunkStorage::CHUNK_LAYERS + ZonedChunkStorage::CHUNK_HEADER_SIZE;
+const int ZonedChunkStorage::CHUNK_SIZE_BYTES =
+    ZonedChunkStorage::CHUNK_SIZE * ZonedChunkStorage::CHUNK_LAYERS +
+    ZonedChunkStorage::CHUNK_HEADER_SIZE;
 
 const ByteOrder ZonedChunkStorage::BYTEORDER = BIGENDIAN;
 
-ZonedChunkStorage::ZonedChunkStorage(File dir)
-{
-	tickCount = 0;
+ZonedChunkStorage::ZonedChunkStorage(File dir) {
+    tickCount = 0;
 
-	//this->dir = dir;
-	this->dir = File( dir, std::wstring( L"data" ) );
-	if( !this->dir.exists() ) this->dir.mkdirs();
+    // this->dir = dir;
+    this->dir = File(dir, std::wstring(L"data"));
+    if (!this->dir.exists()) this->dir.mkdirs();
 }
 
-
-int ZonedChunkStorage::getSlot(int x, int z)
-{
+int ZonedChunkStorage::getSlot(int x, int z) {
     int xZone = x >> CHUNKS_PER_ZONE_BITS;
     int zZone = z >> CHUNKS_PER_ZONE_BITS;
     int xOffs = x - (xZone << CHUNKS_PER_ZONE_BITS);
@@ -44,60 +47,58 @@ int ZonedChunkStorage::getSlot(int x, int z)
     return slot;
 }
 
-ZoneFile *ZonedChunkStorage::getZoneFile(int x, int z, bool create)
-{
+ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
     int slot = getSlot(x, z);
 
     int xZone = x >> CHUNKS_PER_ZONE_BITS;
     int zZone = z >> CHUNKS_PER_ZONE_BITS;
     __int64 key = xZone + (zZone << 20l);
-	// 4J - was !zoneFiles.containsKey(key)
-    if (zoneFiles.find(key) == zoneFiles.end())
-	{
-		wchar_t xRadix36[64];
-		wchar_t zRadix36[64];
-		_itow(x,xRadix36,36);
-		_itow(z,zRadix36,36);
-		File file = File(dir, std::wstring( L"zone_") +  _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+    // 4J - was !zoneFiles.containsKey(key)
+    if (zoneFiles.find(key) == zoneFiles.end()) {
+        wchar_t xRadix36[64];
+        wchar_t zRadix36[64];
+        _itow(x, xRadix36, 36);
+        _itow(z, zRadix36, 36);
+        File file = File(dir, std::wstring(L"zone_") + _toString(xRadix36) +
+                                  L"_" + _toString(zRadix36) + L".dat");
 
-		if ( !file.exists() )
-		{
+        if (!file.exists()) {
             if (!create) return NULL;
-			HANDLE ch = CreateFile(wstringtofilename(file.getPath()), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-			CloseHandle(ch);
+            HANDLE ch = CreateFile(wstringtofilename(file.getPath()),
+                                   GENERIC_READ | GENERIC_WRITE, 0, NULL,
+                                   OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+            CloseHandle(ch);
         }
 
-		File entityFile = File(dir, std::wstring( L"entities_") + _toString( xRadix36 ) + L"_" + _toString( zRadix36 ) + L".dat" );
+        File entityFile =
+            File(dir, std::wstring(L"entities_") + _toString(xRadix36) + L"_" +
+                          _toString(zRadix36) + L".dat");
 
         zoneFiles[key] = new ZoneFile(key, file, entityFile);
     }
 
-    ZoneFile *zoneFile = zoneFiles[key];
+    ZoneFile* zoneFile = zoneFiles[key];
     zoneFile->lastUse = tickCount;
-    if (!zoneFile->containsSlot(slot))
-	{
+    if (!zoneFile->containsSlot(slot)) {
         if (!create) return NULL;
     }
     return zoneFile;
-
 }
 
-ZoneIo *ZonedChunkStorage::getBuffer(int x, int z, bool create)
-{
-    ZoneFile *zoneFile = getZoneFile(x, z, create);
+ZoneIo* ZonedChunkStorage::getBuffer(int x, int z, bool create) {
+    ZoneFile* zoneFile = getZoneFile(x, z, create);
     if (zoneFile == NULL) return NULL;
     return zoneFile->getZoneIo(getSlot(x, z));
 }
 
-LevelChunk *ZonedChunkStorage::load(Level *level, int x, int z)
-{
-    ZoneIo *zoneIo = getBuffer(x, z, false);
+LevelChunk* ZonedChunkStorage::load(Level* level, int x, int z) {
+    ZoneIo* zoneIo = getBuffer(x, z, false);
     if (zoneIo == NULL) return NULL;
 
-    LevelChunk *lc = new LevelChunk(level, x, z);
+    LevelChunk* lc = new LevelChunk(level, x, z);
     lc->unsaved = false;
 
-    ByteBuffer *header = zoneIo->read(CHUNK_HEADER_SIZE);
+    ByteBuffer* header = zoneIo->read(CHUNK_HEADER_SIZE);
     lc->blocks = zoneIo->read(CHUNK_SIZE)->array();
     lc->data = new DataLayer(zoneIo->read(CHUNK_SIZE / 2)->array());
     lc->skyLight = new DataLayer(zoneIo->read(CHUNK_SIZE / 2)->array());
@@ -116,15 +117,13 @@ LevelChunk *ZonedChunkStorage::load(Level *level, int x, int z)
 
     lc->fixBlocks();
     return lc;
-
 }
 
-void ZonedChunkStorage::save(Level *level, LevelChunk *lc)
-{
+void ZonedChunkStorage::save(Level* level, LevelChunk* lc) {
     __int64 flags = 0;
     if (lc->terrainPopulated) flags |= BIT_TERRAIN_POPULATED;
 
-    ByteBuffer *header = ByteBuffer::allocate(CHUNK_HEADER_SIZE);
+    ByteBuffer* header = ByteBuffer::allocate(CHUNK_HEADER_SIZE);
     header->order(ZonedChunkStorage::BYTEORDER);
     header->putInt(lc->x);
     header->putInt(lc->z);
@@ -132,7 +131,7 @@ void ZonedChunkStorage::save(Level *level, LevelChunk *lc)
     header->putLong(flags);
     header->flip();
 
-    ZoneIo *zoneIo = getBuffer(lc->x, lc->z, true);
+    ZoneIo* zoneIo = getBuffer(lc->x, lc->z, true);
     zoneIo->write(header, CHUNK_HEADER_SIZE);
     zoneIo->write(lc->blocks, CHUNK_SIZE);
     zoneIo->write(lc->data->data, CHUNK_SIZE / 2);
@@ -142,123 +141,112 @@ void ZonedChunkStorage::save(Level *level, LevelChunk *lc)
     zoneIo->flush();
 }
 
-void ZonedChunkStorage::tick()
-{
+void ZonedChunkStorage::tick() {
     tickCount++;
-    if (tickCount % (20 * 10) == 4)
-	{
-		std::vector<__int64> toClose;
+    if (tickCount % (20 * 10) == 4) {
+        std::vector<__int64> toClose;
 
-		AUTO_VAR(itEndZF, zoneFiles.end());
-		for( std::unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEndZF; it++ )
-		{
-			ZoneFile *zoneFile = it->second;
-            if (tickCount - zoneFile->lastUse > 20 * 60)
-			{
+        AUTO_VAR(itEndZF, zoneFiles.end());
+        for (std::unordered_map<__int64, ZoneFile*>::iterator it =
+                 zoneFiles.begin();
+             it != itEndZF; it++) {
+            ZoneFile* zoneFile = it->second;
+            if (tickCount - zoneFile->lastUse > 20 * 60) {
                 toClose.push_back(zoneFile->key);
             }
-		}
-		
-		AUTO_VAR(itEndTC, toClose.end());
-		for (AUTO_VAR(it, toClose.begin()); it != itEndTC; it++)
-		{
-			__int64 key = *it ; //toClose[i];
-			// 4J - removed try/catch
-//            try {
-			char buf[256];
-			sprintf(buf,"Closing zone %I64d\n",key);
-			app.DebugPrintf(buf);
+        }
+
+        AUTO_VAR(itEndTC, toClose.end());
+        for (AUTO_VAR(it, toClose.begin()); it != itEndTC; it++) {
+            __int64 key = *it;  // toClose[i];
+            // 4J - removed try/catch
+            //            try {
+            char buf[256];
+            sprintf(buf, "Closing zone %I64d\n", key);
+            app.DebugPrintf(buf);
             zoneFiles[key]->close();
-			zoneFiles.erase(zoneFiles.find(key));
-//           } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-		}
+            zoneFiles.erase(zoneFiles.find(key));
+            //           } catch (IOException e) {
+            //                e.printStackTrace();
+            //            }
+        }
     }
 }
 
-
-void ZonedChunkStorage::flush()
-{
-	AUTO_VAR(itEnd, zoneFiles.end());
-	for( std::unordered_map<__int64, ZoneFile *>::iterator it = zoneFiles.begin(); it != itEnd; it++ )
-	{
-		ZoneFile *zoneFile = it->second;
-		// 4J - removed try/catch
-//        try {
-            zoneFile->close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-	}
-	zoneFiles.clear();
+void ZonedChunkStorage::flush() {
+    AUTO_VAR(itEnd, zoneFiles.end());
+    for (std::unordered_map<__int64, ZoneFile*>::iterator it =
+             zoneFiles.begin();
+         it != itEnd; it++) {
+        ZoneFile* zoneFile = it->second;
+        // 4J - removed try/catch
+        //        try {
+        zoneFile->close();
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
+    }
+    zoneFiles.clear();
 }
 
-void ZonedChunkStorage::loadEntities(Level *level, LevelChunk *lc)
-{
+void ZonedChunkStorage::loadEntities(Level* level, LevelChunk* lc) {
     int slot = getSlot(lc->x, lc->z);
-    ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
-    std::vector<CompoundTag *> *tags = zoneFile->entityFile->readAll(slot);
+    ZoneFile* zoneFile = getZoneFile(lc->x, lc->z, true);
+    std::vector<CompoundTag*>* tags = zoneFile->entityFile->readAll(slot);
 
-	AUTO_VAR(itEnd, tags->end());
-	for (AUTO_VAR(it, tags->begin()); it != itEnd; it++)
-	{
-        CompoundTag *tag = *it; //tags->at(i);
+    AUTO_VAR(itEnd, tags->end());
+    for (AUTO_VAR(it, tags->begin()); it != itEnd; it++) {
+        CompoundTag* tag = *it;  // tags->at(i);
         int type = tag->getInt(L"_TYPE");
-        if (type == 0)
-		{
+        if (type == 0) {
             std::shared_ptr<Entity> e = EntityIO::loadStatic(tag, level);
             if (e != NULL) lc->addEntity(e);
-        }
-		else if (type == 1)
-		{
+        } else if (type == 1) {
             std::shared_ptr<TileEntity> te = TileEntity::loadStatic(tag);
             if (te != NULL) lc->addTileEntity(te);
         }
     }
 }
 
-void ZonedChunkStorage::saveEntities(Level *level, LevelChunk *lc)
-{
+void ZonedChunkStorage::saveEntities(Level* level, LevelChunk* lc) {
     int slot = getSlot(lc->x, lc->z);
-    ZoneFile *zoneFile = getZoneFile(lc->x, lc->z, true);
+    ZoneFile* zoneFile = getZoneFile(lc->x, lc->z, true);
 
-    std::vector<CompoundTag *> tags;
+    std::vector<CompoundTag*> tags;
 
 #ifdef _ENTITIES_RW_SECTION
-	EnterCriticalRWSection(&lc->m_csEntities, true);
+    EnterCriticalRWSection(&lc->m_csEntities, true);
 #else
-	EnterCriticalSection(&lc->m_csEntities);
+    EnterCriticalSection(&lc->m_csEntities);
 #endif
-    for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++)
-	{
-        std::vector<std::shared_ptr<Entity> > *entities = lc->entityBlocks[i];
+    for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++) {
+        std::vector<std::shared_ptr<Entity> >* entities = lc->entityBlocks[i];
 
-		AUTO_VAR(itEndTags, entities->end());
-		for (AUTO_VAR(it, entities->begin()); it != itEndTags; it++)
-		{
-            std::shared_ptr<Entity> e = *it; //entities->at(j);
-            CompoundTag *cp = new CompoundTag();
+        AUTO_VAR(itEndTags, entities->end());
+        for (AUTO_VAR(it, entities->begin()); it != itEndTags; it++) {
+            std::shared_ptr<Entity> e = *it;  // entities->at(j);
+            CompoundTag* cp = new CompoundTag();
             cp->putInt(L"_TYPE", 0);
             e->save(cp);
             tags.push_back(cp);
         }
     }
 #ifdef _ENTITIES_RW_SECTION
-	LeaveCriticalRWSection(&lc->m_csEntities, true);
+    LeaveCriticalRWSection(&lc->m_csEntities, true);
 #else
-	LeaveCriticalSection(&lc->m_csEntities);
+    LeaveCriticalSection(&lc->m_csEntities);
 #endif
 
-	for( std::unordered_map<TilePos, std::shared_ptr<TileEntity> , TilePosKeyHash, TilePosKeyEq>::iterator it = lc->tileEntities.begin();
-		it != lc->tileEntities.end(); it++)
-	{
-		std::shared_ptr<TileEntity> te = it->second;
-        CompoundTag *cp = new CompoundTag();
+    for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
+                            TilePosKeyHash, TilePosKeyEq>::iterator it =
+             lc->tileEntities.begin();
+         it != lc->tileEntities.end(); it++) {
+        std::shared_ptr<TileEntity> te = it->second;
+        CompoundTag* cp = new CompoundTag();
         cp->putInt(L"_TYPE", 1);
         te->save(cp);
         tags.push_back(cp);
-	}
+    }
 
     zoneFile->entityFile->replaceSlot(slot, &tags);
 }

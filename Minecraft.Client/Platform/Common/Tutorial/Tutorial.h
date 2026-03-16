@@ -6,6 +6,8 @@
 #include "TutorialMessage.h"
 #include "TutorialEnum.h"
 
+#include <cstdint>
+
 // #define TUTORIAL_HINT_DELAY_TIME 14000 // How long we should wait from displaying one hint to the next
 // #define TUTORIAL_DISPLAY_MESSAGE_TIME 7000
 // #define TUTORIAL_MINIMUM_DISPLAY_MESSAGE_TIME 2000
@@ -93,8 +95,8 @@ protected:
 	//D3DXVECTOR3 m_OriginalPosition;
 
 public:
-	DWORD lastMessageTime;
-	DWORD m_lastHintDisplayedTime;
+	std::uint32_t lastMessageTime;
+	std::uint32_t m_lastHintDisplayedTime;
 private:
 	PopupMessageDetails *m_lastMessage;
 

@@ -2,19 +2,16 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 
-TemperatureLayer::TemperatureLayer(std::shared_ptr<Layer> parent) : Layer(0)
-{
-	this->parent = parent;
+TemperatureLayer::TemperatureLayer(std::shared_ptr<Layer> parent) : Layer(0) {
+    this->parent = parent;
 }
 
-intArray TemperatureLayer::getArea(int xo, int yo, int w, int h)
-{
-	intArray b = parent->getArea(xo, yo, w, h);
+intArray TemperatureLayer::getArea(int xo, int yo, int w, int h) {
+    intArray b = parent->getArea(xo, yo, w, h);
 
-	intArray result = IntCache::allocate(w * h);
-	for (int i = 0; i < w * h; i++)
-	{
-		result[i] = Biome::biomes[b[i]]->getTemperatureInt();
-	}
-	return result;
+    intArray result = IntCache::allocate(w * h);
+    for (int i = 0; i < w * h; i++) {
+        result[i] = Biome::biomes[b[i]]->getTemperatureInt();
+    }
+    return result;
 }

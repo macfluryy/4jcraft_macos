@@ -4,60 +4,53 @@
 #include "../../../Minecraft.Client/Network/PlayerConnection.h"
 #ifndef __linux__
 #include <qnet.h>
-#endif // __linux__
+#endif  // __linux__
 #include "PacketListener.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PlayerInfoPacket.h"
 
-
-
-PlayerInfoPacket::PlayerInfoPacket()
-{
-	m_networkSmallId = 0;
-	m_playerColourIndex = -1;
-	m_playerPrivileges = 0;
-	m_entityId = -1;
+PlayerInfoPacket::PlayerInfoPacket() {
+    m_networkSmallId = 0;
+    m_playerColourIndex = -1;
+    m_playerPrivileges = 0;
+    m_entityId = -1;
 }
 
-PlayerInfoPacket::PlayerInfoPacket(std::uint8_t networkSmallId, short playerColourIndex, unsigned int playerPrivileges)
-{
-	m_networkSmallId = networkSmallId;
-	m_playerColourIndex = playerColourIndex;
-	m_playerPrivileges = playerPrivileges;
-	m_entityId = -1;
+PlayerInfoPacket::PlayerInfoPacket(std::uint8_t networkSmallId,
+                                   short playerColourIndex,
+                                   unsigned int playerPrivileges) {
+    m_networkSmallId = networkSmallId;
+    m_playerColourIndex = playerColourIndex;
+    m_playerPrivileges = playerPrivileges;
+    m_entityId = -1;
 }
 
-PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<ServerPlayer> player)
-{
-	m_networkSmallId = 0;
-	if(player->connection != NULL && player->connection->getNetworkPlayer() != NULL) m_networkSmallId = player->connection->getNetworkPlayer()->GetSmallId();
-	m_playerColourIndex = player->getPlayerIndex();
-	m_playerPrivileges = player->getAllPlayerGamePrivileges();
-	m_entityId = player->entityId;
+PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<ServerPlayer> player) {
+    m_networkSmallId = 0;
+    if (player->connection != NULL &&
+        player->connection->getNetworkPlayer() != NULL)
+        m_networkSmallId = player->connection->getNetworkPlayer()->GetSmallId();
+    m_playerColourIndex = player->getPlayerIndex();
+    m_playerPrivileges = player->getAllPlayerGamePrivileges();
+    m_entityId = player->entityId;
 }
 
-void PlayerInfoPacket::read(DataInputStream *dis)
-{
-	m_networkSmallId = dis->readByte();
-	m_playerColourIndex = dis->readShort();
-	m_playerPrivileges = dis->readInt();
-	m_entityId = dis->readInt();
+void PlayerInfoPacket::read(DataInputStream* dis) {
+    m_networkSmallId = dis->readByte();
+    m_playerColourIndex = dis->readShort();
+    m_playerPrivileges = dis->readInt();
+    m_entityId = dis->readInt();
 }
 
-void PlayerInfoPacket::write(DataOutputStream *dos)
-{
-	dos->writeByte(m_networkSmallId);
-	dos->writeShort(m_playerColourIndex);
-	dos->writeInt(m_playerPrivileges);
-	dos->writeInt(m_entityId);
+void PlayerInfoPacket::write(DataOutputStream* dos) {
+    dos->writeByte(m_networkSmallId);
+    dos->writeShort(m_playerColourIndex);
+    dos->writeInt(m_playerPrivileges);
+    dos->writeInt(m_entityId);
 }
 
-void PlayerInfoPacket::handle(PacketListener *listener)
-{
-	listener->handlePlayerInfo(shared_from_this());
+void PlayerInfoPacket::handle(PacketListener* listener) {
+    listener->handlePlayerInfo(shared_from_this());
 }
 
-int PlayerInfoPacket::getEstimatedSize()
-{
-	return 2 + 2 + 4 + 4;
-}
+int PlayerInfoPacket::getEstimatedSize() { return 2 + 2 + 4 + 4; }

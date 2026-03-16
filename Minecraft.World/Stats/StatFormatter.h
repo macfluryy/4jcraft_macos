@@ -1,8 +1,6 @@
 #pragma once
 
-
-class StatFormatter
-{
+class StatFormatter {
 public:
-	virtual std::wstring format(int value) = 0;
+    virtual std::wstring format(int value) = 0;
 };

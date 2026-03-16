@@ -1,77 +1,82 @@
 #pragma once
 #include "TexturePack.h"
 
-
 class Minecraft;
 
-class TexturePackRepository 
-{
+class TexturePackRepository {
 public:
-	static constexpr std::uint32_t DEFAULT_TEXTURE_PACK_ID = 0;
-	static constexpr std::uint32_t FOLDER_TEST_TEXTURE_PACK_ID = 1;
-	static constexpr std::uint32_t DLC_TEST_TEXTURE_PACK_ID = 2;
+    static constexpr std::uint32_t DEFAULT_TEXTURE_PACK_ID = 0;
+    static constexpr std::uint32_t FOLDER_TEST_TEXTURE_PACK_ID = 1;
+    static constexpr std::uint32_t DLC_TEST_TEXTURE_PACK_ID = 2;
+
 private:
-	static TexturePack *DEFAULT_TEXTURE_PACK;
-	TexturePack *m_dummyTexturePack;
-	TexturePack *m_dummyDLCTexturePack;
+    static TexturePack* DEFAULT_TEXTURE_PACK;
+    TexturePack* m_dummyTexturePack;
+    TexturePack* m_dummyDLCTexturePack;
 
-	Minecraft *minecraft;
-	File workDir;
-	File multiplayerDir;
-	std::vector<TexturePack *> *texturePacks;
-	std::vector<TexturePack *> m_texturePacksToDelete;
+    Minecraft* minecraft;
+    File workDir;
+    File multiplayerDir;
+    std::vector<TexturePack*>* texturePacks;
+    std::vector<TexturePack*> m_texturePacksToDelete;
 
-	std::unordered_map<std::uint32_t, TexturePack *> cacheById;
+    std::unordered_map<std::uint32_t, TexturePack*> cacheById;
 
-	TexturePack *selected;
-	TexturePack *lastSelected;
+    TexturePack* selected;
+    TexturePack* lastSelected;
     bool usingWeb;
-    static const int MAX_WEB_FILESIZE = 10 * 1000 * 1000; // 10 Megabytes
+    static const int MAX_WEB_FILESIZE = 10 * 1000 * 1000;  // 10 Megabytes
 
 public:
-	TexturePackRepository(File workingDirectory, Minecraft *minecraft);
-	void addDebugPacks();
-private:
-	void createWorkingDirecoryUnlessExists();
-
-public:
-    bool selectSkin(TexturePack *skin);
-
-	void selectWebSkin(const std::wstring &url);
+    TexturePackRepository(File workingDirectory, Minecraft* minecraft);
+    void addDebugPacks();
 
 private:
-	void downloadWebSkin(const std::wstring &url, File file);
+    void createWorkingDirecoryUnlessExists();
 
 public:
-	bool isUsingWebSkin();
-	void resetWebSkin();
+    bool selectSkin(TexturePack* skin);
+
+    void selectWebSkin(const std::wstring& url);
+
+private:
+    void downloadWebSkin(const std::wstring& url, File file);
+
+public:
+    bool isUsingWebSkin();
+    void resetWebSkin();
     void updateList();
 
 private:
-	std::wstring getIdOrNull(File file);
+    std::wstring getIdOrNull(File file);
     std::vector<File> getWorkDirContents();
 
 public:
-    std::vector<TexturePack *> *getAll();
+    std::vector<TexturePack*>* getAll();
 
-	TexturePack *getSelected();
-	bool shouldPromptForWebSkin();
-	bool canUseWebSkin();
-	bool isUsingDefaultSkin() { return selected == DEFAULT_TEXTURE_PACK; } // 4J Added
-	TexturePack *getDefault() { return DEFAULT_TEXTURE_PACK; } // 4J Added
+    TexturePack* getSelected();
+    bool shouldPromptForWebSkin();
+    bool canUseWebSkin();
+    bool isUsingDefaultSkin() {
+        return selected == DEFAULT_TEXTURE_PACK;
+    }                                                           // 4J Added
+    TexturePack* getDefault() { return DEFAULT_TEXTURE_PACK; }  // 4J Added
 
-	std::vector< std::pair<std::uint32_t,std::wstring> > *getTexturePackIdNames();
-	bool selectTexturePackById(std::uint32_t id); // 4J Added
-	TexturePack *getTexturePackById(std::uint32_t id); // 4J Added
+    std::vector<std::pair<std::uint32_t, std::wstring> >*
+    getTexturePackIdNames();
+    bool selectTexturePackById(std::uint32_t id);       // 4J Added
+    TexturePack* getTexturePackById(std::uint32_t id);  // 4J Added
 
-	TexturePack *addTexturePackFromDLC(DLCPack *dlcPack, std::uint32_t id);
-	void clearInvalidTexturePacks();
-	void updateUI();
-	bool needsUIUpdate();
+    TexturePack* addTexturePackFromDLC(DLCPack* dlcPack, std::uint32_t id);
+    void clearInvalidTexturePacks();
+    void updateUI();
+    bool needsUIUpdate();
+
 private:
-	void removeTexturePackById(std::uint32_t id);
+    void removeTexturePackById(std::uint32_t id);
+
 public:
-	unsigned int getTexturePackCount();
-	TexturePack *getTexturePackByIndex(unsigned int index);
-	unsigned int getTexturePackIndex(std::uint32_t id);
+    unsigned int getTexturePackCount();
+    TexturePack* getTexturePackByIndex(unsigned int index);
+    unsigned int getTexturePackIndex(std::uint32_t id);
 };

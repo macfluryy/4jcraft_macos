@@ -1,27 +1,27 @@
 #pragma once
 
-
 #include "Packet.h"
 
-class ComplexItemDataPacket : public Packet, public std::enable_shared_from_this<ComplexItemDataPacket>
-{
+class ComplexItemDataPacket
+    : public Packet,
+      public std::enable_shared_from_this<ComplexItemDataPacket> {
 public:
-	short itemType;
+    short itemType;
     short itemId;
     charArray data;
 
-	ComplexItemDataPacket();
-	~ComplexItemDataPacket();
-	ComplexItemDataPacket(short itemType, short itemId, charArray data);
+    ComplexItemDataPacket();
+    ~ComplexItemDataPacket();
+    ComplexItemDataPacket(short itemType, short itemId, charArray data);
 
-	virtual void read(DataInputStream *dis);
-	virtual void write(DataOutputStream *dos);
-	virtual void handle(PacketListener *listener);
-	virtual int getEstimatedSize();
+    virtual void read(DataInputStream* dis);
+    virtual void write(DataOutputStream* dos);
+    virtual void handle(PacketListener* listener);
+    virtual int getEstimatedSize();
 
 public:
-	static std::shared_ptr<Packet> create() { return std::shared_ptr<Packet>(new ComplexItemDataPacket()); }
-	virtual int getId() { return 131; }
+    static std::shared_ptr<Packet> create() {
+        return std::shared_ptr<Packet>(new ComplexItemDataPacket());
+    }
+    virtual int getId() { return 131; }
 };
-
-

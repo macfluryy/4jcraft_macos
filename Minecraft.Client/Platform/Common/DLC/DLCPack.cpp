@@ -237,6 +237,8 @@ DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const std::wstring &path)
 	case DLCManager::e_DLCType_GameRulesHeader:
 		newFile = new DLCGameRulesHeader(path);
 		break;
+	default:
+		break;
 	};
 
 	if( newFile != NULL )

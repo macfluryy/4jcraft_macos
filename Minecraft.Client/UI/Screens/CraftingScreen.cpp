@@ -4,25 +4,22 @@
 #include "../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
-CraftingScreen::CraftingScreen(std::shared_ptr<Inventory> inventory, Level *level, int x, int y, int z) : AbstractContainerScreen(new CraftingMenu(inventory, level, x, y, z))
-{
-}
+CraftingScreen::CraftingScreen(std::shared_ptr<Inventory> inventory,
+                               Level* level, int x, int y, int z)
+    : AbstractContainerScreen(new CraftingMenu(inventory, level, x, y, z)) {}
 
-void CraftingScreen::removed()
-{
+void CraftingScreen::removed() {
     AbstractContainerScreen::removed();
     menu->removed(std::dynamic_pointer_cast<Player>(minecraft->player));
 }
 
-void CraftingScreen::renderLabels()
-{
+void CraftingScreen::renderLabels() {
     font->draw(L"Crafting", 8 + 16 + 4, 2 + 2 + 2, 0x404040);
     font->draw(L"Inventory", 8, imageHeight - 96 + 2, 0x404040);
 }
 
-void CraftingScreen::renderBg(float a)
-{
-	// 4J Unused
+void CraftingScreen::renderBg(float a) {
+    // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
     int tex = minecraft->textures->loadTexture(TN_GUI_CRAFTING);
     glColor4f(1, 1, 1, 1);

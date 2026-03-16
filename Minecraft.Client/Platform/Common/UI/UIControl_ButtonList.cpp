@@ -98,9 +98,11 @@ void UIControl_ButtonList::addItem(const std::wstring &label, int data)
 	IggyDataValue result;
 	IggyDataValue value[2];
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 
@@ -151,9 +153,11 @@ void UIControl_ButtonList::setButtonLabel(int iButtonId, const std::wstring &lab
 	value[0].type = IGGY_DATATYPE_number;
 	value[0].number = iButtonId;
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[1].type = IGGY_DATATYPE_string_UTF16;
 	value[1].string16 = stringVal;
 	IggyResult out = IggyPlayerCallMethodRS ( m_parentScene->getMovie(), &result, getIggyValuePath(), m_funcSetButtonLabel, 2 , value );

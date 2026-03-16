@@ -18,13 +18,18 @@ void PIXSetMarkerDeprecated(int a, const char* b, ...) {}
 
 #include "../Xbox/Network/NetworkPlayerXbox.h"
 
-NetworkPlayerXbox::NetworkPlayerXbox(IQNetPlayer* p) : m_qnetPlayer(p), m_pSocket(nullptr) {}
+NetworkPlayerXbox::NetworkPlayerXbox(IQNetPlayer* p)
+    : m_qnetPlayer(p), m_pSocket(nullptr) {}
 IQNetPlayer* NetworkPlayerXbox::GetQNetPlayer() { return m_qnetPlayer; }
 unsigned char NetworkPlayerXbox::GetSmallId() { return 0; }
 void NetworkPlayerXbox::SendData(INetworkPlayer*, const void*, int, bool) {}
 bool NetworkPlayerXbox::IsSameSystem(INetworkPlayer*) { return false; }
-int NetworkPlayerXbox::GetSendQueueSizeBytes(INetworkPlayer*, bool) { return 0; }
-int NetworkPlayerXbox::GetSendQueueSizeMessages(INetworkPlayer*, bool) { return 0; }
+int NetworkPlayerXbox::GetSendQueueSizeBytes(INetworkPlayer*, bool) {
+    return 0;
+}
+int NetworkPlayerXbox::GetSendQueueSizeMessages(INetworkPlayer*, bool) {
+    return 0;
+}
 int NetworkPlayerXbox::GetCurrentRtt() { return 0; }
 bool NetworkPlayerXbox::IsHost() { return false; }
 bool NetworkPlayerXbox::IsGuest() { return false; }

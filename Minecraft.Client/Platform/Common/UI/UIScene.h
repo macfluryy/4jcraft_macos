@@ -269,4 +269,6 @@ protected:
 	size_t GetCallbackUniqueId();
 
 	virtual bool isReadyToDelete();
+
+	static int parseSlotId(const char16_t *s);
 };

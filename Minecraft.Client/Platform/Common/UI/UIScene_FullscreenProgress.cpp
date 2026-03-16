@@ -339,6 +339,8 @@ void UIScene_FullscreenProgress::handlePress(F64 controlId, F64 childId)
 			ui.NavigateToHomeMenu();
 			ui.UpdatePlayerBasePositions();
 			break;
+		default:
+			break;
 		}
 	}
 }

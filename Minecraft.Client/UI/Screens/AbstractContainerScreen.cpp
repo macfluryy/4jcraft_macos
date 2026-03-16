@@ -10,29 +10,25 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
-ItemRenderer *AbstractContainerScreen::itemRenderer = new ItemRenderer();
+ItemRenderer* AbstractContainerScreen::itemRenderer = new ItemRenderer();
 
-AbstractContainerScreen::AbstractContainerScreen(AbstractContainerMenu *menu)
-{
-	// 4J - added initialisers
-	imageWidth = 176;
-	imageHeight = 166;
+AbstractContainerScreen::AbstractContainerScreen(AbstractContainerMenu* menu) {
+    // 4J - added initialisers
+    imageWidth = 176;
+    imageHeight = 166;
 
-	this->menu = menu;
+    this->menu = menu;
 }
 
-void AbstractContainerScreen::init()
-{
+void AbstractContainerScreen::init() {
     Screen::init();
     minecraft->player->containerMenu = menu;
-// 	leftPos = (width - imageWidth) / 2;
-// 	topPos = (height - imageHeight) / 2;
-
+    // 	leftPos = (width - imageWidth) / 2;
+    // 	topPos = (height - imageHeight) / 2;
 }
 
-void AbstractContainerScreen::render(int xm, int ym, float a)
-{
-	// 4J Stu - Not used
+void AbstractContainerScreen::render(int xm, int ym, float a) {
+    // 4J Stu - Not used
 #if ENABLE_JAVA_GUIS
     renderBackground();
     int xo = (width - imageWidth) / 2;
@@ -51,17 +47,15 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
     glEnable(GL_RESCALE_NORMAL);
     Lighting::turnOnGui();
 
-    Slot *hoveredSlot = NULL;
-	
-	AUTO_VAR(itEnd, menu->slots->end());
-	for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++)
-	{
-        Slot *slot = *it; //menu->slots->at(i);
+    Slot* hoveredSlot = NULL;
+
+    AUTO_VAR(itEnd, menu->slots->end());
+    for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++) {
+        Slot* slot = *it;  // menu->slots->at(i);
 
         renderSlot(slot);
 
-        if (isHovering(slot, xm, ym))
-		{
+        if (isHovering(slot, xm, ym)) {
             hoveredSlot = slot;
 
             glDisable(GL_LIGHTING);
@@ -76,13 +70,16 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
     }
 
     std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
-    if (inventory->getCarried() != NULL)
-	{
+    if (inventory->getCarried() != NULL) {
         glTranslatef(0, 0, 32);
         // Slot old = carriedSlot;
         // carriedSlot = null;
-        itemRenderer->renderGuiItem(font, minecraft->textures, inventory->getCarried(), xm - xo - 8, ym - yo - 8);
-        itemRenderer->renderGuiItemDecorations(font, minecraft->textures, inventory->getCarried(), xm - xo - 8, ym - yo - 8);
+        itemRenderer->renderGuiItem(font, minecraft->textures,
+                                    inventory->getCarried(), xm - xo - 8,
+                                    ym - yo - 8);
+        itemRenderer->renderGuiItemDecorations(font, minecraft->textures,
+                                               inventory->getCarried(),
+                                               xm - xo - 8, ym - yo - 8);
         // carriedSlot = old;
     }
     Lighting::turnOff();
@@ -240,23 +237,20 @@ void AbstractContainerScreen::render(int xm, int ym, float a)
 #endif
 }
 
-void AbstractContainerScreen::renderLabels()
-{
-}
+void AbstractContainerScreen::renderLabels() {}
 
-void AbstractContainerScreen::renderSlot(Slot *slot)
-{
-	// 4J Unused
+void AbstractContainerScreen::renderSlot(Slot* slot) {
+    // 4J Unused
 #if ENABLE_JAVA_GUIS
     int x = slot->x;
     int y = slot->y;
     std::shared_ptr<ItemInstance> item = slot->getItem();
 
     // if (item == NULL)
-	// {
+    // {
     //     int icon = slot->getNoItemIcon();
     //     if (icon >= 0)
-	// 	{
+    // 	{
     //         glDisable(GL_LIGHTING);
     //         minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
     //         blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
@@ -266,92 +260,81 @@ void AbstractContainerScreen::renderSlot(Slot *slot)
     // }
 
     itemRenderer->renderGuiItem(font, minecraft->textures, item, x, y);
-    itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x, y);
+    itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x,
+                                           y);
 #endif
 }
 
-Slot *AbstractContainerScreen::findSlot(int x, int y)
-{
-	AUTO_VAR(itEnd, menu->slots->end());
-	for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++)
-	{
-        Slot *slot = *it; //menu->slots->at(i);
+Slot* AbstractContainerScreen::findSlot(int x, int y) {
+    AUTO_VAR(itEnd, menu->slots->end());
+    for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++) {
+        Slot* slot = *it;  // menu->slots->at(i);
         if (isHovering(slot, x, y)) return slot;
     }
     return NULL;
 }
 
-bool AbstractContainerScreen::isHovering(Slot *slot, int xm, int ym)
-{
+bool AbstractContainerScreen::isHovering(Slot* slot, int xm, int ym) {
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
     xm -= xo;
     ym -= yo;
 
-    return xm >= slot->x - 1 && xm < slot->x + 16 + 1 && ym >= slot->y - 1 && ym < slot->y + 16 + 1;
-
+    return xm >= slot->x - 1 && xm < slot->x + 16 + 1 && ym >= slot->y - 1 &&
+           ym < slot->y + 16 + 1;
 }
 
-void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum)
-{
+void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum) {
     Screen::mouseClicked(x, y, buttonNum);
-    if (buttonNum == 0 || buttonNum == 1)
-	{
-        Slot *slot = findSlot(x, y);
+    if (buttonNum == 0 || buttonNum == 1) {
+        Slot* slot = findSlot(x, y);
 
         int xo = (width - imageWidth) / 2;
         int yo = (height - imageHeight) / 2;
-        bool clickedOutside = (x < xo || y < yo || x >= xo + imageWidth || y >= yo + imageHeight);
+        bool clickedOutside =
+            (x < xo || y < yo || x >= xo + imageWidth || y >= yo + imageHeight);
 
         int slotId = -1;
         if (slot != NULL) slotId = slot->index;
 
-        if (clickedOutside)
-		{
+        if (clickedOutside) {
             slotId = AbstractContainerMenu::CLICKED_OUTSIDE;
         }
 
-        if (slotId != -1)
-		{
-            bool quickKey = slotId != AbstractContainerMenu::CLICKED_OUTSIDE && (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) || Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
-            minecraft->gameMode->handleInventoryMouseClick(menu->containerId, slotId, buttonNum, quickKey, minecraft->player);
+        if (slotId != -1) {
+            bool quickKey = slotId != AbstractContainerMenu::CLICKED_OUTSIDE &&
+                            (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) ||
+                             Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
+            minecraft->gameMode->handleInventoryMouseClick(
+                menu->containerId, slotId, buttonNum, quickKey,
+                minecraft->player);
         }
     }
-
 }
 
-void AbstractContainerScreen::mouseReleased(int x, int y, int buttonNum)
-{
-    if (buttonNum == 0)
-	{
+void AbstractContainerScreen::mouseReleased(int x, int y, int buttonNum) {
+    if (buttonNum == 0) {
     }
 }
 
-void AbstractContainerScreen::keyPressed(wchar_t eventCharacter, int eventKey)
-{
-    if (eventKey == Keyboard::KEY_ESCAPE || eventKey == minecraft->options->keyBuild->key)
-	{
+void AbstractContainerScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
+    if (eventKey == Keyboard::KEY_ESCAPE ||
+        eventKey == minecraft->options->keyBuild->key) {
         minecraft->player->closeContainer();
     }
 }
 
-void AbstractContainerScreen::removed()
-{
+void AbstractContainerScreen::removed() {
     if (minecraft->player == NULL) return;
 }
 
-void AbstractContainerScreen::slotsChanged(std::shared_ptr<Container> container)
-{
-}
+void AbstractContainerScreen::slotsChanged(
+    std::shared_ptr<Container> container) {}
 
-bool AbstractContainerScreen::isPauseScreen()
-{
-	return false;
-}
+bool AbstractContainerScreen::isPauseScreen() { return false; }
 
-void AbstractContainerScreen::tick()
-{
+void AbstractContainerScreen::tick() {
     Screen::tick();
-    if (!minecraft->player->isAlive() || minecraft->player->removed) minecraft->player->closeContainer();
-
+    if (!minecraft->player->isAlive() || minecraft->player->removed)
+        minecraft->player->closeContainer();
 }

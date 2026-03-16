@@ -1,44 +1,50 @@
 #pragma once
 
-
 #include "../Item.h"
 
 class Player;
 class Level;
 
-class TileItem : public Item
-{
-public: static const int _class = 0;
-using Item::getColor;
+class TileItem : public Item {
+public:
+    static const int _class = 0;
+    using Item::getColor;
 
-private: 
-	int tileId;
-	Icon *itemIcon;
+private:
+    int tileId;
+    Icon* itemIcon;
 
 public:
-	TileItem(int id); 
-	
-	virtual int getTileId();
+    TileItem(int id);
 
-	//@Override
-	int getIconType();
+    virtual int getTileId();
 
-	//@Override
-	Icon *getIcon(int auxValue);
+    //@Override
+    int getIconType();
 
-	virtual bool useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
-	virtual unsigned int getDescriptionId(std::shared_ptr<ItemInstance> instance);
-	virtual unsigned int getDescriptionId(int iData = -1);
+    //@Override
+    Icon* getIcon(int auxValue);
 
-	// 4J Added
-	virtual int getColor(int itemAuxValue, int spriteLayer);
+    virtual bool useOn(std::shared_ptr<ItemInstance> instance,
+                       std::shared_ptr<Player> player, Level* level, int x,
+                       int y, int z, int face, float clickX, float clickY,
+                       float clickZ, bool bTestUseOnOnly = false);
+    virtual unsigned int getDescriptionId(
+        std::shared_ptr<ItemInstance> instance);
+    virtual unsigned int getDescriptionId(int iData = -1);
 
-	// 4J Added
-	virtual unsigned int getUseDescriptionId(std::shared_ptr<ItemInstance> instance);
-	virtual unsigned int getUseDescriptionId();
+    // 4J Added
+    virtual int getColor(int itemAuxValue, int spriteLayer);
 
-	virtual bool mayPlace(Level *level, int x, int y, int z, int face, std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> item);
+    // 4J Added
+    virtual unsigned int getUseDescriptionId(
+        std::shared_ptr<ItemInstance> instance);
+    virtual unsigned int getUseDescriptionId();
 
-	//@Override
-    virtual void registerIcons(IconRegister *iconRegister);
+    virtual bool mayPlace(Level* level, int x, int y, int z, int face,
+                          std::shared_ptr<Player> player,
+                          std::shared_ptr<ItemInstance> item);
+
+    //@Override
+    virtual void registerIcons(IconRegister* iconRegister);
 };

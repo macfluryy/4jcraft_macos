@@ -2,15 +2,14 @@
 
 #include "Goal.h"
 
-class LeapAtTargetGoal : public Goal
-{
+class LeapAtTargetGoal : public Goal {
 private:
-    Mob *mob; // Owner of this goal
+    Mob* mob;  // Owner of this goal
     std::weak_ptr<Mob> target;
     float yd;
 
 public:
-	LeapAtTargetGoal(Mob *mob, float yd);
+    LeapAtTargetGoal(Mob* mob, float yd);
 
     virtual bool canUse();
     virtual bool canContinueToUse();

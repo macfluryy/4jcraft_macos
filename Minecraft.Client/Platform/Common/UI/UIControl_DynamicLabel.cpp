@@ -22,12 +22,14 @@ bool UIControl_DynamicLabel::setupControl(UIScene *scene, IggyValuePath *parent,
 
 void UIControl_DynamicLabel::addText(const std::wstring &text, bool bLastEntry)
 {
+	const std::u16string convText = convWstringToU16string(text);
+
 	IggyDataValue result;
 	IggyDataValue value[2];
 
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)text.c_str();
-	stringVal.length = text.length();
+	stringVal.string = convText.c_str();
+	stringVal.length = convText.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

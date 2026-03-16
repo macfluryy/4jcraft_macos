@@ -303,6 +303,8 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId, bool se
 	case eLaunchCheckbox_DisableSaving:
 		m_params->bDisableSaving = selected;
 		break;
+	default:
+		break;
 	};
 }
 

@@ -3,22 +3,16 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.h"
 
-BookshelfTile::BookshelfTile(int id) : Tile(id, Material::wood)
-{
+BookshelfTile::BookshelfTile(int id) : Tile(id, Material::wood) {}
+
+Icon* BookshelfTile::getTexture(int face, int data) {
+    if (face == Facing::UP || face == Facing::DOWN)
+        return Tile::wood->getTexture(face);
+    return Tile::getTexture(face, data);
 }
 
-Icon *BookshelfTile::getTexture(int face, int data)
-{
-	if (face == Facing::UP || face == Facing::DOWN) return Tile::wood->getTexture(face);
-	return Tile::getTexture(face, data);
-}
+int BookshelfTile::getResourceCount(Random* random) { return 3; }
 
-int BookshelfTile::getResourceCount(Random *random)
-{
-	return 3;
-}
-
-int BookshelfTile::getResource(int data, Random *random,int playerBonusLevel)
-{
-	return Item::book_Id;
+int BookshelfTile::getResource(int data, Random* random, int playerBonusLevel) {
+    return Item::book_Id;
 }

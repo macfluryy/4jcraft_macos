@@ -1,14 +1,15 @@
 #pragma once
 #include "../Screen.h"
 
-class ErrorScreen : public Screen
-{
+class ErrorScreen : public Screen {
 private:
-	std::wstring title, message;
+    std::wstring title, message;
+
 public:
-	ErrorScreen(const std::wstring& title, const std::wstring& message);
+    ErrorScreen(const std::wstring& title, const std::wstring& message);
     virtual void init();
     virtual void render(int xm, int ym, float a);
+
 protected:
-	virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
 };

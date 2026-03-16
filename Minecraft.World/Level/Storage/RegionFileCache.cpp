@@ -5,118 +5,107 @@
 
 RegionFileCache RegionFileCache::s_defaultCache;
 
-bool RegionFileCache::useSplitSaves(ESavePlatform platform)
-{
-	switch(platform)
-	{
-	case SAVE_FILE_PLATFORM_XBONE:
-	case SAVE_FILE_PLATFORM_PS4:
-		return true;
-	default:
-		return false;
-	};
+bool RegionFileCache::useSplitSaves(ESavePlatform platform) {
+    switch (platform) {
+        case SAVE_FILE_PLATFORM_XBONE:
+        case SAVE_FILE_PLATFORM_PS4:
+            return true;
+        default:
+            return false;
+    };
 }
 
-RegionFile *RegionFileCache::_getRegionFile(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)		// 4J - TODO was synchronized
+RegionFile* RegionFileCache::_getRegionFile(
+    ConsoleSaveFile* saveFile, const std::wstring& prefix, int chunkX,
+    int chunkZ)  // 4J - TODO was synchronized
 {
-	// 4J Jev - changed back to use of the File class.
-	//char file[MAX_PATH_SIZE];
-	//sprintf(file,"%s\\region\\r.%d.%d.mcr",basePath,chunkX >> 5,chunkZ >> 5);
+    // 4J Jev - changed back to use of the File class.
+    // char file[MAX_PATH_SIZE];
+    // sprintf(file,"%s\\region\\r.%d.%d.mcr",basePath,chunkX >> 5,chunkZ >> 5);
 
-	//File regionDir(basePath, L"region");
+    // File regionDir(basePath, L"region");
 
-	//File file(regionDir, std::wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
-	MemSect(31);
-	File file;
-	if(useSplitSaves(saveFile->getSavePlatform()))
-	{
-		file = File( prefix + std::wstring(L"r.") + _toString(chunkX>>4) + L"." + _toString(chunkZ>>4) + L".mcr" );
-	}
-	else
-	{
-		file = File( prefix + std::wstring(L"r.") + _toString(chunkX>>5) + L"." + _toString(chunkZ>>5) + L".mcr" );
-	}
-	MemSect(0);
+    // File file(regionDir, std::wstring(L"r.") + _toString(chunkX>>5) + L"." +
+    // _toString(chunkZ>>5) + L".mcr" );
+    MemSect(31);
+    File file;
+    if (useSplitSaves(saveFile->getSavePlatform())) {
+        file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 4) +
+                    L"." + _toString(chunkZ >> 4) + L".mcr");
+    } else {
+        file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 5) +
+                    L"." + _toString(chunkZ >> 5) + L".mcr");
+    }
+    MemSect(0);
 
-	RegionFile *ref = NULL;
-	AUTO_VAR(it, cache.find(file));
-	if( it != cache.end() )
-		ref = it->second;
+    RegionFile* ref = NULL;
+    AUTO_VAR(it, cache.find(file));
+    if (it != cache.end()) ref = it->second;
 
-	// 4J Jev, put back in.
-    if (ref != NULL)
-	{
-		return ref;
+    // 4J Jev, put back in.
+    if (ref != NULL) {
+        return ref;
     }
 
-	// 4J Stu - Remove for new save files
-	/*
-    if (!regionDir.exists())
-	{
-        regionDir.mkdirs();
-    }
-	*/
-    if (cache.size() >= MAX_CACHE_SIZE)
-	{
+    // 4J Stu - Remove for new save files
+    /*
+if (!regionDir.exists())
+    {
+    regionDir.mkdirs();
+}
+    */
+    if (cache.size() >= MAX_CACHE_SIZE) {
         _clear();
     }
 
-	RegionFile *reg = new RegionFile(saveFile, &file);
-    cache[file] = reg;	   // 4J - this was originally a softReferenc
+    RegionFile* reg = new RegionFile(saveFile, &file);
+    cache[file] = reg;  // 4J - this was originally a softReferenc
     return reg;
-
 }
 
-void RegionFileCache::_clear()															// 4J - TODO was synchronized
+void RegionFileCache::_clear()  // 4J - TODO was synchronized
 {
-	AUTO_VAR(itEnd, cache.end());
-	for( AUTO_VAR(it, cache.begin()); it != itEnd; it++ )
-	{
-		// 4J - removed try/catch
-//        try {
-        RegionFile *regionFile = it->second;
-        if (regionFile != NULL)
-		{
+    AUTO_VAR(itEnd, cache.end());
+    for (AUTO_VAR(it, cache.begin()); it != itEnd; it++) {
+        // 4J - removed try/catch
+        //        try {
+        RegionFile* regionFile = it->second;
+        if (regionFile != NULL) {
             regionFile->close();
         }
-		delete regionFile;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }	
-	}
-	cache.clear();
+        delete regionFile;
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
+    }
+    cache.clear();
 }
 
-int RegionFileCache::_getSizeDelta(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
-{
-    RegionFile *r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
+int RegionFileCache::_getSizeDelta(ConsoleSaveFile* saveFile,
+                                   const std::wstring& prefix, int chunkX,
+                                   int chunkZ) {
+    RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
     return r->getSizeDelta();
 }
 
-DataInputStream *RegionFileCache::_getChunkDataInputStream(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
-{
-	RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
-	if(useSplitSaves(saveFile->getSavePlatform()))
-	{
-		return r->getChunkDataInputStream(chunkX & 15, chunkZ & 15);
-	}
-	else
-	{
-
-		return r->getChunkDataInputStream(chunkX & 31, chunkZ & 31);
-	}
+DataInputStream* RegionFileCache::_getChunkDataInputStream(
+    ConsoleSaveFile* saveFile, const std::wstring& prefix, int chunkX,
+    int chunkZ) {
+    RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
+    if (useSplitSaves(saveFile->getSavePlatform())) {
+        return r->getChunkDataInputStream(chunkX & 15, chunkZ & 15);
+    } else {
+        return r->getChunkDataInputStream(chunkX & 31, chunkZ & 31);
+    }
 }
 
-DataOutputStream *RegionFileCache::_getChunkDataOutputStream(ConsoleSaveFile *saveFile, const std::wstring &prefix, int chunkX, int chunkZ)
-{
-	RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
-	if(useSplitSaves(saveFile->getSavePlatform()))
-	{
-		return r->getChunkDataOutputStream(chunkX & 15, chunkZ & 15);
-	}
-	else
-	{
-
-		return r->getChunkDataOutputStream(chunkX & 31, chunkZ & 31);
-	}
+DataOutputStream* RegionFileCache::_getChunkDataOutputStream(
+    ConsoleSaveFile* saveFile, const std::wstring& prefix, int chunkX,
+    int chunkZ) {
+    RegionFile* r = _getRegionFile(saveFile, prefix, chunkX, chunkZ);
+    if (useSplitSaves(saveFile->getSavePlatform())) {
+        return r->getChunkDataOutputStream(chunkX & 15, chunkZ & 15);
+    } else {
+        return r->getChunkDataOutputStream(chunkX & 31, chunkZ & 31);
+    }
 }

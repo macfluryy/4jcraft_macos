@@ -7,58 +7,59 @@
 #include "RecordingItem.h"
 #include "../Stats/GenericStats.h"
 
-RecordingItem::RecordingItem(int id, const std::wstring& recording) : Item(id), recording( recording )
-{
-	this->maxStackSize = 1;
+RecordingItem::RecordingItem(int id, const std::wstring& recording)
+    : Item(id), recording(recording) {
+    this->maxStackSize = 1;
 }
 
-Icon *RecordingItem::getIcon(int auxValue)
-{
-	return icon;
+Icon* RecordingItem::getIcon(int auxValue) { return icon; }
+
+bool RecordingItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
+                          std::shared_ptr<Player> player, Level* level, int x,
+                          int y, int z, int face, float clickX, float clickY,
+                          float clickZ, bool bTestUseOnOnly) {
+    // 4J-PB - Adding a test only version to allow tooltips to be displayed
+    if (level->getTile(x, y, z) == Tile::recordPlayer_Id &&
+        level->getData(x, y, z) == 0) {
+        if (!bTestUseOnOnly) {
+            if (level->isClientSide) return true;
+
+            ((RecordPlayerTile*)Tile::recordPlayer)
+                ->setRecord(level, x, y, z, id);
+            level->levelEvent(nullptr, LevelEvent::SOUND_PLAY_RECORDING, x, y,
+                              z, id);
+            itemInstance->count--;
+
+            player->awardStat(GenericStats::musicToMyEars(),
+                              GenericStats::param_musicToMyEars(id));
+        }
+        return true;
+    }
+    return false;
 }
 
-bool RecordingItem::useOn(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly)
-{
-	// 4J-PB - Adding a test only version to allow tooltips to be displayed
-	if (level->getTile(x, y, z) == Tile::recordPlayer_Id && level->getData(x, y, z) == 0)
-	{
-		if(!bTestUseOnOnly)
-		{
-			if (level->isClientSide) return true;
+void RecordingItem::appendHoverText(
+    std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player,
+    std::vector<std::wstring>* lines, bool advanced,
+    std::vector<std::wstring>& unformattedStrings) {
+    eMinecraftColour rarityColour =
+        getRarity(std::shared_ptr<ItemInstance>())->color;
+    int colour = app.GetHTMLColour(rarityColour);
+    wchar_t formatted[256];
 
-			((RecordPlayerTile *) Tile::recordPlayer)->setRecord(level, x, y, z, id);
-			level->levelEvent(nullptr, LevelEvent::SOUND_PLAY_RECORDING, x, y, z, id);
-			itemInstance->count--;
+    swprintf(formatted, 256, L"<font color=\"#%08x\">%ls</font>", colour,
+             L"C418 - ", recording.c_str());
 
-			player->awardStat(
-				GenericStats::musicToMyEars(),
-				GenericStats::param_musicToMyEars(id)
-				);
-		}
-		return true;
-	}
-	return false;
+    lines->push_back(formatted);
+
+    unformattedStrings.push_back(recording);
 }
 
-void RecordingItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player, std::vector<std::wstring> *lines, bool advanced, std::vector<std::wstring> &unformattedStrings)
-{
-	eMinecraftColour rarityColour = getRarity(std::shared_ptr<ItemInstance>())->color;
-	int colour = app.GetHTMLColour(rarityColour);
-	wchar_t formatted[256];
-
-	swprintf(formatted, 256, L"<font color=\"#%08x\">%ls</font>",colour,L"C418 - ", recording.c_str());
-
-	lines->push_back(formatted);
-
-	unformattedStrings.push_back(recording);
+const Rarity* RecordingItem::getRarity(
+    std::shared_ptr<ItemInstance> itemInstance) {
+    return (Rarity*)Rarity::rare;
 }
 
-const Rarity *RecordingItem::getRarity(std::shared_ptr<ItemInstance> itemInstance)
-{
-	return (Rarity *)Rarity::rare;
-}
-
-void RecordingItem::registerIcons(IconRegister *iconRegister)
-{
-	icon = iconRegister->registerIcon(L"record_" + recording);
+void RecordingItem::registerIcons(IconRegister* iconRegister) {
+    icon = iconRegister->registerIcon(L"record_" + recording);
 }

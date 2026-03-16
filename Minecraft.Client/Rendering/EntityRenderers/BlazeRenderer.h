@@ -2,13 +2,13 @@
 
 #include "MobRenderer.h"
 
-class BlazeRenderer : public MobRenderer
-{
+class BlazeRenderer : public MobRenderer {
 private:
-	int modelVersion;
+    int modelVersion;
 
 public:
-	BlazeRenderer();
+    BlazeRenderer();
 
-	virtual void render(std::shared_ptr<Entity> mob, double x, double y, double z, float rot, float a);
+    virtual void render(std::shared_ptr<Entity> mob, double x, double y,
+                        double z, float rot, float a);
 };

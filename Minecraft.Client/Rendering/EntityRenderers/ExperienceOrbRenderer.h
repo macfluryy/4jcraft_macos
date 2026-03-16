@@ -2,16 +2,16 @@
 
 #include "EntityRenderer.h"
 
-class ExperienceOrbRenderer : public EntityRenderer
-{
+class ExperienceOrbRenderer : public EntityRenderer {
 private:
-	TileRenderer *tileRenderer;
+    TileRenderer* tileRenderer;
 
 public:
-	bool setColor;
+    bool setColor;
 
-	ExperienceOrbRenderer();
+    ExperienceOrbRenderer();
 
-	void render(std::shared_ptr<Entity> _orb, double x, double y, double z, float rot, float a);
-	void blit(int x, int y, int sx, int sy, int w, int h);
+    void render(std::shared_ptr<Entity> _orb, double x, double y, double z,
+                float rot, float a);
+    void blit(int x, int y, int sx, int sy, int w, int h);
 };

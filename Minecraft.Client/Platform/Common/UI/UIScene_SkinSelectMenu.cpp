@@ -303,7 +303,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 #endif
 
 						// no
-						UINT uiIDA[1] = { IDS_OK };
+						unsigned int uiIDA[1] = { IDS_OK };
 #ifdef __ORBIS__
 						// Check if PSN is unavailable because of age restriction
 						int npAvailability = ProfileManager.getNPAvailability(iPad);
@@ -351,7 +351,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 							{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 								// you can't see the store
-								UINT uiIDA[1] = { IDS_CONFIRM_OK };
+								unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 								ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad,NULL,this, app.GetStringTable(),NULL,0,false);
 #endif
 							}
@@ -364,7 +364,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 								{
 									this->m_bIgnoreInput = true;
 
-									UINT uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
+									unsigned int uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
 									ui.RequestMessageBox(IDS_UNLOCK_DLC_TITLE, IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,&UIScene_SkinSelectMenu::UnlockSkinReturned,this,app.GetStringTable(),NULL,0,false);
 								}
 							}
@@ -410,6 +410,8 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat, bool pr
 				break;
 			case eSkinNavigation_Skin:
 				m_currentNavigation = eSkinNavigation_Pack;
+				break;
+			default:
 				break;
 			};
 			sendInputToMovie(key, repeat, pressed, released);
@@ -615,7 +617,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 				if(!m_currentPack->hasPurchasedFile( DLCManager::e_DLCType_Skin, skinFile->getPath() ))
 				{
 					// no
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 
 					// We need to upsell the full version
@@ -658,7 +660,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 						{
 #if !(defined(_XBOX) || defined(_WIN64)) // 4J Stu - Temp to get the win build running, but so we check this for other platforms
 							// you can't see the store
-							UINT uiIDA[1];
+							unsigned int uiIDA[1];
 							uiIDA[0]=IDS_CONFIRM_OK;
 							ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, ProfileManager.GetPrimaryPad(),NULL,this, app.GetStringTable(),NULL,0,false);
 #endif
@@ -673,7 +675,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 								m_bIgnoreInput = true;
 								renableInputAfterOperation = false;
 
-								UINT uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
+								unsigned int uiIDA[2] = { IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL };
 								ui.RequestMessageBox(IDS_UNLOCK_DLC_TITLE, IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,&UIScene_SkinSelectMenu::UnlockSkinReturned,this,app.GetStringTable(),NULL,0,false);
 							}
 						}
@@ -714,6 +716,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad)
 void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 {
 	int characterId = -1;
+	// 4jcraft TODO: undefined behavior
 	swscanf((wchar_t*)region->name,L"Character%d",&characterId);
 	if (characterId == -1)
 	{
@@ -1362,14 +1365,16 @@ void UIScene_SkinSelectMenu::setLeftLabel(const std::wstring &label)
 {
 	if(label.compare(m_leftLabel) != 0)
 	{
-		m_leftLabel = label;	
+		m_leftLabel = label;
+
+		const std::u16string convLabel = convWstringToU16string(label);
 
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
@@ -1381,14 +1386,16 @@ void UIScene_SkinSelectMenu::setCentreLabel(const std::wstring &label)
 {
 	if(label.compare(m_centreLabel) != 0)
 	{
-		m_centreLabel = label;	
+		m_centreLabel = label;
+
+		const std::u16string convLabel = convWstringToU16string(label);
 
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
@@ -1402,12 +1409,14 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring &label)
 	{
 		m_rightLabel = label;	
 
+		const std::u16string convLabel = convWstringToU16string(label);
+
 		IggyDataValue result;
 		IggyDataValue value[1];
 
 		IggyStringUTF16 stringVal;
-		stringVal.string = (IggyUTF16*)label.c_str();
-		stringVal.length = label.length();
+		stringVal.string = convLabel.c_str();
+		stringVal.length = convLabel.length();
 
 		value[0].type = IGGY_DATATYPE_string_UTF16;
 		value[0].string16 = stringVal;
@@ -1644,7 +1653,7 @@ void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad)
 
 #elif defined(_DURANGO)
 
-	UINT uiIDA[1] = { IDS_CONFIRM_OK };
+	unsigned int uiIDA[1] = { IDS_CONFIRM_OK };
 	ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad, NULL, NULL, app.GetStringTable() );
 
 #endif

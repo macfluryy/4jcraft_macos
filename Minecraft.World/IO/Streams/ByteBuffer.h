@@ -6,52 +6,49 @@
 class IntBuffer;
 class FloatBuffer;
 
-class ByteBuffer : public Buffer
-{
+class ByteBuffer : public Buffer {
 protected:
-	uint8_t *buffer;
-	ByteOrder byteOrder;
+    uint8_t* buffer;
+    ByteOrder byteOrder;
 
 public:
-	ByteBuffer(unsigned int capacity);
-	static ByteBuffer *allocateDirect(int capacity);
-	ByteBuffer( unsigned int capacity, uint8_t *backingArray );
-	virtual ~ByteBuffer();
+    ByteBuffer(unsigned int capacity);
+    static ByteBuffer* allocateDirect(int capacity);
+    ByteBuffer(unsigned int capacity, uint8_t* backingArray);
+    virtual ~ByteBuffer();
 
-	static ByteBuffer *wrap(byteArray &b);
-	static ByteBuffer *allocate(unsigned int capacity);
-	void order(ByteOrder a);
-	ByteBuffer *flip();
-	uint8_t *getBuffer();
-	int getSize();
-	int getInt();
-	int getInt(unsigned int index);
-	void get(byteArray) {}	// 4J - TODO
-	uint8_t get(int index);
-	__int64 getLong();
-	short getShort();
-	void getShortArray(shortArray &s);
-	ByteBuffer *put(int index, uint8_t b);
-	ByteBuffer *putInt(int value);
-	ByteBuffer *putInt(unsigned int index, int value);
-	ByteBuffer *putShort(short value);
-	ByteBuffer *putShortArray(shortArray &s);
-	ByteBuffer *putLong(__int64 value);
-	ByteBuffer *put(byteArray inputArray);
-	byteArray array();
-	IntBuffer *asIntBuffer();
-	FloatBuffer *asFloatBuffer();
-
+    static ByteBuffer* wrap(byteArray& b);
+    static ByteBuffer* allocate(unsigned int capacity);
+    void order(ByteOrder a);
+    ByteBuffer* flip();
+    uint8_t* getBuffer();
+    int getSize();
+    int getInt();
+    int getInt(unsigned int index);
+    void get(byteArray) {}  // 4J - TODO
+    uint8_t get(int index);
+    __int64 getLong();
+    short getShort();
+    void getShortArray(shortArray& s);
+    ByteBuffer* put(int index, uint8_t b);
+    ByteBuffer* putInt(int value);
+    ByteBuffer* putInt(unsigned int index, int value);
+    ByteBuffer* putShort(short value);
+    ByteBuffer* putShortArray(shortArray& s);
+    ByteBuffer* putLong(__int64 value);
+    ByteBuffer* put(byteArray inputArray);
+    byteArray array();
+    IntBuffer* asIntBuffer();
+    FloatBuffer* asFloatBuffer();
 };
-
 
 #ifdef __PS3__
-// we're using the RSX now to upload textures to vram, so we need th main ram textures allocated from io space
-class ByteBuffer_IO : public ByteBuffer
-{
+// we're using the RSX now to upload textures to vram, so we need th main ram
+// textures allocated from io space
+class ByteBuffer_IO : public ByteBuffer {
 public:
-	ByteBuffer_IO(unsigned int capacity);
-	~ByteBuffer_IO();
+    ByteBuffer_IO(unsigned int capacity);
+    ~ByteBuffer_IO();
 };
 
-#endif // __PS3__
+#endif  // __PS3__

@@ -12,13 +12,12 @@
 #endif
 #include <string>
 
-class PerformanceTimer
-{
+class PerformanceTimer {
 private:
-	std::chrono::steady_clock::time_point m_startTime;
+    std::chrono::steady_clock::time_point m_startTime;
 
 public:
-	PerformanceTimer();
-	void Reset();
-	void PrintElapsedTime(const std::wstring &description);
+    PerformanceTimer();
+    void Reset();
+    void PrintElapsedTime(const std::wstring& description);
 };

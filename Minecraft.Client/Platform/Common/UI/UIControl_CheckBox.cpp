@@ -27,13 +27,15 @@ void UIControl_CheckBox::init(const std::wstring &label, int id, bool checked)
 	m_id = id;
 	m_bChecked = checked;
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyDataValue result;
 	IggyDataValue value[3];
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	IggyStringUTF16 stringVal;
 
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].string16 = stringVal;
 
 	value[1].type = IGGY_DATATYPE_number;

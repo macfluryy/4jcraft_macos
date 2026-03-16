@@ -2,31 +2,30 @@
 
 class CompoundTag;
 
-class Abilities
-{
+class Abilities {
 public:
-	bool invulnerable;
-	bool flying;
-	bool mayfly;
-	bool instabuild;
-	bool mayBuild;
+    bool invulnerable;
+    bool flying;
+    bool mayfly;
+    bool instabuild;
+    bool mayBuild;
 
 private:
-	float flyingSpeed;
-	float walkingSpeed;
+    float flyingSpeed;
+    float walkingSpeed;
 
 public:
 #ifdef _DEBUG_MENUS_ENABLED
-	bool debugflying;
+    bool debugflying;
 #endif
 
-	Abilities();
+    Abilities();
 
-	void addSaveData(CompoundTag *parentTag);
-	void loadSaveData(CompoundTag *parentTag);
+    void addSaveData(CompoundTag* parentTag);
+    void loadSaveData(CompoundTag* parentTag);
 
-	float getFlyingSpeed();
-	void setFlyingSpeed(float value);
-	float getWalkingSpeed();
-	void setWalkingSpeed(float value);
+    float getFlyingSpeed();
+    void setFlyingSpeed(float value);
+    float getWalkingSpeed();
+    void setWalkingSpeed(float value);
 };

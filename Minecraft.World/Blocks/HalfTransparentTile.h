@@ -3,17 +3,21 @@
 
 class ChunkRebuildData;
 
-class HalfTransparentTile : public Tile
-{
-	friend class ChunkRebuildData;
+class HalfTransparentTile : public Tile {
+    friend class ChunkRebuildData;
+
 private:
-	bool allowSame;
-	std::wstring texture;
+    bool allowSame;
+    std::wstring texture;
+
 protected:
-	HalfTransparentTile(int id, const std::wstring &tex, Material *material, bool allowSame);
+    HalfTransparentTile(int id, const std::wstring& tex, Material* material,
+                        bool allowSame);
+
 public:
     virtual bool isSolidRender(bool isServerLevel = false);
-    virtual bool shouldRenderFace(LevelSource *level, int x, int y, int z, int face);
+    virtual bool shouldRenderFace(LevelSource* level, int x, int y, int z,
+                                  int face);
     virtual bool blocksLight();
-	void registerIcons(IconRegister *iconRegister);
+    void registerIcons(IconRegister* iconRegister);
 };

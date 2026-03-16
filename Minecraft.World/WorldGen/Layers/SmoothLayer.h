@@ -2,10 +2,9 @@
 
 #include "Layer.h"
 
-class SmoothLayer : public Layer
-{
+class SmoothLayer : public Layer {
 public:
-	SmoothLayer(__int64 seedMixup, std::shared_ptr<Layer>parent);
+    SmoothLayer(__int64 seedMixup, std::shared_ptr<Layer> parent);
 
-	virtual intArray getArea(int xo, int yo, int w, int h);
+    virtual intArray getArea(int xo, int yo, int w, int h);
 };

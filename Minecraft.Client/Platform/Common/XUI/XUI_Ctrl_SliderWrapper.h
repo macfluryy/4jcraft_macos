@@ -33,6 +33,6 @@ public:
 	HRESULT SetRange( int nRangeMin, int nRangeMax);
 	LPCWSTR GetText(  );
 	HRESULT SetText(LPCWSTR text, int iDataAssoc=0  );
-	HRESULT SetValueDisplay( BOOL bShow );
+	HRESULT SetValueDisplay( bool show );
 
 };

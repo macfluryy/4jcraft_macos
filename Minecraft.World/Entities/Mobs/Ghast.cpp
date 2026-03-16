@@ -13,78 +13,70 @@
 #include "../../Level/Events/LevelEvent.h"
 #include "../../Util/SoundTypes.h"
 
+void Ghast::_init() {
+    floatDuration = 0;
+    target = nullptr;
+    retargetTime = 0;
+    oCharge = 0;
+    charge = 0;
 
-
-void Ghast::_init()
-{
-	floatDuration = 0;
-	target = nullptr;
-	retargetTime = 0;
-	oCharge = 0;
-	charge = 0;
-
-	xTarget = 0.0f;
-	yTarget = 0.0f;
-	zTarget = 0.0f;
+    xTarget = 0.0f;
+    yTarget = 0.0f;
+    zTarget = 0.0f;
 }
 
-Ghast::Ghast(Level *level) : FlyingMob( level )
-{
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
-	this->defineSynchedData();
+Ghast::Ghast(Level* level) : FlyingMob(level) {
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called
+    this->defineSynchedData();
 
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that the derived version of the function is called
-	health = getMaxHealth();
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called
+    health = getMaxHealth();
 
     _init();
 
-    this->textureIdx = TN_MOB_GHAST; // 4J was L"/mob/ghast.png";
+    this->textureIdx = TN_MOB_GHAST;  // 4J was L"/mob/ghast.png";
     this->setSize(4, 4);
     this->fireImmune = true;
-	xpReward = Enemy::XP_REWARD_MEDIUM;
+    xpReward = Enemy::XP_REWARD_MEDIUM;
 }
 
-bool Ghast::hurt(DamageSource *source, int dmg)
-{
-	if (source->getMsgId() == ChatPacket::e_ChatDeathFireball)
-	{
-		std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>( source->getEntity() );
-		if (player != NULL)
-		{
-			// reflected fireball, kill the ghast
-			FlyingMob::hurt(source, 1000);
-			player->awardStat(GenericStats::ghast(),GenericStats::param_ghast());
-			return true;
-		}
-	}
+bool Ghast::hurt(DamageSource* source, int dmg) {
+    if (source->getMsgId() == ChatPacket::e_ChatDeathFireball) {
+        std::shared_ptr<Player> player =
+            std::dynamic_pointer_cast<Player>(source->getEntity());
+        if (player != NULL) {
+            // reflected fireball, kill the ghast
+            FlyingMob::hurt(source, 1000);
+            player->awardStat(GenericStats::ghast(),
+                              GenericStats::param_ghast());
+            return true;
+        }
+    }
 
-	return FlyingMob::hurt(source, dmg);
+    return FlyingMob::hurt(source, dmg);
 }
 
-void Ghast::defineSynchedData() 
-{
+void Ghast::defineSynchedData() {
     FlyingMob::defineSynchedData();
 
-    entityData->define(DATA_IS_CHARGING, (uint8_t) 0);
+    entityData->define(DATA_IS_CHARGING, (uint8_t)0);
 }
 
-int Ghast::getMaxHealth()
-{
-	return 10;
-}
+int Ghast::getMaxHealth() { return 10; }
 
-void Ghast::tick()
-{
+void Ghast::tick() {
     FlyingMob::tick();
     uint8_t current = entityData->getByte(DATA_IS_CHARGING);
-//    this->textureName = current == 1 ? L"/mob/ghast_fire.png" : L"/mob/ghast.png";	// 4J replaced with following line
-	this->textureIdx = current == 1 ? TN_MOB_GHAST_FIRE : TN_MOB_GHAST;
+    //    this->textureName = current == 1 ? L"/mob/ghast_fire.png" :
+    //    L"/mob/ghast.png";	// 4J replaced with following line
+    this->textureIdx = current == 1 ? TN_MOB_GHAST_FIRE : TN_MOB_GHAST;
 }
 
-void Ghast::serverAiStep() 
-{
-    if (!level->isClientSide && level->difficulty == Difficulty::PEACEFUL) remove();
+void Ghast::serverAiStep() {
+    if (!level->isClientSide && level->difficulty == Difficulty::PEACEFUL)
+        remove();
     checkDespawn();
 
     oCharge = charge;
@@ -94,27 +86,22 @@ void Ghast::serverAiStep()
 
     double dd = xd * xd + yd * yd + zd * zd;
 
-    if (dd < 1 * 1 || dd > 60 * 60)
-	{
+    if (dd < 1 * 1 || dd > 60 * 60) {
         xTarget = x + (random->nextFloat() * 2 - 1) * 16;
         yTarget = y + (random->nextFloat() * 2 - 1) * 16;
         zTarget = z + (random->nextFloat() * 2 - 1) * 16;
     }
 
-    if (floatDuration-- <= 0)
-	{
+    if (floatDuration-- <= 0) {
         floatDuration += random->nextInt(5) + 2;
 
-		dd = sqrt(dd);
+        dd = sqrt(dd);
 
-        if (canReach(xTarget, yTarget, zTarget, dd)) 
-		{
+        if (canReach(xTarget, yTarget, zTarget, dd)) {
             this->xd += xd / dd * 0.1;
             this->yd += yd / dd * 0.1;
             this->zd += zd / dd * 0.1;
-        }
-		else
-		{
+        } else {
             xTarget = x;
             yTarget = y;
             zTarget = z;
@@ -122,128 +109,103 @@ void Ghast::serverAiStep()
     }
 
     if (target != NULL && target->removed) target = nullptr;
-    if (target == NULL || retargetTime-- <= 0)
-	{
+    if (target == NULL || retargetTime-- <= 0) {
         target = level->getNearestAttackablePlayer(shared_from_this(), 100);
-        if (target != NULL) 
-		{
+        if (target != NULL) {
             retargetTime = 20;
         }
     }
 
     double maxDist = 64.0f;
-    if (target != NULL && target->distanceToSqr(shared_from_this()) < maxDist * maxDist) 
-	{
+    if (target != NULL &&
+        target->distanceToSqr(shared_from_this()) < maxDist * maxDist) {
         double xdd = target->x - x;
-        double ydd = (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
+        double ydd =
+            (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zdd = target->z - z;
-        yBodyRot = yRot = -(float) atan2(xdd, zdd) * 180 / PI;
+        yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / PI;
 
-        if (this->canSee(target))
-		{
-            if (charge == 10)
-			{
-				// 4J - change brought forward from 1.2.3
-				level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_WARNING, (int) x, (int) y, (int) z, 0);
+        if (this->canSee(target)) {
+            if (charge == 10) {
+                // 4J - change brought forward from 1.2.3
+                level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_WARNING,
+                                  (int)x, (int)y, (int)z, 0);
             }
             charge++;
-            if (charge == 20)
-			{
-				// 4J - change brought forward from 1.2.3
-				level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL, (int) x, (int) y, (int) z, 0);
-                std::shared_ptr<Fireball> ie = std::shared_ptr<Fireball>( new Fireball(level, std::dynamic_pointer_cast<Mob>( shared_from_this() ), xdd, ydd, zdd) );
+            if (charge == 20) {
+                // 4J - change brought forward from 1.2.3
+                level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL,
+                                  (int)x, (int)y, (int)z, 0);
+                std::shared_ptr<Fireball> ie =
+                    std::shared_ptr<Fireball>(new Fireball(
+                        level,
+                        std::dynamic_pointer_cast<Mob>(shared_from_this()), xdd,
+                        ydd, zdd));
                 double d = 4;
-                Vec3 *v = getViewVector(1);
+                Vec3* v = getViewVector(1);
                 ie->x = x + v->x * d;
                 ie->y = y + bbHeight / 2 + 0.5f;
                 ie->z = z + v->z * d;
                 level->addEntity(ie);
                 charge = -40;
             }
-        } 
-		else 
-		{
+        } else {
             if (charge > 0) charge--;
         }
-    }
-	else
-	{
-        yBodyRot = yRot = -(float) atan2(this->xd, this->zd) * 180 / PI;
+    } else {
+        yBodyRot = yRot = -(float)atan2(this->xd, this->zd) * 180 / PI;
         if (charge > 0) charge--;
     }
 
-    if (!level->isClientSide) 
-	{
+    if (!level->isClientSide) {
         uint8_t old = entityData->getByte(DATA_IS_CHARGING);
-        uint8_t current = (uint8_t) (charge > 10 ? 1 : 0);
-        if (old != current)
-		{
+        uint8_t current = (uint8_t)(charge > 10 ? 1 : 0);
+        if (old != current) {
             entityData->set(DATA_IS_CHARGING, current);
         }
     }
 }
 
-bool Ghast::canReach(double xt, double yt, double zt, double dist) 
-{
-	double xd = (xTarget - x) / dist;
-	double yd = (yTarget - y) / dist;
-	double zd = (zTarget - z) / dist;
+bool Ghast::canReach(double xt, double yt, double zt, double dist) {
+    double xd = (xTarget - x) / dist;
+    double yd = (yTarget - y) / dist;
+    double zd = (zTarget - z) / dist;
 
-	AABB *bb = this->bb->copy();
-	for (int d = 1; d < dist; d++)
-	{
-	    bb->move(xd, yd, zd);
-	    if (!level->getCubes( shared_from_this(), bb)->empty()) return false;
-	}
+    AABB* bb = this->bb->copy();
+    for (int d = 1; d < dist; d++) {
+        bb->move(xd, yd, zd);
+        if (!level->getCubes(shared_from_this(), bb)->empty()) return false;
+    }
 
     return true;
 }
 
-int Ghast::getAmbientSound()
-{
-    return eSoundType_MOB_GHAST_MOAN;
+int Ghast::getAmbientSound() { return eSoundType_MOB_GHAST_MOAN; }
+
+int Ghast::getHurtSound() { return eSoundType_MOB_GHAST_SCREAM; }
+
+int Ghast::getDeathSound() { return eSoundType_MOB_GHAST_DEATH; }
+
+int Ghast::getDeathLoot() { return Item::sulphur->id; }
+
+void Ghast::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
+    int count = random->nextInt(2) + random->nextInt(1 + playerBonusLevel);
+    for (int i = 0; i < count; i++) {
+        spawnAtLocation(Item::ghastTear_Id, 1);
+    }
+    count = random->nextInt(3) + random->nextInt(1 + playerBonusLevel);
+    for (int i = 0; i < count; i++) {
+        spawnAtLocation(Item::sulphur_Id, 1);
+    }
 }
 
-int Ghast::getHurtSound()
-{
-    return eSoundType_MOB_GHAST_SCREAM;
+float Ghast::getSoundVolume() {
+    return 0.4f;  // 10; 4J-PB - changing due to customer demands
 }
 
-int Ghast::getDeathSound()
-{
-    return eSoundType_MOB_GHAST_DEATH;
+bool Ghast::canSpawn() {
+    return (random->nextInt(20) == 0 && FlyingMob::canSpawn() &&
+            level->difficulty > Difficulty::PEACEFUL);
 }
 
-int Ghast::getDeathLoot() 
-{
-    return Item::sulphur->id;
-}
-
-void Ghast::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
-{
-	int count = random->nextInt(2) + random->nextInt(1 + playerBonusLevel);
-	for (int i = 0; i < count; i++)
-	{
-		spawnAtLocation(Item::ghastTear_Id, 1);
-	}
-	count = random->nextInt(3) + random->nextInt(1 + playerBonusLevel);
-	for (int i = 0; i < count; i++)
-	{
-		spawnAtLocation(Item::sulphur_Id, 1);
-	}
-}
-
-float Ghast::getSoundVolume()
-{
-    return 0.4f;//10; 4J-PB - changing due to customer demands
-}
-
-bool Ghast::canSpawn()
-{
-    return (random->nextInt(20) == 0 && FlyingMob::canSpawn() && level->difficulty > Difficulty::PEACEFUL);
-}
-
-int Ghast::getMaxSpawnClusterSize()
-{
-    return 1;
-}
+int Ghast::getMaxSpawnClusterSize() { return 1; }

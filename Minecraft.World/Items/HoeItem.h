@@ -1,19 +1,21 @@
 #pragma once
 
-
 #include "Item.h"
 
 class Player;
 
-class HoeItem : public Item
-{
+class HoeItem : public Item {
 protected:
-	const Tier *tier;
+    const Tier* tier;
+
 public:
-	HoeItem(int id, const Tier *tier);
+    HoeItem(int id, const Tier* tier);
 
-	virtual bool useOn(std::shared_ptr<ItemInstance> instance, std::shared_ptr<Player> player, Level *level, int x, int y, int z, int face, float clickX, float clickY, float clickZ, bool bTestUseOnOnly=false);
-	virtual bool isHandEquipped();
+    virtual bool useOn(std::shared_ptr<ItemInstance> instance,
+                       std::shared_ptr<Player> player, Level* level, int x,
+                       int y, int z, int face, float clickX, float clickY,
+                       float clickZ, bool bTestUseOnOnly = false);
+    virtual bool isHandEquipped();
 
-	const Tier *getTier();
+    const Tier* getTier();
 };

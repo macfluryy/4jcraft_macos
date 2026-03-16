@@ -305,10 +305,15 @@ void UIScene_HowToPlay::StartPage( EHowToPlayPage ePage )
 	value[0].type = IGGY_DATATYPE_number;
 	value[0].number = gs_pageToFlashMapping[(int)ePage];
 
+	std::vector<std::u16string> conv;
+	conv.reserve(paragraphs.size());
+
 	for(unsigned int i = 0; i < paragraphs.size(); ++i)
 	{
-		stringVal[i].string = (IggyUTF16 *)paragraphs[i].c_str();
-		stringVal[i].length = paragraphs[i].length();
+		conv.push_back(convWstringToU16string(paragraphs[i]));
+
+		stringVal[i].string = conv[i].c_str();
+		stringVal[i].length = conv[i].length();
 		value[i+1].type = IGGY_DATATYPE_string_UTF16;
 		value[i+1].string16 = stringVal[i];
 	}

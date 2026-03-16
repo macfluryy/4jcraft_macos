@@ -300,9 +300,9 @@ HRESULT CScene_InGamePlayerOptions::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINoti
 
 	if( hObjPressed == m_buttonKick )
 	{
-		BYTE *smallId = new BYTE();
+		std::uint8_t *smallId = new std::uint8_t();
 		*smallId = m_networkSmallId;
-		UINT uiIDA[2];
+		unsigned int uiIDA[2];
 		uiIDA[0]=IDS_CONFIRM_OK;
 		uiIDA[1]=IDS_CONFIRM_CANCEL;
 
@@ -330,7 +330,7 @@ HRESULT CScene_InGamePlayerOptions::OnControlNavigate(XUIMessageControlNavigate 
 
 int CScene_InGamePlayerOptions::KickPlayerReturned(void *pParam,int iPad,C4JStorage::EMessageResult result)
 {
-	BYTE smallId = *(BYTE *)pParam;
+	std::uint8_t smallId = *static_cast<std::uint8_t *>(pParam);
 	delete pParam;
 
 	if(result==C4JStorage::EMessage_ResultAccept)
@@ -357,7 +357,7 @@ void CScene_InGamePlayerOptions::OnPlayerChanged(void *callbackParam, INetworkPl
 
 	HXUIOBJ hBackScene = scene->GetBackScene();
 	CScene_InGameInfo* infoScene;
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( hBackScene, &pObj );
 	infoScene = (CScene_InGameInfo *)pObj;
 	if(infoScene != NULL) CScene_InGameInfo::OnPlayerChanged(infoScene,pPlayer,leaving);

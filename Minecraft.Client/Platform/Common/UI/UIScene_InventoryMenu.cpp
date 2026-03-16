@@ -194,9 +194,14 @@ void UIScene_InventoryMenu::setSectionSelectedSlot(ESceneSection eSection, int x
 	case eSectionInventoryUsing:
 		slotList = &m_slotListHotbar;
 		break;
+	default:
+		break;
 	}
 
-	slotList->setHighlightSlot(index);
+	if (slotList != NULL)
+	{
+		slotList->setHighlightSlot(index);
+	}
 }
 
 UIControl *UIScene_InventoryMenu::getSection(ESceneSection eSection)
@@ -213,6 +218,8 @@ UIControl *UIScene_InventoryMenu::getSection(ESceneSection eSection)
 	case eSectionInventoryUsing:
 		control = &m_slotListHotbar;
 		break;
+	default:
+		break;
 	}
 	return control;
 }
@@ -222,7 +229,7 @@ void UIScene_InventoryMenu::customDraw(IggyCustomDrawCallbackRegion *region)
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 	if(pMinecraft->localplayers[m_iPad] == NULL || pMinecraft->localgameModes[m_iPad] == NULL) return;
 
-	if(wcscmp((wchar_t *)region->name,L"player")==0)
+	if(std::char_traits<char16_t>::compare(region->name, u"player", 6) == 0)
 	{
 		// Setup GDraw, normal game render states and matrices
 		CustomDrawData *customDrawRegion = ui.setupCustomDraw(this,region);
@@ -302,9 +309,10 @@ void UIScene_InventoryMenu::updateEffectsDisplay()
 			value[0].type = IGGY_DATATYPE_number;
 			value[0].number = icon;
 
+			const std::u16string convString = convWstringToU16string(effectString);
 			IggyStringUTF16 stringVal;
-			stringVal.string = (IggyUTF16*)effectString.c_str();
-			stringVal.length = effectString.length();
+			stringVal.string = convString.c_str();
+			stringVal.length = convString.length();
 			value[1].type = IGGY_DATATYPE_string_UTF16;
 			value[1].string16 = stringVal;
 

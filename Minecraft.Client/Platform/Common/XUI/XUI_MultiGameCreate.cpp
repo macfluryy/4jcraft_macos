@@ -341,7 +341,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				{			
 					TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-					UINT uiIDA[3];
+					unsigned int uiIDA[3];
 
 					// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 					DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);
@@ -403,7 +403,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				if(m_pDLCPack && !m_pDLCPack->hasPurchasedFile( DLCManager::e_DLCType_Texture, L"" ))
 				{
 					// no
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_OK;
 
 					if(!ProfileManager.IsSignedInLive(pNotifyPressData->UserIndex))
@@ -431,7 +431,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 						// tell sentient about the upsell of the full version of the skin pack
 						TelemetryManager->RecordUpsellPresented(pNotifyPressData->UserIndex, eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-						UINT uiIDA[1];
+						unsigned int uiIDA[1];
 						uiIDA[0]=IDS_CONFIRM_OK;
 
 						// Give the player a warning about the trial version of the texture pack
@@ -444,7 +444,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 
 		if(m_bGameModeSurvival != true || m_MoreOptionsParams.bHostPrivileges)
 		{			
-			UINT uiIDA[2];
+			unsigned int uiIDA[2];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			uiIDA[1]=IDS_CONFIRM_CANCEL;
 			if(m_bGameModeSurvival != true)
@@ -459,7 +459,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 		else
 		{
 			// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-			DWORD connectedControllers = 0;
+			int connectedControllers = 0;
 			for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 			{
 				if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -483,7 +483,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyPressEx(HXUIOBJ hObjPressed, XUINotifyPr
 				{
 					m_bIgnoreInput = false;
 					SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -565,7 +565,7 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(void *pParam,int iPa
 
 
 	// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-	DWORD connectedControllers = 0;
+	int connectedControllers = 0;
 	for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 	{
 		if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -586,7 +586,7 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(void *pParam,int iPa
 
 		if(isClientSide && noUGC )
 		{
-			UINT uiIDA[1];
+			unsigned int uiIDA[1];
 			uiIDA[0]=IDS_CONFIRM_OK;
 			StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 		}
@@ -628,7 +628,7 @@ HRESULT CScene_MultiGameCreate::OnNotifyValueChanged (HXUIOBJ hObjSource, XUINot
 	{
 		//  Enable the done button when we have all of the necessary information
 		std::wstring wWorldName = m_EditWorldName.GetText();
-		BOOL bHasWorldName = ( wWorldName.length()!=0);
+		bool bHasWorldName = ( wWorldName.length()!=0);
 		m_NewWorld.SetEnable(bHasWorldName);        
 	}
 	else if(hObjSource==m_SliderDifficulty.GetSlider() )
@@ -761,7 +761,7 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(void *pParam,int iPad,C4JStora
 		bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 
 		// 4J Stu - If we only have one controller connected, then don't show the sign-in UI again
-		DWORD connectedControllers = 0;
+		int connectedControllers = 0;
 		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			if( InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i) ) ++connectedControllers;
@@ -785,7 +785,7 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(void *pParam,int iPad,C4JStora
 			{
 				pClass->m_bIgnoreInput = false;
 				pClass->SetShow( TRUE );
-				UINT uiIDA[1];
+				unsigned int uiIDA[1];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 			}
@@ -815,7 +815,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 		// It's possible that the player has not signed in - they can back out
 		if(ProfileManager.IsSignedIn(iPad))
 		{
-			DWORD dwLocalUsersMask = 0;
+			unsigned int dwLocalUsersMask = 0;
 			
 			bool isClientSide = ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) && pClass->m_MoreOptionsParams.bOnlineGame;
 			bool noPrivileges = false;
@@ -842,7 +842,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_FAILED_TO_CREATE_GAME_TITLE, IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -850,7 +850,7 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void *pParam,bool bContinue
 				{
 					pClass->m_bIgnoreInput = false;
 					pClass->SetShow( TRUE );
-					UINT uiIDA[1];
+					unsigned int uiIDA[1];
 					uiIDA[0]=IDS_CONFIRM_OK;
 					StorageManager.RequestMessageBox( IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE, IDS_NO_MULTIPLAYER_PRIVILEGE_HOST_TEXT, uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL, app.GetStringTable());
 				}
@@ -889,7 +889,7 @@ void CScene_MultiGameCreate::CreateGame(CScene_MultiGameCreate* pClass, DWORD dw
 	// Make our next save default to the name of the level
 	StorageManager.SetSaveTitle((wchar_t *)wWorldName.c_str());
 
-	BOOL bHasSeed = (pClass->m_EditSeed.GetText() != NULL);
+	bool bHasSeed = (pClass->m_EditSeed.GetText() != NULL);
 
 	std::wstring wSeed;
 	if(bHasSeed)
@@ -1186,7 +1186,7 @@ void CScene_MultiGameCreate::UpdateCurrentTexturePack()
 
 		TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC, ullOfferID_Full & 0xFFFFFFFF);
 
-		UINT uiIDA[3];
+		unsigned int uiIDA[3];
 
 		// Need to check if the texture pack has both Full and Trial versions - we may do some as free ones, so only Full
 		DLC_INFO *pDLCInfo=app.GetDLCInfoForFullOfferID(ullOfferID_Full);

@@ -1,60 +1,64 @@
 #pragma once
 
-
 class StitchSlot;
 class Texture;
 #include "../TextureHolder.h"
 
-class Stitcher
-{
+class Stitcher {
 public:
-	static const int STITCH_SUCCESS = 0;
-	static const int STITCH_RETRY = 1;
-	static const int STITCH_ABORT = 2;
+    static const int STITCH_SUCCESS = 0;
+    static const int STITCH_RETRY = 1;
+    static const int STITCH_ABORT = 2;
 
-	static const int MAX_MIPLEVEL = 0; // This should be 4 again later when we *ACTUALLY* mipmap
-	static const int MIN_TEXEL = 1 << MAX_MIPLEVEL;
+    static const int MAX_MIPLEVEL =
+        0;  // This should be 4 again later when we *ACTUALLY* mipmap
+    static const int MIN_TEXEL = 1 << MAX_MIPLEVEL;
 
 private:
-	std::set<TextureHolder *, TextureHolderLessThan> texturesToBeStitched; // = new HashSet<TextureHolder>(256);
-	std::vector<StitchSlot *> storage; // = new ArrayList<StitchSlot>(256);
-	int storageX;
-	int storageY;
+    std::set<TextureHolder*, TextureHolderLessThan>
+        texturesToBeStitched;          // = new HashSet<TextureHolder>(256);
+    std::vector<StitchSlot*> storage;  // = new ArrayList<StitchSlot>(256);
+    int storageX;
+    int storageY;
 
-	int maxWidth;
-	int maxHeight;
-	bool forcePowerOfTwo;
-	int forcedScale;
+    int maxWidth;
+    int maxHeight;
+    bool forcePowerOfTwo;
+    int forcedScale;
 
-	Texture *stitchedTexture;
+    Texture* stitchedTexture;
 
-	std::wstring name;
+    std::wstring name;
 
-	void _init(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+    void _init(const std::wstring& name, int maxWidth, int maxHeight,
+               bool forcePowerOfTwo, int forcedScale);
 
 public:
-	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo);
-	Stitcher(const std::wstring &name, int maxWidth, int maxHeight, bool forcePowerOfTwo, int forcedScale);
+    Stitcher(const std::wstring& name, int maxWidth, int maxHeight,
+             bool forcePowerOfTwo);
+    Stitcher(const std::wstring& name, int maxWidth, int maxHeight,
+             bool forcePowerOfTwo, int forcedScale);
 
-	int getWidth();
-	int getHeight();
-	void addTexture(TextureHolder *textureHolder);
-	Texture *constructTexture(bool mipmap = true); // 4J Added mipmap param
-	void stitch();
-	std::vector<StitchSlot *> *gatherAreas();
+    int getWidth();
+    int getHeight();
+    void addTexture(TextureHolder* textureHolder);
+    Texture* constructTexture(bool mipmap = true);  // 4J Added mipmap param
+    void stitch();
+    std::vector<StitchSlot*>* gatherAreas();
 
-private:	
-	// Based on: http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
-	int smallestEncompassingPowerOfTwo(int input);
+private:
+    // Based on:
+    // http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
+    int smallestEncompassingPowerOfTwo(int input);
 
-	bool addToStorage(TextureHolder *textureHolder);
+    bool addToStorage(TextureHolder* textureHolder);
 
-	/**
-	* Expand the current storage to take in account the new texture.
-	* This should only be called if it didn't fit anywhere.
-	*
-	* @param textureHolder
-	* @return Boolean indicating if it could accommodate for the growth
-	*/
-	bool expand(TextureHolder *textureHolder);
+    /**
+     * Expand the current storage to take in account the new texture.
+     * This should only be called if it didn't fit anywhere.
+     *
+     * @param textureHolder
+     * @return Boolean indicating if it could accommodate for the growth
+     */
+    bool expand(TextureHolder* textureHolder);
 };

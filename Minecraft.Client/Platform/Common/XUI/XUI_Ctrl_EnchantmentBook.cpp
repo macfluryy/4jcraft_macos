@@ -23,7 +23,7 @@
 
 //-----------------------------------------------------------------------------
 CXuiCtrlEnchantmentBook::CXuiCtrlEnchantmentBook() :
-	m_bDirty(FALSE),
+	m_bDirty(false),
 	m_fScale(1.0f),
 	m_fAlpha(1.0f)
 {
@@ -64,7 +64,7 @@ HRESULT CXuiCtrlEnchantmentBook::OnInit(XUIMessageInit* pInitData, BOOL& rfHandl
 
 	assert( parent != NULL );
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( parent, &pObj );
 	m_containerScene = (CXuiSceneEnchant *)pObj;
 

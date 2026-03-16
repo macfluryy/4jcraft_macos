@@ -90,6 +90,7 @@ static void RADLINK WarningCallback(void *user_callback_data, Iggy *player, Iggy
 		use for debugging, otherwise debugging errors in the
 		ActionScript 3 code in your Flash content will be very
 		difficult! */
+		app.DebugPrintf(app.USER_SR, "[Iggy] ");
 		app.DebugPrintf(app.USER_SR, message);
 		app.DebugPrintf(app.USER_SR, "\n");
 		break;
@@ -174,7 +175,7 @@ UIController::UIController()
 #endif
 
 	// 4J Stu - This is a bit of a hack until we change the Minecraft initialisation to store the proper screen size for other platforms
-#if defined _WINDOWS64 || defined _DURANGO || defined __ORBIS__
+#if defined _WINDOWS64 || defined _DURANGO || defined __ORBIS__ || defined(__linux__)
 	m_fScreenWidth = 1920.0f;
 	m_fScreenHeight = 1080.0f;
 	m_bScreenWidthSetup = true;
@@ -426,7 +427,7 @@ void UIController::loadSkins()
 	platformSkinPath = L"skinPS3.swf";
 #elif defined __PSVITA__
 	platformSkinPath = L"skinVita.swf";
-#elif defined _WINDOWS64
+#elif defined(_WINDOWS64) || defined(__linux__)
 	if(m_fScreenHeight==1080.0f)
 	{
 		platformSkinPath = L"skinHDWin.swf";
@@ -478,7 +479,7 @@ void UIController::loadSkins()
 	m_iggyLibraries[eLibrary_Default] = loadSkin(L"skin.swf", L"skin.swf");
 #endif
 
-#if ( defined(_WINDOWS64) || defined(_DURANGO) || defined(__ORBIS__) )
+#if ( defined(_WINDOWS64) || defined(_DURANGO) || defined(__ORBIS__) || defined(__linux__))
 
 #if defined(_WINDOWS64)
 	// 4J Stu - Load the 720/480 skins so that we have something to fallback on during development
@@ -512,24 +513,26 @@ void UIController::loadSkins()
 IggyLibrary UIController::loadSkin(const std::wstring &skinPath, const std::wstring &skinName)
 {
 	IggyLibrary lib = IGGY_INVALID_LIBRARY;
-	// 4J Stu - We need to load the platformskin before the normal skin, as the normal skin requires some elements from the platform skin
 	if(!skinPath.empty() && app.hasArchiveFile(skinPath))
 	{
 		byteArray baFile = app.getArchiveFile(skinPath);
-		lib = IggyLibraryCreateFromMemoryUTF16( (IggyUTF16 *)skinName.c_str() , (void *)baFile.data, baFile.length, NULL );
+
+		const std::u16string convSkinName = convWstringToU16string(skinName);
+
+		lib = IggyLibraryCreateFromMemoryUTF16( convSkinName.data() , (void *)baFile.data, baFile.length, NULL );
 
 		delete[] baFile.data;
-#ifdef _DEBUG
+		#ifdef _DEBUG
 		IggyMemoryUseInfo memoryInfo;
 		rrbool res;
 		int iteration = 0;
 		__int64 totalStatic = 0;
-		while(res = IggyDebugGetMemoryUseInfo ( NULL ,
+		while((res = IggyDebugGetMemoryUseInfo ( NULL ,
 			lib ,
 			"" ,
 			0 ,
 			iteration ,
-			&memoryInfo ))
+			&memoryInfo )))
 		{
 			totalStatic += memoryInfo.static_allocation_bytes;
 			app.DebugPrintf(app.USER_SR, "%ls - %.*s, static: %dB, dynamic: %dB\n", skinPath.c_str(), memoryInfo.subcategory_stringlen, memoryInfo.subcategory, memoryInfo.static_allocation_bytes, memoryInfo.dynamic_allocation_bytes);
@@ -559,7 +562,7 @@ void UIController::ReloadSkin()
 		m_iggyLibraries[i] = IGGY_INVALID_LIBRARY;
 	}
 
-#ifdef _WINDOWS64
+#if defined _WINDOWS64 || defined __linux__
 	// 4J Stu - Don't load on a thread on windows. I haven't investigated this in detail, so a quick fix
 	reloadSkinThreadProc(this);
 #else
@@ -606,7 +609,7 @@ int UIController::reloadSkinThreadProc(void* lpParam)
 	controller->m_groups[eUIGroup_Fullscreen]->ReloadAll();
 
 	// 4J Stu - Don't do this on windows, as we never navigated forwards to start with
-#ifndef _WINDOW64
+#if ! (defined _WINDOWS64 || defined __linux__)
 	controller->NavigateBack(0, false, eUIScene_COUNT, eUILayer_Tooltips);
 #endif
 	LeaveCriticalSection(&ms_reloadSkinCS);
@@ -1200,6 +1203,8 @@ void UIController::setupCustomDrawGameState()
 #elif defined __PS3__
 	RenderManager.StartFrame();
 #elif defined __PSVITA__
+	RenderManager.StartFrame();
+#elif defined __linux__
 	RenderManager.StartFrame();
 #elif defined __ORBIS__
 	RenderManager.StartFrame(false);
@@ -2542,7 +2547,7 @@ void UIController::setFontCachingCalculationBuffer(int length)
 	draw call is not large enough, Iggy will crash or otherwise behave
 	incorrectly.
 	*/
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64
+#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __linux__
 	static const int CHAR_SIZE = 24;
 #else
 	static const int CHAR_SIZE = 16;

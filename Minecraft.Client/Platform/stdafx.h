@@ -299,6 +299,7 @@ typedef XUID GameSessionUID;
 	// Linux build: avoid pulling in Windows64 platform headers (they cause
 	// symbol/class redefinitions). Use Orbis-compatible stubs and Linux controller.
 	#include "../Platform/Linux/Linux_App.h"
+	#include "../Platform/Linux/Iggy/include/iggy.h"
 	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
 	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
 	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"

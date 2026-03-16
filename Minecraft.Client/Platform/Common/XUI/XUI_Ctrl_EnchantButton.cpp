@@ -32,7 +32,7 @@ HRESULT CXuiCtrlEnchantmentButton::OnInit(XUIMessageInit* pInitData, BOOL& rfHan
 
 	assert( parent != NULL );
 
-	VOID *pObj;
+	void *pObj;
 	XuiObjectFromHandle( parent, &pObj );
 	m_containerScene = (CXuiSceneEnchant *)pObj;
 

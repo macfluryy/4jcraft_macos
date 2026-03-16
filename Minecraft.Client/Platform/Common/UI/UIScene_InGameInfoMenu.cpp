@@ -354,7 +354,7 @@ void UIScene_InGameInfoMenu::handleInput(int iPad, int key, bool repeat, bool pr
 			if(!ProfileManager.IsSignedInLive(iPad))
 			{
 				// get them to sign in to online
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_PRO_NOTONLINE_ACCEPT;
 				uiIDA[1]=IDS_PRO_NOTONLINE_DECLINE;
 				ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2, ProfileManager.GetPrimaryPad(),&UIScene_InGameInfoMenu::MustSignInReturnedPSN,this, app.GetStringTable());
@@ -457,7 +457,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId)
 				// Only ops will hit this, can kick anyone not local and not local to the host
 				std::uint8_t *smallId = new std::uint8_t();
 				*smallId = m_players[currentSelection];
-				UINT uiIDA[2];
+				unsigned int uiIDA[2];
 				uiIDA[0]=IDS_CONFIRM_OK;
 				uiIDA[1]=IDS_CONFIRM_CANCEL;
 

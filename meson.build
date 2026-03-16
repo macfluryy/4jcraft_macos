@@ -1,6 +1,8 @@
 project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
+  meson_version: '>= 1.1',
   default_options : [
+    'warning_level=0',
     'buildtype=debug', # for now
     'unity=on', # merge source files per target
     'unity_size=8', # TODO: mess around with this
@@ -36,14 +38,6 @@ global_cpp_defs = [
   '-D_DEBUG',
   '-DDEBUG',
 ]
-
-if get_option('enable_java_guis')
-  global_cpp_defs += '-DENABLE_JAVA_GUIS'
-endif
-
-if get_option('enable_vsync')
-  global_cpp_defs += '-DENABLE_VSYNC'
-endif
 
 if host_machine.system() == 'linux'
   global_cpp_defs += [

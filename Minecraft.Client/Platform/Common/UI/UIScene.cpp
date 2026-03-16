@@ -391,12 +391,12 @@ void UIScene::getDebugMemoryUseRecursive(const std::wstring &moviePath, IggyMemo
 	rrbool res;
 	IggyMemoryUseInfo internalMemoryInfo;
 	int internalIteration = 0;
-	while(res = IggyDebugGetMemoryUseInfo ( swf ,
+	while((res = IggyDebugGetMemoryUseInfo ( swf ,
 		0 ,
 		memoryInfo.subcategory ,
 		memoryInfo.subcategory_stringlen ,
 		internalIteration ,
-		&internalMemoryInfo ))
+		&internalMemoryInfo )))
 	{
 		app.DebugPrintf(app.USER_SR, "%ls - %.*s static: %d ( %d ) dynamic: %d ( %d )\n", moviePath.c_str(), internalMemoryInfo.subcategory_stringlen, internalMemoryInfo.subcategory, 
 			internalMemoryInfo.static_allocation_bytes, internalMemoryInfo.static_allocation_count, internalMemoryInfo.dynamic_allocation_bytes, internalMemoryInfo.dynamic_allocation_count);
@@ -414,12 +414,12 @@ void UIScene::PrintTotalMemoryUsage(__int64 &totalStatic, __int64 &totalDynamic)
 	int iteration = 0;
 	__int64 sceneStatic = 0;
 	__int64 sceneDynamic = 0;
-	while(res = IggyDebugGetMemoryUseInfo ( swf ,
+	while((res = IggyDebugGetMemoryUseInfo ( swf ,
 		0 ,
 		"" ,
 		0 ,
 		iteration ,
-		&memoryInfo ))
+		&memoryInfo )))
 	{
 		sceneStatic += memoryInfo.static_allocation_bytes;
 		sceneDynamic += memoryInfo.dynamic_allocation_bytes;
@@ -507,7 +507,9 @@ IggyName UIScene::registerFastName(const std::wstring &name)
 	}
 	else
 	{
-		var = IggyPlayerCreateFastName ( getMovie() , (IggyUTF16 *)name.c_str() , -1 );
+		const std::u16string convName = convWstringToU16string(name);
+		var = IggyPlayerCreateFastName ( getMovie() , (IggyUTF16 *)convName.c_str() , -1 );
+
 		m_fastNames[name] = var;
 	}
 	return var;
@@ -718,10 +720,21 @@ void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, std::shar
 	float scaleX = bwidth / 16.0f;
 	float scaleY = bheight / 16.0f;	
 
+    // 4jcraft: make sure we cull the back to not make transparent blocks (like
+    // leaves) look weird
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    // 4jcraft: needed for transparency in the item renders (like in the
+    // crafting menu)
+    if (fAlpha < 1) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 	glEnable(GL_RESCALE_NORMAL);
 	glPushMatrix();
+    Lighting::turnOnGui();
 	glRotatef(120, 1, 0, 0);
-	Lighting::turnOn();
 	glPopMatrix();
 
 	float pop = item->popTime;
@@ -768,6 +781,10 @@ void UIScene::_customDrawSlotControl(CustomDrawData *region, int iPad, std::shar
 
 	Lighting::turnOff();
 	glDisable(GL_RESCALE_NORMAL);
+    glDisable(GL_CULL_FACE);
+    if (fAlpha < 1) {
+        glDisable(GL_BLEND);
+    }
 }
 
 // 4J Stu - Not threadsafe
@@ -992,8 +1009,7 @@ bool UIScene::allowRepeat(int key)
 
 void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 {
-	if(wcscmp((wchar_t *)call->function_name.string,L"handlePress")==0)
-	{
+	if(std::char_traits<char16_t>::compare(call->function_name.string, u"handlePress", 12) == 0) {
 		if(call->num_arguments != 2)
 		{
 			app.DebugPrintf("Callback for handlePress did not have the correct number of arguments\n");
@@ -1012,7 +1028,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handlePress(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleFocusChange")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleFocusChange", 18) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1032,7 +1048,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		_handleFocusChange(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleInitFocus")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleInitFocus", 16) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1052,7 +1068,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		_handleInitFocus(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleCheckboxToggled")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleCheckboxToggled", 22) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1072,7 +1088,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleCheckboxToggled(call->arguments[0].number, call->arguments[1].boolval);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleSliderMove")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleSliderMove", 17) == 0)
 	{
 		if(call->num_arguments != 2)
 		{
@@ -1092,7 +1108,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleSliderMove(call->arguments[0].number, call->arguments[1].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleAnimationEnd")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleAnimationEnd", 19) == 0)
 	{
 		if(call->num_arguments != 0)
 		{
@@ -1104,7 +1120,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleAnimationEnd();
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleSelectionChanged")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleSelectionChanged", 23) == 0)
 	{
 		if(call->num_arguments != 1)
 		{
@@ -1124,7 +1140,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 		}
 		handleSelectionChanged(call->arguments[0].number);
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleRequestMoreData")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleRequestMoreData", 22) == 0)
 	{
 		if(call->num_arguments == 0)
 		{
@@ -1151,7 +1167,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16 * call)
 			handleRequestMoreData(call->arguments[0].number, call->arguments[1].boolval);
 		}
 	}
-	else if(wcscmp((wchar_t *)call->function_name.string,L"handleTouchBoxRebuild")==0)
+	else if(std::char_traits<char16_t>::compare(call->function_name.string, u"handleTouchBoxRebuild", 22) == 0)
 	{
 		handleTouchBoxRebuild();
 	}
@@ -1245,4 +1261,26 @@ size_t UIScene::GetCallbackUniqueId()
 bool UIScene::isReadyToDelete()
 {
 	return true;
+}
+
+int UIScene::parseSlotId(const char16_t *s) {
+	// must be nonnull, must start with 'slot_', first char after the underscore must be a digit
+	if (!s ||
+		(s[0] != u's' || s[1] != u'l' || s[2] != u'o' || s[3] != u't' ||
+		s[4] != u'_') ||
+		(s[5] < u'0' || s[5] > u'9')) {
+		return -1;
+	}
+
+	int i = 5;
+	int id = 0;
+
+	// keep consuming digits until we reach a non-digit. each digit scales the existing id value
+	// by 10 plus the actual digit value. (this is referred to as a 'number' by the way) 
+	while (s[i] >= u'0' && s[i] <= u'9') {
+		id = id * 10 + (s[i] - u'0');
+		i++;
+	}
+
+	return id;
 }

@@ -1,59 +1,57 @@
 #pragma once
 
-
 #include "../Monster.h"
 
 class Level;
 class DamageSource;
 
-class Creeper : public Monster
-{
+class Creeper : public Monster {
 public:
-	eINSTANCEOF GetType() { return eTYPE_CREEPER; }
-	static Entity *create(Level *level) { return new Creeper(level); }
+    eINSTANCEOF GetType() { return eTYPE_CREEPER; }
+    static Entity* create(Level* level) { return new Creeper(level); }
 
 private:
-	static const int DATA_SWELL_DIR = 16;
+    static const int DATA_SWELL_DIR = 16;
     static const int DATA_IS_POWERED = 17;
 
     int swell;
     int oldSwell;
 
-	static const int MAX_SWELL = 30;
+    static const int MAX_SWELL = 30;
 
-	void _init();
+    void _init();
 
 public:
-	Creeper(Level *level);
+    Creeper(Level* level);
 
-	virtual bool useNewAi();
-	virtual int getMaxHealth();
+    virtual bool useNewAi();
+    virtual int getMaxHealth();
 
 protected:
-	virtual void defineSynchedData();
+    virtual void defineSynchedData();
 
 public:
-	virtual void addAdditonalSaveData(CompoundTag *entityTag);
-    virtual void readAdditionalSaveData(CompoundTag *tag);
+    virtual void addAdditonalSaveData(CompoundTag* entityTag);
+    virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
     virtual void tick();
 
 protected:
-	virtual int getHurtSound();
-	virtual int getDeathSound();
+    virtual int getHurtSound();
+    virtual int getDeathSound();
 
 public:
-	virtual void die(DamageSource *source);
-	virtual bool doHurtTarget(std::shared_ptr<Entity> target);
-	virtual bool isPowered();
+    virtual void die(DamageSource* source);
+    virtual bool doHurtTarget(std::shared_ptr<Entity> target);
+    virtual bool isPowered();
     float getSwelling(float a);
 
 protected:
-	int getDeathLoot();
+    int getDeathLoot();
 
 public:
-	int getSwellDir();
-	void setSwellDir(int dir);
-	void thunderHit(const LightningBolt *lightningBolt) ;
+    int getSwellDir();
+    void setSwellDir(int dir);
+    void thunderHit(const LightningBolt* lightningBolt);
 };

@@ -642,9 +642,11 @@ void UIScene_Credits::setNextLabel(const std::wstring &label, ECreditTextTypes s
 	IggyDataValue result;
 	IggyDataValue value[3];
 
+	const std::u16string convLabel = convWstringToU16string(label);
+
 	IggyStringUTF16 stringVal;
-	stringVal.string = (IggyUTF16*)label.c_str();
-	stringVal.length = label.length();
+	stringVal.string = convLabel.c_str();
+	stringVal.length = convLabel.length();
 	value[0].type = IGGY_DATATYPE_string_UTF16;
 	value[0].string16 = stringVal;
 

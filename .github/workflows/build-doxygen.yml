@@ -1,0 +1,50 @@
+name: Publish Documentation
+
+on:
+  push:
+    branches: ["dev"]
+    paths:
+      - "4J.Input/**"
+      - "4J.Profile/**"
+      - "4J.Render/**"
+      - "4J.Storage/**"
+      - "Minecraft.Assets/**"
+      - "Minecraft.Client/**"
+      - "Minecraft.World/**"
+      - "docs/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
+      - name: Update doxygen-awesome
+        run: git submodule update --init --recursive
+      - name: Generate Docs
+        run: cd docs && doxygen
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+      - name: Upload Pages Artifacts
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./docs/html
+  deploy:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Github Pages
+        uses: actions/deploy-pages@v4
+        id: deployment

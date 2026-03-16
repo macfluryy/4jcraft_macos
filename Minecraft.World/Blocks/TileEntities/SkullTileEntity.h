@@ -2,35 +2,35 @@
 
 #include "TileEntity.h"
 
-class SkullTileEntity : public TileEntity
-{
+class SkullTileEntity : public TileEntity {
 public:
-	eINSTANCEOF GetType() { return eTYPE_SKULLTILEENTITY; }
-	static TileEntity *create() { return new SkullTileEntity(); }
+    eINSTANCEOF GetType() { return eTYPE_SKULLTILEENTITY; }
+    static TileEntity* create() { return new SkullTileEntity(); }
+
 public:
-	static const int TYPE_SKELETON = 0;
-	static const int TYPE_WITHER = 1;
-	static const int TYPE_ZOMBIE = 2;
-	static const int TYPE_CHAR = 3;
-	static const int TYPE_CREEPER = 4;
+    static const int TYPE_SKELETON = 0;
+    static const int TYPE_WITHER = 1;
+    static const int TYPE_ZOMBIE = 2;
+    static const int TYPE_CHAR = 3;
+    static const int TYPE_CREEPER = 4;
 
 private:
-	int skullType;
-	int rotation;
-	std::wstring extraType;
+    int skullType;
+    int rotation;
+    std::wstring extraType;
 
 public:
-	SkullTileEntity();
+    SkullTileEntity();
 
-	void save(CompoundTag *tag);
-	void load(CompoundTag *tag);
-	std::shared_ptr<Packet> getUpdatePacket();
-	void setSkullType(int skullType, const std::wstring &extra);
-	int getSkullType();
-	int getRotation();
-	void setRotation(int rot);
-	std::wstring getExtraType();
+    void save(CompoundTag* tag);
+    void load(CompoundTag* tag);
+    std::shared_ptr<Packet> getUpdatePacket();
+    void setSkullType(int skullType, const std::wstring& extra);
+    int getSkullType();
+    int getRotation();
+    void setRotation(int rot);
+    std::wstring getExtraType();
 
-	// 4J Added
-	virtual std::shared_ptr<TileEntity> clone();
+    // 4J Added
+    virtual std::shared_ptr<TileEntity> clone();
 };

@@ -8,30 +8,29 @@ class LevelType;
 #define _BIOME_OVERRIDE
 #endif
 
-class Layer
-{
+class Layer {
 private:
-	__int64 seed;
+    __int64 seed;
 
 protected:
-	std::shared_ptr<Layer>parent;
+    std::shared_ptr<Layer> parent;
 
 private:
-	__int64 rval;
-	__int64 seedMixup;
+    __int64 rval;
+    __int64 seedMixup;
 
 public:
-	static LayerArray getDefaultLayers(__int64 seed, LevelType *levelType);
+    static LayerArray getDefaultLayers(__int64 seed, LevelType* levelType);
 
-	Layer(__int64 seedMixup);
-	virtual ~Layer(){}
+    Layer(__int64 seedMixup);
+    virtual ~Layer() {}
 
-	virtual void init(__int64 seed);
-	virtual void initRandom(__int64 x, __int64 y);
+    virtual void init(__int64 seed);
+    virtual void initRandom(__int64 x, __int64 y);
 
 protected:
-	int nextRandom(int max);
+    int nextRandom(int max);
 
 public:
-	virtual intArray getArea(int xo, int yo, int w, int h) = 0;
+    virtual intArray getArea(int xo, int yo, int w, int h) = 0;
 };

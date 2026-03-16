@@ -6,139 +6,91 @@
 #include "LavaSlime.h"
 #include "../../Util/SoundTypes.h"
 
+LavaSlime::LavaSlime(Level* level) : Slime(level) {
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called 4J Stu - The
+    // Slime ctor has already called this, and as we don't override it here
+    // don't need to call it
+    // this->defineSynchedData();
 
+    // 4J Stu - This function call had to be moved here from the Entity ctor to
+    // ensure that the derived version of the function is called
+    health = getMaxHealth();
 
-LavaSlime::LavaSlime(Level *level) : Slime(level)
-{
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that
-	// the derived version of the function is called
-	// 4J Stu - The Slime ctor has already called this, and as we don't override it here don't need to call it
-	//this->defineSynchedData();
-
-	// 4J Stu - This function call had to be moved here from the Entity ctor to ensure that the derived version of the function is called
-	health = getMaxHealth();
-
-	this->textureIdx = TN_MOB_LAVA; // 4J was "/mob/lava.png";
-	fireImmune = true;
-	walkingSpeed = .2f;
+    this->textureIdx = TN_MOB_LAVA;  // 4J was "/mob/lava.png";
+    fireImmune = true;
+    walkingSpeed = .2f;
 }
 
-bool LavaSlime::canSpawn()
-{
-	return level->difficulty > Difficulty::PEACEFUL && level->isUnobstructed(bb) && level->getCubes(shared_from_this(), bb)->empty() && !level->containsAnyLiquid(bb);
+bool LavaSlime::canSpawn() {
+    return level->difficulty > Difficulty::PEACEFUL &&
+           level->isUnobstructed(bb) &&
+           level->getCubes(shared_from_this(), bb)->empty() &&
+           !level->containsAnyLiquid(bb);
 }
 
-int LavaSlime::getArmorValue()
-{
-	return getSize() * 3;
+int LavaSlime::getArmorValue() { return getSize() * 3; }
+
+int LavaSlime::getLightColor(float a) { return 15 << 20 | 15 << 4; }
+
+float LavaSlime::getBrightness(float a) { return 1.0f; }
+
+ePARTICLE_TYPE LavaSlime::getParticleName() { return eParticleType_flame; }
+
+std::shared_ptr<Slime> LavaSlime::createChild() {
+    return std::shared_ptr<LavaSlime>(new LavaSlime(level));
 }
 
-int LavaSlime::getLightColor(float a)
-{
-	return 15 << 20 | 15 << 4;
+int LavaSlime::getDeathLoot() {
+    // 4J-PB - brought forward the magma cream drops
+    return Item::magmaCream_Id;
 }
 
-float LavaSlime::getBrightness(float a)
-{
-	return 1.0f;
+void LavaSlime::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
+    int loot = getDeathLoot();
+    if (loot > 0 && getSize() > 1) {
+        int count = random->nextInt(4) - 2;
+        if (playerBonusLevel > 0) {
+            count += random->nextInt(playerBonusLevel + 1);
+        }
+        for (int i = 0; i < count; i++) {
+            spawnAtLocation(loot, 1);
+        }
+    }
 }
 
-ePARTICLE_TYPE LavaSlime::getParticleName()
-{
-	return eParticleType_flame;
+bool LavaSlime::isOnFire() { return false; }
+
+int LavaSlime::getJumpDelay() { return Slime::getJumpDelay() * 4; }
+
+void LavaSlime::decreaseSquish() { targetSquish = targetSquish * 0.90f; }
+
+void LavaSlime::jumpFromGround() {
+    yd = 0.42f + getSize() * .1f;
+    this->hasImpulse = true;
 }
 
-std::shared_ptr<Slime> LavaSlime::createChild()
-{
-	return std::shared_ptr<LavaSlime>( new LavaSlime(level) );
+void LavaSlime::causeFallDamage(float distance) {}
+
+bool LavaSlime::isDealsDamage() { return true; }
+
+int LavaSlime::getAttackDamage() { return Slime::getAttackDamage() + 2; }
+
+int LavaSlime::getHurtSound() { return eSoundType_MOB_SLIME; }
+
+int LavaSlime::getDeathSound() { return eSoundType_MOB_SLIME; }
+
+int LavaSlime::getSquishSound() {
+    if (getSize() > 1) {
+        return eSoundType_MOB_MAGMACUBE_BIG;
+    }
+    return eSoundType_MOB_MAGMACUBE_SMALL;
 }
 
-int LavaSlime::getDeathLoot()
-{
-	// 4J-PB - brought forward the magma cream drops
-	return Item::magmaCream_Id;
+bool LavaSlime::isInLava() {
+    // hack that makes the lava slimes move freely on the bottom of the lava
+    // oceans
+    return false;
 }
 
-void LavaSlime::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel)
-{
-	int loot = getDeathLoot();
-	if (loot > 0 && getSize() > 1)
-	{
-		int count = random->nextInt(4) - 2;
-		if (playerBonusLevel > 0)
-		{
-			count += random->nextInt(playerBonusLevel + 1);
-		}
-		for (int i = 0; i < count; i++)
-		{
-			spawnAtLocation(loot, 1);
-		}
-	}
-}
-
-bool LavaSlime::isOnFire()
-{
-	return false;
-}
-
-
-int LavaSlime::getJumpDelay()
-{
-	return Slime::getJumpDelay() * 4;
-}
-
-void LavaSlime::decreaseSquish()
-{
-	targetSquish = targetSquish * 0.90f;
-}
-
-void LavaSlime::jumpFromGround()
-{
-	yd = 0.42f + getSize() * .1f;
-	this->hasImpulse = true;
-}
-
-void LavaSlime::causeFallDamage(float distance)
-{
-}
-
-bool LavaSlime::isDealsDamage()
-{
-	return true;
-}
-
-int LavaSlime::getAttackDamage()
-{
-	return Slime::getAttackDamage() + 2;
-}
-
-int LavaSlime::getHurtSound()
-{
-	return eSoundType_MOB_SLIME;
-}
-
-int LavaSlime::getDeathSound()
-{
-	return eSoundType_MOB_SLIME;
-}
-
-int LavaSlime::getSquishSound()
-{
-	if (getSize() > 1)
-	{
-		return eSoundType_MOB_MAGMACUBE_BIG;
-	}
-	return eSoundType_MOB_MAGMACUBE_SMALL;
-}
-
-bool LavaSlime::isInLava()
-{
-	// hack that makes the lava slimes move freely on the bottom of the lava
-	// oceans
-	return false;
-}
-
-bool LavaSlime::doPlayLandSound()
-{
-	return true;
-}
+bool LavaSlime::doPlayLandSound() { return true; }

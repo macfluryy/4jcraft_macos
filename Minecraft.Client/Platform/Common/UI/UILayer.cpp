@@ -404,6 +404,8 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void *initData)
 	case eUIScene_Timer:
 		newScene = new UIScene_Timer(iPad, initData, this);
 		break;
+	default:
+		break;
 	};
 
 	if(newScene == NULL)
@@ -552,6 +554,8 @@ UIScene *UILayer::addComponent(int iPad, EUIScene scene, void *initData)
 	case eUIComponent_MenuBackground:
 		newScene = new UIComponent_MenuBackground(iPad, initData, this);
 		m_componentRefCount[scene] = std::pair<int,bool>(1,true);
+		break;
+	default:
 		break;
 	};
 
@@ -728,6 +732,8 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */)
 		case eUIScene_EndPoem:
 			m_bIgnoreAutosaveMenuDisplayed = true;
 			break;
+		default:
+			break;
 		}
 
 		switch(sceneType)
@@ -737,6 +743,8 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */)
 		case eUIScene_Credits:
 		case eUIScene_LeaderboardsMenu:
 			m_bIgnorePlayerJoinMenuDisplayed = true;
+			break;
+		default:
 			break;
 		}
 	}

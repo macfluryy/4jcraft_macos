@@ -5,18 +5,18 @@
 class Level;
 class BossMobPart;
 
-class BossMob : public Mob
-{
+class BossMob : public Mob {
 protected:
-	int maxHealth;
+    int maxHealth;
 
 public:
-	BossMob(Level *level);
+    BossMob(Level* level);
 
-	virtual int getMaxHealth();
-	virtual bool hurt(std::shared_ptr<BossMobPart> bossMobPart, DamageSource *source, int damage);
-	virtual bool hurt(DamageSource *source, int damage);
+    virtual int getMaxHealth();
+    virtual bool hurt(std::shared_ptr<BossMobPart> bossMobPart,
+                      DamageSource* source, int damage);
+    virtual bool hurt(DamageSource* source, int damage);
 
 protected:
-	virtual bool reallyHurt(DamageSource *source, int damage);
+    virtual bool reallyHurt(DamageSource* source, int damage);
 };
