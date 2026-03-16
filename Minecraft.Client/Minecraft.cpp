@@ -1986,7 +1986,7 @@ void Minecraft::run_middle() {
                     }
                 }
 
-#ifdef _ENABLEIGGY
+#ifndef _ENABLEIGGY
                 // On Linux, Iggy Flash UI is not available. If no players were
                 // rendered (menu / title-screen state), call GameRenderer
                 // directly so mc->screen draws.
