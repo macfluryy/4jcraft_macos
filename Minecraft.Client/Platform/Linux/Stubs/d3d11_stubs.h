@@ -6,6 +6,19 @@
 #include "winapi_stubs.h"
 #include "DirectXMath/DirectXMath.h"
 
+// The DirectXMath SAL shim defines a few reserved identifiers such as
+// `__valid`. Newer libstdc++ headers also use those internal names, so keep
+// the shim's macros from leaking past the DirectXMath include.
+#ifdef __valid
+#undef __valid
+#endif
+#ifdef __notvalid
+#undef __notvalid
+#endif
+#ifdef __maybevalid
+#undef __maybevalid
+#endif
+
 using namespace DirectX;
 
 typedef struct _RECT {
