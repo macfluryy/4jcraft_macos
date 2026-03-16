@@ -60,7 +60,7 @@ jobs:
 
           BASE_SHA=""
           if [ "$EVENT_NAME" = "pull_request" ]; then
-            git fetch --no-tags origin "$PR_BASE_REF" --depth=1
+            git fetch --no-tags origin "$PR_BASE_REF"
             BASE_SHA="$(git merge-base "origin/$PR_BASE_REF" "$CURRENT_SHA")"
           elif [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
             BASE_SHA="$BEFORE_SHA"
