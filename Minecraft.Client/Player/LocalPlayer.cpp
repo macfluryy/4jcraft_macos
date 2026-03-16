@@ -709,10 +709,12 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // storage device, so needs a primary player, and the player may not
         // have been a primary player when they first 'got' the award so let the
         // award manager figure it out
-        // if (!minecraft->stats[m_iPad]->hasTaken(ach))
+        if (!minecraft->stats[m_iPad]->hasTaken(ach))
         {
             // 4J-PB - Don't display the java popup
-            // minecraft->achievementPopup->popup(ach);
+#ifdef ENABLE_JAVA_GUIS
+            minecraft->achievementPopup->popup(ach);
+#endif
 
             // 4J Stu - Added this function in the libraries as some
             // achievements don't get awarded to all players e.g. Splitscreen
