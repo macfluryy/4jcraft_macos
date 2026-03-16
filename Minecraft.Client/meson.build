@@ -77,6 +77,10 @@ if get_option('enable_java_guis')
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
+if get_option('enable_shiggy') and get_option('enable_java_guis')
+  error('You cannot use the Iggy and Java UI at the same time, please choose one.')
+endif
+
 client = executable('Minecraft.Client',
   client_sources + platform_sources + localisation[1],
   include_directories : include_directories('Platform', 'Platform/Linux/Iggy/include'),
