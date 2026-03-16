@@ -433,7 +433,7 @@ __int64 BiomeSource::findSeed(LevelType* generator)
 
             // Clean up
             delete pr;
-            delete indices.data;
+            delete[] indices.data;
 
 #ifdef DEBUG_SEEDS
             app.DebugPrintf("%d: %d tries taken, seed used is %lld\n", k,

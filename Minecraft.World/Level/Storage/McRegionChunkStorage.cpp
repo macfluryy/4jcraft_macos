@@ -240,7 +240,7 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
     uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) |
                      (((uint64_t)(uint32_t)(levelChunk->z)));
 
-    delete m_entityData[index].data;
+    delete[] m_entityData[index].data;
 
     CompoundTag* newTag = new CompoundTag();
     bool savedEntities =
