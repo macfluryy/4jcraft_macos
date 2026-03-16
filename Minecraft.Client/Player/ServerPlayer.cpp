@@ -703,12 +703,16 @@ bool ServerPlayer::hurt(DamageSource* dmgSource, int dmg) {
                                         m_lastDamageSource =
                                             eTelemetryPlayerDeathSource_Player_Arrow;
                                         break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
                         break;
                     case eTYPE_FIREBALL:
                         m_lastDamageSource = eTelemetryPlayerDeathSource_Ghast;
+                        break;
+                    default:
                         break;
                 };
             }

@@ -350,6 +350,8 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat, bool 
 						m_labelFilter.setLabel(filterBuffer);
 					}
 					break;
+				default:
+					break;
 				}
 
 				ReadStats(-1);
@@ -483,6 +485,8 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex)
 				m_newEntryIndex, m_newReadSize
 				);
 		}
+		break;
+	default:
 		break;
 	}
 
