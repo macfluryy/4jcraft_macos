@@ -26,25 +26,9 @@ jobs:
         run: git submodule update --init --recursive
       - name: Generate Docs
         run: cd docs && doxygen
-      - name: Configure Pages
-        uses: actions/configure-pages@v4
-      - name: Upload Pages Artifacts
-        uses: actions/upload-pages-artifact@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: ./docs/html
-  deploy:
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy Github Pages
-        uses: actions/deploy-pages@v4
-        id: deployment
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/html
+          force_orphan: true
