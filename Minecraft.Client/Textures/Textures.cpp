@@ -30,19 +30,14 @@ C4JRender::eTextureFormat Textures::TEXTURE_FORMAT =
 int Textures::preLoadedIdx[TN_COUNT];
 const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"%blur%misc/pumpkinblur",
-#ifdef ENABLE_JAVA_GUIS
     L"%blur%/misc/vignette",  // Not currently used
-#endif
     L"%clamp%misc/shadow",
-#ifdef ENABLE_JAVA_GUIS
     L"/achievement/bg",  // Not currently used
-#endif
     L"art/kz",
     L"environment/clouds",
     L"environment/rain",
     L"environment/snow",
     L"gui/gui",
-#ifdef ENABLE_JAVA_GUIS
     L"gui/background",
     L"gui/inventory",
     L"gui/container",
@@ -53,7 +48,6 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"gui/creative_inventory/tab_inventory",
     L"gui/creative_inventory/tab_item_search",
     L"title/mclogo",
-#endif
     L"gui/icons",
     L"item/arrows",
     L"item/boat",

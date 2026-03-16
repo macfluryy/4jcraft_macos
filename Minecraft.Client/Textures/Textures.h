@@ -15,19 +15,14 @@ class PreStitchedTextureMap;
 
 typedef enum _TEXTURE_NAME {
     TN__BLUR__MISC_PUMPKINBLUR,
-#ifdef ENABLE_JAVA_GUIS
     TN__BLUR__MISC_VIGNETTE,  // Not currently used
-#endif
     TN__CLAMP__MISC_SHADOW,
-#ifdef ENABLE_JAVA_GUIS
     TN_ACHIEVEMENT_BG,  // Not currently used
-#endif
     TN_ART_KZ,
     TN_ENVIRONMENT_CLOUDS,
     TN_ENVIRONMENT_RAIN,
     TN_ENVIRONMENT_SNOW,
     TN_GUI_GUI,
-#ifdef ENABLE_JAVA_GUIS
     TN_GUI_BACKGROUND,
     TN_GUI_INVENTORY,
     TN_GUI_CONTAINER,
@@ -38,7 +33,6 @@ typedef enum _TEXTURE_NAME {
     TN_GUI_CREATIVE_TAB_INVENTORY,
     TN_GUI_CREATIVE_TAB_ITEM_SEARCH,
     TN_TITLE_MCLOGO,
-#endif
     TN_GUI_ICONS,
     TN_ITEM_ARROWS,
     TN_ITEM_BOAT,
