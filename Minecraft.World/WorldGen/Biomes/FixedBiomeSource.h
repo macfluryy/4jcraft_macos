@@ -36,10 +36,10 @@ class FixedBiomeSource : public BiomeSource {
     virtual TilePos* findBiome(int x, int z, int r, Biome* toFind,
                                Random* random);
     virtual TilePos* findBiome(int x, int z, int r,
-                               const std::vector<Biome*>& allowed,
+                               const std::vector<Biome*> allowed,
                                Random* random);
     virtual bool containsOnly(int x, int z, int r, Biome* allowed);
     virtual bool containsOnly(
         int x, int z, int r,
-        const std::vector<Biome*>& allowed);
+        const std::vector<Biome*> allowed);
 };
