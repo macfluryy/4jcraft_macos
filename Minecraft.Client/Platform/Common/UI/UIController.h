@@ -218,6 +218,7 @@ public:
 	// RENDERING
 	float getScreenWidth() { return m_fScreenWidth; }
 	float getScreenHeight() { return m_fScreenHeight; }
+	void setScreenSize(S32 w, S32 h) { m_fScreenWidth = (float)w; m_fScreenHeight = (float)h; }
 
 	virtual void render() = 0;
 	void getRenderDimensions(C4JRender::eViewportType viewport, S32 &width, S32 &height);
