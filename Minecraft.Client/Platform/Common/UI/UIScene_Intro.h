@@ -49,7 +49,7 @@ public:
 	virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId, bool bPressed, bool bRepeat, bool bReleased);
 #endif
 
-#if !defined(_ENABLEIGGY) && !defined(ENABLE_JAVA_GUIS)
+#ifndef _ENABLEIGGY
 	virtual void tick();
 #endif
 };
