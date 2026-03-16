@@ -1981,6 +1981,8 @@ void Minecraft::run_middle() {
                                     // capture the save thumbnail
                                     app.CaptureSaveThumbnail();
                                     break;
+                                default:
+                                    break;
                             }
                         }
                     }

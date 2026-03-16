@@ -34,7 +34,7 @@ void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
 
 std::wstring Screen::getClipboard() {
     // 4J - removed
-    return NULL;
+    return std::wstring();
 }
 
 void Screen::setClipboard(const std::wstring& str) {

@@ -341,7 +341,8 @@ void GameRuleManager::writeRuleFile(DataOutputStream *dos)
 	for (int i=0; i<8; i++) dos->writeBoolean(false); // Padding.
 
 	// Write string lookup.
-	int numStrings = ConsoleGameRules::eGameRuleType_Count + ConsoleGameRules::eGameRuleAttr_Count;
+	int numStrings = static_cast<int>(ConsoleGameRules::eGameRuleType_Count) +
+	                 static_cast<int>(ConsoleGameRules::eGameRuleAttr_Count);
 	dos->writeInt(numStrings);
 	for (int i = 0; i < ConsoleGameRules::eGameRuleType_Count; i++)	dos->writeUTF( wchTagNameA[i] );
 	for (int i = 0; i < ConsoleGameRules::eGameRuleAttr_Count; i++)	dos->writeUTF( wchAttrNameA[i] );

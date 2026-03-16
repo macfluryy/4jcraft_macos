@@ -208,6 +208,8 @@ int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void *lpParam,bool bR
 				pClass->m_data->endZ = iVal;
 			}
 			break;
+		default:
+			break;
 		}
 	}
 

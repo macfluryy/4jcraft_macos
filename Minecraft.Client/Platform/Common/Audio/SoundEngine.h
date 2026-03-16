@@ -153,7 +153,8 @@ private:
 	C4JThread *m_openStreamThread;
 	static int OpenStreamThreadProc( void* lpParameter );
 	char m_szStreamName[255];
-	int CurrentSoundsPlaying[eSoundType_MAX+eSFX_MAX];
+	int CurrentSoundsPlaying[static_cast<int>(eSoundType_MAX) +
+	                         static_cast<int>(eSFX_MAX)];
 
 	// streaming music files - will be different for mash-up packs
 	int m_iStream_Overworld_Min,m_iStream_Overworld_Max;

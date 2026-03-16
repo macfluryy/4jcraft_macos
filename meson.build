@@ -2,6 +2,7 @@ project('4jcraft-chucklegrounds', ['cpp', 'c'],
   version : '0.1.0',
   meson_version: '>= 1.1',
   default_options : [
+    'cpp_std=c++26',
     'warning_level=0',
     'buildtype=debug', # for now
     'unity=on', # merge source files per target

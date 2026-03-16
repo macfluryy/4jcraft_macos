@@ -1330,6 +1330,8 @@ void CMinecraftApp::ActionGameSettings(int iPad,eGameSetting eVal)
 	case eGameSetting_PSVita_NetworkModeAdhoc:
 		//nothing to do here
 		break;
+	default:
+		break;
 	}
 }
 
@@ -3811,6 +3813,8 @@ void CMinecraftApp::HandleXuiActions(void)
 				}
 
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -3993,6 +3997,8 @@ void CMinecraftApp::HandleXuiActions(void)
 				// 					app.ApplyGameSettingsChanged(ProfileManager.GetPrimaryPad());
 				// 					app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_MultiGameJoinLoad);
 				// 				}
+				break;
+			default:
 				break;
 			}
 		}
@@ -7512,6 +7518,8 @@ void CMinecraftApp::SetGameHostOption(unsigned int &uiHostSettings, eGameHostOpt
 	case eGameHostOption_All:
 		uiHostSettings=uiVal;
 		break;
+	default:
+		break;
 	}
 }
 
@@ -7585,7 +7593,9 @@ unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings, eGame
 		break;
 	case eGameHostOption_DisableSaving:
 		return (uiHostSettings&GAME_HOST_OPTION_BITMASK_DISABLESAVE);
-		break;		
+		break;
+	default:
+		return 0;
 	}
 
 	return false;
@@ -7918,6 +7928,8 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type)
 		// 4J-PB - fix for #107167 - Customer Encountered: TU12: Content: UI: There is no information what killed Player after being slain by Iron Golem.
 	case eTYPE_VILLAGERGOLEM:
 		return app.GetString(IDS_IRONGOLEM);
+	default:
+		break;
 
 	};
 

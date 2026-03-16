@@ -155,6 +155,8 @@ void UIScene_CreativeMenu::handleOtherClicked(int iPad, ESceneSection eSection, 
 	case eSectionInventoryCreativeSlider:
 		ScrollBar(this->m_pointerPos);
 		break;
+	default:
+		break;
 	}
 }
 

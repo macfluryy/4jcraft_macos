@@ -113,7 +113,8 @@ public:
 
 	static void write(DataOutputStream *dos, ConsoleGameRules::EGameRuleAttr eAttr)
 	{
-		dos->writeInt( eGameRuleType_Count + eAttr );
+		dos->writeInt(static_cast<int>(eGameRuleType_Count) +
+		             static_cast<int>(eAttr));
 	}
 
 };

@@ -7,8 +7,7 @@ class DescFormatter;
 class Achievement : public Stat {
 public:
     const int x, y;
-    Achievement*
-        requires;
+    Achievement* prerequisite;
 
 private:
     const std::wstring desc;
@@ -23,11 +22,12 @@ private:
 
 public:
     Achievement(int id, const std::wstring& name, int x, int y, Item* icon,
-                Achievement* requires);
+                Achievement* prerequisite);
     Achievement(int id, const std::wstring& name, int x, int y, Tile* icon,
-                Achievement* requires);
+                Achievement* prerequisite);
     Achievement(int id, const std::wstring& name, int x, int y,
-                std::shared_ptr<ItemInstance> icon, Achievement* requires);
+                std::shared_ptr<ItemInstance> icon,
+                Achievement* prerequisite);
 
     Achievement* setAwardLocallyOnly();
     Achievement* setGolden();
