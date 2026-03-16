@@ -924,7 +924,10 @@ void GameRenderer::updateLightTexture(float a) {
                 }
             }
 
-            float brightness = 0.0f;  // 4J - TODO - was mc->options->gamma;
+            float brightness =
+                mc->options->gamma;  // 4jcraft: since the java UI has a
+                                     // brightness slider again, lets use it.
+                                     // it'll still be 0.0f for iggy UI anyway
             if (_r > 1) _r = 1;
             if (_g > 1) _g = 1;
             if (_b > 1) _b = 1;
