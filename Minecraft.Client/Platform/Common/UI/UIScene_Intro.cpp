@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIScene_Intro.h"
 
-#if !defined _ENABLEIGGY || !defined ENABLE_JAVA_GUIS
+#if !defined(_ENABLEIGGY) && !defined(ENABLE_JAVA_GUIS)
 static int s_introTickCount = 0;
 #endif
 
@@ -12,7 +12,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void *initData, UILayer *parentLayer) : U
 	initialiseMovie();
 	m_bIgnoreNavigate = false;
 	m_bAnimationEnded = false;
-#if !defined _ENABLEIGGY || !defined ENABLE_JAVA_GUIS
+#if !defined(_ENABLEIGGY) && !defined(ENABLE_JAVA_GUIS)
 	s_introTickCount = 0;
 #endif
 
@@ -171,7 +171,7 @@ void UIScene_Intro::handleGainFocus(bool navBack)
 	}
 }
 
-#if !defined _ENABLEIGGY || !defined ENABLE_JAVA_GUIS
+#if !defined(_ENABLEIGGY) && !defined(ENABLE_JAVA_GUIS)
 void UIScene_Intro::tick()
 {
 	// Call base tick first (processes Iggy ticking)
