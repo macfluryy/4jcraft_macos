@@ -10,6 +10,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"
 #include "../../Minecraft.Client/Rendering/EntityRenderers/EnderDragonRenderer.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/UI/Screens/TitleScreen.h"
 #include "UIFontData.h"
 #ifdef __PSVITA__
 #include <message_dialog.h>
@@ -1596,6 +1597,9 @@ void UIController::NavigateToHomeMenu()
 	else
 	{
 		ui.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_MainMenu);
+#ifdef ENABLE_JAVA_GUIS
+		pMinecraft->setScreen(new TitleScreen());
+#endif
 	}
 }
 

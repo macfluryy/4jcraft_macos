@@ -10,6 +10,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 #include "../../../Minecraft.World/Platform/System.h"
 #include "../../../Minecraft.World/Util/Random.h"
+#include <GL/gl.h>
 #include "TitleScreen.h"
 
 Random* TitleScreen::random = new Random();
@@ -36,13 +37,12 @@ while ( !(line = br->readLine()).empty() )
             {
         splashes.push_back(line);
     }
-}
 
-br->close();
-    delete br;
-    */
+    br->close();
+        delete br;
+        */
 
-    splash = L"";  // splashes.at(random->nextInt(splashes.size()));
+    // splash = L""; //splashes.at(random->nextInt(splashes.size()));
 
     //    } catch (Exception e) {
     //    }
@@ -122,4 +122,37 @@ void TitleScreen::buttonClicked(Button* button) {
 
 void TitleScreen::render(int xm, int ym, float a) {
     // 4J Unused - Iggy Flash UI renders the title screen on consoles
+#ifdef ENABLE_JAVA_GUIS
+    renderBackground();
+    Tesselator* t = Tesselator::getInstance();
+
+    int logoWidth = 155 + 119;
+    int logoX = width / 2 - logoWidth / 2;
+    int logoY = 30;
+
+    glBindTexture(GL_TEXTURE_2D,
+                  minecraft->textures->loadTexture(TN_TITLE_MCLOGO));
+    glColor4f(1, 1, 1, 1);
+    blit(logoX + 0, logoY + 0, 0, 0, 155, 44);
+    blit(logoX + 155, logoY + 0, 0, 45, 155, 44);
+    t->color(0xffffff);
+    glPushMatrix();
+    glTranslatef((float)width / 2 + 90, 70, 0);
+
+    glRotatef(-20, 0, 0, 1);
+    float sss = 1.8f - Mth::abs(Mth::sin(System::currentTimeMillis() % 1000 /
+                                         1000.0f * PI * 2) *
+                                0.1f);
+
+    sss = sss * 100 / (font->width(splash) + 8 * 4);
+    glScalef(sss, sss, sss);
+    drawCenteredString(font, splash, 0, -8, 0xffff00);
+    glPopMatrix();
+
+    drawString(font, ClientConstants::VERSION_STRING, 2, 2, 0x505050);
+    wstring msg = L"Copyright Mojang AB. Do not distribute.";
+    drawString(font, msg, width - font->width(msg) - 2, height - 10, 0xffffff);
+
+    Screen::render(xm, ym, a);
+#endif
 }

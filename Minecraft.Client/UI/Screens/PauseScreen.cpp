@@ -9,6 +9,8 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../Player/LocalPlayer.h"
+#include "../../Player/MultiPlayerLocalPlayer.h"
+#include "../../MinecraftServer.h"
 
 PauseScreen::PauseScreen() {
     saveStep = 0;
@@ -30,6 +32,11 @@ void PauseScreen::init() {
     buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + yo,
                                  L"LOptions..."));
 
+    buttons.push_back(new Button(4, width / 2 - 100, height / 4 + 24 * 1 + yo,
+                                 I18n::get(L"menu.returnToGame")));
+    buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + yo,
+                                 I18n::get(L"menu.options")));
+
     buttons.push_back(new Button(5, width / 2 - 100, height / 4 + 24 * 2 + yo,
                                  98, 20, I18n::get(L"gui.achievements")));
     buttons.push_back(new Button(6, width / 2 + 2, height / 4 + 24 * 2 + yo, 98,
@@ -41,28 +48,30 @@ void PauseScreen::init() {
      */
 }
 
-void PauseScreen::buttonClicked(Button button) {
-    if (button.id == 0) {
+void PauseScreen::buttonClicked(Button* button) {
+    if (button->id == 0) {
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
-    if (button.id == 1) {
-        if (minecraft->isClientSide()) {
-            minecraft->level->disconnect();
-        }
+    if (button->id == 1) {
+        // TODO: proper disconnects
+        // if (minecraft->isClientSide())
+        // {
+        //     minecraft->level->disconnect();
+        // }
 
-        minecraft->setLevel(NULL);
-        minecraft->setScreen(new TitleScreen());
+        // minecraft->setLevel(NULL);
+        // minecraft->setScreen(new TitleScreen());
     }
-    if (button.id == 4) {
+    if (button->id == 4) {
         minecraft->setScreen(NULL);
         //       minecraft->grabMouse();		// 4J - removed
     }
 
-    if (button.id == 5) {
+    if (button->id == 5) {
         //        minecraft->setScreen(new AchievementScreen(minecraft->stats));
         //        // 4J TODO - put back
     }
-    if (button.id == 6) {
+    if (button->id == 6) {
         //        minecraft->setScreen(new StatsScreen(this, minecraft->stats));
         //        // 4J TODO - put back
     }

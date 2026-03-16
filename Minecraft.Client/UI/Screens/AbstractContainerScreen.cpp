@@ -29,7 +29,7 @@ void AbstractContainerScreen::init() {
 
 void AbstractContainerScreen::render(int xm, int ym, float a) {
     // 4J Stu - Not used
-#if 0
+#if ENABLE_JAVA_GUIS
     renderBackground();
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
@@ -38,7 +38,6 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     glPushMatrix();
     glRotatef(120, 1, 0, 0);
-    Lighting::turnOn();
     glPopMatrix();
 
     glPushMatrix();
@@ -46,18 +45,17 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     glColor4f(1, 1, 1, 1);
     glEnable(GL_RESCALE_NORMAL);
+    Lighting::turnOnGui();
 
-    Slot *hoveredSlot = NULL;
-	
-	AUTO_VAR(itEnd, menu->slots->end());
-	for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++)
-	{
-        Slot *slot = *it; //menu->slots->at(i);
+    Slot* hoveredSlot = NULL;
+
+    AUTO_VAR(itEnd, menu->slots->end());
+    for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++) {
+        Slot* slot = *it;  // menu->slots->at(i);
 
         renderSlot(slot);
 
-        if (isHovering(slot, xm, ym))
-		{
+        if (isHovering(slot, xm, ym)) {
             hoveredSlot = slot;
 
             glDisable(GL_LIGHTING);
@@ -72,38 +70,163 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     }
 
     std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
-    if (inventory->getCarried() != NULL)
-	{
+    if (inventory->getCarried() != NULL) {
         glTranslatef(0, 0, 32);
         // Slot old = carriedSlot;
         // carriedSlot = null;
-        itemRenderer->renderGuiItem(font, minecraft->textures, inventory->getCarried(), xm - xo - 8, ym - yo - 8);
-        itemRenderer->renderGuiItemDecorations(font, minecraft->textures, inventory->getCarried(), xm - xo - 8, ym - yo - 8);
+        itemRenderer->renderGuiItem(font, minecraft->textures,
+                                    inventory->getCarried(), xm - xo - 8,
+                                    ym - yo - 8);
+        itemRenderer->renderGuiItemDecorations(font, minecraft->textures,
+                                               inventory->getCarried(),
+                                               xm - xo - 8, ym - yo - 8);
         // carriedSlot = old;
     }
-    glDisable(GL_RESCALE_NORMAL);
     Lighting::turnOff();
+    glDisable(GL_RESCALE_NORMAL);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
 
     renderLabels();
 
-    if (inventory->getCarried() == NULL && hoveredSlot != NULL && hoveredSlot->hasItem())
-	{
+    // 4jcraft: newer tooltips backported from java edition 1.3.x (MCP 7.x)
+    if (inventory->getCarried() == NULL && hoveredSlot != NULL &&
+        hoveredSlot->hasItem()) {
+        std::shared_ptr<ItemInstance> item = hoveredSlot->getItem();
 
-        std::wstring elementName = trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
+        // std::wstring elementName =
+        // trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
+        std::vector<std::wstring> elementName;
+        std::vector<std::wstring>* tooltipLines =
+            item->getHoverText(minecraft->player, false, elementName);
 
-        if (elementName.length() > 0)
-		{
-            int x = xm - xo + 12;
-            int y = ym - yo - 12;
-            int width = font->width(elementName);
-            fillGradient(x - 3, y - 3, x + width + 3, y + 8 + 3, 0xc0000000, 0xc0000000);
+        if (tooltipLines != NULL && tooltipLines->size() > 0) {
+            int tooltipWidth = 0;
+            std::vector<std::wstring> cleanedLines;
+            std::vector<int> lineColors;
 
-            font->drawShadow(elementName, x, y, 0xffffffff);
+            for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
+                 ++lineIndex) {
+                std::wstring rawLine = (*tooltipLines)[lineIndex];
+                std::wstring clean = L"";
+                int lineColor = 0xffffffff;
+
+                // 4jcraft: LCE is using HTML font elements for its tooltip
+                // colors, so make sure to parse them for parity w iggy UI
+                //
+                // examples would be enchantment books, potions and music
+                // discs
+                size_t fontPos = rawLine.find(L"<font");
+                if (fontPos != std::wstring::npos) {
+                    size_t colorPos = rawLine.find(L"color=\"", fontPos);
+                    if (colorPos != std::wstring::npos) {
+                        colorPos += 7;
+                        size_t colorEnd = rawLine.find(L'"', colorPos);
+                        if (colorEnd != std::wstring::npos) {
+                            std::wstring colorStr =
+                                rawLine.substr(colorPos, colorEnd - colorPos);
+                            if (!colorStr.empty() && colorStr[0] == L'#') {
+                                colorStr = colorStr.substr(1);
+                            }
+                            if (!colorStr.empty()) {
+                                wchar_t* endPtr;
+                                long hexColor =
+                                    wcstol(colorStr.c_str(), &endPtr, 16);
+                                if (*endPtr == L'\0') {
+                                    lineColor = 0xff000000 | (int)hexColor;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                bool inTag = false;
+                for (wchar_t currentChar : rawLine) {
+                    if (currentChar == L'<') {
+                        inTag = true;
+                    } else if (currentChar == L'>') {
+                        inTag = false;
+                    } else if (!inTag) {
+                        clean += currentChar;
+                    }
+                }
+
+                cleanedLines.push_back(clean);
+                lineColors.push_back(lineColor);
+
+                int lineWidth = font->width(clean);
+                if (lineWidth > tooltipWidth) {
+                    tooltipWidth = lineWidth;
+                }
+            }
+
+            int tooltipX = xm - xo + 12;
+            int tooltipY = ym - yo - 12;
+
+            int tooltipHeight = 8;
+
+            if (tooltipLines->size() > 1) {
+                tooltipHeight += 2 + (tooltipLines->size() - 1) * 10;
+            }
+
+            int bgColor = 0xf0100010;
+            fillGradient(tooltipX - 3, tooltipY - 4,
+                         tooltipX + tooltipWidth + 3, tooltipY - 3, bgColor,
+                         bgColor);
+            fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 3,
+                         tooltipX + tooltipWidth + 3,
+                         tooltipY + tooltipHeight + 4, bgColor, bgColor);
+            fillGradient(tooltipX - 3, tooltipY - 3,
+                         tooltipX + tooltipWidth + 3,
+                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
+            fillGradient(tooltipX - 4, tooltipY - 3, tooltipX - 3,
+                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
+            fillGradient(tooltipX + tooltipWidth + 3, tooltipY - 3,
+                         tooltipX + tooltipWidth + 4,
+                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
+
+            int borderStart = 0x505000ff;
+            int borderFinish =
+                (borderStart & 0xfefefe) >> 1 | borderStart & 0xff000000;
+            fillGradient(tooltipX - 3, (tooltipY - 3) + 1, (tooltipX - 3) + 1,
+                         (tooltipY + tooltipHeight + 3) - 1, borderStart,
+                         borderFinish);
+            fillGradient(tooltipX + tooltipWidth + 2, (tooltipY - 3) + 1,
+                         tooltipX + tooltipWidth + 3,
+                         (tooltipY + tooltipHeight + 3) - 1, borderStart,
+                         borderFinish);
+            fillGradient(tooltipX - 3, tooltipY - 3,
+                         tooltipX + tooltipWidth + 3, (tooltipY - 3) + 1,
+                         borderStart, borderStart);
+            fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 2,
+                         tooltipX + tooltipWidth + 3,
+                         tooltipY + tooltipHeight + 3, borderFinish,
+                         borderFinish);
+
+            int currentY = tooltipY;
+            for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
+                 ++lineIndex) {
+                std::wstring& currentLine = cleanedLines[lineIndex];
+                int textColor;
+
+                if (lineIndex == 0) {
+                    textColor = app.GetHTMLColour(item->getRarity()->color);
+                } else {
+                    textColor = (lineColors[lineIndex] != 0xffffffff)
+                                    ? lineColors[lineIndex]
+                                    : 0xffaaaaaa;
+                }
+
+                font->drawShadow(currentLine, tooltipX, currentY, textColor);
+
+                if (lineIndex == 0) {
+                    currentY += 2;
+                }
+
+                currentY += 10;
+            }
         }
-
     }
 
     glPopMatrix();
@@ -118,26 +241,27 @@ void AbstractContainerScreen::renderLabels() {}
 
 void AbstractContainerScreen::renderSlot(Slot* slot) {
     // 4J Unused
-#if 0
+#if ENABLE_JAVA_GUIS
     int x = slot->x;
     int y = slot->y;
     std::shared_ptr<ItemInstance> item = slot->getItem();
 
-    if (item == NULL)
-	{
-        int icon = slot->getNoItemIcon();
-        if (icon >= 0)
-		{
-            glDisable(GL_LIGHTING);
-            minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
-            blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
-            glEnable(GL_LIGHTING);
-            return;
-        }
-    }
+    // if (item == NULL)
+    // {
+    //     int icon = slot->getNoItemIcon();
+    //     if (icon >= 0)
+    // 	{
+    //         glDisable(GL_LIGHTING);
+    //         minecraft->textures->bind(minecraft->textures->loadTexture(TN_GUI_ITEMS));//L"/gui/items.png"));
+    //         blit(x, y, icon % 16 * 16, icon / 16 * 16, 16, 16);
+    //         glEnable(GL_LIGHTING);
+    //         return;
+    //     }
+    // }
 
     itemRenderer->renderGuiItem(font, minecraft->textures, item, x, y);
-    itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x, y);
+    itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x,
+                                           y);
 #endif
 }
 

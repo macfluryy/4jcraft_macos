@@ -1806,7 +1806,7 @@ void UIScene_MainMenu::tick()
 {
 	UIScene::tick();
 
-#ifndef _ENABLEIGGY
+#if !defined(_ENABLEIGGY) && !defined(ENABLE_JAVA_GUIS)
 	{
 		static int s_mainMenuTickCount = 0;
 		s_mainMenuTickCount++;

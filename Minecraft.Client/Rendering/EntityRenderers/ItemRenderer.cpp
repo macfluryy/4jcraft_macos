@@ -317,6 +317,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
                                  std::shared_ptr<ItemInstance> item, float x,
                                  float y, float fScaleX, float fScaleY,
                                  float fAlpha, bool useCompiled) {
+    if (!item) return;
     int itemId = item->id;
     int itemAuxValue = item->getAuxValue();
     Icon* itemIcon = item->getIcon();

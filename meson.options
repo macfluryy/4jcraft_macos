@@ -1,3 +1,8 @@
+option('enable_java_guis', 
+  type : 'boolean', 
+  value : false, 
+  description : 'Re-enable the Java UI remnants in the code (for testing only)')
+
 option('enable_vsync', 
   type : 'boolean', 
   value : true, 

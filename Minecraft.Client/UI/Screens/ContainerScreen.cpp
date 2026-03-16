@@ -26,13 +26,13 @@ void ContainerScreen::renderLabels() {
 
 void ContainerScreen::renderBg(float a) {
     // 4J Unused
-#if 0
-	int tex = minecraft->textures->loadTexture(L"/gui/container.png");
-	glColor4f(1, 1, 1, 1);
-	minecraft->textures->bind(tex);
-	int xo = (width - imageWidth) / 2;
-	int yo = (height - imageHeight) / 2;
-	this->blit(xo, yo, 0, 0, imageWidth, containerRows * 18 + 17);
-	this->blit(xo, yo + containerRows * 18 + 17, 0, 222 - 96, imageWidth, 96);
+#ifdef ENABLE_JAVA_GUIS
+    int tex = minecraft->textures->loadTexture(TN_GUI_CONTAINER);
+    glColor4f(1, 1, 1, 1);
+    minecraft->textures->bind(tex);
+    int xo = (width - imageWidth) / 2;
+    int yo = (height - imageHeight) / 2;
+    this->blit(xo, yo, 0, 0, imageWidth, containerRows * 18 + 17);
+    this->blit(xo, yo + containerRows * 18 + 17, 0, 222 - 96, imageWidth, 96);
 #endif
 }

@@ -27,10 +27,8 @@ public:
     Screen();  // 4J added
     virtual void render(int xm, int ym, float a);
 
-protected:
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
-
 public:
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
     static std::wstring getClipboard();
     static void setClipboard(const std::wstring& str);
 

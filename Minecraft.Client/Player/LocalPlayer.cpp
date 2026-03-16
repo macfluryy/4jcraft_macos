@@ -531,25 +531,37 @@ void LocalPlayer::closeContainer() {
 }
 
 void LocalPlayer::openTextEdit(std::shared_ptr<SignTileEntity> sign) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new TextEditScreen(sign));
+    bool success = true;
+#else
     bool success = app.LoadSignEntryMenu(GetXboxPad(), sign);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft->setScreen(new TextEditScreen(sign));
+#endif
 }
 
 bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new ContainerScreen(inventory, container));
+    bool success = true;
+#else
     bool success = app.LoadContainerMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft->setScreen(new ContainerScreen(inventory, container));
+#endif
     return success;
 }
 
 bool LocalPlayer::startCrafting(int x, int y, int z) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
+    bool success = true;
+#else
     bool success = app.LoadCrafting3x3Menu(
         GetXboxPad(),
         std::dynamic_pointer_cast<LocalPlayer>(shared_from_this()), x, y, z);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     // app.LoadXuiCraftMenu(0,inventory, level, x, y, z);
-    // minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
     return success;
 }
 
@@ -562,17 +574,26 @@ bool LocalPlayer::startEnchanting(int x, int y, int z) {
 }
 
 bool LocalPlayer::startRepairing(int x, int y, int z) {
+#ifdef ENABLE_JAVA_GUIS
+    // minecraft.setScreen(new RepairScreen(inventory, level, x, y, z));
+    // FUCK YOU 4J FIRST AND FOREMOST
+    bool success = true;
+#else
     bool success =
         app.LoadRepairingMenu(GetXboxPad(), inventory, level, x, y, z);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new RepairScreen(inventory, level, x, y, z));
+#endif
     return success;
 }
 
 bool LocalPlayer::openFurnace(std::shared_ptr<FurnaceTileEntity> furnace) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new FurnaceScreen(inventory, furnace));
+    bool success = true;
+#else
     bool success = app.LoadFurnaceMenu(GetXboxPad(), inventory, furnace);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft->setScreen(new FurnaceScreen(inventory, furnace));
+#endif
     return success;
 }
 
@@ -688,10 +709,12 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // storage device, so needs a primary player, and the player may not
         // have been a primary player when they first 'got' the award so let the
         // award manager figure it out
-        // if (!minecraft->stats[m_iPad]->hasTaken(ach))
+        if (!minecraft->stats[m_iPad]->hasTaken(ach))
         {
             // 4J-PB - Don't display the java popup
-            // minecraft->achievementPopup->popup(ach);
+#ifdef ENABLE_JAVA_GUIS
+            minecraft->achievementPopup->popup(ach);
+#endif
 
             // 4J Stu - Added this function in the libraries as some
             // achievements don't get awarded to all players e.g. Splitscreen

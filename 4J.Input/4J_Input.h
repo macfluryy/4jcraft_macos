@@ -157,6 +157,9 @@ public:
                                    void* lpParam);
     void CancelAllVerifyInProgress(void);
 
+    int GetMouseX();
+    int GetMouseY();
+
     // bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);
 };
 

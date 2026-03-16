@@ -67,7 +67,7 @@ void AchievementPopup::prepareWindow() {
 
 void AchievementPopup::render() {
 // 4J Unused
-#if 0
+#if ENABLE_JAVA_GUIS
     if (Minecraft::warezTime > 0)
 	{
         glDisable(GL_DEPTH_TEST);
@@ -113,7 +113,7 @@ void AchievementPopup::render() {
 
     int xx = width - 160;
     int yy = 0 - (int) (yo * 36);
-    int tex = mc->textures->loadTexture(L"/achievement/bg.png");
+    int tex = mc->textures->loadTexture(TN_ACHIEVEMENT_BG);
     glColor4f(1, 1, 1, 1);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, tex);
@@ -121,15 +121,15 @@ void AchievementPopup::render() {
 
     blit(xx, yy, 96, 202, 160, 32);
 
-    if (isHelper)
-	{
-        mc->font->drawWordWrap(desc, xx + 30, yy + 7, 120, 0xffffffff);
-    }
-	else
-	{
+    // if (isHelper)
+	// {
+    //     mc->font->drawWordWrap(desc, xx + 30, yy + 7, 120, 0xffffffff);
+    // }
+	// else
+	// {
         mc->font->draw(title, xx + 30, yy + 7, 0xffffff00);
         mc->font->draw(desc, xx + 30, yy + 18, 0xffffffff);
-    }
+    // }
 
     glPushMatrix();
     glRotatef(180, 1, 0, 0);
