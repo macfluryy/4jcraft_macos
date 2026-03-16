@@ -2254,14 +2254,33 @@ void Minecraft::pauseGame() {
     //    setScreen(new PauseScreen());	// 4J - TODO put back in
 }
 
+bool Minecraft::pollResize() {
+    int fbw, fbh;
+    RenderManager.GetFramebufferSize(fbw, fbh);
+    if (fbw != width_phys || fbh != height_phys) {
+        resize(fbw, fbh);
+        return true;
+    }
+    return false;
+}
+
 void Minecraft::resize(int width, int height) {
     if (width <= 0) width = 1;
     if (height <= 0) height = 1;
-    this->width = width;
+    // 4jcraft: store physical framebuffer size and adjust logical width
+    // for non-widescreen aspect ratio to fix UI scaling.
+    this->width_phys = width;
+    this->height_phys = height;
+    if (RenderManager.IsWidescreen()) {
+        this->width = width;
+    } else {
+        this->width = (width * 3) / 4;
+    }
     this->height = height;
 
     if (screen != NULL) {
-        ScreenSizeCalculator ssc(options, width, height);
+        // 4jcraft: use adjusted logical width instead of raw width for correct screen size calculation.
+        ScreenSizeCalculator ssc(options, this->width, height);
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         //        screen->init(this, screenWidth, screenHeight);	// 4J -

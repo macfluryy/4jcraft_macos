@@ -1046,7 +1046,9 @@ void GameRenderer::render(float a, bool bFirst) {
         int fbw, fbh;
         RenderManager.GetFramebufferSize(fbw, fbh);
         glViewport(0, 0, fbw, fbh);
-        ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
+        // 4jcraft: use framebuffer dimensions for ScreenSizeCalculator so the
+        // title screen GUI coordinates match the actual viewport size.
+        ScreenSizeCalculator ssc(mc->options, fbw, fbh);
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         int xMouse = Mouse::getX() * screenWidth / fbw;
@@ -1819,7 +1821,10 @@ void GameRenderer::renderSnowAndRain(float a) {
 void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     int fbw, fbh;
     RenderManager.GetFramebufferSize(fbw, fbh);
-    ScreenSizeCalculator ssc(mc->options, mc->width, mc->height, forceScale);
+
+    // 4jcraft: use actual framebuffer dimensions instead of mc->width/height
+    // to ensure GUI scales correctly after a window resize.
+    ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
 
     glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
