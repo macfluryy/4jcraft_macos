@@ -31,11 +31,11 @@ namespace fs = std::filesystem;
 
 fs::path ToFilesystemPath(const std::wstring& path) {
     const std::string nativePath = wstringtofilename(path);
-    return fs::u8path(nativePath);
+    return fs::path(nativePath);
 }
 
 std::wstring ToFilename(const fs::path& path) {
-    const std::string filename = path.filename().u8string();
+    const std::string filename = path.filename().string();
     return filenametowstring(filename.c_str());
 }
 

@@ -936,8 +936,8 @@ struct XMFLOAT3X3 {
     }
 
 #if (__cplusplus >= 202002L)
-    bool operator==(const XMFLOAT3X3&) const = default;
-    auto operator<=>(const XMFLOAT3X3&) const = default;
+    bool operator==(const XMFLOAT3X3&) const = delete;
+    auto operator<=>(const XMFLOAT3X3&) const = delete;
 #endif
 };
 
@@ -988,8 +988,8 @@ struct XMFLOAT4X3 {
     }
 
 #if (__cplusplus >= 202002L)
-    bool operator==(const XMFLOAT4X3&) const = default;
-    auto operator<=>(const XMFLOAT4X3&) const = default;
+    bool operator==(const XMFLOAT4X3&) const = delete;
+    auto operator<=>(const XMFLOAT4X3&) const = delete;
 #endif
 };
 
@@ -1045,8 +1045,8 @@ struct XMFLOAT3X4 {
     }
 
 #if (__cplusplus >= 202002L)
-    bool operator==(const XMFLOAT3X4&) const = default;
-    auto operator<=>(const XMFLOAT3X4&) const = default;
+    bool operator==(const XMFLOAT3X4&) const = delete;
+    auto operator<=>(const XMFLOAT3X4&) const = delete;
 #endif
 };
 
@@ -1107,8 +1107,8 @@ struct XMFLOAT4X4 {
     }
 
 #if (__cplusplus >= 202002L)
-    bool operator==(const XMFLOAT4X4&) const = default;
-    auto operator<=>(const XMFLOAT4X4&) const = default;
+    bool operator==(const XMFLOAT4X4&) const = delete;
+    auto operator<=>(const XMFLOAT4X4&) const = delete;
 #endif
 };
 
