@@ -301,7 +301,9 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 		ui.PlayUISFX(eSFX_Press);
 
 		signInReturnedFunc = &UIScene_MainMenu::CreateLoad_SignInReturned;
+		app.DebugPrintf("UIScene_MainMenu::handlePress AFTER &UIScene_MainMenu::CreateLoad_SignInReturned\n");
 #endif		
+		app.DebugPrintf("UIScene_MainMenu::handlePress FINISH eControl_PlayGame \n");
 		break;
 	case eControl_Leaderboards:
 		//CD - Added for audio
@@ -334,7 +336,6 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 		m_eAction=eAction_RunUnlockOrDLC;
 		signInReturnedFunc = &UIScene_MainMenu::UnlockFullGame_SignInReturned;
 		break;
-#if defined _XBOX
 	case eControl_Exit:
 		if( ProfileManager.IsFullVersion() )
 		{				
@@ -342,16 +343,19 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId)
 			uiIDA[0]=IDS_CANCEL;
 			uiIDA[1]=IDS_OK;
 			ui.RequestMessageBox(IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2, XUSER_INDEX_ANY,&UIScene_MainMenu::ExitGameReturned,this);
+			app.DebugPrintf("UIScene_MainMenu::handlePress AFTER ui.RequestMessageBox(IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2, XUSER_INDEX_ANY,&UIScene_MainMenu::ExitGameReturned,this) CALL\n");
 		}
+#if defined _XBOX //|| _ENABLEIGGY
 		else
 		{
 #ifdef _XBOX_ONE
 				ui.ShowPlayerDisplayname(true);
 #endif
 			ui.NavigateToScene(primaryPad,eUIScene_TrialExitUpsell);
+			app.DebugPrintf("UIScene_MainMenu::handlePress AFTER ui.NavigateToScene(primaryPad,eUIScene_TrialExitUpsell) CALL\n");		
 		}
-		break;
 #endif
+		break;
 
 #ifdef _DURANGO
 	case eControl_XboxHelp:
@@ -1034,6 +1038,7 @@ int UIScene_MainMenu::ExitGameReturned(void *pParam,int iPad,C4JStorage::EMessag
 	{
 		//XLaunchNewImage(XLAUNCH_KEYWORD_DASH_ARCADE, 0);
 		app.ExitGame();
+		app.DebugPrintf("UIScene_MainMenu::ExitGameReturned AFTER app.ExitGame() CALL\n");
 	}
 
 	return 0;

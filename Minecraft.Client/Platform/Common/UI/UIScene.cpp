@@ -226,9 +226,12 @@ void UIScene::setSafeZone(S32 safeTop, S32 safeBottom, S32 safeLeft, S32 safeRig
 void UIScene::initialiseMovie()
 {
 	loadMovie();
-	mapElementsAndNames();
+	app.DebugPrintf("UIScene::initialiseMovie AFTER loadMovie CALL\n");	
+	mapElementsAndNames(); 
+	app.DebugPrintf("UIScene::initialiseMovie AFTER mapElementsAndNames CALL\n");
 
 	updateSafeZone();
+	app.DebugPrintf("UIScene::initialiseMovie AFTER updateSafeZone CALL\n");
 
 	m_bUpdateOpacity = true;
 }

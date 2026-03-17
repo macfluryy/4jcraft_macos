@@ -23,7 +23,10 @@ void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {
 }
 
 void CConsoleMinecraftApp::StoreLaunchData() {}
-void CConsoleMinecraftApp::ExitGame() {}
+void CConsoleMinecraftApp::ExitGame() {
+    app.DebugPrintf("Linux_App CConsoleMinecraftApp::ExitGame AFTER START\n");
+    RenderManager.Close();
+}
 void CConsoleMinecraftApp::FatalLoadError() {
     app.DebugPrintf(
         "CConsoleMinecraftApp::FatalLoadError - asserting 0 and dying...\n");
