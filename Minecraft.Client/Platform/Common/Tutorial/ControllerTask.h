@@ -14,6 +14,11 @@ private:
 	int *m_iCompletionMaskA;
 	int m_iCompletionMaskACount;
 	bool CompletionMaskIsValid();
+
+	// Mouse tracking for tutorial look-around task
+	float m_lastYaw;
+	float m_lastPitch;
+	bool m_initialized = false;
 public:
 	ControllerTask(Tutorial *tutorial, int descriptionId, bool enablePreCompletion,  bool showMinimumTime,
 				int mappings[], unsigned int mappingsLength, int iCompletionMaskA[]=NULL, int iCompletionMaskACount=0, int iSouthpawMappings[]=NULL, unsigned int uiSouthpawMappingsCount=0);

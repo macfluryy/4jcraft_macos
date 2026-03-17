@@ -33,6 +33,9 @@ ControllerTask::ControllerTask(Tutorial *tutorial, int descriptionId, bool enabl
 	// If we don't want to be able to complete it early..then assume we want the constraints active
 	//if( !enablePreCompletion )
 	//	enableConstraints( true );
+
+
+	m_initialized = false; // we can set yaw + pitch on the first tick
 }
 
 ControllerTask::~ControllerTask()
@@ -42,69 +45,64 @@ ControllerTask::~ControllerTask()
 
 bool ControllerTask::isCompleted()
 {
-	if( bIsCompleted )
-		return true;
+    if (bIsCompleted)
+        return true;
 
-	bool bAllComplete = true;
-	
-	Minecraft *pMinecraft = Minecraft::GetInstance();
+    Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	int iCurrent=0;
+    // mouse look check
+    if (!m_initialized) {
+        m_lastYaw = pMinecraft->player->yRot;    
+        m_lastPitch = pMinecraft->player->xRot;
+        m_initialized = true;
+    } else {
+        float deltaYaw   = fabs(pMinecraft->player->yRot   - m_lastYaw);
+        float deltaPitch = fabs(pMinecraft->player->xRot - m_lastPitch);
+        m_lastYaw   = pMinecraft->player->yRot;
+        m_lastPitch = pMinecraft->player->xRot;
 
-	if(m_bHasSouthpaw && app.GetGameSettings(pMinecraft->player->GetXboxPad(),eGameSetting_ControlSouthPaw))
-	{
-		for(AUTO_VAR(it, southpawCompletedMappings.begin()); it != southpawCompletedMappings.end(); ++it)
-		{
-			bool current = (*it).second;
-			if(!current)
-			{
-				// TODO Use a different pad
-				if( InputManager.GetValue(pMinecraft->player->GetXboxPad(), (*it).first) > 0 )
-				{
-					(*it).second = true;
-					m_uiCompletionMask|=1<<iCurrent;
-				}
-				else
-				{
-					bAllComplete = false;
-				}
-			}
-			iCurrent++;
-		}
-	}
-	else
-	{
-		for(AUTO_VAR(it, completedMappings.begin()); it != completedMappings.end(); ++it)
-		{
-			bool current = (*it).second;
-			if(!current)
-			{
-				// TODO Use a different pad
-				if( InputManager.GetValue(pMinecraft->player->GetXboxPad(), (*it).first) > 0 )
-				{
-					(*it).second = true;
-					m_uiCompletionMask|=1<<iCurrent;
-				}
-				else
-				{
-					bAllComplete = false;
-				}
-			}
-			iCurrent++;
-		}
-	}
+        const float LOOK_THRESHOLD = 0.1f;
+        if (deltaYaw > LOOK_THRESHOLD || deltaPitch > LOOK_THRESHOLD)
+            return true;
+    }
 
-	// If this has a list of completion masks then check if there is a matching one to mark the task as complete
-	if(m_iCompletionMaskA && CompletionMaskIsValid())
-	{
-		bIsCompleted = true;
-	}
-	else
-	{
-		bIsCompleted = bAllComplete;
-	}
+    // check for controller button input
+    bool bAllComplete = true;
+    int iCurrent = 0;
 
-	return bIsCompleted;
+    if (m_bHasSouthpaw && app.GetGameSettings(pMinecraft->player->GetXboxPad(), eGameSetting_ControlSouthPaw)) {
+        for (auto it = southpawCompletedMappings.begin(); it != southpawCompletedMappings.end(); ++it) {
+            if (!it->second) {
+                if (InputManager.GetValue(pMinecraft->player->GetXboxPad(), it->first) > 0) {
+                    it->second = true;
+                    m_uiCompletionMask |= 1 << iCurrent;
+                } else {
+                    bAllComplete = false;
+                }
+            }
+            iCurrent++;
+        }
+    } else {
+        for (auto it = completedMappings.begin(); it != completedMappings.end(); ++it) {
+            if (!it->second) {
+                if (InputManager.GetValue(pMinecraft->player->GetXboxPad(), it->first) > 0) {
+                    it->second = true;
+                    m_uiCompletionMask |= 1 << iCurrent;
+                } else {
+                    bAllComplete = false;
+                }
+            }
+            iCurrent++;
+        }
+    }
+
+    // completion mask check
+    if (m_iCompletionMaskA && CompletionMaskIsValid())
+        bIsCompleted = true;
+    else
+        bIsCompleted = bAllComplete;
+
+    return bIsCompleted;
 }
 
 bool ControllerTask::CompletionMaskIsValid()
