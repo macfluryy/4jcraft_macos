@@ -46,7 +46,7 @@ public:
     float tbr;
 
 private:
-    // void renderBossHealth(void);
+    void renderBossHealth(void);
     void renderPumpkin(int w, int h);
     void renderVignette(float br, int w, int h);
     void renderTp(float br, int w, int h);

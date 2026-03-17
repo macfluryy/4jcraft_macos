@@ -19,20 +19,19 @@ void FurnaceScreen::renderLabels() {
 
 void FurnaceScreen::renderBg(float a) {
     // 4J Unused
-#if 0
-	int tex = minecraft->textures->loadTexture(L"/gui/furnace.png");
-	glColor4f(1, 1, 1, 1);
-	minecraft->textures->bind(tex);
-	int xo = (width - imageWidth) / 2;
-	int yo = (height - imageHeight) / 2;
-	this->blit(xo, yo, 0, 0, imageWidth, imageHeight);
-	if (furnace->isLit())
-	{
-		int p = furnace->getLitProgress(12);
-		this->blit(xo + 56, yo + 36 + 12 - p, 176, 12 - p, 14, p + 2);
-	}
+#ifdef ENABLE_JAVA_GUIS
+    int tex = minecraft->textures->loadTexture(TN_GUI_FURNACE);
+    glColor4f(1, 1, 1, 1);
+    minecraft->textures->bind(tex);
+    int xo = (width - imageWidth) / 2;
+    int yo = (height - imageHeight) / 2;
+    this->blit(xo, yo, 0, 0, imageWidth, imageHeight);
+    if (furnace->isLit()) {
+        int p = furnace->getLitProgress(12);
+        this->blit(xo + 56, yo + 36 + 12 - p, 176, 12 - p, 14, p + 2);
+    }
 
-	int p = furnace->getBurnProgress(24);
-	this->blit(xo + 79, yo + 34, 176, 14, p + 1, 16);
+    int p = furnace->getBurnProgress(24);
+    this->blit(xo + 79, yo + 34, 176, 14, p + 1, 16);
 #endif
 }

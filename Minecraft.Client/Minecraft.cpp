@@ -1,6 +1,7 @@
 #include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
+#include "UI/Screens/PauseScreen.h"
 #include "Utils/Timer.h"
 #include "Rendering/EntityRenderers/ProgressRenderer.h"
 #include "Rendering/LevelRenderer.h"
@@ -28,6 +29,9 @@
 #include "UI/Screens/ErrorScreen.h"
 #include "UI/Screens/TitleScreen.h"
 #include "UI/Screens/InventoryScreen.h"
+#ifdef ENABLE_JAVA_GUIS
+#include "UI/Screens/CreativeInventoryScreen.h"
+#endif
 #include "UI/Screens/InBedChatScreen.h"
 #include "UI/Screens/AchievementPopup.h"
 #include "Input/Input.h"
@@ -420,7 +424,7 @@ void Minecraft::init() {
 void Minecraft::renderLoadingScreen() {
     // 4J Unused
     // testing stuff on vita just now
-#ifdef __PSVITA__
+#if (defined(__PSVITA__) || defined(ENABLE_JAVA_GUIS))
     ScreenSizeCalculator ssc(options, width, height);
 
     // xxx
@@ -463,7 +467,7 @@ void Minecraft::renderLoadingScreen() {
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1f);
 
-    Display::swapBuffers();
+    // Display::swapBuffers();
     // xxx
     RenderManager.Present();
 #endif
@@ -621,6 +625,55 @@ void Minecraft::destroy() {
     //    } catch (Throwable e) {
     //    }
 
+    if (screen == NULL && level == NULL) {
+        screen = new TitleScreen();
+    } else if (player != NULL && !ui.GetMenuDisplayed(player->GetXboxPad()) &&
+               player->getHealth() <= 0) {
+#ifdef ENABLE_JAVA_GUIS
+        screen = new DeathScreen();
+#else
+        // 4J Stu - If we exit from the death screen then we are saved as being
+        // dead. In the Java game when you load the game you are still dead, but
+        // this is silly so only show the dead screen if we have died during
+        // gameplay
+        if (ticks == 0) {
+            player->respawn();
+        } else {
+            ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu, NULL);
+        }
+#endif
+    }
+
+    if (screen != NULL && dynamic_cast<TitleScreen*>(screen) != NULL) {
+        options->renderDebug = false;
+        gui->clearMessages();
+    }
+
+    this->screen = screen;
+    if (screen != NULL) {
+        //        releaseMouse();	// 4J - removed
+        ScreenSizeCalculator ssc(options, width, height);
+        int screenWidth = ssc.getWidth();
+        int screenHeight = ssc.getHeight();
+        screen->init(this, screenWidth, screenHeight);
+        noRender = false;
+    } else {
+        //        grabMouse();	// 4J - removed
+    }
+
+    // 4J-PB - if a screen has been set, go into menu mode
+    // it's possible that player doesn't exist here yet
+#ifdef ENABLE_JAVA_GUIS
+    if (screen != NULL) {
+        if (player && player->GetXboxPad() != -1) {
+            InputManager.SetMenuDisplayed(player->GetXboxPad(), true);
+        }
+    } else {
+        if (player && player->GetXboxPad() != -1) {
+            InputManager.SetMenuDisplayed(player->GetXboxPad(), false);
+        }
+    }
+#endif
     //    try {
     MemoryTracker::release();
     //    } catch (Throwable e) {
@@ -1437,6 +1490,9 @@ void Minecraft::run_middle() {
                             1LL << MINECRAFT_ACTION_PAUSEMENU;
                         app.DebugPrintf(
                             "PAUSE PRESSED - ipad = %d, Storing press\n", i);
+#ifdef ENABLE_JAVA_GUIS
+                        pauseGame();
+#endif
                     }
 #ifdef _DURANGO
                     if (InputManager.ButtonPressed(i, ACTION_MENU_GTC_PAUSE))
@@ -1900,6 +1956,10 @@ void Minecraft::run_middle() {
                     }
                 }
 
+                if (screen != NULL) {
+                    screen->updateEvents();
+                }
+
                 ui.HandleGameTick();
 
                 setLocalPlayerIdx(ProfileManager.GetPrimaryPad());
@@ -1919,7 +1979,8 @@ void Minecraft::run_middle() {
                 //                setScreen(new LevelConflictScreen());
                 //            }
                 // 				SparseLightStorage::tick();
-                // // 4J added 				CompressedTileStorage::tick();	// 4J added
+                // // 4J added
+                // CompressedTileStorage::tick();	// 4J added
                 // 				SparseDataStorage::tick();
                 // // 4J added
             }
@@ -2092,19 +2153,23 @@ void Minecraft::run_middle() {
             if (width <= 0) width = 1;
             if (height <= 0) height = 1;
 
-            resize(width, height);
-            }
-            }
-            */
+                        resize(width, height);
+                        }
+                        }
+                        */
             MemSect(31);
             checkGlError(L"Post render");
             MemSect(0);
             frames++;
             // pause = !isClientSide() && screen != NULL &&
-            // screen->isPauseScreen(); pause = g_NetworkManager.IsLocalGame()
-            // && g_NetworkManager.GetPlayerCount() == 1 &&
-            // app.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad());
+            // screen->isPauseScreen();
+#ifdef ENABLE_JAVA_GUIS
+            pause = g_NetworkManager.IsLocalGame() &&
+                    g_NetworkManager.GetPlayerCount() == 1 &&
+                    screen != nullptr && screen->isPauseScreen();
+#else
             pause = app.IsAppPaused();
+#endif
 
 #ifndef _CONTENT_PACKAGE
             while (System::nanoTime() >= lastTime + 1000000000) {
@@ -2251,9 +2316,16 @@ void Minecraft::stop() {
 }
 
 void Minecraft::pauseGame() {
-    if (screen != NULL) return;
-
-    //    setScreen(new PauseScreen());	// 4J - TODO put back in
+    if (screen != NULL) {
+        // 4jcraft: Pass the keypress to the screen
+        // normally this would've been done in updateEvents(), but it works
+        // better here (for now atleast)
+        screen->keyPressed(0, Keyboard::KEY_ESCAPE);
+        return;
+    }
+#ifdef ENABLE_JAVA_GUIS
+    setScreen(new PauseScreen());  // 4J - TODO put back in
+#endif
 }
 
 bool Minecraft::pollResize() {
@@ -2281,8 +2353,13 @@ void Minecraft::resize(int width, int height) {
     this->height = height;
 
     if (screen != NULL) {
-        // 4jcraft: use adjusted logical width instead of raw width for correct screen size calculation.
+#ifdef _ENABLEIGGY
+        // 4jcraft: use adjusted logical width instead of raw width for correct
+        // screen size calculation.
         ScreenSizeCalculator ssc(options, this->width, height);
+#else
+        ScreenSizeCalculator ssc(options, width, height);
+#endif
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         //        screen->init(this, screenWidth, screenHeight);	// 4J -
@@ -2326,7 +2403,8 @@ void Minecraft::levelTickThreadInitFunc() {
 // textures are to be updated - this will be true for the last time this tick
 // runs with bFirst true
 void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
-    int iPad = player->GetXboxPad();
+    int iPad = -1;
+    if (player) iPad = player->GetXboxPad();
     // OutputDebugString("Minecraft::tick\n");
 
     // 4J-PB - only tick this player's stats
@@ -2392,18 +2470,21 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         setScreen(NULL);
     }
 
-    if (screen != NULL) {
-        player->missTime = 10000;
-        player->lastClickTick[0] = ticks + 10000;
-        player->lastClickTick[1] = ticks + 10000;
-    }
+    // if (screen != NULL) {
+    //     player->missTime = 10000;
+    //     player->lastClickTick[0] = ticks + 10000;
+    //     player->lastClickTick[1] = ticks + 10000;
+    // }
 
     if (screen != NULL) {
+        InputManager.SetMenuDisplayed(player->GetXboxPad(), true);
         screen->updateEvents();
         if (screen != NULL) {
             screen->particles->tick();
             screen->tick();
         }
+    } else {
+        InputManager.SetMenuDisplayed(player->GetXboxPad(), false);
     }
 
     if (screen == NULL && !ui.GetMenuDisplayed(iPad)) {
@@ -3589,7 +3670,14 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                 std::dynamic_pointer_cast<LocalPlayer>(
                     Minecraft::GetInstance()->player);
             ui.PlayUISFX(eSFX_Press);
+#ifdef ENABLE_JAVA_GUIS
+            if (gameMode->hasInfiniteItems())
+                setScreen(new CreativeInventoryScreen(player));
+            else
+                setScreen(new InventoryScreen(player));
+#else
             app.LoadInventoryMenu(iPad, player);
+#endif
         }
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_CRAFTING)) &&
@@ -3636,7 +3724,9 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                 "PAUSE PRESS PROCESSING - ipad = %d, NavigateToScene\n",
                 player->GetXboxPad());
             ui.PlayUISFX(eSFX_Press);
+#ifndef ENABLE_JAVA_GUIS
             ui.NavigateToScene(iPad, eUIScene_PauseMenu, NULL, eUILayer_Scene);
+#endif
         }
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_DROP)) &&
@@ -3694,10 +3784,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         }
     } else {
         // 4J-PB
-        if (InputManager.GetValue(iPad, ACTION_MENU_CANCEL) > 0 &&
-            gameMode->isInputAllowed(ACTION_MENU_CANCEL)) {
-            setScreen(NULL);
-        }
+        // if (InputManager.GetValue(iPad, ACTION_MENU_CANCEL) > 0 &&
+        //     gameMode->isInputAllowed(ACTION_MENU_CANCEL)) {
+        //     setScreen(NULL);
+        // }
     }
 
     // monitor for keyboard input

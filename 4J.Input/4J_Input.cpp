@@ -28,6 +28,7 @@ static bool s_prevMenuDisplayed = false;
 static bool s_snapTaken = false;
 static float s_accumRelX = 0, s_accumRelY = 0;
 static float s_snapRelX = 0, s_snapRelY = 0;
+static int s_mouseX = 0, s_mouseY = 0;
 
 static int s_scrollTicksForButtonPressed = 0;
 static int s_scrollTicksForGetValue = 0;
@@ -274,7 +275,7 @@ void C_4JInput::Tick() {
         if (sc > 0 && sc < KEY_COUNT) s_keysCurrent[sc] = state[sc] != 0;
     }
 
-    Uint32 btns = SDL_GetMouseState(NULL, NULL);
+    Uint32 btns = SDL_GetMouseState(&s_mouseX, &s_mouseY);
     s_mouseLeftCurrent = (btns & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
     s_mouseRightCurrent = (btns & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
 
@@ -353,13 +354,17 @@ int C_4JInput::GetHotbarSlotPressed(int iPad) {
     case ACTION_MENU_PAGEDOWN:                                                 \
         return KFN(SDL_SCANCODE_PAGEDOWN);                                     \
     case ACTION_MENU_OK:                                                       \
-        return KFN(SDL_SCANCODE_RETURN) || KFN(SDL_SCANCODE_Z) || CFN(SDL_CONTROLLER_BUTTON_A);       \
+        return KFN(SDL_SCANCODE_RETURN) || KFN(SDL_SCANCODE_Z) ||              \
+               CFN(SDL_CONTROLLER_BUTTON_A);                                   \
     case ACTION_MENU_CANCEL:                                                   \
-        return KFN(SDL_SCANCODE_ESCAPE) || KFN(SDL_SCANCODE_X) || CFN(SDL_CONTROLLER_BUTTON_B);       \
+        return KFN(SDL_SCANCODE_ESCAPE) || KFN(SDL_SCANCODE_X) ||              \
+               CFN(SDL_CONTROLLER_BUTTON_B);                                   \
     case ACTION_MENU_A:                                                        \
-        return KFN(SDL_SCANCODE_Z) || KFN(SDL_SCANCODE_RETURN) || CFN(SDL_CONTROLLER_BUTTON_A);            \
+        return KFN(SDL_SCANCODE_Z) || KFN(SDL_SCANCODE_RETURN) ||              \
+               CFN(SDL_CONTROLLER_BUTTON_A);                                   \
     case ACTION_MENU_B:                                                        \
-        return KFN(SDL_SCANCODE_X) || KFN(SDL_SCANCODE_ESCAPE) || CFN(SDL_CONTROLLER_BUTTON_B);            \
+        return KFN(SDL_SCANCODE_X) || KFN(SDL_SCANCODE_ESCAPE) ||              \
+               CFN(SDL_CONTROLLER_BUTTON_B);                                   \
     case ACTION_MENU_X:                                                        \
         return KFN(SDL_SCANCODE_C) || CFN(SDL_CONTROLLER_BUTTON_X);            \
     case ACTION_MENU_Y:                                                        \
@@ -545,6 +550,10 @@ unsigned char C_4JInput::GetJoypadRTrigger(int, bool) {
                ? 255
                : 0;
 }
+
+int C_4JInput::GetMouseX() { return s_mouseX; }
+int C_4JInput::GetMouseY() { return s_mouseY; }
+
 // We detect if a Menu is visible on the player's screen to the mouse being
 // stuck.
 void C_4JInput::SetMenuDisplayed(int iPad, bool bVal) {

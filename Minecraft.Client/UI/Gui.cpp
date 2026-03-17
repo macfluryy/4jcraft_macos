@@ -28,7 +28,11 @@
 #include "../../Minecraft.World/Level/LevelChunk.h"
 #include "../../Minecraft.World/WorldGen/Biomes/Biome.h"
 
+#ifdef ENABLE_JAVA_GUIS
+#define RENDER_HUD 1
+#else
 #define RENDER_HUD 0
+#endif
 
 // #ifndef _XBOX
 // #undef RENDER_HUD
@@ -396,9 +400,11 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         int food = foodData->getFoodLevel();
         int oldFood = foodData->getLastFoodLevel();
 
-        // 		if (false) //(true)
-        // 		{
-        // 			renderBossHealth();
+// 		if (false) //(true)
+// 		{
+#ifdef ENABLE_JAVA_GUIS
+        renderBossHealth();
+#endif
         // 		}
 
         /////////////////////////////////////////////////////////////////////////////////////
@@ -941,35 +947,38 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
 
     lastTickA = a;
     // 4J Stu - This is now displayed in a xui scene
-#if 0
-	// Jukebox CD message
-    if (overlayMessageTime > 0)
-	{
+#ifdef ENABLE_JAVA_GUIS
+    // Jukebox CD message
+    if (overlayMessageTime > 0) {
         float t = overlayMessageTime - a;
-        int alpha = (int) (t * 256 / 20);
+        int alpha = (int)(t * 256 / 20);
         if (alpha > 255) alpha = 255;
-        if (alpha > 0) 
-		{
+        if (alpha > 0) {
             glPushMatrix();
 
-			if(bTwoPlayerSplitscreen)
-			{
-				glTranslatef((float)((screenWidth / 2)+iWidthOffset), ((float)(screenHeight+iHeightOffset)) - iTooltipsYOffset -12 -iSafezoneYHalf, 0);
-			}
-			else
-			{
-				glTranslatef(((float)screenWidth) / 2, ((float)screenHeight) - iTooltipsYOffset - 12 -iSafezoneYHalf, 0);
-			}
+            if (bTwoPlayerSplitscreen) {
+                glTranslatef((float)((screenWidth / 2) + iWidthOffset),
+                             ((float)(screenHeight + iHeightOffset)) -
+                                 iTooltipsYOffset - 12 - iSafezoneYHalf,
+                             0);
+            } else {
+                glTranslatef(((float)screenWidth) / 2,
+                             ((float)screenHeight) - iTooltipsYOffset - 12 -
+                                 iSafezoneYHalf,
+                             0);
+            }
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             int col = 0xffffff;
-            if (animateOverlayMessageColor)
-			{
+            if (animateOverlayMessageColor) {
                 col = Color::HSBtoRGB(t / 50.0f, 0.7f, 0.6f) & 0xffffff;
             }
-			// 4J-PB - this is the string displayed when cds are placed in a jukebox
-            font->draw(overlayMessageString,-font->width(overlayMessageString) / 2, -20, col + (alpha << 24));
+            // 4J-PB - this is the string displayed when cds are placed in a
+            // jukebox
+            font->draw(overlayMessageString,
+                       -font->width(overlayMessageString) / 2, -20,
+                       col + (alpha << 24));
             glDisable(GL_BLEND);
             glPopMatrix();
         }
@@ -988,49 +997,52 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
     glDisable(GL_ALPHA_TEST);
 
 // 4J Stu - We have moved the chat text to a xui
-#if 0
+#ifdef ENABLE_JAVA_GUIS
     glPushMatrix();
-	// 4J-PB we need to move this up a bit because we've moved the quick select
-	//glTranslatef(0, ((float)screenHeight) - 48, 0);
-    glTranslatef(0.0f, (float)(screenHeight - iSafezoneYHalf - iTooltipsYOffset - 16 - 3 + 22) - 24.0f, 0.0f);
+    // 4J-PB we need to move this up a bit because we've moved the quick select
+    // glTranslatef(0, ((float)screenHeight) - 48, 0);
+    glTranslatef(0.0f,
+                 (float)(screenHeight - iSafezoneYHalf - iTooltipsYOffset - 16 -
+                         3 + 22) -
+                     24.0f,
+                 0.0f);
     // glScalef(1.0f / ssc.scale, 1.0f / ssc.scale, 1);
 
-	// 4J-PB - we need gui messages for each of the possible 4 splitscreen players
-	if(bDisplayGui)
-	{
-		int iPad=minecraft->player->GetXboxPad();
-		for (unsigned int i = 0; i < guiMessages[iPad].size() && i < max; i++)
-		{
-			if (guiMessages[iPad][i].ticks < 20 * 10 || isChatting)
-			{
-				double t = guiMessages[iPad][i].ticks / (20 * 10.0);
-				t = 1 - t;
-				t = t * 10;
-				if (t < 0) t = 0;
-				if (t > 1) t = 1;
-				t = t * t;
-				int alpha = (int) (255 * t);
-				if (isChatting) alpha = 255;
+    // 4J-PB - we need gui messages for each of the possible 4 splitscreen
+    // players
+    if (bDisplayGui) {
+        int iPad = minecraft->player->GetXboxPad();
+        for (unsigned int i = 0; i < guiMessages[iPad].size() && i < max; i++) {
+            if (guiMessages[iPad][i].ticks < 20 * 10 || isChatting) {
+                double t = guiMessages[iPad][i].ticks / (20 * 10.0);
+                t = 1 - t;
+                t = t * 10;
+                if (t < 0) t = 0;
+                if (t > 1) t = 1;
+                t = t * t;
+                int alpha = (int)(255 * t);
+                if (isChatting) alpha = 255;
 
-				if (alpha > 0)
-				{
-					int x = iSafezoneXHalf+2;
-					int y = -((int)i) * 9;
-					if(bTwoPlayerSplitscreen)
-					{
-						y+= iHeightOffset;
-					}
+                if (alpha > 0) {
+                    int x = iSafezoneXHalf + 2;
+                    int y = -((int)i) * 9;
+                    if (bTwoPlayerSplitscreen) {
+                        y += iHeightOffset;
+                    }
 
-					std::wstring msg = guiMessages[iPad][i].string;
-					// 4J-PB - fill the black bar across the whole screen, otherwise it looks odd due to the safe area
-					this->fill(0, y - 1, screenWidth/fScaleFactorWidth, y + 8, (alpha / 2) << 24);
-					glEnable(GL_BLEND);
+                    std::wstring msg = guiMessages[iPad][i].string;
+                    // 4J-PB - fill the black bar across the whole screen,
+                    // otherwise it looks odd due to the safe area
+                    this->fill(0, y - 1, screenWidth / fScaleFactorWidth, y + 8,
+                               (alpha / 2) << 24);
+                    glEnable(GL_BLEND);
 
-					font->drawShadow(msg, iSafezoneXHalf+4, y, 0xffffff + (alpha << 24));
-				}
-			}
-		}
-	}
+                    font->drawShadow(msg, iSafezoneXHalf + 4, y,
+                                     0xffffff + (alpha << 24));
+                }
+            }
+        }
+    }
     glPopMatrix();
 #endif
 
@@ -1103,40 +1115,40 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
 }
 
 // Moved to the xui base scene
-// void Gui::renderBossHealth(void)
-// {
-// 	if (EnderDragonRenderer::bossInstance == NULL) return;
-//
-// 	std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
-// 	EnderDragonRenderer::bossInstance = NULL;
-//
-// 	Minecraft *pMinecraft=Minecraft::GetInstance();
-//
-// 	Font *font = pMinecraft->font;
-//
-// 	ScreenSizeCalculator ssc(pMinecraft->options, pMinecraft->width_phys,
-// pMinecraft->height_phys); 	int screenWidth = ssc.getWidth();
-//
-// 	int w = 182;
-// 	int xLeft = screenWidth / 2 - w / 2;
-//
-// 	int progress = (int) (boss->getSynchedHealth() / (float)
-// boss->getMaxHealth() * (float) (w + 1));
-//
-// 	int yo = 12;
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	blit(xLeft, yo, 0, 74, w, 5);
-// 	if (progress > 0)
-// 	{
-// 		blit(xLeft, yo, 0, 79, progress, 5);
-// 	}
-//
-// 	std::wstring msg = L"Boss health - NON LOCALISED";
-// 	font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10,
-// 0xff00ff); 	glColor4f(1, 1, 1, 1); 	glBindTexture(GL_TEXTURE_2D,
-// pMinecraft->textures->loadTexture(TN_GUI_ICONS) );//"/gui/icons.png"));
-//
-// }
+void Gui::renderBossHealth(void) {
+    if (EnderDragonRenderer::bossInstance == NULL) return;
+
+    std::shared_ptr<EnderDragon> boss = EnderDragonRenderer::bossInstance;
+    EnderDragonRenderer::bossInstance = NULL;
+
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+
+    Font* font = pMinecraft->font;
+
+    ScreenSizeCalculator ssc(pMinecraft->options, pMinecraft->width_phys,
+                             pMinecraft->height_phys);
+    int screenWidth = ssc.getWidth();
+
+    int w = 182;
+    int xLeft = screenWidth / 2 - w / 2;
+
+    int progress = (int)(boss->getSynchedHealth() /
+                         (float)boss->getMaxHealth() * (float)(w + 1));
+
+    int yo = 12;
+    blit(xLeft, yo, 0, 74, w, 5);
+    blit(xLeft, yo, 0, 74, w, 5);
+    if (progress > 0) {
+        blit(xLeft, yo, 0, 79, progress, 5);
+    }
+
+    std::wstring msg = L"Boss health" /*L"Boss health - NON LOCALISED"*/;
+    font->drawShadow(msg, screenWidth / 2 - font->width(msg) / 2, yo - 10,
+                     0xff00ff);
+    glColor4f(1, 1, 1, 1);
+    glBindTexture(GL_TEXTURE_2D, pMinecraft->textures->loadTexture(
+                                     TN_GUI_ICONS));  //"/gui/icons.png"));
+}
 
 void Gui::renderPumpkin(int w, int h) {
     glDisable(GL_DEPTH_TEST);
@@ -1168,18 +1180,22 @@ void Gui::renderVignette(float br, int w, int h) {
     if (br > 1) br = 1;
     tbr += (br - tbr) * 0.01f;
 
-#if 0  // 4J - removed - TODO put back when we have blend functions implemented
+#ifdef ENABLE_JAVA_GUIS  // 4J - removed - TODO put back when we have blend
+                         // functions implemented
     glDisable(GL_DEPTH_TEST);
     glDepthMask(false);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
     glColor4f(tbr, tbr, tbr, 1);
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(TN__BLUR__MISC_VIGNETTE));//L"%blur%/misc/vignette.png"));
-    Tesselator *t = Tesselator::getInstance();
+    glBindTexture(
+        GL_TEXTURE_2D,
+        minecraft->textures->loadTexture(
+            TN__BLUR__MISC_VIGNETTE));  // L"%blur%/misc/vignette.png"));
+    Tesselator* t = Tesselator::getInstance();
     t->begin();
-    t->vertexUV((float)(0), (float)( h), (float)( -90), (float)( 0), (float)( 1));
-    t->vertexUV((float)(w), (float)( h), (float)( -90), (float)( 1), (float)( 1));
-    t->vertexUV((float)(w), (float)( 0), (float)( -90), (float)( 1), (float)( 0));
-    t->vertexUV((float)(0), (float)( 0), (float)( -90), (float)( 0), (float)( 0));
+    t->vertexUV((float)(0), (float)(h), (float)(-90), (float)(0), (float)(1));
+    t->vertexUV((float)(w), (float)(h), (float)(-90), (float)(1), (float)(1));
+    t->vertexUV((float)(w), (float)(0), (float)(-90), (float)(1), (float)(0));
+    t->vertexUV((float)(0), (float)(0), (float)(-90), (float)(0), (float)(0));
     t->end();
     glDepthMask(true);
     glEnable(GL_DEPTH_TEST);

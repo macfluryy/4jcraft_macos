@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "GameRenderer.h"
 #include "EntityRenderers/ItemInHandRenderer.h"
+#include "Input/Input.h"
 #include "LevelRenderer.h"
 #include "Frustum.h"
 #include "FrustumCuller.h"
@@ -923,7 +924,10 @@ void GameRenderer::updateLightTexture(float a) {
                 }
             }
 
-            float brightness = 0.0f;  // 4J - TODO - was mc->options->gamma;
+            float brightness =
+                mc->options->gamma;  // 4jcraft: since the java UI has a
+                                     // brightness slider again, lets use it.
+                                     // it'll still be 0.0f for iggy UI anyway
             if (_r > 1) _r = 1;
             if (_g > 1) _g = 1;
             if (_b > 1) _b = 1;
@@ -1046,13 +1050,17 @@ void GameRenderer::render(float a, bool bFirst) {
         int fbw, fbh;
         RenderManager.GetFramebufferSize(fbw, fbh);
         glViewport(0, 0, fbw, fbh);
+#ifdef _ENABLEIGGY
         // 4jcraft: use framebuffer dimensions for ScreenSizeCalculator so the
         // title screen GUI coordinates match the actual viewport size.
         ScreenSizeCalculator ssc(mc->options, fbw, fbh);
+#else
+        ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
+#endif
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
-        int xMouse = Mouse::getX() * screenWidth / fbw;
-        int yMouse = screenHeight - Mouse::getY() * screenHeight / fbh - 1;
+        int xMouse = InputManager.GetMouseX() * screenWidth / fbw;
+        int yMouse = InputManager.GetMouseY() * screenHeight / fbh - 1;
 
         int maxFps = getFpsCap(mc->options->framerateLimit);
 
@@ -1086,9 +1094,14 @@ void GameRenderer::render(float a, bool bFirst) {
 
         if (mc->screen != NULL) {
             glClear(GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_ALPHA_TEST);
+            glAlphaFunc(GL_GREATER, 0.01f);
             mc->screen->render(xMouse, yMouse, a);
             if (mc->screen != NULL && mc->screen->particles != NULL)
                 mc->screen->particles->render(a);
+            glDisable(GL_BLEND);
         }
     }
 }
@@ -1244,8 +1257,8 @@ void GameRenderer::DisableUpdateThread() {
 
 void GameRenderer::renderLevel(float a, __int64 until) {
     //	if (updateLightTexture) updateLightTexture();	// 4J - TODO -
-    //Java 1.0.1 has this line enabled, should check why - don't want to put it
-    //in now in case it breaks split-screen
+    // Java 1.0.1 has this line enabled, should check why - don't want to put it
+    // in now in case it breaks split-screen
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -1259,7 +1272,7 @@ void GameRenderer::renderLevel(float a, __int64 until) {
         (mc->player == mc->localplayers[ProfileManager.GetPrimaryPad()]);
 
     //	if (mc->cameraTargetPlayer == NULL)	// 4J - removed condition as we
-    //want to update this is mc->player changes for different local players
+    // want to update this is mc->player changes for different local players
     {
         mc->cameraTargetPlayer = mc->player;
     }
@@ -1822,9 +1835,13 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     int fbw, fbh;
     RenderManager.GetFramebufferSize(fbw, fbh);
 
+#ifdef _ENABLEIGGY
     // 4jcraft: use actual framebuffer dimensions instead of mc->width/height
     // to ensure GUI scales correctly after a window resize.
     ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
+#else
+    ScreenSizeCalculator ssc(mc->options, mc->width, mc->height, forceScale);
+#endif
 
     glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);

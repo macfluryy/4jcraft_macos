@@ -13,7 +13,7 @@ public:
 protected:
     using Screen::buttonClicked;
 
-    virtual void buttonClicked(Button button);
+    virtual void buttonClicked(Button* button);
 
 public:
     virtual void tick();

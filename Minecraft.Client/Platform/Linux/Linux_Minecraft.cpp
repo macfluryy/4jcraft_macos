@@ -905,11 +905,13 @@ return -1;
     app.InitialiseTips();
     while (!RenderManager.ShouldClose()) {
         RenderManager.StartFrame();
+#ifdef _ENABLEIGGY
         if (pMinecraft->pollResize()) {
             int fbw, fbh;
             RenderManager.GetFramebufferSize(fbw, fbh);
             ui.setScreenSize(fbw, fbh);
         }
+#endif
         app.UpdateTime();
         PIXBeginNamedEvent(0, "Input manager tick");
         InputManager.Tick();
@@ -939,10 +941,14 @@ return -1;
         PIXBeginNamedEvent(0, "Network manager do work #1");
         g_NetworkManager.DoWork();
         PIXEndNamedEvent();
-
         // Render game graphics.
+#ifdef ENABLE_JAVA_GUIS
+        pMinecraft->run_middle();
+        if (app.GetGameStarted()) {
+#else
         if (app.GetGameStarted()) {
             pMinecraft->run_middle();
+#endif
             app.SetAppPaused(
                 g_NetworkManager.IsLocalGame() &&
                 g_NetworkManager.GetPlayerCount() == 1 &&
