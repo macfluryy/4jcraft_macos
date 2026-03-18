@@ -546,8 +546,9 @@ void Minecraft::setScreen(Screen* screen) {
         screen = new TitleScreen();
     } else if (player != NULL && !ui.GetMenuDisplayed(player->GetXboxPad()) &&
                player->getHealth() <= 0) {
-        // screen = new DeathScreen();
-
+#ifdef ENABLE_JAVA_GUIS
+        screen = new DeathScreen();
+#else
         // 4J Stu - If we exit from the death screen then we are saved as being
         // dead. In the Java game when you load the game you are still dead, but
         // this is silly so only show the dead screen if we have died during
@@ -557,6 +558,7 @@ void Minecraft::setScreen(Screen* screen) {
         } else {
             ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu, NULL);
         }
+#endif
     }
 
     if (dynamic_cast<TitleScreen*>(screen) != NULL) {
