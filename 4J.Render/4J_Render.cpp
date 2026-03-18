@@ -311,6 +311,8 @@ void C4JRender::SetFullscreen(bool fs) { s_fullscreen = fs; }
 
 bool C4JRender::ShouldClose() { return !s_window || s_shouldClose; }
 
+void C4JRender::Close() { s_window = nullptr; }
+
 void C4JRender::Shutdown() {
     // Destroy the main window and clean up SDL resources so that
     // destructors running after the game loop don't touch a dead context.

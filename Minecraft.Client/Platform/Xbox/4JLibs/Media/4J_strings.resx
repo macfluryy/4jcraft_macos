@@ -92,7 +92,7 @@
     <value>Enter a name for your savegame</value>
   </data>
   <data name="IDS_WARNING_ARCADE_TITLE">
-    <value>Return to Xbox Dashboard</value>
+    <value>Return to Desktop</value>
   </data>
   <data name="IDS_WARNING_ARCADE_TEXT">
     <value>Are you sure you want to exit the game?</value>
