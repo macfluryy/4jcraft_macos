@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1772433332,
-        "narHash": "sha256-izhTDFKsg6KeVBxJS9EblGeQ8y+O8eCa6RcW874vxEc=",
+        "lastModified": 1773734432,
+        "narHash": "sha256-IF5ppUWh6gHGHYDbtVUyhwy/i7D261P7fWD1bPefOsw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "cf59864ef8aa2e178cccedbe2c178185b0365705",
+        "rev": "cda48547b432e8d3b18b4180ba07473762ec8558",
         "type": "github"
       },
       "original": {
@@ -18,7 +18,25 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "shiggy": "shiggy"
+      }
+    },
+    "shiggy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773545684,
+        "narHash": "sha256-NI2qw4nROLciRgVZW1CM68vLQbeLmQeqdZ/QxufL6d4=",
+        "owner": "4jcraft",
+        "repo": "shiggy",
+        "rev": "7adc6c47882409c31e4f2d66fbfabdf4a3a98fd1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "4jcraft",
+        "ref": "main",
+        "repo": "shiggy",
+        "type": "github"
       }
     }
   },
