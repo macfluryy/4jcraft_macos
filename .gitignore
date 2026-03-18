@@ -1,5 +1,6 @@
 # Exclude everything by default
 /*
+/subprojects/.wraplock
 
 # Except for tracked top-level project directories
 !/.devcontainer/
