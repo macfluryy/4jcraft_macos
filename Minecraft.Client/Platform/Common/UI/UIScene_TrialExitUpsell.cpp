@@ -6,6 +6,7 @@
 UIScene_TrialExitUpsell::UIScene_TrialExitUpsell(int iPad, void *initData, UILayer *parentLayer) : UIScene(iPad, parentLayer)
 {
 	// Setup all the Iggy references we need for this scene
+	app.DebugPrintf("UIScene_TrialExitUpsell::UIScene_TrialExitUpsell BEFORE initialiseMovie CALL\n");
 	initialiseMovie();
 }
 

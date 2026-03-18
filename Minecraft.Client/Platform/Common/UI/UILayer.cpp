@@ -342,6 +342,7 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void *initData)
 		// Frontend
 	case eUIScene_TrialExitUpsell:
 		newScene = new UIScene_TrialExitUpsell(iPad, initData, this);
+	    app.DebugPrintf("UILayer::NavigateToScene AFTER UIScene_TrialExitUpsell CALL\n");
 		break;
 	case eUIScene_Intro:
 		newScene = new UIScene_Intro(iPad, initData, this);
