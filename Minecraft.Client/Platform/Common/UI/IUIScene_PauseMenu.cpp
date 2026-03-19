@@ -627,6 +627,7 @@ void IUIScene_PauseMenu::_ExitWorld(void *lpParameter)
 
 	app.SetChangingSessionType(false);
 	app.SetReallyChangingSessionType(false);
+	pMinecraft->exitingWorldRightNow = false;
 
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
 	// Make sure we don't think saving is disabled in the menus

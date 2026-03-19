@@ -3,6 +3,7 @@
 #include "DeathScreen.h"
 #include "../Button.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"
+#include "PauseScreen.h"
 #include "TitleScreen.h"
 
 void DeathScreen::init() {
@@ -30,9 +31,11 @@ void DeathScreen::buttonClicked(Button* button) {
         //          minecraft.setScreen(new NewLevelScreen(this));
     }
     if (button->id == 2) {
-        // TODO: proper world exits
         // minecraft->setLevel(NULL);
         // minecraft->setScreen(new TitleScreen());
+
+        // 4jcraft: use the static method from PauseScreen to exit
+        PauseScreen::exitWorld(minecraft, true);
     }
 }
 

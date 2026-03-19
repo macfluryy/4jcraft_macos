@@ -9,6 +9,7 @@ private:
 public:
     PauseScreen();  // 4J added
     virtual void init();
+    static void exitWorld(Minecraft* minecraft, bool save);
 
 protected:
     using Screen::buttonClicked;

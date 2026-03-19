@@ -122,6 +122,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     user = NULL;
     parent = NULL;
     pause = false;
+    exitingWorldRightNow = false;
     textures = NULL;
     font = NULL;
     screen = NULL;
@@ -1253,6 +1254,15 @@ void Minecraft::run_middle() {
     static int iFirstTimeCountdown = 60;
     if (lastTime == 0) lastTime = System::nanoTime();
     static int frames = 0;
+
+#ifdef ENABLE_JAVA_GUIS
+    // 4jcraft: while the java ui is leaving world, don't run the rest of
+    // run_middle
+    if (exitingWorldRightNow) {
+        screen->render(0, 0, 1);
+        return;
+    }
+#endif
 
     EnterCriticalSection(&m_setLevelCS);
 

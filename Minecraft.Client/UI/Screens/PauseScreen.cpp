@@ -2,6 +2,7 @@
 #include "PauseScreen.h"
 #include "../Button.h"
 #include "../../GameState/StatsCounter.h"
+#include "MessageScreen.h"
 #include "OptionsScreen.h"
 #include "TitleScreen.h"
 #include "../../Level/MultiPlayerLevel.h"
@@ -48,12 +49,23 @@ void PauseScreen::init() {
      */
 }
 
+void PauseScreen::exitWorld(Minecraft* minecraft, bool save) {
+    // 4jcraft: made our own static method for use in the java gui (other
+    // places such as the deathscreen need this)
+    MinecraftServer* server = MinecraftServer::getInstance();
+
+    minecraft->setScreen(new MessageScreen(L"Leaving world"));
+    if (g_NetworkManager.IsHost()) {
+        server->setSaveOnExit(save);
+    }
+    app.SetAction(minecraft->player->GetXboxPad(), eAppAction_ExitWorld);
+}
+
 void PauseScreen::buttonClicked(Button* button) {
     if (button->id == 0) {
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
     if (button->id == 1) {
-        // TODO: proper disconnects
         // if (minecraft->isClientSide())
         // {
         //     minecraft->level->disconnect();
@@ -61,6 +73,9 @@ void PauseScreen::buttonClicked(Button* button) {
 
         // minecraft->setLevel(NULL);
         // minecraft->setScreen(new TitleScreen());
+
+        // 4jcraft: exit with our new exitWorld method
+        exitWorld(minecraft, true);
     }
     if (button->id == 4) {
         minecraft->setScreen(NULL);
