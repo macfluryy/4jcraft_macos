@@ -22,7 +22,8 @@ glu_dep    = dependency('glu')
 sdl2_dep   = dependency('sdl2') # Yes.. i know sdl3 is out, but there's not point upgrading right now except when
                                 # someone is gonna ask me "Hey juicey can you make it SDL3?" and i'd be like fuck you and still do it.
 thread_dep = dependency('threads')
-
+miniaudio_dep = dependency('miniaudio')
+stb = subproject('stb').get_variable('stb_inc')
 # compile flags (chagne ts juicey)
 global_cpp_args = [
   '-fpermissive',

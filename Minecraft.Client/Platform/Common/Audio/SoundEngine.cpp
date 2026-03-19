@@ -15,11 +15,25 @@
 #endif
 #ifdef __linux__
 #define STB_VORBIS_HEADER_ONLY
-#include "./stb_vorbis.h"
+#include "stb_vorbis.c"
+// Fixes strcasecmp in miniaudio
+// https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
+int strcasecmp(const char *a, const char *b) {
+int ca, cb;
+do {
+    ca = * (unsigned char *)a;
+    cb = * (unsigned char *)b;
+    ca = tolower(toupper(ca));
+    cb = tolower(toupper(cb));
+    a++;
+    b++;
+} while (ca == cb && ca != '\0');
+return ca - cb;
+}
 #define MINIAUDIO_IMPLEMENTATION
-#include "./miniaudio.h"
+#include "miniaudio.h"
 #undef STB_VORBIS_HEADER_ONLY
-#include "./stb_vorbis.h"
+#include "stb_vorbis.c"
 #endif
 #ifdef _WINDOWS64
 #include "../../Minecraft.Client/Platform/Windows64/Windows64_App.h"
