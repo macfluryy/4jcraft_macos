@@ -60,7 +60,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     // 4J-PB - correct the name of the event for hitting ocelots
     L"mob/cat/hit",  //  eSoundType_MOB_CAT_HITT
                      //	L"mob/irongolem/throw",				//
-    //eSoundType_MOB_IRONGOLEM_THROW 	L"mob/irongolem/hit",
+    // eSoundType_MOB_IRONGOLEM_THROW 	L"mob/irongolem/hit",
     ////  eSoundType_MOB_IRONGOLEM_HIT 	L"mob/irongolem/death",
     ////  eSoundType_MOB_IRONGOLEM_DEATH 	L"mob/irongolem/walk",
     ////  eSoundType_MOB_IRONGOLEM_WALK
@@ -79,7 +79,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"random/orb",               //	eSoundType_RANDOM_ORB,
     L"random/break",             //	eSoundType_RANDOM_BREAK,
     L"block/chest/open",         //	eSoundType_RANDOM_CHEST_OPEN,
-    L"block/chest/close",       //	eSoundType_RANDOM_CHEST_CLOSE,
+    L"block/chest/close",        //	eSoundType_RANDOM_CHEST_CLOSE,
     L"random/door_open",         //	eSoundType_RANDOM_DOOR_OPEN,
     L"random/door_close",        //	eSoundType_RANDOM_DOOR_CLOSE,
     L"ambient/weather/rain",     //	eSoundType_AMBIENT_WEATHER_RAIN,
@@ -87,17 +87,17 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"ambient/cave/cave",  //	eSoundType_CAVE_CAVE, DON'T USE FOR XBOX 360!!!
 #ifdef _XBOX
     L"ambient/cave/cave2",  //	eSoundType_CAVE_CAVE2 - removed the two sounds
-                            //that were at 192k in the first ambient cave event
+                            // that were at 192k in the first ambient cave event
 #endif
     L"portal/portal",  //	eSoundType_PORTAL_PORTAL,
     // 4J-PB - added a couple that were still using std::wstring
     L"portal/trigger",  //	eSoundType_PORTAL_TRIGGER
     L"portal/travel",   //	eSoundType_PORTAL_TRAVEL
 
-    L"fire/new_ignite",       //	eSoundType_FIRE_IGNITE,
-    L"fire/fire",         //	eSoundType_FIRE_FIRE,
+    L"fire/new_ignite",  //	eSoundType_FIRE_IGNITE,
+    L"fire/fire",        //	eSoundType_FIRE_FIRE,
     // Renamed to damage/hit as the other file doesn't exist
-    L"damage/hit",  //	eSoundType_DAMAGE_HURT,
+    L"damage/hit",        //	eSoundType_DAMAGE_HURT,
     L"damage/fallsmall",  //	eSoundType_DAMAGE_FALL_SMALL,
     L"damage/fallbig",    //	eSoundType_DAMAGE_FALL_BIG,
     L"note/harp",         //	eSoundType_NOTE_HARP,
