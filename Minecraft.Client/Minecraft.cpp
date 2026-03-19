@@ -2066,11 +2066,10 @@ void Minecraft::run_middle() {
                 // If there's an unoccupied quadrant, then clear that to black
                 if (unoccupiedQuadrant > -1) {
                     // render a logo
-                    RenderManager.StateSetViewport((
-                        C4JRender::
-                            eViewportType)(C4JRender::
-                                               VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
-                                           unoccupiedQuadrant));
+                    RenderManager.StateSetViewport(
+                        static_cast<C4JRender::eViewportType>(
+                            C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                            unoccupiedQuadrant));
                     glClearColor(0, 0, 0, 0);
                     glClear(GL_COLOR_BUFFER_BIT);
 

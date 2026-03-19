@@ -20,7 +20,7 @@ static SDL_Window* s_window = nullptr;
 static SDL_GLContext s_glContext = nullptr;
 static bool s_shouldClose = false;
 static int s_textureLevels = 1;
-static int s_windowWidth  = 1920;
+static int s_windowWidth = 1920;
 static int s_windowHeight = 1080;
 
 // We set Window size with the monitor's res, so that I can get rid of ugly
@@ -34,14 +34,20 @@ static void SetInitialWindowSize() {
             h = (int)(mode.h * 0.4f);
         }
     }
-    if (w > 0 && h > 0) { s_windowWidth = w; s_windowHeight = h; }
-    else { s_windowWidth = 1920; s_windowHeight = 1080; }
+    if (w > 0 && h > 0) {
+        s_windowWidth = w;
+        s_windowHeight = h;
+    } else {
+        s_windowWidth = 1920;
+        s_windowHeight = 1080;
+    }
 }
 // (can't believe i had to rewrite this, i literally did it TODAY.)
-static int s_reqWidth     = 1920;
-static int s_reqHeight    = 1080;
-// When we'll have a settings system in order, we'll set bool to that value, right now it's hardcoded.
-static bool s_fullscreen  = false;
+static int s_reqWidth = 1920;
+static int s_reqHeight = 1080;
+// When we'll have a settings system in order, we'll set bool to that value,
+// right now it's hardcoded.
+static bool s_fullscreen = false;
 
 static pthread_key_t s_glCtxKey;
 static pthread_once_t s_glCtxKeyOnce = PTHREAD_ONCE_INIT;
@@ -126,14 +132,14 @@ void C4JRender::Initialise() {
     }
 
     int w, h, channels;
-    unsigned char* data = stbi_load("Common/Media/Graphics/MinecraftIcon.png", &w, &h, &channels, 4);
+    unsigned char* data = stbi_load("Common/Media/Graphics/MinecraftIcon.png",
+                                    &w, &h, &channels, 4);
     if (!data) {
         SDL_Log("Failed to load icon: %s", SDL_GetError());
     } else {
-        SDL_Surface* icon = SDL_CreateRGBSurfaceFrom(
-            data, w, h, 32, w * 4,
-            0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
-        );
+        SDL_Surface* icon =
+            SDL_CreateRGBSurfaceFrom(data, w, h, 32, w * 4, 0x000000FF,
+                                     0x0000FF00, 0x00FF0000, 0xFF000000);
         if (!icon) {
             SDL_Log("Failed to load icon: %s", SDL_GetError());
         } else {
