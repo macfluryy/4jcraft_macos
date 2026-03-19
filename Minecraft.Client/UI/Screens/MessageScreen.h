@@ -1,8 +1,6 @@
 #pragma once
 #include "../Screen.h"
 
-// 4jcraft addition
-
 class MessageScreen : public Screen {
 private:
     std::wstring message;

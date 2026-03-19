@@ -92,7 +92,10 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void *initData, UILayer *parentLa
 	XuiSetTimer(m_hObj,IGNORE_KEYPRESS_TIMERID,IGNORE_KEYPRESS_TIME);
 #endif
 
-	if( g_NetworkManager.IsLocalGame() && g_NetworkManager.GetPlayerCount() == 1 )
+    // TODO: proper fix for pausing
+    // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due to
+    // IsLocalGame() issues on Iggy
+	if( /*g_NetworkManager.IsLocalGame() &&*/ g_NetworkManager.GetPlayerCount() == 1 )
 	{
 		app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_PauseServer,(void *)TRUE);
 	}
@@ -364,8 +367,10 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat, bool pressed
 #ifdef _DURANGO
 			//DurangoStatsDebugger::PrintStats(iPad);
 #endif
-
-			if( iPad == ProfileManager.GetPrimaryPad() && g_NetworkManager.IsLocalGame() )
+            // TODO: proper fix for pausing
+            // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due to
+            // IsLocalGame() issues on Iggy
+			if( iPad == ProfileManager.GetPrimaryPad() && /*g_NetworkManager.IsLocalGame()*/g_NetworkManager.GetPlayerCount() == 1 )
 			{
 				app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_PauseServer,(void *)FALSE);
 			}
@@ -509,7 +514,10 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId)
 	switch((int)controlId)
 	{
 	case BUTTON_PAUSE_RESUMEGAME:
-		if( m_iPad == ProfileManager.GetPrimaryPad() && g_NetworkManager.IsLocalGame() )
+        // TODO: proper fix for pausing
+        // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due to
+        // IsLocalGame() issues on Iggy
+		if( m_iPad == ProfileManager.GetPrimaryPad() && /*g_NetworkManager.IsLocalGame()*/g_NetworkManager.GetPlayerCount() == 1 )
 		{
 			app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),eXuiServerAction_PauseServer,(void *)FALSE);
 		}
