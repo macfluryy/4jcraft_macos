@@ -104,6 +104,7 @@ void C4JRender::Initialise() {
 
     Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if (s_fullscreen) winFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
     s_window = SDL_CreateWindow("Minecraft Console Edition",
                                 SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                 s_windowWidth, s_windowHeight, winFlags);
@@ -122,6 +123,23 @@ void C4JRender::Initialise() {
         s_window = nullptr;
         SDL_Quit();
         return;
+    }
+
+    int w, h, channels;
+    unsigned char* data = stbi_load("Common/Media/Graphics/MinecraftIcon.png", &w, &h, &channels, 4);
+    if (!data) {
+        SDL_Log("Failed to load icon: %s", SDL_GetError());
+    } else {
+        SDL_Surface* icon = SDL_CreateRGBSurfaceFrom(
+            data, w, h, 32, w * 4,
+            0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000
+        );
+        if (!icon) {
+            SDL_Log("Failed to load icon: %s", SDL_GetError());
+        } else {
+            SDL_SetWindowIcon(s_window, icon);
+            SDL_FreeSurface(icon);
+        }
     }
 
 // 4JCraft VSync/V-Sync
