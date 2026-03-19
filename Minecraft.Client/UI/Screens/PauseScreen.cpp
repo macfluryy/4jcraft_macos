@@ -28,9 +28,9 @@ void PauseScreen::init() {
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                eXuiServerAction_PauseServer, (void*)TRUE);
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + yo,
-                                 L"Save and quit to title"));
+                                 I18n::get(L"menu.returnToMenu")));
     if (minecraft->isClientSide()) {
-        buttons[0]->msg = L"Disconnect";
+        buttons[0]->msg = I18n::get(L"menu.disconnect");
     }
 
     buttons.push_back(new Button(4, width / 2 - 100, height / 4 + 24 * 1 + yo,
