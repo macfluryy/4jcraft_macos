@@ -2,6 +2,7 @@
 #include "PauseScreen.h"
 #include "../Button.h"
 #include "../../GameState/StatsCounter.h"
+#include "MessageScreen.h"
 #include "OptionsScreen.h"
 #include "TitleScreen.h"
 #include "../../Level/MultiPlayerLevel.h"
@@ -21,10 +22,15 @@ void PauseScreen::init() {
     saveStep = 0;
     buttons.clear();
     int yo = -16;
+    // 4jcraft: solves the issue of client-side only pausing in the java gui
+    if (g_NetworkManager.IsLocalGame() &&
+        g_NetworkManager.GetPlayerCount() == 1)
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)TRUE);
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + yo,
-                                 L"Save and quit to title"));
-    if (minecraft->isClientSide()) {
-        buttons[0]->msg = L"Disconnect";
+                                 I18n::get(L"menu.returnToMenu")));
+    if (!g_NetworkManager.IsHost()) {
+        buttons[0]->msg = I18n::get(L"menu.disconnect");
     }
 
     buttons.push_back(new Button(4, width / 2 - 100, height / 4 + 24 * 1 + yo,
@@ -48,12 +54,32 @@ void PauseScreen::init() {
      */
 }
 
+void PauseScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
+    if (eventKey == Keyboard::KEY_ESCAPE && g_NetworkManager.IsLocalGame() &&
+        g_NetworkManager.GetPlayerCount() == 1)
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)FALSE);
+
+    Screen::keyPressed(eventCharacter, eventKey);
+}
+
+void PauseScreen::exitWorld(Minecraft* minecraft, bool save) {
+    // 4jcraft: made our own static method for use in the java gui (other
+    // places such as the deathscreen need this)
+    MinecraftServer* server = MinecraftServer::getInstance();
+
+    minecraft->setScreen(new MessageScreen(L"Leaving world"));
+    if (g_NetworkManager.IsHost()) {
+        server->setSaveOnExit(save);
+    }
+    app.SetAction(minecraft->player->GetXboxPad(), eAppAction_ExitWorld);
+}
+
 void PauseScreen::buttonClicked(Button* button) {
     if (button->id == 0) {
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
     if (button->id == 1) {
-        // TODO: proper disconnects
         // if (minecraft->isClientSide())
         // {
         //     minecraft->level->disconnect();
@@ -61,8 +87,13 @@ void PauseScreen::buttonClicked(Button* button) {
 
         // minecraft->setLevel(NULL);
         // minecraft->setScreen(new TitleScreen());
+
+        // 4jcraft: exit with our new exitWorld method
+        exitWorld(minecraft, true);
     }
     if (button->id == 4) {
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)FALSE);
         minecraft->setScreen(NULL);
         //       minecraft->grabMouse();		// 4J - removed
     }

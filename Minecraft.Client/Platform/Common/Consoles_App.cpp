@@ -2826,7 +2826,7 @@ void CMinecraftApp::HandleXuiActions(void)
 #endif
 
 			case eAppAction_ExitWorld:
-
+				pMinecraft->exitingWorldRightNow = true;
 				SetAction(i,eAppAction_Idle);
 
 				// If we're already leaving don't exit
