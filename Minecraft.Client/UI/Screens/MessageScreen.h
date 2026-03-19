@@ -17,7 +17,6 @@ protected:
 
 public:
     virtual void init();
-    virtual void tick();
 
 protected:
     virtual void buttonClicked(Button* button);
