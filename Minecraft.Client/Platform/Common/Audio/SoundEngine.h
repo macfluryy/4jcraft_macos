@@ -134,6 +134,9 @@ private:
 #else
     int initAudioHardware(int iMinSpeakers) { return iMinSpeakers; }
 #endif
+    #ifdef __linux__
+        void updateMiniAudio();
+    #endif
 
     int GetRandomishTrack(int iStart, int iEnd);
 

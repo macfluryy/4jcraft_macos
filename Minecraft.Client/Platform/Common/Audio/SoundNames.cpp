@@ -8,7 +8,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"mob/chicken/chickenplop",    //	eSoundType_MOB_CHICKENPLOP
     L"mob/cow/say",                //	eSoundType_MOB_COW_AMBIENT
     L"mob/cow/hurt",               //	eSoundType_MOB_COW_HURT
-    L"mob/pig/say",                //	eSoundType_MOB_PIG_AMBIENT
+    L"mob/pig/pig",                //	eSoundType_MOB_PIG_AMBIENT
     L"mob/pig/pigdeath",           //	eSoundType_MOB_PIG_DEATH
     L"mob/sheep/sheep",            //	eSoundType_MOB_SHEEP_AMBIENT
     L"mob/wolf/growl",             //	eSoundType_MOB_WOLF_GROWL
@@ -78,8 +78,8 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"random/glass",             //	eSoundType_RANDOM_GLASS,
     L"random/orb",               //	eSoundType_RANDOM_ORB,
     L"random/break",             //	eSoundType_RANDOM_BREAK,
-    L"random/chestopen",         //	eSoundType_RANDOM_CHEST_OPEN,
-    L"random/chestclosed",       //	eSoundType_RANDOM_CHEST_CLOSE,
+    L"block/chest/open",         //	eSoundType_RANDOM_CHEST_OPEN,
+    L"block/chest/close",       //	eSoundType_RANDOM_CHEST_CLOSE,
     L"random/door_open",         //	eSoundType_RANDOM_DOOR_OPEN,
     L"random/door_close",        //	eSoundType_RANDOM_DOOR_CLOSE,
     L"ambient/weather/rain",     //	eSoundType_AMBIENT_WEATHER_RAIN,
@@ -94,9 +94,10 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"portal/trigger",  //	eSoundType_PORTAL_TRIGGER
     L"portal/travel",   //	eSoundType_PORTAL_TRAVEL
 
-    L"fire/ignite",       //	eSoundType_FIRE_IGNITE,
+    L"fire/new_ignite",       //	eSoundType_FIRE_IGNITE,
     L"fire/fire",         //	eSoundType_FIRE_FIRE,
-    L"damage/hurtflesh",  //	eSoundType_DAMAGE_HURT,
+    // Renamed to damage/hit as the other file doesn't exist
+    L"damage/hit",  //	eSoundType_DAMAGE_HURT,
     L"damage/fallsmall",  //	eSoundType_DAMAGE_FALL_SMALL,
     L"damage/fallbig",    //	eSoundType_DAMAGE_FALL_BIG,
     L"note/harp",         //	eSoundType_NOTE_HARP,
