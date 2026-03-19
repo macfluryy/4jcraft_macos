@@ -11,6 +11,7 @@
 #include "../../../Minecraft.World/Util/Random.h"
 #include "../../MinecraftServer.h"
 #include "../../GameState/Options.h"
+#include "MessageScreen.h"
 #include <string>
 
 CreateWorldScreen::CreateWorldScreen(Screen* lastScreen) {
@@ -43,10 +44,8 @@ void CreateWorldScreen::init() {
     buttons.push_back(new Button(1, width / 2 + 5, height - 28, 150, 20,
                                  language->getElement(L"gui.cancel")));
 
-    nameEdit = new EditBox(
-        this, font, width / 2 - 100, 60, 200, 20,
-        language->getElement(
-            L"testWorld"));  // 4J - test - should be L"selectWorld.newWorld"
+    nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20,
+                           language->getElement(L"selectWorld.newWorld"));
     nameEdit->inFocus = true;
     nameEdit->setMaxLength(32);
 
@@ -294,7 +293,11 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         loadingParams->completionData = completionData;
 
         ui.NavigateToScene(0, eUIScene_FullscreenProgress, loadingParams);
-// 4J Stu - This screen is not used, so removing this to stop the build failing
+        Language* language = Language::getInstance();
+        minecraft->setScreen(
+            new MessageScreen(language->getElement(L"menu.generatingLevel")));
+        // 4J Stu - This screen is not used, so removing this to stop the build
+        // failing
 #if 0
         minecraft->gameMode = new SurvivalMode(minecraft);
         minecraft->selectLevel(resultFolder, nameEdit->getValue(), seedValue);

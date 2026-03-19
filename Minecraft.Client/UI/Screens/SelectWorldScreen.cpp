@@ -165,6 +165,7 @@ void SelectWorldScreen::confirmResult(bool result, int id) {
 
 void SelectWorldScreen::render(int xm, int ym, float a) {
     // fill(0, 0, width, height, 0x40000000);
+    renderDirtBackground(0);
     worldSelectionList->render(xm, ym, a);
 
     drawCenteredString(font, title, width / 2, 20, 0xffffff);

@@ -292,7 +292,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         minecraft->createPrimaryLocalPlayer(ProfileManager.GetPrimaryPad());
 
         minecraft->player->dimension = packet->dimension;
-        // minecraft->setScreen(new ReceivingLevelScreen(this));
+        minecraft->setScreen(new ReceivingLevelScreen(this));
         minecraft->player->entityId = packet->clientVersion;
 
         std::uint8_t networkSmallId = getSocket()->getSmallId();
@@ -2636,7 +2636,7 @@ void ClientConnection::handleRespawn(std::shared_ptr<RespawnPacket> packet) {
 
         // minecraft->player->dimension = packet->dimension;
         minecraft->localplayers[m_userIndex]->dimension = packet->dimension;
-        // minecraft->setScreen(new ReceivingLevelScreen(this));
+        minecraft->setScreen(new ReceivingLevelScreen(this));
         //		minecraft->addPendingLocalConnection(m_userIndex, this);
 
 #ifdef _XBOX

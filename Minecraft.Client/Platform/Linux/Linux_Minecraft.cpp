@@ -950,7 +950,12 @@ return -1;
             pMinecraft->run_middle();
 #endif
             app.SetAppPaused(
-                g_NetworkManager.IsLocalGame() &&
+                // TODO: proper fix for pausing
+                // 4jcraft: IsLocalGame() doesn't seem to work properly on Iggy
+                // UI, this should work even in multiplayer scenarios though
+                // since it checks for the player count anyway
+                //
+                // g_NetworkManager.IsLocalGame() &&
                 g_NetworkManager.GetPlayerCount() == 1 &&
                 ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()));
         } else {
