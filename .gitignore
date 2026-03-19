@@ -1,6 +1,5 @@
 # Exclude everything by default
 /*
-/subprojects/.wraplock
 
 # Except for tracked top-level project directories
 !/.devcontainer/
@@ -15,7 +14,7 @@
 !/Minecraft.Client/
 !/Minecraft.World/
 !/scripts/
-!/subprojects/
+!/subprojects/*.wrap
 !/.clang-format
 !/.git-blame-ignore-revs
 !/.gitattributes
