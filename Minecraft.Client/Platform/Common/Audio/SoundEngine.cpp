@@ -18,17 +18,17 @@
 #include "stb_vorbis.c"
 // Fixes strcasecmp in miniaudio
 // https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
-int strcasecmp(const char *a, const char *b) {
-int ca, cb;
-do {
-    ca = * (unsigned char *)a;
-    cb = * (unsigned char *)b;
-    ca = tolower(toupper(ca));
-    cb = tolower(toupper(cb));
-    a++;
-    b++;
-} while (ca == cb && ca != '\0');
-return ca - cb;
+int strcasecmp(const char* a, const char* b) {
+    int ca, cb;
+    do {
+        ca = *(unsigned char*)a;
+        cb = *(unsigned char*)b;
+        ca = tolower(toupper(ca));
+        cb = tolower(toupper(cb));
+        a++;
+        b++;
+    } while (ca == cb && ca != '\0');
+    return ca - cb;
 }
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
