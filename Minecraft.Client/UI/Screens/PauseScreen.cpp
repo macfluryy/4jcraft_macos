@@ -29,7 +29,7 @@ void PauseScreen::init() {
                                eXuiServerAction_PauseServer, (void*)TRUE);
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + yo,
                                  I18n::get(L"menu.returnToMenu")));
-    if (minecraft->isClientSide()) {
+    if (!g_NetworkManager.IsHost()) {
         buttons[0]->msg = I18n::get(L"menu.disconnect");
     }
 
