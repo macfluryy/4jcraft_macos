@@ -32,10 +32,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ccache python3 ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
-          python3 -m ensurepip
-          sudo pip install meson
-
+          sudo apt-get install -y build-essential ccache python3 ninja-build python3-meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
           # Set a reasonable ccache size
           ccache -M 5G || true
 
@@ -59,7 +56,7 @@ jobs:
         run: |
           mkdir -p "$CCACHE_DIR"
           export CCACHE_DIR="$CCACHE_DIR"
-          python -m meson setup build_release --wipe --buildtype=release --native-file=./scripts/llvm_native.txt
+          meson setup build_release --wipe --buildtype=release --native-file=./scripts/llvm_native.txt
 
       - name: Build with Meson
         env:
@@ -69,7 +66,7 @@ jobs:
         run: |
           export CCACHE_DIR="${{ runner.temp }}/ccache"
           # Use all available cores for faster parallel builds
-          python -m meson compile -C build_release -j $(nproc) -v Minecraft.Client
+          meson compile -C build_release -j $(nproc) -v Minecraft.Client
 
       - name: Install patchelf
         run: sudo apt-get install -y patchelf
@@ -89,9 +86,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ccache python3 ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
-          python3 -m ensurepip
-          sudo pip install meson
+          sudo apt-get install -y build-essential ccache python3 ninja-build python3-meson libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
           # Set a reasonable ccache size
           ccache -M 5G || true
 
@@ -115,7 +110,7 @@ jobs:
         run: |
           mkdir -p "$CCACHE_DIR"
           export CCACHE_DIR="$CCACHE_DIR"
-          python -m meson setup build_debug --wipe --buildtype=debug --native-file=./scripts/llvm_native.txt
+          meson setup build_debug --wipe --buildtype=debug --native-file=./scripts/llvm_native.txt
 
       - name: Build Debug with Meson
         env:
@@ -125,7 +120,7 @@ jobs:
         run: |
           export CCACHE_DIR="${{ runner.temp }}/ccache"
           # Use all available cores for faster parallel builds
-          python -m meson compile -C build_debug -j $(nproc) -v Minecraft.Client
+          meson compile -C build_debug -j $(nproc) -v Minecraft.Client
 
       - name: Upload debug executable
         uses: actions/upload-artifact@v4
