@@ -1054,8 +1054,8 @@ void SoundEngine::init(Options* pOptions) {
     // Create a driver to render our audio - 44khz, 16 bit,
 #ifdef __PS3__
     //	On the Sony PS3, the driver is always opened in 48 kHz, 32-bit floating
-    //point. The only meaningful configurations are MSS_MC_STEREO,
-    //MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
+    // point. The only meaningful configurations are MSS_MC_STEREO,
+    // MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
     m_hDriver = AIL_open_digital_driver(48000, 16, iNumberOfChannels,
                                         AIL_OPEN_DIGITAL_USE_SPU0);
 #elif defined __PSVITA__
@@ -1954,9 +1954,9 @@ void SoundEngine::playMusicUpdate() {
 #endif
                 }
 
-                // 			std::wstring name =
-                // m_szStreamFileA[m_musicID]; 			char *SoundName = (char
-                // *)ConvertSoundPathToName(name); 			strcat((char
+                // std::wstring name =
+                // m_szStreamFileA[m_musicID];char*SoundName=(char
+                // *)ConvertSoundPathToName(name);strcat((char
                 // *)szStreamName,SoundName);
 
                 app.DebugPrintf("Starting streaming - %s\n", m_szStreamName);

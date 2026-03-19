@@ -3381,7 +3381,7 @@ static int start_decoder(vorb* f) {
             if (get_bits(f, 1)) high_bits = get_bits(f, 5);
             residue_cascade[j] = high_bits * 8 + low_bits;
         }
-        r->residue_books = (short (*)[8])setup_malloc(
+        r->residue_books = (short(*)[8])setup_malloc(
             f, sizeof(r->residue_books[0]) * r->classifications);
         if (r->residue_books == NULL) return error(f, VORBIS_outofmem);
         for (j = 0; j < r->classifications; ++j) {
