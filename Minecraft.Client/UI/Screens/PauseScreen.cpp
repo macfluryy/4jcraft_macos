@@ -22,6 +22,11 @@ void PauseScreen::init() {
     saveStep = 0;
     buttons.clear();
     int yo = -16;
+    // 4jcraft: solves the issue of client-side only pausing in the java gui
+    if (g_NetworkManager.IsLocalGame() &&
+        g_NetworkManager.GetPlayerCount() == 1)
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)TRUE);
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + yo,
                                  L"Save and quit to title"));
     if (minecraft->isClientSide()) {
@@ -47,6 +52,15 @@ void PauseScreen::init() {
      * false; buttons.get(2).active = false; buttons.get(3).active = false;
      * }
      */
+}
+
+void PauseScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
+    if (eventKey == Keyboard::KEY_ESCAPE && g_NetworkManager.IsLocalGame() &&
+        g_NetworkManager.GetPlayerCount() == 1)
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)FALSE);
+
+    Screen::keyPressed(eventCharacter, eventKey);
 }
 
 void PauseScreen::exitWorld(Minecraft* minecraft, bool save) {
@@ -78,6 +92,8 @@ void PauseScreen::buttonClicked(Button* button) {
         exitWorld(minecraft, true);
     }
     if (button->id == 4) {
+        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)FALSE);
         minecraft->setScreen(NULL);
         //       minecraft->grabMouse();		// 4J - removed
     }
