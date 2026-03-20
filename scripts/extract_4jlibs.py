@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import site
 import shutil
 import subprocess
 import sys
@@ -28,13 +29,30 @@ def require_clean_destination(dest: Path) -> None:
         raise SystemExit(f"Destination already exists: {dest}")
 
 
-def ensure_filter_repo() -> None:
-    try:
-        run(["git", "filter-repo", "--help"])
-    except subprocess.CalledProcessError as exc:
-        raise SystemExit(
-            "git-filter-repo is required. Install it first and rerun this script."
-        ) from exc
+def resolve_filter_repo_command() -> list[str]:
+    script_name = "git-filter-repo.exe" if sys.platform == "win32" else "git-filter-repo"
+
+    path_candidates = [
+        shutil.which("git-filter-repo"),
+        shutil.which(script_name),
+    ]
+
+    user_script_dirs = [
+        Path(site.USER_BASE) / "Scripts",
+        Path(site.getusersitepackages()).parent / "Scripts",
+    ]
+
+    for script_dir in user_script_dirs:
+        user_scripts = script_dir / script_name
+        path_candidates.append(str(user_scripts) if user_scripts.exists() else None)
+
+    for candidate in path_candidates:
+        if candidate:
+            return [candidate]
+
+    raise SystemExit(
+        "git-filter-repo is required. Install it first and rerun this script."
+    )
 
 
 def clone_source(source: Path, dest: Path) -> None:
@@ -42,7 +60,7 @@ def clone_source(source: Path, dest: Path) -> None:
 
 
 def filter_history(dest: Path) -> None:
-    cmd = ["git", "filter-repo", "--force"]
+    cmd = resolve_filter_repo_command() + ["--force"]
     for path in PATHS_TO_KEEP:
         cmd.extend(["--path", path])
     run(cmd, cwd=dest)
@@ -100,7 +118,6 @@ def main() -> int:
     destination = args.destination.resolve()
 
     require_clean_destination(destination)
-    ensure_filter_repo()
     clone_source(source, destination)
     filter_history(destination)
     rewrite_staged_layout(destination)

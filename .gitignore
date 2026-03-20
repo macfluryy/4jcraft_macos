@@ -19,8 +19,6 @@
 !/subprojects/
 /subprojects/*
 !/subprojects/*.wrap
-!/subprojects/4jlibs/
-!/subprojects/4jlibs/**
 /scripts/__pycache__/
 !/.clang-format
 !/.git-blame-ignore-revs
