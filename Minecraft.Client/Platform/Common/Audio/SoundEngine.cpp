@@ -254,6 +254,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
             }
         }
     }
+    if (!found) return;
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
 
@@ -322,6 +323,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
             break;
         }
     }
+    if (!found) return;
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
 
@@ -2318,7 +2320,7 @@ void SoundEngine::SetStreamingSounds(int iOverworldMin, int iOverWorldMax,
         delete[] m_bHeardTrackA;
     }
     m_bHeardTrackA = new bool[iEndMax + 1];
-    memset(m_bHeardTrackA, 0, sizeof(bool) * iEndMax + 1);
+    memset(m_bHeardTrackA, 0, sizeof(bool) * (iEndMax + 1));
 }
 int SoundEngine::GetRandomishTrack(int iStart, int iEnd) {
     // 4J-PB - make it more likely that we'll get a track we've not heard for a

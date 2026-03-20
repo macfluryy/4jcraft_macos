@@ -1,6 +1,6 @@
 option('enable_java_guis', 
   type : 'boolean', 
-  value : true, 
+  value : false, 
   description : 'Re-enable the Java UI remnants in the code (for testing only)')
 
 option('enable_vsync', 
@@ -10,5 +10,5 @@ option('enable_vsync',
 
 option('enable_shiggy', 
   type : 'boolean', 
-  value : false, 
+  value : true, 
   description : 'Toggles shimmed PS4 Iggy binaries and UI for x86_64 Linux.')

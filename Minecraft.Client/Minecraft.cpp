@@ -562,13 +562,13 @@ void Minecraft::setScreen(Screen* m_screen) {
 #endif
     }
 
-    if (dynamic_cast<TitleScreen*>(screen) != NULL) {
+    if (dynamic_cast<TitleScreen*>(m_screen) != NULL) {
         options->renderDebug = false;
         gui->clearMessages();
     }
 
     this->screen = m_screen;
-    if (screen != NULL) {
+    if (m_screen != NULL) {
         //        releaseMouse();	// 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
         int screenWidth = ssc.getWidth();
@@ -653,7 +653,7 @@ void Minecraft::destroy() {
     }
 
     this->screen = m_screen;
-    if (screen != NULL) {
+    if (m_screen != NULL) {
         //        releaseMouse();	// 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
         int screenWidth = ssc.getWidth();
@@ -667,7 +667,7 @@ void Minecraft::destroy() {
     // 4J-PB - if a screen has been set, go into menu mode
     // it's possible that player doesn't exist here yet
 #ifdef ENABLE_JAVA_GUIS
-    if (screen != NULL) {
+    if (m_screen != NULL) {
         if (player && player->GetXboxPad() != -1) {
             InputManager.SetMenuDisplayed(player->GetXboxPad(), true);
         }
