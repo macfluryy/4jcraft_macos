@@ -654,8 +654,8 @@ void C4JRender::Tick() {}
 void C4JRender::UpdateGamma(unsigned short) {}
 
 // Converts RGBA data to the format expected by the texture loader.
-static HRESULT LoadFromSTB(unsigned char* data, int width, int height,
-                           D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
+static int LoadFromSTB(unsigned char* data, int width, int height,
+                       D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
     int pixelCount = width * height;
     int* pixels = new int[pixelCount];
 
@@ -675,45 +675,45 @@ static HRESULT LoadFromSTB(unsigned char* data, int width, int height,
     }
 
     *ppDataOut = pixels;
-    return S_OK;
+    return 0;
 }
 
-HRESULT C4JRender::LoadTextureData(const char* szFilename,
-                                   D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
+int C4JRender::LoadTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
+                               int** ppDataOut) {
     int width, height, channels;
 
     unsigned char* data = stbi_load(szFilename, &width, &height, &channels, 4);
-    if (!data) return E_FAIL;
+    if (!data) return -1;
 
-    HRESULT hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
+    const int hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
 
     stbi_image_free(data);
     return hr;
 }
 
-HRESULT C4JRender::LoadTextureData(std::uint8_t* pbData,
-                                   std::uint32_t byteCount,
-                                   D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
+int C4JRender::LoadTextureData(std::uint8_t* pbData,
+                               std::uint32_t byteCount,
+                               D3DXIMAGE_INFO* pSrcInfo, int** ppDataOut) {
     int width, height, channels;
 
     unsigned char* data =
         stbi_load_from_memory(pbData, byteCount, &width, &height, &channels, 4);
-    if (!data) return E_FAIL;
+    if (!data) return -1;
 
-    HRESULT hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
+    const int hr = LoadFromSTB(data, width, height, pSrcInfo, ppDataOut);
 
     stbi_image_free(data);
     return hr;
 }
 
-HRESULT C4JRender::SaveTextureData(const char* szFilename,
-                                   D3DXIMAGE_INFO* pSrcInfo, int* ppDataOut) {
-    return S_OK;
+int C4JRender::SaveTextureData(const char* szFilename, D3DXIMAGE_INFO* pSrcInfo,
+                               int* ppDataOut) {
+    return 0;
 }
-HRESULT C4JRender::SaveTextureDataToMemory(void* pOutput, int outputCapacity,
-                                           int* outputLength, int width,
-                                           int height, int* ppDataIn) {
-    return S_OK;
+int C4JRender::SaveTextureDataToMemory(void* pOutput, int outputCapacity,
+                                       int* outputLength, int width,
+                                       int height, int* ppDataIn) {
+    return 0;
 }
 void C4JRender::TextureGetStats() {}
 void* C4JRender::TextureGetTexture(int idx) { return nullptr; }
@@ -910,7 +910,7 @@ void C4JRender::StateSetStencil(int Function, uint8_t stencil_ref,
 
 void C4JRender::StateSetForceLOD(int LOD) {}  // No LOD bias in legacy GL path
 
-void C4JRender::BeginEvent(LPCWSTR eventName) {}
+void C4JRender::BeginEvent(const wchar_t* eventName) {}
 void C4JRender::EndEvent() {}
 void C4JRender::Suspend() {}
 bool C4JRender::Suspended() { return false; }

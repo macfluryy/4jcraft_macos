@@ -16,7 +16,7 @@ C4JStorage::EMessageResult C4JStorage::RequestMessageBox(
     unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
     unsigned int uiOptionC, unsigned int pad,
     int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
-    C4JStringTable* pStringTable, WCHAR* pwchFormatString,
+    C4JStringTable* pStringTable, wchar_t* pwchFormatString,
     unsigned int focusButton) {
     return EMessage_ResultAccept;
 }
@@ -30,15 +30,16 @@ bool C4JStorage::SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
     return true;
 }
 
-void C4JStorage::Init(unsigned int uiSaveVersion, LPCWSTR pwchDefaultSaveName,
+void C4JStorage::Init(unsigned int uiSaveVersion,
+                      const wchar_t* pwchDefaultSaveName,
                       char* pszSavePackName, int iMinimumSaveSize,
                       int (*Func)(void*, const ESavingMessage, int),
-                      void* lpParam, LPCSTR szGroupID) {}
+                      void* lpParam, const char* szGroupID) {}
 void C4JStorage::ResetSaveData() {}
 void C4JStorage::SetDefaultSaveNameForKeyboardDisplay(
-    LPCWSTR pwchDefaultSaveName) {}
-void C4JStorage::SetSaveTitle(LPCWSTR pwchDefaultSaveName) {}
-bool C4JStorage::GetSaveUniqueNumber(INT* piVal) {
+    const wchar_t* pwchDefaultSaveName) {}
+void C4JStorage::SetSaveTitle(const wchar_t* pwchDefaultSaveName) {}
+bool C4JStorage::GetSaveUniqueNumber(int* piVal) {
     if (piVal) *piVal = 0;
     return true;
 }
@@ -55,7 +56,7 @@ unsigned int C4JStorage::GetSaveSize() { return 0; }
 void C4JStorage::GetSaveData(void* pvData, unsigned int* puiBytes) {
     if (puiBytes) *puiBytes = 0;
 }
-PVOID C4JStorage::AllocateSaveData(unsigned int uiBytes) {
+void* C4JStorage::AllocateSaveData(unsigned int uiBytes) {
     return malloc(uiBytes);
 }
 void C4JStorage::SetSaveImages(std::uint8_t* pbThumbnail,
@@ -71,7 +72,7 @@ C4JStorage::ESaveGameState C4JStorage::SaveSaveData(int (*Func)(void*,
 }
 void C4JStorage::CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
                                        unsigned int cbThumbnail,
-                                       WCHAR* wchNewName,
+                                       wchar_t* wchNewName,
                                        int (*Func)(void* lpParam, bool),
                                        void* lpParam) {}
 void C4JStorage::SetSaveDeviceSelected(unsigned int uiPad, bool bSelected) {}
@@ -129,11 +130,9 @@ C4JStorage::EDLCStatus C4JStorage::GetDLCOffers(
 }
 unsigned int C4JStorage::CancelGetDLCOffers() { return 0; }
 void C4JStorage::ClearDLCOffers() {}
-XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) {
-    return s_dummyOffer;
-}
+XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) { return s_dummyOffer; }
 int C4JStorage::GetOfferCount() { return 0; }
-unsigned int C4JStorage::InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+unsigned int C4JStorage::InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
                                       int (*Func)(void*, int, int),
                                       void* lpParam, bool bTrial) {
     return 0;
@@ -151,10 +150,12 @@ XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) { return s_dummyContentData; 
 std::uint32_t C4JStorage::MountInstalledDLC(
     int iPad, std::uint32_t dwDLC,
     int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
-    LPCSTR szMountDrive) {
+    const char* szMountDrive) {
     return 0;
 }
-unsigned int C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
+unsigned int C4JStorage::UnmountInstalledDLC(const char* szMountDrive) {
+    return 0;
+}
 void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
                                        std::vector<std::string>& fileList) {
     fileList.clear();
@@ -162,25 +163,26 @@ void C4JStorage::GetMountedDLCFileList(const char* szMountDrive,
 std::string C4JStorage::GetMountedPath(std::string szMount) { return ""; }
 C4JStorage::ETMSStatus C4JStorage::ReadTMSFile(
     int iQuadrant, eGlobalStorage eStorageFacility,
-    C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
+    C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
     std::uint8_t** ppBuffer, unsigned int* pBufferSize,
-    int (*Func)(void*, WCHAR*, int, bool, int), void* lpParam, int iAction) {
+    int (*Func)(void*, wchar_t*, int, bool, int), void* lpParam,
+    int iAction) {
     return ETMSStatus_Fail;
 }
 bool C4JStorage::WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                              WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                              wchar_t* pwchFilename, std::uint8_t* pBuffer,
                               unsigned int bufferSize) {
     return false;
 }
 bool C4JStorage::DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                               WCHAR* pwchFilename) {
+                               wchar_t* pwchFilename) {
     return false;
 }
-void C4JStorage::StoreTMSPathName(WCHAR* pwchName) {}
+void C4JStorage::StoreTMSPathName(wchar_t* pwchName) {}
 C4JStorage::ETMSStatus C4JStorage::TMSPP_ReadFile(
     int iPad, C4JStorage::eGlobalStorage eStorageFacility,
-    C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, LPCSTR szFilename,
-    int (*Func)(void*, int, int, PTMSPP_FILEDATA, LPCSTR), void* lpParam,
+    C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
+    int (*Func)(void*, int, int, PTMSPP_FILEDATA, const char*), void* lpParam,
     int iUserData) {
     return ETMSStatus_Fail;
 }

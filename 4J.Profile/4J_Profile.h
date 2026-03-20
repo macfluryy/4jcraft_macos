@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+
+#include "../4J.Common/4J_Compat.h"
 
 enum eAwardType {
     eAwardType_Achievement = 0,
@@ -77,7 +80,8 @@ public:
     void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
                                      bool* allAllowed, bool* friendsAllowed);
     bool CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
-                                     PPlayerUID pXuids, unsigned int xuidCount);
+                                     PlayerUID* pXuids,
+                                     unsigned int xuidCount);
     void ShowProfileCard(int iPad, PlayerUID targetUid);
     bool GetProfileAvatar(int iPad,
                           int (*Func)(void* lpParam,
@@ -99,7 +103,7 @@ public:
                                   void* lpParam);
     bool RegionIsNorthAmerica(void);
     bool LocaleIsUSorCanada(void);
-    HRESULT GetLiveConnectionStatus();
+    int GetLiveConnectionStatus();
     bool IsSystemUIDisplayed();
     void SetProfileReadErrorCallback(void (*Func)(void*), void* lpParam);
 
@@ -124,9 +128,10 @@ public:
 
     void RegisterAward(int iAwardNumber, int iGamerconfigID, eAwardType eType,
                        bool bLeaderboardAffected = false,
-                       CXuiStringTable* pStringTable = NULL, int iTitleStr = -1,
+                       CXuiStringTable* pStringTable = nullptr,
+                       int iTitleStr = -1,
                        int iTextStr = -1, int iAcceptStr = -1,
-                       char* pszThemeName = NULL,
+                       char* pszThemeName = nullptr,
                        unsigned int uiThemeSize = 0L);
     int GetAwardId(int iAwardNumber);
     eAwardType GetAwardType(int iAwardNumber);
