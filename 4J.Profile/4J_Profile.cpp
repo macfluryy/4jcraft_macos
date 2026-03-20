@@ -1,6 +1,5 @@
 #include "4J_Profile.h"
-#include "../Minecraft.Client/Platform/Common/App_Defines.h"
-#include "../Minecraft.Client/Platform/Common/Tutorial/TutorialEnum.h"
+#include "../4J.Common/4J_ProfileConstants.h"
 #include <cstdio>
 #include <cstring>
 
@@ -177,7 +176,7 @@ void C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
     if (friendsAllowed) *friendsAllowed = true;
 }
 bool C_4JProfile::CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
-                                              PPlayerUID pXuids,
+                                              PlayerUID* pXuids,
                                               unsigned int xuidCount) {
     return true;
 }
@@ -212,7 +211,7 @@ void C_4JProfile::SetNotificationsCallback(void (*Func)(void*, std::uint32_t,
                                            void* lpParam) {}
 bool C_4JProfile::RegionIsNorthAmerica(void) { return false; }
 bool C_4JProfile::LocaleIsUSorCanada(void) { return false; }
-HRESULT C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
+int C_4JProfile::GetLiveConnectionStatus() { return 0; }
 bool C_4JProfile::IsSystemUIDisplayed() { return false; }
 void C_4JProfile::SetProfileReadErrorCallback(void (*Func)(void*),
                                               void* lpParam) {}

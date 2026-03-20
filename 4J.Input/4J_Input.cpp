@@ -1,6 +1,5 @@
 #include "4J_Input.h"
-#include "../Minecraft.Client/Platform/Common/App_enums.h"
-#include "../4J.Render/4J_Render.h"
+#include "../4J.Common/4J_InputActions.h"
 #include <SDL2/SDL.h>
 #include <math.h>
 #include <string.h>

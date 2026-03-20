@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #define MAP_STYLE_0 0
 #define MAP_STYLE_1 1
 #define MAP_STYLE_2 2
@@ -54,7 +56,7 @@ enum EKeyboardResult {
 
 typedef struct _STRING_VERIFY_RESPONSE {
     std::uint16_t wNumStrings;
-    HRESULT* pStringResult;
+    int* pStringResult;
 } STRING_VERIFY_RESPONSE;
 
 class C_4JInput {
@@ -112,14 +114,8 @@ public:
     int GetHotbarSlotPressed(int iPad);
     int GetScrollDelta();
 
-    // 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT
-    // uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int(
-    // *Func)(LPVOID,const bool),LPVOID lpParam,EKeyboardMode
-    // eMode,C4JStringTable *pStringTable=NULL); 	EKeyboardResult
-    // RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD
-    // dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(LPVOID,const
-    // bool),LPVOID lpParam, EKeyboardMode eMode,C4JStringTable
-    // *pStringTable=NULL);
+    // Legacy keyboard request overloads with integer string-table ids used to
+    // live here. The remaining public API keeps the direct text/callback form.
     EKeyboardResult RequestKeyboard(const wchar_t* Title, const wchar_t* Text,
                                     int iPad, unsigned int uiMaxChars,
                                     int (*Func)(void*, const bool),
@@ -160,7 +156,7 @@ public:
     int GetMouseX();
     int GetMouseY();
 
-    // bool InputDetected(DWORD dwUserIndex,WCHAR *pwchInput);
+    // bool InputDetected(int userIndex, wchar_t* inputText);
 };
 
 // Singleton

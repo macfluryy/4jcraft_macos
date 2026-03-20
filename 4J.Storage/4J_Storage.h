@@ -1,8 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <ctime>
+#include <string>
 #include <vector>
 // #include <xtms.h>
+
+#include "../4J.Common/4J_Compat.h"
 
 class C4JStringTable;
 
@@ -38,23 +42,23 @@ typedef std::vector<PXCONTENT_DATA> XContentDataArray;
 class C4JStorage {
 public:
     // Structs defined in the DLC_Creator, but added here to be used in the app
-    typedef struct {
-        unsigned int uiFileSize;
-        std::uint32_t dwType;
-        std::uint32_t dwWchCount;  // count of WCHAR in next array
-        WCHAR wchFile[1];
-    } DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
+typedef struct {
+    unsigned int uiFileSize;
+    std::uint32_t dwType;
+    std::uint32_t dwWchCount;  // count of wchar_t in next array
+    wchar_t wchFile[1];
+} DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
 
-    typedef struct {
-        std::uint32_t dwType;
-        std::uint32_t dwWchCount;  // count of WCHAR in next array;
-        WCHAR wchData[1];  // will be an array of size dwBytes
-    } DLC_FILE_PARAM, *PDLC_FILE_PARAM;
+typedef struct {
+    std::uint32_t dwType;
+    std::uint32_t dwWchCount;  // count of wchar_t in next array;
+    wchar_t wchData[1];  // will be an array of size dwBytes
+} DLC_FILE_PARAM, *PDLC_FILE_PARAM;
     // End of DLC_Creator structs
 
     typedef struct {
-        WCHAR wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
-        CHAR szFileName[XCONTENT_MAX_FILENAME_LENGTH];
+        wchar_t wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
+        char szFileName[XCONTENT_MAX_FILENAME_LENGTH];
         std::uint32_t dwImageOffset;
         std::uint32_t dwImageBytes;
     } CACHEINFOSTRUCT;
@@ -178,7 +182,7 @@ public:
     enum eTMS_UGCTYPE { TMS_UGCTYPE_NONE, TMS_UGCTYPE_IMAGE, TMS_UGCTYPE_MAX };
 
     typedef struct {
-        CHAR szFilename[256];
+        char szFilename[256];
         int iFileSize;
         eTMS_FILETYPEVAL eFileTypeVal;
     } TMSPP_FILE_DETAILS, *PTMSPP_FILE_DETAILS;
@@ -201,9 +205,9 @@ public:
     C4JStorage::EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
         unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
-        int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
-        void* lpParam = NULL, C4JStringTable* pStringTable = NULL,
-        WCHAR* pwchFormatString = NULL, unsigned int focusButton = 0);
+        int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
+        void* lpParam = nullptr, C4JStringTable* pStringTable = nullptr,
+        wchar_t* pwchFormatString = nullptr, unsigned int focusButton = 0);
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
@@ -212,15 +216,16 @@ public:
                        bool bForceResetOfSaveDevice = false);
 
     // savegame
-    void Init(unsigned int uiSaveVersion, LPCWSTR pwchDefaultSaveName,
+    void Init(unsigned int uiSaveVersion, const wchar_t* pwchDefaultSaveName,
               char* pszSavePackName, int iMinimumSaveSize,
               int (*Func)(void*, const ESavingMessage, int), void* lpParam,
-              LPCSTR szGroupID);
+              const char* szGroupID);
     void ResetSaveData();  // Call before a new save to clear out stored save
                            // file name
-    void SetDefaultSaveNameForKeyboardDisplay(LPCWSTR pwchDefaultSaveName);
-    void SetSaveTitle(LPCWSTR pwchDefaultSaveName);
-    bool GetSaveUniqueNumber(INT* piVal);
+    void SetDefaultSaveNameForKeyboardDisplay(
+        const wchar_t* pwchDefaultSaveName);
+    void SetSaveTitle(const wchar_t* pwchDefaultSaveName);
+    bool GetSaveUniqueNumber(int* piVal);
     bool GetSaveUniqueFilename(char* pszName);
     void SetSaveUniqueFilename(char* szFilename);
     void SetState(ESaveGameControlState eControlState,
@@ -229,7 +234,7 @@ public:
     bool GetSaveDisabled(void);
     unsigned int GetSaveSize();
     void GetSaveData(void* pvData, unsigned int* puiBytes);
-    PVOID AllocateSaveData(unsigned int uiBytes);
+    void* AllocateSaveData(unsigned int uiBytes);
     void SetSaveImages(
         std::uint8_t* pbThumbnail, unsigned int thumbnailBytes,
         std::uint8_t* pbImage, unsigned int imageBytes,
@@ -240,7 +245,7 @@ public:
     C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
                                             void* lpParam);
     void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
-                               unsigned int cbThumbnail, WCHAR* wchNewName,
+                               unsigned int cbThumbnail, wchar_t* wchNewName,
                                int (*Func)(void* lpParam, bool), void* lpParam);
     void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected);
     bool GetSaveDeviceSelected(unsigned int iPad);
@@ -292,7 +297,7 @@ public:
     void ClearDLCOffers();
     XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw);
     int GetOfferCount();
-    unsigned int InstallOffer(int iOfferIDC, __uint64* ullOfferIDA,
+    unsigned int InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
                               int (*Func)(void*, int, int), void* lpParam,
                               bool bTrial = false);
     unsigned int GetAvailableDLCCount(int iPad);
@@ -304,8 +309,9 @@ public:
     std::uint32_t MountInstalledDLC(int iPad, std::uint32_t dwDLC,
                                     int (*Func)(void*, int, std::uint32_t,
                                                 std::uint32_t),
-                                    void* lpParam, LPCSTR szMountDrive = NULL);
-    unsigned int UnmountInstalledDLC(LPCSTR szMountDrive = NULL);
+                                    void* lpParam,
+                                    const char* szMountDrive = nullptr);
+    unsigned int UnmountInstalledDLC(const char* szMountDrive = nullptr);
     void GetMountedDLCFileList(const char* szMountDrive,
                                std::vector<std::string>& fileList);
     std::string GetMountedPath(std::string szMount);
@@ -313,49 +319,36 @@ public:
     // Global title storage
     C4JStorage::ETMSStatus ReadTMSFile(
         int iQuadrant, eGlobalStorage eStorageFacility,
-        C4JStorage::eTMS_FileType eFileType, WCHAR* pwchFilename,
+        C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
         std::uint8_t** ppBuffer, unsigned int* pBufferSize,
-        int (*Func)(void*, WCHAR*, int, bool, int) = NULL, void* lpParam = NULL,
-        int iAction = 0);
+        int (*Func)(void*, wchar_t*, int, bool, int) = nullptr,
+        void* lpParam = nullptr, int iAction = 0);
     bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                      WCHAR* pwchFilename, std::uint8_t* pBuffer,
+                      wchar_t* pwchFilename, std::uint8_t* pBuffer,
                       unsigned int bufferSize);
     bool DeleteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
-                       WCHAR* pwchFilename);
-    void StoreTMSPathName(WCHAR* pwchName = NULL);
+                       wchar_t* pwchFilename);
+    void StoreTMSPathName(wchar_t* pwchName = nullptr);
 
     // TMS++
 #ifdef _XBOX
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
-        C4JStorage::eTMS_FileType eFileType, CHAR* pchFilePath, CHAR* pchBuffer,
-        unsigned int bufferSize, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
-    HRESULT GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, LPVOID lpParam);
+        C4JStorage::eTMS_FileType eFileType, char* pchFilePath,
+        char* pchBuffer, unsigned int bufferSize, TMSCLIENT_CALLBACK Func,
+        void* lpParam);
+    int GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, void* lpParam);
 #endif
 
-    // 	C4JStorage::ETMSStatus				TMSPP_WriteFile(int
-    // iPad,C4JStorage::eGlobalStorage
-    // eStorageFacility,C4JStorage::eTMS_FILETYPEVAL
-    // eFileTypeVal,C4JStorage::eTMS_UGCTYPE eUGCType,CHAR *pchFilePath,CHAR
-    // *pchBuffer,DWORD dwBufferSize,int( *Func)(LPVOID,int,int)=NULL,LPVOID
-    // lpParam=NULL, int iUserData=0); 	C4JStorage::ETMSStatus
-    // TMSPP_GetUserQuotaInfo(int iPad,TMSCLIENT_CALLBACK Func,LPVOID lpParam,
-    // int iUserData=0);
+    // Older TMS++ write/quota entry points were kept in platform-specific
+    // implementations and are intentionally not part of this shared API.
     C4JStorage::ETMSStatus TMSPP_ReadFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
-        C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, LPCSTR szFilename,
-        int (*Func)(void*, int, int, PTMSPP_FILEDATA, LPCSTR) = NULL,
-        void* lpParam = NULL, int iUserData = 0);
-    // 	C4JStorage::ETMSStatus				TMSPP_ReadFileList(int
-    // iPad,C4JStorage::eGlobalStorage eStorageFacility,CHAR *pchFilePath,int(
-    // *Func)(LPVOID,int,int,PTMSPP_FILE_LIST)=NULL,LPVOID lpParam=NULL, int
-    // iUserData=0); 	C4JStorage::ETMSStatus
-    // TMSPP_DeleteFile(int iPad,LPCSTR szFilePath,C4JStorage::eTMS_FILETYPEVAL
-    // eFileTypeVal,int( *Func)(LPVOID,int,int),LPVOID lpParam=NULL, int
-    // iUserData=0); 	bool
-    // TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const
-    // std::wstring &Filename); 	unsigned int
-    // CRC(unsigned char *buf, int len);
+        C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
+        int (*Func)(void*, int, int, PTMSPP_FILEDATA, const char*) = nullptr,
+        void* lpParam = nullptr, int iUserData = 0);
+    // Older TMS++ list/delete helpers stayed platform-specific. The shared
+    // surface keeps the read path plus CRC/subfile helpers below.
 
     // 	enum eXBLWS
     // 	{

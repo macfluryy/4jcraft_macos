@@ -48,10 +48,11 @@ if host_machine.system() == 'linux'
   ]
 endif
 
-subdir('4J.Render')
-subdir('4J.Input')
-subdir('4J.Profile')
-subdir('4J.Storage')
+render_dep = dependency('4j-render', fallback: ['4jlibs', 'render_dep'])
+input_dep = dependency('4j-input', fallback: ['4jlibs', 'input_dep'])
+profile_dep = dependency('4j-profile', fallback: ['4jlibs', 'profile_dep'])
+storage_dep = dependency('4j-storage', fallback: ['4jlibs', 'storage_dep'])
+
 subdir('Minecraft.Assets')
 subdir('Minecraft.World')
 subdir('Minecraft.Client')
