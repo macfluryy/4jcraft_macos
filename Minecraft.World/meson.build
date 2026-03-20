@@ -27,7 +27,13 @@ world_sources = run_command(
 lib_world = static_library('Minecraft.World',
   world_sources,
   include_directories : include_directories('Platform', 'Platform/x64headers'),
-  dependencies : [ assets_localisation_dep ],
+  dependencies : [
+    assets_localisation_dep,
+    render_dep,
+    input_dep,
+    profile_dep,
+    storage_dep,
+  ],
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-include', 'Platform/stdafx.h',
   ],
