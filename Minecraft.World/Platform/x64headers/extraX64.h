@@ -5,6 +5,7 @@
 #include <functional>
 #include <cstdint>
 #include <limits>
+#include "4J_Compat.h"
 
 #include "../../../Minecraft.Client/Rendering/Models/SkinBox.h"
 
@@ -13,14 +14,10 @@
 #define MULTITHREAD_ENABLE
 
 typedef unsigned char byte;
-const int XUSER_INDEX_ANY = 255;
-const int XUSER_INDEX_FOCUS = 254;
 
 #ifdef __PSVITA__
-const int XUSER_MAX_COUNT = 1;
 constexpr int MINECRAFT_NET_MAX_PLAYERS = 4;
 #else
-const int XUSER_MAX_COUNT = 4;
 constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
 #endif
 
@@ -65,16 +62,12 @@ typedef ULONGLONG SessionID;
 typedef ULONGLONG GameSessionUID;
 typedef DQRNetworkManager::SessionInfo INVITE_INFO;
 #else
-typedef ULONGLONG PlayerUID;
 typedef ULONGLONG SessionID;
 typedef PlayerUID GameSessionUID;
 class INVITE_INFO;
 
 #endif  //  __PS3__
 
-#ifndef _DURANGO
-typedef PlayerUID* PPlayerUID;
-#endif
 typedef struct _XUIOBJ* HXUIOBJ;
 typedef struct _XUICLASS* HXUICLASS;
 typedef struct _XUIBRUSH* HXUIBRUSH;
@@ -188,8 +181,6 @@ const int XN_SYS_STORAGEDEVICESCHANGED = 3;
 #define VK_PAD_RTHUMB_UPRIGHT 0x5835
 #define VK_PAD_RTHUMB_DOWNRIGHT 0x5836
 #define VK_PAD_RTHUMB_DOWNLEFT 0x5837
-
-const int XUSER_NAME_SIZE = 32;
 
 class IQNetPlayer {
 public:
@@ -339,23 +330,12 @@ const int INVALID_XUID = 0;
 //     HRESULT *pStringResult;
 // } STRING_VERIFY_RESPONSE;
 
-const int XCONTENT_MAX_DISPLAYNAME_LENGTH = 256;
-const int XCONTENT_MAX_FILENAME_LENGTH = 256;
-typedef int XCONTENTDEVICEID;
-
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(_DURANGO) && \
-    !defined(__PSVITA__)
-typedef struct _XCONTENT_DATA {
-    XCONTENTDEVICEID DeviceID;
-    DWORD dwContentType;
-    WCHAR szDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
-    CHAR szFileName[XCONTENT_MAX_FILENAME_LENGTH];
-} XCONTENT_DATA, *PXCONTENT_DATA;
+    !defined(__PSVITA__) && !defined(FOURJ_COMMON_XCONTENT_DATA_DEFINED)
+typedef int XCONTENTDEVICEID;
 #endif  //__PS3__
 
-static const int XMARKETPLACE_CONTENT_ID_LEN = 4;
-
-#ifndef _DURANGO
+#if !defined(_DURANGO) && !defined(FOURJ_COMMON_XMARKETPLACE_DEFINED)
 typedef struct _XMARKETPLACE_CONTENTOFFER_INFO {
     ULONGLONG qwOfferID;
     ULONGLONG qwPreviewOfferID;
