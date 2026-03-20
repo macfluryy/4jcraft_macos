@@ -116,11 +116,9 @@ meson.override_dependency('4j-profile', profile_dep)
 meson.override_dependency('4j-storage', storage_dep)
 
 if meson.project_name() == '4jlibs'
-  smoke_inc = include_directories('../..')
   header_smoke = executable(
     '4j-header-smoke',
     'header_smoke.cpp',
-    include_directories: smoke_inc,
     build_by_default: false,
   )
   test('4j-header-smoke', header_smoke)
