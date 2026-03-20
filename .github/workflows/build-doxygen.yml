@@ -4,10 +4,6 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "4J.Input/**"
-      - "4J.Profile/**"
-      - "4J.Render/**"
-      - "4J.Storage/**"
       - "Minecraft.Assets/**"
       - "Minecraft.Client/**"
       - "Minecraft.World/**"

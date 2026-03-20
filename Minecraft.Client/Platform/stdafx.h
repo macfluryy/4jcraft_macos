@@ -188,10 +188,10 @@ typedef XUID GameSessionUID;
 	#include "../Platform/Windows64/4JLibs/inc/4J_Render.h"
 	#include "../Platform/Windows64/4JLibs/inc/4J_Storage.h"
 #elif defined __linux__
-	#include "../../4J.Input/4J_Input.h"
-	#include "../../4J.Profile/4J_Profile.h"
-	#include "../../4J.Render/4J_Render.h"
-	#include "../../4J.Storage/4J_Storage.h"
+	#include "4J_Input.h"
+	#include "4J_Profile.h"
+	#include "4J_Render.h"
+	#include "4J_Storage.h"
 #elif defined __PSVITA__
 	#include "../Platform/PSVita/4JLibs/inc/4J_Input.h"	
 	#include "../Platform/PSVita/4JLibs/inc/4J_Profile.h"

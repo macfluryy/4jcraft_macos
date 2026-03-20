@@ -5,12 +5,6 @@
 !/.devcontainer/
 !/.github/
 !/.github-assets/
-!/4J.Input/
-!/4J.Common/
-!/4J.Profile/
-!/4J.Render/
-!/4J.Storage/
-!/4jlibs/
 !/docs/
 !/Minecraft.Assets/
 !/Minecraft.Client/
