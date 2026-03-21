@@ -10,7 +10,7 @@ class RespawnPacket : public Packet,
 public:
     char dimension;
     char difficulty;
-    __int64 mapSeed;
+    int64_t mapSeed;
     int mapHeight;
     GameType* playerGameType;
     bool m_newSeaLevel;  // 4J added
@@ -20,7 +20,7 @@ public:
     int m_hellScale;  // 4J Added
 
     RespawnPacket();
-    RespawnPacket(char dimension, __int64 mapSeed, int mapHeight,
+    RespawnPacket(char dimension, int64_t mapSeed, int mapHeight,
                   GameType* playerGameType, char difficulty,
                   LevelType* pLevelType, bool newSeaLevel, int newEntityId,
                   int xzSize, int hellScale);

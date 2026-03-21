@@ -45,9 +45,9 @@ public:
     }
     static bool isInfinite(double a) { return false; /*4J TODO*/ }
 
-    static double longBitsToDouble(__int64 bits) { return *(double*)&bits; }
+    static double longBitsToDouble(int64_t bits) { return *(double*)&bits; }
 
-    static __int64 doubleToLongBits(double d) { return *(__int64*)&d; }
+    static int64_t doubleToLongBits(double d) { return *(int64_t*)&d; }
 };
 
 // 4J Stu - The String class should only be used if we need to use the

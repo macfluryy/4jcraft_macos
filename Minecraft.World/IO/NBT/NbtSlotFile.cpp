@@ -19,7 +19,7 @@ std::FILE* OpenBinaryFileForReadWrite(const File& file) {
     return stream;
 }
 
-bool SeekFile(std::FILE* file, __int64 offset) {
+bool SeekFile(std::FILE* file, int64_t offset) {
 #if defined(_WIN32)
     return _fseeki64(file, offset, SEEK_SET) == 0;
 #else
@@ -37,7 +37,7 @@ bool WriteExact(std::FILE* file, const void* buffer, std::size_t size) {
 }  // namespace
 
 byteArray NbtSlotFile::READ_BUFFER(1024 * 1024);
-__int64 NbtSlotFile::largest = 0;
+int64_t NbtSlotFile::largest = 0;
 
 NbtSlotFile::NbtSlotFile(File file) {
     totalFileSlots = 0;

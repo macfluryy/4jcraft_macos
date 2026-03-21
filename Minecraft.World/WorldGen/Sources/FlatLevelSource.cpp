@@ -10,7 +10,7 @@
 
 // FlatLevelSource::villageFeature = new VillageFeature(1);
 
-FlatLevelSource::FlatLevelSource(Level* level, __int64 seed,
+FlatLevelSource::FlatLevelSource(Level* level, int64_t seed,
                                  bool generateStructures) {
     m_XZSize = level->getLevelData()->getXZSize();
 
@@ -89,8 +89,8 @@ void FlatLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     // 4J - changed from random to pprandom so we can run in parallel with
     // getChunk etc.
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
     pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
     if (generateStructures) {

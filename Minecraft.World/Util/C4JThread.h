@@ -181,7 +181,7 @@ private:
     bool m_isRunning;
     bool m_hasStarted;
     int m_exitCode;
-    __int64 m_lastSleepTime;
+    int64_t m_lastSleepTime;
     static std::vector<C4JThread*> ms_threadList;
     static CRITICAL_SECTION ms_threadListCS;
 

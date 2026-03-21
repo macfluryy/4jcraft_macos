@@ -363,9 +363,9 @@ void Packet::renderAllPacketStatsKey() {
 #endif
 }
 
-__int64 Packet::getIndexedStatValue(unsigned int samplePos,
+int64_t Packet::getIndexedStatValue(unsigned int samplePos,
                                     unsigned int renderableId) {
-    __int64 val = 0;
+    int64_t val = 0;
 
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
@@ -615,7 +615,7 @@ void Packet::PacketStatistics::renderStats() {
 #endif
 }
 
-__int64 Packet::PacketStatistics::getCountSample(int samplePos) {
+int64_t Packet::PacketStatistics::getCountSample(int samplePos) {
     if (samplePos == 511) {
         samplesPos++;
         countSamples[samplesPos & (512 - 1)] = 0;

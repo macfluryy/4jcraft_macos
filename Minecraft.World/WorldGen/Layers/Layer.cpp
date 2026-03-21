@@ -16,7 +16,7 @@ libdivide::divider<long long> fast_d7(7);
 libdivide::divider<long long> fast_d10(10);
 #endif
 
-LayerArray Layer::getDefaultLayers(__int64 seed, LevelType* levelType) {
+LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers
     // are no longer created & returned, and a debug layer is isn't. For
     // reference with regard to future merging, things NOT brought forward from
@@ -127,7 +127,7 @@ LayerArray Layer::getDefaultLayers(__int64 seed, LevelType* levelType) {
     return result;
 }
 
-Layer::Layer(__int64 seedMixup) {
+Layer::Layer(int64_t seedMixup) {
     parent = nullptr;
 
     // 4jcraft added casts to prevent signed int overflow
@@ -143,7 +143,7 @@ Layer::Layer(__int64 seedMixup) {
     this->seedMixup = (uint64_t)this->seedMixup + seedMixup;
 }
 
-void Layer::init(__int64 seed) {
+void Layer::init(int64_t seed) {
     this->seed = seed;
     if (parent != NULL) parent->init(seed);
     // 4jcraft added casts to prevent signed int overflow
@@ -158,7 +158,7 @@ void Layer::init(__int64 seed) {
     this->seed = (uint64_t)this->seed + seedMixup;
 }
 
-void Layer::initRandom(__int64 x, __int64 y) {
+void Layer::initRandom(int64_t x, int64_t y) {
     rval = seed;
     // 4jcraft added casts to prevent signed int overflow
     rval *= (uint64_t)rval * 6364136223846793005l + 1442695040888963407l;

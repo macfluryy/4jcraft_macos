@@ -4,6 +4,6 @@
 
 class RiverLayer : public Layer {
 public:
-    RiverLayer(__int64 seedMixup, std::shared_ptr<Layer> parent);
+    RiverLayer(int64_t seedMixup, std::shared_ptr<Layer> parent);
     intArray getArea(int xo, int yo, int w, int h);
 };

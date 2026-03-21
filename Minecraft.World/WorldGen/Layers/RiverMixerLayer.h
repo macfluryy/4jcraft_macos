@@ -8,9 +8,9 @@ private:
     std::shared_ptr<Layer> rivers;
 
 public:
-    RiverMixerLayer(__int64 seed, std::shared_ptr<Layer> biomes,
+    RiverMixerLayer(int64_t seed, std::shared_ptr<Layer> biomes,
                     std::shared_ptr<Layer> rivers);
 
-    virtual void init(__int64 seed);
+    virtual void init(int64_t seed);
     virtual intArray getArea(int xo, int yo, int w, int h);
 };

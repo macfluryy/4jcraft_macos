@@ -26,8 +26,8 @@ public:
     std::vector<File*>* listFiles() const;  // Array
     std::vector<File*>* listFiles(FileFilter* filter) const;
     bool isDirectory() const;
-    __int64 length();
-    __int64 lastModified();
+    int64_t length();
+    int64_t lastModified();
     const std::wstring getPath() const;  // 4J Jev: TODO
     std::wstring getName() const;
 

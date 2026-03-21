@@ -6,7 +6,7 @@
 
 SetTimePacket::SetTimePacket() { time = 0; }
 
-SetTimePacket::SetTimePacket(__int64 time) { this->time = time; }
+SetTimePacket::SetTimePacket(int64_t time) { this->time = time; }
 
 void SetTimePacket::read(DataInputStream* dis)  // throws IOException
 {

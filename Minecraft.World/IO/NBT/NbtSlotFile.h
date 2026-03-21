@@ -20,7 +20,7 @@ private:
     int fileSlotMapLength;
     std::vector<int> freeFileSlots;
     int totalFileSlots;
-    static __int64 largest;
+    static int64_t largest;
 
 public:
     NbtSlotFile(File file);

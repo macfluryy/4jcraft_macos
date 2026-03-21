@@ -16,9 +16,9 @@ public:
     class Toggle {
     public:
         int x, y, z;
-        __int64 when;
+        int64_t when;
 
-        Toggle(int x, int y, int z, __int64 when) {
+        Toggle(int x, int y, int z, int64_t when) {
             this->x = x;
             this->y = y;
             this->z = z;
@@ -58,6 +58,6 @@ public:
 public:
     void animateTick(Level* level, int xt, int yt, int zt, Random* random);
     int cloneTileId(Level* level, int x, int y, int z);
-    void levelTimeChanged(Level* level, __int64 delta, __int64 newTime);
+    void levelTimeChanged(Level* level, int64_t delta, int64_t newTime);
     bool isMatching(int id);
 };

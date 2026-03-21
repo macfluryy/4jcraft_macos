@@ -276,8 +276,8 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 
 void McRegionChunkStorage::loadEntities(Level* level, LevelChunk* levelChunk) {
 #ifdef SPLIT_SAVES
-    __int64 index = ((__int64)(levelChunk->x) << 32) |
-                    (((__int64)(levelChunk->z)) & 0x00000000FFFFFFFF);
+    int64_t index = ((int64_t)(levelChunk->x) << 32) |
+                    (((int64_t)(levelChunk->z)) & 0x00000000FFFFFFFF);
 
     AUTO_VAR(it, m_entityData.find(index));
     if (it != m_entityData.end()) {

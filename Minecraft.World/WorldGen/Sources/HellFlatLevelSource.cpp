@@ -4,7 +4,7 @@
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "HellFlatLevelSource.h"
 
-HellFlatLevelSource::HellFlatLevelSource(Level* level, __int64 seed) {
+HellFlatLevelSource::HellFlatLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();
     int hellScale = level->getLevelData()->getHellScale();
     m_XZSize = ceil((float)xzSize / hellScale);
@@ -143,8 +143,8 @@ void HellFlatLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     // is consistent for each world generation. Also changed all uses of random
     // here to pprandom.
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
     pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
     int count = pprandom->nextInt(pprandom->nextInt(10) + 1) + 1;

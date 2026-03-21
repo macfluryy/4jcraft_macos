@@ -2,7 +2,7 @@
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 
-AddSnowLayer::AddSnowLayer(__int64 seedMixup, std::shared_ptr<Layer> parent)
+AddSnowLayer::AddSnowLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)
     : Layer(seedMixup) {
     this->parent = parent;
 }

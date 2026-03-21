@@ -3,6 +3,6 @@
 
 class AddSnowLayer : public Layer {
 public:
-    AddSnowLayer(__int64 seedMixup, std::shared_ptr<Layer> parent);
+    AddSnowLayer(int64_t seedMixup, std::shared_ptr<Layer> parent);
     virtual intArray getArea(int xo, int yo, int w, int h);
 };

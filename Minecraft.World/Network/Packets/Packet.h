@@ -20,10 +20,10 @@ public:
         int totalSize;
 
         // 4J Added
-        __int64 countSamples[512];
-        __int64 sizeSamples[512];
+        int64_t countSamples[512];
+        int64_t sizeSamples[512];
         int samplesPos;
-        __int64 firstSampleTime;
+        int64_t firstSampleTime;
 
     public:
         const int id;
@@ -44,7 +44,7 @@ public:
 
         // 4J Added
         void renderStats();
-        __int64 getCountSample(int samplePos);
+        int64_t getCountSample(int samplePos);
         std::wstring getLegendString();
     };
 
@@ -68,7 +68,7 @@ public:
                     const std::type_info& clazz, packetCreateFn);
 
 public:
-    const __int64 createTime;
+    const int64_t createTime;
 
     Packet();
     virtual ~Packet() {}
@@ -97,7 +97,7 @@ public:
     static void renderPacketStats(int id);
     static void renderAllPacketStats();
     static void renderAllPacketStatsKey();
-    static __int64 getIndexedStatValue(unsigned int samplePos,
+    static int64_t getIndexedStatValue(unsigned int samplePos,
                                        unsigned int renderableId);
 
 private:

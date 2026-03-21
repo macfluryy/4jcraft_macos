@@ -772,7 +772,7 @@ public:
                                    std::shared_ptr<Player> player);
     virtual void onRemoving(Level* level, int x, int y, int z, int data);
     virtual void handleRain(Level* level, int x, int y, int z);
-    virtual void levelTimeChanged(Level* level, __int64 delta, __int64 newTime);
+    virtual void levelTimeChanged(Level* level, int64_t delta, int64_t newTime);
     virtual bool useOwnCloneData();
     virtual bool canInstantlyTick();
     virtual bool dropFromExplosion(Explosion* explosion);

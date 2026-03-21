@@ -1,7 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 
-IslandLayer::IslandLayer(__int64 seedMixup) : Layer(seedMixup) {}
+IslandLayer::IslandLayer(int64_t seedMixup) : Layer(seedMixup) {}
 
 intArray IslandLayer::getArea(int xo, int yo, int w, int h) {
     intArray result = IntCache::allocate(w * h);

@@ -99,7 +99,7 @@ public:
         unsigned int regionIndex;  // 4B
     };
 
-    __int64 lastModifiedTime;  // 8B
+    int64_t lastModifiedTime;  // 8B
 };
 
 typedef FileEntrySaveDataV2 FileEntrySaveData;

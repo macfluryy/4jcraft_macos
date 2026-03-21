@@ -10,7 +10,7 @@
 #include "TheEndLevelRandomLevelSource.h"
 
 TheEndLevelRandomLevelSource::TheEndLevelRandomLevelSource(Level* level,
-                                                           __int64 seed) {
+                                                           int64_t seed) {
     m_XZSize = END_LEVEL_MIN_WIDTH;
 
     this->level = level;
@@ -389,8 +389,8 @@ void TheEndLevelRandomLevelSource::postProcess(ChunkSource* parent, int xt,
     // RandomLevelSource::postProcess to make sure this random value is
     // consistent for each world generation.
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
     // 4jcraft added cast to higher int and unsigned
     pprandom->setSeed((((uint64_t)xt * xScale) + ((uint64_t)zt * zScale)) ^
                       level->getSeed());

@@ -34,7 +34,7 @@ double Math::random() { return Math::rand.nextDouble(); }
 // the value of Long.MAX_VALUE, the result is equal to the value of
 // Long.MAX_VALUE. Parameters: a - a floating-point value to be rounded to a
 // long. Returns: the value of the argument rounded to the nearest long value.
-__int64 Math::round(double d) {
+int64_t Math::round(double d) {
     // 4jcraft fixes the fact that if double is a huge
     // number than the cast of d to int64_t overflows
 

@@ -3179,7 +3179,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                        bool force, bool rootOnlyEmissive) {
     lightCache_t* cache =
         static_cast<lightCache_t*>(LevelTlsGetValue(tlsIdxLightCache));
-    __uint64 cacheUse = 0;
+    uint64_t cacheUse = 0;
 
     if (force) {
         // 4J - special mode added so we can do lava lighting updates without

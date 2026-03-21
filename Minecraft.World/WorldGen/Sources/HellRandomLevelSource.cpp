@@ -7,7 +7,7 @@
 #include "../Biomes/BiomeSource.h"
 #include "HellRandomLevelSource.h"
 
-HellRandomLevelSource::HellRandomLevelSource(Level* level, __int64 seed) {
+HellRandomLevelSource::HellRandomLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();
     int hellScale = level->getLevelData()->getHellScale();
     m_XZSize = ceil((float)xzSize / hellScale);
@@ -449,8 +449,8 @@ void HellRandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     // is consistent for each world generation. Also changed all uses of random
     // here to pprandom.
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
     // 4jcraft added casts to a higher int and unsigned
     pprandom->setSeed((((uint64_t)xt * (uint64_t)xScale) +
                        ((uint64_t)zt * (uint64_t)zScale)) ^
