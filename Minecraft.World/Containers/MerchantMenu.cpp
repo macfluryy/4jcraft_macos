@@ -42,8 +42,8 @@ void MerchantMenu::broadcastChanges() {
     AbstractContainerMenu::broadcastChanges();
 }
 
-// 4J used to take a std::shared_ptr<Container> but wasn't using it, so removed
-// to simplify things
+// 4J used to take a shared_ptr<Container> but wasn't using it, so removed to
+// simplify things
 void MerchantMenu::slotsChanged() {
     tradeContainer->updateSellItem();
     AbstractContainerMenu::slotsChanged();
@@ -64,7 +64,7 @@ std::shared_ptr<ItemInstance> MerchantMenu::quickMoveStack(
     std::shared_ptr<ItemInstance> clicked = nullptr;
     Slot* slot = NULL;
 
-    if (slotIndex < slots->size()) slot = slots->at(slotIndex);
+    if (slotIndex < slots.size()) slot = slots.at(slotIndex);
     if (slot != NULL && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();

@@ -12,12 +12,21 @@ class Container;
 
 class AbstractContainerMenu {
 public:
-    static const int CLICKED_OUTSIDE = -999;
+    static const int SLOT_CLICKED_OUTSIDE = -999;
 
     static const int CLICK_PICKUP = 0;
     static const int CLICK_QUICK_MOVE = 1;
     static const int CLICK_SWAP = 2;
     static const int CLICK_CLONE = 3;
+    static const int CLICK_THROW = 4;
+    static const int CLICK_QUICK_CRAFT = 5;
+    static const int CLICK_PICKUP_ALL = 6;
+
+    static const int QUICKCRAFT_TYPE_CHARITABLE = 0;
+    static const int QUICKCRAFT_TYPE_GREEDY = 1;
+    static const int QUICKCRAFT_HEADER_START = 0;
+    static const int QUICKCRAFT_HEADER_CONTINUE = 1;
+    static const int QUICKCRAFT_HEADER_END = 2;
 
     // 4J Stu - Added these to fix problem with items picked up while in the
     // creative menu replacing slots in the creative menu
@@ -25,16 +34,22 @@ public:
     static const int CONTAINER_ID_INVENTORY = 0;
     static const int CONTAINER_ID_CREATIVE = -2;
 
-    std::vector<std::shared_ptr<ItemInstance> >* lastSlots;
-    std::vector<Slot*>* slots;
+    std::vector<std::shared_ptr<ItemInstance> > lastSlots;
+    std::vector<Slot*> slots;
     int containerId;
 
 private:
     short changeUid;
+
+    int quickcraftType;
+    int quickcraftStatus;
+    std::unordered_set<Slot*> quickcraftSlots;
+
+private:
     bool m_bNeedsRendered;  // 4J added
 
 protected:
-    std::vector<ContainerListener*>* containerListeners;
+    std::vector<ContainerListener*> containerListeners;
 
     // 4J Stu - The java does not have ctor here (being an abstract) but we need
     // one to initialise the member variables
@@ -46,19 +61,23 @@ protected:
 public:
     virtual ~AbstractContainerMenu();
     virtual void addSlotListener(ContainerListener* listener);
-    std::vector<std::shared_ptr<ItemInstance> >* getItems();
-    void sendData(int id, int value);
+    virtual void removeSlotListener(ContainerListener* listener);
+    virtual std::vector<std::shared_ptr<ItemInstance> >* getItems();
+    virtual void sendData(int id, int value);
     virtual void broadcastChanges();
     virtual bool needsRendered();
     virtual bool clickMenuButton(std::shared_ptr<Player> player, int buttonId);
-    Slot* getSlotFor(std::shared_ptr<Container> c, int index);
-    Slot* getSlot(int index);
+    virtual Slot* getSlotFor(std::shared_ptr<Container> c, int index);
+    virtual Slot* getSlot(int index);
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
-        std::shared_ptr<Player> player);
+        std::shared_ptr<Player> player,
+        bool looped = false);  // 4J added looped param
     virtual bool mayCombine(Slot* slot, std::shared_ptr<ItemInstance> item);
+    virtual bool canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                       Slot* target);
 
 protected:
     virtual void loopClick(int slotIndex, int buttonNum, bool quickKeyHeld,
@@ -85,7 +104,7 @@ public:
     virtual bool stillValid(std::shared_ptr<Player> player) = 0;
 
     // 4J Stu Added for UI
-    unsigned int getSize() { return (unsigned int)slots->size(); }
+    unsigned int getSize() { return (unsigned int)slots.size(); }
 
 protected:
     // 4J Stu - Changes to return bool brought forward from 1.2
@@ -94,4 +113,27 @@ protected:
 
 public:
     virtual bool isOverrideResultClick(int slotNum, int buttonNum);
+
+    static int getQuickcraftType(int mask);
+    static int getQuickcraftHeader(int mask);
+    static int getQuickcraftMask(int header, int type);
+    static bool isValidQuickcraftType(int type);
+
+protected:
+    void resetQuickCraft();
+
+public:
+    static bool canItemQuickReplace(Slot* slot,
+                                    std::shared_ptr<ItemInstance> item,
+                                    bool ignoreSize);
+    static void getQuickCraftSlotCount(
+        std::unordered_set<Slot*>* quickCraftSlots, int quickCraftingType,
+        std::shared_ptr<ItemInstance> item, int carry);
+    bool canDragTo(Slot* slot);
+    static int getRedstoneSignalFromContainer(
+        std::shared_ptr<Container> container);
+
+    // 4J Added
+    virtual bool isValidIngredient(std::shared_ptr<ItemInstance> item,
+                                   int slotId);
 };

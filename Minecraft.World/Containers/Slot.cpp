@@ -84,6 +84,8 @@ bool Slot::isAt(std::shared_ptr<Container> c, int s) {
 
 bool Slot::mayPickup(std::shared_ptr<Player> player) { return true; }
 
+bool Slot::isActive() { return true; }
+
 bool Slot::mayCombine(std::shared_ptr<ItemInstance> second) {
     std::shared_ptr<ItemInstance> first = getItem();
 

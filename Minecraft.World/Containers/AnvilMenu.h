@@ -2,7 +2,7 @@
 
 #include "AbstractContainerMenu.h"
 
-class RepairMenu : public AbstractContainerMenu {
+class AnvilMenu : public AbstractContainerMenu {
     friend class RepairResultSlot;
 
 private:
@@ -41,8 +41,8 @@ private:
 public:
     using AbstractContainerMenu::slotsChanged;
 
-    RepairMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
-               int yt, int zt, std::shared_ptr<Player> player);
+    AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
+              int yt, int zt, std::shared_ptr<Player> player);
 
     void slotsChanged(std::shared_ptr<Container> container);
     void createResult();

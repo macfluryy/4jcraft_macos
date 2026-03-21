@@ -35,7 +35,8 @@ public:
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
 
+    // 4J Added looped param
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
-        std::shared_ptr<Player> player);
+        std::shared_ptr<Player> player, bool looped = false);
 };

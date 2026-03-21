@@ -1,6 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
-
+#include "../Network/Packets/ContainerOpenPacket.h"
 #include "CompoundContainer.h"
 
 CompoundContainer::CompoundContainer(int name, std::shared_ptr<Container> c1,
@@ -12,11 +12,33 @@ CompoundContainer::CompoundContainer(int name, std::shared_ptr<Container> c1,
     this->c2 = c2;
 }
 
+int CompoundContainer::getContainerType() {
+    return ContainerOpenPacket::LARGE_CHEST;
+}
+
 unsigned int CompoundContainer::getContainerSize() {
     return c1->getContainerSize() + c2->getContainerSize();
 }
 
-int CompoundContainer::getName() { return name; }
+bool CompoundContainer::contains(std::shared_ptr<Container> c) {
+    return c1 == c || c2 == c;
+}
+
+std::wstring CompoundContainer::getName() {
+    if (c1->hasCustomName()) return c1->getName();
+    if (c2->hasCustomName()) return c2->getName();
+    return app.GetString(name);
+}
+
+std::wstring CompoundContainer::getCustomName() {
+    if (c1->hasCustomName()) return c1->getName();
+    if (c2->hasCustomName()) return c2->getName();
+    return L"";
+}
+
+bool CompoundContainer::hasCustomName() {
+    return c1->hasCustomName() || c2->hasCustomName();
+}
 
 std::shared_ptr<ItemInstance> CompoundContainer::getItem(unsigned int slot) {
     if (slot >= c1->getContainerSize())
@@ -67,4 +89,9 @@ void CompoundContainer::startOpen() {
 void CompoundContainer::stopOpen() {
     c1->stopOpen();
     c2->stopOpen();
+}
+
+bool CompoundContainer::canPlaceItem(int slot,
+                                     std::shared_ptr<ItemInstance> item) {
+    return true;
 }

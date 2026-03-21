@@ -13,23 +13,21 @@ public:
     CompoundContainer(int name, std::shared_ptr<Container> c1,
                       std::shared_ptr<Container> c2);
 
-    unsigned int getContainerSize();
-
-    int getName();
-
-    std::shared_ptr<ItemInstance> getItem(unsigned int slot);
-
-    std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int i);
-    std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
-
-    void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
-
-    int getMaxStackSize();
-
-    void setChanged();
-
-    bool stillValid(std::shared_ptr<Player> player);
+    virtual int getContainerType();
+    virtual unsigned int getContainerSize();
+    virtual bool contains(std::shared_ptr<Container> c);
+    virtual std::wstring getName();
+    virtual std::wstring getCustomName();
+    virtual bool hasCustomName();
+    virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
+    virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot, int i);
+    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
+    virtual int getMaxStackSize();
+    virtual void setChanged();
+    virtual bool stillValid(std::shared_ptr<Player> player);
 
     virtual void startOpen();
     virtual void stopOpen();
+    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 };

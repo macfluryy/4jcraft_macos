@@ -7,19 +7,15 @@
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "ResultSlot.h"
-#include "CraftingMenu.h"
+#include "FireworksMenu.h"
 
-const int CraftingMenu::RESULT_SLOT = 0;
-const int CraftingMenu::CRAFT_SLOT_START = 1;
-const int CraftingMenu::CRAFT_SLOT_END = CraftingMenu::CRAFT_SLOT_START + 9;
-const int CraftingMenu::INV_SLOT_START = CraftingMenu::CRAFT_SLOT_END;
-const int CraftingMenu::INV_SLOT_END = CraftingMenu::INV_SLOT_START + 9 * 3;
-const int CraftingMenu::USE_ROW_SLOT_START = CraftingMenu::INV_SLOT_END;
-const int CraftingMenu::USE_ROW_SLOT_END = CraftingMenu::USE_ROW_SLOT_START + 9;
-
-CraftingMenu::CraftingMenu(std::shared_ptr<Inventory> inventory, Level* level,
-                           int xt, int yt, int zt)
+FireworksMenu::FireworksMenu(std::shared_ptr<Inventory> inventory, Level* level,
+                             int xt, int yt, int zt)
     : AbstractContainerMenu() {
+    m_canMakeFireworks = false;
+    m_canMakeCharge = false;
+    m_canMakeFade = false;
+
     craftSlots =
         std::shared_ptr<CraftingContainer>(new CraftingContainer(this, 3, 3));
     resultSlots = std::shared_ptr<ResultContainer>(new ResultContainer());
@@ -50,15 +46,17 @@ CraftingMenu::CraftingMenu(std::shared_ptr<Inventory> inventory, Level* level,
     slotsChanged();  // 4J - removed craftSlots parameter, see comment below
 }
 
-void CraftingMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
-                                   // but wasn't using it, so removed to
-                                   // simplify things
+void FireworksMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
+                                    // but wasn't using it, so removed to
+                                    // simplify things
 {
-    resultSlots->setItem(0,
-                         Recipes::getInstance()->getItemFor(craftSlots, level));
+    FireworksRecipe::updatePossibleRecipes(craftSlots, &m_canMakeFireworks,
+                                           &m_canMakeCharge, &m_canMakeFade);
+    resultSlots->setItem(0, Recipes::getInstance()->getItemFor(
+                                craftSlots, level, Recipes::pFireworksRecipes));
 }
 
-void CraftingMenu::removed(std::shared_ptr<Player> player) {
+void FireworksMenu::removed(std::shared_ptr<Player> player) {
     AbstractContainerMenu::removed(player);
     if (level->isClientSide) return;
 
@@ -70,13 +68,9 @@ void CraftingMenu::removed(std::shared_ptr<Player> player) {
     }
 }
 
-bool CraftingMenu::stillValid(std::shared_ptr<Player> player) {
-    if (level->getTile(x, y, z) != Tile::workBench_Id) return false;
-    if (player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 8 * 8) return false;
-    return true;
-}
+bool FireworksMenu::stillValid(std::shared_ptr<Player> player) { return true; }
 
-std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
+std::shared_ptr<ItemInstance> FireworksMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
     Slot* slot = slots.at(slotIndex);
@@ -91,13 +85,20 @@ std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
             }
             slot->onQuickCraft(stack, clicked);
         } else if (slotIndex >= INV_SLOT_START && slotIndex < INV_SLOT_END) {
-            if (!moveItemStackTo(stack, USE_ROW_SLOT_START, USE_ROW_SLOT_END,
-                                 false)) {
+            if (isValidIngredient(stack, -1) &&
+                moveItemStackTo(stack, CRAFT_SLOT_START, CRAFT_SLOT_END,
+                                false)) {
+            } else if (!moveItemStackTo(stack, USE_ROW_SLOT_START,
+                                        USE_ROW_SLOT_END, false)) {
                 return nullptr;
             }
         } else if (slotIndex >= USE_ROW_SLOT_START &&
                    slotIndex < USE_ROW_SLOT_END) {
-            if (!moveItemStackTo(stack, INV_SLOT_START, INV_SLOT_END, false)) {
+            if (isValidIngredient(stack, -1) &&
+                moveItemStackTo(stack, CRAFT_SLOT_START, CRAFT_SLOT_END,
+                                false)) {
+            } else if (!moveItemStackTo(stack, INV_SLOT_START, INV_SLOT_END,
+                                        false)) {
                 return nullptr;
             }
         } else {
@@ -121,8 +122,15 @@ std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
     return clicked;
 }
 
-bool CraftingMenu::canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
-                                         Slot* target) {
+bool FireworksMenu::canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                          Slot* target) {
     return target->container != resultSlots &&
            AbstractContainerMenu::canTakeItemForPickAll(carried, target);
+}
+
+bool FireworksMenu::isValidIngredient(std::shared_ptr<ItemInstance> item,
+                                      int slotId) {
+    if (item == NULL || slotId == RESULT_SLOT) return true;
+    return FireworksRecipe::isValidIngredient(item, m_canMakeFireworks,
+                                              m_canMakeCharge, m_canMakeFade);
 }

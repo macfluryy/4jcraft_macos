@@ -4,9 +4,9 @@
 #include "ClientSideMerchant.h"
 
 ClientSideMerchant::ClientSideMerchant(std::shared_ptr<Player> source,
-                                       int name) {
+                                       const std::wstring& name) {
     this->source = source;
-    // 4J Stu - Need to do this after creating as a std::shared_ptr
+    // 4J Stu - Need to do this after creating as a shared_ptr
     container = NULL;  // new MerchantContainer(source, this);
     currentOffers = NULL;
     m_name = name;
@@ -46,4 +46,4 @@ void ClientSideMerchant::notifyTrade(MerchantRecipe* activeRecipe) {
 void ClientSideMerchant::notifyTradeUpdated(
     std::shared_ptr<ItemInstance> item) {}
 
-int ClientSideMerchant::getDisplayName() { return m_name; }
+std::wstring ClientSideMerchant::getDisplayName() { return m_name; }

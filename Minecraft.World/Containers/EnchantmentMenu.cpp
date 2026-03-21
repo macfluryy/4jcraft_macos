@@ -17,9 +17,9 @@ EnchantmentMenu::EnchantmentMenu(std::shared_ptr<Inventory> inventory,
     }
 
     this->level = level;
-    this->x = xt;
-    this->y = yt;
-    this->z = zt;
+    x = xt;
+    y = yt;
+    z = zt;
     addSlot(new EnchantmentSlot(enchantSlots, 0, 21 + 4, 43 + 4));
 
     for (int y = 0; y < 3; y++) {
@@ -49,8 +49,8 @@ void EnchantmentMenu::broadcastChanges() {
     // 4J Added m_costsChanged to stop continually sending update packets even
     // when no changes have been made
     if (m_costsChanged) {
-        for (int i = 0; i < containerListeners->size(); i++) {
-            ContainerListener* listener = containerListeners->at(i);
+        for (int i = 0; i < containerListeners.size(); i++) {
+            ContainerListener* listener = containerListeners.at(i);
             listener->setContainerData(this, 0, costs[0]);
             listener->setContainerData(this, 1, costs[1]);
             listener->setContainerData(this, 2, costs[2]);
@@ -68,9 +68,9 @@ void EnchantmentMenu::setData(int id, int value) {
     }
 }
 
-void EnchantmentMenu::
-    slotsChanged()  // 4J used to take a std::shared_ptr<Container> container
-                    // but wasn't using it, so removed to simplify things
+void EnchantmentMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
+                                      // container but wasn't using it, so
+                                      // removed to simplify things
 {
     std::shared_ptr<ItemInstance> item = enchantSlots->getItem(0);
 
@@ -144,7 +144,7 @@ bool EnchantmentMenu::clickMenuButton(std::shared_ptr<Player> player, int i) {
             std::vector<EnchantmentInstance*>* newEnchantment =
                 EnchantmentHelper::selectEnchantment(&random, item, costs[i]);
             if (newEnchantment != NULL) {
-                player->withdrawExperienceLevels(costs[i]);
+                player->giveExperienceLevels(-costs[i]);
                 if (isBook) item->id = Item::enchantedBook_Id;
                 int randomIndex =
                     isBook ? random.nextInt(newEnchantment->size()) : -1;
@@ -190,8 +190,8 @@ bool EnchantmentMenu::stillValid(std::shared_ptr<Player> player) {
 std::shared_ptr<ItemInstance> EnchantmentMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
-    Slot* slot = slots->at(slotIndex);
-    Slot* IngredientSlot = slots->at(INGREDIENT_SLOT);
+    Slot* slot = slots.at(slotIndex);
+    Slot* IngredientSlot = slots.at(INGREDIENT_SLOT);
 
     if (slot != NULL && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
