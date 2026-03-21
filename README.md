@@ -136,6 +136,10 @@ cd build/Minecraft.Client
 
 ---
 
+### View the online documentation [here](https://4jcraft.github.io/4jcraft).
+
+---
+
 ## Generative AI Policy
 
 Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.
