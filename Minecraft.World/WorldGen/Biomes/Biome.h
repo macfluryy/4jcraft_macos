@@ -86,6 +86,7 @@ protected:
     std::vector<MobSpawnerData*> friendlies_chicken;
     std::vector<MobSpawnerData*> friendlies_wolf;
     std::vector<MobSpawnerData*> friendlies_mushroomcow;
+    std::vector<MobSpawnerData*> ambientFriendlies;
 
     Biome(int id);
     ~Biome();
@@ -109,9 +110,9 @@ private:
 
 protected:
     /* removing these so that we can consistently return newly created trees via
-getTreeFeature, and let the calling function be resposible for deleting the
-returned tree TreeFeature *normalTree; BasicTree *fancyTree; BirchFeature
-*birchTree; SwampTreeFeature *swampTree;
+    getTreeFeature, and let the calling function be resposible for deleting the
+    returned tree TreeFeature *normalTree; BasicTree *fancyTree; BirchFeature
+    *birchTree; SwampTreeFeature *swampTree;
     */
 
 public:

@@ -23,7 +23,6 @@ public:
     static LayerArray getDefaultLayers(int64_t seed, LevelType* levelType);
 
     Layer(int64_t seedMixup);
-    virtual ~Layer() {}
 
     virtual void init(int64_t seed);
     virtual void initRandom(int64_t x, int64_t y);

@@ -50,7 +50,7 @@ bool BirchFeature::place(Level* level, Random* random, int x, int y, int z) {
         }
     }
 
-    level->setTileNoUpdate(x, y - 1, z, Tile::dirt_Id);
+    placeBlock(level, x, y - 1, z, Tile::dirt_Id);
 
     for (int yy = y - 3 + treeHeight; yy <= y + treeHeight; yy++) {
         int yo = yy - (y + treeHeight);
@@ -62,7 +62,8 @@ bool BirchFeature::place(Level* level, Random* random, int x, int y, int z) {
                 if (abs(xo) == offs && abs(zo) == offs &&
                     (random->nextInt(2) == 0 || yo == 0))
                     continue;
-                if (!Tile::solid[level->getTile(xx, yy, zz)])
+                int t = level->getTile(xx, yy, zz);
+                if (t == 0 || t == Tile::leaves_Id)
                     placeBlock(level, xx, yy, zz, Tile::leaves_Id,
                                LeafTile::BIRCH_LEAF);
             }

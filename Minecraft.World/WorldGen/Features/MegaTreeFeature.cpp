@@ -58,10 +58,13 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
         y >= Level::maxBuildHeight - treeHeight - 1)
         return false;
 
-    level->setTileNoUpdate(x, y - 1, z, Tile::dirt_Id);
-    level->setTileNoUpdate(x + 1, y - 1, z, Tile::dirt_Id);
-    level->setTileNoUpdate(x, y - 1, z + 1, Tile::dirt_Id);
-    level->setTileNoUpdate(x + 1, y - 1, z + 1, Tile::dirt_Id);
+    level->setTileAndData(x, y - 1, z, Tile::dirt_Id, 0, Tile::UPDATE_CLIENTS);
+    level->setTileAndData(x + 1, y - 1, z, Tile::dirt_Id, 0,
+                          Tile::UPDATE_CLIENTS);
+    level->setTileAndData(x, y - 1, z + 1, Tile::dirt_Id, 0,
+                          Tile::UPDATE_CLIENTS);
+    level->setTileAndData(x + 1, y - 1, z + 1, Tile::dirt_Id, 0,
+                          Tile::UPDATE_CLIENTS);
 
     PIXBeginNamedEvent(0, "MegaTree placing leaves, %d, %d, %d", x, z,
                        y + treeHeight);
@@ -191,7 +194,7 @@ void MegaTreeFeature::placeLeaves(Level* level, int x, int z, int topPosition,
                 PIXBeginNamedEvent(0, "Getting tile");
                 int t = level->getTile(xx, yy, zz);
                 PIXEndNamedEvent();
-                if (!Tile::solid[t]) {
+                if (t == 0 || t == Tile::leaves_Id) {
                     PIXBeginNamedEvent(0, "Placing block");
                     placeBlock(level, xx, yy, zz, Tile::leaves_Id, leafType);
                     PIXEndNamedEvent();

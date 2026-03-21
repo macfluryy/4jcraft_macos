@@ -30,7 +30,8 @@ bool ReedsFeature::place(Level* level, Random* random, int x, int y, int z) {
                 int h = 2 + random->nextInt(random->nextInt(3) + 1);
                 for (int yy = 0; yy < h; yy++) {
                     if (Tile::reeds->canSurvive(level, x2, y2 + yy, z2)) {
-                        level->setTileNoUpdate(x2, y2 + yy, z2, Tile::reeds_Id);
+                        level->setTileAndData(x2, y2 + yy, z2, Tile::reeds_Id,
+                                              0, Tile::UPDATE_CLIENTS);
                     }
                 }
             }

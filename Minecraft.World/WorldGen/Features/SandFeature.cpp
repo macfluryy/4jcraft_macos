@@ -43,7 +43,8 @@ bool SandFeature::place(Level* level, Random* random, int x, int y, int z) {
             for (int yy = y - yr; yy <= y + yr; yy++) {
                 int t = level->getTile(xx, yy, zz);
                 if (t == Tile::dirt_Id || t == Tile::grass_Id) {
-                    level->setTileNoUpdate(xx, yy, zz, tile);
+                    level->setTileAndData(xx, yy, zz, tile, 0,
+                                          Tile::UPDATE_CLIENTS);
                 }
             }
         }

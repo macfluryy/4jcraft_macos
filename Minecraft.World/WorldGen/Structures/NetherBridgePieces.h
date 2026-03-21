@@ -26,6 +26,10 @@ private:
         EPieceClass_CastleCorridorTBalconyPiece
     };
 
+public:
+    static void loadStatic();
+
+private:
     class PieceWeight {
     public:
         EPieceClass pieceClass;
@@ -65,7 +69,18 @@ public:
 private:
     class NetherBridgePiece : public StructurePiece {
     protected:
+        static const int FORTRESS_TREASURE_ITEMS_COUNT = 11;
+        static WeighedTreasure*
+            fortressTreasureItems[FORTRESS_TREASURE_ITEMS_COUNT];
+
+    public:
+        NetherBridgePiece();
+
+    protected:
         NetherBridgePiece(int genDepth);
+
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+        virtual void addAdditonalSaveData(CompoundTag* tag);
 
     private:
         int updatePieceWeight(std::list<PieceWeight*>* currentPieces);
@@ -120,12 +135,19 @@ private:
      *
      */
     class BridgeStraight : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new BridgeStraight(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_BridgeStraight;
+        }
+
     private:
         static const int width = 5;
         static const int height = 10;
         static const int depth = 19;
 
     public:
+        BridgeStraight();
         BridgeStraight(int genDepth, Random* random, BoundingBox* stairsBox,
                        int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -140,6 +162,12 @@ private:
     };
 
     class BridgeEndFiller : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new BridgeEndFiller(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_BridgeEndFiller;
+        }
+
     private:
         static const int width = 5;
         static const int height = 10;
@@ -148,23 +176,36 @@ private:
         int selfSeed;
 
     public:
+        BridgeEndFiller();
         BridgeEndFiller(int genDepth, Random* random, BoundingBox* stairsBox,
                         int direction);
+
         static BridgeEndFiller* createPiece(std::list<StructurePiece*>* pieces,
                                             Random* random, int footX,
                                             int footY, int footZ, int direction,
                                             int genDepth);
         virtual bool postProcess(Level* level, Random* random,
                                  BoundingBox* chunkBB);
+
+    protected:
+        void readAdditonalSaveData(CompoundTag* tag);
+        void addAdditonalSaveData(CompoundTag* tag);
     };
 
     class BridgeCrossing : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new BridgeCrossing(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_BridgeCrossing;
+        }
+
     private:
         static const int width = 19;
         static const int height = 10;
         static const int depth = 19;
 
     public:
+        BridgeCrossing();
         BridgeCrossing(int genDepth, Random* random, BoundingBox* stairsBox,
                        int direction);
 
@@ -186,7 +227,11 @@ private:
 public:
     class StartPiece : public BridgeCrossing {
     public:
-        bool isLibraryAdded;
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_NetherBridgeStartPiece;
+        }
+
+    public:
         PieceWeight* previousPiece;
         Level* m_level;
 
@@ -197,18 +242,30 @@ public:
         // called in a random order
         std::vector<StructurePiece*> pendingChildren;
 
+        StartPiece();
         StartPiece(Random* random, int west, int north,
                    Level* level);  // 4J Added level param
+
+    protected:
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+        virtual void addAdditonalSaveData(CompoundTag* tag);
     };
 
 private:
     class RoomCrossing : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new RoomCrossing(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_RoomCrossing;
+        }
+
     private:
         static const int width = 7;
         static const int height = 9;
         static const int depth = 7;
 
     public:
+        RoomCrossing();
         RoomCrossing(int genDepth, Random* random, BoundingBox* box,
                      int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -223,12 +280,17 @@ private:
     };
 
     class StairsRoom : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new StairsRoom(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_StairsRoom; }
+
     private:
         static const int width = 7;
         static const int height = 11;
         static const int depth = 7;
 
     public:
+        StairsRoom();
         StairsRoom(int genDepth, Random* random, BoundingBox* box,
                    int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -242,6 +304,12 @@ private:
     };
 
     class MonsterThrone : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new MonsterThrone(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_MonsterThrone;
+        }
+
     private:
         static const int width = 7;
         static const int height = 8;
@@ -250,8 +318,15 @@ private:
         bool hasPlacedMobSpawner;
 
     public:
+        MonsterThrone();
         MonsterThrone(int genDepth, Random* random, BoundingBox* box,
                       int direction);
+
+    protected:
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+
+    public:
         static MonsterThrone* createPiece(std::list<StructurePiece*>* pieces,
                                           Random* random, int footX, int footY,
                                           int footZ, int direction,
@@ -265,12 +340,19 @@ private:
      *
      */
     class CastleEntrance : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new CastleEntrance(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleEntrance;
+        }
+
     private:
         static const int width = 13;
         static const int height = 14;
         static const int depth = 13;
 
     public:
+        CastleEntrance();
         CastleEntrance(int genDepth, Random* random, BoundingBox* stairsBox,
                        int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -289,12 +371,19 @@ private:
      *
      */
     class CastleStalkRoom : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() { return new CastleStalkRoom(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleStalkRoom;
+        }
+
     private:
         static const int width = 13;
         static const int height = 14;
         static const int depth = 13;
 
     public:
+        CastleStalkRoom();
         CastleStalkRoom(int genDepth, Random* random, BoundingBox* stairsBox,
                         int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -313,12 +402,21 @@ private:
      *
      */
     class CastleSmallCorridorPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleSmallCorridorPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleSmallCorridorPiece;
+        }
+
     private:
         static const int width = 5;
         static const int height = 7;
         static const int depth = 5;
 
     public:
+        CastleSmallCorridorPiece();
         CastleSmallCorridorPiece(int genDepth, Random* random,
                                  BoundingBox* stairsBox, int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -336,12 +434,21 @@ private:
      *
      */
     class CastleSmallCorridorCrossingPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleSmallCorridorCrossingPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleSmallCorridorCrossingPiece;
+        }
+
     private:
         static const int width = 5;
         static const int height = 7;
         static const int depth = 5;
 
     public:
+        CastleSmallCorridorCrossingPiece();
         CastleSmallCorridorCrossingPiece(int genDepth, Random* random,
                                          BoundingBox* stairsBox, int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -359,15 +466,32 @@ private:
      *
      */
     class CastleSmallCorridorRightTurnPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleSmallCorridorRightTurnPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleSmallCorridorRightTurnPiece;
+        }
+
     private:
         static const int width = 5;
         static const int height = 7;
         static const int depth = 5;
 
+        bool isNeedingChest;
+
     public:
+        CastleSmallCorridorRightTurnPiece();
         CastleSmallCorridorRightTurnPiece(int genDepth, Random* random,
                                           BoundingBox* stairsBox,
                                           int direction);
+
+    protected:
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -383,14 +507,30 @@ private:
      *
      */
     class CastleSmallCorridorLeftTurnPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleSmallCorridorLeftTurnPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleSmallCorridorLeftTurnPiece;
+        }
+
     private:
         static const int width = 5;
         static const int height = 7;
         static const int depth = 5;
+        bool isNeedingChest;
 
     public:
+        CastleSmallCorridorLeftTurnPiece();
         CastleSmallCorridorLeftTurnPiece(int genDepth, Random* random,
                                          BoundingBox* stairsBox, int direction);
+
+    protected:
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -406,12 +546,21 @@ private:
      *
      */
     class CastleCorridorStairsPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleCorridorStairsPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleCorridorStairsPiece;
+        }
+
     private:
         static const int width = 5;
         static const int height = 14;
         static const int depth = 10;
 
     public:
+        CastleCorridorStairsPiece();
         CastleCorridorStairsPiece(int genDepth, Random* random,
                                   BoundingBox* stairsBox, int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -429,12 +578,21 @@ private:
      *
      */
     class CastleCorridorTBalconyPiece : public NetherBridgePiece {
+    public:
+        static StructurePiece* Create() {
+            return new CastleCorridorTBalconyPiece();
+        }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_CastleCorridorTBalconyPiece;
+        }
+
     private:
         static const int width = 9;
         static const int height = 7;
         static const int depth = 9;
 
     public:
+        CastleCorridorTBalconyPiece();
         CastleCorridorTBalconyPiece(int genDepth, Random* random,
                                     BoundingBox* stairsBox, int direction);
         virtual void addChildren(StructurePiece* startPiece,

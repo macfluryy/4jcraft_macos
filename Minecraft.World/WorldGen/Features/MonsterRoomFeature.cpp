@@ -4,7 +4,27 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Headers/net.minecraft.world.item.h"
+#include "../../Util/WeighedTreasure.h"
 #include "MonsterRoomFeature.h"
+
+WeighedTreasure* MonsterRoomFeature::monsterRoomTreasure
+    [MonsterRoomFeature::TREASURE_ITEMS_COUNT] = {
+        new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::ironIngot_Id, 0, 1, 4, 10),
+        new WeighedTreasure(Item::bread_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::wheat_Id, 0, 1, 4, 10),
+        new WeighedTreasure(Item::gunpowder_Id, 0, 1, 4, 10),
+        new WeighedTreasure(Item::string_Id, 0, 1, 4, 10),
+        new WeighedTreasure(Item::bucket_empty_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::apple_gold_Id, 0, 1, 1, 1),
+        new WeighedTreasure(Item::redStone_Id, 0, 1, 4, 10),
+        new WeighedTreasure(Item::record_01_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::record_02_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::nameTag_Id, 0, 1, 1, 10),
+        new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 2),
+        new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 5),
+        new WeighedTreasure(Item::horseArmorDiamond_Id, 0, 1, 1, 1),
+};
 
 bool MonsterRoomFeature::place(Level* level, Random* random, int x, int y,
                                int z) {
@@ -40,16 +60,20 @@ bool MonsterRoomFeature::place(Level* level, Random* random, int x, int y,
                     xx == x + xr + 1 || yy == y + hr + 1 || zz == z + zr + 1) {
                     if (yy >= 0 &&
                         !level->getMaterial(xx, yy - 1, zz)->isSolid()) {
-                        level->setTile(xx, yy, zz, 0);
+                        level->removeTile(xx, yy, zz);
                     } else if (level->getMaterial(xx, yy, zz)->isSolid()) {
                         if (yy == y - 1 && random->nextInt(4) != 0) {
-                            level->setTile(xx, yy, zz, Tile::mossStone_Id);
+                            level->setTileAndData(xx, yy, zz,
+                                                  Tile::mossyCobblestone_Id, 0,
+                                                  Tile::UPDATE_CLIENTS);
                         } else {
-                            level->setTile(xx, yy, zz, Tile::stoneBrick_Id);
+                            level->setTileAndData(xx, yy, zz,
+                                                  Tile::cobblestone_Id, 0,
+                                                  Tile::UPDATE_CLIENTS);
                         }
                     }
                 } else {
-                    level->setTile(xx, yy, zz, 0);
+                    level->removeTile(xx, yy, zz);
                 }
             }
         }
@@ -70,70 +94,34 @@ bool MonsterRoomFeature::place(Level* level, Random* random, int x, int y,
 
             if (count != 1) continue;
 
-            level->setTile(xc, yc, zc, Tile::chest_Id);
+            level->setTileAndData(xc, yc, zc, Tile::chest_Id, 0,
+                                  Tile::UPDATE_CLIENTS);
+            WeighedTreasureArray wrapperArray(monsterRoomTreasure,
+                                              TREASURE_ITEMS_COUNT);
+            WeighedTreasureArray treasure = WeighedTreasure::addToTreasure(
+                wrapperArray,
+                Item::enchantedBook->createForRandomTreasure(random));
             std::shared_ptr<ChestTileEntity> chest =
                 std::dynamic_pointer_cast<ChestTileEntity>(
                     level->getTileEntity(xc, yc, zc));
             if (chest != NULL) {
-                for (int j = 0; j < 8; j++) {
-                    std::shared_ptr<ItemInstance> item = randomItem(random);
-                    if (item != NULL)
-                        chest->setItem(
-                            random->nextInt(chest->getContainerSize()), item);
-                }
+                WeighedTreasure::addChestItems(random, treasure, chest, 8);
             }
 
             break;
         }
     }
 
-    level->setTile(x, y, z, Tile::mobSpawner_Id);
+    level->setTileAndData(x, y, z, Tile::mobSpawner_Id, 0,
+                          Tile::UPDATE_CLIENTS);
     std::shared_ptr<MobSpawnerTileEntity> entity =
         std::dynamic_pointer_cast<MobSpawnerTileEntity>(
             level->getTileEntity(x, y, z));
     if (entity != NULL) {
-        entity->setEntityId(randomEntityId(random));
+        entity->getSpawner()->setEntityId(randomEntityId(random));
     }
 
     return true;
-}
-
-std::shared_ptr<ItemInstance> MonsterRoomFeature::randomItem(Random* random) {
-    int type = random->nextInt(12);
-    if (type == 0)
-        return std::shared_ptr<ItemInstance>(new ItemInstance(Item::saddle));
-    if (type == 1)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::ironIngot, random->nextInt(4) + 1));
-    if (type == 2)
-        return std::shared_ptr<ItemInstance>(new ItemInstance(Item::bread));
-    if (type == 3)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::wheat, random->nextInt(4) + 1));
-    if (type == 4)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::sulphur, random->nextInt(4) + 1));
-    if (type == 5)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::string, random->nextInt(4) + 1));
-    if (type == 6)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::bucket_empty));
-    if (type == 7 && random->nextInt(100) == 0)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::apple_gold));
-    if (type == 8 && random->nextInt(2) == 0)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::redStone, random->nextInt(4) + 1));
-    if (type == 9 && random->nextInt(10) == 0)
-        return std::shared_ptr<ItemInstance>(new ItemInstance(
-            Item::items[Item::record_01->id + random->nextInt(2)]));
-    if (type == 10)
-        return std::shared_ptr<ItemInstance>(
-            new ItemInstance(Item::dye_powder, 1, DyePowderItem::BROWN));
-    if (type == 11) return Item::enchantedBook->createForRandomLoot(random);
-
-    return std::shared_ptr<ItemInstance>();
 }
 
 std::wstring MonsterRoomFeature::randomEntityId(Random* random) {

@@ -34,7 +34,8 @@ bool SpikeFeature::place(Level* level, Random* random, int x, int y, int z) {
                     int xd = xx - x;
                     int zd = zz - z;
                     if (xd * xd + zd * zd <= r * r + 1) {
-                        level->setTile(xx, yy, zz, Tile::obsidian_Id);
+                        level->setTileAndData(xx, yy, zz, Tile::obsidian_Id, 0,
+                                              Tile::UPDATE_CLIENTS);
                     }
                 }
         } else
@@ -46,7 +47,8 @@ bool SpikeFeature::place(Level* level, Random* random, int x, int y, int z) {
     enderCrystal->moveTo(x + 0.5f, y + hh, z + 0.5f, random->nextFloat() * 360,
                          0);
     level->addEntity(enderCrystal);
-    level->setTile(x, y + hh, z, Tile::unbreakable_Id);
+    level->setTileAndData(x, y + hh, z, Tile::unbreakable_Id, 0,
+                          Tile::UPDATE_CLIENTS);
 
     return true;
 }
@@ -70,11 +72,13 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
                        level->getTile(xx, y - iTileBelow, zz) != tile) {
                     if (level->isEmptyTile(xx, y - iTileBelow, zz)) {
                         // empty tile
-                        level->setTileNoUpdate(xx, y - iTileBelow, zz,
-                                               Tile::obsidian_Id);
+                        level->setTileAndData(xx, y - iTileBelow, zz,
+                                              Tile::obsidian_Id, 0,
+                                              Tile::UPDATE_CLIENTS);
                     } else {
-                        level->setTile(xx, y - iTileBelow, zz,
-                                       Tile::obsidian_Id);
+                        level->setTileAndData(xx, y - iTileBelow, zz,
+                                              Tile::obsidian_Id, 0,
+                                              Tile::UPDATE_CLIENTS);
                     }
                     iTileBelow++;
                 }

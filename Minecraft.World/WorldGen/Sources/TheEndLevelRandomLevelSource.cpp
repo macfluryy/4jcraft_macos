@@ -101,7 +101,7 @@ void TheEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs,
                         for (int z = 0; z < CHUNK_WIDTH; z++) {
                             int tileId = 0;
                             if (val > 0) {
-                                tileId = Tile::whiteStone_Id;
+                                tileId = Tile::endStone_Id;
                             } else {
                             }
 
@@ -132,8 +132,8 @@ void TheEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
             int runDepth = 1;
             int run = -1;
 
-            uint8_t top = (uint8_t)Tile::whiteStone_Id;
-            uint8_t material = (uint8_t)Tile::whiteStone_Id;
+            uint8_t top = (uint8_t)Tile::endStone_Id;
+            uint8_t material = (uint8_t)Tile::endStone_Id;
 
             for (int y = Level::genDepthMinusOne; y >= 0; y--) {
                 int offs = (z * 16 + x) * Level::genDepth + y;
@@ -142,11 +142,11 @@ void TheEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
 
                 if (old == 0) {
                     run = -1;
-                } else if (old == Tile::rock_Id) {
+                } else if (old == Tile::stone_Id) {
                     if (run == -1) {
                         if (runDepth <= 0) {
                             top = 0;
-                            material = (uint8_t)Tile::whiteStone_Id;
+                            material = (uint8_t)Tile::endStone_Id;
                         }
 
                         run = runDepth;
@@ -199,8 +199,8 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     levelChunk->recalcHeightmap();
 
     // delete blocks.data; // Don't delete the blocks as the array data is
-    // actually owned by the chunk now 4jcraft changed to []
-    delete[] biomes.data;
+    // actually owned by the chunk now
+    delete biomes.data;
 
     return levelChunk;
 }
@@ -354,19 +354,21 @@ void TheEndLevelRandomLevelSource::calcWaterDepths(ChunkSource* parent, int xt,
                                         int od =
                                             level->getData(xp + x2, y, zp + z2);
                                         if (od < 7 && od < d) {
-                                            level->setData(xp + x2, y, zp + z2,
-                                                           d);
+                                            level->setData(
+                                                xp + x2, y, zp + z2, d,
+                                                Tile::UPDATE_CLIENTS);
                                         }
                                     }
                                 }
                             }
                         }
                         if (hadWater) {
-                            level->setTileAndDataNoUpdate(
-                                xp, y, zp, Tile::calmWater_Id, 7);
+                            level->setTileAndData(xp, y, zp, Tile::calmWater_Id,
+                                                  7, Tile::UPDATE_CLIENTS);
                             for (int y2 = 0; y2 < y; y2++) {
-                                level->setTileAndDataNoUpdate(
-                                    xp, y2, zp, Tile::calmWater_Id, 8);
+                                level->setTileAndData(xp, y2, zp,
+                                                      Tile::calmWater_Id, 8,
+                                                      Tile::UPDATE_CLIENTS);
                             }
                         }
                     }
@@ -391,9 +393,7 @@ void TheEndLevelRandomLevelSource::postProcess(ChunkSource* parent, int xt,
     pprandom->setSeed(level->getSeed());
     int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
     int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
-    // 4jcraft added cast to higher int and unsigned
-    pprandom->setSeed((((uint64_t)xt * xScale) + ((uint64_t)zt * zScale)) ^
-                      level->getSeed());
+    pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
     Biome* biome = level->getBiome(xo + 16, zo + 16);
     biome->decorate(
@@ -431,4 +431,8 @@ std::vector<Biome::MobSpawnerData*>* TheEndLevelRandomLevelSource::getMobsAt(
 TilePos* TheEndLevelRandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
     return NULL;
+}
+
+void TheEndLevelRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
+                                                                   int chunkZ) {
 }

@@ -17,6 +17,8 @@ public:
         return false;
     }
     virtual void init(double V1, double V2, double V3) {};
+    virtual void applyFeature(Level* level, Random* random, int xChunk,
+                              int zChunk);
 
 protected:
     virtual void placeBlock(Level* level, int x, int y, int z, int tile);

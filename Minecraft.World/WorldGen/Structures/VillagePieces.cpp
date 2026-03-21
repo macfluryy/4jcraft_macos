@@ -4,6 +4,7 @@
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"
+#include "../../Headers/net.minecraft.world.level.levelgen.structure.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.level.dimension.h"
 #include "../../Headers/net.minecraft.world.entity.npc.h"
@@ -15,6 +16,34 @@
 #include "../Biomes/BiomeSource.h"
 
 WeighedTreasureArray VillagePieces::Smithy::treasureItems;
+
+void VillagePieces::loadStatic() {
+    StructureFeatureIO::setPieceId(eStructurePiece_BookHouse, BookHouse::Create,
+                                   L"ViBH");
+    StructureFeatureIO::setPieceId(eStructurePiece_DoubleFarmland,
+                                   DoubleFarmland::Create, L"ViDF");
+    StructureFeatureIO::setPieceId(eStructurePiece_Farmland, Farmland::Create,
+                                   L"ViF");
+    StructureFeatureIO::setPieceId(eStructurePiece_LightPost, LightPost::Create,
+                                   L"ViL");
+    StructureFeatureIO::setPieceId(eStructurePiece_PigHouse, PigHouse::Create,
+                                   L"ViPH");
+    StructureFeatureIO::setPieceId(eStructurePiece_SimpleHouse,
+                                   SimpleHouse::Create, L"ViSH");
+    StructureFeatureIO::setPieceId(eStructurePiece_SmallHut, SmallHut::Create,
+                                   L"ViSmH");
+    StructureFeatureIO::setPieceId(eStructurePiece_SmallTemple,
+                                   SmallTemple::Create, L"ViST");
+    StructureFeatureIO::setPieceId(eStructurePiece_Smithy, Smithy::Create,
+                                   L"ViS");
+    StructureFeatureIO::setPieceId(eStructurePiece_VillageStartPiece,
+                                   StartPiece::Create, L"ViStart");
+    StructureFeatureIO::setPieceId(eStructurePiece_StraightRoad,
+                                   StraightRoad::Create, L"ViSR");
+    StructureFeatureIO::setPieceId(eStructurePiece_TwoRoomHouse,
+                                   TwoRoomHouse::Create, L"ViTRH");
+    StructureFeatureIO::setPieceId(eStructurePiece_Well, Well::Create, L"ViW");
+}
 
 VillagePieces::PieceWeight::PieceWeight(VillagePieces::EPieceClass pieceClass,
                                         int weight, int maxPlaceCount)
@@ -251,10 +280,35 @@ StructurePiece* VillagePieces::generateAndAddRoadPiece(
     return NULL;
 }
 
+VillagePieces::VillagePiece::VillagePiece() {
+    heightPosition = -1;
+    spawnedVillagerCount = 0;
+    isDesertVillage = false;
+    startPiece = NULL;
+    // for reflection
+}
+
 VillagePieces::VillagePiece::VillagePiece(StartPiece* startPiece, int genDepth)
     : StructurePiece(genDepth) {
+    heightPosition = -1;
+    isDesertVillage = false;
     spawnedVillagerCount = 0;
     this->startPiece = startPiece;
+    if (startPiece != NULL) {
+        this->isDesertVillage = startPiece->isDesertVillage;
+    }
+}
+
+void VillagePieces::VillagePiece::addAdditonalSaveData(CompoundTag* tag) {
+    tag->putInt(L"HPos", heightPosition);
+    tag->putInt(L"VCount", spawnedVillagerCount);
+    tag->putBoolean(L"Desert", isDesertVillage);
+}
+
+void VillagePieces::VillagePiece::readAdditonalSaveData(CompoundTag* tag) {
+    heightPosition = tag->getInt(L"HPos");
+    spawnedVillagerCount = tag->getInt(L"VCount");
+    isDesertVillage = tag->getBoolean(L"Desert");
 }
 
 StructurePiece* VillagePieces::VillagePiece::generateHouseNorthernLeft(
@@ -384,10 +438,10 @@ int VillagePieces::VillagePiece::getVillagerProfession(int villagerNumber) {
 }
 
 int VillagePieces::VillagePiece::biomeBlock(int tile, int data) {
-    if (startPiece->isDesertVillage) {
+    if (isDesertVillage) {
         if (tile == Tile::treeTrunk_Id) {
             return Tile::sandStone_Id;
-        } else if (tile == Tile::stoneBrick_Id) {
+        } else if (tile == Tile::cobblestone_Id) {
             return Tile::sandStone_Id;
         } else if (tile == Tile::wood_Id) {
             return Tile::sandStone_Id;
@@ -403,10 +457,10 @@ int VillagePieces::VillagePiece::biomeBlock(int tile, int data) {
 }
 
 int VillagePieces::VillagePiece::biomeData(int tile, int data) {
-    if (startPiece->isDesertVillage) {
+    if (isDesertVillage) {
         if (tile == Tile::treeTrunk_Id) {
             return 0;
-        } else if (tile == Tile::stoneBrick_Id) {
+        } else if (tile == Tile::cobblestone_Id) {
             return SandStoneTile::TYPE_DEFAULT;
         } else if (tile == Tile::wood_Id) {
             return SandStoneTile::TYPE_SMOOTHSIDE;
@@ -444,10 +498,13 @@ void VillagePieces::VillagePiece::fillColumnDown(Level* level, int block,
     StructurePiece::fillColumnDown(level, bblock, bdata, x, startY, z, chunkBB);
 }
 
+VillagePieces::Well::Well() {
+    // for reflection
+}
+
 VillagePieces::Well::Well(StartPiece* startPiece, int genDepth, Random* random,
                           int west, int north)
-    : VillagePiece(startPiece, genDepth), isSource(true) {
-    heightPosition = -1;  // 4J added initialiser
+    : VillagePiece(startPiece, genDepth) {
     orientation = random->nextInt(4);
 
     switch (orientation) {
@@ -465,9 +522,7 @@ VillagePieces::Well::Well(StartPiece* startPiece, int genDepth, Random* random,
 
 VillagePieces::Well::Well(StartPiece* startPiece, int genDepth, Random* random,
                           BoundingBox* stairsBox, int direction)
-    : VillagePiece(startPiece, genDepth), isSource(false) {
-    heightPosition = -1;  // 4J added initialiser
-
+    : VillagePiece(startPiece, genDepth) {
     orientation = direction;
     boundingBox = stairsBox;
 }
@@ -493,23 +548,6 @@ void VillagePieces::Well::addChildren(StructurePiece* startPiece,
                             getGenDepth());
 }
 
-// VillagePieces::Well
-// *VillagePieces::Well::createPiece(std::list<StructurePiece *> *pieces, Random
-// *random, int footX, int footY, int footZ, int direction, int genDepth)
-//{
-//     BoundingBox *box = BoundingBox::orientBox(footX, footY, footZ, -1, 4 -
-//     height, 0, width, height, depth, direction);
-//
-//     if (!isOkBox(box) || StructurePiece::findCollisionPiece(pieces, box) !=
-//     NULL)
-//	{
-//		delete box;
-//         return NULL;
-//     }
-//
-//     return new Well(genDepth, random, box, direction);
-// }
-
 bool VillagePieces::Well::postProcess(Level* level, Random* random,
                                       BoundingBox* chunkBB) {
     if (heightPosition < 0) {
@@ -520,7 +558,7 @@ bool VillagePieces::Well::postProcess(Level* level, Random* random,
         boundingBox->move(0, heightPosition - boundingBox->y1 + 3, 0);
     }
 
-    generateBox(level, chunkBB, 1, 0, 1, 4, height - 3, 4, Tile::stoneBrick_Id,
+    generateBox(level, chunkBB, 1, 0, 1, 4, height - 3, 4, Tile::cobblestone_Id,
                 Tile::water_Id, false);
     placeBlock(level, 0, 0, 2, height - 3, 2, chunkBB);
     placeBlock(level, 0, 0, 3, height - 3, 2, chunkBB);
@@ -535,8 +573,8 @@ bool VillagePieces::Well::postProcess(Level* level, Random* random,
     placeBlock(level, Tile::fence_Id, 0, 1, height - 1, 4, chunkBB);
     placeBlock(level, Tile::fence_Id, 0, 4, height - 2, 4, chunkBB);
     placeBlock(level, Tile::fence_Id, 0, 4, height - 1, 4, chunkBB);
-    generateBox(level, chunkBB, 1, height, 1, 4, height, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, height, 1, 4, height, 4,
+                Tile::cobblestone_Id, Tile::cobblestone_Id, false);
 
     for (int z = 0; z <= 5; z++) {
         for (int x = 0; x <= 5; x++) {
@@ -552,6 +590,10 @@ bool VillagePieces::Well::postProcess(Level* level, Random* random,
     return true;
 }
 
+VillagePieces::StartPiece::StartPiece() {
+    // for reflection
+}
+
 VillagePieces::StartPiece::StartPiece(BiomeSource* biomeSource, int genDepth,
                                       Random* random, int west, int north,
                                       std::list<PieceWeight*>* pieceSet,
@@ -565,9 +607,7 @@ VillagePieces::StartPiece::StartPiece(BiomeSource* biomeSource, int genDepth,
     m_level = level;
 
     Biome* biome = biomeSource->getBiome(west, north);
-    this->isDesertVillage =
-        biome == Biome::desert || biome == Biome::desertHills;
-    this->startPiece = this;
+    isDesertVillage = biome == Biome::desert || biome == Biome::desertHills;
 }
 
 VillagePieces::StartPiece::~StartPiece() {
@@ -579,6 +619,10 @@ VillagePieces::StartPiece::~StartPiece() {
 
 BiomeSource* VillagePieces::StartPiece::getBiomeSource() { return biomeSource; }
 
+VillagePieces::StraightRoad::StraightRoad() {
+    // for reflection
+}
+
 VillagePieces::StraightRoad::StraightRoad(StartPiece* startPiece, int genDepth,
                                           Random* random,
                                           BoundingBox* stairsBox, int direction)
@@ -586,6 +630,16 @@ VillagePieces::StraightRoad::StraightRoad(StartPiece* startPiece, int genDepth,
     orientation = direction;
     boundingBox = stairsBox;
     length = Math::_max(stairsBox->getXSpan(), stairsBox->getZSpan());
+}
+
+void VillagePieces::StraightRoad::addAdditonalSaveData(CompoundTag* tag) {
+    VillageRoadPiece::addAdditonalSaveData(tag);
+    tag->putInt(L"Length", length);
+}
+
+void VillagePieces::StraightRoad::readAdditonalSaveData(CompoundTag* tag) {
+    VillageRoadPiece::readAdditonalSaveData(tag);
+    length = tag->getInt(L"Length");
 }
 
 void VillagePieces::StraightRoad::addChildren(
@@ -704,7 +758,7 @@ bool VillagePieces::StraightRoad::postProcess(Level* level, Random* random,
         for (int z = boundingBox->z0; z <= boundingBox->z1; z++) {
             if (chunkBB->isInside(x, 64, z)) {
                 int y = level->getTopSolidBlock(x, z) - 1;
-                level->setTileNoUpdate(x, y, z, tile);
+                level->setTileAndData(x, y, z, tile, 0, Tile::UPDATE_CLIENTS);
             }
         }
     }
@@ -712,17 +766,27 @@ bool VillagePieces::StraightRoad::postProcess(Level* level, Random* random,
     return true;
 }
 
-/*
-int heightPosition;
-const bool hasTerrace;*/
+VillagePieces::SimpleHouse::SimpleHouse() {
+    hasTerrace = false;
+    // for reflection
+}
 
 VillagePieces::SimpleHouse::SimpleHouse(StartPiece* startPiece, int genDepth,
                                         Random* random, BoundingBox* stairsBox,
                                         int direction)
     : VillagePiece(startPiece, genDepth), hasTerrace(random->nextBoolean()) {
-    heightPosition = -1;  // 4J added initialiser
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void VillagePieces::SimpleHouse::addAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Terrace", hasTerrace);
+}
+
+void VillagePieces::SimpleHouse::readAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::readAdditonalSaveData(tag);
+    hasTerrace = tag->getBoolean(L"Terrace");
 }
 
 VillagePieces::SimpleHouse* VillagePieces::SimpleHouse::createPiece(
@@ -751,8 +815,8 @@ bool VillagePieces::SimpleHouse::postProcess(Level* level, Random* random,
     }
 
     // floor
-    generateBox(level, chunkBB, 0, 0, 0, 4, 0, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 4, 0, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // roof
     generateBox(level, chunkBB, 0, 4, 0, 4, 4, 4, Tile::treeTrunk_Id,
                 Tile::treeTrunk_Id, false);
@@ -760,18 +824,18 @@ bool VillagePieces::SimpleHouse::postProcess(Level* level, Random* random,
                 false);
 
     // window walls
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 1, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 2, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 3, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 1, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 2, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 3, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 1, 4, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 2, 4, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 3, 4, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 1, 4, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 2, 4, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 3, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 1, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 2, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 3, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 1, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 2, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 3, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 1, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 2, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 3, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 1, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 2, 4, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 3, 4, chunkBB);
     generateBox(level, chunkBB, 0, 1, 1, 0, 3, 3, Tile::wood_Id, Tile::wood_Id,
                 false);
     generateBox(level, chunkBB, 4, 1, 1, 4, 3, 3, Tile::wood_Id, Tile::wood_Id,
@@ -835,13 +899,17 @@ bool VillagePieces::SimpleHouse::postProcess(Level* level, Random* random,
     for (int z = 0; z < depth; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
     spawnVillagers(level, chunkBB, 1, 1, 2, 1);
 
     return true;
+}
+
+VillagePieces::SmallTemple::SmallTemple() {
+    // for reflection
 }
 
 VillagePieces::SmallTemple::SmallTemple(StartPiece* startPiece, int genDepth,
@@ -883,51 +951,51 @@ bool VillagePieces::SmallTemple::postProcess(Level* level, Random* random,
     generateBox(level, chunkBB, 1, 5, 1, 3, 9, 3, 0, 0, false);
 
     // floor
-    generateBox(level, chunkBB, 1, 0, 0, 3, 0, 8, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, 0, 0, 3, 0, 8, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // front wall
-    generateBox(level, chunkBB, 1, 1, 0, 3, 10, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, 1, 0, 3, 10, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // left tall wall
-    generateBox(level, chunkBB, 0, 1, 1, 0, 10, 3, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 1, 1, 0, 10, 3, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // right tall wall
-    generateBox(level, chunkBB, 4, 1, 1, 4, 10, 3, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 4, 1, 1, 4, 10, 3, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // left low wall
-    generateBox(level, chunkBB, 0, 0, 4, 0, 4, 7, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 4, 0, 4, 7, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // right low wall
-    generateBox(level, chunkBB, 4, 0, 4, 4, 4, 7, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 4, 0, 4, 4, 4, 7, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // far low wall
-    generateBox(level, chunkBB, 1, 1, 8, 3, 4, 8, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, 1, 8, 3, 4, 8, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // far upper wall
-    generateBox(level, chunkBB, 1, 5, 4, 3, 10, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, 5, 4, 3, 10, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // low roof
-    generateBox(level, chunkBB, 1, 5, 5, 3, 5, 7, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 1, 5, 5, 3, 5, 7, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // high roof
-    generateBox(level, chunkBB, 0, 9, 0, 4, 9, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 9, 0, 4, 9, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // middle floor / roof
-    generateBox(level, chunkBB, 0, 4, 0, 4, 4, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 0, 11, 2, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 4, 11, 2, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 11, 0, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 11, 4, chunkBB);
+    generateBox(level, chunkBB, 0, 4, 0, 4, 4, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    placeBlock(level, Tile::cobblestone_Id, 0, 0, 11, 2, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 4, 11, 2, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 2, 11, 0, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 2, 11, 4, chunkBB);
 
     // altar pieces
-    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 1, 6, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 1, 7, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 1, 7, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 3, 1, 6, chunkBB);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 3, 1, 7, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 1, 1, 6, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 1, 1, 7, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 2, 1, 7, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 3, 1, 6, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 3, 1, 7, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id,
                getOrientationData(Tile::stairs_stone_Id, 3), 1, 1, 5, chunkBB);
     placeBlock(level, Tile::stairs_stone_Id,
@@ -983,7 +1051,7 @@ bool VillagePieces::SmallTemple::postProcess(Level* level, Random* random,
     for (int z = 0; z < depth; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -994,6 +1062,10 @@ bool VillagePieces::SmallTemple::postProcess(Level* level, Random* random,
 
 int VillagePieces::SmallTemple::getVillagerProfession(int villagerNumber) {
     return Villager::PROFESSION_PRIEST;
+}
+
+VillagePieces::BookHouse::BookHouse() {
+    // for reflection
 }
 
 VillagePieces::BookHouse::BookHouse(StartPiece* startPiece, int genDepth,
@@ -1034,15 +1106,15 @@ bool VillagePieces::BookHouse::postProcess(Level* level, Random* random,
     generateBox(level, chunkBB, 1, 1, 1, 7, 5, 4, 0, 0, false);
 
     // floor
-    generateBox(level, chunkBB, 0, 0, 0, 8, 0, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 8, 0, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     // roof
-    generateBox(level, chunkBB, 0, 5, 0, 8, 5, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 0, 6, 1, 8, 6, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 0, 7, 2, 8, 7, 3, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 5, 0, 8, 5, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 0, 6, 1, 8, 6, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 0, 7, 2, 8, 7, 3, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     int southStairs = getOrientationData(Tile::stairs_wood_Id, 3);
     int northStairs = getOrientationData(Tile::stairs_wood_Id, 2);
     for (int d = -1; d <= 2; d++) {
@@ -1055,22 +1127,22 @@ bool VillagePieces::BookHouse::postProcess(Level* level, Random* random,
     }
 
     // rock supports
-    generateBox(level, chunkBB, 0, 1, 0, 0, 1, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 1, 1, 5, 8, 1, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 8, 1, 0, 8, 1, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 2, 1, 0, 7, 1, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 0, 2, 0, 0, 4, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 0, 2, 5, 0, 4, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 8, 2, 5, 8, 4, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 8, 2, 0, 8, 4, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 1, 0, 0, 1, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 1, 1, 5, 8, 1, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 8, 1, 0, 8, 1, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 2, 1, 0, 7, 1, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 0, 2, 0, 0, 4, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 0, 2, 5, 0, 4, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 8, 2, 5, 8, 4, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 8, 2, 0, 8, 4, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // wooden walls
     generateBox(level, chunkBB, 0, 2, 1, 0, 4, 4, Tile::wood_Id, Tile::wood_Id,
@@ -1142,7 +1214,7 @@ bool VillagePieces::BookHouse::postProcess(Level* level, Random* random,
     for (int z = 0; z < depth; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -1155,6 +1227,10 @@ int VillagePieces::BookHouse::getVillagerProfession(int villagerNumber) {
     return Villager::PROFESSION_LIBRARIAN;
 }
 
+VillagePieces::SmallHut::SmallHut() {
+    // for reflection
+}
+
 VillagePieces::SmallHut::SmallHut(StartPiece* startPiece, int genDepth,
                                   Random* random, BoundingBox* stairsBox,
                                   int direction)
@@ -1165,6 +1241,18 @@ VillagePieces::SmallHut::SmallHut(StartPiece* startPiece, int genDepth,
 
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void VillagePieces::SmallHut::addAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::addAdditonalSaveData(tag);
+    tag->putInt(L"T", tablePlacement);
+    tag->putBoolean(L"C", lowCeiling);
+}
+
+void VillagePieces::SmallHut::readAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::readAdditonalSaveData(tag);
+    tablePlacement = tag->getInt(L"T");
+    lowCeiling = tag->getBoolean(L"C");
 }
 
 VillagePieces::SmallHut* VillagePieces::SmallHut::createPiece(
@@ -1196,8 +1284,8 @@ bool VillagePieces::SmallHut::postProcess(Level* level, Random* random,
     generateBox(level, chunkBB, 1, 1, 1, 3, 5, 4, 0, 0, false);
 
     // floor
-    generateBox(level, chunkBB, 0, 0, 0, 3, 0, 4, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 3, 0, 4, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     generateBox(level, chunkBB, 1, 0, 1, 2, 0, 3, Tile::dirt_Id, Tile::dirt_Id,
                 false);
     // roof
@@ -1265,7 +1353,7 @@ bool VillagePieces::SmallHut::postProcess(Level* level, Random* random,
     for (int z = 0; z < depth; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -1274,11 +1362,14 @@ bool VillagePieces::SmallHut::postProcess(Level* level, Random* random,
     return true;
 }
 
+VillagePieces::PigHouse::PigHouse() {
+    // for reflection
+}
+
 VillagePieces::PigHouse::PigHouse(StartPiece* startPiece, int genDepth,
                                   Random* random, BoundingBox* stairsBox,
                                   int direction)
     : VillagePiece(startPiece, genDepth) {
-    heightPosition = -1;  // 4J added initialiser
     orientation = direction;
     boundingBox = stairsBox;
 }
@@ -1315,7 +1406,7 @@ bool VillagePieces::PigHouse::postProcess(Level* level, Random* random,
     // pig floor
     generateBox(level, chunkBB, 2, 0, 6, 8, 0, 10, Tile::dirt_Id, Tile::dirt_Id,
                 false);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 6, 0, 6, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 6, 0, 6, chunkBB);
     // pig fence
     generateBox(level, chunkBB, 2, 1, 6, 2, 1, 10, Tile::fence_Id,
                 Tile::fence_Id, false);
@@ -1327,14 +1418,14 @@ bool VillagePieces::PigHouse::postProcess(Level* level, Random* random,
     // floor
     generateBox(level, chunkBB, 1, 0, 1, 7, 0, 4, Tile::wood_Id, Tile::wood_Id,
                 false);
-    generateBox(level, chunkBB, 0, 0, 0, 0, 3, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 8, 0, 0, 8, 3, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 1, 0, 0, 7, 1, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 1, 0, 5, 7, 1, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 0, 3, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 8, 0, 0, 8, 3, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 1, 0, 0, 7, 1, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 1, 0, 5, 7, 1, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // roof
     generateBox(level, chunkBB, 1, 2, 0, 7, 3, 0, Tile::wood_Id, Tile::wood_Id,
@@ -1415,7 +1506,7 @@ bool VillagePieces::PigHouse::postProcess(Level* level, Random* random,
     for (int z = 0; z < 5; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -1429,6 +1520,10 @@ int VillagePieces::PigHouse::getVillagerProfession(int villagerNumber) {
         return Villager::PROFESSION_BUTCHER;
     }
     return Villager::PROFESSION_FARMER;
+}
+
+VillagePieces::TwoRoomHouse::TwoRoomHouse() {
+    // for reflection
 }
 
 VillagePieces::TwoRoomHouse::TwoRoomHouse(StartPiece* startPiece, int genDepth,
@@ -1475,18 +1570,18 @@ bool VillagePieces::TwoRoomHouse::postProcess(Level* level, Random* random,
                 false);
     generateBox(level, chunkBB, 1, 0, 1, 7, 0, 4, Tile::wood_Id, Tile::wood_Id,
                 false);
-    generateBox(level, chunkBB, 0, 0, 0, 0, 3, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 8, 0, 0, 8, 3, 10, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 1, 0, 0, 7, 2, 0, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 1, 0, 5, 2, 1, 5, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 2, 0, 6, 2, 3, 10, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
-    generateBox(level, chunkBB, 3, 0, 10, 7, 3, 10, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 0, 3, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 8, 0, 0, 8, 3, 10, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 1, 0, 0, 7, 2, 0, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 1, 0, 5, 2, 1, 5, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 2, 0, 6, 2, 3, 10, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
+    generateBox(level, chunkBB, 3, 0, 10, 7, 3, 10, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // room 1 roof
     generateBox(level, chunkBB, 1, 2, 0, 7, 3, 0, Tile::wood_Id, Tile::wood_Id,
@@ -1595,13 +1690,13 @@ bool VillagePieces::TwoRoomHouse::postProcess(Level* level, Random* random,
     for (int z = 0; z < 5; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
     for (int z = 5; z < depth - 1; z++) {
         for (int x = 2; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -1611,7 +1706,7 @@ bool VillagePieces::TwoRoomHouse::postProcess(Level* level, Random* random,
 }
 
 void VillagePieces::Smithy::staticCtor() {
-    treasureItems = WeighedTreasureArray(13);
+    treasureItems = WeighedTreasureArray(17);
     treasureItems[0] = new WeighedTreasure(Item::diamond_Id, 0, 1, 3, 3);
     treasureItems[1] = new WeighedTreasure(Item::ironIngot_Id, 0, 1, 5, 10);
     treasureItems[2] = new WeighedTreasure(Item::goldIngot_Id, 0, 1, 3, 5);
@@ -1626,13 +1721,25 @@ void VillagePieces::Smithy::staticCtor() {
     treasureItems[10] = new WeighedTreasure(Item::boots_iron_Id, 0, 1, 1, 5);
     treasureItems[11] = new WeighedTreasure(Tile::obsidian_Id, 0, 3, 7, 5);
     treasureItems[12] = new WeighedTreasure(Tile::sapling_Id, 0, 3, 7, 5);
+    // very rare for villages ...
+    treasureItems[13] = new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 3);
+    treasureItems[14] =
+        new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 1);
+    treasureItems[15] =
+        new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 1);
+    treasureItems[16] =
+        new WeighedTreasure(Item::horseArmorDiamond_Id, 0, 1, 1, 1);
+    // ...
+}
+
+VillagePieces::Smithy::Smithy() {
+    // for reflection
 }
 
 VillagePieces::Smithy::Smithy(StartPiece* startPiece, int genDepth,
                               Random* random, BoundingBox* stairsBox,
                               int direction)
     : VillagePiece(startPiece, genDepth) {
-    heightPosition = -1;  // 4J added initialiser
     hasPlacedChest = false;
 
     orientation = direction;
@@ -1654,6 +1761,16 @@ VillagePieces::Smithy* VillagePieces::Smithy::createPiece(
     return new Smithy(startPiece, genDepth, random, box, direction);
 }
 
+void VillagePieces::Smithy::addAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Chest", hasPlacedChest);
+}
+
+void VillagePieces::Smithy::readAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::readAdditonalSaveData(tag);
+    hasPlacedChest = tag->getBoolean(L"Chest");
+}
+
 bool VillagePieces::Smithy::postProcess(Level* level, Random* random,
                                         BoundingBox* chunkBB) {
     if (heightPosition < 0) {
@@ -1668,12 +1785,12 @@ bool VillagePieces::Smithy::postProcess(Level* level, Random* random,
     generateBox(level, chunkBB, 0, 1, 0, 9, 4, 6, 0, 0, false);
 
     // floor
-    generateBox(level, chunkBB, 0, 0, 0, 9, 0, 6, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 0, 0, 9, 0, 6, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
 
     // roof
-    generateBox(level, chunkBB, 0, 4, 0, 9, 4, 6, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 0, 4, 0, 9, 4, 6, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     generateBox(level, chunkBB, 0, 5, 0, 9, 5, 6, Tile::stoneSlabHalf_Id,
                 Tile::stoneSlabHalf_Id, false);
     generateBox(level, chunkBB, 1, 5, 1, 8, 5, 5, 0, 0, false);
@@ -1704,14 +1821,14 @@ bool VillagePieces::Smithy::postProcess(Level* level, Random* random,
                 Tile::fence_Id, false);
 
     // furnace
-    generateBox(level, chunkBB, 6, 1, 4, 9, 4, 6, Tile::stoneBrick_Id,
-                Tile::stoneBrick_Id, false);
+    generateBox(level, chunkBB, 6, 1, 4, 9, 4, 6, Tile::cobblestone_Id,
+                Tile::cobblestone_Id, false);
     placeBlock(level, Tile::lava_Id, 0, 7, 1, 5, chunkBB);
     placeBlock(level, Tile::lava_Id, 0, 8, 1, 5, chunkBB);
     placeBlock(level, Tile::ironFence_Id, 0, 9, 2, 5, chunkBB);
     placeBlock(level, Tile::ironFence_Id, 0, 9, 2, 4, chunkBB);
     generateBox(level, chunkBB, 7, 2, 4, 8, 2, 5, 0, 0, false);
-    placeBlock(level, Tile::stoneBrick_Id, 0, 6, 1, 3, chunkBB);
+    placeBlock(level, Tile::cobblestone_Id, 0, 6, 1, 3, chunkBB);
     placeBlock(level, Tile::furnace_Id, 0, 6, 2, 3, chunkBB);
     placeBlock(level, Tile::furnace_Id, 0, 6, 3, 3, chunkBB);
     placeBlock(level, Tile::stoneSlab_Id, 0, 8, 1, 1, chunkBB);
@@ -1754,7 +1871,7 @@ bool VillagePieces::Smithy::postProcess(Level* level, Random* random,
     for (int z = 0; z < depth; z++) {
         for (int x = 0; x < width; x++) {
             generateAirColumnUp(level, x, height, z, chunkBB);
-            fillColumnDown(level, Tile::stoneBrick_Id, 0, x, -1, z, chunkBB);
+            fillColumnDown(level, Tile::cobblestone_Id, 0, x, -1, z, chunkBB);
         }
     }
 
@@ -1767,11 +1884,16 @@ int VillagePieces::Smithy::getVillagerProfession(int villagerNumber) {
     return Villager::PROFESSION_SMITH;
 }
 
+VillagePieces::Farmland::Farmland() {
+    cropsA = 0;
+    cropsB = 0;
+    // for reflection
+}
+
 VillagePieces::Farmland::Farmland(StartPiece* startPiece, int genDepth,
                                   Random* random, BoundingBox* stairsBox,
                                   int direction)
     : VillagePiece(startPiece, genDepth) {
-    heightPosition = -1;  // 4J added initialiser
     orientation = direction;
     boundingBox = stairsBox;
 
@@ -1782,12 +1904,24 @@ VillagePieces::Farmland::Farmland(StartPiece* startPiece, int genDepth,
 int VillagePieces::Farmland::selectCrops(Random* random) {
     switch (random->nextInt(5)) {
         default:
-            return Tile::crops_Id;
+            return Tile::wheat_Id;
         case 0:
             return Tile::carrots_Id;
         case 1:
             return Tile::potatoes_Id;
     }
+}
+
+void VillagePieces::Farmland::addAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::addAdditonalSaveData(tag);
+    tag->putInt(L"CA", cropsA);
+    tag->putInt(L"CB", cropsB);
+}
+
+void VillagePieces::Farmland::readAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::readAdditonalSaveData(tag);
+    cropsA = tag->getInt(L"CA");
+    cropsB = tag->getInt(L"CB");
 }
 
 VillagePieces::Farmland* VillagePieces::Farmland::createPiece(
@@ -1853,6 +1987,14 @@ bool VillagePieces::Farmland::postProcess(Level* level, Random* random,
     return true;
 }
 
+VillagePieces::DoubleFarmland::DoubleFarmland() {
+    cropsA = 0;
+    cropsB = 0;
+    cropsC = 0;
+    cropsD = 0;
+    // for reflection
+}
+
 VillagePieces::DoubleFarmland::DoubleFarmland(StartPiece* startPiece,
                                               int genDepth, Random* random,
                                               BoundingBox* stairsBox,
@@ -1868,10 +2010,26 @@ VillagePieces::DoubleFarmland::DoubleFarmland(StartPiece* startPiece,
     cropsD = selectCrops(random);
 }
 
+void VillagePieces::DoubleFarmland::addAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::addAdditonalSaveData(tag);
+    tag->putInt(L"CA", cropsA);
+    tag->putInt(L"CB", cropsB);
+    tag->putInt(L"CC", cropsC);
+    tag->putInt(L"CD", cropsD);
+}
+
+void VillagePieces::DoubleFarmland::readAdditonalSaveData(CompoundTag* tag) {
+    VillagePiece::readAdditonalSaveData(tag);
+    cropsA = tag->getInt(L"CA");
+    cropsB = tag->getInt(L"CB");
+    cropsC = tag->getInt(L"CC");
+    cropsD = tag->getInt(L"CD");
+}
+
 int VillagePieces::DoubleFarmland::selectCrops(Random* random) {
     switch (random->nextInt(5)) {
         default:
-            return Tile::crops_Id;
+            return Tile::wheat_Id;
         case 0:
             return Tile::carrots_Id;
         case 1:
@@ -1956,6 +2114,10 @@ bool VillagePieces::DoubleFarmland::postProcess(Level* level, Random* random,
     return true;
 }
 
+VillagePieces::LightPost::LightPost() {
+    // for reflection
+}
+
 VillagePieces::LightPost::LightPost(StartPiece* startPiece, int genDepth,
                                     Random* random, BoundingBox* box,
                                     int direction)
@@ -1999,7 +2161,7 @@ bool VillagePieces::LightPost::postProcess(Level* level, Random* random,
     placeBlock(level, Tile::fence_Id, 0, 1, 2, 0, chunkBB);
 
     // head
-    placeBlock(level, Tile::cloth_Id, DyePowderItem::WHITE, 1, 3, 0, chunkBB);
+    placeBlock(level, Tile::wool_Id, DyePowderItem::WHITE, 1, 3, 0, chunkBB);
 
     // torches
     placeBlock(level, Tile::torch_Id, 0, 0, 3, 0, chunkBB);

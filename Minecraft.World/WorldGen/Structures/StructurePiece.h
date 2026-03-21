@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Util/WeighedRandom.h"
 #include "../../Util/BoundingBox.h"
+#include "../StructureFeatureIO.h"
 
 class Level;
 class Random;
@@ -39,6 +40,9 @@ class TilePos;
  */
 class StructurePiece {
 public:
+    virtual EStructurePiece GetType() = 0;
+
+public:
     class BlockSelector {
     protected:
         int nextId;
@@ -60,11 +64,27 @@ protected:
     int orientation;
     int genDepth;
 
+public:
+    StructurePiece();
+
+protected:
     StructurePiece(int genDepth);
 
 public:
     virtual ~StructurePiece();
 
+    virtual CompoundTag* createTag();
+
+protected:
+    virtual void addAdditonalSaveData(CompoundTag* tag) = 0;
+
+public:
+    virtual void load(Level* level, CompoundTag* tag);
+
+protected:
+    virtual void readAdditonalSaveData(CompoundTag* tag) = 0;
+
+public:
     virtual void addChildren(StructurePiece* startPiece,
                              std::list<StructurePiece*>* pieces,
                              Random* random);

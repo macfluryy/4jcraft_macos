@@ -1,5 +1,4 @@
 #include "../../Platform/stdafx.h"
-#include "../../Util/PortableFileIO.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.newbiome.layer.h"
 #include "../../Headers/net.minecraft.world.level.h"
@@ -8,23 +7,44 @@
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     m_biomeOverride = byteArray(width * height);
 
-#ifdef _WINDOWS64
-    const std::wstring path = L"GameRules\\biomemap.bin";
+#ifdef _UNICODE
+    std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
+    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING,
+                             FILE_ATTRIBUTE_NORMAL, NULL);
 #else
-    const std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
+#ifdef _WINDOWS64
+    std::string path = "GameRules\\biomemap.bin";
+#else
+    std::string path = "GAME:\\GameRules\\biomemap.bin";
 #endif
-    const PortableFileIO::BinaryReadResult readResult =
-        PortableFileIO::ReadBinaryFile(path, m_biomeOverride.data,
-                                       m_biomeOverride.length);
-    if (readResult.status == PortableFileIO::BinaryReadStatus::not_found) {
+    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING,
+                             FILE_ATTRIBUTE_NORMAL, NULL);
+#endif
+    if (file == INVALID_HANDLE_VALUE) {
+        DWORD error = GetLastError();
+        // assert(false);
         app.DebugPrintf("Biome override not found, using plains as default\n");
+
         memset(m_biomeOverride.data, Biome::plains->id, m_biomeOverride.length);
-    } else if (readResult.status ==
-               PortableFileIO::BinaryReadStatus::too_large) {
-        app.DebugPrintf("Biomemap binary is too large!!\n");
-        __debugbreak();
-    } else if (readResult.status != PortableFileIO::BinaryReadStatus::ok) {
-        app.FatalLoadError();
+    } else {
+#ifdef _DURANGO
+        __debugbreak();  // TODO
+        DWORD bytesRead, dwFileSize = 0;
+#else
+        DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
+#endif
+        if (dwFileSize > m_biomeOverride.length) {
+            app.DebugPrintf("Biomemap binary is too large!!\n");
+            __debugbreak();
+        }
+        BOOL bSuccess =
+            ReadFile(file, m_biomeOverride.data, dwFileSize, &bytesRead, NULL);
+
+        if (bSuccess == FALSE) {
+            app.FatalLoadError();
+        }
+
+        CloseHandle(file);
     }
 }
 

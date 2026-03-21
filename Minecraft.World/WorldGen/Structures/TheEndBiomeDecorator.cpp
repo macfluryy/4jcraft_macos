@@ -31,8 +31,8 @@ TheEndBiomeDecorator::SPIKE TheEndBiomeDecorator::SpikeValA[8] = {
 
 TheEndBiomeDecorator::TheEndBiomeDecorator(Biome* biome)
     : BiomeDecorator(biome) {
-    spikeFeature = new SpikeFeature(Tile::whiteStone_Id);
-    endPodiumFeature = new EndPodiumFeature(Tile::whiteStone_Id);
+    spikeFeature = new SpikeFeature(Tile::endStone_Id);
+    endPodiumFeature = new EndPodiumFeature(Tile::endStone_Id);
 }
 
 void TheEndBiomeDecorator::decorate() {
@@ -56,6 +56,7 @@ void TheEndBiomeDecorator::decorate() {
     if (xo == 0 && zo == 0) {
         std::shared_ptr<EnderDragon> enderDragon =
             std::shared_ptr<EnderDragon>(new EnderDragon(level));
+        enderDragon->AddParts();  // 4J added
         enderDragon->moveTo(0, 128, 0, random->nextFloat() * 360, 0);
         level->addEntity(enderDragon);
     }
@@ -64,6 +65,6 @@ void TheEndBiomeDecorator::decorate() {
     // one since this guarantees that all chunks required for the podium are
     // loaded
     if (xo == -16 && zo == -16) {
-        endPodiumFeature->place(level, random, 0, Level::genDepth / 2, 0);
+        endPodiumFeature->place(level, random, 0, level->seaLevel, 0);
     }
 }

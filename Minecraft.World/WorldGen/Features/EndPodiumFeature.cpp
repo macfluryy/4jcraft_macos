@@ -59,7 +59,7 @@ bool EndPodiumFeature::place(Level* level, Random* random, int x, int y,
         for (int xx = x - (r - 1); xx <= x + (r - 1); xx++) {
             for (int zz = z - (r - 1); zz <= z + (r - 1); zz++) {
                 if (level->isEmptyTile(xx, yy, zz)) {
-                    placeBlock(level, xx, yy, zz, Tile::whiteStone_Id, 0);
+                    placeBlock(level, xx, yy, zz, Tile::endStone_Id, 0);
                 }
             }
         }

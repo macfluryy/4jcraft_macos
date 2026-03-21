@@ -10,6 +10,10 @@ private:
 
     static const int MAX_DEPTH = 8;  // 1.2.3 change
 
+public:
+    static void loadStatic();
+
+private:
     static StructurePiece* createRandomShaftPiece(
         std::list<StructurePiece*>* pieces, Random* random, int footX,
         int footY, int footZ, int direction, int genDepth);
@@ -24,10 +28,17 @@ private:
      */
 public:
     class MineShaftRoom : public StructurePiece {
+    public:
+        static StructurePiece* Create() { return new MineShaftRoom(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_MineShaftRoom;
+        }
+
     private:
         std::list<BoundingBox*> childEntranceBoxes;
 
     public:
+        MineShaftRoom();
         MineShaftRoom(int genDepth, Random* random, int west, int north);
         ~MineShaftRoom();
 
@@ -36,6 +47,10 @@ public:
                                  Random* random);
         virtual bool postProcess(Level* level, Random* random,
                                  BoundingBox* chunkBB);
+
+    protected:
+        void addAdditonalSaveData(CompoundTag* tag);
+        void readAdditonalSaveData(CompoundTag* tag);
     };
 
     /**
@@ -43,11 +58,24 @@ public:
      *
      */
     class MineShaftCorridor : public StructurePiece {
+    public:
+        static StructurePiece* Create() { return new MineShaftCorridor(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_MineShaftCorridor;
+        }
+
     private:
         bool hasRails;        // was final
         bool spiderCorridor;  // was final
         bool hasPlacedSpider;
         int numSections;
+
+    public:
+        MineShaftCorridor();
+
+    protected:
+        void addAdditonalSaveData(CompoundTag* tag);
+        void readAdditonalSaveData(CompoundTag* tag);
 
     public:
         MineShaftCorridor(int genDepth, Random* random,
@@ -60,6 +88,13 @@ public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
+
+    protected:
+        virtual bool createChest(Level* level, BoundingBox* chunkBB,
+                                 Random* random, int x, int y, int z,
+                                 WeighedTreasureArray treasure, int numRolls);
+
+    public:
         virtual bool postProcess(Level* level, Random* random,
                                  BoundingBox* chunkBB);
     };
@@ -69,9 +104,22 @@ public:
      *
      */
     class MineShaftCrossing : public StructurePiece {
+    public:
+        static StructurePiece* Create() { return new MineShaftCrossing(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_MineShaftCrossing;
+        }
+
     private:
-        const int direction;
-        const bool isTwoFloored;
+        int direction;
+        bool isTwoFloored;
+
+    public:
+        MineShaftCrossing();
+
+    protected:
+        void addAdditonalSaveData(CompoundTag* tag);
+        void readAdditonalSaveData(CompoundTag* tag);
 
     public:
         MineShaftCrossing(int genDepth, Random* random,
@@ -93,9 +141,21 @@ public:
      */
     class MineShaftStairs : public StructurePiece {
     public:
+        static StructurePiece* Create() { return new MineShaftStairs(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_MineShaftStairs;
+        }
+
+    public:
+        MineShaftStairs();
         MineShaftStairs(int genDepth, Random* random, BoundingBox* stairsBox,
                         int direction);
 
+    protected:
+        void addAdditonalSaveData(CompoundTag* tag);
+        void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         static BoundingBox* findStairs(std::list<StructurePiece*>* pieces,
                                        Random* random, int footX, int footY,
                                        int footZ, int direction);

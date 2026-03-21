@@ -6,9 +6,8 @@
 #include "../../Headers/net.minecraft.world.item.h"
 
 bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
-    while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) {
-        y--;
-    }
+    while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;
+
     int w = random->nextInt(7) + 7;
     int h = 4 + random->nextInt(3) / 2;
     int d = random->nextInt(7) + 7;
@@ -37,7 +36,7 @@ bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
             if (ok) {
                 if (t != 0) return false;
             } else {
-                if (t == Tile::stoneBrick_Id || t == Tile::mossStone_Id)
+                if (t == Tile::cobblestone_Id || t == Tile::mossyCobblestone_Id)
                     return false;
             }
         }
@@ -88,14 +87,15 @@ bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
                     if (yy == y0 - 1 || yy == y0 + h - 1 || xx == xx0 ||
                         zz == zz0 || xx == xx1 || zz == zz1) {
                         if (yy <= y0 + random->nextInt(3))
-                            material = Tile::mossStone_Id;
+                            material = Tile::mossyCobblestone_Id;
                         else
-                            material = Tile::stoneBrick_Id;
+                            material = Tile::cobblestone_Id;
                     }
                 }
 
                 if (material >= 0) {
-                    level->setTileNoUpdate(xx, yy, zz, material);
+                    level->setTileAndData(xx, yy, zz, material, 0,
+                                          Tile::UPDATE_CLIENTS);
                 }
             }
             h = ho;
@@ -108,8 +108,8 @@ bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
         if (doorSide == 1) xx = x0 + w - 1;
         if (doorSide == 2) zz = z0;
         if (doorSide == 3) zz = z0 + d - 1;
-        level->setTileNoUpdate(xx, y0, zz, 0);
-        level->setTileNoUpdate(xx, y0 + 1, zz, 0);
+        level->setTileAndData(xx, y0, zz, 0, 0, Tile::UPDATE_CLIENTS);
+        level->setTileAndData(xx, y0 + 1, zz, 0, 0, Tile::UPDATE_CLIENTS);
 
         int dir = 0;
         if (doorSide == 0) dir = 0;
@@ -139,7 +139,8 @@ bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
                 level->isSolidBlockingTile(xx, y0 + 1, zz + 1))
                 count++;
             if (count == 1) {
-                level->setTileNoUpdate(xx, y0 + 1, zz, Tile::glass_Id);
+                level->setTileAndData(xx, y0 + 1, zz, Tile::glass_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
             }
         }
     }
@@ -158,7 +159,8 @@ bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
             if (level->isSolidBlockingTile(xx, yy + 2, zz - 1)) count++;
             if (level->isSolidBlockingTile(xx, yy + 2, zz + 1)) count++;
             if (count == 1) {
-                level->setTileNoUpdate(xx, y0 + 2, zz, Tile::torch_Id);
+                level->setTileAndData(xx, y0 + 2, zz, Tile::torch_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
             }
         }
     }

@@ -29,7 +29,7 @@ void HellFlatLevelSource::prepareHeights(int xOffs, int zOffs,
             for (int yc = 0; yc < height; yc++) {
                 int block = 0;
                 if ((yc <= 6) || (yc >= 121)) {
-                    block = Tile::hellRock_Id;
+                    block = Tile::netherRack_Id;
                 }
 
                 blocks[xc << 11 | zc << 7 | yc] = (uint8_t)block;
@@ -194,3 +194,6 @@ TilePos* HellFlatLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
     return NULL;
 }
+
+void HellFlatLevelSource::recreateLogicStructuresForChunk(int chunkX,
+                                                          int chunkZ) {}

@@ -8,6 +8,7 @@ HellBiome::HellBiome(int id) : Biome(id) {
     friendlies_chicken.clear();  // 4J added
     friendlies_wolf.clear();     // 4J added
     waterFriendlies.clear();
+    ambientFriendlies.clear();
 
     enemies.push_back(new MobSpawnerData(eTYPE_GHAST, 50, 4, 4));
     enemies.push_back(new MobSpawnerData(eTYPE_PIGZOMBIE, 100, 4, 4));

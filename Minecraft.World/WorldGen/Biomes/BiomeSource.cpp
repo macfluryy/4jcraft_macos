@@ -239,6 +239,7 @@ void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
  */
 bool BiomeSource::containsOnly(int x, int z, int r,
                                std::vector<Biome*> allowed) {
+    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -265,6 +266,7 @@ bool BiomeSource::containsOnly(int x, int z, int r,
  * NO other biomes, add a margin of at least four blocks to the radius
  */
 bool BiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {
+    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -290,6 +292,7 @@ bool BiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {
  */
 TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
                                 Random* random) {
+    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -324,6 +327,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
  */
 TilePos* BiomeSource::findBiome(int x, int z, int r,
                                 std::vector<Biome*> allowed, Random* random) {
+    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -335,8 +339,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r,
     intArray biomes = layer->getArea(x0, z0, w, h);
     TilePos* res = NULL;
     int found = 0;
-    int biomesCount = w * h;
-    for (unsigned int i = 0; i < biomesCount; i++) {
+    for (unsigned int i = 0; i < w * h; i++) {
         int xx = (x0 + i % w) << 2;
         int zz = (z0 + i / w) << 2;
         Biome* b = Biome::biomes[biomes[i]];
@@ -376,7 +379,7 @@ int64_t BiomeSource::findSeed(LevelType* generator)
 #ifndef _CONTENT_PACKAGE
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
-            (1L << eDebugSetting_EnableHeightWaterBiomeOverride)) {
+            (1L << eDebugSetting_EnableBiomeOverride)) {
         // Do nothing
     } else
 #endif

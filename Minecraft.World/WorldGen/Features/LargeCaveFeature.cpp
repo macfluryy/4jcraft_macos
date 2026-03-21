@@ -135,7 +135,7 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
                         if (yd > -0.7 && xd * xd + yd * yd + zd * zd < 1) {
                             int block = blocks[p];
                             if (block == Tile::grass_Id) hasGrass = true;
-                            if (block == Tile::rock_Id ||
+                            if (block == Tile::stone_Id ||
                                 block == Tile::dirt_Id ||
                                 block == Tile::grass_Id) {
                                 if (yy < 10) {

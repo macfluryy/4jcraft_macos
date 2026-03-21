@@ -34,7 +34,7 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     islandLayer = std::shared_ptr<Layer>(new ZoomLayer(2003, islandLayer));
     islandLayer = std::shared_ptr<Layer>(new AddIslandLayer(4, islandLayer));
     //	islandLayer = std::shared_ptr<Layer>(new AddMushroomIslandLayer(5,
-    //islandLayer));		// 4J - old position of mushroom island layer
+    // islandLayer));		// 4J - old position of mushroom island layer
 
     int zoomLevel = 4;
     if (levelType == LevelType::lvl_largeBiomes) {
@@ -105,7 +105,7 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
 #ifdef _BIOME_OVERRIDE
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
-            (1L << eDebugSetting_EnableHeightWaterBiomeOverride)) {
+            (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeLayer =
             std::shared_ptr<BiomeOverrideLayer>(new BiomeOverrideLayer(1));
     }

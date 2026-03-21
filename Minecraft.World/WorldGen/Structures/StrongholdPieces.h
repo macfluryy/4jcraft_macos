@@ -28,6 +28,10 @@ private:
         EPieceClass_PortalRoom
     };
 
+public:
+    static void loadStatic();
+
+private:
     class PieceWeight {
     public:
         EPieceClass pieceClass;  // 4J - was Class<? extends StrongholdPiece>
@@ -36,7 +40,6 @@ private:
         int maxPlaceCount;
 
         PieceWeight(EPieceClass pieceClass, int weight, int maxPlaceCount);
-        virtual ~PieceWeight() {}
         virtual bool doPlace(int depth);
         bool isValid();
     };
@@ -94,14 +97,23 @@ private:
 private:
     class StrongholdPiece : public StructurePiece {
     protected:
-        StrongholdPiece(int genDepth);
-
         enum SmallDoorType {
             OPENING,
             WOOD_DOOR,
             GRATES,
             IRON_DOOR,
         };
+
+        SmallDoorType entryDoor;
+
+    public:
+        StrongholdPiece();
+
+    protected:
+        StrongholdPiece(int genDepth);
+
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
 
         void generateSmallDoor(Level* level, Random* random,
                                BoundingBox* chunkBB, SmallDoorType doorType,
@@ -127,13 +139,25 @@ private:
      */
 public:
     class FillerCorridor : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new FillerCorridor(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_FillerCorridor;
+        }
+
     private:
-        const int steps;
+        int steps;
 
     public:
+        FillerCorridor();
         FillerCorridor(int genDepth, Random* random, BoundingBox* corridorBox,
                        int direction);
 
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         static BoundingBox* findPieceBox(std::list<StructurePiece*>* pieces,
                                          Random* random, int footX, int footY,
                                          int footZ, int direction);
@@ -147,19 +171,28 @@ public:
      */
 public:
     class StairsDown : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new StairsDown(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_StairsDown; }
+
     private:
         static const int width = 5;
         static const int height = 11;
         static const int depth = 5;
 
-        const bool isSource;
-        const SmallDoorType entryDoor;
+        bool isSource;
 
     public:
+        StairsDown();
         StairsDown(int genDepth, Random* random, int west, int north);
         StairsDown(int genDepth, Random* random, BoundingBox* stairsBox,
                    int direction);
 
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -175,6 +208,11 @@ public:
 
     class StartPiece : public StairsDown {
     public:
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_StrongholdStartPiece;
+        }
+
+    public:
         bool isLibraryAdded;
         PieceWeight* previousPiece;
         PortalRoom* portalRoomPiece;
@@ -184,6 +222,7 @@ public:
         // called in a random order
         std::vector<StructurePiece*> pendingChildren;
 
+        StartPiece();
         StartPiece(int genDepth, Random* random, int west, int north,
                    Level* level);  // 4J Added level param
         virtual TilePos* getLocatorPosition();
@@ -195,18 +234,28 @@ public:
      */
 public:
     class Straight : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new Straight(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_Straight; }
+
     private:
         static const int width = 5;
         static const int height = 5;
         static const int depth = 7;
 
-        const SmallDoorType entryDoor;
-        const bool leftChild;
-        const bool rightChild;
+        bool leftChild;
+        bool rightChild;
 
     public:
+        Straight();
         Straight(int genDepth, Random* random, BoundingBox* stairsBox,
                  int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -223,19 +272,31 @@ public:
      */
 
     class ChestCorridor : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new ChestCorridor(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_ChestCorridor;
+        }
+
     private:
         static const int width = 5;
         static const int height = 5;
         static const int depth = 7;
-        static const int TREASURE_ITEMS_COUNT = 14;
+        static const int TREASURE_ITEMS_COUNT = 18;
         static WeighedTreasure* treasureItems[TREASURE_ITEMS_COUNT];
 
-        const SmallDoorType entryDoor;
-        boolean hasPlacedChest;
+        bool hasPlacedChest;
 
     public:
+        ChestCorridor();
         ChestCorridor(int genDepth, Random* random, BoundingBox* stairsBox,
                       int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -253,14 +314,19 @@ public:
      */
 public:
     class StraightStairsDown : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new StraightStairsDown(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_StraightStairsDown;
+        }
+
     private:
         static const int width = 5;
         static const int height = 11;
         static const int depth = 8;
 
-        const SmallDoorType entryDoor;
-
     public:
+        StraightStairsDown();
         StraightStairsDown(int genDepth, Random* random, BoundingBox* stairsBox,
                            int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -279,14 +345,17 @@ public:
      */
 public:
     class LeftTurn : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new LeftTurn(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_LeftTurn; }
+
     protected:
         static const int width = 5;
         static const int height = 5;
         static const int depth = 5;
 
-        const SmallDoorType entryDoor;
-
     public:
+        LeftTurn();
         LeftTurn(int genDepth, Random* random, BoundingBox* stairsBox,
                  int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -306,6 +375,11 @@ public:
 public:
     class RightTurn : public LeftTurn {
     public:
+        static StructurePiece* Create() { return new RightTurn(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_RightTurn; }
+
+    public:
+        RightTurn();
         RightTurn(int genDepth, Random* random, BoundingBox* stairsBox,
                   int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -321,6 +395,12 @@ public:
      */
 public:
     class RoomCrossing : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new RoomCrossing(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_StrongholdRoomCrossing;
+        }
+
     private:
         static const int SMALL_TREASURE_ITEMS_COUNT = 7;  // 4J added
         static WeighedTreasure* smallTreasureItems[SMALL_TREASURE_ITEMS_COUNT];
@@ -331,12 +411,18 @@ public:
         static const int depth = 11;
 
     protected:
-        const SmallDoorType entryDoor;
-        const int type;
+        int type;
 
     public:
+        RoomCrossing();
         RoomCrossing(int genDepth, Random* random, BoundingBox* stairsBox,
                      int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -354,14 +440,17 @@ public:
      */
 public:
     class PrisonHall : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new PrisonHall(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_PrisonHall; }
+
     protected:
         static const int width = 9;
         static const int height = 5;
         static const int depth = 11;
 
-        const SmallDoorType entryDoor;
-
     public:
+        PrisonHall();
         PrisonHall(int genDepth, Random* random, BoundingBox* stairsBox,
                    int direction);
         virtual void addChildren(StructurePiece* startPiece,
@@ -380,6 +469,10 @@ public:
      */
 public:
     class Library : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new Library(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_Library; }
+
     private:
         static const int LIBRARY_TREASURE_ITEMS_COUNT = 4;  // 4J added
         static WeighedTreasure*
@@ -391,14 +484,19 @@ public:
         static const int tallHeight = 11;
         static const int depth = 15;
 
-        const SmallDoorType entryDoor;
-
     private:
-        const bool isTall;
+        bool isTall;
 
     public:
+        Library();
         Library(int genDepth, Random* random, BoundingBox* roomBox,
                 int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         static Library* createPiece(std::list<StructurePiece*>* pieces,
                                     Random* random, int footX, int footY,
                                     int footZ, int direction, int genDepth);
@@ -412,19 +510,30 @@ public:
      */
 public:
     class FiveCrossing : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new FiveCrossing(); }
+        virtual EStructurePiece GetType() {
+            return eStructurePiece_FiveCrossing;
+        }
+
     protected:
         static const int width = 10;
         static const int height = 9;
         static const int depth = 11;
 
-        const SmallDoorType entryDoor;
-
     private:
         bool leftLow, leftHigh, rightLow, rightHigh;
 
     public:
+        FiveCrossing();
         FiveCrossing(int genDepth, Random* random, BoundingBox* stairsBox,
                      int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         virtual void addChildren(StructurePiece* startPiece,
                                  std::list<StructurePiece*>* pieces,
                                  Random* random);
@@ -442,6 +551,10 @@ public:
      */
 
     class PortalRoom : public StrongholdPiece {
+    public:
+        static StructurePiece* Create() { return new PortalRoom(); }
+        virtual EStructurePiece GetType() { return eStructurePiece_PortalRoom; }
+
     protected:
         static const int width = 11;
         static const int height = 8;
@@ -451,8 +564,15 @@ public:
         bool hasPlacedMobSpawner;
 
     public:
+        PortalRoom();
         PortalRoom(int genDepth, Random* random, BoundingBox* stairsBox,
                    int direction);
+
+    protected:
+        virtual void addAdditonalSaveData(CompoundTag* tag);
+        virtual void readAdditonalSaveData(CompoundTag* tag);
+
+    public:
         void addChildren(StructurePiece* startPiece,
                          std::list<StructurePiece*>* pieces, Random* random);
         static PortalRoom* createPiece(std::list<StructurePiece*>* pieces,
