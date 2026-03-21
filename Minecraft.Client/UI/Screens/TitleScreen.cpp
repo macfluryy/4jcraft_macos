@@ -57,6 +57,7 @@ void TitleScreen::tick() {
 void TitleScreen::keyPressed(wchar_t eventCharacter, int eventKey) {}
 
 void TitleScreen::init() {
+    app.DebugPrintf("TitleScreen::init() START\n");
     /* 4J - removed
 Calendar c = Calendar.getInstance();
 c.setTime(new Date());
@@ -103,20 +104,25 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
 
 void TitleScreen::buttonClicked(Button* button) {
     if (button->id == 0) {
+        app.DebugPrintf("TitleScreen::buttonClicked() 'Options...' if (button->id == 0)\n");
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
     if (button->id == 1) {
+        app.DebugPrintf("TitleScreen::buttonClicked() 'Singleplayer' if (button->id == 1)\n");
         minecraft->setScreen(new SelectWorldScreen(this));
     }
     if (button->id == 2) {
+        app.DebugPrintf("TitleScreen::buttonClicked() 'Multiplayer' if (button->id == 2)\n");
         minecraft->setScreen(new JoinMultiplayerScreen(this));
     }
     if (button->id == 3) {
+        app.DebugPrintf("TitleScreen::buttonClicked() 'Texture Pack' if (button->id == 3)\n");
         //       minecraft->setScreen(new TexturePackSelectScreen(this));
         //       // 4J - TODO put back in
     }
     if (button->id == 4) {
-        minecraft->stop();
+        app.DebugPrintf("TitleScreen::buttonClicked() Exit Game if (button->id == 4)\n");
+        RenderManager.Close(); //minecraft->stop();
     }
 }
 
