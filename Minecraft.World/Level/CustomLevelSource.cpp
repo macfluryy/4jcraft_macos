@@ -1,5 +1,4 @@
 #include "../Platform/stdafx.h"
-#include "../Util/PortableFileIO.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "../Headers/net.minecraft.world.level.levelgen.h"
@@ -8,12 +7,13 @@
 #include "../Headers/net.minecraft.world.level.levelgen.synth.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.level.storage.h"
+#include "../Headers/net.minecraft.world.entity.h"
 #include "CustomLevelSource.h"
 
 const double CustomLevelSource::SNOW_SCALE = 0.3;
 const double CustomLevelSource::SNOW_CUTOFF = 0.5;
 
-CustomLevelSource::CustomLevelSource(Level* level, __int64 seed,
+CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
                                      bool generateStructures)
     : generateStructures(generateStructures) {
 #ifdef _OVERRIDE_HEIGHTMAP
@@ -21,55 +21,86 @@ CustomLevelSource::CustomLevelSource(Level* level, __int64 seed,
 
     m_heightmapOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
 
-#ifdef _WINDOWS64
-    const std::wstring path = L"GameRules\\heightmap.bin";
+#ifdef _UNICODE
+    std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
+
 #else
-    const std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
+#ifdef _WINDOWS64
+    std::string path = "GameRules\\heightmap.bin";
+#else
+    std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
-    const PortableFileIO::BinaryReadResult heightmapReadResult =
-        PortableFileIO::ReadBinaryFile(path, m_heightmapOverride.data,
-                                       m_heightmapOverride.length);
-    if (heightmapReadResult.status ==
-        PortableFileIO::BinaryReadStatus::not_found) {
+#endif
+    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING,
+                             FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file == INVALID_HANDLE_VALUE) {
         app.FatalLoadError();
+        DWORD error = GetLastError();
         assert(false);
-    } else if (heightmapReadResult.status ==
-               PortableFileIO::BinaryReadStatus::too_large) {
-        app.DebugPrintf("Heightmap binary is too large!!\n");
-        __debugbreak();
-    } else if (heightmapReadResult.status !=
-               PortableFileIO::BinaryReadStatus::ok) {
-        app.FatalLoadError();
+    } else {
+#ifdef _DURANGO
+        __debugbreak();  // TODO
+        DWORD bytesRead, dwFileSize = 0;
+#else
+        DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
+#endif
+        if (dwFileSize > m_heightmapOverride.length) {
+            app.DebugPrintf("Heightmap binary is too large!!\n");
+            __debugbreak();
+        }
+        BOOL bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
+                                 &bytesRead, NULL);
+
+        if (bSuccess == FALSE) {
+            app.FatalLoadError();
+        }
+        CloseHandle(file);
     }
 
     m_waterheightOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
 
-#ifdef _WINDOWS64
-    const std::wstring waterHeightPath = L"GameRules\\waterheight.bin";
+#ifdef _UNICODE
+    std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
+
 #else
-    const std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
+#ifdef _WINDOWS64
+    std::string waterHeightPath = "GameRules\\waterheight.bin";
+#else
+    std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
 #endif
-    const PortableFileIO::BinaryReadResult waterHeightReadResult =
-        PortableFileIO::ReadBinaryFile(waterHeightPath,
-                                       m_waterheightOverride.data,
-                                       m_waterheightOverride.length);
-    if (waterHeightReadResult.status ==
-        PortableFileIO::BinaryReadStatus::not_found) {
+#endif
+    file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL,
+                      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file == INVALID_HANDLE_VALUE) {
+        DWORD error = GetLastError();
+        // assert(false);
         memset(m_waterheightOverride.data, level->seaLevel,
                m_waterheightOverride.length);
-    } else if (waterHeightReadResult.status ==
-               PortableFileIO::BinaryReadStatus::too_large) {
-        app.DebugPrintf("waterheight binary is too large!!\n");
-        __debugbreak();
-    } else if (waterHeightReadResult.status !=
-               PortableFileIO::BinaryReadStatus::ok) {
-        app.FatalLoadError();
+    } else {
+#ifdef _DURANGO
+        __debugbreak();  // TODO
+        DWORD bytesRead, dwFileSize = 0;
+#else
+        DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
+#endif
+        if (dwFileSize > m_waterheightOverride.length) {
+            app.DebugPrintf("waterheight binary is too large!!\n");
+            __debugbreak();
+        }
+        BOOL bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
+                                 &bytesRead, NULL);
+
+        if (bSuccess == FALSE) {
+            app.FatalLoadError();
+        }
+        CloseHandle(file);
     }
 
     caveFeature = new LargeCaveFeature();
     strongholdFeature = new StrongholdFeature();
-    villageFeature = new VillageFeature(0, m_XZSize);
+    villageFeature = new VillageFeature(m_XZSize);
     mineShaftFeature = new MineShaftFeature();
+    scatteredFeature = new RandomScatteredLargeFeature();
     canyonFeature = new CanyonFeature();
 
     this->level = level;
@@ -89,6 +120,8 @@ CustomLevelSource::~CustomLevelSource() {
     delete villageFeature;
     delete mineShaftFeature;
     delete canyonFeature;
+
+    this->level = level;
 
     delete random;
     delete perlinNoise3;
@@ -169,9 +202,9 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
                             // 4J - this comparison used to just be with 0.0f
                             // but is now varied by block above
                             if (yc * CHUNK_HEIGHT + y < mapHeight) {
-                                tileId = (std::uint8_t)Tile::rock_Id;
+                                tileId = (uint8_t)Tile::stone_Id;
                             } else if (yc * CHUNK_HEIGHT + y < waterHeight) {
-                                tileId = (std::uint8_t)Tile::calmWater_Id;
+                                tileId = (uint8_t)Tile::calmWater_Id;
                             }
 
                             // 4J - more extra code to make sure that the column
@@ -185,7 +218,7 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
                                 // the edge of the world
                                 if (yc * CHUNK_HEIGHT + y <=
                                     (level->getSeaLevel() - 10))
-                                    tileId = Tile::rock_Id;
+                                    tileId = Tile::stone_Id;
                                 else if (yc * CHUNK_HEIGHT + y <
                                          level->getSeaLevel())
                                     tileId = Tile::calmWater_Id;
@@ -245,8 +278,8 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
 
             int run = -1;
 
-            std::uint8_t top = b->topMaterial;
-            std::uint8_t material = b->material;
+            uint8_t top = b->topMaterial;
+            uint8_t material = b->material;
 
             LevelGenerationOptions* lgo = app.getLevelGenerationOptions();
             if (lgo != NULL) {
@@ -270,17 +303,17 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                                       //                if (y <= 0 +
                                       //                random->nextInt(5))
                 {
-                    blocks[offs] = (std::uint8_t)Tile::unbreakable_Id;
+                    blocks[offs] = (uint8_t)Tile::unbreakable_Id;
                 } else {
                     int old = blocks[offs];
 
                     if (old == 0) {
                         run = -1;
-                    } else if (old == Tile::rock_Id) {
+                    } else if (old == Tile::stone_Id) {
                         if (run == -1) {
                             if (runDepth <= 0) {
                                 top = 0;
-                                material = (std::uint8_t)Tile::rock_Id;
+                                material = (uint8_t)Tile::stone_Id;
                             } else if (y >= waterHeight - 4 &&
                                        y <= waterHeight + 1) {
                                 top = b->topMaterial;
@@ -292,9 +325,9 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
 
                             if (y < waterHeight && top == 0) {
                                 if (temp < 0.15f)
-                                    top = (std::uint8_t)Tile::ice_Id;
+                                    top = (uint8_t)Tile::ice_Id;
                                 else
-                                    top = (std::uint8_t)Tile::calmWater_Id;
+                                    top = (uint8_t)Tile::calmWater_Id;
                             }
 
                             run = runDepth;
@@ -310,7 +343,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                             // runs
                             if (run == 0 && material == Tile::sand_Id) {
                                 run = random->nextInt(4);
-                                material = (std::uint8_t)Tile::sandStone_Id;
+                                material = (uint8_t)Tile::sandStone_Id;
                             }
                         }
                     }
@@ -338,8 +371,8 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
     // 4J - now allocating this with a physical alloc & bypassing general memory
     // management so that it will get cleanly freed
     int blocksSize = Level::maxBuildHeight * 16 * 16;
-    std::uint8_t* tileData = (std::uint8_t*)XPhysicalAlloc(
-        blocksSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
+    uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
+                                                 PAGE_READWRITE);
     XMemSet128(tileData, 0, blocksSize);
     byteArray blocks = byteArray(tileData, blocksSize);
     //    byteArray blocks = byteArray(16 * level->depth * 16);
@@ -368,6 +401,7 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
         mineShaftFeature->apply(this, level, xOffs, zOffs, blocks);
         villageFeature->apply(this, level, xOffs, zOffs, blocks);
         strongholdFeature->apply(this, level, xOffs, zOffs, blocks);
+        scatteredFeature->apply(this, level, xOffs, zOffs, blocks);
     }
     //        canyonFeature.apply(this, level, xOffs, zOffs, blocks);
     // townFeature.apply(this, level, xOffs, zOffs, blocks);
@@ -451,19 +485,21 @@ void CustomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
                                         int od =
                                             level->getData(xp + x2, y, zp + z2);
                                         if (od < 7 && od < d) {
-                                            level->setData(xp + x2, y, zp + z2,
-                                                           d);
+                                            level->setData(
+                                                xp + x2, y, zp + z2, d,
+                                                Tile::UPDATE_CLIENTS);
                                         }
                                     }
                                 }
                             }
                         }
                         if (hadWater) {
-                            level->setTileAndDataNoUpdate(
-                                xp, y, zp, Tile::calmWater_Id, 7);
+                            level->setTileAndData(xp, y, zp, Tile::calmWater_Id,
+                                                  7, Tile::UPDATE_CLIENTS);
                             for (int y2 = 0; y2 < y; y2++) {
-                                level->setTileAndDataNoUpdate(
-                                    xp, y2, zp, Tile::calmWater_Id, 8);
+                                level->setTileAndData(xp, y2, zp,
+                                                      Tile::calmWater_Id, 8,
+                                                      Tile::UPDATE_CLIENTS);
                             }
                         }
                     }
@@ -489,8 +525,8 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     }
 
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
     pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
     bool hasVillage = false;
@@ -500,6 +536,7 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         mineShaftFeature->postProcess(level, pprandom, xt, zt);
         hasVillage = villageFeature->postProcess(level, pprandom, xt, zt);
         strongholdFeature->postProcess(level, pprandom, xt, zt);
+        scatteredFeature->postProcess(level, random, xt, zt);
     }
     PIXEndNamedEvent();
 
@@ -562,14 +599,16 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             int y = level->getTopRainBlock(xo + x, zo + z);
 
             if (level->shouldFreezeIgnoreNeighbors(x + xo, y - 1, z + zo)) {
-                level->setTileNoUpdate(
-                    x + xo, y - 1, z + zo,
-                    Tile::ice_Id);  // 4J - changed from setTile, otherwise we
-                                    // end up creating a *lot* of dynamic water
-                                    // tiles as these ice tiles are set
+                level->setTileAndData(
+                    x + xo, y - 1, z + zo, Tile::ice_Id, 0,
+                    Tile::UPDATE_INVISIBLE);  // 4J - changed from setTile,
+                                              // otherwise we end up creating a
+                                              // *lot* of dynamic water tiles as
+                                              // these ice tiles are set
             }
             if (level->shouldSnow(x + xo, y, z + zo)) {
-                level->setTile(x + xo, y, z + zo, Tile::topSnow_Id);
+                level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
             }
         }
     }
@@ -595,6 +634,10 @@ std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
     if (biome == NULL) {
         return NULL;
     }
+    if (mobCategory == MobCategory::monster &&
+        scatteredFeature->isSwamphut(x, y, z)) {
+        return scatteredFeature->getSwamphutEnemies();
+    }
     return biome->getMobs(mobCategory);
 #else
     return NULL;
@@ -609,4 +652,16 @@ TilePos* CustomLevelSource::findNearestMapFeature(
     }
 #endif
     return NULL;
+}
+
+void CustomLevelSource::recreateLogicStructuresForChunk(int chunkX,
+                                                        int chunkZ) {
+    if (generateStructures) {
+#ifdef _OVERRIDE_HEIGHTMAP
+        mineShaftFeature->apply(this, level, chunkX, chunkZ, NULL);
+        villageFeature->apply(this, level, chunkX, chunkZ, NULL);
+        strongholdFeature->apply(this, level, chunkX, chunkZ, NULL);
+        scatteredFeature->apply(this, level, chunkX, chunkZ, NULL);
+#endif
+    }
 }

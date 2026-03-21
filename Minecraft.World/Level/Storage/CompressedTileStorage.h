@@ -17,20 +17,20 @@
 // bytes in total (2) The type of index is determined by the least significant 2
 // bits, the other 14 bits represent an offset for the data, stored divided by 2
 //			0 - the data for this block is represented at 1 bit per
-//tile. Data pointed to is 2 bytes describing the 2 possible tiles stored in
-//this block, followed by 32 bytes of data (total 34 bytes) 			1 - the data for
-//this block is represented at 2 bit per tile. Data pointed to is 4 bytes
-//describing the 4 possible tiles stored in this block, followed by 64 bytes of
-//data (total 68 bytes) 			2 - the data for this block is represented at 4 bit per
-//tile. Data pointed to is 16 bytes describing the 16 possible tiles stored in
-//this block, followed by 128 bytes of data (total 144 bytes) 	        3 - if bit 2 is 0,
-//then this block is represented at 8 bits per tile. Data pointed to is 64
-//bytes, offset must be a multiple of 4 (since bit 2 can also be thought of as
-//being 				the low bit of the offset (divided by 2 as in the other cases), and is
-//zero)
+// tile. Data pointed to is 2 bytes describing the 2 possible tiles stored in
+// this block, followed by 32 bytes of data (total 34 bytes)
+// 1 - the data for this block is represented at 2 bit per tile. Data pointed to
+// is 4 bytes describing the 4 possible tiles stored in this block, followed by
+// 64 bytes of data (total 68 bytes) 			2 - the data for this
+// block is represented at 4 bit per tile. Data pointed to is 16 bytes
+// describing the 16 possible tiles stored in this block, followed by 128 bytes
+// of data (total 144 bytes) 	        3 - if bit 2 is 0, then this block is
+// represented at 8 bits per tile. Data pointed to is 64 bytes, offset must be a
+// multiple of 4 (since bit 2 can also be thought of as being
+// the low bit of the offset (divided by 2 as in the other cases), and is zero)
 //			  - if bit 2 is 1, then this block is represented at 0
-//bits per tile. The upper 8 bits of the index store the tile value that is used
-//by the entire block.
+// bits per tile. The upper 8 bits of the index store the tile value that is
+// used by the entire block.
 // So:
 //     oooooooooooooo00		- 1 bit per tile,  offset oooooooooooooo0
 //     oooooooooooooo01     - 2 bits per tile, offset oooooooooooooo0

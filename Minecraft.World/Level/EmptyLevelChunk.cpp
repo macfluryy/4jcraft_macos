@@ -102,14 +102,17 @@ void EmptyLevelChunk::load() {}
 void EmptyLevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 {}
 
+bool EmptyLevelChunk::containsPlayer() { return false; }
+
 void EmptyLevelChunk::markUnsaved() {}
 
 void EmptyLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb,
-                                  std::vector<std::shared_ptr<Entity> >& es) {}
+                                  std::vector<std::shared_ptr<Entity> >& es,
+                                  EntitySelector* selector) {}
 
 void EmptyLevelChunk::getEntitiesOfClass(
     const std::type_info& ec, AABB bb,
-    std::vector<std::shared_ptr<Entity> >& es) {}
+    std::vector<std::shared_ptr<Entity> >& es, EntitySelector* selector) {}
 
 int EmptyLevelChunk::countEntities() { return 0; }
 
@@ -157,7 +160,7 @@ bool EmptyLevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0,
     return false;
 }
 
-Random* EmptyLevelChunk::getRandom(__int64 l) {
+Random* EmptyLevelChunk::getRandom(int64_t l) {
     return new Random((level->getSeed() + x * x * 4987142 + x * 5947611 +
                        z * z * 4392871l + z * 389711) ^
                       l);

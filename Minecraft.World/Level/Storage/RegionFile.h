@@ -29,7 +29,7 @@ private:
     int* chunkTimestamps;
     std::vector<bool>* sectorFree;
     int sizeDelta;
-    __int64 _lastModified;
+    int64_t _lastModified;
     bool m_bIsEmpty;  // 4J added
 
 public:
@@ -37,7 +37,7 @@ public:
     ~RegionFile();
 
     /* the modification date of the region file when it was first opened */
-    __int64 lastModified();
+    int64_t lastModified();
 
     /* gets how much the region file has grown since it was last checked */
     int getSizeDelta();

@@ -7,6 +7,7 @@
 #include "../Headers/net.minecraft.world.level.levelgen.synth.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.level.storage.h"
+#include "../Headers/net.minecraft.world.entity.h"
 #include "RandomLevelSource.h"
 
 #ifdef __PS3__
@@ -17,19 +18,24 @@ static PerlinNoise_DataIn g_lperlinNoise2_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_perlinNoise1_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_scaleNoise_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_depthNoise_SPU __attribute__((__aligned__(16)));
+// #define DISABLE_SPU_CODE
+
 #endif
 
 const double RandomLevelSource::SNOW_SCALE = 0.3;
 const double RandomLevelSource::SNOW_CUTOFF = 0.5;
 
-RandomLevelSource::RandomLevelSource(Level* level, __int64 seed,
+RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
                                      bool generateStructures)
     : generateStructures(generateStructures) {
     m_XZSize = level->getLevelData()->getXZSize();
-
+#ifdef _LARGE_WORLDS
+    level->getLevelData()->getMoatFlags(&m_classicEdgeMoat, &m_smallEdgeMoat,
+                                        &m_mediumEdgeMoat);
+#endif
     caveFeature = new LargeCaveFeature();
     strongholdFeature = new StrongholdFeature();
-    villageFeature = new VillageFeature(0, m_XZSize);
+    villageFeature = new VillageFeature(m_XZSize);
     mineShaftFeature = new MineShaftFeature();
     scatteredFeature = new RandomScatteredLargeFeature();
     canyonFeature = new CanyonFeature();
@@ -67,6 +73,8 @@ RandomLevelSource::~RandomLevelSource() {
     delete scatteredFeature;
     delete canyonFeature;
 
+    this->level = level;
+
     delete random;
     ;
     delete lperlinNoise1;
@@ -90,6 +98,140 @@ RandomLevelSource::~RandomLevelSource() {
 int g_numPrepareHeightCalls = 0;
 LARGE_INTEGER g_totalPrepareHeightsTime = {0, 0};
 LARGE_INTEGER g_averagePrepareHeightsTime = {0, 0};
+
+#ifdef _LARGE_WORLDS
+
+int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
+                                            float falloffStart) {
+    // Get distance to edges of world in x
+    // we have to do a proper line dist check here
+    int min = -worldSize / 2;
+    int max = (worldSize / 2) - 1;
+
+    // 	// only check if either x or z values are within the falloff
+    // 	if(xxx > (min - falloffStart)
+
+    Vec3* topLeft = Vec3::newTemp(min, 0, min);
+    Vec3* topRight = Vec3::newTemp(max, 0, min);
+    Vec3* bottomLeft = Vec3::newTemp(min, 0, max);
+    Vec3* bottomRight = Vec3::newTemp(max, 0, max);
+
+    float closest = falloffStart;
+    float dist;
+    // make sure we're in range of the edges before we do a full distance check
+    if ((xxx > (min - falloffStart) && xxx < (min + falloffStart)) ||
+        (xxx > (max - falloffStart) && xxx < (max + falloffStart))) {
+        Vec3* point = Vec3::newTemp(xxx, 0, zzz);
+        if (xxx > 0)
+            dist = point->distanceFromLine(topRight, bottomRight);
+        else
+            dist = point->distanceFromLine(topLeft, bottomLeft);
+        closest = dist;
+    }
+
+    // make sure we're in range of the edges before we do a full distance check
+    if ((zzz > (min - falloffStart) && zzz < (min + falloffStart)) ||
+        (zzz > (max - falloffStart) && zzz < (max + falloffStart))) {
+        Vec3* point = Vec3::newTemp(xxx, 0, zzz);
+        if (zzz > 0)
+            dist = point->distanceFromLine(bottomLeft, bottomRight);
+        else
+            dist = point->distanceFromLine(topLeft, topRight);
+        if (dist < closest) closest = dist;
+    }
+
+    return closest;
+}
+
+float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
+    ///////////////////////////////////////////////////////////////////
+    // 4J - add this chunk of code to make land "fall-off" at the edges of
+    // a finite world - size of that world is currently hard-coded in here
+    const int worldSize = m_XZSize * 16;
+    const int falloffStart =
+        32;  // chunks away from edge were we start doing fall-off
+    const float falloffMax =
+        128.0f;  // max value we need to get to falloff by the edge of the map
+
+    float comp = 0.0f;
+    int emin = getMinDistanceToEdge(xxx, zzz, worldSize, falloffStart);
+    // check if we have a larger world that should have moats
+    int expandedWorldSizes[3] = {LEVEL_WIDTH_CLASSIC * 16,
+                                 LEVEL_WIDTH_SMALL * 16,
+                                 LEVEL_WIDTH_MEDIUM * 16};
+    bool expandedMoatValues[3] = {m_classicEdgeMoat, m_smallEdgeMoat,
+                                  m_mediumEdgeMoat};
+    for (int i = 0; i < 3; i++) {
+        if (expandedMoatValues[i] && (worldSize > expandedWorldSizes[i])) {
+            // this world has been expanded, with moat settings, so we need
+            // fallofs at this edges too
+            int eminMoat = getMinDistanceToEdge(xxx, zzz, expandedWorldSizes[i],
+                                                falloffStart);
+            if (eminMoat < emin) {
+                emin = eminMoat;
+            }
+        }
+    }
+
+    // Calculate how much we want the world to fall away, if we're in the
+    // defined region to do so
+    if (emin < falloffStart) {
+        int falloff = falloffStart - emin;
+        comp = ((float)falloff / (float)falloffStart) * falloffMax;
+    }
+    *pEMin = emin;
+    return comp;
+    // 4J - end of extra code
+    ///////////////////////////////////////////////////////////////////
+}
+
+#else
+
+// MGH  - go back to using the simpler version for PS3/vita/360, as it was
+// causing a lot of slow down on the tuturial generation
+float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
+    ///////////////////////////////////////////////////////////////////
+    // 4J - add this chunk of code to make land "fall-off" at the edges of
+    // a finite world - size of that world is currently hard-coded in here
+    const int worldSize = m_XZSize * 16;
+    const int falloffStart =
+        32;  // chunks away from edge were we start doing fall-off
+    const float falloffMax =
+        128.0f;  // max value we need to get to falloff by the edge of the map
+
+    // Get distance to edges of world in x
+    int xxx0 = xxx + (worldSize / 2);
+    if (xxx0 < 0) xxx0 = 0;
+    int xxx1 = ((worldSize / 2) - 1) - xxx;
+    if (xxx1 < 0) xxx1 = 0;
+
+    // Get distance to edges of world in z
+    int zzz0 = zzz + (worldSize / 2);
+    if (zzz0 < 0) zzz0 = 0;
+    int zzz1 = ((worldSize / 2) - 1) - zzz;
+    if (zzz1 < 0) zzz1 = 0;
+
+    // Get min distance to any edge
+    int emin = xxx0;
+    if (xxx1 < emin) emin = xxx1;
+    if (zzz0 < emin) emin = zzz0;
+    if (zzz1 < emin) emin = zzz1;
+
+    float comp = 0.0f;
+
+    // Calculate how much we want the world to fall away, if we're in the
+    // defined region to do so
+    if (emin < falloffStart) {
+        int falloff = falloffStart - emin;
+        comp = ((float)falloff / (float)falloffStart) * falloffMax;
+    }
+    // 4J - end of extra code
+    ///////////////////////////////////////////////////////////////////
+    *pEMin = emin;
+    return comp;
+}
+
+#endif  // _LARGE_WORLDS
 
 void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
     LARGE_INTEGER startTime;
@@ -166,50 +308,19 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
                         double vala = (_s1 - _s0) * zStep;
                         val -= vala;
                         for (int z = 0; z < CHUNK_WIDTH; z++) {
-                            ///////////////////////////////////////////////////////////////////
-                            // 4J - add this chunk of code to make land
-                            // "fall-off" at the edges of a finite world - size
-                            // of that world is currently hard-coded in here
-                            const int worldSize = m_XZSize * 16;
-                            const int falloffStart =
-                                32;  // chunks away from edge were we start
-                                     // doing fall-off
-                            const float falloffMax =
-                                128.0f;  // max value we need to get to falloff
-                                         // by the edge of the map
-
+                            // 4J Stu - I have removed all uses of the new
+                            // getHeightFalloff function for now as we had some
+                            // problems with PS3/PSVita world generation I have
+                            // fixed the non large worlds method, however we
+                            // will be happier if the current builds go out with
+                            // completely old code We can put the new code back
+                            // in mid-november 2014 once those PS3/Vita builds
+                            // are gone (and the PS4 doesn't have world
+                            // enlarging in these either anyway)
                             int xxx = ((xOffs * 16) + x + (xc * CHUNK_WIDTH));
                             int zzz = ((zOffs * 16) + z + (zc * CHUNK_WIDTH));
-
-                            // Get distance to edges of world in x
-                            int xxx0 = xxx + (worldSize / 2);
-                            if (xxx0 < 0) xxx0 = 0;
-                            int xxx1 = ((worldSize / 2) - 1) - xxx;
-                            if (xxx1 < 0) xxx1 = 0;
-
-                            // Get distance to edges of world in z
-                            int zzz0 = zzz + (worldSize / 2);
-                            if (zzz0 < 0) zzz0 = 0;
-                            int zzz1 = ((worldSize / 2) - 1) - zzz;
-                            if (zzz1 < 0) zzz1 = 0;
-
-                            // Get min distance to any edge
-                            int emin = xxx0;
-                            if (xxx1 < emin) emin = xxx1;
-                            if (zzz0 < emin) emin = zzz0;
-                            if (zzz1 < emin) emin = zzz1;
-
-                            float comp = 0.0f;
-
-                            // Calculate how much we want the world to fall
-                            // away, if we're in the defined region to do so
-                            if (emin < falloffStart) {
-                                int falloff = falloffStart - emin;
-                                comp = ((float)falloff / (float)falloffStart) *
-                                       falloffMax;
-                            }
-                            // 4J - end of extra code
-                            ///////////////////////////////////////////////////////////////////
+                            int emin;
+                            float comp = getHeightFalloff(xxx, zzz, &emin);
 
                             // 4J - slightly rearranged this code (as of
                             // java 1.0.1 merge) to better fit with changes
@@ -220,7 +331,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
                             // 4J - this comparison used to just be with 0.0f
                             // but is now varied by block above
                             if ((val += vala) > comp) {
-                                tileId = (uint8_t)Tile::rock_Id;
+                                tileId = (uint8_t)Tile::stone_Id;
                             } else if (yc * CHUNK_HEIGHT + y < waterHeight) {
                                 tileId = (uint8_t)Tile::calmWater_Id;
                             }
@@ -236,7 +347,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
                                 // the edge of the world
                                 if (yc * CHUNK_HEIGHT + y <=
                                     (level->getSeaLevel() - 10))
-                                    tileId = Tile::rock_Id;
+                                    tileId = Tile::stone_Id;
                                 else if (yc * CHUNK_HEIGHT + y <
                                          level->getSeaLevel())
                                     tileId = Tile::calmWater_Id;
@@ -305,7 +416,8 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                 if (y <= 1 + random->nextInt(
                                  2))  // 4J - changed to make the bedrock not
                                       // have bits you can get stuck in
-                //                if (y <= 0 + random->nextInt(5))
+                                      //                if (y <= 0 +
+                                      //                random->nextInt(5))
                 {
                     blocks[offs] = (uint8_t)Tile::unbreakable_Id;
                 } else {
@@ -313,11 +425,11 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
 
                     if (old == 0) {
                         run = -1;
-                    } else if (old == Tile::rock_Id) {
+                    } else if (old == Tile::stone_Id) {
                         if (run == -1) {
                             if (runDepth <= 0) {
                                 top = 0;
-                                material = (uint8_t)Tile::rock_Id;
+                                material = (uint8_t)Tile::stone_Id;
                             } else if (y >= waterHeight - 4 &&
                                        y <= waterHeight + 1) {
                                 top = b->topMaterial;
@@ -343,8 +455,7 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                             run--;
                             blocks[offs] = material;
 
-                            // place a few sandstone blocks beneath sand
-                            // runs
+                            // place a few sandstone blocks beneath sand runs
                             if (run == 0 && material == Tile::sand_Id) {
                                 run = random->nextInt(4);
                                 material = (uint8_t)Tile::sandStone_Id;
@@ -636,18 +747,19 @@ void RandomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
                                             level->getData(xp + x2, y, zp + z2);
                                         if (od < 7 && od < d) {
                                             level->setData(xp + x2, y, zp + z2,
-                                                           d);
+                                                           d, Tile::UPDATE_ALL);
                                         }
                                     }
                                 }
                             }
                         }
                         if (hadWater) {
-                            level->setTileAndDataNoUpdate(
-                                xp, y, zp, Tile::calmWater_Id, 7);
+                            level->setTileAndData(xp, y, zp, Tile::calmWater_Id,
+                                                  7, Tile::UPDATE_CLIENTS);
                             for (int y2 = 0; y2 < y; y2++) {
-                                level->setTileAndDataNoUpdate(
-                                    xp, y2, zp, Tile::calmWater_Id, 8);
+                                level->setTileAndData(xp, y2, zp,
+                                                      Tile::calmWater_Id, 8,
+                                                      Tile::UPDATE_CLIENTS);
                             }
                         }
                     }
@@ -666,7 +778,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 
     Biome* biome = level->getBiome(xo + 16, zo + 16);
 
-    if (RandomLevelSource::FLOATING_ISLANDS) {
+    if (FLOATING_ISLANDS) {
         calcWaterDepths(parent, xt, zt);
     }
 
@@ -690,14 +802,15 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Lakes");
-    if (!hasVillage && pprandom->nextInt(4) == 0) {
-        int x = xo + pprandom->nextInt(16) + 8;
-        int y = pprandom->nextInt(Level::genDepth);
-        int z = zo + pprandom->nextInt(16) + 8;
+    if (biome != Biome::desert && biome != Biome::desertHills) {
+        if (!hasVillage && pprandom->nextInt(4) == 0) {
+            int x = xo + pprandom->nextInt(16) + 8;
+            int y = pprandom->nextInt(Level::genDepth);
+            int z = zo + pprandom->nextInt(16) + 8;
 
-        LakeFeature* calmWater = new LakeFeature(Tile::calmWater_Id);
-        calmWater->place(level, pprandom, x, y, z);
-        delete calmWater;
+            LakeFeature calmWater(Tile::calmWater_Id);
+            calmWater.place(level, pprandom, x, y, z);
+        }
     }
     PIXEndNamedEvent();
 
@@ -707,9 +820,8 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         int y = pprandom->nextInt(pprandom->nextInt(Level::genDepth - 8) + 8);
         int z = zo + pprandom->nextInt(16) + 8;
         if (y < level->seaLevel || pprandom->nextInt(10) == 0) {
-            LakeFeature* calmLava = new LakeFeature(Tile::calmLava_Id);
-            calmLava->place(level, pprandom, x, y, z);
-            delete calmLava;
+            LakeFeature calmLava(Tile::calmLava_Id);
+            calmLava.place(level, pprandom, x, y, z);
         }
     }
     PIXEndNamedEvent();
@@ -719,10 +831,8 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth);
         int z = zo + pprandom->nextInt(16) + 8;
-        MonsterRoomFeature* mrf = new MonsterRoomFeature();
-        if (mrf->place(level, pprandom, x, y, z)) {
-        }
-        delete mrf;
+        MonsterRoomFeature mrf;
+        mrf.place(level, pprandom, x, y, z);
     }
     PIXEndNamedEvent();
 
@@ -730,11 +840,16 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     biome->decorate(level, pprandom, xo, zo);
     PIXEndNamedEvent();
 
+    PIXBeginNamedEvent(0, "Process Schematics");
     app.processSchematics(parent->getChunk(xt, zt));
+    PIXEndNamedEvent();
 
+    PIXBeginNamedEvent(0, "Post process mobs");
     MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
                                      pprandom);
+    PIXEndNamedEvent();
 
+    PIXBeginNamedEvent(0, "Update ice and snow");
     // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
     xo += 8;
     zo += 8;
@@ -743,17 +858,16 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             int y = level->getTopRainBlock(xo + x, zo + z);
 
             if (level->shouldFreezeIgnoreNeighbors(x + xo, y - 1, z + zo)) {
-                level->setTileNoUpdate(
-                    x + xo, y - 1, z + zo,
-                    Tile::ice_Id);  // 4J - changed from setTile, otherwise we
-                                    // end up creating a *lot* of dynamic water
-                                    // tiles as these ice tiles are set
+                level->setTileAndData(x + xo, y - 1, z + zo, Tile::ice_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
             }
             if (level->shouldSnow(x + xo, y, z + zo)) {
-                level->setTile(x + xo, y, z + zo, Tile::topSnow_Id);
+                level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
             }
         }
     }
+    PIXEndNamedEvent();
 
     HeavyTile::instaFall = false;
 }
@@ -774,6 +888,10 @@ std::vector<Biome::MobSpawnerData*>* RandomLevelSource::getMobsAt(
     if (biome == NULL) {
         return NULL;
     }
+    if (mobCategory == MobCategory::monster &&
+        scatteredFeature->isSwamphut(x, y, z)) {
+        return scatteredFeature->getSwamphutEnemies();
+    }
     return biome->getMobs(mobCategory);
 }
 
@@ -783,4 +901,14 @@ TilePos* RandomLevelSource::findNearestMapFeature(
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
     return NULL;
+}
+
+void RandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
+                                                        int chunkZ) {
+    if (generateStructures) {
+        mineShaftFeature->apply(this, level, chunkX, chunkZ, NULL);
+        villageFeature->apply(this, level, chunkX, chunkZ, NULL);
+        strongholdFeature->apply(this, level, chunkX, chunkZ, NULL);
+        scatteredFeature->apply(this, level, chunkX, chunkZ, NULL);
+    }
 }

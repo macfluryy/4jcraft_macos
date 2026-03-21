@@ -18,7 +18,7 @@ _MapDataMappings::_MapDataMappings() {
 #ifndef _DURANGO
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
 #endif
-    ZeroMemory(dimensions, sizeof(std::uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
+    ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
 }
 
 int _MapDataMappings::getDimension(int id) {
@@ -79,7 +79,7 @@ _MapDataMappings_old::_MapDataMappings_old() {
 #ifndef _DURANGO
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
 #endif
-    ZeroMemory(dimensions, sizeof(std::uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
+    ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
 }
 
 int _MapDataMappings_old::getDimension(int id) {
@@ -100,8 +100,8 @@ void DirectoryLevelStorage::PlayerMappings::addMapping(int id, int centreX,
                                                        int centreZ,
                                                        int dimension,
                                                        int scale) {
-    __int64 index = (((__int64)(centreZ & 0x1FFFFFFF)) << 34) |
-                    (((__int64)(centreX & 0x1FFFFFFF)) << 5) |
+    int64_t index = (((int64_t)(centreZ & 0x1FFFFFFF)) << 34) |
+                    (((int64_t)(centreX & 0x1FFFFFFF)) << 5) |
                     ((scale & 0x7) << 2) | (dimension & 0x3);
     m_mappings[index] = id;
     // app.DebugPrintf("Adding mapping: %d - (%d,%d)/%d/%d [%I64d -
@@ -112,14 +112,14 @@ bool DirectoryLevelStorage::PlayerMappings::getMapping(int& id, int centreX,
                                                        int centreZ,
                                                        int dimension,
                                                        int scale) {
-    //__int64 zMasked = centreZ & 0x1FFFFFFF;
-    //__int64 xMasked = centreX & 0x1FFFFFFF;
-    //__int64 zShifted = zMasked << 34;
-    //__int64 xShifted = xMasked << 5;
+    //int64_t zMasked = centreZ & 0x1FFFFFFF;
+    //int64_t xMasked = centreX & 0x1FFFFFFF;
+    //int64_t zShifted = zMasked << 34;
+    //int64_t xShifted = xMasked << 5;
     // app.DebugPrintf("xShifted = %d (0x%016x), zShifted = %I64d
     // (0x%016llx)\n", xShifted, xShifted, zShifted, zShifted);
-    __int64 index = (((__int64)(centreZ & 0x1FFFFFFF)) << 34) |
-                    (((__int64)(centreX & 0x1FFFFFFF)) << 5) |
+    int64_t index = (((int64_t)(centreZ & 0x1FFFFFFF)) << 34) |
+                    (((int64_t)(centreX & 0x1FFFFFFF)) << 5) |
                     ((scale & 0x7) << 2) | (dimension & 0x3);
     AUTO_VAR(it, m_mappings.find(index));
     if (it != m_mappings.end()) {
@@ -148,7 +148,7 @@ void DirectoryLevelStorage::PlayerMappings::writeMappings(
 void DirectoryLevelStorage::PlayerMappings::readMappings(DataInputStream* dis) {
     int count = dis->readInt();
     for (unsigned int i = 0; i < count; ++i) {
-        __int64 index = dis->readLong();
+        int64_t index = dis->readLong();
         int id = dis->readInt();
         m_mappings[index] = id;
         app.DebugPrintf("    -- %lld (0x%016llx) = %d\n", index, index, id);
@@ -202,7 +202,7 @@ void DirectoryLevelStorage::checkSession() {
     // 4J-PB - Not in the Xbox game
 
     /*
-    File dataFile = File( dir, std::wstring(L"session.lock"));
+    File dataFile = File( dir, wstring(L"session.lock"));
     FileInputStream fis = FileInputStream(dataFile);
     DataInputStream dis = DataInputStream(&fis);
     dis.close();
@@ -260,8 +260,7 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
         } else
 #endif
         {
-            getSaveFile()->setFilePointer(fileEntry, 0,
-                                          SaveFileSeekOrigin::Begin);
+            getSaveFile()->setFilePointer(fileEntry, 0, NULL, FILE_BEGIN);
 
 #ifdef _LARGE_WORLDS
             byteArray data(fileEntry->getFileSize());
@@ -429,15 +428,12 @@ void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
 }
 
 // 4J Changed return val to bool to check if new player or loaded player
-bool DirectoryLevelStorage::load(std::shared_ptr<Player> player) {
-    bool newPlayer = true;
+CompoundTag* DirectoryLevelStorage::load(std::shared_ptr<Player> player) {
     CompoundTag* tag = loadPlayerDataTag(player->getXuid());
     if (tag != NULL) {
-        newPlayer = false;
         player->load(tag);
-        delete tag;
     }
-    return newPlayer;
+    return tag;
 }
 
 CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {

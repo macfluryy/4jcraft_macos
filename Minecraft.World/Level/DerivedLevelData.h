@@ -2,6 +2,8 @@
 
 #include "LevelData.h"
 
+class GameRules;
+
 class DerivedLevelData : public LevelData {
 private:
     LevelData* wrapped;
@@ -15,27 +17,29 @@ protected:
 public:
     CompoundTag* createTag();
     CompoundTag* createTag(std::vector<std::shared_ptr<Player> >* players);
-    __int64 getSeed();
+    int64_t getSeed();
     int getXSpawn();
     int getYSpawn();
     int getZSpawn();
-    __int64 getTime();
-    __int64 getSizeOnDisk();
+    int64_t getGameTime();
+    int64_t getDayTime();
+    int64_t getSizeOnDisk();
     CompoundTag* getLoadedPlayerTag();
     std::wstring getLevelName();
     int getVersion();
-    __int64 getLastPlayed();
+    int64_t getLastPlayed();
     bool isThundering();
     int getThunderTime();
     bool isRaining();
     int getRainTime();
     GameType* getGameType();
-    void setSeed(__int64 seed);
+    void setSeed(int64_t seed);
     void setXSpawn(int xSpawn);
     void setYSpawn(int ySpawn);
     void setZSpawn(int zSpawn);
-    void setTime(__int64 time);
-    void setSizeOnDisk(__int64 sizeOnDisk);
+    void setGameTime(int64_t time);
+    void setDayTime(int64_t time);
+    void setSizeOnDisk(int64_t sizeOnDisk);
     void setLoadedPlayerTag(CompoundTag* loadedPlayerTag);
     void setDimension(int dimension);
     void setSpawn(int xSpawn, int ySpawn, int zSpawn);
@@ -54,6 +58,7 @@ public:
     void setAllowCommands(bool allowCommands);
     bool isInitialized();
     void setInitialized(bool initialized);
+    GameRules* getGameRules();
     int getXZSize();     // 4J Added
     int getHellScale();  // 4J Addded
 };

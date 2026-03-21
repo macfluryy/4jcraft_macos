@@ -17,7 +17,7 @@ CompoundTag* DerivedLevelData::createTag(
     return wrapped->createTag(players);
 }
 
-__int64 DerivedLevelData::getSeed() { return wrapped->getSeed(); }
+int64_t DerivedLevelData::getSeed() { return wrapped->getSeed(); }
 
 int DerivedLevelData::getXSpawn() { return wrapped->getXSpawn(); }
 
@@ -25,9 +25,11 @@ int DerivedLevelData::getYSpawn() { return wrapped->getYSpawn(); }
 
 int DerivedLevelData::getZSpawn() { return wrapped->getZSpawn(); }
 
-__int64 DerivedLevelData::getTime() { return wrapped->getTime(); }
+int64_t DerivedLevelData::getGameTime() { return wrapped->getGameTime(); }
 
-__int64 DerivedLevelData::getSizeOnDisk() { return wrapped->getSizeOnDisk(); }
+int64_t DerivedLevelData::getDayTime() { return wrapped->getDayTime(); }
+
+int64_t DerivedLevelData::getSizeOnDisk() { return wrapped->getSizeOnDisk(); }
 
 CompoundTag* DerivedLevelData::getLoadedPlayerTag() {
     return wrapped->getLoadedPlayerTag();
@@ -39,7 +41,7 @@ std::wstring DerivedLevelData::getLevelName() {
 
 int DerivedLevelData::getVersion() { return wrapped->getVersion(); }
 
-__int64 DerivedLevelData::getLastPlayed() { return wrapped->getLastPlayed(); }
+int64_t DerivedLevelData::getLastPlayed() { return wrapped->getLastPlayed(); }
 
 bool DerivedLevelData::isThundering() { return wrapped->isThundering(); }
 
@@ -51,7 +53,7 @@ int DerivedLevelData::getRainTime() { return wrapped->getRainTime(); }
 
 GameType* DerivedLevelData::getGameType() { return wrapped->getGameType(); }
 
-void DerivedLevelData::setSeed(__int64 seed) {}
+void DerivedLevelData::setSeed(int64_t seed) {}
 
 void DerivedLevelData::setXSpawn(int xSpawn) {}
 
@@ -59,9 +61,11 @@ void DerivedLevelData::setYSpawn(int ySpawn) {}
 
 void DerivedLevelData::setZSpawn(int zSpawn) {}
 
-void DerivedLevelData::setTime(__int64 time) {}
+void DerivedLevelData::setGameTime(int64_t time) {}
 
-void DerivedLevelData::setSizeOnDisk(__int64 sizeOnDisk) {}
+void DerivedLevelData::setDayTime(int64_t time) {}
+
+void DerivedLevelData::setSizeOnDisk(int64_t sizeOnDisk) {}
 
 void DerivedLevelData::setLoadedPlayerTag(CompoundTag* loadedPlayerTag) {}
 
@@ -102,6 +106,8 @@ void DerivedLevelData::setAllowCommands(bool allowCommands) {}
 bool DerivedLevelData::isInitialized() { return wrapped->isInitialized(); }
 
 void DerivedLevelData::setInitialized(bool initialized) {}
+
+GameRules* DerivedLevelData::getGameRules() { return wrapped->getGameRules(); }
 
 int DerivedLevelData::getXZSize() { return wrapped->getXZSize(); }
 

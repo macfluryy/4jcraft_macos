@@ -3,7 +3,7 @@
 #include "ZoneIO.h"
 
 namespace {
-bool SeekFile(std::FILE* file, __int64 offset) {
+bool SeekFile(std::FILE* file, int64_t offset) {
 #if defined(_WIN32)
     return _fseeki64(file, offset, SEEK_SET) == 0;
 #else
@@ -12,7 +12,7 @@ bool SeekFile(std::FILE* file, __int64 offset) {
 }
 }  // namespace
 
-ZoneIo::ZoneIo(std::FILE* channel, __int64 pos) {
+ZoneIo::ZoneIo(std::FILE* channel, int64_t pos) {
     this->channel = channel;
     this->pos = pos;
 }

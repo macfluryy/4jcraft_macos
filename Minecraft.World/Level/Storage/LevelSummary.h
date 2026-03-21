@@ -5,8 +5,8 @@ class GameType;
 class LevelSummary {
     const std::wstring levelId;
     const std::wstring levelName;
-    const __int64 lastPlayed;
-    const __int64 sizeOnDisk;
+    const int64_t lastPlayed;
+    const int64_t sizeOnDisk;
     const bool requiresConversion;
     GameType* gameMode;
     const bool hardcore;
@@ -14,13 +14,13 @@ class LevelSummary {
 
 public:
     LevelSummary(const std::wstring& levelId, const std::wstring& levelName,
-                 __int64 lastPlayed, __int64 sizeOnDisk, GameType* gameMode,
+                 int64_t lastPlayed, int64_t sizeOnDisk, GameType* gameMode,
                  bool requiresConversion, bool hardcore, bool hasCheats);
     std::wstring getLevelId();
     std::wstring getLevelName();
-    __int64 getSizeOnDisk();
+    int64_t getSizeOnDisk();
     bool isRequiresConversion();
-    __int64 getLastPlayed();
+    int64_t getLastPlayed();
     int compareTo(LevelSummary* rhs);
     GameType* getGameMode();
     bool isHardcore();

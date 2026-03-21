@@ -1,5 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.entity.h"
+#include "../Headers/net.minecraft.world.entity.item.h"
+#include "../Headers/net.minecraft.world.item.enchantment.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
@@ -64,12 +66,18 @@ void Explosion::explode() {
                     int zt = Mth::floor(zp);
                     int t = level->getTile(xt, yt, zt);
                     if (t > 0) {
-                        remainingPower -=
-                            (Tile::tiles[t]->getExplosionResistance(source) +
-                             0.3f) *
-                            stepSize;
+                        Tile* tile = Tile::tiles[t];
+                        float resistance =
+                            source != NULL
+                                ? source->getTileExplosionResistance(
+                                      this, level, xt, yt, zt, tile)
+                                : tile->getExplosionResistance(source);
+                        remainingPower -= (resistance + 0.3f) * stepSize;
                     }
-                    if (remainingPower > 0) {
+                    if (remainingPower > 0 &&
+                        (source == NULL ||
+                         source->shouldTileExplode(this, level, xt, yt, zt, t,
+                                                   remainingPower))) {
                         toBlow.insert(TilePos(xt, yt, zt));
                     }
 
@@ -141,17 +149,19 @@ void Explosion::explode() {
             double sp = level->getSeenPercent(center, e->bb);
             double pow = (1 - dist) * sp;
             if (canDamage)
-                e->hurt(DamageSource::explosion,
+                e->hurt(DamageSource::explosion(this),
                         (int)((pow * pow + pow) / 2 * 8 * r + 1));
 
-            double push = pow;
-            e->xd += xa * push;
-            e->yd += ya * push;
-            e->zd += za * push;
+            double kbPower =
+                ProtectionEnchantment::getExplosionKnockbackAfterDampener(e,
+                                                                          pow);
+            e->xd += xa * kbPower;
+            e->yd += ya * kbPower;
+            e->zd += za * kbPower;
 
-            std::shared_ptr<Player> player =
-                std::dynamic_pointer_cast<Player>(e);
-            if (player != NULL) {
+            if (e->instanceof(eTYPE_PLAYER)) {
+                std::shared_ptr<Player> player =
+                    std::dynamic_pointer_cast<Player>(e);
                 // app.DebugPrintf("Adding player knockback (%f,%f,%f)\n", xa *
                 // pow, ya * pow, za * pow);
                 hitPlayers.insert(playerVec3Map::value_type(
@@ -171,72 +181,84 @@ void Explosion::finalizeExplosion(
         x, y, z, eSoundType_RANDOM_EXPLODE, 4,
         (1 + (level->random->nextFloat() - level->random->nextFloat()) * 0.2f) *
             0.7f);
-    level->addParticle(eParticleType_hugeexplosion, x, y, z, 0, 0, 0);
+    if (r < 2 || !destroyBlocks) {
+        level->addParticle(eParticleType_largeexplode, x, y, z, 1.0f, 0, 0);
+    } else {
+        level->addParticle(eParticleType_hugeexplosion, x, y, z, 1.0f, 0, 0);
+    }
 
     // 4J - use pointer to vector directly passed in if this is available - used
     // to speed up calling this from an incoming packet
     std::vector<TilePos>* toBlowArray =
         toBlowDirect ? toBlowDirect
                      : new std::vector<TilePos>(toBlow.begin(), toBlow.end());
-    // toBlowArray.addAll(toBlow);
-    //  TODO 4J Stu - Reverse iterator
-    PIXBeginNamedEvent(0, "Finalizing explosion size %d", toBlow.size());
-    app.DebugPrintf("Finalizing explosion size %d\n", toBlow.size());
-    static const int MAX_EXPLODE_PARTICLES = 50;
-    // 4J - try and make at most MAX_EXPLODE_PARTICLES pairs of particles
-    int fraction = (int)toBlowArray->size() / MAX_EXPLODE_PARTICLES;
-    if (fraction == 0) fraction = 1;
-    size_t j = toBlowArray->size() - 1;
-    // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
-    for (AUTO_VAR(it, toBlowArray->rbegin()); it != toBlowArray->rend(); ++it) {
-        TilePos* tp = &(*it);  //&toBlowArray->at(j);
-        int xt = tp->x;
-        int yt = tp->y;
-        int zt = tp->z;
-        // if (xt >= 0 && yt >= 0 && zt >= 0 && xt < width && yt < depth &&
-        // zt < height) {
-        int t = level->getTile(xt, yt, zt);
+    if (destroyBlocks) {
+        // toBlowArray.addAll(toBlow);
+        //  TODO 4J Stu - Reverse iterator
+        PIXBeginNamedEvent(0, "Finalizing explosion size %d", toBlow.size());
+        app.DebugPrintf("Finalizing explosion size %d\n", toBlow.size());
+        static const int MAX_EXPLODE_PARTICLES = 50;
+        // 4J - try and make at most MAX_EXPLODE_PARTICLES pairs of particles
+        int fraction = (int)toBlowArray->size() / MAX_EXPLODE_PARTICLES;
+        if (fraction == 0) fraction = 1;
+        size_t j = toBlowArray->size() - 1;
+        // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
+        for (AUTO_VAR(it, toBlowArray->rbegin()); it != toBlowArray->rend();
+             ++it) {
+            TilePos* tp = &(*it);  //&toBlowArray->at(j);
+            int xt = tp->x;
+            int yt = tp->y;
+            int zt = tp->z;
+            // if (xt >= 0 && yt >= 0 && zt >= 0 && xt < width && yt < depth &&
+            // zt < height) {
+            int t = level->getTile(xt, yt, zt);
 
-        if (generateParticles) {
-            if ((j % fraction) == 0) {
-                double xa = xt + level->random->nextFloat();
-                double ya = yt + level->random->nextFloat();
-                double za = zt + level->random->nextFloat();
+            if (generateParticles) {
+                if ((j % fraction) == 0) {
+                    double xa = xt + level->random->nextFloat();
+                    double ya = yt + level->random->nextFloat();
+                    double za = zt + level->random->nextFloat();
 
-                double xd = xa - x;
-                double yd = ya - y;
-                double zd = za - z;
+                    double xd = xa - x;
+                    double yd = ya - y;
+                    double zd = za - z;
 
-                double dd = sqrt(xd * xd + yd * yd + zd * zd);
+                    double dd = sqrt(xd * xd + yd * yd + zd * zd);
 
-                xd /= dd;
-                yd /= dd;
-                zd /= dd;
+                    xd /= dd;
+                    yd /= dd;
+                    zd /= dd;
 
-                double speed = 0.5 / (dd / r + 0.1);
-                speed *=
-                    (level->random->nextFloat() * level->random->nextFloat() +
-                     0.3f);
-                xd *= speed;
-                yd *= speed;
-                zd *= speed;
+                    double speed = 0.5 / (dd / r + 0.1);
+                    speed *= (level->random->nextFloat() *
+                                  level->random->nextFloat() +
+                              0.3f);
+                    xd *= speed;
+                    yd *= speed;
+                    zd *= speed;
 
-                level->addParticle(eParticleType_explode, (xa + x * 1) / 2,
-                                   (ya + y * 1) / 2, (za + z * 1) / 2, xd, yd,
-                                   zd);
-                level->addParticle(eParticleType_smoke, xa, ya, za, xd, yd, zd);
+                    level->addParticle(eParticleType_explode, (xa + x * 1) / 2,
+                                       (ya + y * 1) / 2, (za + z * 1) / 2, xd,
+                                       yd, zd);
+                    level->addParticle(eParticleType_smoke, xa, ya, za, xd, yd,
+                                       zd);
+                }
             }
-        }
 
-        if (t > 0) {
-            Tile::tiles[t]->spawnResources(level, xt, yt, zt,
-                                           level->getData(xt, yt, zt), 0.3f, 0);
-            level->setTile(xt, yt, zt, 0);
-            Tile::tiles[t]->wasExploded(level, xt, yt, zt);
-        }
-        // }
+            if (t > 0) {
+                Tile* tile = Tile::tiles[t];
 
-        --j;
+                if (tile->dropFromExplosion(this)) {
+                    tile->spawnResources(level, xt, yt, zt,
+                                         level->getData(xt, yt, zt), 1.0f / r,
+                                         0);
+                }
+                level->setTileAndData(xt, yt, zt, 0, 0, Tile::UPDATE_ALL);
+                tile->wasExploded(level, xt, yt, zt, this);
+            }
+
+            --j;
+        }
     }
 
     if (fire) {
@@ -250,7 +272,7 @@ void Explosion::finalizeExplosion(
             int t = level->getTile(xt, yt, zt);
             int b = level->getTile(xt, yt - 1, zt);
             if (t == 0 && Tile::solid[b] && random->nextInt(3) == 0) {
-                level->setTile(xt, yt, zt, Tile::fire_Id);
+                level->setTileAndUpdate(xt, yt, zt, Tile::fire_Id);
             }
         }
     }
@@ -267,4 +289,13 @@ Vec3* Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
     if (it == hitPlayers.end()) return Vec3::newTemp(0.0, 0.0, 0.0);
 
     return it->second;
+}
+
+std::shared_ptr<LivingEntity> Explosion::getSourceMob() {
+    if (source == NULL) return nullptr;
+    if (source->instanceof(eTYPE_PRIMEDTNT))
+        return std::dynamic_pointer_cast<PrimedTnt>(source)->getOwner();
+    if (source->instanceof(eTYPE_LIVINGENTITY))
+        return std::dynamic_pointer_cast<LivingEntity>(source);
+    return nullptr;
 }

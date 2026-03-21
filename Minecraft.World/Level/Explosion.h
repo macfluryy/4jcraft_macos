@@ -43,4 +43,5 @@ public:
                                NULL);  // 4J - added toBlow parameter
     playerVec3Map* getHitPlayers();
     Vec3* getHitPlayerKnockback(std::shared_ptr<Player> player);
+    std::shared_ptr<LivingEntity> getSourceMob();
 };

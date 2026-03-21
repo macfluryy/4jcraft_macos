@@ -10,11 +10,9 @@ class Player;
 class PlayerIO {
 public:
     virtual void save(std::shared_ptr<Player> player) = 0;
-    virtual bool load(std::shared_ptr<Player>
-                          player) = 0;  // 4J Changed return val to bool to
-                                        // check if new player or loaded player
+    virtual CompoundTag* load(std::shared_ptr<Player> player) = 0;
     virtual CompoundTag* loadPlayerDataTag(
-        PlayerUID xuid) = 0;  // 4J Changed from string name to xuid
+        PlayerUID xuid) = 0;  // 4J Changed from std::string name to xuid
 
     // 4J Added
     virtual void clearOldPlayerFiles() = 0;

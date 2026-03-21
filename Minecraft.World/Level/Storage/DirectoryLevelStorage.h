@@ -65,7 +65,7 @@ private:
     const ConsoleSavePath playerDir;
     // const File dataDir;
     const ConsoleSavePath dataDir;
-    const __int64 sessionId;
+    const int64_t sessionId;
     const std::wstring levelId;
 
     static const std::wstring sc_szPlayerDir;
@@ -75,7 +75,7 @@ private:
         friend class DirectoryLevelStorage;
 
     private:
-        std::unordered_map<__int64, short> m_mappings;
+        std::unordered_map<int64_t, short> m_mappings;
 
     public:
         void addMapping(int id, int centreX, int centreZ, int dimension,
@@ -130,9 +130,10 @@ public:
                                std::vector<std::shared_ptr<Player> >* players);
     virtual void saveLevelData(LevelData* levelData);
     virtual void save(std::shared_ptr<Player> player);
-    virtual bool load(std::shared_ptr<Player>
-                          player);  // 4J Changed return val to bool to check if
-                                    // new player or loaded player
+    virtual CompoundTag* load(
+        std::shared_ptr<Player>
+            player);  // 4J Changed return val to bool to check if new player or
+                      // loaded player
     virtual CompoundTag* loadPlayerDataTag(PlayerUID xuid);
     virtual void clearOldPlayerFiles();  // 4J Added
     PlayerIO* getPlayerIO();

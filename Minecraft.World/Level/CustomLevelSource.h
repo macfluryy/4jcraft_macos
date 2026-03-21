@@ -11,6 +11,7 @@ class LargeFeature;
 class StrongholdFeature;
 class VillageFeature;
 class MineShaftFeature;
+class RandomScatteredLargeFeature;
 
 class CustomLevelSource : public ChunkSource {
 public:
@@ -29,6 +30,7 @@ private:
     StrongholdFeature* strongholdFeature;
     VillageFeature* villageFeature;
     MineShaftFeature* mineShaftFeature;
+    RandomScatteredLargeFeature* scatteredFeature;
     LargeFeature* canyonFeature;
     Level* level;
 #endif
@@ -40,7 +42,7 @@ private:
     const bool generateStructures;
 
 public:
-    CustomLevelSource(Level* level, __int64 seed, bool generateStructures);
+    CustomLevelSource(Level* level, int64_t seed, bool generateStructures);
     ~CustomLevelSource();
 
 public:
@@ -76,4 +78,5 @@ public:
     virtual TilePos* findNearestMapFeature(Level* level,
                                            const std::wstring& featureName,
                                            int x, int y, int z);
+    virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
 };

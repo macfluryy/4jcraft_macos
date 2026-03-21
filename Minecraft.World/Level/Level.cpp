@@ -18,14 +18,11 @@
 #include "../Headers/net.minecraft.world.level.levelgen.h"
 #include "../Headers/net.minecraft.world.level.storage.h"
 #include "../Headers/net.minecraft.world.level.pathfinder.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
+#include "../Headers/net.minecraft.world.scores.h"
 #include "../Headers/net.minecraft.world.phys.h"
-#include "ChunkPos.h"
 #include "Explosion.h"
 #include "Events/LevelListener.h"
-#include "../Util/LightLayer.h"
-#include "../Blocks/MobSpawner.h"
-#include "Storage/Region.h"
-#include "TickNextTickData.h"
 #include "Level.h"
 #include "../Util/ThreadName.h"
 #include "../Util/WeighedRandom.h"
@@ -41,6 +38,7 @@
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
+#include "../../Minecraft.Client/MinecraftServer.h"
 #include <cstdint>
 
 namespace {
@@ -140,15 +138,72 @@ void Level::destroyLightingCache() {
     XPhysicalFree(cache);
 }
 
-void Level::initCache(lightCache_t* cache) {
+inline int GetIndex(int x, int y, int z) {
+    return ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
+}
+
+void Level::initCachePartial(lightCache_t* cache, int xc, int yc, int zc) {
     cachewritten = false;
     if (cache == NULL) return;
 
+    int idx;
+    if (!(yc & 0xffffff00)) {
+        idx = GetIndex(xc, yc, zc);
+        cache[idx] = 0;
+        idx = GetIndex(xc - 1, yc, zc);
+        cache[idx] = 0;
+        idx = GetIndex(xc + 1, yc, zc);
+        cache[idx] = 0;
+        idx = GetIndex(xc, yc, zc - 1);
+        cache[idx] = 0;
+        idx = GetIndex(xc, yc, zc + 1);
+        cache[idx] = 0;
+    }
+    if (!((yc - 1) & 0xffffff00)) {
+        idx = GetIndex(xc, yc - 1, zc);
+        cache[idx] = 0;
+    }
+    if (!((yc + 1) & 0xffffff00)) {
+        idx = GetIndex(xc, yc + 1, zc);
+        cache[idx] = 0;
+    }
+}
+
+void Level::initCacheComplete(lightCache_t* cache, int xc, int yc, int zc) {
+    lightCache_t old[7];
+    if (!(yc & 0xffffff00)) {
+        old[0] = cache[GetIndex(xc, yc, zc)];
+        old[1] = cache[GetIndex(xc - 1, yc, zc)];
+        old[2] = cache[GetIndex(xc + 1, yc, zc)];
+        old[5] = cache[GetIndex(xc, yc, zc - 1)];
+        old[6] = cache[GetIndex(xc, yc, zc + 1)];
+    }
+    if (!((yc - 1) & 0xffffff00)) {
+        old[3] = cache[GetIndex(xc, yc - 1, zc)];
+    }
+    if (!((yc + 1) & 0xffffff00)) {
+        old[4] = cache[GetIndex(xc, yc + 1, zc)];
+    }
+
     XMemSet128(cache, 0, 16 * 16 * 16 * sizeof(lightCache_t));
+
+    if (!(yc & 0xffffff00)) {
+        cache[GetIndex(xc, yc, zc)] = old[0];
+        cache[GetIndex(xc - 1, yc, zc)] = old[1];
+        cache[GetIndex(xc + 1, yc, zc)] = old[2];
+        cache[GetIndex(xc, yc, zc - 1)] = old[5];
+        cache[GetIndex(xc, yc, zc + 1)] = old[6];
+    }
+    if (!((yc - 1) & 0xffffff00)) {
+        cache[GetIndex(xc, yc - 1, zc)] = old[3];
+    }
+    if (!((yc + 1) & 0xffffff00)) {
+        cache[GetIndex(xc, yc + 1, zc)] = old[4];
+    }
 }
 
 // Set a brightness value, going through the cache if  enabled for this thread
-void inline Level::setBrightnessCached(lightCache_t* cache, __uint64* cacheUse,
+void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
                                        LightLayer::variety layer, int x, int y,
                                        int z, int brightness) {
     if (cache == NULL) {
@@ -162,8 +217,8 @@ void inline Level::setBrightnessCached(lightCache_t* cache, __uint64* cacheUse,
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
 #ifdef _LARGE_WORLDS
     // Add in the higher bits for x and z
-    posbits |= ((((__uint64)x) & 0x3FFFC00L) << 38) |
-               ((((__uint64)z) & 0x3FFFC00L) << 22);
+    posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
+               ((((uint64_t)z) & 0x3FFFC00L) << 22);
 #endif
 
     lightCache_t cacheValue = cache[idx];
@@ -222,8 +277,8 @@ inline int Level::getBrightnessCached(lightCache_t* cache,
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
 #ifdef _LARGE_WORLDS
     // Add in the higher bits for x and z
-    posbits |= ((((__uint64)x) & 0x3FFFC00L) << 38) |
-               ((((__uint64)z) & 0x3FFFC00L) << 22);
+    posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
+               ((((uint64_t)z) & 0x3FFFC00L) << 22);
 #endif
 
     lightCache_t cacheValue = cache[idx];
@@ -281,8 +336,8 @@ inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
 #ifdef _LARGE_WORLDS
     // Add in the higher bits for x and z
-    posbits |= ((((__uint64)x) & 0x3FFFC00) << 38) |
-               ((((__uint64)z) & 0x3FFFC00) << 22);
+    posbits |= ((((uint64_t)x) & 0x3FFFC00) << 38) |
+               ((((uint64_t)z) & 0x3FFFC00) << 22);
 #endif
 
     lightCache_t cacheValue = cache[idx];
@@ -349,8 +404,8 @@ inline int Level::getBlockingCached(lightCache_t* cache,
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
 #ifdef _LARGE_WORLDS
     // Add in the higher bits for x and z
-    posbits |= ((((__uint64)x) & 0x3FFFC00L) << 38) |
-               ((((__uint64)z) & 0x3FFFC00L) << 22);
+    posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
+               ((((uint64_t)z) & 0x3FFFC00L) << 22);
 #endif
 
     lightCache_t cacheValue = cache[idx];
@@ -411,7 +466,7 @@ inline int Level::getBlockingCached(lightCache_t* cache,
 // renderer know what has been updated (2) it lets the lighting actually
 // complete before we get any visual representation of the update, otherwise we
 // end up seeing some strange partial updates
-void Level::flushCache(lightCache_t* cache, __uint64 cacheUse,
+void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
                        LightLayer::variety layer) {
     // cacheUse has a single bit for each x, y and z to say whether anything
     // with that x, y or z has been written to
@@ -494,11 +549,7 @@ void Level::_init() {
 
     oThunderLevel = thunderLevel = 0.0f;
 
-    lightningTime = 0;
-
-    lightningBoltTime = 0;
-
-    noNeighborUpdate = false;
+    skyFlashTime = 0;
 
     difficulty = 0;
 
@@ -528,11 +579,10 @@ void Level::_init() {
     InitializeCriticalSection(&m_entitiesCS);
     InitializeCriticalSection(&m_tileEntityListCS);
 
-    m_timeOfDayOverride = -1;
-
     updatingTileEntities = false;
 
     villageSiege = new VillageSiege(this);
+    scoreboard = new Scoreboard();
 
     toCheckLevel = new int[32 * 32 * 32];  // 4J - brought forward from 1.8.2
     InitializeCriticalSectionAndSpinCount(
@@ -568,14 +618,14 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
     : seaLevel(constSeaLevel) {
     _init();
     this->levelStorage =
-        levelStorage;  // std::shared_ptr<LevelStorage>(levelStorage);
+        levelStorage;  // shared_ptr<LevelStorage>(levelStorage);
     this->dimension = dimension;
-    this->levelData = new LevelData(levelSettings, name);
+    levelData = new LevelData(levelSettings, name);
     if (!this->levelData->useNewSeaLevel())
         seaLevel = Level::genDepth /
                    2;  // 4J added - sea level is one unit lower since 1.8.2,
                        // maintain older height for old levels
-    this->savedDataStorage = new SavedDataStorage(levelStorage.get());
+    savedDataStorage = new SavedDataStorage(levelStorage.get());
 
     std::shared_ptr<Villages> savedVillages =
         std::dynamic_pointer_cast<Villages>(
@@ -592,34 +642,6 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
     chunkSource = NULL;  // 4J - added flag so chunk source can be called from
                          // derived class instead
 
-    updateSkyBrightness();
-    prepareWeather();
-}
-
-Level::Level(Level* level, Dimension* dimension) : seaLevel(constSeaLevel) {
-    _init();
-    this->levelStorage = level->levelStorage;
-    this->levelData = new LevelData(level->levelData);
-    if (!this->levelData->useNewSeaLevel())
-        seaLevel = Level::genDepth /
-                   2;  // 4J added - sea level is one unit lower since 1.8.2,
-                       // maintain older height for old levels
-    this->savedDataStorage = new SavedDataStorage(levelStorage.get());
-
-    std::shared_ptr<Villages> savedVillages =
-        std::dynamic_pointer_cast<Villages>(
-            savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
-    if (savedVillages == NULL) {
-        villages = std::shared_ptr<Villages>(new Villages(this));
-        savedDataStorage->set(Villages::VILLAGE_FILE_ID, villages);
-    } else {
-        villages = savedVillages;
-        villages->setLevel(this);
-    }
-
-    this->dimension = dimension;
-    dimension->init(this);
-    chunkSource = NULL;
     updateSkyBrightness();
     prepareWeather();
 }
@@ -643,8 +665,8 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
                   Dimension* fixedDimension, bool doCreateChunkSource) {
     _init();
     this->levelStorage =
-        levelStorage;  // std::shared_ptr<LevelStorage>(levelStorage);
-    this->savedDataStorage = new SavedDataStorage(levelStorage.get());
+        levelStorage;  // shared_ptr<LevelStorage>(levelStorage);
+    savedDataStorage = new SavedDataStorage(levelStorage.get());
 
     std::shared_ptr<Villages> savedVillages =
         std::dynamic_pointer_cast<Villages>(
@@ -707,6 +729,8 @@ Level::~Level() {
     delete chunkSource;
     delete levelData;
     delete toCheckLevel;
+    delete scoreboard;
+    delete villageSiege;
 
     if (!isClientSide) {
         NotGateTile::removeLevelReferences(this);  // 4J added
@@ -726,8 +750,8 @@ Level::~Level() {
     // LevelRenderer
     /*
     for(int i = 0; i < listeners.size(); i++)
-            delete listeners[i];
-            */
+    delete listeners[i];
+    */
 }
 
 void Level::initializeLevel(LevelSettings* settings) {
@@ -781,6 +805,15 @@ bool Level::isEntityTile(int x, int y, int z) {
 
 int Level::getTileRenderShape(int x, int y, int z) {
     int t = getTile(x, y, z);
+    if (Tile::tiles[t] != NULL) {
+        return Tile::tiles[t]->getRenderShape();
+    }
+    return Tile::SHAPE_INVISIBLE;
+}
+
+// 4J Added to slightly optimise and avoid getTile call if we already know the
+// tile
+int Level::getTileRenderShape(int t) {
     if (Tile::tiles[t] != NULL) {
         return Tile::tiles[t]->getRenderShape();
     }
@@ -849,12 +882,8 @@ LevelChunk* Level::getChunk(int x, int z) {
     return this->chunkSource->getChunk(x, z);
 }
 
-bool Level::setTileAndDataNoUpdate(int x, int y, int z, int tile, int data) {
-    return setTileAndDataNoUpdate(x, y, z, tile, data, true);
-}
-
-bool Level::setTileAndDataNoUpdate(int x, int y, int z, int tile, int data,
-                                   bool informClients) {
+bool Level::setTileAndData(int x, int y, int z, int tile, int data,
+                           int updateFlags) {
     if (x < -MAX_LEVEL_SIZE || z < -MAX_LEVEL_SIZE || x >= MAX_LEVEL_SIZE ||
         z >= MAX_LEVEL_SIZE) {
         return false;
@@ -862,50 +891,39 @@ bool Level::setTileAndDataNoUpdate(int x, int y, int z, int tile, int data,
     if (y < 0) return false;
     if (y >= maxBuildHeight) return false;
     LevelChunk* c = getChunk(x >> 4, z >> 4);
-    // 4J - changes for lighting brought forward from 1.8.2
+
+    int oldTile = 0;
+    if ((updateFlags & Tile::UPDATE_NEIGHBORS) != 0) {
+        oldTile = c->getTile(x & 15, y, z & 15);
+    }
     bool result;
 #ifndef _CONTENT_PACKAGE
     int old = c->getTile(x & 15, y, z & 15);
     int olddata = c->getData(x & 15, y, z & 15);
 #endif
     result = c->setTileAndData(x & 15, y, z & 15, tile, data);
+    if (updateFlags != Tile::UPDATE_INVISIBLE_NO_LIGHT) {
 #ifndef _CONTENT_PACKAGE
-    PIXBeginNamedEvent(0, "Checking light %d %d %d", x, y, z);
-    PIXBeginNamedEvent(0, "was %d, %d now %d, %d", old, olddata, tile, data);
+        PIXBeginNamedEvent(0, "Checking light %d %d %d", x, y, z);
+        PIXBeginNamedEvent(0, "was %d, %d now %d, %d", old, olddata, tile,
+                           data);
 #endif
-    this->checkLight(x, y, z);
-    PIXEndNamedEvent();
-    PIXEndNamedEvent();
-    if (informClients && result && (isClientSide || c->seenByPlayer))
-        sendTileUpdated(x, y, z);
-    return result;
-}
-
-bool Level::setTileNoUpdate(int x, int y, int z, int tile) {
-    if (x < -MAX_LEVEL_SIZE || z < -MAX_LEVEL_SIZE || x >= MAX_LEVEL_SIZE ||
-        z >= MAX_LEVEL_SIZE) {
-        return false;
+        checkLight(x, y, z);
+        PIXEndNamedEvent();
+        PIXEndNamedEvent();
     }
-    if (y < 0) return false;
-    if (y >= maxBuildHeight) return false;
-    LevelChunk* c = getChunk(x >> 4, z >> 4);
-    // 4J - changes for lighting brought forward from 1.8.2
-    bool result = c->setTile(x & 15, y, z & 15, tile);
-    this->checkLight(x, y, z);
-    if (result && (isClientSide || c->seenByPlayer)) sendTileUpdated(x, y, z);
-    return result;
-}
-
-bool Level::setTileNoUpdateNoLightCheck(int x, int y, int z, int tile) {
-    if (x < -MAX_LEVEL_SIZE || z < -MAX_LEVEL_SIZE || x >= MAX_LEVEL_SIZE ||
-        z >= MAX_LEVEL_SIZE) {
-        return false;
+    if (result) {
+        if ((updateFlags & Tile::UPDATE_CLIENTS) != 0 &&
+            !(isClientSide && (updateFlags & Tile::UPDATE_INVISIBLE) != 0)) {
+            sendTileUpdated(x, y, z);
+        }
+        if (!isClientSide && (updateFlags & Tile::UPDATE_NEIGHBORS) != 0) {
+            tileUpdated(x, y, z, oldTile);
+            Tile* tobj = Tile::tiles[tile];
+            if (tobj != NULL && tobj->hasAnalogOutputSignal())
+                updateNeighbourForOutputSignal(x, y, z, tile);
+        }
     }
-    if (y < 0) return false;
-    if (y >= maxBuildHeight) return false;
-    LevelChunk* c = getChunk(x >> 4, z >> 4);
-    // 4J - changes for lighting brought forward from 1.8.2
-    bool result = c->setTile(x & 15, y, z & 15, tile);
     return result;
 }
 
@@ -928,15 +946,9 @@ int Level::getData(int x, int y, int z) {
     return c->getData(x, y, z);
 }
 
-void Level::setData(int x, int y, int z, int data,
-                    bool forceUpdate /*=false*/)  // 4J added forceUpdate
+bool Level::setData(int x, int y, int z, int data, int updateFlags,
+                    bool forceUpdate /*=false*/)  // 4J added forceUpdate)
 {
-    if (setDataNoUpdate(x, y, z, data) || forceUpdate) {
-        tileUpdated(x, y, z, getTile(x, y, z));
-    }
-}
-
-bool Level::setDataNoUpdate(int x, int y, int z, int data) {
     if (x < -MAX_LEVEL_SIZE || z < -MAX_LEVEL_SIZE || x >= MAX_LEVEL_SIZE ||
         z >= MAX_LEVEL_SIZE) {
         return false;
@@ -961,26 +973,62 @@ bool Level::setDataNoUpdate(int x, int y, int z, int data) {
     bool maskedBitsChanged;
     bool result =
         c->setData(cx, y, cz, data, importantMask, &maskedBitsChanged);
-    if (result && (isClientSide ||
-                   (c->seenByPlayer && sendTileData && maskedBitsChanged)))
-        sendTileUpdated(x, y, z);
+    if (result || forceUpdate) {
+        int tile = c->getTile(cx, y, cz);
+        if (forceUpdate ||
+            ((updateFlags & Tile::UPDATE_CLIENTS) != 0 &&
+             !(isClientSide && (updateFlags & Tile::UPDATE_INVISIBLE) != 0))) {
+            sendTileUpdated(x, y, z);
+        }
+        if (!isClientSide &&
+            (forceUpdate || (updateFlags & Tile::UPDATE_NEIGHBORS) != 0)) {
+            tileUpdated(x, y, z, tile);
+            Tile* tobj = Tile::tiles[tile];
+            if (tobj != NULL && tobj->hasAnalogOutputSignal())
+                updateNeighbourForOutputSignal(x, y, z, tile);
+        }
+    }
     return result;
 }
 
-bool Level::setTile(int x, int y, int z, int tile) {
-    if (setTileNoUpdate(x, y, z, tile)) {
-        tileUpdated(x, y, z, tile);
-        return true;
+/**
+ * Sets a tile to air without dropping resources or showing any animation.
+ *
+ * @param x
+ * @param y
+ * @param z
+ * @return
+ */
+bool Level::removeTile(int x, int y, int z) {
+    return setTileAndData(x, y, z, 0, 0, Tile::UPDATE_ALL);
+}
+
+/**
+ * Sets a tile to air and plays a destruction animation, with option to also
+ * drop resources.
+ *
+ * @param x
+ * @param y
+ * @param z
+ * @param dropResources
+ * @return True if anything was changed
+ */
+bool Level::destroyTile(int x, int y, int z, bool dropResources) {
+    int tile = getTile(x, y, z);
+    if (tile > 0) {
+        int data = getData(x, y, z);
+        levelEvent(LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z,
+                   tile + (data << Tile::TILE_NUM_SHIFT));
+        if (dropResources) {
+            Tile::tiles[tile]->spawnResources(this, x, y, z, data, 0);
+        }
+        return setTileAndData(x, y, z, 0, 0, Tile::UPDATE_ALL);
     }
     return false;
 }
 
-bool Level::setTileAndData(int x, int y, int z, int tile, int data) {
-    if (setTileAndDataNoUpdate(x, y, z, tile, data)) {
-        tileUpdated(x, y, z, tile);
-        return true;
-    }
-    return false;
+bool Level::setTileAndUpdate(int x, int y, int z, int tile) {
+    return setTileAndData(x, y, z, tile, 0, Tile::UPDATE_ALL);
 }
 
 void Level::sendTileUpdated(int x, int y, int z) {
@@ -991,7 +1039,7 @@ void Level::sendTileUpdated(int x, int y, int z) {
 }
 
 void Level::tileUpdated(int x, int y, int z, int tile) {
-    this->updateNeighborsAt(x, y, z, tile);
+    updateNeighborsAt(x, y, z, tile);
 }
 
 void Level::lightColumnChanged(int x, int z, int y0, int y1) {
@@ -1031,19 +1079,6 @@ void Level::setTilesDirty(int x0, int y0, int z0, int x1, int y1, int z1) {
     }
 }
 
-void Level::swap(int x1, int y1, int z1, int x2, int y2, int z2) {
-    int t1 = getTile(x1, y1, z1);
-    int d1 = getData(x1, y1, z1);
-    int t2 = getTile(x2, y2, z2);
-    int d2 = getData(x2, y2, z2);
-
-    setTileAndDataNoUpdate(x1, y1, z1, t2, d2);
-    setTileAndDataNoUpdate(x2, y2, z2, t1, d1);
-
-    updateNeighborsAt(x1, y1, z1, t2);
-    updateNeighborsAt(x2, y2, z2, t1);
-}
-
 void Level::updateNeighborsAt(int x, int y, int z, int tile) {
     neighborChanged(x - 1, y, z, tile);
     neighborChanged(x + 1, y, z, tile);
@@ -1053,10 +1088,28 @@ void Level::updateNeighborsAt(int x, int y, int z, int tile) {
     neighborChanged(x, y, z + 1, tile);
 }
 
+void Level::updateNeighborsAtExceptFromFacing(int x, int y, int z, int tile,
+                                              int skipFacing) {
+    if (skipFacing != Facing::WEST) neighborChanged(x - 1, y, z, tile);
+    if (skipFacing != Facing::EAST) neighborChanged(x + 1, y, z, tile);
+    if (skipFacing != Facing::DOWN) neighborChanged(x, y - 1, z, tile);
+    if (skipFacing != Facing::UP) neighborChanged(x, y + 1, z, tile);
+    if (skipFacing != Facing::NORTH) neighborChanged(x, y, z - 1, tile);
+    if (skipFacing != Facing::SOUTH) neighborChanged(x, y, z + 1, tile);
+}
+
 void Level::neighborChanged(int x, int y, int z, int type) {
-    if (noNeighborUpdate || isClientSide) return;
-    Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile != NULL) tile->neighborChanged(this, x, y, z, type);
+    if (isClientSide) return;
+    int id = getTile(x, y, z);
+    Tile* tile = Tile::tiles[id];
+
+    if (tile != NULL) {
+        tile->neighborChanged(this, x, y, z, type);
+    }
+}
+
+bool Level::isTileToBeTickedAt(int x, int y, int z, int tileId) {
+    return false;
 }
 
 bool Level::canSeeSky(int x, int y, int z) {
@@ -1081,23 +1134,17 @@ int Level::getRawBrightness(int x, int y, int z, bool propagate) {
 
     if (propagate) {
         int id = getTile(x, y, z);
-        switch (id) {
-            case Tile::stoneSlabHalf_Id:
-            case Tile::woodSlabHalf_Id:
-            case Tile::farmland_Id:
-            case Tile::stairs_stone_Id:
-            case Tile::stairs_wood_Id: {
-                int br = getRawBrightness(x, y + 1, z, false);
-                int br1 = getRawBrightness(x + 1, y, z, false);
-                int br2 = getRawBrightness(x - 1, y, z, false);
-                int br3 = getRawBrightness(x, y, z + 1, false);
-                int br4 = getRawBrightness(x, y, z - 1, false);
-                if (br1 > br) br = br1;
-                if (br2 > br) br = br2;
-                if (br3 > br) br = br3;
-                if (br4 > br) br = br4;
-                return br;
-            } break;
+        if (Tile::propagate[id]) {
+            int br = getRawBrightness(x, y + 1, z, false);
+            int br1 = getRawBrightness(x + 1, y, z, false);
+            int br2 = getRawBrightness(x - 1, y, z, false);
+            int br3 = getRawBrightness(x, y, z + 1, false);
+            int br4 = getRawBrightness(x, y, z - 1, false);
+            if (br1 > br) br = br1;
+            if (br2 > br) br = br2;
+            if (br3 > br) br = br3;
+            if (br4 > br) br = br4;
+            return br;
         }
     }
 
@@ -1136,6 +1183,17 @@ int Level::getHeightmap(int x, int z) {
 
     LevelChunk* c = getChunk(x >> 4, z >> 4);
     return c->getHeightmap(x & 15, z & 15);
+}
+
+int Level::getLowestHeightmap(int x, int z) {
+    if (x < -MAX_LEVEL_SIZE || z < -MAX_LEVEL_SIZE || x >= MAX_LEVEL_SIZE ||
+        z >= MAX_LEVEL_SIZE) {
+        return 0;
+    }
+    if (!hasChunk(x >> 4, z >> 4)) return 0;
+
+    LevelChunk* c = getChunk(x >> 4, z >> 4);
+    return c->lowestHeightmap;
 }
 
 void Level::updateLightIfOtherThan(LightLayer::variety layer, int x, int y,
@@ -1347,7 +1405,7 @@ float Level::getBrightness(int x, int y, int z) {
     return dimension->brightnessRamp[getRawBrightness(x, y, z)];
 }
 
-bool Level::isDay() { return this->skyDarken < 4; }
+bool Level::isDay() { return skyDarken < 4; }
 
 HitResult* Level::clip(Vec3* a, Vec3* b) { return clip(a, b, false, false); }
 
@@ -1493,8 +1551,8 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
     return NULL;
 }
 
-void Level::playSound(std::shared_ptr<Entity> entity, int iSound, float volume,
-                      float pitch) {
+void Level::playEntitySound(std::shared_ptr<Entity> entity, int iSound,
+                            float volume, float pitch) {
     if (entity == NULL) return;
     AUTO_VAR(itEnd, listeners.end());
     for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
@@ -1502,7 +1560,7 @@ void Level::playSound(std::shared_ptr<Entity> entity, int iSound, float volume,
         if (entity->GetType() == eTYPE_SERVERPLAYER) {
             // app.DebugPrintf("ENTITY is serverplayer\n");
 
-            (*it)->playSound(entity, iSound, entity->x,
+            (*it)->playSound(iSound, entity->x,
                              entity->y - entity->heightOffset, entity->z,
                              volume, pitch);
         } else {
@@ -1513,7 +1571,18 @@ void Level::playSound(std::shared_ptr<Entity> entity, int iSound, float volume,
     }
 }
 
-// void Level::playSound(double x, double y, double z, const std::wstring& name,
+void Level::playPlayerSound(std::shared_ptr<Player> entity, int iSound,
+                            float volume, float pitch) {
+    if (entity == NULL) return;
+    AUTO_VAR(itEnd, listeners.end());
+    for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
+        (*it)->playSoundExceptPlayer(entity, iSound, entity->x,
+                                     entity->y - entity->heightOffset,
+                                     entity->z, volume, pitch);
+    }
+}
+
+// void Level::playSound(double x, double y, double z, const wstring& name,
 // float volume, float pitch)
 void Level::playSound(double x, double y, double z, int iSound, float volume,
                       float pitch, float fClipSoundDist) {
@@ -1524,7 +1593,8 @@ void Level::playSound(double x, double y, double z, int iSound, float volume,
 }
 
 void Level::playLocalSound(double x, double y, double z, int iSound,
-                           float volume, float pitch, float fClipSoundDist) {}
+                           float volume, float pitch, bool distanceDelay,
+                           float fClipSoundDist) {}
 
 void Level::playStreamingMusic(const std::wstring& name, int x, int y, int z) {
     AUTO_VAR(itEnd, listeners.end());
@@ -1533,17 +1603,17 @@ void Level::playStreamingMusic(const std::wstring& name, int x, int y, int z) {
     }
 }
 
-void Level::playMusic(double x, double y, double z, const std::wstring& string,
-                      float volume) {}
+void Level::playMusic(double x, double y, double z,
+                      const std::wstring& std::string, float volume) {}
 
 // 4J removed -
 /*
-void Level::addParticle(const std::wstring& id, double x, double y, double z,
-double xd, double yd, double zd)
+void Level::addParticle(const wstring& id, double x, double y, double z, double
+xd, double yd, double zd)
 {
-        AUTO_VAR(itEnd, listeners.end());
-        for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++)
-                (*it)->addParticle(id, x, y, z, xd, yd, zd);
+AUTO_VAR(itEnd, listeners.end());
+for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++)
+(*it)->addParticle(id, x, y, z, xd, yd, zd);
 }
 */
 
@@ -1570,13 +1640,13 @@ bool Level::addEntity(std::shared_ptr<Entity> e) {
         return false;
     }
 
-    bool forced = false;
-    if (std::dynamic_pointer_cast<Player>(e) != NULL) {
+    bool forced = e->forcedLoading;
+    if (e->instanceof(eTYPE_PLAYER)) {
         forced = true;
     }
 
     if (forced || hasChunk(xc, zc)) {
-        if (std::dynamic_pointer_cast<Player>(e) != NULL) {
+        if (e->instanceof(eTYPE_PLAYER)) {
             std::shared_ptr<Player> player =
                 std::dynamic_pointer_cast<Player>(e);
 
@@ -1636,7 +1706,7 @@ void Level::removeEntity(std::shared_ptr<Entity> e) {
         e->ride(nullptr);
     }
     e->remove();
-    if (std::dynamic_pointer_cast<Player>(e) != NULL) {
+    if (e->instanceof(eTYPE_PLAYER)) {
         std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
         std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
         while (it != itEnd && *it != std::dynamic_pointer_cast<Player>(e)) it++;
@@ -1655,7 +1725,7 @@ void Level::removeEntity(std::shared_ptr<Entity> e) {
 void Level::removeEntityImmediately(std::shared_ptr<Entity> e) {
     e->remove();
 
-    if (std::dynamic_pointer_cast<Player>(e) != NULL) {
+    if (e->instanceof(eTYPE_PLAYER)) {
         std::vector<std::shared_ptr<Player> >::iterator it = players.begin();
         std::vector<std::shared_ptr<Player> >::iterator itEnd = players.end();
         while (it != itEnd && *it != std::dynamic_pointer_cast<Player>(e)) it++;
@@ -1702,7 +1772,8 @@ void Level::removeListener(LevelListener* listener) {
 
 // 4J - added noEntities and blockAtEdge parameter
 AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
-                          bool noEntities, bool blockAtEdge) {
+                          bool noEntities /* = false*/,
+                          bool blockAtEdge /* = false*/) {
     boxes.clear();
     int x0 = Mth::floor(box->x0);
     int x1 = Mth::floor(box->x1 + 1);
@@ -1720,7 +1791,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
             if (blockAtEdge &&
                 ((x < minxz) || (x >= maxxz) || (z < minxz) || (z >= maxxz))) {
                 for (int y = y0 - 1; y < y1; y++) {
-                    Tile::rock->addAABBs(this, x, y, z, box, &boxes, source);
+                    Tile::stone->addAABBs(this, x, y, z, box, &boxes, source);
                 }
             } else {
                 if (hasChunkAt(x, 64, z)) {
@@ -1740,7 +1811,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
         for (int y = y0 - 1; y < 0; y++) {
             for (int x = x0; x < x1; x++)
                 for (int z = z0; z < z1; z++) {
-                    Tile::rock->addAABBs(this, x, y, z, box, &boxes, source);
+                    Tile::stone->addAABBs(this, x, y, z, box, &boxes, source);
                 }
         }
     }
@@ -1750,7 +1821,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
         for (int y = maxMovementHeight; y < y1; y++) {
             for (int x = x0; x < x1; x++)
                 for (int z = z0; z < z1; z++) {
-                    Tile::rock->addAABBs(this, x, y, z, box, &boxes, source);
+                    Tile::stone->addAABBs(this, x, y, z, box, &boxes, source);
                 }
         }
     }
@@ -1788,7 +1859,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
 
 // 4J Stu - Brought forward from 12w36 to fix #46282 - TU5: Gameplay: Exiting
 // the minecart in a tight corridor damages the player
-AABBList* Level::getTileCubes(AABB* box, bool blockAtEdge) {
+AABBList* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
     return getCubes(nullptr, box, true, blockAtEdge);
     // boxes.clear();
     // int x0 = Mth::floor(box->x0);
@@ -1893,8 +1964,8 @@ Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
         b = b * ba + mid * (1 - ba);
     }
 
-    if (lightningBoltTime > 0) {
-        float f = (lightningBoltTime - a);
+    if (skyFlashTime > 0) {
+        float f = (skyFlashTime - a);
         if (f > 1) f = 1;
         f = f * 0.45f;
         r = r * (1 - f) + 0.8f * f;
@@ -1915,16 +1986,17 @@ float Level::getTimeOfDay(float a) {
 
     // 4J Added if so we can override timeOfDay without changing the time that
     // affects ticking of things
-    if (m_timeOfDayOverride >= 0) {
-        return dimension->getTimeOfDay(m_timeOfDayOverride, a);
-    } else {
-        return dimension->getTimeOfDay(levelData->getTime(), a);
-        ;
-    }
+    return dimension->getTimeOfDay(levelData->getDayTime(), a);
+    ;
 }
 
-int Level::getMoonPhase(float a) {
-    return dimension->getMoonPhase(levelData->getTime(), a);
+int Level::getMoonPhase() {
+    return dimension->getMoonPhase(levelData->getDayTime());
+}
+
+float Level::getMoonBrightness() {
+    return Dimension::MOON_BRIGHTNESS_PER_PHASE[dimension->getMoonPhase(
+        levelData->getDayTime())];
 }
 
 float Level::getSunAngle(float a) {
@@ -2030,24 +2102,26 @@ float Level::getStarBrightness(float a) {
 
 void Level::addToTickNextTick(int x, int y, int z, int tileId, int tickDelay) {}
 
-void Level::forceAddTileTick(int x, int y, int z, int tileId, int tickDelay) {}
+void Level::addToTickNextTick(int x, int y, int z, int tileId, int tickDelay,
+                              int priorityTilt) {}
+
+void Level::forceAddTileTick(int x, int y, int z, int tileId, int tickDelay,
+                             int prioTilt) {}
 
 void Level::tickEntities() {
-    // for (int i = 0; i < globalEntities.size(); i++)
     std::vector<std::shared_ptr<Entity> >::iterator itGE =
         globalEntities.begin();
     while (itGE != globalEntities.end()) {
-        std::shared_ptr<Entity> e = *itGE;  // globalEntities.at(i);
+        std::shared_ptr<Entity> e = *itGE;
+        e->tickCount++;
         e->tick();
         if (e->removed) {
-            // globalEntities.remove(i--);
             itGE = globalEntities.erase(itGE);
         } else {
             itGE++;
         }
     }
 
-    // entities.removeAll(entitiesToRemove);
     EnterCriticalSection(&m_entitiesCS);
 
     for (AUTO_VAR(it, entities.begin()); it != entities.end();) {
@@ -2107,8 +2181,7 @@ void Level::tickEntities() {
         if (!e->removed) {
 #ifndef _FINAL_BUILD
             if (!(app.DebugSettingsOn() && app.GetMobsDontTickEnabled() &&
-                  (std::dynamic_pointer_cast<Mob>(e) != NULL) &&
-                  (std::dynamic_pointer_cast<Player>(e) == NULL)))
+                  e->instanceof(eTYPE_MOB) && !e->instanceof(eTYPE_PLAYER)))
 #endif
             {
                 tick(e);
@@ -2143,7 +2216,7 @@ void Level::tickEntities() {
     updatingTileEntities = true;
     for (AUTO_VAR(it, tileEntityList.begin()); it != tileEntityList.end();) {
         std::shared_ptr<TileEntity> te =
-            *it;  // tilestd::vector<std::shared_ptr<Entity> >.at(i);
+            *it;  // tilevector<shared_ptr<Entity> >.at(i);
         if (!te->isRemoved() && te->hasLevel()) {
             if (hasChunkAt(te->x, te->y, te->z)) {
 #ifdef _LARGE_WORLDS
@@ -2266,6 +2339,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     if (actual && e->inChunk)
 #endif
     {
+        e->tickCount++;
         if (e->riding != NULL) {
             e->rideTick();
         } else {
@@ -2442,8 +2516,8 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
 
     bool ok = false;
     Vec3* current = Vec3::newTemp(0, 0, 0);
-    for (int x = x0; x < x1; x++)
-        for (int y = y0; y < y1; y++)
+    for (int x = x0; x < x1; x++) {
+        for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
                 if (tile != NULL && tile->material == material) {
@@ -2455,7 +2529,9 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
                     }
                 }
             }
-    if (current->length() > 0) {
+        }
+    }
+    if (current->length() > 0 && e->isPushedByWater()) {
         current = current->normalize();
         double pow = 0.014;
         e->xd += current->x * pow;
@@ -2473,14 +2549,16 @@ bool Level::containsMaterial(AABB* box, Material* material) {
     int z0 = Mth::floor(box->z0);
     int z1 = Mth::floor(box->z1 + 1);
 
-    for (int x = x0; x < x1; x++)
-        for (int y = y0; y < y1; y++)
+    for (int x = x0; x < x1; x++) {
+        for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
                 if (tile != NULL && tile->material == material) {
                     return true;
                 }
             }
+        }
+    }
     return false;
 }
 
@@ -2492,8 +2570,8 @@ bool Level::containsLiquid(AABB* box, Material* material) {
     int z0 = Mth::floor(box->z0);
     int z1 = Mth::floor(box->z1 + 1);
 
-    for (int x = x0; x < x1; x++)
-        for (int y = y0; y < y1; y++)
+    for (int x = x0; x < x1; x++) {
+        for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
                 if (tile != NULL && tile->material == material) {
@@ -2507,6 +2585,8 @@ bool Level::containsLiquid(AABB* box, Material* material) {
                     }
                 }
             }
+        }
+    }
     return false;
 }
 
@@ -2562,23 +2642,23 @@ bool Level::extinguishFire(std::shared_ptr<Player> player, int x, int y, int z,
 
     if (getTile(x, y, z) == Tile::fire_Id) {
         levelEvent(player, LevelEvent::SOUND_FIZZ, x, y, z, 0);
-        setTile(x, y, z, 0);
+        removeTile(x, y, z);
         return true;
     }
     return false;
 }
 
 /*
-std::shared_ptr<Entity> Level::findSubclassOf(Entity::Class *entityClass)
+shared_ptr<Entity> Level::findSubclassOf(Entity::Class *entityClass)
 {
-        return std::shared_ptr<Entity>();
+return shared_ptr<Entity>();
 }
 */
 
 std::wstring Level::gatherStats() {
     wchar_t buf[64];
     EnterCriticalSection(&m_entitiesCS);
-    swprintf(buf, 64, L"All:%d", this->entities.size());
+    swprintf(buf, 64, L"All:%d", entities.size());
     LeaveCriticalSection(&m_entitiesCS);
     return std::wstring(buf);
 }
@@ -2588,33 +2668,44 @@ std::wstring Level::gatherChunkSourceStats() {
 }
 
 std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
-    if (y >= Level::maxBuildHeight) {
+    if (y < minBuildHeight || y >= maxBuildHeight) {
         return nullptr;
     }
-    LevelChunk* lc = getChunk(x >> 4, z >> 4);
-    if (lc != NULL) return lc->getTileEntity(x & 15, y, z & 15);
+    std::shared_ptr<TileEntity> tileEntity = nullptr;
 
-    if (lc != NULL) {
-        std::shared_ptr<TileEntity> tileEntity =
-            lc->getTileEntity(x & 15, y, z & 15);
-
-        if (tileEntity == NULL) {
-            EnterCriticalSection(&m_tileEntityListCS);
-            for (AUTO_VAR(it, pendingTileEntities.begin());
-                 it != pendingTileEntities.end(); it++) {
-                std::shared_ptr<TileEntity> e = *it;
-
-                if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
-                    tileEntity = e;
-                    break;
-                }
+    if (updatingTileEntities) {
+        EnterCriticalSection(&m_tileEntityListCS);
+        for (int i = 0; i < pendingTileEntities.size(); i++) {
+            std::shared_ptr<TileEntity> e = pendingTileEntities.at(i);
+            if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
+                tileEntity = e;
+                break;
             }
-            LeaveCriticalSection(&m_tileEntityListCS);
         }
-        return tileEntity;
+        LeaveCriticalSection(&m_tileEntityListCS);
     }
 
-    return nullptr;
+    if (tileEntity == NULL) {
+        LevelChunk* lc = getChunk(x >> 4, z >> 4);
+        if (lc != NULL) {
+            tileEntity = lc->getTileEntity(x & 15, y, z & 15);
+        }
+    }
+
+    if (tileEntity == NULL) {
+        EnterCriticalSection(&m_tileEntityListCS);
+        for (AUTO_VAR(it, pendingTileEntities.begin());
+             it != pendingTileEntities.end(); it++) {
+            std::shared_ptr<TileEntity> e = *it;
+
+            if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
+                tileEntity = e;
+                break;
+            }
+        }
+        LeaveCriticalSection(&m_tileEntityListCS);
+    }
+    return tileEntity;
 }
 
 void Level::setTileEntity(int x, int y, int z,
@@ -2625,6 +2716,19 @@ void Level::setTileEntity(int x, int y, int z,
             tileEntity->x = x;
             tileEntity->y = y;
             tileEntity->z = z;
+
+            // avoid adding duplicates
+            for (AUTO_VAR(it, pendingTileEntities.begin());
+                 it != pendingTileEntities.end();) {
+                std::shared_ptr<TileEntity> next = *it;
+                if (next->x == x && next->y == y && next->z == z) {
+                    next->setRemoved();
+                    it = pendingTileEntities.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+
             pendingTileEntities.push_back(tileEntity);
         } else {
             tileEntityList.push_back(tileEntity);
@@ -2727,29 +2831,40 @@ bool Level::isSolidBlockingTileInLoadedChunk(int x, int y, int z,
     return tile->material->isSolidBlocking() && tile->isCubeShaped();
 }
 
-// 4J - brought forward from 1.3.2
+bool Level::isFullAABBTile(int x, int y, int z) {
+    int tile = getTile(x, y, z);
+    if (tile == 0 || Tile::tiles[tile] == NULL) {
+        return false;
+    }
+    AABB* aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
+    return aabb != NULL && aabb->getSize() >= 1;
+}
+
 bool Level::isTopSolidBlocking(int x, int y, int z) {
     // Temporary workaround until tahgs per-face solidity is finished
     Tile* tile = Tile::tiles[getTile(x, y, z)];
+    return isTopSolidBlocking(tile, getData(x, y, z));
+}
+
+bool Level::isTopSolidBlocking(Tile* tile, int data) {
     if (tile == NULL) return false;
 
     if (tile->material->isSolidBlocking() && tile->isCubeShaped()) return true;
     if (dynamic_cast<StairTile*>(tile) != NULL) {
-        return (getData(x, y, z) & StairTile::UPSIDEDOWN_BIT) ==
-               StairTile::UPSIDEDOWN_BIT;
+        return (data & StairTile::UPSIDEDOWN_BIT) == StairTile::UPSIDEDOWN_BIT;
     }
     if (dynamic_cast<HalfSlabTile*>(tile) != NULL) {
-        return (getData(x, y, z) & HalfSlabTile::TOP_SLOT_BIT) ==
+        return (data & HalfSlabTile::TOP_SLOT_BIT) ==
                HalfSlabTile::TOP_SLOT_BIT;
     }
+    if (dynamic_cast<HopperTile*>(tile) != NULL) return true;
     if (dynamic_cast<TopSnowTile*>(tile) != NULL)
-        return (getData(x, y, z) & TopSnowTile::HEIGHT_MASK) ==
-               TopSnowTile::MAX_HEIGHT + 1;
+        return (data & TopSnowTile::HEIGHT_MASK) == TopSnowTile::MAX_HEIGHT + 1;
     return false;
 }
 
 void Level::updateSkyBrightness() {
-    int newDark = this->getOldSkyDarken(1);
+    int newDark = getOldSkyDarken(1);
     if (newDark != skyDarken) {
         skyDarken = newDark;
     }
@@ -2768,9 +2883,9 @@ void Level::tick() {
 
 void Level::prepareWeather() {
     if (levelData->isRaining()) {
-        this->rainLevel = 1;
+        rainLevel = 1;
         if (levelData->isThundering()) {
-            this->thunderLevel = 1;
+            thunderLevel = 1;
         }
     }
 }
@@ -2792,10 +2907,6 @@ void Level::tickWeather() {
         }
     }
 #endif
-
-    if (lightningTime > 0) {
-        lightningTime--;
-    }
 
     int thunderTime = levelData->getThunderTime();
     if (thunderTime <= 0) {
@@ -2830,9 +2941,9 @@ void Level::tickWeather() {
             levelData->setRaining(!levelData->isRaining());
         }
         /*		if( !levelData->isRaining() )
-                        {
-                                levelData->setRaining(true);
-                        }*/
+        {
+        levelData->setRaining(true);
+        }*/
     }
 
     oRainLevel = rainLevel;
@@ -2924,8 +3035,8 @@ void Level::buildAndPrepareChunksToPoll() {
 void Level::tickClientSideTiles(int xo, int zo, LevelChunk* lc) {
     // lc->tick();	// 4J - brought this lighting update forward from 1.8.2
 
-    if (delayUntilNextMoodSound == 0) {
-        randValue = (unsigned)randValue * 3 + (unsigned)addend;
+    if (delayUntilNextMoodSound == 0 && !isClientSide) {
+        randValue = randValue * 3 + addend;
         int val = (randValue >> 2);
         int x = (val & 15);
         int z = ((val >> 8) & 15);
@@ -2953,7 +3064,9 @@ void Level::tickClientSideTiles(int xo, int zo, LevelChunk* lc) {
                                 0.8f + random->nextFloat() * 0.2f);
 #endif
                 delayUntilNextMoodSound =
-                    random->nextInt(20 * 60 * 10) + 20 * 60 * 5;
+                    random->nextInt(SharedConstants::TICKS_PER_SECOND * 60 *
+                                    10) +
+                    SharedConstants::TICKS_PER_SECOND * 60 * 5;
             }
         }
     }
@@ -3032,59 +3145,32 @@ void Level::checkLight(
         checkLight(LightLayer::Sky, x, y, z, force, false);
     checkLight(LightLayer::Block, x, y, z, force, rootOnlyEmissive);
 }
-int Level::getExpectedSkyColor(lightCache_t* cache, int oc, int x, int y, int z,
-                               int ct, int block) {
-    int expected = 0;
 
-    if (block == 255) return 0;  // 4J added as optimisation
-
-    if (canSeeSky(x, y, z)) {
-        expected = 15;
-    } else {
-        if (block == 0) block = 1;
-
-        // 4J - changed this to attempt to get all 6 brightnesses of neighbours
-        // in a single call, as an optimisation
-        int b[6];
-        b[0] = getBrightnessCached(cache, LightLayer::Sky, x - 1, y, z);
-        b[1] = getBrightnessCached(cache, LightLayer::Sky, x + 1, y, z);
-        b[2] = getBrightnessCached(cache, LightLayer::Sky, x, y - 1, z);
-        b[3] = getBrightnessCached(cache, LightLayer::Sky, x, y + 1, z);
-        b[4] = getBrightnessCached(cache, LightLayer::Sky, x, y, z - 1);
-        b[5] = getBrightnessCached(cache, LightLayer::Sky, x, y, z + 1);
-        for (int i = 0; i < 6; i++) {
-            if ((b[i] - block) > expected) expected = b[i] - block;
-        }
+int Level::getExpectedLight(lightCache_t* cache, int x, int y, int z,
+                            LightLayer::variety layer, bool propagatedOnly) {
+    if (layer == LightLayer::Sky && canSeeSky(x, y, z)) return MAX_BRIGHTNESS;
+    int id = getTile(x, y, z);
+    int result = layer == LightLayer::Sky ? 0 : Tile::lightEmission[id];
+    int block = Tile::lightBlock[id];
+    if (block >= MAX_BRIGHTNESS && Tile::lightEmission[id] > 0) block = 1;
+    if (block < 1) block = 1;
+    if (block >= MAX_BRIGHTNESS) {
+        return propagatedOnly ? 0 : getEmissionCached(cache, 0, x, y, z);
     }
 
-    return expected;
-}
+    if (result >= MAX_BRIGHTNESS - 1) return result;
 
-int Level::getExpectedBlockColor(lightCache_t* cache, int oc, int x, int y,
-                                 int z, int ct, int block,
-                                 bool propagatedOnly) {
-    int expected = propagatedOnly ? 0 : getEmissionCached(cache, ct, x, y, z);
+    for (int face = 0; face < 6; face++) {
+        int xx = x + Facing::STEP_X[face];
+        int yy = y + Facing::STEP_Y[face];
+        int zz = z + Facing::STEP_Z[face];
+        int brightness = getBrightnessCached(cache, layer, xx, yy, zz) - block;
 
-    if (block >= 15) return expected;  // 4J added as optimisation
-
-    // 4J - changed this to attempt to get all 6 brightnesses of neighbours in a
-    // single call, as an optimisation
-    int b[6];
-    b[0] = getBrightnessCached(cache, LightLayer::Block, x - 1, y, z);
-    b[1] = getBrightnessCached(cache, LightLayer::Block, x + 1, y, z);
-    b[2] = getBrightnessCached(cache, LightLayer::Block, x, y - 1, z);
-    b[3] = getBrightnessCached(cache, LightLayer::Block, x, y + 1, z);
-    b[4] = getBrightnessCached(cache, LightLayer::Block, x, y, z - 1);
-    b[5] = getBrightnessCached(cache, LightLayer::Block, x, y, z + 1);
-    for (int i = 0; i < 6; i++) {
-        if ((b[i] - block) > expected) expected = b[i] - block;
+        if (brightness > result) result = brightness;
+        if (result >= MAX_BRIGHTNESS - 1) return result;
     }
 
-    return expected;
-}
-
-inline int GetIndex(int x, int y, int z) {
-    return ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
+    return result;
 }
 
 // 4J - Made changes here so that lighting goes through a cache, if enabled for
@@ -3106,7 +3192,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
 
 #if 0
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	 // Get the frequency of the timer
+	// Get the frequency of the timer
 	LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime, qwDeltaTime1, qwDeltaTime2;
 	float fElapsedTime1 = 0.0f;
 	float fElapsedTime2 = 0.0f;
@@ -3119,36 +3205,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
 
     EnterCriticalSection(&m_checkLightCS);
 
-#ifdef __PSVITA__
-    // AP - only clear the one array element required to check if something has
-    // changed
-    cachewritten = false;
-    if (cache != NULL) {
-        int idx;
-        if (!(yc & 0xffffff00)) {
-            idx = GetIndex(xc, yc, zc);
-            cache[idx] = 0;
-            idx = GetIndex(xc - 1, yc, zc);
-            cache[idx] = 0;
-            idx = GetIndex(xc + 1, yc, zc);
-            cache[idx] = 0;
-            idx = GetIndex(xc, yc, zc - 1);
-            cache[idx] = 0;
-            idx = GetIndex(xc, yc, zc + 1);
-            cache[idx] = 0;
-        }
-        if (!((yc - 1) & 0xffffff00)) {
-            idx = GetIndex(xc, yc - 1, zc);
-            cache[idx] = 0;
-        }
-        if (!((yc + 1) & 0xffffff00)) {
-            idx = GetIndex(xc, yc + 1, zc);
-            cache[idx] = 0;
-        }
-    }
-#else
-    initCache(cache);
-#endif
+    initCachePartial(cache, xc, yc, zc);
 
     // If we're in cached mode, then use memory allocated after the cached data
     // itself for the toCheck array, in an attempt to make both that & the other
@@ -3161,8 +3218,8 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
         toCheck = (int*)(cache + (16 * 16 * 16));
     }
 
-    int tcp = 0;
-    int tcc = 0;
+    int checkedPosition = 0;
+    int toCheckCount = 0;
     // int darktcc = 0;
 
     // 4J - added
@@ -3177,68 +3234,19 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
     // toCheck array) on L2 to try and stop any cached data getting knocked out
     // of L2 by other non-cached reads (or vice-versa)
     //	if( cache ) XLockL2(XLOCKL2_INDEX_TITLE, cache, 128 * 1024,
-    //XLOCKL2_LOCK_SIZE_1_WAY, 0 );
+    // XLOCKL2_LOCK_SIZE_1_WAY, 0 );
 
     {
-        int cc = getBrightnessCached(cache, layer, xc, yc, zc);
-        int ex = 0;
-        {
-            int ct = 0;
-            int block = getBlockingCached(cache, layer, &ct, xc, yc, zc);
-            if (block == 0) block = 1;
+        int centerCurrent = getBrightnessCached(cache, layer, xc, yc, zc);
+        int centerExpected = getExpectedLight(cache, xc, yc, zc, layer, false);
 
-            int expected = 0;
-            if (layer == LightLayer::Sky) {
-                expected =
-                    getExpectedSkyColor(cache, cc, xc, yc, zc, ct, block);
-            } else {
-                expected = getExpectedBlockColor(cache, cc, xc, yc, zc, ct,
-                                                 block, false);
-            }
-
-            ex = expected;
+        if (centerExpected != centerCurrent && cache) {
+            initCacheComplete(cache, xc, yc, zc);
         }
 
-#ifdef __PSVITA__
-        // AP - we only need to memset the entire array if we discover something
-        // has changed
-        if (ex != cc && cache) {
-            lightCache_t old[7];
-            if (!(yc & 0xffffff00)) {
-                old[0] = cache[GetIndex(xc, yc, zc)];
-                old[1] = cache[GetIndex(xc - 1, yc, zc)];
-                old[2] = cache[GetIndex(xc + 1, yc, zc)];
-                old[5] = cache[GetIndex(xc, yc, zc - 1)];
-                old[6] = cache[GetIndex(xc, yc, zc + 1)];
-            }
-            if (!((yc - 1) & 0xffffff00)) {
-                old[3] = cache[GetIndex(xc, yc - 1, zc)];
-            }
-            if (!((yc + 1) & 0xffffff00)) {
-                old[4] = cache[GetIndex(xc, yc + 1, zc)];
-            }
-
-            XMemSet128(cache, 0, 16 * 16 * 16 * sizeof(lightCache_t));
-
-            if (!(yc & 0xffffff00)) {
-                cache[GetIndex(xc, yc, zc)] = old[0];
-                cache[GetIndex(xc - 1, yc, zc)] = old[1];
-                cache[GetIndex(xc + 1, yc, zc)] = old[2];
-                cache[GetIndex(xc, yc, zc - 1)] = old[5];
-                cache[GetIndex(xc, yc, zc + 1)] = old[6];
-            }
-            if (!((yc - 1) & 0xffffff00)) {
-                cache[GetIndex(xc, yc - 1, zc)] = old[3];
-            }
-            if (!((yc + 1) & 0xffffff00)) {
-                cache[GetIndex(xc, yc + 1, zc)] = old[4];
-            }
-        }
-#endif
-
-        if (ex > cc) {
-            toCheck[tcc++] = ((32)) + ((32) << 6) + ((32) << 12);
-        } else if (ex < cc) {
+        if (centerExpected > centerCurrent) {
+            toCheck[toCheckCount++] = 32 | (32 << 6) | (32 << 12);
+        } else if (centerExpected < centerCurrent) {
             // 4J - added tcn. This is the code that is run when checkLight has
             // been called for a light source that has got darker / turned off.
             // In the original version, after zeroing tiles brightnesses that
@@ -3251,35 +3259,30 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
             // original light source we are turning off)
             int tcn = 0;
             if (layer == LightLayer::Block || true) {
-                toCheck[tcc++] =
-                    ((32)) + ((32) << 6) + ((32) << 12) + (cc << 18);
-                while (tcp < tcc) {
-                    int p = toCheck[tcp++];
+                toCheck[toCheckCount++] =
+                    32 | (32 << 6) | (32 << 12) | (centerCurrent << 18);
+                while (checkedPosition < toCheckCount) {
+                    int p = toCheck[checkedPosition++];
                     int x = ((p) & 63) - 32 + xc;
                     int y = ((p >> 6) & 63) - 32 + yc;
                     int z = ((p >> 12) & 63) - 32 + zc;
-                    int cexp = ((p >> 18) & 15);
-                    int o = getBrightnessCached(cache, layer, x, y, z);
-                    if (o == cexp) {
+                    int expected = ((p >> 18) & 15);
+                    int current = getBrightnessCached(cache, layer, x, y, z);
+                    if (current == expected) {
                         setBrightnessCached(cache, &cacheUse, layer, x, y, z,
                                             0);
                         // cexp--;		// 4J - removed, change
                         // from 1.2.3
-                        if (cexp > 0) {
-                            int xd = x - xc;
-                            int yd = y - yc;
-                            int zd = z - zc;
-                            if (xd < 0) xd = -xd;
-                            if (yd < 0) yd = -yd;
-                            if (zd < 0) zd = -zd;
+                        if (expected > 0) {
+                            int xd = Mth::abs(x - xc);
+                            int yd = Mth::abs(y - yc);
+                            int zd = Mth::abs(z - zc);
                             if (xd + yd + zd < 17) {
                                 bool edge = false;
-                                for (int j = 0; j < 6; j++) {
-                                    int flip = j % 2 * 2 - 1;
-
-                                    int xx = x + ((j / 2) % 3 / 2) * flip;
-                                    int yy = y + ((j / 2 + 1) % 3 / 2) * flip;
-                                    int zz = z + ((j / 2 + 2) % 3 / 2) * flip;
+                                for (int face = 0; face < 6; face++) {
+                                    int xx = x + Facing::STEP_X[face];
+                                    int yy = y + Facing::STEP_Y[face];
+                                    int zz = z + Facing::STEP_Z[face];
 
                                     // 4J - added - don't let this lighting
                                     // creep out of the normal fixed world and
@@ -3290,28 +3293,28 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                                     if ((yy < 0) || (yy >= maxBuildHeight))
                                         continue;
 
-                                    o = getBrightnessCached(cache, layer, xx,
-                                                            yy, zz);
                                     // 4J - some changes here brought forward
                                     // from 1.2.3
-                                    int block = getBlockingCached(
-                                        cache, layer, NULL, xx, yy, zz);
-                                    if (block == 0) block = 1;
-                                    if ((o == cexp - block) &&
-                                        (tcc <
+                                    int block = std::max(
+                                        1, getBlockingCached(cache, layer, NULL,
+                                                             xx, yy, zz));
+                                    current = getBrightnessCached(cache, layer,
+                                                                  xx, yy, zz);
+                                    if ((current == expected - block) &&
+                                        (toCheckCount <
                                          (32 * 32 * 32)))  // 4J - 32 * 32 * 32
                                                            // was toCheck.length
                                     {
-                                        toCheck[tcc++] =
-                                            (((xx - xc) + 32)) +
-                                            (((yy - yc) + 32) << 6) +
-                                            (((zz - zc) + 32) << 12) +
-                                            ((cexp - block) << 18);
+                                        toCheck[toCheckCount++] =
+                                            (xx - xc + 32) |
+                                            ((yy - yc + 32) << 6) |
+                                            ((zz - zc + 32) << 12) |
+                                            ((expected - block) << 18);
                                     } else {
                                         // 4J - added - keep track of which
                                         // tiles form the edge of the region we
                                         // are zeroing
-                                        if (o > (cexp - block)) {
+                                        if (current > (expected - block)) {
                                             edge = true;
                                         }
                                     }
@@ -3328,18 +3331,18 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                     }
                 }
             }
-            tcp = 0;
+            checkedPosition = 0;
             //			darktcc = tcc;
             /////////////////////////////////////////////////////
-            tcc = tcn;  // 4J added - we've moved all the edge tiles to the
-                        // start of the array, so only need to process these
-                        // now. The original processes all tcc tiles again in
-                        // the next section
+            toCheckCount = tcn;  // 4J added - we've moved all the edge tiles to
+                                 // the start of the array, so only need to
+                                 // process these now. The original processes
+                                 // all tcc tiles again in the next section
         }
     }
 
-    while (tcp < tcc) {
-        int p = toCheck[tcp++];
+    while (checkedPosition < toCheckCount) {
+        int p = toCheck[checkedPosition++];
         int x = ((p) & 63) - 32 + xc;
         int y = ((p >> 6) & 63) - 32 + yc;
         int z = ((p >> 12) & 63) - 32 + zc;
@@ -3353,90 +3356,79 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                 continue;
             }
         }
+        int current = getBrightnessCached(cache, layer, x, y, z);
 
-        int c = getBrightnessCached(cache, layer, x, y, z);
-        int ct = 0;
-        int block = getBlockingCached(cache, layer, &ct, x, y, z);
-        if (block == 0) block = 1;
-
-        int expected = 0;
-        if (layer == LightLayer::Sky) {
-            expected = getExpectedSkyColor(cache, c, x, y, z, ct, block);
-        } else {
-            // If rootOnlyEmissive flag is set, then only consider the starting
-            // tile to be possibly emissive.
-            bool propagatedOnly = false;
+        // If rootOnlyEmissive flag is set, then only consider the starting tile
+        // to be possibly emissive.
+        bool propagatedOnly = false;
+        if (layer == LightLayer::Block) {
             if (rootOnlyEmissive) {
                 propagatedOnly = (x != xc) || (y != yc) || (z != zc);
             }
-            expected = getExpectedBlockColor(cache, c, x, y, z, ct, block,
-                                             propagatedOnly);
         }
+        int expected = getExpectedLight(cache, x, y, z, layer, propagatedOnly);
 
-        if (expected != c) {
+        if (expected != current) {
             setBrightnessCached(cache, &cacheUse, layer, x, y, z, expected);
 
-            if (expected > c) {
-                int xd = x - xc;
-                int yd = y - yc;
-                int zd = z - zc;
-                if (xd < 0) xd = -xd;
-                if (yd < 0) yd = -yd;
-                if (zd < 0) zd = -zd;
-                if (xd + yd + zd < 17 &&
-                    tcc < (32 * 32 * 32) -
-                              6)  // 4J - 32 * 32 * 32 was toCheck.length
-                {
+            if (expected > current) {
+                int xd = abs(x - xc);
+                int yd = abs(y - yc);
+                int zd = abs(z - zc);
+                bool withinBounds =
+                    toCheckCount <
+                    (32 * 32 * 32) - 6;  // 4J - 32 * 32 * 32 was toCheck.length
+                if (xd + yd + zd < 17 && withinBounds) {
                     // 4J - added extra checks here to stop lighting updates
                     // moving out of the actual fixed world and into the
                     // infinite water chunks
                     if ((x - 1) >= minXZ) {
                         if (getBrightnessCached(cache, layer, x - 1, y, z) <
                             expected)
-                            toCheck[tcc++] = (((x - 1 - xc) + 32)) +
-                                             (((y - yc) + 32) << 6) +
-                                             (((z - zc) + 32) << 12);
+                            toCheck[toCheckCount++] = (((x - 1 - xc) + 32)) +
+                                                      (((y - yc) + 32) << 6) +
+                                                      (((z - zc) + 32) << 12);
                     }
                     if ((x + 1) <= maxXZ) {
                         if (getBrightnessCached(cache, layer, x + 1, y, z) <
                             expected)
-                            toCheck[tcc++] = (((x + 1 - xc) + 32)) +
-                                             (((y - yc) + 32) << 6) +
-                                             (((z - zc) + 32) << 12);
+                            toCheck[toCheckCount++] = (((x + 1 - xc) + 32)) +
+                                                      (((y - yc) + 32) << 6) +
+                                                      (((z - zc) + 32) << 12);
                     }
                     if ((y - 1) >= 0) {
                         if (getBrightnessCached(cache, layer, x, y - 1, z) <
                             expected)
-                            toCheck[tcc++] = (((x - xc) + 32)) +
-                                             (((y - 1 - yc) + 32) << 6) +
-                                             (((z - zc) + 32) << 12);
+                            toCheck[toCheckCount++] =
+                                (((x - xc) + 32)) + (((y - 1 - yc) + 32) << 6) +
+                                (((z - zc) + 32) << 12);
                     }
                     if ((y + 1) < maxBuildHeight) {
                         if (getBrightnessCached(cache, layer, x, y + 1, z) <
                             expected)
-                            toCheck[tcc++] = (((x - xc) + 32)) +
-                                             (((y + 1 - yc) + 32) << 6) +
-                                             (((z - zc) + 32) << 12);
+                            toCheck[toCheckCount++] =
+                                (((x - xc) + 32)) + (((y + 1 - yc) + 32) << 6) +
+                                (((z - zc) + 32) << 12);
                     }
                     if ((z - 1) >= minXZ) {
                         if (getBrightnessCached(cache, layer, x, y, z - 1) <
                             expected)
-                            toCheck[tcc++] = (((x - xc) + 32)) +
-                                             (((y - yc) + 32) << 6) +
-                                             (((z - 1 - zc) + 32) << 12);
+                            toCheck[toCheckCount++] =
+                                (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
+                                (((z - 1 - zc) + 32) << 12);
                     }
                     if ((z + 1) <= maxXZ) {
                         if (getBrightnessCached(cache, layer, x, y, z + 1) <
                             expected)
-                            toCheck[tcc++] = (((x - xc) + 32)) +
-                                             (((y - yc) + 32) << 6) +
-                                             (((z + 1 - zc) + 32) << 12);
+                            toCheck[toCheckCount++] =
+                                (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
+                                (((z + 1 - zc) + 32) << 12);
                     }
                 }
             }
         }
     }
-//	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
+    //	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
 #if 0
 	QueryPerformanceCounter( &qwNewTime );
 	qwDeltaTime1.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
@@ -3471,6 +3463,11 @@ std::vector<TickNextTickData>* Level::fetchTicksInChunk(LevelChunk* chunk,
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     std::shared_ptr<Entity> except, AABB* bb) {
+    return getEntities(except, bb, NULL);
+}
+
+std::vector<std::shared_ptr<Entity> >* Level::getEntities(
+    std::shared_ptr<Entity> except, AABB* bb, const EntitySelector* selector) {
     MemSect(40);
     es.clear();
     int xc0 = Mth::floor((bb->x0 - 2) / 16);
@@ -3491,7 +3488,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     for (int xc = xc0; xc <= xc1; xc++)
         for (int zc = zc0; zc <= zc1; zc++) {
             if (hasChunk(xc, zc)) {
-                getChunk(xc, zc)->getEntities(except, bb, es);
+                getChunk(xc, zc)->getEntities(except, bb, es, selector);
             }
         }
     MemSect(0);
@@ -3509,6 +3506,11 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     const std::type_info& baseClass, AABB* bb) {
+    return getEntitiesOfClass(baseClass, bb, NULL);
+}
+
+std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
+    const std::type_info& baseClass, AABB* bb, const EntitySelector* selector) {
     int xc0 = Mth::floor((bb->x0 - 2) / 16);
     int xc1 = Mth::floor((bb->x1 + 2) / 16);
     int zc0 = Mth::floor((bb->z0 - 2) / 16);
@@ -3526,12 +3528,14 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
 #endif
 #endif
 
-    for (int xc = xc0; xc <= xc1; xc++)
+    for (int xc = xc0; xc <= xc1; xc++) {
         for (int zc = zc0; zc <= zc1; zc++) {
             if (hasChunk(xc, zc)) {
-                getChunk(xc, zc)->getEntitiesOfClass(baseClass, bb, *es);
+                getChunk(xc, zc)->getEntitiesOfClass(baseClass, bb, *es,
+                                                     selector);
             }
         }
+    }
 
 #ifdef __PSVITA__
 #ifdef _ENTITIES_RW_SECTION
@@ -3621,7 +3625,7 @@ unsigned int Level::countInstanceOf(
                 count++;
             }
         } else {
-            if (e->GetType() & clas) count++;
+            if (e->instanceof(clas)) count++;
         }
     }
     LeaveCriticalSection(&m_entitiesCS);
@@ -3647,9 +3651,7 @@ unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
                 count++;
             }
         } else {
-            if (e->GetType() & clas) {
-                count++;
-            }
+            if (e->instanceof(clas)) count++;
         }
     }
     LeaveCriticalSection(&m_entitiesCS);
@@ -3696,7 +3698,8 @@ void Level::removeEntities(std::vector<std::shared_ptr<Entity> >* list) {
 }
 
 bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
-                     int face, std::shared_ptr<Entity> ignoreEntity) {
+                     int face, std::shared_ptr<Entity> ignoreEntity,
+                     std::shared_ptr<ItemInstance> item) {
     int targetType = getTile(x, y, z);
     Tile* targetTile = Tile::tiles[targetType];
 
@@ -3708,13 +3711,14 @@ bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
     if (targetTile != NULL &&
         (targetTile == Tile::water || targetTile == Tile::calmWater ||
          targetTile == Tile::lava || targetTile == Tile::calmLava ||
-         targetTile == Tile::fire || targetTile->material->isReplaceable()))
+         targetTile == Tile::fire || targetTile->material->isReplaceable())) {
         targetTile = NULL;
+    }
     if (targetTile != NULL && targetTile->material == Material::decoration &&
         tile == Tile::anvil)
         return true;
     if (tileId > 0 && targetTile == NULL) {
-        if (tile->mayPlace(this, x, y, z, face)) {
+        if (tile->mayPlace(this, x, y, z, face, item)) {
             return true;
         }
     }
@@ -3737,7 +3741,7 @@ Path* Level::findPath(std::shared_ptr<Entity> from, std::shared_ptr<Entity> to,
     int x2 = x + r;
     int y2 = y + r;
     int z2 = z + r;
-    Region region = Region(this, x1, y1, z1, x2, y2, z2);
+    Region region = Region(this, x1, y1, z1, x2, y2, z2, 0);
     Path* path =
         (PathFinder(&region, canPassDoors, canOpenDoors, avoidWater, canFloat))
             .findPath(from.get(), to.get(), maxDist);
@@ -3758,46 +3762,71 @@ Path* Level::findPath(std::shared_ptr<Entity> from, int xBest, int yBest,
     int x2 = x + r;
     int y2 = y + r;
     int z2 = z + r;
-    Region region = Region(this, x1, y1, z1, x2, y2, z2);
+    Region region = Region(this, x1, y1, z1, x2, y2, z2, 0);
     Path* path =
         (PathFinder(&region, canPassDoors, canOpenDoors, avoidWater, canFloat))
             .findPath(from.get(), xBest, yBest, zBest, maxDist);
     return path;
 }
 
-bool Level::getDirectSignal(int x, int y, int z, int dir) {
+int Level::getDirectSignal(int x, int y, int z, int dir) {
     int t = getTile(x, y, z);
-    if (t == 0) return false;
+    if (t == 0) return Redstone::SIGNAL_NONE;
     return Tile::tiles[t]->getDirectSignal(this, x, y, z, dir);
 }
 
-bool Level::hasDirectSignal(int x, int y, int z) {
-    if (getDirectSignal(x, y - 1, z, 0)) return true;
-    if (getDirectSignal(x, y + 1, z, 1)) return true;
-    if (getDirectSignal(x, y, z - 1, 2)) return true;
-    if (getDirectSignal(x, y, z + 1, 3)) return true;
-    if (getDirectSignal(x - 1, y, z, 4)) return true;
-    if (getDirectSignal(x + 1, y, z, 5)) return true;
-    return false;
+int Level::getDirectSignalTo(int x, int y, int z) {
+    int result = Redstone::SIGNAL_NONE;
+    result = std::max(result, getDirectSignal(x, y - 1, z, 0));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    result = std::max(result, getDirectSignal(x, y + 1, z, 1));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    result = std::max(result, getDirectSignal(x, y, z - 1, 2));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    result = std::max(result, getDirectSignal(x, y, z + 1, 3));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    result = std::max(result, getDirectSignal(x - 1, y, z, 4));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    result = std::max(result, getDirectSignal(x + 1, y, z, 5));
+    if (result >= Redstone::SIGNAL_MAX) return result;
+    return result;
 }
 
-bool Level::getSignal(int x, int y, int z, int dir) {
+bool Level::hasSignal(int x, int y, int z, int dir) {
+    return getSignal(x, y, z, dir) > Redstone::SIGNAL_NONE;
+}
+
+int Level::getSignal(int x, int y, int z, int dir) {
     if (isSolidBlockingTile(x, y, z)) {
-        return hasDirectSignal(x, y, z);
+        return getDirectSignalTo(x, y, z);
     }
     int t = getTile(x, y, z);
-    if (t == 0) return false;
+    if (t == 0) return Redstone::SIGNAL_NONE;
     return Tile::tiles[t]->getSignal(this, x, y, z, dir);
 }
 
 bool Level::hasNeighborSignal(int x, int y, int z) {
-    if (getSignal(x, y - 1, z, 0)) return true;
-    if (getSignal(x, y + 1, z, 1)) return true;
-    if (getSignal(x, y, z - 1, 2)) return true;
-    if (getSignal(x, y, z + 1, 3)) return true;
-    if (getSignal(x - 1, y, z, 4)) return true;
-    if (getSignal(x + 1, y, z, 5)) return true;
+    if (getSignal(x, y - 1, z, 0) > 0) return true;
+    if (getSignal(x, y + 1, z, 1) > 0) return true;
+    if (getSignal(x, y, z - 1, 2) > 0) return true;
+    if (getSignal(x, y, z + 1, 3) > 0) return true;
+    if (getSignal(x - 1, y, z, 4) > 0) return true;
+    if (getSignal(x + 1, y, z, 5) > 0) return true;
     return false;
+}
+
+int Level::getBestNeighborSignal(int x, int y, int z) {
+    int best = Redstone::SIGNAL_NONE;
+
+    for (int i = 0; i < 6; i++) {
+        int signal = getSignal(x + Facing::STEP_X[i], y + Facing::STEP_Y[i],
+                               z + Facing::STEP_Z[i], i);
+
+        if (signal >= Redstone::SIGNAL_MAX) return Redstone::SIGNAL_MAX;
+        if (signal > best) best = signal;
+    }
+
+    return best;
 }
 
 // 4J Stu - Added maxYDist param
@@ -3865,7 +3894,9 @@ std::shared_ptr<Player> Level::getNearestAttackablePlayer(double x, double y,
     for (AUTO_VAR(it, players.begin()); it != itEnd; it++) {
         std::shared_ptr<Player> p = *it;
 
-        if (p->abilities.invulnerable) {
+        // 4J Stu - Added privilege check
+        if (p->abilities.invulnerable || !p->isAlive() ||
+            p->hasInvisiblePrivilege()) {
             continue;
         }
 
@@ -3885,11 +3916,8 @@ std::shared_ptr<Player> Level::getNearestAttackablePlayer(double x, double y,
             visibleDist *= (.7f * coverPercentage);
         }
 
-        // 4J Stu - Added check that this player is still alive and privilege
-        // check
         if ((visibleDist < 0 || dist < visibleDist * visibleDist) &&
-            (best == -1 || dist < best) && p->isAlive() &&
-            !p->hasInvisiblePrivilege()) {
+            (best == -1 || dist < best)) {
             best = dist;
             result = p;
         }
@@ -3900,7 +3928,7 @@ std::shared_ptr<Player> Level::getNearestAttackablePlayer(double x, double y,
 std::shared_ptr<Player> Level::getPlayerByName(const std::wstring& name) {
     AUTO_VAR(itEnd, players.end());
     for (AUTO_VAR(it, players.begin()); it != itEnd; it++) {
-        if (name.compare((*it)->name) == 0) {
+        if (name.compare((*it)->getName()) == 0) {
             return *it;  // players.at(i);
         }
     }
@@ -4010,25 +4038,14 @@ void Level::disconnect(bool sendDisconnect /*= true*/) {}
 
 void Level::checkSession() { levelStorage->checkSession(); }
 
-void Level::setTime(__int64 time) {
+void Level::setGameTime(int64_t time) {
     // 4J : WESTY : Added to track game time played by players for other awards.
     if (time != 0)  // Ignore setting time to 0, done at level start and during
                     // tutorial.
     {
         // Determine step in time and ensure it is reasonable ( we only have an
         // int to store the player stat).
-        __int64 timeDiff = time - levelData->getTime();
-
-        // debug setting added to keep it at day time
-#ifndef _FINAL_BUILD
-        if (app.DebugSettingsOn()) {
-            if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
-                (1L << eDebugSetting_FreezeTime)) {
-                timeDiff = 0;
-                time = levelData->getTime();
-            }
-        }
-#endif
+        int64_t timeDiff = time - levelData->getGameTime();
 
         if (timeDiff < 0) {
             timeDiff = 0;
@@ -4043,7 +4060,7 @@ void Level::setTime(__int64 time) {
         }
 
         // Apply stat to each player.
-        if (timeDiff > 0 && levelData->getTime() != -1) {
+        if (timeDiff > 0 && levelData->getGameTime() != -1) {
             AUTO_VAR(itEnd, players.end());
             for (std::vector<std::shared_ptr<Player> >::iterator it =
                      players.begin();
@@ -4054,14 +4071,16 @@ void Level::setTime(__int64 time) {
         }
     }
 
-    this->levelData->setTime(time);
+    levelData->setGameTime(time);
 }
 
-void Level::setOverrideTimeOfDay(__int64 time) { m_timeOfDayOverride = time; }
+int64_t Level::getSeed() { return levelData->getSeed(); }
 
-__int64 Level::getSeed() { return levelData->getSeed(); }
+int64_t Level::getGameTime() { return levelData->getGameTime(); }
 
-__int64 Level::getTime() { return levelData->getTime(); }
+int64_t Level::getDayTime() { return levelData->getDayTime(); }
+
+void Level::setDayTime(int64_t newTime) { levelData->setDayTime(newTime); }
 
 Pos* Level::getSharedSpawnPos() {
     return new Pos(levelData->getXSpawn(), levelData->getYSpawn(),
@@ -4080,7 +4099,7 @@ void Level::ensureAdded(std::shared_ptr<Entity> entity) {
     int r = 2;
     for (int x = xc - r; x <= xc + r; x++) {
         for (int z = zc - r; z <= zc + r; z++) {
-            this->getChunk(x, z);
+            getChunk(x, z);
         }
     }
 
@@ -4109,6 +4128,8 @@ LevelStorage* Level::getLevelStorage() { return levelStorage.get(); }
 
 LevelData* Level::getLevelData() { return levelData; }
 
+GameRules* Level::getGameRules() { return levelData->getGameRules(); }
+
 void Level::updateSleepingPlayerList() {}
 
 float Level::getThunderLevel(float a) {
@@ -4121,7 +4142,7 @@ float Level::getRainLevel(float a) {
 }
 
 void Level::setRainLevel(float rainLevel) {
-    this->oRainLevel = rainLevel;
+    oRainLevel = rainLevel;
     this->rainLevel = rainLevel;
 }
 
@@ -4166,15 +4187,13 @@ int Level::getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC,
                                                centreZC, scale);
 }
 
-// void Level::globalLevelEvent(int type, int sourceX, int sourceY, int sourceZ,
-// int data)
-// {
-// 	auto itEnd = listeners.end();
-// 	for (auto it = listeners.begin(); it != itEnd; it++)
-// 	{
-// 		(*it)->globalLevelEvent(type, sourceX, sourceY, sourceZ, data);
-// 	}
-// }
+void Level::globalLevelEvent(int type, int sourceX, int sourceY, int sourceZ,
+                             int data) {
+    AUTO_VAR(itEnd, listeners.end());
+    for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
+        (*it)->globalLevelEvent(type, sourceX, sourceY, sourceZ, data);
+    }
+}
 
 void Level::levelEvent(int type, int x, int y, int z, int data) {
     levelEvent(nullptr, type, x, y, z, data);
@@ -4194,14 +4213,16 @@ int Level::getHeight() {
     return dimension->hasCeiling ? genDepth : maxBuildHeight;
 }
 
+Tickable* Level::makeSoundUpdater(std::shared_ptr<Minecart> minecart) {
+    return NULL;
+}
+
 Random* Level::getRandomFor(int x, int z, int blend) {
-    __int64 seed = (x * 341873128712l + z * 132897987541l) +
+    int64_t seed = (x * 341873128712l + z * 132897987541l) +
                    getLevelData()->getSeed() + blend;
     random->setSeed(seed);
     return random;
 }
-
-bool Level::updateLights() { return false; }
 
 TilePos* Level::findNearestMapFeature(const std::wstring& featureName, int x,
                                       int y, int z) {
@@ -4222,6 +4243,64 @@ void Level::destroyTileProgress(int id, int x, int y, int z, int progress) {
     for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
         (*it)->destroyTileProgress(id, x, y, z, progress);
     }
+}
+
+void Level::createFireworks(double x, double y, double z, double xd, double yd,
+                            double zd, CompoundTag* infoTag) {}
+
+Scoreboard* Level::getScoreboard() { return scoreboard; }
+
+void Level::updateNeighbourForOutputSignal(int x, int y, int z, int source) {
+    for (int dir = 0; dir < 4; dir++) {
+        int xx = x + Direction::STEP_X[dir];
+        int zz = z + Direction::STEP_Z[dir];
+        int id = getTile(xx, y, zz);
+        if (id == 0) continue;
+        Tile* tile = Tile::tiles[id];
+
+        if (Tile::comparator_off->isSameDiode(id)) {
+            tile->neighborChanged(this, xx, y, zz, source);
+        } else if (Tile::isSolidBlockingTile(id)) {
+            xx += Direction::STEP_X[dir];
+            zz += Direction::STEP_Z[dir];
+            id = getTile(xx, y, zz);
+            tile = Tile::tiles[id];
+
+            if (Tile::comparator_off->isSameDiode(id)) {
+                tile->neighborChanged(this, xx, y, zz, source);
+            }
+        }
+    }
+}
+
+float Level::getDifficulty(double x, double y, double z) {
+    return getDifficulty(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+}
+
+/**
+ * Returns a difficulty scaled from 0 (easiest) to 1 (normal), may overflow
+ * to 1.5 (hardest) if allowed by player.
+ */
+float Level::getDifficulty(int x, int y, int z) {
+    float result = 0;
+    bool isHard = difficulty == Difficulty::HARD;
+
+    if (hasChunkAt(x, y, z)) {
+        float moonBrightness = getMoonBrightness();
+
+        result += Mth::clamp(getChunkAt(x, z)->inhabitedTime /
+                                 (TICKS_PER_DAY * 150.0f),
+                             0.0f, 1.0f) *
+                  (isHard ? 1.0f : 0.75f);
+        result += moonBrightness * 0.25f;
+    }
+
+    if (difficulty < Difficulty::NORMAL) {
+        result *= difficulty / 2.0f;
+    }
+
+    return Mth::clamp(result, 0.0f, isHard ? 1.5f : 1.0f);
+    ;
 }
 
 bool Level::useNewSeaLevel() { return levelData->useNewSeaLevel(); }
@@ -4282,7 +4361,7 @@ void Level::decrementUnsavedChunkCount() { --m_unsavedChunkCount; }
 bool Level::canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType) {
     int count = 0;
     int max = 0;
-    if (spawnType == eSpawnType_Egg) {
+    if (spawnType == eSpawnType_Egg || spawnType == eSpawnType_Portal) {
         switch (type) {
             case eTYPE_VILLAGER:
                 count = countInstanceOf(eTYPE_VILLAGER, true);
@@ -4312,15 +4391,34 @@ bool Level::canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType) {
                 count = countInstanceOf(eTYPE_VILLAGERGOLEM, true);
                 max = MobCategory::MAX_XBOX_IRONGOLEM;
                 break;
+            case eTYPE_WITHERBOSS:
+                count = countInstanceOf(eTYPE_WITHERBOSS, true) +
+                        countInstanceOf(eTYPE_ENDERDRAGON, true);
+                max = MobCategory::MAX_CONSOLE_BOSS;
+                break;
             default:
                 if ((type & eTYPE_ANIMALS_SPAWN_LIMIT_CHECK) ==
                     eTYPE_ANIMALS_SPAWN_LIMIT_CHECK) {
                     count =
                         countInstanceOf(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK, false);
                     max = MobCategory::MAX_XBOX_ANIMALS_WITH_SPAWN_EGG;
-                } else if ((type & eTYPE_MONSTER) == eTYPE_MONSTER) {
-                    count = countInstanceOf(eTYPE_MONSTER, false);
+                }
+                // 4J: Use eTYPE_ENEMY instead of monster (slimes and ghasts
+                // aren't monsters)
+                else if (Entity::instanceof(type, eTYPE_ENEMY)) {
+                    count = countInstanceOf(eTYPE_ENEMY, false);
                     max = MobCategory::MAX_XBOX_MONSTERS_WITH_SPAWN_EGG;
+                } else if ((type & eTYPE_AMBIENT) == eTYPE_AMBIENT) {
+                    count = countInstanceOf(eTYPE_AMBIENT, false);
+                    max = MobCategory::MAX_AMBIENT_WITH_SPAWN_EGG;
+                }
+                // 4J: Added minecart and boats
+                else if (Entity::instanceof(type, eTYPE_MINECART)) {
+                    count = countInstanceOf(eTYPE_MINECART, false);
+                    max = Level::MAX_CONSOLE_MINECARTS;
+                } else if (Entity::instanceof(type, eTYPE_BOAT)) {
+                    count = countInstanceOf(eTYPE_BOAT, true);
+                    max = Level::MAX_XBOX_BOATS;
                 }
         };
     } else if (spawnType == eSpawnType_Breed) {
@@ -4352,5 +4450,6 @@ bool Level::canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType) {
                 break;
         }
     }
-    return count < max;
+    // 4J: Interpret 0 as no limit
+    return max == 0 || count < max;
 }

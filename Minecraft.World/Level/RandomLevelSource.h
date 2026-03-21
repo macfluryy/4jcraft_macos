@@ -45,10 +45,16 @@ private:
     floatArray pows;
 
 public:
-    RandomLevelSource(Level* level, __int64 seed, bool generateStructures);
+    RandomLevelSource(Level* level, int64_t seed, bool generateStructures);
     ~RandomLevelSource();
 
 public:
+#ifdef _LARGE_WORLDS
+    int getMinDistanceToEdge(int xxx, int zzz, int worldSize,
+                             float falloffStart);
+
+#endif
+    float getHeightFalloff(int xxx, int zzz, int* pEMin);
     void prepareHeights(int xOffs, int zOffs, byteArray blocks);
 
 public:
@@ -93,4 +99,5 @@ public:
     virtual TilePos* findNearestMapFeature(Level* level,
                                            const std::wstring& featureName,
                                            int x, int y, int z);
+    virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
 };

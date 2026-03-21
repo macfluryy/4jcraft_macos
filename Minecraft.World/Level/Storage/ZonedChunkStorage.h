@@ -28,8 +28,8 @@ public:
     File dir;
 
 private:
-    std::unordered_map<__int64, ZoneFile*> zoneFiles;
-    __int64 tickCount;
+    std::unordered_map<int64_t, ZoneFile*> zoneFiles;
+    int64_t tickCount;
 
 public:
     ZonedChunkStorage(File dir);

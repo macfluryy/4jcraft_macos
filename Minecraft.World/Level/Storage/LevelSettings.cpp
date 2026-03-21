@@ -35,10 +35,10 @@ void GameType::updatePlayerAbilities(Abilities* abilities) {
         abilities->invulnerable = false;
         abilities->flying = false;
     }
-    abilities->mayBuild = !isReadOnly();
+    abilities->mayBuild = !isAdventureRestricted();
 }
 
-bool GameType::isReadOnly() { return this == ADVENTURE; }
+bool GameType::isAdventureRestricted() { return this == ADVENTURE; }
 
 bool GameType::isCreative() { return this == CREATIVE; }
 
@@ -70,7 +70,7 @@ GameType* GameType::byName(const std::wstring& name) {
     return SURVIVAL;
 }
 
-void LevelSettings::_init(__int64 seed, GameType* gameType,
+void LevelSettings::_init(int64_t seed, GameType* gameType,
                           bool generateMapFeatures, bool hardcore,
                           bool newSeaLevel, LevelType* levelType, int xzSize,
                           int hellScale) {
@@ -82,11 +82,12 @@ void LevelSettings::_init(__int64 seed, GameType* gameType,
     this->levelType = levelType;
     this->allowCommands = false;
     this->startingBonusItems = false;
+    levelTypeOptions = L"";
     m_xzSize = xzSize;
     m_hellScale = hellScale;
 }
 
-LevelSettings::LevelSettings(__int64 seed, GameType* gameType,
+LevelSettings::LevelSettings(int64_t seed, GameType* gameType,
                              bool generateMapFeatures, bool hardcore,
                              bool newSeaLevel, LevelType* levelType, int xzSize,
                              int hellScale)
@@ -118,9 +119,14 @@ LevelSettings* LevelSettings::enableSinglePlayerCommands() {
     return this;
 }
 
+LevelSettings* LevelSettings::setLevelTypeOptions(const std::wstring& options) {
+    levelTypeOptions = options;
+    return this;
+}
+
 bool LevelSettings::hasStartingBonusItems() { return startingBonusItems; }
 
-__int64 LevelSettings::getSeed() { return seed; }
+int64_t LevelSettings::getSeed() { return seed; }
 
 GameType* LevelSettings::getGameType() { return gameType; }
 
@@ -142,3 +148,5 @@ bool LevelSettings::useNewSeaLevel() { return newSeaLevel; }
 int LevelSettings::getXZSize() { return m_xzSize; }
 
 int LevelSettings::getHellScale() { return m_hellScale; }
+
+std::wstring LevelSettings::getLevelTypeOptions() { return levelTypeOptions; }

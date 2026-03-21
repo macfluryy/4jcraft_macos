@@ -3,18 +3,28 @@
 class Random;
 
 class PortalForcer {
+public:
+    class PortalPosition : public Pos {
+    public:
+        int64_t lastUsed;
+
+        PortalPosition(int x, int y, int z, int64_t time);
+    };
+
 private:
+    ServerLevel* level;
     Random* random;
+    std::unordered_map<int64_t, PortalPosition*> cachedPortals;
+    std::vector<int64_t> cachedPortalKeys;
 
 public:
-    // 4J Stu Added - Java has no ctor, but we need to initialise random
-    PortalForcer();
+    PortalForcer(ServerLevel* level);
+    ~PortalForcer();
 
-    void force(Level* level, std::shared_ptr<Entity> e);
-
-public:
-    bool findPortal(Level* level, std::shared_ptr<Entity> e);
-
-public:
-    bool createPortal(Level* level, std::shared_ptr<Entity> e);
+    void force(std::shared_ptr<Entity> e, double xOriginal, double yOriginal,
+               double zOriginal, float yRotOriginal);
+    bool findPortal(std::shared_ptr<Entity> e, double xOriginal,
+                    double yOriginal, double zOriginal, float yRotOriginal);
+    bool createPortal(std::shared_ptr<Entity> e);
+    void tick(int64_t time);
 };

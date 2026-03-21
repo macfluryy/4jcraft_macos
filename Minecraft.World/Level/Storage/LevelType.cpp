@@ -43,6 +43,7 @@ LevelType::LevelType(int id, std::wstring generatorName, int version) {
 }
 
 void LevelType::init(int id, std::wstring generatorName, int version) {
+    this->id = id;
     m_generatorName = generatorName;
     m_version = version;
     m_selectable = true;
@@ -81,12 +82,14 @@ bool LevelType::hasReplacement() { return m_replacement; }
 LevelType* LevelType::getLevelType(std::wstring name) {
     if (name.length() > 0) {
         for (int i = 0; i < 16; i++) {
-            // Fix: check NULL before accessing member to avoid null dereference
-            if (levelTypes[i] != NULL &&
-                (levelTypes[i]->m_generatorName.compare(name) == 0)) {
+            std::wstring genname = levelTypes[i]->m_generatorName;
+
+            if (levelTypes[i] != NULL && (genname.compare(name) == 0)) {
                 return levelTypes[i];
             }
         }
     }
     return NULL;
 }
+
+int LevelType::getId() { return id; }
