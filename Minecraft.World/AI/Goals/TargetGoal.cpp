@@ -1,36 +1,39 @@
 #include "../../Platform/stdafx.h"
+#include "../../Headers/net.minecraft.world.entity.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "../../Headers/net.minecraft.world.entity.ai.sensing.h"
-#include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.entity.animal.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
 #include "../../Headers/net.minecraft.world.level.pathfinder.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "TargetGoal.h"
 
-void TargetGoal::_init(Mob* mob, float within, bool mustSee, bool mustReach) {
+void TargetGoal::_init(PathfinderMob* mob, bool mustSee, bool mustReach) {
     reachCache = EmptyReachCache;
     reachCacheTime = 0;
     unseenTicks = 0;
 
     this->mob = mob;
-    this->within = within;
     this->mustSee = mustSee;
     this->mustReach = mustReach;
 }
 
-TargetGoal::TargetGoal(Mob* mob, float within, bool mustSee) {
-    _init(mob, within, mustSee, false);
+TargetGoal::TargetGoal(PathfinderMob* mob, bool mustSee) {
+    _init(mob, mustSee, false);
 }
 
-TargetGoal::TargetGoal(Mob* mob, float within, bool mustSee, bool mustReach) {
-    _init(mob, within, mustSee, mustReach);
+TargetGoal::TargetGoal(PathfinderMob* mob, bool mustSee, bool mustReach) {
+    _init(mob, mustSee, mustReach);
 }
 
 bool TargetGoal::canContinueToUse() {
-    std::shared_ptr<Mob> target = mob->getTarget();
+    std::shared_ptr<LivingEntity> target = mob->getTarget();
     if (target == NULL) return false;
     if (!target->isAlive()) return false;
+
+    double within = getFollowDistance();
     if (mob->distanceToSqr(target) > within * within) return false;
     if (mustSee) {
         if (mob->getSensing()->canSee(target)) {
@@ -42,6 +45,12 @@ bool TargetGoal::canContinueToUse() {
     return true;
 }
 
+double TargetGoal::getFollowDistance() {
+    AttributeInstance* followRange =
+        mob->getAttribute(SharedMonsterAttributes::FOLLOW_RANGE);
+    return followRange == NULL ? 16 : followRange->getValue();
+}
+
 void TargetGoal::start() {
     reachCache = EmptyReachCache;
     reachCacheTime = 0;
@@ -50,21 +59,28 @@ void TargetGoal::start() {
 
 void TargetGoal::stop() { mob->setTarget(nullptr); }
 
-bool TargetGoal::canAttack(std::shared_ptr<Mob> target,
+bool TargetGoal::canAttack(std::shared_ptr<LivingEntity> target,
                            bool allowInvulnerable) {
     if (target == NULL) return false;
     if (target == mob->shared_from_this()) return false;
     if (!target->isAlive()) return false;
     if (!mob->canAttackType(target->GetType())) return false;
 
-    std::shared_ptr<TamableAnimal> tamableAnimal =
-        std::dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
-    if (tamableAnimal != NULL && tamableAnimal->isTame()) {
-        std::shared_ptr<TamableAnimal> tamableTarget =
-            std::dynamic_pointer_cast<TamableAnimal>(target);
-        if (tamableTarget != NULL && tamableTarget->isTame()) return false;
-        if (target == tamableAnimal->getOwner()) return false;
-    } else if (std::dynamic_pointer_cast<Player>(target) != NULL) {
+    OwnableEntity* ownableMob = dynamic_cast<OwnableEntity*>(mob);
+    if (ownableMob != NULL && !ownableMob->getOwnerUUID().empty()) {
+        std::shared_ptr<OwnableEntity> ownableTarget =
+            std::dynamic_pointer_cast<OwnableEntity>(target);
+        if (ownableTarget != NULL && ownableMob->getOwnerUUID().compare(
+                                         ownableTarget->getOwnerUUID()) == 0) {
+            // We're attacking something owned by the same person...
+            return false;
+        }
+
+        if (target == ownableMob->getOwner()) {
+            // We're attacking our owner
+            return false;
+        }
+    } else if (target->instanceof(eTYPE_PLAYER)) {
         if (!allowInvulnerable &&
             (std::dynamic_pointer_cast<Player>(target))->abilities.invulnerable)
             return false;
@@ -86,7 +102,7 @@ bool TargetGoal::canAttack(std::shared_ptr<Mob> target,
     return true;
 }
 
-bool TargetGoal::canReach(std::shared_ptr<Mob> target) {
+bool TargetGoal::canReach(std::shared_ptr<LivingEntity> target) {
     reachCacheTime = 10 + mob->getRandom()->nextInt(5);
     Path* path = mob->getNavigation()->createPath(target);
     if (path == NULL) return false;

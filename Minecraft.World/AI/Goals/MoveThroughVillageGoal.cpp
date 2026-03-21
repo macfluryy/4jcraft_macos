@@ -9,13 +9,14 @@
 #include "MoveThroughVillageGoal.h"
 #include "../Navigation/Path.h"
 
-MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob, float speed,
+MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
+                                               double speedModifier,
                                                bool onlyAtNight) {
     path = NULL;
     doorInfo = std::weak_ptr<DoorInfo>();
 
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     this->onlyAtNight = onlyAtNight;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
@@ -68,7 +69,7 @@ bool MoveThroughVillageGoal::canContinueToUse() {
 }
 
 void MoveThroughVillageGoal::start() {
-    mob->getNavigation()->moveTo(path, speed);
+    mob->getNavigation()->moveTo(path, speedModifier);
     path = NULL;
 }
 

@@ -10,7 +10,7 @@ LookAtPlayerGoal::LookAtPlayerGoal(Mob* mob, const std::type_info& lookAtType,
     : lookAtType(lookAtType) {
     this->mob = mob;
     this->lookDistance = lookDistance;
-    this->probability = 0.02f;
+    probability = 0.02f;
     setRequiredControlFlags(Control::LookControlFlag);
 
     lookTime = 0;
@@ -29,13 +29,18 @@ LookAtPlayerGoal::LookAtPlayerGoal(Mob* mob, const std::type_info& lookAtType,
 
 bool LookAtPlayerGoal::canUse() {
     if (mob->getRandom()->nextFloat() >= probability) return false;
-    if (lookAtType == typeid(Player))
+
+    if (mob->getTarget() != NULL) {
+        lookAt = mob->getTarget();
+    }
+    if (lookAtType == typeid(Player)) {
         lookAt =
             mob->level->getNearestPlayer(mob->shared_from_this(), lookDistance);
-    else
+    } else {
         lookAt = std::weak_ptr<Entity>(mob->level->getClosestEntityOfClass(
             lookAtType, mob->bb->grow(lookDistance, 3, lookDistance),
             mob->shared_from_this()));
+    }
     return lookAt.lock() != NULL;
 }
 

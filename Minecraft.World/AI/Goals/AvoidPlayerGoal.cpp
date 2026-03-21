@@ -10,17 +10,30 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "AvoidPlayerGoal.h"
 
+AvoidPlayerGoalEntitySelector::AvoidPlayerGoalEntitySelector(
+    AvoidPlayerGoal* parent) {
+    m_parent = parent;
+}
+
+bool AvoidPlayerGoalEntitySelector::matches(
+    std::shared_ptr<Entity> entity) const {
+    return entity->isAlive() && m_parent->mob->getSensing()->canSee(entity);
+}
+
 AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob* mob,
                                  const std::type_info& avoidType, float maxDist,
-                                 float walkSpeed, float sprintSpeed)
+                                 double walkSpeedModifier,
+                                 double sprintSpeedModifier)
     : avoidType(avoidType) {
     this->mob = mob;
     // this->avoidType = avoidType;
     this->maxDist = maxDist;
-    this->walkSpeed = walkSpeed;
-    this->sprintSpeed = sprintSpeed;
+    this->walkSpeedModifier = walkSpeedModifier;
+    this->sprintSpeedModifier = sprintSpeedModifier;
     this->pathNav = mob->getNavigation();
     setRequiredControlFlags(Control::MoveControlFlag);
+
+    entitySelector = new AvoidPlayerGoalEntitySelector(this);
 
     toAvoid = std::weak_ptr<Entity>();
     path = NULL;
@@ -28,6 +41,7 @@ AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob* mob,
 
 AvoidPlayerGoal::~AvoidPlayerGoal() {
     if (path != NULL) delete path;
+    delete entitySelector;
 }
 
 bool AvoidPlayerGoal::canUse() {
@@ -40,8 +54,8 @@ bool AvoidPlayerGoal::canUse() {
         if (toAvoid.lock() == NULL) return false;
     } else {
         std::vector<std::shared_ptr<Entity> >* entities =
-            mob->level->getEntitiesOfClass(avoidType,
-                                           mob->bb->grow(maxDist, 3, maxDist));
+            mob->level->getEntitiesOfClass(
+                avoidType, mob->bb->grow(maxDist, 3, maxDist), entitySelector);
         if (entities->empty()) {
             delete entities;
             return false;
@@ -49,8 +63,6 @@ bool AvoidPlayerGoal::canUse() {
         toAvoid = std::weak_ptr<Entity>(entities->at(0));
         delete entities;
     }
-
-    if (!mob->getSensing()->canSee(toAvoid.lock())) return false;
 
     Vec3* pos = RandomPos::getPosAvoid(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
@@ -72,7 +84,7 @@ bool AvoidPlayerGoal::canContinueToUse() {
 }
 
 void AvoidPlayerGoal::start() {
-    pathNav->moveTo(path, walkSpeed);
+    pathNav->moveTo(path, walkSpeedModifier);
     path = NULL;
 }
 
@@ -80,7 +92,7 @@ void AvoidPlayerGoal::stop() { toAvoid = std::weak_ptr<Entity>(); }
 
 void AvoidPlayerGoal::tick() {
     if (mob->distanceToSqr(toAvoid.lock()) < 7 * 7)
-        mob->getNavigation()->setSpeed(sprintSpeed);
+        mob->getNavigation()->setSpeedModifier(sprintSpeedModifier);
     else
-        mob->getNavigation()->setSpeed(walkSpeed);
+        mob->getNavigation()->setSpeedModifier(walkSpeedModifier);
 }

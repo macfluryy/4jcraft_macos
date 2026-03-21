@@ -6,9 +6,9 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "FleeSunGoal.h"
 
-FleeSunGoal::FleeSunGoal(PathfinderMob* mob, float speed) {
+FleeSunGoal::FleeSunGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     this->level = mob->level;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
@@ -31,7 +31,7 @@ bool FleeSunGoal::canUse() {
 bool FleeSunGoal::canContinueToUse() { return !mob->getNavigation()->isDone(); }
 
 void FleeSunGoal::start() {
-    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speed);
+    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speedModifier);
 }
 
 Vec3* FleeSunGoal::getHidePos() {

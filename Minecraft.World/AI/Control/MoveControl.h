@@ -16,16 +16,15 @@ private:
     double wantedX;
     double wantedY;
     double wantedZ;
-    float speed;
+    double speedModifier;
     bool _hasWanted;
 
 public:
     MoveControl(Mob* mob);
-    virtual ~MoveControl() {}
 
     bool hasWanted();
-    float getSpeed();
-    void setWantedPosition(double x, double y, double z, float speed);
+    double getSpeedModifier();
+    void setWantedPosition(double x, double y, double z, double speedModifier);
     void setSpeed(float speed);
     virtual void tick();
 

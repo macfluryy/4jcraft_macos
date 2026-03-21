@@ -1,8 +1,26 @@
 #pragma once
 
 #include "TargetGoal.h"
+#include "../../Entities/EntitySelector.h"
+
+class NearestAttackableTargetGoal;
+
+// Anonymous class from NearestAttackableTargetGoal
+class SubselectEntitySelector : public EntitySelector {
+private:
+    EntitySelector* m_subselector;
+    NearestAttackableTargetGoal* m_parent;
+
+public:
+    SubselectEntitySelector(NearestAttackableTargetGoal* parent,
+                            EntitySelector* subselector);
+    ~SubselectEntitySelector();
+    bool matches(std::shared_ptr<Entity> entity) const;
+};
 
 class NearestAttackableTargetGoal : public TargetGoal {
+    friend class SubselectEntitySelector;
+
 public:
     class DistComp {
     private:
@@ -15,21 +33,19 @@ public:
     };
 
 private:
-    std::weak_ptr<Mob> target;
     const std::type_info& targetType;
     int randomInterval;
     DistComp* distComp;
+    EntitySelector* selector;
+    std::weak_ptr<LivingEntity> target;
 
 public:
-    // public NearestAttackableTargetGoal(Mob mob, const std::type_info&
-    // targetType, float within, int randomInterval, bool mustSee)
-    //{
-    //	this(mob, targetType, within, randomInterval, mustSee, false);
-    // }
+    NearestAttackableTargetGoal(PathfinderMob* mob,
+                                const std::type_info& targetType,
+                                int randomInterval, bool mustSee,
+                                bool mustReach = false,
+                                EntitySelector* entitySelector = NULL);
 
-    NearestAttackableTargetGoal(Mob* mob, const std::type_info& targetType,
-                                float within, int randomInterval, bool mustSee,
-                                bool mustReach = false);
     virtual ~NearestAttackableTargetGoal();
 
     virtual bool canUse();

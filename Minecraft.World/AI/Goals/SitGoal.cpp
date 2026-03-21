@@ -19,7 +19,8 @@ bool SitGoal::canUse() {
     if (mob->isInWater()) return false;
     if (!mob->onGround) return false;
 
-    std::shared_ptr<Mob> owner = mob->getOwner();
+    std::shared_ptr<LivingEntity> owner =
+        std::dynamic_pointer_cast<LivingEntity>(mob->getOwner());
     if (owner == NULL) return true;  // owner not on level
 
     if (mob->distanceToSqr(owner) < FollowOwnerGoal::TeleportDistance *

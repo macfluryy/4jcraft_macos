@@ -11,17 +11,17 @@ public:
 
 private:
     TamableAnimal* tamable;  // Owner of this goal
-    std::weak_ptr<Mob> owner;
+    std::weak_ptr<LivingEntity> owner;
     Level* level;
-    float speed;
+    double speedModifier;
     PathNavigation* navigation;
     int timeToRecalcPath;
     float stopDistance, startDistance;
     bool oldAvoidWater;
 
 public:
-    FollowOwnerGoal(TamableAnimal* tamable, float speed, float startDistance,
-                    float stopDistance);
+    FollowOwnerGoal(TamableAnimal* tamable, double speedModifier,
+                    float startDistance, float stopDistance);
 
     virtual bool canUse();
     virtual bool canContinueToUse();

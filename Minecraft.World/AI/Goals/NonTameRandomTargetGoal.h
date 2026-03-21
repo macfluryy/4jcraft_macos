@@ -10,7 +10,7 @@ private:
 
 public:
     NonTameRandomTargetGoal(TamableAnimal* mob,
-                            const std::type_info& targetType, float within,
+                            const std::type_info& targetType,
                             int randomInterval, bool mustSee);
 
     bool canUse();

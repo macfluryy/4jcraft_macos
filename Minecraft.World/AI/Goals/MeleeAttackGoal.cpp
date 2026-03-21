@@ -7,13 +7,13 @@
 #include "../../Headers/net.minecraft.world.entity.ai.sensing.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "MeleeAttackGoal.h"
-#include "../Navigation/Path.h"
 
-void MeleeAttackGoal::_init(Mob* mob, float speed, bool trackTarget) {
+void MeleeAttackGoal::_init(PathfinderMob* mob, double speedModifier,
+                            bool trackTarget) {
     this->attackType = eTYPE_NOTSET;
     this->mob = mob;
-    this->level = mob->level;
-    this->speed = speed;
+    level = mob->level;
+    this->speedModifier = speedModifier;
     this->trackTarget = trackTarget;
     setRequiredControlFlags(Control::MoveControlFlag |
                             Control::LookControlFlag);
@@ -23,14 +23,15 @@ void MeleeAttackGoal::_init(Mob* mob, float speed, bool trackTarget) {
     timeToRecalcPath = 0;
 }
 
-MeleeAttackGoal::MeleeAttackGoal(Mob* mob, eINSTANCEOF attackType, float speed,
-                                 bool trackTarget) {
-    _init(mob, speed, trackTarget);
+MeleeAttackGoal::MeleeAttackGoal(PathfinderMob* mob, eINSTANCEOF attackType,
+                                 double speedModifier, bool trackTarget) {
+    _init(mob, speedModifier, trackTarget);
     this->attackType = attackType;
 }
 
-MeleeAttackGoal::MeleeAttackGoal(Mob* mob, float speed, bool trackTarget) {
-    _init(mob, speed, trackTarget);
+MeleeAttackGoal::MeleeAttackGoal(PathfinderMob* mob, double speedModifier,
+                                 bool trackTarget) {
+    _init(mob, speedModifier, trackTarget);
 }
 
 MeleeAttackGoal::~MeleeAttackGoal() {
@@ -38,57 +39,53 @@ MeleeAttackGoal::~MeleeAttackGoal() {
 }
 
 bool MeleeAttackGoal::canUse() {
-    std::shared_ptr<Mob> bestTarget = mob->getTarget();
-    if (bestTarget == NULL) return false;
-    if (!bestTarget->isAlive()) return false;
-    if (attackType != eTYPE_NOTSET &&
-        (attackType & bestTarget->GetType()) != attackType)
-        return false;
-    target = std::weak_ptr<Mob>(bestTarget);
+    std::shared_ptr<LivingEntity> target = mob->getTarget();
+    if (target == NULL) return false;
+    if (!target->isAlive()) return false;
+    if (attackType != NULL && !target->instanceof(attackType)) return false;
     delete path;
-    path = mob->getNavigation()->createPath(target.lock());
+    path = mob->getNavigation()->createPath(target);
     return path != NULL;
 }
 
 bool MeleeAttackGoal::canContinueToUse() {
-    std::shared_ptr<Mob> bestTarget = mob->getTarget();
-    if (bestTarget == NULL) return false;
-    if (target.lock() == NULL || !target.lock()->isAlive()) return false;
+    std::shared_ptr<LivingEntity> target = mob->getTarget();
+    if (target == NULL) return false;
+    if (!target->isAlive()) return false;
     if (!trackTarget) return !mob->getNavigation()->isDone();
-    if (!mob->isWithinRestriction(Mth::floor(target.lock()->x),
-                                  Mth::floor(target.lock()->y),
-                                  Mth::floor(target.lock()->z)))
+    if (!mob->isWithinRestriction(Mth::floor(target->x), Mth::floor(target->y),
+                                  Mth::floor(target->z)))
         return false;
     return true;
 }
 
 void MeleeAttackGoal::start() {
-    mob->getNavigation()->moveTo(path, speed);
+    mob->getNavigation()->moveTo(path, speedModifier);
     path = NULL;
     timeToRecalcPath = 0;
 }
 
-void MeleeAttackGoal::stop() {
-    target = std::weak_ptr<Mob>();
-    mob->getNavigation()->stop();
-}
+void MeleeAttackGoal::stop() { mob->getNavigation()->stop(); }
 
 void MeleeAttackGoal::tick() {
-    mob->getLookControl()->setLookAt(target.lock(), 30, 30);
-    if (trackTarget || mob->getSensing()->canSee(target.lock())) {
+    std::shared_ptr<LivingEntity> target = mob->getTarget();
+    mob->getLookControl()->setLookAt(target, 30, 30);
+    if (trackTarget || mob->getSensing()->canSee(target)) {
         if (--timeToRecalcPath <= 0) {
             timeToRecalcPath = 4 + mob->getRandom()->nextInt(7);
-            mob->getNavigation()->moveTo(target.lock(), speed);
+            mob->getNavigation()->moveTo(target, speedModifier);
         }
     }
 
     attackTime = std::max(attackTime - 1, 0);
 
-    double meleeRadiusSqr = (mob->bbWidth * 2) * (mob->bbWidth * 2);
-    if (mob->distanceToSqr(target.lock()->x, target.lock()->bb->y0,
-                           target.lock()->z) > meleeRadiusSqr)
+    double meleeRadiusSqr =
+        (mob->bbWidth * 2) * (mob->bbWidth * 2) + target->bbWidth;
+    if (mob->distanceToSqr(target->x, target->bb->y0, target->z) >
+        meleeRadiusSqr)
         return;
     if (attackTime > 0) return;
     attackTime = 20;
-    mob->doHurtTarget(target.lock());
+    if (mob->getCarriedItem() != NULL) mob->swing();
+    mob->doHurtTarget(target);
 }

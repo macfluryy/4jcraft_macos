@@ -6,24 +6,24 @@
 #include "SwellGoal.h"
 
 SwellGoal::SwellGoal(Creeper* creeper) {
-    target = std::weak_ptr<Mob>();
+    target = std::weak_ptr<LivingEntity>();
 
     this->creeper = creeper;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
 
 bool SwellGoal::canUse() {
-    std::shared_ptr<Mob> target = creeper->getTarget();
+    std::shared_ptr<LivingEntity> target = creeper->getTarget();
     return creeper->getSwellDir() > 0 ||
            (target != NULL && (creeper->distanceToSqr(target) < 3 * 3));
 }
 
 void SwellGoal::start() {
     creeper->getNavigation()->stop();
-    target = std::weak_ptr<Mob>(creeper->getTarget());
+    target = std::weak_ptr<LivingEntity>(creeper->getTarget());
 }
 
-void SwellGoal::stop() { target = std::weak_ptr<Mob>(); }
+void SwellGoal::stop() { target = std::weak_ptr<LivingEntity>(); }
 
 void SwellGoal::tick() {
     if (target.lock() == NULL) {

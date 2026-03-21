@@ -51,11 +51,11 @@ void MoveIndoorsGoal::start() {
                           _doorInfo->getIndoorY(),
                           _doorInfo->getIndoorZ() + 0.5));
         if (pos != NULL)
-            mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, 0.3f);
+            mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, 1.0f);
     } else
         mob->getNavigation()->moveTo(_doorInfo->getIndoorX() + 0.5,
                                      _doorInfo->getIndoorY(),
-                                     _doorInfo->getIndoorZ() + 0.5, 0.3f);
+                                     _doorInfo->getIndoorZ() + 0.5, 1.0f);
 }
 
 void MoveIndoorsGoal::stop() {

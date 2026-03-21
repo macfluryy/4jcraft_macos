@@ -7,11 +7,11 @@ class PathfinderMob;
 class PanicGoal : public Goal {
 private:
     PathfinderMob* mob;
-    float speed;
+    double speedModifier;
     double posX, posY, posZ;
 
 public:
-    PanicGoal(PathfinderMob* mob, float speed);
+    PanicGoal(PathfinderMob* mob, double speedModifier);
 
     virtual bool canUse();
     virtual void start();

@@ -7,7 +7,7 @@ class VillagerGolem;
 class DefendVillageTargetGoal : public TargetGoal {
 private:
     VillagerGolem* golem;  // Owner of this goal
-    std::weak_ptr<Mob> potentialTarget;
+    std::weak_ptr<LivingEntity> potentialTarget;
 
 public:
     DefendVillageTargetGoal(VillagerGolem* golem);

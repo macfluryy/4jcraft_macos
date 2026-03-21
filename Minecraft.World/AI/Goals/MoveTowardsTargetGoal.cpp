@@ -6,16 +6,17 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "MoveTowardsTargetGoal.h"
 
-MoveTowardsTargetGoal::MoveTowardsTargetGoal(PathfinderMob* mob, float speed,
+MoveTowardsTargetGoal::MoveTowardsTargetGoal(PathfinderMob* mob,
+                                             double speedModifier,
                                              float within) {
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     this->within = within;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
 
 bool MoveTowardsTargetGoal::canUse() {
-    target = std::weak_ptr<Mob>(mob->getTarget());
+    target = std::weak_ptr<LivingEntity>(mob->getTarget());
     if (target.lock() == NULL) return false;
     if (target.lock()->distanceToSqr(mob->shared_from_this()) > within * within)
         return false;
@@ -39,5 +40,5 @@ bool MoveTowardsTargetGoal::canContinueToUse() {
 void MoveTowardsTargetGoal::stop() { target = std::weak_ptr<Mob>(); }
 
 void MoveTowardsTargetGoal::start() {
-    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speed);
+    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speedModifier);
 }
