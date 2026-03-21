@@ -29,6 +29,12 @@ void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
     if (eventKey == Keyboard::KEY_ESCAPE) {
         minecraft->setScreen(NULL);
         //    minecraft->grabMouse();	// 4J - removed
+        // 4jcraft: moved here from PauseScreen to ensure that serverside
+        // unpausing is done in all scenarios
+        if (g_NetworkManager.IsLocalGame() &&
+            g_NetworkManager.GetPlayerCount() == 1)
+            app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                                   eXuiServerAction_PauseServer, (void*)FALSE);
     }
 }
 

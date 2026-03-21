@@ -3683,10 +3683,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                     Minecraft::GetInstance()->player);
             ui.PlayUISFX(eSFX_Press);
 #ifdef ENABLE_JAVA_GUIS
-            if (gameMode->hasInfiniteItems())
-                setScreen(new CreativeInventoryScreen(player));
-            else
-                setScreen(new InventoryScreen(player));
+            setScreen(new InventoryScreen(player));
 #else
             app.LoadInventoryMenu(iPad, player);
 #endif
@@ -3706,6 +3703,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                 // Creative mode
 
                 ui.PlayUISFX(eSFX_Press);
+#ifdef ENABLE_JAVA_GUIS
+                setScreen(new CreativeInventoryScreen(player));
+            }
+#else
                 app.LoadCreativeMenu(iPad, player);
             }
             // 4J-PB - Microsoft request that we use the 3x3 crafting if someone
@@ -3725,6 +3726,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                 ui.PlayUISFX(eSFX_Press);
                 app.LoadCrafting2x2Menu(iPad, player);
             }
+#endif
         }
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_PAUSEMENU))

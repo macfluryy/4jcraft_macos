@@ -54,15 +54,6 @@ void PauseScreen::init() {
      */
 }
 
-void PauseScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
-    if (eventKey == Keyboard::KEY_ESCAPE && g_NetworkManager.IsLocalGame() &&
-        g_NetworkManager.GetPlayerCount() == 1)
-        app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                               eXuiServerAction_PauseServer, (void*)FALSE);
-
-    Screen::keyPressed(eventCharacter, eventKey);
-}
-
 void PauseScreen::exitWorld(Minecraft* minecraft, bool save) {
     // 4jcraft: made our own static method for use in the java gui (other
     // places such as the deathscreen need this)
