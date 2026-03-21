@@ -23,15 +23,16 @@ int DamageEnchantment::getMaxCost(int level) {
 
 int DamageEnchantment::getMaxLevel() { return 5; }
 
-int DamageEnchantment::getDamageBonus(int level, std::shared_ptr<Mob> target) {
+float DamageEnchantment::getDamageBonus(int level,
+                                        std::shared_ptr<LivingEntity> target) {
     if (type == ALL) {
-        return Mth::floor(level * 2.75f);
+        return level * 1.25f;
     }
     if (type == UNDEAD && target->getMobType() == UNDEAD) {
-        return Mth::floor(level * 4.5f);
+        return level * 2.5f;
     }
     if (type == ARTHROPODS && target->getMobType() == ARTHROPOD) {
-        return Mth::floor(level * 4.5f);
+        return level * 2.5f;
     }
     return 0;
 }

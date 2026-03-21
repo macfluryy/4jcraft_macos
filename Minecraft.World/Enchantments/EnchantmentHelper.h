@@ -50,14 +50,14 @@ private:
      * @return
      */
 public:
-    static int getDamageProtection(std::shared_ptr<Inventory> inventory,
+    static int getDamageProtection(ItemInstanceArray armor,
                                    DamageSource* source);
 
 private:
     class GetDamageBonusIteration : public EnchantmentIterationMethod {
     public:
-        int sum;
-        std::shared_ptr<Mob> target;
+        float sum;
+        std::shared_ptr<LivingEntity> target;
 
         virtual void doEnchantment(Enchantment* enchantment, int level);
     };
@@ -71,21 +71,21 @@ private:
      * @return
      */
 public:
-    static int getDamageBonus(std::shared_ptr<Inventory> inventory,
-                              std::shared_ptr<Mob> target);
-    static int getKnockbackBonus(std::shared_ptr<Inventory> inventory,
-                                 std::shared_ptr<Mob> target);
-    static int getFireAspect(std::shared_ptr<Mob> source);
-    static int getOxygenBonus(std::shared_ptr<Inventory> inventory);
-    static int getDiggingBonus(std::shared_ptr<Inventory> inventory);
-    static int getDigDurability(std::shared_ptr<Inventory> inventory);
-    static bool hasSilkTouch(std::shared_ptr<Inventory> inventory);
-    static int getDiggingLootBonus(std::shared_ptr<Inventory> inventory);
-    static int getKillingLootBonus(std::shared_ptr<Inventory> inventory);
-    static bool hasWaterWorkerBonus(std::shared_ptr<Inventory> inventory);
-    static int getArmorThorns(std::shared_ptr<Mob> source);
+    static float getDamageBonus(std::shared_ptr<LivingEntity> source,
+                                std::shared_ptr<LivingEntity> target);
+    static int getKnockbackBonus(std::shared_ptr<LivingEntity> source,
+                                 std::shared_ptr<LivingEntity> target);
+    static int getFireAspect(std::shared_ptr<LivingEntity> source);
+    static int getOxygenBonus(std::shared_ptr<LivingEntity> source);
+    static int getDiggingBonus(std::shared_ptr<LivingEntity> source);
+    static int getDigDurability(std::shared_ptr<LivingEntity> source);
+    static bool hasSilkTouch(std::shared_ptr<LivingEntity> source);
+    static int getDiggingLootBonus(std::shared_ptr<LivingEntity> source);
+    static int getKillingLootBonus(std::shared_ptr<LivingEntity> source);
+    static bool hasWaterWorkerBonus(std::shared_ptr<LivingEntity> source);
+    static int getArmorThorns(std::shared_ptr<LivingEntity> source);
     static std::shared_ptr<ItemInstance> getRandomItemWith(
-        Enchantment* enchantment, std::shared_ptr<Mob> source);
+        Enchantment* enchantment, std::shared_ptr<LivingEntity> source);
 
     /**
      *

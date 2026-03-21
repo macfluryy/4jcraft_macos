@@ -39,7 +39,7 @@ int ProtectionEnchantment::getDamageProtection(int level,
     if (type == FIRE && source->isFire()) return Mth::floor(protect * 1.25f);
     if (type == FALL && source == DamageSource::fall)
         return Mth::floor(protect * 2.5f);
-    if (type == EXPLOSION && source == DamageSource::explosion)
+    if (type == EXPLOSION && source->isExplosion())
         return Mth::floor(protect * 1.5f);
     if (type == PROJECTILE && source->isProjectile())
         return Mth::floor(protect * 1.5f);
@@ -51,10 +51,10 @@ int ProtectionEnchantment::getDescriptionId() { return names[type]; }
 bool ProtectionEnchantment::isCompatibleWith(Enchantment* other) const {
     ProtectionEnchantment* pe = dynamic_cast<ProtectionEnchantment*>(other);
     if (pe != NULL) {
-        if (pe->type == this->type) {
+        if (pe->type == type) {
             return false;
         }
-        if (this->type == FALL || pe->type == FALL) {
+        if (type == FALL || pe->type == FALL) {
             return true;
         }
         return false;

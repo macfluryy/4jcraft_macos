@@ -87,6 +87,7 @@ void EnchantmentHelper::setEnchantments(
 
 int EnchantmentHelper::getEnchantmentLevel(int enchantmentId,
                                            ItemInstanceArray inventory) {
+    if (inventory.data == NULL) return 0;
     int bestLevel = 0;
     // for (ItemInstance piece : inventory)
     for (unsigned int i = 0; i < inventory.length; ++i) {
@@ -142,12 +143,12 @@ EnchantmentHelper::GetDamageProtectionIteration
  * @param source
  * @return
  */
-int EnchantmentHelper::getDamageProtection(std::shared_ptr<Inventory> inventory,
+int EnchantmentHelper::getDamageProtection(ItemInstanceArray armor,
                                            DamageSource* source) {
     getDamageProtectionIteration.sum = 0;
     getDamageProtectionIteration.source = source;
 
-    runIterationOnInventory(getDamageProtectionIteration, inventory->armor);
+    runIterationOnInventory(getDamageProtectionIteration, armor);
 
     if (getDamageProtectionIteration.sum > 25) {
         getDamageProtectionIteration.sum = 25;
@@ -172,75 +173,72 @@ EnchantmentHelper::GetDamageBonusIteration
  * @param target
  * @return
  */
-int EnchantmentHelper::getDamageBonus(std::shared_ptr<Inventory> inventory,
-                                      std::shared_ptr<Mob> target) {
+float EnchantmentHelper::getDamageBonus(std::shared_ptr<LivingEntity> source,
+                                        std::shared_ptr<LivingEntity> target) {
     getDamageBonusIteration.sum = 0;
     getDamageBonusIteration.target = target;
 
-    runIterationOnItem(getDamageBonusIteration, inventory->getSelected());
+    runIterationOnItem(getDamageBonusIteration, source->getCarriedItem());
 
-    if (getDamageBonusIteration.sum > 0) {
-        return 1 + random.nextInt(getDamageBonusIteration.sum);
-    }
-    return 0;
+    return getDamageBonusIteration.sum;
 }
 
-int EnchantmentHelper::getKnockbackBonus(std::shared_ptr<Inventory> inventory,
-                                         std::shared_ptr<Mob> target) {
+int EnchantmentHelper::getKnockbackBonus(std::shared_ptr<LivingEntity> source,
+                                         std::shared_ptr<LivingEntity> target) {
     return getEnchantmentLevel(Enchantment::knockback->id,
-                               inventory->getSelected());
+                               source->getCarriedItem());
 }
 
-int EnchantmentHelper::getFireAspect(std::shared_ptr<Mob> source) {
+int EnchantmentHelper::getFireAspect(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::fireAspect->id,
                                source->getCarriedItem());
 }
 
-int EnchantmentHelper::getOxygenBonus(std::shared_ptr<Inventory> inventory) {
+int EnchantmentHelper::getOxygenBonus(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::drownProtection->id,
-                               inventory->armor);
+                               source->getEquipmentSlots());
 }
 
-int EnchantmentHelper::getDiggingBonus(std::shared_ptr<Inventory> inventory) {
+int EnchantmentHelper::getDiggingBonus(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::diggingBonus->id,
-                               inventory->getSelected());
+                               source->getCarriedItem());
 }
 
-int EnchantmentHelper::getDigDurability(std::shared_ptr<Inventory> inventory) {
+int EnchantmentHelper::getDigDurability(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::digDurability->id,
-                               inventory->getSelected());
+                               source->getCarriedItem());
 }
 
-bool EnchantmentHelper::hasSilkTouch(std::shared_ptr<Inventory> inventory) {
+bool EnchantmentHelper::hasSilkTouch(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::untouching->id,
-                               inventory->getSelected()) > 0;
+                               source->getCarriedItem()) > 0;
 }
 
 int EnchantmentHelper::getDiggingLootBonus(
-    std::shared_ptr<Inventory> inventory) {
+    std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::resourceBonus->id,
-                               inventory->getSelected());
+                               source->getCarriedItem());
 }
 
 int EnchantmentHelper::getKillingLootBonus(
-    std::shared_ptr<Inventory> inventory) {
+    std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::lootBonus->id,
-                               inventory->getSelected());
+                               source->getCarriedItem());
 }
 
 bool EnchantmentHelper::hasWaterWorkerBonus(
-    std::shared_ptr<Inventory> inventory) {
-    return getEnchantmentLevel(Enchantment::waterWorker->id, inventory->armor) >
-           0;
+    std::shared_ptr<LivingEntity> source) {
+    return getEnchantmentLevel(Enchantment::waterWorker->id,
+                               source->getEquipmentSlots()) > 0;
 }
 
-int EnchantmentHelper::getArmorThorns(std::shared_ptr<Mob> source) {
+int EnchantmentHelper::getArmorThorns(std::shared_ptr<LivingEntity> source) {
     return getEnchantmentLevel(Enchantment::thorns->id,
                                source->getEquipmentSlots());
 }
 
 std::shared_ptr<ItemInstance> EnchantmentHelper::getRandomItemWith(
-    Enchantment* enchantment, std::shared_ptr<Mob> source) {
+    Enchantment* enchantment, std::shared_ptr<LivingEntity> source) {
     ItemInstanceArray items = source->getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
