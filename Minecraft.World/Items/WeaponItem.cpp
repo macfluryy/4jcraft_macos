@@ -1,7 +1,9 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.entity.h"
+#include "../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
+#include "../Headers/net.minecraft.world.entity.monster.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "WeaponItem.h"
 
@@ -12,33 +14,40 @@ WeaponItem::WeaponItem(int id, const Tier* tier) : Item(id), tier(tier) {
     damage = 4 + tier->getAttackDamageBonus();
 }
 
+float WeaponItem::getTierDamage() { return tier->getAttackDamageBonus(); }
+
 float WeaponItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                   Tile* tile) {
     if (tile->id == Tile::web_Id) {
         // swords can quickly cut web
         return 15;
     }
-    return 1.5f;
+    // this change modifies which tiles the swords can destroy in creative
+    // mode (>1 == yes)
+    Material* material = tile->material;
+    if (material == Material::plant ||
+        material == Material::replaceable_plant ||
+        material == Material::coral || material == Material::leaves ||
+        material == Material::vegetable) {
+        return 1.5f;
+    }
+    return 1.0f;
 }
 
 bool WeaponItem::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
-                           std::shared_ptr<Mob> mob,
-                           std::shared_ptr<Mob> attacker) {
-    itemInstance->hurt(1, attacker);
+                           std::shared_ptr<LivingEntity> mob,
+                           std::shared_ptr<LivingEntity> attacker) {
+    itemInstance->hurtAndBreak(1, attacker);
     return true;
 }
 
 bool WeaponItem::mineBlock(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, int tile, int x, int y, int z,
-                           std::shared_ptr<Mob> owner) {
+                           std::shared_ptr<LivingEntity> owner) {
     // Don't damage weapons if the tile can be destroyed in one hit.
     if (Tile::tiles[tile]->getDestroySpeed(level, x, y, z) != 0.0)
-        itemInstance->hurt(2, owner);
+        itemInstance->hurtAndBreak(2, owner);
     return true;
-}
-
-int WeaponItem::getAttackDamage(std::shared_ptr<Entity> entity) {
-    return damage;
 }
 
 bool WeaponItem::isHandEquipped() { return true; }
@@ -73,4 +82,15 @@ bool WeaponItem::isValidRepairItem(std::shared_ptr<ItemInstance> source,
         return true;
     }
     return Item::isValidRepairItem(source, repairItem);
+}
+
+attrAttrModMap* WeaponItem::getDefaultAttributeModifiers() {
+    attrAttrModMap* result = Item::getDefaultAttributeModifiers();
+
+    result->insert(attrAttrModMap::value_type(
+        SharedMonsterAttributes::ATTACK_DAMAGE->getId(),
+        new AttributeModifier(eModifierId_ITEM_BASEDAMAGE, damage,
+                              AttributeModifier::OPERATION_ADDITION)));
+
+    return result;
 }

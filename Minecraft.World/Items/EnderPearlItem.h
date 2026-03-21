@@ -10,5 +10,6 @@ public:
         std::shared_ptr<ItemInstance> instance, Level* level,
         std::shared_ptr<Player> player);
     // 4J added
-    virtual bool TestUse(Level* level, std::shared_ptr<Player> player);
+    virtual bool TestUse(std::shared_ptr<ItemInstance> instance, Level* level,
+                         std::shared_ptr<Player> player);
 };

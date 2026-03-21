@@ -16,8 +16,7 @@ public:
     ListTag<CompoundTag>* getEnchantments(std::shared_ptr<ItemInstance> item);
     void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                          std::shared_ptr<Player> player,
-                         std::vector<std::wstring>* lines, bool advanced,
-                         std::vector<std::wstring>& unformattedStrings);
+                         std::vector<HtmlString>* lines, bool advanced);
     void addEnchantment(std::shared_ptr<ItemInstance> item,
                         EnchantmentInstance* enchantment);
     std::shared_ptr<ItemInstance> createForEnchantment(

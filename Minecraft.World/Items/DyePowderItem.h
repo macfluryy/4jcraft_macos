@@ -46,8 +46,14 @@ public:
                        std::shared_ptr<Player> player, Level* level, int x,
                        int y, int z, int face, float clickX, float clickY,
                        float clickZ, bool bTestUseOnOnly = false);
+    static bool growCrop(std::shared_ptr<ItemInstance> itemInstance,
+                         Level* level, int x, int y, int z,
+                         bool bTestUseOnOnly);
+    static void addGrowthParticles(Level* level, int x, int y, int z,
+                                   int count);
     virtual bool interactEnemy(std::shared_ptr<ItemInstance> itemInstance,
-                               std::shared_ptr<Mob> mob);
+                               std::shared_ptr<Player> player,
+                               std::shared_ptr<LivingEntity> mob);
 
     //@Override
     void registerIcons(IconRegister* iconRegister);

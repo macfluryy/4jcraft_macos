@@ -14,7 +14,7 @@
 #include "../Headers/net.minecraft.world.inventory.h"
 #include "../Util/JavaMath.h"
 
-MapItem::MapItem(int id) : ComplexItem(id) { this->setMaxStackSize(1); }
+MapItem::MapItem(int id) : ComplexItem(id) { setStackedByData(true); }
 
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
                                                         Level* level) {
@@ -94,7 +94,8 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
 
 void MapItem::update(Level* level, std::shared_ptr<Entity> player,
                      std::shared_ptr<MapItemSavedData> data) {
-    if (level->dimension->id != data->dimension) {
+    if ((level->dimension->id != data->dimension) ||
+        !player->instanceof(eTYPE_PLAYER)) {
         // Wrong dimension, abort
         return;
     }
@@ -114,10 +115,12 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
     if (level->dimension->hasCeiling) {
         rad /= 2;
     }
-    data->step++;
+    std::shared_ptr<MapItemSavedData::HoldingPlayer> hp =
+        data->getHoldingPlayer(std::dynamic_pointer_cast<Player>(player));
+    hp->step++;
 
     for (int x = xp - rad + 1; x < xp + rad; x++) {
-        if ((x & 15) != (data->step & 15)) continue;
+        if ((x & 15) != (hp->step & 15)) continue;
 
         int yd0 = 255;
         int yd1 = 0;
@@ -133,10 +136,6 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
 
             int xx = (xo / scale + x - w / 2) * scale;
             int zz = (zo / scale + z - h / 2) * scale;
-
-            int r = 0;
-            int g = 0;
-            int b = 0;
 
             int count[256];
             memset(count, 0, sizeof(int) * 256);
@@ -154,7 +153,7 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
                 if (((ss >> 20) & 1) == 0)
                     count[Tile::dirt_Id] += 10;
                 else
-                    count[Tile::rock_Id] += 10;
+                    count[Tile::stone_Id] += 10;
                 hh = 100;
             } else {
                 for (int xs = 0; xs < scale; xs++) {
@@ -202,9 +201,6 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
                 }
             }
             liquidDepth /= scale * scale;
-            r /= scale * scale;
-            g /= scale * scale;
-            b /= scale * scale;
 
             int best = 0;
             int tBest = 0;
@@ -260,7 +256,7 @@ void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance,
     if (level->isClientSide) return;
 
     std::shared_ptr<MapItemSavedData> data = getSavedData(itemInstance, level);
-    if (std::dynamic_pointer_cast<Player>(owner) != NULL) {
+    if (owner->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(owner);
 
@@ -291,6 +287,21 @@ void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance,
     if (selected) {
         update(level, owner, data);
     }
+}
+
+std::shared_ptr<Packet> MapItem::getUpdatePacket(
+    std::shared_ptr<ItemInstance> itemInstance, Level* level,
+    std::shared_ptr<Player> player) {
+    charArray data = MapItem::getSavedData(itemInstance, level)
+                         ->getUpdatePacket(itemInstance, level, player);
+
+    if (data.data == NULL || data.length == 0) return nullptr;
+
+    std::shared_ptr<Packet> retval =
+        std::shared_ptr<Packet>(new ComplexItemDataPacket(
+            (short)Item::map->id, (short)itemInstance->getAuxValue(), data));
+    delete data.data;
+    return retval;
 }
 
 void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
@@ -333,17 +344,20 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
     data->setDirty();
 }
 
-std::shared_ptr<Packet> MapItem::getUpdatePacket(
-    std::shared_ptr<ItemInstance> itemInstance, Level* level,
-    std::shared_ptr<Player> player) {
-    charArray data = MapItem::getSavedData(itemInstance, level)
-                         ->getUpdatePacket(itemInstance, level, player);
+// 4J - Don't want
+/*
+void appendHoverText(ItemInstance itemInstance, Player player, List<String>
+lines, boolean advanced) { MapItemSavedData data = getSavedData(itemInstance,
+player.level);
 
-    if (data.data == NULL || data.length == 0) return nullptr;
-
-    std::shared_ptr<Packet> retval =
-        std::shared_ptr<Packet>(new ComplexItemDataPacket(
-            (short)Item::map->id, (short)itemInstance->getAuxValue(), data));
-    delete[] data.data;  // 4jcraft, changed to []
-    return retval;
+        if (advanced) {
+                if (data == null) {
+                        lines.add("Unknown map");
+                } else {
+                        lines.add("Scaling at 1:" + (1 << data.scale));
+                        lines.add("(Level " + data.scale + "/" +
+MapItemSavedData.MAX_SCALE + ")");
+                }
+        }
 }
+*/

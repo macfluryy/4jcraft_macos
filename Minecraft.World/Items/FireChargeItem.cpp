@@ -12,7 +12,7 @@ FireChargeItem::FireChargeItem(int id) : Item(id) {
     m_dragonFireballIcon = NULL;
 }
 
-bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
+bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> instance,
                            std::shared_ptr<Player> player, Level* level, int x,
                            int y, int z, int face, float clickX, float clickY,
                            float clickZ, bool bTestUseOnOnly) {
@@ -27,7 +27,7 @@ bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     if (face == 4) x--;
     if (face == 5) x++;
 
-    if (!player->mayBuild(x, y, z)) {
+    if (!player->mayUseItemAt(x, y, z, face, instance)) {
         return false;
     }
 
@@ -39,13 +39,13 @@ bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     int targetType = level->getTile(x, y, z);
 
     if (targetType == 0) {
-        level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_FIRE_IGNITE, 1,
-                         random->nextFloat() * 0.4f + 0.8f);
-        level->setTile(x, y, z, Tile::fire_Id);
+        level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_FIRE_NEWIGNITE,
+                         1, random->nextFloat() * 0.4f + 0.8f);
+        level->setTileAndUpdate(x, y, z, Tile::fire_Id);
     }
 
     if (!player->abilities.instabuild) {
-        itemInstance->count--;
+        instance->count--;
     }
     return true;
 }

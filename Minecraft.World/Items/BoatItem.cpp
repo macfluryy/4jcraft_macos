@@ -7,9 +7,10 @@
 #include "ItemInstance.h"
 #include "BoatItem.h"
 
-BoatItem::BoatItem(int id) : Item(id) { this->maxStackSize = 1; }
+BoatItem::BoatItem(int id) : Item(id) { maxStackSize = 1; }
 
-bool BoatItem::TestUse(Level* level, std::shared_ptr<Player> player) {
+bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
+                       std::shared_ptr<Player> player) {
     // 4J-PB - added for tooltips to test use
     // 4J TODO really we should have the crosshair hitresult telling us if it
     // hit water, and at what distance, so we don't need to do this again if the
@@ -103,20 +104,28 @@ std::shared_ptr<ItemInstance> BoatItem::use(
         int yt = hr->y;
         int zt = hr->z;
 
-        if (!level->isClientSide) {
-            if (level->getTile(xt, yt, zt) == Tile::topSnow_Id) yt--;
-            if (level->countInstanceOf(eTYPE_BOAT, true) <
-                Level::MAX_XBOX_BOATS)  // 4J - added limit
-            {
-                level->addEntity(std::shared_ptr<Boat>(
-                    new Boat(level, xt + 0.5f, yt + 1.0f, zt + 0.5f)));
-                if (!player->abilities.instabuild) {
-                    itemInstance->count--;
-                }
-            } else {
-                // display a message to say max boats has been hit
-                player->displayClientMessage(IDS_MAX_BOATS);
+        if (level->getTile(xt, yt, zt) == Tile::topSnow_Id) yt--;
+        if (level->countInstanceOf(eTYPE_BOAT, true) <
+            Level::MAX_XBOX_BOATS)  // 4J - added limit
+        {
+            std::shared_ptr<Boat> boat = std::shared_ptr<Boat>(
+                new Boat(level, xt + 0.5f, yt + 1.0f, zt + 0.5f));
+            boat->yRot =
+                ((Mth::floor(player->yRot * 4.0F / 360.0F + 0.5) & 0x3) - 1) *
+                90;
+            if (!level->getCubes(boat, boat->bb->grow(-.1, -.1, -.1))
+                     ->empty()) {
+                return itemInstance;
             }
+            if (!level->isClientSide) {
+                level->addEntity(boat);
+            }
+            if (!player->abilities.instabuild) {
+                itemInstance->count--;
+            }
+        } else {
+            // display a message to say max boats has been hit
+            player->displayClientMessage(IDS_MAX_BOATS);
         }
     }
     delete hr;

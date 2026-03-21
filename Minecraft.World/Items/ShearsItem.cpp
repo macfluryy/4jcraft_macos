@@ -10,11 +10,11 @@ ShearsItem::ShearsItem(int itemId) : Item(itemId) {
 
 bool ShearsItem::mineBlock(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, int tile, int x, int y, int z,
-                           std::shared_ptr<Mob> owner) {
+                           std::shared_ptr<LivingEntity> owner) {
     if (tile == Tile::leaves_Id || tile == Tile::web_Id ||
         tile == Tile::tallgrass_Id || tile == Tile::vine_Id ||
         tile == Tile::tripWire_Id) {
-        itemInstance->hurt(1, owner);
+        itemInstance->hurtAndBreak(1, owner);
         return true;
     }
     return Item::mineBlock(itemInstance, level, tile, x, y, z, owner);
@@ -30,7 +30,7 @@ float ShearsItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
     if (tile->id == Tile::web_Id || tile->id == Tile::leaves_Id) {
         return 15;
     }
-    if (tile->id == Tile::cloth_Id) {
+    if (tile->id == Tile::wool_Id) {
         return 5;
     }
     return Item::getDestroySpeed(itemInstance, tile);

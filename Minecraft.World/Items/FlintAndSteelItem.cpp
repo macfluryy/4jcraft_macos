@@ -26,7 +26,7 @@ bool FlintAndSteelItem::useOn(std::shared_ptr<ItemInstance> instance,
     if (face == 4) x--;
     if (face == 5) x++;
 
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     int targetType = level->getTile(x, y, z);
 
@@ -43,12 +43,13 @@ bool FlintAndSteelItem::useOn(std::shared_ptr<ItemInstance> instance,
                 }
             }
 
-            level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_FIRE_IGNITE,
-                             1, random->nextFloat() * 0.4f + 0.8f);
-            level->setTile(x, y, z, Tile::fire_Id);
+            level->playSound(x + 0.5, y + 0.5, z + 0.5,
+                             eSoundType_FIRE_NEWIGNITE, 1,
+                             random->nextFloat() * 0.4f + 0.8f);
+            level->setTileAndUpdate(x, y, z, Tile::fire_Id);
         }
 
-        instance->hurt(1, player);
+        instance->hurtAndBreak(1, player);
     } else {
         if (targetType == 0) {
             return true;

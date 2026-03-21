@@ -42,8 +42,8 @@ std::shared_ptr<ItemInstance> FoodItem::useTimeDepleted(
     instance->count--;
     player->getFoodData()->eat(this);
     // 4J - new sound brought forward from 1.2.3
-    level->playSound(player, eSoundType_RANDOM_BURP, 0.5f,
-                     level->random->nextFloat() * 0.1f + 0.9f);
+    level->playEntitySound(player, eSoundType_RANDOM_BURP, 0.5f,
+                           level->random->nextFloat() * 0.1f + 0.9f);
 
     addEatEffect(instance, level, player);
 

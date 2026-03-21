@@ -19,6 +19,12 @@ public:
         bool bTestUseOnOnly);  //, float clickX, float clickY, float clickZ);
 
 private:
-    std::shared_ptr<HangingEntity> createEntity(Level* level, int x, int y,
-                                                int z, int dir);
+    std::shared_ptr<HangingEntity> createEntity(
+        Level* level, int x, int y, int z, int dir,
+        int auxValue);  // 4J Stu added auxValue param
+
+public:
+    virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
+                                 std::shared_ptr<Player> player,
+                                 std::vector<HtmlString>* lines, bool advanced);
 };

@@ -7,17 +7,18 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.entity.npc.h"
 #include "../Headers/net.minecraft.world.h"
-#include "MonsterPlacerItem.h"
+#include "../Util/HitResult.h"
+#include "SpawnEggItem.h"
 #include "../Util/Difficulty.h"
 
-MonsterPlacerItem::MonsterPlacerItem(int id) : Item(id) {
+SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll
                           // never be able to place that many
     setStackedByData(true);
     overlay = NULL;
 }
 
-std::wstring MonsterPlacerItem::getHoverName(
+std::wstring SpawnEggItem::getHoverName(
     std::shared_ptr<ItemInstance> itemInstance) {
     std::wstring elementName = getDescription();
 
@@ -33,8 +34,8 @@ std::wstring MonsterPlacerItem::getHoverName(
     return elementName;
 }
 
-int MonsterPlacerItem::getColor(std::shared_ptr<ItemInstance> item,
-                                int spriteLayer) {
+int SpawnEggItem::getColor(std::shared_ptr<ItemInstance> item,
+                           int spriteLayer) {
     AUTO_VAR(it, EntityIO::idsSpawnableInCreative.find(item->getAuxValue()));
     if (it != EntityIO::idsSpawnableInCreative.end()) {
         EntityIO::SpawnableMobInfo* spawnableMobInfo = it->second;
@@ -48,9 +49,9 @@ int MonsterPlacerItem::getColor(std::shared_ptr<ItemInstance> item,
     return 0xffffff;
 }
 
-bool MonsterPlacerItem::hasMultipleSpriteLayers() { return true; }
+bool SpawnEggItem::hasMultipleSpriteLayers() { return true; }
 
-Icon* MonsterPlacerItem::getLayerIcon(int auxValue, int spriteLayer) {
+Icon* SpawnEggItem::getLayerIcon(int auxValue, int spriteLayer) {
     if (spriteLayer > 0) {
         return overlay;
     }
@@ -58,8 +59,8 @@ Icon* MonsterPlacerItem::getLayerIcon(int auxValue, int spriteLayer) {
 }
 
 // 4J-PB - added for dispenser
-std::shared_ptr<Entity> MonsterPlacerItem::canSpawn(int iAuxVal, Level* level,
-                                                    int* piResult) {
+std::shared_ptr<Entity> SpawnEggItem::canSpawn(int iAuxVal, Level* level,
+                                               int* piResult) {
     std::shared_ptr<Entity> newEntity = EntityIO::newById(iAuxVal, level);
     if (newEntity != NULL) {
         bool canSpawn = false;
@@ -103,9 +104,16 @@ std::shared_ptr<Entity> MonsterPlacerItem::canSpawn(int iAuxVal, Level* level,
                     *piResult = eSpawnResult_FailTooManySquid;
                 }
                 break;
+            case eTYPE_BAT:
+                if (level->canCreateMore(eTYPE_BAT, Level::eSpawnType_Egg)) {
+                    canSpawn = true;
+                } else {
+                    *piResult = eSpawnResult_FailTooManyBats;
+                }
+                break;
             default:
-                if ((newEntity->GetType() & eTYPE_ANIMALS_SPAWN_LIMIT_CHECK) ==
-                    eTYPE_ANIMALS_SPAWN_LIMIT_CHECK) {
+                if (eTYPE_FLAGSET(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK,
+                                  newEntity->GetType())) {
                     if (level->canCreateMore(newEntity->GetType(),
                                              Level::eSpawnType_Egg)) {
                         canSpawn = true;
@@ -114,8 +122,10 @@ std::shared_ptr<Entity> MonsterPlacerItem::canSpawn(int iAuxVal, Level* level,
 
                         *piResult = eSpawnResult_FailTooManyPigsCowsSheepCats;
                     }
-                } else if ((newEntity->GetType() & eTYPE_MONSTER) ==
-                           eTYPE_MONSTER) {
+                }
+                // 4J: Use eTYPE_ENEMY instead of monster (slimes and ghasts
+                // aren't monsters)
+                else if (newEntity->instanceof(eTYPE_ENEMY)) {
                     // 4J-PB - check if the player is trying to spawn an enemy
                     // in peaceful mode
                     if (level->difficulty == Difficulty::PEACEFUL) {
@@ -127,6 +137,11 @@ std::shared_ptr<Entity> MonsterPlacerItem::canSpawn(int iAuxVal, Level* level,
                         *piResult = eSpawnResult_FailTooManyMonsters;
                     }
                 }
+#ifndef _CONTENT_PACKAGE
+                else if (app.DebugArtToolsOn()) {
+                    canSpawn = true;
+                }
+#endif
                 break;
         }
 
@@ -138,10 +153,10 @@ std::shared_ptr<Entity> MonsterPlacerItem::canSpawn(int iAuxVal, Level* level,
     return nullptr;
 }
 
-bool MonsterPlacerItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
-                              std::shared_ptr<Player> player, Level* level,
-                              int x, int y, int z, int face, float clickX,
-                              float clickY, float clickZ, bool bTestUseOnOnly) {
+bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
+                         std::shared_ptr<Player> player, Level* level, int x,
+                         int y, int z, int face, float clickX, float clickY,
+                         float clickZ, bool bTestUseOnOnly) {
     if (level->isClientSide) {
         return true;
     }
@@ -149,10 +164,11 @@ bool MonsterPlacerItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     int tile = level->getTile(x, y, z);
 
 #ifndef _CONTENT_PACKAGE
-    if (app.DebugSettingsOn() && tile == Tile::mobSpawner_Id) {
+    if (app.DebugArtToolsOn() && tile == Tile::mobSpawner_Id) {
         // 4J Stu - Force adding this as a tile update
-        level->setTile(x, y, z, 0);
-        level->setTile(x, y, z, Tile::mobSpawner_Id);
+        level->removeTile(x, y, z);
+        level->setTileAndData(x, y, z, Tile::mobSpawner_Id, 0,
+                              Tile::UPDATE_ALL);
         std::shared_ptr<MobSpawnerTileEntity> mste =
             std::dynamic_pointer_cast<MobSpawnerTileEntity>(
                 level->getTileEntity(x, y, z));
@@ -169,63 +185,95 @@ bool MonsterPlacerItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
     z += Facing::STEP_Z[face];
 
     double yOff = 0;
-    // 4J-PB - missing parentheses added
     if (face == Facing::UP &&
-        (tile == Tile::fence_Id || tile == Tile::netherFence_Id)) {
+        (Tile::tiles[tile] != NULL &&
+         Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE)) {
         // special case
         yOff = .5;
     }
 
     int iResult = 0;
-    bool spawned = spawnMobAt(level, itemInstance->getAuxValue(), x + .5,
-                              y + yOff, z + .5, &iResult) != NULL;
+    std::shared_ptr<Entity> result = spawnMobAt(
+        level, itemInstance->getAuxValue(), x + .5, y + yOff, z + .5, &iResult);
 
     if (bTestUseOnOnly) {
-        return spawned;
+        return result != NULL;
     }
 
-    if (spawned) {
+    if (result != NULL) {
+        // 4J-JEV: SetCustomName is a method for Mob not LivingEntity; so change
+        // instanceof to check for Mobs.
+        if (result->instanceof(eTYPE_MOB) &&
+            itemInstance->hasCustomHoverName()) {
+            std::dynamic_pointer_cast<Mob>(result)->setCustomName(
+                itemInstance->getHoverName());
+        }
         if (!player->abilities.instabuild) {
             itemInstance->count--;
         }
     } else {
-        // some negative sound effect?
-        // level->levelEvent(LevelEvent::SOUND_CLICK_FAIL, x, y, z, 0);
-        switch (iResult) {
-            case eSpawnResult_FailTooManyPigsCowsSheepCats:
-                player->displayClientMessage(
-                    IDS_MAX_PIGS_SHEEP_COWS_CATS_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManyChickens:
-                player->displayClientMessage(IDS_MAX_CHICKENS_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManySquid:
-                player->displayClientMessage(IDS_MAX_SQUID_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManyWolves:
-                player->displayClientMessage(IDS_MAX_WOLVES_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManyMooshrooms:
-                player->displayClientMessage(IDS_MAX_MOOSHROOMS_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManyMonsters:
-                player->displayClientMessage(IDS_MAX_ENEMIES_SPAWNED);
-                break;
-            case eSpawnResult_FailTooManyVillagers:
-                player->displayClientMessage(IDS_MAX_VILLAGERS_SPAWNED);
-                break;
-            case eSpawnResult_FailCantSpawnInPeaceful:
-                player->displayClientMessage(IDS_CANT_SPAWN_IN_PEACEFUL);
-                break;
-        }
+        DisplaySpawnError(player, iResult);
     }
 
     return true;
 }
 
-std::shared_ptr<Entity> MonsterPlacerItem::spawnMobAt(Level* level, int mobId,
-                                                      double x, double y,
-                                                      double z, int* piResult) {
+std::shared_ptr<ItemInstance> SpawnEggItem::use(
+    std::shared_ptr<ItemInstance> itemInstance, Level* level,
+    std::shared_ptr<Player> player) {
+    if (level->isClientSide) return itemInstance;
+
+    HitResult* hr = getPlayerPOVHitResult(level, player, true);
+    if (hr == NULL) {
+        delete hr;
+        return itemInstance;
+    }
+
+    if (hr->type == HitResult::TILE) {
+        int xt = hr->x;
+        int yt = hr->y;
+        int zt = hr->z;
+
+        if (!level->mayInteract(player, xt, yt, zt, 0)) {
+            delete hr;
+            return itemInstance;
+        }
+        if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance))
+            return itemInstance;
+
+        if (level->getMaterial(xt, yt, zt) == Material::water) {
+            int iResult = 0;
+            std::shared_ptr<Entity> result = spawnMobAt(
+                level, itemInstance->getAuxValue(), xt, yt, zt, &iResult);
+            if (result != NULL) {
+                // 4J-JEV: SetCustomName is a method for Mob not LivingEntity;
+                // so change instanceof to check for Mobs.
+                if (result->instanceof(eTYPE_MOB) &&
+                    itemInstance->hasCustomHoverName()) {
+                    std::dynamic_pointer_cast<Mob>(result)->setCustomName(
+                        itemInstance->getHoverName());
+                }
+                if (!player->abilities.instabuild) {
+                    itemInstance->count--;
+                }
+            } else {
+                SpawnEggItem::DisplaySpawnError(player, iResult);
+            }
+        }
+    }
+    return itemInstance;
+}
+
+std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
+                                                 double x, double y, double z,
+                                                 int* piResult) {
+    int mobId = auxVal;
+    int extraData = 0;
+
+    // 4J Stu - Enable spawning specific entity sub-types
+    mobId = auxVal & 0xFFF;
+    extraData = auxVal >> 12;
+
     if (EntityIO::idsSpawnableInCreative.find(mobId) ==
         EntityIO::idsSpawnableInCreative.end()) {
         return nullptr;
@@ -236,8 +284,11 @@ std::shared_ptr<Entity> MonsterPlacerItem::spawnMobAt(Level* level, int mobId,
     for (int i = 0; i < SPAWN_COUNT; i++) {
         newEntity = canSpawn(mobId, level, piResult);
 
-        std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(newEntity);
-        if (mob) {
+        // 4J-JEV: DynCasting to Mob not LivingEntity; so change instanceof to
+        // check for Mobs.
+        if (newEntity != NULL && newEntity->instanceof(eTYPE_MOB)) {
+            std::shared_ptr<Mob> mob =
+                std::dynamic_pointer_cast<Mob>(newEntity);
             newEntity->moveTo(
                 x, y, z, Mth::wrapDegrees(level->random->nextFloat() * 360), 0);
             newEntity->setDespawnProtected();  // 4J added, default to being
@@ -247,7 +298,7 @@ std::shared_ptr<Entity> MonsterPlacerItem::spawnMobAt(Level* level, int mobId,
             mob->yHeadRot = mob->yRot;
             mob->yBodyRot = mob->yRot;
 
-            mob->finalizeMobSpawn();
+            mob->finalizeMobSpawn(NULL, extraData);
             level->addEntity(newEntity);
             mob->playAmbientSound();
         }
@@ -256,7 +307,42 @@ std::shared_ptr<Entity> MonsterPlacerItem::spawnMobAt(Level* level, int mobId,
     return newEntity;
 }
 
-void MonsterPlacerItem::registerIcons(IconRegister* iconRegister) {
+void SpawnEggItem::registerIcons(IconRegister* iconRegister) {
     Item::registerIcons(iconRegister);
-    overlay = iconRegister->registerIcon(L"monsterPlacer_overlay");
+    overlay = iconRegister->registerIcon(getIconName() + L"_overlay");
+}
+
+void SpawnEggItem::DisplaySpawnError(std::shared_ptr<Player> player,
+                                     int result) {
+    // some negative sound effect?
+    // level->levelEvent(LevelEvent::SOUND_CLICK_FAIL, x, y, z, 0);
+    switch (result) {
+        case eSpawnResult_FailTooManyPigsCowsSheepCats:
+            player->displayClientMessage(IDS_MAX_PIGS_SHEEP_COWS_CATS_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyChickens:
+            player->displayClientMessage(IDS_MAX_CHICKENS_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManySquid:
+            player->displayClientMessage(IDS_MAX_SQUID_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyBats:
+            player->displayClientMessage(IDS_MAX_BATS_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyWolves:
+            player->displayClientMessage(IDS_MAX_WOLVES_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyMooshrooms:
+            player->displayClientMessage(IDS_MAX_MOOSHROOMS_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyMonsters:
+            player->displayClientMessage(IDS_MAX_ENEMIES_SPAWNED);
+            break;
+        case eSpawnResult_FailTooManyVillagers:
+            player->displayClientMessage(IDS_MAX_VILLAGERS_SPAWNED);
+            break;
+        case eSpawnResult_FailCantSpawnInPeaceful:
+            player->displayClientMessage(IDS_CANT_SPAWN_IN_PEACEFUL);
+            break;
+    }
 }

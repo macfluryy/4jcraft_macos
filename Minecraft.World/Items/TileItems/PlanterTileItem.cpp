@@ -20,7 +20,8 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
                             float clickZ, bool bTestUseOnOnly) {
     // 4J-PB - Adding a test only version to allow tooltips to be displayed
     int currentTile = level->getTile(x, y, z);
-    if (currentTile == Tile::topSnow_Id) {
+    if (currentTile == Tile::topSnow_Id &&
+        (level->getData(x, y, z) & TopSnowTile::HEIGHT_MASK) < 1) {
         face = Facing::UP;
     } else if (currentTile == Tile::vine_Id ||
                currentTile == Tile::tallgrass_Id ||
@@ -34,15 +35,16 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
         if (face == 5) x++;
     }
 
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
     if (instance->count == 0) return false;
 
-    if (level->mayPlace(tileId, x, y, z, false, face, nullptr)) {
+    if (level->mayPlace(tileId, x, y, z, false, face, nullptr, instance)) {
         if (!bTestUseOnOnly) {
             Tile* tile = Tile::tiles[tileId];
             int dataValue = tile->getPlacedOnFaceDataValue(
                 level, x, y, z, face, clickX, clickY, clickZ, 0);
-            if (level->setTileAndData(x, y, z, tileId, dataValue)) {
+            if (level->setTileAndData(x, y, z, tileId, dataValue,
+                                      Tile::UPDATE_ALL)) {
                 // 4J-JEV: Hook for durango 'BlockPlaced' event.
                 player->awardStat(GenericStats::blocksPlaced(tileId),
                                   GenericStats::param_blocksPlaced(
@@ -53,12 +55,13 @@ bool TilePlanterItem::useOn(std::shared_ptr<ItemInstance> instance,
                 // placed block to become something else before these methods
                 // are called
                 if (level->getTile(x, y, z) == tileId) {
-                    Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player);
+                    Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player,
+                                                     instance);
                     Tile::tiles[tileId]->finalizePlacement(level, x, y, z,
                                                            dataValue);
                 }
                 level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-                                 tile->soundType->getStepSound(),
+                                 tile->soundType->getPlaceSound(),
                                  (tile->soundType->getVolume() + 1) / 2,
                                  tile->soundType->getPitch() * 0.8f);
                 // 4J-PB - If we have the debug option on, don't reduce the

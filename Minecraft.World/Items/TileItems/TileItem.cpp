@@ -43,7 +43,8 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                      bool bTestUseOnOnly) {
     // 4J-PB - Adding a test only version to allow tooltips to be displayed
     int currentTile = level->getTile(x, y, z);
-    if (currentTile == Tile::topSnow_Id) {
+    if (currentTile == Tile::topSnow_Id &&
+        (level->getData(x, y, z) & TopSnowTile::HEIGHT_MASK) < 1) {
         face = Facing::UP;
     } else if (currentTile == Tile::vine_Id ||
                currentTile == Tile::tallgrass_Id ||
@@ -58,7 +59,7 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
     }
 
     if (instance->count == 0) return false;
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     if (y == Level::maxBuildHeight - 1 &&
         Tile::tiles[tileId]->material->isSolid())
@@ -67,14 +68,15 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
     int undertile =
         level->getTile(x, y - 1, z);  // For 'BodyGuard' achievement.
 
-    if (level->mayPlace(tileId, x, y, z, false, face, player)) {
+    if (level->mayPlace(tileId, x, y, z, false, face, player, instance)) {
         if (!bTestUseOnOnly) {
             Tile* tile = Tile::tiles[tileId];
             // 4J - Adding this from 1.6
             int itemValue = getLevelDataForAuxValue(instance->getAuxValue());
             int dataValue = Tile::tiles[tileId]->getPlacedOnFaceDataValue(
                 level, x, y, z, face, clickX, clickY, clickZ, itemValue);
-            if (level->setTileAndData(x, y, z, tileId, dataValue)) {
+            if (level->setTileAndData(x, y, z, tileId, dataValue,
+                                      Tile::UPDATE_ALL)) {
                 // 4J-JEV: Snow/Iron Golems do not have owners apparently.
                 int newTileId = level->getTile(x, y, z);
                 if ((tileId == Tile::pumpkin_Id ||
@@ -110,7 +112,8 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                 // placed block to become something else before these methods
                 // are called
                 if (level->getTile(x, y, z) == tileId) {
-                    Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player);
+                    Tile::tiles[tileId]->setPlacedBy(level, x, y, z, player,
+                                                     instance);
                     Tile::tiles[tileId]->finalizePlacement(level, x, y, z,
                                                            dataValue);
                 }
@@ -190,7 +193,7 @@ bool TileItem::mayPlace(Level* level, int x, int y, int z, int face,
         if (face == 5) x++;
     }
 
-    return level->mayPlace(getTileId(), x, y, z, false, face, nullptr);
+    return level->mayPlace(getTileId(), x, y, z, false, face, nullptr, item);
 }
 
 // 4J Added to colourise some tile types in the hint popups

@@ -1,8 +1,23 @@
 #pragma once
 
 #include "Item.h"
+#include "../Core/DefaultDispenseItemBehavior.h"
 
 class MinecartItem : public Item {
+private:
+    class MinecartDispenseBehavior : public DefaultDispenseItemBehavior {
+    private:
+        DefaultDispenseItemBehavior defaultDispenseItemBehavior;
+
+    public:
+        virtual std::shared_ptr<ItemInstance> execute(
+            BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
+            eOUTCOME& outcome);
+
+    protected:
+        virtual void playSound(BlockSource* source);
+    };
+
 public:
     int type;
 

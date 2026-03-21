@@ -1,5 +1,4 @@
 
-
 #include "../Platform/stdafx.h"
 #include "Item.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
@@ -20,14 +19,15 @@ bool SeedItem::useOn(std::shared_ptr<ItemInstance> instance,
     // 4J-PB - Adding a test only version to allow tooltips to be displayed
     if (face != 1) return false;
 
-    if (!player->mayBuild(x, y, z) || !player->mayBuild(x, y + 1, z))
+    if (!player->mayUseItemAt(x, y, z, face, instance) ||
+        !player->mayUseItemAt(x, y + 1, z, face, instance))
         return false;
 
     int targetType = level->getTile(x, y, z);
 
     if (targetType == targetLand && level->isEmptyTile(x, y + 1, z)) {
         if (!bTestUseOnOnly) {
-            level->setTile(x, y + 1, z, resultId);
+            level->setTileAndUpdate(x, y + 1, z, resultId);
             instance->count--;
         }
         return true;

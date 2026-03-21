@@ -2,12 +2,15 @@
 
 #include "TileItem.h"
 
-class ClothTileItem : public TileItem {
+class WoolTileItem : public TileItem {
 public:
     static const unsigned int COLOR_DESCS[];
     static const unsigned int CARPET_COLOR_DESCS[];
+    static const unsigned int CLAY_COLOR_DESCS[];
+    static const unsigned int GLASS_COLOR_DESCS[];
+    static const unsigned int GLASS_PANE_COLOR_DESCS[];
 
-    ClothTileItem(int id);
+    WoolTileItem(int id);
 
     virtual Icon* getIcon(int itemAuxValue);
     virtual int getLevelDataForAuxValue(int auxValue);
