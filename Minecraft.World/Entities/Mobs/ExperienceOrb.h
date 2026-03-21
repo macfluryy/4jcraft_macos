@@ -45,7 +45,7 @@ protected:
     virtual void burn(int dmg);
 
 public:
-    virtual bool hurt(DamageSource* source, int damage);
+    virtual bool hurt(DamageSource* source, float damage);
     virtual void addAdditonalSaveData(CompoundTag* entityTag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
     virtual void playerTouch(std::shared_ptr<Player> player);

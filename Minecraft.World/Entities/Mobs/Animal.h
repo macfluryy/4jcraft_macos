@@ -11,7 +11,7 @@ private:
     static const int DATA_IN_LOVE = 13;  // 4J added
 
     //	int inLove;							// 4J
-    //removed - now synched data
+    // removed - now synched data
     int loveTime;
     std::weak_ptr<Player> loveCause;
 
@@ -35,7 +35,7 @@ public:
     virtual float getWalkTargetValue(int x, int y, int z);
 
 public:
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
     virtual void addAdditonalSaveData(CompoundTag* tag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
 
@@ -52,7 +52,7 @@ protected:
 
 public:
     virtual bool isFood(std::shared_ptr<ItemInstance> itemInstance);
-    virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool mobInteract(std::shared_ptr<Player> player);
 
 protected:
     int getInLoveValue();  // 4J added
@@ -62,10 +62,12 @@ public:
     void setInLove(std::shared_ptr<Player>
                        player);  // 4J added, then modified to match latest Java
                                  // for XboxOne achievements
+    virtual void setInLove();
     std::shared_ptr<Player> getLoveCause();
     bool isInLove();
     void resetLove();
     virtual bool canMate(std::shared_ptr<Animal> partner);
+    virtual void handleEntityEvent(uint8_t id);
 
     // 4J added for determining whether animals are enclosed or not
 private:

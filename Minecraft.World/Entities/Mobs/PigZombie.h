@@ -11,8 +11,11 @@ public:
     static Entity* create(Level* level) { return new PigZombie(level); }
 
 private:
+    static AttributeModifier* SPEED_MODIFIER_ATTACKING;
+
     int angerTime;
     int playAngrySoundIn;
+    std::shared_ptr<Entity> lastAttackTarget;
 
     void _init();
 
@@ -20,10 +23,10 @@ public:
     PigZombie(Level* level);
 
 protected:
-    bool useNewAi();
+    virtual void registerAttributes();
+    virtual bool useNewAi();
 
 public:
-    virtual int getTexture();
     virtual void tick();
     virtual bool canSpawn();
     virtual void addAdditonalSaveData(CompoundTag* tag);
@@ -33,7 +36,7 @@ protected:
     virtual std::shared_ptr<Entity> findAttackTarget();
 
 public:
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
 
 private:
     void alert(std::shared_ptr<Entity> target);
@@ -43,16 +46,17 @@ protected:
     virtual int getHurtSound();
     virtual int getDeathSound();
     virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
-    virtual void dropRareDeathLoot(int rareLootLevel);
-    virtual int getDeathLoot();
-
-private:
-    static std::shared_ptr<ItemInstance> sword;
 
 public:
-    virtual void finalizeMobSpawn();
+    virtual bool mobInteract(std::shared_ptr<Player> player);
 
-    std::shared_ptr<ItemInstance> getCarriedItem();
+protected:
+    virtual void dropRareDeathLoot(int rareLootLevel);
+    virtual int getDeathLoot();
+    virtual void populateDefaultEquipmentSlots();
 
-    static void staticCtor();
+public:
+    virtual MobGroupData* finalizeMobSpawn(
+        MobGroupData* groupData,
+        int extraData = 0);  // 4J Added extraData param
 };

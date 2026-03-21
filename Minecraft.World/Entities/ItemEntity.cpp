@@ -83,8 +83,8 @@ void ItemEntity::tick() {
             xd = (random->nextFloat() - random->nextFloat()) * 0.2f;
             zd = (random->nextFloat() - random->nextFloat()) * 0.2f;
             MemSect(31);
-            level->playSound(shared_from_this(), eSoundType_RANDOM_FIZZ, 0.4f,
-                             2.0f + random->nextFloat() * 0.4f);
+            playSound(eSoundType_RANDOM_FIZZ, 0.4f,
+                      2.0f + random->nextFloat() * 0.4f);
             MemSect(0);
         }
 
@@ -168,7 +168,7 @@ bool ItemEntity::updateInWaterState() {
 
 void ItemEntity::burn(int dmg) { hurt(DamageSource::inFire, dmg); }
 
-bool ItemEntity::hurt(DamageSource* source, int damage) {
+bool ItemEntity::hurt(DamageSource* source, float damage) {
     // 4J - added next line: found whilst debugging an issue with item entities
     // getting into a bad state when being created by a cactus, since entities
     // insides cactuses get hurt and therefore depending on the timing of things
@@ -177,6 +177,10 @@ bool ItemEntity::hurt(DamageSource* source, int damage) {
     // hurt?
     if (level->isClientSide) return false;
 
+    if (isInvulnerable()) return false;
+    if (getItem() != NULL && getItem()->id == Item::netherStar_Id &&
+        source->isExplosion())
+        return false;
     markHurt();
     health -= damage;
     if (health <= 0) {
@@ -238,8 +242,8 @@ void ItemEntity::playerTouch(std::shared_ptr<Player> player) {
             player->awardStat(GenericStats::blazeRod(),
                               GenericStats::param_blazeRod());
 
-        level->playSound(
-            shared_from_this(), eSoundType_RANDOM_POP, 0.2f,
+        playSound(
+            eSoundType_RANDOM_POP, 0.2f,
             ((random->nextFloat() - random->nextFloat()) * 0.7f + 1.0f) * 2.0f);
         player->take(shared_from_this(), orgCount);
         //            System.out.println(item.count + ", " + orgCount);
@@ -252,6 +256,12 @@ std::wstring ItemEntity::getAName() {
     // return I18n.get("item." + item.getDescriptionId());
 }
 
+void ItemEntity::changeDimension(int i) {
+    Entity::changeDimension(i);
+
+    if (!level->isClientSide) mergeWithNeighbours();
+}
+
 std::shared_ptr<ItemInstance> ItemEntity::getItem() {
     std::shared_ptr<ItemInstance> result =
         getEntityData()->getItemInstance(DATA_ITEM);
@@ -262,7 +272,7 @@ std::shared_ptr<ItemInstance> ItemEntity::getItem() {
             // level.getLogger().severe("Item entity " + entityId + " has no
             // item?!");
         }
-        return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::rock));
+        return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::stone));
     }
 
     return result;

@@ -12,10 +12,10 @@ AgableMob::AgableMob(Level* level) : PathfinderMob(level) {
     registeredBBHeight = 0;
 }
 
-bool AgableMob::interact(std::shared_ptr<Player> player) {
+bool AgableMob::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 
-    if (item != NULL && item->id == Item::monsterPlacer_Id) {
+    if (item != NULL && item->id == Item::spawnEgg_Id) {
         if (!level->isClientSide) {
             eINSTANCEOF classToSpawn = EntityIO::getClass(item->getAuxValue());
             if (classToSpawn != eTYPE_NOTSET &&
@@ -23,28 +23,38 @@ bool AgableMob::interact(std::shared_ptr<Player> player) {
                 classToSpawn == GetType())  // 4J Added GetType() check to only
                                             // spawn same type
             {
-                std::shared_ptr<AgableMob> offspring = getBreedOffspring(
-                    std::dynamic_pointer_cast<AgableMob>(shared_from_this()));
-                if (offspring != NULL) {
-                    offspring->setAge(-20 * 60 * 20);
-                    offspring->moveTo(x, y, z, 0, 0);
+                int error;
+                std::shared_ptr<Entity> result =
+                    SpawnEggItem::canSpawn(item->getAuxValue(), level, &error);
 
-                    level->addEntity(offspring);
+                if (result != NULL) {
+                    std::shared_ptr<AgableMob> offspring =
+                        getBreedOffspring(std::dynamic_pointer_cast<AgableMob>(
+                            shared_from_this()));
+                    if (offspring != NULL) {
+                        offspring->setAge(BABY_START_AGE);
+                        offspring->moveTo(x, y, z, 0, 0);
 
-                    if (!player->abilities.instabuild) {
-                        item->count--;
+                        level->addEntity(offspring);
 
-                        if (item->count <= 0) {
-                            player->inventory->setItem(
-                                player->inventory->selected, nullptr);
+                        if (!player->abilities.instabuild) {
+                            item->count--;
+
+                            if (item->count <= 0) {
+                                player->inventory->setItem(
+                                    player->inventory->selected, nullptr);
+                            }
                         }
                     }
+                } else {
+                    SpawnEggItem::DisplaySpawnError(player, error);
                 }
             }
         }
+        return true;
     }
 
-    return PathfinderMob::interact(player);
+    return false;
 }
 
 void AgableMob::defineSynchedData() {
@@ -53,6 +63,15 @@ void AgableMob::defineSynchedData() {
 }
 
 int AgableMob::getAge() { return entityData->getInteger(DATA_AGE_ID); }
+
+void AgableMob::ageUp(int seconds) {
+    int age = getAge();
+    age += seconds * SharedConstants::TICKS_PER_SECOND;
+    if (age > 0) {
+        age = 0;
+    }
+    setAge(age);
+}
 
 void AgableMob::setAge(int age) {
     entityData->set(DATA_AGE_ID, age);

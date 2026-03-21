@@ -7,6 +7,9 @@
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
 #include "../../Headers/net.minecraft.world.item.enchantment.h"
+#include "../../Headers/net.minecraft.network.packet.h"
+#include "../../../Minecraft.Client/Player/ServerPlayer.h"
+#include "../../../Minecraft.Client/Network/PlayerConnection.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "Arrow.h"
 
@@ -44,16 +47,19 @@ void Arrow::_init() {
 Arrow::Arrow(Level* level) : Entity(level) {
     _init();
 
-    this->setSize(0.5f, 0.5f);
+    viewScale = 10;
+    setSize(0.5f, 0.5f);
 }
 
-Arrow::Arrow(Level* level, std::shared_ptr<Mob> mob,
-             std::shared_ptr<Mob> target, float power, float uncertainty)
+Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob,
+             std::shared_ptr<LivingEntity> target, float power,
+             float uncertainty)
     : Entity(level) {
     _init();
 
-    this->owner = mob;
-    if (std::dynamic_pointer_cast<Player>(mob) != NULL) pickup = PICKUP_ALLOWED;
+    viewScale = 10;
+    owner = mob;
+    if (mob->instanceof(eTYPE_PLAYER)) pickup = PICKUP_ALLOWED;
 
     y = mob->y + mob->getHeadHeight() - 0.1f;
 
@@ -78,29 +84,30 @@ Arrow::Arrow(Level* level, std::shared_ptr<Mob> mob,
 Arrow::Arrow(Level* level, double x, double y, double z) : Entity(level) {
     _init();
 
-    this->setSize(0.5f, 0.5f);
+    viewScale = 10;
+    setSize(0.5f, 0.5f);
 
-    this->setPos(x, y, z);
-    this->heightOffset = 0;
+    setPos(x, y, z);
+    heightOffset = 0;
 }
 
-Arrow::Arrow(Level* level, std::shared_ptr<Mob> mob, float power)
+Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob, float power)
     : Entity(level) {
     _init();
 
-    this->owner = mob;
-    if (std::dynamic_pointer_cast<Player>(mob) != NULL) pickup = PICKUP_ALLOWED;
+    viewScale = 10;
+    owner = mob;
+    if (mob->instanceof(eTYPE_PLAYER)) pickup = PICKUP_ALLOWED;
 
     setSize(0.5f, 0.5f);
 
-    this->moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot,
-                 mob->xRot);
+    moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot, mob->xRot);
 
     x -= Mth::cos(yRot / 180 * PI) * 0.16f;
     y -= 0.1f;
     z -= Mth::sin(yRot / 180 * PI) * 0.16f;
-    this->setPos(x, y, z);
-    this->heightOffset = 0;
+    setPos(x, y, z);
+    heightOffset = 0;
 
     xd = -Mth::sin(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI);
     zd = Mth::cos(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI);
@@ -119,9 +126,12 @@ void Arrow::shoot(double xd, double yd, double zd, float pow,
     yd /= dist;
     zd /= dist;
 
-    xd += (random->nextGaussian()) * 0.0075f * uncertainty;
-    yd += (random->nextGaussian()) * 0.0075f * uncertainty;
-    zd += (random->nextGaussian()) * 0.0075f * uncertainty;
+    xd += (random->nextGaussian() * (random->nextBoolean() ? -1 : 1)) *
+          0.0075f * uncertainty;
+    yd += (random->nextGaussian() * (random->nextBoolean() ? -1 : 1)) *
+          0.0075f * uncertainty;
+    zd += (random->nextGaussian() * (random->nextBoolean() ? -1 : 1)) *
+          0.0075f * uncertainty;
 
     xd *= pow;
     yd *= pow;
@@ -133,8 +143,8 @@ void Arrow::shoot(double xd, double yd, double zd, float pow,
 
     double sd = sqrt(xd * xd + zd * zd);
 
-    yRotO = this->yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRotO = this->xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
+    xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
     life = 0;
 }
 
@@ -150,8 +160,8 @@ void Arrow::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = this->yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = this->xRot = (float)(atan2(yd, sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
         xRotO = xRot;
         yRotO = yRot;
         app.DebugPrintf("%f %f : 0x%x\n", xRot, yRot, &yRot);
@@ -165,8 +175,8 @@ void Arrow::tick() {
 
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = this->yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = this->xRot = (float)(atan2(yd, sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
     }
 
     {
@@ -243,6 +253,20 @@ void Arrow::tick() {
         res = new HitResult(hitEntity);
     }
 
+    if ((res != NULL) && (res->entity != NULL) &&
+        res->entity->instanceof(eTYPE_PLAYER)) {
+        std::shared_ptr<Player> player =
+            std::dynamic_pointer_cast<Player>(res->entity);
+        // 4J: Check for owner being null
+        if (player->abilities.invulnerable ||
+            ((owner != NULL) &&
+             (owner->instanceof(eTYPE_PLAYER) &&
+              !std::dynamic_pointer_cast<Player>(owner)->canHarmPlayer(
+                  player)))) {
+            res = NULL;
+        }
+    }
+
     if (res != NULL) {
         if (res->entity != NULL) {
             float pow = Mth::sqrt(xd * xd + yd * yd + zd * zd);
@@ -268,14 +292,17 @@ void Arrow::tick() {
                 // unless we can cause some damage (this doesn't necessarily
                 // mean that the arrow hit lowered their health) set targets on
                 // fire first because we want cooked pork/chicken/steak
-                if (this->isOnFire()) {
+                if (isOnFire() && res->entity->GetType() != eTYPE_ENDERMAN) {
                     res->entity->setOnFire(5);
                 }
 
-                std::shared_ptr<Mob> mob =
-                    std::dynamic_pointer_cast<Mob>(res->entity);
-                if (mob != NULL) {
-                    mob->arrowCount++;
+                if (res->entity->instanceof(eTYPE_LIVINGENTITY)) {
+                    std::shared_ptr<LivingEntity> mob =
+                        std::dynamic_pointer_cast<LivingEntity>(res->entity);
+
+                    if (!level->isClientSide) {
+                        mob->setArrowCount(mob->getArrowCount() + 1);
+                    }
                     if (knockback > 0) {
                         float pushLen = sqrt(xd * xd + zd * zd);
                         if (pushLen > 0) {
@@ -289,15 +316,23 @@ void Arrow::tick() {
                         ThornsEnchantment::doThornsAfterAttack(owner, mob,
                                                                random);
                     }
+
+                    if (owner != NULL && res->entity != owner &&
+                        owner->GetType() == eTYPE_SERVERPLAYER) {
+                        std::dynamic_pointer_cast<ServerPlayer>(owner)
+                            ->connection->send(std::shared_ptr<GameEventPacket>(
+                                new GameEventPacket(
+                                    GameEventPacket::SUCCESSFUL_BOW_HIT, 0)));
+                    }
                 }
 
                 // 4J : WESTY : For award, need to track if creeper was killed
                 // by arrow from the player.
-                if ((std::dynamic_pointer_cast<Player>(owner) !=
-                     NULL) &&  // arrow owner is a player
-                    (res->entity->isAlive() == false) &&  // target is now dead
-                    (std::dynamic_pointer_cast<Creeper>(res->entity) !=
-                     NULL))  // target is a creeper
+                if (owner != NULL &&
+                    owner->instanceof(eTYPE_PLAYER)  // arrow owner is a player
+                    && !res->entity->isAlive()       // target is now dead
+                    && (res->entity->GetType() ==
+                        eTYPE_CREEPER))  // target is a creeper
 
                 {
                     std::dynamic_pointer_cast<Player>(owner)->awardStat(
@@ -305,11 +340,9 @@ void Arrow::tick() {
                         GenericStats::param_arrowKillCreeper());
                 }
 
-                // 4J - sound change brought forward from 1.2.3
-                level->playSound(shared_from_this(), eSoundType_RANDOM_BOW_HIT,
-                                 1.0f,
-                                 1.2f / (random->nextFloat() * 0.2f + 0.9f));
-                remove();
+                playSound(eSoundType_RANDOM_BOW_HIT, 1.0f,
+                          1.2f / (random->nextFloat() * 0.2f + 0.9f));
+                if (res->entity->GetType() != eTYPE_ENDERDRAGON) remove();
             } else {
                 xd *= -0.1f;
                 yd *= -0.1f;
@@ -337,12 +370,16 @@ void Arrow::tick() {
                 z -= (zd / dd) * 0.05f;
             }
 
-            // 4J - sound change brought forward from 1.2.3
-            level->playSound(shared_from_this(), eSoundType_RANDOM_BOW_HIT,
-                             1.0f, 1.2f / (random->nextFloat() * 0.2f + 0.9f));
+            playSound(eSoundType_RANDOM_BOW_HIT, 1.0f,
+                      1.2f / (random->nextFloat() * 0.2f + 0.9f));
             inGround = true;
             shakeTime = 7;
             setCritArrow(false);
+
+            if (lastTile != 0) {
+                Tile::tiles[lastTile]->entityInside(level, xTile, yTile, zTile,
+                                                    shared_from_this());
+            }
         }
     }
     delete res;
@@ -441,13 +478,15 @@ void Arrow::playerTouch(std::shared_ptr<Player> player) {
     }
 
     if (bRemove) {
-        level->playSound(
-            shared_from_this(), eSoundType_RANDOM_POP, 0.2f,
+        playSound(
+            eSoundType_RANDOM_POP, 0.2f,
             ((random->nextFloat() - random->nextFloat()) * 0.7f + 1.0f) * 2.0f);
         player->take(shared_from_this(), 1);
         remove();
     }
 }
+
+bool Arrow::makeStepSound() { return false; }
 
 float Arrow::getShadowHeightOffs() { return 0; }
 

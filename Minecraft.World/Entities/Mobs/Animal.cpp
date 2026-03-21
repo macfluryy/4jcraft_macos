@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+
 #include "../../Headers/com.mojang.nbt.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.item.h"
@@ -9,6 +10,8 @@
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.entity.projectile.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Util/Random.h"
 #include "Animal.h"
 
@@ -57,7 +60,8 @@ void Animal::aiStep() {
 }
 
 void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
-    if (std::dynamic_pointer_cast<Player>(target) != NULL) {
+    // 4J-JEV: Changed from dynamic cast to use eINSTANCEOF
+    if (target->instanceof(eTYPE_PLAYER)) {
         if (d < 3) {
             double xd = target->x - x;
             double zd = target->z - z;
@@ -67,13 +71,13 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
         }
 
         std::shared_ptr<Player> p = std::dynamic_pointer_cast<Player>(target);
-        if (p->getSelectedItem() != NULL &&
-            this->isFood(p->getSelectedItem())) {
-        } else {
+        if (p->getSelectedItem() == NULL || !isFood(p->getSelectedItem())) {
             attackTarget = nullptr;
         }
 
-    } else if (std::dynamic_pointer_cast<Animal>(target) != NULL) {
+    }
+    // 4J-JEV: Changed from dynamic cast to use eINSTANCEOF
+    else if (target->instanceof(eTYPE_ANIMAL)) {
         std::shared_ptr<Animal> a = std::dynamic_pointer_cast<Animal>(target);
         if (getAge() > 0 && a->getAge() < 0) {
             if (d < 2.5) {
@@ -152,20 +156,26 @@ float Animal::getWalkTargetValue(int x, int y, int z) {
     return level->getBrightness(x, y, z) - 0.5f;
 }
 
-bool Animal::hurt(DamageSource* dmgSource, int dmg) {
+bool Animal::hurt(DamageSource* dmgSource, float dmg) {
+    if (isInvulnerable()) return false;
     if (dynamic_cast<EntityDamageSource*>(dmgSource) != NULL) {
         std::shared_ptr<Entity> source = dmgSource->getDirectEntity();
 
-        if (std::dynamic_pointer_cast<Player>(source) != NULL &&
+        // 4J-JEV: Changed from dynamic cast to use eINSTANCEOF
+        if (source->instanceof(eTYPE_PLAYER) &&
             !std::dynamic_pointer_cast<Player>(source)
                  ->isAllowedToAttackAnimals()) {
             return false;
         }
 
-        if (source != NULL && source->GetType() == eTYPE_ARROW) {
+        if ((source != NULL) && source->instanceof(eTYPE_ARROW)) {
             std::shared_ptr<Arrow> arrow =
                 std::dynamic_pointer_cast<Arrow>(source);
-            if (std::dynamic_pointer_cast<Player>(arrow->owner) != NULL &&
+
+            // 4J: Check that the arrow's owner can attack animals (dispenser
+            // arrows are not owned)
+            if (arrow->owner != NULL &&
+                arrow->owner->instanceof(eTYPE_PLAYER) &&
                 !std::dynamic_pointer_cast<Player>(arrow->owner)
                      ->isAllowedToAttackAnimals()) {
                 return false;
@@ -174,6 +184,16 @@ bool Animal::hurt(DamageSource* dmgSource, int dmg) {
     }
 
     fleeTime = 20 * 3;
+
+    if (!useNewAi()) {
+        AttributeInstance* speed =
+            getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
+        if (speed->getModifier(eModifierId_MOB_FLEEING) == NULL) {
+            speed->addModifier(
+                new AttributeModifier(*Animal::SPEED_MODIFIER_FLEEING));
+        }
+    }
+
     attackTarget = nullptr;
     setInLoveValue(0);
 
@@ -265,9 +285,10 @@ bool Animal::isFood(std::shared_ptr<ItemInstance> itemInstance) {
     return itemInstance->id == Item::wheat_Id;
 }
 
-bool Animal::interact(std::shared_ptr<Player> player) {
+bool Animal::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item != NULL && isFood(item) && getAge() == 0) {
+    if (item != NULL && isFood(item) && getAge() == 0 &&
+        getInLoveValue() <= 0) {
         if (!player->abilities.instabuild) {
             item->count--;
             if (item->count <= 0) {
@@ -311,28 +332,17 @@ bool Animal::interact(std::shared_ptr<Player> player) {
 
                             return false;
                         }
-                    } else if ((GetType() & eTYPE_MONSTER) == eTYPE_MONSTER) {
+                    } else if (instanceof(eTYPE_MONSTER)) {
                     }
                     break;
             }
             setInLove(player);
         }
-
-        attackTarget = nullptr;
-        for (int i = 0; i < 7; i++) {
-            double xa = random->nextGaussian() * 0.02;
-            double ya = random->nextGaussian() * 0.02;
-            double za = random->nextGaussian() * 0.02;
-            level->addParticle(eParticleType_heart,
-                               x + random->nextFloat() * bbWidth * 2 - bbWidth,
-                               y + .5f + random->nextFloat() * bbHeight,
-                               z + random->nextFloat() * bbWidth * 2 - bbWidth,
-                               xa, ya, za);
-        }
+        setInLove();
 
         return true;
     }
-    return AgableMob::interact(player);
+    return AgableMob::mobInteract(player);
 }
 
 // 4J added
@@ -348,16 +358,39 @@ void Animal::setInLove(std::shared_ptr<Player> player) {
 
 std::shared_ptr<Player> Animal::getLoveCause() { return loveCause.lock(); }
 
+void Animal::setInLove() {
+    entityData->set(DATA_IN_LOVE, 20 * 30);
+
+    attackTarget = nullptr;
+    level->broadcastEntityEvent(shared_from_this(),
+                                EntityEvent::IN_LOVE_HEARTS);
+}
+
 bool Animal::isInLove() { return entityData->getInteger(DATA_IN_LOVE) > 0; }
 
 void Animal::resetLove() { entityData->set(DATA_IN_LOVE, 0); }
 
 bool Animal::canMate(std::shared_ptr<Animal> partner) {
     if (partner == shared_from_this()) return false;
-    Animal* partnerPtr = partner.get();
-    if (partnerPtr == NULL || typeid(*partnerPtr) != typeid(*this))
-        return false;
+    if (typeid(*partner) != typeid(*this)) return false;
     return isInLove() && partner->isInLove();
+}
+
+void Animal::handleEntityEvent(uint8_t id) {
+    if (id == EntityEvent::IN_LOVE_HEARTS) {
+        for (int i = 0; i < 7; i++) {
+            double xa = random->nextGaussian() * 0.02;
+            double ya = random->nextGaussian() * 0.02;
+            double za = random->nextGaussian() * 0.02;
+            level->addParticle(eParticleType_heart,
+                               x + random->nextFloat() * bbWidth * 2 - bbWidth,
+                               y + .5f + random->nextFloat() * bbHeight,
+                               z + random->nextFloat() * bbWidth * 2 - bbWidth,
+                               xa, ya, za);
+        }
+    } else {
+        AgableMob::handleEntityEvent(id);
+    }
 }
 
 void Animal::updateDespawnProtectedState() {
@@ -375,7 +408,7 @@ void Animal::updateDespawnProtectedState() {
         if (((m_maxWanderX - m_minWanderX) > MAX_WANDER_DISTANCE) ||
             ((m_maxWanderZ - m_minWanderZ) > MAX_WANDER_DISTANCE)) {
             //			printf("Unprotecting : %d to %d, %d to %d\n",
-            //m_minWanderX, m_maxWanderX, m_minWanderZ, m_maxWanderZ );
+            // m_minWanderX, m_maxWanderX, m_minWanderZ, m_maxWanderZ );
             m_isDespawnProtected = false;
         }
 

@@ -16,6 +16,8 @@ void ItemFrame::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
+
+    dropChance = 1;
 }
 
 ItemFrame::ItemFrame(Level* level) : HangingEntity(level) { _init(); }
@@ -31,19 +33,40 @@ void ItemFrame::defineSynchedData() {
     getEntityData()->define(DATA_ROTATION, (uint8_t)0);
 }
 
-void ItemFrame::dropItem() {
-    spawnAtLocation(
-        std::shared_ptr<ItemInstance>(new ItemInstance(Item::frame)), 0.0f);
-    std::shared_ptr<ItemInstance> item = getItem();
-    if (item != NULL) {
-        std::shared_ptr<MapItemSavedData> data =
-            Item::map->getSavedData(item, level);
-        data->removeItemFrameDecoration(item);
+bool ItemFrame::shouldRenderAtSqrDistance(double distance) {
+    double size = 16;
+    size *= 64.0f * viewScale;
+    return distance < size * size;
+}
 
-        std::shared_ptr<ItemInstance> itemToDrop = item->copy();
-        itemToDrop->setFramed(nullptr);
-        spawnAtLocation(itemToDrop, 0.0f);
+void ItemFrame::dropItem(std::shared_ptr<Entity> causedBy) {
+    std::shared_ptr<ItemInstance> item = getItem();
+
+    if (causedBy != NULL && causedBy->instanceof(eTYPE_PLAYER)) {
+        if (std::dynamic_pointer_cast<Player>(causedBy)->abilities.instabuild) {
+            removeFramedMap(item);
+            return;
+        }
     }
+
+    spawnAtLocation(
+        std::shared_ptr<ItemInstance>(new ItemInstance(Item::frame)), 0);
+    if ((item != NULL) && (random->nextFloat() < dropChance)) {
+        item = item->copy();
+        removeFramedMap(item);
+        spawnAtLocation(item, 0);
+    }
+}
+
+void ItemFrame::removeFramedMap(std::shared_ptr<ItemInstance> item) {
+    if (item == NULL) return;
+    if (item->id == Item::map_Id) {
+        std::shared_ptr<MapItemSavedData> mapItemSavedData =
+            Item::map->getSavedData(item, level);
+        mapItemSavedData->removeItemFrameDecoration(item);
+        // mapItemSavedData.decorations.remove("frame-" + entityId);
+    }
+    item->setFramed(nullptr);
 }
 
 std::shared_ptr<ItemInstance> ItemFrame::getItem() {
@@ -72,7 +95,7 @@ void ItemFrame::addAdditonalSaveData(CompoundTag* tag) {
     if (getItem() != NULL) {
         tag->putCompound(L"Item", getItem()->save(new CompoundTag()));
         tag->putByte(L"ItemRotation", (uint8_t)getRotation());
-        // tag->putFloat(L"ItemDropChance", dropChance);
+        tag->putFloat(L"ItemDropChance", dropChance);
     }
     HangingEntity::addAdditonalSaveData(tag);
 }
@@ -83,8 +106,8 @@ void ItemFrame::readAdditionalSaveData(CompoundTag* tag) {
         setItem(ItemInstance::fromTag(itemTag));
         setRotation(tag->getByte(L"ItemRotation"));
 
-        // if (tag->contains(L"ItemDropChance")) dropChance =
-        // tag->getFloat(L"ItemDropChance");
+        if (tag->contains(L"ItemDropChance"))
+            dropChance = tag->getFloat(L"ItemDropChance");
     }
     HangingEntity::readAdditionalSaveData(tag);
 }

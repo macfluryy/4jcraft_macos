@@ -15,7 +15,7 @@ void ThrownEgg::_init() {
 
 ThrownEgg::ThrownEgg(Level* level) : Throwable(level) { _init(); }
 
-ThrownEgg::ThrownEgg(Level* level, std::shared_ptr<Mob> mob)
+ThrownEgg::ThrownEgg(Level* level, std::shared_ptr<LivingEntity> mob)
     : Throwable(level, mob) {
     _init();
 }

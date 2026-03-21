@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Entity.h"
+#include "Projectile.h"
 
 class Mob;
 class HitResult;
 
-class Throwable : public Entity {
+class Throwable : public Entity, public Projectile {
 private:
     int xTile;
     int yTile;
@@ -18,10 +19,10 @@ protected:
 public:
     int shakeTime;
 
-protected:
-    std::shared_ptr<Mob> owner;
+    std::shared_ptr<LivingEntity> owner;
 
 private:
+    std::wstring ownerName;
     int life;
     int flightTime;
 
@@ -36,7 +37,7 @@ protected:
 public:
     virtual bool shouldRenderAtSqrDistance(double distance);
 
-    Throwable(Level* level, std::shared_ptr<Mob> mob);
+    Throwable(Level* level, std::shared_ptr<LivingEntity> mob);
     Throwable(Level* level, double x, double y, double z);
 
 protected:
@@ -57,4 +58,5 @@ public:
     virtual void addAdditonalSaveData(CompoundTag* tag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
     virtual float getShadowHeightOffs();
+    virtual std::shared_ptr<LivingEntity> getOwner();
 };

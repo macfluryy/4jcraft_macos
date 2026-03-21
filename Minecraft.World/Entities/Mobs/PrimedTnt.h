@@ -10,11 +10,13 @@ public:
     static const int serialVersionUID = 0;
 
     int life;
+    std::weak_ptr<LivingEntity> owner;
 
     void _init();
 
     PrimedTnt(Level* level);
-    PrimedTnt(Level* level, double x, double y, double z);
+    PrimedTnt(Level* level, double x, double y, double z,
+              std::shared_ptr<LivingEntity> owner);
 
 protected:
     virtual void defineSynchedData();
@@ -33,4 +35,5 @@ protected:
 
 public:
     virtual float getShadowHeightOffs();
+    virtual std::shared_ptr<LivingEntity> getOwner();
 };

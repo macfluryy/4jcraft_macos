@@ -6,8 +6,10 @@
 #include "../../Headers/net.minecraft.world.level.chunk.h"
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.item.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.item.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "Slime.h"
@@ -26,16 +28,13 @@ Slime::Slime(Level* level) : Mob(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
-
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
+    registerAttributes();
+    setHealth(getMaxHealth());
 
     _init();
 
-    this->textureIdx = TN_MOB_SLIME;  // 4J was L"/mob/slime.png";
     int size = 1 << (random->nextInt(3));
-    this->heightOffset = 0;
+    heightOffset = 0;
     jumpDelay = random->nextInt(20) + 10;
     setSize(size);
 }
@@ -48,15 +47,12 @@ void Slime::defineSynchedData() {
 
 void Slime::setSize(int size) {
     entityData->set(ID_SIZE, (uint8_t)size);
-    Mob::setSize(0.6f * size, 0.6f * size);
-    this->setPos(x, y, z);
+    setSize(0.6f * size, 0.6f * size);
+    setPos(x, y, z);
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)
+        ->setBaseValue(size * size);
     setHealth(getMaxHealth());
     xpReward = size;
-}
-
-int Slime::getMaxHealth() {
-    int size = getSize();
-    return size * size;
 }
 
 int Slime::getSize() { return entityData->getByte(ID_SIZE); }
@@ -73,7 +69,9 @@ void Slime::readAdditionalSaveData(CompoundTag* tag) {
 
 ePARTICLE_TYPE Slime::getParticleName() { return eParticleType_slime; }
 
-int Slime::getSquishSound() { return eSoundType_MOB_SLIME; }
+int Slime::getSquishSound() {
+    return getSize() > 1 ? eSoundType_MOB_SLIME_BIG : eSoundType_MOB_SLIME;
+}
 
 void Slime::tick() {
     if (!level->isClientSide && level->difficulty == Difficulty::PEACEFUL &&
@@ -84,7 +82,7 @@ void Slime::tick() {
     squish = squish + (targetSquish - squish) * .5f;
 
     oSquish = squish;
-    bool wasOnGround = this->onGround;
+    bool wasOnGround = onGround;
     Mob::tick();
     if (onGround && !wasOnGround) {
         int size = getSize();
@@ -98,8 +96,8 @@ void Slime::tick() {
         }
 
         if (doPlayLandSound()) {
-            level->playSound(
-                shared_from_this(), getSquishSound(), getSoundVolume(),
+            playSound(
+                getSquishSound(), getSoundVolume(),
                 ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) /
                     0.8f);
         }
@@ -110,6 +108,11 @@ void Slime::tick() {
         targetSquish = 1;
     }
     decreaseSquish();
+
+    if (level->isClientSide) {
+        int size = getSize();
+        setSize(0.6f * size, 0.6f * size);
+    }
 }
 
 void Slime::serverAiStep() {
@@ -126,8 +129,8 @@ void Slime::serverAiStep() {
         }
         jumping = true;
         if (doPlayJumpSound()) {
-            level->playSound(
-                shared_from_this(), getSquishSound(), getSoundVolume(),
+            playSound(
+                getSquishSound(), getSoundVolume(),
                 ((random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f) *
                     0.8f);
         }
@@ -180,12 +183,12 @@ void Slime::playerTouch(std::shared_ptr<Player> player) {
     if (isDealsDamage()) {
         int size = getSize();
         if (canSee(player) &&
-            this->distanceToSqr(player) < (0.6 * size) * (0.6 * size)) {
+            distanceToSqr(player) < (0.6 * size) * (0.6 * size)) {
             DamageSource* damageSource = DamageSource::mobAttack(
                 std::dynamic_pointer_cast<Mob>(shared_from_this()));
             if (player->hurt(damageSource, getAttackDamage())) {
-                level->playSound(
-                    shared_from_this(), eSoundType_MOB_SLIME_ATTACK, 1,
+                playSound(
+                    eSoundType_MOB_SLIME_ATTACK, 1,
                     (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
             }
             delete damageSource;
@@ -197,9 +200,13 @@ bool Slime::isDealsDamage() { return getSize() > 1; }
 
 int Slime::getAttackDamage() { return getSize(); }
 
-int Slime::getHurtSound() { return eSoundType_MOB_SLIME; }
+int Slime::getHurtSound() {
+    return getSize() > 1 ? eSoundType_MOB_SLIME_BIG : eSoundType_MOB_SLIME;
+}
 
-int Slime::getDeathSound() { return eSoundType_MOB_SLIME; }
+int Slime::getDeathSound() {
+    return getSize() > 1 ? eSoundType_MOB_SLIME_BIG : eSoundType_MOB_SLIME;
+}
 
 int Slime::getDeathLoot() {
     if (getSize() == 1) return Item::slimeBall->id;
@@ -214,11 +221,23 @@ bool Slime::canSpawn() {
     }
     Random* lcr =
         lc->getRandom(987234911l);  // 4J - separated out so we can delete
-    if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL) &&
-        random->nextInt(10) == 0 && lcr->nextInt(10) == 0 && y < 40) {
-        delete lcr;
-        return Mob::canSpawn();
+    if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL)) {
+        // spawn slime in swamplands at night
+        Biome* biome = level->getBiome(Mth::floor(x), Mth::floor(z));
+
+        if (biome == Biome::swampland && y > 50 && y < 70 &&
+            random->nextFloat() < 0.5f) {
+            if (random->nextFloat() < level->getMoonBrightness() &&
+                level->getRawBrightness(Mth::floor(x), Mth::floor(y),
+                                        Mth::floor(z)) <= random->nextInt(8)) {
+                return Mob::canSpawn();
+            }
+        }
+        if (random->nextInt(10) == 0 && lcr->nextInt(10) == 0 && y < 40) {
+            return Mob::canSpawn();
+        }
     }
+
     delete lcr;
     return false;
 }
@@ -227,6 +246,6 @@ float Slime::getSoundVolume() { return 0.4f * getSize(); }
 
 int Slime::getMaxHeadXRot() { return 0; }
 
-bool Slime::doPlayJumpSound() { return getSize() > 1; }
+bool Slime::doPlayJumpSound() { return getSize() > 0; }
 
 bool Slime::doPlayLandSound() { return getSize() > 2; }

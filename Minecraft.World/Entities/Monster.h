@@ -12,12 +12,6 @@ public:
     eINSTANCEOF GetType() { return eTYPE_MONSTER; }
     static Entity* create(Level* level) { return NULL; }
 
-protected:
-    int attackDamage;
-
-private:
-    void _init();
-
 public:
     Monster(Level* level);
 
@@ -28,7 +22,7 @@ protected:
     virtual std::shared_ptr<Entity> findAttackTarget();
 
 public:
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
     virtual bool doHurtTarget(std::shared_ptr<Entity> target);
 
 protected:
@@ -43,4 +37,7 @@ protected:
 
 public:
     virtual bool canSpawn();
+
+protected:
+    void registerAttributes();
 };

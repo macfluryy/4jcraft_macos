@@ -13,7 +13,7 @@ private:
 
 public:
     ThrownEgg(Level* level);
-    ThrownEgg(Level* level, std::shared_ptr<Mob> mob);
+    ThrownEgg(Level* level, std::shared_ptr<LivingEntity> mob);
     ThrownEgg(Level* level, double x, double y, double z);
 
 protected:

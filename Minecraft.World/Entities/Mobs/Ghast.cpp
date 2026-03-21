@@ -3,8 +3,10 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.entity.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.projectile.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
 #include "../../Headers/net.minecraft.stats.h"
@@ -14,6 +16,7 @@
 #include "../../Util/SoundTypes.h"
 
 void Ghast::_init() {
+    explosionPower = 1;
     floatDuration = 0;
     target = nullptr;
     retargetTime = 0;
@@ -29,28 +32,27 @@ Ghast::Ghast(Level* level) : FlyingMob(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
-
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
+    registerAttributes();
+    setHealth(getMaxHealth());
 
     _init();
 
-    this->textureIdx = TN_MOB_GHAST;  // 4J was L"/mob/ghast.png";
-    this->setSize(4, 4);
-    this->fireImmune = true;
+    setSize(4, 4);
+    fireImmune = true;
     xpReward = Enemy::XP_REWARD_MEDIUM;
 }
 
-bool Ghast::hurt(DamageSource* source, int dmg) {
+bool Ghast::isCharging() { return entityData->getByte(DATA_IS_CHARGING) != 0; }
+
+bool Ghast::hurt(DamageSource* source, float dmg) {
+    if (isInvulnerable()) return false;
     if (source->getMsgId() == ChatPacket::e_ChatDeathFireball) {
-        std::shared_ptr<Player> player =
-            std::dynamic_pointer_cast<Player>(source->getEntity());
-        if (player != NULL) {
+        if ((source->getEntity() != NULL) &&
+            source->getEntity()->instanceof(eTYPE_PLAYER)) {
             // reflected fireball, kill the ghast
             FlyingMob::hurt(source, 1000);
-            player->awardStat(GenericStats::ghast(),
-                              GenericStats::param_ghast());
+            std::dynamic_pointer_cast<Player>(source->getEntity())
+                ->awardStat(GenericStats::ghast(), GenericStats::param_ghast());
             return true;
         }
     }
@@ -64,14 +66,10 @@ void Ghast::defineSynchedData() {
     entityData->define(DATA_IS_CHARGING, (uint8_t)0);
 }
 
-int Ghast::getMaxHealth() { return 10; }
+void Ghast::registerAttributes() {
+    FlyingMob::registerAttributes();
 
-void Ghast::tick() {
-    FlyingMob::tick();
-    uint8_t current = entityData->getByte(DATA_IS_CHARGING);
-    //    this->textureName = current == 1 ? L"/mob/ghast_fire.png" :
-    //    L"/mob/ghast.png";	// 4J replaced with following line
-    this->textureIdx = current == 1 ? TN_MOB_GHAST_FIRE : TN_MOB_GHAST;
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(10);
 }
 
 void Ghast::serverAiStep() {
@@ -125,7 +123,7 @@ void Ghast::serverAiStep() {
         double zdd = target->z - z;
         yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / PI;
 
-        if (this->canSee(target)) {
+        if (canSee(target)) {
             if (charge == 10) {
                 // 4J - change brought forward from 1.2.3
                 level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_WARNING,
@@ -136,11 +134,12 @@ void Ghast::serverAiStep() {
                 // 4J - change brought forward from 1.2.3
                 level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL,
                                   (int)x, (int)y, (int)z, 0);
-                std::shared_ptr<Fireball> ie =
-                    std::shared_ptr<Fireball>(new Fireball(
+                std::shared_ptr<LargeFireball> ie =
+                    std::shared_ptr<LargeFireball>(new LargeFireball(
                         level,
                         std::dynamic_pointer_cast<Mob>(shared_from_this()), xdd,
                         ydd, zdd));
+                ie->explosionPower = explosionPower;
                 double d = 4;
                 Vec3* v = getViewVector(1);
                 ie->x = x + v->x * d;
@@ -186,7 +185,7 @@ int Ghast::getHurtSound() { return eSoundType_MOB_GHAST_SCREAM; }
 
 int Ghast::getDeathSound() { return eSoundType_MOB_GHAST_DEATH; }
 
-int Ghast::getDeathLoot() { return Item::sulphur->id; }
+int Ghast::getDeathLoot() { return Item::gunpowder_Id; }
 
 void Ghast::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
     int count = random->nextInt(2) + random->nextInt(1 + playerBonusLevel);
@@ -195,7 +194,7 @@ void Ghast::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
     }
     count = random->nextInt(3) + random->nextInt(1 + playerBonusLevel);
     for (int i = 0; i < count; i++) {
-        spawnAtLocation(Item::sulphur_Id, 1);
+        spawnAtLocation(Item::gunpowder_Id, 1);
     }
 }
 
@@ -209,3 +208,13 @@ bool Ghast::canSpawn() {
 }
 
 int Ghast::getMaxSpawnClusterSize() { return 1; }
+void Ghast::addAdditonalSaveData(CompoundTag* tag) {
+    FlyingMob::addAdditonalSaveData(tag);
+    tag->putInt(L"ExplosionPower", explosionPower);
+}
+
+void Ghast::readAdditionalSaveData(CompoundTag* tag) {
+    FlyingMob::readAdditionalSaveData(tag);
+    if (tag->contains(L"ExplosionPower"))
+        explosionPower = tag->getInt(L"ExplosionPower");
+}

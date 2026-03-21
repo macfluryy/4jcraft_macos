@@ -17,9 +17,9 @@ private:
 
 public:
     Blaze(Level* level);
-    virtual int getMaxHealth();
 
 protected:
+    virtual void registerAttributes();
     virtual void defineSynchedData();
     virtual int getAmbientSound();
     virtual int getHurtSound();

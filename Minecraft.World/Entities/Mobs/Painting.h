@@ -69,10 +69,6 @@ public:
     };
 
 public:
-    // 	int dir;
-    //
-    // 	int xTile, yTile, zTile;
-
     Motive* motive;
 
 private:
@@ -85,9 +81,10 @@ public:
     Painting(Level* level, int x, int y, int z, int dir,
              std::wstring motiveName);
 
-    // 4J Stu - Added this so that we can use some std::shared_ptr functions
-    // that were needed in the ctor
-    void PaintingPostConstructor(int dir);
+    // 4J Stu - Added this so that we can use some shared_ptr functions that
+    // were needed in the ctor 4J Stu - Added motive param for debugging/artists
+    // only
+    void PaintingPostConstructor(int dir, int motive = -1);
 
 protected:
     // void defineSynchedData();
@@ -113,5 +110,5 @@ public:
 
     virtual int getWidth();
     virtual int getHeight();
-    virtual void dropItem();
+    virtual void dropItem(std::shared_ptr<Entity> causedBy);
 };

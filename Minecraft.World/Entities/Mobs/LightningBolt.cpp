@@ -23,38 +23,35 @@ LightningBolt::LightningBolt(Level* level, double x, double y, double z)
     flashes = 1;
 
     // 4J - added clientside check
-    if (!level->isClientSide) {
-        if (level->difficulty >= 2 &&
-            level->hasChunksAt(Mth::floor(x), Mth::floor(y), Mth::floor(z),
-                               10)) {
-            {
-                int xt = Mth::floor(x);
-                int yt = Mth::floor(y);
-                int zt = Mth::floor(z);
-                // 4J added - don't go setting tiles if we aren't tracking them
-                // for network synchronisation
-                if (MinecraftServer::getInstance()
-                        ->getPlayers()
-                        ->isTrackingTile(xt, yt, zt, level->dimension->id)) {
-                    if (level->getTile(xt, yt, zt) == 0 &&
-                        Tile::fire->mayPlace(level, xt, yt, zt))
-                        level->setTile(xt, yt, zt, Tile::fire_Id);
-                }
+    if (!level->isClientSide &&
+        level->getGameRules()->getBoolean(GameRules::RULE_DOFIRETICK) &&
+        level->difficulty >= 2 &&
+        level->hasChunksAt(Mth::floor(x), Mth::floor(y), Mth::floor(z), 10)) {
+        {
+            int xt = Mth::floor(x);
+            int yt = Mth::floor(y);
+            int zt = Mth::floor(z);
+            // 4J added - don't go setting tiles if we aren't tracking them for
+            // network synchronisation
+            if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
+                    xt, yt, zt, level->dimension->id)) {
+                if (level->getTile(xt, yt, zt) == 0 &&
+                    Tile::fire->mayPlace(level, xt, yt, zt))
+                    level->setTileAndUpdate(xt, yt, zt, Tile::fire_Id);
             }
+        }
 
-            for (int i = 0; i < 4; i++) {
-                int xt = Mth::floor(x) + random->nextInt(3) - 1;
-                int yt = Mth::floor(y) + random->nextInt(3) - 1;
-                int zt = Mth::floor(z) + random->nextInt(3) - 1;
-                // 4J added - don't go setting tiles if we aren't tracking them
-                // for network synchronisation
-                if (MinecraftServer::getInstance()
-                        ->getPlayers()
-                        ->isTrackingTile(xt, yt, zt, level->dimension->id)) {
-                    if (level->getTile(xt, yt, zt) == 0 &&
-                        Tile::fire->mayPlace(level, xt, yt, zt))
-                        level->setTile(xt, yt, zt, Tile::fire_Id);
-                }
+        for (int i = 0; i < 4; i++) {
+            int xt = Mth::floor(x) + random->nextInt(3) - 1;
+            int yt = Mth::floor(y) + random->nextInt(3) - 1;
+            int zt = Mth::floor(z) + random->nextInt(3) - 1;
+            // 4J added - don't go setting tiles if we aren't tracking them for
+            // network synchronisation
+            if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
+                    xt, yt, zt, level->dimension->id)) {
+                if (level->getTile(xt, yt, zt) == 0 &&
+                    Tile::fire->mayPlace(level, xt, yt, zt))
+                    level->setTileAndUpdate(xt, yt, zt, Tile::fire_Id);
             }
         }
     }
@@ -80,34 +77,34 @@ void LightningBolt::tick() {
         } else if (life < -random->nextInt(10)) {
             flashes--;
             life = 1;
-            // 4J - added clientside check
-            if (!level->isClientSide) {
-                seed = random->nextLong();
-                if (level->hasChunksAt((int)floor(x), (int)floor(y),
-                                       (int)floor(z), 10)) {
-                    int xt = (int)floor(x);
-                    int yt = (int)floor(y);
-                    int zt = (int)floor(z);
 
-                    // 4J added - don't go setting tiles if we aren't tracking
-                    // them for network synchronisation
-                    if (MinecraftServer::getInstance()
-                            ->getPlayers()
-                            ->isTrackingTile(xt, yt, zt,
-                                             level->dimension->id)) {
-                        if (level->getTile(xt, yt, zt) == 0 &&
-                            Tile::fire->mayPlace(level, xt, yt, zt))
-                            level->setTile(xt, yt, zt, Tile::fire_Id);
-                    }
+            seed = random->nextLong();
+            if (!level->isClientSide &&
+                level->getGameRules()->getBoolean(GameRules::RULE_DOFIRETICK) &&
+                level->hasChunksAt((int)floor(x), (int)floor(y), (int)floor(z),
+                                   10)) {
+                int xt = (int)floor(x);
+                int yt = (int)floor(y);
+                int zt = (int)floor(z);
+
+                // 4J added - don't go setting tiles if we aren't tracking them
+                // for network synchronisation
+                if (MinecraftServer::getInstance()
+                        ->getPlayers()
+                        ->isTrackingTile(xt, yt, zt, level->dimension->id)) {
+                    if (level->getTile(xt, yt, zt) == 0 &&
+                        Tile::fire->mayPlace(level, xt, yt, zt))
+                        level->setTileAndUpdate(xt, yt, zt, Tile::fire_Id);
                 }
             }
         }
     }
 
     if (life >= 0) {
-        double r = 3;
-        // 4J - added clientside check
-        if (!level->isClientSide) {
+        if (level->isClientSide) {
+            level->skyFlashTime = 2;
+        } else {
+            double r = 3;
             std::vector<std::shared_ptr<Entity> >* entities =
                 level->getEntities(shared_from_this(),
                                    AABB::newTemp(x - r, y - r, z - r, x + r,
@@ -118,8 +115,6 @@ void LightningBolt::tick() {
                 e->thunderHit(this);
             }
         }
-
-        level->lightningBoltTime = 2;
     }
 }
 

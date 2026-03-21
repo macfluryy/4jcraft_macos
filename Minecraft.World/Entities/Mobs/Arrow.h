@@ -1,11 +1,12 @@
 #pragma once
 
 #include "../Entity.h"
+#include "../Projectile.h"
 
 class Level;
 class CompoundTag;
 
-class Arrow : public Entity {
+class Arrow : public Entity, public Projectile {
 public:
     eINSTANCEOF GetType() { return eTYPE_ARROW; }
     static Entity* create(Level* level) { return new Arrow(level); }
@@ -50,10 +51,10 @@ private:
 
 public:
     Arrow(Level* level);
-    Arrow(Level* level, std::shared_ptr<Mob> mob, std::shared_ptr<Mob> target,
-          float power, float uncertainty);
+    Arrow(Level* level, std::shared_ptr<LivingEntity> mob,
+          std::shared_ptr<LivingEntity> target, float power, float uncertainty);
     Arrow(Level* level, double x, double y, double z);
-    Arrow(Level* level, std::shared_ptr<Mob> mob, float power);
+    Arrow(Level* level, std::shared_ptr<LivingEntity> mob, float power);
 
 protected:
     virtual void defineSynchedData();
@@ -67,6 +68,11 @@ public:
     virtual void addAdditonalSaveData(CompoundTag* tag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
     virtual void playerTouch(std::shared_ptr<Player> player);
+
+protected:
+    virtual bool makeStepSound();
+
+public:
     virtual float getShadowHeightOffs();
 
     void setBaseDamage(double baseDamage);

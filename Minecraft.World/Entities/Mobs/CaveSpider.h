@@ -10,8 +10,12 @@ public:
 public:
     CaveSpider(Level* level);
 
-    virtual int getMaxHealth();
-    virtual float getModelScale();
+protected:
+    void registerAttributes();
+
+public:
     virtual bool doHurtTarget(std::shared_ptr<Entity> target);
-    void finalizeMobSpawn();
+    MobGroupData* finalizeMobSpawn(
+        MobGroupData* groupData,
+        int extraData = 0);  // 4J Added extraData param
 };

@@ -14,6 +14,8 @@ private:
     static const int DATA_ITEM = 2;
     static const int DATA_ROTATION = 3;
 
+    float dropChance;
+
 private:
     void _init();
 
@@ -23,9 +25,15 @@ public:
 
 protected:
     virtual void defineSynchedData();
+
+public:
     virtual int getWidth() { return 9; }
     virtual int getHeight() { return 9; }
-    virtual void dropItem();
+    virtual bool shouldRenderAtSqrDistance(double distance);
+    virtual void dropItem(std::shared_ptr<Entity> causedBy);
+
+private:
+    void removeFramedMap(std::shared_ptr<ItemInstance> item);
 
 public:
     std::shared_ptr<ItemInstance> getItem();

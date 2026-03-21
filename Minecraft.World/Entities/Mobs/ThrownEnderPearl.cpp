@@ -13,7 +13,8 @@ ThrownEnderpearl::ThrownEnderpearl(Level* level) : Throwable(level) {
     this->defineSynchedData();
 }
 
-ThrownEnderpearl::ThrownEnderpearl(Level* level, std::shared_ptr<Mob> mob)
+ThrownEnderpearl::ThrownEnderpearl(Level* level,
+                                   std::shared_ptr<LivingEntity> mob)
     : Throwable(level, mob) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
@@ -30,7 +31,7 @@ ThrownEnderpearl::ThrownEnderpearl(Level* level, double x, double y, double z)
 void ThrownEnderpearl::onHit(HitResult* res) {
     if (res->entity != NULL) {
         DamageSource* damageSource =
-            DamageSource::thrown(shared_from_this(), owner);
+            DamageSource::thrown(shared_from_this(), getOwner());
         res->entity->hurt(damageSource, 0);
         delete damageSource;
     }
@@ -45,14 +46,22 @@ void ThrownEnderpearl::onHit(HitResult* res) {
         // TU8: Code: Gameplay: The title crashes on Host's console when Client
         // Player leaves the game before the Ender Pearl thrown by him touches
         // the ground. If the owner has been removed, then ignore
-        std::shared_ptr<ServerPlayer> serverPlayer =
-            std::dynamic_pointer_cast<ServerPlayer>(owner);
-        if (serverPlayer != NULL && !serverPlayer->removed) {
-            if (!serverPlayer->connection->done &&
-                serverPlayer->level == this->level) {
-                owner->teleportTo(x, y, z);
-                owner->fallDistance = 0;
-                owner->hurt(DamageSource::fall, 5);
+
+        // 4J-JEV: Cheap type check first.
+        if ((getOwner() != NULL) &&
+            getOwner()->instanceof(eTYPE_SERVERPLAYER)) {
+            std::shared_ptr<ServerPlayer> serverPlayer =
+                std::dynamic_pointer_cast<ServerPlayer>(getOwner());
+            if (!serverPlayer->removed) {
+                if (!serverPlayer->connection->done &&
+                    serverPlayer->level == this->level) {
+                    if (getOwner()->isRiding()) {
+                        getOwner()->ride(nullptr);
+                    }
+                    getOwner()->teleportTo(x, y, z);
+                    getOwner()->fallDistance = 0;
+                    getOwner()->hurt(DamageSource::fall, 5);
+                }
             }
         }
         remove();

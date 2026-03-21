@@ -10,7 +10,7 @@
 #include <pthread.h>
 #endif
 
-class Mob;
+class LivingEntity;
 class LightningBolt;
 class ItemEntity;
 class EntityPos;
@@ -21,6 +21,7 @@ class Random;
 class Level;
 class CompoundTag;
 class DamageSource;
+class Explosion;
 
 // 4J Stu Added this mainly to allow is to record telemetry for player deaths
 enum EEntityDamageType {
@@ -48,7 +49,15 @@ public:
     // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
     virtual eINSTANCEOF GetType() = 0;
 
+    inline bool instanceof(eINSTANCEOF super) {
+        return eTYPE_DERIVED_FROM(super, GetType());
+    }
+    inline static bool instanceof(eINSTANCEOF type, eINSTANCEOF super) {
+        return eTYPE_DERIVED_FROM(super, type);
+    }
+
 public:
+    static const std::wstring RIDING_TAG;
     static const short TOTAL_AIR_SUPPLY = 20 * 15;
 
 private:
@@ -63,6 +72,7 @@ public:
     std::weak_ptr<Entity> rider;  // Changed to weak to avoid circular
                                   // dependency between rider/riding entity
     std::shared_ptr<Entity> riding;
+    bool forcedLoading;
 
     Level* level;
     double xo, yo, zo;
@@ -89,6 +99,7 @@ public:
 
     float walkDistO;
     float walkDist;
+    float moveDist;
     float fallDistance;
 
 private:
@@ -120,10 +131,6 @@ public:
 private:
     bool firstTick;
 
-public:
-    std::wstring customTextureUrl;
-    std::wstring customTextureUrl2;
-
 protected:
     bool fireImmune;
 
@@ -135,7 +142,7 @@ private:
     static const int DATA_SHARED_FLAGS_ID = 0;
     static const int FLAG_ONFIRE = 0;
     static const int FLAG_SNEAKING = 1;
-    static const int FLAG_RIDING = 2;
+    // static const int FLAG_ = 2;
     static const int FLAG_SPRINTING = 3;
     static const int FLAG_USING_ITEM = 4;
     static const int FLAG_INVISIBLE = 5;
@@ -153,11 +160,28 @@ public:
     int xp, yp, zp, xRotp, yRotp;
     bool noCulling;
     bool hasImpulse;
+    int changingDimensionDelay;
+
+protected:
+    bool isInsidePortal;
+    int portalTime;
+
+public:
+    int dimension;
+
+protected:
+    int portalEntranceDir;
+
+private:
+    bool invulnerable;
+    std::wstring uuid;
 
 protected:
     // 4J Added so that client side simulations on the host are not affected by
     // zero-lag
     bool m_ignoreVerticalCollisions;
+
+    bool m_ignorePortal;
 
 public:
     Entity(Level* level,
@@ -166,7 +190,7 @@ public:
 
 protected:
     // 4J - added for common ctor code
-    void _init(bool useSmallId);
+    void _init(bool useSmallId, Level* level);
 
 protected:
     virtual void defineSynchedData() = 0;
@@ -204,6 +228,7 @@ public:
     void interpolateTurn(float xo, float yo);
     virtual void tick();
     virtual void baseTick();
+    virtual int getPortalWaitTime();
 
 protected:
     void lavaHurt();
@@ -272,7 +297,7 @@ protected:
 
 public:
     // 4J Added damageSource param to enable telemetry on player deaths
-    virtual bool hurt(DamageSource* source, int damage);
+    virtual bool hurt(DamageSource* source, float damage);
     bool intersects(double x0, double y0, double z0, double x1, double y1,
                     double z1);
     virtual bool isPickable();
@@ -281,18 +306,24 @@ public:
     virtual void awardKillScore(std::shared_ptr<Entity> victim, int score);
     virtual bool shouldRender(Vec3* c);
     virtual bool shouldRenderAtSqrDistance(double distance);
-    virtual int getTexture();  // 4J - changed from std::wstring to int
     virtual bool isCreativeModeAllowed();
+    bool saveAsMount(CompoundTag* entityTag);
     bool save(CompoundTag* entityTag);
     void saveWithoutId(CompoundTag* entityTag);
     virtual void load(CompoundTag* tag);
 
 protected:
+    virtual bool repositionEntityAfterLoad();
     const std::wstring getEncodeId();
 
 public:
     virtual void readAdditionalSaveData(CompoundTag* tag) = 0;
     virtual void addAdditonalSaveData(CompoundTag* tag) = 0;
+    /**
+     * Called after load() has finished and the entity has been added to the
+     * world
+     */
+    virtual void onLoadedFromSave();
 
 protected:
     ListTag<DoubleTag>* newDoubleList(unsigned int number, double firstValue,
@@ -317,20 +348,15 @@ public:
     virtual double getRidingHeight();
     virtual double getRideHeight();
     virtual void ride(std::shared_ptr<Entity> e);
-    virtual void findStandUpPosition(
-        std::shared_ptr<Entity>
-            vehicle);  // 4J Stu - Brought forward from 12w36 to fix #46282 -
-                       // TU5: Gameplay: Exiting the minecart in a tight
-                       // corridor damages the player
     virtual void lerpTo(double x, double y, double z, float yRot, float xRot,
                         int steps);
     virtual float getPickRadius();
     virtual Vec3* getLookAngle();
     virtual void handleInsidePortal();
+    virtual int getDimensionChangingDelay();
     virtual void lerpMotion(double xd, double yd, double zd);
     virtual void handleEntityEvent(uint8_t eventId);
     virtual void animateHurt();
-    virtual void prepareCustomTextures();
     virtual ItemInstanceArray getEquipmentSlots();  // ItemInstance[]
     virtual void setEquippedSlot(
         int slot, std::shared_ptr<ItemInstance>
@@ -369,7 +395,7 @@ public:
     void setAirSupply(int supply);
 
     virtual void thunderHit(const LightningBolt* lightningBolt);
-    virtual void killed(std::shared_ptr<Mob> mob);
+    virtual void killed(std::shared_ptr<LivingEntity> mob);
 
 protected:
     bool checkInTile(double x, double y, double z);
@@ -378,9 +404,6 @@ public:
     virtual void makeStuckInWeb();
 
     virtual std::wstring getAName();
-
-    // TU9
-    bool skipAttackInteraction(std::shared_ptr<Entity> source) { return false; }
 
     // 4J - added to manage allocation of small ids
 private:
@@ -423,8 +446,25 @@ public:
     virtual float getYHeadRot();
     virtual void setYHeadRot(float yHeadRot);
     virtual bool isAttackable();
+    virtual bool skipAttackInteraction(std::shared_ptr<Entity> source);
     virtual bool isInvulnerable();
     virtual void copyPosition(std::shared_ptr<Entity> target);
+    virtual void restoreFrom(std::shared_ptr<Entity> oldEntity,
+                             bool teleporting);
+    virtual void changeDimension(int i);
+    virtual float getTileExplosionResistance(Explosion* explosion, Level* level,
+                                             int x, int y, int z, Tile* tile);
+    virtual bool shouldTileExplode(Explosion* explosion, Level* level, int x,
+                                   int y, int z, int id, float power);
+    virtual int getMaxFallDistance();
+    virtual int getPortalEntranceDir();
+    virtual bool isIgnoringTileTriggers();
+    virtual bool displayFireAnimation();
+    virtual void setUUID(const std::wstring& UUID);
+    virtual std::wstring getUUID();
+    virtual bool isPushedByWater();
+    virtual std::wstring getDisplayName();
+    virtual std::wstring getNetworkName();  // 4J: Added
 
 private:
     unsigned int m_uiAnimOverrideBitmask;

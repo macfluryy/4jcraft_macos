@@ -1,24 +1,49 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.entity.h"
+#include "../Headers/net.minecraft.world.entity.animal.h"
+#include "../Headers/net.minecraft.world.entity.ai.attributes.h"
+#include "../Headers/net.minecraft.world.entity.ai.goal.h"
+#include "../Headers/net.minecraft.world.entity.ai.navigation.h"
+#include "../Headers/net.minecraft.world.entity.monster.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.pathfinder.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Util/SharedConstants.h"
 #include "PathfinderMob.h"
 
+AttributeModifier* PathfinderMob::SPEED_MODIFIER_FLEEING =
+    (new AttributeModifier(eModifierId_MOB_FLEEING, 2.0f,
+                           AttributeModifier::OPERATION_MULTIPLY_TOTAL))
+        ->setSerialize(false);
+
 PathfinderMob::PathfinderMob(Level* level) : Mob(level) {
     path = NULL;
     attackTarget = nullptr;
     holdGround = false;
     fleeTime = 0;
+
+    restrictRadius = -1;
+    restrictCenter = new Pos(0, 0, 0);
+    addedLeashRestrictionGoal = false;
+    leashRestrictionGoal = new MoveTowardsRestrictionGoal(this, 1.0f);
 }
 
 bool PathfinderMob::shouldHoldGround() { return false; }
 
-PathfinderMob::~PathfinderMob() { delete path; }
+PathfinderMob::~PathfinderMob() {
+    delete path;
+    delete restrictCenter;
+    delete leashRestrictionGoal;
+}
 
 void PathfinderMob::serverAiStep() {
-    if (fleeTime > 0) fleeTime--;
+    if (fleeTime > 0) {
+        if (--fleeTime == 0) {
+            AttributeInstance* speed =
+                getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
+            speed->removeModifier(SPEED_MODIFIER_FLEEING);
+        }
+    }
     holdGround = shouldHoldGround();
     float maxDist = 16;
 
@@ -113,7 +138,8 @@ void PathfinderMob::serverAiStep() {
         double yd = target->y - yFloor;
         float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
         float rotDiff = Mth::wrapDegrees(yRotD - yRot);
-        yya = runSpeed;
+        yya = (float)getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)
+                  ->getValue();
         if (rotDiff > MAX_TURN) {
             rotDiff = MAX_TURN;
         }
@@ -144,7 +170,7 @@ void PathfinderMob::serverAiStep() {
         lookAt(attackTarget, 30, 30);
     }
 
-    if (this->horizontalCollision && !isPathFinding()) jumping = true;
+    if (horizontalCollision && !isPathFinding()) jumping = true;
     if (random->nextFloat() < 0.8f && (inWater || inLava)) jumping = true;
 }
 
@@ -217,12 +243,87 @@ void PathfinderMob::setAttackTarget(std::shared_ptr<Entity> attacker) {
     attackTarget = attacker;
 }
 
-float PathfinderMob::getWalkingSpeedModifier() {
-    if (useNewAi()) return 1.0f;
-    float speed = Mob::getWalkingSpeedModifier();
-    if (fleeTime > 0) speed *= 2;
-    return speed;
+// might move to navigation, might make area
+bool PathfinderMob::isWithinRestriction() {
+    return isWithinRestriction(Mth::floor(x), Mth::floor(y), Mth::floor(z));
 }
+
+bool PathfinderMob::isWithinRestriction(int x, int y, int z) {
+    if (restrictRadius == -1) return true;
+    return restrictCenter->distSqr(x, y, z) < restrictRadius * restrictRadius;
+}
+
+void PathfinderMob::restrictTo(int x, int y, int z, int radius) {
+    restrictCenter->set(x, y, z);
+    restrictRadius = radius;
+}
+
+Pos* PathfinderMob::getRestrictCenter() { return restrictCenter; }
+
+float PathfinderMob::getRestrictRadius() { return restrictRadius; }
+
+void PathfinderMob::clearRestriction() { restrictRadius = -1; }
+
+bool PathfinderMob::hasRestriction() { return restrictRadius != -1; }
+
+void PathfinderMob::tickLeash() {
+    Mob::tickLeash();
+
+    if (isLeashed() && getLeashHolder() != NULL &&
+        getLeashHolder()->level == this->level) {
+        // soft restriction
+        std::shared_ptr<Entity> leashHolder = getLeashHolder();
+        restrictTo((int)leashHolder->x, (int)leashHolder->y,
+                   (int)leashHolder->z, 5);
+
+        float _distanceTo = distanceTo(leashHolder);
+
+        std::shared_ptr<TamableAnimal> tamabaleAnimal =
+            shared_from_this()->instanceof(eTYPE_TAMABLE_ANIMAL)
+                ? std::dynamic_pointer_cast<TamableAnimal>(shared_from_this())
+                : nullptr;
+        if ((tamabaleAnimal != NULL) && tamabaleAnimal->isSitting()) {
+            if (_distanceTo > 10) {
+                dropLeash(true, true);
+            }
+            return;
+        }
+
+        if (!addedLeashRestrictionGoal) {
+            goalSelector.addGoal(2, leashRestrictionGoal, false);
+            getNavigation()->setAvoidWater(false);
+            addedLeashRestrictionGoal = true;
+        }
+
+        onLeashDistance(_distanceTo);
+
+        if (_distanceTo > 4) {
+            // harder restriction
+            getNavigation()->moveTo(leashHolder, 1.0);
+        }
+        if (_distanceTo > 6) {
+            // hardest restriction
+            double dx = (leashHolder->x - x) / _distanceTo;
+            double dy = (leashHolder->y - y) / _distanceTo;
+            double dz = (leashHolder->z - z) / _distanceTo;
+
+            xd += dx * abs(dx) * .4;
+            yd += dy * abs(dy) * .4;
+            zd += dz * abs(dz) * .4;
+        }
+        if (_distanceTo > 10) {
+            dropLeash(true, true);
+        }
+
+    } else if (!isLeashed() && addedLeashRestrictionGoal) {
+        addedLeashRestrictionGoal = false;
+        goalSelector.removeGoal(leashRestrictionGoal);
+        getNavigation()->setAvoidWater(true);
+        clearRestriction();
+    }
+}
+
+void PathfinderMob::onLeashDistance(float distanceToLeashHolder) {}
 
 bool PathfinderMob::couldWander() {
     return (noActionTime < SharedConstants::TICKS_PER_SECOND * 5) ||
