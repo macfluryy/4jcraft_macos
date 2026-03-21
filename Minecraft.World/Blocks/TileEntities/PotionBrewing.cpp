@@ -758,19 +758,19 @@ int PotionBrewing::valueOf(int brew, int p1, int p2, int p3, int p4, int p5) {
 }
 
 std::wstring PotionBrewing::toString(int brew) {
-    std::wstring std::string;
+    std::wstring string;
 
     int bit = NUM_BITS - 1;
     while (bit >= 0) {
         if ((brew & (1 << bit)) != 0) {
-            std::string.append(L"O");
+            string.append(L"O");
         } else {
-            std::string.append(L"x");
+            string.append(L"x");
         }
         bit--;
     }
 
-    return std::string;
+    return string;
 }
 
 // void main(String[] args)

@@ -173,8 +173,8 @@ public:
         return (ListTag<Tag>*)tags[name];
     }
 
-    bool getBoolean(const std::wstring& std::string) {
-        return getByte(std::string) != 0;
+    bool getBoolean(const std::wstring& string) {
+        return getByte(string) != 0;
     }
 
     void remove(const std::wstring& name) {

@@ -341,7 +341,7 @@ public:
 
     void playStreamingMusic(const std::wstring& name, int x, int y, int z);
     void playMusic(double x, double y, double z,
-                   const std::wstring& std::string, float volume);
+                   const std::wstring& string, float volume);
     // 4J removed - void addParticle(const std::wstring& id, double x, double y,
     // double z, double xd, double yd, double zd);
     void addParticle(ePARTICLE_TYPE id, double x, double y, double z, double xd,
