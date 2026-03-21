@@ -488,7 +488,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     }
 
     //	McRegionLevelStorage *storage = new McRegionLevelStorage(new
-    //ConsoleSaveFile( L"" ), L"", L"", 0); // original
+    // ConsoleSaveFile( L"" ), L"", L"", 0); // original
     //    McRegionLevelStorage *storage = new McRegionLevelStorage(File(L"."),
     //    name, true); // TODO
     for (unsigned int i = 0; i < levels.length; i++) {
@@ -712,7 +712,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
         }
     }
     //	printf("Main thread complete at %dms\n",System::currentTimeMillis() -
-    //startTime);
+    // startTime);
 
     app.DebugPrintf("[SRV] All chunk loops done, waiting for postProcess\n");
     // Wait for post processing, then lighting threads, to end (post-processing
@@ -753,7 +753,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     //- startTime);
 
     //	printf("Lighting complete at %dms\n",System::currentTimeMillis() -
-    //startTime);
+    // startTime);
 
     if (s_bServerHalted || !g_NetworkManager.IsInSession()) return false;
 
@@ -1133,16 +1133,16 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                 } else {
                     //					int tickcount = 0;
                     //					__int64 beforeall =
-                    //System::currentTimeMillis();
+                    // System::currentTimeMillis();
                     while (unprocessedTime > MS_PER_TICK) {
                         unprocessedTime -= MS_PER_TICK;
                         //						__int64
-                        //before = System::currentTimeMillis();
+                        // before = System::currentTimeMillis();
                         tick();
                         //						__int64
-                        //after = System::currentTimeMillis();
+                        // after = System::currentTimeMillis();
                         //						PIXReportCounter(L"Server
-                        //time",(float)(after-before));
+                        // time",(float)(after-before));
 
                         // 4J Ensure that the slow queue owner keeps cycling if
                         // it's not been used in a while
@@ -1151,9 +1151,10 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                             ((time - s_slowQueueLastTime) >
                              (2 * MINECRAFT_SERVER_SLOW_QUEUE_DELAY))) {
                             //							app.DebugPrintf("Considering
-                            //cycling: (%d) %d - %d -> %d >
+                            // cycling: (%d) %d - %d -> %d >
                             //%d\n",s_slowQueuePacketSent, time,
-                            //s_slowQueueLastTime, (time - s_slowQueueLastTime),
+                            // s_slowQueueLastTime, (time -
+                            // s_slowQueueLastTime),
                             //(2*MINECRAFT_SERVER_SLOW_QUEUE_DELAY));
                             MinecraftServer::cycleSlowQueueIndex();
                             s_slowQueuePacketSent = false;
@@ -1162,16 +1163,17 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                         //						else
                         //						{
                         //							app.DebugPrintf("Not
-                        //considering cycling: %d - %d -> %d > %d\n",time,
-                        //s_slowQueueLastTime, (time - s_slowQueueLastTime),
+                        // considering cycling: %d - %d -> %d > %d\n",time,
+                        // s_slowQueueLastTime, (time - s_slowQueueLastTime),
                         //(2*MINECRAFT_SERVER_SLOW_QUEUE_DELAY));
                         //						}
                     }
                     //					__int64 afterall =
-                    //System::currentTimeMillis(); 					PIXReportCounter(L"Server
-                    //time all",(float)(afterall-beforeall));
+                    // System::currentTimeMillis();
+                    // PIXReportCounter(L"Server time
+                    // all",(float)(afterall-beforeall));
                     //					PIXReportCounter(L"Server
-                    //ticks",(float)tickcount);
+                    // ticks",(float)tickcount);
                 }
             } else {
                 // 4J Stu - TU1-hotfix
@@ -1190,7 +1192,7 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                 MinecraftServer::setTimeAtEndOfTick = false;
                 for (unsigned int i = 0; i < levels.length; i++) {
                     //					if (i == 0 ||
-                    //settings->getBoolean(L"allow-nether", true))
+                    // settings->getBoolean(L"allow-nether", true))
                     //// 4J removed - we always have nether
                     {
                         ServerLevel* level = levels[i];
@@ -1271,8 +1273,8 @@ void MinecraftServer::run(__int64 seed, void* lpParameter) {
                         QueryPerformanceCounter(&qwNewTime);
                         qwDeltaTime.QuadPart =
                             qwNewTime.QuadPart - qwTime.QuadPart;
-                        fElapsedTime =
-                            fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+                        fElapsedTime = fSecsPerTick *
+                                       static_cast<float>(qwDeltaTime.QuadPart);
                         app.DebugPrintf("Autosave: Elapsed time %f\n",
                                         fElapsedTime);
                     } break;
@@ -1735,7 +1737,7 @@ bool MinecraftServer::canSendOnSlowQueue(INetworkPlayer* player) {
     if (player->GetSessionIndex() == s_slowQueuePlayerIndex &&
         (time - s_slowQueueLastTime) > MINECRAFT_SERVER_SLOW_QUEUE_DELAY) {
         //		app.DebugPrintf("Slow queue OK for player #%d\n",
-        //player->GetSessionIndex());
+        // player->GetSessionIndex());
         return true;
     }
 
@@ -1768,7 +1770,7 @@ void MinecraftServer::cycleSlowQueueIndex() {
              s_slowQueuePlayerIndex != startingIndex && currentPlayer != NULL &&
              currentPlayer->IsLocal());
     //	app.DebugPrintf("Cycled slow queue index to %d\n",
-    //s_slowQueuePlayerIndex);
+    // s_slowQueuePlayerIndex);
 }
 
 // 4J added - sets up a vector of flags to indicate which entities (with small
