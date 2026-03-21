@@ -2323,6 +2323,7 @@ void Minecraft::renderFpsMeter(__int64 tickTime) {
 }
 
 void Minecraft::stop() {
+    app.DebugPrintf("Minecraft::stop() SET running = false;\n");
     running = false;
     // keepPolling = false;
 }
