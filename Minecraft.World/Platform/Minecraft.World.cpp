@@ -1,43 +1,21 @@
 #include "stdafx.h"
 
-#include "../Network/Packets/Packet.h"
-#include "../Blocks/MaterialColor.h"
-#include "../Blocks/Material.h"
-#include "../Blocks/Tile.h"
-#include "../Items/HatchetItem.h"
-#include "../Items/PickaxeItem.h"
-#include "../Items/ShovelItem.h"
-#include "../Level/BlockReplacements.h"
-#include "../WorldGen/Biomes/Biome.h"
-#include "../Items/Item.h"
-#include "../Recipes/FurnaceRecipes.h"
-#include "../Recipes/Recipes.h"
-#include "../Stats/Stats.h"
-#include "../Stats/Achievements.h"
-#include "../Entities/Mobs/Skeleton.h"
-#include "../Entities/Mobs/PigZombie.h"
-#include "../Blocks/TileEntities/TileEntity.h"
-#include "../Level/Storage/EntityIO.h"
-#include "../Util/SharedConstants.h"
-#include "../Entities/MobCategory.h"
-#include "../Level/LevelChunk.h"
-#include "../WorldGen/Structures/MineShaftPieces.h"
-#include "../WorldGen/Features/StrongholdFeature.h"
-#include "../WorldGen/Features/VillageFeature.h"
-#include "../Level/Storage/LevelType.h"
-#include "../Entities/Mobs/EnderMan.h"
-#include "../Blocks/TileEntities/PotionBrewing.h"
-#include "../Enchantments/Enchantment.h"
-#include "../WorldGen/Structures/VillagePieces.h"
-#include "../WorldGen/Features/RandomScatteredLargeFeature.h"
+#include "../Headers/net.minecraft.world.item.h"
+#include "../Headers/net.minecraft.world.item.alchemy.h"
+#include "../Headers/net.minecraft.world.item.crafting.h"
+#include "../Headers/net.minecraft.world.item.enchantment.h"
+#include "../Headers/net.minecraft.world.level.chunk.h"
+#include "../Headers/net.minecraft.world.level.chunk.storage.h"
+#include "../Headers/net.minecraft.world.level.levelgen.structure.h"
+#include "../Headers/net.minecraft.world.level.tile.h"
+#include "../Headers/net.minecraft.world.level.tile.entity.h"
+#include "../Headers/net.minecraft.world.entity.h"
+#include "../Headers/net.minecraft.world.entity.monster.h"
+#include "../Headers/net.minecraft.world.entity.npc.h"
+#include "../Headers/net.minecraft.world.effect.h"
 
 #include "Minecraft.World.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
-#include "../Level/Storage/SparseLightStorage.h"
-#include "../Level/Storage/SparseDataStorage.h"
-#include "../Level/Storage/McRegionChunkStorage.h"
-#include "../Entities/Mobs/Villager.h"
-#include "../Level/Storage/LevelSettings.h"
 
 #ifdef _DURANGO
 #include "../Stats/DurangoStats.h"
@@ -60,6 +38,7 @@ void MinecraftWorld_RunStaticCtors() {
         ShovelItem::staticCtor();
         BlockReplacements::staticCtor();
         Biome::staticCtor();
+        MobEffect::staticCtor();
         Item::staticCtor();
         FurnaceRecipes::staticCtor();
         Recipes::staticCtor();
@@ -71,8 +50,6 @@ void MinecraftWorld_RunStaticCtors() {
 #endif
         // Achievements::staticCtor(); // 4J Stu - This is now called from
         // within the Stats::staticCtor()
-        Skeleton::staticCtor();
-        PigZombie::staticCtor();
         TileEntity::staticCtor();
         EntityIO::staticCtor();
         MobCategory::staticCtor();
@@ -82,11 +59,15 @@ void MinecraftWorld_RunStaticCtors() {
 
         LevelType::staticCtor();
 
-        MineShaftPieces::staticCtor();
-        StrongholdFeature::staticCtor();
-        VillagePieces::Smithy::staticCtor();
-        VillageFeature::staticCtor();
-        RandomScatteredLargeFeature::staticCtor();
+        {
+            StructureFeatureIO::staticCtor();
+
+            MineShaftPieces::staticCtor();
+            StrongholdFeature::staticCtor();
+            VillagePieces::Smithy::staticCtor();
+            VillageFeature::staticCtor();
+            RandomScatteredLargeFeature::staticCtor();
+        }
     }
     EnderMan::staticCtor();
     PotionBrewing::staticCtor();
@@ -101,4 +82,5 @@ void MinecraftWorld_RunStaticCtors() {
     McRegionChunkStorage::staticCtor();
     Villager::staticCtor();
     GameType::staticCtor();
+    BeaconTileEntity::staticCtor();
 }
