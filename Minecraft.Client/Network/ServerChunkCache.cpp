@@ -41,7 +41,7 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
 // 4J-PB added
 ServerChunkCache::~ServerChunkCache() {
     delete emptyChunk;
-    delete cache;
+    delete[] cache;
     delete source;
 
 #ifdef _LARGE_WORLDS
