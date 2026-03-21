@@ -12,9 +12,9 @@ FoodData::FoodData() {
     exhaustionLevel = 0;
     tickTimer = 0;
 
-    this->foodLevel = FoodConstants::MAX_FOOD;
-    this->lastFoodLevel = FoodConstants::MAX_FOOD;
-    this->saturationLevel = FoodConstants::START_SATURATION;
+    foodLevel = FoodConstants::MAX_FOOD;
+    lastFoodLevel = FoodConstants::MAX_FOOD;
+    saturationLevel = FoodConstants::START_SATURATION;
 }
 
 void FoodData::eat(int food, float saturationModifier) {
@@ -43,9 +43,12 @@ void FoodData::tick(std::shared_ptr<Player> player) {
         }
     }
 
-    // 4J Added - Allow host to disable using hunger. We don't deplete the
-    // hunger bar due to exhaustion but I think we should deplete it to heal
-    if (player->isAllowedToIgnoreExhaustion()) {
+    // 4J: Added - Allow host to disable using hunger. We don't deplete the
+    // hunger bar due to exhaustion but I think we should deplete it to heal.
+    // Don't heal if natural regen is disabled
+    if (player->isAllowedToIgnoreExhaustion() &&
+        player->level->getGameRules()->getBoolean(
+            GameRules::RULE_NATURAL_REGENERATION)) {
         if (foodLevel > 0 && player->isHurt()) {
             tickTimer++;
             if (tickTimer >= FoodConstants::HEALTH_TICK_COUNT) {
@@ -54,10 +57,13 @@ void FoodData::tick(std::shared_ptr<Player> player) {
                 tickTimer = 0;
             }
         }
-    } else if (foodLevel >= FoodConstants::HEAL_LEVEL && player->isHurt()) {
+    } else if (player->level->getGameRules()->getBoolean(
+                   GameRules::RULE_NATURAL_REGENERATION) &&
+               foodLevel >= FoodConstants::HEAL_LEVEL && player->isHurt()) {
         tickTimer++;
         if (tickTimer >= FoodConstants::HEALTH_TICK_COUNT) {
             player->heal(1);
+            addExhaustion(FoodConstants::EXHAUSTION_HEAL);
             tickTimer = 0;
         }
     } else if (foodLevel <= FoodConstants::STARVE_LEVEL) {
@@ -105,12 +111,8 @@ float FoodData::getExhaustionLevel() { return exhaustionLevel; }
 
 float FoodData::getSaturationLevel() { return saturationLevel; }
 
-void FoodData::setFoodLevel(int food) { this->foodLevel = food; }
+void FoodData::setFoodLevel(int food) { foodLevel = food; }
 
-void FoodData::setSaturation(float saturation) {
-    this->saturationLevel = saturation;
-}
+void FoodData::setSaturation(float saturation) { saturationLevel = saturation; }
 
-void FoodData::setExhaustion(float exhaustion) {
-    this->exhaustionLevel = exhaustion;
-}
+void FoodData::setExhaustion(float exhaustion) { exhaustionLevel = exhaustion; }
