@@ -5,18 +5,24 @@
 class ByteArrayTag : public Tag {
 public:
     byteArray data;
+    bool m_ownData;
 
-    ByteArrayTag(const std::wstring& name) : Tag(name) {}
-    ByteArrayTag(const std::wstring& name, byteArray data) : Tag(name) {
+    ByteArrayTag(const std::wstring& name) : Tag(name) { m_ownData = false; }
+    ByteArrayTag(const std::wstring& name, byteArray data, bool ownData = false)
+        : Tag(name) {
         this->data = data;
+        m_ownData = ownData;
     }  // 4J - added ownData param
+    ~ByteArrayTag() {
+        if (m_ownData) delete[] data.data;
+    }
 
     void write(DataOutput* dos) {
         dos->writeInt(data.length);
         dos->write(data);
     }
 
-    void load(DataInput* dis) {
+    void load(DataInput* dis, int tagDepth) {
         int length = dis->readInt();
 
         if (data.data) delete[] data.data;
@@ -45,6 +51,6 @@ public:
     Tag* copy() {
         byteArray cp = byteArray(data.length);
         System::arraycopy(data, 0, &cp, 0, data.length);
-        return new ByteArrayTag(getName(), cp);
+        return new ByteArrayTag(getName(), cp, true);
     }
 };

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Tag.h"
 
 template <class T>
@@ -25,14 +24,22 @@ public:
         for (AUTO_VAR(it, list.begin()); it != itEnd; it++) (*it)->write(dos);
     }
 
-    void load(DataInput* dis) {
+    void load(DataInput* dis, int tagDepth) {
+        if (tagDepth > MAX_DEPTH) {
+#ifndef _CONTENT_PACKAGE
+            printf("Tried to read NBT tag with too high complexity, depth > %d",
+                   MAX_DEPTH);
+            __debugbreak();
+#endif
+            return;
+        }
         type = dis->readByte();
         int size = dis->readInt();
 
         list.clear();
         for (int i = 0; i < size; i++) {
             Tag* tag = Tag::newTag(type, L"");
-            tag->load(dis);
+            tag->load(dis, tagDepth);
             list.push_back(tag);
         }
     }
@@ -55,9 +62,8 @@ public:
         strcpy(newPrefix, prefix);
         strcat(newPrefix, "   ");
         AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
             (*it)->print(newPrefix, out);
-        }
         delete[] newPrefix;
         out << prefix << "}" << std::endl;
     }
@@ -65,7 +71,10 @@ public:
     void add(T* tag) {
         type = tag->getId();
         // 4J: List tag write/load doesn't preserve tag names so remove them so
-        // we can safely do comparisons. This is the least invasive fix.
+        // we can safely do comparisons There are a few ways I could have fixed
+        // this but this seems the least invasive, most complete fix (covers
+        // other items that also use list tags and require equality checks to
+        // work) considering we can't change the write/load functions.
         tag->setName(L"");
         list.push_back(tag);
     }
@@ -100,8 +109,9 @@ public:
                 if (list.size() == o->list.size()) {
                     equal = true;
                     AUTO_VAR(itEnd, list.end());
-                    // 4J Stu - Pretty inefficient method, but acceptable for
-                    // how small and infrequent these comparisons are.
+                    // 4J Stu - Pretty inefficient method, but I think we can
+                    // live with it give how often it will happen, and the small
+                    // sizes of the data sets
                     for (AUTO_VAR(it, list.begin()); it != itEnd; ++it) {
                         bool thisMatches = false;
                         for (AUTO_VAR(it2, o->list.begin());

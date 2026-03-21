@@ -61,7 +61,9 @@ Tag* Tag::setName(const std::wstring& name) {
     return this;
 }
 
-Tag* Tag::readNamedTag(DataInput* dis) {
+Tag* Tag::readNamedTag(DataInput* dis) { return readNamedTag(dis, 0); }
+
+Tag* Tag::readNamedTag(DataInput* dis, int tagDepth) {
     uint8_t type = dis->readByte();
     if (static_cast<int>(type) == 0) return new EndTag();
 
@@ -82,7 +84,7 @@ Tag* Tag::readNamedTag(DataInput* dis) {
     //        byte[] bytes = new uint8_t[length];
     //        dis.readFully(bytes);
 
-    tag->load(dis);
+    tag->load(dis, tagDepth);
     return tag;
 }
 

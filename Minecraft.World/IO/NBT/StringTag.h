@@ -11,7 +11,7 @@ public:
 
     void write(DataOutput* dos) { dos->writeUTF(data); }
 
-    void load(DataInput* dis) { data = dis->readUTF(); }
+    void load(DataInput* dis, int tagDepth) { data = dis->readUTF(); }
 
     uint8_t getId() { return TAG_String; }
 

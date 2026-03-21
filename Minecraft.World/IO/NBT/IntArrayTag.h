@@ -7,11 +7,13 @@ class IntArrayTag : public Tag {
 public:
     intArray data;
 
-    IntArrayTag(const std::wstring& name) : Tag(name) {}
+    IntArrayTag(const std::wstring& name) : Tag(name) { data = intArray(); }
 
     IntArrayTag(const std::wstring& name, intArray data) : Tag(name) {
         this->data = data;
     }
+
+    ~IntArrayTag() { delete[] data.data; }
 
     void write(DataOutput* dos) {
         dos->writeInt(data.length);
@@ -20,7 +22,7 @@ public:
         }
     }
 
-    void load(DataInput* dis) {
+    void load(DataInput* dis, int tagDepth) {
         int length = dis->readInt();
 
         if (data.data) delete[] data.data;
