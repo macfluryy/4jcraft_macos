@@ -4,5 +4,6 @@
 #include "InputStream.h"
 
 InputStream* InputStream::getResourceAsStream(const std::wstring& fileName) {
-    return new FileInputStream(File(fileName));
+    File file(fileName);
+    return file.exists() ? new FileInputStream(file) : NULL;
 }

@@ -29,6 +29,7 @@ public:
     virtual void writeInt(int a);
     virtual void writeLong(int64_t a);
     virtual void writeShort(short a);
+    virtual void writeUnsignedShort(unsigned short a);
     virtual void writeChar(wchar_t a);
     virtual void writeChars(const std::wstring& a);
     virtual void writeBoolean(bool b);

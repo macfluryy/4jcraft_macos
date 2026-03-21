@@ -146,6 +146,17 @@ void DataOutputStream::writeShort(short a) {
     written += 2;
 }
 
+void DataOutputStream::writeUnsignedShort(unsigned short a) {
+    if (stream == NULL) {
+        app.DebugPrintf(
+            "DataOutputStream::writeUnsignedShort() but underlying stream is NULL\n");
+        return;
+    }
+    stream->write(static_cast<unsigned int>((a >> 8) & 0xff));
+    stream->write(static_cast<unsigned int>(a & 0xff));
+    written += 2;
+}
+
 // Writes a char to the underlying output stream as a 2-byte value, high byte
 // first. If no exception is thrown, the counter written is incremented by 2.
 // Parameters:

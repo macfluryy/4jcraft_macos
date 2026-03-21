@@ -24,6 +24,7 @@ public:
         AUTO_VAR(itEnd, list.end());
         for (AUTO_VAR(it, list.begin()); it != itEnd; it++) (*it)->write(dos);
     }
+
     void load(DataInput* dis) {
         type = dis->readByte();
         int size = dis->readInt();
@@ -46,7 +47,7 @@ public:
     }
 
     void print(char* prefix, std::ostream out) {
-        printf(prefix);
+        Tag::print(prefix, out);
 
         out << prefix << "{" << std::endl;
 
@@ -54,13 +55,18 @@ public:
         strcpy(newPrefix, prefix);
         strcat(newPrefix, "   ");
         AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) printf(newPrefix);
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+            (*it)->print(newPrefix, out);
+        }
         delete[] newPrefix;
         out << prefix << "}" << std::endl;
     }
 
     void add(T* tag) {
         type = tag->getId();
+        // 4J: List tag write/load doesn't preserve tag names so remove them so
+        // we can safely do comparisons. This is the least invasive fix.
+        tag->setName(L"");
         list.push_back(tag);
     }
 
@@ -75,7 +81,7 @@ public:
         }
     }
 
-    Tag* copy() {
+    virtual Tag* copy() {
         ListTag<T>* res = new ListTag<T>(getName());
         res->type = type;
         AUTO_VAR(itEnd, list.end());
@@ -86,44 +92,35 @@ public:
         return res;
     }
 
-#if 0
-	bool equals(Object obj)
-	{
-		if (Tag::equals(obj))
-		{
-			ListTag *o = (ListTag *) obj;
-			if (type == o->type)
-			{
-				bool equal = false;
-				if(list.size() == o->list.size())
-				{
-					equal = true;
-					AUTO_VAR(itEnd, list.end());
-					// 4J Stu - Pretty inefficient method, but I think we can live with it give how often it will happen, and the small sizes of the data sets
-					for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
-					{
-						bool thisMatches = false;
-						for(AUTO_VAR(it2, o->list.begin()); it != o->list.end(); ++it2)
-						{
-							if((*it)->equals(*it2))
-							{
-								thisMatches = true;
-								break;
-							}
-						}
-						if(!thisMatches)
-						{
-							equal = false;
-							break;
-						}
-					}
-				}
+    virtual bool equals(Tag* obj) {
+        if (Tag::equals(obj)) {
+            ListTag* o = (ListTag*)obj;
+            if (type == o->type) {
+                bool equal = false;
+                if (list.size() == o->list.size()) {
+                    equal = true;
+                    AUTO_VAR(itEnd, list.end());
+                    // 4J Stu - Pretty inefficient method, but acceptable for
+                    // how small and infrequent these comparisons are.
+                    for (AUTO_VAR(it, list.begin()); it != itEnd; ++it) {
+                        bool thisMatches = false;
+                        for (AUTO_VAR(it2, o->list.begin());
+                             it2 != o->list.end(); ++it2) {
+                            if ((*it)->equals(*it2)) {
+                                thisMatches = true;
+                                break;
+                            }
+                        }
+                        if (!thisMatches) {
+                            equal = false;
+                            break;
+                        }
+                    }
+                }
 
-				//return list->equals(o->list);
-				return equal;
-			}
-		}
-		return false;
-	}
-#endif
+                return equal;
+            }
+        }
+        return false;
+    }
 };

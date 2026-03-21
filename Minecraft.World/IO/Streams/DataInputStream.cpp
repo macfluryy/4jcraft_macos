@@ -323,6 +323,17 @@ short DataInputStream::readShort() {
     return (short)((a << 8) | (b & 0xff));
 }
 
+unsigned short DataInputStream::readUnsignedShort() {
+    if (stream == NULL) {
+        app.DebugPrintf(
+            "DataInputStream::readUnsignedShort() but underlying stream is NULL\n");
+        return 0;
+    }
+    int a = stream->read();
+    int b = stream->read();
+    return static_cast<unsigned short>(((a & 0xff) << 8) | (b & 0xff));
+}
+
 // Reads in a string that has been encoded using a modified UTF-8 format. The
 // general contract of readUTF is that it reads a representation of a Unicode
 // character string encoded in modified UTF-8 format; this string of characters
