@@ -9,7 +9,6 @@ private:
 public:
     PauseScreen();  // 4J added
     virtual void init();
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
     static void exitWorld(Minecraft* minecraft, bool save);
 
 protected:
