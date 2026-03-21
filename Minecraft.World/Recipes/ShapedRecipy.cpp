@@ -92,7 +92,7 @@ std::shared_ptr<ItemInstance> ShapedRecipy::assemble(
 int ShapedRecipy::size() { return width * height; }
 
 // 4J-PB
-bool ShapedRecipy::requiresRecipe(int iRecipe) {
+bool ShapedRecipy::requires(int iRecipe) {
     app.DebugPrintf("ShapedRecipy %d\n", iRecipe);
     int iCount = 0;
     for (int x = 0; x < 3; x++) {
@@ -109,7 +109,7 @@ bool ShapedRecipy::requiresRecipe(int iRecipe) {
     return false;
 }
 
-void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
+void ShapedRecipy::requires(INGREDIENTS_REQUIRED* pIngReq) {
     // printf("ShapedRecipy %d\n",iRecipe);
 
     int iCount = 0;
@@ -120,14 +120,11 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     TempIngReq.iType = ((width > 2) || (height > 2)) ? RECIPE_TYPE_3x3
                                                      : RECIPE_TYPE_2x2;  // 3x3
     // 3x3
-    // 4jcraft, genuinly what is this garbage code
     TempIngReq.uiGridA = new unsigned int[9];
     TempIngReq.iIngIDA = new int[9];
     TempIngReq.iIngValA = new int[9];
     TempIngReq.iIngAuxValA = new int[9];
 
-    // 4jcraft,yes, yes!!
-    // use winapi and inbetween use a cstd function u could have used!
     ZeroMemory(TempIngReq.iIngIDA, sizeof(int) * 9);
     ZeroMemory(TempIngReq.iIngValA, sizeof(int) * 9);
     memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
@@ -140,10 +137,8 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
 
                 if (expected != NULL) {
                     int iAuxVal = expected->getAuxValue();
-                    // 4jcraft, added cast to uint (shift of negativ num,
-                    // undefined)
-                    TempIngReq.uiGridA[x + y * 3] =
-                        expected->id | (unsigned int)iAuxVal << 24;
+                    TempIngReq.uiGridA[x + y * 3] = expected->id | iAuxVal
+                                                                       << 24;
 
                     bFound = false;
                     for (j = 0; j < TempIngReq.iIngC; j++) {

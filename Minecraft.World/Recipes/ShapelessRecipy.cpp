@@ -65,7 +65,7 @@ std::shared_ptr<ItemInstance> ShapelessRecipy::assemble(
 int ShapelessRecipy::size() { return (int)ingredients->size(); }
 
 // 4J-PB
-bool ShapelessRecipy::requiresRecipe(int iRecipe) {
+bool ShapelessRecipy::requires(int iRecipe) {
     std::vector<ItemInstance*>* tempList = new std::vector<ItemInstance*>;
 
     *tempList = *ingredients;
@@ -87,7 +87,7 @@ bool ShapelessRecipy::requiresRecipe(int iRecipe) {
     return false;
 }
 
-void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
+void ShapelessRecipy::requires(INGREDIENTS_REQUIRED* pIngReq) {
     int iCount = 0;
     bool bFound;
     int j;
@@ -116,9 +116,7 @@ void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
 
         if (expected != NULL) {
             int iAuxVal = (*ingredient)->getAuxValue();
-            // 4jcraft, added cast to uint, shift of negative int is undefined
-            TempIngReq.uiGridA[iCount++] = expected->id | (unsigned int)iAuxVal
-                                                              << 24;
+            TempIngReq.uiGridA[iCount++] = expected->id | iAuxVal << 24;
             // 4J-PB - put the ingredients in boxes 1,2,4,5 so we can see them
             // in a 2x2 crafting screen
             if (iCount == 2) iCount = 3;

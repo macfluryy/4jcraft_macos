@@ -1,19 +1,3 @@
-/*package net.minecraft.world.Item::crafting;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.Item::CoalItem;
-import net.minecraft.world.Item::Item;
-import net.minecraft.world.Item::ItemInstance;
-import net.minecraft.world.level.Tile::StoneSlabTile;
-import net.minecraft.world.level.Tile::Tile;*/
-
 #include "../Platform/stdafx.h"
 #include "../Containers/Container.h"
 #include "../Containers/AbstractContainerMenu.h"
@@ -32,6 +16,7 @@ OreRecipies* Recipes::pOreRecipies = NULL;
 StructureRecipies* Recipes::pStructureRecipies = NULL;
 ToolRecipies* Recipes::pToolRecipies = NULL;
 WeaponRecipies* Recipes::pWeaponRecipies = NULL;
+FireworksRecipe* Recipes::pFireworksRecipes = NULL;
 
 void Recipes::staticCtor() { Recipes::instance = new Recipes(); }
 
@@ -54,6 +39,10 @@ Recipes::Recipes() {
 
     // 4J Stu - These just don't work with our crafting menu
     // recipies->push_back(new ArmorDyeRecipe());
+    // recipies->add(new MapCloningRecipe());
+    // recipies->add(new MapExtendingRecipe());
+    // recipies->add(new FireworksRecipe());
+    pFireworksRecipes = new FireworksRecipe();
 
     addShapedRecipy(new ItemInstance(Tile::wood, 4, 0),  //
                     L"sczg",
@@ -102,7 +91,7 @@ Recipes::Recipes() {
                     L"ssctctg",
                     L"###",  //
                     L"XXX",  //
-                    L'#', Tile::cloth, L'X', Tile::wood, L'S');
+                    L'#', Tile::wool, L'X', Tile::wood, L'S');
 
     addShapedRecipy(new ItemInstance(Tile::enchantTable, 1),  //
                     L"sssctcicig",
@@ -164,7 +153,7 @@ Recipes::Recipes() {
         L"###",  //
         L"###",  //
 
-        L'#', Tile::stoneBrick, L'S');
+        L'#', Tile::cobblestone, L'S');
 
     addShapedRecipy(
         new ItemInstance(Tile::cobbleWall, 6, WallTile::TYPE_MOSSY),  //
@@ -172,7 +161,7 @@ Recipes::Recipes() {
         L"###",  //
         L"###",  //
 
-        L'#', Tile::mossStone, L'S');
+        L'#', Tile::mossyCobblestone, L'S');
 
     addShapedRecipy(new ItemInstance(Item::door_wood, 1),  //
                     L"sssctg",
@@ -210,7 +199,7 @@ Recipes::Recipes() {
                     L"## ",  //
                     L"###",  //
 
-                    L'#', Tile::stoneBrick, L'S');
+                    L'#', Tile::cobblestone, L'S');
 
     addShapedRecipy(new ItemInstance(Tile::stairs_bricks, 4),  //
                     L"sssctg",
@@ -226,7 +215,7 @@ Recipes::Recipes() {
                     L"## ",  //
                     L"###",  //
 
-                    L'#', Tile::stoneBrickSmooth, L'S');
+                    L'#', Tile::cobblestone, L'S');
 
     addShapedRecipy(new ItemInstance(Tile::stairs_netherBricks, 4),  //
                     L"sssctg",
@@ -291,6 +280,12 @@ Recipes::Recipes() {
 
                     L'#', Item::snowBall, L'S');
 
+    addShapedRecipy(new ItemInstance(Tile::topSnow, 6),  //
+                    L"sctg",
+                    L"###",  //
+
+                    L'#', Tile::snow, L'S');
+
     addShapedRecipy(new ItemInstance(Tile::clay, 1),  //
                     L"sscig",
                     L"##",  //
@@ -305,7 +300,7 @@ Recipes::Recipes() {
 
                     L'#', Item::brick, L'S');
 
-    addShapedRecipy(new ItemInstance(Tile::cloth, 1),  //
+    addShapedRecipy(new ItemInstance(Tile::wool, 1),  //
                     L"sscig",
                     L"##",  //
                     L"##",  //
@@ -318,7 +313,7 @@ Recipes::Recipes() {
                     L"#X#",  //
                     L"X#X",  //
 
-                    L'X', Item::sulphur,  //
+                    L'X', Item::gunpowder,  //
                     L'#', Tile::sand, L'T');
 
     addShapedRecipy(
@@ -333,13 +328,13 @@ Recipes::Recipes() {
         L"sctg",
         L"###",  //
 
-        L'#', Tile::rock, L'S');
+        L'#', Tile::stone, L'S');
     addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6,
                                      StoneSlabTile::COBBLESTONE_SLAB),  //
                     L"sctg",
                     L"###",  //
 
-                    L'#', Tile::stoneBrick, L'S');
+                    L'#', Tile::cobblestone, L'S');
 
     addShapedRecipy(
         new ItemInstance(Tile::stoneSlabHalf, 6, StoneSlabTile::BRICK_SLAB),  //
@@ -353,7 +348,7 @@ Recipes::Recipes() {
                     L"sctg",
                     L"###",  //
 
-                    L'#', Tile::stoneBrickSmooth, L'S');
+                    L'#', Tile::stoneBrick, L'S');
 
     addShapedRecipy(new ItemInstance(Tile::stoneSlabHalf, 6,
                                      StoneSlabTile::NETHERBRICK_SLAB),  //
@@ -405,8 +400,8 @@ Recipes::Recipes() {
                     L"BEB",  //
                     L"CCC",  //
 
-                    L'A', Item::milk,   //
-                    L'B', Item::sugar,  //
+                    L'A', Item::bucket_milk,  //
+                    L'B', Item::sugar,        //
                     L'C', Item::wheat, L'E', Item::egg, L'F');
 
     addShapedRecipy(new ItemInstance(Item::sugar, 1),  //
@@ -433,6 +428,16 @@ Recipes::Recipes() {
                     L'X', Item::goldIngot,  //
                     L'R', Item::redStone,   //
                     L'#', Item::stick, L'V');
+
+    addShapedRecipy(new ItemInstance(Tile::activatorRail, 6),  //
+                    L"ssscictcig",
+                    L"XSX",  //
+                    L"X#X",  //
+                    L"XSX",  //
+
+                    L'X', Item::ironIngot,         //
+                    L'#', Tile::redstoneTorch_on,  //
+                    L'S', Item::stick, L'V');
 
     addShapedRecipy(new ItemInstance(Tile::detectorRail, 6),  //
                     L"ssscicictg",
@@ -464,6 +469,20 @@ Recipes::Recipes() {
                     L"B",  //
 
                     L'A', Tile::furnace, L'B', Item::minecart, L'V');
+
+    addShapedRecipy(new ItemInstance(Item::minecart_tnt, 1),  //
+                    L"ssctcig",
+                    L"A",  //
+                    L"B",  //
+
+                    L'A', Tile::tnt, L'B', Item::minecart, L'V');
+
+    addShapedRecipy(new ItemInstance(Item::minecart_hopper, 1),  //
+                    L"ssctcig",
+                    L"A",  //
+                    L"B",  //
+
+                    L'A', Tile::hopper, L'B', Item::minecart, L'V');
 
     addShapedRecipy(new ItemInstance(Item::boat, 1),  //
                     L"ssctg",
@@ -564,13 +583,14 @@ Recipes::Recipes() {
                     L'#', Item::stick, L'T');
 
     addShapedRecipy(new ItemInstance(Tile::torch, 4),  //
-                    L"sscicig",
-                    L"X",              //
-                    L"#",              //
-                    L'X', Item::coal,  //
+                    L"ssczcig",
+                    L"X",  //
+                    L"#",  //
+                    L'X',
+                    new ItemInstance(Item::coal, 1, CoalItem::STONE_COAL),  //
                     L'#', Item::stick, L'T');
 
-    addShapedRecipy(new ItemInstance(Tile::lightGem, 1),  //
+    addShapedRecipy(new ItemInstance(Tile::glowstone, 1),  //
                     L"sscig",
                     L"##",  //
                     L"##",  //
@@ -589,7 +609,7 @@ Recipes::Recipes() {
                     L"X",  //
                     L"#",  //
 
-                    L'#', Tile::stoneBrick, L'X', Item::stick, L'M');
+                    L'#', Tile::cobblestone, L'X', Item::stick, L'M');
 
     addShapedRecipy(new ItemInstance(Tile::tripWireSource, 2),  //
                     L"sssctcicig",
@@ -600,20 +620,42 @@ Recipes::Recipes() {
                     L'#', Tile::wood, L'S', Item::stick, L'I', Item::ironIngot,
                     L'M');
 
-    addShapedRecipy(new ItemInstance(Tile::notGate_on, 1),  //
+    addShapedRecipy(new ItemInstance(Tile::redstoneTorch_on, 1),  //
                     L"sscicig",
                     L"X",  //
                     L"#",  //
 
                     L'#', Item::stick, L'X', Item::redStone, L'M');
 
-    addShapedRecipy(new ItemInstance(Item::diode, 1),  //
+    addShapedRecipy(new ItemInstance(Item::repeater, 1),  //
                     L"ssctcictg",
                     L"#X#",  //
                     L"III",  //
 
-                    L'#', Tile::notGate_on, L'X', Item::redStone, L'I',
-                    Tile::rock, L'M');
+                    L'#', Tile::redstoneTorch_on, L'X', Item::redStone, L'I',
+                    Tile::stone, L'M');
+
+    addShapedRecipy(new ItemInstance(Item::comparator, 1),  //
+                    L"sssctcictg",
+                    L" # ",  //
+                    L"#X#",  //
+                    L"III",  //
+
+                    L'#', Tile::redstoneTorch_on, L'X', Item::netherQuartz,
+                    L'I', Tile::stone, L'M');
+
+    addShapedRecipy(new ItemInstance(Tile::daylightDetector), L"sssctcictg",
+                    L"GGG", L"QQQ", L"WWW",
+
+                    L'G', Tile::glass, L'Q', Item::netherQuartz, L'W',
+                    Tile::woodSlabHalf, L'M');
+
+    addShapedRecipy(new ItemInstance(Tile::hopper), L"ssscictg",
+                    L"I I",  //
+                    L"ICI",  //
+                    L" I ",  //
+
+                    L'I', Item::ironIngot, L'C', Tile::chest, L'M');
 
     addShapedRecipy(new ItemInstance(Item::clock, 1),  //
                     L"ssscicig",
@@ -626,13 +668,21 @@ Recipes::Recipes() {
                        L"iig", Item::enderPearl, Item::blazePowder, L'T');
 
     addShapelessRecipy(new ItemInstance(Item::fireball, 3),  //
-                       L"iiig", Item::sulphur, Item::blazePowder, Item::coal,
+                       L"iiig", Item::gunpowder, Item::blazePowder, Item::coal,
                        L'T');
 
     addShapelessRecipy(new ItemInstance(Item::fireball, 3),  //
-                       L"iizg", Item::sulphur, Item::blazePowder,
+                       L"iizg", Item::gunpowder, Item::blazePowder,
                        new ItemInstance(Item::coal, 1, CoalItem::CHAR_COAL),
                        L'T');
+
+    addShapedRecipy(new ItemInstance(Item::lead, 2),  //
+                    L"ssscicig",
+                    L"~~ ",  //
+                    L"~O ",  //
+                    L"  ~",  //
+
+                    L'~', Item::string, L'O', Item::slimeBall, L'T');
 
     addShapedRecipy(new ItemInstance(Item::compass, 1),  //
                     L"ssscicig",
@@ -642,7 +692,6 @@ Recipes::Recipes() {
 
                     L'#', Item::ironIngot, L'X', Item::redStone, L'T');
 
-    // 4J-PB Added a MapItem init
     addShapedRecipy(new ItemInstance(Item::map, 1),  //
                     L"ssscicig",
                     L"###",  //
@@ -654,13 +703,13 @@ Recipes::Recipes() {
     addShapedRecipy(new ItemInstance(Tile::button, 1),  //
                     L"sctg",
                     L"#",  //
-                    // L"#", //
-                    L'#', Tile::rock, L'M');
+
+                    L'#', Tile::stone, L'M');
 
     addShapedRecipy(new ItemInstance(Tile::button_wood, 1),  //
                     L"sctg",
                     L"#",  //
-                    // L"#", //
+
                     L'#', Tile::wood, L'M');
 
     addShapedRecipy(new ItemInstance(Tile::pressurePlate_wood, 1),  //
@@ -671,15 +720,35 @@ Recipes::Recipes() {
     addShapedRecipy(new ItemInstance(Tile::pressurePlate_stone, 1),  //
                     L"sctg",
                     L"##",  //
-                    L'#', Tile::rock, L'M');
+                    L'#', Tile::stone, L'M');
+
+    addShapedRecipy(new ItemInstance(Tile::weightedPlate_heavy, 1),  //
+                    L"scig",
+                    L"##",  //
+
+                    L'#', Item::ironIngot, L'M');
+
+    addShapedRecipy(new ItemInstance(Tile::weightedPlate_light, 1),  //
+                    L"scig",
+                    L"##",  //
+
+                    L'#', Item::goldIngot, L'M');
 
     addShapedRecipy(new ItemInstance(Tile::dispenser, 1),  //
                     L"sssctcicig",
                     L"###",  //
                     L"#X#",  //
                     L"#R#",  //
-                    L'#', Tile::stoneBrick, L'X', Item::bow, L'R',
+                    L'#', Tile::cobblestone, L'X', Item::bow, L'R',
                     Item::redStone, L'M');
+
+    addShapedRecipy(new ItemInstance(Tile::dropper, 1),  //
+                    L"sssctcig",
+                    L"###",  //
+                    L"# #",  //
+                    L"#R#",  //
+
+                    L'#', Tile::cobblestone, L'R', Item::redStone, L'M');
 
     addShapedRecipy(new ItemInstance(Item::cauldron, 1),  //
                     L"ssscig",
@@ -694,7 +763,7 @@ Recipes::Recipes() {
                     L" B ",  //
                     L"###",  //
 
-                    L'#', Tile::stoneBrick, L'B', Item::blazeRod, L'S');
+                    L'#', Tile::cobblestone, L'B', Item::blazeRod, L'S');
 
     addShapedRecipy(new ItemInstance(Tile::litPumpkin, 1),  //
                     L"ssctctg",
@@ -703,7 +772,7 @@ Recipes::Recipes() {
 
                     L'A', Tile::pumpkin, L'B', Tile::torch, L'T');
 
-    addShapedRecipy(new ItemInstance(Tile::recordPlayer, 1),  //
+    addShapedRecipy(new ItemInstance(Tile::jukebox, 1),  //
                     L"sssctcig",
                     L"###",  //
                     L"#X#",  //
@@ -724,7 +793,7 @@ Recipes::Recipes() {
     //             Item.book, new ItemInstance(Item.dye_powder, 1,
     //             DyePowderItem.BLACK), Item.feather);
 
-    addShapedRecipy(new ItemInstance(Tile::musicBlock, 1),  //
+    addShapedRecipy(new ItemInstance(Tile::noteblock, 1),  //
                     L"sssctcig",
                     L"###",  //
                     L"#X#",  //
@@ -746,7 +815,7 @@ Recipes::Recipes() {
                     L"#X#",  //
                     L"###",  //
 
-                    L'#', Item::stick, L'X', Tile::cloth, L'D');
+                    L'#', Item::stick, L'X', Tile::wool, L'D');
 
     addShapedRecipy(new ItemInstance(Item::frame, 1),  //
                     L"ssscicig",
@@ -787,7 +856,7 @@ Recipes::Recipes() {
                     L"#X#",  //
                     L"#R#",  //
 
-                    L'#', Tile::stoneBrick, L'X', Item::ironIngot, L'R',
+                    L'#', Tile::cobblestone, L'X', Item::ironIngot, L'R',
                     Item::redStone, L'T', Tile::wood, L'M');
 
     addShapedRecipy(new ItemInstance((Tile*)Tile::pistonStickyBase, 1),  //
@@ -796,6 +865,29 @@ Recipes::Recipes() {
                     L"P",  //
 
                     L'S', Item::slimeBall, L'P', Tile::pistonBase, L'M');
+
+    // 4J Stu - Added some dummy firework recipes to allow us to navigate
+    // forward to the fireworks scene
+    addShapedRecipy(new ItemInstance(Item::fireworks, 1),  //
+                    L"sscicig",
+                    L" P ",  //
+                    L" G ",  //
+
+                    L'P', Item::paper, L'G', Item::gunpowder, L'D');
+
+    addShapedRecipy(new ItemInstance(Item::fireworksCharge, 1),  //
+                    L"sscicig",
+                    L" D ",  //
+                    L" G ",  //
+
+                    L'D', Item::dye_powder, L'G', Item::gunpowder, L'D');
+
+    addShapedRecipy(new ItemInstance(Item::fireworksCharge, 1),  //
+                    L"sscicig",
+                    L" D ",  //
+                    L" C ",  //
+
+                    L'D', Item::dye_powder, L'C', Item::fireworksCharge, L'D');
 
     // Sort so the largest recipes get checked first!
     /* 4J-PB - TODO
@@ -899,7 +991,7 @@ ShapedRecipy* Recipes::addShapedRecipy(ItemInstance* result, ...) {
 
                 break;
             case L'c':
-                wchFrom = (wchar_t)va_arg(vl, int);
+                wchFrom = va_arg(vl, wchar_t);
                 break;
             case L'z':
                 pItemInstance = va_arg(vl, ItemInstance*);
@@ -907,7 +999,7 @@ ShapedRecipy* Recipes::addShapedRecipy(ItemInstance* result, ...) {
                 break;
             case L'i':
                 pItem = va_arg(vl, Item*);
-                pItemInstance = new ItemInstance(pItem);
+                pItemInstance = new ItemInstance(pItem, 1, ANY_AUX_VALUE);
                 mappings->insert(myMap::value_type(wchFrom, pItemInstance));
                 break;
             case L't':
@@ -916,7 +1008,7 @@ ShapedRecipy* Recipes::addShapedRecipy(ItemInstance* result, ...) {
                 mappings->insert(myMap::value_type(wchFrom, pItemInstance));
                 break;
             case L'g':
-                wchFrom = (wchar_t)va_arg(vl, int);
+                wchFrom = va_arg(vl, wchar_t);
                 switch (wchFrom) {
                         // 			case L'W':
                         // 				group=ShapedRecipy::eGroupType_Weapon;
@@ -1004,7 +1096,7 @@ void Recipes::addShapelessRecipy(ItemInstance* result, ...) {
                 ingredients->push_back(new ItemInstance(pTile));
                 break;
             case L'g':
-                wchFrom = (wchar_t)va_arg(vl, int);
+                wchFrom = va_arg(vl, wchar_t);
                 switch (wchFrom) {
                     case L'T':
                         group = Recipy::eGroupType_Tool;
@@ -1037,7 +1129,8 @@ void Recipes::addShapelessRecipy(ItemInstance* result, ...) {
 }
 
 std::shared_ptr<ItemInstance> Recipes::getItemFor(
-    std::shared_ptr<CraftingContainer> craftSlots, Level* level) {
+    std::shared_ptr<CraftingContainer> craftSlots, Level* level,
+    Recipy* recipesClass /*= NULL*/) {
     int count = 0;
     std::shared_ptr<ItemInstance> first = nullptr;
     std::shared_ptr<ItemInstance> second = nullptr;
@@ -1063,10 +1156,15 @@ std::shared_ptr<ItemInstance> Recipes::getItemFor(
             new ItemInstance(first->id, 1, resultDamage));
     }
 
-    AUTO_VAR(itEnd, recipies->end());
-    for (AUTO_VAR(it, recipies->begin()); it != itEnd; it++) {
-        Recipy* r = *it;  // recipies->at(i);
-        if (r->matches(craftSlots, level)) return r->assemble(craftSlots);
+    if (recipesClass != NULL) {
+        if (recipesClass->matches(craftSlots, level))
+            return recipesClass->assemble(craftSlots);
+    } else {
+        AUTO_VAR(itEnd, recipies->end());
+        for (AUTO_VAR(it, recipies->begin()); it != itEnd; it++) {
+            Recipy* r = *it;  // recipies->at(i);
+            if (r->matches(craftSlots, level)) return r->assemble(craftSlots);
+        }
     }
     return nullptr;
 }
@@ -1092,7 +1190,7 @@ void Recipes::buildRecipeIngredientsArray(void) {
         Recipy* recipe = *it;
         // wprintf(L"RECIPE - [%d] is
         // %w\n",iCount,recipe->getResultItem()->getItem()->getName());
-        recipe->collectRequirements(&m_pRecipeIngredientsRequired[iCount++]);
+        recipe->requires(&m_pRecipeIngredientsRequired[iCount++]);
     }
 
     // printf("Total recipes in buildRecipeIngredientsArray - %d",iCount);

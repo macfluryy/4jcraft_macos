@@ -35,10 +35,7 @@ bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
     std::shared_ptr<CraftingContainer> craftSlots) {
     std::shared_ptr<ItemInstance> target = nullptr;
-    int colorTotals[3];
-    colorTotals[0] = 0;
-    colorTotals[1] = 0;
-    colorTotals[2] = 0;
+    int colorTotals[3] = {0, 0, 0};
     int intensityTotal = 0;
     int colourCounts = 0;
     ArmorItem* armor = NULL;
@@ -53,6 +50,7 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
                 if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH &&
                     target == NULL) {
                     target = item->copy();
+                    target->count = 1;
 
                     if (armor->hasCustomColor(item)) {
                         int color = armor->getColor(target);
@@ -72,8 +70,8 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
                     return nullptr;
                 }
             } else if (item->id == Item::dye_powder_Id) {
-                int tileData =
-                    ClothTile::getTileDataForItemAuxValue(item->getAuxValue());
+                int tileData = ColoredTile::getTileDataForItemAuxValue(
+                    item->getAuxValue());
                 int red = (int)(Sheep::COLOR[tileData][0] * 0xFF);
                 int green = (int)(Sheep::COLOR[tileData][1] * 0xFF);
                 int blue = (int)(Sheep::COLOR[tileData][2] * 0xFF);
@@ -124,9 +122,9 @@ const ItemInstance* ArmorDyeRecipe::getResultItem() { return NULL; }
 const int ArmorDyeRecipe::getGroup() { return ShapedRecipy::eGroupType_Armour; }
 
 // 4J-PB
-bool ArmorDyeRecipe::requiresRecipe(int iRecipe) { return false; }
+bool ArmorDyeRecipe::requires(int iRecipe) { return false; }
 
-void ArmorDyeRecipe::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
+void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED* pIngReq) {
     // int iCount=0;
     // bool bFound;
     // int j;

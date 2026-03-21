@@ -13,36 +13,27 @@ void FoodRecipies::addRecipes(Recipes* r) {
                        L"###",  //
                        L"#X#",  //
                        L"###",  //
-                       L'#', Item::goldNugget, L'X', Item::apple, L'F');
+                       L'#', Item::goldIngot, L'X', Item::apple, L'F');
 
-    // 4J-PB - Moving the mushroom stew shaped->shapeless forward from 1.9, so
-    // it will not need the crafting table
+    r->addShapedRecipy(new ItemInstance(Item::apple_gold, 1, 1),  //
+                       L"sssctcig",
+                       L"###",  //
+                       L"#X#",  //
+                       L"###",  //
+                       L'#', Tile::goldBlock, L'X', Item::apple, L'F');
+
+    r->addShapedRecipy(new ItemInstance(Item::speckledMelon, 1),  //
+                       L"ssscicig",
+                       L"###",  //
+                       L"#X#",  //
+                       L"###",  //
+
+                       L'#', Item::goldNugget, L'X', Item::melon, L'F');
+
     r->addShapelessRecipy(new ItemInstance(Item::mushroomStew), L"ttig",
-                          Tile::mushroom1, Tile::mushroom2, Item::bowl, L'F');
+                          Tile::mushroom_brown, Tile::mushroom_red, Item::bowl,
+                          L'F');
 
-    /*r->addShapedRecipy(new ItemInstance(Item::mushroomStew), //
-                            L"sssctctcig",
-            L"Y", //
-            L"X", //
-            L"#", //
-
-            L'X', Tile::mushroom1,
-            L'Y', Tile::mushroom2,
-            L'#', Item::bowl,
-                            L'F');*/
-
-    // 4J-PB - removing for the xbox game - we already have it above
-    // 	r->addShapedRecipy(new ItemInstance(Item::mushroomStew), //
-    // 				L"sssctctcig",
-    //                 L"Y", //
-    //                 L"X", //
-    //                 L"#", //
-    //
-    //                 L'X', Tile::mushroom2,
-    //                 L'Y', Tile::mushroom1,
-    //                 L'#', Item::bowl,
-    // 				L'F');
-    //
     r->addShapedRecipy(
         new ItemInstance(Item::cookie, 8),  //
         L"sczcig",
@@ -74,13 +65,6 @@ void FoodRecipies::addRecipes(Recipes* r) {
     r->addShapelessRecipy(new ItemInstance(Item::pumpkinPie),  //
                           L"tiig", Tile::pumpkin, Item::sugar, Item::egg, L'F');
 
-    r->addShapedRecipy(new ItemInstance(Item::apple_gold, 1, 1),  //
-                       L"sssctcig",
-                       L"###",  //
-                       L"#X#",  //
-                       L"###",  //
-                       L'#', Tile::goldBlock, L'X', Item::apple, L'F');
-
     r->addShapedRecipy(new ItemInstance(Item::carrotGolden, 1, 0),  //
                        L"ssscicig",
                        L"###",  //
@@ -90,11 +74,8 @@ void FoodRecipies::addRecipes(Recipes* r) {
                        L'#', Item::goldNugget, L'X', Item::carrots, L'F');
 
     r->addShapelessRecipy(new ItemInstance(Item::fermentedSpiderEye),  //
-                          L"itig", Item::spiderEye, Tile::mushroom1,
+                          L"itig", Item::spiderEye, Tile::mushroom_brown,
                           Item::sugar, L'F');
-
-    r->addShapelessRecipy(new ItemInstance(Item::speckledMelon),  //
-                          L"iig", Item::melon, Item::goldNugget, L'F');
 
     r->addShapelessRecipy(new ItemInstance(Item::blazePowder, 2),  //
                           L"ig", Item::blazeRod, L'F');

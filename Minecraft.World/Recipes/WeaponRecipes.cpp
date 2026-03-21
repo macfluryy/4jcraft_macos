@@ -13,19 +13,11 @@ std::wstring WeaponRecipies::shapes[][4] = {
      L"#", L""},  //
 };
 
-/*
-        private Object[][] map = {
-                        {Tile.wood, Tile.stoneBrick, Item.ironIngot,
-   Item.diamond, Item.goldIngot}, {Item.sword_wood, Item.sword_stone,
-   Item.sword_iron, Item.sword_diamond, Item.sword_gold},
-        };
-*/
-
 void WeaponRecipies::_init() {
     map = new std::vector<Object*>[MAX_WEAPON_RECIPES];
 
     ADD_OBJECT(map[0], Tile::wood);
-    ADD_OBJECT(map[0], Tile::stoneBrick);
+    ADD_OBJECT(map[0], Tile::cobblestone);
     ADD_OBJECT(map[0], Item::ironIngot);
     ADD_OBJECT(map[0], Item::diamond);
     ADD_OBJECT(map[0], Item::goldIngot);
