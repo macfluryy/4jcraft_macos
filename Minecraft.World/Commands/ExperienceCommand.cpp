@@ -2,38 +2,56 @@
 #include "../Headers/net.minecraft.commands.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
+#include "../Headers/net.minecraft.world.level.h"
 #include "ExperienceCommand.h"
 
 EGameCommand ExperienceCommand::getId() { return eGameCommand_Experience; }
 
+int ExperienceCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
+
 void ExperienceCommand::execute(std::shared_ptr<CommandSender> source,
                                 byteArray commandData) {
-    // if (args.length > 0)
-    //{
-    //	Player player;
-    //	int amount = convertArgToInt(source, args[0], 0, 5000);
-
-    //	if (args.length > 1) {
-    //		player = getPlayer(args[1]);
-    //	} else {
-    //		player = convertSourceToPlayer(source);
+    //	if (args.length > 0) {
+    //		Player player;
+    //		String inputAmount = args[0];
+    //
+    //		boolean levels = inputAmount.endsWith("l") ||
+    // inputAmount.endsWith("L"); 		if (levels &&
+    // inputAmount.length() > 1) inputAmount = inputAmount.substring(0,
+    // inputAmount.length() - 1);
+    //
+    //		int amount = convertArgToInt(source, inputAmount);
+    //		boolean take = amount < 0;
+    //
+    //		if (take) amount *= -1;
+    //
+    //		if (args.length > 1) {
+    //			player = convertToPlayer(source, args[1]);
+    //		} else {
+    //			player = convertSourceToPlayer(source);
+    //		}
+    //
+    //		if (levels) {
+    //			if (take) {
+    //				player.giveExperienceLevels(-amount);
+    //				logAdminAction(source,
+    //"commands.xp.success.negative.levels", amount, player.getAName());
+    //} else { 				player.giveExperienceLevels(amount);
+    // logAdminAction(source, "commands.xp.success.levels", amount,
+    // player.getAName());
+    //			}
+    //		} else {
+    //			if (take) {
+    //				throw new
+    // UsageException("commands.xp.failure.widthdrawXp");
+    // } else { 				player.increaseXp(amount);
+    // logAdminAction(source,
+    //"commands.xp.success", amount, player.getAName());
+    //			}
+    //		}
+    //
+    //		return;
     //	}
-
-    //	player.increaseXp(amount);
-    //	logAdminAction(source, "commands.xp.success", amount,
-    //player.getAName());
-    //}
-}
-
-std::shared_ptr<Player> ExperienceCommand::getPlayer(PlayerUID playerId) {
-    return nullptr;
-    // std::shared_ptr<Player> player =
-    // MinecraftServer::getInstance()->getPlayers()->getPlayer(playerId);
-
-    // if (player == null)
-    //{
-    //	throw new PlayerNotFoundException();
-    // } else {
-    //	return player;
-    // }
+    //
+    //	throw new UsageException("commands.xp.usage");
 }

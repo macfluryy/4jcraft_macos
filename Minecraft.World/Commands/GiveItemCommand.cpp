@@ -1,11 +1,14 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.commands.h"
+#include "../Headers/net.minecraft.world.entity.item.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.network.packet.h"
 #include "../../Minecraft.Client/Player/ServerPlayer.h"
 #include "GiveItemCommand.h"
 
 EGameCommand GiveItemCommand::getId() { return eGameCommand_Give; }
+
+int GiveItemCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
                               byteArray commandData) {
@@ -24,7 +27,8 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
     if (player != NULL && item > 0 && Item::items[item] != NULL) {
         std::shared_ptr<ItemInstance> itemInstance =
             std::shared_ptr<ItemInstance>(new ItemInstance(item, amount, aux));
-        player->drop(itemInstance);
+        std::shared_ptr<ItemEntity> drop = player->drop(itemInstance);
+        drop->throwTime = 0;
         // logAdminAction(source, L"commands.give.success",
         // ChatPacket::e_ChatCustom, Item::items[item]->getName(itemInstance),
         // item, amount, player->getAName());

@@ -7,6 +7,8 @@
 
 AdminLogCommand* Command::logger;
 
+int Command::getPermissionLevel() { return LEVEL_OWNERS; }
+
 bool Command::canExecute(std::shared_ptr<CommandSender> source) {
     return source->hasPermission(getId());
 }

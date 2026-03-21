@@ -13,7 +13,7 @@ private:
     std::unordered_set<Command*> commands;
 
 public:
-    void performCommand(std::shared_ptr<CommandSender> sender,
-                        EGameCommand command, byteArray commandData);
+    int performCommand(std::shared_ptr<CommandSender> sender,
+                       EGameCommand command, byteArray commandData);
     Command* addCommand(Command* command);
 };

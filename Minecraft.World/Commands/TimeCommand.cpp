@@ -7,6 +7,8 @@
 
 EGameCommand TimeCommand::getId() { return eGameCommand_Time; }
 
+int TimeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
+
 void TimeCommand::execute(std::shared_ptr<CommandSender> source,
                           byteArray commandData) {
     ByteArrayInputStream bais(commandData);
@@ -51,15 +53,14 @@ void TimeCommand::execute(std::shared_ptr<CommandSender> source,
 
 void TimeCommand::doSetTime(std::shared_ptr<CommandSender> source, int value) {
     for (int i = 0; i < MinecraftServer::getInstance()->levels.length; i++) {
-        MinecraftServer::getInstance()->levels[i]->setTimeAndAdjustTileTicks(
-            value);
+        MinecraftServer::getInstance()->levels[i]->setDayTime(value);
     }
 }
 
 void TimeCommand::doAddTime(std::shared_ptr<CommandSender> source, int value) {
     for (int i = 0; i < MinecraftServer::getInstance()->levels.length; i++) {
         ServerLevel* level = MinecraftServer::getInstance()->levels[i];
-        level->setTimeAndAdjustTileTicks(level->getTime() + value);
+        level->setDayTime(level->getDayTime() + value);
     }
 }
 

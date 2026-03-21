@@ -2,9 +2,9 @@
 #include "../Headers/net.minecraft.commands.h"
 #include "CommandDispatcher.h"
 
-void CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
-                                       EGameCommand command,
-                                       byteArray commandData) {
+int CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
+                                      EGameCommand command,
+                                      byteArray commandData) {
     AUTO_VAR(it, commandsById.find(command));
 
     if (it != commandsById.end()) {
@@ -20,6 +20,8 @@ void CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
     } else {
         app.DebugPrintf("Command %d not found!\n", command);
     }
+
+    return 0;
 }
 
 Command* CommandDispatcher::addCommand(Command* command) {
