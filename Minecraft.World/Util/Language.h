@@ -3,7 +3,6 @@
 class Language {
 private:
     static Language* singleton;
-    std::unordered_map<std::wstring, std::wstring> translateTable;
 
 public:
     Language();

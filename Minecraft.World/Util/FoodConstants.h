@@ -25,6 +25,7 @@ public:
     static const float FOOD_SATURATION_SUPERNATURAL;
 
     // some exhaustion guidelines
+    static const float EXHAUSTION_HEAL;
     static const float EXHAUSTION_JUMP;
     static const float EXHAUSTION_SPRINT_JUMP;
     static const float EXHAUSTION_MINE;

@@ -1,12 +1,13 @@
 #include "../Platform/stdafx.h"
 #include "Mth.h"
 #include "Random.h"
+#include "StringHelpers.h"
 
 const int Mth::BIG_ENOUGH_INT = 1024;
 const float Mth::BIG_ENOUGH_FLOAT = BIG_ENOUGH_INT;
-const float Mth::RAD_TO_GRAD = PI / 180.0f;
 const float Mth::DEGRAD = PI / 180.0f;
 const float Mth::RADDEG = 180.0f / PI;
+const float Mth::RAD_TO_GRAD = PI / 180.0f;
 
 float* Mth::_sin = NULL;
 
@@ -118,6 +119,16 @@ int Mth::nextInt(Random* random, int minInclusive, int maxInclusive) {
     return random->nextInt(maxInclusive - minInclusive + 1) + minInclusive;
 }
 
+float Mth::nextFloat(Random* random, float min, float max) {
+    if (min >= max) return min;
+    return (random->nextFloat() * (max - min)) + min;
+}
+
+double Mth::nextDouble(Random* random, double min, double max) {
+    if (min >= max) return min;
+    return (random->nextDouble() * (max - min)) + min;
+}
+
 float Mth::wrapDegrees(float input) {
     // input %= 360;
     while (input >= 180) {
@@ -138,6 +149,61 @@ double Mth::wrapDegrees(double input) {
         input += 360;
     }
     return input;
+}
+
+int Mth::getInt(const std::wstring& input, int def) {
+    int result = def;
+
+    result = _fromString<int>(input);
+
+    return result;
+}
+
+int Mth::getInt(const std::wstring& input, int def, int min) {
+    int result = def;
+
+    result = _fromString<int>(input);
+
+    if (result < min) result = min;
+    return result;
+}
+
+double Mth::getDouble(const std::wstring& input, double def) {
+    double result = def;
+
+    result = _fromString<double>(input);
+
+    return result;
+}
+
+double Mth::getDouble(const std::wstring& input, double def, double min) {
+    double result = def;
+
+    result = _fromString<double>(input);
+
+    if (result < min) result = min;
+    return result;
+}
+
+// 4J Changed this to remove the use of the actuall UUID type
+std::wstring Mth::createInsecureUUID(Random* random) {
+    wchar_t output[33];
+    output[32] = 0;
+    int64_t high = (random->nextLong() & ~UUID_VERSION) | UUID_VERSION_TYPE_4;
+    int64_t low = (random->nextLong() & ~UUID_VARIANT) | UUID_VARIANT_2;
+    for (int i = 0; i < 16; i++) {
+        wchar_t nybbleHigh = high & 0xf;
+        wchar_t nybbleLow = low & 0xf;
+        nybbleHigh =
+            (nybbleHigh > 9) ? (nybbleHigh + (L'a' - 10)) : (nybbleHigh + L'0');
+        nybbleLow =
+            (nybbleLow > 9) ? (nybbleLow + (L'a' - 10)) : (nybbleLow + L'0');
+        high >>= 4;
+        low >>= 4;
+        output[31 - i] = nybbleLow;
+        output[15 - i] = nybbleHigh;
+    }
+    return std::wstring(output);
 }
 
 // 4J Added

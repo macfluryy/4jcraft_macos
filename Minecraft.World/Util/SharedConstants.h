@@ -6,14 +6,16 @@ class SharedConstants {
 public:
     static void staticCtor();
     static const std::wstring VERSION_STRING;
-    static const int NETWORK_PROTOCOL_VERSION = 39;
+    static const int NETWORK_PROTOCOL_VERSION = 78;
+    static const bool INGAME_DEBUG_OUTPUT = false;
 
     // NOT texture resolution. How many sub-blocks each block face is made up
     // of. 4J Added for texture packs
     static const int WORLD_RESOLUTION = 16;
 
     static bool isAllowedChatCharacter(char ch);
-    // why private??????????
+
+private:
     static std::wstring readAcceptableChars();
 
 public:

@@ -13,6 +13,17 @@ BoundingBox::BoundingBox() {
     z1 = 0;
 }
 
+BoundingBox::BoundingBox(intArray sourceData) {
+    if (sourceData.length == 6) {
+        x0 = sourceData[0];
+        y0 = sourceData[1];
+        z0 = sourceData[2];
+        x1 = sourceData[3];
+        y1 = sourceData[4];
+        z1 = sourceData[5];
+    }
+}
+
 BoundingBox* BoundingBox::getUnknownBox() {
     return new BoundingBox(INT_MAX, INT_MAX, INT_MAX, INT_MIN, INT_MIN,
                            INT_MIN);
@@ -55,12 +66,12 @@ BoundingBox* BoundingBox::orientBox(int footX, int footY, int footZ, int offX,
 }
 
 BoundingBox::BoundingBox(BoundingBox* other) {
-    this->x0 = other->x0;
-    this->y0 = other->y0;
-    this->z0 = other->z0;
-    this->x1 = other->x1;
-    this->y1 = other->y1;
-    this->z1 = other->z1;
+    x0 = other->x0;
+    y0 = other->y0;
+    z0 = other->z0;
+    x1 = other->x1;
+    y1 = other->y1;
+    z1 = other->z1;
 }
 
 BoundingBox::BoundingBox(int x0, int y0, int z0, int x1, int y1, int z1) {
@@ -80,8 +91,8 @@ BoundingBox::BoundingBox(int x0, int z0, int x1, int z1) {
 
     // the bounding box for this constructor is limited to world size,
     // excluding bedrock level
-    this->y0 = 1;
-    this->y1 = 512;
+    y0 = 1;
+    y1 = 512;
 }
 
 bool BoundingBox::intersects(BoundingBox* other) {
@@ -100,12 +111,12 @@ bool BoundingBox::intersects(int x0, int z0, int x1, int z1) {
 }
 
 void BoundingBox::expand(BoundingBox* other) {
-    this->x0 = Math::_min(this->x0, other->x0);
-    this->y0 = Math::_min(this->y0, other->y0);
-    this->z0 = Math::_min(this->z0, other->z0);
-    this->x1 = Math::_max(this->x1, other->x1);
-    this->y1 = Math::_max(this->y1, other->y1);
-    this->z1 = Math::_max(this->z1, other->z1);
+    x0 = Math::_min(x0, other->x0);
+    y0 = Math::_min(y0, other->y0);
+    z0 = Math::_min(z0, other->z0);
+    x1 = Math::_max(x1, other->x1);
+    y1 = Math::_max(y1, other->y1);
+    z1 = Math::_max(z1, other->z1);
 }
 
 BoundingBox* BoundingBox::getIntersection(BoundingBox* other) {
@@ -113,12 +124,12 @@ BoundingBox* BoundingBox::getIntersection(BoundingBox* other) {
         return NULL;
     }
     BoundingBox* result = new BoundingBox();
-    result->x0 = Math::_max(this->x0, other->x0);
-    result->y0 = Math::_max(this->y0, other->y0);
-    result->z0 = Math::_max(this->z0, other->z0);
-    result->x1 = Math::_min(this->x1, other->x1);
-    result->y1 = Math::_min(this->y1, other->y1);
-    result->z1 = Math::_min(this->z1, other->z1);
+    result->x0 = Math::_max(x0, other->x0);
+    result->y0 = Math::_max(y0, other->y0);
+    result->z0 = Math::_max(z0, other->z0);
+    result->x1 = Math::_min(x1, other->x1);
+    result->y1 = Math::_min(y1, other->y1);
+    result->z1 = Math::_min(z1, other->z1);
 
     return result;
 }
@@ -152,4 +163,17 @@ std::wstring BoundingBox::toString() {
     return L"(" + _toString<int>(x0) + L", " + _toString<int>(y0) + L", " +
            _toString<int>(z0) + L"; " + _toString<int>(x1) + L", " +
            _toString<int>(y1) + L", " + _toString<int>(z1) + L")";
+}
+
+IntArrayTag* BoundingBox::createTag(const std::wstring& name) {
+    // 4J-JEV: If somebody knows a better way to do this, please tell me.
+    int* data = new int[6]();
+    data[0] = x0;
+    data[1] = y0;
+    data[2] = z0;
+    data[3] = x1;
+    data[4] = y1;
+    data[5] = z1;
+
+    return new IntArrayTag(name, intArray(data, 6));
 }

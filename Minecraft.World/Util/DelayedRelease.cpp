@@ -19,7 +19,7 @@ void DelayedRelease::tick() {
     }
 }
 
-bool DelayedRelease::hurt(DamageSource* source, int damage) { return false; }
+bool DelayedRelease::hurt(DamageSource* source, float damage) { return false; }
 
 void DelayedRelease::defineSynchedData() {}
 

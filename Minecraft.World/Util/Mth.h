@@ -6,11 +6,14 @@ private:
     static const float BIG_ENOUGH_FLOAT;
 
 public:
-    static const float RAD_TO_GRAD;
-
-public:
     static const float DEGRAD;
     static const float RADDEG;
+    static const float RAD_TO_GRAD;
+
+    static const int64_t UUID_VERSION = 0x000000000000f000L;
+    static const int64_t UUID_VERSION_TYPE_4 = 0x0000000000004000L;
+    static const int64_t UUID_VARIANT = 0xc000000000000000L;
+    static const int64_t UUID_VARIANT_2 = 0x8000000000000000L;
 
 private:
     static float* _sin;
@@ -37,8 +40,15 @@ public:
     static double asbMax(double a, double b);
     static int intFloorDiv(int a, int b);
     static int nextInt(Random* random, int minInclusive, int maxInclusive);
+    static float nextFloat(Random* random, float min, float max);
+    static double nextDouble(Random* random, double min, double max);
     static float wrapDegrees(float input);
     static double wrapDegrees(double input);
+    static std::wstring createInsecureUUID(Random* random);
+    static int getInt(const std::wstring& input, int def);
+    static int getInt(const std::wstring& input, int def, int min);
+    static double getDouble(const std::wstring& input, double def);
+    static double getDouble(const std::wstring& input, double def, double min);
 
     // 4J Added
     static bool almostEquals(double double1, double double2, double precision);

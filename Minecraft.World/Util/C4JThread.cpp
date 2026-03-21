@@ -250,7 +250,7 @@ DWORD WINAPI C4JThread::entryPoint(LPVOID lpParam) {
 void C4JThread::Run() {
 #ifdef __PS3__
     //		prio specifies the priority value of the PPU thread within the
-    //range from 0 to 3071 where 0 is the highest.
+    // range from 0 to 3071 where 0 is the highest.
     // One of the following values is set to flags:
     // 0 - non-joinable non-interrupt thread
     // SYS_PPU_THREAD_CREATE_JOINABLE - Create a joinable thread
@@ -270,7 +270,7 @@ void C4JThread::Run() {
 #elif defined __PSVITA__
     StrArg strArg = {this};
     //	m_threadID = sceKernelCreateThread(m_threadName, entryPoint, m_priority,
-    //m_stackSize, 0, m_CPUMask, NULL);
+    // m_stackSize, 0, m_CPUMask, NULL);
     sceKernelStartThread(m_threadID, sizeof(strArg), &strArg);
 #else
     ResumeThread(m_threadHandle);
@@ -356,7 +356,7 @@ void C4JThread::SetPriority(int priority) {
     }
 #elif defined __PSVITA__
     int Mid = g_DefaultPriority;  //(SCE_KERNEL_LOWEST_PRIORITY_USER +
-                                  //SCE_KERNEL_HIGHEST_PRIORITY_USER) / 2;
+                                  // SCE_KERNEL_HIGHEST_PRIORITY_USER) / 2;
     switch (priority) {
         case THREAD_PRIORITY_LOWEST:
             m_priority = SCE_KERNEL_LOWEST_PRIORITY_USER;
