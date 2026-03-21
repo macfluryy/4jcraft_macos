@@ -11,12 +11,12 @@ public:
     int buttonNum;
     short uid;
     std::shared_ptr<ItemInstance> item;
-    bool quickKey;
+    int clickType;
 
     ContainerClickPacket();
     ~ContainerClickPacket();
     ContainerClickPacket(int containerId, int slotNum, int buttonNum,
-                         bool quickKey, std::shared_ptr<ItemInstance> item,
+                         int clickType, std::shared_ptr<ItemInstance> item,
                          short uid);
 
     virtual void handle(PacketListener* listener);

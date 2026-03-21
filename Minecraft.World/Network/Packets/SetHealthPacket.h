@@ -5,15 +5,14 @@
 class SetHealthPacket : public Packet,
                         public std::enable_shared_from_this<SetHealthPacket> {
 public:
-    int health;
+    float health;
     int food;
     float saturation;
-    //    public float exhaustion; // 4J - Original comment
 
     ETelemetryChallenges damageSource;  // 4J Added
 
     SetHealthPacket();
-    SetHealthPacket(int health, int food, float saturation,
+    SetHealthPacket(float health, int food, float saturation,
                     ETelemetryChallenges damageSource);
 
     virtual void read(DataInputStream* dis);

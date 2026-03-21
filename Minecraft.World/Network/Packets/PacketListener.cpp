@@ -126,7 +126,8 @@ void PacketListener::handleSetEntityData(
     onUnhandledPacket((std::shared_ptr<Packet>)packet);
 }
 
-void PacketListener::handleRidePacket(std::shared_ptr<SetRidingPacket> packet) {
+void PacketListener::handleEntityLinkPacket(
+    std::shared_ptr<SetEntityLinkPacket> packet) {
     onUnhandledPacket((std::shared_ptr<Packet>)packet);
 }
 
@@ -320,7 +321,7 @@ void PacketListener::handleServerAuthData(
     onUnhandledPacket(packet);
 }
 
-// void PacketListener::handleSharedKey(std::shared_ptr<SharedKeyPacket> packet)
+// void PacketListener::handleSharedKey(shared_ptr<SharedKeyPacket> packet)
 //{
 //	onUnhandledPacket(packet);
 // }
@@ -353,13 +354,47 @@ void PacketListener::handleTileDestruction(
 void PacketListener::handleClientCommand(
     std::shared_ptr<ClientCommandPacket> packet) {}
 
-// void PacketListener::handleLevelChunks(std::shared_ptr<LevelChunksPacket>
-// packet)
+// void PacketListener::handleLevelChunks(shared_ptr<LevelChunksPacket> packet)
 //{
 //	onUnhandledPacket(packet);
 // }
 
 bool PacketListener::canHandleAsyncPackets() { return false; }
+
+// 1.6.4
+void PacketListener::handleAddObjective(
+    std::shared_ptr<SetObjectivePacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleSetScore(std::shared_ptr<SetScorePacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleSetDisplayObjective(
+    std::shared_ptr<SetDisplayObjectivePacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleSetPlayerTeamPacket(
+    std::shared_ptr<SetPlayerTeamPacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleParticleEvent(
+    std::shared_ptr<LevelParticlesPacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleUpdateAttributes(
+    std::shared_ptr<UpdateAttributesPacket> packet) {
+    onUnhandledPacket(packet);
+}
+
+void PacketListener::handleTileEditorOpen(
+    std::shared_ptr<TileEditorOpenPacket> tileEditorOpenPacket) {}
+
+bool PacketListener::isDisconnected() { return false; }
 
 // 4J Added
 

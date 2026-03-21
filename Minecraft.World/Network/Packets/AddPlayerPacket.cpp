@@ -33,7 +33,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
                                  PlayerUID OnlineXuid, int xp, int yp, int zp,
                                  int yRotp, int xRotp, int yHeadRotp) {
     id = player->entityId;
-    name = player->name;
+    name = player->getName();
 
     // 4J Stu - Send "previously sent" value of position as well so that we stay
     // in sync

@@ -20,7 +20,6 @@ public:
     virtual int getEstimatedSize();
     virtual bool canBeInvalidated();
     virtual bool isInvalidatedBy(std::shared_ptr<Packet> packet);
-    virtual bool isAync();
 
 public:
     static std::shared_ptr<Packet> create() {

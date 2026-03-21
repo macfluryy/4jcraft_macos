@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 
 #include "Packet.h"
 
@@ -12,7 +11,7 @@ public:
     // std::wstring name;
     // bool add;
     // int latency;
-    std::uint8_t m_networkSmallId;
+    short m_networkSmallId;
     short m_playerColourIndex;
     unsigned int m_playerPrivileges;
     int m_entityId;

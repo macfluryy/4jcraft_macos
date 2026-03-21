@@ -19,8 +19,8 @@ AddMobPacket::AddMobPacket() {
 
 AddMobPacket::~AddMobPacket() { delete unpack; }
 
-AddMobPacket::AddMobPacket(std::shared_ptr<Mob> mob, int yRotp, int xRotp,
-                           int xp, int yp, int zp, int yHeadRotp) {
+AddMobPacket::AddMobPacket(std::shared_ptr<LivingEntity> mob, int yRotp,
+                           int xRotp, int xp, int yp, int zp, int yHeadRotp) {
     id = mob->entityId;
 
     type = EntityIO::getId(mob);

@@ -38,13 +38,13 @@ UseItemPacket::UseItemPacket(int x, int y, int z, int face,
 void UseItemPacket::read(DataInputStream* dis)  // throws IOException
 {
     x = dis->readInt();
-    y = dis->read();
+    y = dis->readUnsignedByte();
     z = dis->readInt();
     face = dis->read();
     item = readItem(dis);
-    clickX = dis->read() / CLICK_ACCURACY;
-    clickY = dis->read() / CLICK_ACCURACY;
-    clickZ = dis->read() / CLICK_ACCURACY;
+    clickX = dis->readUnsignedByte() / CLICK_ACCURACY;
+    clickY = dis->readUnsignedByte() / CLICK_ACCURACY;
+    clickZ = dis->readUnsignedByte() / CLICK_ACCURACY;
 }
 
 void UseItemPacket::write(DataOutputStream* dos)  // throws IOException

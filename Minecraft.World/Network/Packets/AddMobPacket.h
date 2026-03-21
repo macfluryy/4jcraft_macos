@@ -3,7 +3,7 @@
 #include "Packet.h"
 #include "../../Entities/SyncedEntityData.h"
 
-class Mob;
+class LivingEntity;
 
 class AddMobPacket : public Packet,
                      public std::enable_shared_from_this<AddMobPacket> {
@@ -21,8 +21,8 @@ private:
 public:
     AddMobPacket();
     ~AddMobPacket();
-    AddMobPacket(std::shared_ptr<Mob> mob, int yRotp, int xRotp, int xp, int yp,
-                 int zp, int yHeadRotp);
+    AddMobPacket(std::shared_ptr<LivingEntity> mob, int yRotp, int xRotp,
+                 int xp, int yp, int zp, int yHeadRotp);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

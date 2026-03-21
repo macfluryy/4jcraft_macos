@@ -13,6 +13,8 @@ public:
     static const int STOP_SPRINTING;
     static const int START_IDLEANIM;
     static const int STOP_IDLEANIM;
+    static const int RIDING_JUMP;
+    static const int OPEN_INVENTORY;
 
     // 4J Added
     // 4J-PB - Making this host only setting
@@ -23,9 +25,11 @@ public:
 
     int id;
     int action;
+    int data;
 
     PlayerCommandPacket();
     PlayerCommandPacket(std::shared_ptr<Entity> e, int action);
+    PlayerCommandPacket(std::shared_ptr<Entity> e, int action, int data);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

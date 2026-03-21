@@ -1,5 +1,4 @@
 #pragma once
-//
 
 class Packet;
 class PacketListener;
@@ -19,33 +18,26 @@ public:
         int count;
         int totalSize;
 
+        static const int TOTAL_TICKS = 100;
+
         // 4J Added
-        int64_t countSamples[512];
-        int64_t sizeSamples[512];
+        int64_t countSamples[TOTAL_TICKS];
+        int64_t sizeSamples[TOTAL_TICKS];
+        int64_t timeSamples[TOTAL_TICKS];
         int samplesPos;
-        int64_t firstSampleTime;
 
     public:
         const int id;
 
     public:
-        PacketStatistics(int id)
-            : count(0),
-              totalSize(0),
-              samplesPos(0),
-              firstSampleTime(0),
-              id(id) {
-            countSamples[0] = 0;
-            sizeSamples[0] = 0;
-        }
+        PacketStatistics(int id);
         void addPacket(int bytes);
         int getCount();
+        int getTotalSize();
         double getAverageSize();
-
-        // 4J Added
-        void renderStats();
-        int64_t getCountSample(int samplePos);
-        std::wstring getLegendString();
+        int64_t getRunningTotal();
+        int64_t getRunningCount();
+        void IncrementPos();
     };
 
     // 4J JEV, replaces the static blocks.
@@ -71,7 +63,6 @@ public:
     const int64_t createTime;
 
     Packet();
-    virtual ~Packet() {}
 
     static std::shared_ptr<Packet> getPacket(int id);
 
@@ -93,12 +84,9 @@ private:
     static int renderPos;
 
 public:
-    static void recordOutgoingPacket(std::shared_ptr<Packet> packet);
-    static void renderPacketStats(int id);
-    static void renderAllPacketStats();
-    static void renderAllPacketStatsKey();
-    static int64_t getIndexedStatValue(unsigned int samplePos,
-                                       unsigned int renderableId);
+    static void recordOutgoingPacket(std::shared_ptr<Packet> packet,
+                                     int playerIndex);
+    static void updatePacketStatsPIX();
 
 private:
     static std::unordered_map<int, PacketStatistics*> statistics;
