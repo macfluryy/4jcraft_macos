@@ -10,10 +10,9 @@ class SimpleContainer;
 
 namespace net_minecraft_world {
 class ContainerListener {
-    friend class SimpleContainer;
+    friend class ::SimpleContainer;
 
 private:
-    virtual void containerChanged(
-        std::shared_ptr<SimpleContainer> simpleContainer) = 0;
+    virtual void containerChanged() = 0;
 };
 }  // namespace net_minecraft_world

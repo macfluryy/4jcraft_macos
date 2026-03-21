@@ -24,3 +24,11 @@
 
 // 1.2.3
 #include "../Entities/Mobs/AgeableMob.h"
+#include "../Entities/TamableAnimal.h"
+
+// 1.6.4
+#include "../Entities/LeashFenceKnotEntity.h"
+#include "../Entities/Mobs/MobGroupData.h"
+#include "../Entities/OwnableEntity.h"
+#include "../Entities/EntitySelector.h"
+#include "../Entities/LivingEntity.h"

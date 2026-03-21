@@ -11,3 +11,5 @@
 #include "../Util/Icon.h"
 #include "../Util/IconRegister.h"
 #include "../Util/FlippedIcon.h"
+
+#include "../Containers/WorldlyContainer.h"

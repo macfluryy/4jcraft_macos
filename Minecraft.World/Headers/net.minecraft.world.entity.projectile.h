@@ -16,3 +16,9 @@
 
 // Added TU 9
 #include "../Entities/Mobs/DragonFireball.h"
+
+// 1.6.4
+#include "../Entities/FireworksRocketEntity.h"
+#include "../Entities/LargeFireball.h"
+#include "../Entities/Projectile.h"
+#include "../Entities/WitherSkull.h"

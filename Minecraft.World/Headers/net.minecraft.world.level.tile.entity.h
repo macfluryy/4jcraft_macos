@@ -1,10 +1,17 @@
 #pragma once
 
+#include "../Blocks/TileEntities/BeaconTileEntity.h"
 #include "../Blocks/TileEntities/BrewingStandTileEntity.h"
 #include "../Blocks/TileEntities/ChestTileEntity.h"
+#include "../Blocks/TileEntities/CommandBlockEntity.h"
+#include "../Blocks/TileEntities/ComparatorTileEntity.h"
+#include "../Blocks/TileEntities/DaylightDetectorTileEntity.h"
 #include "../Blocks/TileEntities/DispenserTileEntity.h"
+#include "../Blocks/TileEntities/DropperTileEntity.h"
 #include "../Blocks/TileEntities/EnchantmentTableTileEntity.h"
 #include "../Blocks/TileEntities/FurnaceTileEntity.h"
+#include "../Blocks/TileEntities/Hopper.h"
+#include "../Blocks/TileEntities/HopperTileEntity.h"
 #include "../Blocks/TileEntities/MobSpawnerTileEntity.h"
 #include "../Blocks/TileEntities/MusicTileEntity.h"
 #include "../Blocks/TileEntities/SignTileEntity.h"

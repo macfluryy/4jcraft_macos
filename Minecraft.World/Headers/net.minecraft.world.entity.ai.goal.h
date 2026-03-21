@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../AI/Goals/Goal.h"
-#include "../AI/Goals/ArrowAttackGoal.h"
 #include "../AI/Goals/AvoidPlayerGoal.h"
 #include "../AI/Goals/BegGoal.h"
 #include "../AI/Goals/BreakDoorGoal.h"
@@ -32,8 +31,10 @@
 #include "../AI/Goals/PlayGoal.h"
 #include "../AI/Goals/RandomLookAroundGoal.h"
 #include "../AI/Goals/RandomStrollGoal.h"
+#include "../AI/Goals/RangedAttackGoal.h"
 #include "../AI/Goals/RestrictOpenDoorGoal.h"
 #include "../AI/Goals/RestrictSunGoal.h"
+#include "../AI/Goals/RunAroundLikeCrazyGoal.h"
 #include "../AI/Goals/SitGoal.h"
 #include "../AI/Goals/SwellGoal.h"
 #include "../AI/Goals/TakeFlowerGoal.h"
