@@ -994,7 +994,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
         y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperData : lowerData;
     int old = blocks->get(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z);
     int oldData = data->get(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z);
-    if (old == _tile && oldData == _data) return false;
+    if (old == _tile && oldData == _data) {
         // 4J Stu - Need to do this here otherwise double chests don't always
         // work correctly
         std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);

@@ -139,6 +139,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
     std::shared_ptr<ServerPlayer> servPlayer =
         std::dynamic_pointer_cast<ServerPlayer>(player);
     for (int d = 0; d < 10; d++) {
+        int column = (tick++ * 11) % (MapItem::IMAGE_WIDTH);
 
         if (rowsDirtyMin[column] >= 0) {
             int len = rowsDirtyMax[column] - rowsDirtyMin[column] + 1;
