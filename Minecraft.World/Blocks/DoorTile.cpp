@@ -11,9 +11,8 @@
 const std::wstring DoorTile::TEXTURES[] = {
     L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper"};
 
-DoorTile::DoorTile(int id, Material* material) : Tile(id, material, false) {
-    icons = NULL;
-
+DoorTile::DoorTile(int id, Material* material)
+    : Tile(id, material, false) {
     if (material == Material::metal) {
         texBase = 2;
     } else {
@@ -25,10 +24,13 @@ DoorTile::DoorTile(int id, Material* material) : Tile(id, material, false) {
     Tile::setShape(0.5f - r, 0, 0.5f - r, 0.5f + r, h, 0.5f + r);
 }
 
-Icon* DoorTile::getTexture(int face, int data) { return icons[texBase]; }
+Icon* DoorTile::getTexture(int face, int data) {
+    return iconBottom[TEXTURE_NORMAL];
+}
 
 Icon* DoorTile::getTexture(LevelSource* level, int x, int y, int z, int face) {
-    if (face == Facing::UP || face == Facing::DOWN) return icons[texBase];
+    if (face == Facing::UP || face == Facing::DOWN)
+        return iconBottom[TEXTURE_NORMAL];
 
     int compositeData = getCompositeData(level, x, y, z);
     int dir = compositeData & C_DIR_MASK;
@@ -57,18 +59,22 @@ Icon* DoorTile::getTexture(LevelSource* level, int x, int y, int z, int face) {
         if ((compositeData & C_RIGHT_HINGE_MASK) != 0) flip = !flip;
     }
 
-    return icons[texBase + (flip ? DOOR_TILE_TEXTURE_COUNT : 0) +
-                 (upper ? 1 : 0)];
+    if (upper) {
+        return iconTop[flip ? TEXTURE_FLIPPED : TEXTURE_NORMAL];
+    } else {
+        return iconBottom[flip ? TEXTURE_FLIPPED : TEXTURE_NORMAL];
+    }
 }
 
 void DoorTile::registerIcons(IconRegister* iconRegister) {
-    icons = new Icon*[DOOR_TILE_TEXTURE_COUNT * 2];
-
-    for (int i = 0; i < DOOR_TILE_TEXTURE_COUNT; i++) {
-        icons[i] = iconRegister->registerIcon(TEXTURES[i]);
-        icons[i + DOOR_TILE_TEXTURE_COUNT] =
-            new FlippedIcon(icons[i], true, false);
-    }
+    iconTop[TEXTURE_NORMAL] =
+        iconRegister->registerIcon(getIconName() + L"_upper");
+    iconBottom[TEXTURE_NORMAL] =
+        iconRegister->registerIcon(getIconName() + L"_lower");
+    iconTop[TEXTURE_FLIPPED] =
+        new FlippedIcon(iconTop[TEXTURE_NORMAL], true, false);
+    iconBottom[TEXTURE_FLIPPED] =
+        new FlippedIcon(iconBottom[TEXTURE_NORMAL], true, false);
 }
 
 bool DoorTile::blocksLight() { return false; }
@@ -157,7 +163,7 @@ void DoorTile::attack(Level* level, int x, int y, int z,
 }
 
 // 4J-PB - Adding a TestUse for tooltip display
-bool DoorTile::TestUse() { return true; }
+bool DoorTile::TestUse() { return id == Tile::door_wood_Id; }
 
 bool DoorTile::use(Level* level, int x, int y, int z,
                    std::shared_ptr<Player> player, int clickedFace,
@@ -178,10 +184,10 @@ bool DoorTile::use(Level* level, int x, int y, int z,
     int lowerData = compositeData & C_LOWER_DATA_MASK;
     lowerData ^= 4;
     if ((compositeData & C_IS_UPPER_MASK) == 0) {
-        level->setData(x, y, z, lowerData);  //, Tile.UPDATE_CLIENTS);
+        level->setData(x, y, z, lowerData, Tile::UPDATE_CLIENTS);
         level->setTilesDirty(x, y, z, x, y, z);
     } else {
-        level->setData(x, y - 1, z, lowerData);  //, Tile.UPDATE_CLIENTS);
+        level->setData(x, y - 1, z, lowerData, Tile::UPDATE_CLIENTS);
         level->setTilesDirty(x, y - 1, z, x, y, z);
     }
 
@@ -197,10 +203,10 @@ void DoorTile::setOpen(Level* level, int x, int y, int z, bool shouldOpen) {
     int lowerData = compositeData & C_LOWER_DATA_MASK;
     lowerData ^= 4;
     if ((compositeData & C_IS_UPPER_MASK) == 0) {
-        level->setData(x, y, z, lowerData);  //, Tile.UPDATE_CLIENTS);
+        level->setData(x, y, z, lowerData, Tile::UPDATE_CLIENTS);
         level->setTilesDirty(x, y, z, x, y, z);
     } else {
-        level->setData(x, y - 1, z, lowerData);  //, Tile.UPDATE_CLIENTS);
+        level->setData(x, y - 1, z, lowerData, Tile::UPDATE_CLIENTS);
         level->setTilesDirty(x, y - 1, z, x, y, z);
     }
 
@@ -212,14 +218,14 @@ void DoorTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if ((data & UPPER_BIT) == 0) {
         bool spawn = false;
         if (level->getTile(x, y + 1, z) != id) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             spawn = true;
         }
         if (!level->isSolidBlockingTile(x, y - 1, z)) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             spawn = true;
             if (level->getTile(x, y + 1, z) == id) {
-                level->setTile(x, y + 1, z, 0);
+                level->removeTile(x, y + 1, z);
             }
         }
         if (spawn) {
@@ -236,7 +242,7 @@ void DoorTile::neighborChanged(Level* level, int x, int y, int z, int type) {
         }
     } else {
         if (level->getTile(x, y - 1, z) != id) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
         }
         if (type > 0 && type != id) {
             neighborChanged(level, x, y - 1, z, type);
@@ -290,4 +296,15 @@ int DoorTile::getCompositeData(LevelSource* level, int x, int y, int z) {
 int DoorTile::cloneTileId(Level* level, int x, int y, int z) {
     return material == Material::metal ? Item::door_iron_Id
                                        : Item::door_wood_Id;
+}
+
+void DoorTile::playerWillDestroy(Level* level, int x, int y, int z, int data,
+                                 std::shared_ptr<Player> player) {
+    if (player->abilities.instabuild) {
+        if ((data & UPPER_BIT) != 0) {
+            if (level->getTile(x, y - 1, z) == id) {
+                level->removeTile(x, y - 1, z);
+            }
+        }
+    }
 }

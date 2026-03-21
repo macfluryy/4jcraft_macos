@@ -10,7 +10,7 @@ RedStoneOreTile::RedStoneOreTile(int id, bool lit) : Tile(id, Material::stone) {
     this->lit = lit;
 }
 
-int RedStoneOreTile::getTickDelay() { return 30; }
+int RedStoneOreTile::getTickDelay(Level* level) { return 30; }
 
 void RedStoneOreTile::attack(Level* level, int x, int y, int z,
                              std::shared_ptr<Player> player) {
@@ -25,7 +25,7 @@ void RedStoneOreTile::stepOn(Level* level, int x, int y, int z,
 }
 
 // 4J-PB - Adding a TestUse for tooltip display
-bool RedStoneOreTile::TestUse() { return true; }
+bool RedStoneOreTile::TestUse() { return id == Tile::redStoneOre_Id; }
 
 bool RedStoneOreTile::use(
     Level* level, int x, int y, int z, std::shared_ptr<Player> player,
@@ -42,13 +42,13 @@ void RedStoneOreTile::interact(Level* level, int x, int y, int z) {
     poofParticles(level, x, y, z);
     if (level->isClientSide) return;  // 4J added
     if (id == Tile::redStoneOre_Id) {
-        level->setTile(x, y, z, Tile::redStoneOre_lit_Id);
+        level->setTileAndUpdate(x, y, z, Tile::redStoneOre_lit_Id);
     }
 }
 
 void RedStoneOreTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (id == Tile::redStoneOre_lit_Id) {
-        level->setTile(x, y, z, Tile::redStoneOre_Id);
+        level->setTileAndUpdate(x, y, z, Tile::redStoneOre_Id);
     }
 }
 

@@ -10,7 +10,7 @@ private:
 
 public:
     RedStoneOreTile(int id, bool lit);
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     virtual void attack(Level* level, int x, int y, int z,
                         std::shared_ptr<Player> player);
     virtual void stepOn(Level* level, int x, int y, int z,

@@ -29,7 +29,7 @@ public:
                              std::shared_ptr<TileEntity> forceEntity =
                                  std::shared_ptr<TileEntity>());
     virtual void setPlacedBy(Level* level, int x, int y, int z,
-                             std::shared_ptr<Mob> by,
+                             std::shared_ptr<LivingEntity> by,
                              std::shared_ptr<ItemInstance> itemInstance);
     virtual int getPlacedOnFaceDataValue(Level* level, int x, int y, int z,
                                          int face, float clickX, float clickY,

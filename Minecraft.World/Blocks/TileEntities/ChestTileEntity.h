@@ -13,10 +13,16 @@ public:
     eINSTANCEOF GetType() { return eTYPE_CHESTTILEENTITY; }
     static TileEntity* create() { return new ChestTileEntity(); }
 
+    int getContainerType();  // 4J-Added;
+
     using TileEntity::setChanged;
 
+private:
+    void _init(bool isBonusChest);
+
 public:
-    ChestTileEntity(bool isBonusChest = false);  // 4J added param
+    ChestTileEntity(bool isBonusChest = false);            // 4J added param
+    ChestTileEntity(int type, bool isBonusChest = false);  // 4J added param
     virtual ~ChestTileEntity();
 
 private:
@@ -36,6 +42,9 @@ public:
 private:
     int tickInterval;
 
+    int type;
+    std::wstring name;
+
 public:
     virtual unsigned int getContainerSize();
     virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
@@ -43,19 +52,35 @@ public:
                                                      int count);
     virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
     virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
-    virtual int getName();
+    virtual std::wstring getName();
+    virtual std::wstring getCustomName();
+    virtual bool hasCustomName();
+    virtual void setCustomName(const std::wstring& name);
     virtual void load(CompoundTag* base);
     virtual void save(CompoundTag* base);
     virtual int getMaxStackSize();
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual void setChanged();
     virtual void clearCache();
+
+private:
+    virtual void heyImYourNeighbor(std::shared_ptr<ChestTileEntity> neighbor,
+                                   int from);
+
+public:
     virtual void checkNeighbors();
+
+private:
+    bool isSameChest(int x, int y, int z);
+
+public:
     virtual void tick();
-    virtual void triggerEvent(int b0, int b1);
+    virtual bool triggerEvent(int b0, int b1);
     virtual void startOpen();
     virtual void stopOpen();
+    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
     virtual void setRemoved();
+    virtual int getType();
 
     // 4J Added
     virtual std::shared_ptr<TileEntity> clone();

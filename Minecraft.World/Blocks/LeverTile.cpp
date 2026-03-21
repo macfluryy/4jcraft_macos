@@ -1,10 +1,11 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.h"
 #include "LeverTile.h"
-#include "../Util/SoundTypes.h"
 
-LeverTile::LeverTile(int id) : Tile(id, Material::decoration, false) {}
+LeverTile::LeverTile(int id)
+    : Tile(id, Material::decoration, false) {}
 
 AABB* LeverTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
 
@@ -17,12 +18,18 @@ bool LeverTile::isCubeShaped() { return false; }
 int LeverTile::getRenderShape() { return Tile::SHAPE_LEVER; }
 
 bool LeverTile::mayPlace(Level* level, int x, int y, int z, int face) {
-    if (face == 0 && level->isSolidBlockingTile(x, y + 1, z)) return true;
-    if (face == 1 && level->isTopSolidBlocking(x, y - 1, z)) return true;
-    if (face == 2 && level->isSolidBlockingTile(x, y, z + 1)) return true;
-    if (face == 3 && level->isSolidBlockingTile(x, y, z - 1)) return true;
-    if (face == 4 && level->isSolidBlockingTile(x + 1, y, z)) return true;
-    if (face == 5 && level->isSolidBlockingTile(x - 1, y, z)) return true;
+    if (face == Facing::DOWN && level->isSolidBlockingTile(x, y + 1, z))
+        return true;
+    if (face == Facing::UP && level->isTopSolidBlocking(x, y - 1, z))
+        return true;
+    if (face == Facing::NORTH && level->isSolidBlockingTile(x, y, z + 1))
+        return true;
+    if (face == Facing::SOUTH && level->isSolidBlockingTile(x, y, z - 1))
+        return true;
+    if (face == Facing::WEST && level->isSolidBlockingTile(x + 1, y, z))
+        return true;
+    if (face == Facing::EAST && level->isSolidBlockingTile(x - 1, y, z))
+        return true;
     return false;
 }
 
@@ -68,6 +75,28 @@ int LeverTile::getPlacedOnFaceDataValue(Level* level, int x, int y, int z,
     return dir + oldFlip;
 }
 
+void LeverTile::setPlacedBy(Level* level, int x, int y, int z,
+                            std::shared_ptr<LivingEntity> by,
+                            std::shared_ptr<ItemInstance> itemInstance) {
+    int data = level->getData(x, y, z);
+    int dir = data & 7;
+    int flip = data & 8;
+
+    if (dir == getLeverFacing(Facing::UP)) {
+        if ((Mth::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
+            level->setData(x, y, z, 5 | flip, Tile::UPDATE_CLIENTS);
+        } else {
+            level->setData(x, y, z, 6 | flip, Tile::UPDATE_CLIENTS);
+        }
+    } else if (dir == getLeverFacing(Facing::DOWN)) {
+        if ((Mth::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
+            level->setData(x, y, z, 7 | flip, Tile::UPDATE_CLIENTS);
+        } else {
+            level->setData(x, y, z, 0 | flip, Tile::UPDATE_CLIENTS);
+        }
+    }
+}
+
 int LeverTile::getLeverFacing(int facing) {
     switch (facing) {
         case Facing::DOWN:
@@ -107,16 +136,16 @@ void LeverTile::neighborChanged(Level* level, int x, int y, int z, int type) {
             replace = true;
 
         if (replace) {
-            this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-            level->setTile(x, y, z, 0);
+            spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+            level->removeTile(x, y, z);
         }
     }
 }
 
 bool LeverTile::checkCanSurvive(Level* level, int x, int y, int z) {
     if (!mayPlace(level, x, y, z)) {
-        this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+        level->removeTile(x, y, z);
         return false;
     }
     return true;
@@ -144,11 +173,6 @@ void LeverTile::updateShape(
         r = 4 / 16.0f;
         setShape(0.5f - r, 0.4f, 0.5f - r, 0.5f + r, 1.0f, 0.5f + r);
     }
-}
-
-void LeverTile::attack(Level* level, int x, int y, int z,
-                       std::shared_ptr<Player> player) {
-    use(level, x, y, z, player, 0, 0, 0, 0);
 }
 
 // 4J-PB - Adding a TestUse for tooltip display
@@ -182,7 +206,7 @@ bool LeverTile::use(Level* level, int x, int y, int z,
     int dir = data & 7;
     int open = 8 - (data & 8);
 
-    level->setData(x, y, z, dir + open);
+    level->setData(x, y, z, dir + open, Tile::UPDATE_ALL);
     level->setTilesDirty(x, y, z, x, y, z);
 
     level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_RANDOM_CLICK, 0.3f,
@@ -227,25 +251,27 @@ void LeverTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
     Tile::onRemove(level, x, y, z, id, data);
 }
 
-bool LeverTile::getSignal(LevelSource* level, int x, int y, int z, int dir) {
-    return (level->getData(x, y, z) & 8) > 0;
+int LeverTile::getSignal(LevelSource* level, int x, int y, int z, int dir) {
+    return (level->getData(x, y, z) & 8) > 0 ? Redstone::SIGNAL_MAX
+                                             : Redstone::SIGNAL_NONE;
 }
 
-bool LeverTile::getDirectSignal(Level* level, int x, int y, int z, int dir) {
+int LeverTile::getDirectSignal(LevelSource* level, int x, int y, int z,
+                               int dir) {
     int data = level->getData(x, y, z);
-    if ((data & 8) == 0) return false;
+    if ((data & 8) == 0) return Redstone::SIGNAL_NONE;
     int myDir = data & 7;
 
-    if (myDir == 0 && dir == 0) return true;
-    if (myDir == 7 && dir == 0) return true;
-    if (myDir == 6 && dir == 1) return true;
-    if (myDir == 5 && dir == 1) return true;
-    if (myDir == 4 && dir == 2) return true;
-    if (myDir == 3 && dir == 3) return true;
-    if (myDir == 2 && dir == 4) return true;
-    if (myDir == 1 && dir == 5) return true;
+    if (myDir == 0 && dir == 0) return Redstone::SIGNAL_MAX;
+    if (myDir == 7 && dir == 0) return Redstone::SIGNAL_MAX;
+    if (myDir == 6 && dir == 1) return Redstone::SIGNAL_MAX;
+    if (myDir == 5 && dir == 1) return Redstone::SIGNAL_MAX;
+    if (myDir == 4 && dir == 2) return Redstone::SIGNAL_MAX;
+    if (myDir == 3 && dir == 3) return Redstone::SIGNAL_MAX;
+    if (myDir == 2 && dir == 4) return Redstone::SIGNAL_MAX;
+    if (myDir == 1 && dir == 5) return Redstone::SIGNAL_MAX;
 
-    return false;
+    return Redstone::SIGNAL_NONE;
 }
 
 bool LeverTile::isSignalSource() { return true; }

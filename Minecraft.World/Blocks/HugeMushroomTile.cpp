@@ -2,10 +2,10 @@
 #include "../Headers/net.minecraft.world.h"
 #include "HugeMushroomTile.h"
 
-const std::wstring HugeMushroomTile::TEXTURE_STEM = L"mushroom_skin_stem";
-const std::wstring HugeMushroomTile::TEXTURE_INSIDE = L"mushroom_inside";
-const std::wstring HugeMushroomTile::TEXTURE_TYPE[] = {L"mushroom_skin_brown",
-                                                       L"mushroom_skin_red"};
+const std::wstring HugeMushroomTile::TEXTURE_STEM = L"skin_stem";
+const std::wstring HugeMushroomTile::TEXTURE_INSIDE = L"inside";
+const std::wstring HugeMushroomTile::TEXTURE_TYPE[] = {L"skin_brown",
+                                                       L"skin_red"};
 
 HugeMushroomTile::HugeMushroomTile(int id, Material* material, int type)
     : Tile(id, material) {
@@ -46,20 +46,22 @@ int HugeMushroomTile::getResourceCount(Random* random) {
 
 int HugeMushroomTile::getResource(int data, Random* random,
                                   int playerBonusLevel) {
-    return Tile::mushroom1_Id + type;
+    return Tile::mushroom_brown_Id + type;
 }
 
 int HugeMushroomTile::cloneTileId(Level* level, int x, int y, int z) {
-    return Tile::mushroom1_Id + type;
+    return Tile::mushroom_brown_Id + type;
 }
 
 void HugeMushroomTile::registerIcons(IconRegister* iconRegister) {
     icons = new Icon*[HUGE_MUSHROOM_TEXTURE_COUNT];
 
     for (int i = 0; i < HUGE_MUSHROOM_TEXTURE_COUNT; i++) {
-        icons[i] = iconRegister->registerIcon(TEXTURE_TYPE[i]);
+        icons[i] =
+            iconRegister->registerIcon(getIconName() + L"_" + TEXTURE_TYPE[i]);
     }
 
-    iconInside = iconRegister->registerIcon(TEXTURE_INSIDE);
-    iconStem = iconRegister->registerIcon(TEXTURE_STEM);
+    iconInside =
+        iconRegister->registerIcon(getIconName() + L"_" + TEXTURE_INSIDE);
+    iconStem = iconRegister->registerIcon(getIconName() + L"_" + TEXTURE_STEM);
 }

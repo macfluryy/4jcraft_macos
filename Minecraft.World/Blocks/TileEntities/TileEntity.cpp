@@ -18,10 +18,12 @@ void TileEntity::staticCtor() {
     TileEntity::setId(ChestTileEntity::create, eTYPE_CHESTTILEENTITY, L"Chest");
     TileEntity::setId(EnderChestTileEntity::create, eTYPE_ENDERCHESTTILEENTITY,
                       L"EnderChest");
-    TileEntity::setId(RecordPlayerTile::Entity::create, eTYPE_RECORDPLAYERTILE,
+    TileEntity::setId(JukeboxTile::Entity::create, eTYPE_RECORDPLAYERTILE,
                       L"RecordPlayer");
     TileEntity::setId(DispenserTileEntity::create, eTYPE_DISPENSERTILEENTITY,
                       L"Trap");
+    TileEntity::setId(DropperTileEntity::create, eTYPE_DROPPERTILEENTITY,
+                      L"Dropper");
     TileEntity::setId(SignTileEntity::create, eTYPE_SIGNTILEENTITY, L"Sign");
     TileEntity::setId(MobSpawnerTileEntity::create, eTYPE_MOBSPAWNERTILEENTITY,
                       L"MobSpawner");
@@ -34,7 +36,17 @@ void TileEntity::staticCtor() {
                       eTYPE_ENCHANTMENTTABLEENTITY, L"EnchantTable");
     TileEntity::setId(TheEndPortalTileEntity::create,
                       eTYPE_THEENDPORTALTILEENTITY, L"Airportal");
+    TileEntity::setId(CommandBlockEntity::create, eTYPE_COMMANDBLOCKTILEENTITY,
+                      L"Control");
+    TileEntity::setId(BeaconTileEntity::create, eTYPE_BEACONTILEENTITY,
+                      L"Beacon");
     TileEntity::setId(SkullTileEntity::create, eTYPE_SKULLTILEENTITY, L"Skull");
+    TileEntity::setId(DaylightDetectorTileEntity::create,
+                      eTYPE_DAYLIGHTDETECTORTILEENTITY, L"DLDetector");
+    TileEntity::setId(HopperTileEntity::create, eTYPE_HOPPERTILEENTITY,
+                      L"Hopper");
+    TileEntity::setId(ComparatorTileEntity::create, eTYPE_COMPARATORTILEENTITY,
+                      L"Comparator");
 }
 
 void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas,
@@ -117,15 +129,17 @@ int TileEntity::getData() {
     return data;
 }
 
-void TileEntity::setData(int data) {
+void TileEntity::setData(int data, int updateFlags) {
     this->data = data;
-    level->setData(x, y, z, data);
+    level->setData(x, y, z, data, updateFlags);
 }
 
 void TileEntity::setChanged() {
     if (level != NULL) {
         data = level->getData(x, y, z);
         level->tileEntityChanged(x, y, z, shared_from_this());
+        if (getTile() != NULL)
+            level->updateNeighbourForOutputSignal(x, y, z, getTile()->id);
     }
 }
 
@@ -136,6 +150,8 @@ double TileEntity::distanceToSqr(double xPlayer, double yPlayer,
     double zd = (z + 0.5) - zPlayer;
     return xd * xd + yd * yd + zd * zd;
 }
+
+double TileEntity::getViewDistance() { return 64 * 64; }
 
 Tile* TileEntity::getTile() {
     if (tile == NULL) tile = Tile::tiles[level->getTile(x, y, z)];
@@ -149,7 +165,8 @@ bool TileEntity::isRemoved() { return remove; }
 void TileEntity::setRemoved() { remove = true; }
 
 void TileEntity::clearRemoved() { remove = false; }
-void TileEntity::triggerEvent(int b0, int b1) {}
+
+bool TileEntity::triggerEvent(int b0, int b1) { return false; }
 
 void TileEntity::clearCache() {
     tile = NULL;

@@ -21,6 +21,23 @@ void PistonExtensionTile::clearOverrideTopTexture() {
     this->overrideTopTexture = NULL;
 }
 
+void PistonExtensionTile::playerWillDestroy(Level* level, int x, int y, int z,
+                                            int data,
+                                            std::shared_ptr<Player> player) {
+    if (player->abilities.instabuild) {
+        int facing = getFacing(data);
+        int tile = level->getTile(x - Facing::STEP_X[facing],
+                                  y - Facing::STEP_Y[facing],
+                                  z - Facing::STEP_Z[facing]);
+        if (tile == Tile::pistonBase_Id || tile == Tile::pistonStickyBase_Id) {
+            level->removeTile(x - Facing::STEP_X[facing],
+                              y - Facing::STEP_Y[facing],
+                              z - Facing::STEP_Z[facing]);
+        }
+    }
+    Tile::playerWillDestroy(level, x, y, z, data, player);
+}
+
 void PistonExtensionTile::onRemove(Level* level, int x, int y, int z, int id,
                                    int data) {
     Tile::onRemove(level, x, y, z, id, data);
@@ -35,7 +52,7 @@ void PistonExtensionTile::onRemove(Level* level, int x, int y, int z, int id,
         data = level->getData(x, y, z);
         if (PistonBaseTile::isExtended(data)) {
             Tile::tiles[t]->spawnResources(level, x, y, z, data, 0);
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
         }
     }
 }
@@ -181,7 +198,7 @@ void PistonExtensionTile::neighborChanged(Level* level, int x, int y, int z,
         level->getTile(x - Facing::STEP_X[facing], y - Facing::STEP_Y[facing],
                        z - Facing::STEP_Z[facing]);
     if (tile != Tile::pistonBase_Id && tile != Tile::pistonStickyBase_Id) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     } else {
         Tile::tiles[tile]->neighborChanged(level, x - Facing::STEP_X[facing],
                                            y - Facing::STEP_Y[facing],
@@ -192,5 +209,10 @@ void PistonExtensionTile::neighborChanged(Level* level, int x, int y, int z,
 int PistonExtensionTile::getFacing(int data) { return data & 0x7; }
 
 int PistonExtensionTile::cloneTileId(Level* level, int x, int y, int z) {
+    int data = level->getData(x, y, z);
+    if ((data & STICKY_BIT) != 0) {
+        return Tile::pistonStickyBase_Id;
+    }
+    return Tile::pistonBase_Id;
     return 0;
 }

@@ -69,7 +69,7 @@ const std::wstring PotionBrewing::MOD_GLOWSTONE =
 // with water bottle and gunpowder
 const std::wstring PotionBrewing::MOD_GUNPOWDER =
     L"+14";  //&13-13"; // gunpowder makes them throwable! // gunpowder requires
-             //13 and sets 14
+             // 13 and sets 14
 #else
 const std::wstring PotionBrewing::MOD_WATER = L"-1-3-5-7-9-11-13";
 const std::wstring PotionBrewing::MOD_SUGAR = L"+0";
@@ -223,6 +223,16 @@ int PotionBrewing::getColorValue(std::vector<MobEffectInstance*>* effects) {
     blue = (blue / count) * 255.0f;
 
     return ((int)red) << 16 | ((int)green) << 8 | ((int)blue);
+}
+
+bool PotionBrewing::areAllEffectsAmbient(
+    std::vector<MobEffectInstance*>* effects) {
+    for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+        MobEffectInstance* effect = *it;
+        if (!effect->isAmbient()) return false;
+    }
+
+    return true;
 }
 
 int PotionBrewing::getColorValue(int brew, bool includeDisabledEffects) {
@@ -517,8 +527,7 @@ std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
             (effect->isDisabled() && !includeDisabledEffects)) {
             continue;
         }
-        // std::wstring durationString =
-        // potionEffectDuration.get(effect->getId());
+        // wstring durationString = potionEffectDuration.get(effect->getId());
         AUTO_VAR(effIt, potionEffectDuration.find(effect->getId()));
         if (effIt == potionEffectDuration.end()) {
             continue;
@@ -557,8 +566,10 @@ std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
             if (list == NULL) {
                 list = new std::vector<MobEffectInstance*>();
             }
-            list->push_back(
-                new MobEffectInstance(effect->getId(), duration, amplifier));
+            MobEffectInstance* instance =
+                new MobEffectInstance(effect->getId(), duration, amplifier);
+            if ((brew & THROWABLE_MASK) != 0) instance->setSplash(true);
+            list->push_back(instance);
         }
     }
 
@@ -747,29 +758,29 @@ int PotionBrewing::valueOf(int brew, int p1, int p2, int p3, int p4, int p5) {
 }
 
 std::wstring PotionBrewing::toString(int brew) {
-    std::wstring string;
+    std::wstring std::string;
 
     int bit = NUM_BITS - 1;
     while (bit >= 0) {
         if ((brew & (1 << bit)) != 0) {
-            string.append(L"O");
+            std::string.append(L"O");
         } else {
-            string.append(L"x");
+            std::string.append(L"x");
         }
         bit--;
     }
 
-    return string;
+    return std::string;
 }
 
 // void main(String[] args)
 //{
 
 //	HashMap<String, Integer> existingCombinations = new HashMap<String,
-//Integer>(); 	HashMap<String, Integer> distinctCombinations = new
-//HashMap<String, Integer>(); 	int noEffects = 0; 	for (int brew = 0; brew <=
-//BREW_MASK; brew++) { 		List<MobEffectInstance> effects =
-//PotionBrewing.getEffects(brew, true); 		if (effects != null) {
+// Integer>(); 	HashMap<String, Integer> distinctCombinations = new
+// HashMap<String, Integer>(); 	int noEffects = 0; 	for (int brew = 0; brew
+// <= BREW_MASK; brew++) { 		List<MobEffectInstance> effects =
+// PotionBrewing.getEffects(brew, true); 		if (effects != null) {
 
 //			{
 //				StringBuilder builder = new StringBuilder();
@@ -779,8 +790,9 @@ std::wstring PotionBrewing::toString(int brew) {
 //				}
 //				String string = builder.toString();
 //				Integer count =
-//existingCombinations.get(string); 				if (count != null) { 					count++; 				} else { 					count
-//= 1;
+// existingCombinations.get(string); 				if (count !=
+// null) { 					count++;
+// } else { 					count = 1;
 //				}
 //				existingCombinations.put(string, count);
 //			}
@@ -792,8 +804,9 @@ std::wstring PotionBrewing::toString(int brew) {
 //				}
 //				String string = builder.toString();
 //				Integer count =
-//distinctCombinations.get(string); 				if (count != null) { 					count++; 				} else { 					count
-//= 1;
+// distinctCombinations.get(string); 				if (count !=
+// null) { 					count++;
+// } else { 					count = 1;
 //				}
 //				distinctCombinations.put(string, count);
 //			}
@@ -810,7 +823,7 @@ std::wstring PotionBrewing::toString(int brew) {
 //	}
 
 //	System.out.println("Combination with no effects: " + noEffects + " (" +
-//((double) noEffects / BREW_MASK * 100.0) + " %)"); 	System.out.println("Unique
-//combinations: " + existingCombinations.size()); 	System.out.println("Distinct
-//combinations: " + distinctCombinations.size());
+//((double) noEffects / BREW_MASK * 100.0) + " %)");
+// System.out.println("Unique combinations: " + existingCombinations.size());
+// System.out.println("Distinct combinations: " + distinctCombinations.size());
 //}

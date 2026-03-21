@@ -18,7 +18,7 @@ protected:
 public:
     Icon* getTexture(int face, int data);
     virtual AABB* getAABB(Level* level, int x, int y, int z);
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
@@ -55,8 +55,9 @@ public:
                      float clickX, float clickY, float clickZ,
                      bool soundOnly = false);  // 4J added soundOnly param
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);
-    virtual bool getSignal(LevelSource* level, int x, int y, int z, int dir);
-    virtual bool getDirectSignal(Level* level, int x, int y, int z, int dir);
+    virtual int getSignal(LevelSource* level, int x, int y, int z, int dir);
+    virtual int getDirectSignal(LevelSource* level, int x, int y, int z,
+                                int dir);
     virtual bool isSignalSource();
     virtual void tick(Level* level, int x, int y, int z, Random* random);
     virtual void updateDefaultShape();

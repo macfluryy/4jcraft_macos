@@ -7,7 +7,7 @@
 #include "../Util/AABB.h"
 
 PistonMovingPiece::PistonMovingPiece(int id)
-    : EntityTile(id, Material::piston, false) {
+    : BaseEntityTile(id, Material::piston, false) {
     setDestroyTime(INDESTRUCTIBLE_DESTROY_TIME);
 }
 
@@ -24,7 +24,7 @@ void PistonMovingPiece::onRemove(Level* level, int x, int y, int z, int id,
         std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL) {
         std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity)->finalTick();
     } else {
-        EntityTile::onRemove(level, x, y, z, id, data);
+        BaseEntityTile::onRemove(level, x, y, z, id, data);
     }
 }
 
@@ -52,7 +52,7 @@ bool PistonMovingPiece::use(
     // blocks in the world
     if (!level->isClientSide && level->getTileEntity(x, y, z) == NULL) {
         // this block is no longer valid
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return true;
     }
     return false;
@@ -78,7 +78,8 @@ void PistonMovingPiece::spawnResources(Level* level, int x, int y, int z,
 
 void PistonMovingPiece::neighborChanged(Level* level, int x, int y, int z,
                                         int type) {
-    if (!level->isClientSide && level->getTileEntity(x, y, z) == NULL) {
+    if (!level->isClientSide) {
+        level->getTileEntity(x, y, z) == NULL;
     }
 }
 

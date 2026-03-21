@@ -34,4 +34,7 @@ private:
 
 public:
     virtual int getAuxName(int auxValue) = 0;
+
+    virtual int cloneTileData(Level* level, int x, int y, int z);
+    virtual int cloneTileId(Level* level, int x, int y, int z);
 };

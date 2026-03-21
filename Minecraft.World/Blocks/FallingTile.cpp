@@ -21,6 +21,7 @@ void FallingTile::_init() {
     hurtEntities = false;
     fallDamageMax = 40;
     fallDamageAmount = 2;
+    tileData = NULL;
 
     // 4J Added so that client-side falling tiles can fall through blocks
     // This fixes a bug on the host where the tile update from the server comes
@@ -58,6 +59,8 @@ FallingTile::FallingTile(Level* level, double x, double y, double z, int tile,
     zOld = z;
 }
 
+FallingTile::~FallingTile() { delete tileData; }
+
 bool FallingTile::makeStepSound() { return false; }
 
 void FallingTile::defineSynchedData() {}
@@ -87,7 +90,7 @@ void FallingTile::tick() {
         int zt = Mth::floor(z);
         if (time == 1) {
             if (level->getTile(xt, yt, zt) == tile) {
-                level->setTile(xt, yt, zt, 0);
+                level->removeTile(xt, yt, zt);
             } else {
                 remove();
                 return;
@@ -99,16 +102,39 @@ void FallingTile::tick() {
             zd *= 0.7f;
             yd *= -0.5f;
 
-            // if (HeavyTile.isFree(level, xt, yt, zt)) {
             if (level->getTile(xt, yt, zt) != Tile::pistonMovingPiece_Id) {
                 remove();
                 if (!cancelDrop &&
-                    level->mayPlace(tile, xt, yt, zt, true, 1, nullptr) &&
+                    level->mayPlace(tile, xt, yt, zt, true, 1, nullptr,
+                                    nullptr) &&
                     !HeavyTile::isFree(level, xt, yt - 1, zt) &&
-                    level->setTileAndData(xt, yt, zt, tile, data)) {
+                    level->setTileAndData(xt, yt, zt, tile, data,
+                                          Tile::UPDATE_ALL)) {
                     HeavyTile* hv = dynamic_cast<HeavyTile*>(Tile::tiles[tile]);
                     if (hv) {
                         hv->onLand(level, xt, yt, zt, data);
+                    }
+                    if (tileData != NULL && Tile::tiles[tile]->isEntityTile()) {
+                        std::shared_ptr<TileEntity> tileEntity =
+                            level->getTileEntity(xt, yt, zt);
+
+                        if (tileEntity != NULL) {
+                            CompoundTag* swap = new CompoundTag();
+                            tileEntity->save(swap);
+                            std::vector<Tag*>* allTags = tileData->getAllTags();
+                            for (AUTO_VAR(it, allTags->begin());
+                                 it != allTags->end(); ++it) {
+                                Tag* tag = *it;
+                                if (tag->getName().compare(L"x") == 0 ||
+                                    tag->getName().compare(L"y") == 0 ||
+                                    tag->getName().compare(L"z") == 0)
+                                    continue;
+                                swap->put(tag->getName(), tag->copy());
+                            }
+                            delete allTags;
+                            tileEntity->load(swap);
+                            tileEntity->setChanged();
+                        }
                     }
                 } else {
                     if (dropItem && !cancelDrop)
@@ -123,7 +149,12 @@ void FallingTile::tick() {
         } else if ((time > 20 * 5 && !level->isClientSide &&
                     (yt < 1 || yt > Level::maxBuildHeight)) ||
                    (time > 20 * 30)) {
-            if (dropItem) spawnAtLocation(tile, 1);
+            if (dropItem)
+                spawnAtLocation(
+                    std::shared_ptr<ItemInstance>(new ItemInstance(
+                        tile, 1,
+                        Tile::tiles[tile]->getSpawnResourcesAuxValue(data))),
+                    0);
             remove();
         }
     }
@@ -133,17 +164,21 @@ void FallingTile::causeFallDamage(float distance) {
     if (hurtEntities) {
         int dmg = Mth::ceil(distance - 1);
         if (dmg > 0) {
+            // 4J: Copy vector since it might be modified when we hurt the
+            // entities (invalidating our iterator)
             std::vector<std::shared_ptr<Entity> >* entities =
-                level->getEntities(shared_from_this(), bb);
+                new std::vector<std::shared_ptr<Entity> >(
+                    *level->getEntities(shared_from_this(), bb));
             DamageSource* source = tile == Tile::anvil_Id
                                        ? DamageSource::anvil
                                        : DamageSource::fallingBlock;
-
             // for (Entity entity : entities)
             for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
                 (*it)->hurt(source, std::min(Mth::floor(dmg * fallDamageAmount),
                                              fallDamageMax));
             }
+            delete entities;
+
             if (tile == Tile::anvil_Id &&
                 random->nextFloat() < 0.05f + (dmg * 0.05)) {
                 int damage = data >> 2;
@@ -161,16 +196,22 @@ void FallingTile::causeFallDamage(float distance) {
 
 void FallingTile::addAdditonalSaveData(CompoundTag* tag) {
     tag->putByte(L"Tile", (uint8_t)tile);
+    tag->putInt(L"TileID", tile);
     tag->putByte(L"Data", (uint8_t)data);
     tag->putByte(L"Time", (uint8_t)time);
     tag->putBoolean(L"DropItem", dropItem);
     tag->putBoolean(L"HurtEntities", hurtEntities);
     tag->putFloat(L"FallHurtAmount", fallDamageAmount);
     tag->putInt(L"FallHurtMax", fallDamageMax);
+    if (tileData != NULL) tag->putCompound(L"TileEntityData", tileData);
 }
 
 void FallingTile::readAdditionalSaveData(CompoundTag* tag) {
-    tile = tag->getByte(L"Tile") & 0xff;
+    if (tag->contains(L"TileID")) {
+        tile = tag->getInt(L"TileID");
+    } else {
+        tile = tag->getByte(L"Tile") & 0xff;
+    }
     data = tag->getByte(L"Data") & 0xff;
     time = tag->getByte(L"Time") & 0xff;
 
@@ -184,6 +225,10 @@ void FallingTile::readAdditionalSaveData(CompoundTag* tag) {
 
     if (tag->contains(L"DropItem")) {
         dropItem = tag->getBoolean(L"DropItem");
+    }
+
+    if (tag->contains(L"TileEntityData")) {
+        tileData = tag->getCompound(L"TileEntityData");
     }
 
     if (tile == 0) {

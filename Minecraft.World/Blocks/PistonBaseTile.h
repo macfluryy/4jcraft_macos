@@ -58,7 +58,8 @@ public:
                      float clickX, float clickY, float clickZ,
                      bool soundOnly = false);  // 4J added soundOnly param
     virtual void setPlacedBy(Level* level, int x, int y, int z,
-                             std::shared_ptr<Mob> by);
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     virtual void onPlace(Level* level, int x, int y, int z);
 
@@ -67,7 +68,7 @@ private:
     bool getNeighborSignal(Level* level, int x, int y, int z, int facing);
 
 public:
-    virtual void triggerEvent(Level* level, int x, int y, int z, int param1,
+    virtual bool triggerEvent(Level* level, int x, int y, int z, int param1,
                               int facing);
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
@@ -82,7 +83,7 @@ public:
     static int getFacing(int data);
     static bool isExtended(int data);
     static int getNewFacing(Level* level, int x, int y, int z,
-                            std::shared_ptr<Player> player);
+                            std::shared_ptr<LivingEntity> player);
 
 private:
     static bool isPushable(int block, Level* level, int cx, int cy, int cz,

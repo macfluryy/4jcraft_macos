@@ -4,10 +4,9 @@
 #include "../Headers/net.minecraft.world.h"
 #include "MushroomPlantTile.h"
 
-Mushroom::Mushroom(int id, const std::wstring& texture) : Bush(id) {
+Mushroom::Mushroom(int id) : Bush(id) {
     this->updateDefaultShape();
     this->setTicking(true);
-    this->texture = texture;
 }
 
 // 4J Added override
@@ -42,7 +41,7 @@ void Mushroom::tick(Level* level, int x, int y, int z, Random* random) {
         }
 
         if (level->isEmptyTile(x2, y2, z2) && canSurvive(level, x2, y2, z2)) {
-            level->setTile(x2, y2, z2, id);
+            level->setTileAndData(x2, y2, z2, id, 0, UPDATE_CLIENTS);
         }
     }
 }
@@ -65,24 +64,20 @@ bool Mushroom::canSurvive(Level* level, int x, int y, int z) {
 bool Mushroom::growTree(Level* level, int x, int y, int z, Random* random) {
     int data = level->getData(x, y, z);
 
-    level->setTileNoUpdate(x, y, z, 0);
+    level->removeTile(x, y, z);
     Feature* f = NULL;
 
-    if (id == Tile::mushroom1_Id) {
+    if (id == Tile::mushroom_brown_Id) {
         f = new HugeMushroomFeature(0);
-    } else if (id == Tile::mushroom2_Id) {
+    } else if (id == Tile::mushroom_red_Id) {
         f = new HugeMushroomFeature(1);
     }
 
     if (f == NULL || !f->place(level, random, x, y, z)) {
-        level->setTileAndDataNoUpdate(x, y, z, this->id, data);
+        level->setTileAndData(x, y, z, id, data, Tile::UPDATE_ALL);
         if (f != NULL) delete f;
         return false;
     }
     if (f != NULL) delete f;
     return true;
-}
-
-void Mushroom::registerIcons(IconRegister* iconRegister) {
-    icon = iconRegister->registerIcon(texture);
 }

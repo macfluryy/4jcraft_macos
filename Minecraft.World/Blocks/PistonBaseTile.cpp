@@ -149,10 +149,11 @@ bool PistonBaseTile::use(Level* level, int x, int y, int z,
 }
 
 void PistonBaseTile::setPlacedBy(Level* level, int x, int y, int z,
-                                 std::shared_ptr<Mob> by) {
+                                 std::shared_ptr<LivingEntity> by,
+                                 std::shared_ptr<ItemInstance> itemInstance) {
     int targetData =
         getNewFacing(level, x, y, z, std::dynamic_pointer_cast<Player>(by));
-    level->setData(x, y, z, targetData);
+    level->setData(x, y, z, targetData, Tile::UPDATE_CLIENTS);
     if (!level->isClientSide && !ignoreUpdate()) {
         checkIfExtend(level, x, y, z);
     }
@@ -183,11 +184,10 @@ void PistonBaseTile::checkIfExtend(Level* level, int x, int y, int z) {
 
     if (extend && !isExtended(data)) {
         if (canPush(level, x, y, z, facing)) {
-            // level->setDataNoUpdate(x, y, z, facing | EXTENDED_BIT);
             level->tileEvent(x, y, z, id, TRIGGER_EXTEND, facing);
         }
     } else if (!extend && isExtended(data)) {
-        // level->setDataNoUpdate(x, y, z, facing);
+        level->setData(x, y, z, facing, UPDATE_CLIENTS);
         level->tileEvent(x, y, z, id, TRIGGER_CONTRACT, facing);
     }
 }
@@ -206,38 +206,43 @@ void PistonBaseTile::checkIfExtend(Level* level, int x, int y, int z) {
 bool PistonBaseTile::getNeighborSignal(Level* level, int x, int y, int z,
                                        int facing) {
     // check adjacent neighbors, but not in push direction
-    if (facing != Facing::DOWN && level->getSignal(x, y - 1, z, Facing::DOWN))
+    if (facing != Facing::DOWN && level->hasSignal(x, y - 1, z, Facing::DOWN))
         return true;
-    if (facing != Facing::UP && level->getSignal(x, y + 1, z, Facing::UP))
+    if (facing != Facing::UP && level->hasSignal(x, y + 1, z, Facing::UP))
         return true;
-    if (facing != Facing::NORTH && level->getSignal(x, y, z - 1, Facing::NORTH))
+    if (facing != Facing::NORTH && level->hasSignal(x, y, z - 1, Facing::NORTH))
         return true;
-    if (facing != Facing::SOUTH && level->getSignal(x, y, z + 1, Facing::SOUTH))
+    if (facing != Facing::SOUTH && level->hasSignal(x, y, z + 1, Facing::SOUTH))
         return true;
-    if (facing != Facing::EAST && level->getSignal(x + 1, y, z, Facing::EAST))
+    if (facing != Facing::EAST && level->hasSignal(x + 1, y, z, Facing::EAST))
         return true;
-    if (facing != Facing::WEST && level->getSignal(x - 1, y, z, Facing::WEST))
+    if (facing != Facing::WEST && level->hasSignal(x - 1, y, z, Facing::WEST))
         return true;
 
     // check signals above
-    if (level->getSignal(x, y, z, 0)) return true;
-    if (level->getSignal(x, y + 2, z, 1)) return true;
-    if (level->getSignal(x, y + 1, z - 1, 2)) return true;
-    if (level->getSignal(x, y + 1, z + 1, 3)) return true;
-    if (level->getSignal(x - 1, y + 1, z, 4)) return true;
-    if (level->getSignal(x + 1, y + 1, z, 5)) return true;
+    if (level->hasSignal(x, y, z, 0)) return true;
+    if (level->hasSignal(x, y + 2, z, 1)) return true;
+    if (level->hasSignal(x, y + 1, z - 1, 2)) return true;
+    if (level->hasSignal(x, y + 1, z + 1, 3)) return true;
+    if (level->hasSignal(x - 1, y + 1, z, 4)) return true;
+    if (level->hasSignal(x + 1, y + 1, z, 5)) return true;
 
     return false;
 }
 
-void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
+bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                                   int facing) {
     ignoreUpdate(true);
 
-    if (param1 == TRIGGER_EXTEND) {
-        level->setDataNoUpdate(x, y, z, facing | EXTENDED_BIT);
-    } else {
-        level->setDataNoUpdate(x, y, z, facing);
+    if (!level->isClientSide) {
+        bool extend = getNeighborSignal(level, x, y, z, facing);
+
+        if (extend && param1 == TRIGGER_CONTRACT) {
+            level->setData(x, y, z, facing | EXTENDED_BIT, UPDATE_CLIENTS);
+            return false;
+        } else if (!extend && param1 == TRIGGER_EXTEND) {
+            return false;
+        }
     }
 
     if (param1 == TRIGGER_EXTEND) {
@@ -265,12 +270,13 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
             // doesn't happen because the client does actually receive an update
             // for this tile from the host after the event has been processed on
             // the cient.
-            level->setData(x, y, z, facing | EXTENDED_BIT, true);
+            level->setData(x, y, z, facing | EXTENDED_BIT, Tile::UPDATE_CLIENTS,
+                           true);
             level->playSound(x + 0.5, y + 0.5, z + 0.5,
                              eSoundType_TILE_PISTON_OUT, 0.5f,
                              level->random->nextFloat() * 0.25f + 0.6f);
         } else {
-            level->setDataNoUpdate(x, y, z, facing);
+            return false;
         }
         PIXEndNamedEvent();
     } else if (param1 == TRIGGER_CONTRACT) {
@@ -286,8 +292,8 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
         }
 
         stopSharingIfServer(level, x, y, z);  // 4J added
-        level->setTileAndDataNoUpdate(x, y, z, Tile::pistonMovingPiece_Id,
-                                      facing);
+        level->setTileAndData(x, y, z, Tile::pistonMovingPiece_Id, facing,
+                              Tile::UPDATE_ALL);
         level->setTileEntity(x, y, z,
                              PistonMovingPiece::newMovingPieceEntity(
                                  id, facing, facing, false, true));
@@ -308,9 +314,9 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
 
             if (block == Tile::pistonMovingPiece_Id) {
                 PIXBeginNamedEvent(0, "Contract sticky phase B\n");
-                // the block two steps away is a moving piston block piece,
-                // so replace it with the real data, since it's probably
-                // this piston which is changing too fast
+                // the block two steps away is a moving piston block piece, so
+                // replace it with the real data, since it's probably this
+                // piston which is changing too fast
                 std::shared_ptr<TileEntity> tileEntity =
                     level->getTileEntity(twoX, twoY, twoZ);
                 if (tileEntity != NULL &&
@@ -344,24 +350,24 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                 y += Facing::STEP_Y[facing];
                 z += Facing::STEP_Z[facing];
 
-                level->setTileAndDataNoUpdate(
-                    x, y, z, Tile::pistonMovingPiece_Id, blockData);
+                level->setTileAndData(x, y, z, Tile::pistonMovingPiece_Id,
+                                      blockData, Tile::UPDATE_ALL);
                 level->setTileEntity(
                     x, y, z,
                     PistonMovingPiece::newMovingPieceEntity(
                         block, blockData, facing, false, false));
 
                 ignoreUpdate(false);
-                level->setTile(twoX, twoY, twoZ, 0);
+                level->removeTile(twoX, twoY, twoZ);
                 ignoreUpdate(true);
             } else if (!pistonPiece) {
                 stopSharingIfServer(level, x + Facing::STEP_X[facing],
                                     y + Facing::STEP_Y[facing],
                                     z + Facing::STEP_Z[facing]);  // 4J added
                 ignoreUpdate(false);
-                level->setTile(x + Facing::STEP_X[facing],
-                               y + Facing::STEP_Y[facing],
-                               z + Facing::STEP_Z[facing], 0);
+                level->removeTile(x + Facing::STEP_X[facing],
+                                  y + Facing::STEP_Y[facing],
+                                  z + Facing::STEP_Z[facing]);
                 ignoreUpdate(true);
             }
             PIXEndNamedEvent();
@@ -370,9 +376,9 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                                 y + Facing::STEP_Y[facing],
                                 z + Facing::STEP_Z[facing]);  // 4J added
             ignoreUpdate(false);
-            level->setTile(x + Facing::STEP_X[facing],
-                           y + Facing::STEP_Y[facing],
-                           z + Facing::STEP_Z[facing], 0);
+            level->removeTile(x + Facing::STEP_X[facing],
+                              y + Facing::STEP_Y[facing],
+                              z + Facing::STEP_Z[facing]);
             ignoreUpdate(true);
         }
 
@@ -381,6 +387,8 @@ void PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
     }
 
     ignoreUpdate(false);
+
+    return true;
 }
 
 void PistonBaseTile::updateShape(
@@ -437,7 +445,7 @@ int PistonBaseTile::getFacing(int data) { return data & 0x7; }
 bool PistonBaseTile::isExtended(int data) { return (data & EXTENDED_BIT) != 0; }
 
 int PistonBaseTile::getNewFacing(Level* level, int x, int y, int z,
-                                 std::shared_ptr<Player> player) {
+                                 std::shared_ptr<LivingEntity> player) {
     if (Mth::abs((float)player->x - x) < 2 &&
         Mth::abs((float)player->z - z) < 2) {
         // If the player is above the block, the slot is on the top
@@ -482,9 +490,12 @@ bool PistonBaseTile::isPushable(int block, Level* level, int cx, int cy, int cz,
             return false;
         }
 
-        if (!allowDestroyable && Tile::tiles[block]->getPistonPushReaction() ==
-                                     Material::PUSH_DESTROY) {
-            return false;
+        if (Tile::tiles[block]->getPistonPushReaction() ==
+            Material::PUSH_DESTROY) {
+            if (!allowDestroyable) {
+                return false;
+            }
+            return true;
         }
     }
 
@@ -589,16 +600,16 @@ bool PistonBaseTile::createPush(Level* level, int sx, int sy, int sz,
             // this block is destroyed when pushed
             Tile::tiles[block]->spawnResources(level, cx, cy, cz,
                                                level->getData(cx, cy, cz), 0);
-            // setting the tile to air is actually superflous, but
-            // helps vs multiplayer problems
+            // setting the tile to air is actually superflous, but helps vs
+            // multiplayer problems
             stopSharingIfServer(level, cx, cy, cz);  // 4J added
-            level->setTile(cx, cy, cz, 0);
+            level->removeTile(cx, cy, cz);
             break;
         }
 
         if (i == MAX_PUSH_DEPTH) {
-            // we've reached the maximum push depth
-            // without finding air or a breakable block
+            // we've reached the maximum push depth without finding air or a
+            // breakable block
             return false;
         }
 
@@ -606,6 +617,12 @@ bool PistonBaseTile::createPush(Level* level, int sx, int sy, int sz,
         cy += Facing::STEP_Y[facing];
         cz += Facing::STEP_Z[facing];
     }
+
+    int ex = cx;
+    int ey = cy;
+    int ez = cz;
+    int count = 0;
+    int tiles[MAX_PUSH_DEPTH + 1];
 
     while (cx != sx || cy != sy || cz != sz) {
         int nx = cx - Facing::STEP_X[facing];
@@ -618,10 +635,10 @@ bool PistonBaseTile::createPush(Level* level, int sx, int sy, int sz,
         stopSharingIfServer(level, cx, cy, cz);  // 4J added
 
         if (block == id && nx == sx && ny == sy && nz == sz) {
-            level->setTileAndDataNoUpdate(
+            level->setTileAndData(
                 cx, cy, cz, Tile::pistonMovingPiece_Id,
                 facing | (isSticky ? PistonExtensionTile::STICKY_BIT : 0),
-                false);
+                Tile::UPDATE_NONE);
             level->setTileEntity(
                 cx, cy, cz,
                 PistonMovingPiece::newMovingPieceEntity(
@@ -629,12 +646,30 @@ bool PistonBaseTile::createPush(Level* level, int sx, int sy, int sz,
                     facing | (isSticky ? PistonExtensionTile::STICKY_BIT : 0),
                     facing, true, false));
         } else {
-            level->setTileAndDataNoUpdate(
-                cx, cy, cz, Tile::pistonMovingPiece_Id, data, false);
+            level->setTileAndData(cx, cy, cz, Tile::pistonMovingPiece_Id, data,
+                                  Tile::UPDATE_NONE);
             level->setTileEntity(cx, cy, cz,
                                  PistonMovingPiece::newMovingPieceEntity(
                                      block, data, facing, true, false));
         }
+        tiles[count++] = block;
+
+        cx = nx;
+        cy = ny;
+        cz = nz;
+    }
+
+    cx = ex;
+    cy = ey;
+    cz = ez;
+    count = 0;
+
+    while (cx != sx || cy != sy || cz != sz) {
+        int nx = cx - Facing::STEP_X[facing];
+        int ny = cy - Facing::STEP_Y[facing];
+        int nz = cz - Facing::STEP_Z[facing];
+
+        level->updateNeighborsAt(nx, ny, nz, tiles[count++]);
 
         cx = nx;
         cy = ny;

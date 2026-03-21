@@ -41,7 +41,7 @@ std::unordered_map<ChunkPos, bool, ChunkPosKeyHash, ChunkPosKeyEq>
 #endif
 
 const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
-                           bool spawnFriendlies) {
+                           bool spawnFriendlies, bool spawnPersistent) {
 #ifndef _CONTENT_PACKAGE
 
 #if 0
@@ -95,7 +95,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
 #endif
 #endif
 
-    if (!spawnEnemies && !spawnFriendlies) {
+    if (!spawnEnemies && !spawnFriendlies && !spawnPersistent) {
         return 0;
     }
     MemSect(20);
@@ -209,8 +209,16 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     for (unsigned int i = 0; i < MobCategory::values.length; i++) {
         MobCategory* mobCategory = MobCategory::values[i];
         if ((mobCategory->isFriendly() && !spawnFriendlies) ||
-            (!mobCategory->isFriendly() && !spawnEnemies)) {
+            (!mobCategory->isFriendly() && !spawnEnemies) ||
+            (mobCategory->isPersistent() && !spawnPersistent)) {
             continue;
+        }
+
+        // 4J - early out for non-main dimensions, if spawning anything friendly
+        if (mobCategory->isFriendly()) {
+            if (level->dimension->id != 0) {
+                continue;
+            }
         }
 
         // 4J - this is now quite different to the java version. We just have
@@ -259,6 +267,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                 int ss = 6;
 
                 Biome::MobSpawnerData* currentMobType = NULL;
+                MobGroupData* groupData = NULL;
 
                 for (int ll = 0; ll < 4; ll++) {
                     x +=
@@ -315,12 +324,12 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                         //(exception e)
                         //						   {
                         //							   //
-                        //TODO 4J We can't print a stack trace, and the
-                        //newInstance function doesn't throw an exception just
-                        //now anyway
+                        // TODO 4J We can't print a stack trace, and the
+                        // newInstance function doesn't throw an exception just
+                        // now anyway
                         //							   //e.printStackTrace();
                         //							   return
-                        //count;
+                        // count;
                         //						   }
 
                         // 4J - If it is an animal or a monster, don't let any
@@ -388,8 +397,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                                                              // against
                                                              // despawning
                                 level->addEntity(mob);
-                                finalizeMobSettings(mob, level, xx, yy, zz);
-                                mob->finalizeMobSpawn();
+                                groupData = mob->finalizeMobSpawn(groupData);
                                 // 4J - change here so that we can't ever make
                                 // more than the desired amount of entities in
                                 // each priority. In the original java version
@@ -470,170 +478,6 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
     }
 }
 
-void MobSpawner::finalizeMobSettings(std::shared_ptr<Mob> mob, Level* level,
-                                     float xx, float yy, float zz) {
-    if (std::dynamic_pointer_cast<Spider>(mob) != NULL &&
-        level->random->nextInt(100) == 0) {
-        std::shared_ptr<Skeleton> skeleton =
-            std::shared_ptr<Skeleton>(new Skeleton(level));
-        skeleton->moveTo(xx, yy, zz, mob->yRot, 0);
-        level->addEntity(skeleton);
-        skeleton->ride(mob);
-    } else if (std::dynamic_pointer_cast<Sheep>(mob) != NULL) {
-        (std::dynamic_pointer_cast<Sheep>(mob))
-            ->setColor(Sheep::getSheepColor(level->random));
-    } else if (std::dynamic_pointer_cast<Ozelot>(mob) != NULL) {
-        if (level->random->nextInt(7) == 0) {
-            for (int kitten = 0; kitten < 2; kitten++) {
-                std::shared_ptr<Ozelot> ozelot =
-                    std::shared_ptr<Ozelot>(new Ozelot(level));
-                ozelot->moveTo(xx, yy, zz, mob->yRot, 0);
-                ozelot->setAge(-20 * 60 * 20);
-                level->addEntity(ozelot);
-            }
-        }
-    }
-}
-
-// 4J Stu TODO This was an array of Class type. I haven't made a base Class type
-// yet, but don't need to as this can be an array of Mob type?
-eINSTANCEOF MobSpawner::bedEnemies[bedEnemyCount] = {eTYPE_SPIDER, eTYPE_ZOMBIE,
-                                                     eTYPE_SKELETON};
-
-bool MobSpawner::attackSleepingPlayers(
-    Level* level, std::vector<std::shared_ptr<Player> >* players) {
-    bool somebodyWokeUp = false;
-
-    PathFinder finder = PathFinder(level, true, false, false, true);
-
-    AUTO_VAR(itEnd, players->end());
-    for (AUTO_VAR(it, players->begin()); it != itEnd; it++) {
-        std::shared_ptr<Player> player = (*it);
-
-        bool nextPlayer = false;
-
-        for (int attemptCount = 0; attemptCount < 20 && !nextPlayer;
-             attemptCount++) {
-            // limit position within the range of the player
-            int x = Mth::floor(player->x) + level->random->nextInt(32) -
-                    level->random->nextInt(32);
-            int z = Mth::floor(player->z) + level->random->nextInt(32) -
-                    level->random->nextInt(32);
-            int yStart = Mth::floor(player->y) + level->random->nextInt(16) -
-                         level->random->nextInt(16);
-            if (yStart < 1) {
-                yStart = 1;
-            } else if (yStart > Level::maxBuildHeight) {
-                yStart = Level::maxBuildHeight;
-            }
-
-            {
-                int type = level->random->nextInt(bedEnemyCount);
-                int y = yStart;
-
-                while (y > 2 && !level->isTopSolidBlocking(x, y - 1, z)) {
-                    y--;
-                }
-
-                while (!isSpawnPositionOk((MobCategory*)MobCategory::monster,
-                                          level, x, y, z) &&
-                       y < (yStart + 16) && y < Level::maxBuildHeight) {
-                    y++;
-                }
-                if (y >= (yStart + 16) || y >= Level::maxBuildHeight) {
-                    y = yStart;
-                    continue;
-                } else {
-                    float xx = x + 0.5f;
-                    float yy = (float)y;
-                    float zz = z + 0.5f;
-
-                    std::shared_ptr<Mob> mob;
-                    // 4J - removed try/catch
-                    //					try
-                    //					{
-                    // mob =
-                    // classes[type].getConstructor(Level.class).newInstance(level);
-                    // 4J - there was a classes array here which duplicated the
-                    // bedEnemies array but have removed it
-                    mob = std::dynamic_pointer_cast<Mob>(
-                        EntityIO::newByEnumType(bedEnemies[type], level));
-                    //					}
-                    //					catch (exception e)
-                    //					{
-                    //						// TODO 4J Stu -
-                    //We can't print a stack trace, and newInstance doesn't
-                    //currently throw an exception anyway
-                    //						//e.printStackTrace();
-                    //						return
-                    //somebodyWokeUp;
-                    //					}
-
-                    // System.out.println("Placing night mob");
-                    mob->moveTo(xx, yy, zz, level->random->nextFloat() * 360,
-                                0);
-                    // check if the mob can spawn at this location
-                    if (!mob->canSpawn()) {
-                        continue;
-                    }
-                    Pos* bedPos = BedTile::findStandUpPosition(
-                        level, Mth::floor(player->x), Mth::floor(player->y),
-                        Mth::floor(player->z), 1);
-                    if (bedPos == NULL) {
-                        // an unlikely case where the bed is
-                        // completely blocked
-                        bedPos = new Pos(x, y + 1, z);
-                    }
-
-                    // 4J Stu - TU-1 hotfix
-                    // Fix for #13152 - If the player sleeps in a bed next to a
-                    // wall in an enclosed, well lit area they will be awoken by
-                    // a monster The pathfinder should attempt to get close to
-                    // the position that we will move the mob to, instead of the
-                    // player who could be next to a wall. Otherwise the paths
-                    // gets to the other side of the the wall, then moves the
-                    // mob inside the building
-                    // Path *findPath = finder.findPath(mob.get(),
-                    // player.get(), 32.0f);
-                    Path* findPath = finder.findPath(
-                        mob.get(), bedPos->x, bedPos->y, bedPos->z, 32.0f);
-                    if (findPath != NULL && findPath->getSize() > 1) {
-                        Node* last = findPath->last();
-
-                        if (abs(last->x - bedPos->x) < 1.5 &&
-                            abs(last->z - bedPos->z) < 1.5 &&
-                            abs(last->y - bedPos->y) < 1.5) {
-                            // System.out.println("Found path!");
-
-                            mob->moveTo(bedPos->x + 0.5f, bedPos->y,
-                                        bedPos->z + 0.5f, 0, 0);
-                            // the mob would maybe not be able to
-                            // spawn here, but we ignore that now (we assume
-                            // it walked here)
-                            {
-                                level->addEntity(mob);
-                                finalizeMobSettings(
-                                    mob, level, bedPos->x + 0.5f,
-                                    (float)bedPos->y, bedPos->z + 0.5f);
-                                mob->finalizeMobSpawn();
-                                player->stopSleepInBed(true, false, false);
-                                // play a sound effect to scare the player
-                                mob->playAmbientSound();
-                                somebodyWokeUp = true;
-                                nextPlayer = true;
-                            }
-                        }
-                        delete findPath;
-                    }
-                    delete bedPos;
-                }
-            }
-        }
-    }
-
-    return somebodyWokeUp;
-}
-
 void MobSpawner::postProcessSpawnMobs(Level* level, Biome* biome, int xo,
                                       int zo, int cellWidth, int cellHeight,
                                       Random* random) {
@@ -648,6 +492,7 @@ void MobSpawner::postProcessSpawnMobs(Level* level, Biome* biome, int xo,
 	while (random->nextFloat() < biome->getCreatureProbability())
 	{
 		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((std::vector<WeighedRandomItem *> *)mobs));
+		MobGroupData *groupData = NULL;
 		int count = type->minCount + random->nextInt(1 + type->maxCount - type->minCount);
 
 		int x = xo + random->nextInt(cellWidth);
@@ -682,7 +527,7 @@ void MobSpawner::postProcessSpawnMobs(Level* level, Biome* biome, int xo,
 					mob->setDespawnProtected();
 
 					level->addEntity(mob);
-					finalizeMobSettings(mob, level, xx, yy, zz);
+					groupData = mob->finalizeMobSpawn(groupData);
 					success = true;
 				}
 

@@ -6,6 +6,9 @@ class HugeMushroomTile : public Tile {
     friend class ChunkRebuildData;
 
 public:
+    static const int MUSHROOM_TYPE_BROWN = 0;
+    static const int MUSHROOM_TYPE_RED = 1;
+
     static const std::wstring TEXTURE_STEM;
     static const std::wstring TEXTURE_INSIDE;
 

@@ -52,8 +52,9 @@ private:
 public:
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     virtual int getResource(int data, Random* random, int playerBonusLevel);
-    virtual bool getDirectSignal(Level* level, int x, int y, int z, int dir);
-    virtual bool getSignal(LevelSource* level, int x, int y, int z, int dir);
+    virtual int getDirectSignal(LevelSource* level, int x, int y, int z,
+                                int dir);
+    virtual int getSignal(LevelSource* level, int x, int y, int z, int dir);
 
     virtual bool isSignalSource();
     virtual void animateTick(Level* level, int x, int y, int z, Random* random);

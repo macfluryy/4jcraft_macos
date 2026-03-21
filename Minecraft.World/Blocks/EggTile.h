@@ -23,7 +23,7 @@ private:
     void teleport(Level* level, int x, int y, int z);
 
 public:
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();

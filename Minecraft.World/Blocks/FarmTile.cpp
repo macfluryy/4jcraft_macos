@@ -38,14 +38,14 @@ Icon* FarmTile::getTexture(int face, int data) {
 
 void FarmTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (isNearWater(level, x, y, z) || level->isRainingAt(x, y + 1, z)) {
-        level->setData(x, y, z, 7);
+        level->setData(x, y, z, 7, Tile::UPDATE_CLIENTS);
     } else {
         int moisture = level->getData(x, y, z);
         if (moisture > 0) {
-            level->setData(x, y, z, moisture - 1);
+            level->setData(x, y, z, moisture - 1, Tile::UPDATE_CLIENTS);
         } else {
             if (!isUnderCrops(level, x, y, z)) {
-                level->setTile(x, y, z, Tile::dirt_Id);
+                level->setTileAndUpdate(x, y, z, Tile::dirt_Id);
             }
         }
     }
@@ -58,12 +58,17 @@ void FarmTile::fallOn(Level* level, int x, int y, int z,
     // the client based on random values!
     if (!level->isClientSide &&
         level->random->nextFloat() < (fallDistance - .5f)) {
-        // Fix for #60547 - TU7: Content: Gameplay: Players joining a game can
-        // destroy crops even with Trust Players option disabled.
-        std::shared_ptr<Player> player =
-            std::dynamic_pointer_cast<Player>(entity);
-        if (player == NULL || player->isAllowedToMine())
-            level->setTile(x, y, z, Tile::dirt_Id);
+        if (entity->instanceof(eTYPE_PLAYER)) {
+            std::shared_ptr<Player> player =
+                std::dynamic_pointer_cast<Player>(entity);
+            if (!player->isAllowedToMine()) {
+                return;
+            }
+        } else if (!level->getGameRules()->getBoolean(
+                       GameRules::RULE_MOBGRIEFING)) {
+            return;
+        }
+        level->setTileAndUpdate(x, y, z, Tile::dirt_Id);
     }
 }
 
@@ -72,7 +77,7 @@ bool FarmTile::isUnderCrops(Level* level, int x, int y, int z) {
     for (int xx = x - r; xx <= x + r; xx++)
         for (int zz = z - r; zz <= z + r; zz++) {
             int tile = level->getTile(xx, y + 1, zz);
-            if (tile == Tile::crops_Id || tile == Tile::melonStem_Id ||
+            if (tile == Tile::wheat_Id || tile == Tile::melonStem_Id ||
                 tile == Tile::pumpkinStem_Id || tile == Tile::potatoes_Id ||
                 tile == Tile::carrots_Id) {
                 return true;
@@ -96,7 +101,7 @@ void FarmTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     Tile::neighborChanged(level, x, y, z, type);
     Material* above = level->getMaterial(x, y + 1, z);
     if (above->isSolid()) {
-        level->setTile(x, y, z, Tile::dirt_Id);
+        level->setTileAndUpdate(x, y, z, Tile::dirt_Id);
     }
 }
 

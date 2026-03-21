@@ -29,6 +29,7 @@ public:
     virtual void onPlace(Level* level, int x, int y, int z);
     virtual bool mayPlace(Level* level, int x, int y, int z);
     virtual void setPlacedBy(Level* level, int x, int y, int z,
-                             std::shared_ptr<Mob> by);
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
     void registerIcons(IconRegister* iconRegister);
 };

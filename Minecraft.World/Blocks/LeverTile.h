@@ -18,6 +18,9 @@ public:
     virtual int getPlacedOnFaceDataValue(Level* level, int x, int y, int z,
                                          int face, float clickX, float clickY,
                                          float clickZ, int itemValue);
+    virtual void setPlacedBy(Level* level, int x, int y, int z,
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
     static int getLeverFacing(int facing);
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
 
@@ -29,15 +32,14 @@ public:
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
             TileEntity>());  // 4J added forceData, forceEntity param
-    virtual void attack(Level* level, int x, int y, int z,
-                        std::shared_ptr<Player> player);
     virtual bool TestUse();
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,
                      float clickX, float clickY, float clickZ,
                      bool soundOnly = false);  // 4J added soundOnly param
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);
-    virtual bool getSignal(LevelSource* level, int x, int y, int z, int dir);
-    virtual bool getDirectSignal(Level* level, int x, int y, int z, int dir);
+    virtual int getSignal(LevelSource* level, int x, int y, int z, int dir);
+    virtual int getDirectSignal(LevelSource* level, int x, int y, int z,
+                                int dir);
     virtual bool isSignalSource();
 };

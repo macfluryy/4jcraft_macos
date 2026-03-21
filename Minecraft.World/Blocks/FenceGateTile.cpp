@@ -59,9 +59,10 @@ bool FenceGateTile::isPathfindable(LevelSource* level, int x, int y, int z) {
 int FenceGateTile::getRenderShape() { return Tile::SHAPE_FENCE_GATE; }
 
 void FenceGateTile::setPlacedBy(Level* level, int x, int y, int z,
-                                std::shared_ptr<Mob> by) {
+                                std::shared_ptr<LivingEntity> by,
+                                std::shared_ptr<ItemInstance> itemInstance) {
     int dir = (((Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3)) % 4;
-    level->setData(x, y, z, dir);
+    level->setData(x, y, z, dir, Tile::UPDATE_CLIENTS);
 }
 
 bool FenceGateTile::use(Level* level, int x, int y, int z,
@@ -80,7 +81,7 @@ bool FenceGateTile::use(Level* level, int x, int y, int z,
 
     int data = level->getData(x, y, z);
     if (isOpen(data)) {
-        level->setData(x, y, z, data & ~OPEN_BIT);
+        level->setData(x, y, z, data & ~OPEN_BIT, Tile::UPDATE_CLIENTS);
     } else {
         // open the door from the player
         int dir = (((Mth::floor(player->yRot * 4 / (360) + 0.5)) & 3)) % 4;
@@ -88,7 +89,7 @@ bool FenceGateTile::use(Level* level, int x, int y, int z,
         if (current == ((dir + 2) % 4)) {
             data = dir;
         }
-        level->setData(x, y, z, data | OPEN_BIT);
+        level->setData(x, y, z, data | OPEN_BIT, Tile::UPDATE_CLIENTS);
     }
     level->levelEvent(player, LevelEvent::SOUND_OPEN_DOOR, x, y, z, 0);
     return true;
@@ -104,10 +105,10 @@ void FenceGateTile::neighborChanged(Level* level, int x, int y, int z,
     if (signal ||
         ((type > 0 && Tile::tiles[type]->isSignalSource()) || type == 0)) {
         if (signal && !isOpen(data)) {
-            level->setData(x, y, z, data | OPEN_BIT);
+            level->setData(x, y, z, data | OPEN_BIT, Tile::UPDATE_CLIENTS);
             level->levelEvent(nullptr, LevelEvent::SOUND_OPEN_DOOR, x, y, z, 0);
         } else if (!signal && isOpen(data)) {
-            level->setData(x, y, z, data & ~OPEN_BIT);
+            level->setData(x, y, z, data & ~OPEN_BIT, Tile::UPDATE_CLIENTS);
             level->levelEvent(nullptr, LevelEvent::SOUND_OPEN_DOOR, x, y, z, 0);
         }
     }

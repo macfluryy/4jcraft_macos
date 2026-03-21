@@ -9,7 +9,8 @@
 
 int BedTile::HEAD_DIRECTION_OFFSETS[4][2] = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
 
-BedTile::BedTile(int id) : DirectionalTile(id, Material::cloth, false) {
+BedTile::BedTile(int id)
+    : DirectionalTile(id, Material::cloth, false) {
     setShape();
 
     iconEnd = NULL;
@@ -64,7 +65,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
 
     int data = level->getData(x, y, z);
 
-    if (!BedTile::isHeadPiece(data)) {
+    if (!isHeadPiece(data)) {
         // fetch head piece instead
         int direction = getDirection(data);
         x += HEAD_DIRECTION_OFFSETS[direction][0];
@@ -75,16 +76,17 @@ bool BedTile::use(Level* level, int x, int y, int z,
         data = level->getData(x, y, z);
     }
 
-    if (!level->dimension->mayRespawn()) {
+    if (!level->dimension->mayRespawn() ||
+        level->getBiome(x, z) == Biome::hell) {
         double xc = x + 0.5;
         double yc = y + 0.5;
         double zc = z + 0.5;
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         int direction = getDirection(data);
         x += HEAD_DIRECTION_OFFSETS[direction][0];
         z += HEAD_DIRECTION_OFFSETS[direction][1];
         if (level->getTile(x, y, z) == id) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             xc = (xc + x + 0.5) / 2;
             yc = (yc + y + 0.5) / 2;
             zc = (zc + z + 0.5) / 2;
@@ -93,7 +95,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
         return true;
     }
 
-    if (BedTile::isOccupied(data)) {
+    if (isOccupied(data)) {
         std::shared_ptr<Player> sleepingPlayer = nullptr;
         AUTO_VAR(itEnd, level->players.end());
         for (AUTO_VAR(it, level->players.begin()); it != itEnd; it++) {
@@ -107,7 +109,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
         }
 
         if (sleepingPlayer == NULL) {
-            BedTile::setOccupied(level, x, y, z, false);
+            setOccupied(level, x, y, z, false);
         } else {
             player->displayClientMessage(IDS_TILE_BED_OCCUPIED);
 
@@ -117,7 +119,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
 
     Player::BedSleepingResult result = player->startSleepInBed(x, y, z);
     if (result == Player::OK) {
-        BedTile::setOccupied(level, x, y, z, true);
+        setOccupied(level, x, y, z, true);
         // 4J-PB added
         // are there multiple players in the same world as us?
         if (level->AllPlayersAreSleeping() == false) {
@@ -190,12 +192,12 @@ void BedTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (isHeadPiece(data)) {
         if (level->getTile(x - HEAD_DIRECTION_OFFSETS[direction][0], y,
                            z - HEAD_DIRECTION_OFFSETS[direction][1]) != id) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
         }
     } else {
         if (level->getTile(x + HEAD_DIRECTION_OFFSETS[direction][0], y,
                            z + HEAD_DIRECTION_OFFSETS[direction][1]) != id) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             if (!level->isClientSide) {
                 Tile::spawnResources(
                     level, x, y, z, data,
@@ -226,7 +228,7 @@ void BedTile::setOccupied(Level* level, int x, int y, int z, bool occupied) {
     } else {
         data = data & ~OCCUPIED_DATA;
     }
-    level->setData(x, y, z, data);
+    level->setData(x, y, z, data, Tile::UPDATE_NONE);
 }
 
 Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
@@ -236,10 +238,8 @@ Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
 
     // try to find a clear location near the bed
     for (int step = 0; step <= 1; step++) {
-        int startX =
-            x - BedTile::HEAD_DIRECTION_OFFSETS[direction][0] * step - 1;
-        int startZ =
-            z - BedTile::HEAD_DIRECTION_OFFSETS[direction][1] * step - 1;
+        int startX = x - HEAD_DIRECTION_OFFSETS[direction][0] * step - 1;
+        int startZ = z - HEAD_DIRECTION_OFFSETS[direction][1] * step - 1;
         int endX = startX + 2;
         int endZ = startZ + 2;
 
@@ -249,8 +249,9 @@ Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
                 // isEmpty for the blocks that we wish to place the player This
                 // allows the player to spawn in blocks with snow, grass etc
                 if (level->isTopSolidBlocking(standX, y - 1, standZ) &&
-                    !level->isSolidBlockingTile(standX, y, standZ) &&
-                    !level->isSolidBlockingTile(standX, y + 1, standZ)) {
+                    !level->getMaterial(standX, y, standZ)->isSolidBlocking() &&
+                    !level->getMaterial(standX, y + 1, standZ)
+                         ->isSolidBlocking()) {
                     if (skipCount > 0) {
                         skipCount--;
                         continue;
@@ -275,4 +276,18 @@ int BedTile::getPistonPushReaction() { return Material::PUSH_DESTROY; }
 
 int BedTile::cloneTileId(Level* level, int x, int y, int z) {
     return Item::bed_Id;
+}
+
+void BedTile::playerWillDestroy(Level* level, int x, int y, int z, int data,
+                                std::shared_ptr<Player> player) {
+    if (player->abilities.instabuild) {
+        if (isHeadPiece(data)) {
+            int direction = getDirection(data);
+            x -= HEAD_DIRECTION_OFFSETS[direction][0];
+            z -= HEAD_DIRECTION_OFFSETS[direction][1];
+            if (level->getTile(x, y, z) == id) {
+                level->removeTile(x, y, z);
+            }
+        }
+    }
 }

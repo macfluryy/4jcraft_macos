@@ -22,7 +22,7 @@ protected:
     virtual void falling(std::shared_ptr<FallingTile> entity);
 
 public:
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     static bool isFree(Level* level, int x, int y, int z);
     virtual void onLand(Level* level, int xt, int yt, int zt, int data);
 };

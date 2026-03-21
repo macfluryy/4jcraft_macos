@@ -18,8 +18,7 @@ LiquidTileDynamic::~LiquidTileDynamic() {
 
 void LiquidTileDynamic::setStatic(Level* level, int x, int y, int z) {
     int d = level->getData(x, y, z);
-    level->setTileAndDataNoUpdate(x, y, z, id + 1, d);
-    level->setTilesDirty(x, y, z, x, y, z);
+    level->setTileAndData(x, y, z, id + 1, d, Tile::UPDATE_CLIENTS);
 }
 
 bool LiquidTileDynamic::isPathfindable(LevelSource* level, int x, int y,
@@ -31,12 +30,15 @@ void LiquidTileDynamic::iterativeTick(Level* level, int x, int y, int z,
                                       Random* random) {
     m_tilesToTick.push_back(LiquidTickData(level, x, y, z, random));
 
-    while (m_tilesToTick.size() > 0) {
+    int failsafe = 100;
+    while ((m_tilesToTick.size() > 0) && (failsafe > 0)) {
         LiquidTickData tickData = m_tilesToTick.front();
         m_tilesToTick.pop_front();
         mainTick(tickData.level, tickData.x, tickData.y, tickData.z,
                  tickData.random);
+        failsafe--;
     }
+    m_tilesToTick.clear();
 }
 
 void LiquidTileDynamic::tick(Level* level, int x, int y, int z,
@@ -63,6 +65,7 @@ void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
     if (material == Material::lava && !level->dimension->ultraWarm) dropOff = 2;
 
     bool becomeStatic = true;
+    int tickDelay = getTickDelay(level);
     if (depth > 0) {
         int highest = -100;
         maxCount = 0;
@@ -96,8 +99,7 @@ void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
             if (depth < 8 && newDepth < 8) {
                 if (newDepth > depth) {
                     if (random->nextInt(4) != 0) {
-                        newDepth = depth;
-                        becomeStatic = false;
+                        tickDelay = tickDelay * 4;
                     }
                 }
             }
@@ -109,10 +111,10 @@ void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
         } else {
             depth = newDepth;
             if (depth < 0) {
-                level->setTile(x, y, z, 0);
+                level->removeTile(x, y, z);
             } else {
-                level->setData(x, y, z, depth);
-                level->addToTickNextTick(x, y, z, id, getTickDelay());
+                level->setData(x, y, z, depth, Tile::UPDATE_CLIENTS);
+                level->addToTickNextTick(x, y, z, id, tickDelay);
                 level->updateNeighborsAt(x, y, z, id);
             }
         }
@@ -122,7 +124,7 @@ void LiquidTileDynamic::mainTick(Level* level, int x, int y, int z,
     if (canSpreadTo(level, x, y - 1, z)) {
         if (material == Material::lava) {
             if (level->getMaterial(x, y - 1, z) == Material::water) {
-                level->setTile(x, y - 1, z, Tile::rock_Id);
+                level->setTileAndUpdate(x, y - 1, z, Tile::stone_Id);
                 fizz(level, x, y - 1, z);
                 return;
             }
@@ -161,7 +163,7 @@ void LiquidTileDynamic::trySpreadTo(Level* level, int x, int y, int z,
                 }
             }
         }
-        level->setTileAndData(x, y, z, id, neighbor);
+        level->setTileAndData(x, y, z, id, neighbor, Tile::UPDATE_ALL);
     }
 }
 
@@ -288,6 +290,8 @@ bool LiquidTileDynamic::canSpreadTo(Level* level, int x, int y, int z) {
 void LiquidTileDynamic::onPlace(Level* level, int x, int y, int z) {
     LiquidTile::onPlace(level, x, y, z);
     if (level->getTile(x, y, z) == id) {
-        level->addToTickNextTick(x, y, z, id, getTickDelay());
+        level->addToTickNextTick(x, y, z, id, getTickDelay(level));
     }
 }
+
+bool LiquidTileDynamic::canInstantlyTick() { return true; }

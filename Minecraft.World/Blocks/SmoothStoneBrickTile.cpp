@@ -3,8 +3,7 @@
 #include "../Headers/net.minecraft.world.h"
 
 const std::wstring SmoothStoneBrickTile::TEXTURE_NAMES[] = {
-    L"stonebricksmooth", L"stonebricksmooth_mossy", L"stonebricksmooth_cracked",
-    L"stonebricksmooth_carved"};
+    L"", L"mossy", L"cracked", L"carved"};
 
 const unsigned int SmoothStoneBrickTile::SMOOTH_STONE_BRICK_NAMES
     [SMOOTH_STONE_BRICK_NAMES_LENGTH] = {IDS_TILE_STONE_BRICK_SMOOTH,
@@ -32,6 +31,8 @@ void SmoothStoneBrickTile::registerIcons(IconRegister* iconRegister) {
     icons = new Icon*[SMOOTH_STONE_BRICK_NAMES_LENGTH];
 
     for (int i = 0; i < SMOOTH_STONE_BRICK_NAMES_LENGTH; i++) {
-        icons[i] = iconRegister->registerIcon(TEXTURE_NAMES[i]);
+        std::wstring name = getIconName();
+        if (!TEXTURE_NAMES[i].empty()) name += L"_" + TEXTURE_NAMES[i];
+        icons[i] = iconRegister->registerIcon(name);
     }
 }

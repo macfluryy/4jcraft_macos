@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "../Util/JavaMath.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.dimension.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "../Headers/net.minecraft.world.h"
 #include "LiquidTile.h"
@@ -12,7 +13,8 @@ const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
 const std::wstring LiquidTile::TEXTURE_WATER_FLOW = L"water_flow";
 const std::wstring LiquidTile::TEXTURE_LAVA_FLOW = L"lava_flow";
 
-LiquidTile::LiquidTile(int id, Material* material) : Tile(id, material, false) {
+LiquidTile::LiquidTile(int id, Material* material)
+    : Tile(id, material, false) {
     float yo = 0;
     float e = 0;
 
@@ -89,7 +91,7 @@ bool LiquidTile::mayPick(int data, bool liquid) { return liquid && data == 0; }
 bool LiquidTile::isSolidFace(LevelSource* level, int x, int y, int z,
                              int face) {
     Material* m = level->getMaterial(x, y, z);
-    if (m == this->material) return false;
+    if (m == material) return false;
     if (face == Facing::UP) return true;
     if (m == Material::ice) return false;
 
@@ -99,7 +101,7 @@ bool LiquidTile::isSolidFace(LevelSource* level, int x, int y, int z,
 bool LiquidTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
                                   int face) {
     Material* m = level->getMaterial(x, y, z);
-    if (m == this->material) return false;
+    if (m == material) return false;
     if (face == Facing::UP) return true;
     if (m == Material::ice) return false;
     return Tile::shouldRenderFace(level, x, y, z, face);
@@ -170,9 +172,15 @@ void LiquidTile::handleEntityInside(Level* level, int x, int y, int z,
     current->z += flow->z;
 }
 
-int LiquidTile::getTickDelay() {
+int LiquidTile::getTickDelay(Level* level) {
     if (material == Material::water) return 5;
-    if (material == Material::lava) return 30;
+    if (material == Material::lava) {
+        if (level->dimension->hasCeiling) {
+            return 10;
+        } else {
+            return 30;
+        }
+    }
     return 0;
 }
 
@@ -213,8 +221,8 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
         }
         // 4J-PB - this loop won't run!
         for (int i = 0; i < 0; i++) {  // This was an attempt to add foam to
-                                       // the bottoms of waterfalls. It
-                                       // didn't went ok.
+            // the bottoms of waterfalls. It
+            // didn't went ok.
             int dir = random->nextInt(4);
             int xt = x;
             int zt = z;
@@ -252,7 +260,7 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
             level->playLocalSound(x + 0.5f, y + 0.5f, z + 0.5f,
                                   eSoundType_LIQUID_WATER,
                                   random->nextFloat() * 0.25f + 0.75f,
-                                  random->nextFloat() * 1.0f + 0.5f);
+                                  random->nextFloat() * 1.0f + 0.5f, false);
         }
     }
     if (material == Material::lava) {
@@ -268,13 +276,15 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
                 // 4J - new sound brought forward from 1.2.3
                 level->playLocalSound(xx, yy, zz, eSoundType_LIQUID_LAVA_POP,
                                       0.2f + random->nextFloat() * 0.2f,
-                                      0.9f + random->nextFloat() * 0.15f);
+                                      0.9f + random->nextFloat() * 0.15f,
+                                      false);
             }
             // 4J - new sound brought forward from 1.2.3
             if (random->nextInt(200) == 0) {
                 level->playLocalSound(x, y, z, eSoundType_LIQUID_LAVA,
                                       0.2f + random->nextFloat() * 0.2f,
-                                      0.9f + random->nextFloat() * 0.15f);
+                                      0.9f + random->nextFloat() * 0.15f,
+                                      false);
             }
         }
     }
@@ -331,9 +341,9 @@ void LiquidTile::updateLiquid(Level* level, int x, int y, int z) {
         if (water) {
             int data = level->getData(x, y, z);
             if (data == 0) {
-                level->setTile(x, y, z, Tile::obsidian_Id);
+                level->setTileAndUpdate(x, y, z, Tile::obsidian_Id);
             } else if (data <= 4) {
-                level->setTile(x, y, z, Tile::stoneBrick_Id);
+                level->setTileAndUpdate(x, y, z, Tile::cobblestone_Id);
             }
             fizz(level, x, y, z);
         }

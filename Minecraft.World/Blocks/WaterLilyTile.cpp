@@ -11,14 +11,14 @@ WaterlilyTile::WaterlilyTile(int id) : Bush(id) { this->updateDefaultShape(); }
 void WaterlilyTile::updateDefaultShape() {
     float ss = 0.5f;
     float hh = 0.25f / 16.0f;
-    this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, hh, 0.5f + ss);
+    setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, hh, 0.5f + ss);
 }
 
 int WaterlilyTile::getRenderShape() { return Tile::SHAPE_LILYPAD; }
 
 void WaterlilyTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
                              AABBList* boxes, std::shared_ptr<Entity> source) {
-    if (source == NULL || !(std::dynamic_pointer_cast<Boat>(source))) {
+    if (source == NULL || !source->instanceof(eTYPE_BOAT)) {
         Bush::addAABBs(level, x, y, z, box, boxes, source);
     }
 }

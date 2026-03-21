@@ -8,7 +8,7 @@
 #include "EnderChestTile.h"
 
 EnderChestTile::EnderChestTile(int id)
-    : EntityTile(id, Material::stone, false) {
+    : BaseEntityTile(id, Material::stone, false) {
     updateDefaultShape();
 }
 
@@ -33,7 +33,8 @@ int EnderChestTile::getResourceCount(Random* random) { return 8; }
 bool EnderChestTile::isSilkTouchable() { return true; }
 
 void EnderChestTile::setPlacedBy(Level* level, int x, int y, int z,
-                                 std::shared_ptr<Mob> by) {
+                                 std::shared_ptr<LivingEntity> by,
+                                 std::shared_ptr<ItemInstance> itemInstance) {
     int facing = 0;
     int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5f)) & 3;
 
@@ -42,7 +43,7 @@ void EnderChestTile::setPlacedBy(Level* level, int x, int y, int z,
     if (dir == 2) facing = Facing::SOUTH;
     if (dir == 3) facing = Facing::WEST;
 
-    level->setData(x, y, z, facing);
+    level->setData(x, y, z, facing, Tile::UPDATE_CLIENTS);
 }
 
 bool EnderChestTile::use(Level* level, int x, int y, int z,

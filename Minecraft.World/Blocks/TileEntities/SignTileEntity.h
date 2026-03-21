@@ -27,6 +27,7 @@ public:
 
 public:
 private:
+    std::shared_ptr<Player> playerWhoMayEdit;
     bool _isEditable;
     bool m_bVerified;
     bool m_bCensored;
@@ -40,6 +41,8 @@ public:
     virtual std::shared_ptr<Packet> getUpdatePacket();
     bool isEditable();
     void setEditable(bool isEditable);
+    void setAllowedPlayerEditor(std::shared_ptr<Player> player);
+    std::shared_ptr<Player> getPlayerWhoMayEdit();
     virtual void setChanged();
     static int StringVerifyCallback(void* lpParam,
                                     STRING_VERIFY_RESPONSE* pResults);

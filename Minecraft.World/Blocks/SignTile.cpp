@@ -6,7 +6,7 @@
 #include "SignTile.h"
 
 SignTile::SignTile(int id, eINSTANCEOF clas, bool onGround)
-    : EntityTile(id, Material::wood, false) {
+    : BaseEntityTile(id, Material::wood, false) {
     this->onGround = onGround;
     this->clas = clas;
     updateDefaultShape();
@@ -26,7 +26,7 @@ AABB* SignTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
 
 AABB* SignTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
-    return EntityTile::getTileAABB(level, x, y, z);
+    return BaseEntityTile::getTileAABB(level, x, y, z);
 }
 
 void SignTile::updateShape(
@@ -97,10 +97,10 @@ void SignTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     }
     if (remove) {
         spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 
-    EntityTile::neighborChanged(level, x, y, z, type);
+    BaseEntityTile::neighborChanged(level, x, y, z, type);
 }
 
 int SignTile::cloneTileId(Level* level, int x, int y, int z) {

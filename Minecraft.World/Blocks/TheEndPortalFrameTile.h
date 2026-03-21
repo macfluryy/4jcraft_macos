@@ -23,5 +23,9 @@ public:
     static bool hasEye(int data);
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual void setPlacedBy(Level* level, int x, int y, int z,
-                             std::shared_ptr<Mob> by);
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
+    virtual bool hasAnalogOutputSignal();
+    virtual int getAnalogOutputSignal(Level* level, int x, int y, int z,
+                                      int dir);
 };

@@ -6,16 +6,6 @@
 #include "../Headers/net.minecraft.stats.h"
 #include "../Util/Facing.h"
 
-/*package net.minecraft.world.level.tile;
-
-import java.util.*;
-
-import net.minecraft.Facing;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.AABB;*/
-
 HalfSlabTile::HalfSlabTile(int id, bool fullSize, Material* material)
     : Tile(id, material, fullSize) {
     this->fullSize = fullSize;
@@ -118,4 +108,21 @@ bool HalfSlabTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
 
 bool HalfSlabTile::isHalfSlab(int tileId) {
     return tileId == Tile::stoneSlabHalf_Id || tileId == Tile::woodSlabHalf_Id;
+}
+
+int HalfSlabTile::cloneTileData(Level* level, int x, int y, int z) {
+    return Tile::cloneTileData(level, x, y, z) & TYPE_MASK;
+}
+
+int HalfSlabTile::cloneTileId(Level* level, int x, int y, int z) {
+    if (isHalfSlab(id)) {
+        return id;
+    }
+    if (id == Tile::stoneSlab_Id) {
+        return Tile::stoneSlabHalf_Id;
+    }
+    if (id == Tile::woodSlab_Id) {
+        return Tile::woodSlabHalf_Id;
+    }
+    return Tile::stoneSlabHalf_Id;
 }

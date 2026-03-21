@@ -6,7 +6,7 @@
 #include <pthread.h>
 #endif
 
-class TheEndPortal : public EntityTile {
+class TheEndPortal : public BaseEntityTile {
 public:
 #if defined(_WIN32)
     using TlsKey = std::uint32_t;

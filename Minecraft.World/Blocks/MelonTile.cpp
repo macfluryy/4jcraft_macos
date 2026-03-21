@@ -4,9 +4,6 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Util/Facing.h"
 
-const std::wstring MelonTile::TEX = L"melon_side";
-const std::wstring MelonTile::TEX_TOP = L"melon_top";
-
 MelonTile::MelonTile(int id) : Tile(id, Material::vegetable) { iconTop = NULL; }
 
 Icon* MelonTile::getTexture(int face, int data) {
@@ -31,6 +28,6 @@ int MelonTile::getResourceCountForLootBonus(int bonusLevel, Random* random) {
 }
 
 void MelonTile::registerIcons(IconRegister* iconRegister) {
-    icon = iconRegister->registerIcon(TEX);
-    iconTop = iconRegister->registerIcon(TEX_TOP);
+    icon = iconRegister->registerIcon(getIconName() + L"_side");
+    iconTop = iconRegister->registerIcon(getIconName() + L"_top");
 }

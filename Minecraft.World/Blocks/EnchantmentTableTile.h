@@ -1,8 +1,8 @@
 #pragma once
-#include "TileEntities/EntityTile.h"
+#include "BaseEntityTile.h"
 
 class ChunkRebuildData;
-class EnchantmentTableTile : public EntityTile {
+class EnchantmentTableTile : public BaseEntityTile {
     friend class ChunkRebuildData;
 
 public:
@@ -18,14 +18,17 @@ public:
     EnchantmentTableTile(int id);
 
     virtual void updateDefaultShape();  // 4J Added override
-    bool isCubeShaped();
-    void animateTick(Level* level, int x, int y, int z, Random* random);
-    bool isSolidRender(bool isServerLevel = false);
-    Icon* getTexture(int face, int data);
-    std::shared_ptr<TileEntity> newTileEntity(Level* level);
-    bool use(Level* level, int x, int y, int z, std::shared_ptr<Player> player,
-             int clickedFace, float clickX, float clickY, float clickZ,
-             bool soundOnly = false);  // 4J added soundOnly param
-    //@Override
-    void registerIcons(IconRegister* iconRegister);
+    virtual bool isCubeShaped();
+    virtual void animateTick(Level* level, int x, int y, int z, Random* random);
+    virtual bool isSolidRender(bool isServerLevel = false);
+    virtual Icon* getTexture(int face, int data);
+    virtual std::shared_ptr<TileEntity> newTileEntity(Level* level);
+    virtual bool use(Level* level, int x, int y, int z,
+                     std::shared_ptr<Player> player, int clickedFace,
+                     float clickX, float clickY, float clickZ,
+                     bool soundOnly = false);  // 4J added soundOnly param
+    virtual void setPlacedBy(Level* level, int x, int y, int z,
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
+    virtual void registerIcons(IconRegister* iconRegister);
 };

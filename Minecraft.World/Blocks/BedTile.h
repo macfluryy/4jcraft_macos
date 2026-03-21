@@ -58,4 +58,6 @@ public:
                                 float odds, int playerBonus);
     virtual int getPistonPushReaction();
     virtual int cloneTileId(Level* level, int x, int y, int z);
+    virtual void playerWillDestroy(Level* level, int x, int y, int z, int data,
+                                   std::shared_ptr<Player> player);
 };

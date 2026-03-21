@@ -37,7 +37,7 @@ void MycelTile::tick(Level* level, int x, int y, int z, Random* random) {
 
     if (level->getRawBrightness(x, y + 1, z) < MIN_BRIGHTNESS &&
         Tile::lightBlock[level->getTile(x, y + 1, z)] > 2) {
-        level->setTile(x, y, z, Tile::dirt_Id);
+        level->setTileAndUpdate(x, y, z, Tile::dirt_Id);
     } else {
         if (level->getRawBrightness(x, y + 1, z) >= Level::MAX_BRIGHTNESS - 6) {
             for (int i = 0; i < 4; i++) {
@@ -48,7 +48,7 @@ void MycelTile::tick(Level* level, int x, int y, int z, Random* random) {
                 if (level->getTile(xt, yt, zt) == Tile::dirt_Id &&
                     level->getRawBrightness(xt, yt + 1, zt) >= MIN_BRIGHTNESS &&
                     Tile::lightBlock[above] <= 2) {
-                    level->setTile(xt, yt, zt, id);
+                    level->setTileAndUpdate(xt, yt, zt, id);
                 }
             }
         }

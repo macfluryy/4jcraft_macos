@@ -13,11 +13,11 @@ HeavyTile::HeavyTile(int type, Material* material, bool isSolidRender)
     : Tile(type, material, isSolidRender) {}
 
 void HeavyTile::onPlace(Level* level, int x, int y, int z) {
-    level->addToTickNextTick(x, y, z, id, getTickDelay());
+    level->addToTickNextTick(x, y, z, id, getTickDelay(level));
 }
 
 void HeavyTile::neighborChanged(Level* level, int x, int y, int z, int type) {
-    level->addToTickNextTick(x, y, z, id, getTickDelay());
+    level->addToTickNextTick(x, y, z, id, getTickDelay(level));
 }
 
 void HeavyTile::tick(Level* level, int x, int y, int z, Random* random) {
@@ -35,16 +35,16 @@ void HeavyTile::checkSlide(Level* level, int x, int y, int z) {
 
         if (instaFall ||
             !level->hasChunksAt(x - r, y - r, z - r, x + r, y + r, z + r)) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             while (isFree(level, x, y - 1, z) && y > 0) y--;
             if (y > 0) {
-                level->setTile(x, y, z, id);
+                level->setTileAndUpdate(x, y, z, id);
             }
         } else if (!level->isClientSide) {
             // 4J added - don't do anything just now if we can't create any new
             // falling tiles
             if (!level->newFallingTileAllowed()) {
-                level->addToTickNextTick(x, y, z, id, getTickDelay());
+                level->addToTickNextTick(x, y, z, id, getTickDelay(level));
                 return;
             }
 
@@ -59,7 +59,7 @@ void HeavyTile::checkSlide(Level* level, int x, int y, int z) {
 
 void HeavyTile::falling(std::shared_ptr<FallingTile> entity) {}
 
-int HeavyTile::getTickDelay() { return 5; }
+int HeavyTile::getTickDelay(Level* level) { return 2; }
 
 bool HeavyTile::isFree(Level* level, int x, int y, int z) {
     int t = level->getTile(x, y, z);

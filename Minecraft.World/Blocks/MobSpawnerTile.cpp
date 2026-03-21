@@ -4,7 +4,7 @@
 #include "MobSpawnerTile.h"
 
 MobSpawnerTile::MobSpawnerTile(int id)
-    : EntityTile(id, Material::stone, false) {}
+    : BaseEntityTile(id, Material::stone, false) {}
 
 std::shared_ptr<TileEntity> MobSpawnerTile::newTileEntity(Level* level) {
     return std::shared_ptr<MobSpawnerTileEntity>(new MobSpawnerTileEntity());

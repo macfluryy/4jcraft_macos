@@ -45,8 +45,9 @@ public:
     virtual bool isCubeShaped();
     virtual int getRenderShape();
     virtual int getResourceCount(Random* random);
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     virtual void tick(Level* level, int x, int y, int z, Random* random);
+    virtual bool canInstantlyTick();
 
 private:
     void checkBurnOut(Level* level, int x, int y, int z, int chance,

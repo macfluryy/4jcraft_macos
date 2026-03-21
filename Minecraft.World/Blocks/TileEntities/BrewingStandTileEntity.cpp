@@ -2,18 +2,39 @@
 #include "../../Headers/com.mojang.nbt.h"
 #include "BrewingStandTileEntity.h"
 #include "../../Util/SharedConstants.h"
+#include "../../Headers/net.minecraft.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.item.alchemy.h"
 
+int slotsForUp[] = {BrewingStandTileEntity::INGREDIENT_SLOT};
+int slotsForOtherFaces[] = {0, 1, 2};
+
+intArray BrewingStandTileEntity::SLOTS_FOR_UP = intArray(slotsForUp, 1);
+intArray BrewingStandTileEntity::SLOTS_FOR_OTHER_FACES =
+    intArray(slotsForOtherFaces, 3);
+
 BrewingStandTileEntity::BrewingStandTileEntity() {
     brewTime = 0;
     items = ItemInstanceArray(4);
+    name = L"";
 }
 
 BrewingStandTileEntity::~BrewingStandTileEntity() { delete[] items.data; }
 
-int BrewingStandTileEntity::getName() { return IDS_TILE_BREWINGSTAND; }
+std::wstring BrewingStandTileEntity::getName() {
+    return hasCustomName() ? name : app.GetString(IDS_TILE_BREWINGSTAND);
+}
+
+std::wstring BrewingStandTileEntity::getCustomName() {
+    return hasCustomName() ? name : L"";
+}
+
+bool BrewingStandTileEntity::hasCustomName() { return !name.empty(); }
+
+void BrewingStandTileEntity::setCustomName(const std::wstring& name) {
+    this->name = name;
+}
 
 unsigned int BrewingStandTileEntity::getContainerSize() { return items.length; }
 
@@ -41,7 +62,7 @@ void BrewingStandTileEntity::tick() {
     int newCount = getPotionBits();
     if (newCount != lastPotionCount) {
         lastPotionCount = newCount;
-        level->setData(x, y, z, newCount);
+        level->setData(x, y, z, newCount, Tile::UPDATE_CLIENTS);
     }
 
     TileEntity::tick();
@@ -106,7 +127,7 @@ bool BrewingStandTileEntity::isBrewable() {
     } else {
         if (!Item::items[ingredient->id]->hasPotionBrewingFormula() &&
             ingredient->id != Item::bucket_water_Id &&
-            ingredient->id != Item::netherStalkSeeds_Id) {
+            ingredient->id != Item::netherwart_seeds_Id) {
             return false;
         }
         bool isWater = ingredient->id == Item::bucket_water_Id;
@@ -220,7 +241,7 @@ int BrewingStandTileEntity::applyIngredient(
             return PotionBrewing::applyBrew(currentBrew,
                                             PotionBrewing::MOD_WATER);
         }
-        if (ingredient->id == Item::netherStalkSeeds_Id) {
+        if (ingredient->id == Item::netherwart_seeds_Id) {
             return PotionBrewing::stirr(currentBrew);
         }
 #endif
@@ -236,18 +257,19 @@ int BrewingStandTileEntity::applyIngredient(
 void BrewingStandTileEntity::load(CompoundTag* base) {
     TileEntity::load(base);
 
-    ListTag<Tag>* inventoryList = base->getList(L"Items");
-
+    ListTag<CompoundTag>* inventoryList =
+        (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
     items = ItemInstanceArray(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
-        CompoundTag* tag = (CompoundTag*)inventoryList->get(i);
+        CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot");
         if (slot >= 0 && slot < items.length)
             items[slot] = ItemInstance::fromTag(tag);
     }
 
     brewTime = base->getShort(L"BrewTime");
+    if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
 }
 
 void BrewingStandTileEntity::save(CompoundTag* base) {
@@ -265,6 +287,7 @@ void BrewingStandTileEntity::save(CompoundTag* base) {
         }
     }
     base->put(L"Items", listTag);
+    if (hasCustomName()) base->putString(L"CustomName", name);
 }
 
 std::shared_ptr<ItemInstance> BrewingStandTileEntity::getItem(
@@ -319,7 +342,10 @@ void BrewingStandTileEntity::setItem(unsigned int slot,
     }
 }
 
-int BrewingStandTileEntity::getMaxStackSize() { return 1; }
+int BrewingStandTileEntity::getMaxStackSize() {
+    // this value is not used for the potion slots
+    return 64;
+}
 
 bool BrewingStandTileEntity::stillValid(std::shared_ptr<Player> player) {
     if (level->getTileEntity(x, y, z) != shared_from_this()) return false;
@@ -331,7 +357,22 @@ void BrewingStandTileEntity::startOpen() {}
 
 void BrewingStandTileEntity::stopOpen() {}
 
-void BrewingStandTileEntity::setBrewTime(int value) { this->brewTime = value; }
+bool BrewingStandTileEntity::canPlaceItem(int slot,
+                                          std::shared_ptr<ItemInstance> item) {
+    if (slot == INGREDIENT_SLOT) {
+        if (PotionBrewing::SIMPLIFIED_BREWING) {
+            return Item::items[item->id]->hasPotionBrewingFormula();
+        } else {
+            return Item::items[item->id]->hasPotionBrewingFormula() ||
+                   item->id == Item::netherwart_seeds_Id ||
+                   item->id == Item::bucket_water_Id;
+        }
+    }
+
+    return item->id == Item::potion_Id || item->id == Item::glassBottle_Id;
+}
+
+void BrewingStandTileEntity::setBrewTime(int value) { brewTime = value; }
 
 int BrewingStandTileEntity::getPotionBits() {
     int newCount = 0;
@@ -341,6 +382,24 @@ int BrewingStandTileEntity::getPotionBits() {
         }
     }
     return newCount;
+}
+
+intArray BrewingStandTileEntity::getSlotsForFace(int face) {
+    if (face == Facing::UP) {
+        return SLOTS_FOR_UP;
+    }
+
+    return SLOTS_FOR_OTHER_FACES;
+}
+
+bool BrewingStandTileEntity::canPlaceItemThroughFace(
+    int slot, std::shared_ptr<ItemInstance> item, int face) {
+    return canPlaceItem(slot, item);
+}
+
+bool BrewingStandTileEntity::canTakeItemThroughFace(
+    int slot, std::shared_ptr<ItemInstance> item, int face) {
+    return true;
 }
 
 // 4J Added

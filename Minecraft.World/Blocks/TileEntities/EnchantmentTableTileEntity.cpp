@@ -16,9 +16,20 @@ EnchantmentTableEntity::EnchantmentTableEntity() {
     rot = 0.0f;
     oRot = 0.0f;
     tRot = 0.0f;
+    name = L"";
 }
 
 EnchantmentTableEntity::~EnchantmentTableEntity() { delete random; }
+
+void EnchantmentTableEntity::save(CompoundTag* base) {
+    TileEntity::save(base);
+    if (hasCustomName()) base->putString(L"CustomName", name);
+}
+
+void EnchantmentTableEntity::load(CompoundTag* base) {
+    TileEntity::load(base);
+    if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
+}
 
 void EnchantmentTableEntity::tick() {
     TileEntity::tick();
@@ -70,6 +81,20 @@ void EnchantmentTableEntity::tick() {
     flipA += (diff - flipA) * 0.9f;
 
     flip = flip + flipA;
+}
+
+std::wstring EnchantmentTableEntity::getName() {
+    return hasCustomName() ? name : app.GetString(IDS_ENCHANT);
+}
+
+std::wstring EnchantmentTableEntity::getCustomName() {
+    return hasCustomName() ? name : L"";
+}
+
+bool EnchantmentTableEntity::hasCustomName() { return !name.empty(); }
+
+void EnchantmentTableEntity::setCustomName(const std::wstring& name) {
+    this->name = name;
 }
 
 std::shared_ptr<TileEntity> EnchantmentTableEntity::clone() {

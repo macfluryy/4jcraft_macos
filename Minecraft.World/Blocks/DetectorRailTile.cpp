@@ -1,5 +1,7 @@
 #include "../Platform/stdafx.h"
+#include "../Headers/net.minecraft.world.inventory.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.entity.item.h"
 #include "../Headers/net.minecraft.world.phys.h"
@@ -7,12 +9,12 @@
 #include "DetectorRailTile.h"
 #include "../Headers/net.minecraft.h"
 
-DetectorRailTile::DetectorRailTile(int id) : RailTile(id, true) {
+DetectorRailTile::DetectorRailTile(int id) : BaseRailTile(id, true) {
     setTicking(true);
     icons = NULL;
 }
 
-int DetectorRailTile::getTickDelay() { return 20; }
+int DetectorRailTile::getTickDelay(Level* level) { return 20; }
 
 bool DetectorRailTile::isSignalSource() { return true; }
 
@@ -41,15 +43,19 @@ void DetectorRailTile::tick(Level* level, int x, int y, int z, Random* random) {
     checkPressed(level, x, y, z, data);
 }
 
-bool DetectorRailTile::getSignal(LevelSource* level, int x, int y, int z,
-                                 int dir) {
-    return (level->getData(x, y, z) & RAIL_DATA_BIT) != 0;
+int DetectorRailTile::getSignal(LevelSource* level, int x, int y, int z,
+                                int dir) {
+    return (level->getData(x, y, z) & RAIL_DATA_BIT) != 0
+               ? Redstone::SIGNAL_MAX
+               : Redstone::SIGNAL_NONE;
 }
 
-bool DetectorRailTile::getDirectSignal(Level* level, int x, int y, int z,
-                                       int facing) {
-    if ((level->getData(x, y, z) & RAIL_DATA_BIT) == 0) return false;
-    return (facing == Facing::UP);
+int DetectorRailTile::getDirectSignal(LevelSource* level, int x, int y, int z,
+                                      int facing) {
+    if ((level->getData(x, y, z) & RAIL_DATA_BIT) == 0)
+        return Redstone::SIGNAL_NONE;
+    return (facing == Facing::UP) ? Redstone::SIGNAL_MAX
+                                  : Redstone::SIGNAL_NONE;
 }
 
 void DetectorRailTile::checkPressed(Level* level, int x, int y, int z,
@@ -66,23 +72,54 @@ void DetectorRailTile::checkPressed(Level* level, int x, int y, int z,
     }
 
     if (shouldBePressed && !wasPressed) {
-        level->setData(x, y, z, currentData | RAIL_DATA_BIT);
+        level->setData(x, y, z, currentData | RAIL_DATA_BIT, Tile::UPDATE_ALL);
         level->updateNeighborsAt(x, y, z, id);
         level->updateNeighborsAt(x, y - 1, z, id);
         level->setTilesDirty(x, y, z, x, y, z);
     }
     if (!shouldBePressed && wasPressed) {
-        level->setData(x, y, z, currentData & RAIL_DIRECTION_MASK);
+        level->setData(x, y, z, currentData & RAIL_DIRECTION_MASK,
+                       Tile::UPDATE_ALL);
         level->updateNeighborsAt(x, y, z, id);
         level->updateNeighborsAt(x, y - 1, z, id);
         level->setTilesDirty(x, y, z, x, y, z);
     }
 
     if (shouldBePressed) {
-        level->addToTickNextTick(x, y, z, id, getTickDelay());
+        level->addToTickNextTick(x, y, z, id, getTickDelay(level));
     }
 
+    level->updateNeighbourForOutputSignal(x, y, z, id);
+
     delete entities;
+}
+
+void DetectorRailTile::onPlace(Level* level, int x, int y, int z) {
+    BaseRailTile::onPlace(level, x, y, z);
+    checkPressed(level, x, y, z, level->getData(x, y, z));
+}
+
+bool DetectorRailTile::hasAnalogOutputSignal() { return true; }
+
+int DetectorRailTile::getAnalogOutputSignal(Level* level, int x, int y, int z,
+                                            int dir) {
+    if ((level->getData(x, y, z) & RAIL_DATA_BIT) > 0) {
+        float b = 2 / 16.0f;
+        std::vector<std::shared_ptr<Entity> >* entities =
+            level->getEntitiesOfClass(
+                typeid(Minecart),
+                AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 1 - b, z + 1 - b),
+                EntitySelector::CONTAINER_ENTITY_SELECTOR);
+
+        if (entities->size() > 0) {
+            std::shared_ptr<Entity> out = entities->at(0);
+            delete entities;
+            return AbstractContainerMenu::getRedstoneSignalFromContainer(
+                std::dynamic_pointer_cast<Container>(out));
+        }
+    }
+
+    return Redstone::SIGNAL_NONE;
 }
 
 void DetectorRailTile::registerIcons(IconRegister* iconRegister) {

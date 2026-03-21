@@ -23,10 +23,11 @@ void CactusTile::tick(Level* level, int x, int y, int z, Random* random) {
         if (height < 3) {
             int age = level->getData(x, y, z);
             if (age == 15) {
-                level->setTile(x, y + 1, z, id);
-                level->setData(x, y, z, 0);
+                level->setTileAndUpdate(x, y + 1, z, id);
+                level->setData(x, y, z, 0, Tile::UPDATE_NONE);
+                neighborChanged(level, x, y + 1, z, id);
             } else {
-                level->setData(x, y, z, age + 1);
+                level->setData(x, y, z, age + 1, Tile::UPDATE_NONE);
             }
         }
     }
@@ -64,8 +65,7 @@ bool CactusTile::mayPlace(Level* level, int x, int y, int z) {
 
 void CactusTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (!canSurvive(level, x, y, z)) {
-        this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->destroyTile(x, y, z, true);
     }
 }
 

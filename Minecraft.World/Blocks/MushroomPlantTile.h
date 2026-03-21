@@ -6,11 +6,8 @@ class Random;
 class Mushroom : public Bush {
     friend class Tile;
 
-private:
-    std::wstring texture;
-
 protected:
-    Mushroom(int id, const std::wstring& texture);
+    Mushroom(int id);
 
 public:
     virtual void updateDefaultShape();  // 4J Added override
@@ -23,5 +20,4 @@ protected:
 public:
     virtual bool canSurvive(Level* level, int x, int y, int z);
     bool growTree(Level* level, int x, int y, int z, Random* random);
-    void registerIcons(IconRegister* iconRegister);
 };

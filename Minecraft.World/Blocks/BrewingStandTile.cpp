@@ -5,11 +5,10 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.entity.item.h"
 #include "../Headers/net.minecraft.world.h"
-
-const std::wstring BrewingStandTile::TEXTURE_BASE = L"brewingStand_base";
+#include "../Headers/net.minecraft.world.inventory.h"
 
 BrewingStandTile::BrewingStandTile(int id)
-    : EntityTile(id, Material::metal, false) {
+    : BaseEntityTile(id, Material::metal, false) {
     random = new Random();
     iconBase = NULL;
 }
@@ -31,9 +30,9 @@ void BrewingStandTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
                                 std::shared_ptr<Entity> source) {
     setShape(7.0f / 16.0f, 0, 7.0f / 16.0f, 9.0f / 16.0f, 14.0f / 16.0f,
              9.0f / 16.0f);
-    EntityTile::addAABBs(level, x, y, z, box, boxes, source);
+    BaseEntityTile::addAABBs(level, x, y, z, box, boxes, source);
     updateDefaultShape();
-    EntityTile::addAABBs(level, x, y, z, box, boxes, source);
+    BaseEntityTile::addAABBs(level, x, y, z, box, boxes, source);
 }
 
 void BrewingStandTile::updateDefaultShape() {
@@ -56,6 +55,16 @@ bool BrewingStandTile::use(
     if (brewingStand != NULL) player->openBrewingStand(brewingStand);
 
     return true;
+}
+
+void BrewingStandTile::setPlacedBy(Level* level, int x, int y, int z,
+                                   std::shared_ptr<LivingEntity> by,
+                                   std::shared_ptr<ItemInstance> itemInstance) {
+    if (itemInstance->hasCustomHoverName()) {
+        std::dynamic_pointer_cast<BrewingStandTileEntity>(
+            level->getTileEntity(x, y, z))
+            ->setCustomName(itemInstance->getHoverName());
+    }
 }
 
 void BrewingStandTile::animateTick(Level* level, int xt, int yt, int zt,
@@ -105,7 +114,7 @@ void BrewingStandTile::onRemove(Level* level, int x, int y, int z, int id,
             }
         }
     }
-    EntityTile::onRemove(level, x, y, z, id, data);
+    BaseEntityTile::onRemove(level, x, y, z, id, data);
 }
 
 int BrewingStandTile::getResource(int data, Random* random,
@@ -117,9 +126,17 @@ int BrewingStandTile::cloneTileId(Level* level, int x, int y, int z) {
     return Item::brewingStand_Id;
 }
 
+bool BrewingStandTile::hasAnalogOutputSignal() { return true; }
+
+int BrewingStandTile::getAnalogOutputSignal(Level* level, int x, int y, int z,
+                                            int dir) {
+    return AbstractContainerMenu::getRedstoneSignalFromContainer(
+        std::dynamic_pointer_cast<Container>(level->getTileEntity(x, y, z)));
+}
+
 void BrewingStandTile::registerIcons(IconRegister* iconRegister) {
-    EntityTile::registerIcons(iconRegister);
-    iconBase = iconRegister->registerIcon(TEXTURE_BASE);
+    BaseEntityTile::registerIcons(iconRegister);
+    iconBase = iconRegister->registerIcon(getIconName() + L"_base");
 }
 
 Icon* BrewingStandTile::getBaseTexture() { return iconBase; }
