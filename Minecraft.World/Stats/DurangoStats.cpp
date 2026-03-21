@@ -29,16 +29,16 @@
 // Ds Item Event //
 ///////////////////
 
-string DsItemEvent::nameMethods[] = {"NONE",
-                                     "itemPickedUp",
-                                     "itemCrafted",
-                                     "itemTakenFromChest",
-                                     "itemTakenFromEnderchest",
-                                     "itemBought",
-                                     "itemSmithed",
-                                     "blockMined",
-                                     "blockPlaced",
-                                     "MAX"};
+std::string DsItemEvent::nameMethods[] = {"NONE",
+                                          "itemPickedUp",
+                                          "itemCrafted",
+                                          "itemTakenFromChest",
+                                          "itemTakenFromEnderchest",
+                                          "itemBought",
+                                          "itemSmithed",
+                                          "blockMined",
+                                          "blockPlaced",
+                                          "MAX"};
 
 DsItemEvent::DsItemEvent(int id, const std::wstring& name) : Stat(id, name) {}
 
@@ -48,8 +48,8 @@ bool DsItemEvent::onLeaderboard(ELeaderboardId leaderboard,
         case eAcquisitionMethod_Pickedup:
             switch (param->itemId) {
                 case Item::egg_Id:
-                case Tile::mushroom1_Id:
-                case Tile::mushroom2_Id:
+                case Tile::mushroom_brown_Id:
+                case Tile::mushroom_red_Id:
                     return leaderboard == eLeaderboardId_FARMING;
             }
             break;
@@ -59,13 +59,13 @@ bool DsItemEvent::onLeaderboard(ELeaderboardId leaderboard,
                 case Tile::dirt_Id:
                 case Tile::stoneBrick_Id:
                 case Tile::sand_Id:
-                case Tile::rock_Id:
+                case Tile::stone_Id:
                 case Tile::gravel_Id:
                 case Tile::clay_Id:
                 case Tile::obsidian_Id:
                     return leaderboard == eLeaderboardId_MINING;
 
-                case Tile::crops_Id:
+                case Tile::wheat_Id:
                 case Tile::pumpkin_Id:
                 case Tile::reeds_Id:
                     return leaderboard == eLeaderboardId_FARMING;
@@ -82,9 +82,9 @@ int DsItemEvent::mergeIds(int itemId) {
         default:
             return itemId;
 
-        case Tile::mushroom1_Id:
-        case Tile::mushroom2_Id:
-            return Tile::mushroom1_Id;
+        case Tile::mushroom_brown_Id:
+        case Tile::mushroom_red_Id:
+            return Tile::mushroom_brown_Id;
 
         case Tile::dirt_Id:
         case Tile::grass_Id:
@@ -146,7 +146,7 @@ void DsItemEvent::handleParamBlob(std::shared_ptr<LocalPlayer> player,
         }
 
         // Debug printout.
-        string method = nameMethods[(int)param->methodId];
+        std::string method = nameMethods[(int)param->methodId];
         app.DebugPrintf("<%ls>\t%s(%i:%i:%i)\n",
                         DurangoStats::getUserId(player), method.c_str(),
                         param->itemId, param->itemAux, param->itemCount);
@@ -247,11 +247,13 @@ byteArray DsMobKilled::createParamBlob(std::shared_ptr<Player> player,
     int mob_networking_id;
     eINSTANCEOF mobEType = mob->GetType();
     if ((mobEType == eTYPE_SPIDER) && (mob->rider.lock() != NULL) &&
-        (mob->rider.lock()->GetType() == eTYPE_SKELETON)) {
+        (mob->rider.lock()->GetType() == eTYPE_SKELETON) &&
+        mob->rider.lock()->isAlive()) {
         mob_networking_id =
             SPIDER_JOCKEY_ID;  // Spider jockey only a concept for leaderboards.
     } else if ((mobEType == eTYPE_SKELETON) && (mob->riding != NULL) &&
-               (mob->riding->GetType() == eTYPE_SPIDER)) {
+               (mob->riding->GetType() == eTYPE_SPIDER) &&
+               mob->riding->isAlive()) {
         mob_networking_id =
             SPIDER_JOCKEY_ID;  // Spider jockey only a concept for leaderboards.
     } else {
@@ -290,12 +292,12 @@ byteArray DsMobKilled::createParamBlob(std::shared_ptr<Player> player,
 // Ds Mob Interact //
 /////////////////////
 
-string DsMobInteract::nameInteract[] = {"unknownMobInteraction",
-                                        "mobBred",
-                                        "mobTamed",
-                                        "mobCured",
-                                        "mobCrafted",
-                                        "mobSheared"};
+std::string DsMobInteract::nameInteract[] = {"unknownMobInteraction",
+                                             "mobBred",
+                                             "mobTamed",
+                                             "mobCured",
+                                             "mobCrafted",
+                                             "mobSheared"};
 
 DsMobInteract::DsMobInteract(int id, const std::wstring& name)
     : Stat(id, name) {}
@@ -330,8 +332,8 @@ byteArray DsMobInteract::createParamBlob(eInteract interactionId,
 // Ds Travel //
 ///////////////
 
-string DsTravel::nameMethods[eMethod_MAX] = {"Walk", "Swim", "Fall", "Climb",
-                                             "Cart", "Boat", "Pig",  "Time"};
+std::string DsTravel::nameMethods[eMethod_MAX] = {
+    "Walk", "Swim", "Fall", "Climb", "Cart", "Boat", "Pig", "Time"};
 
 unsigned int DsTravel::CACHE_SIZES[eMethod_MAX] = {
     40,  //  WALK - Meters?
@@ -682,7 +684,9 @@ Stat* DurangoStats::get_boatOneM() { return travel; }
 
 Stat* DurangoStats::get_pigOneM() { return travel; }
 
-Stat* DurangoStats::get_cowsMilked() { return get_itemsCrafted(Item::milk_Id); }
+Stat* DurangoStats::get_cowsMilked() {
+    return get_itemsCrafted(Item::bucket_milk_Id);
+}
 
 Stat* DurangoStats::get_killMob() { return mobKilled; }
 
@@ -725,7 +729,7 @@ Stat* DurangoStats::get_itemsCrafted(int itemId) {
         // 4J-JEV:	These items can be crafted trivially to and from their
         // block equivalents,
         //	'Acquire Hardware' also relies on 'Count_Crafted(IronIngot) ==
-        //Count_Forged(IronIngot)" on the Stats server.
+        // Count_Forged(IronIngot)" on the Stats server.
         case Item::ironIngot_Id:
         case Item::goldIngot_Id:
         case Item::diamond_Id:
@@ -806,7 +810,7 @@ byteArray DurangoStats::getParam_pigOneM(int distance) {
 
 byteArray DurangoStats::getParam_cowsMilked() {
     return DsItemEvent::createParamBlob(DsItemEvent::eAcquisitionMethod_Crafted,
-                                        Item::milk_Id, 0, 1);
+                                        Item::bucket_milk_Id, 0, 1);
 }
 
 byteArray DurangoStats::getParam_blocksPlaced(int blockId, int data,
