@@ -514,7 +514,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         pClass->m_bIgnoreInput = false;
 
         int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-        if (dwSignedInUsers > 1)
+        if (signedInUsers > 1)
             messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
 
         ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);

@@ -868,7 +868,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
     }
 #endif
 
-        unsigned int uiIDA[2];
+    unsigned int uiIDA[2];
     if (m_bGameModeCreative == true ||
         m_MoreOptionsParams.bHostPrivileges == TRUE) {
         uiIDA[0] = IDS_CONFIRM_OK;
@@ -1202,7 +1202,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
         (EGameHostOptionWorldSize)(pClass->m_MoreOptionsParams.worldSize + 1);
 #endif
 
-    g_NetworkManager.HostGame(dwLocalUsersMask, isClientSide, isPrivate,
+    g_NetworkManager.HostGame(localUsersMask, isClientSide, isPrivate,
                               MINECRAFT_NET_MAX_PLAYERS, 0);
 
     param->settings = app.GetGameHostOption(eGameHostOption_All);

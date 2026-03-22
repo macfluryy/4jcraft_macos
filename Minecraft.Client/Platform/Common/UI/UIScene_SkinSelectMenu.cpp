@@ -513,51 +513,50 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                                         m_currentPack->getPurchaseOfferId();
                                 }
 
-                            // tell sentient about the upsell of the full
-                            // version of the skin pack
-                            SentientManager.RecordUpsellPresented(
-                                iPad, eSet_UpsellID_Skin_DLC,
-                                ullOfferID_Full & 0xFFFFFFFF);
+                                // tell sentient about the upsell of the full
+                                // version of the skin pack
+                                SentientManager.RecordUpsellPresented(
+                                    iPad, eSet_UpsellID_Skin_DLC,
+                                    ullOfferID_Full & 0xFFFFFFFF);
 #endif
-                            bool bContentRestricted = false;
+                                bool bContentRestricted = false;
 #if defined(__PS3__) || defined(__PSVITA__)
-                            ProfileManager.GetChatAndContentRestrictions(
-                                m_iPad, true, NULL, &bContentRestricted, NULL);
+                                ProfileManager.GetChatAndContentRestrictions(
+                                    m_iPad, true, NULL, &bContentRestricted,
+                                    NULL);
 #endif
-                            if (bContentRestricted) {
+                                if (bContentRestricted) {
 #if !(defined(_XBOX) || \
       defined(          \
           _WIN64))  // 4J Stu - Temp to get the win build running, but so we
                     // check this for other platforms you can't see the store
-                                unsigned int uiIDA[1];
-                                uiIDA[0] = IDS_CONFIRM_OK;
-                                ui.RequestMessageBox(
-                                    IDS_ONLINE_SERVICE_TITLE,
-                                    IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                    ProfileManager.GetPrimaryPad(), NULL, this,
-                                    app.GetStringTable(), NULL, 0, false);
+                                    unsigned int uiIDA[1];
+                                    uiIDA[0] = IDS_CONFIRM_OK;
+                                    ui.RequestAlertMessage(
+                                        IDS_ONLINE_SERVICE_TITLE,
+                                        IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                        iPad);
 #endif
-                            } else {
-                                // 4J-PB - need to check for an empty store
+                                } else {
+                                    // 4J-PB - need to check for an empty store
 #if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
-                                if (app.CheckForEmptyStore(iPad) == false)
+                                    if (app.CheckForEmptyStore(iPad) == false)
 #endif
-                                {
-                                    m_bIgnoreInput = true;
-                                    renableInputAfterOperation = false;
+                                    {
+                                        m_bIgnoreInput = true;
+                                        renableInputAfterOperation = false;
 
-                                    unsigned int uiIDA[2] = {
-                                        IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL};
-                                    ui.RequestMessageBox(
-                                        IDS_UNLOCK_DLC_TITLE,
-                                        IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,
-                                        &UIScene_SkinSelectMenu::
-                                            UnlockSkinReturned,
-                                        this, app.GetStringTable(), NULL, 0,
-                                        false);
+                                        unsigned int uiIDA[2] = {
+                                            IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL};
+                                        ui.RequestAlertMessage(
+                                            IDS_UNLOCK_DLC_TITLE,
+                                            IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,
+                                            &UIScene_SkinSelectMenu::
+                                                UnlockSkinReturned,
+                                            this);
+                                    }
                                 }
                             }
-                        }
                     } else {
                         app.SetPlayerSkin(iPad, skinFile->getPath());
                         app.SetPlayerCape(iPad,

@@ -355,9 +355,9 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
                     InGamePlayerOptionsInitData* pInitData =
                         new InGamePlayerOptionsInitData();
                     pInitData->iPad = m_iPad;
-                    pInitData->networkSmallId = m_players[currentSelection];
+                    pInitData->networkSmallId = m_players[currentSelection]->m_smallId;
                     pInitData->playerPrivileges =
-                        app.GetPlayerPrivileges(m_players[currentSelection]);
+                        app.GetPlayerPrivileges(m_players[currentSelection]->m_smallId);
                     pInitData->playerPrivileges = app.GetPlayerPrivileges(
                         m_players[currentSelection]->m_smallId);
                     ui.NavigateToScene(m_iPad, eUIScene_InGamePlayerOptionsMenu,
@@ -368,7 +368,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
                     // Only ops will hit this, can kick anyone not local and not
                     // local to the host
                     std::uint8_t* smallId = new std::uint8_t();
-                    *smallId = m_players[currentSelection];
+                    *smallId = m_players[currentSelection]->m_smallId;
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
