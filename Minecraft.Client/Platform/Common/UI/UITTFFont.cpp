@@ -3,7 +3,7 @@
 #include "../../Minecraft.World/Util/PortableFileIO.h"
 #include "UITTFFont.h"
 
-UITTFFont::UITTFFont(const std::string& path, S32 fallbackCharacter) {
+UITTFFont::UITTFFont(const std::string& name, const std::string& path,
                      S32 fallbackCharacter)
     : m_strFontName(name) {
     app.DebugPrintf("UITTFFont opening %s\n", path.c_str());
