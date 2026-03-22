@@ -1,11 +1,11 @@
-#pragma once
 #include "../Platform/stdafx.h"
-#include "../Textures/Stitching/StitchedTexture.h"
+#include "SimpleIcon.h"
 
-// 4J Added this class to store the uv data that we have pre-calculated and
-// loaded from a file
-class SimpleIcon : public StitchedTexture {
-public:
-    SimpleIcon(const std::wstring& name, const std::wstring& filename, float u0,
-               float v0, float u1, float v1);
-};
+SimpleIcon::SimpleIcon(const std::wstring& name, const std::wstring& filename,
+                       float U0, float V0, float U1, float V1)
+    : StitchedTexture(name, filename) {
+    u0 = U0;
+    u1 = U1;
+    v0 = V0;
+    v1 = V1;
+}

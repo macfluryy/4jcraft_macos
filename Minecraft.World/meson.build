@@ -11,6 +11,7 @@ exclude_sources = [
   '! -name ZonedChunkStorage.cpp',
   '! -name ZoneFile.cpp',
   '! -name ZoneIO.cpp',
+  '! -name LevelConflictException.cpp',
 ]
 
 # GET IT ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL

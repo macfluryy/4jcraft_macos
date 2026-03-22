@@ -4,7 +4,6 @@ exclude_sources = [
   ' ! -name "CreativeMode.cpp"',
   ' ! -name "GameMode.cpp"',
   ' ! -name "DemoMode.cpp"',
-  ' ! -name "PreStitchedTextureMap.cpp"',
 ]
 
 # all sources except ./Platform/*

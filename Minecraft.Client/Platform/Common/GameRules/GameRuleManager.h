@@ -3,12 +3,14 @@
 
 #include "LevelGenerators.h"
 #include "LevelRules.h"
+#include "../DLC/DLCGameRulesHeader.h"
+
 class LevelGenerationOptions;
 class RootGameRulesDefinition;
 class LevelChunk;
 class DLCPack;
 class DLCGameRulesFile;
-class DLCGameRulesHeader;
+// class DLCGameRulesHeader;
 class StringTable;
 class GameRuleDefinition;
 class DataInputStream;
