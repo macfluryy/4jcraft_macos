@@ -130,7 +130,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
             if (mipmapped) {
                 for (unsigned int level = 1; level < m_iMipLevels; ++level) {
                     int ww = width >> level;
-                    int hh = height >> height;
+                    int hh = height >> level;
 
                     byteArray tempBytes = byteArray(ww * hh * depth * 4);
                     for (int index = 0; index < tempBytes.length; index++) {
