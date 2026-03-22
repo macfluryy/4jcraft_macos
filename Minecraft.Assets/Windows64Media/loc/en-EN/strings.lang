@@ -8660,4 +8660,52 @@ If you try to save while using the trial version, you will be given the option t
 	<value>Minecart</value>
   </data>
 
+
+	<data name="IDS_DESC_COMMAND_BLOCK">
+		<value>Used to execute commands.</value>
+	</data>
+	<data name="IDS_DESC_BEACON">
+		<value>Projects a beam of light into the sky and can provide Status Effects to nearby players.</value>
+	</data>
+	<data name="IDS_DESC_CHEST_TRAP">
+		<value>Stores blocks and items inside. Place two chest side by side to create a larger chest with double capacity. The trapped chest also creates a Redstone charge when opened.</value>
+	</data>
+	<data name="IDS_DESC_WEIGHTED_PLATE_LIGHT">
+		<value>Provides a Redstone charge. The charge will be stronger if more items are on the plate.</value>
+	</data>
+	<data name="IDS_DESC_WEIGHTED_PLATE_HEAVY">
+		<value>Provides a Redstone charge. The charge will be stronger if more items are on the plate. Requires more weight than the light plate.</value>
+	</data>
+	<data name="IDS_DESC_REDSTONE_BLOCK">
+		<value>Used as a redstone power source. Can be crafted back into Redstone.</value>
+	</data>
+	<data name="IDS_DESC_HOPPER">
+		<value>Used to catch items or to transfer items into and out of containers.</value>
+	</data>
+	<data name="IDS_DESC_ACTIVATOR_RAIL">
+		<value>A type of rail that can enable or disable Minecarts with Hoppers and trigger Minecarts with TNT.</value>
+	</data>
+	<data name="IDS_DESC_DROPPER">
+		<value>Used to hold and drop items, or push items into another container, when given a Redstone charge.</value>
+	</data>
+	<data name="IDS_DESC_STAINED_CLAY">
+		<value>Colorful blocks crafted by dyeing Hardened clay.</value>
+	</data>
+	<data name="IDS_DESC_HAY">
+		<value>Can be fed to Horses, Donkeys or Mules to heal up to 10 Hearts. Speeds up the growth of foals.</value>
+	</data>
+	<data name="IDS_DESC_HARDENED_CLAY">
+		<value>Created by smelting Clay in a furnace.</value>
+	</data>
+	<data name="IDS_DESC_STAINED_GLASS">
+		<value>Crafted from glass and a dye.</value>
+	</data>
+	<data name="IDS_DESC_STAINED_GLASS_PANE">
+		<value>Crafted from Stained Glass</value>
+	</data>
+	<data name="IDS_DESC_COAL_BLOCK">
+	  <value>A compact way of storing Coal. Can be used as fuel in a Furnace.</value>
+	 </data>
+	
+
 </root>
