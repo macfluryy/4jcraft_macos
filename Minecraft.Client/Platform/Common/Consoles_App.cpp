@@ -1,4 +1,4 @@
-
+﻿
 #include "../Minecraft.World/Platform/stdafx.h"
 
 #include "../Minecraft.World/Recipes/Recipy.h"
@@ -4928,6 +4928,14 @@ void CMinecraftApp::UpsellReturnedCallback(void *pParam, eUpsellType type, eUpse
 	// Always the primary pad that gets an upsell	
 	TelemetryManager->RecordUpsellResponded(ProfileManager.GetPrimaryPad(), eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID, senResponse);
 }
+
+#ifdef _DEBUG_MENUS_ENABLED
+bool CMinecraftApp::DebugArtToolsOn() {
+    return DebugSettingsOn() &&
+           (GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+            (1L << eDebugSetting_ArtTools)) != 0;
+}
+#endif
 
 void CMinecraftApp::SetDebugSequence(const char *pchSeq)
 {

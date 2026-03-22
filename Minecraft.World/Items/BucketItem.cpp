@@ -15,7 +15,7 @@
 #include "../../Minecraft.Client/Player/LocalPlayer.h"
 #include "../../Minecraft.Client/Player/ServerPlayer.h"
 #include "../../Minecraft.Client/Network/PlayerConnection.h"
-#include "../Minecraft.World/ChatPacket.h"
+#include "../Network/ChatPacket.h"
 #include "../Util/SoundTypes.h"
 
 BucketItem::BucketItem(int id, int content) : Item(id) {

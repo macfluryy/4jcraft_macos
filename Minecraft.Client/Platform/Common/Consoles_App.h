@@ -306,9 +306,11 @@ public:
 #endif
 
 #ifdef _DEBUG_MENUS_ENABLED
-	bool			DebugSettingsOn()																									{ return m_bDebugOptions;}
+    bool DebugSettingsOn() { return m_bDebugOptions; }
+    bool DebugArtToolsOn();
 #else
-	bool			DebugSettingsOn()																									{ return false;}
+    bool DebugSettingsOn() { return false; }
+    bool DebugArtToolsOn() { return false; }
 #endif
 	void			SetDebugSequence(const char *pchSeq);
 	static int		DebugInputCallback(void *pParam);

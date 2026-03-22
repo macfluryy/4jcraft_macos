@@ -5,8 +5,8 @@ project('4jcraft-chucklegrounds', ['cpp', 'c'],
     'cpp_std=c++23',
     'warning_level=0',
     'buildtype=debug', # for now
-    'unity=off', # merge source files per target
-    # 'unity_size=8', # TODO: mess around with this
+    'unity=on', # merge source files per target
+    'unity_size=8', # TODO: mess around with this
     'b_pch=true', # precompiled headers
   ],
 )
