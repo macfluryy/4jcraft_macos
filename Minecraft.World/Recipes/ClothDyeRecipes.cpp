@@ -1,5 +1,5 @@
 #include "../Platform/stdafx.h"
-#include "net.minecraft.world.item.h"
+#include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "Recipy.h"
 #include "Recipes.h"

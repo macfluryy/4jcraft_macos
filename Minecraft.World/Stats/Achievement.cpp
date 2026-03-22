@@ -76,12 +76,6 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       y(y),
       prerequisite(prerequisite) {}
 
-/**
- * @brief Returns whether the Achivement is golden
- * @return boolean
- */
-bool Achievement::isGolden() { return isGoldenVar; }
-
 int Achievement::getAchievementID() {
     return id - Achievements::ACHIEVEMENT_OFFSET;
 }

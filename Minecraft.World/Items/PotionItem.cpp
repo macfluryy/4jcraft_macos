@@ -325,12 +325,12 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
     }
 }
 
-bool PotionItem::isFoistd::l(std::shared_ptr<ItemInstance> itemInstance) {
+bool PotionItem::isFoil(std::shared_ptr<ItemInstance> itemInstance) {
     std::vector<MobEffectInstance*>* mobEffects = getMobEffects(itemInstance);
     return mobEffects != NULL && !mobEffects->empty();
 }
 
-unsigned int PotionItem::getUseDescriptionIstd::d(
+unsigned int PotionItem::getUseDescriptionId(
     std::shared_ptr<ItemInstance> instance) {
     int brew = instance->getAuxValue();
     if (brew == 0)
