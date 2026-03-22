@@ -118,9 +118,6 @@ private:
     static int TrophyDialogReturned(void* pParam, int iPad,
                                     C4JStorage::EMessageResult result);
     static int LoadDataComplete(void* pParam);
-    static int LoadSaveDataThumbnailReturned(void* lpParam,
-                                             std::uint8_t* pbThumbnail,
-                                             unsigned int thumbnailBytes);
     static int CheckResetNetherReturned(void* pParam, int iPad,
                                         C4JStorage::EMessageResult result);
     static int DeleteSaveDialogReturned(void* pParam, int iPad,
@@ -136,5 +133,10 @@ private:
 #endif
 
 public:
+    // 4jcraft: made public for the thunk system we have for thumbnail loading, probably a FIXME for
+    // when this gets cleaned up
+    static int LoadSaveDataThumbnailReturned(void* lpParam,
+                                             std::uint8_t* pbThumbnail,
+                                             unsigned int thumbnailBytes);
     static int StartGame_SignInReturned(void* pParam, bool, int);
 };

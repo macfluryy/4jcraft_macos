@@ -372,16 +372,14 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
             swprintf(wchFormat, 132, L"%ls\n\n%%ls",
                      firstCorruptPack->getName().c_str());
 
-            C4JStorage::EMessageResult result = ui.RequestMessageBox(
+            C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                 IDS_CORRUPT_DLC_TITLE, IDS_CORRUPT_DLC, uiIDA, 1,
-                ProfileManager.GetPrimaryPad(), NULL, NULL,
-                app.GetStringTable(), wchFormat);
+                ProfileManager.GetPrimaryPad(), NULL, NULL, wchFormat);
 
         } else {
-            C4JStorage::EMessageResult result = ui.RequestMessageBox(
+            C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                 IDS_CORRUPT_DLC_TITLE, IDS_CORRUPT_DLC_MULTIPLE, uiIDA, 1,
-                ProfileManager.GetPrimaryPad(), NULL, NULL,
-                app.GetStringTable());
+                ProfileManager.GetPrimaryPad());
         }
     }
 
