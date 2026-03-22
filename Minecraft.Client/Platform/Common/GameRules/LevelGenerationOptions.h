@@ -146,9 +146,10 @@ public:
 
 private:
     // This should match the "MapOptionsRule" definition in the XML schema
-    __int64 m_seed;
+    int64_t m_seed;
     bool m_useFlatWorld;
     Pos* m_spawnPos;
+    int m_bHasBeenInCreative;
     std::vector<ApplySchematicRuleDefinition*> m_schematicRules;
     std::vector<ConsoleGenerateStructure*> m_structureRules;
     bool m_bHaveMinY;
@@ -162,8 +163,11 @@ private:
 
     StringTable* m_stringTable;
 
+    DLCPack* m_parentDLCPack;
+    bool m_bLoadingData;
+
 public:
-    LevelGenerationOptions();
+    LevelGenerationOptions(DLCPack* parentPack = NULL);
     ~LevelGenerationOptions();
 
     virtual ConsoleGameRules::EGameRuleType getActionType();
@@ -176,7 +180,8 @@ public:
     virtual void addAttribute(const std::wstring& attributeName,
                               const std::wstring& attributeValue);
 
-    __int64 getLevelSeed();
+    int64_t getLevelSeed();
+    int getLevelHasBeenInCreative();
     Pos* getSpawnPos();
     bool getuseFlatWorld();
 
@@ -204,13 +209,18 @@ public:
     void getBiomeOverride(int biomeId, std::uint8_t& tile,
                           std::uint8_t& topTile);
     bool isFeatureChunk(int chunkX, int chunkZ,
-                        StructureFeature::EFeatureTypes feature);
+                        StructureFeature::EFeatureTypes feature,
+                        int* orientation = NULL);
 
     void loadStringTable(StringTable* table);
     const wchar_t* getString(const std::wstring& key);
 
     std::unordered_map<std::wstring, ConsoleSchematicFile*>*
     getUnfinishedSchematicFiles();
+
+    void loadBaseSaveData();
+    static int packMounted(LPVOID pParam, int iPad, DWORD dwErr,
+                           DWORD dwLicenceMask);
 
     // 4J-JEV:
     // ApplySchematicRules contain limited state

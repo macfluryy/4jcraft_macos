@@ -6,7 +6,7 @@
 
 class StartFeature : public GameRuleDefinition {
 private:
-    int m_chunkX, m_chunkZ;
+    int m_chunkX, m_chunkZ, m_orientation;
     StructureFeature::EFeatureTypes m_feature;
 
 public:
@@ -21,5 +21,6 @@ public:
                               const std::wstring& attributeValue);
 
     bool isFeatureChunk(int chunkX, int chunkZ,
-                        StructureFeature::EFeatureTypes feature);
+                        StructureFeature::EFeatureTypes feature,
+                        int* orientation);
 };

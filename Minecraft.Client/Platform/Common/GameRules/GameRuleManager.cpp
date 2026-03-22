@@ -106,18 +106,15 @@ void GameRuleManager::loadGameRules(DLCPack* pack) {
         uint8_t* dData = dlcHeader->getData(dSize);
 
         LevelGenerationOptions* createdLevelGenerationOptions =
-            new LevelGenerationOptions();
+            new LevelGenerationOptions(pack);
         //	= loadGameRules(dData, dSize); //, strings);
 
         createdLevelGenerationOptions->setGrSource(dlcHeader);
-
-        readRuleFile(createdLevelGenerationOptions, dData, dSize, strings);
-
         createdLevelGenerationOptions->setSrc(
             LevelGenerationOptions::eSrc_fromDLC);
 
-        // createdLevelGenerationOptions->setSrc(
-        // LevelGenerationOptions::eSrc_fromDLC );
+        readRuleFile(createdLevelGenerationOptions, dData, dSize, strings);
+
         dlcHeader->lgo = createdLevelGenerationOptions;
     }
 
@@ -130,16 +127,14 @@ void GameRuleManager::loadGameRules(DLCPack* pack) {
         uint8_t* dData = dlcFile->getData(dSize);
 
         LevelGenerationOptions* createdLevelGenerationOptions =
-            new LevelGenerationOptions();
+            new LevelGenerationOptions(pack);
         //	= loadGameRules(dData, dSize); //, strings);
 
         createdLevelGenerationOptions->setGrSource(new JustGrSource());
-        readRuleFile(createdLevelGenerationOptions, dData, dSize, strings);
-
         createdLevelGenerationOptions->setSrc(
             LevelGenerationOptions::eSrc_tutorial);
 
-        // createdLevelGenerationOptions->set_DLCGameRulesFile( dlcFile );
+        readRuleFile(createdLevelGenerationOptions, dData, dSize, strings);
 
         createdLevelGenerationOptions->setLoadedData();
     }
@@ -661,67 +656,46 @@ void GameRuleManager::loadDefaultGameRules() {
 
 #else  // _XBOX
 
-    std::wstring fpTutorial = L"Tutorial.pck";
-    if (app.getArchiveFileSize(fpTutorial) >= 0) {
-        DLCPack* pack = new DLCPack(L"", 0xffffffff);
-        unsigned int dwFilesProcessed = 0;
-        if (app.m_dlcManager.readDLCDataFile(dwFilesProcessed, fpTutorial, pack,
-                                             true)) {
-            app.m_dlcManager.addPack(pack);
-            if (!m_levelGenerators.getLevelGenerators()->empty()) {
-                m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(
-                    app.GetString(IDS_PLAY_TUTORIAL));
-                m_levelGenerators.getLevelGenerators()
-                    ->at(0)
-                    ->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
-            } else {
-                app.DebugPrintf(
-                    "loadDefaultGameRules: Tutorial.pck parsed OK but no level "
-                    "generators were added (missing "
-                    "GameRules/LevelGenerationOptions tag?)\n");
-            }
-        } else {
-            app.DebugPrintf(
-                "loadDefaultGameRules: readDLCDataFile failed for Tutorial.pck "
-                "(version too old, IO error, or DLC_TYPE_GameRules not "
-                "found)\n");
-            delete pack;
-        }
-    } else {
-        app.DebugPrintf(
-            "loadDefaultGameRules: Tutorial.pck not found in archive\n");
+#ifdef _WINDOWS64
+    File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
+    if (!packedTutorialFile.exists())
+        packedTutorialFile = File(L"Windows64\\Tutorial\\Tutorial.pck");
+#elif defined(__ORBIS__)
+    File packedTutorialFile(L"/app0/orbis/Tutorial/Tutorial.pck");
+#elif defined(__PSVITA__)
+    File packedTutorialFile(L"PSVita/Tutorial/Tutorial.pck");
+#elif defined(__PS3__)
+    File packedTutorialFile(L"PS3/Tutorial/Tutorial.pck");
+#else
+    File packedTutorialFile(L"Tutorial\\Tutorial.pck");
+#endif
+    if (loadGameRulesPack(&packedTutorialFile)) {
+        m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(
+            app.GetString(IDS_PLAY_TUTORIAL));
+        // m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(L"Tutorial");
+        m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(
+            app.GetString(IDS_TUTORIALSAVENAME));
     }
-
-    // Linux/PC port fallback: if Tutorial.pck parsing didn't populate level
-    // generators (e.g. DLC version mismatch, missing GameRules tag), create a
-    // minimal placeholder so the game doesn't crash with vector::at(0) in
-    // LoadTrial().
-    if (m_levelGenerators.getLevelGenerators()->empty()) {
-        app.DebugPrintf(
-            "loadDefaultGameRules: creating minimal fallback "
-            "LevelGenerationOptions\n");
-        LevelGenerationOptions* lgo = new LevelGenerationOptions();
-        lgo->setGrSource(new JustGrSource());
-        lgo->setSrc(LevelGenerationOptions::eSrc_tutorial);
-        lgo->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
-        lgo->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
-        lgo->setLoadedData();
-        addLevelGenerationOptions(lgo);
-    }
-
-    /*StringTable *strings = new StringTable(baStrings.data, baStrings.length);
-    LevelGenerationOptions *lgo = new LevelGenerationOptions();
-    lgo->setGrSource( new JustGrSource() );
-    lgo->setSrc( LevelGenerationOptions::eSrc_tutorial );
-    readRuleFile(lgo, tutorial.data, tutorial.length, strings);
-    lgo->setLoadedData();*/
-
+#if 0
+	std::wstring fpTutorial = L"Tutorial.pck";
+	if(app.getArchiveFileSize(fpTutorial) >= 0)
+	{
+		DLCPack *pack = new DLCPack(L"",0xffffffff);
+		DWORD dwFilesProcessed = 0;
+		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
+		{
+			app.m_dlcManager.addPack(pack);
+			//m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
+			//m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
+		}
+		else delete pack;
+	}
+#endif
 #endif
 }
 
 bool GameRuleManager::loadGameRulesPack(File* path) {
     bool success = false;
-#ifdef _XBOX
     if (path->exists()) {
         DLCPack* pack = new DLCPack(L"", 0xffffffff);
         unsigned int dwFilesProcessed = 0;
@@ -733,12 +707,13 @@ bool GameRuleManager::loadGameRulesPack(File* path) {
             delete pack;
         }
     }
-#endif
     return success;
 }
 
 void GameRuleManager::setLevelGenerationOptions(
     LevelGenerationOptions* levelGen) {
+    unloadCurrentGameRules();
+
     m_currentGameRuleDefinitions = NULL;
     m_currentLevelGenerationOptions = levelGen;
 

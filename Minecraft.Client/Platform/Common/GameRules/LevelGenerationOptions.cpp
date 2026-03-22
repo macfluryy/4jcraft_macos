@@ -51,20 +51,24 @@ void JustGrSource::setBaseSavePath(const std::wstring& x) {
 
 bool JustGrSource::ready() { return true; }
 
-LevelGenerationOptions::LevelGenerationOptions() {
+LevelGenerationOptions::LevelGenerationOptions(DLCPack* parentPack) {
     m_spawnPos = NULL;
     m_stringTable = NULL;
 
     m_hasLoadedData = false;
 
     m_seed = 0;
+    m_bHasBeenInCreative = true;
     m_useFlatWorld = false;
     m_bHaveMinY = false;
     m_minY = INT_MAX;
     m_bRequiresGameRules = false;
 
     m_pbBaseSaveData = NULL;
-    m_baseSaveSize = 0;
+    m_dwBaseSaveSize = 0;
+
+    m_parentDLCPack = parentPack;
+    m_bLoadingData = false;
 }
 
 LevelGenerationOptions::~LevelGenerationOptions() {
@@ -235,6 +239,12 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter baseSaveName=%ls\n",
             getBaseSavePath().c_str());
+    } else if (attributeName.compare(L"hasBeenInCreative") == 0) {
+        bool value = _fromString<bool>(attributeValue);
+        m_bHasBeenInCreative = value;
+        app.DebugPrintf(
+            "LevelGenerationOptions: Adding parameter gameMode=%d\n",
+            m_bHasBeenInCreative);
     } else {
         GameRuleDefinition::addAttribute(attributeName, attributeValue);
     }
@@ -252,9 +262,8 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
         rule->processSchematic(chunkBox, chunk);
     }
 
-    // 4jcraft added cast to unsigned
-    int cx = ((unsigned)chunk->x << 4);
-    int cz = ((unsigned)chunk->z << 4);
+    int cx = (chunk->x << 4);
+    int cz = (chunk->z << 4);
 
     for (AUTO_VAR(it, m_structureRules.begin()); it != m_structureRules.end();
          it++) {
@@ -420,12 +429,13 @@ void LevelGenerationOptions::getBiomeOverride(int biomeId, std::uint8_t& tile,
 }
 
 bool LevelGenerationOptions::isFeatureChunk(
-    int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature) {
+    int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature,
+    int* orientation) {
     bool isFeature = false;
 
     for (AUTO_VAR(it, m_features.begin()); it != m_features.end(); ++it) {
         StartFeature* sf = *it;
-        if (sf->isFeatureChunk(chunkX, chunkZ, feature)) {
+        if (sf->isFeatureChunk(chunkX, chunkZ, feature, orientation)) {
             isFeature = true;
             break;
         }
@@ -450,6 +460,180 @@ LevelGenerationOptions::getUnfinishedSchematicFiles() {
             *it, getSchematicFile(*it)));
 
     return out;
+}
+
+void LevelGenerationOptions::loadBaseSaveData() {
+    int mountIndex = -1;
+    if (m_parentDLCPack != NULL)
+        mountIndex = m_parentDLCPack->GetDLCMountIndex();
+
+    if (mountIndex > -1) {
+#ifdef _DURANGO
+        if (StorageManager.MountInstalledDLC(
+                ProfileManager.GetPrimaryPad(), mountIndex,
+                &LevelGenerationOptions::packMounted, this,
+                L"WPACK") != ERROR_IO_PENDING)
+#else
+        if (StorageManager.MountInstalledDLC(
+                ProfileManager.GetPrimaryPad(), mountIndex,
+                &LevelGenerationOptions::packMounted, this,
+                "WPACK") != ERROR_IO_PENDING)
+#endif
+        {
+            // corrupt DLC
+            setLoadedData();
+            app.DebugPrintf("Failed to mount LGO DLC %d for pad %d\n",
+                            mountIndex, ProfileManager.GetPrimaryPad());
+        } else {
+            m_bLoadingData = true;
+            app.DebugPrintf("Attempted to mount DLC data for LGO %d\n",
+                            mountIndex);
+        }
+    } else {
+        setLoadedData();
+        app.SetAction(ProfileManager.GetPrimaryPad(),
+                      eAppAction_ReloadTexturePack);
+    }
+}
+
+int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
+                                        DWORD dwLicenceMask) {
+    LevelGenerationOptions* lgo = (LevelGenerationOptions*)pParam;
+    lgo->m_bLoadingData = false;
+    if (dwErr != ERROR_SUCCESS) {
+        // corrupt DLC
+        app.DebugPrintf("Failed to mount LGO DLC for pad %d: %d\n", iPad,
+                        dwErr);
+    } else {
+        app.DebugPrintf("Mounted DLC for LGO, attempting to load data\n");
+        DWORD dwFilesProcessed = 0;
+        int gameRulesCount = lgo->m_parentDLCPack->getDLCItemsCount(
+            DLCManager::e_DLCType_GameRulesHeader);
+        for (int i = 0; i < gameRulesCount; ++i) {
+            DLCGameRulesHeader* dlcFile =
+                (DLCGameRulesHeader*)lgo->m_parentDLCPack->getFile(
+                    DLCManager::e_DLCType_GameRulesHeader, i);
+
+            if (!dlcFile->getGrfPath().empty()) {
+                File grf(app.getFilePath(lgo->m_parentDLCPack->GetPackID(),
+                                         dlcFile->getGrfPath(), true,
+                                         L"WPACK:"));
+                if (grf.exists()) {
+#ifdef _UNICODE
+                    std::wstring path = grf.getPath();
+                    const WCHAR* pchFilename = path.c_str();
+                    HANDLE fileHandle = CreateFile(
+                        pchFilename,   // file name
+                        GENERIC_READ,  // access mode
+                        0,  // share mode // TODO 4J Stu - Will we need to share
+                            // file? Probably not but...
+                        NULL,           // Unused
+                        OPEN_EXISTING,  // how to create // TODO 4J Stu -
+                                        // Assuming that the file already exists
+                                        // if we are opening to read from it
+                        FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                        NULL                        // Unsupported
+                    );
+#else
+                    const char* pchFilename = wstringtofilename(grf.getPath());
+                    HANDLE fileHandle = CreateFile(
+                        pchFilename,   // file name
+                        GENERIC_READ,  // access mode
+                        0,  // share mode // TODO 4J Stu - Will we need to share
+                            // file? Probably not but...
+                        NULL,           // Unused
+                        OPEN_EXISTING,  // how to create // TODO 4J Stu -
+                                        // Assuming that the file already exists
+                                        // if we are opening to read from it
+                        FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                        NULL                        // Unsupported
+                    );
+#endif
+
+                    if (fileHandle != INVALID_HANDLE_VALUE) {
+                        DWORD dwFileSize = grf.length();
+                        DWORD bytesRead;
+                        PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                        BOOL bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
+                                                 &bytesRead, NULL);
+                        if (bSuccess == FALSE) {
+                            app.FatalLoadError();
+                        }
+                        CloseHandle(fileHandle);
+
+                        // 4J-PB - is it possible that we can get here after a
+                        // read fail and it's not an error?
+                        dlcFile->setGrfData(pbData, dwFileSize,
+                                            lgo->m_stringTable);
+
+                        delete[] pbData;
+
+                        app.m_gameRules.setLevelGenerationOptions(dlcFile->lgo);
+                    }
+                }
+            }
+        }
+        if (lgo->requiresBaseSave() && !lgo->getBaseSavePath().empty()) {
+            File save(app.getFilePath(lgo->m_parentDLCPack->GetPackID(),
+                                      lgo->getBaseSavePath(), true, L"WPACK:"));
+            if (save.exists()) {
+#ifdef _UNICODE
+                std::wstring path = save.getPath();
+                const WCHAR* pchFilename = path.c_str();
+                HANDLE fileHandle = CreateFile(
+                    pchFilename,   // file name
+                    GENERIC_READ,  // access mode
+                    0,     // share mode // TODO 4J Stu - Will we need to share
+                           // file? Probably not but...
+                    NULL,  // Unused
+                    OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
+                                    // that the file already exists if we are
+                                    // opening to read from it
+                    FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                    NULL                        // Unsupported
+                );
+#else
+                const char* pchFilename = wstringtofilename(save.getPath());
+                HANDLE fileHandle = CreateFile(
+                    pchFilename,   // file name
+                    GENERIC_READ,  // access mode
+                    0,     // share mode // TODO 4J Stu - Will we need to share
+                           // file? Probably not but...
+                    NULL,  // Unused
+                    OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
+                                    // that the file already exists if we are
+                                    // opening to read from it
+                    FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                    NULL                        // Unsupported
+                );
+#endif
+
+                if (fileHandle != INVALID_HANDLE_VALUE) {
+                    DWORD bytesRead, dwFileSize = GetFileSize(fileHandle, NULL);
+                    PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                    BOOL bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
+                                             &bytesRead, NULL);
+                    if (bSuccess == FALSE) {
+                        app.FatalLoadError();
+                    }
+                    CloseHandle(fileHandle);
+
+                    // 4J-PB - is it possible that we can get here after a read
+                    // fail and it's not an error?
+                    lgo->setBaseSaveData(pbData, dwFileSize);
+                }
+            }
+        }
+#ifdef _DURANGO
+        DWORD result = StorageManager.UnmountInstalledDLC(L"WPACK");
+#else
+        DWORD result = StorageManager.UnmountInstalledDLC("WPACK");
+#endif
+    }
+
+    lgo->setLoadedData();
+
+    return 0;
 }
 
 void LevelGenerationOptions::reset_start() {
@@ -484,13 +668,37 @@ std::uint32_t LevelGenerationOptions::getRequiredTexturePackId() {
     return info()->getRequiredTexturePackId();
 }
 std::wstring LevelGenerationOptions::getDefaultSaveName() {
-    return info()->getDefaultSaveName();
+    switch (getSrc()) {
+        case eSrc_fromSave:
+            return getString(info()->getDefaultSaveName());
+        case eSrc_fromDLC:
+            return getString(info()->getDefaultSaveName());
+        case eSrc_tutorial:
+            return app.GetString(IDS_TUTORIALSAVENAME);
+    }
+    return L"";
 }
-const wchar_t* LevelGenerationOptions::getWorldName() {
-    return info()->getWorldName();
+LPCWSTR LevelGenerationOptions::getWorldName() {
+    switch (getSrc()) {
+        case eSrc_fromSave:
+            return getString(info()->getWorldName());
+        case eSrc_fromDLC:
+            return getString(info()->getWorldName());
+        case eSrc_tutorial:
+            return app.GetString(IDS_PLAY_TUTORIAL);
+    }
+    return L"";
 }
-const wchar_t* LevelGenerationOptions::getDisplayName() {
-    return info()->getDisplayName();
+LPCWSTR LevelGenerationOptions::getDisplayName() {
+    switch (getSrc()) {
+        case eSrc_fromSave:
+            return getString(info()->getDisplayName());
+        case eSrc_fromDLC:
+            return getString(info()->getDisplayName());
+        case eSrc_tutorial:
+            return L"";
+    }
+    return L"";
 }
 std::wstring LevelGenerationOptions::getGrfPath() {
     return info()->getGrfPath();
@@ -549,7 +757,10 @@ void LevelGenerationOptions::deleteBaseSaveData() {
 bool LevelGenerationOptions::hasLoadedData() { return m_hasLoadedData; }
 void LevelGenerationOptions::setLoadedData() { m_hasLoadedData = true; }
 
-__int64 LevelGenerationOptions::getLevelSeed() { return m_seed; }
+int64_t LevelGenerationOptions::getLevelSeed() { return m_seed; }
+int LevelGenerationOptions::getLevelHasBeenInCreative() {
+    return m_bHasBeenInCreative;
+}
 Pos* LevelGenerationOptions::getSpawnPos() { return m_spawnPos; }
 bool LevelGenerationOptions::getuseFlatWorld() { return m_useFlatWorld; }
 
