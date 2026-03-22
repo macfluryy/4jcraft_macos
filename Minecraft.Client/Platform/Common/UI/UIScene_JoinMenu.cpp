@@ -442,14 +442,15 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
             if (!ProfileManager.AllowedToPlayMultiplayer(
                     ProfileManager.GetPrimaryPad()))
                 noPrivileges = true;
+            dwLocalUsersMask |= CGameNetworkManager::GetLocalPlayerMask(
                 ProfileManager.GetPrimaryPad());
 
-                isSignedInLive = ProfileManager.IsSignedInLive(
-                    ProfileManager.GetPrimaryPad());
+            isSignedInLive =
+                ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
 #ifdef __PSVITA__
-                if (CGameNetworkManager::usingAdhocMode() &&
-                    SQRNetworkManager_AdHoc_Vita::GetAdhocStatus())
-                    isSignedInLive = true;
+            if (CGameNetworkManager::usingAdhocMode() &&
+                SQRNetworkManager_AdHoc_Vita::GetAdhocStatus())
+                isSignedInLive = true;
 #endif
         }
     }

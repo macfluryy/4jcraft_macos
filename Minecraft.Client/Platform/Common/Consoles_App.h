@@ -27,6 +27,8 @@
 #include "GameRules/GameRuleManager.h"
 #include "../Minecraft.Client/Rendering/Models/SkinBox.h"
 #include "../Minecraft.Client/Utils/ArchiveFile.h"
+#include "../Minecraft.World/Entities/MinecartHopper.h"
+
 
 typedef struct _JoinFromInviteData {
     std::uint32_t dwUserIndex;       // dwUserIndex
@@ -44,7 +46,7 @@ class SignTileEntity;
 class BrewingStandTileEntity;
 class CommandBlockEntity;
 class HopperTileEntity;
-class MinecartHopper;
+// class MinecartHopper;
 class EntityHorse;
 class BeaconTileEntity;
 class LocalPlayer;

@@ -102,6 +102,9 @@ public:
     // INPUT
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
+    // 4jcraft: made public for thumbnail thunk
+    static int AvatarReturned(LPVOID lpParam, PBYTE pbThumbnail,
+                              DWORD dwThumbnailBytes);
 
 private:
 #ifdef _XBOX_ONE
@@ -110,8 +113,6 @@ private:
 #else
     static int SignInReturned(void* pParam, bool bContinue, int iPad);
 #endif
-    static int AvatarReturned(LPVOID lpParam, PBYTE pbThumbnail,
-                              DWORD dwThumbnailBytes);
 
     void updateState();
     void setControllerState(int iPad, EControllerStatus state);

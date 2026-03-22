@@ -8,6 +8,17 @@ StringTable::StringTable(void) {}
 StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
     src = byteArray(pbData, dataSize);
 
+    ProcessStringTableData();
+}
+
+void StringTable::ReloadStringTable() {
+    m_stringsMap.clear();
+    m_stringsVec.clear();
+
+    ProcessStringTableData();
+}
+
+void StringTable::ProcessStringTableData(void) {
     ByteArrayInputStream bais(src);
     DataInputStream dis(&bais);
 
@@ -28,8 +39,8 @@ StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
     app.getLocale(locales);
 
     bool foundLang = false;
-    __int64 bytesToSkip = 0;
-    int selectedDataSize = 0;
+    int64_t bytesToSkip = 0;
+    int dataSize = 0;
 
     //
     for (AUTO_VAR(it_locales, locales.begin());
@@ -40,7 +51,7 @@ StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
             if (it->first.compare(*it_locales) == 0) {
                 app.DebugPrintf("StringTable:: Found language '%ls'.\n",
                                 it_locales->c_str());
-                selectedDataSize = it->second;
+                dataSize = it->second;
                 foundLang = true;
                 break;
             }
@@ -56,7 +67,7 @@ StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
     if (foundLang) {
         dis.skip(bytesToSkip);
 
-        byteArray langData(selectedDataSize);
+        byteArray langData(dataSize);
         dis.read(langData);
 
         dis.close();
@@ -73,6 +84,9 @@ StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
 
         std::wstring langId = dis2.readUTF();
         int totalStrings = dis2.readInt();
+
+        app.DebugPrintf("IsStatic=%d totalStrings = %d\n", isStatic ? 1 : 0,
+                        totalStrings);
 
         if (!isStatic) {
             for (int i = 0; i < totalStrings; ++i) {

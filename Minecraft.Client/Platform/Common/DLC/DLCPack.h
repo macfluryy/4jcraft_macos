@@ -74,6 +74,8 @@ public:
     std::uint32_t getLicenseMask() { return m_dwLicenseMask; }
 
     std::wstring getName() { return m_packName; }
+
+    void UpdateLanguage();
 #ifdef _XBOX_ONE
     std::wstring getPurchaseOfferId() { return m_wsProductId; }
 #else
