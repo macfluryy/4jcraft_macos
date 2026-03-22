@@ -2,8 +2,8 @@
 #include "UI.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../Minecraft.h"
-#include "../../LocalPlayer.h"
+#include "../../../Minecraft.h"
+#include "../../../Player/LocalPlayer.h"
 #include "UIScene_FireworksMenu.h"
 
 UIScene_FireworksMenu::UIScene_FireworksMenu(int iPad, void* _initData,
