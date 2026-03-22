@@ -1,13 +1,13 @@
-#include "../../Minecraft.World/Platform/stdafx.h"
+#include "../../stdafx.h"
 #include "UI.h"
 #include "UIScene_DLCOffersMenu.h"
-#include "../../Minecraft.World/Util/StringHelpers.h"
+#include "../../../../Minecraft.World/Util/StringHelpers.h"
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-#include "../Network/Sony/SonyHttp.h"
+#include "Common/Network/Sony/SonyHttp.h"
 #endif
 
 #ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/Network/SonyCommerce_Vita.h"
+#include "PSVita/Network/SonyCommerce_Vita.h"
 #endif
 
 #define PLAYER_ONLINE_TIMER_ID 0
@@ -186,35 +186,35 @@ void UIScene_DLCOffersMenu::handleInput(int iPad, int key, bool repeat,
     case 0:
             m_labelHTMLSellText.init("Voici un fantastique mini-pack de 24
 apparences pour personnaliser votre personnage Minecraft et vous mettre dans
-l'ambiance des fêtes de fin d'année.<br><br>1-4 joueurs<br>2-8 joueurs en
-réseau<br><br>  Cet article fait l’objet d’une licence ou d’une sous-licence de
-Sony Computer Entertainment America, et est soumis aux conditions générales du
-service du réseau, au contrat d’utilisateur, aux restrictions d’utilisation de
+l'ambiance des f�tes de fin d'ann�e.<br><br>1-4 joueurs<br>2-8 joueurs en
+r�seau<br><br>  Cet article fait l�objet d�une licence ou d�une sous-licence de
+Sony Computer Entertainment America, et est soumis aux conditions g�n�rales du
+service du r�seau, au contrat d�utilisateur, aux restrictions d�utilisation de
 cet article et aux autres conditions applicables, disponibles sur le site
 www.us.playstation.com/support/useragreements. Si vous ne souhaitez pas accepter
-ces conditions, ne téléchargez pas ce produit. Cet article peut être utilisé
-avec un maximum de deux systèmes PlayStation®3 activés associés à ce compte Sony
-Entertainment Network. <br><br>'Minecraft' est une marque commerciale de Notch
+ces conditions, ne t�l�chargez pas ce produit. Cet article peut �tre utilis�
+avec un maximum de deux syst�mes PlayStation�3 activ�s associ�s � ce compte Sony
+Entertainment Network.�<br><br>'Minecraft' est une marque commerciale de Notch
 Development AB."); break; case 1: m_labelHTMLSellText.init("Un fabuloso minipack
 de 24 aspectos para personalizar tu personaje de Minecraft y ponerte a tono con
 las fiestas.<br><br>1-4 jugadores<br>2-8 jugadores en red<br><br>  Sony Computer
-Entertainment America le concede la licencia o sublicencia de este artículo, que
-está sujeto a los términos de servicio y al acuerdo de usuario de la red. Las
-restricciones de uso de este artículo, así como otros términos aplicables, se
+Entertainment America le concede la licencia o sublicencia de este art�culo, que
+est� sujeto a los t�rminos de servicio y al acuerdo de usuario de la red. Las
+restricciones de uso de este art�culo, as� como otros t�rminos aplicables, se
 encuentran en www.us.playstation.com/support/useragreements. Si no desea aceptar
-todos estos términos, no descargue este artículo. Este artículo puede usarse en
-hasta dos sistemas PlayStation®3 activados asociados con esta cuenta de Sony
-Entertainment Network. <br><br>'Minecraft' es una marca comercial de Notch
-Development AB."); break; case 2: m_labelHTMLSellText.init("Este é um incrível
+todos estos t�rminos, no descargue este art�culo. Este art�culo puede usarse en
+hasta dos sistemas PlayStation�3 activados asociados con esta cuenta de Sony
+Entertainment Network.�<br><br>'Minecraft' es una marca comercial de Notch
+Development AB."); break; case 2: m_labelHTMLSellText.init("Este � um incr�vel
 pacote com 24 capas para personalizar seu personagem no Minecraft e entrar no
 clima de final de ano.<br><br>1-4 Jogadores<br>Jogadores em rede 2-8<br><br>
-Este item está sendo licenciado ou sublicenciado para você pela Sony Computer
-Entertainment America e está sujeito aos Termos de Serviço da Rede e Acordo do
-Usuário, as restrições de uso deste item e outros termos aplicáveis estão
-localizados em www.us.playstation.com/support/useragreements. Caso não queira
-aceitar todos esses termos, não baixe este item. Este item pode ser usado com
-até 2 sistemas PlayStation®3 ativados associados a esta Conta de Rede Sony
-Entertainment. <br><br>'Minecraft' é uma marca registrada da Notch Development
+Este item est� sendo licenciado ou sublicenciado para voc� pela Sony Computer
+Entertainment America e est� sujeito aos Termos de Servi�o da Rede e Acordo do
+Usu�rio, as restri��es de uso deste item e outros termos aplic�veis est�o
+localizados em www.us.playstation.com/support/useragreements. Caso n�o queira
+aceitar todos esses termos, n�o baixe este item. Este item pode ser usado com
+at� 2 sistemas PlayStation�3 ativados associados a esta Conta de Rede Sony
+Entertainment.�<br><br>'Minecraft' � uma marca registrada da Notch Development
 AB"); break;
     }
     iTextC++;
@@ -279,7 +279,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
 #else
             int iIndex = (int)childId;
 
-            ULONGLONG ullIndexA[1];
+            uint64_t ullIndexA[1];
             ullIndexA[0] = StorageManager.GetOffer(iIndex).qwOfferID;
             StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
 #endif
@@ -396,8 +396,8 @@ void UIScene_DLCOffersMenu::tick() {
                         bDLCIsAvailable = true;
                     }
                 }
-#else  // __ORBIS__
-       // is the item purchasable?
+#else   // __ORBIS__
+        // is the item purchasable?
                 if (info.purchasabilityFlag ==
                     SCE_TOOLKIT_NP_COMMERCE_NOT_PURCHASED) {
                     // can be bought
@@ -431,8 +431,7 @@ void UIScene_DLCOffersMenu::tick() {
                     }
 
                     // get the image - if we haven't already
-                    std::wstring textureName =
-                        filenametostd::wstring(info.imageUrl);
+                    std::wstring textureName = filenametowstring(info.imageUrl);
 
                     if (hasRegisteredSubstitutionTexture(textureName) ==
                         false) {
@@ -554,7 +553,7 @@ void UIScene_DLCOffersMenu::tick() {
             // get the image
 
             // then retrieve from the web
-            std::wstring textureName = filenametostd::wstring(info.imageUrl);
+            std::wstring textureName = filenametowstring(info.imageUrl);
 
             if (hasRegisteredSubstitutionTexture(textureName) == false) {
                 PBYTE pbImageData;
