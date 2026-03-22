@@ -383,7 +383,6 @@ void UIScene_CreateWorldMenu::handleInput(int iPad, int key, bool repeat,
                     m_MoreOptionsParams.bAllowFriendsOfFriends = false;
                 }
             }
-#endif
 
             handled = true;
             break;
@@ -730,27 +729,6 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
         }
 
         pClass->m_buttonCreateWorld.setEnable(!pClass->m_worldName.empty());
-    }
-    return 0;
-}
-
-int UIScene_CreateWorldMenu::KeyboardCompleteSeedCallback(void* lpParam,
-                                                          bool bRes) {
-    UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
-    // 4J HEG - No reason to set value if keyboard was cancelled
-    if (bRes) {
-#ifdef __PSVITA__
-        // CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
-        std::uint16_t pchText[2048];
-        ZeroMemory(pchText, 2048 * sizeof(std::uint16_t));
-#else
-        std::uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(std::uint16_t));
-#endif
-        InputManager.GetText(pchText);
-        pClass->m_editSeed.setLabel((wchar_t*)pchText);
-        pClass->m_MoreOptionsParams.seed = (wchar_t*)pchText;
     }
     return 0;
 }
