@@ -7655,6 +7655,20 @@ You can upload a world save to the save transfer area using Minecraft: PlayStati
     <value>You are being returned to the main menu because of a problem reading your Xbox profile.</value>
   </data>
 
+	<data name="IDS_ERROR_NETWORK">
+		<value>A network error has occurred.</value>
+	</data>	
+
+	<data name="IDS_ERROR_NETWORK_TITLE">
+		<value>Network Error</value>
+	</data>	
+
+	<data name="IDS_ERROR_NETWORK_EXIT">
+		<value>A network error has occurred. Exiting to Main Menu.</value>
+	</data>	
+
+
+
 ﻿
 
 </root>
