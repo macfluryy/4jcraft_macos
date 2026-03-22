@@ -8604,4 +8604,60 @@ If you try to save while using the trial version, you will be given the option t
   <data name="IDS_ERROR_NETWORK_TITLE">
     <value>Network Error</value>
   </data>
+
+	<data name="IDS_ATTRIBUTE_NAME_HORSE_JUMPSTRENGTH">
+		<value>Horse Jump Strength</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_ZOMBIE_SPAWNREINFORCEMENTS">
+		<value>Zombie Reinforcements</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_GENERIC_MAXHEALTH">
+		<value>Max Health</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_GENERIC_FOLLOWRANGE">
+		<value>Mob Follow Range</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_GENERIC_KNOCKBACKRESISTANCE">
+		<value>Knockback Resistance</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_GENERIC_MOVEMENTSPEED">
+		<value>Speed</value>
+	</data>	
+
+	<data name="IDS_ATTRIBUTE_NAME_GENERIC_ATTACKDAMAGE">
+		<value>Attack Damage</value>
+	</data>	
+
+	<data name="IDS_CONTAINER_ANIMAL">
+		<value>Horse</value>
+	</data>
+
+	<data name="IDS_WITHER">
+		<value>Wither</value>
+	</data>
+
+	<data name="IDS_CONTAINER_DROPPER">
+	<value>Dropper</value>
+  </data>
+	<data name="IDS_CONTAINER_HOPPER">
+	<value>Hopper</value>
+  </data>
+	<data name="IDS_CONTAINER_BEACON">
+	<value>Beacon</value>
+  </data>
+	<data name="IDS_CONTAINER_BEACON_PRIMARY_POWER">
+	<value>Primary Power</value>
+  </data>
+	<data name="IDS_CONTAINER_BEACON_SECONDARY_POWER">
+	<value>Secondary Power</value>
+  </data>
+	<data name="IDS_CONTAINER_MINECART">
+	<value>Minecart</value>
+  </data>
+
 </root>

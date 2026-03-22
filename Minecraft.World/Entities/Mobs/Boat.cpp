@@ -276,9 +276,9 @@ void Boat::tick() {
     if (rider.lock() != NULL && rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
         std::shared_ptr<LivingEntity> livingRider =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
-        double std::forward = livingRider->yya;
+        double forward = livingRider->yya;
 
-        if (std::forward > 0) {
+        if (forward > 0) {
             double riderXd = -sin(livingRider->yRot * PI / 180);
             double riderZd = cos(livingRider->yRot * PI / 180);
             xd += riderXd * acceleration * 0.05f;

@@ -43,7 +43,7 @@ void Achievement::_init() {
  * @param prerequisite Achievement object that is required to unlock this one
  */
 Achievement::Achievement(int id, const std::wstring& name, int x, int y,
-                         Item* icon, Achievement* requires)
+                         Item* icon, Achievement* prerequisite)
     : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
            I18n::get(std::wstring(L"achievement.").append(name))),
       desc(I18n::get(
@@ -51,10 +51,10 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       icon(new ItemInstance(icon)),
       x(x),
       y(y),
-      requires(requires) {}
+      prerequisite(prerequisite) {}
 
       Achievement::Achievement(int id, const std::wstring& name, int x, int y,
-                               Tile* icon, Achievement* requires)
+                               Tile* icon, Achievement* prerequisite)
     : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
            I18n::get(std::wstring(L"achievement.").append(name))),
       desc(I18n::get(
@@ -62,11 +62,11 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       icon(new ItemInstance(icon)),
       x(x),
       y(y),
-      requires(requires) {}
+      prerequisite(prerequisite) {}
 
       Achievement::Achievement(int id, const std::wstring& name, int x, int y,
                                std::shared_ptr<ItemInstance> icon,
-                               Achievement* requires)
+                               Achievement* prerequisite)
     : Stat(Achievements::ACHIEVEMENT_OFFSET + id,
            I18n::get(std::wstring(L"achievement.").append(name))),
       desc(I18n::get(
@@ -74,7 +74,7 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       icon(icon),
       x(x),
       y(y),
-      requires(requires) {}
+      prerequisite(prerequisite) {}
 
 /**
  * @brief Returns whether the Achivement is golden

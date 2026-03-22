@@ -16,11 +16,12 @@ StoneMonsterTile::StoneMonsterTile(int id) : Tile(id, Material::clay) {
 }
 
 Icon* StoneMonsterTile::getTexture(int face, int data) {
-#ifndef _CONTENT_PACKAGE
-    if (app.DebugArtToolsOn()) {
-        return Tile::fire->getTexture(face, 0);
-    }
-#endif
+// 4jcraft: removed in TU19 merge for now
+// #ifndef _CONTENT_PACKAGE
+//     if (app.DebugArtToolsOn()) {
+//         return Tile::fire->getTexture(face, 0);
+//     }
+// #endif
     if (data == HOST_COBBLE) {
         return Tile::cobblestone->getTexture(face);
     }

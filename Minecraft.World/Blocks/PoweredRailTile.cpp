@@ -19,7 +19,7 @@ void PoweredRailTile::registerIcons(IconRegister* iconRegister) {
 }
 
 bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
-                                            int data, bool std::forward,
+                                            int data, bool forward,
                                             int searchDepth) {
     if (searchDepth >= 8) {
         return false;
@@ -30,21 +30,21 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
     bool checkBelow = true;
     switch (dir) {
         case DIR_FLAT_Z:
-            if (std::forward) {
+            if (forward) {
                 z++;
             } else {
                 z--;
             }
             break;
         case DIR_FLAT_X:
-            if (std::forward) {
+            if (forward) {
                 x--;
             } else {
                 x++;
             }
             break;
         case 2:
-            if (std::forward) {
+            if (forward) {
                 x--;
             } else {
                 x++;
@@ -54,7 +54,7 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
             dir = DIR_FLAT_X;
             break;
         case 3:
-            if (std::forward) {
+            if (forward) {
                 x--;
                 y++;
                 checkBelow = false;
@@ -64,7 +64,7 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
             dir = DIR_FLAT_X;
             break;
         case 4:
-            if (std::forward) {
+            if (forward) {
                 z++;
             } else {
                 z--;
@@ -74,7 +74,7 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
             dir = DIR_FLAT_Z;
             break;
         case 5:
-            if (std::forward) {
+            if (forward) {
                 z++;
                 y++;
                 checkBelow = false;
@@ -85,10 +85,10 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
             break;
     }
 
-    if (isSameRailWithPower(level, x, y, z, std::forward, searchDepth, dir)) {
+    if (isSameRailWithPower(level, x, y, z, forward, searchDepth, dir)) {
         return true;
     }
-    if (checkBelow && isSameRailWithPower(level, x, y - 1, z, std::forward,
+    if (checkBelow && isSameRailWithPower(level, x, y - 1, z, forward,
                                           searchDepth, dir)) {
         return true;
     }
@@ -96,7 +96,7 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
 }
 
 bool PoweredRailTile::isSameRailWithPower(Level* level, int x, int y, int z,
-                                          bool std::forward, int searchDepth,
+                                          bool forward, int searchDepth,
                                           int dir) {
     int tile = level->getTile(x, y, z);
 
@@ -118,7 +118,7 @@ bool PoweredRailTile::isSameRailWithPower(Level* level, int x, int y, int z,
                 return true;
             } else {
                 return findPoweredRailSignal(level, x, y, z, tileData,
-                                             std::forward, searchDepth + 1);
+                                             forward, searchDepth + 1);
             }
         }
     }

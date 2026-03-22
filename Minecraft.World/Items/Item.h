@@ -219,7 +219,7 @@ public:
     static Item* pickAxe_gold;
     static Item* hatchet_gold;
 
-    static Item* std::string;
+    static Item* string;
     static Item* feather;
     static Item* gunpowder;
 

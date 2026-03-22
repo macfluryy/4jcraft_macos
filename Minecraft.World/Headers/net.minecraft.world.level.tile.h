@@ -44,7 +44,7 @@
 #include "../Blocks/FlowerPotTile.h"
 #include "../Blocks/FurnaceTile.h"
 #include "../Blocks/GlassTile.h"
-#include "GlowstoneTile.h"
+#include "../Blocks/GlowstoneTile.h"
 #include "../Blocks/GrassTile.h"
 #include "../Blocks/GravelTile.h"
 #include "../Blocks/HalfSlabTile.h"

@@ -408,9 +408,9 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
         std::shared_ptr<LivingEntity> living =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
 
-        double std::forward = living->yya;
+        double forward = living->yya;
 
-        if (std::forward > 0) {
+        if (forward > 0) {
             double riderXd = -sin(living->yRot * PI / 180);
             double riderZd = cos(living->yRot * PI / 180);
 

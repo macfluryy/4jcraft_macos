@@ -122,9 +122,9 @@ const ItemInstance* ArmorDyeRecipe::getResultItem() { return NULL; }
 const int ArmorDyeRecipe::getGroup() { return ShapedRecipy::eGroupType_Armour; }
 
 // 4J-PB
-bool ArmorDyeRecipe::requires(int iRecipe) { return false; }
+bool ArmorDyeRecipe::collectRequirements(int iRecipe) { return false; }
 
-void ArmorDyeRecipe::requires(INGREDIENTS_REQUIRED* pIngReq) {
+void ArmorDyeRecipe::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     // int iCount=0;
     // bool bFound;
     // int j;

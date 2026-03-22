@@ -52,9 +52,9 @@ public:
 
     // 4J-PB
     virtual bool
-        requires(int iRecipe)
+        prerequisite(int iRecipe)
     = 0;
     virtual void
-        requires(INGREDIENTS_REQUIRED* pIngReq)
+        prerequisite(INGREDIENTS_REQUIRED* pIngReq)
     = 0;
 };

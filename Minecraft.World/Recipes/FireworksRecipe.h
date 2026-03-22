@@ -39,12 +39,12 @@ public:
 
     // 4J-PB
     virtual bool
-        requires(int iRecipe)
+        requiresRecipe(int iRecipe)
     {
         return false;
     };
     virtual void
-        requires(INGREDIENTS_REQUIRED* pIngReq)
+        collectRequirements(INGREDIENTS_REQUIRED* pIngReq)
     {};
 
     // 4J Added
