@@ -22,6 +22,11 @@ class CommandDispatcher;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 
+#if defined _XBOX_ONE || defined _XBOX || defined __ORBIS__ || \
+    defined __PS3__ || defined __PSVITA__
+#define _ACK_CHUNK_SEND_THROTTLING
+#endif
+
 typedef struct _LoadSaveDataThreadParam {
     void* data;
     __int64 fileSize;
@@ -32,7 +37,7 @@ typedef struct _LoadSaveDataThreadParam {
 } LoadSaveDataThreadParam;
 
 typedef struct _NetworkGameInitData {
-    __int64 seed;
+    int64_t seed;
     LoadSaveDataThreadParam* saveData;
     std::uint32_t settings;
     LevelGenerationOptions* levelGen;
@@ -99,7 +104,7 @@ public:
 
 private:
     //	std::vector<Tickable *> tickables = new ArrayList<Tickable>();	// 4J -
-    //removed
+    // removed
     CommandDispatcher* commandDispatcher;
     std::vector<ConsoleInput*>
         consoleInput;  // 4J - was synchronizedList - TODO - investigate
@@ -111,6 +116,8 @@ public:
     bool allowFlight;
     std::wstring motd;
     int maxBuildHeight;
+    int playerIdleTimeout;
+    bool forceGameType;
 
 private:
     // 4J Added
@@ -142,8 +149,13 @@ private:
     void endProgress();
     void saveAllChunks();
     void saveGameRules();
-    void stopServer();
+    void stopServer(bool didInit);
+#ifdef _LARGE_WORLDS
+    void overwriteBordersForNewWorldSize(ServerLevel* level);
+    void overwriteHellBordersForNewWorldSize(ServerLevel* level,
+                                             int oldHellSize);
 
+#endif
 public:
     void setMaxBuildHeight(int maxBuildHeight);
     int getMaxBuildHeight();
@@ -158,9 +170,21 @@ public:
     void setPvpAllowed(bool pvp);
     bool isFlightAllowed();
     void setFlightAllowed(bool allowFlight);
+    bool isCommandBlockEnabled();
     bool isNetherEnabled();
     bool isHardcore();
+    int getOperatorUserPermissionLevel();
     CommandDispatcher* getCommandDispatcher();
+    Pos* getCommandSenderWorldPosition();
+    Level* getCommandSenderWorld();
+    int getSpawnProtectionRadius();
+    bool isUnderSpawnProtection(Level* level, int x, int y, int z,
+                                std::shared_ptr<Player> player);
+    void setForceGameType(bool forceGameType);
+    bool getForceGameType();
+    static int64_t getCurrentTimeMillis();
+    int getPlayerIdleTimeout();
+    void setPlayerIdleTimeout(int playerIdleTimeout);
 
 public:
     void halt();
@@ -177,7 +201,7 @@ public:
                             ConsoleInputSource* source);
     void handleConsoleInputs();
     //    void addTickable(Tickable tickable);	// 4J removed
-    static void main(__int64 seed, void* lpParameter);
+    static void main(int64_t seed, void* lpParameter);
     static void HaltServer(bool bPrimaryPlayerSignedOut = false);
 
     File* getFile(const std::wstring& name);
@@ -200,9 +224,9 @@ private:
     static MinecraftServer* server;
 
     static bool setTimeOfDayAtEndOfTick;
-    static __int64 setTimeOfDay;
+    static int64_t setTimeOfDay;
     static bool setTimeAtEndOfTick;
-    static __int64 setTime;
+    static int64_t setTime;
 
     static bool
         m_bPrimaryPlayerSignedOut;  // 4J-PB added to tell the stopserver not to
@@ -239,11 +263,11 @@ public:
         else
             return NULL;
     }
-    static void SetTimeOfDay(__int64 time) {
+    static void SetTimeOfDay(int64_t time) {
         setTimeOfDayAtEndOfTick = true;
         setTimeOfDay = time;
     }
-    static void SetTime(__int64 time) {
+    static void SetTime(int64_t time) {
         setTimeAtEndOfTick = true;
         setTime = time;
     }
@@ -256,11 +280,16 @@ private:
 
     // 4J Added - A static that stores the QNet index of the player that is next
     // allowed to send a packet in the slow queue
+#ifdef _ACK_CHUNK_SEND_THROTTLING
+    static bool s_hasSentEnoughPackets;
+    static int64_t s_tickStartTime;
+    static std::vector<INetworkPlayer*> s_sentTo;
+    static const int MAX_TICK_TIME_FOR_PACKET_SENDS = 35;
+#else
     static int s_slowQueuePlayerIndex;
     static int s_slowQueueLastTime;
-
-public:
     static bool s_slowQueuePacketSent;
+#endif
 
     bool IsServerPaused() { return m_isServerPaused; }
 
@@ -270,9 +299,14 @@ private:
     bool m_suspending;
 
 public:
-    // static int getSlowQueueIndex() { return s_slowQueuePlayerIndex; }
-    static bool canSendOnSlowQueue(INetworkPlayer* player);
+    static bool chunkPacketManagement_CanSendTo(INetworkPlayer* player);
+    static void chunkPacketManagement_DidSendTo(INetworkPlayer* player);
+#ifndef _ACK_CHUNK_SEND_THROTTLING
     static void cycleSlowQueueIndex();
+#endif
+
+    void chunkPacketManagement_PreTick();
+    void chunkPacketManagement_PostTick();
 
     void setSaveOnExit(bool save) {
         m_saveOnExit = save;
