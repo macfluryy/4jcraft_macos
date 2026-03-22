@@ -65,7 +65,7 @@ LevelGenerationOptions::LevelGenerationOptions(DLCPack* parentPack) {
     m_bRequiresGameRules = false;
 
     m_pbBaseSaveData = NULL;
-    m_dwBaseSaveSize = 0;
+    m_baseSaveSize = 0;
 
     m_parentDLCPack = parentPack;
     m_bLoadingData = false;
