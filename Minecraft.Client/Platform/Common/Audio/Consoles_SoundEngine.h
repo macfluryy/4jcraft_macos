@@ -77,6 +77,26 @@ public:
     static const WCHAR* wchSoundNames[eSoundType_MAX];
     static const WCHAR* wchUISoundNames[eSFX_MAX];
 
+public:
+    void tick();
+    void schedule(int iSound, float x, float y, float z, float volume,
+                  float pitch, int delayTicks);
+
+private:
+    class ScheduledSound {
+    public:
+        int iSound;
+        float x, y, z;
+        float volume, pitch;
+        int delay;
+
+    public:
+        ScheduledSound(int iSound, float x, float y, float z, float volume,
+                       float pitch, int delay);
+    };
+
+    std::vector<ScheduledSound*> scheduledSounds;
+
 private:
     // platform specific functions
 

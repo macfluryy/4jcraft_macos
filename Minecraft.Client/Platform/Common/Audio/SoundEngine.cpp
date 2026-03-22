@@ -202,8 +202,8 @@ void SoundEngine::init(Options* pOptions) {
     // Create a driver to render our audio - 44khz, 16 bit,
 #ifdef __PS3__
     //	On the Sony PS3, the driver is always opened in 48 kHz, 32-bit floating
-    //point. The only meaningful configurations are MSS_MC_STEREO,
-    //MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
+    // point. The only meaningful configurations are MSS_MC_STEREO,
+    // MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
     m_hDriver = AIL_open_digital_driver(48000, 16, iNumberOfChannels,
                                         AIL_OPEN_DIGITAL_USE_SPU0);
 #elif defined __PSVITA__
@@ -479,6 +479,12 @@ void SoundEngine::updateMiles() {
                             case eSoundType_MOB_ENDERDRAGON_HIT:
                                 distanceScaler = 100.0f;
                                 break;
+                            case eSoundType_FIREWORKS_BLAST:
+                            case eSoundType_FIREWORKS_BLAST_FAR:
+                            case eSoundType_FIREWORKS_LARGE_BLAST:
+                            case eSoundType_FIREWORKS_LARGE_BLAST_FAR:
+                                distanceScaler = 100.0f;
+                                break;
                             case eSoundType_MOB_GHAST_MOAN:
                             case eSoundType_MOB_GHAST_SCREAM:
                             case eSoundType_MOB_GHAST_DEATH:
@@ -631,6 +637,7 @@ static S32 running = AIL_ms_count();
 #endif
 
 void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
+    ConsoleSoundEngine::tick();
 #ifdef __DISABLE_MILES__
     return;
 #endif
@@ -1103,6 +1110,12 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
     SoundEngine* soundEngine = (SoundEngine*)lpParameter;
     soundEngine->m_hStream =
         AIL_open_stream(soundEngine->m_hDriver, soundEngine->m_szStreamName, 0);
+
+    if (soundEngine->m_hStream == 0) {
+        app.DebugPrintf(
+            "SoundEngine::OpenStreamThreadProc - Could not open - %s\n",
+            soundEngine->m_szStreamName);
+    }
     return 0;
 }
 
@@ -1204,8 +1217,13 @@ void SoundEngine::playMusicUpdate() {
                         char szName[255];
                         wcstombs(szName, wstrSoundName.c_str(), 255);
 
+#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
                         std::string strFile =
-                            "TPACK:\\Data\\" + string(szName) + ".binka";
+                            "TPACK:/Data/" + std::string(szName) + ".binka";
+#else
+                        std::string strFile =
+                            "TPACK:\\Data\\" + std::string(szName) + ".binka";
+#endif
                         std::string mountedPath =
                             StorageManager.GetMountedPath(strFile);
                         strcpy(m_szStreamName, mountedPath.c_str());
@@ -1296,8 +1314,10 @@ void SoundEngine::playMusicUpdate() {
                 }
 
                 // 			std::wstring name =
-                // m_szStreamFileA[m_musicID]; 			char *SoundName = (char
-                // *)ConvertSoundPathToName(name); 			strcat((char
+                // m_szStreamFileA[m_musicID]; 			char *SoundName
+                // = (char
+                // *)ConvertSoundPathToName(name);
+                // strcat((char
                 // *)szStreamName,SoundName);
 
                 app.DebugPrintf("Starting streaming - %s\n", m_szStreamName);
