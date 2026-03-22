@@ -146,7 +146,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
 #endif
             DWORD skinId = app.getSkinIdFromPath(m_path);
             app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
-        } break;
+            break;
         default:
             break;
     }
