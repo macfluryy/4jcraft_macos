@@ -1121,7 +1121,7 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
         localplayers[idx]->setOnlineXuid(playerXUIDOnline);
         localplayers[idx]->setIsGuest(ProfileManager.IsGuest(idx));
 
-        localplayers[idx]->displayName = ProfileManager.GetDisplayName(idx);
+        localplayers[idx]->m_displayName = ProfileManager.GetDisplayName(idx);
 
         localplayers[idx]->m_iScreenSection = tempScreenSection;
 
@@ -2025,7 +2025,7 @@ void Minecraft::run_middle() {
 
             PIXBeginNamedEvent(0, "Light update");
 
-            if (level != NULL) level->updateLights();
+            // if (level != NULL) level->updateLights();
             glEnable(GL_TEXTURE_2D);
 
             PIXEndNamedEvent();
@@ -4529,7 +4529,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
             player->setXuid(playerXUIDOffline);
             player->setOnlineXuid(playerXUIDOnline);
 
-            player->displayName = ProfileManager.GetDisplayName(iPrimaryPlayer);
+            player->m_displayName = ProfileManager.GetDisplayName(iPrimaryPlayer);
 
             player->resetPos();
             gameMode->initPlayer(player);
@@ -4638,9 +4638,9 @@ void Minecraft::prepareLevel(int title) {
                 this->progressRenderer->progressStagePercentage((pp++) * 100 /
                                                                 max);
             level->getTile(spawnPos->x + x, 64, spawnPos->z + z);
-            if (!gameMode->isCutScene()) {
-                while (level->updateLights());
-            }
+            // if (!gameMode->isCutScene()) {
+            //     while (level->updateLights());
+            // }
         }
     }
     delete spawnPos;
@@ -4721,7 +4721,7 @@ void Minecraft::respawnPlayer(int iPad, int dimension, int newEntityId) {
     player->setOnlineXuid(playerXUIDOnline);
     player->setIsGuest(ProfileManager.IsGuest(iTempPad));
 
-    player->displayName = ProfileManager.GetDisplayName(iPad);
+    player->m_displayName = ProfileManager.GetDisplayName(iPad);
 
     player->SetXboxPad(iTempPad);
 
