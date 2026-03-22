@@ -11,8 +11,9 @@ public:
     virtual ~INetworkPlayer() {}
     virtual unsigned char GetSmallId() = 0;
     virtual void SendData(INetworkPlayer* player, const void* pvData,
-                          int dataSize, bool lowPriority) = 0;
+                          int dataSize, bool lowPriority, bool ack) = 0;
     virtual bool IsSameSystem(INetworkPlayer* player) = 0;
+    virtual int GetOutstandingAckCount() = 0;
     virtual int GetSendQueueSizeBytes(INetworkPlayer* player,
                                       bool lowPriority) = 0;
     virtual int GetSendQueueSizeMessages(INetworkPlayer* player,
@@ -32,4 +33,6 @@ public:
     virtual const wchar_t* GetOnlineName() = 0;
     virtual std::wstring GetDisplayName() = 0;
     virtual PlayerUID GetUID() = 0;
+    virtual void SentChunkPacket() = 0;
+    virtual int GetTimeSinceLastChunkPacket_ms() = 0;
 };

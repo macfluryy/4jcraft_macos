@@ -40,14 +40,12 @@
 #include "../../Minecraft.World/Stats/DurangoStats.h"
 #endif
 
-#define WAIT_TIMEOUT 258
-
 // Global instance
 CGameNetworkManager g_NetworkManager;
 CPlatformNetworkManager* CGameNetworkManager::s_pPlatformNetworkManager;
 
-__int64 CGameNetworkManager::messageQueue[512];
-__int64 CGameNetworkManager::byteQueue[512];
+int64_t CGameNetworkManager::messageQueue[512];
+int64_t CGameNetworkManager::byteQueue[512];
 int CGameNetworkManager::messageQueuePos = 0;
 
 CGameNetworkManager::CGameNetworkManager() {
@@ -183,7 +181,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
     ProfileManager.SetDeferredSignoutEnabled(true);
 #endif
 
-    __int64 seed = 0;
+    int64_t seed = 0;
     if (lpParameter != NULL) {
         NetworkGameInitData* param = (NetworkGameInitData*)lpParameter;
         seed = param->seed;
@@ -198,14 +196,110 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
             } else {
                 param->seed = seed =
                     app.getLevelGenerationOptions()->getLevelSeed();
+
+                if (param->levelGen->isTutorial()) {
+                    // Load the tutorial save data here
+                    if (param->levelGen->requiresBaseSave() &&
+                        !param->levelGen->getBaseSavePath().empty()) {
+#ifdef _XBOX
+#ifdef _TU_BUILD
+                        std::wstring fileRoot =
+                            L"UPDATE:\\res\\GameRules\\" +
+                            param->levelGen->getBaseSavePath();
+#else
+                        std::wstring fileRoot =
+                            L"GAME:\\res\\TitleUpdate\\GameRules\\" +
+                            param->levelGen->getBaseSavePath();
+#endif
+#else
+#ifdef _WINDOWS64
+                        std::wstring fileRoot =
+                            L"Windows64Media\\Tutorial\\" +
+                            param->levelGen->getBaseSavePath();
+                        File root(fileRoot);
+                        if (!root.exists())
+                            fileRoot = L"Windows64\\Tutorial\\" +
+                                       param->levelGen->getBaseSavePath();
+#elif defined(__ORBIS__)
+                        std::wstring fileRoot =
+                            L"/app0/orbis/Tutorial/" +
+                            param->levelGen->getBaseSavePath();
+#elif defined(__PSVITA__)
+                        std::wstring fileRoot =
+                            L"PSVita/Tutorial/" +
+                            param->levelGen->getBaseSavePath();
+#elif defined(__PS3__)
+                        std::wstring fileRoot =
+                            L"PS3/Tutorial/" +
+                            param->levelGen->getBaseSavePath();
+#else
+                        std::wstring fileRoot =
+                            L"Tutorial\\" + param->levelGen->getBaseSavePath();
+#endif
+#endif
+                        File grf(fileRoot);
+                        if (grf.exists()) {
+#ifdef _UNICODE
+                            std::wstring path = grf.getPath();
+                            const WCHAR* pchFilename = path.c_str();
+                            HANDLE fileHandle = CreateFile(
+                                pchFilename,   // file name
+                                GENERIC_READ,  // access mode
+                                0,  // share mode // TODO 4J Stu - Will we need
+                                    // to share file? Probably not but...
+                                NULL,           // Unused
+                                OPEN_EXISTING,  // how to create // TODO 4J Stu
+                                                // - Assuming that the file
+                                                // already exists if we are
+                                                // opening to read from it
+                                FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                                NULL                        // Unsupported
+                            );
+#else
+                            const char* pchFilename =
+                                wstringtofilename(grf.getPath());
+                            HANDLE fileHandle = CreateFile(
+                                pchFilename,   // file name
+                                GENERIC_READ,  // access mode
+                                0,  // share mode // TODO 4J Stu - Will we need
+                                    // to share file? Probably not but...
+                                NULL,           // Unused
+                                OPEN_EXISTING,  // how to create // TODO 4J Stu
+                                                // - Assuming that the file
+                                                // already exists if we are
+                                                // opening to read from it
+                                FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
+                                NULL                        // Unsupported
+                            );
+#endif
+
+                            if (fileHandle != INVALID_HANDLE_VALUE) {
+                                DWORD bytesRead,
+                                    dwFileSize = GetFileSize(fileHandle, NULL);
+                                PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                                BOOL bSuccess =
+                                    ReadFile(fileHandle, pbData, dwFileSize,
+                                             &bytesRead, NULL);
+                                if (bSuccess == FALSE) {
+                                    app.FatalLoadError();
+                                }
+                                CloseHandle(fileHandle);
+
+                                // 4J-PB - is it possible that we can get here
+                                // after a read fail and it's not an error?
+                                param->levelGen->setBaseSaveData(pbData,
+                                                                 dwFileSize);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    static __int64 sseed =
+    static int64_t sseed =
         seed;  // Create static version so this will be valid until next call to
                // this function & whilst thread is running
-
     ServerStoppedCreate(false);
     if (g_NetworkManager.IsHost()) {
         ServerStoppedCreate(true);
@@ -727,9 +821,8 @@ int CGameNetworkManager::JoinFromInvite_SignInReturned(void* pParam,
         if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
-            ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                 IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad, NULL,
-                                 NULL, app.GetStringTable());
+            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                   IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
 
             return 0;
         }
@@ -776,10 +869,10 @@ int CGameNetworkManager::JoinFromInvite_SignInReturned(void* pParam,
             } else if (noPrivileges) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                                     IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
-                                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                                     NULL, NULL, app.GetStringTable());
+                ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                                       IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
+                                       uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else {
 #if defined(__ORBIS__) || defined(__PSVITA__)
                 bool chatRestricted = false;
@@ -895,11 +988,24 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
 }
 
 int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
-    __int64 seed = 0;
+    int64_t seed = 0;
     if (lpParameter != NULL) {
         NetworkGameInitData* param = (NetworkGameInitData*)lpParameter;
         seed = param->seed;
         app.SetGameHostOption(eGameHostOption_All, param->settings);
+
+        // 4J Stu - If we are loading a DLC save that's separate from the
+        // texture pack, load
+        if (param->levelGen != NULL &&
+            (param->texturePackId == 0 ||
+             param->levelGen->getRequiredTexturePackId() !=
+                 param->texturePackId)) {
+            while ((Minecraft::GetInstance()->skins->needsUIUpdate() ||
+                    ui.IsReloadingSkin())) {
+                Sleep(1);
+            }
+            param->levelGen->loadBaseSaveData();
+        }
     }
 
     SetThreadName(-1, "Minecraft Server thread");
@@ -911,6 +1017,7 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
     Entity::useSmallIds();
     Level::enableLightingCache();
     Tile::CreateNewThreadStorage();
+    FireworksRecipe::CreateNewThreadStorage();
 
     MinecraftServer::main(
         seed,
@@ -924,7 +1031,7 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
 
     if (lpParameter != NULL) delete (NetworkGameInitData*)lpParameter;
 
-    return 0;
+    return S_OK;
 }
 
 int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
@@ -935,10 +1042,7 @@ int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
-
-#ifndef __PSVITA__
     UIScene_PauseMenu::_ExitWorld(NULL);
-#endif
 
     while (g_NetworkManager.IsInSession()) {
         Sleep(1);
@@ -946,7 +1050,7 @@ int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
 
     // Xbox should always be online when receiving invites - on PS3 we need to
     // check & ask the user to sign in
-#ifndef __PS3__
+#if !defined(__PS3__) && !defined(__PSVITA__)
     JoinFromInviteData* inviteData = (JoinFromInviteData*)lpParam;
     app.SetAction(inviteData->dwUserIndex, eAppAction_JoinFromInvite, lpParam);
 #else
@@ -958,14 +1062,14 @@ int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
         unsigned int uiIDA[2];
         uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
         uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-        ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
-                             uiIDA, 2, ProfileManager.GetPrimaryPad(),
-                             &CGameNetworkManager::MustSignInReturned_0,
-                             lpParam, app.GetStringTable());
+        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
+                               uiIDA, 2, ProfileManager.GetPrimaryPad(),
+                               &CGameNetworkManager::MustSignInReturned_0,
+                               lpParam);
     }
 #endif
 
-    return 0;
+    return S_OK;
 }
 
 #if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
@@ -1098,17 +1202,17 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     uiIDA[0] = IDS_CONFIRM_OK;
     if (g_NetworkManager.m_bLastDisconnectWasLostRoomOnly) {
         if (g_NetworkManager.m_bSignedOutofPSN) {
-            C4JStorage::EMessageResult result = ui.RequestMessageBox(
+            C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                 IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME, IDS_ERROR_PSN_SIGN_OUT,
                 uiIDA, 1, ProfileManager.GetPrimaryPad());
         } else {
-            C4JStorage::EMessageResult result =
-                ui.RequestMessageBox(IDS_ERROR_NETWORK_TITLE,
-                                     IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME,
-                                     uiIDA, 1, ProfileManager.GetPrimaryPad());
+            C4JStorage::EMessageResult result = ui.RequestErrorMessage(
+                IDS_ERROR_NETWORK_TITLE,
+                IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME, uiIDA, 1,
+                ProfileManager.GetPrimaryPad());
         }
     } else {
-        C4JStorage::EMessageResult result = ui.RequestMessageBox(
+        C4JStorage::EMessageResult result = ui.RequestErrorMessage(
             IDS_CONNECTION_LOST,
             g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT),
             uiIDA, 1, ProfileManager.GetPrimaryPad());
@@ -1117,13 +1221,14 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Swap these two messages around as one is too long to display at 480
     pMinecraft->progressRenderer->progressStartNoAbort(
         IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME);
-    pMinecraft->progressRenderer->progressStage(-1);  // g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT)
-                                                      // );
+    pMinecraft->progressRenderer->progressStage(
+        -1);  // g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT)
+              // );
 #elif defined(_XBOX_ONE)
     if (g_NetworkManager.m_bFullSessionMessageOnNextSessionChange) {
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
-        C4JStorage::EMessageResult result = ui.RequestMessageBox(
+        C4JStorage::EMessageResult result = ui.RequestErrorMessage(
             IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME, IDS_IN_PARTY_SESSION_FULL,
             uiIDA, 1, ProfileManager.GetPrimaryPad());
         pMinecraft->progressRenderer->progressStartNoAbort(
@@ -1158,8 +1263,9 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Swap these two messages around as one is too long to display at 480
     pMinecraft->progressRenderer->progressStartNoAbort(
         IDS_PROGRESS_CONVERTING_TO_OFFLINE_GAME);
-    pMinecraft->progressRenderer->progressStage(-1);  // g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT)
-                                                      // );
+    pMinecraft->progressRenderer->progressStage(
+        -1);  // g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT)
+              // );
 #elif defined(_XBOX_ONE)
     if (g_NetworkManager.m_bFullSessionMessageOnNextSessionChange) {
         pMinecraft->progressRenderer->progressStartNoAbort(
@@ -1277,6 +1383,14 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
                         ->getSocket()
                         ->setPlayer(
                             g_NetworkManager.GetLocalPlayerByUserIndex(index));
+                } else if (pMinecraft->m_connectionFailed[index] &&
+                           (pMinecraft->m_connectionFailedReason[index] ==
+                            DisconnectPacket::
+                                eDisconnect_ConnectionCreationFailed)) {
+                    pMinecraft->removeLocalPlayerIdx(index);
+#ifdef _XBOX_ONE
+                    ProfileManager.RemoveGamepadFromGame(index);
+#endif
                 }
             }
         }
@@ -1308,7 +1422,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     app.SetChangingSessionType(false);
     app.SetReallyChangingSessionType(false);
 
-    return 0;
+    return S_OK;
 }
 
 void CGameNetworkManager::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
@@ -1649,75 +1763,46 @@ void CGameNetworkManager::GameInviteReceived(int userIndex,
             // npAvailability isn't SCE_OK
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
-            ui.RequestMessageBox(
-                IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
+            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                   iPadNotSignedInLive);
         } else if (ProfileManager.isSignedInPSN(iPadNotSignedInLive)) {
             // Signed in to PSN but not connected (no internet access)
             assert(!ProfileManager.isConnectedToPSN(iPadNotSignedInLive));
 
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
-            ui.RequestMessageBox(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
-                                 uiIDA, 1, iPadNotSignedInLive, NULL, NULL,
-                                 app.GetStringTable());
+            ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
+                                   uiIDA, 1, iPadNotSignedInLive);
         } else {
             // Not signed in to PSN
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-            ui.RequestMessageBox(
+            ui.RequestAlertMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                 iPadNotSignedInLive, &CGameNetworkManager::MustSignInReturned_1,
-                (void*)pInviteInfo, app.GetStringTable(), NULL, 0, false);
+                (void*)pInviteInfo);
         }
         return;
     }
 
-    // 4J-JEV: Check that all players are authorised for PsPlus, present upsell
-    // to players that aren't and try again.
-    for (unsigned int index = 0; index < XUSER_MAX_COUNT; index++) {
-        if (ProfileManager.IsSignedIn(index) &&
-            !ProfileManager.HasPlayStationPlus(userIndex)) {
-            m_pInviteInfo = (INVITE_INFO*)pInviteInfo;
-            m_iPlayerInvited = userIndex;
+    // if this is the trial game, we'll check and send the user to unlock the
+    // game later, in HandleInviteWhenInMenus
+    if (ProfileManager.IsFullVersion()) {
+        // 4J-JEV: Check that all players are authorised for PsPlus, present
+        // upsell to players that aren't and try again.
+        for (unsigned int index = 0; index < XUSER_MAX_COUNT; index++) {
+            if (ProfileManager.IsSignedIn(index) &&
+                !ProfileManager.HasPlayStationPlus(userIndex)) {
+                m_pInviteInfo = (INVITE_INFO*)pInviteInfo;
+                m_iPlayerInvited = userIndex;
 
-            m_pUpsell = new PsPlusUpsellWrapper(index);
-            m_pUpsell->displayUpsell();
+                m_pUpsell = new PsPlusUpsellWrapper(index);
+                m_pUpsell->displayUpsell();
 
-            return;
+                return;
+            }
         }
-    }
-#endif
-
-#ifdef __PSVITA__
-    // Need to check we're signed in to PSN
-    bool isSignedInLive =
-        ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
-    if (!isSignedInLive) {
-        // Determine why they're not "signed in live"
-        // MGH - we need to add a new message at some point for connecting when
-        // already signed in
-        // 		if
-        // (ProfileManager.IsSignedInPSN(ProfileManager.GetPrimaryPad()))
-        // 		{
-        // 			// Signed in to PSN but not connected (no
-        // internet access) 			unsigned int uiIDA[1]; 			uiIDA[0] = IDS_OK;
-        // 			ui.RequestMessageBox( IDS_ERROR_NETWORK_TITLE,
-        // IDS_ERROR_NETWORK, uiIDA, 1, ProfileManager.GetPrimaryPad(), NULL,
-        // NULL, app.GetStringTable());
-        // 		}
-        // 		else
-        {
-            // Not signed in to PSN
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-            ui.RequestMessageBox(
-                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
-                ProfileManager.GetPrimaryPad(),
-                &CGameNetworkManager::MustSignInReturned_1, (void*)pInviteInfo,
-                app.GetStringTable(), NULL, 0, false);
-        }
-        return;
     }
 #endif
 
@@ -1764,19 +1849,27 @@ void CGameNetworkManager::GameInviteReceived(int userIndex,
 
         // 4J-PB - it's possible there is no primary pad here, when accepting an
         // invite from the dashboard
-        ui.RequestMessageBox(IDS_CONNECTION_FAILED,
-                             IDS_CONNECTION_FAILED_NO_SD_SPLITSCREEN, uiIDA, 1,
-                             XUSER_INDEX_ANY, NULL, NULL, app.GetStringTable());
+        ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
+                               IDS_CONNECTION_FAILED_NO_SD_SPLITSCREEN, uiIDA,
+                               1, XUSER_INDEX_ANY);
     } else
 #endif
 
         if (noUGC) {
+#ifdef __PSVITA__
+        // showing the system message for chat restriction here instead now, to
+        // fix FQA bug report
+        ProfileManager.DisplaySystemMessage(
+            SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION,
+            ProfileManager.GetPrimaryPad());
+#else
         int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
         if (joiningUsers > 1)
             messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
 
         ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText,
                                 XUSER_INDEX_ANY);
+#endif
     }
 #if defined(__PS3__) || defined __PSVITA__
     else if (bContentRestricted) {
@@ -1797,9 +1890,9 @@ void CGameNetworkManager::GameInviteReceived(int userIndex,
         // IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
         // uiIDA,1,ProfileManager.GetPrimaryPad(),NULL,NULL,
         // app.GetStringTable());
-        ui.RequestMessageBox(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                             IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
-                             XUSER_INDEX_ANY, NULL, NULL, app.GetStringTable());
+        ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                               IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
+                               XUSER_INDEX_ANY);
     } else {
 #if defined(__ORBIS__) || defined(__PSVITA__)
         bool chatRestricted = false;
@@ -1812,34 +1905,40 @@ void CGameNetworkManager::GameInviteReceived(int userIndex,
         }
 #endif
         if (!g_NetworkManager.IsInSession()) {
-#ifndef __PS3__
-            HandleInviteWhenInMenus(userIndex, pInviteInfo);
-#else
+#if defined(__PS3__) || defined(__PSVITA__)
             // PS3 is more complicated here - we need to make sure that the
             // player is online. If they are then we can do the same as the
             // xbox, if not we need to try and get them online and then, if they
             // do sign in, go down the same path
+
+            // Determine why they're not "signed in live"
+            // MGH - On Vita we need to add a new message at some point for
+            // connecting when already signed in
             if (ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad())) {
                 HandleInviteWhenInMenus(userIndex, pInviteInfo);
             } else {
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
                 uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-                ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-                                     IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
-                                     ProfileManager.GetPrimaryPad(),
-                                     &CGameNetworkManager::MustSignInReturned_1,
-                                     (void*)pInviteInfo, app.GetStringTable());
+                ui.RequestErrorMessage(
+                    IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
+                    ProfileManager.GetPrimaryPad(),
+                    &CGameNetworkManager::MustSignInReturned_1,
+                    (void*)pInviteInfo);
             }
+
+#else
+            HandleInviteWhenInMenus(userIndex, pInviteInfo);
 #endif
         } else {
             app.DebugPrintf(
                 "We are already in a multiplayer game...need to leave it\n");
 
             // 			JoinFromInviteData *joinData = new
-            // JoinFromInviteData(); 			joinData->dwUserIndex = dwUserIndex;
-            // 			joinData->dwLocalUsersMask = dwLocalUsersMask;
-            // 			joinData->pInviteInfo = pInviteInfo;
+            // JoinFromInviteData(); 			joinData->dwUserIndex =
+            // dwUserIndex; 			joinData->dwLocalUsersMask =
+            // dwLocalUsersMask; 			joinData->pInviteInfo =
+            // pInviteInfo;
 
             // tell the app to process this
 #ifdef __PSVITA__
@@ -1873,7 +1972,9 @@ void CGameNetworkManager::HandleInviteWhenInMenus(
 
         app.SetAction(userIndex, eAppAction_DashboardTrialJoinFromInvite);
     } else {
+#ifndef _XBOX_ONE
         ProfileManager.SetPrimaryPad(userIndex);
+#endif
 
         // 4J Stu - If we accept an invite from the main menu before going to
         // play game we need to load the DLC These checks are done within the
@@ -1887,17 +1988,23 @@ void CGameNetworkManager::HandleInviteWhenInMenus(
         // as the main player might sign out in the sign-in ui
         // ProfileManager.SetLockedProfile(-1);
 
-        if (!app.IsLocalMultiplayerAvailable()) {
+#ifdef _XBOX_ONE
+        if ((!app.IsLocalMultiplayerAvailable()) &&
+            InputManager.IsPadLocked(userIndex))
+#else
+        if (!app.IsLocalMultiplayerAvailable())
+#endif
+        {
             bool noPrivileges =
                 !ProfileManager.AllowedToPlayMultiplayer(userIndex);
 
             if (noPrivileges) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                                     IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
-                                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                                     NULL, NULL, app.GetStringTable());
+                ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                                       IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
+                                       uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else {
                 ProfileManager.SetLockedProfile(userIndex);
                 ProfileManager.SetPrimaryPad(userIndex);
