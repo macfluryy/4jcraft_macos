@@ -44,6 +44,8 @@ std::wstring UIScene_SettingsMenu::getMoviePath() {
 }
 
 void UIScene_SettingsMenu::handleReload() {
+    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+
     if (ProfileManager.GetPrimaryPad() != m_iPad) {
         removeControl(&m_buttons[BUTTON_ALL_AUDIO], bNotInGame);
         removeControl(&m_buttons[BUTTON_ALL_GRAPHICS], bNotInGame);
