@@ -172,30 +172,32 @@ std::wstring AbstractTexturePack::getAnimationString(
 
     bool requiresFallback = !hasFile(L"\\" + textureName + L".png", false);
 
+    std::wstring result = L"";
+
     InputStream* fileStream =
         getResource(L"\\" + path + animationDefinitionFile, requiresFallback);
 
-    // Minecraft::getInstance()->getLogger().info("Found animation info for: " +
-    // animationDefinitionFile);
+    if (fileStream) {
+        // Minecraft::getInstance()->getLogger().info("Found animation info for:
+        // " + animationDefinitionFile);
 #ifndef _CONTENT_PACKAGE
-    wprintf(L"Found animation info for: %ls\n",
-            animationDefinitionFile.c_str());
+        app.DebugPrintf("Found animation info for: %ls\n",
+                        animationDefinitionFile.c_str());
 #endif
-    InputStreamReader isr(fileStream);
-    BufferedReader br(&isr);
+        InputStreamReader isr(fileStream);
+        BufferedReader br(&isr);
 
-    std::wstring result = L"";
-
-    std::wstring line = br.readLine();
-    while (!line.empty()) {
-        line = trimString(line);
-        if (line.length() > 0) {
-            result.append(L",");
-            result.append(line);
+        std::wstring line = br.readLine();
+        while (!line.empty()) {
+            line = trimString(line);
+            if (line.length() > 0) {
+                result.append(L",");
+                result.append(line);
+            }
+            line = br.readLine();
         }
-        line = br.readLine();
+        delete fileStream;
     }
-    delete fileStream;
 
     return result;
 }
@@ -241,21 +243,20 @@ void AbstractTexturePack::loadColourTable() {
 
 void AbstractTexturePack::loadDefaultColourTable() {
     // Load the file
+#ifdef __PS3__
+    // need to check if it's a BD build, so pass in the name
+    File coloursFile(
+        AbstractTexturePack::getPath(
+            true, app.GetBootedFromDiscPatch() ? "colours.col" : NULL)
+            .append(L"res/colours.col"));
+
+#else
     File coloursFile(
         AbstractTexturePack::getPath(true).append(L"res/colours.col"));
+#endif
 
     if (coloursFile.exists()) {
-        const __int64 colourTableLength = coloursFile.length();
-        if (colourTableLength < 0 ||
-            colourTableLength > static_cast<__int64>(
-                                    std::numeric_limits<unsigned int>::max())) {
-            app.DebugPrintf("Failed to load the default colours table\n");
-            app.FatalLoadError();
-            return;
-        }
-
-        const unsigned int dataLength =
-            static_cast<unsigned int>(colourTableLength);
+        DWORD dataLength = coloursFile.length();
         byteArray data(dataLength);
 
         FileInputStream fis(coloursFile);
