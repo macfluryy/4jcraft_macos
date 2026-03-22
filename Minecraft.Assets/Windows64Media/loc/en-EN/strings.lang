@@ -5985,10 +5985,52 @@ Would you like to install the mash-up pack or texture pack now?</value>
 	<data name="IDS_WORLD_OPTIONS">
 		<value>World Options</value>
 	</data>
+
+  <data name="IDS_WORLD_SIZE_TITLE_SMALL">
+		<value>Small</value>
+	</data>
+
+	<data name="IDS_WORLD_SIZE_TITLE_MEDIUM">
+		<value>Medium</value>
+	</data>
+
+	<data name="IDS_WORLD_SIZE_TITLE_LARGE">
+		<value>Large</value>
+	</data>
+
+	<data name="IDS_WORLD_SIZE_TITLE_CLASSIC">
+		<value>Classic</value>
+	</data>
+
 	<data name="IDS_GAME_OPTIONS">
 		<value>Game Options</value>
 	</data>
-	
+
+	<data name="IDS_INCREASE_WORLD_SIZE">
+		<value>Increase World Size</value>
+	</data>	
+	<data name="IDS_INCREASE_WORLD_SIZE_OVERWRITE_EDGES">
+		<value>Overwrite Edges</value>
+	</data>	
+	<data name="IDS_GAMEOPTION_INCREASE_WORLD_SIZE">
+		<value>Increase World Size</value>
+	</data>	
+	<data name="IDS_GAMEOPTION_INCREASE_WORLD_SIZE_OVERWRITE_EDGES">
+		<value>Overwrite Edges</value>
+	</data>	
+	<data name="IDS_WORLD_SIZE">
+		<value>World Size</value>
+	</data>
+	<data name="IDS_GAMEOPTION_WORLD_SIZE">
+		<value>Select a world size to vary the amount of the world that you can explore.</value>
+	</data>	
+	<data name="IDS_DISABLE_SAVING">
+		<value>Disable autosave</value>
+	</data>	
+	<data name="IDS_GAMEOPTION_DISABLE_SAVING">
+		<value>Turn off the constant, automatic saving of the world. If you later choose to save it could take a long time.</value>
+	</data>	
+
 	<data name="IDS_MOB_GRIEFING">
 		<value>Mob Griefing</value>
 	</data>
