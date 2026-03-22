@@ -46,6 +46,7 @@ public:
     void send(std::shared_ptr<Packet> packet);
     std::wstring getName();
     virtual bool isServerPacketListener();
+    virtual bool isDisconnected();
 
 private:
     void sendPreLoginResponse();

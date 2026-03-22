@@ -11,6 +11,7 @@
 #include "../../Minecraft.World/Util/ThreadName.h"
 #include "../../Minecraft.World/IO/Streams/Compression.h"
 #include "../../Minecraft.World/Level/Storage/OldChunkStorage.h"
+#include "../../Minecraft.World/Blocks/Tile.h"
 
 ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
                                    ChunkSource* source) {
@@ -40,6 +41,7 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
 
 // 4J-PB added
 ServerChunkCache::~ServerChunkCache() {
+    storage->WaitForAll();  // MGH -  added to fix crash bug 175183
     delete emptyChunk;
     delete cache;
     delete source;
@@ -336,6 +338,76 @@ LevelChunk* ServerChunkCache::getChunkLoadedOrUnloaded(int x, int z) {
 }
 #endif
 
+// 4J MGH added, for expanding worlds, to kill any player changes and reset the
+// chunk
+#ifdef _LARGE_WORLDS
+void ServerChunkCache::overwriteLevelChunkFromSource(int x, int z) {
+    int ix = x + XZOFFSET;
+    int iz = z + XZOFFSET;
+    // Check we're in range of the stored level
+    if ((ix < 0) || (ix >= XZSIZE)) assert(0);
+    if ((iz < 0) || (iz >= XZSIZE)) assert(0);
+    int idx = ix * XZSIZE + iz;
+
+    LevelChunk* chunk = NULL;
+    chunk = source->getChunk(x, z);
+    assert(chunk);
+    if (chunk) {
+        save(chunk);
+    }
+}
+
+void ServerChunkCache::updateOverwriteHellChunk(LevelChunk* origChunk,
+                                                LevelChunk* playerChunk,
+                                                int xMin, int xMax, int zMin,
+                                                int zMax) {
+    // replace a section of the chunk with the original source data, if it
+    // hasn't already changed
+    for (int x = xMin; x < xMax; x++) {
+        for (int z = zMin; z < zMax; z++) {
+            for (int y = 0; y < 256; y++) {
+                int playerTile = playerChunk->getTile(x, y, z);
+                if (playerTile ==
+                    Tile::unbreakable_Id)  // if the tile is still unbreakable,
+                                           // the player hasn't changed it, so
+                                           // we can replace with the source
+                    playerChunk->setTileAndData(x, y, z,
+                                                origChunk->getTile(x, y, z),
+                                                origChunk->getData(x, y, z));
+            }
+        }
+    }
+}
+
+void ServerChunkCache::overwriteHellLevelChunkFromSource(int x, int z,
+                                                         int minVal,
+                                                         int maxVal) {
+    int ix = x + XZOFFSET;
+    int iz = z + XZOFFSET;
+    // Check we're in range of the stored level
+    if ((ix < 0) || (ix >= XZSIZE)) assert(0);
+    if ((iz < 0) || (iz >= XZSIZE)) assert(0);
+    int idx = ix * XZSIZE + iz;
+    autoCreate = true;
+    LevelChunk* playerChunk = getChunk(x, z);
+    autoCreate = false;
+    LevelChunk* origChunk = source->getChunk(x, z);
+    assert(origChunk);
+    if (playerChunk != emptyChunk) {
+        if (x == minVal)
+            updateOverwriteHellChunk(origChunk, playerChunk, 0, 4, 0, 16);
+        if (x == maxVal)
+            updateOverwriteHellChunk(origChunk, playerChunk, 12, 16, 0, 16);
+        if (z == minVal)
+            updateOverwriteHellChunk(origChunk, playerChunk, 0, 16, 0, 4);
+        if (z == maxVal)
+            updateOverwriteHellChunk(origChunk, playerChunk, 0, 16, 12, 16);
+    }
+    save(playerChunk);
+}
+
+#endif
+
 // 4J Added //
 #ifdef _LARGE_WORLDS
 void ServerChunkCache::dontDrop(int x, int z) {
@@ -362,7 +434,7 @@ LevelChunk* ServerChunkCache::load(int x, int z) {
         levelChunk = storage->load(level, x, z);
     }
     if (levelChunk != NULL) {
-        levelChunk->lastSaveTime = level->getTime();
+        levelChunk->lastSaveTime = level->getGameTime();
     }
     return levelChunk;
 }
@@ -376,7 +448,7 @@ void ServerChunkCache::saveEntities(LevelChunk* levelChunk) {
 void ServerChunkCache::save(LevelChunk* levelChunk) {
     if (storage == NULL) return;
 
-    levelChunk->lastSaveTime = level->getTime();
+    levelChunk->lastSaveTime = level->getGameTime();
     storage->save(level, levelChunk);
 }
 
@@ -710,6 +782,7 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
             notificationEvent[3];  // These are signalled by the threads to let
                                    // us know they are complete
         C4JThread* saveThreads[3];
+        DWORD threadId[3];
         SaveThreadData threadData[3];
         ZeroMemory(&threadData[0], sizeof(SaveThreadData));
         ZeroMemory(&threadData[1], sizeof(SaveThreadData));
@@ -787,7 +860,7 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
                         if (saveThreads[j] == NULL) {
                             char threadName[256];
                             sprintf(threadName, "Save thread %d\n", j);
-                            SetThreadName(0, threadName);
+                            SetThreadName(threadId[j], threadName);
 
                             // saveThreads[j] =
                             // CreateThread(NULL,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
@@ -926,22 +999,37 @@ bool ServerChunkCache::tick() {
             if (!m_toDrop.empty()) {
                 LevelChunk* chunk = m_toDrop.front();
                 if (!chunk->isUnloaded()) {
-                    save(chunk);
-                    saveEntities(chunk);
-                    chunk->unload(true);
+                    // Don't unload a chunk that contains a player, as this will
+                    // cause their entity to be removed from the level itself
+                    // and they will never tick again. This can happen if a
+                    // player moves a long distance in one tick, for example
+                    // when the server thread has locked up doing something for
+                    // a while whilst a player kept moving. In this case, the
+                    // player is moved in the player chunk map (driven by the
+                    // network packets being processed for their new position)
+                    // before the player's tick is called to remove them from
+                    // the chunk they used to be in, and add them to their
+                    // current chunk. This will only be a temporary state and we
+                    // should be able to unload the chunk on the next call to
+                    // this tick.
+                    if (!chunk->containsPlayer()) {
+                        save(chunk);
+                        saveEntities(chunk);
+                        chunk->unload(true);
 
-                    // loadedChunks.remove(cp);
-                    // loadedChunkList.remove(chunk);
-                    AUTO_VAR(it, std::find(m_loadedChunkList.begin(),
-                                           m_loadedChunkList.end(), chunk));
-                    if (it != m_loadedChunkList.end())
-                        m_loadedChunkList.erase(it);
+                        // loadedChunks.remove(cp);
+                        // loadedChunkList.remove(chunk);
+                        AUTO_VAR(it, find(m_loadedChunkList.begin(),
+                                          m_loadedChunkList.end(), chunk));
+                        if (it != m_loadedChunkList.end())
+                            m_loadedChunkList.erase(it);
 
-                    int ix = chunk->x + XZOFFSET;
-                    int iz = chunk->z + XZOFFSET;
-                    int idx = ix * XZSIZE + iz;
-                    m_unloadedCache[idx] = chunk;
-                    cache[idx] = NULL;
+                        int ix = chunk->x + XZOFFSET;
+                        int iz = chunk->z + XZOFFSET;
+                        int idx = ix * XZSIZE + iz;
+                        m_unloadedCache[idx] = chunk;
+                        cache[idx] = NULL;
+                    }
                 }
                 m_toDrop.pop_front();
             }
@@ -970,8 +1058,11 @@ TilePos* ServerChunkCache::findNearestMapFeature(
     return source->findNearestMapFeature(level, featureName, x, y, z);
 }
 
-int ServerChunkCache::runSaveThreadProc(void* lpParam) {
-    SaveThreadData* params = static_cast<SaveThreadData*>(lpParam);
+void ServerChunkCache::recreateLogicStructuresForChunk(int chunkX, int chunkZ) {
+}
+
+int ServerChunkCache::runSaveThreadProc(LPVOID lpParam) {
+    SaveThreadData* params = (SaveThreadData*)lpParam;
 
     if (params->useSharedThreadStorage) {
         Compression::UseDefaultThreadStorage();

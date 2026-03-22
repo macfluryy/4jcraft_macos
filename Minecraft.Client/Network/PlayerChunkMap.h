@@ -44,6 +44,7 @@ public:
         int zChangeMin, zChangeMax;
         int ticksToNextRegionUpdate;  // 4J added
         bool prioritised;             // 4J added
+        int64_t firstInhabitedTime;
 
     public:
         PlayerChunk(int x, int z, PlayerChunkMap* pcm);
@@ -53,6 +54,12 @@ public:
         // one much smaller packet
         void add(std::shared_ptr<ServerPlayer> player, bool sendPacket = true);
         void remove(std::shared_ptr<ServerPlayer> player);
+        void updateInhabitedTime();
+
+    private:
+        void updateInhabitedTime(LevelChunk* chunk);
+
+    public:
         void tileChanged(int x, int y, int z);
         void prioritiseTileChanges();  // 4J added
         void broadcast(std::shared_ptr<Packet> packet);
@@ -67,15 +74,17 @@ public:
     void flagEntitiesToBeRemoved(unsigned int* flags,
                                  bool* removedFound);  // 4J added
 private:
-    std::unordered_map<__int64, PlayerChunk*, LongKeyHash, LongKeyEq>
+    std::unordered_map<int64_t, PlayerChunk*, LongKeyHash, LongKeyEq>
         chunks;  // 4J - was LongHashMap
     std::vector<PlayerChunk*> changedChunks;
+    std::vector<PlayerChunk*> knownChunks;
     std::vector<PlayerChunkAddRequest> addRequests;              // 4J added
     void tickAddRequests(std::shared_ptr<ServerPlayer> player);  // 4J added
 
     ServerLevel* level;
     int radius;
     int dimension;
+    int64_t lastInhabitedUpdate;
 
 public:
     PlayerChunkMap(ServerLevel* level, int dimension, int radius);

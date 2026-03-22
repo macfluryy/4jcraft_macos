@@ -44,7 +44,7 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
                     for (int z = 0; z < 16; z++) {
                         unsigned char tileId = 0;
                         if (y <= (level->getSeaLevel() - 10))
-                            tileId = Tile::rock_Id;
+                            tileId = Tile::stone_Id;
                         else if (y < level->getSeaLevel())
                             tileId = Tile::calmWater_Id;
 
@@ -195,8 +195,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
 
             // 4J - changed to use new methods for lighting
             chunk->setSkyLightDataAllBright();
-            //			Arrays::fill(chunk->skyLight->data, (uint8_t)
-            //255);
+            //			Arrays::fill(chunk->skyLight->data, (byte) 255);
         }
 
         chunk->loaded = true;
@@ -277,6 +276,9 @@ TilePos* MultiPlayerChunkCache::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
     return NULL;
 }
+
+void MultiPlayerChunkCache::recreateLogicStructuresForChunk(int chunkX,
+                                                            int chunkZ) {}
 
 std::wstring MultiPlayerChunkCache::gatherStats() {
     EnterCriticalSection(&m_csLoadCreate);

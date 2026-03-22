@@ -14,6 +14,7 @@ class TileEntity;
 class ProgressListener;
 class GameType;
 class LoginPacket;
+class ServerScoreboard;
 
 class PlayerList {
 private:
@@ -70,13 +71,18 @@ public:
     void placeNewPlayer(Connection* connection,
                         std::shared_ptr<ServerPlayer> player,
                         std::shared_ptr<LoginPacket> packet);
+
+protected:
+    void updateEntireScoreboard(ServerScoreboard* scoreboard,
+                                std::shared_ptr<ServerPlayer> player);
+
+public:
     void setLevel(ServerLevelArray levels);
     void changeDimension(std::shared_ptr<ServerPlayer> player,
                          ServerLevel* from);
     int getMaxRange();
-    bool load(std::shared_ptr<ServerPlayer>
-                  player);  // 4J Changed return val to bool to check if new
-                            // player or loaded player
+    CompoundTag* load(std::shared_ptr<ServerPlayer> player);
+
 protected:
     void save(std::shared_ptr<ServerPlayer> player);
 
@@ -94,6 +100,9 @@ public:
         bool keepAllPlayerData);
     void toggleDimension(std::shared_ptr<ServerPlayer> player,
                          int targetDimension);
+    void repositionAcrossDimension(std::shared_ptr<Entity> entity,
+                                   int lastDimension, ServerLevel* oldLevel,
+                                   ServerLevel* newLevel);
     void tick();
     bool isTrackingTile(int x, int y, int z, int dimension);         // 4J added
     void prioritiseTileChanges(int x, int y, int z, int dimension);  // 4J added
@@ -108,13 +117,25 @@ public:
     bool isOp(std::shared_ptr<ServerPlayer> player);  // 4J Added
     std::shared_ptr<ServerPlayer> getPlayer(const std::wstring& name);
     std::shared_ptr<ServerPlayer> getPlayer(PlayerUID uid);
+    std::shared_ptr<ServerPlayer> getNearestPlayer(Pos* position, int range);
+    std::vector<ServerPlayer>* getPlayers(
+        Pos* position, int rangeMin, int rangeMax, int count, int mode,
+        int levelMin, int levelMax,
+        std::unordered_map<std::wstring, int>* scoreRequirements,
+        const std::wstring& playerName, const std::wstring& teamName,
+        Level* level);
+
+private:
+    bool meetsScoreRequirements(
+        std::shared_ptr<Player> player,
+        std::unordered_map<std::wstring, int> scoreRequirements);
+
+public:
     void sendMessage(const std::wstring& name, const std::wstring& message);
     void broadcast(double x, double y, double z, double range, int dimension,
                    std::shared_ptr<Packet> packet);
     void broadcast(std::shared_ptr<Player> except, double x, double y, double z,
                    double range, int dimension, std::shared_ptr<Packet> packet);
-    void broadcastToAllOps(const std::wstring& message);
-    bool sendTo(const std::wstring& name, std::shared_ptr<Packet> packet);
     // 4J Added ProgressListener *progressListener param and bDeleteGuestMaps
     // param
     void saveAll(ProgressListener* progressListener,
