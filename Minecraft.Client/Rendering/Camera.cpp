@@ -89,11 +89,12 @@ zPlayerOffs = position->get(2);
     ya = cosf(xRot * PI / 180.0f);
 }
 
-TilePos* Camera::getCameraTilePos(std::shared_ptr<Mob> player, double alpha) {
+TilePos* Camera::getCameraTilePos(std::shared_ptr<LivingEntity> player,
+                                  double alpha) {
     return new TilePos(getCameraPos(player, alpha));
 }
 
-Vec3* Camera::getCameraPos(std::shared_ptr<Mob> player, double alpha) {
+Vec3* Camera::getCameraPos(std::shared_ptr<LivingEntity> player, double alpha) {
     double xx = player->xo + (player->x - player->xo) * alpha;
     double yy =
         player->yo + (player->y - player->yo) * alpha + player->getHeadHeight();
@@ -106,7 +107,8 @@ Vec3* Camera::getCameraPos(std::shared_ptr<Mob> player, double alpha) {
     return Vec3::newTemp(xt, yt, zt);
 }
 
-int Camera::getBlockAt(Level* level, std::shared_ptr<Mob> player, float alpha) {
+int Camera::getBlockAt(Level* level, std::shared_ptr<LivingEntity> player,
+                       float alpha) {
     Vec3* p = Camera::getCameraPos(player, alpha);
     TilePos tp = TilePos(p);
     int t = level->getTile(tp.x, tp.y, tp.z);

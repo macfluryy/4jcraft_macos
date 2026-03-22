@@ -8,13 +8,12 @@
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "../../../Minecraft.World/Util/JavaMath.h"
 
-ExperienceOrbRenderer::ExperienceOrbRenderer() {
-    // 4J In class Java initialisors
-    tileRenderer = new TileRenderer();
-    setColor = true;
+ResourceLocation ExperienceOrbRenderer::XP_ORB_LOCATION =
+    ResourceLocation(TN_ITEM_EXPERIENCE_ORB);
 
-    this->shadowRadius = 0.15f;
-    this->shadowStrength = 0.75f;
+ExperienceOrbRenderer::ExperienceOrbRenderer() {
+    shadowRadius = 0.15f;
+    shadowStrength = 0.75f;
 }
 
 void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x,
@@ -25,8 +24,7 @@ void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x,
     glTranslatef((float)x, (float)y, (float)z);
 
     int icon = orb->getIcon();
-    bindTexture(TN_ITEM_EXPERIENCE_ORB);  // 4J was L"/item/xporb.png"
-    Tesselator* t = Tesselator::getInstance();
+    bindTexture(orb);  // 4J was L"/item/xporb.png"
 
     float u0 = ((icon % 4) * 16 + 0) / 64.0f;
     float u1 = ((icon % 4) * 16 + 16) / 64.0f;
@@ -57,6 +55,7 @@ void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x,
     glRotatef(-entityRenderDispatcher->playerRotX, 1, 0, 0);
     float s = 0.3f;
     glScalef(s, s, s);
+    Tesselator* t = Tesselator::getInstance();
     t->begin();
     t->color(col, 128);
     t->normal(0, 1, 0);
@@ -69,6 +68,11 @@ void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x,
     glDisable(GL_BLEND);
     glDisable(GL_RESCALE_NORMAL);
     glPopMatrix();
+}
+
+ResourceLocation* ExperienceOrbRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &XP_ORB_LOCATION;
 }
 
 void ExperienceOrbRenderer::blit(int x, int y, int sx, int sy, int w, int h) {

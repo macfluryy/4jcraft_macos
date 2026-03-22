@@ -1,11 +1,15 @@
 #include "../../Platform/stdafx.h"
 #include "PistonPieceRenderer.h"
-#include "../Tesselator.h"
 #include "../Lighting.h"
+#include "../Tesselator.h"
+#include "../../Textures/TextureAtlas.h"
 #include "TileRenderer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../../../Minecraft.World/Blocks/TileEntities/PistonPieceTileEntity.h"
+#include "../Minecraft.World/PistonPieceEntity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+
+ResourceLocation PistonPieceRenderer::SIGN_LOCATION =
+    ResourceLocation(TN_ITEM_SIGN);
 
 PistonPieceRenderer::PistonPieceRenderer() { tileRenderer = NULL; }
 
@@ -25,7 +29,7 @@ void PistonPieceRenderer::render(std::shared_ptr<TileEntity> _entity, double x,
                 // progress of 1
     {
         Tesselator* t = Tesselator::getInstance();
-        bindTexture(TN_TERRAIN);
+        bindTexture(&TextureAtlas::LOCATION_BLOCKS);
 
         Lighting::turnOff();
         glColor4f(1, 1, 1,

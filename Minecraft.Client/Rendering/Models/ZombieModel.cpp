@@ -13,8 +13,9 @@ ZombieModel::ZombieModel(float g, bool isArmor)
 
 void ZombieModel::setupAnim(float time, float r, float bob, float yRot,
                             float xRot, float scale,
+                            std::shared_ptr<Entity> entity,
                             unsigned int uiBitmaskOverrideAnim) {
-    HumanoidModel::setupAnim(time, r, bob, yRot, xRot, scale,
+    HumanoidModel::setupAnim(time, r, bob, yRot, xRot, scale, entity,
                              uiBitmaskOverrideAnim);
 
     float attack2 = Mth::sin(attackTime * PI);

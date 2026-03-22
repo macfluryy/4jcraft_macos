@@ -27,7 +27,8 @@ private:
     double xOff, yOff, zOff;
 
 public:
-    ViewportCuller(std::shared_ptr<Mob> mob, double fogDistance, float a);
+    ViewportCuller(std::shared_ptr<LivingEntity> mob, double fogDistance,
+                   float a);
     virtual bool isVisible(AABB bb);
     virtual bool cubeInFrustum(double x0, double y0, double z0, double x1,
                                double y1, double z1);

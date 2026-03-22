@@ -4,6 +4,7 @@ class SignModel;
 
 class SignRenderer : public TileEntityRenderer {
 private:
+    static ResourceLocation SIGN_LOCATION;
     SignModel* signModel;
 
 public:

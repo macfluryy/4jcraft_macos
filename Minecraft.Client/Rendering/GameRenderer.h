@@ -11,8 +11,13 @@ class SparseDataStorage;
 
 #include "../../Minecraft.World/Util/SmoothFloat.h"
 #include "../../Minecraft.World/Util/C4JThread.h"
+#include "../Textures/ResourceLocation.h"
 
 class GameRenderer {
+private:
+    static ResourceLocation RAIN_LOCATION;
+    static ResourceLocation SNOW_LOCATION;
+
 public:
     static bool anaglyph3d;
     static int anaglyphPass;
@@ -67,6 +72,9 @@ private:
     float oFov[4];
     float tFov[4];
 
+    float darkenWorldAmount;
+    float darkenWorldAmountO;
+
     bool isInClouds;
 
     float m_fov;
@@ -103,8 +111,8 @@ public:
 
 private:
     void renderItemInHand(float a, int eye);
-    __int64 lastActiveTime;
-    __int64 lastNsTime;
+    int64_t lastActiveTime;
+    int64_t lastNsTime;
     // 4J - changes brought forward from 1.8.2
     bool _updateLightTexture;
 
@@ -114,7 +122,7 @@ public:
     float blg;
     float blgt;
     void turnOffLightLayer(double alpha);
-    void turnOnLightLayer(double alpha, bool scaleLight = false);
+    void turnOnLightLayer(double alpha);
 
 private:
     void tickLightTexture();
@@ -129,6 +137,7 @@ public:
 private:
     Random* random;
     int rainSoundTime;
+    void prepareAndRenderClouds(LevelRenderer* levelRenderer, float a);
     void tickRain();
 
 private:
@@ -174,13 +183,13 @@ public:
     static bool nearThingsToDo;
     static bool updateRunning;
 #endif
-    static std::vector<std::uint8_t*> m_deleteStackByte;
+    static std::vector<uint8_t*> m_deleteStackByte;
     static std::vector<SparseLightStorage*> m_deleteStackSparseLightStorage;
     static std::vector<CompressedTileStorage*>
         m_deleteStackCompressedTileStorage;
     static std::vector<SparseDataStorage*> m_deleteStackSparseDataStorage;
     static CRITICAL_SECTION m_csDeleteStack;
-    static void AddForDelete(std::uint8_t* deleteThis);
+    static void AddForDelete(uint8_t* deleteThis);
     static void AddForDelete(SparseLightStorage* deleteThis);
     static void AddForDelete(CompressedTileStorage* deleteThis);
     static void AddForDelete(SparseDataStorage* deleteThis);

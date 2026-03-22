@@ -12,13 +12,18 @@ void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x,
     // our version
     std::shared_ptr<MobSpawnerTileEntity> spawner =
         std::dynamic_pointer_cast<MobSpawnerTileEntity>(_spawner);
+    render(spawner->getSpawner(), x, y, z, a);
+    glPopMatrix();
+}
 
+void MobSpawnerRenderer::render(BaseMobSpawner* spawner, double x, double y,
+                                double z, float a) {
     glPushMatrix();
     glTranslatef((float)x + 0.5f, (float)y, (float)z + 0.5f);
 
     std::shared_ptr<Entity> e = spawner->getDisplayEntity();
     if (e != NULL) {
-        e->setLevel(spawner->level);
+        e->setLevel(spawner->getLevel());
         float s = 7 / 16.0f;
         glTranslatef(0, 0.4f, 0);
         glRotatef(
@@ -30,5 +35,4 @@ void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x,
         e->moveTo(x, y, z, 0, 0);
         EntityRenderDispatcher::instance->render(e, 0, 0, 0, 0, a);
     }
-    glPopMatrix();
 }

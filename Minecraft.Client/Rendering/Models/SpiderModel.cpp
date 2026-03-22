@@ -70,7 +70,7 @@ SpiderModel::SpiderModel() : Model() {
 void SpiderModel::render(std::shared_ptr<Entity> entity, float time, float r,
                          float bob, float yRot, float xRot, float scale,
                          bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     head->render(scale, usecompiled);
     body0->render(scale, usecompiled);
@@ -87,6 +87,7 @@ void SpiderModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
 void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
                             float xRot, float scale,
+                            std::shared_ptr<Entity> entity,
                             unsigned int uiBitmaskOverrideAnim) {
     head->yRot = yRot / (float)(180 / PI);
     head->xRot = xRot / (float)(180 / PI);

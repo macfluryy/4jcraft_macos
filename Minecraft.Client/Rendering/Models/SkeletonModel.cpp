@@ -1,6 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "SkeletonModel.h"
 #include "../../../Minecraft.World/Util/Mth.h"
+#include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "ModelPart.h"
 
 void SkeletonModel::_init(float g) {
@@ -34,10 +35,19 @@ SkeletonModel::SkeletonModel() : ZombieModel(0, 0, 64, 32) { _init(0); }
 
 SkeletonModel::SkeletonModel(float g) : ZombieModel(g, 0, 64, 32) { _init(g); }
 
+void SkeletonModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
+                                    float time, float r, float a) {
+    ZombieModel::prepareMobModel(mob, time, r, a);
+
+    bowAndArrow = std::dynamic_pointer_cast<Skeleton>(mob)->getSkeletonType() ==
+                  Skeleton::TYPE_WITHER;
+}
+
 void SkeletonModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
+                              std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
     bowAndArrow = true;
-    ZombieModel::setupAnim(time, r, bob, yRot, xRot, scale,
+    ZombieModel::setupAnim(time, r, bob, yRot, xRot, scale, entity,
                            uiBitmaskOverrideAnim);
 }

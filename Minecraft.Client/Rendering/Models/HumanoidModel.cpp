@@ -28,9 +28,6 @@ ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
         case eBodyPart_Leg1:
             pAttachTo = leg1;
             break;
-        case eBodyPart_Unknown:
-        default:
-            return NULL;
     }
 
     // first check this box doesn't already exist
@@ -146,7 +143,7 @@ void HumanoidModel::render(std::shared_ptr<Entity> entity, float time, float r,
         m_uiAnimOverrideBitmask = entity->getAnimOverrideBitmask();
     }
 
-    setupAnim(time, r, bob, yRot, xRot, scale, m_uiAnimOverrideBitmask);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity, m_uiAnimOverrideBitmask);
 
     if (young) {
         float ss = 2.0f;
@@ -192,6 +189,7 @@ void HumanoidModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
 void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
+                              std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
     // bool bIsAttacking = (attackTime > -9990.0f);
 
@@ -200,6 +198,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         head->xRot = xRot / (float)(180.0f / PI);
         hair->yRot = head->yRot;
         hair->xRot = head->xRot;
+        body->z = 0.0f;
 
         // Does the skin have an override for anim?
 
@@ -244,12 +243,19 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         leg1->yRot = 0.0f;
 
         if (riding) {
-            arm0->xRot += -HALF_PI * 0.4f;
-            arm1->xRot += -HALF_PI * 0.4f;
-            leg0->xRot = -HALF_PI * 0.8f;
-            leg1->xRot = -HALF_PI * 0.8f;
-            leg0->yRot = HALF_PI * 0.2f;
-            leg1->yRot = -HALF_PI * 0.2f;
+            if (uiBitmaskOverrideAnim & (1 << eAnim_SmallModel) == 0) {
+                arm0->xRot += -HALF_PI * 0.4f;
+                arm1->xRot += -HALF_PI * 0.4f;
+                leg0->xRot = -HALF_PI * 0.8f;
+                leg1->xRot = -HALF_PI * 0.8f;
+                leg0->yRot = HALF_PI * 0.2f;
+                leg1->yRot = -HALF_PI * 0.2f;
+            } else {
+                arm0->xRot += -HALF_PI * 0.4f;
+                arm1->xRot += -HALF_PI * 0.4f;
+                leg0->xRot = -HALF_PI * 0.4f;
+                leg1->xRot = -HALF_PI * 0.4f;
+            }
         } else if (idle && !sneaking) {
             leg0->xRot = -HALF_PI;
             leg1->xRot = -HALF_PI;
@@ -328,22 +334,42 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         }
 
         if (sneaking) {
-            body->xRot = 0.5f;
-            leg0->xRot -= 0.0f;
-            leg1->xRot -= 0.0f;
-            arm0->xRot += 0.4f;
-            arm1->xRot += 0.4f;
-            leg0->z = +4.0f;
-            leg1->z = +4.0f;
-            body->y = 0.0f;
-            arm0->y = 2.0f;
-            arm1->y = 2.0f;
-            leg0->y = +9.0f;
-            leg1->y = +9.0f;
-            head->y = +1.0f;
-            hair->y = +1.0f;
-            ear->y = +1.0f;
-            cloak->y = 0.0f;
+            if (uiBitmaskOverrideAnim & (1 << eAnim_SmallModel)) {
+                body->xRot = -0.5f;
+                leg0->xRot -= 0.0f;
+                leg1->xRot -= 0.0f;
+                arm0->xRot += 0.4f;
+                arm1->xRot += 0.4f;
+                leg0->z = -4.0f;
+                leg1->z = -4.0f;
+                body->z = 2.0f;
+                body->y = 0.0f;
+                arm0->y = 2.0f;
+                arm1->y = 2.0f;
+                leg0->y = +9.0f;
+                leg1->y = +9.0f;
+                head->y = +1.0f;
+                hair->y = +1.0f;
+                ear->y = +1.0f;
+                cloak->y = 0.0f;
+            } else {
+                body->xRot = 0.5f;
+                leg0->xRot -= 0.0f;
+                leg1->xRot -= 0.0f;
+                arm0->xRot += 0.4f;
+                arm1->xRot += 0.4f;
+                leg0->z = +4.0f;
+                leg1->z = +4.0f;
+                body->y = 0.0f;
+                arm0->y = 2.0f;
+                arm1->y = 2.0f;
+                leg0->y = +9.0f;
+                leg1->y = +9.0f;
+                head->y = +1.0f;
+                hair->y = +1.0f;
+                ear->y = +1.0f;
+                cloak->y = 0.0f;
+            }
         } else {
             body->xRot = 0.0f;
             leg0->z = 0.1f;

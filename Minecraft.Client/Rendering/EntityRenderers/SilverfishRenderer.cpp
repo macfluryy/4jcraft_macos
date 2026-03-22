@@ -3,10 +3,12 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "../Models/SilverfishModel.h"
 
+ResourceLocation SilverfishRenderer::SILVERFISH_LOCATION(TN_MOB_SILVERFISH);
+
 SilverfishRenderer::SilverfishRenderer()
     : MobRenderer(new SilverfishModel(), 0.3f) {}
 
-float SilverfishRenderer::getFlipDegrees(std::shared_ptr<Silverfish> spider) {
+float SilverfishRenderer::getFlipDegrees(std::shared_ptr<LivingEntity> spider) {
     return 180;
 }
 
@@ -15,7 +17,12 @@ void SilverfishRenderer::render(std::shared_ptr<Entity> _mob, double x,
     MobRenderer::render(_mob, x, y, z, rot, a);
 }
 
-int SilverfishRenderer::prepareArmor(std::shared_ptr<Mob> _silverfish,
+ResourceLocation* SilverfishRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &SILVERFISH_LOCATION;
+}
+
+int SilverfishRenderer::prepareArmor(std::shared_ptr<LivingEntity> _silverfish,
                                      int layer, float a) {
     return -1;
 }

@@ -27,7 +27,7 @@ public:
 
     Textures* textures;
     Level* level;
-    std::shared_ptr<Mob> cameraEntity;
+    std::shared_ptr<LivingEntity> cameraEntity;
     float playerRotY;
     float playerRotX;
     double xPlayer, yPlayer, zPlayer;
@@ -40,7 +40,7 @@ public:
     bool hasRenderer(std::shared_ptr<TileEntity> e);
     TileEntityRenderer* getRenderer(std::shared_ptr<TileEntity> e);
     void prepare(Level* level, Textures* textures, Font* font,
-                 std::shared_ptr<Mob> player, float a);
+                 std::shared_ptr<LivingEntity> player, float a);
     void render(std::shared_ptr<TileEntity> e, float a, bool setColor = true);
     void render(std::shared_ptr<TileEntity> entity, double x, double y,
                 double z, float a, bool setColor = true, float alpha = 1.0f,

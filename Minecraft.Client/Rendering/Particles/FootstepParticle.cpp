@@ -4,6 +4,10 @@
 #include "../Tesselator.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Textures/ResourceLocation.h"
+
+ResourceLocation FootstepParticle::FOOTPRINT_LOCATION =
+    ResourceLocation(TN_MISC_FOOTSTEP);
 
 FootstepParticle::FootstepParticle(Textures* textures, Level* level, double x,
                                    double y, double z)
@@ -36,7 +40,7 @@ void FootstepParticle::render(Tesselator* t, float a, float xa, float ya,
     float br =
         level->getBrightness(Mth::floor(x), Mth::floor(y), Mth::floor(z));
 
-    textures->bindTexture(TN_MISC_FOOTSTEP);  // L"/misc/footprint.png"));
+    textures->bindTexture(&FOOTPRINT_LOCATION);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

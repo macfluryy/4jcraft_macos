@@ -3,23 +3,28 @@
 #include "../Models/SpiderModel.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 
+ResourceLocation SpiderRenderer::SPIDER_LOCATION =
+    ResourceLocation(TN_MOB_SPIDER);
+ResourceLocation SpiderRenderer::SPIDER_EYES_LOCATION =
+    ResourceLocation(TN_MOB_SPIDER_EYES);
+
 SpiderRenderer::SpiderRenderer() : MobRenderer(new SpiderModel(), 1.0f) {
     this->setArmor(new SpiderModel());
 }
 
-float SpiderRenderer::getFlipDegrees(std::shared_ptr<Mob> spider) {
+float SpiderRenderer::getFlipDegrees(std::shared_ptr<LivingEntity> spider) {
     return 180;
 }
 
-int SpiderRenderer::prepareArmor(std::shared_ptr<Mob> _spider, int layer,
-                                 float a) {
+int SpiderRenderer::prepareArmor(std::shared_ptr<LivingEntity> _spider,
+                                 int layer, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<Spider> spider = std::dynamic_pointer_cast<Spider>(_spider);
 
     if (layer != 0) return -1;
     MemSect(31);
-    bindTexture(TN_MOB_SPIDER_EYES);  // 4J was L"/mob/spider_eyes.png"
+    bindTexture(&SPIDER_EYES_LOCATION);
     MemSect(0);
     // 4J - changes brought forward from 1.8.2
     float br = 1.0f;  // was (1-spider->getBrightness(1))*0.5f;
@@ -56,10 +61,7 @@ int SpiderRenderer::prepareArmor(std::shared_ptr<Mob> _spider, int layer,
     return 1;
 }
 
-void SpiderRenderer::scale(std::shared_ptr<Mob> _mob, float a) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
-    std::shared_ptr<Spider> mob = std::dynamic_pointer_cast<Spider>(_mob);
-    float scale = mob->getModelScale();
-    glScalef(scale, scale, scale);
+ResourceLocation* SpiderRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &SPIDER_LOCATION;
 }

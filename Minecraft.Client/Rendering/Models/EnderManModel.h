@@ -10,5 +10,6 @@ public:
     EndermanModel();
     virtual void setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
+                           std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim = 0);
 };

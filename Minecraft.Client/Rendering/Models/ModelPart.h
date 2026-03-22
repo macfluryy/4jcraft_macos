@@ -3,7 +3,7 @@
 #include "../Vertex.h"
 #include "../Polygon.h"
 #include "Model.h"
-#include "SkinBox.h"
+#include "../Minecraft.Client/SkinBox.h"
 
 class Cube;
 
@@ -19,6 +19,7 @@ public:
     std::vector<Cube*> cubes;
     std::vector<ModelPart*> children;
     static const float RAD;
+    float translateX, translateY, translateZ;
 
 private:
     std::wstring id;

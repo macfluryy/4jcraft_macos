@@ -1,5 +1,4 @@
 #pragma once
-
 #include "MobRenderer.h"
 
 class EnderMan;
@@ -9,14 +8,17 @@ class EndermanRenderer : public MobRenderer {
 private:
     EndermanModel* model;
     Random random;
+    static ResourceLocation ENDERMAN_EYES_LOCATION;
+    static ResourceLocation ENDERMAN_LOCATION;
 
 public:
     EndermanRenderer();
 
-    virtual void render(std::shared_ptr<Entity> _mob, double x, double y,
-                        double z, float rot, float a);
-    virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
+    void render(std::shared_ptr<Entity> _mob, double x, double y, double z,
+                float rot, float a);
+    ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
+    void additionalRendering(std::shared_ptr<LivingEntity> _mob, float a);
 
 protected:
-    virtual int prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a);
+    int prepareArmor(std::shared_ptr<LivingEntity> _mob, int layer, float a);
 };

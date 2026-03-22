@@ -13,6 +13,7 @@ public:
     // ItemSpriteRenderer(Item *icon);
     virtual void render(std::shared_ptr<Entity> e, double x, double y, double z,
                         float rot, float a);
+    virtual ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
 
 private:
     void renderIcon(Tesselator* t, Icon* icon);

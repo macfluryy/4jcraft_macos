@@ -1,16 +1,20 @@
 #include "../../Platform/stdafx.h"
 #include "EntityRenderer.h"
-#include "../Models/HumanoidModel.h"
 #include "EntityRenderDispatcher.h"
+#include "../Models/HumanoidModel.h"
+#include "../../Player/LocalPlayer.h"
 #include "../../GameState/Options.h"
+#include "../../Textures/TextureAtlas.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.h"
-#include "../../../Minecraft.World/Entities/Entity.h"
+#include "../../../Minecraft.World/Headers/net.minecraft.world.entity.h"
 #include "../../../Minecraft.World/Level/Level.h"
 #include "../../../Minecraft.World/Util/AABB.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
-#include "../../Player/LocalPlayer.h"
+
+ResourceLocation EntityRenderer::SHADOW_LOCATION =
+    ResourceLocation(TN__CLAMP__MISC_SHADOW);
 
 // 4J - added
 EntityRenderer::EntityRenderer() {
@@ -22,12 +26,12 @@ EntityRenderer::EntityRenderer() {
 
 EntityRenderer::~EntityRenderer() { delete tileRenderer; }
 
-void EntityRenderer::bindTexture(int resourceName) {
-    entityRenderDispatcher->textures->bindTexture(resourceName);
+void EntityRenderer::bindTexture(std::shared_ptr<Entity> entity) {
+    bindTexture(getTextureLocation(entity));
 }
 
-void EntityRenderer::bindTexture(const std::wstring& resourceName) {
-    entityRenderDispatcher->textures->bindTexture(resourceName);
+void EntityRenderer::bindTexture(ResourceLocation* location) {
+    entityRenderDispatcher->textures->bindTexture(location);
 }
 
 bool EntityRenderer::bindTexture(const std::wstring& urlTexture,
@@ -79,7 +83,7 @@ void EntityRenderer::renderFlame(std::shared_ptr<Entity> e, double x, double y,
     float s = e->bbWidth * 1.4f;
     glScalef(s, s, s);
     MemSect(31);
-    bindTexture(TN_TERRAIN);  // 4J was L"/terrain.png"
+    bindTexture(&TextureAtlas::LOCATION_BLOCKS);
     MemSect(0);
     Tesselator* t = Tesselator::getInstance();
 
@@ -139,32 +143,23 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     MemSect(31);
-    entityRenderDispatcher->textures->bindTexture(
-        TN__CLAMP__MISC_SHADOW);  // L"%clamp%/misc/shadow.png"));
+    entityRenderDispatcher->textures->bindTexture(&SHADOW_LOCATION);
     MemSect(0);
 
     Level* level = getLevel();
 
     glDepthMask(false);
     float r = shadowRadius;
-    std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(e);
-    bool isLocalPlayer = false;
     float fYLocalPlayerShadowOffset = 0.0f;
 
-    // if (std::dynamic_pointer_cast<Mob>(e) != NULL)
-    if (mob != NULL) {
-        // std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(e);
+    if (e->instanceof(eTYPE_MOB)) {
+        std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(e);
         r *= mob->getSizeScale();
 
-        std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(mob);
-        if (animal != NULL) {
-            if (animal->isBaby()) {
+        if (mob->instanceof(eTYPE_ANIMAL)) {
+            if (std::dynamic_pointer_cast<Animal>(mob)->isBaby()) {
                 r *= 0.5f;
             }
-        }
-
-        if (std::dynamic_pointer_cast<LocalPlayer>(mob) != NULL) {
-            isLocalPlayer = true;
         }
     }
 
@@ -174,7 +169,7 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     // 4J-PB - local players seem to have a position at their head, and remote
     // players have a foot position. get the shadow to render by changing the
     // check here depending on the player type
-    if (isLocalPlayer) {
+    if (e->instanceof(eTYPE_LOCALPLAYER)) {
         ey -= 1.62;
         fYLocalPlayerShadowOffset = -1.62f;
     }
@@ -395,3 +390,8 @@ void EntityRenderer::postRender(std::shared_ptr<Entity> entity, double x,
 Font* EntityRenderer::getFont() { return entityRenderDispatcher->getFont(); }
 
 void EntityRenderer::registerTerrainTextures(IconRegister* iconRegister) {}
+
+ResourceLocation* EntityRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return NULL;
+}

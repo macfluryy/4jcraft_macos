@@ -15,6 +15,7 @@ void ModelPart::_init() {
     neverRender = false;
     x = y = z = 0.0f;
     xRot = yRot = zRot = 0.0f;
+    translateX = translateY = translateZ = 0.0f;
 }
 
 ModelPart::ModelPart() { _init(); }
@@ -138,6 +139,8 @@ void ModelPart::render(float scale, bool usecompiled,
     if (!visible) return;
     if (!compiled) compile(scale);
 
+    glTranslatef(translateX, translateY, translateZ);
+
     if (xRot != 0 || yRot != 0 || zRot != 0) {
         glPushMatrix();
         glTranslatef(x * scale, y * scale, z * scale);
@@ -200,6 +203,8 @@ void ModelPart::render(float scale, bool usecompiled,
             }
         }
     }
+
+    glTranslatef(-translateX, -translateY, -translateZ);
 }
 
 void ModelPart::renderRollable(float scale, bool usecompiled) {

@@ -9,6 +9,11 @@ public:
     static SkullTileRenderer* instance;
 
 private:
+    static ResourceLocation SKELETON_LOCATION;
+    static ResourceLocation WITHER_SKELETON_LOCATION;
+    static ResourceLocation ZOMBIE_LOCATION;
+    static ResourceLocation CREEPER_LOCATION;
+
     // note: this head fits most mobs, just change texture
     SkeletonHeadModel* skeletonModel;
     SkeletonHeadModel* zombieModel;

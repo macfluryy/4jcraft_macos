@@ -3,16 +3,15 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../Models/VillagerGolemModel.h"
 #include "../Models/ModelPart.h"
+#include "../../Textures/TextureAtlas.h"
 #include "VillagerGolemRenderer.h"
+
+ResourceLocation VillagerGolemRenderer::GOLEM_LOCATION =
+    ResourceLocation(TN_MOB_VILLAGER_GOLEM);
 
 VillagerGolemRenderer::VillagerGolemRenderer()
     : MobRenderer(new VillagerGolemModel(), 0.5f) {
     golemModel = (VillagerGolemModel*)model;
-}
-
-int VillagerGolemRenderer::prepareArmor(VillagerGolemModel* villagerGolem,
-                                        int layer, float a) {
-    return -1;
 }
 
 void VillagerGolemRenderer::render(std::shared_ptr<Entity> mob, double x,
@@ -20,11 +19,11 @@ void VillagerGolemRenderer::render(std::shared_ptr<Entity> mob, double x,
     MobRenderer::render(mob, x, y, z, rot, a);
 }
 
-void VillagerGolemRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
-                                           float bodyRot, float a) {
+void VillagerGolemRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
+                                           float bob, float bodyRot, float a) {
     // 4J - original version used generics and thus had an input parameter of
-    // type Blaze rather than std::shared_ptr<Entity>  we have here - do some
-    // casting around instead
+    // type Blaze rather than shared_ptr<Entity>  we have here - do some casting
+    // around instead
     std::shared_ptr<VillagerGolem> mob =
         std::dynamic_pointer_cast<VillagerGolem>(_mob);
     MobRenderer::setupRotations(mob, bob, bodyRot, a);
@@ -37,11 +36,16 @@ void VillagerGolemRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
     glRotatef(6.5f * triangleWave, 0, 0, 1);
 }
 
-void VillagerGolemRenderer::additionalRendering(std::shared_ptr<Mob> _mob,
-                                                float a) {
+ResourceLocation* VillagerGolemRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &GOLEM_LOCATION;
+}
+
+void VillagerGolemRenderer::additionalRendering(
+    std::shared_ptr<LivingEntity> _mob, float a) {
     // 4J - original version used generics and thus had an input parameter of
-    // type Blaze rather than std::shared_ptr<Entity>  we have here - do some
-    // casting around instead
+    // type Blaze rather than shared_ptr<Entity>  we have here - do some casting
+    // around instead
     std::shared_ptr<VillagerGolem> mob =
         std::dynamic_pointer_cast<VillagerGolem>(_mob);
     MobRenderer::additionalRendering(mob, a);
@@ -66,7 +70,7 @@ void VillagerGolemRenderer::additionalRendering(std::shared_ptr<Mob> _mob,
     }
 
     glColor4f(1, 1, 1, 1);
-    bindTexture(TN_TERRAIN);  //"/terrain.png");
+    bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // TODO: By Icon
     tileRenderer->renderTile(Tile::rose, 0, 1);
     glPopMatrix();
     glDisable(GL_RESCALE_NORMAL);

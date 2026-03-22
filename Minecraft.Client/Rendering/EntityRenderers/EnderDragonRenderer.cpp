@@ -4,19 +4,25 @@
 #include "../Tesselator.h"
 #include "../Lighting.h"
 #include "EnderDragonRenderer.h"
+#include "../../UI/BossMobGuiInfo.h"
 
-std::shared_ptr<EnderDragon> EnderDragonRenderer::bossInstance;
-int EnderDragonRenderer::currentModel;
+ResourceLocation EnderDragonRenderer::DRAGON_EXPLODING_LOCATION =
+    ResourceLocation(TN_MOB_ENDERDRAGON_SHUFFLE);
+ResourceLocation EnderDragonRenderer::CRYSTAL_BEAM_LOCATION =
+    ResourceLocation(TN_MOB_ENDERDRAGON_BEAM);
+ResourceLocation EnderDragonRenderer::DRAGON_EYES_LOCATION =
+    ResourceLocation(TN_MOB_ENDERDRAGON_ENDEREYES);
+ResourceLocation EnderDragonRenderer::DRAGON_LOCATION =
+    ResourceLocation(TN_MOB_ENDERDRAGON);
 
 EnderDragonRenderer::EnderDragonRenderer()
     : MobRenderer(new DragonModel(0), 0.5f) {
-    currentModel = 0;
     dragonModel = (DragonModel*)model;
-    this->setArmor(model);
+    setArmor(model);  // TODO: Make second constructor that assigns this.
 }
 
-void EnderDragonRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
-                                         float bodyRot, float a) {
+void EnderDragonRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
+                                         float bob, float bodyRot, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<EnderDragon> mob =
@@ -47,8 +53,8 @@ void EnderDragonRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
     }
 }
 
-void EnderDragonRenderer::renderModel(std::shared_ptr<Entity> _mob, float wp,
-                                      float ws, float bob,
+void EnderDragonRenderer::renderModel(std::shared_ptr<LivingEntity> _mob,
+                                      float wp, float ws, float bob,
                                       float headRotMinusBodyRot, float headRotx,
                                       float scale) {
     // 4J - dynamic cast required because we aren't using templates/generics in
@@ -62,8 +68,7 @@ void EnderDragonRenderer::renderModel(std::shared_ptr<Entity> _mob, float wp,
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, tt);
         bindTexture(
-            mob->customTextureUrl,
-            TN_MOB_ENDERDRAGON_SHUFFLE);  // 4J was
+            &DRAGON_EXPLODING_LOCATION);  // 4J was
                                           // "/mob/enderdragon/shuffle.png"
         model->render(mob, wp, ws, bob, headRotMinusBodyRot, headRotx, scale,
                       true);
@@ -72,7 +77,7 @@ void EnderDragonRenderer::renderModel(std::shared_ptr<Entity> _mob, float wp,
         glDepthFunc(GL_EQUAL);
     }
 
-    bindTexture(mob->customTextureUrl, mob->getTexture());
+    bindTexture(mob);
     model->render(mob, wp, ws, bob, headRotMinusBodyRot, headRotx, scale, true);
 
     if (mob->hurtTime > 0) {
@@ -103,11 +108,7 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
     // our version
     std::shared_ptr<EnderDragon> mob =
         std::dynamic_pointer_cast<EnderDragon>(_mob);
-    EnderDragonRenderer::bossInstance = mob;
-    if (currentModel != DragonModel::MODEL_ID) {
-        model = new DragonModel(0);
-        currentModel = DragonModel::MODEL_ID;
-    }
+    BossMobGuiInfo::setBossHealth(mob, false);
     MobRenderer::render(mob, x, y, z, rot, a);
     if (mob->nearestCrystal != NULL) {
         float tt = mob->nearestCrystal->time + a;
@@ -150,7 +151,7 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
         glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 
         bindTexture(
-            TN_MOB_ENDERDRAGON_BEAM);  // 4J was "/mob/enderdragon/beam.png"
+            &CRYSTAL_BEAM_LOCATION);  // 4J was "/mob/enderdragon/beam.png"
 
         glShadeModel(GL_SMOOTH);
 
@@ -184,8 +185,13 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
     }
 }
 
-void EnderDragonRenderer::additionalRendering(std::shared_ptr<Mob> _mob,
-                                              float a) {
+ResourceLocation* EnderDragonRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &DRAGON_LOCATION;
+}
+
+void EnderDragonRenderer::additionalRendering(
+    std::shared_ptr<LivingEntity> _mob, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<EnderDragon> mob =
@@ -242,8 +248,8 @@ void EnderDragonRenderer::additionalRendering(std::shared_ptr<Mob> _mob,
     }
 }
 
-int EnderDragonRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
-                                      float a) {
+int EnderDragonRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob,
+                                      int layer, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<EnderDragon> mob =
@@ -255,8 +261,7 @@ int EnderDragonRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
     if (layer != 0) return -1;
 
     bindTexture(
-        TN_MOB_ENDERDRAGON_ENDEREYES);  // 4J was
-                                        // "/mob/enderdragon/ender_eyes.png"
+        &DRAGON_EYES_LOCATION);  // 4J was "/mob/enderdragon/ender_eyes.png"
     float br = 1;
     glEnable(GL_BLEND);
     // 4J Stu - We probably don't need to do this on 360 either (as we force it

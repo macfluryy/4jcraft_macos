@@ -1,11 +1,15 @@
 #pragma once
 #include "TileEntityRenderer.h"
 
+class BaseMobSpawner;
+
 class MobSpawnerRenderer : public TileEntityRenderer {
 private:
     std::unordered_map<std::wstring, std::shared_ptr<Entity> > models;
 
 public:
+    static void render(BaseMobSpawner* spawner, double x, double y, double z,
+                       float a);
     virtual void render(std::shared_ptr<TileEntity> _spawner, double x,
                         double y, double z, float a, bool setColor,
                         float alpha = 1.0f,

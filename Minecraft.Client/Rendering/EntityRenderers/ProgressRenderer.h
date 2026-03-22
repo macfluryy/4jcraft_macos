@@ -24,7 +24,7 @@ private:
     int status;
     Minecraft* minecraft;
     int title;
-    __int64 lastTime;
+    int64_t lastTime;
     bool noAbort;
     std::wstring m_wstrText;
     eProgressStringType m_eType;

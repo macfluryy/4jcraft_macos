@@ -3,12 +3,16 @@
 #include "../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
 
+ResourceLocation SheepRenderer::SHEEP_LOCATION = ResourceLocation(TN_MOB_SHEEP);
+ResourceLocation SheepRenderer::SHEEP_FUR_LOCATION =
+    ResourceLocation(TN_MOB_SHEEP_FUR);
+
 SheepRenderer::SheepRenderer(Model* model, Model* armor, float shadow)
     : MobRenderer(model, shadow) {
     setArmor(armor);
 }
 
-int SheepRenderer::prepareArmor(std::shared_ptr<Mob> _sheep, int layer,
+int SheepRenderer::prepareArmor(std::shared_ptr<LivingEntity> _sheep, int layer,
                                 float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
@@ -21,8 +25,31 @@ int SheepRenderer::prepareArmor(std::shared_ptr<Mob> _sheep, int layer,
                             // sheep armour) in '1.7.5'.
     {
         MemSect(31);
-        bindTexture(TN_MOB_SHEEP_FUR);  // 4J was L"/mob/sheep_fur.png"
+        bindTexture(&SHEEP_FUR_LOCATION);
         MemSect(0);
+
+        if (sheep->hasCustomName() &&
+            sheep->getCustomName().compare(L"jeb_") == 0) {
+            // easter egg...
+            int colorDuration = 25;
+            int value = (sheep->tickCount / colorDuration) + sheep->entityId;
+            int c1 = value % Sheep::COLOR_LENGTH;
+            int c2 = (value + 1) % Sheep::COLOR_LENGTH;
+            float subStep =
+                ((sheep->tickCount % colorDuration) + a) / (float)colorDuration;
+
+            glColor3f(Sheep::COLOR[c1][0] * (1.0f - subStep) +
+                          Sheep::COLOR[c2][0] * subStep,
+                      Sheep::COLOR[c1][1] * (1.0f - subStep) +
+                          Sheep::COLOR[c2][1] * subStep,
+                      Sheep::COLOR[c1][2] * (1.0f - subStep) +
+                          Sheep::COLOR[c2][2] * subStep);
+        } else {
+            int color = sheep->getColor();
+            glColor3f(Sheep::COLOR[color][0], Sheep::COLOR[color][1],
+                      Sheep::COLOR[color][2]);
+        }
+
         // 4J - change brought forward from 1.8.2
         float brightness =
             SharedConstants::TEXTURE_LIGHTING ? 1.0f : sheep->getBrightness(a);
@@ -38,4 +65,9 @@ int SheepRenderer::prepareArmor(std::shared_ptr<Mob> _sheep, int layer,
 void SheepRenderer::render(std::shared_ptr<Entity> mob, double x, double y,
                            double z, float rot, float a) {
     MobRenderer::render(mob, x, y, z, rot, a);
+}
+
+ResourceLocation* SheepRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &SHEEP_LOCATION;
 }

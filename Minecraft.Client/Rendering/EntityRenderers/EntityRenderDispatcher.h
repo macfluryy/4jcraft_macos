@@ -15,7 +15,7 @@ private:
     // 4J - was:
     //	Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers
     //= new HashMap<Class<? extends Entity>, EntityRenderer<? extends
-    //Entity>>();
+    // Entity>>();
 
 public:
     static EntityRenderDispatcher* instance;
@@ -29,7 +29,8 @@ public:
     Textures* textures;
     ItemInHandRenderer* itemInHandRenderer;
     Level* level;
-    std::shared_ptr<Mob> cameraEntity;
+    std::shared_ptr<LivingEntity> cameraEntity;
+    std::shared_ptr<LivingEntity> crosshairPickMob;
     float playerRotY;
     float playerRotX;
     Options* options;
@@ -44,7 +45,9 @@ public:
     EntityRenderer* getRenderer(eINSTANCEOF e);
     EntityRenderer* getRenderer(std::shared_ptr<Entity> e);
     void prepare(Level* level, Textures* textures, Font* font,
-                 std::shared_ptr<Mob> player, Options* options, float a);
+                 std::shared_ptr<LivingEntity> player,
+                 std::shared_ptr<LivingEntity> crosshairPickMob,
+                 Options* options, float a);
     void render(std::shared_ptr<Entity> entity, float a);
     void render(std::shared_ptr<Entity> entity, double x, double y, double z,
                 float rot, float a, bool bItemFrame = false,
@@ -53,4 +56,8 @@ public:
     double distanceToSqr(double x, double y, double z);
     Font* getFont();
     void registerTerrainTextures(IconRegister* iconRegister);
+
+private:
+    void renderHitbox(std::shared_ptr<Entity> entity, double x, double y,
+                      double z, float rot, float a);
 };

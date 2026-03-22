@@ -39,6 +39,13 @@ class Tesselator;
 class LevelRenderer : public LevelListener {
     friend class Chunk;
 
+private:
+    static ResourceLocation MOON_LOCATION;
+    static ResourceLocation MOON_PHASES_LOCATION;
+    static ResourceLocation SUN_LOCATION;
+    static ResourceLocation CLOUDS_LOCATION;
+    static ResourceLocation END_SKY_LOCATION;
+
 public:
     static const int CHUNK_XZSIZE = 16;
 #ifdef _LARGE_WORLDS
@@ -47,7 +54,7 @@ public:
     static const int CHUNK_SIZE = 16;
 #endif
     static const int CHUNK_Y_COUNT = Level::maxBuildHeight / CHUNK_SIZE;
-#if defined _XBOX_ONE
+#if (defined _XBOX_ONE || defined _WINDOWS64)
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         512 * 1024 * 1024;  // 4J - added
 #elif defined __ORBIS__
@@ -86,7 +93,7 @@ private:
     void resortChunks(int xc, int yc, int zc);
 
 public:
-    int render(std::shared_ptr<Mob> player, int layer, double alpha,
+    int render(std::shared_ptr<LivingEntity> player, int layer, double alpha,
                bool updateChunks);
 
 private:
@@ -110,8 +117,7 @@ public:
     void renderDestroyAnimation(Tesselator* t, std::shared_ptr<Player> player,
                                 float a);
     void renderHitOutline(std::shared_ptr<Player> player, HitResult* h,
-                          int mode, std::shared_ptr<ItemInstance> inventoryItem,
-                          float a);
+                          int mode, float a);
     void render(AABB* b);
     void setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                   Level* level);  // 4J - added level param
@@ -134,6 +140,9 @@ public:
     void playSound(std::shared_ptr<Entity> entity, int iSound, double x,
                    double y, double z, float volume, float pitch,
                    float fSoundClipDist = 16.0f);
+    void playSoundExceptPlayer(std::shared_ptr<Player> player, int iSound,
+                               double x, double y, double z, float volume,
+                               float pitch, float fSoundClipDist = 16.0f);
     void addParticle(ePARTICLE_TYPE eParticleType, double x, double y, double z,
                      double xa, double ya, double za);  // 4J added
     std::shared_ptr<Particle> addParticleInternal(ePARTICLE_TYPE eParticleType,
@@ -147,6 +156,8 @@ public:
        // not just the entity storage
     void skyColorChanged();
     void clear();
+    void globalLevelEvent(int type, int sourceX, int sourceY, int sourceZ,
+                          int data);
     void levelEvent(std::shared_ptr<Player> source, int type, int x, int y,
                     int z, int data);
     void destroyTileProgress(int id, int x, int y, int z, int progress);
@@ -317,7 +328,7 @@ public:
     XLockFreeStack<int> dirtyChunksLockFreeStack;
 
     bool dirtyChunkPresent;
-    __int64 lastDirtyChunkFound;
+    int64_t lastDirtyChunkFound;
     static const int FORCE_DIRTY_CHUNK_CHECK_PERIOD_MS = 250;
 
 #ifdef _LARGE_WORLDS
@@ -334,4 +345,6 @@ public:
     CRITICAL_SECTION m_csChunkFlags;
 #endif
     void nonStackDirtyChunksAdded();
+
+    int checkAllPresentChunks(bool* faultFound);  // 4J - added for testing
 };
