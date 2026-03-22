@@ -104,6 +104,13 @@ CMinecraftApp::CMinecraftApp() {
         m_eXuiAction[i] = eAppAction_Idle;
         m_eXuiActionParam[i] = nullptr;
         // m_dwAdditionalModelParts[i] = 0;
+
+        if (FAILED(XUserGetSigninInfo(i,
+                                      XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY,
+                                      &m_currentSigninInfo[i]))) {
+            m_currentSigninInfo[i].xuid = INVALID_XUID;
+            m_currentSigninInfo[i].dwGuestNumber = 0;
+        }
         DebugPrintf("Player at index %d has guest number %d\n", i,
                     m_currentSigninInfo[i].dwGuestNumber);
 
@@ -172,6 +179,12 @@ CMinecraftApp::CMinecraftApp() {
 
     m_uiGameHostSettings = 0;
 
+#ifdef _LARGE_WORLDS
+    m_GameNewWorldSize = 0;
+    m_bGameNewWorldSizeUseMoat = false;
+    m_GameNewHellScale = 0;
+#endif
+
     ZeroMemory(m_playerColours, MINECRAFT_NET_MAX_PLAYERS);
 
     m_iDLCOfferC = 0;
@@ -194,8 +207,8 @@ CMinecraftApp::CMinecraftApp() {
     m_bResetNether = false;
 
 #ifdef _XBOX
-//	m_bTransferSavesToXboxOne=false;
-//	m_uiTransferSlotC=5;
+    //	m_bTransferSavesToXboxOne=false;
+    //	m_uiTransferSlotC=5;
 #endif
 
 #if (defined _CONTENT_PACAKGE) || (defined _XBOX)
@@ -234,12 +247,47 @@ void CMinecraftApp::DebugPrintf(const char* szFormat, ...) {
 }
 
 void CMinecraftApp::DebugPrintf(int user, const char* szFormat, ...) {
+#ifndef _FINAL_BUILD
     if (user == USER_NONE) return;
     char buf[1024];
     va_list ap;
     va_start(ap, szFormat);
     vsnprintf(buf, sizeof(buf), szFormat, ap);
     va_end(ap);
+#ifdef __PS3__
+    unsigned int writelen;
+    sys_tty_write(SYS_TTYP_USER1 + (user - 1), buf, strlen(buf), &writelen);
+#elif defined __PSVITA__
+    switch (user) {
+        case 0: {
+            SceUID tty2 = sceIoOpen("tty2:", SCE_O_WRONLY, 0);
+            if (tty2 >= 0) {
+                std::string string1(buf);
+                sceIoWrite(tty2, string1.c_str(), string1.length());
+                sceIoClose(tty2);
+            }
+        } break;
+        case 1: {
+            SceUID tty3 = sceIoOpen("tty3:", SCE_O_WRONLY, 0);
+            if (tty3 >= 0) {
+                std::string string1(buf);
+                sceIoWrite(tty3, string1.c_str(), string1.length());
+                sceIoClose(tty3);
+            }
+        } break;
+        default:
+            OutputDebugStringA(buf);
+            break;
+    }
+#else
+    OutputDebugStringA(buf);
+#endif
+#ifndef _XBOX
+    if (user == USER_UI) {
+        ui.logDebugString(buf);
+    }
+#endif
+#endif
 }
 
 const wchar_t* CMinecraftApp::GetString(int iID) {
@@ -249,8 +297,18 @@ const wchar_t* CMinecraftApp::GetString(int iID) {
 }
 
 void CMinecraftApp::SetAction(int iPad, eXuiAction action, void* param) {
-    if (m_eXuiAction[iPad] == eAppAction_ExitWorldCapturedThumbnail &&
-        action != eAppAction_Idle) {
+    if ((m_eXuiAction[iPad] == eAppAction_ReloadTexturePack) &&
+        (action == eAppAction_EthernetDisconnected)) {
+        app.DebugPrintf(
+            "Invalid change of App action for pad %d from %d to %d, ignoring\n",
+            iPad, m_eXuiAction[iPad], action);
+    } else if ((m_eXuiAction[iPad] == eAppAction_ReloadTexturePack) &&
+               (action == eAppAction_ExitWorld)) {
+        app.DebugPrintf(
+            "Invalid change of App action for pad %d from %d to %d, ignoring\n",
+            iPad, m_eXuiAction[iPad], action);
+    } else if (m_eXuiAction[iPad] == eAppAction_ExitWorldCapturedThumbnail &&
+               action != eAppAction_Idle) {
         app.DebugPrintf(
             "Invalid change of App action for pad %d from %d to %d, ignoring\n",
             iPad, m_eXuiAction[iPad], action);
@@ -388,9 +446,33 @@ bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,
     return success;
 }
 
+bool CMinecraftApp::LoadFireworksMenu(int iPad,
+                                      std::shared_ptr<LocalPlayer> player,
+                                      int x, int y, int z) {
+    bool success = true;
+
+    FireworksScreenInput* initData = new FireworksScreenInput();
+    initData->player = player;
+    initData->iPad = iPad;
+    initData->x = x;
+    initData->y = y;
+    initData->z = z;
+
+    if (app.GetLocalPlayerCount() > 1) {
+        initData->bSplitscreen = true;
+        success = ui.NavigateToScene(iPad, eUIScene_FireworksMenu, initData);
+    } else {
+        initData->bSplitscreen = false;
+        success = ui.NavigateToScene(iPad, eUIScene_FireworksMenu, initData);
+    }
+
+    return success;
+}
+
 bool CMinecraftApp::LoadEnchantingMenu(int iPad,
                                        std::shared_ptr<Inventory> inventory,
-                                       int x, int y, int z, Level* level) {
+                                       int x, int y, int z, Level* level,
+                                       const std::wstring& name) {
     bool success = true;
 
     EnchantingScreenInput* initData = new EnchantingScreenInput();
@@ -400,6 +482,7 @@ bool CMinecraftApp::LoadEnchantingMenu(int iPad,
     initData->y = y;
     initData->z = z;
     initData->iPad = iPad;
+    initData->name = name;
 
     if (app.GetLocalPlayerCount() > 1) {
         initData->bSplitscreen = true;
@@ -553,7 +636,7 @@ bool CMinecraftApp::LoadRepairingMenu(int iPad,
 bool CMinecraftApp::LoadTradingMenu(int iPad,
                                     std::shared_ptr<Inventory> inventory,
                                     std::shared_ptr<Merchant> trader,
-                                    Level* level) {
+                                    Level* level, const std::wstring& name) {
     bool success = true;
 
     TradingScreenInput* initData = new TradingScreenInput();
@@ -567,6 +650,84 @@ bool CMinecraftApp::LoadTradingMenu(int iPad,
         initData->bSplitscreen = false;
 
     success = ui.NavigateToScene(iPad, eUIScene_TradingMenu, initData);
+
+    return success;
+}
+
+bool CMinecraftApp::LoadHopperMenu(int iPad,
+                                   std::shared_ptr<Inventory> inventory,
+                                   std::shared_ptr<HopperTileEntity> hopper) {
+    bool success = true;
+
+    HopperScreenInput* initData = new HopperScreenInput();
+    initData->inventory = inventory;
+    initData->hopper = hopper;
+    initData->iPad = iPad;
+    if (app.GetLocalPlayerCount() > 1)
+        initData->bSplitscreen = true;
+    else
+        initData->bSplitscreen = false;
+
+    success = ui.NavigateToScene(iPad, eUIScene_HopperMenu, initData);
+
+    return success;
+}
+
+bool CMinecraftApp::LoadHopperMenu(int iPad,
+                                   std::shared_ptr<Inventory> inventory,
+                                   std::shared_ptr<MinecartHopper> hopper) {
+    bool success = true;
+
+    HopperScreenInput* initData = new HopperScreenInput();
+    initData->inventory = inventory;
+    initData->hopper = std::dynamic_pointer_cast<Container>(hopper);
+    initData->iPad = iPad;
+    if (app.GetLocalPlayerCount() > 1)
+        initData->bSplitscreen = true;
+    else
+        initData->bSplitscreen = false;
+
+    success = ui.NavigateToScene(iPad, eUIScene_HopperMenu, initData);
+
+    return success;
+}
+
+bool CMinecraftApp::LoadHorseMenu(int iPad,
+                                  std::shared_ptr<Inventory> inventory,
+                                  std::shared_ptr<Container> container,
+                                  std::shared_ptr<EntityHorse> horse) {
+    bool success = true;
+
+    HorseScreenInput* initData = new HorseScreenInput();
+    initData->inventory = inventory;
+    initData->container = container;
+    initData->horse = horse;
+    initData->iPad = iPad;
+    if (app.GetLocalPlayerCount() > 1)
+        initData->bSplitscreen = true;
+    else
+        initData->bSplitscreen = false;
+
+    success = ui.NavigateToScene(iPad, eUIScene_HorseMenu, initData);
+
+    return success;
+}
+
+bool CMinecraftApp::LoadBeaconMenu(int iPad,
+                                   std::shared_ptr<Inventory> inventory,
+                                   std::shared_ptr<BeaconTileEntity> beacon) {
+    bool success = true;
+
+    BeaconScreenInput* initData = new BeaconScreenInput();
+    initData->inventory = inventory;
+    initData->beacon = beacon;
+    initData->iPad = iPad;
+    if (app.GetLocalPlayerCount() > 1)
+        initData->bSplitscreen = true;
+    else
+        initData->bSplitscreen = false;
+
+    success = ui.NavigateToScene(iPad, eUIScene_BeaconMenu, initData);
 
     return success;
 }
@@ -684,17 +845,37 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     // TU 13
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
 
+    // 1.6.4
+    app.SetGameHostOption(eGameHostOption_MobGriefing, 1);
+    app.SetGameHostOption(eGameHostOption_KeepInventory, 0);
+    app.SetGameHostOption(eGameHostOption_DoMobSpawning, 1);
+    app.SetGameHostOption(eGameHostOption_DoMobLoot, 1);
+    app.SetGameHostOption(eGameHostOption_DoTileDrops, 1);
+    app.SetGameHostOption(eGameHostOption_NaturalRegeneration, 1);
+    app.SetGameHostOption(eGameHostOption_DoDaylightCycle, 1);
+
     // 4J-PB - leave these in, or remove from everywhere they are referenced!
     // Although probably best to leave in unless we split the profile settings
     // into platform specific classes - having different meaning per platform
     // for the same bitmask could get confusing
     // #ifdef __PS3__
-    //  PS3DEC13
+    // PS3DEC13
     SetGameSettings(iPad, eGameSetting_PS3_EULA_Read, 0);  // EULA not read
 
     // PS3 1.05 - added Greek
-    GameSettingsA[iPad]->ucLanguage =
-        MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+
+    // 4J-JEV: We cannot change these in-game, as they could affect localised
+    // strings and font. XB1: Fix for #172947 - Content: Gameplay: While playing
+    // in language different form system default one and resetting options to
+    // their defaults in active gameplay causes in-game language to change and
+    // HUD to disappear
+    if (!app.GetGameStarted()) {
+        GameSettingsA[iPad]->ucLanguage =
+            MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
+        GameSettingsA[iPad]->ucLocale =
+            MINECRAFT_LANGUAGE_DEFAULT;  // use the system locale
+    }
+
     // #endif
 
 #if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
@@ -719,7 +900,7 @@ int CMinecraftApp::DefaultOptionsCallback(
     // flag the default options to be set
 
     pApp->DebugPrintf("Setting default options for player %d", iPad);
-    pApp->SetAction(iPad, eAppAction_SetDefaultOptions, pSettings);
+    pApp->SetAction(iPad, eAppAction_SetDefaultOptions, (void*)pSettings);
     // pApp->SetDefaultOptions(pSettings,iPad);
 
     // if the profile data has been changed, then force a profile write
@@ -732,6 +913,38 @@ int CMinecraftApp::DefaultOptionsCallback(
 
 #if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
      defined __PSVITA__)
+
+std::wstring CMinecraftApp::toStringOptionsStatus(
+    const C4JStorage::eOptionsCallback& eStatus) {
+#ifndef _CONTENT_PACKAGE
+    switch (eStatus) {
+        case C4JStorage::eOptions_Callback_Idle:
+            return L"Idle";
+        case C4JStorage::eOptions_Callback_Write:
+            return L"Write";
+        case C4JStorage::eOptions_Callback_Write_Fail_NoSpace:
+            return L"Write_Fail_NoSpace";
+        case C4JStorage::eOptions_Callback_Write_Fail:
+            return L"Write_Fail";
+        case C4JStorage::eOptions_Callback_Read:
+            return L"Read";
+        case C4JStorage::eOptions_Callback_Read_Fail:
+            return L"Read_Fail";
+        case C4JStorage::eOptions_Callback_Read_FileNotFound:
+            return L"Read_FileNotFound";
+        case C4JStorage::eOptions_Callback_Read_Corrupt:
+            return L"Read_Corrupt";
+        case C4JStorage::eOptions_Callback_Read_CorruptDeletePending:
+            return L"Read_CorruptDeletePending";
+        case C4JStorage::eOptions_Callback_Read_CorruptDeleted:
+            return L"Read_CorruptDeleted";
+        default:
+            return L"[UNRECOGNISED_OPTIONS_STATUS]";
+    }
+#else
+    return L"";
+#endif
+}
 
 #ifdef __ORBIS__
 int CMinecraftApp::OptionsDataCallback(void* pParam, int iPad,
@@ -753,7 +966,15 @@ int CMinecraftApp::OptionsDataCallback(void* pParam, int iPad,
                                        unsigned short usVersion,
                                        C4JStorage::eOptionsCallback eStatus) {
     CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+
+#ifndef _CONTENT_PACKAGE
+    pApp->DebugPrintf("[OptionsDataCallback] Pad_%i: new status == %ls(%i).\n",
+                      iPad, pApp->toStringOptionsStatus(eStatus).c_str(),
+                      (int)eStatus);
+#endif
+
     pApp->m_eOptionsStatusA[iPad] = eStatus;
+
     return 0;
 }
 #endif
@@ -809,8 +1030,7 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
                     GAMESETTING_CLOUDS;  // eGameSetting_Clouds - on
                 pGameSettings->uiBitmaskValues |=
                     GAMESETTING_ONLINE;  // eGameSetting_GameSetting_Online - on
-                                         // eGameSetting_GameSetting_Invite -
-                                         // off
+                // eGameSetting_GameSetting_Invite - off
                 pGameSettings->uiBitmaskValues |=
                     GAMESETTING_FRIENDSOFFRIENDS;  // eGameSetting_GameSetting_FriendsOfFriends
                                                    // - on
@@ -864,7 +1084,7 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
                 GAMESETTING_CLOUDS;  // eGameSetting_Clouds - on
             pGameSettings->uiBitmaskValues |=
                 GAMESETTING_ONLINE;  // eGameSetting_GameSetting_Online - on
-                                     // eGameSetting_GameSetting_Invite - off
+            // eGameSetting_GameSetting_Invite - off
             pGameSettings->uiBitmaskValues |=
                 GAMESETTING_FRIENDSOFFRIENDS;  // eGameSetting_GameSetting_FriendsOfFriends
                                                // - on
@@ -1066,8 +1286,9 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
         case PROFILE_VERSION_8: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             // reset the display new message counter
-            // pGameSettings->uiBitmaskValues|=GAMESETTING_DISPLAYUPDATEMSG;
-            // //eGameSetting_DisplayUpdateMessage (counter)
+            pGameSettings->uiBitmaskValues |=
+                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
+                                               // (counter)
 
             // Added a bitmask in TU13 to enable/disable display of the Mash-up
             // pack worlds in the saves list
@@ -1086,6 +1307,9 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
             // PS3DEC13
             {
                 GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
+                pGameSettings->uiBitmaskValues |=
+                    GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
+                                                   // (counter)
                 pGameSettings->uiBitmaskValues &=
                     ~GAMESETTING_PS3EULAREAD;  // eGameSetting_PS3_EULA_Read -
                                                // off
@@ -1097,18 +1321,31 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
             break;
         case PROFILE_VERSION_10: {
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
-
+            pGameSettings->uiBitmaskValues |=
+                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
+                                               // (counter)
             pGameSettings->ucLanguage =
                 MINECRAFT_LANGUAGE_DEFAULT;  // use the system language
         } break;
-
+        case PROFILE_VERSION_11: {
+            GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
+            pGameSettings->uiBitmaskValues |=
+                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
+                                               // (counter)
+        } break;
+        case PROFILE_VERSION_12: {
+            GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
+            pGameSettings->uiBitmaskValues |=
+                GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
+                                               // (counter)
+        } break;
         default: {
             // This might be from a version during testing of new profile
             // updates
             app.DebugPrintf(
                 "Don't know what to do with this profile version!\n");
 #ifndef _CONTENT_PACKAGE
-//		__debugbreak();
+            //		__debugbreak();
 #endif
 
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
@@ -1618,11 +1855,6 @@ void CMinecraftApp::HideMashupPackWorld(int iPad, unsigned int iMashupPackID) {
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-void CMinecraftApp::SetMinecraftLanguage(int iPad, unsigned char ucLanguage) {
-    GameSettingsA[iPad]->ucLanguage = ucLanguage;
-    GameSettingsA[iPad]->bSettingsChanged = true;
-}
-
 void CMinecraftApp::EnableMashupPackWorlds(int iPad) {
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
     GameSettingsA[iPad]->bSettingsChanged = true;
@@ -1632,12 +1864,31 @@ unsigned int CMinecraftApp::GetMashupPackWorlds(int iPad) {
     return GameSettingsA[iPad]->uiMashUpPackWorldsDisplay;
 }
 
+void CMinecraftApp::SetMinecraftLanguage(int iPad, unsigned char ucLanguage) {
+    GameSettingsA[iPad]->ucLanguage = ucLanguage;
+    GameSettingsA[iPad]->bSettingsChanged = true;
+}
+
 unsigned char CMinecraftApp::GetMinecraftLanguage(int iPad) {
     // if there are no game settings read yet, return the default language
     if (GameSettingsA[iPad] == NULL) {
         return 0;
     } else {
         return GameSettingsA[iPad]->ucLanguage;
+    }
+}
+
+void CMinecraftApp::SetMinecraftLocale(int iPad, unsigned char ucLocale) {
+    GameSettingsA[iPad]->ucLocale = ucLocale;
+    GameSettingsA[iPad]->bSettingsChanged = true;
+}
+
+unsigned char CMinecraftApp::GetMinecraftLocale(int iPad) {
+    // if there are no game settings read yet, return the default language
+    if (GameSettingsA[iPad] == NULL) {
+        return 0;
+    } else {
+        return GameSettingsA[iPad]->ucLocale;
     }
 }
 
@@ -1963,7 +2214,7 @@ void CMinecraftApp::SetGameSettings(int iPad, eGameSetting eVal,
             }
 
             break;
-        // TU9
+            // TU9
         case eGameSetting_DeathMessages:
             if ((GameSettingsA[iPad]->uiBitmaskValues &
                  GAMESETTING_DEATHMESSAGES) != (ucVal & 0x01) << 10) {
@@ -2090,7 +2341,7 @@ unsigned char CMinecraftApp::GetGameSettings(int iPad, eGameSetting eVal) {
         case eGameSetting_SplitScreenVertical:
             return ((GameSettingsA[iPad]->usBitmaskValues & 0x0100) >> 8);
             break;
-        // 4J-PB - Added for Interim TU for 1.6.6
+            // 4J-PB - Added for Interim TU for 1.6.6
         case eGameSetting_Sensitivity_InMenu:
             return GameSettingsA[iPad]->ucMenuSensitivity;
             break;
@@ -2158,7 +2409,7 @@ unsigned char CMinecraftApp::GetGameSettings(int iPad, eGameSetting eVal) {
                     GAMESETTING_CUSTOMSKINANIM) >>
                    9;
             break;
-        // TU9
+            // TU9
         case eGameSetting_DeathMessages:
             return (GameSettingsA[iPad]->uiBitmaskValues &
                     GAMESETTING_DEATHMESSAGES) >>
@@ -2415,10 +2666,10 @@ void CMinecraftApp::HandleXuiActions(void) {
                 {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    C4JStorage::EMessageResult result = ui.RequestMessageBox(
-                        IDS_CANT_PLACE_NEAR_SPAWN_TITLE,
-                        IDS_CANT_PLACE_NEAR_SPAWN_TEXT, uiIDA, 1,
-                        XUSER_INDEX_ANY, NULL, NULL, app.GetStringTable());
+                    C4JStorage::EMessageResult result =
+                        ui.RequestErrorMessage(IDS_CANT_PLACE_NEAR_SPAWN_TITLE,
+                                               IDS_CANT_PLACE_NEAR_SPAWN_TEXT,
+                                               uiIDA, 1, XUSER_INDEX_ANY);
                     if (result != C4JStorage::EMessage_Busy)
                         SetGlobalXuiAction(eAppAction_Idle);
                 }
@@ -2492,10 +2743,10 @@ void CMinecraftApp::HandleXuiActions(void) {
                             unsigned int uiIDA[2];
                             uiIDA[0] = IDS_CONFIRM_OK;
                             uiIDA[1] = IDS_CONFIRM_CANCEL;
-                            ui.RequestMessageBox(
+                            ui.RequestErrorMessage(
                                 IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA,
                                 2, i, &CMinecraftApp::UnlockFullSaveReturned,
-                                this, app.GetStringTable());
+                                this);
                         }
                     }
 
@@ -2527,7 +2778,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // tutorial, we'll not have a name
                     /*if(StorageManager.GetSaveName()==NULL)
                     {
-                            app.NavigateToScene(i,eUIScene_SaveWorld);
+                    app.NavigateToScene(i,eUIScene_SaveWorld);
                     }
                     else*/
                     {
@@ -2539,7 +2790,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         ui.ShowOtherPlayersBaseScene(
                             ProfileManager.GetPrimaryPad(), false);
 
-                        // INT saveOrCheckpointId = 0;
+                        // int saveOrCheckpointId = 0;
                         // bool validSave =
                         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
                         // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
@@ -2549,7 +2800,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                             new LoadingInputParams();
                         loadingParams->func =
                             &UIScene_PauseMenu::SaveWorldThreadProc;
-                        loadingParams->lpParam = (LPVOID) false;
+                        loadingParams->lpParam = (void*)false;
 
                         // 4J-JEV - PS4: Fix for #5708 - [ONLINE] - If the user
                         // pulls their network cable out while saving the title
@@ -2618,7 +2869,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                             ->getTutorial()
                             ->showTutorialPopup(false);
 
-                    // INT saveOrCheckpointId = 0;
+                    // int saveOrCheckpointId = 0;
                     // bool validSave =
                     // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
                     // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
@@ -2629,7 +2880,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     loadingParams->func =
                         &UIScene_PauseMenu::SaveWorldThreadProc;
 
-                    loadingParams->lpParam = (LPVOID) true;
+                    loadingParams->lpParam = (void*)true;
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
@@ -2901,6 +3152,7 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                 case eAppAction_ExitWorld:
                     pMinecraft->exitingWorldRightNow = true;
+
                     SetAction(i, eAppAction_Idle);
 
                     // If we're already leaving don't exit
@@ -2944,8 +3196,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                     ProfileManager.ForceQueuedProfileWrites();
 #endif
 
-                    // 4J-PB - cancel any possible string verifications queued
-                    // with LIVE
+                    // 4J-PB - cancel any possible std::string verifications
+                    // queued with LIVE
                     // InputManager.CancelAllVerifyInProgress();
 
                     if (ProfileManager.IsFullVersion()) {
@@ -2973,10 +3225,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                         unsigned int uiIDA[2];
                         uiIDA[0] = IDS_CONFIRM_OK;
                         uiIDA[1] = IDS_CONFIRM_CANCEL;
-                        ui.RequestMessageBox(
+                        ui.RequestErrorMessage(
                             IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2,
-                            i, &CMinecraftApp::UnlockFullExitReturned, this,
-                            app.GetStringTable());
+                            i, &CMinecraftApp::UnlockFullExitReturned, this);
                     }
 
                     // Change the presence info
@@ -3153,7 +3404,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         // LoadingInputParams *loadingParams = new
                         // LoadingInputParams(); loadingParams->func =
                         // &CScene_Death::RespawnThreadProc;
-                        // loadingParams->lpParam = (LPVOID)i;
+                        // loadingParams->lpParam = (void*)i;
 
                         // Disable game & update thread whilst we do any of this
                         // app.SetGameStarted(false);
@@ -3230,9 +3481,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                     pStats->clear();
 
                     // 4J-PB - the libs will display the Returned to Title
-                    // screen
-                    // 					unsigned int uiIDA[1];
-                    // 					uiIDA[0]=IDS_CONFIRM_OK;
+                    // screen 					unsigned int
+                    // uiIDA[1]; uiIDA[0]=IDS_CONFIRM_OK;
                     //
                     // 					ui.RequestMessageBox(IDS_RETURNEDTOMENU_TITLE,
                     // IDS_RETURNEDTOTITLESCREEN_TEXT, uiIDA, 1,
@@ -3276,8 +3526,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                                        !g_NetworkManager.IsInGameplay()) {
                                 // There are two cases here, either:
                                 //	 1. We're early enough in the
-                                //create/load game that we can do a really
-                                //minimal shutdown or
+                                // create/load game that we can do a really
+                                // minimal shutdown or
                                 //   2. We're far enough in (game has started
                                 //   but the actual game started flag hasn't
                                 //   been set) that we should just wait until
@@ -3287,9 +3537,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                                 // If there's a non-null level then, for our
                                 // purposes, the game has started
                                 bool gameStarted = false;
-                                for (int i = 0; i < pMinecraft->levels.length;
-                                     i++) {
-                                    if (pMinecraft->levels.data[i] != nullptr) {
+                                for (int j = 0; j < pMinecraft->levels.length;
+                                     j++) {
+                                    if (pMinecraft->levels.data[j] != NULL) {
                                         gameStarted = true;
                                         break;
                                     }
@@ -3316,7 +3566,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                                     unsigned int uiIDA[1];
                                     uiIDA[0] = IDS_CONFIRM_OK;
 
-                                    ui.RequestMessageBox(
+                                    ui.RequestErrorMessage(
                                         g_NetworkManager.CorrectErrorIDS(
                                             IDS_CONNECTION_LOST),
                                         g_NetworkManager.CorrectErrorIDS(
@@ -3324,37 +3574,48 @@ void CMinecraftApp::HandleXuiActions(void) {
                                         uiIDA, 1, i,
                                         &CMinecraftApp::
                                             EthernetDisconnectReturned,
-                                        this, app.GetStringTable());
+                                        this);
                                 } else {
                                     // 2. Switch to offline
                                     SetAction(i, eAppAction_ChangeSessionType);
                                 }
                             }
                         } else {
-                            app.DebugPrintf(
-                                "Handling eAppAction_EthernetDisconnected - "
-                                "Not host\n");
-                            // need to clear the player stats - can't assume
-                            // it'll be done in setlevel - we may not be in the
-                            // game
-                            StatsCounter* pStats =
-                                Minecraft::GetInstance()->stats[i];
-                            pStats->clear();
-                            unsigned int uiIDA[1];
-                            uiIDA[0] = IDS_CONFIRM_OK;
+#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
+                            if (UIScene_LoadOrJoinMenu::
+                                    isSaveTransferRunning()) {
+                                // the save transfer is still in progress, delay
+                                // jumping back to the main menu until we've
+                                // cleaned up
+                                SetAction(i, eAppAction_EthernetDisconnected);
+                            } else
+#endif
+                            {
+                                app.DebugPrintf(
+                                    "Handling eAppAction_EthernetDisconnected "
+                                    "- Not host\n");
+                                // need to clear the player stats - can't assume
+                                // it'll be done in setlevel - we may not be in
+                                // the game
+                                StatsCounter* pStats =
+                                    Minecraft::GetInstance()->stats[i];
+                                pStats->clear();
+                                unsigned int uiIDA[1];
+                                uiIDA[0] = IDS_CONFIRM_OK;
 
-                            ui.RequestMessageBox(
-                                g_NetworkManager.CorrectErrorIDS(
-                                    IDS_CONNECTION_LOST),
-                                g_NetworkManager.CorrectErrorIDS(
-                                    IDS_CONNECTION_LOST_LIVE),
-                                uiIDA, 1, i,
-                                &CMinecraftApp::EthernetDisconnectReturned,
-                                this, app.GetStringTable());
+                                ui.RequestErrorMessage(
+                                    g_NetworkManager.CorrectErrorIDS(
+                                        IDS_CONNECTION_LOST),
+                                    g_NetworkManager.CorrectErrorIDS(
+                                        IDS_CONNECTION_LOST_LIVE),
+                                    uiIDA, 1, i,
+                                    &CMinecraftApp::EthernetDisconnectReturned,
+                                    this);
+                            }
                         }
                     }
                 } break;
-                // We currently handle both these returns the same way.
+                    // We currently handle both these returns the same way.
                 case eAppAction_EthernetDisconnectedReturned:
                 case eAppAction_PrimaryPlayerSignedOutReturned: {
                     SetAction(i, eAppAction_Idle);
@@ -3452,10 +3713,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                     uiIDA[0] = IDS_UNLOCK_TITLE;
                     uiIDA[1] = IDS_EXIT_GAME;
 
-                    ui.RequestMessageBox(IDS_TRIALOVER_TITLE,
-                                         IDS_TRIALOVER_TEXT, uiIDA, 2, i,
-                                         &CMinecraftApp::TrialOverReturned,
-                                         this, app.GetStringTable());
+                    ui.RequestErrorMessage(
+                        IDS_TRIALOVER_TITLE, IDS_TRIALOVER_TEXT, uiIDA, 2, i,
+                        &CMinecraftApp::TrialOverReturned, this);
                 } break;
 
                     // INVITES
@@ -3468,10 +3728,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-                    ui.RequestMessageBox(
+                    ui.RequestErrorMessage(
                         IDS_UNLOCK_TITLE, IDS_UNLOCK_ACCEPT_INVITE, uiIDA, 2, i,
-                        &CMinecraftApp::UnlockFullInviteReturned, this,
-                        app.GetStringTable());
+                        &CMinecraftApp::UnlockFullInviteReturned, this);
                 } break;
                 case eAppAction_ExitAndJoinFromInvite: {
                     unsigned int uiIDA[3];
@@ -3489,12 +3748,12 @@ void CMinecraftApp::HandleXuiActions(void) {
                         uiIDA[1] = IDS_EXIT_GAME_SAVE;
                         uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
 
-                        ui.RequestMessageBox(
+                        ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE, uiIDA,
                             3, i,
                             &CMinecraftApp::
                                 ExitAndJoinFromInviteSaveDialogReturned,
-                            this, app.GetStringTable(), 0, 0, false);
+                            this);
                     } else
 #else
                     if (ProfileManager.IsFullVersion() &&
@@ -3505,12 +3764,12 @@ void CMinecraftApp::HandleXuiActions(void) {
                         uiIDA[1] = IDS_EXIT_GAME_SAVE;
                         uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
 
-                        ui.RequestMessageBox(
+                        ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE, uiIDA,
                             3, i,
                             &CMinecraftApp::
                                 ExitAndJoinFromInviteSaveDialogReturned,
-                            this, app.GetStringTable(), 0, 0, false);
+                            this);
                     } else
 #endif
                     {
@@ -3522,19 +3781,17 @@ void CMinecraftApp::HandleXuiActions(void) {
                             // upsell
                             uiIDA[0] = IDS_CONFIRM_OK;
                             uiIDA[1] = IDS_CONFIRM_CANCEL;
-                            ui.RequestMessageBox(
+                            ui.RequestErrorMessage(
                                 IDS_UNLOCK_TITLE, IDS_UNLOCK_ACCEPT_INVITE,
                                 uiIDA, 2, i,
-                                &CMinecraftApp::UnlockFullInviteReturned, this,
-                                app.GetStringTable());
+                                &CMinecraftApp::UnlockFullInviteReturned, this);
                         } else {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
                             uiIDA[1] = IDS_CONFIRM_OK;
-                            ui.RequestMessageBox(
+                            ui.RequestAlertMessage(
                                 IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE,
                                 uiIDA, 2, i,
-                                &CMinecraftApp::ExitAndJoinFromInvite, this,
-                                app.GetStringTable(), 0, 0, false);
+                                &CMinecraftApp::ExitAndJoinFromInvite, this);
                         }
                     }
                 } break;
@@ -3635,7 +3892,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         new LoadingInputParams();
                     loadingParams->func =
                         &CGameNetworkManager::ExitAndJoinFromInviteThreadProc;
-                    loadingParams->lpParam = (LPVOID)&m_InviteData;
+                    loadingParams->lpParam = (void*)&m_InviteData;
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
@@ -3710,10 +3967,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                         // longer be failing
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_CONFIRM_OK;
-                        ui.RequestMessageBox(IDS_CONNECTION_FAILED,
-                                             IDS_CONNECTION_LOST_SERVER, uiIDA,
-                                             1, ProfileManager.GetPrimaryPad(),
-                                             NULL, NULL, app.GetStringTable());
+                        ui.RequestErrorMessage(
+                            IDS_CONNECTION_FAILED, IDS_CONNECTION_LOST_SERVER,
+                            uiIDA, 1, ProfileManager.GetPrimaryPad());
 
                         ui.NavigateToHomeMenu();
                         ui.UpdatePlayerBasePositions();
@@ -3879,11 +4135,10 @@ void CMinecraftApp::HandleXuiActions(void) {
                 case eAppAction_FailedToJoinNoPrivileges: {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    C4JStorage::EMessageResult result = ui.RequestMessageBox(
+                    C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                         IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
                         IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
-                        ProfileManager.GetPrimaryPad(), NULL, NULL,
-                        app.GetStringTable());
+                        ProfileManager.GetPrimaryPad());
                     if (result != C4JStorage::EMessage_Busy)
                         SetAction(i, eAppAction_Idle);
                 } break;
@@ -3942,7 +4197,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     uiIDA[0] = IDS_BUTTON_REMOVE_FROM_BAN_LIST;
                     uiIDA[1] = IDS_EXIT_GAME;
 
-                    // pass in the gamertag format string
+                    // pass in the gamertag format std::string
                     WCHAR wchFormat[40];
                     INetworkPlayer* player =
                         g_NetworkManager.GetLocalPlayerByUserIndex(i);
@@ -3955,11 +4210,11 @@ void CMinecraftApp::HandleXuiActions(void) {
                                  player->GetOnlineName());
 
                         C4JStorage::EMessageResult result =
-                            ui.RequestMessageBox(
+                            ui.RequestErrorMessage(
                                 IDS_BANNED_LEVEL_TITLE, IDS_PLAYER_BANNED_LEVEL,
                                 uiIDA, 2, i,
                                 &CMinecraftApp::BannedLevelDialogReturned, this,
-                                app.GetStringTable(), wchFormat);
+                                wchFormat);
                         if (result != C4JStorage::EMessage_Busy)
                             SetAction(i, eAppAction_Idle);
                     } else {
@@ -4013,11 +4268,40 @@ void CMinecraftApp::HandleXuiActions(void) {
                         Minecraft::GetInstance()->soundEngine->playStreaming(
                             L"", 0, 0, 0, 1, 1);
                     }
-                }
+                } break;
 
-                break;
+                case eAppAction_ReloadFont: {
+#ifndef _XBOX
+                    app.DebugPrintf(
+                        "[Consoles_App] eAppAction_ReloadFont, ingame='%s'.\n",
+                        app.GetGameStarted() ? "Yes" : "No");
+
+                    SetAction(i, eAppAction_Idle);
+
+                    ui.SetTooltips(i, -1);
+
+                    ui.ReloadSkin();
+                    ui.StartReloadSkinThread();
+
+                    ui.setCleanupOnReload();
+#endif
+                } break;
 
                 case eAppAction_TexturePackRequired: {
+#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
+                    unsigned int uiIDA[2];
+                    uiIDA[0] = IDS_TEXTUREPACK_FULLVERSION;
+                    uiIDA[1] = IDS_CONFIRM_CANCEL;  // let them continue without
+                                                    // the texture pack here (as
+                                                    // this is only really for r
+                    // Give the player a warning about the texture pack missing
+                    ui.RequestErrorMessage(
+                        IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
+                        IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2,
+                        ProfileManager.GetPrimaryPad(),
+                        &CMinecraftApp::TexturePackDialogReturned, this);
+                    SetAction(i, eAppAction_Idle);
+#else
 #ifdef _XBOX
                     ULONGLONG ullOfferID_Full;
                     app.GetDLCFullOfferIDForPackID(
@@ -4034,13 +4318,13 @@ void CMinecraftApp::HandleXuiActions(void) {
                     uiIDA[1] = IDS_TEXTURE_PACK_TRIALVERSION;
 
                     // Give the player a warning about the texture pack missing
-                    ui.RequestMessageBox(
+                    ui.RequestErrorMessage(
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2,
                         ProfileManager.GetPrimaryPad(),
-                        &CMinecraftApp::TexturePackDialogReturned, this,
-                        app.GetStringTable());
+                        &CMinecraftApp::TexturePackDialogReturned, this);
                     SetAction(i, eAppAction_Idle);
+#endif
                 }
 
                 break;
@@ -4203,52 +4487,50 @@ void CMinecraftApp::HandleXuiActions(void) {
                     /*			case
                     eTMSAction_TMS_RetrieveFiles_CreateLoad_SignInReturned: case
                     eTMSAction_TMS_RetrieveFiles_RunPlayGame: #ifdef _XBOX
-                                                    SetTMSAction(i,eTMSAction_TMS_XUIDSFile_Waiting);
-                                                    // pass in the next app
-                    action on the call or callback completing
-                                                    app.ReadXuidsFileFromTMS(i,eTMSAction_TMS_DLCFile,true);
+                    SetTMSAction(i,eTMSAction_TMS_XUIDSFile_Waiting);
+                    // pass in the next app action on the call or callback
+                    completing
+                    app.ReadXuidsFileFromTMS(i,eTMSAction_TMS_DLCFile,true);
                     #else
-                                                    SetTMSAction(i,eTMSAction_TMS_DLCFile);
+                    SetTMSAction(i,eTMSAction_TMS_DLCFile);
                     #endif
-                                                    break;
+                    break;
 
-                                            case eTMSAction_TMS_DLCFile:
+                    case eTMSAction_TMS_DLCFile:
                     #ifdef _XBOX
-                                                    SetTMSAction(i,eTMSAction_TMS_DLCFile_Waiting);
-                                                    // pass in the next app
-                    action on the call or callback completing
-                                                    app.ReadDLCFileFromTMS(i,eTMSAction_TMS_BannedListFile,true);
+                    SetTMSAction(i,eTMSAction_TMS_DLCFile_Waiting);
+                    // pass in the next app action on the call or callback
+                    completing
+                    app.ReadDLCFileFromTMS(i,eTMSAction_TMS_BannedListFile,true);
                     #else
-                                                    SetTMSAction(i,eTMSAction_TMS_BannedListFile);
+                    SetTMSAction(i,eTMSAction_TMS_BannedListFile);
                     #endif
 
-                                                    break;
+                    break;
 
-                                            case
-                    eTMSAction_TMS_RetrieveFiles_HelpAndOptions: case
-                    eTMSAction_TMS_RetrieveFiles_DLCMain: #ifdef _XBOX
-                                                    SetTMSAction(i,eTMSAction_TMS_DLCFile_Waiting);
-                                                    // pass in the next app
-                    action on the call or callback completing
-                                                    app.ReadDLCFileFromTMS(i,eTMSAction_Idle,true);
-                    #else
-                                                    SetTMSAction(i,eTMSAction_Idle);
-                    #endif
-
-                                                    break;
-                                            case eTMSAction_TMS_BannedListFile:
+                    case eTMSAction_TMS_RetrieveFiles_HelpAndOptions:
+                    case eTMSAction_TMS_RetrieveFiles_DLCMain:
                     #ifdef _XBOX
-                                                    SetTMSAction(i,eTMSAction_TMS_BannedListFile_Waiting);
-                                                    // pass in the next app
-                    action on the call or callback completing
-                                                    app.ReadBannedList(i,
+                    SetTMSAction(i,eTMSAction_TMS_DLCFile_Waiting);
+                    // pass in the next app action on the call or callback
+                    completing app.ReadDLCFileFromTMS(i,eTMSAction_Idle,true);
+                    #else
+                    SetTMSAction(i,eTMSAction_Idle);
+                    #endif
+
+                    break;
+                    case eTMSAction_TMS_BannedListFile:
+                    #ifdef _XBOX
+                    SetTMSAction(i,eTMSAction_TMS_BannedListFile_Waiting);
+                    // pass in the next app action on the call or callback
+                    completing app.ReadBannedList(i,
                     eTMSAction_TMS_RetrieveFiles_Complete,true); #else
-                                                    SetTMSAction(i,eTMSAction_TMS_RetrieveFiles_Complete);
+                    SetTMSAction(i,eTMSAction_TMS_RetrieveFiles_Complete);
                     #endif
 
-                                                    break;
+                    break;
 
-                                                    */
+                    */
                 case eTMSAction_TMS_RetrieveFiles_Complete:
                     SetTMSAction(i, eTMSAction_Idle);
                     // 				if(StorageManager.SetSaveDevice(&CScene_Main::DeviceSelectReturned,pClass))
@@ -4322,28 +4604,28 @@ void CMinecraftApp::loadMediaArchive() {
 #if 0
 	std::string path = "Common\\media.arc";
 	HANDLE hFile = CreateFile(	path.c_str(),
-								GENERIC_READ,
-								FILE_SHARE_READ,
-								NULL,
-								OPEN_EXISTING,
-								FILE_FLAG_SEQUENTIAL_SCAN,
-								NULL );
+		GENERIC_READ,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_FLAG_SEQUENTIAL_SCAN,
+		NULL );
 
 	if( hFile != INVALID_HANDLE_VALUE )
 	{
 		File fileHelper(convStringToWstring(path));
-		DWORD dwFileSize = fileHelper.length();
+		std::uint32_t dwFileSize = fileHelper.length();
 
 		// Initialize memory.
-		PBYTE m_fBody = new BYTE[ dwFileSize ];
+		std::uint8_t* m_fBody = new std::uint8_t[ dwFileSize ];
 		ZeroMemory(m_fBody, dwFileSize);
 
-		DWORD m_fSize = 0;
+		std::uint32_t m_fSize = 0;
 		BOOL hr = ReadFile(	hFile,
-							m_fBody,
-							dwFileSize,
-							&m_fSize,
-							NULL	);
+			m_fBody,
+			dwFileSize,
+			&m_fSize,
+			NULL	);
 
 		assert( m_fSize == dwFileSize );
 
@@ -4364,7 +4646,7 @@ void CMinecraftApp::loadStringTable() {
 #ifndef _XBOX
 
     if (m_stringTable != NULL) {
-        // we need to unload the current string table, this is a reload
+        // we need to unload the current std::string table, this is a reload
         delete m_stringTable;
     }
     std::wstring localisationFile = L"languages.loc";
@@ -4411,10 +4693,8 @@ int CMinecraftApp::EthernetDisconnectReturned(
     } else {
         //  4J-PB - turn off the PSN store icon just in case this happened when
         //  we were in one of the DLC menus
-#ifdef __ORBIS__
-        sceNpCommerceHidePsStoreIcon();
-#elif defined __PSVITA__
-        sceNpCommerce2HidePsStoreIcon();
+#if defined __ORBIS__ || defined __PSVITA__
+        app.GetCommerce()->HidePsStoreIcon();
 #endif
         app.SetAction(iPad, eAppAction_EthernetDisconnectedReturned_Menus);
     }
@@ -4554,7 +4834,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
         Sleep(1);
     }
 
-    return 0;
+    return S_OK;
 }
 
 int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
@@ -4582,10 +4862,9 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
             if (bContentRestricted) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                     IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                     ProfileManager.GetPrimaryPad(), NULL, &app,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else
 #endif
             {
@@ -4599,11 +4878,10 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                 ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app,
-                app.GetStringTable());
+                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app);
         }
 #endif
     } else {
@@ -4631,10 +4909,9 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
             if (bContentRestricted) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                     IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                     ProfileManager.GetPrimaryPad(), NULL, &app,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else
 #endif
             {
@@ -4649,11 +4926,10 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                 ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app,
-                app.GetStringTable());
+                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app);
         }
 #elif defined(__ORBIS__)
         else {
@@ -4664,17 +4940,16 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
 
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
-                ui.RequestMessageBox(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
-                                     uiIDA, 1, iPad, NULL, NULL,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
+                                       IDS_ERROR_NETWORK, uiIDA, 1, iPad);
             } else {
                 // Not signed in to PSN
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                ui.RequestMessageBox(
+                ui.RequestAlertMessage(
                     IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                     iPad, &CMinecraftApp::MustSignInFullVersionPurchaseReturned,
-                    &app, app.GetStringTable(), NULL, 0, false);
+                    &app);
             }
         }
 #endif
@@ -4703,10 +4978,9 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
             if (bContentRestricted) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                     IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                     ProfileManager.GetPrimaryPad(), NULL, &app,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else
 #endif
             {
@@ -4727,11 +5001,11 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                 ProfileManager.GetPrimaryPad(),
                 &CMinecraftApp::MustSignInFullVersionPurchaseReturnedExitTrial,
-                &app, app.GetStringTable());
+                &app);
         }
 #elif defined(__ORBIS__)
         else {
@@ -4742,9 +5016,8 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
 
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
-                ui.RequestMessageBox(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
-                                     uiIDA, 1, iPad, NULL, NULL,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
+                                       IDS_ERROR_NETWORK, uiIDA, 1, iPad);
                 // still need to exit the trial or we'll be in the Pause menu
                 // with input ignored
                 pApp->SetAction(pMinecraft->player->GetXboxPad(),
@@ -4753,12 +5026,12 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
                 // Not signed in to PSN
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                ui.RequestMessageBox(
+                ui.RequestAlertMessage(
                     IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                     iPad,
                     &CMinecraftApp::
                         MustSignInFullVersionPurchaseReturnedExitTrial,
-                    &app, app.GetStringTable(), NULL, 0, false);
+                    &app);
             }
         }
 #endif
@@ -4790,10 +5063,9 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
             if (bContentRestricted) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                     IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                     ProfileManager.GetPrimaryPad(), NULL, &app,
-                                     app.GetStringTable());
+                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
             } else
 #endif
             {
@@ -4808,11 +5080,10 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                 ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app,
-                app.GetStringTable());
+                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app);
 
             // 4J Stu - We can't actually exit the game, so just exit back to
             // the main menu
@@ -4920,10 +5191,9 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
                 if (hasGuestIdChanged) {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    ui.RequestMessageBox(IDS_GUEST_ORDER_CHANGED_TITLE,
-                                         IDS_GUEST_ORDER_CHANGED_TEXT, uiIDA, 1,
-                                         ProfileManager.GetPrimaryPad(), NULL,
-                                         NULL, app.GetStringTable());
+                    ui.RequestErrorMessage(IDS_GUEST_ORDER_CHANGED_TITLE,
+                                           IDS_GUEST_ORDER_CHANGED_TEXT, uiIDA,
+                                           1, ProfileManager.GetPrimaryPad());
                 }
 
                 // 4J Stu - On PS4 we can also cause to exit players if they are
@@ -4986,8 +5256,13 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
                                 i);
                             pApp->InvalidateBannedList(i);
 
+                            // 4J-HG: If either the player is in the network
+                            // manager or in the game, need to exit player
+                            // TODO: Do we need to check the network manager?
                             if (g_NetworkManager.GetLocalPlayerByUserIndex(i) !=
-                                NULL) {
+                                    NULL ||
+                                Minecraft::GetInstance()->localplayers[i] !=
+                                    NULL) {
                                 pApp->DebugPrintf("Player %d signed out\n", i);
                                 pApp->SetAction(i, eAppAction_ExitPlayer);
                             }
@@ -5029,8 +5304,15 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
             else if (pApp->GetLiveLinkRequired() &&
                      !ProfileManager.IsSignedInLive(
                          ProfileManager.GetLockedProfile())) {
-                pApp->SetAction(iPrimaryPlayer,
-                                eAppAction_EthernetDisconnected);
+#ifdef __PSVITA__
+                if (!CGameNetworkManager::usingAdhocMode())  // if we're in
+                                                             // adhoc mode, we
+                                                             // can ignore this
+#endif
+                {
+                    pApp->SetAction(iPrimaryPlayer,
+                                    eAppAction_EthernetDisconnected);
+                }
             }
 
 #if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
@@ -5059,14 +5341,12 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
 
     // Update the guest numbers to the current state
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
-#if defined(_XBOX)
         if (FAILED(XUserGetSigninInfo(i,
                                       XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY,
                                       &pApp->m_currentSigninInfo[i]))) {
             pApp->m_currentSigninInfo[i].xuid = INVALID_XUID;
             pApp->m_currentSigninInfo[i].dwGuestNumber = 0;
         }
-#endif
         app.DebugPrintf("Player at index %d has guest number %d\n", i,
                         pApp->m_currentSigninInfo[i].dwGuestNumber);
     }
@@ -5227,11 +5507,10 @@ void CMinecraftApp::UpsellReturnedCallback(void* pParam, eUpsellType type,
 
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                 ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app,
-                app.GetStringTable());
+                &CMinecraftApp::MustSignInFullVersionPurchaseReturned, &app);
 
             return;
 
@@ -5242,10 +5521,9 @@ void CMinecraftApp::UpsellReturnedCallback(void* pParam, eUpsellType type,
                                                 // they selected to buy the game
                                                 // on the trophy upsell
             uiIDA[0] = IDS_CONFIRM_OK;
-            ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                 IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                 ProfileManager.GetPrimaryPad(), NULL, &app,
-                                 app.GetStringTable());
+            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                   ProfileManager.GetPrimaryPad());
             break;
 #endif
         case eUpsellResponse_Declined:
@@ -5390,8 +5668,8 @@ void CMinecraftApp::MountNextDLC(int iPad) {
         /* Removed - now loading these on demand instead of as each pack is
         mounted if(m_iTotalDLCInstalled > 0)
         {
-                Minecraft *pMinecraft=Minecraft::GetInstance();
-                pMinecraft->levelRenderer->AddDLCSkinsToMemTextures();
+        Minecraft *pMinecraft=Minecraft::GetInstance();
+        pMinecraft->levelRenderer->AddDLCSkinsToMemTextures();
         }
         */
 
@@ -5412,6 +5690,19 @@ void CMinecraftApp::MountNextDLC(int iPad) {
             if (pParentPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                               L"")) {
                 StorageManager.SetSaveDisabled(false);
+            }
+        }
+#endif
+#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
+        {
+            TexturePack* currentTPack =
+                Minecraft::GetInstance()->skins->getSelected();
+            TexturePack* requiredTPack =
+                Minecraft::GetInstance()->skins->getTexturePackById(
+                    app.GetRequiredTexturePackID());
+            if (currentTPack != requiredTPack) {
+                Minecraft::GetInstance()->skins->selectTexturePackById(
+                    app.GetRequiredTexturePackID());
             }
         }
 #endif
@@ -5507,10 +5798,11 @@ int CMinecraftApp::DLCMountedCallback(void* pParam, int iPad,
 // 		 // if the file is not already in the memory textures, then read
 // it from TMS 		 if(!bRes)
 // 		 {
-// 			 BYTE *pBuffer=NULL;
-// 			 DWORD dwSize=0;
+// 			 std::uint8_t *pBuffer=NULL;
+// 			 std::uint32_t dwSize=0;
 // 			 // 4J-PB - out for now for DaveK so he doesn't get the
-// birthday cape #ifdef _CONTENT_PACKAGE 			 C4JStorage::ETMSStatus eTMSStatus;
+// birthday cape #ifdef _CONTENT_PACKAGE
+// C4JStorage::ETMSStatus eTMSStatus;
 // 			 eTMSStatus=StorageManager.ReadTMSFile(ProfileManager.GetPrimaryPad(),C4JStorage::eGlobalStorage_Title,C4JStorage::eTMS_FileType_Graphic,
 // L"Default_Cape.png",&pBuffer, &dwSize);
 // 			 if(eTMSStatus==C4JStorage::ETMSStatus_Idle)
@@ -5532,9 +5824,16 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
     std::vector<std::wstring> dlcFilenames;
 #endif
     StorageManager.GetMountedDLCFileList("DLCDrive", dlcFilenames);
+#ifdef __ORBIS__
+    // 4J Stu - I don't know why we handle more than one file here any more,
+    // however this doesn't seem to work with the PS4 patches
+    if (dlcFilenames.size() > 0)
+        m_dlcManager.readDLCDataFile(dwFilesProcessed, dlcFilenames[0], pack);
+#else
     for (int i = 0; i < dlcFilenames.size(); i++) {
         m_dlcManager.readDLCDataFile(dwFilesProcessed, dlcFilenames[i], pack);
     }
+#endif
 #else
     WIN32_FIND_DATA wfd;
     HANDLE hFind;
@@ -5591,7 +5890,7 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
     if (dwFilesProcessed == 0) m_dlcManager.removePack(pack);
 }
 
-//  int CMinecraftApp::DLCReadCallback(LPVOID
+//  int CMinecraftApp::DLCReadCallback(void*
 //  pParam,C4JStorage::DLC_FILE_DETAILS *pDLCData)
 //  {
 //
@@ -5673,7 +5972,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
         pData = (*it).second;
 
         if (pData->byteCount == 0 && byteCount != 0) {
-            // This should never be NULL if byteCount is 0
+            // This should never be NULL if dwBytes is 0
             if (pData->pbData != NULL) delete[] pData->pbData;
 
             pData->pbData = pbData;
@@ -5859,7 +6158,7 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
 // 	// read the local file
 // 	File gtsFile( wsFile->c_str() );
 //
-// 	__int64 fileSize = gtsFile.length();
+// 	int64_t fileSize = gtsFile.length();
 //
 // 	if(fileSize!=0)
 // 	{
@@ -5946,13 +6245,13 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
 
                     // Give the player a warning about the trial version of the
                     // texture pack
-                    ui.RequestMessageBox(
+                    ui.RequestErrorMessage(
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
-                        &CMinecraftApp::WarningTrialTexturePackReturned, pClass,
-                        app.GetStringTable());
+                        &CMinecraftApp::WarningTrialTexturePackReturned,
+                        pClass);
 
-                    return 0;
+                    return S_OK;
                 }
             }
 #ifndef _XBOX_ONE
@@ -5966,11 +6265,11 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_CANCEL;
                 uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(
+                ui.RequestErrorMessage(
                     IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2,
                     ProfileManager.GetPrimaryPad(),
                     &CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned,
-                    pClass, app.GetStringTable());
+                    pClass);
                 return 0;
             } else
 #endif
@@ -5985,11 +6284,11 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME,
                 uiIDA, 2, ProfileManager.GetPrimaryPad(),
                 &CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned,
-                pClass, app.GetStringTable());
+                pClass);
             return 0;
         }
 
@@ -6001,6 +6300,106 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
 
 int CMinecraftApp::WarningTrialTexturePackReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
+    // 4J Stu - I added this in when fixing an X1 bug. We should probably add
+    // this as well but I don't have time to test all platforms atm
+#if 0  // defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+	if(result==C4JStorage::EMessage_ResultAccept)
+	{
+		if(!ProfileManager.IsSignedInLive(iPad))
+		{
+			// you're not signed in to PSN!
+
+		}
+		else
+		{
+			// 4J-PB - need to check this user can access the store
+			bool bContentRestricted;
+			ProfileManager.GetChatAndContentRestrictions(iPad,true,NULL,&bContentRestricted,NULL);
+			if(bContentRestricted)
+			{
+				unsigned int uiIDA[1];
+				uiIDA[0]=IDS_CONFIRM_OK;
+				ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
+			}
+			else
+			{
+				// need to get info on the pack to see if the user has already downloaded it
+				TexturePack *tPack = Minecraft::GetInstance()->skins->getSelected();
+				DLCTexturePack *pDLCTexPack=(DLCTexturePack *)tPack;
+
+				// retrieve the store name for the skin pack
+				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
+				const char *pchPackName=wstringtofilename(pDLCPack->getName());
+				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
+				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
+
+				if(pSONYDLCInfo!=NULL)
+				{
+					char chName[42];
+					char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
+
+					memset(chSkuID,0,SCE_NP_COMMERCE2_SKU_ID_LEN);
+					// find the info on the skin pack
+					// we have to retrieve the skuid from the store info, it can't be hardcoded since Sony may change it.
+					// So we assume the first sku for the product is the one we want
+#ifdef __ORBIS__
+					sprintf(chName,"%s",pSONYDLCInfo->chDLCKeyname);
+#else
+					sprintf(chName,"%s-%s",app.GetCommerceCategory(),pSONYDLCInfo->chDLCKeyname);
+#endif
+					app.GetDLCSkuIDFromProductList(chName,chSkuID);
+					// 4J-PB - need to check for an empty store
+#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+					if(app.CheckForEmptyStore(iPad)==false)
+#endif
+					{					
+						if(app.DLCAlreadyPurchased(chSkuID))
+						{
+							app.DownloadAlreadyPurchased(chSkuID);
+						}
+						else
+						{
+							app.Checkout(chSkuID);	
+						}
+					}
+				}
+			}
+		}
+	}
+#endif  //
+
+#ifdef _XBOX_ONE
+    if (result == C4JStorage::EMessage_ResultAccept) {
+        if (ProfileManager.IsSignedIn(iPad)) {
+            if (ProfileManager.IsSignedInLive(iPad)) {
+                TexturePack* tPack =
+                    Minecraft::GetInstance()->skins->getSelected();
+                // get the dlc texture pack
+                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
+
+                DLCPack* pDLCPack = pDLCTexPack->getDLCInfoParentPack();
+
+                DLC_INFO* pDLCInfo = app.GetDLCInfoForProductName(
+                    (WCHAR*)pDLCPack->getName().c_str());
+
+                StorageManager.InstallOffer(
+                    1, (WCHAR*)pDLCInfo->wsProductId.c_str(), NULL, NULL);
+
+                // the license change coming in when the offer has been
+                // installed will cause this scene to refresh
+            } else {
+                // 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no
+                // active network connection user is unable to convert from
+                // Trial to Full texture pack and is not messaged why.
+                unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
+                ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
+                                       IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
+                                       iPad);
+            }
+        }
+    }
+
+#endif
 #ifdef _XBOX
 
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
@@ -6073,13 +6472,12 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
 
                 // Give the player a warning about the trial version of the
                 // texture pack
-                ui.RequestMessageBox(
+                ui.RequestErrorMessage(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
-                    &CMinecraftApp::WarningTrialTexturePackReturned, NULL,
-                    app.GetStringTable());
+                    &CMinecraftApp::WarningTrialTexturePackReturned, NULL);
 
-                return 0;
+                return S_OK;
             }
         }
         // bool validSave =
@@ -6189,7 +6587,7 @@ void CMinecraftApp::InitialiseTips() {
     // randomise then quicksort
     // going to leave the multiplayer tip so it is always first
 
-// Only randomise the content package build
+    // Only randomise the content package build
 #ifdef _CONTENT_PACKAGE
 
     for (int i = 1; i < MAX_TIPS_GAMETIP; i++) {
@@ -6389,6 +6787,11 @@ std::wstring CMinecraftApp::FormatHTMLString(
     text = replaceAll(
         text, L"{*CONTROLLER_ACTION_CAMERA*}",
         GetActionReplacement(iPad, MINECRAFT_ACTION_RENDER_THIRD_PERSON));
+    text = replaceAll(text, L"{*CONTROLLER_ACTION_MENU_PAGEDOWN*}",
+                      GetActionReplacement(iPad, ACTION_MENU_PAGEDOWN));
+    text =
+        replaceAll(text, L"{*CONTROLLER_ACTION_DISMOUNT*}",
+                   GetActionReplacement(iPad, MINECRAFT_ACTION_SNEAK_TOGGLE));
     text = replaceAll(text, L"{*CONTROLLER_VK_A*}", GetVKReplacement(VK_PAD_A));
     text = replaceAll(text, L"{*CONTROLLER_VK_B*}", GetVKReplacement(VK_PAD_B));
     text = replaceAll(text, L"{*CONTROLLER_VK_X*}", GetVKReplacement(VK_PAD_X));
@@ -6743,7 +7146,7 @@ std::wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon) {
 std::unordered_map<PlayerUID, MOJANG_DATA*, PlayerUID::Hash>
     CMinecraftApp::MojangData;
 std::unordered_map<int, char*> CMinecraftApp::DLCTextures_PackID;
-std::unordered_map<string, DLC_INFO*> CMinecraftApp::DLCInfo;
+std::unordered_map<std::string, DLC_INFO*> CMinecraftApp::DLCInfo;
 std::unordered_map<std::wstring, ULONGLONG> CMinecraftApp::DLCInfo_SkinName;
 #elif defined(_DURANGO)
 std::unordered_map<PlayerUID, MOJANG_DATA*, PlayerUID::Hash>
@@ -6766,7 +7169,7 @@ std::unordered_map<std::wstring, ULONGLONG> CMinecraftApp::DLCInfo_SkinName;
 
 HRESULT CMinecraftApp::RegisterMojangData(WCHAR* pXuidName, PlayerUID xuid,
                                           WCHAR* pSkin, WCHAR* pCape) {
-    HRESULT hr = 0;
+    HRESULT hr = S_OK;
     eXUID eTempXuid = eXUID_Undefined;
     MOJANG_DATA* pMojangData = NULL;
 
@@ -6800,7 +7203,7 @@ MOJANG_DATA* CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid) {
 }
 
 HRESULT CMinecraftApp::RegisterConfigValues(WCHAR* pType, int iValue) {
-    HRESULT hr = 0;
+    HRESULT hr = S_OK;
 
     // #ifdef _XBOX
     // 	if(pType!=NULL)
@@ -6829,12 +7232,12 @@ HRESULT CMinecraftApp::RegisterConfigValues(WCHAR* pType, int iValue) {
 
 #if (defined _XBOX || defined _WINDOWS64)
 HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
-                                       int iGender, __uint64 ullOfferID_Full,
-                                       __uint64 ullOfferID_Trial,
+                                       int iGender, uint64_t ullOfferID_Full,
+                                       uint64_t ullOfferID_Trial,
                                        WCHAR* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
                                        WCHAR* pDataFile) {
-    HRESULT hr = 0;
+    HRESULT hr = S_OK;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
     pDLCData->ullOfferID_Full = ullOfferID_Full;
@@ -6891,7 +7294,7 @@ HRESULT CMinecraftApp::RegisterDLCData(eDLCContentType eType,
                                        WCHAR* pwchProductName,
                                        WCHAR* pwchFirstSkin, int iConfig,
                                        unsigned int uiSortIndex) {
-    HRESULT hr = 0;
+    HRESULT hr = S_OK;
     // 4J-PB - need to convert the product id to uppercase because the catalog
     // calls come back with upper case
     WCHAR wchUppercaseProductID[64];
@@ -6967,12 +7370,13 @@ HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
     return S_OK;
 }
 #else
+
 HRESULT CMinecraftApp::RegisterDLCData(char* pchDLCName,
                                        unsigned int uiSortIndex,
                                        char* pchImageURL) {
     // on PS3 we get all the required info from the name
     char chDLCType[3];
-    HRESULT hr = 0;
+    HRESULT hr = S_OK;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
 
@@ -7052,7 +7456,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfo(char* pchDLCName) {
 }
 
 DLC_INFO* CMinecraftApp::GetDLCInfoFromTPackID(int iTPID) {
-    std::unordered_map<string, DLC_INFO*>::iterator it = DLCInfo.begin();
+    std::unordered_map<std::string, DLC_INFO*>::iterator it = DLCInfo.begin();
 
     for (int i = 0; i < DLCInfo.size(); i++) {
         if (((DLC_INFO*)it->second)->iConfig == iTPID) {
@@ -7064,7 +7468,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoFromTPackID(int iTPID) {
 }
 
 DLC_INFO* CMinecraftApp::GetDLCInfo(int iIndex) {
-    std::unordered_map<string, DLC_INFO*>::iterator it = DLCInfo.begin();
+    std::unordered_map<std::string, DLC_INFO*>::iterator it = DLCInfo.begin();
 
     for (int i = 0; i < iIndex; i++) {
         ++it;
@@ -7252,12 +7656,18 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full) {
 void CMinecraftApp::EnterSaveNotificationSection() {
     EnterCriticalSection(&m_saveNotificationCriticalSection);
     if (m_saveNotificationDepth++ == 0) {
-        MinecraftServer::getInstance()->broadcastStartSavingPacket();
+        if (g_NetworkManager
+                .IsInSession())  // this can be triggered from the front end if
+                                 // we're downloading a save
+        {
+            MinecraftServer::getInstance()->broadcastStartSavingPacket();
 
-        if (g_NetworkManager.IsLocalGame() &&
-            g_NetworkManager.GetPlayerCount() == 1) {
-            app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                                   eXuiServerAction_PauseServer, (void*)TRUE);
+            if (g_NetworkManager.IsLocalGame() &&
+                g_NetworkManager.GetPlayerCount() == 1) {
+                app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                                       eXuiServerAction_PauseServer,
+                                       (void*)TRUE);
+            }
         }
     }
     LeaveCriticalSection(&m_saveNotificationCriticalSection);
@@ -7266,12 +7676,18 @@ void CMinecraftApp::EnterSaveNotificationSection() {
 void CMinecraftApp::LeaveSaveNotificationSection() {
     EnterCriticalSection(&m_saveNotificationCriticalSection);
     if (--m_saveNotificationDepth == 0) {
-        MinecraftServer::getInstance()->broadcastStopSavingPacket();
+        if (g_NetworkManager
+                .IsInSession())  // this can be triggered from the front end if
+                                 // we're downloading a save
+        {
+            MinecraftServer::getInstance()->broadcastStopSavingPacket();
 
-        if (g_NetworkManager.IsLocalGame() &&
-            g_NetworkManager.GetPlayerCount() == 1) {
-            app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                                   eXuiServerAction_PauseServer, (void*)FALSE);
+            if (g_NetworkManager.IsLocalGame() &&
+                g_NetworkManager.GetPlayerCount() == 1) {
+                app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
+                                       eXuiServerAction_PauseServer,
+                                       (void*)FALSE);
+            }
         }
     }
     LeaveCriticalSection(&m_saveNotificationCriticalSection);
@@ -7323,7 +7739,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
 
     Tile::ReleaseThreadStorage();
 
-    return 0;
+    return S_OK;
 }
 
 void CMinecraftApp::ExitGameFromRemoteSave(void* lpParameter) {
@@ -7333,10 +7749,9 @@ void CMinecraftApp::ExitGameFromRemoteSave(void* lpParameter) {
     uiIDA[0] = IDS_CONFIRM_CANCEL;
     uiIDA[1] = IDS_CONFIRM_OK;
 
-    ui.RequestMessageBox(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                         primaryPad,
-                         &CMinecraftApp::ExitGameFromRemoteSaveDialogReturned,
-                         NULL, app.GetStringTable(), 0, 0, false);
+    ui.RequestAlertMessage(
+        IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2, primaryPad,
+        &CMinecraftApp::ExitGameFromRemoteSaveDialogReturned, NULL);
 }
 
 int CMinecraftApp::ExitGameFromRemoteSaveDialogReturned(
@@ -7439,8 +7854,8 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
         // 4J-PB - write to TMS++ now
 
         // bool
-        // bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(PBYTE)pBannedList,
-        // dataBytes);
+        // bRes=StorageManager.WriteTMSFile(iPad,C4JStorage::eGlobalStorage_TitleUser,L"BannedList",(std::uint8_t*)pBannedList,
+        // dwDataBytes);
 #ifdef _XBOX
         StorageManager.TMSPP_WriteFile(
             iPad, C4JStorage::eGlobalStorage_TitleUser,
@@ -7449,9 +7864,10 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
 #elif defined _XBOX_ONE
         StorageManager.TMSPP_WriteFile(
             iPad, C4JStorage::eGlobalStorage_TitleUser,
-            C4JStorage::TMS_FILETYPE_BINARY, L"BannedList", (PBYTE)pBannedList,
-            dataBytes, NULL, NULL, 0);
+            C4JStorage::TMS_FILETYPE_BINARY, L"BannedList",
+            (std::uint8_t*)pBannedList, dataBytes, NULL, NULL, 0);
 #endif
+
         delete[] pBannedList;
     }
     // update telemetry too
@@ -7525,7 +7941,8 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
             C4JStorage::TMS_FILETYPE_BINARY, L"BannedList", NULL, NULL, 0);
 #endif
     } else {
-        PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
+        PBANNEDLISTDATA pBannedList =
+            (BANNEDLISTDATA*)(new std::uint8_t[dataBytes]);
 
         for (std::size_t i = 0; i < bannedListCount; ++i) {
             PBANNEDLISTDATA pBannedListData = m_vBannedListA[iPad]->at(i);
@@ -7534,7 +7951,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
         }
 #ifdef _XBOX
         StorageManager.WriteTMSFile(iPad, C4JStorage::eGlobalStorage_TitleUser,
-                                    L"BannedList", (PBYTE)pBannedList,
+                                    L"BannedList", (std::uint8_t*)pBannedList,
                                     dataBytes);
 #elif defined _XBOX_ONE
         StorageManager.TMSPP_WriteFile(
@@ -7551,7 +7968,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
 // function to add credits for the DLC packs
 void CMinecraftApp::AddCreditText(const wchar_t* lpStr) {
     DebugPrintf("ADDING CREDIT - %ls\n", lpStr);
-    // add a string from the DLC to a credits vector
+    // add a std::string from the DLC to a credits std::vector
     SCreditTextItemDef* pCreditStruct = new SCreditTextItemDef;
     pCreditStruct->m_eType = eSmallText;
     pCreditStruct->m_iStringID[0] = NO_TRANSLATED_STRING;
@@ -7748,6 +8165,77 @@ void CMinecraftApp::SetGameHostOption(unsigned int& uiHostSettings,
                 uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DISABLESAVE;
             }
             break;
+        case eGameHostOption_WasntSaveOwner:
+            if (uiVal != 0) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_NOTOWNER;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_NOTOWNER;
+            }
+            break;
+        case eGameHostOption_MobGriefing:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_MOBGRIEFING;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_MOBGRIEFING;
+            }
+            break;
+        case eGameHostOption_KeepInventory:
+            if (uiVal != 0) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_KEEPINVENTORY;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_KEEPINVENTORY;
+            }
+            break;
+        case eGameHostOption_DoMobSpawning:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING;
+            }
+            break;
+        case eGameHostOption_DoMobLoot:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOMOBLOOT;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOMOBLOOT;
+            }
+            break;
+        case eGameHostOption_DoTileDrops:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_DOTILEDROPS;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DOTILEDROPS;
+            }
+            break;
+        case eGameHostOption_NaturalRegeneration:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_NATURALREGEN;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_NATURALREGEN;
+            }
+            break;
+        case eGameHostOption_DoDaylightCycle:
+            if (uiVal != 1) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE;
+            } else {
+                // off
+                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE;
+            }
+            break;
+        case eGameHostOption_WorldSize:
+            // clear the difficulty first
+            uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_WORLDSIZE;
+            uiHostSettings |=
+                (GAME_HOST_OPTION_BITMASK_WORLDSIZE &
+                 (uiVal << GAME_HOST_OPTION_BITMASK_WORLDSIZE_BITSHIFT));
+            break;
         case eGameHostOption_All:
             uiHostSettings = uiVal;
             break;
@@ -7834,6 +8322,26 @@ unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings,
         case eGameHostOption_DisableSaving:
             return (uiHostSettings & GAME_HOST_OPTION_BITMASK_DISABLESAVE);
             break;
+        case eGameHostOption_WasntSaveOwner:
+            return (uiHostSettings & GAME_HOST_OPTION_BITMASK_NOTOWNER);
+        case eGameHostOption_WorldSize:
+            return (uiHostSettings & GAME_HOST_OPTION_BITMASK_WORLDSIZE) >>
+                   GAME_HOST_OPTION_BITMASK_WORLDSIZE_BITSHIFT;
+        case eGameHostOption_MobGriefing:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_MOBGRIEFING);
+        case eGameHostOption_KeepInventory:
+            return (uiHostSettings & GAME_HOST_OPTION_BITMASK_KEEPINVENTORY);
+        case eGameHostOption_DoMobSpawning:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING);
+        case eGameHostOption_DoMobLoot:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_DOMOBLOOT);
+        case eGameHostOption_DoTileDrops:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_DOTILEDROPS);
+        case eGameHostOption_NaturalRegeneration:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_NATURALREGEN);
+        case eGameHostOption_DoDaylightCycle:
+            return !(uiHostSettings & GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE);
+            break;
         default:
             return 0;
     }
@@ -7842,12 +8350,20 @@ unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings,
 }
 
 bool CMinecraftApp::CanRecordStatsAndAchievements() {
+    bool isTutorial = Minecraft::GetInstance() != NULL &&
+                      Minecraft::GetInstance()->isTutorial();
     // 4J Stu - All of these options give the host player some advantage, so
     // should not allow achievements
     return !(app.GetGameHostOption(eGameHostOption_HasBeenInCreative) ||
              app.GetGameHostOption(eGameHostOption_HostCanBeInvisible) ||
              app.GetGameHostOption(eGameHostOption_HostCanChangeHunger) ||
-             app.GetGameHostOption(eGameHostOption_HostCanFly));
+             app.GetGameHostOption(eGameHostOption_HostCanFly) ||
+             app.GetGameHostOption(eGameHostOption_WasntSaveOwner) ||
+             !app.GetGameHostOption(eGameHostOption_MobGriefing) ||
+             app.GetGameHostOption(eGameHostOption_KeepInventory) ||
+             !app.GetGameHostOption(eGameHostOption_DoMobSpawning) ||
+             (!app.GetGameHostOption(eGameHostOption_DoDaylightCycle) &&
+              !isTutorial));
 }
 
 void CMinecraftApp::processSchematics(LevelChunk* levelChunk) {
@@ -7944,9 +8460,9 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                     bHostOptionsRead = true;
                     // read the host options value
                     unsigned int uiValueC = 0;
-                    unsigned char pszHostOptions[8];  // Hex representation of
+                    unsigned char pszHostOptions[9];  // Hex representation of
                                                       // unsigned int
-                    ZeroMemory(&pszHostOptions, 8);
+                    ZeroMemory(&pszHostOptions, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -7961,9 +8477,9 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                 } else if (strcmp(szKeyword, "4J_TEXTUREPACK") == 0) {
                     // read the texture pack value
                     unsigned int uiValueC = 0;
-                    unsigned char pszTexturePack[8];  // Hex representation of
+                    unsigned char pszTexturePack[9];  // Hex representation of
                                                       // unsigned int
-                    ZeroMemory(&pszTexturePack, 8);
+                    ZeroMemory(&pszTexturePack, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -7986,7 +8502,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
 }
 
 unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
-                                                __int64 seed, bool hasSeed,
+                                                int64_t seed, bool hasSeed,
                                                 unsigned int uiHostOptions,
                                                 unsigned int uiTexturePackId) {
     int iTextMetadataBytes = 0;
@@ -8013,6 +8529,8 @@ unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
 
     // Save the texture pack id
     strcpy((char*)&textMetadata[iTextMetadataBytes], "4J_TEXTUREPACK");
+    snprintf((char*)&textMetadata[iTextMetadataBytes + 15], 9, "%X",
+             uiHostOptions);
 
     iTextMetadataBytes += 15;
     while (textMetadata[iTextMetadataBytes] != 0) iTextMetadataBytes++;
@@ -8152,6 +8670,14 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type) {
             // by Iron Golem.
         case eTYPE_VILLAGERGOLEM:
             return app.GetString(IDS_IRONGOLEM);
+        case eTYPE_HORSE:
+            return app.GetString(IDS_HORSE);
+        case eTYPE_WITCH:
+            return app.GetString(IDS_WITCH);
+        case eTYPE_WITHERBOSS:
+            return app.GetString(IDS_WITHER);
+        case eTYPE_BAT:
+            return app.GetString(IDS_BAT);
         default:
             break;
     };
@@ -8231,30 +8757,30 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
     for(AUTO_VAR(it, m_TMSPPDownloadQueue.begin()); it !=
     m_TMSPPDownloadQueue.end(); ++it)
     {
-            TMSPPRequest  *pCurrent = *it;
+    TMSPPRequest  *pCurrent = *it;
 
-            if(pCurrent->eType==eType)
-            {
-                    if(!(pCurrent->eState == e_TMS_ContentState_Retrieving ||
-    pCurrent->eState == e_TMS_ContentState_Retrieved))
-                    {
-                            // promote
-                            if(bPromote)
-                            {
-                                    m_TMSPPDownloadQueue.erase(m_TMSPPDownloadQueue.begin()+iPosition);
-                                    m_TMSPPDownloadQueue.insert(m_TMSPPDownloadQueue.begin(),pCurrent);
-                                    bPromoted=true;
-                            }
-                    }
-            }
-            iPosition++;
+    if(pCurrent->eType==eType)
+    {
+    if(!(pCurrent->eState == e_TMS_ContentState_Retrieving || pCurrent->eState
+    == e_TMS_ContentState_Retrieved))
+    {
+    // promote
+    if(bPromote)
+    {
+    m_TMSPPDownloadQueue.erase(m_TMSPPDownloadQueue.begin()+iPosition);
+    m_TMSPPDownloadQueue.insert(m_TMSPPDownloadQueue.begin(),pCurrent);
+    bPromoted=true;
+    }
+    }
+    }
+    iPosition++;
     }
 
     if(bPromoted)
     {
-            // re-ordered the list, so leave now
-            LeaveCriticalSection(&csTMSPPDownloadQueue);
-            return 0;
+    // re-ordered the list, so leave now
+    LeaveCriticalSection(&csTMSPPDownloadQueue);
+    return 0;
     }
     */
 
@@ -9046,6 +9572,52 @@ std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId) {
 
 int CMinecraftApp::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
+#if defined __PSVITA__ || defined __PS3__ || defined __ORBIS__
+    if (result == C4JStorage::EMessage_ResultAccept) {
+        Minecraft* pMinecraft = Minecraft::GetInstance();
+        if (pMinecraft->skins->selectTexturePackById(
+                app.GetRequiredTexturePackID())) {
+            // it's been installed already
+        } else {
+            // we need to enable background downloading for the DLC
+            XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
+            SONYDLC* pSONYDLCInfo =
+                app.GetSONYDLCInfo(app.GetRequiredTexturePackID());
+            if (pSONYDLCInfo != NULL) {
+                char chName[42];
+                char chKeyName[20];
+                char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
+
+                memset(chSkuID, 0, SCE_NP_COMMERCE2_SKU_ID_LEN);
+                // we have to retrieve the skuid from the store info, it can't
+                // be hardcoded since Sony may change it. So we assume the first
+                // sku for the product is the one we want MGH -  keyname in the
+                // DLC file is 16 chars long, but there's no space for a NULL
+                // terminating char
+                memset(chKeyName, 0, sizeof(chKeyName));
+                strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
+
+#ifdef __ORBIS__
+                strcpy(chName, chKeyName);
+#else
+                sprintf(chName, "%s-%s", app.GetCommerceCategory(), chKeyName);
+#endif
+                app.GetDLCSkuIDFromProductList(chName, chSkuID);
+                // 4J-PB - need to check for an empty store
+                if (app.CheckForEmptyStore(iPad) == false) {
+                    if (app.DLCAlreadyPurchased(chSkuID)) {
+                        app.DownloadAlreadyPurchased(chSkuID);
+                    } else {
+                        app.Checkout(chSkuID);
+                    }
+                }
+            }
+        }
+    } else {
+        app.DebugPrintf("Continuing without installing texture pack\n");
+    }
+#endif
+
 #ifdef _XBOX
     if (result != C4JStorage::EMessage_Cancelled) {
         if (app.GetRequiredTexturePackID() != 0) {
@@ -9182,9 +9754,9 @@ bool CMinecraftApp::IsLocalMultiplayerAvailable() {
     // Found this in GameNetworkManager?
     // #ifdef _DURANGO
     //		iOtherConnectedControllers =
-    //InputManager.GetConnectedGamepadCount();
+    // InputManager.GetConnectedGamepadCount();
     //		if((InputManager.IsPadConnected(userIndex) ||
-    //ProfileManager.IsSignedIn(userIndex)))
+    // ProfileManager.IsSignedIn(userIndex)))
     //		{
     //			--iOtherConnectedControllers;
     //		}
@@ -9192,7 +9764,7 @@ bool CMinecraftApp::IsLocalMultiplayerAvailable() {
     //		for(unsigned int i = 0; i < XUSER_MAX_COUNT; ++i)
     //		{
     //			if( (i!=userIndex) && (InputManager.IsPadConnected(i) ||
-    //ProfileManager.IsSignedIn(i)) )
+    // ProfileManager.IsSignedIn(i)) )
     //			{
     //				iOtherConnectedControllers++;
     //			}
@@ -9304,6 +9876,8 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 case XC_LOCALE_CHILE:
                 case XC_LOCALE_COLOMBIA:
                 case XC_LOCALE_UNITED_STATES:
+                case XC_LOCALE_LATIN_AMERICA:
+                    locales.push_back(eMCLang_laLAS);
                     locales.push_back(eMCLang_esMX);
                     break;
                 default:  // XC_LOCALE_SPAIN
@@ -9329,6 +9903,7 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 default:
                     break;
             }
+            locales.push_back(eMCLang_hant);
             locales.push_back(eMCLang_zhCHT);
             break;
         case XC_LANGUAGE_PORTUGUESE:
@@ -9373,7 +9948,8 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
                 default:
                     break;
             }
-            locales.push_back(eMCLang_zhCHS);
+            locales.push_back(eMCLang_hans);
+            locales.push_back(eMCLang_csCS);
             locales.push_back(eMCLang_zhCN);
             break;
 
@@ -9382,11 +9958,6 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
         case XC_LANGUAGE_DANISH:
             locales.push_back(eMCLang_daDA);
             locales.push_back(eMCLang_daDK);
-            break;
-
-        case XC_LANGUAGE_LATINAMERICANSPANISH:
-            locales.push_back(eMCLang_laLAS);
-            locales.push_back(eMCLang_esES);
             break;
 
         case XC_LANGUAGE_FINISH:
@@ -9432,7 +10003,7 @@ int CMinecraftApp::get_xcLang(WCHAR* pwchLocale) {
 
 void CMinecraftApp::LocaleAndLanguageInit() {
     m_localeA[eMCLang_zhCHT] = L"zh-CHT";
-    m_localeA[eMCLang_zhCHS] = L"zh-CHS";
+    m_localeA[eMCLang_csCS] = L"cs-CS";
     m_localeA[eMCLang_laLAS] = L"la-LAS";
     m_localeA[eMCLang_null] = L"en-EN";
     m_localeA[eMCLang_enUS] = L"en-US";
@@ -9494,8 +10065,11 @@ void CMinecraftApp::LocaleAndLanguageInit() {
     m_localeA[eMCLang_nnNO] = L"nn-NO";
     m_localeA[eMCLang_skSK] = L"sk-SK";
 
-    m_eMCLangA[L"zh-CHT"] = eMCLang_zhCHS;
-    m_eMCLangA[L"zh-CHS"] = eMCLang_zhCHT;
+    m_localeA[eMCLang_hans] = L"zh-HANS";
+    m_localeA[eMCLang_hant] = L"zh-HANT";
+
+    m_eMCLangA[L"zh-CHT"] = eMCLang_zhCHT;
+    m_eMCLangA[L"cs-CS"] = eMCLang_csCS;
     m_eMCLangA[L"la-LAS"] = eMCLang_laLAS;
     m_eMCLangA[L"en-EN"] = eMCLang_null;
     m_eMCLangA[L"en-US"] = eMCLang_enUS;
@@ -9557,8 +10131,11 @@ void CMinecraftApp::LocaleAndLanguageInit() {
     m_eMCLangA[L"nn-NO"] = eMCLang_nnNO;
     m_eMCLangA[L"sk-SK"] = eMCLang_skSK;
 
+    m_eMCLangA[L"zh-HANS"] = eMCLang_hans;
+    m_eMCLangA[L"zh-HANT"] = eMCLang_hant;
+
     m_xcLangA[L"zh-CHT"] = XC_LOCALE_CHINA;
-    m_xcLangA[L"zh-CHS"] = XC_LOCALE_CHINA;
+    m_xcLangA[L"cs-CS"] = XC_LOCALE_CHINA;
     m_xcLangA[L"en-EN"] = XC_LOCALE_UNITED_STATES;
     m_xcLangA[L"en-US"] = XC_LOCALE_UNITED_STATES;
     m_xcLangA[L"en-GB"] = XC_LOCALE_GREAT_BRITAIN;
@@ -9622,6 +10199,9 @@ void CMinecraftApp::LocaleAndLanguageInit() {
     m_xcLangA[L"cs-CZ"] = XC_LOCALE_CZECH_REPUBLIC;
     m_xcLangA[L"el-GR"] = XC_LOCALE_GREECE;
     m_xcLangA[L"sk-SK"] = XC_LOCALE_SLOVAK_REPUBLIC;
+
+    m_xcLangA[L"zh-HANS"] = XC_LOCALE_CHINA;
+    m_xcLangA[L"zh-HANT"] = XC_LOCALE_CHINA;
 }
 
 void CMinecraftApp::SetTickTMSDLCFiles(bool bVal) {
@@ -9633,15 +10213,15 @@ void CMinecraftApp::SetTickTMSDLCFiles(bool bVal) {
 
 std::wstring CMinecraftApp::getFilePath(std::uint32_t packId,
                                         std::wstring filename,
-                                        bool bAddDataFolder) {
-#ifdef _XBOX
-    std::wstring path = getRootPath(packId, true, bAddDataFolder) + filename;
+                                        bool bAddDataFolder,
+                                        std::wstring mountPoint) {
+    std::wstring path =
+        getRootPath(packId, true, bAddDataFolder, mountPoint) + filename;
     File f(path);
     if (f.exists()) {
         return path;
     }
-#endif
-    return getRootPath(packId, false, true) + filename;
+    return getRootPath(packId, false, true, mountPoint) + filename;
 }
 
 #ifdef _XBOX
@@ -9650,6 +10230,7 @@ enum ETitleUpdateTexturePacks {
     eTUTP_MassEffect = 0x400,
     eTUTP_Skyrim = 0x401,
     eTUTP_Halo = 0x402,
+    eTUTP_Festive = 0x405,
 
     eTUTP_Plastic = 0x801,
     eTUTP_Candy = 0x802,
@@ -9657,7 +10238,10 @@ enum ETitleUpdateTexturePacks {
     eTUTP_Halloween = 0x804,
     eTUTP_Natural = 0x805,
     eTUTP_City =
-        0x01000806  // 4J Stu - The released City pack had a sub-pack ID
+        0x01000806,  // 4J Stu - The released City pack had a sub-pack ID
+    eTUTP_Cartoon = 0x807,
+    eTUTP_Steampunk =
+        0x01000808,  // 4J Stu - The released Steampunk pack had a sub-pack ID
 };
 
 #ifdef _TU_BUILD
@@ -9665,12 +10249,41 @@ std::wstring titleUpdateTexturePackRoot = L"UPDATE:\\res\\DLC\\";
 #else
 std::wstring titleUpdateTexturePackRoot = L"GAME:\\res\\TitleUpdate\\DLC\\";
 #endif
+#else
+enum ETitleUpdateTexturePacks {
+    // eTUTP_MassEffect = 0x400,
+    // eTUTP_Skyrim = 0x401,
+    // eTUTP_Halo = 0x402,
+    // eTUTP_Festive = 0x405,
+
+    // eTUTP_Plastic = 0x801,
+    // eTUTP_Candy = 0x802,
+    // eTUTP_Fantasy = 0x803,
+    eTUTP_Halloween = 0x804,
+    // eTUTP_Natural = 0x805,
+    // eTUTP_City = 0x01000806, // 4J Stu - The released City pack had a
+    // sub-pack ID eTUTP_Cartoon = 0x807, eTUTP_Steampunk = 0x01000808, // 4J
+    // Stu - The released Steampunk pack had a sub-pack ID
+};
+
+#ifdef _WINDOWS64
+std::wstring titleUpdateTexturePackRoot = L"Windows64\\DLC\\";
+#elif defined(__ORBIS__)
+std::wstring titleUpdateTexturePackRoot = L"/app0/orbis/CU/DLC/";
+#elif defined(__PSVITA__)
+std::wstring titleUpdateTexturePackRoot = L"PSVita/CU/DLC/";
+#elif defined(__PS3__)
+std::wstring titleUpdateTexturePackRoot = L"PS3/CU/DLC/";
+#else
+std::wstring titleUpdateTexturePackRoot = L"CU\\DLC\\";
+#endif
+
 #endif
 
 std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
-                                        bool allowOverride,
-                                        bool bAddDataFolder) {
-    std::wstring path = L"TPACK:";
+                                        bool allowOverride, bool bAddDataFolder,
+                                        std::wstring mountPoint) {
+    std::wstring path = mountPoint;
 #ifdef _XBOX
     if (allowOverride) {
         switch (packId) {
@@ -9682,6 +10295,9 @@ std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
                 break;
             case eTUTP_Halo:
                 path = titleUpdateTexturePackRoot + L"Halo";
+                break;
+            case eTUTP_Festive:
+                path = titleUpdateTexturePackRoot + L"Festive";
                 break;
             case eTUTP_Plastic:
                 path = titleUpdateTexturePackRoot + L"Plastic";
@@ -9701,10 +10317,28 @@ std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
             case eTUTP_City:
                 path = titleUpdateTexturePackRoot + L"City";
                 break;
+            case eTUTP_Cartoon:
+                path = titleUpdateTexturePackRoot + L"Cartoon";
+                break;
+            case eTUTP_Steampunk:
+                path = titleUpdateTexturePackRoot + L"Steampunk";
+                break;
         };
         File folder(path);
         if (!folder.exists()) {
-            path = L"TPACK:";
+            path = mountPoint;
+        }
+    }
+#else
+    if (allowOverride) {
+        switch (packId) {
+            case eTUTP_Halloween:
+                path = titleUpdateTexturePackRoot + L"Halloween Texture Pack";
+                break;
+        };
+        File folder(path);
+        if (!folder.exists()) {
+            path = mountPoint;
         }
     }
 #endif

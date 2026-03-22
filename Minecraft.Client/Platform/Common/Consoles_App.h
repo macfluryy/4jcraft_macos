@@ -42,6 +42,11 @@ class Container;
 class DispenserTileEntity;
 class SignTileEntity;
 class BrewingStandTileEntity;
+class CommandBlockEntity;
+class HopperTileEntity;
+class MinecartHopper;
+class EntityHorse;
+class BeaconTileEntity;
 class LocalPlayer;
 class DLCPack;
 class LevelRuleset;
@@ -151,7 +156,8 @@ public:
     bool LoadCreativeMenu(int iPad, std::shared_ptr<LocalPlayer> player,
                           bool bNavigateBack = false);
     bool LoadEnchantingMenu(int iPad, std::shared_ptr<Inventory> inventory,
-                            int x, int y, int z, Level* level);
+                            int x, int y, int z, Level* level,
+                            const std::wstring& name);
     bool LoadFurnaceMenu(int iPad, std::shared_ptr<Inventory> inventory,
                          std::shared_ptr<FurnaceTileEntity> furnace);
     bool LoadBrewingStandMenu(
@@ -164,11 +170,28 @@ public:
     bool LoadCrafting2x2Menu(int iPad, std::shared_ptr<LocalPlayer> player);
     bool LoadCrafting3x3Menu(int iPad, std::shared_ptr<LocalPlayer> player,
                              int x, int y, int z);
+    bool LoadFireworksMenu(int iPad, std::shared_ptr<LocalPlayer> player, int x,
+                           int y, int z);
     bool LoadSignEntryMenu(int iPad, std::shared_ptr<SignTileEntity> sign);
     bool LoadRepairingMenu(int iPad, std::shared_ptr<Inventory> inventory,
                            Level* level, int x, int y, int z);
     bool LoadTradingMenu(int iPad, std::shared_ptr<Inventory> inventory,
-                         std::shared_ptr<Merchant> trader, Level* level);
+                         std::shared_ptr<Merchant> trader, Level* level,
+                         const std::wstring& name);
+
+    bool LoadCommandBlockMenu(
+        int iPad, std::shared_ptr<CommandBlockEntity> commandBlock) {
+        return false;
+    }
+    bool LoadHopperMenu(int iPad, std::shared_ptr<Inventory> inventory,
+                        std::shared_ptr<HopperTileEntity> hopper);
+    bool LoadHopperMenu(int iPad, std::shared_ptr<Inventory> inventory,
+                        std::shared_ptr<MinecartHopper> hopper);
+    bool LoadHorseMenu(int iPad, std::shared_ptr<Inventory> inventory,
+                       std::shared_ptr<Container> container,
+                       std::shared_ptr<EntityHorse> horse);
+    bool LoadBeaconMenu(int iPad, std::shared_ptr<Inventory> inventory,
+                        std::shared_ptr<BeaconTileEntity> beacon);
 
     bool GetTutorialMode() { return m_bTutorialMode; }
     void SetTutorialMode(bool bSet) { m_bTutorialMode = bSet; }
@@ -267,6 +290,8 @@ public:
 
 #if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
      defined __PSVITA__)
+    std::wstring toStringOptionsStatus(
+        const C4JStorage::eOptionsCallback& eStatus);
     static int DefaultOptionsCallback(void* pParam,
                                       C4JStorage::PROFILESETTINGS* pSettings,
                                       const int iPad);
@@ -320,6 +345,8 @@ public:
     // Minecraft language select
     void SetMinecraftLanguage(int iPad, unsigned char ucLanguage);
     unsigned char GetMinecraftLanguage(int iPad);
+    void SetMinecraftLocale(int iPad, unsigned char ucLanguage);
+    unsigned char GetMinecraftLocale(int iPad);
 
     // 4J-PB - set a timer when the user navigates the quickselect, so we can
     // bring the opacity back to defaults for a short time
@@ -409,7 +436,7 @@ public:
     static int DLCMountedCallback(void* pParam, int iPad, std::uint32_t dwErr,
                                   std::uint32_t dwLicenceMask);
     void MountNextDLC(int iPad);
-    // static int DLCReadCallback(LPVOID pParam,C4JStorage::DLC_FILE_DETAILS
+    // static int DLCReadCallback(void* pParam,C4JStorage::DLC_FILE_DETAILS
     // *pDLCData);
     void HandleDLC(DLCPack* pack);
     bool DLCInstallPending() { return m_bDLCInstallPending; }
@@ -721,7 +748,7 @@ public:
     DLC_INFO* GetDLCInfoForFullOfferID(WCHAR* pwchProductId);
     DLC_INFO* GetDLCInfoForProductName(WCHAR* pwchProductName);
 #else
-    static HRESULT RegisterDLCData(WCHAR*, WCHAR*, int, __uint64, __uint64,
+    static HRESULT RegisterDLCData(WCHAR*, WCHAR*, int, uint64_t, uint64_t,
                                    WCHAR*, unsigned int, int, WCHAR* pDataFile);
     bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                     ULONGLONG* pullVal);
@@ -757,7 +784,7 @@ private:
         MojangData;
     static std::unordered_map<int, char*>
         DLCTextures_PackID;  // for mash-up packs & texture packs
-    static std::unordered_map<string, DLC_INFO*> DLCInfo;
+    static std::unordered_map<std::string, DLC_INFO*> DLCInfo;
     static std::unordered_map<std::wstring, ULONGLONG>
         DLCInfo_SkinName;  // skin name, full offer id
 #elif defined(_DURANGO)
@@ -783,8 +810,8 @@ private:
         DLCInfo_SkinName;  // skin name, full offer id
 #endif
     //	bool m_bRead_TMS_XUIDS_XML; // track whether we have already read the
-    //TMS xuids.xml file 	bool m_bRead_TMS_DLCINFO_XML; // track whether we have
-    //already read the TMS DLC.xml file
+    // TMS xuids.xml file 	bool m_bRead_TMS_DLCINFO_XML; // track whether
+    // we have already read the TMS DLC.xml file
 
     bool m_bDefaultCapeInstallAttempted;  // have we attempted to install the
                                           // default cape from tms
@@ -806,7 +833,7 @@ public:
 
     // void OverrideFontRenderer(bool set, bool immediate = true);
     //	void ToggleFontRenderer() {
-    //OverrideFontRenderer(!m_bFontRendererOverridden,false); }
+    // OverrideFontRenderer(!m_bFontRendererOverridden,false); }
     BANNEDLIST BannedListA[XUSER_MAX_COUNT];
 
 private:
@@ -840,6 +867,11 @@ private:
     unsigned int m_uiGameHostSettings;
     static unsigned char m_szPNG[8];
 
+#ifdef _LARGE_WORLDS
+    unsigned int m_GameNewWorldSize;
+    bool m_bGameNewWorldSizeUseMoat;
+    unsigned int m_GameNewHellScale;
+#endif
     unsigned int FromBigEndian(unsigned int uiValue);
 
 public:
@@ -850,6 +882,20 @@ public:
     unsigned int GetGameHostOption(unsigned int uiHostSettings,
                                    eGameHostOption eVal);
 
+#ifdef _LARGE_WORLDS
+    void SetGameNewWorldSize(unsigned int newSize, bool useMoat) {
+        m_GameNewWorldSize = newSize;
+        m_bGameNewWorldSizeUseMoat = useMoat;
+    }
+    unsigned int GetGameNewWorldSize() { return m_GameNewWorldSize; }
+    unsigned int GetGameNewWorldSizeUseMoat() {
+        return m_bGameNewWorldSizeUseMoat;
+    }
+    void SetGameNewHellScale(unsigned int newScale) {
+        m_GameNewHellScale = newScale;
+    }
+    unsigned int GetGameNewHellScale() { return m_GameNewHellScale; }
+#endif
     void SetResetNether(bool bResetNether) { m_bResetNether = bResetNether; }
     bool GetResetNether() { return m_bResetNether; }
     bool CanRecordStatsAndAchievements();
@@ -983,10 +1029,10 @@ public:
     unsigned int m_dwDLCFileSize;
     std::uint8_t* m_pDLCFileBuffer;
 
-    // 	static int CallbackReadXuidsFileFromTMS(LPVOID lpParam, WCHAR
+    // 	static int CallbackReadXuidsFileFromTMS(void* lpParam, WCHAR
     // *wchFilename, int iPad, bool bResult, int iAction); 	static int
-    // CallbackDLCFileFromTMS(LPVOID lpParam, WCHAR *wchFilename, int iPad, bool
-    // bResult, int iAction); 	static int CallbackBannedListFileFromTMS(LPVOID
+    // CallbackDLCFileFromTMS(void* lpParam, WCHAR *wchFilename, int iPad, bool
+    // bResult, int iAction); 	static int CallbackBannedListFileFromTMS(void*
     // lpParam, WCHAR *wchFilename, int iPad, bool bResult, int iAction);
 
     // Storing additional model parts per skin texture
@@ -1074,14 +1120,15 @@ public:
     void SetTickTMSDLCFiles(bool bVal);
 
     std::wstring getFilePath(std::uint32_t packId, std::wstring filename,
-                             bool bAddDataFolder);
+                             bool bAddDataFolder,
+                             std::wstring mountPoint = L"TPACK:");
 
 private:
     std::unordered_map<int, std::wstring> m_localeA;
     std::unordered_map<std::wstring, int> m_eMCLangA;
     std::unordered_map<std::wstring, int> m_xcLangA;
     std::wstring getRootPath(std::uint32_t packId, bool allowOverride,
-                             bool bAddDataFolder);
+                             bool bAddDataFolder, std::wstring mountPoint);
 
 public:
 #ifdef _XBOX
