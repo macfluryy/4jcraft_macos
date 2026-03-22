@@ -4,7 +4,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../Minecraft.World/PistonPieceEntity.h"
+#include "../../../Minecraft.World/Blocks/TileEntities/PistonPieceTileEntity.h"
 #include "SignRenderer.h"
 #include "MobSpawnerRenderer.h"
 #include "PistonPieceRenderer.h"

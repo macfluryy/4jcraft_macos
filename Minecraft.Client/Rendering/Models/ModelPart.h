@@ -3,7 +3,7 @@
 #include "../Vertex.h"
 #include "../Polygon.h"
 #include "Model.h"
-#include "../Minecraft.Client/SkinBox.h"
+#include "./SkinBox.h"
 
 class Cube;
 

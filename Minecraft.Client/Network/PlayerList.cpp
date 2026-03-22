@@ -325,7 +325,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     }
 }
 
-void PlayerList::updateEntireScoreboard(ServerScoreboard* scoreboardstd::,
+void PlayerList::updateEntireScoreboard(ServerScoreboard* scoreboard,
                                         std::shared_ptr<ServerPlayer> player) {
     // unordered_set<Objective *> objectives;
 

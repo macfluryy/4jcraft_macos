@@ -499,7 +499,7 @@ std::wstring Packet::readUtf(DataInputStream* dis,
 {
     short stringLength = dis->readShort();
     if (stringLength > maxLength) {
-        wstringstream stream;
+        std::wstringstream stream;
         stream << L"Received string length longer than maximum allowed ("
                << stringLength << " > " << maxLength << ")";
         assert(false);

@@ -867,7 +867,7 @@ void ServerPlayer::changeDimension(int i) {
 
 // 4J Added delay param
 void ServerPlayer::broadcast(std::shared_ptr<TileEntity> te,
-                                  bool delay /*= false*/) {
+                             bool delay /*= false*/) {
     if (te != NULL) {
         std::shared_ptr<Packet> p = te->getUpdatePacket();
         if (p != NULL) {
@@ -1064,8 +1064,7 @@ bool ServerPlayer::openContainer(std::shared_ptr<Container> container) {
     return true;
 }
 
-bool ServerPlayer::openHopper(
-    std::shared_ptr<HopperTileEntity> container) {
+bool ServerPlayer::openHopper(std::shared_ptr<HopperTileEntity> container) {
     if (containerMenu == inventoryMenu) {
         nextContainerCounter();
         connection->send(
@@ -1187,7 +1186,7 @@ bool ServerPlayer::openBeacon(std::shared_ptr<BeaconTileEntity> beacon) {
 }
 
 bool ServerPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
-                                    const std::wstring& name) {
+                               const std::wstring& name) {
     if (containerMenu == inventoryMenu) {
         nextContainerCounter();
         containerMenu = new MerchantMenu(inventory, traderTarget, level);
@@ -1225,8 +1224,8 @@ bool ServerPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
     return true;
 }
 
-bool ServerPlayer::openHorseInventory(
-    std::shared_ptr<EntityHorse> horse, std::shared_ptr<Container> container) {
+bool ServerPlayer::openHorseInventory(std::shared_ptr<EntityHorse> horse,
+                                      std::shared_ptr<Container> container) {
     if (containerMenu != inventoryMenu) {
         closeContainer();
     }
@@ -1243,8 +1242,7 @@ bool ServerPlayer::openHorseInventory(
     return true;
 }
 
-void ServerPlayer::slotChanged(AbstractContainerMenu* container,
-                               int slotIndstd::ex,
+void ServerPlayer::slotChanged(AbstractContainerMenu* container, int slotIndex,
                                std::shared_ptr<ItemInstance> item) {
     if (dynamic_cast<ResultSlot*>(container->getSlot(slotIndex))) {
         return;
@@ -1651,7 +1649,7 @@ void ServerPlayer::completeUsingItem() {
 }
 
 void ServerPlayer::startUsingItem(std::shared_ptr<ItemInstance> instance,
-                                       int duration) {
+                                  int duration) {
     Player::startUsingItem(instance, duration);
 
     if (instance != NULL && instance->getItem() != NULL &&
@@ -1664,7 +1662,7 @@ void ServerPlayer::startUsingItem(std::shared_ptr<ItemInstance> instance,
 }
 
 void ServerPlayer::restoreFrom(std::shared_ptr<Player> oldPlayer,
-                                    bool restoreAll) {
+                               bool restoreAll) {
     Player::restoreFrom(oldPlayer, restoreAll);
     lastSentExp = -1;
     lastSentHealth = -1;
@@ -1725,8 +1723,7 @@ void ServerPlayer::setGameMode(GameType* mode) {
 void ServerPlayer::sendMessage(
     const std::wstring& message,
     ChatPacket::EChatPacketMessage type /*= e_ChatCustom*/,
-    int customData /*= -1*/,
-    const std::wstring& additionalMessage /*= L""*/) {
+    int customData /*= -1*/, const std::wstring& additionalMessage /*= L""*/) {
     connection->send(std::shared_ptr<ChatPacket>(
         new ChatPacket(message, type, customData, additionalMessage)));
 }

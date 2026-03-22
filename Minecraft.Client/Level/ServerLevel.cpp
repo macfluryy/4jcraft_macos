@@ -30,7 +30,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
 #include "../../Minecraft.World/Util/Mth.h"
 #include "../../Minecraft.World/WorldGen/Structures/StructurePiece.h"
-#include "../Minecraft.Client/ServerLevelListener.h"
+#include "./ServerLevelListener.h"
 #include "../../Minecraft.World/Util/WeighedTreasure.h"
 #include "../Textures/Packs/TexturePackRepository.h"
 #include "../Textures/Packs/DLCTexturePack.h"
@@ -710,10 +710,10 @@ std::vector<TickNextTickData>* ServerLevel::fetchTicksInChunk(LevelChunk* chunk,
 
     ChunkPos* pos = chunk->getPos();
     // 4jcraft added cast to unsigned
-    int west = (unsigned)pos->x << 4;
-    int east = west + 16;
-    int north = (unsigned)pos->z << 4;
-    int south = north + 16;
+    int xMin = ((unsigned)pos->x << 4) - 2;
+    int xMax = (xMin + 16) + 2;
+    int zMin = ((unsigned)pos->z << 4) - 2;
+    int zMax = (zMin + 16) + 2;
     delete pos;
 
     for (int i = 0; i < 2; i++) {
