@@ -5,25 +5,23 @@
 #include "XUI_Scene_Furnace.h"
 #include "XUI_Ctrl_FireProgress.h"
 
-int CXuiCtrlFireProgress::GetValue()
-{
-	void* pvUserData;
-	this->GetUserData( &pvUserData );
+int CXuiCtrlFireProgress::GetValue() {
+    void* pvUserData;
+    this->GetUserData(&pvUserData);
 
-	if( pvUserData != NULL )
-	{
-		FurnaceTileEntity *pFurnaceTileEntity = (FurnaceTileEntity *)pvUserData;
+    if (pvUserData != NULL) {
+        FurnaceTileEntity* pFurnaceTileEntity = (FurnaceTileEntity*)pvUserData;
 
-		// TODO This param is a magic number in Java but we should really define it somewhere with a name
-		// I think it is the number of states of the progress display (ie the max value)
-		return pFurnaceTileEntity->getLitProgress( 12 );
-	}
+        // TODO This param is a magic number in Java but we should really define
+        // it somewhere with a name I think it is the number of states of the
+        // progress display (ie the max value)
+        return pFurnaceTileEntity->getLitProgress(12);
+    }
 
-	return 0;
+    return 0;
 }
 
-void CXuiCtrlFireProgress::GetRange(int *pnRangeMin, int *pnRangeMax)
-{
-	*pnRangeMin = 0;
-	*pnRangeMax = 12;
+void CXuiCtrlFireProgress::GetRange(int* pnRangeMin, int* pnRangeMax) {
+    *pnRangeMin = 0;
+    *pnRangeMax = 12;
 }
