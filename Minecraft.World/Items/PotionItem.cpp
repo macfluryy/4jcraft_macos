@@ -366,7 +366,7 @@ void PotionItem::registerIcons(IconRegister* iconRegister) {
     iconOverlay = iconRegister->registerIcon(CONTENTS_ICON);
 }
 
-Icon* PotionItem::getTexture(consstd::t std::wstring& name) {
+Icon* PotionItem::getTexture(const std::wstring& name) {
     if (name.compare(DEFAULT_ICON) == 0) return Item::potion->iconDrinkable;
     if (name.compare(THROWABLE_ICON) == 0) return Item::potion->iconThrowable;
     if (name.compare(CONTENTS_ICON) == 0) return Item::potion->iconOverlay;
