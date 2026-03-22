@@ -1,6 +1,7 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
 #include "UIScene_HUD.h"
+#include "../../Minecraft.Client/UI/BossMobGuiInfo.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.boss.enderdragon.h"

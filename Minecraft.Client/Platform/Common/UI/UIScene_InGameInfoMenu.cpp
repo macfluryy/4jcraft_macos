@@ -171,12 +171,8 @@ void UIScene_InGameInfoMenu::handleReload() {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
         if (player != NULL) {
-            m_players[i] = player->GetSmallId();
-            ++m_playersCount;
+            PlayerInfo* info = BuildPlayerInfo(player);
 
-            std::wstring playerName = L"";
-            if (app.DebugSettingsOn() &&
-                 (1L << eDebugSetting_DebugLeaderboards))) {
             m_players.push_back(info);
             m_playerList.addItem(info->m_name, info->m_colorState,
                                  info->m_voiceStatus);
