@@ -8,44 +8,47 @@ class LevelChunk;
 class LevelGenerationOptions;
 class GRFObject;
 
-class ApplySchematicRuleDefinition : public GameRuleDefinition
-{
+class ApplySchematicRuleDefinition : public GameRuleDefinition {
 private:
-	LevelGenerationOptions *m_levelGenOptions;
-	std::wstring m_schematicName;
-	ConsoleSchematicFile *m_schematic;
-	Vec3 *m_location;
-	AABB *m_locationBox;
-	ConsoleSchematicFile::ESchematicRotation m_rotation;
-	int m_dimension;
+    LevelGenerationOptions* m_levelGenOptions;
+    std::wstring m_schematicName;
+    ConsoleSchematicFile* m_schematic;
+    Vec3* m_location;
+    AABB* m_locationBox;
+    ConsoleSchematicFile::ESchematicRotation m_rotation;
+    int m_dimension;
 
-	__int64 m_totalBlocksChanged;
-	__int64 m_totalBlocksChangedLighting;
-	bool m_completed;
+    __int64 m_totalBlocksChanged;
+    __int64 m_totalBlocksChangedLighting;
+    bool m_completed;
 
-	void updateLocationBox();
-public:	
-	ApplySchematicRuleDefinition(LevelGenerationOptions *levelGenOptions);
-	~ApplySchematicRuleDefinition();
+    void updateLocationBox();
 
-	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_ApplySchematic; }
-	
-	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttrs);
-	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
+public:
+    ApplySchematicRuleDefinition(LevelGenerationOptions* levelGenOptions);
+    ~ApplySchematicRuleDefinition();
 
-	void processSchematic(AABB *chunkBox, LevelChunk *chunk);
-	void processSchematicLighting(AABB *chunkBox, LevelChunk *chunk);
+    virtual ConsoleGameRules::EGameRuleType getActionType() {
+        return ConsoleGameRules::eGameRuleType_ApplySchematic;
+    }
 
-	bool checkIntersects(int x0, int y0, int z0, int x1, int y1, int z1);
-	int getMinY();
+    virtual void writeAttributes(DataOutputStream* dos, unsigned int numAttrs);
+    virtual void addAttribute(const std::wstring& attributeName,
+                              const std::wstring& attributeValue);
 
-	bool isComplete() { return m_completed; }
+    void processSchematic(AABB* chunkBox, LevelChunk* chunk);
+    void processSchematicLighting(AABB* chunkBox, LevelChunk* chunk);
 
-	std::wstring getSchematicName() { return m_schematicName; }
+    bool checkIntersects(int x0, int y0, int z0, int x1, int y1, int z1);
+    int getMinY();
 
-	/** 4J-JEV:
-	 *  This GameRuleDefinition contains limited game state.
-	 *	Reset any state to how it should be before a new game.
-	 */
-	void reset();
+    bool isComplete() { return m_completed; }
+
+    std::wstring getSchematicName() { return m_schematicName; }
+
+    /** 4J-JEV:
+     *  This GameRuleDefinition contains limited game state.
+     *	Reset any state to how it should be before a new game.
+     */
+    void reset();
 };

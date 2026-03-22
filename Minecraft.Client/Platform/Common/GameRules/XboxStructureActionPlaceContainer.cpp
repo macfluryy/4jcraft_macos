@@ -7,93 +7,94 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 
-XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer()
-{
-	m_tile = Tile::chest_Id;
+XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer() {
+    m_tile = Tile::chest_Id;
 }
 
-XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer()
-{
-	for(AUTO_VAR(it, m_items.begin()); it != m_items.end(); ++it)
-	{
-		delete *it;
-	}
+XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer() {
+    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); ++it) {
+        delete *it;
+    }
 }
 
 // 4J-JEV: Super class handles attr-facing fine.
-//void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
-	
+// void XboxStructureActionPlaceContainer::writeAttributes(DataOutputStream
+// *dos, unsigned int numAttrs)
 
-void XboxStructureActionPlaceContainer::getChildren(std::vector<GameRuleDefinition *> *children)
-{
-	XboxStructureActionPlaceBlock::getChildren(children);
-	for(AUTO_VAR(it, m_items.begin()); it!=m_items.end(); it++)
-		children->push_back( *it );
+void XboxStructureActionPlaceContainer::getChildren(
+    std::vector<GameRuleDefinition*>* children) {
+    XboxStructureActionPlaceBlock::getChildren(children);
+    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); it++)
+        children->push_back(*it);
 }
 
-GameRuleDefinition *XboxStructureActionPlaceContainer::addChild(ConsoleGameRules::EGameRuleType ruleType)
-{
-	GameRuleDefinition *rule = NULL;
-	if(ruleType == ConsoleGameRules::eGameRuleType_AddItem)
-	{
-		rule = new AddItemRuleDefinition();
-		m_items.push_back((AddItemRuleDefinition *)rule);
-	}
-	else
-	{
+GameRuleDefinition* XboxStructureActionPlaceContainer::addChild(
+    ConsoleGameRules::EGameRuleType ruleType) {
+    GameRuleDefinition* rule = NULL;
+    if (ruleType == ConsoleGameRules::eGameRuleType_AddItem) {
+        rule = new AddItemRuleDefinition();
+        m_items.push_back((AddItemRuleDefinition*)rule);
+    } else {
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"XboxStructureActionPlaceContainer: Attempted to add invalid child rule - %d\n", ruleType );
+        wprintf(
+            L"XboxStructureActionPlaceContainer: Attempted to add invalid "
+            L"child rule - %d\n",
+            ruleType);
 #endif
-	}
-	return rule;
+    }
+    return rule;
 }
 
-void XboxStructureActionPlaceContainer::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
-{
-	if(attributeName.compare(L"facing") == 0)
-	{
-		int value = _fromString<int>(attributeValue);
-		m_data = value;
-		app.DebugPrintf("XboxStructureActionPlaceContainer: Adding parameter facing=%d\n",m_data);
-	}
-	else
-	{
-		XboxStructureActionPlaceBlock::addAttribute(attributeName, attributeValue);
-	}
+void XboxStructureActionPlaceContainer::addAttribute(
+    const std::wstring& attributeName, const std::wstring& attributeValue) {
+    if (attributeName.compare(L"facing") == 0) {
+        int value = _fromString<int>(attributeValue);
+        m_data = value;
+        app.DebugPrintf(
+            "XboxStructureActionPlaceContainer: Adding parameter facing=%d\n",
+            m_data);
+    } else {
+        XboxStructureActionPlaceBlock::addAttribute(attributeName,
+                                                    attributeValue);
+    }
 }
 
-bool XboxStructureActionPlaceContainer::placeContainerInLevel(StructurePiece *structure, Level *level, BoundingBox *chunkBB)
-{
-	int worldX = structure->getWorldX( m_x, m_z );
-	int worldY = structure->getWorldY( m_y );
-	int worldZ = structure->getWorldZ( m_x, m_z );
+bool XboxStructureActionPlaceContainer::placeContainerInLevel(
+    StructurePiece* structure, Level* level, BoundingBox* chunkBB) {
+    int worldX = structure->getWorldX(m_x, m_z);
+    int worldY = structure->getWorldY(m_y);
+    int worldZ = structure->getWorldZ(m_x, m_z);
 
-	if ( chunkBB->isInside( worldX, worldY, worldZ ) )
-	{
-		if ( level->getTileEntity( worldX, worldY, worldZ ) != NULL )
-		{
-			// Remove the current tile entity
-			level->removeTileEntity( worldX, worldY, worldZ );
-			level->setTile( worldX, worldY, worldZ, 0 );
-		}
+    if (chunkBB->isInside(worldX, worldY, worldZ)) {
+        if (level->getTileEntity(worldX, worldY, worldZ) != NULL) {
+            // Remove the current tile entity
+            level->removeTileEntity(worldX, worldY, worldZ);
+            level->setTile(worldX, worldY, worldZ, 0);
+        }
 
-		level->setTile( worldX, worldY, worldZ, m_tile );
-		std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(level->getTileEntity( worldX, worldY, worldZ ));
-		
-		app.DebugPrintf("XboxStructureActionPlaceContainer - placing a container at (%d,%d,%d)\n", worldX, worldY, worldZ);
-		if ( container != NULL )
-		{
-			level->setData( worldX, worldY, worldZ, m_data);
-			// Add items
-			int slotId = 0;
-			for(AUTO_VAR(it, m_items.begin()); it != m_items.end() && (slotId < container->getContainerSize()); ++it, ++slotId )
-			{
-				AddItemRuleDefinition *addItem = *it;
+        level->setTile(worldX, worldY, worldZ, m_tile);
+        std::shared_ptr<Container> container =
+            std::dynamic_pointer_cast<Container>(
+                level->getTileEntity(worldX, worldY, worldZ));
 
-				addItem->addItemToContainer(container,slotId);
-			}
-		}
-		return true;
-	}
-	return false;
+        app.DebugPrintf(
+            "XboxStructureActionPlaceContainer - placing a container at "
+            "(%d,%d,%d)\n",
+            worldX, worldY, worldZ);
+        if (container != NULL) {
+            level->setData(worldX, worldY, worldZ, m_data);
+            // Add items
+            int slotId = 0;
+            for (AUTO_VAR(it, m_items.begin());
+                 it != m_items.end() &&
+                 (slotId < container->getContainerSize());
+                 ++it, ++slotId) {
+                AddItemRuleDefinition* addItem = *it;
+
+                addItem->addItemToContainer(container, slotId);
+            }
+        }
+        return true;
+    }
+    return false;
 }
