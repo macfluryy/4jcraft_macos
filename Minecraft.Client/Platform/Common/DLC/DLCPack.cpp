@@ -96,7 +96,7 @@ XCONTENTDEVICEID DLCPack::GetDLCDeviceID() {
 void DLCPack::addChildPack(DLCPack* childPack) {
     const std::uint32_t packId = childPack->GetPackId();
 #ifndef _CONTENT_PACKAGE
-    if (packId > 15) {
+    if (packId < 0 || packId > 15) {
         __debugbreak();
     }
 #endif
@@ -360,5 +360,19 @@ bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type,
     } else {
         // purchased
         return true;
+    }
+}
+
+void DLCPack::UpdateLanguage() {
+    // find the language file
+    DLCManager::e_DLCType_LocalisationData;
+    DLCFile* file = NULL;
+
+    if (m_files[DLCManager::e_DLCType_LocalisationData].size() > 0) {
+        file = m_files[DLCManager::e_DLCType_LocalisationData][0];
+        DLCLocalisationFile* localisationFile = (DLCLocalisationFile*)getFile(
+            DLCManager::e_DLCType_LocalisationData, L"languages.loc");
+        StringTable* strTable = localisationFile->getStringTable();
+        strTable->ReloadStringTable();
     }
 }

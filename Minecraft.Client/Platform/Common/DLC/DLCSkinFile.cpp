@@ -107,9 +107,14 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             SKIN_BOX* pSkinBox = new SKIN_BOX;
             ZeroMemory(pSkinBox, sizeof(SKIN_BOX));
 
+#ifdef __PS3__
             // 4J Stu - The Xbox version used swscanf_s which isn't available in
             // GCC.
             swscanf(value.c_str(), L"%10ls%f%f%f%f%f%f%f%f", wchBodyPart,
+#else
+            swscanf_s(
+                value.c_str(), L"%9ls%f%f%f%f%f%f%f%f", wchBodyPart, 10,
+#endif
                     &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ, &pSkinBox->fW,
                     &pSkinBox->fH, &pSkinBox->fD, &pSkinBox->fU, &pSkinBox->fV);
 
@@ -130,11 +135,16 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             // add this to the skin's vector of parts
             m_AdditionalBoxes.push_back(pSkinBox);
         } break;
-        case DLCManager::e_DLCParamType_Anim: {
+        case DLCManager::e_DLCParamType_Anim:
+#ifdef __PS3__
             // 4J Stu - The Xbox version used swscanf_s which isn't available in
             // GCC.
             swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);
-            std::uint32_t skinId = app.getSkinIdFromPath(m_path);
+#else
+            swscanf_s(value.c_str(), L"%X", &m_uiAnimOverrideBitmask,
+                      sizeof(unsigned int));
+#endif
+            DWORD skinId = app.getSkinIdFromPath(m_path);
             app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
         } break;
         default:

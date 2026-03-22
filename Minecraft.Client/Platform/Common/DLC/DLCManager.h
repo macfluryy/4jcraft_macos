@@ -73,6 +73,8 @@ public:
 
     void addPack(DLCPack* pack);
     void removePack(DLCPack* pack);
+    void removeAllPacks(void);
+    void LanguageChanged(void);
 
     DLCPack* getPack(const std::wstring& name);
 #ifdef _XBOX_ONE
