@@ -359,10 +359,10 @@ std::vector<HtmlString>* IUIScene_BeaconMenu::GetSectionHoverText(
 
             desc = new std::vector<HtmlString>();
 
-            HtmlString std::string(
+            HtmlString string(
                 app.GetString(MobEffect::effects[effectId]->getDescriptionId()),
                 eHTMLColor_White);
-            desc->push_back(std::string);
+            desc->push_back(string);
         } break;
     }
     return desc;
