@@ -61,7 +61,11 @@ Alternatively, you can build and use the container manually:
 
 ```bash
 docker build -t 4jcraft-dev .devcontainer/
-docker run -it -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev bash
+docker run -it --rm -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev bash
+```
+(Optional) Clean up the Docker image
+```bash
+docker rmi 4jcraft-dev --force
 ```
 
 ### Configure & Build
