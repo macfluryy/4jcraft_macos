@@ -42,10 +42,37 @@ private:
 
     S32 m_tileOriginX, m_tileOriginY;
 
+    enum EFont {
+        eFont_NotLoaded = 0,
+
+        eFont_Bitmap,
+        eFont_Japanese,
+        eFont_SimpChinese,
+        eFont_TradChinese,
+        eFont_Korean,
+
+    };
+
+    // 4J-JEV: It's important that currentFont == targetFont, unless
+    // updateCurrentLanguage is going to be called.
+    EFont m_eCurrentFont, m_eTargetFont;
+
+    // 4J-JEV: Behaves like navigateToHome when not ingame. When in-game, it
+    // closes all player scenes instead.
+    bool m_bCleanupOnReload;
+
+    EFont getFontForLanguage(int language);
+    UITTFFont* createFont(EFont fontLanguage);
+
     UIAbstractBitmapFont* m_mcBitmapFont;
     UITTFFont* m_mcTTFFont;
     UIBitmapFont *m_moj7, *m_moj11;
 
+public:
+    void setCleanupOnReload();
+    void updateCurrentFont();
+
+private:
     // 4J-PB - ui element type for PSVita touch control
 #ifdef __PSVITA__
 
@@ -123,7 +150,7 @@ private:
 
     typedef struct _CachedMovieData {
         byteArray m_ba;
-        __int64 m_expiry;
+        int64_t m_expiry;
     } CachedMovieData;
     std::unordered_map<std::wstring, CachedMovieData> m_cachedMovieData;
 
@@ -140,6 +167,7 @@ private:
     C4JThread* m_reloadSkinThread;
     bool m_navigateToHomeOnReload;
     int m_accumulatedTicks;
+    uint64_t m_lastUiSfx;  // Tracks time (ms) of last UI sound effect
 
     D3D11_RECT m_customRenderingClearRect;
 
@@ -192,6 +220,8 @@ protected:
 public:
     CRITICAL_SECTION m_Allocatorlock;
     void SetupFont();
+    bool PendingFontChange();
+    bool UsingBitmapFont();
 
 public:
     // TICKING
@@ -339,7 +369,8 @@ public:
     virtual void SetTooltips(unsigned int iPad, int iA, int iB = -1,
                              int iX = -1, int iY = -1, int iLT = -1,
                              int iRT = -1, int iLB = -1, int iRB = -1,
-                             int iLS = -1, bool forceUpdate = false);
+                             int iLS = -1, int iRS = -1, int iBack = -1,
+                             bool forceUpdate = false);
     virtual void EnableTooltip(unsigned int iPad, unsigned int tooltip,
                                bool enable);
     virtual void RefreshTooltips(unsigned int iPad);
@@ -387,26 +418,25 @@ public:
     virtual void HidePressStart();
     void ClearPressStart();
 
-    // 4J Stu - Only because of the different StringTable type, should really
-    // fix the libraries
-#ifndef __PS3__
-    virtual C4JStorage::EMessageResult RequestMessageBox(
-        unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
-        unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
-        int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
-        void* lpParam = NULL, C4JStringTable* pStringTable = NULL,
-        wchar_t* pwchFormatString = NULL, unsigned int dwFocusButton = 0,
-        bool bIsError = true);
-#else
-    virtual C4JStorage::EMessageResult RequestMessageBox(
-        unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
-        unsigned int uiOptionC, unsigned int dwPad = XUSER_INDEX_ANY,
-        int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
-        void* lpParam = NULL, StringTable* pStringTable = NULL,
-        wchar_t* pwchFormatString = NULL, unsigned int dwFocusButton = 0,
-        bool bIsError = true);
-#endif
+    virtual C4JStorage::EMessageResult RequestAlertMessage(
+        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
+        DWORD dwPad = XUSER_INDEX_ANY,
+        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = NULL,
+        LPVOID lpParam = NULL, WCHAR* pwchFormatString = NULL);
+    virtual C4JStorage::EMessageResult RequestErrorMessage(
+        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
+        DWORD dwPad = XUSER_INDEX_ANY,
+        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = NULL,
+        LPVOID lpParam = NULL, WCHAR* pwchFormatString = NULL);
 
+private:
+    virtual C4JStorage::EMessageResult RequestMessageBox(
+        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
+        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult),
+        LPVOID lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
+        bool bIsError);
+
+public:
     C4JStorage::EMessageResult RequestUGCMessageBox(
         int title = -1, int message = -1, int iPad = -1,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,

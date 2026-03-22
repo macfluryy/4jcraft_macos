@@ -123,7 +123,7 @@ extern "C" void* __real_malloc(size_t t);
 extern "C" void __real_free(void* t);
 #endif
 
-__int64 UIController::iggyAllocCount = 0;
+int64_t UIController::iggyAllocCount = 0;
 static std::unordered_map<void*, size_t> allocations;
 static void* RADLINK AllocateFunction(void* alloc_callback_user_data,
                                       size_t size_requested,
@@ -164,10 +164,17 @@ static void RADLINK DeallocateFunction(void* alloc_callback_user_data,
 UIController::UIController() {
     m_uiDebugConsole = NULL;
     m_reloadSkinThread = NULL;
+
     m_navigateToHomeOnReload = false;
+
+    m_bCleanupOnReload = false;
     m_mcTTFFont = NULL;
     m_moj7 = NULL;
     m_moj11 = NULL;
+
+    // 4J-JEV: It's important that these remain the same, unless
+    // updateCurrentLanguage is going to be called.
+    m_eCurrentFont = m_eTargetFont = eFont_NotLoaded;
 
 #ifdef ENABLE_IGGY_ALLOCATOR
     InitializeCriticalSection(&m_Allocatorlock);
@@ -210,6 +217,7 @@ UIController::UIController() {
     m_bCustomRenderPosition = false;
     m_winUserIndex = 0;
     m_accumulatedTicks = 0;
+    m_lastUiSfx = 0;
 
     InitializeCriticalSection(&m_navigationLock);
     InitializeCriticalSection(&m_registeredCallbackScenesCS);
@@ -300,79 +308,163 @@ void UIController::postInit() {
     NavigateToScene(0, eUIScene_Intro);
 }
 
-void UIController::SetupFont() {
-    bool bBitmapFont = false;
-
-    if (m_mcTTFFont != NULL) {
-        delete m_mcTTFFont;
-    }
-
-    switch (XGetLanguage()) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+UIController::EFont UIController::getFontForLanguage(int language) {
+    switch (language) {
         case XC_LANGUAGE_JAPANESE:
-            m_mcTTFFont = new UITTFFont(
-                "Common/Media/font/JPN/DF-DotDotGothic16.ttf", 0x203B);  // JPN
-            break;
-        case XC_LANGUAGE_SCHINESE:  // TODO
-        case XC_LANGUAGE_TCHINESE:
-            m_mcTTFFont = new UITTFFont("Common/Media/font/CHT/DFTT_R5.TTC",
-                                        0x203B);  // CHT
-            break;
-        case XC_LANGUAGE_KOREAN:
-            m_mcTTFFont = new UITTFFont("Common/Media/font/KOR/candadite2.ttf",
-                                        0x203B);  // KOR
-            break;
-            // 4J-JEV, Cyrillic characters have been added to this font now,
-            // (4/July/14)
-            // case XC_LANGUAGE_RUSSIAN:
-            // case XC_LANGUAGE_GREEK:
-#else
-        case XC_LANGUAGE_JAPANESE:
-            m_mcTTFFont = new UITTFFont(
-                "Common/Media/font/JPN/DFGMaruGothic-Md.ttf", 0x2022);  // JPN
-            break;
-        case XC_LANGUAGE_SCHINESE:  // TODO
-        case XC_LANGUAGE_TCHINESE:
-            m_mcTTFFont = new UITTFFont(
-                "Common/Media/font/CHT/DFHeiMedium-B5.ttf", 0x2022);  // CHT
-            break;
-        case XC_LANGUAGE_KOREAN:
-            m_mcTTFFont = new UITTFFont("Common/Media/font/KOR/BOKMSD.ttf",
-                                        0x2022);  // KOR
-            break;
+            return eFont_Japanese;
+#ifdef _DURANGO
+        case XC_LANGUAGE_SCHINESE:
+            return eFont_SimpChinese;
 #endif
+        case XC_LANGUAGE_TCHINESE:
+            return eFont_TradChinese;
+        case XC_LANGUAGE_KOREAN:
+            return eFont_Korean;
         default:
-            bBitmapFont = true;
-            // m_mcTTFFont = new UITTFFont("Common/Media/font/Mojangles.ttf",
-            // 0x2022); // 4J-JEV: Shouldn't be using this.
-            break;
-    }
-
-    if (bBitmapFont) {
-        // these may have been set up by a previous language being chosen
-        if (m_moj7 == NULL) {
-            m_moj7 = new UIBitmapFont(SFontData::Mojangles_7);
-            m_moj7->registerFont();
-        }
-        if (m_moj11 == NULL) {
-            m_moj11 = new UIBitmapFont(SFontData::Mojangles_11);
-            m_moj11->registerFont();
-        }
-    } else {
-        app.DebugPrintf("IggyFontSetIndirectUTF8\n");
-        IggyFontSetIndirectUTF8("Mojangles7", -1, IGGY_FONTFLAG_all,
-                                "Mojangles_TTF", -1, IGGY_FONTFLAG_none);
-        IggyFontSetIndirectUTF8("Mojangles11", -1, IGGY_FONTFLAG_all,
-                                "Mojangles_TTF", -1, IGGY_FONTFLAG_none);
+            return eFont_Bitmap;
     }
 }
 
+UITTFFont* UIController::createFont(EFont fontLanguage) {
+    switch (fontLanguage) {
+#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+        case eFont_Japanese:
+            return new UITTFFont("Mojangles_TTF_jaJP",
+                                 "Common/Media/font/JPN/DF-DotDotGothic16.ttf",
+                                 0x203B);  // JPN
+        // case eFont_SimpChinese:	Simplified Chinese is unsupported.
+        case eFont_TradChinese:
+            return new UITTFFont("Mojangles_TTF_cnTD",
+                                 "Common/Media/font/CHT/DFTT_R5.TTC",
+                                 0x203B);  // CHT
+        case eFont_Korean:
+            return new UITTFFont("Mojangles_TTF_koKR",
+                                 "Common/Media/font/KOR/candadite2.ttf",
+                                 0x203B);  // KOR
+#else
+        case eFont_Japanese:
+            return new UITTFFont("Mojangles_TTF_jaJP",
+                                 "Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
+                                 0x2022);  // JPN
+#ifdef _DURANGO
+        case eFont_SimpChinese:
+            return new UITTFFont("Mojangled_TTF_cnCN",
+                                 "Common/Media/font/CHS/MSYH.ttf",
+                                 0x2022);  // CHS
+#endif
+        case eFont_TradChinese:
+            return new UITTFFont("Mojangles_TTF_cnTD",
+                                 "Common/Media/font/CHT/DFHeiMedium-B5.ttf",
+                                 0x2022);  // CHT
+        case eFont_Korean:
+            return new UITTFFont("Mojangles_TTF_koKR",
+                                 "Common/Media/font/KOR/BOKMSD.ttf",
+                                 0x2022);  // KOR
+#endif
+        // 4J-JEV, Cyrillic characters have been added to this font now,
+        // (4/July/14) XC_LANGUAGE_RUSSIAN and XC_LANGUAGE_GREEK:
+        default:
+            return NULL;
+    }
+}
+
+void UIController::SetupFont() {
+    // 4J-JEV: Language hasn't changed or is already changing.
+    if ((m_eCurrentFont != m_eTargetFont) || !UIString::setCurrentLanguage())
+        return;
+
+    DWORD nextLanguage = UIString::getCurrentLanguage();
+    m_eTargetFont = getFontForLanguage(nextLanguage);
+
+    // flag a language change to reload the string tables in the DLC
+    app.m_dlcManager.LanguageChanged();
+
+    app.loadStringTable();  // Switch to use new string table,
+
+    if (m_eTargetFont == m_eCurrentFont) {
+        // 4J-JEV: If we're ingame, reload the font to update all the text.
+        if (app.GetGameStarted())
+            app.SetAction(ProfileManager.GetPrimaryPad(),
+                          eAppAction_ReloadFont);
+        return;
+    }
+
+    if (m_eCurrentFont != eFont_NotLoaded)
+        app.DebugPrintf(
+            "[UIController] Font switch required for language transition to "
+            "%i.\n",
+            nextLanguage);
+    else
+        app.DebugPrintf("[UIController] Initialising font for language %i.\n",
+                        nextLanguage);
+
+    if (m_mcTTFFont != NULL) {
+        delete m_mcTTFFont;
+        m_mcTTFFont = NULL;
+    }
+
+    if (m_eTargetFont == eFont_Bitmap) {
+        // these may have been set up by a previous language being chosen
+        if (m_moj7 == NULL) m_moj7 = new UIBitmapFont(SFontData::Mojangles_7);
+        if (m_moj11 == NULL)
+            m_moj11 = new UIBitmapFont(SFontData::Mojangles_11);
+
+        // 4J-JEV: Ensure we redirect to them correctly, even if the objects
+        // were previously initialised.
+        m_moj7->registerFont();
+        m_moj11->registerFont();
+    } else if (m_eTargetFont != eFont_NotLoaded) {
+        m_mcTTFFont = createFont(m_eTargetFont);
+
+        app.DebugPrintf("[Iggy] Set font indirect to '%hs'.\n",
+                        m_mcTTFFont->getFontName().c_str());
+        IggyFontSetIndirectUTF8("Mojangles7", -1, IGGY_FONTFLAG_all,
+                                m_mcTTFFont->getFontName().c_str(), -1,
+                                IGGY_FONTFLAG_none);
+        IggyFontSetIndirectUTF8("Mojangles11", -1, IGGY_FONTFLAG_all,
+                                m_mcTTFFont->getFontName().c_str(), -1,
+                                IGGY_FONTFLAG_none);
+    } else {
+        assert(false);
+    }
+
+    // Reload ui to set new font.
+    if (m_eCurrentFont != eFont_NotLoaded) {
+        app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ReloadFont);
+    } else {
+        updateCurrentFont();
+    }
+}
+
+bool UIController::PendingFontChange() {
+    return getFontForLanguage(XGetLanguage()) != m_eCurrentFont;
+}
+
+void UIController::setCleanupOnReload() { m_bCleanupOnReload = true; }
+
+void UIController::updateCurrentFont() { m_eCurrentFont = m_eTargetFont; }
+
+bool UIController::UsingBitmapFont() { return m_eCurrentFont == eFont_Bitmap; }
+
 // TICKING
 void UIController::tick() {
-    if (m_navigateToHomeOnReload && !ui.IsReloadingSkin()) {
+    SetupFont();  // If necessary, change font.
+
+    if ((m_navigateToHomeOnReload || m_bCleanupOnReload) &&
+        !ui.IsReloadingSkin()) {
         ui.CleanUpSkinReload();
+
+        if (m_navigateToHomeOnReload || !g_NetworkManager.IsInSession()) {
+            ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
+                               eUIScene_MainMenu);
+        } else {
+            ui.CloseAllPlayersScenes();
+        }
+
+        updateCurrentFont();
+
         m_navigateToHomeOnReload = false;
-        ui.NavigateToScene(ProfileManager.GetPrimaryPad(), eUIScene_MainMenu);
+        m_bCleanupOnReload = false;
     }
 
     for (unsigned int i = 0; i < eUIGroup_COUNT; ++i) {
@@ -392,11 +484,8 @@ void UIController::tick() {
         // TODO: May wish to skip ticking other groups here
     }
 
-    // Fix for HUD ticks so that they all tick before this reference is cleared
-    EnderDragonRenderer::bossInstance = nullptr;
-
     // Clear out the cached movie file data
-    __int64 currentTime = System::currentTimeMillis();
+    int64_t currentTime = System::currentTimeMillis();
     for (AUTO_VAR(it, m_cachedMovieData.begin());
          it != m_cachedMovieData.end();) {
         if (it->second.m_expiry < currentTime) {
@@ -520,9 +609,10 @@ void UIController::loadSkins() {
 IggyLibrary UIController::loadSkin(const std::wstring& skinPath,
                                    const std::wstring& skinName) {
     IggyLibrary lib = IGGY_INVALID_LIBRARY;
+    // 4J Stu - We need to load the platformskin before the normal skin, as the
+    // normal skin requires some elements from the platform skin
     if (!skinPath.empty() && app.hasArchiveFile(skinPath)) {
         byteArray baFile = app.getArchiveFile(skinPath);
-
         const std::u16string convSkinName = convWstringToU16string(skinName);
 
         lib = IggyLibraryCreateFromMemoryUTF16(
@@ -533,7 +623,7 @@ IggyLibrary UIController::loadSkin(const std::wstring& skinPath,
         IggyMemoryUseInfo memoryInfo;
         rrbool res;
         int iteration = 0;
-        __int64 totalStatic = 0;
+        int64_t totalStatic = 0;
         while ((res = IggyDebugGetMemoryUseInfo(NULL, lib, "", 0, iteration,
                                                 &memoryInfo))) {
             totalStatic += memoryInfo.static_allocation_bytes;
@@ -572,14 +662,15 @@ void UIController::ReloadSkin() {
     // in detail, so a quick fix
     reloadSkinThreadProc(this);
 #else
-    // Navigate to the timer scene so that we can display something while the
-    // loading is happening
-    ui.NavigateToScene(0, eUIScene_Timer, (void*)1, eUILayer_Tooltips,
-                       eUIGroup_Fullscreen);
 
     m_reloadSkinThread =
         new C4JThread(reloadSkinThreadProc, (void*)this, "Reload skin thread");
     m_reloadSkinThread->SetProcessor(CPU_CORE_UI_SCENE);
+
+    // Navigate to the timer scene so that we can display something while the
+    // loading is happening
+    ui.NavigateToScene(0, eUIScene_Timer, (void*)1, eUILayer_Tooltips,
+                       eUIGroup_Fullscreen);
     // m_reloadSkinThread->Run();
 
     //// Load new skin
@@ -634,7 +725,7 @@ bool UIController::IsReloadingSkin() {
 bool UIController::IsExpectingOrReloadingSkin() {
     return Minecraft::GetInstance()->skins->getSelected()->isLoadingData() ||
            Minecraft::GetInstance()->skins->needsUIUpdate() ||
-           IsReloadingSkin();
+           IsReloadingSkin() || PendingFontChange();
 }
 
 void UIController::CleanUpSkinReload() {
@@ -667,7 +758,7 @@ void UIController::CleanUpSkinReload() {
 
 byteArray UIController::getMovieData(const std::wstring& filename) {
     // Cache everything we load in the current tick
-    __int64 targetTime = System::currentTimeMillis() + (1000LL * 60);
+    int64_t targetTime = System::currentTimeMillis() + (1000LL * 60);
     AUTO_VAR(it, m_cachedMovieData.find(filename));
     if (it == m_cachedMovieData.end()) {
         byteArray baFile = app.getArchiveFile(filename);
@@ -976,8 +1067,8 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
 		//!(app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_ToggleFont)) &&
 		key == ACTION_MENU_STICK_PRESS)
 	{
-		__int64 totalStatic = 0;
-		__int64 totalDynamic = 0;
+		int64_t totalStatic = 0;
+		int64_t totalDynamic = 0;
 		app.DebugPrintf(app.USER_SR, "********************************\n");
 		app.DebugPrintf(app.USER_SR, "BEGIN TOTAL SWF MEMORY USAGE\n\n");
 		for(unsigned int i = 0; i < eUIGroup_COUNT; ++i)
@@ -986,8 +1077,8 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
 		}
 		for(unsigned int i = 0; i < eLibrary_Count; ++i)
 		{
-			__int64 libraryStatic = 0;
-			__int64 libraryDynamic = 0;
+			int64_t libraryStatic = 0;
+			int64_t libraryDynamic = 0;
 
 			if(m_iggyLibraries[i] != IGGY_INVALID_LIBRARY)
 			{
@@ -1134,6 +1225,8 @@ void UIController::getRenderDimensions(C4JRender::eViewportType viewport,
         case C4JRender::VIEWPORT_TYPE_QUADRANT_BOTTOM_RIGHT:
             width = (S32)(getScreenWidth() / 2);
             height = (S32)(getScreenHeight() / 2);
+            break;
+        default:
             break;
     }
 }
@@ -1441,6 +1534,18 @@ void UIController::unregisterSubstitutionTexture(
 // NAVIGATION
 bool UIController::NavigateToScene(int iPad, EUIScene scene, void* initData,
                                    EUILayer layer, EUIGroup group) {
+    static bool bSeenUpdateTextThisSession = false;
+    // If you're navigating to the multigamejoinload, and the player hasn't seen
+    // the updates message yet, display it now display this message the first 3
+    // times
+    if ((scene == eUIScene_LoadOrJoinMenu) &&
+        (bSeenUpdateTextThisSession == false) &&
+        (app.GetGameSettings(ProfileManager.GetPrimaryPad(),
+                             eGameSetting_DisplayUpdateMessage) != 0)) {
+        scene = eUIScene_NewUpdateMessage;
+        bSeenUpdateTextThisSession = true;
+    }
+
     // if you're trying to navigate to the inventory,the crafting, pause or game
     // info or any of the trigger scenes and there's already a menu up (because
     // you were pressing a few buttons at the same time) then ignore the
@@ -1462,6 +1567,8 @@ bool UIController::NavigateToScene(int iPad, EUIScene scene, void* initData,
             case eUIScene_BrewingStandMenu:
             case eUIScene_AnvilMenu:
             case eUIScene_TradingMenu:
+            case eUIScene_BeaconMenu:
+            case eUIScene_HorseMenu:
                 app.DebugPrintf(
                     "IGNORING NAVIGATE - we're trying to navigate to a user "
                     "selected scene when there's already a scene up: pad:%d, "
@@ -1929,7 +2036,7 @@ void UIController::ShowTooltip(unsigned int iPad, unsigned int tooltip,
 
 void UIController::SetTooltips(unsigned int iPad, int iA, int iB, int iX,
                                int iY, int iLT, int iRT, int iLB, int iRB,
-                               int iLS, bool forceUpdate) {
+                               int iLS, int iRS, int iBack, bool forceUpdate) {
     EUIGroup group;
 
     // 4J-PB - strip out any that are not applicable on the platform
@@ -1956,7 +2063,7 @@ void UIController::SetTooltips(unsigned int iPad, int iA, int iB, int iX,
     }
     if (m_groups[(int)group]->getTooltips())
         m_groups[(int)group]->getTooltips()->SetTooltips(
-            iA, iB, iX, iY, iLT, iRT, iLB, iRB, iLS, forceUpdate);
+            iA, iB, iX, iY, iLT, iRT, iLB, iRB, iLS, iRS, iBack, forceUpdate);
 }
 
 void UIController::EnableTooltip(unsigned int iPad, unsigned int tooltip,
@@ -2023,6 +2130,16 @@ void UIController::OverrideSFX(int iPad, int iAction, bool bVal) {
 }
 
 void UIController::PlayUISFX(ESoundEffect eSound) {
+    uint64_t time = System::currentTimeMillis();
+
+    // Don't play multiple SFX on the same tick
+    // (prevents horrible sounds when programmatically setting multiple
+    // checkboxes)
+    if (time - m_lastUiSfx < 10) {
+        return;
+    }
+    m_lastUiSfx = time;
+
     Minecraft::GetInstance()->soundEngine->playUI(eSound, 1.0f, 1.0f);
 }
 
@@ -2108,8 +2225,12 @@ void UIController::HandleTMSBanFileRetrieved(int iPad) {
 }
 
 void UIController::HandleInventoryUpdated(int iPad) {
-    app.DebugPrintf(app.USER_SR,
-                    "UIController::HandleInventoryUpdated not implemented\n");
+    EUIGroup group = eUIGroup_Fullscreen;
+    if (app.GetGameStarted() && (iPad != 255) && (iPad >= 0)) {
+        group = (EUIGroup)(iPad + 1);
+    }
+
+    m_groups[group]->HandleMessage(eUIMessage_InventoryUpdated, NULL);
 }
 
 void UIController::HandleGameTick() {
@@ -2160,16 +2281,10 @@ void UIController::SetTutorialDescription(int iPad, TutorialPopupInfo* info) {
 #ifndef _XBOX
 void UIController::RemoveInteractSceneReference(int iPad, UIScene* scene) {
     EUIGroup group;
-    if (app.GetGameStarted()) {
-        // If the game isn't running treat as user 0, otherwise map index
-        // directly from pad
-        if ((iPad != 255) && (iPad >= 0))
-            group = (EUIGroup)(iPad + 1);
-        else
-            group = eUIGroup_Fullscreen;
-    } else {
+    if ((iPad != 255) && (iPad >= 0))
+        group = (EUIGroup)(iPad + 1);
+    else
         group = eUIGroup_Fullscreen;
-    }
     if (m_groups[(int)group]->getTutorialPopup())
         m_groups[(int)group]->getTutorialPopup()->RemoveInteractSceneReference(
             scene);
@@ -2422,23 +2537,30 @@ void UIController::HidePressStart() {
 
 void UIController::ClearPressStart() { m_iPressStartQuadrantsMask = 0; }
 
-// 4J Stu - For the different StringTable classes. Should really fix the
-// libraries.
-#ifndef __PS3__
+C4JStorage::EMessageResult UIController::RequestAlertMessage(
+    unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+    unsigned int uiOptionC, unsigned int dwPad,
+    int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
+    wchar_t* pwchFormatString) {
+    return RequestMessageBox(uiTitle, uiText, uiOptionA, uiOptionC, dwPad, Func,
+                             lpParam, pwchFormatString, 0, false);
+}
+
+C4JStorage::EMessageResult UIController::RequestErrorMessage(
+    unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
+    unsigned int uiOptionC, unsigned int dwPad,
+    int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
+    wchar_t* pwchFormatString) {
+    return RequestMessageBox(uiTitle, uiText, uiOptionA, uiOptionC, dwPad, Func,
+                             lpParam, pwchFormatString, 0, true);
+}
+
 C4JStorage::EMessageResult UIController::RequestMessageBox(
     unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
     unsigned int uiOptionC, unsigned int dwPad,
     int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
-    C4JStringTable* pStringTable, wchar_t* pwchFormatString,
-    unsigned int dwFocusButton, bool bIsError)
-#else
-C4JStorage::EMessageResult UIController::RequestMessageBox(
-    unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
-    unsigned int uiOptionC, unsigned int dwPad,
-    int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
-    StringTable* pStringTable, wchar_t* pwchFormatString,
-    unsigned int dwFocusButton, bool bIsError)
-#endif
+    wchar_t* pwchFormatString, unsigned int dwFocusButton, bool bIsError)
+
 {
     MessageBoxInfo param;
     param.uiTitle = uiTitle;
@@ -2507,14 +2629,13 @@ C4JStorage::EMessageResult UIController::RequestUGCMessageBox(
         SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, iPad);
     unsigned int uiIDA[1];
     uiIDA[0] = IDS_CONFIRM_OK;
-    return ui.RequestMessageBox(title, IDS_CHAT_RESTRICTION_UGC, uiIDA, 1, iPad,
-                                Func, lpParam, app.GetStringTable(), NULL, 0,
-                                false);
+    return ui.RequestAlertMessage(title, IDS_CHAT_RESTRICTION_UGC, uiIDA, 1,
+                                  iPad, Func, lpParam);
 #else
     unsigned int uiIDA[1];
     uiIDA[0] = IDS_CONFIRM_OK;
-    return ui.RequestMessageBox(title, message, uiIDA, 1, iPad, Func, lpParam,
-                                app.GetStringTable(), NULL, 0, false);
+    return ui.RequestAlertMessage(title, message, uiIDA, 1, iPad, Func,
+                                  lpParam);
 #endif
 }
 
@@ -2529,6 +2650,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(
 
     if (message == -1) {
 #if defined(_XBOX_ONE) || defined(_WINDOWS64) || defined(__linux__)
+        // IDS_CONTENT_RESTRICTION doesn't exist on XB1
         message = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE;
 #else
         message = IDS_CONTENT_RESTRICTION;
@@ -2550,8 +2672,8 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(
 #else
     unsigned int uiIDA[1];
     uiIDA[0] = IDS_CONFIRM_OK;
-    return ui.RequestMessageBox(title, message, uiIDA, 1, iPad, Func, lpParam,
-                                app.GetStringTable(), NULL, 0, false);
+    return ui.RequestAlertMessage(title, message, uiIDA, 1, iPad, Func,
+                                  lpParam);
 #endif
 }
 
@@ -2704,12 +2826,14 @@ void UIController::TouchBoxRebuild(UIScene* pUIScene) {
             control->getControlType() == UIControl::eHTMLLabel ||
             control->getControlType() == UIControl::eLeaderboardList ||
             control->getControlType() == UIControl::eTouchControl) {
-            // 4J-TomK update the control (it might have been moved by flash /
-            // AS)
-            control->UpdateControl();
+            if (control->getVisible()) {
+                // 4J-TomK update the control (it might have been moved by flash
+                // / AS)
+                control->UpdateControl();
 
-            ui.TouchBoxAdd(control, eUIGroup, eUILayer, eUIscene,
-                           pUIScene->GetMainPanel());
+                ui.TouchBoxAdd(control, eUIGroup, eUILayer, eUIscene,
+                               pUIScene->GetMainPanel());
+            }
         }
     }
 }
@@ -3013,7 +3137,9 @@ void UIController::HandleTouchInput(unsigned int iPad, unsigned int key,
                         m_HighlightedUIElement->pControl) {
                     UIControl_CheckBox* pCheckbox =
                         (UIControl_CheckBox*)m_ActiveUIElement->pControl;
-                    pCheckbox->TouchSetCheckbox(!pCheckbox->IsChecked());
+                    if (pCheckbox->IsEnabled())  // only proceed if checkbox is
+                                                 // enabled!
+                        pCheckbox->TouchSetCheckbox(!pCheckbox->IsChecked());
                 }
                 bReleased = false;
                 break;
