@@ -1,5 +1,7 @@
 #pragma once
 #include "../../Minecraft.World/Containers/MerchantMenu.h"
+#include "../Minecraft.World/Util/HtmlString.h"
+#include "../Minecraft.World/Util/Rarity.h"
 
 class MerchantRecipe;
 
