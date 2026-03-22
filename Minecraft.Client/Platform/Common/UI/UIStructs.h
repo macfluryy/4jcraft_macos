@@ -5,6 +5,7 @@
 #include <cstdint>
 
 #include "UIEnums.h"
+#include "../App_Defines.h"
 
 class Container;
 class Inventory;
@@ -253,54 +254,79 @@ typedef struct _JoinMenuInitData {
 
 // More Options
 typedef struct _LaunchMoreOptionsMenuInitData {
-    bool bOnlineGame = true;
-    bool bInviteOnly = false;
-    bool bAllowFriendsOfFriends = true;
+    bool bOnlineGame;
+    bool bInviteOnly;
+    bool bAllowFriendsOfFriends;
 
-    bool bGenerateOptions = false;
-    bool bStructures = false;
-    bool bFlatWorld = false;
-    bool bBonusChest = false;
+    bool bGenerateOptions;
+    bool bStructures;
+    bool bFlatWorld;
+    bool bBonusChest;
 
-    bool bPVP = true;
-    bool bTrust = false;
-    bool bFireSpreads = true;
-    bool bTNT = true;
+    bool bPVP;
+    bool bTrust;
+    bool bFireSpreads;
+    bool bTNT;
 
-    bool bHostPrivileges = false;
-    bool bResetNether = false;
+    bool bHostPrivileges;
+    bool bResetNether;
 
-    bool bOnlineSettingChangedBySystem = false;
+    bool bMobGriefing;
+    bool bKeepInventory;
+    bool bDoMobSpawning;
+    bool bDoMobLoot;
+    bool bDoTileDrops;
+    bool bNaturalRegeneration;
+    bool bDoDaylightCycle;
 
-    bool bDoMobSpawning = false;
-    bool bDoDaylightCycle = false;
-    int iPad = -1;
+    bool bOnlineSettingChangedBySystem;
 
-    std::uint32_t dwTexturePack = 0;
+    int iPad;
 
-    std::wstring seed = L"";
-    int worldSize = 3;
-    bool bDisableSaving = false;
+    DWORD dwTexturePack;
+
+    std::wstring seed;
+    int worldSize;
+    bool bDisableSaving;
 
     EGameHostOptionWorldSize currentWorldSize;
     EGameHostOptionWorldSize newWorldSize;
+    bool newWorldSizeOverwriteEdges;
 
     _LaunchMoreOptionsMenuInitData() {
-        memset(this, 0, sizeof(_LaunchMoreOptionsMenuInitData));
         bOnlineGame = true;
+        bInviteOnly = false;
         bAllowFriendsOfFriends = true;
+        bGenerateOptions = false;
+        bStructures = false;
+        bFlatWorld = false;
+        bBonusChest = false;
         bPVP = true;
+        bTrust = false;
         bFireSpreads = true;
-        worldSize = 3;
-        seed = L"";
-        bDisableSaving = false;
-        newWorldSize = e_worldSize_Unknown;
-        newWorldSizeOverwriteEdges = false;
+        bTNT = false;
+        bHostPrivileges = false;
+        bResetNether = false;
         bMobGriefing = true;
+        bKeepInventory = false;
+        bDoMobSpawning = false;
         bDoMobLoot = true;
         bDoTileDrops = true;
         bNaturalRegeneration = true;
         bDoDaylightCycle = true;
+        bOnlineSettingChangedBySystem = false;
+
+        iPad = 0;
+
+        dwTexturePack = 0;
+
+        worldSize = 3;
+        seed = L"";
+        bDisableSaving = false;
+
+        currentWorldSize = e_worldSize_Unknown;
+        newWorldSize = e_worldSize_Unknown;
+        newWorldSizeOverwriteEdges = false;
     }
 } LaunchMoreOptionsMenuInitData;
 
