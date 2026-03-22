@@ -288,6 +288,8 @@ bool Connection::writeTick() {
             Packet::writePacket(packet, bufferedDos);
         }
 
+#endif
+
 #ifndef _CONTENT_PACKAGE
         // 4J Added for debugging
         if (!socket->isLocal()) {

@@ -76,10 +76,6 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       y(y),
       prerequisite(prerequisite) {}
 
-int Achievement::getAchievementID() {
-    return id - Achievements::ACHIEVEMENT_OFFSET;
-}
-
 /**
  * @brief Marks the achievement as locally awarded only.
  * @return self

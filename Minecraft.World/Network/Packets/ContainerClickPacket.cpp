@@ -51,7 +51,7 @@ void ContainerClickPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeShort(slotNum);
     dos->writeByte((uint8_t)buttonNum);
     dos->writeShort(uid);
-    dos->writeBoolean(quickKey);
+    dos->writeBoolean(clickType);
 
     writeItem(item, dos);
 }
