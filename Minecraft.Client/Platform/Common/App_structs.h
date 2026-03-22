@@ -101,6 +101,10 @@ typedef struct {
 
             // PS3 1.05 - Adding Greek, so need a language
             unsigned char ucLanguage;
+
+            // 29/Oct/2014 - Language selector.
+            unsigned char ucLocale;
+
             // 4J Stu - See comment for GAME_SETTINGS_PROFILE_DATA_BYTES below
             // was 192
             // unsigned char
