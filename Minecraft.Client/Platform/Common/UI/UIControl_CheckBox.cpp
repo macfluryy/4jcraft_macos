@@ -19,12 +19,12 @@ bool UIControl_CheckBox::setupControl(UIScene* scene, IggyValuePath* parent,
     return success;
 }
 
-void UIControl_CheckBox::init(const std::wstring& label, int id, bool checked) {
+void UIControl_CheckBox::init(UIString label, int id, bool checked) {
     m_label = label;
     m_id = id;
     m_bChecked = checked;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = convWstringToU16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[3];

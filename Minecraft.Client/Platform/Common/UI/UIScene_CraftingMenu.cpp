@@ -429,7 +429,8 @@ void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     float alpha = 1.0f;
     bool decorations = true;
     bool inventoryItem = false;
-    swscanf((wchar_t*)region->name, L"slot_%d", &slotId);
+    int slotId = parseSlotId(region->name);
+
     if (slotId == -1) {
         app.DebugPrintf("This is not the control we are looking for\n");
     } else if (slotId >= CRAFTING_INVENTORY_SLOT_START &&

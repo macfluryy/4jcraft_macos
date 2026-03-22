@@ -1,6 +1,7 @@
 #include "../../stdafx.h"
 #include "UI.h"
 #include "UIControl_TextInput.h"
+#include "../../../Minecraft.World/Util/StringHelpers.h"
 
 UIControl_TextInput::UIControl_TextInput() { m_bHasFocus = false; }
 
@@ -21,7 +22,7 @@ void UIControl_TextInput::init(UIString label, int id) {
     m_label = label;
     m_id = id;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = convWstringToU16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[2];

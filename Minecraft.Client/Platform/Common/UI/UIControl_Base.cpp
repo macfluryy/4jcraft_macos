@@ -29,7 +29,7 @@ void UIControl_Base::tick() {
         // app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = convWstringToU16string(m_label);
+        const std::u16string convLabel = convWstringToU16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];

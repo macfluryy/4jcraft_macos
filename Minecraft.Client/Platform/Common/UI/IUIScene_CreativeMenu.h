@@ -63,6 +63,7 @@ public:
         unsigned int m_pages;
         unsigned int m_staticPerPage;
         unsigned int m_staticItems;
+        unsigned int m_debugItems;
 
     public:
         TabSpec(const wchar_t* icon, int descriptionId, int staticGroupsCount,
@@ -96,13 +97,14 @@ public:
         virtual void loopClick(int slotIndex, int buttonNum, bool quickKeyHeld,
                                std::shared_ptr<Player> player) {}  // do nothing
     }* itemPickerMenu;
-
-protected:
+    
+    // 4jcraft: changed these two from public to protected for the java UI
     static std::vector<std::shared_ptr<ItemInstance> >
         categoryGroups[eCreativeInventoryGroupsCount];
     // 4J JEV - Tabs
     static TabSpec** specs;
 
+public:
     bool m_bCarryingCreativeItem;
     int m_creativeSlotX, m_creativeSlotY, m_inventorySlotX, m_inventorySlotY;
 

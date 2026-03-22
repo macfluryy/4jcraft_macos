@@ -8,6 +8,9 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.enchantment.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
+#include "../../Minecraft.World/Util/JavaMath.h"
 
 // 4J JEV - Images for each tab.
 IUIScene_CreativeMenu::TabSpec** IUIScene_CreativeMenu::specs = NULL;

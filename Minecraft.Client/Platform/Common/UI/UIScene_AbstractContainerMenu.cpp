@@ -230,13 +230,13 @@ void UIScene_AbstractContainerMenu::customDraw(
         pMinecraft->localgameModes[m_iPad] == NULL)
         return;
 
+        int slotId = parseSlotId(region->name);
     std::shared_ptr<ItemInstance> item = nullptr;
     if (std::char_traits<char16_t>::compare(region->name, u"pointerIcon", 11) ==
         0) {
         m_cacheSlotRenders = false;
         item = pMinecraft->localplayers[m_iPad]->inventory->getCarried();
     } else {
-        int slotId = parseSlotId(region->name);
         if (slotId == -1) {
             app.DebugPrintf("This is not the control we are looking for\n");
         } else {

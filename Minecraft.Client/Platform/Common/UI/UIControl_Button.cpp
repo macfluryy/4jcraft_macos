@@ -19,7 +19,7 @@ void UIControl_Button::init(UIString label, int id) {
     m_label = label;
     m_id = id;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = convWstringToU16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[2];

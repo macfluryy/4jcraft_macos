@@ -29,7 +29,7 @@ void UIControl_Slider::init(UIString label, int id, int min, int max,
     m_max = max;
     m_current = current;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = convWstringToU16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[5];

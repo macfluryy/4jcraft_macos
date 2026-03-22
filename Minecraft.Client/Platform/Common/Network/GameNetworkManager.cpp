@@ -6,6 +6,7 @@
 #include "../../Minecraft.World/Util/ThreadName.h"
 #include "../../Minecraft.World/Entities/Entity.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+#include "../../Minecraft.World/Recipes/FireworksRecipe.h"
 #include "../../Minecraft.Client/Network/ClientConnection.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Player/User.h"

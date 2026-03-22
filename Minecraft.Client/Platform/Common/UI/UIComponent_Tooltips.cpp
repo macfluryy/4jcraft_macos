@@ -307,7 +307,7 @@ void UIComponent_Tooltips::_SetTooltip(unsigned int iToolTipId, UIString label,
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = iToolTipId;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = convWstringToU16string(label.getString());
 
     value[1].type = IGGY_DATATYPE_string_UTF16;
     IggyStringUTF16 stringVal;

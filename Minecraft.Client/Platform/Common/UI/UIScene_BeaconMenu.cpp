@@ -315,8 +315,7 @@ void UIScene_BeaconMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         return;
 
     std::shared_ptr<ItemInstance> item = nullptr;
-    int slotId = -1;
-    swscanf((wchar_t*)region->name, L"slot_%d", &slotId);
+    int slotId = parseSlotId(region->name);
 
     if (slotId >= 0 && slotId >= m_menu->getSize()) {
         int icon = slotId - m_menu->getSize();
