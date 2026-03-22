@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
-#include "../../Minecraft.h"
+#include "../../../../Minecraft.Client/Minecraft.h"
 #include "UIScene_HopperMenu.h"
 
 UIScene_HopperMenu::UIScene_HopperMenu(int iPad, void* _initData,
