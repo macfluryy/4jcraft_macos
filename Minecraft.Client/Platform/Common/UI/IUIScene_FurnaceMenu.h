@@ -7,9 +7,11 @@
 #define FURNACE_SCENE_FUEL_SLOT_UP_OFFSET 0
 #define FURNACE_SCENE_FUEL_SLOT_DOWN_OFFSET -3
 
-class IUIScene_FurnaceMenu : public virtual IUIScene_AbstractContainerMenu
-{
+class IUIScene_FurnaceMenu : public virtual IUIScene_AbstractContainerMenu {
 protected:
-	virtual ESceneSection GetSectionAndSlotInDirection( ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY );
-	int getSectionStartOffset(ESceneSection eSection);
+    virtual ESceneSection GetSectionAndSlotInDirection(ESceneSection eSection,
+                                                       ETapState eTapDirection,
+                                                       int* piTargetX,
+                                                       int* piTargetY);
+    int getSectionStartOffset(ESceneSection eSection);
 };

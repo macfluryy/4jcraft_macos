@@ -2,40 +2,40 @@
 
 #include "UIScene.h"
 
-class UIScene_EndPoem : public UIScene
-{
+class UIScene_EndPoem : public UIScene {
 private:
-	std::wstring noNoiseString;
-	std::wstring noiseString;
-	std::vector<int> m_noiseLengths;
-	bool m_bIgnoreInput;
-	int m_requestedLabel;
+    std::wstring noNoiseString;
+    std::wstring noiseString;
+    std::vector<int> m_noiseLengths;
+    bool m_bIgnoreInput;
+    int m_requestedLabel;
 
-	std::vector<std::wstring> m_paragraphs;
+    std::vector<std::wstring> m_paragraphs;
 
-	IggyName m_funcSetNextLabel;
-	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-		UI_MAP_NAME(m_funcSetNextLabel, L"SetNextLabel")
-	UI_END_MAP_ELEMENTS_AND_NAMES()
+    IggyName m_funcSetNextLabel;
+    UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
+    UI_MAP_NAME(m_funcSetNextLabel, L"SetNextLabel")
+    UI_END_MAP_ELEMENTS_AND_NAMES()
 
 public:
-	UIScene_EndPoem(int iPad, void *initData, UILayer *parentLayer);
+    UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer);
 
-	virtual EUIScene getSceneType() { return eUIScene_EndPoem;}
-	virtual void updateTooltips();
+    virtual EUIScene getSceneType() { return eUIScene_EndPoem; }
+    virtual void updateTooltips();
 
 protected:
-	virtual std::wstring getMoviePath();
+    virtual std::wstring getMoviePath();
 
 public:
-	virtual void tick();
+    virtual void tick();
 
-	// INPUT
-	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
-	virtual void handleDestroy();
+    // INPUT
+    virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
+                             bool released, bool& handled);
+    virtual void handleDestroy();
 
-	virtual void handleRequestMoreData(F64 startIndex, bool up);
+    virtual void handleRequestMoreData(F64 startIndex, bool up);
 
 private:
-	void updateNoise();
+    void updateNoise();
 };

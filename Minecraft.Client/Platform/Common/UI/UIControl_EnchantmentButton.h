@@ -2,54 +2,52 @@
 
 #include "UIControl_Button.h"
 
-class UIControl_EnchantmentButton : public UIControl_Button
-{
+class UIControl_EnchantmentButton : public UIControl_Button {
 private:
-	// Maps to values in AS
-	enum EState
-	{
-		eState_Inactive = 0,
-		eState_Active = 1,
-		eState_Selected = 2,
-	};
+    // Maps to values in AS
+    enum EState {
+        eState_Inactive = 0,
+        eState_Active = 1,
+        eState_Selected = 2,
+    };
 
-	EState m_lastState;
-	int m_lastCost;
-	int m_index;
-	std::wstring m_enchantmentString;
-	bool m_bHasFocus;
+    EState m_lastState;
+    int m_lastCost;
+    int m_index;
+    std::wstring m_enchantmentString;
+    bool m_bHasFocus;
 
-	IggyName m_funcChangeState;
+    IggyName m_funcChangeState;
 
-	unsigned int m_textColour, m_textFocusColour, m_textDisabledColour;
+    unsigned int m_textColour, m_textFocusColour, m_textDisabledColour;
 
-	class EnchantmentNames
-	{
-	public:
-		static EnchantmentNames instance;
+    class EnchantmentNames {
+    public:
+        static EnchantmentNames instance;
 
-	private:
-		Random random;
-		std::vector<std::wstring> words;
+    private:
+        Random random;
+        std::vector<std::wstring> words;
 
-		EnchantmentNames();
+        EnchantmentNames();
 
-	public:
-		std::wstring getRandomName();
-	};
+    public:
+        std::wstring getRandomName();
+    };
 
 public:
-	UIControl_EnchantmentButton();
+    UIControl_EnchantmentButton();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	virtual void tick();
+    virtual void tick();
 
-	void init(int index);
+    void init(int index);
 
-	void render(IggyCustomDrawCallbackRegion *region);
+    void render(IggyCustomDrawCallbackRegion* region);
 
-	void updateState();
+    void updateState();
 
-	virtual void setFocus(bool focus);
+    virtual void setFocus(bool focus);
 };

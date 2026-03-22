@@ -1,8 +1,9 @@
 #pragma once
 // 4J-PB - remove the inherits via dominance warnings
 
-//using namespace std;
-// A scene map directly to an Iggy movie (or more accurately a collection of different sized movies)
+// using namespace std;
+//  A scene map directly to an Iggy movie (or more accurately a collection of
+//  different sized movies)
 
 #include <cstdint>
 
@@ -15,260 +16,282 @@ class UILayer;
 // 4J Stu - Setup some defines for quickly mapping elements in the scene
 
 #define UI_BEGIN_MAP_ELEMENTS_AND_NAMES(parentClass) \
-	virtual bool mapElementsAndNames() \
-	{ \
-		parentClass::mapElementsAndNames(); \
-		IggyValuePath *currentRoot = IggyPlayerRootPath ( getMovie() );
+    virtual bool mapElementsAndNames() {             \
+        parentClass::mapElementsAndNames();          \
+        IggyValuePath* currentRoot = IggyPlayerRootPath(getMovie());
 
 #define UI_END_MAP_ELEMENTS_AND_NAMES() \
-		return true; \
-	}
+    return true;                        \
+    }
 
-#define UI_MAP_ELEMENT( var, name) \
-	{ var.setupControl(this, currentRoot , name ); m_controls.push_back(&var); }
+#define UI_MAP_ELEMENT(var, name)                  \
+    {                                              \
+        var.setupControl(this, currentRoot, name); \
+        m_controls.push_back(&var);                \
+    }
 
-#define UI_BEGIN_MAP_CHILD_ELEMENTS( parent ) \
-	{ \
-		IggyValuePath *lastRoot = currentRoot; \
-		currentRoot = parent.getIggyValuePath();
+#define UI_BEGIN_MAP_CHILD_ELEMENTS(parent)    \
+    {                                          \
+        IggyValuePath* lastRoot = currentRoot; \
+        currentRoot = parent.getIggyValuePath();
 
 #define UI_END_MAP_CHILD_ELEMENTS() \
-		currentRoot = lastRoot; \
-	}
+    currentRoot = lastRoot;         \
+    }
 
-#define UI_MAP_NAME( var, name ) \
-	{ var = registerFastName(name); }
+#define UI_MAP_NAME(var, name)        \
+    {                                 \
+        var = registerFastName(name); \
+    }
 
-class UIScene
-{
-	friend class UILayer;
-public:	
-	IggyValuePath *m_rootPath;
+class UIScene {
+    friend class UILayer;
+
+public:
+    IggyValuePath* m_rootPath;
 
 private:
-	Iggy *swf;
-	IggyName m_funcRemoveObject, m_funcSlideLeft, m_funcSlideRight, m_funcSetSafeZone, m_funcSetFocus, m_funcHorizontalResizeCheck;
-	IggyName m_funcSetAlpha;
+    Iggy* swf;
+    IggyName m_funcRemoveObject, m_funcSlideLeft, m_funcSlideRight,
+        m_funcSetSafeZone, m_funcSetFocus, m_funcHorizontalResizeCheck;
+    IggyName m_funcSetAlpha;
 
-	ItemRenderer *m_pItemRenderer;
-	std::unordered_map<std::wstring, IggyName> m_fastNames;
-	std::unordered_map<std::wstring, bool> m_registeredTextures;
+    ItemRenderer* m_pItemRenderer;
+    std::unordered_map<std::wstring, IggyName> m_fastNames;
+    std::unordered_map<std::wstring, bool> m_registeredTextures;
 
-	typedef struct _TimerInfo
-	{
-		int duration;
-		int targetTime;
-		bool running;
-	} TimerInfo;
-	std::unordered_map<int,TimerInfo> m_timers;
+    typedef struct _TimerInfo {
+        int duration;
+        int targetTime;
+        bool running;
+    } TimerInfo;
+    std::unordered_map<int, TimerInfo> m_timers;
 
-	int m_iFocusControl, m_iFocusChild;
-	float m_lastOpacity;
-	bool m_bUpdateOpacity;
-	bool m_bVisible;
-	bool m_bCanHandleInput;
-	UIScene *m_backScene;
+    int m_iFocusControl, m_iFocusChild;
+    float m_lastOpacity;
+    bool m_bUpdateOpacity;
+    bool m_bVisible;
+    bool m_bCanHandleInput;
+    UIScene* m_backScene;
 
-	size_t m_callbackUniqueId;
-
-public:
-	enum ESceneResolution
-	{
-		eSceneResolution_1080,
-		eSceneResolution_720,
-		eSceneResolution_480,
-		eSceneResolution_Vita,
-	};
-
-protected:
-	ESceneResolution m_loadedResolution;
-	
-	bool m_bIsReloading;
-	bool m_bFocussedOnce;
-
-	int m_movieWidth, m_movieHeight;
-	int m_renderWidth, m_renderHeight;
-	std::vector<UIControl *> m_controls;
-
-protected:
-	UILayer *m_parentLayer;
-	bool bHasFocus;
-	int m_iPad;
-	bool m_hasTickedOnce;
+    size_t m_callbackUniqueId;
 
 public:
-	virtual Iggy *getMovie() { return swf; }
-	
-	void destroyMovie();
-	virtual void reloadMovie(bool force = false);
-	virtual bool needsReloaded();
-	virtual bool hasMovie();
-	virtual void updateSafeZone();
+    enum ESceneResolution {
+        eSceneResolution_1080,
+        eSceneResolution_720,
+        eSceneResolution_480,
+        eSceneResolution_Vita,
+    };
 
-	int getRenderWidth() { return m_renderWidth; }
-	int getRenderHeight() { return m_renderHeight; }
+protected:
+    ESceneResolution m_loadedResolution;
+
+    bool m_bIsReloading;
+    bool m_bFocussedOnce;
+
+    int m_movieWidth, m_movieHeight;
+    int m_renderWidth, m_renderHeight;
+    std::vector<UIControl*> m_controls;
+
+protected:
+    UILayer* m_parentLayer;
+    bool bHasFocus;
+    int m_iPad;
+    bool m_hasTickedOnce;
+
+public:
+    virtual Iggy* getMovie() { return swf; }
+
+    void destroyMovie();
+    virtual void reloadMovie(bool force = false);
+    virtual bool needsReloaded();
+    virtual bool hasMovie();
+    virtual void updateSafeZone();
+
+    int getRenderWidth() { return m_renderWidth; }
+    int getRenderHeight() { return m_renderHeight; }
 
 #ifdef __PSVITA__
-	UILayer *GetParentLayer() {return m_parentLayer;}
-	EUIGroup GetParentLayerGroup() {return m_parentLayer->m_parentGroup->GetGroup();}
-	std::vector<UIControl *> *GetControls() {return &m_controls;}
+    UILayer* GetParentLayer() { return m_parentLayer; }
+    EUIGroup GetParentLayerGroup() {
+        return m_parentLayer->m_parentGroup->GetGroup();
+    }
+    std::vector<UIControl*>* GetControls() { return &m_controls; }
 #endif
 
 protected:
-	virtual F64 getSafeZoneHalfHeight();
-	virtual F64 getSafeZoneHalfWidth();
-	void setSafeZone(S32 top, S32 bottom, S32 left, S32 right);
-	void doHorizontalResizeCheck();
-	virtual std::wstring getMoviePath() = 0;
+    virtual F64 getSafeZoneHalfHeight();
+    virtual F64 getSafeZoneHalfWidth();
+    void setSafeZone(S32 top, S32 bottom, S32 left, S32 right);
+    void doHorizontalResizeCheck();
+    virtual std::wstring getMoviePath() = 0;
 
-	virtual bool mapElementsAndNames();
-	void initialiseMovie();
-	void loadMovie();
+    virtual bool mapElementsAndNames();
+    void initialiseMovie();
+    void loadMovie();
 
 private:
-	void getDebugMemoryUseRecursive(const std::wstring &moviePath, IggyMemoryUseInfo &memoryInfo);
+    void getDebugMemoryUseRecursive(const std::wstring& moviePath,
+                                    IggyMemoryUseInfo& memoryInfo);
 
 public:
-	void PrintTotalMemoryUsage(__int64 &totalStatic, __int64 &totalDynamic);
+    void PrintTotalMemoryUsage(__int64& totalStatic, __int64& totalDynamic);
 
 public:
-	UIScene(int iPad, UILayer *parentLayer);
-	virtual ~UIScene();
+    UIScene(int iPad, UILayer* parentLayer);
+    virtual ~UIScene();
 
-	virtual EUIScene getSceneType() = 0;
-	ESceneResolution getSceneResolution() { return m_loadedResolution; }
+    virtual EUIScene getSceneType() = 0;
+    ESceneResolution getSceneResolution() { return m_loadedResolution; }
 
-	virtual void tick();
+    virtual void tick();
 
-	IggyName registerFastName(const std::wstring &name);
+    IggyName registerFastName(const std::wstring& name);
 #ifdef __PSVITA__
-	void SetFocusToElement(int iID); 
-	void UpdateSceneControls();
+    void SetFocusToElement(int iID);
+    void UpdateSceneControls();
 #endif
 protected:
-	void addTimer(int id, int ms);
-	void killTimer(int id);
-	void tickTimers();
-	TimerInfo* getTimer(int id) { return &m_timers[id]; }
-	virtual void handleTimerComplete(int id) {}
+    void addTimer(int id, int ms);
+    void killTimer(int id);
+    void tickTimers();
+    TimerInfo* getTimer(int id) { return &m_timers[id]; }
+    virtual void handleTimerComplete(int id) {}
 
 public:
-	// FOCUS
-	// Returns true if this scene handles input
-	virtual bool stealsFocus() { return true; }
+    // FOCUS
+    // Returns true if this scene handles input
+    virtual bool stealsFocus() { return true; }
 
-	// Returns true if this scene has focus for the pad passed in
-	virtual bool hasFocus(int iPad) { return bHasFocus && iPad == m_iPad; }
+    // Returns true if this scene has focus for the pad passed in
+    virtual bool hasFocus(int iPad) { return bHasFocus && iPad == m_iPad; }
 
-	void gainFocus();
-	void loseFocus();
-	
-	virtual void updateTooltips();
-	virtual void updateComponents() {}
-	virtual void handleGainFocus(bool navBack);
-	virtual void handleLoseFocus() {}
+    void gainFocus();
+    void loseFocus();
 
-	// Returns true if lower scenes in this scenes layer, or in any layer below this scenes layers should be hidden
-	virtual bool hidesLowerScenes() { return m_hasTickedOnce; }
+    virtual void updateTooltips();
+    virtual void updateComponents() {}
+    virtual void handleGainFocus(bool navBack);
+    virtual void handleLoseFocus() {}
 
-	// returns main panel if controls are not living in the root
-	virtual UIControl* GetMainPanel();
+    // Returns true if lower scenes in this scenes layer, or in any layer below
+    // this scenes layers should be hidden
+    virtual bool hidesLowerScenes() { return m_hasTickedOnce; }
 
-	void removeControl( UIControl_Base *control, bool centreScene);
-	void slideLeft();
-	void slideRight();
+    // returns main panel if controls are not living in the root
+    virtual UIControl* GetMainPanel();
 
-	// RENDERING
-	virtual void render(S32 width, S32 height, C4JRender::eViewportType viewpBort);
+    void removeControl(UIControl_Base* control, bool centreScene);
+    void slideLeft();
+    void slideRight();
 
-	virtual void customDraw(IggyCustomDrawCallbackRegion *region);
+    // RENDERING
+    virtual void render(S32 width, S32 height,
+                        C4JRender::eViewportType viewpBort);
 
-	void setOpacity(float percent);
-	void setVisible(bool visible);
-	bool isVisible() { return m_bVisible; }
+    virtual void customDraw(IggyCustomDrawCallbackRegion* region);
+
+    void setOpacity(float percent);
+    void setVisible(bool visible);
+    bool isVisible() { return m_bVisible; }
 
 protected:
-	//void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, int iID, int iCount, int iAuxVal, float fAlpha, bool isFoil, bool bDecorations);
-	void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations);
-	
-	bool m_cacheSlotRenders;
-	bool m_needsCacheRendered;
-	int m_expectedCachedSlotCount;
+    // void customDrawSlotControl(IggyCustomDrawCallbackRegion *region, int
+    // iPad, int iID, int iCount, int iAuxVal, float fAlpha, bool isFoil, bool
+    // bDecorations);
+    void customDrawSlotControl(IggyCustomDrawCallbackRegion* region, int iPad,
+                               std::shared_ptr<ItemInstance> item, float fAlpha,
+                               bool isFoil, bool bDecorations);
+
+    bool m_cacheSlotRenders;
+    bool m_needsCacheRendered;
+    int m_expectedCachedSlotCount;
+
 private:
-	typedef struct _CachedSlotDrawData
-	{
-		CustomDrawData *customDrawRegion;
-		std::shared_ptr<ItemInstance> item;
-		float fAlpha;
-		bool isFoil;
-		bool bDecorations;
-	} CachedSlotDrawData;
-	std::vector<CachedSlotDrawData *> m_cachedSlotDraw;
+    typedef struct _CachedSlotDrawData {
+        CustomDrawData* customDrawRegion;
+        std::shared_ptr<ItemInstance> item;
+        float fAlpha;
+        bool isFoil;
+        bool bDecorations;
+    } CachedSlotDrawData;
+    std::vector<CachedSlotDrawData*> m_cachedSlotDraw;
 
-	void _customDrawSlotControl(CustomDrawData *region, int iPad, std::shared_ptr<ItemInstance> item, float fAlpha, bool isFoil, bool bDecorations, bool usingCommandBuffer);
+    void _customDrawSlotControl(CustomDrawData* region, int iPad,
+                                std::shared_ptr<ItemInstance> item,
+                                float fAlpha, bool isFoil, bool bDecorations,
+                                bool usingCommandBuffer);
 
 public:
-	// INPUT
-	bool canHandleInput() { return m_bCanHandleInput; }
-	virtual bool allowRepeat(int key);
-	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled) {}
-	void externalCallback(IggyExternalFunctionCallUTF16 * call);
+    // INPUT
+    bool canHandleInput() { return m_bCanHandleInput; }
+    virtual bool allowRepeat(int key);
+    virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
+                             bool released, bool& handled) {}
+    void externalCallback(IggyExternalFunctionCallUTF16* call);
 
-	virtual void handleDestroy() {}
+    virtual void handleDestroy() {}
+
 protected:
-	void sendInputToMovie(int key, bool repeat, bool pressed, bool released);
-	virtual void handlePreReload() {}
-	virtual void handleReload() {}
-	virtual void handlePress(F64 controlId, F64 childId) {}
-	virtual void handleFocusChange(F64 controlId, F64 childId) {}
-	virtual void handleInitFocus(F64 controlId, F64 childId) {}
-	virtual void handleCheckboxToggled(F64 controlId, bool selected) {}
-	virtual void handleSliderMove(F64 sliderId, F64 currentValue) {}
-	virtual void handleAnimationEnd() {}
-	virtual void handleSelectionChanged(F64 selectedId) {}
-	virtual void handleRequestMoreData(F64 startIndex, bool up) {}
-	virtual void handleTouchBoxRebuild() {}
+    void sendInputToMovie(int key, bool repeat, bool pressed, bool released);
+    virtual void handlePreReload() {}
+    virtual void handleReload() {}
+    virtual void handlePress(F64 controlId, F64 childId) {}
+    virtual void handleFocusChange(F64 controlId, F64 childId) {}
+    virtual void handleInitFocus(F64 controlId, F64 childId) {}
+    virtual void handleCheckboxToggled(F64 controlId, bool selected) {}
+    virtual void handleSliderMove(F64 sliderId, F64 currentValue) {}
+    virtual void handleAnimationEnd() {}
+    virtual void handleSelectionChanged(F64 selectedId) {}
+    virtual void handleRequestMoreData(F64 startIndex, bool up) {}
+    virtual void handleTouchBoxRebuild() {}
+
 private:
-	void _handleFocusChange(F64 controlId, F64 childId);
-	void _handleInitFocus(F64 controlId, F64 childId);
+    void _handleFocusChange(F64 controlId, F64 childId);
+    void _handleInitFocus(F64 controlId, F64 childId);
 
-	int convertGameActionToIggyKeycode(int action);
+    int convertGameActionToIggyKeycode(int action);
 
 public:
-	bool controlHasFocus(int iControlId);
-	bool controlHasFocus(UIControl_Base *control);
-	int getControlFocus();
-	int getControlChildFocus();
+    bool controlHasFocus(int iControlId);
+    bool controlHasFocus(UIControl_Base* control);
+    int getControlFocus();
+    int getControlChildFocus();
 
-	// NAVIGATION
+    // NAVIGATION
 protected:
-	//void navigateForward(int iPad, EUIScene scene, void *initData = NULL);
-	void navigateBack();
+    // void navigateForward(int iPad, EUIScene scene, void *initData = NULL);
+    void navigateBack();
 
 public:
-	void setBackScene(UIScene *scene);
-	UIScene *getBackScene();
-	virtual void HandleDLCMountingComplete() {}
-	virtual void HandleDLCInstalled() {}
+    void setBackScene(UIScene* scene);
+    UIScene* getBackScene();
+    virtual void HandleDLCMountingComplete() {}
+    virtual void HandleDLCInstalled() {}
 #ifdef _XBOX_ONE
-	virtual void HandleDLCLicenseChange() {}
+    virtual void HandleDLCLicenseChange() {}
 #endif
-	void registerSubstitutionTexture(const std::wstring &textureName, std::uint8_t *pbData, unsigned int dwLength, bool deleteData = false);
-	bool hasRegisteredSubstitutionTexture(const std::wstring &textureName);
+    void registerSubstitutionTexture(const std::wstring& textureName,
+                                     std::uint8_t* pbData,
+                                     unsigned int dwLength,
+                                     bool deleteData = false);
+    bool hasRegisteredSubstitutionTexture(const std::wstring& textureName);
 
-	virtual void handleUnlockFullVersion() {}
+    virtual void handleUnlockFullVersion() {}
 
-	virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId, bool bPressed, bool bRepeat, bool bReleased) {}
-
+    virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
+                                  bool bPressed, bool bRepeat, bool bReleased) {
+    }
 
 protected:
-#ifdef _DURANGO	
-	virtual long long getDefaultGtcButtons() { return _360_GTC_BACK; }
+#ifdef _DURANGO
+    virtual long long getDefaultGtcButtons() { return _360_GTC_BACK; }
 #endif
 
-	size_t GetCallbackUniqueId();
+    size_t GetCallbackUniqueId();
 
-	virtual bool isReadyToDelete();
+    virtual bool isReadyToDelete();
 
-	static int parseSlotId(const char16_t *s);
+    static int parseSlotId(const char16_t* s);
 };

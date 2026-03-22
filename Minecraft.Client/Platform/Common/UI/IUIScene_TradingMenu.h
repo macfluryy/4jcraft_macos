@@ -3,56 +3,59 @@
 
 class MerchantRecipe;
 
-class IUIScene_TradingMenu
-{
+class IUIScene_TradingMenu {
 protected:
-	MerchantMenu *m_menu;
-	std::shared_ptr<Merchant> m_merchant;
-	std::vector< std::pair<MerchantRecipe *,int> > m_activeOffers;
+    MerchantMenu* m_menu;
+    std::shared_ptr<Merchant> m_merchant;
+    std::vector<std::pair<MerchantRecipe*, int> > m_activeOffers;
 
-	int m_validOffersCount;
-	int m_selectedSlot;
-	int m_offersStartIndex;
-	bool m_bHasUpdatedOnce;
+    int m_validOffersCount;
+    int m_selectedSlot;
+    int m_offersStartIndex;
+    bool m_bHasUpdatedOnce;
 
-	eTutorial_State m_previousTutorialState;
+    eTutorial_State m_previousTutorialState;
 
-	static const int DISPLAY_TRADES_COUNT = 7;
+    static const int DISPLAY_TRADES_COUNT = 7;
 
-	static const int BUY_A = MerchantMenu::USE_ROW_SLOT_END;
-	static const int BUY_B = BUY_A + 1;
-	static const int TRADES_START = BUY_B + 1;
+    static const int BUY_A = MerchantMenu::USE_ROW_SLOT_END;
+    static const int BUY_B = BUY_A + 1;
+    static const int TRADES_START = BUY_B + 1;
 
 protected:
-	IUIScene_TradingMenu();
+    IUIScene_TradingMenu();
 
-	bool handleKeyDown(int iPad, int iAction, bool bRepeat);
-	void handleTick();
+    bool handleKeyDown(int iPad, int iAction, bool bRepeat);
+    void handleTick();
 
-	virtual void showScrollRightArrow(bool show) = 0;
-	virtual void showScrollLeftArrow(bool show) = 0;
-	virtual void moveSelector(bool right) = 0;
-	virtual void setRequest1Name(const std::wstring &name) = 0;
-	virtual void setRequest2Name(const std::wstring &name) = 0;
-	virtual void setTitle(const std::wstring &name) = 0;
+    virtual void showScrollRightArrow(bool show) = 0;
+    virtual void showScrollLeftArrow(bool show) = 0;
+    virtual void moveSelector(bool right) = 0;
+    virtual void setRequest1Name(const std::wstring& name) = 0;
+    virtual void setRequest2Name(const std::wstring& name) = 0;
+    virtual void setTitle(const std::wstring& name) = 0;
 
-	virtual void setRequest1RedBox(bool show) = 0;
-	virtual void setRequest2RedBox(bool show) = 0;
-	virtual void setTradeRedBox(int index, bool show) = 0;
-	
-	virtual void setOfferDescription(const std::wstring &name, std::vector<std::wstring> &unformattedStrings) = 0;
+    virtual void setRequest1RedBox(bool show) = 0;
+    virtual void setRequest2RedBox(bool show) = 0;
+    virtual void setTradeRedBox(int index, bool show) = 0;
 
-	virtual void setRequest1Item(std::shared_ptr<ItemInstance> item);
-	virtual void setRequest2Item(std::shared_ptr<ItemInstance> item);
-	virtual void setTradeItem(int index, std::shared_ptr<ItemInstance> item);
+    virtual void setOfferDescription(
+        const std::wstring& name,
+        std::vector<std::wstring>& unformattedStrings) = 0;
+
+    virtual void setRequest1Item(std::shared_ptr<ItemInstance> item);
+    virtual void setRequest2Item(std::shared_ptr<ItemInstance> item);
+    virtual void setTradeItem(int index, std::shared_ptr<ItemInstance> item);
 
 private:
-	void updateDisplay();
-	bool canMake(MerchantRecipe *recipe);
-	std::wstring GetItemDescription(std::shared_ptr<ItemInstance> item, std::vector<std::wstring> &unformattedStrings);
+    void updateDisplay();
+    bool canMake(MerchantRecipe* recipe);
+    std::wstring GetItemDescription(
+        std::shared_ptr<ItemInstance> item,
+        std::vector<std::wstring>& unformattedStrings);
 
 public:
-	std::shared_ptr<Merchant> getMerchant();
+    std::shared_ptr<Merchant> getMerchant();
 
-	virtual int getPad() = 0;
+    virtual int getPad() = 0;
 };

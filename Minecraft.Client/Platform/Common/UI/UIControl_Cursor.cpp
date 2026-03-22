@@ -2,16 +2,14 @@
 #include "UI.h"
 #include "UIControl_Cursor.h"
 
-UIControl_Cursor::UIControl_Cursor()
-{
-}
+UIControl_Cursor::UIControl_Cursor() {}
 
-bool UIControl_Cursor::setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName)
-{
-	UIControl::setControlType(UIControl::eCursor);
-	bool success = UIControl_Base::setupControl(scene,parent,controlName);
+bool UIControl_Cursor::setupControl(UIScene* scene, IggyValuePath* parent,
+                                    const std::string& controlName) {
+    UIControl::setControlType(UIControl::eCursor);
+    bool success = UIControl_Base::setupControl(scene, parent, controlName);
 
-	//Label specific initialisers
+    // Label specific initialisers
 
-	return success;
+    return success;
 }

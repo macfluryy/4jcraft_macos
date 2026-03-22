@@ -2,13 +2,12 @@
 
 #include <cstdint>
 
-class UITTFFont
-{
+class UITTFFont {
 private:
-	std::uint8_t *pbData;
-	//DWORD dwDataSize;
+    std::uint8_t* pbData;
+    // DWORD dwDataSize;
 
 public:
-	UITTFFont(const std::string &path, S32 fallbackCharacter);
-	~UITTFFont();
+    UITTFFont(const std::string& path, S32 fallbackCharacter);
+    ~UITTFFont();
 };

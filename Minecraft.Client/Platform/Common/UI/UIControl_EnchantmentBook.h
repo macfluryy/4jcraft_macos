@@ -5,29 +5,28 @@
 class UIScene_EnchantingMenu;
 class BookModel;
 
-class UIControl_EnchantmentBook : public UIControl
-{
+class UIControl_EnchantmentBook : public UIControl {
 private:
-	BookModel *model;
-	Random random;
+    BookModel* model;
+    Random random;
 
-	// 4J JEV: Book animation variables.
-	int time;
+    // 4J JEV: Book animation variables.
+    int time;
     float flip, oFlip, flipT, flipA;
     float open, oOpen;
 
-	//BOOL m_bDirty;
-	//float m_fScale,m_fAlpha;
-	//int	m_iPad;
-	std::shared_ptr<ItemInstance> last;
+    // BOOL m_bDirty;
+    // float m_fScale,m_fAlpha;
+    // int	m_iPad;
+    std::shared_ptr<ItemInstance> last;
 
-	//float m_fScreenWidth,m_fScreenHeight;
-	//float m_fRawWidth,m_fRawHeight;
+    // float m_fScreenWidth,m_fScreenHeight;
+    // float m_fRawWidth,m_fRawHeight;
 
-	void tickBook();
+    void tickBook();
 
 public:
-	UIControl_EnchantmentBook();
+    UIControl_EnchantmentBook();
 
-	void render(IggyCustomDrawCallbackRegion *region);
+    void render(IggyCustomDrawCallbackRegion* region);
 };

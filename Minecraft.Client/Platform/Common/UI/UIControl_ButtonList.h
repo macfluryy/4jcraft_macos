@@ -2,43 +2,45 @@
 
 #include "UIControl_Base.h"
 
-class UIControl_ButtonList : public UIControl_Base
-{
+class UIControl_ButtonList : public UIControl_Base {
 protected:
-	IggyName m_addNewItemFunc, m_removeAllItemsFunc, m_funcHighlightItem, m_funcRemoveItem, m_funcSetButtonLabel, m_funcSetTouchFocus, m_funcCanTouchTrigger;
+    IggyName m_addNewItemFunc, m_removeAllItemsFunc, m_funcHighlightItem,
+        m_funcRemoveItem, m_funcSetButtonLabel, m_funcSetTouchFocus,
+        m_funcCanTouchTrigger;
 
-	int m_itemCount;
-	int m_iCurrentSelection;
+    int m_itemCount;
+    int m_iCurrentSelection;
 
 public:
-	UIControl_ButtonList();
+    UIControl_ButtonList();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	void init(int id);
-	virtual void ReInit();
+    void init(int id);
+    virtual void ReInit();
 
-	void clearList();
+    void clearList();
 
-	void addItem(const std::wstring &label);
-	void addItem(const std::string &label);
+    void addItem(const std::wstring& label);
+    void addItem(const std::string& label);
 
-	void addItem(const std::wstring &label, int data);
-	void addItem(const std::string &label, int data);
+    void addItem(const std::wstring& label, int data);
+    void addItem(const std::string& label, int data);
 
-	void removeItem(int index);
+    void removeItem(int index);
 
-	int getItemCount() { return m_itemCount; }
+    int getItemCount() { return m_itemCount; }
 
-	void setCurrentSelection(int iSelection);
-	int getCurrentSelection();
+    void setCurrentSelection(int iSelection);
+    int getCurrentSelection();
 
-	void updateChildFocus(int iChild);
+    void updateChildFocus(int iChild);
 
-	void setButtonLabel(int iButtonId, const std::wstring &label);
+    void setButtonLabel(int iButtonId, const std::wstring& label);
 
 #ifdef __PSVITA__
-	void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);
-	bool CanTouchTrigger(S32 iX, S32 iY);
+    void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);
+    bool CanTouchTrigger(S32 iX, S32 iY);
 #endif
 };

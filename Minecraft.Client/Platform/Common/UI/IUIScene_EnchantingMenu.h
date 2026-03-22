@@ -10,14 +10,17 @@
 
 class EnchantmentMenu;
 
-class IUIScene_EnchantingMenu : public virtual IUIScene_AbstractContainerMenu
-{
+class IUIScene_EnchantingMenu : public virtual IUIScene_AbstractContainerMenu {
 protected:
-	virtual ESceneSection GetSectionAndSlotInDirection( ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY );
-	virtual void handleOtherClicked(int iPad, ESceneSection eSection, int buttonNum, bool quickKey);
-	int getSectionStartOffset(ESceneSection eSection);
-	virtual bool IsSectionSlotList( ESceneSection eSection );
+    virtual ESceneSection GetSectionAndSlotInDirection(ESceneSection eSection,
+                                                       ETapState eTapDirection,
+                                                       int* piTargetX,
+                                                       int* piTargetY);
+    virtual void handleOtherClicked(int iPad, ESceneSection eSection,
+                                    int buttonNum, bool quickKey);
+    int getSectionStartOffset(ESceneSection eSection);
+    virtual bool IsSectionSlotList(ESceneSection eSection);
 
 public:
-	EnchantmentMenu *getMenu();
+    EnchantmentMenu* getMenu();
 };

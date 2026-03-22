@@ -13,33 +13,40 @@
 class Inventory;
 class RepairMenu;
 
-class IUIScene_AnvilMenu : public virtual IUIScene_AbstractContainerMenu, public net_minecraft_world_inventory::ContainerListener
-{
+class IUIScene_AnvilMenu
+    : public virtual IUIScene_AbstractContainerMenu,
+      public net_minecraft_world_inventory::ContainerListener {
 protected:
-	std::shared_ptr<Inventory> m_inventory;
-	RepairMenu *m_repairMenu;
-	std::wstring m_itemName;
+    std::shared_ptr<Inventory> m_inventory;
+    RepairMenu* m_repairMenu;
+    std::wstring m_itemName;
 
 protected:
-	IUIScene_AnvilMenu();
+    IUIScene_AnvilMenu();
 
-	virtual ESceneSection GetSectionAndSlotInDirection( ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY );
-	int getSectionStartOffset(ESceneSection eSection);	
-	virtual void handleOtherClicked(int iPad, ESceneSection eSection, int buttonNum, bool quickKey);
-	bool IsSectionSlotList( ESceneSection eSection );
+    virtual ESceneSection GetSectionAndSlotInDirection(ESceneSection eSection,
+                                                       ETapState eTapDirection,
+                                                       int* piTargetX,
+                                                       int* piTargetY);
+    int getSectionStartOffset(ESceneSection eSection);
+    virtual void handleOtherClicked(int iPad, ESceneSection eSection,
+                                    int buttonNum, bool quickKey);
+    bool IsSectionSlotList(ESceneSection eSection);
 
-	void handleTick();
+    void handleTick();
 
-	// Anvil only
-	virtual void handleEditNamePressed() = 0;
-	virtual void setEditNameValue(const std::wstring &name) = 0;
-	virtual void setEditNameEditable(bool enabled) = 0;
-	virtual void setCostLabel(const std::wstring &label, bool canAfford) = 0;
-	virtual void showCross(bool show) = 0;
-	void updateItemName();
+    // Anvil only
+    virtual void handleEditNamePressed() = 0;
+    virtual void setEditNameValue(const std::wstring& name) = 0;
+    virtual void setEditNameEditable(bool enabled) = 0;
+    virtual void setCostLabel(const std::wstring& label, bool canAfford) = 0;
+    virtual void showCross(bool show) = 0;
+    void updateItemName();
 
-	// ContainerListenr
-	void refreshContainer(AbstractContainerMenu *container, std::vector<std::shared_ptr<ItemInstance> > *items);
-	void slotChanged(AbstractContainerMenu *container, int slotIndex, std::shared_ptr<ItemInstance> item);
-	void setContainerData(AbstractContainerMenu *container, int id, int value);
+    // ContainerListenr
+    void refreshContainer(AbstractContainerMenu* container,
+                          std::vector<std::shared_ptr<ItemInstance> >* items);
+    void slotChanged(AbstractContainerMenu* container, int slotIndex,
+                     std::shared_ptr<ItemInstance> item);
+    void setContainerData(AbstractContainerMenu* container, int id, int value);
 };
