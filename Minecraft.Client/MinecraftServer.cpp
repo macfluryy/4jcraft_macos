@@ -889,7 +889,7 @@ void MinecraftServer::overwriteHellBordersForNewWorldSize(ServerLevel* level,
 
 #endif
 
-void MinecraftServer::setProgress(consstd::t std::wstring& status,
+void MinecraftServer::setProgress(const std::wstring& status,
                                   int progress) {
     progressStatus = status;
     this->progress = progress;
@@ -1176,8 +1176,7 @@ Level* MinecraftServer::getCommandSenderWorld() { return levels[0]; }
 
 int MinecraftServer::getSpawnProtectionRadius() { return 16; }
 
-bool MinecraftServer::isUnderSpawnProtection(Level* level, int x, int y,
-                                             int zstd::,
+bool MinecraftServer::isUnderSpawnProtection(Level* level, int x, int y, int z,
                                              std::shared_ptr<Player> player) {
     if (level->dimension->id != 0) return false;
     // if (getPlayers()->getOps()->empty()) return false;
@@ -1776,7 +1775,7 @@ void MinecraftServer::tick() {
     //    }
 }
 
-void MinecraftServer::handleConsoleInput(consstd::t std::wstring& msg,
+void MinecraftServer::handleConsoleInput(const std::wstring& msg,
                                          ConsoleInputSource* source) {
     consoleInput.push_back(new ConsoleInput(msg, source));
 }
@@ -1816,11 +1815,9 @@ File* MinecraftServer::getFile(const std::wstring& name) {
 
 void MinecraftServer::info(const std::wstring& string) {}
 
-void MinecraftServer::warn(consstd::t std::wstring& std::string) {}
-std::
+void MinecraftServer::warn(const std::wstring& string) {}
 
-    std::wstring
-    MinecraftServer::getConsoleName() {
+std::wstring MinecraftServer::getConsoleName() {
     return L"CONSOLE";
 }
 

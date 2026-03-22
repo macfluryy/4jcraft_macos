@@ -49,8 +49,7 @@ void HorseRenderer::renderModel(std::shared_ptr<LivingEntity> mob, float wp,
                       true);
         // Ensure that any extra layers of texturing are disabled after
         // rendering this horse
-        assert(0 && "TODO: implement TextureBind(layer, idx) properly");
-        // RenderManager.TextureBind(1, -1);
+        RenderManager.TextureBind(-1);
     }
 }
 

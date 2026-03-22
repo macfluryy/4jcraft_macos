@@ -3,14 +3,15 @@
 #include "Font.h"
 #include "../GameState/Options.h"
 #include "../Rendering/Tesselator.h"
+#include "../Textures/ResourceLocation.h"
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/Util/Random.h"
 
 Font::Font(Options* options, const std::wstring& name, Textures* textures,
-           bool enforceUnicode, TEXTURE_NAME textureName, int cols, int rows,
-           int charWidth, int charHeight,
+           bool enforceUnicode, ResourceLocation* textureLocation, int cols,
+           int rows, int charWidth, int charHeight,
            unsigned short charMap[] /* = nullptr */)
     : textures(textures) {
     int charC = cols * rows;  // Number of characters in the font
@@ -29,7 +30,7 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
     m_rows = rows;
     m_charWidth = charWidth;
     m_charHeight = charHeight;
-    m_textureName = textureName;
+    m_textureLocation = textureLocation;
 
     // Build character map
     if (charMap != NULL) {
@@ -41,7 +42,8 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
     random = new Random();
 
     // Load the image
-    BufferedImage* img = textures->readImage(m_textureName, name);
+    BufferedImage* img =
+        textures->readImage(textureLocation->getTexture(), name);
 
     /* - 4J - TODO
     try {
@@ -182,7 +184,7 @@ std::wstring Font::reorderBidi(const std::wstring& str) {
 
 void Font::draw(const std::wstring& str, bool dropShadow) {
     // Bind the texture
-    textures->bindTexture(m_textureName);
+    textures->bindTexture(m_textureLocation);
 
     bool noise = false;
     std::wstring cleanStr = sanitize(str);
