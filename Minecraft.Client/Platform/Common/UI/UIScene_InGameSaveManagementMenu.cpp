@@ -297,15 +297,15 @@ void UIScene_InGameSaveManagementMenu::tick() {
 #ifdef __PS3
                 size_t srcmax, dstmax;
 #else
-                std::uint32_t srcmax, dstmax;
-                std::uint32_t srclen, dstlen;
+                uint32_t srcmax, dstmax;
+                uint32_t srclen, dstlen;
 #endif
                 srcmax = MAX_SAVEFILENAME_LENGTH;
                 dstmax = MAX_SAVEFILENAME_LENGTH;
 
 #if defined(__PS3__)
                 L10nResult lres = UTF8stoUTF16s(
-                    (std::uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
+                    (uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
                         .UTF8SaveFilename,
                     &srcmax, u16Message, &dstmax);
 #else
@@ -314,7 +314,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
 
                 sceCesUtf8StrToUtf16Str(
                     &context,
-                    (std::uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
+                    (uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
                         .UTF8SaveFilename,
                     srcmax, &srclen, u16Message, dstmax, &dstlen);
 #endif

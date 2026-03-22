@@ -1,5 +1,5 @@
 #include "../../stdafx.h"
-#include "../../Minecraft.h"
+#include "../../Minecraft.Client/Minecraft.h"
 
 #include "../../Minecraft.Client/UI/ScreenSizeCalculator.h"
 #include "../../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"

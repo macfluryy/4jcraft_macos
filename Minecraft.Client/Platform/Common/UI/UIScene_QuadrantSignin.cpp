@@ -203,6 +203,14 @@ void UIScene_QuadrantSignin::checkAllPrivilegesCallback(LPVOID lpParam,
 }
 #endif
 
+namespace {
+int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
+                        unsigned int thumbnailBytes) {
+    return UIScene_QuadrantSignin::AvatarReturned(lpParam, thumbnailData,
+                                                  thumbnailBytes);
+}
+}  // namespace
+
 void UIScene_QuadrantSignin::updateState() {
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if (ProfileManager.IsSignedIn(i) && InputManager.IsPadConnected(i)) {
@@ -243,14 +251,6 @@ void UIScene_QuadrantSignin::updateState() {
         }
     }
 }
-
-namespace {
-int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
-                        unsigned int thumbnailBytes) {
-    return UIScene_QuadrantSignin::AvatarReturned(lpParam, thumbnailData,
-                                                  thumbnailBytes);
-}
-}  // namespace
 
 void UIScene_QuadrantSignin::setControllerState(int iPad,
                                                 EControllerStatus state) {

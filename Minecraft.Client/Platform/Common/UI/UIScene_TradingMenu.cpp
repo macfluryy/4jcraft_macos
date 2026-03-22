@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
+#include "../../Minecraft.World/Util/HtmlString.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.trading.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
