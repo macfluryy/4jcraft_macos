@@ -42,7 +42,7 @@ public:
                  bool enablePreCompletion,
                  std::vector<TutorialConstraint*>* inConstraints,
                  bool bShowMinimumTime = false, bool bAllowFade = true,
-                 bool m_bTaskReminders = true);
+                 bool bTaskReminders = true);
     virtual ~TutorialTask();
 
     virtual int getDescriptionId() { return descriptionId; }
@@ -75,4 +75,7 @@ public:
                         unsigned int invItemCountThisAux) {}
     virtual void onStateChange(eTutorial_State newState) {}
     virtual void onEffectChanged(MobEffect* effect, bool bRemoved = false) {}
+
+    virtual void onLookAtEntity(std::shared_ptr<Entity> entity) {}
+    virtual void onRideEntity(std::shared_ptr<Entity> entity) {}
 };

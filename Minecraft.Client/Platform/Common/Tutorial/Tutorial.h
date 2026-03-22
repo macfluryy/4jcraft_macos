@@ -174,7 +174,8 @@ public:
                 unsigned int invItemCountThisAux);
     void onSelectedItemChanged(std::shared_ptr<ItemInstance> item);
     void onLookAt(int id, int iData = 0);
-    void onLookAtEntity(eINSTANCEOF type);
+    void onLookAtEntity(std::shared_ptr<Entity> entity);
+    void onRideEntity(std::shared_ptr<Entity> entity);
     void onEffectChanged(MobEffect* effect, bool bRemoved = false);
 
     bool canMoveToPosition(double xo, double yo, double zo, double xt,

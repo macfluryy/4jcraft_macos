@@ -602,7 +602,6 @@ void ServerPlayer::doTickB() {
             std::shared_ptr<SetExperiencePacket>(new SetExperiencePacket(
                 experienceProgress, totalExperience, experienceLevel)));
     }
-    std::
 }
 
 std::shared_ptr<ItemInstance> ServerPlayer::getCarried(int slot) {

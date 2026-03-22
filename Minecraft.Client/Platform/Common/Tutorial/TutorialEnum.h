@@ -65,9 +65,14 @@ enum eTutorial_State {
     e_Tutorial_State_Anvil,
     e_Tutorial_State_Anvil_Menu,
     e_Tutorial_State_Enderchests,
-
-    e_Tutorial_State_Unused_9,
-    e_Tutorial_State_Unused_10,
+    e_Tutorial_State_Horse,
+    e_Tutorial_State_Horse_Menu,
+    e_Tutorial_State_Hopper,
+    e_Tutorial_State_Hopper_Menu,
+    e_Tutorial_State_Beacon,
+    e_Tutorial_State_Beacon_Menu,
+    e_Tutorial_State_Fireworks,
+    e_Tutorial_State_Fireworks_Menu,
 
     e_Tutorial_State_Max
 };
@@ -207,6 +212,10 @@ enum eTutorial_Hint {
 
     e_Tutorial_Hint_Ozelot,
     e_Tutorial_Hint_Villager,
+    e_Tutorial_Hint_Wither,
+    e_Tutorial_Hint_Witch,
+    e_Tutorial_Hint_Bat,
+    e_Tutorial_Hint_Horse,
 
     e_Tutorial_Hint_Item_Shovel,
     e_Tutorial_Hint_Item_Hatchet,
@@ -295,9 +304,19 @@ enum eTutorial_Hint {
     e_Tutorial_Hint_Potato,
     e_Tutorial_Hint_Carrot,
 
-    e_Tutorial_Hint_Item_Unused_18,
-    e_Tutorial_Hint_Item_Unused_19,
-    e_Tutorial_Hint_Item_Unused_20,
+    e_Tutorial_Hint_CommandBlock,
+    e_Tutorial_Hint_Beacon,
+    e_Tutorial_Hint_Activator_Rail,
+    e_Tutorial_Hint_RedstoneBlock,
+    e_Tutorial_Hint_DaylightDetector,
+    e_Tutorial_Hint_Dropper,
+    e_Tutorial_Hint_Hopper,
+    e_Tutorial_Hint_Comparator,
+    e_Tutorial_Hint_ChestTrap,
+    e_Tutorial_Hint_HayBlock,
+    e_Tutorial_Hint_ClayHardened,
+    e_Tutorial_Hint_ClayHardenedColored,
+    e_Tutorial_Hint_CoalBlock,
 
     e_Tutorial_Hint_Item_Max,
 };
