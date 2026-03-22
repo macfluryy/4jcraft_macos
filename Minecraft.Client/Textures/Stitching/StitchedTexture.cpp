@@ -42,20 +42,29 @@ StitchedTexture::StitchedTexture(const std::wstring& name,
 }
 
 void StitchedTexture::freeFrameTextures() {
-    if (frames) {
+    if (frames != NULL) {
         for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
             TextureManager::getInstance()->unregisterTexture(L"", *it);
             delete *it;
         }
         delete frames;
+        frames = NULL;
     }
 }
 
 StitchedTexture::~StitchedTexture() {
-    for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
-        delete *it;
+    if (frames != NULL) {
+        for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
+            delete *it;
+        }
+        delete frames;
+        frames = NULL;
     }
-    delete frames;
+
+    if (frameOverride != NULL) {
+        delete frameOverride;
+        frameOverride = NULL;
+    }
 }
 
 void StitchedTexture::initUVs(float U0, float V0, float U1, float V1) {
