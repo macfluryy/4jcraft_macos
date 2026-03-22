@@ -17,7 +17,7 @@ public:
     virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
                               const std::string& controlName);
 
-    void init(const std::wstring& label, int id, int min, int max, int current);
+    void init(UIString label, int id, int min, int max, int current);
     virtual void ReInit();
 
     void setProgress(int current);

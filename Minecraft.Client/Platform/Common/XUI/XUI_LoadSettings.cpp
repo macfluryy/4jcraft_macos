@@ -983,7 +983,7 @@ void CScene_LoadGameSettings::StartGameFromSave(CScene_LoadGameSettings* pClass,
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave timer
 	app.SetAutosaveTimerTime();
@@ -1484,7 +1484,7 @@ void CScene_LoadGameSettings::LoadLevelGen(LevelGenerationOptions *levelGen)
 
 	LoadingInputParams *loadingParams = new LoadingInputParams();
 	loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-	loadingParams->lpParam = (LPVOID)param;
+	loadingParams->lpParam = param;
 
 	// Reset the autosave timer
 	app.SetAutosaveTimerTime();

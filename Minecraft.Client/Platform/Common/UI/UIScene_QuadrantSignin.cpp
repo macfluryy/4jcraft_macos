@@ -6,11 +6,6 @@
 #include "../Network/Sony/SonyHttp.h"
 #endif
 
-namespace {
-int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
-                        unsigned int thumbnailBytes);
-}
-
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
                                                UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
@@ -22,35 +17,8 @@ UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
     m_bIgnoreInput = false;
 
     m_lastRequestedAvatar = -1;
-    for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
-        m_iconRequested[i] = false;
 
-        m_labelPressToJoin[i].init(app.GetString(IDS_MUST_SIGN_IN_TITLE));
-        m_labelConnectController[i].init(L"");
-        m_labelAccountType[i].init(L"");
-
-        // wchar_t num[2];
-        // swprintf(num,2,L"%d",i+1);
-        // m_labelPlayerNumber[i].init(num);
-
-        m_controllerStatus[i] = eControllerStatus_ConnectController;
-
-        if (ProfileManager.IsSignedIn(i)) {
-            app.DebugPrintf("Index %d is signed in\n", i);
-
-            setControllerState(i, eControllerStatus_PlayerDetails);
-            m_labelDisplayName[i].init(ProfileManager.GetDisplayName(i));
-        } else if (InputManager.IsPadConnected(i)) {
-            app.DebugPrintf("Index %d is not signed in\n", i);
-
-            setControllerState(i, eControllerStatus_PressToJoin);
-            m_labelDisplayName[i].init(L"");
-        } else {
-            app.DebugPrintf("Index %d is not connected\n", i);
-
-            setControllerState(i, eControllerStatus_ConnectController);
-        }
-    }
+    _initQuadrants();
 
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
     if (InputManager.IsCircleCrossSwapped()) {
@@ -91,6 +59,8 @@ bool UIScene_QuadrantSignin::hidesLowerScenes() {
 }
 
 void UIScene_QuadrantSignin::tick() {
+    if (!getMovie()) return;
+
     UIScene::tick();
 
     updateState();
@@ -111,7 +81,7 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
         switch (key) {
             case ACTION_MENU_CANCEL: {
                 if (pressed) {
-#ifdef _DURANGO
+#ifdef _XBOX_ONE
                     if (InputManager.IsPadLocked(iPad)) {
                         if (iPad != ProfileManager.GetPrimaryPad()) {
                             ProfileManager.RemoveGamepadFromGame(iPad);
@@ -126,7 +96,7 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
                             navigateBack();
                         }
                     }
-#ifdef _DURANGO
+#ifdef _XBOX_ONE
                 }
 #endif
             } break;
@@ -136,11 +106,17 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
 #endif
                 if (pressed) {
                     m_bIgnoreInput = true;
-                    if (ProfileManager.IsSignedIn(iPad)) {
+#ifdef _XBOX_ONE
+                    if (ProfileManager.IsSignedIn(iPad) &&
+                        InputManager.IsPadLocked(iPad))
+#else
+                    if (ProfileManager.IsSignedIn(iPad))
+#endif
+                    {
                         app.DebugPrintf("Signed in pad pressed\n");
                         ProfileManager.CancelProfileAvatarRequest();
 
-#ifdef _DURANGO
+#ifdef _XBOX_ONE
                         // On Durango, if we don't navigate forward here, then
                         // when we are on the main menu, it (re)gains focus &
                         // that causes our users to get cleared
@@ -149,11 +125,25 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
                         navigateBack();
                         m_signInInfo.Func(m_signInInfo.lpParam, true, m_iPad);
                     } else {
-                        app.DebugPrintf("Non-signed in pad pressed\n");
-                        ProfileManager.RequestSignInUI(
-                            false, false, false, true, true,
-                            &UIScene_QuadrantSignin::SignInReturned, this,
-                            iPad);
+#ifdef _XBOX_ONE
+                        if (ProfileManager.IsSignedIn(0) &&
+                            !InputManager.IsPadLocked(0)) {
+                            app.DebugPrintf(
+                                "Signed in pad with no controller bound "
+                                "pressed\n");
+                            ProfileManager.RequestSignInUI(
+                                false, false, false, true, false,
+                                &UIScene_QuadrantSignin::SignInReturned, this,
+                                iPad);
+                        } else
+#endif
+                        {
+                            app.DebugPrintf("Non-signed in pad pressed\n");
+                            ProfileManager.RequestSignInUI(
+                                false, false, false, true, true,
+                                &UIScene_QuadrantSignin::SignInReturned, this,
+                                iPad);
+                        }
                     }
                 }
                 break;
@@ -169,15 +159,24 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
     handled = true;
 }
 
+#ifdef _XBOX_ONE
 int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
-                                           int iPad) {
+                                           int iPad, int iController)
+#else
+int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
+                                           int iPad)
+#endif
+{
     app.DebugPrintf("SignInReturned for pad %d\n", iPad);
 
     UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)pParam;
 
-#ifdef _DURANGO
+#ifdef _XBOX_ONE
     if (bContinue && pClass->m_signInInfo.requireOnline &&
         ProfileManager.IsSignedIn(iPad)) {
+        if (!InputManager.IsPadLocked(iPad)) {
+            ProfileManager.ForcePrimaryPadController(iController);
+        }
         ProfileManager.CheckMultiplayerPrivileges(
             iPad, true, &checkAllPrivilegesCallback, pClass);
     } else
@@ -190,8 +189,8 @@ int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _DURANGO
-void UIScene_QuadrantSignin::checkAllPrivilegesCallback(void* lpParam,
+#ifdef _XBOX_ONE
+void UIScene_QuadrantSignin::checkAllPrivilegesCallback(LPVOID lpParam,
                                                         bool hasPrivileges,
                                                         int iPad) {
     UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)lpParam;
@@ -210,7 +209,15 @@ void UIScene_QuadrantSignin::updateState() {
             // app.DebugPrintf("Index %d is signed in, display name - '%s'\n",
             // i, ProfileManager.GetDisplayName(i).data());
 
-            setControllerState(i, eControllerStatus_PlayerDetails);
+#ifdef _XBOX_ONE
+            if (!InputManager.IsPadLocked(i)) {
+                setControllerState(i, eControllerStatus_PressToJoin_LoggedIn);
+            } else
+#endif
+            {
+                setControllerState(i, eControllerStatus_PlayerDetails);
+            }
+
             m_labelDisplayName[i].setLabel(ProfileManager.GetDisplayName(i));
             // m_buttonControllers[i].setLabel(app.GetString(IDS_TOOLTIPS_CONTINUE),i);
 
@@ -286,3 +293,41 @@ int UIScene_QuadrantSignin::AvatarReturned(void* lpParam,
 
     return 0;
 }
+
+void UIScene_QuadrantSignin::_initQuadrants() {
+    for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
+        m_iconRequested[i] = false;
+
+        m_labelPressToJoin[i].init(IDS_MUST_SIGN_IN_TITLE);
+        m_labelConnectController[i].init(L"");
+        m_labelAccountType[i].init(L"");
+
+        m_controllerStatus[i] = eControllerStatus_ConnectController;
+
+        if (ProfileManager.IsSignedIn(i)) {
+            app.DebugPrintf("Index %d is signed in\n", i);
+
+#ifdef _XBOX_ONE
+            if (!InputManager.IsPadLocked(i)) {
+                setControllerState(i, eControllerStatus_PressToJoin_LoggedIn);
+            } else
+#endif
+            {
+                setControllerState(i, eControllerStatus_PlayerDetails);
+            }
+
+            m_labelDisplayName[i].init(ProfileManager.GetDisplayName(i));
+        } else if (InputManager.IsPadConnected(i)) {
+            app.DebugPrintf("Index %d is not signed in\n", i);
+
+            setControllerState(i, eControllerStatus_PressToJoin);
+            m_labelDisplayName[i].init(L"");
+        } else {
+            app.DebugPrintf("Index %d is not connected\n", i);
+
+            setControllerState(i, eControllerStatus_ConnectController);
+        }
+    }
+}
+
+void UIScene_QuadrantSignin::handleReload() { _initQuadrants(); }

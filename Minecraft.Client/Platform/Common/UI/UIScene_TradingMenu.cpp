@@ -121,6 +121,17 @@ void UIScene_TradingMenu::handleReload() {
 
     m_slotListInventory.addSlots(MerchantMenu::INV_SLOT_START, 27);
     m_slotListHotbar.addSlots(MerchantMenu::USE_ROW_SLOT_START, 9);
+
+    updateDisplay();
+
+    IggyDataValue result;
+    IggyDataValue value[1];
+
+    value[0].type = IGGY_DATATYPE_number;
+    value[0].number = m_selectedSlot;
+    IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
+                                            IggyPlayerRootPath(getMovie()),
+                                            m_funcSetActiveSlot, 1, value);
 }
 
 void UIScene_TradingMenu::tick() {
@@ -260,4 +271,16 @@ void UIScene_TradingMenu::setOfferDescription(
     IggyResult out = IggyPlayerCallMethodRS(
         getMovie(), &result, IggyPlayerRootPath(getMovie()),
         m_funcSetOfferDescription, 1, value);
+}
+
+void UIScene_TradingMenu::HandleMessage(EUIMessage message, void* data) {
+    switch (message) {
+        case eUIMessage_InventoryUpdated:
+            handleInventoryUpdated(data);
+            break;
+    };
+}
+
+void UIScene_TradingMenu::handleInventoryUpdated(LPVOID data) {
+    HandleInventoryUpdated();
 }

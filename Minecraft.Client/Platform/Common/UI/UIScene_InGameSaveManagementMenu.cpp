@@ -190,9 +190,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
     // Stop loading thumbnails if we navigate forwards
     if (hasFocus(m_iPad)) {
         if (m_bUpdateSaveSize) {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
             m_spaceIndicatorSaves.selectSave(m_iSaveListIndex);
-#endif
             m_bUpdateSaveSize = false;
         }
 
@@ -200,9 +198,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
         if (!m_bSavesDisplayed) {
             m_pSaveDetails = StorageManager.ReturnSavesInfo();
             if (m_pSaveDetails != NULL) {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
                 m_spaceIndicatorSaves.reset();
-#endif
 
                 m_bSavesDisplayed = true;
 
@@ -297,11 +293,6 @@ void UIScene_InGameSaveManagementMenu::tick() {
                     MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
                                              // WCHAR's
                 );
-#elif defined(__linux__)
-                mbstowcs(
-                    (wchar_t*)u16Message,
-                    m_saveDetails[m_iRequestingThumbnailId].UTF8SaveFilename,
-                    MAX_SAVEFILENAME_LENGTH);
 #else
 #ifdef __PS3
                 size_t srcmax, dstmax;
@@ -471,10 +462,10 @@ void UIScene_InGameSaveManagementMenu::handlePress(F64 controlId, F64 childId) {
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
-            ui.RequestMessageBox(
+            ui.RequestErrorMessage(
                 IDS_TOOLTIPS_DELETESAVE, IDS_TEXT_DELETE_SAVE, uiIDA, 2, m_iPad,
                 &UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned,
-                this, app.GetStringTable(), NULL, 0, true);
+                this);
 
             ui.PlayUISFX(eSFX_Press);
             break;

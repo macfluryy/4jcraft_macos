@@ -11,9 +11,9 @@ UIScene_DispenserMenu::UIScene_DispenserMenu(int iPad, void* _initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    m_labelDispenser.init(app.GetString(IDS_DISPENSER));
-
     TrapScreenInput* initData = (TrapScreenInput*)_initData;
+
+    m_labelDispenser.init(initData->trap->getName());
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft->localgameModes[initData->iPad] != NULL) {

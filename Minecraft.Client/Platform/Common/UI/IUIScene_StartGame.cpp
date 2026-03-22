@@ -224,11 +224,10 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
         uiIDA[2] = IDS_CONFIRM_CANCEL;
 
         // Give the player a warning about the texture pack missing
-        ui.RequestMessageBox(IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
-                             IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 3,
-                             ProfileManager.GetPrimaryPad(),
-                             & : TexturePackDialogReturned, this,
-                             app.GetStringTable());
+        ui.RequestErrorMessage(IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
+                               IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 3,
+                               ProfileManager.GetPrimaryPad(),
+                               & : TexturePackDialogReturned, this);
 
         // do set the texture pack id, and on the user pressing create world,
         // check they have it

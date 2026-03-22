@@ -6,9 +6,6 @@ UIScene_TrialExitUpsell::UIScene_TrialExitUpsell(int iPad, void* initData,
                                                  UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
     // Setup all the Iggy references we need for this scene
-    app.DebugPrintf(
-        "UIScene_TrialExitUpsell::UIScene_TrialExitUpsell BEFORE "
-        "initialiseMovie CALL\n");
     initialiseMovie();
 }
 
@@ -58,10 +55,9 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
                 if (bContentRestricted) {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    ui.RequestMessageBox(IDS_ONLINE_SERVICE_TITLE,
-                                         IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                         ProfileManager.GetPrimaryPad(), NULL,
-                                         this, app.GetStringTable());
+                    ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                           IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                           ProfileManager.GetPrimaryPad());
                 } else
 #endif
                 {

@@ -4,6 +4,8 @@
 #include "UITTFFont.h"
 
 UITTFFont::UITTFFont(const std::string& path, S32 fallbackCharacter) {
+                     S32 fallbackCharacter)
+    : m_strFontName(name) {
     app.DebugPrintf("UITTFFont opening %s\n", path.c_str());
     pbData = NULL;
 
@@ -41,7 +43,8 @@ UITTFFont::UITTFFont(const std::string& path, S32 fallbackCharacter) {
         }
 
         IggyFontInstallTruetypeUTF8((void*)pbData, IGGY_TTC_INDEX_none,
-                                    "Mojangles_TTF", -1, IGGY_FONTFLAG_none);
+                                    m_strFontName.c_str(), -1,
+                                    IGGY_FONTFLAG_none);
 
         IggyFontInstallTruetypeFallbackCodepointUTF8(
             "Mojangles_TTF", -1, IGGY_FONTFLAG_none, fallbackCharacter);
@@ -57,3 +60,5 @@ UITTFFont::UITTFFont(const std::string& path, S32 fallbackCharacter) {
 }
 
 UITTFFont::~UITTFFont() {}
+
+std::string UITTFFont::getFontName() { return m_strFontName; }

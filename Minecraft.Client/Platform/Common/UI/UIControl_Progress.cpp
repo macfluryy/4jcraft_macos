@@ -22,8 +22,8 @@ bool UIControl_Progress::setupControl(UIScene* scene, IggyValuePath* parent,
     return success;
 }
 
-void UIControl_Progress::init(const std::wstring& label, int id, int min,
-                              int max, int current) {
+void UIControl_Progress::init(UIString label, int id, int min, int max,
+                              int current) {
     m_label = label;
     m_id = id;
     m_min = min;

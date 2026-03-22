@@ -35,8 +35,8 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
 
     m_labelOffers.init(app.GetString(IDS_DOWNLOADABLE_CONTENT_OFFERS));
     m_buttonListOffers.init(eControl_OffersList);
-    m_labelHTMLSellText.init(" ");
-    m_labelPriceTag.init(" ");
+    m_labelHTMLSellText.init(L" ");
+    m_labelPriceTag.init(L" ");
     TelemetryManager->RecordMenuShown(m_iPad, eUIScene_DLCOffersMenu, 0);
 
     m_bHasPurchased = false;
@@ -92,13 +92,12 @@ void UIScene_DLCOffersMenu::handleTimerComplete(int id) {
                 // menu
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
-                C4JStorage::EMessageResult result = ui.RequestMessageBox(
+                C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                     IDS_CONNECTION_LOST,
                     g_NetworkManager.CorrectErrorIDS(
                         IDS_CONNECTION_LOST_LIVE_NO_EXIT),
                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                    UIScene_DLCOffersMenu::ExitDLCOffersMenu, this,
-                    app.GetStringTable());
+                    UIScene_DLCOffersMenu::ExitDLCOffersMenu, this);
             }
 #endif
             break;
@@ -110,10 +109,8 @@ int UIScene_DLCOffersMenu::ExitDLCOffersMenu(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_DLCOffersMenu* pClass = (UIScene_DLCOffersMenu*)pParam;
 
-#ifdef __ORBIS__
-    sceNpCommerceHidePsStoreIcon();
-#elif defined __PSVITA__
-    sceNpCommerce2HidePsStoreIcon();
+#if defined __ORBIS__ || defined __PSVITA__
+    app.GetCommerce()->HidePsStoreIcon();
 #endif
     ui.NavigateToHomeMenu();  // iPad,eUIScene_MainMenu);
 
@@ -284,7 +281,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
 
             ULONGLONG ullIndexA[1];
             ullIndexA[0] = StorageManager.GetOffer(iIndex).qwOfferID;
-            StorageManager.InstallOffer(1, (__uint64*)ullIndexA, NULL, NULL);
+            StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
 #endif
         } break;
     }
@@ -439,7 +436,7 @@ void UIScene_DLCOffersMenu::tick() {
 
                     if (hasRegisteredSubstitutionTexture(textureName) ==
                         false) {
-                        std::uint8_t* pbImageData = NULL;
+                        PBYTE pbImageData;
                         int iImageDataBytes = 0;
                         bool bDeleteData;
 #ifdef __ORBIS__
@@ -448,7 +445,7 @@ void UIScene_DLCOffersMenu::tick() {
                             app.GetSONYDLCInfoFromKeyname(info.productId);
 
                         // does the DLC info have an image?
-                        if (pSONYDLCInfo->dwImageBytes != 0) {
+                        if (pSONYDLCInfo && pSONYDLCInfo->dwImageBytes != 0) {
                             pbImageData = pSONYDLCInfo->pbImageData;
                             iImageDataBytes = pSONYDLCInfo->dwImageBytes;
                             bDeleteData =
@@ -560,7 +557,7 @@ void UIScene_DLCOffersMenu::tick() {
             std::wstring textureName = filenametostd::wstring(info.imageUrl);
 
             if (hasRegisteredSubstitutionTexture(textureName) == false) {
-                std::uint8_t* pbImageData = NULL;
+                PBYTE pbImageData;
                 int iImageDataBytes = 0;
                 bool bDeleteData;
 #ifdef __ORBIS__
@@ -627,6 +624,18 @@ void UIScene_DLCOffersMenu::tick() {
             int iIndex = getControlChildFocus();
             MARKETPLACE_CONTENTOFFER_INFO xOffer =
                 StorageManager.GetOffer(iIndex);
+
+            if (!ui.UsingBitmapFont())  // 4J-JEV: Replace characters we don't
+                                        // have.
+            {
+                for (int i = 0; xOffer.wszCurrencyPrice[i] != 0; i++) {
+                    WCHAR* c = &xOffer.wszCurrencyPrice[i];
+                    if (*c == L'\u20A9')
+                        *c = L'\uFFE6';  // Korean Won.
+                    else if (*c == L'\u00A5')
+                        *c = L'\uFFE5';  // Japanese Yen.
+                }
+            }
 
             if (UpdateDisplay(xOffer)) {
                 // image was available
@@ -710,7 +719,8 @@ void UIScene_DLCOffersMenu::GetDLCInfo(int iOfferC, bool bUpdateOnly) {
 
                 if (wcsncmp(L"Minecraft ", wstrTemp.c_str(), 10) == 0) {
                     app.DebugPrintf("Removing Minecraft from name\n");
-                    wstrTemp = wstrTemp.substr(10);
+                    WCHAR* pwchNewName = (WCHAR*)wstrTemp.c_str();
+                    wstrTemp = &pwchNewName[10];
                 }
 
 #ifdef _XBOX_ONE
@@ -792,7 +802,7 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(
 #endif
 
     if (dlc != NULL) {
-        wchar_t* cString = dlc->wchBanner;
+        WCHAR* cString = dlc->wchBanner;
 
         // is the file in the local DLC images?
         // is the file in the TMS XZP?
@@ -819,8 +829,8 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(
                 // m_bitmapIconOfferImage.setTextureName(L"");
             } else {
                 if (hasRegisteredSubstitutionTexture(cString) == false) {
-                    std::uint8_t* pData = NULL;
-                    unsigned int dwSize = 0;
+                    BYTE* pData = NULL;
+                    DWORD dwSize = 0;
                     app.GetMemFileDetails(cString, &pData, &dwSize);
                     // set the image
 #ifdef _XBOX_ONE

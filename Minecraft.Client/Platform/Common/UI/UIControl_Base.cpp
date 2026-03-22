@@ -6,7 +6,7 @@
 
 UIControl_Base::UIControl_Base() {
     m_bLabelChanged = false;
-    m_label = L"";
+    m_label;
     m_id = 0;
 }
 
@@ -25,7 +25,7 @@ bool UIControl_Base::setupControl(UIScene* scene, IggyValuePath* parent,
 void UIControl_Base::tick() {
     UIControl::tick();
 
-    if (m_bLabelChanged) {
+    if (m_label.needsUpdating() || m_bLabelChanged) {
         // app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
         m_bLabelChanged = false;
 
@@ -43,11 +43,12 @@ void UIControl_Base::tick() {
         IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(),
                                                 &result, getIggyValuePath(),
                                                 m_setLabelFunc, 1, value);
+
+        m_label.setUpdated();
     }
 }
 
-void UIControl_Base::setLabel(const std::wstring& label, bool instant,
-                              bool force) {
+void UIControl_Base::setLabel(UIString label, bool instant, bool force) {
     if (force ||
         ((!m_label.empty() || !label.empty()) && m_label.compare(label) != 0))
         m_bLabelChanged = true;
@@ -71,11 +72,6 @@ void UIControl_Base::setLabel(const std::wstring& label, bool instant,
                                                 &result, getIggyValuePath(),
                                                 m_setLabelFunc, 1, value);
     }
-}
-
-void UIControl_Base::setLabel(const std::string& label) {
-    std::wstring wlabel = convStringToWstring(label);
-    setLabel(wlabel);
 }
 
 const wchar_t* UIControl_Base::getLabel() {

@@ -82,6 +82,8 @@ private:
     bool m_bPopulatedOnce;
     bool m_bReady;
 
+    LeaderboardInterface m_interface;
+
     UIControl_LeaderboardList m_listEntries;
     UIControl_Label m_labelFilter, m_labelLeaderboard, m_labelEntries,
         m_labelInfo;
@@ -117,7 +119,8 @@ protected:
     virtual std::wstring getMoviePath();
 
 public:
-    void handleReload();
+    virtual void tick();
+    virtual void handleReload();
 
     // INPUT
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,

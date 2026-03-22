@@ -141,6 +141,8 @@ void UIScene_JoinMenu::tick() {
             app.GetGameHostOption(uiGameHostSettings, eGameHostOption_GameType);
         if (option == GameType::CREATIVE->getId()) {
             m_labelValues[eLabel_GameType].init(app.GetString(IDS_CREATIVE));
+        } else if (option == GameType::ADVENTURE->getId()) {
+            m_labelValues[eLabel_GameType].init(app.GetString(IDS_ADVENTURE));
         } else {
             m_labelValues[eLabel_GameType].init(app.GetString(IDS_SURVIVAL));
         }
@@ -240,10 +242,10 @@ void UIScene_JoinMenu::tick() {
         ui.RequestMessageBox(IDS_CONNECTION_FAILED,
                              IDS_DISCONNECTED_SERVER_QUIT, uiIDA, 1, m_iPad,
                              ErrorDialogReturned, this, app.GetStringTable());
+                               IDS_DISCONNECTED_SERVER_QUIT, uiIDA, 1, m_iPad,
+                               ErrorDialogReturned, this);
 #else
-        ui.RequestMessageBox(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK, uiIDA,
-                             1, m_iPad, ErrorDialogReturned, this,
-                             app.GetStringTable());
+                               uiIDA, 1, m_iPad, ErrorDialogReturned, this);
 #endif
     }
 
@@ -353,10 +355,13 @@ void UIScene_JoinMenu::checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
                                               int iPad) {
     UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)lpParam;
 
-    if (hasPrivilege) {
-        pClass->StartSharedLaunchFlow();
-    } else {
         pClass->m_bIgnoreInput = false;
+    if (pClass) {
+        if (hasPrivilege) {
+            pClass->StartSharedLaunchFlow();
+        } else {
+            pClass->m_bIgnoreInput = false;
+        }
     }
 }
 #endif
@@ -383,12 +388,21 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
 
     if (bContinue == true) {
         // It's possible that the player has not signed in - they can back out
-        if (ProfileManager.IsSignedIn(iPad)) {
-            JoinGame(pClass);
+    UIScene_JoinMenu* pClass =
+        (UIScene_JoinMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
+
+    if (pClass) {
+        if (bContinue == true) {
+            // It's possible that the player has not signed in - they can back
+            // out
+            if (ProfileManager.IsSignedIn(iPad)) {
+                JoinGame(pClass);
+            } else {
+                pClass->m_bIgnoreInput = false;
+            }
         } else {
             pClass->m_bIgnoreInput = false;
         }
-    } else {
         pClass->m_bIgnoreInput = false;
     }
     return 0;
@@ -400,6 +414,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     bool noPrivileges = false;
     int signedInUsers = 0;
     int localUsersMask = 0;
+    DWORD dwLocalUsersMask = 0;
     bool isSignedInLive = true;
     int iPadNotSignedInLive = -1;
 
@@ -409,7 +424,6 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     if (app.IsLocalMultiplayerAvailable()) {
         for (unsigned int index = 0; index < XUSER_MAX_COUNT; ++index) {
             if (ProfileManager.IsSignedIn(index)) {
-                ++signedInUsers;
                 if (isSignedInLive && !ProfileManager.IsSignedInLive(index)) {
                     // Record the first non signed in live pad
                     iPadNotSignedInLive = index;
@@ -417,7 +431,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
 
                 if (!ProfileManager.AllowedToPlayMultiplayer(index))
                     noPrivileges = true;
-                localUsersMask |=
+                dwLocalUsersMask |=
                     CGameNetworkManager::GetLocalPlayerMask(index);
                 isSignedInLive =
                     isSignedInLive && ProfileManager.IsSignedInLive(index);
@@ -425,11 +439,9 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         }
     } else {
         if (ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
-            ++signedInUsers;
             if (!ProfileManager.AllowedToPlayMultiplayer(
                     ProfileManager.GetPrimaryPad()))
                 noPrivileges = true;
-            localUsersMask |= CGameNetworkManager::GetLocalPlayerMask(
                 ProfileManager.GetPrimaryPad());
 
             isSignedInLive =
@@ -456,19 +468,18 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
             // npAvailability isn't SCE_OK
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
-            ui.RequestMessageBox(
-                IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                iPadNotSignedInLive, NULL, NULL, app.GetStringTable());
+            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                   iPadNotSignedInLive);
         } else
 #endif
         {
             pClass->m_bIgnoreInput = false;
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_CONFIRM_OK;
-            ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-                                 IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
-                                 ProfileManager.GetPrimaryPad(), NULL, NULL,
-                                 app.GetStringTable());
+            ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
+                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
+                                   ProfileManager.GetPrimaryPad());
         }
         return;
     }
@@ -502,7 +513,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         pClass->m_bIgnoreInput = false;
 
         int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-        if (signedInUsers > 1)
+        if (dwSignedInUsers > 1)
             messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
 
         ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);
@@ -511,10 +522,9 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         pClass->m_bIgnoreInput = false;
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
-        ui.RequestMessageBox(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                             IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
-                             ProfileManager.GetPrimaryPad(), NULL, NULL,
-                             app.GetStringTable());
+        ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                               IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
+                               ProfileManager.GetPrimaryPad());
     } else {
 #if defined(__ORBIS__) || defined(__PSVITA__)
         bool chatRestricted = false;
@@ -527,7 +537,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
         }
 #endif
         CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame(
-            pClass->m_selectedSession, localUsersMask);
+            pClass->m_selectedSession, dwLocalUsersMask);
 
         // Alert the app the we no longer want to be informed of ethernet
         // connections
@@ -548,9 +558,9 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
             } else {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(IDS_CONNECTION_FAILED, exitReasonStringId,
-                                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                                     NULL, NULL, app.GetStringTable());
+                ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
+                                       exitReasonStringId, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
                 exitReasonStringId = -1;
 
                 ui.NavigateToHomeMenu();

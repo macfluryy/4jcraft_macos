@@ -17,12 +17,16 @@ UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
 #endif
 
     bool bSkipESRB = false;
+    bool bChina = false;
 #if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
     bSkipESRB = app.GetProductSKU() != e_sku_SCEA;
 #elif defined(_XBOX) || defined(_DURANGO)
     bSkipESRB = !ProfileManager.LocaleIsUSorCanada();
 #endif
 
+#ifdef _DURANGO
+    bChina = ProfileManager.LocaleIsChina();
+#endif
     // 4J Stu - These map to values in the Actionscript
 #if defined(_WINDOWS64) || defined(__linux__)
     int platformIdx = 0;
@@ -39,15 +43,19 @@ UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
 #endif
 
     IggyDataValue result;
-    IggyDataValue value[2];
+    IggyDataValue value[3];
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = platformIdx;
 
     value[1].type = IGGY_DATATYPE_boolean;
-    value[1].boolval = bSkipESRB;
+    value[1].boolval = bChina ? true : bSkipESRB;
+
+    value[2].type = IGGY_DATATYPE_boolean;
+    value[2].boolval = bChina;
+
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
-                                            m_funcSetIntroPlatform, 2, value);
+                                            m_funcSetIntroPlatform, 3, value);
 
 #ifdef __PSVITA__
     // initialise vita touch controls with ids

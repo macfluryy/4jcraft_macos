@@ -44,7 +44,7 @@ public:
     virtual void tick();
 
     void init(int index);
-
+    virtual void ReInit();
     void render(IggyCustomDrawCallbackRegion* region);
 
     void updateState();

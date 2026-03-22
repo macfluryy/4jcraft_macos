@@ -14,11 +14,11 @@ const int UIScene_LeaderboardsMenu::TitleIcons
     [UIScene_LeaderboardsMenu::NUM_LEADERBOARDS][7] = {
         {UIControl_LeaderboardList::e_ICON_TYPE_WALKED,
          UIControl_LeaderboardList::e_ICON_TYPE_FALLEN, Item::minecart_Id,
-         Item::boat_Id, 0},
-        {Tile::dirt_Id, Tile::stoneBrick_Id, Tile::sand_Id, Tile::rock_Id,
+         Item::boat_Id, NULL},
+        {Tile::dirt_Id, Tile::cobblestone_Id, Tile::sand_Id, Tile::stone_Id,
          Tile::gravel_Id, Tile::clay_Id, Tile::obsidian_Id},
-        {Item::egg_Id, Item::wheat_Id, Tile::mushroom1_Id, Tile::reeds_Id,
-         Item::milk_Id, Tile::pumpkin_Id, 0},
+        {Item::egg_Id, Item::wheat_Id, Tile::mushroom_brown_Id, Tile::reeds_Id,
+         Item::bucket_milk_Id, Tile::pumpkin_Id, NULL},
         {UIControl_LeaderboardList::e_ICON_TYPE_ZOMBIE,
          UIControl_LeaderboardList::e_ICON_TYPE_SKELETON,
          UIControl_LeaderboardList::e_ICON_TYPE_CREEPER,
@@ -77,7 +77,7 @@ const UIScene_LeaderboardsMenu::LeaderboardDescriptor UIScene_LeaderboardsMenu::
 
 UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
                                                    UILayer* parentLayer)
-    : UIScene(iPad, parentLayer) {
+    : UIScene(iPad, parentLayer), m_interface(LeaderboardManager::Instance()) {
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
@@ -93,8 +93,6 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
 
     // Alert the app the we want to be informed of ethernet connections
     app.SetLiveLinkRequired(true);
-
-    LeaderboardManager::Instance()->OpenSession();
 
     // GetFriends();
 
@@ -121,9 +119,6 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
 }
 
 UIScene_LeaderboardsMenu::~UIScene_LeaderboardsMenu() {
-    LeaderboardManager::Instance()->CancelOperation();
-    LeaderboardManager::Instance()->CloseSession();
-
     // Alert the app the we no longer want to be informed of ethernet
     // connections
     app.SetLiveLinkRequired(false);
@@ -198,6 +193,11 @@ void UIScene_LeaderboardsMenu::updateComponents() {
 
 std::wstring UIScene_LeaderboardsMenu::getMoviePath() {
     return L"LeaderboardMenu";
+}
+
+void UIScene_LeaderboardsMenu::tick() {
+    UIScene::tick();
+    m_interface.tick();
 }
 
 void UIScene_LeaderboardsMenu::handleReload() {
@@ -493,16 +493,16 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex) {
     }
 
     switch (filtermode) {
-        case LeaderboardManager::eFM_TopRank:
-            LeaderboardManager::Instance()->ReadStats_TopRank(
+        case LeaderboardManager::eFM_TopRank: {
+            m_interface.ReadStats_TopRank(
                 this, m_currentDifficulty,
                 (LeaderboardManager::EStatsType)m_currentLeaderboard,
                 m_newEntryIndex, m_newReadSize);
-            break;
+        } break;
         case LeaderboardManager::eFM_MyScore: {
             PlayerUID uid;
             ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &uid, true);
-            LeaderboardManager::Instance()->ReadStats_MyScore(
+            m_interface.ReadStats_MyScore(
                 this, m_currentDifficulty,
                 (LeaderboardManager::EStatsType)m_currentLeaderboard,
                 uid /*ignored on PS3*/, m_newReadSize);
@@ -510,7 +510,7 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex) {
         case LeaderboardManager::eFM_Friends: {
             PlayerUID uid;
             ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &uid, true);
-            LeaderboardManager::Instance()->ReadStats_Friends(
+            m_interface.ReadStats_Friends(
                 this, m_currentDifficulty,
                 (LeaderboardManager::EStatsType)m_currentLeaderboard,
                 uid /*ignored on PS3*/, m_newEntryIndex, m_newReadSize);
@@ -537,12 +537,10 @@ bool UIScene_LeaderboardsMenu::OnStatsReadComplete(
     bool ret;
 
     // app.DebugPrintf("Leaderboards read %d stats\n", numResults);
-    if (retIn == LeaderboardManager::eStatsReturn_Success) {
-        m_numStats = numResults;
-        m_stats = results;
-        ret = RetrieveStats();
-    } else
-        ret = true;
+
+    m_numStats = numResults;
+    m_stats = results;
+    ret = RetrieveStats();
 
     // else LeaderboardManager::Instance()->SetStatsRetrieved(false);
 
@@ -1062,13 +1060,12 @@ void UIScene_LeaderboardsMenu::handleTimerComplete(int id) {
                 // leaderboards
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
-                C4JStorage::EMessageResult result = ui.RequestMessageBox(
+                C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                     IDS_CONNECTION_LOST,
                     g_NetworkManager.CorrectErrorIDS(
                         IDS_CONNECTION_LOST_LIVE_NO_EXIT),
                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                    UIScene_LeaderboardsMenu::ExitLeaderboards, this,
-                    app.GetStringTable());
+                    UIScene_LeaderboardsMenu::ExitLeaderboards, this);
             }
 #endif
             break;

@@ -42,6 +42,11 @@ static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =
         {IDS_HOW_TO_PLAY_TRADING,
          UIScene_HowToPlay::eHowToPlay_LabelTrading_Inventory,
          5},                                   // eHowToPlay_Trading
+        {IDS_HOW_TO_PLAY_HORSES, 0, 0},        // eHowToPlay_Horses
+        {IDS_HOW_TO_PLAY_BEACONS, 0, 0},       // eHowToPlay_Beacons
+        {IDS_HOW_TO_PLAY_FIREWORKS, 0, 0},     // eHowToPlay_Fireworks
+        {IDS_HOW_TO_PLAY_HOPPERS, 0, 0},       // eHowToPlay_Hoppers
+        {IDS_HOW_TO_PLAY_DROPPERS, 0, 0},      // eHowToPlay_Droppers
         {IDS_HOW_TO_PLAY_NETHERPORTAL, 0, 0},  // eHowToPlay_NetherPortal
         {IDS_HOW_TO_PLAY_THEEND, 0, 0},        // eHowToPlay_NetherPortal
 #ifdef _XBOX
@@ -73,6 +78,12 @@ int gs_pageToFlashMapping[eHowToPlay_NumPages] = {
     15,  // eHowToPlay_Breeding,
     22,  // eHowToPlay_Trading,
 
+    24,  // eHowToPlay_Horses
+    25,  // eHowToPlay_Beacons
+    26,  // eHowToPlay_Fireworks
+    27,  // eHowToPlay_Hoppers
+    28,  // eHowToPlay_Droppers
+
     16,  // eHowToPlay_NetherPortal,
     17,  // eHowToPlay_TheEnd,
 #ifdef _XBOX
@@ -103,7 +114,7 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void* initData,
     m_labels[eHowToPlay_LabelLCInventory].init(inventoryString);
     m_labels[eHowToPlay_LabelCreativeInventory].init(
         app.GetString(IDS_GROUPNAME_BUILDING_BLOCKS));
-    m_labels[eHowToPlay_LabelLCChest].init(app.GetString(IDS_CHEST));
+    m_labels[eHowToPlay_LabelLCChest].init(app.GetString(IDS_CHEST_LARGE));
     m_labels[eHowToPlay_LabelSCInventory].init(inventoryString);
     m_labels[eHowToPlay_LabelSCChest].init(app.GetString(IDS_CHEST));
     m_labels[eHowToPlay_LabelIInventory].init(inventoryString);
@@ -128,6 +139,21 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void* initData,
         app.GetString(IDS_ITEM_EMERALD));
     m_labels[eHowToPlay_LabelTrading_NeededForTrade].init(
         app.GetString(IDS_REQUIRED_ITEMS_FOR_TRADE));
+
+    m_labels[eHowToPlay_LabelBeacon_PrimaryPower].init(
+        app.GetString(IDS_CONTAINER_BEACON_PRIMARY_POWER));
+    m_labels[eHowToPlay_LabelBeacon_SecondaryPower].init(
+        app.GetString(IDS_CONTAINER_BEACON_SECONDARY_POWER));
+
+    m_labels[eHowToPlay_LabelFireworksText].init(
+        app.GetString(IDS_HOW_TO_PLAY_MENU_FIREWORKS));
+    m_labels[eHowToPlay_LabelFireworksInventory].init(inventoryString.c_str());
+
+    m_labels[eHowToPlay_LabelHopperText].init(app.GetString(IDS_TILE_HOPPER));
+    m_labels[eHowToPlay_LabelHopperInventory].init(inventoryString.c_str());
+
+    m_labels[eHowToPlay_LabelDropperText].init(app.GetString(IDS_TILE_DROPPER));
+    m_labels[eHowToPlay_LabelDropperInventory].init(inventoryString.c_str());
 
     wsTemp = app.GetString(IDS_VILLAGER_OFFERS_ITEM);
     wsTemp = replaceAll(wsTemp, L"{*VILLAGER_TYPE*}",
@@ -162,18 +188,14 @@ void UIScene_HowToPlay::updateTooltips() {
     int iPage = (int)(m_eCurrPage);
 
     int firstPage = eHowToPlay_WhatsNew;
-#ifdef __PS3__
-    // If it's the blu ray, or the first Japanese digital game, there's no
-    // What's New until the first patch, which will take this line out
-    if (StorageManager.GetBootTypeDisc() ||
-        (app.GetProductSKU() == e_sku_SCEJ)) {
-        ++firstPage;
-    }
-#elif defined(__ORBIS__) || defined(_DURANGO) || defined(__PSVITA__)
-    // No What's New for the first PS4 and Xbox One builds
-    if (true) {
-        ++firstPage;
-    }
+
+    // 4J Stu - Add back for future platforms
+#if 0
+	// No What's New for the first PS4 and Xbox One builds
+	if(true)
+	{
+		++firstPage;
+	}
 #endif
 
     int iA = -1;
@@ -224,27 +246,18 @@ void UIScene_HowToPlay::handleInput(int iPad, int key, bool repeat,
                 // Previous page
                 int iPrevPage = (int)(m_eCurrPage)-1;
 
-#ifdef __PS3__
-                // If it's the blu ray, or the first Japanese digital game,
-                // there's no What's New until the first patch, which will take
-                // this line out
-                if (StorageManager.GetBootTypeDisc() ||
-                    (app.GetProductSKU() == e_sku_SCEJ)) {
-                    if (iPrevPage >= 0 &&
-                        !((iPrevPage == eHowToPlay_WhatsNew))) {
-                        StartPage((EHowToPlayPage)(iPrevPage));
-                        ui.PlayUISFX(eSFX_Press);
-                    }
-                } else
-#elif defined(__ORBIS__) || defined(_DURANGO) || defined(__PSVITA__)
-                // No What's New for the first PS4 and Xbox One builds
-                if (true) {
-                    if (iPrevPage >= 0 &&
-                        !((iPrevPage == eHowToPlay_WhatsNew))) {
-                        StartPage((EHowToPlayPage)(iPrevPage));
-                        ui.PlayUISFX(eSFX_Press);
-                    }
-                } else
+                // 4J Stu - Add back for future platforms
+#if 0
+			// No What's New for the first PS4 and Xbox One builds
+			if(true)
+			{
+				if ( iPrevPage >= 0 && !((iPrevPage==eHowToPlay_WhatsNew))) 
+				{
+					StartPage( ( EHowToPlayPage )( iPrevPage ) );
+					ui.PlayUISFX(eSFX_Press);
+				}
+			}
+			else
 #endif
                 {
                     if (iPrevPage >= 0) {
@@ -275,12 +288,10 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
         app.FormatHTMLString(m_iPad, app.GetString(pDef->m_iTextStringID));
     // 4J-PB - replace the title with the platform specific title, and the
     // platform name
-//	replacedText =
-//replaceAll(replacedText,L"{*TITLE_UPDATE_NAME*}",app.GetString(IDS_TITLE_UPDATE_NAME));
-#ifndef _WINDOWS64
+    //	replacedText =
+    // replaceAll(replacedText,L"{*TITLE_UPDATE_NAME*}",app.GetString(IDS_TITLE_UPDATE_NAME));
     replacedText = replaceAll(replacedText, L"{*KICK_PLAYER_DESCRIPTION*}",
                               app.GetString(IDS_KICK_PLAYER_DESCRIPTION));
-#endif
 #ifdef _XBOX_ONE
     replacedText = replaceAll(replacedText, L"{*PLATFORM_NAME*}",
                               app.GetString(IDS_PLATFORM_NAME));
@@ -290,6 +301,14 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     replacedText =
         replaceAll(replacedText, L"{*DISABLES_ACHIEVEMENTS*}",
                    app.GetString(IDS_HOST_OPTION_DISABLES_ACHIEVEMENTS));
+
+    // 4J-JEV: Temporary fix: LOC: Minecraft: XB1: KO: Font: Uncategorized:
+    // Squares appear instead of hyphens in FIREWORKS description
+    if (!ui.UsingBitmapFont()) {
+        replacedText = replaceAll(replacedText, L"\u00A9", L"(C)");
+        replacedText = replaceAll(replacedText, L"\u00AE", L"(R)");
+        replacedText = replaceAll(replacedText, L"\u2013", L"-");
+    }
 
     // strip out any tab characters and repeated spaces
     stripWhitespaceForHtml(replacedText, true);
@@ -304,7 +323,7 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     std::vector<std::wstring> paragraphs;
     int lastIndex = 0;
     for (int index = finalText.find(L"\r\n", lastIndex, 2);
-         index != std::wstring::npos;
+         index != wstring::npos;
          index = finalText.find(L"\r\n", lastIndex, 2)) {
         paragraphs.push_back(finalText.substr(lastIndex, index - lastIndex) +
                              L" ");
@@ -322,14 +341,9 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = gs_pageToFlashMapping[(int)ePage];
 
-    std::vector<std::u16string> conv;
-    conv.reserve(paragraphs.size());
-
     for (unsigned int i = 0; i < paragraphs.size(); ++i) {
-        conv.push_back(convWstringToU16string(paragraphs[i]));
-
-        stringVal[i].string = conv[i].c_str();
-        stringVal[i].length = conv[i].length();
+        stringVal[i].string = (IggyUTF16*)paragraphs[i].c_str();
+        stringVal[i].length = paragraphs[i].length();
         value[i + 1].type = IGGY_DATATYPE_string_UTF16;
         value[i + 1].string16 = stringVal[i];
     }

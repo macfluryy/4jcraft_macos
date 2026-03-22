@@ -62,6 +62,18 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
      eSmallText},
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
+
+    // Added credit for horses
+    {L"Developers of Mo' Creatures:", NO_TRANSLATED_STRING,
+     NO_TRANSLATED_STRING, eExtraLargeText},
+    {L"John Olarte (DrZhark)", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
+     eSmallText},
+    {L"Kent Christian Jensen", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
+     eSmallText},
+    {L"Dan Roque", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
+    {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
+     eSmallText},  // extra blank line
+
     {L"4J Studios", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eExtraLargeText},
     {L"%ls", IDS_CREDITS_PROGRAMMING, NO_TRANSLATED_STRING, eLargeText},
@@ -758,19 +770,35 @@ void UIScene_Credits::tick() {
         {
             if (pDef->m_iStringID[0] == CREDIT_ICON) {
                 addImage((ECreditIcons)pDef->m_iStringID[1]);
-            } else if (pDef->m_iStringID[0] == NO_TRANSLATED_STRING) {
-                setNextLabel(pDef->m_Text, pDef->m_eType);
             } else  // using additional translated string.
             {
+                std::wstring sanitisedString = std::wstring(pDef->m_Text);
+
+                // 4J-JEV: Some DLC credits contain copyright or registered
+                // symbols that are not rendered in some fonts.
+                if (!ui.UsingBitmapFont()) {
+                    sanitisedString =
+                        replaceAll(sanitisedString, L"\u00A9", L"(C)");
+                    sanitisedString =
+                        replaceAll(sanitisedString, L"\u00AE", L"(R)");
+                    sanitisedString =
+                        replaceAll(sanitisedString, L"\u2013", L"-");
+                }
+
                 LPWSTR creditsString = new wchar_t[128];
-                if (pDef->m_iStringID[1] != NO_TRANSLATED_STRING) {
-                    swprintf(creditsString, 128, pDef->m_Text,
+                if (pDef->m_iStringID[0] == NO_TRANSLATED_STRING) {
+                    ZeroMemory(creditsString, 128);
+                    memcpy(creditsString, sanitisedString.c_str(),
+                           sizeof(WCHAR) * sanitisedString.length());
+                } else if (pDef->m_iStringID[1] != NO_TRANSLATED_STRING) {
+                    swprintf(creditsString, 128, sanitisedString.c_str(),
                              app.GetString(pDef->m_iStringID[0]),
                              app.GetString(pDef->m_iStringID[1]));
                 } else {
-                    swprintf(creditsString, 128, pDef->m_Text,
+                    swprintf(creditsString, 128, sanitisedString.c_str(),
                              app.GetString(pDef->m_iStringID[0]));
                 }
+
                 setNextLabel(creditsString, pDef->m_eType);
                 delete[] creditsString;
             }

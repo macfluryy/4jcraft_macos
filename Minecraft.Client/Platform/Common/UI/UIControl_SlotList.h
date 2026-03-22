@@ -16,6 +16,8 @@ public:
     virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
                               const std::string& controlName);
 
+    virtual void ReInit();
+
     void addSlot(int id);
     void addSlots(int iStartValue, int iCount);
 

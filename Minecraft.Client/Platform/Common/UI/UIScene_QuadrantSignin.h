@@ -9,7 +9,9 @@ private:
     enum EControllerStatus {
         eControllerStatus_ConnectController,
         eControllerStatus_PressToJoin,
-        eControllerStatus_PlayerDetails
+        eControllerStatus_PlayerDetails,
+        eControllerStatus_PressToJoin_LoggedIn,
+        eControllerStatus_PressToJoin_NoController,
     };
 
     bool m_bIgnoreInput;
@@ -102,7 +104,14 @@ public:
                              bool released, bool& handled);
 
 private:
+#ifdef _XBOX_ONE
+    static int SignInReturned(void* pParam, bool bContinue, int iPad,
+                              int iController);
+#else
     static int SignInReturned(void* pParam, bool bContinue, int iPad);
+#endif
+    static int AvatarReturned(LPVOID lpParam, PBYTE pbThumbnail,
+                              DWORD dwThumbnailBytes);
 
     void updateState();
     void setControllerState(int iPad, EControllerStatus state);
@@ -112,7 +121,8 @@ private:
                                            int iPad);
 #endif
 
-public:
-    static int AvatarReturned(void* lpParam, std::uint8_t* pbThumbnail,
-                              unsigned int thumbnailBytes);
+protected:
+    void _initQuadrants();
+
+    virtual void handleReload();
 };

@@ -23,7 +23,8 @@ protected:
     UIControl_Label m_labelRequest1, m_labelRequest2;
 
     IggyName m_funcMoveSelector, m_funcShowScrollRightArrow,
-        m_funcShowScrollLeftArrow, m_funcSetOfferDescription;
+        m_funcShowScrollLeftArrow, m_funcSetOfferDescription,
+        m_funcSetActiveSlot;
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_ELEMENT(m_controlMainPanel, "MainPanel")
@@ -48,6 +49,7 @@ protected:
     UI_MAP_NAME(m_funcShowScrollRightArrow, L"ShowScrollRightArrow")
     UI_MAP_NAME(m_funcShowScrollLeftArrow, L"ShowScrollLeftArrow")
     UI_MAP_NAME(m_funcSetOfferDescription, L"SetOfferDescription")
+    UI_MAP_NAME(m_funcSetActiveSlot, L"SetSelectorSlot")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
     virtual std::wstring getMoviePath();
@@ -73,9 +75,10 @@ protected:
     virtual void setRequest2RedBox(bool show);
     virtual void setTradeRedBox(int index, bool show);
 
-    virtual void setOfferDescription(
-        const std::wstring& name,
-        std::vector<std::wstring>& unformattedStrings);
+    virtual void setOfferDescription(std::vector<HtmlString>* description);
+
+    virtual void HandleMessage(EUIMessage message, void* data);
+    void handleInventoryUpdated(LPVOID data);
 
     int getPad() { return m_iPad; }
 };

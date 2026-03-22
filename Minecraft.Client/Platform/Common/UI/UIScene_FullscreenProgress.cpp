@@ -148,14 +148,7 @@ void UIScene_FullscreenProgress::tick() {
     }
 
     int code = thread->GetExitCode();
-    const unsigned int exitcode = static_cast<unsigned int>(code);
-
-    static int s_FPTickCount = 0;
-    if (s_FPTickCount % 60 == 0)
-        app.DebugPrintf("[FP] tick #%d  exitcode=%u  STILL_ACTIVE=%u\n",
-                        s_FPTickCount, exitcode,
-                        static_cast<unsigned int>(STILL_ACTIVE));
-    s_FPTickCount++;
+    DWORD exitcode = *((DWORD*)&code);
 
     // app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
 
@@ -189,12 +182,11 @@ void UIScene_FullscreenProgress::tick() {
 
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestMessageBox(
+                ui.RequestErrorMessage(
                     g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_FAILED),
                     g_NetworkManager.CorrectErrorIDS(
                         IDS_CONNECTION_LOST_SERVER),
-                    uiIDA, 1, XUSER_INDEX_ANY, NULL, NULL,
-                    app.GetStringTable());
+                    uiIDA, 1, XUSER_INDEX_ANY);
 
                 ui.NavigateToHomeMenu();
                 ui.UpdatePlayerBasePositions();
@@ -204,6 +196,11 @@ void UIScene_FullscreenProgress::tick() {
                 (!m_bWasCancelled)) {
                 m_threadCompleted = true;
                 m_buttonConfirm.setVisible(true);
+                // 4J-TomK - rebuild touch after confirm button made visible
+                // again
+#ifdef __PSVITA__
+                ui.TouchBoxRebuild(this);
+#endif
                 updateTooltips();
             } else {
                 if (m_bWasCancelled) {

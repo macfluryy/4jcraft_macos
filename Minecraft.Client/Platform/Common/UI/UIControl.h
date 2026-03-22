@@ -17,6 +17,7 @@ public:
         eLabel,
         eLeaderboardList,
         eMinecraftPlayer,
+        eMinecraftHorse,
         ePlayerList,
         ePlayerSkinPreview,
         eProgress,

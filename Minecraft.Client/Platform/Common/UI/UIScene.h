@@ -179,6 +179,10 @@ public:
     // this scenes layers should be hidden
     virtual bool hidesLowerScenes() { return m_hasTickedOnce; }
 
+    // Returns true if this scene should block input to lower scenes (works like
+    // hidesLowerScenes but doesn't interfere with rendering)
+    virtual bool blocksInput() { return false; }
+
     // returns main panel if controls are not living in the root
     virtual UIControl* GetMainPanel();
 
@@ -272,6 +276,9 @@ public:
 #ifdef _XBOX_ONE
     virtual void HandleDLCLicenseChange() {}
 #endif
+
+    virtual void HandleMessage(EUIMessage message, void* data);
+
     void registerSubstitutionTexture(const std::wstring& textureName,
                                      std::uint8_t* pbData,
                                      unsigned int dwLength,

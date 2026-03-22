@@ -15,6 +15,10 @@ class SignTileEntity;
 class LevelGenerationOptions;
 class LocalPlayer;
 class Merchant;
+class EntityHorse;
+class BeaconTileEntity;
+class Slot;
+class AbstractContainerMenu;
 
 // 4J Stu - Structs shared by Iggy and Xui scenes.
 typedef struct _UIVec2D {
@@ -70,6 +74,7 @@ typedef struct _EnchantingScreenInput {
     int z;
     int iPad;
     bool bSplitscreen;
+    std::wstring name;
 } EnchantingScreenInput;
 
 // Furnace
@@ -91,6 +96,16 @@ typedef struct _CraftingPanelScreenInput {
     int z;
 } CraftingPanelScreenInput;
 
+// Fireworks
+typedef struct _FireworksScreenInput {
+    std::shared_ptr<LocalPlayer> player;
+    bool bSplitscreen;
+    int iPad;
+    int x;
+    int y;
+    int z;
+} FireworksScreenInput;
+
 // Trading
 typedef struct _TradingScreenInput {
     std::shared_ptr<Inventory> inventory;
@@ -110,6 +125,31 @@ typedef struct _AnvilScreenInput {
     int iPad;
     bool bSplitscreen;
 } AnvilScreenInput;
+
+// Hopper
+typedef struct _HopperScreenInput {
+    std::shared_ptr<Inventory> inventory;
+    std::shared_ptr<Container> hopper;
+    int iPad;
+    bool bSplitscreen;
+} HopperScreenInput;
+
+// Horse
+typedef struct _HorseScreenInput {
+    std::shared_ptr<Inventory> inventory;
+    std::shared_ptr<Container> container;
+    std::shared_ptr<EntityHorse> horse;
+    int iPad;
+    bool bSplitscreen;
+} HorseScreenInput;
+
+// Beacon
+typedef struct _BeaconScreenInput {
+    std::shared_ptr<Inventory> inventory;
+    std::shared_ptr<BeaconTileEntity> beacon;
+    int iPad;
+    bool bSplitscreen;
+} BeaconScreenInput;
 
 // Sign
 typedef struct _SignEntryScreenInput {
@@ -232,6 +272,8 @@ typedef struct _LaunchMoreOptionsMenuInitData {
 
     bool bOnlineSettingChangedBySystem = false;
 
+    bool bDoMobSpawning = false;
+    bool bDoDaylightCycle = false;
     int iPad = -1;
 
     std::uint32_t dwTexturePack = 0;
@@ -239,6 +281,27 @@ typedef struct _LaunchMoreOptionsMenuInitData {
     std::wstring seed = L"";
     int worldSize = 3;
     bool bDisableSaving = false;
+
+    EGameHostOptionWorldSize currentWorldSize;
+    EGameHostOptionWorldSize newWorldSize;
+
+    _LaunchMoreOptionsMenuInitData() {
+        memset(this, 0, sizeof(_LaunchMoreOptionsMenuInitData));
+        bOnlineGame = true;
+        bAllowFriendsOfFriends = true;
+        bPVP = true;
+        bFireSpreads = true;
+        worldSize = 3;
+        seed = L"";
+        bDisableSaving = false;
+        newWorldSize = e_worldSize_Unknown;
+        newWorldSizeOverwriteEdges = false;
+        bMobGriefing = true;
+        bDoMobLoot = true;
+        bDoTileDrops = true;
+        bNaturalRegeneration = true;
+        bDoDaylightCycle = true;
+    }
 } LaunchMoreOptionsMenuInitData;
 
 typedef struct _LoadingInputParams {
@@ -319,13 +382,13 @@ typedef struct {
 
 // Message box
 typedef struct _MessageBoxInfo {
-    unsigned int uiTitle;
-    unsigned int uiText;
-    unsigned int* uiOptionA;
-    unsigned int uiOptionC;
-    unsigned int dwPad;
-    int (*Func)(void*, int, const C4JStorage::EMessageResult);
-    void* lpParam;
+    UINT uiTitle;
+    UINT uiText;
+    UINT* uiOptionA;
+    UINT uiOptionC;
+    DWORD dwPad;
+    int (*Func)(LPVOID, int, const C4JStorage::EMessageResult);
+    LPVOID lpParam;
     // C4JStringTable *pStringTable; // 4J Stu - We don't need this for our
     // internal message boxes
     wchar_t* pwchFormatString;
@@ -359,3 +422,9 @@ typedef struct _CustomDrawData {
         y1;  // the bounding box of the original DisplayObject, in object space
     float mat[16];
 } CustomDrawData;
+
+typedef struct _ItemEditorInput {
+    int iPad;
+    Slot* slot;
+    AbstractContainerMenu* menu;
+} ItemEditorInput;

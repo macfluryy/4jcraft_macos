@@ -44,3 +44,15 @@ public:
     bool CanTouchTrigger(S32 iX, S32 iY);
 #endif
 };
+
+class UIControl_DynamicButtonList : public UIControl_ButtonList {
+protected:
+    std::vector<UIString> m_labels;
+
+public:
+    virtual void tick();
+
+    virtual void addItem(UIString label, int data = -1);
+
+    virtual void removeItem(int index);
+};

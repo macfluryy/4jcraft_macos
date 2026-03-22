@@ -21,7 +21,7 @@ UIScene_ContainerMenu::UIScene_ContainerMenu(int iPad, void* _initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    m_labelChest.init(app.GetString(initData->container->getName()));
+    m_labelChest.init(initData->container->getName());
 
     ContainerMenu* menu =
         new ContainerMenu(initData->inventory, initData->container);

@@ -29,17 +29,17 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
             e_Tutorial_State_Anvil_Menu, this);
     }
 
-    m_repairMenu = new RepairMenu(initData->inventory, initData->level,
-                                  initData->x, initData->y, initData->z,
-                                  pMinecraft->localplayers[iPad]);
+    m_repairMenu =
+        new AnvilMenu(initData->inventory, initData->level, initData->x,
+                      initData->y, initData->z, pMinecraft->localplayers[iPad]);
     m_repairMenu->addSlotListener(this);
 
-    Initialize(iPad, m_repairMenu, true, RepairMenu::INV_SLOT_START,
+    Initialize(iPad, m_repairMenu, true, AnvilMenu::INV_SLOT_START,
                eSectionAnvilUsing, eSectionAnvilMax);
 
-    m_slotListItem1.addSlots(RepairMenu::INPUT_SLOT, 1);
-    m_slotListItem2.addSlots(RepairMenu::ADDITIONAL_SLOT, 1);
-    m_slotListResult.addSlots(RepairMenu::RESULT_SLOT, 1);
+    m_slotListItem1.addSlots(AnvilMenu::INPUT_SLOT, 1);
+    m_slotListItem2.addSlots(AnvilMenu::ADDITIONAL_SLOT, 1);
+    m_slotListResult.addSlots(AnvilMenu::RESULT_SLOT, 1);
 
     bool expensive = false;
     std::wstring m_costString = L"";
@@ -49,14 +49,14 @@ UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
             !pMinecraft->localplayers[iPad]->abilities.instabuild) {
             m_costString = app.GetString(IDS_REPAIR_EXPENSIVE);
             expensive = true;
-        } else if (!m_repairMenu->getSlot(RepairMenu::RESULT_SLOT)->hasItem()) {
+        } else if (!m_repairMenu->getSlot(AnvilMenu::RESULT_SLOT)->hasItem()) {
             // Do nothing
         } else {
             const wchar_t* costString = app.GetString(IDS_REPAIR_COST);
             wchar_t temp[256];
             swprintf(temp, 256, costString, m_repairMenu->cost);
             m_costString = temp;
-            if (!m_repairMenu->getSlot(RepairMenu::RESULT_SLOT)
+            if (!m_repairMenu->getSlot(AnvilMenu::RESULT_SLOT)
                      ->mayPickup(std::dynamic_pointer_cast<Player>(
                          m_inventory->player->shared_from_this()))) {
                 expensive = true;
@@ -81,12 +81,12 @@ std::wstring UIScene_AnvilMenu::getMoviePath() {
 }
 
 void UIScene_AnvilMenu::handleReload() {
-    Initialize(m_iPad, m_menu, true, RepairMenu::INV_SLOT_START,
+    Initialize(m_iPad, m_menu, true, AnvilMenu::INV_SLOT_START,
                eSectionAnvilUsing, eSectionAnvilMax);
 
-    m_slotListItem1.addSlots(RepairMenu::INPUT_SLOT, 1);
-    m_slotListItem2.addSlots(RepairMenu::ADDITIONAL_SLOT, 1);
-    m_slotListResult.addSlots(RepairMenu::RESULT_SLOT, 1);
+    m_slotListItem1.addSlots(AnvilMenu::INPUT_SLOT, 1);
+    m_slotListItem2.addSlots(AnvilMenu::ADDITIONAL_SLOT, 1);
+    m_slotListResult.addSlots(AnvilMenu::RESULT_SLOT, 1);
 }
 
 void UIScene_AnvilMenu::tick() {

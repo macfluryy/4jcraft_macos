@@ -24,22 +24,20 @@ bool UIControl_SpaceIndicatorBar::setupControl(UIScene* scene,
     return success;
 }
 
-void UIControl_SpaceIndicatorBar::init(const std::wstring& label, int id,
-                                       __int64 min, __int64 max) {
+void UIControl_SpaceIndicatorBar::init(UIString label, int id, int64_t min,
+                                       int64_t max) {
     m_label = label;
     m_id = id;
     m_min = min;
     m_max = max;
-
-    const std::u16string convLabel = convWstringToU16string(label);
 
     IggyDataValue result;
     IggyDataValue value[1];
     value[0].type = IGGY_DATATYPE_string_UTF16;
     IggyStringUTF16 stringVal;
 
-    stringVal.string = convLabel.c_str();
-    stringVal.length = convLabel.length();
+    stringVal.string = (IggyUTF16*)label.c_str();
+    stringVal.length = label.length();
     value[0].string16 = stringVal;
 
     IggyResult out =
@@ -63,10 +61,10 @@ void UIControl_SpaceIndicatorBar::reset() {
     setSaveGameOffset(0.0f);
 }
 
-void UIControl_SpaceIndicatorBar::addSave(__int64 size) {
+void UIControl_SpaceIndicatorBar::addSave(int64_t size) {
     float startPercent = (float)((m_currentTotal - m_min)) / (m_max - m_min);
 
-    m_sizeAndOffsets.push_back(std::pair<__int64, float>(size, startPercent));
+    m_sizeAndOffsets.push_back(std::pair<int64_t, float>(size, startPercent));
 
     m_currentTotal += size;
     setTotalSize(m_currentTotal);
@@ -74,7 +72,7 @@ void UIControl_SpaceIndicatorBar::addSave(__int64 size) {
 
 void UIControl_SpaceIndicatorBar::selectSave(int index) {
     if (index >= 0 && index < m_sizeAndOffsets.size()) {
-        std::pair<__int64, float> values = m_sizeAndOffsets[index];
+        std::pair<int64_t, float> values = m_sizeAndOffsets[index];
         setSaveSize(values.first);
         setSaveGameOffset(values.second);
     } else {
@@ -83,7 +81,7 @@ void UIControl_SpaceIndicatorBar::selectSave(int index) {
     }
 }
 
-void UIControl_SpaceIndicatorBar::setSaveSize(__int64 size) {
+void UIControl_SpaceIndicatorBar::setSaveSize(int64_t size) {
     m_currentSave = size;
 
     float percent = (float)((m_currentSave - m_min)) / (m_max - m_min);
@@ -97,7 +95,7 @@ void UIControl_SpaceIndicatorBar::setSaveSize(__int64 size) {
                                getIggyValuePath(), m_setSaveSizeFunc, 1, value);
 }
 
-void UIControl_SpaceIndicatorBar::setTotalSize(__int64 size) {
+void UIControl_SpaceIndicatorBar::setTotalSize(int64_t size) {
     float percent = (float)((m_currentTotal - m_min)) / (m_max - m_min);
 
     IggyDataValue result;

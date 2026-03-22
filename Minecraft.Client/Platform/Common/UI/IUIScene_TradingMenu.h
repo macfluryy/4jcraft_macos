@@ -39,20 +39,20 @@ protected:
     virtual void setRequest2RedBox(bool show) = 0;
     virtual void setTradeRedBox(int index, bool show) = 0;
 
-    virtual void setOfferDescription(
-        const std::wstring& name,
-        std::vector<std::wstring>& unformattedStrings) = 0;
+    virtual void setOfferDescription(std::vector<HtmlString>* description) = 0;
 
     virtual void setRequest1Item(std::shared_ptr<ItemInstance> item);
     virtual void setRequest2Item(std::shared_ptr<ItemInstance> item);
     virtual void setTradeItem(int index, std::shared_ptr<ItemInstance> item);
 
-private:
     void updateDisplay();
+    void HandleInventoryUpdated();
+
+private:
     bool canMake(MerchantRecipe* recipe);
-    std::wstring GetItemDescription(
-        std::shared_ptr<ItemInstance> item,
-        std::vector<std::wstring>& unformattedStrings);
+
+    std::vector<HtmlString>* GetItemDescription(
+        std::shared_ptr<ItemInstance> item);
 
 public:
     std::shared_ptr<Merchant> getMerchant();

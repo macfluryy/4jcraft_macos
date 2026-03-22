@@ -201,8 +201,12 @@ void UIScene_CraftingMenu::handleDestroy() {
     // We need to make sure that we call closeContainer() anytime this menu is
     // closed, even if it is forced to close by some other reason (like the
     // player dying)
-    if (Minecraft::GetInstance()->localplayers[m_iPad] != NULL)
+    if (Minecraft::GetInstance()->localplayers[m_iPad] != NULL &&
+        Minecraft::GetInstance()
+                ->localplayers[m_iPad]
+                ->containerMenu->containerId == m_menu->containerId) {
         Minecraft::GetInstance()->localplayers[m_iPad]->closeContainer();
+    }
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
@@ -425,7 +429,7 @@ void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     float alpha = 1.0f;
     bool decorations = true;
     bool inventoryItem = false;
-    int slotId = parseSlotId(region->name);
+    swscanf((wchar_t*)region->name, L"slot_%d", &slotId);
     if (slotId == -1) {
         app.DebugPrintf("This is not the control we are looking for\n");
     } else if (slotId >= CRAFTING_INVENTORY_SLOT_START &&
@@ -718,6 +722,18 @@ void UIScene_CraftingMenu::updateHighlightAndScrollPositions() {
             getMovie(), &result, IggyPlayerRootPath(getMovie()),
             m_funcSelectVerticalItem, 1, value);
     }
+}
+
+void UIScene_CraftingMenu::HandleMessage(EUIMessage message, void* data) {
+    switch (message) {
+        case eUIMessage_InventoryUpdated:
+            handleInventoryUpdated(data);
+            break;
+    };
+}
+
+void UIScene_CraftingMenu::handleInventoryUpdated(LPVOID data) {
+    HandleInventoryUpdated();
 }
 
 void UIScene_CraftingMenu::updateVSlotPositions(int iSlots, int i) {

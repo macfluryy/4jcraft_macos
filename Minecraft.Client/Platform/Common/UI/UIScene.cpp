@@ -91,6 +91,7 @@ void UIScene::reloadMovie(bool force) {
         (*it)->ReInit();
     }
 
+    updateComponents();
     handleReload();
 
     IggyDataValue result;
@@ -311,11 +312,11 @@ void UIScene::loadMovie() {
     }
 
     byteArray baFile = ui.getMovieData(moviePath.c_str());
-    __int64 beforeLoad = ui.iggyAllocCount;
+    int64_t beforeLoad = ui.iggyAllocCount;
     swf = IggyPlayerCreateFromMemory(baFile.data, baFile.length, NULL);
-    __int64 afterLoad = ui.iggyAllocCount;
+    int64_t afterLoad = ui.iggyAllocCount;
     IggyPlayerInitializeAndTickRS(swf);
-    __int64 afterTick = ui.iggyAllocCount;
+    int64_t afterTick = ui.iggyAllocCount;
 
     if (!swf) {
         app.DebugPrintf("ERROR: Failed to load iggy scene!\n");
@@ -343,8 +344,8 @@ void UIScene::loadMovie() {
 	IggyMemoryUseInfo memoryInfo;
 	rrbool res;
 	int iteration = 0;
-	__int64 totalStatic = 0;
-	__int64 totalDynamic = 0;
+	int64_t totalStatic = 0;
+	int64_t totalDynamic = 0;
 	while(res = IggyDebugGetMemoryUseInfo ( swf ,
 		NULL ,
 		0 ,
@@ -372,10 +373,10 @@ void UIScene::getDebugMemoryUseRecursive(const std::wstring& moviePath,
     rrbool res;
     IggyMemoryUseInfo internalMemoryInfo;
     int internalIteration = 0;
-    while ((res = IggyDebugGetMemoryUseInfo(swf, 0, memoryInfo.subcategory,
-                                            memoryInfo.subcategory_stringlen,
-                                            internalIteration,
-                                            &internalMemoryInfo))) {
+    while (res = IggyDebugGetMemoryUseInfo(swf, NULL, memoryInfo.subcategory,
+                                           memoryInfo.subcategory_stringlen,
+                                           internalIteration,
+                                           &internalMemoryInfo)) {
         app.DebugPrintf(
             app.USER_SR, "%ls - %.*s static: %d ( %d ) dynamic: %d ( %d )\n",
             moviePath.c_str(), internalMemoryInfo.subcategory_stringlen,
@@ -391,17 +392,17 @@ void UIScene::getDebugMemoryUseRecursive(const std::wstring& moviePath,
     }
 }
 
-void UIScene::PrintTotalMemoryUsage(__int64& totalStatic,
-                                    __int64& totalDynamic) {
+void UIScene::PrintTotalMemoryUsage(int64_t& totalStatic,
+                                    int64_t& totalDynamic) {
     if (!swf) return;
 
     IggyMemoryUseInfo memoryInfo;
     rrbool res;
     int iteration = 0;
-    __int64 sceneStatic = 0;
-    __int64 sceneDynamic = 0;
-    while ((res = IggyDebugGetMemoryUseInfo(swf, 0, "", 0, iteration,
-                                            &memoryInfo))) {
+    int64_t sceneStatic = 0;
+    int64_t sceneDynamic = 0;
+    while (res = IggyDebugGetMemoryUseInfo(swf, NULL, "", 0, iteration,
+                                           &memoryInfo)) {
         sceneStatic += memoryInfo.static_allocation_bytes;
         sceneDynamic += memoryInfo.dynamic_allocation_bytes;
         totalStatic += memoryInfo.static_allocation_bytes;
@@ -816,7 +817,7 @@ void UIScene::gainFocus() {
         app.DebugPrintf("Sent gain focus event to scene\n");
         */
         bHasFocus = true;
-        if (app.GetGameStarted() && needsReloaded()) {
+        if (needsReloaded()) {
             reloadMovie();
         }
 
@@ -864,7 +865,9 @@ void UIScene::handleGainFocus(bool navBack) {
 #endif
 }
 
-void UIScene::updateTooltips() { ui.SetTooltips(m_iPad, -1); }
+void UIScene::updateTooltips() {
+    if (!ui.IsReloadingSkin()) ui.SetTooltips(m_iPad, -1);
+}
 
 void UIScene::sendInputToMovie(int key, bool repeat, bool pressed,
                                bool released) {
@@ -888,6 +891,7 @@ void UIScene::sendInputToMovie(int key, bool repeat, bool pressed,
 }
 
 int UIScene::convertGameActionToIggyKeycode(int action) {
+    // TODO: This action to key mapping should probably use the control mapping
     int keycode = -1;
     switch (action) {
 #ifdef __ORBIS__
@@ -927,7 +931,14 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
             keycode = IGGY_KEYCODE_PAGE_UP;
             break;
         case ACTION_MENU_PAGEDOWN:
-            keycode = IGGY_KEYCODE_PAGE_DOWN;
+#ifdef __PSVITA__
+            if (!InputManager.IsVitaTV()) {
+                keycode = IGGY_KEYCODE_F6;
+            } else
+#endif
+            {
+                keycode = IGGY_KEYCODE_PAGE_DOWN;
+            }
             break;
         case ACTION_MENU_RIGHT_SCROLL:
             keycode = IGGY_KEYCODE_F3;
@@ -938,6 +949,7 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
         case ACTION_MENU_STICK_PRESS:
             break;
         case ACTION_MENU_OTHER_STICK_PRESS:
+            keycode = IGGY_KEYCODE_F5;
             break;
         case ACTION_MENU_OTHER_STICK_UP:
             keycode = IGGY_KEYCODE_F11;
@@ -1211,7 +1223,9 @@ void UIScene::UpdateSceneControls() {
 }
 #endif
 
-size_t UIScene::GetCallbackUniqueId() {
+void UIScene::HandleMessage(EUIMessage message, void* data) {}
+
+std::size_t UIScene::GetCallbackUniqueId() {
     if (m_callbackUniqueId == 0) {
         m_callbackUniqueId = ui.RegisterForCallbackId(this);
     }

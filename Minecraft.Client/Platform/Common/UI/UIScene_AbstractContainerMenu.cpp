@@ -50,8 +50,11 @@ void UIScene_AbstractContainerMenu::handleDestroy() {
     // packet loss. We need to make sure that we call closeContainer() anytime
     // this menu is closed, even if it is forced to close by some other reason
     // (like the player dying)
-    if (pMinecraft->localplayers[m_iPad] != NULL)
+    if (pMinecraft->localplayers[m_iPad] != NULL &&
+        pMinecraft->localplayers[m_iPad]->containerMenu->containerId ==
+            m_menu->containerId) {
         pMinecraft->localplayers[m_iPad]->closeContainer();
+    }
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
@@ -206,7 +209,7 @@ void UIScene_AbstractContainerMenu::render(S32 width, S32 height,
     m_needsCacheRendered = m_needsCacheRendered || m_menu->needsRendered();
 
     if (m_needsCacheRendered) {
-        m_expectedCachedSlotCount = 0;
+        m_expectedCachedSlotCount = GetBaseSlotCount();
         unsigned int count = m_menu->getSize();
         for (unsigned int i = 0; i < count; ++i) {
             if (m_menu->getSlot(i)->hasItem()) {
@@ -244,7 +247,10 @@ void UIScene_AbstractContainerMenu::customDraw(
     }
 
     if (item != NULL)
-        customDrawSlotControl(region, m_iPad, item, 1.0f, item->isFoil(), true);
+        customDrawSlotControl(
+            region, m_iPad, item,
+            m_menu->isValidIngredient(item, slotId) ? 1.0f : 0.5f,
+            item->isFoil(), true);
 }
 
 void UIScene_AbstractContainerMenu::handleInput(int iPad, int key, bool repeat,
@@ -263,20 +269,24 @@ void UIScene_AbstractContainerMenu::handleInput(int iPad, int key, bool repeat,
 }
 
 void UIScene_AbstractContainerMenu::SetPointerText(
-    const std::wstring& description,
-    std::vector<std::wstring>& unformattedStrings, bool newSlot) {
-    // app.DebugPrintf("Setting pointer text\n");
-    m_cursorPath.setLabel(description, false, newSlot);
+    std::vector<HtmlString>* description, bool newSlot) {
+    m_cursorPath.setLabel(HtmlString::Compose(description), false, newSlot);
 }
 
 void UIScene_AbstractContainerMenu::setSectionFocus(ESceneSection eSection,
                                                     int iPad) {
-    if (m_focusSection != eSectionNone) {
-        UIControl* currentFocus = getSection(m_focusSection);
-        if (currentFocus) currentFocus->setFocus(false);
-    }
     UIControl* newFocus = getSection(eSection);
     if (newFocus) newFocus->setFocus(true);
+
+    if (m_focusSection != eSectionNone) {
+        UIControl* currentFocus = getSection(m_focusSection);
+        // 4J-TomK only set current focus to false if it differs from last
+        // (previously this continuously fired iggy functions when they were
+        // identical!
+        if (currentFocus != newFocus)
+            if (currentFocus) currentFocus->setFocus(false);
+    }
+
     m_focusSection = eSection;
 }
 
@@ -295,6 +305,15 @@ std::shared_ptr<ItemInstance> UIScene_AbstractContainerMenu::getSlotItem(
         return slot->getItem();
     else
         return nullptr;
+}
+
+Slot* UIScene_AbstractContainerMenu::getSlot(ESceneSection eSection,
+                                             int iSlot) {
+    Slot* slot = m_menu->getSlot(getSectionStartOffset(eSection) + iSlot);
+    if (slot)
+        return slot;
+    else
+        return NULL;
 }
 
 bool UIScene_AbstractContainerMenu::isSlotEmpty(ESceneSection eSection,

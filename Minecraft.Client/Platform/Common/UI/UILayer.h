@@ -93,8 +93,10 @@ public:
 #ifdef _XBOX_ONE
     virtual void HandleDLCLicenseChange();
 #endif
+    virtual void HandleMessage(EUIMessage message, void* data);
+
     void handleUnlockFullVersion();
     UIScene* FindScene(EUIScene sceneType);
 
-    void PrintTotalMemoryUsage(__int64& totalStatic, __int64& totalDynamic);
+    void PrintTotalMemoryUsage(int64_t& totalStatic, int64_t& totalDynamic);
 };

@@ -29,8 +29,10 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
     m_sliderFov.init(TempString, eControl_FOV, 0, 100,
                      (int)pMinecraft->gameRenderer->GetFovVal());
 
-    float currentTime = pMinecraft->level->getLevelData()->getTime() % 24000;
-    swprintf(TempString, 256, L"Set time (unsafe) (%d)", (int)currentTime);
+    float currentTime =
+        pMinecraft->level->getLevelData()->getGameTime() % 24000;
+    swprintf((WCHAR*)TempString, 256, L"Set time (unsafe) (%d)",
+             (int)currentTime);
     m_sliderTime.init(TempString, eControl_Time, 0, 240, currentTime / 100);
 
     m_buttonRain.init(L"Toggle Rain", eControl_Rain);
@@ -246,7 +248,7 @@ void UIScene_DebugOverlay::handleSliderMove(F64 sliderId, F64 currentValue) {
             // local level tries to predict the time Only works if we are on the
             // host machine, but shouldn't break if not
             MinecraftServer::SetTime(currentValue * 100);
-            pMinecraft->level->getLevelData()->setTime(currentValue * 100);
+            pMinecraft->level->getLevelData()->setGameTime(currentValue * 100);
 
             wchar_t TempString[256];
             float currentTime = currentValue * 100;

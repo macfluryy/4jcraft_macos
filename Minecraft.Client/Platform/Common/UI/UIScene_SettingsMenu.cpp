@@ -11,22 +11,17 @@ UIScene_SettingsMenu::UIScene_SettingsMenu(int iPad, void* initData,
 
     bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
 
-    m_buttons[BUTTON_ALL_OPTIONS].init(app.GetString(IDS_OPTIONS),
-                                       BUTTON_ALL_OPTIONS);
-    m_buttons[BUTTON_ALL_AUDIO].init(app.GetString(IDS_AUDIO),
-                                     BUTTON_ALL_AUDIO);
-    m_buttons[BUTTON_ALL_CONTROL].init(app.GetString(IDS_CONTROL),
-                                       BUTTON_ALL_CONTROL);
-    m_buttons[BUTTON_ALL_GRAPHICS].init(app.GetString(IDS_GRAPHICS),
-                                        BUTTON_ALL_GRAPHICS);
-    m_buttons[BUTTON_ALL_UI].init(app.GetString(IDS_USER_INTERFACE),
-                                  BUTTON_ALL_UI);
-    m_buttons[BUTTON_ALL_RESETTODEFAULTS].init(
-        app.GetString(IDS_RESET_TO_DEFAULTS), BUTTON_ALL_RESETTODEFAULTS);
+    m_buttons[BUTTON_ALL_OPTIONS].init(IDS_OPTIONS, BUTTON_ALL_OPTIONS);
+    m_buttons[BUTTON_ALL_AUDIO].init(IDS_AUDIO, BUTTON_ALL_AUDIO);
+    m_buttons[BUTTON_ALL_CONTROL].init(IDS_CONTROL, BUTTON_ALL_CONTROL);
+    m_buttons[BUTTON_ALL_GRAPHICS].init(IDS_GRAPHICS, BUTTON_ALL_GRAPHICS);
+    m_buttons[BUTTON_ALL_UI].init(IDS_USER_INTERFACE, BUTTON_ALL_UI);
+    m_buttons[BUTTON_ALL_RESETTODEFAULTS].init(IDS_RESET_TO_DEFAULTS,
+                                               BUTTON_ALL_RESETTODEFAULTS);
 
     if (ProfileManager.GetPrimaryPad() != m_iPad) {
-        removeControl(&m_buttons[BUTTON_ALL_AUDIO], true);
-        removeControl(&m_buttons[BUTTON_ALL_GRAPHICS], true);
+        removeControl(&m_buttons[BUTTON_ALL_AUDIO], bNotInGame);
+        removeControl(&m_buttons[BUTTON_ALL_GRAPHICS], bNotInGame);
     }
 
     doHorizontalResizeCheck();
@@ -50,8 +45,8 @@ std::wstring UIScene_SettingsMenu::getMoviePath() {
 
 void UIScene_SettingsMenu::handleReload() {
     if (ProfileManager.GetPrimaryPad() != m_iPad) {
-        removeControl(&m_buttons[BUTTON_ALL_AUDIO], true);
-        removeControl(&m_buttons[BUTTON_ALL_GRAPHICS], true);
+        removeControl(&m_buttons[BUTTON_ALL_AUDIO], bNotInGame);
+        removeControl(&m_buttons[BUTTON_ALL_GRAPHICS], bNotInGame);
     }
 
     doHorizontalResizeCheck();
@@ -134,10 +129,9 @@ void UIScene_SettingsMenu::handlePress(F64 controlId, F64 childId) {
             uiIDA[0] = IDS_CONFIRM_CANCEL;
             uiIDA[1] = IDS_CONFIRM_OK;
 
-            ui.RequestMessageBox(
+            ui.RequestAlertMessage(
                 IDS_DEFAULTS_TITLE, IDS_DEFAULTS_TEXT, uiIDA, 2, m_iPad,
-                &UIScene_SettingsMenu::ResetDefaultsDialogReturned, this,
-                app.GetStringTable(), NULL, 0, false);
+                &UIScene_SettingsMenu::ResetDefaultsDialogReturned, this);
         } break;
     }
 }

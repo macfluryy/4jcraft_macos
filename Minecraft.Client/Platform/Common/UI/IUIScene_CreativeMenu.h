@@ -4,11 +4,8 @@
 // 4J Stu - This class is for code that is common between XUI and Iggy
 
 class SimpleContainer;
-class CreativeInventoryScreen;
 
 class IUIScene_CreativeMenu : public virtual IUIScene_AbstractContainerMenu {
-    friend class CreativeInventoryScreen;
-
 public:
     // 4J Stu - These map directly to the tabs seenon the screen
     enum ECreativeInventoryTabs {
@@ -39,6 +36,8 @@ public:
         eCreativeInventory_Potions_Extended,
         eCreativeInventory_Potions_Level2_Extended,
         eCreativeInventory_Misc,
+        eCreativeInventory_ArtToolsDecorations,
+        eCreativeInventory_ArtToolsMisc,
         eCreativeInventoryGroupsCount
     };
 
@@ -57,6 +56,8 @@ public:
         ECreative_Inventory_Groups* m_staticGroupsA;
         const int m_dynamicGroupsCount;
         ECreative_Inventory_Groups* m_dynamicGroupsA;
+        const int m_debugGroupsCount;
+        ECreative_Inventory_Groups* m_debugGroupsA;
 
     private:
         unsigned int m_pages;
@@ -66,8 +67,10 @@ public:
     public:
         TabSpec(const wchar_t* icon, int descriptionId, int staticGroupsCount,
                 ECreative_Inventory_Groups* staticGroups,
-                int dynamicGroupsCount,
-                ECreative_Inventory_Groups* dynamicGroups);
+                int dynamicGroupsCount = 0,
+                ECreative_Inventory_Groups* dynamicGroups = NULL,
+                int debugGroupsCount = 0,
+                ECreative_Inventory_Groups* debugGroups = NULL);
         ~TabSpec();
 
         void populateMenu(AbstractContainerMenu* menu, int dynamicIndex,
@@ -113,6 +116,7 @@ protected:
     int m_tabPage[eCreativeInventoryTab_COUNT];
 
     void switchTab(ECreativeInventoryTabs tab);
+    void ScrollBar(UIVec2D pointerPos);
     virtual void updateTabHighlightAndText(ECreativeInventoryTabs tab) = 0;
     virtual void updateScrollCurrentPage(int currentPage, int pageCount) = 0;
     virtual ESceneSection GetSectionAndSlotInDirection(ESceneSection eSection,
@@ -136,5 +140,10 @@ protected:
         std::shared_ptr<ItemInstance> itemUnderPointer, bool bIsItemCarried,
         bool bSlotHasItem, bool bCarriedIsSameAsSlot,
         int iSlotStackSizeRemaining, EToolTipItem& buttonA,
-        EToolTipItem& buttonX, EToolTipItem& buttonY, EToolTipItem& buttonRT);
+        EToolTipItem& buttonX, EToolTipItem& buttonY, EToolTipItem& buttonRT,
+        EToolTipItem& buttonBack);
+
+    static void BuildFirework(std::vector<std::shared_ptr<ItemInstance> >* list,
+                              uint8_t type, int color, int sulphur,
+                              bool flicker, bool trail, int fadeColor = -1);
 };

@@ -1,4 +1,4 @@
-#include "../../Minecraft.World/Platform/stdafx.h"
+#include "../../stdafx.h"
 #include "UI.h"
 #include "UIControl_TextInput.h"
 
@@ -17,7 +17,7 @@ bool UIControl_TextInput::setupControl(UIScene* scene, IggyValuePath* parent,
     return success;
 }
 
-void UIControl_TextInput::init(const std::wstring& label, int id) {
+void UIControl_TextInput::init(UIString label, int id) {
     m_label = label;
     m_id = id;
 

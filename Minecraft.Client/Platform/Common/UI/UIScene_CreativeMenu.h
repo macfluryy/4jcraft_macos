@@ -84,7 +84,6 @@ public:
     virtual void handleTouchBoxRebuild();
     virtual void handleTimerComplete(int id);
 #endif
-    virtual void ScrollBar(UIVec2D pointerPos);
 
 private:
     // IUIScene_CreativeMenu

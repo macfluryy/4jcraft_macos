@@ -19,6 +19,12 @@ bool UIControl_SlotList::setupControl(UIScene* scene, IggyValuePath* parent,
     return success;
 }
 
+void UIControl_SlotList::ReInit() {
+    UIControl_Base::ReInit();
+
+    m_lastHighlighted = -1;
+}
+
 void UIControl_SlotList::addSlot(int id) {
     IggyDataValue result;
     IggyDataValue value[3];

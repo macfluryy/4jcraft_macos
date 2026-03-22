@@ -162,7 +162,7 @@ void UILayer::ReloadAll(bool force) {
     if (!m_sceneStack.empty()) {
         int lowestRenderable = 0;
         for (; lowestRenderable < m_sceneStack.size(); ++lowestRenderable) {
-            m_sceneStack[lowestRenderable]->reloadMovie();
+            m_sceneStack[lowestRenderable]->reloadMovie(force);
         }
     }
 }
@@ -221,6 +221,18 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
         case eUIScene_AnvilMenu:
             newScene = new UIScene_AnvilMenu(iPad, initData, this);
             break;
+        case eUIScene_HopperMenu:
+            newScene = new UIScene_HopperMenu(iPad, initData, this);
+            break;
+        case eUIScene_BeaconMenu:
+            newScene = new UIScene_BeaconMenu(iPad, initData, this);
+            break;
+        case eUIScene_HorseMenu:
+            newScene = new UIScene_HorseInventoryMenu(iPad, initData, this);
+            break;
+        case eUIScene_FireworksMenu:
+            newScene = new UIScene_FireworksMenu(iPad, initData, this);
+            break;
 
             // Help and Options
         case eUIScene_HelpAndOptionsMenu:
@@ -249,6 +261,9 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
             break;
         case eUIScene_HowToPlayMenu:
             newScene = new UIScene_HowToPlayMenu(iPad, initData, this);
+            break;
+        case eUIScene_LanguageSelector:
+            newScene = new UIScene_LanguageSelector(iPad, initData, this);
             break;
         case eUIScene_HowToPlay:
             newScene = new UIScene_HowToPlay(iPad, initData, this);
@@ -307,9 +322,6 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
             // Frontend
         case eUIScene_TrialExitUpsell:
             newScene = new UIScene_TrialExitUpsell(iPad, initData, this);
-            app.DebugPrintf(
-                "UILayer::NavigateToScene AFTER UIScene_TrialExitUpsell "
-                "CALL\n");
             break;
         case eUIScene_Intro:
             newScene = new UIScene_Intro(iPad, initData, this);
@@ -349,6 +361,9 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
             break;
         case eUIScene_EULA:
             newScene = new UIScene_EULA(iPad, initData, this);
+            break;
+        case eUIScene_NewUpdateMessage:
+            newScene = new UIScene_NewUpdateMessage(iPad, initData, this);
             break;
 
             // Other
@@ -634,6 +649,11 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
                 m_scenesToDestroy.push_back(scene);
 #endif
             }
+
+            if (scene->getSceneType() == eUIScene_SettingsOptionsMenu) {
+                scene->loseFocus();
+                m_scenesToDestroy.push_back(scene);
+            }
         }
 
         /// UPDATE STACK STATES
@@ -656,6 +676,12 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
             case eUIScene_DispenserMenu:
             case eUIScene_BrewingStandMenu:
             case eUIScene_EnchantingMenu:
+            case eUIScene_TradingMenu:
+            case eUIScene_HopperMenu:
+            case eUIScene_HorseMenu:
+            case eUIScene_FireworksMenu:
+            case eUIScene_BeaconMenu:
+            case eUIScene_AnvilMenu:
                 m_bContainerMenuDisplayed = true;
 
                 // Intentional fall-through
@@ -719,7 +745,7 @@ void UILayer::handleInput(int iPad, int key, bool repeat, bool pressed,
 
         // Fix for PS3 #444 - [IN GAME] If the user keeps pressing CROSS while
         // on the 'Save Game' screen the title will crash.
-        handled = handled || scene->hidesLowerScenes();
+        handled = handled || scene->hidesLowerScenes() || scene->blocksInput();
         if (handled) break;
     }
 
@@ -750,6 +776,13 @@ void UILayer::HandleDLCLicenseChange() {
 }
 #endif
 
+void UILayer::HandleMessage(EUIMessage message, void* data) {
+    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+        UIScene* topScene = *it;
+        topScene->HandleMessage(message, data);
+    }
+}
+
 bool UILayer::IsFullscreenGroup() { return m_parentGroup->IsFullscreenGroup(); }
 
 C4JRender::eViewportType UILayer::getViewport() {
@@ -762,10 +795,10 @@ void UILayer::handleUnlockFullVersion() {
     }
 }
 
-void UILayer::PrintTotalMemoryUsage(__int64& totalStatic,
-                                    __int64& totalDynamic) {
-    __int64 layerStatic = 0;
-    __int64 layerDynamic = 0;
+void UILayer::PrintTotalMemoryUsage(int64_t& totalStatic,
+                                    int64_t& totalDynamic) {
+    int64_t layerStatic = 0;
+    int64_t layerDynamic = 0;
     for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
         (*it)->PrintTotalMemoryUsage(layerStatic, layerDynamic);
     }

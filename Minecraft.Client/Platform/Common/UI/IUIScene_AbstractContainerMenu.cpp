@@ -12,6 +12,7 @@
 #ifdef __ORBIS__
 #include <pad.h>
 #endif
+
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = NULL;
     m_autoDeleteMenu = false;
@@ -100,7 +101,7 @@ int IUIScene_AbstractContainerMenu::GetSectionDimensions(ESceneSection eSection,
 
 void IUIScene_AbstractContainerMenu::updateSlotPosition(
     ESceneSection eSection, ESceneSection newSection, ETapState eTapDirection,
-    int* piTargetX, int* piTargetY, int xOffset) {
+    int* piTargetX, int* piTargetY, int xOffset, int yOffset) {
     // Update the target slot based on the size of the current section
     int columns, rows;
 
@@ -116,8 +117,13 @@ void IUIScene_AbstractContainerMenu::updateSlotPosition(
         } else if (eTapDirection == eTapStateDown) {
             (*piTargetY) = 0;
         }
-        if ((*piTargetY) < 0) {
+        int offsetY = (*piTargetY) - yOffset;
+        if (offsetY < 0) {
             (*piTargetY) = 0;
+        } else if (offsetY >= rows) {
+            (*piTargetY) = rows - 1;
+        } else {
+            (*piTargetY) = offsetY;
         }
 
         // Update X
@@ -566,6 +572,9 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         }
     }
 
+    // 4J - TomK - set to section none if this is a non-visible section
+    if (!IsVisible(eSectionUnderPointer)) eSectionUnderPointer = eSectionNone;
+
     // If we are not over any slot, set focus elsewhere.
     if (eSectionUnderPointer == eSectionNone) {
         setFocusToPointer(getPad());
@@ -755,19 +764,24 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
     }
 
     if (bPointerIsOverSlot && bSlotHasItem) {
-        std::vector<std::wstring> unformattedStrings;
-        std::wstring desc = GetItemDescription(slot, unformattedStrings);
-        SetPointerText(desc, unformattedStrings,
-                       slot != m_lastPointerLabelSlot);
+        std::vector<HtmlString>* desc = GetItemDescription(slot);
+        SetPointerText(desc, slot != m_lastPointerLabelSlot);
         m_lastPointerLabelSlot = slot;
+        delete desc;
+    } else if (eSectionUnderPointer != eSectionNone &&
+               !IsSectionSlotList(eSectionUnderPointer)) {
+        std::vector<HtmlString>* desc =
+            GetSectionHoverText(eSectionUnderPointer);
+        SetPointerText(desc, false);
+        m_lastPointerLabelSlot = NULL;
+        delete desc;
     } else {
-        std::vector<std::wstring> unformattedStrings;
-        SetPointerText(L"", unformattedStrings, false);
+        SetPointerText(NULL, false);
         m_lastPointerLabelSlot = NULL;
     }
 
-    EToolTipItem buttonA, buttonX, buttonY, buttonRT;
-    buttonA = buttonX = buttonY = buttonRT = eToolTipNone;
+    EToolTipItem buttonA, buttonX, buttonY, buttonRT, buttonBack;
+    buttonA = buttonX = buttonY = buttonRT = buttonBack = eToolTipNone;
     if (bPointerIsOverSlot) {
         SetPointerOutsideMenu(false);
         if (bIsItemCarried) {
@@ -828,11 +842,18 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
             if (bSlotHasItem) {
                 if (iSlotCount == 1) {
                     buttonA = eToolTipPickUpGeneric;
-                    buttonRT = eToolTipWhatIsThis;
                 } else {
                     // Multiple items in slot.
                     buttonA = eToolTipPickUpAll;
                     buttonX = eToolTipPickUpHalf;
+                }
+
+#ifdef __PSVITA__
+                if (!InputManager.IsVitaTV()) {
+                    buttonBack = eToolTipWhatIsThis;
+                } else
+#endif
+                {
                     buttonRT = eToolTipWhatIsThis;
                 }
             } else {
@@ -974,7 +995,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                 // bool bValidIngredientBottom=false;
 
                 if (Item::items[iId]->hasPotionBrewingFormula() ||
-                    (iId == Item::netherStalkSeeds_Id)) {
+                    (iId == Item::netherwart_seeds_Id)) {
                     bValidIngredient = true;
                 }
 
@@ -1030,10 +1051,10 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                                 buttonY = eToolTipQuickMoveWeapon;
                                 break;
 
-                            case Item::helmet_cloth_Id:
-                            case Item::chestplate_cloth_Id:
-                            case Item::leggings_cloth_Id:
-                            case Item::boots_cloth_Id:
+                            case Item::helmet_leather_Id:
+                            case Item::chestplate_leather_Id:
+                            case Item::leggings_leather_Id:
+                            case Item::boots_leather_Id:
 
                             case Item::helmet_chain_Id:
                             case Item::chestplate_chain_Id:
@@ -1099,12 +1120,13 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         item = getSlotItem(eSectionUnderPointer, iNewSlotIndex);
     overrideTooltips(eSectionUnderPointer, item, bIsItemCarried, bSlotHasItem,
                      bCarriedIsSameAsSlot, iSlotStackSizeRemaining, buttonA,
-                     buttonX, buttonY, buttonRT);
+                     buttonX, buttonY, buttonRT, buttonBack);
 
     SetToolTip(eToolTipButtonA, buttonA);
     SetToolTip(eToolTipButtonX, buttonX);
     SetToolTip(eToolTipButtonY, buttonY);
     SetToolTip(eToolTipButtonRT, buttonRT);
+    SetToolTip(eToolTipButtonBack, buttonBack);
 
     // Offset back to image top left.
     vPointerPos.x -= m_fPointerImageOffsetX;
@@ -1165,21 +1187,19 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
 #endif
 
     int buttonNum = 0;          // 0 = LeftMouse, 1 = RightMouse
-    bool quickKeyHeld = false;  // Represents shift key on PC
+    BOOL quickKeyHeld = FALSE;  // Represents shift key on PC
 
-    bool validKeyPress = false;
-    // BOOL itemEditorKeyPress = FALSE;
+    BOOL validKeyPress = FALSE;
+    bool itemEditorKeyPress = false;
 
     // Ignore input from other players
     // if(pMinecraft->player->GetXboxPad()!=pInputData->UserIndex) return S_OK;
 
     switch (iAction) {
 #ifdef _DEBUG_MENUS_ENABLED
-#if TO_BE_IMPLEMENTED
-        case VK_PAD_RTHUMB_PRESS:
+        case ACTION_MENU_OTHER_STICK_PRESS:
             itemEditorKeyPress = TRUE;
             break;
-#endif
 #endif
         case ACTION_MENU_A:
 #ifdef __ORBIS__
@@ -1275,14 +1295,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
             // 4J Stu - Do nothing except stop this being passed anywhere else
             bHandled = true;
         } break;
-#ifdef __PSVITA__
-            // CD - Vita uses select for What's this - key 40
-        case MINECRAFT_ACTION_GAME_INFO:
-#else
-        case ACTION_MENU_PAGEDOWN:
-#endif
-
-        {
+        case ACTION_MENU_PAGEDOWN: {
             if (IsSectionSlotList(m_eCurrSection)) {
                 int currentIndex = getCurrentIndex(m_eCurrSection) -
                                    getSectionStartOffset(m_eCurrSection);
@@ -1345,48 +1358,18 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
         bHandled = true;
     }
 #ifdef _DEBUG_MENUS_ENABLED
-#if TO_BE_IMPLEMENTED
     else if (itemEditorKeyPress == TRUE) {
-        HXUIOBJ hFocusObject = GetFocus(pInputData->UserIndex);
-        HXUIOBJ hFocusObjectParent;
-        XuiElementGetParent(hFocusObject, &hFocusObjectParent);
-
-        HXUICLASS hClassCXuiCtrlSlotList;
-
-        // TODO Define values for these
-        hClassCXuiCtrlSlotList = XuiFindClass(L"CXuiCtrlSlotList");
-
-        // If the press comes from a SlotList, cast it up then send a clicked
-        // call to it's menu
-        if (XuiIsInstanceOf(hFocusObjectParent, hClassCXuiCtrlSlotList)) {
-            CXuiCtrlSlotList* slotList;
-            void* pObj;
-            XuiObjectFromHandle(hFocusObjectParent, &pObj);
-            slotList = (CXuiCtrlSlotList*)pObj;
-
-            int currentIndex = slotList->GetCurSel();
-
-            CXuiCtrlSlotItemListItem* pCXuiCtrlSlotItem;
-            slotList->GetCXuiCtrlSlotItem(currentIndex, &(pCXuiCtrlSlotItem));
-
-            // Minecraft *pMinecraft = Minecraft::GetInstance();
-
-            CScene_DebugItemEditor::ItemEditorInput* initData =
-                new CScene_DebugItemEditor::ItemEditorInput();
-            initData->iPad = m_iPad;
+        if (IsSectionSlotList(m_eCurrSection)) {
+            ItemEditorInput* initData = new ItemEditorInput();
+            initData->iPad = getPad();
             initData->slot =
-                pCXuiCtrlSlotItem->getSlot(pCXuiCtrlSlotItem->m_hObj);
+                getSlot(m_eCurrSection, getCurrentIndex(m_eCurrSection));
             initData->menu = m_menu;
 
-            // Add timer to poll controller stick input at 60Hz
-            HRESULT timerResult = KillTimer(POINTER_INPUT_TIMER_ID);
-            assert(timerResult == S_OK);
-
-            app.NavigateToScene(m_iPad, eUIScene_DebugItemEditor,
-                                (void*)initData, false, TRUE);
+            ui.NavigateToScene(getPad(), eUIScene_DebugItemEditor,
+                               (void*)initData);
         }
     }
-#endif
 #endif
     else {
         handleAdditionalKeyPress(iAction);
@@ -1411,7 +1394,7 @@ void IUIScene_AbstractContainerMenu::handleOutsideClicked(int iPad,
     // pMinecraft->localgameModes[m_iPad]->handleInventoryMouseClick(menu->containerId,
     // AbstractContainerMenu::CLICKED_OUTSIDE, buttonNum,
     // quickKeyHeld?true:false, pMinecraft->localplayers[m_iPad] );
-    slotClicked(AbstractContainerMenu::CLICKED_OUTSIDE, buttonNum,
+    slotClicked(AbstractContainerMenu::SLOT_CLICKED_OUTSIDE, buttonNum,
                 quickKeyHeld ? true : false);
 }
 
@@ -1461,10 +1444,10 @@ bool IUIScene_AbstractContainerMenu::IsSameItemAs(
     std::shared_ptr<ItemInstance> itemA, std::shared_ptr<ItemInstance> itemB) {
     if (itemA == NULL || itemB == NULL) return false;
 
-    bool bStackedByData = itemA->isStackedByData();
-    return ((itemA->id == itemB->id) &&
-            ((bStackedByData && itemA->getAuxValue() == itemB->getAuxValue()) ||
-             !bStackedByData));
+    return (itemA->id == itemB->id &&
+            (!itemB->isStackedByData() ||
+             itemB->getAuxValue() == itemA->getAuxValue()) &&
+            ItemInstance::tagMatches(itemB, itemA));
 }
 
 int IUIScene_AbstractContainerMenu::GetEmptyStackSpace(Slot* slot) {
@@ -1486,35 +1469,26 @@ int IUIScene_AbstractContainerMenu::GetEmptyStackSpace(Slot* slot) {
     return iResult;
 }
 
-std::wstring IUIScene_AbstractContainerMenu::GetItemDescription(
-    Slot* slot, std::vector<std::wstring>& unformattedStrings) {
-    if (slot == NULL) return L"";
+std::vector<HtmlString>* IUIScene_AbstractContainerMenu::GetItemDescription(
+    Slot* slot) {
+    if (slot == NULL) return NULL;
 
-    std::wstring desc = L"";
-    std::vector<std::wstring>* strings =
-        slot->getItem()->getHoverText(nullptr, false, unformattedStrings);
-    bool firstLine = true;
-    for (AUTO_VAR(it, strings->begin()); it != strings->end(); ++it) {
-        std::wstring thisString = *it;
-        if (!firstLine) {
-            desc.append(L"<br />");
-        } else {
-            firstLine = false;
-            wchar_t formatted[256];
-            eMinecraftColour rarityColour = slot->getItem()->getRarity()->color;
-            int colour = app.GetHTMLColour(rarityColour);
+    std::vector<HtmlString>* lines =
+        slot->getItem()->getHoverText(nullptr, false);
 
-            if (slot->getItem()->hasCustomHoverName()) {
-                colour = app.GetHTMLColour(eTextColor_RenamedItemTitle);
-            }
+    // Add rarity to first line
+    if (lines->size() > 0) {
+        lines->at(0).color = slot->getItem()->getRarity()->color;
 
-            swprintf(formatted, 256, L"<font color=\"#%08x\">%ls</font>",
-                     colour, thisString.c_str());
-            thisString = formatted;
+        if (slot->getItem()->hasCustomHoverName()) {
+            lines->at(0).color = eTextColor_RenamedItemTitle;
         }
-        desc.append(thisString);
     }
-    strings->clear();
-    delete strings;
-    return desc;
+
+    return lines;
+}
+
+std::vector<HtmlString>* IUIScene_AbstractContainerMenu::GetSectionHoverText(
+    ESceneSection eSection) {
+    return NULL;
 }

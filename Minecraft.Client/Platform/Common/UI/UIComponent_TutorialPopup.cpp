@@ -22,6 +22,7 @@ UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
 
     m_bContainerMenuVisible = false;
     m_bSplitscreenGamertagVisible = false;
+    m_iconType = e_ICON_TYPE_IGGY;
 
     m_labelDescription.init(L"");
 
@@ -76,6 +77,8 @@ void UIComponent_TutorialPopup::handleReload() {
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcAdjustLayout, 1, value);
+
+    setupIconHolder(m_iconType);
 }
 
 void UIComponent_TutorialPopup::SetTutorialDescription(
@@ -327,7 +330,7 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
             setupIconHolder(e_ICON_TYPE_TOOLS);
         } else if (temp.find(L"{*StoneIcon*}") != std::wstring::npos) {
             m_iconItem = std::shared_ptr<ItemInstance>(
-                new ItemInstance(Tile::rock_Id, 1, 0));
+                new ItemInstance(Tile::stone_Id, 1, 0));
         } else {
             m_iconItem = nullptr;
         }
@@ -437,6 +440,8 @@ void UIComponent_TutorialPopup::UpdateInteractScenePosition(bool visible) {
         (m_interactScene->getSceneType() == eUIScene_Crafting3x3Menu);
     bool isCreativeScene =
         (m_interactScene->getSceneType() == eUIScene_CreativeMenu);
+    bool isTradingScene =
+        (m_interactScene->getSceneType() == eUIScene_TradingMenu);
     switch (Minecraft::GetInstance()->localplayers[m_iPad]->m_iScreenSection) {
         case C4JRender::VIEWPORT_TYPE_FULLSCREEN:
         case C4JRender::VIEWPORT_TYPE_SPLIT_TOP:
@@ -446,7 +451,7 @@ void UIComponent_TutorialPopup::UpdateInteractScenePosition(bool visible) {
         default:
             // anim allowed for everything except the crafting 2x2 and 3x3, and
             // the creative menu
-            if (!isCraftingScene && !isCreativeScene) {
+            if (!isCraftingScene && !isCreativeScene && !isTradingScene) {
                 bAllowAnim = true;
             }
             break;
@@ -543,4 +548,6 @@ void UIComponent_TutorialPopup::setupIconHolder(EIcons icon) {
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcSetupIconHolder, 1, value);
+
+    m_iconType = icon;
 }

@@ -14,7 +14,7 @@ public:
     virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
                               const std::string& controlName);
 
-    void init(const std::wstring& label, int id, bool checked);
+    void init(UIString label, int id, bool checked);
 
     bool IsChecked();
     bool IsEnabled();

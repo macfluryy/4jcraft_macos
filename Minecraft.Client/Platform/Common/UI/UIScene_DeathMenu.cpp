@@ -108,49 +108,49 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         uiIDA[1] = IDS_EXIT_GAME_SAVE;
                         uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
 
-                        ui.RequestMessageBox(
+                        ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
                             m_iPad,
                             &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
-                            this, app.GetStringTable(), 0, 0, false);
+                            (LPVOID)GetCallbackUniqueId());
                     } else {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
-                        ui.RequestMessageBox(
+                        ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                             m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            this, app.GetStringTable(), 0, 0, false);
+                            (LPVOID)GetCallbackUniqueId());
                     }
 
 #else
                     if (StorageManager.GetSaveDisabled()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
-                        ui.RequestMessageBox(
+                        ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                             uiIDA, 2, m_iPad,
-                            &IUIScene_PauseMenu::ExitGameDialogReturned, this,
-                            app.GetStringTable(), 0, 0, false);
+                            &IUIScene_PauseMenu::ExitGameDialogReturned,
+                            (LPVOID)GetCallbackUniqueId());
                     } else {
                         if (g_NetworkManager.IsHost()) {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
                             uiIDA[1] = IDS_EXIT_GAME_SAVE;
                             uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
 
-                            ui.RequestMessageBox(
+                            ui.RequestAlertMessage(
                                 IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
                                 m_iPad,
                                 &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
-                                this, app.GetStringTable(), 0, 0, false);
+                                (LPVOID)GetCallbackUniqueId());
                         } else {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
                             uiIDA[1] = IDS_CONFIRM_OK;
 
-                            ui.RequestMessageBox(
+                            ui.RequestAlertMessage(
                                 IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                                 m_iPad,
                                 &IUIScene_PauseMenu::ExitGameDialogReturned,
-                                this, app.GetStringTable(), 0, 0, false);
+                                (LPVOID)GetCallbackUniqueId());
                         }
                     }
 #endif
@@ -174,11 +174,11 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_CANCEL;
                     uiIDA[1] = IDS_CONFIRM_OK;
-                    ui.RequestMessageBox(
+                    ui.RequestAlertMessage(
                         IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                         uiIDA, 2, m_iPad,
-                        &IUIScene_PauseMenu::ExitGameDialogReturned, this,
-                        app.GetStringTable(), 0, 0, false);
+                        &IUIScene_PauseMenu::ExitGameDialogReturned,
+                        (LPVOID)GetCallbackUniqueId());
                 } else {
                     TelemetryManager->RecordLevelExit(
                         m_iPad, eSen_LevelExitStatus_Failed);

@@ -77,6 +77,12 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                              buyAMatches >= buyAItem->count) &&
                             (buyBItem == NULL ||
                              buyBMatches >= buyBItem->count)) {
+                            // 4J-JEV: Fix for PS4 #7111: [PATCH 1.12] Trading
+                            // Librarian villagers for multiple �Enchanted
+                            // Books� will cause the title to crash.
+                            int actualShopItem =
+                                m_activeOffers.at(selectedShopItem).second;
+
                             m_merchant->notifyTrade(activeRecipe);
 
                             // Remove the items we are purchasing with
@@ -91,8 +97,6 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
                             }
 
                             // Send a packet to the server
-                            int actualShopItem =
-                                m_activeOffers.at(selectedShopItem).second;
                             player->connection->send(
                                 std::shared_ptr<TradeItemPacket>(
                                     new TradeItemPacket(m_menu->containerId,
@@ -235,17 +239,16 @@ void IUIScene_TradingMenu::updateDisplay() {
             // 4J-PB - need to get the villager type here
             wsTemp = app.GetString(IDS_VILLAGER_OFFERS_ITEM);
             wsTemp = replaceAll(wsTemp, L"{*VILLAGER_TYPE*}",
-                                app.GetString(m_merchant->getDisplayName()));
+                                m_merchant->getDisplayName());
             int iPos = wsTemp.find(L"%s");
             wsTemp.replace(iPos, 2,
                            activeRecipe->getSellItem()->getHoverName());
 
             setTitle(wsTemp.c_str());
 
-            std::vector<std::wstring> unformattedStrings;
-            std::wstring offerDescription = GetItemDescription(
-                activeRecipe->getSellItem(), unformattedStrings);
-            setOfferDescription(offerDescription, unformattedStrings);
+            std::vector<HtmlString>* offerDescription =
+                GetItemDescription(activeRecipe->getSellItem());
+            setOfferDescription(offerDescription);
 
             std::shared_ptr<ItemInstance> buyAItem =
                 activeRecipe->getBuyAItem();
@@ -294,13 +297,15 @@ void IUIScene_TradingMenu::updateDisplay() {
 
             if (canMake) iA = IDS_TOOLTIPS_TRADE;
         } else {
-            setTitle(app.GetString(m_merchant->getDisplayName()));
+            setTitle(m_merchant->getDisplayName());
             setRequest1Name(L"");
             setRequest2Name(L"");
             setRequest1RedBox(false);
             setRequest2RedBox(false);
             setRequest1Item(nullptr);
             setRequest2Item(nullptr);
+            std::vector<HtmlString> offerDescription;
+            setOfferDescription(&offerDescription);
         }
 
         m_bHasUpdatedOnce = true;
@@ -345,25 +350,16 @@ void IUIScene_TradingMenu::setRequest2Item(std::shared_ptr<ItemInstance> item) {
 void IUIScene_TradingMenu::setTradeItem(int index,
                                         std::shared_ptr<ItemInstance> item) {}
 
-std::wstring IUIScene_TradingMenu::GetItemDescription(
-    std::shared_ptr<ItemInstance> item,
-    std::vector<std::wstring>& unformattedStrings) {
-    if (item == NULL) return L"";
+std::vector<HtmlString>* IUIScene_TradingMenu::GetItemDescription(
+    std::shared_ptr<ItemInstance> item) {
+    std::vector<HtmlString>* lines = item->getHoverText(nullptr, false);
 
-    std::wstring desc = L"";
-    std::vector<std::wstring>* strings =
-        item->getHoverTextOnly(nullptr, false, unformattedStrings);
-    bool firstLine = true;
-    for (AUTO_VAR(it, strings->begin()); it != strings->end(); ++it) {
-        std::wstring thisString = *it;
-        if (!firstLine) {
-            desc.append(L"<br />");
-        } else {
-            firstLine = false;
-        }
-        desc.append(thisString);
+    // Add rarity to first line
+    if (lines->size() > 0) {
+        lines->at(0).color = item->getRarity()->color;
     }
-    strings->clear();
-    delete strings;
-    return desc;
+
+    return lines;
 }
+
+void IUIScene_TradingMenu::HandleInventoryUpdated() { updateDisplay(); }

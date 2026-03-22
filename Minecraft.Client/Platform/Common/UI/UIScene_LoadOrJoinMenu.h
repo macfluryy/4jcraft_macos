@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include "UIScene.h"
 
 class LevelGenerationOptions;
@@ -154,6 +152,13 @@ public:
     static int DeleteSaveDataReturned(void* lpParam, bool bRes);
     static int RenameSaveDataReturned(void* lpParam, bool bRes);
     static int KeyboardCompleteWorldNameCallback(void* lpParam, bool bRes);
+#ifdef __PSVITA__
+    static int MustSignInTexturePack(void* pParam, int iPad,
+                                     C4JStorage::EMessageResult result);
+    static int MustSignInReturnedTexturePack(void* pParam, bool bContinue,
+                                             int iPad);
+    static int SignInAdhocReturned(void* pParam, bool bContinue, int iPad);
+#endif
 
 protected:
     void handlePress(F64 controlId, F64 childId);
@@ -258,8 +263,10 @@ private:
     eSaveTransferState m_eSaveTransferState;
     static unsigned long m_ulFileSize;
     static std::wstring m_wstrStageText;
+    static bool m_bSaveTransferRunning;
     int m_iProgress;
-    char m_downloadedUniqueFilename[64];  // SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE];
+    char
+        m_downloadedUniqueFilename[64];  // SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE];
     bool m_saveTransferDownloadCancelled;
     void LaunchSaveTransfer();
     static int CreateDummySaveDataCallback(void* lpParam, bool bRes);
@@ -279,6 +286,11 @@ private:
     static ConsoleSaveFile* SonyCrossSaveConvert();
 
     static void CancelSaveTransferCallback(void* lpParam);
+
+public:
+    static bool isSaveTransferRunning() { return m_bSaveTransferRunning; }
+
+private:
 #endif
 
 #ifdef SONY_REMOTE_STORAGE_UPLOAD
