@@ -201,36 +201,26 @@ void UIScene_InGameInfoMenu::handleReload() {
 void UIScene_InGameInfoMenu::tick() {
     UIScene::tick();
 
-    for (int i = 0; i < m_playersCount; ++i) {
+    // Update players by index
+    for (DWORD i = 0; i < m_players.size(); ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
         if (player != NULL) {
-            m_players[i] = player->GetSmallId();
-            int voiceStatus = 0;
-            if (player != NULL && player->HasVoice()) {
-                if (player->IsMutedByLocalUser(m_iPad)) {
-                    // Muted image
             PlayerInfo* info = BuildPlayerInfo(player);
 
-                m_playerList.setVOIPIcon(i, voiceStatus);
             m_players[i]->m_smallId = info->m_smallId;
 
-                m_playersColourState[i] = icon;
-                m_playerList.setPlayerIcon(
+            if (info->m_voiceStatus != m_players[i]->m_voiceStatus) {
                 m_players[i]->m_voiceStatus = info->m_voiceStatus;
                 m_playerList.setVOIPIcon(i, info->m_voiceStatus);
             }
 
-#ifndef _CONTENT_PACKAGE
-            if (app.DebugSettingsOn() &&
-                (app.GetGameSettingsDebugMask() &
-                 (1L << eDebugSetting_DebugLeaderboards))) {
             if (info->m_colorState != m_players[i]->m_colorState) {
                 m_players[i]->m_colorState = info->m_colorState;
                 m_playerList.setPlayerIcon(i, info->m_colorState);
             }
-                m_playerNames[i] = playerName;
 
+            if (info->m_name.compare(m_players[i]->m_name) != 0) {
                 m_playerList.setButtonLabel(i, info->m_name);
                 m_players[i]->m_name = info->m_name;
             }
@@ -265,11 +255,10 @@ void UIScene_InGameInfoMenu::handleInput(int iPad, int key, bool repeat,
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
                     uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-                    ui.RequestMessageBox(
+                    ui.RequestErrorMessage(
                         IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
                         2, ProfileManager.GetPrimaryPad(),
-                        &UIScene_InGameInfoMenu::MustSignInReturnedPSN, this,
-                        app.GetStringTable());
+                        &UIScene_InGameInfoMenu::MustSignInReturnedPSN, this);
                 } else
 #endif
                 {
@@ -290,9 +279,9 @@ void UIScene_InGameInfoMenu::handleInput(int iPad, int key, bool repeat,
 
             if (pressed && m_playerList.hasFocus() &&
                 (m_playerList.getItemCount() > 0) &&
-                (m_playerList.getCurrentSelection() < m_playersCount)) {
+                (m_playerList.getCurrentSelection() < m_players.size())) {
                 INetworkPlayer* player = g_NetworkManager.GetPlayerBySmallId(
-                    m_players[m_playerList.getCurrentSelection()]);
+                    m_players[m_playerList.getCurrentSelection()]->m_smallId);
                 if (player != NULL) {
                     PlayerUID uid = player->GetUID();
                     if (uid != INVALID_XUID) {
@@ -342,7 +331,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
             int currentSelection = (int)childId;
             INetworkPlayer* selectedPlayer =
                 g_NetworkManager.GetPlayerBySmallId(
-                    m_players[currentSelection]);
+                    m_players[currentSelection]->m_smallId);
 
             Minecraft* pMinecraft = Minecraft::GetInstance();
             std::shared_ptr<MultiplayerLocalPlayer> localPlayer =
@@ -384,11 +373,10 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
 
-                    ui.RequestMessageBox(
+                    ui.RequestAlertMessage(
                         IDS_UNLOCK_KICK_PLAYER_TITLE, IDS_UNLOCK_KICK_PLAYER,
                         uiIDA, 2, m_iPad,
-                        &UIScene_InGameInfoMenu::KickPlayerReturned, smallId,
-                        app.GetStringTable(), NULL, 0, false);
+                        &UIScene_InGameInfoMenu::KickPlayerReturned, smallId);
                 }
             }
             break;
@@ -406,47 +394,57 @@ void UIScene_InGameInfoMenu::handleFocusChange(F64 controlId, F64 childId) {
 void UIScene_InGameInfoMenu::OnPlayerChanged(void* callbackParam,
                                              INetworkPlayer* pPlayer,
                                              bool leaving) {
+    app.DebugPrintf(
+        "<UIScene_InGameInfoMenu::OnPlayerChanged> Player \"%ls\" %s (smallId: "
+        "%d)\n",
+        pPlayer->GetOnlineName(), leaving ? "leaving" : "joining",
+        pPlayer->GetSmallId());
+
     UIScene_InGameInfoMenu* scene = (UIScene_InGameInfoMenu*)callbackParam;
     bool playerFound = false;
     int foundIndex = 0;
-    for (int i = 0; i < scene->m_playersCount; ++i) {
-        if (!playerFound && scene->m_players[i] == pPlayer->GetSmallId()) {
+    for (int i = 0; i < scene->m_players.size(); ++i) {
+        if (!playerFound &&
+            scene->m_players[i]->m_smallId == pPlayer->GetSmallId()) {
             if (scene->m_playerList.getCurrentSelection() ==
                 scene->m_playerList.getItemCount() - 1) {
                 scene->m_playerList.setCurrentSelection(
                     scene->m_playerList.getItemCount() - 2);
             }
-            // Player removed
+
+            // Player found
             playerFound = true;
             foundIndex = i;
         }
     }
 
+    if (leaving && !playerFound)
+        app.DebugPrintf(
+            "<UIScene_InGameInfoMenu::OnPlayerChanged> Error: Player \"%ls\" "
+            "leaving but not found in list\n",
+            pPlayer->GetOnlineName());
+    if (!leaving && playerFound)
+        app.DebugPrintf(
+            "<UIScene_InGameInfoMenu::OnPlayerChanged> Error: Player \"%ls\" "
+            "joining but already in list\n",
+            pPlayer->GetOnlineName());
 
     // If the player was found remove them (even if they're joining, they'll be
     // added again later)
     if (playerFound) {
-        scene->m_playersColourState[scene->m_playersCount] = 0;
-        scene->m_playerList.removeItem(scene->m_playersCount);
         app.DebugPrintf(
             "<UIScene_InGameInfoMenu::OnPlayerChanged> Player \"%ls\" found, "
             "removing\n",
+            pPlayer->GetOnlineName());
 
-        scene->m_players[scene->m_playersCount] = pPlayer->GetSmallId();
+        // Remove player info
         delete scene->m_players[foundIndex];
         scene->m_players.erase(scene->m_players.begin() + foundIndex);
 
-#ifndef _CONTENT_PACKAGE
-        if (app.DebugSettingsOn() &&
-             (1L << eDebugSetting_DebugLeaderboards))) {
-            playerName = pPlayer->GetDisplayName();
         // Remove player from list
         scene->m_playerList.removeItem(foundIndex);
     }
 
-            if (pPlayer->IsMutedByLocalUser(scene->m_iPad)) {
-                voiceStatus = 3;
-                // Not talking image
     // If the player is joining
     if (!leaving) {
         app.DebugPrintf(
@@ -457,7 +455,7 @@ void UIScene_InGameInfoMenu::OnPlayerChanged(void* callbackParam,
         PlayerInfo* info = scene->BuildPlayerInfo(pPlayer);
         scene->m_players.push_back(info);
 
-            app.GetPlayerColour(scene->m_players[scene->m_playersCount - 1]),
+        // Note that the tick updates buttons every tick so it's only really
         // important that we add the button (not the order or content)
         scene->m_playerList.addItem(info->m_name, info->m_colorState,
                                     info->m_voiceStatus);
@@ -482,6 +480,16 @@ int UIScene_InGameInfoMenu::KickPlayerReturned(
     return 0;
 }
 
+UIScene_InGameInfoMenu::PlayerInfo* UIScene_InGameInfoMenu::BuildPlayerInfo(
+    INetworkPlayer* player) {
+    PlayerInfo* info = new PlayerInfo();
+    info->m_smallId = player->GetSmallId();
+
+    std::wstring playerName = L"";
+#ifndef _CONTENT_PACKAGE
+    if (app.DebugSettingsOn() && (app.GetGameSettingsDebugMask() &
+                                  (1L << eDebugSetting_DebugLeaderboards))) {
+        playerName = L"WWWWWWWWWWWWWWWW";
     } else
 #endif
     {
@@ -543,7 +551,7 @@ int UIScene_InGameInfoMenu::ViewInvites_SignInReturned(void* pParam,
             app.DebugPrintf("sceNpBasicRecvMessageCustom return %d ( %08x )\n",
                             ret, ret);
 #else  // __PSVITA__
-            PSVITA_STUBBED;
+            SQRNetworkManager_Vita::RecvInviteGUI();
 #endif
         }
     }
