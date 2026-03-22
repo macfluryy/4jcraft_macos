@@ -3,7 +3,7 @@
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
 #include "../../../Player/MultiPlayerLocalPlayer.h"
-#include "../../Minecraft.h"
+#include "../../../../Minecraft.Client/Minecraft.h"
 #include "UIScene_HorseInventoryMenu.h"
 
 UIScene_HorseInventoryMenu::UIScene_HorseInventoryMenu(int iPad,
