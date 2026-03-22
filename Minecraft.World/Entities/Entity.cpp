@@ -51,6 +51,7 @@ inline void EntityTlsSetValue(pthread_key_t key, void* value) {
 #endif
 }  // namespace
 
+const std::wstring Entity::RIDING_TAG = L"Riding";
 int Entity::entityCounter =
     2048;  // 4J - changed initialiser to 2048, as we are using range 0 - 2047
            // as special unique smaller ids for things that need network tracked

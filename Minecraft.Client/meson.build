@@ -3,6 +3,7 @@ exclude_sources = [
   ' ! -name "SurvivalMode.cpp"',
   ' ! -name "CreativeMode.cpp"',
   ' ! -name "GameMode.cpp"',
+  ' ! -name "DemoMode.cpp"',
   ' ! -name "PreStitchedTextureMap.cpp"',
 ]
 
