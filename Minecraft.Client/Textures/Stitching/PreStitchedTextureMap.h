@@ -30,8 +30,6 @@ private:
     std::vector<StitchedTexture*>
         animatedTextures;  // = new ArrayList<StitchedTexture>();
 
-    std::vector<std::pair<std::wstring, std::wstring> > texturesToAnimate;
-
     void loadUVs();
 
 public:
@@ -40,6 +38,11 @@ public:
                           BufferedImage* missingTexture, bool mipMap = false);
 
     void stitch();
+
+private:
+    void makeTextureAnimated(TexturePack* texturePack, StitchedTexture* tex);
+
+public:
     StitchedTexture* getTexture(const std::wstring& name);
     void cycleAnimationFrames();
     Texture* getStitchedTexture();

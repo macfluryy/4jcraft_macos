@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
 #include "Packs/TexturePack.h"
 #include "../GameState/Options.h"
-#include "MemTextureProcessor.h"
+#include "../Minecraft.Client/MemTextureProcessor.h"
 #include "MobSkinMemTextureProcessor.h"
 #include "Stitching/PreStitchedTextureMap.h"
 #include "Stitching/StitchedTexture.h"
@@ -16,6 +16,9 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
+#include "ResourceLocation.h"
+#include "../../Minecraft.World/Entities/ItemEntity.h"
+#include "TextureAtlas.h"
 
 // Linux/PC port: disable mipmapping globally so textures are always sampled
 // from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp
@@ -135,6 +138,44 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     // TU 14
     L"mob/wolf_collar",
     L"mob/zombie_villager",
+
+    // 1.6.4
+    L"item/lead_knot",
+
+    L"misc/beacon_beam",
+
+    L"mob/bat",
+
+    L"mob/horse/donkey",
+    L"mob/horse/horse_black",
+    L"mob/horse/horse_brown",
+    L"mob/horse/horse_chestnut",
+    L"mob/horse/horse_creamy",
+    L"mob/horse/horse_darkbrown",
+    L"mob/horse/horse_gray",
+    L"mob/horse/horse_markings_blackdots",
+    L"mob/horse/horse_markings_white",
+    L"mob/horse/horse_markings_whitedots",
+    L"mob/horse/horse_markings_whitefield",
+    L"mob/horse/horse_skeleton",
+    L"mob/horse/horse_white",
+    L"mob/horse/horse_zombie",
+    L"mob/horse/mule",
+
+    L"mob/horse/armor/horse_armor_diamond",
+    L"mob/horse/armor/horse_armor_gold",
+    L"mob/horse/armor/horse_armor_iron",
+
+    L"mob/witch",
+
+    L"mob/wither/wither",
+    L"mob/wither/wither_armor",
+    L"mob/wither/wither_invulnerable",
+
+    L"item/trapped",
+    L"item/trapped_double",
+// L"item/christmas",
+// L"item/christmas_double",
 
 #ifdef _LARGE_WORLDS
     L"misc/additionalmapicons",
@@ -285,7 +326,7 @@ intArray Textures::loadTexturePixels(TEXTURE_NAME texId,
     // 4J - removed try/catch
     //    try {
     intArray res;
-    // std::wstring in = skin->getResource(resourceName);
+    // wstring in = skin->getResource(resourceName);
     if (false)  // 4J - removed - was ( in == NULL)
     {
         res = loadTexturePixels(missingNo);
@@ -366,7 +407,23 @@ void Textures::bindTexture(const std::wstring& resourceName) {
 }
 
 // 4J Added
-void Textures::bindTexture(int resourceId) { bind(loadTexture(resourceId)); }
+void Textures::bindTexture(ResourceLocation* resource) {
+    if (resource->isPreloaded()) {
+        std::bind(loadTexture(resource->getTexture()));
+    } else {
+        std::bind(loadTexture(TN_COUNT, resource->getPath()));
+    }
+}
+
+void Textures::bindTextureLayers(ResourceLocation* resource) {
+    assert(resource->isPreloaded());
+
+    int layers = resource->getTextureCount();
+
+    for (int i = 0; i < layers; i++) {
+        RenderManager.TextureBind(i, loadTexture(resource->getTexture(i)));
+    }
+}
 
 void Textures::bind(int id) {
     // if (id != lastBoundId)
@@ -374,6 +431,24 @@ void Textures::bind(int id) {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
         //	lastBoundId = id;
+    }
+}
+
+ResourceLocation* Textures::getTextureLocation(std::shared_ptr<Entity> entity) {
+    std::shared_ptr<ItemEntity> item =
+        std::dynamic_pointer_cast<ItemEntity>(entity);
+    int iconType = item->getItem()->getIconType();
+    return getTextureLocation(iconType);
+}
+
+ResourceLocation* Textures::getTextureLocation(int iconType) {
+    switch (iconType) {
+        case Icon::TYPE_TERRAIN:
+            return &TextureAtlas::LOCATION_BLOCKS;
+            break;
+        case Icon::TYPE_ITEM:
+            return &TextureAtlas::LOCATION_ITEMS;
+            break;
     }
 }
 
@@ -433,7 +508,7 @@ int Textures::loadTexture(TEXTURE_NAME texId,
                  0;  // resourceName.startsWith("%clamp%");
     if (clamp) pathName = resourceName.substr(7);
 
-    // std::wstring in = skins->getSelected()->getResource(pathName);
+    // wstring in = skins->getSelected()->getResource(pathName);
     if (false)  // 4J - removed was ( in == NULL)
     {
         loadTexture(missingNo, id, blur, clamp);
@@ -979,8 +1054,8 @@ MemTexture* Textures::addMemTexture(const std::wstring& name,
     return texture;
 }
 
-// MemTexture *Textures::getMemTexture(const std::wstring& url,
-// MemTextureProcessor *processor)
+// MemTexture *Textures::getMemTexture(const wstring& url, MemTextureProcessor
+// *processor)
 // {
 // 	MemTexture *texture = memTextures[url];
 // 	if (texture != NULL)
@@ -1220,6 +1295,28 @@ TEXTURE_NAME TUImages[] = {
     TN_TILE_ENDER_CHEST, TN_ART_KZ, TN_MOB_WOLF_TAME, TN_MOB_WOLF_COLLAR,
     TN_PARTICLES, TN_MOB_ZOMBIE_VILLAGER,
 
+    TN_ITEM_LEASHKNOT,
+
+    TN_MISC_BEACON_BEAM,
+
+    TN_MOB_BAT,
+
+    TN_MOB_DONKEY, TN_MOB_HORSE_BLACK, TN_MOB_HORSE_BROWN,
+    TN_MOB_HORSE_CHESTNUT, TN_MOB_HORSE_CREAMY, TN_MOB_HORSE_DARKBROWN,
+    TN_MOB_HORSE_GRAY, TN_MOB_HORSE_MARKINGS_BLACKDOTS,
+    TN_MOB_HORSE_MARKINGS_WHITE, TN_MOB_HORSE_MARKINGS_WHITEDOTS,
+    TN_MOB_HORSE_MARKINGS_WHITEFIELD, TN_MOB_HORSE_SKELETON, TN_MOB_HORSE_WHITE,
+    TN_MOB_HORSE_ZOMBIE, TN_MOB_MULE, TN_MOB_HORSE_ARMOR_DIAMOND,
+    TN_MOB_HORSE_ARMOR_GOLD, TN_MOB_HORSE_ARMOR_IRON,
+
+    TN_MOB_WITCH,
+
+    TN_MOB_WITHER, TN_MOB_WITHER_ARMOR, TN_MOB_WITHER_INVULNERABLE,
+
+    TN_TILE_TRAP_CHEST, TN_TILE_LARGE_TRAP_CHEST,
+// TN_TILE_XMAS_CHEST,
+// TN_TILE_LARGE_XMAS_CHEST,
+
 #ifdef _LARGE_WORLDS
     TN_MISC_ADDITIONALMAPICONS,
 #endif
@@ -1232,14 +1329,16 @@ TEXTURE_NAME TUImages[] = {
 };
 
 // This is for any TU textures that aren't part of our enum indexed preload set
-const wchar_t* TUImagePaths[] = {L"font/Default", L"font/Mojangles_7",
-                                 L"font/Mojangles_11",
+wchar_t* TUImagePaths[] = {L"font/Default", L"font/Mojangles_7",
+                           L"font/Mojangles_11",
 
-                                 // TU12
-                                 L"armor/cloth_1.png", L"armor/cloth_1_b.png",
-                                 L"armor/cloth_2.png", L"armor/cloth_2_b.png",
+                           // TU12
+                           L"armor/cloth_1.png", L"armor/cloth_1_b.png",
+                           L"armor/cloth_2.png", L"armor/cloth_2_b.png",
 
-                                 NULL};
+                           //
+
+                           NULL};
 
 bool Textures::IsTUImage(TEXTURE_NAME texId, const std::wstring& name) {
     int i = 0;
@@ -1269,9 +1368,9 @@ TEXTURE_NAME OriginalImages[] = {TN_MOB_CHAR,   TN_MOB_CHAR1, TN_MOB_CHAR2,
 
                                  TN_COUNT};
 
-const wchar_t* OriginalImagesPaths[] = {L"misc/watercolor.png",
+wchar_t* OriginalImagesPaths[] = {L"misc/watercolor.png",
 
-                                        NULL};
+                                  NULL};
 
 bool Textures::IsOriginalImage(TEXTURE_NAME texId, const std::wstring& name) {
     int i = 0;

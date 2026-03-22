@@ -90,7 +90,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
         /*char *pchUsrDir=getUsrDirPath();
 
-        std::wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
+        wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
 
         if(bTitleUpdateTexture)
         {
@@ -139,7 +139,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
         const char* pchTextureName = wstringtofilename(name);
 
-#ifdef _DEBUG
+#ifndef _CONTENT_PACKAGE
         app.DebugPrintf("\n--- Loading TEXTURE - %s\n\n", pchTextureName);
 #endif
 

@@ -5,13 +5,14 @@
 #include "Texture.h"
 
 #ifdef __PS3__
-#include "../Platform/PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
+#include "PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
+#include "C4JSpursJob.h"
 static const int sc_maxTextureBlits = 256;
 static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits]
     __attribute__((__aligned__(16)));
 static int g_currentTexBlit = 0;
 C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
+// #define DISABLE_SPU_CODE
 #endif  //__PS3__
 
 #define MAX_MIP_LEVELS 5
@@ -129,7 +130,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
             if (mipmapped) {
                 for (unsigned int level = 1; level < m_iMipLevels; ++level) {
                     int ww = width >> level;
-                    int hh = height >> level;
+                    int hh = height >> height;
 
                     byteArray tempBytes = byteArray(ww * hh * depth * 4);
                     for (int index = 0; index < tempBytes.length; index++) {
@@ -292,7 +293,7 @@ void Texture::writeAsBMP(const std::wstring& name) {
 	outStream->writeInt(0);                          // 0x0032: Number of important colors, 0 for all
 
 	// Pixels follow in inverted Y order
-	byte[] bytes = new uint8_t[width * height * 4];
+	uint8_t[] bytes = new uint8_t[width * height * 4];
 	data.position(0);
 	data.get(bytes);
 	for (int y = height - 1; y >= 0; y--)
@@ -320,7 +321,7 @@ void Texture::writeAsPNG(const std::wstring& filename) {
 #if 0
 	BufferedImage *image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	ByteBuffer *buffer = this->getData();
-	byte[] bytes = new uint8_t[width * height * 4];
+	uint8_t[] bytes = new uint8_t[width * height * 4];
 
 	buffer.position(0);
 	buffer.get(bytes);
@@ -518,8 +519,9 @@ void Texture::transferFromImage(BufferedImage* image) {
     int imgHeight = image->getHeight();
     if (imgWidth > width || imgHeight > height) {
         // Minecraft::GetInstance().getLogger().warning("transferFromImage
-        // called with a BufferedImage with dimensions (" + 	imgWidth + ", " +
-        //imgHeight + ") larger than the Texture dimensions (" + width +
+        // called with a BufferedImage with dimensions (" + 	imgWidth + ", "
+        // +
+        // imgHeight + ") larger than the Texture dimensions (" + width +
         //	", " + height + "). Ignoring.");
         app.DebugPrintf(
             "transferFromImage called with a BufferedImage with dimensions "
@@ -765,7 +767,7 @@ void Texture::updateOnGPU() {
     // if (height != 1 && depth != 1)
     //{
     //	glTexImage3D(type, 0, format, width, height, depth, 0, format,
-    //GL_UNSIGNED_BYTE, data);
+    // GL_UNSIGNED_BYTE, data);
     //}
     // else if(height != 1)
     //{

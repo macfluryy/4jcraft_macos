@@ -161,7 +161,8 @@ bool DLCTexturePack::hasFile(const std::wstring& name) {
 
 bool DLCTexturePack::isTerrainUpdateCompatible() { return true; }
 
-std::wstring DLCTexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
+std::wstring DLCTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
+                                     const char* pchBDPatchFilename) {
     return L"";
 }
 
