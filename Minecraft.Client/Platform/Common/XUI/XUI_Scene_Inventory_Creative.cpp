@@ -64,7 +64,7 @@ HRESULT CXuiSceneInventoryCreative::OnInit(XUIMessageInit* pInitData,
     // 4J JEV - Item Picker Menu
     std::shared_ptr<SimpleContainer> creativeContainer =
         std::shared_ptr<SimpleContainer>(
-            new SimpleContainer(0, TabSpec::MAX_SIZE + 9));
+            new SimpleContainer(0, L"", false, TabSpec::MAX_SIZE + 9));
     itemPickerMenu =
         new ItemPickerMenu(creativeContainer, initData->player->inventory);
 

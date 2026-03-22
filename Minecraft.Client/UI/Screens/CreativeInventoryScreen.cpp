@@ -16,7 +16,7 @@
 
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex = IUIScene_CreativeMenu::eCreativeInventoryTab_BuildingBlocks;
-std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory = std::make_shared<SimpleContainer>(0, ITEMS_PER_PAGE);
+std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory = std::make_shared<SimpleContainer>(0, L"", false, ITEMS_PER_PAGE);
 
 // ContainerCreative implementation
 CreativeInventoryScreen::ContainerCreative::ContainerCreative(std::shared_ptr<Player> player) : AbstractContainerMenu()
