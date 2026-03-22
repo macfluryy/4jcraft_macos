@@ -11,8 +11,8 @@ void DemoMode::tick() {
     SurvivalMode::tick();
 
     /* 4J - TODO - seems unlikely we need this demo mode anyway
-        __int64 time = minecraft->level->getTime();
-        __int64 day = (time / Level::TICKS_PER_DAY) + 1;
+        int64_t time = minecraft->level->getTime();
+        int64_t day = (time / Level::TICKS_PER_DAY) + 1;
 
         demoHasEnded = (time > (500 + Level::TICKS_PER_DAY * DEMO_DAYS));
         if (demoHasEnded)
@@ -25,13 +25,13 @@ void DemoMode::tick() {
             if (day <= (DEMO_DAYS + 1))
                     {
                 minecraft->gui->displayClientMessage(L"demo.day." +
-       _toString<__int64>(day));
+       _toString<int64_t>(day));
             }
         }
             else if (day == 1)
             {
             Options *options = minecraft->options;
-            std::wstring message;
+            wstring message;
 
             if (time == 100) {
                 minecraft.gui.addMessage("Seed: " + minecraft.level.getSeed());
