@@ -4,34 +4,28 @@
 #include "../../Minecraft.World/Util/Mth.h"
 
 RemotePlayer::RemotePlayer(Level* level, const std::wstring& name)
-    : Player(level) {
+    : Player(level, name) {
     // 4J - added initialisers
     hasStartedUsingItem = false;
     lSteps = 0;
     lx = ly = lz = lyr = lxr = 0.0;
     fallTime = 0.0f;
 
-    this->name = name;
-    m_UUID = name;
     app.DebugPrintf("Created RemotePlayer with name %ls\n", name.c_str());
 
     heightOffset = 0;
-    this->footSize = 0;
-    if (name.length() > 0) {
-        customTextureUrl = L"";  // L"http://s3.amazonaws.com/MinecraftSkins/" +
-                                 // name + L".png";
-    }
+    footSize = 0;
 
-    this->noPhysics = true;
+    noPhysics = true;
 
     bedOffsetY = 4 / 16.0f;
 
-    this->viewScale = 10;
+    viewScale = 10;
 }
 
 void RemotePlayer::setDefaultHeadHeight() { heightOffset = 0; }
 
-bool RemotePlayer::hurt(DamageSource* source, int dmg) { return true; }
+bool RemotePlayer::hurt(DamageSource* source, float dmg) { return true; }
 
 void RemotePlayer::lerpTo(double x, double y, double z, float yRot, float xRot,
                           int steps) {
@@ -99,8 +93,8 @@ void RemotePlayer::aiStep() {
         xRot += (float)((lxr - xRot) / lSteps);
 
         lSteps--;
-        this->setPos(xt, yt, zt);
-        this->setRot(yRot, xRot);
+        setPos(xt, yt, zt);
+        setRot(yRot, xRot);
     }
     oBob = bob;
 
@@ -130,3 +124,7 @@ void RemotePlayer::animateRespawn() {
 }
 
 float RemotePlayer::getHeadHeight() { return 1.82f; }
+
+Pos RemotePlayer::getCommandSenderWorldPosition() {
+    return new Pos(floor(x + .5), floor(y + .5), floor(z + .5));
+}

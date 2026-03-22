@@ -25,7 +25,8 @@ private:
     bool updatedPlayerVisibility;
     bool trackDelta;
     int teleportDelay;
-    std::shared_ptr<Entity> wasRiding;
+    std::shared_ptr<Entity> lastRidingEntity;
+    bool wasRiding;
 
 public:
     bool moved;
@@ -39,6 +40,11 @@ public:
 
     void tick(EntityTracker* tracker,
               std::vector<std::shared_ptr<Player> >* players);
+
+private:
+    void sendDirtyEntityData();
+
+public:
     void broadcast(std::shared_ptr<Packet> packet);
     void broadcastAndSend(std::shared_ptr<Packet> packet);
     void broadcastRemoved();

@@ -10,6 +10,10 @@ class Stat;
 class TileEntity;
 class Entity;
 class BrewingStandTileEntity;
+class HopperTileEntity;
+class MinecartHopper;
+class BeaconTileEntity;
+class EntityHorse;
 class Merchant;
 
 class ServerPlayer : public Player,
@@ -29,12 +33,14 @@ public:
     Biome* currentBiome;
 
 private:
-    int lastSentHealth;
+    float lastRecordedHealthAndAbsorption;
+    float lastSentHealth;
     int lastSentFood;
     bool lastFoodSaturationZero;
     int lastSentExp;
     int invulnerableTime;
     int viewDistance;
+    int64_t lastActionTime;
     int lastBrupSendTickCount;  // 4J Added
 
 public:
@@ -46,14 +52,8 @@ public:
 
     virtual void readAdditionalSaveData(CompoundTag* entityTag);
     virtual void addAdditonalSaveData(CompoundTag* entityTag);
-    virtual void withdrawExperienceLevels(int amount);
+    virtual void giveExperienceLevels(int amount);
     void initMenu();
-
-private:
-    ItemInstanceArray lastCarried;
-
-public:
-    virtual ItemInstanceArray getEquipmentSlots();
 
 protected:
     virtual void setDefaultHeadHeight();
@@ -64,13 +64,14 @@ public:
     void flushEntitiesToRemove();
     virtual std::shared_ptr<ItemInstance> getCarried(int slot);
     virtual void die(DamageSource* source);
-    virtual bool hurt(DamageSource* dmgSource, int dmg);
-    virtual bool isPlayerVersusPlayer();
+    virtual bool hurt(DamageSource* dmgSource, float dmg);
+    virtual bool canHarmPlayer(std::shared_ptr<Player> target);
+    bool canHarmPlayer(std::wstring targetName);  // 4J: Added
     void doTick(bool sendChunks, bool dontDelayChunks = false,
                 bool ignorePortal = false);
     void doTickA();
     void doChunkSendingTick(bool dontDelayChunks);
-    void doTickB(bool ignorePortal);
+    void doTickB();
     virtual void changeDimension(int i);
 
 private:
@@ -78,7 +79,6 @@ private:
 
 public:
     virtual void take(std::shared_ptr<Entity> e, int orgCount);
-    virtual void swing();
     virtual BedSleepingResult startSleepInBed(int x, int y, int z,
                                               bool bTestUse = false);
 
@@ -106,19 +106,27 @@ private:
     void nextContainerCounter();
 
 public:
-    virtual bool startCrafting(int x, int y, int z);    // 4J added bool return
-    virtual bool startEnchanting(int x, int y, int z);  // 4J added bool return
-    virtual bool startRepairing(int x, int y, int z);   // 4J added bool return
+    virtual void openTextEdit(std::shared_ptr<TileEntity> sign);
+    virtual bool startCrafting(int x, int y, int z);  // 4J added bool return
+    virtual bool openFireworks(int x, int y, int z);  // 4J added
+    virtual bool startEnchanting(
+        int x, int y, int z, const std::wstring& name);  // 4J added bool return
+    virtual bool startRepairing(int x, int y, int z);    // 4J added bool return
     virtual bool openContainer(
         std::shared_ptr<Container> container);  // 4J added bool return
+    virtual bool openHopper(std::shared_ptr<HopperTileEntity> container);
+    virtual bool openHopper(std::shared_ptr<MinecartHopper> container);
     virtual bool openFurnace(
         std::shared_ptr<FurnaceTileEntity> furnace);  // 4J added bool return
     virtual bool openTrap(
         std::shared_ptr<DispenserTileEntity> trap);  // 4J added bool return
     virtual bool openBrewingStand(std::shared_ptr<BrewingStandTileEntity>
                                       brewingStand);  // 4J added bool return
-    virtual bool openTrading(
-        std::shared_ptr<Merchant> traderTarget);  // 4J added bool return
+    virtual bool openBeacon(std::shared_ptr<BeaconTileEntity> beacon);
+    virtual bool openTrading(std::shared_ptr<Merchant> traderTarget,
+                             const std::wstring& name);  // 4J added bool return
+    virtual bool openHorseInventory(std::shared_ptr<EntityHorse> horse,
+                                    std::shared_ptr<Container> container);
     virtual void slotChanged(AbstractContainerMenu* container, int slotIndex,
                              std::shared_ptr<ItemInstance> item);
     void refreshContainer(AbstractContainerMenu* menu);
@@ -130,8 +138,7 @@ public:
     virtual void closeContainer();
     void broadcastCarriedItem();
     void doCloseContainer();
-    void setPlayerInput(float xa, float ya, bool jumping, bool sneaking,
-                        float xRot, float yRot);
+    void setPlayerInput(float xa, float ya, bool jumping, bool sneaking);
 
     virtual void awardStat(Stat* stat, byteArray param);
 
@@ -150,7 +157,8 @@ public:
 
 protected:
     virtual void onEffectAdded(MobEffectInstance* effect);
-    virtual void onEffectUpdated(MobEffectInstance* effect);
+    virtual void onEffectUpdated(MobEffectInstance* effect,
+                                 bool doRefreshAttributes);
     virtual void onEffectRemoved(MobEffectInstance* effect);
 
 public:
@@ -166,11 +174,14 @@ public:
         ChatPacket::EChatPacketMessage type = ChatPacket::e_ChatCustom,
         int customData = -1, const std::wstring& additionalMessage = L"");
     bool hasPermission(EGameCommand command);
-    // 4J - Don't use
-    // void updateOptions(std::shared_ptr<ClientInformationPacket> packet);
+    // bool hasPermission(int permissionLevel, EGameCommand command);
+    // void updateOptions(std::shared_ptr<ClientInformationPacket> packet); //
+    // 4J: Don't use
     int getViewDistance();
     // bool canChatInColor();
     // int getChatVisibility();
+    Pos* getCommandSenderWorldPosition();
+    void resetLastActionTime();
 
 public:
     static int getFlagIndexForChunk(const ChunkPos& pos,

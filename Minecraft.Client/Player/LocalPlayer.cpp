@@ -16,18 +16,22 @@
 #include "../GameState/CreativeMode.h"
 #include "../Rendering/GameRenderer.h"
 #include "../Rendering/EntityRenderers/ItemInHandRenderer.h"
+#include "../../Minecraft.World/AI/Attributes/AttributeInstance.h"
 #include "../../Minecraft.World/Level/LevelData.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.damagesource.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.food.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.effect.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "../../Minecraft.World/Entities/ItemEntity.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.phys.h"
 #include "../../Minecraft.World/Headers/net.minecraft.stats.h"
 #include "../../Minecraft.World/Headers/com.mojang.nbt.h"
 #include "../../Minecraft.World/Util/Random.h"
+#include "../../Minecraft.World/Blocks/TileEntities/TileEntity.h"
 #include "../../Minecraft.World/Util/Mth.h"
 #include "../UI/Screens/AchievementPopup.h"
 #include "../Rendering/Particles/CritParticle.h"
@@ -55,7 +59,7 @@
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)
-    : Player(level) {
+    : Player(level, user->name) {
     flyX = flyY = flyZ = 0.0f;  // 4J added
     m_awardedThisSession = 0;
 
@@ -64,6 +68,10 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
     twoJumpsRegistered = false;
     sprintTime = 0;
     m_uiInactiveTicks = 0;
+    portalTime = 0.0f;
+    oPortalTime = 0.0f;
+    jumpRidingTicks = 0;
+    jumpRidingScale = 0.0f;
 
     yBob = xBob = yBobO = xBobO = 0.0f;
 
@@ -76,7 +84,6 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
     }
     if (user != NULL) {
         this->name = user->name;
-        m_UUID = name;
         // wprintf(L"Created LocalPlayer with name %ls\n", name.c_str() );
         //  check to see if this player's xuid is in the list of special players
         MOJANG_DATA* pMojangData = app.GetMojangDataForXuid(getOnlineXuid());
@@ -114,28 +121,6 @@ LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
 
 LocalPlayer::~LocalPlayer() {
     if (this->input != NULL) delete input;
-}
-
-// 4J - added noEntityCubes parameter
-void LocalPlayer::move(double xa, double ya, double za, bool noEntityCubes) {
-    if (ClientConstants::DEADMAU5_CAMERA_CHEATS) {
-        if (shared_from_this() == minecraft->player &&
-            minecraft->options->isFlying) {
-            noPhysics = true;
-            float tmp = walkDist;  // update
-            calculateFlight((float)xa, (float)ya, (float)za);
-            fallDistance = 0.0f;
-            yd = 0.0f;
-            Player::move(flyX, flyY, flyZ, noEntityCubes);
-            onGround = true;
-            walkDist = tmp;
-        } else {
-            noPhysics = false;
-            Player::move(xa, ya, za, noEntityCubes);
-        }
-    } else {
-        Player::move(xa, ya, za, noEntityCubes);
-    }
 }
 
 void LocalPlayer::calculateFlight(float xa, float ya, float za) {
@@ -193,7 +178,7 @@ void LocalPlayer::serverAiStep() {
     //	mapPlayerChunk(8);
 }
 
-bool LocalPlayer::isEffectiveAI() { return true; }
+bool LocalPlayer::isEffectiveAi() { return true; }
 
 void LocalPlayer::aiStep() {
     if (sprintTime > 0) {
@@ -248,7 +233,7 @@ void LocalPlayer::aiStep() {
     // input->tick( std::dynamic_pointer_cast<Player>( shared_from_this() ) );
     //  4J-PB - make it a localplayer
     input->tick(this);
-    if (isUsingItem()) {
+    if (isUsingItem() && !isRiding()) {
         input->xa *= 0.2f;
         input->ya *= 0.2f;
         sprintTriggerTime = 0;
@@ -373,6 +358,36 @@ void LocalPlayer::aiStep() {
         }
     }
 
+    if (isRidingJumpable()) {
+        if (jumpRidingTicks < 0) {
+            jumpRidingTicks++;
+            if (jumpRidingTicks == 0) {
+                // reset scale (for gui)
+                jumpRidingScale = 0;
+            }
+        }
+        if (wasJumping && !input->jumping) {
+            // jump release
+            jumpRidingTicks = -10;
+            sendRidingJump();
+        } else if (!wasJumping && input->jumping) {
+            // jump press
+            jumpRidingTicks = 0;
+            jumpRidingScale = 0;
+        } else if (wasJumping) {
+            // calc jump scale
+            jumpRidingTicks++;
+            if (jumpRidingTicks < 10) {
+                jumpRidingScale = (float)jumpRidingTicks * .1f;
+            } else {
+                jumpRidingScale =
+                    .8f + (2.f / ((float)(jumpRidingTicks - 9))) * .1f;
+            }
+        }
+    } else {
+        jumpRidingScale = 0;
+    }
+
     Player::aiStep();
 
     // 4J-PB - If we're in Creative Mode, allow flying on ground
@@ -491,8 +506,10 @@ float LocalPlayer::getFieldOfViewModifier() {
 
     // modify for movement
     if (abilities.flying) targetFov *= 1.1f;
-    targetFov *=
-        ((walkingSpeed * getWalkingSpeedModifier()) / defaultWalkSpeed + 1) / 2;
+
+    AttributeInstance* speed =
+        getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
+    targetFov *= (speed->getValue() / abilities.getWalkingSpeed() + 1) / 2;
 
     // modify for bow =)
     if (isUsingItem() && getUseItem()->id == Item::bow->id) {
@@ -511,12 +528,12 @@ float LocalPlayer::getFieldOfViewModifier() {
 
 void LocalPlayer::addAdditonalSaveData(CompoundTag* entityTag) {
     Player::addAdditonalSaveData(entityTag);
-    entityTag->putInt(L"Score", score);
+    // entityTag->putInt(L"Score", score);
 }
 
 void LocalPlayer::readAdditionalSaveData(CompoundTag* entityTag) {
     Player::readAdditionalSaveData(entityTag);
-    score = entityTag->getInt(L"Score");
+    // score = entityTag->getInt(L"Score");
 }
 
 void LocalPlayer::closeContainer() {
@@ -530,12 +547,23 @@ void LocalPlayer::closeContainer() {
     ui.CloseUIScenes(m_iPad);
 }
 
-void LocalPlayer::openTextEdit(std::shared_ptr<SignTileEntity> sign) {
+void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 #ifdef ENABLE_JAVA_GUIS
     minecraft->setScreen(new TextEditScreen(sign));
     bool success = true;
 #else
-    bool success = app.LoadSignEntryMenu(GetXboxPad(), sign);
+    bool success;
+
+    if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
+        success = app.LoadSignEntryMenu(
+            GetXboxPad(),
+            std::dynamic_pointer_cast<SignTileEntity>(tileEntity));
+    } else if (tileEntity->GetType() == eTYPE_COMMANDBLOCKTILEENTITY) {
+        success = app.LoadCommandBlockMenu(
+            GetXboxPad(),
+            std::dynamic_pointer_cast<CommandBlockEntity>(tileEntity));
+    }
+
     if (success) ui.PlayUISFX(eSFX_Press);
 #endif
 }
@@ -548,6 +576,30 @@ bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
     bool success = app.LoadContainerMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
 #endif
+    // minecraft->setScreen(new ContainerScreen(inventory, container));
+    return success;
+}
+
+bool LocalPlayer::openHopper(std::shared_ptr<HopperTileEntity> container) {
+    // minecraft->setScreen(new HopperScreen(inventory, container));
+    bool success = app.LoadHopperMenu(GetXboxPad(), inventory, container);
+    if (success) ui.PlayUISFX(eSFX_Press);
+    return success;
+}
+
+bool LocalPlayer::openHopper(std::shared_ptr<MinecartHopper> container) {
+    // minecraft->setScreen(new HopperScreen(inventory, container));
+    bool success = app.LoadHopperMenu(GetXboxPad(), inventory, container);
+    if (success) ui.PlayUISFX(eSFX_Press);
+    return success;
+}
+
+bool LocalPlayer::openHorseInventory(std::shared_ptr<EntityHorse> horse,
+                                     std::shared_ptr<Container> container) {
+    // minecraft->setScreen(new HorseInventoryScreen(inventory, container,
+    // horse));
+    bool success = app.LoadHorseMenu(GetXboxPad(), inventory, container, horse);
+    if (success) ui.PlayUISFX(eSFX_Press);
     return success;
 }
 
@@ -562,12 +614,22 @@ bool LocalPlayer::startCrafting(int x, int y, int z) {
     if (success) ui.PlayUISFX(eSFX_Press);
 #endif
     // app.LoadXuiCraftMenu(0,inventory, level, x, y, z);
+    // minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
     return success;
 }
 
-bool LocalPlayer::startEnchanting(int x, int y, int z) {
+bool LocalPlayer::openFireworks(int x, int y, int z) {
+    bool success = app.LoadFireworksMenu(
+        GetXboxPad(),
+        std::dynamic_pointer_cast<LocalPlayer>(shared_from_this()), x, y, z);
+    if (success) ui.PlayUISFX(eSFX_Press);
+    return success;
+}
+
+bool LocalPlayer::startEnchanting(int x, int y, int z,
+                                  const std::wstring& name) {
     bool success =
-        app.LoadEnchantingMenu(GetXboxPad(), inventory, x, y, z, level);
+        app.LoadEnchantingMenu(GetXboxPad(), inventory, x, y, z, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
     // minecraft.setScreen(new EnchantmentScreen(inventory, level, x, y, z));
     return success;
@@ -606,6 +668,13 @@ bool LocalPlayer::openBrewingStand(
     return success;
 }
 
+bool LocalPlayer::openBeacon(std::shared_ptr<BeaconTileEntity> beacon) {
+    // minecraft->setScreen(new BeaconScreen(inventory, beacon));
+    bool success = app.LoadBeaconMenu(GetXboxPad(), inventory, beacon);
+    if (success) ui.PlayUISFX(eSFX_Press);
+    return success;
+}
+
 bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap) {
     bool success = app.LoadTrapMenu(GetXboxPad(), inventory, trap);
     if (success) ui.PlayUISFX(eSFX_Press);
@@ -613,9 +682,10 @@ bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap) {
     return success;
 }
 
-bool LocalPlayer::openTrading(std::shared_ptr<Merchant> traderTarget) {
+bool LocalPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
+                              const std::wstring& name) {
     bool success =
-        app.LoadTradingMenu(GetXboxPad(), inventory, traderTarget, level);
+        app.LoadTradingMenu(GetXboxPad(), inventory, traderTarget, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
     // minecraft.setScreen(new MerchantScreen(inventory, traderTarget, level));
     return success;
@@ -645,8 +715,8 @@ void LocalPlayer::chat(const std::wstring& message) {}
 
 bool LocalPlayer::isSneaking() { return input->sneaking && !m_isSleeping; }
 
-void LocalPlayer::hurtTo(int newHealth, ETelemetryChallenges damageSource) {
-    int dmg = getHealth() - newHealth;
+void LocalPlayer::hurtTo(float newHealth, ETelemetryChallenges damageSource) {
+    float dmg = getHealth() - newHealth;
     if (dmg <= 0) {
         setHealth(newHealth);
         if (dmg < 0) {
@@ -660,8 +730,9 @@ void LocalPlayer::hurtTo(int newHealth, ETelemetryChallenges damageSource) {
         hurtTime = hurtDuration = 10;
     }
 
-    if (this->health <= 0) {
-        int deathTime = (int)(level->getTime() % Level::TICKS_PER_DAY) / 1000;
+    if (this->getHealth() <= 0) {
+        int deathTime =
+            (int)(level->getGameTime() % Level::TICKS_PER_DAY) / 1000;
         int carriedId =
             inventory->getSelected() == NULL ? 0 : inventory->getSelected()->id;
         TelemetryManager->RecordPlayerDiedOrFailed(GetXboxPad(), 0, y, 0, 0,
@@ -972,15 +1043,15 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
             bool justPickedupWool = false;
 
             for (int i = 0; i < 16; i++)
-                if (stat == GenericStats::itemsCollected(Tile::cloth_Id, i))
+                if (stat == GenericStats::itemsCollected(Tile::wool_Id, i))
                     justPickedupWool = true;
 
             if (justPickedupWool) {
                 unsigned int woolCount = 0;
 
                 for (unsigned int i = 0; i < 16; i++) {
-                    if (pStats->getTotalValue(GenericStats::itemsCollected(
-                            Tile::cloth_Id, i)) > 0)
+                    if (pStats->getTotalValue(
+                            GenericStats::itemsCollected(Tile::wool_Id, i)) > 0)
                         woolCount++;
                 }
 
@@ -1084,6 +1155,33 @@ void LocalPlayer::setExperienceValues(float experienceProgress, int totalExp,
     this->experienceLevel = experienceLevel;
 }
 
+// 4J: removed
+// void LocalPlayer::sendMessage(ChatMessageComponent *message)
+//{
+//	minecraft->gui->getChat()->addMessage(message.toString(true));
+//}
+
+Pos LocalPlayer::getCommandSenderWorldPosition() {
+    return new Pos(floor(x + .5), floor(y + .5), floor(z + .5));
+}
+
+std::shared_ptr<ItemInstance> LocalPlayer::getCarriedItem() {
+    return inventory->getSelected();
+}
+
+void LocalPlayer::playSound(int soundId, float volume, float pitch) {
+    level->playLocalSound(x, y - heightOffset, z, soundId, volume, pitch,
+                          false);
+}
+
+bool LocalPlayer::isRidingJumpable() {
+    return riding != NULL && riding->GetType() == eTYPE_HORSE;
+}
+
+float LocalPlayer::getJumpRidingScale() { return jumpRidingScale; }
+
+void LocalPlayer::sendRidingJump() {}
+
 bool LocalPlayer::hasPermission(EGameCommand command) {
     return level->getLevelData()->getAllowCommands();
 }
@@ -1168,7 +1266,7 @@ void LocalPlayer::handleMouseDown(int button, bool down) {
         minecraft->gameMode->continueDestroyBlock(x, y, z,
                                                   minecraft->hitResult->f);
 
-        if (mayBuild(x, y, z)) {
+        if (mayDestroyBlockAt(x, y, z)) {
             minecraft->particleEngine->crack(x, y, z, minecraft->hitResult->f);
             swing();
         }
@@ -1449,15 +1547,12 @@ void LocalPlayer::updateRichPresence() {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_FISHING);
         } else if (selectedItem != NULL && selectedItem->id == Item::map_Id) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_MAP);
-        } else if (riding != NULL &&
-                   std::dynamic_pointer_cast<Minecart>(riding) != NULL) {
+        } else if ((riding != NULL) && riding->instanceof(eTYPE_MINECART)) {
             app.SetRichPresenceContext(m_iPad,
                                        CONTEXT_GAME_STATE_RIDING_MINECART);
-        } else if (riding != NULL &&
-                   std::dynamic_pointer_cast<Boat>(riding) != NULL) {
+        } else if ((riding != NULL) && riding->instanceof(eTYPE_BOAT)) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_BOATING);
-        } else if (riding != NULL &&
-                   std::dynamic_pointer_cast<Pig>(riding) != NULL) {
+        } else if ((riding != NULL) && riding->instanceof(eTYPE_PIG)) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_RIDING_PIG);
         } else if (this->dimension == -1) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_NETHER);

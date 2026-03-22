@@ -5,8 +5,8 @@
 std::vector<Tile*> User::allowedTiles;
 
 void User::staticCtor() {
-    allowedTiles.push_back(Tile::rock);
-    allowedTiles.push_back(Tile::stoneBrick);
+    allowedTiles.push_back(Tile::stone);
+    allowedTiles.push_back(Tile::cobblestone);
     allowedTiles.push_back(Tile::redBrick);
     allowedTiles.push_back(Tile::dirt);
     allowedTiles.push_back(Tile::wood);
@@ -16,17 +16,17 @@ void User::staticCtor() {
     allowedTiles.push_back(Tile::stoneSlabHalf);
 
     allowedTiles.push_back(Tile::glass);
-    allowedTiles.push_back(Tile::mossStone);
+    allowedTiles.push_back(Tile::mossyCobblestone);
     allowedTiles.push_back(Tile::sapling);
     allowedTiles.push_back(Tile::flower);
     allowedTiles.push_back(Tile::rose);
-    allowedTiles.push_back(Tile::mushroom1);
-    allowedTiles.push_back(Tile::mushroom2);
+    allowedTiles.push_back(Tile::mushroom_brown);
+    allowedTiles.push_back(Tile::mushroom_red);
     allowedTiles.push_back(Tile::sand);
     allowedTiles.push_back(Tile::gravel);
     allowedTiles.push_back(Tile::sponge);
 
-    allowedTiles.push_back(Tile::cloth);
+    allowedTiles.push_back(Tile::wool);
     allowedTiles.push_back(Tile::coalOre);
     allowedTiles.push_back(Tile::ironOre);
     allowedTiles.push_back(Tile::goldOre);
