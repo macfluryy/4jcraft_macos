@@ -1,23 +1,25 @@
 #include "../../stdafx.h"
 #include "../../Minecraft.h"
-#include "../../ScreenSizeCalculator.h"
-#include "../../EntityRenderDispatcher.h"
 
-#include "../../PlayerRenderer.h"
-#include "../../HorseRenderer.h"
+#include "../../Minecraft.Client/UI/ScreenSizeCalculator.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/EntityRenderDispatcher.h"
 
-#include "../../HumanoidModel.h"
-#include "../../ModelHorse.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/PlayerRenderer.h"
+#include "../../Minecraft.Client/Rendering/EntityRenderers/HorseRenderer.h"
 
-#include "../../Lighting.h"
-#include "../../ModelPart.h"
-#include "../../Options.h"
+#include "../../Minecraft.Client/Rendering/Models/HumanoidModel.h"
+#include "../../Minecraft.Client/Rendering/Models/ModelHorse.h"
+
+#include "../../Minecraft.Client/Rendering/Lighting.h"
+#include "../../Minecraft.Client/Rendering/Models/ModelPart.h"
+#include "../../Minecraft.Client/GameState/Options.h"
 
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 // #include
 // "../../../Minecraft.World/net.minecraft.world.entity.animal.EntityHorse.h"
 
-#include "../../MultiPlayerLocalPlayer.h"
+#include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
+
 #include "UI.h"
 #include "UIControl_MinecraftHorse.h"
 
