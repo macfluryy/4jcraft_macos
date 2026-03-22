@@ -239,12 +239,11 @@ void UIScene_JoinMenu::tick() {
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
 #ifdef _XBOX_ONE
-        ui.RequestMessageBox(IDS_CONNECTION_FAILED,
-                             IDS_DISCONNECTED_SERVER_QUIT, uiIDA, 1, m_iPad,
-                             ErrorDialogReturned, this, app.GetStringTable());
+        ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
                                IDS_DISCONNECTED_SERVER_QUIT, uiIDA, 1, m_iPad,
                                ErrorDialogReturned, this);
 #else
+        ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
                                uiIDA, 1, m_iPad, ErrorDialogReturned, this);
 #endif
     }
@@ -355,7 +354,7 @@ void UIScene_JoinMenu::checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
                                               int iPad) {
     UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)lpParam;
 
-        pClass->m_bIgnoreInput = false;
+    pClass->m_bIgnoreInput = false;
     if (pClass) {
         if (hasPrivilege) {
             pClass->StartSharedLaunchFlow();
@@ -388,227 +387,233 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
 
     if (bContinue == true) {
         // It's possible that the player has not signed in - they can back out
-    UIScene_JoinMenu* pClass =
-        (UIScene_JoinMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
+        UIScene_JoinMenu* pClass =
+            (UIScene_JoinMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
 
-    if (pClass) {
-        if (bContinue == true) {
-            // It's possible that the player has not signed in - they can back
-            // out
-            if (ProfileManager.IsSignedIn(iPad)) {
-                JoinGame(pClass);
+        if (pClass) {
+            if (bContinue == true) {
+                // It's possible that the player has not signed in - they can
+                // back out
+                if (ProfileManager.IsSignedIn(iPad)) {
+                    JoinGame(pClass);
+                } else {
+                    pClass->m_bIgnoreInput = false;
+                }
             } else {
                 pClass->m_bIgnoreInput = false;
             }
-        } else {
             pClass->m_bIgnoreInput = false;
         }
-        pClass->m_bIgnoreInput = false;
+        return 0;
     }
-    return 0;
-}
 
-// Shared function to join the game that is the same whether we used the sign-in
-// UI or not
-void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
-    bool noPrivileges = false;
-    int signedInUsers = 0;
-    int localUsersMask = 0;
-    DWORD dwLocalUsersMask = 0;
-    bool isSignedInLive = true;
-    int iPadNotSignedInLive = -1;
+    // Shared function to join the game that is the same whether we used the
+    // sign-in UI or not
+    void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu * pClass) {
+        bool noPrivileges = false;
+        int signedInUsers = 0;
+        int localUsersMask = 0;
+        DWORD dwLocalUsersMask = 0;
+        bool isSignedInLive = true;
+        int iPadNotSignedInLive = -1;
 
-    ProfileManager.SetLockedProfile(0);  // TEMP!
+        ProfileManager.SetLockedProfile(0);  // TEMP!
 
-    // If we're in SD mode, then only the primary player gets to play
-    if (app.IsLocalMultiplayerAvailable()) {
-        for (unsigned int index = 0; index < XUSER_MAX_COUNT; ++index) {
-            if (ProfileManager.IsSignedIn(index)) {
-                if (isSignedInLive && !ProfileManager.IsSignedInLive(index)) {
-                    // Record the first non signed in live pad
-                    iPadNotSignedInLive = index;
+        // If we're in SD mode, then only the primary player gets to play
+        if (app.IsLocalMultiplayerAvailable()) {
+            for (unsigned int index = 0; index < XUSER_MAX_COUNT; ++index) {
+                if (ProfileManager.IsSignedIn(index)) {
+                    if (isSignedInLive &&
+                        !ProfileManager.IsSignedInLive(index)) {
+                        // Record the first non signed in live pad
+                        iPadNotSignedInLive = index;
+                    }
+
+                    if (!ProfileManager.AllowedToPlayMultiplayer(index))
+                        noPrivileges = true;
+                    dwLocalUsersMask |=
+                        CGameNetworkManager::GetLocalPlayerMask(index);
+                    isSignedInLive =
+                        isSignedInLive && ProfileManager.IsSignedInLive(index);
                 }
-
-                if (!ProfileManager.AllowedToPlayMultiplayer(index))
-                    noPrivileges = true;
-                dwLocalUsersMask |=
-                    CGameNetworkManager::GetLocalPlayerMask(index);
-                isSignedInLive =
-                    isSignedInLive && ProfileManager.IsSignedInLive(index);
             }
-        }
-    } else {
-        if (ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
-            if (!ProfileManager.AllowedToPlayMultiplayer(
-                    ProfileManager.GetPrimaryPad()))
-                noPrivileges = true;
+        } else {
+            if (ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
+                if (!ProfileManager.AllowedToPlayMultiplayer(
+                        ProfileManager.GetPrimaryPad()))
+                    noPrivileges = true;
                 ProfileManager.GetPrimaryPad());
 
-            isSignedInLive =
-                ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
+                isSignedInLive = ProfileManager.IsSignedInLive(
+                    ProfileManager.GetPrimaryPad());
 #ifdef __PSVITA__
-            if (CGameNetworkManager::usingAdhocMode() &&
-                SQRNetworkManager_AdHoc_Vita::GetAdhocStatus())
-                isSignedInLive = true;
+                if (CGameNetworkManager::usingAdhocMode() &&
+                    SQRNetworkManager_AdHoc_Vita::GetAdhocStatus())
+                    isSignedInLive = true;
 #endif
+            }
         }
-    }
 
-    // If this is an online game but not all players are signed in to Live,
-    // stop!
-    if (!isSignedInLive) {
+        // If this is an online game but not all players are signed in to Live,
+        // stop!
+        if (!isSignedInLive) {
 #ifdef __ORBIS__
-        // Check if PSN is unavailable because of age restriction
-        int npAvailability =
-            ProfileManager.getNPAvailability(iPadNotSignedInLive);
-        if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-            pClass->m_bIgnoreInput = false;
-            // 4J Stu - This is a bit messy and is due to the library
-            // incorrectly returning false for IsSignedInLive if the
-            // npAvailability isn't SCE_OK
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                   iPadNotSignedInLive);
-        } else
+            // Check if PSN is unavailable because of age restriction
+            int npAvailability =
+                ProfileManager.getNPAvailability(iPadNotSignedInLive);
+            if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
+                pClass->m_bIgnoreInput = false;
+                // 4J Stu - This is a bit messy and is due to the library
+                // incorrectly returning false for IsSignedInLive if the
+                // npAvailability isn't SCE_OK
+                unsigned int uiIDA[1];
+                uiIDA[0] = IDS_OK;
+                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                       iPadNotSignedInLive);
+            } else
 #endif
-        {
+            {
+                pClass->m_bIgnoreInput = false;
+                unsigned int uiIDA[1];
+                uiIDA[0] = IDS_CONFIRM_OK;
+                ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
+                                       IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
+                                       ProfileManager.GetPrimaryPad());
+            }
+            return;
+        }
+
+        // Check if user-created content is allowed, as we cannot play
+        // multiplayer if it's not
+        bool noUGC = false;
+        bool pccAllowed = true;
+        bool pccFriendsAllowed = true;
+
+#if defined(__PS3__) || defined(__PSVITA__)
+        if (isSignedInLive) {
+            ProfileManager.GetChatAndContentRestrictions(
+                ProfileManager.GetPrimaryPad(), false, &noUGC, NULL, NULL);
+        }
+#else
+        ProfileManager.AllowedPlayerCreatedContent(
+            ProfileManager.GetPrimaryPad(), false, &pccAllowed,
+            &pccFriendsAllowed);
+        if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
+#endif
+
+#ifdef __PSVITA__
+        if (CGameNetworkManager::usingAdhocMode()) {
+            noPrivileges = false;
+            noUGC = false;
+        }
+#endif
+
+        if (noUGC) {
+            pClass->setVisible(true);
+            pClass->m_bIgnoreInput = false;
+
+            int messageText =
+                IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
+            if (dwSignedInUsers > 1)
+                messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
+
+            ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);
+        } else if (noPrivileges) {
+            pClass->setVisible(true);
             pClass->m_bIgnoreInput = false;
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_CONFIRM_OK;
-            ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
-                                   ProfileManager.GetPrimaryPad());
-        }
-        return;
-    }
-
-    // Check if user-created content is allowed, as we cannot play multiplayer
-    // if it's not
-    bool noUGC = false;
-    bool pccAllowed = true;
-    bool pccFriendsAllowed = true;
-
-#if defined(__PS3__) || defined(__PSVITA__)
-    if (isSignedInLive) {
-        ProfileManager.GetChatAndContentRestrictions(
-            ProfileManager.GetPrimaryPad(), false, &noUGC, NULL, NULL);
-    }
-#else
-    ProfileManager.AllowedPlayerCreatedContent(
-        ProfileManager.GetPrimaryPad(), false, &pccAllowed, &pccFriendsAllowed);
-    if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
-#endif
-
-#ifdef __PSVITA__
-    if (CGameNetworkManager::usingAdhocMode()) {
-        noPrivileges = false;
-        noUGC = false;
-    }
-#endif
-
-    if (noUGC) {
-        pClass->setVisible(true);
-        pClass->m_bIgnoreInput = false;
-
-        int messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-        if (dwSignedInUsers > 1)
-            messageText = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
-
-        ui.RequestUGCMessageBox(IDS_CONNECTION_FAILED, messageText);
-    } else if (noPrivileges) {
-        pClass->setVisible(true);
-        pClass->m_bIgnoreInput = false;
-        unsigned int uiIDA[1];
-        uiIDA[0] = IDS_CONFIRM_OK;
-        ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                               IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
-                               ProfileManager.GetPrimaryPad());
-    } else {
+            ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                                   IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
+                                   uiIDA, 1, ProfileManager.GetPrimaryPad());
+        } else {
 #if defined(__ORBIS__) || defined(__PSVITA__)
-        bool chatRestricted = false;
-        ProfileManager.GetChatAndContentRestrictions(
-            ProfileManager.GetPrimaryPad(), false, &chatRestricted, NULL, NULL);
-        if (chatRestricted) {
-            ProfileManager.DisplaySystemMessage(
-                SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION,
-                ProfileManager.GetPrimaryPad());
-        }
-#endif
-        CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame(
-            pClass->m_selectedSession, dwLocalUsersMask);
-
-        // Alert the app the we no longer want to be informed of ethernet
-        // connections
-        app.SetLiveLinkRequired(false);
-
-        if (result != CGameNetworkManager::JOINGAME_SUCCESS) {
-            int exitReasonStringId = -1;
-            switch (result) {
-                case CGameNetworkManager::JOINGAME_FAIL_SERVER_FULL:
-                    exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
-                    break;
-                default:
-                    break;
+            bool chatRestricted = false;
+            ProfileManager.GetChatAndContentRestrictions(
+                ProfileManager.GetPrimaryPad(), false, &chatRestricted, NULL,
+                NULL);
+            if (chatRestricted) {
+                ProfileManager.DisplaySystemMessage(
+                    SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION,
+                    ProfileManager.GetPrimaryPad());
             }
+#endif
+            CGameNetworkManager::eJoinGameResult result =
+                g_NetworkManager.JoinGame(pClass->m_selectedSession,
+                                          dwLocalUsersMask);
 
-            if (exitReasonStringId == -1) {
-                ui.NavigateBack(pClass->m_iPad);
-            } else {
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
-                                       exitReasonStringId, uiIDA, 1,
-                                       ProfileManager.GetPrimaryPad());
-                exitReasonStringId = -1;
+            // Alert the app the we no longer want to be informed of ethernet
+            // connections
+            app.SetLiveLinkRequired(false);
 
-                ui.NavigateToHomeMenu();
+            if (result != CGameNetworkManager::JOINGAME_SUCCESS) {
+                int exitReasonStringId = -1;
+                switch (result) {
+                    case CGameNetworkManager::JOINGAME_FAIL_SERVER_FULL:
+                        exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (exitReasonStringId == -1) {
+                    ui.NavigateBack(pClass->m_iPad);
+                } else {
+                    unsigned int uiIDA[1];
+                    uiIDA[0] = IDS_CONFIRM_OK;
+                    ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
+                                           exitReasonStringId, uiIDA, 1,
+                                           ProfileManager.GetPrimaryPad());
+                    exitReasonStringId = -1;
+
+                    ui.NavigateToHomeMenu();
+                }
             }
         }
     }
-}
 
-void UIScene_JoinMenu::handleTimerComplete(int id) {
-    switch (id) {
-        case UPDATE_PLAYERS_TIMER_ID: {
+    void UIScene_JoinMenu::handleTimerComplete(int id) {
+        switch (id) {
+            case UPDATE_PLAYERS_TIMER_ID: {
 #if TO_BE_IMPLEMENTED
-            PlayerUID selectedPlayerXUID =
-                m_selectedSession->data.players[playersList.GetCurSel()];
+                PlayerUID selectedPlayerXUID =
+                    m_selectedSession->data.players[playersList.GetCurSel()];
 
-            bool success = g_NetworkManager.GetGameSessionInfo(
-                m_iPad, m_selectedSession->sessionId, m_selectedSession);
+                bool success = g_NetworkManager.GetGameSessionInfo(
+                    m_iPad, m_selectedSession->sessionId, m_selectedSession);
 
-            if (success) {
-                playersList.DeleteItems(0, playersList.GetItemCount());
-                int selectedIndex = 0;
-                for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
-                    if (m_selectedSession->data.players[i] != NULL) {
-                        if (m_selectedSession->data.players[i] ==
-                            selectedPlayerXUID)
-                            selectedIndex = i;
-                        playersList.InsertItems(i, 1);
+                if (success) {
+                    playersList.DeleteItems(0, playersList.GetItemCount());
+                    int selectedIndex = 0;
+                    for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS;
+                         ++i) {
+                        if (m_selectedSession->data.players[i] != NULL) {
+                            if (m_selectedSession->data.players[i] ==
+                                selectedPlayerXUID)
+                                selectedIndex = i;
+                            playersList.InsertItems(i, 1);
 #ifndef _CONTENT_PACKAGE
-                        if (app.DebugSettingsOn() &&
-                            (app.GetGameSettingsDebugMask() &
-                             (1L << eDebugSetting_DebugLeaderboards))) {
-                            playersList.SetText(i, L"WWWWWWWWWWWWWWWW");
-                        } else
+                            if (app.DebugSettingsOn() &&
+                                (app.GetGameSettingsDebugMask() &
+                                 (1L << eDebugSetting_DebugLeaderboards))) {
+                                playersList.SetText(i, L"WWWWWWWWWWWWWWWW");
+                            } else
 #endif
-                        {
-                            playersList.SetText(
-                                i, convStringToWstring(
-                                       m_selectedSession->data.szPlayers[i])
-                                       .c_str());
+                            {
+                                playersList.SetText(
+                                    i, convStringToWstring(
+                                           m_selectedSession->data.szPlayers[i])
+                                           .c_str());
+                            }
+                        } else {
+                            // Leave the loop when we hit the first NULL player
+                            break;
                         }
-                    } else {
-                        // Leave the loop when we hit the first NULL player
-                        break;
                     }
+                    playersList.SetCurSel(selectedIndex);
                 }
-                playersList.SetCurSel(selectedIndex);
-            }
 #endif
-        } break;
-    };
-}
+            } break;
+        };
+    }
