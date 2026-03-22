@@ -22,6 +22,9 @@ exclude_platform_common_sources = [
   ' ! -path "*/XUI/*"',
   # we use system zlib instead, since this one is old as hell and isn't configured for linux correctly
   ' ! -path "*/zlib/*"',
+  ' ! -path "*/GameState/SurvivalMode.cpp"',
+  ' ! -path "*/GameState/CreativeMode.cpp"',
+  ' ! -path "*/GameState/GameMode.cpp"',
 ]
 
 # all sources in in ./Platform/Common

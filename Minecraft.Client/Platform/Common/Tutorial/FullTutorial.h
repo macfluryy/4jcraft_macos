@@ -7,15 +7,15 @@
 #define FULL_TUTORIAL_PROGRESS_USE_FURNACE 8
 #define EXTENDED_TUTORIAL_PROGRESS_USE_BREWING_STAND 16
 
-class FullTutorial : public Tutorial
-{
+class FullTutorial : public Tutorial {
 private:
-	bool m_isTrial;
-	char m_progressFlags;
-	bool m_completedStates[e_Tutorial_State_Max];
-public:
-	FullTutorial(int iPad, bool isTrial = false);
+    bool m_isTrial;
+    char m_progressFlags;
+    bool m_completedStates[e_Tutorial_State_Max];
 
-	virtual bool isStateCompleted( eTutorial_State state );
-	virtual void setStateCompleted( eTutorial_State state );
+public:
+    FullTutorial(int iPad, bool isTrial = false);
+
+    virtual bool isStateCompleted(eTutorial_State state);
+    virtual void setStateCompleted(eTutorial_State state);
 };
