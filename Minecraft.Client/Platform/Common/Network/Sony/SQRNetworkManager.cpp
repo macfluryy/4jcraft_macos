@@ -4,7 +4,6 @@
 
 bool SQRNetworkManager::s_safeToRespondToGameBootInvite = false;
 
-void SQRNetworkManager::SafeToRespondToGameBootInvite()
-{
-	s_safeToRespondToGameBootInvite = true;
+void SQRNetworkManager::SafeToRespondToGameBootInvite() {
+    s_safeToRespondToGameBootInvite = true;
 }

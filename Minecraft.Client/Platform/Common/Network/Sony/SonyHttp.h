@@ -1,11 +1,9 @@
 #pragma once
 
-
-
-class SonyHttp
-{
+class SonyHttp {
 public:
-	static bool init();
-	static void shutdown();
-	static bool getDataFromURL(const char* szURL, void** ppOutData, int* pDataSize);
+    static bool init();
+    static void shutdown();
+    static bool getDataFromURL(const char* szURL, void** ppOutData,
+                               int* pDataSize);
 };
