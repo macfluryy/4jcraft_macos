@@ -202,6 +202,23 @@ void DLCManager::removePack(DLCPack* pack) {
     }
 }
 
+void DLCManager::removeAllPacks(void) {
+    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        DLCPack* pack = (DLCPack*)*it;
+        delete pack;
+    }
+
+    m_packs.clear();
+}
+
+void DLCManager::LanguageChanged(void) {
+    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        DLCPack* pack = (DLCPack*)*it;
+        // update the language
+        pack->UpdateLanguage();
+    }
+}
+
 DLCPack* DLCManager::getPack(const std::wstring& name) {
     DLCPack* pack = NULL;
     // DWORD currentIndex = 0;
