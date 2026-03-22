@@ -5,7 +5,7 @@
 #include "../../Textures/TextureAtlas.h"
 #include "TileRenderer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.h"
-#include "../Minecraft.World/PistonPieceTileEntity.h"
+#include "../../../Minecraft.World/Blocks/TileEntities/PistonPieceTileEntity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 ResourceLocation PistonPieceRenderer::SIGN_LOCATION =

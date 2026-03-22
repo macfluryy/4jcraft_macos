@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
 #include "Packs/TexturePack.h"
 #include "../GameState/Options.h"
-#include "../Minecraft.Client/MemTextureProcessor.h"
+#include "../../Minecraft.Client/Textures/MemTextureProcessor.h"
 #include "MobSkinMemTextureProcessor.h"
 #include "Stitching/PreStitchedTextureMap.h"
 #include "Stitching/StitchedTexture.h"
@@ -409,9 +409,9 @@ void Textures::bindTexture(const std::wstring& resourceName) {
 // 4J Added
 void Textures::bindTexture(ResourceLocation* resource) {
     if (resource->isPreloaded()) {
-        std::bind(loadTexture(resource->getTexture()));
+        bind(loadTexture(resource->getTexture()));
     } else {
-        std::bind(loadTexture(TN_COUNT, resource->getPath()));
+        bind(loadTexture(TN_COUNT, resource->getPath()));
     }
 }
 
@@ -421,6 +421,7 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
     int layers = resource->getTextureCount();
 
     for (int i = 0; i < layers; i++) {
+        assert(0 && "todo: implement 2-argument TextureBind");
         RenderManager.TextureBind(i, loadTexture(resource->getTexture(i)));
     }
 }

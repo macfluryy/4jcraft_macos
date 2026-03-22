@@ -10,9 +10,6 @@ DemoLevel::DemoLevel(std::shared_ptr<LevelStorage> levelStorage,
                      const std::wstring& levelName)
     : Level(levelStorage, levelName, &DEMO_LEVEL_SETTINGS) {}
 
-DemoLevel::DemoLevel(Level* level, Dimension* dimension)
-    : Level(level, dimension) {}
-
 void DemoLevel::setInitialSpawn() {
     levelData->setSpawn(DEMO_SPAWN_X, DEMO_SPAWN_Y, DEMO_SPAWN_Z);
 }

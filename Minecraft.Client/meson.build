@@ -1,9 +1,18 @@
+exclude_sources = [
+  ' ! -path "*/Platform/*"', # added by platform_sources
+  ' ! -name "SurvivalMode.cpp"',
+  ' ! -name "CreativeMode.cpp"',
+  ' ! -name "GameMode.cpp"',
+  ' ! -name "PreStitchedTextureMap.cpp"'
+]
+
 # all sources except ./Platform/*
 client_sources = run_command(
   'sh', '-c',
   'find "'
     + meson.current_source_dir()
-    + '" \\( -name "*.cpp" -o -name "*.c" \\) ! -path "*/Platform/*"',
+    + '" \\( -name "*.cpp" -o -name "*.c" \\)'
+    + ' '.join(exclude_sources),
   check : true,
 ).stdout().strip().split('\n')
 
@@ -22,9 +31,6 @@ exclude_platform_common_sources = [
   ' ! -path "*/XUI/*"',
   # we use system zlib instead, since this one is old as hell and isn't configured for linux correctly
   ' ! -path "*/zlib/*"',
-  ' ! -name "SurvivalMode.cpp"',
-  ' ! -name "CreativeMode.cpp"',
-  ' ! -name "GameMode.cpp"',
 ]
 
 # all sources in in ./Platform/Common

@@ -52,7 +52,7 @@ std::shared_ptr<ItemInstance> CreativeInventoryScreen::ContainerCreative::clicke
 	std::shared_ptr<ItemInstance> carried = inventory->getCarried();
 	
 	// Handle clicks outside the GUI
-	if (slotIndex == CLICKED_OUTSIDE)
+	if (slotIndex == SLOT_CLICKED_OUTSIDE)
 	{
 		// Drop the carried item
 		if (carried != NULL)
