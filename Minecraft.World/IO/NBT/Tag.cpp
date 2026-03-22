@@ -40,9 +40,9 @@ bool Tag::equals(Tag* obj) {
     return true;
 }
 
-void Tag::print(std::ostream out) { out << ""; }
+void Tag::print(std::ostream& out) { out << ""; }
 
-void Tag::print(char* prefix, std::wostream out) {
+void Tag::print(char* prefix, std::wostream& out) {
     std::wstring name = getName();
 
     out << prefix;

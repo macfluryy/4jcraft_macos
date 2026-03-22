@@ -1,10 +1,12 @@
 #pragma once
 #include "../../Minecraft.World/Headers/net.minecraft.network.h"
+
 class Minecraft;
 class MultiPlayerLevel;
 class SavedDataStorage;
 class Socket;
 class MultiplayerLocalPlayer;
+class SetRidingPacket;
 
 class ClientConnection : public PacketListener {
 private:

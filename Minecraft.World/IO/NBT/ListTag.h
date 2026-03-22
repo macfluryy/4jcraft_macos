@@ -53,7 +53,7 @@ public:
         return std::wstring(buf);
     }
 
-    void print(char* prefix, std::ostream out) {
+    void print(char* prefix, std::wostream& out) {
         Tag::print(prefix, out);
 
         out << prefix << "{" << std::endl;
@@ -62,8 +62,9 @@ public:
         strcpy(newPrefix, prefix);
         strcat(newPrefix, "   ");
         AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++)
+        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
             (*it)->print(newPrefix, out);
+        }
         delete[] newPrefix;
         out << prefix << "}" << std::endl;
     }
