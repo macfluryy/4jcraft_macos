@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "IUIScene_PauseMenu.h"
+#include "UIScene.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Level/MultiPlayerLevel.h"
