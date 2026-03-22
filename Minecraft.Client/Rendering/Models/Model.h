@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../Minecraft.World/Util/Random.h"
-#include "../Minecraft.Client/SkinBox.h"
+#include "SkinBox.h"
 class Mob;
 class ModelPart;
 class TexOffs;

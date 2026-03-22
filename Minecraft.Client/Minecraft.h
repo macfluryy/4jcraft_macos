@@ -43,6 +43,10 @@ class PsPlusUpsellWrapper;
 #include "../Minecraft.World/Util/C4JThread.h"
 #include "Textures/ResourceLocation.h"
 
+#ifdef linux
+#undef linux
+#endif
+
 class Minecraft {
 private:
     enum OS { linux, solaris, windows, macos, unknown, xbox };
@@ -362,7 +366,7 @@ public:
 private:
     // A bit field that store whether a particular quadrant is in the full
     // tutorial or not
-    BYTE m_inFullTutorialBits;
+    uint8_t m_inFullTutorialBits;
 
 public:
     bool isTutorial();
