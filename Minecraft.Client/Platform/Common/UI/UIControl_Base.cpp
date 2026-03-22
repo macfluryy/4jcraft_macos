@@ -57,7 +57,7 @@ void UIControl_Base::setLabel(UIString label, bool instant, bool force) {
     if (m_bLabelChanged && instant) {
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = convWstringToU16string(m_label);
+        const std::u16string convLabel = convWstringToU16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];

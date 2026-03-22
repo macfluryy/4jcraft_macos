@@ -3,7 +3,7 @@ exclude_sources = [
   ' ! -name "SurvivalMode.cpp"',
   ' ! -name "CreativeMode.cpp"',
   ' ! -name "GameMode.cpp"',
-  ' ! -name "PreStitchedTextureMap.cpp"'
+  ' ! -name "PreStitchedTextureMap.cpp"',
 ]
 
 # all sources except ./Platform/*
@@ -31,6 +31,7 @@ exclude_platform_common_sources = [
   ' ! -path "*/XUI/*"',
   # we use system zlib instead, since this one is old as hell and isn't configured for linux correctly
   ' ! -path "*/zlib/*"',
+  ' ! -name "SonyLeaderboardManager.cpp"',
 ]
 
 # all sources in in ./Platform/Common
