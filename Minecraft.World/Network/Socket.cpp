@@ -461,15 +461,24 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             return;
         }
 
+#ifdef _XBOX
+        bool lowPriority = ((flags & QNET_SENDDATA_LOW_PRIORITY) ==
+                            QNET_SENDDATA_LOW_PRIORITY);
+        bool requireAck = lowPriority;
+#else
+        bool lowPriority = false;
+        bool requireAck = ((flags & NON_QNET_SENDDATA_ACK_REQUIRED) ==
+                           NON_QNET_SENDDATA_ACK_REQUIRED);
+#endif
+
         if (m_queueIdx == SOCKET_SERVER_END) {
             // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",
             // buffer.dwDataSize,
             // hostPlayer->GetGamertag(),
             // m_socket->networkPlayer->GetGamertag());
 
-            hostPlayer->SendData(
-                socketPlayer, buffer.pbyData, buffer.dwDataSize,
-                QNET_SENDDATA_RELIABLE | QNET_SENDDATA_SEQUENTIAL | flags);
+            hostPlayer->SendData(socketPlayer, buffer.pbyData,
+                                 buffer.dwDataSize, lowPriority, requireAck);
 
             // 		DWORD queueSize = hostPlayer->GetSendQueueSize( NULL,
             // QNET_GETSENDQUEUESIZE_BYTES  ); 		if( queueSize > 24000 )
@@ -483,9 +492,8 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             // m_socket->networkPlayer->GetGamertag(),
             // hostPlayer->GetGamertag());
 
-            socketPlayer->SendData(
-                hostPlayer, buffer.pbyData, buffer.dwDataSize,
-                QNET_SENDDATA_RELIABLE | QNET_SENDDATA_SEQUENTIAL | flags);
+            socketPlayer->SendData(hostPlayer, buffer.pbyData,
+                                   buffer.dwDataSize, lowPriority, requireAck);
         }
     }
 }
