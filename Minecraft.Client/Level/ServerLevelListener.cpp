@@ -19,8 +19,8 @@ ServerLevelListener::ServerLevelListener(MinecraftServer* server,
 
 // 4J removed -
 /*
-void ServerLevelListener::addParticle(const std::wstring& name, double x, double
-y, double z, double xa, double ya, double za)
+void ServerLevelListener::addParticle(const wstring& name, double x, double y,
+double z, double xa, double ya, double za)
 {
 }
 */
@@ -67,9 +67,11 @@ void ServerLevelListener::playSound(int iSound, double x, double y, double z,
     }
 }
 
-void ServerLevelListener::playSound(std::shared_ptr<Entity> entity, int iSound,
-                                    double x, double y, double z, float volume,
-                                    float pitch, float fClipSoundDist) {
+void ServerLevelListener::playSoundExceptPlayer(std::shared_ptr<Player> player,
+                                                int iSound, double x, double y,
+                                                double z, float volume,
+                                                float pitch,
+                                                float fSoundClipDist) {
     if (iSound < 0) {
         app.DebugPrintf(
             "ServerLevelListener received request for sound less than 0, so "
@@ -79,8 +81,6 @@ void ServerLevelListener::playSound(std::shared_ptr<Entity> entity, int iSound,
         // since we're already playing these in the LevelRenderer::playSound.
         // The PC version does seem to do this and the result is I can stop
         // walking , and then I'll hear my footstep sound with a delay
-        std::shared_ptr<Player> player =
-            std::dynamic_pointer_cast<Player>(entity);
         server->getPlayers()->broadcast(
             player, x, y, z, volume > 1 ? 16 * volume : 16,
             level->dimension->id,
@@ -108,7 +108,13 @@ void ServerLevelListener::levelEvent(std::shared_ptr<Player> source, int type,
     server->getPlayers()->broadcast(
         source, x, y, z, 64, level->dimension->id,
         std::shared_ptr<LevelEventPacket>(
-            new LevelEventPacket(type, x, y, z, data)));
+            new LevelEventPacket(type, x, y, z, data, false)));
+}
+
+void ServerLevelListener::globalLevelEvent(int type, int sourceX, int sourceY,
+                                           int sourceZ, int data) {
+    server->getPlayers()->broadcastAll(std::shared_ptr<LevelEventPacket>(
+        new LevelEventPacket(type, sourceX, sourceY, sourceZ, data, true)));
 }
 
 void ServerLevelListener::destroyTileProgress(int id, int x, int y, int z,

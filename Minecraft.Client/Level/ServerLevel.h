@@ -9,7 +9,8 @@ class PlayerChunkMap;
 
 class ServerLevel : public Level {
 private:
-    static const int EMPTY_TIME_NO_TICK = SharedConstants::TICKS_PER_SECOND * 3;
+    static const int EMPTY_TIME_NO_TICK =
+        SharedConstants::TICKS_PER_SECOND * 60;
 
     MinecraftServer* server;
     EntityTracker* tracker;
@@ -35,6 +36,8 @@ public:
 
 private:
     bool allPlayersSleeping;
+    PortalForcer* portalForcer;
+    MobSpawner* mobSpawner;
     int emptyTime;
     bool m_bAtLeastOnePlayerSleeping;  // 4J Added
     static WeighedTreasureArray
@@ -68,10 +71,18 @@ public:
 protected:
     void tickTiles();
 
+private:
+    std::vector<TickNextTickData> toBeTicked;
+
 public:
+    bool isTileToBeTickedAt(int x, int y, int z, int tileId);
     void addToTickNextTick(int x, int y, int z, int tileId, int tickDelay);
-    void forceAddTileTick(int x, int y, int z, int tileId, int tickDelay);
+    void addToTickNextTick(int x, int y, int z, int tileId, int tickDelay,
+                           int priorityTilt);
+    void forceAddTileTick(int x, int y, int z, int tileId, int tickDelay,
+                          int prioTilt);
     void tickEntities();
+    void resetEmptyTime();
     bool tickPendingTicks(bool force);
     std::vector<TickNextTickData>* fetchTicksInChunk(LevelChunk* chunk,
                                                      bool remove);
@@ -89,7 +100,7 @@ public:
     std::vector<std::shared_ptr<TileEntity> >* getTileEntitiesInRegion(
         int x0, int y0, int z0, int x1, int y1, int z1);
     virtual bool mayInteract(std::shared_ptr<Player> player, int xt, int yt,
-                             int zt, int id);
+                             int zt, int content);
 
 protected:
     virtual void initializeLevel(LevelSettings* settings);
@@ -141,8 +152,14 @@ protected:
 public:
     MinecraftServer* getServer();
     EntityTracker* getTracker();
-    void setTimeAndAdjustTileTicks(__int64 newTime);
+    void setTimeAndAdjustTileTicks(int64_t newTime);
     PlayerChunkMap* getChunkMap();
+    PortalForcer* getPortalForcer();
+    void sendParticles(const std::wstring& name, double x, double y, double z,
+                       int count);
+    void sendParticles(const std::wstring& name, double x, double y, double z,
+                       int count, double xDist, double yDist, double zDist,
+                       double speed);
 
     void queueSendTileUpdate(int x, int y, int z);  // 4J Added
 private:
@@ -169,6 +186,8 @@ public:
     virtual bool addEntity(std::shared_ptr<Entity> e);
     void entityAddedExtra(std::shared_ptr<Entity> e);
     void entityRemovedExtra(std::shared_ptr<Entity> e);
+
+    bool atEntityLimit(std::shared_ptr<Entity> e);  // 4J: Added
 
     virtual bool newPrimedTntAllowed();
     virtual bool newFallingTileAllowed();
