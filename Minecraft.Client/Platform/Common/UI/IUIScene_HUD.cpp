@@ -1,6 +1,6 @@
 #include "../../stdafx.h"
-#include "../../../../Minecraft.Client/Minecraft.h"
-#include "../../../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"\
+#include "../../../Minecraft.h"
+#include "../../../Player/MultiPlayerLocalPlayer.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.effect.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../../../Minecraft.World/Headers/net.minecraft.world.entity.ai.attributes.h"
