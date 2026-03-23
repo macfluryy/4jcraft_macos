@@ -471,10 +471,11 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
 }
 
 void Texture::transferFromBuffer(intArray buffer) {
-    if (depth == 1) {
-        return;
-    }
-
+    //if (depth == 1) {
+    //    return;
+    //}
+    // 4jcraft - move pos out of loops
+    data[0]->clear();
     // #ifdef __PS3__
     // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
     // 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
@@ -484,7 +485,24 @@ void Texture::transferFromBuffer(intArray buffer) {
     // #endif
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
-    for (int z = 0; z < depth; z++) {
+    int totalPixels = width * height * depth;
+
+    for (int i = 0; i < totalPixels; i++){
+        int pixel = buffer[i];
+        int offset = i * 4;
+
+        data[0]->put(offset + byteRemap[0], (uint8_t)((pixel >> 24) & 0xff));
+        data[0]->put(offset + byteRemap[1], (uint8_t)((pixel >> 16) & 0xff));
+        data[0]->put(offset + byteRemap[2], (uint8_t)((pixel >> 8) & 0xff));
+        data[0]->put(offset + byteRemap[3], (uint8_t)((pixel >> 0) & 0xff));
+
+        data[0]->position(totalPixels * 4);
+        data[0]->limit(totalPixels * 4);
+
+        updateOnGPU();
+    }
+    
+    /* for (int z = 0; z < depth; z++) {
         int plane = z * height * width * 4;
         for (int y = 0; y < height; y++) {
             int column = plane + y * width * 4;
@@ -504,6 +522,7 @@ void Texture::transferFromBuffer(intArray buffer) {
     }
 
     data[0]->position(width * height * depth * 4);
+    */
 
     updateOnGPU();
 }
