@@ -804,7 +804,7 @@ void GameRenderer::turnOnLightLayer(double alpha) {  // 4J - TODO
 		glActiveTexture(GL_TEXTURE0);
 	}
 #endif
-    // update light texture
+    // 4jcraft: update light texture
     // todo: check implementation of getLightTexture.
     RenderManager.TextureBindVertex(
         getLightTexture(mc->player->GetXboxPad(), mc->level));

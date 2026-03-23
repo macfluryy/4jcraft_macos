@@ -53,7 +53,7 @@ void UIControl_LeaderboardList::setupTitles(const std::wstring& rank,
     IggyDataValue result;
     IggyDataValue value[2];
 
-    const std::u16string convRank = convWstringToU16string(rank);
+    const std::u16string convRank = wstring_to_u16string(rank);
 
     IggyStringUTF16 stringVal0;
     stringVal0.string = convRank.c_str();
@@ -61,7 +61,7 @@ void UIControl_LeaderboardList::setupTitles(const std::wstring& rank,
     value[0].type = IGGY_DATATYPE_string_UTF16;
     value[0].string16 = stringVal0;
 
-    const std::u16string convGamertag = convWstringToU16string(gamertag);
+    const std::u16string convGamertag = wstring_to_u16string(gamertag);
 
     IggyStringUTF16 stringVal1;
     stringVal1.string = convGamertag.c_str();
@@ -137,7 +137,7 @@ void UIControl_LeaderboardList::addDataSet(
     value[2].type = IGGY_DATATYPE_number;
     value[2].number = iRank;
 
-    const std::u16string convGamertag = convWstringToU16string(gamertag);
+    const std::u16string convGamertag = wstring_to_u16string(gamertag);
 
     IggyStringUTF16 stringVal0;
     stringVal0.string = convGamertag.c_str();
@@ -148,7 +148,7 @@ void UIControl_LeaderboardList::addDataSet(
     value[4].type = IGGY_DATATYPE_boolean;
     value[4].boolval = bDisplayMessage;
 
-    const std::u16string convCol0 = convWstringToU16string(col0);
+    const std::u16string convCol0 = wstring_to_u16string(col0);
 
     IggyStringUTF16 stringVal1;
     stringVal1.string = convCol0.c_str();
@@ -159,7 +159,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col1.empty()) {
         value[6].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol1 = convWstringToU16string(col1);
+        const std::u16string convCol1 = wstring_to_u16string(col1);
 
         IggyStringUTF16 stringVal2;
         stringVal2.string = convCol1.c_str();
@@ -171,7 +171,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col2.empty()) {
         value[7].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol2 = convWstringToU16string(col2);
+        const std::u16string convCol2 = wstring_to_u16string(col2);
 
         IggyStringUTF16 stringVal3;
         stringVal3.string = convCol2.c_str();
@@ -183,7 +183,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col3.empty()) {
         value[8].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol3 = convWstringToU16string(col3);
+        const std::u16string convCol3 = wstring_to_u16string(col3);
 
         IggyStringUTF16 stringVal4;
         stringVal4.string = convCol3.c_str();
@@ -195,7 +195,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col4.empty()) {
         value[9].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol4 = convWstringToU16string(col4);
+        const std::u16string convCol4 = wstring_to_u16string(col4);
 
         IggyStringUTF16 stringVal5;
         stringVal5.string = convCol4.c_str();
@@ -207,7 +207,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col5.empty()) {
         value[10].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol5 = convWstringToU16string(col5);
+        const std::u16string convCol5 = wstring_to_u16string(col5);
 
         IggyStringUTF16 stringVal6;
         stringVal6.string = convCol5.c_str();
@@ -219,7 +219,7 @@ void UIControl_LeaderboardList::addDataSet(
     if (col6.empty()) {
         value[11].type = IGGY_DATATYPE_null;
     } else {
-        const std::u16string convCol6 = convWstringToU16string(col6);
+        const std::u16string convCol6 = wstring_to_u16string(col6);
 
         IggyStringUTF16 stringVal7;
         stringVal7.string = convCol6.c_str();

@@ -30,7 +30,7 @@ void UIControl_Progress::init(UIString label, int id, int min, int max,
     m_max = max;
     m_current = current;
 
-    const std::u16string convLabel = convWstringToU16string(label.getString());
+    const std::u16string convLabel = wstring_to_u16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[1];

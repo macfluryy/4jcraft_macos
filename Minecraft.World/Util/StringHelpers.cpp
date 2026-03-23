@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include "simdutf.h"
 
 std::wstring toLower(const std::wstring& a) {
     std::wstring out = std::wstring(a);
@@ -41,36 +42,45 @@ std::wstring convStringToWstring(const std::string& converting) {
     return converted;
 }
 
-std::u16string convWstringToU16string(const std::wstring& converting) {
-    std::u16string out;
-    out.reserve(converting.size());
+std::wstring u16string_to_wstring(const std::u16string& converting) {
+#if WCHAR_MAX == 0xFFFF
+    // on windows, wchar_t is UTF-16 so we can get away with just a type
+    // transmutation
+    return std::wstring(reinterpret_cast<const wchar_t*>(converting.data()),
+                        converting.size());
+#else
+    // POSIX has wchar_t as UTF-32 instead so simdutf time :>>>
+    if (converting.empty()) return {};
 
-    if constexpr (sizeof(wchar_t) == sizeof(char16_t)) {
-        // wchar_t is UTF-16: direct copy
-        out.assign(converting.begin(), converting.end());
-    } else {
-        // wchar_t is UTF-32: encode to UTF-16
-        for (wchar_t wc : converting) {
-            uint32_t cp = static_cast<uint32_t>(wc);
+    std::wstring result(
+        simdutf::utf32_length_from_utf16(converting.data(), converting.size()),
+        L'\0');
+    simdutf::convert_utf16_to_utf32(converting.data(), converting.size(),
+                                    reinterpret_cast<char32_t*>(result.data()));
 
-            if (cp <= 0xFFFF) {
-                // Avoid producing UTF-16 surrogate code points directly
-                if (cp >= 0xD800 && cp <= 0xDFFF) {
-                    out.push_back(u'\uFFFD');  // replacement char
-                } else {
-                    out.push_back(static_cast<char16_t>(cp));
-                }
-            } else if (cp <= 0x10FFFF) {
-                cp -= 0x10000;
-                out.push_back(static_cast<char16_t>(0xD800 + (cp >> 10)));
-                out.push_back(static_cast<char16_t>(0xDC00 + (cp & 0x3FF)));
-            } else {
-                out.push_back(u'\uFFFD');  // invalid code point
-            }
-        }
-    }
+    return result;
+#endif
+}
 
-    return out;
+std::u16string wstring_to_u16string(const std::wstring& converting) {
+    #if WCHAR_MAX == 0xFFFF
+    // windows, UTF-16
+    return std::u16string(reinterpret_cast<const char16_t*>(converting.data()),
+                          converting.size());
+#else
+    // POSIX, UTF-32
+    if (converting.empty()) return {};
+
+    const char32_t* data32 =
+        reinterpret_cast<const char32_t*>(converting.data());
+    const std::size_t len32 = converting.size();
+
+    std::u16string result(simdutf::utf16_length_from_utf32(data32, len32),
+                          u'\0');
+    simdutf::convert_utf32_to_utf16(data32, len32, result.data());
+
+    return result;
+#endif
 }
 
 // Convert for filename std::wstrings to a straight character pointer for Xbox

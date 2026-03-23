@@ -56,7 +56,7 @@ void UIControl_SaveList::addItem(const std::string& label,
     value[1].type = IGGY_DATATYPE_number;
     value[1].number = m_itemCount;
 
-    const std::u16string convName = convWstringToU16string(iconName);
+    const std::u16string convName = wstring_to_u16string(iconName);
 
     IggyStringUTF16 stringVal2;
     stringVal2.string = convName.c_str();
@@ -73,7 +73,7 @@ void UIControl_SaveList::addItem(const std::wstring& label,
     IggyDataValue result;
     IggyDataValue value[3];
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = wstring_to_u16string(label);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convLabel.c_str();
@@ -84,7 +84,7 @@ void UIControl_SaveList::addItem(const std::wstring& label,
     value[1].type = IGGY_DATATYPE_number;
     value[1].number = m_itemCount;
 
-    const std::u16string convName = convWstringToU16string(iconName);
+    const std::u16string convName = wstring_to_u16string(iconName);
 
     IggyStringUTF16 stringVal2;
     stringVal2.string = convName.c_str();
@@ -103,7 +103,7 @@ void UIControl_SaveList::setTextureName(int iId, const std::wstring& iconName) {
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = iId;
 
-    const std::u16string convName = convWstringToU16string(iconName);
+    const std::u16string convName = wstring_to_u16string(iconName);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convName.c_str();

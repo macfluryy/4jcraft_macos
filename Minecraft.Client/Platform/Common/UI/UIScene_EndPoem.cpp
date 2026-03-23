@@ -122,7 +122,7 @@ void UIScene_EndPoem::tick() {
         IggyDataValue result;
         IggyDataValue value[3];
 
-        const std::u16string convLabel = convWstringToU16string(label);
+        const std::u16string convLabel = wstring_to_u16string(label);
 
         IggyStringUTF16 stringVal;
         stringVal.string = convLabel.c_str();

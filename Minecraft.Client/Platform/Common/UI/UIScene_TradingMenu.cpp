@@ -258,7 +258,7 @@ void UIScene_TradingMenu::setTradeRedBox(int index, bool show) {
 
 void UIScene_TradingMenu::setOfferDescription(std::vector<HtmlString>* description) {
 	std::wstring descriptionStr = HtmlString::Compose(description);
-    const std::u16string conv = convWstringToU16string(descriptionStr);
+    const std::u16string conv = wstring_to_u16string(descriptionStr);
 
     IggyDataValue result;
     IggyDataValue value[1];

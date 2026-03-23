@@ -342,8 +342,10 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     value[0].number = gs_pageToFlashMapping[(int)ePage];
 
     for (unsigned int i = 0; i < paragraphs.size(); ++i) {
-        stringVal[i].string = (IggyUTF16*)paragraphs[i].c_str();
-        stringVal[i].length = paragraphs[i].length();
+        const std::u16string convParagraph = wstring_to_u16string(paragraphs[i]);
+
+        stringVal[i].string = convParagraph.c_str();
+        stringVal[i].length = convParagraph.length();
         value[i + 1].type = IGGY_DATATYPE_string_UTF16;
         value[i + 1].string16 = stringVal[i];
     }

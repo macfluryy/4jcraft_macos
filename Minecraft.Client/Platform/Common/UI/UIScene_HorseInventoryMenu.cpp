@@ -285,7 +285,7 @@ void UIScene_HorseInventoryMenu::customDraw(
         pMinecraft->localgameModes[m_iPad] == NULL)
         return;
 
-    if (wcscmp((wchar_t*)region->name, L"horse") == 0) {
+    if (std::char_traits<char16_t>::compare(region->name, u"horse", 5) == 0) {
         // Setup GDraw, normal game render states and matrices
         CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
         delete customDrawRegion;

@@ -26,7 +26,7 @@ void UIControl_TexturePackList::init(const std::wstring& label, int id) {
     m_label = label;
     m_id = id;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = wstring_to_u16string(label);
 
     IggyDataValue result;
     IggyDataValue value[2];
@@ -58,7 +58,7 @@ void UIControl_TexturePackList::init(const std::wstring& label, int id) {
 
 void UIControl_TexturePackList::addPack(int id,
                                         const std::wstring& textureName) {
-    const std::u16string convName = convWstringToU16string(textureName);
+    const std::u16string convName = wstring_to_u16string(textureName);
 
     IggyDataValue result;
     IggyDataValue value[2];

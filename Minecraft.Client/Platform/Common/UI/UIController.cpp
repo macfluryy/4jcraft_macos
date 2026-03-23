@@ -613,7 +613,7 @@ IggyLibrary UIController::loadSkin(const std::wstring& skinPath,
     // normal skin requires some elements from the platform skin
     if (!skinPath.empty() && app.hasArchiveFile(skinPath)) {
         byteArray baFile = app.getArchiveFile(skinPath);
-        const std::u16string convSkinName = convWstringToU16string(skinName);
+        const std::u16string convSkinName = wstring_to_u16string(skinName);
 
         lib = IggyLibraryCreateFromMemoryUTF16(
             convSkinName.data(), (void*)baFile.data, baFile.length, NULL);

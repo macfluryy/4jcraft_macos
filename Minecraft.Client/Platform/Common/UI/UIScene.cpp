@@ -472,7 +472,7 @@ IggyName UIScene::registerFastName(const std::wstring& name) {
     if (it != m_fastNames.end()) {
         var = it->second;
     } else {
-        const std::u16string convName = convWstringToU16string(name);
+        const std::u16string convName = wstring_to_u16string(name);
         var = IggyPlayerCreateFastName(getMovie(), (IggyUTF16*)convName.c_str(),
                                        -1);
 

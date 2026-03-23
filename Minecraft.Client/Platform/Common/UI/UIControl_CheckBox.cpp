@@ -24,7 +24,7 @@ void UIControl_CheckBox::init(UIString label, int id, bool checked) {
     m_id = id;
     m_bChecked = checked;
 
-    const std::u16string convLabel = convWstringToU16string(label.getString());
+    const std::u16string convLabel = wstring_to_u16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[3];

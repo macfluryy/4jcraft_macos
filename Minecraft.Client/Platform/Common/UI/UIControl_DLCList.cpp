@@ -42,7 +42,7 @@ void UIControl_DLCList::addItem(const std::wstring& label, bool showTick,
     IggyDataValue result;
     IggyDataValue value[3];
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = wstring_to_u16string(label);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convLabel.c_str();

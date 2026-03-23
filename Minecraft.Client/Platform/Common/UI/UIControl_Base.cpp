@@ -29,7 +29,7 @@ void UIControl_Base::tick() {
         // app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = convWstringToU16string(m_label.getString());
+        const std::u16string convLabel = wstring_to_u16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -57,7 +57,7 @@ void UIControl_Base::setLabel(UIString label, bool instant, bool force) {
     if (m_bLabelChanged && instant) {
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = convWstringToU16string(m_label.getString());
+        const std::u16string convLabel = wstring_to_u16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -81,8 +81,7 @@ const wchar_t* UIControl_Base::getLabel() {
                                getIggyValuePath(), m_funcGetLabel, 0, NULL);
 
     if (result.type == IGGY_DATATYPE_string_UTF16) {
-        m_label = std::wstring((wchar_t*)result.string16.string,
-                               result.string16.length);
+        m_label = u16string_to_wstring(result.string16.string);
     }
 
     return m_label.c_str();
@@ -98,7 +97,7 @@ void UIControl_Base::setAllPossibleLabels(int labelCount,
     conv.reserve(labelCount);
 
     for (int i = 0; i < labelCount; ++i) {
-        conv.push_back(convWstringToU16string(labels[i]));
+        conv.push_back(wstring_to_u16string(labels[i]));
         stringVal[i].string = conv[i].c_str();
         stringVal[i].length = (S32)conv[i].length();
         value[i].type = IGGY_DATATYPE_string_UTF16;

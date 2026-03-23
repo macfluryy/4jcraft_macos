@@ -20,7 +20,7 @@ bool UIControl_DynamicLabel::setupControl(UIScene* scene, IggyValuePath* parent,
 
 void UIControl_DynamicLabel::addText(const std::wstring& text,
                                      bool bLastEntry) {
-    const std::u16string convText = convWstringToU16string(text);
+    const std::u16string convText = wstring_to_u16string(text);
 
     IggyDataValue result;
     IggyDataValue value[2];

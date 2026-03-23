@@ -17,7 +17,7 @@ void UIControl_BitmapIcon::setTextureName(const std::wstring& iconName) {
     IggyDataValue result;
     IggyDataValue value[1];
 
-    const std::u16string convName = convWstringToU16string(iconName);
+    const std::u16string convName = wstring_to_u16string(iconName);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convName.c_str();

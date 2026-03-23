@@ -95,7 +95,7 @@ void UIControl_ButtonList::addItem(const std::wstring& label, int data) {
     IggyDataValue result;
     IggyDataValue value[2];
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = wstring_to_u16string(label);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convLabel.c_str();
@@ -150,7 +150,7 @@ void UIControl_ButtonList::setButtonLabel(int iButtonId,
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = iButtonId;
 
-    const std::u16string convLabel = convWstringToU16string(label);
+    const std::u16string convLabel = wstring_to_u16string(label);
 
     IggyStringUTF16 stringVal;
     stringVal.string = convLabel.c_str();

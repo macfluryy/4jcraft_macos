@@ -1202,7 +1202,7 @@ void UIScene_SkinSelectMenu::setLeftLabel(const std::wstring& label) {
     if (label.compare(m_leftLabel) != 0) {
         m_leftLabel = label;
 
-        const std::u16string convLabel = convWstringToU16string(label);
+        const std::u16string convLabel = wstring_to_u16string(label);
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -1223,7 +1223,7 @@ void UIScene_SkinSelectMenu::setCentreLabel(const std::wstring& label) {
     if (label.compare(m_centreLabel) != 0) {
         m_centreLabel = label;
 
-        const std::u16string convLabel = convWstringToU16string(label);
+        const std::u16string convLabel = wstring_to_u16string(label);
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -1244,7 +1244,7 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring& label) {
     if (label.compare(m_rightLabel) != 0) {
         m_rightLabel = label;
 
-        const std::u16string convLabel = convWstringToU16string(label);
+        const std::u16string convLabel = wstring_to_u16string(label);
 
         IggyDataValue result;
         IggyDataValue value[1];

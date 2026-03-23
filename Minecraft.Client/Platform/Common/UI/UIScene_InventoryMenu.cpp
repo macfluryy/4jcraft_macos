@@ -300,7 +300,7 @@ void UIScene_InventoryMenu::updateEffectsDisplay() {
             value[0].number = icon;
 
             const std::u16string convString =
-                convWstringToU16string(effectString);
+                wstring_to_u16string(effectString);
             IggyStringUTF16 stringVal;
             stringVal.string = convString.c_str();
             stringVal.length = convString.length();

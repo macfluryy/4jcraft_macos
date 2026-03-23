@@ -230,7 +230,7 @@ void UIScene_AbstractContainerMenu::customDraw(
         pMinecraft->localgameModes[m_iPad] == NULL)
         return;
 
-        int slotId = parseSlotId(region->name);
+    int slotId = parseSlotId(region->name);
     std::shared_ptr<ItemInstance> item = nullptr;
     if (std::char_traits<char16_t>::compare(region->name, u"pointerIcon", 11) ==
         0) {
