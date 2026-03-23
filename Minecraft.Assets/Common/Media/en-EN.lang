@@ -591,15 +591,12 @@ so they can easily join you.
 
 <data name="IDS_TITLEUPDATE">
     <value>{*ETB*}Welcome back! You may not have noticed but your Minecraft has just been updated.{*B*}{*B*}
-There are lots of new features for you and friends to play with so here’s just a few highlights. Have a read and then go and have fun!{*B*}{*B*} 
-{*T1*}New Items{*ETB*} - Redstone Lamp, Jungle Wood Stairs, Jungle Wood Half Slab, Jungle Wood Block, Jungle Wood Planks, Jungle Tree Sapling, and Ocelot Spawn Egg.{*B*}{*B*}
-{*T1*}New Items (only available in Creative Mode at the moment){*ETB*} - Chiseled Stone Brick, Mob Heads (Skelton, Wither Skeleton, Zombie, Human and Creeper).{*B*}{*B*}
-{*T1*}New Mobs{*ETB*} - Ocelot/Cat, Iron Golem and Baby Villager.{*B*}{*B*}
-{*T1*}New Jungle Biome{*ETB*} - Jungle trees grow here!{*B*}{*B*}
-{*T1*}Doubled map height limit{*ETB*} - You can now build to 256 blocks high!{*B*}{*B*}
-{*T1*}New Tutorial World{*ETB*} – A brand new Tutorial World to explore!{*B*}{*B*}
-{*T1*}New 'Easter Eggs'{*ETB*} – You may have found all the Music Discs in the previous Tutorial World, but you'll need to see if you can find them in the new Tutorial World!{*B*}{*B*}
-</value>
+There are lots of new features for you and friends to play with so here’s just a few highlights. Have a read and then go and have fun!{*B*}{*B*}
+{*T1*}New Items{*ETB*} - Hardened Clay, Stained Clay, Block of Coal, Hay Bale, Activator Rail, Block of Redstone, Daylight Sensor, Dropper, Hopper, Minecart with Hopper, Minecart with TNT, Redstone Comparator, Weighted Pressure Plate, Beacon, Trapped Chest, Firework Rocket, Firework Star, Nether Star, Lead, Horse Armor, Name Tag, Horse Spawn Egg{*B*}{*B*}
+{*T1*}New Mobs{*ETB*} - Wither, Wither Skeletons, Witches, Bats, Horses, Donkeys and Mules{*B*}{*B*}
+{*T1*}New Features{*ETB*} -  Tame and ride a horse, craft fireworks and put on a show, name animals and monsters with a Name Tag, create more advanced Redstone circuits, and new Host Options to help control what guests to your world can do!{*B*}{*B*}
+{*T1*}New Tutorial World{*ETB*} – Learn how to use the old and new features in the Tutorial World. See if you can find all the secret Music Discs hidden in the world!{*B*}{*B*}
+    </value>
 </data>
 
 ﻿
