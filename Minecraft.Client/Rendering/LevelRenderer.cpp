@@ -560,7 +560,9 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
     TileEntityRenderDispatcher::zOff =
         (player->zOld + (player->z - player->zOld) * a);
 
-    mc->gameRenderer->turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
+    // 4jcraft: we use scaleLight for entity lighting
+    mc->gameRenderer->turnOnLightLayer(
+        a, true);  // 4J - brought forward from 1.8.2
 
     std::vector<std::shared_ptr<Entity> > entities =
         level[playerIndex]->getAllEntities();
@@ -1689,7 +1691,7 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
                 // geometry to get rid of seams. This is a huge amount more
                 // quads to render, so now using command buffers to render each
                 // section to cut CPU hit.
-#if 1
+#if 0
                 float xx = (float)(xPos * D);
                 float zz = (float)(zPos * D);
                 float xp = xx - xoffs;

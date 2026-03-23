@@ -739,7 +739,7 @@ void GameRenderer::renderItemInHand(float a, int eye) {
         if (!localplayer->ThirdPersonView() &&
             !mc->cameraTargetPlayer->isSleeping()) {
             if (!mc->options->hideGui && !mc->gameMode->isCutScene()) {
-                turnOnLightLayer(a);
+                turnOnLightLayer(a, true);
                 PIXBeginNamedEvent(0, "Item in hand render");
                 itemInHandRenderer->render(a);
                 PIXEndNamedEvent();
@@ -767,21 +767,29 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
-#if 0	
-	if (SharedConstants::TEXTURE_LIGHTING)
-	{
-		glClientActiveTexture(GL_TEXTURE1);
-		glActiveTexture(GL_TEXTURE1);
-		glDisable(GL_TEXTURE_2D);
-		glClientActiveTexture(GL_TEXTURE0);
-		glActiveTexture(GL_TEXTURE0);
-	}
-#endif
+    // 4jcraft: manually handle this in order to ensure that the light layer is
+    // turned off correctly
+#if 1
+    if (SharedConstants::TEXTURE_LIGHTING) {
+        glClientActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE1);
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glClientActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0);
+    }
+#else
     RenderManager.TextureBindVertex(-1);
+#endif
 }
 
 // 4J - change brought forward from 1.8.2
-void GameRenderer::turnOnLightLayer(double alpha) {  // 4J - TODO
+void GameRenderer::turnOnLightLayer(
+    double alpha,
+    bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
 #if 0
 	if (SharedConstants::TEXTURE_LIGHTING)
 	{
@@ -812,7 +820,7 @@ void GameRenderer::turnOnLightLayer(double alpha) {  // 4J - TODO
     // 4jcraft: update light texture
     // todo: check implementation of getLightTexture.
     RenderManager.TextureBindVertex(
-        getLightTexture(mc->player->GetXboxPad(), mc->level));
+        getLightTexture(mc->player->GetXboxPad(), mc->level), scaleLight);
 #if 0
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

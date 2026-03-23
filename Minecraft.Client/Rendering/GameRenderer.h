@@ -122,7 +122,10 @@ public:
     float blg;
     float blgt;
     void turnOffLightLayer(double alpha);
-    void turnOnLightLayer(double alpha);
+    void turnOnLightLayer(
+        double alpha,
+        bool scaleLight =
+            false);  // 4jcraft: added scaleLight for entity lighting
 
 private:
     void tickLightTexture();
