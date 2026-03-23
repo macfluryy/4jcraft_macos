@@ -58,7 +58,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"mob/cat/purreow",          //  eSoundType_MOB_CAT_PURREOW
     L"mob/cat/meow",             //  eSoundType_MOB_CAT_MEOW
     // 4J-PB - correct the name of the event for hitting ocelots
-    L"mob/cat/hit",  //  eSoundType_MOB_CAT_HITT
+    L"mob/cat/hitt",  //  eSoundType_MOB_CAT_HITT
                      //	L"mob.irongolem.throw",				//
     //eSoundType_MOB_IRONGOLEM_THROW 	L"mob.irongolem.hit",
     ////  eSoundType_MOB_IRONGOLEM_HIT 	L"mob.irongolem.death",
@@ -96,7 +96,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
 
     L"fire/ignite",       //	eSoundType_FIRE_IGNITE,
     L"fire/fire",         //	eSoundType_FIRE_FIRE,
-    L"damage/hurtflesh",  //	eSoundType_DAMAGE_HURT,
+    L"damage/hit",  //	eSoundType_DAMAGE_HURT,
     L"damage/fallsmall",  //	eSoundType_DAMAGE_FALL_SMALL,
     L"damage/fallbig",    //	eSoundType_DAMAGE_FALL_BIG,
     L"note/harp",         //	eSoundType_NOTE_HARP,
