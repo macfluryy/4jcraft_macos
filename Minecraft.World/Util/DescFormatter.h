@@ -2,5 +2,6 @@
 
 class DescFormatter {
 public:
-    virtual std::wstring format(const std::wstring& i18nValue);
+    virtual ~DescFormatter() = default;
+    virtual std::wstring format(const std::wstring& i18nValue) = 0;
 };
