@@ -55,8 +55,10 @@ std::wstring u16string_to_wstring(const std::u16string& converting) {
     std::wstring result(
         simdutf::utf32_length_from_utf16(converting.data(), converting.size()),
         L'\0');
-    simdutf::convert_utf16_to_utf32(converting.data(), converting.size(),
-                                    reinterpret_cast<char32_t*>(result.data()));
+    std::size_t convertedLength = simdutf::convert_utf16_to_utf32(
+        converting.data(), converting.size(),
+        reinterpret_cast<char32_t*>(result.data()));
+    result.resize(convertedLength);
 
     return result;
 #endif
@@ -77,7 +79,9 @@ std::u16string wstring_to_u16string(const std::wstring& converting) {
 
     std::u16string result(simdutf::utf16_length_from_utf32(data32, len32),
                           u'\0');
-    simdutf::convert_utf32_to_utf16(data32, len32, result.data());
+    std::size_t convertedLength =
+        simdutf::convert_utf32_to_utf16(data32, len32, result.data());
+    result.resize(convertedLength);
 
     return result;
 #endif

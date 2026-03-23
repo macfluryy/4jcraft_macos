@@ -541,11 +541,11 @@ ResourceLocation* Textures::getTextureLocation(int iconType) {
     switch (iconType) {
         case Icon::TYPE_TERRAIN:
             return &TextureAtlas::LOCATION_BLOCKS;
-            break;
         case Icon::TYPE_ITEM:
             return &TextureAtlas::LOCATION_ITEMS;
-            break;
     }
+
+    return &TextureAtlas::LOCATION_ITEMS;
 }
 
 void Textures::clearLastBoundId() { lastBoundId = -1; }
@@ -1425,16 +1425,16 @@ TEXTURE_NAME TUImages[] = {
 };
 
 // This is for any TU textures that aren't part of our enum indexed preload set
-wchar_t* TUImagePaths[] = {L"font/Default", L"font/Mojangles_7",
-                           L"font/Mojangles_11",
+const wchar_t* const TUImagePaths[] = {
+    L"font/Default", L"font/Mojangles_7", L"font/Mojangles_11",
 
-                           // TU12
-                           L"armor/cloth_1.png", L"armor/cloth_1_b.png",
-                           L"armor/cloth_2.png", L"armor/cloth_2_b.png",
+    // TU12
+    L"armor/cloth_1.png", L"armor/cloth_1_b.png", L"armor/cloth_2.png",
+    L"armor/cloth_2_b.png",
 
-                           //
+    //
 
-                           NULL};
+    nullptr};
 
 bool Textures::IsTUImage(TEXTURE_NAME texId, const std::wstring& name) {
     int i = 0;
@@ -1464,9 +1464,9 @@ TEXTURE_NAME OriginalImages[] = {TN_MOB_CHAR,   TN_MOB_CHAR1, TN_MOB_CHAR2,
 
                                  TN_COUNT};
 
-wchar_t* OriginalImagesPaths[] = {L"misc/watercolor.png",
+const wchar_t* const OriginalImagesPaths[] = {L"misc/watercolor.png",
 
-                                  NULL};
+                                              nullptr};
 
 bool Textures::IsOriginalImage(TEXTURE_NAME texId, const std::wstring& name) {
     int i = 0;

@@ -523,7 +523,7 @@ bool MultiPlayerLevel::setData(
     // better to early out here
     int d = getData(x, y, z);
 
-    if ((d == data)) {
+    if (d == data) {
         // If we early-out, its important that we still do a checkLight here
         // (which would otherwise have happened as part of
         // Level::setTileAndDataNoUpdate) This is because since we are

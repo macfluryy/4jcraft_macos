@@ -583,7 +583,6 @@ void Minecraft::setScreen(Screen* screen) {
         gui->clearMessages();
     }
 
-    this->screen = screen;
     if (screen != NULL) {
         //        releaseMouse();	// 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
@@ -668,7 +667,6 @@ void Minecraft::destroy() {
         gui->clearMessages();
     }
 
-    this->screen = screen;
     if (screen != NULL) {
         //        releaseMouse();	// 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
@@ -1921,7 +1919,7 @@ void Minecraft::run_middle() {
                 timer->advanceTime();
             }
 
-            //int64_t beforeTickTime = System::nanoTime();
+            // int64_t beforeTickTime = System::nanoTime();
             for (int i = 0; i < timer->ticks; i++) {
                 bool bLastTimerTick = (i == (timer->ticks - 1));
                 // 4J-PB - the tick here can run more than once, and this is a
@@ -2010,7 +2008,7 @@ void Minecraft::run_middle() {
                 // 				SparseDataStorage::tick();
                 // // 4J added
             }
-            //int64_t tickDuraction = System::nanoTime() - beforeTickTime;
+            // int64_t tickDuraction = System::nanoTime() - beforeTickTime;
             MemSect(31);
             checkGlError(L"Pre render");
             MemSect(0);
@@ -2090,11 +2088,9 @@ void Minecraft::run_middle() {
                 // If there's an unoccupied quadrant, then clear that to black
                 if (unoccupiedQuadrant > -1) {
                     // render a logo
-                    RenderManager.StateSetViewport((
-                        C4JRender::
-                            eViewportType)(C4JRender::
-                                               VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
-                                           unoccupiedQuadrant));
+                    RenderManager.StateSetViewport((C4JRender::eViewportType)(
+                        C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                        unoccupiedQuadrant));
                     glClearColor(0, 0, 0, 0);
                     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -2612,8 +2608,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             if (player->isRiding()) {
                 std::shared_ptr<Entity> mount = player->riding;
 
-                if (mount->instanceof(eTYPE_MINECART) ||
-                    mount->instanceof(eTYPE_BOAT)) {
+                if (mount->instanceof (eTYPE_MINECART) || mount->instanceof
+                    (eTYPE_BOAT)) {
                     *piAlt = IDS_TOOLTIPS_EXIT;
                 } else {
                     *piAlt = IDS_TOOLTIPS_DISMOUNT;
@@ -3639,7 +3635,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                                 break;
 
                             default:
-                                if (hitResult->entity->instanceof(eTYPE_MOB)) {
+                                if (hitResult->entity->instanceof (eTYPE_MOB)) {
                                     std::shared_ptr<Mob> mob =
                                         std::dynamic_pointer_cast<Mob>(
                                             hitResult->entity);
@@ -4529,7 +4525,8 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
             player->setXuid(playerXUIDOffline);
             player->setOnlineXuid(playerXUIDOnline);
 
-            player->m_displayName = ProfileManager.GetDisplayName(iPrimaryPlayer);
+            player->m_displayName =
+                ProfileManager.GetDisplayName(iPrimaryPlayer);
 
             player->resetPos();
             gameMode->initPlayer(player);

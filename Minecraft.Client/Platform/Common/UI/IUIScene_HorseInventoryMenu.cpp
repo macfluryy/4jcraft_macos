@@ -168,6 +168,8 @@ bool IUIScene_HorseInventoryMenu::IsSectionSlotList(ESceneSection eSection) {
         case eSectionHorseInventory:
         case eSectionHorseUsing:
             return true;
+        default:
+            break;
     }
     return false;
 }
@@ -188,6 +190,8 @@ bool IUIScene_HorseInventoryMenu::IsVisible(ESceneSection eSection) {
         case eSectionHorseInventory:
         case eSectionHorseUsing:
             return true;
+        default:
+            break;
     }
     return false;
 }

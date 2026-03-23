@@ -5,6 +5,7 @@ public:
     static const EntitySelector* ENTITY_STILL_ALIVE;
     static const EntitySelector* CONTAINER_ENTITY_SELECTOR;
 
+    virtual ~EntitySelector() = default;
     virtual bool matches(std::shared_ptr<Entity> entity) const = 0;
 };
 

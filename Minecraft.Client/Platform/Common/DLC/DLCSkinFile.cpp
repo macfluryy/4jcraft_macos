@@ -135,7 +135,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             // add this to the skin's vector of parts
             m_AdditionalBoxes.push_back(pSkinBox);
         } break;
-        case DLCManager::e_DLCParamType_Anim:
+        case DLCManager::e_DLCParamType_Anim: {
 #ifdef __PS3__
             // 4J Stu - The Xbox version used swscanf_s which isn't available in
             // GCC.
@@ -146,6 +146,9 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
 #endif
             DWORD skinId = app.getSkinIdFromPath(m_path);
             app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
+            break;
+        }
+        default:
             break;
     }
 }

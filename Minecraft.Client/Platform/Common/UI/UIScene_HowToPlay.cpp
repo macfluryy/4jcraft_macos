@@ -163,11 +163,11 @@ UIScene_HowToPlay::UIScene_HowToPlay(int iPad, void* initData,
 
     // Extract pad and required page from init data. We just put the data into
     // the pointer rather than using it as an address.
-    size_t uiInitData = (size_t)(initData);
+    uintptr_t uiInitData = reinterpret_cast<uintptr_t>(initData);
 
     EHowToPlayPage eStartPage =
         (EHowToPlayPage)((uiInitData >> 16) &
-                         0xFFF);  // Ignores MSB which is set to 1!
+                         0xFFFu);  // Ignores MSB which is set to 1!
 
     TelemetryManager->RecordMenuShown(
         m_iPad, eUIScene_HowToPlay, (ETelemetry_HowToPlay_SubMenuId)eStartPage);
@@ -342,7 +342,8 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     value[0].number = gs_pageToFlashMapping[(int)ePage];
 
     for (unsigned int i = 0; i < paragraphs.size(); ++i) {
-        const std::u16string convParagraph = wstring_to_u16string(paragraphs[i]);
+        const std::u16string convParagraph =
+            wstring_to_u16string(paragraphs[i]);
 
         stringVal[i].string = convParagraph.c_str();
         stringVal[i].length = convParagraph.length();

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class Level;
@@ -13,7 +15,7 @@ private:
     int attackTime;
     double speedModifier;
     bool trackTarget;
-    Path* path;
+    std::unique_ptr<Path> path;
     eINSTANCEOF attackType;
     int timeToRecalcPath;
 

@@ -256,8 +256,9 @@ void UIScene_TradingMenu::setTradeRedBox(int index, bool show) {
     m_slotListTrades.showSlotRedBox(index, show);
 }
 
-void UIScene_TradingMenu::setOfferDescription(std::vector<HtmlString>* description) {
-	std::wstring descriptionStr = HtmlString::Compose(description);
+void UIScene_TradingMenu::setOfferDescription(
+    std::vector<HtmlString>* description) {
+    std::wstring descriptionStr = HtmlString::Compose(description);
     const std::u16string conv = wstring_to_u16string(descriptionStr);
 
     IggyDataValue result;
@@ -278,6 +279,8 @@ void UIScene_TradingMenu::HandleMessage(EUIMessage message, void* data) {
     switch (message) {
         case eUIMessage_InventoryUpdated:
             handleInventoryUpdated(data);
+            break;
+        default:
             break;
     };
 }

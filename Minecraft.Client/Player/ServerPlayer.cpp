@@ -42,10 +42,10 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
     lastMoveX = lastMoveZ = 0;
     spewTimer = 0;
     lastRecordedHealthAndAbsorption = FLT_MIN;
-    lastSentHealth = -99999999;
+    lastSentHealth = -99999999.0f;
     lastSentFood = -99999999;
     lastFoodSaturationZero = true;
-    lastSentExp = -99999999;
+    lastSentExp = -99999999.0f;
     invulnerableTime = 20 * 3;
     containerCounter = 0;
     ignoreSlotUpdateHack = false;
@@ -656,19 +656,20 @@ bool ServerPlayer::hurt(DamageSource* dmgSource, float dmg) {
         // sometimes NULL.
         std::shared_ptr<Entity> source = dmgSource->getDirectEntity();
 
-        if (source->instanceof(eTYPE_PLAYER) &&
-            !std::dynamic_pointer_cast<Player>(source)->canHarmPlayer(
-                std::dynamic_pointer_cast<Player>(shared_from_this()))) {
+        if (source->instanceof
+            (eTYPE_PLAYER) &&
+                !std::dynamic_pointer_cast<Player>(source)->canHarmPlayer(
+                    std::dynamic_pointer_cast<Player>(shared_from_this()))) {
             return false;
         }
 
-        if ((source != NULL) && source->instanceof(eTYPE_ARROW)) {
+        if ((source != NULL) && source->instanceof (eTYPE_ARROW)) {
             std::shared_ptr<Arrow> arrow =
                 std::dynamic_pointer_cast<Arrow>(source);
-            if ((arrow->owner != NULL) &&
-                arrow->owner->instanceof(eTYPE_PLAYER) &&
-                !canHarmPlayer(
-                    std::dynamic_pointer_cast<Player>(arrow->owner))) {
+            if ((arrow->owner != NULL) && arrow->owner->instanceof
+                (eTYPE_PLAYER) &&
+                    !canHarmPlayer(
+                        std::dynamic_pointer_cast<Player>(arrow->owner))) {
                 return false;
             }
         }
@@ -1353,7 +1354,7 @@ void ServerPlayer::disconnect() {
     }
 }
 
-void ServerPlayer::resetSentInfo() { lastSentHealth = -99999999; }
+void ServerPlayer::resetSentInfo() { lastSentHealth = -99999999.0f; }
 
 void ServerPlayer::displayClientMessage(int messageId) {
     ChatPacket::EChatPacketMessage messageType = ChatPacket::e_ChatCustom;

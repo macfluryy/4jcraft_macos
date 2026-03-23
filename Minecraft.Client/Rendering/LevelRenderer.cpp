@@ -430,7 +430,7 @@ void LevelRenderer::allChanged(int playerIndex) {
     // called then (on 360 at least) we can get a deadlock when starting a game
     // in splitscreen.
     // EnterCriticalSection(&m_csDirtyChunks);
-    if (level == NULL) {
+    if (level[playerIndex] == NULL) {
         return;
     }
 
@@ -506,7 +506,7 @@ void LevelRenderer::allChanged(int playerIndex) {
     }
     nonStackDirtyChunksAdded();
 
-    if (level != NULL) {
+    if (level[playerIndex] != NULL) {
         std::shared_ptr<Entity> player = mc->cameraTargetPlayer;
         if (player != NULL) {
             this->resortChunks(Mth::floor(player->x), Mth::floor(player->y),
@@ -584,7 +584,7 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
              (entity->noCulling || culler->isVisible(entity->bb)));
 
         // Render the mob if the mob's leash holder is within the culler
-        if (!shouldRender && entity->instanceof(eTYPE_MOB)) {
+        if (!shouldRender && entity->instanceof (eTYPE_MOB)) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(entity);
             if (mob->isLeashed() && (mob->getLeashHolder() != NULL)) {
                 std::shared_ptr<Entity> leashHolder = mob->getLeashHolder();
@@ -598,10 +598,10 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
             // !mc->options->thirdPersonView &&
             // !mc->cameraTargetPlayer->isSleeping()) continue;
             std::shared_ptr<LocalPlayer> localplayer =
-                mc->cameraTargetPlayer->instanceof(eTYPE_LOCALPLAYER)
-                    ? std::dynamic_pointer_cast<LocalPlayer>(
-                          mc->cameraTargetPlayer)
-                    : nullptr;
+                mc->cameraTargetPlayer->instanceof
+                (eTYPE_LOCALPLAYER) ? std::dynamic_pointer_cast<LocalPlayer>(
+                                          mc->cameraTargetPlayer)
+                                    : nullptr;
 
             if (localplayer && entity == mc->cameraTargetPlayer &&
                 !localplayer->ThirdPersonView() &&
@@ -766,8 +766,8 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
         resortChunks(Mth::floor(player->x), Mth::floor(player->y),
                      Mth::floor(player->z));
         //		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
-        //DistanceChunkSorter(player));	// 4J - removed - not sorting our chunks
-        //anymore
+        // DistanceChunkSorter(player));	// 4J - removed - not sorting
+        // our chunks anymore
     }
     Lighting::turnOff();
     glColor4f(1, 1, 1, 1);
@@ -2746,9 +2746,7 @@ void LevelRenderer::cull_SPU(int playerIndex, Culler* culler, float a) {
     m_jobPort_CullSPU->submitSync();
     // 	static int doSort = false;
     // 	if(doSort)
-    {
-        m_jobPort_CullSPU->submitJob(&sortJob);
-    }
+    { m_jobPort_CullSPU->submitJob(&sortJob); }
     // 	doSort ^= 1;
     m_bSPUCullStarted[playerIndex] = true;
 }
@@ -3221,7 +3219,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
 }
 
 void LevelRenderer::entityAdded(std::shared_ptr<Entity> entity) {
-    if (entity->instanceof(eTYPE_PLAYER)) {
+    if (entity->instanceof (eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(entity);
         player->prepareCustomTextures();
@@ -3239,7 +3237,7 @@ void LevelRenderer::entityAdded(std::shared_ptr<Entity> entity) {
 }
 
 void LevelRenderer::entityRemoved(std::shared_ptr<Entity> entity) {
-    if (entity->instanceof(eTYPE_PLAYER)) {
+    if (entity->instanceof (eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(entity);
         if (player->customTextureUrl != L"") {

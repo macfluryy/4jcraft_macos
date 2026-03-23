@@ -56,7 +56,7 @@ Minecart::Minecart(Level* level) : Entity(level) {
     // soundUpdater = level != NULL ? level->makeSoundUpdater(this) : NULL;
 }
 
-Minecart::~Minecart() { delete soundUpdater; }
+Minecart::~Minecart() {}
 
 std::shared_ptr<Minecart> Minecart::createMinecart(Level* level, double x,
                                                    double y, double z,
@@ -129,9 +129,10 @@ bool Minecart::hurt(DamageSource* source, float hurtDamage) {
     if (dynamic_cast<EntityDamageSource*>(source) != NULL) {
         std::shared_ptr<Entity> attacker = source->getDirectEntity();
 
-        if (attacker->instanceof(eTYPE_PLAYER) &&
-            !std::dynamic_pointer_cast<Player>(attacker)->isAllowedToHurtEntity(
-                shared_from_this())) {
+        if (attacker->instanceof
+            (eTYPE_PLAYER) &&
+                !std::dynamic_pointer_cast<Player>(attacker)
+                     ->isAllowedToHurtEntity(shared_from_this())) {
             return false;
         }
     }
@@ -148,9 +149,9 @@ bool Minecart::hurt(DamageSource* source, float hurtDamage) {
     if (rider.lock() != NULL && rider.lock() == source->getEntity())
         hurtDamage += 1;
 
-    bool creativePlayer = source->getEntity() != NULL &&
-                          source->getEntity()->instanceof(eTYPE_PLAYER) &&
-                          std::dynamic_pointer_cast<Player>(source->getEntity())
+    bool creativePlayer =
+        source->getEntity() != NULL && source->getEntity()->instanceof
+        (eTYPE_PLAYER) && std::dynamic_pointer_cast<Player>(source->getEntity())
                               ->abilities.instabuild;
 
     if (creativePlayer || getDamage() > 20 * 2) {
@@ -309,8 +310,8 @@ void Minecart::tick() {
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = (*it);  // entities->at(i);
-                if (e != rider.lock() && e->isPushable() &&
-                    e->instanceof(eTYPE_MINECART)) {
+                if (e != rider.lock() && e->isPushable() && e->instanceof
+                    (eTYPE_MINECART)) {
                     std::shared_ptr<Minecart> cart =
                         std::dynamic_pointer_cast<Minecart>(e);
                     cart->m_bHasPushedCartThisTick = false;
@@ -404,7 +405,7 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
     xd = pow * xD / dd;
     zd = pow * zD / dd;
 
-    if (rider.lock() != NULL && rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
+    if (rider.lock() != NULL && rider.lock()->instanceof (eTYPE_LIVINGENTITY)) {
         std::shared_ptr<LivingEntity> living =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
 
@@ -688,9 +689,10 @@ void Minecart::push(std::shared_ptr<Entity> e) {
     if (level->isClientSide) return;
 
     if (e == rider.lock()) return;
-    if (e->instanceof(eTYPE_LIVINGENTITY) && !e->instanceof(eTYPE_PLAYER) &&
-        !e->instanceof(eTYPE_VILLAGERGOLEM) && (getType() == TYPE_RIDEABLE) &&
-        (xd * xd + zd * zd > 0.01)) {
+    if (e->instanceof (eTYPE_LIVINGENTITY) && !e->instanceof
+        (eTYPE_PLAYER) && !e->instanceof
+        (eTYPE_VILLAGERGOLEM) && (getType() == TYPE_RIDEABLE) &&
+            (xd * xd + zd * zd > 0.01)) {
         if ((rider.lock() == NULL) && (e->riding == NULL)) {
             e->ride(shared_from_this());
         }
@@ -716,7 +718,7 @@ void Minecart::push(std::shared_ptr<Entity> e) {
         xa *= 0.5;
         za *= 0.5;
 
-        if (e->instanceof(eTYPE_MINECART)) {
+        if (e->instanceof (eTYPE_MINECART)) {
             double xo = e->x - x;
             double zo = e->z - z;
 

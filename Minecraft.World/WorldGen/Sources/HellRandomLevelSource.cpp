@@ -561,5 +561,5 @@ TilePos* HellRandomLevelSource::findNearestMapFeature(
 
 void HellRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                             int chunkZ) {
-    netherBridgeFeature->apply(this, level, chunkX, chunkZ, NULL);
+    netherBridgeFeature->apply(this, level, chunkX, chunkZ, byteArray());
 }

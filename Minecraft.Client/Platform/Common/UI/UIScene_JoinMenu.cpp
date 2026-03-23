@@ -383,29 +383,22 @@ void UIScene_JoinMenu::StartSharedLaunchFlow() {
 
 int UIScene_JoinMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                                                int iPad) {
-    UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)pParam;
-
-    if (bContinue == true) {
-        // It's possible that the player has not signed in - they can back out
-        UIScene_JoinMenu* pClass =
-            (UIScene_JoinMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
-
-        if (pClass) {
-            if (bContinue == true) {
-                // It's possible that the player has not signed in - they can
-                // back out
-                if (ProfileManager.IsSignedIn(iPad)) {
-                    JoinGame(pClass);
-                } else {
-                    pClass->m_bIgnoreInput = false;
-                }
-            } else {
-                pClass->m_bIgnoreInput = false;
-            }
-            pClass->m_bIgnoreInput = false;
-        }
-        return 0;
+    UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)ui.GetSceneFromCallbackId(
+        reinterpret_cast<size_t>(pParam));
+    if (pClass == NULL) {
+        pClass = (UIScene_JoinMenu*)pParam;
     }
+
+    if (bContinue == true && pClass != NULL &&
+        ProfileManager.IsSignedIn(iPad)) {
+        JoinGame(pClass);
+    }
+
+    if (pClass != NULL) {
+        pClass->m_bIgnoreInput = false;
+    }
+
+    return 0;
 }
 
 // Shared function to join the game that is the same whether we used the

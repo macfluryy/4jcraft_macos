@@ -373,10 +373,10 @@ void UIScene::getDebugMemoryUseRecursive(const std::wstring& moviePath,
     rrbool res;
     IggyMemoryUseInfo internalMemoryInfo;
     int internalIteration = 0;
-    while (res = IggyDebugGetMemoryUseInfo(swf, NULL, memoryInfo.subcategory,
-                                           memoryInfo.subcategory_stringlen,
-                                           internalIteration,
-                                           &internalMemoryInfo)) {
+    while ((res = IggyDebugGetMemoryUseInfo(swf, 0, memoryInfo.subcategory,
+                                            memoryInfo.subcategory_stringlen,
+                                            internalIteration,
+                                            &internalMemoryInfo))) {
         app.DebugPrintf(
             app.USER_SR, "%ls - %.*s static: %d ( %d ) dynamic: %d ( %d )\n",
             moviePath.c_str(), internalMemoryInfo.subcategory_stringlen,
@@ -401,8 +401,8 @@ void UIScene::PrintTotalMemoryUsage(int64_t& totalStatic,
     int iteration = 0;
     int64_t sceneStatic = 0;
     int64_t sceneDynamic = 0;
-    while (res = IggyDebugGetMemoryUseInfo(swf, NULL, "", 0, iteration,
-                                           &memoryInfo)) {
+    while ((res = IggyDebugGetMemoryUseInfo(swf, 0, "", 0, iteration,
+                                            &memoryInfo))) {
         sceneStatic += memoryInfo.static_allocation_bytes;
         sceneDynamic += memoryInfo.dynamic_allocation_bytes;
         totalStatic += memoryInfo.static_allocation_bytes;
@@ -771,7 +771,7 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
 //	if(m_parentLayer == NULL)
 //	{
 //		app.DebugPrintf("A scene is trying to navigate forwards, but
-//it's parent layer is NULL!\n"); #ifndef _CONTENT_PACKAGE
+// it's parent layer is NULL!\n"); #ifndef _CONTENT_PACKAGE
 //		__debugbreak();
 // #endif
 //	}
@@ -789,7 +789,7 @@ void UIScene::navigateBack() {
 
     if (m_parentLayer == NULL) {
 //		app.DebugPrintf("A scene is trying to navigate back, but it's
-//parent layer is NULL!\n");
+// parent layer is NULL!\n");
 #ifndef _CONTENT_PACKAGE
 //		__debugbreak();
 #endif

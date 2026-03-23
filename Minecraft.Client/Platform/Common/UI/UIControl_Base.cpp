@@ -6,7 +6,6 @@
 
 UIControl_Base::UIControl_Base() {
     m_bLabelChanged = false;
-    m_label;
     m_id = 0;
 }
 
@@ -29,7 +28,8 @@ void UIControl_Base::tick() {
         // app.DebugPrintf("Calling SetLabel - '%ls'\n", m_label.c_str());
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = wstring_to_u16string(m_label.getString());
+        const std::u16string convLabel =
+            wstring_to_u16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];
@@ -57,7 +57,8 @@ void UIControl_Base::setLabel(UIString label, bool instant, bool force) {
     if (m_bLabelChanged && instant) {
         m_bLabelChanged = false;
 
-        const std::u16string convLabel = wstring_to_u16string(m_label.getString());
+        const std::u16string convLabel =
+            wstring_to_u16string(m_label.getString());
 
         IggyDataValue result;
         IggyDataValue value[1];

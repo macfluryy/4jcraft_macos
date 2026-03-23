@@ -27,6 +27,7 @@ void Connection::_init() {
     quitting = false;
     disconnected = false;
     disconnectReason = DisconnectPacket::eDisconnect_None;
+    disconnectReasonObjects = NULL;
     noInputTicks = 0;
     estimatedRemaining = 0;
     fakeLag = 0;
@@ -375,29 +376,14 @@ e.printStackTrace();
 close("disconnect.genericReason", "Internal exception: " + e.toString());
 }*/
 
-void Connection::close(DisconnectPacket::eDisconnectReason reason, ...) {
+void Connection::close(DisconnectPacket::eDisconnectReason reason) {
     //	printf("Con:0x%x close\n",this);
     if (!running) return;
     //	printf("Con:0x%x close doing something\n",this);
     disconnected = true;
 
-    va_list input;
-    va_start(input, reason);
-
     disconnectReason = reason;  // va_arg( input, const wstring );
-
-    std::vector<void*> objs = std::vector<void*>();
-    void* i = NULL;
-    while (i != NULL) {
-        i = va_arg(input, void*);
-        objs.push_back(i);
-    }
-
-    if (objs.size()) {
-        disconnectReasonObjects = &objs[0];
-    } else {
-        disconnectReasonObjects = NULL;
-    }
+    disconnectReasonObjects = NULL;
 
     //	int count = 0, sum = 0, i = first;
     //	va_list marker;

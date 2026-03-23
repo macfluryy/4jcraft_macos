@@ -17,6 +17,23 @@
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "Villager.h"
 
+namespace {
+struct VillagerShuffleRandom {
+    using result_type = unsigned int;
+
+    explicit VillagerShuffleRandom(Random* random) : random(random) {}
+
+    static constexpr result_type min() { return 0; }
+    static constexpr result_type max() { return 0xFFFFFFFFu; }
+
+    result_type operator()() {
+        return static_cast<result_type>(random->nextInt());
+    }
+
+    Random* random;
+};
+}  // namespace
+
 std::unordered_map<int, std::pair<int, int> > Villager::MIN_MAX_VALUES;
 std::unordered_map<int, std::pair<int, int> > Villager::MIN_MAX_PRICES;
 
@@ -217,7 +234,7 @@ void Villager::setLastHurtByMob(std::shared_ptr<LivingEntity> mob) {
     if (_village != NULL && mob != NULL) {
         _village->addAggressor(mob);
 
-        if (mob->instanceof(eTYPE_PLAYER)) {
+        if (mob->instanceof (eTYPE_PLAYER)) {
             int amount = -1;
             if (isBaby()) {
                 amount = -3;
@@ -237,11 +254,11 @@ void Villager::die(DamageSource* source) {
     if (_village != NULL) {
         std::shared_ptr<Entity> sourceEntity = source->getEntity();
         if (sourceEntity != NULL) {
-            if (sourceEntity->instanceof(eTYPE_PLAYER)) {
+            if (sourceEntity->instanceof (eTYPE_PLAYER)) {
                 _village->modifyStanding(
                     std::dynamic_pointer_cast<Player>(sourceEntity)->getName(),
                     -2);
-            } else if (sourceEntity->instanceof(eTYPE_ENEMY)) {
+            } else if (sourceEntity->instanceof (eTYPE_ENEMY)) {
                 _village->resetNoBreedTimer();
             }
         } else if (sourceEntity == NULL) {
@@ -508,7 +525,8 @@ void Villager::addOffers(int addCount) {
     }
 
     // shuffle the list to make it more interesting
-    std::random_shuffle(newOffers->begin(), newOffers->end());
+    std::shuffle(newOffers->begin(), newOffers->end(),
+                 VillagerShuffleRandom(random));
 
     if (offers == NULL) {
         offers = new MerchantRecipeList();

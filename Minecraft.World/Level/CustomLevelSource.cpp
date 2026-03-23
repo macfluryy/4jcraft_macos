@@ -121,8 +121,6 @@ CustomLevelSource::~CustomLevelSource() {
     delete mineShaftFeature;
     delete canyonFeature;
 
-    this->level = level;
-
     delete random;
     delete perlinNoise3;
 #endif
@@ -658,10 +656,10 @@ void CustomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                         int chunkZ) {
     if (generateStructures) {
 #ifdef _OVERRIDE_HEIGHTMAP
-        mineShaftFeature->apply(this, level, chunkX, chunkZ, NULL);
-        villageFeature->apply(this, level, chunkX, chunkZ, NULL);
-        strongholdFeature->apply(this, level, chunkX, chunkZ, NULL);
-        scatteredFeature->apply(this, level, chunkX, chunkZ, NULL);
+        mineShaftFeature->apply(this, level, chunkX, chunkZ, byteArray());
+        villageFeature->apply(this, level, chunkX, chunkZ, byteArray());
+        strongholdFeature->apply(this, level, chunkX, chunkZ, byteArray());
+        scatteredFeature->apply(this, level, chunkX, chunkZ, byteArray());
 #endif
     }
 }

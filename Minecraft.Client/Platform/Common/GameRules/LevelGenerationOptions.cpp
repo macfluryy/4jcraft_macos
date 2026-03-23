@@ -675,6 +675,8 @@ std::wstring LevelGenerationOptions::getDefaultSaveName() {
             return getString(info()->getDefaultSaveName());
         case eSrc_tutorial:
             return app.GetString(IDS_TUTORIALSAVENAME);
+        default:
+            break;
     }
     return L"";
 }
@@ -686,6 +688,8 @@ LPCWSTR LevelGenerationOptions::getWorldName() {
             return getString(info()->getWorldName());
         case eSrc_tutorial:
             return app.GetString(IDS_PLAY_TUTORIAL);
+        default:
+            break;
     }
     return L"";
 }
@@ -697,6 +701,8 @@ LPCWSTR LevelGenerationOptions::getDisplayName() {
             return getString(info()->getDisplayName());
         case eSrc_tutorial:
             return L"";
+        default:
+            break;
     }
     return L"";
 }

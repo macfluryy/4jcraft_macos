@@ -10,6 +10,8 @@ ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
     ModelPart* pAttachTo = NULL;
 
     switch (pBox->ePart) {
+        case eBodyPart_Unknown:
+            return nullptr;
         case eBodyPart_Head:
             pAttachTo = head;
             break;
@@ -243,7 +245,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         leg1->yRot = 0.0f;
 
         if (riding) {
-            if (uiBitmaskOverrideAnim & (1 << eAnim_SmallModel) == 0) {
+            if ((uiBitmaskOverrideAnim & (1 << eAnim_SmallModel)) == 0) {
                 arm0->xRot += -HALF_PI * 0.4f;
                 arm1->xRot += -HALF_PI * 0.4f;
                 leg0->xRot = -HALF_PI * 0.8f;

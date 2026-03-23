@@ -78,8 +78,10 @@ void PistonMovingPiece::spawnResources(Level* level, int x, int y, int z,
 
 void PistonMovingPiece::neighborChanged(Level* level, int x, int y, int z,
                                         int type) {
-    if (!level->isClientSide) {
-        level->getTileEntity(x, y, z) == NULL;
+    if (!level->isClientSide && level->getTileEntity(x, y, z) == nullptr) {
+        // 4jcraft: remove orphaned moving piston blocks once their tile entity
+        // has already vanished, matching the cleanup path used on interaction.
+        level->removeTile(x, y, z);
     }
 }
 

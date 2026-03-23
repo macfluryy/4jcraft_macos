@@ -192,6 +192,8 @@ bool IUIScene_BeaconMenu::IsSectionSlotList(ESceneSection eSection) {
         case eSectionBeaconInventory:
         case eSectionBeaconUsing:
             return true;
+        default:
+            break;
     }
     return false;
 }
@@ -238,7 +240,7 @@ void IUIScene_BeaconMenu::handleOtherClicked(int iPad, ESceneSection eSection,
         case eSectionBeaconPrimaryTierTwoTwo:
         case eSectionBeaconPrimaryTierThree:
         case eSectionBeaconSecondaryOne:
-        case eSectionBeaconSecondaryTwo:
+        case eSectionBeaconSecondaryTwo: {
             if (IsPowerButtonSelected(eSection)) {
                 return;
             }
@@ -253,6 +255,9 @@ void IUIScene_BeaconMenu::handleOtherClicked(int iPad, ESceneSection eSection,
                 m_beacon->setSecondaryPower(effectId);
             }
             SetPowerButtonSelected(eSection);
+            break;
+        }
+        default:
             break;
     };
 }
@@ -364,6 +369,8 @@ std::vector<HtmlString>* IUIScene_BeaconMenu::GetSectionHoverText(
                 eHTMLColor_White);
             desc->push_back(string);
         } break;
+        default:
+            break;
     }
     return desc;
 }
@@ -375,6 +382,8 @@ bool IUIScene_BeaconMenu::IsVisible(ESceneSection eSection) {
                 // This isn't visible
                 return false;
             }
+        default:
+            break;
     }
     return true;
 }

@@ -730,6 +730,8 @@ void UIScene_CraftingMenu::HandleMessage(EUIMessage message, void* data) {
         case eUIMessage_InventoryUpdated:
             handleInventoryUpdated(data);
             break;
+        default:
+            break;
     };
 }
 

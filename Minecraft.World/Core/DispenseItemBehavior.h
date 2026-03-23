@@ -12,6 +12,8 @@ public:
      */
     static DispenseItemBehavior* NOOP;
 
+    virtual ~DispenseItemBehavior() = default;
+
     /**
      *
      * @param source The source of this call (the dispenser that calls it)

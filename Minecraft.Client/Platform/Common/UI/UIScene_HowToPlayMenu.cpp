@@ -129,9 +129,7 @@ void UIScene_HowToPlayMenu::handleReload() {
 		}
 		else
 #endif
-        {
-            m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i);
-        }
+        { m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i); }
     }
 
     doHorizontalResizeCheck();
@@ -174,6 +172,8 @@ void UIScene_HowToPlayMenu::handlePress(F64 controlId, F64 childId) {
         unsigned int uiInitData;
         uiInitData =
             ((1 << 31) | (m_uiHTPSceneA[(int)childId] << 16) | (short)(m_iPad));
-        ui.NavigateToScene(m_iPad, eUIScene_HowToPlay, (void*)(uiInitData));
+        ui.NavigateToScene(
+            m_iPad, eUIScene_HowToPlay,
+            reinterpret_cast<void*>(static_cast<uintptr_t>(uiInitData)));
     }
 }

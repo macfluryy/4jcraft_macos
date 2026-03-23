@@ -419,6 +419,8 @@ int UIScene_BeaconMenu::GetPowerButtonId(ESceneSection eSection) {
         case eSectionBeaconSecondaryTwo:
             return m_buttonsPowers[eControl_Secondary2].GetData();
             break;
+        default:
+            break;
     };
     return 0;
 }
@@ -446,6 +448,8 @@ bool UIScene_BeaconMenu::IsPowerButtonSelected(ESceneSection eSection) {
         case eSectionBeaconSecondaryTwo:
             return m_buttonsPowers[eControl_Secondary2].IsButtonSelected();
             break;
+        default:
+            break;
     };
     return false;
 }
@@ -467,6 +471,8 @@ void UIScene_BeaconMenu::SetPowerButtonSelected(ESceneSection eSection) {
         case eSectionBeaconSecondaryTwo:
             m_buttonsPowers[eControl_Secondary1].SetButtonSelected(false);
             m_buttonsPowers[eControl_Secondary2].SetButtonSelected(false);
+            break;
+        default:
             break;
     };
 
@@ -492,5 +498,7 @@ void UIScene_BeaconMenu::SetPowerButtonSelected(ESceneSection eSection) {
         case eSectionBeaconSecondaryTwo:
             return m_buttonsPowers[eControl_Secondary2].SetButtonSelected(true);
             break;
+        default:
+            return;
     };
 }

@@ -2533,7 +2533,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
     } else if ((m_lastMessage != NULL &&
                 m_lastMessage->m_messageId !=
                     -1))  //&& (lastMessageTime + m_iTutorialReminderTime ) >
-                          //GetTickCount() )
+                          // GetTickCount() )
     {
         // This should cause the popup to dissappear
         TutorialPopupInfo popupInfo;
@@ -2819,8 +2819,8 @@ void Tutorial::onLookAtEntity(std::shared_ptr<Entity> entity) {
         }
     }
 
-    if ((m_CurrentState == e_Tutorial_State_Gameplay) &&
-        entity->instanceof(eTYPE_HORSE)) {
+    if ((m_CurrentState == e_Tutorial_State_Gameplay) && entity->instanceof
+        (eTYPE_HORSE)) {
         changeTutorialState(e_Tutorial_State_Horse);
     }
 
@@ -2838,6 +2838,8 @@ void Tutorial::onRideEntity(std::shared_ptr<Entity> entity) {
                 break;
             case eTYPE_BOAT:
                 changeTutorialState(e_Tutorial_State_Riding_Boat);
+                break;
+            default:
                 break;
         }
     }

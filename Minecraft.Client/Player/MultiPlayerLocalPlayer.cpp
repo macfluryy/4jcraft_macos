@@ -351,6 +351,8 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
                 case eTYPE_PIG:
                     eventType = eTelemetryInGame_Ride_Pig;
                     break;
+                default:
+                    break;
             };
         }
         TelemetryManager->RecordEnemyKilledOrOvercome(GetXboxPad(), 0, y, 0, 0,

@@ -3,6 +3,7 @@
 #include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.entity.ai.control.h"
+#include "../Navigation/Path.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "../../Headers/net.minecraft.world.entity.ai.sensing.h"
 #include "../../Headers/net.minecraft.world.phys.h"
@@ -19,7 +20,7 @@ void MeleeAttackGoal::_init(PathfinderMob* mob, double speedModifier,
                             Control::LookControlFlag);
 
     attackTime = 0;
-    path = NULL;
+    path = nullptr;
     timeToRecalcPath = 0;
 }
 
@@ -34,18 +35,16 @@ MeleeAttackGoal::MeleeAttackGoal(PathfinderMob* mob, double speedModifier,
     _init(mob, speedModifier, trackTarget);
 }
 
-MeleeAttackGoal::~MeleeAttackGoal() {
-    if (path != NULL) delete path;
-}
+MeleeAttackGoal::~MeleeAttackGoal() = default;
 
 bool MeleeAttackGoal::canUse() {
     std::shared_ptr<LivingEntity> target = mob->getTarget();
     if (target == NULL) return false;
     if (!target->isAlive()) return false;
-    if (attackType != NULL && !target->instanceof(attackType)) return false;
-    delete path;
-    path = mob->getNavigation()->createPath(target);
-    return path != NULL;
+    if (attackType != eTYPE_NOTSET && !target->instanceof (attackType))
+        return false;
+    path.reset(mob->getNavigation()->createPath(target));
+    return path != nullptr;
 }
 
 bool MeleeAttackGoal::canContinueToUse() {
@@ -60,8 +59,7 @@ bool MeleeAttackGoal::canContinueToUse() {
 }
 
 void MeleeAttackGoal::start() {
-    mob->getNavigation()->moveTo(path, speedModifier);
-    path = NULL;
+    mob->getNavigation()->moveTo(path.release(), speedModifier);
     timeToRecalcPath = 0;
 }
 

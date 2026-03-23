@@ -128,7 +128,7 @@ private:
     }*/
 
 public:
-    void close(DisconnectPacket::eDisconnectReason reason, ...);
+    void close(DisconnectPacket::eDisconnectReason reason);
 
     void tick();
 

@@ -14,11 +14,11 @@ const int UIScene_LeaderboardsMenu::TitleIcons
     [UIScene_LeaderboardsMenu::NUM_LEADERBOARDS][7] = {
         {UIControl_LeaderboardList::e_ICON_TYPE_WALKED,
          UIControl_LeaderboardList::e_ICON_TYPE_FALLEN, Item::minecart_Id,
-         Item::boat_Id, NULL},
+         Item::boat_Id, 0},
         {Tile::dirt_Id, Tile::cobblestone_Id, Tile::sand_Id, Tile::stone_Id,
          Tile::gravel_Id, Tile::clay_Id, Tile::obsidian_Id},
         {Item::egg_Id, Item::wheat_Id, Tile::mushroom_brown_Id, Tile::reeds_Id,
-         Item::bucket_milk_Id, Tile::pumpkin_Id, NULL},
+         Item::bucket_milk_Id, Tile::pumpkin_Id, 0},
         {UIControl_LeaderboardList::e_ICON_TYPE_ZOMBIE,
          UIControl_LeaderboardList::e_ICON_TYPE_SKELETON,
          UIControl_LeaderboardList::e_ICON_TYPE_CREEPER,

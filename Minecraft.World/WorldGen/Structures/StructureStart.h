@@ -17,7 +17,7 @@ private:
 public:
     StructureStart();
     StructureStart(int x, int z);
-    ~StructureStart();
+    virtual ~StructureStart();
     BoundingBox* getBoundingBox();
     std::list<StructurePiece*>* getPieces();
     void postProcess(Level* level, Random* random, BoundingBox* chunkBB);
