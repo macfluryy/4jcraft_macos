@@ -3,7 +3,12 @@ class Mob;
 class Options;
 using namespace std;
 #include "../../Minecraft.World/Util/SoundTypes.h"
-
+#include "./miniaudio.h"
+constexpr float SFX_3D_MIN_DISTANCE = 1.0f;
+constexpr float SFX_3D_MAX_DISTANCE = 16.0f;
+constexpr float SFX_3D_ROLLOFF = 0.5f;
+constexpr float SFX_VOLUME_MULTIPLIER = 1.5f;
+constexpr float SFX_MAX_GAIN = 1.5f;
 enum eMUSICFILES {
     eStream_Overworld_Calm1 = 0,
     eStream_Overworld_Calm2,
@@ -79,7 +84,11 @@ typedef struct {
     char chName[64];
 #endif
 } AUDIO_INFO;
-
+struct MiniAudioSound {
+    ma_sound sound;
+    AUDIO_INFO info;
+    bool active;
+};
 class SoundEngine : public ConsoleSoundEngine {
     static const int MAX_SAME_SOUNDS_PLAYING = 8;  // 4J added
 public:
@@ -125,17 +134,21 @@ private:
 #else
     int initAudioHardware(int iMinSpeakers) { return iMinSpeakers; }
 #endif
+#ifdef __linux__
+    void updateMiniAudio();
+#endif
 
     int GetRandomishTrack(int iStart, int iEnd);
 
-    HMSOUNDBANK m_hBank;
-    HDIGDRIVER m_hDriver;
-    HSTREAM m_hStream;
+    ma_engine m_engine;
+    ma_engine_config m_engineConfig;
+    ma_sound m_musicStream;
+    bool m_musicStreamActive;
 
     static char m_szSoundPath[];
     static char m_szMusicPath[];
     static char m_szRedistName[];
-    static char* m_szStreamFileA[eStream_Max];
+    static const char* m_szStreamFileA[eStream_Max];
 
     AUDIO_LISTENER m_ListenerA[MAX_LOCAL_PLAYERS];
     int m_validListenerCount;

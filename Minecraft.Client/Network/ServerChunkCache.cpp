@@ -43,7 +43,7 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
 ServerChunkCache::~ServerChunkCache() {
     storage->WaitForAll();  // MGH -  added to fix crash bug 175183
     delete emptyChunk;
-    delete cache;
+    delete[] cache; // 4jcraft changed to delete[]
     delete source;
 
 #ifdef _LARGE_WORLDS
