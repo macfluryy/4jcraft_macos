@@ -656,6 +656,7 @@ void GameRuleManager::loadDefaultGameRules() {
 
 #else  // _XBOX
 
+#ifndef __linux__
 #ifdef _WINDOWS64
     File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
     if (!packedTutorialFile.exists())
@@ -676,7 +677,7 @@ void GameRuleManager::loadDefaultGameRules() {
         m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(
             app.GetString(IDS_TUTORIALSAVENAME));
     }
-#if 0
+#else // 4jcraft, TODO this is using old pre-TU19 logic for loading the tutorial, modify to use the above ifdefs
 	std::wstring fpTutorial = L"Tutorial.pck";
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
@@ -685,8 +686,8 @@ void GameRuleManager::loadDefaultGameRules() {
 		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
 		{
 			app.m_dlcManager.addPack(pack);
-			//m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
-			//m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
+			m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
+			m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
 		}
 		else delete pack;
 	}
