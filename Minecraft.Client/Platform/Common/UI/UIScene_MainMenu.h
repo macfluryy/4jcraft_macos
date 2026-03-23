@@ -90,10 +90,10 @@ private:
 
 private:
     // 4J-JEV: Delay navigation until font changes.
-    static EUIScene eNavigateWhenReady;
+    static int eNavigateWhenReady;
 
     static void proceedToScene(int iPad, EUIScene eScene) {
-        eNavigateWhenReady = eScene;
+        eNavigateWhenReady = (int)eScene;
     }
 
 public:

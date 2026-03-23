@@ -27,7 +27,11 @@ bool TickNextTickData::equals(const TickNextTickData* o) const {
 }
 
 int TickNextTickData::hashCode() const {
-    return (((x * 1024 * 1024) + (z * 1024) + y) * 256);
+    std::uint32_t hash =
+        (((std::uint32_t)x * 1024u * 1024u) + ((std::uint32_t)z * 1024u) +
+         (std::uint32_t)y) *
+        256u;
+    return (std::int32_t)hash;
 }
 
 TickNextTickData* TickNextTickData::delay(int64_t l) {

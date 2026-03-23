@@ -1504,30 +1504,34 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
 
 static void set_vertex_format(S32 format, F32 *vertices)
 {
+   const void *vertex_offset_0 = (const void *) (size_t) vertices;
+   const void *vertex_offset_8 = (const void *) ((size_t) vertices + (2 * sizeof(F32)));
+   const void *vertex_offset_16 = (const void *) ((size_t) vertices + (4 * sizeof(F32)));
+
    switch (format) {
       case GDRAW_vformat_v2:
-         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, vertex_offset_0);
          glEnableVertexAttribArray(0);
          break;
 
       case GDRAW_vformat_v2aa:
-         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16, vertices);
-         glVertexAttribPointer(1, 4, GL_SHORT, GL_FALSE, 16, vertices+2);
+         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16, vertex_offset_0);
+         glVertexAttribPointer(1, 4, GL_SHORT, GL_FALSE, 16, vertex_offset_8);
          glEnableVertexAttribArray(0);
          glEnableVertexAttribArray(1);
          break;
 
       case GDRAW_vformat_v2tc2:
-         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16, vertices);
-         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 16, vertices+2);
+         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16, vertex_offset_0);
+         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 16, vertex_offset_8);
          glEnableVertexAttribArray(0);
          glEnableVertexAttribArray(1);
          break;
 
       case GDRAW_vformat_ihud1:
-         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 20, vertices);
-         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 20, vertices+2);
-         glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, 20, vertices+4);
+         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 20, vertex_offset_0);
+         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 20, vertex_offset_8);
+         glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, GL_TRUE, 20, vertex_offset_16);
          glEnableVertexAttribArray(0);
          glEnableVertexAttribArray(1);
          glEnableVertexAttribArray(2);
@@ -1943,10 +1947,13 @@ static void make_fragment_program(ProgramWithCachedVariableLocations *p, int num
       p->program = 0;
    } else {
       S32 vert = GDRAW_vformat_v2tc2;
-      if (p >= &gdraw->fprog[0][0][0] && p < &gdraw->fprog[GDRAW_TEXTURE__count][0][0]) {
+      ProgramWithCachedVariableLocations *basic_fprog_begin = &gdraw->fprog[0][0][0];
+      ProgramWithCachedVariableLocations *basic_fprog_end =
+         basic_fprog_begin + (sizeof(gdraw->fprog) / sizeof(gdraw->fprog[0][0][0]));
+      if (p >= basic_fprog_begin && p < basic_fprog_end) {
          // for basic rendering shaders, we have three versions corresponding to the
          // three vertex formats we support.
-         S32 n = (S32) (p - gdraw->fprog[0][0]);
+         S32 n = (S32) (p - basic_fprog_begin);
          vert = n % 3;
       }
 
@@ -2032,8 +2039,12 @@ static void make_vertex_programs(void)
 
 static void lazy_shader(ProgramWithCachedVariableLocations *ptr)
 {
-   if (ptr >= &gdraw->fprog[0][0][0] && ptr < &gdraw->fprog[GDRAW_TEXTURE__count][0][0]) {
-      S32 n = (S32) (ptr - gdraw->fprog[0][0]);
+   ProgramWithCachedVariableLocations *basic_fprog_begin = &gdraw->fprog[0][0][0];
+   ProgramWithCachedVariableLocations *basic_fprog_end =
+      basic_fprog_begin + (sizeof(gdraw->fprog) / sizeof(gdraw->fprog[0][0][0]));
+
+   if (ptr >= basic_fprog_begin && ptr < basic_fprog_end) {
+      S32 n = (S32) (ptr - basic_fprog_begin);
       n /= 3;
 
       make_fragment_program(ptr, NUMFRAGMENTS_pshader_basic, pshader_basic_arr[n], pshader_basic_vars);

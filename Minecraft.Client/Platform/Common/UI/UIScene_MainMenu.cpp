@@ -12,7 +12,7 @@
 
 Random* UIScene_MainMenu::random = new Random();
 
-EUIScene UIScene_MainMenu::eNavigateWhenReady = (EUIScene)-1;
+int UIScene_MainMenu::eNavigateWhenReady = -1;
 
 UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
                                    UILayer* parentLayer)
@@ -1966,8 +1966,8 @@ void UIScene_MainMenu::tick() {
 #endif
         {
             app.DebugPrintf("[MainMenu] Navigating away from MainMenu.\n");
-            ui.NavigateToScene(lockedProfile, eNavigateWhenReady);
-            eNavigateWhenReady = (EUIScene)-1;
+            ui.NavigateToScene(lockedProfile, (EUIScene)eNavigateWhenReady);
+            eNavigateWhenReady = -1;
         }
 #ifdef _DURANGO
         else {
