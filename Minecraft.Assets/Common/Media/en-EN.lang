@@ -478,7 +478,7 @@ If "Host Privileges" is enabled the host player can modify some privileges for t
     <value>HUD</value>
   </data>
       <data name="IDS_HOW_TO_PLAY_MENU_INVENTORY">
-    <value>hi</value>
+    <value>Inventory</value>
   </data>
       <data name="IDS_HOW_TO_PLAY_MENU_CHESTS">
     <value>Chests</value>
@@ -2593,7 +2593,7 @@ Can also be used for low-level lighting.</value>
     <value>Jump/Fly Up</value>
   </data>
   <data name="IDS_CONTROLS_INVENTORY">
-    <value>hi</value>
+    <value>Inventory</value>
   </data>
   <data name="IDS_CONTROLS_HELDITEM">
     <value>Cycle Held Item</value>
@@ -4413,7 +4413,7 @@ Would you like to unlock the full game?</value>
   </data>
 
     <data name="IDS_INVENTORY">
-    <value>hi</value>
+    <value>Inventory</value>
   </data>
     <data name="IDS_INGREDIENTS">
     <value>Ingredients</value>
