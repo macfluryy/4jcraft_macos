@@ -3,14 +3,14 @@
 #include "Consoles_SoundEngine.h"
 
 const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
-    L"mob/chicken",              //	eSoundType_MOB_CHICKEN_AMBIENT
-    L"mob/chickenhurt",          //	eSoundType_MOB_CHICKEN_HURT
-    L"mob/chickenplop",          //	eSoundType_MOB_CHICKENPLOP
-    L"mob/cow",                  //	eSoundType_MOB_COW_AMBIENT
-    L"mob/cowhurt",              //	eSoundType_MOB_COW_HURT
-    L"mob/pig",                  //	eSoundType_MOB_PIG_AMBIENT
-    L"mob/pigdeath",             //	eSoundType_MOB_PIG_DEATH
-    L"mob/sheep",                //	eSoundType_MOB_SHEEP_AMBIENT
+    L"mob/chicken/chicken",              //	eSoundType_MOB_CHICKEN_AMBIENT
+    L"mob/chicken/chickenhurt",          //	eSoundType_MOB_CHICKEN_HURT
+    L"mob/chicken/chickenplop",          //	eSoundType_MOB_CHICKENPLOP
+    L"mob/cow/say",                  //	eSoundType_MOB_COW_AMBIENT
+    L"mob/cow/hurt",              //	eSoundType_MOB_COW_HURT
+    L"mob/pig/pig",                  //	eSoundType_MOB_PIG_AMBIENT
+    L"mob/pig/pigdeath",             //	eSoundType_MOB_PIG_DEATH
+    L"mob/sheep/sheep",                //	eSoundType_MOB_SHEEP_AMBIENT
     L"mob/wolf/growl",           //	eSoundType_MOB_WOLF_GROWL
     L"mob/wolf/whine",           //	eSoundType_MOB_WOLF_WHINE
     L"mob/wolf/panting",         //	eSoundType_MOB_WOLF_PANTING
@@ -38,17 +38,17 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"mob/silverfish/hit",       //	eSoundType_MOB_SILVERFISH_HURT
     L"mob/silverfish/kill",      //	eSoundType_MOB_SILVERFISH_DEATH,
     L"mob/silverfish/step",      //	eSoundType_MOB_SILVERFISH_STEP,
-    L"mob/skeleton",             //	eSoundType_MOB_SKELETON_AMBIENT,
-    L"mob/skeletonhurt",         //	eSoundType_MOB_SKELETON_HURT,
-    L"mob/spider",               //	eSoundType_MOB_SPIDER_AMBIENT,
-    L"mob/spiderdeath",          //	eSoundType_MOB_SPIDER_DEATH,
-    L"mob/slime",                //	eSoundType_MOB_SLIME,
-    L"mob/slimeattack",          //	eSoundType_MOB_SLIME_ATTACK,
-    L"mob/creeper",              //	eSoundType_MOB_CREEPER_HURT,
-    L"mob/creeperdeath",         //	eSoundType_MOB_CREEPER_DEATH,
-    L"mob/zombie",               //	eSoundType_MOB_ZOMBIE_AMBIENT,
-    L"mob/zombiehurt",           //	eSoundType_MOB_ZOMBIE_HURT,
-    L"mob/zombiedeath",          //	eSoundType_MOB_ZOMBIE_DEATH,
+    L"mob/skeleton/skeleton",             //	eSoundType_MOB_SKELETON_AMBIENT,
+    L"mob/skeleton/skeletonhurt",         //	eSoundType_MOB_SKELETON_HURT,
+    L"mob/spider/spider",               //	eSoundType_MOB_SPIDER_AMBIENT,
+    L"mob/spider/spiderdeath",          //	eSoundType_MOB_SPIDER_DEATH,
+    L"mob/slime/slime",                //	eSoundType_MOB_SLIME,
+    L"mob/slime/slimeattack",          //	eSoundType_MOB_SLIME_ATTACK,
+    L"mob/creeper/creeper",              //	eSoundType_MOB_CREEPER_HURT,
+    L"mob/creeper/creeperdeath",         //	eSoundType_MOB_CREEPER_DEATH,
+    L"mob/zombie/zombie",               //	eSoundType_MOB_ZOMBIE_AMBIENT,
+    L"mob/zombie/zombiehurt",           //	eSoundType_MOB_ZOMBIE_HURT,
+    L"mob/zombie/zombiedeath",          //	eSoundType_MOB_ZOMBIE_DEATH,
     L"mob/zombie/wood",          //	eSoundType_MOB_ZOMBIE_WOOD,
     L"mob/zombie/woodbreak",     //	eSoundType_MOB_ZOMBIE_WOOD_BREAK,
     L"mob/zombie/metal",         //	eSoundType_MOB_ZOMBIE_METAL,
