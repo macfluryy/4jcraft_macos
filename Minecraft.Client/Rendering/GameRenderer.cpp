@@ -767,6 +767,13 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
+#ifdef __linux__
+    if (SharedConstants::TEXTURE_LIGHTING) {
+        LinuxLogStubLightmapProbe();
+        RenderManager.TextureBindVertex(-1);
+        LinuxGLLogLightmapState("turnOffLightLayer", -1, false);
+    }
+#else
     // 4jcraft: manually handle this in order to ensure that the light layer is
     // turned off correctly
 #if 1
@@ -784,12 +791,30 @@ void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
 #else
     RenderManager.TextureBindVertex(-1);
 #endif
+#endif
 }
 
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOnLightLayer(
     double alpha,
     bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
+#ifdef __linux__
+    if (!SharedConstants::TEXTURE_LIGHTING) return;
+
+    LinuxLogStubLightmapProbe();
+    const int textureId = getLightTexture(mc->player->GetXboxPad(), mc->level);
+
+    static int logCount = 0;
+    if (logCount < 16) {
+        ++logCount;
+        app.DebugPrintf(
+            "[linux-lightmap] turnOnLightLayer tex=%d scale=%d\n", textureId,
+            scaleLight ? 1 : 0);
+    }
+
+    RenderManager.TextureBindVertex(textureId, scaleLight);
+    LinuxGLLogLightmapState("turnOnLightLayer", textureId, scaleLight);
+#else
 #if 0
 	if (SharedConstants::TEXTURE_LIGHTING)
 	{
@@ -826,6 +851,7 @@ void GameRenderer::turnOnLightLayer(
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+#endif
 #endif
 }
 

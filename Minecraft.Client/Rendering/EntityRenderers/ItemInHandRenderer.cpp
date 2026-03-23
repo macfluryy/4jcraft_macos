@@ -441,6 +441,15 @@ void ItemInHandRenderer::render(float a) {
                                                   Mth::floor(player->z), 0);
         int u = col % 65536;
         int v = col / 65536;
+#ifdef __linux__
+        static int lightmapLogCount = 0;
+        if (lightmapLogCount < 8) {
+            ++lightmapLogCount;
+            app.DebugPrintf(
+                "[linux-lightmap] item-hand raw=0x%08x uv=(%d,%d)\n", col, u,
+                v);
+        }
+#endif
         glMultiTexCoord2f(GL_TEXTURE1, u / 1.0f, v / 1.0f);
         glColor4f(1, 1, 1, 1);
     }

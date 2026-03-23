@@ -741,6 +741,31 @@ typedef unsigned short hfloat;
 extern hfloat convertFloatToHFloat(float f);
 extern float convertHFloatToFloat(hfloat hf);
 
+#ifdef __linux__
+namespace {
+void packLinuxLightmapCoords(int tex2, std::int16_t& u, std::int16_t& v) {
+    u = static_cast<std::int16_t>(tex2 & 0xffff);
+    v = static_cast<std::int16_t>((tex2 >> 16) & 0xffff);
+
+    // Linux 4jlibs consumes packed UV2 values by dividing them by 256 directly
+    // for chunk and other non-scaleLight draws, so offset to texel centers here.
+    u += 8;
+    v += 8;
+}
+
+void logLinuxPackedLightmapCoords(const char* path, int tex2, std::int16_t u,
+                                  std::int16_t v) {
+    static int logCount = 0;
+    if (logCount >= 16) return;
+
+    ++logCount;
+    app.DebugPrintf(
+        "[linux-lightmap] %s raw=0x%08x packed=(%d,%d) sampled=(%.4f,%.4f)\n",
+        path, tex2, (int)u, (int)v, u / 256.0f, v / 256.0f);
+}
+}  // namespace
+#endif
+
 void Tesselator::vertex(float x, float y, float z) {
     bounds.addVert(x + xo, y + yo, z + zo);  // 4J MGH - added
     count++;
@@ -828,8 +853,13 @@ void Tesselator::vertex(float x, float y, float z) {
         pShortData[3] = ipackedcol;
         pShortData[4] = (((int)(uu * 8192.0f)) & 0xffff);
         pShortData[5] = (((int)(v * 8192.0f)) & 0xffff);
-        std::int16_t u2 = ((std::int16_t*)&_tex2)[0];
-        std::int16_t v2 = ((std::int16_t*)&_tex2)[1];
+        std::int16_t u2 = static_cast<std::int16_t>(_tex2 & 0xffff);
+        std::int16_t v2 =
+            static_cast<std::int16_t>((_tex2 >> 16) & 0xffff);
+#ifdef __linux__
+        packLinuxLightmapCoords(_tex2, u2, v2);
+        logLinuxPackedLightmapCoords("compact", _tex2, u2, v2);
+#endif
 #if defined _XBOX_ONE || defined __ORBIS__
         // Optimisation - pack the second UVs into a single short (they could
         // actually go in a byte), which frees up a short to store the x offset
@@ -943,8 +973,10 @@ void Tesselator::vertex(float x, float y, float z) {
             std::int16_t tex2U = ((std::int16_t*)&_tex2)[1] + 8;
             std::int16_t tex2V = ((std::int16_t*)&_tex2)[0] + 8;
 #else
-            std::int16_t tex2U = ((std::int16_t*)&_tex2)[0] + 8;
-            std::int16_t tex2V = ((std::int16_t*)&_tex2)[1] + 8;
+            std::int16_t tex2U;
+            std::int16_t tex2V;
+            packLinuxLightmapCoords(_tex2, tex2U, tex2V);
+            logLinuxPackedLightmapCoords("standard", _tex2, tex2U, tex2V);
 #endif
             std::int16_t* pShortArray = (std::int16_t*)&_array->data[p + 7];
             pShortArray[0] = tex2U;

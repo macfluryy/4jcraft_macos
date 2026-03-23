@@ -1,6 +1,18 @@
 #include "stdafx.h"
 
-#ifndef __linux__
+#ifdef __linux__
+
+void LinuxLogStubLightmapProbe() {
+    static bool logged = false;
+    if (logged) return;
+
+    logged = true;
+    app.DebugPrintf(
+        "[linux-lightmap] stubs.cpp: Linux excludes the no-op multitexture "
+        "stubs in this file; the runtime uses libGL/4jlibs symbols.\n");
+}
+
+#else
 
 void glReadPixels(int,int, int, int, int, int, ByteBuffer *)
 {
