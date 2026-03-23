@@ -63,7 +63,7 @@ std::wstring u16string_to_wstring(const std::u16string& converting) {
 }
 
 std::u16string wstring_to_u16string(const std::wstring& converting) {
-    #if WCHAR_MAX == 0xFFFF
+#if WCHAR_MAX == 0xFFFF
     // windows, UTF-16
     return std::u16string(reinterpret_cast<const char16_t*>(converting.data()),
                           converting.size());
