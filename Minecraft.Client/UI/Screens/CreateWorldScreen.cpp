@@ -152,8 +152,10 @@ std::wstring CreateWorldScreen::findAvailableFolderName(
 void CreateWorldScreen::removed() { Keyboard::enableRepeatEvents(false); }
 
 void CreateWorldScreen::buttonClicked(Button* button) {
+    app.DebugPrintf("CreateWorldScreen::buttonClicked START\n");
     if (!button->active) return;
     if (button->id == 1) {
+        app.DebugPrintf("CreateWorldScreen::buttonClicked 'Cancel' minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
     } else if (button->id == 0) {
         minecraft->setScreen(
