@@ -877,27 +877,6 @@ return -1;
     Tile::CreateNewThreadStorage();
 
     Minecraft::main();
-
-    // Minecraft::main () used to call Minecraft::Start, but this takes ~2.5
-    // seconds, so now running this in another thread so we can do some basic
-    // renderer calls whilst it is happening. This is at attempt to stop getting
-    // TRC failure on SubmitDone taking > 5 seconds on boot
-    C4JThread* minecraftThread = new C4JThread(&StartMinecraftThreadProc, NULL,
-                                               "Running minecraft start");
-    minecraftThread->Run();
-    do {
-        RenderManager.StartFrame();
-        Sleep(20);
-        RenderManager.Present();
-    } while (minecraftThread->isRunning());
-    delete minecraftThread;
-
-    // Re-acquire the GL context in the main thread.
-    // StartMinecraftThreadProc calls InitialiseContext() which moves the
-    // context to the init thread for texture loading; we must reclaim it here
-    // before any further OpenGL calls in the main render loop.
-    RenderManager.InitialiseContext();
-
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     app.InitGameSettings();
