@@ -136,6 +136,17 @@ Enchantment* Enchantment::setDescriptionId(int id) {
 
 int Enchantment::getDescriptionId() { return descriptionId; }
 
+// 4jcraft: re-added old TU18 overload for java gui
+std::wstring Enchantment::getFullname(int level, std::wstring& unformatted) {
+    wchar_t formatted[256];
+    swprintf(formatted, 256, L"%ls %ls", app.GetString(getDescriptionId()),
+             getLevelString(level).c_str());
+    unformatted = formatted;
+    swprintf(formatted, 256, L"<font color=\"#%08x\">%ls</font>",
+             app.GetHTMLColour(eHTMLColor_f), unformatted.c_str());
+    return formatted;
+}
+
 HtmlString Enchantment::getFullname(int level) {
     wchar_t formatted[256];
     swprintf(formatted, 256, L"%ls %ls", app.GetString(getDescriptionId()),

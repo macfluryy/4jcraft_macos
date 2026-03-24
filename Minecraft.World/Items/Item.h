@@ -757,6 +757,13 @@ protected:
 public:
     virtual std::wstring getPotionBrewingFormula();
     virtual bool hasPotionBrewingFormula();
+    // 4jcraft: re-added old TU18 overload for java gui
+    virtual void appendHoverText(
+        std::shared_ptr<ItemInstance> itemInstance,
+        std::shared_ptr<Player> player, std::vector<std::wstring>* lines,
+        bool advanced,
+        std::vector<std::wstring>&
+            unformattedStrings);  // 4J Added unformattedStrings
     virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                                  std::shared_ptr<Player> player,
                                  std::vector<HtmlString>* lines, bool advanced);

@@ -455,6 +455,74 @@ bool ItemInstance::hasCustomHoverName() {
     return tag->getCompound(L"display")->contains(L"Name");
 }
 
+// 4jcraft: re-added old TU18 overload for java gui
+std::vector<std::wstring>* ItemInstance::getHoverText(
+    std::shared_ptr<Player> player, bool advanced,
+    std::vector<std::wstring>& unformattedStrings) {
+    std::vector<std::wstring>* lines = new std::vector<std::wstring>();
+    Item* item = Item::items[id];
+    std::wstring title = getHoverName();
+
+    // 4J Stu - We don't do italics, but do change colour. But handle this later
+    // in the process due to text length measuring on the Xbox360
+    // if (hasCustomHoverName())
+    //{
+    //	title = L"<i>" + title + L"</i>";
+    //}
+
+    // 4J Stu - Don't currently have this
+    // if (advanced)
+    //{
+    //	String suffix = "";
+
+    //	if (title.length() > 0) {
+    //		title += " (";
+    //		suffix = ")";
+    //	}
+
+    //	if (isStackedByData())
+    //	{
+    //		title += String.format("#%04d/%d%s", id, auxValue, suffix);
+    //	}
+    //	else
+    //	{
+    //		title += String.format("#%04d%s", id, suffix);
+    //	}
+    //}
+    // else
+    //	if (!hasCustomHoverName())
+    //{
+    //	if (id == Item::map_Id)
+    //	{
+    //		title += L" #" + _toString(auxValue);
+    //	}
+    //}
+
+    lines->push_back(title);
+    unformattedStrings.push_back(title);
+    item->appendHoverText(shared_from_this(), player, lines, advanced,
+                          unformattedStrings);
+
+    if (hasTag()) {
+        ListTag<CompoundTag>* list = getEnchantmentTags();
+        if (list != NULL) {
+            for (int i = 0; i < list->size(); i++) {
+                int type = list->get(i)->getShort((wchar_t*)TAG_ENCH_ID);
+                int level = list->get(i)->getShort((wchar_t*)TAG_ENCH_LEVEL);
+
+                if (Enchantment::enchantments[type] != NULL) {
+                    std::wstring unformatted = L"";
+                    lines->push_back(
+                        Enchantment::enchantments[type]->getFullname(
+                            level, unformatted));
+                    unformattedStrings.push_back(unformatted);
+                }
+            }
+        }
+    }
+    return lines;
+}
+
 std::vector<HtmlString>* ItemInstance::getHoverText(
     std::shared_ptr<Player> player, bool advanced) {
     std::vector<HtmlString>* lines = new std::vector<HtmlString>();

@@ -158,6 +158,10 @@ public:
     void setHoverName(const std::wstring& name);
     void resetHoverName();
     bool hasCustomHoverName();
+    // 4jcraft: re-added old TU18 overload for java gui
+    std::vector<std::wstring>* getHoverText(
+        std::shared_ptr<Player> player, bool advanced,
+        std::vector<std::wstring>& unformattedStrings);
     std::vector<HtmlString>* getHoverText(std::shared_ptr<Player> player,
                                           bool advanced);
     std::vector<HtmlString>* getHoverTextOnly(std::shared_ptr<Player> player,

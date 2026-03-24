@@ -1558,6 +1558,12 @@ std::wstring Item::getPotionBrewingFormula() { return potionBrewingFormula; }
 
 bool Item::hasPotionBrewingFormula() { return !potionBrewingFormula.empty(); }
 
+// 4jcraft: re-added old TU18 overload for java gui
+void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
+                           std::shared_ptr<Player> player,
+                           std::vector<std::wstring>* lines, bool advanced,
+                           std::vector<std::wstring>& unformattedStrings) {}
+
 void Item::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                            std::shared_ptr<Player> player,
                            std::vector<HtmlString>* lines, bool advanced) {}
