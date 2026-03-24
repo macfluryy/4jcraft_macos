@@ -259,6 +259,10 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
     //     }
     // }
 
+    if (item == NULL) {
+        return;
+    }
+
     itemRenderer->renderGuiItem(font, minecraft->textures, item, x, y);
     itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x,
                                            y);
