@@ -2372,13 +2372,9 @@ void Minecraft::resize(int width, int height) {
     this->height = height;
 
     if (screen != NULL) {
-#ifdef _ENABLEIGGY
         // 4jcraft: use adjusted logical width instead of raw width for correct
         // screen size calculation.
         ScreenSizeCalculator ssc(options, this->width, height);
-#else
-        ScreenSizeCalculator ssc(options, width, height);
-#endif
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         //        screen->init(this, screenWidth, screenHeight);	// 4J -

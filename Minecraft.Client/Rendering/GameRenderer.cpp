@@ -1050,8 +1050,8 @@ void GameRenderer::render(float a, bool bFirst) {
     ScreenSizeCalculator ssc(mc->options, mc->width, mc->height);
     int screenWidth = ssc.getWidth();
     int screenHeight = ssc.getHeight();
-    int xMouse = Mouse::getX() * screenWidth / mc->width;
-    int yMouse = screenHeight - Mouse::getY() * screenHeight / mc->height - 1;
+    int xMouse = InputManager.GetMouseX() * screenWidth / mc->width;
+    int yMouse = InputManager.GetMouseY() * screenHeight / mc->height - 1;
 
     int maxFps = getFpsCap(mc->options->framerateLimit);
 
@@ -1837,13 +1837,9 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     int fbw, fbh;
     RenderManager.GetFramebufferSize(fbw, fbh);
 
-#ifdef _ENABLEIGGY
     // 4jcraft: use actual framebuffer dimensions instead of mc->width/height
     // to ensure GUI scales correctly after a window resize.
     ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
-#else
-    ScreenSizeCalculator ssc(mc->options, mc->width, mc->height, forceScale);
-#endif
     glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

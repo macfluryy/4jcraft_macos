@@ -884,13 +884,11 @@ return -1;
     app.InitialiseTips();
     while (!RenderManager.ShouldClose()) {
         RenderManager.StartFrame();
-#ifdef _ENABLEIGGY
         if (pMinecraft->pollResize()) {
             int fbw, fbh;
             RenderManager.GetFramebufferSize(fbw, fbh);
             ui.setScreenSize(fbw, fbh);
         }
-#endif
         app.UpdateTime();
         PIXBeginNamedEvent(0, "Input manager tick");
         InputManager.Tick();
