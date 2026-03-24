@@ -595,11 +595,22 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 }
 
 void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
-	// int characterId = -1;
-	// swscanf((wchar_t*)region->name,L"Character%d",&characterId);
-	// 4jcraft: fuck wchar_t
-	int characterId =region->name[9] - '0' < 0 ? -1 : region->name[9] - '0';
-	if (characterId == -1) {
+    // 4jcraft: fuck wchar_t
+    int characterId = -1;
+    if (region->name != nullptr &&
+        std::char_traits<char16_t>::length(region->name) > 9 &&
+        std::char_traits<char16_t>::compare(region->name, u"Character", 9) ==
+            0) {
+        int i = 9;
+        characterId = 0;
+
+        while (region->name[i] >= u'0' && region->name[i] <= u'9') {
+            characterId = characterId * 10 + (region->name[i] - u'0');
+            i++;
+        }
+    }
+
+    if (characterId == -1) {
         app.DebugPrintf("Invalid character to render found\n");
     } else {
         // Setup GDraw, normal game render states and matrices

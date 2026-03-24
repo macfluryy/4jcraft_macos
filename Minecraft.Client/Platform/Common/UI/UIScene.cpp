@@ -1235,21 +1235,16 @@ std::size_t UIScene::GetCallbackUniqueId() {
 bool UIScene::isReadyToDelete() { return true; }
 
 int UIScene::parseSlotId(const char16_t* s) {
-    // must be nonnull, must start with 'slot_', first char after the underscore
-    // must be a digit
-    if (!s ||
-        (s[0] != u's' || s[1] != u'l' || s[2] != u'o' || s[3] != u't' ||
-         s[4] != u'_') ||
-        (s[5] < u'0' || s[5] > u'9')) {
+    if (s == nullptr ||
+        std::char_traits<char16_t>::compare(s, u"slot_", 5) != 0) {
         return -1;
     }
 
+    // keep consuming digits until we reach a non-digit. each digit scales the
+    // existing id value by 10 plus the actual digit value. (this is called a
+    // 'number' by the way)
     int i = 5;
     int id = 0;
-
-    // keep consuming digits until we reach a non-digit. each digit scales the
-    // existing id value by 10 plus the actual digit value. (this is referred to
-    // as a 'number' by the way)
     while (s[i] >= u'0' && s[i] <= u'9') {
         id = id * 10 + (s[i] - u'0');
         i++;
