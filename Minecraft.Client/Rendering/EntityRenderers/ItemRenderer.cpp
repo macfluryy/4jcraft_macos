@@ -359,9 +359,10 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
         // 4J - original code left here for reference
-#if 0
+        // 4jcraft: original code reused for proper lighting
+#if 1
 		glTranslatef((float)(x), (float)(y), 0.0f);
-		glScalef(fScale, fScale, fScale);
+		glScalef(fScaleX, fScaleY, 1.0f);
 		glTranslatef(-2.0f,3.0f, -3.0f + blitOffset);
 		glScalef(10.0f, 10.0f, 10.0f);
         glTranslatef(1.0f, 0.5f, 8.0f);
