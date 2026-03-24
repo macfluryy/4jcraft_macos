@@ -36,11 +36,11 @@ ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =
 ResourceLocation Gui::GUI_GUI_LOCATION = ResourceLocation(TN_GUI_GUI);
 ResourceLocation Gui::GUI_ICONS_LOCATION = ResourceLocation(TN_GUI_ICONS);
 
+#ifdef ENABLE_JAVA_GUIS
 #define RENDER_HUD 1
-// #ifndef _XBOX
-// #undef RENDER_HUD
-// #define RENDER_HUD 1
-// #endif
+#else
+#define RENDER_HUD 0
+#endif
 
 float Gui::currentGuiBlendFactor = 1.0f;  // 4J added
 float Gui::currentGuiScaleFactor = 1.0f;  // 4J added
