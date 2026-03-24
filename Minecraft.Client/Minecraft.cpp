@@ -2366,8 +2366,10 @@ void Minecraft::resize(int width, int height) {
         ScreenSizeCalculator ssc(options, this->width, height);
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
-        //        screen->init(this, screenWidth, screenHeight);	// 4J -
-        //        TODO - put back in
+        screen->init(
+            this, screenWidth,
+            screenHeight);  // 4jcraft: uncommented to immediately scale on
+                            // resize now that we have correct ssc usage
     }
 }
 
