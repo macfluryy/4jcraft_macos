@@ -258,8 +258,8 @@ void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         int slotId = -1;
         if (region->name != nullptr &&
             std::char_traits<char16_t>::length(region->name) > 11 &&
-            std::char_traits<char16_t>::compare(region->name, u"slot_Button", 11) ==
-                0) {
+            std::char_traits<char16_t>::compare(region->name, u"slot_Button",
+                                                11) == 0) {
             int i = 11;
             slotId = 0;
 
@@ -270,15 +270,19 @@ void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         }
 
         if (slotId >= 0) {
+            // 4jcraft: sanity check because this code is utter trash garbage
+            assert(slotId != 0 &&
+                   "4J shitcode - attempted to access m_enchantButton with "
+                   "slot_Button0. this shouldn't happen; if you're reading "
+                   "this then go bug someone on GitHub or something");
+
             // Setup GDraw, normal game render states and matrices
             CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
             delete customDrawRegion;
 
-            const char* namews = wstringtofilename(u16string_to_wstring(region->name));
-
-            std::println("render slot {} {}", namews, slotId);
-
-            m_enchantButton[slotId].render(region);
+            // 4jcraft: NOTE: if slotId == 0 this is UB, but it never is in
+            // practice, plus added the assertion above as a sanity check
+            m_enchantButton[slotId - 1].render(region);
 
             // Finish GDraw and anything else that needs to be finalised
             ui.endCustomDraw(region);
