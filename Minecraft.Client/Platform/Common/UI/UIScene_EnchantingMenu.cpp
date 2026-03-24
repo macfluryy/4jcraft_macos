@@ -5,6 +5,8 @@
 #include "../../Minecraft.Client/Minecraft.h"
 #include "UIScene_EnchantingMenu.h"
 
+#include <print>
+
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
@@ -253,13 +255,30 @@ void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         // Finish GDraw and anything else that needs to be finalised
         ui.endCustomDraw(region);
     } else {
-        int slotId = parseSlotId(region->name);
+        int slotId = -1;
+        if (region->name != nullptr &&
+            std::char_traits<char16_t>::length(region->name) > 11 &&
+            std::char_traits<char16_t>::compare(region->name, u"slot_Button", 11) ==
+                0) {
+            int i = 11;
+            slotId = 0;
+
+            while (region->name[i] >= u'0' && region->name[i] <= u'9') {
+                slotId = slotId * 10 + (region->name[i] - u'0');
+                i++;
+            }
+        }
+
         if (slotId >= 0) {
             // Setup GDraw, normal game render states and matrices
             CustomDrawData* customDrawRegion = ui.setupCustomDraw(this, region);
             delete customDrawRegion;
 
-            m_enchantButton[slotId - 1].render(region);
+            const char* namews = wstringtofilename(u16string_to_wstring(region->name));
+
+            std::println("render slot {} {}", namews, slotId);
+
+            m_enchantButton[slotId].render(region);
 
             // Finish GDraw and anything else that needs to be finalised
             ui.endCustomDraw(region);

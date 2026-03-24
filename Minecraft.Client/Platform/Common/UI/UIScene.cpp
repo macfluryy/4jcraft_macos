@@ -1235,7 +1235,7 @@ std::size_t UIScene::GetCallbackUniqueId() {
 bool UIScene::isReadyToDelete() { return true; }
 
 int UIScene::parseSlotId(const char16_t* s) {
-    if (s == nullptr ||
+    if (s == nullptr || std::char_traits<char16_t>::length(s) <= 5 ||
         std::char_traits<char16_t>::compare(s, u"slot_", 5) != 0) {
         return -1;
     }
