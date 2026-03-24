@@ -31,6 +31,8 @@
 
 ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =
     ResourceLocation(TN__BLUR__MISC_PUMPKINBLUR);
+ResourceLocation Gui::GUI_GUI_LOCATION = ResourceLocation(TN_GUI_GUI);
+ResourceLocation Gui::GUI_ICONS_LOCATION = ResourceLocation(TN_GUI_ICONS);
 
 #ifdef ENABLE_JAVA_GUIS
 #define RENDER_HUD 1
@@ -332,7 +334,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         if (bDisplayGui) {
             MemSect(31);
             minecraft->textures->bindTexture(
-                TN_GUI_GUI);  // 4J was L"/gui/gui.png"
+                &GUI_GUI_LOCATION);  // 4J was L"/gui/gui.png"
             MemSect(0);
 
             std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
@@ -370,7 +372,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 
             MemSect(31);
             minecraft->textures->bindTexture(
-                TN_GUI_ICONS);  // L"/gui/icons.png"));
+                &GUI_ICONS_LOCATION);  // L"/gui/icons.png"));
             MemSect(0);
             glEnable(GL_BLEND);
             RenderManager.StateSetBlendFactor(0xffffff |
@@ -1221,7 +1223,8 @@ void Gui::renderTp(float br, int w, int h) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1, 1, 1, br);
     MemSect(31);
-    minecraft->textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
+    minecraft->textures->bindTexture(
+        &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
     MemSect(0);
 
     Icon* slot = Tile::portalTile->getTexture(Facing::UP);
