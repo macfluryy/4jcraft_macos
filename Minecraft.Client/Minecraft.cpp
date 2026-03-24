@@ -559,6 +559,7 @@ void Minecraft::setScreen(Screen* screen) {
     }
     stats->forceSave();*/
 
+    this->screen = screen;
     if (screen == NULL && level == NULL) {
         screen = new TitleScreen();
     } else if (player != NULL && !ui.GetMenuDisplayed(player->GetXboxPad()) &&
