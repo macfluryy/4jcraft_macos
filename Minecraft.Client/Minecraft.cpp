@@ -597,29 +597,18 @@ void Minecraft::setScreen(Screen* screen) {
 
     // 4J-PB - if a screen has been set, go into menu mode
     // it's possible that player doesn't exist here yet
-    /*if(screen!=NULL)
-    {
-    if(player && player->GetXboxPad()!=-1)
-    {
-    InputManager.SetMenuDisplayed(player->GetXboxPad(),true);
+    // 4jcraft: reuse this for the java GUI
+#ifdef ENABLE_JAVA_GUIS
+    if (screen != NULL && player != NULL) {
+        if (player && player->GetXboxPad() != -1) {
+            InputManager.SetMenuDisplayed(player->GetXboxPad(), true);
+        }
+    } else if (player != NULL) {
+        if (player && player->GetXboxPad() != -1) {
+            InputManager.SetMenuDisplayed(player->GetXboxPad(), false);
+        }
     }
-    else
-    {
-    // set all
-    //InputManager.SetMenuDisplayed(XUSER_INDEX_ANY,true);
-    }
-    }
-    else
-    {
-    if(player && player->GetXboxPad()!=-1)
-    {
-    InputManager.SetMenuDisplayed(player->GetXboxPad(),false);
-    }
-    else
-    {
-    //InputManager.SetMenuDisplayed(XUSER_INDEX_ANY,false);
-    }
-    }*/
+#endif
 }
 
 void Minecraft::checkGlError(const std::wstring& string) {
