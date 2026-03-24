@@ -549,8 +549,10 @@ void LocalPlayer::closeContainer() {
 
 void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 #ifdef ENABLE_JAVA_GUIS
-    minecraft->setScreen(new TextEditScreen(sign));
-    bool success = true;
+    if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
+        minecraft->setScreen(new TextEditScreen(std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
+        bool success = true;
+    }
 #else
     bool success;
 
