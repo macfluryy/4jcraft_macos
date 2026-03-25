@@ -158,6 +158,7 @@ void TitleScreen::buttonClicked(Button* button) {
 // uses the TU panorama instead of JE panorama and as such a different rendering
 // method
 void TitleScreen::renderPanorama() {
+#ifdef ENABLE_JAVA_GUIS
     Tesselator* t = Tesselator::getInstance();
 
     glMatrixMode(GL_PROJECTION);
@@ -217,6 +218,7 @@ void TitleScreen::renderPanorama() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
+#endif
 }
 
 void TitleScreen::render(int xm, int ym, float a) {
