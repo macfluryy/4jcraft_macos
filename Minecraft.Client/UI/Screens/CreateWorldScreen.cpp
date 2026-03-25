@@ -30,8 +30,8 @@ void CreateWorldScreen::tick() {
     if (moreOptions) seedEdit->tick();
 
     // 4J - debug code - to be removed
-    static int count = 0;
-    if (count++ == 100) buttonClicked(buttons[0]);
+    // static int count = 0;
+    // if (count++ == 100) buttonClicked(buttons[0]);
 }
 
 void CreateWorldScreen::init() {
