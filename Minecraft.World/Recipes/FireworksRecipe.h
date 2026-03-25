@@ -38,14 +38,8 @@ public:
     virtual const int getGroup() { return 0; }
 
     // 4J-PB
-    virtual bool
-        requiresRecipe(int iRecipe)
-    {
-        return false;
-    };
-    virtual void
-        collectRequirements(INGREDIENTS_REQUIRED* pIngReq)
-    {};
+    virtual bool requiresRecipe(int iRecipe) { return false; };
+    virtual void collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {};
 
     // 4J Added
     static void updatePossibleRecipes(

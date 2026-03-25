@@ -26,13 +26,9 @@ void Chunk::CreateNewThreadStorage() {
     m_tlsTileIds = new unsigned char[16 * 16 * Level::maxBuildHeight];
 }
 
-void Chunk::ReleaseThreadStorage() {
-    delete m_tlsTileIds;
-}
+void Chunk::ReleaseThreadStorage() { delete m_tlsTileIds; }
 
-uint8_t* Chunk::GetTileIdsStorage() {
-    return m_tlsTileIds;
-}
+uint8_t* Chunk::GetTileIdsStorage() { return m_tlsTileIds; }
 #else
 // 4J Stu - Don't want this when multi-threaded
 Tesselator* Chunk::t = Tesselator::getInstance();

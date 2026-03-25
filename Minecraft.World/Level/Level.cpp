@@ -102,9 +102,7 @@ void Level::enableLightingCache() {
         256 * 1024, MAXULONG_PTR, 128 * 1024, PAGE_READWRITE | MEM_LARGE_PAGES);
 }
 
-void Level::destroyLightingCache() {
-    delete m_tlsLightCache;
-}
+void Level::destroyLightingCache() { delete m_tlsLightCache; }
 
 inline int GetIndex(int x, int y, int z) {
     return ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
@@ -491,13 +489,9 @@ void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
 
 // 4J - added following 2 functions to move instaBuild flag from being a class
 // member, to TLS
-bool Level::getInstaTick() {
-    return m_tlsInstaTick;
-}
+bool Level::getInstaTick() { return m_tlsInstaTick; }
 
-void Level::setInstaTick(bool enable) {
-    m_tlsInstaTick = enable;
-}
+void Level::setInstaTick(bool enable) { m_tlsInstaTick = enable; }
 
 // 4J - added
 bool Level::hasEntitiesToRemove() { return !entitiesToRemove.empty(); }
@@ -1569,8 +1563,8 @@ void Level::playStreamingMusic(const std::wstring& name, int x, int y, int z) {
     }
 }
 
-void Level::playMusic(double x, double y, double z,
-                      const std::wstring& string, float volume) {}
+void Level::playMusic(double x, double y, double z, const std::wstring& string,
+                      float volume) {}
 
 // 4J removed -
 /*

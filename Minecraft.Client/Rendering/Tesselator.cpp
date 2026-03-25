@@ -26,9 +26,7 @@ int normal;
 */
 thread_local Tesselator* Tesselator::m_tlsInstance = nullptr;
 
-Tesselator* Tesselator::getInstance() {
-    return m_tlsInstance;
-}
+Tesselator* Tesselator::getInstance() { return m_tlsInstance; }
 
 void Tesselator::CreateNewThreadStorage(int bytes) {
     Tesselator::m_tlsInstance = new Tesselator(bytes / 4);
@@ -349,7 +347,7 @@ void Tesselator::vertexUV(float x, float y, float z, float u, float v) {
 // where: cccc		 is a 15-bit (5 bits per x/y/z) origin position / offset
 // for the whole quad. Each
 //					 component is unsigned, and offset by 16
-//so has a range 0 to 31 actually representing -16 to 15
+// so has a range 0 to 31 actually representing -16 to 15
 //        xx,yy,zz   are 8-bit deltas from this origin to each vertex. These are
 //        unsigned 1.7 fixed point, ie
 //                   representing a range of 0 to 1.9921875
@@ -358,14 +356,16 @@ void Tesselator::vertexUV(float x, float y, float z, float u, float v) {
 //        v required by the quad ud,vd		 are 8-bit unsigned fixed pont
 //        UV deltas, which can be added to umin/vmin to get umax, vmax
 //					 and therefore define the 4 corners of
-//an axis aligned UV mapping
+// an axis aligned UV mapping
 //        i          is a code per vertex that indicates which of umin/umax
 //        should be used for u, and which
 //					 of vmin/vmax should be used for v for
-//this vertex. The coding is: 						0 - u = umin, v = vmin 						1 - u = umin, v = vmax 						2 -
-//u = umax, v = vmin 						3 - u = umax, v = vmax 						4 - not axis aligned, use uv stored
-//in the vertex data 4 on from this one 		  ll		 is an 8-bit (4 bit per
-//u/v) index into the current lighting texture
+// this vertex. The coding is: 						0 - u =
+// umin, v = vmin 						1 - u = umin, v
+// = vmax 						2 - u = umax, v = vmin
+// 3 - u = umax, v = vmax 						4 - not
+// axis aligned, use uv stored in the vertex data 4 on from this one ll
+// is an 8-bit (4 bit per u/v) index into the current lighting texture
 //
 // For quads that don't have axis aligned UVs (ie have a code for 4 in i as
 // described above) the 8 byte vertex is followed by a further 8 bytes which
@@ -747,7 +747,8 @@ void packLinuxLightmapCoords(int tex2, std::int16_t& u, std::int16_t& v) {
     v = static_cast<std::int16_t>((tex2 >> 16) & 0xffff);
 
     // Linux 4jlibs consumes packed UV2 values by dividing them by 256 directly
-    // for chunk and other non-scaleLight draws, so offset to texel centers here.
+    // for chunk and other non-scaleLight draws, so offset to texel centers
+    // here.
     u += 8;
     v += 8;
 }
@@ -853,8 +854,7 @@ void Tesselator::vertex(float x, float y, float z) {
         pShortData[4] = (((int)(uu * 8192.0f)) & 0xffff);
         pShortData[5] = (((int)(v * 8192.0f)) & 0xffff);
         std::int16_t u2 = static_cast<std::int16_t>(_tex2 & 0xffff);
-        std::int16_t v2 =
-            static_cast<std::int16_t>((_tex2 >> 16) & 0xffff);
+        std::int16_t v2 = static_cast<std::int16_t>((_tex2 >> 16) & 0xffff);
 #ifdef __linux__
         packLinuxLightmapCoords(_tex2, u2, v2);
         logLinuxPackedLightmapCoords("compact", _tex2, u2, v2);

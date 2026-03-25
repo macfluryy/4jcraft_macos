@@ -11,11 +11,11 @@ FireworksRecipe::ThreadStorage::ThreadStorage() { resultItem = nullptr; }
 
 void FireworksRecipe::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    
+
     if (m_defaultThreadStorage == nullptr) {
         m_defaultThreadStorage = tls;
     }
-    
+
     m_tlsStorage = tls;
 }
 

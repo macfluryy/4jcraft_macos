@@ -31,13 +31,9 @@ thread_local bool PistonBaseTile::m_tlsIgnoreUpdate = false;
 // leaving the piston in a bad (simultaneously extended & not extended) state.
 // 4J - ignoreUpdate is a static in java, implementing as TLS here to make
 // thread safe
-bool PistonBaseTile::ignoreUpdate() {
-    return m_tlsIgnoreUpdate;
-}
+bool PistonBaseTile::ignoreUpdate() { return m_tlsIgnoreUpdate; }
 
-void PistonBaseTile::ignoreUpdate(bool set) {
-    m_tlsIgnoreUpdate = set;
-}
+void PistonBaseTile::ignoreUpdate(bool set) { m_tlsIgnoreUpdate = set; }
 
 PistonBaseTile::PistonBaseTile(int id, bool isSticky)
     : Tile(id, Material::piston, false) {

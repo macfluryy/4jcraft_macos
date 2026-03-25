@@ -11,8 +11,7 @@
 const int TopSnowTile::MAX_HEIGHT = 6;
 const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps
 
-TopSnowTile::TopSnowTile(int id)
-    : Tile(id, Material::topSnow, false) {
+TopSnowTile::TopSnowTile(int id) : Tile(id, Material::topSnow, false) {
     setShape(0, 0, 0, 1, 2 / 16.0f, 1);
     setTicking(true);
     updateShape(0);

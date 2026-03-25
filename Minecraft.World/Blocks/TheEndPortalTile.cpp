@@ -13,13 +13,9 @@ thread_local bool TheEndPortal::m_tlsAllowAnywhere = false;
 
 // 4J - allowAnywhere is a static in java, implementing as TLS here to make
 // thread safe
-bool TheEndPortal::allowAnywhere() {
-    return m_tlsAllowAnywhere;
-}
+bool TheEndPortal::allowAnywhere() { return m_tlsAllowAnywhere; }
 
-void TheEndPortal::allowAnywhere(bool set) {
-    m_tlsAllowAnywhere = set;
-}
+void TheEndPortal::allowAnywhere(bool set) { m_tlsAllowAnywhere = set; }
 
 TheEndPortal::TheEndPortal(int id, Material* material)
     : BaseEntityTile(id, material, false) {

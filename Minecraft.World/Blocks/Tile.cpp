@@ -229,13 +229,9 @@ Tile::ThreadStorage::ThreadStorage() {
     tileId = 0;
 }
 
-void Tile::CreateNewThreadStorage() {
-    m_tlsShape = new ThreadStorage();
-}
+void Tile::CreateNewThreadStorage() { m_tlsShape = new ThreadStorage(); }
 
-void Tile::ReleaseThreadStorage() {
-    delete m_tlsShape;
-}
+void Tile::ReleaseThreadStorage() { delete m_tlsShape; }
 
 void Tile::staticCtor() {
     Tile::SOUND_NORMAL = new Tile::SoundType(eMaterialSoundType_STONE, 1, 1);
@@ -1918,8 +1914,7 @@ bool Tile::isFaceVisible(Level* level, int x, int y, int z, int f) {
 }
 
 bool Tile::shouldRenderFace(LevelSource* level, int x, int y, int z, int face) {
-    ThreadStorage* tls =
-        m_tlsShape;
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     if (face == 0 && tls->yy0 > 0) return true;
@@ -2595,7 +2590,8 @@ int Tile::SoundType::getPlaceSound() const { return iPlaceSound; }
 4J: These are necessary on the PS3.
 (and 4 and Vita).
 */
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined __linux__)
+#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
+     defined __linux__)
 const int Tile::stone_Id;
 const int Tile::grass_Id;
 const int Tile::dirt_Id;
