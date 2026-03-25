@@ -12,8 +12,9 @@ class Vec3 {
         ThreadStorage();
         ~ThreadStorage();
     };
-    static unsigned int tlsIdx;
-    static ThreadStorage* tlsDefault;
+
+    static thread_local ThreadStorage* m_tlsPool;
+    static ThreadStorage* m_tlsPoolDefault;
 
 public:
     // Each new thread that needs to use Vec3 pools will need to call one of the

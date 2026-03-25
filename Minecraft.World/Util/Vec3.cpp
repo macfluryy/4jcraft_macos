@@ -2,8 +2,8 @@
 #include "Vec3.h"
 #include "AABB.h"
 
-unsigned int Vec3::tlsIdx = 0;
-Vec3::ThreadStorage* Vec3::tlsDefault = NULL;
+thread_local Vec3::ThreadStorage* Vec3::m_tlsPool = nullptr;
+Vec3::ThreadStorage* Vec3::m_tlsPoolDefault = nullptr;
 
 Vec3::ThreadStorage::ThreadStorage() {
     pool = new Vec3[POOL_SIZE];
@@ -14,20 +14,18 @@ Vec3::ThreadStorage::~ThreadStorage() { delete[] pool; }
 
 void Vec3::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == NULL) {
-        tlsIdx = TlsAlloc();
-        tlsDefault = tls;
+    if (m_tlsPoolDefault == nullptr) {
+        m_tlsPoolDefault = tls;
     }
-    TlsSetValue(tlsIdx, tls);
+    m_tlsPool = m_tlsPoolDefault;
 }
 
-void Vec3::UseDefaultThreadStorage() { TlsSetValue(tlsIdx, tlsDefault); }
+void Vec3::UseDefaultThreadStorage() { m_tlsPool = m_tlsPoolDefault; }
 
 void Vec3::ReleaseThreadStorage() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    if (tls == tlsDefault) return;
-
-    delete tls;
+    if (m_tlsPool != m_tlsPoolDefault) {
+        delete m_tlsPool;
+    }
 }
 
 Vec3* Vec3::newPermanent(double x, double y, double z) {
@@ -39,7 +37,7 @@ void Vec3::clearPool() {}
 void Vec3::resetPool() {}
 
 Vec3* Vec3::newTemp(double x, double y, double z) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
+    ThreadStorage* tls = m_tlsPool;
     Vec3* thisVec = &tls->pool[tls->poolPointer];
     thisVec->set(x, y, z);
     tls->poolPointer = (tls->poolPointer + 1) % ThreadStorage::POOL_SIZE;
