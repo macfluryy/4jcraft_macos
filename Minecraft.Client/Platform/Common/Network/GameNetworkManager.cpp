@@ -25,7 +25,6 @@
 
 #include "../../Minecraft.Client/UI/Gui.h"
 #include "../../Minecraft.Client/Rendering/LevelRenderer.h"
-#include "../../Minecraft.World/Util/IntCache.h"
 #include "../GameRules/ConsoleGameRules.h"
 #include "GameNetworkManager.h"
 
@@ -952,7 +951,6 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
     Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
     Tile::CreateNewThreadStorage();
-    IntCache::CreateNewThreadStorage();
 
     g_NetworkManager.m_bNetworkThreadRunning = true;
     bool success = g_NetworkManager._RunNetworkGame(lpParameter);
@@ -984,7 +982,6 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
 #endif
 
     Tile::ReleaseThreadStorage();
-    IntCache::ReleaseThreadStorage();
     return 0;
 }
 
@@ -1012,7 +1009,6 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
     SetThreadName(-1, "Minecraft Server thread");
     AABB::CreateNewThreadStorage();
     Vec3::CreateNewThreadStorage();
-    IntCache::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
     OldChunkStorage::UseDefaultThreadStorage();
     Entity::useSmallIds();
@@ -1027,7 +1023,6 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
     Tile::ReleaseThreadStorage();
     AABB::ReleaseThreadStorage();
     Vec3::ReleaseThreadStorage();
-    IntCache::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
     if (lpParameter != NULL) delete (NetworkGameInitData*)lpParameter;

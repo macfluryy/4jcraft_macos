@@ -1873,7 +1873,6 @@ int UIScene_LoadMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
 #endif
                 // This is NOT called from a storage manager thread, and is in
                 // fact called from the main thread in the Profile library tick.
-                // Therefore we use the main threads IntCache.
                 StartGameFromSave(pClass, localUsersMask);
             }
         }

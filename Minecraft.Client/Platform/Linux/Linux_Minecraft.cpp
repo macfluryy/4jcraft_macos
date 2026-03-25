@@ -65,7 +65,6 @@ static void sigsegv_handler(int sig) {
 #include "../../Rendering/Tesselator.h"
 #include "../../GameState/Options.h"
 #include "../Linux/Sentient/SentientManager.h"
-#include "../../../Minecraft.World/Util/IntCache.h"
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/IO/Streams/Compression.h"
 #include "../../../Minecraft.World/Level/Storage/OldChunkStorage.h"
@@ -870,7 +869,6 @@ return -1;
     // Initialise TLS for AABB and Vec3 pools, for this main thread
     AABB::CreateNewThreadStorage();
     Vec3::CreateNewThreadStorage();
-    IntCache::CreateNewThreadStorage();
     Compression::CreateNewThreadStorage();
     OldChunkStorage::CreateNewThreadStorage();
     Level::enableLightingCache();
@@ -940,7 +938,6 @@ return -1;
             pMinecraft->soundEngine->tick(NULL, 0.0f);
             MemSect(0);
             pMinecraft->textures->tick(true, false);
-            IntCache::Reset();
             if (app.GetReallyChangingSessionType()) {
                 pMinecraft
                     ->tickAllConnections();  // Added to stop timing out when we

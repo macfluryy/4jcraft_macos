@@ -8,7 +8,6 @@
 #include "../WorldGen/Layers/DownfallMixerLayer.h"
 #include "../WorldGen/Layers/FlatLayer.h"
 #include "../WorldGen/Layers/FuzzyZoomLayer.h"
-#include "../Util/IntCache.h"
 #include "../WorldGen/Layers/IslandLayer.h"
 #include "../WorldGen/Layers/Layer.h"
 #include "../WorldGen/Layers/RiverInitLayer.h"

@@ -75,7 +75,6 @@ floatArray BiomeSource::getDownfallBlock(int x, int z, int w, int h) const {
 // downfall layers brought forward from 1.2.3
 void BiomeSource::getDownfallBlock(floatArray& downfalls, int x, int z, int w,
                                    int h) const {
-    IntCache::releaseAll();
     // if (downfalls == NULL || downfalls->length < w * h)
     if (downfalls.data == NULL || downfalls.length < w * h) {
         if (downfalls.data != NULL) delete[] downfalls.data;
@@ -112,7 +111,6 @@ floatArray BiomeSource::getTemperatureBlock(int x, int z, int w, int h) const {
 // downfall layers brought forward from 1.2.3
 void BiomeSource::getTemperatureBlock(floatArray& temperatures, int x, int z,
                                       int w, int h) const {
-    IntCache::releaseAll();
     // if (temperatures == null || temperatures.length < w * h) {
     if (temperatures.data == NULL || temperatures.length < w * h) {
         if (temperatures.data != NULL) delete[] temperatures.data;
@@ -137,7 +135,6 @@ BiomeArray BiomeSource::getRawBiomeBlock(int x, int z, int w, int h) const {
 // 4J added
 void BiomeSource::getRawBiomeIndices(intArray& biomes, int x, int z, int w,
                                      int h) const {
-    IntCache::releaseAll();
 
     intArray result = layer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
@@ -147,7 +144,6 @@ void BiomeSource::getRawBiomeIndices(intArray& biomes, int x, int z, int w,
 
 void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
                                    int h) const {
-    IntCache::releaseAll();
     // if (biomes == null || biomes.length < w * h)
     if (biomes.data == NULL || biomes.length < w * h) {
         if (biomes.data != NULL) delete[] biomes.data;
@@ -178,7 +174,6 @@ BiomeArray BiomeSource::getBiomeBlock(int x, int z, int w, int h) const {
 // 4J - caller is responsible for deleting biomes array
 void BiomeSource::getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h,
                                 bool useCache) const {
-    IntCache::releaseAll();
     // if (biomes == null || biomes.length < w * h)
     if (biomes.data == NULL || biomes.length < w * h) {
         if (biomes.data != NULL) delete[] biomes.data;
@@ -211,7 +206,6 @@ byteArray BiomeSource::getBiomeIndexBlock(int x, int z, int w, int h) const {
 // 4J - caller is responsible for deleting biomes array
 void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
                                      int w, int h, bool useCache) const {
-    IntCache::releaseAll();
     // if (biomes == null || biomes.length < w * h)
     if (biomeIndices.data == NULL || biomeIndices.length < w * h) {
         if (biomeIndices.data != NULL) delete[] biomeIndices.data;
@@ -239,7 +233,6 @@ void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
  */
 bool BiomeSource::containsOnly(int x, int z, int r,
                                std::vector<Biome*> allowed) {
-    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -266,7 +259,6 @@ bool BiomeSource::containsOnly(int x, int z, int r,
  * NO other biomes, add a margin of at least four blocks to the radius
  */
 bool BiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {
-    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -292,7 +284,6 @@ bool BiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {
  */
 TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
                                 Random* random) {
-    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -327,7 +318,6 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
  */
 TilePos* BiomeSource::findBiome(int x, int z, int r,
                                 std::vector<Biome*> allowed, Random* random) {
-    IntCache::releaseAll();
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);

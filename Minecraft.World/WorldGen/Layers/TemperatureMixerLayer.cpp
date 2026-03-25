@@ -15,7 +15,7 @@ intArray TemperatureMixerLayer::getArea(int xo, int yo, int w, int h) {
     intArray b = parent->getArea(xo, yo, w, h);
     intArray t = temp->getArea(xo, yo, w, h);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int i = 0; i < w * h; i++) {
         result[i] = t[i] + (Biome::biomes[b[i]]->getTemperatureInt() - t[i]) /
                                (layer * 2 + 1);

@@ -21,7 +21,7 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h) {
     // 4jcraft added all those casts to unsigned
     int ww = (unsigned)pw << bits;
     int hh = (unsigned)ph << bits;
-    intArray tmp = IntCache::allocate(ww * hh);
+    intArray tmp{static_cast<unsigned int>(ww * hh)};
     for (int y = 0; y < ph - 1; y++) {
         int ul = p[(0 + 0) + (y + 0) * pw];
         int dl = p[(0 + 0) + (y + 1) * pw];
@@ -71,7 +71,7 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h) {
             dl = dr;
         }
     }
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         System::arraycopy(
             tmp,

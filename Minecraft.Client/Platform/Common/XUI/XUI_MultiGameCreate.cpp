@@ -9,7 +9,6 @@
 #include "../../Minecraft.World/Level/Storage/LevelSettings.h"
 #include "XUI_MultiGameLaunchMoreOptions.h"
 #include "../../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
-#include "../../Minecraft.World/Util/IntCache.h"
 #include "../../Minecraft.World/Level/Storage/LevelType.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePackRepository.h"
 #include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
@@ -614,12 +613,14 @@ int CScene_MultiGameCreate::WarningTrialTexturePackReturned(
                 ProfileManager.GetPrimaryPad(), NULL, NULL,
                 app.GetStringTable());
         } else {
-            // This is called from a storage manager thread... need to set up
-            // thread storage for IntCache as CreateGame requires this to search
-            // for a suitable seed if we haven't set a seed.
-            IntCache::CreateNewThreadStorage();
+            // 4J - This is called from a storage manager thread... need to set
+            // up thread storage for IntCache as CreateGame requires this to
+            // search for a suitable seed if we haven't set a seed.
+            //
+            // 4jcraft - removed reliance on int caching, old 4J comment is
+            // moot, and we can search for suitable seeds without said cache
+            // initialization.
             CreateGame(pScene, 0);
-            IntCache::ReleaseThreadStorage();
         }
     }
 
@@ -825,9 +826,11 @@ int CScene_MultiGameCreate::ConfirmCreateReturned(
                 // This is called from a storage manager thread... need to set
                 // up thread storage for IntCache as CreateGame requires this to
                 // search for a suitable seed if we haven't set a seed.
-                IntCache::CreateNewThreadStorage();
+                //
+                // 4jcraft - removed reliance on int caching, old 4J comment is
+                // moot, and we can search for suitable seeds without said cache
+                // initialization.
                 CreateGame(pClass, 0);
-                IntCache::ReleaseThreadStorage();
             }
         }
     } else {
@@ -895,7 +898,6 @@ int CScene_MultiGameCreate::StartGame_SignInReturned(void* pParam,
             } else {
                 // This is NOT called from a storage manager thread, and is in
                 // fact called from the main thread in the Profile library tick.
-                // Therefore we use the main threads IntCache.
                 CreateGame(pClass, dwLocalUsersMask);
             }
         }

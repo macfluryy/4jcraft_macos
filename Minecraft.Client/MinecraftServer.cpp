@@ -37,7 +37,6 @@
 #include "Player/ServerPlayer.h"
 #include "Rendering/GameRenderer.h"
 #include "../Minecraft.World/Util/ThreadName.h"
-#include "../Minecraft.World/Util/IntCache.h"
 #include "../Minecraft.World/Level/Storage/CompressedTileStorage.h"
 #include "../Minecraft.World/Level/Storage/SparseLightStorage.h"
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
@@ -315,7 +314,6 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     MinecraftServer* server = (MinecraftServer*)lpParam;
     Entity::useSmallIds();  // This thread can end up spawning entities as
                             // resources
-    IntCache::CreateNewThreadStorage();
     AABB::CreateNewThreadStorage();
     Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
@@ -366,7 +364,6 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     LeaveCriticalSection(&server->m_postProcessCS);
     // #endif //__PS3__
     Tile::ReleaseThreadStorage();
-    IntCache::ReleaseThreadStorage();
     AABB::ReleaseThreadStorage();
     Vec3::ReleaseThreadStorage();
     Level::destroyLightingCache();
@@ -889,8 +886,7 @@ void MinecraftServer::overwriteHellBordersForNewWorldSize(ServerLevel* level,
 
 #endif
 
-void MinecraftServer::setProgress(const std::wstring& status,
-                                  int progress) {
+void MinecraftServer::setProgress(const std::wstring& status, int progress) {
     progressStatus = status;
     this->progress = progress;
     //    logger.info(status + ": " + progress + "%");
@@ -1817,9 +1813,7 @@ void MinecraftServer::info(const std::wstring& string) {}
 
 void MinecraftServer::warn(const std::wstring& string) {}
 
-std::wstring MinecraftServer::getConsoleName() {
-    return L"CONSOLE";
-}
+std::wstring MinecraftServer::getConsoleName() { return L"CONSOLE"; }
 
 ServerLevel* MinecraftServer::getLevel(int dimension) {
     if (dimension == -1)

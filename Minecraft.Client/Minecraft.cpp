@@ -61,7 +61,6 @@
 #include "../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
 #include "../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "../Minecraft.World/WorldGen/Features/StrongholdFeature.h"
-#include "../Minecraft.World/Util/IntCache.h"
 #include "../Minecraft.World/Entities/Mobs/Villager.h"
 #include "../Minecraft.World/Level/Storage/SparseLightStorage.h"
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
@@ -2078,9 +2077,11 @@ void Minecraft::run_middle() {
                 // If there's an unoccupied quadrant, then clear that to black
                 if (unoccupiedQuadrant > -1) {
                     // render a logo
-                    RenderManager.StateSetViewport((C4JRender::eViewportType)(
-                        C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
-                        unoccupiedQuadrant));
+                    RenderManager.StateSetViewport((
+                        C4JRender::
+                            eViewportType)(C4JRender::
+                                               VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                                           unoccupiedQuadrant));
                     glClearColor(0, 0, 0, 0);
                     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -2400,7 +2401,6 @@ void Minecraft::levelTickUpdateFunc(void* pParam) {
 void Minecraft::levelTickThreadInitFunc() {
     AABB::CreateNewThreadStorage();
     Vec3::CreateNewThreadStorage();
-    IntCache::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
 }
 
@@ -2596,8 +2596,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             if (player->isRiding()) {
                 std::shared_ptr<Entity> mount = player->riding;
 
-                if (mount->instanceof (eTYPE_MINECART) || mount->instanceof
-                    (eTYPE_BOAT)) {
+                if (mount->instanceof(eTYPE_MINECART) ||
+                    mount->instanceof(eTYPE_BOAT)) {
                     *piAlt = IDS_TOOLTIPS_EXIT;
                 } else {
                     *piAlt = IDS_TOOLTIPS_DISMOUNT;
@@ -3623,7 +3623,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                                 break;
 
                             default:
-                                if (hitResult->entity->instanceof (eTYPE_MOB)) {
+                                if (hitResult->entity->instanceof(eTYPE_MOB)) {
                                     std::shared_ptr<Mob> mob =
                                         std::dynamic_pointer_cast<Mob>(
                                             hitResult->entity);
@@ -4914,7 +4914,7 @@ void Minecraft::main() {
 	}
 
 	app.DebugPrintf("\n\n\n\n\n");
-	
+
 	for(unsigned int i = 0; i < 256; ++i)
 	{
 		if(Tile::tiles[i] != NULL)
