@@ -4,9 +4,6 @@
 #include "../Util/Definitions.h"
 #include "../Util/SoundTypes.h"
 #include <cstdint>
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
 
 class GrassTile;
 class LeafTile;

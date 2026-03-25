@@ -2,10 +2,6 @@
 #include "Tile.h"
 #include <cstdint>
 
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
-
 class PistonBaseTile : public Tile {
 public:
 #if defined(_WIN32)

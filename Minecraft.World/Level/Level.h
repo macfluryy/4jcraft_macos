@@ -10,9 +10,6 @@
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
 #include <cstdint>
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
 
 #ifdef __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"

@@ -5,9 +5,6 @@
 #include "../../IO/NBT/CompoundTag.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include <cstdint>
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
 
 class Level;
 
