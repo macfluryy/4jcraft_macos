@@ -1965,11 +1965,10 @@ void Minecraft::run_middle() {
                         // clear the stored button downs since the tick for this
                         // player will now have actioned them
                         player->ullButtonsPressed = 0LL;
+                    } else if (screen != NULL) {
+                        screen->updateEvents();
+                        screen->tick();
                     }
-                }
-
-                if (screen != NULL) {
-                    screen->updateEvents();
                 }
 
                 ui.HandleGameTick();
