@@ -126,7 +126,7 @@ void PistonMovingPiece::updateShape(
             progress = 1.0f - progress;
         }
         int facing = entity->getFacing();
-        ThreadStorage* tls = m_threadShape;
+        ThreadStorage* tls = m_tlsShape;
         tls->xx0 = tile->getShapeX0() - Facing::STEP_X[facing] * progress;
         tls->yy0 = tile->getShapeY0() - Facing::STEP_Y[facing] * progress;
         tls->zz0 = tile->getShapeZ0() - Facing::STEP_Z[facing] * progress;

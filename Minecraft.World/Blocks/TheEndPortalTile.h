@@ -35,5 +35,5 @@ public:
     void registerIcons(IconRegister* iconRegister);
 
 private:
-    static thread_local bool m_threadAllowAnywhere;
+    static thread_local bool m_tlsAllowAnywhere;
 };

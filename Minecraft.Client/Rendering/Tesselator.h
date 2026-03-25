@@ -41,7 +41,7 @@ public:
     static void CreateNewThreadStorage(int bytes);
 
 private:
-    static thread_local Tesselator* m_threadInstance;
+    static thread_local Tesselator* m_tlsInstance;
 
 public:
     static Tesselator* getInstance();

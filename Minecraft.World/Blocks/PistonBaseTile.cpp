@@ -20,7 +20,7 @@ const std::wstring PistonBaseTile::INSIDE_TEX = L"piston_inner_top";
 
 const float PistonBaseTile::PLATFORM_THICKNESS = 4.0f;
 
-thread_local bool PistonBaseTile::m_threadIgnoreUpdate = false;
+thread_local bool PistonBaseTile::m_tlsIgnoreUpdate = false;
 
 // 4J - NOTE - this ignoreUpdate stuff has been removed from the java version,
 // but I'm not currently sure how the java version does without it... there must
@@ -32,11 +32,11 @@ thread_local bool PistonBaseTile::m_threadIgnoreUpdate = false;
 // 4J - ignoreUpdate is a static in java, implementing as TLS here to make
 // thread safe
 bool PistonBaseTile::ignoreUpdate() {
-    return m_threadIgnoreUpdate;
+    return m_tlsIgnoreUpdate;
 }
 
 void PistonBaseTile::ignoreUpdate(bool set) {
-    m_threadIgnoreUpdate = set;
+    m_tlsIgnoreUpdate = set;
 }
 
 PistonBaseTile::PistonBaseTile(int id, bool isSticky)
@@ -72,7 +72,7 @@ Icon* PistonBaseTile::getTexture(int face, int data) {
         // when the piston is extended, either normally
         // or because a piston arm animation, the top
         // texture is the furnace bottom
-        ThreadStorage* tls = m_threadShape;
+        ThreadStorage* tls = m_tlsShape;
         if (isExtended(data) || tls->xx0 > 0 || tls->yy0 > 0 || tls->zz0 > 0 ||
             tls->xx1 < 1 || tls->yy1 < 1 || tls->zz1 < 1) {
             return iconInside;

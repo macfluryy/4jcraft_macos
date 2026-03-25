@@ -93,8 +93,8 @@ public:
 
     // 4J - added, making instaTick flag use TLS so we can set it in the chunk
     // rebuilding thread without upsetting the main game thread
-    static thread_local bool m_threadInstaTick;
-    static thread_local lightCache_t* m_threadLightCache;
+    static thread_local bool m_tlsInstaTick;
+    static thread_local lightCache_t* m_tlsLightCache;
     static void enableLightingCache();
     static void destroyLightingCache();
     static bool getCacheTestEnabled();

@@ -13,7 +13,7 @@ private:
         std::shared_ptr<ItemInstance> resultItem;
         ThreadStorage();
     };
-    static thread_local ThreadStorage* m_threadStorage;
+    static thread_local ThreadStorage* m_tlsStorage;
     static ThreadStorage* m_defaultThreadStorage;
 
     void setResultItem(std::shared_ptr<ItemInstance> item);

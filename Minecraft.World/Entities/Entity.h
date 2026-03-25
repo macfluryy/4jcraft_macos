@@ -429,7 +429,7 @@ private:
     static int extraWanderCount;
     static int extraWanderTicks;
 
-    static thread_local bool m_threadUseSmallIds;
+    static thread_local bool m_tlsUseSmallIds;
 public:
     static void tickExtraWandering();
     static void countFlagsForPIX();

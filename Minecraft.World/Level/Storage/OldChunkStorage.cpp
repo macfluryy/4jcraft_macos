@@ -9,7 +9,7 @@
 #include "../../IO/Files/FileHeader.h"
 #include "OldChunkStorage.h"
 
-thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_threadStorage =
+thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =
     nullptr;
 OldChunkStorage::ThreadStorage* OldChunkStorage::m_defaultThreadStorage =
     nullptr;
@@ -35,16 +35,16 @@ void OldChunkStorage::CreateNewThreadStorage() {
         m_defaultThreadStorage = tls;
     }
 
-    m_threadStorage = tls;
+    m_tlsStorage = tls;
 }
 
 void OldChunkStorage::UseDefaultThreadStorage() {
-    m_threadStorage = m_defaultThreadStorage;
+    m_tlsStorage = m_defaultThreadStorage;
 }
 
 void OldChunkStorage::ReleaseThreadStorage() {
-    if (m_threadStorage != m_defaultThreadStorage) {
-        delete m_threadStorage;
+    if (m_tlsStorage != m_defaultThreadStorage) {
+        delete m_tlsStorage;
     }
 }
 
@@ -319,7 +319,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
 
     // 4J Stu - As we now save on multiple threads, the static data has been
     // moved to TLS
-    ThreadStorage* tls = m_threadStorage;
+    ThreadStorage* tls = m_tlsStorage;
 
     PIXBeginNamedEvent(0, "Getting block data");
     // static byteArray blockData = byteArray(32768);

@@ -66,7 +66,7 @@ protected:
         int tileId;
         ThreadStorage();
     };
-    static thread_local ThreadStorage* m_threadShape;
+    static thread_local ThreadStorage* m_tlsShape;
 public:
     // Each new thread that needs to use Vec3 pools will need to call one of the
     // following 2 functions, to either create its own local storage, or share

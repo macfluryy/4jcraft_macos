@@ -30,7 +30,7 @@ private:
 #ifndef _LARGE_WORLDS
     static Tesselator* t;
 #else
-    static thread_local uint8_t* m_threadTileIds;
+    static thread_local uint8_t* m_tlsTileIds;
 
 public:
     static void CreateNewThreadStorage();

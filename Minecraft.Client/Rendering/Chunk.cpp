@@ -20,18 +20,18 @@
 int Chunk::updates = 0;
 
 #ifdef _LARGE_WORLDS
-thread_local uint8_t* Chunk::m_threadTileIds = nullptr;
+thread_local uint8_t* Chunk::m_tlsTileIds = nullptr;
 
 void Chunk::CreateNewThreadStorage() {
-    m_threadTileIds = new unsigned char[16 * 16 * Level::maxBuildHeight];
+    m_tlsTileIds = new unsigned char[16 * 16 * Level::maxBuildHeight];
 }
 
 void Chunk::ReleaseThreadStorage() {
-    delete m_threadTileIds;
+    delete m_tlsTileIds;
 }
 
 uint8_t* Chunk::GetTileIdsStorage() {
-    return m_threadTileIds;
+    return m_tlsTileIds;
 }
 #else
 // 4J Stu - Don't want this when multi-threaded

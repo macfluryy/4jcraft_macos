@@ -90,20 +90,20 @@
 // W       - lighting value requires write
 #endif
 
-thread_local bool Level::m_threadInstaTick = false;
-thread_local Level::lightCache_t* Level::m_threadLightCache = nullptr;
+thread_local bool Level::m_tlsInstaTick = false;
+thread_local Level::lightCache_t* Level::m_tlsLightCache = nullptr;
 
 void Level::enableLightingCache() {
     // Allocate 16K (needs 32K for large worlds) for a 16x16x16x4 byte cache of
     // results, plus 128K required for toCheck array. Rounding up to 256 to keep
     // as multiple of alignement - aligning to 128K boundary for possible cache
     // locking.
-    m_threadLightCache = (lightCache_t*)XPhysicalAlloc(
+    m_tlsLightCache = (lightCache_t*)XPhysicalAlloc(
         256 * 1024, MAXULONG_PTR, 128 * 1024, PAGE_READWRITE | MEM_LARGE_PAGES);
 }
 
 void Level::destroyLightingCache() {
-    delete m_threadLightCache;
+    delete m_tlsLightCache;
 }
 
 inline int GetIndex(int x, int y, int z) {
@@ -492,11 +492,11 @@ void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
 // 4J - added following 2 functions to move instaBuild flag from being a class
 // member, to TLS
 bool Level::getInstaTick() {
-    return m_threadInstaTick;
+    return m_tlsInstaTick;
 }
 
 void Level::setInstaTick(bool enable) {
-    m_threadInstaTick = enable;
+    m_tlsInstaTick = enable;
 }
 
 // 4J - added
@@ -3143,7 +3143,7 @@ int Level::getExpectedLight(lightCache_t* cache, int x, int y, int z,
 // this thread
 void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                        bool force, bool rootOnlyEmissive) {
-    lightCache_t* cache = m_threadLightCache;
+    lightCache_t* cache = m_tlsLightCache;
     uint64_t cacheUse = 0;
 
     if (force) {

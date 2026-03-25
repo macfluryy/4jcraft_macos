@@ -31,7 +31,7 @@ private:
         ThreadStorage();
         ~ThreadStorage();
     };
-    static thread_local ThreadStorage* m_threadStorage;
+    static thread_local ThreadStorage* m_tlsStorage;
     static ThreadStorage* m_defaultThreadStorage;
 
 public:

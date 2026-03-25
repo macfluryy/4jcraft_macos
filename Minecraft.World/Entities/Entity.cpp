@@ -26,7 +26,7 @@
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
 
-thread_local bool Entity::m_threadUseSmallIds = false;
+thread_local bool Entity::m_tlsUseSmallIds = false;
 
 const std::wstring Entity::RIDING_TAG = L"Riding";
 int Entity::entityCounter =
@@ -54,7 +54,7 @@ int Entity::getSmallId() {
     // telling the client that the entity has been removed After we have already
     // re-used its Id and created a new entity. This ends up with newly created
     // client-side entities being removed by accident, causing invisible mobs.
-    if (m_threadUseSmallIds) {
+    if (m_tlsUseSmallIds) {
         MinecraftServer* server = MinecraftServer::getInstance();
         if (server) {
             // In some attempt to optimise this, flagEntitiesToBeRemoved most of
@@ -129,13 +129,13 @@ void Entity::countFlagsForPIX() {
 
 void Entity::resetSmallId() {
     freeSmallId(entityId);
-    if (m_threadUseSmallIds) {
+    if (m_tlsUseSmallIds) {
         entityId = getSmallId();
     }
 }
 
 void Entity::freeSmallId(int index) {
-    if (!m_threadUseSmallIds)
+    if (!m_tlsUseSmallIds)
         return;  // Don't do anything with small ids if this isn't the server
                  // thread
     if (index >= 2048) return;  // Don't do anything if this isn't a short id
@@ -148,7 +148,7 @@ void Entity::freeSmallId(int index) {
     entityIdWanderFlags[i] &= uiMask;
 }
 
-void Entity::useSmallIds() { m_threadUseSmallIds = true; }
+void Entity::useSmallIds() { m_tlsUseSmallIds = true; }
 
 // Things also added here to be able to manage the concept of a number of extra
 // "wandering" entities - normally path finding entities aren't allowed to
@@ -161,7 +161,7 @@ void Entity::useSmallIds() { m_threadUseSmallIds = true; }
 // Let the management system here know whether or not to consider this
 // particular entity for some extra wandering
 void Entity::considerForExtraWandering(bool enable) {
-    if (!m_threadUseSmallIds)
+    if (!m_tlsUseSmallIds)
         return;  // Don't do anything with small ids if this isn't the server
                  // thread
     if (entityId >= 2048) return;  // Don't do anything if this isn't a short id
@@ -180,7 +180,7 @@ void Entity::considerForExtraWandering(bool enable) {
 // Should this entity do wandering in addition to what the java code would have
 // done?
 bool Entity::isExtraWanderingEnabled() {
-    if (!m_threadUseSmallIds)
+    if (!m_tlsUseSmallIds)
         return false;  // Don't do anything with small ids if this isn't the
                        // server thread
     if (entityId >= 2048)
@@ -247,7 +247,7 @@ void Entity::_init(bool useSmallId, Level* level) {
     // rest of the range is used for anything we don't need to track like this,
     // currently particles. We only ever want to allocate this type of id from
     // the server thread, so using thread local storage to isolate this.
-    if (useSmallId && m_threadUseSmallIds) {
+    if (useSmallId && m_tlsUseSmallIds) {
         entityId = getSmallId();
     } else {
         entityId = Entity::entityCounter++;

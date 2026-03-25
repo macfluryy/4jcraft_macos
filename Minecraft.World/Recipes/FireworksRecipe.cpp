@@ -2,7 +2,7 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "FireworksRecipe.h"
 
-thread_local FireworksRecipe::ThreadStorage* FireworksRecipe::m_threadStorage =
+thread_local FireworksRecipe::ThreadStorage* FireworksRecipe::m_tlsStorage =
     nullptr;
 FireworksRecipe::ThreadStorage* FireworksRecipe::m_defaultThreadStorage =
     nullptr;
@@ -16,21 +16,21 @@ void FireworksRecipe::CreateNewThreadStorage() {
         m_defaultThreadStorage = tls;
     }
     
-    m_threadStorage = tls;
+    m_tlsStorage = tls;
 }
 
 void FireworksRecipe::UseDefaultThreadStorage() {
-    m_threadStorage = m_defaultThreadStorage;
+    m_tlsStorage = m_defaultThreadStorage;
 }
 
 void FireworksRecipe::ReleaseThreadStorage() {
-    if (m_threadStorage != m_defaultThreadStorage) {
-        delete m_threadStorage;
+    if (m_tlsStorage != m_defaultThreadStorage) {
+        delete m_tlsStorage;
     }
 }
 
 void FireworksRecipe::setResultItem(std::shared_ptr<ItemInstance> item) {
-    m_threadStorage->resultItem = item;
+    m_tlsStorage->resultItem = item;
 }
 
 FireworksRecipe::FireworksRecipe() {
@@ -216,14 +216,14 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
 std::shared_ptr<ItemInstance> FireworksRecipe::assemble(
     std::shared_ptr<CraftingContainer> craftSlots) {
-    return m_threadStorage->resultItem->copy();
+    return m_tlsStorage->resultItem->copy();
     // return resultItem->copy();
 }
 
 int FireworksRecipe::size() { return 10; }
 
 const ItemInstance* FireworksRecipe::getResultItem() {
-    return m_threadStorage->resultItem.get();
+    return m_tlsStorage->resultItem.get();
     // return resultItem.get();
 }
 

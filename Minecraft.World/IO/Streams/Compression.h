@@ -25,7 +25,7 @@ private:
         ThreadStorage();
         ~ThreadStorage();
     };
-    static thread_local ThreadStorage* m_threadCompression;
+    static thread_local ThreadStorage* m_tlsCompression;
     static ThreadStorage* m_threadCompressionDefault;
 
 public:
