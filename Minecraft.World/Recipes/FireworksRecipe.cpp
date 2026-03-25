@@ -2,34 +2,35 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "FireworksRecipe.h"
 
-DWORD FireworksRecipe::tlsIdx = 0;
-FireworksRecipe::ThreadStorage* FireworksRecipe::tlsDefault = NULL;
+thread_local FireworksRecipe::ThreadStorage* FireworksRecipe::m_threadStorage =
+    nullptr;
+FireworksRecipe::ThreadStorage* FireworksRecipe::m_defaultThreadStorage =
+    nullptr;
 
 FireworksRecipe::ThreadStorage::ThreadStorage() { resultItem = nullptr; }
 
 void FireworksRecipe::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == NULL) {
-        tlsIdx = TlsAlloc();
-        tlsDefault = tls;
+    
+    if (m_defaultThreadStorage == nullptr) {
+        m_defaultThreadStorage = tls;
     }
-    TlsSetValue(tlsIdx, tls);
+    
+    m_threadStorage = tls;
 }
 
 void FireworksRecipe::UseDefaultThreadStorage() {
-    TlsSetValue(tlsIdx, tlsDefault);
+    m_threadStorage = m_defaultThreadStorage;
 }
 
 void FireworksRecipe::ReleaseThreadStorage() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    if (tls == tlsDefault) return;
-
-    delete tls;
+    if (m_threadStorage != m_defaultThreadStorage) {
+        delete m_threadStorage;
+    }
 }
 
 void FireworksRecipe::setResultItem(std::shared_ptr<ItemInstance> item) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    tls->resultItem = item;
+    m_threadStorage->resultItem = item;
 }
 
 FireworksRecipe::FireworksRecipe() {

@@ -24,14 +24,14 @@ int normal;
 
 
 */
-thread_local Tesselator* Tesselator::m_thread_instance = nullptr;
+thread_local Tesselator* Tesselator::m_threadInstance = nullptr;
 
 Tesselator* Tesselator::getInstance() {
-    return m_thread_instance;
+    return m_threadinstance;
 }
 
 void Tesselator::CreateNewThreadStorage(int bytes) {
-    Tesselator::m_thread_instance = new Tesselator(bytes / 4);
+    Tesselator::m_threadinstance = new Tesselator(bytes / 4);
 }
 
 // she tessalate my vertices till i render

@@ -13,8 +13,8 @@ private:
         std::shared_ptr<ItemInstance> resultItem;
         ThreadStorage();
     };
-    static DWORD tlsIdx;
-    static ThreadStorage* tlsDefault;
+    static thread_local ThreadStorage* m_threadStorage;
+    static ThreadStorage* m_defaultThreadStorage;
 
     void setResultItem(std::shared_ptr<ItemInstance> item);
 
