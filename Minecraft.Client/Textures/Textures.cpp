@@ -177,6 +177,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
 
     // 4jcraft: 1.6.4 java UI
 #ifdef ENABLE_JAVA_GUIS
+    L"gui/horse",
     L"title/bg/panorama",
 #endif
 // L"item/christmas",
