@@ -4,19 +4,29 @@
 #include "PacketListener.h"
 #include "ContainerOpenPacket.h"
 
-ContainerOpenPacket::ContainerOpenPacket() {
-    containerId = 0;
-    type = 0;
-    title = 0;
-    size = 0;
-}
-
-ContainerOpenPacket::ContainerOpenPacket(int containerId, int type, int title,
-                                         int size) {
+void ContainerOpenPacket::_init(int containerId, int type,
+                                const std::wstring& title, int size,
+                                bool customName, int entityId) {
     this->containerId = containerId;
     this->type = type;
     this->title = title;
     this->size = size;
+    this->customName = customName;
+    this->entityId = entityId;
+}
+
+ContainerOpenPacket::ContainerOpenPacket() { _init(0, 0, L"", 0, false, 0); }
+
+ContainerOpenPacket::ContainerOpenPacket(int containerId, int type,
+                                         const std::wstring& title, int size,
+                                         bool customName) {
+    _init(containerId, type, title, size, customName, 0);
+}
+
+ContainerOpenPacket::ContainerOpenPacket(int containerId, int type,
+                                         const std::wstring& title, int size,
+                                         bool customName, int entityId) {
+    _init(containerId, type, title, size, customName, entityId);
 }
 
 void ContainerOpenPacket::handle(PacketListener* listener) {
@@ -25,18 +35,35 @@ void ContainerOpenPacket::handle(PacketListener* listener) {
 
 void ContainerOpenPacket::read(DataInputStream* dis)  // throws IOException
 {
-    containerId = (int)(dis->readByte() & (uint8_t)0xff);
-    type = (int)(dis->readByte() & (uint8_t)0xff);
-    title = dis->readShort();
-    size = (int)(dis->readByte() & (uint8_t)0xff);
+    containerId = dis->readByte() & 0xff;
+    type = dis->readByte() & 0xff;
+    size = dis->readByte() & 0xff;
+    customName = dis->readBoolean();
+    if (type == HORSE) {
+        entityId = dis->readInt();
+    }
+    if (customName) {
+        title = readUtf(dis, 64);
+    }
 }
 
 void ContainerOpenPacket::write(DataOutputStream* dos)  // throws IOException
 {
-    dos->writeByte((uint8_t)containerId & (uint8_t)0xff);
-    dos->writeByte((uint8_t)type & (uint8_t)0xff);
-    dos->writeShort(title & 0xffff);
-    dos->writeByte((uint8_t)size & (uint8_t)0xff);
+    dos->writeByte(containerId & 0xff);
+    dos->writeByte(type & 0xff);
+    dos->writeByte(size & 0xff);
+    dos->writeBoolean(customName);
+    if (type == HORSE) {
+        dos->writeInt(entityId);
+    }
+    if (customName) {
+        writeUtf(title, dos);
+    }
 }
 
-int ContainerOpenPacket::getEstimatedSize() { return 5; }
+int ContainerOpenPacket::getEstimatedSize() {
+    if (type == HORSE) {
+        return 10;
+    }
+    return 6;
+}

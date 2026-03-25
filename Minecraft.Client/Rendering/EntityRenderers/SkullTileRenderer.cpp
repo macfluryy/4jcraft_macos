@@ -1,11 +1,21 @@
 #include "../../Platform/stdafx.h"
-#include "../../../Minecraft.World/Blocks/TileEntities/SkullTileEntity.h"
-#include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
-#include "../../../Minecraft.World/Headers/net.minecraft.h"
-#include "../Models/SkeletonHeadModel.h"
 #include "SkullTileRenderer.h"
+#include "../Models/SkeletonHeadModel.h"
+#include "PlayerRenderer.h"
+#include "../../../Minecraft.World/Blocks/TileEntities/SkullTileEntity.h"
+#include "../../../Minecraft.World/Headers/net.minecraft.h"
+#include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 SkullTileRenderer* SkullTileRenderer::instance = NULL;
+
+ResourceLocation SkullTileRenderer::SKELETON_LOCATION =
+    ResourceLocation(TN_MOB_SKELETON);
+ResourceLocation SkullTileRenderer::WITHER_SKELETON_LOCATION =
+    ResourceLocation(TN_MOB_WITHER_SKELETON);
+ResourceLocation SkullTileRenderer::ZOMBIE_LOCATION =
+    ResourceLocation(TN_MOB_ZOMBIE);
+ResourceLocation SkullTileRenderer::CREEPER_LOCATION =
+    ResourceLocation(TN_MOB_CREEPER);
 
 SkullTileRenderer::SkullTileRenderer() {
     skeletonModel = new SkeletonHeadModel(0, 0, 64, 32);
@@ -41,38 +51,38 @@ void SkullTileRenderer::renderSkull(float x, float y, float z, int face,
 
     switch (type) {
         case SkullTileEntity::TYPE_WITHER:
-            bindTexture(TN_MOB_WITHER_SKELETON);
+            bindTexture(&WITHER_SKELETON_LOCATION);
             break;
         case SkullTileEntity::TYPE_ZOMBIE:
-            bindTexture(TN_MOB_ZOMBIE);
+            bindTexture(&ZOMBIE_LOCATION);
             // model = zombieModel;
             break;
         case SkullTileEntity::TYPE_CHAR:
             // if (!extra.empty())
             //{
-            //	std::wstring url = "http://skins.minecraft.net/MinecraftSkins/"
-            //+ StringUtil.stripColor(extra) + ".png";
+            //	wstring url = "http://skins.minecraft.net/MinecraftSkins/" +
+            // StringUtil.stripColor(extra) + ".png";
 
             //	if
             //(!instance->tileEntityRenderDispatcher->textures->hasHttpTexture(url))
             //	{
             //		instance->tileEntityRenderDispatcher->textures->addHttpTexture(url,
-            //new MobSkinTextureProcessor());
+            // new MobSkinTextureProcessor());
             //	}
 
             //	bindTexture(url, "/mob/char.png");
             //}
             // else
             {
-                bindTexture(TN_MOB_CHAR);
+                bindTexture(&PlayerRenderer::DEFAULT_LOCATION);
             }
             break;
         case SkullTileEntity::TYPE_CREEPER:
-            bindTexture(TN_MOB_CREEPER);
+            bindTexture(&CREEPER_LOCATION);
             break;
         case SkullTileEntity::TYPE_SKELETON:
         default:
-            bindTexture(TN_MOB_SKELETON);
+            bindTexture(&SKELETON_LOCATION);
             break;
     }
 

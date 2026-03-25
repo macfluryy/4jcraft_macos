@@ -35,6 +35,7 @@ public:
 class Double {
 public:
     static const double MAX_VALUE;
+    static const double MIN_NORMAL;
 
     static bool isNaN(double a) {
 #ifdef __PS3__
@@ -45,9 +46,9 @@ public:
     }
     static bool isInfinite(double a) { return false; /*4J TODO*/ }
 
-    static double longBitsToDouble(__int64 bits) { return *(double*)&bits; }
+    static double longBitsToDouble(int64_t bits) { return *(double*)&bits; }
 
-    static __int64 doubleToLongBits(double d) { return *(__int64*)&d; }
+    static int64_t doubleToLongBits(double d) { return *(int64_t*)&d; }
 };
 
 // 4J Stu - The String class should only be used if we need to use the

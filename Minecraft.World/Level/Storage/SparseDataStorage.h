@@ -30,13 +30,13 @@
 // system, implemented using a read-copy-update (RCU) type algorithm. Some
 // details...
 
-// (1) The storage details for the class are now packed into a single __int64,
+// (1) The storage details for the class are now packed into a single int64_t,
 // which contains both a pointer to the data that is required and a count of how
 // many planes worth
 //     of storage are allocated. This allows the full storage to be updated
 //     atomically using compare and exchange operations (implemented with
 //     InterlockedCompareExchangeRelease64).
-// (2) The data pointer referenced in this __int64 points to an area of memory
+// (2) The data pointer referenced in this int64_t points to an area of memory
 // which is 128 + 128 * plane_count bytes long, where the first 128 bytes stoere
 // the plane indices, and
 //     the rest of the data is variable in size to accomodate however many
@@ -62,7 +62,7 @@ class SparseDataStorage {
 
 private:
     //	unsigned char	planeIndices[128];
-    __int64 dataAndCount;  // Contains packed-together data pointer (lower
+    int64_t dataAndCount;  // Contains packed-together data pointer (lower
                            // 48-bits), and count of lines used (upper 16-bits)
 
     //	unsigned char	*data;
@@ -109,7 +109,7 @@ public:
     void addNewPlane(int y);
     void getPlaneIndicesAndData(unsigned char** planeIndices,
                                 unsigned char** data);
-    void updateDataAndCount(__int64 newDataAndCount);
+    void updateDataAndCount(int64_t newDataAndCount);
     int compress();
 
     bool isCompressed();

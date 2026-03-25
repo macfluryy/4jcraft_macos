@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include "../../Headers/net.minecraft.world.level.levelgen.flat.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.storage.h"
@@ -13,9 +14,13 @@
 #include "../../../Minecraft.Client/Minecraft.h"
 #include "../../../Minecraft.Client/Platform/Common/Colours/ColourTable.h"
 
+const float Dimension::MOON_BRIGHTNESS_PER_PHASE[8] = {
+    1.0f, 0.75f, 0.5f, 0.25f, 0, 0.25f, 0.5f, 0.75f};
+
 void Dimension::init(Level* level) {
     this->level = level;
-    this->levelType = level->getLevelData()->getGenerator();
+    levelType = level->getLevelData()->getGenerator();
+    levelTypeOptions = level->getLevelData()->getGeneratorOptions();
     init();
     updateLightRamp();
 }
@@ -35,12 +40,16 @@ void Dimension::init() {
     // file
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
-            (1L << eDebugSetting_EnableHeightWaterBiomeOverride)) {
+            (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeSource = new BiomeSource(level);
     } else
 #endif
         if (level->getLevelData()->getGenerator() == LevelType::lvl_flat) {
-        biomeSource = new FixedBiomeSource(Biome::plains, 0.5f, 0.5f);
+        FlatGeneratorInfo* generator = FlatGeneratorInfo::fromValue(
+            level->getLevelData()->getGeneratorOptions());
+        biomeSource = new FixedBiomeSource(Biome::biomes[generator->getBiome()],
+                                           0.5f, 0.5f);
+        delete generator;
     } else {
         biomeSource = new BiomeSource(level);
     }
@@ -51,6 +60,7 @@ Dimension::Dimension() {
     hasCeiling = false;
     brightnessRamp = new float[Level::MAX_BRIGHTNESS + 1];
     id = 0;
+    levelTypeOptions = L"";
 }
 
 Dimension::~Dimension() {
@@ -65,7 +75,7 @@ ChunkSource* Dimension::createRandomLevelSource() const {
     // file
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
-            (1L << eDebugSetting_EnableHeightWaterBiomeOverride)) {
+            (1L << eDebugSetting_EnableHeightWaterOverride)) {
         return new CustomLevelSource(
             level, level->getSeed(),
             level->getLevelData()->isGenerateMapFeatures());
@@ -99,7 +109,7 @@ bool Dimension::isValidSpawn(int x, int z) const {
     return true;
 }
 
-float Dimension::getTimeOfDay(__int64 time, float a) const {
+float Dimension::getTimeOfDay(int64_t time, float a) const {
     int dayStep = (int)(time % Level::TICKS_PER_DAY);
     float td = (dayStep + a) / Level::TICKS_PER_DAY - 0.25f;
     if (td < 0) td += 1;
@@ -110,7 +120,7 @@ float Dimension::getTimeOfDay(__int64 time, float a) const {
     return td;
 }
 
-int Dimension::getMoonPhase(__int64 time, float a) const {
+int Dimension::getMoonPhase(int64_t time) const {
     return ((int)(time / Level::TICKS_PER_DAY)) % 8;
 }
 

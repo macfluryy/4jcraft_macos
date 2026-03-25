@@ -13,6 +13,8 @@ BreakDoorGoal::BreakDoorGoal(Mob* mob) : DoorInteractGoal(mob) {
 
 bool BreakDoorGoal::canUse() {
     if (!DoorInteractGoal::canUse()) return false;
+    if (!mob->level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING))
+        return false;
     return !doorTile->isOpen(mob->level, doorX, doorY, doorZ);
 }
 
@@ -50,7 +52,7 @@ void BreakDoorGoal::tick() {
 
     if (breakTime == DOOR_BREAK_TIME) {
         if (mob->level->difficulty == Difficulty::HARD) {
-            mob->level->setTile(doorX, doorY, doorZ, 0);
+            mob->level->removeTile(doorX, doorY, doorZ);
             mob->level->levelEvent(LevelEvent::SOUND_ZOMBIE_DOOR_CRASH, doorX,
                                    doorY, doorZ, 0);
             mob->level->levelEvent(LevelEvent::PARTICLES_DESTROY_BLOCK, doorX,

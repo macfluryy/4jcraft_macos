@@ -13,6 +13,7 @@ private:
     static const int DATA_HEALTH_ID = 18;
     static const int DATA_INTERESTED_ID = 19;
     static const int DATA_COLLAR_COLOR = 20;
+
     static const int START_HEALTH = 8;
     static const int MAX_HEALTH = 20;
     static const int TAME_HEALTH = 20;
@@ -23,26 +24,24 @@ private:
 
 public:
     Wolf(Level* level);
+
+protected:
+    virtual void registerAttributes();
+
+public:
     virtual bool useNewAi();
-    virtual void setTarget(std::shared_ptr<Mob> target);
+    virtual void setTarget(std::shared_ptr<LivingEntity> target);
 
 protected:
     virtual void serverAiMobStep();
-
-public:
-    virtual int getMaxHealth();
-
-protected:
     virtual void defineSynchedData();
-    virtual bool makeStepSound();
+    virtual void playStepSound(int xt, int yt, int zt, int t);
 
 public:
-    virtual int getTexture();  // 4J - changed from std::wstring to ing
     virtual void addAdditonalSaveData(CompoundTag* tag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
 
 protected:
-    virtual bool removeWhenFarAway();
     virtual int getAmbientSound();
     virtual int getHurtSound();
     virtual int getDeathSound();
@@ -58,9 +57,10 @@ public:
     float getHeadRollAngle(float a);
     float getHeadHeight();
     int getMaxHeadXRot();
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
     virtual bool doHurtTarget(std::shared_ptr<Entity> target);
-    virtual bool interact(std::shared_ptr<Player> player);
+    virtual void setTame(bool value);
+    virtual bool mobInteract(std::shared_ptr<Player> player);
     virtual void handleEntityEvent(uint8_t id);
     float getTailAngle();
     virtual bool isFood(std::shared_ptr<ItemInstance> item);
@@ -83,4 +83,11 @@ public:
     virtual void setIsInterested(bool isInterested);
     virtual bool canMate(std::shared_ptr<Animal> animal);
     bool isInterested();
+
+protected:
+    virtual bool removeWhenFarAway();
+
+public:
+    virtual bool wantsToAttack(std::shared_ptr<LivingEntity> target,
+                               std::shared_ptr<LivingEntity> owner);
 };

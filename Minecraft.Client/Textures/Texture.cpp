@@ -5,13 +5,14 @@
 #include "Texture.h"
 
 #ifdef __PS3__
-#include "../Platform/PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
+#include "PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
+#include "C4JSpursJob.h"
 static const int sc_maxTextureBlits = 256;
 static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits]
     __attribute__((__aligned__(16)));
 static int g_currentTexBlit = 0;
 C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
+// #define DISABLE_SPU_CODE
 #endif  //__PS3__
 
 #define MAX_MIP_LEVELS 5
@@ -292,7 +293,7 @@ void Texture::writeAsBMP(const std::wstring& name) {
 	outStream->writeInt(0);                          // 0x0032: Number of important colors, 0 for all
 
 	// Pixels follow in inverted Y order
-	byte[] bytes = new uint8_t[width * height * 4];
+	uint8_t[] bytes = new uint8_t[width * height * 4];
 	data.position(0);
 	data.get(bytes);
 	for (int y = height - 1; y >= 0; y--)
@@ -320,7 +321,7 @@ void Texture::writeAsPNG(const std::wstring& filename) {
 #if 0
 	BufferedImage *image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	ByteBuffer *buffer = this->getData();
-	byte[] bytes = new uint8_t[width * height * 4];
+	uint8_t[] bytes = new uint8_t[width * height * 4];
 
 	buffer.position(0);
 	buffer.get(bytes);
@@ -470,10 +471,11 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
 }
 
 void Texture::transferFromBuffer(intArray buffer) {
-    if (depth == 1) {
-        return;
-    }
-
+    //if (depth == 1) {
+    //    return;
+    //}
+    // 4jcraft - move pos out of loops
+    data[0]->clear();
     // #ifdef __PS3__
     // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
     // 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
@@ -483,7 +485,24 @@ void Texture::transferFromBuffer(intArray buffer) {
     // #endif
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
-    for (int z = 0; z < depth; z++) {
+    int totalPixels = width * height * depth;
+
+    for (int i = 0; i < totalPixels; i++){
+        int pixel = buffer[i];
+        int offset = i * 4;
+
+        data[0]->put(offset + byteRemap[0], (uint8_t)((pixel >> 24) & 0xff));
+        data[0]->put(offset + byteRemap[1], (uint8_t)((pixel >> 16) & 0xff));
+        data[0]->put(offset + byteRemap[2], (uint8_t)((pixel >> 8) & 0xff));
+        data[0]->put(offset + byteRemap[3], (uint8_t)((pixel >> 0) & 0xff));
+
+        data[0]->position(totalPixels * 4);
+        data[0]->limit(totalPixels * 4);
+
+        updateOnGPU();
+    }
+    
+    /* for (int z = 0; z < depth; z++) {
         int plane = z * height * width * 4;
         for (int y = 0; y < height; y++) {
             int column = plane + y * width * 4;
@@ -503,6 +522,7 @@ void Texture::transferFromBuffer(intArray buffer) {
     }
 
     data[0]->position(width * height * depth * 4);
+    */
 
     updateOnGPU();
 }
@@ -518,8 +538,9 @@ void Texture::transferFromImage(BufferedImage* image) {
     int imgHeight = image->getHeight();
     if (imgWidth > width || imgHeight > height) {
         // Minecraft::GetInstance().getLogger().warning("transferFromImage
-        // called with a BufferedImage with dimensions (" + 	imgWidth + ", " +
-        //imgHeight + ") larger than the Texture dimensions (" + width +
+        // called with a BufferedImage with dimensions (" + 	imgWidth + ", "
+        // +
+        // imgHeight + ") larger than the Texture dimensions (" + width +
         //	", " + height + "). Ignoring.");
         app.DebugPrintf(
             "transferFromImage called with a BufferedImage with dimensions "
@@ -765,7 +786,7 @@ void Texture::updateOnGPU() {
     // if (height != 1 && depth != 1)
     //{
     //	glTexImage3D(type, 0, format, width, height, depth, 0, format,
-    //GL_UNSIGNED_BYTE, data);
+    // GL_UNSIGNED_BYTE, data);
     //}
     // else if(height != 1)
     //{

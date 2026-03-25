@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.entity.monster.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.tile.h"
 #include "StoneMonsterTile.h"
 
 const unsigned int
@@ -15,13 +16,18 @@ StoneMonsterTile::StoneMonsterTile(int id) : Tile(id, Material::clay) {
 }
 
 Icon* StoneMonsterTile::getTexture(int face, int data) {
+#ifndef _CONTENT_PACKAGE
+    if (app.DebugArtToolsOn()) {
+        return Tile::fire->getTexture(face, 0);
+    }
+#endif
     if (data == HOST_COBBLE) {
-        return Tile::stoneBrick->getTexture(face);
+        return Tile::cobblestone->getTexture(face);
     }
     if (data == HOST_STONEBRICK) {
-        return Tile::stoneBrickSmooth->getTexture(face);
+        return Tile::stoneBrick->getTexture(face);
     }
-    return Tile::rock->getTexture(face);
+    return Tile::stone->getTexture(face);
 }
 
 void StoneMonsterTile::registerIcons(IconRegister* iconRegister) {
@@ -51,15 +57,15 @@ void StoneMonsterTile::destroy(Level* level, int x, int y, int z, int data) {
 int StoneMonsterTile::getResourceCount(Random* random) { return 0; }
 
 bool StoneMonsterTile::isCompatibleHostBlock(int block) {
-    return block == Tile::rock_Id || block == Tile::stoneBrick_Id ||
-           block == Tile::stoneBrickSmooth_Id;
+    return block == Tile::stone_Id || block == Tile::cobblestone_Id ||
+           block == Tile::stoneBrick_Id;
 }
 
 int StoneMonsterTile::getDataForHostBlock(int block) {
-    if (block == Tile::stoneBrick_Id) {
+    if (block == Tile::cobblestone_Id) {
         return HOST_COBBLE;
     }
-    if (block == Tile::stoneBrickSmooth_Id) {
+    if (block == Tile::stoneBrick_Id) {
         return HOST_STONEBRICK;
     }
     return HOST_ROCK;
@@ -68,22 +74,22 @@ int StoneMonsterTile::getDataForHostBlock(int block) {
 Tile* StoneMonsterTile::getHostBlockForData(int data) {
     switch (data) {
         case HOST_COBBLE:
-            return Tile::stoneBrick;
+            return Tile::cobblestone;
         case HOST_STONEBRICK:
-            return Tile::stoneBrickSmooth;
+            return Tile::stoneBrick;
         default:
-            return Tile::rock;
+            return Tile::stone;
     }
 }
 
 std::shared_ptr<ItemInstance> StoneMonsterTile::getSilkTouchItemInstance(
     int data) {
-    Tile* tile = Tile::rock;
+    Tile* tile = Tile::stone;
     if (data == HOST_COBBLE) {
-        tile = Tile::stoneBrick;
+        tile = Tile::cobblestone;
     }
     if (data == HOST_STONEBRICK) {
-        tile = Tile::stoneBrickSmooth;
+        tile = Tile::stoneBrick;
     }
     return std::shared_ptr<ItemInstance>(new ItemInstance(tile));
 }

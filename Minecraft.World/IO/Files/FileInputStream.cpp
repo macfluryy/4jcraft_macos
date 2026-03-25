@@ -7,15 +7,15 @@
 extern CConsoleMinecraftApp app;
 
 namespace {
-__int64 FileTell(std::FILE* file) {
+int64_t FileTell(std::FILE* file) {
 #if defined(_WIN32)
     return _ftelli64(file);
 #else
-    return static_cast<__int64>(ftello(file));
+    return static_cast<int64_t>(ftello(file));
 #endif
 }
 
-bool FileSeek(std::FILE* file, __int64 offset, int origin) {
+bool FileSeek(std::FILE* file, int64_t offset, int origin) {
 #if defined(_WIN32)
     return _fseeki64(file, offset, origin) == 0;
 #else
@@ -167,12 +167,12 @@ void FileInputStream::close() {
 // pos and k is returned. Overrides: skip in class InputStream Parameters: n -
 // the number of bytes to be skipped. Returns: the actual number of bytes
 // skipped.
-__int64 FileInputStream::skip(__int64 n) {
+int64_t FileInputStream::skip(int64_t n) {
     if (m_fileHandle == NULL || n <= 0) {
         return 0;
     }
 
-    const __int64 start = FileTell(m_fileHandle);
+    const int64_t start = FileTell(m_fileHandle);
     if (start < 0) {
         return 0;
     }
@@ -181,13 +181,13 @@ __int64 FileInputStream::skip(__int64 n) {
         return 0;
     }
 
-    const __int64 end = FileTell(m_fileHandle);
+    const int64_t end = FileTell(m_fileHandle);
     if (end < 0) {
         return 0;
     }
 
-    const __int64 offset = std::min(n, std::max<__int64>(0, end - start));
-    const __int64 target = start + offset;
+    const int64_t offset = std::min(n, std::max<int64_t>(0, end - start));
+    const int64_t target = start + offset;
     if (!FileSeek(m_fileHandle, target, SEEK_SET)) {
         return 0;
     }

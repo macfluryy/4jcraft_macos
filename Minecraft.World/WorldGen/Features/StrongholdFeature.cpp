@@ -4,8 +4,13 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.dimension.h"
+#include "../../Util/Mth.h"
 #include "../../IO/Files/FileHeader.h"
 #include "../../Util/JavaMath.h"
+
+const std::wstring StrongholdFeature::OPTION_DISTANCE = L"distance";
+const std::wstring StrongholdFeature::OPTION_COUNT = L"count";
+const std::wstring StrongholdFeature::OPTION_SPREAD = L"spread";
 
 std::vector<Biome*> StrongholdFeature::allowedBiomes;
 
@@ -25,12 +30,35 @@ void StrongholdFeature::staticCtor() {
     allowedBiomes.push_back(Biome::jungleHills);
 };
 
-StrongholdFeature::StrongholdFeature() : StructureFeature() {
+void StrongholdFeature::_init() {
+    distance = 32;
+    spread = 3;
+
     // 4J added initialisers
     for (int i = 0; i < strongholdPos_length; i++) {
         strongholdPos[i] = NULL;
     }
     isSpotSelected = false;
+}
+
+StrongholdFeature::StrongholdFeature() : StructureFeature() { _init(); }
+
+StrongholdFeature::StrongholdFeature(
+    std::unordered_map<std::wstring, std::wstring> options) {
+    _init();
+
+    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+        if (it->first.compare(OPTION_DISTANCE) == 0) {
+            distance = Mth::getDouble(it->second, distance, 1);
+        } else if (it->first.compare(OPTION_COUNT) == 0) {
+            // 4J-JEV: Removed, we only have the one stronghold.
+            // strongholdPos = new ChunkPos[ Mth::getInt(it->second,
+            // strongholdPos_length, 1) ];
+            assert(false);
+        } else if (it->first.compare(OPTION_SPREAD) == 0) {
+            spread = Mth::getInt(it->second, spread, 1);
+        }
+    }
 }
 
 StrongholdFeature::~StrongholdFeature() {
@@ -39,12 +67,17 @@ StrongholdFeature::~StrongholdFeature() {
     }
 }
 
+std::wstring StrongholdFeature::getFeatureName() {
+    return LargeFeature::STRONGHOLD;
+}
+
 bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
     if (!isSpotSelected) {
         Random random;
 
         random.setSeed(level->getSeed());
         double angle = random.nextDouble() * PI * 2.0;
+        int circle = 1;
 
         // 4J Stu - Changed so that we keep trying more until we have found
         // somewhere in the world to place a stronghold
@@ -60,7 +93,8 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                         (1.25 + random.nextDouble()) * (3 + random.nextInt(4));
                 } else {
                     // Original Java
-                    dist = (1.25 + random.nextDouble()) * 32.0;
+                    dist = (1.25 * circle + random.nextDouble()) *
+                           (distance * circle);
                 }
 #else
                 // 4J Stu - Design change: Original spawns at *32 chunks rather
@@ -119,10 +153,6 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                     // 4J Added
                     hasFoundValidPos = true;
                     delete position;
-                } else {
-                    app.DebugPrintf(
-                        "Placed stronghold in INVALID biome at (%d, %d)\n",
-                        selectedX, selectedZ);
                 }
 
                 delete strongholdPos[i];
@@ -137,7 +167,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
             // 4J Stu - Randomise the angles for retries as well
 #ifdef _LARGE_WORLDS
-            angle = random.nextDouble() * PI * 2.0;
+            angle = random.nextDouble() * PI * 2.0 * circle / (double)spread;
 #endif
         } while (!hasFoundValidPos && findAttempts < MAX_STRONGHOLD_ATTEMPTS);
 
@@ -200,10 +230,14 @@ StructureStart* StrongholdFeature::createStructureStart(int x, int z) {
     // return new StrongholdStart(level, random, x, z);
 }
 
+StrongholdFeature::StrongholdStart::StrongholdStart() {
+    // for reflection
+}
+
 StrongholdFeature::StrongholdStart::StrongholdStart(Level* level,
                                                     Random* random, int chunkX,
                                                     int chunkZ)
-    : StructureStart() {
+    : StructureStart(chunkX, chunkZ) {
     StrongholdPieces::resetPieces();
 
     StrongholdPieces::StartPiece* startRoom = new StrongholdPieces::StartPiece(

@@ -8,14 +8,16 @@ public:
     int type;
     int data;
     int x, y, z;
+    bool globalEvent;
 
     LevelEventPacket();
-    LevelEventPacket(int type, int x, int y, int z, int data);
+    LevelEventPacket(int type, int x, int y, int z, int data, bool globalEvent);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);
     virtual void handle(PacketListener* listener);
     virtual int getEstimatedSize();
+    bool isGlobalEvent();
 
 public:
     static std::shared_ptr<Packet> create() {

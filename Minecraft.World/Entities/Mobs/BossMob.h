@@ -1,22 +1,8 @@
 #pragma once
 
-#include "../Mob.h"
-
-class Level;
-class BossMobPart;
-
-class BossMob : public Mob {
-protected:
-    int maxHealth;
-
+class BossMob {
 public:
-    BossMob(Level* level);
-
-    virtual int getMaxHealth();
-    virtual bool hurt(std::shared_ptr<BossMobPart> bossMobPart,
-                      DamageSource* source, int damage);
-    virtual bool hurt(DamageSource* source, int damage);
-
-protected:
-    virtual bool reallyHurt(DamageSource* source, int damage);
+    virtual float getMaxHealth() = 0;
+    virtual float getHealth() = 0;
+    virtual std::wstring getAName() = 0;
 };

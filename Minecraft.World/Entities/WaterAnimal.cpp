@@ -3,6 +3,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.damagesource.h"
 #include "WaterAnimal.h"
 
 WaterAnimal::WaterAnimal(Level* level) : PathfinderMob(level) {
@@ -25,4 +26,20 @@ bool WaterAnimal::removeWhenFarAway() { return true; }
 
 int WaterAnimal::getExperienceReward(std::shared_ptr<Player> killedBy) {
     return 1 + level->random->nextInt(3);
+}
+
+void WaterAnimal::baseTick() {
+    int airSupply = getAirSupply();
+
+    PathfinderMob::baseTick();  // this modified the airsupply
+
+    if (isAlive() && !isInWater()) {
+        setAirSupply(--airSupply);
+        if (getAirSupply() == -20) {
+            setAirSupply(0);
+            hurt(DamageSource::drown, 2);
+        }
+    } else {
+        setAirSupply(TOTAL_AIR_SUPPLY);
+    }
 }

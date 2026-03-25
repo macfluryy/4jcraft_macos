@@ -25,9 +25,9 @@ CraftingMenu::CraftingMenu(std::shared_ptr<Inventory> inventory, Level* level,
     resultSlots = std::shared_ptr<ResultContainer>(new ResultContainer());
 
     this->level = level;
-    this->x = xt;
-    this->y = yt;
-    this->z = zt;
+    x = xt;
+    y = yt;
+    z = zt;
     addSlot(new ResultSlot(inventory->player, craftSlots, resultSlots, 0,
                            120 + 4, 31 + 4));
 
@@ -50,9 +50,9 @@ CraftingMenu::CraftingMenu(std::shared_ptr<Inventory> inventory, Level* level,
     slotsChanged();  // 4J - removed craftSlots parameter, see comment below
 }
 
-void CraftingMenu::slotsChanged()  // 4J used to take a
-                                   // std::shared_ptr<Container> but wasn't
-                                   // using it, so removed to simplify things
+void CraftingMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
+                                   // but wasn't using it, so removed to
+                                   // simplify things
 {
     resultSlots->setItem(0,
                          Recipes::getInstance()->getItemFor(craftSlots, level));
@@ -79,7 +79,7 @@ bool CraftingMenu::stillValid(std::shared_ptr<Player> player) {
 std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
-    Slot* slot = slots->at(slotIndex);
+    Slot* slot = slots.at(slotIndex);
     if (slot != NULL && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
@@ -119,4 +119,10 @@ std::shared_ptr<ItemInstance> CraftingMenu::quickMoveStack(
         }
     }
     return clicked;
+}
+
+bool CraftingMenu::canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                         Slot* target) {
+    return target->container != resultSlots &&
+           AbstractContainerMenu::canTakeItemForPickAll(carried, target);
 }

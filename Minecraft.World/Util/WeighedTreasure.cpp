@@ -22,7 +22,7 @@ WeighedTreasure::WeighedTreasure(std::shared_ptr<ItemInstance> item,
 }
 
 void WeighedTreasure::addChestItems(Random* random, WeighedTreasureArray items,
-                                    std::shared_ptr<ChestTileEntity> dest,
+                                    std::shared_ptr<Container> dest,
                                     int numRolls) {
     for (int r = 0; r < numRolls; r++) {
         WeighedTreasure* treasure =

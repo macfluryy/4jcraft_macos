@@ -10,10 +10,11 @@ TheEndBiome::TheEndBiome(int id) : Biome(id) {
     friendlies_chicken.clear();  // 4J added
     friendlies_wolf.clear();     // 4J added
     waterFriendlies.clear();
+    ambientFriendlies.clear();
 
     enemies.push_back(new MobSpawnerData(eTYPE_ENDERMAN, 10, 4, 4));
     topMaterial = (uint8_t)Tile::dirt_Id;
-    this->material = (uint8_t)Tile::dirt_Id;
+    material = (uint8_t)Tile::dirt_Id;
 
     decorator = new TheEndBiomeDecorator(this);
 }

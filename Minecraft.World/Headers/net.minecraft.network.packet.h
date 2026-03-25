@@ -45,7 +45,7 @@
 #include "../Network/Packets/SetEntityMotionPacket.h"
 #include "../Network/Packets/SetEquippedItemPacket.h"
 #include "../Network/Packets/SetHealthPacket.h"
-#include "../Network/Packets/SetRidingPacket.h"
+#include "../Network/Packets/SetEntityLinkPacket.h"
 #include "../Network/Packets/SetSpawnPositionPacket.h"
 #include "../Network/Packets/SetTimePacket.h"
 #include "../Network/Packets/SignUpdatePacket.h"
@@ -83,6 +83,15 @@
 #include "../Network/Packets/PlayerAbilitiesPacket.h"
 #include "../Network/Packets/ServerAuthDataPacket.h"
 #include "../Network/Packets/TileDestructionPacket.h"
+
+// 1.6.4
+#include "../Network/Packets/LevelParticlesPacket.h"
+#include "../Network/Packets/SetDisplayObjectivePacket.h"
+#include "../Network/Packets/SetObjectivePacket.h"
+#include "../Network/Packets/SetPlayerTeamPacket.h"
+#include "../Network/Packets/SetScorePacket.h"
+#include "../Network/Packets/TileEditorOpenPacket.h"
+#include "../Network/Packets/UpdateAttributesPacket.h"
 
 // 4J Added
 #include "../Network/Packets/CraftItemPacket.h"

@@ -46,6 +46,11 @@ class LevelSettings;
 class Biome;
 class Villages;
 class VillageSiege;
+class Tickable;
+class Minecart;
+class EntitySelector;
+class Scoreboard;
+class GameRules;
 
 class Level : public LevelSource {
 public:
@@ -138,11 +143,10 @@ public:
 protected:
     float oRainLevel, rainLevel;
     float oThunderLevel, thunderLevel;
-    int lightningTime;
 
 public:
-    int lightningBoltTime;
-    bool noNeighborUpdate;
+    int skyFlashTime;
+
     int difficulty;
     Random* random;
     bool isNew;
@@ -168,6 +172,13 @@ public:
     std::shared_ptr<Villages> villages;
     VillageSiege* villageSiege;
 
+private:
+    // 4J - Calendar is now static
+    // Calendar *calendar;
+
+protected:
+    Scoreboard* scoreboard;
+
 public:
     Biome* getBiome(int x, int z);  // 4J - brought forward from 1.2.3
     virtual BiomeSource* getBiomeSource();
@@ -183,7 +194,6 @@ public:
     Level(std::shared_ptr<LevelStorage> levelStorage, const std::wstring& name,
           Dimension* dimension, LevelSettings* levelSettings,
           bool doCreateChunkSource = true);
-    Level(Level* level, Dimension* dimension);
     Level(std::shared_ptr<LevelStorage> levelStorage,
           const std::wstring& levelName, LevelSettings* levelSettings);
     Level(std::shared_ptr<LevelStorage> levelStorage,
@@ -209,6 +219,8 @@ public:
     bool isEmptyTile(int x, int y, int z);
     virtual bool isEntityTile(int x, int y, int z);
     int getTileRenderShape(int x, int y, int z);
+    int getTileRenderShape(int t);  // 4J Added to slightly optimise and avoid
+                                    // getTile call if we already know the tile
     bool hasChunkAt(int x, int y, int z);
     bool hasChunksAt(int x, int y, int z, int r);
     bool hasChunksAt(int x0, int y0, int z0, int x1, int y1, int z1);
@@ -224,40 +236,34 @@ public:
 public:
     LevelChunk* getChunkAt(int x, int z);
     LevelChunk* getChunk(int x, int z);
-    virtual bool setTileAndDataNoUpdate(int x, int y, int z, int tile,
-                                        int data);
-    virtual bool setTileAndDataNoUpdate(int x, int y, int z, int tile, int data,
-                                        bool informClients);
-    virtual bool setTileNoUpdate(int x, int y, int z, int tile);
-    bool setTileNoUpdateNoLightCheck(int x, int y, int z,
-                                     int tile);  // 4J added
+    virtual bool setTileAndData(int x, int y, int z, int tile, int data,
+                                int updateFlags);
     Material* getMaterial(int x, int y, int z);
     virtual int getData(int x, int y, int z);
-    void setData(int x, int y, int z, int data,
-                 bool forceUpdate = false);  // 4J added forceUpdate
-    virtual bool setDataNoUpdate(int x, int y, int z, int data);
-    bool setTile(int x, int y, int z, int tile);
-    bool setTileAndData(int x, int y, int z, int tile, int data);
-    void sendTileUpdated(int x, int y, int z);
+    virtual bool setData(int x, int y, int z, int data, int updateFlags,
+                         bool forceUpdate = false);  // 4J added forceUpdate
+    virtual bool removeTile(int x, int y, int z);
+    virtual bool destroyTile(int x, int y, int z, bool dropResources);
+    virtual bool setTileAndUpdate(int x, int y, int z, int tile);
+    virtual void sendTileUpdated(int x, int y, int z);
 
 public:
     virtual void tileUpdated(int x, int y, int z, int tile);
     void lightColumnChanged(int x, int z, int y0, int y1);
     void setTileDirty(int x, int y, int z);
     void setTilesDirty(int x0, int y0, int z0, int x1, int y1, int z1);
-    void swap(int x1, int y1, int z1, int x2, int y2, int z2);
     void updateNeighborsAt(int x, int y, int z, int tile);
-
-private:
+    void updateNeighborsAtExceptFromFacing(int x, int y, int z, int tile,
+                                           int skipFacing);
     void neighborChanged(int x, int y, int z, int type);
-
-public:
+    virtual bool isTileToBeTickedAt(int x, int y, int z, int tileId);
     bool canSeeSky(int x, int y, int z);
     int getDaytimeRawBrightness(int x, int y, int z);
     int getRawBrightness(int x, int y, int z);
     int getRawBrightness(int x, int y, int z, bool propagate);
     bool isSkyLit(int x, int y, int z);
     int getHeightmap(int x, int z);
+    int getLowestHeightmap(int x, int z);
     void updateLightIfOtherThan(LightLayer::variety layer, int x, int y, int z,
                                 int expected);
     int getBrightnessPropagate(LightLayer::variety layer, int x, int y, int z,
@@ -272,11 +278,11 @@ public:
                                        int z, int brightness);  // 4J added
 
 #ifdef _LARGE_WORLDS
-    typedef __uint64 lightCache_t;
+    typedef uint64_t lightCache_t;
 #else
     typedef unsigned int lightCache_t;
 #endif
-    inline void setBrightnessCached(lightCache_t* cache, __uint64* cacheUse,
+    inline void setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
                                     LightLayer::variety layer, int x, int y,
                                     int z, int brightness);
     inline int getBrightnessCached(lightCache_t* cache,
@@ -286,8 +292,9 @@ public:
                                  int z);
     inline int getBlockingCached(lightCache_t* cache, LightLayer::variety layer,
                                  int* ct, int x, int y, int z);
-    void initCache(lightCache_t* cache);
-    void flushCache(lightCache_t* cache, __uint64 cacheUse,
+    void initCachePartial(lightCache_t* cache, int xc, int yc, int zc);
+    void initCacheComplete(lightCache_t* cache, int xc, int yc, int zc);
+    void flushCache(lightCache_t* cache, uint64_t cacheUse,
                     LightLayer::variety layer);
 
     bool cachewritten;
@@ -295,10 +302,10 @@ public:
     static const int BLOCKING_SHIFT = 20;
     static const int EMISSION_SHIFT = 16;
 #ifdef _LARGE_WORLDS
-    static const __int64 LIGHTING_WRITEBACK = 0x80000000LL;
-    static const __int64 EMISSION_VALID = 0x40000000LL;
-    static const __int64 BLOCKING_VALID = 0x20000000LL;
-    static const __int64 LIGHTING_VALID = 0x10000000LL;
+    static const int64_t LIGHTING_WRITEBACK = 0x80000000LL;
+    static const int64_t EMISSION_VALID = 0x40000000LL;
+    static const int64_t BLOCKING_VALID = 0x20000000LL;
+    static const int64_t LIGHTING_VALID = 0x10000000LL;
     static const lightCache_t POSITION_MASK = 0xffffffff0000ffffLL;
 #else
     static const int LIGHTING_WRITEBACK = 0x80000000;
@@ -320,19 +327,21 @@ public:
     HitResult* clip(Vec3* a, Vec3* b, bool liquid);
     HitResult* clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly);
 
-    virtual void playSound(std::shared_ptr<Entity> entity, int iSound,
-                           float volume, float pitch);
+    virtual void playEntitySound(std::shared_ptr<Entity> entity, int iSound,
+                                 float volume, float pitch);
+    virtual void playPlayerSound(std::shared_ptr<Player> entity, int iSound,
+                                 float volume, float pitch);
     virtual void playSound(double x, double y, double z, int iSound,
                            float volume, float pitch,
                            float fClipSoundDist = 16.0f);
 
     virtual void playLocalSound(double x, double y, double z, int iSound,
-                                float volume, float pitch,
+                                float volume, float pitch, bool distanceDelay,
                                 float fClipSoundDist = 16.0f);
 
     void playStreamingMusic(const std::wstring& name, int x, int y, int z);
-    void playMusic(double x, double y, double z, const std::wstring& string,
-                   float volume);
+    void playMusic(double x, double y, double z,
+                   const std::wstring& string, float volume);
     // 4J removed - void addParticle(const std::wstring& id, double x, double y,
     // double z, double xd, double yd, double zd);
     void addParticle(ePARTICLE_TYPE id, double x, double y, double z, double xd,
@@ -358,17 +367,16 @@ public:
     AABBList* getCubes(
         std::shared_ptr<Entity> source, AABB* box, bool noEntities = false,
         bool blockAtEdge =
-            false);  // 4J - added noEntities & blockAtEdge parameters
+            false);  // 4J: Added noEntities & blockAtEdge parameters
     AABBList* getTileCubes(
-        AABB* box,
-        bool blockAtEdge);  // 4J Stu - Brought forward from 12w36 to fix #46282
-                            // - TU5: Gameplay: Exiting the minecart in a tight
-                            // corridor damages the player
+        AABB* box, bool blockAtEdge =
+                       false);  // 4J: Added noEntities & blockAtEdge parameters
     int getOldSkyDarken(float a);  // 4J - change brought forward from 1.8.2
     float getSkyDarken(float a);   // 4J - change brought forward from 1.8.2
     Vec3* getSkyColor(std::shared_ptr<Entity> source, float a);
     float getTimeOfDay(float a);
-    int getMoonPhase(float a);
+    int getMoonPhase();
+    float getMoonBrightness();
     float getSunAngle(float a);
     Vec3* getCloudColor(float a);
     Vec3* getFogColor(float a);
@@ -380,8 +388,10 @@ public:
     float getStarBrightness(float a);
     virtual void addToTickNextTick(int x, int y, int z, int tileId,
                                    int tickDelay);
+    virtual void addToTickNextTick(int x, int y, int z, int tileId,
+                                   int tickDelay, int priorityTilt);
     virtual void forceAddTileTick(int x, int y, int z, int tileId,
-                                  int tickDelay);
+                                  int tickDelay, int prioTilt);
     virtual void tickEntities();
     void addAllPendingTileEntities(
         std::vector<std::shared_ptr<TileEntity> >& entities);
@@ -420,8 +430,10 @@ public:
     virtual bool isSolidBlockingTile(int x, int y, int z);
     bool isSolidBlockingTileInLoadedChunk(int x, int y, int z,
                                           bool valueIfNotLoaded);
+    bool isFullAABBTile(int x, int y, int z);
     virtual bool isTopSolidBlocking(int x, int y,
                                     int z);  // 4J - brought forward from 1.3.2
+    bool isTopSolidBlocking(Tile* tile, int data);
 
 protected:
     bool spawnEnemies;
@@ -477,11 +489,9 @@ public:
                         false);  // 4J added force, rootOnlySource parameters
 private:
     int* toCheckLevel;
-    int getExpectedSkyColor(lightCache_t* cache, int oc, int x, int y, int z,
-                            int ct, int block);
-    int getExpectedBlockColor(lightCache_t* cache, int oc, int x, int y, int z,
-                              int ct, int block,
-                              bool propagatedOnly);  // 4J added parameter
+    int getExpectedLight(lightCache_t* cache, int x, int y, int z,
+                         LightLayer::variety layer, bool propagatedOnly);
+
 public:
     void checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                     bool force = false,
@@ -501,11 +511,18 @@ public:
 
     std::vector<std::shared_ptr<Entity> >* getEntities(
         std::shared_ptr<Entity> except, AABB* bb);
+    std::vector<std::shared_ptr<Entity> >* getEntities(
+        std::shared_ptr<Entity> except, AABB* bb,
+        const EntitySelector* selector);
     std::vector<std::shared_ptr<Entity> >* getEntitiesOfClass(
         const std::type_info& baseClass, AABB* bb);
+    std::vector<std::shared_ptr<Entity> >* getEntitiesOfClass(
+        const std::type_info& baseClass, AABB* bb,
+        const EntitySelector* selector);
     std::shared_ptr<Entity> getClosestEntityOfClass(
         const std::type_info& baseClass, AABB* bb,
         std::shared_ptr<Entity> source);
+    virtual std::shared_ptr<Entity> getEntity(int entityId) = 0;
     std::vector<std::shared_ptr<Entity> > getAllEntities();
     void tileEntityChanged(int x, int y, int z, std::shared_ptr<TileEntity> te);
     //	unsigned int countInstanceOf(BaseObject::Class *clas);
@@ -518,7 +535,8 @@ public:
     void addEntities(std::vector<std::shared_ptr<Entity> >* list);
     virtual void removeEntities(std::vector<std::shared_ptr<Entity> >* list);
     bool mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
-                  int face, std::shared_ptr<Entity> ignoreEntity);
+                  int face, std::shared_ptr<Entity> ignoreEntity,
+                  std::shared_ptr<ItemInstance> item);
     int getSeaLevel();
     Path* findPath(std::shared_ptr<Entity> from, std::shared_ptr<Entity> to,
                    float maxDist, bool canPassDoors, bool canOpenDoors,
@@ -526,10 +544,12 @@ public:
     Path* findPath(std::shared_ptr<Entity> from, int xBest, int yBest,
                    int zBest, float maxDist, bool canPassDoors,
                    bool canOpenDoors, bool avoidWater, bool canFloat);
-    bool getDirectSignal(int x, int y, int z, int dir);
-    bool hasDirectSignal(int x, int y, int z);
-    bool getSignal(int x, int y, int z, int dir);
+    int getDirectSignal(int x, int y, int z, int dir);
+    int getDirectSignalTo(int x, int y, int z);
+    bool hasSignal(int x, int y, int z, int dir);
+    int getSignal(int x, int y, int z, int dir);
     bool hasNeighborSignal(int x, int y, int z);
+    int getBestNeighborSignal(int x, int y, int z);
     // 4J Added maxYDist param
     std::shared_ptr<Player> getNearestPlayer(std::shared_ptr<Entity> source,
                                              double maxDist,
@@ -554,12 +574,11 @@ public:
                           byteArray data, bool includeLighting = true);
     virtual void disconnect(bool sendDisconnect = true);
     void checkSession();
-    void setTime(__int64 time);
-    void setOverrideTimeOfDay(
-        __int64 time);  // 4J Added so we can override timeOfDay without
-                        // changing tick time
-    __int64 getSeed();
-    __int64 getTime();
+    void setGameTime(int64_t time);
+    int64_t getSeed();
+    int64_t getGameTime();
+    int64_t getDayTime();
+    void setDayTime(int64_t newTime);
     Pos* getSharedSpawnPos();
     void setSpawnPos(int x, int y, int z);
     void setSpawnPos(Pos* spawnPos);
@@ -571,6 +590,7 @@ public:
     virtual void tileEvent(int x, int y, int z, int tile, int b0, int b1);
     LevelStorage* getLevelStorage();
     LevelData* getLevelData();
+    GameRules* getGameRules();
     virtual void updateSleepingPlayerList();
     bool useNewSeaLevel();         // 4J added
     bool getHasBeenInCreative();   // 4J Added
@@ -588,26 +608,32 @@ public:
     std::shared_ptr<SavedData> getSavedData(const std::type_info& clazz,
                                             const std::wstring& id);
     int getFreeAuxValueFor(const std::wstring& id);
+    void globalLevelEvent(int type, int sourceX, int sourceY, int sourceZ,
+                          int data);
     void levelEvent(int type, int x, int y, int z, int data);
     void levelEvent(std::shared_ptr<Player> source, int type, int x, int y,
                     int z, int data);
     int getMaxBuildHeight();
     int getHeight();
+    virtual Tickable* makeSoundUpdater(std::shared_ptr<Minecart> minecart);
     Random* getRandomFor(int x, int z, int blend);
-    bool updateLights();
     virtual bool isAllEmpty();
     double getHorizonHeight();
     void destroyTileProgress(int id, int x, int y, int z, int progress);
+    //  Calendar *getCalendar(); // 4J - Calendar is now static
+    virtual void createFireworks(double x, double y, double z, double xd,
+                                 double yd, double zd, CompoundTag* infoTag);
+    virtual Scoreboard* getScoreboard();
+    virtual void updateNeighbourForOutputSignal(int x, int y, int z,
+                                                int source);
+    virtual float getDifficulty(double x, double y, double z);
+    virtual float getDifficulty(int x, int y, int z);
     TilePos* findNearestMapFeature(const std::wstring& featureName, int x,
                                    int y, int z);
 
     // 4J Added
     int getAuxValueForMap(PlayerUID xuid, int dimension, int centreXC,
                           int centreZC, int scale);
-
-    // 4J added
-
-    __int64 m_timeOfDayOverride;
 
     // 4J - optimisation - keep direct reference of underlying cache here
     LevelChunk** chunkSourceCache;
@@ -642,6 +668,7 @@ public:
     enum ESPAWN_TYPE {
         eSpawnType_Egg,
         eSpawnType_Breed,
+        eSpawnType_Portal,
     };
 
     bool canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType);

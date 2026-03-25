@@ -10,6 +10,10 @@ public:
 public:
     LavaSlime(Level* level);
 
+protected:
+    virtual void registerAttributes();
+
+public:
     virtual bool canSpawn();
     virtual int getArmorValue();
 

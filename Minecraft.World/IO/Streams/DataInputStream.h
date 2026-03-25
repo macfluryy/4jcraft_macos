@@ -26,6 +26,7 @@ public:
     virtual int readInt();
     virtual __int64 readLong();
     virtual short readShort();
+    virtual unsigned short readUnsignedShort();
     virtual std::wstring readUTF();
     void deleteChildStream();
     virtual int readUTFChar();

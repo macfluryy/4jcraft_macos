@@ -40,8 +40,8 @@ EyeOfEnderSignal::EyeOfEnderSignal(Level* level, double x, double y, double z)
 
     setSize(0.25f, 0.25f);
 
-    this->setPos(x, y, z);
-    this->heightOffset = 0;
+    setPos(x, y, z);
+    heightOffset = 0;
 }
 
 void EyeOfEnderSignal::signalTo(double tx, int ty, double tz) {
@@ -68,8 +68,8 @@ void EyeOfEnderSignal::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         float sd = (float)sqrt(xd * xd + zd * zd);
-        yRotO = this->yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = this->xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
+        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
     }
 }
 

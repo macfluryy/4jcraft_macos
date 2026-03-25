@@ -8,7 +8,8 @@
 #include "../Headers/net.minecraft.stats.h"
 #include "../Headers/net.minecraft.world.level.biome.h"
 
-VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, false) {
+VineTile::VineTile(int id)
+    : Tile(id, Material::replaceable_plant, false) {
     setTicking(true);
 }
 
@@ -139,7 +140,7 @@ bool VineTile::updateSurvival(Level* level, int x, int y, int z) {
         }
     }
     if (newFacings != facings) {
-        level->setData(x, y, z, newFacings);
+        level->setData(x, y, z, newFacings, Tile::UPDATE_CLIENTS);
     }
     return true;
 }
@@ -159,7 +160,7 @@ int VineTile::getColor(LevelSource* level, int x, int y, int z) {
 void VineTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (!level->isClientSide && !updateSurvival(level, x, y, z)) {
         spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 }
 
@@ -202,7 +203,8 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                         }
                     }
                     if (spawnFacings > 0) {
-                        level->setTileAndData(x, y + 1, z, id, spawnFacings);
+                        level->setTileAndData(x, y + 1, z, id, spawnFacings,
+                                              Tile::UPDATE_CLIENTS);
                     }
                 }
             } else if (testFacing >= Facing::NORTH &&
@@ -231,8 +233,8 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                                 Direction::STEP_Z[left]))) {
                         level->setTileAndData(
                             x + Direction::STEP_X[testDirection], y,
-                            z + Direction::STEP_Z[testDirection], id,
-                            1 << left);
+                            z + Direction::STEP_Z[testDirection], id, 1 << left,
+                            Tile::UPDATE_CLIENTS);
                     } else if ((currentFacings & (1 << right)) != 0 &&
                                isAcceptableNeighbor(level->getTile(
                                    x + Direction::STEP_X[testDirection] +
@@ -243,7 +245,7 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                         level->setTileAndData(
                             x + Direction::STEP_X[testDirection], y,
                             z + Direction::STEP_Z[testDirection], id,
-                            1 << right);
+                            1 << right, Tile::UPDATE_CLIENTS);
                     }
                     // attempt to grow around corners, but only if the
                     // base tile is solid
@@ -263,7 +265,8 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                             y,
                             z + Direction::STEP_Z[testDirection] +
                                 Direction::STEP_Z[left],
-                            id, 1 << ((testDirection + 2) & 3));
+                            id, 1 << ((testDirection + 2) & 3),
+                            Tile::UPDATE_CLIENTS);
                     } else if ((currentFacings & (1 << right)) != 0 &&
                                level->isEmptyTile(
                                    x + Direction::STEP_X[testDirection] +
@@ -280,7 +283,8 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                             y,
                             z + Direction::STEP_Z[testDirection] +
                                 Direction::STEP_Z[right],
-                            id, 1 << ((testDirection + 2) & 3));
+                            id, 1 << ((testDirection + 2) & 3),
+                            Tile::UPDATE_CLIENTS);
                     }
                     // attempt to grow onto the ceiling
                     else if (isAcceptableNeighbor(level->getTile(
@@ -288,14 +292,16 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                                  z + Direction::STEP_Z[testDirection]))) {
                         level->setTileAndData(
                             x + Direction::STEP_X[testDirection], y,
-                            z + Direction::STEP_Z[testDirection], id, 0);
+                            z + Direction::STEP_Z[testDirection], id, 0,
+                            Tile::UPDATE_CLIENTS);
                     }
 
                 } else if (Tile::tiles[edgeTile]->material->isSolidBlocking() &&
                            Tile::tiles[edgeTile]->isCubeShaped()) {
                     // we have a wall that we can cling to
                     level->setData(x, y, z,
-                                   currentFacings | (1 << testDirection));
+                                   currentFacings | (1 << testDirection),
+                                   Tile::UPDATE_CLIENTS);
                 }
             }
             // growing downwards happens more often than the other
@@ -307,14 +313,16 @@ void VineTile::tick(Level* level, int x, int y, int z, Random* random) {
                     int spawnFacings =
                         level->random->nextInt(16) & currentFacings;
                     if (spawnFacings > 0) {
-                        level->setTileAndData(x, y - 1, z, id, spawnFacings);
+                        level->setTileAndData(x, y - 1, z, id, spawnFacings,
+                                              Tile::UPDATE_CLIENTS);
                     }
                 } else if (belowTile == id) {
                     int spawnFacings =
                         level->random->nextInt(16) & currentFacings;
                     int belowData = level->getData(x, y - 1, z);
                     if (belowData != (belowData | spawnFacings)) {
-                        level->setData(x, y - 1, z, belowData | spawnFacings);
+                        level->setData(x, y - 1, z, belowData | spawnFacings,
+                                       Tile::UPDATE_CLIENTS);
                     }
                 }
             }

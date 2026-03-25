@@ -4,103 +4,106 @@
 
 #include "UIScene.h"
 
-class UIScene_InGameSaveManagementMenu : public UIScene
-{
+class UIScene_InGameSaveManagementMenu : public UIScene {
 private:
-	enum EControls
-	{
-		eControl_SavesList,
+    enum EControls {
+        eControl_SavesList,
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
-		eControl_SpaceIndicator,
+        eControl_SpaceIndicator,
 #endif
-	};
+    };
 
-	enum EState
-	{
-		e_SavesIdle,
-		e_SavesRepopulate,
-		e_SavesRepopulateAfterDelete
-	};
+    enum EState {
+        e_SavesIdle,
+        e_SavesRepopulate,
+        e_SavesRepopulateAfterDelete
+    };
 
-	static const int JOIN_LOAD_CREATE_BUTTON_INDEX = 0;
+    static const int JOIN_LOAD_CREATE_BUTTON_INDEX = 0;
 
-	SaveListDetails *m_saveDetails;
-	int m_iSaveDetailsCount;
+    SaveListDetails* m_saveDetails;
+    int m_iSaveDetailsCount;
 
 protected:
-	UIControl_SaveList m_buttonListSaves;
-	UIControl_Label m_labelSavesListTitle;
-	UIControl m_controlSavesTimer;
+    UIControl_SaveList m_buttonListSaves;
+    UIControl_Label m_labelSavesListTitle;
+    UIControl m_controlSavesTimer;
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
-	UIControl_SpaceIndicatorBar m_spaceIndicatorSaves;
+    UIControl_SpaceIndicatorBar m_spaceIndicatorSaves;
 #endif
 
 private:
-	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)		
-		UI_MAP_ELEMENT( m_buttonListSaves, "SavesList")
+    UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
+    UI_MAP_ELEMENT(m_buttonListSaves, "SavesList")
 
-		UI_MAP_ELEMENT( m_labelSavesListTitle, "SavesListTitle")
+    UI_MAP_ELEMENT(m_labelSavesListTitle, "SavesListTitle")
 
-		UI_MAP_ELEMENT( m_controlSavesTimer, "SavesTimer")
+    UI_MAP_ELEMENT(m_controlSavesTimer, "SavesTimer")
 
 #if defined(_XBOX_ONE) || defined(__ORBIS__)
-		UI_MAP_ELEMENT( m_spaceIndicatorSaves, "SaveSizeBar")
+    UI_MAP_ELEMENT(m_spaceIndicatorSaves, "SaveSizeBar")
 #endif
-	UI_END_MAP_ELEMENTS_AND_NAMES()
+    UI_END_MAP_ELEMENTS_AND_NAMES()
 
-	int m_iState;
+    int m_iState;
 
-	std::vector<File *> *m_saves;
-	
-	bool m_bIgnoreInput;
-	bool m_bAllLoaded;
-	bool m_bRetrievingSaveThumbnails;
-	bool m_bSaveThumbnailReady;
-	int m_iRequestingThumbnailId;
-	SAVE_DETAILS *m_pSaveDetails;
-	bool m_bSavesDisplayed;
-	bool m_bExitScene;
-	int m_iSaveInfoC;
-	int m_iSaveListIndex;
-	//int *m_iConfigA; // track the texture packs that we don't have installed
+    std::vector<File*>* m_saves;
 
-	bool m_bUpdateSaveSize;
+    bool m_bIgnoreInput;
+    bool m_bAllLoaded;
+    bool m_bRetrievingSaveThumbnails;
+    bool m_bSaveThumbnailReady;
+    int m_iRequestingThumbnailId;
+    SAVE_DETAILS* m_pSaveDetails;
+    bool m_bSavesDisplayed;
+    bool m_bExitScene;
+    int m_iSaveInfoC;
+    int m_iSaveListIndex;
+    // int *m_iConfigA; // track the texture packs that we don't have installed
+
+    bool m_bUpdateSaveSize;
 
 public:
-	UIScene_InGameSaveManagementMenu(int iPad, void *initData, UILayer *parentLayer);
-	virtual ~UIScene_InGameSaveManagementMenu();
-	
-	virtual void updateTooltips();
+    UIScene_InGameSaveManagementMenu(int iPad, void* initData,
+                                     UILayer* parentLayer);
+    virtual ~UIScene_InGameSaveManagementMenu();
 
-	virtual void handleReload();
-	virtual void handleGainFocus(bool navBack);
-	// INPUT
-	virtual void handleInput(int iPad, int key, bool repeat, bool pressed, bool released, bool &handled);
-	virtual void handleFocusChange(F64 controlId, F64 childId);
-	virtual void handleInitFocus(F64 controlId, F64 childId);
+    virtual void updateTooltips();
 
-	virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu;}
+    virtual void handleReload();
+    virtual void handleGainFocus(bool navBack);
+    // INPUT
+    virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
+                             bool released, bool& handled);
+    virtual void handleFocusChange(F64 controlId, F64 childId);
+    virtual void handleInitFocus(F64 controlId, F64 childId);
 
-	// Returns true if lower scenes in this scenes layer, or in any layer below this scenes layers should be hidden
-	virtual bool hidesLowerScenes() { return true; }
+    virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu; }
 
-	virtual bool hasFocus(int iPad);
+    // Returns true if lower scenes in this scenes layer, or in any layer below
+    // this scenes layers should be hidden
+    virtual bool hidesLowerScenes() { return true; }
 
-	virtual void tick();
+    virtual bool hasFocus(int iPad);
+
+    virtual void tick();
 
 private:
-	void Initialise();
-	void GetSaveInfo();
+    void Initialise();
+    void GetSaveInfo();
 
 protected:
-	// TODO: This should be pure virtual in this class
-	virtual std::wstring getMoviePath();
+    // TODO: This should be pure virtual in this class
+    virtual std::wstring getMoviePath();
 
 public:
+    static int LoadSaveDataThumbnailReturned(void* lpParam,
+                                             std::uint8_t* pbThumbnail,
+                                             unsigned int thumbnailBytes);
+    static int DeleteSaveDialogReturned(void* pParam, int iPad,
+                                        C4JStorage::EMessageResult result);
+    static int DeleteSaveDataReturned(void* lpParam, bool bRes);
 
-	static int LoadSaveDataThumbnailReturned(void *lpParam, std::uint8_t *pbThumbnail, unsigned int thumbnailBytes);
-	static int DeleteSaveDialogReturned(void *pParam,int iPad,C4JStorage::EMessageResult result);
-	static int DeleteSaveDataReturned(void *lpParam,bool bRes);
 protected:
-	void handlePress(F64 controlId, F64 childId);
+    void handlePress(F64 controlId, F64 childId);
 };

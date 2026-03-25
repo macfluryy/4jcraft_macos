@@ -5,6 +5,7 @@
 #include "../../Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.h"
+#include "../../Headers/net.minecraft.world.level.levelgen.structure.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Util/WeighedTreasure.h"
 #include "../../IO/Files/FileHeader.h"
@@ -14,6 +15,35 @@ int StrongholdPieces::totalWeight = 0;
 std::list<StrongholdPieces::PieceWeight*> StrongholdPieces::currentPieces;
 StrongholdPieces::EPieceClass StrongholdPieces::imposedPiece;
 const bool StrongholdPieces::CHECK_AIR = true;
+
+void StrongholdPieces::loadStatic() {
+    StructureFeatureIO::setPieceId(eStructurePiece_ChestCorridor,
+                                   ChestCorridor::Create, L"SHCC");
+    StructureFeatureIO::setPieceId(eStructurePiece_FillerCorridor,
+                                   FillerCorridor::Create, L"SHFC");
+    StructureFeatureIO::setPieceId(eStructurePiece_FiveCrossing,
+                                   FiveCrossing::Create, L"SH5C");
+    StructureFeatureIO::setPieceId(eStructurePiece_LeftTurn, LeftTurn::Create,
+                                   L"SHLT");
+    StructureFeatureIO::setPieceId(eStructurePiece_Library, Library::Create,
+                                   L"SHLi");
+    StructureFeatureIO::setPieceId(eStructurePiece_PortalRoom,
+                                   PortalRoom::Create, L"SHPR");
+    StructureFeatureIO::setPieceId(eStructurePiece_PrisonHall,
+                                   PrisonHall::Create, L"SHPH");
+    StructureFeatureIO::setPieceId(eStructurePiece_RightTurn, RightTurn::Create,
+                                   L"SHRT");
+    StructureFeatureIO::setPieceId(eStructurePiece_StrongholdRoomCrossing,
+                                   RoomCrossing::Create, L"SHRC");
+    StructureFeatureIO::setPieceId(eStructurePiece_StairsDown,
+                                   StairsDown::Create, L"SHSD");
+    StructureFeatureIO::setPieceId(eStructurePiece_StrongholdStartPiece,
+                                   StartPiece::Create, L"SHStart");
+    StructureFeatureIO::setPieceId(eStructurePiece_Straight, Straight::Create,
+                                   L"SHS");
+    StructureFeatureIO::setPieceId(eStructurePiece_StraightStairsDown,
+                                   StraightStairsDown::Create, L"SHSSD");
+}
 
 StrongholdPieces::PieceWeight::PieceWeight(EPieceClass pieceClass, int weight,
                                            int maxPlaceCount)
@@ -223,8 +253,24 @@ StructurePiece* StrongholdPieces::generateAndAddPiece(
     return newPiece;
 }
 
+StrongholdPieces::StrongholdPiece::StrongholdPiece() {
+    entryDoor = OPENING;
+    // for reflection
+}
+
 StrongholdPieces::StrongholdPiece::StrongholdPiece(int genDepth)
-    : StructurePiece(genDepth) {}
+    : StructurePiece(genDepth) {
+    entryDoor = OPENING;
+}
+
+void StrongholdPieces::StrongholdPiece::addAdditonalSaveData(CompoundTag* tag) {
+    tag->putString(L"EntryDoor", _toString<int>(entryDoor));
+}
+
+void StrongholdPieces::StrongholdPiece::readAdditonalSaveData(
+    CompoundTag* tag) {
+    entryDoor = (SmallDoorType)_fromString<int>(tag->getString(L"EntryDoor"));
+}
 
 void StrongholdPieces::StrongholdPiece::generateSmallDoor(
     Level* level, Random* random, BoundingBox* chunkBB,
@@ -238,20 +284,20 @@ void StrongholdPieces::StrongholdPiece::generateSmallDoor(
                         footY + SMALL_DOOR_HEIGHT - 1, footZ, 0, 0, false);
             break;
         case WOOD_DOOR:
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY, footZ,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY, footZ,
                        chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY + 1,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY + 1, footZ,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY + 2, footZ,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 1, footY + 2,
                        footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY + 2,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY + 2,
                        footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 1,
-                       footY + 2, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2,
-                       footY + 2, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2,
-                       footY + 1, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2, footY,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY + 1,
                        footZ, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY, footZ,
+                       chunkBB);
             placeBlock(level, Tile::door_wood_Id, 0, footX + 1, footY, footZ,
                        chunkBB);
             placeBlock(level, Tile::door_wood_Id, DoorTile::UPPER_BIT,
@@ -276,20 +322,20 @@ void StrongholdPieces::StrongholdPiece::generateSmallDoor(
                        chunkBB);
             break;
         case IRON_DOOR:
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY, footZ,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY, footZ,
                        chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY + 1,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY + 1, footZ,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX, footY + 2, footZ,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 1, footY + 2,
                        footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX, footY + 2,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY + 2,
                        footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 1,
-                       footY + 2, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2,
-                       footY + 2, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2,
-                       footY + 1, footZ, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, footX + 2, footY,
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY + 1,
                        footZ, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, footX + 2, footY, footZ,
+                       chunkBB);
             placeBlock(level, Tile::door_iron_Id, 0, footX + 1, footY, footZ,
                        chunkBB);
             placeBlock(level, Tile::door_iron_Id, DoorTile::UPPER_BIT,
@@ -431,6 +477,10 @@ bool StrongholdPieces::StrongholdPiece::isOkBox(BoundingBox* box,
     return bIsOk;
 }
 
+StrongholdPieces::FillerCorridor::FillerCorridor() : steps(0) {
+    // for reflection
+}
+
 StrongholdPieces::FillerCorridor::FillerCorridor(int genDepth, Random* random,
                                                  BoundingBox* corridorBox,
                                                  int direction)
@@ -440,6 +490,16 @@ StrongholdPieces::FillerCorridor::FillerCorridor(int genDepth, Random* random,
                 : corridorBox->getXSpan()) {
     orientation = direction;
     boundingBox = corridorBox;
+}
+
+void StrongholdPieces::FillerCorridor::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putInt(L"Steps", steps);
+}
+
+void StrongholdPieces::FillerCorridor::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    steps = tag->getInt(L"Steps");
 }
 
 BoundingBox* StrongholdPieces::FillerCorridor::findPieceBox(
@@ -469,8 +529,7 @@ BoundingBox* StrongholdPieces::FillerCorridor::findPieceBox(
             if (!collisionPiece->getBoundingBox()->intersects(box)) {
                 delete box;
                 // the corridor has shrunk enough to fit, but make it
-                // one step too big to build an entrance into the other
-                // block
+                // one step too big to build an entrance into the other block
                 return BoundingBox::orientBox(footX, footY, footZ, -1, -1, 0, 5,
                                               5, depth, direction);
             }
@@ -490,34 +549,39 @@ bool StrongholdPieces::FillerCorridor::postProcess(Level* level, Random* random,
     // filler corridor
     for (int i = 0; i < steps; i++) {
         // row 0
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 0, 0, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 0, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, 0, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 0, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 4, 0, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 0, 0, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 1, 0, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 2, 0, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 3, 0, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 4, 0, i, chunkBB);
         // row 1-3
         for (int y = 1; y <= 3; y++) {
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 0, y, i, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 0, y, i, chunkBB);
             placeBlock(level, 0, 0, 1, y, i, chunkBB);
             placeBlock(level, 0, 0, 2, y, i, chunkBB);
             placeBlock(level, 0, 0, 3, y, i, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 4, y, i, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 4, y, i, chunkBB);
         }
         // row 4
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 0, 4, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 4, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, 4, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 4, i, chunkBB);
-        placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 4, 4, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 0, 4, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 1, 4, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 2, 4, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 3, 4, i, chunkBB);
+        placeBlock(level, Tile::stoneBrick_Id, 0, 4, 4, i, chunkBB);
     }
 
     return true;
 }
 
+StrongholdPieces::StairsDown::StairsDown() {
+    // for reflection
+}
+
 StrongholdPieces::StairsDown::StairsDown(int genDepth, Random* random, int west,
                                          int north)
-    : StrongholdPiece(genDepth), isSource(true), entryDoor(OPENING) {
+    : StrongholdPiece(genDepth), isSource(true) {
     orientation = random->nextInt(4);
+    entryDoor = OPENING;
 
     switch (orientation) {
         case Direction::NORTH:
@@ -534,11 +598,20 @@ StrongholdPieces::StairsDown::StairsDown(int genDepth, Random* random, int west,
 
 StrongholdPieces::StairsDown::StairsDown(int genDepth, Random* random,
                                          BoundingBox* stairsBox, int direction)
-    : StrongholdPiece(genDepth),
-      isSource(false),
-      entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth), isSource(false) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void StrongholdPieces::StairsDown::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Source", isSource);
+}
+
+void StrongholdPieces::StairsDown::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    isSource = tag->getBoolean(L"Source");
 }
 
 void StrongholdPieces::StairsDown::addChildren(
@@ -587,31 +660,35 @@ bool StrongholdPieces::StairsDown::postProcess(Level* level, Random* random,
     generateSmallDoor(level, random, chunkBB, OPENING, 1, 1, depth - 1);
 
     // stair steps
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, 6, 1, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 5, 1, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 6, 1, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 5, 1, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 1, 6,
                1, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 5, 2, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 4, 3, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 5, 2, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 4, 3, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 1, 5,
                3, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, 4, 3, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 3, 3, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 4, 3, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 3, 3, 3, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 3, 4,
                3, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 3, 2, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 2, 1, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 3, 3, 2, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 3, 2, 1, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 3, 3,
                1, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, 2, 1, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 1, 1, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 2, 2, 1, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 1, 1, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 1, 2,
                1, chunkBB);
-    placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, 1, 2, chunkBB);
+    placeBlock(level, Tile::stoneBrick_Id, 0, 1, 1, 2, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::STONE_SLAB, 1, 1,
                3, chunkBB);
 
     return true;
+}
+
+StrongholdPieces::StartPiece::StartPiece() {
+    // for reflection
 }
 
 StrongholdPieces::StartPiece::StartPiece(int genDepth, Random* random, int west,
@@ -632,14 +709,30 @@ TilePos* StrongholdPieces::StartPiece::getLocatorPosition() {
     return StairsDown::getLocatorPosition();
 }
 
+StrongholdPieces::Straight::Straight() {
+    // for reflection
+}
+
 StrongholdPieces::Straight::Straight(int genDepth, Random* random,
                                      BoundingBox* stairsBox, int direction)
     : StrongholdPiece(genDepth),
-      entryDoor(randomSmallDoor(random)),
       leftChild(random->nextInt(2) == 0),
       rightChild(random->nextInt(2) == 0) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void StrongholdPieces::Straight::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Left", leftChild);
+    tag->putBoolean(L"Right", rightChild);
+}
+
+void StrongholdPieces::Straight::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    leftChild = tag->getBoolean(L"Left");
+    rightChild = tag->getBoolean(L"Right");
 }
 
 void StrongholdPieces::Straight::addChildren(StructurePiece* startPiece,
@@ -719,14 +812,36 @@ WeighedTreasure*
         new WeighedTreasure(Item::helmet_iron_Id, 0, 1, 1, 5),
         new WeighedTreasure(Item::leggings_iron_Id, 0, 1, 1, 5),
         new WeighedTreasure(Item::boots_iron_Id, 0, 1, 1, 5),
-        new WeighedTreasure(Item::apple_gold_Id, 0, 1, 1, 1)};
+        new WeighedTreasure(Item::apple_gold_Id, 0, 1, 1, 1),
+        // very rare for strongholds ...
+        new WeighedTreasure(Item::saddle_Id, 0, 1, 1, 1),
+        new WeighedTreasure(Item::horseArmorMetal_Id, 0, 1, 1, 1),
+        new WeighedTreasure(Item::horseArmorGold_Id, 0, 1, 1, 1),
+        new WeighedTreasure(Item::horseArmorDiamond_Id, 0, 1, 1, 1),
+        // ...
+};
+
+StrongholdPieces::ChestCorridor::ChestCorridor() {
+    // for reflection
+}
 
 StrongholdPieces::ChestCorridor::ChestCorridor(int genDepth, Random* random,
                                                BoundingBox* stairsBox,
                                                int direction)
-    : StrongholdPiece(genDepth), entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void StrongholdPieces::ChestCorridor::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Chest", hasPlacedChest);
+}
+
+void StrongholdPieces::ChestCorridor::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    hasPlacedChest = tag->getBoolean(L"Chest");
 }
 
 void StrongholdPieces::ChestCorridor::addChildren(
@@ -771,8 +886,8 @@ bool StrongholdPieces::ChestCorridor::postProcess(Level* level, Random* random,
     generateSmallDoor(level, random, chunkBB, OPENING, 1, 1, depth - 1);
 
     // chest placement
-    generateBox(level, chunkBB, 3, 1, 2, 3, 1, 4, Tile::stoneBrickSmooth_Id,
-                Tile::stoneBrickSmooth_Id, false);
+    generateBox(level, chunkBB, 3, 1, 2, 3, 1, 4, Tile::stoneBrick_Id,
+                Tile::stoneBrick_Id, false);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::SMOOTHBRICK_SLAB,
                3, 1, 1, chunkBB);
     placeBlock(level, Tile::stoneSlabHalf_Id, StoneSlabTile::SMOOTHBRICK_SLAB,
@@ -803,11 +918,16 @@ bool StrongholdPieces::ChestCorridor::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::StraightStairsDown::StraightStairsDown() {
+    // for reflection
+}
+
 StrongholdPieces::StraightStairsDown::StraightStairsDown(int genDepth,
                                                          Random* random,
                                                          BoundingBox* stairsBox,
                                                          int direction)
-    : StrongholdPiece(genDepth), entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
 }
@@ -866,21 +986,26 @@ bool StrongholdPieces::StraightStairsDown::postProcess(Level* level,
         placeBlock(level, Tile::stairs_stone_Id, orientationData, 3,
                    height - 5 - i, 1 + i, chunkBB);
         if (i < 5) {
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 1, height - 6 - i,
-                       1 + i, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 2, height - 6 - i,
-                       1 + i, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, height - 6 - i,
-                       1 + i, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 1, height - 6 - i, 1 + i,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 2, height - 6 - i, 1 + i,
+                       chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 3, height - 6 - i, 1 + i,
+                       chunkBB);
         }
     }
 
     return true;
 }
 
+StrongholdPieces::LeftTurn::LeftTurn() {
+    // for reflection
+}
+
 StrongholdPieces::LeftTurn::LeftTurn(int genDepth, Random* random,
                                      BoundingBox* stairsBox, int direction)
-    : StrongholdPiece(genDepth), entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
 }
@@ -938,6 +1063,10 @@ bool StrongholdPieces::LeftTurn::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::RightTurn::RightTurn() {
+    // for reflection
+}
+
 StrongholdPieces::RightTurn::RightTurn(int genDepth, Random* random,
                                        BoundingBox* stairsBox, int direction)
     : LeftTurn(genDepth, random, stairsBox, direction) {}
@@ -976,14 +1105,27 @@ bool StrongholdPieces::RightTurn::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::RoomCrossing::RoomCrossing() {
+    // for reflection
+}
+
 StrongholdPieces::RoomCrossing::RoomCrossing(int genDepth, Random* random,
                                              BoundingBox* stairsBox,
                                              int direction)
-    : StrongholdPiece(genDepth),
-      entryDoor(randomSmallDoor(random)),
-      type(random->nextInt(5)) {
+    : StrongholdPiece(genDepth), type(random->nextInt(5)) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
+}
+
+void StrongholdPieces::RoomCrossing::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putInt(L"Type", type);
+}
+
+void StrongholdPieces::RoomCrossing::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    type = tag->getInt(L"Type");
 }
 
 void StrongholdPieces::RoomCrossing::addChildren(
@@ -1046,9 +1188,9 @@ bool StrongholdPieces::RoomCrossing::postProcess(Level* level, Random* random,
             break;
         case 0:
             // middle torch pillar
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 1, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 2, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 3, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 1, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 2, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 3, 5, chunkBB);
             placeBlock(level, Tile::torch_Id, 0, 4, 3, 5, chunkBB);
             placeBlock(level, Tile::torch_Id, 0, 6, 3, 5, chunkBB);
             placeBlock(level, Tile::torch_Id, 0, 5, 3, 4, chunkBB);
@@ -1064,42 +1206,38 @@ bool StrongholdPieces::RoomCrossing::postProcess(Level* level, Random* random,
             break;
         case 1: {
             for (int i = 0; i < 5; i++) {
-                placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3, 1, 3 + i,
-                           chunkBB);
-                placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 7, 1, 3 + i,
-                           chunkBB);
-                placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3 + i, 1, 3,
-                           chunkBB);
-                placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 3 + i, 1, 7,
-                           chunkBB);
+                placeBlock(level, Tile::stoneBrick_Id, 0, 3, 1, 3 + i, chunkBB);
+                placeBlock(level, Tile::stoneBrick_Id, 0, 7, 1, 3 + i, chunkBB);
+                placeBlock(level, Tile::stoneBrick_Id, 0, 3 + i, 1, 3, chunkBB);
+                placeBlock(level, Tile::stoneBrick_Id, 0, 3 + i, 1, 7, chunkBB);
             }
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 1, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 2, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrickSmooth_Id, 0, 5, 3, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 1, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 2, 5, chunkBB);
+            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 3, 5, chunkBB);
             placeBlock(level, Tile::water_Id, 0, 5, 4, 5, chunkBB);
         } break;
         case 2: {
             for (int z = 1; z <= 9; z++) {
-                placeBlock(level, Tile::stoneBrick_Id, 0, 1, 3, z, chunkBB);
-                placeBlock(level, Tile::stoneBrick_Id, 0, 9, 3, z, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 1, 3, z, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 9, 3, z, chunkBB);
             }
             for (int x = 1; x <= 9; x++) {
-                placeBlock(level, Tile::stoneBrick_Id, 0, x, 3, 1, chunkBB);
-                placeBlock(level, Tile::stoneBrick_Id, 0, x, 3, 9, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, x, 3, 1, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, x, 3, 9, chunkBB);
             }
-            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 1, 4, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 1, 6, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 3, 4, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 5, 3, 6, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 4, 1, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 6, 1, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 4, 3, 5, chunkBB);
-            placeBlock(level, Tile::stoneBrick_Id, 0, 6, 3, 5, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 5, 1, 4, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 5, 1, 6, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 5, 3, 4, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 5, 3, 6, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 4, 1, 5, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 6, 1, 5, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 4, 3, 5, chunkBB);
+            placeBlock(level, Tile::cobblestone_Id, 0, 6, 3, 5, chunkBB);
             for (int y = 1; y <= 3; y++) {
-                placeBlock(level, Tile::stoneBrick_Id, 0, 4, y, 4, chunkBB);
-                placeBlock(level, Tile::stoneBrick_Id, 0, 6, y, 4, chunkBB);
-                placeBlock(level, Tile::stoneBrick_Id, 0, 4, y, 6, chunkBB);
-                placeBlock(level, Tile::stoneBrick_Id, 0, 6, y, 6, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 4, y, 4, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 6, y, 4, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 4, y, 6, chunkBB);
+                placeBlock(level, Tile::cobblestone_Id, 0, 6, y, 6, chunkBB);
             }
             placeBlock(level, Tile::torch_Id, 0, 5, 3, 5, chunkBB);
             for (int z = 2; z <= 8; z++) {
@@ -1138,9 +1276,14 @@ bool StrongholdPieces::RoomCrossing::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::PrisonHall::PrisonHall() {
+    // for reflection
+}
+
 StrongholdPieces::PrisonHall::PrisonHall(int genDepth, Random* random,
                                          BoundingBox* stairsBox, int direction)
-    : StrongholdPiece(genDepth), entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
 }
@@ -1218,13 +1361,27 @@ bool StrongholdPieces::PrisonHall::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::Library::Library() {
+    isTall = false;
+    // for reflection
+}
+
 StrongholdPieces::Library::Library(int genDepth, Random* random,
                                    BoundingBox* roomBox, int direction)
-    : StrongholdPiece(genDepth),
-      entryDoor(randomSmallDoor(random)),
-      isTall(roomBox->getYSpan() > height) {
+    : StrongholdPiece(genDepth), isTall(roomBox->getYSpan() > height) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = roomBox;
+}
+
+void StrongholdPieces::Library::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Tall", isTall);
+}
+
+void StrongholdPieces::Library::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    isTall = tag->getBoolean(L"Tall");
 }
 
 StrongholdPieces::Library* StrongholdPieces::Library::createPiece(
@@ -1426,10 +1583,16 @@ bool StrongholdPieces::Library::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::FiveCrossing::FiveCrossing() {
+    leftLow = leftHigh = rightLow = rightHigh = false;
+    // for reflection
+}
+
 StrongholdPieces::FiveCrossing::FiveCrossing(int genDepth, Random* random,
                                              BoundingBox* stairsBox,
                                              int direction)
-    : StrongholdPiece(genDepth), entryDoor(randomSmallDoor(random)) {
+    : StrongholdPiece(genDepth) {
+    entryDoor = randomSmallDoor(random);
     orientation = direction;
     boundingBox = stairsBox;
 
@@ -1437,6 +1600,22 @@ StrongholdPieces::FiveCrossing::FiveCrossing(int genDepth, Random* random,
     leftHigh = random->nextBoolean();
     rightLow = random->nextBoolean();
     rightHigh = random->nextInt(3) > 0;
+}
+
+void StrongholdPieces::FiveCrossing::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"leftLow", leftLow);
+    tag->putBoolean(L"leftHigh", leftHigh);
+    tag->putBoolean(L"rightLow", rightLow);
+    tag->putBoolean(L"rightHigh", rightHigh);
+}
+
+void StrongholdPieces::FiveCrossing::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    leftLow = tag->getBoolean(L"leftLow");
+    leftHigh = tag->getBoolean(L"leftHigh");
+    rightLow = tag->getBoolean(L"rightLow");
+    rightHigh = tag->getBoolean(L"rightHigh");
 }
 
 void StrongholdPieces::FiveCrossing::addChildren(
@@ -1544,12 +1723,26 @@ bool StrongholdPieces::FiveCrossing::postProcess(Level* level, Random* random,
     return true;
 }
 
+StrongholdPieces::PortalRoom::PortalRoom() {
+    // for reflection
+}
+
 StrongholdPieces::PortalRoom::PortalRoom(int genDepth, Random* random,
                                          BoundingBox* box, int direction)
     : StrongholdPiece(genDepth) {
     hasPlacedMobSpawner = false;
     orientation = direction;
     boundingBox = box;
+}
+
+void StrongholdPieces::PortalRoom::addAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::addAdditonalSaveData(tag);
+    tag->putBoolean(L"Mob", hasPlacedMobSpawner);
+}
+
+void StrongholdPieces::PortalRoom::readAdditonalSaveData(CompoundTag* tag) {
+    StrongholdPiece::readAdditonalSaveData(tag);
+    hasPlacedMobSpawner = tag->getBoolean(L"Mob");
 }
 
 void StrongholdPieces::PortalRoom::addChildren(
@@ -1629,8 +1822,7 @@ bool StrongholdPieces::PortalRoom::postProcess(Level* level, Random* random,
     }
 
     // stair
-    int orientationData =
-        getOrientationData(Tile::stairs_stoneBrickSmooth_Id, 3);
+    int orientationData = getOrientationData(Tile::stairs_stoneBrick_Id, 3);
     generateBox(level, chunkBB, 4, 1, 5, 6, 1, 7, false, random,
                 (BlockSelector*)smoothStoneSelector);
     generateBox(level, chunkBB, 4, 2, 6, 6, 2, 7, false, random,
@@ -1638,12 +1830,12 @@ bool StrongholdPieces::PortalRoom::postProcess(Level* level, Random* random,
     generateBox(level, chunkBB, 4, 3, 7, 6, 3, 7, false, random,
                 (BlockSelector*)smoothStoneSelector);
     for (int x = 4; x <= 6; x++) {
-        placeBlock(level, Tile::stairs_stoneBrickSmooth_Id, orientationData, x,
-                   1, 4, chunkBB);
-        placeBlock(level, Tile::stairs_stoneBrickSmooth_Id, orientationData, x,
-                   2, 5, chunkBB);
-        placeBlock(level, Tile::stairs_stoneBrickSmooth_Id, orientationData, x,
-                   3, 6, chunkBB);
+        placeBlock(level, Tile::stairs_stoneBrick_Id, orientationData, x, 1, 4,
+                   chunkBB);
+        placeBlock(level, Tile::stairs_stoneBrick_Id, orientationData, x, 2, 5,
+                   chunkBB);
+        placeBlock(level, Tile::stairs_stoneBrick_Id, orientationData, x, 3, 6,
+                   chunkBB);
     }
 
     int north = Direction::NORTH;
@@ -1749,11 +1941,13 @@ bool StrongholdPieces::PortalRoom::postProcess(Level* level, Random* random,
             level->getLevelData()->setHasStrongholdEndPortal();
 
             hasPlacedMobSpawner = true;
-            level->setTile(x, y, z, Tile::mobSpawner_Id);
+            level->setTileAndData(x, y, z, Tile::mobSpawner_Id, 0,
+                                  Tile::UPDATE_CLIENTS);
             std::shared_ptr<MobSpawnerTileEntity> entity =
                 std::dynamic_pointer_cast<MobSpawnerTileEntity>(
                     level->getTileEntity(x, y, z));
-            if (entity != NULL) entity->setEntityId(L"Silverfish");
+            if (entity != NULL)
+                entity->getSpawner()->setEntityId(L"Silverfish");
         }
     }
 
@@ -1764,7 +1958,7 @@ void StrongholdPieces::SmoothStoneSelector::next(Random* random, int worldX,
                                                  int worldY, int worldZ,
                                                  bool isEdge) {
     if (isEdge) {
-        nextId = Tile::stoneBrickSmooth_Id;
+        nextId = Tile::stoneBrick_Id;
 
         float selection = random->nextFloat();
         if (selection < 0.2f) {

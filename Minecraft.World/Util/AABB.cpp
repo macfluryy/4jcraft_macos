@@ -107,6 +107,17 @@ AABB* AABB::grow(double xa, double ya, double za) {
     return AABB::newTemp(_x0, _y0, _z0, _x1, _y1, _z1);
 }
 
+AABB* AABB::minmax(AABB* other) {
+    double _x0 = std::min(x0, other->x0);
+    double _y0 = std::min(y0, other->y0);
+    double _z0 = std::min(z0, other->z0);
+    double _x1 = std::max(x1, other->x1);
+    double _y1 = std::max(y1, other->y1);
+    double _z1 = std::max(z1, other->z1);
+
+    return newTemp(_x0, _y0, _z0, _x1, _y1, _z1);
+}
+
 AABB* AABB::cloneMove(double xa, double ya, double za) {
     return AABB::newTemp(x0 + xa, y0 + ya, z0 + za, x1 + xa, y1 + ya, z1 + za);
 }
@@ -294,12 +305,12 @@ bool AABB::containsZ(Vec3* v) {
 }
 
 void AABB::set(AABB* b) {
-    this->x0 = b->x0;
-    this->y0 = b->y0;
-    this->z0 = b->z0;
-    this->x1 = b->x1;
-    this->y1 = b->y1;
-    this->z1 = b->z1;
+    x0 = b->x0;
+    y0 = b->y0;
+    z0 = b->z0;
+    x1 = b->x1;
+    y1 = b->y1;
+    z1 = b->z1;
 }
 
 std::wstring AABB::toString() {

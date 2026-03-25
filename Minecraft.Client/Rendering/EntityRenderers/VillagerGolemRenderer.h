@@ -7,19 +7,17 @@ class VillagerGolemModel;
 class VillagerGolemRenderer : public MobRenderer {
 private:
     VillagerGolemModel* golemModel;
+    static ResourceLocation GOLEM_LOCATION;
 
 public:
     VillagerGolemRenderer();
+    virtual void render(std::shared_ptr<Entity> mob, double x, double y,
+                        double z, float rot, float a);
+    virtual ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
 
 protected:
-    int prepareArmor(VillagerGolemModel* villagerGolem, int layer, float a);
-
-public:
-    void render(std::shared_ptr<Entity> mob, double x, double y, double z,
-                float rot, float a);
-
-protected:
-    void setupRotations(std::shared_ptr<Mob> _mob, float bob, float bodyRot,
-                        float a);
-    void additionalRendering(std::shared_ptr<Mob> mob, float a);
+    virtual void setupRotations(std::shared_ptr<LivingEntity> _mob, float bob,
+                                float bodyRot, float a);
+    virtual void additionalRendering(std::shared_ptr<LivingEntity> mob,
+                                     float a);
 };

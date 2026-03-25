@@ -16,5 +16,5 @@ public:
         return stream->read(b, offset, length);
     };
     virtual void close() { return stream->close(); };
-    virtual __int64 skip(__int64 n) { return 0; };
+    virtual int64_t skip(int64_t n) { return 0; };
 };

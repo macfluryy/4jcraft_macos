@@ -172,9 +172,9 @@ void Vec3::xRot(float degs) {
     double yy = y * _cos + z * _sin;
     double zz = z * _cos - y * _sin;
 
-    this->x = xx;
-    this->y = yy;
-    this->z = zz;
+    x = xx;
+    y = yy;
+    z = zz;
 }
 
 void Vec3::yRot(float degs) {
@@ -186,9 +186,9 @@ void Vec3::yRot(float degs) {
     double yy = y;
     double zz = z * _cos - x * _sin;
 
-    this->x = xx;
-    this->y = yy;
-    this->z = zz;
+    x = xx;
+    y = yy;
+    z = zz;
 }
 
 void Vec3::zRot(float degs) {
@@ -200,9 +200,9 @@ void Vec3::zRot(float degs) {
     double yy = y * _cos - x * _sin;
     double zz = z;
 
-    this->x = xx;
-    this->y = yy;
-    this->z = zz;
+    x = xx;
+    y = yy;
+    z = zz;
 }
 
 // Returns 0 if this point is within the box
@@ -228,4 +228,25 @@ double Vec3::distanceTo(AABB* box) {
         zd = z - box->z1;
 
     return sqrt(xd * xd + yd * yd + zd * zd);
+}
+
+Vec3* Vec3::closestPointOnLine(Vec3* p1, Vec3* p2) {
+    Vec3* diff = newTemp(x - p1->x, y - p1->y, z - p1->z);
+    Vec3* dir = newTemp(p2->x - p1->x, p2->y - p1->y, p2->z - p1->z);
+    float dot1 = diff->dot(dir);
+    if (dot1 <= 0.0f) return p1;
+
+    float dot2 = dir->dot(dir);
+
+    if (dot2 <= dot1) return p2;
+
+    float t = dot1 / dot2;
+    return newTemp(p1->x + t * dir->x, p1->y + t * dir->y, p1->z + t * dir->z);
+}
+
+double Vec3::distanceFromLine(Vec3* p1, Vec3* p2) {
+    Vec3* closestPoint = closestPointOnLine(p1, p2);
+    Vec3* diff =
+        newTemp(x - closestPoint->x, y - closestPoint->y, z - closestPoint->z);
+    return diff->length();
 }

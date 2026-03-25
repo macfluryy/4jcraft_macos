@@ -3,6 +3,9 @@
 #include "Item.h"
 
 class RecordingItem : public Item {
+private:
+    static std::unordered_map<std::wstring, RecordingItem*> BY_NAME;
+
 public:
     const std::wstring recording;
 
@@ -10,7 +13,6 @@ public
     :  // 4J Stu - Was protected in Java, but the can't access it where we need
     RecordingItem(int id, const std::wstring& recording);
 
-    //@Override
     Icon* getIcon(int auxValue);
     virtual bool useOn(std::shared_ptr<ItemInstance> itemInstance,
                        std::shared_ptr<Player> player, Level* level, int x,
@@ -19,11 +21,9 @@ public
 
     virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                                  std::shared_ptr<Player> player,
-                                 std::vector<std::wstring>* lines,
-                                 bool advanced,
-                                 std::vector<std::wstring>& unformattedStrings);
+                                 std::vector<HtmlString>* lines, bool advanced);
     virtual const Rarity* getRarity(std::shared_ptr<ItemInstance> itemInstance);
 
-    //@Override
     void registerIcons(IconRegister* iconRegister);
+    static RecordingItem* getByName(const std::wstring& name);
 };

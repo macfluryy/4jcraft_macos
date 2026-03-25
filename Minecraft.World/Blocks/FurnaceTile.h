@@ -1,12 +1,12 @@
 #pragma once
-#include "TileEntities/EntityTile.h"
+#include "BaseEntityTile.h"
 
 class Mob;
 class Player;
 class Random;
 class ChunkRebuildData;
 
-class FurnaceTile : public EntityTile {
+class FurnaceTile : public BaseEntityTile {
     friend class Tile;
     friend class ChunkRebuildData;
 
@@ -44,6 +44,12 @@ protected:
 
 public:
     virtual void setPlacedBy(Level* level, int x, int y, int z,
-                             std::shared_ptr<Mob> by);
+                             std::shared_ptr<LivingEntity> by,
+                             std::shared_ptr<ItemInstance> itemInstance);
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);
+
+    virtual bool hasAnalogOutputSignal();
+    virtual int getAnalogOutputSignal(Level* level, int x, int y, int z,
+                                      int dir);
+    virtual int cloneTileId(Level* level, int x, int y, int z);
 };

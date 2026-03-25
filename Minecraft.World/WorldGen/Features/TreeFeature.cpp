@@ -83,7 +83,8 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
                 if (abs(xo) == offs && abs(zo) == offs &&
                     (random->nextInt(2) == 0 || yo == 0))
                     continue;
-                if (!Tile::solid[level->getTile(xx, yy, zz)])
+                int t = level->getTile(xx, yy, zz);
+                if (t == 0 || t == Tile::leaves_Id)
                     placeBlock(level, xx, yy, zz, Tile::leaves_Id, leafType);
             }
         }

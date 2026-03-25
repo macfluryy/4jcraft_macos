@@ -7,8 +7,9 @@
 SaddleItem::SaddleItem(int id) : Item(id) { maxStackSize = 1; }
 
 bool SaddleItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance,
-                               std::shared_ptr<Mob> mob) {
-    if (std::dynamic_pointer_cast<Pig>(mob)) {
+                               std::shared_ptr<Player> player,
+                               std::shared_ptr<LivingEntity> mob) {
+    if ((mob != NULL) && mob->instanceof(eTYPE_PIG)) {
         std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(mob);
         if (!pig->hasSaddle() && !pig->isBaby()) {
             pig->setSaddle(true);
@@ -20,8 +21,8 @@ bool SaddleItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance,
 }
 
 bool SaddleItem::hurtEnemy(std::shared_ptr<ItemInstance> itemInstance,
-                           std::shared_ptr<Mob> mob,
-                           std::shared_ptr<Mob> attacker) {
-    interactEnemy(itemInstance, mob);
+                           std::shared_ptr<LivingEntity> mob,
+                           std::shared_ptr<LivingEntity> attacker) {
+    interactEnemy(itemInstance, nullptr, mob);
     return true;
 }

@@ -2,52 +2,55 @@
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "StartFeature.h"
 
-StartFeature::StartFeature()
-{
-	m_chunkX = 0;
-	m_chunkZ = 0;
-	m_feature = StructureFeature::eFeature_Temples;
+StartFeature::StartFeature() {
+    m_chunkX = 0;
+    m_chunkZ = 0;
+    m_orientation = 0;
+    m_feature = StructureFeature::eFeature_Temples;
 }
 
-void StartFeature::writeAttributes(DataOutputStream *dos, unsigned int numAttrs)
-{
-	GameRuleDefinition::writeAttributes(dos, numAttrs + 3);
+void StartFeature::writeAttributes(DataOutputStream* dos,
+                                   unsigned int numAttrs) {
+    GameRuleDefinition::writeAttributes(dos, numAttrs + 4);
 
-	ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkX);
-	dos->writeUTF(_toString(m_chunkX));
-	ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkZ);
-	dos->writeUTF(_toString(m_chunkZ));
-	ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_feature);
-	dos->writeUTF(_toString((int)m_feature));
+    ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkX);
+    dos->writeUTF(_toString(m_chunkX));
+    ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkZ);
+    dos->writeUTF(_toString(m_chunkZ));
+    ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_feature);
+    dos->writeUTF(_toString((int)m_feature));
+    ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_orientation);
+    dos->writeUTF(_toString(m_orientation));
 }
 
-void StartFeature::addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue)
-{
-	if(attributeName.compare(L"chunkX") == 0)
-	{
-		int value = _fromString<int>(attributeValue);
-		m_chunkX = value;
-		app.DebugPrintf("StartFeature: Adding parameter chunkX=%d\n",m_chunkX);
-	}
-	else if(attributeName.compare(L"chunkZ") == 0)
-	{
-		int value = _fromString<int>(attributeValue);
-		m_chunkZ = value;
-		app.DebugPrintf("StartFeature: Adding parameter chunkZ=%d\n",m_chunkZ);
-	}
-	else if(attributeName.compare(L"feature") == 0)
-	{
-		int value = _fromString<int>(attributeValue);
-		m_feature = (StructureFeature::EFeatureTypes)value;
-		app.DebugPrintf("StartFeature: Adding parameter feature=%d\n",m_feature);
-	}
-	else
-	{
-		GameRuleDefinition::addAttribute(attributeName, attributeValue);
-	}
+void StartFeature::addAttribute(const std::wstring& attributeName,
+                                const std::wstring& attributeValue) {
+    if (attributeName.compare(L"chunkX") == 0) {
+        int value = _fromString<int>(attributeValue);
+        m_chunkX = value;
+        app.DebugPrintf("StartFeature: Adding parameter chunkX=%d\n", m_chunkX);
+    } else if (attributeName.compare(L"chunkZ") == 0) {
+        int value = _fromString<int>(attributeValue);
+        m_chunkZ = value;
+        app.DebugPrintf("StartFeature: Adding parameter chunkZ=%d\n", m_chunkZ);
+    } else if (attributeName.compare(L"orientation") == 0) {
+        int value = _fromString<int>(attributeValue);
+        m_orientation = value;
+        app.DebugPrintf("StartFeature: Adding parameter orientation=%d\n",
+                        m_orientation);
+    } else if (attributeName.compare(L"feature") == 0) {
+        int value = _fromString<int>(attributeValue);
+        m_feature = (StructureFeature::EFeatureTypes)value;
+        app.DebugPrintf("StartFeature: Adding parameter feature=%d\n",
+                        m_feature);
+    } else {
+        GameRuleDefinition::addAttribute(attributeName, attributeValue);
+    }
 }
 
-bool StartFeature::isFeatureChunk(int chunkX, int chunkZ, StructureFeature::EFeatureTypes feature)
-{
-	return chunkX == m_chunkX && chunkZ == m_chunkZ && feature == m_feature;
+bool StartFeature::isFeatureChunk(int chunkX, int chunkZ,
+                                  StructureFeature::EFeatureTypes feature,
+                                  int* orientation) {
+    if (orientation != NULL) *orientation = m_orientation;
+    return chunkX == m_chunkX && chunkZ == m_chunkZ && feature == m_feature;
 }

@@ -36,7 +36,7 @@ private:
     Level* level;
 
 public:
-    HellRandomLevelSource(Level* level, __int64 seed);
+    HellRandomLevelSource(Level* level, int64_t seed);
     ~HellRandomLevelSource();
 
     NetherBridgeFeature* netherBridgeFeature;
@@ -72,4 +72,5 @@ public:
     virtual TilePos* findNearestMapFeature(Level* level,
                                            const std::wstring& featureName,
                                            int x, int y, int z);
+    virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
 };

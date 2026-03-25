@@ -6,7 +6,7 @@
 #include "../Items/BowItem.h"
 #include "../Items/BowlFoodItem.h"
 #include "../Items/BucketItem.h"
-#include "../Items/TileItems/ClothTileItem.h"
+#include "../Items/TileItems/WoolTileItem.h"
 #include "../Items/CoalItem.h"
 #include "../Items/ComplexItem.h"
 #include "../Items/DiggerItem.h"
@@ -38,14 +38,12 @@
 #include "../Items/TileItems/StoneSlabTileItem.h"
 #include "../Items/TileItems/TileItem.h"
 #include "../Items/TileItems/PlanterTileItem.h"
-#include "../Items/TileItems/TreeTileItem.h"
 #include "../Items/WeaponItem.h"
 
 // 1.8.2
 #include "../Items/TileItems/AuxDataTileItem.h"
 #include "../Items/TileItems/ColoredTileItem.h"
 #include "../Util/UseAnim.h"
-#include "../Items/TileItems/StoneMonsterTileItem.h"
 
 // 1.0.1
 #include "../Items/BottleItem.h"
@@ -57,12 +55,11 @@
 #include "../Util/Rarity.h"
 #include "../Items/TileItems/WaterLilyTileItem.h"
 #include "../Items/ExperienceItem.h"  // 4J Stu brought forward
-#include "../Items/TileItems/SmoothStoneBrickTileItem.h"  // 4J Stu brought forward
 
 // TU9
 #include "../Items/FireChargeItem.h"
 #include "../Entities/Mobs/ItemFrame.h"
-#include "../Items/MonsterPlacerItem.h"
+#include "../Items/SpawnEggItem.h"
 #include "../Items/TileItems/MultiTextureTileItem.h"
 
 // TU12
@@ -75,6 +72,16 @@
 #include "../Items/EnchantedBookItem.h"
 #include "../Items/SeedFoodItem.h"
 
+// 1.6.4
+#include "../Items/FireworksChargeItem.h"
+#include "../Items/FireworksItem.h"
+#include "../Items/LeashItem.h"
+#include "../Items/NameTagItem.h"
+#include "../Items/SimpleFoiledItem.h"
+#include "../Items/SnowItem.h"
+#include "../Items/EmptyMapItem.h"
+
 // 4J Added
 #include "../Items/ClockItem.h"
 #include "../Items/CompassItem.h"
+#include "../Util/HtmlString.h"

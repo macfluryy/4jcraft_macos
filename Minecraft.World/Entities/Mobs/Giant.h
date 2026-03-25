@@ -11,6 +11,9 @@ public:
 
     Giant(Level* level);
 
-    int getMaxHealth();
+protected:
+    virtual void registerAttributes();
+
+public:
     virtual float getWalkTargetValue(int x, int y, int z);
 };

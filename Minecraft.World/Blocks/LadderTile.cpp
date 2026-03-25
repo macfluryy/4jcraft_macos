@@ -2,7 +2,8 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "LadderTile.h"
 
-LadderTile::LadderTile(int id) : Tile(id, Material::decoration, false) {}
+LadderTile::LadderTile(int id)
+    : Tile(id, Material::decoration, false) {}
 
 AABB* LadderTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
@@ -80,7 +81,7 @@ void LadderTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (face == 5 && level->isSolidBlockingTile(x - 1, y, z)) ok = true;
     if (!ok) {
         spawnResources(level, x, y, z, face, 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 
     Tile::neighborChanged(level, x, y, z, type);

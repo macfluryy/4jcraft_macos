@@ -7,23 +7,28 @@ class StructurePiece;
 class Level;
 class BoundingBox;
 
-class XboxStructureActionPlaceContainer : public XboxStructureActionPlaceBlock
-{
+class XboxStructureActionPlaceContainer : public XboxStructureActionPlaceBlock {
 private:
-	std::vector<AddItemRuleDefinition *> m_items;
+    std::vector<AddItemRuleDefinition*> m_items;
+
 public:
-	XboxStructureActionPlaceContainer();
-	~XboxStructureActionPlaceContainer();
+    XboxStructureActionPlaceContainer();
+    ~XboxStructureActionPlaceContainer();
 
-	virtual ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_PlaceContainer; }
-	
-	virtual void getChildren(std::vector<GameRuleDefinition *> *children);
-	virtual GameRuleDefinition *addChild(ConsoleGameRules::EGameRuleType ruleType);
-	
-	// 4J-JEV: Super class handles attr-facing fine.
-	//virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
-	
-	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
+    virtual ConsoleGameRules::EGameRuleType getActionType() {
+        return ConsoleGameRules::eGameRuleType_PlaceContainer;
+    }
 
-	bool placeContainerInLevel(StructurePiece *structure, Level *level, BoundingBox *chunkBB);
+    virtual void getChildren(std::vector<GameRuleDefinition*>* children);
+    virtual GameRuleDefinition* addChild(
+        ConsoleGameRules::EGameRuleType ruleType);
+
+    // 4J-JEV: Super class handles attr-facing fine.
+    // virtual void writeAttributes(DataOutputStream *dos, UINT numAttributes);
+
+    virtual void addAttribute(const std::wstring& attributeName,
+                              const std::wstring& attributeValue);
+
+    bool placeContainerInLevel(StructurePiece* structure, Level* level,
+                               BoundingBox* chunkBB);
 };

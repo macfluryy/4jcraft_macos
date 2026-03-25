@@ -165,21 +165,21 @@ void Achievements::staticCtor() {
     // "requires" are ignored on xbox.
     Achievements::leaderOfThePack =
         (new Achievement(eAward_LeaderOfThePack, L"leaderOfThePack", 0, 0,
-                         Item::bone, (Achievement*)buildSword))
+                         Tile::treeTrunk, (Achievement*)buildSword))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::MOARTools =
-        (new Achievement(eAward_MOARTools, L"MOARTools", 0, 0, Item::shovel_diamond,
+        (new Achievement(eAward_MOARTools, L"MOARTools", 0, 0, Tile::treeTrunk,
                          (Achievement*)buildSword))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::dispenseWithThis =
         (new Achievement(eAward_DispenseWithThis, L"dispenseWithThis", 0, 0,
-                         Tile::dispenser, (Achievement*)buildSword))
+                         Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
     Achievements::InToTheNether =
         (new Achievement(eAward_InToTheNether, L"InToTheNether", 0, 0,
-                         Tile::portalTile, (Achievement*)buildSword))
+                         Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
 
     // 4J : WESTY : Added other awards.
@@ -196,7 +196,7 @@ void Achievements::staticCtor() {
 #ifdef _EXTENDED_ACHIEVEMENTS
     Achievements::eatPorkChop =
         (new Achievement(eAward_eatPorkChop, L"eatPorkChop", 0, 0,
-                         Item::porkChop_raw, (Achievement*)buildSword))
+                         Tile::treeTrunk, (Achievement*)buildSword))
             ->setAwardLocallyOnly()
             ->postConstruct();
 #else
@@ -298,13 +298,13 @@ void Achievements::staticCtor() {
             ->postConstruct();
     Achievements::repopulation =
         (new Achievement(eAward_repopulation, L"repopulation", 0, 0,
-                         Item::wheat, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     // Achievements::porkChoop			// // //
     // // // //
     Achievements::diamondsToYou =
         (new Achievement(eAward_diamondsToYou, L"diamondsToYou", 0, 0,
-                         Item::diamond, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     // Achievements::passingTheTime		= (new
     // Achievement(eAward_play100Days, L"passingTheTime",
@@ -315,63 +315,63 @@ void Achievements::staticCtor() {
     // )->postConstruct();
     Achievements::theHaggler =
         (new Achievement(eAward_theHaggler, L"theHaggler", 0, 0,
-                         Item::emerald, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::potPlanter =
         (new Achievement(eAward_potPlanter, L"potPlanter", 0, 0,
-                         Item::flowerPot, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::itsASign =
-        (new Achievement(eAward_itsASign, L"itsASign", 0, 0, Item::sign,
+        (new Achievement(eAward_itsASign, L"itsASign", 0, 0, Tile::bookshelf,
                          (Achievement*)NULL))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::ironBelly =
-        (new Achievement(eAward_ironBelly, L"ironBelly", 0, 0, Item::rotten_flesh,
+        (new Achievement(eAward_ironBelly, L"ironBelly", 0, 0, Tile::bookshelf,
                          (Achievement*)NULL))
             ->postConstruct();
     Achievements::haveAShearfulDay =
         (new Achievement(eAward_haveAShearfulDay, L"haveAShearfulDay", 0, 0,
-                         Item::shears, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     Achievements::rainbowCollection =
         (new Achievement(eAward_rainbowCollection, L"rainbowCollection", 0, 0,
-                         Tile::cloth, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::stayinFrosty =
         (new Achievement(eAward_stayinFrosty, L"stayingFrosty", 0, 0,
-                         Tile::ice, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     Achievements::chestfulOfCobblestone =
         (new Achievement(eAward_chestfulOfCobblestone, L"chestfulOfCobblestone",
-                         0, 0, Tile::rock, (Achievement*)NULL))
+                         0, 0, Tile::bookshelf, (Achievement*)NULL))
             ->setAwardLocallyOnly()
             ->postConstruct();
     Achievements::renewableEnergy =
         (new Achievement(eAward_renewableEnergy, L"renewableEnergy", 0, 0,
-                         Item::coal, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     Achievements::musicToMyEars =
         (new Achievement(eAward_musicToMyEars, L"musicToMyEars", 0, 0,
-                         Tile::musicBlock, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     Achievements::bodyGuard =
-        (new Achievement(eAward_bodyGuard, L"bodyGuard", 0, 0, Tile::pumpkin,
+        (new Achievement(eAward_bodyGuard, L"bodyGuard", 0, 0, Tile::bookshelf,
                          (Achievement*)NULL))
             ->postConstruct();
     Achievements::ironMan =
-        (new Achievement(eAward_ironMan, L"ironMan", 0, 0, Item::chestplate_iron,
+        (new Achievement(eAward_ironMan, L"ironMan", 0, 0, Tile::bookshelf,
                          (Achievement*)NULL))
             ->postConstruct();
     Achievements::zombieDoctor =
         (new Achievement(eAward_zombieDoctor, L"zombieDoctor", 0, 0,
-                         Item::apple_gold, (Achievement*)NULL))
+                         Tile::bookshelf, (Achievement*)NULL))
             ->postConstruct();
     Achievements::lionTamer =
-        (new Achievement(eAward_lionTamer, L"lionTamer", 0, 0, Item::fish_raw,
+        (new Achievement(eAward_lionTamer, L"lionTamer", 0, 0, Tile::bookshelf,
                          (Achievement*)NULL))
             ->postConstruct();
 #endif

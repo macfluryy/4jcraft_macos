@@ -67,6 +67,8 @@ void WaterLevelChunk::load() {}
 void WaterLevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 {}
 
+bool WaterLevelChunk::containsPlayer() { return false; }
+
 void WaterLevelChunk::markUnsaved() {}
 
 void WaterLevelChunk::getEntities(std::shared_ptr<Entity> except, AABB bb,
@@ -104,7 +106,7 @@ bool WaterLevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0,
     return false;
 }
 
-Random* WaterLevelChunk::getRandom(__int64 l) {
+Random* WaterLevelChunk::getRandom(int64_t l) {
     return new Random((level->getSeed() + x * x * 4987142 + x * 5947611 +
                        z * z * 4392871l + z * 389711) ^
                       l);

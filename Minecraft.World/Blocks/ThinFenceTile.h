@@ -33,5 +33,5 @@ protected:
     std::shared_ptr<ItemInstance> getSilkTouchItemInstance(int data);
 
 public:
-    void registerIcons(IconRegister* iconRegister);
+    virtual void registerIcons(IconRegister* iconRegister);
 };

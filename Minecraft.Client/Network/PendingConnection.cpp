@@ -258,3 +258,5 @@ std::wstring PendingConnection::getName() {
 }
 
 bool PendingConnection::isServerPacketListener() { return true; }
+
+bool PendingConnection::isDisconnected() { return done; }

@@ -2,26 +2,25 @@
 
 #include "UIControl_Base.h"
 
-class UIControl_CheckBox : public UIControl_Base
-{
+class UIControl_CheckBox : public UIControl_Base {
 private:
-	IggyName m_checkedProp, m_funcEnable, m_funcSetCheckBox;
+    IggyName m_checkedProp, m_funcEnable, m_funcSetCheckBox;
 
-	bool m_bChecked, m_bEnabled;
+    bool m_bChecked, m_bEnabled;
 
 public:
-	UIControl_CheckBox();
+    UIControl_CheckBox();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	void init(const std::wstring &label, int id, bool checked);
+    void init(UIString label, int id, bool checked);
 
-	bool IsChecked();
-	bool IsEnabled();
-	void SetEnable(bool enable);
-	void setChecked(bool checked);
-	void TouchSetCheckbox(bool checked);
+    bool IsChecked();
+    bool IsEnabled();
+    void SetEnable(bool enable);
+    void setChecked(bool checked);
+    void TouchSetCheckbox(bool checked);
 
-	virtual void ReInit();
-
+    virtual void ReInit();
 };

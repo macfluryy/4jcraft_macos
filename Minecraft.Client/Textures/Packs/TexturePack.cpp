@@ -1,7 +1,8 @@
 #include "../../Platform/stdafx.h"
 #include "TexturePack.h"
 
-std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
+std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
+                                  const char* pchBDPatchFileName /*= NULL*/) {
     std::wstring wDrive;
 #ifdef _XBOX
     if (bTitleUpdateTexture) {
@@ -21,16 +22,28 @@ std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
 
     // 4J-PB - we need to check for a BD patch - this is going to be an issue
     // for full DLC texture packs (Halloween)
+    char* pchUsrDir = NULL;
+    if (app.GetBootedFromDiscPatch() && pchBDPatchFileName != NULL) {
+        pchUsrDir = app.GetBDUsrDirPath(pchBDPatchFileName);
+        std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
 
-    char* pchUsrDir = getUsrDirPath();
+        if (bTitleUpdateTexture) {
+            wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
 
-    std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
-
-    if (bTitleUpdateTexture) {
-        // Make the content package point to to the UPDATE: drive is needed
-        wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
+        } else {
+            wDrive = wstr + L"/Common/";
+        }
     } else {
-        wDrive = wstr + L"/Common/";
+        pchUsrDir = getUsrDirPath();
+
+        std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
+
+        if (bTitleUpdateTexture) {
+            // Make the content package point to to the UPDATE: drive is needed
+            wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
+        } else {
+            wDrive = wstr + L"/Common/";
+        }
     }
 
 #elif __PSVITA__

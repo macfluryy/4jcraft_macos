@@ -168,7 +168,12 @@ Node* PathFinder::getNode(Entity* entity, int x, int y, int z, Node* size,
             if (avoidWater && cost == TYPE_WATER) return NULL;
             if (cost != TYPE_OPEN) break;
             // fell too far?
-            if (++drop >= 4) return NULL;
+            if (++drop >= 4)
+                return NULL;  // 4J - rolling this back to pre-java 1.6.4
+                              // version as we're suspicious of the performance
+                              // implications of this
+                              //			if (drop++ >=
+                              // entity->getMaxFallDistance()) return NULL;
             y--;
 
             if (y > 0) best = getNode(x, y, z);
@@ -221,6 +226,24 @@ int PathFinder::isFree(Entity* entity, int x, int y, int z, Node* size,
                 }
 
                 Tile* tile = Tile::tiles[tileId];
+
+                // 4J Stu - Use new getTileRenderShape passing in the tileId we
+                // have already got
+                if (entity->level->getTileRenderShape(tileId) ==
+                    Tile::SHAPE_RAIL) {
+                    int xt = Mth::floor(entity->x);
+                    int yt = Mth::floor(entity->y);
+                    int zt = Mth::floor(entity->z);
+                    if (entity->level->getTileRenderShape(xt, yt, zt) ==
+                            Tile::SHAPE_RAIL ||
+                        entity->level->getTileRenderShape(xt, yt - 1, zt) ==
+                            Tile::SHAPE_RAIL) {
+                        continue;
+                    } else {
+                        return TYPE_FENCE;
+                    }
+                }
+
                 if (tile->isPathfindable(entity->level, xx, yy, zz)) continue;
                 if (canOpenDoors && tileId == Tile::door_wood_Id) continue;
 

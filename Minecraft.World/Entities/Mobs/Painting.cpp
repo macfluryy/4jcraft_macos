@@ -69,22 +69,30 @@ Painting::Painting(Level* level, int xTile, int yTile, int zTile, int dir)
     // PaintingPostConstructor
 }
 
-// 4J Stu - Added this so that we can use some std::shared_ptr functions that
-// were needed in the ctor
-void Painting::PaintingPostConstructor(int dir) {
-    std::vector<Motive*>* survivableMotives = new std::vector<Motive*>();
-    for (int i = 0; i < LAST_VALUE; i++) {
-        this->motive = (Motive*)Motive::values[i];
+// 4J Stu - Added this so that we can use some shared_ptr functions that were
+// needed in the ctor 4J Stu - Added motive param for debugging/artists only
+void Painting::PaintingPostConstructor(int dir, int motive) {
+#ifndef _CONTENT_PACKAGE
+    if (app.DebugArtToolsOn() && motive >= 0) {
+        this->motive = (Motive*)Motive::values[motive];
         setDir(dir);
-        if (survives()) {
-            survivableMotives->push_back(this->motive);
+    } else
+#endif
+    {
+        std::vector<Motive*>* survivableMotives = new std::vector<Motive*>();
+        for (int i = 0; i < LAST_VALUE; i++) {
+            this->motive = (Motive*)Motive::values[i];
+            setDir(dir);
+            if (survives()) {
+                survivableMotives->push_back(this->motive);
+            }
         }
+        if (!survivableMotives->empty()) {
+            this->motive = survivableMotives->at(
+                random->nextInt((int)survivableMotives->size()));
+        }
+        setDir(dir);
     }
-    if (!survivableMotives->empty()) {
-        this->motive = survivableMotives->at(
-            random->nextInt((int)survivableMotives->size()));
-    }
-    setDir(dir);
 }
 
 Painting::Painting(Level* level, int x, int y, int z, int dir,
@@ -125,7 +133,15 @@ int Painting::getWidth() { return motive->w; }
 
 int Painting::getHeight() { return motive->h; }
 
-void Painting::dropItem() {
+void Painting::dropItem(std::shared_ptr<Entity> causedBy) {
+    if ((causedBy != NULL) && causedBy->instanceof(eTYPE_PLAYER)) {
+        std::shared_ptr<Player> player =
+            std::dynamic_pointer_cast<Player>(causedBy);
+        if (player->abilities.instabuild) {
+            return;
+        }
+    }
+
     spawnAtLocation(
         std::shared_ptr<ItemInstance>(new ItemInstance(Item::painting)), 0.0f);
 }

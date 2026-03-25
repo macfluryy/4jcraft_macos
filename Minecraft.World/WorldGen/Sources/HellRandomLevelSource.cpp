@@ -7,7 +7,7 @@
 #include "../Biomes/BiomeSource.h"
 #include "HellRandomLevelSource.h"
 
-HellRandomLevelSource::HellRandomLevelSource(Level* level, __int64 seed) {
+HellRandomLevelSource::HellRandomLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();
     int hellScale = level->getLevelData()->getHellScale();
     m_XZSize = ceil((float)xzSize / hellScale);
@@ -115,7 +115,7 @@ void HellRandomLevelSource::prepareHeights(int xOffs, int zOffs,
                                 tileId = Tile::calmLava_Id;
                             }
                             if (val > 0) {
-                                tileId = Tile::hellRock_Id;
+                                tileId = Tile::netherRack_Id;
                             }
 
                             blocks[offs] = (uint8_t)tileId;
@@ -167,8 +167,8 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
 
             int run = -1;
 
-            uint8_t top = (uint8_t)Tile::hellRock_Id;
-            uint8_t material = (uint8_t)Tile::hellRock_Id;
+            uint8_t top = (uint8_t)Tile::netherRack_Id;
+            uint8_t material = (uint8_t)Tile::netherRack_Id;
 
             for (int y = Level::genDepthMinusOne; y >= 0; y--) {
                 int offs = (z * 16 + x) * Level::genDepth + y;
@@ -214,18 +214,18 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
 
                     if (old == 0) {
                         run = -1;
-                    } else if (old == Tile::hellRock_Id) {
+                    } else if (old == Tile::netherRack_Id) {
                         if (run == -1) {
                             if (runDepth <= 0) {
                                 top = 0;
-                                material = (uint8_t)Tile::hellRock_Id;
+                                material = (uint8_t)Tile::netherRack_Id;
                             } else if (y >= waterHeight - 4 &&
                                        y <= waterHeight + 1) {
-                                top = (uint8_t)Tile::hellRock_Id;
-                                material = (uint8_t)Tile::hellRock_Id;
+                                top = (uint8_t)Tile::netherRack_Id;
+                                material = (uint8_t)Tile::netherRack_Id;
                                 if (gravel) top = (uint8_t)Tile::gravel_Id;
                                 if (gravel)
-                                    material = (uint8_t)Tile::hellRock_Id;
+                                    material = (uint8_t)Tile::netherRack_Id;
                                 if (sand) {
                                     // 4J Stu - Make some nether wart spawn
                                     // outside of the nether fortresses
@@ -251,10 +251,10 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
                                         offs =
                                             (z * 16 + x) * Level::genDepth + y;
                                     } else {
-                                        top = (uint8_t)Tile::hellSand_Id;
+                                        top = (uint8_t)Tile::soulsand_Id;
                                     }
                                 }
-                                if (sand) material = (uint8_t)Tile::hellSand_Id;
+                                if (sand) material = (uint8_t)Tile::soulsand_Id;
                             }
 
                             if (y < waterHeight && top == 0)
@@ -449,12 +449,9 @@ void HellRandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     // is consistent for each world generation. Also changed all uses of random
     // here to pprandom.
     pprandom->setSeed(level->getSeed());
-    __int64 xScale = pprandom->nextLong() / 2 * 2 + 1;
-    __int64 zScale = pprandom->nextLong() / 2 * 2 + 1;
-    // 4jcraft added casts to a higher int and unsigned
-    pprandom->setSeed((((uint64_t)xt * (uint64_t)xScale) +
-                       ((uint64_t)zt * (uint64_t)zScale)) ^
-                      level->getSeed());
+    int64_t xScale = pprandom->nextLong() / 2 * 2 + 1;
+    int64_t zScale = pprandom->nextLong() / 2 * 2 + 1;
+    pprandom->setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
     netherBridgeFeature->postProcess(level, pprandom, xt, zt);
 
@@ -462,7 +459,7 @@ void HellRandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth - 8) + 4;
         int z = zo + pprandom->nextInt(16) + 8;
-        HellSpringFeature(Tile::lava_Id).place(level, pprandom, x, y, z);
+        HellSpringFeature(Tile::lava_Id, false).place(level, pprandom, x, y, z);
     }
 
     int count = pprandom->nextInt(pprandom->nextInt(10) + 1) + 1;
@@ -493,22 +490,30 @@ void HellRandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth);
         int z = zo + pprandom->nextInt(16) + 8;
-        FlowerFeature(Tile::mushroom1_Id).place(level, pprandom, x, y, z);
+        FlowerFeature(Tile::mushroom_brown_Id).place(level, pprandom, x, y, z);
     }
 
     if (pprandom->nextInt(1) == 0) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth);
         int z = zo + pprandom->nextInt(16) + 8;
-        FlowerFeature(Tile::mushroom2_Id).place(level, pprandom, x, y, z);
+        FlowerFeature(Tile::mushroom_red_Id).place(level, pprandom, x, y, z);
     }
 
-    OreFeature quartzFeature(Tile::netherQuartz_Id, 13, Tile::hellRock_Id);
+    OreFeature quartzFeature(Tile::netherQuartz_Id, 13, Tile::netherRack_Id);
     for (int i = 0; i < 16; i++) {
         int x = xo + pprandom->nextInt(16);
         int y = pprandom->nextInt(Level::genDepth - 20) + 10;
         int z = zo + pprandom->nextInt(16);
         quartzFeature.place(level, pprandom, x, y, z);
+    }
+
+    for (int i = 0; i < 16; i++) {
+        int x = xo + random->nextInt(16);
+        int y = random->nextInt(Level::genDepth - 20) + 10;
+        int z = zo + random->nextInt(16);
+        HellSpringFeature hellSpringFeature(Tile::lava_Id, true);
+        hellSpringFeature.place(level, random, x, y, z);
     }
 
     HeavyTile::instaFall = false;
@@ -532,9 +537,14 @@ std::wstring HellRandomLevelSource::gatherStats() {
 std::vector<Biome::MobSpawnerData*>* HellRandomLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
     // check if the coordinates is within a netherbridge
-    if (mobCategory == MobCategory::monster &&
-        netherBridgeFeature->isInsideFeature(x, y, z)) {
-        return netherBridgeFeature->getBridgeEnemies();
+    if (mobCategory == MobCategory::monster) {
+        if (netherBridgeFeature->isInsideFeature(x, y, z)) {
+            return netherBridgeFeature->getBridgeEnemies();
+        }
+        if ((netherBridgeFeature->isInsideBoundingFeature(x, y, z) &&
+             level->getTile(x, y - 1, z) == Tile::netherBrick_Id)) {
+            return netherBridgeFeature->getBridgeEnemies();
+        }
     }
 
     Biome* biome = level->getBiome(x, z);
@@ -547,4 +557,9 @@ std::vector<Biome::MobSpawnerData*>* HellRandomLevelSource::getMobsAt(
 TilePos* HellRandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
     return NULL;
+}
+
+void HellRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
+                                                            int chunkZ) {
+    netherBridgeFeature->apply(this, level, chunkX, chunkZ, byteArray());
 }

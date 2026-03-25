@@ -16,10 +16,11 @@ public:
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
-    void removed(std::shared_ptr<Player> player);
+    virtual void removed(std::shared_ptr<Player> player);
+    virtual std::shared_ptr<Container> getContainer();
 
     // 4J ADDED,
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
-        std::shared_ptr<Player> player);
+        std::shared_ptr<Player> player, bool looped = false);
 };

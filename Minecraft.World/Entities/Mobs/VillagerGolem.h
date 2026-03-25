@@ -30,12 +30,9 @@ public:
 
 protected:
     virtual void serverAiMobStep();
-
-public:
-    virtual int getMaxHealth();
-
-protected:
+    virtual void registerAttributes();
     virtual int decreaseAirSupply(int currentSupply);
+    virtual void doPush(std::shared_ptr<Entity> e);
 
 public:
     virtual void aiStep();
@@ -60,4 +57,5 @@ public:
     virtual bool isPlayerCreated();
     virtual void setPlayerCreated(bool value);
     virtual void die(DamageSource* source);
+    virtual bool hurt(DamageSource* source, float dmg);
 };

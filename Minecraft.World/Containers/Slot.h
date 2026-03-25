@@ -37,6 +37,7 @@ public:
     virtual std::shared_ptr<ItemInstance> remove(int c);
     virtual bool isAt(std::shared_ptr<Container> c, int s);
     virtual bool mayPickup(std::shared_ptr<Player> player);
+    virtual bool isActive();
     virtual bool mayCombine(std::shared_ptr<ItemInstance> item);  // 4J Added
     virtual std::shared_ptr<ItemInstance> combine(
         std::shared_ptr<ItemInstance> item);  // 4J Added

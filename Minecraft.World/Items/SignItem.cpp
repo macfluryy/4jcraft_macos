@@ -26,16 +26,22 @@ bool SignItem::useOn(std::shared_ptr<ItemInstance> instance,
     if (face == 4) x--;
     if (face == 5) x++;
 
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     if (!Tile::sign->mayPlace(level, x, y, z)) return false;
+
+    if (level->isClientSide) {
+        return true;
+    }
 
     if (!bTestUseOnOnly) {
         if (face == 1) {
             int rot = Mth::floor(((player->yRot + 180) * 16) / 360 + 0.5) & 15;
-            level->setTileAndData(x, y, z, Tile::sign_Id, rot);
+            level->setTileAndData(x, y, z, Tile::sign_Id, rot,
+                                  Tile::UPDATE_ALL);
         } else {
-            level->setTileAndData(x, y, z, Tile::wallSign_Id, face);
+            level->setTileAndData(x, y, z, Tile::wallSign_Id, face,
+                                  Tile::UPDATE_ALL);
         }
 
         instance->count--;

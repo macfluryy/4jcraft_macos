@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "NotGateTile.h"
 #include "../Util/SoundTypes.h"
 #include "../Headers/net.minecraft.world.h"
@@ -25,7 +26,8 @@ bool NotGateTile::isToggledTooFrequently(Level* level, int x, int y, int z,
     if (recentToggles.find(level) == recentToggles.end()) {
         recentToggles[level] = new std::deque<Toggle>;
     }
-    if (add) recentToggles[level]->push_back(Toggle(x, y, z, level->getTime()));
+    if (add)
+        recentToggles[level]->push_back(Toggle(x, y, z, level->getGameTime()));
     int count = 0;
 
     AUTO_VAR(itEnd, recentToggles[level]->end());
@@ -45,7 +47,7 @@ NotGateTile::NotGateTile(int id, bool on) : TorchTile(id) {
     this->setTicking(true);
 }
 
-int NotGateTile::getTickDelay() { return 2; }
+int NotGateTile::getTickDelay(Level* level) { return 2; }
 
 void NotGateTile::onPlace(Level* level, int x, int y, int z) {
     if (level->getData(x, y, z) == 0) TorchTile::onPlace(level, x, y, z);
@@ -71,28 +73,28 @@ void NotGateTile::onRemove(Level* level, int x, int y, int z, int id,
     }
 }
 
-bool NotGateTile::getSignal(LevelSource* level, int x, int y, int z, int face) {
-    if (!on) return false;
+int NotGateTile::getSignal(LevelSource* level, int x, int y, int z, int face) {
+    if (!on) return Redstone::SIGNAL_NONE;
 
     int dir = level->getData(x, y, z);
 
-    if (dir == 5 && face == 1) return false;
-    if (dir == 3 && face == 3) return false;
-    if (dir == 4 && face == 2) return false;
-    if (dir == 1 && face == 5) return false;
-    if (dir == 2 && face == 4) return false;
+    if (dir == 5 && face == 1) return Redstone::SIGNAL_NONE;
+    if (dir == 3 && face == 3) return Redstone::SIGNAL_NONE;
+    if (dir == 4 && face == 2) return Redstone::SIGNAL_NONE;
+    if (dir == 1 && face == 5) return Redstone::SIGNAL_NONE;
+    if (dir == 2 && face == 4) return Redstone::SIGNAL_NONE;
 
-    return true;
+    return Redstone::SIGNAL_MAX;
 }
 
 bool NotGateTile::hasNeighborSignal(Level* level, int x, int y, int z) {
     int dir = level->getData(x, y, z);
 
-    if (dir == 5 && level->getSignal(x, y - 1, z, 0)) return true;
-    if (dir == 3 && level->getSignal(x, y, z - 1, 2)) return true;
-    if (dir == 4 && level->getSignal(x, y, z + 1, 3)) return true;
-    if (dir == 1 && level->getSignal(x - 1, y, z, 4)) return true;
-    if (dir == 2 && level->getSignal(x + 1, y, z, 5)) return true;
+    if (dir == 5 && level->hasSignal(x, y - 1, z, 0)) return true;
+    if (dir == 3 && level->hasSignal(x, y, z - 1, 2)) return true;
+    if (dir == 4 && level->hasSignal(x, y, z + 1, 3)) return true;
+    if (dir == 1 && level->hasSignal(x - 1, y, z, 4)) return true;
+    if (dir == 2 && level->hasSignal(x + 1, y, z, 5)) return true;
     return false;
 }
 
@@ -103,15 +105,16 @@ void NotGateTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (recentToggles.find(level) != recentToggles.end()) {
         std::deque<Toggle>* toggles = recentToggles[level];
         while (!toggles->empty() &&
-               level->getTime() - toggles->front().when > RECENT_TOGGLE_TIMER) {
+               level->getGameTime() - toggles->front().when >
+                   RECENT_TOGGLE_TIMER) {
             toggles->pop_front();
         }
     }
 
     if (on) {
         if (neighborSignal) {
-            level->setTileAndData(x, y, z, Tile::notGate_off_Id,
-                                  level->getData(x, y, z));
+            level->setTileAndData(x, y, z, Tile::redstoneTorch_off_Id,
+                                  level->getData(x, y, z), Tile::UPDATE_ALL);
 
             if (isToggledTooFrequently(level, x, y, z, true)) {
                 app.DebugPrintf(
@@ -136,8 +139,9 @@ void NotGateTile::tick(Level* level, int x, int y, int z, Random* random) {
     } else {
         if (!neighborSignal) {
             if (!isToggledTooFrequently(level, x, y, z, false)) {
-                level->setTileAndData(x, y, z, Tile::notGate_on_Id,
-                                      level->getData(x, y, z));
+                level->setTileAndData(x, y, z, Tile::redstoneTorch_on_Id,
+                                      level->getData(x, y, z),
+                                      Tile::UPDATE_ALL);
             } else {
                 app.DebugPrintf(
                     "Torch at (%d,%d,%d) has toggled too many times\n", x, y,
@@ -148,19 +152,26 @@ void NotGateTile::tick(Level* level, int x, int y, int z, Random* random) {
 }
 
 void NotGateTile::neighborChanged(Level* level, int x, int y, int z, int type) {
-    TorchTile::neighborChanged(level, x, y, z, type);
-    level->addToTickNextTick(x, y, z, id, getTickDelay());
+    if (checkDoPop(level, x, y, z, type)) {
+        return;
+    }
+
+    bool neighborSignal = hasNeighborSignal(level, x, y, z);
+    if ((on && neighborSignal) || (!on && !neighborSignal)) {
+        level->addToTickNextTick(x, y, z, id, getTickDelay(level));
+    }
 }
 
-bool NotGateTile::getDirectSignal(Level* level, int x, int y, int z, int face) {
+int NotGateTile::getDirectSignal(LevelSource* level, int x, int y, int z,
+                                 int face) {
     if (face == 0) {
         return getSignal(level, x, y, z, face);
     }
-    return false;
+    return Redstone::SIGNAL_NONE;
 }
 
 int NotGateTile::getResource(int data, Random* random, int playerBonusLevel) {
-    return Tile::notGate_on_Id;
+    return Tile::redstoneTorch_on_Id;
 }
 
 bool NotGateTile::isSignalSource() { return true; }
@@ -188,11 +199,11 @@ void NotGateTile::animateTick(Level* level, int xt, int yt, int zt,
 }
 
 int NotGateTile::cloneTileId(Level* level, int x, int y, int z) {
-    return Tile::notGate_on_Id;
+    return Tile::redstoneTorch_on_Id;
 }
 
-void NotGateTile::levelTimeChanged(Level* level, __int64 delta,
-                                   __int64 newTime) {
+void NotGateTile::levelTimeChanged(Level* level, int64_t delta,
+                                   int64_t newTime) {
     std::deque<Toggle>* toggles = recentToggles[level];
 
     if (toggles != NULL) {
@@ -202,10 +213,6 @@ void NotGateTile::levelTimeChanged(Level* level, __int64 delta,
     }
 }
 
-void NotGateTile::registerIcons(IconRegister* iconRegister) {
-    if (on) {
-        icon = iconRegister->registerIcon(L"redtorch_lit");
-    } else {
-        icon = iconRegister->registerIcon(L"redtorch");
-    }
+bool NotGateTile::isMatching(int id) {
+    return id == Tile::redstoneTorch_off_Id || id == Tile::redstoneTorch_on_Id;
 }

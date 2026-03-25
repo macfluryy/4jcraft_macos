@@ -13,6 +13,7 @@
 #include "TheEndPortalRenderer.h"
 #include "SkullTileRenderer.h"
 #include "EnderChestRenderer.h"
+#include "BeaconRenderer.h"
 
 TileEntityRenderDispatcher* TileEntityRenderDispatcher::instance = NULL;
 double TileEntityRenderDispatcher::xOff = 0;
@@ -44,6 +45,7 @@ TileEntityRenderDispatcher::TileEntityRenderDispatcher() {
     renderers[eTYPE_THEENDPORTALTILEENTITY] = new TheEndPortalRenderer();
     renderers[eTYPE_SKULLTILEENTITY] = new SkullTileRenderer();
     renderers[eTYPE_FURNACETILEENTITY] = NULL;
+    renderers[eTYPE_BEACONTILEENTITY] = new BeaconRenderer();
     glDisable(GL_LIGHTING);
 
     AUTO_VAR(itEnd, renderers.end());
@@ -65,15 +67,15 @@ TileEntityRenderer* TileEntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
 
     /* 4J - not doing this hierarchical search anymore. We need to explicitly
        add renderers for any eINSTANCEOF type that we want to be able to render
-        if (it == renderers.end() && e != TileEntity::_class)
+            if (it == renderers.end() && e != TileEntity::_class)
             {
-            r = getRenderer(dynamic_cast<TileEntity::Class *>(
+                    r = getRenderer(dynamic_cast<TileEntity::Class *>(
        e->getSuperclass() ));
                     // 4J - added condition here to only add if a valid renderer
        found if( r ) renderers.insert( classToTileRendererMap::value_type( e, r
        ) );
                     //assert(false);
-        }
+            }
             else if(it != renderers.end() && e != TileEntity::_class)
                     r = (*it).second;
                     */
@@ -93,12 +95,13 @@ TileEntityRenderer* TileEntityRenderDispatcher::getRenderer(
 
 void TileEntityRenderDispatcher::prepare(Level* level, Textures* textures,
                                          Font* font,
-                                         std::shared_ptr<Mob> player, float a) {
+                                         std::shared_ptr<LivingEntity> player,
+                                         float a) {
     if (this->level != level) {
         setLevel(level);
     }
     this->textures = textures;
-    this->cameraEntity = player;
+    cameraEntity = player;
     this->font = font;
 
     playerRotY = player->yRotO + (player->yRot - player->yRotO) * a;
@@ -111,7 +114,7 @@ void TileEntityRenderDispatcher::prepare(Level* level, Textures* textures,
 
 void TileEntityRenderDispatcher::render(std::shared_ptr<TileEntity> e, float a,
                                         bool setColor /*=true*/) {
-    if (e->distanceToSqr(xPlayer, yPlayer, zPlayer) < 64 * 64) {
+    if (e->distanceToSqr(xPlayer, yPlayer, zPlayer) < e->getViewDistance()) {
         // 4J - changes brought forward from 1.8.2
         if (SharedConstants::TEXTURE_LIGHTING) {
             int col = level->getLightColor(e->x, e->y, e->z, 0);

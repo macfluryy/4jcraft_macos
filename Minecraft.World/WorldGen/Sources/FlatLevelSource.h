@@ -23,7 +23,7 @@ private:
     VillageFeature* villageFeature;  // = new VillageFeature(1);
 
 public:
-    FlatLevelSource(Level* level, __int64 seed, bool generateStructures);
+    FlatLevelSource(Level* level, int64_t seed, bool generateStructures);
     ~FlatLevelSource();
 
 private:
@@ -43,4 +43,5 @@ public:
     virtual TilePos* findNearestMapFeature(Level* level,
                                            const std::wstring& featureName,
                                            int x, int y, int z);
+    virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
 };

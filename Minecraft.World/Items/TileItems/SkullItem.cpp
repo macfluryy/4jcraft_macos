@@ -12,8 +12,7 @@ const unsigned int SkullItem::NAMES[SKULL_COUNT] = {
     IDS_ITEM_SKULL_CHARACTER, IDS_ITEM_SKULL_CREEPER};
 
 std::wstring SkullItem::ICON_NAMES[SKULL_COUNT] = {
-    L"skull_skeleton", L"skull_wither", L"skull_zombie", L"skull_char",
-    L"skull_creeper"};
+    L"skeleton", L"wither", L"zombie", L"char", L"creeper"};
 
 SkullItem::SkullItem(int id) : Item(id) {
     // setItemCategory(CreativeModeTab.TAB_DECORATIONS);
@@ -38,13 +37,13 @@ bool SkullItem::useOn(
     if (face == 5) x++;
 
     // if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     if (!Tile::skull->mayPlace(level, x, y, z)) return false;
 
     if (!bTestUseOnOnly) {
-        level->setTileAndData(x, y, z, Tile::skull_Id,
-                              face);  //, Tile.UPDATE_CLIENTS);
+        level->setTileAndData(x, y, z, Tile::skull_Id, face,
+                              Tile::UPDATE_CLIENTS);
 
         int rot = 0;
         if (face == Facing::UP) {
@@ -88,8 +87,7 @@ bool SkullItem::mayPlace(Level* level, int x, int y, int z, int face,
         if (face == 5) x++;
     }
 
-    return level->mayPlace(Tile::skull_Id, x, y, z, false, face,
-                           nullptr);  //, item);
+    return level->mayPlace(Tile::skull_Id, x, y, z, false, face, nullptr, item);
 }
 
 Icon* SkullItem::getIcon(int itemAuxValue) {
@@ -133,6 +131,7 @@ std::wstring SkullItem::getHoverName(
 
 void SkullItem::registerIcons(IconRegister* iconRegister) {
     for (int i = 0; i < SKULL_COUNT; i++) {
-        icons[i] = iconRegister->registerIcon(ICON_NAMES[i]);
+        icons[i] =
+            iconRegister->registerIcon(getIconName() + L"_" + ICON_NAMES[i]);
     }
 }

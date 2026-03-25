@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Item.h"
+#include "../Core/DefaultDispenseItemBehavior.h"
 
 class ArmorItem : public Item {
 public:
@@ -17,6 +18,14 @@ private:
 
 public:
     static const std::wstring TEXTURE_EMPTY_SLOTS[];
+
+private:
+    class ArmorDispenseItemBehavior : public DefaultDispenseItemBehavior {
+    protected:
+        virtual std::shared_ptr<ItemInstance> execute(
+            BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
+            eOUTCOME& outcome);
+    };
 
 public:
     class ArmorMaterial {
@@ -65,28 +74,20 @@ private:
 public:
     ArmorItem(int id, const ArmorMaterial* armorType, int icon, int slot);
 
-    //@Override
-    int getColor(std::shared_ptr<ItemInstance> item, int spriteLayer);
-
-    //@Override
-    bool hasMultipleSpriteLayers();
-
+    virtual int getColor(std::shared_ptr<ItemInstance> item, int spriteLayer);
+    virtual bool hasMultipleSpriteLayers();
     virtual int getEnchantmentValue();
+    virtual const ArmorMaterial* getMaterial();
+    virtual bool hasCustomColor(std::shared_ptr<ItemInstance> item);
+    virtual int getColor(std::shared_ptr<ItemInstance> item);
 
-    const ArmorMaterial* getMaterial();
-    bool hasCustomColor(std::shared_ptr<ItemInstance> item);
-    int getColor(std::shared_ptr<ItemInstance> item);
+    virtual Icon* getLayerIcon(int auxValue, int spriteLayer);
+    virtual void clearColor(std::shared_ptr<ItemInstance> item);
+    virtual void setColor(std::shared_ptr<ItemInstance> item, int color);
 
-    //@Override
-    Icon* getLayerIcon(int auxValue, int spriteLayer);
-    void clearColor(std::shared_ptr<ItemInstance> item);
-    void setColor(std::shared_ptr<ItemInstance> item, int color);
-
-    bool isValidRepairItem(std::shared_ptr<ItemInstance> source,
-                           std::shared_ptr<ItemInstance> repairItem);
-
-    //@Override
-    void registerIcons(IconRegister* iconRegister);
+    virtual bool isValidRepairItem(std::shared_ptr<ItemInstance> source,
+                                   std::shared_ptr<ItemInstance> repairItem);
+    virtual void registerIcons(IconRegister* iconRegister);
 
     static Icon* getEmptyIcon(int slot);
 };

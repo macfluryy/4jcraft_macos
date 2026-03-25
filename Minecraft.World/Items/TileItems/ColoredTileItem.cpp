@@ -45,8 +45,9 @@ unsigned int ColoredTileItem::getDescriptionId(
     }
     int id = instance->getAuxValue();
     if (id >= 0 && id < descriptionPostfixes.length) {
-        return descriptionPostfixes[id];  // TileItem::getDescriptionId(instance)
-                                          // + "." + descriptionPostfixes[id];
+        return descriptionPostfixes
+            [id];  // TileItem::getDescriptionId(instance)
+                   // + "." + descriptionPostfixes[id];
     }
     return TileItem::getDescriptionId(instance);
 }

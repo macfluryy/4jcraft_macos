@@ -30,6 +30,7 @@ class StructureRecipies;
 class ToolRecipies;
 class WeaponRecipies;
 class ShapedRecipy;
+class FireworksRecipe;
 
 typedef std::unordered_map<wchar_t, ItemInstance*> myMap;
 
@@ -98,7 +99,8 @@ public:
     void addShapelessRecipy(ItemInstance* result, ...);
 
     std::shared_ptr<ItemInstance> getItemFor(
-        std::shared_ptr<CraftingContainer> craftSlots, Level* level);
+        std::shared_ptr<CraftingContainer> craftSlots, Level* level,
+        Recipy* recipesClass = NULL);  // 4J Added recipesClass param
     std::vector<Recipy*>* getRecipies();
 
     // 4J-PB - Added all below for new Xbox 'crafting'
@@ -109,6 +111,7 @@ private:
     void buildRecipeIngredientsArray();
     Recipy::INGREDIENTS_REQUIRED* m_pRecipeIngredientsRequired;
 
+public:
     static ToolRecipies* pToolRecipies;
     static WeaponRecipies* pWeaponRecipies;
     static StructureRecipies* pStructureRecipies;
@@ -116,4 +119,5 @@ private:
     static FoodRecipies* pFoodRecipies;
     static ClothDyeRecipes* pClothDyeRecipes;
     static ArmorRecipes* pArmorRecipes;
+    static FireworksRecipe* pFireworksRecipes;
 };

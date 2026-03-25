@@ -19,18 +19,18 @@ bool SpringFeature::place(Level* level, Random* random, int x, int y, int z) {
         }
     }
 
-    if (level->getTile(x, y + 1, z) != Tile::rock_Id) return false;
-    if (level->getTile(x, y - 1, z) != Tile::rock_Id) return false;
+    if (level->getTile(x, y + 1, z) != Tile::stone_Id) return false;
+    if (level->getTile(x, y - 1, z) != Tile::stone_Id) return false;
 
     if (level->getTile(x, y, z) != 0 &&
-        level->getTile(x, y, z) != Tile::rock_Id)
+        level->getTile(x, y, z) != Tile::stone_Id)
         return false;
 
     int rockCount = 0;
-    if (level->getTile(x - 1, y, z) == Tile::rock_Id) rockCount++;
-    if (level->getTile(x + 1, y, z) == Tile::rock_Id) rockCount++;
-    if (level->getTile(x, y, z - 1) == Tile::rock_Id) rockCount++;
-    if (level->getTile(x, y, z + 1) == Tile::rock_Id) rockCount++;
+    if (level->getTile(x - 1, y, z) == Tile::stone_Id) rockCount++;
+    if (level->getTile(x + 1, y, z) == Tile::stone_Id) rockCount++;
+    if (level->getTile(x, y, z - 1) == Tile::stone_Id) rockCount++;
+    if (level->getTile(x, y, z + 1) == Tile::stone_Id) rockCount++;
 
     int holeCount = 0;
     if (level->isEmptyTile(x - 1, y, z)) holeCount++;
@@ -39,7 +39,7 @@ bool SpringFeature::place(Level* level, Random* random, int x, int y, int z) {
     if (level->isEmptyTile(x, y, z + 1)) holeCount++;
 
     if (rockCount == 3 && holeCount == 1) {
-        level->setTile(x, y, z, tile);
+        level->setTileAndData(x, y, z, tile, 0, Tile::UPDATE_CLIENTS);
         level->setInstaTick(true);
         Tile::tiles[tile]->tick(level, x, y, z, random);
         level->setInstaTick(false);

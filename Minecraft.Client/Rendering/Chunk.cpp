@@ -204,8 +204,8 @@ void Chunk::rebuild() {
 
     LevelChunk::touchedSky = false;
 
-    //	std::unordered_set<std::shared_ptr<TileEntity> >
-    //oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    //	unordered_set<shared_ptr<TileEntity> >
+    // oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     //// 4J removed this & next line 	renderableTileEntities.clear();
 
     std::vector<std::shared_ptr<TileEntity> >
@@ -242,7 +242,7 @@ void Chunk::rebuild() {
                      // the whole thing
 
     LevelSource* region =
-        new Region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r);
+        new Region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r, r);
     TileRenderer* tileRenderer =
         new TileRenderer(region, this->x, this->y, this->z, tileIds);
 
@@ -294,27 +294,27 @@ void Chunk::rebuild() {
                 // of rock, dirt, unbreakable tiles, or have already been
                 // determined to meet this criteria themselves and have a tile
                 // of 255 set.
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
                 tileId = tileIds[offset + (((xx - 1) << 11) | ((zz + 0) << 7) |
                                            (indexY + 0))];
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
                 tileId = tileIds[offset + (((xx + 1) << 11) | ((zz + 0) << 7) |
                                            (indexY + 0))];
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
                 tileId = tileIds[offset + (((xx + 0) << 11) | ((zz - 1) << 7) |
                                            (indexY + 0))];
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
                 tileId = tileIds[offset + (((xx + 0) << 11) | ((zz + 1) << 7) |
                                            (indexY + 0))];
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
                 // Treat the bottom of the world differently - we shouldn't ever
@@ -332,7 +332,7 @@ void Chunk::rebuild() {
                     tileId = tileIds[yMinusOneOffset + (((xx + 0) << 11) |
                                                         ((zz + 0) << 7) |
                                                         indexYMinusOne)];
-                    if (!((tileId == Tile::rock_Id) ||
+                    if (!((tileId == Tile::stone_Id) ||
                           (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
@@ -346,7 +346,7 @@ void Chunk::rebuild() {
                 tileId =
                     tileIds[yPlusOneOffset + (((xx + 0) << 11) |
                                               ((zz + 0) << 7) | indexYPlusOne)];
-                if (!((tileId == Tile::rock_Id) || (tileId == Tile::dirt_Id) ||
+                if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
                       (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                     continue;
 
@@ -416,7 +416,7 @@ void Chunk::rebuild() {
                     // If flagged as not visible, drop out straight away
                     if (tileId == 0xff) continue;
                     //					int tileId =
-                    //region->getTile(x,y,z);
+                    // region->getTile(x,y,z);
                     if (tileId > 0) {
                         if (!started) {
                             started = true;
@@ -425,8 +425,8 @@ void Chunk::rebuild() {
                             glNewList(lists + currentLayer, GL_COMPILE);
                             MemSect(0);
                             glPushMatrix();
-                            glDepthMask(true);             // 4J added
-                            t->useCompactVertices(false);  // 4J added
+                            glDepthMask(true);            // 4J added
+                            t->useCompactVertices(true);  // 4J added
                             translateToPos();
                             float ss = 1.000001f;
                             // 4J - have removed this scale as I don't think we
@@ -666,8 +666,6 @@ TileCompressData_SPU g_tileCompressDataIn __attribute__((__aligned__(16)));
 unsigned char* g_tileCompressDataOut =
     (unsigned char*)&g_rebuildDataIn.m_tileIds;
 
-#define TILE_RENDER_SPU
-
 void RunSPURebuild() {
     static C4JSpursJobQueue::Port p("C4JSpursJob_ChunkUpdate");
     C4JSpursJob_CompressedTile tileJob(&g_tileCompressDataIn,
@@ -702,8 +700,8 @@ void Chunk::rebuild_SPU() {
 
     LevelChunk::touchedSky = false;
 
-    //	std::unordered_set<std::shared_ptr<TileEntity> >
-    //oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
+    //	unordered_set<shared_ptr<TileEntity> >
+    // oldTileEntities(renderableTileEntities.begin(),renderableTileEntities.end());
     //// 4J removed this & next line 	renderableTileEntities.clear();
 
     std::vector<std::shared_ptr<TileEntity> >
@@ -715,7 +713,7 @@ void Chunk::rebuild_SPU() {
 
     int r = 1;
 
-    Region region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r);
+    Region region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r, r);
     TileRenderer tileRenderer(&region);
 
     int lists = levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z,
@@ -754,8 +752,8 @@ void Chunk::rebuild_SPU() {
             glNewList(lists + currentLayer, GL_COMPILE);
             MemSect(0);
             glPushMatrix();
-            glDepthMask(true);             // 4J added
-            t->useCompactVertices(false);  // 4J added
+            glDepthMask(true);            // 4J added
+            t->useCompactVertices(true);  // 4J added
             translateToPos();
             float ss = 1.000001f;
             // 4J - have removed this scale as I don't think we should need it,
@@ -775,19 +773,11 @@ void Chunk::rebuild_SPU() {
             (unsigned int*)g_rebuildDataIn.m_tesselator.m_PPUArray);
         g_rebuildDataIn.m_tesselator._array = &tesselatorArray;
         g_rebuildDataIn.m_currentLayer = currentLayer;
-#ifdef TILE_RENDER_SPU
         g_tileCompressDataIn.setForChunk(&region, x0, y0, z0);
         RunSPURebuild();
         g_rebuildDataOut.storeInTesselator();
         pOutData = &g_rebuildDataOut;
-#else
-        g_rebuildDataIn.disableUnseenTiles();
-        TileRenderer_SPU* pTileRenderer =
-            new TileRenderer_SPU(&g_rebuildDataIn);
-        g_rebuildDataIn.tesselateAllTiles(pTileRenderer);
-        g_rebuildDataIn.storeInTesselator();
-        pOutData = &g_rebuildDataIn;
-#endif
+
         if (pOutData->m_flags & ChunkRebuildData::e_flag_Rendered)
             rendered = true;
 

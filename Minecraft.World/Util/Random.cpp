@@ -8,7 +8,7 @@ Random::Random() {
     // 4J - jave now uses the system nanosecond counter added to a
     // "seedUniquifier" to get an initial seed. Our nanosecond timer is actually
     // only millisecond accuate, so use QueryPerformanceCounter here instead
-    __int64 seed;
+    int64_t seed;
 
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -20,9 +20,9 @@ Random::Random() {
     setSeed(seed);
 }
 
-Random::Random(__int64 seed) { setSeed(seed); }
+Random::Random(int64_t seed) { setSeed(seed); }
 
-void Random::setSeed(__int64 s) {
+void Random::setSeed(int64_t s) {
     this->seed = (s ^ 0x5DEECE66DLL) & ((1LL << 48) - 1);
     haveNextNextGaussian = false;
 }
@@ -41,7 +41,7 @@ void Random::nextBytes(uint8_t* bytes, unsigned int count) {
 }
 
 double Random::nextDouble() {
-    return (((__int64)next(26) << 27) + next(27)) / (double)(1LL << 53);
+    return (((int64_t)next(26) << 27) + next(27)) / (double)(1LL << 53);
 }
 
 double Random::nextGaussian() {
@@ -70,7 +70,7 @@ int Random::nextInt(int n) {
     if ((n & -n) == n)  // i.e., n is a power of 2
                         // 4jcraft added casts to unsigned (and uint64_t)
         return (int)(((uint64_t)next(31) * n) >>
-                     31);  // 4J Stu - Made __int64 instead of long
+                     31);  // 4J Stu - Made int64_t instead of long
 
     int bits, val;
     do {
@@ -83,7 +83,7 @@ int Random::nextInt(int n) {
 
 float Random::nextFloat() { return next(24) / ((float)(1 << 24)); }
 
-__int64 Random::nextLong() {
+int64_t Random::nextLong() {
     // 4jcraft added casts to unsigned
     return (int64_t)((uint64_t)next(32) << 32) + next(32);
 }

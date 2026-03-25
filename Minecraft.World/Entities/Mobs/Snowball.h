@@ -14,7 +14,7 @@ private:
 
 public:
     Snowball(Level* level);
-    Snowball(Level* level, std::shared_ptr<Mob> mob);
+    Snowball(Level* level, std::shared_ptr<LivingEntity> mob);
     Snowball(Level* level, double x, double y, double z);
 
 protected:

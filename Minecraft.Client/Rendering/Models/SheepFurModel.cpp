@@ -41,8 +41,8 @@ SheepFurModel::SheepFurModel() : QuadrupedModel(12, 0) {
     leg3->compile(1.0f / 16.0f);
 }
 
-void SheepFurModel::prepareMobModel(std::shared_ptr<Mob> mob, float time,
-                                    float r, float a) {
+void SheepFurModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
+                                    float time, float r, float a) {
     QuadrupedModel::prepareMobModel(mob, time, r, a);
 
     std::shared_ptr<Sheep> sheep = std::dynamic_pointer_cast<Sheep>(mob);
@@ -52,7 +52,8 @@ void SheepFurModel::prepareMobModel(std::shared_ptr<Mob> mob, float time,
 
 void SheepFurModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
+                              std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
-    QuadrupedModel::setupAnim(time, r, bob, yRot, xRot, scale);
+    QuadrupedModel::setupAnim(time, r, bob, yRot, xRot, scale, entity);
     head->xRot = headXRot;
 }

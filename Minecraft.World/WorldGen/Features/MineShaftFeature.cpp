@@ -1,6 +1,24 @@
 #include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.levelgen.structure.h"
 #include "../../Util/JavaMath.h"
+#include "../../Util/Mth.h"
+
+const std::wstring MineShaftFeature::OPTION_CHANCE = L"chance";
+
+MineShaftFeature::MineShaftFeature() { chance = 0.01; }
+
+std::wstring MineShaftFeature::getFeatureName() { return L"Mineshaft"; }
+
+MineShaftFeature::MineShaftFeature(
+    std::unordered_map<std::wstring, std::wstring> options) {
+    chance = 0.01;
+
+    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+        if (it->first.compare(OPTION_CHANCE) == 0) {
+            chance = Mth::getDouble(it->second, chance);
+        }
+    }
+}
 
 bool MineShaftFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
     bool forcePlacement = false;
@@ -10,7 +28,7 @@ bool MineShaftFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
             levelGenOptions->isFeatureChunk(x, z, eFeature_Mineshaft);
     }
 
-    return forcePlacement || (random->nextInt(100) == 0 &&
+    return forcePlacement || (random->nextDouble() < chance &&
                               random->nextInt(80) < std::max(abs(x), abs(z)));
 }
 

@@ -5,6 +5,9 @@
 #include "../../Headers/net.minecraft.world.level.biome.h"
 #include "../../Headers/net.minecraft.world.level.dimension.h"
 
+const std::wstring VillageFeature::OPTION_SIZE_MODIFIER = L"size";
+const std::wstring VillageFeature::OPTION_SPACING = L"distance";
+
 std::vector<Biome*> VillageFeature::allowedBiomes;
 
 void VillageFeature::staticCtor() {
@@ -12,26 +15,43 @@ void VillageFeature::staticCtor() {
     allowedBiomes.push_back(Biome::desert);
 }
 
-VillageFeature::VillageFeature(int villageSizeModifier, int iXZSize)
-    : StructureFeature(), villageSizeModifier(villageSizeModifier) {
+void VillageFeature::_init(int iXZSize) {
+    villageSizeModifier = 0;
+    townSpacing = 32;
+    minTownSeparation = 8;
+
     m_iXZSize = iXZSize;
 }
 
-bool VillageFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
-    int townSpacing;
+VillageFeature::VillageFeature(int iXZSize) { _init(iXZSize); }
 
+VillageFeature::VillageFeature(
+    std::unordered_map<std::wstring, std::wstring> options, int iXZSize) {
+    _init(iXZSize);
+
+    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+        if (it->first.compare(OPTION_SIZE_MODIFIER) == 0) {
+            villageSizeModifier =
+                Mth::getInt(it->second, villageSizeModifier, 0);
+        } else if (it->first.compare(OPTION_SPACING) == 0) {
+            townSpacing =
+                Mth::getInt(it->second, townSpacing, minTownSeparation + 1);
+        }
+    }
+}
+
+std::wstring VillageFeature::getFeatureName() { return L"Village"; }
+
+bool VillageFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
+    int townSpacing = this->townSpacing;
+
+    if (!bIsSuperflat
 #ifdef _LARGE_WORLDS
-    if (level->dimension->getXZSize() > 128) {
-        townSpacing = 32;
-    } else
+        && level->dimension->getXZSize() < 128
 #endif
-        if (bIsSuperflat) {
-        townSpacing = 32;
-    } else {
+    ) {
         townSpacing = 16;  // 4J change 32;
     }
-
-    int minTownSeparation = 8;
 
     int xx = x;
     int zz = z;
@@ -75,6 +95,12 @@ StructureStart* VillageFeature::createStructureStart(int x, int z) {
 
     return new VillageStart(level, random, x, z, villageSizeModifier,
                             m_iXZSize);
+}
+
+VillageFeature::VillageStart::VillageStart() {
+    valid = false;  // 4J added initialiser
+    m_iXZSize = 0;
+    // for reflection
 }
 
 VillageFeature::VillageStart::VillageStart(Level* level, Random* random,
@@ -135,4 +161,15 @@ bool VillageFeature::VillageStart::isValid() {
         valid = false;
     }
     return valid;
+}
+
+void VillageFeature::VillageStart::addAdditonalSaveData(CompoundTag* tag) {
+    StructureStart::addAdditonalSaveData(tag);
+
+    tag->putBoolean(L"Valid", valid);
+}
+
+void VillageFeature::VillageStart::readAdditonalSaveData(CompoundTag* tag) {
+    StructureStart::readAdditonalSaveData(tag);
+    valid = tag->getBoolean(L"Valid");
 }

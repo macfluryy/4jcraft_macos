@@ -7,15 +7,19 @@
 #include "EntityRenderDispatcher.h"
 #include "SnowManRenderer.h"
 
+ResourceLocation SnowManRenderer::SNOWMAN_LOCATION =
+    ResourceLocation(TN_MOB_SNOWMAN);
+
 SnowManRenderer::SnowManRenderer() : MobRenderer(new SnowManModel(), 0.5f) {
     model = (SnowManModel*)MobRenderer::model;
     this->setArmor(model);
 }
 
-void SnowManRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
+void SnowManRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
+                                          float a) {
     // 4J - original version used generics and thus had an input parameter of
-    // type SnowMan rather than std::shared_ptr<Mob>  we have here - do some
-    // casting around instead
+    // type SnowMan rather than shared_ptr<Mob>  we have here - do some casting
+    // around instead
     std::shared_ptr<SnowMan> mob = std::dynamic_pointer_cast<SnowMan>(_mob);
 
     MobRenderer::additionalRendering(mob, a);
@@ -33,9 +37,14 @@ void SnowManRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
             glScalef(s, -s, s);
         }
 
-        this->entityRenderDispatcher->itemInHandRenderer->renderItem(
-            mob, headGear, 0);
+        entityRenderDispatcher->itemInHandRenderer->renderItem(mob, headGear,
+                                                               0);
 
         glPopMatrix();
     }
+}
+
+ResourceLocation* SnowManRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &SNOWMAN_LOCATION;
 }

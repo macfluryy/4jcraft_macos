@@ -8,6 +8,9 @@ class ItemRenderer;
 
 class Gui : public GuiComponent {
 private:
+    static ResourceLocation PUMPKIN_BLUR_LOCATION;
+    static ResourceLocation GUI_GUI_LOCATION;
+    static ResourceLocation GUI_ICONS_LOCATION;
     // 4J-PB - this doesn't account for the safe zone, and the indent applied to
     // messages
     // static const int MAX_MESSAGE_WIDTH = 320;

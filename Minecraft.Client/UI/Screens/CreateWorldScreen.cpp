@@ -282,7 +282,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
 
         LoadingInputParams* loadingParams = new LoadingInputParams();
         loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
-        loadingParams->lpParam = (LPVOID)param;
+        loadingParams->lpParam = param;
 
         app.SetAutosaveTimerTime();
 

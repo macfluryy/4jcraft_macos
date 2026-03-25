@@ -17,6 +17,11 @@ class Biome;
 
 class StrongholdFeature : public StructureFeature {
 public:
+    static const std::wstring OPTION_DISTANCE;
+    static const std::wstring OPTION_COUNT;
+    static const std::wstring OPTION_SPREAD;
+
+public:
     static void staticCtor();
 
 private:
@@ -27,19 +32,33 @@ private:
         1;  // Java game has 3, but xbox game only has 1 because of the world
             // size;	// 4J added
     ChunkPos* strongholdPos[strongholdPos_length];
+    double distance;
+    int spread;
+
+    void _init();
 
 public:
     StrongholdFeature();
+    StrongholdFeature(std::unordered_map<std::wstring, std::wstring> options);
     ~StrongholdFeature();
+
+    std::wstring getFeatureName();
 
 protected:
     virtual bool isFeatureChunk(int x, int z, bool bIsSuperflat = false);
     std::vector<TilePos>* getGuesstimatedFeaturePositions();
     virtual StructureStart* createStructureStart(int x, int z);
 
-private:
+public:
     class StrongholdStart : public StructureStart {
     public:
+        static StructureStart* Create() { return new StrongholdStart(); }
+        virtual EStructureStart GetType() {
+            return eStructureStart_StrongholdStart;
+        }
+
+    public:
+        StrongholdStart();
         StrongholdStart(Level* level, Random* random, int chunkX, int chunkZ);
     };
 };

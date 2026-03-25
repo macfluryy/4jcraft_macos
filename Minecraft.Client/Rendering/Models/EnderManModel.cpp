@@ -53,8 +53,9 @@ EndermanModel::EndermanModel() : HumanoidModel(0, -14, 64, 32) {
 
 void EndermanModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
+                              std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
-    HumanoidModel::setupAnim(time, r, bob, yRot, xRot, scale,
+    HumanoidModel::setupAnim(time, r, bob, yRot, xRot, scale, entity,
                              uiBitmaskOverrideAnim);
 
     head->visible = true;

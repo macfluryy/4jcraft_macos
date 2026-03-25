@@ -5,14 +5,16 @@
 class DiggerItem;
 class Level;
 
-class DiggerItemHint : public TutorialHint
-{
+class DiggerItemHint : public TutorialHint {
 private:
-	int *m_iItems;
-	unsigned int m_iItemsCount;
+    int* m_iItems;
+    unsigned int m_iItemsCount;
 
 public:
-	DiggerItemHint(eTutorial_Hint id, Tutorial *tutorial, int descriptionId, int items[], unsigned int itemsLength);
-	virtual int startDestroyBlock(std::shared_ptr<ItemInstance> item, Tile *tile);
-	virtual int attack(std::shared_ptr<ItemInstance> item, std::shared_ptr<Entity> entity);
+    DiggerItemHint(eTutorial_Hint id, Tutorial* tutorial, int descriptionId,
+                   int items[], unsigned int itemsLength);
+    virtual int startDestroyBlock(std::shared_ptr<ItemInstance> item,
+                                  Tile* tile);
+    virtual int attack(std::shared_ptr<ItemInstance> item,
+                       std::shared_ptr<Entity> entity);
 };

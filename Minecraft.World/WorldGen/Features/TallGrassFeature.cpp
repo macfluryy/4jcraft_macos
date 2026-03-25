@@ -21,7 +21,8 @@ bool TallGrassFeature::place(Level* level, Random* random, int x, int y,
         int z2 = z + random->nextInt(8) - random->nextInt(8);
         if (level->isEmptyTile(x2, y2, z2)) {
             if (Tile::tiles[tile]->canSurvive(level, x2, y2, z2)) {
-                level->setTileAndDataNoUpdate(x2, y2, z2, tile, type);
+                level->setTileAndData(x2, y2, z2, tile, type,
+                                      Tile::UPDATE_CLIENTS);
             }
         }
     }

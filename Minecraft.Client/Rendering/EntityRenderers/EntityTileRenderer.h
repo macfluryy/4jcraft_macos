@@ -10,6 +10,7 @@ public:
 
 private:
     std::shared_ptr<ChestTileEntity> chest;
+    std::shared_ptr<ChestTileEntity> trappedChest;
     std::shared_ptr<EnderChestTileEntity> enderChest;
 
 public:

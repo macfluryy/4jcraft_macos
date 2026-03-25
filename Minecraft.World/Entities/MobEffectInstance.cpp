@@ -5,6 +5,10 @@ void MobEffectInstance::_init(int id, int duration, int amplifier) {
     this->id = id;
     this->duration = duration;
     this->amplifier = amplifier;
+
+    splash = false;
+    ambient = false;
+    noCounter = false;
 }
 
 MobEffectInstance::MobEffectInstance(int id) { _init(id, 0, 0); }
@@ -17,23 +21,34 @@ MobEffectInstance::MobEffectInstance(int id, int duration, int amplifier) {
     _init(id, duration, amplifier);
 }
 
+MobEffectInstance::MobEffectInstance(int id, int duration, int amplifier,
+                                     bool ambient) {
+    _init(id, duration, amplifier);
+    this->ambient = ambient;
+}
+
 MobEffectInstance::MobEffectInstance(MobEffectInstance* copy) {
     this->id = copy->id;
     this->duration = copy->duration;
     this->amplifier = copy->amplifier;
+    this->splash = copy->splash;
+    this->ambient = copy->ambient;
+    this->noCounter = copy->noCounter;
 }
 
 void MobEffectInstance::update(MobEffectInstance* takeOver) {
-    if (this->id != takeOver->id) {
+    if (id != takeOver->id) {
         app.DebugPrintf(
             "This method should only be called for matching effects!");
     }
-    if (takeOver->amplifier > this->amplifier) {
-        this->amplifier = takeOver->amplifier;
-        this->duration = takeOver->duration;
-    } else if (takeOver->amplifier == this->amplifier &&
-               this->duration < takeOver->duration) {
-        this->duration = takeOver->duration;
+    if (takeOver->amplifier > amplifier) {
+        amplifier = takeOver->amplifier;
+        duration = takeOver->duration;
+    } else if (takeOver->amplifier == amplifier &&
+               duration < takeOver->duration) {
+        duration = takeOver->duration;
+    } else if (!takeOver->ambient && ambient) {
+        ambient = takeOver->ambient;
     }
 }
 
@@ -43,13 +58,19 @@ int MobEffectInstance::getDuration() { return duration; }
 
 int MobEffectInstance::getAmplifier() { return amplifier; }
 
+bool MobEffectInstance::isSplash() { return splash; }
+
+void MobEffectInstance::setSplash(bool splash) { this->splash = splash; }
+
+bool MobEffectInstance::isAmbient() { return ambient; }
+
 /**
  * Runs the effect on a Mob target.
  *
  * @param target
  * @return True if the effect is still active.
  */
-bool MobEffectInstance::tick(std::shared_ptr<Mob> target) {
+bool MobEffectInstance::tick(std::shared_ptr<LivingEntity> target) {
     if (duration > 0) {
         if (MobEffect::effects[id]->isDurationEffectTick(duration, amplifier)) {
             applyEffect(target);
@@ -61,7 +82,7 @@ bool MobEffectInstance::tick(std::shared_ptr<Mob> target) {
 
 int MobEffectInstance::tickDownDuration() { return --duration; }
 
-void MobEffectInstance::applyEffect(std::shared_ptr<Mob> mob) {
+void MobEffectInstance::applyEffect(std::shared_ptr<LivingEntity> mob) {
     if (duration > 0) {
         MobEffect::effects[id]->applyEffectTick(mob, amplifier);
     }
@@ -88,11 +109,11 @@ int MobEffectInstance::hashCode() {
 std::wstring MobEffectInstance::toString() {
     std::wstring result =
         L"MobEffectInstance::toString - NON IMPLEMENTED OR LOCALISED FUNCTION";
-    // std::wstring result = "";
+    // wstring result = "";
     // if (getAmplifier() > 0)
     //{
     //	result = getDescriptionId() + " x " + (getAmplifier() + 1) + ",
-    //Duration: " + getDuration();
+    // Duration: " + getDuration();
     // }
     // else
     //{
@@ -106,7 +127,30 @@ std::wstring MobEffectInstance::toString() {
 }
 
 // Was bool equals(Object obj)
-bool MobEffectInstance::equals(MobEffectInstance* obj) {
-    return this->id == obj->id && this->amplifier == obj->amplifier &&
-           this->duration == obj->duration;
+bool MobEffectInstance::equals(MobEffectInstance* instance) {
+    return id == instance->id && amplifier == instance->amplifier &&
+           duration == instance->duration && splash == instance->splash &&
+           ambient == instance->ambient;
 }
+
+CompoundTag* MobEffectInstance::save(CompoundTag* tag) {
+    tag->putByte(L"Id", (uint8_t)getId());
+    tag->putByte(L"Amplifier", (uint8_t)getAmplifier());
+    tag->putInt(L"Duration", getDuration());
+    tag->putBoolean(L"Ambient", isAmbient());
+    return tag;
+}
+
+MobEffectInstance* MobEffectInstance::load(CompoundTag* tag) {
+    int id = tag->getByte(L"Id");
+    int amplifier = tag->getByte(L"Amplifier");
+    int duration = tag->getInt(L"Duration");
+    boolean ambient = tag->getBoolean(L"Ambient");
+    return new MobEffectInstance(id, duration, amplifier, ambient);
+}
+
+void MobEffectInstance::setNoCounter(bool noCounter) {
+    this->noCounter = noCounter;
+}
+
+bool MobEffectInstance::isNoCounter() { return noCounter; }

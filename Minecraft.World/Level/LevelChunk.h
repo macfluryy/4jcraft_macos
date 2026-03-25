@@ -4,6 +4,8 @@ class DataLayer;
 class TileEntity;
 class Random;
 class ChunkSource;
+class EntitySelector;
+
 #include "Storage/SparseLightStorage.h"
 #include "Storage/CompressedTileStorage.h"
 #include "Storage/SparseDataStorage.h"
@@ -167,9 +169,11 @@ public:
     void stopSharingTilesAndData();                  // 4J added
     virtual void reSyncLighting();                   // 4J added
     void startSharingTilesAndData(int forceMs = 0);  // 4J added
-    __int64 lastUnsharedTime;                        // 4J added
-    __int64 lastSaveTime;
+    int64_t lastUnsharedTime;                        // 4J added
+    int64_t lastSaveTime;
     bool seenByPlayer;
+    int lowestHeightmap;
+    int64_t inhabitedTime;
 
 #ifdef _LARGE_WORLDS
     bool m_bUnloaded;
@@ -237,14 +241,17 @@ public:
     virtual void removeTileEntity(int x, int y, int z);
     virtual void load();
     virtual void unload(bool unloadTileEntities);  // 4J - added parameter
+    virtual bool containsPlayer();                 // 4J - added
 #ifdef _LARGE_WORLDS
     virtual bool isUnloaded();
 #endif
     virtual void markUnsaved();
     virtual void getEntities(std::shared_ptr<Entity> except, AABB* bb,
-                             std::vector<std::shared_ptr<Entity> >& es);
+                             std::vector<std::shared_ptr<Entity> >& es,
+                             const EntitySelector* selector);
     virtual void getEntitiesOfClass(const std::type_info& ec, AABB* bb,
-                                    std::vector<std::shared_ptr<Entity> >& es);
+                                    std::vector<std::shared_ptr<Entity> >& es,
+                                    const EntitySelector* selector);
     virtual int countEntities();
     virtual bool shouldSave(bool force);
     virtual int getBlocksAndData(
@@ -260,7 +267,7 @@ public:
                                       int p);  // 4J added
     virtual void setCheckAllLight();
 
-    virtual Random* getRandom(__int64 l);
+    virtual Random* getRandom(int64_t l);
     virtual bool isEmpty();
     virtual void attemptCompression();
 
@@ -285,6 +292,7 @@ public:
     void tick();  // 4J - lighting change brought forward from 1.8.2
     ChunkPos* getPos();
     bool isYSpaceEmpty(int y1, int y2);
+    void reloadBiomes();  // 4J added
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);
     byteArray getBiomes();
     void setBiomes(byteArray biomes);

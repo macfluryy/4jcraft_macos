@@ -2,27 +2,30 @@
 
 #include "UIControl_Base.h"
 
-class UIControl_SlotList : public UIControl_Base
-{
+class UIControl_SlotList : public UIControl_Base {
 private:
-	//IggyName m_addSlotFunc, m_getSlotFunc, m_setRedBoxFunc, m_setHighlightFunc;
-	IggyName m_addSlotFunc, m_setRedBoxFunc, m_setHighlightFunc;
+    // IggyName m_addSlotFunc, m_getSlotFunc, m_setRedBoxFunc,
+    // m_setHighlightFunc;
+    IggyName m_addSlotFunc, m_setRedBoxFunc, m_setHighlightFunc;
 
-	int m_lastHighlighted;
+    int m_lastHighlighted;
 
 public:
-	UIControl_SlotList();
+    UIControl_SlotList();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	void addSlot(int id);
-	void addSlots(int iStartValue, int iCount);
+    virtual void ReInit();
 
-	void setHighlightSlot(int index);
-	void showSlotRedBox(int index, bool show);
+    void addSlot(int id);
+    void addSlots(int iStartValue, int iCount);
 
-	virtual void setFocus(bool focus);
+    void setHighlightSlot(int index);
+    void showSlotRedBox(int index, bool show);
+
+    virtual void setFocus(bool focus);
 
 private:
-	void setSlotHighlighted(int index, bool highlight);
+    void setSlotHighlighted(int index, bool highlight);
 };

@@ -10,7 +10,7 @@
 #endif
 
 #if (defined _XBOX || defined _WINDOWS64 || defined _DURANGO)
-typedef unsigned __int64 __uint64;
+typedef unsigned int64_t uint64_t;
 #endif
 
 #ifdef _WINDOWS64
@@ -243,8 +243,8 @@ void MemSect(int sect);
 // once, preventing double-inclusion when DLC/other Common files also pull in
 // Minecraft.Client stdafx.h.
 #include "../../Minecraft.Client/Platform/Linux/Linux_App.h"
-#include "../../Minecraft.Client/Platform/Orbis/Sentient/SentientTelemetryCommon.h"
-#include "../../Minecraft.Client/Platform/Orbis/Sentient/DynamicConfigurations.h"
+#include "../../Minecraft.Client/Platform/Linux/Sentient/SentientTelemetryCommon.h"
+#include "../../Minecraft.Client/Platform/Linux/Sentient/DynamicConfigurations.h"
 #include "../../Minecraft.Client/Platform/Orbis/GameConfig/Minecraft.spa.h"
 // #include
 // "../../Minecraft.Client/Platform/Windows64/Sentient/MinecraftTelemetry.h"

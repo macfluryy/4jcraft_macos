@@ -5,6 +5,9 @@
 class Input;
 
 class RemotePlayer : public Player {
+public:
+    eINSTANCEOF GetType() { return eTYPE_REMOTEPLAYER; }
+
 private:
     bool hasStartedUsingItem;
 
@@ -16,7 +19,7 @@ protected:
     virtual void setDefaultHeadHeight();
 
 public:
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
 
 private:
     int lSteps;
@@ -39,4 +42,5 @@ public:
     virtual void animateRespawn();
     virtual float getHeadHeight();
     bool hasPermission(EGameCommand command) { return false; }
+    virtual Pos getCommandSenderWorldPosition();
 };

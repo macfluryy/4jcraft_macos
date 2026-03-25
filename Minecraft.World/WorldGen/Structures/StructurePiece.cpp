@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include "../../Headers/net.minecraft.world.level.levelgen.structure.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.material.h"
@@ -41,6 +42,13 @@
  * chunks, leading to infinite loops and other errors.
  */
 
+StructurePiece::StructurePiece() {
+    boundingBox = NULL;
+    orientation = 0;
+    genDepth = 0;
+    // for reflection
+}
+
 StructurePiece::StructurePiece(int genDepth) {
     boundingBox = NULL;
     this->genDepth = genDepth;
@@ -49,6 +57,29 @@ StructurePiece::StructurePiece(int genDepth) {
 
 StructurePiece::~StructurePiece() {
     if (boundingBox != NULL) delete boundingBox;
+}
+
+CompoundTag* StructurePiece::createTag() {
+    CompoundTag* tag = new CompoundTag();
+
+    tag->putString(L"id", StructureFeatureIO::getEncodeId(this));
+    tag->put(L"BB", boundingBox->createTag(L"BB"));
+    tag->putInt(L"O", orientation);
+    tag->putInt(L"GD", genDepth);
+
+    addAdditonalSaveData(tag);
+
+    return tag;
+}
+
+void StructurePiece::load(Level* level, CompoundTag* tag) {
+    if (tag->contains(L"BB")) {
+        boundingBox = new BoundingBox(tag->getIntArray(L"BB"));
+    }
+    orientation = tag->getInt(L"O");
+    genDepth = tag->getInt(L"GD");
+
+    readAdditonalSaveData(tag);
 }
 
 void StructurePiece::addChildren(StructurePiece* startPiece,
@@ -172,10 +203,10 @@ int StructurePiece::getWorldZ(int x, int z) {
 int StructurePiece::getOrientationData(int tile, int data) {
     if (tile == Tile::rail->id) {
         if (orientation == Direction::WEST || orientation == Direction::EAST) {
-            if (data == RailTile::DIR_FLAT_X) {
-                return RailTile::DIR_FLAT_Z;
+            if (data == BaseRailTile::DIR_FLAT_X) {
+                return BaseRailTile::DIR_FLAT_Z;
             } else {
-                return RailTile::DIR_FLAT_X;
+                return BaseRailTile::DIR_FLAT_X;
             }
         }
     } else if (tile == Tile::door_wood_Id || tile == Tile::door_iron_Id) {
@@ -201,7 +232,7 @@ int StructurePiece::getOrientationData(int tile, int data) {
         }
     } else if (tile == Tile::stairs_stone_Id || tile == Tile::stairs_wood_Id ||
                tile == Tile::stairs_netherBricks_Id ||
-               tile == Tile::stairs_stoneBrickSmooth_Id ||
+               tile == Tile::stairs_stoneBrick_Id ||
                tile == Tile::stairs_sandstone_Id) {
         if (orientation == Direction::SOUTH) {
             if (data == 2) {
@@ -394,7 +425,8 @@ void StructurePiece::placeBlock(Level* level, int block, int data, int x, int y,
     // SuperFlat)
     if (worldY == 0) return;
 
-    level->setTileAndDataNoUpdate(worldX, worldY, worldZ, block, data);
+    level->setTileAndData(worldX, worldY, worldZ, block, data,
+                          Tile::UPDATE_CLIENTS);
 }
 
 /**
@@ -590,7 +622,8 @@ void StructurePiece::generateAirColumnUp(Level* level, int x, int startY, int z,
 
     while (!level->isEmptyTile(worldX, worldY, worldZ) &&
            worldY < Level::maxBuildHeight - 1) {
-        level->setTileAndDataNoUpdate(worldX, worldY, worldZ, 0, 0);
+        level->setTileAndData(worldX, worldY, worldZ, 0, 0,
+                              Tile::UPDATE_CLIENTS);
         worldY++;
     }
 }
@@ -608,7 +641,8 @@ void StructurePiece::fillColumnDown(Level* level, int tile, int tileData, int x,
     while ((level->isEmptyTile(worldX, worldY, worldZ) ||
             level->getMaterial(worldX, worldY, worldZ)->isLiquid()) &&
            worldY > 1) {
-        level->setTileAndDataNoUpdate(worldX, worldY, worldZ, tile, tileData);
+        level->setTileAndData(worldX, worldY, worldZ, tile, tileData,
+                              Tile::UPDATE_CLIENTS);
         worldY--;
     }
 }
@@ -622,7 +656,8 @@ bool StructurePiece::createChest(Level* level, BoundingBox* chunkBB,
 
     if (chunkBB->isInside(worldX, worldY, worldZ)) {
         if (level->getTile(worldX, worldY, worldZ) != Tile::chest->id) {
-            level->setTile(worldX, worldY, worldZ, Tile::chest->id);
+            level->setTileAndData(worldX, worldY, worldZ, Tile::chest->id, 0,
+                                  Tile::UPDATE_CLIENTS);
             std::shared_ptr<ChestTileEntity> chest =
                 std::dynamic_pointer_cast<ChestTileEntity>(
                     level->getTileEntity(worldX, worldY, worldZ));
@@ -647,7 +682,8 @@ bool StructurePiece::createDispenser(Level* level, BoundingBox* chunkBB,
         if (level->getTile(worldX, worldY, worldZ) != Tile::dispenser_Id) {
             level->setTileAndData(
                 worldX, worldY, worldZ, Tile::dispenser_Id,
-                getOrientationData(Tile::dispenser_Id, facing));
+                getOrientationData(Tile::dispenser_Id, facing),
+                Tile::UPDATE_CLIENTS);
             std::shared_ptr<DispenserTileEntity> dispenser =
                 std::dynamic_pointer_cast<DispenserTileEntity>(
                     level->getTileEntity(worldX, worldY, worldZ));

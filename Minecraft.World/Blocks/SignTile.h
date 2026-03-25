@@ -1,12 +1,12 @@
 #pragma once
 
-#include "TileEntities/EntityTile.h"
+#include "BaseEntityTile.h"
 #include "TileEntities/TileEntity.h"
 
 #include "../Platform/stdafx.h"
 #include "Material.h"
 
-class SignTile : public EntityTile {
+class SignTile : public BaseEntityTile {
     friend class Tile;
 
 private:

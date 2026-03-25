@@ -2,15 +2,16 @@
 #include "TileEntityRenderer.h"
 #include "TileEntityRenderDispatcher.h"
 
-void TileEntityRenderer::bindTexture(int resourceName) {
+void TileEntityRenderer::bindTexture(ResourceLocation* location) {
     Textures* t = tileEntityRenderDispatcher->textures;
-    if (t != NULL) t->bind(t->loadTexture(resourceName));
+    if (t != NULL) t->bind(t->loadTexture(location->getTexture()));
 }
 
 void TileEntityRenderer::bindTexture(const std::wstring& urlTexture,
-                                     int backupTexture) {
+                                     ResourceLocation* location) {
     Textures* t = tileEntityRenderDispatcher->textures;
-    if (t != NULL) t->bind(t->loadHttpTexture(urlTexture, backupTexture));
+    if (t != NULL)
+        t->bind(t->loadHttpTexture(urlTexture, location->getTexture()));
 }
 
 Level* TileEntityRenderer::getLevel() {

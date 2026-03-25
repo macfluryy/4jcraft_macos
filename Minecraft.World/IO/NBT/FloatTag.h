@@ -11,7 +11,7 @@ public:
     }
 
     void write(DataOutput* dos) { dos->writeFloat(data); }
-    void load(DataInput* dis) { data = dis->readFloat(); }
+    void load(DataInput* dis, int tagDepth) { data = dis->readFloat(); }
 
     uint8_t getId() { return TAG_Float; }
     std::wstring toString() {

@@ -2,21 +2,28 @@
 #include "../../Headers/net.minecraft.world.effect.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
+#include "../../WorldGen/Features/BasicTreeFeature.h"
+#include "../../Util/BasicTypeContainers.h"
 #include "UpdateMobEffectPacket.h"
 
 UpdateMobEffectPacket::UpdateMobEffectPacket() {
-    this->entityId = 0;
-    this->effectId = 0;
-    this->effectAmplifier = 0;
-    this->effectDurationTicks = 0;
+    entityId = 0;
+    effectId = 0;
+    effectAmplifier = 0;
+    effectDurationTicks = 0;
 }
 
 UpdateMobEffectPacket::UpdateMobEffectPacket(int entityId,
                                              MobEffectInstance* effect) {
     this->entityId = entityId;
-    this->effectId = static_cast<std::uint8_t>(effect->getId() & 0xff);
-    this->effectAmplifier = (char)(effect->getAmplifier() & 0xff);
-    this->effectDurationTicks = (short)effect->getDuration();
+    effectId = (BYTE)(effect->getId() & 0xff);
+    effectAmplifier = (char)(effect->getAmplifier() & 0xff);
+
+    if (effect->getDuration() > Short::MAX_VALUE) {
+        effectDurationTicks = Short::MAX_VALUE;
+    } else {
+        effectDurationTicks = (short)effect->getDuration();
+    }
 }
 
 void UpdateMobEffectPacket::read(DataInputStream* dis) {
@@ -31,6 +38,10 @@ void UpdateMobEffectPacket::write(DataOutputStream* dos) {
     dos->writeByte(effectId);
     dos->writeByte(effectAmplifier);
     dos->writeShort(effectDurationTicks);
+}
+
+bool UpdateMobEffectPacket::isSuperLongDuration() {
+    return effectDurationTicks == Short::MAX_VALUE;
 }
 
 void UpdateMobEffectPacket::handle(PacketListener* listener) {

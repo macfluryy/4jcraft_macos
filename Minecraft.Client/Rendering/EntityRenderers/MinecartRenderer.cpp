@@ -1,12 +1,16 @@
 #include "../../Platform/stdafx.h"
 #include "MinecartRenderer.h"
 #include "../Models/MinecartModel.h"
+#include "../../Textures/TextureAtlas.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
+
+ResourceLocation MinecartRenderer::MINECART_LOCATION(TN_ITEM_CART);
 
 MinecartRenderer::MinecartRenderer() {
     this->shadowRadius = 0.5f;
     model = new MinecartModel();
+    renderer = new TileRenderer();
 }
 
 void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
@@ -16,6 +20,8 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
     std::shared_ptr<Minecart> cart = std::dynamic_pointer_cast<Minecart>(_cart);
 
     glPushMatrix();
+
+    bindTexture(cart);
 
     // 4jcraft added a bunch of casts to prever overflow
     int64_t seed = (int64_t)((uint64_t)cart->entityId * 493286711ULL);
@@ -68,32 +74,76 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
                   0);
     }
 
-    if (cart->type != Minecart::RIDEABLE) {
-        glPushMatrix();
-        bindTexture(TN_TERRAIN);  // 4J was L"/terrain.png"
-        float ss = 12 / 16.0f;
-        glScalef(ss, ss, ss);
+    int yOffset = cart->getDisplayOffset();
+    Tile* tile = cart->getDisplayTile();
+    int tileData = cart->getDisplayData();
 
-        // 4J - changes here brought forward from 1.2.3
-        if (cart->type == Minecart::CHEST) {
-            glTranslatef(0 / 16.0f, 8 / 16.0f, 0 / 16.0f);
-            TileRenderer* tr = new TileRenderer();
-            tr->renderTile(Tile::chest, 0, cart->getBrightness(a));
-            delete tr;
-        } else if (cart->type == Minecart::FURNACE) {
-            glTranslatef(0, 6 / 16.0f, 0);
-            TileRenderer* tr = new TileRenderer();
-            tr->renderTile(Tile::furnace, 0, cart->getBrightness(a));
-            delete tr;
-        }
+    if (tile != NULL) {
+        glPushMatrix();
+
+        bindTexture(&TextureAtlas::LOCATION_BLOCKS);
+        float ss = 12 / 16.0f;
+
+        glScalef(ss, ss, ss);
+        glTranslatef(0 / 16.f, yOffset / 16.f, 0 / 16.f);
+        renderMinecartContents(cart, a, tile, tileData);
+
         glPopMatrix();
         glColor4f(1, 1, 1, 1);
+        bindTexture(cart);
     }
 
-    bindTexture(TN_ITEM_CART);  // 4J - was L"/item/cart.png"
+    glScalef(-1, -1, 1);
+    model->render(cart, 0, 0, -0.1f, 0, 0, 1 / 16.0f, true);
+    glPopMatrix();
+
+    /*
+    if (cart->type != Minecart::RIDEABLE)
+    {
+    glPushMatrix();
+    bindTexture(TN_TERRAIN);	// 4J was L"/terrain.png"
+    float ss = 12 / 16.0f;
+    glScalef(ss, ss, ss);
+
+    // 4J - changes here brought forward from 1.2.3
+    if (cart->type == Minecart::CHEST)
+    {
+    glTranslatef(0 / 16.0f, 8 / 16.0f, 0 / 16.0f);
+    TileRenderer *tr = new TileRenderer();
+    tr->renderTile(Tile::chest, 0, cart->getBrightness(a));
+    delete tr;
+    }
+    else if (cart->type == Minecart::FURNACE)
+    {
+    glTranslatef(0, 6 / 16.0f, 0);
+    TileRenderer *tr = new TileRenderer();
+    tr->renderTile(Tile::furnace, 0, cart->getBrightness(a));
+    delete tr;
+    }
+    glPopMatrix();
+    glColor4f(1, 1, 1, 1);
+    }
+
+    bindTexture(TN_ITEM_CART);		// 4J - was L"/item/cart.png"
     glScalef(-1, -1, 1);
     // model.render(0, 0, cart->getLootContent() * 7.1f - 0.1f, 0, 0, 1 /
     // 16.0f);
     model->render(cart, 0, 0, -0.1f, 0, 0, 1 / 16.0f, true);
+    glPopMatrix();
+    */
+}
+
+ResourceLocation* MinecartRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &MINECART_LOCATION;
+}
+
+void MinecartRenderer::renderMinecartContents(std::shared_ptr<Minecart> cart,
+                                              float a, Tile* tile,
+                                              int tileData) {
+    float brightness = cart->getBrightness(a);
+
+    glPushMatrix();
+    renderer->renderTile(tile, tileData, brightness);
     glPopMatrix();
 }

@@ -3,15 +3,15 @@
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "ModelPart.h"
 
-void VillagerModel::_init(float g, float yOffset) {
-    int xTexSize = 64;
-    int yTexSize = 64;
-
+void VillagerModel::_init(float g, float yOffset, int xTexSize, int yTexSize) {
     head = (new ModelPart(this))->setTexSize(xTexSize, yTexSize);
     head->setPos(0, 0 + yOffset, 0);
     head->texOffs(0, 0)->addBox(-4, -10, -4, 8, 10, 8, g);
-    //        head.texOffs(32, 0).addBox(-4, -10, -4, 8, 12, 8, g + 0.5f);
-    head->texOffs(24, 0)->addBox(-1, -3, -6, 2, 4, 2, g);
+
+    nose = (new ModelPart(this))->setTexSize(xTexSize, yTexSize);
+    nose->setPos(0, yOffset - 2, 0);
+    nose->texOffs(24, 0)->addBox(-1, -1, -6, 2, 4, 2, g);
+    head->addChild(nose);
 
     body = (new ModelPart(this))->setTexSize(xTexSize, yTexSize);
     body->setPos(0, 0 + yOffset, 0);
@@ -44,16 +44,17 @@ void VillagerModel::_init(float g, float yOffset) {
     leg1->compile(1.0f / 16.0f);
 }
 
-VillagerModel::VillagerModel(float g) : Model() { _init(g, 0); }
+VillagerModel::VillagerModel(float g) : Model() { _init(g, 0, 64, 64); }
 
-VillagerModel::VillagerModel(float g, float yOffset) : Model() {
-    _init(g, yOffset);
+VillagerModel::VillagerModel(float g, float yOffset, int xTexSize, int yTexSize)
+    : Model() {
+    _init(g, yOffset, xTexSize, yTexSize);
 }
 
 void VillagerModel::render(std::shared_ptr<Entity> entity, float time, float r,
                            float bob, float yRot, float xRot, float scale,
                            bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     head->render(scale, usecompiled);
     body->render(scale, usecompiled);
@@ -64,6 +65,7 @@ void VillagerModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
 void VillagerModel::setupAnim(float time, float r, float bob, float yRot,
                               float xRot, float scale,
+                              std::shared_ptr<Entity> entity,
                               unsigned int uiBitmaskOverrideAnim) {
     head->yRot = yRot / (float)(180 / PI);
     head->xRot = xRot / (float)(180 / PI);

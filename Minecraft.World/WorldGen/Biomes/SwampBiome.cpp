@@ -13,6 +13,8 @@ SwampBiome::SwampBiome(int id) : Biome(id) {
     decorator->waterlilyCount = 4;
 
     // waterColor = 0xe0ffae;
+
+    enemies.push_back(new MobSpawnerData(eTYPE_SLIME, 1, 1, 1));
 }
 
 Feature* SwampBiome::getTreeFeature(Random* random) {

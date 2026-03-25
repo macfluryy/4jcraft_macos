@@ -51,23 +51,24 @@ public:
     Villager(Level* level, int profession);
     ~Villager();
 
+protected:
+    virtual void registerAttributes();
+
+public:
     virtual bool useNewAi();
 
 protected:
     virtual void serverAiMobStep();
 
 public:
-    virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool mobInteract(std::shared_ptr<Player> player);
 
 protected:
     virtual void defineSynchedData();
 
 public:
-    virtual int getMaxHealth();
     virtual void addAdditonalSaveData(CompoundTag* tag);
     virtual void readAdditionalSaveData(CompoundTag* tag);
-
-    virtual int getTexture();
 
 protected:
     virtual bool removeWhenFarAway();
@@ -82,7 +83,7 @@ public:
     void setInLove(bool inLove);
     void setChasing(bool chasing);
     bool isChasing();
-    void setLastHurtByMob(std::shared_ptr<Mob> mob);
+    void setLastHurtByMob(std::shared_ptr<LivingEntity> mob);
     void die(DamageSource* source);
 
     void handleEntityEvent(uint8_t id);
@@ -143,10 +144,12 @@ private:
     static int getPurchaseCost(int itemId, Random* random);
 
 public:
-    void finalizeMobSpawn();
-    void setRewardPlayersInVillage();
-    std::shared_ptr<AgableMob> getBreedOffspring(
+    virtual MobGroupData* finalizeMobSpawn(
+        MobGroupData* groupData,
+        int extraData = 0);  // 4J Added extraData param
+    virtual void setRewardPlayersInVillage();
+    virtual std::shared_ptr<AgableMob> getBreedOffspring(
         std::shared_ptr<AgableMob> target);
-
-    virtual int getDisplayName();
+    virtual bool canBeLeashed();
+    virtual std::wstring getDisplayName();
 };

@@ -6,6 +6,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.entity.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.ai.goal.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "../../Headers/net.minecraft.world.entity.item.h"
@@ -20,34 +21,36 @@ Pig::Pig(Level* level) : Animal(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
+    registerAttributes();
+    setHealth(getMaxHealth());
 
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
-
-    this->textureIdx = TN_MOB_PIG;  // 4J - was L"/mob/pig.png";
-    this->setSize(0.9f, 0.9f);
+    setSize(0.9f, 0.9f);
 
     getNavigation()->setAvoidWater(true);
-    float walkSpeed = 0.25f;
     goalSelector.addGoal(0, new FloatGoal(this));
-    goalSelector.addGoal(1, new PanicGoal(this, 0.38f));
+    goalSelector.addGoal(1, new PanicGoal(this, 1.25));
     goalSelector.addGoal(
-        2, controlGoal = new ControlledByPlayerGoal(this, 0.34f, walkSpeed));
-    goalSelector.addGoal(3, new BreedGoal(this, walkSpeed));
+        2, controlGoal = new ControlledByPlayerGoal(this, 0.3f, 0.25f));
+    goalSelector.addGoal(3, new BreedGoal(this, 1.0));
     goalSelector.addGoal(
-        4, new TemptGoal(this, 0.3f, Item::carrotOnAStick_Id, false));
-    goalSelector.addGoal(4,
-                         new TemptGoal(this, 0.25f, Item::carrots_Id, false));
-    goalSelector.addGoal(5, new FollowParentGoal(this, 0.28f));
-    goalSelector.addGoal(6, new RandomStrollGoal(this, walkSpeed));
+        4, new TemptGoal(this, 1.2, Item::carrotOnAStick_Id, false));
+    goalSelector.addGoal(4, new TemptGoal(this, 1.2, Item::carrots_Id, false));
+    goalSelector.addGoal(5, new FollowParentGoal(this, 1.1));
+    goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0));
     goalSelector.addGoal(7, new LookAtPlayerGoal(this, typeid(Player), 6));
     goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 }
 
 bool Pig::useNewAi() { return true; }
 
-int Pig::getMaxHealth() { return 10; }
+void Pig::registerAttributes() {
+    Animal::registerAttributes();
+
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(10);
+    getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.25f);
+}
+
+void Pig::newServerAiStep() { Animal::newServerAiStep(); }
 
 bool Pig::canBeControlledByRider() {
     std::shared_ptr<ItemInstance> item =
@@ -77,8 +80,12 @@ int Pig::getHurtSound() { return eSoundType_MOB_PIG_AMBIENT; }
 
 int Pig::getDeathSound() { return eSoundType_MOB_PIG_DEATH; }
 
-bool Pig::interact(std::shared_ptr<Player> player) {
-    if (!Animal::interact(player)) {
+void Pig::playStepSound(int xt, int yt, int zt, int t) {
+    playSound(eSoundType_MOB_PIG_STEP, 0.15f, 1);
+}
+
+bool Pig::mobInteract(std::shared_ptr<Player> player) {
+    if (!Animal::mobInteract(player)) {
         if (hasSaddle() && !level->isClientSide &&
             (rider.lock() == NULL || rider.lock() == player)) {
             // 4J HEG - Fixed issue with player not being able to dismount pig
@@ -130,8 +137,8 @@ void Pig::thunderHit(const LightningBolt* lightningBolt) {
 
 void Pig::causeFallDamage(float distance) {
     Animal::causeFallDamage(distance);
-    if (distance > 5 &&
-        std::dynamic_pointer_cast<Player>(rider.lock()) != NULL) {
+    if ((distance > 5) && rider.lock() != NULL &&
+        rider.lock()->instanceof(eTYPE_PLAYER)) {
         (std::dynamic_pointer_cast<Player>(rider.lock()))
             ->awardStat(GenericStats::flyPig(), GenericStats::param_flyPig());
     }

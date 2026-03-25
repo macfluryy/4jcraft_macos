@@ -13,4 +13,6 @@ public:
     static const int STEP_X[6];
     static const int STEP_Y[6];
     static const int STEP_Z[6];
+
+    static const std::wstring NAMES[];
 };

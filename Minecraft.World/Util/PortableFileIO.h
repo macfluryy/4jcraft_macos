@@ -31,17 +31,17 @@ inline std::FILE* OpenBinaryFileForRead(const std::wstring& path) {
 
 inline bool Seek(std::FILE* file, std::size_t offset, int origin) {
 #if defined(_WIN32)
-    return _fseeki64(file, static_cast<__int64>(offset), origin) == 0;
+    return _fseeki64(file, static_cast<int64_t>(offset), origin) == 0;
 #else
     return fseeko(file, static_cast<off_t>(offset), origin) == 0;
 #endif
 }
 
-inline __int64 Tell(std::FILE* file) {
+inline int64_t Tell(std::FILE* file) {
 #if defined(_WIN32)
     return _ftelli64(file);
 #else
-    return static_cast<__int64>(ftello(file));
+    return static_cast<int64_t>(ftello(file));
 #endif
 }
 
@@ -57,7 +57,7 @@ inline BinaryReadResult ReadBinaryFile(const std::wstring& path, void* buffer,
         return {BinaryReadStatus::read_error, 0, 0};
     }
 
-    const __int64 endPosition = Tell(stream);
+    const int64_t endPosition = Tell(stream);
     if (endPosition < 0) {
         std::fclose(stream);
         return {BinaryReadStatus::read_error, 0, 0};
@@ -97,7 +97,7 @@ inline BinaryReadResult ReadBinaryFileSegment(const std::wstring& path,
         return {BinaryReadStatus::read_error, 0, 0};
     }
 
-    const __int64 endPosition = Tell(stream);
+    const int64_t endPosition = Tell(stream);
     if (endPosition < 0) {
         std::fclose(stream);
         return {BinaryReadStatus::read_error, 0, 0};

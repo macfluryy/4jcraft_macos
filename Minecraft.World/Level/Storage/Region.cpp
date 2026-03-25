@@ -3,6 +3,7 @@
 #include "../../Headers/net.minecraft.world.level.chunk.h"
 #include "../../Headers/net.minecraft.world.level.dimension.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
+#include "../../Headers/net.minecraft.world.level.redstone.h"
 #include "../../Blocks/Material.h"
 #include "../Level.h"
 
@@ -23,13 +24,14 @@ Region::~Region() {
     }
 }
 
-Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2) {
+Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
+               int r) {
     this->level = level;
 
-    xc1 = x1 >> 4;
-    zc1 = z1 >> 4;
-    int xc2 = x2 >> 4;
-    int zc2 = z2 >> 4;
+    xc1 = (x1 - r) >> 4;
+    zc1 = (z1 - r) >> 4;
+    int xc2 = (x2 + r) >> 4;
+    int zc2 = (z2 + r) >> 4;
 
     chunks = new LevelChunk2DArray(xc2 - xc1 + 1, zc2 - zc1 + 1);
 
@@ -40,7 +42,14 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2) {
             if (chunk != NULL) {
                 LevelChunkArray* lca = (*chunks)[xc - xc1];
                 lca->data[zc - zc1] = chunk;
-                //(*chunks)[xc - xc1].data[zc - zc1] = level->getChunk(xc, zc);
+            }
+        }
+    }
+    for (int xc = (x1 >> 4); xc <= (x2 >> 4); xc++) {
+        for (int zc = (z1 >> 4); zc <= (z2 >> 4); zc++) {
+            LevelChunkArray* lca = (*chunks)[xc - xc1];
+            LevelChunk* chunk = lca->data[zc - zc1];
+            if (chunk != NULL) {
                 if (!chunk->isYSpaceEmpty(y1, y2)) {
                     allEmpty = false;
                 }
@@ -246,18 +255,8 @@ bool Region::isSolidBlockingTile(int x, int y, int z) {
 }
 
 bool Region::isTopSolidBlocking(int x, int y, int z) {
-    // Temporary workaround until tahgs per-face solidity is finished
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile == NULL) return false;
-
-    if (tile->material->isSolidBlocking() && tile->isCubeShaped()) return true;
-    if (dynamic_cast<StairTile*>(tile))
-        return (getData(x, y, z) & StairTile::UPSIDEDOWN_BIT) ==
-               StairTile::UPSIDEDOWN_BIT;
-    if (dynamic_cast<HalfSlabTile*>(tile))
-        return (getData(x, y, z) & HalfSlabTile::TOP_SLOT_BIT) ==
-               HalfSlabTile::TOP_SLOT_BIT;
-    return false;
+    return level->isTopSolidBlocking(tile, getData(x, y, z));
 }
 
 bool Region::isEmptyTile(int x, int y, int z) {
@@ -278,6 +277,9 @@ int Region::getBrightnessPropagate(LightLayer::variety layer, int x, int y,
         // the same value as the enum value in our C++ code, so just cast it to
         // an int
         return (int)layer;
+    }
+    if (layer == LightLayer::Sky && level->dimension->hasCeiling) {
+        return 0;
     }
 
     int id = tileId > -1 ? tileId : getTile(x, y, z);
@@ -325,3 +327,9 @@ int Region::getBrightness(LightLayer::variety layer, int x, int y, int z) {
 }
 
 int Region::getMaxBuildHeight() { return Level::maxBuildHeight; }
+
+int Region::getDirectSignal(int x, int y, int z, int dir) {
+    int t = getTile(x, y, z);
+    if (t == 0) return Redstone::SIGNAL_NONE;
+    return Tile::tiles[t]->getDirectSignal(this, x, y, z, dir);
+}

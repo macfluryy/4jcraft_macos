@@ -2,8 +2,6 @@
 #include "CreativeMode.h"
 #include "../Player/User.h"
 #include "../Player/LocalPlayer.h"
-#include "../Level/MultiPlayerLevel.h"
-#include "../Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.entity.player.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"

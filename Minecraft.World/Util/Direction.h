@@ -11,6 +11,9 @@ public:
     static const int STEP_X[];
     static const int STEP_Z[];
 
+    static const std::wstring NAMES[];
+    ;
+
     // for [direction] it gives [tile-face]
     static int DIRECTION_FACING[];
 
@@ -28,4 +31,7 @@ public:
 
     // for [direction][world-facing] it gives [tile-facing]
     static int RELATIVE_DIRECTION_FACING[4][6];
+
+    static int getDirection(double xd, double zd);
+    static int getDirection(int x0, int z0, int x1, int z1);
 };

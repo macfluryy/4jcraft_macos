@@ -34,6 +34,8 @@ void glBeginQueryARB(int, int);
 void glEndQueryARB(int);
 void glGetQueryObjectuARB(int, int, IntBuffer *);
 void glReadPixels(int, int, int, int, int, int, ByteBuffer *);
+void LinuxGLLogLightmapState(const char* stage, int textureId, bool scaleLight);
+void LinuxLogStubLightmapProbe();
 
 #else
 

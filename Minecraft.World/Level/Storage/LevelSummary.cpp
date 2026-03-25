@@ -2,8 +2,8 @@
 #include "LevelSummary.h"
 
 LevelSummary::LevelSummary(const std::wstring& levelId,
-                           const std::wstring& levelName, __int64 lastPlayed,
-                           __int64 sizeOnDisk, GameType* gameMode,
+                           const std::wstring& levelName, int64_t lastPlayed,
+                           int64_t sizeOnDisk, GameType* gameMode,
                            bool requiresConversion, bool hardcore,
                            bool hasCheats)
     : levelId(levelId),
@@ -19,11 +19,11 @@ std::wstring LevelSummary::getLevelId() { return levelId; }
 
 std::wstring LevelSummary::getLevelName() { return levelName; }
 
-__int64 LevelSummary::getSizeOnDisk() { return sizeOnDisk; }
+int64_t LevelSummary::getSizeOnDisk() { return sizeOnDisk; }
 
 bool LevelSummary::isRequiresConversion() { return requiresConversion; }
 
-__int64 LevelSummary::getLastPlayed() { return lastPlayed; }
+int64_t LevelSummary::getLastPlayed() { return lastPlayed; }
 
 int LevelSummary::compareTo(LevelSummary* rhs) {
     if (lastPlayed < rhs->lastPlayed) {

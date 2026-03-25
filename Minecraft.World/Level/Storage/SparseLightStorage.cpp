@@ -51,7 +51,7 @@ SparseLightStorage::SparseLightStorage(bool sky) {
     // planes allocated - 127 planes allocated in this case
 
     dataAndCount =
-        0x007F000000000000L | (((__int64)planeIndices) & 0x0000ffffffffffffL);
+        0x007F000000000000L | (((int64_t)planeIndices) & 0x0000ffffffffffffL);
 
 #ifdef LIGHT_COMPRESSION_STATS
     count = 127;
@@ -73,7 +73,7 @@ SparseLightStorage::SparseLightStorage(bool sky, bool isUpper) {
     // planes allocated - 0 planes allocated in this case
 
     dataAndCount =
-        0x0000000000000000L | (((__int64)planeIndices) & 0x0000ffffffffffffL);
+        0x0000000000000000L | (((int64_t)planeIndices) & 0x0000ffffffffffffL);
 
 #ifdef LIGHT_COMPRESSION_STATS
     count = 0;
@@ -99,7 +99,7 @@ SparseLightStorage::~SparseLightStorage() {
 
 SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
     // Extra details of source storage
-    __int64 sourceDataAndCount = copyFrom->dataAndCount;
+    int64_t sourceDataAndCount = copyFrom->dataAndCount;
     unsigned char* sourceIndicesAndData =
         (unsigned char*)(sourceDataAndCount & 0x0000ffffffffffff);
     int sourceCount = (sourceDataAndCount >> 48) & 0xffff;
@@ -115,7 +115,7 @@ SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
     // fixes it for now.
 
     dataAndCount = (sourceDataAndCount & 0xffff000000000000L) |
-                   (((__int64)destIndicesAndData) & 0x0000ffffffffffffL);
+                   (((int64_t)destIndicesAndData) & 0x0000ffffffffffffL);
 
     XMemCpy(destIndicesAndData, sourceIndicesAndData, sourceCount * 128 + 128);
 
@@ -196,9 +196,9 @@ void SparseLightStorage::setData(byteArray dataIn, unsigned int inOffset) {
 
     // Get new data and count packed info
 
-    __int64 newDataAndCount = ((__int64)planeIndices) & 0x0000ffffffffffffL;
+    int64_t newDataAndCount = ((int64_t)planeIndices) & 0x0000ffffffffffffL;
 
-    newDataAndCount |= ((__int64)allocatedPlaneCount) << 48;
+    newDataAndCount |= ((int64_t)allocatedPlaneCount) << 48;
 
     updateDataAndCount(newDataAndCount);
 }
@@ -319,7 +319,7 @@ void SparseLightStorage::setAllBright() {
     // Data and count packs together the pointer to our data and the count of
     // planes allocated, which is currently zero
 
-    __int64 newDataAndCount = ((__int64)planeIndices) & 0x0000ffffffffffffL;
+    int64_t newDataAndCount = ((int64_t)planeIndices) & 0x0000ffffffffffffL;
 
     updateDataAndCount(newDataAndCount);
 }
@@ -392,7 +392,7 @@ void SparseLightStorage::addNewPlane(int y) {
     bool success = false;
     do {
         // Get last packed data pointer & count
-        __int64 lastDataAndCount = dataAndCount;
+        int64_t lastDataAndCount = dataAndCount;
 
         // Unpack count & data pointer
         int lastLinesUsed = (int)((lastDataAndCount >> 48) & 0xffff);
@@ -419,15 +419,15 @@ void SparseLightStorage::addNewPlane(int y) {
 
         // Get new data and count packed info
 
-        __int64 newDataAndCount = ((__int64)dataPointer) & 0x0000ffffffffffffL;
+        int64_t newDataAndCount = ((int64_t)dataPointer) & 0x0000ffffffffffffL;
 
-        newDataAndCount |= ((__int64)linesUsed) << 48;
+        newDataAndCount |= ((int64_t)linesUsed) << 48;
 
         // Attempt to update the data & count atomically. This command will Only
         // succeed if the data stored at dataAndCount is equal to
         // lastDataAndCount, and will return the value present just before the
         // write took place
-        __int64 lastDataAndCount2 = InterlockedCompareExchangeRelease64(
+        int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
             (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 == lastDataAndCount) {
@@ -492,13 +492,13 @@ void SparseLightStorage::tick() {
 
 // Update storage with a new values for dataAndCount, repeating as necessary if
 // other simultaneous writes happen.
-void SparseLightStorage::updateDataAndCount(__int64 newDataAndCount) {
+void SparseLightStorage::updateDataAndCount(int64_t newDataAndCount) {
     // Now actually assign this data to the storage. Just repeat until
     // successful, there isn't any useful really that we can merge the results
     // of this with any other simultaneous writes that might be happening.
     bool success = false;
     do {
-        __int64 lastDataAndCount = dataAndCount;
+        int64_t lastDataAndCount = dataAndCount;
         unsigned char* lastDataPointer =
             (unsigned char*)(lastDataAndCount & 0x0000ffffffffffff);
 
@@ -506,7 +506,7 @@ void SparseLightStorage::updateDataAndCount(__int64 newDataAndCount) {
         // succeed if the data stored at dataAndCount is equal to
         // lastDataAndCount, and will return the value present just before the
         // write took place
-        __int64 lastDataAndCount2 = InterlockedCompareExchangeRelease64(
+        int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
             (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 == lastDataAndCount) {
@@ -530,7 +530,7 @@ int SparseLightStorage::compress() {
     unsigned char _planeIndices[128];
     bool needsCompressed = false;
 
-    __int64 lastDataAndCount = dataAndCount;
+    int64_t lastDataAndCount = dataAndCount;
 
     unsigned char* planeIndices =
         (unsigned char*)(lastDataAndCount & 0x0000ffffffffffff);
@@ -579,16 +579,16 @@ int SparseLightStorage::compress() {
 
         // Get new data and count packed info
 
-        __int64 newDataAndCount =
-            ((__int64)newIndicesAndData) & 0x0000ffffffffffffL;
+        int64_t newDataAndCount =
+            ((int64_t)newIndicesAndData) & 0x0000ffffffffffffL;
 
-        newDataAndCount |= ((__int64)planesToAlloc) << 48;
+        newDataAndCount |= ((int64_t)planesToAlloc) << 48;
 
         // Attempt to update the data & count atomically. This command will Only
         // succeed if the data stored at dataAndCount is equal to
         // lastDataAndCount, and will return the value present just before the
         // write took place
-        __int64 lastDataAndCount2 = InterlockedCompareExchangeRelease64(
+        int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
             (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 != lastDataAndCount) {
@@ -633,9 +633,9 @@ void SparseLightStorage::read(DataInputStream* dis) {
     byteArray wrapper(dataPointer, count * 128 + 128);
     dis->readFully(wrapper);
 
-    __int64 newDataAndCount = ((__int64)dataPointer) & 0x0000ffffffffffffL;
+    int64_t newDataAndCount = ((int64_t)dataPointer) & 0x0000ffffffffffffL;
 
-    newDataAndCount |= ((__int64)count) << 48;
+    newDataAndCount |= ((int64_t)count) << 48;
 
     updateDataAndCount(newDataAndCount);
 }

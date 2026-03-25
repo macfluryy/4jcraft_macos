@@ -1,24 +1,27 @@
 #pragma once
-//using namespace std;
+// using namespace std;
 
 #include "GameRuleDefinition.h"
 #include "../../Minecraft.World/Util/Pos.h"
 
-class UseTileRuleDefinition : public GameRuleDefinition
-{
+class UseTileRuleDefinition : public GameRuleDefinition {
 private:
-	// These values should map directly to the xsd definition for this Rule
-	int m_tileId;
-	bool m_useCoords;
-	Pos m_coordinates;
+    // These values should map directly to the xsd definition for this Rule
+    int m_tileId;
+    bool m_useCoords;
+    Pos m_coordinates;
 
 public:
-	UseTileRuleDefinition();
+    UseTileRuleDefinition();
 
-	ConsoleGameRules::EGameRuleType getActionType() { return ConsoleGameRules::eGameRuleType_UseTileRule; }
+    ConsoleGameRules::EGameRuleType getActionType() {
+        return ConsoleGameRules::eGameRuleType_UseTileRule;
+    }
 
-	virtual void writeAttributes(DataOutputStream *dos, unsigned int numAttributes);
-	virtual void addAttribute(const std::wstring &attributeName, const std::wstring &attributeValue);
-	
-	virtual bool onUseTile(GameRule *rule, int tileId, int x, int y, int z);
+    virtual void writeAttributes(DataOutputStream* dos,
+                                 unsigned int numAttributes);
+    virtual void addAttribute(const std::wstring& attributeName,
+                              const std::wstring& attributeValue);
+
+    virtual bool onUseTile(GameRule* rule, int tileId, int x, int y, int z);
 };

@@ -41,12 +41,19 @@ class PsPlusUpsellWrapper;
 #include "../Minecraft.World/IO/Files/File.h"
 #include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
 #include "../Minecraft.World/Util/C4JThread.h"
+#include "Textures/ResourceLocation.h"
 
 #ifdef linux
 #undef linux
 #endif
 
 class Minecraft {
+private:
+    enum OS { linux, solaris, windows, macos, unknown, xbox };
+
+    static ResourceLocation DEFAULT_FONT_LOCATION;
+    static ResourceLocation ALT_FONT_LOCATION;
+
 public:
     static const std::wstring VERSION_STRING;
     Minecraft(Component* mouseComponent, Canvas* parent,
@@ -128,7 +135,8 @@ public:
     void updatePlayerViewportAssignments();
     int unoccupiedQuadrant;  // 4J - added
 
-    std::shared_ptr<Mob> cameraTargetPlayer;
+    std::shared_ptr<LivingEntity> cameraTargetPlayer;
+    std::shared_ptr<LivingEntity> crosshairPickMob;
     ParticleEngine* particleEngine;
     User* user;
     std::wstring serverDomain;
@@ -183,11 +191,11 @@ private:
 
 public:
     static const int frameTimes_length = 512;
-    static __int64 frameTimes[frameTimes_length];
+    static int64_t frameTimes[frameTimes_length];
     static const int tickTimes_length = 512;
-    static __int64 tickTimes[tickTimes_length];
+    static int64_t tickTimes[tickTimes_length];
     static int frameTimePos;
-    static __int64 warezTime;
+    static int64_t warezTime;
 
 private:
     int rightClickDelay;
@@ -249,9 +257,9 @@ private:
     //    ssWidth, int ssHeight);	// 4J - removed
 
     // 4J - per player thing?
-    __int64 lastTimer;
+    int64_t lastTimer;
 
-    void renderFpsMeter(__int64 tickTime);
+    void renderFpsMeter(int64_t tickTime);
 
 public:
     void stop();
@@ -275,7 +283,7 @@ public:
     // bool isRaining ;
 
     // 4J - Moved to per player
-    //__int64 lastTickTime;
+    //int64_t lastTickTime;
 
 private:
     // 4J- per player?
@@ -336,14 +344,17 @@ public:
 
     static int maxSupportedTextureSize();
     void delayTextureReload();
-    static __int64 currentTimeMillis();
+    static int64_t currentTimeMillis();
 
 #ifdef _DURANGO
     static void inGameSignInCheckAllPrivilegesCallback(void* lpParam,
                                                        bool hasPrivileges,
                                                        int iPad);
-#endif
+    static int InGame_SignInReturned(void* pParam, bool bContinue, int iPad,
+                                     int iController);
+#else
     static int InGame_SignInReturned(void* pParam, bool bContinue, int iPad);
+#endif
     // 4J-PB
     Screen* getScreen();
 
@@ -355,7 +366,7 @@ public:
 private:
     // A bit field that store whether a particular quadrant is in the full
     // tutorial or not
-    std::uint8_t m_inFullTutorialBits;
+    uint8_t m_inFullTutorialBits;
 
 public:
     bool isTutorial();

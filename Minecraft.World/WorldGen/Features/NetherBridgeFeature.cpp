@@ -10,7 +10,9 @@
 NetherBridgeFeature::NetherBridgeFeature() : StructureFeature() {
     bridgeEnemies.push_back(new Biome::MobSpawnerData(eTYPE_BLAZE, 10, 2, 3));
     bridgeEnemies.push_back(
-        new Biome::MobSpawnerData(eTYPE_PIGZOMBIE, 10, 4, 4));
+        new Biome::MobSpawnerData(eTYPE_PIGZOMBIE, 5, 4, 4));
+    bridgeEnemies.push_back(
+        new Biome::MobSpawnerData(eTYPE_SKELETON, 10, 4, 4));
     bridgeEnemies.push_back(
         new Biome::MobSpawnerData(eTYPE_LAVASLIME, 3, 4, 4));
     isSpotSelected = false;
@@ -20,6 +22,8 @@ NetherBridgeFeature::NetherBridgeFeature() : StructureFeature() {
 NetherBridgeFeature::~NetherBridgeFeature() {
     if (netherFortressPos != NULL) delete netherFortressPos;
 }
+
+std::wstring NetherBridgeFeature::getFeatureName() { return L"Fortress"; }
 
 std::vector<Biome::MobSpawnerData*>* NetherBridgeFeature::getBridgeEnemies() {
     return &bridgeEnemies;
@@ -89,11 +93,15 @@ StructureStart* NetherBridgeFeature::createStructureStart(int x, int z) {
 
 void NetherBridgeFeature::clearCachedBuildings() { cachedStructures.clear(); }
 
+NetherBridgeFeature::NetherBridgeStart::NetherBridgeStart() {
+    // for reflection
+}
+
 NetherBridgeFeature::NetherBridgeStart::NetherBridgeStart(Level* level,
                                                           Random* random,
                                                           int chunkX,
                                                           int chunkZ)
-    : StructureStart() {
+    : StructureStart(chunkX, chunkZ) {
     NetherBridgePieces::StartPiece* start = new NetherBridgePieces::StartPiece(
         random, (chunkX << 4) + 2, (chunkZ << 4) + 2, level);
     pieces.push_back(start);

@@ -2,26 +2,34 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
 #include "../Headers/net.minecraft.world.entity.projectile.h"
+#include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.world.food.h"
 #include "../Headers/net.minecraft.network.packet.h"
 
 DamageSource* DamageSource::inFire =
-    (new DamageSource(ChatPacket::e_ChatDeathInFire))->setIsFire();
+    (new DamageSource(ChatPacket::e_ChatDeathInFire,
+                      ChatPacket::e_ChatDeathInFirePlayer))
+        ->setIsFire();
 DamageSource* DamageSource::onFire =
-    (new DamageSource(ChatPacket::e_ChatDeathOnFire))
+    (new DamageSource(ChatPacket::e_ChatDeathOnFire,
+                      ChatPacket::e_ChatDeathOnFirePlayer))
         ->bypassArmor()
         ->setIsFire();
 DamageSource* DamageSource::lava =
-    (new DamageSource(ChatPacket::e_ChatDeathLava))->setIsFire();
+    (new DamageSource(ChatPacket::e_ChatDeathLava,
+                      ChatPacket::e_ChatDeathLavaPlayer))
+        ->setIsFire();
 DamageSource* DamageSource::inWall =
     (new DamageSource(ChatPacket::e_ChatDeathInWall))->bypassArmor();
 DamageSource* DamageSource::drown =
-    (new DamageSource(ChatPacket::e_ChatDeathDrown))->bypassArmor();
+    (new DamageSource(ChatPacket::e_ChatDeathDrown,
+                      ChatPacket::e_ChatDeathDrownPlayer))
+        ->bypassArmor();
 DamageSource* DamageSource::starve =
     (new DamageSource(ChatPacket::e_ChatDeathStarve))->bypassArmor();
-DamageSource* DamageSource::cactus =
-    new DamageSource(ChatPacket::e_ChatDeathCactus);
+DamageSource* DamageSource::cactus = new DamageSource(
+    ChatPacket::e_ChatDeathCactus, ChatPacket::e_ChatDeathCactusPlayer);
 DamageSource* DamageSource::fall =
     (new DamageSource(ChatPacket::e_ChatDeathFall))->bypassArmor();
 DamageSource* DamageSource::outOfWorld =
@@ -30,11 +38,6 @@ DamageSource* DamageSource::outOfWorld =
         ->bypassInvul();
 DamageSource* DamageSource::genericSource =
     (new DamageSource(ChatPacket::e_ChatDeathGeneric))->bypassArmor();
-DamageSource* DamageSource::explosion =
-    (new DamageSource(ChatPacket::e_ChatDeathExplosion))
-        ->setScalesWithDifficulty();
-DamageSource* DamageSource::controlledExplosion =
-    (new DamageSource(ChatPacket::e_ChatDeathExplosion));
 DamageSource* DamageSource::magic =
     (new DamageSource(ChatPacket::e_ChatDeathMagic))->bypassArmor()->setMagic();
 DamageSource* DamageSource::dragonbreath =
@@ -46,18 +49,21 @@ DamageSource* DamageSource::anvil =
 DamageSource* DamageSource::fallingBlock =
     (new DamageSource(ChatPacket::e_ChatDeathFallingBlock));
 
-DamageSource* DamageSource::mobAttack(std::shared_ptr<Mob> mob) {
-    return new EntityDamageSource(ChatPacket::e_ChatDeathMob, mob);
+DamageSource* DamageSource::mobAttack(std::shared_ptr<LivingEntity> mob) {
+    return new EntityDamageSource(ChatPacket::e_ChatDeathMob,
+                                  ChatPacket::e_ChatDeathMob, mob);
 }
 
 DamageSource* DamageSource::playerAttack(std::shared_ptr<Player> player) {
-    return new EntityDamageSource(ChatPacket::e_ChatDeathPlayer, player);
+    return new EntityDamageSource(ChatPacket::e_ChatDeathPlayer,
+                                  ChatPacket::e_ChatDeathPlayerItem, player);
 }
 
 DamageSource* DamageSource::arrow(std::shared_ptr<Arrow> arrow,
                                   std::shared_ptr<Entity> owner) {
-    return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow, arrow,
-                                           owner))
+    return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathArrow,
+                                           ChatPacket::e_ChatDeathArrowItem,
+                                           arrow, owner))
         ->setProjectile();
 }
 
@@ -65,11 +71,13 @@ DamageSource* DamageSource::fireball(std::shared_ptr<Fireball> fireball,
                                      std::shared_ptr<Entity> owner) {
     if (owner == NULL) {
         return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathOnFire,
+                                               ChatPacket::e_ChatDeathOnFire,
                                                fireball, fireball))
             ->setIsFire()
             ->setProjectile();
     }
     return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathFireball,
+                                           ChatPacket::e_ChatDeathArrowItem,
                                            fireball, owner))
         ->setIsFire()
         ->setProjectile();
@@ -78,28 +86,52 @@ DamageSource* DamageSource::fireball(std::shared_ptr<Fireball> fireball,
 DamageSource* DamageSource::thrown(std::shared_ptr<Entity> entity,
                                    std::shared_ptr<Entity> owner) {
     return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathThrown,
+                                           ChatPacket::e_ChatDeathThrownItem,
                                            entity, owner))
         ->setProjectile();
 }
 
 DamageSource* DamageSource::indirectMagic(std::shared_ptr<Entity> entity,
                                           std::shared_ptr<Entity> owner) {
-    return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathIndirectMagic,
-                                           entity, owner))
+    return (new IndirectEntityDamageSource(
+                ChatPacket::e_ChatDeathIndirectMagic,
+                ChatPacket::e_ChatDeathIndirectMagicItem, entity, owner))
         ->bypassArmor()
         ->setMagic();
     ;
 }
 
 DamageSource* DamageSource::thorns(std::shared_ptr<Entity> source) {
-    return (new EntityDamageSource(ChatPacket::e_ChatDeathThorns, source))
+    return (new EntityDamageSource(ChatPacket::e_ChatDeathThorns,
+                                   ChatPacket::e_ChatDeathThorns, source))
         ->setMagic();
+}
+
+DamageSource* DamageSource::explosion(Explosion* explosion) {
+    if ((explosion != NULL) && (explosion->getSourceMob() != NULL)) {
+        return (new EntityDamageSource(ChatPacket::e_ChatDeathExplosionPlayer,
+                                       ChatPacket::e_ChatDeathExplosionPlayer,
+                                       explosion->getSourceMob()))
+            ->setScalesWithDifficulty()
+            ->setExplosion();
+    } else {
+        return (new DamageSource(ChatPacket::e_ChatDeathExplosion))
+            ->setScalesWithDifficulty()
+            ->setExplosion();
+    }
 }
 
 bool DamageSource::isProjectile() { return _isProjectile; }
 
 DamageSource* DamageSource::setProjectile() {
-    this->_isProjectile = true;
+    _isProjectile = true;
+    return this;
+}
+
+bool DamageSource::isExplosion() { return _isExplosion; }
+
+DamageSource* DamageSource::setExplosion() {
+    _isExplosion = true;
     return this;
 }
 
@@ -109,8 +141,9 @@ float DamageSource::getFoodExhaustion() { return exhaustion; }
 
 bool DamageSource::isBypassInvul() { return _bypassInvul; }
 
-// DamageSource::DamageSource(const std::wstring &msgId)
-DamageSource::DamageSource(ChatPacket::EChatPacketMessage msgId) {
+// DamageSource::DamageSource(const wstring &msgId)
+DamageSource::DamageSource(ChatPacket::EChatPacketMessage msgId,
+                           ChatPacket::EChatPacketMessage msgWithItemId) {
     // 4J added initialisors
     _bypassArmor = false;
     _bypassInvul = false;
@@ -119,9 +152,11 @@ DamageSource::DamageSource(ChatPacket::EChatPacketMessage msgId) {
     isFireSource = false;
     _isProjectile = false;
     _isMagic = false;
+    _isExplosion = false;
 
     // this->msgId = msgId;
     m_msgId = msgId;
+    m_msgWithItemId = msgWithItemId;
 }
 
 std::shared_ptr<Entity> DamageSource::getDirectEntity() { return getEntity(); }
@@ -161,18 +196,36 @@ DamageSource* DamageSource::setMagic() {
     return this;
 }
 
-// std::wstring DamageSource::getLocalizedDeathMessage(std::shared_ptr<Player>
-// player)
+// wstring DamageSource::getLocalizedDeathMessage(shared_ptr<Player> player)
 //{
 //	return L"death." + msgId + player->name;
 //	//return I18n.get(L"death." + msgId, player.name);
 // }
 
 std::shared_ptr<ChatPacket> DamageSource::getDeathMessagePacket(
-    std::shared_ptr<Player> player) {
-    return std::shared_ptr<ChatPacket>(new ChatPacket(player->name, m_msgId));
+    std::shared_ptr<LivingEntity> player) {
+    std::shared_ptr<LivingEntity> source = player->getKillCredit();
+    if (source != NULL) {
+        return std::shared_ptr<ChatPacket>(new ChatPacket(
+            player->getNetworkName(),
+            m_msgWithItemId != ChatPacket::e_ChatCustom ? m_msgWithItemId
+                                                        : m_msgId,
+            source->GetType(), source->getNetworkName()));
+    } else {
+        return std::shared_ptr<ChatPacket>(
+            new ChatPacket(player->getNetworkName(), m_msgId));
+    }
 }
 
 bool DamageSource::isFire() { return isFireSource; }
 
 ChatPacket::EChatPacketMessage DamageSource::getMsgId() { return m_msgId; }
+
+// 4J: Very limited check for equality (used to detect fall damage, etc)
+bool DamageSource::equals(DamageSource* source) {
+    return m_msgId == source->m_msgId &&
+           m_msgWithItemId == source->m_msgWithItemId;
+}
+
+// 4J: Copy function
+DamageSource* DamageSource::copy() { return new DamageSource(*this); }

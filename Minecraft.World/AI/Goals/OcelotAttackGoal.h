@@ -2,17 +2,17 @@
 
 #include "Goal.h"
 
-class OzelotAttackGoal : public Goal {
+class OcelotAttackGoal : public Goal {
 private:
     Level* level;
     Mob* mob;
-    std::weak_ptr<Mob> target;
+    std::weak_ptr<LivingEntity> target;
     int attackTime;
     float speed;
     bool trackTarget;
 
 public:
-    OzelotAttackGoal(Mob* mob);
+    OcelotAttackGoal(Mob* mob);
 
     virtual bool canUse();
     virtual bool canContinueToUse();

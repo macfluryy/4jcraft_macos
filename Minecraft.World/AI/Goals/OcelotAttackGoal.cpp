@@ -6,8 +6,8 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "OcelotAttackGoal.h"
 
-OzelotAttackGoal::OzelotAttackGoal(Mob* mob) {
-    target = std::weak_ptr<Mob>();
+OcelotAttackGoal::OcelotAttackGoal(Mob* mob) {
+    target = std::weak_ptr<LivingEntity>();
     attackTime = 0;
     speed = 0;
     trackTarget = false;
@@ -18,38 +18,38 @@ OzelotAttackGoal::OzelotAttackGoal(Mob* mob) {
                             Control::LookControlFlag);
 }
 
-bool OzelotAttackGoal::canUse() {
-    std::shared_ptr<Mob> bestTarget = mob->getTarget();
+bool OcelotAttackGoal::canUse() {
+    std::shared_ptr<LivingEntity> bestTarget = mob->getTarget();
     if (bestTarget == NULL) return false;
-    target = std::weak_ptr<Mob>(bestTarget);
+    target = std::weak_ptr<LivingEntity>(bestTarget);
     return true;
 }
 
-bool OzelotAttackGoal::canContinueToUse() {
+bool OcelotAttackGoal::canContinueToUse() {
     if (target.lock() == NULL || !target.lock()->isAlive()) return false;
     if (mob->distanceToSqr(target.lock()) > 15 * 15) return false;
     return !mob->getNavigation()->isDone() || canUse();
 }
 
-void OzelotAttackGoal::stop() {
+void OcelotAttackGoal::stop() {
     target = std::weak_ptr<Mob>();
     mob->getNavigation()->stop();
 }
 
-void OzelotAttackGoal::tick() {
+void OcelotAttackGoal::tick() {
     mob->getLookControl()->setLookAt(target.lock(), 30, 30);
 
     double meleeRadiusSqr = (mob->bbWidth * 2) * (mob->bbWidth * 2);
     double distSqr = mob->distanceToSqr(target.lock()->x, target.lock()->bb->y0,
                                         target.lock()->z);
 
-    float speed = Ozelot::WALK_SPEED;
+    double speedModifier = Ocelot::WALK_SPEED_MOD;
     if (distSqr > meleeRadiusSqr && distSqr < 4 * 4)
-        speed = Ozelot::SPRINT_SPEED;
+        speedModifier = Ocelot::SPRINT_SPEED_MOD;
     else if (distSqr < 15 * 15)
-        speed = Ozelot::SNEAK_SPEED;
+        speedModifier = Ocelot::SNEAK_SPEED_MOD;
 
-    mob->getNavigation()->moveTo(target.lock(), speed);
+    mob->getNavigation()->moveTo(target.lock(), speedModifier);
 
     attackTime = std::max(attackTime - 1, 0);
 

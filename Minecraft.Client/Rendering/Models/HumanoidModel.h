@@ -35,7 +35,8 @@ public:
         eAnim_DisableRenderTorso,
         eAnim_DisableRenderLeg0,
         eAnim_DisableRenderLeg1,
-        eAnim_DisableRenderHair
+        eAnim_DisableRenderHair,
+        eAnim_SmallModel  // Maggie Simpson for riding horse, etc
 
     };
 
@@ -58,6 +59,7 @@ public:
                         bool usecompiled);
     virtual void setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
+                           std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim = 0);
     void renderHair(float scale, bool usecompiled);
     void renderEars(float scale, bool usecompiled);

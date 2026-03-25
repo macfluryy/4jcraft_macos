@@ -11,10 +11,10 @@ private:
     Level* level;
     std::weak_ptr<Animal> partner;
     int loveTime;
-    float speed;
+    double speedModifier;
 
 public:
-    BreedGoal(Animal* animal, float speed);
+    BreedGoal(Animal* animal, double speedModifier);
 
     virtual bool canUse();
     virtual bool canContinueToUse();

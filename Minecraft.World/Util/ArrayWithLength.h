@@ -99,6 +99,7 @@ class Enchantment;
 class ClipChunk;
 
 typedef arrayWithLength<double> doubleArray;
+typedef array2DWithLength<double> coords2DArray;
 typedef arrayWithLength<uint8_t> byteArray;
 typedef arrayWithLength<char> charArray;
 typedef arrayWithLength<short> shortArray;

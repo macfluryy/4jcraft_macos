@@ -7,8 +7,10 @@
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
     // 	temps = floatArray(ZONE_SIZE * ZONE_SIZE, false);		// MGH -
-    // added "no clear" flag to arrayWithLength 	downfall = floatArray(ZONE_SIZE
-    // * ZONE_SIZE, false); 	biomes = BiomeArray(ZONE_SIZE * ZONE_SIZE, false);
+    // added "no clear" flag to arrayWithLength 	downfall =
+    // floatArray(ZONE_SIZE
+    // * ZONE_SIZE, false); 	biomes = BiomeArray(ZONE_SIZE * ZONE_SIZE,
+    // false);
     biomeIndices = byteArray(ZONE_SIZE * ZONE_SIZE, false);
 
     lastUse = 0;
@@ -35,7 +37,7 @@ BiomeCache::Block::~Block() {
 
 Biome* BiomeCache::Block::getBiome(int x, int z) {
     //	return biomes[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<
-    //ZONE_SIZE_BITS)];
+    // ZONE_SIZE_BITS)];
 
     int biomeIndex = biomeIndices[(x & ZONE_SIZE_MASK) |
                                   ((z & ZONE_SIZE_MASK) << ZONE_SIZE_BITS)];
@@ -44,7 +46,7 @@ Biome* BiomeCache::Block::getBiome(int x, int z) {
 
 float BiomeCache::Block::getTemperature(int x, int z) {
     //	return temps[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<
-    //ZONE_SIZE_BITS)];
+    // ZONE_SIZE_BITS)];
 
     int biomeIndex = biomeIndices[(x & ZONE_SIZE_MASK) |
                                   ((z & ZONE_SIZE_MASK) << ZONE_SIZE_BITS)];
@@ -83,8 +85,8 @@ BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
     EnterCriticalSection(&m_CS);
     x >>= ZONE_SIZE_BITS;
     z >>= ZONE_SIZE_BITS;
-    __int64 slot =
-        (((__int64)x) & 0xffffffffl) | ((((__int64)z) & 0xffffffffl) << 32l);
+    int64_t slot =
+        (((int64_t)x) & 0xffffffffl) | ((((int64_t)z) & 0xffffffffl) << 32l);
     AUTO_VAR(it, cached.find(slot));
     Block* block = NULL;
     if (it == cached.end()) {
@@ -115,18 +117,18 @@ float BiomeCache::getDownfall(int x, int z) {
 
 void BiomeCache::update() {
     EnterCriticalSection(&m_CS);
-    __int64 now = app.getAppTime();
-    __int64 utime = now - lastUpdateTime;
+    int64_t now = app.getAppTime();
+    int64_t utime = now - lastUpdateTime;
     if (utime > DECAY_TIME / 4 || utime < 0) {
         lastUpdateTime = now;
 
         for (AUTO_VAR(it, all.begin()); it != all.end();) {
             Block* block = *it;
-            __int64 time = now - block->lastUse;
+            int64_t time = now - block->lastUse;
             if (time > DECAY_TIME || time < 0) {
                 it = all.erase(it);
-                __int64 slot = (((__int64)block->x) & 0xffffffffl) |
-                               ((((__int64)block->z) & 0xffffffffl) << 32l);
+                int64_t slot = (((int64_t)block->x) & 0xffffffffl) |
+                               ((((int64_t)block->z) & 0xffffffffl) << 32l);
                 cached.erase(slot);
                 delete block;
             } else {

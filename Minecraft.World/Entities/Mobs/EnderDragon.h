@@ -1,21 +1,23 @@
 #pragma once
-
 #include "BossMob.h"
+#include "MultiEntityMob.h"
+#include "../Enemy.h"
 
-class BossMobPart;
+class MultiEntityMobPart;
 class EnderCrystal;
 class Node;
 class BinaryHeap;
 class Path;
 
-class EnderDragon : public BossMob {
+class EnderDragon : public Mob,
+                    public BossMob,
+                    public MultiEntityMob,
+                    public Enemy {
 public:
     eINSTANCEOF GetType() { return eTYPE_ENDERDRAGON; };
     static Entity* create(Level* level) { return new EnderDragon(level); }
 
 private:
-    static const int DATA_ID_SYNCHED_HEALTH = 16;
-
     // 4J Added for new behaviours
     static const int DATA_ID_SYNCHED_ACTION = 17;
 
@@ -28,16 +30,16 @@ public:
     double positions[positionsLength][3];
     int posPointer;
 
-    // BossMobPart[] subEntities;
+    // MultiEntityMobPart[] subEntities;
     std::vector<std::shared_ptr<Entity> > subEntities;
-    std::shared_ptr<BossMobPart> head;
-    std::shared_ptr<BossMobPart> neck;  // 4J Added
-    std::shared_ptr<BossMobPart> body;
-    std::shared_ptr<BossMobPart> tail1;
-    std::shared_ptr<BossMobPart> tail2;
-    std::shared_ptr<BossMobPart> tail3;
-    std::shared_ptr<BossMobPart> wing1;
-    std::shared_ptr<BossMobPart> wing2;
+    std::shared_ptr<MultiEntityMobPart> head;
+    std::shared_ptr<MultiEntityMobPart> neck;  // 4J Added
+    std::shared_ptr<MultiEntityMobPart> body;
+    std::shared_ptr<MultiEntityMobPart> tail1;
+    std::shared_ptr<MultiEntityMobPart> tail2;
+    std::shared_ptr<MultiEntityMobPart> tail3;
+    std::shared_ptr<MultiEntityMobPart> wing1;
+    std::shared_ptr<MultiEntityMobPart> wing2;
 
     float oFlapTime;
     float flapTime;
@@ -113,9 +115,11 @@ private:
 
 public:
     EnderDragon(Level* level);
+    void AddParts();
     virtual ~EnderDragon();
 
 protected:
+    virtual void registerAttributes();
     virtual void defineSynchedData();
 
 public:
@@ -123,7 +127,7 @@ public:
     virtual void aiStep();
 
 private:
-    using BossMob::hurt;
+    using MultiEntityMob::hurt;
 
     void checkCrystals();
     void checkAttack();
@@ -134,10 +138,12 @@ private:
     bool checkWalls(AABB* bb);
 
 public:
-    virtual bool hurt(std::shared_ptr<BossMobPart> bossMobPart,
-                      DamageSource* source, int damage);
+    virtual bool hurt(std::shared_ptr<MultiEntityMobPart> MultiEntityMobPart,
+                      DamageSource* source, float damage);
+    virtual bool hurt(DamageSource* source, float damage);
 
 protected:
+    virtual bool reallyHurt(DamageSource* source, float damage);
     virtual void tickDeath();
 
 private:
@@ -145,12 +151,16 @@ private:
 
 protected:
     virtual void checkDespawn();
-    virtual int getHurtSound();
 
 public:
     virtual std::vector<std::shared_ptr<Entity> >* getSubEntities();
     virtual bool isPickable();
-    virtual int getSynchedHealth();
+    Level* getLevel();
+
+protected:
+    int getAmbientSound();
+    int getHurtSound();
+    float getSoundVolume();
 
 private:
     // 4J added for new dragon behaviour
@@ -179,4 +189,8 @@ public:
     double getHeadPartYRotDiff(int partIndex, doubleArray bodyPos,
                                doubleArray partPos);
     Vec3* getHeadLookVector(float a);
+
+    virtual std::wstring getAName() { return app.GetString(IDS_ENDERDRAGON); };
+    virtual float getHealth() { return LivingEntity::getHealth(); };
+    virtual float getMaxHealth() { return LivingEntity::getMaxHealth(); };
 };

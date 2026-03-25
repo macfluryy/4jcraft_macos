@@ -17,6 +17,7 @@ public:
     // Made public and non-static so we can have a cache for input and output
     // files
     RegionFileCache() {}
+    ~RegionFileCache();
 
     RegionFile* _getRegionFile(ConsoleSaveFile* saveFile,
                                const std::wstring& prefix, int chunkX,

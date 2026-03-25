@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.enchantment.h"
+#include "../Headers/net.minecraft.world.item.h"
 #include "Enchantment.h"
 
 // Enchantment *Enchantment::enchantments[256];
@@ -119,8 +120,9 @@ int Enchantment::getDamageProtection(int level, DamageSource* source) {
     return 0;
 }
 
-int Enchantment::getDamageBonus(int level, std::shared_ptr<Mob> target) {
-    return 0;
+float Enchantment::getDamageBonus(int level,
+                                  std::shared_ptr<LivingEntity> target) {
+    return 0.0f;
 }
 
 bool Enchantment::isCompatibleWith(Enchantment* other) const {
@@ -134,6 +136,7 @@ Enchantment* Enchantment::setDescriptionId(int id) {
 
 int Enchantment::getDescriptionId() { return descriptionId; }
 
+// 4jcraft: re-added old TU18 overload for java gui
 std::wstring Enchantment::getFullname(int level, std::wstring& unformatted) {
     wchar_t formatted[256];
     swprintf(formatted, 256, L"%ls %ls", app.GetString(getDescriptionId()),
@@ -142,6 +145,14 @@ std::wstring Enchantment::getFullname(int level, std::wstring& unformatted) {
     swprintf(formatted, 256, L"<font color=\"#%08x\">%ls</font>",
              app.GetHTMLColour(eHTMLColor_f), unformatted.c_str());
     return formatted;
+}
+
+HtmlString Enchantment::getFullname(int level) {
+    wchar_t formatted[256];
+    swprintf(formatted, 256, L"%ls %ls", app.GetString(getDescriptionId()),
+             getLevelString(level).c_str());
+
+    return HtmlString(formatted, eHTMLColor_f);
 }
 
 bool Enchantment::canEnchant(std::shared_ptr<ItemInstance> item) {

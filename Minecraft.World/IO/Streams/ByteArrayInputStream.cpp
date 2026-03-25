@@ -95,7 +95,7 @@ void ByteArrayInputStream::close() { return; }
 // pos and k is returned. Overrides: skip in class InputStream Parameters: n -
 // the number of bytes to be skipped. Returns: the actual number of bytes
 // skipped.
-__int64 ByteArrayInputStream::skip(__int64 n) {
+int64_t ByteArrayInputStream::skip(int64_t n) {
     int newPos = pos + n;
 
     if (newPos > count) newPos = count;

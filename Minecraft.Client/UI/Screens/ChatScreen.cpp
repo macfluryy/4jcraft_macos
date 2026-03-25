@@ -5,7 +5,7 @@
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 
 const std::wstring ChatScreen::allowedChars =
-    SharedConstants::readAcceptableChars();
+    SharedConstants::acceptableLetters;
 
 ChatScreen::ChatScreen() { frame = 0; }
 

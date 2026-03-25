@@ -1,7 +1,11 @@
 #include "../Platform/stdafx.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../Headers/net.minecraft.world.h"
+#include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
+#include "../Headers/net.minecraft.world.entity.h"
+#include "../Headers/net.minecraft.world.phys.h"
+#include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/com.mojang.nbt.h"
 #include "ArmorItem.h"
 
@@ -14,6 +18,42 @@ const std::wstring ArmorItem::LEATHER_OVERLAYS[] = {
 const std::wstring ArmorItem::TEXTURE_EMPTY_SLOTS[] = {
     L"slot_empty_helmet", L"slot_empty_chestplate", L"slot_empty_leggings",
     L"slot_empty_boots"};
+
+std::shared_ptr<ItemInstance> ArmorItem::ArmorDispenseItemBehavior::execute(
+    BlockSource* source, std::shared_ptr<ItemInstance> dispensed,
+    eOUTCOME& outcome) {
+    FacingEnum* facing = DispenserTile::getFacing(source->getData());
+    int x = source->getBlockX() + facing->getStepX();
+    int y = source->getBlockY() + facing->getStepY();
+    int z = source->getBlockZ() + facing->getStepZ();
+    AABB* bb = AABB::newTemp(x, y, z, x + 1, y + 1, z + 1);
+    EntitySelector* selector = new MobCanWearArmourEntitySelector(dispensed);
+    std::vector<std::shared_ptr<Entity> >* entities =
+        source->getWorld()->getEntitiesOfClass(typeid(LivingEntity), bb,
+                                               selector);
+    delete selector;
+
+    if (entities->size() > 0) {
+        std::shared_ptr<LivingEntity> target =
+            std::dynamic_pointer_cast<LivingEntity>(entities->at(0));
+        int offset = target->instanceof(eTYPE_PLAYER) ? 1 : 0;
+        int slot = Mob::getEquipmentSlotForItem(dispensed);
+        std::shared_ptr<ItemInstance> equip = dispensed->copy();
+        equip->count = 1;
+        target->setEquippedSlot(slot - offset, equip);
+        if (target->instanceof(eTYPE_MOB))
+            std::dynamic_pointer_cast<Mob>(target)->setDropChance(slot, 2);
+        dispensed->count--;
+
+        outcome = ACTIVATED_ITEM;
+
+        delete entities;
+        return dispensed;
+    } else {
+        delete entities;
+        return DefaultDispenseItemBehavior::execute(source, dispensed, outcome);
+    }
+}
 
 typedef ArmorItem::ArmorMaterial _ArmorMaterial;
 
@@ -76,6 +116,7 @@ ArmorItem::ArmorItem(int id, const ArmorMaterial* armorType, int icon, int slot)
       defense(armorType->getDefenseForSlot(slot)) {
     setMaxDamage(armorType->getHealthForSlot(slot));
     maxStackSize = 1;
+    DispenserTile::REGISTRY.add(this, new ArmorDispenseItemBehavior());
 }
 
 int ArmorItem::getColor(std::shared_ptr<ItemInstance> item, int spriteLayer) {
@@ -88,7 +129,6 @@ int ArmorItem::getColor(std::shared_ptr<ItemInstance> item, int spriteLayer) {
     return color;
 }
 
-//@Override
 bool ArmorItem::hasMultipleSpriteLayers() {
     return armorType == ArmorMaterial::CLOTH;
 }
@@ -129,7 +169,6 @@ int ArmorItem::getColor(std::shared_ptr<ItemInstance> item) {
     }
 }
 
-//@Override
 Icon* ArmorItem::getLayerIcon(int auxValue, int spriteLayer) {
     if (spriteLayer == 1) {
         return overlayIcon;
@@ -175,7 +214,6 @@ bool ArmorItem::isValidRepairItem(std::shared_ptr<ItemInstance> source,
     return Item::isValidRepairItem(source, repairItem);
 }
 
-//@Override
 void ArmorItem::registerIcons(IconRegister* iconRegister) {
     Item::registerIcons(iconRegister);
 

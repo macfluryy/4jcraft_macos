@@ -1,14 +1,12 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.h"
 #include "DiodeTile.h"
-
-const double DiodeTile::DELAY_RENDER_OFFSETS[4] = {-1.0f / 16.0f, 1.0f / 16.0f,
-                                                   3.0f / 16.0f, 5.0f / 16.0f};
-const int DiodeTile::DELAYS[4] = {1, 2, 3, 4};
 
 DiodeTile::DiodeTile(int id, bool on)
     : DirectionalTile(id, Material::decoration, false) {
@@ -37,17 +35,20 @@ bool DiodeTile::canSurvive(Level* level, int x, int y, int z) {
 
 void DiodeTile::tick(Level* level, int x, int y, int z, Random* random) {
     int data = level->getData(x, y, z);
-    bool sourceOn = getSourceSignal(level, x, y, z, data);
-    if (on && !sourceOn) {
-        level->setTileAndData(x, y, z, Tile::diode_off_Id, data);
-    } else if (!on) {
-        // when off-diodes are ticked, they always turn on for one tick and
-        // then off again if necessary
-        level->setTileAndData(x, y, z, Tile::diode_on_Id, data);
-        if (!sourceOn) {
-            int delay = (data & DELAY_MASK) >> DELAY_SHIFT;
-            level->addToTickNextTick(x, y, z, Tile::diode_on_Id,
-                                     DELAYS[delay] * 2);
+    if (!isLocked(level, x, y, z, data)) {
+        bool sourceOn = shouldTurnOn(level, x, y, z, data);
+        if (on && !sourceOn) {
+            level->setTileAndData(x, y, z, getOffTile()->id, data,
+                                  Tile::UPDATE_CLIENTS);
+        } else if (!on) {
+            // when off-diodes are ticked, they always turn on for one tick and
+            // then off again if necessary
+            level->setTileAndData(x, y, z, getOnTile()->id, data,
+                                  Tile::UPDATE_CLIENTS);
+            if (!sourceOn) {
+                level->addToTickNextTick(x, y, z, getOnTile()->id,
+                                         getTurnOffDelay(data), -1);
+            }
         }
     }
 }
@@ -56,19 +57,15 @@ Icon* DiodeTile::getTexture(int face, int data) {
     // down is used by the torch tesselator
     if (face == Facing::DOWN) {
         if (on) {
-            return Tile::notGate_on->getTexture(face);
+            return Tile::redstoneTorch_on->getTexture(face);
         }
-        return Tile::notGate_off->getTexture(face);
+        return Tile::redstoneTorch_off->getTexture(face);
     }
     if (face == Facing::UP) {
         return icon;
     }
     // edge of stone half-step
     return Tile::stoneSlab->getTexture(Facing::UP);
-}
-
-void DiodeTile::registerIcons(IconRegister* iconRegister) {
-    icon = iconRegister->registerIcon(on ? L"repeater_lit" : L"repeater");
 }
 
 bool DiodeTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
@@ -82,29 +79,37 @@ bool DiodeTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
 
 int DiodeTile::getRenderShape() { return SHAPE_DIODE; }
 
-bool DiodeTile::getDirectSignal(Level* level, int x, int y, int z, int dir) {
+bool DiodeTile::isOn(int data) { return on; }
+
+int DiodeTile::getDirectSignal(LevelSource* level, int x, int y, int z,
+                               int dir) {
     return getSignal(level, x, y, z, dir);
 }
 
-bool DiodeTile::getSignal(LevelSource* level, int x, int y, int z, int facing) {
-    if (!on) {
-        return false;
+int DiodeTile::getSignal(LevelSource* level, int x, int y, int z, int facing) {
+    int data = level->getData(x, y, z);
+    if (!isOn(data)) {
+        return Redstone::SIGNAL_NONE;
     }
 
-    int dir = getDirection(level->getData(x, y, z));
+    int dir = getDirection(data);
 
-    if (dir == Direction::SOUTH && facing == Facing::SOUTH) return true;
-    if (dir == Direction::WEST && facing == Facing::WEST) return true;
-    if (dir == Direction::NORTH && facing == Facing::NORTH) return true;
-    if (dir == Direction::EAST && facing == Facing::EAST) return true;
+    if (dir == Direction::SOUTH && facing == Facing::SOUTH)
+        return getOutputSignal(level, x, y, z, data);
+    if (dir == Direction::WEST && facing == Facing::WEST)
+        return getOutputSignal(level, x, y, z, data);
+    if (dir == Direction::NORTH && facing == Facing::NORTH)
+        return getOutputSignal(level, x, y, z, data);
+    if (dir == Direction::EAST && facing == Facing::EAST)
+        return getOutputSignal(level, x, y, z, data);
 
-    return false;
+    return Redstone::SIGNAL_NONE;
 }
 
 void DiodeTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (!canSurvive(level, x, y, z)) {
         this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         level->updateNeighborsAt(x + 1, y, z, id);
         level->updateNeighborsAt(x - 1, y, z, id);
         level->updateNeighborsAt(x, y, z + 1, id);
@@ -114,76 +119,125 @@ void DiodeTile::neighborChanged(Level* level, int x, int y, int z, int type) {
         return;
     }
 
+    checkTickOnNeighbor(level, x, y, z, type);
+}
+
+void DiodeTile::checkTickOnNeighbor(Level* level, int x, int y, int z,
+                                    int type) {
     int data = level->getData(x, y, z);
 
-    bool sourceOn = getSourceSignal(level, x, y, z, data);
-    int delay = (data & DELAY_MASK) >> DELAY_SHIFT;
-    if ((on && !sourceOn) || (!on && sourceOn)) {
-        level->addToTickNextTick(x, y, z, id, DELAYS[delay] * 2);
+    if (!isLocked(level, x, y, z, data)) {
+        bool sourceOn = shouldTurnOn(level, x, y, z, data);
+        if ((on && !sourceOn || !on && sourceOn) &&
+            !level->isTileToBeTickedAt(x, y, z, id)) {
+            int prio = -1;
+
+            // if the tile in front is a repeater, we prioritize this update
+            if (shouldPrioritize(level, x, y, z, data)) {
+                prio = -3;
+            } else if (on) {
+                prio = -2;
+            }
+
+            level->addToTickNextTick(x, y, z, id, getTurnOnDelay(data), prio);
+        }
     }
 }
 
-bool DiodeTile::getSourceSignal(Level* level, int x, int y, int z, int data) {
-    int dir = getDirection(data);
-    switch (dir) {
-        case Direction::SOUTH:
-            return level->getSignal(x, y, z + 1, Facing::SOUTH) ||
-                   (level->getTile(x, y, z + 1) == Tile::redStoneDust_Id &&
-                    level->getData(x, y, z + 1) > 0);
-        case Direction::NORTH:
-            return level->getSignal(x, y, z - 1, Facing::NORTH) ||
-                   (level->getTile(x, y, z - 1) == Tile::redStoneDust_Id &&
-                    level->getData(x, y, z - 1) > 0);
-        case Direction::EAST:
-            return level->getSignal(x + 1, y, z, Facing::EAST) ||
-                   (level->getTile(x + 1, y, z) == Tile::redStoneDust_Id &&
-                    level->getData(x + 1, y, z) > 0);
-        case Direction::WEST:
-            return level->getSignal(x - 1, y, z, Facing::WEST) ||
-                   (level->getTile(x - 1, y, z) == Tile::redStoneDust_Id &&
-                    level->getData(x - 1, y, z) > 0);
-    }
+bool DiodeTile::isLocked(LevelSource* level, int x, int y, int z, int data) {
     return false;
 }
 
-// 4J-PB - Adding a TestUse for tooltip display
-bool DiodeTile::TestUse() { return true; }
+bool DiodeTile::shouldTurnOn(Level* level, int x, int y, int z, int data) {
+    return getInputSignal(level, x, y, z, data) > Redstone::SIGNAL_NONE;
+}
 
-bool DiodeTile::use(Level* level, int x, int y, int z,
-                    std::shared_ptr<Player> player, int clickedFace,
-                    float clickX, float clickY, float clickZ,
-                    bool soundOnly /*=false*/)  // 4J added soundOnly param
-{
-    if (soundOnly) return false;
+int DiodeTile::getInputSignal(Level* level, int x, int y, int z, int data) {
+    int dir = getDirection(data);
 
-    int data = level->getData(x, y, z);
-    int delay = (data & DELAY_MASK) >> DELAY_SHIFT;
-    delay = ((delay + 1) << DELAY_SHIFT) & DELAY_MASK;
+    int xx = x + Direction::STEP_X[dir];
+    int zz = z + Direction::STEP_Z[dir];
+    int input = level->getSignal(xx, y, zz, Direction::DIRECTION_FACING[dir]);
 
-    level->setData(x, y, z, delay | (data & DIRECTION_MASK));
-    return true;
+    if (input >= Redstone::SIGNAL_MAX) return input;
+    return std::max(input, level->getTile(xx, y, zz) == Tile::redStoneDust_Id
+                               ? level->getData(xx, y, zz)
+                               : Redstone::SIGNAL_NONE);
+}
+
+int DiodeTile::getAlternateSignal(LevelSource* level, int x, int y, int z,
+                                  int data) {
+    int dir = getDirection(data);
+
+    switch (dir) {
+        case Direction::SOUTH:
+        case Direction::NORTH:
+            return std::max(
+                getAlternateSignalAt(level, x - 1, y, z, Facing::WEST),
+                getAlternateSignalAt(level, x + 1, y, z, Facing::EAST));
+        case Direction::EAST:
+        case Direction::WEST:
+            return std::max(
+                getAlternateSignalAt(level, x, y, z + 1, Facing::SOUTH),
+                getAlternateSignalAt(level, x, y, z - 1, Facing::NORTH));
+    }
+
+    return Redstone::SIGNAL_NONE;
+}
+
+int DiodeTile::getAlternateSignalAt(LevelSource* level, int x, int y, int z,
+                                    int facing) {
+    int tile = level->getTile(x, y, z);
+
+    if (isAlternateInput(tile)) {
+        if (tile == Tile::redStoneDust_Id) {
+            return level->getData(x, y, z);
+        } else {
+            return level->getDirectSignal(x, y, z, facing);
+        }
+    }
+
+    return Redstone::SIGNAL_NONE;
 }
 
 bool DiodeTile::isSignalSource() { return true; }
 
 void DiodeTile::setPlacedBy(Level* level, int x, int y, int z,
-                            std::shared_ptr<Mob> by) {
+                            std::shared_ptr<LivingEntity> by,
+                            std::shared_ptr<ItemInstance> itemInstance) {
     int dir = (((Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3) + 2) % 4;
-    level->setData(x, y, z, dir);
+    level->setData(x, y, z, dir, Tile::UPDATE_ALL);
 
-    bool sourceOn = getSourceSignal(level, x, y, z, dir);
+    bool sourceOn = shouldTurnOn(level, x, y, z, dir);
     if (sourceOn) {
         level->addToTickNextTick(x, y, z, id, 1);
     }
 }
 
 void DiodeTile::onPlace(Level* level, int x, int y, int z) {
-    level->updateNeighborsAt(x + 1, y, z, id);
-    level->updateNeighborsAt(x - 1, y, z, id);
-    level->updateNeighborsAt(x, y, z + 1, id);
-    level->updateNeighborsAt(x, y, z - 1, id);
-    level->updateNeighborsAt(x, y - 1, z, id);
-    level->updateNeighborsAt(x, y + 1, z, id);
+    updateNeighborsInFront(level, x, y, z);
+}
+
+void DiodeTile::updateNeighborsInFront(Level* level, int x, int y, int z) {
+    int dir = getDirection(level->getData(x, y, z));
+    if (dir == Direction::WEST) {
+        level->neighborChanged(x + 1, y, z, id);
+        level->updateNeighborsAtExceptFromFacing(x + 1, y, z, id, Facing::WEST);
+    }
+    if (dir == Direction::EAST) {
+        level->neighborChanged(x - 1, y, z, id);
+        level->updateNeighborsAtExceptFromFacing(x - 1, y, z, id, Facing::EAST);
+    }
+    if (dir == Direction::NORTH) {
+        level->neighborChanged(x, y, z + 1, id);
+        level->updateNeighborsAtExceptFromFacing(x, y, z + 1, id,
+                                                 Facing::NORTH);
+    }
+    if (dir == Direction::SOUTH) {
+        level->neighborChanged(x, y, z - 1, id);
+        level->updateNeighborsAtExceptFromFacing(x, y, z - 1, id,
+                                                 Facing::SOUTH);
+    }
 }
 
 void DiodeTile::destroy(Level* level, int x, int y, int z, int data) {
@@ -200,60 +254,37 @@ void DiodeTile::destroy(Level* level, int x, int y, int z, int data) {
 
 bool DiodeTile::isSolidRender(bool isServerLevel) { return false; }
 
-int DiodeTile::getResource(int data, Random* random, int playerBonusLevel) {
-    return Item::diode->id;
+bool DiodeTile::isAlternateInput(int tile) {
+    Tile* tt = Tile::tiles[tile];
+    return tt != NULL && tt->isSignalSource();
 }
 
-void DiodeTile::animateTick(Level* level, int xt, int yt, int zt,
-                            Random* random) {
-    if (!on) return;
-    int data = level->getData(xt, yt, zt);
+int DiodeTile::getOutputSignal(LevelSource* level, int x, int y, int z,
+                               int data) {
+    return Redstone::SIGNAL_MAX;
+}
+
+bool DiodeTile::isDiode(int id) {
+    return Tile::diode_off->isSameDiode(id) ||
+           Tile::comparator_off->isSameDiode(id);
+}
+
+bool DiodeTile::isSameDiode(int id) {
+    return id == getOnTile()->id || id == getOffTile()->id;
+}
+
+bool DiodeTile::shouldPrioritize(Level* level, int x, int y, int z, int data) {
     int dir = getDirection(data);
-
-    double x = xt + 0.5f + (random->nextFloat() - 0.5f) * 0.2;
-    double y = yt + 0.4f + (random->nextFloat() - 0.5f) * 0.2;
-    double z = zt + 0.5f + (random->nextFloat() - 0.5f) * 0.2;
-
-    double xo = 0;
-    double zo = 0;
-
-    if (random->nextInt(2) == 0) {
-        // spawn on receiver
-        switch (dir) {
-            case Direction::SOUTH:
-                zo = -5.0f / 16.0f;
-                break;
-            case Direction::NORTH:
-                zo = 5.0f / 16.0f;
-                break;
-            case Direction::EAST:
-                xo = -5.0f / 16.0f;
-                break;
-            case Direction::WEST:
-                xo = 5.0f / 16.0f;
-                break;
-        }
-    } else {
-        // spawn on transmitter
-        int delay = (data & DELAY_MASK) >> DELAY_SHIFT;
-        switch (dir) {
-            case Direction::SOUTH:
-                zo = DiodeTile::DELAY_RENDER_OFFSETS[delay];
-                break;
-            case Direction::NORTH:
-                zo = -DiodeTile::DELAY_RENDER_OFFSETS[delay];
-                break;
-            case Direction::EAST:
-                xo = DiodeTile::DELAY_RENDER_OFFSETS[delay];
-                break;
-            case Direction::WEST:
-                xo = -DiodeTile::DELAY_RENDER_OFFSETS[delay];
-                break;
-        }
+    if (isDiode(level->getTile(x - Direction::STEP_X[dir], y,
+                               z - Direction::STEP_Z[dir]))) {
+        int odata = level->getData(x - Direction::STEP_X[dir], y,
+                                   z - Direction::STEP_Z[dir]);
+        int odir = getDirection(odata);
+        return odir != dir;
     }
-    level->addParticle(eParticleType_reddust, x + xo, y, z + zo, 0, 0, 0);
+    return false;
 }
 
-int DiodeTile::cloneTileId(Level* level, int x, int y, int z) {
-    return Item::diode_Id;
-}
+int DiodeTile::getTurnOffDelay(int data) { return getTurnOnDelay(data); }
+
+bool DiodeTile::isMatching(int id) { return isSameDiode(id); }

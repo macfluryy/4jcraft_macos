@@ -1,8 +1,8 @@
 #include "../Platform/stdafx.h"
 #include "Enemy.h"
 
-const int Enemy::XP_REWARD_NONE = 0;
-const int Enemy::XP_REWARD_SMALL = 3;
-const int Enemy::XP_REWARD_MEDIUM = 5;
-const int Enemy::XP_REWARD_LARGE = 10;
-const int Enemy::XP_REWARD_HUGE = 20;
+EntitySelector* Enemy::ENEMY_SELECTOR = new Enemy::EnemyEntitySelector();
+
+bool Enemy::EnemyEntitySelector::matches(std::shared_ptr<Entity> entity) const {
+    return (entity != NULL) && entity->instanceof(eTYPE_ENEMY);
+}

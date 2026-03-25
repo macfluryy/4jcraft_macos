@@ -4,7 +4,7 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.biome.h"
 
-void CanyonFeature::addTunnel(__int64 seed, int xOffs, int zOffs,
+void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
                               byteArray blocks, double xCave, double yCave,
                               double zCave, float thickness, float yRot,
                               float xRot, int step, int dist, double yScale) {
@@ -129,7 +129,7 @@ void CanyonFeature::addTunnel(__int64 seed, int xOffs, int zOffs,
                         if ((xd * xd + zd * zd) * rs[yy] + (yd * yd / 6) < 1) {
                             int block = blocks[p];
                             if (block == Tile::grass_Id) hasGrass = true;
-                            if (block == Tile::rock_Id ||
+                            if (block == Tile::stone_Id ||
                                 block == Tile::dirt_Id ||
                                 block == Tile::grass_Id) {
                                 if (yy < 10) {

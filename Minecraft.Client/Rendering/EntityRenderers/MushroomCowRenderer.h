@@ -1,8 +1,10 @@
 #pragma once
-
 #include "MobRenderer.h"
 
 class MushroomCowRenderer : public MobRenderer {
+private:
+    static ResourceLocation MOOSHROOM_LOCATION;
+
 public:
     MushroomCowRenderer(Model* model, float shadow);
 
@@ -10,5 +12,7 @@ public:
                         double z, float rot, float a);
 
 protected:
-    virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
+    virtual void additionalRendering(std::shared_ptr<LivingEntity> _mob,
+                                     float a);
+    virtual ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
 };

@@ -4,6 +4,9 @@
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "EnchantTableRenderer.h"
 
+ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
+    ResourceLocation(TN_ITEM_BOOK);
+
 EnchantTableRenderer::EnchantTableRenderer() { bookModel = new BookModel(); }
 
 EnchantTableRenderer::~EnchantTableRenderer() { delete bookModel; }
@@ -38,7 +41,7 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
 
     glRotatef(-yRot * 180 / PI, 0, 1, 0);
     glRotatef(80, 0, 0, 1);
-    bindTexture(TN_ITEM_BOOK);  // 4J was "/item/book.png"
+    bindTexture(&BOOK_LOCATION);  // 4J was "/item/book.png"
 
     float ff1 = table->oFlip + (table->flip - table->oFlip) * a + 0.25f;
     float ff2 = table->oFlip + (table->flip - table->oFlip) * a + 0.75f;
@@ -51,6 +54,7 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
     if (ff2 > 1) ff2 = 1;
 
     float o = table->oOpen + (table->open - table->oOpen) * a;
+    glEnable(GL_CULL_FACE);
     bookModel->render(nullptr, tt, ff1, ff2, o, 0, 1 / 16.0f, true);
     glPopMatrix();
 }

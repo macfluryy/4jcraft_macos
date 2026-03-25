@@ -25,24 +25,22 @@ void IceTile::playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
                       GenericStats::param_blocksMined(id, data, 1));
     player->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE);
 
-    if (isSilkTouchable() &&
-        EnchantmentHelper::hasSilkTouch(player->inventory)) {
+    if (isSilkTouchable() && EnchantmentHelper::hasSilkTouch(player)) {
         std::shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
         if (item != NULL) {
             popResource(level, x, y, z, item);
         }
     } else {
         if (level->dimension->ultraWarm) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             return;
         }
 
-        int playerBonusLevel =
-            EnchantmentHelper::getDiggingLootBonus(player->inventory);
+        int playerBonusLevel = EnchantmentHelper::getDiggingLootBonus(player);
         spawnResources(level, x, y, z, data, playerBonusLevel);
         Material* below = level->getMaterial(x, y - 1, z);
         if (below->blocksMotion() || below->isLiquid()) {
-            level->setTile(x, y, z, Tile::water_Id);
+            level->setTileAndUpdate(x, y, z, Tile::water_Id);
         }
     }
 }
@@ -53,11 +51,11 @@ void IceTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (level->getBrightness(LightLayer::Block, x, y, z) >
         11 - Tile::lightBlock[id]) {
         if (level->dimension->ultraWarm) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
             return;
         }
         this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, Tile::calmWater_Id);
+        level->setTileAndUpdate(x, y, z, Tile::calmWater_Id);
     }
 }
 

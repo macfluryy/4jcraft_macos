@@ -55,8 +55,8 @@ Fireball::Fireball(Level* level, double x, double y, double z, double xa,
 
     setSize(16 / 16.0f, 16 / 16.0f);
 
-    this->moveTo(x, y, z, yRot, xRot);
-    this->setPos(x, y, z);
+    moveTo(x, y, z, yRot, xRot);
+    setPos(x, y, z);
 
     double dd = sqrt(xa * xa + ya * ya + za * za);
 
@@ -74,8 +74,8 @@ Fireball::Fireball(Level* level, double x, double y, double z, double xa,
     }
 }
 
-Fireball::Fireball(Level* level, std::shared_ptr<Mob> mob, double xa, double ya,
-                   double za)
+Fireball::Fireball(Level* level, std::shared_ptr<LivingEntity> mob, double xa,
+                   double ya, double za)
     : Entity(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
@@ -83,13 +83,13 @@ Fireball::Fireball(Level* level, std::shared_ptr<Mob> mob, double xa, double ya,
 
     _init();
 
-    this->owner = mob;
+    owner = mob;
 
     setSize(16 / 16.0f, 16 / 16.0f);
 
-    this->moveTo(mob->x, mob->y, mob->z, mob->yRot, mob->xRot);
-    this->setPos(x, y, z);
-    this->heightOffset = 0;
+    moveTo(mob->x, mob->y, mob->z, mob->yRot, mob->xRot);
+    setPos(x, y, z);
+    heightOffset = 0;
 
     xd = yd = zd = 0.0;
 
@@ -177,7 +177,7 @@ void Fireball::tick() {
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+        shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -214,8 +214,8 @@ void Fireball::tick() {
     z += zd;
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRot = (float)(atan2(zd, xd) * 180 / PI) + 90;
+    xRot = (float)(atan2(sd, yd) * 180 / PI) - 90;
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;
@@ -226,7 +226,7 @@ void Fireball::tick() {
     xRot = xRotO + (xRot - xRotO) * 0.2f;
     yRot = yRotO + (yRot - yRotO) * 0.2f;
 
-    float inertia = 0.95f;
+    float inertia = getInertia();
     if (isInWater()) {
         for (int i = 0; i < 4; i++) {
             float s = 1 / 4.0f;
@@ -260,24 +260,7 @@ void Fireball::tick() {
     setPos(x, y, z);
 }
 
-void Fireball::onHit(HitResult* res) {
-    if (!level->isClientSide) {
-        if (res->entity != NULL) {
-            DamageSource* damageSource = DamageSource::fireball(
-                std::dynamic_pointer_cast<Fireball>(shared_from_this()), owner);
-            if (res->entity->hurt(damageSource, 6)) {
-            } else {
-            }
-            delete damageSource;
-        }
-
-        bool destroyBlocks =
-            true;  // level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-        level->explode(nullptr, x, y, z, 1, true, destroyBlocks);
-
-        remove();
-    }
-}
+float Fireball::getInertia() { return 0.95f; }
 
 void Fireball::addAdditonalSaveData(CompoundTag* tag) {
     tag->putShort(L"xTile", (short)xTile);
@@ -285,8 +268,7 @@ void Fireball::addAdditonalSaveData(CompoundTag* tag) {
     tag->putShort(L"zTile", (short)zTile);
     tag->putByte(L"inTile", (uint8_t)lastTile);
     tag->putByte(L"inGround", (uint8_t)(inGround ? 1 : 0));
-    tag->put(L"direction",
-             this->newDoubleList(3, this->xd, this->yd, this->zd));
+    tag->put(L"direction", newDoubleList(3, xd, yd, zd));
 }
 
 void Fireball::readAdditionalSaveData(CompoundTag* tag) {
@@ -301,11 +283,11 @@ void Fireball::readAdditionalSaveData(CompoundTag* tag) {
     if (tag->contains(L"direction")) {
         ListTag<DoubleTag>* listTag =
             (ListTag<DoubleTag>*)tag->getList(L"direction");
-        this->xd = ((DoubleTag*)listTag->get(0))->data;
-        this->yd = ((DoubleTag*)listTag->get(1))->data;
-        this->zd = ((DoubleTag*)listTag->get(2))->data;
+        xd = ((DoubleTag*)listTag->get(0))->data;
+        yd = ((DoubleTag*)listTag->get(1))->data;
+        zd = ((DoubleTag*)listTag->get(2))->data;
     } else {
-        this->remove();
+        remove();
     }
 }
 
@@ -313,7 +295,8 @@ bool Fireball::isPickable() { return true; }
 
 float Fireball::getPickRadius() { return 1; }
 
-bool Fireball::hurt(DamageSource* source, int damage) {
+bool Fireball::hurt(DamageSource* source, float damage) {
+    if (isInvulnerable()) return false;
     markHurt();
 
     if (source->getEntity() != NULL) {
@@ -326,10 +309,9 @@ bool Fireball::hurt(DamageSource* source, int damage) {
             yPower = yd * 0.1;
             zPower = zd * 0.1;
         }
-        std::shared_ptr<Mob> mob =
-            std::dynamic_pointer_cast<Mob>(source->getEntity());
-        if (mob != NULL) {
-            owner = mob;
+        if (source->getEntity()->instanceof(eTYPE_LIVINGENTITY)) {
+            owner =
+                std::dynamic_pointer_cast<LivingEntity>(source->getEntity());
         }
         return true;
     }
@@ -342,8 +324,6 @@ float Fireball::getBrightness(float a) { return 1.0f; }
 
 int Fireball::getLightColor(float a) { return 15 << 20 | 15 << 4; }
 
-bool Fireball::shouldBurn() { return true; }
-
-int Fireball::getIcon() { return 14 + 2 * 16; }
-
 ePARTICLE_TYPE Fireball::getTrailParticleType() { return eParticleType_smoke; }
+
+bool Fireball::shouldBurn() { return true; }

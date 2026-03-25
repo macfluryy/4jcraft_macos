@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.entity.projectile.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Headers/net.minecraft.h"
 #include "ButtonTile.h"
@@ -16,12 +17,12 @@ Icon* ButtonTile::getTexture(int face, int data) {
     if (id == Tile::button_wood_Id)
         return Tile::wood->getTexture(Facing::UP);
     else
-        return Tile::rock->getTexture(Facing::UP);
+        return Tile::stone->getTexture(Facing::UP);
 }
 
 AABB* ButtonTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
 
-int ButtonTile::getTickDelay() { return sensitive ? 30 : 20; }
+int ButtonTile::getTickDelay(Level* level) { return sensitive ? 30 : 20; }
 
 bool ButtonTile::blocksLight() { return false; }
 
@@ -100,8 +101,8 @@ void ButtonTile::neighborChanged(Level* level, int x, int y, int z, int type) {
             replace = true;
 
         if (replace) {
-            this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-            level->setTile(x, y, z, 0);
+            spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+            level->removeTile(x, y, z);
         }
     }
 }
@@ -109,7 +110,7 @@ void ButtonTile::neighborChanged(Level* level, int x, int y, int z, int type) {
 bool ButtonTile::checkCanSurvive(Level* level, int x, int y, int z) {
     if (!mayPlace(level, x, y, z)) {
         this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return false;
     }
     return true;
@@ -164,12 +165,13 @@ bool ButtonTile::use(Level* level, int x, int y, int z,
                          0.3f, 0.6f);
         return false;
     }
+
     int data = level->getData(x, y, z);
     int dir = data & 7;
     int open = 8 - (data & 8);
     if (open == 0) return true;
 
-    level->setData(x, y, z, dir + open);
+    level->setData(x, y, z, dir + open, Tile::UPDATE_ALL);
     level->setTilesDirty(x, y, z, x, y, z);
 
     level->playSound(x + 0.5, y + 0.5, z + 0.5, eSoundType_RANDOM_CLICK, 0.3f,
@@ -177,7 +179,7 @@ bool ButtonTile::use(Level* level, int x, int y, int z,
 
     updateNeighbours(level, x, y, z, dir);
 
-    level->addToTickNextTick(x, y, z, id, getTickDelay());
+    level->addToTickNextTick(x, y, z, id, getTickDelay(level));
 
     return true;
 }
@@ -190,20 +192,22 @@ void ButtonTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
     Tile::onRemove(level, x, y, z, id, data);
 }
 
-bool ButtonTile::getSignal(LevelSource* level, int x, int y, int z, int dir) {
-    return (level->getData(x, y, z) & 8) > 0;
+int ButtonTile::getSignal(LevelSource* level, int x, int y, int z, int dir) {
+    return (level->getData(x, y, z) & 8) > 0 ? Redstone::SIGNAL_MAX
+                                             : Redstone::SIGNAL_NONE;
 }
 
-bool ButtonTile::getDirectSignal(Level* level, int x, int y, int z, int dir) {
+int ButtonTile::getDirectSignal(LevelSource* level, int x, int y, int z,
+                                int dir) {
     int data = level->getData(x, y, z);
-    if ((data & 8) == 0) return false;
+    if ((data & 8) == 0) return Redstone::SIGNAL_NONE;
     int myDir = data & 7;
 
-    if (myDir == 5 && dir == 1) return true;
-    if (myDir == 4 && dir == 2) return true;
-    if (myDir == 3 && dir == 3) return true;
-    if (myDir == 2 && dir == 4) return true;
-    if (myDir == 1 && dir == 5) return true;
+    if (myDir == 5 && dir == 1) return Redstone::SIGNAL_MAX;
+    if (myDir == 4 && dir == 2) return Redstone::SIGNAL_MAX;
+    if (myDir == 3 && dir == 3) return Redstone::SIGNAL_MAX;
+    if (myDir == 2 && dir == 4) return Redstone::SIGNAL_MAX;
+    if (myDir == 1 && dir == 5) return Redstone::SIGNAL_MAX;
 
     return false;
 }
@@ -219,7 +223,7 @@ void ButtonTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (sensitive) {
         checkPressed(level, x, y, z);
     } else {
-        level->setData(x, y, z, data & 7);
+        level->setData(x, y, z, data & 7, Tile::UPDATE_ALL);
 
         int dir = data & 7;
         updateNeighbours(level, x, y, z, dir);
@@ -265,7 +269,7 @@ void ButtonTile::checkPressed(Level* level, int x, int y, int z) {
     delete entities;
 
     if (shouldBePressed && !wasPressed) {
-        level->setData(x, y, z, dir | 8);
+        level->setData(x, y, z, dir | 8, Tile::UPDATE_ALL);
         updateNeighbours(level, x, y, z, dir);
         level->setTilesDirty(x, y, z, x, y, z);
 
@@ -273,7 +277,7 @@ void ButtonTile::checkPressed(Level* level, int x, int y, int z) {
                          0.3f, 0.6f);
     }
     if (!shouldBePressed && wasPressed) {
-        level->setData(x, y, z, dir);
+        level->setData(x, y, z, dir, Tile::UPDATE_ALL);
         updateNeighbours(level, x, y, z, dir);
         level->setTilesDirty(x, y, z, x, y, z);
 
@@ -282,7 +286,7 @@ void ButtonTile::checkPressed(Level* level, int x, int y, int z) {
     }
 
     if (shouldBePressed) {
-        level->addToTickNextTick(x, y, z, id, getTickDelay());
+        level->addToTickNextTick(x, y, z, id, getTickDelay(level));
     }
 }
 

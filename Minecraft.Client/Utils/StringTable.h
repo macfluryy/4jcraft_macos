@@ -59,6 +59,7 @@ public:
     StringTable(void);
     StringTable(std::uint8_t* pbData, unsigned int dataSize);
     ~StringTable(void);
+    void ReloadStringTable();
 
     void getData(std::uint8_t** ppData, unsigned int* pSize);
 
@@ -69,4 +70,5 @@ public:
 
 private:
     // std::wstring getLangId(DWORD dwLanguage=0);
+    void ProcessStringTableData(void);
 };

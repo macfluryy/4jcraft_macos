@@ -1,5 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "../../Util/SharedConstants.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.effect.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.h"
@@ -9,19 +11,20 @@
 CaveSpider::CaveSpider(Level* level) : Spider(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
-    health = getMaxHealth();
+    registerAttributes();
 
-    this->textureIdx = TN_MOB_CAVE_SPIDER;  // 4J was  "/mob/cavespider.png";
     this->setSize(0.7f, 0.5f);
 }
 
-int CaveSpider::getMaxHealth() { return 12; }
+void CaveSpider::registerAttributes() {
+    Spider::registerAttributes();
 
-float CaveSpider::getModelScale() { return .7f; }
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(12);
+}
 
 bool CaveSpider::doHurtTarget(std::shared_ptr<Entity> target) {
     if (Spider::doHurtTarget(target)) {
-        if (std::dynamic_pointer_cast<Mob>(target) != NULL) {
+        if (target->instanceof(eTYPE_LIVINGENTITY)) {
             int poisonTime = 0;
             if (level->difficulty <= Difficulty::EASY) {
                 // No poison!
@@ -32,7 +35,7 @@ bool CaveSpider::doHurtTarget(std::shared_ptr<Entity> target) {
             }
 
             if (poisonTime > 0) {
-                std::dynamic_pointer_cast<Mob>(target)->addEffect(
+                std::dynamic_pointer_cast<LivingEntity>(target)->addEffect(
                     new MobEffectInstance(
                         MobEffect::poison->id,
                         poisonTime * SharedConstants::TICKS_PER_SECOND, 0));
@@ -44,6 +47,9 @@ bool CaveSpider::doHurtTarget(std::shared_ptr<Entity> target) {
     return false;
 }
 
-void CaveSpider::finalizeMobSpawn() {
+MobGroupData* CaveSpider::finalizeMobSpawn(
+    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+{
     // do nothing
+    return groupData;
 }

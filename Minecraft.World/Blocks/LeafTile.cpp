@@ -100,8 +100,9 @@ void LeafTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
                     if (t == Tile::leaves_Id) {
                         int currentData =
                             level->getData(x + xo, y + yo, z + zo);
-                        level->setDataNoUpdate(x + xo, y + yo, z + zo,
-                                               currentData | UPDATE_LEAF_BIT);
+                        level->setData(x + xo, y + yo, z + zo,
+                                       currentData | UPDATE_LEAF_BIT,
+                                       Tile::UPDATE_NONE);
                     }
                 }
     }
@@ -113,7 +114,7 @@ void LeafTile::tick(Level* level, int x, int y, int z, Random* random) {
     int currentData = level->getData(x, y, z);
     if ((currentData & UPDATE_LEAF_BIT) != 0 &&
         (currentData & PERSISTENT_LEAF_BIT) == 0) {
-        int r = LeafTile::REQUIRED_WOOD_RANGE;
+        int r = REQUIRED_WOOD_RANGE;
         int r2 = r + 1;
 
         int W = 32;
@@ -143,7 +144,7 @@ void LeafTile::tick(Level* level, int x, int y, int z, Random* random) {
                                         (zo + WO)] = -1;
                         }
                     }
-            for (int i = 1; i <= LeafTile::REQUIRED_WOOD_RANGE; i++) {
+            for (int i = 1; i <= REQUIRED_WOOD_RANGE; i++) {
                 for (int xo = -r; xo <= r; xo++)
                     for (int yo = -r; yo <= r; yo++)
                         for (int zo = -r; zo <= r; zo++) {
@@ -192,7 +193,8 @@ void LeafTile::tick(Level* level, int x, int y, int z, Random* random) {
 
         int mid = checkBuffer[(WO)*WW + (WO)*W + (WO)];
         if (mid >= 0) {
-            level->setDataNoUpdate(x, y, z, currentData & ~UPDATE_LEAF_BIT);
+            level->setData(x, y, z, currentData & ~UPDATE_LEAF_BIT,
+                           Tile::UPDATE_NONE);
         } else {
             die(level, x, y, z);
         }
@@ -212,7 +214,7 @@ void LeafTile::animateTick(Level* level, int x, int y, int z, Random* random) {
 
 void LeafTile::die(Level* level, int x, int y, int z) {
     Tile::spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-    level->setTile(x, y, z, 0);
+    level->removeTile(x, y, z);
 }
 
 int LeafTile::getResourceCount(Random* random) {
@@ -231,6 +233,12 @@ void LeafTile::spawnResources(Level* level, int x, int y, int z, int data,
         if ((data & LEAF_TYPE_MASK) == JUNGLE_LEAF) {
             chance = 40;
         }
+        if (playerBonusLevel > 0) {
+            chance -= 2 << playerBonusLevel;
+            if (chance < 10) {
+                chance = 10;
+            }
+        }
         if (level->random->nextInt(chance) == 0) {
             int type = getResource(data, level->random, playerBonusLevel);
             popResource(level, x, y, z,
@@ -238,8 +246,15 @@ void LeafTile::spawnResources(Level* level, int x, int y, int z, int data,
                             type, 1, getSpawnResourcesAuxValue(data))));
         }
 
+        chance = 200;
+        if (playerBonusLevel > 0) {
+            chance -= 10 << playerBonusLevel;
+            if (chance < 40) {
+                chance = 40;
+            }
+        }
         if ((data & LEAF_TYPE_MASK) == NORMAL_LEAF &&
-            level->random->nextInt(200) == 0) {
+            level->random->nextInt(chance) == 0) {
             popResource(level, x, y, z,
                         std::shared_ptr<ItemInstance>(
                             new ItemInstance(Item::apple_Id, 1, 0)));
@@ -281,6 +296,9 @@ Icon* LeafTile::getTexture(int face, int data) {
     }
     if ((data & LEAF_TYPE_MASK) == JUNGLE_LEAF) {
         return icons[fancyTextureSet][JUNGLE_LEAF];
+    }
+    if ((data & LEAF_TYPE_MASK) == BIRCH_LEAF) {
+        return icons[fancyTextureSet][BIRCH_LEAF];
     }
     return icons[fancyTextureSet][0];
 }

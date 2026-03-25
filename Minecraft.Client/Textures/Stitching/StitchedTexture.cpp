@@ -13,11 +13,13 @@ StitchedTexture* StitchedTexture::create(const std::wstring& name) {
     } else if (name.compare(L"compass") == 0) {
         return new CompassTexture();
     } else {
-        return new StitchedTexture(name);
+        return new StitchedTexture(name, name);
     }
 }
 
-StitchedTexture::StitchedTexture(const std::wstring& name) : name(name) {
+StitchedTexture::StitchedTexture(const std::wstring& name,
+                                 const std::wstring& filename)
+    : name(name) {
     // 4J Initialisers
     source = NULL;
     rotated = false;
@@ -36,28 +38,32 @@ StitchedTexture::StitchedTexture(const std::wstring& name) : name(name) {
     frameOverride = NULL;
     flags = 0;
     frames = NULL;
+    m_fileName = filename;
 }
 
 void StitchedTexture::freeFrameTextures() {
-    if (frames) {
+    if (frames != NULL) {
         for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
             TextureManager::getInstance()->unregisterTexture(L"", *it);
             delete *it;
         }
         delete frames;
+        frames = NULL;
     }
 }
 
 StitchedTexture::~StitchedTexture() {
-    // 4jcraft, added null check
-    // the constructor does not allocate the frames vector.
-    // in some scenarios the destructor/delete is called
-    // without ever calling ::init()
-    if (frames) {
+    if (frames != NULL) {
         for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
             delete *it;
         }
         delete frames;
+        frames = NULL;
+    }
+
+    if (frameOverride != NULL) {
+        delete frameOverride;
+        frameOverride = NULL;
     }
 }
 
@@ -181,7 +187,7 @@ void StitchedTexture::cycleFrames() {
 
 Texture* StitchedTexture::getSource() { return source; }
 
-Texture* StitchedTexture::getFrame(int i) { return frames->at(i); }
+Texture* StitchedTexture::getFrame(int i) { return frames->at(0); }
 
 int StitchedTexture::getFrames() { return frames ? frames->size() : 0; }
 
@@ -229,7 +235,7 @@ void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
     }
     //} catch (Exception e) {
     //	System.err.println("Failed to read animation info for " + name + ": " +
-    //e.getMessage());
+    // e.getMessage());
     //}
 
     if (!results->empty() &&

@@ -81,7 +81,17 @@ void Particle::setColor(float r, float g, float b) {
     this->bCol = b;
 }
 
-void Particle::setAlpha(float alpha) { this->alpha = alpha; }
+void Particle::setAlpha(float alpha) {
+    // 4J - brought forward from Java 1.8
+    if (this->alpha == 1.0f && alpha < 1.0f) {
+        Minecraft::GetInstance()->particleEngine->markTranslucent(
+            std::dynamic_pointer_cast<Particle>(shared_from_this()));
+    } else if (this->alpha < 1.0f && alpha == 1.0f) {
+        Minecraft::GetInstance()->particleEngine->markOpaque(
+            std::dynamic_pointer_cast<Particle>(shared_from_this()));
+    }
+    this->alpha = alpha;
+}
 
 float Particle::getRedCol() { return rCol; }
 

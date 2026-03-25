@@ -65,6 +65,8 @@ public:
     virtual void handleAddPlayer(std::shared_ptr<AddPlayerPacket> packet);
     virtual void handleTeleportEntity(
         std::shared_ptr<TeleportEntityPacket> packet);
+    virtual void handleSetCarriedItem(
+        std::shared_ptr<SetCarriedItemPacket> packet);
     virtual void handleMoveEntity(std::shared_ptr<MoveEntityPacket> packet);
     virtual void handleRotateMob(std::shared_ptr<RotateHeadPacket> packet);
     virtual void handleMoveEntitySmall(
@@ -102,7 +104,8 @@ public:
     virtual void handleAddMob(std::shared_ptr<AddMobPacket> packet);
     virtual void handleSetTime(std::shared_ptr<SetTimePacket> packet);
     virtual void handleSetSpawn(std::shared_ptr<SetSpawnPositionPacket> packet);
-    virtual void handleRidePacket(std::shared_ptr<SetRidingPacket> packet);
+    virtual void handleEntityLinkPacket(
+        std::shared_ptr<SetEntityLinkPacket> packet);
     virtual void handleEntityEvent(std::shared_ptr<EntityEventPacket> packet);
 
 private:
@@ -122,6 +125,8 @@ public:
     virtual void handleContainerAck(std::shared_ptr<ContainerAckPacket> packet);
     virtual void handleContainerContent(
         std::shared_ptr<ContainerSetContentPacket> packet);
+    virtual void handleTileEditorOpen(
+        std::shared_ptr<TileEditorOpenPacket> packet);
     virtual void handleSignUpdate(std::shared_ptr<SignUpdatePacket> packet);
     virtual void handleTileEntityData(
         std::shared_ptr<TileEntityDataPacket> packet);
@@ -179,4 +184,30 @@ public:
 
     void displayPrivilegeChanges(std::shared_ptr<MultiplayerLocalPlayer> player,
                                  unsigned int oldPrivileges);
+
+    virtual void handleAddObjective(std::shared_ptr<SetObjectivePacket> packet);
+    virtual void handleSetScore(std::shared_ptr<SetScorePacket> packet);
+    virtual void handleSetDisplayObjective(
+        std::shared_ptr<SetDisplayObjectivePacket> packet);
+    virtual void handleSetPlayerTeamPacket(
+        std::shared_ptr<SetPlayerTeamPacket> packet);
+    virtual void handleParticleEvent(
+        std::shared_ptr<LevelParticlesPacket> packet);
+    virtual void handleUpdateAttributes(
+        std::shared_ptr<UpdateAttributesPacket> packet);
+
+private:
+    // 4J: Entity link packet deferred
+    class DeferredEntityLinkPacket {
+    public:
+        DWORD m_recievedTick;
+        std::shared_ptr<SetEntityLinkPacket> m_packet;
+
+        DeferredEntityLinkPacket(std::shared_ptr<SetEntityLinkPacket> packet);
+    };
+
+    std::vector<DeferredEntityLinkPacket> deferredEntityLinkPackets;
+    static const int MAX_ENTITY_LINK_DEFERRAL_INTERVAL = 1000;
+
+    void checkDeferredEntityLinkPackets(int newEntityId);
 };

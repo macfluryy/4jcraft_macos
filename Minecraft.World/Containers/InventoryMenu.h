@@ -41,9 +41,11 @@ public:
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
     virtual bool mayCombine(Slot* slot, std::shared_ptr<ItemInstance> item);
+    virtual bool canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                       Slot* target);
 
     // 4J ADDED,
     virtual std::shared_ptr<ItemInstance> clicked(
         int slotIndex, int buttonNum, int clickType,
-        std::shared_ptr<Player> player);
+        std::shared_ptr<Player> player, bool looped = false);
 };

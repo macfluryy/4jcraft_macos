@@ -20,8 +20,8 @@ SheepModel::SheepModel() : QuadrupedModel(12, 0) {
     body->compile(1.0f / 16.0f);
 }
 
-void SheepModel::prepareMobModel(std::shared_ptr<Mob> mob, float time, float r,
-                                 float a) {
+void SheepModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
+                                 float r, float a) {
     QuadrupedModel::prepareMobModel(mob, time, r, a);
 
     std::shared_ptr<Sheep> sheep = std::dynamic_pointer_cast<Sheep>(mob);
@@ -31,8 +31,9 @@ void SheepModel::prepareMobModel(std::shared_ptr<Mob> mob, float time, float r,
 
 void SheepModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
+                           std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
-    QuadrupedModel::setupAnim(time, r, bob, yRot, xRot, scale);
+    QuadrupedModel::setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     head->xRot = headXRot;
 }

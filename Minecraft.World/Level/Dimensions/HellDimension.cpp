@@ -56,7 +56,7 @@ bool HellDimension::isNaturalDimension() { return false; }
 
 bool HellDimension::isValidSpawn(int x, int z) const { return false; }
 
-float HellDimension::getTimeOfDay(__int64 time, float a) const { return 0.5f; }
+float HellDimension::getTimeOfDay(int64_t time, float a) const { return 0.5f; }
 
 bool HellDimension::mayRespawn() const { return false; }
 

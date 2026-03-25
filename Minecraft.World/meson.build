@@ -11,6 +11,7 @@ exclude_sources = [
   '! -name ZonedChunkStorage.cpp',
   '! -name ZoneFile.cpp',
   '! -name ZoneIO.cpp',
+  '! -name LevelConflictException.cpp',
 ]
 
 # GET IT ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
@@ -24,6 +25,11 @@ world_sources = run_command(
   check : true,
 ).stdout().strip().split('\n')
 
+simdutf_dep = dependency('simdutf', 
+  fallback: ['simdutf', 'simdutf_dep'], 
+  default_options: ['utf8=true', 'utf16=true', 'utf32=true']
+)
+
 lib_world = static_library('Minecraft.World',
   world_sources,
   include_directories : include_directories('Platform', 'Platform/x64headers'),
@@ -33,17 +39,18 @@ lib_world = static_library('Minecraft.World',
     input_dep,
     profile_dep,
     storage_dep,
+    simdutf_dep,
   ],
   cpp_args : global_cpp_args + global_cpp_defs + [
     '-include', 'Platform/stdafx.h',
   ],
 )
 
-dep_zlib = dependency('zlib')
-dep_crypto = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
+zlib_dep = dependency('zlib')
+crypto_dep = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 
 world_dep = declare_dependency(
   link_with : lib_world,
-  dependencies : [dep_crypto, dep_zlib],
+  dependencies : [crypto_dep, zlib_dep],
   include_directories : include_directories('Platform/x64headers'),
 )

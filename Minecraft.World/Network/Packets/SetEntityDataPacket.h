@@ -22,7 +22,6 @@ public:
     virtual void write(DataOutputStream* dos);
     virtual void handle(PacketListener* listener);
     virtual int getEstimatedSize();
-    virtual bool isAync();
 
     std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
     getUnpackedData();

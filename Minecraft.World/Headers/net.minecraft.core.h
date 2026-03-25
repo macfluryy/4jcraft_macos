@@ -1,0 +1,16 @@
+#pragma once
+
+#include "../Core/Behavior.h"
+#include "../Core/BlockSource.h"
+#include "../Core/BlockSourceImpl.h"
+#include "../Core/BehaviorRegistry.h"
+#include "../Core/DispenseItemBehavior.h"
+#include "../Core/DefaultDispenseItemBehavior.h"
+#include "../Core/AbstractProjectileDispenseBehavior.h"
+#include "../Core/ItemDispenseBehaviors.h"
+#include "../Core/FacingEnum.h"
+#include "../Core/LocatableSource.h"
+#include "../Core/Location.h"
+#include "../Core/Position.h"
+#include "../Core/PositionImpl.h"
+#include "../Core/Source.h"

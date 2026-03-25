@@ -5,7 +5,8 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "FlowerPotTile.h"
 
-FlowerPotTile::FlowerPotTile(int id) : Tile(id, Material::decoration, false) {
+FlowerPotTile::FlowerPotTile(int id)
+    : Tile(id, Material::decoration, false) {
     updateDefaultShape();
     sendTileData();
 }
@@ -32,7 +33,7 @@ bool FlowerPotTile::use(Level* level, int x, int y, int z,
     int type = getTypeFromItem(item);
 
     if (type > 0) {
-        level->setData(x, y, z, type);
+        level->setData(x, y, z, type, Tile::UPDATE_CLIENTS);
 
         if (!player->abilities.instabuild) {
             if (--item->count <= 0) {
@@ -81,7 +82,7 @@ void FlowerPotTile::neighborChanged(Level* level, int x, int y, int z,
     if (!level->isTopSolidBlocking(x, y - 1, z)) {
         spawnResources(level, x, y, z, level->getData(x, y, z), 0);
 
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 }
 
@@ -111,10 +112,10 @@ std::shared_ptr<ItemInstance> FlowerPotTile::getItemFromType(int type) {
                 new ItemInstance(Tile::cactus));
         case TYPE_MUSHROOM_BROWN:
             return std::shared_ptr<ItemInstance>(
-                new ItemInstance(Tile::mushroom1));
+                new ItemInstance(Tile::mushroom_brown));
         case TYPE_MUSHROOM_RED:
             return std::shared_ptr<ItemInstance>(
-                new ItemInstance(Tile::mushroom2));
+                new ItemInstance(Tile::mushroom_red));
         case TYPE_DEAD_BUSH:
             return std::shared_ptr<ItemInstance>(
                 new ItemInstance(Tile::deadBush));
@@ -144,8 +145,8 @@ int FlowerPotTile::getTypeFromItem(std::shared_ptr<ItemInstance> item) {
     if (id == Tile::rose_Id) return TYPE_FLOWER_RED;
     if (id == Tile::flower_Id) return TYPE_FLOWER_YELLOW;
     if (id == Tile::cactus_Id) return TYPE_CACTUS;
-    if (id == Tile::mushroom1_Id) return TYPE_MUSHROOM_BROWN;
-    if (id == Tile::mushroom2_Id) return TYPE_MUSHROOM_RED;
+    if (id == Tile::mushroom_brown_Id) return TYPE_MUSHROOM_BROWN;
+    if (id == Tile::mushroom_red_Id) return TYPE_MUSHROOM_RED;
     if (id == Tile::deadBush_Id) return TYPE_DEAD_BUSH;
 
     if (id == Tile::sapling_Id) {

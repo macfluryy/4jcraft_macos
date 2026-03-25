@@ -162,7 +162,7 @@ void Options::init() {
     fixedCamera = false;
     flySpeed = 1;
     cameraSpeed = 1;
-    guiScale = 0;
+    guiScale = 3;
     particles = 0;
     fov = 0;
     gamma = 0;

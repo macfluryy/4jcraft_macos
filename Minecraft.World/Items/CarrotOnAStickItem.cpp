@@ -25,7 +25,7 @@ std::shared_ptr<ItemInstance> CarrotOnAStickItem::use(
                 itemInstance->getMaxDamage() - itemInstance->getAuxValue() >=
                     7) {
                 pig->getControlGoal()->boost();
-                itemInstance->hurt(7, player);
+                itemInstance->hurtAndBreak(7, player);
 
                 if (itemInstance->count == 0) {
                     std::shared_ptr<ItemInstance> replacement =

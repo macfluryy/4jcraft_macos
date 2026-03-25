@@ -2,32 +2,31 @@
 
 #include "UIControl_Base.h"
 
-class UIControl_SpaceIndicatorBar : public UIControl_Base
-{
+class UIControl_SpaceIndicatorBar : public UIControl_Base {
 private:
-	IggyName m_setSaveSizeFunc, m_setTotalSizeFunc, m_setSaveGameOffsetFunc;
-	__int64 m_min;
-	__int64 m_max;
-	__int64 m_currentSave, m_currentTotal;
-	float m_currentOffset;
+    IggyName m_setSaveSizeFunc, m_setTotalSizeFunc, m_setSaveGameOffsetFunc;
+    int64_t m_min;
+    int64_t m_max;
+    int64_t m_currentSave, m_currentTotal;
+    float m_currentOffset;
 
-	std::vector<std::pair<__int64,float> > m_sizeAndOffsets;
+    std::vector<std::pair<int64_t, float> > m_sizeAndOffsets;
 
 public:
-	UIControl_SpaceIndicatorBar();
+    UIControl_SpaceIndicatorBar();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	void init(const std::wstring &label, int id, __int64 min, __int64 max);
-	virtual void ReInit();
-	void reset();
+    void init(UIString label, int id, int64_t min, int64_t max);
+    virtual void ReInit();
+    void reset();
 
-	void addSave(__int64 size);
-	void selectSave(int index);
-
+    void addSave(int64_t size);
+    void selectSave(int index);
 
 private:
-	void setSaveSize(__int64 size);
-	void setTotalSize(__int64 totalSize);
-	void setSaveGameOffset(float offset);
+    void setSaveSize(int64_t size);
+    void setTotalSize(int64_t totalSize);
+    void setSaveGameOffset(float offset);
 };

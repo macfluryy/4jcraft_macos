@@ -57,4 +57,5 @@ private:
 
 public:
     void onPlace(Level* level, int x, int y, int z);
+    bool canInstantlyTick();
 };

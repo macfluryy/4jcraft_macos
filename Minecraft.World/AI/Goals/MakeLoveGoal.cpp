@@ -76,6 +76,10 @@ bool MakeLoveGoal::villageNeedsMoreVillagers() {
     std::shared_ptr<Village> _village = village.lock();
     if (_village == NULL) return false;
 
+    if (!_village->isBreedTimerOk()) {
+        return false;
+    }
+
     int idealSize = (int)((float)_village->getDoorCount() * 0.35);
     // System.out.println("idealSize: " + idealSize + " pop: " +
     // village.getPopulationSize());
@@ -90,11 +94,9 @@ void MakeLoveGoal::breed() {
     villager->setAge(5 * 60 * 20);
     // 4J - added limit to number of animals that can be bred
     if (level->canCreateMore(eTYPE_VILLAGER, Level::eSpawnType_Breed)) {
-        std::shared_ptr<Villager> child =
-            std::shared_ptr<Villager>(new Villager(level));
+        std::shared_ptr<Villager> child = std::dynamic_pointer_cast<Villager>(
+            villager->getBreedOffspring(partner.lock()));
         child->setAge(-20 * 60 * 20);
-        child->setProfession(
-            villager->getRandom()->nextInt(Villager::PROFESSION_MAX));
         child->moveTo(villager->x, villager->y, villager->z, 0, 0);
         level->addEntity(child);
         level->broadcastEntityEvent(child, EntityEvent::LOVE_HEARTS);

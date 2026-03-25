@@ -7,6 +7,8 @@
 #include "../../../Minecraft.World/Entities/Entity.h"
 #include "../../../Minecraft.World/Level/Level.h"
 
+ResourceLocation SignRenderer::SIGN_LOCATION = ResourceLocation(TN_ITEM_SIGN);
+
 SignRenderer::SignRenderer() { signModel = new SignModel(); }
 
 void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
@@ -41,7 +43,7 @@ void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
         signModel->cube2->visible = false;
     }
 
-    bindTexture(TN_ITEM_SIGN);  // 4J was L"/item/sign.png"
+    bindTexture(&SIGN_LOCATION);  // 4J was L"/item/sign.png"
 
     glPushMatrix();
     glScalef(size, -size, -size);

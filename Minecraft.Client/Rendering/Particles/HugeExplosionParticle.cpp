@@ -4,6 +4,10 @@
 #include "../../Textures/Textures.h"
 #include "../Tesselator.h"
 #include "../Lighting.h"
+#include "../../Textures/ResourceLocation.h"
+
+ResourceLocation HugeExplosionParticle::EXPLOSION_LOCATION =
+    ResourceLocation(TN_MISC_EXPLOSION);
 
 HugeExplosionParticle::HugeExplosionParticle(Textures* textures, Level* level,
                                              double x, double y, double z,
@@ -33,7 +37,7 @@ void HugeExplosionParticle::render(Tesselator* t, float a, float xa, float ya,
                                    float za, float xa2, float za2) {
     int tex = (int)((life + a) * 15 / lifeTime);
     if (tex > 15) return;
-    textures->bindTexture(TN_MISC_EXPLOSION);  // 4J was "/misc/explosion.png"
+    textures->bindTexture(&EXPLOSION_LOCATION);
 
     float u0 = (tex % 4) / 4.0f;
     float u1 = u0 + 0.999f / 4.0f;

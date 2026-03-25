@@ -10,8 +10,8 @@ SmallFireball::SmallFireball(Level* level) : Fireball(level) {
     setSize(5 / 16.0f, 5 / 16.0f);
 }
 
-SmallFireball::SmallFireball(Level* level, std::shared_ptr<Mob> mob, double xa,
-                             double ya, double za)
+SmallFireball::SmallFireball(Level* level, std::shared_ptr<LivingEntity> mob,
+                             double xa, double ya, double za)
     : Fireball(level, mob, xa, ya, za) {
     setSize(5 / 16.0f, 5 / 16.0f);
 }
@@ -57,7 +57,7 @@ void SmallFireball::onHit(HitResult* res) {
                     break;
             };
             if (level->isEmptyTile(tileX, tileY, tileZ)) {
-                level->setTile(tileX, tileY, tileZ, Tile::fire_Id);
+                level->setTileAndUpdate(tileX, tileY, tileZ, Tile::fire_Id);
             }
         }
         remove();
@@ -66,4 +66,4 @@ void SmallFireball::onHit(HitResult* res) {
 
 bool SmallFireball::isPickable() { return false; }
 
-bool SmallFireball::hurt(DamageSource* source, int damage) { return false; }
+bool SmallFireball::hurt(DamageSource* source, float damage) { return false; }

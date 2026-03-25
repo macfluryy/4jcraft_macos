@@ -44,8 +44,8 @@ void BrewingStandMenu::broadcastChanges() {
     AbstractContainerMenu::broadcastChanges();
 
     // for (int i = 0; i < containerListeners->size(); i++)
-    for (AUTO_VAR(it, containerListeners->begin());
-         it != containerListeners->end(); ++it) {
+    for (AUTO_VAR(it, containerListeners.begin());
+         it != containerListeners.end(); ++it) {
         ContainerListener* listener = *it;  // containerListeners.at(i);
         if (tc != brewingStand->getBrewTime()) {
             listener->setContainerData(this, 0, brewingStand->getBrewTime());
@@ -65,11 +65,11 @@ bool BrewingStandMenu::stillValid(std::shared_ptr<Player> player) {
 std::shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
-    Slot* slot = slots->at(slotIndex);
-    Slot* IngredientSlot = slots->at(INGREDIENT_SLOT);
-    Slot* PotionSlot1 = slots->at(BOTTLE_SLOT_START);
-    Slot* PotionSlot2 = slots->at(BOTTLE_SLOT_START + 1);
-    Slot* PotionSlot3 = slots->at(BOTTLE_SLOT_START + 2);
+    Slot* slot = slots.at(slotIndex);
+    Slot* IngredientSlot = slots.at(INGREDIENT_SLOT);
+    Slot* PotionSlot1 = slots.at(BOTTLE_SLOT_START);
+    Slot* PotionSlot2 = slots.at(BOTTLE_SLOT_START + 1);
+    Slot* PotionSlot3 = slots.at(BOTTLE_SLOT_START + 2);
 
     if (slot != NULL && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
@@ -97,7 +97,7 @@ std::shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(
             // 4J-PB - if the item is an ingredient, quickmove it into the
             // ingredient slot
             if ((Item::items[stack->id]->hasPotionBrewingFormula() ||
-                 (stack->id == Item::netherStalkSeeds_Id)) &&
+                 (stack->id == Item::netherwart_seeds_Id)) &&
                 (!IngredientSlot->hasItem() ||
                  (stack->id == IngredientSlot->getItem()->id))) {
                 if (!moveItemStackTo(stack, INGREDIENT_SLOT,
@@ -122,7 +122,7 @@ std::shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(
             // 4J-PB - if the item is an ingredient, quickmove it into the
             // ingredient slot
             if ((Item::items[stack->id]->hasPotionBrewingFormula() ||
-                 (stack->id == Item::netherStalkSeeds_Id)) &&
+                 (stack->id == Item::netherwart_seeds_Id)) &&
                 (!IngredientSlot->hasItem() ||
                  (stack->id == IngredientSlot->getItem()->id))) {
                 if (!moveItemStackTo(stack, INGREDIENT_SLOT,
@@ -178,9 +178,6 @@ int BrewingStandMenu::PotionSlot::getMaxStackSize() { return 1; }
 
 void BrewingStandMenu::PotionSlot::onTake(
     std::shared_ptr<Player> player, std::shared_ptr<ItemInstance> carried) {
-    carried->onCraftedBy(
-        this->player->level,
-        std::dynamic_pointer_cast<Player>(this->player->shared_from_this()), 1);
     if (carried->id == Item::potion_Id && carried->getAuxValue() > 0)
         this->player->awardStat(GenericStats::potion(),
                                 GenericStats::param_potion());
@@ -209,7 +206,7 @@ bool BrewingStandMenu::IngredientsSlot::mayPlace(
             return Item::items[item->id]->hasPotionBrewingFormula();
         } else {
             return Item::items[item->id]->hasPotionBrewingFormula() ||
-                   item->id == Item::netherStalkSeeds_Id ||
+                   item->id == Item::netherwart_seeds_Id ||
                    item->id == Item::bucket_water_Id;
         }
     }

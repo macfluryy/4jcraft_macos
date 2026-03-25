@@ -33,6 +33,7 @@ public:
     static const int PARTICLES_POTION_SPLASH = 2002;
     static const int PARTICLES_EYE_OF_ENDER_DEATH = 2003;
     static const int PARTICLES_MOBTILE_SPAWN = 2004;
+    static const int PARTICLES_PLANT_GROWTH = 2005;
 
     // static const int ENDERDRAGON_KILLED = 9000; // 4J Added to signal the the
     // enderdragon was killed

@@ -11,8 +11,8 @@ bool PumpkinFeature::place(Level* level, Random* random, int x, int y, int z) {
         if (level->isEmptyTile(x2, y2, z2) &&
             level->getTile(x2, y2 - 1, z2) == Tile::grass_Id) {
             if (Tile::pumpkin->mayPlace(level, x2, y2, z2)) {
-                level->setTileAndDataNoUpdate(x2, y2, z2, Tile::pumpkin_Id,
-                                              random->nextInt(4));
+                level->setTileAndData(x2, y2, z2, Tile::pumpkin_Id,
+                                      random->nextInt(4), Tile::UPDATE_CLIENTS);
             }
         }
     }

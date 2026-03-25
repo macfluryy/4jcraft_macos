@@ -18,6 +18,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.network.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
 #include "../../Minecraft.World/Util/BasicTypeContainers.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../Network/PlayerConnection.h"
 
 EntityTracker::EntityTracker(ServerLevel* level) {
@@ -26,7 +27,7 @@ EntityTracker::EntityTracker(ServerLevel* level) {
 }
 
 void EntityTracker::addEntity(std::shared_ptr<Entity> e) {
-    if (e->GetType() == eTYPE_SERVERPLAYER) {
+    if (e->instanceof(eTYPE_SERVERPLAYER)) {
         addEntity(e, 32 * 16, 2);
         std::shared_ptr<ServerPlayer> player =
             std::dynamic_pointer_cast<ServerPlayer>(e);
@@ -35,51 +36,57 @@ void EntityTracker::addEntity(std::shared_ptr<Entity> e) {
                 (*it)->updatePlayer(this, player);
             }
         }
-    } else if (e->GetType() == eTYPE_FISHINGHOOK)
+    } else if (e->instanceof(eTYPE_FISHINGHOOK))
         addEntity(e, 16 * 4, 5, true);
-    else if (e->GetType() == eTYPE_SMALL_FIREBALL)
+    else if (e->instanceof(eTYPE_SMALL_FIREBALL))
         addEntity(e, 16 * 4, 10, false);
-    else if (e->GetType() == eTYPE_DRAGON_FIREBALL)
+    else if (e->instanceof(eTYPE_DRAGON_FIREBALL))
         addEntity(e, 16 * 4, 10, false);  // 4J Added TU9
-    else if (e->GetType() == eTYPE_ARROW)
+    else if (e->instanceof(eTYPE_ARROW))
         addEntity(e, 16 * 4, 20, false);
-    else if (e->GetType() == eTYPE_FIREBALL)
+    else if (e->instanceof(eTYPE_FIREBALL))
         addEntity(e, 16 * 4, 10, false);
-    else if (e->GetType() == eTYPE_SNOWBALL)
+    else if (e->instanceof(eTYPE_SNOWBALL))
         addEntity(e, 16 * 4, 10, true);
-    else if (e->GetType() == eTYPE_THROWNENDERPEARL)
+    else if (e->instanceof(eTYPE_THROWNENDERPEARL))
         addEntity(e, 16 * 4, 10, true);
-    else if (e->GetType() == eTYPE_EYEOFENDERSIGNAL)
+    else if (e->instanceof(eTYPE_EYEOFENDERSIGNAL))
         addEntity(e, 16 * 4, 4, true);
-    else if (e->GetType() == eTYPE_THROWNEGG)
+    else if (e->instanceof(eTYPE_THROWNEGG))
         addEntity(e, 16 * 4, 10, true);
-    else if (e->GetType() == eTYPE_THROWNPOTION)
+    else if (e->instanceof(eTYPE_THROWNPOTION))
         addEntity(e, 16 * 4, 10, true);
-    else if (e->GetType() == eTYPE_THROWNEXPBOTTLE)
+    else if (e->instanceof(eTYPE_THROWNEXPBOTTLE))
         addEntity(e, 16 * 4, 10, true);
-    else if (e->GetType() == eTYPE_ITEMENTITY)
+    else if (e->instanceof(eTYPE_FIREWORKS_ROCKET))
+        addEntity(e, 16 * 4, 10, true);
+    else if (e->instanceof(eTYPE_ITEMENTITY))
         addEntity(e, 16 * 4, 20, true);
-    else if (e->GetType() == eTYPE_MINECART)
+    else if (e->instanceof(eTYPE_MINECART))
         addEntity(e, 16 * 5, 3, true);
-    else if (e->GetType() == eTYPE_BOAT)
+    else if (e->instanceof(eTYPE_BOAT))
         addEntity(e, 16 * 5, 3, true);
-    else if (e->GetType() == eTYPE_SQUID)
+    else if (e->instanceof(eTYPE_SQUID))
         addEntity(e, 16 * 4, 3, true);
+    else if (e->instanceof(eTYPE_WITHERBOSS))
+        addEntity(e, 16 * 5, 3, false);
+    else if (e->instanceof(eTYPE_BAT))
+        addEntity(e, 16 * 5, 3, false);
     else if (std::dynamic_pointer_cast<Creature>(e) != NULL)
         addEntity(e, 16 * 5, 3, true);
-    else if (e->GetType() == eTYPE_ENDERDRAGON)
+    else if (e->instanceof(eTYPE_ENDERDRAGON))
         addEntity(e, 16 * 10, 3, true);
-    else if (e->GetType() == eTYPE_PRIMEDTNT)
+    else if (e->instanceof(eTYPE_PRIMEDTNT))
         addEntity(e, 16 * 10, 10, true);
-    else if (e->GetType() == eTYPE_FALLINGTILE)
+    else if (e->instanceof(eTYPE_FALLINGTILE))
         addEntity(e, 16 * 10, 20, true);
-    else if (e->GetType() == eTYPE_PAINTING)
+    else if (e->instanceof(eTYPE_HANGING_ENTITY))
         addEntity(e, 16 * 10, INT_MAX, false);
-    else if (e->GetType() == eTYPE_EXPERIENCEORB)
+    else if (e->instanceof(eTYPE_EXPERIENCEORB))
         addEntity(e, 16 * 10, 20, true);
-    else if (e->GetType() == eTYPE_ENDER_CRYSTAL)
+    else if (e->instanceof(eTYPE_ENDER_CRYSTAL))
         addEntity(e, 16 * 16, INT_MAX, false);
-    else if (e->GetType() == eTYPE_ITEM_FRAME)
+    else if (e->instanceof(eTYPE_ITEM_FRAME))
         addEntity(e, 16 * 10, INT_MAX, false);
 }
 
@@ -125,6 +132,10 @@ void EntityTracker::removePlayer(std::shared_ptr<Entity> e) {
         for (AUTO_VAR(it, entities.begin()); it != entities.end(); it++) {
             (*it)->removePlayer(player);
         }
+
+        // 4J: Flush now to ensure remove packets are sent before player
+        // respawns and add entity packets are sent
+        player->flushEntitiesToRemove();
     }
 }
 
@@ -213,6 +224,17 @@ void EntityTracker::clear(std::shared_ptr<ServerPlayer> serverPlayer) {
     for (AUTO_VAR(it, entities.begin()); it != entities.end(); it++) {
         std::shared_ptr<TrackedEntity> te = *it;
         te->clear(serverPlayer);
+    }
+}
+
+void EntityTracker::playerLoadedChunk(std::shared_ptr<ServerPlayer> player,
+                                      LevelChunk* chunk) {
+    for (AUTO_VAR(it, entities.begin()); it != entities.end(); ++it) {
+        std::shared_ptr<TrackedEntity> te = *it;
+        if (te->e != player && te->e->xChunk == chunk->x &&
+            te->e->zChunk == chunk->z) {
+            te->updatePlayer(this, player);
+        }
     }
 }
 

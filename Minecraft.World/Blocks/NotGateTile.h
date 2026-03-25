@@ -16,9 +16,9 @@ public:
     class Toggle {
     public:
         int x, y, z;
-        __int64 when;
+        int64_t when;
 
-        Toggle(int x, int y, int z, __int64 when) {
+        Toggle(int x, int y, int z, int64_t when) {
             this->x = x;
             this->y = y;
             this->z = z;
@@ -38,10 +38,10 @@ protected:
     NotGateTile(int id, bool on);
 
 public:
-    int getTickDelay();
+    int getTickDelay(Level* level);
     void onPlace(Level* level, int x, int y, int z);
     void onRemove(Level* level, int x, int y, int z, int id, int data);
-    bool getSignal(LevelSource* level, int x, int y, int z, int face);
+    int getSignal(LevelSource* level, int x, int y, int z, int face);
 
 private:
     bool hasNeighborSignal(Level* level, int x, int y, int z);
@@ -50,7 +50,7 @@ public:
     void tick(Level* level, int x, int y, int z, Random* random);
     void neighborChanged(Level* level, int x, int y, int z, int type);
 
-    bool getDirectSignal(Level* level, int x, int y, int z, int face);
+    int getDirectSignal(LevelSource* level, int x, int y, int z, int face);
 
     int getResource(int data, Random* random, int playerBonusLevel);
     bool isSignalSource();
@@ -58,7 +58,6 @@ public:
 public:
     void animateTick(Level* level, int xt, int yt, int zt, Random* random);
     int cloneTileId(Level* level, int x, int y, int z);
-    void levelTimeChanged(Level* level, __int64 delta, __int64 newTime);
-
-    void registerIcons(IconRegister* iconRegister);
+    void levelTimeChanged(Level* level, int64_t delta, int64_t newTime);
+    bool isMatching(int id);
 };

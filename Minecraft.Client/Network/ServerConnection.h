@@ -53,4 +53,5 @@ public:
     void handleTextureAndGeometryReceived(const std::wstring& textureName);
     void handleServerSettingsChanged(
         std::shared_ptr<ServerSettingsChangedPacket> packet);
+    std::vector<std::shared_ptr<PlayerConnection> >* getPlayers();
 };

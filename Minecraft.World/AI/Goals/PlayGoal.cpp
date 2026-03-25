@@ -9,13 +9,13 @@
 #include "../../Util/BasicTypeContainers.h"
 #include "PlayGoal.h"
 
-PlayGoal::PlayGoal(Villager* mob, float speed) {
-    followFriend = std::weak_ptr<Mob>();
+PlayGoal::PlayGoal(Villager* mob, double speedModifier) {
+    followFriend = std::weak_ptr<LivingEntity>();
     wantedX = wantedY = wantedZ = 0.0;
     playTime = 0;
 
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
 
@@ -38,7 +38,7 @@ bool PlayGoal::canUse() {
         double distSqr = friendV->distanceToSqr(mob->shared_from_this());
         if (distSqr > closestDistSqr) continue;
         closestDistSqr = distSqr;
-        followFriend = std::weak_ptr<Mob>(friendV);
+        followFriend = std::weak_ptr<LivingEntity>(friendV);
     }
     delete children;
 
@@ -62,14 +62,14 @@ void PlayGoal::start() {
 
 void PlayGoal::stop() {
     mob->setChasing(false);
-    followFriend = std::weak_ptr<Mob>();
+    followFriend = std::weak_ptr<LivingEntity>();
 }
 
 void PlayGoal::tick() {
     --playTime;
     if (followFriend.lock() != NULL) {
         if (mob->distanceToSqr(followFriend.lock()) > 2 * 2)
-            mob->getNavigation()->moveTo(followFriend.lock(), speed);
+            mob->getNavigation()->moveTo(followFriend.lock(), speedModifier);
     } else {
         if (mob->getNavigation()->isDone()) {
             Vec3* pos =
@@ -77,7 +77,7 @@ void PlayGoal::tick() {
                                       mob->shared_from_this()),
                                   16, 3);
             if (pos == NULL) return;
-            mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, speed);
+            mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, speedModifier);
         }
     }
 }

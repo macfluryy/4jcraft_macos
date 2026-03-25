@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TileEntity.h"
+#include "../../Level/BaseMobSpawner.h"
 
 class Packet;
 class Entity;
@@ -10,48 +11,36 @@ public:
     eINSTANCEOF GetType() { return eTYPE_MOBSPAWNERTILEENTITY; }
     static TileEntity* create() { return new MobSpawnerTileEntity(); }
 
-    using TileEntity::setChanged;
-
 private:
-    static const int MAX_DIST;
+    class TileEntityMobSpawner : public BaseMobSpawner {
+    private:
+        MobSpawnerTileEntity* m_parent;
 
-public:
-    int spawnDelay;
+    public:
+        TileEntityMobSpawner(MobSpawnerTileEntity* parent);
 
-private:
-    std::wstring entityId;
-    CompoundTag* spawnData;
+        void broadcastEvent(int id);
+        Level* getLevel();
+        int getX();
+        int getY();
+        int getZ();
+        void setNextSpawnData(BaseMobSpawner::SpawnData* nextSpawnData);
+    };
 
-    bool m_bEntityIdUpdated;  // 4J Added
-
-public:
-    double spin, oSpin;
-
-private:
-    int minSpawnDelay;
-    int maxSpawnDelay;
-    int spawnCount;
-    std::shared_ptr<Entity> displayEntity;
+    BaseMobSpawner* spawner;
 
 public:
     MobSpawnerTileEntity();
+    ~MobSpawnerTileEntity();
 
-    std::wstring getEntityId();
-    void setEntityId(const std::wstring& entityId);
-    bool isNearPlayer();
-    virtual void tick();
-    void fillExtraData(std::shared_ptr<Entity> entity);
-
-private:
-    void delay();
-
-public:
     virtual void load(CompoundTag* tag);
     virtual void save(CompoundTag* tag);
-
-    std::shared_ptr<Entity> getDisplayEntity();
+    virtual void tick();
     virtual std::shared_ptr<Packet> getUpdatePacket();
+    virtual bool triggerEvent(int b0, int b1);
+    virtual BaseMobSpawner* getSpawner();
 
     // 4J Added
     virtual std::shared_ptr<TileEntity> clone();
+    void setEntityId(const std::wstring& id);
 };

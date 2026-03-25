@@ -40,8 +40,6 @@ void SetEntityDataPacket::handle(PacketListener* listener) {
 
 int SetEntityDataPacket::getEstimatedSize() { return 5; }
 
-bool SetEntityDataPacket::isAync() { return true; }
-
 std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
 SetEntityDataPacket::getUnpackedData() {
     return packedItems;

@@ -20,7 +20,7 @@ public:
 
 public:
     virtual void tick(Level* level, int x, int y, int z, Random* random);
-    void growCropsToMax(Level* level, int x, int y, int z);
+    virtual void growCrops(Level* level, int x, int y, int z);
 
 private:
     float getGrowthSpeed(Level* level, int x, int y, int z);

@@ -4,18 +4,19 @@
 #include "../../Headers/net.minecraft.world.entity.animal.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
+#include "../../Util/BasicTypeContainers.h"
 #include "BreedGoal.h"
 #include "../../Entities/Mobs/ExperienceOrb.h"
 
 #include "../../Stats/GenericStats.h"
 
-BreedGoal::BreedGoal(Animal* animal, float speed) {
+BreedGoal::BreedGoal(Animal* animal, double speedModifier) {
     partner = std::weak_ptr<Animal>();
     loveTime = 0;
 
     this->animal = animal;
     this->level = animal->level;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     setRequiredControlFlags(Control::MoveControlFlag |
                             Control::LookControlFlag);
 }
@@ -39,24 +40,27 @@ void BreedGoal::stop() {
 void BreedGoal::tick() {
     animal->getLookControl()->setLookAt(partner.lock(), 10,
                                         animal->getMaxHeadXRot());
-    animal->getNavigation()->moveTo(partner.lock(), speed);
+    animal->getNavigation()->moveTo(partner.lock(), speedModifier);
     ++loveTime;
-    if (loveTime == 20 * 3) breed();
+    if (loveTime >= 20 * 3 && animal->distanceToSqr(partner.lock()) < 3 * 3)
+        breed();
 }
 
 std::shared_ptr<Animal> BreedGoal::getFreePartner() {
     float r = 8;
     std::vector<std::shared_ptr<Entity> >* others =
         level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
+    double dist = Double::MAX_VALUE;
+    std::shared_ptr<Animal> partner = nullptr;
     for (AUTO_VAR(it, others->begin()); it != others->end(); ++it) {
         std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);
-        if (animal->canMate(p)) {
-            delete others;
-            return p;
+        if (animal->canMate(p) && animal->distanceToSqr(p) < dist) {
+            partner = p;
+            dist = animal->distanceToSqr(p);
         }
     }
     delete others;
-    return nullptr;
+    return partner;
 }
 
 void BreedGoal::breed() {
@@ -93,7 +97,7 @@ void BreedGoal::breed() {
     partner.lock()->setAge(5 * 60 * 20);
     animal->resetLove();
     partner.lock()->resetLove();
-    offspring->setAge(-20 * 60 * 20);
+    offspring->setAge(AgableMob::BABY_START_AGE);
     offspring->moveTo(animal->x, animal->y, animal->z, 0, 0);
     offspring->setDespawnProtected();
     level->addEntity(offspring);

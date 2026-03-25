@@ -10,7 +10,7 @@ const std::wstring EnchantmentTableTile::TEXTURE_TOP = L"enchantment_top";
 const std::wstring EnchantmentTableTile::TEXTURE_BOTTOM = L"enchantment_bottom";
 
 EnchantmentTableTile::EnchantmentTableTile(int id)
-    : EntityTile(id, Material::stone, false) {
+    : BaseEntityTile(id, Material::stone, false) {
     updateDefaultShape();
     setLightBlock(0);
 
@@ -27,7 +27,7 @@ bool EnchantmentTableTile::isCubeShaped() { return false; }
 
 void EnchantmentTableTile::animateTick(Level* level, int x, int y, int z,
                                        Random* random) {
-    EntityTile::animateTick(level, x, y, z, random);
+    BaseEntityTile::animateTick(level, x, y, z, random);
 
     for (int xx = x - 2; xx <= x + 2; xx++) {
         for (int zz = z - 2; zz <= z + 2; zz++) {
@@ -74,8 +74,23 @@ bool EnchantmentTableTile::use(
     if (level->isClientSide) {
         return true;
     }
-    player->startEnchanting(x, y, z);
+    std::shared_ptr<EnchantmentTableEntity> table =
+        std::dynamic_pointer_cast<EnchantmentTableEntity>(
+            level->getTileEntity(x, y, z));
+    player->startEnchanting(x, y, z,
+                            table->hasCustomName() ? table->getName() : L"");
     return true;
+}
+
+void EnchantmentTableTile::setPlacedBy(
+    Level* level, int x, int y, int z, std::shared_ptr<LivingEntity> by,
+    std::shared_ptr<ItemInstance> itemInstance) {
+    BaseEntityTile::setPlacedBy(level, x, y, z, by, itemInstance);
+    if (itemInstance->hasCustomHoverName()) {
+        std::dynamic_pointer_cast<EnchantmentTableEntity>(
+            level->getTileEntity(x, y, z))
+            ->setCustomName(itemInstance->getHoverName());
+    }
 }
 
 void EnchantmentTableTile::registerIcons(IconRegister* iconRegister) {

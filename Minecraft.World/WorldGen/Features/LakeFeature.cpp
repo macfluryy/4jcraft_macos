@@ -9,9 +9,7 @@ LakeFeature::LakeFeature(int tile) { this->tile = tile; }
 bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
     x -= 8;
     z -= 8;
-    while (y > 5 && level->isEmptyTile(x, y, z)) {
-        y--;
-    }
+    while (y > 5 && level->isEmptyTile(x, y, z)) y--;
     if (y <= 4) {
         return false;
     }
@@ -69,8 +67,8 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
             for (int yy = 0; yy < 8; yy++) {
                 bool check =
                     !grid[((xx) * 16 + (zz)) * 8 + (yy)] &&
-                    ((xx < 15 && grid[((xx + 1) * 16 + (zz)) * 8 + (yy)]) ||
-                     (xx > 0 && grid[((xx - 1) * 16 + (zz)) * 8 + (yy)]) ||
+                    ((xx < 15 && grid[((xx + 1) * 16 + (zz)) * 8 + (yy)])  //
+                     || (xx > 0 && grid[((xx - 1) * 16 + (zz)) * 8 + (yy)]) ||
                      (zz < 15 && grid[((xx) * 16 + (zz + 1)) * 8 + (yy)]) ||
                      (zz > 0 && grid[((xx) * 16 + (zz - 1)) * 8 + (yy)]) ||
                      (yy < 7 && grid[((xx) * 16 + (zz)) * 8 + (yy + 1)]) ||
@@ -92,8 +90,9 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
         for (int zz = 0; zz < 16; zz++) {
             for (int yy = 0; yy < 8; yy++) {
                 if (grid[((xx) * 16 + (zz)) * 8 + (yy)]) {
-                    level->setTileNoUpdate(x + xx, y + yy, z + zz,
-                                           yy >= 4 ? 0 : tile);
+                    level->setTileAndData(x + xx, y + yy, z + zz,
+                                          yy >= 4 ? 0 : tile, 0,
+                                          Tile::UPDATE_CLIENTS);
                 }
             }
         }
@@ -109,11 +108,13 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
                                              z + zz) > 0) {
                         Biome* b = level->getBiome(x + xx, z + zz);
                         if (b->topMaterial == Tile::mycel_Id)
-                            level->setTileNoUpdate(x + xx, y + yy - 1, z + zz,
-                                                   Tile::mycel_Id);
+                            level->setTileAndData(x + xx, y + yy - 1, z + zz,
+                                                  Tile::mycel_Id, 0,
+                                                  Tile::UPDATE_CLIENTS);
                         else
-                            level->setTileNoUpdate(x + xx, y + yy - 1, z + zz,
-                                                   Tile::grass_Id);
+                            level->setTileAndData(x + xx, y + yy - 1, z + zz,
+                                                  Tile::grass_Id, 0,
+                                                  Tile::UPDATE_CLIENTS);
                     }
                 }
             }
@@ -142,8 +143,9 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
                         if ((yy < 4 || random->nextInt(2) != 0) &&
                             level->getMaterial(x + xx, y + yy, z + zz)
                                 ->isSolid()) {
-                            level->setTileNoUpdate(x + xx, y + yy, z + zz,
-                                                   Tile::rock_Id);
+                            level->setTileAndData(x + xx, y + yy, z + zz,
+                                                  Tile::stone_Id, 0,
+                                                  Tile::UPDATE_CLIENTS);
                         }
                     }
                 }
@@ -157,8 +159,8 @@ bool LakeFeature::place(Level* level, Random* random, int x, int y, int z) {
             for (int zz = 0; zz < 16; zz++) {
                 int yy = 4;
                 if (level->shouldFreezeIgnoreNeighbors(x + xx, y + yy, z + zz))
-                    level->setTileNoUpdate(x + xx, y + yy, z + zz,
-                                           Tile::ice_Id);
+                    level->setTileAndData(x + xx, y + yy, z + zz, Tile::ice_Id,
+                                          0, Tile::UPDATE_CLIENTS);
             }
         }
     }

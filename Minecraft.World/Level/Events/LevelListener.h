@@ -15,16 +15,17 @@ public:
 
     virtual void allChanged() = 0;
 
-    // virtual void playSound(const std::wstring& name, double x, double y,
-    // double z, float volume, float pitch) = 0;
+    // virtual void playSound(const wstring& name, double x, double y, double z,
+    // float volume, float pitch) = 0;
     virtual void playSound(int iSound, double x, double y, double z,
                            float volume, float pitch,
                            float fSoundClipDist = 16.0f) = 0;
-    virtual void playSound(std::shared_ptr<Entity> entity, int iSound, double x,
-                           double y, double z, float volume, float pitch,
-                           float fSoundClipDist = 16.0f) = 0;
+    virtual void playSoundExceptPlayer(std::shared_ptr<Player> player,
+                                       int iSound, double x, double y, double z,
+                                       float volume, float pitch,
+                                       float fSoundClipDist = 16.0f) = 0;
 
-    // 4J removed - virtual void addParticle(const std::wstring& name, double x,
+    // 4J removed - virtual void addParticle(const wstring& name, double x,
     // double y, double z, double xa, double ya, double za) = 0;
 
     virtual void addParticle(ePARTICLE_TYPE name, double x, double y, double z,
@@ -43,7 +44,8 @@ public:
 
     virtual void playStreamingMusic(const std::wstring& name, int x, int y,
                                     int z) = 0;
-
+    virtual void globalLevelEvent(int type, int sourceX, int sourceY,
+                                  int sourceZ, int data) = 0;
     virtual void levelEvent(std::shared_ptr<Player> source, int type, int x,
                             int y, int z, int data) = 0;
 

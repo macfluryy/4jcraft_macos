@@ -155,11 +155,11 @@ std::vector<Texture*>* TextureManager::createTextures(
     // return result;
     // } catch (FileNotFoundException e) {
     //	Minecraft.getInstance().getLogger().warning("TextureManager.createTexture
-    //called for file " + filename + ", but that file does not exist.
-    //Ignoring."); } catch (IOException e) {
+    // called for file " + filename + ", but that file does not exist.
+    // Ignoring."); } catch (IOException e) {
     //	Minecraft.getInstance().getLogger().warning("TextureManager.createTexture
-    //encountered an IOException when " + "trying to read file " + filename + ".
-    //Ignoring.");
+    // encountered an IOException when " + "trying to read file " + filename +
+    // ". Ignoring.");
     // }
     return result;
 }

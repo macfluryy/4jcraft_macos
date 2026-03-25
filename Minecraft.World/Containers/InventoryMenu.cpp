@@ -65,9 +65,9 @@ void InventoryMenu::_init(std::shared_ptr<Inventory> inventory, bool active) {
     slotsChanged();  // 4J removed craftSlots parameter, see comment below
 }
 
-void InventoryMenu::slotsChanged()  // 4J used to take a
-                                    // std::shared_ptr<Container> but wasn't
-                                    // using it, so removed to simplify things
+void InventoryMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
+                                    // but wasn't using it, so removed to
+                                    // simplify things
 {
     MemSect(23);
     resultSlots->setItem(
@@ -92,12 +92,12 @@ bool InventoryMenu::stillValid(std::shared_ptr<Player> player) { return true; }
 std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
-    Slot* slot = slots->at(slotIndex);
+    Slot* slot = slots.at(slotIndex);
 
-    Slot* HelmetSlot = slots->at(ARMOR_SLOT_START);
-    Slot* ChestplateSlot = slots->at(ARMOR_SLOT_START + 1);
-    Slot* LeggingsSlot = slots->at(ARMOR_SLOT_START + 2);
-    Slot* BootsSlot = slots->at(ARMOR_SLOT_START + 3);
+    Slot* HelmetSlot = slots.at(ARMOR_SLOT_START);
+    Slot* ChestplateSlot = slots.at(ARMOR_SLOT_START + 1);
+    Slot* LeggingsSlot = slots.at(ARMOR_SLOT_START + 2);
+    Slot* BootsSlot = slots.at(ARMOR_SLOT_START + 3);
 
     if (slot != NULL && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
@@ -211,18 +211,25 @@ bool InventoryMenu::mayCombine(Slot* slot, std::shared_ptr<ItemInstance> item) {
     return slot->mayCombine(item);
 }
 
+bool InventoryMenu::canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                          Slot* target) {
+    return target->container != resultSlots &&
+           AbstractContainerMenu::canTakeItemForPickAll(carried, target);
+}
+
 // 4J-JEV: Added for achievement 'Iron Man'.
 std::shared_ptr<ItemInstance> InventoryMenu::clicked(
-    int slotIndex, int buttonNum, int clickType,
-    std::shared_ptr<Player> player) {
-    std::shared_ptr<ItemInstance> out =
-        AbstractContainerMenu::clicked(slotIndex, buttonNum, clickType, player);
+    int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
+    bool looped)  // 4J Added looped param
+{
+    std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(
+        slotIndex, buttonNum, clickType, player, looped);
 
 #ifdef _EXTENDED_ACHIEVEMENTS
     static int ironItems[4] = {Item::helmet_iron_Id, Item::chestplate_iron_Id,
                                Item::leggings_iron_Id, Item::boots_iron_Id};
     for (int i = ARMOR_SLOT_START; i < ARMOR_SLOT_END; i++) {
-        Slot* slot = slots->at(i);
+        Slot* slot = slots.at(i);
         if ((slot == NULL) || (!slot->hasItem()) ||
             (slot->getItem()->getItem()->id !=
              ironItems[i - ARMOR_SLOT_START])) {

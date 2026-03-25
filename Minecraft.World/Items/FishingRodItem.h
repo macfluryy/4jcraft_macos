@@ -6,9 +6,6 @@ class Player;
 class Level;
 
 class FishingRodItem : public Item {
-public:
-    static const std::wstring TEXTURE_EMPTY;
-
 private:
     Icon* emptyIcon;
 
@@ -21,7 +18,6 @@ public:
         std::shared_ptr<ItemInstance> instance, Level* level,
         std::shared_ptr<Player> player);
 
-    //@Override
     void registerIcons(IconRegister* iconRegister);
     Icon* getEmptyIcon();
 };

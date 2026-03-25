@@ -4,6 +4,7 @@
 #include "EntityRenderDispatcher.h"
 // #include "ItemFrame"
 #include "ItemFrameRenderer.h"
+#include "../../Textures/TextureAtlas.h"
 
 #include "../../../Minecraft.World/Util/JavaMath.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
@@ -18,6 +19,9 @@
 #include "../../Textures/CompassTexture.h"
 #include "../Minimap.h"
 
+ResourceLocation ItemFrameRenderer::MAP_BACKGROUND_LOCATION =
+    ResourceLocation(TN_MISC_MAPBG);
+
 void ItemFrameRenderer::registerTerrainTextures(IconRegister* iconRegister) {
     backTexture = iconRegister->registerIcon(L"itemframe_back");
 }
@@ -25,8 +29,8 @@ void ItemFrameRenderer::registerTerrainTextures(IconRegister* iconRegister) {
 void ItemFrameRenderer::render(std::shared_ptr<Entity> _itemframe, double x,
                                double y, double z, float rot, float a) {
     // 4J - original version used generics and thus had an input parameter of
-    // type EnderCrystal rather than std::shared_ptr<Entity>  we have here - do
-    // some casting around instead
+    // type EnderCrystal rather than shared_ptr<Entity>  we have here - do some
+    // casting around instead
     std::shared_ptr<ItemFrame> itemFrame =
         std::dynamic_pointer_cast<ItemFrame>(_itemframe);
 
@@ -51,7 +55,8 @@ void ItemFrameRenderer::drawFrame(std::shared_ptr<ItemFrame> itemFrame) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     glPushMatrix();
-    entityRenderDispatcher->textures->bindTexture(TN_TERRAIN);
+    entityRenderDispatcher->textures->bindTexture(
+        &TextureAtlas::LOCATION_BLOCKS);
     glRotatef(itemFrame->yRot, 0, 1, 0);
 
     Tile* wood = Tile::wood;
@@ -142,7 +147,7 @@ void ItemFrameRenderer::drawItem(std::shared_ptr<ItemFrame> entity) {
     }
 
     if (itemEntity->getItem()->getItem() == Item::map) {
-        entityRenderDispatcher->textures->bindTexture(TN_MISC_MAPBG);
+        entityRenderDispatcher->textures->bindTexture(&MAP_BACKGROUND_LOCATION);
         Tesselator* t = Tesselator::getInstance();
 
         glRotatef(180, 0, 1, 0);

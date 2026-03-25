@@ -30,7 +30,7 @@
 // On Linux, stdafx.h already provides Orbis-compatible Sentient/Dynamic headers
 // via #pragma once. Pull in SentientManager for CSentientManager class declaration
 // and StatsCounter; CSocialManager is provided as inline stubs via Platform/Linux/Social/SocialManager.h.
-#include "../Platform/Orbis/Sentient/SentientManager.h"
+#include "../Platform/Linux/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
 #else
 #include "../Platform/Orbis/Sentient/SentientManager.h"

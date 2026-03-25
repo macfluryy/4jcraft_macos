@@ -2,15 +2,15 @@
 
 #include "Slot.h"
 
-class RepairMenu;
+class AnvilMenu;
 
 class RepairResultSlot : public Slot {
 private:
-    RepairMenu* m_menu;
+    AnvilMenu* m_menu;
     int xt, yt, zt;
 
 public:
-    RepairResultSlot(RepairMenu* menu, int xt, int yt, int zt,
+    RepairResultSlot(AnvilMenu* menu, int xt, int yt, int zt,
                      std::shared_ptr<Container> container, int slot, int x,
                      int y);
 

@@ -22,9 +22,9 @@ public:  // 4J Stu - Was protected in Java, but then we can't access it where we
     virtual void inventoryTick(std::shared_ptr<ItemInstance> itemInstance,
                                Level* level, std::shared_ptr<Entity> owner,
                                int slot, bool selected);
-    virtual void onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
-                             Level* level, std::shared_ptr<Player> player);
     std::shared_ptr<Packet> getUpdatePacket(
         std::shared_ptr<ItemInstance> itemInstance, Level* level,
         std::shared_ptr<Player> player);
+    virtual void onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
+                             Level* level, std::shared_ptr<Player> player);
 };

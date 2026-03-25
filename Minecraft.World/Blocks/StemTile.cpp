@@ -32,7 +32,7 @@ void StemTile::tick(Level* level, int x, int y, int z, Random* random) {
             int age = level->getData(x, y, z);
             if (age < 7) {
                 age++;
-                level->setData(x, y, z, age);
+                level->setData(x, y, z, age, Tile::UPDATE_CLIENTS);
             } else {
                 if (level->getTile(x - 1, y, z) == fruit->id) return;
                 if (level->getTile(x + 1, y, z) == fruit->id) return;
@@ -52,15 +52,17 @@ void StemTile::tick(Level* level, int x, int y, int z, Random* random) {
                 if (level->getTile(xx, y, zz) == 0 &&
                     (below == Tile::farmland_Id || below == Tile::dirt_Id ||
                      below == Tile::grass_Id)) {
-                    level->setTile(xx, y, zz, fruit->id);
+                    level->setTileAndUpdate(xx, y, zz, fruit->id);
                 }
             }
         }
     }
 }
 
-void StemTile::growCropsToMax(Level* level, int x, int y, int z) {
-    level->setData(x, y, z, 7);
+void StemTile::growCrops(Level* level, int x, int y, int z) {
+    int stage = level->getData(x, y, z) + Mth::nextInt(level->random, 2, 5);
+    if (stage > 7) stage = 7;
+    level->setData(x, y, z, stage, Tile::UPDATE_CLIENTS);
 }
 
 float StemTile::getGrowthSpeed(Level* level, int x, int y, int z) {
@@ -76,10 +78,9 @@ float StemTile::getGrowthSpeed(Level* level, int x, int y, int z) {
     int d2 = level->getTile(x + 1, y, z + 1);
     int d3 = level->getTile(x - 1, y, z + 1);
 
-    bool horizontal = w == this->id || e == this->id;
-    bool vertical = n == this->id || s == this->id;
-    bool diagonal =
-        d0 == this->id || d1 == this->id || d2 == this->id || d3 == this->id;
+    bool horizontal = w == id || e == id;
+    bool vertical = n == id || s == id;
+    bool diagonal = d0 == id || d1 == id || d2 == id || d3 == id;
 
     for (int xx = x - 1; xx <= x + 1; xx++)
         for (int zz = z - 1; zz <= z + 1; zz++) {
@@ -136,7 +137,7 @@ int StemTile::getColor(LevelSource* level, int x, int y, int z) {
 
 void StemTile::updateDefaultShape() {
     float ss = 0.125f;
-    this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.25f, 0.5f + ss);
+    setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.25f, 0.5f + ss);
 }
 
 void StemTile::updateShape(
@@ -147,8 +148,7 @@ void StemTile::updateShape(
     ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
     tls->yy1 = (level->getData(x, y, z) * 2 + 2) / 16.0f;
     float ss = 0.125f;
-    this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, (float)tls->yy1,
-                   0.5f + ss);
+    setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, (float)tls->yy1, 0.5f + ss);
 }
 
 int StemTile::getRenderShape() { return Tile::SHAPE_STEM; }
@@ -179,17 +179,8 @@ void StemTile::spawnResources(Level* level, int x, int y, int z, int data,
     if (fruit == Tile::pumpkin) seed = Item::seeds_pumpkin;
     if (fruit == Tile::melon) seed = Item::seeds_melon;
     for (int i = 0; i < 3; i++) {
-        if (level->random->nextInt(5 * 3) > data) continue;
-        float s = 0.7f;
-        float xo = level->random->nextFloat() * s + (1 - s) * 0.5f;
-        float yo = level->random->nextFloat() * s + (1 - s) * 0.5f;
-        float zo = level->random->nextFloat() * s + (1 - s) * 0.5f;
-        std::shared_ptr<ItemEntity> item =
-            std::shared_ptr<ItemEntity>(new ItemEntity(
-                level, x + xo, y + yo, z + zo,
-                std::shared_ptr<ItemInstance>(new ItemInstance(seed))));
-        item->throwTime = 10;
-        level->addEntity(item);
+        popResource(level, x, y, z,
+                    std::shared_ptr<ItemInstance>(new ItemInstance(seed)));
     }
 }
 

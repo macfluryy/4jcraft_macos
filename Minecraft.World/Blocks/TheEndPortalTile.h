@@ -1,12 +1,15 @@
 #pragma once
 #include "TileEntities/EntityTile.h"
+#include "BaseEntityTile.h"
 #include <cstdint>
 
 #if !defined(_WIN32)
 #include <pthread.h>
 #endif
 
-class TheEndPortal : public EntityTile {
+class IconRegister;
+
+class TheEndPortal : public BaseEntityTile {
 public:
 #if defined(_WIN32)
     using TlsKey = std::uint32_t;

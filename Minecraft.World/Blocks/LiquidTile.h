@@ -51,7 +51,7 @@ private:
 public:
     virtual void handleEntityInside(Level* level, int x, int y, int z,
                                     std::shared_ptr<Entity> e, Vec3* current);
-    virtual int getTickDelay();
+    virtual int getTickDelay(Level* level);
     virtual int getLightColor(
         LevelSource* level, int x, int y, int z,
         int tileId = -1);  // 4J - brought forward from 1.8.2

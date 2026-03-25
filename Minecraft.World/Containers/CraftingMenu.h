@@ -35,4 +35,10 @@ public:
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual std::shared_ptr<ItemInstance> quickMoveStack(
         std::shared_ptr<Player> player, int slotIndex);
+    virtual bool canTakeItemForPickAll(std::shared_ptr<ItemInstance> carried,
+                                       Slot* target);
+
+    int getX() { return x; }
+    int getY() { return y; }
+    int getZ() { return z; }
 };

@@ -52,7 +52,7 @@ void Packet::staticCtor() {
         PlayerActionPacket::create);
     map(15, false, true, false, false, typeid(UseItemPacket),
         UseItemPacket::create);
-    map(16, false, true, false, false, typeid(SetCarriedItemPacket),
+    map(16, true, true, true, false, typeid(SetCarriedItemPacket),
         SetCarriedItemPacket::create);
     // 4J-PB - we need to send to any client for the sleep in bed
     // map(17, true, false, false, false, EntityActionAtPositionPacket));
@@ -78,9 +78,10 @@ void Packet::staticCtor() {
     map(26, true, false, false, false, typeid(AddExperienceOrbPacket),
         AddExperienceOrbPacket::create);  // TODO New for 1.8.2 - Needs
                                           // sendToAny?
-    // map(27, false, true, false, false, PlayerInputPacket));
-    //  4J-PB - needs to go to any player, due to the knockback effect when a
-    //  played is hit
+    map(27, false, true, false, false, typeid(PlayerInputPacket),
+        PlayerInputPacket::create);
+    // 4J-PB - needs to go to any player, due to the knockback effect when a
+    // played is hit
     map(28, true, false, true, true, typeid(SetEntityMotionPacket),
         SetEntityMotionPacket::create);
     map(29, true, false, false, true, typeid(RemoveEntitiesPacket),
@@ -103,8 +104,8 @@ void Packet::staticCtor() {
     // hit
     map(38, true, false, true, true, typeid(EntityEventPacket),
         EntityEventPacket::create);
-    map(39, true, false, true, false, typeid(SetRidingPacket),
-        SetRidingPacket::create);
+    map(39, true, false, true, false, typeid(SetEntityLinkPacket),
+        SetEntityLinkPacket::create);
     map(40, true, false, true, true, typeid(SetEntityDataPacket),
         SetEntityDataPacket::create);
     map(41, true, false, true, false, typeid(UpdateMobEffectPacket),
@@ -113,6 +114,8 @@ void Packet::staticCtor() {
         RemoveMobEffectPacket::create);
     map(43, true, false, true, false, typeid(SetExperiencePacket),
         SetExperiencePacket::create);
+    map(44, true, false, true, false, typeid(UpdateAttributesPacket),
+        UpdateAttributesPacket::create);
 
     map(50, true, false, true, true, typeid(ChunkVisibilityPacket),
         ChunkVisibilityPacket::create);
@@ -135,8 +138,8 @@ void Packet::staticCtor() {
     // 4J-PB - don't see the need for this, we can use 61
     map(62, true, false, true, false, typeid(LevelSoundPacket),
         LevelSoundPacket::create);
-    // map(62, true, false, true, false, typeid(LevelSoundPacket),
-    // LevelSoundPacket::create);
+    map(63, true, false, true, false, typeid(LevelParticlesPacket),
+        LevelParticlesPacket::create);
 
     map(70, true, false, false, false, typeid(GameEventPacket),
         GameEventPacket::create);
@@ -176,6 +179,8 @@ void Packet::staticCtor() {
         ComplexItemDataPacket::create);
     map(132, true, false, false, false, typeid(TileEntityDataPacket),
         TileEntityDataPacket::create);
+    map(133, true, false, true, false, typeid(TileEditorOpenPacket),
+        TileEditorOpenPacket::create);
 
     // 4J Added
     map(150, false, true, false, false, typeid(CraftItemPacket),
@@ -226,6 +231,16 @@ void Packet::staticCtor() {
     // map(204, false, true, true, false, ClientInformationPacket.class);
     map(205, false, true, true, false, typeid(ClientCommandPacket),
         ClientCommandPacket::create);
+
+    map(206, true, false, true, false, typeid(SetObjectivePacket),
+        SetObjectivePacket::create);
+    map(207, true, false, true, false, typeid(SetScorePacket),
+        SetScorePacket::create);
+    map(208, true, false, true, false, typeid(SetDisplayObjectivePacket),
+        SetDisplayObjectivePacket::create);
+    map(209, true, false, true, false, typeid(SetPlayerTeamPacket),
+        SetPlayerTeamPacket::create);
+
     map(250, true, true, true, false, typeid(CustomPayloadPacket),
         CustomPayloadPacket::create);
     // 4J Stu - These added 1.3.2, but don't think we need them
@@ -245,8 +260,6 @@ IllegalArgumentException::IllegalArgumentException(
 IOException::IOException(const std::wstring& information) {
     this->information = information;
 }
-
-RuntimeException::RuntimeException(const std::wstring& /*information*/) {}
 
 Packet::Packet() : createTime(System::currentTimeMillis()) {
     shouldDelay = false;
@@ -304,15 +317,23 @@ void Packet::map(int id, bool receiveOnClient, bool receiveOnServer,
 }
 
 // 4J Added to record data for outgoing packets
-void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet) {
+void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet,
+                                  int playerIndex) {
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
-    AUTO_VAR(it, outgoingStatistics.find(packet->getId()));
+#if 0
+	int idx = packet->getId();
+#else
+    int idx = playerIndex;
+    if (packet->getId() != 51) {
+        idx = 100;
+    }
+#endif
+    AUTO_VAR(it, outgoingStatistics.find(idx));
 
     if (it == outgoingStatistics.end()) {
-        Packet::PacketStatistics* packetStatistics =
-            new PacketStatistics(packet->getId());
-        outgoingStatistics[packet->getId()] = packetStatistics;
+        Packet::PacketStatistics* packetStatistics = new PacketStatistics(idx);
+        outgoingStatistics[idx] = packetStatistics;
         packetStatistics->addPacket(packet->getEstimatedSize());
     } else {
         it->second->addPacket(packet->getEstimatedSize());
@@ -321,74 +342,29 @@ void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet) {
 #endif
 }
 
-void Packet::renderPacketStats(int id) {
-    AUTO_VAR(it, outgoingStatistics.find(id));
-
-    if (it != outgoingStatistics.end()) {
-        it->second->renderStats();
-    }
-}
-
-void Packet::renderAllPacketStats() {
+void Packet::updatePacketStatsPIX() {
 #ifndef _CONTENT_PACKAGE
 #if PACKET_ENABLE_STAT_TRACKING
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-    pMinecraft->gui->renderStackedGraph(Packet::renderPos, 512,
-                                        renderableStats.size(),
-                                        &Packet::getIndexedStatValue);
 
-    renderAllPacketStatsKey();
-
-    Packet::renderPos++;
-    Packet::renderPos %= 511;
-#endif
-#endif
-}
-
-void Packet::renderAllPacketStatsKey() {
-#ifndef _CONTENT_PACKAGE
-#if PACKET_ENABLE_STAT_TRACKING
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-    int total = Packet::renderableStats.size();
-    for (unsigned int i = 0; i < total; ++i) {
-        Packet::PacketStatistics* stat = Packet::renderableStats[i];
-        float vary = (float)i / total;
-        int fColour = floor(vary * 0xffffff);
-
-        int colour = 0xff000000 + fColour;
-        pMinecraft->gui->drawString(pMinecraft->font, stat->getLegendString(),
-                                    900, 30 + (10 * i), colour);
+    for (AUTO_VAR(it, outgoingStatistics.begin());
+         it != outgoingStatistics.end(); it++) {
+        Packet::PacketStatistics* stat = it->second;
+        int64_t count = stat->getRunningCount();
+        wchar_t pixName[256];
+        swprintf_s(pixName, L"Packet count %d", stat->id);
+        //		PIXReportCounter(pixName,(float)count);
+        int64_t total = stat->getRunningTotal();
+        swprintf_s(pixName, L"Packet bytes %d", stat->id);
+        PIXReportCounter(pixName, (float)total);
+        stat->IncrementPos();
     }
 #endif
 #endif
-}
-
-__int64 Packet::getIndexedStatValue(unsigned int samplePos,
-                                    unsigned int renderableId) {
-    __int64 val = 0;
-
-#ifndef _CONTENT_PACKAGE
-#if PACKET_ENABLE_STAT_TRACKING
-    val = renderableStats[renderableId]->getCountSample(samplePos);
-#endif
-#endif
-
-    return val;
 }
 
 std::shared_ptr<Packet> Packet::getPacket(int id) {
-    // 4J - removed try/catch
-    //    try
-    //	{
+    // 4J: Removed try/catch
     return idToCreateMap[id]();
-    //    }
-    //	catch (exception e)
-    //	{
-    //		// TODO 4J JEV print stack trace, newInstance doesnt throw an
-    //exception in c++ yet.
-    //        printf("Skipping packet with id %d" , id);
-    //        return NULL;
-    //    }
 }
 
 void Packet::writeBytes(DataOutputStream* dataoutputstream, byteArray bytes) {
@@ -408,7 +384,7 @@ byteArray Packet::readBytes(DataInputStream* datainputstream) {
     }
 
     byteArray bytes(size);
-    datainputstream->read(bytes);
+    datainputstream->readFully(bytes);
 
     return bytes;
 }
@@ -436,14 +412,6 @@ std::shared_ptr<Packet> Packet::readPacket(
     DataInputStream* dis, bool isServer)  // throws IOException TODO 4J JEV,
                                           // should this declare a throws?
 {
-    // N packet ID
-    static int s_clientPktHistory[64];
-    static int s_clientPktIdx = 0;
-    static int s_serverPktHistory[64];
-    static int s_serverPktIdx = 0;
-    static bool s_clientDesyncLogged = false;
-    static bool s_serverDesyncLogged = false;
-
     int id = 0;
     std::shared_ptr<Packet> packet = nullptr;
 
@@ -457,47 +425,20 @@ std::shared_ptr<Packet> Packet::readPacket(
          serverReceivedPackets.find(id) == serverReceivedPackets.end()) ||
         (!isServer &&
          clientReceivedPackets.find(id) == clientReceivedPackets.end())) {
-        int* history = isServer ? s_serverPktHistory : s_clientPktHistory;
-        int idx = isServer ? s_serverPktIdx : s_clientPktIdx;
-        bool& logged = isServer ? s_serverDesyncLogged : s_clientDesyncLogged;
-
-        fprintf(stderr, "[PKT] Bad packet id %d (0x%x) isServer=%d\n", id, id,
-                isServer);
-        if (!logged) {
-            logged = true;
-            fprintf(stderr,
-                    "[PKT] === PACKET HISTORY (last %d, newest last) ===\n",
-                    64);
-            for (int i = 0; i < 64; i++) {
-                int h = history[(idx + i) % 64];
-                if (h != 0) fprintf(stderr, "[PKT]   pkt %d (0x%x)\n", h, h);
-            }
-            fprintf(stderr, "[PKT] === END HISTORY ===\n");
-        }
+        // app.DebugPrintf("Bad packet id %d\n", id);
         __debugbreak();
-        // assert(false);
-        //  Close the stream to prevent further reads on a desynced stream
-        dis->close();
-        return nullptr;
-        //            throw new IOException(std::wstring(L"Bad packet id ") +
+        assert(false);
+        //            throw new IOException(wstring(L"Bad packet id ") +
         //            _toString<int>(id));
     }
 
-    // Record successfully read packet ID
-    if (isServer) {
-        s_serverPktHistory[s_serverPktIdx % 64] = id;
-        s_serverPktIdx++;
-    } else {
-        s_clientPktHistory[s_clientPktIdx % 64] = id;
-        s_clientPktIdx++;
-    }
-
     packet = getPacket(id);
-    if (packet == NULL) {
-        fprintf(stderr, "[PKT] getPacket(%d) returned NULL\n", id);
-        return nullptr;
-    }
+    if (packet == NULL)
+        assert(false);  // throw new IOException(wstring(L"Bad packet id ") +
+                        // _toString<int>(id));
 
+    // app.DebugPrintf("%s reading packet %d\n", isServer ? "Server" : "Client",
+    // packet->getId());
     packet->read(dis);
     //    }
     //	catch (EOFException e)
@@ -558,16 +499,16 @@ std::wstring Packet::readUtf(DataInputStream* dis,
 {
     short stringLength = dis->readShort();
     if (stringLength > maxLength) {
-        fprintf(stderr,
-                "[PKT] readUtf: string length %d > max %d (stream desync?)\n",
-                stringLength, maxLength);
-        return L"";
+        std::wstringstream stream;
+        stream << L"Received string length longer than maximum allowed ("
+               << stringLength << " > " << maxLength << ")";
+        assert(false);
+        //        throw new IOException( stream.str() );
     }
     if (stringLength < 0) {
-        fprintf(stderr,
-                "[PKT] readUtf: negative string length %d (stream desync?)\n",
-                stringLength);
-        return L"";
+        assert(false);
+        //        throw new IOException(L"Received string length is less than
+        //        zero! Weird string!");
     }
 
     std::wstring builder = L"";
@@ -579,16 +520,18 @@ std::wstring Packet::readUtf(DataInputStream* dis,
     return builder;
 }
 
-void Packet::PacketStatistics::addPacket(int bytes) {
-    if (count == 0) {
-        firstSampleTime = System::currentTimeMillis();
-    }
-    count++;
-    totalSize += bytes;
+Packet::PacketStatistics::PacketStatistics(int id)
+    : id(id), count(0), totalSize(0), samplesPos(0) {
+    memset(countSamples, 0, sizeof(countSamples));
+    memset(sizeSamples, 0, sizeof(sizeSamples));
+}
 
-    // 4J Added
-    countSamples[samplesPos & (512 - 1)]++;
-    sizeSamples[samplesPos & (512 - 1)] += (unsigned int)bytes;
+void Packet::PacketStatistics::addPacket(int bytes) {
+    countSamples[samplesPos]++;
+    sizeSamples[samplesPos] += bytes;
+    timeSamples[samplesPos] = System::currentTimeMillis();
+    totalSize += bytes;
+    count++;
 }
 
 int Packet::PacketStatistics::getCount() { return count; }
@@ -600,44 +543,35 @@ double Packet::PacketStatistics::getAverageSize() {
     return (double)totalSize / count;
 }
 
-void Packet::PacketStatistics::renderStats() {
-#ifndef _CONTENT_PACKAGE
-#if PACKET_ENABLE_STAT_TRACKING
-    samplesPos++;
+int Packet::PacketStatistics::getTotalSize() { return totalSize; }
 
-    countSamples[samplesPos & (512 - 1)] = 0;
-    sizeSamples[samplesPos & (512 - 1)] = 0;
-
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-    pMinecraft->gui->renderGraph(512, samplesPos, countSamples, 1, 10,
-                                 sizeSamples, 1, 50);
-#endif
-#endif
+int64_t Packet::PacketStatistics::getRunningTotal() {
+    int64_t total = 0;
+    int64_t currentTime = System::currentTimeMillis();
+    for (int i = 0; i < TOTAL_TICKS; i++) {
+        if (currentTime - timeSamples[i] <= 1000) {
+            total += sizeSamples[i];
+        }
+    }
+    return total;
 }
 
-__int64 Packet::PacketStatistics::getCountSample(int samplePos) {
-    if (samplePos == 511) {
-        samplesPos++;
-        countSamples[samplesPos & (512 - 1)] = 0;
-        sizeSamples[samplesPos & (512 - 1)] = 0;
+int64_t Packet::PacketStatistics::getRunningCount() {
+    int64_t total = 0;
+    int64_t currentTime = System::currentTimeMillis();
+    for (int i = 0; i < TOTAL_TICKS; i++) {
+        if (currentTime - timeSamples[i] <= 1000) {
+            total += countSamples[i];
+        }
     }
-
-    return countSamples[samplePos] * 10;
+    return total;
 }
 
-std::wstring Packet::PacketStatistics::getLegendString() {
-    static wchar_t string[128];
-    double bps = 0.0;
-    if (firstSampleTime > 0) {
-        float timeDiff =
-            ((System::currentTimeMillis() - firstSampleTime) / 1000);
-        if (timeDiff > 0) bps = totalSize / timeDiff;
-    }
-    swprintf(string, 128,
-             L"id: %d , packets: %d , total: %d , bytes: %d, total: %d, %f Bps",
-             id, countSamples[(samplesPos - 1) & (512 - 1)], count,
-             sizeSamples[(samplesPos - 1) & (512 - 1)], totalSize, bps);
-    return string;
+void Packet::PacketStatistics::IncrementPos() {
+    samplesPos = (samplesPos + 1) % TOTAL_TICKS;
+    countSamples[samplesPos] = 0;
+    sizeSamples[samplesPos] = 0;
+    timeSamples[samplesPos] = 0;
 }
 
 bool Packet::canBeInvalidated() { return false; }

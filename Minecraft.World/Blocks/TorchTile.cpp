@@ -100,21 +100,25 @@ void TorchTile::tick(Level* level, int x, int y, int z, Random* random) {
 void TorchTile::onPlace(Level* level, int x, int y, int z) {
     if (level->getData(x, y, z) == 0) {
         if (level->isSolidBlockingTileInLoadedChunk(x - 1, y, z, true)) {
-            level->setData(x, y, z, 1);
+            level->setData(x, y, z, 1, Tile::UPDATE_CLIENTS);
         } else if (level->isSolidBlockingTileInLoadedChunk(x + 1, y, z, true)) {
-            level->setData(x, y, z, 2);
+            level->setData(x, y, z, 2, Tile::UPDATE_CLIENTS);
         } else if (level->isSolidBlockingTileInLoadedChunk(x, y, z - 1, true)) {
-            level->setData(x, y, z, 3);
+            level->setData(x, y, z, 3, Tile::UPDATE_CLIENTS);
         } else if (level->isSolidBlockingTileInLoadedChunk(x, y, z + 1, true)) {
-            level->setData(x, y, z, 4);
+            level->setData(x, y, z, 4, Tile::UPDATE_CLIENTS);
         } else if (isConnection(level, x, y - 1, z)) {
-            level->setData(x, y, z, 5);
+            level->setData(x, y, z, 5, Tile::UPDATE_CLIENTS);
         }
     }
     checkCanSurvive(level, x, y, z);
 }
 
 void TorchTile::neighborChanged(Level* level, int x, int y, int z, int type) {
+    checkDoPop(level, x, y, z, type);
+}
+
+bool TorchTile::checkDoPop(Level* level, int x, int y, int z, int type) {
     if (checkCanSurvive(level, x, y, z)) {
         int dir = level->getData(x, y, z);
         bool replace = false;
@@ -134,17 +138,21 @@ void TorchTile::neighborChanged(Level* level, int x, int y, int z, int type) {
         if (!isConnection(level, x, y - 1, z) && dir == 5) replace = true;
 
         if (replace) {
-            this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-            level->setTile(x, y, z, 0);
+            spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+            level->removeTile(x, y, z);
+            return true;
         }
+    } else {
+        return true;
     }
+    return false;
 }
 
 bool TorchTile::checkCanSurvive(Level* level, int x, int y, int z) {
     if (!mayPlace(level, x, y, z)) {
         if (level->getTile(x, y, z) == id) {
             this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
         }
         return false;
     }

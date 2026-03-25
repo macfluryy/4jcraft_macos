@@ -966,7 +966,7 @@ void ConsoleSaveFileSplit::tick() {
     {
         unsigned int totalDirty = 0;
         unsigned int totalDirtyBytes = 0;
-        __int64 oldestDirty = currentTime;
+        int64_t oldestDirty = currentTime;
         for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
             if (it->second->dirty) {
                 if (it->second->lastWritten < oldestDirty) {
@@ -1397,7 +1397,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             std::uint8_t bTextMetadata[88];
             ZeroMemory(bTextMetadata, 88);
 
-            __int64 seed = 0;
+            int64_t seed = 0;
             bool hasSeed = false;
             if (MinecraftServer::getInstance() != NULL &&
                 MinecraftServer::getInstance()->levels[0] != NULL) {

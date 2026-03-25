@@ -17,7 +17,7 @@ const int OcelotSitOnTileGoal::SIT_TICKS =
 const int OcelotSitOnTileGoal::SEARCH_RANGE = 8;
 const double OcelotSitOnTileGoal::SIT_CHANCE = 0.0065f;
 
-OcelotSitOnTileGoal::OcelotSitOnTileGoal(Ozelot* ocelot, float speed) {
+OcelotSitOnTileGoal::OcelotSitOnTileGoal(Ocelot* ocelot, double speedModifier) {
     _tick = 0;
     tryTicks = 0;
     maxTicks = 0;
@@ -26,7 +26,7 @@ OcelotSitOnTileGoal::OcelotSitOnTileGoal(Ozelot* ocelot, float speed) {
     tileZ = 0;
 
     this->ocelot = ocelot;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     setRequiredControlFlags(Control::MoveControlFlag |
                             Control::JumpControlFlag);
 }
@@ -43,16 +43,22 @@ bool OcelotSitOnTileGoal::canContinueToUse() {
 
 void OcelotSitOnTileGoal::start() {
     ocelot->getNavigation()->moveTo((float)tileX + 0.5, tileY + 1,
-                                    (float)tileZ + 0.5, speed);
+                                    (float)tileZ + 0.5, speedModifier);
     _tick = 0;
     tryTicks = 0;
     maxTicks = ocelot->getRandom()->nextInt(
                    ocelot->getRandom()->nextInt(SIT_TICKS) + SIT_TICKS) +
                SIT_TICKS;
     ocelot->getSitGoal()->wantToSit(false);
+
+    ocelot->setSittingOnTile(true);  // 4J-Added.
 }
 
-void OcelotSitOnTileGoal::stop() { ocelot->setSitting(false); }
+void OcelotSitOnTileGoal::stop() {
+    ocelot->setSitting(false);
+
+    ocelot->setSittingOnTile(false);  // 4J-Added.
+}
 
 void OcelotSitOnTileGoal::tick() {
     _tick++;
@@ -60,7 +66,7 @@ void OcelotSitOnTileGoal::tick() {
     if (ocelot->distanceToSqr(tileX, tileY + 1, tileZ) > 1) {
         ocelot->setSitting(false);
         ocelot->getNavigation()->moveTo((float)tileX + 0.5, tileY + 1,
-                                        (float)tileZ + 0.5, speed);
+                                        (float)tileZ + 0.5, speedModifier);
         tryTicks++;
     } else if (!ocelot->isSitting()) {
         ocelot->setSitting(true);
@@ -82,9 +88,9 @@ bool OcelotSitOnTileGoal::findNearestTile() {
                 double dist = ocelot->distanceToSqr(x, y, z);
 
                 if (dist < distSqr) {
-                    this->tileX = x;
-                    this->tileY = y;
-                    this->tileZ = z;
+                    tileX = x;
+                    tileY = y;
+                    tileZ = z;
                     distSqr = dist;
                 }
             }

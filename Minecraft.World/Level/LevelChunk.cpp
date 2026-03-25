@@ -11,10 +11,13 @@
 #include "Storage/SparseLightStorage.h"
 #include "BlockReplacements.h"
 #include "LevelChunk.h"
+#include "../Util/BasicTypeContainers.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/ServerChunkCache.h"
 #include "../../Minecraft.Client/Rendering/GameRenderer.h"
+#include "../Entities/ItemEntity.h"
+#include "../Entities/Mobs/Minecart.h"
 
 #ifdef __PS3__
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/C4JSpursJob.h"
@@ -96,6 +99,9 @@ void LevelChunk::init(Level* level, int x, int z) {
 #endif
 
     MemSect(0);
+
+    lowestHeightmap = 256;
+    inhabitedTime = 0;
 
     // Optimisation brought forward from 1.8.2, change from int to unsigned char
     // & this special value changed from -999 to 255
@@ -398,7 +404,7 @@ void LevelChunk::startSharingTilesAndData(int forceMs) {
     } else {
         // Only force if it has been more than forceMs milliseconds since we
         // last wanted to unshare this chunk
-        __int64 timenow = System::currentTimeMillis();
+        int64_t timenow = System::currentTimeMillis();
         if ((timenow - lastUnsharedTime) < forceMs) {
             LeaveCriticalSection(&m_csSharing);
             return;
@@ -462,7 +468,7 @@ LevelChunk::~LevelChunk() {
 bool LevelChunk::isAt(int x, int z) { return x == this->x && z == this->z; }
 
 int LevelChunk::getHeightmap(int x, int z) {
-    return heightmap[(unsigned)z << 4 | x] & 0xff;
+    return heightmap[z << 4 | x] & 0xff;
 }
 
 int LevelChunk::getHighestSectionPosition() {
@@ -493,8 +499,8 @@ void LevelChunk::recalcHeightmapOnly() {
                       // value changed from -999 to 255
 
             int y = Level::maxBuildHeight - 1;
-        //            int p = x << level->depthBitsPlusFour | z <<
-        //            level->depthBits;		// 4J - removed
+            //            int p = x << level->depthBitsPlusFour | z <<
+            //            level->depthBits;		// 4J - removed
 #ifdef __PSVITA__
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
             int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
@@ -555,13 +561,14 @@ void LevelChunk::recalcHeightmap() {
     byteArray blockData = byteArray(Level::CHUNK_TILE_COUNT);
     getBlockData(blockData);
 #endif
+    lowestHeightmap = Integer::MAX_VALUE;
 
     int min = Level::maxBuildHeight - 1;
     for (int x = 0; x < 16; x++)
         for (int z = 0; z < 16; z++) {
             int y = Level::maxBuildHeight - 1;
-        //            int p = x << level->depthBitsPlusFour | z <<
-        //            level->depthBits;			// 4J - removed
+            //            int p = x << level->depthBitsPlusFour | z <<
+            //            level->depthBits;			// 4J - removed
 
 #ifdef __PSVITA__
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
@@ -607,6 +614,7 @@ void LevelChunk::recalcHeightmap() {
 #endif
             heightmap[(unsigned)z << 4 | x] = (uint8_t)y;
             if (y < min) min = y;
+            if (y < lowestHeightmap) lowestHeightmap = y;
 
             if (!level->dimension->hasCeiling) {
                 int br = Level::MAX_BRIGHTNESS;
@@ -934,6 +942,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z) {
         y1 = y2;
         y2 = tmp;
     }
+    if (height < lowestHeightmap) lowestHeightmap = height;
     if (!level->dimension->hasCeiling) {
         PIXBeginNamedEvent(0, "Light gaps");
         lightGap(xOffs - 1, zOffs, y1, y2);
@@ -985,7 +994,16 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
         y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperData : lowerData;
     int old = blocks->get(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z);
     int oldData = data->get(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z);
-    if (old == _tile && oldData == _data) return false;
+    if (old == _tile && oldData == _data) {
+        // 4J Stu - Need to do this here otherwise double chests don't always
+        // work correctly
+        std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
+        if (te != NULL) {
+            te->clearCache();
+        }
+
+        return false;
+    }
     int xOffs = this->x * 16 + x;
     int zOffs = this->z * 16 + z;
     if (old != 0 && !level->isClientSide) {
@@ -1056,7 +1074,8 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
                     blocks->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT,
                                 z, 0);
                     //					blocks[x <<
-                    //level->depthBitsPlusFour | z << level->depthBits | y] = 0;
+                    // level->depthBitsPlusFour | z << level->depthBits | y] =
+                    // 0;
                 }
             }
         }
@@ -1068,7 +1087,8 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
             Tile::tiles[_tile]->isEntityTile()) {
             std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
             if (te == NULL) {
-                te = ((EntityTile*)Tile::tiles[_tile])->newTileEntity(level);
+                te = dynamic_cast<EntityTile*>(Tile::tiles[_tile])
+                         ->newTileEntity(level);
                 // app.DebugPrintf("%s: Setting tile id %d, created tileEntity
                 // type %d\n", level->isClientSide?"Client":"Server", _tile,
                 // te->GetType());
@@ -1085,7 +1105,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
     // AP - changed the method of EntityTile detection cos it's well slow on
     // Vita mate
     //	else if (old > 0 && dynamic_cast<EntityTile *>(Tile::tiles[old]) !=
-    //NULL)
+    // NULL)
     else if (old > 0 && Tile::tiles[_tile] != NULL &&
              Tile::tiles[_tile]->isEntityTile()) {
         std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
@@ -1137,6 +1157,9 @@ bool LevelChunk::setData(int x, int y, int z, int val, int mask,
 
 int LevelChunk::getBrightness(LightLayer::variety layer, int x, int y, int z) {
     if (layer == LightLayer::Sky) {
+        if (level->dimension->hasCeiling) {
+            return 0;
+        }
         SparseLightStorage* skyLight =
             y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperSkyLight
                                                         : lowerSkyLight;
@@ -1229,7 +1252,7 @@ int LevelChunk::getRawBrightness(int x, int y, int z, int skyDampen) {
         level->dimension->hasCeiling
             ? 0
             : skyLight->get(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z);
-    if (light > 0) LevelChunk::touchedSky = true;
+    if (light > 0) touchedSky = true;
     light -= skyDampen;
     SparseLightStorage* blockLight = y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT
                                          ? upperBlockLight
@@ -1341,7 +1364,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
 
     // 4J Stu - Changed as we should not be using the [] accessor (causes an
     // insert when we don't want one)
-    // std::shared_ptr<TileEntity> tileEntity = tileEntities[pos];
+    // shared_ptr<TileEntity> tileEntity = tileEntities[pos];
     EnterCriticalSection(&m_csTileEntities);
     std::shared_ptr<TileEntity> tileEntity = nullptr;
     AUTO_VAR(it, tileEntities.find(pos));
@@ -1366,7 +1389,8 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
 
         // if (tileEntity == NULL)
         //{
-        tileEntity = ((EntityTile*)Tile::tiles[t])->newTileEntity(level);
+        tileEntity =
+            dynamic_cast<EntityTile*>(Tile::tiles[t])->newTileEntity(level);
         level->setTileEntity(this->x * 16 + x, y, this->z * 16 + z, tileEntity);
         //}
 
@@ -1425,6 +1449,8 @@ void LevelChunk::setTileEntity(int x, int y, int z,
             "tile!\n");
         return;
     }
+    AUTO_VAR(it, tileEntities.find(pos));
+    if (it != tileEntities.end()) it->second->setRemoved();
 
     tileEntity->clearRemoved();
 
@@ -1471,10 +1497,11 @@ void LevelChunk::load() {
             if (entityTags != NULL) {
                 for (int i = 0; i < entityTags->size(); i++) {
                     CompoundTag* teTag = entityTags->get(i);
-                    std::shared_ptr<Entity> te =
+                    std::shared_ptr<Entity> ent =
                         EntityIO::loadStatic(teTag, level);
-                    if (te != NULL) {
-                        addEntity(te);
+                    if (ent != NULL) {
+                        ent->onLoadedFromSave();
+                        addEntity(ent);
                     }
                 }
             }
@@ -1612,6 +1639,33 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 #endif
 }
 
+bool LevelChunk::containsPlayer() {
+#ifdef _ENTITIES_RW_SECTION
+    EnterCriticalRWSection(&m_csEntities, true);
+#else
+    EnterCriticalSection(&m_csEntities);
+#endif
+    for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+        std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
+        for (int j = 0; j < vecEntity->size(); j++) {
+            if (vecEntity->at(j)->GetType() == eTYPE_SERVERPLAYER) {
+#ifdef _ENTITIES_RW_SECTION
+                LeaveCriticalRWSection(&m_csEntities, true);
+#else
+                LeaveCriticalSection(&m_csEntities);
+#endif
+                return true;
+            }
+        }
+    }
+#ifdef _ENTITIES_RW_SECTION
+    LeaveCriticalRWSection(&m_csEntities, true);
+#else
+    LeaveCriticalSection(&m_csEntities);
+#endif
+    return false;
+}
+
 #ifdef _LARGE_WORLDS
 bool LevelChunk::isUnloaded() { return m_bUnloaded; }
 #endif
@@ -1619,7 +1673,8 @@ bool LevelChunk::isUnloaded() { return m_bUnloaded; }
 void LevelChunk::markUnsaved() { this->setUnsaved(true); }
 
 void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
-                             std::vector<std::shared_ptr<Entity> >& es) {
+                             std::vector<std::shared_ptr<Entity> >& es,
+                             const EntitySelector* selector) {
     int yc0 = Mth::floor((bb->y0 - 2) / 16);
     int yc1 = Mth::floor((bb->y1 + 2) / 16);
     if (yc0 < 0) yc0 = 0;
@@ -1636,14 +1691,16 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
-            if (e != except && e->bb->intersects(bb)) {
+            if (e != except && e->bb->intersects(bb) &&
+                (selector == NULL || selector->matches(e))) {
                 es.push_back(e);
                 std::vector<std::shared_ptr<Entity> >* subs =
                     e->getSubEntities();
                 if (subs != NULL) {
                     for (int j = 0; j < subs->size(); j++) {
                         e = subs->at(j);
-                        if (e != except && e->bb->intersects(bb)) {
+                        if (e != except && e->bb->intersects(bb) &&
+                            (selector == NULL || selector->matches(e))) {
                             es.push_back(e);
                         }
                     }
@@ -1657,7 +1714,8 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
 }
 
 void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
-                                    std::vector<std::shared_ptr<Entity> >& es) {
+                                    std::vector<std::shared_ptr<Entity> >& es,
+                                    const EntitySelector* selector) {
     int yc0 = Mth::floor((bb->y0 - 2) / 16);
     int yc1 = Mth::floor((bb->y1 + 2) / 16);
 
@@ -1687,25 +1745,31 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
             bool isAssignableFrom = false;
             // Some special cases where the base class is a general type that
             // our class may be derived from, otherwise do a direct comparison
-            // of std::type_info
-            if (ec == typeid(Player)) {
-                if (std::dynamic_pointer_cast<Player>(e) != NULL)
-                    isAssignableFrom = true;
-            } else if (ec == typeid(Mob)) {
-                if (std::dynamic_pointer_cast<Mob>(e) != NULL)
-                    isAssignableFrom = true;
-            } else if (ec == typeid(Monster)) {
-                if (std::dynamic_pointer_cast<Monster>(e) != NULL)
-                    isAssignableFrom = true;
-            } else if (ec == typeid(Zombie)) {
-                if (std::dynamic_pointer_cast<Zombie>(e) != NULL)
-                    isAssignableFrom = true;
-            } else {
-                Entity* entityPtr = e.get();
-                if (entityPtr != NULL && ec == typeid(*entityPtr))
-                    isAssignableFrom = true;
+            // of type_info
+            if (ec == typeid(Player))
+                isAssignableFrom = e->instanceof (eTYPE_PLAYER);
+            else if (ec == typeid(Entity))
+                isAssignableFrom = e->instanceof (eTYPE_ENTITY);
+            else if (ec == typeid(Mob))
+                isAssignableFrom = e->instanceof (eTYPE_MOB);
+            else if (ec == typeid(LivingEntity))
+                isAssignableFrom = e->instanceof (eTYPE_LIVINGENTITY);
+            else if (ec == typeid(ItemEntity))
+                isAssignableFrom = e->instanceof (eTYPE_ITEMENTITY);
+            else if (ec == typeid(Minecart))
+                isAssignableFrom = e->instanceof (eTYPE_MINECART);
+            else if (ec == typeid(Monster))
+                isAssignableFrom = e->instanceof (eTYPE_MONSTER);
+            else if (ec == typeid(Zombie))
+                isAssignableFrom = e->instanceof (eTYPE_ZOMBIE);
+            else if (Entity* entity = e.get();
+                     entity != NULL && ec == typeid(*entity))
+                isAssignableFrom = true;
+            if (isAssignableFrom && e->bb->intersects(bb)) {
+                if (selector == NULL || selector->matches(e)) {
+                    es.push_back(e);
+                }
             }
-            if (isAssignableFrom && e->bb->intersects(bb)) es.push_back(e);
             // 4J - note needs to be equivalent to
             // baseClass.isAssignableFrom(e.getClass())
         }
@@ -1736,10 +1800,13 @@ int LevelChunk::countEntities() {
 bool LevelChunk::shouldSave(bool force) {
     if (dontSave) return false;
     if (force) {
-        if (lastSaveHadEntities && level->getTime() != lastSaveTime)
+        if ((lastSaveHadEntities && level->getGameTime() != lastSaveTime) ||
+            m_unsaved) {
             return true;
+        }
     } else {
-        if (lastSaveHadEntities && level->getTime() >= lastSaveTime + 20 * 30)
+        if (lastSaveHadEntities &&
+            level->getGameTime() >= lastSaveTime + 20 * 30)
             return true;
     }
 
@@ -1796,22 +1863,22 @@ int LevelChunk::getBlocksAndData(byteArray* data, int x0, int y0, int z0,
     }
 
     /*
-for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
     for (int z = z0; z < z1; z++)
-            {
-        int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0)
->> 1; int len = (y1 - y0) / 2; System::arraycopy(blockLight->data, slot, data,
-p, len); p += len;
+    {
+    int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0) >>
+    1; int len = (y1 - y0) / 2; System::arraycopy(blockLight->data, slot, data,
+    p, len); p += len;
     }
 
-for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
     for (int z = z0; z < z1; z++)
-            {
-        int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0)
->> 1; int len = (y1 - y0) / 2; System::arraycopy(skyLight->data, slot, data, p,
-len); p += len;
+    {
+    int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0) >>
+    1; int len = (y1 - y0) / 2; System::arraycopy(skyLight->data, slot, data, p,
+    len); p += len;
     }
-            */
+    */
 
     return p;
 }
@@ -1890,13 +1957,13 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
             includeLighting ? NULL : tileUpdatedCallback, this,
             Level::COMPRESSED_CHUNK_SECTION_HEIGHT);
     /*
-for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
     for (int z = z0; z < z1; z++)
-            {
-        int slot = x << level->depthBitsPlusFour | z << level->depthBits | y0;
-        int len = y1 - y0;
-        System::arraycopy(data, p, &blocks, slot, len);
-        p += len;
+    {
+    int slot = x << level->depthBitsPlusFour | z << level->depthBits | y0;
+    int len = y1 - y0;
+    System::arraycopy(data, p, &blocks, slot, len);
+    p += len;
     }*/
 
     recalcHeightmapOnly();
@@ -1956,22 +2023,22 @@ for (int x = x0; x < x1; x++)
     }
 
     /*
-for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
     for (int z = z0; z < z1; z++)
-            {
-        int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0)
->> 1; int len = (y1 - y0) / 2; System::arraycopy(data, p, &blockLight->data,
-slot, len); p += len;
+    {
+    int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0) >>
+    1; int len = (y1 - y0) / 2; System::arraycopy(data, p, &blockLight->data,
+    slot, len); p += len;
     }
 
-for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
     for (int z = z0; z < z1; z++)
-            {
-        int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0)
->> 1; int len = (y1 - y0) / 2; System::arraycopy(data, p, &skyLight->data, slot,
-len); p += len;
+    {
+    int slot = (x << level->depthBitsPlusFour | z << level->depthBits | y0) >>
+    1; int len = (y1 - y0) / 2; System::arraycopy(data, p, &skyLight->data,
+    slot, len); p += len;
     }
-            */
+    */
 
     for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end(); ++it) {
         it->second->clearCache();
@@ -1991,7 +2058,7 @@ len); p += len;
 
 void LevelChunk::setCheckAllLight() { checkLightPosition = 0; }
 
-Random* LevelChunk::getRandom(__int64 l) {
+Random* LevelChunk::getRandom(int64_t l) {
     return new Random((level->getSeed() + x * x * 4987142 + x * 5947611 +
                        z * z * 4392871l + z * 389711) ^
                       l);
@@ -2001,15 +2068,15 @@ bool LevelChunk::isEmpty() { return false; }
 void LevelChunk::attemptCompression() {
     // 4J - removed
 #if 0
-    try {
-        ByteArrayOutputStream *baos = new ByteArrayOutputStream();
-        GZIPOutputStream *gzos = new GZIPOutputStream(baos);
-        DataOutputStream *dos = new DataOutputStream(gzos);
-        dos.close();
-        System.out.println("Compressed size: " + baos.toByteArray().length);
-    } catch (Exception e) {
+	try {
+		ByteArrayOutputStream *baos = new ByteArrayOutputStream();
+		GZIPOutputStream *gzos = new GZIPOutputStream(baos);
+		DataOutputStream *dos = new DataOutputStream(gzos);
+		dos.close();
+		System.out.println("Compressed size: " + baos.toByteArray().length);
+	} catch (Exception e) {
 
-    }
+	}
 #endif
 }
 
@@ -2074,18 +2141,30 @@ bool LevelChunk::isYSpaceEmpty(int y1, int y2) {
     return false;
     // 4J Unused
     /*if (y1 < 0) {
-            y1 = 0;
+    y1 = 0;
     }
     if (y2 >= Level.maxBuildHeight) {
-            y2 = Level.maxBuildHeight - 1;
+    y2 = Level.maxBuildHeight - 1;
     }
     for (int y = y1; y <= y2; y += 16) {
-            LevelChunkSection section = sections[y >> 4];
-            if (section != null && !section.isEmpty()) {
-                    return false;
-            }
+    LevelChunkSection section = sections[y >> 4];
+    if (section != null && !section.isEmpty()) {
+    return false;
+    }
     }
     return true;*/
+}
+
+// 4J Added
+void LevelChunk::reloadBiomes() {
+    BiomeSource* biomeSource = level->dimension->biomeSource;
+    for (unsigned int x = 0; x < 16; ++x) {
+        for (unsigned int z = 0; z < 16; ++z) {
+            Biome* biome =
+                biomeSource->getBiome((this->x << 4) + x, (this->z << 4) + z);
+            biomes[(z << 4) | x] = (uint8_t)((biome->id) & 0xff);
+        }
+    }
 }
 
 Biome* LevelChunk::getBiome(int x, int z, BiomeSource* biomeSource) {
@@ -2422,9 +2501,13 @@ int LevelChunk::getBlocksAllocatedSize(int* count0, int* count1, int* count2,
 
 int LevelChunk::getHighestNonEmptyY() {
     int highestNonEmptyY = -1;
-    if (upperBlocks)
-        highestNonEmptyY = upperBlocks->getHighestNonEmptyY() +
-                           Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+    if (upperBlocks) {
+        int upperNonEmpty = upperBlocks->getHighestNonEmptyY();
+        if (upperNonEmpty >= 0) {
+            highestNonEmptyY =
+                upperNonEmpty + Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+        }
+    }
     if (highestNonEmptyY < 0)
         highestNonEmptyY = lowerBlocks->getHighestNonEmptyY();
     if (highestNonEmptyY < 0) highestNonEmptyY = 0;
@@ -2510,7 +2593,7 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
     //
     // unsigned int offset = Level::CHUNK_TILE_COUNT;
     //// Don't bother reordering block data, block light or sky light as they
-    ///don't seem to make much difference
+    /// don't seem to make much difference
     // byteArray dataData = byteArray(rawBuffer.data+offset,
     // Level::HALF_CHUNK_TILE_COUNT); lc->getDataData(dataData); offset +=
     // Level::HALF_CHUNK_TILE_COUNT; byteArray blockLightData =
@@ -2564,7 +2647,7 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
     // setBlocksAndData(*data, x0, y0, z0, x1, y1, z1, p);
 
     //// If it is a full chunk, we'll need to rearrange into the order the rest
-    ///of the game expects
+    /// of the game expects
     // if( xs == 16 && ys == 128 && zs == 16 && ( ( x & 15 ) == 0 ) && ( y == 0
     // ) && ( ( z & 15 ) == 0 ) )
     //{

@@ -4,7 +4,7 @@
 
 class SwampRiversLayer : public Layer {
 public:
-    SwampRiversLayer(__int64 seed, std::shared_ptr<Layer> parent);
+    SwampRiversLayer(int64_t seed, std::shared_ptr<Layer> parent);
 
     intArray getArea(int xo, int yo, int w, int h);
 };

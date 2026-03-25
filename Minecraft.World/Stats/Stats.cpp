@@ -172,9 +172,9 @@ void Stats::buildBlockStats() {
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 1, L"mineBlock.stone",
-                           Tile::stoneBrick->id);
+                           Tile::cobblestone->id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::stoneBrick->id] = newStat;
+    blocksMined[Tile::cobblestone->id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 2, L"mineBlock.sand",
@@ -184,9 +184,9 @@ void Stats::buildBlockStats() {
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 3, L"mineBlock.cobblestone",
-                           Tile::rock->id);
+                           Tile::stone->id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::rock->id] = newStat;
+    blocksMined[Tile::stone->id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 4, L"mineBlock.gravel",
@@ -245,21 +245,21 @@ void Stats::buildBlockStats() {
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 13, L"mineBlock.netherrack",
-                           Tile::hellRock->id);
+                           Tile::netherRack->id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::hellRock->id] = newStat;
+    blocksMined[Tile::netherRack->id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 14, L"mineBlock.soulSand",
-                           Tile::hellSand->id);
+                           Tile::soulsand->id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::hellSand->id] = newStat;
+    blocksMined[Tile::soulsand->id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 15, L"mineBlock.glowstone",
-                           Tile::lightGem->id);
+                           Tile::glowstone->id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::lightGem->id] = newStat;
+    blocksMined[Tile::glowstone->id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 16, L"mineBlock.wood",
@@ -311,15 +311,15 @@ void Stats::buildCraftableStats() {
     // leaderboards by dropping and picking up these items They are now changed
     // to mining the block which involves a tiny bit more effort
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 18, L"mineBlock.wheat",
-                           Tile::crops_Id);
+                           Tile::wheat_Id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::crops_Id] = newStat;
+    blocksMined[Tile::wheat_Id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 19, L"mineBlock.mushroom1",
-                           Tile::mushroom1_Id);
+                           Tile::mushroom_brown_Id);
     blocksMinedStats->push_back(newStat);
-    blocksMined[Tile::mushroom1_Id] = newStat;
+    blocksMined[Tile::mushroom_brown_Id] = newStat;
     newStat->postConstruct();
 
     newStat = new ItemStat(BLOCKS_MINED_OFFSET + 17, L"mineBlock.sugar",
@@ -498,9 +498,9 @@ void Stats::buildCraftableStats() {
     newStat->postConstruct();
 
     newStat = new ItemStat(ITEMS_CRAFTED_OFFSET + 23, L"craftItem.glowstone",
-                           Tile::lightGem_Id);
+                           Tile::glowstone_Id);
     itemsCraftedStats->push_back(newStat);
-    itemsCrafted[Tile::lightGem_Id] = newStat;
+    itemsCrafted[Tile::glowstone_Id] = newStat;
     newStat->postConstruct();
 
     newStat =
@@ -608,7 +608,7 @@ void Stats::buildAdditionalStats() {
         // 4J-JEV:	WHY ON EARTH DO THESE ARRAYS HAVE TO BE SO PAINFULLY
         // LARGE WHEN THEY ARE GOING TO BE MOSTLY EMPTY!!!
         //			Either way, I'm making this one smaller because
-        //we don't need those record items (and we only need 2).
+        // we don't need those record items (and we only need 2).
         blocksPlaced = StatArray(1000);
 
         itemStat = new ItemStat(offset++, L"blockPlaced.flowerPot",

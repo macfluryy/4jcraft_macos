@@ -5,6 +5,8 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "../../Headers/net.minecraft.world.item.h"
 #include "../../Headers/net.minecraft.world.entity.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.entity.projectile.h"
 #include "../../Util/SharedConstants.h"
 #include "../../../Minecraft.Client/Textures/Textures.h"
@@ -15,17 +17,11 @@ Blaze::Blaze(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
-
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
-
-    this->textureIdx = TN_MOB_BLAZE;  // 4J Was "/mob/fire.png";
+    registerAttributes();
+    setHealth(getMaxHealth());
 
     fireImmune = true;
-    attackDamage = 6;
     xpReward = XP_REWARD_LARGE;
-    //        this.setSize(1.2f, 1.8f);
 
     // 4J Default inits
     allowedHeightOffset = 0.5f;
@@ -33,7 +29,10 @@ Blaze::Blaze(Level* level) : Monster(level) {
     attackCounter = 0;
 }
 
-int Blaze::getMaxHealth() { return 20; }
+void Blaze::registerAttributes() {
+    Monster::registerAttributes();
+    getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->setBaseValue(6);
+}
 
 void Blaze::defineSynchedData() {
     Monster::defineSynchedData();
@@ -67,7 +66,7 @@ void Blaze::aiStep() {
 
         if (getAttackTarget() != NULL &&
             (getAttackTarget()->y + getAttackTarget()->getHeadHeight()) >
-                (this->y + getHeadHeight() + allowedHeightOffset)) {
+                (y + getHeadHeight() + allowedHeightOffset)) {
             yd = yd + (.3f - yd) * .3f;
         }
     }

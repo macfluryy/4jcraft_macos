@@ -93,10 +93,9 @@ void CakeTile::eat(Level* level, int x, int y, int z,
 
         int d = level->getData(x, y, z) + 1;
         if (d >= 6) {
-            level->setTile(x, y, z, 0);
+            level->removeTile(x, y, z);
         } else {
-            level->setData(x, y, z, d);
-            level->setTileDirty(x, y, z);
+            level->setData(x, y, z, d, Tile::UPDATE_CLIENTS);
         }
     }
 }
@@ -109,8 +108,7 @@ bool CakeTile::mayPlace(Level* level, int x, int y, int z) {
 
 void CakeTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     if (!canSurvive(level, x, y, z)) {
-        this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 }
 

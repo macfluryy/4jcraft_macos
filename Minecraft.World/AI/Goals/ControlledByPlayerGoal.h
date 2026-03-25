@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Goal.h"
-#include "../../Util/SharedConstants.h"
+#include "../Minecraft.World/Util/SharedConstants.h"
 
 class Mob;
 
@@ -26,6 +26,11 @@ public:
     void stop();
     bool canUse();
     void tick();
+
+private:
+    bool isNoJumpTile(int tile);
+
+public:
     bool isBoosting();
     void boost();
     bool canBoost();

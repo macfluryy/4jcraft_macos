@@ -14,4 +14,7 @@ public:
 protected:
     virtual bool removeWhenFarAway();
     virtual int getExperienceReward(std::shared_ptr<Player> killedBy);
+
+public:
+    virtual void baseTick();
 };

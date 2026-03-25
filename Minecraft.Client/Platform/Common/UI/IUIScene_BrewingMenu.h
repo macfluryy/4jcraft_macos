@@ -11,9 +11,11 @@
 #define BREWING_SCENE_BOTTLE3_SLOT_UP_OFFSET 5
 #define BREWING_SCENE_BOTTLE3_SLOT_DOWN_OFFSET 5
 
-class IUIScene_BrewingMenu : public virtual IUIScene_AbstractContainerMenu
-{
+class IUIScene_BrewingMenu : public virtual IUIScene_AbstractContainerMenu {
 protected:
-	virtual ESceneSection GetSectionAndSlotInDirection( ESceneSection eSection, ETapState eTapDirection, int *piTargetX, int *piTargetY );
-	int getSectionStartOffset(ESceneSection eSection);
+    virtual ESceneSection GetSectionAndSlotInDirection(ESceneSection eSection,
+                                                       ETapState eTapDirection,
+                                                       int* piTargetX,
+                                                       int* piTargetY);
+    int getSectionStartOffset(ESceneSection eSection);
 };

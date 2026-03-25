@@ -12,7 +12,8 @@ bool ExperienceItem::isFoil(std::shared_ptr<ItemInstance> itemInstance) {
     return true;
 }
 
-bool ExperienceItem::TestUse(Level* level, std::shared_ptr<Player> player) {
+bool ExperienceItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
+                             Level* level, std::shared_ptr<Player> player) {
     return true;
 }
 
@@ -22,8 +23,8 @@ std::shared_ptr<ItemInstance> ExperienceItem::use(
     if (!player->abilities.instabuild) {
         itemInstance->count--;
     }
-    level->playSound(player, eSoundType_RANDOM_BOW, 0.5f,
-                     0.4f / (random->nextFloat() * 0.4f + 0.8f));
+    level->playEntitySound(player, eSoundType_RANDOM_BOW, 0.5f,
+                           0.4f / (random->nextFloat() * 0.4f + 0.8f));
     if (!level->isClientSide)
         level->addEntity(std::shared_ptr<ThrownExpBottle>(
             new ThrownExpBottle(level, player)));

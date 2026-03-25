@@ -45,7 +45,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
         int count = dis.readInt();
 
         for (int i = 0; i < count; ++i) {
-            __int64 index = dis.readLong();
+            int64_t index = dis.readLong();
             CompoundTag* tag = NbtIo::read(&dis);
 
             ByteArrayOutputStream bos;
@@ -160,6 +160,14 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
 #endif
         delete chunkData;
     }
+#ifndef _CONTENT_PACKAGE
+    if (levelChunk && app.DebugSettingsOn() &&
+        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+            (1L << eDebugSetting_EnableBiomeOverride)) {
+        // 4J Stu - This will force an update of the chunk's biome array
+        levelChunk->reloadBiomes();
+    }
+#endif
     return levelChunk;
 }
 
@@ -268,8 +276,8 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 
 void McRegionChunkStorage::loadEntities(Level* level, LevelChunk* levelChunk) {
 #ifdef SPLIT_SAVES
-    __int64 index = ((__int64)(levelChunk->x) << 32) |
-                    (((__int64)(levelChunk->z)) & 0x00000000FFFFFFFF);
+    int64_t index = ((int64_t)(levelChunk->x) << 32) |
+                    (((int64_t)(levelChunk->z)) & 0x00000000FFFFFFFF);
 
     AUTO_VAR(it, m_entityData.find(index));
     if (it != m_entityData.end()) {

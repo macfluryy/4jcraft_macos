@@ -3,7 +3,7 @@
 #include "../IO/Streams/InputOutputStream.h"
 #include "SharedConstants.h"
 
-const std::wstring SharedConstants::VERSION_STRING = L"1.2.3";
+const std::wstring SharedConstants::VERSION_STRING = L"1.6.4";
 const bool SharedConstants::TEXTURE_LIGHTING = true;
 
 std::wstring SharedConstants::readAcceptableChars() {
@@ -43,8 +43,7 @@ bool SharedConstants::isAllowedChatCharacter(char ch) {
     return true;
 }
 
-std::wstring SharedConstants::acceptableLetters =
-    SharedConstants::readAcceptableChars();
+std::wstring SharedConstants::acceptableLetters;
 
 void SharedConstants::staticCtor() {
     acceptableLetters = readAcceptableChars();

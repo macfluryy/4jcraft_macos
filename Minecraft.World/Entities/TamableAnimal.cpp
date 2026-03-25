@@ -57,6 +57,7 @@ void TamableAnimal::readAdditionalSaveData(CompoundTag* tag) {
         setTame(true);
     }
     sitGoal->wantToSit(tag->getBoolean(L"Sitting"));
+    setSitting(tag->getBoolean(L"Sitting"));
 }
 
 void TamableAnimal::spawnTamingParticles(bool success) {
@@ -119,8 +120,38 @@ void TamableAnimal::setOwnerUUID(const std::wstring& name) {
     entityData->set(DATA_OWNERUUID_ID, name);
 }
 
-std::shared_ptr<Mob> TamableAnimal::getOwner() {
+std::shared_ptr<Entity> TamableAnimal::getOwner() {
     return level->getPlayerByUUID(getOwnerUUID());
 }
 
 SitGoal* TamableAnimal::getSitGoal() { return sitGoal; }
+
+bool TamableAnimal::wantsToAttack(std::shared_ptr<LivingEntity> target,
+                                  std::shared_ptr<LivingEntity> owner) {
+    return true;
+}
+
+Team* TamableAnimal::getTeam() {
+    if (isTame()) {
+        std::shared_ptr<LivingEntity> owner =
+            std::dynamic_pointer_cast<LivingEntity>(getOwner());
+        if (owner != NULL) {
+            return owner->getTeam();
+        }
+    }
+    return Animal::getTeam();
+}
+
+bool TamableAnimal::isAlliedTo(std::shared_ptr<LivingEntity> other) {
+    if (isTame()) {
+        std::shared_ptr<LivingEntity> owner =
+            std::dynamic_pointer_cast<LivingEntity>(getOwner());
+        if (other == owner) {
+            return true;
+        }
+        if (owner != NULL) {
+            return owner->isAlliedTo(other);
+        }
+    }
+    return Animal::isAlliedTo(other);
+}

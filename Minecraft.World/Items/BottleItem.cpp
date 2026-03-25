@@ -25,7 +25,7 @@ std::shared_ptr<ItemInstance> BottleItem::use(
         if (!level->mayInteract(player, xt, yt, zt, 0)) {
             return itemInstance;
         }
-        if (!player->mayBuild(xt, yt, zt)) {
+        if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance)) {
             return itemInstance;
         }
         if (level->getMaterial(xt, yt, zt) == Material::water) {
@@ -49,7 +49,8 @@ std::shared_ptr<ItemInstance> BottleItem::use(
 }
 
 // 4J-PB - added to allow tooltips
-bool BottleItem::TestUse(Level* level, std::shared_ptr<Player> player) {
+bool BottleItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
+                         Level* level, std::shared_ptr<Player> player) {
     HitResult* hr = getPlayerPOVHitResult(level, player, true);
     if (hr == NULL) return false;
 
@@ -62,7 +63,7 @@ bool BottleItem::TestUse(Level* level, std::shared_ptr<Player> player) {
         if (!level->mayInteract(player, xt, yt, zt, 0)) {
             return false;
         }
-        if (!player->mayBuild(xt, yt, zt)) {
+        if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance)) {
             return false;
         }
         if (level->getMaterial(xt, yt, zt) == Material::water) {

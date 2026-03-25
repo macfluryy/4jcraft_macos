@@ -1,10 +1,13 @@
 #pragma once
 
+#include "ArrayWithLength.h"
+
 class BoundingBox {
 public:
     int x0, y0, z0, x1, y1, z1;
 
     BoundingBox();
+    BoundingBox(intArray sourceData);
     static BoundingBox* getUnknownBox();
     static BoundingBox* orientBox(int footX, int footY, int footZ, int offX,
                                   int offY, int offZ, int width, int height,
@@ -29,4 +32,5 @@ public:
     int getZCenter();
 
     std::wstring toString();
+    IntArrayTag* createTag(const std::wstring& name);
 };

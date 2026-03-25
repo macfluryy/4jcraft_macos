@@ -5,10 +5,11 @@
 class SetTimePacket : public Packet,
                       public std::enable_shared_from_this<SetTimePacket> {
 public:
-    __int64 time;
+    int64_t gameTime;
+    int64_t dayTime;
 
     SetTimePacket();
-    SetTimePacket(__int64 time);
+    SetTimePacket(int64_t gameTime, int64_t dayTime, bool tickDayTime);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

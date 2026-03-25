@@ -40,5 +40,3 @@ bool SetExperiencePacket::canBeInvalidated() { return true; }
 bool SetExperiencePacket::isInvalidatedBy(std::shared_ptr<Packet> packet) {
     return true;
 }
-
-bool SetExperiencePacket::isAync() { return true; }

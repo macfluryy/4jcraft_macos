@@ -24,6 +24,16 @@ public:
 
     virtual std::wstring getResource(const std::wstring& name);
     virtual DLCPack* getDLCPack();
+    virtual std::wstring getDesc1() {
+        return m_stringTable->getString(L"IDS_TP_DESCRIPTION");
+    }
+    virtual std::wstring getName() {
+        return m_stringTable->getString(L"IDS_DISPLAY_NAME");
+    }
+    virtual std::wstring getWorldName() {
+        return m_stringTable->getString(L"IDS_WORLD_NAME");
+    }
+
     // Added for sound banks with MashUp packs
 #ifdef _XBOX
     IXACT3WaveBank* m_pStreamedWaveBank;
@@ -44,7 +54,8 @@ public:
     bool isTerrainUpdateCompatible();
 
     // 4J Added
-    virtual std::wstring getPath(bool bTitleUpdateTexture = false);
+    virtual std::wstring getPath(bool bTitleUpdateTexture = false,
+                                 const char* pchBDPatchFilename = NULL);
     virtual std::wstring getAnimationString(const std::wstring& textureName,
                                             const std::wstring& path);
     virtual BufferedImage* getImageResource(const std::wstring& File,

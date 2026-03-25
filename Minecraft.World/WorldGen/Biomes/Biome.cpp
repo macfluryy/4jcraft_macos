@@ -309,9 +309,10 @@ Biome::Biome(int id) : id(id) {
     m_waterColor = eMinecraftColour_NOT_SET;
 
     /*	4J - removing these so that we can consistently return newly created
-trees via getTreeFeature, and let the calling function be resposible for
-deleting the returned tree normalTree = new TreeFeature(); fancyTree = new
-BasicTree(); birchTree = new BirchFeature(); swampTree = new SwampTreeFeature();
+    trees via getTreeFeature, and let the calling function be resposible for
+    deleting the returned tree normalTree = new TreeFeature(); fancyTree = new
+    BasicTree(); birchTree = new BirchFeature(); swampTree = new
+    SwampTreeFeature();
     */
 
     biomes[id] = this;
@@ -333,6 +334,8 @@ BasicTree(); birchTree = new BirchFeature(); swampTree = new SwampTreeFeature();
     // wolves are added to forests and taigas
 
     waterFriendlies.push_back(new MobSpawnerData(eTYPE_SQUID, 10, 4, 4));
+
+    ambientFriendlies.push_back(new MobSpawnerData(eTYPE_BAT, 10, 8, 8));
 }
 
 Biome::~Biome() {
@@ -354,7 +357,7 @@ Biome* Biome::setLeafFoliageWaterSkyColor(eMinecraftColour grassColor,
 }
 
 Biome* Biome::setTemperatureAndDownfall(float temp, float downfall) {
-    this->temperature = temp;
+    temperature = temp;
     this->downfall = downfall;
     return this;
 }
@@ -388,7 +391,7 @@ Feature* Biome::getGrassFeature(Random* random) {
 }
 
 Biome* Biome::setSnowCovered() {
-    this->snowCovered = true;
+    snowCovered = true;
     return this;
 }
 
@@ -426,6 +429,7 @@ std::vector<Biome::MobSpawnerData*>* Biome::getMobs(MobCategory* category) {
     if (category == MobCategory::creature_wolf) return &friendlies_wolf;
     if (category == MobCategory::creature_mushroomcow)
         return &friendlies_mushroomcow;
+    if (category == MobCategory::ambient) return &ambientFriendlies;
     return NULL;
 }
 

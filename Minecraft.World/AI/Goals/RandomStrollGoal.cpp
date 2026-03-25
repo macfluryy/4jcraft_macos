@@ -7,9 +7,9 @@
 #include "../../Util/SharedConstants.h"
 #include "RandomStrollGoal.h"
 
-RandomStrollGoal::RandomStrollGoal(PathfinderMob* mob, float speed) {
+RandomStrollGoal::RandomStrollGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     setRequiredControlFlags(Control::MoveControlFlag |
                             Control::LookControlFlag);
 }
@@ -57,5 +57,5 @@ bool RandomStrollGoal::canContinueToUse() {
 }
 
 void RandomStrollGoal::start() {
-    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speed);
+    mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speedModifier);
 }

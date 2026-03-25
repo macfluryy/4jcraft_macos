@@ -14,13 +14,14 @@ LookControl::LookControl(Mob* mob) {
 
 void LookControl::setLookAt(std::shared_ptr<Entity> target, float yMax,
                             float xMax) {
-    this->wantedX = target->x;
-    std::shared_ptr<Mob> targetMob = std::dynamic_pointer_cast<Mob>(target);
-    if (targetMob != NULL)
-        this->wantedY = target->y + targetMob->getHeadHeight();
+    wantedX = target->x;
+    if (target->instanceof(eTYPE_LIVINGENTITY))
+        wantedY =
+            target->y +
+            std::dynamic_pointer_cast<LivingEntity>(target)->getHeadHeight();
     else
-        this->wantedY = (target->bb->y0 + target->bb->y1) / 2;
-    this->wantedZ = target->z;
+        wantedY = (target->bb->y0 + target->bb->y1) / 2;
+    wantedZ = target->z;
     this->yMax = yMax;
     this->xMax = xMax;
     hasWanted = true;
@@ -28,9 +29,9 @@ void LookControl::setLookAt(std::shared_ptr<Entity> target, float yMax,
 
 void LookControl::setLookAt(double x, double y, double z, float yMax,
                             float xMax) {
-    this->wantedX = x;
-    this->wantedY = y;
-    this->wantedZ = z;
+    wantedX = x;
+    wantedY = y;
+    wantedZ = z;
     this->yMax = yMax;
     this->xMax = xMax;
     hasWanted = true;

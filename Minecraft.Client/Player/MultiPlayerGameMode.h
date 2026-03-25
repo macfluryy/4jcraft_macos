@@ -9,8 +9,8 @@ private:
     int xDestroyBlock;
     int yDestroyBlock;
     int zDestroyBlock;
+    std::shared_ptr<ItemInstance> destroyingItem;
     float destroyProgress;
-    float oDestroyProgress;
     int destroyTicks;  // 4J was float but doesn't seem to need to be
     int destroyDelay;
     bool isDestroying;
@@ -22,7 +22,6 @@ protected:
 
 public:
     MultiPlayerGameMode(Minecraft* minecraft, ClientConnection* connection);
-    virtual ~MultiPlayerGameMode() {}
     static void creativeDestroyBlock(Minecraft* minecraft,
                                      MultiPlayerGameMode* gameMode, int x,
                                      int y, int z, int face);
@@ -42,6 +41,7 @@ private:
     int carriedItem;
 
 private:
+    bool sameDestroyTarget(int x, int y, int z);
     void ensureHasSentCarriedItem();
 
 public:
@@ -70,6 +70,7 @@ public:
     virtual bool hasMissTime();
     virtual bool hasInfiniteItems();
     virtual bool hasFarPickRange();
+    virtual bool isServerControlledInventory();
 
     // 4J Stu - Added so we can send packets for this in the network game
     virtual bool handleCraftItem(int recipe, std::shared_ptr<Player> player);

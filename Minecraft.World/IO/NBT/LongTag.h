@@ -3,14 +3,14 @@
 
 class LongTag : public Tag {
 public:
-    __int64 data;
+    int64_t data;
     LongTag(const std::wstring& name) : Tag(name) {}
-    LongTag(const std::wstring& name, __int64 data) : Tag(name) {
+    LongTag(const std::wstring& name, int64_t data) : Tag(name) {
         this->data = data;
     }
 
     void write(DataOutput* dos) { dos->writeLong(data); }
-    void load(DataInput* dis) { data = dis->readLong(); }
+    void load(DataInput* dis, int tagDepth) { data = dis->readLong(); }
 
     uint8_t getId() { return TAG_Long; }
     std::wstring toString() {

@@ -25,7 +25,7 @@ RegionFile* RegionFileCache::_getRegionFile(
 
     // File regionDir(basePath, L"region");
 
-    // File file(regionDir, std::wstring(L"r.") + _toString(chunkX>>5) + L"." +
+    // File file(regionDir, wstring(L"r.") + _toString(chunkX>>5) + L"." +
     // _toString(chunkZ>>5) + L".mcr" );
     MemSect(31);
     File file;
@@ -109,3 +109,5 @@ DataOutputStream* RegionFileCache::_getChunkDataOutputStream(
         return r->getChunkDataOutputStream(chunkX & 31, chunkZ & 31);
     }
 }
+
+RegionFileCache::~RegionFileCache() { _clear(); }

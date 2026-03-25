@@ -2,28 +2,22 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
+#include "../Headers/net.minecraft.world.entity.monster.h"
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.world.effect.h"
 #include "../Headers/net.minecraft.world.item.enchantment.h"
 #include "Monster.h"
+
 #include "../../Minecraft.Client/Minecraft.h"
 
-void Monster::_init() { attackDamage = 2; }
-
 Monster::Monster(Level* level) : PathfinderMob(level) {
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-
-    // 4J Stu - Only the most derived classes should call this
-    // this->defineSynchedData();
-
-    _init();
-
     xpReward = Enemy::XP_REWARD_MEDIUM;
 }
 
 void Monster::aiStep() {
+    updateSwingTime();
     float br = getBrightness(1);
     if (br > 0.5f) {
         noActionTime += 2;
@@ -52,13 +46,14 @@ std::shared_ptr<Entity> Monster::findAttackTarget() {
     return std::shared_ptr<Player>();
 }
 
-bool Monster::hurt(DamageSource* source, int dmg) {
+bool Monster::hurt(DamageSource* source, float dmg) {
+    if (isInvulnerable()) return false;
     if (PathfinderMob::hurt(source, dmg)) {
         std::shared_ptr<Entity> sourceEntity = source->getEntity();
         if (rider.lock() == sourceEntity || riding == sourceEntity) return true;
 
         if (sourceEntity != shared_from_this()) {
-            this->attackTarget = sourceEntity;
+            attackTarget = sourceEntity;
         }
         return true;
     }
@@ -72,34 +67,49 @@ bool Monster::hurt(DamageSource* source, int dmg) {
  * @return
  */
 bool Monster::doHurtTarget(std::shared_ptr<Entity> target) {
-    int dmg = attackDamage;
-    if (hasEffect(MobEffect::damageBoost)) {
-        dmg += (3 << getEffect(MobEffect::damageBoost)->getAmplifier());
-    }
-    if (hasEffect(MobEffect::weakness)) {
-        dmg -= (2 << getEffect(MobEffect::weakness)->getAmplifier());
+    float dmg =
+        (float)getAttribute(SharedMonsterAttributes::ATTACK_DAMAGE)->getValue();
+    int knockback = 0;
+
+    if (target->instanceof(eTYPE_LIVINGENTITY)) {
+        std::shared_ptr<LivingEntity> livingTarget =
+            std::dynamic_pointer_cast<LivingEntity>(target);
+        dmg += EnchantmentHelper::getDamageBonus(
+            std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
+            livingTarget);
+        knockback += EnchantmentHelper::getKnockbackBonus(
+            std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
+            livingTarget);
     }
 
-    DamageSource* damageSource = DamageSource::mobAttack(
-        std::dynamic_pointer_cast<Mob>(shared_from_this()));
-    bool didHurt = target->hurt(damageSource, dmg);
-    delete damageSource;
+    boolean wasHurt = target->hurt(
+        DamageSource::mobAttack(
+            std::dynamic_pointer_cast<LivingEntity>(shared_from_this())),
+        dmg);
 
-    if (didHurt) {
+    if (wasHurt) {
+        if (knockback > 0) {
+            target->push(-Mth::sin(yRot * PI / 180) * knockback * .5f, 0.1,
+                         Mth::cos(yRot * PI / 180) * knockback * .5f);
+            xd *= 0.6;
+            zd *= 0.6;
+        }
+
         int fireAspect = EnchantmentHelper::getFireAspect(
-            std::dynamic_pointer_cast<Mob>(shared_from_this()));
+            std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
         if (fireAspect > 0) {
             target->setOnFire(fireAspect * 4);
         }
 
-        std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(target);
-        if (mob != NULL) {
-            ThornsEnchantment::doThornsAfterAttack(shared_from_this(), mob,
-                                                   random);
+        if (target->instanceof(eTYPE_LIVINGENTITY)) {
+            std::shared_ptr<LivingEntity> livingTarget =
+                std::dynamic_pointer_cast<LivingEntity>(target);
+            ThornsEnchantment::doThornsAfterAttack(shared_from_this(),
+                                                   livingTarget, random);
         }
     }
 
-    return didHurt;
+    return wasHurt;
 }
 
 void Monster::checkHurtTarget(std::shared_ptr<Entity> target, float distance) {
@@ -134,9 +144,12 @@ bool Monster::isDarkEnoughToSpawn() {
 }
 
 bool Monster::canSpawn() {
-    // 4J Stu
-    // Fix for #8265 - AI: Monsters will flash briefly on the screen around
-    // Monster Spawners when the game settings are set to Peaceful.
-    return isDarkEnoughToSpawn() && PathfinderMob::canSpawn() &&
-           level->difficulty > Difficulty::PEACEFUL;
+    return level->difficulty > Difficulty::PEACEFUL && isDarkEnoughToSpawn() &&
+           PathfinderMob::canSpawn();
+}
+
+void Monster::registerAttributes() {
+    PathfinderMob::registerAttributes();
+
+    getAttributes()->registerAttribute(SharedMonsterAttributes::ATTACK_DAMAGE);
 }

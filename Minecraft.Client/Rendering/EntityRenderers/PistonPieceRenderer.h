@@ -1,10 +1,12 @@
 #pragma once
 #include "TileEntityRenderer.h"
+
 class PistonPieceEntity;
 class TileRenderer;
 
 class PistonPieceRenderer : public TileEntityRenderer {
 private:
+    static ResourceLocation SIGN_LOCATION;
     TileRenderer* tileRenderer;
 
 public:

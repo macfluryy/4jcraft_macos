@@ -52,7 +52,7 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
 
     int xZone = x >> CHUNKS_PER_ZONE_BITS;
     int zZone = z >> CHUNKS_PER_ZONE_BITS;
-    __int64 key = xZone + (zZone << 20l);
+    int64_t key = xZone + (zZone << 20l);
     // 4J - was !zoneFiles.containsKey(key)
     if (zoneFiles.find(key) == zoneFiles.end()) {
         wchar_t xRadix36[64];
@@ -108,8 +108,8 @@ LevelChunk* ZonedChunkStorage::load(Level* level, int x, int z) {
     header->flip();
     int xOrg = header->getInt();
     int zOrg = header->getInt();
-    __int64 time = header->getLong();
-    __int64 flags = header->getLong();
+    int64_t time = header->getLong();
+    int64_t flags = header->getLong();
 
     lc->terrainPopulated = (flags & BIT_TERRAIN_POPULATED) != 0;
 
@@ -120,7 +120,7 @@ LevelChunk* ZonedChunkStorage::load(Level* level, int x, int z) {
 }
 
 void ZonedChunkStorage::save(Level* level, LevelChunk* lc) {
-    __int64 flags = 0;
+    int64_t flags = 0;
     if (lc->terrainPopulated) flags |= BIT_TERRAIN_POPULATED;
 
     ByteBuffer* header = ByteBuffer::allocate(CHUNK_HEADER_SIZE);
@@ -144,10 +144,10 @@ void ZonedChunkStorage::save(Level* level, LevelChunk* lc) {
 void ZonedChunkStorage::tick() {
     tickCount++;
     if (tickCount % (20 * 10) == 4) {
-        std::vector<__int64> toClose;
+        std::vector<int64_t> toClose;
 
         AUTO_VAR(itEndZF, zoneFiles.end());
-        for (std::unordered_map<__int64, ZoneFile*>::iterator it =
+        for (std::unordered_map<int64_t, ZoneFile*>::iterator it =
                  zoneFiles.begin();
              it != itEndZF; it++) {
             ZoneFile* zoneFile = it->second;
@@ -158,7 +158,7 @@ void ZonedChunkStorage::tick() {
 
         AUTO_VAR(itEndTC, toClose.end());
         for (AUTO_VAR(it, toClose.begin()); it != itEndTC; it++) {
-            __int64 key = *it;  // toClose[i];
+            int64_t key = *it;  // toClose[i];
             // 4J - removed try/catch
             //            try {
             char buf[256];
@@ -175,7 +175,7 @@ void ZonedChunkStorage::tick() {
 
 void ZonedChunkStorage::flush() {
     AUTO_VAR(itEnd, zoneFiles.end());
-    for (std::unordered_map<__int64, ZoneFile*>::iterator it =
+    for (std::unordered_map<int64_t, ZoneFile*>::iterator it =
              zoneFiles.begin();
          it != itEnd; it++) {
         ZoneFile* zoneFile = it->second;

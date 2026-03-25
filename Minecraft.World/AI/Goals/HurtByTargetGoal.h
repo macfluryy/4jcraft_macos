@@ -5,12 +5,11 @@
 class HurtByTargetGoal : public TargetGoal {
 private:
     bool alertSameType;
-    std::shared_ptr<Mob> oldHurtByMob;
+    int timestamp;
 
 public:
-    HurtByTargetGoal(Mob* mob, bool alertSameType);
+    HurtByTargetGoal(PathfinderMob* mob, bool alertSameType);
 
     bool canUse();
     void start();
-    void tick();
 };

@@ -2,15 +2,14 @@
 
 #include "UIControl_Base.h"
 
-class UIControl_Touch : public UIControl_Base
-{
+class UIControl_Touch : public UIControl_Base {
 private:
-
 public:
-	UIControl_Touch();
+    UIControl_Touch();
 
-	virtual bool setupControl(UIScene *scene, IggyValuePath *parent, const std::string &controlName);
+    virtual bool setupControl(UIScene* scene, IggyValuePath* parent,
+                              const std::string& controlName);
 
-	void init(int id);
-	virtual void ReInit();
+    void init(int id);
+    virtual void ReInit();
 };

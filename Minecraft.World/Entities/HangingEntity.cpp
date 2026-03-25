@@ -11,22 +11,16 @@ void HangingEntity::_init(Level* level) {
     checkInterval = 0;
     dir = 0;
     xTile = yTile = zTile = 0;
-}
-
-HangingEntity::HangingEntity(Level* level) : Entity(level) {
-    _init(level);
-
     this->heightOffset = 0;
     this->setSize(0.5f, 0.5f);
 }
+
+HangingEntity::HangingEntity(Level* level) : Entity(level) { _init(level); }
 
 HangingEntity::HangingEntity(Level* level, int xTile, int yTile, int zTile,
                              int dir)
     : Entity(level) {
     _init(level);
-    // motive = NULL;
-    this->heightOffset = 0;
-    this->setSize(0.5f, 0.5f);
     this->xTile = xTile;
     this->yTile = yTile;
     this->zTile = zTile;
@@ -34,7 +28,7 @@ HangingEntity::HangingEntity(Level* level, int xTile, int yTile, int zTile,
 
 void HangingEntity::setDir(int dir) {
     this->dir = dir;
-    this->yRotO = this->yRot = (float)(dir * 90);
+    yRotO = yRot = (float)(dir * 90);
 
     float w = (float)getWidth();
     float h = (float)getHeight();
@@ -68,7 +62,7 @@ void HangingEntity::setDir(int dir) {
     if (dir == Direction::EAST) z -= offs(getWidth());
     y += offs(getHeight());
 
-    this->setPos(x, y, z);
+    setPos(x, y, z);
 
     float ss = -(0.5f / 16.0f);
 
@@ -91,12 +85,14 @@ float HangingEntity::offs(int w) {
 }
 
 void HangingEntity::tick() {
-    if (checkInterval++ == 20 * 5 && !level->isClientSide)  // isClientSide)
-    {
+    xo = x;
+    yo = y;
+    zo = z;
+    if (checkInterval++ == 20 * 5 && !level->isClientSide) {
         checkInterval = 0;
         if (!removed && !survives()) {
             remove();
-            dropItem();
+            dropItem(nullptr);
         }
     }
 }
@@ -138,7 +134,7 @@ bool HangingEntity::survives() {
                 AUTO_VAR(itEnd, entities->end());
                 for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
                     std::shared_ptr<Entity> e = (*it);
-                    if (std::dynamic_pointer_cast<HangingEntity>(e) != NULL) {
+                    if (e->instanceof(eTYPE_HANGING_ENTITY)) {
                         return false;
                     }
                 }
@@ -159,12 +155,14 @@ bool HangingEntity::skipAttackInteraction(std::shared_ptr<Entity> source) {
     return false;
 }
 
-bool HangingEntity::hurt(DamageSource* source, int damage) {
+bool HangingEntity::hurt(DamageSource* source, float damage) {
+    if (isInvulnerable()) return false;
     if (!removed && !level->isClientSide) {
         if (dynamic_cast<EntityDamageSource*>(source) != NULL) {
             std::shared_ptr<Entity> sourceEntity = source->getDirectEntity();
 
-            if (std::dynamic_pointer_cast<Player>(sourceEntity) != NULL &&
+            if ((sourceEntity != NULL) &&
+                sourceEntity->instanceof(eTYPE_PLAYER) &&
                 !std::dynamic_pointer_cast<Player>(sourceEntity)
                      ->isAllowedToHurtEntity(shared_from_this())) {
                 return false;
@@ -176,8 +174,9 @@ bool HangingEntity::hurt(DamageSource* source, int damage) {
 
         std::shared_ptr<Player> player = nullptr;
         std::shared_ptr<Entity> e = source->getEntity();
-        if (e != NULL && ((e->GetType() & eTYPE_PLAYER) !=
-                          0))  // check if it's serverplayer or player
+        if ((e != NULL) &&
+            e->instanceof(
+                eTYPE_PLAYER))  // check if it's serverplayer or player
         {
             player = std::dynamic_pointer_cast<Player>(e);
         }
@@ -186,7 +185,7 @@ bool HangingEntity::hurt(DamageSource* source, int damage) {
             return true;
         }
 
-        dropItem();
+        dropItem(nullptr);
     }
     return true;
 }
@@ -195,14 +194,14 @@ bool HangingEntity::hurt(DamageSource* source, int damage) {
 void HangingEntity::move(double xa, double ya, double za, bool noEntityCubes) {
     if (!level->isClientSide && !removed && (xa * xa + ya * ya + za * za) > 0) {
         remove();
-        dropItem();
+        dropItem(nullptr);
     }
 }
 
 void HangingEntity::push(double xa, double ya, double za) {
     if (!level->isClientSide && !removed && (xa * xa + ya * ya + za * za) > 0) {
         remove();
-        dropItem();
+        dropItem(nullptr);
     }
 }
 
@@ -253,3 +252,5 @@ void HangingEntity::readAdditionalSaveData(CompoundTag* tag) {
     zTile = tag->getInt(L"TileZ");
     setDir(dir);
 }
+
+bool HangingEntity::repositionEntityAfterLoad() { return false; }

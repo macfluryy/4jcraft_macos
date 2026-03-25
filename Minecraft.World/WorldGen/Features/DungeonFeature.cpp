@@ -132,7 +132,7 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
                     if (yd > -0.7 && xd * xd + yd * yd + zd * zd < 1) {
                         int block = blocks[p];
                         if (block == Tile::grass_Id) hasGrass = true;
-                        if (block == Tile::rock_Id || block == Tile::dirt_Id ||
+                        if (block == Tile::stone_Id || block == Tile::dirt_Id ||
                             block == Tile::grass_Id) {
                             if (yy < 10) {
                                 blocks[p] = (uint8_t)Tile::lava_Id;

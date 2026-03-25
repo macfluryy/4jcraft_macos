@@ -10,7 +10,7 @@ public:
 public:
     MushroomCow(Level* level);
 
-    virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool mobInteract(std::shared_ptr<Player> player);
     virtual bool canSpawn();  // 4J added
     virtual std::shared_ptr<AgableMob> getBreedOffspring(
         std::shared_ptr<AgableMob> target);

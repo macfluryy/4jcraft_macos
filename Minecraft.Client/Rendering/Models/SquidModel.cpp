@@ -36,6 +36,7 @@ SquidModel::SquidModel() : Model() {
 
 void SquidModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
+                           std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
     for (int i = 0; i < TENTACLES_LENGTH; i++)  // 4J - 8 was tentacles.length
     {
@@ -47,7 +48,7 @@ void SquidModel::setupAnim(float time, float r, float bob, float yRot,
 void SquidModel::render(std::shared_ptr<Entity> entity, float time, float r,
                         float bob, float yRot, float xRot, float scale,
                         bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     body->render(scale, usecompiled);
     for (int i = 0; i < TENTACLES_LENGTH;

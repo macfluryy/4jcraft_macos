@@ -38,7 +38,7 @@ VillagerGolemModel::VillagerGolemModel(float g, float yOffset) {
 void VillagerGolemModel::render(std::shared_ptr<Entity> entity, float time,
                                 float r, float bob, float yRot, float xRot,
                                 float scale, bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     head->render(scale, usecompiled);
     body->render(scale, usecompiled);
@@ -50,6 +50,7 @@ void VillagerGolemModel::render(std::shared_ptr<Entity> entity, float time,
 
 void VillagerGolemModel::setupAnim(float time, float r, float bob, float yRot,
                                    float xRot, float scale,
+                                   std::shared_ptr<Entity> entity,
                                    unsigned int uiBitmaskOverrideAnim) {
     head->yRot = yRot / (float)(180 / PI);
     head->xRot = xRot / (float)(180 / PI);
@@ -60,8 +61,8 @@ void VillagerGolemModel::setupAnim(float time, float r, float bob, float yRot,
     leg1->yRot = 0;
 }
 
-void VillagerGolemModel::prepareMobModel(std::shared_ptr<Mob> mob, float time,
-                                         float r, float a) {
+void VillagerGolemModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
+                                         float time, float r, float a) {
     std::shared_ptr<VillagerGolem> vg =
         std::dynamic_pointer_cast<VillagerGolem>(mob);
     int attackTick = vg->getAttackAnimationTick();

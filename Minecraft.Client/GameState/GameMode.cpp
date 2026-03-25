@@ -1,7 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "GameMode.h"
 #include "../Player/LocalPlayer.h"
-#include "../Level/MultiPlayerLevel.h"
 #include "../Rendering/LevelRenderer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
@@ -47,9 +46,7 @@ bool GameMode::destroyBlock(int x, int y, int z, int face) {
 void GameMode::render(float a) {}
 
 bool GameMode::useItem(std::shared_ptr<Player> player, Level* level,
-                       std::shared_ptr<ItemInstance> item, bool bTestUseOnly) {
-    return false;
-}
+                       std::shared_ptr<ItemInstance> item, bool bTestUseOnly) {}
 
 void GameMode::initPlayer(std::shared_ptr<Player> player) {}
 
@@ -57,8 +54,8 @@ void GameMode::tick() {}
 
 void GameMode::adjustPlayer(std::shared_ptr<Player> player) {}
 
-// bool GameMode::useItemOn(std::shared_ptr<Player> player, Level *level,
-// std::shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool
+// bool GameMode::useItemOn(shared_ptr<Player> player, Level *level,
+// shared_ptr<ItemInstance> item, int x, int y, int z, int face, bool
 // bTestUseOnOnly)
 //{
 //	// 4J-PB - Adding a test only version to allow tooltips to be displayed
@@ -72,7 +69,7 @@ void GameMode::adjustPlayer(std::shared_ptr<Player> player) {}
 //			case Tile::recordPlayer_Id:
 //			case Tile::bed_Id: // special case for a bed
 //				if (Tile::tiles[t]->TestUse(level, x, y, z,
-//player ))
+// player ))
 //				{
 //					return true;
 //				}
@@ -90,7 +87,7 @@ void GameMode::adjustPlayer(std::shared_ptr<Player> player) {}
 //		else
 //		{
 //			if (Tile::tiles[t]->use(level, x, y, z, player )) return
-//true;
+// true;
 //		}
 //	}
 //

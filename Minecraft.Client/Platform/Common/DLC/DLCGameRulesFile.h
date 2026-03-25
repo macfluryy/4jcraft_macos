@@ -1,15 +1,14 @@
 #pragma once
 #include "DLCGameRules.h"
 
-class DLCGameRulesFile : public DLCGameRules
-{
+class DLCGameRulesFile : public DLCGameRules {
 private:
-	std::uint8_t *m_pbData;
-	std::uint32_t m_dataBytes;
+    std::uint8_t* m_pbData;
+    std::uint32_t m_dataBytes;
 
 public:
-	DLCGameRulesFile(const std::wstring &path);
+    DLCGameRulesFile(const std::wstring& path);
 
-	virtual void addData(std::uint8_t *pbData, std::uint32_t dataBytes);
-	virtual std::uint8_t *getData(std::uint32_t &dataBytes);
+    virtual void addData(std::uint8_t* pbData, std::uint32_t dataBytes);
+    virtual std::uint8_t* getData(std::uint32_t& dataBytes);
 };

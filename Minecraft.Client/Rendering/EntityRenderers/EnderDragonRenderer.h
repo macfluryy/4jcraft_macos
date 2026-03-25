@@ -1,5 +1,4 @@
 #pragma once
-
 #include "MobRenderer.h"
 
 #ifdef _XBOX
@@ -8,11 +7,11 @@ class EnderDragon;
 class DragonModel;
 
 class EnderDragonRenderer : public MobRenderer {
-public:
-    static std::shared_ptr<EnderDragon> bossInstance;
-
 private:
-    static int currentModel;
+    static ResourceLocation DRAGON_EXPLODING_LOCATION;
+    static ResourceLocation CRYSTAL_BEAM_LOCATION;
+    static ResourceLocation DRAGON_EYES_LOCATION;
+    static ResourceLocation DRAGON_LOCATION;
 
 protected:
     DragonModel* dragonModel;
@@ -21,19 +20,20 @@ public:
     EnderDragonRenderer();
 
 protected:
-    virtual void setupRotations(std::shared_ptr<Mob> _mob, float bob,
+    virtual void setupRotations(std::shared_ptr<LivingEntity> _mob, float bob,
                                 float bodyRot, float a);
-
-protected:
-    void renderModel(std::shared_ptr<Entity> _mob, float wp, float ws,
-                     float bob, float headRotMinusBodyRot, float headRotx,
-                     float scale);
+    virtual void renderModel(std::shared_ptr<LivingEntity> _mob, float wp,
+                             float ws, float bob, float headRotMinusBodyRot,
+                             float headRotx, float scale);
 
 public:
     virtual void render(std::shared_ptr<Entity> _mob, double x, double y,
                         double z, float rot, float a);
+    virtual ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
 
 protected:
-    virtual void additionalRendering(std::shared_ptr<Mob> _mob, float a);
-    virtual int prepareArmor(std::shared_ptr<Mob> _mob, int layer, float a);
+    virtual void additionalRendering(std::shared_ptr<LivingEntity> _mob,
+                                     float a);
+    virtual int prepareArmor(std::shared_ptr<LivingEntity> _mob, int layer,
+                             float a);
 };

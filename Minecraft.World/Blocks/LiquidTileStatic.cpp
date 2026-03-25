@@ -23,11 +23,8 @@ void LiquidTileStatic::neighborChanged(Level* level, int x, int y, int z,
 
 void LiquidTileStatic::setDynamic(Level* level, int x, int y, int z) {
     int d = level->getData(x, y, z);
-    level->noNeighborUpdate = true;
-    level->setTileAndDataNoUpdate(x, y, z, id - 1, d);
-    level->setTilesDirty(x, y, z, x, y, z);
-    level->addToTickNextTick(x, y, z, id - 1, getTickDelay());
-    level->noNeighborUpdate = false;
+    level->setTileAndData(x, y, z, id - 1, d, Tile::UPDATE_CLIENTS);
+    level->addToTickNextTick(x, y, z, id - 1, getTickDelay(level));
 }
 
 void LiquidTileStatic::tick(Level* level, int x, int y, int z, Random* random) {
@@ -45,7 +42,7 @@ void LiquidTileStatic::tick(Level* level, int x, int y, int z, Random* random) {
                     isFlammable(level, x, y, z + 1) ||
                     isFlammable(level, x, y - 1, z) ||
                     isFlammable(level, x, y + 1, z)) {
-                    level->setTile(x, y, z, Tile::fire_Id);
+                    level->setTileAndUpdate(x, y, z, Tile::fire_Id);
                     return;
                 }
             } else if (Tile::tiles[t]->material->blocksMotion()) {
@@ -60,7 +57,7 @@ void LiquidTileStatic::tick(Level* level, int x, int y, int z, Random* random) {
                 z = oz + random->nextInt(3) - 1;
                 if (level->isEmptyTile(x, y + 1, z) &&
                     isFlammable(level, x, y, z)) {
-                    level->setTile(x, y + 1, z, Tile::fire_Id);
+                    level->setTileAndUpdate(x, y + 1, z, Tile::fire_Id);
                 }
             }
         }

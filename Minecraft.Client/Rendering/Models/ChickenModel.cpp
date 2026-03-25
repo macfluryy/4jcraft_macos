@@ -52,7 +52,7 @@ ChickenModel::ChickenModel() : Model() {
 void ChickenModel::render(std::shared_ptr<Entity> entity, float time, float r,
                           float bob, float yRot, float xRot, float scale,
                           bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
     if (young) {
         float ss = 2;
         glPushMatrix();
@@ -84,6 +84,7 @@ void ChickenModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
 void ChickenModel::setupAnim(float time, float r, float bob, float yRot,
                              float xRot, float scale,
+                             std::shared_ptr<Entity> entity,
                              unsigned int uiBitmaskOverrideAnim) {
     head->xRot = xRot / (float)(180 / PI);
     head->yRot = yRot / (float)(180 / PI);

@@ -74,7 +74,11 @@ void MerchantContainer::setItem(unsigned int slot,
     }
 }
 
-int MerchantContainer::getName() { return merchant->getDisplayName(); }
+std::wstring MerchantContainer::getName() { return merchant->getDisplayName(); }
+
+std::wstring MerchantContainer::getCustomName() { return L""; }
+
+bool MerchantContainer::hasCustomName() { return false; }
 
 int MerchantContainer::getMaxStackSize() {
     return Container::LARGE_MAX_STACK_SIZE;
@@ -87,6 +91,11 @@ bool MerchantContainer::stillValid(std::shared_ptr<Player> player) {
 void MerchantContainer::startOpen() {}
 
 void MerchantContainer::stopOpen() {}
+
+bool MerchantContainer::canPlaceItem(int slot,
+                                     std::shared_ptr<ItemInstance> item) {
+    return true;
+}
 
 void MerchantContainer::setChanged() { updateSellItem(); }
 

@@ -13,12 +13,13 @@ class ClientInformationPacket : public Packet {
 	public ClientInformationPacket() {
 	}
 
-	public ClientInformationPacket(String language, int viewDistance, int chatVisibility, boolean chatColors, int difficulty) {
+	public ClientInformationPacket(String language, int viewDistance, int chatVisibility, boolean chatColors, int difficulty, boolean showCape) {
 		this.language = language;
 		this.viewDistance = viewDistance;
 		this.chatVisibility = chatVisibility;
 		this.chatColors = chatColors;
 		this.difficulty = difficulty;
+        this.showCape = showCape;
 	}
 
 	@Override
@@ -31,6 +32,7 @@ class ClientInformationPacket : public Packet {
 			chatColors = (chat & 0x8) == 0x8;
 
 			difficulty = dis.readByte();
+        showCape = dis.readBoolean();
 	}
 
 	@Override
@@ -39,6 +41,7 @@ class ClientInformationPacket : public Packet {
 			dos.writeByte(viewDistance);
 			dos.writeByte(chatVisibility | (chatColors ? 1 : 0) << 3);
 			dos.writeByte(difficulty);
+        dos.writeBoolean(showCape);
 	}
 
 	@Override
@@ -48,7 +51,7 @@ class ClientInformationPacket : public Packet {
 
 	@Override
 		public int getEstimatedSize() {
-			return 0;
+			return 7;
 	}
 
 	public String getLanguage() {
@@ -70,6 +73,10 @@ class ClientInformationPacket : public Packet {
 	public int getDifficulty() {
 		return difficulty;
 	}
+
+    public boolean getShowCape() {
+        return showCape;
+    }
 
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;

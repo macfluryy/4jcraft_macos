@@ -8,8 +8,10 @@ class Random;
 
 class ParticleEngine {
 private:
+    static ResourceLocation PARTICLES_LOCATION;
     static const int MAX_PARTICLES_PER_LAYER = 200;  // 4J - reduced from 4000
     static const int MAX_DRAGON_BREATH_PARTICLES = 1000;
+    static const int MAX_FIREWORK_SPARK_PARTICLES = 2000;
 
 public:
     static const int MISC_TEXTURE = 0;
@@ -17,16 +19,21 @@ public:
     static const int ITEM_TEXTURE = 2;
     static const int ENTITY_PARTICLE_TEXTURE = 3;
     static const int DRAGON_BREATH_TEXTURE = 4;  // 4J Added
-
     static const int TEXTURE_COUNT = 5;
+
+    // Brought forward from Java 1.8
+    static const int TRANSLUCENT_LIST = 0;
+    static const int OPAQUE_LIST = 1;
+    static const int LIST_COUNT = 2;
 
 protected:
     Level* level;
 
 private:
     std::deque<std::shared_ptr<Particle> >
-        particles[3][TEXTURE_COUNT];  // 4J made two arrays to cope with
-                                      // simultaneous two dimensions
+        particles[3][TEXTURE_COUNT]
+                 [LIST_COUNT];  // 4J made three arrays to cope with
+                                // simultaneous two dimensions
     Textures* textures;
     Random* random;
 
@@ -35,10 +42,17 @@ public:
     ~ParticleEngine();
     void add(std::shared_ptr<Particle> p);
     void tick();
-    void render(std::shared_ptr<Entity> player, float a);
-    void renderLit(std::shared_ptr<Entity> player, float a);
+    void render(std::shared_ptr<Entity> player, float a, int list);
+    void renderLit(std::shared_ptr<Entity> player, float a, int list);
     void setLevel(Level* level);
     void destroy(int x, int y, int z, int tid, int data);
     void crack(int x, int y, int z, int face);
+
+    // 4J - Brought forward from Java 1.8
+    void markTranslucent(std::shared_ptr<Particle> particle);
+    void markOpaque(std::shared_ptr<Particle> particle);
+    void moveParticleInList(std::shared_ptr<Particle> particle, int source,
+                            int destination);
+
     std::wstring countParticles();
 };

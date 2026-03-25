@@ -17,8 +17,8 @@ void LargeFeature::apply(ChunkSource* ChunkSource, Level* level, int xOffs,
     this->level = level;
 
     random->setSeed(level->getSeed());
-    __int64 xScale = random->nextLong();
-    __int64 zScale = random->nextLong();
+    int64_t xScale = random->nextLong();
+    int64_t zScale = random->nextLong();
 
     for (int x = xOffs - r; x <= xOffs + r; x++) {
         for (int z = zOffs - r; z <= zOffs + r; z++) {

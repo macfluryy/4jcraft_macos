@@ -1,6 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "PlayerRenderer.h"
 #include "SkullTileRenderer.h"
+#include "HumanoidMobRenderer.h"
 #include "../Models/HumanoidModel.h"
 #include "../Models/ModelPart.h"
 #include "../../Player/LocalPlayer.h"
@@ -28,10 +29,11 @@ const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
 #endif
 };
 
-const std::wstring PlayerRenderer::MATERIAL_NAMES[5] = {
-    L"cloth", L"chain", L"iron", L"diamond", L"gold"};
+ResourceLocation PlayerRenderer::DEFAULT_LOCATION =
+    ResourceLocation(TN_MOB_CHAR);
 
-PlayerRenderer::PlayerRenderer() : MobRenderer(new HumanoidModel(0), 0.5f) {
+PlayerRenderer::PlayerRenderer()
+    : LivingEntityRenderer(new HumanoidModel(0), 0.5f) {
     humanoidModel = (HumanoidModel*)model;
 
     armorParts1 = new HumanoidModel(1.0f);
@@ -45,8 +47,8 @@ unsigned int PlayerRenderer::getNametagColour(int index) {
     return 0xFF000000;
 }
 
-int PlayerRenderer::prepareArmor(std::shared_ptr<Mob> _player, int layer,
-                                 float a) {
+int PlayerRenderer::prepareArmor(std::shared_ptr<LivingEntity> _player,
+                                 int layer, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(_player);
@@ -63,8 +65,8 @@ int PlayerRenderer::prepareArmor(std::shared_ptr<Mob> _player, int layer,
         Item* item = itemInstance->getItem();
         if (dynamic_cast<ArmorItem*>(item)) {
             ArmorItem* armorItem = dynamic_cast<ArmorItem*>(item);
-            bindTexture(L"armor/" + MATERIAL_NAMES[armorItem->modelIndex] +
-                        L"_" + _toString<int>(layer == 2 ? 2 : 1) + L".png");
+            bindTexture(
+                HumanoidMobRenderer::getArmorLocation(armorItem, layer));
 
             HumanoidModel* armor = layer == 2 ? armorParts2 : armorParts1;
 
@@ -106,8 +108,8 @@ int PlayerRenderer::prepareArmor(std::shared_ptr<Mob> _player, int layer,
     return -1;
 }
 
-void PlayerRenderer::prepareSecondPassArmor(std::shared_ptr<Mob> _player,
-                                            int layer, float a) {
+void PlayerRenderer::prepareSecondPassArmor(
+    std::shared_ptr<LivingEntity> _player, int layer, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(_player);
@@ -117,8 +119,8 @@ void PlayerRenderer::prepareSecondPassArmor(std::shared_ptr<Mob> _player,
         Item* item = itemInstance->getItem();
         if (dynamic_cast<ArmorItem*>(item)) {
             ArmorItem* armorItem = dynamic_cast<ArmorItem*>(item);
-            bindTexture(L"armor/" + MATERIAL_NAMES[armorItem->modelIndex] +
-                        L"_" + _toString<int>(layer == 2 ? 2 : 1) + L"_b.png");
+            bindTexture(HumanoidMobRenderer::getArmorLocation((ArmorItem*)item,
+                                                              layer, true));
 
             float brightness = SharedConstants::TEXTURE_LIGHTING
                                    ? 1
@@ -173,8 +175,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         mob->isSneaking();
 
     double yp = y - mob->heightOffset;
-    if (mob->isSneaking() &&
-        (std::dynamic_pointer_cast<LocalPlayer>(mob) == NULL)) {
+    if (mob->isSneaking() && !mob->instanceof(eTYPE_LOCALPLAYER)) {
         yp -= 2 / 16.0f;
     }
 
@@ -208,7 +209,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         }
     }
 
-    MobRenderer::render(mob, x, yp, z, rot, a);
+    LivingEntityRenderer::render(mob, x, yp, z, rot, a);
 
     // turn them off again
     if (pAdditionalModelParts && pAdditionalModelParts->size() != 0) {
@@ -227,91 +228,14 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         humanoidModel->holdingRightHand = 0;
 }
 
-void PlayerRenderer::renderName(std::shared_ptr<Mob> _mob, double x, double y,
-                                double z) {
-    // 4J - dynamic cast required because we aren't using templates/generics in
-    // our version
-    std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
+void PlayerRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
+                                         float a) {
+    float brightness =
+        SharedConstants::TEXTURE_LIGHTING ? 1 : _mob->getBrightness(a);
+    glColor3f(brightness, brightness, brightness);
 
-    if (Minecraft::renderNames() &&
-        mob != entityRenderDispatcher->cameraEntity &&
-        !mob->isInvisibleTo(
-            Minecraft::GetInstance()
-                ->player))  // 4J-JEV: Todo, move to LivingEntityRenderer.
-    {
-        float size = 1.60f;
-        float s = 1 / 60.0f * size;
-        double dist = mob->distanceToSqr(entityRenderDispatcher->cameraEntity);
-
-        float maxDist = mob->isSneaking() ? 32.0f : 64.0f;
-
-        if (dist < maxDist * maxDist) {
-            // Truncate display names longer than 16 char
-            std::wstring msg = mob->getDisplayName();
-            if (msg.length() > 16) {
-                msg.resize(16);
-                msg += L"...";
-            }
-
-            if (mob->isSneaking()) {
-                if (app.GetGameSettings(eGameSetting_DisplayHUD) == 0) {
-                    // 4J-PB - turn off gamertag render
-                    return;
-                }
-
-                if (app.GetGameHostOption(eGameHostOption_Gamertags) == 0) {
-                    // turn off gamertags if the host has set them off
-                    return;
-                }
-
-                Font* font = getFont();
-                glPushMatrix();
-                glTranslatef((float)x + 0, (float)y + 2.3f, (float)z);
-                glNormal3f(0, 1, 0);
-
-                glRotatef(-this->entityRenderDispatcher->playerRotY, 0, 1, 0);
-                glRotatef(this->entityRenderDispatcher->playerRotX, 1, 0, 0);
-
-                glScalef(-s, -s, s);
-                glDisable(GL_LIGHTING);
-
-                glTranslatef(0, (float)0.25f / s, 0);
-                glDepthMask(false);
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                Tesselator* t = Tesselator::getInstance();
-
-                glDisable(GL_TEXTURE_2D);
-                t->begin();
-                int w = font->width(msg) / 2;
-                t->color(0.0f, 0.0f, 0.0f, 0.25f);
-                t->vertex((float)(-w - 1), (float)(-1), (float)(0));
-                t->vertex((float)(-w - 1), (float)(+8), (float)(0));
-                t->vertex((float)(+w + 1), (float)(+8), (float)(0));
-                t->vertex((float)(+w + 1), (float)(-1), (float)(0));
-                t->end();
-                glEnable(GL_TEXTURE_2D);
-                glDepthMask(true);
-                font->draw(msg, -font->width(msg) / 2, 0, 0x20ffffff);
-                glEnable(GL_LIGHTING);
-                glDisable(GL_BLEND);
-                glColor4f(1, 1, 1, 1);
-                glPopMatrix();
-            } else {
-                if (mob->isSleeping()) {
-                    renderNameTag(mob, msg, x, y - 1.5f, z, 64,
-                                  s_nametagColors[mob->getPlayerIndex()]);
-                } else {
-                    renderNameTag(mob, msg, x, y, z, 64,
-                                  s_nametagColors[mob->getPlayerIndex()]);
-                }
-            }
-        }
-    }
-}
-
-void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
-    MobRenderer::additionalRendering(_mob, a);
+    LivingEntityRenderer::additionalRendering(_mob, a);
+    LivingEntityRenderer::renderArrows(_mob, a);
 
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
@@ -337,7 +261,7 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
                     glScalef(s, -s, s);
                 }
 
-                this->entityRenderDispatcher->itemInHandRenderer->renderItem(
+                entityRenderDispatcher->itemInHandRenderer->renderItem(
                     mob, headGear, 0);
             } else if (headGear->getItem()->id == Item::skull_Id) {
                 float s = 17 / 16.0f;
@@ -378,8 +302,11 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
             glPopMatrix();
         }
     }
-    // 4J-PB
-    //	if (bindTexture(mob->cloakTexture, L"" ))
+
+    // 4J: removed
+    /*boolean loaded = mob->getCloakTexture()->isLoaded();
+boolean b1 = !mob->isInvisible();
+boolean b2 = !mob->isCapeHidden();*/
     if (bindTexture(mob->customTextureUrl2, L"") && !mob->isInvisible()) {
         glPushMatrix();
         glTranslatef(0, 0, 2 / 16.0f);
@@ -448,7 +375,7 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
             s *= 0.75f;
             glRotatef(20, 1, 0, 0);
             glRotatef(45, 0, 1, 0);
-            glScalef(s, -s, s);
+            glScalef(-s, -s, s);
         } else if (item->id == Item::bow->id) {
             float s = 10 / 16.0f;
             glTranslatef(0 / 16.0f, 2 / 16.0f, 5 / 16.0f);
@@ -495,6 +422,12 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
                     mob, item, layer, false);
             }
         } else {
+            int col = item->getItem()->getColor(item, 0);
+            float red = ((col >> 16) & 0xff) / 255.0f;
+            float g = ((col >> 8) & 0xff) / 255.0f;
+            float b = ((col) & 0xff) / 255.0f;
+
+            glColor4f(red, g, b, 1);
             this->entityRenderDispatcher->itemInHandRenderer->renderItem(
                 mob, item, 0);
         }
@@ -503,18 +436,53 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<Mob> _mob, float a) {
     }
 }
 
-void PlayerRenderer::scale(std::shared_ptr<Mob> player, float a) {
+void PlayerRenderer::renderNameTags(std::shared_ptr<LivingEntity> player,
+                                    double x, double y, double z,
+                                    std::wstring msg, float scale,
+                                    double dist) {
+#if 0
+    if (dist < 10 * 10)
+	{
+        Scoreboard *scoreboard = player->getScoreboard();
+        Objective *objective = scoreboard->getDisplayObjective(Scoreboard::DISPLAY_SLOT_BELOW_NAME);
+
+        if (objective != NULL)
+		{
+            Score *score = scoreboard->getPlayerScore(player->getAName(), objective);
+
+            if (player->isSleeping())
+			{
+                renderNameTag(player, score->getScore() + " " + objective->getDisplayName(), x, y - 1.5f, z, 64);
+            }
+			else
+			{
+                renderNameTag(player, score->getScore() + " " + objective->getDisplayName(), x, y, z, 64);
+            }
+
+            y += getFont()->lineHeight * 1.15f * scale;
+        }
+    }
+#endif
+
+    LivingEntityRenderer::renderNameTags(player, x, y, z, msg, scale, dist);
+}
+
+void PlayerRenderer::scale(std::shared_ptr<LivingEntity> player, float a) {
     float s = 15 / 16.0f;
     glScalef(s, s, s);
 }
 
 void PlayerRenderer::renderHand() {
+    float brightness = 1;
+    glColor3f(brightness, brightness, brightness);
+
     humanoidModel->m_uiAnimOverrideBitmask =
         Minecraft::GetInstance()->player->getAnimOverrideBitmask();
     armorParts1->eating = armorParts2->eating = humanoidModel->eating =
         humanoidModel->idle = false;
     humanoidModel->attackTime = 0;
-    humanoidModel->setupAnim(0, 0, 0, 0, 0, 1 / 16.0f);
+    humanoidModel->setupAnim(0, 0, 0, 0, 0, 1 / 16.0f,
+                             Minecraft::GetInstance()->player);
     // 4J-PB - does this skin have its arm0 disabled? (Dalek, etc)
     if ((humanoidModel->m_uiAnimOverrideBitmask &
          (1 << HumanoidModel::eAnim_DisableRenderArm0)) == 0) {
@@ -522,23 +490,27 @@ void PlayerRenderer::renderHand() {
     }
 }
 
-void PlayerRenderer::setupPosition(std::shared_ptr<Mob> _mob, double x,
+void PlayerRenderer::setupPosition(std::shared_ptr<LivingEntity> _mob, double x,
                                    double y, double z) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
 
     if (mob->isAlive() && mob->isSleeping()) {
-        MobRenderer::setupPosition(mob, x + mob->bedOffsetX,
-                                   y + mob->bedOffsetY, z + mob->bedOffsetZ);
+        LivingEntityRenderer::setupPosition(
+            mob, x + mob->bedOffsetX, y + mob->bedOffsetY, z + mob->bedOffsetZ);
 
     } else {
-        MobRenderer::setupPosition(mob, x, y, z);
+        if (mob->isRiding() && (mob->getAnimOverrideBitmask() &
+                                (1 << HumanoidModel::eAnim_SmallModel)) != 0) {
+            y += 0.5f;
+        }
+        LivingEntityRenderer::setupPosition(mob, x, y, z);
     }
 }
 
-void PlayerRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
-                                    float bodyRot, float a) {
+void PlayerRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
+                                    float bob, float bodyRot, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
     std::shared_ptr<Player> mob = std::dynamic_pointer_cast<Player>(_mob);
@@ -548,7 +520,7 @@ void PlayerRenderer::setupRotations(std::shared_ptr<Mob> _mob, float bob,
         glRotatef(getFlipDegrees(mob), 0, 0, 1);
         glRotatef(270, 0, 1, 0);
     } else {
-        MobRenderer::setupRotations(mob, bob, bodyRot, a);
+        LivingEntityRenderer::setupRotations(mob, bob, bodyRot, a);
     }
 }
 
@@ -560,4 +532,16 @@ void PlayerRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
         if (player != NULL && player->hasInvisiblePrivilege()) return;
     }
     EntityRenderer::renderShadow(e, x, y, z, pow, a);
+}
+
+// 4J Added override
+void PlayerRenderer::bindTexture(std::shared_ptr<Entity> entity) {
+    std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(entity);
+    bindTexture(player->customTextureUrl, player->getTexture());
+}
+
+ResourceLocation* PlayerRenderer::getTextureLocation(
+    std::shared_ptr<Entity> entity) {
+    std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(entity);
+    return new ResourceLocation((_TEXTURE_NAME)player->getTexture());
 }

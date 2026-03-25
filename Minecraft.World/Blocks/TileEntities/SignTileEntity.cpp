@@ -27,14 +27,15 @@ SignTileEntity::SignTileEntity() : TileEntity() {
     m_iSelectedLine = -1;
 
     _isEditable = true;
+
+    playerWhoMayEdit = nullptr;
 }
 
 SignTileEntity::~SignTileEntity() {
     // TODO ORBIS_STUBBED;
 #ifndef __ORBIS__
     // 4J-PB - we don't need to verify strings anymore -
-    // InputManager.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback,
-    // this);
+    // InputManager.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback,(LPVOID)this);
 #endif
 }
 
@@ -91,6 +92,17 @@ bool SignTileEntity::isEditable() { return _isEditable; }
 
 void SignTileEntity::setEditable(bool isEditable) {
     this->_isEditable = isEditable;
+    if (!isEditable) {
+        playerWhoMayEdit = nullptr;
+    }
+}
+
+void SignTileEntity::setAllowedPlayerEditor(std::shared_ptr<Player> player) {
+    playerWhoMayEdit = player;
+}
+
+std::shared_ptr<Player> SignTileEntity::getPlayerWhoMayEdit() {
+    return playerWhoMayEdit;
 }
 
 void SignTileEntity::setChanged() {
@@ -115,8 +127,7 @@ void SignTileEntity::setChanged() {
             // at this point, we can ask the online string verifier if our sign
 text is ok #ifdef __ORBIS__ m_bVerified=true; #else
 
-            if(!InputManager.VerifyStrings((WCHAR**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,
-this))
+            if(!InputManager.VerifyStrings((WCHAR**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,(LPVOID)this))
             {
                     // Nothing to verify
                     m_bVerified=true;

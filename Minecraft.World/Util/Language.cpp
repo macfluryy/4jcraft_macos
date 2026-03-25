@@ -15,7 +15,7 @@ Language::Language() {
     if (langFile.exists()) {
         InputStream* stream = new FileInputStream(langFile);
         if (stream) {
-            __int64 fileSize = langFile.length();
+            int64_t fileSize = langFile.length();
             if (fileSize > 0) {
                 // 4jcraft: we would've used BufferedReader like the JE
                 // equivalent here, but the lang file starts with a newline,

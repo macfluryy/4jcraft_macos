@@ -15,6 +15,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
+#include "../../Minecraft.World/Headers/net.minecraft.world.entity.animal.h"
 #include "../../Minecraft.World/Headers/net.minecraft.network.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.food.h"
 #include "../../Minecraft.World/Util/AABB.h"
@@ -55,7 +56,7 @@ PlayerConnection::PlayerConnection(MinecraftServer* server,
     connection->setListener(this);
     this->player = player;
     //	player->connection = this;		// 4J - moved out as we can't
-    //assign in a ctor
+    // assign in a ctor
     InitializeCriticalSection(&done_cs);
 
     m_bCloseOnTick = false;
@@ -95,9 +96,6 @@ void PlayerConnection::tick() {
         send(std::shared_ptr<KeepAlivePacket>(
             new KeepAlivePacket(lastKeepAliveId)));
     }
-    //        if (!didTick) {
-    //            player->doTick(false);
-    //        }
 
     if (chatSpamTickCount > 0) {
         chatSpamTickCount--;
@@ -142,9 +140,8 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
 
 void PlayerConnection::handlePlayerInput(
     std::shared_ptr<PlayerInputPacket> packet) {
-    player->setPlayerInput(packet->getXa(), packet->getYa(),
-                           packet->isJumping(), packet->isSneaking(),
-                           packet->getXRot(), packet->getYRot());
+    player->setPlayerInput(packet->getXxa(), packet->getYya(),
+                           packet->isJumping(), packet->isSneaking());
 }
 
 void PlayerConnection::handleMovePlayer(
@@ -172,45 +169,27 @@ void PlayerConnection::handleMovePlayer(
             double xt = player->x;
             double yt = player->y;
             double zt = player->z;
-            double xxa = 0;
-            double zza = 0;
+
             if (packet->hasRot) {
                 yRotT = packet->yRot;
                 xRotT = packet->xRot;
-            }
-            if (packet->hasPos && packet->y == -999 && packet->yView == -999) {
-                // CraftBukkit start
-                if (abs(packet->x) > 1 || abs(packet->z) > 1) {
-                    // System.err.println(player.name + " was caught trying to
-                    // crash the server with an invalid position.");
-#ifndef _CONTENT_PACKAGE
-                    wprintf(
-                        L"%ls was caught trying to crash the server with an "
-                        L"invalid position.",
-                        player->name.c_str());
-#endif
-                    disconnect(DisconnectPacket::
-                                   eDisconnect_IllegalPosition);  //"Nope!");
-                    return;
-                }
-                // CraftBukkit end
-                xxa = packet->x;
-                zza = packet->z;
             }
 
             player->onGround = packet->onGround;
 
             player->doTick(false);
-            player->move(xxa, 0, zza);
+            player->ySlideOffset = 0;
             player->absMoveTo(xt, yt, zt, yRotT, xRotT);
-            player->xd = xxa;
-            player->zd = zza;
-            if (player->riding != NULL) level->forceTick(player->riding, true);
             if (player->riding != NULL) player->riding->positionRider();
             server->getPlayers()->move(player);
-            xLastOk = player->x;
-            yLastOk = player->y;
-            zLastOk = player->z;
+
+            // player may have been kicked off the mount during the tick, so
+            // only copy valid coordinates if the player still is "synched"
+            if (synched) {
+                xLastOk = player->x;
+                yLastOk = player->y;
+                zLastOk = player->z;
+            }
             ((Level*)level)->tick(player);
 
             return;
@@ -283,12 +262,12 @@ void PlayerConnection::handleMovePlayer(
         // 4J-PB - removing this one for now
         /*if (dist > 100.0f)
         {
-//            logger.warning(player->name + " moved too quickly!");
-                disconnect(DisconnectPacket::eDisconnect_MovedTooQuickly);
-//                System.out.println("Moved too quickly at " + xt + ", " + yt +
-", " + zt);
-//                teleport(player->x, player->y, player->z, player->yRot,
-player->xRot); return;
+        //            logger.warning(player->name + " moved too quickly!");
+        disconnect(DisconnectPacket::eDisconnect_MovedTooQuickly);
+        //                System.out.println("Moved too quickly at " + xt + ", "
+        + yt + ", " + zt);
+        //                teleport(player->x, player->y, player->z,
+        player->yRot, player->xRot); return;
         }
         */
 
@@ -332,10 +311,10 @@ player->xRot); return;
         if (dist > 0.25 * 0.25 && !player->isSleeping() &&
             !player->gameMode->isCreative() && !player->isAllowedToFly()) {
             fail = true;
-//            logger.warning(player->name + " moved wrongly!");
-//            System.out.println("Got position " + xt + ", " + yt + ", " + zt);
-//            System.out.println("Expected " + player->x + ", " + player->y + ",
-//            " + player->z);
+            //            logger.warning(player->name + " moved wrongly!");
+            //            System.out.println("Got position " + xt + ", " + yt +
+            //            ", " + zt); System.out.println("Expected " + player->x
+            //            + ", " + player->y + ", " + player->z);
 #ifndef _CONTENT_PACKAGE
             wprintf(L"%ls moved wrongly!\n", player->name.c_str());
             app.DebugPrintf("Got position %f, %f, %f\n", xt, yt, zt);
@@ -359,8 +338,8 @@ player->xRot); return;
             if (oyDist >= (-0.5f / 16.0f)) {
                 aboveGroundTickCount++;
                 if (aboveGroundTickCount > 80) {
-//                    logger.warning(player->name + " was kicked for floating
-//                    too long!");
+                    //                    logger.warning(player->name + " was
+                    //                    kicked for floating too long!");
 #ifndef _CONTENT_PACKAGE
                     wprintf(L"%ls was kicked for floating too long!\n",
                             player->name.c_str());
@@ -376,6 +355,8 @@ player->xRot); return;
         player->onGround = packet->onGround;
         server->getPlayers()->move(player);
         player->doCheckFallDamage(player->y - startY, packet->onGround);
+    } else if ((tickCount % SharedConstants::TICKS_PER_SECOND) == 0) {
+        teleport(xLastOk, yLastOk, zLastOk, player->yRot, player->xRot);
     }
 }
 
@@ -399,20 +380,23 @@ void PlayerConnection::teleport(double x, double y, double z, float yRot,
 void PlayerConnection::handlePlayerAction(
     std::shared_ptr<PlayerActionPacket> packet) {
     ServerLevel* level = server->getLevel(player->dimension);
+    player->resetLastActionTime();
 
     if (packet->action == PlayerActionPacket::DROP_ITEM) {
-        player->drop();
+        player->drop(false);
+        return;
+    } else if (packet->action == PlayerActionPacket::DROP_ALL_ITEMS) {
+        player->drop(true);
         return;
     } else if (packet->action == PlayerActionPacket::RELEASE_USE_ITEM) {
         player->releaseUsingItem();
         return;
     }
-    // 4J Stu - We don't have ops, so just use the levels setting
-    bool canEditSpawn =
-        level->canEditSpawn;  // = level->dimension->id != 0 ||
-                              // server->players->isOp(player->name);
+
     bool shouldVerifyLocation = false;
     if (packet->action == PlayerActionPacket::START_DESTROY_BLOCK)
+        shouldVerifyLocation = true;
+    if (packet->action == PlayerActionPacket::ABORT_DESTROY_BLOCK)
         shouldVerifyLocation = true;
     if (packet->action == PlayerActionPacket::STOP_DESTROY_BLOCK)
         shouldVerifyLocation = true;
@@ -434,14 +418,15 @@ void PlayerConnection::handlePlayerAction(
             return;
         }
     }
-    Pos* spawnPos = level->getSharedSpawnPos();
-    int xd = (int)Mth::abs((float)(x - spawnPos->x));
-    int zd = (int)Mth::abs((float)(z - spawnPos->z));
-    delete spawnPos;
-    if (xd > zd) zd = xd;
+
     if (packet->action == PlayerActionPacket::START_DESTROY_BLOCK) {
-        if (zd > 16 || canEditSpawn)
-            player->gameMode->startDestroyBlock(x, y, z, packet->face);
+        if (true)
+            player->gameMode->startDestroyBlock(
+                x, y, z,
+                packet->face);  // 4J - condition was
+                                // !server->isUnderSpawnProtection(level,
+                                // x, y, z, player) (from Java 1.6.4)
+                                // but putting back to old behaviour
         else
             player->connection->send(std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level)));
@@ -461,19 +446,7 @@ void PlayerConnection::handlePlayerAction(
         if (level->getTile(x, y, z) != 0)
             player->connection->send(std::shared_ptr<TileUpdatePacket>(
                 new TileUpdatePacket(x, y, z, level)));
-    } else if (packet->action == PlayerActionPacket::GET_UPDATED_BLOCK) {
-        double xDist = player->x - (x + 0.5);
-        double yDist = player->y - (y + 0.5);
-        double zDist = player->z - (z + 0.5);
-        double dist = xDist * xDist + yDist * yDist + zDist * zDist;
-        if (dist < 16 * 16) {
-            player->connection->send(std::shared_ptr<TileUpdatePacket>(
-                new TileUpdatePacket(x, y, z, level)));
-        }
     }
-
-    // 4J Stu - Don't change the levels state
-    // level->canEditSpawn = false;
 }
 
 void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
@@ -484,6 +457,7 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
     int y = packet->getY();
     int z = packet->getZ();
     int face = packet->getFace();
+    player->resetLastActionTime();
 
     // 4J Stu - We don't have ops, so just use the levels setting
     bool canEditSpawn =
@@ -495,14 +469,13 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
     } else if ((packet->getY() < server->getMaxBuildHeight() - 1) ||
                (packet->getFace() != Facing::UP &&
                 packet->getY() < server->getMaxBuildHeight())) {
-        Pos* spawnPos = level->getSharedSpawnPos();
-        int xd = (int)Mth::abs((float)(x - spawnPos->x));
-        int zd = (int)Mth::abs((float)(z - spawnPos->z));
-        delete spawnPos;
-        if (xd > zd) zd = xd;
         if (synched &&
             player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) < 8 * 8) {
-            if (zd > 16 || canEditSpawn) {
+            if (true)  // 4J - condition was
+                       // !server->isUnderSpawnProtection(level, x, y, z,
+                       // player) (from java 1.6.4) but putting back to old
+                       // behaviour
+            {
                 player->gameMode->useItemOn(
                     player, level, item, x, y, z, face, packet->getClickX(),
                     packet->getClickY(), packet->getClickZ());
@@ -511,7 +484,7 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
 
         informClient = true;
     } else {
-        // player->connection->send(std::shared_ptr<ChatPacket>(new
+        // player->connection->send(shared_ptr<ChatPacket>(new
         // ChatPacket("\u00A77Height limit for building is " +
         // server->maxBuildHeight)));
         informClient = true;
@@ -546,6 +519,11 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
     }
 
     item = player->inventory->getSelected();
+
+    bool forceClientUpdate = false;
+    if (item != NULL && packet->getItem() == NULL) {
+        forceClientUpdate = true;
+    }
     if (item != NULL && item->count == 0) {
         player->inventory->items[player->inventory->selected] = nullptr;
         item = nullptr;
@@ -561,7 +539,8 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
         player->containerMenu->broadcastChanges();
         player->ignoreSlotUpdateHack = false;
 
-        if (!ItemInstance::matches(player->inventory->getSelected(),
+        if (forceClientUpdate ||
+            !ItemInstance::matches(player->inventory->getSelected(),
                                    packet->getItem())) {
             send(std::shared_ptr<ContainerSetSlotPacket>(
                 new ContainerSetSlotPacket(player->containerMenu->containerId,
@@ -569,9 +548,6 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
                                            player->inventory->getSelected())));
         }
     }
-
-    // 4J Stu - Don't change the levels state
-    // level->canEditSpawn = false;
 }
 
 void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
@@ -641,6 +617,7 @@ void PlayerConnection::handleSetCarriedItem(
         return;
     }
     player->inventory->selected = packet->slot;
+    player->resetLastActionTime();
 }
 
 void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
@@ -686,6 +663,7 @@ void PlayerConnection::handleCommand(const std::wstring& message) {
 }
 
 void PlayerConnection::handleAnimate(std::shared_ptr<AnimatePacket> packet) {
+    player->resetLastActionTime();
     if (packet->action == AnimatePacket::SWING) {
         player->swing();
     }
@@ -693,6 +671,7 @@ void PlayerConnection::handleAnimate(std::shared_ptr<AnimatePacket> packet) {
 
 void PlayerConnection::handlePlayerCommand(
     std::shared_ptr<PlayerCommandPacket> packet) {
+    player->resetLastActionTime();
     if (packet->action == PlayerCommandPacket::START_SNEAKING) {
         player->setSneaking(true);
     } else if (packet->action == PlayerCommandPacket::STOP_SNEAKING) {
@@ -704,6 +683,20 @@ void PlayerConnection::handlePlayerCommand(
     } else if (packet->action == PlayerCommandPacket::STOP_SLEEPING) {
         player->stopSleepInBed(false, true, true);
         synched = false;
+    } else if (packet->action == PlayerCommandPacket::RIDING_JUMP) {
+        // currently only supported by horses...
+        if ((player->riding != NULL) &&
+            player->riding->GetType() == eTYPE_HORSE) {
+            std::dynamic_pointer_cast<EntityHorse>(player->riding)
+                ->onPlayerJump(packet->data);
+        }
+    } else if (packet->action == PlayerCommandPacket::OPEN_INVENTORY) {
+        // also only supported by horses...
+        if ((player->riding != NULL) &&
+            player->riding->instanceof(eTYPE_HORSE)) {
+            std::dynamic_pointer_cast<EntityHorse>(player->riding)
+                ->openInventory(player);
+        }
     } else if (packet->action == PlayerCommandPacket::START_IDLEANIM) {
         player->setIsIdle(true);
     } else if (packet->action == PlayerCommandPacket::STOP_IDLEANIM) {
@@ -737,11 +730,12 @@ void PlayerConnection::warn(const std::wstring& string) {
     // send( std::shared_ptr<ChatPacket>( new ChatPacket(L"§9" + string) ) );
 }
 
-std::wstring PlayerConnection::getConsoleName() { return player->name; }
+std::wstring PlayerConnection::getConsoleName() { return player->getName(); }
 
 void PlayerConnection::handleInteract(std::shared_ptr<InteractPacket> packet) {
     ServerLevel* level = server->getLevel(player->dimension);
     std::shared_ptr<Entity> target = level->getEntity(packet->target);
+    player->resetLastActionTime();
 
     // Fix for #8218 - Gameplay: Attacking zombies from a different level often
     // results in no hits being registered 4J Stu - If the client says that we
@@ -763,6 +757,14 @@ void PlayerConnection::handleInteract(std::shared_ptr<InteractPacket> packet) {
         if (packet->action == InteractPacket::INTERACT) {
             player->interact(target);
         } else if (packet->action == InteractPacket::ATTACK) {
+            if ((target->GetType() == eTYPE_ITEMENTITY) ||
+                (target->GetType() == eTYPE_EXPERIENCEORB) ||
+                (target->GetType() == eTYPE_ARROW) || target == player) {
+                // disconnect("Attempting to attack an invalid entity");
+                // server.warn("Player " + player.getName() + " tried to attack
+                // an invalid entity");
+                return;
+            }
             player->attack(target);
         }
         //}
@@ -1033,6 +1035,33 @@ void PlayerConnection::handleServerSettingsChanged(
             app.SetGameHostOption(
                 eGameHostOption_TNT,
                 app.GetGameHostOption(packet->data, eGameHostOption_TNT));
+            app.SetGameHostOption(
+                eGameHostOption_MobGriefing,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_MobGriefing));
+            app.SetGameHostOption(
+                eGameHostOption_KeepInventory,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_KeepInventory));
+            app.SetGameHostOption(
+                eGameHostOption_DoMobSpawning,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_DoMobSpawning));
+            app.SetGameHostOption(
+                eGameHostOption_DoMobLoot,
+                app.GetGameHostOption(packet->data, eGameHostOption_DoMobLoot));
+            app.SetGameHostOption(
+                eGameHostOption_DoTileDrops,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_DoTileDrops));
+            app.SetGameHostOption(
+                eGameHostOption_DoDaylightCycle,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_DoDaylightCycle));
+            app.SetGameHostOption(
+                eGameHostOption_NaturalRegeneration,
+                app.GetGameHostOption(packet->data,
+                                      eGameHostOption_NaturalRegeneration));
 
             server->getPlayers()->broadcastAll(
                 std::shared_ptr<ServerSettingsChangedPacket>(
@@ -1063,6 +1092,7 @@ void PlayerConnection::handleGameCommand(
 
 void PlayerConnection::handleClientCommand(
     std::shared_ptr<ClientCommandPacket> packet) {
+    player->resetLastActionTime();
     if (packet->action == ClientCommandPacket::PERFORM_RESPAWN) {
         if (player->wonGame) {
             player = server->getPlayers()->respawn(
@@ -1072,10 +1102,10 @@ void PlayerConnection::handleClientCommand(
         // else if (player.getLevel().getLevelData().isHardcore())
         //{
         //	if (server.isSingleplayer() &&
-        //player.name.equals(server.getSingleplayerName()))
+        // player.name.equals(server.getSingleplayerName()))
         //	{
         //		player.connection.disconnect("You have died. Game over,
-        //man, it's game over!"); 		server.selfDestruct();
+        // man, it's game over!"); 		server.selfDestruct();
         //	}
         //	else
         //	{
@@ -1084,7 +1114,7 @@ void PlayerConnection::handleClientCommand(
 
         //		server.getPlayers().getBans().add(ban);
         //		player.connection.disconnect("You have died. Game over,
-        //man, it's game over!");
+        // man, it's game over!");
         //	}
         //}
         else {
@@ -1135,13 +1165,11 @@ void PlayerConnection::handleContainerSetSlot(
 
 void PlayerConnection::handleContainerClick(
     std::shared_ptr<ContainerClickPacket> packet) {
+    player->resetLastActionTime();
     if (player->containerMenu->containerId == packet->containerId &&
         player->containerMenu->isSynched(player)) {
         std::shared_ptr<ItemInstance> clicked = player->containerMenu->clicked(
-            packet->slotNum, packet->buttonNum,
-            packet->quickKey ? AbstractContainerMenu::CLICK_QUICK_MOVE
-                             : AbstractContainerMenu::CLICK_PICKUP,
-            player);
+            packet->slotNum, packet->buttonNum, packet->clickType, player);
 
         if (ItemInstance::matches(packet->item, clicked)) {
             // Yep, you sure did click what you claimed to click!
@@ -1161,9 +1189,9 @@ void PlayerConnection::handleContainerClick(
             player->containerMenu->setSynched(player, false);
 
             std::vector<std::shared_ptr<ItemInstance> > items;
-            for (unsigned int i = 0; i < player->containerMenu->slots->size();
+            for (unsigned int i = 0; i < player->containerMenu->slots.size();
                  i++) {
-                items.push_back(player->containerMenu->slots->at(i)->getItem());
+                items.push_back(player->containerMenu->slots.at(i)->getItem());
             }
             player->refreshContainer(player->containerMenu, &items);
 
@@ -1174,6 +1202,7 @@ void PlayerConnection::handleContainerClick(
 
 void PlayerConnection::handleContainerButtonClick(
     std::shared_ptr<ContainerButtonClickPacket> packet) {
+    player->resetLastActionTime();
     if (player->containerMenu->containerId == packet->containerId &&
         player->containerMenu->isSynched(player)) {
         player->containerMenu->clickMenuButton(player, packet->buttonId);
@@ -1261,9 +1290,9 @@ void PlayerConnection::handleSetCreativeModeSlot(
             // as the client also incorrectly predicts the auxvalue of the
             // mapItem
             std::vector<std::shared_ptr<ItemInstance> > items;
-            for (unsigned int i = 0; i < player->inventoryMenu->slots->size();
+            for (unsigned int i = 0; i < player->inventoryMenu->slots.size();
                  i++) {
-                items.push_back(player->inventoryMenu->slots->at(i)->getItem());
+                items.push_back(player->inventoryMenu->slots.at(i)->getItem());
             }
             player->refreshContainer(player->inventoryMenu, &items);
         }
@@ -1283,6 +1312,7 @@ void PlayerConnection::handleContainerAck(
 
 void PlayerConnection::handleSignUpdate(
     std::shared_ptr<SignUpdatePacket> packet) {
+    player->resetLastActionTime();
     app.DebugPrintf("PlayerConnection::handleSignUpdate\n");
 
     ServerLevel* level = server->getLevel(player->dimension);
@@ -1293,8 +1323,8 @@ void PlayerConnection::handleSignUpdate(
         if (std::dynamic_pointer_cast<SignTileEntity>(te) != NULL) {
             std::shared_ptr<SignTileEntity> ste =
                 std::dynamic_pointer_cast<SignTileEntity>(te);
-            if (!ste->isEditable()) {
-                server->warn(L"Player " + player->name +
+            if (!ste->isEditable() || ste->getPlayerWhoMayEdit() != player) {
+                server->warn(L"Player " + player->getName() +
                              L" just tried to change non-editable sign");
                 return;
             }
@@ -1552,7 +1582,7 @@ void PlayerConnection::handleCustomPayload(
 		ItemInstance carried = player.inventory.getSelected();
 		if (sentItem != null && sentItem.id == Item.writingBook.id && sentItem.id == carried.id)
 		{
-			carried.setTag(sentItem.getTag());
+			carried.addTagElement(WrittenBookItem.TAG_PAGES, sentItem.getTag().getList(WrittenBookItem.TAG_PAGES));
 		}
 	}
 	else if (CustomPayloadPacket.CUSTOM_BOOK_SIGN_PACKET.equals(customPayloadPacket.identifier))
@@ -1569,7 +1599,9 @@ void PlayerConnection::handleCustomPayload(
 		ItemInstance carried = player.inventory.getSelected();
 		if (sentItem != null && sentItem.id == Item.writtenBook.id && carried.id == Item.writingBook.id)
 		{
-			carried.setTag(sentItem.getTag());
+			carried.addTagElement(WrittenBookItem.TAG_AUTHOR, new StringTag(WrittenBookItem.TAG_AUTHOR, player.getName()));
+			carried.addTagElement(WrittenBookItem.TAG_TITLE, new StringTag(WrittenBookItem.TAG_TITLE, sentItem.getTag().getString(WrittenBookItem.TAG_TITLE)));
+			carried.addTagElement(WrittenBookItem.TAG_PAGES, sentItem.getTag().getList(WrittenBookItem.TAG_PAGES));
 			carried.id = Item.writtenBook.id;
 		}
 	}
@@ -1585,9 +1617,55 @@ void PlayerConnection::handleCustomPayload(
         if (dynamic_cast<MerchantMenu*>(menu)) {
             ((MerchantMenu*)menu)->setSelectionHint(selection);
         }
+    } else if (CustomPayloadPacket::SET_ADVENTURE_COMMAND_PACKET.compare(
+                   customPayloadPacket->identifier) == 0) {
+        if (!server->isCommandBlockEnabled()) {
+            app.DebugPrintf("Command blocks not enabled");
+            // player->sendMessage(ChatMessageComponent.forTranslation("advMode.notEnabled"));
+        } else if (player->hasPermission(eGameCommand_Effect) &&
+                   player->abilities.instabuild) {
+            ByteArrayInputStream bais(customPayloadPacket->data);
+            DataInputStream input(&bais);
+            int x = input.readInt();
+            int y = input.readInt();
+            int z = input.readInt();
+            std::wstring command = Packet::readUtf(&input, 256);
+
+            std::shared_ptr<TileEntity> tileEntity =
+                player->level->getTileEntity(x, y, z);
+            std::shared_ptr<CommandBlockEntity> cbe =
+                std::dynamic_pointer_cast<CommandBlockEntity>(tileEntity);
+            if (tileEntity != NULL && cbe != NULL) {
+                cbe->setCommand(command);
+                player->level->sendTileUpdated(x, y, z);
+                // player->sendMessage(ChatMessageComponent.forTranslation("advMode.setCommand.success",
+                // command));
+            }
+        } else {
+            // player.sendMessage(ChatMessageComponent.forTranslation("advMode.notAllowed"));
+        }
+    } else if (CustomPayloadPacket::SET_BEACON_PACKET.compare(
+                   customPayloadPacket->identifier) == 0) {
+        if (dynamic_cast<BeaconMenu*>(player->containerMenu) != NULL) {
+            ByteArrayInputStream bais(customPayloadPacket->data);
+            DataInputStream input(&bais);
+            int primary = input.readInt();
+            int secondary = input.readInt();
+
+            BeaconMenu* beaconMenu = (BeaconMenu*)player->containerMenu;
+            Slot* slot = beaconMenu->getSlot(0);
+            if (slot->hasItem()) {
+                slot->remove(1);
+                std::shared_ptr<BeaconTileEntity> beacon =
+                    beaconMenu->getBeacon();
+                beacon->setPrimaryPower(primary);
+                beacon->setSecondaryPower(secondary);
+                beacon->setChanged();
+            }
+        }
     } else if (CustomPayloadPacket::SET_ITEM_NAME_PACKET.compare(
                    customPayloadPacket->identifier) == 0) {
-        RepairMenu* menu = dynamic_cast<RepairMenu*>(player->containerMenu);
+        AnvilMenu* menu = dynamic_cast<AnvilMenu*>(player->containerMenu);
         if (menu) {
             if (customPayloadPacket->data.data == NULL ||
                 customPayloadPacket->data.length < 1) {
@@ -1603,6 +1681,8 @@ void PlayerConnection::handleCustomPayload(
         }
     }
 }
+
+bool PlayerConnection::isDisconnected() { return done; }
 
 // 4J Added
 
@@ -1634,6 +1714,10 @@ void PlayerConnection::handleCraftItem(
             // no room in inventory, so throw it down
             player->drop(pTempItemInst);
         }
+    } else if (pTempItemInst->id == Item::fireworksCharge_Id ||
+               pTempItemInst->id == Item::fireworks_Id) {
+        CraftingMenu* menu = (CraftingMenu*)player->containerMenu;
+        player->openFireworks(menu->getX(), menu->getY(), menu->getZ());
     } else {
         // TODO 4J Stu - Assume at the moment that the client can work this out
         // for us...
@@ -1692,9 +1776,9 @@ void PlayerConnection::handleCraftItem(
             // as the client also incorrectly predicts the auxvalue of the
             // mapItem
             std::vector<std::shared_ptr<ItemInstance> > items;
-            for (unsigned int i = 0; i < player->containerMenu->slots->size();
+            for (unsigned int i = 0; i < player->containerMenu->slots.size();
                  i++) {
-                items.push_back(player->containerMenu->slots->at(i)->getItem());
+                items.push_back(player->containerMenu->slots.at(i)->getItem());
             }
             player->refreshContainer(player->containerMenu, &items);
         } else {

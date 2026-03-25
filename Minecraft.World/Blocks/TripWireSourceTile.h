@@ -43,7 +43,8 @@ public:
                      std::shared_ptr<TileEntity> forceEntity =
                          std::shared_ptr<TileEntity>());
     void onRemove(Level* level, int x, int y, int z, int id, int data);
-    virtual bool getSignal(LevelSource* level, int x, int y, int z, int dir);
-    virtual bool getDirectSignal(Level* level, int x, int y, int z, int dir);
+    virtual int getSignal(LevelSource* level, int x, int y, int z, int dir);
+    virtual int getDirectSignal(LevelSource* level, int x, int y, int z,
+                                int dir);
     bool isSignalSource();
 };

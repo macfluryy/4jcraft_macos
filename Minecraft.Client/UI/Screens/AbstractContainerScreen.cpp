@@ -49,9 +49,9 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     Slot* hoveredSlot = NULL;
 
-    AUTO_VAR(itEnd, menu->slots->end());
-    for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++) {
-        Slot* slot = *it;  // menu->slots->at(i);
+    AUTO_VAR(itEnd, menu->slots.end());
+    for (AUTO_VAR(it, menu->slots.begin()); it != itEnd; it++) {
+        Slot* slot = *it;  // menu->slots.at(i);
 
         renderSlot(slot);
 
@@ -259,6 +259,10 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
     //     }
     // }
 
+    if (item == NULL) {
+        return;
+    }
+
     itemRenderer->renderGuiItem(font, minecraft->textures, item, x, y);
     itemRenderer->renderGuiItemDecorations(font, minecraft->textures, item, x,
                                            y);
@@ -266,9 +270,9 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
 }
 
 Slot* AbstractContainerScreen::findSlot(int x, int y) {
-    AUTO_VAR(itEnd, menu->slots->end());
-    for (AUTO_VAR(it, menu->slots->begin()); it != itEnd; it++) {
-        Slot* slot = *it;  // menu->slots->at(i);
+    AUTO_VAR(itEnd, menu->slots.end());
+    for (AUTO_VAR(it, menu->slots.begin()); it != itEnd; it++) {
+        Slot* slot = *it;  // menu->slots.at(i);
         if (isHovering(slot, x, y)) return slot;
     }
     return NULL;
@@ -298,11 +302,11 @@ void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum) {
         if (slot != NULL) slotId = slot->index;
 
         if (clickedOutside) {
-            slotId = AbstractContainerMenu::CLICKED_OUTSIDE;
+            slotId = AbstractContainerMenu::SLOT_CLICKED_OUTSIDE;
         }
 
         if (slotId != -1) {
-            bool quickKey = slotId != AbstractContainerMenu::CLICKED_OUTSIDE &&
+            bool quickKey = slotId != AbstractContainerMenu::SLOT_CLICKED_OUTSIDE &&
                             (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) ||
                              Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
             minecraft->gameMode->handleInventoryMouseClick(

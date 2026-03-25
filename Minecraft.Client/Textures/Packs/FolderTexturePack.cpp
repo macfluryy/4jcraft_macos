@@ -58,7 +58,8 @@ bool FolderTexturePack::isTerrainUpdateCompatible() {
     return true;
 }
 
-std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/) {
+std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
+                                        const char* pchBDPatchFilename) {
     std::wstring wDrive;
 #ifdef _XBOX
     wDrive = L"GAME:\\" + file->getPath() + L"\\";

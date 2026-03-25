@@ -16,6 +16,6 @@ public:
     static bool shouldHit(int level, Random* random);
     static int getDamage(int level, Random* random);
     static void doThornsAfterAttack(std::shared_ptr<Entity> source,
-                                    std::shared_ptr<Mob> target,
+                                    std::shared_ptr<LivingEntity> target,
                                     Random* random);
 };

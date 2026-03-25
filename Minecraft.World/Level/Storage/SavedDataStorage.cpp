@@ -10,9 +10,9 @@
 
 SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
     /*
-    cache = new std::unordered_map<std::wstring, std::shared_ptr<SavedData> >;
-    savedDatas = new std::vector<std::shared_ptr<SavedData> >;
-    usedAuxIds = new std::unordered_map<std::wstring, short*>;
+    cache = new unordered_map<wstring, shared_ptr<SavedData> >;
+    savedDatas = new vector<shared_ptr<SavedData> >;
+    usedAuxIds = new unordered_map<wstring, short*>;
     */
 
     this->levelStorage = levelStorage;
@@ -31,7 +31,8 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
         if (!file.getName().empty() &&
             levelStorage->getSaveFile()->doesFileExist(file)) {
             // mob = std::dynamic_pointer_cast<Mob>(Mob::_class->newInstance(
-            // level ));
+            // level
+            // ));
             // data = clazz.getConstructor(String.class).newInstance(id);
 
             if (clazz == typeid(MapItemSavedData)) {
@@ -41,6 +42,10 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
             } else if (clazz == typeid(Villages)) {
                 data = std::dynamic_pointer_cast<SavedData>(
                     std::shared_ptr<Villages>(new Villages(id)));
+            } else if (clazz == typeid(StructureFeatureSavedData)) {
+                data = std::dynamic_pointer_cast<SavedData>(
+                    std::shared_ptr<StructureFeatureSavedData>(
+                        new StructureFeatureSavedData(id)));
             } else {
                 // Handling of new SavedData class required
                 __debugbreak();

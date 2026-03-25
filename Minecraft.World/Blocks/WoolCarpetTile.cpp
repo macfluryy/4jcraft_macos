@@ -12,7 +12,7 @@ WoolCarpetTile::WoolCarpetTile(int id)
 }
 
 Icon* WoolCarpetTile::getTexture(int face, int data) {
-    return Tile::cloth->getTexture(face, data);
+    return Tile::wool->getTexture(face, data);
 }
 
 AABB* WoolCarpetTile::getAABB(Level* level, int x, int y, int z) {
@@ -57,7 +57,7 @@ void WoolCarpetTile::neighborChanged(Level* level, int x, int y, int z,
 bool WoolCarpetTile::checkCanSurvive(Level* level, int x, int y, int z) {
     if (!canSurvive(level, x, y, z)) {
         spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return false;
     }
     return true;

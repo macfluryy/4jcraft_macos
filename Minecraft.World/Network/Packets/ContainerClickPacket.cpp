@@ -13,18 +13,18 @@ ContainerClickPacket::ContainerClickPacket() {
     buttonNum = 0;
     uid = 0;
     item = nullptr;
-    quickKey = false;
+    clickType = 0;
 }
 
 ContainerClickPacket::ContainerClickPacket(int containerId, int slotNum,
-                                           int buttonNum, bool quickKey,
+                                           int buttonNum, int clickType,
                                            std::shared_ptr<ItemInstance> item,
                                            short uid) {
     this->containerId = containerId;
     this->slotNum = slotNum;
     this->buttonNum = buttonNum;
     this->uid = uid;
-    this->quickKey = quickKey;
+    this->clickType = clickType;
     // 4J - make a copy of the relevant bits of this item, as we want our
     // packets to have full ownership of any data they reference
     this->item = item ? item->copy() : nullptr;
@@ -36,11 +36,11 @@ void ContainerClickPacket::handle(PacketListener* listener) {
 
 void ContainerClickPacket::read(DataInputStream* dis)  // throws IOException
 {
-    containerId = (int)dis->readByte();
+    containerId = dis->readByte();
     slotNum = dis->readShort();
-    buttonNum = (int)dis->readByte();
+    buttonNum = dis->readByte();
     uid = dis->readShort();
-    quickKey = dis->readBoolean();
+    clickType = dis->readByte();
 
     item = readItem(dis);
 }
@@ -51,7 +51,7 @@ void ContainerClickPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeShort(slotNum);
     dos->writeByte((uint8_t)buttonNum);
     dos->writeShort(uid);
-    dos->writeBoolean(quickKey);
+    dos->writeBoolean(clickType);
 
     writeItem(item, dos);
 }

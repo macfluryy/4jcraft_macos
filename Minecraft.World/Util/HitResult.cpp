@@ -4,7 +4,7 @@
 #include "HitResult.h"
 
 HitResult::HitResult(int x, int y, int z, int f, Vec3* pos) {
-    this->type = TILE;
+    type = TILE;
     this->x = x;
     this->y = y;
     this->z = z;
@@ -15,7 +15,7 @@ HitResult::HitResult(int x, int y, int z, int f, Vec3* pos) {
 }
 
 HitResult::HitResult(std::shared_ptr<Entity> entity) {
-    this->type = ENTITY;
+    type = ENTITY;
     this->entity = entity;
     pos = Vec3::newTemp(entity->x, entity->y, entity->z);
 

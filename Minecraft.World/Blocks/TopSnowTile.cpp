@@ -9,12 +9,13 @@
 #include "TopSnowTile.h"
 
 const int TopSnowTile::MAX_HEIGHT = 6;
-
 const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps
 
-TopSnowTile::TopSnowTile(int id) : Tile(id, Material::topSnow, false) {
+TopSnowTile::TopSnowTile(int id)
+    : Tile(id, Material::topSnow, false) {
     setShape(0, 0, 0, 1, 2 / 16.0f, 1);
     setTicking(true);
+    updateShape(0);
 }
 
 void TopSnowTile::registerIcons(IconRegister* iconRegister) {
@@ -23,12 +24,10 @@ void TopSnowTile::registerIcons(IconRegister* iconRegister) {
 
 AABB* TopSnowTile::getAABB(Level* level, int x, int y, int z) {
     int height = level->getData(x, y, z) & HEIGHT_MASK;
-    if (height >= (MAX_HEIGHT / 2)) {
-        ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
-        return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0,
-                             x + tls->xx1, y + .5f, z + tls->zz1);
-    }
-    return NULL;
+    float offset = 2.0f / SharedConstants::WORLD_RESOLUTION;
+    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
+                         y + (height * offset), z + tls->zz1);
 }
 
 float TopSnowTile::getHeight(Level* level, int x, int y, int z) {
@@ -60,11 +59,14 @@ void TopSnowTile::updateShape(int data) {
 
 bool TopSnowTile::mayPlace(Level* level, int x, int y, int z) {
     int t = level->getTile(x, y - 1, z);
+    if (t == 0) return false;
+    if (t == id &&
+        (level->getData(x, y - 1, z) & HEIGHT_MASK) == MAX_HEIGHT + 1)
+        return true;
     // 4J Stu - Assume when placing that this is the server level and we don't
     // care how it's going to be rendered Fix for #9407 - Gameplay: Destroying a
     // block of snow on top of trees, removes any adjacent snow.
-    if (t == 0 ||
-        (t != Tile::leaves_Id && !Tile::tiles[t]->isSolidRender(true)))
+    if (t != Tile::leaves_Id && !Tile::tiles[t]->isSolidRender(true))
         return false;
     return level->getMaterial(x, y - 1, z)->blocksMotion();
 }
@@ -75,8 +77,8 @@ void TopSnowTile::neighborChanged(Level* level, int x, int y, int z, int type) {
 
 bool TopSnowTile::checkCanSurvive(Level* level, int x, int y, int z) {
     if (!mayPlace(level, x, y, z)) {
-        this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+        level->removeTile(x, y, z);
         return false;
     }
     return true;
@@ -85,17 +87,11 @@ bool TopSnowTile::checkCanSurvive(Level* level, int x, int y, int z) {
 void TopSnowTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
                                 int x, int y, int z, int data) {
     int type = Item::snowBall->id;
-    float s = 0.7f;
-    double xo = level->random->nextFloat() * s + (1 - s) * 0.5;
-    double yo = level->random->nextFloat() * s + (1 - s) * 0.5;
-    double zo = level->random->nextFloat() * s + (1 - s) * 0.5;
-    std::shared_ptr<ItemEntity> item =
-        std::shared_ptr<ItemEntity>(new ItemEntity(
-            level, x + xo, y + yo, z + zo,
-            std::shared_ptr<ItemInstance>(new ItemInstance(type, 1, 0))));
-    item->throwTime = 10;
-    level->addEntity(item);
-    level->setTile(x, y, z, 0);
+    int height = data & HEIGHT_MASK;
+    popResource(
+        level, x, y, z,
+        std::shared_ptr<ItemInstance>(new ItemInstance(type, height + 1, 0)));
+    level->removeTile(x, y, z);
 }
 
 int TopSnowTile::getResource(int data, Random* random, int playerBonusLevel) {
@@ -106,8 +102,8 @@ int TopSnowTile::getResourceCount(Random* random) { return 0; }
 
 void TopSnowTile::tick(Level* level, int x, int y, int z, Random* random) {
     if (level->getBrightness(LightLayer::Block, x, y, z) > 11) {
-        this->spawnResources(level, x, y, z, level->getData(x, y, z), 0);
-        level->setTile(x, y, z, 0);
+        spawnResources(level, x, y, z, level->getData(x, y, z), 0);
+        level->removeTile(x, y, z);
     }
 }
 

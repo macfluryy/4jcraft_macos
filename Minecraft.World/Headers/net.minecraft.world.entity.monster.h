@@ -19,3 +19,8 @@
 // 1.0.1
 #include "../Entities/Mobs/Blaze.h"
 #include "../Entities/Mobs/LavaSlime.h"
+
+// 1.6.4
+#include "../Entities/Mobs/RangedAttackMob.h"
+#include "../Entities/Mobs/SharedMonsterAttributes.h"
+#include "../Entities/Mobs/Witch.h"

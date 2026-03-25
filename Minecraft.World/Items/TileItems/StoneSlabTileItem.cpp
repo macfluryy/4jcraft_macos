@@ -13,7 +13,7 @@ StoneSlabTileItem::StoneSlabTileItem(int id, HalfSlabTile* halfTile,
     this->halfTile = halfTile;
     this->fullTile = fullTile;
 
-    this->isFull = full;
+    isFull = full;
     setMaxDamage(0);
     setStackedByData(true);
 }
@@ -41,7 +41,7 @@ bool StoneSlabTileItem::useOn(std::shared_ptr<ItemInstance> instance,
     }
 
     if (instance->count == 0) return false;
-    if (!player->mayBuild(x, y, z)) return false;
+    if (!player->mayUseItemAt(x, y, z, face, instance)) return false;
 
     int currentTile = level->getTile(x, y, z);
     int currentData = level->getData(x, y, z);
@@ -56,13 +56,10 @@ bool StoneSlabTileItem::useOn(std::shared_ptr<ItemInstance> instance,
         }
 
         if (level->isUnobstructed(fullTile->getAABB(level, x, y, z)) &&
-            level->setTileAndData(x, y, z, fullTile->id, slabType)) {
-            // 			level.playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-            // fullTile.soundType.getPlaceSound(),
-            // (fullTile.soundType.getVolume() + 1) / 2,
-            // fullTile.soundType.getPitch() * 0.8f); 			instance.count--;
+            level->setTileAndData(x, y, z, fullTile->id, slabType,
+                                  Tile::UPDATE_ALL)) {
             level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-                             fullTile->soundType->getStepSound(),
+                             fullTile->soundType->getPlaceSound(),
                              (fullTile->soundType->getVolume() + 1) / 2,
                              fullTile->soundType->getPitch() * 0.8f);
             instance->count--;
@@ -131,13 +128,10 @@ bool StoneSlabTileItem::tryConvertTargetTile(
             return true;
         }
         if (level->isUnobstructed(fullTile->getAABB(level, x, y, z)) &&
-            level->setTileAndData(x, y, z, fullTile->id, slabType)) {
-            // level.playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-            // fullTile.soundType.getPlaceSound(),
-            // (fullTile.soundType.getVolume() + 1) / 2,
-            // fullTile.soundType.getPitch() * 0.8f);
+            level->setTileAndData(x, y, z, fullTile->id, slabType,
+                                  Tile::UPDATE_ALL)) {
             level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,
-                             fullTile->soundType->getStepSound(),
+                             fullTile->soundType->getPlaceSound(),
                              (fullTile->soundType->getVolume() + 1) / 2,
                              fullTile->soundType->getPitch() * 0.8f);
             instance->count--;

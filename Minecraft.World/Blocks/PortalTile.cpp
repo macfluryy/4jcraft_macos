@@ -23,10 +23,13 @@ void PortalTile::tick(Level* level, int x, int y, int z, Random* random) {
         }
         if (y0 > 0 && !level->isSolidBlockingTile(x, y0 + 1, z)) {
             // spawn a pig man here
-            int result = 0;
-            bool spawned =
-                MonsterPlacerItem::spawnMobAt(level, 57, x + .5, y0 + 1.1,
-                                              z + .5, &result) != NULL;
+            int iResult = 0;
+            std::shared_ptr<Entity> entity = SpawnEggItem::spawnMobAt(
+                level, 57, x + .5, y0 + 1.1, z + .5, &iResult);
+            if (entity != NULL) {
+                entity->changingDimensionDelay =
+                    entity->getDimensionChangingDelay();
+            }
         }
     }
 }
@@ -42,11 +45,11 @@ void PortalTile::updateShape(
         level->getTile(x + 1, y, z) == id) {
         float xr = 8 / 16.0f;
         float yr = 2 / 16.0f;
-        this->setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
+        setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
     } else {
         float xr = 2 / 16.0f;
         float yr = 8 / 16.0f;
-        this->setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
+        setShape(0.5f - xr, 0, 0.5f - yr, 0.5f + xr, 1, 0.5f + yr);
     }
 }
 
@@ -89,14 +92,12 @@ bool PortalTile::trySpawnPortal(Level* level, int x, int y, int z,
 
     if (!actuallySpawn) return true;
 
-    level->noNeighborUpdate = true;
     for (int xx = 0; xx < 2; xx++) {
         for (int yy = 0; yy < 3; yy++) {
-            level->setTile(x + xd * xx, y + yy, z + zd * xx,
-                           Tile::portalTile_Id);
+            level->setTileAndData(x + xd * xx, y + yy, z + zd * xx,
+                                  Tile::portalTile_Id, 0, Tile::UPDATE_CLIENTS);
         }
     }
-    level->noNeighborUpdate = false;
 
     return true;
 }
@@ -114,7 +115,7 @@ void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     while (level->getTile(x, yBottom - 1, z) == id) yBottom--;
 
     if (level->getTile(x, yBottom - 1, z) != Tile::obsidian_Id) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return;
     }
 
@@ -123,7 +124,7 @@ void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
 
     if (height != 3 ||
         level->getTile(x, yBottom + height, z) != Tile::obsidian_Id) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return;
     }
 
@@ -132,7 +133,7 @@ void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
     bool ns =
         level->getTile(x, y, z - 1) == id || level->getTile(x, y, z + 1) == id;
     if (we && ns) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return;
     }
 
@@ -142,7 +143,7 @@ void PortalTile::neighborChanged(Level* level, int x, int y, int z, int type) {
             (level->getTile(x - xd, y, z - zd) == Tile::obsidian_Id &&
              level->getTile(x + xd, y, z + zd) == id)  //
             )) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return;
     }
 }
@@ -178,6 +179,8 @@ int PortalTile::getRenderLayer() { return 1; }
 
 void PortalTile::entityInside(Level* level, int x, int y, int z,
                               std::shared_ptr<Entity> entity) {
+    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  // 4J added
+
     if (entity->riding == NULL && entity->rider.lock() == NULL)
         entity->handleInsidePortal();
 }
@@ -187,7 +190,7 @@ void PortalTile::animateTick(Level* level, int xt, int yt, int zt,
     if (random->nextInt(100) == 0) {
         level->playLocalSound(xt + 0.5, yt + 0.5, zt + 0.5,
                               eSoundType_PORTAL_PORTAL, 0.5f,
-                              random->nextFloat() * 0.4f + 0.8f);
+                              random->nextFloat() * 0.4f + 0.8f, false);
     }
     for (int i = 0; i < 4; i++) {
         double x = xt + random->nextFloat();

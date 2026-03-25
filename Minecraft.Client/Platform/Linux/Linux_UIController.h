@@ -7,6 +7,8 @@ public:
     void init(S32 w, S32 h);
 
     void render();
+
+    void shutdown();
     void beginIggyCustomDraw4J(IggyCustomDrawCallbackRegion* region,
                                CustomDrawData* customDrawRegion);
     virtual CustomDrawData* setupCustomDraw(
@@ -23,8 +25,7 @@ public:
     void destroySubstitutionTexture(void* destroyCallBackData,
                                     GDrawTexture* handle);
 
-public:
-    void shutdown();
+    static void handleUnlockFullVersionCallback();
 };
 
 extern ConsoleUIController ui;

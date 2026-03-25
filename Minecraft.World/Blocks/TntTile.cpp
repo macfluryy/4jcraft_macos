@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.entity.item.h"
+#include "../Headers/net.minecraft.world.entity.projectile.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.h"
@@ -24,23 +25,22 @@ void TntTile::onPlace(Level* level, int x, int y, int z) {
     if (level->hasNeighborSignal(x, y, z) &&
         app.GetGameHostOption(eGameHostOption_TNT)) {
         destroy(level, x, y, z, EXPLODE_BIT);
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
     }
 }
 
 void TntTile::neighborChanged(Level* level, int x, int y, int z, int type) {
-    if (type > 0 && Tile::tiles[type]->isSignalSource()) {
-        if (level->hasNeighborSignal(x, y, z) &&
-            app.GetGameHostOption(eGameHostOption_TNT)) {
-            destroy(level, x, y, z, EXPLODE_BIT);
-            level->setTile(x, y, z, 0);
-        }
+    if (level->hasNeighborSignal(x, y, z) &&
+        app.GetGameHostOption(eGameHostOption_TNT)) {
+        destroy(level, x, y, z, EXPLODE_BIT);
+        level->removeTile(x, y, z);
     }
 }
 
 int TntTile::getResourceCount(Random* random) { return 1; }
 
-void TntTile::wasExploded(Level* level, int x, int y, int z) {
+void TntTile::wasExploded(Level* level, int x, int y, int z,
+                          Explosion* explosion) {
     // 4J - added - don't every create on the client, I think this must be the
     // cause of a bug reported in the java version where white tnts are created
     // in the network game
@@ -53,7 +53,8 @@ void TntTile::wasExploded(Level* level, int x, int y, int z) {
     if (level->newPrimedTntAllowed() &&
         app.GetGameHostOption(eGameHostOption_TNT)) {
         std::shared_ptr<PrimedTnt> primed = std::shared_ptr<PrimedTnt>(
-            new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f));
+            new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f,
+                          explosion->getSourceMob()));
         primed->life =
             level->random->nextInt(primed->life / 4) + primed->life / 8;
         level->addEntity(primed);
@@ -61,6 +62,11 @@ void TntTile::wasExploded(Level* level, int x, int y, int z) {
 }
 
 void TntTile::destroy(Level* level, int x, int y, int z, int data) {
+    destroy(level, x, y, z, data, nullptr);
+}
+
+void TntTile::destroy(Level* level, int x, int y, int z, int data,
+                      std::shared_ptr<LivingEntity> source) {
     if (level->isClientSide) return;
 
     if ((data & EXPLODE_BIT) == 1) {
@@ -68,9 +74,9 @@ void TntTile::destroy(Level* level, int x, int y, int z, int data) {
         if (level->newPrimedTntAllowed() &&
             app.GetGameHostOption(eGameHostOption_TNT)) {
             std::shared_ptr<PrimedTnt> tnt = std::shared_ptr<PrimedTnt>(
-                new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f));
+                new PrimedTnt(level, x + 0.5f, y + 0.5f, z + 0.5f, source));
             level->addEntity(tnt);
-            level->playSound(tnt, eSoundType_RANDOM_FUSE, 1, 1.0f);
+            level->playEntitySound(tnt, eSoundType_RANDOM_FUSE, 1, 1.0f);
         }
     }
 }
@@ -83,8 +89,9 @@ bool TntTile::use(Level* level, int x, int y, int z,
     if (soundOnly) return false;
     if (player->getSelectedItem() != NULL &&
         player->getSelectedItem()->id == Item::flintAndSteel_Id) {
-        destroy(level, x, y, z, EXPLODE_BIT);
-        level->setTile(x, y, z, 0);
+        destroy(level, x, y, z, EXPLODE_BIT, player);
+        level->removeTile(x, y, z);
+        player->getSelectedItem()->hurtAndBreak(1, player);
         return true;
     }
     return Tile::use(level, x, y, z, player, clickedFace, clickX, clickY,
@@ -94,18 +101,16 @@ bool TntTile::use(Level* level, int x, int y, int z,
 void TntTile::entityInside(Level* level, int x, int y, int z,
                            std::shared_ptr<Entity> entity) {
     if (entity->GetType() == eTYPE_ARROW && !level->isClientSide) {
-        // 4J Stu - Don't need to cast this
-        // std::shared_ptr<Arrow> arrow =
-        // std::dynamic_pointer_cast<Arrow>(entity);
         if (entity->isOnFire()) {
-            destroy(level, x, y, z, EXPLODE_BIT);
-            level->setTile(x, y, z, 0);
+            std::shared_ptr<Arrow> arrow =
+                std::dynamic_pointer_cast<Arrow>(entity);
+            destroy(level, x, y, z, EXPLODE_BIT,
+                    arrow->owner->instanceof(eTYPE_LIVINGENTITY)
+                        ? std::dynamic_pointer_cast<LivingEntity>(arrow->owner)
+                        : nullptr);
+            level->removeTile(x, y, z);
         }
     }
-}
-
-std::shared_ptr<ItemInstance> TntTile::getSilkTouchItemInstance(int data) {
-    return nullptr;
 }
 
 void TntTile::registerIcons(IconRegister* iconRegister) {
@@ -113,3 +118,5 @@ void TntTile::registerIcons(IconRegister* iconRegister) {
     iconTop = iconRegister->registerIcon(L"tnt_top");
     iconBottom = iconRegister->registerIcon(L"tnt_bottom");
 }
+
+bool TntTile::dropFromExplosion(Explosion* explosion) { return false; }

@@ -1,183 +1,189 @@
 #pragma once
 
 #include "UIScene.h"
+#include "IUIScene_HUD.h"
 
 #define CHAT_LINES_COUNT 10
 
-class UIScene_HUD : public UIScene
-{
+class UIScene_HUD : public UIScene, public IUIScene_HUD {
 private:
-	bool m_bSplitscreen;
-
-	int m_lastActiveSlot;
-	int m_lastScale;
-	bool m_bToolTipsVisible;
-	float m_lastExpProgress;
-	int m_lastExpLevel;
-	int m_lastMaxHealth;
-	bool m_lastHealthBlink, m_lastHealthPoison;
-	int m_lastMaxFood;
-	bool m_lastFoodPoison;
-	int m_lastAir;
-	int m_lastArmour;
-	float m_lastDragonHealth;
-	bool m_showDragonHealth;
-	int m_ticksWithNoBoss;
-	bool m_lastShowDisplayName;
-
-	bool m_showHealth, m_showFood, m_showAir, m_showArmour, m_showExpBar;
-	bool m_lastRegenEffect;
-	int m_lastSaturation;
-
-	unsigned int m_uiSelectedItemOpacityCountDown;
-
-	std::wstring m_displayName;
+    bool m_bSplitscreen;
 
 protected:
-	UIControl_Label m_labelChatText[CHAT_LINES_COUNT];
-	UIControl_Label m_labelJukebox;
-	UIControl m_controlLabelBackground[CHAT_LINES_COUNT];
-	UIControl_Label m_labelDisplayName;
+    UIControl_Label m_labelChatText[CHAT_LINES_COUNT];
+    UIControl_Label m_labelJukebox;
+    UIControl m_controlLabelBackground[CHAT_LINES_COUNT];
+    UIControl_Label m_labelDisplayName;
 
-	IggyName m_funcLoadHud, m_funcSetExpBarProgress, m_funcSetPlayerLevel, m_funcSetActiveSlot;
-	IggyName m_funcSetHealth, m_funcSetFood, m_funcSetAir, m_funcSetArmour;
-	IggyName m_funcShowHealth, m_funcShowFood, m_funcShowAir, m_funcShowArmour, m_funcShowExpbar;
-	IggyName m_funcSetRegenerationEffect, m_funcSetFoodSaturationLevel;
-	IggyName m_funcSetDragonHealth, m_funcSetDragonLabel, m_funcShowDragonHealth;
-	IggyName m_funcSetSelectedLabel, m_funcHideSelectedLabel;
-	IggyName m_funcRepositionHud, m_funcSetDisplayName, m_funcSetTooltipsEnabled;
-	UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-		UI_MAP_ELEMENT(m_labelChatText[0],"Label1")
-		UI_MAP_ELEMENT(m_labelChatText[1],"Label2")
-		UI_MAP_ELEMENT(m_labelChatText[2],"Label3")
-		UI_MAP_ELEMENT(m_labelChatText[3],"Label4")
-		UI_MAP_ELEMENT(m_labelChatText[4],"Label5")
-		UI_MAP_ELEMENT(m_labelChatText[5],"Label6")
-		UI_MAP_ELEMENT(m_labelChatText[6],"Label7")
-		UI_MAP_ELEMENT(m_labelChatText[7],"Label8")
-		UI_MAP_ELEMENT(m_labelChatText[8],"Label9")
-		UI_MAP_ELEMENT(m_labelChatText[9],"Label10")
+    IggyName m_funcLoadHud, m_funcSetExpBarProgress, m_funcSetPlayerLevel,
+        m_funcSetActiveSlot;
+    IggyName m_funcSetHealth, m_funcSetFood, m_funcSetAir, m_funcSetArmour;
+    IggyName m_funcShowHealth, m_funcShowHorseHealth, m_funcShowFood,
+        m_funcShowAir, m_funcShowArmour, m_funcShowExpbar;
+    IggyName m_funcSetRegenerationEffect, m_funcSetFoodSaturationLevel;
+    IggyName m_funcSetDragonHealth, m_funcSetDragonLabel,
+        m_funcShowDragonHealth;
+    IggyName m_funcSetSelectedLabel, m_funcHideSelectedLabel;
+    IggyName m_funcRepositionHud, m_funcSetDisplayName,
+        m_funcSetTooltipsEnabled;
+    IggyName m_funcSetRidingHorse, m_funcSetHorseHealth,
+        m_funcSetHorseJumpBarProgress;
+    IggyName m_funcSetHealthAbsorb;
+    UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
+    UI_MAP_ELEMENT(m_labelChatText[0], "Label1")
+    UI_MAP_ELEMENT(m_labelChatText[1], "Label2")
+    UI_MAP_ELEMENT(m_labelChatText[2], "Label3")
+    UI_MAP_ELEMENT(m_labelChatText[3], "Label4")
+    UI_MAP_ELEMENT(m_labelChatText[4], "Label5")
+    UI_MAP_ELEMENT(m_labelChatText[5], "Label6")
+    UI_MAP_ELEMENT(m_labelChatText[6], "Label7")
+    UI_MAP_ELEMENT(m_labelChatText[7], "Label8")
+    UI_MAP_ELEMENT(m_labelChatText[8], "Label9")
+    UI_MAP_ELEMENT(m_labelChatText[9], "Label10")
 
-		UI_MAP_ELEMENT(m_controlLabelBackground[0],"Label1Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[1],"Label2Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[2],"Label3Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[3],"Label4Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[4],"Label5Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[5],"Label6Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[6],"Label7Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[7],"Label8Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[8],"Label9Background")
-		UI_MAP_ELEMENT(m_controlLabelBackground[9],"Label10Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[0], "Label1Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[1], "Label2Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[2], "Label3Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[3], "Label4Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[4], "Label5Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[5], "Label6Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[6], "Label7Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[7], "Label8Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[8], "Label9Background")
+    UI_MAP_ELEMENT(m_controlLabelBackground[9], "Label10Background")
 
-		UI_MAP_ELEMENT(m_labelJukebox,"Jukebox")
+    UI_MAP_ELEMENT(m_labelJukebox, "Jukebox")
 
-		UI_MAP_ELEMENT(m_labelDisplayName,"LabelGamertag")
+    UI_MAP_ELEMENT(m_labelDisplayName, "LabelGamertag")
 
-		UI_MAP_NAME(m_funcLoadHud, L"LoadHud")
-		UI_MAP_NAME(m_funcSetExpBarProgress, L"SetExpBarProgress")
-		UI_MAP_NAME(m_funcSetPlayerLevel, L"SetPlayerLevel")
-		UI_MAP_NAME(m_funcSetActiveSlot, L"SetActiveSlot")
-		
-		UI_MAP_NAME(m_funcSetHealth, L"SetHealth")
-		UI_MAP_NAME(m_funcSetFood, L"SetFood")
-		UI_MAP_NAME(m_funcSetAir, L"SetAir")
-		UI_MAP_NAME(m_funcSetArmour, L"SetArmour")
-		
-		UI_MAP_NAME(m_funcShowHealth, L"ShowHealth")
-		UI_MAP_NAME(m_funcShowFood, L"ShowFood")
-		UI_MAP_NAME(m_funcShowAir, L"ShowAir")
-		UI_MAP_NAME(m_funcShowArmour, L"ShowArmour")
-		UI_MAP_NAME(m_funcShowExpbar, L"ShowExpBar")
-		
-		UI_MAP_NAME(m_funcSetRegenerationEffect, L"SetRegenerationEffect")
-		UI_MAP_NAME(m_funcSetFoodSaturationLevel, L"SetFoodSaturationLevel")
+    UI_MAP_NAME(m_funcLoadHud, L"LoadHud")
+    UI_MAP_NAME(m_funcSetExpBarProgress, L"SetExpBarProgress")
+    UI_MAP_NAME(m_funcSetPlayerLevel, L"SetPlayerLevel")
+    UI_MAP_NAME(m_funcSetActiveSlot, L"SetActiveSlot")
 
-		UI_MAP_NAME(m_funcSetDragonHealth, L"SetDragonHealth")
-		UI_MAP_NAME(m_funcSetDragonLabel, L"SetDragonLabel")
-		UI_MAP_NAME(m_funcShowDragonHealth, L"ShowDragonHealthBar")
-		
-		UI_MAP_NAME(m_funcSetSelectedLabel, L"SetSelectedLabel")
-		UI_MAP_NAME(m_funcHideSelectedLabel, L"HideSelectedLabel")
+    UI_MAP_NAME(m_funcSetHealth, L"SetHealth")
+    UI_MAP_NAME(m_funcSetFood, L"SetFood")
+    UI_MAP_NAME(m_funcSetAir, L"SetAir")
+    UI_MAP_NAME(m_funcSetArmour, L"SetArmour")
 
-		UI_MAP_NAME(m_funcRepositionHud, L"RepositionHud")
-		UI_MAP_NAME(m_funcSetDisplayName, L"SetGamertag")
+    UI_MAP_NAME(m_funcShowHealth, L"ShowHealth")
+    UI_MAP_NAME(m_funcShowHorseHealth, L"ShowHorseHealth")
+    UI_MAP_NAME(m_funcShowFood, L"ShowFood")
+    UI_MAP_NAME(m_funcShowAir, L"ShowAir")
+    UI_MAP_NAME(m_funcShowArmour, L"ShowArmour")
+    UI_MAP_NAME(m_funcShowExpbar, L"ShowExpBar")
 
-		UI_MAP_NAME(m_funcSetTooltipsEnabled, L"SetTooltipsEnabled")
-	UI_END_MAP_ELEMENTS_AND_NAMES()
+    UI_MAP_NAME(m_funcSetRegenerationEffect, L"SetRegenerationEffect")
+    UI_MAP_NAME(m_funcSetFoodSaturationLevel, L"SetFoodSaturationLevel")
+
+    UI_MAP_NAME(m_funcSetDragonHealth, L"SetDragonHealth")
+    UI_MAP_NAME(m_funcSetDragonLabel, L"SetDragonLabel")
+    UI_MAP_NAME(m_funcShowDragonHealth, L"ShowDragonHealthBar")
+
+    UI_MAP_NAME(m_funcSetSelectedLabel, L"SetSelectedLabel")
+    UI_MAP_NAME(m_funcHideSelectedLabel, L"HideSelectedLabel")
+
+    UI_MAP_NAME(m_funcRepositionHud, L"RepositionHud")
+    UI_MAP_NAME(m_funcSetDisplayName, L"SetGamertag")
+
+    UI_MAP_NAME(m_funcSetTooltipsEnabled, L"SetTooltipsEnabled")
+
+    UI_MAP_NAME(m_funcSetRidingHorse, L"SetRidingHorse")
+    UI_MAP_NAME(m_funcSetHorseHealth, L"SetHorseHealth")
+    UI_MAP_NAME(m_funcSetHorseJumpBarProgress, L"SetHorseJumpBarProgress")
+
+    UI_MAP_NAME(m_funcSetHealthAbsorb, L"SetHealthAbsorb")
+    UI_END_MAP_ELEMENTS_AND_NAMES()
 
 public:
-	UIScene_HUD(int iPad, void *initData, UILayer *parentLayer);
+    UIScene_HUD(int iPad, void* initData, UILayer* parentLayer);
 
-	virtual void tick();
+    virtual void tick();
 
-	virtual void updateSafeZone();
+    virtual void updateSafeZone();
 
 protected:
-	// TODO: This should be pure virtual in this class
-	virtual std::wstring getMoviePath();
+    // TODO: This should be pure virtual in this class
+    virtual std::wstring getMoviePath();
 
 public:
-	virtual EUIScene getSceneType() { return eUIScene_HUD;}
+    virtual EUIScene getSceneType() { return eUIScene_HUD; }
 
-	// Returns true if this scene handles input
-	virtual bool stealsFocus() { return false; }
+    // Returns true if this scene handles input
+    virtual bool stealsFocus() { return false; }
 
-	// Returns true if this scene has focus for the pad passed in
-	virtual bool hasFocus(int iPad) { return false; }
+    // Returns true if this scene has focus for the pad passed in
+    virtual bool hasFocus(int iPad) { return false; }
 
-	// Returns true if lower scenes in this scenes layer, or in any layer below this scenes layers should be hidden
-	virtual bool hidesLowerScenes() { return false; }
+    // Returns true if lower scenes in this scenes layer, or in any layer below
+    // this scenes layers should be hidden
+    virtual bool hidesLowerScenes() { return false; }
 
-	virtual void customDraw(IggyCustomDrawCallbackRegion *region);
+    virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 
-	virtual void handleReload();
+    virtual void handleReload();
 
 private:
-	void SetHudSize(int scale);
-	void SetExpBarProgress(float progress);
-	void SetExpLevel(int level);
-	void SetActiveSlot(int slot);
+    virtual int getPad();
+    virtual void SetOpacity(float opacity);
+    virtual void SetVisible(bool visible);
 
-	void SetHealth(int iHealth, int iLastHealth, bool bBlink, bool bPoison);
-	void SetFood(int iFood, int iLastFood, bool bPoison);
-	void SetAir(int iAir);
-	void SetArmour(int iArmour);
+    void SetHudSize(int scale);
+    void SetExpBarProgress(float progress, int xpNeededForNextLevel);
+    void SetExpLevel(int level);
+    void SetActiveSlot(int slot);
 
-	void ShowHealth(bool show);
-	void ShowFood(bool show);
-	void ShowAir(bool show);
-	void ShowArmour(bool show);
-	void ShowExpBar(bool show);
+    void SetHealth(int iHealth, int iLastHealth, bool bBlink, bool bPoison,
+                   bool bWither);
+    void SetFood(int iFood, int iLastFood, bool bPoison);
+    void SetAir(int iAir, int extra);
+    void SetArmour(int iArmour);
 
-	void SetRegenerationEffect(bool bEnabled);
-	void SetFoodSaturationLevel(int iSaturation);
+    void ShowHealth(bool show);
+    void ShowHorseHealth(bool show);
+    void ShowFood(bool show);
+    void ShowAir(bool show);
+    void ShowArmour(bool show);
+    void ShowExpBar(bool show);
 
-	void SetDragonHealth(float health);
-	void SetDragonLabel(const std::wstring &label);
-	void ShowDragonHealth(bool show);
+    void SetRegenerationEffect(bool bEnabled);
+    void SetFoodSaturationLevel(int iSaturation);
 
-	void HideSelectedLabel();
+    void SetDragonHealth(float health);
+    void SetDragonLabel(const std::wstring& label);
+    void ShowDragonHealth(bool show);
 
-	void SetDisplayName(const std::wstring &displayName);
+    void HideSelectedLabel();
 
-	void SetTooltipsEnabled(bool bEnabled);
+    void SetDisplayName(const std::wstring& displayName);
+
+    void SetTooltipsEnabled(bool bEnabled);
+
+    void SetRidingHorse(bool ridingHorse, bool bIsJumpable, int maxHorseHealth);
+    void SetHorseHealth(int health, bool blink = false);
+    void SetHorseJumpBarProgress(float progress);
+
+    void SetHealthAbsorb(int healthAbsorb);
 
 public:
-	void SetSelectedLabel(const std::wstring &label);
-	void ShowDisplayName(bool show);
+    void SetSelectedLabel(const std::wstring& label);
+    void ShowDisplayName(bool show);
 
-	void handleGameTick();
+    void handleGameTick();
 
-	// RENDERING
-	virtual void render(S32 width, S32 height, C4JRender::eViewportType viewport);
+    // RENDERING
+    virtual void render(S32 width, S32 height,
+                        C4JRender::eViewportType viewport);
 
 protected:
-	void handleTimerComplete(int id);
+    void handleTimerComplete(int id);
 
-#ifdef _DURANGO	
-	virtual long long getDefaultGtcButtons() { return _360_GTC_PAUSE | _360_GTC_MENU | _360_GTC_VIEW; }
+#ifdef _DURANGO
+    virtual long long getDefaultGtcButtons() {
+        return _360_GTC_PAUSE | _360_GTC_MENU | _360_GTC_VIEW;
+    }
 #endif
 
 private:
-	void repositionHud();
+    void repositionHud();
 };

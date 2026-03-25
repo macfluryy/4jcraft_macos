@@ -3,14 +3,13 @@
 #include "FullTutorial.h"
 #include "FullTutorialMode.h"
 
-FullTutorialMode::FullTutorialMode(int iPad, Minecraft *minecraft, ClientConnection *connection)
-	: TutorialMode(iPad, minecraft, connection)
-{
-	tutorial = new FullTutorial( iPad );
-	minecraft->playerStartedTutorial( iPad );
+FullTutorialMode::FullTutorialMode(int iPad, Minecraft* minecraft,
+                                   ClientConnection* connection)
+    : TutorialMode(iPad, minecraft, connection) {
+    tutorial = new FullTutorial(iPad);
+    minecraft->playerStartedTutorial(iPad);
 }
 
-bool FullTutorialMode::isTutorial()
-{
-	return !tutorial->m_fullTutorialComplete;
+bool FullTutorialMode::isTutorial() {
+    return !tutorial->m_fullTutorialComplete;
 }

@@ -282,45 +282,6 @@ void StairTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
         }
     }
 
-    // int data = level->getData(x, y, z);
-    // int dir = data & 0x3;
-    // float lowerPieceY0 = 0;
-    // float lowerPieceY1 = 0.5f;
-    // float upperPieceY0 = 0.5f;
-    // float upperPieceY1 = 1;
-
-    // if ((data & UPSIDEDOWN_BIT) != 0)
-    //{
-    //	lowerPieceY0 = .5f;
-    //	lowerPieceY1 = 1;
-    //	upperPieceY0 = 0;
-    //	upperPieceY1 = .5f;
-    // }
-
-    // setShape(0, lowerPieceY0, 0, 1, lowerPieceY1, 1);
-    // Tile::addAABBs(level, x, y, z, box, boxes);
-
-    // if (dir == 0)
-    //{
-    //	setShape(0.5f, upperPieceY0, 0, 1, upperPieceY1, 1);
-    //	Tile::addAABBs(level, x, y, z, box, boxes);
-    // }
-    // else if (dir == 1)
-    //{
-    //	setShape(0, upperPieceY0, 0, .5f, upperPieceY1, 1);
-    //	Tile::addAABBs(level, x, y, z, box, boxes);
-    // }
-    // else if (dir == 2)
-    //{
-    //	setShape(0, upperPieceY0, 0.5f, 1, upperPieceY1, 1);
-    //	Tile::addAABBs(level, x, y, z, box, boxes);
-    // }
-    // else if (dir == 3)
-    //{
-    //	setShape(0, upperPieceY0, 0, 1, upperPieceY1, .5f);
-    //	Tile::addAABBs(level, x, y, z, box, boxes);
-    // }
-
     setShape(0, 0, 0, 1, 1, 1);
 }
 
@@ -363,7 +324,7 @@ Icon* StairTile::getTexture(int face, int data) {
     return base->getTexture(face, basedata);
 }
 
-int StairTile::getTickDelay() { return base->getTickDelay(); }
+int StairTile::getTickDelay(Level* level) { return base->getTickDelay(level); }
 
 AABB* StairTile::getTileAABB(Level* level, int x, int y, int z) {
     return base->getTileAABB(level, x, y, z);
@@ -422,19 +383,23 @@ bool StairTile::use(Level* level, int x, int y, int z,
     return base->use(level, x, y, z, player, 0, 0, 0, 0);
 }
 
-void StairTile::wasExploded(Level* level, int x, int y, int z) {
-    base->wasExploded(level, x, y, z);
+void StairTile::wasExploded(Level* level, int x, int y, int z,
+                            Explosion* explosion) {
+    base->wasExploded(level, x, y, z, explosion);
 }
 
 void StairTile::setPlacedBy(Level* level, int x, int y, int z,
-                            std::shared_ptr<Mob> by) {
+                            std::shared_ptr<LivingEntity> by,
+                            std::shared_ptr<ItemInstance> itemInstance) {
     int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
     int usd = level->getData(x, y, z) & UPSIDEDOWN_BIT;
 
-    if (dir == 0) level->setData(x, y, z, DIR_SOUTH | usd);
-    if (dir == 1) level->setData(x, y, z, DIR_WEST | usd);
-    if (dir == 2) level->setData(x, y, z, DIR_NORTH | usd);
-    if (dir == 3) level->setData(x, y, z, DIR_EAST | usd);
+    if (dir == 0)
+        level->setData(x, y, z, DIR_SOUTH | usd, Tile::UPDATE_CLIENTS);
+    if (dir == 1) level->setData(x, y, z, DIR_WEST | usd, Tile::UPDATE_CLIENTS);
+    if (dir == 2)
+        level->setData(x, y, z, DIR_NORTH | usd, Tile::UPDATE_CLIENTS);
+    if (dir == 3) level->setData(x, y, z, DIR_EAST | usd, Tile::UPDATE_CLIENTS);
 }
 
 int StairTile::getPlacedOnFaceDataValue(Level* level, int x, int y, int z,

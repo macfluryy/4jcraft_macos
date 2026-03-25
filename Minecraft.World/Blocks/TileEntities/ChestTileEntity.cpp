@@ -1,18 +1,26 @@
-
-
 #include "../../Platform/stdafx.h"
 #include "../../Headers/com.mojang.nbt.h"
+#include "../../Headers/net.minecraft.world.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "TileEntity.h"
 #include "../../Headers/net.minecraft.world.entity.item.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
 #include "../../Headers/net.minecraft.world.item.h"
+#include "../../Headers/net.minecraft.world.inventory.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
+#include "../../Headers/net.minecraft.world.phys.h"
 #include "ChestTileEntity.h"
+#include "../../Network/Packets/ContainerOpenPacket.h"
 #include "../../Util/SoundTypes.h"
 
-ChestTileEntity::ChestTileEntity(bool isBonusChest /* = false*/)
-    : TileEntity() {
+int ChestTileEntity::getContainerType() {
+    if (isBonusChest)
+        return ContainerOpenPacket::BONUS_CHEST;
+    else
+        return ContainerOpenPacket::CONTAINER;
+}
+
+void ChestTileEntity::_init(bool isBonusChest) {
     items = new ItemInstanceArray(9 * 4);
 
     hasCheckedNeighbors = false;
@@ -22,6 +30,21 @@ ChestTileEntity::ChestTileEntity(bool isBonusChest /* = false*/)
     oOpenness = 0.0f;
     openCount = 0;
     tickInterval = 0;
+
+    type = -1;
+    name = L"";
+}
+
+ChestTileEntity::ChestTileEntity(bool isBonusChest /* = false*/)
+    : TileEntity() {
+    _init(isBonusChest);
+}
+
+ChestTileEntity::ChestTileEntity(int type, bool isBonusChest /* = false*/)
+    : TileEntity() {
+    _init(isBonusChest);
+
+    this->type = type;
 }
 
 ChestTileEntity::~ChestTileEntity() {
@@ -41,14 +64,14 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
         if (items->data[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = items->data[slot];
             items->data[slot] = nullptr;
-            this->setChanged();
+            setChanged();
             // 4J Stu - Fix for duplication glitch
             if (item->count <= 0) return nullptr;
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = items->data[slot]->remove(count);
             if (items->data[slot]->count == 0) items->data[slot] = nullptr;
-            this->setChanged();
+            setChanged();
             // 4J Stu - Fix for duplication glitch
             if (i->count <= 0) return nullptr;
             return i;
@@ -74,22 +97,32 @@ void ChestTileEntity::setItem(unsigned int slot,
     this->setChanged();
 }
 
-int ChestTileEntity::getName() { return IDS_TILE_CHEST; }
+std::wstring ChestTileEntity::getName() {
+    return hasCustomName() ? name : app.GetString(IDS_TILE_CHEST);
+}
+
+std::wstring ChestTileEntity::getCustomName() {
+    return hasCustomName() ? name : L"";
+}
+
+bool ChestTileEntity::hasCustomName() { return !name.empty(); }
+
+void ChestTileEntity::setCustomName(const std::wstring& name) {
+    this->name = name;
+}
 
 void ChestTileEntity::load(CompoundTag* base) {
     TileEntity::load(base);
-
-    // 4jcraft, fixed cast of templated List to get the tag list
-    // and cast it to CompoundTag inside the loop
-    ListTag<Tag>* inventoryList = base->getList(L"Items");
-
+    ListTag<CompoundTag>* inventoryList =
+        (ListTag<CompoundTag>*)base->getList(L"Items");
     if (items) {
         delete[] items->data;
         delete items;
     }
     items = new ItemInstanceArray(getContainerSize());
+    if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
     for (int i = 0; i < inventoryList->size(); i++) {
-        CompoundTag* tag = (CompoundTag*)inventoryList->get(i);
+        CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot") & 0xff;
         if (slot >= 0 && slot < items->length)
             (*items)[slot] = ItemInstance::fromTag(tag);
@@ -110,6 +143,7 @@ void ChestTileEntity::save(CompoundTag* base) {
         }
     }
     base->put(L"Items", listTag);
+    if (hasCustomName()) base->putString(L"CustomName", name);
     base->putBoolean(L"bonus", isBonusChest);
 }
 
@@ -130,6 +164,28 @@ void ChestTileEntity::clearCache() {
     hasCheckedNeighbors = false;
 }
 
+void ChestTileEntity::heyImYourNeighbor(
+    std::shared_ptr<ChestTileEntity> neighbor, int from) {
+    if (neighbor->isRemoved()) {
+        hasCheckedNeighbors = false;
+    } else if (hasCheckedNeighbors) {
+        switch (from) {
+            case Direction::NORTH:
+                if (n.lock() != neighbor) hasCheckedNeighbors = false;
+                break;
+            case Direction::SOUTH:
+                if (s.lock() != neighbor) hasCheckedNeighbors = false;
+                break;
+            case Direction::EAST:
+                if (e.lock() != neighbor) hasCheckedNeighbors = false;
+                break;
+            case Direction::WEST:
+                if (w.lock() != neighbor) hasCheckedNeighbors = false;
+                break;
+        }
+    }
+}
+
 void ChestTileEntity::checkNeighbors() {
     if (hasCheckedNeighbors) return;
 
@@ -139,36 +195,79 @@ void ChestTileEntity::checkNeighbors() {
     w = std::weak_ptr<ChestTileEntity>();
     s = std::weak_ptr<ChestTileEntity>();
 
-    if (level->getTile(x - 1, y, z) == Tile::chest_Id) {
+    if (isSameChest(x - 1, y, z)) {
         w = std::dynamic_pointer_cast<ChestTileEntity>(
             level->getTileEntity(x - 1, y, z));
     }
-    if (level->getTile(x + 1, y, z) == Tile::chest_Id) {
+    if (isSameChest(x + 1, y, z)) {
         e = std::dynamic_pointer_cast<ChestTileEntity>(
             level->getTileEntity(x + 1, y, z));
     }
-    if (level->getTile(x, y, z - 1) == Tile::chest_Id) {
+    if (isSameChest(x, y, z - 1)) {
         n = std::dynamic_pointer_cast<ChestTileEntity>(
             level->getTileEntity(x, y, z - 1));
     }
-    if (level->getTile(x, y, z + 1) == Tile::chest_Id) {
+    if (isSameChest(x, y, z + 1)) {
         s = std::dynamic_pointer_cast<ChestTileEntity>(
             level->getTileEntity(x, y, z + 1));
     }
 
-    if (n.lock() != NULL) n.lock()->clearCache();
-    if (s.lock() != NULL) s.lock()->clearCache();
-    if (e.lock() != NULL) e.lock()->clearCache();
-    if (w.lock() != NULL) w.lock()->clearCache();
+    std::shared_ptr<ChestTileEntity> cteThis =
+        std::dynamic_pointer_cast<ChestTileEntity>(shared_from_this());
+    if (n.lock() != NULL)
+        n.lock()->heyImYourNeighbor(cteThis, Direction::SOUTH);
+    if (s.lock() != NULL)
+        s.lock()->heyImYourNeighbor(cteThis, Direction::NORTH);
+    if (e.lock() != NULL) e.lock()->heyImYourNeighbor(cteThis, Direction::WEST);
+    if (w.lock() != NULL) w.lock()->heyImYourNeighbor(cteThis, Direction::EAST);
+}
+
+bool ChestTileEntity::isSameChest(int x, int y, int z) {
+    Tile* tile = Tile::tiles[level->getTile(x, y, z)];
+    if (tile == NULL || !(dynamic_cast<ChestTile*>(tile) != NULL)) return false;
+    return ((ChestTile*)tile)->type == getType();
 }
 
 void ChestTileEntity::tick() {
     TileEntity::tick();
     checkNeighbors();
 
-    if (++tickInterval % 20 * 4 == 0) {
-        // level->tileEvent(x, y, z, ChestTile::EVENT_SET_OPEN_COUNT,
-        // openCount);
+    ++tickInterval;
+    if (!level->isClientSide && openCount != 0 &&
+        (tickInterval + x + y + z) % (SharedConstants::TICKS_PER_SECOND * 10) ==
+            0) {
+        //            level.tileEvent(x, y, z, Tile.chest.id,
+        //            ChestTile.EVENT_SET_OPEN_COUNT, openCount);
+
+        openCount = 0;
+
+        float range = 5;
+        std::vector<std::shared_ptr<Entity> >* players =
+            level->getEntitiesOfClass(
+                typeid(Player),
+                AABB::newTemp(x - range, y - range, z - range, x + 1 + range,
+                              y + 1 + range, z + 1 + range));
+        for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+            std::shared_ptr<Player> player =
+                std::dynamic_pointer_cast<Player>(*it);
+
+            ContainerMenu* containerMenu =
+                dynamic_cast<ContainerMenu*>(player->containerMenu);
+            if (containerMenu != NULL) {
+                std::shared_ptr<Container> container =
+                    containerMenu->getContainer();
+                std::shared_ptr<Container> thisContainer =
+                    std::dynamic_pointer_cast<Container>(shared_from_this());
+                std::shared_ptr<CompoundContainer> compoundContainer =
+                    std::dynamic_pointer_cast<CompoundContainer>(container);
+                if ((container == thisContainer) ||
+                    (compoundContainer != NULL &&
+                     compoundContainer->contains(thisContainer))) {
+                    openCount++;
+                }
+            }
+        }
+        delete players;
     }
 
     oOpenness = openness;
@@ -220,28 +319,56 @@ void ChestTileEntity::tick() {
     }
 }
 
-void ChestTileEntity::triggerEvent(int b0, int b1) {
+bool ChestTileEntity::triggerEvent(int b0, int b1) {
     if (b0 == ChestTile::EVENT_SET_OPEN_COUNT) {
         openCount = b1;
+        return true;
     }
+    return TileEntity::triggerEvent(b0, b1);
 }
 
 void ChestTileEntity::startOpen() {
+    if (openCount < 0) {
+        openCount = 0;
+    }
     openCount++;
-    level->tileEvent(x, y, z, Tile::chest_Id, ChestTile::EVENT_SET_OPEN_COUNT,
+    level->tileEvent(x, y, z, getTile()->id, ChestTile::EVENT_SET_OPEN_COUNT,
                      openCount);
+    level->updateNeighborsAt(x, y, z, getTile()->id);
+    level->updateNeighborsAt(x, y - 1, z, getTile()->id);
 }
 
 void ChestTileEntity::stopOpen() {
+    if (getTile() == NULL || !(dynamic_cast<ChestTile*>(getTile()) != NULL))
+        return;
     openCount--;
-    level->tileEvent(x, y, z, Tile::chest_Id, ChestTile::EVENT_SET_OPEN_COUNT,
+    level->tileEvent(x, y, z, getTile()->id, ChestTile::EVENT_SET_OPEN_COUNT,
                      openCount);
+    level->updateNeighborsAt(x, y, z, getTile()->id);
+    level->updateNeighborsAt(x, y - 1, z, getTile()->id);
+}
+
+bool ChestTileEntity::canPlaceItem(int slot,
+                                   std::shared_ptr<ItemInstance> item) {
+    return true;
 }
 
 void ChestTileEntity::setRemoved() {
+    TileEntity::setRemoved();
     clearCache();
     checkNeighbors();
-    TileEntity::setRemoved();
+}
+
+int ChestTileEntity::getType() {
+    if (type == -1) {
+        if (level != NULL && dynamic_cast<ChestTile*>(getTile()) != NULL) {
+            type = ((ChestTile*)getTile())->type;
+        } else {
+            return ChestTile::TYPE_BASIC;
+        }
+    }
+
+    return type;
 }
 
 // 4J Added

@@ -17,8 +17,11 @@ public:
     using TileEntity::setChanged;
 
 private:
-    ItemInstanceArray* items;
+    ItemInstanceArray items;
     Random* random;
+
+protected:
+    std::wstring name;
 
 public:
     DispenserTileEntity();
@@ -28,20 +31,24 @@ public:
     virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
     virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot,
                                                      int count);
-    std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
-    bool removeProjectile(int itemId);
-    int getRandomSlot();
+    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
+    virtual bool removeProjectile(int itemId);
+    virtual int getRandomSlot();
     virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
     virtual int addItem(std::shared_ptr<ItemInstance> item);
-    virtual int getName();
+    virtual std::wstring getName();
+    virtual std::wstring getCustomName();
+    virtual void setCustomName(const std::wstring& name);
+    virtual bool hasCustomName();
     virtual void load(CompoundTag* base);
     virtual void save(CompoundTag* base);
     virtual int getMaxStackSize();
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual void setChanged();
 
-    void startOpen();
-    void stopOpen();
+    virtual void startOpen();
+    virtual void stopOpen();
+    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 
     // 4J Added
     virtual std::shared_ptr<TileEntity> clone();

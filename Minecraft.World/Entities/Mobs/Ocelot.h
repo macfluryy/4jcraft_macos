@@ -4,29 +4,35 @@
 
 class TemptGoal;
 
-class Ozelot : public TamableAnimal {
-public:
-    eINSTANCEOF GetType() { return eTYPE_OZELOT; }
-    static Entity* create(Level* level) { return new Ozelot(level); }
+class Ocelot : public TamableAnimal {
+    friend class OcelotSitOnTileGoal;
 
 public:
-    static const float SNEAK_SPEED;
-    static const float WALK_SPEED;
-    static const float FOLLOW_SPEED;
-    static const float SPRINT_SPEED;
+    eINSTANCEOF GetType() { return eTYPE_OCELOT; }
+    static Entity* create(Level* level) { return new Ocelot(level); }
+
+public:
+    static const double SNEAK_SPEED_MOD;
+    static const double WALK_SPEED_MOD;
+    static const double FOLLOW_SPEED_MOD;
+    static const double SPRINT_SPEED_MOD;
 
 private:
     static const int DATA_TYPE_ID;
 
-    static const int TYPE_OZELOT;
-    static const int TYPE_BLACK;
-    static const int TYPE_RED;
-    static const int TYPE_SIAMESE;
+public:
+    enum {
+        TYPE_OCELOT,
+        TYPE_BLACK,
+        TYPE_RED,
+        TYPE_SIAMESE,
+    };
 
+private:
     TemptGoal* temptGoal;
 
 public:
-    Ozelot(Level* level);
+    Ocelot(Level* level);
 
 protected:
     virtual void defineSynchedData();
@@ -38,11 +44,10 @@ protected:
     virtual bool removeWhenFarAway();
 
 public:
-    virtual int getTexture();
     virtual bool useNewAi();
-    virtual int getMaxHealth();
 
 protected:
+    virtual void registerAttributes();
     virtual void causeFallDamage(float distance);
 
 public:
@@ -58,13 +63,13 @@ protected:
 
 public:
     virtual bool doHurtTarget(std::shared_ptr<Entity> target);
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
 
 protected:
     virtual void dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel);
 
 public:
-    virtual bool interact(std::shared_ptr<Player> player);
+    virtual bool mobInteract(std::shared_ptr<Player> player);
     virtual std::shared_ptr<AgableMob> getBreedOffspring(
         std::shared_ptr<AgableMob> target);
     virtual bool isFood(std::shared_ptr<ItemInstance> itemInstance);
@@ -73,4 +78,15 @@ public:
     virtual void setCatType(int type);
     virtual bool canSpawn();
     virtual std::wstring getAName();
+    virtual MobGroupData* finalizeMobSpawn(
+        MobGroupData* groupData,
+        int extraData = 0);  // 4J Added extraData param
+
+    // 4J-JEV: Added for tooltips, is cat annoying player by sitting on chest or
+    // furnace.
+private:
+    void setSittingOnTile(bool val);
+
+public:
+    bool isSittingOnTile();
 };

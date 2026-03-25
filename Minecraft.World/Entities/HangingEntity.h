@@ -9,7 +9,6 @@ public:
 
 private:
     void _init(Level* level);
-    float offs(int w);
 
     int checkInterval;
     // eINSTANCEOF eType;
@@ -24,12 +23,16 @@ public:
     HangingEntity(Level* level);
     HangingEntity(Level* level, int xTile, int yTile, int zTile, int dir);
     void setDir(int dir);
-    bool survives();
+    virtual bool survives();
 
+private:
+    float offs(int w);
+
+public:
     virtual void tick();
     virtual bool isPickable();
     virtual bool skipAttackInteraction(std::shared_ptr<Entity> source);
-    virtual bool hurt(DamageSource* source, int damage);
+    virtual bool hurt(DamageSource* source, float damage);
     virtual void move(
         double xa, double ya, double za,
         bool noEntityCubes = false);  // 4J - added noEntityCubes parameter
@@ -39,5 +42,8 @@ public:
 
     virtual int getWidth() = 0;
     virtual int getHeight() = 0;
-    virtual void dropItem() = 0;
+    virtual void dropItem(std::shared_ptr<Entity> causedBy) = 0;
+
+protected:
+    virtual bool repositionEntityAfterLoad();
 };

@@ -8,6 +8,9 @@
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "../../Player/MultiPlayerLocalPlayer.h"
 
+ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =
+    ResourceLocation(TN_PARTICLES);
+
 void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
                                  double y, double z, float rot, float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
@@ -22,13 +25,13 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
     glScalef(1 / 2.0f, 1 / 2.0f, 1 / 2.0f);
     int xi = 1;
     int yi = 2;
-    bindTexture(TN_PARTICLES);  // 4J was L"/particles.png"
+    bindTexture(hook);  // 4J was L"/particles.png"
     Tesselator* t = Tesselator::getInstance();
 
-    float u0 = ((xi) * 8 + 0) / 128.0f;
-    float u1 = ((xi) * 8 + 8) / 128.0f;
-    float v0 = ((yi) * 8 + 0) / 128.0f;
-    float v1 = ((yi) * 8 + 8) / 128.0f;
+    float u0 = (xi * 8 + 0) / 128.0f;
+    float u1 = (xi * 8 + 8) / 128.0f;
+    float v0 = (yi * 8 + 0) / 128.0f;
+    float v1 = (yi * 8 + 8) / 128.0f;
 
     float r = 1.0f;
     float xo = 0.5f;
@@ -53,7 +56,7 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
 
     if (hook->owner != NULL) {
         float swing = hook->owner->getAttackAnim(a);
-        float swing2 = (float)Mth::sin((sqrt(swing)) * PI);
+        float swing2 = (float)Mth::sin(sqrt(swing) * PI);
 
         Vec3* vv = Vec3::newTemp(-0.5, 0.03, 0.8);
         vv->xRot(-(hook->owner->xRotO +
@@ -71,10 +74,10 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
             hook->owner->yo + (hook->owner->y - hook->owner->yo) * a + vv->y;
         double zp =
             hook->owner->zo + (hook->owner->z - hook->owner->zo) * a + vv->z;
-        double yOffset = hook->owner != std::dynamic_pointer_cast<Player>(
+        double yOffset = hook->owner == std::dynamic_pointer_cast<Player>(
                                             Minecraft::GetInstance()->player)
-                             ? hook->owner->getHeadHeight()
-                             : 0;
+                             ? 0
+                             : hook->owner->getHeadHeight();
 
         // 4J-PB - changing this to be per player
         // if (this->entityRenderDispatcher->options->thirdPersonView)
@@ -116,4 +119,9 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
         glEnable(GL_LIGHTING);
         glEnable(GL_TEXTURE_2D);
     }
+}
+
+ResourceLocation* FishingHookRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &PARTICLE_LOCATION;
 }

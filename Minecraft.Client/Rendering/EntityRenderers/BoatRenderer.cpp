@@ -4,6 +4,8 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 
+ResourceLocation BoatRenderer::BOAT_LOCATION = ResourceLocation(TN_ITEM_BOAT);
+
 BoatRenderer::BoatRenderer() : EntityRenderer() {
     this->shadowRadius = 0.5f;
     model = new BoatModel();
@@ -12,8 +14,8 @@ BoatRenderer::BoatRenderer() : EntityRenderer() {
 void BoatRenderer::render(std::shared_ptr<Entity> _boat, double x, double y,
                           double z, float rot, float a) {
     // 4J - original version used generics and thus had an input parameter of
-    // type Boat rather than std::shared_ptr<Entity>  we have here - do some
-    // casting around instead
+    // type Boat rather than shared_ptr<Entity>  we have here - do some casting
+    // around instead
     std::shared_ptr<Boat> boat = std::dynamic_pointer_cast<Boat>(_boat);
 
     glPushMatrix();
@@ -29,13 +31,17 @@ void BoatRenderer::render(std::shared_ptr<Entity> _boat, double x, double y,
                   0);
     }
 
-    bindTexture(TN_TERRAIN);  // 4J was L"/terrain.png"
     float ss = 12 / 16.0f;
     glScalef(ss, ss, ss);
     glScalef(1 / ss, 1 / ss, 1 / ss);
 
-    bindTexture(TN_ITEM_BOAT);  // 4J was L"/item/boat.png"
+    bindTexture(boat);
     glScalef(-1, -1, 1);
     model->render(boat, 0, 0, -0.1f, 0, 0, 1 / 16.0f, true);
     glPopMatrix();
+}
+
+ResourceLocation* BoatRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &BOAT_LOCATION;
 }

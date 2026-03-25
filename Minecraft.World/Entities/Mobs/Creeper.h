@@ -14,20 +14,26 @@ private:
     static const int DATA_SWELL_DIR = 16;
     static const int DATA_IS_POWERED = 17;
 
-    int swell;
     int oldSwell;
-
-    static const int MAX_SWELL = 30;
+    int swell;
+    int maxSwell;
+    int explosionRadius;
 
     void _init();
 
 public:
     Creeper(Level* level);
 
+protected:
+    void registerAttributes();
+
+public:
     virtual bool useNewAi();
-    virtual int getMaxHealth();
+
+    virtual int getMaxFallDistance();
 
 protected:
+    virtual void causeFallDamage(float distance);
     virtual void defineSynchedData();
 
 public:

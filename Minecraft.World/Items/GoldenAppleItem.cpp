@@ -26,11 +26,16 @@ const Rarity* GoldenAppleItem::getRarity(
 void GoldenAppleItem::addEatEffect(std::shared_ptr<ItemInstance> instance,
                                    Level* level,
                                    std::shared_ptr<Player> player) {
+    if (!level->isClientSide)
+        player->addEffect(new MobEffectInstance(
+            MobEffect::absorption->id,
+            2 * 60 * SharedConstants::TICKS_PER_SECOND, 0));
+
     if (instance->getAuxValue() > 0) {
         if (!level->isClientSide) {
             player->addEffect(new MobEffectInstance(
                 MobEffect::regeneration->id,
-                30 * SharedConstants::TICKS_PER_SECOND, 3));
+                30 * SharedConstants::TICKS_PER_SECOND, 4));
             player->addEffect(new MobEffectInstance(
                 MobEffect::damageResistance->id,
                 300 * SharedConstants::TICKS_PER_SECOND, 0));

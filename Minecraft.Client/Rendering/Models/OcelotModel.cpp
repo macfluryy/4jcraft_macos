@@ -4,24 +4,24 @@
 #include "../../../Minecraft.World/Util/Mth.h"
 #include "OcelotModel.h"
 
-const float OzelotModel::xo = 0;
-const float OzelotModel::yo = 16;
-const float OzelotModel::zo = -9;
+const float OcelotModel::xo = 0;
+const float OcelotModel::yo = 16;
+const float OcelotModel::zo = -9;
 
-const float OzelotModel::headWalkY = -1 + yo;
-const float OzelotModel::headWalkZ = 0 + zo;
-const float OzelotModel::bodyWalkY = -4 + yo;
-const float OzelotModel::bodyWalkZ = -1 + zo;
-const float OzelotModel::tail1WalkY = -1 + yo;
-const float OzelotModel::tail1WalkZ = 17 + zo;
-const float OzelotModel::tail2WalkY = 4 + yo;
-const float OzelotModel::tail2WalkZ = 23 + zo;
-const float OzelotModel::backLegY = 2.f + yo;
-const float OzelotModel::backLegZ = 14 + zo;
-const float OzelotModel::frontLegY = -2.2f + yo;
-const float OzelotModel::frontLegZ = 4.f + zo;
+const float OcelotModel::headWalkY = -1 + yo;
+const float OcelotModel::headWalkZ = 0 + zo;
+const float OcelotModel::bodyWalkY = -4 + yo;
+const float OcelotModel::bodyWalkZ = -1 + zo;
+const float OcelotModel::tail1WalkY = -1 + yo;
+const float OcelotModel::tail1WalkZ = 17 + zo;
+const float OcelotModel::tail2WalkY = 4 + yo;
+const float OcelotModel::tail2WalkZ = 23 + zo;
+const float OcelotModel::backLegY = 2.f + yo;
+const float OcelotModel::backLegZ = 14 + zo;
+const float OcelotModel::frontLegY = -2.2f + yo;
+const float OcelotModel::frontLegZ = 4.f + zo;
 
-OzelotModel::OzelotModel() {
+OcelotModel::OcelotModel() {
     state = WALK_STATE;
 
     setMapTex(L"head.main", 0, 0);
@@ -77,10 +77,10 @@ OzelotModel::OzelotModel() {
     backLegR->compile(1.0f / 16.0f);
 }
 
-void OzelotModel::render(std::shared_ptr<Entity> entity, float time, float r,
+void OcelotModel::render(std::shared_ptr<Entity> entity, float time, float r,
                          float bob, float yRot, float xRot, float scale,
                          bool usecompiled) {
-    setupAnim(time, r, bob, yRot, xRot, scale);
+    setupAnim(time, r, bob, yRot, xRot, scale, entity);
     if (young) {
         float ss = 2.0f;
         glPushMatrix();
@@ -111,7 +111,7 @@ void OzelotModel::render(std::shared_ptr<Entity> entity, float time, float r,
     }
 }
 
-void OzelotModel::render(OzelotModel* model, float scale, bool usecompiled) {
+void OcelotModel::render(OcelotModel* model, float scale, bool usecompiled) {
     head->yRot = model->head->yRot;
     head->xRot = model->head->xRot;
     head->y = model->head->y;
@@ -143,8 +143,9 @@ void OzelotModel::render(OzelotModel* model, float scale, bool usecompiled) {
     body->render(scale, usecompiled);
 }
 
-void OzelotModel::setupAnim(float time, float r, float bob, float yRot,
+void OcelotModel::setupAnim(float time, float r, float bob, float yRot,
                             float xRot, float scale,
+                            std::shared_ptr<Entity> entity,
                             unsigned int uiBitmaskOverrideAnim) {
     head->xRot = xRot / (float)(180 / PI);
     head->yRot = yRot / (float)(180 / PI);
@@ -173,9 +174,9 @@ void OzelotModel::setupAnim(float time, float r, float bob, float yRot,
     }
 }
 
-void OzelotModel::prepareMobModel(std::shared_ptr<Mob> mob, float time, float r,
-                                  float a) {
-    std::shared_ptr<Ozelot> ozelot = std::dynamic_pointer_cast<Ozelot>(mob);
+void OcelotModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
+                                  float r, float a) {
+    std::shared_ptr<Ocelot> ozelot = std::dynamic_pointer_cast<Ocelot>(mob);
 
     body->y = bodyWalkY;
     body->z = bodyWalkZ;

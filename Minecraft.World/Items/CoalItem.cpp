@@ -1,9 +1,8 @@
-
-
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.entity.item.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
+#include "../Headers/net.minecraft.world.h"
 #include "CoalItem.h"
 
 CoalItem::CoalItem(int id) : Item(id) {
@@ -17,4 +16,17 @@ unsigned int CoalItem::getDescriptionId(
         return IDS_ITEM_CHARCOAL;
     }
     return IDS_ITEM_COAL;
+}
+
+Icon* CoalItem::getIcon(int auxValue) {
+    if (auxValue == CHAR_COAL) {
+        return charcoalIcon;
+    }
+    return Item::getIcon(auxValue);
+}
+
+void CoalItem::registerIcons(IconRegister* iconRegister) {
+    Item::registerIcons(iconRegister);
+
+    charcoalIcon = iconRegister->registerIcon(L"charcoal");
 }

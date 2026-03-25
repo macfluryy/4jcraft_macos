@@ -25,11 +25,11 @@ private:
 
 protected:
     void _init();
-    void _init(__int64 seed, LevelType* generator);
+    void _init(int64_t seed, LevelType* generator);
     BiomeSource();
 
 public:
-    BiomeSource(__int64 seed, LevelType* generator);
+    BiomeSource(int64_t seed, LevelType* generator);
     BiomeSource(Level* level);
 
 private:
@@ -37,13 +37,13 @@ private:
     static void getFracs(intArray indices, float* fracs);  // 4J added
 public:
 #ifdef __PSVITA__
-    static __int64 findSeed(
+    static int64_t findSeed(
         LevelType* generator,
         bool* pServerRunning);  // MGH - added pRunning, so we can early out of
                                 // this on Vita as it can take up to 60 secs
                                 // // 4J added
 #else
-    static __int64 findSeed(LevelType* generator);  // 4J added
+    static int64_t findSeed(LevelType* generator);  // 4J added
 #endif
     virtual ~BiomeSource();
 

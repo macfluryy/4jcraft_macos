@@ -44,7 +44,7 @@ class SetEntityDataPacket;
 class SetEntityMotionPacket;
 class SetEquippedItemPacket;
 class SetHealthPacket;
-class SetRidingPacket;
+class SetEntityLinkPacket;
 class SetSpawnPositionPacket;
 class SetTimePacket;
 class SignUpdatePacket;
@@ -85,6 +85,15 @@ class TileDestructionPacket;
 class ClientCommandPacket;
 class LevelChunksPacket;
 
+// 1.6.4
+class SetObjectivePacket;
+class SetScorePacket;
+class SetDisplayObjectivePacket;
+class SetPlayerTeamPacket;
+class LevelParticlesPacket;
+class UpdateAttributesPacket;
+class TileEditorOpenPacket;
+
 // 4J Added
 class CraftItemPacket;
 class TradeItemPacket;
@@ -104,7 +113,6 @@ class GameCommandPacket;
 
 class PacketListener {
 public:
-    virtual ~PacketListener() {}
     virtual bool isServerPacketListener() = 0;
     virtual void handleBlockRegionUpdate(
         std::shared_ptr<BlockRegionUpdatePacket> packet);
@@ -146,7 +154,8 @@ public:
         std::shared_ptr<SetEntityMotionPacket> packet);
     virtual void handleSetEntityData(
         std::shared_ptr<SetEntityDataPacket> packet);
-    virtual void handleRidePacket(std::shared_ptr<SetRidingPacket> packet);
+    virtual void handleEntityLinkPacket(
+        std::shared_ptr<SetEntityLinkPacket> packet);
     virtual void handleInteract(std::shared_ptr<InteractPacket> packet);
     virtual void handleEntityEvent(std::shared_ptr<EntityEventPacket> packet);
     virtual void handleSetHealth(std::shared_ptr<SetHealthPacket> packet);
@@ -230,6 +239,21 @@ public:
     // virtual void handleLevelChunks(std::shared_ptr<LevelChunksPacket>
     // packet);
     virtual bool canHandleAsyncPackets();
+
+    // 1.6.4
+    virtual void handleAddObjective(std::shared_ptr<SetObjectivePacket> packet);
+    virtual void handleSetScore(std::shared_ptr<SetScorePacket> packet);
+    virtual void handleSetDisplayObjective(
+        std::shared_ptr<SetDisplayObjectivePacket> packet);
+    virtual void handleSetPlayerTeamPacket(
+        std::shared_ptr<SetPlayerTeamPacket> packet);
+    virtual void handleParticleEvent(
+        std::shared_ptr<LevelParticlesPacket> packet);
+    virtual void handleUpdateAttributes(
+        std::shared_ptr<UpdateAttributesPacket> packet);
+    virtual void handleTileEditorOpen(
+        std::shared_ptr<TileEditorOpenPacket> tileEditorOpenPacket);
+    virtual bool isDisconnected();
 
     // 4J Added
     virtual void handleCraftItem(std::shared_ptr<CraftItemPacket> packet);

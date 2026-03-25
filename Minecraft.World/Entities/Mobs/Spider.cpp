@@ -2,11 +2,14 @@
 #include "../../Headers/net.minecraft.world.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.item.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.item.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
 #include "../../Headers/net.minecraft.world.effect.h"
 #include "../../Headers/net.minecraft.world.entity.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/com.mojang.nbt.h"
+#include "../../Util/BasicTypeContainers.h"
 #include "Spider.h"
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "../../Util/SoundTypes.h"
@@ -15,14 +18,10 @@ Spider::Spider(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
+    registerAttributes();
+    setHealth(getMaxHealth());
 
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
-
-    this->textureIdx = TN_MOB_SPIDER;  // 4J was L"/mob/spider.png";
     this->setSize(1.4f, 0.9f);
-    runSpeed = 0.8f;
 }
 
 void Spider::defineSynchedData() {
@@ -41,11 +40,12 @@ void Spider::tick() {
     }
 }
 
-int Spider::getMaxHealth() { return 16; }
+void Spider::registerAttributes() {
+    Monster::registerAttributes();
 
-double Spider::getRideHeight() { return bbHeight * 0.75 - 0.5f; }
-
-bool Spider::makeStepSound() { return false; }
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(16);
+    getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.8f);
+}
 
 std::shared_ptr<Entity> Spider::findAttackTarget() {
 #ifndef _FINAL_BUILD
@@ -70,10 +70,14 @@ int Spider::getHurtSound() { return eSoundType_MOB_SPIDER_AMBIENT; }
 
 int Spider::getDeathSound() { return eSoundType_MOB_SPIDER_DEATH; }
 
+void Spider::playStepSound(int xt, int yt, int zt, int t) {
+    playSound(eSoundType_MOB_SPIDER_STEP, 0.15f, 1);
+}
+
 void Spider::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
     float br = getBrightness(1);
     if (br > 0.5f && random->nextInt(100) == 0) {
-        this->attackTarget = nullptr;
+        attackTarget = nullptr;
         return;
     }
 
@@ -113,8 +117,6 @@ void Spider::makeStuckInWeb() {
     // do nothing - spiders don't get stuck in web
 }
 
-float Spider::getModelScale() { return 1.0f; }
-
 MobType Spider::getMobType() { return ARTHROPOD; }
 
 bool Spider::canBeAffected(MobEffectInstance* newEffect) {
@@ -136,4 +138,61 @@ void Spider::setClimbing(bool value) {
         flags &= ~0x1;
     }
     entityData->set(DATA_FLAGS_ID, flags);
+}
+
+MobGroupData* Spider::finalizeMobSpawn(
+    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+{
+    groupData = Monster::finalizeMobSpawn(groupData);
+
+#ifndef _CONTENT_PACKAGE
+    // 4J-JEV: Added for spider-jockey spawn-egg.
+    if ((level->random->nextInt(100) == 0) || (extraData != 0))
+#else
+    if (level->random->nextInt(100) == 0)
+#endif
+    {
+        std::shared_ptr<Skeleton> skeleton =
+            std::shared_ptr<Skeleton>(new Skeleton(level));
+        skeleton->moveTo(x, y, z, yRot, 0);
+        skeleton->finalizeMobSpawn(NULL);
+        level->addEntity(skeleton);
+        skeleton->ride(shared_from_this());
+    }
+
+    if (groupData == NULL) {
+        groupData = new SpiderEffectsGroupData();
+
+        if (level->difficulty > Difficulty::NORMAL &&
+            level->random->nextFloat() <
+                SPIDER_SPECIAL_EFFECT_CHANCE * level->getDifficulty(x, y, z)) {
+            ((SpiderEffectsGroupData*)groupData)
+                ->setRandomEffect(level->random);
+        }
+    }
+    if (dynamic_cast<SpiderEffectsGroupData*>(groupData) != NULL) {
+        int effect = ((SpiderEffectsGroupData*)groupData)->effectId;
+        if (effect > 0 && MobEffect::effects[effect] != NULL) {
+            addEffect(new MobEffectInstance(effect, Integer::MAX_VALUE));
+        }
+    }
+
+    return groupData;
+}
+
+const float Spider::SPIDER_SPECIAL_EFFECT_CHANCE = .1f;
+
+Spider::SpiderEffectsGroupData::SpiderEffectsGroupData() { effectId = 0; }
+
+void Spider::SpiderEffectsGroupData::setRandomEffect(Random* random) {
+    int selection = random->nextInt(5);
+    if (selection <= 1) {
+        effectId = MobEffect::movementSpeed->id;
+    } else if (selection <= 2) {
+        effectId = MobEffect::damageBoost->id;
+    } else if (selection <= 3) {
+        effectId = MobEffect::regeneration->id;
+    } else if (selection <= 4) {
+        effectId = MobEffect::invisibility->id;
+    }
 }

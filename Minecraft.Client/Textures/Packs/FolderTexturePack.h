@@ -21,7 +21,8 @@ public:
     bool isTerrainUpdateCompatible();
 
     // 4J Added
-    virtual std::wstring getPath(bool bTitleUpdateTexture = false);
+    virtual std::wstring getPath(bool bTitleUpdateTexture = false,
+                                 const char* pchBDPatchFilename = NULL);
     virtual void loadUI();
     virtual void unloadUI();
 };

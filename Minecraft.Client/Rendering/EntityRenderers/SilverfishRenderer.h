@@ -1,5 +1,4 @@
 #pragma once
-
 #include "MobRenderer.h"
 
 class Silverfish;
@@ -7,17 +6,20 @@ class Silverfish;
 class SilverfishRenderer : public MobRenderer {
 private:
     // int modelVersion;
+    static ResourceLocation SILVERFISH_LOCATION;
 
 public:
     SilverfishRenderer();
 
 protected:
-    float getFlipDegrees(std::shared_ptr<Silverfish> spider);
+    float getFlipDegrees(std::shared_ptr<LivingEntity> spider);
 
 public:
-    void render(std::shared_ptr<Entity> _mob, double x, double y, double z,
-                float rot, float a);
+    virtual void render(std::shared_ptr<Entity> _mob, double x, double y,
+                        double z, float rot, float a);
+    virtual ResourceLocation* getTextureLocation(std::shared_ptr<Entity> mob);
 
 protected:
-    int prepareArmor(std::shared_ptr<Mob> _silverfish, int layer, float a);
+    virtual int prepareArmor(std::shared_ptr<LivingEntity> _silverfish,
+                             int layer, float a);
 };

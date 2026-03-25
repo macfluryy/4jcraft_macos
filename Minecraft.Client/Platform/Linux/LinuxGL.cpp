@@ -1,5 +1,7 @@
 #ifdef __linux__
 
+#include "../stdafx.h"
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
@@ -8,6 +10,48 @@
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
+
+void LinuxGLLogLightmapState(const char* stage, int textureId, bool scaleLight) {
+    static int logCount = 0;
+    if (logCount >= 16) return;
+
+    ++logCount;
+
+    static bool loggedSymbols = false;
+    if (!loggedSymbols) {
+        loggedSymbols = true;
+        app.DebugPrintf(
+            "[linux-lightmap] linuxgl symbols glActiveTexture=%p "
+            "glClientActiveTexture=%p glMultiTexCoord2f=%p\n",
+            reinterpret_cast<void*>(::glActiveTexture),
+            reinterpret_cast<void*>(::glClientActiveTexture),
+            reinterpret_cast<void*>(::glMultiTexCoord2f));
+    }
+
+    GLint activeTexture = 0;
+    GLint matrixMode = 0;
+    ::glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+    ::glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
+
+    const GLint restoreTexture = activeTexture;
+    ::glActiveTexture(GL_TEXTURE1);
+
+    GLint unit1Binding = 0;
+    ::glGetIntegerv(GL_TEXTURE_BINDING_2D, &unit1Binding);
+    const bool unit1Enabled = (::glIsEnabled(GL_TEXTURE_2D) == GL_TRUE);
+
+    GLfloat textureMatrix[16];
+    ::glGetFloatv(GL_TEXTURE_MATRIX, textureMatrix);
+
+    ::glActiveTexture(restoreTexture);
+
+    app.DebugPrintf(
+        "[linux-lightmap] %s tex=%d scale=%d active=%#x matrixMode=%#x "
+        "unit1Bound=%d unit1Enabled=%d texMatrix=[%.4f %.4f %.4f %.4f]\n",
+        stage, textureId, scaleLight ? 1 : 0, activeTexture, matrixMode,
+        unit1Binding, unit1Enabled ? 1 : 0, textureMatrix[0], textureMatrix[5],
+        textureMatrix[12], textureMatrix[13]);
+}
 
 int glGenTextures() {
     GLuint id = 0;

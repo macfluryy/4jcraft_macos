@@ -1,10 +1,11 @@
 #pragma once
 
-class Mob;
+class LivingEntity;
 class Entity;
 class Arrow;
 class Fireball;
 class Player;
+class Explosion;
 
 #include "../Network/Packets/ChatPacket.h"
 
@@ -20,15 +21,13 @@ public:
     static DamageSource* fall;
     static DamageSource* outOfWorld;
     static DamageSource* genericSource;
-    static DamageSource* explosion;
-    static DamageSource* controlledExplosion;
     static DamageSource* magic;
     static DamageSource* dragonbreath;
     static DamageSource* wither;
     static DamageSource* anvil;
     static DamageSource* fallingBlock;
 
-    static DamageSource* mobAttack(std::shared_ptr<Mob> mob);
+    static DamageSource* mobAttack(std::shared_ptr<LivingEntity> mob);
     static DamageSource* playerAttack(std::shared_ptr<Player> player);
     static DamageSource* arrow(std::shared_ptr<Arrow> arrow,
                                std::shared_ptr<Entity> owner);
@@ -39,6 +38,7 @@ public:
     static DamageSource* indirectMagic(std::shared_ptr<Entity> entity,
                                        std::shared_ptr<Entity> owner);
     static DamageSource* thorns(std::shared_ptr<Entity> source);
+    static DamageSource* explosion(Explosion* explosion);
 
 private:
     bool _bypassArmor;
@@ -49,10 +49,13 @@ private:
     bool _isProjectile;
     bool _scalesWithDifficulty;
     bool _isMagic;
+    bool _isExplosion;
 
 public:
     bool isProjectile();
     DamageSource* setProjectile();
+    bool isExplosion();
+    DamageSource* setExplosion();
 
     bool isBypassArmor();
     float getFoodExhaustion();
@@ -60,10 +63,15 @@ public:
 
     // std::wstring msgId;
     ChatPacket::EChatPacketMessage m_msgId;  // 4J Made int so we can localise
+    ChatPacket::EChatPacketMessage
+        m_msgWithItemId;  // 4J: Renamed from m_msgWithSourceId (it was already
+                          // renamed in places, just made consistent)
 
 protected:
     // DamageSource(const std::wstring &msgId);
-    DamageSource(ChatPacket::EChatPacketMessage msgId);
+    DamageSource(ChatPacket::EChatPacketMessage msgId,
+                 ChatPacket::EChatPacketMessage msgWithItemId =
+                     ChatPacket::e_ChatCustom);
 
 public:
     virtual ~DamageSource() {}
@@ -87,9 +95,13 @@ public:
     // virtual std::wstring getLocalizedDeathMessage(std::shared_ptr<Player>
     // player);
     virtual std::shared_ptr<ChatPacket> getDeathMessagePacket(
-        std::shared_ptr<Player> player);
+        std::shared_ptr<LivingEntity> player);
 
     bool isFire();
     ChatPacket::EChatPacketMessage
     getMsgId();  // 4J Stu - Used to return String
+
+    // 4J Added
+    bool equals(DamageSource* source);
+    virtual DamageSource* copy();
 };

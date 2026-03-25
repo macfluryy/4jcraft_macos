@@ -25,6 +25,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.storage.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Util/JavaMath.h"
+#include "../../Minecraft.World/Level/Storage/EntityIO.h"
 #ifdef _XBOX
 #include "../Platform/Xbox/Network/NetworkPlayerXbox.h"
 #elif defined(__PS3__) || defined(__ORBIS__)
@@ -76,7 +77,10 @@ PlayerList::~PlayerList() {
 void PlayerList::placeNewPlayer(Connection* connection,
                                 std::shared_ptr<ServerPlayer> player,
                                 std::shared_ptr<LoginPacket> packet) {
-    bool newPlayer = load(player);
+    CompoundTag* playerTag = load(player);
+
+    bool newPlayer = playerTag == NULL;
+
     player->setLevel(server->getLevel(player->dimension));
     player->gameMode->setLevel((ServerLevel*)player->level);
 
@@ -240,18 +244,21 @@ void PlayerList::placeNewPlayer(Connection* connection,
     playerConnection->send(std::shared_ptr<LoginPacket>(new LoginPacket(
         L"", player->entityId, level->getLevelData()->getGenerator(),
         level->getSeed(), player->gameMode->getGameModeForPlayer()->getId(),
-        (std::uint8_t)level->dimension->id,
-        (std::uint8_t)level->getMaxBuildHeight(), (std::uint8_t)getMaxPlayers(),
-        level->difficulty, TelemetryManager->GetMultiplayerInstanceID(),
-        playerIndex, level->useNewSeaLevel(),
-        player->getAllPlayerGamePrivileges(),
+        (uint8_t)level->dimension->id, (uint8_t)level->getMaxBuildHeight(),
+        (uint8_t)getMaxPlayers(), level->difficulty,
+        TelemetryManager->GetMultiplayerInstanceID(), (BYTE)playerIndex,
+        level->useNewSeaLevel(), player->getAllPlayerGamePrivileges(),
         level->getLevelData()->getXZSize(),
         level->getLevelData()->getHellScale())));
     playerConnection->send(std::shared_ptr<SetSpawnPositionPacket>(
         new SetSpawnPositionPacket(spawnPos->x, spawnPos->y, spawnPos->z)));
     playerConnection->send(std::shared_ptr<PlayerAbilitiesPacket>(
         new PlayerAbilitiesPacket(&player->abilities)));
+    playerConnection->send(std::shared_ptr<SetCarriedItemPacket>(
+        new SetCarriedItemPacket(player->inventory->selected)));
     delete spawnPos;
+
+    updateEntireScoreboard((ServerScoreboard*)level->getScoreboard(), player);
 
     sendLevelInfo(player, level);
 
@@ -274,8 +281,9 @@ void PlayerList::placeNewPlayer(Connection* connection,
                                player->xRot);
 
     server->getConnection()->addPlayerConnection(playerConnection);
-    playerConnection->send(
-        std::shared_ptr<SetTimePacket>(new SetTimePacket(level->getTime())));
+    playerConnection->send(std::shared_ptr<SetTimePacket>(new SetTimePacket(
+        level->getGameTime(), level->getDayTime(),
+        level->getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT))));
 
     AUTO_VAR(activeEffects, player->getActiveEffects());
     for (AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end();
@@ -286,6 +294,18 @@ void PlayerList::placeNewPlayer(Connection* connection,
     }
 
     player->initMenu();
+
+    if (playerTag != NULL && playerTag->contains(Entity::RIDING_TAG)) {
+        // this player has been saved with a mount tag
+        std::shared_ptr<Entity> mount = EntityIO::loadStatic(
+            playerTag->getCompound(Entity::RIDING_TAG), level);
+        if (mount != NULL) {
+            mount->forcedLoading = true;
+            level->addEntity(mount);
+            player->ride(mount);
+            mount->forcedLoading = false;
+        }
+    }
 
     // If we are joining at the same time as someone in the end on this system
     // is travelling through the win portal, then we should set our wonGame flag
@@ -303,6 +323,35 @@ void PlayerList::placeNewPlayer(Connection* connection,
             }
         }
     }
+}
+
+void PlayerList::updateEntireScoreboard(ServerScoreboard* scoreboard,
+                                        std::shared_ptr<ServerPlayer> player) {
+    // unordered_set<Objective *> objectives;
+
+    // for (PlayerTeam team : scoreboard->getPlayerTeams())
+    //{
+    //	player->connection->send( shared_ptr<SetPlayerTeamPacket>(new
+    // SetPlayerTeamPacket(team, SetPlayerTeamPacket::METHOD_ADD)));
+    // }
+
+    // for (int slot = 0; slot < Scoreboard::DISPLAY_SLOTS; slot++)
+    //{
+    //	Objective objective = scoreboard->getDisplayObjective(slot);
+
+    //	if (objective != NULL && !objectives->contains(objective))
+    //	{
+    //		vector<shared_ptr<Packet> > *packets =
+    // scoreboard->getStartTrackingPackets(objective);
+
+    //		for (Packet packet : packets)
+    //		{
+    //			player->connection->send(packet);
+    //		}
+
+    //		objectives->add(objective);
+    //	}
+    //}
 }
 
 void PlayerList::setLevel(ServerLevelArray levels) {
@@ -323,8 +372,7 @@ int PlayerList::getMaxRange() {
     return PlayerChunkMap::convertChunkRangeToBlock(getViewDistance());
 }
 
-// 4J Changed return val to bool to check if new player or loaded player
-bool PlayerList::load(std::shared_ptr<ServerPlayer> player) {
+CompoundTag* PlayerList::load(std::shared_ptr<ServerPlayer> player) {
     return playerIo->load(player);
 }
 
@@ -345,6 +393,8 @@ void PlayerList::validatePlayerSpawnPosition(
     // of the current column
     app.DebugPrintf("Original pos is %f, %f, %f in dimension %d\n", player->x,
                     player->y, player->z, player->dimension);
+
+    bool spawnForced = player->isRespawnForced();
 
     double targetX = 0;
     if (player->x < 0)
@@ -397,12 +447,12 @@ void PlayerList::validatePlayerSpawnPosition(
         Pos* bedPosition = player->getRespawnPosition();
         if (bedPosition != NULL) {
             Pos* respawnPosition = Player::checkBedValidRespawnPosition(
-                server->getLevel(player->dimension), bedPosition);
+                server->getLevel(player->dimension), bedPosition, spawnForced);
             if (respawnPosition != NULL) {
                 player->moveTo(respawnPosition->x + 0.5f,
                                respawnPosition->y + 0.1f,
                                respawnPosition->z + 0.5f, 0, 0);
-                player->setRespawnPosition(bedPosition);
+                player->setRespawnPosition(bedPosition, spawnForced);
             }
             delete bedPosition;
         }
@@ -480,6 +530,13 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     // sure that the player is gone delete the map
     if (player->isGuest()) playerIo->deleteMapFilesForPlayer(player);
     ServerLevel* level = player->getLevel();
+    if (player->riding != NULL) {
+        // remove mount first because the player unmounts when being
+        // removed, also remove mount because it's saved in the player's
+        // save tag
+        level->removeEntityImmediately(player->riding);
+        app.DebugPrintf("removing player mount");
+    }
     level->removeEntity(player);
     level->getChunkMap()->remove(player);
     AUTO_VAR(it, find(players.begin(), players.end(), player));
@@ -601,6 +658,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         ->removeEntityImmediately(serverPlayer);
 
     Pos* bedPosition = serverPlayer->getRespawnPosition();
+    bool spawnForced = serverPlayer->isRespawnForced();
 
     removePlayerFromReceiving(serverPlayer);
     serverPlayer->dimension = targetDimension;
@@ -613,9 +671,10 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
 
     std::shared_ptr<ServerPlayer> player = std::shared_ptr<ServerPlayer>(
         new ServerPlayer(server, server->getLevel(serverPlayer->dimension),
-                         serverPlayer->name,
+                         serverPlayer->getName(),
                          new ServerPlayerGameMode(
                              server->getLevel(serverPlayer->dimension))));
+    player->connection = serverPlayer->connection;
     player->restoreFrom(serverPlayer, keepAllPlayerData);
     if (keepAllPlayerData) {
         // Fix for #81759 - TU9: Content: Gameplay: Entering The End Exit Portal
@@ -633,7 +692,6 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     // packet
     // player->entityId = serverPlayer->entityId;
 
-    player->connection = serverPlayer->connection;
     player->setPlayerDefaultSkin(skin);
     player->setIsGuest(serverPlayer->isGuest());
     player->setPlayerIndex(playerIndex);
@@ -665,7 +723,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         player->moveTo(serverPlayer->x, serverPlayer->y, serverPlayer->z,
                        serverPlayer->yRot, serverPlayer->xRot);
         if (bedPosition != NULL) {
-            player->setRespawnPosition(bedPosition);
+            player->setRespawnPosition(bedPosition, spawnForced);
             delete bedPosition;
         }
         // Fix for #81759 - TU9: Content: Gameplay: Entering The End Exit Portal
@@ -674,11 +732,12 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         player->inventory->selected = serverPlayer->inventory->selected;
     } else if (bedPosition != NULL) {
         Pos* respawnPosition = Player::checkBedValidRespawnPosition(
-            server->getLevel(serverPlayer->dimension), bedPosition);
+            server->getLevel(serverPlayer->dimension), bedPosition,
+            spawnForced);
         if (respawnPosition != NULL) {
             player->moveTo(respawnPosition->x + 0.5f, respawnPosition->y + 0.1f,
                            respawnPosition->z + 0.5f, 0, 0);
-            player->setRespawnPosition(bedPosition);
+            player->setRespawnPosition(bedPosition, spawnForced);
         } else {
             player->connection->send(
                 std::shared_ptr<GameEventPacket>(new GameEventPacket(
@@ -703,6 +762,10 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         level->getLevelData()->getHellScale())));
     player->connection->teleport(player->x, player->y, player->z, player->yRot,
                                  player->xRot);
+    player->connection->send(
+        std::shared_ptr<SetExperiencePacket>(new SetExperiencePacket(
+            player->experienceProgress, player->totalExperience,
+            player->experienceLevel)));
 
     if (keepAllPlayerData) {
         std::vector<MobEffectInstance*>* activeEffects =
@@ -725,6 +788,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     players.push_back(player);
 
     player->initMenu();
+    player->setHealth(player->getHealth());
 
     // 4J-JEV - Dying before this point in the tutorial is pretty annoying,
     // making sure to remove health/hunger and give you back your meat.
@@ -772,9 +836,9 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
     // (1) if this isn't the primary player, then we just need to remove it from
     // the entity tracker (2) if this Is the primary player then:
     //		(a) if isEmptying is true, then remove the player from the
-    //tracker, and send "remove entity" packets for anything seen (this is the
-    //original behaviour of the code) 		(b) if isEmptying is false, then we'll be
-    //transferring control of entity tracking to another player
+    // tracker, and send "remove entity" packets for anything seen (this is the
+    // original behaviour of the code) 		(b) if isEmptying is false, then
+    // we'll be transferring control of entity tracking to another player
 
     if (isPrimary) {
         if (isEmptying) {
@@ -824,58 +888,7 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
     oldLevel->removeEntityImmediately(player);
     player->removed = false;
 
-    double xt = player->x;
-    double zt = player->z;
-    double scale =
-        newLevel->getLevelData()
-            ->getHellScale();  // 4J Scale was 8 but this is all we can fit in
-    if (player->dimension == -1) {
-        xt /= scale;
-        zt /= scale;
-        player->moveTo(xt, player->y, zt, player->yRot, player->xRot);
-        if (player->isAlive()) {
-            oldLevel->tick(player, false);
-        }
-    } else if (player->dimension == 0) {
-        xt *= scale;
-        zt *= scale;
-        player->moveTo(xt, player->y, zt, player->yRot, player->xRot);
-        if (player->isAlive()) {
-            oldLevel->tick(player, false);
-        }
-    } else {
-        Pos* p = newLevel->getDimensionSpecificSpawn();
-
-        xt = p->x;
-        player->y = p->y;
-        zt = p->z;
-        delete p;
-        player->moveTo(xt, player->y, zt, 90, 0);
-        if (player->isAlive()) {
-            oldLevel->tick(player, false);
-        }
-    }
-
-    removePlayerFromReceiving(player, false, lastDimension);
-    addPlayerToReceiving(player);
-
-    if (lastDimension == 1) {
-    } else {
-        xt = (double)Mth::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
-                                Level::MAX_LEVEL_SIZE - 128);
-        zt = (double)Mth::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
-                                Level::MAX_LEVEL_SIZE - 128);
-        if (player->isAlive()) {
-            newLevel->addEntity(player);
-            player->moveTo(xt, player->y, zt, player->yRot, player->xRot);
-            newLevel->tick(player, false);
-            newLevel->cache->autoCreate = true;
-            (new PortalForcer())->force(newLevel, player);
-            newLevel->cache->autoCreate = false;
-        }
-    }
-
-    player->setLevel(newLevel);
+    repositionAcrossDimension(player, lastDimension, oldLevel, newLevel);
     changeDimension(player, oldLevel);
 
     player->gameMode->setLevel(newLevel);
@@ -910,6 +923,80 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
 
     sendLevelInfo(player, newLevel);
     sendAllPlayerInfo(player);
+}
+
+void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
+                                           int lastDimension,
+                                           ServerLevel* oldLevel,
+                                           ServerLevel* newLevel) {
+    double xt = entity->x;
+    double zt = entity->z;
+    double xOriginal = entity->x;
+    double yOriginal = entity->y;
+    double zOriginal = entity->z;
+    float yRotOriginal = entity->yRot;
+    double scale =
+        newLevel->getLevelData()
+            ->getHellScale();  // 4J Scale was 8 but this is all we can fit in
+    if (entity->dimension == -1) {
+        xt /= scale;
+        zt /= scale;
+        entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+        if (entity->isAlive()) {
+            oldLevel->tick(entity, false);
+        }
+    } else if (entity->dimension == 0) {
+        xt *= scale;
+        zt *= scale;
+        entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+        if (entity->isAlive()) {
+            oldLevel->tick(entity, false);
+        }
+    } else {
+        Pos* p;
+
+        if (lastDimension == 1) {
+            // Coming from the end
+            p = newLevel->getSharedSpawnPos();
+        } else {
+            // Going to the end
+            p = newLevel->getDimensionSpecificSpawn();
+        }
+
+        xt = p->x;
+        entity->y = p->y;
+        zt = p->z;
+        delete p;
+        entity->moveTo(xt, entity->y, zt, 90, 0);
+        if (entity->isAlive()) {
+            oldLevel->tick(entity, false);
+        }
+    }
+
+    if (entity->GetType() == eTYPE_SERVERPLAYER) {
+        std::shared_ptr<ServerPlayer> player =
+            std::dynamic_pointer_cast<ServerPlayer>(entity);
+        removePlayerFromReceiving(player, false, lastDimension);
+        addPlayerToReceiving(player);
+    }
+
+    if (lastDimension != 1) {
+        xt = (double)Mth::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
+                                Level::MAX_LEVEL_SIZE - 128);
+        zt = (double)Mth::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
+                                Level::MAX_LEVEL_SIZE - 128);
+        if (entity->isAlive()) {
+            newLevel->addEntity(entity);
+            entity->moveTo(xt, entity->y, zt, entity->yRot, entity->xRot);
+            newLevel->tick(entity, false);
+            newLevel->cache->autoCreate = true;
+            newLevel->getPortalForcer()->force(entity, xOriginal, yOriginal,
+                                               zOriginal, yRotOriginal);
+            newLevel->cache->autoCreate = false;
+        }
+    }
+
+    entity->setLevel(newLevel);
 }
 
 void PlayerList::tick() {
@@ -1095,6 +1182,121 @@ std::shared_ptr<ServerPlayer> PlayerList::getPlayer(PlayerUID uid) {
     return nullptr;
 }
 
+std::shared_ptr<ServerPlayer> PlayerList::getNearestPlayer(Pos* position,
+                                                           int range) {
+    if (players.empty()) return nullptr;
+    if (position == NULL) return players.at(0);
+    std::shared_ptr<ServerPlayer> current = nullptr;
+    double dist = -1;
+    int rangeSqr = range * range;
+
+    for (int i = 0; i < players.size(); i++) {
+        std::shared_ptr<ServerPlayer> next = players.at(i);
+        double newDist =
+            position->distSqr(next->getCommandSenderWorldPosition());
+
+        if ((dist == -1 || newDist < dist) &&
+            (range <= 0 || newDist <= rangeSqr)) {
+            dist = newDist;
+            current = next;
+        }
+    }
+
+    return current;
+}
+
+std::vector<ServerPlayer>* PlayerList::getPlayers(
+    Pos* position, int rangeMin, int rangeMax, int count, int mode,
+    int levelMin, int levelMax,
+    std::unordered_map<std::wstring, int>* scoreRequirements,
+    const std::wstring& playerName, const std::wstring& teamName,
+    Level* level) {
+    app.DebugPrintf("getPlayers NOT IMPLEMENTED!");
+    return NULL;
+
+    /*if (players.empty()) return NULL;
+    vector<shared_ptr<ServerPlayer> > result = new
+    vector<shared_ptr<ServerPlayer> >(); bool reverse = count < 0; bool
+    playerNameNot = !playerName.empty() && playerName.startsWith("!"); bool
+    teamNameNot = !teamName.empty() && teamName.startsWith("!"); int rangeMinSqr
+    = rangeMin * rangeMin; int rangeMaxSqr = rangeMax * rangeMax; count =
+    Mth.abs(count);
+
+    if (playerNameNot) playerName = playerName.substring(1);
+    if (teamNameNot) teamName = teamName.substring(1);
+
+    for (int i = 0; i < players.size(); i++) {
+    ServerPlayer player = players.get(i);
+
+    if (level != null && player.level != level) continue;
+    if (playerName != null) {
+    if (playerNameNot == playerName.equalsIgnoreCase(player.getAName()))
+    continue;
+    }
+    if (teamName != null) {
+    Team team = player.getTeam();
+    String actualName = team == null ? "" : team.getName();
+    if (teamNameNot == teamName.equalsIgnoreCase(actualName)) continue;
+    }
+
+    if (position != null && (rangeMin > 0 || rangeMax > 0)) {
+    float distance = position.distSqr(player.getCommandSenderWorldPosition());
+    if (rangeMin > 0 && distance < rangeMinSqr) continue;
+    if (rangeMax > 0 && distance > rangeMaxSqr) continue;
+    }
+
+    if (!meetsScoreRequirements(player, scoreRequirements)) continue;
+
+    if (mode != GameType.NOT_SET.getId() && mode !=
+    player.gameMode.getGameModeForPlayer().getId()) continue; if (levelMin > 0
+    && player.experienceLevel < levelMin) continue; if (player.experienceLevel >
+    levelMax) continue;
+
+    result.add(player);
+    }
+
+    if (position != null) Collections.sort(result, new
+    PlayerDistanceComparator(position)); if (reverse)
+    Collections.reverse(result); if (count > 0) result = result.subList(0,
+    Math.min(count, result.size()));
+
+    return result;*/
+}
+
+bool PlayerList::meetsScoreRequirements(
+    std::shared_ptr<Player> player,
+    std::unordered_map<std::wstring, int> scoreRequirements) {
+    app.DebugPrintf("meetsScoreRequirements NOT IMPLEMENTED!");
+    return false;
+
+    // if (scoreRequirements == null || scoreRequirements.size() == 0) return
+    // true;
+
+    // for (Map.Entry<String, Integer> requirement :
+    // scoreRequirements.entrySet()) { 	String name = requirement.getKey();
+    //	boolean min = false;
+
+    //	if (name.endsWith("_min") && name.length() > 4) {
+    //		min = true;
+    //		name = name.substring(0, name.length() - 4);
+    //	}
+
+    //	Scoreboard scoreboard = player.getScoreboard();
+    //	Objective objective = scoreboard.getObjective(name);
+    //	if (objective == null) return false;
+    //	Score score = player.getScoreboard().getPlayerScore(player.getAName(),
+    // objective); 	int value = score.getScore();
+
+    //	if (value < requirement.getValue() && min) {
+    //		return false;
+    //	} else if (value > requirement.getValue() && !min) {
+    //		return false;
+    //	}
+    //}
+
+    // return true;
+}
+
 void PlayerList::sendMessage(const std::wstring& name,
                              const std::wstring& message) {
     std::shared_ptr<ServerPlayer> player = getPlayer(name);
@@ -1168,27 +1370,6 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y,
     }
 }
 
-void PlayerList::broadcastToAllOps(const std::wstring& message) {
-    std::shared_ptr<Packet> chatPacket =
-        std::shared_ptr<ChatPacket>(new ChatPacket(message));
-    for (unsigned int i = 0; i < players.size(); i++) {
-        std::shared_ptr<ServerPlayer> p = players[i];
-        if (isOp(p->name)) {
-            p->connection->send(chatPacket);
-        }
-    }
-}
-
-bool PlayerList::sendTo(const std::wstring& name,
-                        std::shared_ptr<Packet> packet) {
-    std::shared_ptr<ServerPlayer> player = getPlayer(name);
-    if (player != NULL) {
-        player->connection->send(packet);
-        return true;
-    }
-    return false;
-}
-
 void PlayerList::saveAll(ProgressListener* progressListener,
                          bool bDeleteGuestMaps /*= false*/) {
     if (progressListener != NULL)
@@ -1222,8 +1403,9 @@ void PlayerList::reloadWhitelist() {}
 
 void PlayerList::sendLevelInfo(std::shared_ptr<ServerPlayer> player,
                                ServerLevel* level) {
-    player->connection->send(
-        std::shared_ptr<SetTimePacket>(new SetTimePacket(level->getTime())));
+    player->connection->send(std::shared_ptr<SetTimePacket>(new SetTimePacket(
+        level->getGameTime(), level->getDayTime(),
+        level->getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT))));
     if (level->isRaining()) {
         player->connection->send(std::shared_ptr<GameEventPacket>(
             new GameEventPacket(GameEventPacket::START_RAINING, 0)));
@@ -1247,6 +1429,8 @@ void PlayerList::sendLevelInfo(std::shared_ptr<ServerPlayer> player,
 void PlayerList::sendAllPlayerInfo(std::shared_ptr<ServerPlayer> player) {
     player->refreshContainer(player->inventoryMenu);
     player->resetSentInfo();
+    player->connection->send(std::shared_ptr<SetCarriedItemPacket>(
+        new SetCarriedItemPacket(player->inventory->selected)));
 }
 
 int PlayerList::getPlayerCount() { return (int)players.size(); }
@@ -1268,7 +1452,7 @@ MinecraftServer* PlayerList::getServer() { return server; }
 int PlayerList::getViewDistance() { return viewDistance; }
 
 void PlayerList::setOverrideGameMode(GameType* gameMode) {
-    this->overrideGameMode = gameMode;
+    overrideGameMode = gameMode;
 }
 
 void PlayerList::updatePlayerGameMode(std::shared_ptr<ServerPlayer> newPlayer,

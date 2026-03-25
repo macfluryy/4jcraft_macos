@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "TheEndPortalFrameTile.h"
 #include "../Headers/net.minecraft.world.level.h"
+#include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.world.h"
 #include "../Util/Facing.h"
 
@@ -17,7 +18,7 @@ Icon* TheEndPortalFrameTile::getTexture(int face, int data) {
         return iconTop;
     }
     if (face == Facing::DOWN) {
-        return Tile::whiteStone->getTexture(face);
+        return Tile::endStone->getTexture(face);
     }
     return icon;
 }
@@ -60,8 +61,22 @@ int TheEndPortalFrameTile::getResource(int data, Random* random,
     return 0;
 }
 
-void TheEndPortalFrameTile::setPlacedBy(Level* level, int x, int y, int z,
-                                        std::shared_ptr<Mob> by) {
+void TheEndPortalFrameTile::setPlacedBy(
+    Level* level, int x, int y, int z, std::shared_ptr<LivingEntity> by,
+    std::shared_ptr<ItemInstance> itemInstance) {
     int dir = (((Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3) + 2) % 4;
-    level->setData(x, y, z, dir);
+    level->setData(x, y, z, dir, Tile::UPDATE_CLIENTS);
+}
+
+bool TheEndPortalFrameTile::hasAnalogOutputSignal() { return true; }
+
+int TheEndPortalFrameTile::getAnalogOutputSignal(Level* level, int x, int y,
+                                                 int z, int dir) {
+    int data = level->getData(x, y, z);
+
+    if (hasEye(data)) {
+        return Redstone::SIGNAL_MAX;
+    } else {
+        return Redstone::SIGNAL_NONE;
+    }
 }

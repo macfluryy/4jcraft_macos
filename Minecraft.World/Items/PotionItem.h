@@ -34,7 +34,8 @@ public:
     virtual std::shared_ptr<ItemInstance> use(
         std::shared_ptr<ItemInstance> instance, Level* level,
         std::shared_ptr<Player> player);
-    virtual bool TestUse(Level* level, std::shared_ptr<Player> player);
+    virtual bool TestUse(std::shared_ptr<ItemInstance> itemInstance,
+                         Level* level, std::shared_ptr<Player> player);
     virtual bool useOn(std::shared_ptr<ItemInstance> itemInstance,
                        std::shared_ptr<Player> player, Level* level, int x,
                        int y, int z, int face, float clickX, float clickY,
@@ -50,9 +51,7 @@ public:
         std::shared_ptr<ItemInstance> itemInstance);
     virtual void appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                                  std::shared_ptr<Player> player,
-                                 std::vector<std::wstring>* lines,
-                                 bool advanced,
-                                 std::vector<std::wstring>& unformattedStrings);
+                                 std::vector<HtmlString>* lines, bool advanced);
     virtual bool isFoil(std::shared_ptr<ItemInstance> itemInstance);
 
     virtual unsigned int getUseDescriptionId(

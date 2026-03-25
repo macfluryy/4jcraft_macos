@@ -76,28 +76,6 @@ Achievement::Achievement(int id, const std::wstring& name, int x, int y,
       y(y),
       prerequisite(prerequisite) {}
 
-          /**
-           * @brief Sets the decription formatter (DescFormatter)
-           * @param descFormatter Pointer to the DescFormatter formatting the
-           * description text.
-           * @return self
-           **/
-          Achievement
-          * Achievement::setDescFormatter(DescFormatter * descFormatter) {
-    this->descFormatter = descFormatter;
-    return this;
-}
-
-/**
- * @brief Returns whether the Achivement is golden
- * @return boolean
- */
-bool Achievement::isGolden() { return isGoldenVar; }
-
-int Achievement::getAchievementID() {
-    return id - Achievements::ACHIEVEMENT_OFFSET;
-}
-
 /**
  * @brief Marks the achievement as locally awarded only.
  * @return self
@@ -148,4 +126,15 @@ std::wstring Achievement::getDescription() {
         return descFormatter->format(desc);
     }
     return desc;
+}
+
+Achievement* Achievement::setDescFormatter(DescFormatter* descFormatter) {
+    this->descFormatter = descFormatter;
+    return this;
+}
+
+bool Achievement::isGolden() { return isGoldenVar; }
+
+int Achievement::getAchievementID() {
+    return id - Achievements::ACHIEVEMENT_OFFSET;
 }

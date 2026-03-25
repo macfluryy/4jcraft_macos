@@ -11,11 +11,13 @@ private:
 
 public:
     PistonExtensionTile(int id);
-    void setOverrideTopTexture(Icon* overrideTopTexture);
-    void clearOverrideTopTexture();
-    void onRemove(Level* level, int x, int y, int z, int id, int data);
+    virtual void setOverrideTopTexture(Icon* overrideTopTexture);
+    virtual void clearOverrideTopTexture();
+    virtual void playerWillDestroy(Level* level, int x, int y, int z, int data,
+                                   std::shared_ptr<Player> player);
+    virtual void onRemove(Level* level, int x, int y, int z, int id, int data);
     virtual Icon* getTexture(int face, int data);
-    void registerIcons(IconRegister* iconRegister);
+    virtual void registerIcons(IconRegister* iconRegister);
     virtual int getRenderShape();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();

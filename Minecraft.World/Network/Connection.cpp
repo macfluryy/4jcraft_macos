@@ -27,10 +27,14 @@ void Connection::_init() {
     quitting = false;
     disconnected = false;
     disconnectReason = DisconnectPacket::eDisconnect_None;
+    disconnectReasonObjects = NULL;
     noInputTicks = 0;
     estimatedRemaining = 0;
     fakeLag = 0;
     slowWriteDelay = 50;
+
+    saqThreadID = 0;
+    closeThreadID = 0;
 
     tickCount = 0;
 }
@@ -46,9 +50,11 @@ Connection::~Connection() {
                        // waiting on a read
     readThread->WaitForCompletion(INFINITE);
     writeThread->WaitForCompletion(INFINITE);
+
     DeleteCriticalSection(&writeLock);
     DeleteCriticalSection(&threadCounterLock);
     DeleteCriticalSection(&incoming_cs);
+
     delete m_hWakeReadThread;
     delete m_hWakeWriteThread;
 
@@ -132,7 +138,7 @@ Connection::Connection(Socket* socket, const std::wstring& id,
     writeThread->Run();
 
     /* 4J JEV, java:
-    new Thread(std::wstring(id).append(L" read thread")) {
+    new Thread(wstring(id).append(L" read thread")) {
 
     };
 
@@ -174,8 +180,10 @@ void Connection::send(std::shared_ptr<Packet> packet) {
 
 void Connection::queueSend(std::shared_ptr<Packet> packet) {
     if (quitting) return;
+    EnterCriticalSection(&writeLock);
     estimatedRemaining += packet->getEstimatedSize() + 1;
     outgoing_slow.push(packet);
+    LeaveCriticalSection(&writeLock);
 }
 
 bool Connection::writeTick() {
@@ -208,7 +216,17 @@ bool Connection::writeTick() {
 
 #ifndef _CONTENT_PACKAGE
         // 4J Added for debugging
-        if (!socket->isLocal()) Packet::recordOutgoingPacket(packet);
+        int playerId = 0;
+        if (!socket->isLocal()) {
+            Socket* socket = getSocket();
+            if (socket) {
+                INetworkPlayer* player = socket->getPlayer();
+                if (player) {
+                    playerId = player->GetSmallId();
+                }
+            }
+            Packet::recordOutgoingPacket(packet, playerId);
+        }
 #endif
 
         // 4J Stu - Changed this so that rather than writing to the network
@@ -260,17 +278,34 @@ bool Connection::writeTick() {
             // "game" packets to QNet, rather than amalgamated chunks of data
             // that may include many packets, and partial packets b) To be able
             // to change the priority and queue of a packet if required
+#ifdef _XBOX
             int flags = QNET_SENDDATA_LOW_PRIORITY | QNET_SENDDATA_SECONDARY;
+#else
+            int flags = NON_QNET_SENDDATA_ACK_REQUIRED;
+#endif
             sos->writeWithFlags(baos->buf, 0, baos->size(), flags);
             baos->reset();
         } else {
             Packet::writePacket(packet, bufferedDos);
         }
+
 #endif
 
 #ifndef _CONTENT_PACKAGE
         // 4J Added for debugging
-        if (!socket->isLocal()) Packet::recordOutgoingPacket(packet);
+        if (!socket->isLocal()) {
+            int playerId = 0;
+            if (!socket->isLocal()) {
+                Socket* socket = getSocket();
+                if (socket) {
+                    INetworkPlayer* player = socket->getPlayer();
+                    if (player) {
+                        playerId = player->GetSmallId();
+                    }
+                }
+                Packet::recordOutgoingPacket(packet, playerId);
+            }
+        }
 #endif
 
         writeSizes[packet->getId()] += packet->getEstimatedSize() + 1;
@@ -342,14 +377,12 @@ close("disconnect.genericReason", "Internal exception: " + e.toString());
 }*/
 
 void Connection::close(DisconnectPacket::eDisconnectReason reason) {
-    fprintf(stderr, "[CONN] close called with reason=%d on connection=%p\n",
-            reason, (void*)this);
+    //	printf("Con:0x%x close\n",this);
     if (!running) return;
-    fprintf(stderr, "[CONN] close proceeding (was running) on connection=%p\n",
-            (void*)this);
+    //	printf("Con:0x%x close doing something\n",this);
     disconnected = true;
 
-    disconnectReason = reason;
+    disconnectReason = reason;  // va_arg( input, const wstring );
     disconnectReasonObjects = NULL;
 
     //	int count = 0, sum = 0, i = first;
@@ -365,7 +398,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
     //	va_end( marker );
     //	return( sum ? (sum / count) : 0 );
 
-    //	CreateThread(NULL, 0, runClose, this, 0, NULL);
+    //	CreateThread(NULL, 0, runClose, this, 0, &closeThreadID);
 
     running = false;
 
@@ -510,7 +543,7 @@ void Connection::sendAndQuit() {
         close(DisconnectPacket::eDisconnect_Closed);
     }
 #else
-    CreateThread(NULL, 0, runSendAndQuit, this, 0, NULL);
+    CreateThread(NULL, 0, runSendAndQuit, this, 0, &saqThreadID);
 #endif
 }
 
@@ -589,7 +622,7 @@ int Connection::runWrite(void* lpParam) {
     unsigned int waitResult = WAIT_TIMEOUT;
 
     while (
-        (con->running || waitResult == 0) &&
+        (con->running || waitResult == WAIT_OBJECT_0) &&
         ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads)) {
         while (con->writeTick());
 

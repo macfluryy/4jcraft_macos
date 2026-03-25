@@ -53,7 +53,7 @@ void TheEndPortal::allowAnywhere(bool set) {
 }
 
 TheEndPortal::TheEndPortal(int id, Material* material)
-    : EntityTile(id, material, false) {
+    : BaseEntityTile(id, material, false) {
     this->setLightEmission(1.0f);
 }
 
@@ -67,13 +67,13 @@ void TheEndPortal::updateShape(
         forceEntity)  // 4J added forceData, forceEntity param
 {
     float r = 1 / 16.0f;
-    this->setShape(0, 0, 0, 1, r, 1);
+    setShape(0, 0, 0, 1, r, 1);
 }
 
 bool TheEndPortal::shouldRenderFace(LevelSource* level, int x, int y, int z,
                                     int face) {
     if (face != 0) return false;
-    return EntityTile::shouldRenderFace(level, x, y, z, face);
+    return BaseEntityTile::shouldRenderFace(level, x, y, z, face);
 }
 
 void TheEndPortal::addAABBs(Level* level, int x, int y, int z, AABB* box,
@@ -87,9 +87,11 @@ int TheEndPortal::getResourceCount(Random* random) { return 0; }
 
 void TheEndPortal::entityInside(Level* level, int x, int y, int z,
                                 std::shared_ptr<Entity> entity) {
+    if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  // 4J added
+
     if (entity->riding == NULL && entity->rider.lock() == NULL) {
-        if (std::dynamic_pointer_cast<Player>(entity) != NULL) {
-            if (!level->isClientSide) {
+        if (!level->isClientSide) {
+            if (entity->instanceof(eTYPE_PLAYER)) {
                 // 4J Stu - Update the level data position so that the
                 // stronghold portal can be shown on the maps
                 int x, z;
@@ -102,9 +104,8 @@ void TheEndPortal::entityInside(Level* level, int x, int y, int z,
                     level->getLevelData()->setZStrongholdEndPortal(z);
                     level->getLevelData()->setHasStrongholdEndPortal();
                 }
-
-                (std::dynamic_pointer_cast<Player>(entity))->changeDimension(1);
             }
+            entity->changeDimension(1);
         }
     }
 }
@@ -127,7 +128,7 @@ void TheEndPortal::onPlace(Level* level, int x, int y, int z) {
     if (allowAnywhere()) return;
 
     if (level->dimension->id != 0) {
-        level->setTile(x, y, z, 0);
+        level->removeTile(x, y, z);
         return;
     }
 }

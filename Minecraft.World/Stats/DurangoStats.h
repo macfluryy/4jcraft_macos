@@ -13,7 +13,7 @@ enum ELeaderboardId {
 
 class DsItemEvent : public Stat {
 public:
-    static string nameMethods[];
+    static std::string nameMethods[];
 
     enum eAcquisitionMethod {
         eAcquisitionMethod_None = 0,
@@ -69,7 +69,7 @@ public:
 
 class DsMobInteract : public Stat {
 protected:
-    static string nameInteract[];
+    static std::string nameInteract[];
 
 public:
     enum eInteract {
@@ -93,7 +93,7 @@ public:
 
 class DsTravel : public Stat {
 public:
-    static string nameMethods[];
+    static std::string nameMethods[];
 
     enum eMethod {
         eMethod_walk,

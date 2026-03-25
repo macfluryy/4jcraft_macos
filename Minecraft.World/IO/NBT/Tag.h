@@ -16,6 +16,7 @@ public:
     static const uint8_t TAG_List = static_cast<uint8_t>(9);
     static const uint8_t TAG_Compound = static_cast<uint8_t>(10);
     static const uint8_t TAG_Int_Array = static_cast<uint8_t>(11);
+    static const int MAX_DEPTH = static_cast<uint8_t>(512);
 
 private:
     std::wstring name;
@@ -25,14 +26,15 @@ protected:
 
 public:
     virtual void write(DataOutput* dos) = 0;
-    virtual void load(DataInput* dis) = 0;
+    virtual void load(DataInput* dis, int tagDepth) = 0;
     virtual std::wstring toString() = 0;
     virtual uint8_t getId() = 0;
-    void print(std::ostream out);
-    void print(char* prefix, std::wostream out);
+    void print(std::ostream& out);
+    void print(char* prefix, std::wostream& out);
     std::wstring getName();
     Tag* setName(const std::wstring& name);
     static Tag* readNamedTag(DataInput* dis);
+    static Tag* readNamedTag(DataInput* dis, int tagDepth);
     static void writeNamedTag(Tag* tag, DataOutput* dos);
     static Tag* newTag(uint8_t type, const std::wstring& name);
     static const wchar_t* getTagName(uint8_t type);

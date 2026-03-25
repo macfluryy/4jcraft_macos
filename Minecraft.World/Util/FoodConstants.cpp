@@ -27,6 +27,7 @@ const float FoodConstants::FOOD_SATURATION_MAX = 1.0f;
 const float FoodConstants::FOOD_SATURATION_SUPERNATURAL = 1.2f;
 
 // some exhaustion guidelines
+const float FoodConstants::EXHAUSTION_HEAL = 3.0f;
 const float FoodConstants::EXHAUSTION_JUMP = .2f;
 const float FoodConstants::EXHAUSTION_SPRINT_JUMP =
     FoodConstants::EXHAUSTION_JUMP * 4;

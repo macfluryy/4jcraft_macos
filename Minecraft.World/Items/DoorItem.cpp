@@ -1,5 +1,4 @@
 
-
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.world.entity.player.h"
@@ -31,7 +30,8 @@ bool DoorItem::useOn(std::shared_ptr<ItemInstance> instance,
     else
         tile = Tile::door_iron;
 
-    if (!player->mayBuild(x, y, z) || !player->mayBuild(x, y + 1, z))
+    if (!player->mayUseItemAt(x, y, z, face, instance) ||
+        !player->mayUseItemAt(x, y + 1, z, face, instance))
         return false;
     if (!tile->mayPlace(level, x, y, z)) return false;
 
@@ -76,10 +76,9 @@ void DoorItem::place(Level* level, int x, int y, int z, int dir, Tile* tile) {
     else if (solidRight > solidLeft)
         flip = true;
 
-    level->noNeighborUpdate = true;
-    level->setTileAndData(x, y, z, tile->id, dir);
-    level->setTileAndData(x, y + 1, z, tile->id, 8 | (flip ? 1 : 0));
-    level->noNeighborUpdate = false;
+    level->setTileAndData(x, y, z, tile->id, dir, Tile::UPDATE_CLIENTS);
+    level->setTileAndData(x, y + 1, z, tile->id, 8 | (flip ? 1 : 0),
+                          Tile::UPDATE_CLIENTS);
     level->updateNeighborsAt(x, y, z, tile->id);
     level->updateNeighborsAt(x, y + 1, z, tile->id);
 }

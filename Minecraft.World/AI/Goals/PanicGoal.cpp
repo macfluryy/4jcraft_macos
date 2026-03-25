@@ -6,14 +6,14 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "PanicGoal.h"
 
-PanicGoal::PanicGoal(PathfinderMob* mob, float speed) {
+PanicGoal::PanicGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;
-    this->speed = speed;
+    this->speedModifier = speedModifier;
     setRequiredControlFlags(Control::MoveControlFlag);
 }
 
 bool PanicGoal::canUse() {
-    if (mob->getLastHurtByMob() == NULL) return false;
+    if (mob->getLastHurtByMob() == NULL && !mob->isOnFire()) return false;
     Vec3* pos = RandomPos::getPos(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 5,
         4);
@@ -25,7 +25,7 @@ bool PanicGoal::canUse() {
 }
 
 void PanicGoal::start() {
-    mob->getNavigation()->moveTo(posX, posY, posZ, speed);
+    mob->getNavigation()->moveTo(posX, posY, posZ, speedModifier);
 }
 
 bool PanicGoal::canContinueToUse() { return !mob->getNavigation()->isDone(); }

@@ -33,14 +33,16 @@ void CropTile::tick(Level* level, int x, int y, int z, Random* random) {
 
             if (random->nextInt((int)(25 / growthSpeed) + 1) == 0) {
                 age++;
-                level->setData(x, y, z, age);
+                level->setData(x, y, z, age, Tile::UPDATE_CLIENTS);
             }
         }
     }
 }
 
-void CropTile::growCropsToMax(Level* level, int x, int y, int z) {
-    level->setData(x, y, z, 7);
+void CropTile::growCrops(Level* level, int x, int y, int z) {
+    int stage = level->getData(x, y, z) + Mth::nextInt(level->random, 2, 5);
+    if (stage > 7) stage = 7;
+    level->setData(x, y, z, stage, Tile::UPDATE_CLIENTS);
 }
 
 float CropTile::getGrowthSpeed(Level* level, int x, int y, int z) {
@@ -56,10 +58,9 @@ float CropTile::getGrowthSpeed(Level* level, int x, int y, int z) {
     int d2 = level->getTile(x + 1, y, z + 1);
     int d3 = level->getTile(x - 1, y, z + 1);
 
-    bool horizontal = w == this->id || e == this->id;
-    bool vertical = n == this->id || s == this->id;
-    bool diagonal =
-        d0 == this->id || d1 == this->id || d2 == this->id || d3 == this->id;
+    bool horizontal = w == id || e == id;
+    bool vertical = n == id || s == id;
+    bool diagonal = d0 == id || d1 == id || d2 == id || d3 == id;
 
     for (int xx = x - 1; xx <= x + 1; xx++)
         for (int zz = z - 1; zz <= z + 1; zz++) {

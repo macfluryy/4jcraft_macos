@@ -4,6 +4,21 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "NearestAttackableTargetGoal.h"
 
+SubselectEntitySelector::SubselectEntitySelector(
+    NearestAttackableTargetGoal* parent, EntitySelector* subselector) {
+    m_parent = parent;
+    m_subselector = subselector;
+}
+
+SubselectEntitySelector::~SubselectEntitySelector() { delete m_subselector; }
+
+bool SubselectEntitySelector::matches(std::shared_ptr<Entity> entity) const {
+    if (!entity->instanceof(eTYPE_LIVINGENTITY)) return false;
+    if (m_subselector != NULL && !m_subselector->matches(entity)) return false;
+    return m_parent->canAttack(std::dynamic_pointer_cast<LivingEntity>(entity),
+                               false);
+}
+
 NearestAttackableTargetGoal::DistComp::DistComp(Entity* source) {
     this->source = source;
 }
@@ -19,46 +34,41 @@ bool NearestAttackableTargetGoal::DistComp::operator()(
 }
 
 NearestAttackableTargetGoal::NearestAttackableTargetGoal(
-    Mob* mob, const std::type_info& targetType, float within,
-    int randomInterval, bool mustSee, bool mustReach /*= false*/)
-    : TargetGoal(mob, within, mustSee, mustReach), targetType(targetType) {
-    // this->targetType = targetType;
-    this->within = within;
+    PathfinderMob* mob, const std::type_info& targetType, int randomInterval,
+    bool mustSee, bool mustReach /*= false*/,
+    EntitySelector* entitySelector /* =NULL */)
+    : TargetGoal(mob, mustSee, mustReach), targetType(targetType) {
     this->randomInterval = randomInterval;
     this->distComp = new DistComp(mob);
     setRequiredControlFlags(TargetGoal::TargetFlag);
+
+    this->selector = new SubselectEntitySelector(this, entitySelector);
 }
 
-NearestAttackableTargetGoal::~NearestAttackableTargetGoal() { delete distComp; }
+NearestAttackableTargetGoal::~NearestAttackableTargetGoal() {
+    delete distComp;
+    delete selector;
+}
 
 bool NearestAttackableTargetGoal::canUse() {
     if (randomInterval > 0 && mob->getRandom()->nextInt(randomInterval) != 0)
         return false;
-    if (targetType == typeid(Player)) {
-        std::shared_ptr<Mob> potentialTarget =
-            mob->level->getNearestAttackablePlayer(mob->shared_from_this(),
-                                                   within);
-        if (canAttack(potentialTarget, false)) {
-            target = std::weak_ptr<Mob>(potentialTarget);
-            return true;
-        }
-    } else {
-        std::vector<std::shared_ptr<Entity> >* entities =
-            mob->level->getEntitiesOfClass(targetType,
-                                           mob->bb->grow(within, 4, within));
-        // Collections.sort(entities, distComp);
+    double within = getFollowDistance();
+
+    std::vector<std::shared_ptr<Entity> >* entities =
+        mob->level->getEntitiesOfClass(
+            targetType, mob->bb->grow(within, 4, within), selector);
+
+    bool result = false;
+    if (entities != NULL && !entities->empty()) {
         std::sort(entities->begin(), entities->end(), *distComp);
-        for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
-            std::shared_ptr<Mob> potTarget =
-                std::dynamic_pointer_cast<Mob>(*it);
-            if (canAttack(potTarget, false)) {
-                target = std::weak_ptr<Mob>(potTarget);
-                return true;
-            }
-        }
-        delete entities;
+        target = std::weak_ptr<LivingEntity>(
+            std::dynamic_pointer_cast<LivingEntity>(entities->at(0)));
+        result = true;
     }
-    return false;
+
+    delete entities;
+    return result;
 }
 
 void NearestAttackableTargetGoal::start() {

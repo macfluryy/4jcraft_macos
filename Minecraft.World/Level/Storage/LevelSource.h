@@ -27,5 +27,6 @@ public:
     virtual int getMaxBuildHeight() = 0;
     virtual bool isAllEmpty() = 0;
     virtual bool isTopSolidBlocking(int x, int y, int z) = 0;
+    virtual int getDirectSignal(int x, int y, int z, int dir) = 0;
     virtual ~LevelSource() {}
 };

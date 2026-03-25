@@ -14,10 +14,11 @@ bool VinesFeature::place(Level* level, Random* random, int x, int y, int z) {
         if (level->isEmptyTile(x, y, z)) {
             for (int face = Facing::NORTH; face <= Facing::EAST; face++) {
                 if (Tile::vine->mayPlace(level, x, y, z, face)) {
-                    level->setTileAndDataNoUpdate(
+                    level->setTileAndData(
                         x, y, z, Tile::vine_Id,
                         1 << Direction::FACING_DIRECTION
-                                [Facing::OPPOSITE_FACING[face]]);
+                                [Facing::OPPOSITE_FACING[face]],
+                        Tile::UPDATE_CLIENTS);
                     break;
                 }
             }

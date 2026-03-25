@@ -13,6 +13,7 @@ private:
 public:
     NetherBridgeFeature();
     ~NetherBridgeFeature();
+    std::wstring getFeatureName();
     std::vector<Biome::MobSpawnerData*>* getBridgeEnemies();
 
 protected:
@@ -22,9 +23,15 @@ protected:
 public:
     void clearCachedBuildings();
 
-private:
     class NetherBridgeStart : public StructureStart {
     public:
+        static StructureStart* Create() { return new NetherBridgeStart(); }
+        virtual EStructureStart GetType() {
+            return eStructureStart_NetherBridgeStart;
+        }
+
+    public:
+        NetherBridgeStart();
         NetherBridgeStart(Level* level, Random* random, int chunkX, int chunkZ);
     };
 };

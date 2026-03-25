@@ -3,6 +3,8 @@
 #include "../../Entities/Mobs/Painting.h"
 #include "../../Platform/System.h"
 #include "../../Entities/Entity.h"
+#include "../../Entities/Mobs/WitherBoss.h"
+#include "../../Headers/net.minecraft.world.entity.ambient.h"
 #include "../../Headers/net.minecraft.world.entity.animal.h"
 #include "../../Headers/net.minecraft.world.entity.item.h"
 #include "../../Headers/net.minecraft.world.entity.monster.h"
@@ -66,10 +68,11 @@ void EntityIO::staticCtor() {
     setId(ItemEntity::create, eTYPE_ITEMENTITY, L"Item", 1);
     setId(ExperienceOrb::create, eTYPE_EXPERIENCEORB, L"XPOrb", 2);
 
+    setId(LeashFenceKnotEntity::create, eTYPE_LEASHFENCEKNOT, L"LeashKnot", 8);
     setId(Painting::create, eTYPE_PAINTING, L"Painting", 9);
     setId(Arrow::create, eTYPE_ARROW, L"Arrow", 10);
     setId(Snowball::create, eTYPE_SNOWBALL, L"Snowball", 11);
-    setId(Fireball::create, eTYPE_FIREBALL, L"Fireball", 12);
+    setId(LargeFireball::create, eTYPE_FIREBALL, L"Fireball", 12);
     setId(SmallFireball::create, eTYPE_SMALL_FIREBALL, L"SmallFireball", 13);
     setId(ThrownEnderpearl::create, eTYPE_THROWNENDERPEARL, L"ThrownEnderpearl",
           14);
@@ -79,12 +82,24 @@ void EntityIO::staticCtor() {
     setId(ThrownExpBottle::create, eTYPE_THROWNEXPBOTTLE, L"ThrownExpBottle",
           17);
     setId(ItemFrame::create, eTYPE_ITEM_FRAME, L"ItemFrame", 18);
+    setId(WitherSkull::create, eTYPE_WITHER_SKULL, L"WitherSkull", 19);
 
     setId(PrimedTnt::create, eTYPE_PRIMEDTNT, L"PrimedTnt", 20);
     setId(FallingTile::create, eTYPE_FALLINGTILE, L"FallingSand", 21);
 
-    setId(Minecart::create, eTYPE_MINECART, L"Minecart", 40);
+    setId(FireworksRocketEntity::create, eTYPE_FIREWORKS_ROCKET,
+          L"FireworksRocketEntity", 22);
+
     setId(Boat::create, eTYPE_BOAT, L"Boat", 41);
+    setId(MinecartRideable::create, eTYPE_MINECART_RIDEABLE,
+          L"MinecartRideable", 42);
+    setId(MinecartChest::create, eTYPE_MINECART_CHEST, L"MinecartChest", 43);
+    setId(MinecartFurnace::create, eTYPE_MINECART_FURNACE, L"MinecartFurnace",
+          44);
+    setId(MinecartTNT::create, eTYPE_MINECART_TNT, L"MinecartTNT", 45);
+    setId(MinecartHopper::create, eTYPE_MINECART_HOPPER, L"MinecartHopper", 46);
+    setId(MinecartSpawner::create, eTYPE_MINECART_SPAWNER, L"MinecartSpawner",
+          47);
 
     setId(Mob::create, eTYPE_MOB, L"Mob", 48);
     setId(Monster::create, eTYPE_MONSTER, L"Monster", 49);
@@ -126,7 +141,15 @@ void EntityIO::staticCtor() {
     setId(LavaSlime::create, eTYPE_LAVASLIME, L"LavaSlime", 62,
           eMinecraftColour_Mob_LavaSlime_Colour1,
           eMinecraftColour_Mob_LavaSlime_Colour2, IDS_LAVA_SLIME);
-    setId(EnderDragon::create, eTYPE_ENDERDRAGON, L"EnderDragon", 63);
+    setId(EnderDragon::create, eTYPE_ENDERDRAGON, L"EnderDragon", 63,
+          eMinecraftColour_Mob_Enderman_Colour1,
+          eMinecraftColour_Mob_Enderman_Colour1, IDS_ENDERDRAGON);
+    setId(WitherBoss::create, eTYPE_WITHERBOSS, L"WitherBoss", 64);
+    setId(Bat::create, eTYPE_BAT, L"Bat", 65, eMinecraftColour_Mob_Bat_Colour1,
+          eMinecraftColour_Mob_Bat_Colour2, IDS_BAT);
+    setId(Witch::create, eTYPE_WITCH, L"Witch", 66,
+          eMinecraftColour_Mob_Witch_Colour1,
+          eMinecraftColour_Mob_Witch_Colour2, IDS_WITCH);
 
     setId(Pig::create, eTYPE_PIG, L"Pig", 90, eMinecraftColour_Mob_Pig_Colour1,
           eMinecraftColour_Mob_Pig_Colour2, IDS_PIG);
@@ -148,10 +171,13 @@ void EntityIO::staticCtor() {
           eMinecraftColour_Mob_MushroomCow_Colour1,
           eMinecraftColour_Mob_MushroomCow_Colour2, IDS_MUSHROOM_COW);
     setId(SnowMan::create, eTYPE_SNOWMAN, L"SnowMan", 97);
-    setId(Ozelot::create, eTYPE_OZELOT, L"Ozelot", 98,
+    setId(Ocelot::create, eTYPE_OCELOT, L"Ozelot", 98,
           eMinecraftColour_Mob_Ocelot_Colour1,
           eMinecraftColour_Mob_Ocelot_Colour2, IDS_OZELOT);
     setId(VillagerGolem::create, eTYPE_VILLAGERGOLEM, L"VillagerGolem", 99);
+    setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse", 100,
+          eMinecraftColour_Mob_Horse_Colour1,
+          eMinecraftColour_Mob_Horse_Colour2, IDS_HORSE);
 
     setId(Villager::create, eTYPE_VILLAGER, L"Villager", 120,
           eMinecraftColour_Mob_Villager_Colour1,
@@ -162,6 +188,43 @@ void EntityIO::staticCtor() {
     // 4J Added
     setId(DragonFireball::create, eTYPE_DRAGON_FIREBALL, L"DragonFireball",
           1000);
+
+    // 4J-PB - moved to allow the eggs to be named and coloured in the Creative
+    // Mode menu 4J Added for custom spawn eggs
+    setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse",
+          100 | ((EntityHorse::TYPE_DONKEY + 1) << 12),
+          eMinecraftColour_Mob_Horse_Colour1,
+          eMinecraftColour_Mob_Horse_Colour2, IDS_DONKEY);
+    setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse",
+          100 | ((EntityHorse::TYPE_MULE + 1) << 12),
+          eMinecraftColour_Mob_Horse_Colour1,
+          eMinecraftColour_Mob_Horse_Colour2, IDS_MULE);
+
+#ifndef _CONTENT_PACKAGE
+    setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse",
+          100 | ((EntityHorse::TYPE_SKELETON + 1) << 12),
+          eMinecraftColour_Mob_Horse_Colour1,
+          eMinecraftColour_Mob_Horse_Colour2, IDS_SKELETON_HORSE);
+    setId(EntityHorse::create, eTYPE_HORSE, L"EntityHorse",
+          100 | ((EntityHorse::TYPE_UNDEAD + 1) << 12),
+          eMinecraftColour_Mob_Horse_Colour1,
+          eMinecraftColour_Mob_Horse_Colour2, IDS_ZOMBIE_HORSE);
+    setId(Ocelot::create, eTYPE_OCELOT, L"Ozelot",
+          98 | ((Ocelot::TYPE_BLACK + 1) << 12),
+          eMinecraftColour_Mob_Ocelot_Colour1,
+          eMinecraftColour_Mob_Ocelot_Colour2, IDS_OZELOT);
+    setId(Ocelot::create, eTYPE_OCELOT, L"Ozelot",
+          98 | ((Ocelot::TYPE_RED + 1) << 12),
+          eMinecraftColour_Mob_Ocelot_Colour1,
+          eMinecraftColour_Mob_Ocelot_Colour2, IDS_OZELOT);
+    setId(Ocelot::create, eTYPE_OCELOT, L"Ozelot",
+          98 | ((Ocelot::TYPE_SIAMESE + 1) << 12),
+          eMinecraftColour_Mob_Ocelot_Colour1,
+          eMinecraftColour_Mob_Ocelot_Colour2, IDS_OZELOT);
+    setId(Spider::create, eTYPE_SPIDER, L"Spider", 52 | (2 << 12),
+          eMinecraftColour_Mob_Spider_Colour1,
+          eMinecraftColour_Mob_Spider_Colour2, IDS_SKELETON);
+#endif
 }
 
 std::shared_ptr<Entity> EntityIO::newEntity(const std::wstring& id,
@@ -172,6 +235,10 @@ std::shared_ptr<Entity> EntityIO::newEntity(const std::wstring& id,
     if (it != idCreateMap->end()) {
         entityCreateFn create = it->second;
         if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+            std::dynamic_pointer_cast<EnderDragon>(entity)
+                ->AddParts();  // 4J added to finalise creation
+        }
     }
 
     return entity;
@@ -180,10 +247,32 @@ std::shared_ptr<Entity> EntityIO::newEntity(const std::wstring& id,
 std::shared_ptr<Entity> EntityIO::loadStatic(CompoundTag* tag, Level* level) {
     std::shared_ptr<Entity> entity;
 
+    if (tag->getString(L"id").compare(L"Minecart") == 0) {
+        // I don't like this any more than you do. Sadly, compatibility...
+
+        switch (tag->getInt(L"Type")) {
+            case Minecart::TYPE_CHEST:
+                tag->putString(L"id", L"MinecartChest");
+                break;
+            case Minecart::TYPE_FURNACE:
+                tag->putString(L"id", L"MinecartFurnace");
+                break;
+            case Minecart::TYPE_RIDEABLE:
+                tag->putString(L"id", L"MinecartRideable");
+                break;
+        }
+
+        tag->remove(L"Type");
+    }
+
     AUTO_VAR(it, idCreateMap->find(tag->getString(L"id")));
     if (it != idCreateMap->end()) {
         entityCreateFn create = it->second;
         if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+            std::dynamic_pointer_cast<EnderDragon>(entity)
+                ->AddParts();  // 4J added to finalise creation
+        }
     }
 
     if (entity != NULL) {
@@ -204,6 +293,10 @@ std::shared_ptr<Entity> EntityIO::newById(int id, Level* level) {
     if (it != numCreateMap->end()) {
         entityCreateFn create = it->second;
         if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+            std::dynamic_pointer_cast<EnderDragon>(entity)
+                ->AddParts();  // 4J added to finalise creation
+        }
     }
 
     if (entity != NULL) {
@@ -225,6 +318,10 @@ std::shared_ptr<Entity> EntityIO::newByEnumType(eINSTANCEOF eType,
         if (it2 != numCreateMap->end()) {
             entityCreateFn create = it2->second;
             if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
+            if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+                std::dynamic_pointer_cast<EnderDragon>(entity)
+                    ->AddParts();  // 4J added to finalise creation
+            }
         }
     }
 

@@ -10,7 +10,7 @@ public:
     }
 
     void write(DataOutput* dos) { dos->writeInt(data); }
-    void load(DataInput* dis) { data = dis->readInt(); }
+    void load(DataInput* dis, int tagDepth) { data = dis->readInt(); }
 
     uint8_t getId() { return TAG_Int; }
     std::wstring toString() {

@@ -1,24 +1,31 @@
 #pragma once
 #include "TileEntity.h"
-#include "../../Containers/Container.h"
+#include "../../Containers/WorldlyContainer.h"
 
-class BrewingStandTileEntity : public TileEntity, public Container {
+class BrewingStandTileEntity : public TileEntity, public WorldlyContainer {
 public:
     eINSTANCEOF GetType() { return eTYPE_BREWINGSTANDTILEENTITY; }
     static TileEntity* create() { return new BrewingStandTileEntity(); }
 
+    static const int INGREDIENT_SLOT = 3;
+
 private:
     ItemInstanceArray items;
-    static const int INGREDIENT_SLOT = 3;
+    static intArray SLOTS_FOR_UP;
+    static intArray SLOTS_FOR_OTHER_FACES;
 
     int brewTime;
     int lastPotionCount;
     int ingredientId;
+    std::wstring name;
 
 public:
     BrewingStandTileEntity();
     ~BrewingStandTileEntity();
-    virtual int getName();
+    virtual std::wstring getName();
+    virtual std::wstring getCustomName();
+    virtual bool hasCustomName();
+    virtual void setCustomName(const std::wstring& name);
     virtual unsigned int getContainerSize();
     virtual void tick();
 
@@ -42,9 +49,17 @@ public:
     virtual bool stillValid(std::shared_ptr<Player> player);
     virtual void startOpen();
     virtual void stopOpen();
+    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
     virtual void setBrewTime(int value);
-    virtual void setChanged() {}  // 4J added
+    virtual void setChanged() { TileEntity::setChanged(); }  // 4J added
     int getPotionBits();
+    virtual intArray getSlotsForFace(int face);
+    virtual bool canPlaceItemThroughFace(int slot,
+                                         std::shared_ptr<ItemInstance> item,
+                                         int face);
+    virtual bool canTakeItemThroughFace(int slot,
+                                        std::shared_ptr<ItemInstance> item,
+                                        int face);
 
     // 4J Added
     virtual std::shared_ptr<TileEntity> clone();

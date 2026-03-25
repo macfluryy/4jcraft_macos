@@ -4,11 +4,16 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.monster.h"
 #include "../../../Minecraft.World/Util/Mth.h"
 
+ResourceLocation CreeperRenderer::POWER_LOCATION =
+    ResourceLocation(TN_POWERED_CREEPER);
+ResourceLocation CreeperRenderer::CREEPER_LOCATION =
+    ResourceLocation(TN_MOB_CREEPER);
+
 CreeperRenderer::CreeperRenderer() : MobRenderer(new CreeperModel(), 0.5f) {
     armorModel = new CreeperModel(2);
 }
 
-void CreeperRenderer::scale(std::shared_ptr<Mob> mob, float a) {
+void CreeperRenderer::scale(std::shared_ptr<LivingEntity> mob, float a) {
     std::shared_ptr<Creeper> creeper = std::dynamic_pointer_cast<Creeper>(mob);
 
     float g = creeper->getSwelling(a);
@@ -23,8 +28,8 @@ void CreeperRenderer::scale(std::shared_ptr<Mob> mob, float a) {
     glScalef(s, hs, s);
 }
 
-int CreeperRenderer::getOverlayColor(std::shared_ptr<Mob> mob, float br,
-                                     float a) {
+int CreeperRenderer::getOverlayColor(std::shared_ptr<LivingEntity> mob,
+                                     float br, float a) {
     std::shared_ptr<Creeper> creeper = std::dynamic_pointer_cast<Creeper>(mob);
 
     float step = creeper->getSwelling(a);
@@ -44,7 +49,7 @@ int CreeperRenderer::getOverlayColor(std::shared_ptr<Mob> mob, float br,
     return (_a << 24) | (r << 16) | (g << 8) | b;
 }
 
-int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
+int CreeperRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob, int layer,
                                   float a) {
     // 4J - dynamic cast required because we aren't using templates/generics in
     // our version
@@ -57,7 +62,7 @@ int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
 
         if (layer == 1) {
             float time = mob->tickCount + a;
-            bindTexture(TN_POWERED_CREEPER);  // was L"/armor/power.png");
+            bindTexture(&POWER_LOCATION);
             glMatrixMode(GL_TEXTURE);
             glLoadIdentity();
             float uo = time * 0.01f;
@@ -83,7 +88,12 @@ int CreeperRenderer::prepareArmor(std::shared_ptr<Mob> _mob, int layer,
     return -1;
 }
 
-int CreeperRenderer::prepareArmorOverlay(std::shared_ptr<Mob> mob, int layer,
-                                         float a) {
+int CreeperRenderer::prepareArmorOverlay(std::shared_ptr<LivingEntity> mob,
+                                         int layer, float a) {
     return -1;
+}
+
+ResourceLocation* CreeperRenderer::getTextureLocation(
+    std::shared_ptr<Entity> mob) {
+    return &CREEPER_LOCATION;
 }

@@ -3,6 +3,7 @@
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
+#include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "HangingEntityItem.h"
 #include "../Entities/HangingEntity.h"
@@ -12,10 +13,7 @@
 
 HangingEntityItem::HangingEntityItem(int id, eINSTANCEOF eClassType)
     : Item(id) {
-    // super(id);
-    // this.clazz = clazz;
     this->eType = eClassType;
-    // setItemCategory(CreativeModeTab.TAB_DECORATIONS);
 }
 
 bool HangingEntityItem::useOn(std::shared_ptr<ItemInstance> instance,
@@ -26,7 +24,7 @@ bool HangingEntityItem::useOn(std::shared_ptr<ItemInstance> instance,
     if (face == Facing::UP) return false;
 
     if (bTestOnly) {
-        if (!player->mayBuild(xt, yt, zt)) return false;
+        if (!player->mayUseItemAt(xt, yt, zt, face, instance)) return false;
 
         return true;
     }
@@ -34,10 +32,9 @@ bool HangingEntityItem::useOn(std::shared_ptr<ItemInstance> instance,
     int dir = Direction::FACING_DIRECTION[face];
 
     std::shared_ptr<HangingEntity> entity =
-        createEntity(level, xt, yt, zt, dir);
+        createEntity(level, xt, yt, zt, dir, instance->getAuxValue());
 
-    // if (!player->mayUseItemAt(xt, yt, zt, face, instance)) return false;
-    if (!player->mayBuild(xt, yt, zt)) return false;
+    if (!player->mayUseItemAt(xt, yt, zt, face, instance)) return false;
 
     if (entity != NULL && entity->survives()) {
         if (!level->isClientSide) {
@@ -66,13 +63,22 @@ bool HangingEntityItem::useOn(std::shared_ptr<ItemInstance> instance,
     return true;
 }
 
-std::shared_ptr<HangingEntity> HangingEntityItem::createEntity(Level* level,
-                                                               int x, int y,
-                                                               int z, int dir) {
+std::shared_ptr<HangingEntity> HangingEntityItem::createEntity(
+    Level* level, int x, int y, int z, int dir,
+    int auxValue)  // 4J added auxValue
+{
     if (eType == eTYPE_PAINTING) {
         std::shared_ptr<Painting> painting =
             std::shared_ptr<Painting>(new Painting(level, x, y, z, dir));
-        painting->PaintingPostConstructor(dir);
+
+#ifndef _CONTENT_PACKAGE
+        if (app.DebugArtToolsOn() && auxValue > 0) {
+            painting->PaintingPostConstructor(dir, auxValue - 1);
+        } else
+#endif
+        {
+            painting->PaintingPostConstructor(dir);
+        }
 
         return std::dynamic_pointer_cast<HangingEntity>(painting);
     } else if (eType == eTYPE_ITEM_FRAME) {
@@ -82,5 +88,31 @@ std::shared_ptr<HangingEntity> HangingEntityItem::createEntity(Level* level,
         return std::dynamic_pointer_cast<HangingEntity>(itemFrame);
     } else {
         return nullptr;
+    }
+}
+
+// 4J Adding overrides for art tools
+void HangingEntityItem::appendHoverText(
+    std::shared_ptr<ItemInstance> itemInstance, std::shared_ptr<Player> player,
+    std::vector<HtmlString>* lines, bool advanced) {
+#ifndef _CONTENT_PACKAGE
+    if (eType == eTYPE_PAINTING && app.DebugArtToolsOn() &&
+        itemInstance->getAuxValue() > 0) {
+        int motive = itemInstance->getAuxValue() - 1;
+
+        wchar_t formatted[256];
+        ZeroMemory(formatted, 256 * sizeof(wchar_t));
+        swprintf(formatted, 256, L"** %ls %dx%d",
+                 Painting::Motive::values[motive]->name.c_str(),
+                 Painting::Motive::values[motive]->w / 16,
+                 Painting::Motive::values[motive]->h / 16);
+
+        std::wstring motiveName = formatted;
+
+        lines->push_back(HtmlString(motiveName.c_str(), eHTMLColor_c));
+    } else
+#endif
+    {
+        return Item::appendHoverText(itemInstance, player, lines, advanced);
     }
 }

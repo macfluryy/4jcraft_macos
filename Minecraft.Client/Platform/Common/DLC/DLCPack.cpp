@@ -11,402 +11,364 @@
 #include "DLCColourTableFile.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-DLCPack::DLCPack(const std::wstring &name,std::uint32_t dwLicenseMask)
-{
-	m_dataPath = L"";
-	m_packName = name;
-	m_dwLicenseMask=dwLicenseMask;
+DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
+    m_dataPath = L"";
+    m_packName = name;
+    m_dwLicenseMask = dwLicenseMask;
 #ifdef _XBOX_ONE
-	m_wsProductId = L"";
+    m_wsProductId = L"";
 #else
-	m_ullFullOfferId = 0LL;
+    m_ullFullOfferId = 0LL;
 #endif
-	m_isCorrupt = false;
-	m_packId = 0;
-	m_packVersion = 0;
-	m_parentPack = NULL;
-	m_dlcMountIndex = -1;
+    m_isCorrupt = false;
+    m_packId = 0;
+    m_packVersion = 0;
+    m_parentPack = NULL;
+    m_dlcMountIndex = -1;
 #ifdef _XBOX
-	m_dlcDeviceID = XCONTENTDEVICE_ANY;
+    m_dlcDeviceID = XCONTENTDEVICE_ANY;
 #endif
-	
-	// This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
-	m_data = NULL;
+
+    // This pointer is for all the data used for this pack, so deleting it
+    // invalidates ALL of it's children.
+    m_data = NULL;
 }
 
 #ifdef _XBOX_ONE
-DLCPack::DLCPack(const std::wstring &name,const std::wstring &productID,std::uint32_t dwLicenseMask)
-{
-	m_dataPath = L"";
-	m_packName = name;
-	m_dwLicenseMask=dwLicenseMask;
-	m_wsProductId = productID;
-	m_isCorrupt = false;
-	m_packId = 0;
-	m_packVersion = 0;
-	m_parentPack = NULL;
-	m_dlcMountIndex = -1;
+DLCPack::DLCPack(const std::wstring& name, const std::wstring& productID,
+                 std::uint32_t dwLicenseMask) {
+    m_dataPath = L"";
+    m_packName = name;
+    m_dwLicenseMask = dwLicenseMask;
+    m_wsProductId = productID;
+    m_isCorrupt = false;
+    m_packId = 0;
+    m_packVersion = 0;
+    m_parentPack = NULL;
+    m_dlcMountIndex = -1;
 
-	// This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
-	m_data = NULL;
+    // This pointer is for all the data used for this pack, so deleting it
+    // invalidates ALL of it's children.
+    m_data = NULL;
 }
 #endif
 
-DLCPack::~DLCPack()
-{
-	for(AUTO_VAR(it, m_childPacks.begin()); it != m_childPacks.end(); ++it)
-	{
-		delete *it;
-	}
+DLCPack::~DLCPack() {
+    for (AUTO_VAR(it, m_childPacks.begin()); it != m_childPacks.end(); ++it) {
+        delete *it;
+    }
 
-	for(unsigned int i = 0; i < DLCManager::e_DLCType_Max; ++i)
-	{
-		for(AUTO_VAR(it,m_files[i].begin()); it != m_files[i].end(); ++it)
-		{
-			delete *it;
-		}
-	}
+    for (unsigned int i = 0; i < DLCManager::e_DLCType_Max; ++i) {
+        for (AUTO_VAR(it, m_files[i].begin()); it != m_files[i].end(); ++it) {
+            delete *it;
+        }
+    }
 
-	// This pointer is for all the data used for this pack, so deleting it invalidates ALL of it's children.
-	if(m_data)
-	{
+    // This pointer is for all the data used for this pack, so deleting it
+    // invalidates ALL of it's children.
+    if (m_data) {
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"Deleting data for DLC pack %ls\n", m_packName.c_str());
+        wprintf(L"Deleting data for DLC pack %ls\n", m_packName.c_str());
 #endif
-		// For the same reason, don't delete data pointer for any child pack as it just points to a region within the parent pack that has already been freed
-		if( m_parentPack == NULL )
-		{
-			delete [] m_data;
-		}
-	}
+        // For the same reason, don't delete data pointer for any child pack as
+        // it just points to a region within the parent pack that has already
+        // been freed
+        if (m_parentPack == NULL) {
+            delete[] m_data;
+        }
+    }
 }
 
-int DLCPack::GetDLCMountIndex()
-{
-	if(m_parentPack != NULL)
-	{
-		return m_parentPack->GetDLCMountIndex();
-	}
-	return m_dlcMountIndex;
+int DLCPack::GetDLCMountIndex() {
+    if (m_parentPack != NULL) {
+        return m_parentPack->GetDLCMountIndex();
+    }
+    return m_dlcMountIndex;
 }
 
-XCONTENTDEVICEID DLCPack::GetDLCDeviceID()
-{
-	if(m_parentPack != NULL )
-	{
-		return m_parentPack->GetDLCDeviceID();
-	}
-	return m_dlcDeviceID;
+XCONTENTDEVICEID DLCPack::GetDLCDeviceID() {
+    if (m_parentPack != NULL) {
+        return m_parentPack->GetDLCDeviceID();
+    }
+    return m_dlcDeviceID;
 }
 
-void DLCPack::addChildPack(DLCPack *childPack)
-{
-	const std::uint32_t packId = childPack->GetPackId();
+void DLCPack::addChildPack(DLCPack* childPack) {
+    const std::uint32_t packId = childPack->GetPackId();
 #ifndef _CONTENT_PACKAGE
-	if(packId > 15)
-	{
-		__debugbreak();
-	}
+    if (packId < 0 || packId > 15) {
+        __debugbreak();
+    }
 #endif
-	childPack->SetPackId( (packId<<24) | m_packId );
-	m_childPacks.push_back(childPack);
-	childPack->setParentPack(this);
-	childPack->m_packName = m_packName + childPack->getName();
+    childPack->SetPackId((packId << 24) | m_packId);
+    m_childPacks.push_back(childPack);
+    childPack->setParentPack(this);
+    childPack->m_packName = m_packName + childPack->getName();
 }
 
-void DLCPack::setParentPack(DLCPack *parentPack)
-{
-	m_parentPack = parentPack;
+void DLCPack::setParentPack(DLCPack* parentPack) { m_parentPack = parentPack; }
+
+void DLCPack::addParameter(DLCManager::EDLCParameterType type,
+                           const std::wstring& value) {
+    switch (type) {
+        case DLCManager::e_DLCParamType_PackId: {
+            std::uint32_t packId = 0;
+
+            std::wstringstream ss;
+            // 4J Stu - numbered using decimal to make it easier for
+            // artists/people to number manually
+            ss << std::dec << value.c_str();
+            ss >> packId;
+
+            SetPackId(packId);
+        } break;
+        case DLCManager::e_DLCParamType_PackVersion: {
+            std::uint32_t version = 0;
+
+            std::wstringstream ss;
+            // 4J Stu - numbered using decimal to make it easier for
+            // artists/people to number manually
+            ss << std::dec << value.c_str();
+            ss >> version;
+
+            SetPackVersion(version);
+        } break;
+        case DLCManager::e_DLCParamType_DisplayName:
+            m_packName = value;
+            break;
+        case DLCManager::e_DLCParamType_DataPath:
+            m_dataPath = value;
+            break;
+        default:
+            m_parameters[(int)type] = value;
+            break;
+    }
 }
 
-void DLCPack::addParameter(DLCManager::EDLCParameterType type, const std::wstring &value)
-{
-	switch(type)
-	{
-	case DLCManager::e_DLCParamType_PackId:
-		{
-			std::uint32_t packId = 0;
-
-			std::wstringstream ss;
-			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
-			ss << std::dec << value.c_str();
-			ss >> packId;
-
-			SetPackId(packId);
-		}
-		break;
-	case DLCManager::e_DLCParamType_PackVersion:
-		{
-			std::uint32_t version = 0;
-
-			std::wstringstream ss;
-			// 4J Stu - numbered using decimal to make it easier for artists/people to number manually
-			ss << std::dec << value.c_str();
-			ss >> version;
-
-			SetPackVersion(version);
-		}
-		break;
-	case DLCManager::e_DLCParamType_DisplayName:
-		m_packName = value;
-		break;
-	case DLCManager::e_DLCParamType_DataPath:
-		m_dataPath = value;
-		break;
-	default:
-		m_parameters[(int)type] = value;
-		break;
-	}
+bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type,
+                                 unsigned int& param) {
+    AUTO_VAR(it, m_parameters.find((int)type));
+    if (it != m_parameters.end()) {
+        switch (type) {
+            case DLCManager::e_DLCParamType_NetherParticleColour:
+            case DLCManager::e_DLCParamType_EnchantmentTextColour:
+            case DLCManager::e_DLCParamType_EnchantmentTextFocusColour: {
+                std::wstringstream ss;
+                ss << std::hex << it->second.c_str();
+                ss >> param;
+            } break;
+            default:
+                param = _fromString<unsigned int>(it->second);
+        }
+        return true;
+    }
+    return false;
 }
 
-bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type, unsigned int &param)
-{
-	AUTO_VAR(it,m_parameters.find((int)type));
-	if(it != m_parameters.end())
-	{
-		switch(type)
-		{
-		case DLCManager::e_DLCParamType_NetherParticleColour:
-		case DLCManager::e_DLCParamType_EnchantmentTextColour:
-		case DLCManager::e_DLCParamType_EnchantmentTextFocusColour:
-			{
-				std::wstringstream ss;
-				ss << std::hex << it->second.c_str();
-				ss >> param;
-			}
-			break;
-		default:
-			param = _fromString<unsigned int>(it->second);
-		}
-		return true;
-	}
-	return false;
-}
+DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
+    DLCFile* newFile = NULL;
 
-DLCFile *DLCPack::addFile(DLCManager::EDLCType type, const std::wstring &path)
-{
-	DLCFile *newFile = NULL;
+    switch (type) {
+        case DLCManager::e_DLCType_Skin: {
+            std::vector<std::wstring> splitPath = stringSplit(path, L'/');
+            std::wstring strippedPath = splitPath.back();
 
-	switch(type)
-	{
-	case DLCManager::e_DLCType_Skin:
-		{
-			std::vector<std::wstring> splitPath = stringSplit(path,L'/');
-			std::wstring strippedPath = splitPath.back();
+            newFile = new DLCSkinFile(strippedPath);
 
-			newFile = new DLCSkinFile(strippedPath);
-
-			// check to see if we can get the full offer id using this skin name
+            // check to see if we can get the full offer id using this skin name
 #ifdef _XBOX_ONE
-			app.GetDLCFullOfferIDForSkinID(strippedPath,m_wsProductId);
+            app.GetDLCFullOfferIDForSkinID(strippedPath, m_wsProductId);
 #else
-			ULONGLONG ullVal=0LL;
+            ULONGLONG ullVal = 0LL;
 
-			if(app.GetDLCFullOfferIDForSkinID(strippedPath,&ullVal))
-			{
-				m_ullFullOfferId=ullVal;
-			}
+            if (app.GetDLCFullOfferIDForSkinID(strippedPath, &ullVal)) {
+                m_ullFullOfferId = ullVal;
+            }
 #endif
-		}
-		break;
-	case DLCManager::e_DLCType_Cape:
-		{
-			std::vector<std::wstring> splitPath = stringSplit(path,L'/');
-			std::wstring strippedPath = splitPath.back();
-			newFile = new DLCCapeFile(strippedPath);
-		}
-		break;
-	case DLCManager::e_DLCType_Texture:
-		newFile = new DLCTextureFile(path);
-		break;
-	case DLCManager::e_DLCType_UIData:
-		newFile = new DLCUIDataFile(path);
-		break;
-	case DLCManager::e_DLCType_LocalisationData:
-		newFile = new DLCLocalisationFile(path);
-		break;
-	case DLCManager::e_DLCType_GameRules:
-		newFile = new DLCGameRulesFile(path);
-		break;
-	case DLCManager::e_DLCType_Audio:
-		newFile = new DLCAudioFile(path);
-		break;
-	case DLCManager::e_DLCType_ColourTable:
-		newFile = new DLCColourTableFile(path);
-		break;
-	case DLCManager::e_DLCType_GameRulesHeader:
-		newFile = new DLCGameRulesHeader(path);
-		break;
-	default:
-		break;
-	};
+        } break;
+        case DLCManager::e_DLCType_Cape: {
+            std::vector<std::wstring> splitPath = stringSplit(path, L'/');
+            std::wstring strippedPath = splitPath.back();
+            newFile = new DLCCapeFile(strippedPath);
+        } break;
+        case DLCManager::e_DLCType_Texture:
+            newFile = new DLCTextureFile(path);
+            break;
+        case DLCManager::e_DLCType_UIData:
+            newFile = new DLCUIDataFile(path);
+            break;
+        case DLCManager::e_DLCType_LocalisationData:
+            newFile = new DLCLocalisationFile(path);
+            break;
+        case DLCManager::e_DLCType_GameRules:
+            newFile = new DLCGameRulesFile(path);
+            break;
+        case DLCManager::e_DLCType_Audio:
+            newFile = new DLCAudioFile(path);
+            break;
+        case DLCManager::e_DLCType_ColourTable:
+            newFile = new DLCColourTableFile(path);
+            break;
+        case DLCManager::e_DLCType_GameRulesHeader:
+            newFile = new DLCGameRulesHeader(path);
+            break;
+        default:
+            break;
+    };
 
-	if( newFile != NULL )
-	{
-		m_files[newFile->getType()].push_back(newFile);
-	}
+    if (newFile != NULL) {
+        m_files[newFile->getType()].push_back(newFile);
+    }
 
-	return newFile;
+    return newFile;
 }
 
-// MGH - added this comp func, as the embedded func in find_if was confusing the PS3 compiler
-static const std::wstring *g_pathCmpString = NULL;
-static bool pathCmp(DLCFile *val)
-{
-	return (g_pathCmpString->compare(val->getPath()) == 0); 
+// MGH - added this comp func, as the embedded func in find_if was confusing the
+// PS3 compiler
+static const std::wstring* g_pathCmpString = NULL;
+static bool pathCmp(DLCFile* val) {
+    return (g_pathCmpString->compare(val->getPath()) == 0);
 }
 
-bool DLCPack::doesPackContainFile(DLCManager::EDLCType type, const std::wstring &path)
-{
-	bool hasFile = false;
-	if(type == DLCManager::e_DLCType_All)
-	{
-		for(DLCManager::EDLCType currentType = (DLCManager::EDLCType)0; currentType < DLCManager::e_DLCType_Max; currentType = (DLCManager::EDLCType)(currentType + 1))
-		{
-			hasFile = doesPackContainFile(currentType,path);
-			if(hasFile) break;
-		}
-	}
-	else
-	{
-		g_pathCmpString = &path;
-		AUTO_VAR(it, std::find_if( m_files[type].begin(), m_files[type].end(), pathCmp ));
-		hasFile = it != m_files[type].end();
-		if(!hasFile && m_parentPack )
-		{
-			hasFile = m_parentPack->doesPackContainFile(type,path);
-		}
-	}
-	return hasFile;
+bool DLCPack::doesPackContainFile(DLCManager::EDLCType type,
+                                  const std::wstring& path) {
+    bool hasFile = false;
+    if (type == DLCManager::e_DLCType_All) {
+        for (DLCManager::EDLCType currentType = (DLCManager::EDLCType)0;
+             currentType < DLCManager::e_DLCType_Max;
+             currentType = (DLCManager::EDLCType)(currentType + 1)) {
+            hasFile = doesPackContainFile(currentType, path);
+            if (hasFile) break;
+        }
+    } else {
+        g_pathCmpString = &path;
+        AUTO_VAR(it, std::find_if(m_files[type].begin(), m_files[type].end(),
+                                  pathCmp));
+        hasFile = it != m_files[type].end();
+        if (!hasFile && m_parentPack) {
+            hasFile = m_parentPack->doesPackContainFile(type, path);
+        }
+    }
+    return hasFile;
 }
 
-DLCFile *DLCPack::getFile(DLCManager::EDLCType type, unsigned int index)
-{
-	DLCFile *file = NULL;
-	if(type == DLCManager::e_DLCType_All)
-	{
-		for(DLCManager::EDLCType currentType = (DLCManager::EDLCType)0; currentType < DLCManager::e_DLCType_Max; currentType = (DLCManager::EDLCType)(currentType + 1))
-		{
-			file = getFile(currentType,index);
-			if(file != NULL) break;
-		}
-	}
-	else
-	{
-		if(m_files[type].size() > index) file = m_files[type][index];
-		if(!file && m_parentPack)
-		{
-			file = m_parentPack->getFile(type,index);
-		}
-	}
-	return file;
+DLCFile* DLCPack::getFile(DLCManager::EDLCType type, unsigned int index) {
+    DLCFile* file = NULL;
+    if (type == DLCManager::e_DLCType_All) {
+        for (DLCManager::EDLCType currentType = (DLCManager::EDLCType)0;
+             currentType < DLCManager::e_DLCType_Max;
+             currentType = (DLCManager::EDLCType)(currentType + 1)) {
+            file = getFile(currentType, index);
+            if (file != NULL) break;
+        }
+    } else {
+        if (m_files[type].size() > index) file = m_files[type][index];
+        if (!file && m_parentPack) {
+            file = m_parentPack->getFile(type, index);
+        }
+    }
+    return file;
 }
 
-DLCFile *DLCPack::getFile(DLCManager::EDLCType type, const std::wstring &path)
-{
-	DLCFile *file = NULL;
-	if(type == DLCManager::e_DLCType_All)
-	{
-		for(DLCManager::EDLCType currentType = (DLCManager::EDLCType)0; currentType < DLCManager::e_DLCType_Max; currentType = (DLCManager::EDLCType)(currentType + 1))
-		{
-			file = getFile(currentType,path);
-			if(file != NULL) break;
-		}
-	}
-	else
-	{
-		g_pathCmpString = &path;
-		AUTO_VAR(it, std::find_if( m_files[type].begin(), m_files[type].end(), pathCmp ));
+DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
+    DLCFile* file = NULL;
+    if (type == DLCManager::e_DLCType_All) {
+        for (DLCManager::EDLCType currentType = (DLCManager::EDLCType)0;
+             currentType < DLCManager::e_DLCType_Max;
+             currentType = (DLCManager::EDLCType)(currentType + 1)) {
+            file = getFile(currentType, path);
+            if (file != NULL) break;
+        }
+    } else {
+        g_pathCmpString = &path;
+        AUTO_VAR(it, std::find_if(m_files[type].begin(), m_files[type].end(),
+                                  pathCmp));
 
-		if(it == m_files[type].end())
-		{
-			// Not found
-			file = NULL; 
-		}
-		else
-		{
-			file = *it;
-		}
-		if(!file && m_parentPack)
-		{
-			file = m_parentPack->getFile(type,path);
-		}
-	}
-	return file;
+        if (it == m_files[type].end()) {
+            // Not found
+            file = NULL;
+        } else {
+            file = *it;
+        }
+        if (!file && m_parentPack) {
+            file = m_parentPack->getFile(type, path);
+        }
+    }
+    return file;
 }
 
-unsigned int DLCPack::getDLCItemsCount(DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/)
-{
-	unsigned int count = 0;
+unsigned int DLCPack::getDLCItemsCount(
+    DLCManager::EDLCType type /*= DLCManager::e_DLCType_All*/) {
+    unsigned int count = 0;
 
-	switch(type)
-	{
-	case DLCManager::e_DLCType_All:
-		for(int i = 0; i < DLCManager::e_DLCType_Max; ++i)
-		{
-			count += getDLCItemsCount((DLCManager::EDLCType)i);
-		}
-		break;
-	default:
-		count = static_cast<unsigned int>(m_files[(int)type].size());
-		break;
-	};
-	return count;
+    switch (type) {
+        case DLCManager::e_DLCType_All:
+            for (int i = 0; i < DLCManager::e_DLCType_Max; ++i) {
+                count += getDLCItemsCount((DLCManager::EDLCType)i);
+            }
+            break;
+        default:
+            count = static_cast<unsigned int>(m_files[(int)type].size());
+            break;
+    };
+    return count;
 };
 
-unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type, const std::wstring &path, bool &found)
-{
-	if(type == DLCManager::e_DLCType_All)
-	{
-		app.DebugPrintf("Unimplemented\n");
+unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type,
+                                     const std::wstring& path, bool& found) {
+    if (type == DLCManager::e_DLCType_All) {
+        app.DebugPrintf("Unimplemented\n");
 #ifndef __CONTENT_PACKAGE
-		__debugbreak();
+        __debugbreak();
 #endif
-		return 0;
-	}
+        return 0;
+    }
 
-	unsigned int foundIndex = 0;
-	found = false;
-	unsigned int index = 0;
-	for(AUTO_VAR(it, m_files[type].begin()); it != m_files[type].end(); ++it)
-	{
-		if(path.compare((*it)->getPath()) == 0)
-		{
-			foundIndex = index;
-			found = true;
-			break;
-		}
-		++index;
-	}
+    unsigned int foundIndex = 0;
+    found = false;
+    unsigned int index = 0;
+    for (AUTO_VAR(it, m_files[type].begin()); it != m_files[type].end(); ++it) {
+        if (path.compare((*it)->getPath()) == 0) {
+            foundIndex = index;
+            found = true;
+            break;
+        }
+        ++index;
+    }
 
-	return foundIndex;
+    return foundIndex;
 }
 
-bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type, const std::wstring &path)
-{
-	if(type == DLCManager::e_DLCType_All)
-	{
-		app.DebugPrintf("Unimplemented\n");
+bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type,
+                               const std::wstring& path) {
+    if (type == DLCManager::e_DLCType_All) {
+        app.DebugPrintf("Unimplemented\n");
 #ifndef _CONTENT_PACKAGE
-		__debugbreak();
+        __debugbreak();
 #endif
-		return false;
-	}
+        return false;
+    }
 #ifndef _CONTENT_PACKAGE
-	if( app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_UnlockAllDLC) )
-	{
-		return true;
-	}
-	else
+    if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        (1L << eDebugSetting_UnlockAllDLC)) {
+        return true;
+    } else
 #endif
-	if ( m_dwLicenseMask == 0 )
-	{
-		//not purchased.
-		return false;
-	}
-	else
-	{
-		//purchased
-		return true;
-	}
+        if (m_dwLicenseMask == 0) {
+        // not purchased.
+        return false;
+    } else {
+        // purchased
+        return true;
+    }
+}
+
+void DLCPack::UpdateLanguage() {
+    // find the language file
+    if (m_files[DLCManager::e_DLCType_LocalisationData].size() > 0) {
+        DLCLocalisationFile* localisationFile = (DLCLocalisationFile*)getFile(
+            DLCManager::e_DLCType_LocalisationData, L"languages.loc");
+        StringTable* strTable = localisationFile->getStringTable();
+        strTable->ReloadStringTable();
+    }
 }

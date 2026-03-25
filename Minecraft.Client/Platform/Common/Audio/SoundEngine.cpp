@@ -1327,6 +1327,12 @@ void SoundEngine::updateMiles() {
                             case eSoundType_MOB_ENDERDRAGON_HIT:
                                 distanceScaler = 100.0f;
                                 break;
+                            case eSoundType_FIREWORKS_BLAST:
+                            case eSoundType_FIREWORKS_BLAST_FAR:
+                            case eSoundType_FIREWORKS_LARGE_BLAST:
+                            case eSoundType_FIREWORKS_LARGE_BLAST_FAR:
+                                distanceScaler = 100.0f;
+                                break;
                             case eSoundType_MOB_GHAST_MOAN:
                             case eSoundType_MOB_GHAST_SCREAM:
                             case eSoundType_MOB_GHAST_DEATH:
@@ -2381,4 +2387,42 @@ bool SoundEngine::isStreamingWavebankReady() { return true; }
 char* SoundEngine::ConvertSoundPathToName(const std::wstring& name,
                                           bool bConvertSpaces) {
     return NULL;
+}
+
+void ConsoleSoundEngine::tick() {
+    if (scheduledSounds.empty()) {
+        return;
+    }
+
+    for (AUTO_VAR(it, scheduledSounds.begin()); it != scheduledSounds.end();) {
+        SoundEngine::ScheduledSound* next = *it;
+        next->delay--;
+
+        if (next->delay <= 0) {
+            play(next->iSound, next->x, next->y, next->z, next->volume,
+                 next->pitch);
+            it = scheduledSounds.erase(it);
+            delete next;
+        } else {
+            ++it;
+        }
+    }
+}
+
+void ConsoleSoundEngine::schedule(int iSound, float x, float y, float z,
+                                  float volume, float pitch, int delayTicks) {
+    scheduledSounds.push_back(new SoundEngine::ScheduledSound(
+        iSound, x, y, z, volume, pitch, delayTicks));
+}
+
+ConsoleSoundEngine::ScheduledSound::ScheduledSound(int iSound, float x, float y,
+                                                   float z, float volume,
+                                                   float pitch, int delay) {
+    this->iSound = iSound;
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->volume = volume;
+    this->pitch = pitch;
+    this->delay = delay;
 }

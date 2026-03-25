@@ -3,17 +3,16 @@
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetHealthPacket.h"
-#include "../../../Minecraft.Client/Platform/Common/Telemetry/TelemetryManager.h"
 
 SetHealthPacket::SetHealthPacket() {
-    this->health = 0;
+    this->health = 0.0f;
     this->food = 0;
     this->saturation = 0;
 
     this->damageSource = eTelemetryChallenges_Unknown;
 }
 
-SetHealthPacket::SetHealthPacket(int health, int food, float saturation,
+SetHealthPacket::SetHealthPacket(float health, int food, float saturation,
                                  ETelemetryChallenges damageSource) {
     this->health = health;
     this->food = food;
@@ -25,7 +24,7 @@ SetHealthPacket::SetHealthPacket(int health, int food, float saturation,
 
 void SetHealthPacket::read(DataInputStream* dis)  // throws IOException
 {
-    health = dis->readShort();
+    health = dis->readFloat();
     food = dis->readShort();
     saturation = dis->readFloat();
     //        exhaustion = dis.readFloat();
@@ -35,7 +34,7 @@ void SetHealthPacket::read(DataInputStream* dis)  // throws IOException
 
 void SetHealthPacket::write(DataOutputStream* dos)  // throws IOException
 {
-    dos->writeShort(health);
+    dos->writeFloat(health);
     dos->writeShort(food);
     dos->writeFloat(saturation);
     //        dos.writeFloat(exhaustion);
@@ -47,7 +46,7 @@ void SetHealthPacket::handle(PacketListener* listener) {
     listener->handleSetHealth(shared_from_this());
 }
 
-int SetHealthPacket::getEstimatedSize() { return 9; }
+int SetHealthPacket::getEstimatedSize() { return 11; }
 
 bool SetHealthPacket::canBeInvalidated() { return true; }
 

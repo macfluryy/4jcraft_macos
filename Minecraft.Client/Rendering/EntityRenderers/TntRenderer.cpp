@@ -1,11 +1,12 @@
 #include "../../Platform/stdafx.h"
 #include "TntRenderer.h"
+#include "../../Textures/TextureAtlas.h"
 #include "TileRenderer.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
 TntRenderer::TntRenderer() {
-    tileRenderer = new TileRenderer();
+    renderer = new TileRenderer();
     this->shadowRadius = 0.5f;
 }
 
@@ -28,26 +29,30 @@ void TntRenderer::render(std::shared_ptr<Entity> _tnt, double x, double y,
     }
 
     float br = (1 - ((tnt->life - a + 1) / 100.0f)) * 0.8f;
-    bindTexture(TN_TERRAIN);  // 4J was L"/terrain.png"
+    bindTexture(tnt);
     // 4J - change brought forward from 1.8.2
     float brightness =
         SharedConstants::TEXTURE_LIGHTING ? 1.0f : tnt->getBrightness(a);
-    tileRenderer->renderTile(Tile::tnt, 0, brightness);
+    renderer->renderTile(Tile::tnt, 0, brightness);
     if (tnt->life / 5 % 2 == 0) {
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_LIGHTING);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
         glColor4f(1, 1, 1, br);
-        tileRenderer->setColor = false;  // 4J added so that renderTile doesn't
-                                         // set its own colour here
-        tileRenderer->renderTile(Tile::tnt, 0, 1);
-        tileRenderer->setColor = true;  // 4J added so that renderTile doesn't
-                                        // set its own colour here
+        renderer->setColor = false;  // 4J added so that renderTile doesn't set
+                                     // its own colour here
+        renderer->renderTile(Tile::tnt, 0, 1);
+        renderer->setColor = true;  // 4J added so that renderTile doesn't set
+                                    // its own colour here
         glColor4f(1, 1, 1, 1);
         glDisable(GL_BLEND);
         glEnable(GL_LIGHTING);
         glEnable(GL_TEXTURE_2D);
     }
     glPopMatrix();
+}
+
+ResourceLocation* TntRenderer::getTextureLocation(std::shared_ptr<Entity> mob) {
+    return &TextureAtlas::LOCATION_BLOCKS;
 }

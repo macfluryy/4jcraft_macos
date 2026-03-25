@@ -3,7 +3,7 @@
 #include "../../Util/IntCache.h"
 #include "RegionHillsLayer.h"
 
-RegionHillsLayer::RegionHillsLayer(__int64 seed, std::shared_ptr<Layer> parent)
+RegionHillsLayer::RegionHillsLayer(int64_t seed, std::shared_ptr<Layer> parent)
     : Layer(seed) {
     this->parent = parent;
 }

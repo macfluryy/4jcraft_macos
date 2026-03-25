@@ -44,6 +44,7 @@ public:
     virtual TilePos* findNearestMapFeature(Level* level,
                                            const std::wstring& featureName,
                                            int x, int y, int z);
+    virtual void recreateLogicStructuresForChunk(int chunkX, int chunkZ);
     virtual void dataReceived(int x, int z);  // 4J added
 
     virtual LevelChunk** getCache() { return cache; }  // 4J added

@@ -11,10 +11,13 @@ private:
 public:
     PlayerEnderChestContainer();
 
+    virtual int getContainerType();
+
     void setActiveChest(std::shared_ptr<EnderChestTileEntity> activeChest);
     void setItemsByTag(ListTag<CompoundTag>* enderItemsList);
     ListTag<CompoundTag>* createTag();
     bool stillValid(std::shared_ptr<Player> player);
     void startOpen();
     void stopOpen();
+    bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
 };

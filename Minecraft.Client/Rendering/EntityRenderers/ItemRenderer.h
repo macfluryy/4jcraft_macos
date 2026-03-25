@@ -9,7 +9,7 @@ class ItemEntity;
 class ItemRenderer : public EntityRenderer {
 private:
     //	TileRenderer *tileRenderer;	// 4J - removed - this is shadowing the
-    //tilerenderer from entityrenderer
+    // tilerenderer from entityrenderer
     Random* random;
     bool m_bItemFrame;
 
@@ -21,6 +21,9 @@ public:
     virtual ~ItemRenderer();
     virtual void render(std::shared_ptr<Entity> _itemEntity, double x, double y,
                         double z, float rot, float a);
+    virtual ResourceLocation* getTextureLocation(
+        std::shared_ptr<Entity> entity);
+    virtual ResourceLocation* getTextureLocation(int iconType);
 
 private:
     virtual void renderItemBillboard(std::shared_ptr<ItemEntity> entity,

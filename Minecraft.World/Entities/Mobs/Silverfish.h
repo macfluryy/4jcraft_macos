@@ -13,9 +13,8 @@ private:
 public:
     Silverfish(Level* level);
 
-    virtual int getMaxHealth();
-
 protected:
+    virtual void registerAttributes();
     virtual bool makeStepSound();
     virtual std::shared_ptr<Entity> findAttackTarget();
 
@@ -24,7 +23,7 @@ protected:
     virtual int getDeathSound();
 
 public:
-    virtual bool hurt(DamageSource* source, int dmg);
+    virtual bool hurt(DamageSource* source, float dmg);
 
 protected:
     virtual void checkHurtTarget(std::shared_ptr<Entity> target, float d);

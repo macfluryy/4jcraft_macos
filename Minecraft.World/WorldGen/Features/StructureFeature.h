@@ -1,6 +1,10 @@
 #pragma once
 #include "LargeFeature.h"
+#include "../StructureFeatureSavedData.h"
+
 class StructureStart;
+
+// #define ENABLE_STRUCTURE_SAVING
 
 class StructureFeature : public LargeFeature {
 public:
@@ -13,11 +17,19 @@ public:
         eFeature_Village,
     };
 
+#ifdef ENABLE_STRUCTURE_SAVING
+private:
+    std::shared_ptr<StructureFeatureSavedData> savedData;
+#endif
+
 protected:
-    std::unordered_map<__int64, StructureStart*> cachedStructures;
+    std::unordered_map<int64_t, StructureStart*> cachedStructures;
 
 public:
+    StructureFeature();
     ~StructureFeature();
+
+    virtual std::wstring getFeatureName() = 0;
 
     virtual void addFeature(Level* level, int x, int z, int xOffs, int zOffs,
                             byteArray blocks);
@@ -26,11 +38,21 @@ public:
     bool isIntersection(int cellX, int cellZ);
 
     bool isInsideFeature(int cellX, int cellY, int cellZ);
+
+protected:
+    StructureStart* getStructureAt(int cellX, int cellY, int cellZ);
+
+public:
+    bool isInsideBoundingFeature(int cellX, int cellY, int cellZ);
     TilePos* getNearestGeneratedFeature(Level* level, int cellX, int cellY,
                                         int cellZ);
 
 protected:
     std::vector<TilePos>* getGuesstimatedFeaturePositions();
+
+private:
+    virtual void restoreSavedData(Level* level);
+    virtual void saveFeature(int chunkX, int chunkZ, StructureStart* feature);
 
     /**
      * Returns true if the given chunk coordinates should hold a structure

@@ -86,7 +86,7 @@ void DataOutputStream::writeByte(uint8_t a) {
 // counter written is incremented by 8. Parameters: v - a double value to be
 // written.
 void DataOutputStream::writeDouble(double a) {
-    __int64 bits = Double::doubleToLongBits(a);
+    int64_t bits = Double::doubleToLongBits(a);
 
     writeLong(bits);
     // TODO 4J Stu - Error handling?
@@ -122,7 +122,7 @@ void DataOutputStream::writeInt(int a) {
 // first. In no exception is thrown, the counter written is incremented by 8.
 // Parameters:
 // v - a long to be written.
-void DataOutputStream::writeLong(__int64 a) {
+void DataOutputStream::writeLong(int64_t a) {
     stream->write((a >> 56) & 0xff);
     stream->write((a >> 48) & 0xff);
     stream->write((a >> 40) & 0xff);
@@ -143,6 +143,17 @@ void DataOutputStream::writeShort(short a) {
     stream->write((a >> 8) & 0xff);
     stream->write(a & 0xff);
     // TODO 4J Stu - Error handling?
+    written += 2;
+}
+
+void DataOutputStream::writeUnsignedShort(unsigned short a) {
+    if (stream == NULL) {
+        app.DebugPrintf(
+            "DataOutputStream::writeUnsignedShort() but underlying stream is NULL\n");
+        return;
+    }
+    stream->write(static_cast<unsigned int>((a >> 8) & 0xff));
+    stream->write(static_cast<unsigned int>(a & 0xff));
     written += 2;
 }
 

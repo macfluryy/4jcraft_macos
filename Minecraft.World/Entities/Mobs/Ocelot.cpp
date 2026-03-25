@@ -1,10 +1,12 @@
 #include "../../Platform/stdafx.h"
+#include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
 #include "../../Headers/net.minecraft.world.entity.ai.control.h"
 #include "../../Headers/net.minecraft.world.entity.ai.goal.target.h"
 #include "../../Headers/net.minecraft.world.entity.ai.goal.h"
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "../../Headers/net.minecraft.world.entity.animal.h"
 #include "../../Headers/net.minecraft.world.entity.player.h"
+#include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
 #include "../../Headers/net.minecraft.world.level.h"
@@ -13,67 +15,62 @@
 #include "../SyncedEntityData.h"
 #include "../../Util/StringHelpers.h"
 #include "../../../Minecraft.Client/Textures/Textures.h"
+#include "../../../Minecraft.Client/Minecraft.h"
+#include "../../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Stats/GenericStats.h"
 #include "Ocelot.h"
 
-const float Ozelot::SNEAK_SPEED = 0.18f;
-const float Ozelot::WALK_SPEED = 0.23f;
-const float Ozelot::FOLLOW_SPEED = 0.3f;
-const float Ozelot::SPRINT_SPEED = 0.4f;
+const double Ocelot::SNEAK_SPEED_MOD = 0.6;
+const double Ocelot::WALK_SPEED_MOD = 0.8;
+const double Ocelot::FOLLOW_SPEED_MOD = 1.0;
+const double Ocelot::SPRINT_SPEED_MOD = 1.33;
 
-const int Ozelot::DATA_TYPE_ID = 18;
+const int Ocelot::DATA_TYPE_ID = 18;
 
-const int Ozelot::TYPE_OZELOT = 0;
-const int Ozelot::TYPE_BLACK = 1;
-const int Ozelot::TYPE_RED = 2;
-const int Ozelot::TYPE_SIAMESE = 3;
-
-Ozelot::Ozelot(Level* level) : TamableAnimal(level) {
+Ocelot::Ocelot(Level* level) : TamableAnimal(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();
+    registerAttributes();
+    setHealth(getMaxHealth());
 
-    // 4J Stu - This function call had to be moved here from the Entity ctor to
-    // ensure that the derived version of the function is called
-    health = getMaxHealth();
-
-    this->textureIdx = TN_MOB_OZELOT;  // "/mob/ozelot.png";
-    this->setSize(0.6f, 0.8f);
+    setSize(0.6f, 0.8f);
 
     getNavigation()->setAvoidWater(true);
     goalSelector.addGoal(1, new FloatGoal(this));
     goalSelector.addGoal(2, sitGoal, false);
+    goalSelector.addGoal(3,
+                         temptGoal = new TemptGoal(this, SNEAK_SPEED_MOD,
+                                                   Item::fish_raw_Id, true),
+                         false);
     goalSelector.addGoal(
-        3,
-        temptGoal = new TemptGoal(this, SNEAK_SPEED, Item::fish_raw_Id, true),
-        false);
-    goalSelector.addGoal(4, new AvoidPlayerGoal(this, typeid(Player), 16,
-                                                WALK_SPEED, SPRINT_SPEED));
-    goalSelector.addGoal(5, new FollowOwnerGoal(this, FOLLOW_SPEED, 10, 5));
-    goalSelector.addGoal(6, new OcelotSitOnTileGoal(this, SPRINT_SPEED));
+        4, new AvoidPlayerGoal(this, typeid(Player), 16, WALK_SPEED_MOD,
+                               SPRINT_SPEED_MOD));
+    goalSelector.addGoal(5, new FollowOwnerGoal(this, FOLLOW_SPEED_MOD, 10, 5));
+    goalSelector.addGoal(6, new OcelotSitOnTileGoal(this, SPRINT_SPEED_MOD));
     goalSelector.addGoal(7, new LeapAtTargetGoal(this, 0.3f));
-    goalSelector.addGoal(8, new OzelotAttackGoal(this));
-    goalSelector.addGoal(9, new BreedGoal(this, WALK_SPEED));
-    goalSelector.addGoal(10, new RandomStrollGoal(this, WALK_SPEED));
+    goalSelector.addGoal(8, new OcelotAttackGoal(this));
+    goalSelector.addGoal(9, new BreedGoal(this, WALK_SPEED_MOD));
+    goalSelector.addGoal(10, new RandomStrollGoal(this, WALK_SPEED_MOD));
     goalSelector.addGoal(11, new LookAtPlayerGoal(this, typeid(Player), 10));
 
     targetSelector.addGoal(
-        1, new NonTameRandomTargetGoal(this, typeid(Chicken), 14, 750, false));
+        1, new NonTameRandomTargetGoal(this, typeid(Chicken), 750, false));
 }
 
-void Ozelot::defineSynchedData() {
+void Ocelot::defineSynchedData() {
     TamableAnimal::defineSynchedData();
 
-    entityData->define(DATA_TYPE_ID, (uint8_t)TYPE_OZELOT);
+    entityData->define(DATA_TYPE_ID, (uint8_t)0);
 }
 
-void Ozelot::serverAiMobStep() {
+void Ocelot::serverAiMobStep() {
     if (getMoveControl()->hasWanted()) {
-        float speed = getMoveControl()->getSpeed();
-        if (speed == SNEAK_SPEED) {
+        double speed = getMoveControl()->getSpeedModifier();
+        if (speed == SNEAK_SPEED_MOD) {
             setSneaking(true);
             setSprinting(false);
-        } else if (speed == SPRINT_SPEED) {
+        } else if (speed == SPRINT_SPEED_MOD) {
             setSneaking(false);
             setSprinting(true);
         } else {
@@ -86,47 +83,39 @@ void Ozelot::serverAiMobStep() {
     }
 }
 
-bool Ozelot::removeWhenFarAway() {
-    return Animal::removeWhenFarAway() && !isTame();
+bool Ocelot::removeWhenFarAway() {
+    return Animal::removeWhenFarAway() && !isTame() &&
+           tickCount > SharedConstants::TICKS_PER_SECOND * 60 * 2;
 }
 
-int Ozelot::getTexture() {
-    switch (getCatType()) {
-        case TYPE_OZELOT:
-            return TN_MOB_OZELOT;  //"/mob/ozelot.png";
-        case TYPE_BLACK:
-            return TN_MOB_CAT_BLACK;  //"/mob/cat_black.png";
-        case TYPE_RED:
-            return TN_MOB_CAT_RED;  //"/mob/cat_red.png";
-        case TYPE_SIAMESE:
-            return TN_MOB_CAT_SIAMESE;  //"/mob/cat_siamese.png";
-    }
-    return TamableAnimal::getTexture();
+bool Ocelot::useNewAi() { return true; }
+
+void Ocelot::registerAttributes() {
+    TamableAnimal::registerAttributes();
+
+    getAttribute(SharedMonsterAttributes::MAX_HEALTH)->setBaseValue(10);
+    getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)->setBaseValue(0.3f);
 }
 
-bool Ozelot::useNewAi() { return true; }
-
-int Ozelot::getMaxHealth() { return 10; }
-
-void Ozelot::causeFallDamage(float distance) {
+void Ocelot::causeFallDamage(float distance) {
     // do nothing
 }
 
-void Ozelot::addAdditonalSaveData(CompoundTag* tag) {
+void Ocelot::addAdditonalSaveData(CompoundTag* tag) {
     TamableAnimal::addAdditonalSaveData(tag);
     tag->putInt(L"CatType", getCatType());
 }
 
-void Ozelot::readAdditionalSaveData(CompoundTag* tag) {
+void Ocelot::readAdditionalSaveData(CompoundTag* tag) {
     TamableAnimal::readAdditionalSaveData(tag);
     if (isTame()) {
         setCatType(tag->getInt(L"CatType"));
     } else {
-        setCatType(TYPE_OZELOT);
+        setCatType(TYPE_OCELOT);
     }
 }
 
-int Ozelot::getAmbientSound() {
+int Ocelot::getAmbientSound() {
     if (isTame()) {
         if (isInLove()) {
             return eSoundType_MOB_CAT_PURR;
@@ -140,28 +129,29 @@ int Ozelot::getAmbientSound() {
     return -1;
 }
 
-int Ozelot::getHurtSound() { return eSoundType_MOB_CAT_HITT; }
+int Ocelot::getHurtSound() { return eSoundType_MOB_CAT_HIT; }
 
-int Ozelot::getDeathSound() { return eSoundType_MOB_CAT_HITT; }
+int Ocelot::getDeathSound() { return eSoundType_MOB_CAT_HIT; }
 
-float Ozelot::getSoundVolume() { return 0.4f; }
+float Ocelot::getSoundVolume() { return 0.4f; }
 
-int Ozelot::getDeathLoot() { return Item::leather_Id; }
+int Ocelot::getDeathLoot() { return Item::leather_Id; }
 
-bool Ozelot::doHurtTarget(std::shared_ptr<Entity> target) {
+bool Ocelot::doHurtTarget(std::shared_ptr<Entity> target) {
     return target->hurt(DamageSource::mobAttack(
                             std::dynamic_pointer_cast<Mob>(shared_from_this())),
                         3);
 }
 
-bool Ozelot::hurt(DamageSource* source, int dmg) {
+bool Ocelot::hurt(DamageSource* source, float dmg) {
+    if (isInvulnerable()) return false;
     sitGoal->wantToSit(false);
     return TamableAnimal::hurt(source, dmg);
 }
 
-void Ozelot::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {}
+void Ocelot::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {}
 
-bool Ozelot::interact(std::shared_ptr<Player> player) {
+bool Ocelot::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
     if (isTame()) {
         if (equalsIgnoreCase(player->getUUID(), getOwnerUUID())) {
@@ -186,8 +176,8 @@ bool Ozelot::interact(std::shared_ptr<Player> player) {
 
                     // 4J-JEV, hook for durango event.
                     player->awardStat(
-                        GenericStats::tamedEntity(eTYPE_OZELOT),
-                        GenericStats::param_tamedEntity(eTYPE_OZELOT));
+                        GenericStats::tamedEntity(eTYPE_OCELOT),
+                        GenericStats::param_tamedEntity(eTYPE_OCELOT));
 
                     setCatType(1 + level->random->nextInt(3));
                     setOwnerUUID(player->getUUID());
@@ -204,15 +194,15 @@ bool Ozelot::interact(std::shared_ptr<Player> player) {
             return true;
         }
     }
-    return TamableAnimal::interact(player);
+    return TamableAnimal::mobInteract(player);
 }
 
-std::shared_ptr<AgableMob> Ozelot::getBreedOffspring(
+std::shared_ptr<AgableMob> Ocelot::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
     // 4J - added limit to number of animals that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
-        std::shared_ptr<Ozelot> offspring =
-            std::shared_ptr<Ozelot>(new Ozelot(level));
+        std::shared_ptr<Ocelot> offspring =
+            std::shared_ptr<Ocelot>(new Ocelot(level));
         if (isTame()) {
             offspring->setOwnerUUID(getOwnerUUID());
             offspring->setTame(true);
@@ -224,28 +214,28 @@ std::shared_ptr<AgableMob> Ozelot::getBreedOffspring(
     }
 }
 
-bool Ozelot::isFood(std::shared_ptr<ItemInstance> itemInstance) {
+bool Ocelot::isFood(std::shared_ptr<ItemInstance> itemInstance) {
     return itemInstance != NULL && itemInstance->id == Item::fish_raw_Id;
 }
 
-bool Ozelot::canMate(std::shared_ptr<Animal> animal) {
+bool Ocelot::canMate(std::shared_ptr<Animal> animal) {
     if (animal == shared_from_this()) return false;
     if (!isTame()) return false;
 
-    std::shared_ptr<Ozelot> partner = std::dynamic_pointer_cast<Ozelot>(animal);
+    std::shared_ptr<Ocelot> partner = std::dynamic_pointer_cast<Ocelot>(animal);
     if (partner == NULL) return false;
     if (!partner->isTame()) return false;
 
     return isInLove() && partner->isInLove();
 }
 
-int Ozelot::getCatType() { return entityData->getByte(DATA_TYPE_ID); }
+int Ocelot::getCatType() { return entityData->getByte(DATA_TYPE_ID); }
 
-void Ozelot::setCatType(int type) {
+void Ocelot::setCatType(int type) {
     entityData->set(DATA_TYPE_ID, (uint8_t)type);
 }
 
-bool Ozelot::canSpawn() {
+bool Ocelot::canSpawn() {
     // artificially make ozelots more rare
     if (level->random->nextInt(3) == 0) {
         return false;
@@ -268,9 +258,51 @@ bool Ozelot::canSpawn() {
     return false;
 }
 
-std::wstring Ozelot::getAName() {
+std::wstring Ocelot::getAName() {
+    if (hasCustomName()) return getCustomName();
+#ifdef _DEBUG
     if (isTame()) {
         return L"entity.Cat.name";
     }
     return TamableAnimal::getAName();
+#else
+    return L"";
+#endif
+}
+
+MobGroupData* Ocelot::finalizeMobSpawn(
+    MobGroupData* groupData, int extraData /*= 0*/)  // 4J Added extraData param
+{
+    groupData = TamableAnimal::finalizeMobSpawn(groupData);
+
+#ifndef _CONTENT_PACKAGE
+    if (app.DebugArtToolsOn() && (extraData != 0)) {
+        setTame(true);
+        setCatType(extraData - 1);
+        setOwnerUUID(Minecraft::GetInstance()
+                         ->localplayers[ProfileManager.GetPrimaryPad()]
+                         ->getUUID());
+    } else
+#endif
+        if (level->random->nextInt(7) == 0) {
+        for (int kitten = 0; kitten < 2; kitten++) {
+            std::shared_ptr<Ocelot> ocelot =
+                std::shared_ptr<Ocelot>(new Ocelot(level));
+            ocelot->moveTo(x, y, z, yRot, 0);
+            ocelot->setAge(-20 * 60 * 20);
+            level->addEntity(ocelot);
+        }
+    }
+    return groupData;
+}
+
+void Ocelot::setSittingOnTile(bool val) {
+    uint8_t current = entityData->getByte(DATA_FLAGS_ID);
+    entityData->set(DATA_FLAGS_ID, val ? (uint8_t)(current | 0x02)
+                                       : (uint8_t)(current & ~0x02));
+}
+
+bool Ocelot::isSittingOnTile() {
+    uint8_t current = entityData->getByte(DATA_FLAGS_ID);
+    return (current & 0x02) > 0;
 }

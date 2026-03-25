@@ -36,6 +36,7 @@ public:
     void removeTileEntity(int x, int y, int z);
     void load();
     void unload(bool unloadTileEntities);  // 4J - added parameter
+    bool containsPlayer();                 // 4J added
     void markUnsaved();
     void getEntities(std::shared_ptr<Entity> except, AABB bb,
                      std::vector<std::shared_ptr<Entity> >& es);
@@ -49,7 +50,7 @@ public:
         bool includeLighting = true);  // 4J - added includeLighting parameter;
     bool testSetBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
                               int y1, int z1, int p);
-    Random* getRandom(__int64 l);
+    Random* getRandom(int64_t l);
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);
     virtual void reSyncLighting() {};  // 4J added
 };

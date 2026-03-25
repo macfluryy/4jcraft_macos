@@ -15,8 +15,7 @@ public:
                     int maxCount, int weight);
 
     static void addChestItems(Random* random, WeighedTreasureArray items,
-                              std::shared_ptr<ChestTileEntity> dest,
-                              int numRolls);
+                              std::shared_ptr<Container> dest, int numRolls);
     static void addDispenserItems(Random* random, WeighedTreasureArray items,
                                   std::shared_ptr<DispenserTileEntity> dest,
                                   int numRolls);

@@ -51,8 +51,8 @@ void Abilities::loadSaveData(CompoundTag* parentTag) {
 
 float Abilities::getFlyingSpeed() { return flyingSpeed; }
 
-void Abilities::setFlyingSpeed(float value) { this->flyingSpeed = value; }
+void Abilities::setFlyingSpeed(float value) { flyingSpeed = value; }
 
 float Abilities::getWalkingSpeed() { return walkingSpeed; }
 
-void Abilities::setWalkingSpeed(float value) { this->walkingSpeed = value; }
+void Abilities::setWalkingSpeed(float value) { walkingSpeed = value; }

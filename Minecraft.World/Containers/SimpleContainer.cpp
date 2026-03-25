@@ -5,8 +5,11 @@
 
 #include "SimpleContainer.h"
 
-SimpleContainer::SimpleContainer(int name, int size) {
+SimpleContainer::SimpleContainer(int name, std::wstring stringName,
+                                 bool customName, int size) {
     this->name = name;
+    this->stringName = stringName;
+    this->customName = customName;
     this->size = size;
     items = new ItemInstanceArray(size);
 
@@ -44,12 +47,12 @@ std::shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot,
         if ((*items)[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = (*items)[slot];
             (*items)[slot] = nullptr;
-            this->setChanged();
+            setChanged();
             return item;
         } else {
             std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
             if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
-            this->setChanged();
+            setChanged();
             return i;
         }
     }
@@ -70,29 +73,42 @@ void SimpleContainer::setItem(unsigned int slot,
     (*items)[slot] = item;
     if (item != NULL && item->count > getMaxStackSize())
         item->count = getMaxStackSize();
-    this->setChanged();
+    setChanged();
 }
 
 unsigned int SimpleContainer::getContainerSize() { return size; }
 
-int SimpleContainer::getName() { return name; }
+std::wstring SimpleContainer::getName() {
+    return stringName.empty() ? app.GetString(name) : stringName;
+}
+
+std::wstring SimpleContainer::getCustomName() {
+    return hasCustomName() ? stringName : L"";
+}
+
+bool SimpleContainer::hasCustomName() { return customName; }
+
+void SimpleContainer::setCustomName(const std::wstring& name) {
+    customName = true;
+    this->stringName = name;
+}
 
 int SimpleContainer::getMaxStackSize() {
     return Container::LARGE_MAX_STACK_SIZE;
 }
 
 void SimpleContainer::setChanged() {
-    // 4J - removing this as we don't seem to have any implementation of a
-    // listener containerChanged function, and shared_from_this is proving
-    // tricky to add to containers
-#if 0
-	if (listeners != NULL) for (unsigned int i = 0; i < listeners->size(); i++)
-	{
-		listeners->at(i)->containerChanged(shared_from_this());
-	}
-#endif
+    if (listeners != NULL)
+        for (unsigned int i = 0; i < listeners->size(); i++) {
+            listeners->at(i)->containerChanged();  // shared_from_this());
+        }
 }
 
 bool SimpleContainer::stillValid(std::shared_ptr<Player> player) {
+    return true;
+}
+
+bool SimpleContainer::canPlaceItem(int slot,
+                                   std::shared_ptr<ItemInstance> item) {
     return true;
 }

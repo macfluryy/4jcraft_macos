@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../../Headers/net.minecraft.world.level.h"
 
 class LevelType {
@@ -15,6 +14,7 @@ public:
     static void staticCtor();
 
 private:
+    int id;
     std::wstring m_generatorName;
     int m_version;
     bool m_selectable;
@@ -42,4 +42,5 @@ private:
 public:
     bool hasReplacement();
     static LevelType* getLevelType(std::wstring name);
+    int getId();
 };

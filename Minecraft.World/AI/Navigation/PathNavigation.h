@@ -9,8 +9,8 @@ private:
     Mob* mob;
     Level* level;
     Path* path;
-    float speed;
-    float maxDist;
+    double speedModifier;
+    AttributeInstance* dist;
     bool avoidSun;
     int _tick;
     int lastStuckCheck;
@@ -22,7 +22,7 @@ private:
     bool canFloat;
 
 public:
-    PathNavigation(Mob* mob, Level* level, float maxDist);
+    PathNavigation(Mob* mob, Level* level);
     ~PathNavigation();
 
     void setAvoidWater(bool avoidWater);
@@ -32,13 +32,14 @@ public:
     void setCanPassDoors(bool canPass);
     bool canOpenDoors();
     void setAvoidSun(bool avoidSun);
-    void setSpeed(float speed);
+    void setSpeedModifier(double speedModifier);
     void setCanFloat(bool canFloat);
+    float getMaxDist();
     Path* createPath(double x, double y, double z);
-    bool moveTo(double x, double y, double z, float speed);
-    Path* createPath(std::shared_ptr<Mob> target);
-    bool moveTo(std::shared_ptr<Mob> target, float speed);
-    bool moveTo(Path* newPath, float speed);
+    bool moveTo(double x, double y, double z, double speedModifier);
+    Path* createPath(std::shared_ptr<Entity> target);
+    bool moveTo(std::shared_ptr<Entity> target, double speedModifier);
+    bool moveTo(Path* newPath, double speedModifier);
     Path* getPath();
     void tick();
 

@@ -24,8 +24,9 @@ FurnaceRecipes::FurnaceRecipes() {
                      new ItemInstance(Item::chicken_cooked), .35f);
     addFurnaceRecipy(Item::fish_raw_Id, new ItemInstance(Item::fish_cooked),
                      .35f);
-    addFurnaceRecipy(Tile::stoneBrick_Id, new ItemInstance(Tile::rock), .1f);
+    addFurnaceRecipy(Tile::cobblestone_Id, new ItemInstance(Tile::stone), .1f);
     addFurnaceRecipy(Item::clay_Id, new ItemInstance(Item::brick), .3f);
+    addFurnaceRecipy(Tile::clay_Id, new ItemInstance(Tile::clayHardened), .35f);
     addFurnaceRecipy(
         Tile::cactus_Id,
         new ItemInstance(Item::dye_powder, 1, DyePowderItem::GREEN), .2f);
@@ -35,8 +36,7 @@ FurnaceRecipes::FurnaceRecipes() {
     addFurnaceRecipy(Tile::emeraldOre_Id, new ItemInstance(Item::emerald), 1);
     addFurnaceRecipy(Item::potato_Id, new ItemInstance(Item::potatoBaked),
                      .35f);
-    // 4J - TU9 - add in smelting netherrack
-    addFurnaceRecipy(Tile::hellRock_Id, new ItemInstance(Item::netherbrick),
+    addFurnaceRecipy(Tile::netherRack_Id, new ItemInstance(Item::netherbrick),
                      .1f);
 
     // special silk touch related recipes:

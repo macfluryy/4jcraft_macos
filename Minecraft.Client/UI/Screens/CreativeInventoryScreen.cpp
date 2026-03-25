@@ -16,7 +16,7 @@
 
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex = IUIScene_CreativeMenu::eCreativeInventoryTab_BuildingBlocks;
-std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory = std::make_shared<SimpleContainer>(0, ITEMS_PER_PAGE);
+std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory = std::make_shared<SimpleContainer>(0, L"", false, ITEMS_PER_PAGE);
 
 // ContainerCreative implementation
 CreativeInventoryScreen::ContainerCreative::ContainerCreative(std::shared_ptr<Player> player) : AbstractContainerMenu()
@@ -52,7 +52,7 @@ std::shared_ptr<ItemInstance> CreativeInventoryScreen::ContainerCreative::clicke
 	std::shared_ptr<ItemInstance> carried = inventory->getCarried();
 	
 	// Handle clicks outside the GUI
-	if (slotIndex == CLICKED_OUTSIDE)
+	if (slotIndex == SLOT_CLICKED_OUTSIDE)
 	{
 		// Drop the carried item
 		if (carried != NULL)
@@ -78,12 +78,12 @@ std::shared_ptr<ItemInstance> CreativeInventoryScreen::ContainerCreative::clicke
 	}
 	
 	// Validate slot index
-	if (slotIndex < 0 || slotIndex >= (int)slots->size())
+	if (slotIndex < 0 || slotIndex >= (int)slots.size())
 	{
 		return std::shared_ptr<ItemInstance>();
 	}
 	
-	Slot* slot = slots->at(slotIndex);
+	Slot* slot = slots.at(slotIndex);
 	
 	// Handle creative inventory slots (0-44)
 	if (slotIndex >= 0 && slotIndex < ITEMS_PER_PAGE)
@@ -282,11 +282,11 @@ void CreativeInventoryScreen::mouseClicked(int x, int y, int buttonNum)
 
 		int slotId = -1;
 		if (slot != NULL) slotId = slot->index;
-		if (clickedOutside) slotId = AbstractContainerMenu::CLICKED_OUTSIDE;
+		if (clickedOutside) slotId = AbstractContainerMenu::SLOT_CLICKED_OUTSIDE;
 
 		if (slotId == -1) return;
 
-		bool quickKey = slotId != AbstractContainerMenu::CLICKED_OUTSIDE &&
+		bool quickKey = slotId != AbstractContainerMenu::SLOT_CLICKED_OUTSIDE &&
 		                (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) || Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
 		int clickType = quickKey ? AbstractContainerMenu::CLICK_QUICK_MOVE : AbstractContainerMenu::CLICK_PICKUP;
 
