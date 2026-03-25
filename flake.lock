@@ -1,12 +1,54 @@
 {
   "nodes": {
+    "4jlibs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774012501,
+        "narHash": "sha256-NoM5LtKcU+3LFPVZUtep1L+hfZS6YSQ4P/xkJU/2NY4=",
+        "owner": "4jcraft",
+        "repo": "4jlibs",
+        "rev": "df5f4a1fc3288fdc021b3d8ee2abaed3083de460",
+        "type": "github"
+      },
+      "original": {
+        "owner": "4jcraft",
+        "ref": "main",
+        "repo": "4jlibs",
+        "type": "github"
+      }
+    },
+    "miniaudio": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740378702,
+        "narHash": "sha256-o/7sfBcrhyXEakccOAogQqm8dO4Szj1QSpaIHg6OSt4=",
+        "type": "tarball",
+        "url": "https://github.com/mackron/miniaudio/archive/refs/tags/0.11.22.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/mackron/miniaudio/archive/refs/tags/0.11.22.tar.gz"
+      }
+    },
+    "miniaudio-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-txCgaQ2r4134YVNJjw0oVG9yGGLxGvdLfXnB1j+DI/4=",
+        "type": "file",
+        "url": "https://wrapdb.mesonbuild.com/v2/miniaudio_0.11.22-2/get_patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://wrapdb.mesonbuild.com/v2/miniaudio_0.11.22-2/get_patch"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1773734432,
-        "narHash": "sha256-IF5ppUWh6gHGHYDbtVUyhwy/i7D261P7fWD1bPefOsw=",
+        "lastModified": 1774106199,
+        "narHash": "sha256-US5Tda2sKmjrg2lNHQL3jRQ6p96cgfWh3J1QBliQ8Ws=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "cda48547b432e8d3b18b4180ba07473762ec8558",
+        "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
         "type": "github"
       },
       "original": {
@@ -18,8 +60,12 @@
     },
     "root": {
       "inputs": {
+        "4jlibs": "4jlibs",
+        "miniaudio": "miniaudio",
+        "miniaudio-patch": "miniaudio-patch",
         "nixpkgs": "nixpkgs",
-        "shiggy": "shiggy"
+        "shiggy": "shiggy",
+        "stb": "stb"
       }
     },
     "shiggy": {
@@ -36,6 +82,23 @@
         "owner": "4jcraft",
         "ref": "main",
         "repo": "shiggy",
+        "type": "github"
+      }
+    },
+    "stb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773836560,
+        "narHash": "sha256-bRXN5YdVuSi9gzWn7UbCY+v6OSQdfWaUwrP1WWKrbks=",
+        "owner": "nothings",
+        "repo": "stb",
+        "rev": "28d546d5eb77d4585506a20480f4de2e706dff4c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nothings",
+        "ref": "master",
+        "repo": "stb",
         "type": "github"
       }
     }

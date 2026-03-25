@@ -1387,8 +1387,8 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                         QueryPerformanceCounter(&qwNewTime);
                         qwDeltaTime.QuadPart =
                             qwNewTime.QuadPart - qwTime.QuadPart;
-                        fElapsedTime =
-                            fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+                        fElapsedTime = fSecsPerTick *
+                                       static_cast<float>(qwDeltaTime.QuadPart);
                         app.DebugPrintf("Autosave: Elapsed time %f\n",
                                         fElapsedTime);
                     } break;
