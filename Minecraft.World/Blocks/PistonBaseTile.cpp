@@ -103,7 +103,7 @@ Icon* PistonBaseTile::getTexture(int face, int data) {
         // when the piston is extended, either normally
         // or because a piston arm animation, the top
         // texture is the furnace bottom
-        ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+        ThreadStorage* tls = m_threadShape;
         if (isExtended(data) || tls->xx0 > 0 || tls->yy0 > 0 || tls->zz0 > 0 ||
             tls->xx1 < 1 || tls->yy1 < 1 || tls->zz1 < 1) {
             return iconInside;
