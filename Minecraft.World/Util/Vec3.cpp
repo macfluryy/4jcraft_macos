@@ -17,7 +17,7 @@ void Vec3::CreateNewThreadStorage() {
     if (m_tlsPoolDefault == nullptr) {
         m_tlsPoolDefault = tls;
     }
-    m_tlsPool = m_tlsPoolDefault;
+    m_tlsPool = tls;
 }
 
 void Vec3::UseDefaultThreadStorage() { m_tlsPool = m_tlsPoolDefault; }

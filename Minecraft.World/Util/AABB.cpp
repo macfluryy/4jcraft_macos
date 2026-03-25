@@ -24,7 +24,7 @@ void AABB::CreateNewThreadStorage() {
     if (m_tlsPoolDefault == nullptr) {
         m_tlsPoolDefault = tls;
     }
-    m_tlsPool = m_tlsPoolDefault;
+    m_tlsPool = tls;
 }
 
 void AABB::UseDefaultThreadStorage() { m_tlsPool = m_tlsPoolDefault; }
