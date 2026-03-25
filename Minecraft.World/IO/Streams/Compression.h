@@ -26,7 +26,7 @@ private:
         ~ThreadStorage();
     };
     static thread_local ThreadStorage* m_tlsCompression;
-    static ThreadStorage* m_threadCompressionDefault;
+    static ThreadStorage* m_tlsCompressionDefault;
 
 public:
     // Each new thread that needs to use Compression will need to call one of
