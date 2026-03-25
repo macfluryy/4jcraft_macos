@@ -50,12 +50,6 @@ class Tile {
     friend class WallTile;
 
 protected:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
-#else
-    using TlsKey = pthread_key_t;
-#endif
-
     // 4J added so we can have separate shapes for different threads
     class ThreadStorage {
     public:

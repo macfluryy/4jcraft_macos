@@ -36,12 +36,6 @@ class Entity : public std::enable_shared_from_this<Entity> {
     friend class Gui;  // 4J Stu - Added to be able to access the shared flag
                        // functions and constants, without making them publicly
                        // available to everything
-public:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
-#else
-    using TlsKey = pthread_key_t;
-#endif
 
     // 4J-PB - added to replace (e instanceof Type), avoiding dynamic casts
     virtual eINSTANCEOF GetType() = 0;

@@ -4,12 +4,6 @@
 
 class PistonBaseTile : public Tile {
 public:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
-#else
-    using TlsKey = pthread_key_t;
-#endif
-
     static const int EXTENDED_BIT = 8;
     static const int UNDEFINED_FACING = 7;
 

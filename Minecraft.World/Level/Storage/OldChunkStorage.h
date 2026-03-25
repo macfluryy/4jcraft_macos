@@ -9,13 +9,6 @@
 class Level;
 
 class OldChunkStorage : public ChunkStorage {
-public:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
-#else
-    using TlsKey = pthread_key_t;
-#endif
-
 private:
     // 4J added so we can have separate storage arrays for different threads
     class ThreadStorage {
