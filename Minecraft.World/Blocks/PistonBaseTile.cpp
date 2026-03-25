@@ -20,37 +20,7 @@ const std::wstring PistonBaseTile::INSIDE_TEX = L"piston_inner_top";
 
 const float PistonBaseTile::PLATFORM_THICKNESS = 4.0f;
 
-namespace {
-#if defined(_WIN32)
-inline void* PistonTlsGetValue(PistonBaseTile::TlsKey key) {
-    return TlsGetValue(key);
-}
-
-inline void PistonTlsSetValue(PistonBaseTile::TlsKey key, void* value) {
-    TlsSetValue(key, value);
-}
-#else
-pthread_key_t CreatePistonTlsKey() {
-    pthread_key_t key;
-    pthread_key_create(&key, NULL);
-    return key;
-}
-
-inline void* PistonTlsGetValue(pthread_key_t key) {
-    return pthread_getspecific(key);
-}
-
-inline void PistonTlsSetValue(pthread_key_t key, void* value) {
-    pthread_setspecific(key, value);
-}
-#endif
-}  // namespace
-
-#if defined(_WIN32)
-PistonBaseTile::TlsKey PistonBaseTile::tlsIdx = TlsAlloc();
-#else
-PistonBaseTile::TlsKey PistonBaseTile::tlsIdx = CreatePistonTlsKey();
-#endif
+thread_local bool PistonBaseTile::m_tlsIgnoreUpdate = false;
 
 // 4J - NOTE - this ignoreUpdate stuff has been removed from the java version,
 // but I'm not currently sure how the java version does without it... there must
@@ -61,14 +31,9 @@ PistonBaseTile::TlsKey PistonBaseTile::tlsIdx = CreatePistonTlsKey();
 // leaving the piston in a bad (simultaneously extended & not extended) state.
 // 4J - ignoreUpdate is a static in java, implementing as TLS here to make
 // thread safe
-bool PistonBaseTile::ignoreUpdate() {
-    return PistonTlsGetValue(tlsIdx) != NULL;
-}
+bool PistonBaseTile::ignoreUpdate() { return m_tlsIgnoreUpdate; }
 
-void PistonBaseTile::ignoreUpdate(bool set) {
-    PistonTlsSetValue(
-        tlsIdx, reinterpret_cast<void*>(static_cast<intptr_t>(set ? 1 : 0)));
-}
+void PistonBaseTile::ignoreUpdate(bool set) { m_tlsIgnoreUpdate = set; }
 
 PistonBaseTile::PistonBaseTile(int id, bool isSticky)
     : Tile(id, Material::piston, false) {
@@ -103,7 +68,7 @@ Icon* PistonBaseTile::getTexture(int face, int data) {
         // when the piston is extended, either normally
         // or because a piston arm animation, the top
         // texture is the furnace bottom
-        ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+        ThreadStorage* tls = m_tlsShape;
         if (isExtended(data) || tls->xx0 > 0 || tls->yy0 > 0 || tls->zz0 > 0 ||
             tls->xx1 < 1 || tls->yy1 < 1 || tls->zz1 < 1) {
             return iconInside;

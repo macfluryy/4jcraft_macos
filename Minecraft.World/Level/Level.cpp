@@ -41,38 +41,6 @@
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include <cstdint>
 
-namespace {
-#if defined(_WIN32)
-inline void* LevelTlsGetValue(Level::TlsKey key) { return TlsGetValue(key); }
-
-inline void LevelTlsSetValue(Level::TlsKey key, void* value) {
-    TlsSetValue(key, value);
-}
-#else
-pthread_key_t CreateLevelTlsKey() {
-    pthread_key_t key;
-    pthread_key_create(&key, NULL);
-    return key;
-}
-
-inline void* LevelTlsGetValue(pthread_key_t key) {
-    return pthread_getspecific(key);
-}
-
-inline void LevelTlsSetValue(pthread_key_t key, void* value) {
-    pthread_setspecific(key, value);
-}
-#endif
-}  // namespace
-
-#if defined(_WIN32)
-Level::TlsKey Level::tlsIdx = TlsAlloc();
-Level::TlsKey Level::tlsIdxLightCache = TlsAlloc();
-#else
-Level::TlsKey Level::tlsIdx = CreateLevelTlsKey();
-Level::TlsKey Level::tlsIdxLightCache = CreateLevelTlsKey();
-#endif
-
 // 4J : WESTY : Added for time played stats.
 #include "../Headers/net.minecraft.stats.h"
 
@@ -122,21 +90,19 @@ Level::TlsKey Level::tlsIdxLightCache = CreateLevelTlsKey();
 // W       - lighting value requires write
 #endif
 
+thread_local bool Level::m_tlsInstaTick = false;
+thread_local Level::lightCache_t* Level::m_tlsLightCache = nullptr;
+
 void Level::enableLightingCache() {
     // Allocate 16K (needs 32K for large worlds) for a 16x16x16x4 byte cache of
     // results, plus 128K required for toCheck array. Rounding up to 256 to keep
     // as multiple of alignement - aligning to 128K boundary for possible cache
     // locking.
-    void* cache = (unsigned char*)XPhysicalAlloc(
+    m_tlsLightCache = (lightCache_t*)XPhysicalAlloc(
         256 * 1024, MAXULONG_PTR, 128 * 1024, PAGE_READWRITE | MEM_LARGE_PAGES);
-    LevelTlsSetValue(tlsIdxLightCache, cache);
 }
 
-void Level::destroyLightingCache() {
-    lightCache_t* cache =
-        static_cast<lightCache_t*>(LevelTlsGetValue(tlsIdxLightCache));
-    XPhysicalFree(cache);
-}
+void Level::destroyLightingCache() { delete m_tlsLightCache; }
 
 inline int GetIndex(int x, int y, int z) {
     return ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
@@ -523,15 +489,9 @@ void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
 
 // 4J - added following 2 functions to move instaBuild flag from being a class
 // member, to TLS
-bool Level::getInstaTick() {
-    return reinterpret_cast<std::intptr_t>(LevelTlsGetValue(tlsIdx)) != 0;
-}
+bool Level::getInstaTick() { return m_tlsInstaTick; }
 
-void Level::setInstaTick(bool enable) {
-    void* value = 0;
-    if (enable) value = (void*)1;
-    LevelTlsSetValue(tlsIdx, value);
-}
+void Level::setInstaTick(bool enable) { m_tlsInstaTick = enable; }
 
 // 4J - added
 bool Level::hasEntitiesToRemove() { return !entitiesToRemove.empty(); }
@@ -1603,8 +1563,8 @@ void Level::playStreamingMusic(const std::wstring& name, int x, int y, int z) {
     }
 }
 
-void Level::playMusic(double x, double y, double z,
-                      const std::wstring& string, float volume) {}
+void Level::playMusic(double x, double y, double z, const std::wstring& string,
+                      float volume) {}
 
 // 4J removed -
 /*
@@ -3177,8 +3137,7 @@ int Level::getExpectedLight(lightCache_t* cache, int x, int y, int z,
 // this thread
 void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                        bool force, bool rootOnlyEmissive) {
-    lightCache_t* cache =
-        static_cast<lightCache_t*>(LevelTlsGetValue(tlsIdxLightCache));
+    lightCache_t* cache = m_tlsLightCache;
     uint64_t cacheUse = 0;
 
     if (force) {

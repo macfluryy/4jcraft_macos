@@ -13,8 +13,7 @@ const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
 const std::wstring LiquidTile::TEXTURE_WATER_FLOW = L"water_flow";
 const std::wstring LiquidTile::TEXTURE_LAVA_FLOW = L"lava_flow";
 
-LiquidTile::LiquidTile(int id, Material* material)
-    : Tile(id, material, false) {
+LiquidTile::LiquidTile(int id, Material* material) : Tile(id, material, false) {
     float yo = 0;
     float e = 0;
 
@@ -267,8 +266,7 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
         if (level->getMaterial(x, y + 1, z) == Material::air &&
             !level->isSolidRenderTile(x, y + 1, z)) {
             if (random->nextInt(100) == 0) {
-                ThreadStorage* tls =
-                    (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+                ThreadStorage* tls = m_tlsShape;
                 double xx = x + random->nextFloat();
                 double yy = y + tls->yy1;
                 double zz = z + random->nextFloat();

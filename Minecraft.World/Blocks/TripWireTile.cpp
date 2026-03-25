@@ -5,8 +5,7 @@
 #include "../Headers/net.minecraft.world.phys.h"
 #include "TripWireTile.h"
 
-TripWireTile::TripWireTile(int id)
-    : Tile(id, Material::decoration, false) {
+TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
     setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);
     this->setTicking(true);
 }
@@ -132,7 +131,7 @@ void TripWireTile::checkPressed(Level* level, int x, int y, int z) {
     bool wasPressed = (data & MASK_POWERED) == MASK_POWERED;
     bool shouldBePressed = false;
 
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+    ThreadStorage* tls = m_tlsShape;
     std::vector<std::shared_ptr<Entity> >* entities = level->getEntities(
         nullptr, AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0,
                                x + tls->xx1, y + tls->yy1, z + tls->zz1));

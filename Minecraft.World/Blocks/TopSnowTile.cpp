@@ -11,8 +11,7 @@
 const int TopSnowTile::MAX_HEIGHT = 6;
 const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps
 
-TopSnowTile::TopSnowTile(int id)
-    : Tile(id, Material::topSnow, false) {
+TopSnowTile::TopSnowTile(int id) : Tile(id, Material::topSnow, false) {
     setShape(0, 0, 0, 1, 2 / 16.0f, 1);
     setTicking(true);
     updateShape(0);
@@ -25,7 +24,7 @@ void TopSnowTile::registerIcons(IconRegister* iconRegister) {
 AABB* TopSnowTile::getAABB(Level* level, int x, int y, int z) {
     int height = level->getData(x, y, z) & HEIGHT_MASK;
     float offset = 2.0f / SharedConstants::WORLD_RESOLUTION;
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+    ThreadStorage* tls = m_tlsShape;
     return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                          y + (height * offset), z + tls->zz1);
 }

@@ -3,20 +3,10 @@
 #include "BaseEntityTile.h"
 #include <cstdint>
 
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
-
 class IconRegister;
 
 class TheEndPortal : public BaseEntityTile {
 public:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
-#else
-    using TlsKey = pthread_key_t;
-#endif
-    static TlsKey tlsIdx;
     // 4J - was just a static but implemented with TLS for our version
     static bool allowAnywhere();
     static void allowAnywhere(bool set);
@@ -43,4 +33,7 @@ public:
     virtual void onPlace(Level* level, int x, int y, int z);
     virtual int cloneTileId(Level* level, int x, int y, int z);
     void registerIcons(IconRegister* iconRegister);
+
+private:
+    static thread_local bool m_tlsAllowAnywhere;
 };

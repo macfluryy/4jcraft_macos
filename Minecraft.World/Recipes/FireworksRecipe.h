@@ -13,8 +13,8 @@ private:
         std::shared_ptr<ItemInstance> resultItem;
         ThreadStorage();
     };
-    static DWORD tlsIdx;
-    static ThreadStorage* tlsDefault;
+    static thread_local ThreadStorage* m_tlsStorage;
+    static ThreadStorage* m_defaultThreadStorage;
 
     void setResultItem(std::shared_ptr<ItemInstance> item);
 
@@ -38,14 +38,8 @@ public:
     virtual const int getGroup() { return 0; }
 
     // 4J-PB
-    virtual bool
-        requiresRecipe(int iRecipe)
-    {
-        return false;
-    };
-    virtual void
-        collectRequirements(INGREDIENTS_REQUIRED* pIngReq)
-    {};
+    virtual bool requiresRecipe(int iRecipe) { return false; };
+    virtual void collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {};
 
     // 4J Added
     static void updatePossibleRecipes(

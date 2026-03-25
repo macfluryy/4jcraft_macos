@@ -2,34 +2,35 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "FireworksRecipe.h"
 
-DWORD FireworksRecipe::tlsIdx = 0;
-FireworksRecipe::ThreadStorage* FireworksRecipe::tlsDefault = NULL;
+thread_local FireworksRecipe::ThreadStorage* FireworksRecipe::m_tlsStorage =
+    nullptr;
+FireworksRecipe::ThreadStorage* FireworksRecipe::m_defaultThreadStorage =
+    nullptr;
 
 FireworksRecipe::ThreadStorage::ThreadStorage() { resultItem = nullptr; }
 
 void FireworksRecipe::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == NULL) {
-        tlsIdx = TlsAlloc();
-        tlsDefault = tls;
+
+    if (m_defaultThreadStorage == nullptr) {
+        m_defaultThreadStorage = tls;
     }
-    TlsSetValue(tlsIdx, tls);
+
+    m_tlsStorage = tls;
 }
 
 void FireworksRecipe::UseDefaultThreadStorage() {
-    TlsSetValue(tlsIdx, tlsDefault);
+    m_tlsStorage = m_defaultThreadStorage;
 }
 
 void FireworksRecipe::ReleaseThreadStorage() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    if (tls == tlsDefault) return;
-
-    delete tls;
+    if (m_tlsStorage != m_defaultThreadStorage) {
+        delete m_tlsStorage;
+    }
 }
 
 void FireworksRecipe::setResultItem(std::shared_ptr<ItemInstance> item) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    tls->resultItem = item;
+    m_tlsStorage->resultItem = item;
 }
 
 FireworksRecipe::FireworksRecipe() {
@@ -215,16 +216,14 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
 std::shared_ptr<ItemInstance> FireworksRecipe::assemble(
     std::shared_ptr<CraftingContainer> craftSlots) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    return tls->resultItem->copy();
+    return m_tlsStorage->resultItem->copy();
     // return resultItem->copy();
 }
 
 int FireworksRecipe::size() { return 10; }
 
 const ItemInstance* FireworksRecipe::getResultItem() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    return tls->resultItem.get();
+    return m_tlsStorage->resultItem.get();
     // return resultItem.get();
 }
 

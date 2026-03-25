@@ -145,7 +145,7 @@ void StemTile::updateShape(
     std::shared_ptr<TileEntity>
         forceEntity)  // 4J added forceData, forceEntity param
 {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+    ThreadStorage* tls = m_tlsShape;
     tls->yy1 = (level->getData(x, y, z) * 2 + 2) / 16.0f;
     float ss = 0.125f;
     setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, (float)tls->yy1, 0.5f + ss);

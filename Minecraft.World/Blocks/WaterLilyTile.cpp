@@ -24,7 +24,7 @@ void WaterlilyTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
 }
 
 AABB* WaterlilyTile::getAABB(Level* level, int x, int y, int z) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(Tile::tlsIdxShape);
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,

@@ -8,40 +8,11 @@
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "../../IO/Files/FileHeader.h"
 #include "OldChunkStorage.h"
-#if defined(_WIN32)
-namespace {
-inline void* OldChunkStorageTlsGetValue(OldChunkStorage::TlsKey key) {
-    return TlsGetValue(key);
-}
 
-inline void OldChunkStorageTlsSetValue(OldChunkStorage::TlsKey key,
-                                       void* value) {
-    TlsSetValue(key, value);
-}
-}  // namespace
-
-OldChunkStorage::TlsKey OldChunkStorage::tlsIdx = TlsAlloc();
-#else
-namespace {
-pthread_key_t CreateOldChunkStorageTlsKey() {
-    pthread_key_t key;
-    const int result = pthread_key_create(&key, nullptr);
-    assert(result == 0);
-    return key;
-}
-
-inline void* OldChunkStorageTlsGetValue(pthread_key_t key) {
-    return pthread_getspecific(key);
-}
-
-inline void OldChunkStorageTlsSetValue(pthread_key_t key, void* value) {
-    pthread_setspecific(key, value);
-}
-}  // namespace
-
-OldChunkStorage::TlsKey OldChunkStorage::tlsIdx = CreateOldChunkStorageTlsKey();
-#endif
-OldChunkStorage::ThreadStorage* OldChunkStorage::tlsDefault = NULL;
+thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =
+    nullptr;
+OldChunkStorage::ThreadStorage* OldChunkStorage::m_defaultThreadStorage =
+    nullptr;
 
 OldChunkStorage::ThreadStorage::ThreadStorage() {
     blockData = byteArray(Level::CHUNK_TILE_COUNT);
@@ -59,22 +30,22 @@ OldChunkStorage::ThreadStorage::~ThreadStorage() {
 
 void OldChunkStorage::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == NULL) {
-        tlsDefault = tls;
+
+    if (m_defaultThreadStorage == nullptr) {
+        m_defaultThreadStorage = tls;
     }
-    OldChunkStorageTlsSetValue(tlsIdx, tls);
+
+    m_tlsStorage = tls;
 }
 
 void OldChunkStorage::UseDefaultThreadStorage() {
-    OldChunkStorageTlsSetValue(tlsIdx, tlsDefault);
+    m_tlsStorage = m_defaultThreadStorage;
 }
 
 void OldChunkStorage::ReleaseThreadStorage() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(OldChunkStorageTlsGetValue(tlsIdx));
-    if (tls == tlsDefault) return;
-
-    delete tls;
+    if (m_tlsStorage != m_defaultThreadStorage) {
+        delete m_tlsStorage;
+    }
 }
 
 OldChunkStorage::OldChunkStorage(File dir, bool create) {
@@ -348,8 +319,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
 
     // 4J Stu - As we now save on multiple threads, the static data has been
     // moved to TLS
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(OldChunkStorageTlsGetValue(tlsIdx));
+    ThreadStorage* tls = m_tlsStorage;
 
     PIXBeginNamedEvent(0, "Getting block data");
     // static byteArray blockData = byteArray(32768);

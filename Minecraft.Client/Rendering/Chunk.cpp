@@ -20,22 +20,15 @@
 int Chunk::updates = 0;
 
 #ifdef _LARGE_WORLDS
-unsigned int Chunk::tlsIdx = TlsAlloc();
+thread_local uint8_t* Chunk::m_tlsTileIds = nullptr;
 
 void Chunk::CreateNewThreadStorage() {
-    unsigned char* tileIds = new unsigned char[16 * 16 * Level::maxBuildHeight];
-    TlsSetValue(tlsIdx, tileIds);
+    m_tlsTileIds = new unsigned char[16 * 16 * Level::maxBuildHeight];
 }
 
-void Chunk::ReleaseThreadStorage() {
-    unsigned char* tileIds = (unsigned char*)TlsGetValue(tlsIdx);
-    delete tileIds;
-}
+void Chunk::ReleaseThreadStorage() { delete m_tlsTileIds; }
 
-unsigned char* Chunk::GetTileIdsStorage() {
-    unsigned char* tileIds = (unsigned char*)TlsGetValue(tlsIdx);
-    return tileIds;
-}
+uint8_t* Chunk::GetTileIdsStorage() { return m_tlsTileIds; }
 #else
 // 4J Stu - Don't want this when multi-threaded
 Tesselator* Chunk::t = Tesselator::getInstance();

@@ -17,31 +17,6 @@
 #include "../Headers/net.minecraft.h"
 #include "Tile.h"
 
-namespace {
-#if defined(_WIN32)
-inline void* TileTlsGetValue(Tile::TlsKey key) { return TlsGetValue(key); }
-
-inline void TileTlsSetValue(Tile::TlsKey key, void* value) {
-    TlsSetValue(key, value);
-}
-#else
-pthread_key_t CreateTileTlsKey() {
-    pthread_key_t key;
-    const int result = pthread_key_create(&key, nullptr);
-    assert(result == 0);
-    return key;
-}
-
-inline void* TileTlsGetValue(pthread_key_t key) {
-    return pthread_getspecific(key);
-}
-
-inline void TileTlsSetValue(pthread_key_t key, void* value) {
-    pthread_setspecific(key, value);
-}
-#endif
-}  // namespace
-
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 
 const float Tile::INDESTRUCTIBLE_DESTROY_TIME = -1.0f;
@@ -247,27 +222,16 @@ Tile* Tile::woolCarpet = NULL;
 Tile* Tile::clayHardened = NULL;
 Tile* Tile::coalBlock = NULL;
 
-#if defined(_WIN32)
-Tile::TlsKey Tile::tlsIdxShape = TlsAlloc();
-#else
-Tile::TlsKey Tile::tlsIdxShape = CreateTileTlsKey();
-#endif
+thread_local Tile::ThreadStorage* Tile::m_tlsShape = nullptr;
 
 Tile::ThreadStorage::ThreadStorage() {
     xx0 = yy0 = zz0 = xx1 = yy1 = zz1 = 0.0;
     tileId = 0;
 }
 
-void Tile::CreateNewThreadStorage() {
-    ThreadStorage* tls = new ThreadStorage();
-    TileTlsSetValue(Tile::tlsIdxShape, tls);
-}
+void Tile::CreateNewThreadStorage() { m_tlsShape = new ThreadStorage(); }
 
-void Tile::ReleaseThreadStorage() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
-    delete tls;
-}
+void Tile::ReleaseThreadStorage() { delete m_tlsShape; }
 
 void Tile::staticCtor() {
     Tile::SOUND_NORMAL = new Tile::SoundType(eMaterialSoundType_STONE, 1, 1);
@@ -1900,8 +1864,7 @@ Tile* Tile::disableMipmap() {
 
 void Tile::setShape(float x0, float y0, float z0, float x1, float y1,
                     float z1) {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     tls->xx0 = x0;
     tls->yy0 = y0;
     tls->zz0 = z0;
@@ -1951,8 +1914,7 @@ bool Tile::isFaceVisible(Level* level, int x, int y, int z, int f) {
 }
 
 bool Tile::shouldRenderFace(LevelSource* level, int x, int y, int z, int face) {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     if (face == 0 && tls->yy0 > 0) return true;
@@ -1969,8 +1931,7 @@ bool Tile::shouldRenderFace(LevelSource* level, int x, int y, int z, int face) {
 int Tile::getFaceFlags(LevelSource* level, int x, int y, int z) {
     int faceFlags = 0;
 
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
 
@@ -2043,8 +2004,7 @@ Icon* Tile::getTexture(int face, int data) { return icon; }
 Icon* Tile::getTexture(int face) { return getTexture(face, 0); }
 
 AABB* Tile::getTileAABB(Level* level, int x, int y, int z) {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
@@ -2058,8 +2018,7 @@ void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
 }
 
 AABB* Tile::getAABB(Level* level, int x, int y, int z) {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
@@ -2164,8 +2123,7 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     a = a->add(-xt, -yt, -zt);
     b = b->add(-xt, -yt, -zt);
 
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     Vec3* xh0 = a->clipX(b, tls->xx0);
     Vec3* xh1 = a->clipX(b, tls->xx1);
 
@@ -2213,8 +2171,7 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
 bool Tile::containsX(Vec3* v) {
     if (v == NULL) return false;
 
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return v->y >= tls->yy0 && v->y <= tls->yy1 && v->z >= tls->zz0 &&
@@ -2224,8 +2181,7 @@ bool Tile::containsX(Vec3* v) {
 bool Tile::containsY(Vec3* v) {
     if (v == NULL) return false;
 
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return v->x >= tls->xx0 && v->x <= tls->xx1 && v->z >= tls->zz0 &&
@@ -2235,8 +2191,7 @@ bool Tile::containsY(Vec3* v) {
 bool Tile::containsZ(Vec3* v) {
     if (v == NULL) return false;
 
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return v->x >= tls->xx0 && v->x <= tls->xx1 && v->y >= tls->yy0 &&
@@ -2300,55 +2255,48 @@ void Tile::updateShape(
     std::shared_ptr<TileEntity>
         forceEntity)  // 4J added forceData, forceEntity param
 {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
 }
 
 double Tile::getShapeX0() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->xx0;
 }
 
 double Tile::getShapeX1() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->xx1;
 }
 
 double Tile::getShapeY0() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->yy0;
 }
 
 double Tile::getShapeY1() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->yy1;
 }
 
 double Tile::getShapeZ0() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->zz0;
 }
 
 double Tile::getShapeZ1() {
-    ThreadStorage* tls =
-        static_cast<ThreadStorage*>(TileTlsGetValue(Tile::tlsIdxShape));
+    ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return tls->zz1;
@@ -2642,7 +2590,8 @@ int Tile::SoundType::getPlaceSound() const { return iPlaceSound; }
 4J: These are necessary on the PS3.
 (and 4 and Vita).
 */
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined __linux__)
+#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
+     defined __linux__)
 const int Tile::stone_Id;
 const int Tile::grass_Id;
 const int Tile::dirt_Id;

@@ -17,8 +17,8 @@
 #include "../../../Minecraft.Client/Platform/PS3/PS3Extras/EdgeZLib.h"
 #endif  //__PS3__
 
-unsigned int Compression::tlsIdx = 0;
-Compression::ThreadStorage* Compression::tlsDefault = NULL;
+thread_local Compression::ThreadStorage* Compression::m_tlsCompression = nullptr;
+Compression::ThreadStorage* Compression::m_tlsCompressionDefault = nullptr;
 
 Compression::ThreadStorage::ThreadStorage() { compression = new Compression(); }
 
@@ -26,28 +26,24 @@ Compression::ThreadStorage::~ThreadStorage() { delete compression; }
 
 void Compression::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == nullptr) {
-        pthread_key_create(&tlsIdx, nullptr);
-        tlsDefault = tls;
+    if (m_tlsCompressionDefault == nullptr) {
+        m_tlsCompressionDefault = tls;
     }
-    pthread_setspecific(tlsIdx, tls);
+    m_tlsCompression = tls;
 }
 
 void Compression::UseDefaultThreadStorage() {
-    pthread_setspecific(tlsIdx, tlsDefault);
+    m_tlsCompression = m_tlsCompressionDefault;
 }
 
 void Compression::ReleaseThreadStorage() {
-    ThreadStorage* tls =
-        (ThreadStorage*)pthread_getspecific(tlsIdx);  // POSIX equivalent
-    if (tls != tlsDefault) {
-        delete tls;
+    if (m_tlsCompression != m_tlsCompressionDefault) {
+        delete m_tlsCompression;
     }
 }
 
 Compression* Compression::getCompression() {
-    ThreadStorage* tls = (ThreadStorage*)pthread_getspecific(tlsIdx);
-    return tls->compression;
+    return m_tlsCompression->compression;
 }
 
 HRESULT Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
