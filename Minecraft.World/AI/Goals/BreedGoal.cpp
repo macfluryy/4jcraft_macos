@@ -4,8 +4,8 @@
 #include "../../Headers/net.minecraft.world.entity.animal.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "BreedGoal.h"
+#include <limits>
 #include "../../Entities/Mobs/ExperienceOrb.h"
 
 #include "../../Stats/GenericStats.h"
@@ -50,7 +50,7 @@ std::shared_ptr<Animal> BreedGoal::getFreePartner() {
     float r = 8;
     std::vector<std::shared_ptr<Entity> >* others =
         level->getEntitiesOfClass(typeid(*animal), animal->bb->grow(r, r, r));
-    double dist = Double::MAX_VALUE;
+    double dist = std::numeric_limits<double>::max();
     std::shared_ptr<Animal> partner = nullptr;
     for (AUTO_VAR(it, others->begin()); it != others->end(); ++it) {
         std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);

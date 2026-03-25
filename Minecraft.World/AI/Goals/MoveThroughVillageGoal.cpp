@@ -5,8 +5,8 @@
 #include "../../Headers/net.minecraft.world.entity.ai.village.h"
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.level.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "MoveThroughVillageGoal.h"
+#include <limits>
 #include "../Navigation/Path.h"
 
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
@@ -86,7 +86,7 @@ void MoveThroughVillageGoal::stop() {
 std::shared_ptr<DoorInfo> MoveThroughVillageGoal::getNextDoorInfo(
     std::shared_ptr<Village> village) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDistSqr = Integer::MAX_VALUE;
+    int closestDistSqr = std::numeric_limits<int>::max();
     std::vector<std::shared_ptr<DoorInfo> >* doorInfos =
         village->getDoorInfos();
     // for (DoorInfo di : doorInfos)

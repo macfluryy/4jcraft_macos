@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "LevelRenderer.h"
+#include <cmath>
 #include "../Textures/Textures.h"
 #include "../Textures/TextureAtlas.h"
 #include "Tesselator.h"
@@ -59,7 +60,6 @@
 #include "../Level/MultiPlayerLevel.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "FrustumCuller.h"
-#include "../../Minecraft.World/Util/BasicTypeContainers.h"
 
 // #define DISABLE_SPU_CODE
 
@@ -2920,9 +2920,9 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
     // optimised PS3 code which reverses the logic on the comparison with
     // particleDistanceSquared and gets the opposite result to what you might
     // expect.
-    if (Double::isNaN(x)) return nullptr;
-    if (Double::isNaN(y)) return nullptr;
-    if (Double::isNaN(z)) return nullptr;
+    if (std::isnan(x)) return nullptr;
+    if (std::isnan(y)) return nullptr;
+    if (std::isnan(z)) return nullptr;
 
     int particleLevel = mc->options->particles;
 

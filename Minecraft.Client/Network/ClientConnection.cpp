@@ -1,5 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "ClientConnection.h"
+#include <cfloat>
+#include <limits>
 #include "../Level/MultiPlayerLevel.h"
 #include "../Player/MultiPlayerLocalPlayer.h"
 #include "../GameState/StatsCounter.h"
@@ -43,7 +45,6 @@
 #include "../MinecraftServer.h"
 #include "../ClientConstants.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
-#include "../../Minecraft.World/Util/BasicTypeContainers.h"
 #include "../Textures/Packs/TexturePackRepository.h"
 #ifdef _XBOX
 #include "../Platform/Common/XUI/XUI_Scene_Trading.h"
@@ -2171,12 +2172,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                 // Check this friend against each player, if we find them we
                 // have at least one friend
                 for (int j = 0; j < g_NetworkManager.GetPlayerCount(); j++) {
-                    Platform::String ^ xboxUserId =
-                        ref new Platform::String(
-                            g_NetworkManager.GetPlayerByIndex(j)
-                                ->GetUID()
-                                .toString()
-                                .data());
+                    Platform::String ^ xboxUserId = ref new Platform::String(
+                        g_NetworkManager.GetPlayerByIndex(j)
+                            ->GetUID()
+                            .toString()
+                            .data());
                     if (friendsXuid == xboxUserId) {
                         isAtLeastOneFriend = true;
                         break;
@@ -2279,8 +2279,8 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
             // down, because they are trying to lock the incoming critsec when
             // it's already locked by this thread
             // 			Minecraft::GetInstance()->connectionDisconnected(
-            // m_userIndex , reason ); 			done = true; 			connection->flush();
-            // 			connection->close(reason);
+            // m_userIndex , reason ); 			done = true;
+            // connection->flush(); 			connection->close(reason);
             //			app.SetAction(m_userIndex,eAppAction_ExitPlayer);
 
             // 4J-PB - doing this instead
@@ -4050,7 +4050,8 @@ void ClientConnection::handleUpdateAttributes(
             // are we passing in MIN_NORMAL (Java's smallest non-zero value
             // conforming to IEEE Standard 754 (?)) and MAX_VALUE
             instance = attributes->registerAttribute(new RangedAttribute(
-                attribute->getId(), 0, Double::MIN_NORMAL, Double::MAX_VALUE));
+                attribute->getId(), 0, std::numeric_limits<double>::min(),
+                std::numeric_limits<double>::max()));
         }
 
         instance->setBaseValue(attribute->getBase());

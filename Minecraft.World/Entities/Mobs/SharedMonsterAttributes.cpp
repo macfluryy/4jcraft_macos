@@ -1,11 +1,11 @@
 #include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.entity.ai.attributes.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "SharedMonsterAttributes.h"
+#include <limits>
 
 Attribute* SharedMonsterAttributes::MAX_HEALTH =
     (new RangedAttribute(eAttributeId_GENERIC_MAXHEALTH, 20, 0,
-                         Double::MAX_VALUE))
+                         std::numeric_limits<double>::max()))
         ->setSyncable(true);
 Attribute* SharedMonsterAttributes::FOLLOW_RANGE =
     (new RangedAttribute(eAttributeId_GENERIC_FOLLOWRANGE, 32, 0, 2048));
@@ -13,10 +13,11 @@ Attribute* SharedMonsterAttributes::KNOCKBACK_RESISTANCE =
     (new RangedAttribute(eAttributeId_GENERIC_KNOCKBACKRESISTANCE, 0, 0, 1));
 Attribute* SharedMonsterAttributes::MOVEMENT_SPEED =
     (new RangedAttribute(eAttributeId_GENERIC_MOVEMENTSPEED, 0.7f, 0,
-                         Double::MAX_VALUE))
+                         std::numeric_limits<double>::max()))
         ->setSyncable(true);
-Attribute* SharedMonsterAttributes::ATTACK_DAMAGE = new RangedAttribute(
-    eAttributeId_GENERIC_ATTACKDAMAGE, 2, 0, Double::MAX_VALUE);
+Attribute* SharedMonsterAttributes::ATTACK_DAMAGE =
+    new RangedAttribute(eAttributeId_GENERIC_ATTACKDAMAGE, 2, 0,
+                        std::numeric_limits<double>::max());
 
 ListTag<CompoundTag>* SharedMonsterAttributes::saveAttributes(
     BaseAttributeMap* attributes) {

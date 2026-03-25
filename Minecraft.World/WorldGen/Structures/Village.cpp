@@ -5,8 +5,8 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "Village.h"
+#include <limits>
 
 Village::Aggressor::Aggressor(std::shared_ptr<LivingEntity> mob,
                               int timeStamp) {
@@ -159,7 +159,7 @@ std::vector<std::shared_ptr<DoorInfo> >* Village::getDoorInfos() {
 
 std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDistSqr = Integer::MAX_VALUE;
+    int closestDistSqr = std::numeric_limits<int>::max();
     // for (DoorInfo dm : doorInfos)
     for (AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
@@ -174,7 +174,7 @@ std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
 
 std::shared_ptr<DoorInfo> Village::getBestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDist = Integer::MAX_VALUE;
+    int closestDist = std::numeric_limits<int>::max();
     // for (DoorInfo dm : doorInfos)
     for (AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
@@ -232,7 +232,7 @@ void Village::addAggressor(std::shared_ptr<LivingEntity> mob) {
 
 std::shared_ptr<LivingEntity> Village::getClosestAggressor(
     std::shared_ptr<LivingEntity> from) {
-    double closestSqr = Double::MAX_VALUE;
+    double closestSqr = std::numeric_limits<double>::max();
     Aggressor* closest = NULL;
     // for (int i = 0; i < aggressors.size(); ++i)
     for (AUTO_VAR(it, aggressors.begin()); it != aggressors.end(); ++it) {
@@ -247,7 +247,7 @@ std::shared_ptr<LivingEntity> Village::getClosestAggressor(
 
 std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
     std::shared_ptr<LivingEntity> from) {
-    double closestSqr = Double::MAX_VALUE;
+    double closestSqr = std::numeric_limits<double>::max();
     std::shared_ptr<Player> closest = nullptr;
 
     // for (String player : playerStanding.keySet())

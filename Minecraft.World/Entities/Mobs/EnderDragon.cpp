@@ -8,12 +8,12 @@
 #include "../../Headers/net.minecraft.world.entity.projectile.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "../../Headers/net.minecraft.world.damagesource.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "../../Headers/net.minecraft.world.entity.boss.enderdragon.h"
 #include "../../Headers/net.minecraft.world.level.pathfinder.h"
 #include "../../Util/SharedConstants.h"
 #include "EnderDragon.h"
+#include <limits>
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
@@ -815,7 +815,7 @@ void EnderDragon::checkCrystals() {
                                       bb->grow(maxDist, maxDist, maxDist));
 
         std::shared_ptr<EnderCrystal> crystal = nullptr;
-        double nearest = Double::MAX_VALUE;
+        double nearest = std::numeric_limits<double>::max();
         // for (Entity ec : crystals)
         for (AUTO_VAR(it, crystals->begin()); it != crystals->end(); ++it) {
             std::shared_ptr<EnderCrystal> ec =

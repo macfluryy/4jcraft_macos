@@ -17,7 +17,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.network.packet.h"
 #include "../../Minecraft.World/Headers/net.minecraft.network.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.dimension.h"
-#include "../../Minecraft.World/Util/BasicTypeContainers.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../Network/PlayerConnection.h"
 

@@ -28,7 +28,6 @@
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Player/EntityTracker.h"
 #include "../Util/SoundTypes.h"
-#include "../Util/BasicTypeContainers.h"
 #include "../Util/ParticleTypes.h"
 #include "../Stats/GenericStats.h"
 #include "ItemEntity.h"

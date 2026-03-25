@@ -1,16 +1,16 @@
 #include "../../Platform/stdafx.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.network.packet.h"
 #include "LevelSoundPacket.h"
+#include <limits>
 
-const float LevelSoundPacket::PITCH_ACCURACY = Byte::MAX_VALUE / 2.0f;
+const float LevelSoundPacket::PITCH_ACCURACY = std::numeric_limits<char>::max() / 2.0;
 const float LevelSoundPacket::LOCATION_ACCURACY = 8.0f;
 
 LevelSoundPacket::LevelSoundPacket() {
     sound = 0;
     x = 0;
-    y = Integer::MAX_VALUE;
+    y = std::numeric_limits<int>::max();
     z = 0;
     volume = 0.0f;
     pitch = 0;

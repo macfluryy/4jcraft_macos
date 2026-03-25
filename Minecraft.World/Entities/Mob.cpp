@@ -25,7 +25,6 @@
 #include "Mob.h"
 #include "../../Minecraft.Client/Textures/Textures.h"
 #include "../Util/SoundTypes.h"
-#include "../Util/BasicTypeContainers.h"
 #include "../Util/ParticleTypes.h"
 #include "../Stats/GenericStats.h"
 #include "ItemEntity.h"

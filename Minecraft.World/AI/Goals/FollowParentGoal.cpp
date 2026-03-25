@@ -3,8 +3,8 @@
 #include "../../Headers/net.minecraft.world.entity.ai.navigation.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "FollowParentGoal.h"
+#include <limits>
 
 FollowParentGoal::FollowParentGoal(Animal* animal, double speedModifier) {
     timeToRecalcPath = 0;
@@ -21,7 +21,7 @@ bool FollowParentGoal::canUse() {
                                           animal->bb->grow(8, 4, 8));
 
     std::shared_ptr<Animal> closest = nullptr;
-    double closestDistSqr = Double::MAX_VALUE;
+    double closestDistSqr = std::numeric_limits<double>::max();
     for (AUTO_VAR(it, parents->begin()); it != parents->end(); ++it) {
         std::shared_ptr<Animal> parent = std::dynamic_pointer_cast<Animal>(*it);
         if (parent->getAge() < 0) continue;

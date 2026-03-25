@@ -1,8 +1,8 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.damagesource.h"
 #include "../Headers/net.minecraft.world.entity.h"
-#include "BasicTypeContainers.h"
 #include "CombatEntry.h"
+#include <limits>
 
 CombatEntry::CombatEntry(DamageSource* source, int time, float health,
                          float damage, CombatTracker::eLOCATION location,
@@ -45,6 +45,7 @@ std::wstring CombatEntry::getAttackerName() {
 }
 
 float CombatEntry::getFallDistance() {
-    if (source == DamageSource::outOfWorld) return Float::MAX_VALUE;
+    if (source == DamageSource::outOfWorld)
+        return std::numeric_limits<float>::max();
     return fallDistance;
 }
