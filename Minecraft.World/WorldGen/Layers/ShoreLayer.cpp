@@ -10,7 +10,7 @@ ShoreLayer::ShoreLayer(int64_t seed, std::shared_ptr<Layer> parent)
 intArray ShoreLayer::getArea(int xo, int yo, int w, int h) {
     intArray b = parent->getArea(xo - 1, yo - 1, w + 2, h + 2);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             initRandom(x + xo, y + yo);

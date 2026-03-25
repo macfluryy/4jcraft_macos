@@ -26,30 +26,31 @@
 #include "../../../Minecraft.World/Util/ThreadName.h"
 #include "../../GameState/StatsCounter.h"
 #include "../../UI/Screens/ConnectScreen.h"
-//#include "Social/SocialManager.h"
-//#include "../Common/Leaderboards/LeaderboardManager.h"
-//#include "../Common/XUI/XUI_Scene_Container.h"
-//#include "QNetManager.h"
+// #include "Social/SocialManager.h"
+// #include "../Common/Leaderboards/LeaderboardManager.h"
+// #include "../Common/XUI/XUI_Scene_Container.h"
+// #include "QNetManager.h"
 #include "../../Rendering/Tesselator.h"
 #include "Xbox_Awards_enum.h"
 #include "../../GameState/Options.h"
 #include "Sentient/SentientManager.h"
-#include "../../../Minecraft.World/Util/IntCache.h"
 #include "../../Textures/Textures.h"
 #include "Resource.h"
 
+#define THEME_NAME "584111F70AAAAAAA"
+#define THEME_FILESIZE 2797568
 
-#define THEME_NAME		"584111F70AAAAAAA"
-#define THEME_FILESIZE	2797568
-
-//#define THREE_MB 3145728 // minimum save size (checking for this on a selected device)
-//#define FIVE_MB 5242880 // minimum save size (checking for this on a selected device)
-//#define FIFTY_TWO_MB (1024*1024*52) // Maximum TCR space required for a save (checking for this on a selected device)
-#define FIFTY_ONE_MB (1000000*51) // Maximum TCR space required for a save is 52MB (checking for this on a selected device)
+// #define THREE_MB 3145728 // minimum save size (checking for this on a
+// selected device) #define FIVE_MB 5242880 // minimum save size (checking for
+// this on a selected device) #define FIFTY_TWO_MB (1024*1024*52) // Maximum TCR
+// space required for a save (checking for this on a selected device)
+#define FIFTY_ONE_MB \
+    (1000000 * 51)  // Maximum TCR space required for a save is 52MB (checking
+                    // for this on a selected device)
 
 #if 0
 //#define PROFILE_VERSION 3 // new version for the interim bug fix 166 TU
-#define NUM_PROFILE_VALUES	5
+#define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
 DWORD dwProfileSettingsA[NUM_PROFILE_VALUES]=
 {
@@ -62,17 +63,15 @@ DWORD dwProfileSettingsA[NUM_PROFILE_VALUES]=
 #endif
 
 //-------------------------------------------------------------------------------------
-// Time             Since fAppTime is a float, we need to keep the quadword app time 
-//                  as a LARGE_INTEGER so that we don't lose precision after running
-//                  for a long time.
+// Time             Since fAppTime is a float, we need to keep the quadword app
+// time
+//                  as a LARGE_INTEGER so that we don't lose precision after
+//                  running for a long time.
 //-------------------------------------------------------------------------------------
-
 
 BOOL g_bWidescreen = TRUE;
 
-
-void DefineActions(void)
-{
+void DefineActions(void) {
 #if 0
 	// The app needs to define the actions required, and the possible mappings for these
 
@@ -113,11 +112,11 @@ void DefineActions(void)
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_CRAFTING,				_360_JOY_BUTTON_X);
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_RENDER_THIRD_PERSON,	_360_JOY_BUTTON_LTHUMB);
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_GAME_INFO,				_360_JOY_BUTTON_BACK);
-	
+
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_DPAD_LEFT,				_360_JOY_BUTTON_DPAD_LEFT);
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_DPAD_RIGHT,				_360_JOY_BUTTON_DPAD_RIGHT);
 	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_DPAD_UP,				_360_JOY_BUTTON_DPAD_UP);
-	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_DPAD_DOWN,				_360_JOY_BUTTON_DPAD_DOWN);		
+	InputManager.SetGameJoypadMaps(MAP_STYLE_0,MINECRAFT_ACTION_DPAD_DOWN,				_360_JOY_BUTTON_DPAD_DOWN);
 
 	InputManager.SetGameJoypadMaps(MAP_STYLE_1,ACTION_MENU_A,							_360_JOY_BUTTON_A);
 	InputManager.SetGameJoypadMaps(MAP_STYLE_1,ACTION_MENU_B,							_360_JOY_BUTTON_B);
@@ -194,7 +193,7 @@ void DefineActions(void)
 }
 
 #if 0
-HRESULT InitD3D( IDirect3DDevice9 **ppDevice, 
+HRESULT InitD3D( IDirect3DDevice9 **ppDevice,
 	D3DPRESENT_PARAMETERS *pd3dPP )
 {
 	IDirect3D9 *pD3D;
@@ -221,14 +220,14 @@ HRESULT InitD3D( IDirect3DDevice9 **ppDevice,
 	//pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
 	//ERR[D3D]: Can't set D3DPRESENTFLAG_NO_LETTERBOX when wide-screen is enabled
 	//	in the launcher/dashboard.
-	if(g_bWidescreen) 
+	if(g_bWidescreen)
 		pd3dPP->Flags=0;
-	else 
+	else
 		pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
 
 	// Create the device.
 	return pD3D->CreateDevice(
-		0, 
+		0,
 		D3DDEVTYPE_HAL,
 		NULL,
 		D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_BUFFER_2_FRAMES,
@@ -236,25 +235,23 @@ HRESULT InitD3D( IDirect3DDevice9 **ppDevice,
 		ppDevice );
 }
 #endif
-//#define MEMORY_TRACKING
+// #define MEMORY_TRACKING
 
 #ifdef MEMORY_TRACKING
 void ResetMem();
 void DumpMem();
 void MemPixStuff();
 #else
-void MemSect(int sect)
-{
-}
+void MemSect(int sect) {}
 #endif
 
-HINSTANCE               g_hInst = NULL;
-HWND                    g_hWnd = NULL;
-D3D_DRIVER_TYPE         g_driverType = D3D_DRIVER_TYPE_NULL;
-D3D_FEATURE_LEVEL       g_featureLevel = D3D_FEATURE_LEVEL_11_0;
-ID3D11Device*           g_pd3dDevice = NULL;
-ID3D11DeviceContext*    g_pImmediateContext = NULL;
-IDXGISwapChain*         g_pSwapChain = NULL;
+HINSTANCE g_hInst = NULL;
+HWND g_hWnd = NULL;
+D3D_DRIVER_TYPE g_driverType = D3D_DRIVER_TYPE_NULL;
+D3D_FEATURE_LEVEL g_featureLevel = D3D_FEATURE_LEVEL_11_0;
+ID3D11Device* g_pd3dDevice = NULL;
+ID3D11DeviceContext* g_pImmediateContext = NULL;
+IDXGISwapChain* g_pSwapChain = NULL;
 ID3D11RenderTargetView* g_pRenderTargetView = NULL;
 
 //
@@ -267,66 +264,62 @@ ID3D11RenderTargetView* g_pRenderTargetView = NULL;
 //  WM_DESTROY	- post a quit message and return
 //
 //
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	int wmId, wmEvent;
-	PAINTSTRUCT ps;
-	HDC hdc;
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam,
+                         LPARAM lParam) {
+    int wmId, wmEvent;
+    PAINTSTRUCT ps;
+    HDC hdc;
 
-	switch (message)
-	{
-	case WM_COMMAND:
-		wmId    = LOWORD(wParam);
-		wmEvent = HIWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-		break;
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
-		EndPaint(hWnd, &ps);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	return 0;
+    switch (message) {
+        case WM_COMMAND:
+            wmId = LOWORD(wParam);
+            wmEvent = HIWORD(wParam);
+            // Parse the menu selections:
+            switch (wmId) {
+                case IDM_EXIT:
+                    DestroyWindow(hWnd);
+                    break;
+                default:
+                    return DefWindowProc(hWnd, message, wParam, lParam);
+            }
+            break;
+        case WM_PAINT:
+            hdc = BeginPaint(hWnd, &ps);
+            // TODO: Add any drawing code here...
+            EndPaint(hWnd, &ps);
+            break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
 }
-
 
 //
 //  FUNCTION: MyRegisterClass()
 //
 //  PURPOSE: Registers the window class.
 //
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-	WNDCLASSEX wcex;
+ATOM MyRegisterClass(HINSTANCE hInstance) {
+    WNDCLASSEX wcex;
 
-	wcex.cbSize = sizeof(WNDCLASSEX);
+    wcex.cbSize = sizeof(WNDCLASSEX);
 
-	wcex.style			= CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc	= WndProc;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
-	wcex.hInstance		= hInstance;
-	wcex.hIcon			= LoadIcon(hInstance, "Minecraft");
-	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName	= "Minecraft";
-	wcex.lpszClassName	= "MinecraftClass";
-	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, "Minecraft");
+    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = "Minecraft";
+    wcex.lpszClassName = "MinecraftClass";
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-	return RegisterClassEx(&wcex);
+    return RegisterClassEx(&wcex);
 }
 
 //
@@ -339,34 +332,31 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-   g_hInst = hInstance; // Store instance handle in our global variable
+BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
+    g_hInst = hInstance;  // Store instance handle in our global variable
 
-   g_hWnd = CreateWindow("MinecraftClass", "Minecraft", WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+    g_hWnd = CreateWindow("MinecraftClass", "Minecraft", WS_OVERLAPPEDWINDOW,
+                          CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL,
+                          hInstance, NULL);
 
-   if (!g_hWnd)
-   {
-      return FALSE;
-   }
+    if (!g_hWnd) {
+        return FALSE;
+    }
 
-   ShowWindow(g_hWnd, nCmdShow);
-   UpdateWindow(g_hWnd);
+    ShowWindow(g_hWnd, nCmdShow);
+    UpdateWindow(g_hWnd);
 
-   return TRUE;
+    return TRUE;
 }
-
 
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
-HRESULT InitDevice()
-{
+HRESULT InitDevice() {
     HRESULT hr = S_OK;
 
     RECT rc;
-    GetClientRect( g_hWnd, &rc );
+    GetClientRect(g_hWnd, &rc);
     UINT width = rc.right - rc.left;
     UINT height = rc.bottom - rc.top;
 
@@ -375,24 +365,22 @@ HRESULT InitDevice()
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    D3D_DRIVER_TYPE driverTypes[] =
-    {
+    D3D_DRIVER_TYPE driverTypes[] = {
         D3D_DRIVER_TYPE_HARDWARE,
         D3D_DRIVER_TYPE_WARP,
         D3D_DRIVER_TYPE_REFERENCE,
     };
-    UINT numDriverTypes = ARRAYSIZE( driverTypes );
+    UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-    D3D_FEATURE_LEVEL featureLevels[] =
-    {
+    D3D_FEATURE_LEVEL featureLevels[] = {
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
     };
-	UINT numFeatureLevels = ARRAYSIZE( featureLevels );
+    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
     DXGI_SWAP_CHAIN_DESC sd;
-    ZeroMemory( &sd, sizeof( sd ) );
+    ZeroMemory(&sd, sizeof(sd));
     sd.BufferCount = 1;
     sd.BufferDesc.Width = width;
     sd.BufferDesc.Height = height;
@@ -405,29 +393,29 @@ HRESULT InitDevice()
     sd.SampleDesc.Quality = 0;
     sd.Windowed = TRUE;
 
-    for( UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++ )
-    {
+    for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes;
+         driverTypeIndex++) {
         g_driverType = driverTypes[driverTypeIndex];
-        hr = D3D11CreateDeviceAndSwapChain( NULL, g_driverType, NULL, createDeviceFlags, featureLevels, numFeatureLevels,
-                                            D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext );
-        if( SUCCEEDED( hr ) )
-            break;
+        hr = D3D11CreateDeviceAndSwapChain(
+            NULL, g_driverType, NULL, createDeviceFlags, featureLevels,
+            numFeatureLevels, D3D11_SDK_VERSION, &sd, &g_pSwapChain,
+            &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
+        if (SUCCEEDED(hr)) break;
     }
-    if( FAILED( hr ) )
-        return hr;
+    if (FAILED(hr)) return hr;
 
     // Create a render target view
     ID3D11Texture2D* pBackBuffer = NULL;
-    hr = g_pSwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&pBackBuffer );
-    if( FAILED( hr ) )
-        return hr;
+    hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
+                                 (LPVOID*)&pBackBuffer);
+    if (FAILED(hr)) return hr;
 
-    hr = g_pd3dDevice->CreateRenderTargetView( pBackBuffer, NULL, &g_pRenderTargetView );
+    hr = g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL,
+                                              &g_pRenderTargetView);
     pBackBuffer->Release();
-    if( FAILED( hr ) )
-        return hr;
+    if (FAILED(hr)) return hr;
 
-    g_pImmediateContext->OMSetRenderTargets( 1, &g_pRenderTargetView, NULL );
+    g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, NULL);
 
     // Setup the viewport
     D3D11_VIEWPORT vp;
@@ -437,59 +425,51 @@ HRESULT InitDevice()
     vp.MaxDepth = 1.0f;
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
-    g_pImmediateContext->RSSetViewports( 1, &vp );
+    g_pImmediateContext->RSSetViewports(1, &vp);
 
-	RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
+    RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
 
     return S_OK;
 }
 
-
 //--------------------------------------------------------------------------------------
 // Render the frame
 //--------------------------------------------------------------------------------------
-void Render()
-{
+void Render() {
     // Just clear the backbuffer
-    float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; //red,green,blue,alpha
+    float ClearColor[4] = {0.0f, 0.125f, 0.3f, 1.0f};  // red,green,blue,alpha
 
-    g_pImmediateContext->ClearRenderTargetView( g_pRenderTargetView, ClearColor );
-    g_pSwapChain->Present( 0, 0 );
+    g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
+    g_pSwapChain->Present(0, 0);
 }
-
 
 //--------------------------------------------------------------------------------------
 // Clean up the objects we've created
 //--------------------------------------------------------------------------------------
-void CleanupDevice()
-{
-    if( g_pImmediateContext ) g_pImmediateContext->ClearState();
+void CleanupDevice() {
+    if (g_pImmediateContext) g_pImmediateContext->ClearState();
 
-    if( g_pRenderTargetView ) g_pRenderTargetView->Release();
-    if( g_pSwapChain ) g_pSwapChain->Release();
-    if( g_pImmediateContext ) g_pImmediateContext->Release();
-    if( g_pd3dDevice ) g_pd3dDevice->Release();
+    if (g_pRenderTargetView) g_pRenderTargetView->Release();
+    if (g_pSwapChain) g_pSwapChain->Release();
+    if (g_pImmediateContext) g_pImmediateContext->Release();
+    if (g_pd3dDevice) g_pd3dDevice->Release();
 }
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPTSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
-{
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
+                       _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine,
+                       _In_ int nCmdShow) {
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// Initialize global strings
-	MyRegisterClass(hInstance);
+    // Initialize global strings
+    MyRegisterClass(hInstance);
 
-	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow))
-	{
-		return FALSE;
-	}
+    // Perform application initialization:
+    if (!InitInstance(hInstance, nCmdShow)) {
+        return FALSE;
+    }
 
-    if( FAILED( InitDevice() ) )
-    {
+    if (FAILED(InitDevice())) {
         CleanupDevice();
         return 0;
     }
@@ -513,13 +493,14 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	return (int) msg.wParam;
 #endif
 
-	static bool bTrialTimerDisplayed=true;
+    static bool bTrialTimerDisplayed = true;
 
 #ifdef MEMORY_TRACKING
-	ResetMem();
-	MEMORYSTATUS memStat;
-	GlobalMemoryStatus(&memStat);
-	printf("RESETMEM start: Avail. phys %d\n",memStat.dwAvailPhys/(1024*1024));
+    ResetMem();
+    MEMORYSTATUS memStat;
+    GlobalMemoryStatus(&memStat);
+    printf("RESETMEM start: Avail. phys %d\n",
+           memStat.dwAvailPhys / (1024 * 1024));
 #endif
 
 #if 0
@@ -534,24 +515,23 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	// Initialize the application, assuming sharing of the d3d interface.
-	hr = app.InitShared( pDevice, &d3dpp, 
+	hr = app.InitShared( pDevice, &d3dpp,
 		XuiPNGTextureLoader );
 
 	if ( FAILED(hr) )
 	{
 		app.DebugPrintf
 			( "Failed initializing application.\n" );
-		
+
 		return -1;
 	}
-	
-	
-#endif
-	RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
 
-	////////////////
-	// Initialise //
-	////////////////
+#endif
+    RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
+
+    ////////////////
+    // Initialise //
+    ////////////////
 
 #if 0
 	// 4J Stu - XACT was creating these automatically, but we need them for QNet. The setup params
@@ -641,7 +621,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	// set a function to be called when the ethernet is disconnected, so we can back out if required
 	ProfileManager.SetNotificationsCallback(&CXboxMinecraftApp::NotificationsCallback,(LPVOID)&app);
-	
+
 	// Set a callback for the default player options to be set - when there is no profile data for the player
 	ProfileManager.SetDefaultOptionsCallback(&CXboxMinecraftApp::DefaultOptionsCallback,(LPVOID)&app);
 	// Set a callback to deal with old profile versions needing updated to new versions
@@ -668,27 +648,24 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	if(XNuiGetHardwareStatus()!=0)
 	{
-		// If the Kinect Sensor is not physically connected, this function returns 0. 
-		NuiInitialize(NUI_INITIALIZE_FLAG_USES_HIGH_QUALITY_COLOR | NUI_INITIALIZE_FLAG_USES_DEPTH | 
+		// If the Kinect Sensor is not physically connected, this function returns 0.
+		NuiInitialize(NUI_INITIALIZE_FLAG_USES_HIGH_QUALITY_COLOR | NUI_INITIALIZE_FLAG_USES_DEPTH |
 			NUI_INITIALIZE_FLAG_EXTRAPOLATE_FLOOR_PLANE | NUI_INITIALIZE_FLAG_USES_FITNESS | NUI_INITIALIZE_FLAG_NUI_GUIDE_DISABLED | NUI_INITIALIZE_FLAG_SUPPRESS_AUTOMATIC_UI,NUI_INITIALIZE_DEFAULT_HARDWARE_THREAD );
 	}
 
 	// Sentient !
-	hr = SentientManager.Init();  
-
+	hr = SentientManager.Init();
 
 #endif
-	// Initialise TLS for tesselator, for this main thread
-	Tesselator::CreateNewThreadStorage(1024*1024);
-	// Initialise TLS for AABB and Vec3 pools, for this main thread
-	AABB::CreateNewThreadStorage();
-	Vec3::CreateNewThreadStorage();
-	IntCache::CreateNewThreadStorage();
-	Level::enableLightingCache();
+    // Initialise TLS for tesselator, for this main thread
+    Tesselator::CreateNewThreadStorage(1024 * 1024);
+    // Initialise TLS for AABB and Vec3 pools, for this main thread
+    AABB::CreateNewThreadStorage();
+    Vec3::CreateNewThreadStorage();
+    Level::enableLightingCache();
 
-
-	Minecraft::main();
-	Minecraft *pMinecraft=Minecraft::GetInstance();
+    Minecraft::main();
+    Minecraft* pMinecraft = Minecraft::GetInstance();
 #if 0
 	//bool bDisplayPauseMenu=false;
 
@@ -722,11 +699,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	DWORD initData=0;
 
-
-
 #ifndef _FINAL_BUILD
 #ifndef _DEBUG
-	#pragma message(__LOC__"Need to define the _FINAL_BUILD before submission")
+#pragma message(__LOC__ "Need to define the _FINAL_BUILD before submission")
 #endif
 #endif
 
@@ -738,7 +713,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	app.NavigateToScene(XUSER_INDEX_ANY,CXboxMinecraftApp::e_xuiScene_Intro,&initData);
 #endif
 
-	//Sleep(10000);
+    // Sleep(10000);
 #if 0
 	// Intro loop ?
 	while(app.IntroRunning())
@@ -762,8 +737,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	}
 #endif
 
-	while( TRUE ) 
-	{
+    while (TRUE) {
 #if 0
 		if(pMinecraft->soundEngine->isStreamingWavebankReady() &&
 			!pMinecraft->soundEngine->isPlayingStreamingGameMusic() &&
@@ -773,81 +747,79 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			pMinecraft->soundEngine->playStreaming(L"", 0, 0, 0, 0, 0, false);
 		}
 #endif
-		app.UpdateTime();
-		PIXBeginNamedEvent(0,"Input manager tick");
-//		InputManager.Tick();
-		PIXEndNamedEvent();
-		PIXBeginNamedEvent(0,"Profile manager tick");
-//		ProfileManager.Tick();
-		PIXEndNamedEvent();
-		PIXBeginNamedEvent(0,"Storage manager tick");
-//		StorageManager.Tick();
-		PIXEndNamedEvent();
-		PIXBeginNamedEvent(0,"Render manager tick");
-		RenderManager.Tick();
-		PIXEndNamedEvent();
+        app.UpdateTime();
+        PIXBeginNamedEvent(0, "Input manager tick");
+        //		InputManager.Tick();
+        PIXEndNamedEvent();
+        PIXBeginNamedEvent(0, "Profile manager tick");
+        //		ProfileManager.Tick();
+        PIXEndNamedEvent();
+        PIXBeginNamedEvent(0, "Storage manager tick");
+        //		StorageManager.Tick();
+        PIXEndNamedEvent();
+        PIXBeginNamedEvent(0, "Render manager tick");
+        RenderManager.Tick();
+        PIXEndNamedEvent();
 
-		// Tick the social networking manager.
-		PIXBeginNamedEvent(0,"Social network manager tick");
-//		CSocialManager::Instance()->Tick();
-		PIXEndNamedEvent();
-		
-		// Tick sentient.
-		PIXBeginNamedEvent(0,"Sentient tick");
-		MemSect(37);
-//		SentientManager.Tick();
-		MemSect(0);
-		PIXEndNamedEvent();
+        // Tick the social networking manager.
+        PIXBeginNamedEvent(0, "Social network manager tick");
+        //		CSocialManager::Instance()->Tick();
+        PIXEndNamedEvent();
 
-		PIXBeginNamedEvent(0,"Qnet do work #1");
-//		g_qNetManager.DoWork();
-		PIXEndNamedEvent();
+        // Tick sentient.
+        PIXBeginNamedEvent(0, "Sentient tick");
+        MemSect(37);
+        //		SentientManager.Tick();
+        MemSect(0);
+        PIXEndNamedEvent();
 
-//		LeaderboardManager::Instance()->Tick();
-		// Render game graphics.
-		if(app.GetGameStarted()) 
-		{
-			pMinecraft->run_middle();
-			app.SetAppPaused( g_qNetManager.IsLocalGame() && g_qNetManager.GetPlayerCount() == 1 && app.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()) );
-		}
-		else
-		{
-			MemSect(28);
-			pMinecraft->soundEngine->update(NULL, 0.0f);
-			MemSect(0);
-			pMinecraft->soundEngine->playMusicTick();
-			pMinecraft->textures->tick(true,false);
-			IntCache::Reset();
-			app.SetGameStarted(true);
-		}
+        PIXBeginNamedEvent(0, "Qnet do work #1");
+        //		g_qNetManager.DoWork();
+        PIXEndNamedEvent();
 
-		app.ToggleDimensionIfRequested();
+        //		LeaderboardManager::Instance()->Tick();
+        // Render game graphics.
+        if (app.GetGameStarted()) {
+            pMinecraft->run_middle();
+            app.SetAppPaused(
+                g_qNetManager.IsLocalGame() &&
+                g_qNetManager.GetPlayerCount() == 1 &&
+                app.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()));
+        } else {
+            MemSect(28);
+            pMinecraft->soundEngine->update(NULL, 0.0f);
+            MemSect(0);
+            pMinecraft->soundEngine->playMusicTick();
+            pMinecraft->textures->tick(true, false);
+            app.SetGameStarted(true);
+        }
 
+        app.ToggleDimensionIfRequested();
 
 #ifdef MEMORY_TRACKING
-		static bool bResetMemTrack = false;
-		static bool bDumpMemTrack = false;
+        static bool bResetMemTrack = false;
+        static bool bDumpMemTrack = false;
 
-		MemPixStuff();
+        MemPixStuff();
 
-		if( bResetMemTrack )
-		{
-			ResetMem();
-			MEMORYSTATUS memStat;
-			GlobalMemoryStatus(&memStat);
-			printf("RESETMEM: Avail. phys %d\n",memStat.dwAvailPhys/(1024*1024));
-			bResetMemTrack = false;
-		}
+        if (bResetMemTrack) {
+            ResetMem();
+            MEMORYSTATUS memStat;
+            GlobalMemoryStatus(&memStat);
+            printf("RESETMEM: Avail. phys %d\n",
+                   memStat.dwAvailPhys / (1024 * 1024));
+            bResetMemTrack = false;
+        }
 
-		if( bDumpMemTrack )
-		{
-			DumpMem();
-			bDumpMemTrack = false;
-			MEMORYSTATUS memStat;
-			GlobalMemoryStatus(&memStat);
-			printf("DUMPMEM: Avail. phys %d\n",memStat.dwAvailPhys/(1024*1024));
-			printf("Renderer used: %d\n",RenderManager.CBuffSize(-1));
-		}
+        if (bDumpMemTrack) {
+            DumpMem();
+            bDumpMemTrack = false;
+            MEMORYSTATUS memStat;
+            GlobalMemoryStatus(&memStat);
+            printf("DUMPMEM: Avail. phys %d\n",
+                   memStat.dwAvailPhys / (1024 * 1024));
+            printf("Renderer used: %d\n", RenderManager.CBuffSize(-1));
+        }
 #endif
 #if 0
 		static bool bDumpTextureUsage = false;
@@ -880,7 +852,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 		for(int i=0;i<8;i++)
 		{
-			if(RenderStateA2[i]!=RenderStateA[i]) 
+			if(RenderStateA2[i]!=RenderStateA[i])
 			{
 				//printf("Reseting RenderStateA[%d] after a XUI render\n",i);
 				pDevice->SetRenderState(RenderStateModes[i],RenderStateA[i]);
@@ -888,7 +860,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 		for(int i=0;i<5;i++)
 		{
-			if(SamplerStateA2[i]!=SamplerStateA[i]) 
+			if(SamplerStateA2[i]!=SamplerStateA[i])
 			{
 				//printf("Reseting SamplerStateA[%d] after a XUI render\n",i);
 				pDevice->SetSamplerState(0,SamplerStateModes[i],SamplerStateA[i]);
@@ -897,10 +869,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 		RenderManager.Set_matrixDirty();
 #endif
-		// Present the frame.
-		PIXBeginNamedEvent(0,"Frame present");
-		RenderManager.Present();
-		PIXEndNamedEvent();
+        // Present the frame.
+        PIXBeginNamedEvent(0, "Frame present");
+        RenderManager.Present();
+        PIXEndNamedEvent();
 #if 0
 		app.CheckMenuDisplayed();
 		PIXBeginNamedEvent(0,"Profile load check");
@@ -922,7 +894,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 #ifdef _DEBUG_MENUS_ENABLED
 					if(app.DebugSettingsOn())
 					{
-						app.ActionDebugMask(i);		
+						app.ActionDebugMask(i);
 					}
 					else
 					{
@@ -967,7 +939,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		if(!ProfileManager.IsFullVersion())
 		{
 			// display the trial timer
-			if(app.GetGameStarted()) 
+			if(app.GetGameStarted())
 			{
 				// 4J-PB - if the game is paused, add the elapsed time to the trial timer count so it doesn't tick down
 				if(app.IsAppPaused())
@@ -988,21 +960,21 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 #endif
 
-		// Fix for #7318 - Title crashes after short soak in the leaderboards menu
-		// A memory leak was caused because the icon renderer kept creating new Vec3's because the pool wasn't reset
-		Vec3::resetPool();
-	}
+        // Fix for #7318 - Title crashes after short soak in the leaderboards
+        // menu A memory leak was caused because the icon renderer kept creating
+        // new Vec3's because the pool wasn't reset
+        Vec3::resetPool();
+    }
 
-	// Free resources, unregister custom classes, and exit.
-//	app.Uninit();
-	g_pd3dDevice->Release();
+    // Free resources, unregister custom classes, and exit.
+    //	app.Uninit();
+    g_pd3dDevice->Release();
 }
-
 
 #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
-std::unordered_map<int,int> allocCounts;
+std::unordered_map<int, int> allocCounts;
 bool trackEnable = false;
 bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;
@@ -1011,181 +983,159 @@ volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
 DWORD tlsIdx;
 
-LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes)
-{
-	if( !trackStarted )
-	{
-		void *p = XMemAllocDefault(dwSize,dwAllocAttributes); 
-		size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
-		totalAllocGen += realSize;
-		return p;
-	}
+LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
+    if (!trackStarted) {
+        void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
+        size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
+        totalAllocGen += realSize;
+        return p;
+    }
 
-	EnterCriticalSection(&memCS);
+    EnterCriticalSection(&memCS);
 
-	void *p=XMemAllocDefault(dwSize + 16,dwAllocAttributes); 
-	size_t realSize = XMemSizeDefault(p,dwAllocAttributes) - 16;
+    void* p = XMemAllocDefault(dwSize + 16, dwAllocAttributes);
+    size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
 
-	if( trackEnable )
-	{
+    if (trackEnable) {
 #if 1
-		int sect = ((int) TlsGetValue(tlsIdx)) & 0x3f;
-		*(((unsigned char *)p)+realSize) = sect;
+        int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
+        *(((unsigned char*)p) + realSize) = sect;
 
-		if( ( realSize >= sizeCheckMin ) && ( realSize <= sizeCheckMax ) && ( ( sect == sectCheck ) || ( sectCheck == -1 ) ) )
-		{
-			app.DebugPrintf("Found one\n");
-		}
+        if ((realSize >= sizeCheckMin) && (realSize <= sizeCheckMax) &&
+            ((sect == sectCheck) || (sectCheck == -1))) {
+            app.DebugPrintf("Found one\n");
+        }
 #endif
 
-		if( p )
-		{
-			totalAllocGen += realSize;
-			trackEnable = false;
-			int key = ( sect << 26 ) | realSize;
-			int oldCount = allocCounts[key];
-			allocCounts[key] = oldCount + 1;
+        if (p) {
+            totalAllocGen += realSize;
+            trackEnable = false;
+            int key = (sect << 26) | realSize;
+            int oldCount = allocCounts[key];
+            allocCounts[key] = oldCount + 1;
 
-			trackEnable = true;
-		}
-	}
-	 
-	LeaveCriticalSection(&memCS);
+            trackEnable = true;
+        }
+    }
 
-	return p;
+    LeaveCriticalSection(&memCS);
+
+    return p;
 }
 
-void* operator new (size_t size)
-{
-	return (unsigned char *)XMemAlloc(size,MAKE_XALLOC_ATTRIBUTES(0,FALSE,TRUE,FALSE,0,XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,XALLOC_MEMPROTECT_READWRITE,FALSE,XALLOC_MEMTYPE_HEAP));
+void* operator new(size_t size) {
+    return (unsigned char*)XMemAlloc(
+        size, MAKE_XALLOC_ATTRIBUTES(
+                  0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+                  XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
 }
 
-void operator delete (void *p)
-{
-	XMemFree(p,MAKE_XALLOC_ATTRIBUTES(0,FALSE,TRUE,FALSE,0,XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,XALLOC_MEMPROTECT_READWRITE,FALSE,XALLOC_MEMTYPE_HEAP));
+void operator delete(void* p) {
+    XMemFree(p, MAKE_XALLOC_ATTRIBUTES(
+                    0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+                    XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
 }
 
-void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes)
-{
-	bool special = false;
-	if( dwAllocAttributes == 0 )
-	{
-		dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(0,FALSE,TRUE,FALSE,0,XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,XALLOC_MEMPROTECT_READWRITE,FALSE,XALLOC_MEMTYPE_HEAP);
-		special = true;
-	}
-	if(!trackStarted )
-	{
-		size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes);
-		XMemFreeDefault(pAddress, dwAllocAttributes);
-		totalAllocGen -= realSize;
-		return;
-	}
-	EnterCriticalSection(&memCS);
-	if( pAddress )
-	{
-		size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
-		
-		if(trackEnable)
-		{
-			int sect = *(((unsigned char *)pAddress)+realSize);
-			totalAllocGen -= realSize;
-			trackEnable = false;
-			int key = ( sect << 26 ) | realSize;
-			int oldCount = allocCounts[key];
-			allocCounts[key] = oldCount - 1;
-			trackEnable = true;
+void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes) {
+    bool special = false;
+    if (dwAllocAttributes == 0) {
+        dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(
+            0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+            XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP);
+        special = true;
+    }
+    if (!trackStarted) {
+        size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes);
+        XMemFreeDefault(pAddress, dwAllocAttributes);
+        totalAllocGen -= realSize;
+        return;
+    }
+    EnterCriticalSection(&memCS);
+    if (pAddress) {
+        size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
 
-		}
-		XMemFreeDefault(pAddress, dwAllocAttributes);
-	}
-	LeaveCriticalSection(&memCS);
+        if (trackEnable) {
+            int sect = *(((unsigned char*)pAddress) + realSize);
+            totalAllocGen -= realSize;
+            trackEnable = false;
+            int key = (sect << 26) | realSize;
+            int oldCount = allocCounts[key];
+            allocCounts[key] = oldCount - 1;
+            trackEnable = true;
+        }
+        XMemFreeDefault(pAddress, dwAllocAttributes);
+    }
+    LeaveCriticalSection(&memCS);
 }
 
-SIZE_T WINAPI XMemSize(
-         PVOID pAddress,
-         DWORD dwAllocAttributes
-)
-{
-	if( trackStarted )
-	{
-		return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
-	}
-	else
-	{
-		return XMemSizeDefault(pAddress, dwAllocAttributes);
-	}
+SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
+    if (trackStarted) {
+        return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
+    } else {
+        return XMemSizeDefault(pAddress, dwAllocAttributes);
+    }
 }
 
-
-void DumpMem()
-{
-	int totalLeak = 0;
-	for(AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++ )
-	{
-		if(it->second > 0 )
-		{
-			app.DebugPrintf("%d %d %d %d\n",( it->first >> 26 ) & 0x3f,it->first & 0x03ffffff, it->second, (it->first & 0x03ffffff) * it->second);
-			totalLeak += ( it->first & 0x03ffffff ) * it->second;
-		}
-	}
-	app.DebugPrintf("Total %d\n",totalLeak);
+void DumpMem() {
+    int totalLeak = 0;
+    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+        if (it->second > 0) {
+            app.DebugPrintf("%d %d %d %d\n", (it->first >> 26) & 0x3f,
+                            it->first & 0x03ffffff, it->second,
+                            (it->first & 0x03ffffff) * it->second);
+            totalLeak += (it->first & 0x03ffffff) * it->second;
+        }
+    }
+    app.DebugPrintf("Total %d\n", totalLeak);
 }
 
-void ResetMem()
-{
-	if( !trackStarted )
-	{
-		trackEnable = true;
-		trackStarted = true;
-		totalAllocGen = 0;
-		InitializeCriticalSection(&memCS);
-		tlsIdx = TlsAlloc();
-	}
-	EnterCriticalSection(&memCS);
-	trackEnable = false;
-	allocCounts.clear();
-	trackEnable = true;
-	LeaveCriticalSection(&memCS);
+void ResetMem() {
+    if (!trackStarted) {
+        trackEnable = true;
+        trackStarted = true;
+        totalAllocGen = 0;
+        InitializeCriticalSection(&memCS);
+        tlsIdx = TlsAlloc();
+    }
+    EnterCriticalSection(&memCS);
+    trackEnable = false;
+    allocCounts.clear();
+    trackEnable = true;
+    LeaveCriticalSection(&memCS);
 }
 
-void MemSect(int section)
-{
-	unsigned int value = (unsigned int)TlsGetValue(tlsIdx);
-	if( section == 0 ) // pop
-	{
-		value = (value >> 6) & 0x03ffffff;
-	}
-	else
-	{
-		value = (value << 6) | section;
-	}
-	TlsSetValue(tlsIdx, (LPVOID)value);
+void MemSect(int section) {
+    unsigned int value = (unsigned int)TlsGetValue(tlsIdx);
+    if (section == 0)  // pop
+    {
+        value = (value >> 6) & 0x03ffffff;
+    } else {
+        value = (value << 6) | section;
+    }
+    TlsSetValue(tlsIdx, (LPVOID)value);
 }
 
-void MemPixStuff()
-{
-	const int MAX_SECT = 46;
+void MemPixStuff() {
+    const int MAX_SECT = 46;
 
-	int totals[MAX_SECT] = {0};
+    int totals[MAX_SECT] = {0};
 
-	for(AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++ )
-	{
-		if(it->second > 0 )
-		{
-			int sect = ( it->first >> 26 ) & 0x3f;
-			int bytes = it->first & 0x03ffffff;
-			totals[sect] += bytes * it->second;
-		}
-	}
+    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+        if (it->second > 0) {
+            int sect = (it->first >> 26) & 0x3f;
+            int bytes = it->first & 0x03ffffff;
+            totals[sect] += bytes * it->second;
+        }
+    }
 
-	unsigned int allSectsTotal = 0;
-	for( int i = 0; i < MAX_SECT; i++ )
-	{
-		allSectsTotal += totals[i];
-		PIXAddNamedCounter(((float)totals[i])/1024.0f,"MemSect%d",i);
-	}
+    unsigned int allSectsTotal = 0;
+    for (int i = 0; i < MAX_SECT; i++) {
+        allSectsTotal += totals[i];
+        PIXAddNamedCounter(((float)totals[i]) / 1024.0f, "MemSect%d", i);
+    }
 
-	PIXAddNamedCounter(((float)allSectsTotal)/(4096.0f),"MemSect total pages");
+    PIXAddNamedCounter(((float)allSectsTotal) / (4096.0f),
+                       "MemSect total pages");
 }
 
 #endif

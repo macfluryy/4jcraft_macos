@@ -14,7 +14,7 @@ intArray AddSnowLayer::getArea(int xo, int yo, int w, int h) {
     int ph = h + 2;
     intArray p = parent->getArea(px, py, pw, ph);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             int c = p[(x + 1) + (y + 1) * pw];

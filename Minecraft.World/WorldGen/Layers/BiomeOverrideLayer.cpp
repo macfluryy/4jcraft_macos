@@ -49,7 +49,7 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
 }
 
 intArray BiomeOverrideLayer::getArea(int xo, int yo, int w, int h) {
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
 
     int xOrigin = xo + width / 2;
     int yOrigin = yo + height / 2;

@@ -15,7 +15,7 @@ intArray FuzzyZoomLayer::getArea(int xo, int yo, int w, int h) {
     intArray p = parent->getArea(px, py, pw, ph);
 
     // 4jcraft added casts to unsigned to prevent shift of neg value
-    intArray tmp = IntCache::allocate((pw * 2) * (ph * 2));
+    intArray tmp{static_cast<unsigned int>(pw * ph * 4)};
     int ww = ((unsigned int)pw << 1);
     for (int y = 0; y < ph - 1; y++) {
         int ry = (unsigned int)y << 1;
@@ -37,7 +37,7 @@ intArray FuzzyZoomLayer::getArea(int xo, int yo, int w, int h) {
             dl = dr;
         }
     }
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         System::arraycopy(tmp,
                           (y + (yo & 1)) * ((unsigned int)pw << 1) + (xo & 1),

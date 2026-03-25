@@ -42,7 +42,6 @@
 #include "../GameState/Options.h"
 #include "../Network/MultiPlayerChunkCache.h"
 #include "../../Minecraft.World/Util/ParticleTypes.h"
-#include "../../Minecraft.World/Util/IntCache.h"
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/Util/JavaMath.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
@@ -586,7 +585,7 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
              (entity->noCulling || culler->isVisible(entity->bb)));
 
         // Render the mob if the mob's leash holder is within the culler
-        if (!shouldRender && entity->instanceof (eTYPE_MOB)) {
+        if (!shouldRender && entity->instanceof(eTYPE_MOB)) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(entity);
             if (mob->isLeashed() && (mob->getLeashHolder() != NULL)) {
                 std::shared_ptr<Entity> leashHolder = mob->getLeashHolder();
@@ -600,10 +599,10 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
             // !mc->options->thirdPersonView &&
             // !mc->cameraTargetPlayer->isSleeping()) continue;
             std::shared_ptr<LocalPlayer> localplayer =
-                mc->cameraTargetPlayer->instanceof
-                (eTYPE_LOCALPLAYER) ? std::dynamic_pointer_cast<LocalPlayer>(
-                                          mc->cameraTargetPlayer)
-                                    : nullptr;
+                mc->cameraTargetPlayer->instanceof(eTYPE_LOCALPLAYER)
+                    ? std::dynamic_pointer_cast<LocalPlayer>(
+                          mc->cameraTargetPlayer)
+                    : nullptr;
 
             if (localplayer && entity == mc->cameraTargetPlayer &&
                 !localplayer->ThirdPersonView() &&
@@ -1198,7 +1197,7 @@ void LevelRenderer::renderSky(float alpha) {
         // 4J - can't work out what this big black box is for. Taking it out
         // until someone misses it... it causes a big black box to visible
         // appear in 3rd person mode whilst under the ground.
-#if 0        
+#if 0
 		float ss = 1;
 		float yo = -(float) (yy + 65);
 		float y0 = -ss;
@@ -2748,7 +2747,9 @@ void LevelRenderer::cull_SPU(int playerIndex, Culler* culler, float a) {
     m_jobPort_CullSPU->submitSync();
     // 	static int doSort = false;
     // 	if(doSort)
-    { m_jobPort_CullSPU->submitJob(&sortJob); }
+    {
+        m_jobPort_CullSPU->submitJob(&sortJob);
+    }
     // 	doSort ^= 1;
     m_bSPUCullStarted[playerIndex] = true;
 }
@@ -3221,7 +3222,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
 }
 
 void LevelRenderer::entityAdded(std::shared_ptr<Entity> entity) {
-    if (entity->instanceof (eTYPE_PLAYER)) {
+    if (entity->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(entity);
         player->prepareCustomTextures();
@@ -3239,7 +3240,7 @@ void LevelRenderer::entityAdded(std::shared_ptr<Entity> entity) {
 }
 
 void LevelRenderer::entityRemoved(std::shared_ptr<Entity> entity) {
-    if (entity->instanceof (eTYPE_PLAYER)) {
+    if (entity->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(entity);
         if (player->customTextureUrl != L"") {
@@ -4040,7 +4041,6 @@ void LevelRenderer::staticCtor() {
 int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
     Vec3::CreateNewThreadStorage();
     AABB::CreateNewThreadStorage();
-    IntCache::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     RenderManager.InitialiseContext();
     Chunk::CreateNewThreadStorage();

@@ -19,7 +19,7 @@ intArray RiverMixerLayer::getArea(int xo, int yo, int w, int h) {
     intArray b = biomes->getArea(xo, yo, w, h);
     intArray r = rivers->getArea(xo, yo, w, h);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int i = 0; i < w * h; i++) {
         if (b[i] == Biome::ocean->id) {
             result[i] = b[i];

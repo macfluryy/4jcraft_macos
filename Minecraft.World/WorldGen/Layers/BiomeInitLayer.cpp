@@ -34,7 +34,7 @@ BiomeInitLayer::~BiomeInitLayer() { delete[] startBiomes.data; }
 intArray BiomeInitLayer::getArea(int xo, int yo, int w, int h) {
     intArray b = parent->getArea(xo, yo, w, h);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             initRandom(x + xo, y + yo);

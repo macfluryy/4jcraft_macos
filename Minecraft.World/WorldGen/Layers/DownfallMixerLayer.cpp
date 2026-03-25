@@ -14,7 +14,7 @@ intArray DownfallMixerLayer::getArea(int xo, int yo, int w, int h) {
     intArray b = parent->getArea(xo, yo, w, h);
     intArray d = downfall->getArea(xo, yo, w, h);
 
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int i = 0; i < w * h; i++) {
         result[i] =
             d[i] + (Biome::biomes[b[i]]->getDownfallInt() - d[i]) / (layer + 1);

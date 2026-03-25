@@ -15,7 +15,7 @@ intArray SmoothZoomLayer::getArea(int xo, int yo, int w, int h) {
     int ph = (h >> 1) + 3;
     intArray p = parent->getArea(px, py, pw, ph);
 
-    intArray tmp = IntCache::allocate((pw * 2) * (ph * 2));
+    intArray tmp{static_cast<unsigned int>(pw * ph * 4)};
     int ww = (pw << 1);
     for (int y = 0; y < ph - 1; y++) {
         int ry = y << 1;
@@ -40,7 +40,7 @@ intArray SmoothZoomLayer::getArea(int xo, int yo, int w, int h) {
             dl = dr;
         }
     }
-    intArray result = IntCache::allocate(w * h);
+    intArray result{static_cast<unsigned int>(w * h)};
     for (int y = 0; y < h; y++) {
         System::arraycopy(tmp, (y + (yo & 1)) * (pw << 1) + (xo & 1), &result,
                           y * w, w);

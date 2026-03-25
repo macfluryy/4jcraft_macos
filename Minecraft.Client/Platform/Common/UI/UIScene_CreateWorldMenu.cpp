@@ -9,7 +9,6 @@
 #include "../../Minecraft.World/Level/Storage/LevelSettings.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
-#include "../../Minecraft.World/Util/IntCache.h"
 #include "../../Minecraft.World/Level/Storage/LevelType.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 
@@ -1373,7 +1372,6 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             } else {
                 // This is NOT called from a storage manager thread, and is in
                 // fact called from the main thread in the Profile library tick.
-                // Therefore we use the main threads IntCache.
                 CreateGame(pClass, localUsersMask);
             }
         }
