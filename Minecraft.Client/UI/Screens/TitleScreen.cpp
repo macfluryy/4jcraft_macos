@@ -24,32 +24,52 @@ TitleScreen::TitleScreen() {
     //    try {	// 4J - removed try/catch
     std::vector<std::wstring> splashes;
 
-    /*
-BufferedReader *br = new BufferedReader(new
-InputStreamReader(InputStream::getResourceAsStream(L"res\\title\\splashes.txt")));
-//, Charset.forName("UTF-8")
+    // 4jcraft: copied over from UIScene_MainMenu
+    int splashIndex;
 
-std::wstring line = L"";
-while ( !(line = br->readLine()).empty() )
-    {
-    line = trimString( line );
-    if (line.length() > 0)
-            {
-        splashes.push_back(line);
+    std::wstring filename = L"splashes.txt";
+    if (app.hasArchiveFile(filename)) {
+        byteArray splashesArray = app.getArchiveFile(filename);
+        ByteArrayInputStream bais(splashesArray);
+        InputStreamReader isr(&bais);
+        BufferedReader br(&isr);
+
+        std::wstring line = L"";
+        while (!(line = br.readLine()).empty()) {
+            line = trimString(line);
+            if (line.length() > 0) {
+                splashes.push_back(line);
+            }
+        }
+
+        br.close();
     }
 
-    br->close();
-        delete br;
-        */
+    splashIndex =
+        eSplashRandomStart + 1 +
+        random->nextInt((int)splashes.size() - (eSplashRandomStart + 1));
 
-    // splash = L""; //splashes.at(random->nextInt(splashes.size()));
+    // Override splash text on certain dates
+    SYSTEMTIME LocalSysTime;
+    GetLocalTime(&LocalSysTime);
+    if (LocalSysTime.wMonth == 11 && LocalSysTime.wDay == 9) {
+        splashIndex = eSplashHappyBirthdayEx;
+    } else if (LocalSysTime.wMonth == 6 && LocalSysTime.wDay == 1) {
+        splashIndex = eSplashHappyBirthdayNotch;
+    } else if (LocalSysTime.wMonth == 12 &&
+               LocalSysTime.wDay == 24)  // the Java game shows this on
+                                         // Christmas Eve, so we will too
+    {
+        splashIndex = eSplashMerryXmas;
+    } else if (LocalSysTime.wMonth == 1 && LocalSysTime.wDay == 1) {
+        splashIndex = eSplashHappyNewYear;
+    }
 
-    //    } catch (Exception e) {
-    //    }
+    splash = splashes.at(splashIndex);
 }
 
 void TitleScreen::tick() {
-    // vo += 1.0f;
+    vo += 1.0f;
     // if( vo > 100.0f ) minecraft->setScreen(new SelectWorldScreen(this));
     // // 4J - temp testing
 }
@@ -104,32 +124,105 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
 
 void TitleScreen::buttonClicked(Button* button) {
     if (button->id == 0) {
-        app.DebugPrintf("TitleScreen::buttonClicked() 'Options...' if (button->id == 0)\n");
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Options...' if (button->id == 0)\n");
         minecraft->setScreen(new OptionsScreen(this, minecraft->options));
     }
     if (button->id == 1) {
-        app.DebugPrintf("TitleScreen::buttonClicked() 'Singleplayer' if (button->id == 1)\n");
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Singleplayer' if (button->id == "
+            "1)\n");
         minecraft->setScreen(new SelectWorldScreen(this));
     }
     if (button->id == 2) {
-        app.DebugPrintf("TitleScreen::buttonClicked() 'Multiplayer' if (button->id == 2)\n");
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Multiplayer' if (button->id == "
+            "2)\n");
         minecraft->setScreen(new JoinMultiplayerScreen(this));
     }
     if (button->id == 3) {
-        app.DebugPrintf("TitleScreen::buttonClicked() 'Texture Pack' if (button->id == 3)\n");
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() 'Texture Pack' if (button->id == "
+            "3)\n");
         //       minecraft->setScreen(new TexturePackSelectScreen(this));
         //       // 4J - TODO put back in
     }
     if (button->id == 4) {
-        app.DebugPrintf("TitleScreen::buttonClicked() Exit Game if (button->id == 4)\n");
-        RenderManager.Close(); //minecraft->stop();
+        app.DebugPrintf(
+            "TitleScreen::buttonClicked() Exit Game if (button->id == 4)\n");
+        RenderManager.Close();  // minecraft->stop();
     }
+}
+
+// 4jcraft: render our panorama
+// uses the TU panorama instead of JE panorama and as such a different rendering
+// method
+void TitleScreen::renderPanorama() {
+    Tesselator* t = Tesselator::getInstance();
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, width, height, 0, 1000, 3000);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0, 0, -2000);
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glEnable(GL_TEXTURE_2D);
+    glDisable(GL_ALPHA_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(false);
+
+    glBindTexture(GL_TEXTURE_2D,
+                  minecraft->textures->loadTexture(TN_TITLE_BG_PANORAMA));
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    float off = vo * 0.0001f;
+
+    float screenAspect = (float)width / (float)height;
+    float texAspect = 1748.0f / 144.0f;
+    float scale;
+    if (screenAspect > texAspect) {
+        scale = (float)width / 1748.0f;
+    } else {
+        scale = (float)height / 144.0f;
+    }
+
+    float texWidth = 1748.0f * scale;
+    float texHeight = 144.0f * scale;
+    float yOff = (height - texHeight) / 2.0f;
+
+    float uMax = off + (texWidth / 1748.0f);
+
+    t->begin(GL_QUADS);
+    t->color(0xffffff, 255);
+    t->vertexUV(0, yOff + texHeight, 0, off, 1.0f);
+    t->vertexUV(texWidth, yOff + texHeight, 0, uMax, 1.0f);
+    t->vertexUV(texWidth, yOff, 0, uMax, 0.0f);
+    t->vertexUV(0, yOff, 0, off, 0.0f);
+    t->end();
+
+    glDepthMask(true);
+    glDisable(GL_BLEND);
+    glEnable(GL_ALPHA_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
 }
 
 void TitleScreen::render(int xm, int ym, float a) {
     // 4J Unused - Iggy Flash UI renders the title screen on consoles
 #ifdef ENABLE_JAVA_GUIS
-    renderBackground();
+    renderPanorama();
     Tesselator* t = Tesselator::getInstance();
 
     int logoWidth = 155 + 119;
@@ -155,7 +248,9 @@ void TitleScreen::render(int xm, int ym, float a) {
     drawCenteredString(font, splash, 0, -8, 0xffff00);
     glPopMatrix();
 
-    drawString(font, ClientConstants::VERSION_STRING, 2, 2, 0x505050);
+    drawString(
+        font, ClientConstants::VERSION_STRING, 2, height - 10,
+        0xffffff);  // 4jcraft: use the same height as the copyright message
     wstring msg = L"Copyright Mojang AB. Do not distribute.";
     drawString(font, msg, width - font->width(msg) - 2, height - 10, 0xffffff);
 

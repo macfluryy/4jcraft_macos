@@ -174,6 +174,11 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
 
     L"item/trapped",
     L"item/trapped_double",
+
+    // 4jcraft: 1.6.4 java UI
+#ifdef ENABLE_JAVA_GUIS
+    L"title/bg/panorama",
+#endif
 // L"item/christmas",
 // L"item/christmas_double",
 

@@ -156,6 +156,11 @@ typedef enum _TEXTURE_NAME {
 
     TN_TILE_TRAP_CHEST,
     TN_TILE_LARGE_TRAP_CHEST,
+
+    // 4jcraft: 1.6.4 java UI
+#ifdef ENABLE_JAVA_GUIS
+    TN_TITLE_BG_PANORAMA,
+#endif
 // TN_TILE_XMAS_CHEST,
 // TN_TILE_LARGE_XMAS_CHEST,
 
