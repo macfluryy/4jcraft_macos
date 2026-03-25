@@ -21,6 +21,8 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
 
     glPushMatrix();
 
+    bindTexture(cart);
+
     // 4jcraft added a bunch of casts to prever overflow
     int64_t seed = (int64_t)((uint64_t)cart->entityId * 493286711ULL);
     seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 4392167121ULL) +
