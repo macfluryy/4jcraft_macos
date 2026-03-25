@@ -4,7 +4,8 @@
 #include "LevelSoundPacket.h"
 #include <limits>
 
-const float LevelSoundPacket::PITCH_ACCURACY = std::numeric_limits<char>::max() / 2.0;
+const float LevelSoundPacket::PITCH_ACCURACY =
+    std::numeric_limits<char>::max() / 2.0;
 const float LevelSoundPacket::LOCATION_ACCURACY = 8.0f;
 
 LevelSoundPacket::LevelSoundPacket() {

@@ -2280,7 +2280,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
             // it's already locked by this thread
             // 			Minecraft::GetInstance()->connectionDisconnected(
             // m_userIndex , reason ); 			done = true;
-            // connection->flush(); 			connection->close(reason);
+            // connection->flush(); connection->close(reason);
             //			app.SetAction(m_userIndex,eAppAction_ExitPlayer);
 
             // 4J-PB - doing this instead
