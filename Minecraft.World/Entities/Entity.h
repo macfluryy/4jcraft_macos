@@ -6,9 +6,6 @@
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
 #include <cstdint>
-#if !defined(_WIN32)
-#include <pthread.h>
-#endif
 
 class LivingEntity;
 class LightningBolt;
@@ -431,7 +428,8 @@ private:
     static int extraWanderIds[EXTRA_WANDER_MAX];
     static int extraWanderCount;
     static int extraWanderTicks;
-    static TlsKey tlsIdx;
+
+    static thread_local bool m_threadUseSmallIds;
 public:
     static void tickExtraWandering();
     static void countFlagsForPIX();

@@ -1,6 +1,6 @@
 #pragma once
 
-class DispenseItemBehavior;
+#include "DispenseItemBehavior.h"
 
 class BehaviorRegistry {
 private:

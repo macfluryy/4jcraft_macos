@@ -216,16 +216,14 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
 std::shared_ptr<ItemInstance> FireworksRecipe::assemble(
     std::shared_ptr<CraftingContainer> craftSlots) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    return tls->resultItem->copy();
+    return m_threadStorage->resultItem->copy();
     // return resultItem->copy();
 }
 
 int FireworksRecipe::size() { return 10; }
 
 const ItemInstance* FireworksRecipe::getResultItem() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    return tls->resultItem.get();
+    return m_threadStorage->resultItem.get();
     // return resultItem.get();
 }
 

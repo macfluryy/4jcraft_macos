@@ -27,11 +27,11 @@ int normal;
 thread_local Tesselator* Tesselator::m_threadInstance = nullptr;
 
 Tesselator* Tesselator::getInstance() {
-    return m_threadinstance;
+    return m_threadInstance;
 }
 
 void Tesselator::CreateNewThreadStorage(int bytes) {
-    Tesselator::m_threadinstance = new Tesselator(bytes / 4);
+    Tesselator::m_threadInstance = new Tesselator(bytes / 4);
 }
 
 // she tessalate my vertices till i render

@@ -54,10 +54,10 @@ class GameRules;
 
 class Level : public LevelSource {
 public:
-#if defined(_WIN32)
-    using TlsKey = std::uint32_t;
+#ifdef _LARGE_WORLDS
+    using lightCache_t = uint64_t;
 #else
-    using TlsKey = pthread_key_t;
+    using lightCache_t = unsigned int;
 #endif
 
     static const int MAX_TICK_TILES_PER_TICK = 1000;
@@ -93,8 +93,8 @@ public:
 
     // 4J - added, making instaTick flag use TLS so we can set it in the chunk
     // rebuilding thread without upsetting the main game thread
-    static TlsKey tlsIdx;
-    static TlsKey tlsIdxLightCache;
+    static thread_local bool m_threadInstaTick;
+    static thread_local lightCache_t* m_threadLightCache;
     static void enableLightingCache();
     static void destroyLightingCache();
     static bool getCacheTestEnabled();
@@ -277,11 +277,6 @@ public:
     void setBrightnessNoUpdateOnClient(LightLayer::variety layer, int x, int y,
                                        int z, int brightness);  // 4J added
 
-#ifdef _LARGE_WORLDS
-    typedef uint64_t lightCache_t;
-#else
-    typedef unsigned int lightCache_t;
-#endif
     inline void setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
                                     LightLayer::variety layer, int x, int y,
                                     int z, int brightness);

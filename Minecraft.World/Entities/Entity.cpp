@@ -26,40 +26,12 @@
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
 
-namespace {
-#if defined(_WIN32)
-inline void* EntityTlsGetValue(Entity::TlsKey key) { return TlsGetValue(key); }
-
-inline void EntityTlsSetValue(Entity::TlsKey key, void* value) {
-    TlsSetValue(key, value);
-}
-#else
-pthread_key_t CreateEntityTlsKey() {
-    pthread_key_t key;
-    const int result = pthread_key_create(&key, nullptr);
-    assert(result == 0);
-    return key;
-}
-
-inline void* EntityTlsGetValue(pthread_key_t key) {
-    return pthread_getspecific(key);
-}
-
-inline void EntityTlsSetValue(pthread_key_t key, void* value) {
-    pthread_setspecific(key, value);
-}
-#endif
-}  // namespace
+thread_local bool Entity::m_threadUseSmallIds = false;
 
 const std::wstring Entity::RIDING_TAG = L"Riding";
 int Entity::entityCounter =
     2048;  // 4J - changed initialiser to 2048, as we are using range 0 - 2047
            // as special unique smaller ids for things that need network tracked
-#if defined(_WIN32)
-Entity::TlsKey Entity::tlsIdx = TlsAlloc();
-#else
-Entity::TlsKey Entity::tlsIdx = CreateEntityTlsKey();
-#endif
 
 // 4J - added getSmallId & freeSmallId methods
 unsigned int Entity::entityIdUsedFlags[2048 / 32] = {0};
@@ -82,7 +54,7 @@ int Entity::getSmallId() {
     // telling the client that the entity has been removed After we have already
     // re-used its Id and created a new entity. This ends up with newly created
     // client-side entities being removed by accident, causing invisible mobs.
-    if (reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) != 0) {
+    if (m_threadUseSmallIds) {
         MinecraftServer* server = MinecraftServer::getInstance();
         if (server) {
             // In some attempt to optimise this, flagEntitiesToBeRemoved most of
@@ -157,13 +129,13 @@ void Entity::countFlagsForPIX() {
 
 void Entity::resetSmallId() {
     freeSmallId(entityId);
-    if (reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) != 0) {
+    if (m_threadUseSmallIds) {
         entityId = getSmallId();
     }
 }
 
 void Entity::freeSmallId(int index) {
-    if (reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) == 0)
+    if (!m_threadUseSmallIds)
         return;  // Don't do anything with small ids if this isn't the server
                  // thread
     if (index >= 2048) return;  // Don't do anything if this isn't a short id
@@ -176,10 +148,7 @@ void Entity::freeSmallId(int index) {
     entityIdWanderFlags[i] &= uiMask;
 }
 
-void Entity::useSmallIds() {
-    EntityTlsSetValue(tlsIdx,
-                      reinterpret_cast<void*>(static_cast<std::intptr_t>(1)));
-}
+void Entity::useSmallIds() { m_threadUseSmallIds = true; }
 
 // Things also added here to be able to manage the concept of a number of extra
 // "wandering" entities - normally path finding entities aren't allowed to
@@ -192,7 +161,7 @@ void Entity::useSmallIds() {
 // Let the management system here know whether or not to consider this
 // particular entity for some extra wandering
 void Entity::considerForExtraWandering(bool enable) {
-    if (reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) == 0)
+    if (!m_threadUseSmallIds)
         return;  // Don't do anything with small ids if this isn't the server
                  // thread
     if (entityId >= 2048) return;  // Don't do anything if this isn't a short id
@@ -211,7 +180,7 @@ void Entity::considerForExtraWandering(bool enable) {
 // Should this entity do wandering in addition to what the java code would have
 // done?
 bool Entity::isExtraWanderingEnabled() {
-    if (reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) == 0)
+    if (!m_threadUseSmallIds)
         return false;  // Don't do anything with small ids if this isn't the
                        // server thread
     if (entityId >= 2048)
@@ -278,8 +247,7 @@ void Entity::_init(bool useSmallId, Level* level) {
     // rest of the range is used for anything we don't need to track like this,
     // currently particles. We only ever want to allocate this type of id from
     // the server thread, so using thread local storage to isolate this.
-    if (useSmallId &&
-        reinterpret_cast<std::intptr_t>(EntityTlsGetValue(tlsIdx)) != 0) {
+    if (useSmallId && m_threadUseSmallIds) {
         entityId = getSmallId();
     } else {
         entityId = Entity::entityCounter++;
