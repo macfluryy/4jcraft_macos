@@ -306,28 +306,6 @@ static inline ULONG TryEnterCriticalSection(
     return pthread_mutex_trylock(CriticalSection) == 0;
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsalloc
-static inline DWORD TlsAlloc(VOID) {
-    pthread_key_t key;
-    if (pthread_key_create(&key, NULL) == 0) return key;
-    return TLS_OUT_OF_INDEXES;
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsfree
-static inline BOOL TlsFree(DWORD dwTlsIndex) {
-    return pthread_key_delete(dwTlsIndex) == 0;
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlsgetvalue
-static inline LPVOID TlsGetValue(DWORD dwTlsIndex) {
-    return pthread_getspecific(dwTlsIndex);
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-tlssetvalue
-static inline BOOL TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue) {
-    return pthread_setspecific(dwTlsIndex, lpTlsValue) == 0;
-}
-
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
 static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
     // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will
