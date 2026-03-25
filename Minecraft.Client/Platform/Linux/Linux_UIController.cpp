@@ -1,3 +1,4 @@
+// Linux_UIController.cpp
 #include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Linux_UIController.h"
 
@@ -6,34 +7,34 @@
 #include "../../Textures/Textures.h"
 
 // GDraw GL backend for Linux
-#include "Iggy/gdraw/gdraw_sdl.h"
+#include "Iggy/gdraw/gdraw.h"
+#include "4J_Render.h"
 
 ConsoleUIController ui;
 
 static void restoreFixedFunctionStateAfterIggy() {
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.1f);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
+    RenderManager.StateSetAlphaTestEnable(true);
+    RenderManager.StateSetAlphaFunc(GL_GREATER, 0.1f);
 
-    glClientActiveTexture(GL_TEXTURE1);
-    glActiveTexture(GL_TEXTURE1);
-    glDisable(GL_TEXTURE_2D);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
+    RenderManager.StateSetDepthTestEnable(true);
+    RenderManager.StateSetDepthFunc(GL_LEQUAL);
+    RenderManager.StateSetDepthMask(true);
 
-    glClientActiveTexture(GL_TEXTURE0);
-    glActiveTexture(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
+    RenderManager.StateSetFaceCull(true);
+    RenderManager.StateSetActiveTexture(GL_TEXTURE1);
+    RenderManager.StateSetTextureEnable(false);
+    RenderManager.MatrixMode(GL_TEXTURE);
+    RenderManager.MatrixSetIdentity();
 
-    glMatrixMode(GL_MODELVIEW);
+    RenderManager.StateSetActiveTexture(GL_TEXTURE0);
+    RenderManager.StateSetTextureEnable(true);
+    RenderManager.MatrixMode(GL_TEXTURE);
+
+    RenderManager.MatrixSetIdentity();
+    RenderManager.MatrixMode(GL_MODELVIEW);
+
+    RenderManager.Set_matrixDirty();
 }
 
 void ConsoleUIController::init(S32 w, S32 h) {
@@ -66,8 +67,11 @@ void ConsoleUIController::render() {
     if (!gdraw_funcs) return;
 
     gdraw_GL_SetTileOrigin(0, 0, 0);
-    if (!app.GetGameStarted() && gdraw_funcs->ClearID) {
-        gdraw_funcs->ClearID();
+    if (!app.GetGameStarted()) {
+        glDisable(GL_SCISSOR_TEST);
+        glClearDepth(1.0);
+        glDepthMask(GL_TRUE);
+        glClear(GL_DEPTH_BUFFER_BIT);
     }
 
     // render
