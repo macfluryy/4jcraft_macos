@@ -65,6 +65,7 @@
         "miniaudio-patch": "miniaudio-patch",
         "nixpkgs": "nixpkgs",
         "shiggy": "shiggy",
+        "simdutf": "simdutf",
         "stb": "stb"
       }
     },
@@ -82,6 +83,22 @@
         "owner": "4jcraft",
         "ref": "main",
         "repo": "shiggy",
+        "type": "github"
+      }
+    },
+    "simdutf": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773677002,
+        "narHash": "sha256-kq53Jz9zm2bfs8x/74FQbzYrUc+VD7JlnBoYHnEHuSY=",
+        "owner": "simdutf",
+        "repo": "simdutf",
+        "rev": "04a9b596de943ea9e4d4c833e39740edf3c11e88",
+        "type": "github"
+      },
+      "original": {
+        "owner": "simdutf",
+        "repo": "simdutf",
         "type": "github"
       }
     },
