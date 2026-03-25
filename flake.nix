@@ -24,6 +24,10 @@
       url   = "github:nothings/stb/master";
       flake = false;
     };
+    simdutf = {
+      url   = "github:simdutf/simdutf";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:
@@ -48,7 +52,10 @@
         dontUseCmakeConfigure = true;
 
         preConfigure = ''
+          # shiggy
           cp -r ${inputs.shiggy}    subprojects/shiggy
+
+          # miniaudio
           cp -r ${inputs.miniaudio} subprojects/miniaudio
           chmod -R u+w subprojects/miniaudio
           unzip ${inputs."miniaudio-patch"} -d /tmp/miniaudio-patch/
@@ -60,10 +67,20 @@
           [provide]
           dependency_names = miniaudio
           EOF
+
+          # 4jlibs
           cp -r ${inputs."4jlibs"}  subprojects/4jlibs
+
+          # stb
           cp -r ${inputs.stb}       subprojects/stb
           chmod -R u+w subprojects/
           cp subprojects/packagefiles/stb/meson.build subprojects/stb/meson.build
+
+          # simdutf
+          cp -r ${inputs.simdutf} subprojects/simdutf
+          chmod -R u+w subprojects/simdutf
+          cp subprojects/packagefiles/simdutf/meson.build subprojects/simdutf/meson.build
+          cp subprojects/packagefiles/simdutf/meson.options subprojects/simdutf/meson.options
         '';
 
         buildInputs = with pkgs; [
@@ -96,7 +113,7 @@
 
         meta = {
           description = "4JCraft";
-          platforms   = pkgs.lib.platforms.linux;
+          platforms   = pkgs.lib.platforms.unix;
         };
       };
     });
