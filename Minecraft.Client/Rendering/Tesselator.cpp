@@ -24,15 +24,14 @@ int normal;
 
 
 */
-unsigned int Tesselator::tlsIdx = TlsAlloc();
+thread_local Tesselator* Tesselator::m_thread_instance = nullptr;
 
 Tesselator* Tesselator::getInstance() {
-    return (Tesselator*)TlsGetValue(tlsIdx);
+    return m_thread_instance;
 }
 
 void Tesselator::CreateNewThreadStorage(int bytes) {
-    Tesselator* instance = new Tesselator(bytes / 4);
-    TlsSetValue(tlsIdx, instance);
+    Tesselator::m_thread_instance = new Tesselator(bytes / 4);
 }
 
 // she tessalate my vertices till i render

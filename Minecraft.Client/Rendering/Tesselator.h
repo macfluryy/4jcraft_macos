@@ -41,7 +41,7 @@ public:
     static void CreateNewThreadStorage(int bytes);
 
 private:
-    static unsigned int tlsIdx;
+    static thread_local Tesselator* m_thread_instance;
 
 public:
     static Tesselator* getInstance();
