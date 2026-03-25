@@ -27,7 +27,6 @@ private:
 
     static thread_local bool m_tlsIgnoreUpdate;
 
-    static TlsKey tlsIdx;
     // 4J - was just a static but implemented with TLS for our version
     static bool ignoreUpdate();
     static void ignoreUpdate(bool set);
