@@ -25,8 +25,8 @@ private:
         ThreadStorage();
         ~ThreadStorage();
     };
-    static unsigned int tlsIdx;
-    static ThreadStorage* tlsDefault;
+    static thread_local ThreadStorage* m_threadCompression;
+    static ThreadStorage* m_threadCompressionDefault;
 
 public:
     // Each new thread that needs to use Compression will need to call one of

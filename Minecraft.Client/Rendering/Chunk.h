@@ -30,12 +30,12 @@ private:
 #ifndef _LARGE_WORLDS
     static Tesselator* t;
 #else
-    static unsigned int tlsIdx;
+    static thread_local uint8_t* m_threadTileIds;
 
 public:
     static void CreateNewThreadStorage();
     static void ReleaseThreadStorage();
-    static unsigned char* GetTileIdsStorage();
+    static uint8_t* GetTileIdsStorage();
 #endif
 
 public:

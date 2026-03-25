@@ -35,6 +35,8 @@ private:
     Icon* iconBack;
     Icon* iconPlatform;
 
+    static thread_local bool m_threadIgnoreUpdate;
+
     static TlsKey tlsIdx;
     // 4J - was just a static but implemented with TLS for our version
     static bool ignoreUpdate();
