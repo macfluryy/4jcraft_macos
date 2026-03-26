@@ -1115,7 +1115,6 @@ void GameRenderer::FinishedReassigning() {
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    Vec3::CreateNewThreadStorage();
     AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
@@ -1196,7 +1195,6 @@ int GameRenderer::runUpdate(void* lpParam) {
         //		PIXEndNamedEvent();
 
         AABB::resetPool();
-        Vec3::resetPool();
         m_updateEvents->Set(eUpdateEventIsFinished);
     }
 
@@ -1866,9 +1864,8 @@ void GameRenderer::setupClearColor(float a) {
     fb = (float)fogColor.z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0
-                             ? Vec3(-1, 0, 0)
-                             : Vec3(1, 0, 0);
+        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
+                                                            : Vec3(1, 0, 0);
         float d = (float)player->getViewVector(a).dot(sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {

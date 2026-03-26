@@ -5413,19 +5413,20 @@ bool TileRenderer_SPU::tesselateBlockInWorldWithAmbienceOcclusionOldLighting(
     // 	// 4J - added these faceFlags so we can detect whether this block is
     // going to have no visible faces and early out
     // 	// the original code checked noCulling and shouldRenderFace directly
-    // where faceFlags is used now 	int		faceFlags = 0; 	if ( noCulling )
+    // where faceFlags is used now 	int		faceFlags = 0; 	if (
+    // noCulling )
     // 	{
     // 		faceFlags = 0x3f;
     // 	}
     // 	else
     // 	{
     // 		faceFlags |= tt->shouldRenderFace( level, pX, pY - 1, pZ, 0 ) ?
-    // 0x01 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX, pY + 1, pZ, 1 ) ?
-    // 0x02 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX, pY, pZ - 1, 2 ) ?
-    // 0x04 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX, pY, pZ + 1, 3 ) ?
-    // 0x08 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX - 1, pY, pZ, 4 ) ?
-    // 0x10 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX + 1, pY, pZ, 5 ) ?
-    // 0x20 : 0;
+    // 0x01 : 0; 		faceFlags |= tt->shouldRenderFace( level, pX, pY
+    // + 1, pZ, 1 ) ? 0x02 : 0; 		faceFlags |=
+    // tt->shouldRenderFace( level, pX, pY, pZ - 1, 2 ) ? 0x04 : 0;
+    // faceFlags |= tt->shouldRenderFace( level, pX, pY, pZ + 1, 3 ) ? 0x08 : 0;
+    // faceFlags |= tt->shouldRenderFace( level, pX - 1, pY, pZ, 4 ) ? 0x10 : 0;
+    // faceFlags |= tt->shouldRenderFace( level, pX + 1, pY, pZ, 5 ) ? 0x20 : 0;
     // 	}
     // 	if ( faceFlags == 0 )
     // 	{
@@ -5454,21 +5455,24 @@ bool TileRenderer_SPU::tesselateBlockInWorldWithAmbienceOcclusionOldLighting(
     // 	ll00Z = tt->getBrightness( level, pX, pY, pZ + 1 );
     //
     // 	llTransXY0 = level->m_tileData.transculent[level->getTile( pX + 1, pY +
-    // 1, pZ )]; 	llTransXy0 = level->m_tileData.transculent[level->getTile( pX +
-    // 1, pY - 1, pZ )]; 	llTransX0Z =
-    // level->m_tileData.transculent[level->getTile( pX + 1, pY, pZ + 1 )];
-    // 	llTransX0z = level->m_tileData.transculent[level->getTile( pX + 1, pY,
-    // pZ - 1 )]; 	llTransxY0 = level->m_tileData.transculent[level->getTile( pX
+    // 1, pZ )]; 	llTransXy0 =
+    // level->m_tileData.transculent[level->getTile( pX + 1, pY - 1, pZ )];
+    // llTransX0Z = level->m_tileData.transculent[level->getTile( pX + 1, pY, pZ
+    // + 1 )]; 	llTransX0z = level->m_tileData.transculent[level->getTile( pX +
+    // 1, pY, pZ - 1 )]; 	llTransxY0 =
+    // level->m_tileData.transculent[level->getTile( pX
     // - 1, pY + 1, pZ )]; 	llTransxy0 =
     // level->m_tileData.transculent[level->getTile( pX - 1, pY - 1, pZ )];
     // 	llTransx0z = level->m_tileData.transculent[level->getTile( pX - 1, pY,
-    // pZ - 1 )]; 	llTransx0Z = level->m_tileData.transculent[level->getTile( pX
+    // pZ - 1 )]; 	llTransx0Z =
+    // level->m_tileData.transculent[level->getTile( pX
     // - 1, pY, pZ + 1 )]; 	llTrans0YZ =
     // level->m_tileData.transculent[level->getTile( pX, pY + 1, pZ + 1 )];
     // 	llTrans0Yz = level->m_tileData.transculent[level->getTile( pX, pY + 1,
-    // pZ - 1 )]; 	llTrans0yZ = level->m_tileData.transculent[level->getTile( pX,
-    // pY - 1, pZ + 1 )]; 	llTrans0yz =
-    // level->m_tileData.transculent[level->getTile( pX, pY - 1, pZ - 1 )];
+    // pZ - 1 )]; 	llTrans0yZ =
+    // level->m_tileData.transculent[level->getTile( pX, pY - 1, pZ + 1 )];
+    // llTrans0yz = level->m_tileData.transculent[level->getTile( pX, pY - 1, pZ
+    // - 1 )];
     //
     // 	spu_print("Have to add texture name check here\n");
     // 	if ( getTexture(tt)->getName().compare(L"grass_top") == 0 ) tint0 =
@@ -6097,7 +6101,7 @@ bool TileRenderer_SPU::tesselateBlockInWorld(Tile_SPU* tt, int x, int y, int z,
             float br = tt->getBrightness(level, x, y + 1, z);
             //	spu_print("need to add material settings\n");
             //			if ( tileShapeY1 != 1 &&
-            //!tt->material->isLiquid() ) br = centerBrightness;
+            //! tt->material->isLiquid() ) br = centerBrightness;
             t->color(r11 * br, g11 * br, b11 * br);
         }
         renderFaceUp(tt, x, y, z, getTexture(tt, level, x, y, z, 1));
@@ -6537,8 +6541,8 @@ bool TileRenderer_SPU::tesselateFenceGateInWorld(FenceGateTile_SPU* tt, int x,
     // level->getTile(x - 1, y, z) == Tile_SPU::cobbleWall_Id &&
     // level->getTile(x + 1, y, z) == Tile_SPU::cobbleWall_Id)
     //	|| ((direction == Direction::EAST || direction == Direction::WEST) &&
-    //level->getTile(x, y, z - 1) == Tile_SPU::cobbleWall_Id &&
-    //level->getTile(x, y, z + 1) == Tile_SPU::cobbleWall_Id))
+    // level->getTile(x, y, z - 1) == Tile_SPU::cobbleWall_Id &&
+    // level->getTile(x, y, z + 1) == Tile_SPU::cobbleWall_Id))
     //{
     //		h00 -= 3.0f / 16.0f;
     //		h01 -= 3.0f / 16.0f;
@@ -7582,7 +7586,7 @@ Icon_SPU* TileRenderer_SPU::getTextureOrMissing(Icon_SPU* Icon_SPU) {
     if (Icon_SPU == NULL) {
         assert(0);
         //	return
-        //minecraft->textures->getMissingIcon_SPU(Icon_SPU::TYPE_TERRAIN);
+        // minecraft->textures->getMissingIcon_SPU(Icon_SPU::TYPE_TERRAIN);
     }
     return Icon_SPU;
 }

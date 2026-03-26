@@ -220,7 +220,6 @@ HRESULT CScene_Death::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled) {
 
 int CScene_Death::RespawnThreadProc(void* lpParameter) {
     AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
     size_t iPad = (size_t)lpParameter;
 

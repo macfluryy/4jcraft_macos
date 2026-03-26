@@ -724,7 +724,6 @@ void Minecraft::run()
 		//        try {	// 4J - removed try/catch
 		//            if (minecraftApplet != null && !minecraftApplet.isActive()) break;	// 4J - removed
 		AABB::resetPool();
-		Vec3::resetPool();
 
 		//            if (parent == NULL && Display.isCloseRequested()) {		// 4J - removed
 		//                stop();
@@ -1281,7 +1280,6 @@ void Minecraft::run_middle() {
             //            if (minecraftApplet != null &&
             //            !minecraftApplet.isActive()) break;	// 4J - removed
             AABB::resetPool();
-            Vec3::resetPool();
 
             //            if (parent == NULL && Display.isCloseRequested()) {
             //            // 4J - removed
@@ -2223,7 +2221,6 @@ void Minecraft::emergencySave() {
     // 4J - lots of try/catches removed here, and garbage collector things
     levelRenderer->clear();
     AABB::clearPool();
-    Vec3::clearPool();
     setLevel(NULL);
 }
 
@@ -2400,7 +2397,6 @@ void Minecraft::levelTickUpdateFunc(void* pParam) {
 
 void Minecraft::levelTickThreadInitFunc() {
     AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
 }
 
