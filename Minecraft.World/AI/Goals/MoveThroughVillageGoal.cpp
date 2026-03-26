@@ -47,9 +47,10 @@ bool MoveThroughVillageGoal::canUse() {
     mob->getNavigation()->setCanOpenDoors(oldCanOpenDoors);
     if (path != NULL) return true;
 
+    Vec3 towards(_doorInfo->x, _doorInfo->y, _doorInfo->z);
     Vec3* pos = RandomPos::getPosTowards(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 10,
-        7, Vec3::newTemp(_doorInfo->x, _doorInfo->y, _doorInfo->z));
+        7, &towards);
     if (pos == NULL) return false;
     mob->getNavigation()->setCanOpenDoors(false);
     delete path;

@@ -1603,7 +1603,7 @@ HitResult* Item::getPlayerPOVHitResult(Level* level,
         player->yo + (player->y - player->yo) * a + 1.62 - player->heightOffset;
     double z = player->zo + (player->z - player->zo) * a;
 
-    Vec3* from = Vec3::newTemp(x, y, z);
+    Vec3 from(x, y, z);
 
     float yCos = (float)cos(-yRot * Mth::RAD_TO_GRAD - PI);
     float ySin = (float)sin(-yRot * Mth::RAD_TO_GRAD - PI);
@@ -1615,9 +1615,9 @@ HitResult* Item::getPlayerPOVHitResult(Level* level,
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
-    *to = to->add(from->x, from->y, from->z);
-    return level->clip(from, to, alsoPickLiquid, !alsoPickLiquid);
+    Vec3 to(xa * range, ya * range, za * range);
+    to = to.add(from.x, from.y, from.z);
+    return level->clip(&from, &to, alsoPickLiquid, !alsoPickLiquid);
 }
 
 int Item::getEnchantmentValue() { return 0; }

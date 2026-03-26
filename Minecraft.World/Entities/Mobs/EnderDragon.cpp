@@ -314,9 +314,9 @@ void EnderDragon::aiStep() {
             // v->y, v->z, lSteps); unsigned int d = 0; for(unsigned int d = 1;
             // d < 3; ++d)
             {
-                Vec3* vN = Vec3::newTemp(v->x, v->y, v->z);
-                *vN = v->normalize();
-                vN->yRot(-PI / 4);
+                Vec3 vN = Vec3{v->x, v->y, v->z}.normalize();
+                vN.yRot(-PI / 4);
+
                 for (unsigned int i = 0; i < 8; ++i) {
                     if (getSynchedAction() == e_EnderdragonAction_Landing) {
                         // for(unsigned int j = 0; j < 6; ++j)
@@ -335,9 +335,9 @@ void EnderDragon::aiStep() {
                             zP += (level->random->nextBoolean() ? 1 : -1) *
                                   level->random->nextFloat() / 2;
                             level->addParticle(eParticleType_dragonbreath, xP,
-                                               yP, zP, (-vN->x * 0.08) + xd,
-                                               (-vN->y * 0.3) + yd,
-                                               (-vN->z * 0.08) + zd);
+                                               yP, zP, (-vN.x * 0.08) + xd,
+                                               (-vN.y * 0.3) + yd,
+                                               (-vN.z * 0.08) + zd);
                         }
                     } else {
                         double yVelocity = 0.6;
@@ -357,12 +357,12 @@ void EnderDragon::aiStep() {
                             zP += (level->random->nextBoolean() ? 1 : -1) *
                                   level->random->nextFloat() / 2;
                             level->addParticle(eParticleType_dragonbreath, xP,
-                                               yP, zP, -vN->x * xzVelocity * j,
-                                               -vN->y * yVelocity,
-                                               -vN->z * xzVelocity * j);
+                                               yP, zP, -vN.x * xzVelocity * j,
+                                               -vN.y * yVelocity,
+                                               -vN.z * xzVelocity * j);
                         }
                     }
-                    vN->yRot(PI / (2 * 8));
+                    vN.yRot(PI / (2 * 8));
                 }
             }
         } else if (getSynchedAction() ==
@@ -478,15 +478,13 @@ void EnderDragon::aiStep() {
             // No movement
         } else if (getSynchedAction() == e_EnderdragonAction_Sitting_Scanning) {
             if (attackTarget != NULL) {
-                Vec3* aim = Vec3::newTemp((attackTarget->x - x), 0,
-                                          (attackTarget->z - z));
-                *aim = aim->normalize();
+                Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
+                               .normalize();
 
-                Vec3* dir = Vec3::newTemp(sin(yRot * PI / 180), 0,
-                                          -cos(yRot * PI / 180));
+                Vec3 dir = Vec3(sin(yRot * PI / 180), 0, -cos(yRot * PI / 180))
+                               .normalize();
 
-                *dir = dir->normalize();
-                float dot = (float)dir->dot(*aim);
+                float dot = (float)dir.dot(aim);
                 float angleDegs = acos(dot) * 180 / PI;
                 angleDegs = angleDegs + 0.5f;
 
@@ -564,14 +562,12 @@ void EnderDragon::aiStep() {
             if (yRotD > 50) yRotD = 50;
             if (yRotD < -50) yRotD = -50;
 
-            Vec3* aim =
-                Vec3::newTemp((xTarget - x), (yTarget - y), (zTarget - z));
-            *aim = aim->normalize();
+            Vec3 aim =
+                Vec3((xTarget - x), (yTarget - y), (zTarget - z)).normalize();
 
-            Vec3* dir =
-                Vec3::newTemp(sin(yRot * PI / 180), yd, -cos(yRot * PI / 180));
-            *dir = dir->normalize();
-            float dot = (float)(dir->dot(*aim) + 0.5f) / 1.5f;
+            Vec3 dir = Vec3(sin(yRot * PI / 180), yd, -cos(yRot * PI / 180))
+                           .normalize();
+            float dot = (float)(dir.dot(aim) + 0.5f) / 1.5f;
             if (dot < 0) dot = 0;
 
             yRotA *= 0.80f;
@@ -595,9 +591,8 @@ void EnderDragon::aiStep() {
                 move(xd, yd, zd);
             }
 
-            Vec3* actual = Vec3::newTemp(xd, yd, zd);
-            *actual = actual->normalize();
-            float slide = (float)(actual->dot(*dir) + 1) / 2.0f;
+            Vec3 actual = Vec3(xd, yd, zd).normalize();
+            float slide = (float)(actual.dot(dir) + 1) / 2.0f;
             slide = 0.8f + 0.15f * slide;
 
             xd *= slide;
@@ -738,15 +733,13 @@ void EnderDragon::aiStep() {
                 maxDist * maxDist) {
             if (this->canSee(attackTarget)) {
                 m_fireballCharge++;
-                Vec3* aim = Vec3::newTemp((attackTarget->x - x), 0,
-                                          (attackTarget->z - z));
-                *aim = aim->normalize();
+                Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
+                               .normalize();
 
-                Vec3* dir = Vec3::newTemp(sin(yRot * PI / 180), 0,
-                                          -cos(yRot * PI / 180));
-                *dir = dir->normalize();
+                Vec3 dir = Vec3(sin(yRot * PI / 180), 0, -cos(yRot * PI / 180))
+                               .normalize();
 
-                float dot = (float)dir->dot(*aim);
+                float dot = (float)dir.dot(aim);
                 float angleDegs = acos(dot) * 180 / PI;
                 angleDegs = angleDegs + 0.5f;
 
@@ -985,13 +978,13 @@ void EnderDragon::findNewTarget() {
 
             int targetNodeIndex = 0;
             if (playerNearestToEgg != NULL) {
-                Vec3* aim = Vec3::newTemp(playerNearestToEgg->x, 0,
-                                          playerNearestToEgg->z);
-                *aim = aim->normalize();
+                Vec3 aim = Vec3(playerNearestToEgg->x, 0, playerNearestToEgg->z)
+                               .normalize();
+
                 // app.DebugPrintf("Final marker node near (%f,%d,%f)\n",
                 // -aim->x*40,105,-aim->z*40 );
                 targetNodeIndex =
-                    findClosestNode(-aim->x * 40, 105.0, -aim->z * 40);
+                    findClosestNode(-aim.x * 40, 105.0, -aim.z * 40);
             } else {
                 targetNodeIndex = findClosestNode(40.0, eggHeight, 0.0);
             }

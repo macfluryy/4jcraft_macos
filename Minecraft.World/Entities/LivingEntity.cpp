@@ -792,18 +792,18 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
               0.8f + level->random->nextFloat() * 0.4f);
 
     for (int i = 0; i < 5; i++) {
-        Vec3* d = Vec3::newTemp((random->nextFloat() - 0.5) * 0.1,
+        Vec3 d = Vec3((random->nextFloat() - 0.5) * 0.1,
                                 Math::random() * 0.1 + 0.1, 0);
-        d->xRot(-xRot * PI / 180);
-        d->yRot(-yRot * PI / 180);
+        d.xRot(-xRot * PI / 180);
+        d.yRot(-yRot * PI / 180);
 
-        Vec3* p = Vec3::newTemp((random->nextFloat() - 0.5) * 0.3,
+        Vec3 p = Vec3((random->nextFloat() - 0.5) * 0.3,
                                 -random->nextFloat() * 0.6 - 0.3, 0.6);
-        p->xRot(-xRot * PI / 180);
-        p->yRot(-yRot * PI / 180);
-        *p = p->add(x, y + getHeadHeight(), z);
+        p.xRot(-xRot * PI / 180);
+        p.yRot(-yRot * PI / 180);
+        p = p.add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
-                           p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
+                           p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
     }
 }
 
@@ -1641,10 +1641,10 @@ void LivingEntity::take(std::shared_ptr<Entity> e, int orgCount) {
 }
 
 bool LivingEntity::canSee(std::shared_ptr<Entity> target) {
-    HitResult* hres = level->clip(
-        Vec3::newTemp(x, y + getHeadHeight(), z),
-        Vec3::newTemp(target->x, target->y + target->getHeadHeight(),
-                      target->z));
+    Vec3 a{x, y + getHeadHeight(), z};
+    Vec3 b{target->x, target->y + target->getHeadHeight(), target->z};
+
+    HitResult* hres = level->clip(&a, &b);
     bool retVal = (hres == NULL);
     delete hres;
     return retVal;
@@ -1690,11 +1690,11 @@ Vec3* LivingEntity::getPos(float a) {
 }
 
 HitResult* LivingEntity::pick(double range, float a) {
-    Vec3* from = getPos(a);
-    Vec3* b = getViewVector(a);
-    Vec3* to = Vec3::newTemp(b->x * range, b->y * range, b->z * range);
-    *to = to->add(from->x, from->y, from->z);
-    return level->clip(from, to);
+    Vec3 from = *getPos(a);
+    Vec3 b = *getViewVector(a);
+    Vec3 to{b.x * range, b.y * range, b.z * range};
+    to = to.add(from.x, from.y, from.z);
+    return level->clip(&from, &to);
 }
 
 bool LivingEntity::isEffectiveAi() { return !level->isClientSide; }

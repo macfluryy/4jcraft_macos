@@ -62,7 +62,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
         player->yo + (player->y - player->yo) * a + 1.62 - player->heightOffset;
     double z = player->zo + (player->z - player->zo) * a;
 
-    Vec3* from = Vec3::newTemp(x, y, z);
+    Vec3 from(x, y, z);
 
     float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
     float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
@@ -74,9 +74,9 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
-    *to = to->add(from->x, from->y, from->z);
-    HitResult* hr = level->clip(from, to, true);
+    Vec3 to(xa * range, ya * range, za * range);
+    to = to.add(from.x, from.y, from.z);
+    HitResult* hr = level->clip(&from, &to, true);
     if (hr == NULL) return itemInstance;
 
     // check entity collision
@@ -94,7 +94,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
 
         float rr = e->getPickRadius();
         AABB* bb = e->bb->grow(rr, rr, rr);
-        if (bb->contains(from)) {
+        if (bb->contains(&from)) {
             hitEntity = true;
         }
     }

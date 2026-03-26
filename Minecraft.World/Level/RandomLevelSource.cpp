@@ -109,32 +109,34 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
     // 	// only check if either x or z values are within the falloff
     // 	if(xxx > (min - falloffStart)
 
-    Vec3* topLeft = Vec3::newTemp(min, 0, min);
-    Vec3* topRight = Vec3::newTemp(max, 0, min);
-    Vec3* bottomLeft = Vec3::newTemp(min, 0, max);
-    Vec3* bottomRight = Vec3::newTemp(max, 0, max);
+    Vec3 topLeft(min, 0, min);
+    Vec3 topRight(max, 0, min);
+    Vec3 bottomLeft(min, 0, max);
+    Vec3 bottomRight(max, 0, max);
 
     float closest = falloffStart;
     float dist;
     // make sure we're in range of the edges before we do a full distance check
     if ((xxx > (min - falloffStart) && xxx < (min + falloffStart)) ||
         (xxx > (max - falloffStart) && xxx < (max + falloffStart))) {
-        Vec3* point = Vec3::newTemp(xxx, 0, zzz);
+        Vec3 point(xxx, 0, zzz);
+
         if (xxx > 0)
-            dist = point->distanceFromLine(*topRight, *bottomRight);
+            dist = point.distanceFromLine(topRight, bottomRight);
         else
-            dist = point->distanceFromLine(*topLeft, *bottomLeft);
+            dist = point.distanceFromLine(topLeft, bottomLeft);
         closest = dist;
     }
 
     // make sure we're in range of the edges before we do a full distance check
     if ((zzz > (min - falloffStart) && zzz < (min + falloffStart)) ||
         (zzz > (max - falloffStart) && zzz < (max + falloffStart))) {
-        Vec3* point = Vec3::newTemp(xxx, 0, zzz);
+        Vec3 point(xxx, 0, zzz);
+
         if (zzz > 0)
-            dist = point->distanceFromLine(*bottomLeft, *bottomRight);
+            dist = point.distanceFromLine(bottomLeft, bottomRight);
         else
-            dist = point->distanceFromLine(*topLeft, *topRight);
+            dist = point.distanceFromLine(topLeft, topRight);
         if (dist < closest) closest = dist;
     }
 

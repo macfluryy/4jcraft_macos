@@ -184,7 +184,8 @@ void Arrow::tick() {
         if (t > 0) {
             Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
             AABB* aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
-            if (aabb != NULL && aabb->contains(Vec3::newTemp(x, y, z))) {
+            Vec3 pos{x, y, z};
+            if (aabb != NULL && aabb->contains(&pos)) {
                 inGround = true;
             }
         }
@@ -217,15 +218,17 @@ void Arrow::tick() {
         flightTime++;
     }
 
-    Vec3* from = Vec3::newTemp(x, y, z);
-    Vec3* to = Vec3::newTemp(x + xd, y + yd, z + zd);
-    HitResult* res = level->clip(from, to, false, true);
+    Vec3 from{x, y, z};
+    Vec3 to{x + xd, y + yd, z + zd};
+    HitResult* res = level->clip(&from, &to, false, true);
 
-    from = Vec3::newTemp(x, y, z);
-    to = Vec3::newTemp(x + xd, y + yd, z + zd);
+    from = Vec3{x, y, z};
+    to = Vec3{x + xd, y + yd, z + zd};
+
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos.x, res->pos.y, res->pos.z);
+        to = Vec3{res->pos.x, res->pos.y, res->pos.z};
     }
+
     std::shared_ptr<Entity> hitEntity = nullptr;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
         shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
@@ -237,9 +240,9 @@ void Arrow::tick() {
 
         float rr = 0.3f;
         AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        HitResult* p = bb->clip(&from, &to);
         if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
                 nearest = dd;

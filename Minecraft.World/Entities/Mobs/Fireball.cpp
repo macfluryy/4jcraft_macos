@@ -166,14 +166,14 @@ void Fireball::tick() {
     }
 
     MemSect(41);
-    Vec3* from = Vec3::newTemp(x, y, z);
-    Vec3* to = Vec3::newTemp(x + xd, y + yd, z + zd);
-    HitResult* res = level->clip(from, to);
+    Vec3 from(x, y, z);
+    Vec3 to(x + xd, y + yd, z + zd);
+    HitResult* res = level->clip(&from, &to);
 
-    from = Vec3::newTemp(x, y, z);
-    to = Vec3::newTemp(x + xd, y + yd, z + zd);
+    from = Vec3(x, y, z);
+    to = Vec3(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        *to = Vec3{res->pos.x, res->pos.y, res->pos.z};
+        to = Vec3{res->pos.x, res->pos.y, res->pos.z};
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
@@ -188,9 +188,9 @@ void Fireball::tick() {
 
         float rr = 0.3f;
         AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        HitResult* p = bb->clip(&from, &to);
         if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
                 nearest = dd;

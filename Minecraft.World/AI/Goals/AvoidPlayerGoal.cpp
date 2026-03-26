@@ -64,10 +64,10 @@ bool AvoidPlayerGoal::canUse() {
         delete entities;
     }
 
+    Vec3 avoid_pos(toAvoid.lock()->x, toAvoid.lock()->y, toAvoid.lock()->z);
     Vec3* pos = RandomPos::getPosAvoid(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
-        7,
-        Vec3::newTemp(toAvoid.lock()->x, toAvoid.lock()->y, toAvoid.lock()->z));
+        7, &avoid_pos);
     if (pos == NULL) return false;
     if (toAvoid.lock()->distanceToSqr(pos->x, pos->y, pos->z) <
         toAvoid.lock()->distanceToSqr(mob->shared_from_this()))

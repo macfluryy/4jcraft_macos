@@ -1045,9 +1045,8 @@ bool TileRenderer::tesselateAnvilInWorld(AnvilTile* tt, int x, int y, int z,
 
 float TileRenderer::tesselateAnvilPiece(AnvilTile* tt, int x, int y, int z,
                                         int part, float bottom, float width,
-                                        float height, float length,
-                                        bool rotate, bool render,
-                                        int data) {
+                                        float height, float length, bool rotate,
+                                        bool render, int data) {
     if (rotate) {
         float swap = width;
         width = length;
@@ -4068,9 +4067,11 @@ bool TileRenderer::tesselateCrossInWorld(Tile* tt, int x, int y, int z) {
     float zt = (float)z;
 
     if (tt == Tile::tallgrass) {
-		// 4jcraft add a bunch of casts to prevent overflow (i pray to god)
-		int64_t seed = ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
-		seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) + ((uint64_t)seed * 11ULL));
+        // 4jcraft add a bunch of casts to prevent overflow (i pray to god)
+        int64_t seed =
+            ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
+        seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) +
+                         ((uint64_t)seed * 11ULL));
 
         xt += ((((seed >> 16) & 0xf) / 15.0f) - 0.5f) * 0.5f;
         yt += ((((seed >> 20) & 0xf) / 15.0f) - 1.0f) * 0.2f;
@@ -4326,8 +4327,10 @@ bool TileRenderer::tesselateLilypadInWorld(Tile* tt, int x, int y, int z) {
     float v1 = tex->getV1(true);
 
     // 4jcraft add a bunch of casts to prevent overflow (i pray to god)
-    int64_t seed = ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
-    seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) + ((uint64_t)seed * 11ULL));
+    int64_t seed =
+        ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
+    seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) +
+                     ((uint64_t)seed * 11ULL));
 
     int dir = (int)((seed >> 16) & 0x3);
 

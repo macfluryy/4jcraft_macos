@@ -1,6 +1,8 @@
 #pragma once
 
 #include <optional>
+#include <string>
+
 class AABB;
 
 class Vec3 {

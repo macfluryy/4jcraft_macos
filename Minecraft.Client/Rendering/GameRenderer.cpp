@@ -305,8 +305,8 @@ void GameRenderer::pick(float a) {
     }
 
     Vec3* b = mc->cameraTargetPlayer->getViewVector(a);
-    Vec3* to = Vec3::newTemp(b->x * range, b->y * range, b->z * range);
-    *to = to->add(from->x, from->y, from->z);
+    Vec3 to(b->x * range, b->y * range, b->z * range);
+    to = to.add(from->x, from->y, from->z);
     hovered = nullptr;
     float overlap = 1;
     std::vector<std::shared_ptr<Entity> >* objects = mc->level->getEntities(
@@ -323,7 +323,7 @@ void GameRenderer::pick(float a) {
 
         float rr = e->getPickRadius();
         AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        HitResult* p = bb->clip(from, &to);
         if (bb->contains(from)) {
             if (0 < nearest || nearest == 0) {
                 hovered = e;
@@ -524,11 +524,12 @@ void GameRenderer::moveCameraToPlayer(float a) {
 
                 // 4J - corrected bug here where zo was also added to x
                 // component
-                HitResult* hr = mc->level->clip(
-                    Vec3::newTemp(x + xo, y + yo, z + zo),
-                    Vec3::newTemp(x - xd + xo, y - yd + yo, z - zd + zo));
+                Vec3 a(x + xo, y + yo, z + zo);
+                Vec3 b(x - xd + xo, y - yd + yo, z - zd + zo);
+                HitResult* hr = mc->level->clip(&a, &b);
                 if (hr != NULL) {
-                    double dist = hr->pos.distanceTo(*Vec3::newTemp(x, y, z));
+                    Vec3 p(x, y, z);
+                    double dist = hr->pos.distanceTo(p);
                     if (dist < cameraDist) cameraDist = dist;
                     delete hr;
                 }
@@ -1865,10 +1866,10 @@ void GameRenderer::setupClearColor(float a) {
     fb = (float)fogColor->z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3* sunAngle = Mth::sin(level->getSunAngle(a)) > 0
-                             ? Vec3::newTemp(-1, 0, 0)
-                             : Vec3::newTemp(1, 0, 0);
-        float d = (float)player->getViewVector(a)->dot(*sunAngle);
+        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0
+                             ? Vec3(-1, 0, 0)
+                             : Vec3(1, 0, 0);
+        float d = (float)player->getViewVector(a)->dot(sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {
             float* c =

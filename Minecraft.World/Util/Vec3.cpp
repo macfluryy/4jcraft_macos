@@ -1,7 +1,8 @@
-#include "../Platform/stdafx.h"
 #include "Vec3.h"
+
 #include <format>
 #include <optional>
+
 #include "AABB.h"
 
 unsigned int Vec3::tlsIdx = 0;

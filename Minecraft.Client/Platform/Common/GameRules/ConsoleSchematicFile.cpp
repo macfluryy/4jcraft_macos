@@ -463,8 +463,8 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
         schematicCoordToChunkCoord(destinationBox, te->x, te->z, rot, targetX,
                                    targetZ);
 
-        Vec3* pos = Vec3::newTemp(targetX, targetY, targetZ);
-        if (chunkBox->containsIncludingLowerBound(pos)) {
+        Vec3 pos(targetX, targetY, targetZ);
+        if (chunkBox->containsIncludingLowerBound(&pos)) {
             std::shared_ptr<TileEntity> teCopy = chunk->getTileEntity(
                 (int)targetX & 15, (int)targetY & 15, (int)targetZ & 15);
 
@@ -510,9 +510,8 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
 
         // Add 0.01 as the AABB::contains function returns false if a value is
         // <= the lower bound
-        Vec3* pos =
-            Vec3::newTemp(targetX + 0.01, targetY + 0.01, targetZ + 0.01);
-        if (!chunkBox->containsIncludingLowerBound(pos)) {
+        Vec3 pos(targetX + 0.01, targetY + 0.01, targetZ + 0.01);
+        if (!chunkBox->containsIncludingLowerBound(&pos)) {
             ++it;
             continue;
         }
@@ -800,8 +799,8 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, byteArray* data,
     // if (xs * ys * zs == LevelChunk::BLOCKS_LENGTH)
     //{
     //	byteArray blockData = byteArray(data->data + blocksP,
-    //Level::CHUNK_TILE_COUNT); 	chunk->getBlockData(blockData); 	blocksP  +=
-    //blockData.length;
+    // Level::CHUNK_TILE_COUNT); 	chunk->getBlockData(blockData);
+    // blocksP  += blockData.length;
 
     //	byteArray dataData = byteArray(data->data + dataP, 16384);
     //	chunk->getBlockLightData(dataData);

@@ -724,13 +724,13 @@ void Minecart::push(std::shared_ptr<Entity> e) {
             // other
             //  Fix for #38882 - TU5: Gameplay: Minecart with furnace is not
             //  able to move another minecart on the rail.
-            Vec3* dir = Vec3::newTemp(xo, 0, zo);
-            *dir = dir->normalize();
-            Vec3* facing =
-                Vec3::newTemp(cos(yRot * PI / 180), 0, sin(yRot * PI / 180));
-            *facing = facing->normalize();
+            Vec3 dir(xo, 0, zo);
+            dir = dir.normalize();
 
-            double dot = abs(dir->dot(*facing));
+            Vec3 facing(cos(yRot * PI / 180), 0, sin(yRot * PI / 180));
+            facing = facing.normalize();
+
+            double dot = abs(dir.dot(facing));
 
             if (dot < 0.8f) {
                 return;

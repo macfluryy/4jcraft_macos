@@ -6332,7 +6332,7 @@ int CMinecraftApp::WarningTrialTexturePackReturned(
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
 				const char *pchPackName=wstringtofilename(pDLCPack->getName());
 				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
-				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
+				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);
 
 				if(pSONYDLCInfo!=NULL)
 				{
@@ -6353,14 +6353,14 @@ int CMinecraftApp::WarningTrialTexturePackReturned(
 #if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
 					if(app.CheckForEmptyStore(iPad)==false)
 #endif
-					{					
+					{
 						if(app.DLCAlreadyPurchased(chSkuID))
 						{
 							app.DownloadAlreadyPurchased(chSkuID);
 						}
 						else
 						{
-							app.Checkout(chSkuID);	
+							app.Checkout(chSkuID);
 						}
 					}
 				}

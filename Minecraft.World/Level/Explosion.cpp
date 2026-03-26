@@ -108,7 +108,7 @@ void Explosion::explode() {
         level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
     std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(),
                                                    levelEntities->end());
-    Vec3* center = Vec3::newTemp(x, y, z);
+    Vec3 center(x, y, z);
 
     AUTO_VAR(itEnd, entities.end());
     for (AUTO_VAR(it, entities.begin()); it != itEnd; it++) {
@@ -146,7 +146,7 @@ void Explosion::explode() {
                 za /= da;
             }
 
-            double sp = level->getSeenPercent(center, e->bb);
+            double sp = level->getSeenPercent(&center, e->bb);
             double pow = (1 - dist) * sp;
             if (canDamage)
                 e->hurt(DamageSource::explosion(this),

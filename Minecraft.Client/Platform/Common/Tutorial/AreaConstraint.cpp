@@ -37,15 +37,15 @@ bool AreaConstraint::canMoveToPosition(double xo, double yo, double zo,
                                        double xt, double yt, double zt) {
     if (!m_restrictsMovement) return true;
 
-    Vec3* targetPos = Vec3::newTemp(xt, yt, zt);
+    Vec3 targetPos(xt, yt, zt);
     Minecraft* minecraft = Minecraft::GetInstance();
 
-    if (movementArea->contains(targetPos) == contains) {
+    if (movementArea->contains(&targetPos) == contains) {
         return true;
     }
-    Vec3* origPos = Vec3::newTemp(xo, yo, zo);
+    Vec3 origPos(xo, yo, zo);
 
-    double currDist = origPos->distanceTo(movementArea);
-    double targetDist = targetPos->distanceTo(movementArea);
+    double currDist = origPos.distanceTo(movementArea);
+    double targetDist = targetPos.distanceTo(movementArea);
     return targetDist < currDist;
 }
