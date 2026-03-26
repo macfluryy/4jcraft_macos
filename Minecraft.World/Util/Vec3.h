@@ -18,7 +18,7 @@ public:
     Vec3 cross(const Vec3& p) const;
     Vec3 add(double x, double y, double z) const;
     double distanceTo(const Vec3& p) const;
-    double distanceToSqr(const Vec3& p);
+    double distanceToSqr(const Vec3& p) const;
     double distanceToSqr(double x2, double y2, double z2) const;
     Vec3 scale(double l) const;
     double length() const;

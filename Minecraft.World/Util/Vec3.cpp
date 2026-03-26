@@ -40,7 +40,7 @@ double Vec3::distanceTo(const Vec3& p) const {
     return std::sqrt(xd * xd + yd * yd + zd * zd);
 }
 
-double Vec3::distanceToSqr(const Vec3& p) {
+double Vec3::distanceToSqr(const Vec3& p) const {
     double xd = p.x - x;
     double yd = p.y - y;
     double zd = p.z - z;
