@@ -336,17 +336,6 @@ static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
 
 static inline DWORD GetLastError(VOID) { return errno; }
 
-static inline VOID Sleep(DWORD dwMilliseconds) {
-    struct timespec ts;
-    ts.tv_nsec = (dwMilliseconds * 1000000) % 1000000000;
-    ts.tv_sec = dwMilliseconds / 1000;
-
-    int ret;
-    do {
-        ret = nanosleep(&ts, &ts);
-    } while (ret == -1 && errno == EINTR);
-}
-
 static inline LONG64 InterlockedCompareExchangeRelease64(
     LONG64 volatile* Destination, LONG64 Exchange, LONG64 Comperand) {
     LONG64 expected = Comperand;
