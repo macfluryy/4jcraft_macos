@@ -142,7 +142,7 @@ void Throwable::tick() {
     from = Vec3::newTemp(x, y, z);
     to = Vec3::newTemp(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        to = Vec3::newTemp(res->pos.x, res->pos.y, res->pos.z);
     }
 
     if (!level->isClientSide) {

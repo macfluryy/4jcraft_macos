@@ -1506,7 +1506,7 @@ bool LocalPlayer::handleMouseClick(int button) {
             bool usedItem = false;
             if (minecraft->gameMode->useItemOn(
                     minecraft->localplayers[GetXboxPad()], level, item, x, y, z,
-                    face, minecraft->hitResult->pos, false, &usedItem)) {
+                    face, &minecraft->hitResult->pos, false, &usedItem)) {
                 // Presume that if we actually used the held item, then we've
                 // placed it
                 if (usedItem) {

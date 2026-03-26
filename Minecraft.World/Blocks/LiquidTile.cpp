@@ -135,14 +135,14 @@ Vec3* LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
                 t = getRenderedDepth(level, xt, yt - 1, zt);
                 if (t >= 0) {
                     int dir = t - (mid - 8);
-                    flow = flow->add((xt - x) * dir, (yt - y) * dir,
-                                     (zt - z) * dir);
+                    *flow = flow->add((xt - x) * dir, (yt - y) * dir,
+                                      (zt - z) * dir);
                 }
             }
         } else {
             if (t >= 0) {
                 int dir = t - mid;
-                flow =
+                *flow =
                     flow->add((xt - x) * dir, (yt - y) * dir, (zt - z) * dir);
             }
         }
@@ -157,9 +157,9 @@ Vec3* LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
         if (ok || isSolidFace(level, x, y + 1, z + 1, 3)) ok = true;
         if (ok || isSolidFace(level, x - 1, y + 1, z, 4)) ok = true;
         if (ok || isSolidFace(level, x + 1, y + 1, z, 5)) ok = true;
-        if (ok) flow = flow->normalize()->add(0, -6, 0);
+        if (ok) *flow = flow->normalize().add(0, -6, 0);
     }
-    flow = flow->normalize();
+    *flow = flow->normalize();
     return flow;
 }
 

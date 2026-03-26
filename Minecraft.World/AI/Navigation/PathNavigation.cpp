@@ -151,7 +151,7 @@ void PathNavigation::updatePath() {
     float waypointRadiusSqr = mob->bbWidth * mob->bbWidth;
     for (int i = path->getIndex(); i < firstElevation; ++i) {
         Vec3* pathPos = path->getPos(mob->shared_from_this(), i);
-        if (mobPos->distanceToSqr(pathPos) < waypointRadiusSqr) {
+        if (mobPos->distanceToSqr(*pathPos) < waypointRadiusSqr) {
             path->setIndex(i + 1);
         }
     }
@@ -170,7 +170,7 @@ void PathNavigation::updatePath() {
 
     // stuck detection (probably pushed off path)
     if (_tick - lastStuckCheck > 100) {
-        if (mobPos->distanceToSqr(lastStuckCheckPos) < 1.5 * 1.5) stop();
+        if (mobPos->distanceToSqr(*lastStuckCheckPos) < 1.5 * 1.5) stop();
         lastStuckCheck = _tick;
         lastStuckCheckPos->x = mobPos->x;
         lastStuckCheckPos->y = mobPos->y;

@@ -15,6 +15,7 @@
 #include "Item.h"
 #include "HangingEntityItem.h"
 #include "../Util/HtmlString.h"
+#include "Util/Vec3.h"
 
 typedef Item::Tier _Tier;
 
@@ -1614,7 +1615,8 @@ HitResult* Item::getPlayerPOVHitResult(Level* level,
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = from->add(xa * range, ya * range, za * range);
+    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
+    *to = to->add(from->x, from->y, from->z);
     return level->clip(from, to, alsoPickLiquid, !alsoPickLiquid);
 }
 

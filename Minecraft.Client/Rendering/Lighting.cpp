@@ -22,13 +22,15 @@ void Lighting::turnOn() {
     float d = 0.6f;
     float s = 0.0f;
 
-    Vec3* l = Vec3::newTemp(0.2f, 1.0f, -0.7f)->normalize();
+    Vec3* l = Vec3::newTemp(0.2f, 1.0f, -0.7f);
+    *l = l->normalize();
     glLight(GL_LIGHT0, GL_POSITION, getBuffer(l->x, l->y, l->z, 0));
     glLight(GL_LIGHT0, GL_DIFFUSE, getBuffer(d, d, d, 1));
     glLight(GL_LIGHT0, GL_AMBIENT, getBuffer(0.0f, 0.0f, 0.0f, 1.0f));
     glLight(GL_LIGHT0, GL_SPECULAR, getBuffer(s, s, s, 1.0f));
 
-    l = Vec3::newTemp(-0.2f, 1.0f, 0.7f)->normalize();
+    l = Vec3::newTemp(-0.2f, 1.0f, 0.7f);
+    *l = l->normalize();
     glLight(GL_LIGHT1, GL_POSITION, getBuffer(l->x, l->y, l->z, 0));
     glLight(GL_LIGHT1, GL_DIFFUSE, getBuffer(d, d, d, 1));
     glLight(GL_LIGHT1, GL_AMBIENT, getBuffer(0.0f, 0.0f, 0.0f, 1.0f));

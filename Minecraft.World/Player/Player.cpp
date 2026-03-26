@@ -435,7 +435,7 @@ void Player::tick() {
 		// minecart. For some reason some of the torches come off so it will also need some fixing along the way.
 		static bool madeTrack = false;
 		if( !madeTrack )
-		{	
+		{
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Item::minecart, 1 ) ) );
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::goldenRail, 10 ) ) );
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::lever, 10 ) ) );
@@ -537,7 +537,7 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
                                     -random->nextFloat() * 0.6 - 0.3, 0.6);
             p->xRot(-xRot * PI / 180);
             p->yRot(-yRot * PI / 180);
-            p = p->add(x, y + getHeadHeight(), z);
+            *p = p->add(x, y + getHeadHeight(), z);
 
             level->addParticle(PARTICLE_ICONCRACK(useItem->getItem()->id, 0),
                                p->x, p->y, p->z, d->x, d->y + 0.05, d->z);

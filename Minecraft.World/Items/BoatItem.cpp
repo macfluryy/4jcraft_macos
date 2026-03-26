@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "ItemInstance.h"
+#include "Util/Vec3.h"
 #include "BoatItem.h"
 
 BoatItem::BoatItem(int id) : Item(id) { maxStackSize = 1; }
@@ -36,7 +37,8 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = from->add(xa * range, ya * range, za * range);
+    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
+    *to = to->add(from->x, from->y, from->z);
     HitResult* hr = level->clip(from, to, true);
     if (hr == NULL) return false;
 
@@ -72,7 +74,8 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = from->add(xa * range, ya * range, za * range);
+    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
+    *to = to->add(from->x, from->y, from->z);
     HitResult* hr = level->clip(from, to, true);
     if (hr == NULL) return itemInstance;
 

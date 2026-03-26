@@ -173,7 +173,7 @@ void Fireball::tick() {
     from = Vec3::newTemp(x, y, z);
     to = Vec3::newTemp(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        *to = Vec3{res->pos.x, res->pos.y, res->pos.z};
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(

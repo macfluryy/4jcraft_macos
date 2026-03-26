@@ -5,7 +5,9 @@
 
 #include "../Platform/stdafx.h"
 #include "AABB.h"
+#include <optional>
 #include "HitResult.h"
+#include "Util/Vec3.h"
 
 unsigned int AABB::tlsIdx = 0;
 AABB::ThreadStorage* AABB::tlsDefault = NULL;
@@ -238,55 +240,62 @@ AABB* AABB::shrink(double xa, double ya, double za) {
 AABB* AABB::copy() { return AABB::newTemp(x0, y0, z0, x1, y1, z1); }
 
 HitResult* AABB::clip(Vec3* a, Vec3* b) {
-    Vec3* xh0 = a->clipX(b, x0);
-    Vec3* xh1 = a->clipX(b, x1);
+    auto xh0 = a->clipX(*b, x0);
+    auto xh1 = a->clipX(*b, x1);
 
-    Vec3* yh0 = a->clipY(b, y0);
-    Vec3* yh1 = a->clipY(b, y1);
+    auto yh0 = a->clipY(*b, y0);
+    auto yh1 = a->clipY(*b, y1);
 
-    Vec3* zh0 = a->clipZ(b, z0);
-    Vec3* zh1 = a->clipZ(b, z1);
+    auto zh0 = a->clipZ(*b, z0);
+    auto zh1 = a->clipZ(*b, z1);
 
-    if (!containsX(xh0)) xh0 = NULL;
-    if (!containsX(xh1)) xh1 = NULL;
-    if (!containsY(yh0)) yh0 = NULL;
-    if (!containsY(yh1)) yh1 = NULL;
-    if (!containsZ(zh0)) zh0 = NULL;
-    if (!containsZ(zh1)) zh1 = NULL;
+    if (!(xh0.has_value() and containsX(&*xh0))) xh0 = std::nullopt;
+    if (!(xh1.has_value() and containsX(&*xh1))) xh1 = std::nullopt;
+    if (!(yh0.has_value() and containsY(&*yh0))) yh0 = std::nullopt;
+    if (!(yh1.has_value() and containsY(&*yh1))) yh1 = std::nullopt;
+    if (!(zh0.has_value() and containsZ(&*zh0))) zh0 = std::nullopt;
+    if (!(zh1.has_value() and containsZ(&*zh1))) zh1 = std::nullopt;
+    Vec3* closest = nullptr;
 
-    Vec3* closest = NULL;
+    if (xh0.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*xh0) < a->distanceToSqr(*closest)))
+        *closest = *xh0;
+    if (xh1.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
+        *closest = *xh1;
+    if (yh0.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
+        *closest = *yh0;
+    if (yh1.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
+        *closest = *yh1;
+    if (zh0.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
+        *closest = *zh0;
+    if (zh1.has_value() and
+        (closest == nullptr or
+         a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
+        *closest = *zh1;
 
-    if (xh0 != NULL &&
-        (closest == NULL || a->distanceToSqr(xh0) < a->distanceToSqr(closest)))
-        closest = xh0;
-    if (xh1 != NULL &&
-        (closest == NULL || a->distanceToSqr(xh1) < a->distanceToSqr(closest)))
-        closest = xh1;
-    if (yh0 != NULL &&
-        (closest == NULL || a->distanceToSqr(yh0) < a->distanceToSqr(closest)))
-        closest = yh0;
-    if (yh1 != NULL &&
-        (closest == NULL || a->distanceToSqr(yh1) < a->distanceToSqr(closest)))
-        closest = yh1;
-    if (zh0 != NULL &&
-        (closest == NULL || a->distanceToSqr(zh0) < a->distanceToSqr(closest)))
-        closest = zh0;
-    if (zh1 != NULL &&
-        (closest == NULL || a->distanceToSqr(zh1) < a->distanceToSqr(closest)))
-        closest = zh1;
-
-    if (closest == NULL) return NULL;
+    if (closest == nullptr) return nullptr;
 
     int face = -1;
 
-    if (closest == xh0) face = 4;
-    if (closest == xh1) face = 5;
-    if (closest == yh0) face = 0;
-    if (closest == yh1) face = 1;
-    if (closest == zh0) face = 2;
-    if (closest == zh1) face = 3;
+    if (*closest == xh0) face = 4;
+    if (*closest == xh1) face = 5;
+    if (*closest == yh0) face = 0;
+    if (*closest == yh1) face = 1;
+    if (*closest == zh0) face = 2;
+    if (*closest == zh1) face = 3;
 
-    return new HitResult(0, 0, 0, face, closest);
+    closest = Vec3::newTemp(closest->x, closest->y, closest->z);
+
+    return new HitResult(0, 0, 0, face, *closest);
 }
 
 bool AABB::containsX(Vec3* v) {

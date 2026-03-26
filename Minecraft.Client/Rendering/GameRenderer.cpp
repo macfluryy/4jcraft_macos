@@ -301,11 +301,12 @@ void GameRenderer::pick(float a) {
     }
 
     if (mc->hitResult != NULL) {
-        dist = mc->hitResult->pos->distanceTo(from);
+        dist = mc->hitResult->pos.distanceTo(*from);
     }
 
     Vec3* b = mc->cameraTargetPlayer->getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
+    Vec3* to = Vec3::newTemp(b->x * range, b->y * range, b->z * range);
+    *to = to->add(from->x, from->y, from->z);
     hovered = nullptr;
     float overlap = 1;
     std::vector<std::shared_ptr<Entity> >* objects = mc->level->getEntities(
@@ -527,7 +528,7 @@ void GameRenderer::moveCameraToPlayer(float a) {
                     Vec3::newTemp(x + xo, y + yo, z + zo),
                     Vec3::newTemp(x - xd + xo, y - yd + yo, z - zd + zo));
                 if (hr != NULL) {
-                    double dist = hr->pos->distanceTo(Vec3::newTemp(x, y, z));
+                    double dist = hr->pos.distanceTo(*Vec3::newTemp(x, y, z));
                     if (dist < cameraDist) cameraDist = dist;
                     delete hr;
                 }
@@ -1867,7 +1868,7 @@ void GameRenderer::setupClearColor(float a) {
         Vec3* sunAngle = Mth::sin(level->getSunAngle(a)) > 0
                              ? Vec3::newTemp(-1, 0, 0)
                              : Vec3::newTemp(1, 0, 0);
-        float d = (float)player->getViewVector(a)->dot(sunAngle);
+        float d = (float)player->getViewVector(a)->dot(*sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {
             float* c =

@@ -45,15 +45,15 @@ void _Polygon::mirror() {
 }
 
 void _Polygon::render(Tesselator* t, float scale) {
-    Vec3* v0 = vertices[1]->pos->vectorTo(vertices[0]->pos);
-    Vec3* v1 = vertices[1]->pos->vectorTo(vertices[2]->pos);
-    Vec3* n = v1->cross(v0)->normalize();
+    Vec3 v0 = vertices[1]->pos->vectorTo(*vertices[0]->pos);
+    Vec3 v1 = vertices[1]->pos->vectorTo(*vertices[2]->pos);
+    Vec3 n = v1.cross(v0).normalize();
 
     t->begin();
     if (_flipNormal) {
-        t->normal(-(float)n->x, -(float)n->y, -(float)n->z);
+        t->normal(-(float)n.x, -(float)n.y, -(float)n.z);
     } else {
-        t->normal((float)n->x, (float)n->y, (float)n->z);
+        t->normal((float)n.x, (float)n.y, (float)n.z);
     }
 
     for (int i = 0; i < 4; i++) {

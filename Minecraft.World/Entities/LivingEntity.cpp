@@ -31,6 +31,7 @@
 #include "../Util/ParticleTypes.h"
 #include "../Stats/GenericStats.h"
 #include "ItemEntity.h"
+#include "Util/Vec3.h"
 
 const double LivingEntity::MIN_MOVEMENT_DISTANCE = 0.005;
 
@@ -800,7 +801,7 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
                                 -random->nextFloat() * 0.6 - 0.3, 0.6);
         p->xRot(-xRot * PI / 180);
         p->yRot(-yRot * PI / 180);
-        p = p->add(x, y + getHeadHeight(), z);
+        *p = p->add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
                            p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
     }
@@ -1691,7 +1692,8 @@ Vec3* LivingEntity::getPos(float a) {
 HitResult* LivingEntity::pick(double range, float a) {
     Vec3* from = getPos(a);
     Vec3* b = getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
+    Vec3* to = Vec3::newTemp(b->x * range, b->y * range, b->z * range);
+    *to = to->add(from->x, from->y, from->z);
     return level->clip(from, to);
 }
 

@@ -54,10 +54,11 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
         y += (p0->y + p1->y) / 2 - yy;
         z += p->z - zz;
 
-        Vec3* dir = p1->add(-p0->x, -p0->y, -p0->z);
+        Vec3* dir = Vec3::newTemp(-p0->x, -p0->y, -p0->z);
+        *dir = dir->add(p1->x, p1->y, p1->z);
         if (dir->length() == 0) {
         } else {
-            dir = dir->normalize();
+            *dir = dir->normalize();
             rot = (float)(atan2(dir->z, dir->x) * 180 / PI);
             xRot = (float)(atan(dir->y) * 73);
         }

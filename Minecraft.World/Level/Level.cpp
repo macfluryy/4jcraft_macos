@@ -2490,7 +2490,7 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
         }
     }
     if (current->length() > 0 && e->isPushedByWater()) {
-        current = current->normalize();
+        *current = current->normalize();
         double pow = 0.014;
         e->xd += current->x * pow;
         e->yd += current->y * pow;

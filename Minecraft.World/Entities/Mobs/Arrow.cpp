@@ -224,7 +224,7 @@ void Arrow::tick() {
     from = Vec3::newTemp(x, y, z);
     to = Vec3::newTemp(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        to = Vec3::newTemp(res->pos.x, res->pos.y, res->pos.z);
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
@@ -359,9 +359,9 @@ void Arrow::tick() {
             zTile = res->z;
             lastTile = level->getTile(xTile, yTile, zTile);
             lastData = level->getData(xTile, yTile, zTile);
-            xd = (float)(res->pos->x - x);
-            yd = (float)(res->pos->y - y);
-            zd = (float)(res->pos->z - z);
+            xd = (float)(res->pos.x - x);
+            yd = (float)(res->pos.y - y);
+            zd = (float)(res->pos.z - z);
             float dd = (float)sqrt(xd * xd + yd * yd + zd * zd);
             // 4J added check - zero dd here was creating NaNs
             if (dd > 0.0001f) {

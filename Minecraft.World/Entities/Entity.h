@@ -424,6 +424,7 @@ private:
     static int extraWanderTicks;
 
     static thread_local bool m_tlsUseSmallIds;
+
 public:
     static void tickExtraWandering();
     static void countFlagsForPIX();

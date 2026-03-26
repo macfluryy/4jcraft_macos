@@ -121,9 +121,9 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
         (xxx > (max - falloffStart) && xxx < (max + falloffStart))) {
         Vec3* point = Vec3::newTemp(xxx, 0, zzz);
         if (xxx > 0)
-            dist = point->distanceFromLine(topRight, bottomRight);
+            dist = point->distanceFromLine(*topRight, *bottomRight);
         else
-            dist = point->distanceFromLine(topLeft, bottomLeft);
+            dist = point->distanceFromLine(*topLeft, *bottomLeft);
         closest = dist;
     }
 
@@ -132,9 +132,9 @@ int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
         (zzz > (max - falloffStart) && zzz < (max + falloffStart))) {
         Vec3* point = Vec3::newTemp(xxx, 0, zzz);
         if (zzz > 0)
-            dist = point->distanceFromLine(bottomLeft, bottomRight);
+            dist = point->distanceFromLine(*bottomLeft, *bottomRight);
         else
-            dist = point->distanceFromLine(topLeft, topRight);
+            dist = point->distanceFromLine(*topLeft, *topRight);
         if (dist < closest) closest = dist;
     }
 
