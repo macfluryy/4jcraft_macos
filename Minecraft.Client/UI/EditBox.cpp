@@ -7,6 +7,9 @@ EditBox::EditBox(Screen* screen, Font* font, int x, int y, int width,
     // 4J - added initialisers
     maxLength = 0;
     frame = 0;
+    enableBackgroundDrawing =
+        true;  // 4jcraft: for toggling the background rendering (from 1.6.4,
+               // mainly for RepairScreen)
 
     this->screen = screen;
     this->font = font;
@@ -68,18 +71,36 @@ void EditBox::focus(bool newFocus) {
 }
 
 void EditBox::render() {
-    fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);
-    fill(x, y, x + width, y + height, 0xff000000);
+    // 4jcraft: render the background conditionally
+    if (enableBackgroundDrawing) {
+        fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);
+        fill(x, y, x + width, y + height, 0xff000000);
+    }
+
+    // 4jcraft: offset conditionally
+    int textX = x;
+    int textY = y;
+    if (enableBackgroundDrawing) {
+        textX += 4;
+        textY += (height - 8) / 2;
+    }
 
     if (active) {
         bool renderUnderscore = inFocus && (frame / 6 % 2 == 0);
-        drawString(font, value + (renderUnderscore ? L"_" : L""), x + 4,
-                   y + (height - 8) / 2, 0xe0e0e0);
+        drawString(font, value + (renderUnderscore ? L"_" : L""), textX, textY,
+                   0xe0e0e0);
     } else {
-        drawString(font, value, x + 4, y + (height - 8) / 2, 0x707070);
+        drawString(font, value, textX, textY,
+                   (enableBackgroundDrawing ? 0xe0e0e0 : 0xffffff));
     }
 }
 
 void EditBox::setMaxLength(int maxLength) { this->maxLength = maxLength; }
 
 int EditBox::getMaxLength() { return maxLength; }
+
+// 4jcraft: for toggling the background rendering (from 1.6.4, mainly for
+// RepairScreen)
+void EditBox::setEnableBackgroundDrawing(bool enable) {
+    enableBackgroundDrawing = enable;
+}
