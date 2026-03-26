@@ -17,6 +17,7 @@
 #include "../Headers/net.minecraft.h"
 #include "Util/Vec3.h"
 #include "Tile.h"
+#include <optional>
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 
@@ -2134,52 +2135,51 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     auto zh0 = a->clipZ(*b, tls->zz0);
     auto zh1 = a->clipZ(*b, tls->zz1);
 
-    Vec3* closest = nullptr;
+    std::optional<Vec3> closest = std::nullopt;
 
     if (xh0.has_value() and containsX(&*xh0) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*xh0) < a->distanceToSqr(*closest)))
-        *closest = *xh0;
+        closest = xh0;
 
     if (xh1.has_value() and containsX(&*xh1) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
-        *closest = *xh1;
+        closest = xh1;
 
     if (yh0.has_value() and containsY(&*yh0) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
-        *closest = *yh0;
+        closest = yh0;
 
     if (yh1.has_value() and containsY(&*yh1) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
-        *closest = *yh1;
+        closest = yh1;
 
     if (zh0.has_value() and containsZ(&*zh0) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
-        *closest = *zh0;
+        closest = zh0;
 
     if (zh1.has_value() and containsZ(&*zh1) and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
-        *closest = *zh1;
+        closest = zh1;
 
-    if (closest == NULL) return NULL;
+    if (!closest.has_value()) return nullptr;
 
     int face = -1;
 
-    if (*closest == xh0) face = Facing::WEST;
-    if (*closest == xh1) face = Facing::EAST;
-    if (*closest == yh0) face = Facing::DOWN;
-    if (*closest == yh1) face = Facing::UP;
-    if (*closest == zh0) face = Facing::NORTH;
-    if (*closest == zh1) face = Facing::SOUTH;
+    if (closest == xh0) face = Facing::WEST;
+    if (closest == xh1) face = Facing::EAST;
+    if (closest == yh0) face = Facing::DOWN;
+    if (closest == yh1) face = Facing::UP;
+    if (closest == zh0) face = Facing::NORTH;
+    if (closest == zh1) face = Facing::SOUTH;
 
-    *closest = closest->add(xt, yt, zt);
-
-    return new HitResult(xt, yt, zt, face, *closest);
+    Vec3 res = closest->add(xt, yt, zt);
+    return new HitResult(xt, yt, zt, face, res);
 }
 
 bool Tile::containsX(Vec3* v) {

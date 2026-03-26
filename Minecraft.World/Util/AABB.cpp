@@ -255,45 +255,49 @@ HitResult* AABB::clip(Vec3* a, Vec3* b) {
     if (!(yh1.has_value() and containsY(&*yh1))) yh1 = std::nullopt;
     if (!(zh0.has_value() and containsZ(&*zh0))) zh0 = std::nullopt;
     if (!(zh1.has_value() and containsZ(&*zh1))) zh1 = std::nullopt;
-    Vec3* closest = nullptr;
+
+    std::optional<Vec3> closest = std::nullopt;
 
     if (xh0.has_value() and
-        (closest == nullptr or
+        (!closest.has_value() or
          a->distanceToSqr(*xh0) < a->distanceToSqr(*closest)))
-        *closest = *xh0;
-    if (xh1.has_value() and
-        (closest == nullptr or
-         a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
-        *closest = *xh1;
-    if (yh0.has_value() and
-        (closest == nullptr or
-         a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
-        *closest = *yh0;
-    if (yh1.has_value() and
-        (closest == nullptr or
-         a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
-        *closest = *yh1;
-    if (zh0.has_value() and
-        (closest == nullptr or
-         a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
-        *closest = *zh0;
-    if (zh1.has_value() and
-        (closest == nullptr or
-         a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
-        *closest = *zh1;
+        closest = xh0;
 
-    if (closest == nullptr) return nullptr;
+    if (xh1.has_value() and
+        (!closest.has_value() or
+         a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
+        closest = xh1;
+
+    if (yh0.has_value() and
+        (!closest.has_value() or
+         a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
+        closest = yh0;
+
+    if (yh1.has_value() and
+        (!closest.has_value() or
+         a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
+        closest = yh1;
+
+    if (zh0.has_value() and
+        (!closest.has_value() or
+         a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
+        closest = zh0;
+
+    if (zh1.has_value() and
+        (!closest.has_value() or
+         a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
+        closest = zh1;
+
+    if (!closest.has_value()) return nullptr;
 
     int face = -1;
 
-    if (*closest == xh0) face = 4;
-    if (*closest == xh1) face = 5;
-    if (*closest == yh0) face = 0;
-    if (*closest == yh1) face = 1;
-    if (*closest == zh0) face = 2;
-    if (*closest == zh1) face = 3;
-
-    closest = Vec3::newTemp(closest->x, closest->y, closest->z);
+    if (closest == xh0) face = 4;
+    if (closest == xh1) face = 5;
+    if (closest == yh0) face = 0;
+    if (closest == yh1) face = 1;
+    if (closest == zh0) face = 2;
+    if (closest == zh1) face = 3;
 
     return new HitResult(0, 0, 0, face, *closest);
 }
