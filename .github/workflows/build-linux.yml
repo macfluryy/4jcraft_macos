@@ -49,13 +49,13 @@ jobs:
         env:
           CC: "ccache clang"
           CXX: "ccache clang++"
+          CC_LD: lld
+          CXX_LD: lld
         run: |
-          meson setup build --wipe --native-file=./scripts/llvm_native.txt
+          meson setup build --wipe
 
       - name: Build with Meson
         env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
           # Use all available cores for faster parallel builds
