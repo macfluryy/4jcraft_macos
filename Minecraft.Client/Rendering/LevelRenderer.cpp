@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "LevelRenderer.h"
 #include "../Textures/Textures.h"
@@ -2321,7 +2324,7 @@ bool LevelRenderer::updateDirtyChunks() {
         }
         LeaveCriticalSection(&m_csDirtyChunks);
 #ifdef __PS3__
-        Sleep(5);
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
 #endif  // __PS3__
         return false;
     }

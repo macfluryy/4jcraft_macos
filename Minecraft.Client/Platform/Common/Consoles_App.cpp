@@ -1,5 +1,4 @@
-﻿
-#include "../Minecraft.World/Platform/stdafx.h"
+﻿#include "../Minecraft.World/Platform/stdafx.h"
 
 #include "../Minecraft.World/Recipes/Recipy.h"
 #include "../Minecraft.Client/GameState/Options.h"
@@ -68,6 +67,9 @@
 #ifdef __ORBIS__
 #include <save_data_dialog.h>
 #endif
+
+#include <thread>
+#include <chrono>
 
 #include "Leaderboards/LeaderboardManager.h"
 
@@ -4832,7 +4834,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // We can't start/join a new game until the session is destroyed, so wait
     // for it to be idle again
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     return S_OK;
@@ -7726,7 +7728,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
                eAppAction_WaitRemoteServerSaveComplete) {
         // Tick all the games connections
         pMinecraft->tickAllConnections();
-        Sleep(100);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (app.GetXuiAction(ProfileManager.GetPrimaryPad()) !=
@@ -9229,7 +9231,8 @@ bool CMinecraftApp::RetrieveNextTMSPPContent() {
                         C4JStorage::ETMSStatus_Fail_ReadInProgress) {
                         app.DebugPrintf(
                             "TMSPP_ReadFile failed - read in progress\n");
-                        Sleep(50);
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(50));
                         LeaveCriticalSection(&csTMSPPDownloadQueue);
                         return false;
                     }
@@ -9268,7 +9271,8 @@ bool CMinecraftApp::RetrieveNextTMSPPContent() {
                         app.DebugPrintf(
                             "@@@@@@@@@@@@@@@@@ TMSPP_ReadFile failed - busy "
                             "(probably reading already)\n");
-                        Sleep(50);
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(50));
                         LeaveCriticalSection(&csTMSPPDownloadQueue);
                         return false;
                     }

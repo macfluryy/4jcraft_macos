@@ -2,6 +2,8 @@
 #include <xuiresource.h>
 #include <xuiapp.h>
 #include <assert.h>
+#include <thread>
+#include <chrono>
 
 #include "XUI_Ctrl_4JList.h"
 #include "XUI_Ctrl_4JIcon.h"
@@ -363,7 +365,7 @@ int CScene_TransferToXboxOne::UploadSaveForXboxOneThreadProc(
         // loop waiting for the write to complete
         uiComplete = 0;
         while (pClass->m_bWaitingForWrite && (hr == S_OK)) {
-            Sleep(50);
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
             uiComplete++;
             if (uiComplete > 100) uiComplete = 100;
 
@@ -380,7 +382,7 @@ int CScene_TransferToXboxOne::UploadSaveForXboxOneThreadProc(
 
         // finish the bar
         for (int i = uiComplete; i < 100; i++) {
-            Sleep(5);
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
             pMinecraft->progressRenderer->progressStagePercentage(i);
         }
 
@@ -396,7 +398,7 @@ int CScene_TransferToXboxOne::UploadSaveForXboxOneThreadProc(
 
         // sleep until we have the data
         while (pClass->m_bSaveDataReceived == false) {
-            Sleep(50);
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
 
         // write the save to user TMS
@@ -443,7 +445,7 @@ int CScene_TransferToXboxOne::UploadSaveForXboxOneThreadProc(
             } else {
                 // loop waiting for the write to complete
                 while (pClass->m_bWaitingForWrite && (hr == S_OK)) {
-                    Sleep(50);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 }
                 uiComplete += uiPercentageChunk;
                 if (uiComplete > 100) uiComplete = 100;

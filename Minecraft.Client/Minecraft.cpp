@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
@@ -781,7 +784,7 @@ void Minecraft::run()
 		{
 		this->toggleFullScreen();
 		}
-		Sleep(10);
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 		*/
 
@@ -796,7 +799,7 @@ void Minecraft::run()
 
 		achievementPopup->render();
 
-		Sleep(0);	// 4J - was Thread.yield()
+		std::this_thread::sleep_for(std::chrono::milliseconds(0));	// 4J - was Thread.yield())
 
 		//        if (Keyboard::isKeyDown(Keyboard::KEY_F7)) Display.update();	// 4J - removed condition
 		Display::update();
@@ -2112,7 +2115,7 @@ void Minecraft::run_middle() {
             {
             this->toggleFullScreen();
             }
-            Sleep(10);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
             */
 
@@ -2141,7 +2144,8 @@ void Minecraft::run_middle() {
             achievementPopup->render();
 
             PIXBeginNamedEvent(0, "Sleeping");
-            Sleep(0);  // 4J - was Thread.yield()
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(0));  // 4J - was Thread.yield())
             PIXEndNamedEvent();
 
             //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))

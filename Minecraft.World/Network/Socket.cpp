@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "../IO/Streams/InputOutputStream.h"
 #include "SocketAddress.h"
@@ -250,7 +253,7 @@ int Socket::SocketInputStreamLocal::read() {
             }
             LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
         }
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return -1;
 }
@@ -277,7 +280,7 @@ int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset,
             }
             LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
         }
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return -1;
 }
@@ -356,7 +359,7 @@ int Socket::SocketInputStreamNetwork::read() {
             }
             LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
         }
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return -1;
 }
@@ -385,7 +388,7 @@ int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset,
             }
             LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
         }
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return -1;
 }

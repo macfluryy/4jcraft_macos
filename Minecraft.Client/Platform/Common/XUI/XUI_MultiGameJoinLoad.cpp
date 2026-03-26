@@ -1,6 +1,8 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include <xuiresource.h>
 #include <xuiapp.h>
+#include <thread>
+#include <chrono>
 #include <assert.h>
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../Tutorial/TutorialMode.h"
@@ -2174,7 +2176,7 @@ bool CScene_MultiGameJoinLoad::WaitForTransferComplete(
             // cancelled
             return false;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
         // update the progress
         pMinecraft->progressRenderer->progressStagePercentage(
             (unsigned int)(pClass->m_fProgress * 100.0f));
