@@ -163,7 +163,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"item/trapped",
     L"item/trapped_double",
 
-    // 4jcraft: java UI specific
+// 4jcraft: java UI specific
 #ifdef ENABLE_JAVA_GUIS
     L"%blur%/misc/vignette",
     L"/achievement/bg",
@@ -178,6 +178,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"gui/creative_inventory/tab_item_search",
     L"title/mclogo",
     L"gui/horse",
+    L"gui/anvil",
     L"title/bg/panorama",
 #endif
 // L"item/christmas",

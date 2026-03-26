@@ -1,6 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
 #include "UI/Screens/HorseInventoryScreen.h"
+#include "UI/Screens/RepairScreen.h"
 #include "User.h"
 #include "../Input/Input.h"
 #include "../GameState/StatsCounter.h"
@@ -644,8 +645,7 @@ bool LocalPlayer::startEnchanting(int x, int y, int z,
 
 bool LocalPlayer::startRepairing(int x, int y, int z) {
 #ifdef ENABLE_JAVA_GUIS
-    // minecraft.setScreen(new RepairScreen(inventory, level, x, y, z));
-    // FUCK YOU 4J FIRST AND FOREMOST
+    minecraft->setScreen(new RepairScreen(inventory, level, x, y, z));
     bool success = true;
 #else
     bool success =
