@@ -1,6 +1,5 @@
 #include "../Platform/stdafx.h"
 #include "../Platform/System.h"
-#include "../Util/BasicTypeContainers.h"
 #include "../IO/Files/File.h"
 #include "../Util/ProgressListener.h"
 #include "../Headers/net.minecraft.h"
@@ -39,7 +38,9 @@
 #include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
+#include <cmath>
 #include <cstdint>
+#include <limits>
 
 // 4J : WESTY : Added for time played stats.
 #include "../Headers/net.minecraft.stats.h"
@@ -1374,10 +1375,8 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid) {
 }
 
 HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
-    if (Double::isNaN(a->x) || Double::isNaN(a->y) || Double::isNaN(a->z))
-        return NULL;
-    if (Double::isNaN(b->x) || Double::isNaN(b->y) || Double::isNaN(b->z))
-        return NULL;
+    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z)) return NULL;
+    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z)) return NULL;
 
     int xTile1 = Mth::floor(b->x);
     int yTile1 = Mth::floor(b->y);
@@ -1403,7 +1402,7 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
 
     int maxIterations = 200;
     while (maxIterations-- >= 0) {
-        if (Double::isNaN(a->x) || Double::isNaN(a->y) || Double::isNaN(a->z))
+        if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z))
             return NULL;
         if (xTile0 == xTile1 && yTile0 == yTile1 && zTile0 == zTile1)
             return NULL;
@@ -2308,13 +2307,12 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     }
 
     // SANTITY!!
-    if (Double::isNaN(e->x) || Double::isInfinite(e->x)) e->x = e->xOld;
-    if (Double::isNaN(e->y) || Double::isInfinite(e->y)) e->y = e->yOld;
-    if (Double::isNaN(e->z) || Double::isInfinite(e->z)) e->z = e->zOld;
-    if (Double::isNaN(e->xRot) || Double::isInfinite(e->xRot))
-        e->xRot = e->xRotO;
-    if (Double::isNaN(e->yRot) || Double::isInfinite(e->yRot))
-        e->yRot = e->yRotO;
+
+    if (!std::isfinite(e->x)) e->x = e->xOld;
+    if (!std::isfinite(e->y)) e->y = e->yOld;
+    if (!std::isfinite(e->z)) e->z = e->zOld;
+    if (!std::isfinite(e->xRot)) e->xRot = e->xRotO;
+    if (!std::isfinite(e->yRot)) e->yRot = e->yRotO;
 
     int xcn = Mth::floor(e->x / 16);
     int ycn = Mth::floor(e->y / 16);
@@ -2931,7 +2929,7 @@ void Level::toggleDownfall() {
 }
 
 void Level::buildAndPrepareChunksToPoll() {
-#if 0	
+#if 0
 	AUTO_VAR(itEnd, players.end());
 	for (AUTO_VAR(it, players.begin()); it != itEnd; it++)
 	{
@@ -3512,7 +3510,7 @@ std::shared_ptr<Entity> Level::getClosestEntityOfClass(
     std::vector<std::shared_ptr<Entity> >* entities =
         getEntitiesOfClass(baseClass, bb);
     std::shared_ptr<Entity> closest = nullptr;
-    double closestDistSqr = Double::MAX_VALUE;
+    double closestDistSqr = std::numeric_limits<double>::max();
     // for (Entity entity : entities)
     for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
         std::shared_ptr<Entity> entity = *it;

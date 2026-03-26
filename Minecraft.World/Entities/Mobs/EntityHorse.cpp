@@ -15,8 +15,8 @@
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "../../../Minecraft.Client/Minecraft.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "EntityHorse.h"
+#include <limits>
 
 const std::wstring EntityHorse::TEX_FOLDER = L"mob/horse/";
 
@@ -417,7 +417,7 @@ bool EntityHorse::canSpawn() {
 
 std::shared_ptr<EntityHorse> EntityHorse::getClosestMommy(
     std::shared_ptr<Entity> baby, double searchRadius) {
-    double closestDistance = Double::MAX_VALUE;
+    double closestDistance = std::numeric_limits<double>::max();
 
     std::shared_ptr<Entity> mommy = nullptr;
     std::vector<std::shared_ptr<Entity> >* list = level->getEntities(

@@ -6,8 +6,8 @@
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "PlayGoal.h"
+#include <limits>
 
 PlayGoal::PlayGoal(Villager* mob, double speedModifier) {
     followFriend = std::weak_ptr<LivingEntity>();
@@ -26,7 +26,7 @@ bool PlayGoal::canUse() {
     std::vector<std::shared_ptr<Entity> >* children =
         mob->level->getEntitiesOfClass(typeid(Villager),
                                        mob->bb->grow(6, 3, 6));
-    double closestDistSqr = Double::MAX_VALUE;
+    double closestDistSqr = std::numeric_limits<double>::max();
     // for (Entity c : children)
     for (AUTO_VAR(it, children->begin()); it != children->end(); ++it) {
         std::shared_ptr<Entity> c = *it;

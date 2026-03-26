@@ -1,6 +1,5 @@
 #include "../../Platform/stdafx.h"
 #include "../../Util/JavaMath.h"
-#include "../../Util/BasicTypeContainers.h"
 #if 0
 // 4J - not required anymore
 #include "Matcher.h"
@@ -41,7 +40,7 @@ std::vector<LevelSummary*>* McRegionLevelStorageSource::getLevelList() {
 	{
 		file = *it; //subFolders->at(i);
 
-		if (file->isDirectory()) 
+		if (file->isDirectory())
 		{
 			continue;
 		}
@@ -142,7 +141,7 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile* saveFile,
     }
 
 	int totalCount = normalRegions->size() + netherRegions->size() + enderRegions.size() + normalBaseFolders->size() + netherBaseFolders->size() + enderBaseFolders.size();
-	
+
 	// System.out.println("Total conversion count is " + totalCount); 4J Jev, TODO
 
 	// convert normal world
@@ -170,7 +169,7 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile* saveFile,
 
 #if 0
 // 4J - not required anymore
-void McRegionLevelStorageSource::addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders) 
+void McRegionLevelStorageSource::addRegions(File &baseFolder, std::vector<ChunkFile *> *dest, std::vector<File *> *firstLevelFolders)
 {
 	FolderFilter folderFilter;
 	ChunkFilter chunkFilter;
@@ -236,7 +235,7 @@ void McRegionLevelStorageSource::convertRegions(
 		int z = chunkFile->getZ();
 
 		RegionFile *region = RegionFileCache::getRegionFile(baseFolder, x, z);
-		if (!region->hasChunk(x & 31, z & 31)) 
+		if (!region->hasChunk(x & 31, z & 31))
 		{
 			FileInputStream fis = new BufferedInputStream(FileInputStream(*chunkFile->getFile()));
 			DataInputStream istream = DataInputStream(&fis); // 4J - was new GZIPInputStream as well
@@ -287,7 +286,7 @@ void McRegionLevelStorageSource::eraseFolders(std::vector<File*>* folders,
 
 #if 0
 // 4J - not required anymore
-bool McRegionLevelStorageSource::FolderFilter::accept(File *file) 
+bool McRegionLevelStorageSource::FolderFilter::accept(File *file)
 {
 	if (file->isDirectory())
 	{
@@ -298,23 +297,23 @@ bool McRegionLevelStorageSource::FolderFilter::accept(File *file)
 }
 
 
-bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const std::wstring& name) 
+bool McRegionLevelStorageSource::ChunkFilter::accept(File *dir, const std::wstring& name)
 {
 	Matcher matcher( chunkFilePattern, name );
 	return matcher.matches();
 }
 
 
-McRegionLevelStorageSource::ChunkFile::ChunkFile(File *file) 
+McRegionLevelStorageSource::ChunkFile::ChunkFile(File *file)
 {
 	this->file = file;
 
 	Matcher matcher( ChunkFilter::chunkFilePattern, file->getName() );
-	if (matcher.matches()) 
+	if (matcher.matches())
 	{
 		x = Integer::parseInt(matcher.group(1), 36);
 		z = Integer::parseInt(matcher.group(2), 36);
-	} 
+	}
 	else
 	{
 		x = 0;
@@ -346,17 +345,17 @@ bool McRegionLevelStorageSource::ChunkFile::operator<( ChunkFile *b )
 	return compareTo( b ) < 0;
 }
 
-File *McRegionLevelStorageSource::ChunkFile::getFile() 
+File *McRegionLevelStorageSource::ChunkFile::getFile()
 {
 	return (File *) file;
 }
 
-int McRegionLevelStorageSource::ChunkFile::getX() 
+int McRegionLevelStorageSource::ChunkFile::getX()
 {
 	return x;
 }
 
-int McRegionLevelStorageSource::ChunkFile::getZ() 
+int McRegionLevelStorageSource::ChunkFile::getZ()
 {
 	return z;
 }

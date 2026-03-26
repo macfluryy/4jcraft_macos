@@ -1,8 +1,8 @@
 #include "../../Platform/stdafx.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "GameCommandPacket.h"
+#include <limits>
 
 GameCommandPacket::GameCommandPacket() { length = 0; }
 
@@ -14,7 +14,7 @@ GameCommandPacket::GameCommandPacket(EGameCommand command, byteArray data) {
     if (data.data != NULL) {
         length = data.length;
 
-        if (length > Short::MAX_VALUE) {
+        if (length > std::numeric_limits<short>::max()) {
             app.DebugPrintf("Payload may not be larger than 32K\n");
 #ifndef _CONTENT_PACKAGE
             __debugbreak();
@@ -31,7 +31,7 @@ void GameCommandPacket::read(DataInputStream* dis) {
     command = (EGameCommand)dis->readInt();
     length = dis->readShort();
 
-    if (length > 0 && length < Short::MAX_VALUE) {
+    if (length > 0 && length < std::numeric_limits<short>::max()) {
         if (data.data != NULL) {
             delete[] data.data;
         }

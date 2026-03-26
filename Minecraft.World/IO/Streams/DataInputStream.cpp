@@ -1,7 +1,8 @@
 #include "../../Platform/stdafx.h"
-#include "../../Util/BasicTypeContainers.h"
 
 #include "DataInputStream.h"
+#include <bit>
+#include <cstdint>
 
 // Creates a DataInputStream that uses the specified underlying InputStream.
 // Parameters:
@@ -146,7 +147,7 @@ unsigned char DataInputStream::readUnsignedByte() {
 
 // Reads two input bytes and returns a char value. Let a be the first byte read
 // and b be the second byte. The value returned is: (char)((a << 8) | (b &
-//0xff))
+// 0xff))
 //
 // This method is suitable for reading bytes written by the writeChar method of
 // interface DataOutput. Returns: the char value read.
@@ -229,7 +230,7 @@ bool DataInputStream::readFully(charArray b) {
 double DataInputStream::readDouble() {
     int64_t bits = readLong();
 
-    return Double::longBitsToDouble(bits);
+    return std::bit_cast<double>(bits);
 }
 
 // Reads four input bytes and returns a float value. It does this by first
@@ -240,7 +241,7 @@ double DataInputStream::readDouble() {
 float DataInputStream::readFloat() {
     int bits = readInt();
 
-    return Float::intBitsToFloat(bits);
+    return std::bit_cast<float>(bits);
 }
 
 // Reads four input bytes and returns an int value. Let a-d be the first through
@@ -308,7 +309,7 @@ int64_t DataInputStream::readLong() {
 
 // Reads two input bytes and returns a short value. Let a be the first byte read
 // and b be the second byte. The value returned is: (short)((a << 8) | (b &
-//0xff))
+// 0xff))
 //
 // This method is suitable for reading the bytes written by the writeShort
 // method of interface DataOutput. Returns: the 16-bit value read.
@@ -326,7 +327,8 @@ short DataInputStream::readShort() {
 unsigned short DataInputStream::readUnsignedShort() {
     if (stream == NULL) {
         app.DebugPrintf(
-            "DataInputStream::readUnsignedShort() but underlying stream is NULL\n");
+            "DataInputStream::readUnsignedShort() but underlying stream is "
+            "NULL\n");
         return 0;
     }
     int a = stream->read();
@@ -392,8 +394,8 @@ std::wstring DataInputStream::readUTF() {
     unsigned short UTFLength = (unsigned short)(((a & 0xff) << 8) | (b & 0xff));
 
     //// 4J Stu - I decided while writing DataOutputStream that we didn't need
-    ///to bother using the UTF8 format / used in the java libs, and just write
-    ///in/out as wchar_t all the time
+    /// to bother using the UTF8 format / used in the java libs, and just write
+    /// in/out as wchar_t all the time
 
     /*for( unsigned short i = 0; i < UTFLength; i++)
     {

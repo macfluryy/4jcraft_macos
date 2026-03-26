@@ -11,7 +11,7 @@
 #include "Storage/SparseLightStorage.h"
 #include "BlockReplacements.h"
 #include "LevelChunk.h"
-#include "../Util/BasicTypeContainers.h"
+#include <limits>
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/ServerChunkCache.h"
@@ -499,8 +499,8 @@ void LevelChunk::recalcHeightmapOnly() {
                       // value changed from -999 to 255
 
             int y = Level::maxBuildHeight - 1;
-            //            int p = x << level->depthBitsPlusFour | z <<
-            //            level->depthBits;		// 4J - removed
+        //            int p = x << level->depthBitsPlusFour | z <<
+        //            level->depthBits;		// 4J - removed
 #ifdef __PSVITA__
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
             int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
@@ -561,14 +561,14 @@ void LevelChunk::recalcHeightmap() {
     byteArray blockData = byteArray(Level::CHUNK_TILE_COUNT);
     getBlockData(blockData);
 #endif
-    lowestHeightmap = Integer::MAX_VALUE;
+    lowestHeightmap = std::numeric_limits<int>::max();
 
     int min = Level::maxBuildHeight - 1;
     for (int x = 0; x < 16; x++)
         for (int z = 0; z < 16; z++) {
             int y = Level::maxBuildHeight - 1;
-            //            int p = x << level->depthBitsPlusFour | z <<
-            //            level->depthBits;			// 4J - removed
+        //            int p = x << level->depthBitsPlusFour | z <<
+        //            level->depthBits;			// 4J - removed
 
 #ifdef __PSVITA__
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
@@ -1747,21 +1747,21 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
             // our class may be derived from, otherwise do a direct comparison
             // of type_info
             if (ec == typeid(Player))
-                isAssignableFrom = e->instanceof (eTYPE_PLAYER);
+                isAssignableFrom = e->instanceof(eTYPE_PLAYER);
             else if (ec == typeid(Entity))
-                isAssignableFrom = e->instanceof (eTYPE_ENTITY);
+                isAssignableFrom = e->instanceof(eTYPE_ENTITY);
             else if (ec == typeid(Mob))
-                isAssignableFrom = e->instanceof (eTYPE_MOB);
+                isAssignableFrom = e->instanceof(eTYPE_MOB);
             else if (ec == typeid(LivingEntity))
-                isAssignableFrom = e->instanceof (eTYPE_LIVINGENTITY);
+                isAssignableFrom = e->instanceof(eTYPE_LIVINGENTITY);
             else if (ec == typeid(ItemEntity))
-                isAssignableFrom = e->instanceof (eTYPE_ITEMENTITY);
+                isAssignableFrom = e->instanceof(eTYPE_ITEMENTITY);
             else if (ec == typeid(Minecart))
-                isAssignableFrom = e->instanceof (eTYPE_MINECART);
+                isAssignableFrom = e->instanceof(eTYPE_MINECART);
             else if (ec == typeid(Monster))
-                isAssignableFrom = e->instanceof (eTYPE_MONSTER);
+                isAssignableFrom = e->instanceof(eTYPE_MONSTER);
             else if (ec == typeid(Zombie))
-                isAssignableFrom = e->instanceof (eTYPE_ZOMBIE);
+                isAssignableFrom = e->instanceof(eTYPE_ZOMBIE);
             else if (Entity* entity = e.get();
                      entity != NULL && ec == typeid(*entity))
                 isAssignableFrom = true;
