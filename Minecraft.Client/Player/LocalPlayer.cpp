@@ -601,8 +601,7 @@ bool LocalPlayer::openHopper(std::shared_ptr<MinecartHopper> container) {
 bool LocalPlayer::openHorseInventory(std::shared_ptr<EntityHorse> horse,
                                      std::shared_ptr<Container> container) {
 #ifdef ENABLE_JAVA_GUIS
-                                        minecraft->setScreen(new HorseInventoryScreen(inventory, container,
-    horse));
+    minecraft->setScreen(new HorseInventoryScreen(inventory, container, horse));
     bool success = true;
 #else
     bool success = app.LoadHorseMenu(GetXboxPad(), inventory, container, horse);
