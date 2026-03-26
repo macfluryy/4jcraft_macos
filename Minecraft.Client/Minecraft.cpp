@@ -2144,8 +2144,10 @@ void Minecraft::run_middle() {
             achievementPopup->render();
 
             PIXBeginNamedEvent(0, "Sleeping");
-            std::this_thread::sleep_for(
-                std::chrono::milliseconds(0));  // 4J - was Thread.yield())
+            std::this_thread::yield_now();  // 4jcraft added now that we have
+                                            // portable thread yield.
+            // std::this_thread::sleep_for(
+            //     std::chrono::milliseconds(0));  // 4J - was Thread.yield())
             PIXEndNamedEvent();
 
             //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
