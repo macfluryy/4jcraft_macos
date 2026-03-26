@@ -179,6 +179,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"title/mclogo",
     L"gui/horse",
     L"gui/anvil",
+    L"gui/trap",
     L"title/bg/panorama",
 #endif
 // L"item/christmas",

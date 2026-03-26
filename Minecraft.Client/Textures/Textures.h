@@ -161,6 +161,7 @@ typedef enum _TEXTURE_NAME {
     TN_TITLE_MCLOGO,
     TN_GUI_HORSE,
     TN_GUI_ANVIL,
+    TN_GUI_TRAP,
     TN_TITLE_BG_PANORAMA,
 #endif
 // TN_TILE_XMAS_CHEST,

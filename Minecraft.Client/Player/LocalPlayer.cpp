@@ -683,9 +683,13 @@ bool LocalPlayer::openBeacon(std::shared_ptr<BeaconTileEntity> beacon) {
 }
 
 bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new TrapScreen(inventory, trap));
+    bool success = true;
+#else
     bool success = app.LoadTrapMenu(GetXboxPad(), inventory, trap);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft->setScreen(new TrapScreen(inventory, trap));
+#endif
     return success;
 }
 
