@@ -551,7 +551,8 @@ void Minecart::applyNaturalSlowdown() {
     }
 }
 
-std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z, double offs) {
+std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z,
+                                         double offs) {
     int xt = Mth::floor(x);
     int yt = Mth::floor(y);
     int zt = Mth::floor(z);

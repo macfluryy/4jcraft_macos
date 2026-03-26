@@ -26,9 +26,7 @@ Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
     size = 16;
 }
 
-Explosion::~Explosion() {
-    delete random;
-}
+Explosion::~Explosion() { delete random; }
 
 void Explosion::explode() {
     float oR = r;

@@ -316,8 +316,8 @@ bool Tile_SPU::isSolidRender(bool isServerLevel) { return true; }
 // 	double yo = level->random->nextFloat() * s + (1 - s) * 0.5;
 // 	double zo = level->random->nextFloat() * s + (1 - s) * 0.5;
 // 	std::shared_ptr<ItemEntity> item = std::shared_ptr<ItemEntity>( new
-// ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) ); 	item->throwTime =
-// 10; 	level->addEntity(item);
+// ItemEntity(level, x + xo, y + yo, z + zo, itemInstance ) ); 	item->throwTime
+// = 10; 	level->addEntity(item);
 // }
 //
 // // Brought forward for TU7
@@ -328,8 +328,8 @@ bool Tile_SPU::isSolidRender(bool isServerLevel) { return true; }
 // 		while (amount > 0)
 // 		{
 // 			int newCount =
-// ExperienceOrb::getExperienceValue(amount); 			amount -= newCount;
-// 			level->addEntity(std::shared_ptr<ExperienceOrb>( new
+// ExperienceOrb::getExperienceValue(amount); 			amount -=
+// newCount; 			level->addEntity(std::shared_ptr<ExperienceOrb>( new
 // ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
 // 		}
 // 	}
@@ -366,14 +366,14 @@ bool Tile_SPU::isSolidRender(bool isServerLevel) { return true; }
 // 	Vec3 *closest = NULL;
 //
 // 	if (containsX(xh0) && (closest == NULL || a->distanceTo(xh0) <
-// a->distanceTo(closest))) closest = xh0; 	if (containsX(xh1) && (closest ==
-// NULL || a->distanceTo(xh1) < a->distanceTo(closest))) closest = xh1; 	if
-// (containsY(yh0) && (closest == NULL || a->distanceTo(yh0) <
-// a->distanceTo(closest))) closest = yh0; 	if (containsY(yh1) && (closest ==
-// NULL || a->distanceTo(yh1) < a->distanceTo(closest))) closest = yh1; 	if
-// (containsZ(zh0) && (closest == NULL || a->distanceTo(zh0) <
-// a->distanceTo(closest))) closest = zh0; 	if (containsZ(zh1) && (closest ==
-// NULL || a->distanceTo(zh1) < a->distanceTo(closest))) closest = zh1;
+// a->distanceTo(closest))) closest = xh0; 	if (containsX(xh1) && (closest
+// == NULL || a->distanceTo(xh1) < a->distanceTo(closest))) closest = xh1;
+// if (containsY(yh0) && (closest == NULL || a->distanceTo(yh0) <
+// a->distanceTo(closest))) closest = yh0; 	if (containsY(yh1) && (closest
+// == NULL || a->distanceTo(yh1) < a->distanceTo(closest))) closest = yh1;
+// if (containsZ(zh0) && (closest == NULL || a->distanceTo(zh0) <
+// a->distanceTo(closest))) closest = zh0; 	if (containsZ(zh1) && (closest
+// == NULL || a->distanceTo(zh1) < a->distanceTo(closest))) closest = zh1;
 //
 // 	LeaveCriticalSection(&m_csShape);
 //
@@ -525,7 +525,8 @@ void Tile_SPU::updateDefaultShape() {}
 // 		player->awardStat(Stats::blocksMined[id], 1);
 // 	}
 // 	player->awardStat(Stats::totalBlocksMined, 1);	// 4J : WESTY : Added
-// for other award. 	player->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE);
+// for other award.
+// player->causeFoodExhaustion(FoodConstants::EXHAUSTION_MINE);
 //
 // 	if( id == Tile_SPU::treeTrunk_Id )
 // 		player->awardStat(Achievements::mineWood);

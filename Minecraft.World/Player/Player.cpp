@@ -528,13 +528,13 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
     if (useItem->getUseAnimation() == UseAnim_eat) {
         for (int i = 0; i < count; i++) {
             Vec3 d{(random->nextFloat() - 0.5) * 0.1,
-                                    Math::random() * 0.1 + 0.1, 0};
+                   Math::random() * 0.1 + 0.1, 0};
 
             d.xRot(-xRot * PI / 180);
             d.yRot(-yRot * PI / 180);
 
             Vec3 p{(random->nextFloat() - 0.5) * 0.3,
-                                    -random->nextFloat() * 0.6 - 0.3, 0.6};
+                   -random->nextFloat() * 0.6 - 0.3, 0.6};
             p.xRot(-xRot * PI / 180);
             p.yRot(-yRot * PI / 180);
             p = p.add(x, y + getHeadHeight(), z);

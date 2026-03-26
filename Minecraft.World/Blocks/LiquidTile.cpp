@@ -137,14 +137,13 @@ Vec3 LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
                 if (t >= 0) {
                     int dir = t - (mid - 8);
                     flow = flow.add((xt - x) * dir, (yt - y) * dir,
-                                      (zt - z) * dir);
+                                    (zt - z) * dir);
                 }
             }
         } else {
             if (t >= 0) {
                 int dir = t - mid;
-                flow =
-                    flow.add((xt - x) * dir, (yt - y) * dir, (zt - z) * dir);
+                flow = flow.add((xt - x) * dir, (yt - y) * dir, (zt - z) * dir);
             }
         }
     }
@@ -308,10 +307,8 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
 double LiquidTile::getSlopeAngle(LevelSource* level, int x, int y, int z,
                                  Material* m) {
     Vec3 flow;
-    if (m == Material::water)
-        flow = Tile::water->getFlow(level, x, y, z);
-    if (m == Material::lava)
-        flow = Tile::lava->getFlow(level, x, y, z);
+    if (m == Material::water) flow = Tile::water->getFlow(level, x, y, z);
+    if (m == Material::lava) flow = Tile::lava->getFlow(level, x, y, z);
     if (flow.x == 0 && flow.z == 0) return -1000;
     return atan2(flow.z, flow.x) - PI / 2;
 }

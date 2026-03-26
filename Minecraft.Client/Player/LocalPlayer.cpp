@@ -550,7 +550,8 @@ void LocalPlayer::closeContainer() {
 void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 #ifdef ENABLE_JAVA_GUIS
     if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
-        minecraft->setScreen(new TextEditScreen(std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
+        minecraft->setScreen(new TextEditScreen(
+            std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
         bool success = true;
     }
 #else
@@ -782,8 +783,7 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // storage device, so needs a primary player, and the player may not
         // have been a primary player when they first 'got' the award so let the
         // award manager figure it out
-        if (!minecraft->stats[m_iPad]->hasTaken(ach))
-        {
+        if (!minecraft->stats[m_iPad]->hasTaken(ach)) {
             // 4J-PB - Don't display the java popup
 #ifdef ENABLE_JAVA_GUIS
             minecraft->achievementPopup->popup(ach);

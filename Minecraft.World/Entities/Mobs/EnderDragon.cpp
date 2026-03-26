@@ -1024,8 +1024,7 @@ void EnderDragon::findNewTarget() {
 
             if (getSynchedAction() == e_EnderdragonAction_Takeoff) {
                 Vec3 v = getHeadLookVector(1);
-                targetNodeIndex =
-                    findClosestNode(-v.x * 40, 105.0, -v.z * 40);
+                targetNodeIndex = findClosestNode(-v.x * 40, 105.0, -v.z * 40);
             } else {
                 if (random->nextInt(8) == 0) {
                     m_holdingPatternClockwise = !m_holdingPatternClockwise;

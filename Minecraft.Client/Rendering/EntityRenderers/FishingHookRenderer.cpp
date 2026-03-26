@@ -60,11 +60,11 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
 
         Vec3 vv(-0.5, 0.03, 0.8);
         vv.xRot(-(hook->owner->xRotO +
-                   (hook->owner->xRot - hook->owner->xRotO) * a) *
-                 PI / 180);
+                  (hook->owner->xRot - hook->owner->xRotO) * a) *
+                PI / 180);
         vv.yRot(-(hook->owner->yRotO +
-                   (hook->owner->yRot - hook->owner->yRotO) * a) *
-                 PI / 180);
+                  (hook->owner->yRot - hook->owner->yRotO) * a) *
+                PI / 180);
         vv.yRot(swing2 * 0.5f);
         vv.xRot(-swing2 * 0.7f);
 

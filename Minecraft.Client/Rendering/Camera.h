@@ -27,7 +27,7 @@ public:
     static TilePos* getCameraTilePos(std::shared_ptr<LivingEntity> player,
                                      double alpha);
     static Vec3 getCameraPos(std::shared_ptr<LivingEntity> player,
-                              double alpha);
+                             double alpha);
     static int getBlockAt(Level* level, std::shared_ptr<LivingEntity> player,
                           float alpha);
 };

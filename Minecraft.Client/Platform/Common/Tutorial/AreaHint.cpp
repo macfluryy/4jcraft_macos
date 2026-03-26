@@ -28,8 +28,7 @@ int AreaHint::tick() {
 
     if ((m_displayState == e_Tutorial_State_Any ||
          m_tutorial->getCurrentState() == m_displayState) &&
-        m_hintNeeded &&
-        area->contains(&player_pos) == contains) {
+        m_hintNeeded && area->contains(&player_pos) == contains) {
         if (m_completeState == e_Tutorial_State_None) {
             m_hintNeeded = false;
         } else if (m_tutorial->isStateCompleted(m_completeState)) {

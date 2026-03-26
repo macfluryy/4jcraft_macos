@@ -84,9 +84,8 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     bool hitEntity = false;
     float overlap = 1;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        player,
-        player->bb->expand(b.x * (range), b.y * (range), b.z * (range))
-            ->grow(overlap, overlap, overlap));
+        player, player->bb->expand(b.x * (range), b.y * (range), b.z * (range))
+                    ->grow(overlap, overlap, overlap));
     // for (int i = 0; i < objects.size(); i++) {
     for (AUTO_VAR(it, objects->begin()); it != objects->end(); ++it) {
         std::shared_ptr<Entity> e = *it;  // objects.get(i);
