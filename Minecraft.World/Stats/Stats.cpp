@@ -26,7 +26,7 @@ std::vector<ItemStat*>* Stats::blocksMinedStats = new std::vector<ItemStat*>;
 std::vector<ItemStat*>* Stats::itemsCollectedStats = new std::vector<ItemStat*>;
 std::vector<ItemStat*>* Stats::itemsCraftedStats = new std::vector<ItemStat*>;
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
+#if defined(_EXTENDED_ACHIEVEMENTS)
 std::vector<ItemStat*>* Stats::blocksPlacedStats = new std::vector<ItemStat*>;
 #endif
 
@@ -59,7 +59,7 @@ StatArray Stats::blocksMined;
 StatArray Stats::itemsCollected;
 StatArray Stats::itemsCrafted;
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
+#if defined(_EXTENDED_ACHIEVEMENTS)
 StatArray Stats::blocksPlaced;
 StatArray Stats::rainbowCollection;
 StatArray Stats::biomesVisisted;
@@ -327,23 +327,6 @@ void Stats::buildCraftableStats() {
     blocksMinedStats->push_back(newStat);
     blocksMined[Tile::reeds_Id] = newStat;
     newStat->postConstruct();
-#if 0
-	newStat = new ItemStat(ITEMS_COLLECTED_OFFSET + 1, L"collectItem.wheat", Item::wheat->id);
-	itemsCollectedStats->push_back(newStat);
-	itemsCollected[Item::wheat->id] = newStat;
-	newStat->postConstruct();
-
-	newStat = new ItemStat(ITEMS_COLLECTED_OFFSET + 2, L"collectItem.mushroom", Tile::mushroom1->id);
-	itemsCollectedStats->push_back(newStat);
-	itemsCollected[Tile::mushroom1->id] = newStat;
-	itemsCollected[Tile::mushroom2->id] = newStat;
-	newStat->postConstruct();
-
-	newStat = new ItemStat(ITEMS_COLLECTED_OFFSET + 3, L"collectItem.sugarCane", Item::reeds->id);
-	itemsCollectedStats->push_back(newStat);
-	itemsCollected[Item::reeds->id] = newStat;
-	newStat->postConstruct();
-#endif
 
     newStat = new ItemStat(ITEMS_COLLECTED_OFFSET + 4, L"collectItem.pumpkin",
                            Tile::pumpkin->id);
@@ -577,7 +560,7 @@ void Stats::buildAdditionalStats() {
     Stats::completeTheEnd =
         (new GeneralStat(offset++, L"stat.completeTheEnd"))->postConstruct();
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
+#if defined(_EXTENDED_ACHIEVEMENTS)
     {
         ItemStat* itemStat =
             new ItemStat(offset++, L"craftItem.flowerPot", Item::flowerPot_Id);

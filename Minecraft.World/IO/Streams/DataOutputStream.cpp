@@ -255,12 +255,5 @@ void DataOutputStream::writeUTF(const std::wstring& str) {
 
 // 4J Added
 void DataOutputStream::writePlayerUID(PlayerUID player) {
-#if 0 || 0 || 0
-    for (int idPos = 0; idPos < sizeof(PlayerUID); idPos++)
-        writeByte(((char*)&player)[idPos]);
-#elif 0
-    writeUTF(player.toString());
-#else
     writeLong(player);
-#endif  // PS3
 }

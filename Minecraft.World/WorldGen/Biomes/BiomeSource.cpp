@@ -153,7 +153,7 @@ void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
     intArray result = layer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomes[i] = Biome::biomes[result[i]];
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         if (biomes[i] == NULL) {
             app.DebugPrintf("Tried to assign null biome %d\n", result[i]);
             __debugbreak();
@@ -351,14 +351,7 @@ void BiomeSource::update() { cache->update(); }
 // #define DEBUG_SEEDS 50
 
 // 4J added - find a seed for this biomesource that matches certain criteria
-#if 0
-int64_t BiomeSource::findSeed(
-    LevelType* generator,
-    bool* pServerRunning)  // MGH - added pRunning, so we can early out of this
-                           // on Vita as it can take up to 60 secs
-#else
 int64_t BiomeSource::findSeed(LevelType* generator)
-#endif
 {
 
     int64_t bestSeed = 0;
@@ -366,7 +359,7 @@ int64_t BiomeSource::findSeed(LevelType* generator)
     ProgressRenderer* mcprogress = Minecraft::GetInstance()->progressRenderer;
     mcprogress->progressStage(IDS_PROGRESS_NEW_WORLD_SEED);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
@@ -374,7 +367,7 @@ int64_t BiomeSource::findSeed(LevelType* generator)
     } else
 #endif
     {
-#ifdef DEBUG_SEEDS
+#if defined(DEBUG_SEEDS)
         for (int k = 0; k < DEBUG_SEEDS; k++)
 #endif
         {
@@ -418,17 +411,13 @@ int64_t BiomeSource::findSeed(LevelType* generator)
                 tryCount++;
 
                 mcprogress->progressStagePercentage(tryCount % 100);
-#if 0
-            } while (!matchFound && *pServerRunning);
-#else
             } while (!matchFound);
-#endif
 
             // Clean up
             delete pr;
             delete[] indices.data;
 
-#ifdef DEBUG_SEEDS
+#if defined(DEBUG_SEEDS)
             app.DebugPrintf("%d: %d tries taken, seed used is %lld\n", k,
                             tryCount, bestSeed);
 

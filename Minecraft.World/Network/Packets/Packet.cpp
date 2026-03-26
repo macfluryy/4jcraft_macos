@@ -6,7 +6,7 @@
 #include "Packet.h"
 #include "../../Headers/com.mojang.nbt.h"
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 #include "../../../Minecraft.Client/Minecraft.h"
 #include "../../../Minecraft.Client/UI/Gui.h"
 #endif
@@ -151,7 +151,7 @@ void Packet::staticCtor() {
         ContainerClosePacket::create);
     map(102, false, true, false, false, typeid(ContainerClickPacket),
         ContainerClickPacket::create);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     // 4J Stu - We have some debug code that uses this packet to send data back
     // to the server from the client We may wish to add this into the real game
     // at some point
@@ -285,15 +285,11 @@ int Packet::renderPos = 0;
 void Packet::map(int id, bool receiveOnClient, bool receiveOnServer,
                  bool sendToAnyClient, bool renderStats,
                  const std::type_info& clazz, packetCreateFn createFn) {
-#if 0
-	if (idToClassMap.count(id) > 0) throw new IllegalArgumentException(std::wstring(L"Duplicate packet id:") + _toString<int>(id));
-	if (classToIdMap.count(clazz) > 0) throw new IllegalArgumentException(L"Duplicate packet class:"); // TODO + clazz);
-#endif
 
     idToCreateMap.insert(
         std::unordered_map<int, packetCreateFn>::value_type(id, createFn));
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
     Packet::PacketStatistics* packetStatistics = new PacketStatistics(id);
     outgoingStatistics[id] = packetStatistics;
@@ -318,16 +314,12 @@ void Packet::map(int id, bool receiveOnClient, bool receiveOnServer,
 // 4J Added to record data for outgoing packets
 void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet,
                                   int playerIndex) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
-#if 0
-	int idx = packet->getId();
-#else
     int idx = playerIndex;
     if (packet->getId() != 51) {
         idx = 100;
     }
-#endif
     AUTO_VAR(it, outgoingStatistics.find(idx));
 
     if (it == outgoingStatistics.end()) {
@@ -342,7 +334,7 @@ void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet,
 }
 
 void Packet::updatePacketStatsPIX() {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
 
     for (AUTO_VAR(it, outgoingStatistics.begin());
@@ -375,7 +367,7 @@ byteArray Packet::readBytes(DataInputStream* datainputstream) {
     int size = datainputstream->readShort();
     if (size < 0) {
         app.DebugPrintf("Key was smaller than nothing!  Weird key!");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
         return byteArray();
@@ -450,7 +442,7 @@ std::shared_ptr<Packet> Packet::readPacket(
     // 4J - Don't bother tracking stats in a content package
     // 4J Stu - This changes a bit in 1.0.1, but we don't really use it so stick
     // with what we have
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
     AUTO_VAR(it, statistics.find(id));
 
@@ -481,13 +473,6 @@ void Packet::writeUtf(const std::wstring& value,
                       DataOutputStream* dos)  // throws IOException TODO 4J JEV,
                                               // should this declare a throws?
 {
-#if 0
-#include <limits>
-	if (value.length() > std::numeric_limits<short>::max())
-	{
-		throw new IOException(L"String too big");
-	}
-#endif
 
     dos->writeShort((short)value.length());
     dos->writeChars(value);

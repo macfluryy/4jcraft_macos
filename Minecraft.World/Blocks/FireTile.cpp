@@ -345,11 +345,6 @@ void FireTile::registerIcons(IconRegister* iconRegister) {
 }
 
 Icon* FireTile::getTextureLayer(int layer) {
-#if 0
-    // AP - alpha cut out is expensive on vita. Set the Alpha Cut out flag
-    Tesselator* t = Tesselator::getInstance();
-    t->setAlphaCutOut(true);
-#endif
 
     return icons[layer];
 }

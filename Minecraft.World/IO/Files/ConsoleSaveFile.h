@@ -29,7 +29,7 @@ public:
 
     virtual void Flush(bool autosave, bool updateThumbnail = true) = 0;
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     virtual void DebugFlushToFile(void* compressedData = NULL,
                                   unsigned int compressedDataSize = 0) = 0;
 #endif
@@ -40,13 +40,6 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex) = 0;
 
-#if 0 || 0 || 0
-    virtual std::wstring getPlayerDataFilenameForLoad(
-        const PlayerUID& pUID) = 0;
-    virtual std::wstring getPlayerDataFilenameForSave(
-        const PlayerUID& pUID) = 0;
-    virtual std::vector<FileEntry*>* getValidPlayerDatFiles() = 0;
-#endif  //0
 
     virtual int getSaveVersion() = 0;
     virtual int getOriginalSaveVersion() = 0;

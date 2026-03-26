@@ -72,21 +72,12 @@ void FurnaceResultSlot::checkTakeAchievements(
         }
     }
 
-#if 0
-    if (!player->level->isClientSide && removeCount > 0) {
-        player->awardStat(
-            GenericStats::itemsSmelted(carried->id),
-            GenericStats::param_itemsSmelted(
-                carried->id, carried->getAuxValue(), removeCount));
-    }
-#else
     if (carried->id == Item::ironIngot_Id)
         player->awardStat(GenericStats::acquireIron(),
                           GenericStats::param_acquireIron());
     if (carried->id == Item::fish_cooked_Id)
         player->awardStat(GenericStats::cookFish(),
                           GenericStats::param_cookFish());
-#endif
 
     removeCount = 0;
 }

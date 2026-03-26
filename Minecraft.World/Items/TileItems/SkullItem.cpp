@@ -117,13 +117,6 @@ unsigned int SkullItem::getDescriptionId(
 
 std::wstring SkullItem::getHoverName(
     std::shared_ptr<ItemInstance> itemInstance) {
-#if 0
-	if (itemInstance->getAuxValue() == SkullTileEntity::TYPE_CHAR && itemInstance->hasTag() && itemInstance->getTag()->contains(L"SkullOwner"))
-	{
-		return I18n.get("item.skull.player.name", itemInstance->getTag()->getString(L"SkullOwner"));
-	}
-	else
-#endif
     {
         return Item::getHoverName(itemInstance);
     }

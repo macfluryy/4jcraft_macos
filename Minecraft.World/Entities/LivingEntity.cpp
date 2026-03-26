@@ -1218,16 +1218,8 @@ void LivingEntity::jumpFromGround() {
 }
 
 void LivingEntity::travel(float xa, float ya) {
-#if 0
-    // AP - dynamic_pointer_cast is a non-trivial call
-    Player* thisPlayer = NULL;
-    if (this->instanceof(eTYPE_PLAYER)) {
-        thisPlayer = (Player*)this;
-    }
-#else
     std::shared_ptr<Player> thisPlayer =
         std::dynamic_pointer_cast<Player>(shared_from_this());
-#endif
     if (isInWater() && !(thisPlayer && thisPlayer->abilities.flying)) {
         double yo = y;
         moveRelative(xa, ya, useNewAi() ? 0.04f : 0.02f);

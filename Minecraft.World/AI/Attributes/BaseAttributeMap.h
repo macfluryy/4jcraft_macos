@@ -5,12 +5,7 @@ class ModifiableAttributeInstance;
 class BaseAttributeMap {
 protected:
     // unordered_map<Attribute *, AttributeInstance *> attributesByObject;
-#if 0
-    std::unordered_map<eATTRIBUTE_ID, AttributeInstance*, std::hash<int> >
-        attributesById;
-#else
     std::unordered_map<eATTRIBUTE_ID, AttributeInstance*> attributesById;
-#endif
 
 public:
     virtual ~BaseAttributeMap();

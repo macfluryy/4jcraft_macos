@@ -72,19 +72,6 @@ int Region::getTile(int x, int y, int z) {
     int xc = (x >> 4);
     int zc = (z >> 4);
 
-#if 0
-    // AP - added a caching system for Chunk::rebuild to take advantage of
-    if (CachedTiles && xc == xcCached && zc == zcCached) {
-        unsigned char* Tiles = CachedTiles;
-        Tiles += y;
-        if (y >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
-            Tiles += Level::COMPRESSED_CHUNK_SECTION_TILES -
-                     Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-        }
-
-        return Tiles[((x & 15) << 11) | ((z & 15) << 7)];
-    }
-#endif
 
     xc -= xc1;
     zc -= zc1;

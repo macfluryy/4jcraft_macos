@@ -64,12 +64,7 @@ bool AwardStatPacket::isAync() { return true; }
 
 // On most platforms we only store 'count' in an AwardStatPacket.
 int AwardStatPacket::getCount() {
-#if 0
-    assert(false);  // Method not supported on Durango.
-    return 0;
-#else
     return *((int*)this->m_paramData.data);
-#endif
 }
 
 // On Durango we store 'Event' parameters here in a blob.

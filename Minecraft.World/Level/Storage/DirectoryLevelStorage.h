@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 // 51 maps per player (7x7 overworld, 1 nether, 1 end) * 100 players rounded up
 // to power of 2
 #define MAXIMUM_MAP_SAVE_DATA 8192  // 65536
@@ -70,7 +70,7 @@ private:
 
     static const std::wstring sc_szPlayerDir;
     // 4J Added
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     class PlayerMappings {
         friend class DirectoryLevelStorage;
 
@@ -85,13 +85,7 @@ private:
         void writeMappings(DataOutputStream* dos);
         void readMappings(DataInputStream* dis);
     };
-#if 0 || 0 || 0 || \
-    0
-    std::unordered_map<PlayerUID, PlayerMappings, PlayerUID::Hash>
-        m_playerMappings;
-#else
     std::unordered_map<PlayerUID, PlayerMappings> m_playerMappings;
-#endif
     byteArray m_usedMappings;
 #else
     MapDataMappings m_mapDataMappings;

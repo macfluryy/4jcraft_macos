@@ -7,7 +7,7 @@
 #include "../../Minecraft.Client/Platform/Common/ShutdownManager.h"
 
 // This should always be enabled, except for debugging use
-#ifndef _DEBUG
+#if !defined(_DEBUG)
 #define CONNECTION_ENABLE_TIMEOUT_DISCONNECT 1
 #endif
 
@@ -119,20 +119,6 @@ Connection::Connection(Socket* socket, const std::wstring& id,
         new C4JThread(runWrite, this, writeThreadName, WRITE_STACK_SIZE);
     readThread->SetProcessor(CPU_CORE_CONNECTIONS);
     writeThread->SetProcessor(CPU_CORE_CONNECTIONS);
-#if 0
-    readThread->SetPriority(
-        THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also used for
-                                        // Matching 2, and that priority of that
-                                        // seems to be always at default no
-                                        // matter what we set it to. Prioritise
-                                        // this below Matching 2.
-    writeThread->SetPriority(
-        THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also used for
-                                        // Matching 2, and that priority of that
-                                        // seems to be always at default no
-                                        // matter what we set it to. Prioritise
-                                        // this below Matching 2.
-#endif
 
     readThread->Run();
     writeThread->Run();
@@ -209,12 +195,12 @@ bool Connection::writeTick() {
         LeaveCriticalSection(&writeLock);
 
         Packet::writePacket(packet, bufferedDos);
-#ifdef __linux__
+#if defined(__linux__)
         bufferedDos->flush();  // Ensure buffered data reaches socket before any
                                // other writes
 #endif
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         // 4J Added for debugging
         int playerId = 0;
         if (!socket->isLocal()) {
@@ -261,7 +247,7 @@ bool Connection::writeTick() {
         // write it to QNet as a single packet with priority flags Otherwise
         // just buffer the packet with other outgoing packets as the java game
         // did
-#ifdef __linux__
+#if defined(__linux__)
         // Linux fix: For local connections, always use bufferedDos to avoid
         // byte interleaving between the BufferedOutputStream buffer and direct
         // sos writes. The shouldDelay/writeWithFlags path writes directly to
@@ -278,11 +264,7 @@ bool Connection::writeTick() {
             // "game" packets to QNet, rather than amalgamated chunks of data
             // that may include many packets, and partial packets b) To be able
             // to change the priority and queue of a packet if required
-#if 0
-            int flags = QNET_SENDDATA_LOW_PRIORITY | QNET_SENDDATA_SECONDARY;
-#else
             int flags = NON_QNET_SENDDATA_ACK_REQUIRED;
-#endif
             sos->writeWithFlags(baos->buf, 0, baos->size(), flags);
             baos->reset();
         } else {
@@ -291,7 +273,7 @@ bool Connection::writeTick() {
 
 #endif
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         // 4J Added for debugging
         if (!socket->isLocal()) {
             int playerId = 0;
@@ -534,7 +516,6 @@ void Connection::sendAndQuit() {
     // multithreaded functions a bit more
     // readThread.interrupt();
 
-#if 1
     // 4J - this used to be in a thread but not sure why, and is causing trouble
     // for us if we kill the connection whilst the thread is still expecting to
     // be able to send a packet a couple of seconds after starting it
@@ -542,9 +523,6 @@ void Connection::sendAndQuit() {
         // 4J TODO writeThread.interrupt();
         close(DisconnectPacket::eDisconnect_Closed);
     }
-#else
-    CreateThread(NULL, 0, runSendAndQuit, this, 0, &saqThreadID);
-#endif
 }
 
 int Connection::countDelayedPackets() { return (int)outgoing_slow.size(); }
@@ -554,9 +532,6 @@ int Connection::runRead(void* lpParam) {
     Connection* con = (Connection*)lpParam;
 
     if (con == NULL) {
-#if 0
-        ShutdownManager::HasFinished(ShutdownManager::eConnectionReadThreads);
-#endif
         return 0;
     }
 

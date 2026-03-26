@@ -211,7 +211,6 @@ void Boat::tick() {
             setPos(xt, yt, zt);
             setRot(yRot, xRot);
         } else {
-#if 1
             // Original
             // double xt = x + xd;
             // double yt = y + yd;
@@ -230,37 +229,6 @@ void Boat::tick() {
             xd *= 0.99f;
             yd *= 0.95f;
             zd *= 0.99f;
-#else
-            // 4J Stu - Fix for #8280 - Gameplay : Boats behave erratically when
-            // exited next to land. The client shouldn't change the position of
-            // the boat
-            double xt = x;  // + xd;
-            double yt = y + yd;
-            double zt = z;  // + zd;
-            this->setPos(xt, yt, zt);
-
-            // 4J Stu - Fix for #9579 - GAMEPLAY: Boats with a player in them
-            // slowly sink under the water over time, and with no player in them
-            // they float into the sky. Just make the boats bob up and down
-            // rather than any other client-side movement when not receiving
-            // packets from server
-            if (waterPercentage < 1) {
-                double bob = waterPercentage * 2 - 1;
-                yd += 0.04f * bob;
-            } else {
-                if (yd < 0) yd /= 2;
-                yd += 0.007f;
-            }
-            // if (onGround)
-            //{
-            xd *= 0.5f;
-            yd *= 0.5f;
-            zd *= 0.5f;
-            //}
-            // xd *= 0.99f;
-            // yd *= 0.95f;
-            // zd *= 0.99f;
-#endif
         }
         return;
     }

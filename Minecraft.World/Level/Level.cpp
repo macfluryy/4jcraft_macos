@@ -57,7 +57,7 @@
 // getBlockingCached methods to get and set data (3) Call flushCache, which
 // writes through any dirty values in cache
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 // Packing for cache entries in large worlds is as follows ( 64 bits per entry)
 // Add the extra x and z data into the top 32 bits, to keep all the masks and
 // code for everything else the same
@@ -182,7 +182,7 @@ void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
     int idx = ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
     lightCache_t posbits =
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     // Add in the higher bits for x and z
     posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
                ((((uint64_t)z) & 0x3FFFC00L) << 22);
@@ -197,7 +197,7 @@ void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
             // Then we need to flush
             int val = (cacheValue >> LIGHTING_SHIFT) & 15;
             int xx = ((cacheValue >> 6) & 0x3f0) | (x & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             xx |= ((cacheValue >> 38) & 0x3FFFC00);
             xx = (xx << 6) >> 6;  // sign extend
 #else
@@ -205,7 +205,7 @@ void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
 #endif
             int yy = ((cacheValue >> 2) & 0x0f0) | (y & 15);
             int zz = ((cacheValue << 4) & 0x3f0) | (z & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             zz |= ((cacheValue >> 22) & 0x3FFFC00);
             zz = (zz << 6) >> 6;  // sign extend
 #else
@@ -242,7 +242,7 @@ inline int Level::getBrightnessCached(lightCache_t* cache,
     int idx = ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
     lightCache_t posbits =
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     // Add in the higher bits for x and z
     posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
                ((((uint64_t)z) & 0x3FFFC00L) << 22);
@@ -256,7 +256,7 @@ inline int Level::getBrightnessCached(lightCache_t* cache,
             // Then we need to flush
             int val = (cacheValue >> LIGHTING_SHIFT) & 15;
             int xx = ((cacheValue >> 6) & 0x3f0) | (x & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             xx |= ((cacheValue >> 38) & 0x3FFFC00);
             xx = (xx << 6) >> 6;  // sign extend
 #else
@@ -264,7 +264,7 @@ inline int Level::getBrightnessCached(lightCache_t* cache,
 #endif
             int yy = ((cacheValue >> 2) & 0x0f0) | (y & 15);
             int zz = ((cacheValue << 4) & 0x3f0) | (z & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             zz |= ((cacheValue >> 22) & 0x3FFFC00);
             zz = (zz << 6) >> 6;  // sign extend
 #else
@@ -301,7 +301,7 @@ inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
     int idx = ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
     lightCache_t posbits =
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     // Add in the higher bits for x and z
     posbits |= ((((uint64_t)x) & 0x3FFFC00) << 38) |
                ((((uint64_t)z) & 0x3FFFC00) << 22);
@@ -315,7 +315,7 @@ inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
             // Then we need to flush
             int val = (cacheValue >> LIGHTING_SHIFT) & 15;
             int xx = ((cacheValue >> 6) & 0x3f0) | (x & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             xx |= ((cacheValue >> 38) & 0x3FFFC00);
             xx = (xx << 6) >> 6;  // sign extend
 #else
@@ -323,7 +323,7 @@ inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
 #endif
             int yy = ((cacheValue >> 2) & 0x0f0) | (y & 15);
             int zz = ((cacheValue << 4) & 0x3f0) | (z & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             zz |= ((cacheValue >> 22) & 0x3FFFC00);
             zz = (zz << 6) >> 6;  // sign extend
 #else
@@ -369,7 +369,7 @@ inline int Level::getBlockingCached(lightCache_t* cache,
     int idx = ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
     lightCache_t posbits =
         ((x & 0x3f0) << 6) | ((y & 0x0f0) << 2) | ((z & 0x3f0) >> 4);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     // Add in the higher bits for x and z
     posbits |= ((((uint64_t)x) & 0x3FFFC00L) << 38) |
                ((((uint64_t)z) & 0x3FFFC00L) << 22);
@@ -383,7 +383,7 @@ inline int Level::getBlockingCached(lightCache_t* cache,
             // Then we need to flush
             int val = (cacheValue >> LIGHTING_SHIFT) & 15;
             int xx = ((cacheValue >> 6) & 0x3f0) | (x & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             xx |= ((cacheValue >> 38) & 0x3FFFC00);
             xx = (xx << 6) >> 6;  // sign extend
 #else
@@ -391,7 +391,7 @@ inline int Level::getBlockingCached(lightCache_t* cache,
 #endif
             int yy = ((cacheValue >> 2) & 0x0f0) | (y & 15);
             int zz = ((cacheValue << 4) & 0x3f0) | (z & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             zz |= ((cacheValue >> 22) & 0x3FFFC00);
             zz = (zz << 6) >> 6;  // sign extend
 #else
@@ -459,7 +459,7 @@ void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
                     if (cacheValue & LIGHTING_WRITEBACK) {
                         int val = (cacheValue >> LIGHTING_SHIFT) & 15;
                         int xx = ((cacheValue >> 6) & 0x3f0) | (x & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                         xx |= ((cacheValue >> 38) & 0x3FFFC00);
                         xx = (xx << 6) >> 6;  // sign extend
 #else
@@ -467,7 +467,7 @@ void Level::flushCache(lightCache_t* cache, uint64_t cacheUse,
 #endif
                         int yy = ((cacheValue >> 2) & 0x0f0) | (y & 15);
                         int zz = ((cacheValue << 4) & 0x3f0) | (z & 15);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                         zz |= ((cacheValue >> 22) & 0x3FFFC00);
                         zz = (zz << 6) >> 6;  // sign extend
 #else
@@ -858,13 +858,13 @@ bool Level::setTileAndData(int x, int y, int z, int tile, int data,
         oldTile = c->getTile(x & 15, y, z & 15);
     }
     bool result;
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     int old = c->getTile(x & 15, y, z & 15);
     int olddata = c->getData(x & 15, y, z & 15);
 #endif
     result = c->setTileAndData(x & 15, y, z & 15, tile, data);
     if (updateFlags != Tile::UPDATE_INVISIBLE_NO_LIGHT) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         PIXBeginNamedEvent(0, "Checking light %d %d %d", x, y, z);
         PIXBeginNamedEvent(0, "was %d, %d now %d, %d", old, olddata, tile,
                            data);
@@ -2138,7 +2138,7 @@ void Level::tickEntities() {
         }
 
         if (!e->removed) {
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
             if (!(app.DebugSettingsOn() && app.GetMobsDontTickEnabled() &&
                   e->instanceof(eTYPE_MOB) && !e->instanceof(eTYPE_PLAYER)))
 #endif
@@ -2178,7 +2178,7 @@ void Level::tickEntities() {
             *it;  // tilevector<shared_ptr<Entity> >.at(i);
         if (!te->isRemoved() && te->hasLevel()) {
             if (hasChunkAt(te->x, te->y, te->z)) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                 LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
                 if (!isClientSide || !lc->isUnloaded())
 #endif
@@ -2272,14 +2272,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     int xc = Mth::floor(e->x);
     int zc = Mth::floor(e->z);
     int r = 32;
-#if 0
-    // AP - make sure the dragon ticks all the time, even when there aren't any
-    // chunks.
-    if (actual && e->GetType() != eTYPE_ENDERDRAGON &&
-        !hasChunksAt(xc - r, 0, zc - r, xc + r, 0, zc + r))
-#else
     if (actual && !hasChunksAt(xc - r, 0, zc - r, xc + r, 0, zc + r))
-#endif
     {
         return;
     }
@@ -2290,13 +2283,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     e->yRotO = e->yRot;
     e->xRotO = e->xRot;
 
-#if 0
-    // AP - make sure the dragon ticks all the time, even when there aren't any
-    // chunks.
-    if (actual && (e->GetType() == eTYPE_ENDERDRAGON || e->inChunk))
-#else
     if (actual && e->inChunk)
-#endif
     {
         e->tickCount++;
         if (e->riding != NULL) {
@@ -2851,7 +2838,7 @@ void Level::prepareWeather() {
 void Level::tickWeather() {
     if (dimension->hasCeiling) return;
 
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
     // debug setting added to disable weather
     if (app.DebugSettingsOn()) {
         if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
@@ -2929,22 +2916,6 @@ void Level::toggleDownfall() {
 }
 
 void Level::buildAndPrepareChunksToPoll() {
-#if 0
-	AUTO_VAR(itEnd, players.end());
-	for (AUTO_VAR(it, players.begin()); it != itEnd; it++)
-	{
-		std::shared_ptr<Player> player = *it;
-		int xx = Mth::floor(player->x / 16);
-		int zz = Mth::floor(player->z / 16);
-
-		int r = CHUNK_POLL_RANGE;
-		for (int x = -r; x <= r; x++)
-			for (int z = -r; z <= r; z++)
-			{
-				chunksToPoll.insert(ChunkPos(x + xx, z + zz));
-			}
-	}
-#else
     // 4J - rewritten to add chunks interleaved by player, and to add them from
     // the centre outwards. We're going to be potentially adding less creatures
     // than the original so that our count stays consistent with number of
@@ -2972,7 +2943,6 @@ void Level::buildAndPrepareChunksToPoll() {
     }
     delete[] xx;
     delete[] zz;
-#endif
 
     if (delayUntilNextMoodSound > 0) delayUntilNextMoodSound--;
 
@@ -3012,15 +2982,9 @@ void Level::tickClientSideTiles(int xo, int zo, LevelChunk* lc) {
                 player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 2 * 2) {
                 // 4J-PB - Fixed issue with cave audio event having 2 sounds at
                 // 192k
-#if 0
-                this->playSound(x + 0.5, y + 0.5, z + 0.5,
-                                eSoundType_AMBIENT_CAVE_CAVE2, 0.7f,
-                                0.8f + random->nextFloat() * 0.2f);
-#else
                 this->playSound(x + 0.5, y + 0.5, z + 0.5,
                                 eSoundType_AMBIENT_CAVE_CAVE, 0.7f,
                                 0.8f + random->nextFloat() * 0.2f);
-#endif
                 delayUntilNextMoodSound =
                     random->nextInt(SharedConstants::TICKS_PER_SECOND * 60 *
                                     10) +
@@ -3147,18 +3111,6 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
         if (!hasChunksAt(xc, yc, zc, 17)) return;
     }
 
-#if 0
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	// Get the frequency of the timer
-	LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime, qwDeltaTime1, qwDeltaTime2;
-	float fElapsedTime1 = 0.0f;
-	float fElapsedTime2 = 0.0f;
-	QueryPerformanceFrequency( &qwTicksPerSec );
-	float fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
-
-	QueryPerformanceCounter( &qwTime );
-	/////////////////////////////////////////////////////////////////////////////////////////////
-#endif
 
     EnterCriticalSection(&m_checkLightCS);
 
@@ -3386,28 +3338,8 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
         }
     }
     //	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
-#if 0
-	QueryPerformanceCounter( &qwNewTime );
-	qwDeltaTime1.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-	qwTime = qwNewTime;
-#endif
 
     flushCache(cache, cacheUse, layer);
-#if 0
-	/////////////////////////////////////////////////////////////////
-	if( cache )
-	{
-		QueryPerformanceCounter( &qwNewTime );
-		qwDeltaTime2.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-		fElapsedTime1 = fSecsPerTick * static_cast<float>(qwDeltaTime1.QuadPart);
-		fElapsedTime2 = fSecsPerTick * static_cast<float>(qwDeltaTime2.QuadPart);
-		if( ( darktcc > 0 ) | ( tcc > 0 ) )
-		{
-			printf("%d %d %d %f + %f = %f\n", darktcc, tcc, darktcc + tcc, fElapsedTime1 * 1000.0f, fElapsedTime2 * 1000.0f, ( fElapsedTime1 + fElapsedTime2 ) * 1000.0f);
-		}
-	}
-	/////////////////////////////////////////////////////////////////
-#endif
     LeaveCriticalSection(&m_checkLightCS);
 }
 
@@ -3432,15 +3364,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     int zc0 = Mth::floor((bb->z0 - 2) / 16);
     int zc1 = Mth::floor((bb->z1 + 2) / 16);
 
-#if 0
-#ifdef _ENTITIES_RW_SECTION
-    // AP - RW critical sections are expensive so enter it here so we only have
-    // to call it once instead of X times
-    EnterCriticalRWSection(&LevelChunk::m_csEntities, false);
-#else
-    EnterCriticalSection(&LevelChunk::m_csEntities);
-#endif
-#endif
 
     for (int xc = xc0; xc <= xc1; xc++)
         for (int zc = zc0; zc <= zc1; zc++) {
@@ -3450,13 +3373,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
         }
     MemSect(0);
 
-#if 0
-#ifdef _ENTITIES_RW_SECTION
-    LeaveCriticalRWSection(&LevelChunk::m_csEntities, false);
-#else
-    LeaveCriticalSection(&LevelChunk::m_csEntities);
-#endif
-#endif
 
     return &es;
 }
@@ -3475,15 +3391,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     std::vector<std::shared_ptr<Entity> >* es =
         new std::vector<std::shared_ptr<Entity> >();
 
-#if 0
-#ifdef _ENTITIES_RW_SECTION
-    // AP - RW critical sections are expensive so enter it here so we only have
-    // to call it once instead of X times
-    EnterCriticalRWSection(&LevelChunk::m_csEntities, false);
-#else
-    EnterCriticalSection(&LevelChunk::m_csEntities);
-#endif
-#endif
 
     for (int xc = xc0; xc <= xc1; xc++) {
         for (int zc = zc0; zc <= zc1; zc++) {
@@ -3494,13 +3401,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
         }
     }
 
-#if 0
-#ifdef _ENTITIES_RW_SECTION
-    LeaveCriticalRWSection(&LevelChunk::m_csEntities, false);
-#else
-    LeaveCriticalSection(&LevelChunk::m_csEntities);
-#endif
-#endif
 
     return es;
 }
@@ -3538,22 +3438,6 @@ void Level::tileEntityChanged(int x, int y, int z,
     }
 }
 
-#if 0
-unsigned int Level::countInstanceOf(BaseObject::Class *clas)
-{
-	unsigned int count = 0;
-	EnterCriticalSection(&m_entitiesCS);
-	AUTO_VAR(itEnd, entities.end());
-	for (AUTO_VAR(it, entities.begin()); it != itEnd; it++)
-	{
-		std::shared_ptr<Entity> e = *it;//entities.at(i);
-		if (clas->isAssignableFrom(e->getClass())) count++;
-	}
-	LeaveCriticalSection(&m_entitiesCS);
-
-	return count;
-}
-#endif
 
 // 4J - added - more limited (but faster) version of above, used to count water
 // animals, animals, monsters for the mob spawner singleType flag should be true

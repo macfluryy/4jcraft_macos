@@ -15,9 +15,7 @@
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 
 _MapDataMappings::_MapDataMappings() {
-#if 1
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
-#endif
     ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
 }
 
@@ -38,7 +36,7 @@ int _MapDataMappings::getDimension(int id) {
             returnVal = 1;  // End
             break;
         default:
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             printf("Read invalid dimension from MapDataMapping\n");
             __debugbreak();
 #endif
@@ -65,7 +63,7 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
             dimensions[id >> 2] |= (2 << offset);
             break;
         default:
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             printf(
                 "Trinyg to set a MapDataMapping for an invalid dimension.\n");
             __debugbreak();
@@ -76,9 +74,7 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
 
 // Old version the only used 1 bit for dimension indexing
 _MapDataMappings_old::_MapDataMappings_old() {
-#if 1
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
-#endif
     ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
 }
 
@@ -95,7 +91,7 @@ void _MapDataMappings_old::setMapping(int id, PlayerUID xuid, int dimension) {
     }
 }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 void DirectoryLevelStorage::PlayerMappings::addMapping(int id, int centreX,
                                                        int centreZ,
                                                        int dimension,
@@ -168,7 +164,7 @@ DirectoryLevelStorage::DirectoryLevelStorage(ConsoleSaveFile* saveFile,
     m_saveFile = saveFile;
     m_bHasLoadedMapDataMappings = false;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     m_usedMappings = byteArray(MAXIMUM_MAP_SAVE_DATA / 8);
 #endif
 }
@@ -181,7 +177,7 @@ DirectoryLevelStorage::~DirectoryLevelStorage() {
         delete it->second;
     }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     delete m_usedMappings.data;
 #endif
 }
@@ -228,7 +224,7 @@ ChunkStorage* DirectoryLevelStorage::createChunkStorage(Dimension* dimension) {
 
 LevelData* DirectoryLevelStorage::prepareLevel() {
     // 4J Stu Added
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     ConsoleSavePath mapFile = getDataFile(L"largeMapDataMappings");
 #else
     ConsoleSavePath mapFile = getDataFile(L"mapDataMappings");
@@ -238,32 +234,11 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
         unsigned int NumberOfBytesRead;
         FileEntry* fileEntry = getSaveFile()->createFile(mapFile);
 
-#if 0
-        // 4J Stu - This version changed happened before initial release
-        if (getSaveFile()->getSaveVersion() <
-            SAVE_FILE_VERSION_CHANGE_MAP_DATA_MAPPING_SIZE) {
-            // Delete the old file
-            if (fileEntry) getSaveFile()->deleteFile(fileEntry);
-
-            // Save a new, blank version
-            saveMapIdLookup();
-        } else
-#elif 0
-        // 4J Stu - This version changed happened before initial release
-        if (getSaveFile()->getSaveVersion() <
-            SAVE_FILE_VERSION_DURANGO_CHANGE_MAP_DATA_MAPPING_SIZE) {
-            // Delete the old file
-            if (fileEntry) getSaveFile()->deleteFile(fileEntry);
-
-            // Save a new, blank version
-            saveMapIdLookup();
-        } else
-#endif
         {
             getSaveFile()->setFilePointer(fileEntry, 0,
                                           SaveFileSeekOrigin::Begin);
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             byteArray data(fileEntry->getFileSize());
             getSaveFile()->readFile(fileEntry, data.data,
                                     fileEntry->getFileSize(),
@@ -279,7 +254,7 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
 #if defined(_WINDOWS64) || defined(__linux__)
                 app.DebugPrintf("  -- %d\n", playerUid);
 #else
-#ifdef __linux__
+#if defined(__linux__)
                 app.DebugPrintf("  -- %d\n", playerUid);
 #else
                 app.DebugPrintf("  -- %ls\n", playerUid.toString().c_str());
@@ -384,24 +359,12 @@ void DirectoryLevelStorage::saveLevelData(LevelData* levelData) {
 void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
     // 4J Jev, removed try/catch.
     PlayerUID playerXuid = player->getXuid();
-#if 0 || 0
-    if (playerXuid != INVALID_XUID)
-#else
     if (playerXuid != INVALID_XUID && !player->isGuest())
-#endif
     {
         CompoundTag* tag = new CompoundTag();
         player->saveWithoutId(tag);
-#if 0 || 0 || 0
-        ConsoleSavePath realFile = ConsoleSavePath(
-            m_saveFile->getPlayerDataFilenameForSave(playerXuid).c_str());
-#elif 0
-        ConsoleSavePath realFile = ConsoleSavePath(
-            playerDir.getName() + player->getXuid().toString() + L".dat");
-#else
         ConsoleSavePath realFile = ConsoleSavePath(
             playerDir.getName() + _toString(player->getXuid()) + L".dat");
-#endif
         // If saves are disabled (e.g. because we are writing the save buffer to
         // disk) then cache this player data
         if (StorageManager.GetSaveDisabled()) {
@@ -439,16 +402,8 @@ CompoundTag* DirectoryLevelStorage::load(std::shared_ptr<Player> player) {
 
 CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
     // 4J Jev, removed try/catch.
-#if 0 || 0 || 0
-    ConsoleSavePath realFile =
-        ConsoleSavePath(m_saveFile->getPlayerDataFilenameForLoad(xuid).c_str());
-#elif 0
-    ConsoleSavePath realFile =
-        ConsoleSavePath(playerDir.getName() + xuid.toString() + L".dat");
-#else
     ConsoleSavePath realFile =
         ConsoleSavePath(playerDir.getName() + _toString(xuid) + L".dat");
-#endif
     AUTO_VAR(it, m_cachedSaveData.find(realFile.getName()));
     if (it != m_cachedSaveData.end()) {
         ByteArrayOutputStream* bos = it->second;
@@ -470,15 +425,11 @@ CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
 void DirectoryLevelStorage::clearOldPlayerFiles() {
     if (StorageManager.GetSaveDisabled()) return;
 
-#if 0 || 0 || 0
-    std::vector<FileEntry*>* playerFiles = m_saveFile->getValidPlayerDatFiles();
-#else
     std::vector<FileEntry*>* playerFiles =
         m_saveFile->getFilesWithPrefix(playerDir.getName());
-#endif
 
     if (playerFiles != NULL) {
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
         if (app.DebugSettingsOn() &&
             app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
                 (1L << eDebugSetting_DistributableSave)) {
@@ -487,11 +438,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
                 std::wstring xuidStr = replaceAll(
                     replaceAll(file->data.filename, playerDir.getName(), L""),
                     L".dat", L"");
-#if 0 || 0 || 0
-                PlayerUID xuid(xuidStr);
-#else
                 PlayerUID xuid = _fromString<PlayerUID>(xuidStr);
-#endif
                 deleteMapFilesForPlayer(xuid);
                 m_saveFile->deleteFile(playerFiles->at(i));
             }
@@ -507,11 +454,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
                 std::wstring xuidStr = replaceAll(
                     replaceAll(file->data.filename, playerDir.getName(), L""),
                     L".dat", L"");
-#if 0 || 0 || 0
-                PlayerUID xuid(xuidStr);
-#else
                 PlayerUID xuid = _fromString<PlayerUID>(xuidStr);
-#endif
                 deleteMapFilesForPlayer(xuid);
                 m_saveFile->deleteFile(playerFiles->at(i));
             }
@@ -532,7 +475,7 @@ ConsoleSavePath DirectoryLevelStorage::getDataFile(const std::wstring& id) {
 std::wstring DirectoryLevelStorage::getLevelId() { return levelId; }
 
 void DirectoryLevelStorage::flushSaveFile(bool autosave) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_DistributableSave)) {
@@ -550,13 +493,8 @@ void DirectoryLevelStorage::flushSaveFile(bool autosave) {
 // 4J Added
 void DirectoryLevelStorage::resetNetherPlayerPositions() {
     if (app.GetResetNether()) {
-#if 0 || 0 || 0
-        std::vector<FileEntry*>* playerFiles =
-            m_saveFile->getValidPlayerDatFiles();
-#else
         std::vector<FileEntry*>* playerFiles =
             m_saveFile->getFilesWithPrefix(playerDir.getName());
-#endif
 
         if (playerFiles != NULL) {
             for (AUTO_VAR(it, playerFiles->begin()); it != playerFiles->end();
@@ -596,7 +534,7 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
     int mapId = -1;
     bool foundMapping = false;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     AUTO_VAR(it, m_playerMappings.find(xuid));
     if (it != m_playerMappings.end()) {
         foundMapping =
@@ -656,7 +594,7 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
 void DirectoryLevelStorage::saveMapIdLookup() {
     if (StorageManager.GetSaveDisabled()) return;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     ConsoleSavePath file = getDataFile(L"largeMapDataMappings");
 #else
     ConsoleSavePath file = getDataFile(L"mapDataMappings");
@@ -667,7 +605,7 @@ void DirectoryLevelStorage::saveMapIdLookup() {
         FileEntry* fileEntry = m_saveFile->createFile(file);
         m_saveFile->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         ByteArrayOutputStream baos;
         DataOutputStream dos(&baos);
         dos.writeInt(m_playerMappings.size());
@@ -677,7 +615,7 @@ void DirectoryLevelStorage::saveMapIdLookup() {
 #if defined(_WINDOWS64) || defined(__linux__)
             app.DebugPrintf("  -- %d\n", it->first);
 #else
-#ifdef __linux__
+#if defined(__linux__)
             app.DebugPrintf("  -- %d\n", it->first);
 #else
             app.DebugPrintf("  -- %ls\n", it->first.toString().c_str());
@@ -705,7 +643,7 @@ void DirectoryLevelStorage::saveMapIdLookup() {
 }
 
 void DirectoryLevelStorage::dontSaveMapMappingForPlayer(PlayerUID xuid) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     AUTO_VAR(it, m_playerMappings.find(xuid));
     if (it != m_playerMappings.end()) {
         for (AUTO_VAR(itMap, it->second.m_mappings.begin());
@@ -732,7 +670,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(
 }
 
 void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     AUTO_VAR(it, m_playerMappings.find(xuid));
     if (it != m_playerMappings.end()) {
         for (AUTO_VAR(itMap, it->second.m_mappings.begin());

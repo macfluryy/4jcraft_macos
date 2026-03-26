@@ -39,12 +39,7 @@ Stat* Stat::postConstruct() {
     Stats::all->push_back(this);
 
     std::pair<int, Stat*> id1(id, this);
-#if 0
-    Stats::statsById->emplace(id1);  //	assert(0); // MGH - TODO - FIX - find
-                                     // out where this move function comes from
-#else
     Stats::statsById->emplace(std::move(id1));
-#endif  // 0
 
     return this;
 }

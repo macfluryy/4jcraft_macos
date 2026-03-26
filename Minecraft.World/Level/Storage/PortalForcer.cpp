@@ -70,13 +70,7 @@ bool PortalForcer::findPortal(std::shared_ptr<Entity> e, double xOriginal,
     if (level->dimension->id == -1) {
         r *= 3;
     } else {
-#if 0
-        // AP poor little Vita takes 30 seconds to leave the Nether. This should
-        // help
-        r *= 5;
-#else
         r *= 8;
-#endif
     }
     double closest = -1;
     int xTarget = 0;

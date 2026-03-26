@@ -47,11 +47,9 @@ public:
                         void* pSource, unsigned int SrcSize);
     HRESULT DecompressRLE(void* pDestination, unsigned int* pDestSize,
                           void* pSource, unsigned int SrcSize);
-#if 1
     static void VitaVirtualDecompress(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
                                       unsigned int SrcSize);
-#endif
 
     void SetDecompressionType(ECompressionTypes type) {
         m_decompressType = type;
@@ -67,11 +65,8 @@ private:
     HRESULT DecompressWithType(void* pDestination, unsigned int* pDestSize,
                                void* pSource, unsigned int SrcSize);
 
-#if 0 || 0
-#else
     XMEMCOMPRESSION_CONTEXT compressionContext;
     XMEMDECOMPRESSION_CONTEXT decompressionContext;
-#endif
     CRITICAL_SECTION rleCompressLock;
     CRITICAL_SECTION rleDecompressLock;
 
@@ -84,11 +79,8 @@ private:
 
 // extern Compression gCompression;
 
-#if 0 || 0 || defined _WIN64 || \
-    0 || defined __linux__
+#if defined(_WIN64) || defined(__linux__)
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_ZLIBRLE
-#elif 0
-#define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_PS3ZLIB
 #else
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_LZXRLE
 #endif

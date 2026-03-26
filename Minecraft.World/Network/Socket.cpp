@@ -461,15 +461,9 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             return;
         }
 
-#if 0
-        bool lowPriority = ((flags & QNET_SENDDATA_LOW_PRIORITY) ==
-                            QNET_SENDDATA_LOW_PRIORITY);
-        bool requireAck = lowPriority;
-#else
         bool lowPriority = false;
         bool requireAck = ((flags & NON_QNET_SENDDATA_ACK_REQUIRED) ==
                            NON_QNET_SENDDATA_ACK_REQUIRED);
-#endif
 
         if (m_queueIdx == SOCKET_SERVER_END) {
             // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",

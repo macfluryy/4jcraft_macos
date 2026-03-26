@@ -1,17 +1,7 @@
 #include "../../Platform/stdafx.h"
 #include "CompressedTileStorage.h"
 
-#if 0
-#define PSVITA_PRECOMPUTED_TABLE
-#endif
 
-#if 0
-static const int sc_maxCompressTiles = 64;
-static CompressedTileStorage_compress_dataIn
-    g_compressTileDataIn[sc_maxCompressTiles] __attribute__((__aligned__(16)));
-static int g_currentCompressTiles = 0;
-// #define DISABLE_SPU_CODE
-#endif  //0
 
 // Note: See header for an overview of this class
 
@@ -20,7 +10,7 @@ XLockFreeStack<unsigned char> CompressedTileStorage::deleteQueue[3];
 
 CRITICAL_SECTION CompressedTileStorage::cs_write;
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
 // AP - this will create a precomputed table to speed up getData
 static int* CompressedTile_StorageIndexTable = NULL;
 
@@ -39,7 +29,7 @@ CompressedTileStorage::CompressedTileStorage() {
     indicesAndData = NULL;
     allocatedSize = 0;
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
     CompressedTileStorage_InitTable();
 #endif
 }
@@ -57,7 +47,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
     }
     LeaveCriticalSection(&cs_write);
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
     CompressedTileStorage_InitTable();
 #endif
 }
@@ -98,7 +88,7 @@ CompressedTileStorage::CompressedTileStorage(byteArray initFrom,
                // only needs to be the actual size of the data used rather than
                // the one rounded up to a page size actually allocated
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
     CompressedTileStorage_InitTable();
 #endif
 }
@@ -113,15 +103,8 @@ CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
 
     // Empty and already compressed, so we only need 1K. Rounding up to nearest
     // 4096 bytes for allocation
-#if 0
-    // XPhysicalAlloc just maps to malloc on PS3, so allocate the smallest
-    // amount
-    indicesAndData = (unsigned char*)XPhysicalAlloc(1024, MAXULONG_PTR, 4096,
-                                                    PAGE_READWRITE);
-#else
     indicesAndData = (unsigned char*)XPhysicalAlloc(4096, MAXULONG_PTR, 4096,
                                                     PAGE_READWRITE);
-#endif  //0
     unsigned short* indices = (unsigned short*)indicesAndData;
     // unsigned char *data = indicesAndData + 1024;
 
@@ -135,7 +118,7 @@ CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
                // only needs to be the actual size of the data used rather than
                // the one rounded up to a page size actually allocated
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
     CompressedTileStorage_InitTable();
 #endif
 }
@@ -207,15 +190,7 @@ bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
 }
 
 CompressedTileStorage::~CompressedTileStorage() {
-#if 1
     if (indicesAndData) XPhysicalFree(indicesAndData);
-#else
-    if ((unsigned int)indicesAndData >= MM_PHYSICAL_4KB_BASE) {
-        if (indicesAndData) XPhysicalFree(indicesAndData);
-    } else {
-        if (indicesAndData) free(indicesAndData);
-    }
-#endif
 }
 
 // Get an index into the normal ordering of tiles for the java game, given a
@@ -301,31 +276,6 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
         // and require no storage. Store flags for each tile type used in an
         // array of 4 64-bit flags.
 
-#if 0
-        // AP - Vita isn't so great at shifting 64bits. The top biggest CPU time
-        // sink after profiling is __ashldi3 (64bit shift) at 3% Let's use 32bit
-        // instead
-        unsigned int usedFlags[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-        __int32 i32_1 = 1;
-        for (int j = 0; j < 64; j++)  // This loop of 64 is to go round the 4 x
-                                      // 4 tiles in the block
-        {
-            int tile = data[getIndex(i, j)];
-            if (tile < (64 << 2)) {
-                usedFlags[tile & 7] |= (i32_1 << (tile >> 3));
-            }
-        }
-        int count = 0;
-        for (int tile = 0; tile < 256;
-             tile++)  // This loop of 256 is to go round the 256 possible values
-                      // that the tiles might have had to find how many are
-                      // actually used
-        {
-            if (usedFlags[tile & 7] & (i32_1 << (tile >> 3))) {
-                count++;
-            }
-        }
-#else
         uint64_t usedFlags[4] = {0, 0, 0, 0};
         int64_t i64_1 = 1;  // MGH - instead of 1i64, which is MS specific
         for (int j = 0; j < 64; j++)  // This loop of 64 is to go round the 4 x
@@ -345,7 +295,6 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
                 count++;
             }
         }
-#endif
         if (count == 1) {
             _blockIndices[i] = INDEX_TYPE_0_OR_8_BIT | INDEX_TYPE_0_BIT_FLAG;
             //			type0++;
@@ -460,7 +409,7 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
     LeaveCriticalSection(&cs_write);
 }
 
-#ifdef PSVITA_PRECOMPUTED_TABLE
+#if defined(PSVITA_PRECOMPUTED_TABLE)
 
 // AP - When called in pairs from LevelChunk::getBlockData this version of
 // getData reduces the time from ~5.2ms to ~1.6ms on the Vita Gets all tile
@@ -820,51 +769,12 @@ void CompressedTileStorage::tick() {
     do {
         toFree = deleteQueue[freeIndex].Pop();
 //		if( toFree ) printf("Deleting 0x%x\n", toFree);
-#if 1
         if (toFree) XPhysicalFree(toFree);
-#else
-        // Determine correct means to free this data - could have been allocated
-        // either with XPhysicalAlloc or malloc
-        if ((unsigned int)toFree >= MM_PHYSICAL_4KB_BASE) {
-            XPhysicalFree(toFree);
-        } else {
-            free(toFree);
-        }
-#endif
     } while (toFree);
 
     deleteQueueIndex = (deleteQueueIndex + 1) % 3;
 }
 
-#if 0
-void CompressedTileStorage::compress_SPU(int upgradeBlock /*=-1*/) {
-    EnterCriticalSection(&cs_write);
-    static unsigned char compBuffer[32768 + 4096]
-        __attribute__((__aligned__(16)));
-    CompressedTileStorage_compress_dataIn& dataIn = g_compressTileDataIn[0];
-    dataIn.allocatedSize = allocatedSize;
-    dataIn.indicesAndData = indicesAndData;
-    dataIn.newIndicesAndData = compBuffer;
-    dataIn.upgradeBlock = upgradeBlock;
-
-    static C4JSpursJobQueue::Port p("CompressedTileStorage::compress_SPU");
-    C4JSpursJob_CompressedTileStorage_compress compressJob(&dataIn);
-    p.submitJob(&compressJob);
-    p.waitForCompletion();
-
-    if (dataIn.neededCompressed) {
-        unsigned char* newIndicesAndData = (unsigned char*)XPhysicalAlloc(
-            dataIn.newAllocatedSize, MAXULONG_PTR, 4096,
-            PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
-        memcpy(newIndicesAndData, compBuffer, dataIn.newAllocatedSize);
-        queueForDelete(indicesAndData);
-        indicesAndData = newIndicesAndData;
-        allocatedSize = dataIn.newAllocatedSize;
-    }
-
-    LeaveCriticalSection(&cs_write);
-}
-#endif
 
 // Compresses the data currently stored in one of two ways:
 // (1) Attempt to compresses every block as much as possible (if upgradeBlock is
@@ -872,10 +782,6 @@ void CompressedTileStorage::compress_SPU(int upgradeBlock /*=-1*/) {
 // ( if > -1 ), which is changed to be the next-most-accomodating storage from
 // its current state
 void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
-#if 0 && !defined DISABLE_SPU_CODE
-    compress_SPU(upgradeBlock);
-    return;
-#endif
 
     unsigned char tempdata[64];
     unsigned short _blockIndices[512];
@@ -951,29 +857,6 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                 // compress any further and require no storage. Store flags for
                 // each tile type used in an array of 4 64-bit flags.
 
-#if 0
-                // AP - Vita isn't so great at shifting 64bits. The top biggest
-                // CPU time sink after profiling is __ashldi3 (64bit shift) at
-                // 3% lets use 32bit values instead
-                unsigned int usedFlags[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-                __int32 i32_1 = 1;
-                for (int j = 0; j < 64; j++)  // This loop of 64 is to go round
-                                              // the 4x4x4 tiles in the block
-                {
-                    int tiletype = unpacked_data[j];
-                    usedFlags[tiletype & 7] |= (i32_1 << (tiletype >> 3));
-                }
-                // count the number of bits set using the 'Hammering Weight'
-                // method. This reduces ::compress total thread cpu consumption
-                // from 10% to 4%
-                unsigned int count = 0;
-                for (int Index = 0; Index < 8; Index += 1) {
-                    unsigned int i = usedFlags[Index];
-                    i = i - ((i >> 1) & 0x55555555);
-                    i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
-                    count += (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
-                }
-#else
 
                 uint64_t usedFlags[4] = {0, 0, 0, 0};
                 int64_t i64_1 =
@@ -994,7 +877,6 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                         count++;
                     }
                 }
-#endif
 
                 if (count == 1) {
                     _blockIndices[i] =
@@ -1076,11 +958,9 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
             PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
         if (newIndicesAndData == NULL) {
             DWORD lastError = GetLastError();
-#if 1
             MEMORYSTATUS memStatus;
             GlobalMemoryStatus(&memStatus);
             __debugbreak();
-#endif
         }
         unsigned char* pucData = newIndicesAndData + 1024;
         unsigned short usDataOffset = 0;
@@ -1181,13 +1061,9 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
 
                 // And finally repack
                 unsigned char ucMappings[256] = {0};
-#if 0
-                memset(ucMappings, 255, 256);
-#else
                 for (int j = 0; j < 256; j++) {
                     ucMappings[j] = 255;
                 }
-#endif
 
                 unsigned char* repacked = NULL;
 

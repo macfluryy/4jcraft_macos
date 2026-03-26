@@ -58,17 +58,7 @@ enum ESavePlatform {
     SAVE_FILE_PLATFORM_PSVITA = MAKE_FOURCC('P', 'S', 'V', '_'),
     SAVE_FILE_PLATFORM_WIN64 = MAKE_FOURCC('W', 'I', 'N', '_'),
 
-#if 0
-    SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_X360
-#elif 0
-    SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_XBONE
-#elif 0
-    SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PS3
-#elif 0
-    SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PS4
-#elif 0
-    SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PSVITA
-#elif defined _WINDOWS64
+#if defined(_WINDOWS64)
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_WIN64
 #else
     // DecalOverdose(HACK + TODO)
@@ -161,11 +151,7 @@ private:
     std::vector<FileEntry*> fileTable;
     ESavePlatform m_savePlatform;
     ByteOrder m_saveEndian;
-#if 0 || 0
-    static const ByteOrder m_localEndian = BIGENDIAN;
-#else
     static const ByteOrder m_localEndian = LITTLEENDIAN;
-#endif
 
     short m_saveVersion;
     short m_originalSaveVersion;
@@ -197,13 +183,6 @@ protected:
 
     std::vector<FileEntry*>* getValidPlayerDatFiles();
 
-#if 0 || 0 || 0
-    std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
-    std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
-    std::vector<FileEntry*>* getDatFilesWithOnlineID(const PlayerUID& pUID);
-    std::vector<FileEntry*>* getDatFilesWithMacAndUserID(const PlayerUID& pUID);
-    std::vector<FileEntry*>* getDatFilesWithPrimaryUser();
-#endif
 
     void setSaveVersion(int version) { m_saveVersion = version; }
     int getSaveVersion() { return m_saveVersion; }

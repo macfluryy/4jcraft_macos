@@ -144,41 +144,6 @@ void ArmorDyeRecipe::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
     ZeroMemory(TempIngReq.uiGridA, sizeof(unsigned int) * 9);
 
-#if 0
-	AUTO_VAR(citEnd, ingredients->end());
-
-	for (std::vector<ItemInstance *>::const_iterator ingredient = ingredients->begin(); ingredient != citEnd; ingredient++)
-	{
-		ItemInstance *expected = *ingredient;
-
-		if (expected!=NULL) 
-		{			
-			int iAuxVal = (*ingredient)->getAuxValue();
-			TempIngReq.uiGridA[iCount++]=expected->id | iAuxVal<<24;
-			// 4J-PB - put the ingredients in boxes 1,2,4,5 so we can see them in a 2x2 crafting screen
-			if(iCount==2) iCount=3;
-			bFound=false;
-			for(j=0;j<TempIngReq.iIngC;j++)
-			{
-				if((TempIngReq.iIngIDA[j]==expected->id) && (iAuxVal == Recipes::ANY_AUX_VALUE || TempIngReq.iIngAuxValA[j] == iAuxVal))
-				{
-					bFound= true;
-					break;
-				}
-			}
-			if(bFound)
-			{
-				TempIngReq.iIngValA[j]++;
-			}
-			else
-			{
-				TempIngReq.iIngIDA[TempIngReq.iIngC]=expected->id;
-				TempIngReq.iIngAuxValA[TempIngReq.iIngC]=iAuxVal;
-				TempIngReq.iIngValA[TempIngReq.iIngC++]++;
-			}
-		}
-	}
-#endif
 
     pIngReq->iIngIDA = new int[TempIngReq.iIngC];
     pIngReq->iIngValA = new int[TempIngReq.iIngC];

@@ -65,9 +65,4 @@ protected:
     static const int AttributeNames[];
 };
 
-#if 0
-typedef std::unordered_map<eATTRIBUTE_ID, AttributeModifier*, std::hash<int>>
-    attrAttrModMap;
-#else
 typedef std::unordered_map<eATTRIBUTE_ID, AttributeModifier*> attrAttrModMap;
-#endif

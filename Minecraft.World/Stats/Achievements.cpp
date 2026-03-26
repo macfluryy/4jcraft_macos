@@ -61,7 +61,7 @@ Achievement* Achievements::arrowKillCreeper = NULL;
 Achievement* Achievements::mine100Blocks = NULL;
 Achievement* Achievements::kill10Creepers = NULL;
 
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
 Achievement* Achievements::overkill = NULL;  // Restored old achivements.
 Achievement* Achievements::bookcase = NULL;  // Restored old achivements.
 
@@ -193,7 +193,7 @@ void Achievements::staticCtor() {
                          Tile::treeTrunk, (Achievement*)buildSword))
             ->setAwardLocallyOnly()
             ->postConstruct();
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
     Achievements::eatPorkChop =
         (new Achievement(eAward_eatPorkChop, L"eatPorkChop", 0, 0,
                          Tile::treeTrunk, (Achievement*)buildSword))
@@ -219,7 +219,6 @@ void Achievements::staticCtor() {
                          Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
 
-#if 1
     // WARNING: NO NEW ACHIEVMENTS CAN BE ADDED HERE
     // These stats (achievements) are directly followed by new
     // stats/achievements in the profile data, so cannot be changed without
@@ -278,9 +277,8 @@ void Achievements::staticCtor() {
     //   = (new Achievement(eAward_bookcase,
     //   L"bookcase",			-3, 6,	Tile::bookshelf,
     //   (Achievement *)enchantments) )->postConstruct();
-#endif
 
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
     Achievements::overkill =
         (new Achievement(eAward_overkill, L"overkill", -4, 1,
                          Item::sword_diamond, (Achievement*)enchantments))

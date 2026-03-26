@@ -19,24 +19,9 @@ void CommandBlockEntity::setCommand(const std::wstring& command) {
 std::wstring CommandBlockEntity::getCommand() { return command; }
 
 int CommandBlockEntity::performCommand(Level* level) {
-#if 0
-	if (level->isClientSide)
-	{
-		return 0;
-	}
-
-	MinecraftServer *instance = MinecraftServer::getInstance();
-	if (instance != NULL && instance->isCommandBlockEnabled())
-	{
-		CommandDispatcher *commandDispatcher = instance->getCommandDispatcher();
-		return commandDispatcher->performCommand(std::dynamic_pointer_cast<CommandSender>(shared_from_this()), command, byteArray() );
-	}
-	return 0;
-#else
     // 4J-JEV: Cannot decide what to do with the command field.
     assert(false);
     return 0;
-#endif
 }
 
 std::wstring CommandBlockEntity::getName() { return name; }

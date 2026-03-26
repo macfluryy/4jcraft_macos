@@ -73,7 +73,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         data[0] = 1;
         for (unsigned int i = 0; i < parent->decorations.size(); i++) {
             MapDecoration* md = parent->decorations.at(i);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             data[i * DEC_PACKET_BYTES + 1] = (char)(md->img);
             data[i * DEC_PACKET_BYTES + 8] = (char)(md->rot & 0xF);
 #else
@@ -92,7 +92,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         for (AUTO_VAR(it, parent->nonPlayerDecorations.begin());
              it != parent->nonPlayerDecorations.end(); ++it) {
             MapDecoration* md = it->second;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             data[dataIndex * DEC_PACKET_BYTES + 1] = (char)(md->img);
             data[dataIndex * DEC_PACKET_BYTES + 8] = (char)(md->rot & 0xF);
 #else
@@ -237,9 +237,6 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
 
     // 4J Stu - Put this block back in if you want to display entity positions
     // on a map (see below)
-#if 0
-	nonPlayerDecorations.clear();
-#endif
     bool addedPlayers = false;
     for (AUTO_VAR(it, carriedBy.begin()); it != carriedBy.end();) {
         std::shared_ptr<HoldingPlayer> hp = *it;
@@ -299,7 +296,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                     char x = (char)(xd * 2 + 0.5);
                     char y = (char)(yd * 2 + 0.5);
                     int size = MAP_SIZE - 1;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                     if (xd < -size || yd < -size || xd > size || yd > size) {
                         if (xd <= -size) x = (uint8_t)(size * 2 + 2.5);
                         if (yd <= -size) y = (uint8_t)(size * 2 + 2.5);
@@ -342,7 +339,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                                   10);
                         rot = (char)((s * s * 34187121 + s * 121) >> 15 & 15);
                     }
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                     if (xd < -size || yd < -size || xd > size || yd > size) {
                         if (xd <= -size) x = (uint8_t)(size * 2 + 2.5);
                         if (yd <= -size) y = (uint8_t)(size * 2 + 2.5);
@@ -362,38 +359,6 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
 
             // 4J Stu - Put this block back in if you want to display entity
             // positions on a map (see above as well)
-#if 0
-			for(AUTO_VAR(it,playerLevel->entities.begin()); it != playerLevel->entities.end(); ++it)
-			{
-				std::shared_ptr<Entity> ent = *it;
-
-				if((ent->GetType() & eTYPE_ENEMY) == 0) continue;
-
-				float xd = (float) ( ent->x - x ) / (1 << scale);
-				float yd = (float) ( ent->z - z ) / (1 << scale);
-				char x = (char) (xd * 2 + 0.5);
-				char y = (char) (yd * 2 + 0.5);
-				int size = MAP_SIZE - 1;
-				char rot = 0;
-				if (dimension < 0)
-				{
-					int s = step / 10;
-					rot = (char) ((s * s * 34187121 + s * 121) >> 15 & 15);
-				}
-#ifdef _LARGE_WORLDS
-				if (xd < -size || yd < -size || xd > size || yd > size)
-				{
-
-					if (xd <= -size) x = (uint8_t) (size * 2 + 2.5);
-					if (yd <= -size) y = (uint8_t) (size * 2 + 2.5);
-					if (xd >= size) x = (uint8_t) (size * 2 + 1);
-					if (yd >= size) y = (uint8_t) (size * 2 + 1);
-				}
-#endif
-				//decorations.push_back(new MapDecoration(7, x, y, 0));
-				nonPlayerDecorations.insert( std::unordered_map<int, MapDecoration *>::value_type( ent->entityId, new MapDecoration(4, x, y, rot, ent->entityId, true) ) );
-			}
-#endif
 
             // 4J-PB - display all the players in the map
             // For the xbox, x and z are 0
@@ -417,7 +382,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                         char rot;
                         char imgIndex;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                         if (xd > -size && yd > -size && xd <= size &&
                             yd <= size)
 #endif
@@ -439,7 +404,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                             imgIndex = (int)decorationPlayer->getPlayerIndex();
                             if (imgIndex > 3) imgIndex += 4;
                         }
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                         else  // if (abs(xd) < MAP_SIZE * 5 && abs(yd) <
                               // MAP_SIZE * 5)
                         {
@@ -536,7 +501,7 @@ void MapItemSavedData::handleComplexItemData(charArray& data) {
         decorations.clear();
         for (unsigned int i = 0; i < (data.length - 1) / DEC_PACKET_BYTES;
              i++) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             char img = data[i * DEC_PACKET_BYTES + 1];
             char rot = data[i * DEC_PACKET_BYTES + 8];
 #else

@@ -40,12 +40,8 @@ void ChunkStorageProfilerDecorator::tick() {
     counter++;
     if (counter > 500) {
         if (loadCount > 0) {
-#ifndef _CONTENT_PACKAGE
-#if 0
-            sprintf(buf, "Average load time: %f (%lld)",
-                    0.000001 * (double)timeSpentLoading / (double)loadCount,
-                    loadCount);
-#elif defined(__linux__)
+#if !defined(_CONTENT_PACKAGE)
+#if defined(__linux__)
             sprintf(buf, "Average load time: %f (%lld)",
                     0.000001 * (double)timeSpentLoading / (double)loadCount,
                     (long long)loadCount);
@@ -58,12 +54,8 @@ void ChunkStorageProfilerDecorator::tick() {
 #endif
         }
         if (saveCount > 0) {
-#ifndef _CONTENT_PACKAGE
-#if 0
-            sprintf(buf, "Average save time: %f (%lld)",
-                    0.000001 * (double)timeSpentSaving / (double)loadCount,
-                    loadCount);
-#elif defined(__linux__)
+#if !defined(_CONTENT_PACKAGE)
+#if defined(__linux__)
             sprintf(buf, "Average save time: %f (%lld)",
                     0.000001 * (double)timeSpentSaving / (double)loadCount,
                     (long long)loadCount);

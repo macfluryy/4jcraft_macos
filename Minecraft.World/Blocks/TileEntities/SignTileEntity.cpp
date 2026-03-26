@@ -33,10 +33,8 @@ SignTileEntity::SignTileEntity() : TileEntity() {
 
 SignTileEntity::~SignTileEntity() {
     // TODO ORBIS_STUBBED;
-#if 1
     // 4J-PB - we don't need to verify strings anymore -
     // InputManager.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback,(LPVOID)this);
-#endif
 }
 
 void SignTileEntity::save(CompoundTag* tag) {
@@ -45,7 +43,7 @@ void SignTileEntity::save(CompoundTag* tag) {
     tag->putString(L"Text2", m_wsmessages[1]);
     tag->putString(L"Text3", m_wsmessages[2]);
     tag->putString(L"Text4", m_wsmessages[3]);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     OutputDebugStringW(L"### - Saving a sign with text - \n");
     for (int i = 0; i < 4; i++) {
         OutputDebugStringW(m_wsmessages[i].c_str());
@@ -64,7 +62,7 @@ void SignTileEntity::load(CompoundTag* tag) {
         if (m_wsmessages[i].length() > MAX_LINE_LENGTH)
             m_wsmessages[i] = m_wsmessages[i].substr(0, MAX_LINE_LENGTH);
     }
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     OutputDebugStringW(L"### - Loaded a sign with text - \n");
     for (int i = 0; i < 4; i++) {
         OutputDebugStringW(m_wsmessages[i].c_str());

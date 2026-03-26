@@ -13,13 +13,8 @@ protected:
     static TilePos getRandomPosWithin(Level* level, int cx, int cz);
 
 private:
-#if 0
-    // AP - See CustomMap.h for an explanation of this
-    static CustomMap chunksToPoll;
-#else
     static std::unordered_map<ChunkPos, bool, ChunkPosKeyHash, ChunkPosKeyEq>
         chunksToPoll;
-#endif
 
 public:
     static const int tick(ServerLevel* level, bool spawnEnemies,

@@ -11,7 +11,6 @@ typedef struct tagTHREADNAME_INFO {
 } THREADNAME_INFO;
 
 void SetThreadName(std::uint32_t threadId, const char* threadName) {
-#if 1
     THREADNAME_INFO info;
 
     info.dwType = 0x1000;
@@ -27,14 +26,4 @@ void SetThreadName(std::uint32_t threadId, const char* threadName) {
                                                  : EXCEPTION_EXECUTE_HANDLER) {
     }
 #endif
-#if 0
-    __try {
-        RaiseException(
-            0x406D1388, 0, sizeof(info) / sizeof(std::uint32_t),
-            reinterpret_cast<std::uint32_t*>(&info));
-    } __except (GetExceptionCode() == 0x406D1388 ? EXCEPTION_CONTINUE_EXECUTION
-                                                 : EXCEPTION_EXECUTE_HANDLER) {
-    }
-#endif
-#endif  // 0
 }

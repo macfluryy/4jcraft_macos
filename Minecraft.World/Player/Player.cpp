@@ -101,9 +101,6 @@ void Player::_init() {
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
 
-#if 0 || 0
-    m_ePlayerNameValidState = ePlayerNameValid_NotSet;
-#endif
 
     enderChestInventory = std::shared_ptr<PlayerEnderChestContainer>(
         new PlayerEnderChestContainer());
@@ -146,11 +143,9 @@ Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
         app.GetGameHostOption(eGameHostOption_Gamertags) != 0 ? true : false);
     m_bIsGuest = false;
 
-#if 1
     // 4J: Set UUID to name on none-XB1 consoles, may change in future but for
     // now ownership of animals on these consoles is done by name
     setUUID(name);
-#endif
 }
 
 Player::~Player() {
@@ -335,36 +330,6 @@ void Player::tick() {
     if (!level->isClientSide) {
         static int count = 0;
         if (count++ == 100) {
-#if 0
-#ifdef _WINDOWS64
-			// Drop some items so we have them in inventory to play with
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Tile::recordPlayer) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::map) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::record_01) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::record_02) ) );
-			this->drop( std::shared_ptr<ItemInstance>(new ItemInstance( Item::pickAxe_diamond, 1 )) );
-#endif
-
-#if 0
-			// #ifdef _DEBUG
-			// 		// Drop some items so we have them in inventory to play with
-			// 		this->drop( shared_ptr<ItemInstance>( new ItemInstance(Tile::recordPlayer) ) );
-			// 		this->drop( shared_ptr<ItemInstance>( new ItemInstance(Item::map) ) );
-			// 		this->drop( shared_ptr<ItemInstance>( new ItemInstance(Item::record_01) ) );
-			// 		this->drop( shared_ptr<ItemInstance>( new ItemInstance(Item::record_02) ) );
-			// 		this->drop( shared_ptr<ItemInstance>(new ItemInstance( Item::pickAxe_diamond, 1 )) );
-			// #endif
-#endif
-
-#if 0
-			// Drop some items so we have them in inventory to play with
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Tile::recordPlayer) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::map) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::record_01) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::record_02) ) );
-			this->drop( std::shared_ptr<ItemInstance>(new ItemInstance( Item::pickAxe_diamond, 1 )) );
-#endif
-#endif
             // 4J-PB - Throw items out at the start of the level
             // this->drop( new ItemInstance( Item::pickAxe_diamond, 1 ) );
             // this->drop( new ItemInstance( Tile::workBench, 1 ) );
@@ -429,76 +394,6 @@ void Player::tick() {
                 //            inventory.add(itemInstance);
             }
         }
-#if 0
-		// 4J Stu - This makes a tunnel with a powered track just over length to get the On A Rail achievement
-		// It needs a few items at the start to get you going (a level and some powered rails) and of course a
-		// minecart. For some reason some of the torches come off so it will also need some fixing along the way.
-		static bool madeTrack = false;
-		if( !madeTrack )
-		{	
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Item::minecart, 1 ) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::goldenRail, 10 ) ) );
-			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::lever, 10 ) ) );
-
-			int poweredCount = 0;
-			for(int i = 10; i < 2800; ++i)
-			{
-				level->setTileAndData(x+i,y-1,z-2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y,z-2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+1,z-2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+2,z-2,Tile::glowstone_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+3,z-2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-
-				level->setTileAndData(x+i,y-1,z-1,Tile::stoneBrick_Id,0,Tile::UPDATE_CLIENTS);
-				if(i%20 == 0)
-				{
-					level->setTileAndData(x+i,y,z-1,Tile::redstoneTorch_on_Id,0,Tile::UPDATE_CLIENTS);
-					poweredCount = 4;
-				}
-				else
-				{
-					level->setTileAndData(x+i,y,z-1,0,0,Tile::UPDATE_CLIENTS);
-				}
-				level->setTileAndData(x+i,y+1,z-1,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+2,z-1,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+3,z-1,0,0,Tile::UPDATE_CLIENTS);
-
-				level->setTileAndData(x+i,y-1,z,Tile::stoneBrick_Id,0,Tile::UPDATE_CLIENTS);
-				if(poweredCount>0)
-				{
-					level->setTileAndData(x+i,y,z,Tile::goldenRail_Id,0,Tile::UPDATE_CLIENTS);
-					--poweredCount;
-				}
-				else
-				{
-					level->setTileAndData(x+i,y,z,Tile::rail_Id,0,Tile::UPDATE_CLIENTS);
-				}
-				level->setTileAndData(x+i,y+1,z,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+2,z,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+3,z,0,0,Tile::UPDATE_CLIENTS);
-
-				level->setTileAndData(x+i,y-1,z+1,Tile::stoneBrick_Id,0,Tile::UPDATE_CLIENTS);
-				if((i+5)%20 == 0)
-				{
-					level->setTileAndData(x+i,y,z+1,Tile::torch_Id,0,Tile::UPDATE_CLIENTS);
-				}
-				else
-				{
-					level->setTileAndData(x+i,y,z+1,0,0,Tile::UPDATE_CLIENTS);
-				}
-				level->setTileAndData(x+i,y+1,z+1,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+2,z+1,0,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+3,z+1,0,0,Tile::UPDATE_CLIENTS);
-
-				level->setTileAndData(x+i,y-1,z+2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y,z+2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+1,z+2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+2,z+2,Tile::glowstone_Id,0,Tile::UPDATE_CLIENTS);
-				level->setTileAndData(x+i,y+3,z+2,Tile::quartzBlock_Id,0,Tile::UPDATE_CLIENTS);
-			}
-			madeTrack = true;
-		}
-#endif
     }
     // End 4J sTU
 }
@@ -594,14 +489,14 @@ void Player::ride(std::shared_ptr<Entity> e) {
 }
 
 void Player::setPlayerDefaultSkin(EDefaultSkins skin) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(L"Setting default skin to %d for player %ls\n", skin, name.c_str());
 #endif
     m_skinIndex = skin;
 }
 
 void Player::setCustomSkin(std::uint32_t skinId) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(L"Attempting to set skin to %08X for player %ls\n", skinId,
             name.c_str());
 #endif
@@ -721,17 +616,10 @@ unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId) {
 
 void Player::setXuid(PlayerUID xuid) {
     m_xuid = xuid;
-#if 0
-    // 4J Stu - For XboxOne (and probably in the future all other platforms) we
-    // store a UUID for the player to use as the owner key for tamed animals
-    // This should just be a string version of the xuid
-
-    setUUID(xuid.toString());
-#endif
 }
 
 void Player::setCustomCape(std::uint32_t capeId) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(L"Attempting to set cape to %08X for player %s\n", capeId,
             name.c_str());
 #endif
@@ -1955,28 +1843,11 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                     // on durango.
                     int dist = minecartAchievementPos->dist(
                         Mth::floor(x), Mth::floor(y), Mth::floor(z));
-#if 0
-                    // 4J-PB - send the event to cause the progress bar to
-                    // increase on XB1
-                    if (m_bAwardedOnARail == false) {
-                        if (dist < 500) {
-                            if ((dist > 0) && (dist % 100 == 0)) {
-                                awardStat(GenericStats::onARail(),
-                                          GenericStats::param_onARail(dist));
-                            }
-                        } else {
-                            awardStat(GenericStats::onARail(),
-                                      GenericStats::param_onARail(dist));
-                            m_bAwardedOnARail = true;
-                        }
-                    }
-#else
                     if ((m_bAwardedOnARail == false) && (dist >= 500)) {
                         awardStat(GenericStats::onARail(),
                                   GenericStats::param_onARail(dist));
                         m_bAwardedOnARail = true;
                     }
-#endif
                 }
 
             } else if (riding->instanceof(eTYPE_BOAT)) {
@@ -2203,7 +2074,7 @@ void Player::startUsingItem(std::shared_ptr<ItemInstance> instance,
         GenericStats::param_itemsUsed(
             std::dynamic_pointer_cast<Player>(shared_from_this()), instance));
 
-#if (!0) && (defined _EXTENDED_ACHIEVEMENTS)
+#if defined(_EXTENDED_ACHIEVEMENTS)
     if ((instance->getItem()->id == Item::rotten_flesh_Id) &&
         (getFoodData()->getFoodLevel() == 0))
         awardStat(GenericStats::ironBelly(), GenericStats::param_ironBelly());
@@ -2375,12 +2246,7 @@ int Player::getTexture() {
 
 int Player::hash_fnct(const std::shared_ptr<Player> k) {
     // TODO 4J Stu - Should we just be using the pointers and hashing them?
-#if 0
-    return (int)boost::hash_value(
-        k->name);  // 4J Stu - Names are completely unique?
-#else
     return (int)std::hash<std::wstring>()(k->name);
-#endif  // 0
 }
 
 bool Player::eq_test(const std::shared_ptr<Player> x,
@@ -2815,17 +2681,3 @@ void Player::SetAdditionalModelParts(
     m_ppAdditionalModelParts = ppAdditionalModelParts;
 }
 
-#if 0 || 0
-
-Player::ePlayerNameValidState Player::GetPlayerNameValidState(void) {
-    return m_ePlayerNameValidState;
-}
-
-void Player::SetPlayerNameValidState(bool bState) {
-    if (bState) {
-        m_ePlayerNameValidState = ePlayerNameValid_True;
-    } else {
-        m_ePlayerNameValidState = ePlayerNameValid_False;
-    }
-}
-#endif

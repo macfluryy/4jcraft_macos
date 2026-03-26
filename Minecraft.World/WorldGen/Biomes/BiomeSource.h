@@ -36,15 +36,7 @@ private:
     static bool getIsMatch(float* frac);                   // 4J added
     static void getFracs(intArray indices, float* fracs);  // 4J added
 public:
-#if 0
-    static int64_t findSeed(
-        LevelType* generator,
-        bool* pServerRunning);  // MGH - added pRunning, so we can early out of
-                                // this on Vita as it can take up to 60 secs
-                                // // 4J added
-#else
     static int64_t findSeed(LevelType* generator);  // 4J added
-#endif
     virtual ~BiomeSource();
 
 public:

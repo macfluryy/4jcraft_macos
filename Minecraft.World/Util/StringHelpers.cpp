@@ -103,7 +103,7 @@ const char* wstringtofilename(const std::wstring& name) {
     assert(name.length() < 256);
     for (unsigned int i = 0; i < name.length(); i++) {
         wchar_t c = name[i];
-#if 0 || 0 || defined __linux__
+#if defined(__linux__)
         if (c == '\\') c = '/';
 #else
         if (c == '/') c = '\\';
