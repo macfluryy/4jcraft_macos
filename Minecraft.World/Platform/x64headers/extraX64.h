@@ -5,6 +5,7 @@
 #include <functional>
 #include <cstdint>
 #include <limits>
+#include <mutex>
 #include "4J_Compat.h"
 
 #include "../../../Minecraft.Client/Rendering/Models/SkinBox.h"
@@ -14,107 +15,46 @@
 #define MULTITHREAD_ENABLE
 
 typedef unsigned char byte;
-
-#ifdef __PSVITA__
-constexpr int MINECRAFT_NET_MAX_PLAYERS = 4;
-#else
 constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
-#endif
 
 static_assert(
     MINECRAFT_NET_MAX_PLAYERS <= std::numeric_limits<std::uint8_t>::max(),
     "MINECRAFT_NET_MAX_PLAYERS must fit in the 8-bit network protocol");
 
-#ifdef __ORBIS__
-#include <net.h>
-#include <np/np_npid.h>
-#include <user_service.h>
-#include "../../../Minecraft.Client/Platform/Orbis/Orbis_PlayerUID.h"
-#include "../../../Minecraft.Client/Platform/Orbis/Network/SQRNetworkManager_Orbis.h"
-typedef SQRNetworkManager_Orbis::SessionID SessionID;
-typedef SQRNetworkManager_Orbis::PresenceSyncInfo INVITE_INFO;
-
-#elif defined __PS3__  // defined in the profile lib
-#include <np.h>
-#include <sysutil/sysutil_userinfo.h>
-#include <netex/libnetctl.h>
-#include <assert.h>
-#include <stdlib.h>
-#include "../../../Minecraft.Client/Platform/PS3/PS3_PlayerUID.h"
-#include "../../../Minecraft.Client/Platform/PS3/Network/SQRNetworkManager_PS3.h"
-typedef SQRNetworkManager::SessionID SessionID;
-typedef SQRNetworkManager::PresenceSyncInfo INVITE_INFO;
-
-#elif defined __PSVITA__
-#include <np.h>
-#include <assert.h>
-#include <stdlib.h>
-#include "../../../Minecraft.Client/Platform/PSVita/PSVita_PlayerUID.h"
-#include "../../../Minecraft.Client/Platform/PSVita/Network/SQRNetworkManager_Vita.h"
-#include "../../../Minecraft.Client/Platform/PSVita/Network/SQRNetworkManager_AdHoc_Vita.h"
-typedef SQRNetworkManager_Vita::SessionID SessionID;
-typedef SQRNetworkManager_Vita::PresenceSyncInfo INVITE_INFO;
-
-#elif defined _DURANGO
-#include "../../../Minecraft.Client/Platform/Durango/4JLibs/inc/4J_Profile.h"
-#include "../../../Minecraft.Client/Platform/Durango/Network/DQRNetworkManager.h"
-typedef ULONGLONG SessionID;
-typedef ULONGLONG GameSessionUID;
-typedef DQRNetworkManager::SessionInfo INVITE_INFO;
-#else
 typedef ULONGLONG SessionID;
 typedef PlayerUID GameSessionUID;
 class INVITE_INFO;
-
-#endif  //  __PS3__
 
 typedef struct _XUIOBJ* HXUIOBJ;
 typedef struct _XUICLASS* HXUICLASS;
 typedef struct _XUIBRUSH* HXUIBRUSH;
 typedef struct _XUIDC* HXUIDC;
 
-// #ifdef _DURANGO
-// void GetLocalTime(SYSTEMTIME *time);
-// #endif
-
 bool IsEqualXUID(PlayerUID a, PlayerUID b);
 
-// Temporary implementation of lock free stack with quite a bit more locking
-// than you might expect
 template <typename T>
 class XLockFreeStack {
     std::vector<T*> intStack;
+    std::mutex m_cs;
 
 public:
-    XLockFreeStack() {
-#ifdef __ORBIS__
-        OrbisInit();  // For PS4, we need to make sure Ult is set up for the
-                      // critical sections to be able to initialise
-#endif
-        InitializeCriticalSectionAndSpinCount(&m_cs, 5120);
-    }
-    ~XLockFreeStack() { DeleteCriticalSection(&m_cs); }
+    XLockFreeStack() = default;
+    ~XLockFreeStack() = default;
     void Initialize() {}
     void Push(T* data) {
-        EnterCriticalSection(&m_cs);
+        std::lock_guard<std::mutex> lock(m_cs);
         intStack.push_back(data);
-        LeaveCriticalSection(&m_cs);
     }
     T* Pop() {
-        EnterCriticalSection(&m_cs);
+        std::lock_guard<std::mutex> lock(m_cs);
         if (intStack.size()) {
             T* ret = intStack.back();
             intStack.pop_back();
-            LeaveCriticalSection(&m_cs);
             return ret;
-        } else {
-            LeaveCriticalSection(&m_cs);
-            return NULL;
         }
-    }
 
-private:
-    CRITICAL_SECTION m_cs;
+        return NULL;
+    }
 };
 
 void XMemCpy(void* a, const void* b, size_t s);
@@ -124,8 +64,6 @@ void* XPhysicalAlloc(SIZE_T a, ULONG_PTR b, ULONG_PTR c, DWORD d);
 void XPhysicalFree(void* a);
 
 class DLCManager;
-
-// class LevelGenerationOptions;
 class LevelRuleset;
 class ModelPart;
 class LevelChunk;
@@ -141,10 +79,6 @@ const int XN_SYS_SIGNINCHANGED = 0;
 const int XN_SYS_INPUTDEVICESCHANGED = 1;
 const int XN_LIVE_CONTENT_INSTALLED = 2;
 const int XN_SYS_STORAGEDEVICESCHANGED = 3;
-
-//
-// Codes returned for the gamepad input
-//
 
 #define VK_PAD_A 0x5800
 #define VK_PAD_B 0x5801
@@ -257,11 +191,9 @@ typedef struct _XONLINE_FRIEND {
     SessionID xnkidInvite;
     FILETIME gameinviteTime;
     DWORD cchRichPresence;
-    //    WCHAR wszRichPresence[MAX_RICHPRESENCE_SIZE];
 } XONLINE_FRIEND, *PXONLINE_FRIEND;
 
 class IQNetCallbacks {};
-
 class IQNetGameSearch {};
 
 typedef enum _QNET_STATE {
@@ -297,80 +229,16 @@ public:
     static IQNetPlayer m_player[4];
 };
 
-#ifdef _DURANGO
-// 4J Stu - We don't want to be doing string conversions at runtime for timing
-// instrumentation, so do this instead
-#define PIXBeginNamedEvent(a, b, ...) PIXBeginEvent(a, L##b, __VA_ARGS__)
-#define PIXEndNamedEvent() PIXEndEvent()
-#define PIXSetMarkerDeprecated(a, b, ...) PIXSetMarker(a, L##b, __VA_ARGS__)
-#define PIXAddNamedCounter(a, b) PIXReportCounter(L##b, a)
-#else
 void PIXAddNamedCounter(int a, const char* b, ...);
 void PIXBeginNamedEvent(int a, const char* b, ...);
 void PIXEndNamedEvent();
 void PIXSetMarkerDeprecated(int a, const char* b, ...);
-#endif
 
 void XSetThreadProcessor(HANDLE a, int b);
-// BOOL XCloseHandle(HANDLE a);
 
 const int QNET_SENDDATA_LOW_PRIORITY = 0;
 const int QNET_SENDDATA_SECONDARY = 0;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(_DURANGO) || \
-    defined(__PSVITA__)
-#define INVALID_XUID PlayerUID()
-#else
-const int INVALID_XUID = 0;
-#endif
-// const int MOJANG_DATA = 0;
-
-// typedef struct _STRING_VERIFY_RESPONSE
-// {
-//     WORD wNumStrings;
-//     HRESULT *pStringResult;
-// } STRING_VERIFY_RESPONSE;
-
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(_DURANGO) && \
-    !defined(__PSVITA__) && !defined(FOURJ_COMMON_XCONTENT_DATA_DEFINED)
-typedef int XCONTENTDEVICEID;
-#endif  //__PS3__
-
-#if !defined(_DURANGO) && !defined(FOURJ_COMMON_XMARKETPLACE_DEFINED)
-typedef struct _XMARKETPLACE_CONTENTOFFER_INFO {
-    ULONGLONG qwOfferID;
-    ULONGLONG qwPreviewOfferID;
-    DWORD dwOfferNameLength;
-    WCHAR* wszOfferName;
-    DWORD dwOfferType;
-    BYTE contentId[XMARKETPLACE_CONTENT_ID_LEN];
-    BOOL fIsUnrestrictedLicense;
-    DWORD dwLicenseMask;
-    DWORD dwTitleID;
-    DWORD dwContentCategory;
-    DWORD dwTitleNameLength;
-    WCHAR* wszTitleName;
-    BOOL fUserHasPurchased;
-    DWORD dwPackageSize;
-    DWORD dwInstallSize;
-    DWORD dwSellTextLength;
-    WCHAR* wszSellText;
-    DWORD dwAssetID;
-    DWORD dwPurchaseQuantity;
-    DWORD dwPointsPrice;
-} XMARKETPLACE_CONTENTOFFER_INFO, *PXMARKETPLACE_CONTENTOFFER_INFO;
-
-typedef enum {
-    XMARKETPLACE_OFFERING_TYPE_CONTENT = 0x00000002,
-    XMARKETPLACE_OFFERING_TYPE_GAME_DEMO = 0x00000020,
-    XMARKETPLACE_OFFERING_TYPE_GAME_TRAILER = 0x00000040,
-    XMARKETPLACE_OFFERING_TYPE_THEME = 0x00000080,
-    XMARKETPLACE_OFFERING_TYPE_TILE = 0x00000800,
-    XMARKETPLACE_OFFERING_TYPE_ARCADE = 0x00002000,
-    XMARKETPLACE_OFFERING_TYPE_VIDEO = 0x00004000,
-    XMARKETPLACE_OFFERING_TYPE_CONSUMABLE = 0x00010000,
-    XMARKETPLACE_OFFERING_TYPE_AVATARITEM = 0x00100000
-} XMARKETPLACE_OFFERING_TYPE;
-#endif  // _DURANGO
+constexpr PlayerUID INVALID_XUID = 0;
 
 const int QNET_SENDDATA_RELIABLE = 0;
 const int QNET_SENDDATA_SEQUENTIAL = 0;
@@ -403,7 +271,6 @@ public:
     HRESULT Load(LPCWSTR szId);
 };
 
-#if !defined(__ORBIS__) && !defined(_XBOX_ONE)
 typedef VOID* XMEMDECOMPRESSION_CONTEXT;
 typedef VOID* XMEMCOMPRESSION_CONTEXT;
 
@@ -434,7 +301,6 @@ typedef struct _XMEMCODEC_PARAMETERS_LZX {
 
 void XMemDestroyCompressionContext(XMEMCOMPRESSION_CONTEXT Context);
 void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context);
-#endif
 
 typedef struct {
     BYTE type;
@@ -460,36 +326,6 @@ typedef struct {
     XUSER_DATA value;
 } XUSER_PROPERTY, *PXUSER_PROPERTY;
 
-// these need to match apwstrLocaleCode
-// const int XC_LANGUAGE_ENGLISH		=1;
-// const int XC_LANGUAGE_JAPANESE		=2;
-// const int XC_LANGUAGE_GERMAN		=3;
-// const int XC_LANGUAGE_FRENCH		=4;
-// const int XC_LANGUAGE_SPANISH		=5;
-// const int XC_LANGUAGE_ITALIAN		=6;
-// const int XC_LANGUAGE_KOREAN		=7;
-// const int XC_LANGUAGE_TCHINESE		=8;
-// const int XC_LANGUAGE_PORTUGUESE	=9;
-// const int XC_LANGUAGE_BRAZILIAN		=10;
-// #if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
-// const int XC_LANGUAGE_RUSSIAN		=11;
-// // more PS3
-// const int XC_LANGUAGE_DUTCH			=12;
-// const int XC_LANGUAGE_FINISH		=13;
-// const int XC_LANGUAGE_SWEDISH		=14;
-// const int XC_LANGUAGE_DANISH		=15;
-// const int XC_LANGUAGE_NORWEGIAN		=16;
-// const int XC_LANGUAGE_POLISH		=17;
-// const int XC_LANGUAGE_TURKISH		=18;
-// const int XC_LANGUAGE_LATINAMERICANSPANISH		=19;
-//
-// const int XC_LANGUAGE_GREEK			=20;
-// #else
-// const int XC_LANGUAGE_UKENGLISH	=11;
-// const int XC_LANGUAGE_MEXICANSPANISH=12;
-// #endif
-
-// matching Xbox 360
 const int XC_LANGUAGE_ENGLISH = 0x01;
 const int XC_LANGUAGE_JAPANESE = 0x02;
 const int XC_LANGUAGE_GERMAN = 0x03;
@@ -507,13 +343,10 @@ const int XC_LANGUAGE_BNORWEGIAN = 0x0F;
 const int XC_LANGUAGE_DUTCH = 0x10;
 const int XC_LANGUAGE_SCHINESE = 0x11;
 
-// for Sony
 const int XC_LANGUAGE_LATINAMERICANSPANISH = 0xF0;
 const int XC_LANGUAGE_FINISH = 0xF1;
 const int XC_LANGUAGE_GREEK = 0xF2;
 const int XC_LANGUAGE_DANISH = 0xF3;
-
-// for Xbox One
 const int XC_LANGUAGE_CZECH = 0xF4;
 const int XC_LANGUAGE_SLOVAK = 0xF5;
 
@@ -560,16 +393,11 @@ const int XC_LOCALE_ARGENTINA = 40;
 const int XC_LOCALE_SAUDI_ARABIA = 41;
 const int XC_LOCALE_ISRAEL = 42;
 const int XC_LOCALE_UNITED_ARAB_EMIRATES = 43;
-
-// for Sony
 const int XC_LOCALE_LATIN_AMERICA = 240;
 
-#if !(defined _DURANGO || defined __PS3__ || defined __ORBIS__ || \
-      defined __PSVITA__)
 DWORD XGetLanguage();
 DWORD XGetLocale();
 DWORD XEnableGuestSignin(BOOL fEnable);
-#endif
 
 class D3DXVECTOR3 {
 public:

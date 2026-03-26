@@ -2,30 +2,11 @@
 
 #include "../../Minecraft.World/Util/SoundTypes.h"
 
-#ifdef _XBOX
-
-#elif defined(__PS3__)
-#undef __in
-#undef __out
-#include "../../Minecraft.Client/Platform/PS3/Miles/include/mss.h"
-#elif defined(__PSVITA__)
-#include "../../PSVITA/Miles/include/mss.h"
-#elif defined _DURANGO
-// 4J Stu - Temp define to get Miles to link, can likely be removed when we get
-// a new version of Miles
-#define _SEKRIT
-#include "../../Minecraft.Client/Platform/Durango/Miles/include/mss.h"
-#elif defined _WINDOWS64
+#ifdef _WINDOWS64
 #include "../../windows64/Miles/include/mss.h"
-#elif defined(__linux__)
-// (DecalOverdose)HACK + TODO: Find native Linux headers and libs for this, but
-// for now I'm using Win64 ones
+#else
+// Linux currently uses the Windows64 Miles headers as the compatible host SDK.
 #include "../../Minecraft.Client/Platform/Windows64/Miles/include/mss.h"
-#else  // PS4
-// 4J Stu - Temp define to get Miles to link, can likely be removed when we get
-// a new version of Miles
-#define _SEKRIT2
-#include "../../Minecraft.Client/Platform/Orbis/Miles/include/mss.h"
 #endif
 
 typedef struct {
@@ -46,7 +27,8 @@ public:
         : m_bIsPlayingStreamingCDMusic(false),
           m_bIsPlayingStreamingGameMusic(false),
           m_bIsPlayingEndMusic(false),
-          m_bIsPlayingNetherMusic(false) {};
+          m_bIsPlayingNetherMusic(false) {}
+
     virtual void tick(std::shared_ptr<Mob>* players, float a) = 0;
     virtual void destroy() = 0;
     virtual void play(int iSound, float x, float y, float z, float volume,
@@ -74,6 +56,7 @@ public:
     virtual bool GetIsPlayingNetherMusic();
     virtual void SetIsPlayingEndMusic(bool bVal);
     virtual void SetIsPlayingNetherMusic(bool bVal);
+
     static const WCHAR* wchSoundNames[eSoundType_MAX];
     static const WCHAR* wchUISoundNames[eSFX_MAX];
 
@@ -97,9 +80,6 @@ private:
 
     std::vector<ScheduledSound*> scheduledSounds;
 
-private:
-    // platform specific functions
-
     virtual int initAudioHardware(int iMinSpeakers) = 0;
 
     bool m_bIsPlayingStreamingCDMusic;
@@ -107,3 +87,5 @@ private:
     bool m_bIsPlayingEndMusic;
     bool m_bIsPlayingNetherMusic;
 };
+
+

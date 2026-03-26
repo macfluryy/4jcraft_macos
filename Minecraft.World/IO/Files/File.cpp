@@ -3,29 +3,14 @@
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"
 
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 #include <chrono>
 #include <filesystem>
-#endif
-
-#ifdef __PS3__
-#include <cell/cell_fs.h>
-#endif
-#ifdef __PSVITA__
-#include <fios2.h>
-#endif
 
 const wchar_t File::pathSeparator = L'/';
 
-#ifdef _XBOX
-const std::wstring File::pathRoot =
-    L"GAME:";  // Path root after pathSeparator has been removed
-#else
 const std::wstring File::pathRoot =
     L"";  // Path root after pathSeparator has been removed
-#endif
 
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 namespace {
 namespace fs = std::filesystem;
 
@@ -39,15 +24,14 @@ std::wstring ToFilename(const fs::path& path) {
     return filenametowstring(filename.c_str());
 }
 
-int64_t ToEpochMilliseconds(const fs::file_time_type& fileTime) {
+__int64 ToEpochMilliseconds(const fs::file_time_type& fileTime) {
     using namespace std::chrono;
 
     const auto systemTime = time_point_cast<milliseconds>(
         fileTime - fs::file_time_type::clock::now() + system_clock::now());
-    return static_cast<int64_t>(systemTime.time_since_epoch().count());
+    return static_cast<__int64>(systemTime.time_since_epoch().count());
 }
 }  // namespace
-#endif
 
 // Creates a new File instance from a parent abstract pathname and a child
 // pathname string.
@@ -74,11 +58,6 @@ File::File(const std::wstring& pathname)  //: parent( NULL )
     std::string finalPath = StorageManager.GetMountedPath(path.c_str());
     if (finalPath.size() == 0) finalPath = path;
     m_abstractPathName = convStringToWstring(finalPath);
-#elif defined(_DURANGO)
-    std::wstring finalPath =
-        StorageManager.GetMountedPath(m_abstractPathName.c_str());
-    if (finalPath.size() == 0) finalPath = m_abstractPathName;
-    m_abstractPathName = finalPath;
 #endif
     /*
     std::vector<std::wstring> path = stringSplit( pathname, pathSeparator );
@@ -133,10 +112,8 @@ this->parent = NULL;
 // deleted. Returns: true if and only if the file or directory is successfully
 // deleted; false otherwise
 bool File::_delete() {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     const bool result = fs::remove(ToFilesystemPath(getPath()), error);
-#if defined _UNICODE
     if (!result || error) {
 #ifndef _CONTENT_PACKAGE
         printf("File::_delete - Error code %d (%#0.8X)\n", error.value(),
@@ -145,58 +122,14 @@ bool File::_delete() {
         return false;
     }
     return true;
-#elif defined(__linux__)
-    if (!result || error) {
-        printf("Unable to delete file :(");
-        return false;
-    }
-    return true;
-#else
-    if (!result || error) {
-#ifndef _CONTENT_PACKAGE
-        printf("File::_delete - Error code %d (%#0.8X)\n", error.value(),
-               error.value());
-#endif
-        return false;
-    }
-    return true;
-#endif
-#elif defined _UNICODE
-    const bool result = DeleteFile(getPath().c_str()) != 0;
-#elif defined(__linux__)
-    // FIXME
-    const bool result = false;
-#else
-    const bool result = DeleteFile(wstringtofilename(getPath())) != 0;
-#endif
-    if (!result) {
-#if !defined(__linux__)
-        const unsigned int error = GetLastError();
-#ifndef _CONTENT_PACKAGE
-        printf("File::_delete - Error code %d (%#0.8X)\n", error, error);
-#endif
-#else
-        printf("Unable to delete file :(");
-#endif
-        return false;
-    } else
-        return true;
 }
 
 // Creates the directory named by this abstract pathname.
 // Returns:
 // true if and only if the directory was created; false otherwise
 bool File::mkdir() const {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     return fs::create_directory(ToFilesystemPath(getPath()), error);
-#elif defined(_UNICODE)
-    return CreateDirectory(getPath().c_str(), NULL) != 0;
-#elif defined(__linux__)
-    return ::mkdir(wstringtofilename(getPath()), 0777) == 0;
-#else
-    return CreateDirectory(wstringtofilename(getPath()), NULL) != 0;
-#endif
 }
 
 // Creates the directory named by this abstract pathname, including any
@@ -219,7 +152,6 @@ bool File::mkdir() const {
 //          parent directories to be created
 //
 bool File::mkdirs() const {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     const fs::path path = ToFilesystemPath(getPath());
 
@@ -232,55 +164,6 @@ bool File::mkdirs() const {
     }
 
     return fs::create_directories(path, error);
-#else
-    std::vector<std::wstring> path =
-        stringSplit(m_abstractPathName, pathSeparator);
-
-    std::wstring pathToHere = L"";
-    AUTO_VAR(itEnd, path.end());
-    for (AUTO_VAR(it, path.begin()); it != itEnd; it++) {
-        // If this member of the vector is the root then just skip to the next
-        if (pathRoot.compare(*it) == 0) {
-            pathToHere = *it;
-            continue;
-        }
-
-        pathToHere = pathToHere + pathSeparator + *it;
-
-        // if not exists
-#ifdef _UNICODE
-        if (GetFileAttributes(pathToHere.c_str()) == -1) {
-            const bool result = CreateDirectory(pathToHere.c_str(), NULL) != 0;
-            if (!result) {
-                // Failed to create
-                return false;
-            }
-        }
-#elif defined(__linux__)
-        const char* mkpath = wstringtofilename(getPath());
-        struct stat info;
-        if (stat(mkpath, &info) != 0 || !(info.st_mode & S_IFDIR)) {
-            if (::mkdir(mkpath, 0777) != 0) {
-                return false;
-            }
-        }
-#else
-        if (GetFileAttributes(wstringtofilename(pathToHere)) == -1) {
-            const bool result =
-                CreateDirectory(wstringtofilename(pathToHere), NULL) != 0;
-            if (!result) {
-                // Failed to create
-                return false;
-            }
-        }
-#endif
-    }
-
-    // We should now exist
-    assert(exists());
-
-    return true;
-#endif
 }
 
 /*
@@ -297,17 +180,8 @@ return (File *) parent;
 bool File::exists() const {
     // TODO 4J Stu - Possible we could get an error result from something other
     // than the file not existing?
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     return fs::exists(ToFilesystemPath(getPath()), error);
-#elif defined(_UNICODE)
-    return GetFileAttributes(getPath().c_str()) != -1;
-#elif defined(__linux__)
-    // BAD DOBBY BAD DOBBY
-    return access(wstringtofilename(getPath()), F_OK) != -1;
-#else
-    return GetFileAttributes(wstringtofilename(getPath())) != -1;
-#endif
 }
 
 // Tests whether the file denoted by this abstract pathname is a normal file. A
@@ -328,7 +202,6 @@ bool File::isFile() const { return exists() && !isDirectory(); }
 // Returns:
 // true if and only if the renaming succeeded; false otherwise
 bool File::renameTo(File dest) {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     fs::rename(ToFilesystemPath(getPath()), ToFilesystemPath(dest.getPath()),
                error);
@@ -337,19 +210,6 @@ bool File::renameTo(File dest) {
         return false;
     }
     return true;
-#else
-    std::string sourcePath = wstringtofilename(getPath());
-    std::string destPath = wstringtofilename(dest.getPath());
-
-    int result = rename(sourcePath.c_str(), destPath.c_str());
-
-    if (result != 0) {
-        perror("File::renameTo - Error renaming file");
-        return false;
-    } else {
-        return true;
-    }
-#endif
 }
 
 // Returns an array of abstract pathnames denoting the files in the directory
@@ -378,132 +238,11 @@ std::vector<File*>* File::listFiles() const {
     // TODO 4J Stu - Also need to check for I/O errors?
     if (!isDirectory()) return vOutput;
 
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     for (fs::directory_iterator it(ToFilesystemPath(getPath()), error);
          !error && it != fs::directory_iterator(); it.increment(error)) {
         vOutput->push_back(new File(*this, ToFilename(it->path())));
     }
-#else
-#ifdef __PS3__
-    const char* lpFileName = wstringtofilename(getPath());
-    char filePath[256];
-
-    std::string mountedPath = StorageManager.GetMountedPath(lpFileName);
-    if (mountedPath.length() > 0) {
-        strcpy(filePath, mountedPath.c_str());
-    } else if (lpFileName[0] == '/')  // already fully qualified path
-        strcpy(filePath, lpFileName);
-    else
-        sprintf(filePath, "%s/%s", getUsrDirPath(), lpFileName);
-    int fd;
-    CellFsErrno err = cellFsOpendir(filePath, &fd);
-
-    CellFsDirectoryEntry de;
-    std::uint32_t count = 0;
-    err = cellFsGetDirectoryEntries(fd, &de, sizeof(CellFsDirectoryEntry),
-                                    &count);
-    if (count != 0) {
-        do {
-            if (de.attribute.st_mode & CELL_FS_S_IFREG)
-                vOutput->push_back(
-                    new File(*this, filenametowstring(de.entry_name.d_name)));
-            err = cellFsGetDirectoryEntries(
-                fd, &de, sizeof(CellFsDirectoryEntry), &count);
-        } while (count);
-    }
-    err = cellFsClose(fd);
-#elif defined __ORBIS__ || defined __PSVITA__
-    const char* lpFileName = wstringtofilename(getPath());
-    char filePath[256];
-
-    std::string mountedPath = StorageManager.GetMountedPath(lpFileName);
-    if (mountedPath.length() > 0) {
-        strcpy(filePath, mountedPath.c_str());
-    } else if (lpFileName[0] == '/')  // already fully qualified path
-        strcpy(filePath, lpFileName);
-    else
-        sprintf(filePath, "%s/%s", getUsrDirPath(), lpFileName);
-
-    bool exists = sceFiosDirectoryExistsSync(NULL, filePath);
-    if (!exists) {
-        app.DebugPrintf(
-            "\nsceFiosDirectoryExistsSync - Directory doesn't exist\n");
-    }
-
-    // CD - Vita note: sceFiosDHOpenSync returns SCE_FIOS_ERROR_UNIMPLEMENTED
-    // CD - The Handle also returns as 0 [dh], sceFiosDHOpen could also be
-    // failing CD - Hence, this fails stating 0 files in directory
-
-    SceFiosDH dh = SCE_FIOS_DH_INVALID;
-    SceFiosBuffer buf;
-    buf.length = 0;
-    SceFiosOp op = sceFiosDHOpen(NULL, &dh, filePath, buf);
-
-    int err = sceFiosOpWait(op);
-    if (err != SCE_FIOS_OK) {
-        app.DebugPrintf("\nsceFiosOpWait = 0x%x\n", err);
-    }
-    SceFiosSize size = sceFiosOpGetActualCount(op);
-    char* pBuf = new char[size];
-    buf.set(pBuf, (size_t)size);
-
-    sceFiosOpDelete(op);
-    sceFiosDHClose(NULL, dh);
-
-    err = sceFiosDHOpenSync(NULL, &dh, filePath, buf);
-    if (err != SCE_FIOS_OK) {
-        app.DebugPrintf("\nsceFiosDHOpenSync = 0x%x\n", err);
-    }
-    SceFiosDirEntry entry;
-    ZeroMemory(&entry, sizeof(SceFiosDirEntry));
-    err = sceFiosDHReadSync(NULL, dh, &entry);
-    while (err == SCE_FIOS_OK) {
-        vOutput->push_back(new File(
-            *this, filenametowstring(entry.fullPath + entry.offsetToName)));
-        ZeroMemory(&entry, sizeof(SceFiosDirEntry));
-        err = sceFiosDHReadSync(NULL, dh, &entry);
-    };
-
-    sceFiosDHClose(NULL, dh);
-    delete pBuf;
-#else
-
-#if defined(__linux__)
-    struct stat wfd;
-#else   // _WIN32
-    WIN32_FIND_DATA wfd;
-#endif  // __linux__
-
-#ifdef _UNICODE
-    WCHAR path[MAX_PATH];
-    swprintf(path, L"%ls\\*", getPath().c_str());
-    HANDLE hFind = FindFirstFile(path, &wfd);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        int count = 0;
-        do {
-            vOutput->push_back(new File(*this, wfd.cFileName));
-        } while (FindNextFile(hFind, &wfd));
-        FindClose(hFind);
-    }
-#elif defined(__linux__)
-    char path[MAX_PATH];
-    ::listFiles(path);
-#else
-    char path[MAX_PATH];
-    sprintf(path, "%s\\*", wstringtofilename(getPath()));
-    HANDLE hFind = FindFirstFile(path, &wfd);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        // int count = 0;
-        do {
-            vOutput->push_back(
-                new File(*this, filenametowstring(wfd.cFileName)));
-        } while (FindNextFile(hFind, &wfd));
-        FindClose(hFind);
-    }
-#endif
-#endif
-#endif
     return vOutput;
 }
 
@@ -525,7 +264,6 @@ std::vector<File*>* File::listFiles(FileFilter* filter) const {
 
     std::vector<File*>* vOutput = new std::vector<File*>();
 
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     for (fs::directory_iterator it(ToFilesystemPath(getPath()), error);
          !error && it != fs::directory_iterator(); it.increment(error)) {
@@ -534,82 +272,6 @@ std::vector<File*>* File::listFiles(FileFilter* filter) const {
             vOutput->push_back(new File(thisFile));
         }
     }
-#else
-#ifdef __PS3__
-    const char* lpFileName = wstringtofilename(getPath());
-    char filePath[256];
-
-    std::string mountedPath = StorageManager.GetMountedPath(lpFileName);
-    if (mountedPath.length() > 0) {
-        strcpy(filePath, mountedPath.c_str());
-    } else if (lpFileName[0] == '/')  // already fully qualified path
-        strcpy(filePath, lpFileName);
-    else
-        sprintf(filePath, "%s/%s", getUsrDirPath(), lpFileName);
-    int fd;
-    CellFsErrno err = cellFsOpendir(filePath, &fd);
-
-    CellFsDirectoryEntry de;
-    std::uint32_t count = 0;
-    err = cellFsGetDirectoryEntries(fd, &de, sizeof(CellFsDirectoryEntry),
-                                    &count);
-    if (count != 0) {
-        do {
-            File thisFile =
-                File(*this, filenametowstring(de.entry_name.d_name));
-            if (filter->accept(&thisFile)) {
-                File storageFile = thisFile;
-                if (de.attribute.st_mode & CELL_FS_S_IFREG)
-                    vOutput->push_back(&storageFile);
-            }
-            err = cellFsGetDirectoryEntries(
-                fd, &de, sizeof(CellFsDirectoryEntry), &count);
-        } while (count);
-    }
-    err = cellFsClose(fd);
-#else
-
-#ifdef _UNICODE
-
-    WCHAR path[MAX_PATH];
-    WIN32_FIND_DATA wfd;
-
-    swprintf(path, L"%ls\\*", getPath().c_str());
-    HANDLE hFind = FindFirstFile(path, &wfd);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        int count = 0;
-        do {
-            File thisFile = File(*this, wfd.cFileName);
-            if (filter->accept(&thisFile)) {
-                File storageFile = thisFile;
-                vOutput->push_back(&storageFile);
-            }
-        } while (FindNextFile(hFind, &wfd));
-        FindClose(hFind);
-    }
-#elif defined(__linux__)
-    char path[MAX_PATH];
-    ::listFiles(path);
-#else
-    char path[MAX_PATH];
-    WIN32_FIND_DATA wfd;
-
-    sprintf(path, "%s\\*", wstringtofilename(getPath()));
-    HANDLE hFind = FindFirstFile(path, &wfd);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        // int count = 0;
-        do {
-            File thisFile = File(*this, filenametowstring(wfd.cFileName));
-            if (filter->accept(&thisFile)) {
-                File storageFile = thisFile;
-                vOutput->push_back(&storageFile);
-            }
-        } while (FindNextFile(hFind, &wfd));
-        FindClose(hFind);
-    }
-#endif
-#endif
-#endif
     return vOutput;
 }
 
@@ -618,132 +280,33 @@ std::vector<File*>* File::listFiles(FileFilter* filter) const {
 // true if and only if the file denoted by this abstract pathname exists and is
 // a directory; false otherwise
 bool File::isDirectory() const {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
     std::error_code error;
     return fs::is_directory(ToFilesystemPath(getPath()), error);
-#elif defined(_UNICODE)
-    return exists() && (GetFileAttributes(getPath().c_str()) &
-                        FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
-#elif defined(__linux__)
-    const char* dirpath = wstringtofilename(getPath());
-    struct stat st;
-    return stat(dirpath, &st) == 0 && S_ISDIR(st.st_mode);
-#else
-    return exists() && (GetFileAttributes(wstringtofilename(getPath())) &
-                        FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
-#endif
 }
 
 // Returns the length of the file denoted by this abstract pathname. The return
 // value is unspecified if this pathname denotes a directory. Returns: The
 // length, in bytes, of the file denoted by this abstract pathname, or 0L if the
 // file does not exist
-int64_t File::length() {
-#ifdef __PS3__
-    // extern const char* getPS3HomePath();
-    CellFsErrno err = 0;
-    const char* lpFileName = wstringtofilename(getPath());
-    char filePath[256];
-
-    std::string mountedPath = StorageManager.GetMountedPath(lpFileName);
-    if (mountedPath.length() > 0) {
-        strcpy(filePath, mountedPath.c_str());
-    } else if (lpFileName[0] == '/')  // already fully qualified path
-        strcpy(filePath, lpFileName);
-    else
-        sprintf(filePath, "%s/%s", getUsrDirPath(), lpFileName);
-
-#ifndef _CONTENT_PACKAGE
-    // printf("+++File::length - %s\n",filePath);
-#endif
-    // check if the file exists first
-    CellFsStat statData;
-    err = cellFsStat(filePath, &statData);
-
-    if (err != CELL_FS_SUCCEEDED) {
-        // printf("+++File::length FAILED with %d\n",err);
-        return 0;
-    }
-    if (statData.st_mode == CELL_FS_S_IFDIR) {
-        // printf("+++File::length FAILED with %d\n",err);
-        return 0;
-    }
-
-    // printf("+++File::length - %ll\n",statData.st_size);
-
-    return statData.st_size;
-#elif defined __ORBIS__ || defined __PSVITA__
-
-    char filePath[256];
-    const char* lpFileName = wstringtofilename(getPath());
-
-    std::string mountedPath = StorageManager.GetMountedPath(lpFileName);
-    if (mountedPath.length() > 0) {
-        strcpy(filePath, mountedPath.c_str());
-    } else if (lpFileName[0] == '/')  // already fully qualified path
-        strcpy(filePath, lpFileName);
-    else
-        sprintf(filePath, "%s/%s", getUsrDirPath(), lpFileName);
-
-    // check if the file exists first
-    SceFiosStat statData;
-    if (sceFiosStatSync(NULL, filePath, &statData) != SCE_FIOS_OK) {
-        return 0;
-    }
-    if (statData.statFlags & SCE_FIOS_STATUS_DIRECTORY) {
-        return 0;
-    }
-    return statData.fileSize;
-#elif !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
+__int64 File::length() {
     std::error_code error;
     const fs::path path = ToFilesystemPath(getPath());
 
     if (fs::is_regular_file(path, error)) {
         const auto size = fs::file_size(path, error);
         if (!error) {
-            return static_cast<int64_t>(size);
+            return static_cast<__int64>(size);
         }
     }
 
     return 0;
-#else
-    WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
-#ifdef _UNICODE
-    const bool result =
-        GetFileAttributesEx(getPath().c_str(),      // file or directory name
-                            GetFileExInfoStandard,  // attribute
-                            &fileInfoBuffer         // attribute information
-                            ) != 0;
-#else
-    const bool result =
-        GetFileAttributesEx(
-            wstringtofilename(getPath()),  // file or directory name
-            GetFileExInfoStandard,         // attribute
-            &fileInfoBuffer                // attribute information
-            ) != 0;
-#endif
-
-    if (result && !((fileInfoBuffer.dwFileAttributes &
-                     FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)) {
-        // Success
-        LARGE_INTEGER liFileSize;
-        liFileSize.HighPart = fileInfoBuffer.nFileSizeHigh;
-        liFileSize.LowPart = fileInfoBuffer.nFileSizeLow;
-
-        return liFileSize.QuadPart;
-    } else {
-        // Fail or a Directory
-        return 0l;
-    }
-#endif
 }
 
 // Returns the time that the file denoted by this abstract pathname was last
 // modified. Returns: A long value representing the time the file was last
 // modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1,
 // 1970), or 0L if the file does not exist or if an I/O error occurs
-int64_t File::lastModified() {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
+__int64 File::lastModified() {
     std::error_code error;
     const fs::path path = ToFilesystemPath(getPath());
 
@@ -756,44 +319,6 @@ int64_t File::lastModified() {
     }
 
     return 0l;
-#elif !defined(__linux__)
-    WIN32_FILE_ATTRIBUTE_DATA fileInfoBuffer;
-#ifdef _UNICODE
-    const bool result =
-        GetFileAttributesEx(getPath().c_str(),      // file or directory name
-                            GetFileExInfoStandard,  // attribute
-                            &fileInfoBuffer         // attribute information
-                            ) != 0;
-#else
-    const bool result =
-        GetFileAttributesEx(
-            wstringtofilename(getPath()),  // file or directory name
-            GetFileExInfoStandard,         // attribute
-            &fileInfoBuffer                // attribute information
-            ) != 0;
-#endif
-
-    if (result && !((fileInfoBuffer.dwFileAttributes &
-                     FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)) {
-        // Success
-        LARGE_INTEGER liLastModified;
-        liLastModified.HighPart = fileInfoBuffer.ftLastWriteTime.dwHighDateTime;
-        liLastModified.LowPart = fileInfoBuffer.ftLastWriteTime.dwLowDateTime;
-
-        return liLastModified.QuadPart;
-    } else {
-        // Fail or a Directory
-        return 0l;
-    }
-#else
-    struct stat fileStat;
-    if (stat(wstringtofilename(getPath()), &fileStat) == 0 &&
-        !S_ISDIR(fileStat.st_mode)) {
-        return static_cast<int64_t>(fileStat.st_mtime);
-    } else {
-        return 0l;
-    }
-#endif
 }
 
 const std::wstring File::getPath() const {

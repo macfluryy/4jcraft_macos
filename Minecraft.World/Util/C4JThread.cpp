@@ -1,1065 +1,904 @@
 #include "../Platform/stdafx.h"
 
 #include "C4JThread.h"
-#ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/ShutdownManager.h"
-#include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/PSVitaTLSStorage.h"
 
-// AP - this comes from the low level user_malloc.c file used to overide the
-// default memory functions. These must be called when a thread is
-// started/stopped
-extern "C" {
-extern void user_registerthread();
-extern void user_removethread();
+#include <algorithm>
+#include <bit>
+#include <cassert>
+#include <cerrno>
+#include <chrono>
+#include <climits>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <limits>
+#include <thread>
+#include <vector>
+
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
+
+#if defined(__linux__)
+#include <pthread.h>
+#include <sched.h>
+#include <sys/resource.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
+#include "../../Minecraft.Client/Platform/Common/ShutdownManager.h"
+
+#if !defined(INFINITE)
+#define INFINITE 0xFFFFFFFFu
+#endif
+
+#if !defined(WAIT_OBJECT_0)
+#define WAIT_OBJECT_0 0u
+#endif
+
+#if !defined(WAIT_TIMEOUT)
+#define WAIT_TIMEOUT 258u
+#endif
+
+#if !defined(STILL_ACTIVE)
+#define STILL_ACTIVE 259
+#endif
+
+#if !defined(THREAD_PRIORITY_IDLE)
+#define THREAD_PRIORITY_IDLE (-15)
+#endif
+
+#if !defined(THREAD_PRIORITY_LOWEST)
+#define THREAD_PRIORITY_LOWEST (-2)
+#endif
+
+#if !defined(THREAD_PRIORITY_BELOW_NORMAL)
+#define THREAD_PRIORITY_BELOW_NORMAL (-1)
+#endif
+
+#if !defined(THREAD_PRIORITY_NORMAL)
+#define THREAD_PRIORITY_NORMAL 0
+#endif
+
+#if !defined(THREAD_PRIORITY_ABOVE_NORMAL)
+#define THREAD_PRIORITY_ABOVE_NORMAL 1
+#endif
+
+#if !defined(THREAD_PRIORITY_HIGHEST)
+#define THREAD_PRIORITY_HIGHEST 2
+#endif
+
+#if !defined(THREAD_PRIORITY_TIME_CRITICAL)
+#define THREAD_PRIORITY_TIME_CRITICAL 15
+#endif
+
+thread_local C4JThread* C4JThread::ms_currentThread = nullptr;
+
+namespace {
+
+constexpr int kDefaultStackSize = 65536 * 2;
+constexpr int kMinimumStackSize = 16384;
+constexpr int kUnsetPriority = std::numeric_limits<int>::min();
+constexpr int kEventQueueShutdownPollMs = 100;
+
+const std::thread::id g_processMainThreadId = std::this_thread::get_id();
+
+template <typename Predicate>
+bool WaitForCondition(std::condition_variable& condition,
+                      std::unique_lock<std::mutex>& lock,
+                      int timeoutMs,
+                      Predicate predicate) {
+    if (timeoutMs < 0 ||
+        static_cast<std::uint32_t>(timeoutMs) ==
+            static_cast<std::uint32_t>(INFINITE)) {
+        condition.wait(lock, predicate);
+        return true;
+    }
+
+    return condition.wait_for(lock, std::chrono::milliseconds(timeoutMs),
+                              predicate);
 }
-#else
-#include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 
+std::uint32_t FirstSetBitIndex(std::uint32_t bitMask) {
+    return static_cast<std::uint32_t>(std::countr_zero(bitMask));
+}
+
+std::uint32_t BuildMaskForSize(int size) {
+    assert(size > 0);
+    assert(size <= 32);
+
+    if (size == 32) {
+        return 0xFFFFFFFFU;
+    }
+
+    return (1U << static_cast<std::uint32_t>(size)) - 1U;
+}
+
+void FormatThreadName(std::string& outThreadName, const char* threadName) {
+    const char* safeName =
+        (threadName != nullptr && threadName[0] != '\0') ? threadName : "Unnamed";
+
+    char buffer[64];
+    std::snprintf(buffer, sizeof(buffer), "(4J) %s", safeName);
+    buffer[sizeof(buffer) - 1] = '\0';
+    outThreadName = buffer;
+}
+
+const char* GetSafeThreadName(const char* threadName) {
+    return (threadName != nullptr && threadName[0] != '\0') ? threadName
+                                                            : "(4J) Unnamed";
+}
+
+bool IsProcessorIndexPlausible(int proc) {
+    if (proc < 0) {
+        return true;
+    }
+
+    const unsigned int hardwareThreads = std::thread::hardware_concurrency();
+    if (hardwareThreads == 0U) {
+        return true;
+    }
+
+    return static_cast<unsigned int>(proc) < hardwareThreads;
+}
+
+#if defined(__linux__)
+std::int64_t GetLinuxThreadId() {
+    return static_cast<std::int64_t>(::syscall(SYS_gettid));
+}
+
+int MapPriorityToNice(int priority) {
+    switch (priority) {
+    case THREAD_PRIORITY_TIME_CRITICAL:
+        return -15;
+    case THREAD_PRIORITY_HIGHEST:
+        return -10;
+    case THREAD_PRIORITY_ABOVE_NORMAL:
+        return -5;
+    case THREAD_PRIORITY_NORMAL:
+        return 0;
+    case THREAD_PRIORITY_BELOW_NORMAL:
+        return 5;
+    case THREAD_PRIORITY_LOWEST:
+        return 10;
+    case THREAD_PRIORITY_IDLE:
+        return 19;
+    default:
+        return 0;
+    }
+}
 #endif
 
-std::vector<C4JThread*> C4JThread::ms_threadList;
-CRITICAL_SECTION C4JThread::ms_threadListCS;
-
-#ifdef _XBOX_ONE
-// 4J Stu - On XboxOne the main thread is not the one that does all the static
-// init, so we have to set this up later
-C4JThread* C4JThread::m_mainThread = NULL;
-
-void C4JThread::StaticInit() { m_mainThread = new C4JThread("Main thread"); }
-#else
-C4JThread C4JThread::m_mainThread("Main thread");
+#if defined(_WIN32)
+thread_local std::vector<DWORD_PTR> g_affinityMaskStack;
+#elif defined(__linux__)
+thread_local std::vector<cpu_set_t> g_affinityMaskStack;
 #endif
 
-#ifdef __ORBIS__
-__thread SceKernelCpumask C4JThread::m_oldAffinityMask;
-#endif
-
-#if __PSVITA__
-static SceInt32 g_DefaultCPU;
-static SceInt32 g_DefaultPriority;
-#endif
+}  // namespace
 
 C4JThread::C4JThread(C4JThreadStartFunc* startFunc, void* param,
-                     const char* threadName, int stackSize /* = 0*/) {
-    m_startFunc = startFunc;
-    m_threadParam = param;
-    m_stackSize = stackSize;
-
-    // to match XBox, if the stack size is zero, use the default 64k
-    if (m_stackSize == 0) m_stackSize = 65536 * 2;
-    // make sure it's at least 16K
-    if (m_stackSize < 16384) m_stackSize = 16384;
-
-#ifdef __PS3__
-    sprintf(m_threadName, "(4J) %s", threadName);
-#else
-    sprintf_s(m_threadName, 64, "(4J) %s", threadName);
-#endif
-
-    m_isRunning = false;
-    m_hasStarted = false;
-
-    m_exitCode = STILL_ACTIVE;
-
-#ifdef __PS3__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    m_threadID = 0;
-    m_lastSleepTime = 0;
-    m_priority = 1002;  // main thread has priority 1001
-#elif defined __ORBIS__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    m_threadID = 0;
-    m_lastSleepTime = 0;
-    scePthreadAttrInit(&m_threadAttr);
-    int err = scePthreadAttrSetaffinity(
-        &m_threadAttr,
-        63);  // set the thread affinity to all cores to start with
-    assert(err == SCE_OK);
-    m_oldAffinityMask = 0;
-    m_priority = SCE_KERNEL_PRIO_FIFO_DEFAULT;
-#elif defined __PSVITA__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    m_threadID = 0;
-    m_lastSleepTime = 0;
-    m_priority = g_DefaultPriority;
-    // m_CPUMask = SCE_KERNEL_CPU_MASK_USER_ALL;
-
-    // AP - I had trouble getting the cpu to change once the thread was created
-    // so I've hard coded them here The main work division is... 0 - Main 1 -
-    // Chunk/Tile Update 2 - Server/Audio These three can sometimes consume ALL
-    // the CPU time so they are set to below average priority so as not to block
-    // other critical threads
-    int CPU = SCE_KERNEL_CPU_MASK_USER_ALL;
-    if (!strcmp(threadName, "Chunk update")) {
-        CPU = SCE_KERNEL_CPU_MASK_USER_2;
-        m_priority = g_DefaultPriority + 1;
-    }
-    if (!strcmp(threadName, "Server")) {
-        CPU = SCE_KERNEL_CPU_MASK_USER_1;
-        m_priority = g_DefaultPriority + 1;
-    }
-    // make sure Tile Update doesn't go on cpu 0 because it will hold up the
-    // main thread. And it can't go on cpu 1 because Chunk Update crashes.
-    if (!strcmp(threadName, "Tile update")) {
-        CPU = SCE_KERNEL_CPU_MASK_USER_1;
+                     const char* threadName, int stackSize)
+    : m_threadParam(param),
+      m_startFunc(startFunc),
+      m_stackSize(stackSize == 0 ? kDefaultStackSize : stackSize),
+      m_threadName(),
+      m_isRunning(false),
+      m_hasStarted(false),
+      m_exitCode(STILL_ACTIVE),
+      m_threadID(),
+      m_threadHandle(),
+      m_completionFlag(std::make_unique<Event>(Event::e_modeManualClear)),
+      m_requestedProcessor(-1),
+      m_requestedPriority(kUnsetPriority),
+      m_nativeTid(0) {
+    if (m_stackSize < kMinimumStackSize) {
+        m_stackSize = kMinimumStackSize;
     }
 
-    m_threadID = sceKernelCreateThread(
-        m_threadName, entryPoint, g_DefaultPriority, m_stackSize, 0, CPU, NULL);
-    app.DebugPrintf(
-        "***************************** start thread %s "
-        "**************************\n",
-        m_threadName);
-#else
-    m_threadID = 0;
-    m_threadHandle = 0;
-    DWORD threadID = 0;
-    m_threadHandle = CreateThread(NULL, m_stackSize, entryPoint, this,
-                                  CREATE_SUSPENDED, &threadID);
-    m_threadID = threadID;
-#endif
-    EnterCriticalSection(&ms_threadListCS);
-    ms_threadList.push_back(this);
-    LeaveCriticalSection(&ms_threadListCS);
+    FormatThreadName(m_threadName, threadName);
 }
 
-// only used for the main thread
-C4JThread::C4JThread(const char* mainThreadName) {
-#ifdef __PSVITA__
-    user_registerthread();
-#endif
-
-    m_startFunc = NULL;
-    m_threadParam = NULL;
-    m_stackSize = 0;
-
-#ifdef __PS3__
-    sprintf(m_threadName, "(4J) %s", mainThreadName);
+C4JThread::C4JThread(const char* mainThreadName)
+    : m_threadParam(nullptr),
+      m_startFunc(nullptr),
+      m_stackSize(0),
+      m_threadName(),
+      m_isRunning(true),
+      m_hasStarted(true),
+      m_exitCode(STILL_ACTIVE),
+      m_threadID(std::this_thread::get_id()),
+      m_threadHandle(),
+      m_completionFlag(std::make_unique<Event>(Event::e_modeManualClear)),
+      m_requestedProcessor(-1),
+      m_requestedPriority(kUnsetPriority),
+#if defined(__linux__)
+      m_nativeTid(GetLinuxThreadId())
 #else
-    sprintf_s(m_threadName, 64, "(4J) %s", mainThreadName);
+      m_nativeTid(0)
 #endif
-    m_isRunning = true;
-    m_hasStarted = true;
-    m_lastSleepTime = System::currentTimeMillis();
-
-    // should be the first thread to be created, so init the static critical
-    // section for the threadlist here
-    InitializeCriticalSection(&ms_threadListCS);
-
-#ifdef __PS3__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    sys_ppu_thread_get_id(&m_threadID);
-#elif defined __ORBIS__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    m_threadID = scePthreadSelf();
-    m_priority = SCE_KERNEL_PRIO_FIFO_DEFAULT;
-#elif defined __PSVITA__
-    m_completionFlag = new Event(Event::e_modeManualClear);
-    g_DefaultPriority = sceKernelGetThreadCurrentPriority();
-    m_threadID = sceKernelGetThreadId();
-    int err = sceKernelChangeThreadCpuAffinityMask(m_threadID,
-                                                   SCE_KERNEL_CPU_MASK_USER_0);
-    //	sceKernelChangeThreadPriority(m_threadID, g_DefaultPriority + 1);
-    g_DefaultCPU =
-        SCE_KERNEL_CPU_MASK_USER_ALL;  // sceKernelGetThreadCpuAffinityMask(m_threadID);
-#else
-    m_threadID = GetCurrentThreadId();
-    m_threadHandle = GetCurrentThread();
-#endif
-#ifdef _XBOX_ONE
-    SetThreadName(-1, m_threadName);
-#endif
-    EnterCriticalSection(&ms_threadListCS);
-    ms_threadList.push_back(this);
-    LeaveCriticalSection(&ms_threadListCS);
+{
+    FormatThreadName(m_threadName, mainThreadName);
+    ms_currentThread = this;
+    SetCurrentThreadName(m_threadName.c_str());
 }
 
 C4JThread::~C4JThread() {
-#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
-    delete m_completionFlag;
-#endif
-
-#if defined __ORBIS__
-    scePthreadJoin(m_threadID, NULL);
-#endif
-
-    EnterCriticalSection(&ms_threadListCS);
-
-    for (AUTO_VAR(it, ms_threadList.begin()); it != ms_threadList.end(); it++) {
-        if ((*it) == this) {
-            ms_threadList.erase(it);
-            LeaveCriticalSection(&ms_threadListCS);
-            return;
+    if (m_threadHandle.joinable()) {
+        if (m_threadHandle.get_id() == std::this_thread::get_id()) {
+            m_threadHandle.detach();
+        } else {
+            m_threadHandle.join();
         }
     }
 
-    LeaveCriticalSection(&ms_threadListCS);
+    if (ms_currentThread == this) {
+        ms_currentThread = nullptr;
+    }
 }
 
-#ifdef __PS3__
-void C4JThread::entryPoint(uint64_t param) {
-    C4JThread* pThread = (C4JThread*)param;
-    pThread->m_exitCode = (*pThread->m_startFunc)(pThread->m_threadParam);
-    pThread->m_completionFlag->Set();
-    pThread->m_isRunning = false;
-    sys_ppu_thread_exit(0);
+C4JThread& C4JThread::getMainThreadInstance() noexcept {
+    static C4JThread mainThread("Main thread");
+    return mainThread;
 }
-#elif defined __ORBIS__
-void* C4JThread::entryPoint(void* param) {
-    C4JThread* pThread = (C4JThread*)param;
-    pThread->m_exitCode = (*pThread->m_startFunc)(pThread->m_threadParam);
-    pThread->m_completionFlag->Set();
-    pThread->m_isRunning = false;
-    scePthreadExit(NULL);
-}
-#elif defined __PSVITA__
-struct StrArg {
-    C4JThread* Thread;
-};
 
-SceInt32 C4JThread::entryPoint(SceSize argSize, void* pArgBlock) {
-    StrArg* strArg = (StrArg*)pArgBlock;
-    C4JThread* pThread = strArg->Thread;
-    user_registerthread();
-    pThread->m_exitCode = (*pThread->m_startFunc)(pThread->m_threadParam);
-    app.DebugPrintf(
-        "***************************** thread exit %s "
-        "**************************\n",
-        pThread->m_threadName);
-    pThread->m_completionFlag->Set();
-    pThread->m_isRunning = false;
+void C4JThread::entryPoint(C4JThread* pThread) {
+    ms_currentThread = pThread;
+    pThread->m_threadID = std::this_thread::get_id();
 
-    // AP - make sure we clean up this thread's storage and memory
-    PSVitaTLSStorage::RemoveThread(pThread->m_threadID);
-    user_removethread();
-
-    sceKernelExitDeleteThread(NULL);
-
-    return pThread->m_exitCode;
-}
-#else
-DWORD WINAPI C4JThread::entryPoint(LPVOID lpParam) {
-    C4JThread* pThread = (C4JThread*)lpParam;
-    SetThreadName(-1, pThread->m_threadName);
-    pThread->m_exitCode = (*pThread->m_startFunc)(pThread->m_threadParam);
-    pThread->m_isRunning = false;
-    return pThread->m_exitCode;
-}
+#if defined(__linux__)
+    pThread->m_nativeTid.store(GetLinuxThreadId(), std::memory_order_release);
 #endif
+
+    SetCurrentThreadName(pThread->m_threadName.c_str());
+
+    const int requestedProcessor =
+        pThread->m_requestedProcessor.load(std::memory_order_acquire);
+    if (requestedProcessor >= 0) {
+        pThread->SetProcessor(requestedProcessor);
+    }
+
+    const int requestedPriority =
+        pThread->m_requestedPriority.load(std::memory_order_acquire);
+    if (requestedPriority != kUnsetPriority) {
+        pThread->SetPriority(requestedPriority);
+    }
+
+    int exitCode = 0;
+    try {
+        exitCode =
+            (pThread->m_startFunc != nullptr)
+                ? (*pThread->m_startFunc)(pThread->m_threadParam)
+                : 0;
+    } catch (...) {
+        exitCode = -1;
+    }
+
+    pThread->m_exitCode.store(exitCode, std::memory_order_release);
+    pThread->m_isRunning.store(false, std::memory_order_release);
+    pThread->m_completionFlag->Set();
+}
 
 void C4JThread::Run() {
-#ifdef __PS3__
-    //		prio specifies the priority value of the PPU thread within the
-    // range from 0 to 3071 where 0 is the highest.
-    // One of the following values is set to flags:
-    // 0 - non-joinable non-interrupt thread
-    // SYS_PPU_THREAD_CREATE_JOINABLE - Create a joinable thread
-    // SYS_PPU_THREAD_CREATE_INTERRUPT - Create an interrupt thread
-    uint64_t flags = 0;
-    int err =
-        sys_ppu_thread_create(&m_threadID, entryPoint, (uint64_t)this,
-                              m_priority, m_stackSize, flags, m_threadName);
-#elif defined __ORBIS__
-    scePthreadAttrSetstacksize(&m_threadAttr, m_stackSize);
-    scePthreadAttrSetguardsize(&m_threadAttr, 1024);
-    int ret = scePthreadCreate(&m_threadID, &m_threadAttr, entryPoint, this,
-                               m_threadName);
-    assert(ret == SCE_OK);
-    scePthreadSetprio(m_threadID, m_priority);
-    scePthreadAttrDestroy(&m_threadAttr);
-#elif defined __PSVITA__
-    StrArg strArg = {this};
-    //	m_threadID = sceKernelCreateThread(m_threadName, entryPoint, m_priority,
-    // m_stackSize, 0, m_CPUMask, NULL);
-    sceKernelStartThread(m_threadID, sizeof(strArg), &strArg);
-#else
-    ResumeThread(m_threadHandle);
-#endif
-    m_lastSleepTime = System::currentTimeMillis();
-    m_isRunning = true;
-    m_hasStarted = true;
+    bool expected = false;
+    if (!m_hasStarted.compare_exchange_strong(expected, true,
+                                              std::memory_order_acq_rel)) {
+        return;
+    }
+
+    m_isRunning.store(true, std::memory_order_release);
+    m_exitCode.store(STILL_ACTIVE, std::memory_order_release);
+    m_completionFlag->Clear();
+    m_nativeTid.store(0, std::memory_order_release);
+
+    m_threadHandle = std::thread(&C4JThread::entryPoint, this);
+    m_threadID = m_threadHandle.get_id();
+
+    const int requestedProcessor =
+        m_requestedProcessor.load(std::memory_order_acquire);
+    if (requestedProcessor >= 0) {
+        SetProcessor(requestedProcessor);
+    }
+
+    const int requestedPriority =
+        m_requestedPriority.load(std::memory_order_acquire);
+    if (requestedPriority != kUnsetPriority) {
+        SetPriority(requestedPriority);
+    }
 }
 
 void C4JThread::SetProcessor(int proc) {
-#ifdef __PS3__
-    // does nothing since we only have the 1 processor
-#elif defined __ORBIS__
-    scePthreadAttrSetaffinity(&m_threadAttr, 1 << proc);
-#elif defined __PSVITA__
-    int Proc =
-        proc >>
-        1;  // convert from 360's 3 cores * 2 hardware threads to Vita's 3 cores
-    int Mask = SCE_KERNEL_CPU_MASK_USER_0 << Proc;
-    // m_CPUMask = Mask;
-    //	int err = sceKernelChangeThreadCpuAffinityMask(m_threadID, Mask);
-    int Newmask = sceKernelGetThreadCpuAffinityMask(m_threadID);
-    app.DebugPrintf(
-        "***************************** set thread proc %s %d %d %d "
-        "**************************\n",
-        m_threadName, proc, Mask, Newmask);
-#elif defined _DURANGO
-    SetThreadAffinityMask(m_threadHandle, 1 << proc);
+    m_requestedProcessor.store(proc, std::memory_order_release);
+
+    if (!IsProcessorIndexPlausible(proc)) {
+        return;
+    }
+
+#if defined(_WIN32)
+    HANDLE threadHandle = nullptr;
+
+    if (m_threadHandle.joinable()) {
+        threadHandle = m_threadHandle.native_handle();
+    } else if (ms_currentThread == this) {
+        threadHandle = ::GetCurrentThread();
+    } else {
+        return;
+    }
+
+    DWORD_PTR affinityMask = 0;
+    if (proc < 0) {
+        DWORD_PTR processAffinityMask = 0;
+        DWORD_PTR systemAffinityMask = 0;
+        if (!::GetProcessAffinityMask(::GetCurrentProcess(),
+                                      &processAffinityMask,
+                                      &systemAffinityMask) ||
+            processAffinityMask == 0) {
+            return;
+        }
+        affinityMask = processAffinityMask;
+    } else {
+        const unsigned int bitCount =
+            static_cast<unsigned int>(sizeof(DWORD_PTR) * CHAR_BIT);
+        if (static_cast<unsigned int>(proc) >= bitCount) {
+            return;
+        }
+
+        affinityMask =
+            (static_cast<DWORD_PTR>(1) << static_cast<unsigned int>(proc));
+    }
+
+    (void)::SetThreadAffinityMask(threadHandle, affinityMask);
+
+#elif defined(__linux__)
+    pthread_t threadHandle;
+
+    if (m_threadHandle.joinable()) {
+        threadHandle = m_threadHandle.native_handle();
+    } else if (ms_currentThread == this) {
+        threadHandle = ::pthread_self();
+    } else {
+        return;
+    }
+
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+
+    if (proc < 0) {
+        if (::sched_getaffinity(0, sizeof(cpuset), &cpuset) != 0) {
+            return;
+        }
+    } else {
+        if (proc >= CPU_SETSIZE) {
+            return;
+        }
+        CPU_SET(proc, &cpuset);
+    }
+
+    (void)::pthread_setaffinity_np(threadHandle, sizeof(cpuset), &cpuset);
 #else
-    XSetThreadProcessor(m_threadHandle, proc);
+    (void)proc;
 #endif
 }
 
 void C4JThread::SetPriority(int priority) {
-#ifdef __PS3__
-    switch (priority) {
-        case THREAD_PRIORITY_LOWEST:
-            m_priority = 1003;
-            break;
-        case THREAD_PRIORITY_BELOW_NORMAL:
-            m_priority = 1002;
-            break;
-        case THREAD_PRIORITY_NORMAL:
-            m_priority = 1001;
-            break;  // same as main thread
-        case THREAD_PRIORITY_ABOVE_NORMAL:
-            m_priority = 1000;
-            break;
-        case THREAD_PRIORITY_HIGHEST:
-            m_priority = 999;
-            break;
-    }
-    if (m_threadID != 0) sys_ppu_thread_set_priority(m_threadID, m_priority);
-    // int erro = sys_ppu_thread_set_priority(m_threadID, priority);
-#elif defined __ORBIS__
+    m_requestedPriority.store(priority, std::memory_order_release);
 
-    switch (priority) {
-        case THREAD_PRIORITY_LOWEST:
-            m_priority = SCE_KERNEL_PRIO_FIFO_LOWEST;
-            break;
-        case THREAD_PRIORITY_BELOW_NORMAL:
-            m_priority =
-                SCE_KERNEL_PRIO_FIFO_LOWEST +
-                ((SCE_KERNEL_PRIO_FIFO_DEFAULT - SCE_KERNEL_PRIO_FIFO_LOWEST) /
-                 2);
-            break;
-        case THREAD_PRIORITY_NORMAL:
-            m_priority = SCE_KERNEL_PRIO_FIFO_DEFAULT;
-            break;  // same as main thread
-        case THREAD_PRIORITY_ABOVE_NORMAL:
-            m_priority =
-                SCE_KERNEL_PRIO_FIFO_DEFAULT +
-                ((SCE_KERNEL_PRIO_FIFO_HIGHEST - SCE_KERNEL_PRIO_FIFO_DEFAULT) /
-                 2);
-            break;
-        case THREAD_PRIORITY_HIGHEST:
-            m_priority = SCE_KERNEL_PRIO_FIFO_HIGHEST;
-            break;
+#if defined(_WIN32)
+    HANDLE threadHandle = nullptr;
+
+    if (m_threadHandle.joinable()) {
+        threadHandle = m_threadHandle.native_handle();
+    } else if (ms_currentThread == this) {
+        threadHandle = ::GetCurrentThread();
+    } else {
+        return;
     }
 
-    if (m_threadID != 0) {
-        scePthreadSetprio(m_threadID, m_priority);
-    }
-#elif defined __PSVITA__
-    int Mid = g_DefaultPriority;  //(SCE_KERNEL_LOWEST_PRIORITY_USER +
-                                  // SCE_KERNEL_HIGHEST_PRIORITY_USER) / 2;
-    switch (priority) {
-        case THREAD_PRIORITY_LOWEST:
-            m_priority = SCE_KERNEL_LOWEST_PRIORITY_USER;
-            break;
-        case THREAD_PRIORITY_BELOW_NORMAL:
-            m_priority = Mid + 1;
-            break;
-        case THREAD_PRIORITY_NORMAL:
-            m_priority = Mid;
-            break;  // same as main thread
-        case THREAD_PRIORITY_ABOVE_NORMAL:
-            m_priority = Mid - 1;
-            break;
-        case THREAD_PRIORITY_HIGHEST:
-            m_priority = SCE_KERNEL_HIGHEST_PRIORITY_USER;
-            break;
+    (void)::SetThreadPriority(threadHandle, priority);
+
+#elif defined(__linux__)
+    std::int64_t nativeTid = 0;
+
+    if (ms_currentThread == this) {
+        nativeTid = GetLinuxThreadId();
+        m_nativeTid.store(nativeTid, std::memory_order_release);
+    } else {
+        nativeTid = m_nativeTid.load(std::memory_order_acquire);
     }
 
-    //	sceKernelChangeThreadPriority(m_threadID, m_priority);
-    app.DebugPrintf(
-        "***************************** set thread prio %s %d %d "
-        "**************************\n",
-        m_threadName, priority, m_priority);
+    if (nativeTid <= 0) {
+        return;
+    }
+
+    const int niceValue = MapPriorityToNice(priority);
+
+    errno = 0;
+    if (::setpriority(PRIO_PROCESS, static_cast<id_t>(nativeTid), niceValue) !=
+        0) {
+        if ((errno == EACCES || errno == EPERM) && niceValue < 0) {
+            (void)::setpriority(PRIO_PROCESS, static_cast<id_t>(nativeTid), 0);
+        }
+    }
 #else
-    SetThreadPriority(m_threadHandle, priority);
-#endif  // __PS3__
+    (void)priority;
+#endif
 }
 
 std::uint32_t C4JThread::WaitForCompletion(int timeoutMs) {
-#ifdef __PS3__
-    if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
-    return m_completionFlag->WaitForSignal(timeoutMs);
-#elif defined __ORBIS__
-    return m_completionFlag->WaitForSignal(timeoutMs);
-#elif defined __PSVITA__
-    return m_completionFlag->WaitForSignal(timeoutMs);
-/*	SceUInt32 Timeout = timeoutMs * 1000;
-        SceInt32 err = sceKernelWaitThreadEnd(m_threadID, &m_exitCode,
-   &Timeout); if( err == 0 )
-        {
-                return m_exitCode;
+    const std::uint32_t waitResult = m_completionFlag->WaitForSignal(timeoutMs);
+    if (waitResult == WAIT_OBJECT_0 && m_threadHandle.joinable()) {
+        if (m_threadHandle.get_id() == std::this_thread::get_id()) {
+            m_threadHandle.detach();
+        } else {
+            m_threadHandle.join();
         }
-        else
-        {
-                if( err == SCE_KERNEL_ERROR_WAIT_TIMEOUT )
-                {
-                        return WAIT_TIMEOUT;
-                }
-                else
-                {
-                        // AP - not sure what to do here
-                        return 0;
-                }
-        }*/
-
-//	return m_exitCode;
-#else
-    return WaitForSingleObject(m_threadHandle, timeoutMs);
-#endif  // __PS3__
+    }
+    return waitResult;
 }
 
-int C4JThread::GetExitCode() {
-#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
-    return m_exitCode;
-#else
-    DWORD exitcode = 0;
-    GetExitCodeThread(m_threadHandle, &exitcode);
-
-    return *((int*)&exitcode);
-#endif
+int C4JThread::GetExitCode() const noexcept {
+    return m_isRunning.load(std::memory_order_acquire)
+               ? STILL_ACTIVE
+               : m_exitCode.load(std::memory_order_acquire);
 }
 
 void C4JThread::Sleep(int millisecs) {
-#ifdef __PS3__
-    if (millisecs == 0) {
-        // https://ps3.scedev.net/forums/thread/116470/
-        // "sys_timer_usleep(0) does not yield the CPU."
-        sys_ppu_thread_yield();
-    } else
-        sys_timer_usleep(millisecs * 1000);
-#elif defined __ORBIS__
-    sceKernelUsleep(((SceKernelUseconds)millisecs) * 1000);
-#elif defined __PSVITA__
-    // 4J Stu - 0 is an error, so add a tiny sleep when we just want to yield
-    sceKernelDelayThread(millisecs * 1000 + 1);
-#else
-    ::Sleep(millisecs);
-#endif  // __PS3__
+    if (millisecs <= 0) {
+        std::this_thread::yield();
+        return;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(millisecs));
 }
 
-C4JThread* C4JThread::getCurrentThread() {
-#ifdef __PS3__
-    sys_ppu_thread_t currThreadID;
-    sys_ppu_thread_get_id(&currThreadID);
-#elif defined __ORBIS__
-    ScePthread currThreadID = scePthreadSelf();
-#elif defined __PSVITA__
-    SceUID currThreadID = sceKernelGetThreadId();
-#else
-    std::uint32_t currThreadID = GetCurrentThreadId();
-#endif  //__PS3__
-    EnterCriticalSection(&ms_threadListCS);
+C4JThread* C4JThread::getCurrentThread() noexcept {
+    if (ms_currentThread != nullptr) {
+        return ms_currentThread;
+    }
 
-    for (int i = 0; i < ms_threadList.size(); i++) {
-        if (currThreadID == ms_threadList[i]->m_threadID) {
-            LeaveCriticalSection(&ms_threadListCS);
-            return ms_threadList[i];
+    if (std::this_thread::get_id() == g_processMainThreadId) {
+        return &getMainThreadInstance();
+    }
+
+    return nullptr;
+}
+
+bool C4JThread::isMainThread() noexcept {
+    return std::this_thread::get_id() == g_processMainThreadId;
+}
+
+void C4JThread::SetThreadName(std::uint32_t threadId, const char* threadName) {
+    const char* safeThreadName = GetSafeThreadName(threadName);
+
+#if defined(_WIN32)
+    if (threadId == static_cast<std::uint32_t>(-1) ||
+        threadId == ::GetCurrentThreadId()) {
+        using SetThreadDescriptionFn = HRESULT(WINAPI*)(HANDLE, PCWSTR);
+
+        const HMODULE kernelModule = ::GetModuleHandleW(L"Kernel32.dll");
+        if (kernelModule != nullptr) {
+            const auto setThreadDescription =
+                reinterpret_cast<SetThreadDescriptionFn>(
+                    ::GetProcAddress(kernelModule, "SetThreadDescription"));
+
+            if (setThreadDescription != nullptr) {
+                wchar_t wideName[64];
+                const std::size_t converted =
+                    std::mbstowcs(wideName, safeThreadName,
+                                  (sizeof(wideName) / sizeof(wideName[0])) - 1);
+
+                if (converted != static_cast<std::size_t>(-1)) {
+                    wideName[converted] = L'\0';
+                    (void)setThreadDescription(::GetCurrentThread(), wideName);
+                    return;
+                }
+            }
         }
     }
 
-    LeaveCriticalSection(&ms_threadListCS);
+#pragma pack(push, 8)
+    struct THREADNAME_INFO {
+        std::uint32_t dwType;
+        const char* szName;
+        std::uint32_t dwThreadID;
+        std::uint32_t dwFlags;
+    };
+#pragma pack(pop)
 
-    return NULL;
-}
+    THREADNAME_INFO info;
+    info.dwType = 0x1000;
+    info.szName = safeThreadName;
+    info.dwThreadID = threadId;
+    info.dwFlags = 0;
 
-bool C4JThread::isMainThread() {
-#ifdef _XBOX_ONE
-    return getCurrentThread() == m_mainThread;
+    __try {
+        ::RaiseException(0x406D1388, 0, sizeof(info) / sizeof(ULONG_PTR),
+                         reinterpret_cast<ULONG_PTR*>(&info));
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+    }
+
+#elif defined(__linux__)
+    (void)threadId;
+
+    char truncatedName[16];
+    std::snprintf(truncatedName, sizeof(truncatedName), "%s", safeThreadName);
+    truncatedName[sizeof(truncatedName) - 1] = '\0';
+
+    (void)::pthread_setname_np(::pthread_self(), truncatedName);
+
 #else
-    return getCurrentThread() == &m_mainThread;
+    (void)threadId;
+    (void)safeThreadName;
 #endif
 }
 
-C4JThread::Event::Event(EMode mode /* = e_modeAutoClear*/) {
-    m_mode = mode;
-#ifdef __PS3__
-    sys_event_flag_attribute_t attr;
-    // default values taken from sys_event_flag_attribute_initialize
-    attr.attr_protocol = SYS_SYNC_PRIORITY;
-    attr.attr_pshared = SYS_SYNC_NOT_PROCESS_SHARED;
-    attr.key = 0;
-    attr.flags = 0;
-    attr.type = SYS_SYNC_WAITER_SINGLE;
-    attr.name[0] = '\0';
-    sys_event_flag_attribute_initialize(attr);
-
-    int err = sys_event_flag_create(&m_event, &attr, 0);
-
-#elif defined __ORBIS__
-    char name[1] = {0};
-    sceKernelCreateEventFlag(
-        &m_event, name, SCE_KERNEL_EVF_ATTR_TH_FIFO | SCE_KERNEL_EVF_ATTR_MULTI,
-        0, NULL);
-#elif defined __PSVITA__
-    char name[1] = {0};
-    m_event = sceKernelCreateEventFlag(
-        name, SCE_KERNEL_EVF_ATTR_TH_FIFO | SCE_KERNEL_EVF_ATTR_MULTI, 0, NULL);
-#else
-    m_event = CreateEvent(NULL, (m_mode == e_modeManualClear), FALSE, NULL);
-#endif  //__PS3__
+void C4JThread::SetCurrentThreadName(const char* threadName) {
+    SetThreadName(static_cast<std::uint32_t>(-1), threadName);
 }
 
-C4JThread::Event::~Event() {
-#ifdef __PS3__
-    sys_event_flag_destroy(m_event);
-#elif defined __ORBIS__
-    sceKernelDeleteEventFlag(m_event);
-#elif defined __PSVITA__
-    sceKernelDeleteEventFlag(m_event);
-#else
-    CloseHandle(m_event);
-#endif  // __PS3__
-}
+C4JThread::Event::Event(EMode mode)
+    : m_mode(mode), m_mutex(), m_condition(), m_signaled(false) {}
 
 void C4JThread::Event::Set() {
-#ifdef __PS3__
-    int err = sys_event_flag_set(m_event, 1);
-#elif defined __ORBIS__
-    sceKernelSetEventFlag(m_event, 1);
-#elif defined __PSVITA__
-    sceKernelSetEventFlag(m_event, 1);
-#else
-    SetEvent(m_event);
-#endif  //__PS3__
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_signaled = true;
+    }
+
+    if (m_mode == e_modeAutoClear) {
+        m_condition.notify_one();
+    } else {
+        m_condition.notify_all();
+    }
 }
 
 void C4JThread::Event::Clear() {
-#ifdef __PS3__
-    int err = sys_event_flag_clear(m_event, ~(1));
-#elif defined __ORBIS__
-    sceKernelClearEventFlag(m_event, ~(1));
-#elif defined __PSVITA__
-    sceKernelClearEventFlag(m_event, ~1);
-#else
-    ResetEvent(m_event);
-#endif  //__PS3__
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_signaled = false;
 }
 
 std::uint32_t C4JThread::Event::WaitForSignal(int timeoutMs) {
-#ifdef __PS3__
-    if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
-    int timoutMicrosecs = timeoutMs * 1000;
-    uint32_t mode = SYS_EVENT_FLAG_WAIT_AND;
-    if (m_mode == e_modeAutoClear) mode |= SYS_EVENT_FLAG_WAIT_CLEAR;
-    int err = sys_event_flag_wait(m_event, 1, mode, 0, timoutMicrosecs);
+    std::unique_lock<std::mutex> lock(m_mutex);
+    const bool signaled =
+        WaitForCondition(m_condition, lock, timeoutMs,
+                         [this] { return m_signaled; });
 
-    switch (err) {
-        case CELL_OK:
-            return WAIT_OBJECT_0;
-        case ETIMEDOUT:
-            return WAIT_TIMEOUT;
-        case ECANCELED:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
+    if (!signaled) {
+        return WAIT_TIMEOUT;
     }
 
-#elif defined __ORBIS__
-    SceKernelUseconds timeoutMicrosecs;
-    SceKernelUseconds* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceKernelUseconds)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
     if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_PAT;
+        m_signaled = false;
     }
-    int err =
-        sceKernelWaitEventFlag(m_event, 1, waitMode, NULL, pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_ETIMEDOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_ECANCELED:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#elif defined __PSVITA__
-    SceUInt32 timeoutMicrosecs;
-    SceUInt32* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceInt32)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
-    if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_ALL;
-    }
-    int err =
-        sceKernelWaitEventFlag(m_event, 1, waitMode, NULL, pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_WAIT_TIMEOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_WAIT_CANCEL:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#else
-    return WaitForSingleObject(m_event, timeoutMs);
-#endif  // __PS3__
+
+    return WAIT_OBJECT_0;
 }
 
-C4JThread::EventArray::EventArray(int size, EMode mode /* = e_modeAutoClear*/) {
-    assert(size < 32);
-    m_size = size;
-    m_mode = mode;
-#ifdef __PS3__
-    sys_event_flag_attribute_t attr;
-    // default values taken from sys_event_flag_attribute_initialize
-    attr.attr_protocol = SYS_SYNC_PRIORITY;
-    attr.attr_pshared = SYS_SYNC_NOT_PROCESS_SHARED;
-    attr.key = 0;
-    attr.flags = 0;
-    attr.type = SYS_SYNC_WAITER_SINGLE;
-    attr.name[0] = '\0';
-    sys_event_flag_attribute_initialize(attr);
-    int err = sys_event_flag_create(&m_events, &attr, 0);
-    assert(err == CELL_OK);
-#elif defined __ORBIS__
-    char name[1] = {0};
-    sceKernelCreateEventFlag(
-        &m_events, name,
-        SCE_KERNEL_EVF_ATTR_TH_FIFO | SCE_KERNEL_EVF_ATTR_MULTI, 0, NULL);
-#elif defined __PSVITA__
-    char name[1] = {0};
-    m_events = sceKernelCreateEventFlag(
-        name, SCE_KERNEL_EVF_ATTR_TH_FIFO | SCE_KERNEL_EVF_ATTR_MULTI, 0, NULL);
-#else
-    m_events = new HANDLE[size];
-    for (int i = 0; i < size; i++) {
-        m_events[i] =
-            CreateEvent(NULL, (m_mode == e_modeManualClear), FALSE, NULL);
-    }
-#endif  // __PS3__
+C4JThread::EventArray::EventArray(int size, EMode mode)
+    : m_size(size),
+      m_mode(mode),
+      m_mutex(),
+      m_condition(),
+      m_signaledMask(0U) {
+    assert(m_size > 0);
+    assert(m_size <= 32);
 }
 
 void C4JThread::EventArray::Set(int index) {
-#ifdef __PS3__
-    int err = sys_event_flag_set(m_events, 1 << index);
-    assert(err == CELL_OK);
-#elif defined __ORBIS__
-    sceKernelSetEventFlag(m_events, 1 << index);
-#elif defined __PSVITA__
-    sceKernelSetEventFlag(m_events, 1 << index);
-#else
-    SetEvent(m_events[index]);
-#endif  //__PS3__
+    assert(index >= 0);
+    assert(index < m_size);
+
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_signaledMask |= (1U << static_cast<std::uint32_t>(index));
+    }
+
+    m_condition.notify_all();
 }
 
 void C4JThread::EventArray::Clear(int index) {
-#ifdef __PS3__
-    int err = sys_event_flag_clear(m_events, ~(1 << index));
-    assert(err == CELL_OK);
-#elif defined __ORBIS__
-    sceKernelClearEventFlag(m_events, ~(1 << index));
-#elif defined __PSVITA__
-    sceKernelClearEventFlag(m_events, ~(1 << index));
-#else
-    ResetEvent(m_events[index]);
-#endif  //__PS3__
+    assert(index >= 0);
+    assert(index < m_size);
+
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_signaledMask &= ~(1U << static_cast<std::uint32_t>(index));
 }
 
 void C4JThread::EventArray::SetAll() {
-    for (int i = 0; i < m_size; i++) Set(i);
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_signaledMask |= BuildMaskForSize(m_size);
+    }
+
+    m_condition.notify_all();
 }
 
 void C4JThread::EventArray::ClearAll() {
-    for (int i = 0; i < m_size; i++) Clear(i);
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_signaledMask = 0U;
 }
 
 std::uint32_t C4JThread::EventArray::WaitForSingle(int index, int timeoutMs) {
-    std::uint32_t retVal;
-#ifdef __PS3__
-    int timeoutMicrosecs;
-    if (timeoutMs == INFINITE)
-        timeoutMicrosecs = SYS_NO_TIMEOUT;
-    else
-        timeoutMicrosecs = timeoutMs * 1000;
-    uint32_t mode = SYS_EVENT_FLAG_WAIT_AND;
-    if (m_mode == e_modeAutoClear) mode |= SYS_EVENT_FLAG_WAIT_CLEAR;
+    assert(index >= 0);
+    assert(index < m_size);
 
-    int err =
-        sys_event_flag_wait(m_events, 1 << index, mode, 0, timeoutMicrosecs);
+    const std::uint32_t bitMask = 1U << static_cast<std::uint32_t>(index);
+    std::unique_lock<std::mutex> lock(m_mutex);
 
-    switch (err) {
-        case CELL_OK:
-            retVal = WAIT_OBJECT_0;
-            break;
-        case ETIMEDOUT:
-            retVal = WAIT_TIMEOUT;
-            break;
-        case ECANCELED:
-            retVal = WAIT_ABANDONED;
-            break;
-        default:
-            assert(0);
-            retVal = WAIT_FAILED;
-            break;
+    const bool signaled =
+        WaitForCondition(m_condition, lock, timeoutMs,
+                         [this, bitMask] {
+                             return (m_signaledMask & bitMask) != 0U;
+                         });
+
+    if (!signaled) {
+        return WAIT_TIMEOUT;
     }
-#elif defined __ORBIS__
-    SceKernelUseconds timeoutMicrosecs;
-    SceKernelUseconds* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceKernelUseconds)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
+
     if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_PAT;
+        m_signaledMask &= ~bitMask;
     }
-    uint64_t resultPat;
-    int err = sceKernelWaitEventFlag(m_events, 1 << index, waitMode, &resultPat,
-                                     pTimeoutMicrosecs);
-    assert(err != SCE_KERNEL_ERROR_ETIMEDOUT);
-    switch (err) {
-        case SCE_OK:
-            retVal = WAIT_OBJECT_0;
-            break;
-        case SCE_KERNEL_ERROR_ETIMEDOUT:
-            retVal = WAIT_TIMEOUT;
-            break;
-        case SCE_KERNEL_ERROR_ECANCELED:
-            retVal = WAIT_ABANDONED;
-            break;
-        default:
-            retVal = WAIT_FAILED;
-            break;
-    }
-#elif defined __PSVITA__
-    SceUInt32 timeoutMicrosecs;
-    SceUInt32* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceUInt32)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
-    if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_ALL;
-    }
-    int err = sceKernelWaitEventFlag(m_events, 1 << index, waitMode, NULL,
-                                     pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_WAIT_TIMEOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_WAIT_CANCEL:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#else
-    retVal = WaitForSingleObject(m_events[index], timeoutMs);
-#endif  // __PS3__
 
-    return retVal;
+    return WAIT_OBJECT_0;
 }
 
 std::uint32_t C4JThread::EventArray::WaitForAll(int timeoutMs) {
-    std::uint32_t retVal;
-#ifdef __PS3__
-    if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
-    int timoutMicrosecs = timeoutMs * 1000;
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
+    const std::uint32_t bitMask = BuildMaskForSize(m_size);
+    std::unique_lock<std::mutex> lock(m_mutex);
 
-    uint32_t mode = SYS_EVENT_FLAG_WAIT_AND;
-    if (m_mode == e_modeAutoClear) mode |= SYS_EVENT_FLAG_WAIT_CLEAR;
+    const bool signaled =
+        WaitForCondition(m_condition, lock, timeoutMs,
+                         [this, bitMask] {
+                             return (m_signaledMask & bitMask) == bitMask;
+                         });
 
-    int err = sys_event_flag_wait(m_events, bitmask, mode, 0, timoutMicrosecs);
-
-    switch (err) {
-        case CELL_OK:
-            retVal = WAIT_OBJECT_0;
-            break;
-        case ETIMEDOUT:
-            retVal = WAIT_TIMEOUT;
-            break;
-        case ECANCELED:
-            retVal = WAIT_ABANDONED;
-            break;
-        default:
-            assert(0);
-            retVal = WAIT_FAILED;
-            break;
+    if (!signaled) {
+        return WAIT_TIMEOUT;
     }
 
-#elif defined __ORBIS__
-    SceKernelUseconds timeoutMicrosecs;
-    SceKernelUseconds* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceKernelUseconds)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
     if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_PAT;
+        m_signaledMask &= ~bitMask;
     }
-    int err = sceKernelWaitEventFlag(m_events, bitmask, waitMode, NULL,
-                                     pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            retVal = WAIT_OBJECT_0;
-            break;
-        case SCE_KERNEL_ERROR_ETIMEDOUT:
-            retVal = WAIT_TIMEOUT;
-            break;
-        case SCE_KERNEL_ERROR_ECANCELED:
-            retVal = WAIT_ABANDONED;
-            break;
-        default:
-            retVal = WAIT_FAILED;
-            break;
-    }
-#elif defined __PSVITA__
-    SceUInt32 timeoutMicrosecs;
-    SceUInt32* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceUInt32)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_AND;
-    if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_ALL;
-    }
-    int err = sceKernelWaitEventFlag(m_events, bitmask, waitMode, NULL,
-                                     pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_WAIT_TIMEOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_WAIT_CANCEL:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#else
-    retVal = WaitForMultipleObjects(m_size, m_events, true, timeoutMs);
-#endif  // __PS3__
 
-    return retVal;
+    return WAIT_OBJECT_0;
 }
 
 std::uint32_t C4JThread::EventArray::WaitForAny(int timeoutMs) {
-#ifdef __PS3__
-    if (timeoutMs == INFINITE) timeoutMs = SYS_NO_TIMEOUT;
-    int timoutMicrosecs = timeoutMs * 1000;
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
+    const std::uint32_t bitMask = BuildMaskForSize(m_size);
+    std::unique_lock<std::mutex> lock(m_mutex);
 
-    uint32_t mode = SYS_EVENT_FLAG_WAIT_OR;
-    if (m_mode == e_modeAutoClear) mode |= SYS_EVENT_FLAG_WAIT_CLEAR;
+    const bool signaled =
+        WaitForCondition(m_condition, lock, timeoutMs,
+                         [this, bitMask] {
+                             return (m_signaledMask & bitMask) != 0U;
+                         });
 
-    int err = sys_event_flag_wait(m_events, bitmask, mode, 0, timoutMicrosecs);
-
-    switch (err) {
-        case CELL_OK:
-            return WAIT_OBJECT_0;
-        case ETIMEDOUT:
-            return WAIT_TIMEOUT;
-        case ECANCELED:
-            return WAIT_ABANDONED;
-        default:
-            assert(0);
-            return WAIT_FAILED;
+    if (!signaled) {
+        return WAIT_TIMEOUT;
     }
 
-#elif defined __ORBIS__
-    SceKernelUseconds timeoutMicrosecs;
-    SceKernelUseconds* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceKernelUseconds)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_OR;
+    const std::uint32_t readyMask = m_signaledMask & bitMask;
+    const std::uint32_t readyIndex = FirstSetBitIndex(readyMask);
+
     if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_PAT;
+        m_signaledMask &= ~(1U << readyIndex);
     }
-    int err = sceKernelWaitEventFlag(m_events, bitmask, waitMode, NULL,
-                                     pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_ETIMEDOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_ECANCELED:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#elif defined __PSVITA__
-    SceUInt32 timeoutMicrosecs;
-    SceUInt32* pTimeoutMicrosecs;
-    if (timeoutMs == INFINITE) {
-        pTimeoutMicrosecs = NULL;
-    } else {
-        timeoutMicrosecs = ((SceUInt32)timeoutMs) * 1000;
-        pTimeoutMicrosecs = &timeoutMicrosecs;
-    }
-    unsigned int bitmask = 0;
-    for (int i = 0; i < m_size; i++) bitmask |= (1 << i);
-    uint32_t waitMode = SCE_KERNEL_EVF_WAITMODE_OR;
-    if (m_mode == e_modeAutoClear) {
-        waitMode |= SCE_KERNEL_EVF_WAITMODE_CLEAR_ALL;
-    }
-    int err = sceKernelWaitEventFlag(m_events, bitmask, waitMode, NULL,
-                                     pTimeoutMicrosecs);
-    switch (err) {
-        case SCE_OK:
-            return WAIT_OBJECT_0;
-        case SCE_KERNEL_ERROR_WAIT_TIMEOUT:
-            return WAIT_TIMEOUT;
-        case SCE_KERNEL_ERROR_WAIT_CANCEL:
-            return WAIT_ABANDONED;
-        default:
-            return WAIT_FAILED;
-    }
-#else
-    return WaitForMultipleObjects(m_size, m_events, false, timeoutMs);
-#endif  // __PS3__
+
+    return WAIT_OBJECT_0 + readyIndex;
 }
 
-#ifdef __PS3__
-void C4JThread::EventArray::Cancel() { sys_event_flag_cancel(m_events, NULL); }
-#endif
-
 C4JThread::EventQueue::EventQueue(UpdateFunc* updateFunc,
-                                  ThreadInitFunc threadInitFunc,
-                                  const char* szThreadName) {
-    m_updateFunc = updateFunc;
-    m_threadInitFunc = threadInitFunc;
-    strcpy(m_threadName, szThreadName);
-    m_thread = NULL;
-    m_startEvent = NULL;
-    m_finishedEvent = NULL;
-    m_processor = -1;
-    m_priority = THREAD_PRIORITY_HIGHEST + 1;
+                                  ThreadInitFunc* threadInitFunc,
+                                  const char* threadName)
+    : m_thread(),
+      m_queue(),
+      m_mutex(),
+      m_queueCondition(),
+      m_drainedCondition(),
+      m_updateFunc(updateFunc),
+      m_threadInitFunc(threadInitFunc),
+      m_threadName(threadName != nullptr ? threadName : "Unnamed"),
+      m_processor(-1),
+      m_priority(kUnsetPriority),
+      m_busy(false),
+      m_initOnce(),
+      m_stopRequested(false) {
+    assert(m_updateFunc != nullptr);
+}
+
+C4JThread::EventQueue::~EventQueue() {
+    m_stopRequested.store(true, std::memory_order_release);
+    m_queueCondition.notify_all();
+
+    if (m_thread) {
+        (void)m_thread->WaitForCompletion(INFINITE);
+    }
+}
+
+void C4JThread::EventQueue::setProcessor(int proc) {
+    m_processor = proc;
+    if (m_thread) {
+        m_thread->SetProcessor(proc);
+    }
+}
+
+void C4JThread::EventQueue::setPriority(int priority) {
+    m_priority = priority;
+    if (m_thread) {
+        m_thread->SetPriority(priority);
+    }
 }
 
 void C4JThread::EventQueue::init() {
-    m_startEvent = new C4JThread::EventArray(1);
-    m_finishedEvent = new C4JThread::Event();
-    InitializeCriticalSection(&m_critSect);
-    m_thread = new C4JThread(threadFunc, this, m_threadName);
-    if (m_processor >= 0) m_thread->SetProcessor(m_processor);
-    if (m_priority != THREAD_PRIORITY_HIGHEST + 1)
-        m_thread->SetPriority(m_priority);
-    m_thread->Run();
+    std::call_once(m_initOnce, [this]() {
+        m_thread = std::make_unique<C4JThread>(threadFunc, this,
+                                               m_threadName.c_str());
+
+        if (m_processor >= 0) {
+            m_thread->SetProcessor(m_processor);
+        }
+
+        if (m_priority != kUnsetPriority) {
+            m_thread->SetPriority(m_priority);
+        }
+
+        m_thread->Run();
+    });
 }
 
 void C4JThread::EventQueue::sendEvent(Level* pLevel) {
-    if (m_thread == NULL) init();
-    EnterCriticalSection(&m_critSect);
-    m_queue.push(pLevel);
-    m_startEvent->Set(0);
-    m_finishedEvent->Clear();
-    LeaveCriticalSection(&m_critSect);
+    init();
+
+    if (m_stopRequested.load(std::memory_order_acquire)) {
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_queue.push(pLevel);
+    }
+
+    m_queueCondition.notify_one();
 }
 
 void C4JThread::EventQueue::waitForFinish() {
-    if (m_thread == NULL) init();
-    EnterCriticalSection(&m_critSect);
-    if (m_queue.empty()) {
-        LeaveCriticalSection((&m_critSect));
-        return;
-    }
-    LeaveCriticalSection((&m_critSect));
-    m_finishedEvent->WaitForSignal(INFINITE);
+    init();
+
+    std::unique_lock<std::mutex> lock(m_mutex);
+    m_drainedCondition.wait(lock, [this] {
+        return m_queue.empty() && !m_busy;
+    });
 }
 
 int C4JThread::EventQueue::threadFunc(void* lpParam) {
-    EventQueue* p = (EventQueue*)lpParam;
-    p->threadPoll();
+    EventQueue* pQueue = static_cast<EventQueue*>(lpParam);
+    pQueue->threadPoll();
     return 0;
 }
 
 void C4JThread::EventQueue::threadPoll() {
-    ShutdownManager::HasStarted(ShutdownManager::eEventQueueThreads,
-                                m_startEvent);
+    ShutdownManager::HasStarted(ShutdownManager::eEventQueueThreads);
 
-    if (m_threadInitFunc) m_threadInitFunc();
-
-    while (ShutdownManager::ShouldRun(ShutdownManager::eEventQueueThreads)) {
-        std::uint32_t err = m_startEvent->WaitForAny(INFINITE);
-        if (err == WAIT_OBJECT_0) {
-            bool bListEmpty = true;
-            do {
-                EnterCriticalSection(&m_critSect);
-                void* updateParam = m_queue.front();
-                LeaveCriticalSection(&m_critSect);
-
-                m_updateFunc(updateParam);
-
-                EnterCriticalSection(&m_critSect);
-                m_queue.pop();
-                bListEmpty = m_queue.empty();
-                if (bListEmpty) {
-                    m_finishedEvent->Set();
-                }
-                LeaveCriticalSection(&m_critSect);
-
-            } while (!bListEmpty);
+    if (m_threadInitFunc != nullptr) {
+        try {
+            m_threadInitFunc();
+        } catch (...) {
         }
-    };
+    }
+
+    while (!m_stopRequested.load(std::memory_order_acquire) &&
+           ShutdownManager::ShouldRun(ShutdownManager::eEventQueueThreads)) {
+        void* updateParam = nullptr;
+
+        {
+            std::unique_lock<std::mutex> lock(m_mutex);
+            m_queueCondition.wait_for(lock,
+                                      std::chrono::milliseconds(
+                                          kEventQueueShutdownPollMs),
+                                      [this] {
+                                          return m_stopRequested.load(
+                                                     std::memory_order_acquire) ||
+                                                 !m_queue.empty();
+                                      });
+
+            if (m_stopRequested.load(std::memory_order_acquire)) {
+                break;
+            }
+
+            if (m_queue.empty()) {
+                continue;
+            }
+
+            m_busy = true;
+            updateParam = m_queue.front();
+            m_queue.pop();
+        }
+
+        try {
+            m_updateFunc(updateParam);
+        } catch (...) {
+        }
+
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_busy = false;
+            if (m_queue.empty()) {
+                m_drainedCondition.notify_all();
+            }
+        }
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_busy = false;
+        std::queue<void*> emptyQueue;
+        m_queue.swap(emptyQueue);
+    }
+    m_drainedCondition.notify_all();
 
     ShutdownManager::HasFinished(ShutdownManager::eEventQueueThreads);
 }
 
-#ifdef __ORBIS__
-
 void C4JThread::PushAffinityAllCores() {
-    assert(m_oldAffinityMask == 0);
-    int err;
-    ScePthread currThreadID = scePthreadSelf();
-    err = scePthreadGetaffinity(currThreadID, &m_oldAffinityMask);
-    assert(err == SCE_OK);
-    err = scePthreadSetaffinity(currThreadID, 63);
-    assert(err == SCE_OK);
+#if defined(_WIN32)
+    const HANDLE currentThread = ::GetCurrentThread();
+    DWORD_PTR processAffinityMask = 0;
+    DWORD_PTR systemAffinityMask = 0;
+
+    if (!::GetProcessAffinityMask(::GetCurrentProcess(),
+                                  &processAffinityMask,
+                                  &systemAffinityMask) ||
+        processAffinityMask == 0) {
+        return;
+    }
+
+    const DWORD_PTR previousMask =
+        ::SetThreadAffinityMask(currentThread, processAffinityMask);
+
+    if (previousMask != 0) {
+        g_affinityMaskStack.push_back(previousMask);
+    }
+
+#elif defined(__linux__)
+    cpu_set_t previousMask;
+    if (::pthread_getaffinity_np(::pthread_self(), sizeof(previousMask),
+                                 &previousMask) != 0) {
+        return;
+    }
+
+    g_affinityMaskStack.push_back(previousMask);
+
+    cpu_set_t allowedMask;
+    if (::sched_getaffinity(0, sizeof(allowedMask), &allowedMask) != 0) {
+        g_affinityMaskStack.pop_back();
+        return;
+    }
+
+    (void)::pthread_setaffinity_np(::pthread_self(), sizeof(allowedMask),
+                                   &allowedMask);
+#endif
 }
 
 void C4JThread::PopAffinity() {
-    int err;
-    ScePthread currThreadID = scePthreadSelf();
-    err = scePthreadSetaffinity(currThreadID, m_oldAffinityMask);
-    m_oldAffinityMask = 0;
-    assert(err == SCE_OK);
-}
+#if defined(_WIN32)
+    if (g_affinityMaskStack.empty()) {
+        return;
+    }
 
-#endif  // __ORBIS__
+    const DWORD_PTR previousMask = g_affinityMaskStack.back();
+    g_affinityMaskStack.pop_back();
+    (void)::SetThreadAffinityMask(::GetCurrentThread(), previousMask);
+
+#elif defined(__linux__)
+    if (g_affinityMaskStack.empty()) {
+        return;
+    }
+
+    const cpu_set_t previousMask = g_affinityMaskStack.back();
+    g_affinityMaskStack.pop_back();
+    (void)::pthread_setaffinity_np(::pthread_self(), sizeof(previousMask),
+                                   &previousMask);
+#endif
+}
