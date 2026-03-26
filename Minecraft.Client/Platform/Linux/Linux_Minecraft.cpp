@@ -88,15 +88,7 @@ static void sigsegv_handler(int sig) {
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
 DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
-#if 0
-    XPROFILE_OPTION_CONTROLLER_VIBRATION,
-    XPROFILE_GAMER_YAXIS_INVERSION,
-    XPROFILE_GAMER_CONTROL_SENSITIVITY,
-    XPROFILE_GAMER_ACTION_MOVEMENT_CONTROL,
-    XPROFILE_TITLE_SPECIFIC1,
-#else
     0, 0, 0, 0, 0
-#endif
 };
 
 //-------------------------------------------------------------------------------------
@@ -417,52 +409,9 @@ void DefineActions(void) {
                                    _360_JOY_BUTTON_DPAD_DOWN);
 }
 
-#if 0
-HRESULT InitD3D( IDirect3DDevice9 **ppDevice,
-D3DPRESENT_PARAMETERS *pd3dPP )
-{
-IDirect3D9 *pD3D;
-
-pD3D = Direct3DCreate9( D3D_SDK_VERSION );
-
-// Set up the structure used to create the D3DDevice
-// Using a permanent 1280x720 backbuffer now no matter what the actual video resolution.right Have also disabled letterboxing,
-// which would letterbox a 1280x720 output if it detected a 4:3 video source - we're doing an anamorphic squash in this
-// mode so don't need this functionality.
-
-ZeroMemory( pd3dPP, sizeof(D3DPRESENT_PARAMETERS) );
-XVIDEO_MODE VideoMode;
-XGetVideoMode( &VideoMode );
-g_bWidescreen = VideoMode.fIsWideScreen;
-pd3dPP->BackBufferWidth        = 1280;
-pd3dPP->BackBufferHeight       = 720;
-pd3dPP->BackBufferFormat       = D3DFMT_A8R8G8B8;
-pd3dPP->BackBufferCount        = 1;
-pd3dPP->EnableAutoDepthStencil = TRUE;
-pd3dPP->AutoDepthStencilFormat = D3DFMT_D24S8;
-pd3dPP->SwapEffect             = D3DSWAPEFFECT_DISCARD;
-pd3dPP->PresentationInterval   = D3DPRESENT_INTERVAL_ONE;
-//pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
-//ERR[D3D]: Can't set D3DPRESENTFLAG_NO_LETTERBOX when wide-screen is enabled
-//	in the launcher/dashboard.
-if(g_bWidescreen)
-    pd3dPP->Flags=0;
-else
-    pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
-
-// Create the device.
-return pD3D->CreateDevice(
-    0,
-D3DDEVTYPE_HAL,
-NULL,
-D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_BUFFER_2_FRAMES,
-pd3dPP,
-ppDevice );
-}
-#endif
 // #define MEMORY_TRACKING
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
 void ResetMem();
 void DumpMem();
 void MemPixStuff();
@@ -470,7 +419,7 @@ void MemPixStuff();
 void MemSect(int sect) {}
 #endif
 
-#ifndef __linux__
+#if !defined(__linux__)
 HINSTANCE g_hInst = NULL;
 HWND g_hWnd = NULL;
 D3D_DRIVER_TYPE g_driverType = D3D_DRIVER_TYPE_NULL;
@@ -589,7 +538,7 @@ HRESULT InitDevice() {
     UINT height = rc.bottom - rc.top;
 
     UINT createDeviceFlags = 0;
-#ifdef _DEBUG
+#if defined(_DEBUG)
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -753,28 +702,10 @@ int main(int argc, const char* argv[]) {
         if (fs) RenderManager.SetFullscreen(true);
     }
 
-#if 0
-    // Main message loop
-    MSG msg = {0};
-    while( WM_QUIT != msg.message )
-    {
-    if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
-    {
-    TranslateMessage( &msg );
-    DispatchMessage( &msg );
-}
-else
-{
-Render();
-}
-}
-
-return (int) msg.wParam;
-#endif
 
     static bool bTrialTimerDisplayed = true;
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
     ResetMem();
     MEMORYSTATUS memStat;
     GlobalMemoryStatus(&memStat);
@@ -782,30 +713,6 @@ return (int) msg.wParam;
            memStat.dwAvailPhys / (1024 * 1024));
 #endif
 
-#if 0
-// Initialize D3D
-hr = InitD3D( &pDevice, &d3dpp );
-g_pD3DDevice = pDevice;
-if( FAILED(hr) )
-{
-app.DebugPrintf
-( "Failed initializing D3D.\n" );
-return -1;
-}
-
-// Initialize the application, assuming sharing of the d3d interface.
-hr = app.InitShared( pDevice, &d3dpp,
-XuiPNGTextureLoader );
-
-if ( FAILED(hr) )
-{
-app.DebugPrintf
-( "Failed initializing application.\n" );
-
-return -1;
-}
-
-#endif
 
     RenderManager.Initialise();
 
@@ -917,7 +824,7 @@ return -1;
         g_NetworkManager.DoWork();
         PIXEndNamedEvent();
         // Render game graphics.
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
         pMinecraft->run_middle();
         if (app.GetGameStarted()) {
 #else
@@ -953,7 +860,7 @@ return -1;
             g_NetworkManager.Initialise();
         }
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
         static bool bResetMemTrack = false;
         static bool bDumpMemTrack = false;
 
@@ -978,55 +885,8 @@ return -1;
             printf("Renderer used: %d\n", RenderManager.CBuffSize(-1));
         }
 #endif
-#if 0
-static bool bDumpTextureUsage = false;
-if( bDumpTextureUsage )
-{
-RenderManager.TextureGetStats();
-bDumpTextureUsage = false;
-}
-#endif
         ui.tick();
         ui.render();
-#if 0
-app.HandleButtonPresses();
-
-// store the minecraft renderstates, and re-set them after the xui render
-GetRenderAndSamplerStates(pDevice,RenderStateA,SamplerStateA);
-
-// Tick XUI
-PIXBeginNamedEvent(0,"Xui running");
-app.RunFrame();
-PIXEndNamedEvent();
-
-// Render XUI
-
-PIXBeginNamedEvent(0,"XUI render");
-MemSect(7);
-hr = app.Render();
-MemSect(0);
-GetRenderAndSamplerStates(pDevice,RenderStateA2,SamplerStateA2);
-PIXEndNamedEvent();
-
-for(int i=0;i<8;i++)
-{
-if(RenderStateA2[i]!=RenderStateA[i])
-{
-//printf("Reseting RenderStateA[%d] after a XUI render\n",i);
-pDevice->SetRenderState(RenderStateModes[i],RenderStateA[i]);
-}
-}
-for(int i=0;i<5;i++)
-{
-if(SamplerStateA2[i]!=SamplerStateA[i])
-{
-//printf("Reseting SamplerStateA[%d] after a XUI render\n",i);
-pDevice->SetSamplerState(0,SamplerStateModes[i],SamplerStateA[i]);
-}
-}
-
-RenderManager.Set_matrixDirty();
-#endif
 
         // Present the frame.
         RenderManager.Present();
@@ -1044,7 +904,7 @@ RenderManager.Set_matrixDirty();
                         "***  - APPLYING GAME SETTINGS CHANGE for pad %d\n", i);
                     app.ApplyGameSettingsChanged(i);
 
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
                     if (app.DebugSettingsOn()) {
                         app.ActionDebugMask(i);
                     } else {
@@ -1070,17 +930,8 @@ RenderManager.Set_matrixDirty();
         g_NetworkManager.DoWork();
         PIXEndNamedEvent();
 
-#if 0
-PIXBeginNamedEvent(0,"Misc extra xui");
-// Update XUI Timers
-hr = XuiTimersRun();
-
-#endif
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();
-#if 0
-PIXEndNamedEvent();
-#endif
 
         // 4J-PB - Update the trial timer display if we are in the trial version
         if (!ProfileManager.IsFullVersion()) {
@@ -1202,7 +1053,7 @@ void FreeRichPresenceStrings() {
     vRichPresenceStrings.clear();
 }
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
 
 int totalAllocGen = 0;
 std::unordered_map<int, int> allocCounts;
@@ -1228,7 +1079,6 @@ LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
     size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
 
     if (trackEnable) {
-#if 1
         int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
         *(((unsigned char*)p) + realSize) = sect;
 
@@ -1236,7 +1086,6 @@ LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
             ((sect == sectCheck) || (sectCheck == -1))) {
             app.DebugPrintf("Found one\n");
         }
-#endif
 
         if (p) {
             totalAllocGen += realSize;

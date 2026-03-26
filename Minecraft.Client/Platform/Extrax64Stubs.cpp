@@ -1,23 +1,12 @@
 #include "stdafx.h"
-#if 1
 //#include <compressapi.h>
-#endif // 0
 
-#if 0
-#include "../GameState/StatsCounter.h"
-#include <libsn.h>
-#include <libsntuner.h>
-#elif 0
-#include "../GameState/StatsCounter.h"
-#elif defined _WINDOWS64
+#if defined(_WINDOWS64)
 #include "../Platform/Windows64/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
 #include "../Platform/Windows64/Social/SocialManager.h"
 #include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
-#elif 0
-#include "../GameState/StatsCounter.h"
-#include <libperf.h>
-#elif defined __linux__
+#elif defined(__linux__)
 // On Linux, stdafx.h already provides Orbis-compatible Sentient/Dynamic headers
 // via #pragma once. Pull in SentientManager for CSentientManager class declaration
 // and StatsCounter; CSocialManager is provided as inline stubs via Platform/Linux/Social/SocialManager.h.
@@ -27,26 +16,24 @@
 #include "../GameState/StatsCounter.h"
 #endif
 
-#if !0 && !0 && !0
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
 //C4JStorage StorageManager;
 C_4JProfile ProfileManager;
 #endif
-#endif // 0
 CSentientManager SentientManager;
-#ifndef __linux__
+#if !defined(__linux__)
 // On Linux this global shadows the project's StringTable class name in unity builds
 CXuiStringTable StringTable;
 #endif
 
-#if !0 && !defined(__linux__)
+#if !defined(__linux__)
 ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
 HRESULT    ATG::XMLParser::ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize ) { return S_OK; }   
 VOID ATG::XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback ) {}
 #endif
 
-#ifndef __linux__
+#if !defined(__linux__)
 bool	CSocialManager::IsTitleAllowedToPostAnything() { return false; }
 bool	CSocialManager::AreAllUsersAllowedToPostImages() { return false; }
 bool	CSocialManager::IsTitleAllowedToPostImages() { return false; }
@@ -55,7 +42,7 @@ bool	CSocialManager::PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, DWO
 bool	CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
 CSocialManager *CSocialManager::Instance() { return NULL; }
 void CSocialManager::SetSocialPostText(LPCWSTR Title, LPCWSTR Caption, LPCWSTR Desc) {};
-#endif // !__linux__
+#endif
 
 DWORD XShowPartyUI(DWORD dwUserIndex) { return 0; }
 DWORD XShowFriendsUI(DWORD dwUserIndex) { return 0; }
@@ -64,13 +51,12 @@ DWORD XContentGetThumbnail(DWORD dwUserIndex, const XCONTENT_DATA *pContentData,
 void XShowAchievementsUI(int i) {}
 DWORD XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) { return 0; }
 
-#if 1
 void PIXAddNamedCounter(int a, const char *b, ...) {}
 //#define PS3_USE_PIX_EVENTS 
 //#define PS4_USE_PIX_EVENTS 
 void PIXBeginNamedEvent(int a, const char *b, ...)
 {
-#ifdef PS4_USE_PIX_EVENTS
+#if defined(PS4_USE_PIX_EVENTS)
 	char buf[512];
     va_list args;
     va_start(args,b);
@@ -78,7 +64,7 @@ void PIXBeginNamedEvent(int a, const char *b, ...)
 	sceRazorCpuPushMarker(buf, 0xffffffff, SCE_RAZOR_MARKER_ENABLE_HUD);
 
 #endif
-#ifdef PS3_USE_PIX_EVENTS
+#if defined(PS3_USE_PIX_EVENTS)
 	char buf[256];
 	wchar_t wbuf[256];
     va_list args;
@@ -91,69 +77,19 @@ void PIXBeginNamedEvent(int a, const char *b, ...)
     va_end(args);
 #endif
 }
-#if 0//0
-	if( PixDepth < 64 )
-	{
-		char buf[512];
-		va_list args;
-		va_start(args,b);
-		vsprintf(buf,b,args);
-		sceRazorCpuPushMarkerWithHud(buf, 0xffffffff, SCE_RAZOR_MARKER_ENABLE_HUD);
-	}
-	PixDepth += 1;
-#endif
 
 
 void PIXEndNamedEvent()
 {
-#ifdef PS4_USE_PIX_EVENTS
+#if defined(PS4_USE_PIX_EVENTS)
 	sceRazorCpuPopMarker();
 #endif
-#ifdef PS3_USE_PIX_EVENTS
+#if defined(PS3_USE_PIX_EVENTS)
 	snPopMarker();
 // 	RenderManager.EndEvent();
 #endif
-#if 0//0
-	if( PixDepth <= 64 )
-	{
-		sceRazorCpuPopMarker();
-	}
-	PixDepth -= 1;
-#endif
 }
 void PIXSetMarkerDeprecated(int a, char *b, ...) {}
-#else
-// 4J Stu - Removed this implementation in favour of a macro that will convert our string format
-// conversion at compile time rather than at runtime
-//void PIXBeginNamedEvent(int a, char *b, ...)
-//{
-//	char buf[256];
-//	wchar_t wbuf[256];
-//	va_list args;
-//	va_start(args,b);
-//	vsprintf(buf,b,args);
-//
-//	mbstowcs(wbuf,buf,256);
-//	PIXBeginEvent(a,wbuf);
-//}
-//
-//void PIXEndNamedEvent()
-//{
-//	PIXEndEvent();
-//}
-//
-//void PIXSetMarkerDeprecated(int a, char *b, ...)
-//{
-//	char buf[256];
-//	wchar_t wbuf[256];
-//	va_list args;
-//	va_start(args,b);
-//	vsprintf(buf,b,args);
-//
-//	mbstowcs(wbuf,buf,256);
-//	PIXSetMarker(a, wbuf);
-//}
-#endif
 
 // void *D3DXBUFFER::GetBufferPointer() { return NULL; }
 // int D3DXBUFFER::GetBufferSize() { return 0; }
@@ -166,11 +102,7 @@ void PIXSetMarkerDeprecated(int a, char *b, ...) {}
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b)
 {
-#if 0 || 0 || 0 || 0
-	return (a == b);
-#else
 	return false;
-#endif
 }
 
 void XMemCpy(void *a, const void *b, size_t s) { memcpy(a, b, s); }
@@ -186,7 +118,7 @@ D3DXVECTOR3& D3DXVECTOR3::operator += ( CONST D3DXVECTOR3& add ) { x += add.x; y
 BYTE IQNetPlayer::GetSmallId() { return 0; }
 void IQNetPlayer::SendData(IQNetPlayer *player, const void *pvData, DWORD dwDataSize, DWORD dwFlags)
 {
-#ifndef __linux__
+#if !defined(__linux__)
 	app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n",this,player,dwDataSize);
 #endif
 }
@@ -251,8 +183,6 @@ HRESULT CXuiStringTable::Load(LPCWSTR szId) { return S_OK; }
 
 DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCount, PBOOL pfResult, void *pOverlapped) { return 0; }
 
-#if 0 || 0 || 0
-#else
 HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
          VOID *pDestination,
@@ -368,19 +298,16 @@ void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context)
 //	DECOMPRESSOR_HANDLE Decompressor    = (DECOMPRESSOR_HANDLE)Context;
 //	CloseDecompressor(Decompressor);
 }
-#endif
 
 //#if 1
-#if !(0 || 0 || 0 || 0)
 DWORD XGetLanguage() { return 1; }
 DWORD XGetLocale() { return 0; }
 DWORD XEnableGuestSignin(BOOL fEnable) { return 0; }
-#endif
 
 
 
 /////////////////////////////////////////////// Profile library
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
 static void *profileData[4];
 static bool s_bProfileIsFullVersion;
 void				C_4JProfile::Initialise( std::uint32_t dwTitleID,
@@ -465,15 +392,6 @@ bool				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return fal
 bool				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
 bool				C_4JProfile::AllowedToPlayMultiplayer(int iProf) { return true; }
 
-#if 0
-bool				C_4JProfile::GetChatAndContentRestrictions(int iPad, bool thisQuadrantOnly, bool *pbChatRestricted,bool *pbContentRestricted,int *piAge)
-{
-	if(pbChatRestricted) *pbChatRestricted = false;
-	if(pbContentRestricted) *pbContentRestricted = false;
-	if(piAge) *piAge = 100;
-	return true;
-}
-#endif
 
 void				C_4JProfile::StartTrialGame() {}
 void				C_4JProfile::AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed) {}
@@ -482,14 +400,8 @@ bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(void *lpParam,std::ui
 void				C_4JProfile::CancelProfileAvatarRequest() {}
 int					C_4JProfile::GetPrimaryPad() { return 0; }
 void				C_4JProfile::SetPrimaryPad(int iPad) {}
-#if 0
-char fakeGamerTag[32] = "PlayerName";
-void				SetFakeGamertag(char *name){ strcpy_s(fakeGamerTag, name); }
-char*				C_4JProfile::GetGamertag(int iPad){ return fakeGamerTag; }
-#else
 char*				C_4JProfile::GetGamertag(int iPad){ return "PlayerName"; }
 std::wstring				C_4JProfile::GetDisplayName(int iPad){ return L"PlayerName"; }
-#endif
 bool				C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }
 void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(void *, bool, unsigned int),void *lpParam) {}
 void				C_4JProfile::SetNotificationsCallback(void ( *Func)(void *, std::uint32_t, unsigned int),void *lpParam) {}
@@ -600,9 +512,9 @@ unsigned int						C4JStorage::CRC(unsigned char *buf, int len) { return 0; }
 
 struct PTMSPP_FILEDATA;
 C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)/*=NULL*/,LPVOID lpParam/*=NULL*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
-#endif // _WINDOWS64
+#endif
 
-#endif // 0
+#endif
 
 /////////////////////////////////////////////////////// Sentient manager
 
@@ -648,7 +560,7 @@ void StatsCounter::save(int player, bool force) {}
 void StatsCounter::flushLeaderboards() {}
 void StatsCounter::saveLeaderboards() {}
 void StatsCounter::setupStatBoards() {}
-#ifdef _DEBUG
+#if defined(_DEBUG)
 void StatsCounter::WipeLeaderboards() {}
 #endif
 */

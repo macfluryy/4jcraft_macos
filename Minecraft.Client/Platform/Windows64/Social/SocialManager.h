@@ -4,12 +4,12 @@
 // Andy West
 //
 
-#ifndef _SOCIAL_MANAGER_H
+#if !defined(_SOCIAL_MANAGER_H)
 #define _SOCIAL_MANAGER_H
 
-#ifndef __linux__
+#if !defined(__linux__)
 #include <xsocialpost.h>
-#endif // __linux__
+#endif
 
 #define MAX_SOCIALPOST_CAPTION	60
 #define MAX_SOCIALPOST_DESC		100
@@ -70,13 +70,6 @@ private:
 	// Social post preview image struct.
 	XSOCIAL_PREVIEWIMAGE	m_PostPreviewImage;
 
-#if 0
-	// Social post image params.
-	XSOCIAL_IMAGEPOSTPARAMS	m_PostImageParams;
-
-	// Social post link params.
-	XSOCIAL_LINKPOSTPARAMS	m_PostLinkParams;
-#endif
 
 	// Image details for posting an image to social network.
 	unsigned char*			m_pMainImageBuffer;
@@ -136,4 +129,4 @@ private:
 
 };
 
-#endif //_SOCIAL_MANAGER_H
+#endif

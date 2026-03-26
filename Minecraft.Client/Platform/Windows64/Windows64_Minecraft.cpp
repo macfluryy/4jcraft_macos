@@ -56,15 +56,7 @@ uint16_t ui16GlobalText[256];
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
 DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
-#if 0
-    XPROFILE_OPTION_CONTROLLER_VIBRATION,
-    XPROFILE_GAMER_YAXIS_INVERSION,
-    XPROFILE_GAMER_CONTROL_SENSITIVITY,
-    XPROFILE_GAMER_ACTION_MOVEMENT_CONTROL,
-    XPROFILE_TITLE_SPECIFIC1,
-#else
     0, 0, 0, 0, 0
-#endif
 };
 
 //-------------------------------------------------------------------------------------
@@ -384,52 +376,9 @@ void DefineActions(void) {
                                    _360_JOY_BUTTON_DPAD_DOWN);
 }
 
-#if 0
-HRESULT InitD3D( IDirect3DDevice9 **ppDevice,
-				D3DPRESENT_PARAMETERS *pd3dPP )
-{
-	IDirect3D9 *pD3D;
-
-	pD3D = Direct3DCreate9( D3D_SDK_VERSION );
-
-	// Set up the structure used to create the D3DDevice
-	// Using a permanent 1280x720 backbuffer now no matter what the actual video resolution.right Have also disabled letterboxing,
-	// which would letterbox a 1280x720 output if it detected a 4:3 video source - we're doing an anamorphic squash in this
-	// mode so don't need this functionality.
-
-	ZeroMemory( pd3dPP, sizeof(D3DPRESENT_PARAMETERS) );
-	XVIDEO_MODE VideoMode;
-	XGetVideoMode( &VideoMode );
-	g_bWidescreen = VideoMode.fIsWideScreen;
-	pd3dPP->BackBufferWidth        = 1280;
-	pd3dPP->BackBufferHeight       = 720;
-	pd3dPP->BackBufferFormat       = D3DFMT_A8R8G8B8;
-	pd3dPP->BackBufferCount        = 1;
-	pd3dPP->EnableAutoDepthStencil = TRUE;
-	pd3dPP->AutoDepthStencilFormat = D3DFMT_D24S8;
-	pd3dPP->SwapEffect             = D3DSWAPEFFECT_DISCARD;
-	pd3dPP->PresentationInterval   = D3DPRESENT_INTERVAL_ONE;
-	//pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
-	//ERR[D3D]: Can't set D3DPRESENTFLAG_NO_LETTERBOX when wide-screen is enabled
-	//	in the launcher/dashboard.
-	if(g_bWidescreen)
-		pd3dPP->Flags=0;
-	else
-		pd3dPP->Flags				   = D3DPRESENTFLAG_NO_LETTERBOX;
-
-	// Create the device.
-	return pD3D->CreateDevice(
-		0,
-		D3DDEVTYPE_HAL,
-		NULL,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_BUFFER_2_FRAMES,
-		pd3dPP,
-		ppDevice );
-}
-#endif
 // #define MEMORY_TRACKING
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
 void ResetMem();
 void DumpMem();
 void MemPixStuff();
@@ -606,7 +555,7 @@ HRESULT InitDevice() {
     app.DebugPrintf("width: %d, height: %d\n", width, height);
 
     UINT createDeviceFlags = 0;
-#ifdef _DEBUG
+#if defined(_DEBUG)
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -765,28 +714,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         return 0;
     }
 
-#if 0
-	// Main message loop
-	MSG msg = {0};
-	while( WM_QUIT != msg.message )
-	{
-		if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
-		{
-			TranslateMessage( &msg );
-			DispatchMessage( &msg );
-		}
-		else
-		{
-			Render();
-		}
-	}
-
-	return (int) msg.wParam;
-#endif
 
     static bool bTrialTimerDisplayed = true;
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
     ResetMem();
     MEMORYSTATUS memStat;
     GlobalMemoryStatus(&memStat);
@@ -794,30 +725,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
            memStat.dwAvailPhys / (1024 * 1024));
 #endif
 
-#if 0
-	// Initialize D3D
-	hr = InitD3D( &pDevice, &d3dpp );
-	g_pD3DDevice = pDevice;
-	if( FAILED(hr) )
-	{
-		app.DebugPrintf
-			( "Failed initializing D3D.\n" );
-		return -1;
-	}
-
-	// Initialize the application, assuming sharing of the d3d interface.
-	hr = app.InitShared( pDevice, &d3dpp,
-		XuiPNGTextureLoader );
-
-	if ( FAILED(hr) )
-	{
-		app.DebugPrintf
-			( "Failed initializing application.\n" );
-
-		return -1;
-	}
-
-#endif
     app.loadMediaArchive();
 
     RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
@@ -846,66 +753,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         NUM_PROFILE_VALUES, NUM_PROFILE_SETTINGS, dwProfileSettingsA,
         app.GAME_DEFINED_PROFILE_DATA_BYTES * XUSER_MAX_COUNT,
         &app.uiGameDefinedDataChangedBitmask);
-#if 0
-	// register the awards
-	ProfileManager.RegisterAward(eAward_TakingInventory,	ACHIEVEMENT_01, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_GettingWood,		ACHIEVEMENT_02, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_Benchmarking,		ACHIEVEMENT_03, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_TimeToMine,			ACHIEVEMENT_04, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_HotTopic,			ACHIEVEMENT_05, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_AquireHardware,		ACHIEVEMENT_06, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_TimeToFarm,			ACHIEVEMENT_07, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_BakeBread,			ACHIEVEMENT_08, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_TheLie,				ACHIEVEMENT_09, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_GettingAnUpgrade,	ACHIEVEMENT_10, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_DeliciousFish,		ACHIEVEMENT_11, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_OnARail,			ACHIEVEMENT_12, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_TimeToStrike,		ACHIEVEMENT_13, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_MonsterHunter,		ACHIEVEMENT_14, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_CowTipper,			ACHIEVEMENT_15, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_WhenPigsFly,		ACHIEVEMENT_16, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_LeaderOfThePack,	ACHIEVEMENT_17, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_MOARTools,			ACHIEVEMENT_18, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_DispenseWithThis,	ACHIEVEMENT_19, eAwardType_Achievement);
-	ProfileManager.RegisterAward(eAward_InToTheNether,		ACHIEVEMENT_20, eAwardType_Achievement);
-
-	ProfileManager.RegisterAward(eAward_mine100Blocks,		GAMER_PICTURE_GAMERPIC1,			eAwardType_GamerPic,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_GAMERPIC1,IDS_CONFIRM_OK);
-	ProfileManager.RegisterAward(eAward_kill10Creepers,		GAMER_PICTURE_GAMERPIC2,			eAwardType_GamerPic,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_GAMERPIC2,IDS_CONFIRM_OK);
-
-	ProfileManager.RegisterAward(eAward_eatPorkChop,		AVATARASSETAWARD_PORKCHOP_TSHIRT,	eAwardType_AvatarItem,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_AVATAR1,IDS_CONFIRM_OK);
-	ProfileManager.RegisterAward(eAward_play100Days,		AVATARASSETAWARD_WATCH,				eAwardType_AvatarItem,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_AVATAR2,IDS_CONFIRM_OK);
-	ProfileManager.RegisterAward(eAward_arrowKillCreeper,	AVATARASSETAWARD_CAP,				eAwardType_AvatarItem,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_AVATAR3,IDS_CONFIRM_OK);
-
-	ProfileManager.RegisterAward(eAward_socialPost,			0,									eAwardType_Theme,false,app.GetStringTable(),IDS_AWARD_TITLE,IDS_AWARD_THEME,IDS_CONFIRM_OK,THEME_NAME,THEME_FILESIZE);
-
-	// Rich Presence init - number of presences, number of contexts
-	ProfileManager.RichPresenceInit(4,1);
-	ProfileManager.RegisterRichPresenceContext(CONTEXT_GAME_STATE);
-
-	// initialise the storage manager with a default save display name, a Minimum save size, and a callback for displaying the saving message
-	StorageManager.Init(app.GetString(IDS_DEFAULT_SAVENAME),"savegame.dat",FIFTY_ONE_MB,&CConsoleMinecraftApp::DisplaySavingMessage,(LPVOID)&app);
-	// Set up the global title storage path
-	StorageManager.StoreTMSPathName();
-
-	// set a function to be called when there's a sign in change, so we can exit a level if the primary player signs out
-	ProfileManager.SetSignInChangeCallback(&CConsoleMinecraftApp::SignInChangeCallback,(LPVOID)&app);
-
-	// set a function to be called when the ethernet is disconnected, so we can back out if required
-	ProfileManager.SetNotificationsCallback(&CConsoleMinecraftApp::NotificationsCallback,(LPVOID)&app);
-
-#endif
     // Set a callback for the default player options to be set - when there is
     // no profile data for the player
     ProfileManager.SetDefaultOptionsCallback(
         &CConsoleMinecraftApp::DefaultOptionsCallback, (LPVOID)&app);
-#if 0
-	// Set a callback to deal with old profile versions needing updated to new versions
-	ProfileManager.SetOldProfileVersionCallback(&CConsoleMinecraftApp::OldProfileVersionCallback,(LPVOID)&app);
-
-	// Set a callback for when there is a read error on profile data
-	ProfileManager.SetProfileReadErrorCallback(&CConsoleMinecraftApp::ProfileReadErrorCallback,(LPVOID)&app);
-
-#endif
     // QNet needs to be setup after profile manager, as we do not want its
     // Notify listener to handle XN_SYS_SIGNINCHANGED notifications. This does
     // mean that we need to have a callback in the ProfileManager for
@@ -918,23 +769,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     // debug switch to trial version
     ProfileManager.SetDebugFullOverride(true);
 
-#if 0
-	//ProfileManager.AddDLC(2);
-	StorageManager.SetDLCPackageRoot("DLCDrive");
-	StorageManager.RegisterMarketplaceCountsCallback(&CConsoleMinecraftApp::MarketplaceCountsCallback,(LPVOID)&app);
-	// Kinect !
-
-	if(XNuiGetHardwareStatus()!=0)
-	{
-		// If the Kinect Sensor is not physically connected, this function returns 0.
-		NuiInitialize(NUI_INITIALIZE_FLAG_USES_HIGH_QUALITY_COLOR | NUI_INITIALIZE_FLAG_USES_DEPTH |
-			NUI_INITIALIZE_FLAG_EXTRAPOLATE_FLOOR_PLANE | NUI_INITIALIZE_FLAG_USES_FITNESS | NUI_INITIALIZE_FLAG_NUI_GUIDE_DISABLED | NUI_INITIALIZE_FLAG_SUPPRESS_AUTOMATIC_UI,NUI_INITIALIZE_DEFAULT_HARDWARE_THREAD );
-	}
-
-	// Sentient !
-	hr = TelemetryManager->Init();
-
-#endif
     // Initialise TLS for tesselator, for this main thread
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     // Initialise TLS for AABB and Vec3 pools, for this main thread
@@ -950,52 +784,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
     app.InitGameSettings();
 
-#if 0
-	//bool bDisplayPauseMenu=false;
-
-	// set the default gamma level
-	float fVal=50.0f*327.68f;
-	RenderManager.UpdateGamma((unsigned short)fVal);
-
-	// load any skins
-	//app.AddSkinsToMemoryTextureFiles();
-
-	// set the achievement text for a trial achievement, now we have the string table loaded
-	ProfileManager.SetTrialTextStringTable(app.GetStringTable(),IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL);
-	ProfileManager.SetTrialAwardText(eAwardType_Achievement,IDS_UNLOCK_TITLE,IDS_UNLOCK_ACHIEVEMENT_TEXT);
-	ProfileManager.SetTrialAwardText(eAwardType_GamerPic,IDS_UNLOCK_TITLE,IDS_UNLOCK_GAMERPIC_TEXT);
-	ProfileManager.SetTrialAwardText(eAwardType_AvatarItem,IDS_UNLOCK_TITLE,IDS_UNLOCK_AVATAR_TEXT);
-	ProfileManager.SetTrialAwardText(eAwardType_Theme,IDS_UNLOCK_TITLE,IDS_UNLOCK_THEME_TEXT);
-	ProfileManager.SetUpsellCallback(&app.UpsellReturnedCallback,&app);
-
-	// Set up a debug character press sequence
-#ifndef _FINAL_BUILD
-	app.SetDebugSequence("LRLRYYY");
-#endif
-
-	// Initialise the social networking manager.
-	CSocialManager::Instance()->Initialise();
-
-	// Update the base scene quick selects now that the minecraft class exists
-	//CXuiSceneBase::UpdateScreenSettings(0);
-#endif
     app.InitialiseTips();
-#if 0
-
-	DWORD initData=0;
-
-#ifndef _FINAL_BUILD
-#ifndef _DEBUG
-#pragma message(__LOC__ "Need to define the _FINAL_BUILD before submission")
-#endif
-#endif
-
-	// Set the default sound levels
-	pMinecraft->options->set(Options::Option::MUSIC,1.0f);
-	pMinecraft->options->set(Options::Option::SOUND,1.0f);
-
-	app.NavigateToScene(XUSER_INDEX_ANY,eUIScene_Intro,&initData);
-#endif
 
     // Set the default sound levels
     pMinecraft->options->set(Options::Option::MUSIC, 1.0f);
@@ -1004,28 +793,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     // app.TemporaryCreateGameStart();
 
     // Sleep(10000);
-#if 0
-	// Intro loop ?
-	while(app.IntroRunning())
-	{
-		ProfileManager.Tick();
-		// Tick XUI
-		app.RunFrame();
-
-		// 4J : WESTY : Added to ensure we always have clear background for intro.
-		RenderManager.SetClearColour(D3DCOLOR_RGBA(0,0,0,255));
-		RenderManager.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Render XUI
-		hr = app.Render();
-
-		// Present the frame.
-		RenderManager.Present();
-
-		// Update XUI Timers
-		hr = XuiTimersRun();
-	}
-#endif
     MSG msg = {0};
     while (WM_QUIT != msg.message) {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -1034,15 +801,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
             continue;
         }
         RenderManager.StartFrame();
-#if 0
-		if(pMinecraft->soundEngine->isStreamingWavebankReady() &&
-			!pMinecraft->soundEngine->isPlayingStreamingGameMusic() &&
-			!pMinecraft->soundEngine->isPlayingStreamingCDMusic() )
-		{
-			// play some music in the menus
-			pMinecraft->soundEngine->playStreaming(L"", 0, 0, 0, 0, 0, false);
-		}
-#endif
 
         // 		static bool bPlay=false;
         // 		if(bPlay)
@@ -1104,7 +862,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
         pMinecraft->soundEngine->playMusicTick();
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
         static bool bResetMemTrack = false;
         static bool bDumpMemTrack = false;
 
@@ -1129,122 +887,15 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
             printf("Renderer used: %d\n", RenderManager.CBuffSize(-1));
         }
 #endif
-#if 0
-		static bool bDumpTextureUsage = false;
-		if( bDumpTextureUsage )
-		{
-			RenderManager.TextureGetStats();
-			bDumpTextureUsage = false;
-		}
-#endif
         ui.tick();
         ui.render();
-#if 0
-		app.HandleButtonPresses();
-
-		// store the minecraft renderstates, and re-set them after the xui render
-		GetRenderAndSamplerStates(pDevice,RenderStateA,SamplerStateA);
-
-		// Tick XUI
-		PIXBeginNamedEvent(0,"Xui running");
-		app.RunFrame();
-		PIXEndNamedEvent();
-
-		// Render XUI
-
-		PIXBeginNamedEvent(0,"XUI render");
-		MemSect(7);
-		hr = app.Render();
-		MemSect(0);
-		GetRenderAndSamplerStates(pDevice,RenderStateA2,SamplerStateA2);
-		PIXEndNamedEvent();
-
-		for(int i=0;i<8;i++)
-		{
-			if(RenderStateA2[i]!=RenderStateA[i])
-			{
-				//printf("Reseting RenderStateA[%d] after a XUI render\n",i);
-				pDevice->SetRenderState(RenderStateModes[i],RenderStateA[i]);
-			}
-		}
-		for(int i=0;i<5;i++)
-		{
-			if(SamplerStateA2[i]!=SamplerStateA[i])
-			{
-				//printf("Reseting SamplerStateA[%d] after a XUI render\n",i);
-				pDevice->SetSamplerState(0,SamplerStateModes[i],SamplerStateA[i]);
-			}
-		}
-
-		RenderManager.Set_matrixDirty();
-#endif
         // Present the frame.
         RenderManager.Present();
 
         ui.CheckMenuDisplayed();
-#if 0
-		PIXBeginNamedEvent(0,"Profile load check");
-		// has the game defined profile data been changed (by a profile load)
-		if(app.uiGameDefinedDataChangedBitmask!=0)
-		{
-			void *pData;
-			for(int i=0;i<XUSER_MAX_COUNT;i++)
-			{
-				if(app.uiGameDefinedDataChangedBitmask&(1<<i))
-				{\
-				// It has - game needs to update its values with the data from the profile
-				pData=ProfileManager.GetGameDefinedProfileData(i);
-				// reset the changed flag
-				app.ClearGameSettingsChangedFlag(i);
-				app.DebugPrintf("***  - APPLYING GAME SETTINGS CHANGE for pad %d\n",i);
-				app.ApplyGameSettingsChanged(i);
-
-#ifdef _DEBUG_MENUS_ENABLED
-				if(app.DebugSettingsOn())
-				{
-					app.ActionDebugMask(i);
-				}
-				else
-				{
-					// force debug mask off
-					app.ActionDebugMask(i,true);
-				}
-#endif
-				// clear the stats first - there could have beena signout and sign back in in the menus
-				// need to clear the player stats - can't assume it'll be done in setlevel - we may not be in the game
-				pMinecraft->stats[ i ]->clear();
-				pMinecraft->stats[i]->parse(pData);
-				}
-			}
-
-			// Check to see if we can post to social networks.
-			CSocialManager::Instance()->RefreshPostingCapability();
-
-			// clear the flag
-			app.uiGameDefinedDataChangedBitmask=0;
-
-			// Check if any profile write are needed
-			app.CheckGameSettingsChanged();
-		}
-		PIXEndNamedEvent();
-		app.TickDLCOffersRetrieved();
-		app.TickTMSPPFilesRetrieved();
-
-		PIXBeginNamedEvent(0,"Network manager do work #2");
-		g_NetworkManager.DoWork();
-		PIXEndNamedEvent();
-
-		PIXBeginNamedEvent(0,"Misc extra xui");
-		// Update XUI Timers
-		hr = XuiTimersRun();
-
-#endif
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();
 
-#if 0
-		PIXEndNamedEvent();
-#endif
 
         // 4J-PB - Update the trial timer display if we are in the trial version
         if (!ProfileManager.IsFullVersion()) {
@@ -1277,7 +928,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     g_pd3dDevice->Release();
 }
 
-#ifdef MEMORY_TRACKING
+#if defined(MEMORY_TRACKING)
 
 int totalAllocGen = 0;
 std::unordered_map<int, int> allocCounts;
@@ -1303,7 +954,6 @@ LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
     size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
 
     if (trackEnable) {
-#if 1
         int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
         *(((unsigned char*)p) + realSize) = sect;
 
@@ -1311,7 +961,6 @@ LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
             ((sect == sectCheck) || (sectCheck == -1))) {
             app.DebugPrintf("Found one\n");
         }
-#endif
 
         if (p) {
             totalAllocGen += realSize;

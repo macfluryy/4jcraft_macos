@@ -1984,11 +1984,9 @@ GDrawFunctions *gdraw_D3D_CreateContext(IDirect3DDevice9 *dev, S32 w, S32 h)
       }
    }
 
-   #if 1
    D3DCAPS9 caps;
    dev->GetDeviceCaps(&caps);
    gdraw->conditional_nonpow2 = ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL) != 0);
-   #endif
 
    gdraw->d3d_device = dev;
    create_all_shaders();
