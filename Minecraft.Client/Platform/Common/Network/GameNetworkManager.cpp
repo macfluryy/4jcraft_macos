@@ -28,12 +28,9 @@
 #include "../GameRules/ConsoleGameRules.h"
 #include "GameNetworkManager.h"
 
-#ifdef _XBOX
-#include "../XUI/XUI_PauseMenu.h"
-#elif !(defined __PSVITA__)
+#if !(defined __PSVITA__)
 #include "../UI/UI.h"
 #include "../UI/UIScene_PauseMenu.h"
-#include "../../Minecraft.Client/Platform/Xbox/Network/NetworkPlayerXbox.h"
 #endif
 
 #ifdef _DURANGO
@@ -53,10 +50,6 @@ CGameNetworkManager::CGameNetworkManager() {
     m_bLastDisconnectWasLostRoomOnly = false;
     m_bFullSessionMessageOnNextSessionChange = false;
 
-#ifdef __ORBIS__
-    m_pUpsell = NULL;
-    m_pInviteInfo = NULL;
-#endif
 }
 
 void CGameNetworkManager::Initialise() {
@@ -66,15 +59,7 @@ void CGameNetworkManager::Initialise() {
         LevelRenderer::getGlobalChunkCount() /
         (Level::maxBuildHeight /
          16);  // dividing here by number of renderer chunks in one column
-#ifdef _XBOX
-    s_pPlatformNetworkManager = new CPlatformNetworkManagerXbox();
-#elif defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
-    s_pPlatformNetworkManager = new CPlatformNetworkManagerSony();
-#elif defined _DURANGO
-    s_pPlatformNetworkManager = new CPlatformNetworkManagerDurango();
-#else
     s_pPlatformNetworkManager = new CPlatformNetworkManagerStub();
-#endif
     s_pPlatformNetworkManager->Initialise(this, flagIndexSize);
     m_bNetworkThreadRunning = false;
     m_bInitialised = true;
@@ -115,27 +100,6 @@ void CGameNetworkManager::DoWork() {
 #endif
     s_pPlatformNetworkManager->DoWork();
 
-#ifdef __ORBIS__
-    if (m_pUpsell != NULL && m_pUpsell->hasResponse()) {
-        int iPad_invited = m_iPlayerInvited,
-            iPad_checking = m_pUpsell->m_userIndex;
-
-        m_iPlayerInvited = -1;
-
-        delete m_pUpsell;
-        m_pUpsell = NULL;
-
-        if (ProfileManager.HasPlayStationPlus(iPad_checking)) {
-            this->GameInviteReceived(iPad_invited, m_pInviteInfo);
-
-            // m_pInviteInfo deleted by GameInviteReceived.
-            m_pInviteInfo = NULL;
-        } else {
-            delete m_pInviteInfo;
-            m_pInviteInfo = NULL;
-        }
-    }
-#endif
 }
 
 bool CGameNetworkManager::_RunNetworkGame(void* lpParameter) {
@@ -1724,84 +1688,6 @@ void CGameNetworkManager::WriteStats(INetworkPlayer* pNetworkPlayer) {
 
 void CGameNetworkManager::GameInviteReceived(int userIndex,
                                              const INVITE_INFO* pInviteInfo) {
-#ifdef __ORBIS__
-    if (m_pUpsell != NULL) {
-        delete pInviteInfo;
-        return;
-    }
-
-    // Need to check we're signed in to PSN
-    bool isSignedInLive = true;
-    bool isLocalMultiplayerAvailable = app.IsLocalMultiplayerAvailable();
-    int iPadNotSignedInLive = -1;
-    for (unsigned int i = 0; i < XUSER_MAX_COUNT; i++) {
-        if (ProfileManager.IsSignedIn(i) &&
-            (i == ProfileManager.GetPrimaryPad() ||
-             isLocalMultiplayerAvailable)) {
-            if (isSignedInLive && !ProfileManager.IsSignedInLive(i)) {
-                // Record the first non signed in live pad
-                iPadNotSignedInLive = i;
-            }
-
-            isSignedInLive = isSignedInLive && ProfileManager.IsSignedInLive(i);
-        }
-    }
-
-    if (!isSignedInLive) {
-        // Determine why they're not "signed in live"
-
-        // Check if PSN is unavailable because of age restriction
-        int npAvailability =
-            ProfileManager.getNPAvailability(iPadNotSignedInLive);
-        if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-            // 4J Stu - This is a bit messy and is due to the library
-            // incorrectly returning false for IsSignedInLive if the
-            // npAvailability isn't SCE_OK
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                   iPadNotSignedInLive);
-        } else if (ProfileManager.isSignedInPSN(iPadNotSignedInLive)) {
-            // Signed in to PSN but not connected (no internet access)
-            assert(!ProfileManager.isConnectedToPSN(iPadNotSignedInLive));
-
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
-                                   uiIDA, 1, iPadNotSignedInLive);
-        } else {
-            // Not signed in to PSN
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-            ui.RequestAlertMessage(
-                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
-                iPadNotSignedInLive, &CGameNetworkManager::MustSignInReturned_1,
-                (void*)pInviteInfo);
-        }
-        return;
-    }
-
-    // if this is the trial game, we'll check and send the user to unlock the
-    // game later, in HandleInviteWhenInMenus
-    if (ProfileManager.IsFullVersion()) {
-        // 4J-JEV: Check that all players are authorised for PsPlus, present
-        // upsell to players that aren't and try again.
-        for (unsigned int index = 0; index < XUSER_MAX_COUNT; index++) {
-            if (ProfileManager.IsSignedIn(index) &&
-                !ProfileManager.HasPlayStationPlus(userIndex)) {
-                m_pInviteInfo = (INVITE_INFO*)pInviteInfo;
-                m_iPlayerInvited = userIndex;
-
-                m_pUpsell = new PsPlusUpsellWrapper(index);
-                m_pUpsell->displayUpsell();
-
-                return;
-            }
-        }
-    }
-#endif
-
     int localUsersMask = 0;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     int joiningUsers = 0;

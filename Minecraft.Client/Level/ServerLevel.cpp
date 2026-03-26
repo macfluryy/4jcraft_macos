@@ -35,7 +35,7 @@
 #include "../Textures/Packs/TexturePackRepository.h"
 #include "../Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.World/Util/ProgressListener.h"
-#include "PS3/PS3Extras/ShutdownManager.h"
+#include "../Platform/Common/ShutdownManager.h"
 #include "../Network/PlayerChunkMap.h"
 
 WeighedTreasureArray ServerLevel::RANDOM_BONUS_ITEMS;

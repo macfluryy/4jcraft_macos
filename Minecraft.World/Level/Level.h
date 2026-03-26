@@ -11,10 +11,6 @@
 #include "../Util/C4JThread.h"
 #include <cstdint>
 
-#ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"
-#endif
-
 // 4J Stu - This value should be big enough that we don't get any crashes causes
 // by memory overwrites, however it does seem way too large for what is actually
 // needed. Needs further investigation

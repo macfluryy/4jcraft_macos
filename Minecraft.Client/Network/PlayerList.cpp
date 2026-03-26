@@ -26,12 +26,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Util/JavaMath.h"
 #include "../../Minecraft.World/Level/Storage/EntityIO.h"
-#ifdef _XBOX
-#include "../Platform/Xbox/Network/NetworkPlayerXbox.h"
-#elif defined(__PS3__) || defined(__ORBIS__)
-#include "../Platform/Common/Network/Sony/NetworkPlayerSony.h"
-#endif
-
 // 4J - this class is fairly substantially altered as there didn't seem any
 // point in porting code for banning, whitelisting, ops etc.
 

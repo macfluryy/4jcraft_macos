@@ -5,7 +5,7 @@
 
 #ifdef __PSVITA__
 // AP - this is used to perform fast 64bit divides of known values
-#include "../../../Minecraft.Client/Platform/PSVita/PSVitaExtras/libdivide.h"
+#include "../../Util/libdivide.h"
 
 libdivide::divider<long long> fast_d2(2);
 libdivide::divider<long long> fast_d3(3);

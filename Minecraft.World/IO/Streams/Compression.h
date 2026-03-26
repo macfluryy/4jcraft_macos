@@ -1,10 +1,6 @@
 #pragma once
 #include "../Files/FileHeader.h"
 
-#ifdef _XBOX_ONE
-#include "../../../Minecraft.Client/Platform/Durango/DurangoExtras/xcompress.h"
-#endif
-
 class Compression {
 public:
     // Enum maps directly some external tools

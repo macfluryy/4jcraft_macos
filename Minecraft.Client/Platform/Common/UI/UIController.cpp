@@ -31,18 +31,7 @@
 #define PM_ORIGIN_X 24
 #define PM_ORIGIN_Y 34
 
-#ifdef __ORBIS__
-#include "../../Minecraft.Client/Platform/Orbis/Iggy/include/iggyperfmon.h"
-#include "../../Minecraft.Client/Platform/Orbis/Iggy/include/iggyperfmon_orbis.h"
-#elif defined _DURANGO
-#include "../../Minecraft.Client/Platform/Durango/Iggy/include/iggyperfmon.h"
-#elif defined __PS3__
-#include "../../Minecraft.Client/Platform/PS3/Iggy/include/iggyperfmon.h"
-#include "../../Minecraft.Client/Platform/PS3/Iggy/include/iggyperfmon_ps3.h"
-#elif defined __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/Iggy/include/iggyperfmon.h"
-#include "../../Minecraft.Client/Platform/PSVita/Iggy/include/iggyperfmon_psp2.h"
-#elif defined __WINDOWS64
+#if defined __WINDOWS64
 #include "../../Minecraft.Client/Platform/Windows64/Iggy/include/iggyperfmon.h"
 #endif
 

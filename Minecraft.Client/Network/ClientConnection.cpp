@@ -46,13 +46,8 @@
 #include "../ClientConstants.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "../Textures/Packs/TexturePackRepository.h"
-#ifdef _XBOX
-#include "../Platform/Common/XUI/XUI_Scene_Trading.h"
-#else
+#ifndef _XBOX
 #include "../Platform/Common/UI/UI.h"
-#endif
-#ifdef __PS3__
-#include "../Platform/PS3/Network/SonyVoiceChat.h"
 #endif
 #include "../Textures/Packs/DLCTexturePack.h"
 

@@ -19,10 +19,6 @@
 #include "../Entities/ItemEntity.h"
 #include "../Entities/Mobs/Minecart.h"
 
-#ifdef __PS3__
-#include "../../Minecraft.Client/Platform/PS3/PS3Extras/C4JSpursJob.h"
-#endif  //__PS3__
-
 #ifdef SHARING_ENABLED
 CRITICAL_SECTION LevelChunk::m_csSharing;
 #endif

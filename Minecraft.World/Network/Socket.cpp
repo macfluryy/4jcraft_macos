@@ -5,7 +5,7 @@
 #include "../Util/ThreadName.h"
 #include "../../Minecraft.Client/Network/ServerConnection.h"
 #include <algorithm>
-#include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
+#include "../../Minecraft.Client/Platform/Common/ShutdownManager.h"
 
 // This current socket implementation is for the creation of a single local
 // link. 2 sockets can be created, one for either end of this local link, the

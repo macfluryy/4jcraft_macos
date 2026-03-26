@@ -11,12 +11,6 @@
 #undef Byte
 #endif
 
-#if defined __PSVITA__
-#include "../../../Minecraft.Client/Platform/PSVita/PSVitaExtras/zlib.h"
-#elif defined __PS3__
-#include "../../../Minecraft.Client/Platform/PS3/PS3Extras/EdgeZLib.h"
-#endif  //__PS3__
-
 thread_local Compression::ThreadStorage* Compression::m_tlsCompression = nullptr;
 Compression::ThreadStorage* Compression::m_tlsCompressionDefault = nullptr;
 

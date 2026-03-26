@@ -36,8 +36,6 @@ class ItemInHandRenderer;
 class LevelSettings;
 class ColourTable;
 class MultiPlayerGameMode;
-class PsPlusUpsellWrapper;
-
 #include "../Minecraft.World/IO/Files/File.h"
 #include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
 #include "../Minecraft.World/Util/C4JThread.h"
@@ -231,10 +229,6 @@ public:
 
 private:
     void checkGlError(const std::wstring& string);
-
-#ifdef __ORBIS__
-    PsPlusUpsellWrapper* m_pPsPlusUpsell;
-#endif
 
 public:
     void destroy();

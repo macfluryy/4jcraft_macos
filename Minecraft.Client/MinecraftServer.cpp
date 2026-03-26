@@ -41,10 +41,8 @@
 #include "../Minecraft.World/Level/Storage/SparseLightStorage.h"
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
 #include "../Minecraft.World/IO/Streams/Compression.h"
-#ifdef _XBOX
-#include "Platform/Common/XUI/XUI_DebugSetCamera.h"
-#endif
-#include "Platform/PS3/PS3Extras/ShutdownManager.h"
+#include "Platform/Common/ShutdownManager.h"
+#include "Platform/Common/UI/UIStructs.h"
 #include "Network/ServerCommandDispatcher.h"
 #include "../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
 #include "Network/PlayerChunkMap.h"
@@ -1516,13 +1514,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                             ConsoleSchematicFile::XboxSchematicInitParam*
                                 initData = (ConsoleSchematicFile::
                                                 XboxSchematicInitParam*)param;
-#ifdef _XBOX
-                            File targetFileDir(File::pathRoot +
-                                               File::pathSeparator +
-                                               L"Schematics");
-#else
                             File targetFileDir(L"Schematics");
-#endif
                             if (!targetFileDir.exists()) targetFileDir.mkdir();
 
                             wchar_t filename[128];
@@ -1787,9 +1779,7 @@ void MinecraftServer::handleConsoleInputs() {
 }
 
 void MinecraftServer::main(int64_t seed, void* lpParameter) {
-#if __PS3__
     ShutdownManager::HasStarted(ShutdownManager::eServerThread);
-#endif
     server = new MinecraftServer();
     server->run(seed, lpParameter);
     delete server;

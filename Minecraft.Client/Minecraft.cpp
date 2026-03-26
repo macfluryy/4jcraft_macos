@@ -66,16 +66,9 @@
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
 #include "../Minecraft.World/Blocks/TileEntities/ChestTileEntity.h"
 #include "Textures/TextureManager.h"
-#ifdef _XBOX
-#include "Platform/Xbox/Network/NetworkPlayerXbox.h"
-#endif
 #include "Platform/Common/UI/IUIScene_CreativeMenu.h"
 #include "Platform/Common/UI/UIFontData.h"
 #include "Textures/Packs/DLCTexturePack.h"
-
-#ifdef __ORBIS__
-#include "Platform/Orbis/Network/PsPlusUpsellWrapper_Orbis.h"
-#endif
 
 // #define DISABLE_SPU_CODE
 // 4J Turning this on will change the graph at the bottom of the debug overlay
@@ -1006,22 +999,6 @@ bool Minecraft::addLocalPlayer(int idx) {
 
         updatePlayerViewportAssignments();
 
-#ifdef _XBOX
-        // tell the xui scenes a splitscreen player joined
-        XUIMessage xuiMsg;
-        CustomMessage_Splitscreenplayer_Struct myMsgData;
-        CustomMessage_Splitscreenplayer(&xuiMsg, &myMsgData, true);
-
-        // send the message
-        for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-            // if((i!=idx) && (localplayers[i]!=NULL))
-            {
-                XuiBroadcastMessage(CXuiSceneBase::GetPlayerBaseScene(i),
-                                    &xuiMsg);
-            }
-        }
-#endif
-
         ConnectionProgressParams* param = new ConnectionProgressParams();
         param->iPad = idx;
         param->stringId = IDS_PROGRESS_CONNECTING;
@@ -1398,16 +1375,9 @@ void Minecraft::run_middle() {
                         // 4J-PB - check if the level is in the banned level
                         // list get the unique save name and xuid from whoever
                         // is the host
-#if defined _XBOX || defined _XBOX_ONE
                         INetworkPlayer* pHostPlayer =
                             g_NetworkManager.GetHostPlayer();
-
-#ifdef _XBOX
-                        PlayerUID xuid =
-                            ((NetworkPlayerXbox*)pHostPlayer)->GetUID();
-#else
                         PlayerUID xuid = pHostPlayer->GetUID();
-#endif
 
                         if (app.IsInBannedLevelList(i, xuid,
                                                     app.GetUniqueMapName())) {
@@ -1420,7 +1390,6 @@ void Minecraft::run_middle() {
                             app.SetAction(i, eAppAction_LevelInBanLevelList,
                                           (void*)TRUE);
                         }
-#endif
                     }
                 }
             }
@@ -1459,27 +1428,7 @@ void Minecraft::run_middle() {
             // button press and release will be missed
 
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-#ifdef __ORBIS__
-                if (m_pPsPlusUpsell != NULL && m_pPsPlusUpsell->hasResponse() &&
-                    m_pPsPlusUpsell->m_userIndex == i) {
-                    delete m_pPsPlusUpsell;
-                    m_pPsPlusUpsell = NULL;
-
-                    if (ProfileManager.HasPlayStationPlus(i)) {
-                        app.DebugPrintf(
-                            "<Minecraft.cpp> Player_%i is now authorised for "
-                            "PsPlus.\n",
-                            i);
-                        if (!ui.PressStartPlaying(i)) ui.ShowPressStart(i);
-                    } else {
-                        unsigned int uiIDA[1] = {IDS_OK};
-                        ui.RequestMessageBox(
-                            IDS_CANTJOIN_TITLE, IDS_NO_PLAYSTATIONPLUS, uiIDA,
-                            1, i, NULL, NULL, app.GetStringTable());
-                    }
-                } else
-#endif
-                    if (localplayers[i]) {
+                if (localplayers[i]) {
                     // 4J-PB - add these to check for coming out of idle
                     if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_JUMP))
                         localplayers[i]->ullButtonsPressed |=
@@ -1633,39 +1582,14 @@ void Minecraft::run_middle() {
                                    g_NetworkManager.SessionHasSpace() &&
                                    RenderManager.IsHiDef() &&
                                    InputManager.ButtonPressed(i);
-#ifdef __ORBIS__
-                    // Check for remote play
-                    tryJoin =
-                        tryJoin && InputManager.IsLocalMultiplayerAvailable();
-
-                    // 4J Stu - Check that content restriction information has
-                    // been received
-                    if (!g_NetworkManager.IsLocalGame()) {
-                        tryJoin = tryJoin &&
-                                  ProfileManager.GetChatAndContentRestrictions(
-                                      i, true, NULL, NULL, NULL);
-                    }
-#endif
                     if (tryJoin) {
                         if (!ui.PressStartPlaying(i)) {
-#ifdef __ORBIS__
-                            // Don't let player start joining until their PS
-                            // Plus check has finished
-                            if (g_NetworkManager.IsLocalGame() ||
-                                !ProfileManager.RequestingPlaystationPlus(i))
-#endif
-                            {
-                                ui.ShowPressStart(i);
-                            }
+                            ui.ShowPressStart(i);
                         } else {
                             // did we just get input from a player who doesn't
                             // exist? They'll be wanting to join the game then
-#ifdef __ORBIS__
-                            if (InputManager.ButtonPressed(i, ACTION_MENU_A))
-#else
                             if (InputManager.ButtonPressed(
                                     i, MINECRAFT_ACTION_PAUSEMENU))
-#endif
                             {
                                 // Let them join
 
@@ -1677,30 +1601,7 @@ void Minecraft::run_middle() {
                                         (ProfileManager.IsSignedInLive(i) &&
                                          ProfileManager
                                              .AllowedToPlayMultiplayer(i))) {
-#ifdef __ORBIS__
-                                        bool contentRestricted = false;
-                                        ProfileManager
-                                            .GetChatAndContentRestrictions(
-                                                i, false, NULL,
-                                                &contentRestricted,
-                                                NULL);  // TODO!
-
-                                        if (!g_NetworkManager.IsLocalGame() &&
-                                            contentRestricted) {
-                                            ui.RequestContentRestrictedMessageBox(
-                                                IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                                                IDS_CONTENT_RESTRICTION, i);
-                                        } else if (!g_NetworkManager
-                                                        .IsLocalGame() &&
-                                                   !ProfileManager
-                                                        .HasPlayStationPlus(
-                                                            i)) {
-                                            m_pPsPlusUpsell =
-                                                new PsPlusUpsellWrapper(i);
-                                            m_pPsPlusUpsell->displayUpsell();
-                                        } else
-#endif
-                                            if (level->isClientSide) {
+                                        if (level->isClientSide) {
                                             bool success = addLocalPlayer(i);
 
                                             if (!success) {
@@ -1716,24 +1617,6 @@ void Minecraft::run_middle() {
                                                         InGame_SignInReturned,
                                                     this, i);
                                             } else {
-#ifdef __ORBIS__
-                                                if (g_NetworkManager
-                                                        .IsLocalGame() ==
-                                                    false) {
-                                                    bool chatRestricted = false;
-                                                    ProfileManager
-                                                        .GetChatAndContentRestrictions(
-                                                            i, false,
-                                                            &chatRestricted,
-                                                            NULL, NULL);
-                                                    if (chatRestricted) {
-                                                        ProfileManager
-                                                            .DisplaySystemMessage(
-                                                                SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION,
-                                                                i);
-                                                    }
-                                                }
-#endif
                                             }
                                         } else {
                                             // create the localplayer
@@ -1773,44 +1656,7 @@ void Minecraft::run_middle() {
                                             // &Minecraft::InGame_SignInReturned,
                                             // this,i);
 
-#ifndef _XBOX
                                             ui.HidePressStart();
-#endif
-
-#ifdef __ORBIS__
-                                            int npAvailability =
-                                                ProfileManager
-                                                    .getNPAvailability(i);
-
-                                            // Check if PSN is unavailable
-                                            // because of age restriction
-                                            if (npAvailability ==
-                                                SCE_NP_ERROR_AGE_RESTRICTION) {
-                                                UINT uiIDA[1];
-                                                uiIDA[0] = IDS_OK;
-                                                ui.RequestErrorMessage(
-                                                    IDS_ONLINE_SERVICE_TITLE,
-                                                    IDS_CONTENT_RESTRICTION,
-                                                    uiIDA, 1, i);
-                                            } else if (ProfileManager
-                                                           .IsSignedIn(i) &&
-                                                       !ProfileManager
-                                                            .IsSignedInLive(
-                                                                i)) {
-                                                // You're not signed in to PSN!
-                                                UINT uiIDA[2];
-                                                uiIDA[0] =
-                                                    IDS_PRO_NOTONLINE_ACCEPT;
-                                                uiIDA[1] = IDS_CANCEL;
-                                                ui.RequestAlertMessage(
-                                                    IDS_PRO_NOTONLINE_TITLE,
-                                                    IDS_PRO_NOTONLINE_TEXT,
-                                                    uiIDA, 2, i,
-                                                    &Minecraft::
-                                                        MustSignInReturnedPSN,
-                                                    this);
-                                            } else
-#endif
                                             {
                                                 UINT uiIDA[1];
                                                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -2039,13 +1885,6 @@ void Minecraft::run_middle() {
                         PIXEndNamedEvent();
 
                         if (i == iPrimaryPad) {
-#ifdef __ORBIS__
-                            // PS4 does much of the screen-capturing for every
-                            // frame, to simplify the synchronisation when we
-                            // actually want a capture. This call tells it the
-                            // point in the frame to do it.
-                            RenderManager.InternalScreenCapture();
-#endif
                             // check to see if we need to capture a screenshot
                             // for the save game thumbnail
                             switch (app.GetXuiAction(i)) {
@@ -2092,16 +1931,6 @@ void Minecraft::run_middle() {
                 setLocalPlayerIdx(iPrimaryPad);
                 RenderManager.StateSetViewport(
                     C4JRender::VIEWPORT_TYPE_FULLSCREEN);
-
-#ifdef _XBOX
-                // Do we need to capture a screenshot for a social post?
-                for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-                    if (app.GetXuiAction(i) ==
-                        eAppAction_SocialPostScreenshot) {
-                        app.CaptureScreenshot(i);
-                    }
-                }
-#endif
             }
             glFlush();
 
@@ -5267,23 +5096,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
             else if (g_NetworkManager.IsLocalGame() ||
                      (ProfileManager.IsSignedInLive(iPad) &&
                       ProfileManager.AllowedToPlayMultiplayer(iPad))) {
-#ifdef __ORBIS__
-                bool contentRestricted = false;
-                ProfileManager.GetChatAndContentRestrictions(
-                    iPad, false, NULL, &contentRestricted, NULL);  // TODO!
-
-                if (!g_NetworkManager.IsLocalGame() && contentRestricted) {
-                    ui.RequestContentRestrictedMessageBox(
-                        IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                        IDS_CONTENT_RESTRICTION, iPad);
-                } else if (!g_NetworkManager.IsLocalGame() &&
-                           !ProfileManager.HasPlayStationPlus(iPad)) {
-                    pMinecraftClass->m_pPsPlusUpsell =
-                        new PsPlusUpsellWrapper(iPad);
-                    pMinecraftClass->m_pPsPlusUpsell->displayUpsell();
-                } else
-#endif
-                    if (pMinecraftClass->level->isClientSide) {
+                if (pMinecraftClass->level->isClientSide) {
                     pMinecraftClass->addLocalPlayer(iPad);
                 } else {
                     // create the local player for the iPad

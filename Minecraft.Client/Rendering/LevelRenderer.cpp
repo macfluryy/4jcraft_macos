@@ -64,10 +64,6 @@
 // #define DISABLE_SPU_CODE
 
 #ifdef __PS3__
-#include "../Platform/PS3/SPU_Tasks/LevelRenderer_cull/LevelRenderer_cull.h"
-#include "../Platform/PS3/SPU_Tasks/LevelRenderer_FindNearestChunk/LevelRenderer_FindNearestChunk.h"
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
-
 static LevelRenderer_cull_DataIn g_cullDataIn[4]
     __attribute__((__aligned__(16)));
 static LevelRenderer_FindNearestChunk_DataIn g_findNearestChunkDataIn

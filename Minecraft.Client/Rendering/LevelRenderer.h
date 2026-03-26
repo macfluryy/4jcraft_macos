@@ -7,9 +7,6 @@
 #ifndef __linux__
 #include <xmcore.h>
 #endif  // __linux__
-#ifdef __PS3__
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
-#endif
 class MultiPlayerLevel;
 class Textures;
 class Chunk;

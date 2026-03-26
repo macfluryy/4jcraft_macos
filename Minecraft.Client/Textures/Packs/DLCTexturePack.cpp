@@ -16,8 +16,8 @@
 #include <limits>
 
 #if defined _XBOX || defined _WINDOWS64
-#include "../../Platform/Xbox/XML/ATGXmlParser.h"
-#include "../../Platform/Xbox/XML/xmlFilesCallback.h"
+#include "../../Platform/Common/XML/ATGXmlParser.h"
+#include "../../Platform/Common/XML/xmlFilesCallback.h"
 #endif
 
 namespace {

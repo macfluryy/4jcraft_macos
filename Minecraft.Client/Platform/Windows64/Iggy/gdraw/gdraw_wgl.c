@@ -4,8 +4,8 @@
 
 #define GDRAW_ASSERTS
 
-#include "../../../Durango/Iggy/include/iggy.h"
-#include "../../../Durango/Iggy/include/gdraw.h"
+#include "../include/iggy.h"
+#include "../include/gdraw.h"
 #include "gdraw_wgl.h"
 #include <windows.h>
 #include <gl/gl.h>
@@ -199,4 +199,3 @@ GDrawFunctions *gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples)
 
    return funcs;
 }
-

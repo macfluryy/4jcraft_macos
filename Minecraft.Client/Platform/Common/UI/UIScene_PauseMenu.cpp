@@ -11,14 +11,6 @@
 #include <error_dialog.h>
 #endif
 
-#ifdef _DURANGO
-#include "../../Minecraft.Client/Platform/Durango/Leaderboards/DurangoStatsDebugger.h"
-#endif
-
-#ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/Network/SonyCommerce_Vita.h"
-#endif
-
 #if defined __PS3__ || defined __ORBIS__
 #define USE_SONY_REMOTE_STORAGE
 #endif

@@ -36,8 +36,6 @@
 #include "../../../Minecraft.World/IO/Streams/Compression.h"
 #include "../../../Minecraft.World/Level/Storage/OldChunkStorage.h"
 
-#include "Xbox/resource.h"
-
 HINSTANCE hMyInst;
 LRESULT CALLBACK DlgProc(HWND hWndDlg, UINT Msg, WPARAM wParam, LPARAM lParam);
 char chGlobalText[256];

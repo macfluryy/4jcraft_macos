@@ -1,8 +1,8 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Network/Socket.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
+#include "NetworkPlayerQNet.h"
 #include "PlatformNetworkManagerStub.h"
-#include "../../Minecraft.Client/Platform/Xbox/Network/NetworkPlayerXbox.h"  // TODO - stub version of this?
 
 CPlatformNetworkManagerStub* g_pPlatformNetworkManager;
 
@@ -16,8 +16,8 @@ void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     bool createFakeSocket = false;
     bool localPlayer = false;
 
-    NetworkPlayerXbox* networkPlayer =
-        (NetworkPlayerXbox*)addNetworkPlayer(pQNetPlayer);
+    NetworkPlayerQNet* networkPlayer =
+        (NetworkPlayerQNet*)addNetworkPlayer(pQNetPlayer);
 
     if (pQNetPlayer->IsLocal()) {
         localPlayer = true;
@@ -441,7 +441,7 @@ std::wstring CPlatformNetworkManagerStub::GatherRTTStats() {
 
     for (unsigned int i = 0; i < GetPlayerCount(); ++i) {
         IQNetPlayer* pQNetPlayer =
-            ((NetworkPlayerXbox*)GetPlayerByIndex(i))->GetQNetPlayer();
+            ((NetworkPlayerQNet*)GetPlayerByIndex(i))->GetQNetPlayer();
 
         if (!pQNetPlayer->IsLocal()) {
             ZeroMemory(stat, 32 * sizeof(WCHAR));
@@ -503,7 +503,7 @@ void CPlatformNetworkManagerStub::ForceFriendsSessionRefresh() {
 
 INetworkPlayer* CPlatformNetworkManagerStub::addNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
-    NetworkPlayerXbox* pNetworkPlayer = new NetworkPlayerXbox(pQNetPlayer);
+    NetworkPlayerQNet* pNetworkPlayer = new NetworkPlayerQNet(pQNetPlayer);
     pQNetPlayer->SetCustomDataValue((ULONG_PTR)pNetworkPlayer);
     currentNetworkPlayers.push_back(pNetworkPlayer);
     return pNetworkPlayer;

@@ -13,13 +13,12 @@
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 
 #ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/Network/SQRNetworkManager_AdHoc_Vita.h"
 #endif
 
 #ifdef _WINDOWS64
 
 #include <windows.h>
-#include "../../Minecraft.Client/Platform/Xbox/Resource.h"
+#include "../../Minecraft.Client/Platform/Windows64/Resource.h"
 #endif
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0

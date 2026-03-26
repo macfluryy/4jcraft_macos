@@ -9,12 +9,6 @@
 #include "LevelRenderer.h"
 
 #ifdef __PS3__
-#include "../Platform/PS3/SPU_Tasks/ChunkUpdate/ChunkRebuildData.h"
-#include "../Platform/PS3/SPU_Tasks/ChunkUpdate/TileRenderer_SPU.h"
-#include "../Platform/PS3/SPU_Tasks/CompressedTile/CompressedTileStorage_SPU.h"
-
-#include "../Platform/PS3/PS3Extras/C4JThread_SPU.h"
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
 #endif
 
 int Chunk::updates = 0;

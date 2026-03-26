@@ -25,11 +25,11 @@
 #include "../Minecraft.World/Blocks/TileEntities/HopperTileEntity.h"
 #include "../Minecraft.Client/GameState/StatsCounter.h"
 #include "../Minecraft.Client/GameState/GameMode.h"
-#include "../Minecraft.Client/Platform/Xbox/Social/SocialManager.h"
+#include "../Minecraft.Client/Platform/Windows64/Social/SocialManager.h"
 #include "Tutorial/TutorialMode.h"
 #if defined _XBOX || defined _WINDOWS64
-#include "../Minecraft.Client/Platform/Xbox/XML/ATGXmlParser.h"
-#include "../Minecraft.Client/Platform/Xbox/XML/xmlFilesCallback.h"
+#include "../Minecraft.Client/Platform/Common/XML/ATGXmlParser.h"
+#include "../Minecraft.Client/Platform/Common/XML/xmlFilesCallback.h"
 #endif
 #include "Minecraft_Macros.h"
 #include "../Minecraft.Client/Network/PlayerList.h"
@@ -53,8 +53,7 @@
 #endif
 #include "../Minecraft.Client/Minecraft.h"
 #ifdef _XBOX
-#include "../Minecraft.Client/Platform/Xbox/GameConfig/Minecraft.spa.h"
-#include "../Minecraft.Client/Platform/Xbox/Network/NetworkPlayerXbox.h"
+#include "../Minecraft.Client/Platform/Windows64/GameConfig/Minecraft.spa.h"
 #include "XUI/XUI_TextEntry.h"
 #include "XUI/XUI_XZP_Icons.h"
 #include "XUI/XUI_PauseMenu.h"
@@ -4176,7 +4175,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         // write the level to the banned level list, and exit
                         // the world
                         AddLevelToBannedLevelList(
-                            i, ((NetworkPlayerXbox*)pHost)->GetUID(),
+                            i, pHost->GetUID(),
                             GetUniqueMapName(), true);
 #elif defined _XBOX_ONE
                         INetworkPlayer* pHost =
@@ -4563,7 +4562,7 @@ int CMinecraftApp::BannedLevelDialogReturned(
         if (pHost != NULL) {
 #if defined _XBOX
             pApp->RemoveLevelFromBannedLevelList(
-                iPad, ((NetworkPlayerXbox*)pHost)->GetUID(),
+                iPad, pHost->GetUID(),
                 pApp->GetUniqueMapName());
 #else
             pApp->RemoveLevelFromBannedLevelList(iPad, pHost->GetUID(),

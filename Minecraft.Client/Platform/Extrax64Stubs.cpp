@@ -4,27 +4,18 @@
 #endif // __PS3__
 
 #ifdef __PS3__
-#include "../Platform/PS3/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
-#include "../Platform/PS3/Social/SocialManager.h"
 #include <libsn.h>
 #include <libsntuner.h>
 #elif defined _DURANGO
-#include "../Platform/Durango/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
-#include "../Platform/Durango/Social/SocialManager.h"
-#include "../Platform/Durango/Sentient/DynamicConfigurations.h"
-#include "../Platform/Durango/DurangoExtras/xcompress.h"
 #elif defined _WINDOWS64
 #include "../Platform/Windows64/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
 #include "../Platform/Windows64/Social/SocialManager.h"
 #include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
 #elif defined __PSVITA__
-#include "../Platform/PSVita/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
-#include "../Platform/PSVita/Social/SocialManager.h"
-#include "../Platform/PSVita/Sentient/DynamicConfigurations.h"
 #include <libperf.h>
 #elif defined __linux__
 // On Linux, stdafx.h already provides Orbis-compatible Sentient/Dynamic headers
@@ -33,10 +24,7 @@
 #include "../Platform/Linux/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
 #else
-#include "../Platform/Orbis/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
-#include "../Platform/Orbis/Social/SocialManager.h"
-#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
 #endif
 
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
