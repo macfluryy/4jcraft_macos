@@ -44,9 +44,6 @@ protected:
     // TODO: This should be pure virtual in this class
     virtual std::wstring getMoviePath();
 
-#if 0
-    virtual long long getDefaultGtcButtons() { return 0; }
-#endif
 
 public:
     // INPUT

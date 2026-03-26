@@ -5,7 +5,7 @@
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 int m_iWorldSizeTitleA[4] = {
     IDS_WORLD_SIZE_TITLE_CLASSIC,
     IDS_WORLD_SIZE_TITLE_SMALL,
@@ -26,7 +26,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 
     IggyDataValue result;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     IggyDataValue value[2];
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = m_params->bGenerateOptions ? 0 : 1;
@@ -145,7 +145,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
     m_labelRandomSeed.init(app.GetString(IDS_CREATE_NEW_WORLD_RANDOM_SEED));
     m_editSeed.init(m_params->seed, eControl_EditSeed);
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     m_labelWorldSize.init(app.GetString(IDS_WORLD_SIZE));
     m_sliderWorldSize.init(
         app.GetString(m_iWorldSizeTitleA[m_params->worldSize]),
@@ -179,7 +179,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
         m_params->bGenerateOptions ? TAB_WORLD_OPTIONS : TAB_GAME_OPTIONS;
 
     // set the default text
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     std::wstring wsText = L"";
     if (m_params->bGenerateOptions) {
         wsText = app.GetString(IDS_GAMEOPTION_SEED);
@@ -204,13 +204,6 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 
     addTimer(GAME_CREATE_ONLINE_TIMER_ID, GAME_CREATE_ONLINE_TIMER_TIME);
 
-#if 0
-    // initialise vita tab  controls with ids
-    m_TouchTabWorld.init(ETouchInput_TabWorld);
-    m_TouchTabGame.init(ETouchInput_TabGame);
-
-    ui.TouchBoxRebuild(this);
-#endif
 
     m_bIgnoreInput = false;
 }
@@ -279,14 +272,8 @@ void UIScene_LaunchMoreOptionsMenu::tick() {
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleDestroy() {
-#if 0
-    app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
-#endif
 
     // so shut down the keyboard if it is displayed
-#if (0 || 0 || 0)
-    InputManager.DestroyKeyboard();
-#endif
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
@@ -307,23 +294,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             // 4J-JEV: Inform user why their game must be offline.
-#if 0
-        {
-            UIControl_CheckBox* checkboxOnline =
-                &m_checkboxes[eLaunchCheckbox_Online];
-            if (pressed && controlHasFocus(checkboxOnline->getId()) &&
-                !checkboxOnline->IsEnabled()) {
-                unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
-                ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                       IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
-                                       iPad);
-            }
-        }
-#endif
 
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
@@ -351,39 +322,6 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
     }
 }
 
-#if 0
-void UIScene_LaunchMoreOptionsMenu::handleTouchInput(unsigned int iPad, S32 x,
-                                                     S32 y, int iId,
-                                                     bool bPressed,
-                                                     bool bRepeat,
-                                                     bool bReleased) {
-    if (bPressed) {
-        switch (iId) {
-            case ETouchInput_TabWorld:
-            case ETouchInput_TabGame:
-                // Toggle tab index
-                int iNewTabIndex = (iId == ETouchInput_TabWorld) ? 0 : 1;
-                if (m_tabIndex != iNewTabIndex) {
-                    m_tabIndex = iNewTabIndex;
-                    updateTooltips();
-                    IggyDataValue result;
-                    IggyResult out = IggyPlayerCallMethodRS(
-                        getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                        m_funcChangeTab, 0, NULL);
-                }
-                ui.TouchBoxRebuild(this);
-                break;
-        }
-    }
-}
-
-UIControl* UIScene_LaunchMoreOptionsMenu::GetMainPanel() {
-    if (m_tabIndex == 0)
-        return &m_worldOptions;
-    else
-        return &m_gameOptions;
-}
-#endif
 
 void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId,
                                                           bool selected) {
@@ -429,7 +367,7 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId,
         case eLaunchCheckbox_BonusChest:
             m_params->bBonusChest = selected;
             break;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         case eLaunchCheckbox_DisableSaving:
             m_params->bDisableSaving = selected;
             break;
@@ -526,7 +464,7 @@ void UIScene_LaunchMoreOptionsMenu::handleFocusChange(F64 controlId,
         case eControl_EditSeed:
             stringId = IDS_GAMEOPTION_SEED;
             break;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         case eControl_WorldSize:
             stringId = IDS_GAMEOPTION_WORLD_SIZE;
             break;
@@ -592,14 +530,8 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
     pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-#if 0
-        // CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
-        uint16_t pchText[2048];
-        ZeroMemory(pchText, 2048 * sizeof(uint16_t));
-#else
         uint16_t pchText[128];
         ZeroMemory(pchText, 128 * sizeof(uint16_t));
-#endif
         InputManager.GetText(pchText);
         pClass->m_editSeed.setLabel((wchar_t*)pchText);
         pClass->m_params->seed = (wchar_t*)pchText;
@@ -613,37 +545,11 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_EditSeed: {
             m_bIgnoreInput = true;
-#if 0
-            int language = XGetLanguage();
-            switch (language) {
-                case XC_LANGUAGE_JAPANESE:
-                case XC_LANGUAGE_KOREAN:
-                case XC_LANGUAGE_TCHINESE:
-                    InputManager.RequestKeyboard(
-                        app.GetString(IDS_CREATE_NEW_WORLD_SEED),
-                        m_editSeed.getLabel(), 0, 60,
-                        &UIScene_LaunchMoreOptionsMenu::
-                            KeyboardCompleteSeedCallback,
-                        this, C_4JInput::EKeyboardMode_Default);
-                    break;
-                default:
-                    // 4J Stu - Use a different keyboard for non-asian languages
-                    // so we don't have prediction on
-                    InputManager.RequestKeyboard(
-                        app.GetString(IDS_CREATE_NEW_WORLD_SEED),
-                        m_editSeed.getLabel(), 0, 60,
-                        &UIScene_LaunchMoreOptionsMenu::
-                            KeyboardCompleteSeedCallback,
-                        this, C_4JInput::EKeyboardMode_Alphabet_Extended);
-                    break;
-            }
-#else
             InputManager.RequestKeyboard(
                 app.GetString(IDS_CREATE_NEW_WORLD_SEED), m_editSeed.getLabel(),
                 0, 60,
                 &UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,
                 this, C_4JInput::EKeyboardMode_Default);
-#endif
         } break;
     }
 }
@@ -653,7 +559,7 @@ void UIScene_LaunchMoreOptionsMenu::handleSliderMove(F64 sliderId,
     int value = (int)currentValue;
     switch ((int)sliderId) {
         case eControl_WorldSize:
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             m_sliderWorldSize.handleSliderMove(value);
             m_params->worldSize = value;
             m_sliderWorldSize.setLabel(
@@ -661,7 +567,7 @@ void UIScene_LaunchMoreOptionsMenu::handleSliderMove(F64 sliderId,
 #endif
             break;
         case eControl_WorldResize:
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             EGameHostOptionWorldSize changedSize =
                 EGameHostOptionWorldSize(value + 1);
             if (changedSize >= m_params->currentWorldSize) {

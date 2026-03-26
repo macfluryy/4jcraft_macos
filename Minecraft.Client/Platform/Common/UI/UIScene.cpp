@@ -117,7 +117,6 @@ F64 UIScene::getSafeZoneHalfHeight() {
 
     float safeHeight = 0.0f;
 
-#if 1
     if (!RenderManager.IsHiDef() && RenderManager.IsWidescreen()) {
         // 90% safezone
         safeHeight = height * (0.15f / 2);
@@ -125,7 +124,6 @@ F64 UIScene::getSafeZoneHalfHeight() {
         // 90% safezone
         safeHeight = height * (0.1f / 2);
     }
-#endif
     return safeHeight;
 }
 
@@ -133,7 +131,6 @@ F64 UIScene::getSafeZoneHalfWidth() {
     float width = ui.getScreenWidth();
 
     float safeWidth = 0.0f;
-#if 1
     if (!RenderManager.IsHiDef() && RenderManager.IsWidescreen()) {
         // 85% safezone
         safeWidth = width * (0.15f / 2);
@@ -141,7 +138,6 @@ F64 UIScene::getSafeZoneHalfWidth() {
         // 90% safezone
         safeWidth = width * (0.1f / 2);
     }
-#endif
     return safeWidth;
 }
 
@@ -223,23 +219,6 @@ void UIScene::initialiseMovie() {
     m_bUpdateOpacity = true;
 }
 
-#if 0
-void UIScene::SetFocusToElement(int iID) {
-    IggyDataValue result;
-    IggyDataValue value[1];
-
-    value[0].type = IGGY_DATATYPE_number;
-    value[0].number = iID;
-
-    IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
-                                            IggyPlayerRootPath(getMovie()),
-                                            m_funcSetFocus, 1, value);
-
-    // also trigger handle focus change (just in case if anything else in
-    // relation needs updating!)
-    _handleFocusChange(iID, 0);
-}
-#endif
 
 bool UIScene::mapElementsAndNames() {
     m_rootPath = IggyPlayerRootPath(swf);
@@ -262,18 +241,7 @@ void UIScene::loadMovie() {
                                           // were being reloaded
     std::wstring moviePath = getMoviePath();
 
-#if 0
-    if (RenderManager.IsWidescreen()) {
-        moviePath.append(L"720.swf");
-        m_loadedResolution = eSceneResolution_720;
-    } else {
-        moviePath.append(L"480.swf");
-        m_loadedResolution = eSceneResolution_480;
-    }
-#elif 0
-    moviePath.append(L"Vita.swf");
-    m_loadedResolution = eSceneResolution_Vita;
-#elif defined _WINDOWS64
+#if defined(_WINDOWS64)
     if (ui.getScreenHeight() == 720) {
         moviePath.append(L"720.swf");
         m_loadedResolution = eSceneResolution_720;
@@ -304,7 +272,7 @@ void UIScene::loadMovie() {
         if (!app.hasArchiveFile(moviePath)) {
             app.DebugPrintf("ERROR: Could not find any iggy movie for %ls!\n",
                             moviePath.c_str());
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             app.FatalLoadError();
@@ -320,7 +288,7 @@ void UIScene::loadMovie() {
 
     if (!swf) {
         app.DebugPrintf("ERROR: Failed to load iggy scene!\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
         app.FatalLoadError();
@@ -340,31 +308,6 @@ void UIScene::loadMovie() {
     IggyPlayerSetUserdata(swf, this);
 
 // #ifdef _DEBUG
-#if 0
-	IggyMemoryUseInfo memoryInfo;
-	rrbool res;
-	int iteration = 0;
-	int64_t totalStatic = 0;
-	int64_t totalDynamic = 0;
-	while(res = IggyDebugGetMemoryUseInfo ( swf ,
-		NULL ,
-		0 ,
-		0 ,
-		iteration ,
-		&memoryInfo ))
-	{
-		totalStatic += memoryInfo.static_allocation_bytes;
-		totalDynamic += memoryInfo.dynamic_allocation_bytes;
-		app.DebugPrintf(app.USER_SR, "%ls - %.*s static: %d ( %d ) dynamic: %d ( %d )\n", moviePath.c_str(), memoryInfo.subcategory_stringlen, memoryInfo.subcategory, 
-			memoryInfo.static_allocation_bytes, memoryInfo.static_allocation_count, memoryInfo.dynamic_allocation_bytes, memoryInfo.dynamic_allocation_count);
-		++iteration;
-		//if(memoryInfo.static_allocation_bytes > 0) getDebugMemoryUseRecursive(moviePath, memoryInfo);
-
-	}
-
-	app.DebugPrintf(app.USER_SR, "%ls - Total: %d, Expected: %d, Diff: %d\n", moviePath.c_str(), totalStatic + totalDynamic, afterTick - beforeLoad, (afterTick - beforeLoad) - (totalStatic + totalDynamic));
-
-#endif
     LeaveCriticalSection(&UIController::ms_reloadSkinCS);
 }
 
@@ -498,15 +441,6 @@ void UIScene::removeControl(UIControl_Base* control, bool centreScene) {
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcRemoveObject, 2, value);
 
-#if 0
-    // update the button positions since they may have changed
-    UpdateSceneControls();
-
-    // mark the button as removed
-    control->setHidden(true);
-    // remove it from the touchboxes
-    ui.TouchBoxRebuild(control->getParentScene());
-#endif
 }
 
 void UIScene::slideLeft() {
@@ -592,18 +526,9 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                 int list = m_parentLayer->m_parentGroup->getCommandBufferList();
 
                 bool useCommandBuffers = false;
-#if 0
-                useCommandBuffers = true;
-
-                // 4J Stu - Temporary until we fix the glint animation which
-                // needs updated if we are just replaying a command buffer
-                m_needsCacheRendered = true;
-#endif
 
                 if (!useCommandBuffers || m_needsCacheRendered) {
-#if (!0) && (!0)
                     if (useCommandBuffers) RenderManager.CBuffStart(list, true);
-#endif
                     PIXBeginNamedEvent(0, "Draw uncached");
                     ui.setupCustomDrawMatrices(this, customDrawRegion);
                     _customDrawSlotControl(customDrawRegion, iPad, item, fAlpha,
@@ -627,15 +552,11 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                         delete drawData;
                     }
                     PIXEndNamedEvent();
-#if 1
                     if (useCommandBuffers) RenderManager.CBuffEnd();
-#endif
                 }
                 m_cachedSlotDraw.clear();
 
-#if 1
                 if (useCommandBuffers) RenderManager.CBuffCall(list);
-#endif
 
                 // Finish GDraw and anything else that needs to be finalised
                 ui.endCustomDraw(region);
@@ -790,17 +711,12 @@ void UIScene::navigateBack() {
     if (m_parentLayer == NULL) {
 //		app.DebugPrintf("A scene is trying to navigate back, but it's
 // parent layer is NULL!\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 //		__debugbreak();
 #endif
     } else {
         //		m_parentLayer->removeScene(this);
 
-#if 0
-        if (ui.GetTopScene(0))
-            InputManager.SetEnabledGtcButtons(
-                ui.GetTopScene(0)->getDefaultGtcButtons());
-#endif
     }
 }
 
@@ -860,9 +776,6 @@ void UIScene::loseFocus() {
 }
 
 void UIScene::handleGainFocus(bool navBack) {
-#if 0
-    InputManager.SetEnabledGtcButtons(this->getDefaultGtcButtons());
-#endif
 }
 
 void UIScene::updateTooltips() {
@@ -894,9 +807,6 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
     // TODO: This action to key mapping should probably use the control mapping
     int keycode = -1;
     switch (action) {
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_A:
             keycode = IGGY_KEYCODE_ENTER;
             break;
@@ -931,11 +841,6 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
             keycode = IGGY_KEYCODE_PAGE_UP;
             break;
         case ACTION_MENU_PAGEDOWN:
-#if 0
-            if (!InputManager.IsVitaTV()) {
-                keycode = IGGY_KEYCODE_F6;
-            } else
-#endif
             {
                 keycode = IGGY_KEYCODE_PAGE_DOWN;
             }
@@ -989,7 +894,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handlePress did not have the correct number of "
                 "arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -998,7 +903,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             call->arguments[1].type != IGGY_DATATYPE_number) {
             app.DebugPrintf(
                 "Arguments for handlePress were not of the correct type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1010,7 +915,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleFocusChange did not have the correct "
                 "number of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1020,7 +925,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Arguments for handleFocusChange were not of the correct "
                 "type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1033,7 +938,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleInitFocus did not have the correct number "
                 "of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1042,7 +947,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             call->arguments[1].type != IGGY_DATATYPE_number) {
             app.DebugPrintf(
                 "Arguments for handleInitFocus were not of the correct type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1055,7 +960,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleCheckboxToggled did not have the correct "
                 "number of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1065,7 +970,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Arguments for handleCheckboxToggled were not of the correct "
                 "type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1078,7 +983,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleSliderMove did not have the correct number "
                 "of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1088,7 +993,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Arguments for handleSliderMove were not of the correct "
                 "type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1101,7 +1006,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleAnimationEnd did not have the correct "
                 "number of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1114,7 +1019,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Callback for handleSelectionChanged did not have the correct "
                 "number of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1123,7 +1028,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
             app.DebugPrintf(
                 "Arguments for handleSelectionChanged were not of the correct "
                 "type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             __debugbreak();
 #endif
             return;
@@ -1139,7 +1044,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
                 app.DebugPrintf(
                     "Callback for handleRequestMoreData did not have the "
                     "correct number of arguments\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                 __debugbreak();
 #endif
                 return;
@@ -1149,7 +1054,7 @@ void UIScene::externalCallback(IggyExternalFunctionCallUTF16* call) {
                 app.DebugPrintf(
                     "Arguments for handleRequestMoreData were not of the "
                     "correct type\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                 __debugbreak();
 #endif
                 return;
@@ -1213,15 +1118,6 @@ int UIScene::getControlFocus() { return m_iFocusControl; }
 void UIScene::setBackScene(UIScene* scene) { m_backScene = scene; }
 
 UIScene* UIScene::getBackScene() { return m_backScene; }
-#if 0
-void UIScene::UpdateSceneControls() {
-    AUTO_VAR(itEnd, GetControls()->end());
-    for (AUTO_VAR(it, GetControls()->begin()); it != itEnd; it++) {
-        UIControl* control = (UIControl*)*it;
-        control->UpdateControl();
-    }
-}
-#endif
 
 void UIScene::HandleMessage(EUIMessage message, void* data) {}
 

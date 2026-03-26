@@ -73,7 +73,6 @@ bool LeaderboardManager::ReadStats_TopRank(LeaderboardReadListener *listener, in
 	return true;
 }
 
-#if 1
 void LeaderboardManager::printStats(ReadView &view)
 {
 	app.DebugPrintf("[LeaderboardManager] Printing stats:\n"
@@ -103,4 +102,3 @@ bool DebugReadListener::OnStatsReadComplete(LeaderboardManager::eStatsReturn suc
 }
 
 DebugReadListener *DebugReadListener::m_instance = new DebugReadListener();
-#endif

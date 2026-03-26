@@ -10,10 +10,7 @@
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../DLC/DLCAudioFile.h"
 
-#if 0
-#include <audioout.h>
-#endif
-#ifdef __linux__
+#if defined(__linux__)
 #define STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 // Fixes strcasecmp in miniaudio
@@ -35,7 +32,7 @@ int strcasecmp(const char* a, const char* b) {
 #undef STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 #endif
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
 #include "../../Minecraft.Client/Platform/Windows64/Windows64_App.h"
 #include "../../Minecraft.Client/Platform/Windows64/Miles/include/imssapi.h"
 #endif
@@ -81,56 +78,21 @@ const char* SoundEngine::m_szStreamFileA[eStream_Max] = {"calm1",
                                                          "strad",
                                                          "ward",
                                                          "where_are_we_now"};
-#ifdef __linux__
+#if defined(__linux__)
 char SoundEngine::m_szSoundPath[] = {"Sound/"};
 char SoundEngine::m_szMusicPath[] = {"music/"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
 #endif
 
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
 char SoundEngine::m_szSoundPath[] = {"Durango\\Sound\\"};
 char SoundEngine::m_szMusicPath[] = {"music\\"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif 0
-char SoundEngine::m_szSoundPath[] = {"Sound\\"};
-char SoundEngine::m_szMusicPath[] = {"music\\"};
-char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif 0
-
-#ifdef _CONTENT_PACKAGE
-char SoundEngine::m_szSoundPath[] = {"Sound/"};
-#elif defined _ART_BUILD
-char SoundEngine::m_szSoundPath[] = {"Sound/"};
-#else
-// just use the host Durango folder for the sound. In the content package, we'll
-// have moved this in the .gp4 file
-char SoundEngine::m_szSoundPath[] = {"Durango/Sound/"};
-#endif
-char SoundEngine::m_szMusicPath[] = {"music/"};
-char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif 0
-char SoundEngine::m_szSoundPath[] = {"PSVita/Sound/"};
-char SoundEngine::m_szMusicPath[] = {"music/"};
-char SoundEngine::m_szRedistName[] = {"redist"};
-#elif 0
-// extern const char* getPS3HomePath();
-char SoundEngine::m_szSoundPath[] = {"PS3/Sound/"};
-char SoundEngine::m_szMusicPath[] = {"music/"};
-char SoundEngine::m_szRedistName[] = {"redist"};
-
-#define USE_SPURS
-
-#ifdef USE_SPURS
-#include <cell/spurs.h>
-#else
-#include <sys/spu_image.h>
-#endif
-
 #endif
 // END ASSETS
 
 // Linux specific functions
-#ifdef __linux__
+#if defined(__linux__)
 std::wstring stws(const char* utf8) {
     size_t len = std::mbstowcs(nullptr, utf8, 0);
     if (len == static_cast<size_t>(-1)) return L"";
@@ -438,7 +400,7 @@ void SoundEngine::playStreaming(const wstring& name, float x, float y, float z,
         m_iMusicDelay = random->nextInt(
             20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
 
-#ifdef _DEBUG
+#if defined(_DEBUG)
         m_iMusicDelay = 0;
 #endif
         Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -1044,21 +1006,13 @@ void SoundEngine::tick(shared_ptr<Mob>* players, float a) {
 #else
 void SoundEngine::init(Options* pOptions) {
     app.DebugPrintf("---SoundEngine::init\n");
-#ifdef __DISABLE_MILES__
+#if defined(__DISABLE_MILES__)
     return;
-#endif
-#if 0
-    C4JThread::PushAffinityAllCores();
-#endif
-#if 0 || 0 || 0 || \
-    0
-    Register_RIB(BinkADec);
 #endif
 
     char* redistpath;
 
-#if (defined _WINDOWS64 || \
-     0)  // || 0 || 0 )
+#if defined(_WINDOWS64)
     redistpath = AIL_set_redist_directory(m_szRedistName);
 #endif
 
@@ -1068,55 +1022,15 @@ void SoundEngine::init(Options* pOptions) {
     int iNumberOfChannels = initAudioHardware(8);
 
     // Create a driver to render our audio - 44khz, 16 bit,
-#if 0
-    //	On the Sony PS3, the driver is always opened in 48 kHz, 32-bit floating
-    // point. The only meaningful configurations are MSS_MC_STEREO,
-    // MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
-    m_hDriver = AIL_open_digital_driver(48000, 16, iNumberOfChannels,
-                                        AIL_OPEN_DIGITAL_USE_SPU0);
-#elif 0
-
-    // maximum of 16 samples
-    AIL_set_preference(DIG_MIXER_CHANNELS, 16);
-
-    m_hDriver = AIL_open_digital_driver(48000, 16, MSS_MC_STEREO, 0);
-
-    // AP - For some reason the submit thread defaults to a priority of zero
-    // (invalid). Make sure it has the highest priority to avoid audio breakup.
-    SceUID threadID;
-    AIL_platform_property(m_hDriver, PSP2_SUBMIT_THREAD, &threadID, 0, 0);
-    S32 g_DefaultCPU = sceKernelGetThreadCpuAffinityMask(threadID);
-    S32 Old = sceKernelChangeThreadPriority(threadID, 64);
-
-    // AP - register a callback when the mixer starts
-    AILMIXERCB temp = AIL_register_mix_callback(m_hDriver, MilesMixerCB);
-
-    InitializeCriticalSection(&SoundEngine_MixerMutex);
-
-#elif 0
-    m_hDriver = AIL_open_digital_driver(48000, 16, 2, 0);
-    app.DebugPrintf("---SoundEngine::init - AIL_open_digital_driver\n");
-
-#else
     m_hDriver = AIL_open_digital_driver(44100, 16, MSS_MC_USE_SYSTEM_CONFIG, 0);
-#endif
     if (m_hDriver == 0) {
         app.DebugPrintf("Couldn't open digital sound driver. (%s)\n",
                         AIL_last_error());
         AIL_shutdown();
-#if 0
-        C4JThread::PopAffinity();
-#endif
         return;
     }
     app.DebugPrintf("---SoundEngine::init - driver opened\n");
 
-#if 0
-
-    // set high falloff power for maximum spatial effect in software mode
-    AIL_set_speaker_configuration(m_hDriver, 0, 0, 4.0F);
-
-#endif
 
     AIL_set_event_error_callback(ErrorCallback);
 
@@ -1134,40 +1048,12 @@ void SoundEngine::init(Options* pOptions) {
         app.DebugPrintf("Couldn't init event system (%s).\n", AIL_last_error());
         AIL_close_digital_driver(m_hDriver);
         AIL_shutdown();
-#if 0
-        C4JThread::PopAffinity();
-#endif
         app.DebugPrintf(
             "---SoundEngine::init - AIL_startup_event_system failed\n");
         return;
     }
     char szBankName[255];
-#if 0
-    if (app.GetBootedFromDiscPatch()) {
-        char szTempSoundFilename[255];
-        sprintf(szTempSoundFilename, "%s%s", m_szSoundPath, "Minecraft.msscmp");
-
-        app.DebugPrintf(
-            "SoundEngine::playMusicUpdate - (booted from disc patch) looking "
-            "for %s\n",
-            szTempSoundFilename);
-        sprintf(szBankName, "%s/%s", app.GetBDUsrDirPath(szTempSoundFilename),
-                m_szSoundPath);
-        app.DebugPrintf(
-            "SoundEngine::playMusicUpdate - (booted from disc patch) music "
-            "path - %s\n",
-            szBankName);
-    } else {
-        sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
-    }
-
-#elif 0
-    sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
-#elif 0
-    sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
-#else
     strcpy((char*)szBankName, m_szSoundPath);
-#endif
 
     strcat((char*)szBankName, "Minecraft.msscmp");
 
@@ -1179,9 +1065,6 @@ void SoundEngine::init(Options* pOptions) {
                         Error);
         AIL_close_digital_driver(m_hDriver);
         AIL_shutdown();
-#if 0
-        C4JThread::PopAffinity();
-#endif
         return;
     }
 
@@ -1208,45 +1091,12 @@ void SoundEngine::init(Options* pOptions) {
 
     m_openStreamThread = NULL;
 
-#if 0
-    C4JThread::PopAffinity();
-#endif
 
-#if 0
-    // AP - By default the mixer won't start up and nothing will process. Kick
-    // off a blank sample to force the mixer to start up.
-    HSAMPLE Sample = AIL_allocate_sample_handle(m_hDriver);
-    AIL_init_sample(Sample, DIG_F_STEREO_16);
-    static U64 silence = 0;
-    AIL_set_sample_address(Sample, &silence, sizeof(U64));
-    AIL_start_sample(Sample);
-
-    // wait for 1 mix...
-    AIL_release_sample_handle(Sample);
-#endif
 }
 
-#if 0
-// void SoundEngine::SetHandle(int32_t hAudio)
-// {
-// 	//m_hAudio=hAudio;
-// }
-#endif
 // AP - moved to a separate function so it can be called from the mixer callback
 // on Vita
 void SoundEngine::updateMiles() {
-#if 0
-    // CD - We must check for Background Music [BGM] at any point
-    // If it's playing disable our audio, otherwise enable
-    int NoBGMPlaying = sceAudioOutGetAdopt(SCE_AUDIO_OUT_PORT_TYPE_BGM);
-    updateSystemMusicPlaying(!NoBGMPlaying);
-#elif 0
-    // is the system playing background music?
-    SceAudioOutPortState outPortState;
-    sceAudioOutGetPortState(m_hBGMAudio, &outPortState);
-    updateSystemMusicPlaying(outPortState.output ==
-                             SCE_AUDIO_OUT_STATE_OUTPUT_UNKNOWN);
-#endif
 
     if (m_validListenerCount == 1) {
         for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
@@ -1471,7 +1321,7 @@ void SoundEngine::updateMiles() {
 }
 
 // #define DISTORTION_TEST
-#ifdef DISTORTION_TEST
+#if defined(DISTORTION_TEST)
 static float fVal = 0.0f;
 #endif
 /////////////////////////////////////////////
@@ -1480,22 +1330,16 @@ static float fVal = 0.0f;
 //
 /////////////////////////////////////////////
 
-#if 0
-static S32 running = AIL_ms_count();
-#endif
 
 void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
-#ifdef __DISABLE_MILES__
+#if defined(__DISABLE_MILES__)
     return;
 #endif
 
-#if 0
-    EnterCriticalSection(&SoundEngine_MixerMutex);
-#endif
 
     // update the listener positions
     int listenerCount = 0;
-#ifdef DISTORTION_TEST
+#if defined(DISTORTION_TEST)
     float fX, fY, fZ;
 #endif
     if (players) {
@@ -1541,15 +1385,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
     }
     m_validListenerCount = listenerCount;
 
-#if 0
-    // AP - Show that a change has occurred so we know to update the values at
-    // the next Mixer callback
-    SoundEngine_Change = true;
-
-    LeaveCriticalSection(&SoundEngine_MixerMutex);
-#else
     updateMiles();
-#endif
 }
 SoundEngine::SoundEngine() {
     random = new Random();
@@ -1577,13 +1413,10 @@ SoundEngine::SoundEngine() {
     memset(CurrentSoundsPlaying, 0, sizeof(int) * (eSoundType_MAX + eSFX_MAX));
     memset(m_ListenerA, 0, sizeof(AUDIO_LISTENER) * XUSER_MAX_COUNT);
 
-#if 0
-    m_hBGMAudio = GetAudioBGMHandle();
-#endif
 }
 
 void SoundEngine::destroy() {}
-#ifdef _DEBUG
+#if defined(_DEBUG)
 void SoundEngine::GetSoundName(char* szSoundName, int iSound) {
     strcpy((char*)szSoundName, "Minecraft/");
     std::wstring name = wchSoundNames[iSound];
@@ -1620,7 +1453,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
     // build the name
     strcpy((char*)szSoundName, "Minecraft/");
 
-#ifdef DISTORTION_TEST
+#if defined(DISTORTION_TEST)
     std::wstring name = wchSoundNames[eSoundType_MOB_ENDERDRAGON_GROWL];
 #else
     std::wstring name = wchSoundNames[iSound];
@@ -1641,7 +1474,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
     AudioInfo.bIs3D = true;
     AudioInfo.bUseSoundsPitchVal = false;
     AudioInfo.iSound = iSound + eSFX_MAX;
-#ifdef _DEBUG
+#if defined(_DEBUG)
     strncpy(AudioInfo.chName, (char*)szSoundName, 64);
 #endif
 
@@ -1701,7 +1534,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
     } else {
         AudioInfo.iSound = iSound;
     }
-#ifdef _DEBUG
+#if defined(_DEBUG)
     strncpy(AudioInfo.chName, (char*)szSoundName, 64);
 #endif
 
@@ -1745,7 +1578,7 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
         m_iMusicDelay = random->nextInt(
             20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
 
-#ifdef _DEBUG
+#if defined(_DEBUG)
         m_iMusicDelay = 0;
 #endif
         Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -1779,7 +1612,7 @@ void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
     }
 }
 int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
-#ifdef __DISABLE_MILES__
+#if defined(__DISABLE_MILES__)
     return 0;
 #endif
     SoundEngine* soundEngine = (SoundEngine*)lpParameter;
@@ -1794,9 +1627,7 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 /////////////////////////////////////////////
 void SoundEngine::playMusicTick() {
 // AP - vita will update the music during the mixer callback
-#if 1
     playMusicUpdate();
-#endif
 }
 
 // AP - moved to a separate function so it can be called from the mixer callback
@@ -1822,29 +1653,7 @@ void SoundEngine::playMusicUpdate() {
             if (m_musicID != -1) {
                 // start playing it
 
-#if (0 || 0 || 0)
-
-#if 0
-                // 4J-PB - Need to check if we are a patched BD build
-                if (app.GetBootedFromDiscPatch()) {
-                    sprintf(m_szStreamName, "%s/%s",
-                            app.GetBDUsrDirPath(m_szMusicPath), m_szMusicPath);
-                    app.DebugPrintf(
-                        "SoundEngine::playMusicUpdate - (booted from disc "
-                        "patch) music path - %s",
-                        m_szStreamName);
-                } else {
-                    sprintf(m_szStreamName, "%s/%s", getUsrDirPath(),
-                            m_szMusicPath);
-                }
-#else
-                sprintf(m_szStreamName, "%s/%s", getUsrDirPath(),
-                        m_szMusicPath);
-#endif
-
-#else
                 strcpy((char*)m_szStreamName, m_szMusicPath);
-#endif
                 // are we using a mash-up pack?
                 // if(pMinecraft && !pMinecraft->skins->isUsingDefaultSkin() &&
                 // pMinecraft->skins->getSelected()->hasAudio())
@@ -1871,15 +1680,6 @@ void SoundEngine::playMusicUpdate() {
                         m_MusicType = eMusicType_Game;
                         m_StreamingAudioInfo.bIs3D = false;
 
-#if 0
-                        std::wstring& wstrSoundName =
-                            dlcAudioFile->GetSoundName(m_musicID);
-                        std::wstring wstrFile =
-                            L"TPACK:\\Data\\" + wstrSoundName + L".binka";
-                        std::wstring mountedPath =
-                            StorageManager.GetMountedPath(wstrFile);
-                        wcstombs(m_szStreamName, mountedPath.c_str(), 255);
-#else
                         std::wstring& wstrSoundName =
                             dlcAudioFile->GetSoundName(m_musicID);
                         char szName[255];
@@ -1890,7 +1690,6 @@ void SoundEngine::playMusicUpdate() {
                         std::string mountedPath =
                             StorageManager.GetMountedPath(strFile);
                         strcpy(m_szStreamName, mountedPath.c_str());
-#endif
                     } else {
                         SetIsPlayingStreamingGameMusic(false);
                         SetIsPlayingStreamingCDMusic(true);
@@ -1908,53 +1707,6 @@ void SoundEngine::playMusicUpdate() {
                 } else {
                     // 4J-PB - if this is a PS3 disc patch, we have to check if
                     // the music file is in the patch data
-#if 0
-                    if (app.GetBootedFromDiscPatch() &&
-                        (m_musicID < m_iStream_CD_1)) {
-                        // rebuild the path for the music
-                        strcpy((char*)m_szStreamName, m_szMusicPath);
-                        strcat((char*)m_szStreamName, "music/");
-                        strcat((char*)m_szStreamName,
-                               m_szStreamFileA[m_musicID]);
-                        strcat((char*)m_szStreamName, ".binka");
-
-                        // check if this is in the patch data
-                        sprintf(m_szStreamName, "%s/%s",
-                                app.GetBDUsrDirPath(m_szStreamName),
-                                m_szMusicPath);
-                        strcat((char*)m_szStreamName, "music/");
-                        strcat((char*)m_szStreamName,
-                               m_szStreamFileA[m_musicID]);
-                        strcat((char*)m_szStreamName, ".binka");
-
-                        SetIsPlayingStreamingGameMusic(true);
-                        SetIsPlayingStreamingCDMusic(false);
-                        m_MusicType = eMusicType_Game;
-                        m_StreamingAudioInfo.bIs3D = false;
-                    } else if (m_musicID < m_iStream_CD_1) {
-                        SetIsPlayingStreamingGameMusic(true);
-                        SetIsPlayingStreamingCDMusic(false);
-                        m_MusicType = eMusicType_Game;
-                        m_StreamingAudioInfo.bIs3D = false;
-                        // build the name
-                        strcat((char*)m_szStreamName, "music/");
-                        strcat((char*)m_szStreamName,
-                               m_szStreamFileA[m_musicID]);
-                        strcat((char*)m_szStreamName, ".binka");
-                    }
-
-                    else {
-                        SetIsPlayingStreamingGameMusic(false);
-                        SetIsPlayingStreamingCDMusic(true);
-                        m_MusicType = eMusicType_CD;
-                        m_StreamingAudioInfo.bIs3D = true;
-                        // build the name
-                        strcat((char*)m_szStreamName, "cds/");
-                        strcat((char*)m_szStreamName,
-                               m_szStreamFileA[m_musicID]);
-                        strcat((char*)m_szStreamName, ".binka");
-                    }
-#else
                     if (m_musicID < m_iStream_CD_1) {
                         SetIsPlayingStreamingGameMusic(true);
                         SetIsPlayingStreamingCDMusic(false);
@@ -1973,7 +1725,6 @@ void SoundEngine::playMusicUpdate() {
                     strcat((char*)m_szStreamName, m_szStreamFileA[m_musicID]);
                     strcat((char*)m_szStreamName, ".binka");
 
-#endif
                 }
 
                 // std::wstring name =

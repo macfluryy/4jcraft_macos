@@ -5,10 +5,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "UIScene_CraftingMenu.h"
 
-#if 0
-#define GAME_CRAFTING_TOUCHUPDATE_TIMER_ID 0
-#define GAME_CRAFTING_TOUCHUPDATE_TIMER_TIME 100
-#endif
 
 UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)
@@ -121,7 +117,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
         }
     }
 
-#ifdef _TO_BE_IMPLEMENTED
+#if defined(_TO_BE_IMPLEMENTED)
     XuiSetTimer(m_hObj, IGNORE_KEYPRESS_TIMERID, IGNORE_KEYPRESS_TIME);
 #endif
 
@@ -164,9 +160,6 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // success or fail
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
-#if 0
-    ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, true);
-#endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_RIGHT_SCROLL, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT, true);
@@ -178,13 +171,6 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // CheckRecipesAvailable
     UpdateTooltips();
 
-#if 0
-    // initialise vita touch controls with ids
-    for (unsigned int i = 0; i < ETouchInput_Count; ++i) {
-        m_TouchInput[i].init(i);
-    }
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 void UIScene_CraftingMenu::handleDestroy() {
@@ -210,9 +196,6 @@ void UIScene_CraftingMenu::handleDestroy() {
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
-#if 0
-    ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, false);
-#endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_RIGHT_SCROLL, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT, false);
@@ -246,123 +229,6 @@ std::wstring UIScene_CraftingMenu::getMoviePath() {
     }
 }
 
-#if 0
-UIControl* UIScene_CraftingMenu::GetMainPanel() { return &m_controlMainPanel; }
-
-void UIScene_CraftingMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,
-                                            int iId, bool bPressed,
-                                            bool bRepeat, bool bReleased) {
-    // perform action on release
-    if (bPressed) {
-        if (iId == ETouchInput_CraftingHSlots) {
-            m_iCraftingSlotTouchStartY = y;
-        }
-    } else if (bRepeat) {
-        if (iId == ETouchInput_CraftingHSlots) {
-            if (y >= m_iCraftingSlotTouchStartY +
-                         m_TouchInput[ETouchInput_CraftingHSlots]
-                             .getHeight())  // scroll list down
-            {
-                if (iVSlotIndexA[1] ==
-                    (CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1)) {
-                    iVSlotIndexA[1] = 0;
-                } else {
-                    iVSlotIndexA[1]++;
-                }
-                ui.PlayUISFX(eSFX_Focus);
-
-                UpdateVerticalSlots();
-                UpdateHighlight();
-
-                m_iCraftingSlotTouchStartY = y;
-            } else if (y <= m_iCraftingSlotTouchStartY -
-                                m_TouchInput[ETouchInput_CraftingHSlots]
-                                    .getHeight())  // scroll list up
-            {
-                if (iVSlotIndexA[1] == 0) {
-                    iVSlotIndexA[1] =
-                        CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
-                } else {
-                    iVSlotIndexA[1]--;
-                }
-                ui.PlayUISFX(eSFX_Focus);
-
-                UpdateVerticalSlots();
-                UpdateHighlight();
-
-                m_iCraftingSlotTouchStartY = y;
-            }
-        }
-    } else if (bReleased) {
-        if (iId >= ETouchInput_TouchPanel_0 &&
-            iId <= ETouchInput_TouchPanel_6)  // Touch Change Group
-        {
-            m_iGroupIndex = iId;
-            // turn on the new group
-            showTabHighlight(m_iGroupIndex, true);
-
-            m_iCurrentSlotHIndex = 0;
-            m_iCurrentSlotVIndex = 1;
-            CheckRecipesAvailable();
-            // reset the vertical slots
-            iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
-            iVSlotIndexA[1] = 0;
-            iVSlotIndexA[2] = 1;
-            ui.PlayUISFX(eSFX_Focus);
-            UpdateVerticalSlots();
-            UpdateHighlight();
-            setGroupText(GetGroupNameText(m_pGroupA[m_iGroupIndex]));
-        } else if (iId == ETouchInput_CraftingHSlots)  // Touch Change Slot
-        {
-            int iMaxHSlots = 0;
-            if (m_iContainerType == RECIPE_TYPE_3x3) {
-                iMaxHSlots = m_iMaxHSlot3x3C;
-            } else {
-                iMaxHSlots = m_iMaxHSlot2x2C;
-            }
-
-            int iNewSlot =
-                (x - m_TouchInput[ETouchInput_CraftingHSlots].getXPos() -
-                 m_controlMainPanel.getXPos()) /
-                m_TouchInput[ETouchInput_CraftingHSlots].getHeight();
-
-            int iOldHSlot = m_iCurrentSlotHIndex;
-
-            m_iCurrentSlotHIndex = iNewSlot;
-            if (m_iCurrentSlotHIndex >= m_iCraftablesMaxHSlotC)
-                m_iCurrentSlotHIndex = 0;
-            m_iCurrentSlotVIndex = 1;
-            // clear the indices
-            iVSlotIndexA[0] = CanBeMadeA[m_iCurrentSlotHIndex].iCount - 1;
-            iVSlotIndexA[1] = 0;
-            iVSlotIndexA[2] = 1;
-
-            UpdateVerticalSlots();
-            UpdateHighlight();
-            // re-enable the old hslot
-            if (CanBeMadeA[iOldHSlot].iCount > 0) {
-                setShowCraftHSlot(iOldHSlot, true);
-            }
-            ui.PlayUISFX(eSFX_Focus);
-        }
-    }
-}
-
-void UIScene_CraftingMenu::handleTouchBoxRebuild() {
-    addTimer(GAME_CRAFTING_TOUCHUPDATE_TIMER_ID,
-             GAME_CRAFTING_TOUCHUPDATE_TIMER_TIME);
-}
-
-void UIScene_CraftingMenu::handleTimerComplete(int id) {
-    if (id == GAME_CRAFTING_TOUCHUPDATE_TIMER_ID) {
-        // we cannot rebuild touch boxes in an iggy callback because it requires
-        // further iggy calls
-        GetMainPanel()->UpdateControl();
-        ui.TouchBoxRebuild(this);
-        killTimer(GAME_CRAFTING_TOUCHUPDATE_TIMER_ID);
-    }
-}
-#endif
 
 void UIScene_CraftingMenu::handleReload() {
     m_slotListInventory.addSlots(

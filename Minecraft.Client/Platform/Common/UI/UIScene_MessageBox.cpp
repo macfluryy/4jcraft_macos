@@ -55,9 +55,6 @@ UIScene_MessageBox::UIScene_MessageBox(int iPad, void* initData,
     parentLayer->addComponent(iPad, eUIComponent_MenuBackground);
 
     // 4J-TomK - rebuild touch after auto resize
-#if 0
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 UIScene_MessageBox::~UIScene_MessageBox() {
@@ -111,9 +108,6 @@ void UIScene_MessageBox::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:

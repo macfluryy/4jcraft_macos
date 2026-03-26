@@ -16,15 +16,9 @@
 #define HAS_LANGUAGE_KO_KR(exp) exp,
 #define HAS_LANGUAGE_CN_TW(exp) exp,
 
-#if 0
-#define HAS_LANGUAGE_CN_CN(exp) exp,
-#define HAS_LANGUAGE_SK_SK(exp) exp,
-#define HAS_LANGUAGE_CZ_CZ(exp) exp,
-#else
 #define HAS_LANGUAGE_CN_CN(exp)
 #define HAS_LANGUAGE_SK_SK(exp)
 #define HAS_LANGUAGE_CZ_CZ(exp)
-#endif
 
 #define HAS_LANGUAGE_DA_DK(exp) exp,
 #define HAS_LANGUAGE_FI_FI(exp) exp,
@@ -35,11 +29,7 @@
 #define HAS_LANGUAGE_NB_NO(exp) exp,
 #define HAS_LANGUAGE_EL_GR(exp) exp,
 
-#if 0 || 0 || 0
-#define HAS_LANGUAGE_TR_TR(exp) exp,
-#else
 #define HAS_LANGUAGE_TR_TR(exp)
-#endif
 
 class UIScene_LanguageSelector : public UIScene {
 public:

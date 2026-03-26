@@ -8,11 +8,9 @@
 
 #include "TelemetryManager.h"
 
-#if !0 && !0
 
 CTelemetryManager *TelemetryManager = new CTelemetryManager();
 
-#endif
 
 HRESULT CTelemetryManager::Init()
 {
@@ -286,13 +284,7 @@ int CTelemetryManager::GetMultiplayerInstanceID()
 
 int CTelemetryManager::GenerateMultiplayerInstanceId()
 {
-#if 0 || 0
-	FILETIME SystemTimeAsFileTime;
-	GetSystemTimeAsFileTime( &SystemTimeAsFileTime );
-	return static_cast<int>(SystemTimeAsFileTime.dwLowDateTime);
-#else
 	return 0;
-#endif
 }
 
 void CTelemetryManager::SetMultiplayerInstanceId(int value)

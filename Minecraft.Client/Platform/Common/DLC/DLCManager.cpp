@@ -75,16 +75,10 @@ void ReadDlcStruct(T* out, const std::uint8_t* data, unsigned int offset = 0) {
 std::wstring getMountedDlcReadPath(const std::string& path) {
     std::wstring readPath = convStringToWstring(path);
 
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
     const std::string mountedPath = StorageManager.GetMountedPath(path.c_str());
     if (!mountedPath.empty()) {
         readPath = convStringToWstring(mountedPath);
-    }
-#elif 0
-    const std::wstring mountedPath =
-        StorageManager.GetMountedPath(readPath.c_str());
-    if (!mountedPath.empty()) {
-        readPath = mountedPath;
     }
 #endif
 
@@ -235,23 +229,6 @@ DLCPack* DLCManager::getPack(const std::wstring& name) {
     return pack;
 }
 
-#if 0
-DLCPack* DLCManager::getPackFromProductID(const std::wstring& productID) {
-    DLCPack* pack = NULL;
-    // DWORD currentIndex = 0;
-    DLCPack* currentPack = NULL;
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
-        currentPack = *it;
-        std::wstring wsName = currentPack->getPurchaseOfferId();
-
-        if (wsName.compare(productID) == 0) {
-            pack = currentPack;
-            break;
-        }
-    }
-    return pack;
-}
-#endif
 
 DLCPack* DLCManager::getPack(unsigned int index,
                              EDLCType type /*= e_DLCType_All*/) {

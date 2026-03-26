@@ -378,9 +378,6 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
 
     m_CurrentState = e_Tutorial_State_Gameplay;
     m_hasStateChanged = false;
-#if 0
-    m_hTutorialScene = NULL;
-#endif
 
     for (unsigned int i = 0; i < e_Tutorial_State_Max; ++i) {
         currentTask[i] = NULL;
@@ -1956,14 +1953,8 @@ Tutorial::~Tutorial() {
 }
 
 void Tutorial::debugResetPlayerSavedProgress(int iPad) {
-#if (0 || 0 || 0 || \
-     0)
-    GAME_SETTINGS* pGameSettings =
-        (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(iPad);
-#else
     GAME_SETTINGS* pGameSettings =
         (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(iPad);
-#endif
     ZeroMemory(pGameSettings->ucTutorialCompletion,
                TUTORIAL_PROFILE_STORAGE_BYTES);
     pGameSettings->uiSpecialTutorialBitmask = 0;
@@ -1987,14 +1978,8 @@ void Tutorial::setCompleted(int completableId) {
     if (completableIndex >= 0 &&
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
         // Set the bit for this position
-#if (0 || 0 || 0 || \
-     0)
-        GAME_SETTINGS* pGameSettings =
-            (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(m_iPad);
-#else
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(m_iPad);
-#endif
         int arrayIndex = completableIndex >> 3;
         int bitIndex = 7 - (completableIndex % 8);
         pGameSettings->ucTutorialCompletion[arrayIndex] |= 1 << bitIndex;
@@ -2022,14 +2007,8 @@ bool Tutorial::getCompleted(int completableId) {
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
         // Read the bit for this position
         // Retrieve the data pointer from the profile
-#if (0 || 0 || 0 || \
-     0)
-        GAME_SETTINGS* pGameSettings =
-            (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(m_iPad);
-#else
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(m_iPad);
-#endif
         int arrayIndex = completableIndex >> 3;
         int bitIndex = 7 - (completableIndex % 8);
         return (pGameSettings->ucTutorialCompletion[arrayIndex] &
@@ -2147,37 +2126,12 @@ void Tutorial::tick() {
     }
 
     if (!hasRequestedUI) {
-#if 0
-        m_bSceneIsSplitscreen = app.GetLocalPlayerCount() > 1;
-        if (m_bSceneIsSplitscreen) {
-            app.NavigateToScene(m_iPad, eUIComponent_TutorialPopup, (void*)this,
-                                false, false, &m_hTutorialScene);
-        } else {
-            app.NavigateToScene(m_iPad, eUIComponent_TutorialPopup, (void*)this,
-                                false, false, &m_hTutorialScene);
-        }
-#else
         ui.SetTutorial(m_iPad, this);
-#endif
         hasRequestedUI = true;
     } else {
         // if we've changed mode, we may need to change scene
         if (m_bSceneIsSplitscreen != (app.GetLocalPlayerCount() > 1)) {
-#if 0
-            app.TutorialSceneNavigateBack(m_iPad);
-            m_bSceneIsSplitscreen = app.GetLocalPlayerCount() > 1;
-            if (m_bSceneIsSplitscreen) {
-                app.NavigateToScene(m_iPad, eUIComponent_TutorialPopup,
-                                    (void*)this, false, false,
-                                    &m_hTutorialScene);
-            } else {
-                app.NavigateToScene(m_iPad, eUIComponent_TutorialPopup,
-                                    (void*)this, false, false,
-                                    &m_hTutorialScene);
-            }
-#else
             ui.SetTutorial(m_iPad, this);
-#endif
         }
     }
 
@@ -2979,22 +2933,15 @@ void Tutorial::addMessage(
             new TutorialMessage(messageId, limitRepeats, numRepeats);
 }
 
-#if 0
-void Tutorial::changeTutorialState(eTutorial_State newState,
-                                   CXuiScene* scene /*= NULL*/)
-#else
 void Tutorial::changeTutorialState(eTutorial_State newState,
                                    UIScene* scene /*= NULL*/)
-#endif
 {
     if (newState == m_CurrentState) {
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-#if 1
         if (scene == NULL) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
-#endif
         m_UIScene = scene;
         return;
     }
@@ -3037,11 +2984,9 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
 
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-#if 1
         if (scene == NULL) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
-#endif
         m_UIScene = scene;
 
         if (m_CurrentState != newState) {

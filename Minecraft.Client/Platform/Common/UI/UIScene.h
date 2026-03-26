@@ -112,13 +112,6 @@ public:
     int getRenderWidth() { return m_renderWidth; }
     int getRenderHeight() { return m_renderHeight; }
 
-#if 0
-    UILayer* GetParentLayer() { return m_parentLayer; }
-    EUIGroup GetParentLayerGroup() {
-        return m_parentLayer->m_parentGroup->GetGroup();
-    }
-    std::vector<UIControl*>* GetControls() { return &m_controls; }
-#endif
 
 protected:
     virtual F64 getSafeZoneHalfHeight();
@@ -148,10 +141,6 @@ public:
     virtual void tick();
 
     IggyName registerFastName(const std::wstring& name);
-#if 0
-    void SetFocusToElement(int iID);
-    void UpdateSceneControls();
-#endif
 protected:
     void addTimer(int id, int ms);
     void killTimer(int id);
@@ -273,9 +262,6 @@ public:
     UIScene* getBackScene();
     virtual void HandleDLCMountingComplete() {}
     virtual void HandleDLCInstalled() {}
-#if 0
-    virtual void HandleDLCLicenseChange() {}
-#endif
 
     virtual void HandleMessage(EUIMessage message, void* data);
 
@@ -292,9 +278,6 @@ public:
     }
 
 protected:
-#if 0
-    virtual long long getDefaultGtcButtons() { return _360_GTC_BACK; }
-#endif
 
     size_t GetCallbackUniqueId();
 

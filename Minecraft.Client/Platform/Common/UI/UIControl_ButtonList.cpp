@@ -35,17 +35,6 @@ void UIControl_ButtonList::init(int id) {
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 1, value);
 
-#if 0
-    // 4J-PB - add this buttonlist to the vita touch box list
-
-    switch (m_parentScene->GetParentLayer()->m_iLayer) {
-        case eUILayer_Fullscreen:
-        case eUILayer_Scene:
-        case eUILayer_HUD:
-            ui.TouchBoxAdd(this, m_parentScene);
-            break;
-    }
-#endif
 }
 
 void UIControl_ButtonList::ReInit() {
@@ -162,43 +151,6 @@ void UIControl_ButtonList::setButtonLabel(int iButtonId,
                                             m_funcSetButtonLabel, 2, value);
 }
 
-#if 0
-void UIControl_ButtonList::SetTouchFocus(S32 iX, S32 iY, bool bRepeat) {
-    IggyDataValue result;
-    IggyDataValue value[3];
-
-    value[0].type = IGGY_DATATYPE_number;
-    value[0].number = iX;
-    value[1].type = IGGY_DATATYPE_number;
-    value[1].number = iY;
-    value[2].type = IGGY_DATATYPE_boolean;
-    value[2].boolval = bRepeat;
-
-    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                                            getIggyValuePath(),
-                                            m_funcSetTouchFocus, 3, value);
-}
-
-bool UIControl_ButtonList::CanTouchTrigger(S32 iX, S32 iY) {
-    IggyDataValue result;
-    IggyDataValue value[2];
-
-    value[0].type = IGGY_DATATYPE_number;
-    value[0].number = iX;
-    value[1].type = IGGY_DATATYPE_number;
-    value[1].number = iY;
-
-    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                                            getIggyValuePath(),
-                                            m_funcCanTouchTrigger, 2, value);
-
-    S32 bCanTouchTrigger = false;
-    if (result.type == IGGY_DATATYPE_boolean) {
-        bCanTouchTrigger = (bool)result.boolval;
-    }
-    return bCanTouchTrigger;
-}
-#endif
 
 void UIControl_DynamicButtonList::tick() {
     UIControl_ButtonList::tick();

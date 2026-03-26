@@ -343,54 +343,6 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
 
 std::wstring UIComponent_TutorialPopup::_SetImage(std::wstring& desc) {
     // 4J Stu - Unused
-#if 0
-	bool imageShowAtStart = m_image.IsShown();
-
-	std::wstring openTag(L"{*IMAGE*}");
-	std::wstring closeTag(L"{*/IMAGE*}");
-	int imageTagStartPos = (int)desc.find(openTag);
-	int imageStartPos = imageTagStartPos + (int)openTag.length();
-	if( imageTagStartPos > 0 && imageStartPos < (int)desc.length() )
-	{
-		int imageEndPos = (int)desc.find( closeTag, imageStartPos );
-
-		if(imageEndPos > imageStartPos && imageEndPos < (int)desc.length() )
-		{
-			std::wstring id = desc.substr(imageStartPos, imageEndPos - imageStartPos);
-			m_image.SetImagePath( id.c_str() );
-			m_image.SetShow( true );
-
-			desc.replace(imageTagStartPos, imageEndPos - imageTagStartPos + closeTag.length(), L"");
-		}
-	}
-	else
-	{
-		// hide the icon slot
-		m_image.SetShow( false );
-	}
-	
-	bool imageShowAtEnd = m_image.IsShown();
-	if(imageShowAtStart != imageShowAtEnd)
-	{
-		float fHeight, fWidth, fIconHeight, fDescHeight, fDescWidth;
-		m_image.GetBounds(&fWidth,&fIconHeight);
-		GetBounds(&fWidth,&fHeight);
-
-
-		// 4J Stu - For some reason when we resize the scene it resets the size of the HTML control
-		// We don't want that to happen, so get it's size before and set it back after
-		m_description.GetBounds(&fDescWidth,&fDescHeight);
-		if(imageShowAtEnd)
-		{
-			SetBounds(fWidth, fHeight + fIconHeight);
-		}
-		else
-		{
-			SetBounds(fWidth, fHeight - fIconHeight);
-		}
-		m_description.SetBounds(fDescWidth, fDescHeight);
-	}
-#endif
     return desc;
 }
 

@@ -93,9 +93,6 @@ void UIScene_SettingsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:
@@ -144,16 +141,9 @@ int UIScene_SettingsMenu::ResetDefaultsDialogReturned(
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-#if (0 || 0 || 0 || \
-     0)
-        app.SetDefaultOptions(
-            StorageManager.GetDashboardProfileSettings(pClass->m_iPad),
-            pClass->m_iPad);
-#else
         app.SetDefaultOptions(
             ProfileManager.GetDashboardProfileSettings(pClass->m_iPad),
             pClass->m_iPad);
-#endif
         // if the profile data has been changed, then force a profile write
         // It seems we're allowed to break the 5 minute rule if it's the result
         // of a user action

@@ -15,32 +15,7 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_dataPath = L"";
     m_packName = name;
     m_dwLicenseMask = dwLicenseMask;
-#if 0
-    m_wsProductId = L"";
-#else
     m_ullFullOfferId = 0LL;
-#endif
-    m_isCorrupt = false;
-    m_packId = 0;
-    m_packVersion = 0;
-    m_parentPack = NULL;
-    m_dlcMountIndex = -1;
-#if 0
-    m_dlcDeviceID = XCONTENTDEVICE_ANY;
-#endif
-
-    // This pointer is for all the data used for this pack, so deleting it
-    // invalidates ALL of it's children.
-    m_data = NULL;
-}
-
-#if 0
-DLCPack::DLCPack(const std::wstring& name, const std::wstring& productID,
-                 std::uint32_t dwLicenseMask) {
-    m_dataPath = L"";
-    m_packName = name;
-    m_dwLicenseMask = dwLicenseMask;
-    m_wsProductId = productID;
     m_isCorrupt = false;
     m_packId = 0;
     m_packVersion = 0;
@@ -51,7 +26,7 @@ DLCPack::DLCPack(const std::wstring& name, const std::wstring& productID,
     // invalidates ALL of it's children.
     m_data = NULL;
 }
-#endif
+
 
 DLCPack::~DLCPack() {
     for (AUTO_VAR(it, m_childPacks.begin()); it != m_childPacks.end(); ++it) {
@@ -67,7 +42,7 @@ DLCPack::~DLCPack() {
     // This pointer is for all the data used for this pack, so deleting it
     // invalidates ALL of it's children.
     if (m_data) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"Deleting data for DLC pack %ls\n", m_packName.c_str());
 #endif
         // For the same reason, don't delete data pointer for any child pack as
@@ -95,7 +70,7 @@ XCONTENTDEVICEID DLCPack::GetDLCDeviceID() {
 
 void DLCPack::addChildPack(DLCPack* childPack) {
     const std::uint32_t packId = childPack->GetPackId();
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (packId < 0 || packId > 15) {
         __debugbreak();
     }
@@ -176,15 +151,11 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
             newFile = new DLCSkinFile(strippedPath);
 
             // check to see if we can get the full offer id using this skin name
-#if 0
-            app.GetDLCFullOfferIDForSkinID(strippedPath, m_wsProductId);
-#else
             ULONGLONG ullVal = 0LL;
 
             if (app.GetDLCFullOfferIDForSkinID(strippedPath, &ullVal)) {
                 m_ullFullOfferId = ullVal;
             }
-#endif
         } break;
         case DLCManager::e_DLCType_Cape: {
             std::vector<std::wstring> splitPath = stringSplit(path, L'/');
@@ -318,7 +289,7 @@ unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type,
                                      const std::wstring& path, bool& found) {
     if (type == DLCManager::e_DLCType_All) {
         app.DebugPrintf("Unimplemented\n");
-#ifndef __CONTENT_PACKAGE
+#if !defined(__CONTENT_PACKAGE)
         __debugbreak();
 #endif
         return 0;
@@ -343,12 +314,12 @@ bool DLCPack::hasPurchasedFile(DLCManager::EDLCType type,
                                const std::wstring& path) {
     if (type == DLCManager::e_DLCType_All) {
         app.DebugPrintf("Unimplemented\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
         return false;
     }
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
         (1L << eDebugSetting_UnlockAllDLC)) {
         return true;

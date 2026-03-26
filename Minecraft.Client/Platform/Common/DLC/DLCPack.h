@@ -19,11 +19,7 @@ private:
     std::uint32_t m_dwLicenseMask;
     int m_dlcMountIndex;
     XCONTENTDEVICEID m_dlcDeviceID;
-#if 0
-    std::wstring m_wsProductId;
-#else
     ULONGLONG m_ullFullOfferId;
-#endif
     bool m_isCorrupt;
     std::uint32_t m_packId;
     std::uint32_t m_packVersion;
@@ -33,10 +29,6 @@ private:
                  // deleting it invalidates ALL of it's children.
 public:
     DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask);
-#if 0
-    DLCPack(const std::wstring& name, const std::wstring& productID,
-            std::uint32_t dwLicenseMask);
-#endif
     ~DLCPack();
 
     std::wstring getFullDataPath() { return m_dataPath; }
@@ -76,11 +68,7 @@ public:
     std::wstring getName() { return m_packName; }
 
     void UpdateLanguage();
-#if 0
-    std::wstring getPurchaseOfferId() { return m_wsProductId; }
-#else
     ULONGLONG getPurchaseOfferId() { return m_ullFullOfferId; }
-#endif
 
     DLCFile* addFile(DLCManager::EDLCType type, const std::wstring& path);
     DLCFile* getFile(DLCManager::EDLCType type, unsigned int index);

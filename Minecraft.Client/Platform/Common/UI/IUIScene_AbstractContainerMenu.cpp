@@ -9,9 +9,6 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.Client/Minecraft.h"
 
-#if 0
-#include <pad.h>
-#endif
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = NULL;
@@ -65,23 +62,18 @@ void IUIScene_AbstractContainerMenu::Initialize(
     m_bNavigateBack = bNavigateBack;
 
     // Put the pointer over first item in use row to start with.
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
     m_eCurrSection = firstSection;
     m_eCurrTapState = eTapStateNoInput;
     m_iCurrSlotX = 0;
     m_iCurrSlotY = 0;
-#endif  // TAP_DETECTION
+#endif
         //
         // 	for(int i=0;i<XUSER_MAX_COUNT;i++)
         // 	{
         // 		m_bFirstTouchStored[i]=false;
         // 	}
 
-#if 0
-    for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-        m_bFirstTouchStored[i] = false;
-    }
-#endif
 
     PlatformInitialize(iPad, startIndex);
 }
@@ -148,7 +140,7 @@ void IUIScene_AbstractContainerMenu::updateSlotPosition(
     }
 }
 
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
 IUIScene_AbstractContainerMenu::ETapState
 IUIScene_AbstractContainerMenu::GetTapInputType(float fInputX, float fInputY) {
     if ((fabs(fInputX) < 0.3f) && (fabs(fInputY) < 0.3f)) {
@@ -165,7 +157,7 @@ IUIScene_AbstractContainerMenu::GetTapInputType(float fInputX, float fInputY) {
         return eTapNone;
     }
 }
-#endif  // TAP_DETECTION
+#endif
 
 void IUIScene_AbstractContainerMenu::SetToolTip(EToolTipButton eButton,
                                                 EToolTipItem eItem) {
@@ -255,78 +247,6 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         ((float)app.GetGameSettings(iPad, eGameSetting_Sensitivity_InMenu) /
          100.0f);  // apply the sensitivity
 
-#if 0
-    // should have sensitivity for the touchpad
-    //(float)app.GetGameSettings(iPad,eGameSetting_Sensitivity_TouchPadInMenu)/100.0f
-
-    // get the touchpad input and treat it as a map to the window
-    ScePadTouchData* pTouchPadData = InputManager.GetTouchPadData(iPad);
-
-    // make sure the touchpad button isn't down (it's the pausemenu)
-
-    if ((!InputManager.ButtonDown(iPad, ACTION_MENU_TOUCHPAD_PRESS)) &&
-        (pTouchPadData->touchNum > 0)) {
-        if (m_bFirstTouchStored[iPad] == false) {
-            m_oldvTouchPos.x = (float)pTouchPadData->touch[0].x;
-            m_oldvTouchPos.y = (float)pTouchPadData->touch[0].y;
-            m_oldvPointerPos.x = vPointerPos.x;
-            m_oldvPointerPos.y = vPointerPos.y;
-            m_bFirstTouchStored[iPad] = true;
-        }
-
-        // should take the average of multiple touch points
-
-        float fNewX = (((float)pTouchPadData->touch[0].x) - m_oldvTouchPos.x) *
-                      m_fTouchPadMulX;
-        float fNewY = (((float)pTouchPadData->touch[0].y) - m_oldvTouchPos.y) *
-                      m_fTouchPadMulY;
-        // relative positions - needs a deadzone
-
-        if (fNewX > m_fTouchPadDeadZoneX) {
-            vPointerPos.x = m_oldvPointerPos.x +
-                            ((fNewX - m_fTouchPadDeadZoneX) *
-                             ((float)app.GetGameSettings(
-                                  iPad, eGameSetting_Sensitivity_InMenu) /
-                              100.0f));
-        } else if (fNewX < -m_fTouchPadDeadZoneX) {
-            vPointerPos.x = m_oldvPointerPos.x +
-                            ((fNewX + m_fTouchPadDeadZoneX) *
-                             ((float)app.GetGameSettings(
-                                  iPad, eGameSetting_Sensitivity_InMenu) /
-                              100.0f));
-        }
-
-        if (fNewY > m_fTouchPadDeadZoneY) {
-            vPointerPos.y = m_oldvPointerPos.y +
-                            ((fNewY - m_fTouchPadDeadZoneY) *
-                             ((float)app.GetGameSettings(
-                                  iPad, eGameSetting_Sensitivity_InMenu) /
-                              100.0f));
-        } else if (fNewY < -m_fTouchPadDeadZoneY) {
-            vPointerPos.y = m_oldvPointerPos.y +
-                            ((fNewY + m_fTouchPadDeadZoneY) *
-                             ((float)app.GetGameSettings(
-                                  iPad, eGameSetting_Sensitivity_InMenu) /
-                              100.0f));
-        }
-
-        // Clamp to pointer extents.
-        if (vPointerPos.x < m_fPointerMinX)
-            vPointerPos.x = m_fPointerMinX;
-        else if (vPointerPos.x > m_fPointerMaxX)
-            vPointerPos.x = m_fPointerMaxX;
-        if (vPointerPos.y < m_fPointerMinY)
-            vPointerPos.y = m_fPointerMinY;
-        else if (vPointerPos.y > m_fPointerMaxY)
-            vPointerPos.y = m_fPointerMaxY;
-
-        bStickInput = true;
-        m_eCurrTapState = eTapStateNoInput;
-    } else {
-        // reset the touch flag
-        m_bFirstTouchStored[iPad] = false;
-
-#endif
 
         // If there is any input on sticks, move the pointer.
         if ((fabs(fInputX) >= 0.01f) || (fabs(fInputY) >= 0.01f)) {
@@ -337,7 +257,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                          : (fInputY < 0.0f) ? -1.0f
                                             : 0.0f;
 
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
             // Check for potential tap input to jump slot.
             ETapState eNewTapInput = GetTapInputType(fInputX, fInputY);
 
@@ -363,7 +283,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                 default:
                     break;
             }
-#endif  // TAP_DETECTION
+#endif
 
             // Square it so we get more precision for small inputs.
             fInputX = fInputX * fInputX * fInputDirX * POINTER_SPEED_FACTOR;
@@ -380,7 +300,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                 fInputScale = ((float)(m_iConsectiveInputTicks) /
                                (float)(MAX_INPUT_TICKS_FOR_SCALING));
             }
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
             else if (m_iConsectiveInputTicks < MAX_INPUT_TICKS_FOR_TAPPING) {
                 ++m_iConsectiveInputTicks;
             } else {
@@ -396,7 +316,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
             fInputX *= fInputScale;
             fInputY *= fInputScale;
 
-#ifdef USE_POINTER_ACCEL
+#if defined(USE_POINTER_ACCEL)
             m_fPointerAccelX += fInputX / 50.0f;
             m_fPointerAccelY += fInputY / 50.0f;
 
@@ -436,7 +356,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
             bStickInput = true;
         } else {
             m_iConsectiveInputTicks = 0;
-#ifdef USE_POINTER_ACCEL
+#if defined(USE_POINTER_ACCEL)
             m_fPointerVelX = 0.0f;
             m_fPointerVelY = 0.0f;
             m_fPointerAccelX = 0.0f;
@@ -444,9 +364,6 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
 #endif
         }
 
-#if 0
-    }
-#endif
 
     // Determine which slot the pointer is currently over.
     ESceneSection eSectionUnderPointer = eSectionNone;
@@ -549,7 +466,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
 
                         bPointerIsOverSlot = true;
 
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
                         // Have we actually changed slot? If so, input cannot be
                         // a tap.
                         if ((eSectionUnderPointer != m_eCurrSection) ||
@@ -562,7 +479,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                         m_eCurrSection = eSectionUnderPointer;
                         m_iCurrSlotX = iNewSlotX;
                         m_iCurrSlotY = iNewSlotY;
-#endif  // TAP_DETECTION
+#endif
         // No need to check any further slots, the pointer can only ever be over
         // one.
                         break;
@@ -578,7 +495,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
     // If we are not over any slot, set focus elsewhere.
     if (eSectionUnderPointer == eSectionNone) {
         setFocusToPointer(getPad());
-#ifdef TAP_DETECTION
+#if defined(TAP_DETECTION)
         // Input cannot be a tap.
         m_eCurrTapState = eTapNone;
 
@@ -586,7 +503,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         m_eCurrSection = eSectionNone;
         m_iCurrSlotX = -1;
         m_iCurrSlotY = -1;
-#endif  // TAP_DETECTION
+#endif
     } else {
         if (!bStickInput) {
             // Did we get a tap input?
@@ -848,11 +765,6 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                     buttonX = eToolTipPickUpHalf;
                 }
 
-#if 0
-                if (!InputManager.IsVitaTV()) {
-                    buttonBack = eToolTipWhatIsThis;
-                } else
-#endif
                 {
                     buttonRT = eToolTipWhatIsThis;
                 }
@@ -1180,11 +1092,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
         }
     }
 
-#if 0
-    ui.AnimateKeyPress(iPad, iAction);
-#else
     ui.AnimateKeyPress(iPad, iAction, bRepeat, true, false);
-#endif
 
     int buttonNum = 0;          // 0 = LeftMouse, 1 = RightMouse
     BOOL quickKeyHeld = FALSE;  // Represents shift key on PC
@@ -1196,15 +1104,12 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
     // if(pMinecraft->player->GetXboxPad()!=pInputData->UserIndex) return S_OK;
 
     switch (iAction) {
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
         case ACTION_MENU_OTHER_STICK_PRESS:
             itemEditorKeyPress = TRUE;
             break;
 #endif
         case ACTION_MENU_A:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             if (!bRepeat) {
                 validKeyPress = true;
 
@@ -1357,7 +1262,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
         }
         bHandled = true;
     }
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
     else if (itemEditorKeyPress == TRUE) {
         if (IsSectionSlotList(m_eCurrSection)) {
             ItemEditorInput* initData = new ItemEditorInput();

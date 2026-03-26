@@ -23,9 +23,6 @@ private:
     static int ExitDLCMainMenu(void* pParam, int iPad,
                                C4JStorage::EMessageResult result);
 
-#if 0 || 0 || 0
-    bool m_bCategoriesShown;
-#endif
 
 public:
     UIScene_DLCMainMenu(int iPad, void* initData, UILayer* parentLayer);

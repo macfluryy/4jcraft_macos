@@ -17,12 +17,7 @@ private:
     std::vector<UIScene*>
         m_scenesToDestroy;  // A list of scenes where we want to dump the swf
 
-#if 0
-    std::unordered_map<EUIScene, std::pair<int, bool>, std::hash<int>>
-        m_componentRefCount;
-#else
     std::unordered_map<EUIScene, std::pair<int, bool>> m_componentRefCount;
-#endif
 
 public:
     bool m_hasFocus;  // True if the layer "has focus", should be the only layer
@@ -33,9 +28,6 @@ public:
     bool m_bIgnoreAutosaveMenuDisplayed;
     bool m_bIgnorePlayerJoinMenuDisplayed;
 
-#if 0
-    EUILayer m_iLayer;
-#endif
 
     UIGroup* m_parentGroup;
 
@@ -76,10 +68,6 @@ public:
     // INPUT
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
-#if 0
-    // Current active scene
-    UIScene* getCurrentScene();
-#endif
     // FOCUS
 
     bool updateFocusState(bool allowedFocus = false);
@@ -90,9 +78,6 @@ public:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#if 0
-    virtual void HandleDLCLicenseChange();
-#endif
     virtual void HandleMessage(EUIMessage message, void* data);
 
     void handleUnlockFullVersion();

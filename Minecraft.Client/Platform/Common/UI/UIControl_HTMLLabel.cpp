@@ -48,17 +48,6 @@ void UIControl_HTMLLabel::setLabel(const std::string& label) {
 }
 
 void UIControl_HTMLLabel::SetupTouch() {
-#if 0
-    // 4J-TomK - add this dynamic label to the vita touch box list
-
-    switch (m_parentScene->GetParentLayer()->m_iLayer) {
-        case eUILayer_Fullscreen:
-        case eUILayer_Scene:
-        case eUILayer_HUD:
-            ui.TouchBoxAdd(this, m_parentScene);
-            break;
-    }
-#endif
 }
 
 void UIControl_HTMLLabel::TouchScroll(S32 iY, bool bActive) {

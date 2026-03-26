@@ -3,34 +3,9 @@
 #include <set>
 #include <functional>
 
-#if 1
 
 typedef std::function<std::wstring(void)> StringBuilder;
 
-#else
-
-class StringBuilderCore {
-public:
-    virtual std::wstring getString() = 0;
-};
-
-struct StringBuilder {
-    std::shared_ptr<StringBuilderCore> m_coreBuilder;
-    virtual std::wstring operator()() { return m_coreBuilder->getString(); }
-    StringBuilder() {}
-    StringBuilder(StringBuilderCore* core) {
-        m_coreBuilder = std::shared_ptr<StringBuilderCore>(core);
-    }
-};
-
-class IdsStringBuilder : public StringBuilderCore {
-    const int m_ids;
-
-public:
-    IdsStringBuilder(int ids) : m_ids(ids) {}
-    virtual std::wstring getString(void) { return app.GetString(m_ids); }
-};
-#endif
 
 class UIString {
 protected:

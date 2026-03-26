@@ -22,10 +22,6 @@ class CommandDispatcher;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 
-#if 0 || 0 || 0 || \
-    0 || 0
-#define _ACK_CHUNK_SEND_THROTTLING
-#endif
 
 typedef struct _LoadSaveDataThreadParam {
     void* data;
@@ -150,7 +146,7 @@ private:
     void saveAllChunks();
     void saveGameRules();
     void stopServer(bool didInit);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     void overwriteBordersForNewWorldSize(ServerLevel* level);
     void overwriteHellBordersForNewWorldSize(ServerLevel* level,
                                              int oldHellSize);
@@ -280,7 +276,7 @@ private:
 
     // 4J Added - A static that stores the QNet index of the player that is next
     // allowed to send a packet in the slow queue
-#ifdef _ACK_CHUNK_SEND_THROTTLING
+#if defined(_ACK_CHUNK_SEND_THROTTLING)
     static bool s_hasSentEnoughPackets;
     static int64_t s_tickStartTime;
     static std::vector<INetworkPlayer*> s_sentTo;
@@ -301,7 +297,7 @@ private:
 public:
     static bool chunkPacketManagement_CanSendTo(INetworkPlayer* player);
     static void chunkPacketManagement_DidSendTo(INetworkPlayer* player);
-#ifndef _ACK_CHUNK_SEND_THROTTLING
+#if !defined(_ACK_CHUNK_SEND_THROTTLING)
     static void cycleSlowQueueIndex();
 #endif
 

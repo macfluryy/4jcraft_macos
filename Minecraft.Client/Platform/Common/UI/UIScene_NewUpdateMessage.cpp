@@ -36,9 +36,6 @@ UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
 
     m_bIgnoreInput = false;
 
-#if 0
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 UIScene_NewUpdateMessage::~UIScene_NewUpdateMessage() {
@@ -57,11 +54,6 @@ void UIScene_NewUpdateMessage::handleInput(int iPad, int key, bool repeat,
                                            bool& handled) {
     if (m_bIgnoreInput) return;
 
-#if 0
-    // ignore all players except player 0 - it's their profile that is currently
-    // being used
-    if (iPad != 0) return;
-#endif
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
@@ -78,9 +70,6 @@ void UIScene_NewUpdateMessage::handleInput(int iPad, int key, bool repeat,
             app.CheckGameSettingsChanged(true, m_iPad);
             ui.NavigateBack(m_iPad);
         } break;
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_OK:
         case ACTION_MENU_DOWN:
         case ACTION_MENU_UP:

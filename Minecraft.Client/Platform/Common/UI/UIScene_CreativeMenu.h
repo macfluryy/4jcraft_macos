@@ -28,12 +28,7 @@ protected:
         ETouchInput_Count,
     };
 
-#if 0
-    // 4J - TomK - this only needs to be a touch component on vita!
-    UIControl_Touch m_TouchInput[ETouchInput_Count];
-#else
     UIControl_Base m_TouchInput[ETouchInput_Count];
-#endif
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene_AbstractContainerMenu)
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_controlMainPanel)
@@ -77,13 +72,6 @@ public:
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
-#if 0
-    virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
-                                  bool bPressed, bool bRepeat, bool bReleased);
-    virtual UIControl* GetMainPanel();
-    virtual void handleTouchBoxRebuild();
-    virtual void handleTimerComplete(int id);
-#endif
 
 private:
     // IUIScene_CreativeMenu

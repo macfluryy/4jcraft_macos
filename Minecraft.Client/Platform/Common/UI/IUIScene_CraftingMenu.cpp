@@ -166,9 +166,6 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             bHandled = true;
             break;
         case ACTION_MENU_A:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             // Do some crafting!
             if (m_pPlayer && m_pPlayer->inventory) {
                 // RecipyList *recipes = ((Recipes
@@ -463,9 +460,6 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
         (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
         bNoScrollSlots = true;
     }
-#if 0
-    bNoScrollSlots = true;
-#endif
 
     // 4J Stu - We did used to swap the thumsticks based on Southpaw in this
     // scene, but ONLY in this scene
@@ -855,7 +849,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                         iHSlotBrushControl++;
                     } else {
                         app.DebugPrintf("Need more H slots - ");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                         OutputDebugStringW(
                             app.GetString(pTempItemInst->getDescriptionId()));
 #endif
@@ -1016,9 +1010,6 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
             (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
             bNoScrollSlots = true;
         }
-#if 0
-        bNoScrollSlots = true;
-#endif
 
         for (int i = 0; i < iSlots; i++) {
             // 4J this check determines if the crafting scene has only one
@@ -1305,7 +1296,7 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
             setDescriptionText(wsText.c_str());
         } else {
             /// Missing string!
-#ifdef _DEBUG
+#if defined(_DEBUG)
             setDescriptionText(
                 L"This is some placeholder description text about the "
                 L"craftable item.");

@@ -7,13 +7,7 @@
 #include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
-#if 0
-#include <error_dialog.h>
-#endif
 
-#if 0 || 0
-#define USE_SONY_REMOTE_STORAGE
-#endif
 
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                      UILayer* parentLayer)
@@ -31,43 +25,8 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                               BUTTON_PAUSE_LEADERBOARDS);
     m_buttons[BUTTON_PAUSE_ACHIEVEMENTS].init(app.GetString(IDS_ACHIEVEMENTS),
                                               BUTTON_PAUSE_ACHIEVEMENTS);
-#if 0 || 0
-    m_bTrialTexturePack = false;
-    if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
-        TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
-        DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-        m_pDLCPack =
-            pDLCTexPack->getDLCInfoParentPack();  // tPack->getDLCPack();
-
-        if (!m_pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture, L"")) {
-            m_bTrialTexturePack = true;
-        }
-    }
-
-    // 4J-TomK - check for all possible labels being fed into
-    // BUTTON_PAUSE_SAVEGAME (Bug 163775) this has to be done before button
-    // initialisation!
-    wchar_t saveButtonLabels[2][256];
-    swprintf(saveButtonLabels[0], 256, L"%ls", app.GetString(IDS_SAVE_GAME));
-    swprintf(saveButtonLabels[1], 256, L"%ls",
-             app.GetString(IDS_DISABLE_AUTOSAVE));
-    m_buttons[BUTTON_PAUSE_SAVEGAME].setAllPossibleLabels(2, saveButtonLabels);
-
-    if (app.GetGameHostOption(eGameHostOption_DisableSaving) ||
-        m_bTrialTexturePack) {
-        m_savesDisabled = true;
-        m_buttons[BUTTON_PAUSE_SAVEGAME].init(app.GetString(IDS_SAVE_GAME),
-                                              BUTTON_PAUSE_SAVEGAME);
-    } else {
-        m_savesDisabled = false;
-        m_buttons[BUTTON_PAUSE_SAVEGAME].init(
-            app.GetString(IDS_DISABLE_AUTOSAVE), BUTTON_PAUSE_SAVEGAME);
-    }
-#else
     m_buttons[BUTTON_PAUSE_SAVEGAME].init(app.GetString(IDS_SAVE_GAME),
                                           BUTTON_PAUSE_SAVEGAME);
-#endif
     m_buttons[BUTTON_PAUSE_EXITGAME].init(app.GetString(IDS_EXIT_GAME),
                                           BUTTON_PAUSE_EXITGAME);
 
@@ -136,41 +95,8 @@ std::wstring UIScene_PauseMenu::getMoviePath() {
 void UIScene_PauseMenu::tick() {
     UIScene::tick();
 
-#if 0
-    // 4J-MGH - Need to check for installed DLC here, as we delay the
-    // installation of the key file on Vita
-    if (!app.DLCInstallProcessCompleted()) app.StartInstallDLCProcess(0);
-#endif
 
-#if 0 || 0
-    if (!m_bTrialTexturePack &&
-        m_savesDisabled !=
-            (app.GetGameHostOption(eGameHostOption_DisableSaving) != 0) &&
-        ProfileManager.GetPrimaryPad() == m_iPad) {
-        // We show the save button if saves are disabled as this lets us show a
-        // prompt to enable them (via purchasing a texture pack)
-        if (app.GetGameHostOption(eGameHostOption_DisableSaving)) {
-            m_savesDisabled = true;
-            m_buttons[BUTTON_PAUSE_SAVEGAME].setLabel(
-                app.GetString(IDS_SAVE_GAME));
-        } else {
-            m_savesDisabled = false;
-            m_buttons[BUTTON_PAUSE_SAVEGAME].setLabel(
-                app.GetString(IDS_DISABLE_AUTOSAVE));
-        }
-    }
-#endif
 
-#if 0
-    // Process the error dialog (for a patch being available)
-    if (m_bErrorDialogRunning) {
-        SceErrorDialogStatus stat = sceErrorDialogUpdateStatus();
-        if (stat == SCE_ERROR_DIALOG_STATUS_FINISHED) {
-            sceErrorDialogTerminate();
-            m_bErrorDialogRunning = false;
-        }
-    }
-#endif
 }
 
 void UIScene_PauseMenu::updateTooltips() {
@@ -178,43 +104,25 @@ void UIScene_PauseMenu::updateTooltips() {
     bool bIsisPrimaryHost =
         g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
 
-#if 0
-    bool bDisplayBanTip = !g_NetworkManager.IsLocalGame() &&
-                          !bIsisPrimaryHost && !ProfileManager.IsGuest(m_iPad);
-#endif
 
     int iY = -1;
-#if 0 || 0
-    if (m_iPad == ProfileManager.GetPrimaryPad())
-        iY = IDS_TOOLTIPS_GAME_INVITES;
-#endif
     int iRB = -1;
     int iX = -1;
 
     if (ProfileManager.IsFullVersion()) {
         if (StorageManager.GetSaveDisabled()) {
             iX = bIsisPrimaryHost ? IDS_TOOLTIPS_SELECTDEVICE : -1;
-#if 0
-            iRB = bDisplayBanTip ? IDS_TOOLTIPS_BANLEVEL : -1;
-#endif
             if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
                 CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
                 bUserisClientSide) {
-#if 1
                 iY = IDS_TOOLTIPS_SHARE;
-#endif
             }
         } else {
             iX = bIsisPrimaryHost ? IDS_TOOLTIPS_CHANGEDEVICE : -1;
-#if 0
-            iRB = bDisplayBanTip ? IDS_TOOLTIPS_BANLEVEL : -1;
-#endif
             if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
                 CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
                 bUserisClientSide) {
-#if 1
                 iY = IDS_TOOLTIPS_SHARE;
-#endif
             }
         }
     }
@@ -233,42 +141,12 @@ void UIScene_PauseMenu::updateComponents() {
 }
 
 void UIScene_PauseMenu::handlePreReload() {
-#if 0 || 0
-    if (ProfileManager.GetPrimaryPad() == m_iPad) {
-        // 4J-TomK - check for all possible labels being fed into
-        // BUTTON_PAUSE_SAVEGAME (Bug 163775) this has to be done before button
-        // initialisation!
-        wchar_t saveButtonLabels[2][256];
-        swprintf(saveButtonLabels[0], 256, L"%ls",
-                 app.GetString(IDS_SAVE_GAME));
-        swprintf(saveButtonLabels[1], 256, L"%ls",
-                 app.GetString(IDS_DISABLE_AUTOSAVE));
-        m_buttons[BUTTON_PAUSE_SAVEGAME].setAllPossibleLabels(2,
-                                                              saveButtonLabels);
-    }
-#endif
 }
 
 void UIScene_PauseMenu::handleReload() {
     updateTooltips();
     updateControlsVisibility();
 
-#if 0 || 0
-    if (ProfileManager.GetPrimaryPad() == m_iPad) {
-        // We show the save button if saves are disabled as this lets us show a
-        // prompt to enable them (via purchasing a texture pack)
-        if (app.GetGameHostOption(eGameHostOption_DisableSaving) ||
-            m_bTrialTexturePack) {
-            m_savesDisabled = true;
-            m_buttons[BUTTON_PAUSE_SAVEGAME].setLabel(
-                app.GetString(IDS_SAVE_GAME));
-        } else {
-            m_savesDisabled = false;
-            m_buttons[BUTTON_PAUSE_SAVEGAME].setLabel(
-                app.GetString(IDS_DISABLE_AUTOSAVE));
-        }
-    }
-#endif
 
     doHorizontalResizeCheck();
 }
@@ -288,16 +166,8 @@ void UIScene_PauseMenu::updateControlsVisibility() {
         if (app.GetLocalPlayerCount() > 1) {
             // Hide the BUTTON_PAUSE_LEADERBOARDS and BUTTON_PAUSE_ACHIEVEMENTS
             removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
-#if 1
             removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
-#endif
         }
-#if 0
-        // MGH added - remove leaderboards in adhoc
-        if (CGameNetworkManager::usingAdhocMode()) {
-            removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
-        }
-#endif
 
         if (!g_NetworkManager.IsHost()) {
             // Hide the BUTTON_PAUSE_SAVEGAME
@@ -307,25 +177,14 @@ void UIScene_PauseMenu::updateControlsVisibility() {
         // Hide the BUTTON_PAUSE_LEADERBOARDS, BUTTON_PAUSE_ACHIEVEMENTS and
         // BUTTON_PAUSE_SAVEGAME
         removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
-#if 1
         removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
-#endif
         removeControl(&m_buttons[BUTTON_PAUSE_SAVEGAME], false);
     }
 
     // is saving disabled?
     if (StorageManager.GetSaveDisabled()) {
-#if 0
-        // disable save button
-        m_buttons[BUTTON_PAUSE_SAVEGAME].setEnable(false);
-#endif
     }
 
-#if 0 || 0 || 0
-    // We don't have a way to display trophies/achievements, so remove the
-    // button, and we're allowed to not have it on Xbox One
-    removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
-#endif
 }
 
 void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
@@ -340,26 +199,10 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
     // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 
-#if 0
-    bool bIsisPrimaryHost =
-        g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == iPad);
-    bool bDisplayBanTip = !g_NetworkManager.IsLocalGame() &&
-                          !bIsisPrimaryHost && !ProfileManager.IsGuest(iPad);
-#endif
 
     switch (key) {
-#if 0
-        case ACTION_MENU_GTC_RESUME:
-#endif
-#if 0  // not for Orbis - we want to use the pause menu (touchpad
-                      // press) to select a menu item
-        case ACTION_MENU_PAUSEMENU:
-#endif
         case ACTION_MENU_CANCEL:
             if (pressed) {
-#if 0
-                // DurangoStatsDebugger::PrintStats(iPad);
-#endif
                 // TODO: proper fix for pausing
                 // 4jcraft: replace IsLocalGame() with GetPlayerCount() == 1 due
                 // to IsLocalGame() issues on Iggy
@@ -379,9 +222,6 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
             if (pressed) {
@@ -409,73 +249,6 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
 #endif
 
         case ACTION_MENU_Y: {
-#if 0 || 0
-            if (pressed && iPad == ProfileManager.GetPrimaryPad()) {
-#if 0
-                // If a patch is available, can't view invites
-                if (CheckForPatch()) break;
-#endif
-
-                // Are we offline?
-                if (!ProfileManager.IsSignedInLive(iPad)) {
-                    m_eAction = eAction_ViewInvitesPSN;
-#if 0
-                    int npAvailability = ProfileManager.getNPAvailability(iPad);
-                    if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-                        // 4J Stu - This is a bit messy and is due to the
-                        // library incorrectly returning false for
-                        // IsSignedInLive is the npAvailability isn't SCE_OK
-                        unsigned int uiIDA[1];
-                        uiIDA[0] = IDS_OK;
-                        ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                               IDS_CONTENT_RESTRICTION, uiIDA,
-                                               1, iPad);
-                    } else
-                        // Determine why they're not "signed in live"
-                        if (ProfileManager.isSignedInPSN(iPad)) {
-                            // Signed in to PSN but not connected (no internet
-                            // access)
-                            assert(!ProfileManager.isConnectedToPSN(iPad));
-
-                            unsigned int uiIDA[1];
-                            uiIDA[0] = IDS_OK;
-                            ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
-                                                   IDS_ERROR_NETWORK, uiIDA, 1,
-                                                   iPad);
-                        } else {
-                            // Not signed in to PSN
-                            unsigned int uiIDA[1];
-                            uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                            ui.RequestAlertMessage(
-                                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
-                                uiIDA, 1, iPad,
-                                &UIScene_PauseMenu::MustSignInReturnedPSN,
-                                (LPVOID)GetCallbackUniqueId());
-                        }
-#else  // 0
-       // get them to sign in to online
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                    ui.RequestAlertMessage(
-                        IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
-                        1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN,
-                        (LPVOID)GetCallbackUniqueId());
-#endif
-                } else {
-#if 0
-                    SQRNetworkManager_Orbis::RecvInviteGUI();
-#else  // 0
-                    int ret = sceNpBasicRecvMessageCustom(
-                        SCE_NP_BASIC_MESSAGE_MAIN_TYPE_INVITE,
-                        SCE_NP_BASIC_RECV_MESSAGE_OPTIONS_INCLUDE_BOOTABLE,
-                        SYS_MEMORY_CONTAINER_ID_INVALID);
-                    app.DebugPrintf(
-                        "sceNpBasicRecvMessageCustom return %d ( %08x )\n", ret,
-                        ret);
-#endif
-                }
-            }
-#else
 #if TO_BE_IMPLEMENTED
             if (bUserisClientSide) {
                 // 4J Stu - Added check in 1.8.2 bug fix (TU6) to stop repeat
@@ -493,24 +266,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
             }
             rfHandled = TRUE;
 #endif
-#endif  // 0
         } break;
-#if 0
-        case ACTION_MENU_RIGHT_SCROLL:
-            if (bDisplayBanTip) {
-                unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CONFIRM_CANCEL;
-                uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(
-                    IDS_ACTION_BAN_LEVEL_TITLE,
-                    IDS_ACTION_BAN_LEVEL_DESCRIPTION, uiIDA, 2, iPad,
-                    &UIScene_PauseMenu::BanGameDialogReturned,
-                    (LPVOID)GetCallbackUniqueId());
-
-                // rfHandled = TRUE;
-            }
-            break;
-#endif
     }
 }
 
@@ -542,89 +298,15 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else if (!ProfileManager.IsSignedInLive(m_iPad)) {
-#if 0
-                // If a patch is available, can't show leaderboard
-                if (CheckForPatch()) break;
 
-                // Check for content restricted user
-                // Update error code
-                int errorCode = ProfileManager.getNPAvailability(m_iPad);
-
-                // Check if PSN is unavailable because of age restriction
-                if (errorCode == SCE_NP_ERROR_AGE_RESTRICTION) {
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_CONFIRM_OK;
-                    ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                           IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                           m_iPad);
-
-                    break;
-                    ;
-                }
-
-#endif
-
-#if 0 || 0
-                // get them to sign in to online
-                m_eAction = eAction_ViewLeaderboardsPSN;
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                ui.RequestAlertMessage(
-                    IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
-                    uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                    &UIScene_PauseMenu::MustSignInReturnedPSN,
-                    (LPVOID)GetCallbackUniqueId());
-#elif 0
-                m_eAction = eAction_ViewLeaderboardsPSN;
-                int npAvailability = ProfileManager.getNPAvailability(m_iPad);
-                if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-                    // 4J Stu - This is a bit messy and is due to the library
-                    // incorrectly returning false for IsSignedInLive is the
-                    // npAvailability isn't SCE_OK
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_OK;
-                    ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                           IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                           m_iPad);
-                } else
-                    // Determine why they're not "signed in live"
-                    if (ProfileManager.isSignedInPSN(m_iPad)) {
-                        // Signed in to PSN but not connected (no internet
-                        // access)
-
-                        // Id
-                        assert(!ProfileManager.isConnectedToPSN(m_iPad));
-
-                        unsigned int uiIDA[1];
-                        uiIDA[0] = IDS_OK;
-                        ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
-                                               IDS_ERROR_NETWORK, uiIDA, 1,
-                                               m_iPad);
-                    } else {
-                        // Not signed in to PSN
-                        unsigned int uiIDA[1];
-                        uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                        ui.RequestAlertMessage(
-                            IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
-                            uiIDA, 1, m_iPad,
-                            &UIScene_PauseMenu::MustSignInReturnedPSN,
-                            (LPVOID)GetCallbackUniqueId());
-                    }
-#else
                 unsigned int uiIDA[1] = {IDS_OK};
                 ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
                                        IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                                        m_iPad);
-#endif
             } else {
                 bool bContentRestricted = false;
-#if 0 || 0
-                ProfileManager.GetChatAndContentRestrictions(
-                    m_iPad, true, NULL, &bContentRestricted, NULL);
-#endif
                 if (bContentRestricted) {
-#if !(0 || defined(_WINDOWS64) || \
-      0)  // 4J Stu - Temp to get the win build running, but so
+#if !defined(_WINDOWS64)
                            // we check this for other platforms
                     // you can't see leaderboards
                     unsigned int uiIDA[1];
@@ -671,44 +353,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        ->getSessionTimer();
                     }
 
-#if 0 || 0
-                    uiIDA[0] = IDS_CONFIRM_CANCEL;
-                    uiIDA[1] = IDS_CONFIRM_OK;
-
-                    if (g_NetworkManager.IsHost() &&
-                        StorageManager.GetSaveDisabled()) {
-                        uiIDA[0] = IDS_CONFIRM_CANCEL;
-                        uiIDA[1] = IDS_EXIT_GAME_SAVE;
-                        uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
-
-                        if (g_NetworkManager.GetPlayerCount() > 1) {
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME,
-                                IDS_CONFIRM_EXIT_GAME_CONFIRM_DISCONNECT_SAVE,
-                                uiIDA, 3, m_iPad,
-                                &UIScene_PauseMenu::ExitGameSaveDialogReturned,
-                                (LPVOID)GetCallbackUniqueId());
-                        } else {
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
-                                m_iPad,
-                                &UIScene_PauseMenu::ExitGameSaveDialogReturned,
-                                (LPVOID)GetCallbackUniqueId());
-                        }
-                    } else if (g_NetworkManager.IsHost() &&
-                               g_NetworkManager.GetPlayerCount() > 1) {
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME,
-                            IDS_CONFIRM_EXIT_GAME_CONFIRM_DISCONNECT, uiIDA, 2,
-                            m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
-                    } else {
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                            m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
-                    }
-#else
                     if (StorageManager.GetSaveDisabled()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
@@ -750,7 +394,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                 (LPVOID)GetCallbackUniqueId());
                         }
                     }
-#endif
                 } else {
                     int playTime = -1;
                     if (pMinecraft->localplayers[m_iPad] != NULL) {
@@ -807,55 +450,9 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 void UIScene_PauseMenu::PerformActionSaveGame() {
     // is the player trying to save in the trial version?
     if (!ProfileManager.IsFullVersion()) {
-#if 0
-        // If a patch is available, can't buy full game
-        if (CheckForPatch()) return;
-#endif
 
         // Unlock the full version?
         if (!ProfileManager.IsSignedInLive(m_iPad)) {
-#if 0 || 0
-            m_eAction = eAction_SaveGamePSN;
-            unsigned int uiIDA[2];
-            uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-            uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestAlertMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
-                                   ProfileManager.GetPrimaryPad(),
-                                   &UIScene_PauseMenu::MustSignInReturnedPSN,
-                                   (LPVOID)GetCallbackUniqueId());
-#elif 0
-            m_eAction = eAction_SaveGamePSN;
-            int npAvailability = ProfileManager.getNPAvailability(m_iPad);
-            if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-                // 4J Stu - This is a bit messy and is due to the library
-                // incorrectly returning false for IsSignedInLive is the
-                // npAvailability isn't SCE_OK
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_OK;
-                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                       m_iPad);
-            } else
-                // Determine why they're not "signed in live"
-                if (ProfileManager.isSignedInPSN(m_iPad)) {
-                    // Signed in to PSN but not connected (no internet access)
-                    assert(!ProfileManager.isConnectedToPSN(m_iPad));
-
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_OK;
-                    ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
-                                           IDS_ERROR_NETWORK, uiIDA, 1, m_iPad);
-                } else {
-                    // Not signed in to PSN
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                    ui.RequestAlertMessage(
-                        IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
-                        1, m_iPad, &UIScene_PauseMenu::MustSignInReturnedPSN,
-                        (LPVOID)GetCallbackUniqueId());
-                }
-#endif
         } else {
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_OK;
@@ -880,35 +477,12 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
 
         if (!m_pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture, L"")) {
             // upsell
-#if 0
-            ULONGLONG ullOfferID_Full;
-            // get the dlc texture pack
-            DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-            app.GetDLCFullOfferIDForPackID(pDLCTexPack->getDLCParentPackId(),
-                                           &ullOfferID_Full);
-
-            // tell sentient about the upsell of the full version of the texture
-            // pack
-            TelemetryManager->RecordUpsellPresented(
-                m_iPad, eSet_UpsellID_Texture_DLC,
-                ullOfferID_Full & 0xFFFFFFFF);
-#endif
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CONFIRM_OK;
             uiIDA[1] = IDS_CONFIRM_CANCEL;
 
             // Give the player a warning about the trial version of the texture
             // pack
-#if 0
-            if (app.DLCInstallProcessCompleted() &&
-                !SonyCommerce_Vita::
-                    getDLCUpgradePending())  // MGH - devtrack #5861 On vita it
-                                             // can take a bit after the install
-                                             // has finished to register the
-                                             // purchase, so make sure we don't
-                                             // end up asking to purchase again
-#endif
             {
                 ui.RequestAlertMessage(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
@@ -928,31 +502,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
     C4JStorage::ESaveGameState result =
         StorageManager.DoesSaveExist(&bSaveExists);
 
-#if 0
-    if (result == C4JStorage::ELoadGame_DeviceRemoved) {
-        // this will be a tester trying to be clever
-        unsigned int uiIDA[2];
-        uiIDA[0] = IDS_SELECTANEWDEVICE;
-        uiIDA[1] = IDS_NODEVICE_DECLINE;
-
-        ui.RequestAlertMessage(IDS_STORAGEDEVICEPROBLEM_TITLE,
-                               IDS_FAILED_TO_LOADSAVE_TEXT, uiIDA, 2, m_iPad,
-                               &IUIScene_PauseMenu::DeviceRemovedDialogReturned,
-                               (LPVOID)GetCallbackUniqueId());
-    } else
-#endif
     {
-#if 0 || 0
-        if (!m_savesDisabled) {
-            unsigned int uiIDA[2];
-            uiIDA[0] = IDS_CANCEL;
-            uiIDA[1] = IDS_CONFIRM_OK;
-            ui.RequestAlertMessage(
-                IDS_TITLE_DISABLE_AUTOSAVE, IDS_CONFIRM_DISABLE_AUTOSAVE, uiIDA,
-                2, m_iPad, &IUIScene_PauseMenu::DisableAutosaveDialogReturned,
-                (LPVOID)GetCallbackUniqueId());
-        } else
-#endif
             // we need to ask if they are sure they want to overwrite the
             // existing game
             if (bSaveExists) {
@@ -964,19 +514,8 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
                     m_iPad, &IUIScene_PauseMenu::SaveGameDialogReturned,
                     (LPVOID)GetCallbackUniqueId());
             } else {
-#if 0 || 0
-                unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CONFIRM_CANCEL;
-                uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(
-                    IDS_TITLE_ENABLE_AUTOSAVE, IDS_CONFIRM_ENABLE_AUTOSAVE,
-                    uiIDA, 2, m_iPad,
-                    &IUIScene_PauseMenu::EnableAutosaveDialogReturned,
-                    (LPVOID)GetCallbackUniqueId());
-#else
             // flag a app action of save game
             app.SetAction(m_iPad, eAppAction_SaveGame);
-#endif
             }
     }
 }
@@ -1029,19 +568,6 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
-#if 0 || 0
-            bool bContentRestricted;
-            ProfileManager.GetChatAndContentRestrictions(
-                ProfileManager.GetPrimaryPad(), true, NULL, &bContentRestricted,
-                NULL);
-            if (bContentRestricted) {
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                       ProfileManager.GetPrimaryPad());
-            } else
-#endif
             {
                 ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
@@ -1070,498 +596,10 @@ int UIScene_PauseMenu::SaveGame_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#if 0
-int UIScene_PauseMenu::BanGameDialogReturned(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // results switched for this dialog
-    if (result == C4JStorage::EMessage_ResultDecline) {
-        app.SetAction(iPad, eAppAction_BanLevel);
-    }
-    return 0;
-}
-#endif
 
-#if 0 || 0 || 0
-int UIScene_PauseMenu::MustSignInReturnedPSN(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    UIScene_PauseMenu* pClass =
-        (UIScene_PauseMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
-    if (result == C4JStorage::EMessage_ResultAccept && pClass) {
-#if 0
-        switch (pClass->m_eAction) {
-            case eAction_ViewLeaderboardsPSN:
-                SQRNetworkManager_PS3::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewLeaderboards_SignInReturned,
-                    pParam);
-                break;
-            case eAction_ViewInvitesPSN:
-                SQRNetworkManager_PS3::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewInvites_SignInReturned, pParam);
-                break;
-            case eAction_SaveGamePSN:
-                SQRNetworkManager_PS3::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::SaveGame_SignInReturned, pParam);
-                break;
-            case eAction_BuyTexturePackPSN:
-                SQRNetworkManager_PS3::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::BuyTexturePack_SignInReturned, pParam);
-                break;
-        }
-#elif 0
-        switch (pClass->m_eAction) {
-            case eAction_ViewLeaderboardsPSN:
-                // CD - Must force Ad-Hoc off if they want leaderboard PSN
-                // sign-in Save settings change
-                app.SetGameSettings(0, eGameSetting_PSVita_NetworkModeAdhoc, 0);
-                // Force off
-                CGameNetworkManager::setAdhocMode(false);
-                // Now Sign-in
-                SQRNetworkManager_Vita::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewLeaderboards_SignInReturned,
-                    pParam);
-                break;
-            case eAction_ViewInvitesPSN:
-                SQRNetworkManager_Vita::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewInvites_SignInReturned, pParam);
-                break;
-            case eAction_SaveGamePSN:
-                SQRNetworkManager_Vita::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::SaveGame_SignInReturned, pParam, true);
-                break;
-            case eAction_BuyTexturePackPSN:
-                SQRNetworkManager_Vita::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::BuyTexturePack_SignInReturned, pParam);
-                break;
-        }
-#else
-        switch (pClass->m_eAction) {
-            case eAction_ViewLeaderboardsPSN:
-                SQRNetworkManager_Orbis::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewLeaderboards_SignInReturned, pClass,
-                    false, iPad);
-                break;
-            case eAction_ViewInvitesPSN:
-                SQRNetworkManager_Orbis::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::ViewInvites_SignInReturned, pClass,
-                    false, iPad);
-                break;
-            case eAction_SaveGamePSN:
-                SQRNetworkManager_Orbis::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::SaveGame_SignInReturned, pClass, false,
-                    iPad);
-                break;
-            case eAction_BuyTexturePackPSN:
-                SQRNetworkManager_Orbis::AttemptPSNSignIn(
-                    &UIScene_PauseMenu::BuyTexturePack_SignInReturned, pClass,
-                    false, iPad);
-                break;
-        }
-#endif
-    }
-
-    return 0;
-}
-
-int UIScene_PauseMenu::ViewLeaderboards_SignInReturned(void* pParam,
-                                                       bool bContinue,
-                                                       int iPad) {
-    UIScene_PauseMenu* pClass =
-        (UIScene_PauseMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
-    if (!pClass) return 0;
-
-    if (bContinue == true) {
-        unsigned int uiIDA[1];
-        uiIDA[0] = IDS_CONFIRM_OK;
-
-        // guests can't look at leaderboards
-        if (ProfileManager.IsGuest(pClass->m_iPad)) {
-            ui.RequestAlertMessage(IDS_PRO_GUESTPROFILE_TITLE,
-                                   IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
-                                   ProfileManager.GetPrimaryPad());
-        } else if (ProfileManager.IsSignedInLive(iPad)) {
-#if 1
-            bool bContentRestricted = false;
-            ProfileManager.GetChatAndContentRestrictions(
-                pClass->m_iPad, true, NULL, &bContentRestricted, NULL);
-            if (bContentRestricted) {
-                // you can't see leaderboards
-                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                       ProfileManager.GetPrimaryPad());
-            } else
-#endif
-            {
-                ui.NavigateToScene(pClass->m_iPad, eUIScene_LeaderboardsMenu);
-            }
-        }
-    }
-
-    return 0;
-}
-
-int UIScene_PauseMenu::WarningTrialTexturePackReturned(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    UIScene_PauseMenu* pClass =
-        (UIScene_PauseMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
-
-#if 0
-    // If a patch is available, can't proceed
-    if (!pClass || pClass->CheckForPatch()) return 0;
-#endif
-
-#if 0 || 0 || 0
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (!ProfileManager.IsSignedInLive(iPad)) {
-            if (pClass) pClass->m_eAction = eAction_SaveGamePSN;
-#if 0  // Check if PSN is unavailable because of age restriction
-            int npAvailability = ProfileManager.getNPAvailability(iPad);
-            if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-                // 4J Stu - This is a bit messy and is due to the library
-                // incorrectly returning false for IsSignedInLive is the
-                // npAvailability isn't SCE_OK
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_OK;
-                ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
-            } else
-                // Determine why they're not "signed in live"
-                if (ProfileManager.isSignedInPSN(iPad)) {
-                    // Signed in to PSN but not connected (no internet access)
-                    assert(!ProfileManager.isConnectedToPSN(iPad));
-
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_OK;
-                    ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE,
-                                           IDS_ERROR_NETWORK, uiIDA, 1, iPad);
-                } else {
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-                    ui.RequestAlertMessage(
-                        IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
-                        1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN,
-                        pParam);
-                }
-#else  // 0
-       // You're not signed in to PSN!
-            unsigned int uiIDA[2];
-            uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-            uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
-            ui.RequestAlertMessage(
-                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
-                2, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, pParam);
-#endif
-        } else {
-#if 1
-            // 4J-PB - need to check this user can access the store
-            bool bContentRestricted = false;
-            ProfileManager.GetChatAndContentRestrictions(
-                ProfileManager.GetPrimaryPad(), true, NULL, &bContentRestricted,
-                NULL);
-            if (bContentRestricted) {
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
-            } else
-#endif
-            {
-                // need to get info on the pack to see if the user has already
-                // downloaded it
-                TexturePack* tPack =
-                    Minecraft::GetInstance()->skins->getSelected();
-                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                // retrieve the store name for the skin pack
-                DLCPack* pDLCPack =
-                    pDLCTexPack
-                        ->getDLCInfoParentPack();  // tPack->getDLCPack();
-                const char* pchPackName =
-                    wstringtofilename(pDLCPack->getName());
-                app.DebugPrintf("Texture Pack - %s\n", pchPackName);
-                SONYDLC* pSONYDLCInfo = app.GetSONYDLCInfo((char*)pchPackName);
-
-                if (pSONYDLCInfo != NULL) {
-                    char chName[42];
-                    char chKeyName[20];
-                    char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
-
-                    memset(chSkuID, 0, SCE_NP_COMMERCE2_SKU_ID_LEN);
-                    // find the info on the skin pack
-                    // we have to retrieve the skuid from the store info, it
-                    // can't be hardcoded since Sony may change it. So we assume
-                    // the first sku for the product is the one we want
-
-                    // MGH -  keyname in the DLC file is 16 chars long, but
-                    // there's no space for a NULL terminating char
-                    memset(chKeyName, 0, sizeof(chKeyName));
-                    strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
-
-#if 0
-                    strcpy(chName, chKeyName);
-#else
-                    sprintf(chName, "%s-%s", app.GetCommerceCategory(),
-                            chKeyName);
-#endif
-                    app.GetDLCSkuIDFromProductList(chName, chSkuID);
-
-                    // 4J-PB - need to check for an empty store
-#if 0 || 0 || 0
-                    if (app.CheckForEmptyStore(iPad) == false)
-#endif
-                    {
-                        if (app.DLCAlreadyPurchased(chSkuID)) {
-                            app.DownloadAlreadyPurchased(chSkuID);
-                        } else {
-                            app.Checkout(chSkuID);
-                        }
-                    }
-                }
-            }
-        }
-    }
-#endif  //
-
-    return 0;
-}
-
-int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void* pParam,
-                                                     bool bContinue, int iPad) {
-    if (bContinue == true) {
-        // Check if we're signed in to LIVE
-        if (ProfileManager.IsSignedInLive(iPad)) {
-#if 0 || 0 || 0
-
-#if 1
-            // 4J-PB - need to check this user can access the store
-            bool bContentRestricted = false;
-            ProfileManager.GetChatAndContentRestrictions(
-                iPad, true, NULL, &bContentRestricted, NULL);
-            if (bContentRestricted) {
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
-            } else
-#endif
-            {
-                // need to get info on the pack to see if the user has already
-                // downloaded it
-                TexturePack* tPack =
-                    Minecraft::GetInstance()->skins->getSelected();
-                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                // retrieve the store name for the skin pack
-                DLCPack* pDLCPack =
-                    pDLCTexPack
-                        ->getDLCInfoParentPack();  // tPack->getDLCPack();
-                const char* pchPackName =
-                    wstringtofilename(pDLCPack->getName());
-                app.DebugPrintf("Texture Pack - %s\n", pchPackName);
-                SONYDLC* pSONYDLCInfo = app.GetSONYDLCInfo((char*)pchPackName);
-
-                if (pSONYDLCInfo != NULL) {
-                    char chName[42];
-                    char chKeyName[20];
-                    char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
-
-                    memset(chSkuID, 0, SCE_NP_COMMERCE2_SKU_ID_LEN);
-                    // find the info on the skin pack
-                    // we have to retrieve the skuid from the store info, it
-                    // can't be hardcoded since Sony may change it. So we assume
-                    // the first sku for the product is the one we want
-
-                    // MGH -  keyname in the DLC file is 16 chars long, but
-                    // there's no space for a NULL terminating char
-                    memset(chKeyName, 0, sizeof(chKeyName));
-                    strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
-
-#if 0
-                    strcpy(chName, chKeyName);
-#else
-                    sprintf(chName, "%s-%s", app.GetCommerceCategory(),
-                            chKeyName);
-#endif
-                    app.GetDLCSkuIDFromProductList(chName, chSkuID);
-
-                    // 4J-PB - need to check for an empty store
-#if 0 || 0 || 0
-                    if (app.CheckForEmptyStore(iPad) == false)
-#endif
-                    {
-                        if (app.DLCAlreadyPurchased(chSkuID)) {
-                            app.DownloadAlreadyPurchased(chSkuID);
-                        } else {
-                            app.Checkout(chSkuID);
-                        }
-                    }
-                }
-            }
-#else
-            // TO BE IMPEMENTED FOR ORBIS
-#endif
-        }
-    }
-    return 0;
-}
-
-int UIScene_PauseMenu::ViewInvites_SignInReturned(void* pParam, bool bContinue,
-                                                  int iPad) {
-    if (bContinue == true) {
-        // Check if we're signed in to LIVE
-        if (ProfileManager.IsSignedInLive(iPad)) {
-#if 0
-            SQRNetworkManager_Orbis::RecvInviteGUI();
-#elif 0
-            int ret = sceNpBasicRecvMessageCustom(
-                SCE_NP_BASIC_MESSAGE_MAIN_TYPE_INVITE,
-                SCE_NP_BASIC_RECV_MESSAGE_OPTIONS_INCLUDE_BOOTABLE,
-                SYS_MEMORY_CONTAINER_ID_INVALID);
-            app.DebugPrintf("sceNpBasicRecvMessageCustom return %d ( %08x )\n",
-                            ret, ret);
-#else  // 0
-            PSVITA_STUBBED;
-#endif
-        }
-    }
-    return 0;
-}
-
-int UIScene_PauseMenu::ExitGameSaveDialogReturned(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // Exit with or without saving
-    // Decline means save in this dialog
-    if (result == C4JStorage::EMessage_ResultDecline ||
-        result == C4JStorage::EMessage_ResultThirdOption) {
-        if (result == C4JStorage::EMessage_ResultDecline)  // Save
-        {
-            // 4J-PB - Is the player trying to save but they are using a trial
-            // texturepack ?
-            if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
-                TexturePack* tPack =
-                    Minecraft::GetInstance()->skins->getSelected();
-                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                DLCPack* pDLCPack =
-                    pDLCTexPack
-                        ->getDLCInfoParentPack();  // tPack->getDLCPack();
-                if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
-                                                L"")) {
-#if 0
-                    // upsell
-                    ULONGLONG ullOfferID_Full;
-                    // get the dlc texture pack
-                    DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                    app.GetDLCFullOfferIDForPackID(
-                        pDLCTexPack->getDLCParentPackId(), &ullOfferID_Full);
-
-                    // tell sentient about the upsell of the full version of the
-                    // skin pack
-                    TelemetryManager->RecordUpsellPresented(
-                        iPad, eSet_UpsellID_Texture_DLC,
-                        ullOfferID_Full & 0xFFFFFFFF);
-#endif
-
-                    unsigned int uiIDA[2];
-                    uiIDA[0] = IDS_CONFIRM_OK;
-                    uiIDA[1] = IDS_CONFIRM_CANCEL;
-
-                    // Give the player a warning about the trial version of the
-                    // texture pack
-                    ui.RequestAlertMessage(
-                        IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
-                        IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2,
-                        ProfileManager.GetPrimaryPad(),
-                        &UIScene_PauseMenu::WarningTrialTexturePackReturned,
-                        pParam);
-
-                    return S_OK;
-                }
-            }
-
-            // does the save exist?
-            bool bSaveExists;
-            StorageManager.DoesSaveExist(&bSaveExists);
-            // 4J-PB - we check if the save exists inside the libs
-            // we need to ask if they are sure they want to overwrite the
-            // existing game
-            if (bSaveExists) {
-                unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CONFIRM_CANCEL;
-                uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(
-                    IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2,
-                    ProfileManager.GetPrimaryPad(),
-                    &IUIScene_PauseMenu::ExitGameAndSaveReturned, pParam);
-                return 0;
-            } else {
-#if 0 || 0
-                StorageManager.SetSaveDisabled(false);
-#endif
-                MinecraftServer::getInstance()->setSaveOnExit(true);
-            }
-        } else {
-            // been a few requests for a confirm on exit without saving
-            unsigned int uiIDA[2];
-            uiIDA[0] = IDS_CONFIRM_CANCEL;
-            uiIDA[1] = IDS_CONFIRM_OK;
-            ui.RequestAlertMessage(
-                IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME,
-                uiIDA, 2, ProfileManager.GetPrimaryPad(),
-                &IUIScene_PauseMenu::ExitGameDeclineSaveReturned, pParam);
-            return 0;
-        }
-
-        app.SetAction(iPad, eAppAction_ExitWorld);
-    }
-    return 0;
-}
-
-#endif
 
 void UIScene_PauseMenu::SetIgnoreInput(bool ignoreInput) {
     m_bIgnoreInput = ignoreInput;
 }
 
-#if 0
-void UIScene_PauseMenu::HandleDLCLicenseChange() {}
-#endif
 
-#if 0
-bool UIScene_PauseMenu::CheckForPatch() {
-    int npAvailability =
-        ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());
-
-    bool bPatchAvailable;
-    switch (npAvailability) {
-        case SCE_NP_ERROR_LATEST_PATCH_PKG_EXIST:
-        case SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED:
-            bPatchAvailable = true;
-            break;
-        default:
-            bPatchAvailable = false;
-            break;
-    }
-
-    if (bPatchAvailable) {
-        int32_t ret = sceErrorDialogInitialize();
-        if (ret == SCE_OK) {
-            m_bErrorDialogRunning = true;
-
-            SceErrorDialogParam param;
-            sceErrorDialogParamInitialize(&param);
-            // 4J-PB - We want to display the option to get the patch now
-            param.errorCode =
-                SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED;  // pClass->m_errorCode;
-            ret = sceUserServiceGetInitialUser(&param.userId);
-            if (ret == SCE_OK) {
-                ret = sceErrorDialogOpen(&param);
-            } else {
-                sceErrorDialogTerminate();
-            }
-        }
-    }
-
-    return bPatchAvailable;
-}
-#endif

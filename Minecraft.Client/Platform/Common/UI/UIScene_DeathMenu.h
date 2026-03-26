@@ -34,7 +34,4 @@ public:
 protected:
     void handlePress(F64 controlId, F64 childId);
 
-#if 0
-    virtual long long getDefaultGtcButtons() { return 0; }
-#endif
 };

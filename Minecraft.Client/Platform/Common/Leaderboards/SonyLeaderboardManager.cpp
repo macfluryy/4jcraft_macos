@@ -13,18 +13,7 @@
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
-#if 0
-#include "Orbis/OrbisExtras/ShutdownManager.h"
-#include "Orbis/Orbis_App.h"
-#elif 0
-#include "PSVita/PSVitaExtras/ShutdownManager.h"
-#include "PSVita/PSVita_App.h"
-#elif 0
-#include "PS3/PS3Extras/ShutdownManager.h"
-#include "PS3/PS3_App.h"
-#else
 #error "SonyLeaderboardManager is included for a non-sony platform."
-#endif
 
 SonyLeaderboardManager::SonyLeaderboardManager() {
     m_eStatsState = eStatsState_Idle;
@@ -194,66 +183,6 @@ HRESULT SonyLeaderboardManager::fillByIdsQuery(const SceNpId& myNpId,
     switch (m_eFilterMode) {
         case eFM_Friends: {
             // 4J-JEV: Implementation for Orbis & Vita as they a very similar.
-#if (0) || (0)
-
-            sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>
-                s_friendList;
-            ret = getFriendsList(s_friendList);
-
-            if (ret != SCE_TOOLKIT_NP_SUCCESS) {
-                // Error handling
-                if (m_eStatsState != eStatsState_Canceled)
-                    m_eStatsState = eStatsState_Failed;
-                app.DebugPrintf(
-                    "[SonyLeaderboardManager] 'getFriendslist' fail, 0x%x.\n",
-                    ret);
-                return false;
-            } else if (s_friendList.hasResult()) {
-                // 4J-JEV: Friends list doesn't include player, leave space for
-                // them.
-                len = s_friendList.get()->size() + 1;
-
-                npIds = new SceNpId[len];
-
-                int i = 0;
-
-                sce::Toolkit::NP::FriendsList::const_iterator itr;
-                for (itr = s_friendList.get()->begin();
-                     itr != s_friendList.get()->end(); itr++) {
-                    npIds[i] = itr->npid;
-                    i++;
-                }
-
-                npIds[len - 1] =
-                    myNpId;  // 4J-JEV: Append player to end of query.
-            } else {
-                // 4J-JEV: Something terrible must have happend,
-                // 'getFriendslist' was supposed to be a synchronous operation.
-                __debugbreak();
-
-                // 4J-JEV: We can at least fall-back to just the players score.
-                len = 1;
-                npIds = new SceNpId[1];
-
-                npIds[0] = myNpId;
-            }
-
-#elif (0)
-            // PS3
-
-            // 4J-JEV: Doesn't include the player (its just their friends).
-            ret = sceNpBasicGetFriendListEntryCount(&len);
-            len += 1;
-
-            npIds = new SceNpId[len];
-
-            for (uint32_t i = 0; i < len - 1; i++) {
-                ret = sceNpBasicGetFriendListEntry(i, npIds + i);
-                if (ret < 0) return ret;
-            }
-            npIds[len - 1] = myNpId;  // 4J-JEV: Append player to end of query.
-
-#endif
         } break;
         case eFM_MyScore: {
             len = 1;
@@ -295,9 +224,6 @@ bool SonyLeaderboardManager::getScoreByIds() {
     ProfileManager.GetSceNpId(0, &myNpId);
 
     ret = fillByIdsQuery(myNpId, npIds, num);
-#if 0
-    if (ret < 0) goto error2;
-#endif
 
     ptr = new SceNpScorePlayerRankData[num];
     comments = new SceNpScoreComment[num];
@@ -316,9 +242,6 @@ bool SonyLeaderboardManager::getScoreByIds() {
     int boardId = getBoardId(m_difficulty, m_statsType);
 
     // 4J-JEV: Orbis can only do with 100 ids max, so we use batches.
-#if 0
-    for (int batch = 0; batch < num; batch += 100) {
-#endif
         ret = createTransactionContext(m_titleContext);
         if (m_eStatsState == eStatsState_Canceled) {
             // Cancel operation has been called, abort.
@@ -352,29 +275,14 @@ bool SonyLeaderboardManager::getScoreByIds() {
             m_requestId = ret;
         }
 
-#if 0
-        int tmpNum = std::min(num - batch, (unsigned int)100);
-        app.DebugPrintf(
-            "[SonyLeaderboardManager]\t Requesting ids %i-%i of %i.\n", batch,
-            batch + tmpNum, num);
-#else
     int tmpNum = num;
-#endif
         ret = sceNpScoreGetRankingByNpId(
             m_requestId,
             boardId,  // BoardId
 
-#if 0
-            batch + npIds, sizeof(SceNpId) * tmpNum,  // IN: Player IDs
-            batch + ptr,
-            sizeof(SceNpScorePlayerRankData) * tmpNum,  // OUT: Rank Data
-            batch + comments,
-            sizeof(SceNpScoreComment) * tmpNum,  // OUT: Comments
-#else
         npIds, sizeof(SceNpId) * tmpNum,                 // IN: Player IDs
         ptr, sizeof(SceNpScorePlayerRankData) * tmpNum,  // OUT: Rank Data
         comments, sizeof(SceNpScoreComment) * tmpNum,    // OUT: Comments
-#endif
 
             NULL, 0,  // GameData. (unused)
 
@@ -407,9 +315,6 @@ bool SonyLeaderboardManager::getScoreByIds() {
         destroyTransactionContext(m_requestId);
         m_requestId = 0;
 
-#if 0
-    }
-#endif
 
     m_readCount = num;
 
@@ -640,9 +545,7 @@ bool SonyLeaderboardManager::setScore() {
 
                                 &tmp,  // OUT: current rank,
 
-#if 1
                                 NULL,  // compareDate
-#endif
 
                                 NULL  // Reserved, specify null.
     );
@@ -1029,7 +932,7 @@ void SonyLeaderboardManager::fromSymbols(char* str) {
 }
 
 bool SonyLeaderboardManager::test_string(std::string testing) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     static SceNpScoreComment comment;
     ZeroMemory(&comment, sizeof(SceNpScoreComment));
     memcpy(&comment, testing.c_str(), SCE_NP_SCORE_COMMENT_MAXLEN);

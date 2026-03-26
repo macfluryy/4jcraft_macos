@@ -302,7 +302,7 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
     glTranslatef((float)x, (float)y, (float)z);
 
     // float bob = getBob(mob, a);
-#ifdef SKIN_PREVIEW_BOB_ANIM
+#if defined(SKIN_PREVIEW_BOB_ANIM)
     float bob = (m_bobTick + a) / 2;
 
     ++m_bobTick;
@@ -326,13 +326,9 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
 
     // 4J - TomK - pull up character a bit more to make sure extra geo around
     // feet doesn't cause rendering problems on PSVita
-#if 0
-    glTranslatef(0, -24 * _scale - 1.0f / 16.0f, 0);
-#else
     glTranslatef(0, -24 * _scale - 0.125f / 16.0f, 0);
-#endif
 
-#ifdef SKIN_PREVIEW_WALKING_ANIM
+#if defined(SKIN_PREVIEW_WALKING_ANIM)
     m_walkAnimSpeedO = m_walkAnimSpeed;
     m_walkAnimSpeed += (0.1f - m_walkAnimSpeed) * 0.4f;
     m_walkAnimPos += m_walkAnimSpeed;

@@ -82,11 +82,7 @@ int UIString::s_currentLocale = -1;
 UIString::UIString() { m_core = std::shared_ptr<UIStringCore>(); }
 
 UIString::UIString(int ids) {
-#if 0
-    StringBuilder builder = StringBuilder(new IdsStringBuilder(ids));
-#else
     StringBuilder builder = [ids]() { return app.GetString(ids); };
-#endif
     UIStringCore* core = new UIStringCore(builder);
     m_core = std::shared_ptr<UIStringCore>(core);
 }
@@ -114,9 +110,7 @@ UIString::UIString(const wchar_t* constant) {
 }
 
 UIString::~UIString() {
-#if 1
     m_core = nullptr;
-#endif
 }
 
 bool UIString::empty() { return m_core.get() == NULL; }

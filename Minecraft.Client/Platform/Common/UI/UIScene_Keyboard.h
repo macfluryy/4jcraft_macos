@@ -73,9 +73,7 @@ public:
     // Returns true if this scene has focus for the pad passed in
     // virtual bool hasFocus(int iPad) { return false; }
     // Returns true if this scene has focus for the pad passed in
-#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
-#endif
 
     // Returns true if lower scenes in this scenes layer, or in any layer below
     // this scenes layers should be hidden

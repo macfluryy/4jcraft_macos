@@ -16,10 +16,6 @@ bool UIControl_LeaderboardList::setupControl(UIScene* scene,
     m_funcResetLeaderboard = registerFastName(L"ResetLeaderboard");
     m_funcSetupTitles = registerFastName(L"SetupTitles");
     m_funcSetColumnIcon = registerFastName(L"SetColumnIcon");
-#if 0
-    m_funcSetTouchFocus = registerFastName(L"SetTouchFocus");
-    m_bTouchInitialised = false;
-#endif
 
     return success;
 }
@@ -91,18 +87,6 @@ void UIControl_LeaderboardList::initLeaderboard(int iFirstFocus,
                                             getIggyValuePath(),
                                             m_funcInitLeaderboard, 3, value);
 
-#if 0
-    // 4J-PB - add this button to the vita touch box list
-    if (!m_bTouchInitialised) {
-        switch (m_parentScene->GetParentLayer()->m_iLayer) {
-            case eUILayer_Fullscreen:
-            case eUILayer_Scene:
-                ui.TouchBoxAdd(this, m_parentScene);
-                break;
-        }
-        m_bTouchInitialised = true;
-    }
-#endif
 }
 
 void UIControl_LeaderboardList::setColumnIcon(int iColumn, int iType) {
@@ -232,20 +216,3 @@ void UIControl_LeaderboardList::addDataSet(
                                getIggyValuePath(), m_funcAddDataSet, 12, value);
 }
 
-#if 0
-void UIControl_LeaderboardList::SetTouchFocus(S32 iX, S32 iY, bool bRepeat) {
-    IggyDataValue result;
-    IggyDataValue value[3];
-
-    value[0].type = IGGY_DATATYPE_number;
-    value[0].number = iX;
-    value[1].type = IGGY_DATATYPE_number;
-    value[1].number = iY;
-    value[2].type = IGGY_DATATYPE_boolean;
-    value[2].boolval = bRepeat;
-
-    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                                            getIggyValuePath(),
-                                            m_funcSetTouchFocus, 3, value);
-}
-#endif

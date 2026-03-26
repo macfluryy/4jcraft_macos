@@ -178,11 +178,6 @@ public:
 protected:
     void handleTimerComplete(int id);
 
-#if 0
-    virtual long long getDefaultGtcButtons() {
-        return _360_GTC_PAUSE | _360_GTC_MENU | _360_GTC_VIEW;
-    }
-#endif
 
 private:
     void repositionHud();

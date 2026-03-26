@@ -32,10 +32,6 @@ private:
         eHTPButton_Droppers,
         eHTPButton_NetherPortal,
         eHTPButton_TheEnd,
-#if 0
-        eHTPButton_SocialMedia,
-        eHTPButton_BanningLevels,
-#endif
         eHTPButton_HostOptions,
         eHTPButton_Max,
     };

@@ -42,19 +42,6 @@ bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
     return res;
 }
 
-#if 0
-void UIControl::UpdateControl() {
-    F64 fx, fy, fwidth, fheight;
-    IggyValueGetF64RS(getIggyValuePath(), m_nameXPos, NULL, &fx);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameYPos, NULL, &fy);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameWidth, NULL, &fwidth);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameHeight, NULL, &fheight);
-    m_x = (S32)fx;
-    m_y = (S32)fy;
-    m_width = (S32)Math::round(fwidth);
-    m_height = (S32)Math::round(fheight);
-}
-#endif  // 0
 
 void UIControl::ReInit() {
     if (m_lastOpacity != 1.0f) {

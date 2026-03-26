@@ -1,7 +1,7 @@
 #pragma once
 // using namespace std;
 #include <vector>
-#ifndef __linux__
+#if !defined(__linux__)
 #include <qnet.h>
 #endif
 #include "../../Minecraft.World/Util/C4JThread.h"
@@ -122,15 +122,6 @@ public:
     static int ServerThreadProc(void* lpParameter);
     static int ExitAndJoinFromInviteThreadProc(void* lpParam);
 
-#if (0) || (0) || (0)
-    static int MustSignInReturned_0(void* pParam, int iPad,
-                                    C4JStorage::EMessageResult result);
-    static int PSNSignInReturned_0(void* pParam, bool bContinue, int iPad);
-
-    static int MustSignInReturned_1(void* pParam, int iPad,
-                                    C4JStorage::EMessageResult result);
-    static int PSNSignInReturned_1(void* pParam, bool bContinue, int iPad);
-#endif
 
     static void _LeaveGame();
     static int ChangeSessionTypeThreadProc(void* lpParam);
@@ -154,11 +145,6 @@ public:
     void ServerStoppedDestroy();            // Destroy signal
     bool ServerStoppedValid();              // Is non-NULL
 
-#if 0
-    static bool usingAdhocMode();
-    static void setAdhocMode(bool bAdhoc);
-    static void startAdhocMatching();
-#endif
     // Debug output
 
     std::wstring GatherStats();
@@ -192,11 +178,7 @@ private:
     void GameInviteReceived(int userIndex, const INVITE_INFO* pInviteInfo);
     void HandleInviteWhenInMenus(int userIndex, const INVITE_INFO* pInviteInfo);
     void AddLocalPlayerFailed(int idx, bool serverFull = false);
-#if 0 || 0 || 0
-    void HandleDisconnect(bool bLostRoomOnly, bool bPSNSignOut);
-#else
     void HandleDisconnect(bool bLostRoomOnly);
-#endif
 
     int GetPrimaryPad();
     int GetLockedProfile();
@@ -208,12 +190,6 @@ private:
     C4JThread::Event* m_hServerReadyEvent;
     bool m_bInitialised;
 
-#if 0
-public:
-    void SetFullSessionMessageOnNextSessionChange() {
-        m_bFullSessionMessageOnNextSessionChange = true;
-    }
-#endif
 private:
     float m_lastPlayerEventTimeStart;  // For telemetry
     static CPlatformNetworkManager* s_pPlatformNetworkManager;
@@ -221,20 +197,11 @@ private:
     int GetJoiningReadyPercentage();
     bool m_bLastDisconnectWasLostRoomOnly;
     bool m_bFullSessionMessageOnNextSessionChange;
-#if 0 || 0 || 0
-    bool m_bSignedOutofPSN;
-#endif
 
 public:
-#if 1
     void FakeLocalPlayerJoined();  // Temporary method whilst we don't have real
                                    // networking to make this happen
-#endif
 };
 
 extern CGameNetworkManager g_NetworkManager;
 
-#if 0
-#undef __in
-#define __out
-#endif

@@ -52,42 +52,13 @@ public:
     virtual void handleSelectionChanged(F64 selectedId);
     virtual void handleFocusChange(F64 controlId, F64 childId);
     virtual void handleTimerComplete(int id);
-#if 0
-    virtual void HandleDLCInstalled();
-#endif
 
-#if 0
-    virtual void HandleDLCLicenseChange();
-#endif
 
 private:
-#if 0
-    void GetDLCInfo(int iOfferC, bool bUpdateOnly = false);
-    void UpdateTooltips(MARKETPLACE_CONTENTOFFER_INFO& xOffer);
-    bool UpdateDisplay(MARKETPLACE_CONTENTOFFER_INFO& xOffer);
-
-    static int OrderSortFunction(const void* a, const void* b);
-
-    bool m_bIgnorePress;
-    bool m_bDLCRequiredIsRetrieved;
-    DLC_INFO* m_pNoImageFor_DLC;
-
-    typedef struct {
-        unsigned int uiContentIndex;
-        unsigned int uiSortIndex;
-    } SORTINDEXSTRUCT;
-
-    std::vector<std::wstring> m_vIconRetrieval;
-    bool m_bSelectionChanged;
-
-#endif
 
     bool m_bProductInfoShown;
     int m_iProductInfoIndex;
     int m_iCurrentDLC;
     int m_iTotalDLC;
     bool m_bAddAllDLCButtons;
-#if 0 || 0 || 0
-    std::vector<SonyCommerce::ProductInfo>* m_pvProductInfo;
-#endif
 };

@@ -49,10 +49,6 @@ static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =
         {IDS_HOW_TO_PLAY_DROPPERS, 0, 0},      // eHowToPlay_Droppers
         {IDS_HOW_TO_PLAY_NETHERPORTAL, 0, 0},  // eHowToPlay_NetherPortal
         {IDS_HOW_TO_PLAY_THEEND, 0, 0},        // eHowToPlay_NetherPortal
-#if 0
-        {IDS_HOW_TO_PLAY_SOCIALMEDIA, 0, 0},  // eHowToPlay_SocialMedia
-        {IDS_HOW_TO_PLAY_BANLIST, 0, 0},      // eHowToPlay_BanList
-#endif
         {IDS_HOW_TO_PLAY_HOSTOPTIONS, 0, 0},  // eHowToPlay_HostOptions
 };
 
@@ -86,10 +82,6 @@ int gs_pageToFlashMapping[eHowToPlay_NumPages] = {
 
     16,  // eHowToPlay_NetherPortal,
     17,  // eHowToPlay_TheEnd,
-#if 0
-    18,  // eHowToPlay_SocialMedia,
-    19,  // eHowToPlay_BanList,
-#endif
     20,  // eHowToPlay_HostOptions,
 };
 
@@ -190,13 +182,6 @@ void UIScene_HowToPlay::updateTooltips() {
     int firstPage = eHowToPlay_WhatsNew;
 
     // 4J Stu - Add back for future platforms
-#if 0
-	// No What's New for the first PS4 and Xbox One builds
-	if(true)
-	{
-		++firstPage;
-	}
-#endif
 
     int iA = -1;
     int iX = -1;
@@ -228,9 +213,6 @@ void UIScene_HowToPlay::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_A:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             if (pressed) {
                 // Next page
                 int iNextPage = (int)(m_eCurrPage) + 1;
@@ -247,18 +229,6 @@ void UIScene_HowToPlay::handleInput(int iPad, int key, bool repeat,
                 int iPrevPage = (int)(m_eCurrPage)-1;
 
                 // 4J Stu - Add back for future platforms
-#if 0
-			// No What's New for the first PS4 and Xbox One builds
-			if(true)
-			{
-				if ( iPrevPage >= 0 && !((iPrevPage==eHowToPlay_WhatsNew))) 
-				{
-					StartPage( ( EHowToPlayPage )( iPrevPage ) );
-					ui.PlayUISFX(eSFX_Press);
-				}
-			}
-			else
-#endif
                 {
                     if (iPrevPage >= 0) {
                         StartPage((EHowToPlayPage)(iPrevPage));
@@ -292,10 +262,6 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     // replaceAll(replacedText,L"{*TITLE_UPDATE_NAME*}",app.GetString(IDS_TITLE_UPDATE_NAME));
     replacedText = replaceAll(replacedText, L"{*KICK_PLAYER_DESCRIPTION*}",
                               app.GetString(IDS_KICK_PLAYER_DESCRIPTION));
-#if 0
-    replacedText = replaceAll(replacedText, L"{*PLATFORM_NAME*}",
-                              app.GetString(IDS_PLATFORM_NAME));
-#endif
     replacedText = replaceAll(replacedText, L"{*BACK_BUTTON*}",
                               app.GetString(IDS_BACK_BUTTON));
     replacedText =
@@ -363,7 +329,4 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     TelemetryManager->RecordMenuShown(m_iPad, eUIScene_HowToPlay,
                                       (ETelemetry_HowToPlay_SubMenuId)ePage);
 
-#if 0
-    ui.TouchBoxRebuild(this);
-#endif
 }

@@ -41,16 +41,6 @@ private:
         eControl_Count
     };
 
-#if 0
-    enum ETouchInput {
-        ETouchInput_TabWorld = eControl_Count,
-        ETouchInput_TabGame,
-
-        ETouchInput_Count
-    };
-    UIControl_Touch m_TouchTabWorld, m_TouchTabGame;
-    UIControl m_controlWorldPanel, m_controlGamePanel;
-#endif
     UIControl m_gameOptions, m_worldOptions;
     UIControl_CheckBox m_checkboxes[eLaunchCheckboxes_Count];
     UIControl_Label m_labelWorldOptions, m_labelGameOptions, m_labelDescription;
@@ -68,9 +58,6 @@ private:
 
     UI_MAP_ELEMENT(m_gameOptions, "GameOptions")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_gameOptions)
-#if 0
-    UI_MAP_ELEMENT(m_TouchTabGame, "TouchTabGame")
-#endif
     UI_MAP_ELEMENT(m_labelDescription_GameOptions, "Description_GameOptions")
 
     UI_MAP_ELEMENT(m_checkboxes[eLaunchCheckbox_Online], "CheckboxOnline")
@@ -96,9 +83,6 @@ private:
 
     UI_MAP_ELEMENT(m_worldOptions, "WorldOptions")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_worldOptions)
-#if 0
-    UI_MAP_ELEMENT(m_TouchTabWorld, "TouchTabWorld")
-#endif
     UI_MAP_ELEMENT(m_labelDescription_WorldOptions, "Description_WorldOptions")
 
     UI_MAP_ELEMENT(m_labelSeed, "Seed")
@@ -174,9 +158,4 @@ private:
     bool m_bUpdateOnline;  // If true, update online settings on next tick
     void UpdateOnline();
 
-#if 0
-    virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
-                                  bool bPressed, bool bRepeat, bool bReleased);
-    virtual UIControl* GetMainPanel();
-#endif  //0
 };

@@ -20,12 +20,6 @@ private:
 
     enum eActions {
         eAction_None = 0,
-#if 0 || 0 || 0
-        eAction_ViewLeaderboardsPSN,
-        eAction_ViewInvitesPSN,
-        eAction_SaveGamePSN,
-        eAction_BuyTexturePackPSN
-#endif
 
     };
     eActions m_eAction;
@@ -42,9 +36,6 @@ private:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#if 0
-    virtual void HandleDLCLicenseChange();
-#endif
     static int UnlockFullSaveReturned(void* pParam, int iPad,
                                       C4JStorage::EMessageResult result);
     static int SaveGame_SignInReturned(void* pParam, bool bContinue, int iPad);
@@ -82,31 +73,7 @@ protected:
 private:
     void PerformActionSaveGame();
 
-#if 0 || 0 || 0
-    static int MustSignInReturnedPSN(void* pParam, int iPad,
-                                     C4JStorage::EMessageResult result);
-    static int ViewLeaderboards_SignInReturned(void* pParam, bool bContinue,
-                                               int iPad);
-    static int ViewInvites_SignInReturned(void* pParam, bool bContinue,
-                                          int iPad);
-    static int BuyTexturePack_SignInReturned(void* pParam, bool bContinue,
-                                             int iPad);
-    static int WarningTrialTexturePackReturned(
-        void* pParam, int iPad, C4JStorage::EMessageResult result);
-    static int ExitGameSaveDialogReturned(void* pParam, int iPad,
-                                          C4JStorage::EMessageResult result);
-#endif
 
 protected:
-#if 0
-    static int BanGameDialogReturned(void* pParam, int iPad,
-                                     C4JStorage::EMessageResult result);
-    virtual long long getDefaultGtcButtons() {
-        return _360_GTC_BACK | _360_GTC_PLAY;
-    }
-#endif
 
-#if 0
-    bool CheckForPatch();
-#endif
 };

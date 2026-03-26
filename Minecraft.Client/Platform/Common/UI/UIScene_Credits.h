@@ -10,21 +10,9 @@
 #define DYNAMODE_FONT_CREDITS_COUNT 2
 #define PS3_DOLBY_CREDIT 4
 
-#if 0
-#define MAX_CREDIT_STRINGS                              \
-    (PS3_CREDITS_COUNT + MILES_AND_IGGY_CREDITS_COUNT + \
-     DYNAMODE_FONT_CREDITS_COUNT + PS3_DOLBY_CREDIT)
-#elif 0
-#define MAX_CREDIT_STRINGS                              \
-    (PS4_CREDITS_COUNT + MILES_AND_IGGY_CREDITS_COUNT + \
-     DYNAMODE_FONT_CREDITS_COUNT)
-#elif 0 || defined _WINDOWS64 || defined __linux__
+#if defined(_WINDOWS64) || defined(__linux__)
 #define MAX_CREDIT_STRINGS \
     (XBOXONE_CREDITS_COUNT + MILES_AND_IGGY_CREDITS_COUNT)
-#elif 0
-#define MAX_CREDIT_STRINGS                                 \
-    (PSVITA_CREDITS_COUNT + MILES_AND_IGGY_CREDITS_COUNT + \
-     DYNAMODE_FONT_CREDITS_COUNT)
 #endif
 
 class UIScene_Credits : public UIScene {

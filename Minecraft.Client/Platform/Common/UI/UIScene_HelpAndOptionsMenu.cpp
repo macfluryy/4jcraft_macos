@@ -26,23 +26,13 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void* initData,
     // We don't have a reinstall content, so remove the button
     removeControl(&m_buttons[BUTTON_HAO_REINSTALL], false);
 
-#ifdef _FINAL_BUILD
+#if defined(_FINAL_BUILD)
     removeControl(&m_buttons[BUTTON_HAO_DEBUG], false);
 #else
     if (!app.DebugSettingsOn())
         removeControl(&m_buttons[BUTTON_HAO_DEBUG], false);
 #endif
 
-#if 0
-    // 4J-PB - in order to buy the skin packs, we need the signed offer ids for
-    // them, which we get in the availability info we need to retrieve this info
-    // though, so do it here
-    app.AddDLCRequest(e_Marketplace_Content);  // content is skin packs, texture
-                                               // packs and mash-up packs
-
-    // we also need to mount the local DLC so we can tell what's been purchased
-    app.StartInstallDLCProcess(iPad);
-#endif
 
     // 4J-PB - do not need a storage device to see this menu - just need one
     // when you choose to re-install them
@@ -112,7 +102,7 @@ void UIScene_HelpAndOptionsMenu::updateComponents() {
 }
 
 void UIScene_HelpAndOptionsMenu::handleReload() {
-#ifdef _FINAL_BUILD
+#if defined(_FINAL_BUILD)
     removeControl(&m_buttons[BUTTON_HAO_DEBUG], false);
 #else
     if (!app.DebugSettingsOn())
@@ -178,9 +168,6 @@ void UIScene_HelpAndOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             // CD - Added for audio
             if (pressed) {
                 ui.PlayUISFX(eSFX_Press);

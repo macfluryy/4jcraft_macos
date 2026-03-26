@@ -77,9 +77,6 @@ public:
     void LanguageChanged(void);
 
     DLCPack* getPack(const std::wstring& name);
-#if 0
-    DLCPack* DLCManager::getPackFromProductID(const std::wstring& productID);
-#endif
     DLCPack* getPack(unsigned int index, EDLCType type = e_DLCType_All);
     unsigned int getPackIndex(DLCPack* pack, bool& found,
                               EDLCType type = e_DLCType_All);

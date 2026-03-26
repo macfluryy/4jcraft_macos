@@ -32,9 +32,6 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
             navigateBack();
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             if (pressed) {
                 // CD - Added for audio
                 ui.PlayUISFX(eSFX_Press);
@@ -47,19 +44,6 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
                 ui.PlayUISFX(eSFX_Press);
 
                 // 4J-PB - need to check this user can access the store
-#if 0 || 0
-                bool bContentRestricted;
-                ProfileManager.GetChatAndContentRestrictions(
-                    ProfileManager.GetPrimaryPad(), true, NULL,
-                    &bContentRestricted, NULL);
-                if (bContentRestricted) {
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_CONFIRM_OK;
-                    ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                           IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                           ProfileManager.GetPrimaryPad());
-                } else
-#endif
                 {
                     TelemetryManager->RecordUpsellPresented(
                         iPad, eSen_UpsellID_Full_Version_Of_Game,

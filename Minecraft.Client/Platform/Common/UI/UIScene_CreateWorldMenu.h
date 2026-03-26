@@ -80,10 +80,6 @@ private:
     void StartSharedLaunchFlow();
     bool IsLocalMultiplayerAvailable();
 
-#if 0
-    static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
-                                       int iPad);
-#endif
 
 protected:
     static int KeyboardCompleteWorldNameCallback(void* lpParam,
@@ -98,12 +94,6 @@ protected:
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
 
-#if 0
-    // static int PSPlusReturned(void *pParam,int
-    // iPad,C4JStorage::EMessageResult result);
-    static int ContinueOffline(void* pParam, int iPad,
-                               C4JStorage::EMessageResult result);
-#endif
 
     virtual void checkStateAndStartGame();
 };

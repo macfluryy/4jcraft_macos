@@ -309,32 +309,10 @@ int UIScene_AnvilMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
 
 void UIScene_AnvilMenu::handleEditNamePressed() {
     setIgnoreInput(true);
-#if 0 || 0 || 0
-    int language = XGetLanguage();
-    switch (language) {
-        case XC_LANGUAGE_JAPANESE:
-        case XC_LANGUAGE_KOREAN:
-        case XC_LANGUAGE_TCHINESE:
-            InputManager.RequestKeyboard(
-                app.GetString(IDS_TITLE_RENAME), m_textInputAnvil.getLabel(),
-                m_iPad, 30, &UIScene_AnvilMenu::KeyboardCompleteCallback, this,
-                C_4JInput::EKeyboardMode_Default);
-            break;
-        default:
-            // 4J Stu - Use a different keyboard for non-asian languages so we
-            // don't have prediction on
-            InputManager.RequestKeyboard(
-                app.GetString(IDS_TITLE_RENAME), m_textInputAnvil.getLabel(),
-                m_iPad, 30, &UIScene_AnvilMenu::KeyboardCompleteCallback, this,
-                C_4JInput::EKeyboardMode_Alphabet_Extended);
-            break;
-    }
-#else
     InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),
                                  m_textInputAnvil.getLabel(), m_iPad, 30,
                                  &UIScene_AnvilMenu::KeyboardCompleteCallback,
                                  this, C_4JInput::EKeyboardMode_Default);
-#endif
 }
 
 void UIScene_AnvilMenu::setEditNameValue(const std::wstring& name) {
@@ -379,14 +357,8 @@ void UIScene_AnvilMenu::showCross(bool show) {
 }
 
 void UIScene_AnvilMenu::handleDestroy() {
-#if 0
-    app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
-#endif
 
     // another player destroyed the anvil, so shut down the keyboard if it is
     // displayed
-#if (0 || 0 || 0)
-    InputManager.DestroyKeyboard();
-#endif
     UIScene_AbstractContainerMenu::handleDestroy();
 }

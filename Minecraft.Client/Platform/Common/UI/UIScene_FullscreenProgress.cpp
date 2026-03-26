@@ -70,13 +70,7 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     thread->Run();
     threadStarted = true;
 
-#if 0
-    ui.TouchBoxRebuild(this);
-#endif
 
-#if 0
-    ui.ShowPlayerDisplayname(false);
-#endif
 }
 
 UIScene_FullscreenProgress::~UIScene_FullscreenProgress() {
@@ -198,9 +192,6 @@ void UIScene_FullscreenProgress::tick() {
                 m_buttonConfirm.setVisible(true);
                 // 4J-TomK - rebuild touch after confirm button made visible
                 // again
-#if 0
-                ui.TouchBoxRebuild(this);
-#endif
                 updateTooltips();
             } else {
                 if (m_bWasCancelled) {
@@ -287,9 +278,6 @@ void UIScene_FullscreenProgress::handleInput(int iPad, int key, bool repeat,
 
         switch (key) {
             case ACTION_MENU_OK:
-#if 0
-            case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
                 if (pressed) {
                     sendInputToMovie(key, repeat, pressed, released);
                 }

@@ -95,12 +95,6 @@ void IUIScene_EnchantingMenu::handleOtherClicked(int iPad,
                                                  int buttonNum, bool quickKey) {
     int index = -1;
     // Old xui code
-#if 0
-	HXUIOBJ hFocusObject = GetFocus(iPad);
-	if(hFocusObject == m_enchant1->m_hObj) index = 0;
-	else if(hFocusObject == m_enchant2->m_hObj) index = 1;
-	else if(hFocusObject == m_enchant3->m_hObj) index = 2;
-#endif
 
     switch (eSection) {
         case eSectionEnchantButton1:

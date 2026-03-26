@@ -107,20 +107,11 @@ public:
                               DWORD dwThumbnailBytes);
 
 private:
-#if 0
-    static int SignInReturned(void* pParam, bool bContinue, int iPad,
-                              int iController);
-#else
     static int SignInReturned(void* pParam, bool bContinue, int iPad);
-#endif
 
     void updateState();
     void setControllerState(int iPad, EControllerStatus state);
 
-#if 0
-    static void checkAllPrivilegesCallback(void* lpParam, bool hasPrivileges,
-                                           int iPad);
-#endif
 
 protected:
     void _initQuadrants();

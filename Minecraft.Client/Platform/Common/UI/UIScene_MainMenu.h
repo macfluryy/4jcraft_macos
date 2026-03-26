@@ -39,13 +39,7 @@ private:
     bool m_bIgnorePress;
     bool m_bTrialVersion;
     bool m_bLoadTrialOnNetworkManagerReady;
-#if 0 || 0 || 0
-    bool m_bLaunchFullVersionPurchase;
-#endif
 
-#if 0
-    bool m_bWaitingForDLCInfo;
-#endif
 
     float m_fScreenWidth, m_fScreenHeight;
     float m_fRawWidth, m_fRawHeight;
@@ -69,13 +63,6 @@ private:
         eAction_RunAchievements,
         eAction_RunHelpAndOptions,
         eAction_RunUnlockOrDLC,
-#if 0 || 0 || 0
-        eAction_RunLeaderboardsPSN,
-        eAction_RunGamePSN,
-        eAction_RunUnlockOrDLCPSN,
-#elif 0
-        eAction_RunXboxHelp,
-#endif
 
     };
     eActions m_eAction;
@@ -93,9 +80,7 @@ public:
     virtual ~UIScene_MainMenu();
 
     // Returns true if this scene has focus for the pad passed in
-#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
-#endif
 
     virtual void updateTooltips();
     virtual void updateComponents();
@@ -145,25 +130,12 @@ private:
     static int MustSignInReturned(void* pParam, int iPad,
                                   C4JStorage::EMessageResult result);
 
-#if 0 || 0 || 0
-    static int MustSignInReturnedPSN(void* pParam, int iPad,
-                                     C4JStorage::EMessageResult result);
-#endif
     static int Leaderboards_SignInReturned(void* pParam, bool bContinue,
                                            int iPad);
     static int UnlockFullGame_SignInReturned(void* pParam, bool bContinue,
                                              int iPad);
     static int ExitGameReturned(void* pParam, int iPad,
                                 C4JStorage::EMessageResult result);
-#if 0
-    static void RefreshChatAndContentRestrictionsReturned_PlayGame(
-        void* pParam);
-    static void RefreshChatAndContentRestrictionsReturned_Leaderboards(
-        void* pParam);
-
-    static int PlayOfflineReturned(void* pParam, int iPad,
-                                   C4JStorage::EMessageResult result);
-#endif
     bool m_bRunGameChosen;
     int32_t m_errorCode;
     bool m_bErrorDialogRunning;

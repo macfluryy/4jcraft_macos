@@ -43,7 +43,7 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void* initData,
             ++m_playersCount;
 
             std::wstring playerName = L"";
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             if (app.DebugSettingsOn() &&
                 (app.GetGameSettingsDebugMask() &
                  (1L << eDebugSetting_DebugLeaderboards))) {
@@ -125,7 +125,7 @@ void UIScene_TeleportMenu::handleReload() {
             ++m_playersCount;
 
             std::wstring playerName = L"";
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             if (app.DebugSettingsOn() &&
                 (app.GetGameSettingsDebugMask() &
                  (1L << eDebugSetting_DebugLeaderboards))) {
@@ -184,7 +184,7 @@ void UIScene_TeleportMenu::tick() {
             }
 
             std::wstring playerName = L"";
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             if (app.DebugSettingsOn() &&
                 (app.GetGameSettingsDebugMask() &
                  (1L << eDebugSetting_DebugLeaderboards))) {
@@ -218,9 +218,6 @@ void UIScene_TeleportMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
         case ACTION_MENU_PAGEUP:
@@ -289,7 +286,7 @@ void UIScene_TeleportMenu::OnPlayerChanged(void* callbackParam,
         ++scene->m_playersCount;
 
         std::wstring playerName = L"";
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         if (app.DebugSettingsOn() &&
             (app.GetGameSettingsDebugMask() &
              (1L << eDebugSetting_DebugLeaderboards))) {

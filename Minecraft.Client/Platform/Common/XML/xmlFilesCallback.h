@@ -1,6 +1,6 @@
 
 #pragma once
-#ifndef XMLMOJANGCALLBACK_H
+#if !defined(XMLMOJANGCALLBACK_H)
 #define XMLMOJANGCALLBACK_H
 // xml reading
 
@@ -135,11 +135,7 @@ public:
 					{
 						wcsncpy_s( wValue, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-#if 0
-						iValue=_wtoi(wValue);
-#else
 						iValue=wcstol(wValue, NULL, 10);
-#endif
 					}
 				}
 			}
@@ -147,9 +143,9 @@ public:
 			// if the xuid hasn't been defined, then we can't use the data
 			if(iValue!=-1)
 			{
-	#ifdef _DEBUG
+#if defined(_DEBUG)
 				wprintf(L"Type - %s, Value - %d, ",wType, iValue);
-	#endif
+#endif
 
 				return CConsoleMinecraftApp::RegisterConfigValues(wType, iValue );
 			}
@@ -283,11 +279,7 @@ public:
 					{
 						wcsncpy_s( wConfig, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-#if 0
-						iConfig=_wtoi(wConfig);
-#else
 						iConfig=wcstol(wConfig, NULL, 10);
-#endif
 					}
 				}
 				else if (_wcsicmp(wAttName,L"DataFile")==0)
@@ -303,7 +295,7 @@ public:
 			// if the xuid hasn't been defined, then we can't use the data
 			if(ullFull!=0LL)
 			{
-#ifdef _DEBUG
+#if defined(_DEBUG)
 				wprintf(L"Type - %ls, Name - %ls, ",wType, wNameBanner);
 #endif
 				app.DebugPrintf("Full = %lld, Trial %lld\n",ullFull,ullTrial);

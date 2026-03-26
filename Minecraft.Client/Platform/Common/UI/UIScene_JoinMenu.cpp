@@ -28,9 +28,6 @@ void UIScene_JoinMenu::updateTooltips() {
     int iA = -1;
     int iY = -1;
     if (getControlFocus() == eControl_GamePlayers) {
-#if 0
-        iY = IDS_TOOLTIPS_VIEW_GAMERCARD;
-#endif
     } else {
         iA = IDS_TOOLTIPS_SELECT;
     }
@@ -53,51 +50,6 @@ void UIScene_JoinMenu::tick() {
 
         m_buttonListPlayers.init(eControl_GamePlayers);
 
-#if 0 || 0 || 0
-        for (int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; i++) {
-            if (m_selectedSession->data.players[i] != NULL) {
-#ifndef _CONTENT_PACKAGE
-                if (app.DebugSettingsOn() &&
-                    (app.GetGameSettingsDebugMask() &
-                     (1L << eDebugSetting_DebugLeaderboards))) {
-                    m_buttonListPlayers.addItem(L"WWWWWWWWWWWWWWWW");
-                } else
-#endif
-                {
-                    std::string playerName(
-                        m_selectedSession->data.players[i].getOnlineID());
-
-#if 1
-                    // Append guest number (any players in an online game not
-                    // signed into PSN are guests)
-                    if (m_selectedSession->data.players[i].isSignedIntoPSN() ==
-                        false) {
-                        char suffix[5];
-                        sprintf(
-                            suffix, " (%d)",
-                            m_selectedSession->data.players[i].getQuadrant() +
-                                1);
-                        playerName.append(suffix);
-                    }
-#endif
-                    m_buttonListPlayers.addItem(playerName);
-                }
-            } else {
-                // Leave the loop when we hit the first NULL player
-                break;
-            }
-        }
-#elif 0
-        for (int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; i++) {
-            if (m_selectedSession->searchResult.m_playerNames[i].size()) {
-                m_buttonListPlayers.addItem(
-                    m_selectedSession->searchResult.m_playerNames[i]);
-            } else {
-                // Leave the loop when we hit the first empty player name
-                break;
-            }
-        }
-#endif
 
         m_labelLabels[eLabel_Difficulty].init(
             app.GetString(IDS_LABEL_DIFFICULTY));
@@ -238,14 +190,8 @@ void UIScene_JoinMenu::tick() {
         // network manager so this is the best we can do
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
-#if 0
-        ui.RequestErrorMessage(IDS_CONNECTION_FAILED,
-                               IDS_DISCONNECTED_SERVER_QUIT, uiIDA, 1, m_iPad,
-                               ErrorDialogReturned, this);
-#else
         ui.RequestErrorMessage(IDS_ERROR_NETWORK_TITLE, IDS_ERROR_NETWORK,
                                uiIDA, 1, m_iPad, ErrorDialogReturned, this);
-#endif
     }
 
     UIScene::tick();
@@ -289,28 +235,12 @@ void UIScene_JoinMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
                 handled = true;
             }
             break;
-#if 0
-        case ACTION_MENU_Y:
-            if (m_selectedSession != NULL &&
-                getControlFocus() == eControl_GamePlayers &&
-                m_buttonListPlayers.getItemCount() > 0) {
-                PlayerUID uid = m_selectedSession->searchResult.m_playerXuids
-                                    [m_buttonListPlayers.getCurrentSelection()];
-                if (uid != INVALID_XUID)
-                    ProfileManager.ShowProfileCard(
-                        ProfileManager.GetLockedProfile(), uid);
-            }
-            break;
-#endif
         case ACTION_MENU_OK:
             if (getControlFocus() != eControl_GamePlayers) {
                 sendInputToMovie(key, repeat, pressed, released);
             }
             handled = true;
             break;
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
         case ACTION_MENU_PAGEUP:
@@ -329,12 +259,7 @@ void UIScene_JoinMenu::handlePress(F64 controlId, F64 childId) {
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
 
-#if 0
-            ProfileManager.CheckMultiplayerPrivileges(
-                m_iPad, true, &checkPrivilegeCallback, this);
-#else
             StartSharedLaunchFlow();
-#endif
         } break;
         case eControl_GamePlayers:
             break;
@@ -349,21 +274,6 @@ void UIScene_JoinMenu::handleFocusChange(F64 controlId, F64 childId) {
     updateTooltips();
 }
 
-#if 0
-void UIScene_JoinMenu::checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
-                                              int iPad) {
-    UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)lpParam;
-
-    pClass->m_bIgnoreInput = false;
-    if (pClass) {
-        if (hasPrivilege) {
-            pClass->StartSharedLaunchFlow();
-        } else {
-            pClass->m_bIgnoreInput = false;
-        }
-    }
-}
-#endif
 
 void UIScene_JoinMenu::StartSharedLaunchFlow() {
     if (!app.IsLocalMultiplayerAvailable()) {
@@ -440,33 +350,12 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
 
             isSignedInLive =
                 ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad());
-#if 0
-            if (CGameNetworkManager::usingAdhocMode() &&
-                SQRNetworkManager_AdHoc_Vita::GetAdhocStatus())
-                isSignedInLive = true;
-#endif
         }
     }
 
     // If this is an online game but not all players are signed in to Live,
     // stop!
     if (!isSignedInLive) {
-#if 0
-        // Check if PSN is unavailable because of age restriction
-        int npAvailability =
-            ProfileManager.getNPAvailability(iPadNotSignedInLive);
-        if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-            pClass->m_bIgnoreInput = false;
-            // 4J Stu - This is a bit messy and is due to the library
-            // incorrectly returning false for IsSignedInLive if the
-            // npAvailability isn't SCE_OK
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                   iPadNotSignedInLive);
-        } else
-#endif
         {
             pClass->m_bIgnoreInput = false;
             unsigned int uiIDA[1];
@@ -484,23 +373,10 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     bool pccAllowed = true;
     bool pccFriendsAllowed = true;
 
-#if 0 || 0
-    if (isSignedInLive) {
-        ProfileManager.GetChatAndContentRestrictions(
-            ProfileManager.GetPrimaryPad(), false, &noUGC, NULL, NULL);
-    }
-#else
     ProfileManager.AllowedPlayerCreatedContent(
         ProfileManager.GetPrimaryPad(), false, &pccAllowed, &pccFriendsAllowed);
     if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
-#endif
 
-#if 0
-    if (CGameNetworkManager::usingAdhocMode()) {
-        noPrivileges = false;
-        noUGC = false;
-    }
-#endif
 
     if (noUGC) {
         pClass->setVisible(true);
@@ -520,16 +396,6 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
                                IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT, uiIDA, 1,
                                ProfileManager.GetPrimaryPad());
     } else {
-#if 0 || 0
-        bool chatRestricted = false;
-        ProfileManager.GetChatAndContentRestrictions(
-            ProfileManager.GetPrimaryPad(), false, &chatRestricted, NULL, NULL);
-        if (chatRestricted) {
-            ProfileManager.DisplaySystemMessage(
-                SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION,
-                ProfileManager.GetPrimaryPad());
-        }
-#endif
         CGameNetworkManager::eJoinGameResult result = g_NetworkManager.JoinGame(
             pClass->m_selectedSession, dwLocalUsersMask);
 
@@ -582,7 +448,7 @@ void UIScene_JoinMenu::handleTimerComplete(int id) {
                             selectedPlayerXUID)
                             selectedIndex = i;
                         playersList.InsertItems(i, 1);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                         if (app.DebugSettingsOn() &&
                             (app.GetGameSettingsDebugMask() &
                              (1L << eDebugSetting_DebugLeaderboards))) {

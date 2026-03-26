@@ -24,21 +24,7 @@ UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad,
 
     // 4J-JEV: This object is persistent, so this string needs to be able to
     // handle language changes.
-#if 0
-    m_labelPressStart.init((UIString)[] {
-        return replaceAll(app.GetString(IDS_PRESS_X_TO_JOIN),
-                          L"{*CONTROLLER_VK_A*}",
-                          app.GetVKReplacement(VK_PAD_A));
-    });
-#elif 0
-    m_labelPressStart.init((UIString)[] {
-        return replaceAll(app.GetString(IDS_PRESS_START_TO_JOIN),
-                          L"{*CONTROLLER_VK_START*}",
-                          app.GetVKReplacement(VK_PAD_START));
-    });
-#else
     m_labelPressStart.init(IDS_PRESS_START_TO_JOIN);
-#endif
 
     m_controlSaveIcon.setVisible(false);
     m_controlPressStartPanel.setVisible(false);
@@ -148,13 +134,5 @@ void UIComponent_PressStartToPlay::showSaveIcon(bool show) {
 }
 
 void UIComponent_PressStartToPlay::showPlayerDisplayName(bool show) {
-#if 0
-    if (show) {
-        m_playerDisplayName.setLabel(
-            ProfileManager.GetDisplayName(ProfileManager.GetPrimaryPad()));
-    }
-    m_playerDisplayName.setVisible(show);
-#else
     m_playerDisplayName.setVisible(false);
-#endif
 }

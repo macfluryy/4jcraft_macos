@@ -17,20 +17,6 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
 
     // 4J Stu - Don't need these, the AS handles the scrolling and makes it look
     // nice
-#if 0
-	std::wstring halfScreenLineBreaks;
-
-	if(RenderManager.IsHiDef())
-	{
-		// HD - 17 line page
-		halfScreenLineBreaks = L"<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />";
-	}
-	else
-	{
-		// 480 - 14 line page
-		halfScreenLineBreaks = L"<br /><br /><br /><br /><br /><br /><br /><br />";
-	}
-#endif
 
     // wchar_t startTags[64];
     // swprintf(startTags,64,L"<font

@@ -12,16 +12,6 @@ private:
     // 4J Stu - How many to show on each side of the main control
     static const int sidePreviewControls = 4;
 
-#if 0
-    enum ETouchInput {
-        ETouchInput_TabLeft = 10,
-        ETouchInput_TabRight,
-        ETouchInput_TabCenter,
-        ETouchInput_IggyCharacters,
-
-        ETouchInput_Count,
-    };
-#endif
 
     enum ESkinSelectNavigation {
         eSkinNavigation_Pack,
@@ -49,19 +39,9 @@ private:
     UIControl_Label m_labelSelected;
     UIControl m_controlSkinNamePlate, m_controlSelectedPanel,
         m_controlIggyCharacters, m_controlTimer;
-#if 0
-    UIControl_Touch m_TouchTabLeft, m_TouchTabRight, m_TouchTabCenter,
-        m_TouchIggyCharacters;
-#endif
     IggyName m_funcSetPlayerCharacterSelected, m_funcSetCharacterLocked;
     IggyName m_funcSetLeftLabel, m_funcSetRightLabel, m_funcSetCentreLabel;
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-#if 0
-    UI_MAP_ELEMENT(m_TouchTabLeft, "TouchTabLeft")
-    UI_MAP_ELEMENT(m_TouchTabRight, "TouchTabRight")
-    UI_MAP_ELEMENT(m_TouchTabCenter, "TouchTabCenter")
-    UI_MAP_ELEMENT(m_TouchIggyCharacters, "TouchIggyCharacters")
-#endif
     UI_MAP_ELEMENT(m_controlSkinNamePlate, "SkinNamePlate")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_controlSkinNamePlate)
     UI_MAP_ELEMENT(m_labelSkinName, "SkinTitle1")
@@ -120,11 +100,6 @@ private:
 
 public:
     UIScene_SkinSelectMenu(int iPad, void* initData, UILayer* parentLayer);
-#if 0
-    virtual ~UIScene_SkinSelectMenu() {
-        DeleteCriticalSection(&m_DLCInstallCS);
-    }
-#endif
 
     virtual void tick();
 
@@ -167,9 +142,6 @@ private:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#if 0
-    virtual void HandleDLCLicenseChange();
-#endif
 
     void showNotOnlineDialog(int iPad);
 
@@ -179,24 +151,8 @@ private:
     void AddFavoriteSkin(int iPad, int iSkinID);
 
     void InputActionOK(unsigned int iPad);
-#if 0
-    virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
-                                  bool bPressed, bool bRepeat, bool bReleased);
-#endif  //0
     virtual void handleReload();
 
-#if 0
-    bool m_bErrorDialogRunning;
-#endif
 
-#if 0
-    static int MustSignInReturned(void* pParam, int iPad,
-                                  C4JStorage::EMessageResult result);
-    static int PSNSignInReturned(void* pParam, bool bContinue, int iPad);
-#endif
 
-#if 0
-    CRITICAL_SECTION m_DLCInstallCS;  // to prevent a race condition between the
-                                      // install and the mounted callback
-#endif
 };

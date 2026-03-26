@@ -13,33 +13,7 @@ UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
 
     m_buttonConfirm.init(app.GetString(IDS_TOOLTIPS_ACCEPT), eControl_Confirm);
 
-#if 0 || 0 || 0
-    std::wstring EULA = app.GetString(IDS_EULA);
-    EULA.append(L"\r\n");
-
-#if 0
-    if (app.IsEuropeanSKU()) {
-        EULA.append(app.GetString(IDS_EULA_SCEE));
-        // if it's the BD build
-        if (StorageManager.GetBootTypeDisc()) {
-            EULA.append(app.GetString(IDS_EULA_SCEE_BD));
-        }
-    } else if (app.IsAmericanSKU()) {
-        EULA.append(app.GetString(IDS_EULA_SCEA));
-    }
-#elif 0
-    if (app.IsEuropeanSKU()) {
-        EULA.append(app.GetString(IDS_EULA_SCEE));
-        // 4J-PB - we can't tell if it's a disc or digital version, so let's
-        // show this anyway
-        EULA.append(app.GetString(IDS_EULA_SCEE_BD));
-    } else if (app.IsAmericanSKU()) {
-        EULA.append(app.GetString(IDS_EULA_SCEA));
-    }
-#endif
-#else
     std::wstring EULA = L"";
-#endif
 
     std::vector<std::wstring> paragraphs;
     int lastIndex = 0;
@@ -69,9 +43,6 @@ UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
 
     // ui.setFontCachingCalculationBuffer(20000);
 
-#if 0
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 UIScene_EULA::~UIScene_EULA() {
@@ -89,18 +60,10 @@ void UIScene_EULA::handleInput(int iPad, int key, bool repeat, bool pressed,
                                bool released, bool& handled) {
     if (m_bIgnoreInput) return;
 
-#if 0
-    // ignore all players except player 0 - it's their profile that is currently
-    // being used
-    if (iPad != 0) return;
-#endif
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_OK:
         case ACTION_MENU_DOWN:
         case ACTION_MENU_UP:

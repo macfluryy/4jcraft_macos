@@ -63,9 +63,6 @@ void UIScene_DeathMenu::handleInput(int iPad, int key, bool repeat,
             handled = true;
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
             sendInputToMovie(key, repeat, pressed, released);
@@ -79,9 +76,6 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_Respawn:
             m_bIgnoreInput = true;
             app.SetAction(m_iPad, eAppAction_Respawn);
-#if 0
-            // InputManager.SetEnabledGtcButtons(_360_GTC_MENU|_360_GTC_PAUSE|_360_GTC_VIEW);
-#endif
             break;
         case eControl_ExitGame: {
             Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -101,28 +95,6 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                     TelemetryManager->RecordLevelExit(
                         m_iPad, eSen_LevelExitStatus_Failed);
 
-#if 0 || 0
-                    if (g_NetworkManager.IsHost() &&
-                        StorageManager.GetSaveDisabled()) {
-                        uiIDA[0] = IDS_CONFIRM_CANCEL;
-                        uiIDA[1] = IDS_EXIT_GAME_SAVE;
-                        uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
-
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
-                            m_iPad,
-                            &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
-                    } else {
-                        uiIDA[0] = IDS_CONFIRM_CANCEL;
-                        uiIDA[1] = IDS_CONFIRM_OK;
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                            m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
-                    }
-
-#else
                     if (StorageManager.GetSaveDisabled()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
@@ -153,7 +125,6 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                                 (LPVOID)GetCallbackUniqueId());
                         }
                     }
-#endif
                 } else {
                     TelemetryManager->RecordLevelExit(
                         m_iPad, eSen_LevelExitStatus_Failed);

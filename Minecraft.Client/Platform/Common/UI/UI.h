@@ -38,9 +38,6 @@
 #include "UIControl_SpaceIndicatorBar.h"
 #include "UIControl_BeaconEffectButton.h"
 
-#if 0
-#include "UIControl_Touch.h"
-#endif
 
 #include "UIScene_HUD.h"
 #include "UIComponent_Panorama.h"
@@ -117,9 +114,6 @@
 #include "UIScene_InGameInfoMenu.h"
 #include "UIScene_InGameHostOptionsMenu.h"
 #include "UIScene_InGamePlayerOptionsMenu.h"
-#if 0 || 0
-#include "UIScene_InGameSaveManagementMenu.h"
-#endif
 #include "UIScene_TeleportMenu.h"
 #include "UIScene_EndPoem.h"
 #include "UIScene_EULA.h"

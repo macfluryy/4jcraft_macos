@@ -13,16 +13,8 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
     IggyDataValue result;
     IggyDataValue value[1];
     value[0].type = IGGY_DATATYPE_number;
-#if 0 || defined(_WIN64)
+#if defined(_WIN64)
     value[0].number = (F64)0;
-#elif 0
-    value[0].number = (F64)1;
-#elif 0
-    value[0].number = (F64)2;
-#elif 0
-    value[0].number = (F64)3;
-#elif 0
-    value[0].number = (F64)4;
 #endif
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
@@ -44,17 +36,11 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
         !bNotInGame && Minecraft::GetInstance()->localplayers[m_iPad] &&
         Minecraft::GetInstance()->localplayers[m_iPad]->abilities.mayfly;
 
-#if 1
-#if 0
-    // no buttons to initialise if we're running this on PS4 remote play
-    if (!InputManager.UsingRemoteVita())
-#endif
     {
         m_buttonLayouts[0].init(L"1", eControl_Button0);
         m_buttonLayouts[1].init(L"2", eControl_Button1);
         m_buttonLayouts[2].init(L"3", eControl_Button2);
     }
-#endif
 
     m_checkboxInvert.init(
         app.GetString(IDS_INVERT_LOOK), eControl_InvertLook,
@@ -69,24 +55,15 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
 
     int iSelected = app.GetGameSettings(m_iPad, eGameSetting_ControlScheme);
 
-#if 1
     LPWSTR layoutString = new wchar_t[128];
     swprintf(layoutString, 128, L"%ls : %ls", app.GetString(IDS_CURRENT_LAYOUT),
              app.GetString(m_iSchemeTextA[iSelected]));
-#if 0
-    if (!InputManager.UsingRemoteVita())
-#endif
     {
         m_labelCurrentLayout.init(layoutString);
     }
-#endif
 
     m_iCurrentNavigatedControlsLayout = iSelected;
 
-#if 0
-    // don't set controller layout if we're entering the PS4 remote play scene
-    if (!InputManager.UsingRemoteVita())
-#endif
     {
         IggyDataValue result;
         IggyDataValue value[1];
@@ -97,13 +74,6 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
             m_funcSetControllerLayout, 1, value);
     }
 
-#if 0
-    // Set mapping to Vita mapping
-    if (InputManager.UsingRemoteVita()) m_iCurrentNavigatedControlsLayout = 3;
-#elif 0
-    // Set mapping to Vita mapping
-    if (InputManager.IsVitaTV()) m_iCurrentNavigatedControlsLayout = 1;
-#endif
 
     for (unsigned int i = 0; i < e_PadCOUNT; ++i) {
         m_labelsPad[i].init(L"");
@@ -115,16 +85,6 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
 }
 
 std::wstring UIScene_ControlsMenu::getMoviePath() {
-#if 0
-    if (InputManager.UsingRemoteVita()) {
-        return L"ControlsRemotePlay";
-    } else
-#endif
-#if 0
-        if (InputManager.IsVitaTV()) {
-        return L"ControlsTV";
-    } else
-#endif
         if (app.GetLocalPlayerCount() > 1) {
         return L"ControlsSplit";
     } else {
@@ -157,9 +117,6 @@ void UIScene_ControlsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             if (pressed) {
                 // CD - Added for audio
                 ui.PlayUISFX(eSFX_Press);
@@ -201,9 +158,6 @@ void UIScene_ControlsMenu::handlePress(F64 controlId, F64 childId) {
             swprintf(layoutString, 128, L"%ls : %ls",
                      app.GetString(IDS_CURRENT_LAYOUT),
                      app.GetString(m_iSchemeTextA[control]));
-#if 0
-            if (!InputManager.UsingRemoteVita())
-#endif
             {
                 m_labelCurrentLayout.setLabel(layoutString);
             }
@@ -268,11 +222,7 @@ void UIScene_ControlsMenu::PositionAllText(int iPad) {
     }
 
     bool layoutHasDpadFly;
-#if 0
-    layoutHasDpadFly = m_iCurrentNavigatedControlsLayout == 1;
-#else
     layoutHasDpadFly = m_iCurrentNavigatedControlsLayout == 0;
-#endif
 
     // If we're in controls mode 1, and creative mode show the dpad for Creative
     // Mode
@@ -296,13 +246,7 @@ void UIScene_ControlsMenu::PositionText(int iPad, int iTextID,
     if (uiVal & _360_JOY_BUTTON_Y)
         PositionTextDirect(iPad, iTextID, e_PadY, true);
     if (uiVal & _360_JOY_BUTTON_BACK) {
-#if 0
-        PositionTextDirect(
-            iPad, iTextID,
-            (InputManager.UsingRemoteVita() ? e_PadTouch : e_PadBack), true);
-#else
         PositionTextDirect(iPad, iTextID, e_PadBack, true);
-#endif
     }
     if (uiVal & _360_JOY_BUTTON_START)
         PositionTextDirect(iPad, iTextID, e_PadStart, true);

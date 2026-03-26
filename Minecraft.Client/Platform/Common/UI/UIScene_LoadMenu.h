@@ -60,9 +60,6 @@ private:
     bool m_bThumbnailGetFailed;
     int64_t m_seed;
 
-#if 0
-    std::vector<SonyCommerce::ProductInfo>* m_pvProductInfo;
-#endif
     // int *m_iConfigA; // track the texture packs that we don't have installed
 
     std::uint8_t* m_pbThumbnailData;
@@ -105,10 +102,6 @@ private:
     virtual void checkStateAndStartGame();
     void LaunchGame(void);
 
-#if 0
-    static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
-                                       int iPad);
-#endif
 
     static int ConfirmLoadReturned(void* pParam, int iPad,
                                    C4JStorage::EMessageResult result);
@@ -125,12 +118,6 @@ private:
     static int DeleteSaveDataReturned(void* pParam, bool bSuccess);
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
-#if 0
-    // static int PSPlusReturned(void *pParam,int
-    // iPad,C4JStorage::EMessageResult result);
-    static int ContinueOffline(void* pParam, int iPad,
-                               C4JStorage::EMessageResult result);
-#endif
 
 public:
     // 4jcraft: made public for the thunk system we have for thumbnail loading, probably a FIXME for

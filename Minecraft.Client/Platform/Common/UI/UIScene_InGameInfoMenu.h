@@ -69,10 +69,4 @@ public:
 private:
     PlayerInfo* BuildPlayerInfo(INetworkPlayer* player);
 
-#if 0 || 0 || 0
-    static int MustSignInReturnedPSN(void* pParam, int iPad,
-                                     C4JStorage::EMessageResult result);
-    static int ViewInvites_SignInReturned(void* pParam, bool bContinue,
-                                          int iPad);
-#endif
 };

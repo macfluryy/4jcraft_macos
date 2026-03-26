@@ -19,10 +19,6 @@ private:
     UI_MAP_NAME(m_funcAutoResize, L"AutoResize")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
-#if 0 || 0 || 0
-    static int DeleteOptionsDialogReturned(void* pParam, int iPad,
-                                           C4JStorage::EMessageResult result);
-#endif
 
 public:
     UIScene_SaveMessage(int iPad, void* initData, UILayer* parentLayer);
@@ -30,9 +26,7 @@ public:
 
     virtual EUIScene getSceneType() { return eUIScene_SaveMessage; }
     // Returns true if this scene has focus for the pad passed in
-#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
-#endif
     virtual void updateTooltips();
 
 protected:

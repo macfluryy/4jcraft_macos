@@ -2,11 +2,6 @@
 #include "UI.h"
 #include "UIScene_SkinSelectMenu.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
-#if 0
-#include <error_dialog.h>
-#elif 0
-#include <message_dialog.h>
-#endif
 
 #define SKIN_SELECT_PACK_DEFAULT 0
 #define SKIN_SELECT_PACK_FAVORITES 1
@@ -33,9 +28,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
 
     m_labelSelected.init(app.GetString(IDS_SELECTED));
 
-#if 0
-    m_bErrorDialogRunning = false;
-#endif
 
     m_bIgnoreInput = false;
     m_bNoSkinsToShow = false;
@@ -86,13 +78,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
     m_centreLabel = L"";
     m_rightLabel = L"";
 
-#if 0
-    // initialise vita tab  controls with ids
-    m_TouchTabLeft.init(ETouchInput_TabLeft);
-    m_TouchTabRight.init(ETouchInput_TabRight);
-    m_TouchTabCenter.init(ETouchInput_TabCenter);
-    m_TouchIggyCharacters.init(ETouchInput_IggyCharacters);
-#endif
 
     // block input if we're waiting for DLC to install. The end of dlc mounting
     // custom message will fill the save list
@@ -137,11 +122,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
 
     // Display the tooltips
 
-#if 0
-    InitializeCriticalSection(
-        &m_DLCInstallCS);  // to prevent a race condition between the install
-                           // and the mounted callback
-#endif
 }
 
 void UIScene_SkinSelectMenu::updateTooltips() {
@@ -173,18 +153,6 @@ void UIScene_SkinSelectMenu::tick() {
     // check for new DLC installed
 
     // check for the patch error dialog
-#if 0
-
-    // process the error dialog (for a patch being available)
-    if (m_bErrorDialogRunning) {
-        SceErrorDialogStatus stat = sceErrorDialogUpdateStatus();
-        if (stat == SCE_ERROR_DIALOG_STATUS_FINISHED) {
-            sceErrorDialogTerminate();
-            m_bErrorDialogRunning = false;
-        }
-    }
-
-#endif
 }
 
 void UIScene_SkinSelectMenu::handleAnimationEnd() {
@@ -222,9 +190,6 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#if 0
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             if (pressed) {
                 InputActionOK(iPad);
             }
@@ -434,57 +399,11 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                     // if(true)
                     if (!m_currentPack->hasPurchasedFile(
                             DLCManager::e_DLCType_Skin, skinFile->getPath())) {
-#if 0
-                        // 4J-PB - Check if there is a patch for the game
-                        int errorCode = ProfileManager.getNPAvailability(
-                            ProfileManager.GetPrimaryPad());
-
-                        bool bPatchAvailable;
-                        switch (errorCode) {
-                            case SCE_NP_ERROR_LATEST_PATCH_PKG_EXIST:
-                            case SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED:
-                                bPatchAvailable = true;
-                                break;
-                            default:
-                                bPatchAvailable = false;
-                                break;
-                        }
-
-                        if (bPatchAvailable) {
-                            int32_t ret = sceErrorDialogInitialize();
-                            m_bErrorDialogRunning = true;
-                            if (ret == SCE_OK) {
-                                SceErrorDialogParam param;
-                                sceErrorDialogParamInitialize(&param);
-                                // 4J-PB - We want to display the option to get
-                                // the patch now
-                                param.errorCode =
-                                    SCE_NP_ERROR_LATEST_PATCH_PKG_DOWNLOADED;  // pClass->m_errorCode;
-                                ret =
-                                    sceUserServiceGetInitialUser(&param.userId);
-                                if (ret == SCE_OK) {
-                                    ret = sceErrorDialogOpen(&param);
-                                    break;
-                                }
-                            }
-                        }
-#endif
 
                         // no
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_OK;
 
-#if 0
-                        // Check if PSN is unavailable because of age
-                        // restriction
-                        int npAvailability =
-                            ProfileManager.getNPAvailability(iPad);
-                        if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
-                            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                                   IDS_CONTENT_RESTRICTION,
-                                                   uiIDA, 1, iPad);
-                        } else
-#endif
                             // We need to upsell the full version
                             if (ProfileManager.IsGuest(iPad)) {
                                 // can't buy
@@ -492,43 +411,11 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                                     IDS_PRO_GUESTPROFILE_TITLE,
                                     IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1, iPad);
                             }
-#if 0 || 0 || 0
-                            // are we online?
-                            else if (!ProfileManager.IsSignedInLive(iPad)) {
-                                showNotOnlineDialog(iPad);
-                            }
-#endif
                             else {
                                 // upsell
-#if 0
-                                DLC_INFO* pDLCInfo =
-                                    app.GetDLCInfoForTrialOfferID(
-                                        m_currentPack->getPurchaseOfferId());
-                                ULONGLONG ullOfferID_Full;
-
-                                if (pDLCInfo != NULL) {
-                                    ullOfferID_Full = pDLCInfo->ullOfferID_Full;
-                                } else {
-                                    ullOfferID_Full =
-                                        m_currentPack->getPurchaseOfferId();
-                                }
-
-                                // tell sentient about the upsell of the full
-                                // version of the skin pack
-                                SentientManager.RecordUpsellPresented(
-                                    iPad, eSet_UpsellID_Skin_DLC,
-                                    ullOfferID_Full & 0xFFFFFFFF);
-#endif
                                 bool bContentRestricted = false;
-#if 0 || 0
-                                ProfileManager.GetChatAndContentRestrictions(
-                                    m_iPad, true, NULL, &bContentRestricted,
-                                    NULL);
-#endif
                                 if (bContentRestricted) {
-#if !(0 || \
-      defined(          \
-          _WIN64))  // 4J Stu - Temp to get the win build running, but so we
+#if !defined(_WIN64)
                     // check this for other platforms you can't see the store
                                     unsigned int uiIDA[1];
                                     uiIDA[0] = IDS_CONFIRM_OK;
@@ -539,9 +426,6 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 #endif
                                 } else {
                                     // 4J-PB - need to check for an empty store
-#if 0 || 0 || 0
-                                    if (app.CheckForEmptyStore(iPad) == false)
-#endif
                                     {
                                         m_bIgnoreInput = true;
                                         renableInputAfterOperation = false;
@@ -622,22 +506,10 @@ void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         // region->scissor_y1); app.DebugPrintf("Stencil mask= %d, stencil ref=
         // %d, stencil write= %d\n", region->stencil_func_mask,
         // region->stencil_func_ref, region->stencil_write_mask);
-#if 0
-        if (region->stencil_func_ref != 0)
-            RenderManager.StateSetStencil(GL_EQUAL, region->stencil_func_ref,
-                                          region->stencil_func_mask);
-#elif 0
-        // AP - make sure the skins are only drawn inside the smokey panel
-        if (region->stencil_func_ref != 0)
-            RenderManager.StateSetStencil(SCE_GXM_STENCIL_FUNC_EQUAL,
-                                          region->stencil_func_mask,
-                                          region->stencil_write_mask);
-#else
         if (region->stencil_func_ref != 0)
             RenderManager.StateSetStencil(GL_EQUAL, region->stencil_func_ref,
                                           region->stencil_func_mask,
                                           region->stencil_write_mask);
-#endif
         m_characters[characterId].render(region);
 
         // Finish GDraw and anything else that needs to be finalised
@@ -1273,141 +1145,8 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring& label) {
     }
 }
 
-#if 0
-void UIScene_SkinSelectMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,
-                                              int iId, bool bPressed,
-                                              bool bRepeat, bool bReleased) {
-    if (bPressed) {
-        switch (iId) {
-            case ETouchInput_TabLeft:
-            case ETouchInput_TabRight:
-            case ETouchInput_TabCenter:
-                // change to pack navigation if not already there!
-                if (m_currentNavigation != eSkinNavigation_Pack) {
-                    ui.PlayUISFX(eSFX_Scroll);
-                    m_currentNavigation = eSkinNavigation_Pack;
-                    sendInputToMovie(ACTION_MENU_UP, false, true, false);
-                }
-                break;
-            case ETouchInput_IggyCharacters:
-                if (m_packIndex == SKIN_SELECT_PACK_FAVORITES) {
-                    if (app.GetPlayerFavoriteSkinsCount(m_iPad) == 0) {
-                        // ignore this, since there are no skins being displayed
-                        break;
-                    }
-                }
-                // change to skin navigation if not already there!
-                if (m_currentNavigation != eSkinNavigation_Skin) {
-                    ui.PlayUISFX(eSFX_Scroll);
-                    m_currentNavigation = eSkinNavigation_Skin;
-                    sendInputToMovie(ACTION_MENU_DOWN, false, true, false);
-                }
-                // remember touch x start
-                m_iTouchXStart = x;
-                m_bTouchScrolled = false;
-                break;
-        }
-    } else if (bRepeat) {
-        switch (iId) {
-            case ETouchInput_TabLeft:
-                /* no action */
-                break;
-            case ETouchInput_TabRight:
-                /* no action */
-                break;
-            case ETouchInput_IggyCharacters:
-                if (m_currentNavigation != eSkinNavigation_Skin) {
-                    // not in skin select mode
-                    break;
-                }
-                if (x < m_iTouchXStart - 50) {
-                    if (!m_bAnimatingMove && !m_bTouchScrolled) {
-                        ui.PlayUISFX(eSFX_Scroll);
-                        m_skinIndex = getNextSkinIndex(m_skinIndex);
-                        // handleSkinIndexChanged();
-
-                        m_bSlidingSkins = true;
-                        m_bAnimatingMove = true;
-
-                        m_characters[eCharacter_Current].SetFacing(
-                            UIControl_PlayerSkinPreview::
-                                e_SkinPreviewFacing_Right,
-                            true);
-                        m_characters[eCharacter_Next1].SetFacing(
-                            UIControl_PlayerSkinPreview::
-                                e_SkinPreviewFacing_Forward,
-                            true);
-
-                        // 4J Stu - Swapped nav buttons
-                        sendInputToMovie(ACTION_MENU_LEFT, false, true, false);
-
-                        m_bTouchScrolled = true;
-                    }
-                } else if (x > m_iTouchXStart + 50) {
-                    if (!m_bAnimatingMove && !m_bTouchScrolled) {
-                        ui.PlayUISFX(eSFX_Scroll);
-
-                        m_skinIndex = getPreviousSkinIndex(m_skinIndex);
-                        // handleSkinIndexChanged();
-
-                        m_bSlidingSkins = true;
-                        m_bAnimatingMove = true;
-
-                        m_characters[eCharacter_Current].SetFacing(
-                            UIControl_PlayerSkinPreview::
-                                e_SkinPreviewFacing_Left,
-                            true);
-                        m_characters[eCharacter_Previous1].SetFacing(
-                            UIControl_PlayerSkinPreview::
-                                e_SkinPreviewFacing_Forward,
-                            true);
-
-                        // 4J Stu - Swapped nav buttons
-                        sendInputToMovie(ACTION_MENU_RIGHT, false, true, false);
-
-                        m_bTouchScrolled = true;
-                    }
-                }
-                break;
-        }
-    } else if (bReleased) {
-        switch (iId) {
-            case ETouchInput_TabLeft:
-                if (m_currentNavigation == eSkinNavigation_Pack) {
-                    ui.PlayUISFX(eSFX_Scroll);
-                    int startingIndex = m_packIndex;
-                    m_packIndex = getPreviousPackIndex(m_packIndex);
-                    if (startingIndex != m_packIndex) {
-                        handlePackIndexChanged();
-                    }
-                }
-                break;
-            case ETouchInput_TabRight:
-                if (m_currentNavigation == eSkinNavigation_Pack) {
-                    ui.PlayUISFX(eSFX_Scroll);
-                    int startingIndex = m_packIndex;
-                    m_packIndex = getNextPackIndex(m_packIndex);
-                    if (startingIndex != m_packIndex) {
-                        handlePackIndexChanged();
-                    }
-                }
-                break;
-            case ETouchInput_IggyCharacters:
-                if (!m_bTouchScrolled) {
-                    InputActionOK(iPad);
-                }
-                break;
-        }
-    }
-}
-#endif
 
 void UIScene_SkinSelectMenu::HandleDLCInstalled() {
-#if 0
-    EnterCriticalSection(
-        &m_DLCInstallCS);  // to prevent a race condition between the install
-                           // and the mounted callback
-#endif
 
     app.DebugPrintf(4, "UIScene_SkinSelectMenu::HandleDLCInstalled\n");
     // mounted DLC may have changed
@@ -1426,17 +1165,9 @@ void UIScene_SkinSelectMenu::HandleDLCInstalled() {
 
     // this will send a CustomMessage_DLCMountingComplete when done
 
-#if 0
-    LeaveCriticalSection(&m_DLCInstallCS);
-#endif
 }
 
 void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
-#if 0
-    EnterCriticalSection(
-        &m_DLCInstallCS);  // to prevent a race condition between the install
-                           // and the mounted callback
-#endif
     app.DebugPrintf(4, "UIScene_SkinSelectMenu::HandleDLCMountingComplete\n");
     m_controlTimer.setVisible(false);
     m_controlIggyCharacters.setVisible(true);
@@ -1474,41 +1205,10 @@ void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
 #if TO_BE_IMPLEMENTED
     if (bInGame) XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 #endif
-#if 0
-    LeaveCriticalSection(&m_DLCInstallCS);
-#endif
 }
 
 void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad) {
     // need to be signed in to live. get them to sign in to online
-#if 0
-    SQRNetworkManager_PS3::AttemptPSNSignIn(NULL, this);
-
-#elif 0
-    if (CGameNetworkManager::usingAdhocMode() &&
-        SQRNetworkManager_AdHoc_Vita::GetAdhocStatus()) {
-        // we're in adhoc mode, we really need to ask before disconnecting
-        UINT uiIDA[2];
-        uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
-        uiIDA[1] = IDS_CANCEL;
-        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
-                               uiIDA, 2, ProfileManager.GetPrimaryPad(),
-                               &UIScene_SkinSelectMenu::MustSignInReturned,
-                               NULL);
-    } else {
-        SQRNetworkManager_Vita::AttemptPSNSignIn(NULL, this);
-    }
-
-#elif 0
-    SQRNetworkManager_Orbis::AttemptPSNSignIn(NULL, this, false, iPad);
-
-#elif 0
-
-    unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
-    ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                           IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad);
-
-#endif
 }
 
 int UIScene_SkinSelectMenu::UnlockSkinReturned(
@@ -1518,69 +1218,6 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(
     if ((result == C4JStorage::EMessage_ResultAccept) &&
         ProfileManager.IsSignedIn(iPad)) {
         if (ProfileManager.IsSignedInLive(iPad)) {
-#if 0 || 0 || 0
-            // need to get info on the pack to see if the user has already
-            // downloaded it
-
-            // retrieve the store name for the skin pack
-            std::wstring wStrPackName = pScene->m_currentPack->getName();
-            const char* pchPackName = wstringtofilename(wStrPackName);
-            SONYDLC* pSONYDLCInfo = app.GetSONYDLCInfo((char*)pchPackName);
-
-            if (pSONYDLCInfo != NULL) {
-                char chName[42];
-                char chKeyName[20];
-                char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
-
-                memset(chSkuID, 0, SCE_NP_COMMERCE2_SKU_ID_LEN);
-                // find the info on the skin pack
-                // we have to retrieve the skuid from the store info, it can't
-                // be hardcoded since Sony may change it. So we assume the first
-                // sku for the product is the one we want
-
-                // while the store is screwed, hardcode the sku
-                // sprintf(chName,"%s-%s-%s",app.GetCommerceCategory(),pSONYDLCInfo->chDLCKeyname,"EURO");
-
-                // MGH -  keyname in the DLC file is 16 chars long, but there's
-                // no space for a NULL terminating char
-                memset(chKeyName, 0, sizeof(chKeyName));
-                strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
-
-#if 0
-                strcpy(chName, chKeyName);
-#else
-                sprintf(chName, "%s-%s", app.GetCommerceCategory(), chKeyName);
-#endif
-                app.GetDLCSkuIDFromProductList(chName, chSkuID);
-
-#if 0 || 0 || 0
-                if (app.CheckForEmptyStore(iPad) == false)
-#endif
-                {
-                    if (app.DLCAlreadyPurchased(chSkuID)) {
-                        app.DebugPrintf(
-                            "Already purchased this DLC - "
-                            "DownloadAlreadyPurchased \n");
-                        app.DownloadAlreadyPurchased(chSkuID);
-                    } else {
-                        app.DebugPrintf(
-                            "Not yet purchased this DLC - Checkout \n");
-                        app.Checkout(chSkuID);
-                    }
-                }
-            }
-            // need to re-enable input because the user can back out of the
-            // store purchase, and we'll be stuck
-            pScene->m_bIgnoreInput =
-                false;  // MGH - moved this to outside the pSONYDLCInfo, so we
-                        // don't get stuck
-#elif 0
-            StorageManager.InstallOffer(
-                1,
-                const_cast<wchar_t*>(
-                    pScene->m_currentPack->getPurchaseOfferId().c_str()),
-                &RenableInput, pScene, NULL);
-#endif
         } else  // Is signed in, but not live.
         {
             pScene->showNotOnlineDialog(iPad);
@@ -1642,35 +1279,4 @@ void UIScene_SkinSelectMenu::handleReload() {
     handlePackIndexChanged();
 }
 
-#if 0
-void UIScene_SkinSelectMenu::HandleDLCLicenseChange() {
-    // update the lock flag
-    handleSkinIndexChanged();
-}
-#endif
 
-#if 0
-int UIScene_SkinSelectMenu::MustSignInReturned(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    if (result == C4JStorage::EMessage_ResultAccept) {
-#if 0
-        SQRNetworkManager_PS3::AttemptPSNSignIn(
-            &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
-#elif 0
-        SQRNetworkManager_Vita::AttemptPSNSignIn(
-            &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
-#elif 0
-        SQRNetworkManager_Orbis::AttemptPSNSignIn(
-            &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
-#endif
-    }
-    return 0;
-}
-
-int UIScene_SkinSelectMenu::PSNSignInReturned(void* pParam, bool bContinue,
-                                              int iPad) {
-    if (bContinue) {
-    }
-    return 0;
-}
-#endif  // 0
