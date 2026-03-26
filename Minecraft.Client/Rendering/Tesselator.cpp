@@ -73,7 +73,7 @@ Tesselator::Tesselator(int size) {
         ARBVertexBufferObject::glGenBuffersARB(vboIds);
     }
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Use this to defer primitives
     // that use icons with alpha
     alphaCutOutEnabled = false;
@@ -93,7 +93,7 @@ void Tesselator::end() {
     //    if (!tesselating) throw new IllegalStateException("Not tesselating!");
     //    // 4J - removed
     tesselating = false;
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Check both counts for valid
     // vertices
     if (vertices > 0 || vertices2 > 0)
@@ -115,7 +115,7 @@ void Tesselator::end() {
                 *pColData = 0x00000000;
                 pColData += 8;
             }
-#ifdef __PSVITA__
+#if 0
             // AP - alpha cut out is expensive on vita. Check both counts for
             // valid vertices
             pColData = (unsigned int*)_array2->data;
@@ -128,7 +128,7 @@ void Tesselator::end() {
         }
         if (mode == GL_QUADS && TRIANGLE_MODE) {
             // glDrawArrays(GL_TRIANGLES, 0, vertices); // 4J - changed for xbox
-#ifdef _XBOX
+#if 0
             RenderManager.DrawVertices(
                 D3DPT_TRIANGLELIST, vertices, _array->data,
                 useCompactFormat360
@@ -152,7 +152,7 @@ void Tesselator::end() {
 // For compact vertices, the vertexCount has to be calculated from the amount of
 // data written, as we insert extra fake vertices to encode supplementary data
 // for more awkward quads that have non axis aligned UVs (eg flowing lava/water)
-#ifdef _XBOX
+#if 0
             int vertexCount = vertices;
             if (useCompactFormat360) {
                 vertexCount = p / 2;
@@ -176,7 +176,7 @@ void Tesselator::end() {
 #else
             int vertexCount = vertices;
             if (useCompactFormat360) {
-#ifdef __PSVITA__
+#if 0
                 // AP - alpha cut out is expensive on vita. Render non-cut out
                 // stuff first then send the cut out stuff
                 if (vertexCount) {
@@ -230,7 +230,7 @@ void Tesselator::clear() {
     p = 0;
     count = 0;
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Clear the cut out variables
     vertices2 = 0;
     p2 = 0;
@@ -258,7 +258,7 @@ bool Tesselator::setMipmapEnable(bool enable) {
     return prev;
 }
 
-#ifdef __PSVITA__
+#if 0
 // AP - alpha cut out is expensive on vita. Use this to defer primitives that
 // use icons with alpha
 void Tesselator::setAlphaCutOut(bool enable) { alphaCutOutEnabled = enable; }
@@ -495,7 +495,7 @@ void Tesselator::packCompactQuad() {
     }
 }
 
-#ifdef __PSVITA__
+#if 0
 void Tesselator::tileQuad(float x1, float y1, float z1, float u1, float v1,
                           float r1, float g1, float b1, int tex1, float x2,
                           float y2, float z2, float u2, float v2, float r2,
@@ -778,7 +778,7 @@ void Tesselator::vertex(float x, float y, float z) {
     if (useCompactFormat360) {
         unsigned int ucol = (unsigned int)col;
 
-#ifdef _XBOX
+#if 0
         // Pack as 4:4:4 RGB_
         unsigned short packedcol =
             (((col & 0xf0000000) >> 16) | ((col & 0x00f00000) >> 12) |
@@ -805,7 +805,7 @@ void Tesselator::vertex(float x, float y, float z) {
         ipackedcol -= 32768;  // -32768 to 32767 range
         ipackedcol &= 0xffff;
 
-#ifdef __PSVITA__
+#if 0
         // AP - alpha cut out is expensive on vita. This will choose the correct
         // data buffer depending on cut out enabled
         std::int16_t* pShortData;
@@ -819,7 +819,7 @@ void Tesselator::vertex(float x, float y, float z) {
 
 #endif
 
-#ifdef __PS3__
+#if 0
         float tex2U = ((std::int16_t*)&_tex2)[1] + 8;
         float tex2V = ((std::int16_t*)&_tex2)[0] + 8;
         float colVal1 = ((col & 0xff000000) >> 24) / 256.0f;
@@ -858,7 +858,7 @@ void Tesselator::vertex(float x, float y, float z) {
         packLinuxLightmapCoords(_tex2, u2, v2);
         logLinuxPackedLightmapCoords("compact", _tex2, u2, v2);
 #endif
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
         // Optimisation - pack the second UVs into a single short (they could
         // actually go in a byte), which frees up a short to store the x offset
         // for this chunk in the vertex itself. This means that when rendering
@@ -871,7 +871,7 @@ void Tesselator::vertex(float x, float y, float z) {
         pShortData[7] = v2;
 #endif
 
-#ifdef __PSVITA__
+#if 0
         // AP - alpha cut out is expensive on vita. This will choose the correct
         // data buffer depending on cut out enabled
         if (!alphaCutOutEnabled) {
@@ -887,7 +887,7 @@ void Tesselator::vertex(float x, float y, float z) {
 
 #endif
 
-#ifdef __PSVITA__
+#if 0
         // AP - alpha cut out is expensive on vita. Increase the correct
         // vertices depending on cut out enabled
         if (!alphaCutOutEnabled) {
@@ -900,7 +900,7 @@ void Tesselator::vertex(float x, float y, float z) {
         vertices++;
 #endif
 
-#ifdef _XBOX
+#if 0
         if (vertices % 4 == 0 &&
             ((p >= size - 8 * 2) ||
              ((p / 2) >=
@@ -908,7 +908,7 @@ void Tesselator::vertex(float x, float y, float z) {
                         // the end of a quad to catch it
 #else
 
-#ifdef __PSVITA__
+#if 0
         // Max 65535 verts in D3D, so 65532 is the last point at the end of a
         // quad to catch it
         if ((!alphaCutOutEnabled && vertices % 4 == 0 &&
@@ -962,12 +962,12 @@ void Tesselator::vertex(float x, float y, float z) {
             _array->data[p + 6] = _normal;
         }
         if (hasTexture2) {
-#ifdef _XBOX
+#if 0
             _array->data[p + 7] = ((_tex2 >> 16) & 0xffff) | (_tex2 << 16);
 #else
 // 4jcraft: we will be lighting the blocks right in here
-#if defined(__PS3__) || defined(__linux__)
-#ifdef __PS3__
+#if 0 || defined(__linux__)
+#if 0
             std::int16_t tex2U = ((std::int16_t*)&_tex2)[1] + 8;
             std::int16_t tex2V = ((std::int16_t*)&_tex2)[0] + 8;
 #else
@@ -1020,7 +1020,7 @@ void Tesselator::color(int c, int alpha) {
 
 void Tesselator::noColor() { _noColor = true; }
 
-#ifdef __PS3__
+#if 0
 std::uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z) {
     //                      11111111111 X 0x000007FF
     //           1111111111100000000000 Y 0x003FF800
@@ -1078,14 +1078,14 @@ std::uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z) {
     const std::uint32_t xyz = uX | uY | uZ;
     return xyz;
 }
-#endif  // __PS3__
+#endif  // 0
 
 void Tesselator::normal(float x, float y, float z) {
     hasNormal = true;
 
-#ifdef __PS3__
+#if 0
     _normal = _ConvertF32toX11Y11Z10N(x, y, z);
-#elif __PSVITA__
+#elif 0
     // AP - casting a negative value to 'byte' on Vita results in zero. changed
     // to a signed 8 value
     std::int8_t xx = (std::int8_t)(x * 127);
@@ -1119,7 +1119,7 @@ void Tesselator::addOffset(float x, float y, float z) {
 }
 
 bool Tesselator::hasMaxVertices() {
-#ifdef __ORBIS__
+#if 0
     // On PS4, the way we push data to the command buffer has a maximum size of
     // a single command packet of 2^16 bytes, and the effective maximum size
     // will be slightly less than that due to packet headers and padding.

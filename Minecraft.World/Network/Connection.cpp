@@ -119,7 +119,7 @@ Connection::Connection(Socket* socket, const std::wstring& id,
         new C4JThread(runWrite, this, writeThreadName, WRITE_STACK_SIZE);
     readThread->SetProcessor(CPU_CORE_CONNECTIONS);
     writeThread->SetProcessor(CPU_CORE_CONNECTIONS);
-#ifdef __ORBIS__
+#if 0
     readThread->SetPriority(
         THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also used for
                                         // Matching 2, and that priority of that
@@ -278,7 +278,7 @@ bool Connection::writeTick() {
             // "game" packets to QNet, rather than amalgamated chunks of data
             // that may include many packets, and partial packets b) To be able
             // to change the priority and queue of a packet if required
-#ifdef _XBOX
+#if 0
             int flags = QNET_SENDDATA_LOW_PRIORITY | QNET_SENDDATA_SECONDARY;
 #else
             int flags = NON_QNET_SENDDATA_ACK_REQUIRED;
@@ -554,7 +554,7 @@ int Connection::runRead(void* lpParam) {
     Connection* con = (Connection*)lpParam;
 
     if (con == NULL) {
-#ifdef __PS3__
+#if 0
         ShutdownManager::HasFinished(ShutdownManager::eConnectionReadThreads);
 #endif
         return 0;

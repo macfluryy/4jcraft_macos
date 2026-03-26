@@ -391,7 +391,7 @@ void MultiPlayerLevel::tickTiles() {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Ticking client side tiles");
-#ifdef __PSVITA__
+#if 0
     // AP - see CustomSet.h for and explanation
     for (int i = 0; i < chunksToPoll.end(); i += 1) {
         ChunkPos cp = chunksToPoll.get(i);

@@ -15,7 +15,7 @@
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 
 _MapDataMappings::_MapDataMappings() {
-#ifndef _DURANGO
+#if 1
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
 #endif
     ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
@@ -76,7 +76,7 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
 
 // Old version the only used 1 bit for dimension indexing
 _MapDataMappings_old::_MapDataMappings_old() {
-#ifndef _DURANGO
+#if 1
     ZeroMemory(xuids, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
 #endif
     ZeroMemory(dimensions, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
@@ -238,7 +238,7 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
         unsigned int NumberOfBytesRead;
         FileEntry* fileEntry = getSaveFile()->createFile(mapFile);
 
-#ifdef __PS3__
+#if 0
         // 4J Stu - This version changed happened before initial release
         if (getSaveFile()->getSaveVersion() <
             SAVE_FILE_VERSION_CHANGE_MAP_DATA_MAPPING_SIZE) {
@@ -248,7 +248,7 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
             // Save a new, blank version
             saveMapIdLookup();
         } else
-#elif defined(_DURANGO)
+#elif 0
         // 4J Stu - This version changed happened before initial release
         if (getSaveFile()->getSaveVersion() <
             SAVE_FILE_VERSION_DURANGO_CHANGE_MAP_DATA_MAPPING_SIZE) {
@@ -384,7 +384,7 @@ void DirectoryLevelStorage::saveLevelData(LevelData* levelData) {
 void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
     // 4J Jev, removed try/catch.
     PlayerUID playerXuid = player->getXuid();
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     if (playerXuid != INVALID_XUID)
 #else
     if (playerXuid != INVALID_XUID && !player->isGuest())
@@ -392,10 +392,10 @@ void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
     {
         CompoundTag* tag = new CompoundTag();
         player->saveWithoutId(tag);
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
         ConsoleSavePath realFile = ConsoleSavePath(
             m_saveFile->getPlayerDataFilenameForSave(playerXuid).c_str());
-#elif defined(_DURANGO)
+#elif 0
         ConsoleSavePath realFile = ConsoleSavePath(
             playerDir.getName() + player->getXuid().toString() + L".dat");
 #else
@@ -439,10 +439,10 @@ CompoundTag* DirectoryLevelStorage::load(std::shared_ptr<Player> player) {
 
 CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
     // 4J Jev, removed try/catch.
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     ConsoleSavePath realFile =
         ConsoleSavePath(m_saveFile->getPlayerDataFilenameForLoad(xuid).c_str());
-#elif defined(_DURANGO)
+#elif 0
     ConsoleSavePath realFile =
         ConsoleSavePath(playerDir.getName() + xuid.toString() + L".dat");
 #else
@@ -470,7 +470,7 @@ CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
 void DirectoryLevelStorage::clearOldPlayerFiles() {
     if (StorageManager.GetSaveDisabled()) return;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     std::vector<FileEntry*>* playerFiles = m_saveFile->getValidPlayerDatFiles();
 #else
     std::vector<FileEntry*>* playerFiles =
@@ -487,7 +487,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
                 std::wstring xuidStr = replaceAll(
                     replaceAll(file->data.filename, playerDir.getName(), L""),
                     L".dat", L"");
-#if defined(__PS3__) || defined(__ORBIS__) || defined(_DURANGO)
+#if 0 || 0 || 0
                 PlayerUID xuid(xuidStr);
 #else
                 PlayerUID xuid = _fromString<PlayerUID>(xuidStr);
@@ -507,7 +507,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
                 std::wstring xuidStr = replaceAll(
                     replaceAll(file->data.filename, playerDir.getName(), L""),
                     L".dat", L"");
-#if defined(__PS3__) || defined(__ORBIS__) || defined(_DURANGO)
+#if 0 || 0 || 0
                 PlayerUID xuid(xuidStr);
 #else
                 PlayerUID xuid = _fromString<PlayerUID>(xuidStr);
@@ -550,7 +550,7 @@ void DirectoryLevelStorage::flushSaveFile(bool autosave) {
 // 4J Added
 void DirectoryLevelStorage::resetNetherPlayerPositions() {
     if (app.GetResetNether()) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
         std::vector<FileEntry*>* playerFiles =
             m_saveFile->getValidPlayerDatFiles();
 #else

@@ -4,7 +4,7 @@
 #include "TextureManager.h"
 #include "Texture.h"
 
-#ifdef __PS3__
+#if 0
 #include "PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
 #include "C4JSpursJob.h"
 static const int sc_maxTextureBlits = 256;
@@ -13,7 +13,7 @@ static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits]
 static int g_currentTexBlit = 0;
 C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
 // #define DISABLE_SPU_CODE
-#endif  //__PS3__
+#endif  //0
 
 #define MAX_MIP_LEVELS 5
 
@@ -27,7 +27,7 @@ Texture::Texture(const std::wstring& name, int mode, int width, int height,
 void Texture::_init(const std::wstring& name, int mode, int width, int height,
                     int depth, int wrapMode, int format, int minFilter,
                     int magFilter, bool mipMap) {
-#ifdef __PS3__
+#if 0
     if (g_texBlitJobQueuePort == NULL)
         g_texBlitJobQueuePort =
             new C4JSpursJobQueue::Port("C4JSpursJob_Texture_blit");
@@ -80,7 +80,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
         if (m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
     }
 
-#ifdef __PSVITA__
+#if 0
     // vita doesn't have a mipmap conditional shader because it's too slow so
     // make sure this texture don't look awful at the lower mips
     if (name == L"terrain") {
@@ -116,7 +116,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
             for (int index = 0; index < tempBytes.length; index++) {
                 tempBytes[index] = 0;
             }
-#ifdef __PS3__
+#if 0
             data[0] = new ByteBuffer_IO(tempBytes.length);
 #else
             data[0] = ByteBuffer::allocateDirect(tempBytes.length);
@@ -137,11 +137,11 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
                         tempBytes[index] = 0;
                     }
 
-#ifdef __PS3__
+#if 0
                     data[level] = new ByteBuffer_IO(tempBytes.length);
 #else
                     data[level] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif  // __PS3__
+#endif  // 0
                     data[level]->clear();
                     data[level]->put(tempBytes);
                     data[level]->position(0)->limit(tempBytes.length);
@@ -376,7 +376,7 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
         data[level]->position(0);
         srcBuffer->position(0);
 
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
         if (g_texBlitJobQueuePort->hasCompleted()) {
             // all outstanding blits have completed, so reset to the start of
             // the blit list
@@ -404,7 +404,7 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
         g_texBlitJobQueuePort->submitJob(&blitJob);
         // 		p.waitForCompletion();
 
-#elif __PSVITA__
+#elif 0
         unsigned int* src = (unsigned int*)srcBuffer->getBuffer();
         unsigned int* dst = (unsigned int*)data[level]->getBuffer();
 
@@ -476,7 +476,7 @@ void Texture::transferFromBuffer(intArray buffer) {
     //}
     // 4jcraft - move pos out of loops
     data[0]->clear();
-    // #ifdef __PS3__
+    // #if 0
     // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
     // 	int byteRemapBGRA[] = { 3, 2, 1, 0 };
     // #else
@@ -549,11 +549,11 @@ void Texture::transferFromImage(BufferedImage* image) {
         return;
     }
 
-// #ifdef __PS3__
+// #if 0
 // 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
 // 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
 // #else
-#ifdef _XBOX
+#if 0
     int byteRemapRGBA[] = {0, 1, 2, 3};
 #else
     int byteRemapRGBA[] = {3, 0, 1, 2};
@@ -593,7 +593,7 @@ void Texture::transferFromImage(BufferedImage* image) {
     }
 
     MemSect(51);
-#ifdef __PS3__
+#if 0
     data[0] = new ByteBuffer_IO(tempBytes.length);
 #else
     data[0] = ByteBuffer::allocateDirect(tempBytes.length);
@@ -647,7 +647,7 @@ void Texture::transferFromImage(BufferedImage* image) {
                             ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
                         int c3 = data[level - 1]->getInt(
                             ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
-#ifndef _XBOX
+#if 1
                         // 4J - convert our RGBA texels to ARGB that crispBlend
                         // is expecting 4jcraft, added uint cast to pervent
                         // shift of neg int
@@ -684,7 +684,7 @@ void Texture::transferFromImage(BufferedImage* image) {
             }
 
             MemSect(51);
-#ifdef __PS3__
+#if 0
             data[level] = new ByteBuffer_IO(tempBytes.length);
 #else
             data[level] = ByteBuffer::allocateDirect(tempBytes.length);
@@ -795,7 +795,7 @@ void Texture::updateOnGPU() {
     if (!m_bInitialised) {
         RenderManager.TextureSetTextureLevels(m_iMipLevels);  // 4J added
 
-#ifdef __PSVITA__
+#if 0
         // AP - replace the dynamic ram buffer to one that points to a newly
         // allocated video ram texture buffer. This means we don't have to
         // memcpy the ram based buffer to it any more inside
@@ -817,7 +817,7 @@ void Texture::updateOnGPU() {
                 int levelWidth = width >> level;
                 int levelHeight = height >> level;
 
-#ifdef __PSVITA__
+#if 0
                 // AP - replace the dynamic ram buffer to one that points to a
                 // newly allocated video ram texture buffer. This means we don't
                 // have to memcpy the ram based buffer to it any more inside
@@ -840,7 +840,7 @@ void Texture::updateOnGPU() {
 
         m_bInitialised = true;
     } else {
-#ifdef _XBOX
+#if 0
         RenderManager.TextureDataUpdate(data[0]->getBuffer(), 0);
 #else
         RenderManager.TextureDataUpdate(0, 0, width, height,
@@ -853,7 +853,7 @@ void Texture::updateOnGPU() {
                     int levelWidth = width >> level;
                     int levelHeight = height >> level;
 
-#ifdef _XBOX
+#if 0
                     RenderManager.TextureDataUpdate(data[level]->getBuffer(),
                                                     level);
 #else

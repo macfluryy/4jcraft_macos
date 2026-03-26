@@ -4,7 +4,7 @@
 std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
                                   const char* pchBDPatchFileName /*= NULL*/) {
     std::wstring wDrive;
-#ifdef _XBOX
+#if 0
     if (bTitleUpdateTexture) {
         // Make the content package point to to the UPDATE: drive is needed
 #ifdef _TU_BUILD
@@ -18,7 +18,7 @@ std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
     }
 #else
 
-#ifdef __PS3__
+#if 0
 
     // 4J-PB - we need to check for a BD patch - this is going to be an issue
     // for full DLC texture packs (Halloween)
@@ -46,7 +46,7 @@ std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
         }
     }
 
-#elif __PSVITA__
+#elif 0
     char* pchUsrDir = "";  // getUsrDirPath();
     std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
 

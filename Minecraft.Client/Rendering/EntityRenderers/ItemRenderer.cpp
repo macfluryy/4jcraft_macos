@@ -12,7 +12,7 @@
 #include "../../GameState/Options.h"
 #include "../../Textures/TextureAtlas.h"
 
-#ifdef _XBOX
+#if 0
 extern IDirect3DDevice9* g_pD3DDevice;
 #endif
 
@@ -41,7 +41,7 @@ ResourceLocation* ItemRenderer::getTextureLocation(int iconType) {
     if (iconType == Icon::TYPE_TERRAIN) {
         return &TextureAtlas::LOCATION_BLOCKS;  // L"/terrain.png"));
     } else {
-#ifdef _XBOX
+#if 0
         // 4J - make sure we've got linear sampling on minification here as
         // non-mipmapped things like this currently default to having point
         // sampling, which makes very small icons render rather badly
@@ -430,7 +430,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         } else {
             textures->bindTexture(
                 &TextureAtlas::LOCATION_ITEMS);  // L"/gui/items.png"));
-#ifdef _XBOX
+#if 0
                                                  //  4J - make sure we've got
                                                  //  linear sampling on
                                                  //  minification here as

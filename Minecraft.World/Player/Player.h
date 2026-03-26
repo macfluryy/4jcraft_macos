@@ -582,7 +582,7 @@ public:
     void SetAdditionalModelParts(
         std::vector<ModelPart*>* ppAdditionalModelParts);
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     enum ePlayerNameValidState {
         ePlayerNameValid_NotSet = 0,
         ePlayerNameValid_True,
@@ -597,7 +597,7 @@ private:
     bool m_bCheckedForModelParts;
     bool m_bCheckedDLCForModelParts;
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     ePlayerNameValidState
         m_ePlayerNameValidState;  // 4J-PB - to ensure we have the characters
                                   // for this name in our font, or display a

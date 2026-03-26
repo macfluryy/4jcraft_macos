@@ -35,7 +35,7 @@ public:
     }
 
     // Added for sound banks with MashUp packs
-#ifdef _XBOX
+#if 0
     IXACT3WaveBank* m_pStreamedWaveBank;
     IXACT3SoundBank* m_pSoundBank;
 #endif

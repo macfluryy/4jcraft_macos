@@ -3,7 +3,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "BiomeOverrideLayer.h"
 
-#ifdef __PSVITA__
+#if 0
 // AP - this is used to perform fast 64bit divides of known values
 #include "../../Util/libdivide.h"
 
@@ -172,7 +172,7 @@ void Layer::initRandom(int64_t x, int64_t y) {
 }
 
 int Layer::nextRandom(int max) {
-#ifdef __PSVITA__
+#if 0
     // AP - 64bit mods are very slow on Vita. Replaced with a divide/mult for
     // general case and a fast divide library for specific numbers todo - this
     // can sometimes yield a different number to the original. There's a strange

@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.material.h"
 
-#ifdef __ORBIS__
+#if 0
 short Minimap::LUT[256];  // 4J added
 #else
 int Minimap::LUT[256];  // 4J added
@@ -17,13 +17,13 @@ bool Minimap::genLUT = true;  // 4J added
 
 Minimap::Minimap(Font* font, Options* options, Textures* textures,
                  bool optimised) {
-#ifdef __PS3__
+#if 0
     // we're using the RSX now to upload textures to vram, so we need the main
     // ram textures allocated from io space
     this->pixels =
         intArray((int*)RenderManager.allocIOMem(w * h * sizeof(int)), 16 * 16);
 
-#elif defined __ORBIS__
+#elif 0
     this->pixels = shortArray(w * h);
 #else
     this->pixels = intArray(w * h);
@@ -31,7 +31,7 @@ Minimap::Minimap(Font* font, Options* options, Textures* textures,
     this->options = options;
     this->font = font;
     BufferedImage* img = new BufferedImage(w, h, BufferedImage::TYPE_INT_ARGB);
-#ifdef __ORBIS__
+#if 0
     mapTexture =
         textures->getTexture(img, C4JRender::TEXTURE_FORMAT_RxGyBzAw5551,
                              false);  // 4J - make sure we aren't mipmapping as
@@ -65,7 +65,7 @@ void Minimap::reloadColours() {
     {
         if (i / 4 == 0) {
             // 4J - changed byte order to save having to reorder later
-#ifdef __ORBIS__
+#if 0
             LUT[i] = 0;
 #else
             LUT[i] = (((i + i / w) & 1) * 8 + 16);
@@ -85,11 +85,11 @@ void Minimap::reloadColours() {
             int b = ((color) & 0xff) * br / 255;
 
             // 4J - changed byte order to save having to reorder later
-#if (defined _DURANGO || defined _WIN64 || __PSVITA__ || __linux__)
+#if (0 || defined _WIN64 || 0 || __linux__)
             LUT[i] = 255 << 24 | b << 16 | g << 8 | r;
-#elif defined _XBOX
+#elif 0
             LUT[i] = 255 << 24 | r << 16 | g << 8 | b;
-#elif defined __ORBIS__
+#elif 0
             r >>= 3;
             g >>= 3;
             b >>= 3;
@@ -139,7 +139,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     // 4J - moved to -0.02 to stop z fighting ( was -0.01)
     // AP - Vita still has issues so push it a bit more
     float Offset = -0.02f;
-#ifdef __PSVITA__
+#if 0
     Offset = -0.03f;
 #endif
     t->vertexUV((float)(x + 0 + vo), (float)(y + h - vo), (float)(Offset),

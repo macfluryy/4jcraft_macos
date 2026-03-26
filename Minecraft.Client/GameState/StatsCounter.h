@@ -90,7 +90,7 @@ private:
     bool isLargeStat(Stat* stat);
     void dumpStatsToTTY();
 
-#ifdef _XBOX
+#if 0
     static void setLeaderboardProperty(XUSER_PROPERTY* prop, std::uint32_t id,
                                        unsigned int value);
     static void setLeaderboardRating(XUSER_PROPERTY* prop, LONGLONG value);

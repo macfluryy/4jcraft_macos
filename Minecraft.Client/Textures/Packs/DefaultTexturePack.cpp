@@ -13,7 +13,7 @@ DefaultTexturePack::DefaultTexturePack()
 }
 
 void DefaultTexturePack::loadIcon() {
-#ifdef _XBOX
+#if 0
     // 4J Stu - Temporary only
     constexpr int LOCATOR_SIZE =
         256;  // Use this to allocate space to hold a ResourceLocator string
@@ -52,14 +52,14 @@ InputStream* DefaultTexturePack::getResourceImplementation(
 {
     std::wstring wDrive = L"";
     // Make the content package point to to the UPDATE: drive is needed
-#ifdef _XBOX
+#if 0
 #ifdef _TU_BUILD
     wDrive = L"UPDATE:\\res";
 #else
 
     wDrive = L"GAME:\\res\\TitleUpdate\\res";
 #endif
-#elif __PS3__
+#elif 0
 
     char* pchUsrDir;
     if (app.GetBootedFromDiscPatch()) {
@@ -81,7 +81,7 @@ InputStream* DefaultTexturePack::getResourceImplementation(
     std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
 
     wDrive = wstr + L"\\Common\\res\\TitleUpdate\\res";
-#elif __PSVITA__
+#elif 0
 
     /*
     char *pchUsrDir=getUsrDirPath();
@@ -112,7 +112,7 @@ void DefaultTexturePack::loadUI() {
 }
 
 void DefaultTexturePack::unloadUI() {
-#ifdef _XBOX
+#if 0
     // Unload skin
     XuiFreeVisuals(L"TexturePack");
     XuiFreeVisuals(L"");

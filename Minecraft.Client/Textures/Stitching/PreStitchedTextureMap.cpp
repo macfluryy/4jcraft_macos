@@ -92,7 +92,7 @@ void PreStitchedTextureMap::stitch() {
     std::wstring drive = L"";
 
     // 4J-PB - need to check for BD patched files
-#ifdef __PS3__
+#if 0
     const char* pchName = wstringtofilename(filename);
     if (app.GetBootedFromDiscPatch() && app.IsFileInPatchList(pchName)) {
         if (texturePack->hasFile(L"res/" + filename, false)) {
@@ -157,7 +157,7 @@ void PreStitchedTextureMap::stitch() {
     stitchResult->writeAsPNG(L"debug.stitched_" + name + L".png");
     stitchResult->updateOnGPU();
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita so we mark which icons actually
     // require it
     DWORD* data = (DWORD*)this->getStitchedTexture()->getData()->getBuffer();

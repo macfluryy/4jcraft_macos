@@ -739,7 +739,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 int xo = iSafezoneXHalf + 10;
                 int yo = iSafezoneTopYHalf + 10;
 
-#ifdef __PSVITA__
+#if 0
                 // align directly with corners, there are no safe zones on vita
                 xo = 10;
                 yo = 10;
@@ -1403,7 +1403,7 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
             } else {
                 maximumChars = 55;
             }
-#ifdef __PSVITA__
+#if 0
             maximumChars = 90;
 #endif
             switch (XGetLanguage()) {
@@ -1415,7 +1415,7 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
                     } else {
                         maximumChars = 35;
                     }
-#ifdef __PSVITA__
+#if 0
                     maximumChars = 55;
 #endif
                     break;

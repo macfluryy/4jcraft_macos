@@ -21,7 +21,7 @@ const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
         0xff33cc33,  // GREEN
         0xffcc3333,  // RED
         0xff3333cc,  // BLUE
-#ifndef __PSVITA__   // only 4 player on Vita
+#if 1   // only 4 player on Vita
         0xffcc33cc,  // PINK
         0xffcc6633,  // ORANGE
         0xffcccc33,  // YELLOW

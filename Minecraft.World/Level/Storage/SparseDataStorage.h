@@ -70,7 +70,7 @@ private:
 
     static const int ALL_0_INDEX = 128;
 
-#ifdef _XBOX
+#if 0
     static const unsigned int MM_PHYSICAL_4KB_BASE =
         0xE0000000;  // Start of where 4KB page sized physical allocations are
                      // made

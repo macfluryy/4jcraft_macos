@@ -481,7 +481,7 @@ int LevelChunk::getHighestSectionPosition() {
 void LevelChunk::recalcBlockLights() {}
 
 void LevelChunk::recalcHeightmapOnly() {
-#ifdef __PSVITA__
+#if 0
     // AP - lets fetch ALL the chunk data at the same time for a good speed up
     byteArray blockData = byteArray(Level::CHUNK_TILE_COUNT);
     getBlockData(blockData);
@@ -497,7 +497,7 @@ void LevelChunk::recalcHeightmapOnly() {
             int y = Level::maxBuildHeight - 1;
         //            int p = x << level->depthBitsPlusFour | z <<
         //            level->depthBits;		// 4J - removed
-#ifdef __PSVITA__
+#if 0
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
             int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
             y = 127;
@@ -546,13 +546,13 @@ void LevelChunk::recalcHeightmapOnly() {
     this->minHeight = min;
     this->setUnsaved(true);
 
-#ifdef __PSVITA__
+#if 0
     delete blockData.data;
 #endif
 }
 
 void LevelChunk::recalcHeightmap() {
-#ifdef __PSVITA__
+#if 0
     // AP - lets fetch ALL the chunk data at the same time for a good speed up
     byteArray blockData = byteArray(Level::CHUNK_TILE_COUNT);
     getBlockData(blockData);
@@ -566,7 +566,7 @@ void LevelChunk::recalcHeightmap() {
         //            int p = x << level->depthBitsPlusFour | z <<
         //            level->depthBits;			// 4J - removed
 
-#ifdef __PSVITA__
+#if 0
             int Index = ((unsigned)x << 11) + ((unsigned)z << 7);
             int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
             y = 127;
@@ -615,7 +615,7 @@ void LevelChunk::recalcHeightmap() {
             if (!level->dimension->hasCeiling) {
                 int br = Level::MAX_BRIGHTNESS;
                 int yy = Level::maxBuildHeight - 1;
-#ifdef __PSVITA__
+#if 0
                 int offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
                 SparseLightStorage* skyLight = upperSkyLight;
                 yy = 127;
@@ -685,7 +685,7 @@ void LevelChunk::recalcHeightmap() {
 
     this->setUnsaved(true);
 
-#ifdef __PSVITA__
+#if 0
     delete blockData.data;
 #endif
 }
@@ -1320,7 +1320,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
         // 4J - we don't want storage creeping up here as thinkgs move round the
         // world accumulating up spare space
         MemSect(31);
-#ifdef __PS3__
+#if 0
         // MGH - have to sort this C++11 code
         static bool bShowMsg = true;
         if (bShowMsg) {
@@ -1676,7 +1676,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
     if (yc0 < 0) yc0 = 0;
     if (yc1 >= ENTITY_BLOCKS_LENGTH) yc1 = ENTITY_BLOCKS_LENGTH - 1;
 
-#ifndef __PSVITA__
+#if 1
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntities
     EnterCriticalSection(&m_csEntities);
@@ -1704,7 +1704,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
             }
         }
     }
-#ifndef __PSVITA__
+#if 1
     LeaveCriticalSection(&m_csEntities);
 #endif
 }
@@ -1726,7 +1726,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
         yc1 = 0;
     }
 
-#ifndef __PSVITA__
+#if 1
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntitiesOfClass
     EnterCriticalSection(&m_csEntities);
@@ -1770,7 +1770,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
             // baseClass.isAssignableFrom(e.getClass())
         }
     }
-#ifndef __PSVITA__
+#if 1
     LeaveCriticalSection(&m_csEntities);
 #endif
 }

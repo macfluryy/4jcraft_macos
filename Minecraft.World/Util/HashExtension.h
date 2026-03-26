@@ -1,5 +1,5 @@
 #pragma once
-#ifdef _XBOX
+#if 0
 //
 namespace std {
 namespace tr1 {

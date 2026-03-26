@@ -419,7 +419,7 @@ void RedStoneDustTile::registerIcons(IconRegister* iconRegister) {
 }
 
 Icon* RedStoneDustTile::getTexture(const std::wstring& name) {
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Set the Alpha Cut out flag
     Tesselator* t = Tesselator::getInstance();
     t->setAlphaCutOut(true);

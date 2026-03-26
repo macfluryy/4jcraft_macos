@@ -198,7 +198,7 @@ void Options::setKey(int i, int key) {
 void Options::set(const Options::Option* item, float fVal) {
     if (item == Option::MUSIC) {
         music = fVal;
-#ifdef _XBOX
+#if 0
         minecraft->soundEngine->updateMusicVolume(fVal * 2.0f);
 #else
         minecraft->soundEngine->updateMusicVolume(fVal);
@@ -206,7 +206,7 @@ void Options::set(const Options::Option* item, float fVal) {
     }
     if (item == Option::SOUND) {
         sound = fVal;
-#ifdef _XBOX
+#if 0
         minecraft->soundEngine->updateSoundEffectVolume(fVal * 2.0f);
 #else
         minecraft->soundEngine->updateSoundEffectVolume(fVal);

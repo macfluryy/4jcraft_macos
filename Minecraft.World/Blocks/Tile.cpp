@@ -2590,7 +2590,7 @@ int Tile::SoundType::getPlaceSound() const { return iPlaceSound; }
 4J: These are necessary on the PS3.
 (and 4 and Vita).
 */
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
+#if (0 || 0 || 0 || \
      defined __linux__)
 const int Tile::stone_Id;
 const int Tile::grass_Id;

@@ -461,7 +461,7 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             return;
         }
 
-#ifdef _XBOX
+#if 0
         bool lowPriority = ((flags & QNET_SENDDATA_LOW_PRIORITY) ==
                             QNET_SENDDATA_LOW_PRIORITY);
         bool requireAck = lowPriority;

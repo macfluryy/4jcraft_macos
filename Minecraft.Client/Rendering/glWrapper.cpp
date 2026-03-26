@@ -57,7 +57,7 @@ int glGenLists(int count) { return RenderManager.CBuffCreate(count); }
 void glNewList(int index, int mode) { RenderManager.CBuffStart(index); }
 
 void glEndList(int vertexCount) {
-#ifdef _XBOX
+#if 0
     RenderManager.CBuffEnd(vertexCount);
 #else
     RenderManager.CBuffEnd();
@@ -75,7 +75,7 @@ void glCallLists(IntBuffer* ib) {
 void glClear(int flags) { RenderManager.Clear(flags); }
 
 void glClearColor(float r, float g, float b, float a) {
-#ifdef _XBOX
+#if 0
     int ir = (int)(r * 255.0f);
     if (ir < 0) ir = 0;
     if (ir > 255) ir = 255;
@@ -208,7 +208,7 @@ void glAlphaFunc(int func, float param) {
 }
 
 void glDepthFunc(int func) {
-#ifdef _XBOX
+#if 0
     RenderManager.StateSetDepthFunc(func);
 #else
     RenderManager.StateSetDepthFunc(func);
@@ -220,7 +220,7 @@ void glTexParameteri(int target, int param, int value) {
 }
 
 void glPolygonOffset(float factor, float units) {
-#ifdef __PS3__
+#if 0
     RenderManager.StateSetDepthSlopeAndBias(factor, units);
 #else
     // DirectX specifies these offsets in z buffer 0 to 1 sort of range, whereas

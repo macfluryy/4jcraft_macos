@@ -17,7 +17,7 @@ class EntitySelector;
 #define SHARING_ENABLED
 class TileCompressData_SPU;
 
-#if 0  //__PSVITA__
+#if 0  //0
 #define _ENTITIES_RW_SECTION
 #endif
 

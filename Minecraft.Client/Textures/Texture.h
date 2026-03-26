@@ -4,7 +4,7 @@ class Rect2i;
 class ByteBuffer;
 class BufferedImage;
 
-#ifdef __PS3__
+#if 0
 class ByteBuffer_IO;
 #endif
 
@@ -58,7 +58,7 @@ private:
     bool immediateUpdate;
     bool updated;
     int m_iMipLevels;
-#ifdef __PS3__
+#if 0
     ByteBuffer_IO* data[10];
 #else
     ByteBuffer* data[10];  // Arrays for mipmaps - NULL if not used

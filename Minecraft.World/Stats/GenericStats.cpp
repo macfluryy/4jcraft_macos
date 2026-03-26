@@ -151,7 +151,7 @@ Stat* GenericStats::flyPig() {
 }
 
 Stat* GenericStats::snipeSkeleton() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_snipeSkeleton);
 #else
     return NULL;
@@ -159,7 +159,7 @@ Stat* GenericStats::snipeSkeleton() {
 }
 
 Stat* GenericStats::diamonds() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_diamonds);
 #else
     return NULL;
@@ -167,7 +167,7 @@ Stat* GenericStats::diamonds() {
 }
 
 Stat* GenericStats::ghast() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_ghast);
 #else
     return NULL;
@@ -175,7 +175,7 @@ Stat* GenericStats::ghast() {
 }
 
 Stat* GenericStats::blazeRod() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_blazeRod);
 #else
     return NULL;
@@ -183,7 +183,7 @@ Stat* GenericStats::blazeRod() {
 }
 
 Stat* GenericStats::potion() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_potion);
 #else
     return NULL;
@@ -191,7 +191,7 @@ Stat* GenericStats::potion() {
 }
 
 Stat* GenericStats::theEnd() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_theEnd);
 #else
     return NULL;
@@ -199,7 +199,7 @@ Stat* GenericStats::theEnd() {
 }
 
 Stat* GenericStats::winGame() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_winGame);
 #else
     return NULL;
@@ -207,7 +207,7 @@ Stat* GenericStats::winGame() {
 }
 
 Stat* GenericStats::enchantments() {
-#ifndef _XBOX
+#if 1
     return instance->get_achievement(eAward_enchantments);
 #else
     return NULL;
@@ -536,7 +536,7 @@ byteArray GenericStats::getParam_onARail(int distance) {
 }
 
 byteArray GenericStats::getParam_overkill(int damage) {
-#ifdef _XBOX
+#if 0
     return getParam_noArgs();
 #else
     return getParam_achievement(eAward_overkill);
@@ -739,7 +739,7 @@ byteArray GenericStats::param_flyPig() {
 }
 
 byteArray GenericStats::param_snipeSkeleton() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_snipeSkeleton);
@@ -747,7 +747,7 @@ byteArray GenericStats::param_snipeSkeleton() {
 }
 
 byteArray GenericStats::param_diamonds() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_diamonds);
@@ -755,7 +755,7 @@ byteArray GenericStats::param_diamonds() {
 }
 
 byteArray GenericStats::param_ghast() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_ghast);
@@ -763,7 +763,7 @@ byteArray GenericStats::param_ghast() {
 }
 
 byteArray GenericStats::param_blazeRod() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_blazeRod);
@@ -771,7 +771,7 @@ byteArray GenericStats::param_blazeRod() {
 }
 
 byteArray GenericStats::param_potion() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_potion);
@@ -779,7 +779,7 @@ byteArray GenericStats::param_potion() {
 }
 
 byteArray GenericStats::param_theEnd() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_theEnd);
@@ -787,7 +787,7 @@ byteArray GenericStats::param_theEnd() {
 }
 
 byteArray GenericStats::param_winGame() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_winGame);
@@ -795,7 +795,7 @@ byteArray GenericStats::param_winGame() {
 }
 
 byteArray GenericStats::param_enchantments() {
-#ifdef _XBOX
+#if 0
     return instance->getParam_noArgs();
 #else
     return instance->getParam_achievement(eAward_enchantments);

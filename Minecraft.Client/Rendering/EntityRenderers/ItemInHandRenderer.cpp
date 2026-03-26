@@ -588,7 +588,7 @@ void ItemInHandRenderer::render(float a) {
         glPushMatrix();
         float d = 0.8f;
 
-#if defined __ORBIS__ || defined __PS3__
+#if 0 || 0
         static const float swingPowFactor = 1.0f;
 #else
         static const float swingPowFactor =

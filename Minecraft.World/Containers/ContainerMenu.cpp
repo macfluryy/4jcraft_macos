@@ -98,7 +98,7 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
 
         // 4J-JEV: This check performed on XboxOne servers, for other platforms
         // check here.
-#ifndef _DURANGO
+#if 1
         StatsCounter* sc =
             Minecraft::GetInstance()->stats[localPlayer->GetXboxPad()];
         int minedCount =

@@ -64,7 +64,7 @@ bool AwardStatPacket::isAync() { return true; }
 
 // On most platforms we only store 'count' in an AwardStatPacket.
 int AwardStatPacket::getCount() {
-#ifdef _DURANGO
+#if 0
     assert(false);  // Method not supported on Durango.
     return 0;
 #else

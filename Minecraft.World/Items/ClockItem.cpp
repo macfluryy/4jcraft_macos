@@ -4,7 +4,7 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../Headers/net.minecraft.world.h"
 
-#ifdef __PSVITA__
+#if 0
 const std::wstring ClockItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
     L"clockP0"};
 #else

@@ -2272,7 +2272,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     int xc = Mth::floor(e->x);
     int zc = Mth::floor(e->z);
     int r = 32;
-#ifdef __PSVITA__
+#if 0
     // AP - make sure the dragon ticks all the time, even when there aren't any
     // chunks.
     if (actual && e->GetType() != eTYPE_ENDERDRAGON &&
@@ -2290,7 +2290,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     e->yRotO = e->yRot;
     e->xRotO = e->xRot;
 
-#ifdef __PSVITA__
+#if 0
     // AP - make sure the dragon ticks all the time, even when there aren't any
     // chunks.
     if (actual && (e->GetType() == eTYPE_ENDERDRAGON || e->inChunk))
@@ -3012,7 +3012,7 @@ void Level::tickClientSideTiles(int xo, int zo, LevelChunk* lc) {
                 player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 2 * 2) {
                 // 4J-PB - Fixed issue with cave audio event having 2 sounds at
                 // 192k
-#ifdef _XBOX
+#if 0
                 this->playSound(x + 0.5, y + 0.5, z + 0.5,
                                 eSoundType_AMBIENT_CAVE_CAVE2, 0.7f,
                                 0.8f + random->nextFloat() * 0.2f);
@@ -3432,7 +3432,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     int zc0 = Mth::floor((bb->z0 - 2) / 16);
     int zc1 = Mth::floor((bb->z1 + 2) / 16);
 
-#ifdef __PSVITA__
+#if 0
 #ifdef _ENTITIES_RW_SECTION
     // AP - RW critical sections are expensive so enter it here so we only have
     // to call it once instead of X times
@@ -3450,7 +3450,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
         }
     MemSect(0);
 
-#ifdef __PSVITA__
+#if 0
 #ifdef _ENTITIES_RW_SECTION
     LeaveCriticalRWSection(&LevelChunk::m_csEntities, false);
 #else
@@ -3475,7 +3475,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     std::vector<std::shared_ptr<Entity> >* es =
         new std::vector<std::shared_ptr<Entity> >();
 
-#ifdef __PSVITA__
+#if 0
 #ifdef _ENTITIES_RW_SECTION
     // AP - RW critical sections are expensive so enter it here so we only have
     // to call it once instead of X times
@@ -3494,7 +3494,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
         }
     }
 
-#ifdef __PSVITA__
+#if 0
 #ifdef _ENTITIES_RW_SECTION
     LeaveCriticalRWSection(&LevelChunk::m_csEntities, false);
 #else

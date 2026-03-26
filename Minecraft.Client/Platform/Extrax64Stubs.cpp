@@ -1,20 +1,20 @@
 #include "stdafx.h"
-#ifndef __PS3__
+#if 1
 //#include <compressapi.h>
-#endif // __PS3__
+#endif // 0
 
-#ifdef __PS3__
+#if 0
 #include "../GameState/StatsCounter.h"
 #include <libsn.h>
 #include <libsntuner.h>
-#elif defined _DURANGO
+#elif 0
 #include "../GameState/StatsCounter.h"
 #elif defined _WINDOWS64
 #include "../Platform/Windows64/Sentient/SentientManager.h"
 #include "../GameState/StatsCounter.h"
 #include "../Platform/Windows64/Social/SocialManager.h"
 #include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
-#elif defined __PSVITA__
+#elif 0
 #include "../GameState/StatsCounter.h"
 #include <libperf.h>
 #elif defined __linux__
@@ -27,19 +27,19 @@
 #include "../GameState/StatsCounter.h"
 #endif
 
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
+#if !0 && !0 && !0
 #ifdef _WINDOWS64
 //C4JStorage StorageManager;
 C_4JProfile ProfileManager;
 #endif
-#endif // __PS3__
+#endif // 0
 CSentientManager SentientManager;
 #ifndef __linux__
 // On Linux this global shadows the project's StringTable class name in unity builds
 CXuiStringTable StringTable;
 #endif
 
-#if !defined(_XBOX_ONE) && !defined(__linux__)
+#if !0 && !defined(__linux__)
 ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
 HRESULT    ATG::XMLParser::ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize ) { return S_OK; }   
@@ -64,7 +64,7 @@ DWORD XContentGetThumbnail(DWORD dwUserIndex, const XCONTENT_DATA *pContentData,
 void XShowAchievementsUI(int i) {}
 DWORD XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) { return 0; }
 
-#ifndef _DURANGO
+#if 1
 void PIXAddNamedCounter(int a, const char *b, ...) {}
 //#define PS3_USE_PIX_EVENTS 
 //#define PS4_USE_PIX_EVENTS 
@@ -91,7 +91,7 @@ void PIXBeginNamedEvent(int a, const char *b, ...)
     va_end(args);
 #endif
 }
-#if 0//__PSVITA__
+#if 0//0
 	if( PixDepth < 64 )
 	{
 		char buf[512];
@@ -113,7 +113,7 @@ void PIXEndNamedEvent()
 	snPopMarker();
 // 	RenderManager.EndEvent();
 #endif
-#if 0//__PSVITA__
+#if 0//0
 	if( PixDepth <= 64 )
 	{
 		sceRazorCpuPopMarker();
@@ -159,14 +159,14 @@ void PIXSetMarkerDeprecated(int a, char *b, ...) {}
 // int D3DXBUFFER::GetBufferSize() { return 0; }
 // void D3DXBUFFER::Release() {}
 
-// #ifdef _DURANGO
+// #if 0
 // void GetLocalTime(SYSTEMTIME *time) {}
 // #endif
 
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b)
 {
-#if defined(__PS3__) || defined(__ORBIS__) || defined (__PSVITA__) || defined(_DURANGO)
+#if 0 || 0 || 0 || 0
 	return (a == b);
 #else
 	return false;
@@ -231,9 +231,9 @@ void IQNet::EndGame() { _bQNetStubGameRunning = false; }
 DWORD MinecraftDynamicConfigurations::GetTrialTime() { return DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME; }
 
 void XSetThreadProcessor(HANDLE a, int b) {}
-// #if !(defined __PS3__) && !(defined __ORBIS__)
+// #if !(0) && !(0)
 // BOOL XCloseHandle(HANDLE a) { return CloseHandle(a); }
-// #endif // __PS3__
+// #endif // 0
 
 DWORD XUserGetSigninInfo(
          DWORD dwUserIndex,
@@ -251,7 +251,7 @@ HRESULT CXuiStringTable::Load(LPCWSTR szId) { return S_OK; }
 
 DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCount, PBOOL pfResult, void *pOverlapped) { return 0; }
 
-#if defined __ORBIS__ || defined __PS3__ || defined _XBOX_ONE
+#if 0 || 0 || 0
 #else
 HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
@@ -370,8 +370,8 @@ void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context)
 }
 #endif
 
-//#ifndef __PS3__
-#if !(defined _DURANGO || defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+//#if 1
+#if !(0 || 0 || 0 || 0)
 DWORD XGetLanguage() { return 1; }
 DWORD XGetLocale() { return 0; }
 DWORD XEnableGuestSignin(BOOL fEnable) { return 0; }
@@ -465,7 +465,7 @@ bool				C_4JProfile::AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2) { return fal
 bool				C_4JProfile::XUIDIsGuest(PlayerUID xuid) { return false; }
 bool				C_4JProfile::AllowedToPlayMultiplayer(int iProf) { return true; }
 
-#if defined(__ORBIS__)
+#if 0
 bool				C_4JProfile::GetChatAndContentRestrictions(int iPad, bool thisQuadrantOnly, bool *pbChatRestricted,bool *pbContentRestricted,int *piAge)
 {
 	if(pbChatRestricted) *pbChatRestricted = false;
@@ -482,7 +482,7 @@ bool				C_4JProfile::GetProfileAvatar(int iPad,int( *Func)(void *lpParam,std::ui
 void				C_4JProfile::CancelProfileAvatarRequest() {}
 int					C_4JProfile::GetPrimaryPad() { return 0; }
 void				C_4JProfile::SetPrimaryPad(int iPad) {}
-#ifdef _DURANGO
+#if 0
 char fakeGamerTag[32] = "PlayerName";
 void				SetFakeGamertag(char *name){ strcpy_s(fakeGamerTag, name); }
 char*				C_4JProfile::GetGamertag(int iPad){ return fakeGamerTag; }
@@ -602,7 +602,7 @@ struct PTMSPP_FILEDATA;
 C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)/*=NULL*/,LPVOID lpParam/*=NULL*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
 #endif // _WINDOWS64
 
-#endif // __PS3__
+#endif // 0
 
 /////////////////////////////////////////////////////// Sentient manager
 

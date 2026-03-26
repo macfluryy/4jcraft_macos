@@ -1,7 +1,7 @@
 #pragma once
 #include "MobRenderer.h"
 
-#ifdef _XBOX
+#if 0
 class EnderDragon;
 #endif
 class DragonModel;

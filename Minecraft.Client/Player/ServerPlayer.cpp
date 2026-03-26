@@ -374,7 +374,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 
                 if (dontDelayChunks ||
                     (canSendToPlayer &&
-#ifdef _XBOX_ONE
+#if 0
                      // The network manager on xbox one doesn't currently split
                      // data into slow & fast queues - since we can only measure
                      // both together then bytes provides a better metric than
@@ -382,7 +382,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                      // queueing too much up
                      (g_NetworkManager.GetHostPlayer()->GetSendQueueSizeBytes(
                           NULL, true) < 8192) &&
-#elif defined _XBOX
+#elif 0
                      (g_NetworkManager.GetHostPlayer()
                           ->GetSendQueueSizeMessages(NULL, true) < 4) &&
 #else
@@ -1332,7 +1332,7 @@ void ServerPlayer::awardStat(Stat* stat, byteArray param) {
     }
 
     if (!stat->awardLocallyOnly) {
-#ifndef _DURANGO
+#if 1
         int count = *((int*)param.data);
         delete[] param.data;
 

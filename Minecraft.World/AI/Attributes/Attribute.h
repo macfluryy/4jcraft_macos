@@ -65,7 +65,7 @@ protected:
     static const int AttributeNames[];
 };
 
-#ifdef __ORBIS__
+#if 0
 typedef std::unordered_map<eATTRIBUTE_ID, AttributeModifier*, std::hash<int>>
     attrAttrModMap;
 #else

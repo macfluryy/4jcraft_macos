@@ -219,7 +219,7 @@ void Achievements::staticCtor() {
                          Tile::treeTrunk, (Achievement*)buildSword))
             ->postConstruct();
 
-#ifndef _XBOX
+#if 1
     // WARNING: NO NEW ACHIEVMENTS CAN BE ADDED HERE
     // These stats (achievements) are directly followed by new
     // stats/achievements in the profile data, so cannot be changed without

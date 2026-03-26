@@ -43,7 +43,7 @@ void TexturePackRepository::addDebugPacks() {
     // DEFAULT_TEXTURE_PACK); texturePacks->push_back(m_dummyTexturePack);
     // cacheById[m_dummyTexturePack->getId()] = m_dummyTexturePack;
 
-#ifdef _XBOX
+#if 0
     File packedTestFile(L"GAME:\\DummyTexturePack\\TexturePack.pck");
     if (packedTestFile.exists()) {
         DLCPack* pack = app.m_dlcManager.getPack(L"DLCTestPack");
@@ -73,7 +73,7 @@ void TexturePackRepository::addDebugPacks() {
         }
     }
 
-#endif  // _XBOX
+#endif  // 0
 #endif  // _CONTENT_PACKAGE
 }
 

@@ -351,7 +351,7 @@ void BiomeSource::update() { cache->update(); }
 // #define DEBUG_SEEDS 50
 
 // 4J added - find a seed for this biomesource that matches certain criteria
-#ifdef __PSVITA__
+#if 0
 int64_t BiomeSource::findSeed(
     LevelType* generator,
     bool* pServerRunning)  // MGH - added pRunning, so we can early out of this
@@ -418,7 +418,7 @@ int64_t BiomeSource::findSeed(LevelType* generator)
                 tryCount++;
 
                 mcprogress->progressStagePercentage(tryCount % 100);
-#ifdef __PSVITA__
+#if 0
             } while (!matchFound && *pServerRunning);
 #else
             } while (!matchFound);

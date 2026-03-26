@@ -62,7 +62,7 @@ void ServerLevel::staticCtor() {
 
     m_updateThread = new C4JThread(runUpdate, NULL, "Tile update");
     m_updateThread->SetProcessor(CPU_CORE_TILE_UPDATE);
-#ifdef __ORBIS__
+#if 0
     m_updateThread->SetPriority(
         THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also used for
                                         // Matching 2, and that priority of that
@@ -488,7 +488,7 @@ void ServerLevel::tickTiles() {
     if (app.GetGameSettingsDebugMask() & (1L << eDebugSetting_RegularLightning))
         prob = 100;
 
-#ifdef __PSVITA__
+#if 0
     // AP - see CustomSet.h for and explanation
     for (int i = 0; i < chunksToPoll.end(); i += 1) {
         ChunkPos cp = chunksToPoll.get(i);
@@ -955,7 +955,7 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
     if (progressListener != NULL)
         progressListener->progressStage(IDS_PROGRESS_SAVING_CHUNKS);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     // Our autosave is a minimal save. All the chunks are saves by the constant
     // save process
     if (bAutosave) {
@@ -1569,9 +1569,9 @@ int ServerLevel::runUpdate(void* lpParam) {
             LeaveCriticalSection(&m_updateCS[iLev]);
         }
         PIXEndNamedEvent();
-#ifdef __PS3__
+#if 0
         Sleep(10);
-#endif  //__PS3__
+#endif  //0
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eRunUpdateThread);

@@ -40,13 +40,13 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex) = 0;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     virtual std::wstring getPlayerDataFilenameForLoad(
         const PlayerUID& pUID) = 0;
     virtual std::wstring getPlayerDataFilenameForSave(
         const PlayerUID& pUID) = 0;
     virtual std::vector<FileEntry*>* getValidPlayerDatFiles() = 0;
-#endif  //__PS3__
+#endif  //0
 
     virtual int getSaveVersion() = 0;
     virtual int getOriginalSaveVersion() = 0;

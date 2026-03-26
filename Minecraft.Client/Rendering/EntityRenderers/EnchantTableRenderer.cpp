@@ -18,7 +18,7 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
     std::shared_ptr<EnchantmentTableEntity> table =
         std::dynamic_pointer_cast<EnchantmentTableEntity>(_table);
 
-#ifdef __PSVITA__
+#if 0
     // AP - the book pages are made with 0 depth so the front and back polys are
     // at the same location. This can cause z-fighting if culling is disabled
     // which can sometimes happen depending on what object was last seen so make

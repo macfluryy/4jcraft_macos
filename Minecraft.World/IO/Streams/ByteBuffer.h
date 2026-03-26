@@ -42,7 +42,7 @@ public:
     FloatBuffer* asFloatBuffer();
 };
 
-#ifdef __PS3__
+#if 0
 // we're using the RSX now to upload textures to vram, so we need th main ram
 // textures allocated from io space
 class ByteBuffer_IO : public ByteBuffer {
@@ -51,4 +51,4 @@ public:
     ~ByteBuffer_IO();
 };
 
-#endif  // __PS3__
+#endif  // 0

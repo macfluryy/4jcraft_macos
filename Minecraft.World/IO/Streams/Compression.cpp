@@ -1,6 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "Compression.h"
-#if defined __ORBIS__ || defined __PS3__ || defined _DURANGO || \
+#if 0 || 0 || 0 || \
     defined _WIN64 || defined __linux__
 // zconf.h defines "typedef unsigned char Byte" which conflicts with the
 // project's "class Byte" from BasicTypeContainers.h (via stdafx.h).
@@ -247,14 +247,14 @@ HRESULT Compression::Compress(void* pDestination, unsigned int* pDestSize,
                               void* pSource, unsigned int SrcSize) {
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || \
-    defined __PSVITA__ || defined __linux__
+#if 0 || 0 || defined _WIN64 || \
+    0 || defined __linux__
     SIZE_T destSize = (SIZE_T)(*pDestSize);
     int res = ::compress((Bytef*)pDestination, (uLongf*)&destSize,
                          (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return ((res == Z_OK) ? S_OK : -1);
-#elif defined __PS3__
+#elif 0
     std::uint32_t destSize = (std::uint32_t)(*pDestSize);
     bool res = EdgeZLib::Compress(pDestination, &destSize, pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
@@ -281,14 +281,14 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
 
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || \
-    defined __PSVITA__ || defined __linux__
+#if 0 || 0 || defined _WIN64 || \
+    0 || defined __linux__
     SIZE_T destSize = (SIZE_T)(*pDestSize);
     int res = ::uncompress((Bytef*)pDestination, (uLongf*)&destSize,
                            (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return ((res == Z_OK) ? S_OK : -1);
-#elif defined __PS3__
+#elif 0
     std::uint32_t destSize = (std::uint32_t)(*pDestSize);
     bool res = EdgeZLib::Decompress(pDestination, &destSize, pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
@@ -304,7 +304,7 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
 
 // MGH -  same as VirtualDecompress in PSVitaStubs, but for use on other
 // platforms (so no virtual mem stuff)
-#ifndef _XBOX
+#if 1
 void Compression::VitaVirtualDecompress(
     void* pDestination, unsigned int* pDestSize, void* pSource,
     unsigned int SrcSize)  // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
@@ -347,7 +347,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
             *pDestSize = SrcSize;
             return S_OK;
         case eCompressionType_LZXRLE: {
-#if (defined _XBOX || defined _DURANGO || defined _WIN64)
+#if (0 || 0 || defined _WIN64)
             SIZE_T destSize = (SIZE_T)(*pDestSize);
             HRESULT res = XMemDecompress(decompressionContext, pDestination,
                                          (SIZE_T*)&destSize, pSource, SrcSize);
@@ -358,7 +358,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
 #endif
         } break;
         case eCompressionType_ZLIBRLE:
-#if (defined __ORBIS__ || defined __PS3__ || defined _DURANGO || \
+#if (0 || 0 || 0 || \
      defined _WIN64 || defined __linux__)
             if (pDestination != NULL)
                 return ::uncompress(
@@ -371,7 +371,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
             break;
 #endif
         case eCompressionType_PS3ZLIB:
-#if (defined __ORBIS__ || defined __PSVITA__ || defined _DURANGO || \
+#if (0 || 0 || 0 || \
      defined _WIN64)
             // Note that we're missing the normal zlib header and footer so
             // we'll use inflate to decompress the payload and skip all the CRC
@@ -441,7 +441,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
 Compression::Compression() {
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
-#if !(defined __ORBIS__ || defined __PS3__)
+#if !(0 || 0)
     // The default parameters for compression context allocated about 6.5MB,
     // reducing the partition size here from the default 512KB to 128KB brings
     // this down to about 3MB
@@ -456,9 +456,9 @@ Compression::Compression() {
                                    &decompressionContext);
 #endif
 
-#if defined _XBOX
+#if 0
     m_localDecompressType = eCompressionType_LZXRLE;
-#elif defined __PS3__
+#elif 0
     m_localDecompressType = eCompressionType_PS3ZLIB;
 #else
     m_localDecompressType = eCompressionType_ZLIBRLE;
@@ -470,7 +470,7 @@ Compression::Compression() {
 }
 
 Compression::~Compression() {
-#if !(defined __ORBIS__ || defined __PS3__ || defined __PSVITA__)
+#if !(0 || 0 || 0)
 
     XMemDestroyCompressionContext(compressionContext);
     XMemDestroyDecompressionContext(decompressionContext);

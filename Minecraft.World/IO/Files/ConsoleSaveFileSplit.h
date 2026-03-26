@@ -145,11 +145,11 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex);
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
     virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
     virtual std::vector<FileEntry*>* getValidPlayerDatFiles();
-#endif  //__PS3__
+#endif  //0
 
     virtual int getSaveVersion();
     virtual int getOriginalSaveVersion();

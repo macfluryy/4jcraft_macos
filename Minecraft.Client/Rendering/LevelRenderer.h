@@ -29,7 +29,7 @@ class Tesselator;
 // I've added another chunk flag to mark a chunk critical so it swipes a bit
 // from the reference count value (goes to 3 bits to 2). This works on Vita
 // because it doesn't have split screen reference counting.
-#ifdef __PSVITA__
+#if 0
 #define _CRITICAL_CHUNKS
 #endif
 
@@ -51,16 +51,16 @@ public:
     static const int CHUNK_SIZE = 16;
 #endif
     static const int CHUNK_Y_COUNT = Level::maxBuildHeight / CHUNK_SIZE;
-#if (defined _XBOX_ONE || defined _WINDOWS64)
+#if (0 || defined _WINDOWS64)
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         512 * 1024 * 1024;  // 4J - added
-#elif defined __ORBIS__
+#elif 0
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         448 * 1024 *
         1024;  // 4J - added - hard limit is 512 so giving a lot of headroom
                // here for fragmentation (have seen 16MB lost to fragmentation
                // in multiplayer crash dump before)
-#elif defined __PS3__
+#elif 0
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         110 * 1024 * 1024;  // 4J - added
 #else
@@ -123,13 +123,13 @@ public:
     void setTilesDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                        Level* level);  // 4J - added level param
 
-#ifdef __PS3__
+#if 0
     void cull_SPU(int playerIndex, Culler* culler, float a);
     void waitForCull_SPU();
     C4JSpursJobQueue::Port* m_jobPort_CullSPU;
     C4JSpursJobQueue::Port* m_jobPort_FindNearestChunk;
     bool m_bSPUCullStarted[4];
-#endif  // __PS3__
+#endif  // 0
     void cull(Culler* culler, float a);
     void playStreamingMusic(const std::wstring& name, int x, int y, int z);
     void playSound(int iSound, double x, double y, double z, float volume,

@@ -85,8 +85,8 @@ private:
         void writeMappings(DataOutputStream* dos);
         void readMappings(DataInputStream* dis);
     };
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__) || \
-    defined(_DURANGO)
+#if 0 || 0 || 0 || \
+    0
     std::unordered_map<PlayerUID, PlayerMappings, PlayerUID::Hash>
         m_playerMappings;
 #else

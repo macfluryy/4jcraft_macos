@@ -70,7 +70,7 @@ private:
 	// Social post preview image struct.
 	XSOCIAL_PREVIEWIMAGE	m_PostPreviewImage;
 
-#ifdef _XBOX
+#if 0
 	// Social post image params.
 	XSOCIAL_IMAGEPOSTPARAMS	m_PostImageParams;
 

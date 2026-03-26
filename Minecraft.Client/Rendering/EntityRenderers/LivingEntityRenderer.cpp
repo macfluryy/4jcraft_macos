@@ -511,7 +511,7 @@ void LivingEntityRenderer::renderNameTag(std::shared_ptr<LivingEntity> mob,
 
         if (app.isXuidDeadmau5(player->getXuid())) offs = -10;
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
         // Check we have all the font characters for this player name
         switch (player->GetPlayerNameValidState()) {
             case Player::ePlayerNameValid_NotSet:

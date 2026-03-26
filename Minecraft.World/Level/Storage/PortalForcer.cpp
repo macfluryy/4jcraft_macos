@@ -70,7 +70,7 @@ bool PortalForcer::findPortal(std::shared_ptr<Entity> e, double xOriginal,
     if (level->dimension->id == -1) {
         r *= 3;
     } else {
-#ifdef __PSVITA__
+#if 0
         // AP poor little Vita takes 30 seconds to leave the Nether. This should
         // help
         r *= 5;

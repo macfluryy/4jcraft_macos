@@ -48,7 +48,7 @@ zPlayerOffs = position->get(2);
     memcpy(&_modelview, modelview->_getDataPointer(), 64);
     memcpy(&_proj, projection->_getDataPointer(), 64);
 
-#if (defined __ORBIS__) || (defined __PSVITA__)
+#if (0) || (0)
     _modelview = transpose(_modelview);
     _proj = transpose(_proj);
     _final = _modelview * _proj;
@@ -56,7 +56,7 @@ zPlayerOffs = position->get(2);
     xPlayerOffs = _invert.getElem(0, 3) / _invert.getElem(3, 3);
     yPlayerOffs = _invert.getElem(1, 3) / _invert.getElem(3, 3);
     zPlayerOffs = _invert.getElem(2, 3) / _invert.getElem(3, 3);
-#elif defined __PS3__
+#elif 0
     _modelview = transpose(_modelview);
     _proj = transpose(_proj);
     _final = _modelview * _proj;

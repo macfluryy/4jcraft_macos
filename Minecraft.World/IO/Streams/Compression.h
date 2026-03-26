@@ -47,7 +47,7 @@ public:
                         void* pSource, unsigned int SrcSize);
     HRESULT DecompressRLE(void* pDestination, unsigned int* pDestSize,
                           void* pSource, unsigned int SrcSize);
-#ifndef _XBOX
+#if 1
     static void VitaVirtualDecompress(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
                                       unsigned int SrcSize);
@@ -67,7 +67,7 @@ private:
     HRESULT DecompressWithType(void* pDestination, unsigned int* pDestSize,
                                void* pSource, unsigned int SrcSize);
 
-#if defined __ORBIS__ || defined __PS3__
+#if 0 || 0
 #else
     XMEMCOMPRESSION_CONTEXT compressionContext;
     XMEMDECOMPRESSION_CONTEXT decompressionContext;
@@ -84,10 +84,10 @@ private:
 
 // extern Compression gCompression;
 
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || \
-    defined __PSVITA__ || defined __linux__
+#if 0 || 0 || defined _WIN64 || \
+    0 || defined __linux__
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_ZLIBRLE
-#elif defined __PS3__
+#elif 0
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_PS3ZLIB
 #else
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_LZXRLE

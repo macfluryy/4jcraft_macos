@@ -46,12 +46,12 @@
 #include "../ClientConstants.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "../Textures/Packs/TexturePackRepository.h"
-#ifndef _XBOX
+#if 1
 #include "../Platform/Common/UI/UI.h"
 #endif
 #include "../Textures/Packs/DLCTexturePack.h"
 
-#ifdef _DURANGO
+#if 0
 #include "../../Minecraft.World/Stats/DurangoStats.h"
 #include "../../Minecraft.World/Stats/GenericStats.h"
 #endif
@@ -197,7 +197,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
                 // check the file is not already in
                 bRes = app.IsFileInMemoryTextures(wstr);
                 if (!bRes) {
-#ifdef _XBOX
+#if 0
                     C4JStorage::ETMSStatus eTMSStatus;
                     eTMSStatus = StorageManager.ReadTMSFile(
                         iUserID, C4JStorage::eGlobalStorage_Title,
@@ -219,7 +219,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
                 // check the file is not already in
                 bRes = app.IsFileInMemoryTextures(wstr);
                 if (!bRes) {
-#ifdef _XBOX
+#if 0
                     C4JStorage::ETMSStatus eTMSStatus;
                     eTMSStatus = StorageManager.ReadTMSFile(
                         iUserID, C4JStorage::eGlobalStorage_Title,
@@ -805,7 +805,7 @@ void ClientConnection::handleAddPlayer(
     player->yHeadRot = packet->yHeadRot * 360 / 256.0f;
     player->setXuid(packet->xuid);
 
-#ifdef _DURANGO
+#if 0
     // On Durango request player display name from network manager
     INetworkPlayer* networkPlayer =
         g_NetworkManager.GetPlayerByXuid(player->getXuid());
@@ -1893,7 +1893,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         }
     }
 
-#ifdef _XBOX
+#if 0
     if (!g_NetworkManager.IsHost() &&
         !app.GetGameHostOption(eGameHostOption_FriendsOfFriends)) {
         if (m_userIndex == ProfileManager.GetPrimaryPad()) {
@@ -2036,7 +2036,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
     isAtLeastOneFriend = true;
     cantPlayContentRestricted = false;
 
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
 
     if (!g_NetworkManager.IsHost() &&
         !app.GetGameHostOption(eGameHostOption_FriendsOfFriends)) {
@@ -2046,7 +2046,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
             m_userIndex, true, &bChatRestricted, NULL, NULL);
 
         // Chat restricted orbis players can still play online
-#ifndef __ORBIS__
+#if 1
         canPlay = !bChatRestricted;
 #endif
 
@@ -2054,9 +2054,9 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
             // Is this user friends with the host player?
             bool isFriend = true;
             unsigned int friendCount = 0;
-#ifdef __PS3__
+#if 0
             int ret = sceNpBasicGetFriendListEntryCount(&friendCount);
-#elif defined __PSVITA__
+#elif 0
             sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>
                 friendList;
             int ret = -1;
@@ -2072,7 +2072,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                     }
                 }
             }
-#else  // __ORBIS__
+#else  // 0
 
             sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>
                 friendList;
@@ -2097,7 +2097,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                 isFriend = false;
                 SceNpId npid;
                 for (unsigned int i = 0; i < friendCount; i++) {
-#ifdef __PS3__
+#if 0
                     ret = sceNpBasicGetFriendListEntry(i, &npid);
 #else
                     npid = friendList.get()->at(i).npid;
@@ -2141,7 +2141,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         }
 
         // Chat restricted orbis players can still play online
-#ifndef __ORBIS__
+#if 1
         canPlayLocal = !bChatRestricted;
 #endif
 
@@ -2150,7 +2150,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
 
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     if (!g_NetworkManager.IsHost() &&
         m_userIndex == ProfileManager.GetPrimaryPad()) {
         long long startTime = System::currentTimeMillis();
@@ -2214,11 +2214,11 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
     }
 #endif
 
-#endif  // _XBOX
+#endif  // 0
 
     if (!canPlay || !canPlayLocal || !isAtLeastOneFriend ||
         cantPlayContentRestricted) {
-#ifndef __PS3__
+#if 1
         DisconnectPacket::eDisconnectReason reason =
             DisconnectPacket::eDisconnect_NoUGC_Remote;
 #else
@@ -2302,7 +2302,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                     packet->m_texturePackId);
 
                 // 4J-PB - we need to upsell the texture pack to the player
-#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
+#if 0 || 0 || 0
                 app.SetAction(m_userIndex, eAppAction_TexturePackRequired);
 #endif
                 // Let the player go into the game, and we'll check that they
@@ -2322,7 +2322,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
             // use their online one
             ProfileManager.GetXUID(m_userIndex, &onlineXUID, true);
         }
-#ifdef __PSVITA__
+#if 0
         if (CGameNetworkManager::usingAdhocMode() &&
             onlineXUID.getOnlineID()[0] == 0) {
             // player doesn't have an online UID, set it from the player name
@@ -2332,7 +2332,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
 
         // On PS3, all non-signed in players (even guests) can get a useful
         // offlineXUID
-#if !(defined __PS3__ || defined _DURANGO)
+#if !(0 || 0)
         if (!ProfileManager.IsGuest(m_userIndex))
 #endif
         {
@@ -2837,7 +2837,7 @@ void ClientConnection::handleRespawn(std::shared_ptr<RespawnPacket> packet) {
         minecraft->setScreen(new ReceivingLevelScreen(this));
         //		minecraft->addPendingLocalConnection(m_userIndex, this);
 
-#ifdef _XBOX
+#if 0
         TelemetryManager->RecordLevelStart(
             m_userIndex, eSen_FriendOrMatch_Playing_With_Invited_Friends,
             eSen_CompeteOrCoop_Coop_and_Competitive,
@@ -3337,7 +3337,7 @@ void ClientConnection::handleGameEvent(
     } else if (event == GameEventPacket::WIN_GAME) {
         ui.SetWinUserIndex(static_cast<unsigned int>(gameEventPacket->param));
 
-#ifdef _XBOX
+#if 0
 
         // turn off the gamertags in splitscreen for the primary player, since
         // they are about to be made fullscreen
@@ -3707,7 +3707,7 @@ void ClientConnection::handleCustomPayload(
                                ->containerMenu->containerId) {
             std::shared_ptr<Merchant> trader = nullptr;
 
-#ifdef _XBOX
+#if 0
             HXUIOBJ scene = app.GetCurrentScene(m_userIndex);
             HXUICLASS thisClass = XuiFindClass(L"CXuiSceneTrading");
             HXUICLASS objClass = XuiGetObjectClass(scene);
@@ -3817,7 +3817,7 @@ int ClientConnection::HostDisconnectReturned(
         }
     }
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     // Give the player the option to save their game
     // does the save exist?
     bool bSaveExists;
@@ -3851,7 +3851,7 @@ int ClientConnection::HostDisconnectReturned(
     } else
 #endif
     {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         StorageManager.SetSaveDisabled(false);
 #endif
         MinecraftServer::getInstance()->setSaveOnExit(true);
@@ -3871,7 +3871,7 @@ int ClientConnection::ExitGameAndSaveReturned(
         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
         // saveOrCheckpointId);
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         StorageManager.SetSaveDisabled(false);
 #endif
         MinecraftServer::getInstance()->setSaveOnExit(true);
@@ -3885,7 +3885,7 @@ int ClientConnection::ExitGameAndSaveReturned(
 
 //
 std::wstring ClientConnection::GetDisplayNameByGamertag(std::wstring gamertag) {
-#ifdef _DURANGO
+#if 0
     std::wstring displayName =
         g_NetworkManager.GetDisplayNameByGamertag(gamertag);
     return displayName;

@@ -34,7 +34,7 @@ SparseLightStorage::SparseLightStorage(bool sky) {
     // MM_PHYSICAL_4KB_BASE upwards. We can use this fact to identify the
     // allocation later, and so free it with the corresponding call to
     // XPhysicalFree.
-#ifdef _XBOX
+#if 0
     unsigned char* planeIndices = (unsigned char*)XPhysicalAlloc(
         128 * 128, MAXULONG_PTR, 4096, PAGE_READWRITE);
 #else
@@ -86,7 +86,7 @@ SparseLightStorage::~SparseLightStorage() {
     // Determine correct means to free this data - could have been allocated
     // either with XPhysicalAlloc or malloc
 
-#ifdef _XBOX
+#if 0
     if ((unsigned int)indicesAndData >= MM_PHYSICAL_4KB_BASE) {
         XPhysicalFree(indicesAndData);
     } else
@@ -477,7 +477,7 @@ void SparseLightStorage::tick() {
 //		if( toFree ) printf("Deleting 0x%x\n", toFree);
 // Determine correct means to free this data - could have been allocated either
 // with XPhysicalAlloc or malloc
-#ifdef _XBOX
+#if 0
         if ((unsigned int)toFree >= MM_PHYSICAL_4KB_BASE) {
             XPhysicalFree(toFree);
         } else

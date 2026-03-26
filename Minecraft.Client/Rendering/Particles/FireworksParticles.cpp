@@ -309,7 +309,7 @@ FireworksParticles::FireworksSparkParticle::FireworksSparkParticle(
     size *= 0.75f;
 
     lifetime = 48 + random->nextInt(12);
-#ifdef __PSVITA__
+#if 0
     noPhysics = true;  // 4J - optimisation, these are just too slow on Vita to
                        // be running with physics on
 #else

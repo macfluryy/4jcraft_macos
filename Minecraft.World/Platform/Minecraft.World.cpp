@@ -17,7 +17,7 @@
 #include "Minecraft.World.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 
-#ifdef _DURANGO
+#if 0
 #include "../Stats/DurangoStats.h"
 #else
 #include "../Stats/CommonStats.h"
@@ -42,7 +42,7 @@ void MinecraftWorld_RunStaticCtors() {
         Item::staticCtor();
         FurnaceRecipes::staticCtor();
         Recipes::staticCtor();
-#ifdef _DURANGO
+#if 0
         GenericStats::setInstance(new DurangoStats());
 #else
         GenericStats::setInstance(new CommonStats());

@@ -13,7 +13,7 @@ protected:
     static TilePos getRandomPosWithin(Level* level, int cx, int cz);
 
 private:
-#ifdef __PSVITA__
+#if 0
     // AP - See CustomMap.h for an explanation of this
     static CustomMap chunksToPoll;
 #else

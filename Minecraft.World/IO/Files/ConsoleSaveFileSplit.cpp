@@ -541,9 +541,9 @@ ConsoleSaveFileSplit::~ConsoleSaveFileSplit() {
     pagesCommitted = 0;
     // Make sure we don't have any thumbnail data still waiting round - we can't
     // need it now we've destroyed the save file anyway
-#if defined _XBOX
+#if 0
     app.GetSaveThumbnail(NULL, NULL);
-#elif defined __PS3__
+#elif 0
     app.GetSaveThumbnail(NULL, NULL, NULL, NULL);
 #endif
 
@@ -976,7 +976,7 @@ void ConsoleSaveFileSplit::tick() {
                 totalDirtyBytes += it->second->fileEntry->getFileSize();
             }
         }
-#ifdef _DURANGO
+#if 0
         PIXReportCounter(L"Dirty regions", (float)totalDirty);
         PIXReportCounter(L"Dirty MB", (float)totalDirtyBytes / (1024 * 1024));
         PIXReportCounter(L"Dirty oldest age",
@@ -1282,14 +1282,14 @@ bool ConsoleSaveFileSplit::doesFileExist(ConsoleSavePath file) {
 void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     LockSaveAccess();
 
-#ifdef _XBOX_ONE
+#if 0
     MinecraftServer* server = MinecraftServer::getInstance();
 #endif
 
     // The storage manage might potentially be busy doing a sub-file write
     // initiated from the tick. Wait until this is totally processed.
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
-#ifdef _XBOX_ONE
+#if 0
         if (server && server->IsSuspending()) {
             // If the server is mid-suspend we need to tick the storage manager
             // ourselves
@@ -1387,9 +1387,9 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             std::uint8_t* pbDataSaveImage = NULL;
             unsigned int dwDataSizeSaveImage = 0;
 
-#if (defined _XBOX || defined _DURANGO)
+#if (0 || 0)
             app.GetSaveThumbnail(&pbThumbnailData, &dwThumbnailDataSize);
-#elif (defined __PS3__ || defined __ORBIS__)
+#elif (0 || 0)
             app.GetSaveThumbnail(&pbThumbnailData, &dwThumbnailDataSize,
                                  &pbDataSaveImage, &dwDataSizeSaveImage);
 #endif
@@ -1546,7 +1546,7 @@ std::vector<FileEntry*>* ConsoleSaveFileSplit::getRegionFilesByDimension(
     return files;
 }
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
 std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForLoad(
     const PlayerUID& pUID) {
     return header.getPlayerDataFilenameForLoad(pUID);

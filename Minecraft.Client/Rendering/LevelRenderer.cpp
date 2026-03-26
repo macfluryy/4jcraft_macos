@@ -63,7 +63,7 @@
 
 // #define DISABLE_SPU_CODE
 
-#ifdef __PS3__
+#if 0
 static LevelRenderer_cull_DataIn g_cullDataIn[4]
     __attribute__((__aligned__(16)));
 static LevelRenderer_FindNearestChunk_DataIn g_findNearestChunkDataIn
@@ -274,12 +274,12 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
     destroyedTileManager = new DestroyedTileManager();
 
     dirtyChunksLockFreeStack.Initialize();
-#ifdef __PS3__
+#if 0
     m_jobPort_CullSPU =
         new C4JSpursJobQueue::Port("C4JSpursJob_LevelRenderer_cull");
     m_jobPort_FindNearestChunk = new C4JSpursJobQueue::Port(
         "C4JSpursJob_LevelRenderer_FindNearestChunk");
-#endif  // __PS3__
+#endif  // 0
 }
 
 void LevelRenderer::renderStars() {
@@ -439,7 +439,7 @@ void LevelRenderer::allChanged(int playerIndex) {
     int dist = (int)sqrtf((float)PLAYER_RENDER_AREA / (float)activePlayers());
 
     // AP - poor little Vita just can't cope with such a big area
-#ifdef __PSVITA__
+#if 0
     dist = 10;
 #endif
 
@@ -775,7 +775,7 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
     return count;
 }
 
-#ifdef __PSVITA__
+#if 0
 #include <stdlib.h>
 
 // this is need to sort the chunks by depth
@@ -806,13 +806,13 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     glPushMatrix();
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
-#ifdef __PSVITA__
+#if 0
     // AP - also set the camera position so we can work out if a chunk is fogged
     // or not
     RenderManager.SetCameraPosition((float)-xOff, (float)-yOff, (float)-zOff);
 #endif
 
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
     // pre- calc'd on the SPU
     int count = 0;
     waitForCull_SPU();
@@ -827,9 +827,9 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
             g_cullDataIn[playerIndex].listArray_layer1, count);
     }
 
-#else  // __PS3__
+#else  // 0
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. First render all the non-alpha
     // cut outs
     glDisable(GL_ALPHA_TEST);
@@ -859,7 +859,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         count++;
     }
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Now we render all the alpha cut
     // outs
     glEnable(GL_ALPHA_TEST);
@@ -892,7 +892,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     RenderManager.StateSetForceLOD(-1);  // AP - back to normal mipmapping
 #endif
 
-#endif  // __PS3__
+#endif  // 0
 
     glPopMatrix();
     mc->gameRenderer->turnOffLightLayer(
@@ -1052,7 +1052,7 @@ void LevelRenderer::renderSky(float alpha) {
 
     glDepthMask(false);
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita.
     glDisable(GL_ALPHA_TEST);
 #endif
@@ -1171,7 +1171,7 @@ void LevelRenderer::renderSky(float alpha) {
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_FOG);
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita.
     glDisable(GL_ALPHA_TEST);
 #endif
@@ -1245,7 +1245,7 @@ void LevelRenderer::renderSky(float alpha) {
 }
 
 void LevelRenderer::renderHaloRing(float alpha) {
-#if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
+#if !0 && !0 && !0
     if (!mc->level->dimension->isNaturalDimension()) return;
 
     glDisable(GL_ALPHA_TEST);
@@ -1978,7 +1978,7 @@ bool LevelRenderer::updateDirtyChunks() {
     if (dirtyChunkPresent) {
         lastDirtyChunkFound = System::currentTimeMillis();
         PIXBeginNamedEvent(0, "Finding nearest chunk\n");
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
         // find the nearest chunk with a spu task, copy all the data over here
         // for uploading to SPU
         g_findNearestChunkDataIn.numGlobalChunks = getGlobalChunkCount();
@@ -2030,7 +2030,7 @@ bool LevelRenderer::updateDirtyChunks() {
         m_jobPort_FindNearestChunk->waitForCompletion();
         nearChunk = (ClipChunk*)g_findNearestChunkDataIn.nearChunk;
         veryNearCount = g_findNearestChunkDataIn.veryNearCount;
-#else  // __PS3__
+#else  // 0
 
 #ifdef _LARGE_WORLDS
         int maxNearestChunks = MAX_CONCURRENT_CHUNK_REBUILDS;
@@ -2180,7 +2180,7 @@ bool LevelRenderer::updateDirtyChunks() {
             }
             //			app.DebugPrintf("[%d,%d,%d]\n",nearestClipChunks.empty(),considered,wouldBeNearButEmpty);
         }
-#endif  // __PS3__
+#endif  // 0
         PIXEndNamedEvent();
     }
 
@@ -2316,9 +2316,9 @@ bool LevelRenderer::updateDirtyChunks() {
             dirtyChunkPresent = false;
         }
         LeaveCriticalSection(&m_csDirtyChunks);
-#ifdef __PS3__
+#if 0
         Sleep(5);
-#endif  // __PS3__
+#endif  // 0
         return false;
     }
 
@@ -2398,7 +2398,7 @@ void LevelRenderer::renderDestroyAnimation(Tesselator* t,
 
         glEnable(GL_ALPHA_TEST);
         t->begin();
-#ifdef __PSVITA__
+#if 0
         // AP : fix for bug 4952. No amount of polygon offset will push this
         // close enough to be seen above the second tile layer when looking
         // straight down so just add on a little bit of y to fix this. hacky
@@ -2603,7 +2603,7 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                         (int*)(intptr_t)(uintptr_t)(index + 2));
 #endif
 
-#ifdef _XBOX
+#if 0
                     PIXSetMarker(0, "Setting chunk %d %d %d dirty", x * 16,
                                  y * 16, z * 16);
 #else
@@ -2675,7 +2675,7 @@ bool inline clip(float* bb, float* frustum) {
     return true;
 }
 
-#ifdef __PS3__
+#if 0
 int g_listArray_layer0[4][LevelRenderer_cull_DataIn::sc_listSize]
     __attribute__((__aligned__(16)));  // 8000
 int g_listArray_layer1[4][LevelRenderer_cull_DataIn::sc_listSize]
@@ -2754,15 +2754,15 @@ void LevelRenderer::waitForCull_SPU() {
     int playerIndex = mc->player->GetXboxPad();  // 4J added
     m_bSPUCullStarted[playerIndex] = false;
 }
-#endif  // __PS3__
+#endif  // 0
 
 void LevelRenderer::cull(Culler* culler, float a) {
     int playerIndex = mc->player->GetXboxPad();  // 4J added
 
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
     cull_SPU(playerIndex, culler, a);
     return;
-#endif  // __PS3__
+#endif  // 0
 
     FrustumCuller* fc = (FrustumCuller*)culler;
     FrustumData* fd = fc->frustum;
@@ -4017,7 +4017,7 @@ void LevelRenderer::staticCtor() {
             rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_A);
         else if ((i % 3) == 1) {
             rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_B);
-#ifdef __ORBIS__
+#if 0
             rebuildThreads[i]->SetPriority(
                 THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also
                                                 // used for Matching 2, and that

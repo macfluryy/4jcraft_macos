@@ -72,7 +72,7 @@ void FurnaceResultSlot::checkTakeAchievements(
         }
     }
 
-#ifdef _DURANGO
+#if 0
     if (!player->level->isClientSide && removeCount > 0) {
         player->awardStat(
             GenericStats::itemsSmelted(carried->id),

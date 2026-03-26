@@ -27,7 +27,7 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
 
         memset(m_biomeOverride.data, Biome::plains->id, m_biomeOverride.length);
     } else {
-#ifdef _DURANGO
+#if 0
         __debugbreak();  // TODO
         DWORD bytesRead, dwFileSize = 0;
 #else

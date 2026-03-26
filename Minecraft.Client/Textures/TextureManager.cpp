@@ -88,7 +88,7 @@ std::vector<Texture*>* TextureManager::createTextures(
     if (texturePack->hasFile(L"res/" + filename, false)) {
         drive = texturePack->getPath(true);
     } else {
-#ifdef __PS3__
+#if 0
         if (app.GetBootedFromDiscPatch()) {
             const char* pchTextureName = wstringtofilename(filename);
             char* pchUsrDir = app.GetBDUsrDirPath(pchTextureName);

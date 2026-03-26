@@ -5,7 +5,7 @@ class ModifiableAttributeInstance;
 class BaseAttributeMap {
 protected:
     // unordered_map<Attribute *, AttributeInstance *> attributesByObject;
-#ifdef __ORBIS__
+#if 0
     std::unordered_map<eATTRIBUTE_ID, AttributeInstance*, std::hash<int> >
         attributesById;
 #else

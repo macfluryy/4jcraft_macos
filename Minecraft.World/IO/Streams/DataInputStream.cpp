@@ -590,10 +590,10 @@ int DataInputStream::readUTFChar() {
 // 4J Added
 PlayerUID DataInputStream::readPlayerUID() {
     PlayerUID returnValue;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     for (int idPos = 0; idPos < sizeof(PlayerUID); idPos++)
         ((char*)&returnValue)[idPos] = readByte();
-#elif defined(_DURANGO)
+#elif 0
     returnValue = readUTF();
 #else
     returnValue = readLong();

@@ -15,7 +15,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 #include "../../Minecraft.World/Util/SharedConstants.h"
 #include "../GameState/Settings.h"
-// #ifdef __PS3__
+// #if 0
 // #include "PS3/Network/NetworkPlayerSony.h"
 // #endif
 

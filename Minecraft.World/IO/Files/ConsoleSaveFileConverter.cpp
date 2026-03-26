@@ -80,7 +80,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
     }
 
     // MGH added - find any player data files and copy them across
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     std::vector<FileEntry*>* playerFiles = sourceSave->getValidPlayerDatFiles();
 #else
     std::vector<FileEntry*>* playerFiles =
@@ -91,7 +91,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
         for (int fileIdx = 0; fileIdx < playerFiles->size(); fileIdx++) {
             ConsoleSavePath sourcePlayerDatPath(
                 playerFiles->at(fileIdx)->data.filename);
-#ifdef _XBOX_ONE
+#if 0
             // 4J Stu - As the XUIDs on X360 and X1 are different, we don't want
             // to transfer these over. However as the first player file should
             // be the owner of the save, we can move their data over to the

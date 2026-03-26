@@ -73,7 +73,7 @@ private:
     unsigned int m_t2[4];
     void packCompactQuad();
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Use this to defer primitives
     // that use icons with alpha
     bool alphaCutOutEnabled;
@@ -147,7 +147,7 @@ public:
     bool setMipmapEnable(bool enable);  // 4J added
 
     bool hasMaxVertices();  // 4J Added
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Use this to defer primitives
     // that use icons with alpha
     void setAlphaCutOut(bool enable);

@@ -15,7 +15,7 @@
 #include <cstdint>
 #include <limits>
 
-#if defined _XBOX || defined _WINDOWS64
+#if 0 || defined _WINDOWS64
 #include "../../Platform/Common/XML/ATGXmlParser.h"
 #include "../../Platform/Common/XML/xmlFilesCallback.h"
 #endif
@@ -65,7 +65,7 @@ DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack* pack,
 
     m_stringTable = NULL;
 
-#ifdef _XBOX
+#if 0
     m_pStreamedWaveBank = NULL;
     m_pSoundBank = NULL;
 #endif
@@ -211,7 +211,7 @@ void DLCTexturePack::loadColourTable() {
     }
 
     // Load the text colours
-#ifdef _XBOX
+#if 0
     if (m_dlcDataPack != NULL &&
         m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_UIData,
                                            L"TexturePack.xzp")) {
@@ -267,7 +267,7 @@ void DLCTexturePack::loadData() {
     int mountIndex = m_dlcInfoPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
-#ifdef _DURANGO
+#if 0
         if (StorageManager.MountInstalledDLC(ProfileManager.GetPrimaryPad(),
                                              mountIndex,
                                              &DLCTexturePack::packMounted, this,
@@ -334,7 +334,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
 
             // Load the UI data
             if (texturePack->m_dlcDataPack != NULL) {
-#ifdef _XBOX
+#if 0
                 File xzpPath(
                     getFilePath(texturePack->m_dlcInfoPack->GetPackID(),
                                 std::wstring(L"TexturePack.xzp")));
@@ -419,7 +419,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
                 }
 
                 // any audio data?
-#ifdef _XBOX
+#if 0
                 File audioXSBPath(
                     getFilePath(texturePack->m_dlcInfoPack->GetPackID(),
                                 std::wstring(L"MashUp.xsb")));
@@ -473,7 +473,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
         // 4J-PB - we need to leave the texture pack mounted if it contained
         // streaming audio
         if (texturePack->hasAudio() == false) {
-#ifdef _XBOX
+#if 0
             StorageManager.UnmountInstalledDLC("TPACK");
 #endif
         }
@@ -488,7 +488,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
 }
 
 void DLCTexturePack::loadUI() {
-#ifdef _XBOX
+#if 0
     // Syntax: "memory://" + Address + "," + Size + "#" + File
     // L"memory://0123ABCD,21A3#skin_default.xur"
 
@@ -529,9 +529,9 @@ void DLCTexturePack::loadUI() {
     }
 
     AbstractTexturePack::loadUI();
-#ifndef _XBOX
+#if 1
     if (hasAudio() == false && !ui.IsReloadingSkin()) {
-#ifdef _DURANGO
+#if 0
         StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
         StorageManager.UnmountInstalledDLC("TPACK");
@@ -543,7 +543,7 @@ void DLCTexturePack::loadUI() {
 void DLCTexturePack::unloadUI() {
     // Unload skin
     if (bUILoaded) {
-#ifdef _XBOX
+#if 0
         XuiFreeVisuals(L"TexturePack");
         XuiFreeVisuals(L"");
         CXuiSceneBase::GetInstance()->SetVisualPrefix(L"");

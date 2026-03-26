@@ -447,7 +447,7 @@ public:
     void toggleDownfall();
 
 protected:
-#ifdef __PSVITA__
+#if 0
     // AP - See CustomSet.h for an explanation of this
     CustomSet chunksToPoll;
 #else

@@ -23,7 +23,7 @@ public:
     static std::vector<ItemStat*>* itemsCollectedStats;
     static std::vector<ItemStat*>* itemsCraftedStats;
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!defined _DURANGO)
+#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
     static std::vector<ItemStat*>* blocksPlacedStats;
 #endif
 
@@ -61,7 +61,7 @@ public:
     static StatArray itemsCollected;
     static StatArray itemsCrafted;
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!defined _DURANGO)
+#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
     static StatArray blocksPlaced;
 #endif
 
@@ -71,7 +71,7 @@ public:
     static Stat* completeTheEnd;    // The number of times this player has been
                                     // present when the Enderdragon has died
 
-#if (defined _EXTENDED_ACHIEVEMENTS) && (!defined _DURANGO)
+#if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
     static StatArray biomesVisisted;
     static StatArray rainbowCollection;
 #endif

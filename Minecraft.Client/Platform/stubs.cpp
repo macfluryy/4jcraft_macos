@@ -111,7 +111,7 @@ void glTexGeni(int,int,int)
 {
 }
 
-#ifdef _XBOX
+#if 0
 // 4J Stu - Added these to stop us needing to pull in loads of media libraries just to use Qnet
 #include <xcam.h>
 DWORD XCamInitialize(){ return 0; }

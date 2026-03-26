@@ -336,7 +336,7 @@ void McRegionChunkStorage::staticCtor() {
             s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_A);
         else if (i == 1) {
             s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_B);
-#ifdef __ORBIS__
+#if 0
             s_saveThreads[i]->SetPriority(
                 THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also
                                                 // used for Matching 2, and that

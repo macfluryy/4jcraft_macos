@@ -32,7 +32,7 @@ TilePos MobSpawner::getRandomPosWithin(Level* level, int cx, int cz) {
     return TilePos(x, y, z);
 }
 
-#ifdef __PSVITA__
+#if 0
 // AP - See CustomMap.h for an explanation of this
 CustomMap MobSpawner::chunksToPoll;
 #else
@@ -129,7 +129,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
         std::shared_ptr<Player> player = level->players[i];
         xx[i] = Mth::floor(player->x / 16);
         zz[i] = Mth::floor(player->z / 16);
-#ifdef __PSVITA__
+#if 0
         chunksToPoll.insert(ChunkPos(xx[i], zz[i]), false);
 #else
         chunksToPoll.insert(
@@ -146,7 +146,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                 // player, then always store with a flag of false so that if it
                 // was at the edge of another player, then this will remove that
                 if (!edgeChunk) {
-#ifdef __PSVITA__
+#if 0
                     chunksToPoll.insert(ChunkPos((xx[i] - r) + l, (zz[i] - r)),
                                         false);
                     chunksToPoll.insert(ChunkPos((xx[i] + r), (zz[i] - r) + l),
@@ -166,7 +166,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                         ChunkPos((xx[i] - r), (zz[i] + r) - l), false));
 #endif
                 } else {
-#ifdef __PSVITA__
+#if 0
                     ChunkPos cp = ChunkPos((xx[i] - r) + l, (zz[i] - r));
                     if (chunksToPoll.find(cp)) chunksToPoll.insert(cp, true);
                     cp = ChunkPos((xx[i] + r), (zz[i] - r) + l);
@@ -230,7 +230,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
             continue;
         }
 
-#ifdef __PSVITA__
+#if 0
         for (int i = 0; i < chunksToPoll.end(); i += 1) {
             SCustomMapNode* it = chunksToPoll.get(i);
 #else
@@ -435,7 +435,7 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
     // can happen on another thread
     if (!level->hasChunkAt(x, y, z)) return false;
 
-#ifdef __PSVITA__
+#if 0
     // AP - added this for Vita. Make sure a new spawn point has 2 chunks around
     // it. This will make sure monsters don't keep getting spawned on the edge
     // preventing other new monsters from being spawned

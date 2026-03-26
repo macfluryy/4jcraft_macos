@@ -26,7 +26,7 @@ InputStream* FolderTexturePack::getResourceImplementation(
 
     std::wstring wDrive = L"";
     // Make the content package point to to the UPDATE: drive is needed
-#ifdef _XBOX
+#if 0
     wDrive = L"GAME:\\DummyTexturePack\\res";
 #else
     wDrive = L"Common\\DummyTexturePack\\res";
@@ -61,7 +61,7 @@ bool FolderTexturePack::isTerrainUpdateCompatible() {
 std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
                                         const char* pchBDPatchFilename) {
     std::wstring wDrive;
-#ifdef _XBOX
+#if 0
     wDrive = L"GAME:\\" + file->getPath() + L"\\";
 #else
     wDrive = L"Common\\" + file->getPath() + L"\\";
@@ -70,7 +70,7 @@ std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
 }
 
 void FolderTexturePack::loadUI() {
-#ifdef _XBOX
+#if 0
     //"file://" + Drive + PathToXZP + "#" + PathInsideXZP
 
     // L"file://game:/ui.xzp#skin_default.xur"
@@ -96,7 +96,7 @@ void FolderTexturePack::loadUI() {
 }
 
 void FolderTexturePack::unloadUI() {
-#ifdef _XBOX
+#if 0
     // Unload skin
     if (bUILoaded) {
         XuiFreeVisuals(L"TexturePack");

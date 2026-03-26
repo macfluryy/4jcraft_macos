@@ -4,7 +4,7 @@
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 #include "BufferedImage.h"
 
-#ifdef _XBOX
+#if 0
 typedef struct {
     unsigned int filesz;
     unsigned short creator1;
@@ -54,7 +54,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
     wDrive = drive;
     if (wDrive.empty()) {
-#ifdef _XBOX
+#if 0
         if (bTitleUpdateTexture) {
             // Make the content package point to to the UPDATE: drive is needed
 #ifdef _TU_BUILD
@@ -68,7 +68,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         }
 #else
 
-#ifdef __PS3__
+#if 0
 
         char* pchUsrDir;
         if (app.GetBootedFromDiscPatch()) {
@@ -86,7 +86,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         } else {
             wDrive = wstr + L"/Common/";
         }
-#elif __PSVITA__
+#elif 0
 
         /*char *pchUsrDir=getUsrDirPath();
 

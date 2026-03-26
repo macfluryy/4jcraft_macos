@@ -58,15 +58,15 @@ enum ESavePlatform {
     SAVE_FILE_PLATFORM_PSVITA = MAKE_FOURCC('P', 'S', 'V', '_'),
     SAVE_FILE_PLATFORM_WIN64 = MAKE_FOURCC('W', 'I', 'N', '_'),
 
-#if defined _XBOX
+#if 0
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_X360
-#elif defined _DURANGO
+#elif 0
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_XBONE
-#elif defined __PS3__
+#elif 0
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PS3
-#elif defined __ORBIS__
+#elif 0
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PS4
-#elif defined __PSVITA__
+#elif 0
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_PSVITA
 #elif defined _WINDOWS64
     SAVE_FILE_PLATFORM_LOCAL = SAVE_FILE_PLATFORM_WIN64
@@ -161,7 +161,7 @@ private:
     std::vector<FileEntry*> fileTable;
     ESavePlatform m_savePlatform;
     ByteOrder m_saveEndian;
-#if defined(__PS3__) || defined(_XBOX)
+#if 0 || 0
     static const ByteOrder m_localEndian = BIGENDIAN;
 #else
     static const ByteOrder m_localEndian = LITTLEENDIAN;
@@ -197,7 +197,7 @@ protected:
 
     std::vector<FileEntry*>* getValidPlayerDatFiles();
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
     std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
     std::vector<FileEntry*>* getDatFilesWithOnlineID(const PlayerUID& pUID);

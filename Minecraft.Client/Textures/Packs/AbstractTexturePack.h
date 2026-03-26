@@ -78,7 +78,7 @@ protected:
     void loadDefaultUI();
     void loadDefaultColourTable();
     void loadDefaultHTMLColourTable();
-#ifdef _XBOX
+#if 0
     void loadHTMLColourTableFromXuiScene(HXUIOBJ hObj);
 #endif
 

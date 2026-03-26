@@ -10,7 +10,7 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "RandomLevelSource.h"
 
-#ifdef __PS3__
+#if 0
 static PerlinNoise_DataIn g_lperlinNoise1_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_lperlinNoise2_SPU __attribute__((__aligned__(16)));
 static PerlinNoise_DataIn g_perlinNoise1_SPU __attribute__((__aligned__(16)));
@@ -564,7 +564,7 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
                                             0, 500.0);
     }
 
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
     C4JSpursJobQueue::Port port("C4JSpursJob_PerlinNoise");
     C4JSpursJob_PerlinNoise perlinJob1(&g_scaleNoise_SPU);
     C4JSpursJob_PerlinNoise perlinJob2(&g_depthNoise_SPU);

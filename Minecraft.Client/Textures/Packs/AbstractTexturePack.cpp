@@ -36,7 +36,7 @@ std::wstring AbstractTexturePack::trim(std::wstring line) {
 }
 
 void AbstractTexturePack::loadIcon() {
-#ifdef _XBOX
+#if 0
     // 4J Stu - Temporary only
     constexpr int LOCATOR_SIZE =
         256;  // Use this to allocate space to hold a ResourceLocator string
@@ -53,7 +53,7 @@ void AbstractTexturePack::loadIcon() {
 }
 
 void AbstractTexturePack::loadComparison() {
-#ifdef _XBOX
+#if 0
     // 4J Stu - Temporary only
     constexpr int LOCATOR_SIZE =
         256;  // Use this to allocate space to hold a ResourceLocator string
@@ -214,7 +214,7 @@ BufferedImage* AbstractTexturePack::getImageResource(
 }
 
 void AbstractTexturePack::loadDefaultUI() {
-#ifdef _XBOX
+#if 0
     // load from the .xzp file
     const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
@@ -243,7 +243,7 @@ void AbstractTexturePack::loadColourTable() {
 
 void AbstractTexturePack::loadDefaultColourTable() {
     // Load the file
-#ifdef __PS3__
+#if 0
     // need to check if it's a BD build, so pass in the name
     File coloursFile(
         AbstractTexturePack::getPath(
@@ -273,7 +273,7 @@ void AbstractTexturePack::loadDefaultColourTable() {
 }
 
 void AbstractTexturePack::loadDefaultHTMLColourTable() {
-#ifdef _XBOX
+#if 0
     // load from the .xzp file
     const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
 
@@ -313,7 +313,7 @@ void AbstractTexturePack::loadDefaultHTMLColourTable() {
 #endif
 }
 
-#ifdef _XBOX
+#if 0
 void AbstractTexturePack::loadHTMLColourTableFromXuiScene(HXUIOBJ hObj) {
     HXUIOBJ child;
     HRESULT hr = XuiElementGetFirstChild(hObj, &child);
@@ -345,7 +345,7 @@ void AbstractTexturePack::loadHTMLColourTableFromXuiScene(HXUIOBJ hObj) {
 void AbstractTexturePack::loadUI() {
     loadColourTable();
 
-#ifdef _XBOX
+#if 0
     CXuiSceneBase::GetInstance()->SkinChanged(
         CXuiSceneBase::GetInstance()->m_hObj);
 #endif

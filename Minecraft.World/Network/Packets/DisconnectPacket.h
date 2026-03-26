@@ -33,7 +33,7 @@ public:
         eDisconnect_NoUGC_Single_Local,
         eDisconnect_ContentRestricted_AllLocal,
         eDisconnect_ContentRestricted_Single_Local,
-#ifndef __PS3__
+#if 1
         eDisconnect_NoUGC_Remote,
 #endif
 
@@ -41,10 +41,10 @@ public:
         eDisconnect_Banned,
         eDisconnect_NotFriendsWithHost,
         eDisconnect_NATMismatch,
-#ifdef __ORBIS__
+#if 0
         eDisconnect_NetworkError,
 #endif
-#ifdef _XBOX_ONE
+#if 0
         eDisconnect_ExitedGame,
 #endif
     };

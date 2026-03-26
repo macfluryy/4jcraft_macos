@@ -28,7 +28,7 @@ StatsCounter::StatsCounter() {
 
 void StatsCounter::award(Stat* stat, unsigned int difficulty,
                          unsigned int count) {
-#ifndef _DURANGO
+#if 1
     if (stat->isAchievement()) difficulty = 0;
 
     StatsMap::iterator val = stats.find(stat);
@@ -98,7 +98,7 @@ void StatsCounter::tick(int player) {
     // 4J-JEV, we don't want to write leaderboards in the middle of a game.
     // EDIT: Yes we do, people were not ending their games properly and not
     // updating scores.
-    // #ifndef __PS3__
+    // #if 1
     if (flushCounter > 0) {
         --flushCounter;
         if (flushCounter == 0) flushLeaderboards();
@@ -112,7 +112,7 @@ void StatsCounter::clear() {
 }
 
 void StatsCounter::parse(void* data) {
-#ifndef _DURANGO
+#if 1
     // 4J-PB - If this is the trial game, let's just make sure all the stats are
     // empty 4J-PB - removing - someone can have the full game, and then remove
     // it and go back to the trial
@@ -181,7 +181,7 @@ void StatsCounter::parse(void* data) {
 }
 
 void StatsCounter::save(int player, bool force) {
-#ifndef _DURANGO
+#if 1
     // 4J-PB - If this is the trial game, don't save any stats
     if (!ProfileManager.IsFullVersion()) {
         return;
@@ -198,8 +198,8 @@ void StatsCounter::save(int player, bool force) {
             sizeof(GAME_SETTINGS)));
 
     // Retrieve the data pointer from the profile
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
     std::uint8_t* pbData = reinterpret_cast<std::uint8_t*>(
         StorageManager.GetGameDefinedProfileData(player));
 #else
@@ -260,8 +260,8 @@ void StatsCounter::save(int player, bool force) {
         }
     }
 
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
     StorageManager.WriteToProfile(player, true, force);
 #else
     ProfileManager.WriteToProfile(player, true, force);
@@ -271,7 +271,7 @@ void StatsCounter::save(int player, bool force) {
 #endif
 }
 
-#ifdef _XBOX
+#if 0
 void StatsCounter::setLeaderboardProperty(XUSER_PROPERTY* prop,
                                           std::uint32_t id,
                                           unsigned int value) {
@@ -291,7 +291,7 @@ void StatsCounter::setLeaderboardRating(XUSER_PROPERTY* prop, LONGLONG value) {
 #endif
 
 void StatsCounter::flushLeaderboards() {
-#ifndef _DURANGO
+#if 1
     if (LeaderboardManager::Instance()->OpenSession()) {
         writeStats();
         LeaderboardManager::Instance()->FlushStats();
@@ -309,7 +309,7 @@ void StatsCounter::flushLeaderboards() {
 }
 
 void StatsCounter::saveLeaderboards() {
-#ifndef _DURANGO
+#if 1
     // 4J-PB - If this is the trial game, no writing leaderboards
     if (!ProfileManager.IsFullVersion()) {
         return;
@@ -332,7 +332,7 @@ void StatsCounter::saveLeaderboards() {
 }
 
 void StatsCounter::writeStats() {
-#ifndef _DURANGO
+#if 1
     // 4J-PB - If this is the trial game, no writing
     if (!ProfileManager.IsFullVersion()) {
         return;
@@ -342,7 +342,7 @@ void StatsCounter::writeStats() {
     int viewCount = 0;
     int iPad = ProfileManager.GetLockedProfile();
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     LeaderboardManager::RegisterScore* scores =
         new LeaderboardManager::RegisterScore[24];
 
@@ -884,7 +884,7 @@ void StatsCounter::writeStats() {
         delete[] scores;
     }
 
-#elif defined _XBOX
+#elif 0
 
     LONGLONG rating;
 
@@ -1782,11 +1782,11 @@ void StatsCounter::writeStats() {
         }
     }
 #endif  // Xbox
-#endif  // ndef _DURANGO
+#endif  // ndef 0
 }
 
 void StatsCounter::setupStatBoards() {
-#ifndef _DURANGO
+#if 1
     statBoards.insert(
         std::make_pair(Stats::killsZombie, LEADERBOARD_KILLS_PEACEFUL));
     statBoards.insert(
@@ -1845,7 +1845,7 @@ void StatsCounter::setupStatBoards() {
 }
 
 bool StatsCounter::isLargeStat(Stat* stat) {
-#ifndef _DURANGO
+#if 1
     Stat*** end = &LARGE_STATS[LARGE_STATS_COUNT];
     for (Stat*** iter = LARGE_STATS; iter != end; ++iter)
         if ((*(*iter))->id == stat->id) return true;
@@ -1876,7 +1876,7 @@ void StatsCounter::dumpStatsToTTY() {
 #define DEBUG_ENABLE_CLEAR_LEADERBOARDS
 
 void StatsCounter::WipeLeaderboards() {
-#if defined DEBUG_ENABLE_CLEAR_LEADERBOARDS && defined _XBOX
+#if defined DEBUG_ENABLE_CLEAR_LEADERBOARDS && 0
 
     if (DEBUG_CLEAR_LEADERBOARDS & LEADERBOARD_KILLS_EASY)
         XUserResetStatsViewAllUsers(STATS_VIEW_KILLS_EASY, NULL);

@@ -41,7 +41,7 @@ void ChunkStorageProfilerDecorator::tick() {
     if (counter > 500) {
         if (loadCount > 0) {
 #ifndef _CONTENT_PACKAGE
-#ifdef __PSVITA__
+#if 0
             sprintf(buf, "Average load time: %f (%lld)",
                     0.000001 * (double)timeSpentLoading / (double)loadCount,
                     loadCount);
@@ -59,7 +59,7 @@ void ChunkStorageProfilerDecorator::tick() {
         }
         if (saveCount > 0) {
 #ifndef _CONTENT_PACKAGE
-#ifdef __PSVITA__
+#if 0
             sprintf(buf, "Average save time: %f (%lld)",
                     0.000001 * (double)timeSpentSaving / (double)loadCount,
                     loadCount);

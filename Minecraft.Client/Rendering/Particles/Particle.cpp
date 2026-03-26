@@ -148,7 +148,7 @@ void Particle::render(Tesselator* t, float a, float xa, float ya, float za,
         br = getBrightness(a);
     }
 
-#ifdef __PSVITA__
+#if 0
     // AP - this will set up the 4 vertices in half the time.
     t->tileParticleQuad((float)(x - xa * r - xa2 * r), (float)(y - ya * r),
                         (float)(z - za * r - za2 * r), (float)(u1), (float)(v1),

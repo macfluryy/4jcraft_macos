@@ -38,7 +38,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         DWORD error = GetLastError();
         assert(false);
     } else {
-#ifdef _DURANGO
+#if 0
         __debugbreak();  // TODO
         DWORD bytesRead, dwFileSize = 0;
 #else
@@ -77,7 +77,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         memset(m_waterheightOverride.data, level->seaLevel,
                m_waterheightOverride.length);
     } else {
-#ifdef _DURANGO
+#if 0
         __debugbreak();  // TODO
         DWORD bytesRead, dwFileSize = 0;
 #else

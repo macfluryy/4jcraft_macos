@@ -72,7 +72,7 @@ int Region::getTile(int x, int y, int z) {
     int xc = (x >> 4);
     int zc = (z >> 4);
 
-#ifdef __PSVITA__
+#if 0
     // AP - added a caching system for Chunk::rebuild to take advantage of
     if (CachedTiles && xc == xcCached && zc == zcCached) {
         unsigned char* Tiles = CachedTiles;

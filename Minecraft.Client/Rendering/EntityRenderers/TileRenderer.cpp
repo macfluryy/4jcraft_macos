@@ -182,7 +182,7 @@ void TileRenderer::setFixedTexture(Icon* fixedTexture) {
 void TileRenderer::clearFixedTexture() { this->fixedTexture = NULL; }
 
 bool TileRenderer::hasFixedTexture() {
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Pass on the Alpha Cut out flag
     // to the tesselator
     if (fixedTexture) {
@@ -7120,7 +7120,7 @@ void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x0), (float)(y0), (float)(z1), (float)(u10),
                         (float)(v10), c1r, c1g, c1b, tc1, (float)(x0),
@@ -7239,7 +7239,7 @@ void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x1), (float)(y1), (float)(z1), (float)(u11),
                         (float)(v11), c1r, c1g, c1b, tc1, (float)(x1),
@@ -7363,7 +7363,7 @@ void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
     double z0 = z + tileShapeZ0;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x0), (float)(y1), (float)(z0), (float)(u01),
                         (float)(v01), c1r, c1g, c1b, tc1, (float)(x1),
@@ -7487,7 +7487,7 @@ void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x0), (float)(y1), (float)(z1), (float)(u00),
                         (float)(v00), c1r, c1g, c1b, tc1, (float)(x0),
@@ -7611,7 +7611,7 @@ void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x0), (float)(y1), (float)(z1), (float)(u01),
                         (float)(v01), c1r, c1g, c1b, tc1, (float)(x0),
@@ -7735,7 +7735,7 @@ void TileRenderer::renderEast(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-#ifdef __PSVITA__
+#if 0
         if (t->getCompactVertices()) {
             t->tileQuad((float)(x1), (float)(y0), (float)(z1), (float)(u10),
                         (float)(v10), c1r, c1g, c1b, tc1, (float)(x1),
@@ -8390,7 +8390,7 @@ Icon* TileRenderer::getTextureOrMissing(Icon* icon) {
     if (icon == NULL)
         return minecraft->textures->getMissingIcon(Icon::TYPE_TERRAIN);
 
-#ifdef __PSVITA__
+#if 0
     // AP - alpha cut out is expensive on vita. Pass on the Alpha Cut out flag
     // to the tesselator
     Tesselator* t = Tesselator::getInstance();

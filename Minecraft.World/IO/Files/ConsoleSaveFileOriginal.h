@@ -17,7 +17,7 @@ private:
     static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
     static const unsigned int MAX_PAGE_COUNT =
         32 * 1024;  // 2GB virtual allocation
-#elif defined(__PS3__)
+#elif 0
     static const unsigned int CSF_PAGE_SIZE = 1024 * 1024;
     static const unsigned int MAX_PAGE_COUNT = 64;
 #else
@@ -32,8 +32,8 @@ private:
     void MoveDataBeyond(FileEntry* file, unsigned int nNumberOfBytesToWrite);
 
 public:
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
-     defined _DURANGO || defined _WINDOWS64)
+#if (0 || 0 || 0 || \
+     0 || defined _WINDOWS64)
     static int SaveSaveDataCallback(void* lpParam, bool bRes);
 #endif
     ConsoleSaveFileOriginal(const std::wstring& fileName,
@@ -79,11 +79,11 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex);
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
     virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
     virtual std::vector<FileEntry*>* getValidPlayerDatFiles();
-#endif  //__PS3__
+#endif  //0
 
     virtual int getSaveVersion();
     virtual int getOriginalSaveVersion();

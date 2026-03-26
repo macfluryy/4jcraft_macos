@@ -76,7 +76,7 @@ void FileHeader::WriteHeader(void* saveMem) {
     // Write the offset of the header
     // assert(numberOfBytesWritten == 4);
     int* begin = (int*)saveMem;
-#ifdef __PSVITA__
+#if 0
     VirtualCopyTo(begin, &headerOffset, sizeof(headerOffset));
 #else
     *begin = headerOffset;
@@ -84,7 +84,7 @@ void FileHeader::WriteHeader(void* saveMem) {
 
     // Write the size of the header
     // assert(numberOfBytesWritten == 4);
-#ifdef __PSVITA__
+#if 0
     VirtualCopyTo(begin + 1, &headerSize, sizeof(headerSize));
 #else
     *(begin + 1) = headerSize;
@@ -92,7 +92,7 @@ void FileHeader::WriteHeader(void* saveMem) {
 
     short* versions = (short*)(begin + 2);
     // Write the original version number
-#ifdef __PSVITA__
+#if 0
     VirtualCopyTo(versions, &m_originalSaveVersion,
                   sizeof(m_originalSaveVersion));
 #else
@@ -103,7 +103,7 @@ void FileHeader::WriteHeader(void* saveMem) {
     short versionNumber = SAVE_FILE_VERSION_NUMBER;
     // assert(numberOfBytesWritten == 4);
     //*(begin + 2) = versionNumber;
-#ifdef __PSVITA__
+#if 0
     VirtualCopyTo(versions + 1, &versionNumber, sizeof(versionNumber));
 #else
     *(versions + 1) = versionNumber;
@@ -128,7 +128,7 @@ void FileHeader::WriteHeader(void* saveMem) {
         // fileTable[i]->data.filename, fileTable[i]->data.startOffset,
         // fileTable[i]->data.length, fileTable[i]->data.startOffset +
         // fileTable[i]->data.length);
-#ifdef __PSVITA__
+#if 0
         VirtualCopyTo((void*)headerPosition, &fileTable[i]->data,
                       sizeof(FileEntrySaveData));
 #else
@@ -168,7 +168,7 @@ void FileHeader::ReadHeader(
     // Read the offset of the header
     // assert(numberOfBytesRead == 4);
     int* begin = (int*)saveMem;
-#ifdef __PSVITA__
+#if 0
     VirtualCopyFrom(&headerOffset, begin, sizeof(headerOffset));
 #else
     headerOffset = *begin;
@@ -177,7 +177,7 @@ void FileHeader::ReadHeader(
 
     // Read the size of the header
     // assert(numberOfBytesRead == 4);
-#ifdef __PSVITA__
+#if 0
     VirtualCopyFrom(&headerSize, begin + 1, sizeof(headerSize));
 #else
     headerSize = *(begin + 1);
@@ -186,7 +186,7 @@ void FileHeader::ReadHeader(
 
     short* versions = (short*)(begin + 2);
     // Read the original save version number
-#ifdef __PSVITA__
+#if 0
     VirtualCopyFrom(&m_originalSaveVersion, versions,
                     sizeof(m_originalSaveVersion));
 #else
@@ -196,7 +196,7 @@ void FileHeader::ReadHeader(
 
     // Read the save version number
     // m_saveVersion = *(begin + 2);
-#ifdef __PSVITA__
+#if 0
     VirtualCopyFrom(&m_saveVersion, versions + 1, sizeof(m_saveVersion));
 #else
     m_saveVersion = *(versions + 1);
@@ -244,7 +244,7 @@ void FileHeader::ReadHeader(
                 FileEntry* entry = new FileEntry();
                 // assert(numberOfBytesRead == sizeof(FileEntrySaveData));
 
-#ifdef __PSVITA__
+#if 0
                 VirtualCopyFrom(&entry->data, fesdHeaderPosition,
                                 sizeof(FileEntrySaveData));
 #else
@@ -289,7 +289,7 @@ void FileHeader::ReadHeader(
                 FileEntry* entry = new FileEntry();
                 // assert(numberOfBytesRead == sizeof(FileEntrySaveData));
 
-#ifdef __PSVITA__
+#if 0
                 VirtualCopyFrom(&entry->data, headerPosition,
                                 sizeof(FileEntrySaveDataV1));
 #else
@@ -387,7 +387,7 @@ std::vector<FileEntry*>* FileHeader::getFilesWithPrefix(
     return files;
 }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 
 static bool isHexChar(wchar_t wc) {
     if (wc >= L'0' && wc <= L'9') return true;
@@ -519,7 +519,7 @@ std::vector<FileEntry*>* FileHeader::getDatFilesWithOnlineID(
 
     wcscat(onlineIDW, L".dat");
 
-#ifdef __ORBIS__
+#if 0
     onlineIDSize = wcslen(onlineIDW);
 #else
     static const int onlineIDStart = 24;  // 24 characters into the filename
@@ -532,7 +532,7 @@ std::vector<FileEntry*>* FileHeader::getDatFilesWithOnlineID(
         wcstombs(tempStr, filenameOnly, 128);
         app.DebugPrintf("file : %s\n", tempStr);
 
-#ifdef __ORBIS__
+#if 0
         int onlineIDStart = wcslen(filenameOnly) - onlineIDSize;
         if (onlineIDStart > 0)
 #else
@@ -621,7 +621,7 @@ std::vector<FileEntry*>* FileHeader::getDatFilesWithPrimaryUser() {
     if (files) sort(files->begin(), files->end(), FileEntry::newestFirst);
     return files;
 }
-#endif  // __PS3__ || __ORBIS__
+#endif  // 0 || 0
 
 ByteOrder FileHeader::getEndian(ESavePlatform plat) {
     ByteOrder platEndian;

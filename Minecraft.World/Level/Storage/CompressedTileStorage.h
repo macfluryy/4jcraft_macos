@@ -147,7 +147,7 @@ public:
     static void staticCtor();
 
     void compress(int upgradeBlock = -1);
-#ifdef __PS3__
+#if 0
     void compress_SPU(int upgradeBlock = -1);
 #endif
 

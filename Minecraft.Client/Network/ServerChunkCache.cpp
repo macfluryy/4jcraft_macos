@@ -166,7 +166,7 @@ LevelChunk* ServerChunkCache::create(
         if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
                                               (LONG)lastChunk) ==
             (LONG)lastChunk)
-#endif  // _DURANGO
+#endif  // 0
         {
             // Successfully updated the cache
             EnterCriticalSection(&m_csLoadCreate);
@@ -276,9 +276,9 @@ LevelChunk* ServerChunkCache::create(
         }
     }
 
-#ifdef __PS3__
+#if 0
     Sleep(1);
-#endif  // __PS3__
+#endif  // 0
     return chunk;
 }
 

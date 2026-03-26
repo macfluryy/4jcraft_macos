@@ -5,7 +5,7 @@ class CommandSender;
 
 class CommandDispatcher {
 private:
-#ifdef __ORBIS__
+#if 0
     std::unordered_map<EGameCommand, Command*, std::hash<int>> commandsById;
 #else
     std::unordered_map<EGameCommand, Command*> commandsById;

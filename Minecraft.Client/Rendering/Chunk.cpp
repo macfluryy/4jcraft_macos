@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "LevelRenderer.h"
 
-#ifdef __PS3__
+#if 0
 #endif
 
 int Chunk::updates = 0;
@@ -125,7 +125,7 @@ void Chunk::setPos(int x, int y, int z) {
         // other than the ones in the stack itself have been made dirty.
         levelRenderer->setGlobalChunkFlag(x, y, z, level,
                                           LevelRenderer::CHUNK_FLAG_DIRTY);
-#ifdef _XBOX
+#if 0
         PIXSetMarker(0, "Non-stack event pushed");
 #else
         PIXSetMarkerDeprecated(0, "Non-stack event pushed");
@@ -165,10 +165,10 @@ void Chunk::makeCopyForRebuild(Chunk* source) {
 
 void Chunk::rebuild() {
     PIXBeginNamedEvent(0, "Rebuilding chunk %d, %d, %d", x, y, z);
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
     rebuild_SPU();
     return;
-#endif  // __PS3__
+#endif  // 0
 
     //	if (!dirty) return;
     PIXBeginNamedEvent(0, "Rebuild section A");
@@ -238,7 +238,7 @@ void Chunk::rebuild() {
     // that calls to Region::getTile can grab data more quickly from this array
     // rather than calling CompressedTileStorage. On the Vita the total thread
     // time spent in Region::getTile went from 20% to 4%.
-#ifdef __PSVITA__
+#if 0
     int xc = x >> 4;
     int zc = z >> 4;
     ((Region*)region)->setCachedTiles(tileIds, xc, zc);
@@ -452,7 +452,7 @@ void Chunk::rebuild() {
             }
         }
 
-#ifdef __PSVITA__
+#if 0
         if (currentLayer == 0) {
             levelRenderer->clearGlobalChunkFlag(
                 this->x, this->y, this->z, level,
@@ -461,7 +461,7 @@ void Chunk::rebuild() {
 #endif
 
         if (started) {
-#ifdef __PSVITA__
+#if 0
             // AP - make sure we don't attempt to render chunks without cutout
             // geometry
             if (t->getCutOutFound()) {
@@ -646,7 +646,7 @@ void Chunk::rebuild() {
     return;
 }
 
-#ifdef __PS3__
+#if 0
 ChunkRebuildData g_rebuildDataIn __attribute__((__aligned__(16)));
 ChunkRebuildData g_rebuildDataOut __attribute__((__aligned__(16)));
 TileCompressData_SPU g_tileCompressDataIn __attribute__((__aligned__(16)));

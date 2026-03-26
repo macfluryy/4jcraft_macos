@@ -22,8 +22,8 @@ class CommandDispatcher;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 
-#if defined _XBOX_ONE || defined _XBOX || defined __ORBIS__ || \
-    defined __PS3__ || defined __PSVITA__
+#if 0 || 0 || 0 || \
+    0 || 0
 #define _ACK_CHUNK_SEND_THROTTLING
 #endif
 

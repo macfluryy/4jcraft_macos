@@ -158,7 +158,7 @@ GameRenderer::GameRenderer(Minecraft* mc) {
                                             // per level to support split screen
     }
     delete img;
-#ifdef __PS3__
+#if 0
     // we're using the RSX now to upload textures to vram, so we need the main
     // ram textures allocated from io space
     for (int i = 0; i < NUM_LIGHT_TEXTURES; i++)
@@ -176,9 +176,9 @@ GameRenderer::GameRenderer(Minecraft* mc) {
 
     InitializeCriticalSection(&m_csDeleteStack);
     m_updateThread = new C4JThread(runUpdate, NULL, "Chunk update");
-#ifdef __PS3__
+#if 0
     m_updateThread->SetPriority(THREAD_PRIORITY_ABOVE_NORMAL);
-#endif  // __PS3__
+#endif  // 0
     m_updateThread->SetProcessor(CPU_CORE_CHUNK_UPDATE);
     m_updateThread->Run();
 #endif
@@ -967,9 +967,9 @@ void GameRenderer::updateLightTexture(float a) {
             int g = (int)(_g * 255);
             int b = (int)(_b * 255);
 
-#if (defined _DURANGO || defined _WIN64 || __PSVITA__ || __linux__)
+#if (0 || defined _WIN64 || 0 || __linux__)
             lightPixels[j][i] = alpha << 24 | b << 16 | g << 8 | r;
-#elif (defined _XBOX || defined __ORBIS__)
+#elif (0 || 0)
             lightPixels[j][i] = alpha << 24 | r << 16 | g << 8 | b;
 #else
             lightPixels[j][i] = r << 24 | g << 16 | b << 8 | alpha;
@@ -1204,7 +1204,7 @@ int GameRenderer::runUpdate(void* lpParam) {
 #endif
 
 void GameRenderer::EnableUpdateThread() {
-    // #ifdef __PS3__ // MGH - disable the update on PS3 for now
+    // #if 0 // MGH - disable the update on PS3 for now
     // 	return;
     // #endif
 #ifdef MULTITHREAD_ENABLE
@@ -1218,7 +1218,7 @@ void GameRenderer::EnableUpdateThread() {
 }
 
 void GameRenderer::DisableUpdateThread() {
-    // #ifdef __PS3__ // MGH - disable the update on PS3 for now
+    // #if 0 // MGH - disable the update on PS3 for now
     // 	return;
     // #endif
 #ifdef MULTITHREAD_ENABLE
@@ -1374,7 +1374,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             cameraPos->y = cameraPosTemp->y;
             cameraPos->z = cameraPosTemp->z;
             levelRenderer->renderEntities(cameraPos, frustum, a);
-#ifdef __PSVITA__
+#if 0
             // AP - make sure we're using the Alpha cut out effect for particles
             glEnable(GL_ALPHA_TEST);
 #endif
@@ -1740,7 +1740,7 @@ void GameRenderer::renderSnowAndRain(float a) {
 
                     float br = 1;
                     t->offset(-xo * 1, -yo * 1, -zo * 1);
-#ifdef __PSVITA__
+#if 0
                     // AP - this will set up the 4 vertices in half the time
                     float Alpha = ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel;
                     int tex2 =
@@ -1788,7 +1788,7 @@ void GameRenderer::renderSnowAndRain(float a) {
                     float dd = (float)sqrt(xd * xd + zd * zd) / r;
                     float br = 1;
                     t->offset(-xo * 1, -yo * 1, -zo * 1);
-#ifdef __PSVITA__
+#if 0
                     // AP - this will set up the 4 vertices in half the time
                     float Alpha = ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel;
                     int tex2 =

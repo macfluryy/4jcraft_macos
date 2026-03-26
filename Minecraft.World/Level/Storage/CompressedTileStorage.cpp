@@ -1,17 +1,17 @@
 #include "../../Platform/stdafx.h"
 #include "CompressedTileStorage.h"
 
-#ifdef __PSVITA__
+#if 0
 #define PSVITA_PRECOMPUTED_TABLE
 #endif
 
-#ifdef __PS3__
+#if 0
 static const int sc_maxCompressTiles = 64;
 static CompressedTileStorage_compress_dataIn
     g_compressTileDataIn[sc_maxCompressTiles] __attribute__((__aligned__(16)));
 static int g_currentCompressTiles = 0;
 // #define DISABLE_SPU_CODE
-#endif  //__PS3__
+#endif  //0
 
 // Note: See header for an overview of this class
 
@@ -113,7 +113,7 @@ CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
 
     // Empty and already compressed, so we only need 1K. Rounding up to nearest
     // 4096 bytes for allocation
-#ifdef __PS3__
+#if 0
     // XPhysicalAlloc just maps to malloc on PS3, so allocate the smallest
     // amount
     indicesAndData = (unsigned char*)XPhysicalAlloc(1024, MAXULONG_PTR, 4096,
@@ -121,7 +121,7 @@ CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
 #else
     indicesAndData = (unsigned char*)XPhysicalAlloc(4096, MAXULONG_PTR, 4096,
                                                     PAGE_READWRITE);
-#endif  //__PS3__
+#endif  //0
     unsigned short* indices = (unsigned short*)indicesAndData;
     // unsigned char *data = indicesAndData + 1024;
 
@@ -301,7 +301,7 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
         // and require no storage. Store flags for each tile type used in an
         // array of 4 64-bit flags.
 
-#ifdef __PSVITA__
+#if 0
         // AP - Vita isn't so great at shifting 64bits. The top biggest CPU time
         // sink after profiling is __ashldi3 (64bit shift) at 3% Let's use 32bit
         // instead
@@ -836,7 +836,7 @@ void CompressedTileStorage::tick() {
     deleteQueueIndex = (deleteQueueIndex + 1) % 3;
 }
 
-#ifdef __PS3__
+#if 0
 void CompressedTileStorage::compress_SPU(int upgradeBlock /*=-1*/) {
     EnterCriticalSection(&cs_write);
     static unsigned char compBuffer[32768 + 4096]
@@ -872,7 +872,7 @@ void CompressedTileStorage::compress_SPU(int upgradeBlock /*=-1*/) {
 // ( if > -1 ), which is changed to be the next-most-accomodating storage from
 // its current state
 void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
     compress_SPU(upgradeBlock);
     return;
 #endif
@@ -951,7 +951,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                 // compress any further and require no storage. Store flags for
                 // each tile type used in an array of 4 64-bit flags.
 
-#ifdef __PSVITA__
+#if 0
                 // AP - Vita isn't so great at shifting 64bits. The top biggest
                 // CPU time sink after profiling is __ashldi3 (64bit shift) at
                 // 3% lets use 32bit values instead
@@ -1076,7 +1076,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
             PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
         if (newIndicesAndData == NULL) {
             DWORD lastError = GetLastError();
-#ifndef _DURANGO
+#if 1
             MEMORYSTATUS memStatus;
             GlobalMemoryStatus(&memStatus);
             __debugbreak();
@@ -1181,7 +1181,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
 
                 // And finally repack
                 unsigned char ucMappings[256] = {0};
-#ifdef __PSVITA__
+#if 0
                 memset(ucMappings, 255, 256);
 #else
                 for (int j = 0; j < 256; j++) {

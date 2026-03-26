@@ -22,7 +22,7 @@ void TamableAnimal::defineSynchedData() {
 
 void TamableAnimal::addAdditonalSaveData(CompoundTag* tag) {
     Animal::addAdditonalSaveData(tag);
-#ifdef _XBOX_ONE
+#if 0
     // 4J Stu Added from later Java version to remove owners from save transfer
     // saves. We will probably want this on other platforms in the future
     if (getOwnerUUID().empty()) {
@@ -42,7 +42,7 @@ void TamableAnimal::addAdditonalSaveData(CompoundTag* tag) {
 
 void TamableAnimal::readAdditionalSaveData(CompoundTag* tag) {
     Animal::readAdditionalSaveData(tag);
-#ifdef _XBOX_ONE
+#if 0
     // 4J Stu Added from later Java version to remove owners from save transfer
     // saves. We will probably want this on other platforms in the future
     std::wstring owner = L"";

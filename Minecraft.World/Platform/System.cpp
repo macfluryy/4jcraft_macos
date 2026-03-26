@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#ifdef __PS3__
+#if 0
 #include <sys/sys_time.h>
 #endif
 #include "System.h"
@@ -84,7 +84,7 @@ int64_t System::nanoTime() {
 // the difference, measured in milliseconds, between the current time and
 // midnight, January 1, 1970 UTC.
 int64_t System::currentTimeMillis() {
-#ifdef __PS3__
+#if 0
     //	sys_time_get_current_time() obtains the elapsed time since Epoch
     //(1970/01/01 00:00:00 UTC). 	The value is separated into two parts: sec
     //stores the elapsed time in seconds, and nsec
@@ -95,12 +95,12 @@ int64_t System::currentTimeMillis() {
     int64_t msec = (sec * 1000) + (nsec / (1000 * 1000));
     return msec;
 
-#elif defined __ORBIS__
+#elif 0
     SceRtcTick tick;
     int err = sceRtcGetCurrentTick(&tick);
 
     return (int64_t)(tick.tick / 1000);
-#elif defined __PSVITA__
+#elif 0
     // AP - TRC states we can't use the RTC for measuring elapsed game time
     return sceKernelGetProcessTimeWide() / 1000;
 /*	SceDateTime Time;
@@ -129,13 +129,13 @@ int64_t System::currentTimeMillis() {
     li.LowPart = UTCFileTime.dwLowDateTime;
 
     return li.QuadPart / 10000;
-#endif  // __PS3__
+#endif  // 0
 }
 
 // 4J Stu - Added this so that we can use real-world timestamps in PSVita saves.
 // Particularly required for the save transfers to be smooth
 int64_t System::currentRealTimeMillis() {
-#ifdef __PSVITA__
+#if 0
     SceDateTime Time;
     sceRtcGetCurrentClockLocalTime(&Time);
     int64_t systTime =

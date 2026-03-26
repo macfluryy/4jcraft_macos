@@ -16,7 +16,7 @@ enum ByteOrder {
     BIGENDIAN,
     LITTLEENDIAN,
 
-#if defined(__PS3__) || defined(_XBOX)
+#if 0 || 0
     LOCALSYTEM_ENDIAN = BIGENDIAN,
 #else
     LOCALSYTEM_ENDIAN = LITTLEENDIAN,

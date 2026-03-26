@@ -340,7 +340,7 @@ public:
     void delayTextureReload();
     static int64_t currentTimeMillis();
 
-#ifdef _DURANGO
+#if 0
     static void inGameSignInCheckAllPrivilegesCallback(void* lpParam,
                                                        bool hasPrivileges,
                                                        int iPad);
@@ -395,7 +395,7 @@ public:
     unsigned int getCurrentTexturePackId();
     ColourTable* getColourTable();
 
-#if defined __ORBIS__
+#if 0
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
 #endif

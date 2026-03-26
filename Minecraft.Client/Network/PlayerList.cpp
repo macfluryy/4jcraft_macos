@@ -38,7 +38,7 @@ PlayerList::PlayerList(MinecraftServer* server) {
     overrideGameMode = NULL;
     allowCheatsForAllPlayers = false;
 
-#ifdef __PSVITA__
+#if 0
     viewDistance = 3;
 #elif defined _LARGE_WORLDS
     viewDistance = 16;
@@ -85,7 +85,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_HOST, 1);
     }
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     // PS3 networking library doesn't automatically assign PlayerUIDs to the
     // network players for anything remote, so need to tell it what to set from
     // the data in this packet now
@@ -1045,7 +1045,7 @@ void PlayerList::tick() {
             g_NetworkManager.GetPlayerBySmallId(smallId);
         if (selectedPlayer != NULL) {
             if (selectedPlayer->IsLocal() != TRUE) {
-                // #ifdef _XBOX
+                // #if 0
                 PlayerUID xuid = selectedPlayer->GetUID();
                 // Kick this player from the game
                 std::shared_ptr<ServerPlayer> player = nullptr;

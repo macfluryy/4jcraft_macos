@@ -101,7 +101,7 @@ void Player::_init() {
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     m_ePlayerNameValidState = ePlayerNameValid_NotSet;
 #endif
 
@@ -146,7 +146,7 @@ Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
         app.GetGameHostOption(eGameHostOption_Gamertags) != 0 ? true : false);
     m_bIsGuest = false;
 
-#ifndef _XBOX_ONE
+#if 1
     // 4J: Set UUID to name on none-XB1 consoles, may change in future but for
     // now ownership of animals on these consoles is done by name
     setUUID(name);
@@ -345,7 +345,7 @@ void Player::tick() {
 			this->drop( std::shared_ptr<ItemInstance>(new ItemInstance( Item::pickAxe_diamond, 1 )) );
 #endif
 
-#ifdef __PS3__
+#if 0
 			// #ifdef _DEBUG
 			// 		// Drop some items so we have them in inventory to play with
 			// 		this->drop( shared_ptr<ItemInstance>( new ItemInstance(Tile::recordPlayer) ) );
@@ -356,7 +356,7 @@ void Player::tick() {
 			// #endif
 #endif
 
-#ifdef _DURANGO
+#if 0
 			// Drop some items so we have them in inventory to play with
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Tile::recordPlayer) ) );
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance(Item::map) ) );
@@ -721,7 +721,7 @@ unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId) {
 
 void Player::setXuid(PlayerUID xuid) {
     m_xuid = xuid;
-#ifdef _XBOX_ONE
+#if 0
     // 4J Stu - For XboxOne (and probably in the future all other platforms) we
     // store a UUID for the player to use as the owner key for tamed animals
     // This should just be a string version of the xuid
@@ -1955,7 +1955,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                     // on durango.
                     int dist = minecartAchievementPos->dist(
                         Mth::floor(x), Mth::floor(y), Mth::floor(z));
-#ifdef _XBOX_ONE
+#if 0
                     // 4J-PB - send the event to cause the progress bar to
                     // increase on XB1
                     if (m_bAwardedOnARail == false) {
@@ -2203,7 +2203,7 @@ void Player::startUsingItem(std::shared_ptr<ItemInstance> instance,
         GenericStats::param_itemsUsed(
             std::dynamic_pointer_cast<Player>(shared_from_this()), instance));
 
-#if (!defined _DURANGO) && (defined _EXTENDED_ACHIEVEMENTS)
+#if (!0) && (defined _EXTENDED_ACHIEVEMENTS)
     if ((instance->getItem()->id == Item::rotten_flesh_Id) &&
         (getFoodData()->getFoodLevel() == 0))
         awardStat(GenericStats::ironBelly(), GenericStats::param_ironBelly());
@@ -2375,12 +2375,12 @@ int Player::getTexture() {
 
 int Player::hash_fnct(const std::shared_ptr<Player> k) {
     // TODO 4J Stu - Should we just be using the pointers and hashing them?
-#ifdef __PS3__
+#if 0
     return (int)boost::hash_value(
         k->name);  // 4J Stu - Names are completely unique?
 #else
     return (int)std::hash<std::wstring>()(k->name);
-#endif  // __PS3__
+#endif  // 0
 }
 
 bool Player::eq_test(const std::shared_ptr<Player> x,
@@ -2815,7 +2815,7 @@ void Player::SetAdditionalModelParts(
     m_ppAdditionalModelParts = ppAdditionalModelParts;
 }
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
 
 Player::ePlayerNameValidState Player::GetPlayerNameValidState(void) {
     return m_ePlayerNameValidState;

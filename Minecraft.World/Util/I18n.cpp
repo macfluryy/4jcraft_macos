@@ -5,7 +5,7 @@
 Language* I18n::lang = Language::getInstance();
 // 4jcraft const & into va_start is ub
 std::wstring I18n::get(std::wstring id, ...) {
-#ifdef __PSVITA__  // 4J - vita doesn't like having a reference type as the last
+#if 0  // 4J - vita doesn't like having a reference type as the last
                    // parameter passed to va_start - we shouldn't need this
                    // method anyway
     return L"";

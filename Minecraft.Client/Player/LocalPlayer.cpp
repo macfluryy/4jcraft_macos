@@ -53,7 +53,7 @@
 #include "../GameState/Options.h"
 #include "../../Minecraft.World/Level/Dimensions/Dimension.h"
 
-#ifndef _DURANGO
+#if 1
 #include "../../Minecraft.World/Stats/CommonStats.h"
 #endif
 
@@ -761,7 +761,7 @@ void LocalPlayer::displayClientMessage(int messageId) {
 }
 
 void LocalPlayer::awardStat(Stat* stat, byteArray param) {
-#ifdef _DURANGO
+#if 0
     // 4J-JEV: Maybe we want to fine tune this later? #TODO
     if (!ProfileManager.IsGuest(GetXboxPad()) &&
         app.CanRecordStatsAndAchievements() && ProfileManager.IsFullVersion()) {
@@ -908,7 +908,7 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
             }
         }
 
-#ifdef _XBOX
+#if 0
         // AWARD: Have we killed 10 creepers?
         if (pStats->getTotalValue(GenericStats::killsCreeper()) >= 10) {
             awardStat(GenericStats::kill10Creepers(),

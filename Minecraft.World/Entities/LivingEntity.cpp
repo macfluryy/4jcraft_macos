@@ -1218,7 +1218,7 @@ void LivingEntity::jumpFromGround() {
 }
 
 void LivingEntity::travel(float xa, float ya) {
-#ifdef __PSVITA__
+#if 0
     // AP - dynamic_pointer_cast is a non-trivial call
     Player* thisPlayer = NULL;
     if (this->instanceof(eTYPE_PLAYER)) {
