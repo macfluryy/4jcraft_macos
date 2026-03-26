@@ -326,7 +326,7 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
 
     // 4J - TomK - pull up character a bit more to make sure extra geo around
     // feet doesn't cause rendering problems on PSVita
-#ifdef __PSVITA__
+#if 0
     glTranslatef(0, -24 * _scale - 1.0f / 16.0f, 0);
 #else
     glTranslatef(0, -24 * _scale - 0.125f / 16.0f, 0);

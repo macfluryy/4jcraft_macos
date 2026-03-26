@@ -210,12 +210,12 @@ typedef struct _SaveListDetails {
     int saveId;
     std::uint8_t* pbThumbnailData;
     unsigned int dwThumbnailSize;
-#ifdef _DURANGO
+#if 0
     wchar_t UTF16SaveName[128];
     wchar_t UTF16SaveFilename[MAX_SAVEFILENAME_LENGTH];
 #else
     char UTF8SaveName[128];
-#ifndef _XBOX
+#if 1
     char UTF8SaveFilename[MAX_SAVEFILENAME_LENGTH];
 #endif
 #endif
@@ -224,13 +224,13 @@ typedef struct _SaveListDetails {
         saveId = 0;
         pbThumbnailData = NULL;
         dwThumbnailSize = 0;
-#ifdef _DURANGO
+#if 0
         ZeroMemory(UTF16SaveName, sizeof(wchar_t) * 128);
         ZeroMemory(UTF16SaveFilename,
                    sizeof(wchar_t) * MAX_SAVEFILENAME_LENGTH);
 #else
         ZeroMemory(UTF8SaveName, 128);
-#ifndef _XBOX
+#if 1
         ZeroMemory(UTF8SaveFilename, MAX_SAVEFILENAME_LENGTH);
 #endif
 #endif
@@ -357,12 +357,12 @@ typedef struct _LoadingInputParams {
 } LoadingInputParams;
 
 // Tutorial
-#ifndef _XBOX
+#if 1
 class UIScene;
 #endif
 class Tutorial;
 typedef struct _TutorialPopupInfo {
-#ifdef _XBOX
+#if 0
     CXuiScene* interactScene;
 #else
     UIScene* interactScene;

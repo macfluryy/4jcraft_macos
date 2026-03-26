@@ -34,7 +34,7 @@ public:
 protected:
     void handlePress(F64 controlId, F64 childId);
 
-#ifdef _DURANGO
+#if 0
     virtual long long getDefaultGtcButtons() { return 0; }
 #endif
 };

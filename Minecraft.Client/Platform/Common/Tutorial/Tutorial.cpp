@@ -378,7 +378,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
 
     m_CurrentState = e_Tutorial_State_Gameplay;
     m_hasStateChanged = false;
-#ifdef _XBOX
+#if 0
     m_hTutorialScene = NULL;
 #endif
 
@@ -1956,8 +1956,8 @@ Tutorial::~Tutorial() {
 }
 
 void Tutorial::debugResetPlayerSavedProgress(int iPad) {
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
     GAME_SETTINGS* pGameSettings =
         (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(iPad);
 #else
@@ -1987,8 +1987,8 @@ void Tutorial::setCompleted(int completableId) {
     if (completableIndex >= 0 &&
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
         // Set the bit for this position
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(m_iPad);
 #else
@@ -2022,8 +2022,8 @@ bool Tutorial::getCompleted(int completableId) {
         completableIndex < TUTORIAL_PROFILE_STORAGE_BITS) {
         // Read the bit for this position
         // Retrieve the data pointer from the profile
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
         GAME_SETTINGS* pGameSettings =
             (GAME_SETTINGS*)StorageManager.GetGameDefinedProfileData(m_iPad);
 #else
@@ -2147,7 +2147,7 @@ void Tutorial::tick() {
     }
 
     if (!hasRequestedUI) {
-#ifdef _XBOX
+#if 0
         m_bSceneIsSplitscreen = app.GetLocalPlayerCount() > 1;
         if (m_bSceneIsSplitscreen) {
             app.NavigateToScene(m_iPad, eUIComponent_TutorialPopup, (void*)this,
@@ -2163,7 +2163,7 @@ void Tutorial::tick() {
     } else {
         // if we've changed mode, we may need to change scene
         if (m_bSceneIsSplitscreen != (app.GetLocalPlayerCount() > 1)) {
-#ifdef _XBOX
+#if 0
             app.TutorialSceneNavigateBack(m_iPad);
             m_bSceneIsSplitscreen = app.GetLocalPlayerCount() > 1;
             if (m_bSceneIsSplitscreen) {
@@ -2979,7 +2979,7 @@ void Tutorial::addMessage(
             new TutorialMessage(messageId, limitRepeats, numRepeats);
 }
 
-#ifdef _XBOX
+#if 0
 void Tutorial::changeTutorialState(eTutorial_State newState,
                                    CXuiScene* scene /*= NULL*/)
 #else
@@ -2990,7 +2990,7 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
     if (newState == m_CurrentState) {
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-#ifndef _XBOX
+#if 1
         if (scene == NULL) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
@@ -3037,7 +3037,7 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
 
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-#ifndef _XBOX
+#if 1
         if (scene == NULL) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }

@@ -32,7 +32,7 @@ private:
         eHTPButton_Droppers,
         eHTPButton_NetherPortal,
         eHTPButton_TheEnd,
-#ifdef _XBOX
+#if 0
         eHTPButton_SocialMedia,
         eHTPButton_BanningLevels,
 #endif

@@ -73,7 +73,7 @@ public:
     // Returns true if this scene has focus for the pad passed in
     // virtual bool hasFocus(int iPad) { return false; }
     // Returns true if this scene has focus for the pad passed in
-#ifndef __PS3__
+#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 #endif
 

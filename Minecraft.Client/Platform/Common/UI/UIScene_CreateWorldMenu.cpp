@@ -12,7 +12,7 @@
 #include "../../Minecraft.World/Level/Storage/LevelType.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 
-#ifdef __PSVITA__
+#if 0
 #endif
 
 #ifdef _WINDOWS64
@@ -100,7 +100,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
     // PS3 when we are a restricted child account It'll fail when we choose
     // create, but this matches the behaviour of load game, and lets the player
     // know why they can't play online, instead of just greying out the online
-    // setting in the More Options #ifdef __PS3__
+    // setting in the More Options #ifdef 0
     // 	if(ProfileManager.IsSignedInLive( m_iPad ))
     // 	{
     // 		ProfileManager.GetChatAndContentRestrictions(m_iPad,true,&bChatRestricted,&bContentRestricted,NULL);
@@ -263,12 +263,12 @@ UIControl* UIScene_CreateWorldMenu::GetMainPanel() {
 }
 
 void UIScene_CreateWorldMenu::handleDestroy() {
-#ifdef __PSVITA__
+#if 0
     app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
 #endif
 
     // shut down the keyboard if it is displayed
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO)
+#if (0 || 0 || 0)
     InputManager.DestroyKeyboard();
 #endif
 }
@@ -287,7 +287,7 @@ void UIScene_CreateWorldMenu::tick() {
         m_bShowTexturePackDescription = false;
     }
 
-#ifdef __ORBIS__
+#if 0
     // check the status of the PSPlus common dialog
     switch (sceNpCommerceDialogUpdateStatus()) {
         case SCE_COMMON_DIALOG_STATUS_FINISHED: {
@@ -319,7 +319,7 @@ void UIScene_CreateWorldMenu::tick() {
 #endif
 }
 
-#ifdef __ORBIS__
+#if 0
 int UIScene_CreateWorldMenu::ContinueOffline(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)pParam;
@@ -349,17 +349,17 @@ void UIScene_CreateWorldMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
 
             // 4J-JEV: Inform user why their game must be offline.
-#if defined _XBOX_ONE
+#if 0
             if (pressed && controlHasFocus(m_checkboxOnline.getId()) &&
                 !m_checkboxOnline.IsEnabled()) {
                 unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
                 ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                       IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
+                                       IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                                        iPad);
             }
 #endif
@@ -426,7 +426,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId) {
             UpdateCurrentTexturePack((int)childId);
         } break;
         case eControl_NewWorld: {
-#ifdef _DURANGO
+#if 0
             if (m_MoreOptionsParams.bOnlineGame) {
                 m_bIgnoreInput = true;
                 ProfileManager.CheckMultiplayerPrivileges(
@@ -441,7 +441,7 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId) {
     }
 }
 
-#ifdef _DURANGO
+#if 0
 void UIScene_CreateWorldMenu::checkPrivilegeCallback(void* lpParam,
                                                      bool hasPrivilege,
                                                      int iPad) {
@@ -541,13 +541,13 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
             {
             // need to be signed in to live
             ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-            IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1); m_bIgnoreInput = false;
+            IDS_PRO_NOTONLINE_TEXT, uiIDA, 1); m_bIgnoreInput = false;
             return;
             }
             else */
             {
                 // upsell
-#ifdef _XBOX
+#if 0
                 DLC_INFO* pDLCInfo = app.GetDLCInfoForTrialOfferID(
                     m_pDLCPack->getPurchaseOfferId());
                 ULONGLONG ullOfferID_Full;
@@ -566,7 +566,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
                     ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
-#if defined(_DURANGO) || defined(_WINDOWS64)
+#if 0 || defined(_WINDOWS64)
                 // trial pack warning
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -574,7 +574,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
                                        IDS_USING_TRIAL_TEXUREPACK_WARNING,
                                        uiIDA, 1, m_iPad,
                                        &TrialTexturePackWarningReturned, this);
-#elif defined __PS3__ || defined __ORBIS__ || defined(__PSVITA__)
+#elif 0 || 0 || 0
                 // trial pack warning
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -585,14 +585,14 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
                                        &TrialTexturePackWarningReturned, this);
 #endif
 
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
                 StorageManager.SetSaveDisabled(true);
 #endif
                 return;
             }
         }
     }
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     app.SetGameHostOption(eGameHostOption_DisableSaving,
                           m_MoreOptionsParams.bDisableSaving ? 1 : 0);
     StorageManager.SetSaveDisabled(m_MoreOptionsParams.bDisableSaving);
@@ -617,7 +617,7 @@ void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue) {
 }
 
 void UIScene_CreateWorldMenu::handleTimerComplete(int id) {
-#ifdef __PSVITA__
+#if 0
     // we cannot rebuild touch boxes in an iggy callback because it requires
     // further iggy calls
     if (m_bRebuildTouchBoxes) {
@@ -662,7 +662,7 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id) {
             }
         } break;
         // 4J-PB - Only Xbox will not have trial DLC patched into the game
-#ifdef _XBOX
+#if 0
         case CHECKFORAVAILABLETEXTUREPACKS_TIMER_ID: {
             // also check for any new texture packs info being available
             // for each item in the mem list, check it's in the data list
@@ -753,7 +753,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
     // If this is an online game but not all players are signed in to Live,
     // stop!
     if (isOnlineGame && !isSignedInLive) {
-#ifdef __ORBIS__
+#if 0
         assert(iPadNotSignedInLive != -1);
 
         // Check if PSN is unavailable because of age restriction
@@ -781,7 +781,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
         }
         return;
 /* 4J-PB - Add this after release
-#elif defined __PSVITA__
+#elif 0
                 m_bIgnoreInput=false;
                 // Determine why they're not "signed in live"
                 if
@@ -810,7 +810,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
 #endif
     }
 
-#ifdef __ORBIS__
+#if 0
 
     bool bPlayStationPlus = true;
     int iPadWithNoPlaystationPlus = 0;
@@ -903,7 +903,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
         ProfileManager.AllowedPlayerCreatedContent(
             ProfileManager.GetPrimaryPad(), false, &pccAllowed,
             &pccFriendsAllowed);
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
         if (isOnlineGame && isSignedInLive) {
             ProfileManager.GetChatAndContentRestrictions(
                 ProfileManager.GetPrimaryPad(), false, NULL,
@@ -925,7 +925,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
                 m_bIgnoreInput = false;
                 ui.RequestContentRestrictedMessageBox();
             }
-#ifdef __ORBIS__
+#if 0
             else if (bPlayStationPlus == false) {
                 m_bIgnoreInput = false;
 
@@ -984,7 +984,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
                 m_bIgnoreInput = false;
                 ui.RequestContentRestrictedMessageBox();
             }
-#ifdef __ORBIS__
+#if 0
             else if (isOnlineGame && isSignedInLive &&
                      (bPlayStationPlus == false)) {
                 m_bIgnoreInput = false;
@@ -1026,7 +1026,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
             }
 #endif
             else {
-#if defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0
                 if (isOnlineGame) {
                     bool chatRestricted = false;
                     ProfileManager.GetChatAndContentRestrictions(
@@ -1059,14 +1059,14 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
     bool isClientSide =
         ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) &&
         pClass->m_MoreOptionsParams.bOnlineGame;
-#ifdef __PSVITA__
+#if 0
     if (CGameNetworkManager::usingAdhocMode()) {
         if (SQRNetworkManager_AdHoc_Vita::
                 GetAdhocStatus())  // &&
                                    // pClass->m_MoreOptionsParams.bOnlineGame)
             isClientSide = true;
     }
-#endif  // __PSVITA__
+#endif  // 0
 
     bool isPrivate = pClass->m_MoreOptionsParams.bInviteOnly ? true : false;
 
@@ -1237,7 +1237,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
     param->hellScale = HELL_LEVEL_MAX_SCALE;
 #endif
 
-#ifndef _XBOX
+#if 1
     g_NetworkManager.FakeLocalPlayerJoined();
 #endif
 
@@ -1300,7 +1300,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             // If this is an online game but not all players are signed in to
             // Live, stop!
             if (isOnlineGame && !isSignedInLive) {
-#ifdef __ORBIS__
+#if 0
                 assert(iPadNotSignedInLive != -1);
 
                 // Check if PSN is unavailable because of age restriction
@@ -1431,7 +1431,7 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(
                     IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE, uiIDA, 1,
                     ProfileManager.GetPrimaryPad());
             } else {
-#if defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0
                 bool isOnlineGame = ProfileManager.IsSignedInLive(
                                         ProfileManager.GetPrimaryPad()) &&
                                     pClass->m_MoreOptionsParams.bOnlineGame;
@@ -1456,7 +1456,7 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(
     return 0;
 }
 
-#ifdef __ORBIS__
+#if 0
 int UIScene_CreateWorldMenu::MustSignInReturnedPSN(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)pParam;

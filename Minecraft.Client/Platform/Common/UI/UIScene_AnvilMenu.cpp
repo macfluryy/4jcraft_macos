@@ -309,7 +309,7 @@ int UIScene_AnvilMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
 
 void UIScene_AnvilMenu::handleEditNamePressed() {
     setIgnoreInput(true);
-#if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
+#if 0 || 0 || 0
     int language = XGetLanguage();
     switch (language) {
         case XC_LANGUAGE_JAPANESE:
@@ -379,13 +379,13 @@ void UIScene_AnvilMenu::showCross(bool show) {
 }
 
 void UIScene_AnvilMenu::handleDestroy() {
-#ifdef __PSVITA__
+#if 0
     app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
 #endif
 
     // another player destroyed the anvil, so shut down the keyboard if it is
     // displayed
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO)
+#if (0 || 0 || 0)
     InputManager.DestroyKeyboard();
 #endif
     UIScene_AbstractContainerMenu::handleDestroy();

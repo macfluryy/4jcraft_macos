@@ -24,7 +24,7 @@ protected:
     IggyName m_funcSetTooltip, m_funcSetOpacity, m_funcSetABSwap,
         m_funcUpdateLayout;
 
-#ifdef __PSVITA__
+#if 0
     enum ETouchInput {
         ETouchInput_Touch_A,
         ETouchInput_Touch_B,
@@ -44,7 +44,7 @@ protected:
 #endif
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchController[ETouchInput_Touch_A], "Touch_A")
     UI_MAP_ELEMENT(m_TouchController[ETouchInput_Touch_B], "Touch_B")
     UI_MAP_ELEMENT(m_TouchController[ETouchInput_Touch_X], "Touch_X")
@@ -118,7 +118,7 @@ private:
 
     bool m_overrideSFX[XUSER_MAX_COUNT][ACTION_MAX_MENU];
 
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
 #endif

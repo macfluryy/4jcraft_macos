@@ -627,7 +627,7 @@ void GameRuleManager::processSchematicsLighting(LevelChunk* levelChunk) {
 }
 
 void GameRuleManager::loadDefaultGameRules() {
-#ifdef _XBOX
+#if 0
 #ifdef _TU_BUILD
     std::wstring fileRoot = L"UPDATE:\\res\\GameRules\\Tutorial.pck";
 #else
@@ -654,18 +654,18 @@ void GameRuleManager::loadDefaultGameRules() {
     // delete packFiles;
 #endif
 
-#else  // _XBOX
+#else  // 0
 
 #ifndef __linux__
 #ifdef _WINDOWS64
     File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
     if (!packedTutorialFile.exists())
         packedTutorialFile = File(L"Windows64\\Tutorial\\Tutorial.pck");
-#elif defined(__ORBIS__)
+#elif 0
     File packedTutorialFile(L"/app0/orbis/Tutorial/Tutorial.pck");
-#elif defined(__PSVITA__)
+#elif 0
     File packedTutorialFile(L"PSVita/Tutorial/Tutorial.pck");
-#elif defined(__PS3__)
+#elif 0
     File packedTutorialFile(L"PS3/Tutorial/Tutorial.pck");
 #else
     File packedTutorialFile(L"Tutorial\\Tutorial.pck");

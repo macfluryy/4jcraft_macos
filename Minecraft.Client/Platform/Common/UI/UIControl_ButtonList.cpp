@@ -35,7 +35,7 @@ void UIControl_ButtonList::init(int id) {
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 1, value);
 
-#ifdef __PSVITA__
+#if 0
     // 4J-PB - add this buttonlist to the vita touch box list
 
     switch (m_parentScene->GetParentLayer()->m_iLayer) {
@@ -162,7 +162,7 @@ void UIControl_ButtonList::setButtonLabel(int iButtonId,
                                             m_funcSetButtonLabel, 2, value);
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIControl_ButtonList::SetTouchFocus(S32 iX, S32 iY, bool bRepeat) {
     IggyDataValue result;
     IggyDataValue value[3];

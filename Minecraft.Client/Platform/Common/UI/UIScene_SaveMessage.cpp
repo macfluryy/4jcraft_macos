@@ -37,7 +37,7 @@ UIScene_SaveMessage::UIScene_SaveMessage(int iPad, void* initData,
     m_bIgnoreInput = false;
 
     // 4J-TomK - rebuild touch after auto resize
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 }
@@ -57,7 +57,7 @@ void UIScene_SaveMessage::handleInput(int iPad, int key, bool repeat,
                                       bool pressed, bool released,
                                       bool& handled) {
     if (m_bIgnoreInput) return;
-#if defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0
     // ignore all players except player 0 - it's their profile that is currently
     // being used
     if (iPad != 0) return;
@@ -67,12 +67,12 @@ void UIScene_SaveMessage::handleInput(int iPad, int key, bool repeat,
 
     switch (key) {
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
-            // #ifdef __PS3__
+            // #ifdef 0
             // 	case ACTION_MENU_Y:
             // 		if(pressed)
             // 		{
@@ -104,7 +104,7 @@ void UIScene_SaveMessage::handlePress(F64 controlId, F64 childId) {
 
             m_bIgnoreInput = true;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
             // wait for the profile to be read - this has been kicked off
             // earlier, so should be read by now
             addTimer(PROFILE_LOADED_TIMER_ID, PROFILE_LOADED_TIMER_TIME);
@@ -118,7 +118,7 @@ void UIScene_SaveMessage::handlePress(F64 controlId, F64 childId) {
 void UIScene_SaveMessage::handleTimerComplete(int id) {
     switch (id) {
         case PROFILE_LOADED_TIMER_ID: {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
             C4JStorage::eOptionsCallback eStatus =
                 app.GetOptionsCallbackStatus(0);
 
@@ -126,7 +126,7 @@ void UIScene_SaveMessage::handleTimerComplete(int id) {
                 case C4JStorage::eOptions_Callback_Read:
                 case C4JStorage::eOptions_Callback_Read_FileNotFound:
                 case C4JStorage::eOptions_Callback_Read_Fail:
-#ifdef __PSVITA__
+#if 0
                 case C4JStorage::eOptions_Callback_Write_Fail:
                 case C4JStorage::eOptions_Callback_Write:
 #endif
@@ -168,7 +168,7 @@ void UIScene_SaveMessage::handleTimerComplete(int id) {
     }
 }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 int UIScene_SaveMessage::DeleteOptionsDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // UIScene_SaveMessage* pClass = (UIScene_SaveMessage*)pParam;

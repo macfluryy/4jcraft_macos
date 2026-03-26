@@ -73,7 +73,7 @@ bool LeaderboardManager::ReadStats_TopRank(LeaderboardReadListener *listener, in
 	return true;
 }
 
-#ifndef _XBOX
+#if 1
 void LeaderboardManager::printStats(ReadView &view)
 {
 	app.DebugPrintf("[LeaderboardManager] Printing stats:\n"

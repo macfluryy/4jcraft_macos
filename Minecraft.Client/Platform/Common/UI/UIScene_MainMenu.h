@@ -10,15 +10,11 @@ private:
         eControl_Achievements,
         eControl_HelpAndOptions,
         eControl_UnlockOrDLC,
-#ifndef _DURANGO
         eControl_Exit,
-#else
-        eControl_XboxHelp,
-#endif
         eControl_Count,
     };
 
-    // #ifdef __ORBIS__
+    // #ifdef 0
     // 	enum EPatchCheck
     // 	{
     // 		ePatchCheck_Idle,
@@ -35,11 +31,7 @@ private:
     UI_MAP_ELEMENT(m_buttons[(int)eControl_Achievements], "Button3")
     UI_MAP_ELEMENT(m_buttons[(int)eControl_HelpAndOptions], "Button4")
     UI_MAP_ELEMENT(m_buttons[(int)eControl_UnlockOrDLC], "Button5")
-#ifndef _DURANGO
     UI_MAP_ELEMENT(m_buttons[(int)eControl_Exit], "Button6")
-#else
-    UI_MAP_ELEMENT(m_buttons[(int)eControl_XboxHelp], "Button6")
-#endif
     UI_MAP_ELEMENT(m_controlTimer, "Timer")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
@@ -47,11 +39,11 @@ private:
     bool m_bIgnorePress;
     bool m_bTrialVersion;
     bool m_bLoadTrialOnNetworkManagerReady;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     bool m_bLaunchFullVersionPurchase;
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     bool m_bWaitingForDLCInfo;
 #endif
 
@@ -77,11 +69,11 @@ private:
         eAction_RunAchievements,
         eAction_RunHelpAndOptions,
         eAction_RunUnlockOrDLC,
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
         eAction_RunLeaderboardsPSN,
         eAction_RunGamePSN,
         eAction_RunUnlockOrDLCPSN,
-#elif defined _DURANGO
+#elif 0
         eAction_RunXboxHelp,
 #endif
 
@@ -101,7 +93,7 @@ public:
     virtual ~UIScene_MainMenu();
 
     // Returns true if this scene has focus for the pad passed in
-#ifndef __PS3__
+#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 #endif
 
@@ -144,29 +136,6 @@ private:
 
     static void LoadTrial();
 
-#ifdef _XBOX_ONE
-    static int ChooseUser_SignInReturned(void* pParam, bool bContinue, int iPad,
-                                         int iController);
-    static int CreateLoad_SignInReturned(void* pParam, bool bContinue, int iPad,
-                                         int iController);
-    static int HelpAndOptions_SignInReturned(void* pParam, bool bContinue,
-                                             int iPad, int iController);
-    static int Achievements_SignInReturned(void* pParam, bool bContinue,
-                                           int iPad, int iController);
-    static int MustSignInReturned(void* pParam, int iPad,
-                                  C4JStorage::EMessageResult result);
-
-    static int Leaderboards_SignInReturned(void* pParam, bool bContinue,
-                                           int iPad, int iController);
-    static int UnlockFullGame_SignInReturned(void* pParam, bool bContinue,
-                                             int iPad, int iController);
-    static int ExitGameReturned(void* pParam, int iPad,
-                                C4JStorage::EMessageResult result);
-
-    static int XboxHelp_SignInReturned(void* pParam, bool bContinue, int iPad,
-                                       int iController);
-#else
-
     static int CreateLoad_SignInReturned(void* pParam, bool bContinue,
                                          int iPad);
     static int HelpAndOptions_SignInReturned(void* pParam, bool bContinue,
@@ -176,7 +145,7 @@ private:
     static int MustSignInReturned(void* pParam, int iPad,
                                   C4JStorage::EMessageResult result);
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
 #endif
@@ -186,8 +155,7 @@ private:
                                              int iPad);
     static int ExitGameReturned(void* pParam, int iPad,
                                 C4JStorage::EMessageResult result);
-
-#ifdef __ORBIS__
+#if 0
     static void RefreshChatAndContentRestrictionsReturned_PlayGame(
         void* pParam);
     static void RefreshChatAndContentRestrictionsReturned_Leaderboards(
@@ -196,17 +164,7 @@ private:
     static int PlayOfflineReturned(void* pParam, int iPad,
                                    C4JStorage::EMessageResult result);
 #endif
-#endif
-
-#ifdef __PSVITA__
-    static int SelectNetworkModeReturned(void* pParam, int iPad,
-                                         C4JStorage::EMessageResult result);
-#endif
-
-#ifdef __ORBIS__
-    // EPatchCheck m_ePatchCheckState;
     bool m_bRunGameChosen;
     int32_t m_errorCode;
     bool m_bErrorDialogRunning;
-#endif
 };

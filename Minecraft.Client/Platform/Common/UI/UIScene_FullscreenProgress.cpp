@@ -70,11 +70,11 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     thread->Run();
     threadStarted = true;
 
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     ui.ShowPlayerDisplayname(false);
 #endif
 }
@@ -198,7 +198,7 @@ void UIScene_FullscreenProgress::tick() {
                 m_buttonConfirm.setVisible(true);
                 // 4J-TomK - rebuild touch after confirm button made visible
                 // again
-#ifdef __PSVITA__
+#if 0
                 ui.TouchBoxRebuild(this);
 #endif
                 updateTooltips();
@@ -287,7 +287,7 @@ void UIScene_FullscreenProgress::handleInput(int iPad, int key, bool repeat,
 
         switch (key) {
             case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
             case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
                 if (pressed) {

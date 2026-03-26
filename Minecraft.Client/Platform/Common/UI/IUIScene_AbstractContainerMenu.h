@@ -164,7 +164,7 @@ protected:
     int m_iCurrSlotX;
     int m_iCurrSlotY;
 
-#ifdef __ORBIS__
+#if 0
     bool
         m_bFirstTouchStored[XUSER_MAX_COUNT];  // monitor the first position of
                                                // a touch, so we can use

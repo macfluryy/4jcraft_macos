@@ -77,7 +77,7 @@ public:
     void LanguageChanged(void);
 
     DLCPack* getPack(const std::wstring& name);
-#ifdef _XBOX_ONE
+#if 0
     DLCPack* DLCManager::getPackFromProductID(const std::wstring& productID);
 #endif
     DLCPack* getPack(unsigned int index, EDLCType type = e_DLCType_All);

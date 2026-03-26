@@ -16,7 +16,7 @@ bool UIControl_LeaderboardList::setupControl(UIScene* scene,
     m_funcResetLeaderboard = registerFastName(L"ResetLeaderboard");
     m_funcSetupTitles = registerFastName(L"SetupTitles");
     m_funcSetColumnIcon = registerFastName(L"SetColumnIcon");
-#ifdef __PSVITA__
+#if 0
     m_funcSetTouchFocus = registerFastName(L"SetTouchFocus");
     m_bTouchInitialised = false;
 #endif
@@ -91,7 +91,7 @@ void UIControl_LeaderboardList::initLeaderboard(int iFirstFocus,
                                             getIggyValuePath(),
                                             m_funcInitLeaderboard, 3, value);
 
-#ifdef __PSVITA__
+#if 0
     // 4J-PB - add this button to the vita touch box list
     if (!m_bTouchInitialised) {
         switch (m_parentScene->GetParentLayer()->m_iLayer) {
@@ -232,7 +232,7 @@ void UIControl_LeaderboardList::addDataSet(
                                getIggyValuePath(), m_funcAddDataSet, 12, value);
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIControl_LeaderboardList::SetTouchFocus(S32 iX, S32 iY, bool bRepeat) {
     IggyDataValue result;
     IggyDataValue value[3];

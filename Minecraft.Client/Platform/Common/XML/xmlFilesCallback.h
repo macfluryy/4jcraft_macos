@@ -135,7 +135,7 @@ public:
 					{
 						wcsncpy_s( wValue, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-#ifdef _XBOX
+#if 0
 						iValue=_wtoi(wValue);
 #else
 						iValue=wcstol(wValue, NULL, 10);
@@ -283,7 +283,7 @@ public:
 					{
 						wcsncpy_s( wConfig, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-#ifdef _XBOX
+#if 0
 						iConfig=_wtoi(wConfig);
 #else
 						iConfig=wcstol(wConfig, NULL, 10);

@@ -2,11 +2,11 @@
 #include "UI.h"
 #include "UIScene_DLCOffersMenu.h"
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 #include "Common/Network/Sony/SonyHttp.h"
 #endif
 
-#ifdef __PSVITA__
+#if 0
 #include "PSVita/Network/SonyCommerce_Vita.h"
 #endif
 
@@ -21,7 +21,7 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
     m_iProductInfoIndex = param->iType;
     m_iCurrentDLC = 0;
     m_iTotalDLC = 0;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     m_pvProductInfo = NULL;
 #endif
     m_bAddAllDLCButtons = true;
@@ -43,14 +43,10 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
     m_bIsSelected = false;
 
     if (m_loadedResolution == eSceneResolution_1080) {
-#ifdef _DURANGO
-        m_labelXboxStore.init(app.GetString(IDS_XBOX_STORE));
-#else
         m_labelXboxStore.init(L"");
-#endif
     }
 
-#ifdef _DURANGO
+#if 0
     m_pNoImageFor_DLC = NULL;
     // If we don't yet have this DLC, we need to display a timer
     m_bDLCRequiredIsRetrieved = false;
@@ -61,15 +57,15 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
 
 #endif
 
-#ifdef __ORBIS__
+#if 0
     // sceNpCommerceShowPsStoreIcon(SCE_NP_COMMERCE_PS_STORE_ICON_CENTER);
 #endif
 
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     addTimer(PLAYER_ONLINE_TIMER_ID, PLAYER_ONLINE_TIMER_TIME);
 #endif
 
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 }
@@ -81,7 +77,7 @@ UIScene_DLCOffersMenu::~UIScene_DLCOffersMenu() {
 }
 
 void UIScene_DLCOffersMenu::handleTimerComplete(int id) {
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     switch (id) {
         case PLAYER_ONLINE_TIMER_ID:
 #ifndef _WINDOWS64
@@ -109,7 +105,7 @@ int UIScene_DLCOffersMenu::ExitDLCOffersMenu(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_DLCOffersMenu* pClass = (UIScene_DLCOffersMenu*)pParam;
 
-#if defined __ORBIS__ || defined __PSVITA__
+#if 0 || 0
     app.GetCommerce()->HidePsStoreIcon();
 #endif
     ui.NavigateToHomeMenu();  // iPad,eUIScene_MainMenu);
@@ -146,7 +142,7 @@ void UIScene_DLCOffersMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);
@@ -237,7 +233,7 @@ AB"); break;
 void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_OffersList: {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
             // buy the DLC
 
             std::vector<SonyCommerce::ProductInfo>::iterator it =
@@ -249,7 +245,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
 
             SonyCommerce::ProductInfo info = *it;
 
-#ifdef __PS3__
+#if 0
             // is the item purchasable?
             if (info.purchasabilityFlag == 1) {
                 // can be bought
@@ -262,7 +258,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
                     app.DownloadAlreadyPurchased(info.skuId);
                 }
             }
-#else   // __ORBIS__
+#else   // 0
         // is the item purchasable?
             if (info.purchasabilityFlag ==
                 SCE_TOOLKIT_NP_COMMERCE_NOT_PURCHASED) {
@@ -271,8 +267,8 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
             } else {
                 app.DownloadAlreadyPurchased(info.skuId);
             }
-#endif  // __PS3__
-#elif defined _XBOX_ONE
+#endif  // 0
+#elif 0
             int iIndex = (int)childId;
             StorageManager.InstallOffer(
                 1, StorageManager.GetOffer(iIndex).wszProductID, NULL, NULL);
@@ -292,7 +288,7 @@ void UIScene_DLCOffersMenu::handleSelectionChanged(F64 selectedId) {}
 void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId) {
     app.DebugPrintf("UIScene_DLCOffersMenu::handleFocusChange\n");
 
-#ifdef __PSVITA__
+#if 0
     // set this here on Vita, in case we've came from a touch screen press.
     // Fixes bug #5794
     if ((int)controlId == eControl_OffersList) {
@@ -301,7 +297,7 @@ void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId) {
     }
 #endif
 
-#ifdef _DURANGO
+#if 0
     m_bSelectionChanged = true;  // to tell the tick to update the display
     // 4J-PB can't call settexturename from a callback
     /*if(m_buttonListOffers.hasFocus() && (childId>-1))
@@ -312,7 +308,7 @@ void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId) {
     }*/
 #endif
 
-#if defined __PSVITA__ || defined __ORBIS__
+#if 0 || 0
     if (m_pvProductInfo) {
         m_bIsSelected = true;
         std::vector<SonyCommerce::ProductInfo>::iterator it =
@@ -337,7 +333,7 @@ void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId) {
 void UIScene_DLCOffersMenu::tick() {
     UIScene::tick();
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 
     if (m_bAddAllDLCButtons) {
         // need to fill out all the dlc buttons
@@ -377,7 +373,7 @@ void UIScene_DLCOffersMenu::tick() {
 
                 bool bDLCIsAvailable = false;
 
-#ifdef __PS3__
+#if 0
                 // is the item purchasable?
                 if (info.purchasabilityFlag == 1) {
                     // can be bought
@@ -396,7 +392,7 @@ void UIScene_DLCOffersMenu::tick() {
                         bDLCIsAvailable = true;
                     }
                 }
-#else   // __ORBIS__
+#else   // 0
         // is the item purchasable?
                 if (info.purchasabilityFlag ==
                     SCE_TOOLKIT_NP_COMMERCE_NOT_PURCHASED) {
@@ -407,7 +403,7 @@ void UIScene_DLCOffersMenu::tick() {
                     m_buttonListOffers.addItem(teststring, true, i);
                     bDLCIsAvailable = true;
                 }
-#endif  // __PS3__
+#endif  // 0
 
                 // set the other details for the first item
                 if (bDLCIsAvailable && (bFirstItemSet == false)) {
@@ -438,7 +434,7 @@ void UIScene_DLCOffersMenu::tick() {
                         PBYTE pbImageData;
                         int iImageDataBytes = 0;
                         bool bDeleteData;
-#ifdef __ORBIS__
+#if 0
                         // check the local files first
                         SONYDLC* pSONYDLCInfo =
                             app.GetSONYDLCInfoFromKeyname(info.productId);
@@ -495,7 +491,7 @@ void UIScene_DLCOffersMenu::tick() {
             m_bProductInfoShown = true;
         }
     } else {
-#ifdef __PSVITA__
+#if 0
         // MGH - fixes bug 5768 on Vita - should be extended properly to work
         // for other platforms
         if ((SonyCommerce_Vita::getPurchasabilityUpdated()) &&
@@ -559,7 +555,7 @@ void UIScene_DLCOffersMenu::tick() {
                 PBYTE pbImageData;
                 int iImageDataBytes = 0;
                 bool bDeleteData;
-#ifdef __ORBIS__
+#if 0
                 // check the local files first
                 SONYDLC* pSONYDLCInfo =
                     app.GetSONYDLCInfoFromKeyname(info.productId);
@@ -595,7 +591,7 @@ void UIScene_DLCOffersMenu::tick() {
             m_Timer.setVisible(false);
         }
     }
-#elif defined _XBOX_ONE
+#elif 0
     if (m_bAddAllDLCButtons) {
         // Is the DLC we're looking for available?
         if (!m_bDLCRequiredIsRetrieved) {
@@ -665,7 +661,7 @@ void UIScene_DLCOffersMenu::tick() {
 #endif
 }
 
-#if defined _XBOX_ONE
+#if 0
 void UIScene_DLCOffersMenu::GetDLCInfo(int iOfferC, bool bUpdateOnly) {
     MARKETPLACE_CONTENTOFFER_INFO xOffer;
     int iCount = 0;
@@ -722,7 +718,7 @@ void UIScene_DLCOffersMenu::GetDLCInfo(int iOfferC, bool bUpdateOnly) {
                     wstrTemp = &pwchNewName[10];
                 }
 
-#ifdef _XBOX_ONE
+#if 0
                 // 4J-PB - the hasPurchased comes from the local installed
                 // package info find the DLC in the installed packages
                 XCONTENT_DATA* pContentData =
@@ -794,7 +790,7 @@ void UIScene_DLCOffersMenu::UpdateTooltips(
 bool UIScene_DLCOffersMenu::UpdateDisplay(
     MARKETPLACE_CONTENTOFFER_INFO& xOffer) {
     bool bImageAvailable = false;
-#ifdef _XBOX_ONE
+#if 0
     DLC_INFO* dlc = app.GetDLCInfoForFullOfferID(xOffer.wszProductID);
 #else
     DLC_INFO* dlc = app.GetDLCInfoForFullOfferID(xOffer.wszOfferName);
@@ -832,7 +828,7 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(
                     DWORD dwSize = 0;
                     app.GetMemFileDetails(cString, &pData, &dwSize);
                     // set the image
-#ifdef _XBOX_ONE
+#if 0
                     registerSubstitutionTexture(cString, pData, dwSize);
 #else
                     registerSubstitutionTexture(cString, pData, dwSize, true);
@@ -863,16 +859,16 @@ bool UIScene_DLCOffersMenu::UpdateDisplay(
 }
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
 void UIScene_DLCOffersMenu::HandleDLCLicenseChange() {
     // flag an update of the display
     int iOfferC = app.GetDLCOffersCount();
 
     GetDLCInfo(iOfferC, false);
 }
-#endif  // _XBOX_ONE
+#endif  // 0
 
-#ifdef __PS3__
+#if 0
 void UIScene_DLCOffersMenu::HandleDLCInstalled() {
     app.DebugPrintf(4, "UIScene_DLCOffersMenu::HandleDLCInstalled\n");
 

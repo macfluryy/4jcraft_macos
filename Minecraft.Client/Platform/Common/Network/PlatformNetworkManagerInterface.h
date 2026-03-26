@@ -138,13 +138,13 @@ public:
         void* pParam) = 0;
     virtual void ForceFriendsSessionRefresh() = 0;
 
-#ifndef _XBOX
+#if 1
     virtual void FakeLocalPlayerJoined() {
     };  // Temporary method whilst we don't have real networking to make this
         // happen
 #endif
 
-#ifdef _DURANGO
+#if 0
     virtual std::wstring GetDisplayNameByGamertag(std::wstring gamertag) = 0;
 #endif
 };

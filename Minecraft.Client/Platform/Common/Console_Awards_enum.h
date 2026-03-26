@@ -30,7 +30,7 @@ enum eAward
 	eAward_arrowKillCreeper,	
 	eAward_socialPost,
 
-#ifndef _XBOX	
+#if 1	
 	// 4J Stu - Does not map to any Xbox achievements
 	eAward_snipeSkeleton,
 	eAward_diamonds,

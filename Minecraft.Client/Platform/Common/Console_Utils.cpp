@@ -9,7 +9,7 @@
 #ifndef _CONTENT_PACKAGE
 static void DebugSpewV(const char* strFormat, va_list pArgList)
 {
-#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined(__linux__)
+#if 0 || 0 || 0 || defined(__linux__)
 	assert(0);
 #else
 	char str[2048];

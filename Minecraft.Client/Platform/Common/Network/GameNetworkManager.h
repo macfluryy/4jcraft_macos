@@ -122,7 +122,7 @@ public:
     static int ServerThreadProc(void* lpParameter);
     static int ExitAndJoinFromInviteThreadProc(void* lpParam);
 
-#if (defined __PS3__) || (defined __ORBIS__) || (defined __PSVITA__)
+#if (0) || (0) || (0)
     static int MustSignInReturned_0(void* pParam, int iPad,
                                     C4JStorage::EMessageResult result);
     static int PSNSignInReturned_0(void* pParam, bool bContinue, int iPad);
@@ -154,7 +154,7 @@ public:
     void ServerStoppedDestroy();            // Destroy signal
     bool ServerStoppedValid();              // Is non-NULL
 
-#ifdef __PSVITA__
+#if 0
     static bool usingAdhocMode();
     static void setAdhocMode(bool bAdhoc);
     static void startAdhocMatching();
@@ -192,7 +192,7 @@ private:
     void GameInviteReceived(int userIndex, const INVITE_INFO* pInviteInfo);
     void HandleInviteWhenInMenus(int userIndex, const INVITE_INFO* pInviteInfo);
     void AddLocalPlayerFailed(int idx, bool serverFull = false);
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
+#if 0 || 0 || 0
     void HandleDisconnect(bool bLostRoomOnly, bool bPSNSignOut);
 #else
     void HandleDisconnect(bool bLostRoomOnly);
@@ -208,7 +208,7 @@ private:
     C4JThread::Event* m_hServerReadyEvent;
     bool m_bInitialised;
 
-#ifdef _XBOX_ONE
+#if 0
 public:
     void SetFullSessionMessageOnNextSessionChange() {
         m_bFullSessionMessageOnNextSessionChange = true;
@@ -221,12 +221,12 @@ private:
     int GetJoiningReadyPercentage();
     bool m_bLastDisconnectWasLostRoomOnly;
     bool m_bFullSessionMessageOnNextSessionChange;
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
+#if 0 || 0 || 0
     bool m_bSignedOutofPSN;
 #endif
 
 public:
-#ifndef _XBOX
+#if 1
     void FakeLocalPlayerJoined();  // Temporary method whilst we don't have real
                                    // networking to make this happen
 #endif
@@ -234,7 +234,7 @@ public:
 
 extern CGameNetworkManager g_NetworkManager;
 
-#ifdef __PS3__
+#if 0
 #undef __in
 #define __out
 #endif

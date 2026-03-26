@@ -133,7 +133,7 @@ public:
 	
 
 public:
-#ifdef _XBOX
+#if 0
 	typedef XSESSION_VIEW_PROPERTIES *ViewIn;
 	typedef PXUSER_STATS_READ_RESULTS ViewOut;
 #else
@@ -243,7 +243,7 @@ public:
 	virtual bool isIdle() = 0;
 
 public:
-#ifndef _XBOX
+#if 1
 	static void printStats(ReadView &view);
 #endif
 };
@@ -251,14 +251,14 @@ public:
 class LeaderboardReadListener
 {
 public:
-#ifdef _XBOX
+#if 0
 	virtual bool OnStatsReadComplete(bool success, int numResults, LeaderboardManager::ViewOut results) = 0;
 #else
 	virtual bool OnStatsReadComplete(LeaderboardManager::eStatsReturn ret, int numResults, LeaderboardManager::ViewOut results) = 0;
 #endif
 };
 
-#ifndef _XBOX
+#if 1
 class DebugReadListener : public LeaderboardReadListener
 {
 public:

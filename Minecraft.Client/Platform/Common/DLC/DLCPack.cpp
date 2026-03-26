@@ -15,7 +15,7 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_dataPath = L"";
     m_packName = name;
     m_dwLicenseMask = dwLicenseMask;
-#ifdef _XBOX_ONE
+#if 0
     m_wsProductId = L"";
 #else
     m_ullFullOfferId = 0LL;
@@ -25,7 +25,7 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_packVersion = 0;
     m_parentPack = NULL;
     m_dlcMountIndex = -1;
-#ifdef _XBOX
+#if 0
     m_dlcDeviceID = XCONTENTDEVICE_ANY;
 #endif
 
@@ -34,7 +34,7 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_data = NULL;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 DLCPack::DLCPack(const std::wstring& name, const std::wstring& productID,
                  std::uint32_t dwLicenseMask) {
     m_dataPath = L"";
@@ -176,7 +176,7 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
             newFile = new DLCSkinFile(strippedPath);
 
             // check to see if we can get the full offer id using this skin name
-#ifdef _XBOX_ONE
+#if 0
             app.GetDLCFullOfferIDForSkinID(strippedPath, m_wsProductId);
 #else
             ULONGLONG ullVal = 0LL;

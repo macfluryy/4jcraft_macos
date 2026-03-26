@@ -125,7 +125,7 @@ void UIScene_SignEntryMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
         case ACTION_MENU_UP:
@@ -161,7 +161,7 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_Line4: {
             m_iEditingLine = (int)controlId;
             m_bIgnoreInput = true;
-#ifdef _XBOX_ONE
+#if 0
             // 4J-PB - Xbox One uses the Windows virtual keyboard, and doesn't
             // have the Xbox 360 Latin keyboard type, so we can't restrict the
             // input set to alphanumeric. The closest we get is the
@@ -197,13 +197,13 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
 }
 
 void UIScene_SignEntryMenu::handleDestroy() {
-#ifdef __PSVITA__
+#if 0
     app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
 #endif
 
     // another player destroyed the anvil, so shut down the keyboard if it is
     // displayed
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO)
+#if (0 || 0 || 0)
     InputManager.DestroyKeyboard();
 #endif
 }

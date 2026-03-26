@@ -166,7 +166,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             bHandled = true;
             break;
         case ACTION_MENU_A:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             // Do some crafting!
@@ -463,7 +463,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
         (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
         bNoScrollSlots = true;
     }
-#ifdef __PSVITA__
+#if 0
     bNoScrollSlots = true;
 #endif
 
@@ -1016,7 +1016,7 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
             (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen())) {
             bNoScrollSlots = true;
         }
-#ifdef __PSVITA__
+#if 0
         bNoScrollSlots = true;
 #endif
 

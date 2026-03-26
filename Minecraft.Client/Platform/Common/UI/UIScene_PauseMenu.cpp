@@ -7,11 +7,11 @@
 #include "../../Minecraft.Client/Textures/Packs/TexturePack.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
-#ifdef __ORBIS__
+#if 0
 #include <error_dialog.h>
 #endif
 
-#if defined __PS3__ || defined __ORBIS__
+#if 0 || 0
 #define USE_SONY_REMOTE_STORAGE
 #endif
 
@@ -29,14 +29,9 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
         app.GetString(IDS_HELP_AND_OPTIONS), BUTTON_PAUSE_HELPANDOPTIONS);
     m_buttons[BUTTON_PAUSE_LEADERBOARDS].init(app.GetString(IDS_LEADERBOARDS),
                                               BUTTON_PAUSE_LEADERBOARDS);
-#ifdef _DURANGO
-    m_buttons[BUTTON_PAUSE_XBOXHELP].init(app.GetString(IDS_XBOX_HELP_APP),
-                                          BUTTON_PAUSE_XBOXHELP);
-#else
     m_buttons[BUTTON_PAUSE_ACHIEVEMENTS].init(app.GetString(IDS_ACHIEVEMENTS),
                                               BUTTON_PAUSE_ACHIEVEMENTS);
-#endif
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     m_bTrialTexturePack = false;
     if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
         TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
@@ -141,13 +136,13 @@ std::wstring UIScene_PauseMenu::getMoviePath() {
 void UIScene_PauseMenu::tick() {
     UIScene::tick();
 
-#ifdef __PSVITA__
+#if 0
     // 4J-MGH - Need to check for installed DLC here, as we delay the
     // installation of the key file on Vita
     if (!app.DLCInstallProcessCompleted()) app.StartInstallDLCProcess(0);
 #endif
 
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     if (!m_bTrialTexturePack &&
         m_savesDisabled !=
             (app.GetGameHostOption(eGameHostOption_DisableSaving) != 0) &&
@@ -166,7 +161,7 @@ void UIScene_PauseMenu::tick() {
     }
 #endif
 
-#ifdef __ORBIS__
+#if 0
     // Process the error dialog (for a patch being available)
     if (m_bErrorDialogRunning) {
         SceErrorDialogStatus stat = sceErrorDialogUpdateStatus();
@@ -183,13 +178,13 @@ void UIScene_PauseMenu::updateTooltips() {
     bool bIsisPrimaryHost =
         g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
 
-#ifdef _XBOX_ONE
+#if 0
     bool bDisplayBanTip = !g_NetworkManager.IsLocalGame() &&
                           !bIsisPrimaryHost && !ProfileManager.IsGuest(m_iPad);
 #endif
 
     int iY = -1;
-#if defined __PS3__ || defined __ORBIS__
+#if 0 || 0
     if (m_iPad == ProfileManager.GetPrimaryPad())
         iY = IDS_TOOLTIPS_GAME_INVITES;
 #endif
@@ -199,25 +194,25 @@ void UIScene_PauseMenu::updateTooltips() {
     if (ProfileManager.IsFullVersion()) {
         if (StorageManager.GetSaveDisabled()) {
             iX = bIsisPrimaryHost ? IDS_TOOLTIPS_SELECTDEVICE : -1;
-#ifdef _XBOX_ONE
+#if 0
             iRB = bDisplayBanTip ? IDS_TOOLTIPS_BANLEVEL : -1;
 #endif
             if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
                 CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
                 bUserisClientSide) {
-#ifndef __PS3__
+#if 1
                 iY = IDS_TOOLTIPS_SHARE;
 #endif
             }
         } else {
             iX = bIsisPrimaryHost ? IDS_TOOLTIPS_CHANGEDEVICE : -1;
-#ifdef _XBOX_ONE
+#if 0
             iRB = bDisplayBanTip ? IDS_TOOLTIPS_BANLEVEL : -1;
 #endif
             if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
                 CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
                 bUserisClientSide) {
-#ifndef __PS3__
+#if 1
                 iY = IDS_TOOLTIPS_SHARE;
 #endif
             }
@@ -238,7 +233,7 @@ void UIScene_PauseMenu::updateComponents() {
 }
 
 void UIScene_PauseMenu::handlePreReload() {
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     if (ProfileManager.GetPrimaryPad() == m_iPad) {
         // 4J-TomK - check for all possible labels being fed into
         // BUTTON_PAUSE_SAVEGAME (Bug 163775) this has to be done before button
@@ -258,7 +253,7 @@ void UIScene_PauseMenu::handleReload() {
     updateTooltips();
     updateControlsVisibility();
 
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     if (ProfileManager.GetPrimaryPad() == m_iPad) {
         // We show the save button if saves are disabled as this lets us show a
         // prompt to enable them (via purchasing a texture pack)
@@ -293,11 +288,11 @@ void UIScene_PauseMenu::updateControlsVisibility() {
         if (app.GetLocalPlayerCount() > 1) {
             // Hide the BUTTON_PAUSE_LEADERBOARDS and BUTTON_PAUSE_ACHIEVEMENTS
             removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
-#ifndef _XBOX_ONE
+#if 1
             removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
 #endif
         }
-#ifdef __PSVITA__
+#if 0
         // MGH added - remove leaderboards in adhoc
         if (CGameNetworkManager::usingAdhocMode()) {
             removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
@@ -312,7 +307,7 @@ void UIScene_PauseMenu::updateControlsVisibility() {
         // Hide the BUTTON_PAUSE_LEADERBOARDS, BUTTON_PAUSE_ACHIEVEMENTS and
         // BUTTON_PAUSE_SAVEGAME
         removeControl(&m_buttons[BUTTON_PAUSE_LEADERBOARDS], false);
-#ifndef _XBOX_ONE
+#if 1
         removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
 #endif
         removeControl(&m_buttons[BUTTON_PAUSE_SAVEGAME], false);
@@ -320,13 +315,13 @@ void UIScene_PauseMenu::updateControlsVisibility() {
 
     // is saving disabled?
     if (StorageManager.GetSaveDisabled()) {
-#ifdef _XBOX
+#if 0
         // disable save button
         m_buttons[BUTTON_PAUSE_SAVEGAME].setEnable(false);
 #endif
     }
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     // We don't have a way to display trophies/achievements, so remove the
     // button, and we're allowed to not have it on Xbox One
     removeControl(&m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], false);
@@ -345,7 +340,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
     // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 
-#ifdef _XBOX_ONE
+#if 0
     bool bIsisPrimaryHost =
         g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == iPad);
     bool bDisplayBanTip = !g_NetworkManager.IsLocalGame() &&
@@ -353,16 +348,16 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
 #endif
 
     switch (key) {
-#ifdef _DURANGO
+#if 0
         case ACTION_MENU_GTC_RESUME:
 #endif
-#if defined(__PS3__)  // not for Orbis - we want to use the pause menu (touchpad
+#if 0  // not for Orbis - we want to use the pause menu (touchpad
                       // press) to select a menu item
         case ACTION_MENU_PAUSEMENU:
 #endif
         case ACTION_MENU_CANCEL:
             if (pressed) {
-#ifdef _DURANGO
+#if 0
                 // DurangoStatsDebugger::PrintStats(iPad);
 #endif
                 // TODO: proper fix for pausing
@@ -384,7 +379,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
         case ACTION_MENU_UP:
@@ -414,9 +409,9 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
 #endif
 
         case ACTION_MENU_Y: {
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
             if (pressed && iPad == ProfileManager.GetPrimaryPad()) {
-#ifdef __ORBIS__
+#if 0
                 // If a patch is available, can't view invites
                 if (CheckForPatch()) break;
 #endif
@@ -424,7 +419,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                 // Are we offline?
                 if (!ProfileManager.IsSignedInLive(iPad)) {
                     m_eAction = eAction_ViewInvitesPSN;
-#ifdef __ORBIS__
+#if 0
                     int npAvailability = ProfileManager.getNPAvailability(iPad);
                     if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
                         // 4J Stu - This is a bit messy and is due to the
@@ -457,7 +452,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                                 &UIScene_PauseMenu::MustSignInReturnedPSN,
                                 (LPVOID)GetCallbackUniqueId());
                         }
-#else  // __PS3__
+#else  // 0
        // get them to sign in to online
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
@@ -467,9 +462,9 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                         (LPVOID)GetCallbackUniqueId());
 #endif
                 } else {
-#ifdef __ORBIS__
+#if 0
                     SQRNetworkManager_Orbis::RecvInviteGUI();
-#else  // __PS3__
+#else  // 0
                     int ret = sceNpBasicRecvMessageCustom(
                         SCE_NP_BASIC_MESSAGE_MAIN_TYPE_INVITE,
                         SCE_NP_BASIC_RECV_MESSAGE_OPTIONS_INCLUDE_BOOTABLE,
@@ -498,9 +493,9 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
             }
             rfHandled = TRUE;
 #endif
-#endif  // __PS3__
+#endif  // 0
         } break;
-#ifdef _XBOX_ONE
+#if 0
         case ACTION_MENU_RIGHT_SCROLL:
             if (bDisplayBanTip) {
                 unsigned int uiIDA[2];
@@ -547,7 +542,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else if (!ProfileManager.IsSignedInLive(m_iPad)) {
-#ifdef __ORBIS__
+#if 0
                 // If a patch is available, can't show leaderboard
                 if (CheckForPatch()) break;
 
@@ -569,17 +564,17 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 
 #endif
 
-#if defined __PS3__ || __PSVITA__
+#if 0 || 0
                 // get them to sign in to online
                 m_eAction = eAction_ViewLeaderboardsPSN;
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
                 ui.RequestAlertMessage(
-                    IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION,
+                    IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
                     uiIDA, 1, ProfileManager.GetPrimaryPad(),
                     &UIScene_PauseMenu::MustSignInReturnedPSN,
                     (LPVOID)GetCallbackUniqueId());
-#elif defined(__ORBIS__)
+#elif 0
                 m_eAction = eAction_ViewLeaderboardsPSN;
                 int npAvailability = ProfileManager.getNPAvailability(m_iPad);
                 if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
@@ -618,18 +613,18 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 #else
                 unsigned int uiIDA[1] = {IDS_OK};
                 ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                       IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
+                                       IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                                        m_iPad);
 #endif
             } else {
                 bool bContentRestricted = false;
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
                 ProfileManager.GetChatAndContentRestrictions(
                     m_iPad, true, NULL, &bContentRestricted, NULL);
 #endif
                 if (bContentRestricted) {
-#if !(defined(_XBOX) || defined(_WINDOWS64) || \
-      defined(_XBOX_ONE))  // 4J Stu - Temp to get the win build running, but so
+#if !(0 || defined(_WINDOWS64) || \
+      0)  // 4J Stu - Temp to get the win build running, but so
                            // we check this for other platforms
                     // you can't see leaderboards
                     unsigned int uiIDA[1];
@@ -643,27 +638,18 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                 }
             }
         } break;
-#ifdef _DURANGO
-        case BUTTON_PAUSE_XBOXHELP: {
-            // 4J: Launch the crummy xbox help application.
-            WXS::User ^ user = ProfileManager.GetUser(m_iPad);
-            Windows::Xbox::ApplicationModel::Help::Show(user);
-        } break;
-#elif TO_BE_IMPLEMENTED
         case BUTTON_PAUSE_ACHIEVEMENTS:
-
             // guests can't look at achievements
-            if (ProfileManager.IsGuest(pNotifyPressData->UserIndex)) {
+            if (ProfileManager.IsGuest(m_iPad)) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
                 ui.RequestAlertMessage(IDS_PRO_GUESTPROFILE_TITLE,
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else {
-                XShowAchievementsUI(pNotifyPressData->UserIndex);
+                XShowAchievementsUI(m_iPad);
             }
             break;
-#endif
 
         case BUTTON_PAUSE_HELPANDOPTIONS:
             ui.NavigateToScene(m_iPad, eUIScene_HelpAndOptionsMenu);
@@ -685,7 +671,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        ->getSessionTimer();
                     }
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
                     uiIDA[0] = IDS_CONFIRM_CANCEL;
                     uiIDA[1] = IDS_CONFIRM_OK;
 
@@ -821,24 +807,24 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 void UIScene_PauseMenu::PerformActionSaveGame() {
     // is the player trying to save in the trial version?
     if (!ProfileManager.IsFullVersion()) {
-#ifdef __ORBIS__
+#if 0
         // If a patch is available, can't buy full game
         if (CheckForPatch()) return;
 #endif
 
         // Unlock the full version?
         if (!ProfileManager.IsSignedInLive(m_iPad)) {
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
             m_eAction = eAction_SaveGamePSN;
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
             ui.RequestAlertMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 2,
+                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 2,
                                    ProfileManager.GetPrimaryPad(),
                                    &UIScene_PauseMenu::MustSignInReturnedPSN,
                                    (LPVOID)GetCallbackUniqueId());
-#elif defined(__ORBIS__)
+#elif 0
             m_eAction = eAction_SaveGamePSN;
             int npAvailability = ProfileManager.getNPAvailability(m_iPad);
             if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
@@ -894,7 +880,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
 
         if (!m_pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture, L"")) {
             // upsell
-#ifdef _XBOX
+#if 0
             ULONGLONG ullOfferID_Full;
             // get the dlc texture pack
             DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
@@ -914,7 +900,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
 
             // Give the player a warning about the trial version of the texture
             // pack
-#ifdef __PSVITA__
+#if 0
             if (app.DLCInstallProcessCompleted() &&
                 !SonyCommerce_Vita::
                     getDLCUpgradePending())  // MGH - devtrack #5861 On vita it
@@ -942,7 +928,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
     C4JStorage::ESaveGameState result =
         StorageManager.DoesSaveExist(&bSaveExists);
 
-#ifdef _XBOX
+#if 0
     if (result == C4JStorage::ELoadGame_DeviceRemoved) {
         // this will be a tester trying to be clever
         unsigned int uiIDA[2];
@@ -956,7 +942,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
     } else
 #endif
     {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         if (!m_savesDisabled) {
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_CANCEL;
@@ -978,7 +964,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
                     m_iPad, &IUIScene_PauseMenu::SaveGameDialogReturned,
                     (LPVOID)GetCallbackUniqueId());
             } else {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_CANCEL;
                 uiIDA[1] = IDS_CONFIRM_OK;
@@ -1043,7 +1029,7 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
             bool bContentRestricted;
             ProfileManager.GetChatAndContentRestrictions(
                 ProfileManager.GetPrimaryPad(), true, NULL, &bContentRestricted,
@@ -1084,7 +1070,7 @@ int UIScene_PauseMenu::SaveGame_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_PauseMenu::BanGameDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // results switched for this dialog
@@ -1095,13 +1081,13 @@ int UIScene_PauseMenu::BanGameDialogReturned(
 }
 #endif
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
 int UIScene_PauseMenu::MustSignInReturnedPSN(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_PauseMenu* pClass =
         (UIScene_PauseMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
     if (result == C4JStorage::EMessage_ResultAccept && pClass) {
-#ifdef __PS3__
+#if 0
         switch (pClass->m_eAction) {
             case eAction_ViewLeaderboardsPSN:
                 SQRNetworkManager_PS3::AttemptPSNSignIn(
@@ -1121,7 +1107,7 @@ int UIScene_PauseMenu::MustSignInReturnedPSN(
                     &UIScene_PauseMenu::BuyTexturePack_SignInReturned, pParam);
                 break;
         }
-#elif defined __PSVITA__
+#elif 0
         switch (pClass->m_eAction) {
             case eAction_ViewLeaderboardsPSN:
                 // CD - Must force Ad-Hoc off if they want leaderboard PSN
@@ -1193,7 +1179,7 @@ int UIScene_PauseMenu::ViewLeaderboards_SignInReturned(void* pParam,
                                    IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                    ProfileManager.GetPrimaryPad());
         } else if (ProfileManager.IsSignedInLive(iPad)) {
-#ifndef __ORBIS__
+#if 1
             bool bContentRestricted = false;
             ProfileManager.GetChatAndContentRestrictions(
                 pClass->m_iPad, true, NULL, &bContentRestricted, NULL);
@@ -1218,16 +1204,16 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(
     UIScene_PauseMenu* pClass =
         (UIScene_PauseMenu*)ui.GetSceneFromCallbackId((size_t)pParam);
 
-#ifdef __ORBIS__
+#if 0
     // If a patch is available, can't proceed
     if (!pClass || pClass->CheckForPatch()) return 0;
 #endif
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (!ProfileManager.IsSignedInLive(iPad)) {
             if (pClass) pClass->m_eAction = eAction_SaveGamePSN;
-#ifdef __ORBIS__  // Check if PSN is unavailable because of age restriction
+#if 0  // Check if PSN is unavailable because of age restriction
             int npAvailability = ProfileManager.getNPAvailability(iPad);
             if (npAvailability == SCE_NP_ERROR_AGE_RESTRICTION) {
                 // 4J Stu - This is a bit messy and is due to the library
@@ -1255,17 +1241,17 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(
                         1, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN,
                         pParam);
                 }
-#else  // __PS3__
+#else  // 0
        // You're not signed in to PSN!
             unsigned int uiIDA[2];
             uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
             uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
             ui.RequestAlertMessage(
-                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA,
+                IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA,
                 2, iPad, &UIScene_PauseMenu::MustSignInReturnedPSN, pParam);
 #endif
         } else {
-#ifndef __ORBIS__
+#if 1
             // 4J-PB - need to check this user can access the store
             bool bContentRestricted = false;
             ProfileManager.GetChatAndContentRestrictions(
@@ -1310,7 +1296,7 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(
                     memset(chKeyName, 0, sizeof(chKeyName));
                     strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
 
-#ifdef __ORBIS__
+#if 0
                     strcpy(chName, chKeyName);
 #else
                     sprintf(chName, "%s-%s", app.GetCommerceCategory(),
@@ -1319,7 +1305,7 @@ int UIScene_PauseMenu::WarningTrialTexturePackReturned(
                     app.GetDLCSkuIDFromProductList(chName, chSkuID);
 
                     // 4J-PB - need to check for an empty store
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+#if 0 || 0 || 0
                     if (app.CheckForEmptyStore(iPad) == false)
 #endif
                     {
@@ -1343,9 +1329,9 @@ int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void* pParam,
     if (bContinue == true) {
         // Check if we're signed in to LIVE
         if (ProfileManager.IsSignedInLive(iPad)) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 
-#ifndef __ORBIS__
+#if 1
             // 4J-PB - need to check this user can access the store
             bool bContentRestricted = false;
             ProfileManager.GetChatAndContentRestrictions(
@@ -1389,7 +1375,7 @@ int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void* pParam,
                     memset(chKeyName, 0, sizeof(chKeyName));
                     strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
 
-#ifdef __ORBIS__
+#if 0
                     strcpy(chName, chKeyName);
 #else
                     sprintf(chName, "%s-%s", app.GetCommerceCategory(),
@@ -1398,7 +1384,7 @@ int UIScene_PauseMenu::BuyTexturePack_SignInReturned(void* pParam,
                     app.GetDLCSkuIDFromProductList(chName, chSkuID);
 
                     // 4J-PB - need to check for an empty store
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+#if 0 || 0 || 0
                     if (app.CheckForEmptyStore(iPad) == false)
 #endif
                     {
@@ -1423,16 +1409,16 @@ int UIScene_PauseMenu::ViewInvites_SignInReturned(void* pParam, bool bContinue,
     if (bContinue == true) {
         // Check if we're signed in to LIVE
         if (ProfileManager.IsSignedInLive(iPad)) {
-#ifdef __ORBIS__
+#if 0
             SQRNetworkManager_Orbis::RecvInviteGUI();
-#elif defined __PS3__
+#elif 0
             int ret = sceNpBasicRecvMessageCustom(
                 SCE_NP_BASIC_MESSAGE_MAIN_TYPE_INVITE,
                 SCE_NP_BASIC_RECV_MESSAGE_OPTIONS_INCLUDE_BOOTABLE,
                 SYS_MEMORY_CONTAINER_ID_INVALID);
             app.DebugPrintf("sceNpBasicRecvMessageCustom return %d ( %08x )\n",
                             ret, ret);
-#else  // __PSVITA__
+#else  // 0
             PSVITA_STUBBED;
 #endif
         }
@@ -1460,7 +1446,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(
                         ->getDLCInfoParentPack();  // tPack->getDLCPack();
                 if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                                 L"")) {
-#ifdef _XBOX
+#if 0
                     // upsell
                     ULONGLONG ullOfferID_Full;
                     // get the dlc texture pack
@@ -1509,7 +1495,7 @@ int UIScene_PauseMenu::ExitGameSaveDialogReturned(
                     &IUIScene_PauseMenu::ExitGameAndSaveReturned, pParam);
                 return 0;
             } else {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
                 StorageManager.SetSaveDisabled(false);
 #endif
                 MinecraftServer::getInstance()->setSaveOnExit(true);
@@ -1537,11 +1523,11 @@ void UIScene_PauseMenu::SetIgnoreInput(bool ignoreInput) {
     m_bIgnoreInput = ignoreInput;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 void UIScene_PauseMenu::HandleDLCLicenseChange() {}
 #endif
 
-#ifdef __ORBIS__
+#if 0
 bool UIScene_PauseMenu::CheckForPatch() {
     int npAvailability =
         ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());

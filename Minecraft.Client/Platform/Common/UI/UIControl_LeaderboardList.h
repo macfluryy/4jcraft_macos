@@ -7,7 +7,7 @@ private:
     IggyName m_funcInitLeaderboard, m_funcAddDataSet;
     IggyName m_funcResetLeaderboard;
     IggyName m_funcSetupTitles, m_funcSetColumnIcon;
-#ifdef __PSVITA__
+#if 0
     IggyName m_funcSetTouchFocus;
     bool m_bTouchInitialised;
 #endif
@@ -48,7 +48,7 @@ public:
                     const std::wstring& col4, const std::wstring& col5,
                     const std::wstring& col6);
 
-#ifdef __PSVITA__
+#if 0
     void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);
 #endif
 };

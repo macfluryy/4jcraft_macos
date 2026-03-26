@@ -63,7 +63,7 @@ void UIScene_DeathMenu::handleInput(int iPad, int key, bool repeat,
             handled = true;
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
         case ACTION_MENU_UP:
@@ -79,7 +79,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_Respawn:
             m_bIgnoreInput = true;
             app.SetAction(m_iPad, eAppAction_Respawn);
-#ifdef _DURANGO
+#if 0
             // InputManager.SetEnabledGtcButtons(_360_GTC_MENU|_360_GTC_PAUSE|_360_GTC_VIEW);
 #endif
             break;
@@ -101,7 +101,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                     TelemetryManager->RecordLevelExit(
                         m_iPad, eSen_LevelExitStatus_Failed);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
                     if (g_NetworkManager.IsHost() &&
                         StorageManager.GetSaveDisabled()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;

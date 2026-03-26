@@ -9,7 +9,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
-#ifdef __PSVITA__
+#if 0
 #define GAME_CREATIVE_TOUCHUPDATE_TIMER_ID 0
 #define GAME_CREATIVE_TOUCHUPDATE_TIMER_TIME 100
 #endif
@@ -59,7 +59,7 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
     m_curTab = eCreativeInventoryTab_COUNT;
     switchTab(eCreativeInventoryTab_BuildingBlocks);
 
-#ifdef __PSVITA__
+#if 0
     // initialise vita touch controls with ids
     for (unsigned int i = 0; i < ETouchInput_Count; ++i) {
         m_TouchInput[i].init(i);
@@ -75,7 +75,7 @@ std::wstring UIScene_CreativeMenu::getMoviePath() {
     }
 }
 
-#ifdef __PSVITA__
+#if 0
 UIControl* UIScene_CreativeMenu::GetMainPanel() { return &m_controlMainPanel; }
 
 void UIScene_CreativeMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,

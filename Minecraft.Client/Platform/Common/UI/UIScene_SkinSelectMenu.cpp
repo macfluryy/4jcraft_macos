@@ -2,9 +2,9 @@
 #include "UI.h"
 #include "UIScene_SkinSelectMenu.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
-#ifdef __ORBIS__
+#if 0
 #include <error_dialog.h>
-#elif defined __PSVITA__
+#elif 0
 #include <message_dialog.h>
 #endif
 
@@ -33,7 +33,7 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
 
     m_labelSelected.init(app.GetString(IDS_SELECTED));
 
-#ifdef __ORBIS__
+#if 0
     m_bErrorDialogRunning = false;
 #endif
 
@@ -86,7 +86,7 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
     m_centreLabel = L"";
     m_rightLabel = L"";
 
-#ifdef __PSVITA__
+#if 0
     // initialise vita tab  controls with ids
     m_TouchTabLeft.init(ETouchInput_TabLeft);
     m_TouchTabRight.init(ETouchInput_TabRight);
@@ -137,7 +137,7 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
 
     // Display the tooltips
 
-#ifdef __PSVITA__
+#if 0
     InitializeCriticalSection(
         &m_DLCInstallCS);  // to prevent a race condition between the install
                            // and the mounted callback
@@ -173,7 +173,7 @@ void UIScene_SkinSelectMenu::tick() {
     // check for new DLC installed
 
     // check for the patch error dialog
-#ifdef __ORBIS__
+#if 0
 
     // process the error dialog (for a patch being available)
     if (m_bErrorDialogRunning) {
@@ -222,7 +222,7 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             if (pressed) {
@@ -434,7 +434,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                     // if(true)
                     if (!m_currentPack->hasPurchasedFile(
                             DLCManager::e_DLCType_Skin, skinFile->getPath())) {
-#ifdef __ORBIS__
+#if 0
                         // 4J-PB - Check if there is a patch for the game
                         int errorCode = ProfileManager.getNPAvailability(
                             ProfileManager.GetPrimaryPad());
@@ -474,7 +474,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_OK;
 
-#ifdef __ORBIS__
+#if 0
                         // Check if PSN is unavailable because of age
                         // restriction
                         int npAvailability =
@@ -492,7 +492,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                                     IDS_PRO_GUESTPROFILE_TITLE,
                                     IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1, iPad);
                             }
-#if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
+#if 0 || 0 || 0
                             // are we online?
                             else if (!ProfileManager.IsSignedInLive(iPad)) {
                                 showNotOnlineDialog(iPad);
@@ -500,7 +500,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 #endif
                             else {
                                 // upsell
-#ifdef _XBOX
+#if 0
                                 DLC_INFO* pDLCInfo =
                                     app.GetDLCInfoForTrialOfferID(
                                         m_currentPack->getPurchaseOfferId());
@@ -520,13 +520,13 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                                     ullOfferID_Full & 0xFFFFFFFF);
 #endif
                                 bool bContentRestricted = false;
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
                                 ProfileManager.GetChatAndContentRestrictions(
                                     m_iPad, true, NULL, &bContentRestricted,
                                     NULL);
 #endif
                                 if (bContentRestricted) {
-#if !(defined(_XBOX) || \
+#if !(0 || \
       defined(          \
           _WIN64))  // 4J Stu - Temp to get the win build running, but so we
                     // check this for other platforms you can't see the store
@@ -539,7 +539,7 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
 #endif
                                 } else {
                                     // 4J-PB - need to check for an empty store
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+#if 0 || 0 || 0
                                     if (app.CheckForEmptyStore(iPad) == false)
 #endif
                                     {
@@ -622,11 +622,11 @@ void UIScene_SkinSelectMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         // region->scissor_y1); app.DebugPrintf("Stencil mask= %d, stencil ref=
         // %d, stencil write= %d\n", region->stencil_func_mask,
         // region->stencil_func_ref, region->stencil_write_mask);
-#ifdef __PS3__
+#if 0
         if (region->stencil_func_ref != 0)
             RenderManager.StateSetStencil(GL_EQUAL, region->stencil_func_ref,
                                           region->stencil_func_mask);
-#elif __PSVITA__
+#elif 0
         // AP - make sure the skins are only drawn inside the smokey panel
         if (region->stencil_func_ref != 0)
             RenderManager.StateSetStencil(SCE_GXM_STENCIL_FUNC_EQUAL,
@@ -1273,7 +1273,7 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring& label) {
     }
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIScene_SkinSelectMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,
                                               int iId, bool bPressed,
                                               bool bRepeat, bool bReleased) {
@@ -1403,7 +1403,7 @@ void UIScene_SkinSelectMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,
 #endif
 
 void UIScene_SkinSelectMenu::HandleDLCInstalled() {
-#ifdef __PSVITA__
+#if 0
     EnterCriticalSection(
         &m_DLCInstallCS);  // to prevent a race condition between the install
                            // and the mounted callback
@@ -1426,13 +1426,13 @@ void UIScene_SkinSelectMenu::HandleDLCInstalled() {
 
     // this will send a CustomMessage_DLCMountingComplete when done
 
-#ifdef __PSVITA__
+#if 0
     LeaveCriticalSection(&m_DLCInstallCS);
 #endif
 }
 
 void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
-#ifdef __PSVITA__
+#if 0
     EnterCriticalSection(
         &m_DLCInstallCS);  // to prevent a race condition between the install
                            // and the mounted callback
@@ -1474,17 +1474,17 @@ void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
 #if TO_BE_IMPLEMENTED
     if (bInGame) XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_AUTO);
 #endif
-#ifdef __PSVITA__
+#if 0
     LeaveCriticalSection(&m_DLCInstallCS);
 #endif
 }
 
 void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad) {
     // need to be signed in to live. get them to sign in to online
-#if defined(__PS3__)
+#if 0
     SQRNetworkManager_PS3::AttemptPSNSignIn(NULL, this);
 
-#elif defined(__PSVITA__)
+#elif 0
     if (CGameNetworkManager::usingAdhocMode() &&
         SQRNetworkManager_AdHoc_Vita::GetAdhocStatus()) {
         // we're in adhoc mode, we really need to ask before disconnecting
@@ -1499,14 +1499,14 @@ void UIScene_SkinSelectMenu::showNotOnlineDialog(int iPad) {
         SQRNetworkManager_Vita::AttemptPSNSignIn(NULL, this);
     }
 
-#elif defined(__ORBIS__)
+#elif 0
     SQRNetworkManager_Orbis::AttemptPSNSignIn(NULL, this, false, iPad);
 
-#elif defined(_DURANGO)
+#elif 0
 
     unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
     ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                           IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1, iPad);
+                           IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, iPad);
 
 #endif
 }
@@ -1518,7 +1518,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(
     if ((result == C4JStorage::EMessage_ResultAccept) &&
         ProfileManager.IsSignedIn(iPad)) {
         if (ProfileManager.IsSignedInLive(iPad)) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
+#if 0 || 0 || 0
             // need to get info on the pack to see if the user has already
             // downloaded it
 
@@ -1546,14 +1546,14 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(
                 memset(chKeyName, 0, sizeof(chKeyName));
                 strncpy(chKeyName, pSONYDLCInfo->chDLCKeyname, 16);
 
-#ifdef __ORBIS__
+#if 0
                 strcpy(chName, chKeyName);
 #else
                 sprintf(chName, "%s-%s", app.GetCommerceCategory(), chKeyName);
 #endif
                 app.GetDLCSkuIDFromProductList(chName, chSkuID);
 
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+#if 0 || 0 || 0
                 if (app.CheckForEmptyStore(iPad) == false)
 #endif
                 {
@@ -1574,7 +1574,7 @@ int UIScene_SkinSelectMenu::UnlockSkinReturned(
             pScene->m_bIgnoreInput =
                 false;  // MGH - moved this to outside the pSONYDLCInfo, so we
                         // don't get stuck
-#elif defined _XBOX_ONE
+#elif 0
             StorageManager.InstallOffer(
                 1,
                 const_cast<wchar_t*>(
@@ -1642,24 +1642,24 @@ void UIScene_SkinSelectMenu::handleReload() {
     handlePackIndexChanged();
 }
 
-#ifdef _XBOX_ONE
+#if 0
 void UIScene_SkinSelectMenu::HandleDLCLicenseChange() {
     // update the lock flag
     handleSkinIndexChanged();
 }
 #endif
 
-#ifdef __PSVITA__
+#if 0
 int UIScene_SkinSelectMenu::MustSignInReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     if (result == C4JStorage::EMessage_ResultAccept) {
-#ifdef __PS3__
+#if 0
         SQRNetworkManager_PS3::AttemptPSNSignIn(
             &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
-#elif defined __PSVITA__
+#elif 0
         SQRNetworkManager_Vita::AttemptPSNSignIn(
             &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
-#elif defined __ORBIS__
+#elif 0
         SQRNetworkManager_Orbis::AttemptPSNSignIn(
             &UIScene_SkinSelectMenu::PSNSignInReturned, pParam, true);
 #endif
@@ -1673,4 +1673,4 @@ int UIScene_SkinSelectMenu::PSNSignInReturned(void* pParam, bool bContinue,
     }
     return 0;
 }
-#endif  // __PSVITA__
+#endif  // 0

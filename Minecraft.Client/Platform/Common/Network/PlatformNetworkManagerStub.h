@@ -193,7 +193,7 @@ public:
 private:
     void NotifyPlayerJoined(IQNetPlayer* pQNetPlayer);
 
-#ifndef _XBOX
+#if 1
     void FakeLocalPlayerJoined() {
         NotifyPlayerJoined(m_pIQNet->GetLocalPlayerByUserIndex(0));
     }

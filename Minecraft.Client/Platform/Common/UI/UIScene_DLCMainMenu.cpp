@@ -1,6 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
 #include "../Network/Sony/SonyCommerce.h"
 #endif
 #include "UIScene_DLCMainMenu.h"
@@ -19,12 +19,12 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
     m_labelOffers.init(IDS_DOWNLOADABLE_CONTENT_OFFERS);
     m_buttonListOffers.init(eControl_OffersList);
 
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     // load any local DLC images
     app.LoadLocalDLCImages();
 #endif
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     // show a timer on this menu
     m_Timer.setVisible(true);
 
@@ -32,14 +32,10 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
 #endif
 
     if (m_loadedResolution == eSceneResolution_1080) {
-#ifdef _DURANGO
-        m_labelXboxStore.init(IDS_XBOX_STORE);
-#else
         m_labelXboxStore.init(L"");
-#endif
     }
 
-#if defined(_DURANGO)
+#if 0
     m_Timer.setVisible(false);
 
     m_buttonListOffers.addItem(IDS_DLC_MENU_SKINPACKS, e_DLC_SkinPack);
@@ -54,11 +50,11 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
 
     TelemetryManager->RecordMenuShown(iPad, eUIScene_DLCMainMenu, 0);
 
-#if defined __ORBIS__ || defined __PSVITA__
+#if 0 || 0
     app.GetCommerce()->ShowPsStoreIcon();
 #endif
 
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     addTimer(PLAYER_ONLINE_TIMER_ID, PLAYER_ONLINE_TIMER_TIME);
 #endif
 }
@@ -67,11 +63,11 @@ UIScene_DLCMainMenu::~UIScene_DLCMainMenu() {
     // Alert the app the we no longer want to be informed of ethernet
     // connections
     app.SetLiveLinkRequired(false);
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     app.FreeLocalDLCImages();
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     // 4J-JEV: Have to switch back to user preferred languge now.
     setLanguageOverride(true);
 #endif
@@ -94,14 +90,14 @@ void UIScene_DLCMainMenu::handleInput(int iPad, int key, bool repeat,
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-#if defined __ORBIS__ || defined __PSVITA__
+#if 0 || 0
                 app.GetCommerce()->HidePsStoreIcon();
 #endif
                 navigateBack();
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);
@@ -129,7 +125,7 @@ void UIScene_DLCMainMenu::handlePress(F64 controlId, F64 childId) {
 
             // Xbox One will have requested the marketplace content - there is
             // only that type
-#ifndef _XBOX_ONE
+#if 1
             app.AddDLCRequest((eDLCMarketplaceType)iIndex, true);
 #endif
             killTimer(PLAYER_ONLINE_TIMER_ID);
@@ -140,7 +136,7 @@ void UIScene_DLCMainMenu::handlePress(F64 controlId, F64 childId) {
 }
 
 void UIScene_DLCMainMenu::handleTimerComplete(int id) {
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     switch (id) {
         case PLAYER_ONLINE_TIMER_ID:
 #ifndef _WINDOWS64
@@ -168,7 +164,7 @@ int UIScene_DLCMainMenu::ExitDLCMainMenu(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result) {
     UIScene_DLCMainMenu* pClass = (UIScene_DLCMainMenu*)pParam;
 
-#if defined __ORBIS__ || defined __PSVITA__
+#if 0 || 0
     app.GetCommerce()->HidePsStoreIcon();
 #endif
     pClass->navigateBack();
@@ -183,7 +179,7 @@ void UIScene_DLCMainMenu::handleGainFocus(bool navBack) {
 
     if (navBack) {
         // add the timer back in
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
         addTimer(PLAYER_ONLINE_TIMER_ID, PLAYER_ONLINE_TIMER_TIME);
 #endif
     }
@@ -192,7 +188,7 @@ void UIScene_DLCMainMenu::handleGainFocus(bool navBack) {
 void UIScene_DLCMainMenu::tick() {
     UIScene::tick();
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if ((m_bCategoriesShown == false) &&
         (app.GetCommerceCategoriesRetrieved())) {
         // disable the timer display on this menu
@@ -218,13 +214,13 @@ void UIScene_DLCMainMenu::tick() {
         if (pCategories->countOfSubCategories > 0) {
             m_buttonListOffers.setFocus(true);
         } else {
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
+#if 0 || 0 || 0
             app.CheckForEmptyStore(ProfileManager.GetPrimaryPad());
 #endif
             // need to display text to say no downloadable content available yet
             m_labelOffers.setLabel(app.GetString(IDS_NO_DLCCATEGORIES));
 
-#ifdef __ORBIS__
+#if 0
             // 4J-JEV: TRC Requirement (R4055), need to display this system
             // message.
             ProfileManager.DisplaySystemMessage(

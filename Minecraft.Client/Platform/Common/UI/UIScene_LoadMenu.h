@@ -60,7 +60,7 @@ private:
     bool m_bThumbnailGetFailed;
     int64_t m_seed;
 
-#ifdef __PS3__
+#if 0
     std::vector<SonyCommerce::ProductInfo>* m_pvProductInfo;
 #endif
     // int *m_iConfigA; // track the texture packs that we don't have installed
@@ -105,7 +105,7 @@ private:
     virtual void checkStateAndStartGame();
     void LaunchGame(void);
 
-#ifdef _DURANGO
+#if 0
     static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
                                        int iPad);
 #endif
@@ -125,7 +125,7 @@ private:
     static int DeleteSaveDataReturned(void* pParam, bool bSuccess);
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
-#ifdef __ORBIS__
+#if 0
     // static int PSPlusReturned(void *pParam,int
     // iPad,C4JStorage::EMessageResult result);
     static int ContinueOffline(void* pParam, int iPad,

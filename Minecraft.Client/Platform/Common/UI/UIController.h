@@ -74,7 +74,7 @@ public:
 
 private:
     // 4J-PB - ui element type for PSVita touch control
-#ifdef __PSVITA__
+#if 0
 
     typedef struct {
         UIControl* pControl;
@@ -181,7 +181,7 @@ private:
 
 public:
     UIController();
-#ifdef __PSVITA__
+#if 0
     void TouchBoxAdd(UIControl* pControl, UIScene* pUIScene);
     bool TouchBoxHit(UIScene* pUIScene, S32 x, S32 y);
     void TouchBoxesClear(UIScene* pUIScene);
@@ -383,7 +383,7 @@ public:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled(int iPad);
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
     virtual void HandleTMSDLCFileRetrieved(int iPad);

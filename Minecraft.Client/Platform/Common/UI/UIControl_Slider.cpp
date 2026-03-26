@@ -55,7 +55,7 @@ void UIControl_Slider::init(UIString label, int id, int min, int max,
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 5, value);
 
-#ifdef __PSVITA__
+#if 0
     // 4J-TomK - add slider to the vita touch box list
 
     switch (m_parentScene->GetParentLayer()->m_iLayer) {

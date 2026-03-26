@@ -53,7 +53,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             handled = true;
             break;
         case ACTION_MENU_A:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             if (!m_activeOffers.empty()) {

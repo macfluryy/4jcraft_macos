@@ -12,7 +12,7 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.Client/UI/Screens/TitleScreen.h"
 #include "UIFontData.h"
-#ifdef __PSVITA__
+#if 0
 #include <message_dialog.h>
 #endif
 
@@ -171,7 +171,7 @@ UIController::UIController() {
 
     // 4J Stu - This is a bit of a hack until we change the Minecraft
     // initialisation to store the proper screen size for other platforms
-#if defined _WINDOWS64 || defined _DURANGO || defined __ORBIS__ || \
+#if defined _WINDOWS64 || 0 || 0 || \
     defined(__linux__)
     m_fScreenWidth = 1920.0f;
     m_fScreenHeight = 1080.0f;
@@ -212,7 +212,7 @@ UIController::UIController() {
     InitializeCriticalSection(&m_registeredCallbackScenesCS);
     // m_bSysUIShowing=false;
     m_bSystemUIShowing = false;
-#ifdef __PSVITA__
+#if 0
     m_bTouchscreenPressed = false;
 #endif
 
@@ -301,7 +301,7 @@ UIController::EFont UIController::getFontForLanguage(int language) {
     switch (language) {
         case XC_LANGUAGE_JAPANESE:
             return eFont_Japanese;
-#ifdef _DURANGO
+#if 0
         case XC_LANGUAGE_SCHINESE:
             return eFont_SimpChinese;
 #endif
@@ -316,7 +316,7 @@ UIController::EFont UIController::getFontForLanguage(int language) {
 
 UITTFFont* UIController::createFont(EFont fontLanguage) {
     switch (fontLanguage) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
         case eFont_Japanese:
             return new UITTFFont("Mojangles_TTF_jaJP",
                                  "Common/Media/font/JPN/DF-DotDotGothic16.ttf",
@@ -335,7 +335,7 @@ UITTFFont* UIController::createFont(EFont fontLanguage) {
             return new UITTFFont("Mojangles_TTF_jaJP",
                                  "Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
                                  0x2022);  // JPN
-#ifdef _DURANGO
+#if 0
         case eFont_SimpChinese:
             return new UITTFFont("Mojangled_TTF_cnCN",
                                  "Common/Media/font/CHS/MSYH.ttf",
@@ -489,9 +489,9 @@ void UIController::tick() {
 void UIController::loadSkins() {
     std::wstring platformSkinPath = L"";
 
-#ifdef __PS3__
+#if 0
     platformSkinPath = L"skinPS3.swf";
-#elif defined __PSVITA__
+#elif 0
     platformSkinPath = L"skinVita.swf";
 #elif defined(_WINDOWS64) || defined(__linux__)
     if (m_fScreenHeight == 1080.0f) {
@@ -499,13 +499,13 @@ void UIController::loadSkins() {
     } else {
         platformSkinPath = L"skinWin.swf";
     }
-#elif defined _DURANGO
+#elif 0
     if (m_fScreenHeight == 1080.0f) {
         platformSkinPath = L"skinHDDurango.swf";
     } else {
         platformSkinPath = L"skinDurango.swf";
     }
-#elif defined __ORBIS__
+#elif 0
     if (m_fScreenHeight == 1080.0f) {
         platformSkinPath = L"skinHDOrbis.swf";
     } else {
@@ -522,7 +522,7 @@ void UIController::loadSkins() {
             loadSkin(platformSkinPath, L"platformskin.swf");
     }
 
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
     m_iggyLibraries[eLibrary_GraphicsDefault] =
         loadSkin(L"skinGraphics.swf", L"skinGraphics.swf");
     m_iggyLibraries[eLibrary_GraphicsHUD] =
@@ -543,7 +543,7 @@ void UIController::loadSkins() {
     m_iggyLibraries[eLibrary_Default] = loadSkin(L"skin.swf", L"skin.swf");
 #endif
 
-#if (defined(_WINDOWS64) || defined(_DURANGO) || defined(__ORBIS__) || \
+#if (defined(_WINDOWS64) || 0 || 0 || \
      defined(__linux__))
 
 #if defined(_WINDOWS64)
@@ -723,7 +723,7 @@ void UIController::CleanUpSkinReload() {
 
     if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
         if (!Minecraft::GetInstance()->skins->getSelected()->hasAudio()) {
-#ifdef _DURANGO
+#if 0
             const unsigned int result =
                 StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
@@ -785,7 +785,7 @@ void UIController::handleInput() {
     // For each user, loop over each key type and send messages based on the
     // state
     for (unsigned int iPad = 0; iPad < XUSER_MAX_COUNT; ++iPad) {
-#ifdef _DURANGO
+#if 0
         // 4J-JEV: Added exception for primary play who migh've uttered speech
         // commands.
         if (iPad != ProfileManager.GetPrimaryPad() &&
@@ -797,13 +797,13 @@ void UIController::handleInput() {
             handleKeyPress(iPad, key);
         }
 
-#ifdef __PSVITA__
+#if 0
         // CD - Vita requires key press 40 - select [MINECRAFT_ACTION_GAME_INFO]
         handleKeyPress(iPad, MINECRAFT_ACTION_GAME_INFO);
 #endif
     }
 
-#ifdef _DURANGO
+#if 0
     if (!app.GetGameStarted()) {
         bool repeat = false;
         int firstUnfocussedUnhandledPad = -1;
@@ -852,7 +852,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
     bool released = false;  // Toggle
     bool repeat = false;
 
-#ifdef __PSVITA__
+#if 0
     if (key == ACTION_MENU_OK) {
         bool bTouchScreenInput = false;
 
@@ -1030,7 +1030,7 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
 
     // 4J Stu - Removed this function
 #if 0
-#ifdef __PS3__
+#if 0
 	//if (	pressed &&
 	//	!repeat &&
 	//	//app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_ToggleFont) &&
@@ -1276,18 +1276,18 @@ void UIController::setupCustomDrawGameState() {
     m_customRenderingClearRect.top = LONG_MAX;
     m_customRenderingClearRect.bottom = LONG_MIN;
 
-#if defined _WINDOWS64 || _DURANGO
+#if defined _WINDOWS64 || 0
     PIXBeginNamedEvent(0, "StartFrame");
     RenderManager.StartFrame();
     PIXEndNamedEvent();
     gdraw_D3D11_setViewport_4J();
-#elif defined __PS3__
+#elif 0
     RenderManager.StartFrame();
-#elif defined __PSVITA__
+#elif 0
     RenderManager.StartFrame();
 #elif defined __linux__
     RenderManager.StartFrame();
-#elif defined __ORBIS__
+#elif 0
     RenderManager.StartFrame(false);
     // Set up a viewport for the render that matches Iggy's own viewport, apart
     // form using an opengl-style z-range (Iggy uses a DX-style range on PS4),
@@ -1324,7 +1324,7 @@ void UIController::setupCustomDrawMatrices(UIScene* scene,
     float sceneHeight = (float)scene->getRenderHeight();
 
     LONG left, right, top, bottom;
-#ifdef __PS3__
+#if 0
     if (!RenderManager.IsHiDef() && !RenderManager.IsWidescreen()) {
         // 4J Stu - Our SD target on PS3 is double width
         left = m_tileOriginX +
@@ -1388,7 +1388,7 @@ void UIController::setupCustomDrawGameStateAndMatrices(
 }
 
 void UIController::endCustomDrawGameState() {
-#if defined(__ORBIS__) || defined(__linux__)
+#if 0 || defined(__linux__)
     RenderManager.Clear(GL_DEPTH_BUFFER_BIT);
 #else
     RenderManager.Clear(GL_DEPTH_BUFFER_BIT, &m_customRenderingClearRect);
@@ -1461,7 +1461,7 @@ GDrawTexture* RADLINK UIController::TextureSubstitutionCreateCallback(
             // 4J Stu - All our flash controls that allow replacing textures use
             // a special 64x64 symbol Force this size here so that our images
             // don't get scaled wildly
-#if (defined __ORBIS__ || defined _DURANGO)
+#if (0 || 0)
             *width = 96;
             *height = 96;
 #else
@@ -1699,7 +1699,7 @@ void UIController::NavigateToHomeMenu() {
         // 		{
         // 			pDLCTexPack->m_pSoundBank->Destroy();
         // 		}
-#ifdef _XBOX_ONE
+#if 0
         const unsigned int result =
             StorageManager.UnmountInstalledDLC(L"TPACK");
 #else
@@ -1948,7 +1948,7 @@ void UIController::SetMenuDisplayed(int iPad, bool bVal) {
             m_bMenuToBeClosed[iPad] = true;
             m_iCountDown[iPad] = 10;
 
-#ifdef _DURANGO
+#if 0
             // 4J-JEV: When in-game, allow player to toggle the 'Pause' and
             // 'IngameInfo' menus via Kinnect.
             if (Minecraft::GetInstance()->running)
@@ -2029,11 +2029,11 @@ void UIController::SetTooltips(unsigned int iPad, int iA, int iB, int iX,
     EUIGroup group;
 
     // 4J-PB - strip out any that are not applicable on the platform
-#ifndef _XBOX
+#if 1
     if (iX == IDS_TOOLTIPS_SELECTDEVICE) iX = -1;
     if (iX == IDS_TOOLTIPS_CHANGEDEVICE) iX = -1;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if (iY == IDS_TOOLTIPS_VIEW_GAMERCARD) iY = -1;
     if (iY == IDS_TOOLTIPS_VIEW_GAMERPROFILE) iY = -1;
 
@@ -2191,7 +2191,7 @@ void UIController::HandleDLCInstalled(int iPad) {
     }
 }
 
-#ifdef _XBOX_ONE
+#if 0
 void UIController::HandleDLCLicenseChange() {
     for (unsigned int i = 0; i < eUIGroup_COUNT; ++i) {
         app.DebugPrintf("UIController::HandleDLCLicenseChange - m_groups[%d]\n",
@@ -2267,7 +2267,7 @@ void UIController::SetTutorialDescription(int iPad, TutorialPopupInfo* info) {
     }
 }
 
-#ifndef _XBOX
+#if 1
 void UIController::RemoveInteractSceneReference(int iPad, UIScene* scene) {
     EUIGroup group;
     if ((iPad != 255) && (iPad >= 0))
@@ -2333,7 +2333,7 @@ void UIController::UpdatePlayerBasePositions() {
             // we don't need Changing the viewport to fullscreen for users that
             // no longer exist is SLOW This should probably be on all platforms,
             // but I don't have time to test them all just now!
-#ifndef __ORBIS__
+#if 1
             m_groups[idx + 1]->SetViewportType(
                 C4JRender::VIEWPORT_TYPE_FULLSCREEN);
 #endif
@@ -2430,7 +2430,7 @@ void UIController::ShowAutosaveCountdownTimer(bool show) {
 }
 
 void UIController::UpdateAutosaveCountdownTimer(unsigned int uiSeconds) {
-#if !(defined(_XBOX_ONE) || defined(__ORBIS__))
+#if !(0 || 0)
     wchar_t wcAutosaveCountdown[100];
     swprintf(wcAutosaveCountdown, 100, app.GetString(IDS_AUTOSAVE_COUNTDOWN),
              uiSeconds);
@@ -2608,12 +2608,12 @@ C4JStorage::EMessageResult UIController::RequestUGCMessageBox(
     // Default pad to primary player
     if (iPad == -1) iPad = ProfileManager.GetPrimaryPad();
 
-#ifdef __ORBIS__
+#if 0
     // Show the vague UGC system message in addition to our message
     ProfileManager.DisplaySystemMessage(
         SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_UGC_RESTRICTION, iPad);
     return C4JStorage::EMessage_ResultAccept;
-#elif defined(__PSVITA__)
+#elif 0
     ProfileManager.ShowSystemMessage(
         SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_CHAT_RESTRICTION, iPad);
     unsigned int uiIDA[1];
@@ -2638,7 +2638,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(
     }
 
     if (message == -1) {
-#if defined(_XBOX_ONE) || defined(_WINDOWS64) || defined(__linux__)
+#if 0 || defined(_WINDOWS64) || defined(__linux__)
         // IDS_CONTENT_RESTRICTION doesn't exist on XB1
         message = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE;
 #else
@@ -2649,12 +2649,12 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(
     // Default pad to primary player
     if (iPad == -1) iPad = ProfileManager.GetPrimaryPad();
 
-#ifdef __ORBIS__
+#if 0
     // Show the vague UGC system message in addition to our message
     ProfileManager.DisplaySystemMessage(
         SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_UGC_RESTRICTION, iPad);
     return C4JStorage::EMessage_ResultAccept;
-#elif defined(__PSVITA__)
+#elif 0
     ProfileManager.ShowSystemMessage(
         SCE_MSG_DIALOG_SYSMSG_TYPE_TRC_PSN_AGE_RESTRICTION, iPad);
     return C4JStorage::EMessage_ResultAccept;
@@ -2675,7 +2675,7 @@ void UIController::setFontCachingCalculationBuffer(int length) {
     draw call is not large enough, Iggy will crash or otherwise behave
     incorrectly.
     */
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || defined __linux__
+#if 0 || 0 || defined _WIN64 || defined __linux__
     static const int CHAR_SIZE = 24;
 #else
     static const int CHAR_SIZE = 16;
@@ -2700,7 +2700,7 @@ UIScene* UIController::FindScene(EUIScene sceneType) {
 
     for (int i = 0; i < eUIGroup_COUNT; i++) {
         pScene = m_groups[i]->FindScene(sceneType);
-#ifdef __PS3__
+#if 0
         if (pScene != NULL) return pScene;
 #else
         if (pScene != nullptr) return pScene;
@@ -2710,7 +2710,7 @@ UIScene* UIController::FindScene(EUIScene sceneType) {
     return pScene;
 }
 
-#ifdef __PSVITA__
+#if 0
 
 void UIController::TouchBoxAdd(UIControl* pControl, UIScene* pUIScene) {
     EUIGroup eUIGroup = pUIScene->GetParentLayerGroup();

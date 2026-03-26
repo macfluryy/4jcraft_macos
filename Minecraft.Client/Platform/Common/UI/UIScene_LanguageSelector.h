@@ -16,7 +16,7 @@
 #define HAS_LANGUAGE_KO_KR(exp) exp,
 #define HAS_LANGUAGE_CN_TW(exp) exp,
 
-#ifdef _DURANGO
+#if 0
 #define HAS_LANGUAGE_CN_CN(exp) exp,
 #define HAS_LANGUAGE_SK_SK(exp) exp,
 #define HAS_LANGUAGE_CZ_CZ(exp) exp,
@@ -35,7 +35,7 @@
 #define HAS_LANGUAGE_NB_NO(exp) exp,
 #define HAS_LANGUAGE_EL_GR(exp) exp,
 
-#if defined(__ORBIS__) || defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0 || 0
 #define HAS_LANGUAGE_TR_TR(exp) exp,
 #else
 #define HAS_LANGUAGE_TR_TR(exp)

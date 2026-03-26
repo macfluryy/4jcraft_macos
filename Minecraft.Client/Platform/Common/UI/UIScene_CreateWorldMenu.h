@@ -80,7 +80,7 @@ private:
     void StartSharedLaunchFlow();
     bool IsLocalMultiplayerAvailable();
 
-#ifdef _DURANGO
+#if 0
     static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
                                        int iPad);
 #endif
@@ -98,7 +98,7 @@ protected:
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
 
-#ifdef __ORBIS__
+#if 0
     // static int PSPlusReturned(void *pParam,int
     // iPad,C4JStorage::EMessageResult result);
     static int ContinueOffline(void* pParam, int iPad,

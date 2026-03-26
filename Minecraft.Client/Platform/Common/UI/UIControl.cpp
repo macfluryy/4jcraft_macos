@@ -42,7 +42,7 @@ bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
     return res;
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIControl::UpdateControl() {
     F64 fx, fy, fwidth, fheight;
     IggyValueGetF64RS(getIggyValuePath(), m_nameXPos, NULL, &fx);
@@ -54,7 +54,7 @@ void UIControl::UpdateControl() {
     m_width = (S32)Math::round(fwidth);
     m_height = (S32)Math::round(fheight);
 }
-#endif  // __PSVITA__
+#endif  // 0
 
 void UIControl::ReInit() {
     if (m_lastOpacity != 1.0f) {

@@ -51,8 +51,8 @@ private:
     IggyName m_funcSetPlatform, m_funcSetControllerLayout;
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
 
-#ifndef __PSVITA__
-#ifdef __ORBIS__
+#if 1
+#if 0
     if (!InputManager.UsingRemoteVita())
 #endif
     {

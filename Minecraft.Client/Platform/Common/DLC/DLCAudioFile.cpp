@@ -4,7 +4,7 @@
 #include <cstring>
 #include "DLCManager.h"
 #include "DLCAudioFile.h"
-#if defined _XBOX || defined _WINDOWS64
+#if 0 || defined _WINDOWS64
 #include "../../Minecraft.Client/Platform/Common/XML/ATGXmlParser.h"
 #include "../../Minecraft.Client/Platform/Common/XML/xmlFilesCallback.h"
 #endif

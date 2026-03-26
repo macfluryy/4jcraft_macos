@@ -49,7 +49,7 @@ static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =
         {IDS_HOW_TO_PLAY_DROPPERS, 0, 0},      // eHowToPlay_Droppers
         {IDS_HOW_TO_PLAY_NETHERPORTAL, 0, 0},  // eHowToPlay_NetherPortal
         {IDS_HOW_TO_PLAY_THEEND, 0, 0},        // eHowToPlay_NetherPortal
-#ifdef _XBOX
+#if 0
         {IDS_HOW_TO_PLAY_SOCIALMEDIA, 0, 0},  // eHowToPlay_SocialMedia
         {IDS_HOW_TO_PLAY_BANLIST, 0, 0},      // eHowToPlay_BanList
 #endif
@@ -86,7 +86,7 @@ int gs_pageToFlashMapping[eHowToPlay_NumPages] = {
 
     16,  // eHowToPlay_NetherPortal,
     17,  // eHowToPlay_TheEnd,
-#ifdef _XBOX
+#if 0
     18,  // eHowToPlay_SocialMedia,
     19,  // eHowToPlay_BanList,
 #endif
@@ -228,7 +228,7 @@ void UIScene_HowToPlay::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_A:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             if (pressed) {
@@ -292,7 +292,7 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     // replaceAll(replacedText,L"{*TITLE_UPDATE_NAME*}",app.GetString(IDS_TITLE_UPDATE_NAME));
     replacedText = replaceAll(replacedText, L"{*KICK_PLAYER_DESCRIPTION*}",
                               app.GetString(IDS_KICK_PLAYER_DESCRIPTION));
-#ifdef _XBOX_ONE
+#if 0
     replacedText = replaceAll(replacedText, L"{*PLATFORM_NAME*}",
                               app.GetString(IDS_PLATFORM_NAME));
 #endif
@@ -363,7 +363,7 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     TelemetryManager->RecordMenuShown(m_iPad, eUIScene_HowToPlay,
                                       (ETelemetry_HowToPlay_SubMenuId)ePage);
 
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 }

@@ -82,7 +82,7 @@ int UIString::s_currentLocale = -1;
 UIString::UIString() { m_core = std::shared_ptr<UIStringCore>(); }
 
 UIString::UIString(int ids) {
-#ifdef __PS3__
+#if 0
     StringBuilder builder = StringBuilder(new IdsStringBuilder(ids));
 #else
     StringBuilder builder = [ids]() { return app.GetString(ids); };
@@ -114,7 +114,7 @@ UIString::UIString(const wchar_t* constant) {
 }
 
 UIString::~UIString() {
-#ifndef __PS3__
+#if 1
     m_core = nullptr;
 #endif
 }

@@ -38,7 +38,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                                e_Tutorial_Completion_Jump_To_Last_Task,
                                eTelemetryTutorial_TrialStart));
     } else {
-#ifdef _XBOX
+#if 0
         if (getCompleted(eTutorial_Telemetry_Halfway) &&
             !isStateCompleted(e_Tutorial_State_Redstone_And_Piston)) {
             addTask(e_Tutorial_State_Gameplay,

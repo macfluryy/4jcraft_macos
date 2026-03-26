@@ -9,7 +9,7 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.Client/Minecraft.h"
 
-#ifdef __ORBIS__
+#if 0
 #include <pad.h>
 #endif
 
@@ -77,7 +77,7 @@ void IUIScene_AbstractContainerMenu::Initialize(
         // 		m_bFirstTouchStored[i]=false;
         // 	}
 
-#ifdef __ORBIS__
+#if 0
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         m_bFirstTouchStored[i] = false;
     }
@@ -255,7 +255,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         ((float)app.GetGameSettings(iPad, eGameSetting_Sensitivity_InMenu) /
          100.0f);  // apply the sensitivity
 
-#ifdef __ORBIS__
+#if 0
     // should have sensitivity for the touchpad
     //(float)app.GetGameSettings(iPad,eGameSetting_Sensitivity_TouchPadInMenu)/100.0f
 
@@ -444,7 +444,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
 #endif
         }
 
-#ifdef __ORBIS__
+#if 0
     }
 #endif
 
@@ -848,7 +848,7 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                     buttonX = eToolTipPickUpHalf;
                 }
 
-#ifdef __PSVITA__
+#if 0
                 if (!InputManager.IsVitaTV()) {
                     buttonBack = eToolTipWhatIsThis;
                 } else
@@ -1180,7 +1180,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
         }
     }
 
-#ifdef _XBOX
+#if 0
     ui.AnimateKeyPress(iPad, iAction);
 #else
     ui.AnimateKeyPress(iPad, iAction, bRepeat, true, false);
@@ -1202,7 +1202,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
             break;
 #endif
         case ACTION_MENU_A:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             if (!bRepeat) {

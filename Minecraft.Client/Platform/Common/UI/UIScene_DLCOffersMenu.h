@@ -52,16 +52,16 @@ public:
     virtual void handleSelectionChanged(F64 selectedId);
     virtual void handleFocusChange(F64 controlId, F64 childId);
     virtual void handleTimerComplete(int id);
-#ifdef __PS3__
+#if 0
     virtual void HandleDLCInstalled();
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
 
 private:
-#ifdef _DURANGO
+#if 0
     void GetDLCInfo(int iOfferC, bool bUpdateOnly = false);
     void UpdateTooltips(MARKETPLACE_CONTENTOFFER_INFO& xOffer);
     bool UpdateDisplay(MARKETPLACE_CONTENTOFFER_INFO& xOffer);
@@ -87,7 +87,7 @@ private:
     int m_iCurrentDLC;
     int m_iTotalDLC;
     bool m_bAddAllDLCButtons;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     std::vector<SonyCommerce::ProductInfo>* m_pvProductInfo;
 #endif
 };

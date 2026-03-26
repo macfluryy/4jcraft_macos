@@ -17,7 +17,7 @@ private:
     std::vector<UIScene*>
         m_scenesToDestroy;  // A list of scenes where we want to dump the swf
 
-#ifdef __ORBIS__
+#if 0
     std::unordered_map<EUIScene, std::pair<int, bool>, std::hash<int>>
         m_componentRefCount;
 #else
@@ -33,7 +33,7 @@ public:
     bool m_bIgnoreAutosaveMenuDisplayed;
     bool m_bIgnorePlayerJoinMenuDisplayed;
 
-#ifdef __PSVITA__
+#if 0
     EUILayer m_iLayer;
 #endif
 
@@ -76,7 +76,7 @@ public:
     // INPUT
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
-#ifdef __PSVITA__
+#if 0
     // Current active scene
     UIScene* getCurrentScene();
 #endif
@@ -90,7 +90,7 @@ public:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
     virtual void HandleMessage(EUIMessage message, void* data);

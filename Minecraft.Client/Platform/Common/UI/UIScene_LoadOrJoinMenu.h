@@ -4,10 +4,10 @@
 
 class LevelGenerationOptions;
 
-#if defined __PS3__ || defined __ORBIS__ || defined(__PSVITA__)
+#if 0 || 0 || 0
 #define SONY_REMOTE_STORAGE_DOWNLOAD
 #endif
-#if defined __PS3__ || __PSVITA__
+#if 0 || 0
 #define SONY_REMOTE_STORAGE_UPLOAD
 #endif
 
@@ -16,7 +16,7 @@ private:
     enum EControls {
         eControl_SavesList,
         eControl_GamesList,
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         eControl_SpaceIndicator,
 #endif
     };
@@ -46,7 +46,7 @@ protected:
     UIControl_SaveList m_buttonListGames;
     UIControl_Label m_labelSavesListTitle, m_labelJoinListTitle, m_labelNoGames;
     UIControl m_controlSavesTimer, m_controlJoinTimer;
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     UIControl_SpaceIndicatorBar m_spaceIndicatorSaves;
 #endif
 
@@ -62,7 +62,7 @@ private:
     UI_MAP_ELEMENT(m_controlSavesTimer, "SavesTimer")
     UI_MAP_ELEMENT(m_controlJoinTimer, "JoinTimer")
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     UI_MAP_ELEMENT(m_spaceIndicatorSaves, "SaveSizeBar")
 #endif
     UI_END_MAP_ELEMENTS_AND_NAMES()
@@ -94,7 +94,7 @@ private:
     int m_iSaveListIndex;
     int m_iGameListIndex;
     // int *m_iConfigA; // track the texture packs that we don't have installed
-#ifndef _XBOX_ONE
+#if 1
     bool m_bSaveTransferInProgress;
     bool m_bSaveTransferCancelled;
 #endif
@@ -120,7 +120,7 @@ public:
     virtual EUIScene getSceneType() { return eUIScene_LoadOrJoinMenu; }
 
     static void UpdateGamesListCallback(void* pParam);
-#ifdef _XBOX_ONE
+#if 0
     void HandleDLCLicenseChange();
 #endif
     virtual void tick();
@@ -152,7 +152,7 @@ public:
     static int DeleteSaveDataReturned(void* lpParam, bool bRes);
     static int RenameSaveDataReturned(void* lpParam, bool bRes);
     static int KeyboardCompleteWorldNameCallback(void* lpParam, bool bRes);
-#ifdef __PSVITA__
+#if 0
     static int MustSignInTexturePack(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     static int MustSignInReturnedTexturePack(void* pParam, bool bContinue,
@@ -165,19 +165,19 @@ protected:
     void LoadLevelGen(LevelGenerationOptions* levelGen);
     void LoadSaveFromDisk(
         File* saveFile, ESavePlatform savePlatform = SAVE_FILE_PLATFORM_LOCAL);
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     void LoadSaveFromCloud();
 #endif
 public:
     virtual void HandleDLCMountingComplete();
 
-#ifdef __ORBIS__
+#if 0
     void LoadRemoteFileFromDisk(char* remoteFilename);
 #endif
 
 private:
     void CheckAndJoinGame(int gameIndex);
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     static int PSN_SignInReturned(void* pParam, bool bContinue, int iPad);
@@ -186,11 +186,11 @@ private:
                                              int error_code);
 #endif
 
-#ifdef __ORBIS__
+#if 0
     // static int PSPlusReturned(void *pParam,int
     // iPad,C4JStorage::EMessageResult result);
 #endif
-#ifdef _XBOX_ONE
+#if 0
     typedef struct _SaveTransferStateContainer {
         int m_iProgress;
         bool m_bSaveTransferInProgress;
@@ -317,7 +317,7 @@ private:
         void* pParam, int iPad, C4JStorage::EMessageResult result);
 #endif
 
-#if defined _XBOX_ONE || defined __ORBIS__
+#if 0 || 0
     static int CopySaveDialogReturned(void* pParam, int iPad,
                                       C4JStorage::EMessageResult result);
     static int CopySaveThreadProc(void* lpParameter);

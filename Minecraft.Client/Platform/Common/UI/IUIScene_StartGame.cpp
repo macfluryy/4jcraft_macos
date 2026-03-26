@@ -50,10 +50,10 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
     for (unsigned int i = 0; i < app.GetDLCInfoTexturesOffersCount(); ++i) {
         bTexturePackAlreadyListed = false;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
         char* pchName = app.GetDLCInfoTextures(i);
         pDLCInfo = app.GetDLCInfo(pchName);
-#elif defined _XBOX_ONE
+#elif 0
         pDLCInfo = app.GetDLCInfoForFullOfferID(
             const_cast<wchar_t*>(app.GetDLCInfoTexturesFullOffer(i).c_str()));
 #else
@@ -257,7 +257,7 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
 
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedIn(iPad)) {
-#if defined _XBOX  //|| defined _XBOX_ONE
+#if 0  //|| 0
             ULONGLONG ullIndexA[1];
             DLC_INFO* pDLCInfo = app.GetDLCInfoForTrialOfferID(
                 pScene->m_pDLCPack->getPurchaseOfferId());
@@ -269,7 +269,7 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
             }
 
             StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
-#elif defined _XBOX_ONE
+#elif 0
             // StorageManager.InstallOffer(1,StorageManager.GetOffer(iIndex).wszProductID,NULL,NULL);
 #endif
 
@@ -277,7 +277,7 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
             // will cause this scene to refresh
         }
     } else {
-#if defined _XBOX
+#if 0
         TelemetryManager->RecordUpsellResponded(
             iPad, eSet_UpsellID_Texture_DLC,
             (pScene->m_pDLCPack->getPurchaseOfferId() & 0xFFFFFFFF),
@@ -294,7 +294,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     IUIScene_StartGame* pClass = (IUIScene_StartGame*)pParam;
 
-#ifdef _XBOX
+#if 0
     // Exit with or without saving
     // Decline means install full version of the texture pack in this dialog
     if (result == C4JStorage::EMessage_ResultDecline ||
@@ -325,7 +325,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(
             }
         }
     }
-#elif defined _XBOX_ONE
+#elif 0
     // Get the product id from the texture pack id
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedIn(iPad)) {
@@ -345,7 +345,7 @@ int IUIScene_StartGame::TexturePackDialogReturned(
                 // Trial to Full texture pack and is not messaged why.
                 unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
                 ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-                                     IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
+                                     IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                                      iPad, NULL, NULL, app.GetStringTable());
             }
         }

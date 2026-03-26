@@ -8,11 +8,11 @@ private:
     bool m_bAnimationEnded;
 
     IggyName m_funcSetIntroPlatform;
-#ifdef __PSVITA__
+#if 0
     UIControl_Touch m_TouchToSkip;
 #endif
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchToSkip, "TouchToSkip")
 #endif
     UI_MAP_NAME(m_funcSetIntroPlatform, L"SetIntroPlatform")
@@ -24,14 +24,14 @@ public:
     virtual EUIScene getSceneType() { return eUIScene_Intro; }
 
     // Returns true if this scene has focus for the pad passed in
-#ifndef __PS3__
+#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 #endif
 
 protected:
     virtual std::wstring getMoviePath();
 
-#ifdef _DURANGO
+#if 0
     virtual long long getDefaultGtcButtons() { return 0; }
 #endif
 
@@ -43,7 +43,7 @@ public:
     virtual void handleAnimationEnd();
     virtual void handleGainFocus(bool navBack);
 
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
 #endif

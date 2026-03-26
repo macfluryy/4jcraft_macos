@@ -1,17 +1,17 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Items/ItemInstance.h"
-#if !(defined _XBOX) && !(defined __PSVITA__)
+#if !(0) && !(0)
 #include "../UI/UI.h"
 #endif
 #include "Tutorial.h"
 #include "XuiCraftingTask.h"
 
 bool XuiCraftingTask::isCompleted() {
-#ifndef __PSVITA__
+#if 1
     // This doesn't seem to work
     // IUIScene_CraftingMenu *craftScene =
     // reinterpret_cast<IUIScene_CraftingMenu *>(tutorial->getScene());
-#ifdef _XBOX
+#if 0
     CXuiSceneCraftingPanel* craftScene =
         (CXuiSceneCraftingPanel*)(tutorial->getScene());
 #else

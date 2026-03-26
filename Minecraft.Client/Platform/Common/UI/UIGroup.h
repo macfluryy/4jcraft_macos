@@ -37,7 +37,7 @@ private:
 public:
     UIGroup(EUIGroup group, int iPad);
 
-#ifdef __PSVITA__
+#if 0
     EUIGroup GetGroup() { return m_group; }
 #endif
     UIComponent_Tooltips* getTooltips() { return m_tooltips; }
@@ -83,7 +83,7 @@ public:
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
 
-#ifdef __PSVITA__
+#if 0
     // Current active scene
     UIScene* getCurrentScene();
 #endif
@@ -104,7 +104,7 @@ public:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
     virtual void HandleMessage(EUIMessage message, void* data);

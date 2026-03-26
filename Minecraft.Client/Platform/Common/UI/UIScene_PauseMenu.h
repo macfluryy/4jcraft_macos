@@ -6,12 +6,7 @@
 #define BUTTON_PAUSE_RESUMEGAME 0
 #define BUTTON_PAUSE_HELPANDOPTIONS 1
 #define BUTTON_PAUSE_LEADERBOARDS 2
-
-#ifdef _XBOX_ONE
-#define BUTTON_PAUSE_XBOXHELP 3
-#else
 #define BUTTON_PAUSE_ACHIEVEMENTS 3
-#endif
 
 #define BUTTON_PAUSE_SAVEGAME 4
 #define BUTTON_PAUSE_EXITGAME 5
@@ -25,7 +20,7 @@ private:
 
     enum eActions {
         eAction_None = 0,
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
         eAction_ViewLeaderboardsPSN,
         eAction_ViewInvitesPSN,
         eAction_SaveGamePSN,
@@ -40,18 +35,14 @@ private:
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_RESUMEGAME], "Button1")
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_HELPANDOPTIONS], "Button2")
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_LEADERBOARDS], "Button3")
-#ifdef _DURANGO
-    UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_XBOXHELP], "Button4")
-#else
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_ACHIEVEMENTS], "Button4")
-#endif
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_SAVEGAME], "Button5")
     UI_MAP_ELEMENT(m_buttons[BUTTON_PAUSE_EXITGAME], "Button6")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
     static int UnlockFullSaveReturned(void* pParam, int iPad,
@@ -91,7 +82,7 @@ protected:
 private:
     void PerformActionSaveGame();
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     static int ViewLeaderboards_SignInReturned(void* pParam, bool bContinue,
@@ -107,7 +98,7 @@ private:
 #endif
 
 protected:
-#ifdef _XBOX_ONE
+#if 0
     static int BanGameDialogReturned(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     virtual long long getDefaultGtcButtons() {
@@ -115,7 +106,7 @@ protected:
     }
 #endif
 
-#ifdef __ORBIS__
+#if 0
     bool CheckForPatch();
 #endif
 };

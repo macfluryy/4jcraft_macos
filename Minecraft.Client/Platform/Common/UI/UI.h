@@ -38,7 +38,7 @@
 #include "UIControl_SpaceIndicatorBar.h"
 #include "UIControl_BeaconEffectButton.h"
 
-#ifdef __PSVITA__
+#if 0
 #include "UIControl_Touch.h"
 #endif
 
@@ -117,7 +117,7 @@
 #include "UIScene_InGameInfoMenu.h"
 #include "UIScene_InGameHostOptionsMenu.h"
 #include "UIScene_InGamePlayerOptionsMenu.h"
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
 #include "UIScene_InGameSaveManagementMenu.h"
 #endif
 #include "UIScene_TeleportMenu.h"

@@ -171,7 +171,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 
     // Only the Xbox 360 needs a reset nether
     // 4J-PB - PS3 needs it now
-    // #ifndef _XBOX
+    // #ifndef 0
     // 	if(!m_params->bGenerateOptions) removeControl(
     // &m_checkboxes[eLaunchCheckbox_ResetNether], false ); #endif
 
@@ -204,7 +204,7 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 
     addTimer(GAME_CREATE_ONLINE_TIMER_ID, GAME_CREATE_ONLINE_TIMER_TIME);
 
-#ifdef __PSVITA__
+#if 0
     // initialise vita tab  controls with ids
     m_TouchTabWorld.init(ETouchInput_TabWorld);
     m_TouchTabGame.init(ETouchInput_TabGame);
@@ -279,12 +279,12 @@ void UIScene_LaunchMoreOptionsMenu::tick() {
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleDestroy() {
-#ifdef __PSVITA__
+#if 0
     app.DebugPrintf("missing InputManager.DestroyKeyboard on Vita !!!!!!\n");
 #endif
 
     // so shut down the keyboard if it is displayed
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO)
+#if (0 || 0 || 0)
     InputManager.DestroyKeyboard();
 #endif
 }
@@ -307,11 +307,11 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             // 4J-JEV: Inform user why their game must be offline.
-#if defined _XBOX_ONE
+#if 0
         {
             UIControl_CheckBox* checkboxOnline =
                 &m_checkboxes[eLaunchCheckbox_Online];
@@ -319,7 +319,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
                 !checkboxOnline->IsEnabled()) {
                 unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
                 ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                       IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
+                                       IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                                        iPad);
             }
         }
@@ -351,7 +351,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
     }
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIScene_LaunchMoreOptionsMenu::handleTouchInput(unsigned int iPad, S32 x,
                                                      S32 y, int iId,
                                                      bool bPressed,
@@ -592,7 +592,7 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
     pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-#ifdef __PSVITA__
+#if 0
         // CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
         uint16_t pchText[2048];
         ZeroMemory(pchText, 2048 * sizeof(uint16_t));
@@ -613,7 +613,7 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_EditSeed: {
             m_bIgnoreInput = true;
-#ifdef __PS3__
+#if 0
             int language = XGetLanguage();
             switch (language) {
                 case XC_LANGUAGE_JAPANESE:

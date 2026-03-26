@@ -28,7 +28,7 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {
 
     IDS_HOW_TO_PLAY_MENU_NETHERPORTAL,  // eHTPButton_NetherPortal,
     IDS_HOW_TO_PLAY_MENU_THEEND,        // eHTPButton_TheEnd,
-#ifdef _XBOX
+#if 0
     IDS_HOW_TO_PLAY_MENU_SOCIALMEDIA,  // eHTPButton_SocialMedia,
     IDS_HOW_TO_PLAY_MENU_BANLIST,      // eHTPButton_BanningLevels,
 #endif
@@ -52,7 +52,7 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPSceneA[] = {
     eHowToPlay_Droppers,
 
     eHowToPlay_NetherPortal, eHowToPlay_TheEnd,
-#ifdef _XBOX
+#if 0
     eHowToPlay_SocialMedia,  eHowToPlay_BanList,
 #endif
     eHowToPlay_HostOptions,
@@ -150,7 +150,7 @@ void UIScene_HowToPlayMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);

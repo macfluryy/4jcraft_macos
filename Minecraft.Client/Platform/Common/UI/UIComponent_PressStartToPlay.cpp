@@ -24,13 +24,13 @@ UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad,
 
     // 4J-JEV: This object is persistent, so this string needs to be able to
     // handle language changes.
-#ifdef __ORBIS__
+#if 0
     m_labelPressStart.init((UIString)[] {
         return replaceAll(app.GetString(IDS_PRESS_X_TO_JOIN),
                           L"{*CONTROLLER_VK_A*}",
                           app.GetVKReplacement(VK_PAD_A));
     });
-#elif defined _XBOX_ONE
+#elif 0
     m_labelPressStart.init((UIString)[] {
         return replaceAll(app.GetString(IDS_PRESS_START_TO_JOIN),
                           L"{*CONTROLLER_VK_START*}",
@@ -148,7 +148,7 @@ void UIComponent_PressStartToPlay::showSaveIcon(bool show) {
 }
 
 void UIComponent_PressStartToPlay::showPlayerDisplayName(bool show) {
-#ifdef _XBOX_ONE
+#if 0
     if (show) {
         m_playerDisplayName.setLabel(
             ProfileManager.GetDisplayName(ProfileManager.GetPrimaryPad()));

@@ -57,7 +57,7 @@ UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void* _initData,
     // success or fail
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, true);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, true);
@@ -103,7 +103,7 @@ void UIScene_TradingMenu::handleDestroy() {
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, false);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, false);

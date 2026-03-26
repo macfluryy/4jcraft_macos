@@ -113,7 +113,7 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
 
     ReadStats(-1);
 
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     addTimer(PLAYER_ONLINE_TIMER_ID, PLAYER_ONLINE_TIMER_TIME);
 #endif
 }
@@ -128,7 +128,7 @@ void UIScene_LeaderboardsMenu::updateTooltips() {
     int iTooltipFriendRequest = -1;
     int iTooltipGamerCardOrProfile = -1;
 
-#ifdef _DURANGO
+#if 0
     // if( m_leaderboard.m_entries.size() > 0 )
     if (m_leaderboard.m_totalEntryCount > 0) {
         unsigned int selection = m_newSel;
@@ -147,7 +147,7 @@ void UIScene_LeaderboardsMenu::updateTooltips() {
         } else {
             iTooltipGamerCardOrProfile = IDS_TOOLTIPS_VIEW_GAMERCARD;
 
-#ifdef _XBOX
+#if 0
             // if we're on the friends filter, then don't show the Send Friend
             // Request
             if (!m_currentFilter == LeaderboardManager::eFM_Friends)
@@ -158,7 +158,7 @@ void UIScene_LeaderboardsMenu::updateTooltips() {
                     if (selection >= GetEntryStartIndex() &&
                         selection < (GetEntryStartIndex() +
                                      m_leaderboard.m_entries.size())) {
-#ifdef _XBOX
+#if 0
                         if ((m_leaderboard
                                  .m_entries[selection -
                                             (m_leaderboard.m_entryStartIndex -
@@ -389,7 +389,7 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
             handled = true;
         } break;
         case ACTION_MENU_Y: {
-#ifdef _DURANGO
+#if 0
             // Show gamercard
             // if( m_leaderboard.m_entries.size() > 0 )
             if (m_leaderboard.m_totalEntryCount > 0) {
@@ -412,10 +412,10 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
             handled = true;
         } break;
         case ACTION_MENU_A: {
-#ifdef _DURANGO
+#if 0
             // Send friend request if the filter mode is not friend, and they're
             // not a friend or a pending friend
-#ifdef _XBOX
+#if 0
             if (m_currentFilter != LeaderboardManager::eFM_Friends)
 #endif
             {
@@ -429,7 +429,7 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
                         if (!m_leaderboard
                                  .m_entries[selection - GetEntryStartIndex()]
                                  .m_bPlayer
-#ifdef _XBOX
+#if 0
                             &&
                             !m_leaderboard
                                  .m_entries[selection -
@@ -634,7 +634,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
     if (m_leaderboard.m_totalEntryCount == 0) {
         m_leaderboard.m_entries.clear();
 
-#if _DURANGO
+#if 0
         m_leaderboard.m_totalEntryCount = m_numStats;
 #else
         m_leaderboard.m_totalEntryCount =
@@ -780,7 +780,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
         }
     }
 
-#ifdef __PS3__
+#if 0
     // m_name can be unicode characters somehow for Japan - should use
     // m_onlineID
     std::wstring wstr = convStringToWstring(statsRow->m_uid.getOnlineID());
@@ -845,7 +845,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
         }
     }
 
-#ifdef _DURANGO
+#if 0
     // Is the player
     PlayerUID myXuid;
     ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &myXuid, true);
@@ -860,7 +860,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
         leaderboardEntry->m_bFriend = false;
         leaderboardEntry->m_bRequestedFriend = false;
 
-#ifdef _XBOX
+#if 0
         // Check for friend status
         for (unsigned int friendIndex = 0; friendIndex < m_numFriends;
              ++friendIndex) {
@@ -969,7 +969,7 @@ void UIScene_LeaderboardsMenu::PopulateLeaderboard(
         m_labelEntries.setLabel(entriesBuffer);
 
         // Show the no results message
-#if !(defined(_XBOX) || \
+#if !(0 || \
       defined(_WINDOWS64))  // 4J Stu - Temp to get the win build running, but
                             // so we check this for other platforms
         if (ret == LeaderboardManager::eStatsReturn_NetworkError)
@@ -1049,7 +1049,7 @@ void UIScene_LeaderboardsMenu::handleRequestMoreData(F64 startIndex, bool up) {
 }
 
 void UIScene_LeaderboardsMenu::handleTimerComplete(int id) {
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
+#if (0 || 0 || 0)
     switch (id) {
         case PLAYER_ONLINE_TIMER_ID:
 #ifndef _WINDOWS64

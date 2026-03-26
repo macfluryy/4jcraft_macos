@@ -19,7 +19,7 @@ enum eMUSICFILES {
     eStream_Overworld_hal4,
     eStream_Overworld_nuance1,
     eStream_Overworld_nuance2,
-#ifndef _XBOX
+#if 1
     // Add the new music tracks
     eStream_Overworld_Creative1,
     eStream_Overworld_Creative2,
@@ -129,7 +129,7 @@ public:
 private:
     float getMasterMusicVolume();
     // platform specific functions
-#ifdef __PS3__
+#if 0
     int initAudioHardware(int iMinSpeakers);
 #else
     int initAudioHardware(int iMinSpeakers) { return iMinSpeakers; }
@@ -177,7 +177,7 @@ private:
     int m_iStream_CD_1;
     bool* m_bHeardTrackA;
 
-#ifdef __ORBIS__
+#if 0
     int32_t m_hBGMAudio;
 #endif
 };

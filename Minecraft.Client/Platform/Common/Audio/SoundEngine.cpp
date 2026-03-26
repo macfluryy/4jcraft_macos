@@ -10,7 +10,7 @@
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../DLC/DLCAudioFile.h"
 
-#ifdef __PSVITA__
+#if 0
 #include <audioout.h>
 #endif
 #ifdef __linux__
@@ -91,11 +91,11 @@ char SoundEngine::m_szRedistName[] = {"redist64"};
 char SoundEngine::m_szSoundPath[] = {"Durango\\Sound\\"};
 char SoundEngine::m_szMusicPath[] = {"music\\"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif defined _DURANGO
+#elif 0
 char SoundEngine::m_szSoundPath[] = {"Sound\\"};
 char SoundEngine::m_szMusicPath[] = {"music\\"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif defined __ORBIS__
+#elif 0
 
 #ifdef _CONTENT_PACKAGE
 char SoundEngine::m_szSoundPath[] = {"Sound/"};
@@ -108,11 +108,11 @@ char SoundEngine::m_szSoundPath[] = {"Durango/Sound/"};
 #endif
 char SoundEngine::m_szMusicPath[] = {"music/"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
-#elif defined __PSVITA__
+#elif 0
 char SoundEngine::m_szSoundPath[] = {"PSVita/Sound/"};
 char SoundEngine::m_szMusicPath[] = {"music/"};
 char SoundEngine::m_szRedistName[] = {"redist"};
-#elif defined __PS3__
+#elif 0
 // extern const char* getPS3HomePath();
 char SoundEngine::m_szSoundPath[] = {"PS3/Sound/"};
 char SoundEngine::m_szMusicPath[] = {"music/"};
@@ -1047,18 +1047,18 @@ void SoundEngine::init(Options* pOptions) {
 #ifdef __DISABLE_MILES__
     return;
 #endif
-#ifdef __ORBIS__
+#if 0
     C4JThread::PushAffinityAllCores();
 #endif
-#if defined _DURANGO || defined __ORBIS__ || defined __PS3__ || \
-    defined __PSVITA__
+#if 0 || 0 || 0 || \
+    0
     Register_RIB(BinkADec);
 #endif
 
     char* redistpath;
 
 #if (defined _WINDOWS64 || \
-     defined __PSVITA__)  // || defined _DURANGO || defined __ORBIS__ )
+     0)  // || 0 || 0 )
     redistpath = AIL_set_redist_directory(m_szRedistName);
 #endif
 
@@ -1068,13 +1068,13 @@ void SoundEngine::init(Options* pOptions) {
     int iNumberOfChannels = initAudioHardware(8);
 
     // Create a driver to render our audio - 44khz, 16 bit,
-#ifdef __PS3__
+#if 0
     //	On the Sony PS3, the driver is always opened in 48 kHz, 32-bit floating
     // point. The only meaningful configurations are MSS_MC_STEREO,
     // MSS_MC_51_DISCRETE, and MSS_MC_71_DISCRETE.
     m_hDriver = AIL_open_digital_driver(48000, 16, iNumberOfChannels,
                                         AIL_OPEN_DIGITAL_USE_SPU0);
-#elif defined __PSVITA__
+#elif 0
 
     // maximum of 16 samples
     AIL_set_preference(DIG_MIXER_CHANNELS, 16);
@@ -1093,7 +1093,7 @@ void SoundEngine::init(Options* pOptions) {
 
     InitializeCriticalSection(&SoundEngine_MixerMutex);
 
-#elif defined(__ORBIS__)
+#elif 0
     m_hDriver = AIL_open_digital_driver(48000, 16, 2, 0);
     app.DebugPrintf("---SoundEngine::init - AIL_open_digital_driver\n");
 
@@ -1104,14 +1104,14 @@ void SoundEngine::init(Options* pOptions) {
         app.DebugPrintf("Couldn't open digital sound driver. (%s)\n",
                         AIL_last_error());
         AIL_shutdown();
-#ifdef __ORBIS__
+#if 0
         C4JThread::PopAffinity();
 #endif
         return;
     }
     app.DebugPrintf("---SoundEngine::init - driver opened\n");
 
-#ifdef __PSVITA__
+#if 0
 
     // set high falloff power for maximum spatial effect in software mode
     AIL_set_speaker_configuration(m_hDriver, 0, 0, 4.0F);
@@ -1134,7 +1134,7 @@ void SoundEngine::init(Options* pOptions) {
         app.DebugPrintf("Couldn't init event system (%s).\n", AIL_last_error());
         AIL_close_digital_driver(m_hDriver);
         AIL_shutdown();
-#ifdef __ORBIS__
+#if 0
         C4JThread::PopAffinity();
 #endif
         app.DebugPrintf(
@@ -1142,7 +1142,7 @@ void SoundEngine::init(Options* pOptions) {
         return;
     }
     char szBankName[255];
-#if defined __PS3__
+#if 0
     if (app.GetBootedFromDiscPatch()) {
         char szTempSoundFilename[255];
         sprintf(szTempSoundFilename, "%s%s", m_szSoundPath, "Minecraft.msscmp");
@@ -1161,9 +1161,9 @@ void SoundEngine::init(Options* pOptions) {
         sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
     }
 
-#elif defined __PSVITA__
+#elif 0
     sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
-#elif defined __ORBIS__
+#elif 0
     sprintf(szBankName, "%s/%s", getUsrDirPath(), m_szSoundPath);
 #else
     strcpy((char*)szBankName, m_szSoundPath);
@@ -1179,7 +1179,7 @@ void SoundEngine::init(Options* pOptions) {
                         Error);
         AIL_close_digital_driver(m_hDriver);
         AIL_shutdown();
-#ifdef __ORBIS__
+#if 0
         C4JThread::PopAffinity();
 #endif
         return;
@@ -1208,11 +1208,11 @@ void SoundEngine::init(Options* pOptions) {
 
     m_openStreamThread = NULL;
 
-#ifdef __ORBIS__
+#if 0
     C4JThread::PopAffinity();
 #endif
 
-#ifdef __PSVITA__
+#if 0
     // AP - By default the mixer won't start up and nothing will process. Kick
     // off a blank sample to force the mixer to start up.
     HSAMPLE Sample = AIL_allocate_sample_handle(m_hDriver);
@@ -1226,7 +1226,7 @@ void SoundEngine::init(Options* pOptions) {
 #endif
 }
 
-#ifdef __ORBIS__
+#if 0
 // void SoundEngine::SetHandle(int32_t hAudio)
 // {
 // 	//m_hAudio=hAudio;
@@ -1235,12 +1235,12 @@ void SoundEngine::init(Options* pOptions) {
 // AP - moved to a separate function so it can be called from the mixer callback
 // on Vita
 void SoundEngine::updateMiles() {
-#ifdef __PSVITA__
+#if 0
     // CD - We must check for Background Music [BGM] at any point
     // If it's playing disable our audio, otherwise enable
     int NoBGMPlaying = sceAudioOutGetAdopt(SCE_AUDIO_OUT_PORT_TYPE_BGM);
     updateSystemMusicPlaying(!NoBGMPlaying);
-#elif defined __ORBIS__
+#elif 0
     // is the system playing background music?
     SceAudioOutPortState outPortState;
     sceAudioOutGetPortState(m_hBGMAudio, &outPortState);
@@ -1480,7 +1480,7 @@ static float fVal = 0.0f;
 //
 /////////////////////////////////////////////
 
-#ifdef __PSVITA__
+#if 0
 static S32 running = AIL_ms_count();
 #endif
 
@@ -1489,7 +1489,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
     return;
 #endif
 
-#ifdef __PSVITA__
+#if 0
     EnterCriticalSection(&SoundEngine_MixerMutex);
 #endif
 
@@ -1541,7 +1541,7 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
     }
     m_validListenerCount = listenerCount;
 
-#ifdef __PSVITA__
+#if 0
     // AP - Show that a change has occurred so we know to update the values at
     // the next Mixer callback
     SoundEngine_Change = true;
@@ -1577,7 +1577,7 @@ SoundEngine::SoundEngine() {
     memset(CurrentSoundsPlaying, 0, sizeof(int) * (eSoundType_MAX + eSFX_MAX));
     memset(m_ListenerA, 0, sizeof(AUDIO_LISTENER) * XUSER_MAX_COUNT);
 
-#ifdef __ORBIS__
+#if 0
     m_hBGMAudio = GetAudioBGMHandle();
 #endif
 }
@@ -1794,7 +1794,7 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 /////////////////////////////////////////////
 void SoundEngine::playMusicTick() {
 // AP - vita will update the music during the mixer callback
-#ifndef __PSVITA__
+#if 1
     playMusicUpdate();
 #endif
 }
@@ -1822,9 +1822,9 @@ void SoundEngine::playMusicUpdate() {
             if (m_musicID != -1) {
                 // start playing it
 
-#if (defined __PS3__ || defined __PSVITA__ || defined __ORBIS__)
+#if (0 || 0 || 0)
 
-#ifdef __PS3__
+#if 0
                 // 4J-PB - Need to check if we are a patched BD build
                 if (app.GetBootedFromDiscPatch()) {
                     sprintf(m_szStreamName, "%s/%s",
@@ -1871,7 +1871,7 @@ void SoundEngine::playMusicUpdate() {
                         m_MusicType = eMusicType_Game;
                         m_StreamingAudioInfo.bIs3D = false;
 
-#ifdef _XBOX_ONE
+#if 0
                         std::wstring& wstrSoundName =
                             dlcAudioFile->GetSoundName(m_musicID);
                         std::wstring wstrFile =
@@ -1908,7 +1908,7 @@ void SoundEngine::playMusicUpdate() {
                 } else {
                     // 4J-PB - if this is a PS3 disc patch, we have to check if
                     // the music file is in the patch data
-#ifdef __PS3__
+#if 0
                     if (app.GetBootedFromDiscPatch() &&
                         (m_musicID < m_iStream_CD_1)) {
                         // rebuild the path for the music

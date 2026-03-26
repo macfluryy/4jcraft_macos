@@ -6,7 +6,7 @@
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "UI.h"
 #include "UIScene_MainMenu.h"
-#ifdef __ORBIS__
+#if 0
 #include <error_dialog.h>
 #endif
 
@@ -17,11 +17,8 @@ int UIScene_MainMenu::eNavigateWhenReady = -1;
 UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
                                    UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
-#ifdef __ORBIS
-    // m_ePatchCheckState=ePatchCheck_Idle;
     m_bRunGameChosen = false;
     m_bErrorDialogRunning = false;
-#endif
 
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
@@ -34,7 +31,7 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
 
     m_buttons[(int)eControl_PlayGame].init(IDS_PLAY_GAME, eControl_PlayGame);
 
-#ifdef _XBOX_ONE
+#if 0
     if (!ProfileManager.IsFullVersion())
         m_buttons[(int)eControl_PlayGame].setLabel(IDS_PLAY_TRIAL_GAME);
     app.SetReachedMainMenu();
@@ -56,15 +53,10 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
                                                   eControl_UnlockOrDLC);
     }
 
-#ifndef _DURANGO
     m_buttons[(int)eControl_Exit].init(app.GetString(IDS_EXIT_GAME),
                                        eControl_Exit);
-#else
-    m_buttons[(int)eControl_XboxHelp].init(IDS_XBOX_HELP_APP,
-                                           eControl_XboxHelp);
-#endif
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     // Not allowed to exit from a PS3 game from the game - have to use the PS
     // button
     removeControl(&m_buttons[(int)eControl_Exit], false);
@@ -73,7 +65,7 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
     removeControl(&m_buttons[(int)eControl_Achievements], false);
     m_bLaunchFullVersionPurchase = false;
 #endif
-#ifdef _DURANGO
+#if 0
     // Allowed to not have achievements in the menu
     removeControl(&m_buttons[(int)eControl_Achievements], false);
     // Not allowed to exit from a Xbox One game from the game - have to use the
@@ -132,9 +124,9 @@ void UIScene_MainMenu::updateTooltips() {
     if (!m_bIgnorePress) {
         iA = IDS_TOOLTIPS_SELECT;
 
-#ifdef _XBOX_ONE
+#if 0
         iX = IDS_TOOLTIPS_CHOOSE_USER;
-#elif defined __PSVITA__
+#elif 0
         if (ProfileManager.IsFullVersion()) {
             iX = IDS_TOOLTIP_CHANGE_NETWORK_MODE;
         }
@@ -173,7 +165,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
     m_bIgnorePress = false;
     updateTooltips();
 
-#ifdef _DURANGO
+#if 0
     ProfileManager.ClearGameUsers();
 #endif
 
@@ -192,7 +184,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
 
     // 4J-PB - remove the "hobo humping" message legal say we can't have, and
     // the 1080p one for Vita
-#ifdef __PSVITA__
+#if 0
     int splashIndex =
         eSplashRandomStart + 2 +
         random->nextInt((int)m_splashes.size() - (eSplashRandomStart + 2));
@@ -227,7 +219,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
 std::wstring UIScene_MainMenu::getMoviePath() { return L"MainMenu"; }
 
 void UIScene_MainMenu::handleReload() {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     // Not allowed to exit from a PS3 game from the game - have to use the PS
     // button
     removeControl(&m_buttons[(int)eControl_Exit], false);
@@ -235,7 +227,7 @@ void UIScene_MainMenu::handleReload() {
     // button
     removeControl(&m_buttons[(int)eControl_Achievements], false);
 #endif
-#ifdef _DURANGO
+#if 0
     // Allowed to not have achievements in the menu
     removeControl(&m_buttons[(int)eControl_Achievements], false);
 #endif
@@ -249,7 +241,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 
     if (m_bIgnorePress || (eNavigateWhenReady >= 0)) return;
 
-#if defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0
     // ignore all players except player 0 - it's their profile that is currently
     // being used
     if (iPad != 0) return;
@@ -259,7 +251,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 
     switch (key) {
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             if (pressed) {
@@ -268,7 +260,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
                 sendInputToMovie(key, repeat, pressed, released);
             }
             break;
-#ifdef _XBOX_ONE
+#if 0
         case ACTION_MENU_X:
             if (pressed) {
                 m_bIgnorePress = true;
@@ -278,7 +270,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
             }
             break;
 #endif
-#ifdef __PSVITA__
+#if 0
         case ACTION_MENU_X:
             if (pressed && ProfileManager.IsFullVersion()) {
                 unsigned int uiIDA[2];
@@ -302,7 +294,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
     int primaryPad = ProfileManager.GetPrimaryPad();
 
-#ifdef _XBOX_ONE
+#if 0
     int (*signInReturnedFunc)(void*, const bool, const int iPad,
                               const int iController) = NULL;
 #else
@@ -311,7 +303,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
 
     switch ((int)controlId) {
         case eControl_PlayGame:
-#ifdef __ORBIS__
+#if 0
         {
             m_bIgnorePress = true;
 
@@ -332,7 +324,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_Leaderboards:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
-#ifdef __ORBIS__
+#if 0
             ProfileManager.RefreshChatAndContentRestrictions(
                 RefreshChatAndContentRestrictionsReturned_Leaderboards, this);
 #else
@@ -363,32 +355,21 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
             signInReturnedFunc =
                 &UIScene_MainMenu::UnlockFullGame_SignInReturned;
             break;
-#if defined _XBOX
         case eControl_Exit:
             if (ProfileManager.IsFullVersion()) {
                 unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CANCEL;
-                uiIDA[1] = IDS_OK;
+                uiIDA[0] = IDS_CONFIRM_CANCEL;
+                uiIDA[1] = IDS_CONFIRM_OK;
                 ui.RequestErrorMessage(
-                    IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2,
+                    IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                     XUSER_INDEX_ANY, &UIScene_MainMenu::ExitGameReturned, this);
             } else {
-#ifdef _XBOX_ONE
+#if 0
                 ui.ShowPlayerDisplayname(true);
 #endif
                 ui.NavigateToScene(primaryPad, eUIScene_TrialExitUpsell);
             }
             break;
-#endif
-
-#ifdef _DURANGO
-        case eControl_XboxHelp:
-            ui.PlayUISFX(eSFX_Press);
-
-            m_eAction = eAction_RunXboxHelp;
-            signInReturnedFunc = &UIScene_MainMenu::XboxHelp_SignInReturned;
-            break;
-#endif
 
         default:
             __debugbreak();
@@ -436,7 +417,7 @@ void UIScene_MainMenu::RunAction(int iPad) {
         case eAction_RunUnlockOrDLC:
             RunUnlockOrDLC(iPad);
             break;
-#ifdef _DURANGO
+#if 0
         case eAction_RunXboxHelp:
             // 4J: Launch the dummy xbox help application.
             WXS::User ^ user =
@@ -545,7 +526,7 @@ int UIScene_MainMenu::MustSignInReturned(void* pParam, int iPad,
                     &UIScene_MainMenu::UnlockFullGame_SignInReturned, pClass,
                     iPad);
                 break;
-#ifdef _DURANGO
+#if 0
             case eAction_RunXboxHelp:
                 ProfileManager.RequestSignInUI(
                     false, false, true, false, true,
@@ -571,13 +552,13 @@ int UIScene_MainMenu::MustSignInReturned(void* pParam, int iPad,
     return 0;
 }
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
 int UIScene_MainMenu::MustSignInReturnedPSN(void* pParam, int iPad,
                                             C4JStorage::EMessageResult result) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (result == C4JStorage::EMessage_ResultAccept) {
-#ifdef __PS3__
+#if 0
         // we need to specify local game here to display local and LIVE profiles
         // in the list
         switch (pClass->m_eAction) {
@@ -594,7 +575,7 @@ int UIScene_MainMenu::MustSignInReturnedPSN(void* pParam, int iPad,
                     &UIScene_MainMenu::UnlockFullGame_SignInReturned, pClass);
                 break;
         }
-#elif defined __PSVITA__
+#elif 0
         switch (pClass->m_eAction) {
             case eAction_RunLeaderboardsPSN:
                 // CD - Must force Ad-Hoc off if they want leaderboard PSN
@@ -661,7 +642,7 @@ int UIScene_MainMenu::MustSignInReturnedPSN(void* pParam, int iPad,
 }
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
                                                     bool bContinue, int iPad,
                                                     int iController)
@@ -683,7 +664,7 @@ int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
 #endif
         {
             ProfileManager.SetLockedProfile(ProfileManager.GetPrimaryPad());
-#ifdef _XBOX_ONE
+#if 0
             ui.ShowPlayerDisplayname(true);
 #endif
             proceedToScene(iPad, eUIScene_HelpAndOptionsMenu);
@@ -723,7 +704,7 @@ int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::ChooseUser_SignInReturned(void* pParam, bool bContinue,
                                                 int iPad, int iController) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
@@ -733,7 +714,7 @@ int UIScene_MainMenu::ChooseUser_SignInReturned(void* pParam, bool bContinue,
 }
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                                                 int iPad, int iController)
 #else
@@ -764,7 +745,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
 
             if (ProfileManager.IsFullVersion()) {
                 bool bSignedInLive = ProfileManager.IsSignedInLive(iPad);
-#ifdef __PSVITA__
+#if 0
                 if (CGameNetworkManager::usingAdhocMode()) {
                     if (SQRNetworkManager_AdHoc_Vita::GetAdhocStatus()) {
                         bSignedInLive = true;
@@ -791,7 +772,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                                                1);
                     } else {
                         // 4J Stu - Not relevant to PS3
-#ifdef _XBOX_ONE
+#if 0
                         //						if(app.GetTMSDLCInfoRead()
                         //&& app.GetBanListRead(iPad))
                         if (app.GetBanListRead(iPad)) {
@@ -803,7 +784,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                             // ensure we've applied this player's settings
                             app.ApplyGameSettingsChanged(iPad);
 
-#ifdef _XBOX_ONE
+#if 0
                             ui.ShowPlayerDisplayname(true);
 #endif
                             proceedToScene(ProfileManager.GetPrimaryPad(),
@@ -877,7 +858,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                         // ensure we've applied this player's settings
                         app.ApplyGameSettingsChanged(iPad);
 
-#ifdef _XBOX_ONE
+#if 0
                         ui.ShowPlayerDisplayname(true);
 #endif
                         proceedToScene(ProfileManager.GetPrimaryPad(),
@@ -893,7 +874,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
 #else
                     app.DebugPrintf(
                         "Offline Profile returned not implemented\n");
-#ifdef _XBOX_ONE
+#if 0
                     ui.ShowPlayerDisplayname(true);
 #endif
                     proceedToScene(ProfileManager.GetPrimaryPad(),
@@ -908,13 +889,13 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                 // ensure we've applied this player's settings
                 // app.ApplyGameSettingsChanged(iPad);
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
                 // ensure we've applied this player's settings - we do have them
                 // on PS3
                 app.ApplyGameSettingsChanged(iPad);
 #endif
 
-#ifdef __ORBIS__
+#if 0
                 if (!g_NetworkManager.IsReadyToPlayOrIdle()) {
                     pClass->m_bLoadTrialOnNetworkManagerReady = true;
                     ui.NavigateToScene(iPad, eUIScene_Timer);
@@ -942,7 +923,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
                                                   int iPad, int iController)
 #else
@@ -969,17 +950,17 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
                        ProfileManager.GetPrimaryPad())) {
             pClass->m_bIgnorePress = false;
             ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
+                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
         } else {
             bool bContentRestricted = false;
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
             ProfileManager.GetChatAndContentRestrictions(
                 iPad, true, NULL, &bContentRestricted, NULL);
 #endif
             if (bContentRestricted) {
                 pClass->m_bIgnorePress = false;
-#if !(defined(_XBOX) || defined(_WINDOWS64) || \
-      defined(_XBOX_ONE))  // 4J Stu - Temp to get the win build running, but so
+#if !(0 || defined(_WINDOWS64) || \
+      0)  // 4J Stu - Temp to get the win build running, but so
                            // we check this for other platforms
                 // you can't see leaderboards
                 unsigned int uiIDA[1];
@@ -990,7 +971,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
 #endif
             } else {
                 ProfileManager.SetLockedProfile(ProfileManager.GetPrimaryPad());
-#ifdef _XBOX_ONE
+#if 0
                 ui.ShowPlayerDisplayname(true);
 #endif
                 proceedToScene(ProfileManager.GetPrimaryPad(),
@@ -1012,7 +993,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::Achievements_SignInReturned(void* pParam, bool bContinue,
                                                   int iPad, int iController)
 #else
@@ -1045,7 +1026,7 @@ int UIScene_MainMenu::Achievements_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::UnlockFullGame_SignInReturned(void* pParam,
                                                     bool bContinue, int iPad,
                                                     int iController)
@@ -1079,7 +1060,7 @@ int UIScene_MainMenu::UnlockFullGame_SignInReturned(void* pParam,
     return 0;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 int UIScene_MainMenu::XboxHelp_SignInReturned(void* pParam, bool bContinue,
                                               int iPad, int iController) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
@@ -1118,7 +1099,7 @@ int UIScene_MainMenu::ExitGameReturned(void* pParam, int iPad,
     return 0;
 }
 
-#ifdef __ORBIS__
+#if 0
 void UIScene_MainMenu::RefreshChatAndContentRestrictionsReturned_PlayGame(
     void* pParam) {
     int primaryPad = ProfileManager.GetPrimaryPad();
@@ -1337,7 +1318,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
         if (ProfileManager.IsFullVersion()) {
             // are we offline?
             bool bSignedInLive = ProfileManager.IsSignedInLive(iPad);
-#ifdef __PSVITA__
+#if 0
             if (app.GetGameSettings(ProfileManager.GetPrimaryPad(),
                                     eGameSetting_PSVita_NetworkModeAdhoc) ==
                 true) {
@@ -1351,14 +1332,14 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                                 bSignedInLive ? "true" : "false");
             }
 
-#endif  //__PSVITA__
+#endif  //0
 
             if (!bSignedInLive) {
-#if defined(__PS3__) || defined __PSVITA__
+#if 0 || 0
                 // enable input again
                 m_bIgnorePress = false;
 
-                // Not sure why 360 doesn't need this, but leaving as __PS3__
+                // Not sure why 360 doesn't need this, but leaving as 0
                 // only for now until we see that it does. Without this, on a
                 // PS3 offline game, the primary player just gets the default
                 // Player1234 type name
@@ -1371,7 +1352,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                 uiIDA[0] = IDS_PRO_NOTONLINE_ACCEPT;
                 uiIDA[1] = IDS_PRO_NOTONLINE_DECLINE;
 
-#ifdef __PSVITA__
+#if 0
                 if (CGameNetworkManager::usingAdhocMode()) {
                     uiIDA[0] = IDS_NETWORK_ADHOC;
                     // this should be "Connect to adhoc network"
@@ -1417,7 +1398,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                     iPad, &UIScene_MainMenu::MustSignInReturnedPSN, this);
 #endif
 
-#elif defined __ORBIS__
+#elif 0
 
                 // Determine why they're not "signed in live"
                 if (ProfileManager.isSignedInPSN(iPad)) {
@@ -1444,14 +1425,14 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                 }
 #else
                 ProfileManager.SetLockedProfile(iPad);
-#ifdef _XBOX_ONE
+#if 0
                 ui.ShowPlayerDisplayname(true);
 #endif
                 proceedToScene(ProfileManager.GetPrimaryPad(),
                                eUIScene_LoadOrJoinMenu);
 #endif
             } else {
-#ifdef _XBOX_ONE
+#if 0
                 if (!app.GetBanListRead(iPad)) {
                     app.SetTMSAction(
                         iPad, eTMSAction_TMSPP_RetrieveFiles_RunPlayGame);
@@ -1520,7 +1501,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                 // ensure we've applied this player's settings
                 app.ApplyGameSettingsChanged(iPad);
 
-#ifdef _XBOX_ONE
+#if 0
                 ui.ShowPlayerDisplayname(true);
 #endif
                 proceedToScene(ProfileManager.GetPrimaryPad(),
@@ -1540,13 +1521,13 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
             // this player's settings
             // app.ApplyGameSettingsChanged(iPad);
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
             // ensure we've applied this player's settings - we do have them on
             // PS3
             app.ApplyGameSettingsChanged(iPad);
 #endif
 
-#ifdef __ORBIS__
+#if 0
             if (!g_NetworkManager.IsReadyToPlayOrIdle()) {
                 m_bLoadTrialOnNetworkManagerReady = true;
                 ui.NavigateToScene(iPad, eUIScene_Timer);
@@ -1568,7 +1549,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad) {
         ui.RequestErrorMessage(IDS_PRO_GUESTPROFILE_TITLE,
                                IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
     } else if (!ProfileManager.IsSignedInLive(iPad)) {
-#if defined __PS3__ || defined __PSVITA__
+#if 0 || 0
         m_eAction = eAction_RunLeaderboardsPSN;
         // get them to sign in to online
         unsigned int uiIDA[1];
@@ -1578,7 +1559,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad) {
                                &UIScene_MainMenu::MustSignInReturnedPSN, this);
 
 /* 4J-PB - Add this after release
-#elif defined __PSVITA__
+#elif 0
                 m_eAction=eAction_RunLeaderboardsPSN;
                 // Determine why they're not "signed in live"
                 if (ProfileManager.IsSignedInPSN(iPad))
@@ -1598,7 +1579,7 @@ IDS_PRO_PSNOFFLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),
 IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),
 &UIScene_MainMenu::MustSignInReturnedPSN, this, app.GetStringTable()); return;
                 }*/
-#elif defined __ORBIS__
+#elif 0
         m_eAction = eAction_RunLeaderboardsPSN;
         // Determine why they're not "signed in live"
         if (ProfileManager.isSignedInPSN(iPad)) {
@@ -1621,7 +1602,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),
         }
 #else
         ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                               IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
+                               IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
 #endif
     } else {
         // we're supposed to check for parental control restrictions before
@@ -1635,13 +1616,13 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),
         // for this user.
 
         bool bContentRestricted = false;
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
         ProfileManager.GetChatAndContentRestrictions(iPad, true, NULL,
                                                      &bContentRestricted, NULL);
 #endif
         if (bContentRestricted) {
-#if !(defined(_XBOX) || defined(_WINDOWS64) || \
-      defined(_XBOX_ONE))  // 4J Stu - Temp to get the win build running, but so
+#if !(0 || defined(_WINDOWS64) || \
+      0)  // 4J Stu - Temp to get the win build running, but so
                            // we check this for other platforms
             // you can't see leaderboards
             unsigned int uiIDA[1];
@@ -1657,7 +1638,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad(),
             // happen
             ProfileManager.QuerySigninStatus();
 
-#ifdef _XBOX_ONE
+#if 0
             ui.ShowPlayerDisplayname(true);
 #endif
             proceedToScene(iPad, eUIScene_LeaderboardsMenu);
@@ -1670,7 +1651,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
 
     // Check if this means downloadable content
     if (ProfileManager.IsFullVersion()) {
-#ifdef __ORBIS__
+#if 0
         // 4J-PB - Check if there is a patch for the game
         m_errorCode =
             ProfileManager.getNPAvailability(ProfileManager.GetPrimaryPad());
@@ -1734,19 +1715,19 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                 // this to happen
                 ProfileManager.QuerySigninStatus();
 
-#if defined _XBOX_ONE
+#if 0
                 if (app.GetTMSDLCInfoRead())
 #endif
                 {
                     bool bContentRestricted = false;
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
                     ProfileManager.GetChatAndContentRestrictions(
                         iPad, true, NULL, &bContentRestricted, NULL);
 #endif
                     if (bContentRestricted) {
                         m_bIgnorePress = false;
-#if !(defined(_XBOX) || defined(_WINDOWS64) || \
-      defined(_XBOX_ONE))  // 4J Stu - Temp to get the win build running, but so
+#if !(0 || defined(_WINDOWS64) || \
+      0)  // 4J Stu - Temp to get the win build running, but so
                            // we check this for other platforms
                         // you can't see the store
                         unsigned int uiIDA[1];
@@ -1758,14 +1739,14 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
 #endif
                     } else {
                         ProfileManager.SetLockedProfile(iPad);
-#ifdef _XBOX_ONE
+#if 0
                         ui.ShowPlayerDisplayname(true);
 #endif
                         proceedToScene(ProfileManager.GetPrimaryPad(),
                                        eUIScene_DLCMainMenu);
                     }
                 }
-#if defined _XBOX_ONE
+#if 0
                 else {
                     // Changing to async TMS calls
                     app.SetTMSAction(iPad,
@@ -1797,7 +1778,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                 // app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_DLCMainMenu);
             }
         } else {
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
             m_eAction = eAction_RunUnlockOrDLCPSN;
             // get them to sign in to online
             unsigned int uiIDA[1];
@@ -1807,7 +1788,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                 ProfileManager.GetPrimaryPad(),
                 &UIScene_MainMenu::MustSignInReturnedPSN, this);
-#elif defined __ORBIS__
+#elif 0
             m_eAction = eAction_RunUnlockOrDLCPSN;
             // Determine why they're not "signed in live"
             if (ProfileManager.isSignedInPSN(iPad)) {
@@ -1833,7 +1814,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
             ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
+                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
 #endif
         }
     } else {
@@ -1843,7 +1824,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             ui.RequestErrorMessage(IDS_UNLOCK_TITLE, IDS_UNLOCK_GUEST_TEXT,
                                    uiIDA, 1, iPad);
         } else if (!ProfileManager.IsSignedInLive(iPad)) {
-#if defined(__PS3__) || defined(__PSVITA__)
+#if 0 || 0
             m_eAction = eAction_RunUnlockOrDLCPSN;
             // get them to sign in to online
             unsigned int uiIDA[1];
@@ -1852,7 +1833,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                 IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
                 ProfileManager.GetPrimaryPad(),
                 &UIScene_MainMenu::MustSignInReturnedPSN, this);
-#elif defined __ORBIS__
+#elif 0
             m_eAction = eAction_RunUnlockOrDLCPSN;
             // Determine why they're not "signed in live"
             if (ProfileManager.isSignedInPSN(iPad)) {
@@ -1878,7 +1859,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_OK;
             ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1);
+                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
 #endif
 
         } else {
@@ -1890,7 +1871,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             // check that the commerce is in the right state to be able to
             // display the full version purchase - if the user is fast with the
             // trial version, it can still be retrieving the product list
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
             m_bIgnorePress = true;
             m_bLaunchFullVersionPurchase = true;
 
@@ -1931,7 +1912,7 @@ void UIScene_MainMenu::tick() {
     if ((eNavigateWhenReady >= 0)) {
         int lockedProfile = ProfileManager.GetLockedProfile();
 
-#ifdef _DURANGO
+#if 0
         // 4J-JEV:	DLC menu contains text localised to system language
         // which we can't change. 			We need to switch to
         // this language in-case it uses a different font.
@@ -1969,7 +1950,7 @@ void UIScene_MainMenu::tick() {
             ui.NavigateToScene(lockedProfile, (EUIScene)eNavigateWhenReady);
             eNavigateWhenReady = -1;
         }
-#ifdef _DURANGO
+#if 0
         else {
             app.DebugPrintf(
                 "[MainMenu] Delaying navigation: lockedProfile=%i, %s, "
@@ -1981,7 +1962,7 @@ void UIScene_MainMenu::tick() {
 #endif
     }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if (m_bLaunchFullVersionPurchase) {
         int iCommerceState = app.GetCommerceState();
         // 4J-PB - if there's a commerce error - store down, player can't access
@@ -2024,7 +2005,7 @@ void UIScene_MainMenu::tick() {
     }
 #endif
 
-#if defined _XBOX_ONE
+#if 0
     if (m_bWaitingForDLCInfo) {
         if (app.GetTMSDLCInfoRead()) {
             m_bWaitingForDLCInfo = false;
@@ -2042,7 +2023,7 @@ void UIScene_MainMenu::tick() {
     }
 #endif
 
-#ifdef __ORBIS__
+#if 0
 
     // process the error dialog (for a patch being available)
     // SQRNetworkManager_Orbis::tickErrorDialog also runs the error dialog, so
@@ -2112,7 +2093,7 @@ void UIScene_MainMenu::RunHelpAndOptions(int iPad) {
 #endif
         {
             ProfileManager.SetLockedProfile(iPad);
-#ifdef _XBOX_ONE
+#if 0
             ui.ShowPlayerDisplayname(true);
 #endif
             proceedToScene(iPad, eUIScene_HelpAndOptionsMenu);
@@ -2166,7 +2147,7 @@ void UIScene_MainMenu::LoadTrial(void) {
     // not online for the trial game
     g_NetworkManager.HostGame(0, false, true, MINECRAFT_NET_MAX_PLAYERS, 0);
 
-#ifndef _XBOX
+#if 1
     g_NetworkManager.FakeLocalPlayerJoined();
 #endif
 
@@ -2193,7 +2174,7 @@ void UIScene_MainMenu::LoadTrial(void) {
 
     ui.ShowTrialTimer(true);
 
-#ifdef _XBOX_ONE
+#if 0
     ui.ShowPlayerDisplayname(true);
 #endif
     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
@@ -2205,7 +2186,7 @@ void UIScene_MainMenu::handleUnlockFullVersion() {
                                                   true);
 }
 
-#ifdef __PSVITA__
+#if 0
 int UIScene_MainMenu::SelectNetworkModeReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
@@ -2220,4 +2201,4 @@ int UIScene_MainMenu::SelectNetworkModeReturned(
     pClass->updateTooltips();
     return 0;
 }
-#endif  //__PSVITA__
+#endif  //0

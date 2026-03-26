@@ -67,7 +67,7 @@ private:
     static int m_iTutorialFreezeTimeValue;
     eTutorial_State m_CurrentState;
     bool m_hasStateChanged;
-#ifdef _XBOX
+#if 0
     HXUIOBJ
         m_hTutorialScene;  // to store the popup scene (splitscreen or normal)
 #endif
@@ -113,7 +113,7 @@ private:
     bool hasRequestedUI;
     bool uiTempDisabled;
 
-#ifdef _XBOX
+#if 0
     CXuiScene* m_UIScene;
 #else
     UIScene* m_UIScene;
@@ -143,7 +143,7 @@ public:
     void setCompleted(int completableId);
     bool getCompleted(int completableId);
 
-#ifdef _XBOX
+#if 0
     void changeTutorialState(eTutorial_State newState, CXuiScene* scene = NULL);
 #else
     void changeTutorialState(eTutorial_State newState, UIScene* scene = NULL);
@@ -198,7 +198,7 @@ public:
     std::vector<TutorialTask*>* getTasks();
     unsigned int getCurrentTaskIndex();
 
-#ifdef _XBOX
+#if 0
     CXuiScene* getScene() { return m_UIScene; }
 #else
     UIScene* getScene() { return m_UIScene; }

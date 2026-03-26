@@ -211,7 +211,7 @@ void CPlatformNetworkManagerStub::HostGame(
     int localUsersMask, bool bOnlineGame, bool bIsPrivate,
     unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {
-    // #ifdef _XBOX
+    // #ifdef 0
     // 4J Stu - We probably did this earlier as well, but just to be sure!
     SetLocalGame(!bOnlineGame);
     SetPrivateGame(bIsPrivate);

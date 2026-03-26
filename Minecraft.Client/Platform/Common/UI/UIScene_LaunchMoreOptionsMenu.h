@@ -41,7 +41,7 @@ private:
         eControl_Count
     };
 
-#ifdef __PSVITA__
+#if 0
     enum ETouchInput {
         ETouchInput_TabWorld = eControl_Count,
         ETouchInput_TabGame,
@@ -68,7 +68,7 @@ private:
 
     UI_MAP_ELEMENT(m_gameOptions, "GameOptions")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_gameOptions)
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchTabGame, "TouchTabGame")
 #endif
     UI_MAP_ELEMENT(m_labelDescription_GameOptions, "Description_GameOptions")
@@ -96,7 +96,7 @@ private:
 
     UI_MAP_ELEMENT(m_worldOptions, "WorldOptions")
     UI_BEGIN_MAP_CHILD_ELEMENTS(m_worldOptions)
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchTabWorld, "TouchTabWorld")
 #endif
     UI_MAP_ELEMENT(m_labelDescription_WorldOptions, "Description_WorldOptions")
@@ -174,9 +174,9 @@ private:
     bool m_bUpdateOnline;  // If true, update online settings on next tick
     void UpdateOnline();
 
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
     virtual UIControl* GetMainPanel();
-#endif  //__PSVITA__
+#endif  //0
 };

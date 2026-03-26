@@ -5,7 +5,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "UIScene_CraftingMenu.h"
 
-#ifdef __PSVITA__
+#if 0
 #define GAME_CRAFTING_TOUCHUPDATE_TIMER_ID 0
 #define GAME_CRAFTING_TOUCHUPDATE_TIMER_TIME 100
 #endif
@@ -164,7 +164,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // success or fail
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, true);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, true);
@@ -178,7 +178,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // CheckRecipesAvailable
     UpdateTooltips();
 
-#ifdef __PSVITA__
+#if 0
     // initialise vita touch controls with ids
     for (unsigned int i = 0; i < ETouchInput_Count; ++i) {
         m_TouchInput[i].init(i);
@@ -210,7 +210,7 @@ void UIScene_CraftingMenu::handleDestroy() {
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, false);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_LEFT_SCROLL, false);
@@ -246,7 +246,7 @@ std::wstring UIScene_CraftingMenu::getMoviePath() {
     }
 }
 
-#ifdef __PSVITA__
+#if 0
 UIControl* UIScene_CraftingMenu::GetMainPanel() { return &m_controlMainPanel; }
 
 void UIScene_CraftingMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,

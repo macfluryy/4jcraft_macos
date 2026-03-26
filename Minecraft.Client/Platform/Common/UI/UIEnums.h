@@ -5,7 +5,7 @@
 enum EUIGroup {
     eUIGroup_Fullscreen,
     eUIGroup_Player1,
-#ifndef __PSVITA__
+#if 1
     eUIGroup_Player2,
     eUIGroup_Player3,
     eUIGroup_Player4,
@@ -103,7 +103,7 @@ enum EUIScene {
     eUIScene_HorseMenu,
     eUIScene_FireworksMenu,
 
-#ifdef _XBOX
+#if 0
 //	eUIScene_TransferToXboxOne,
 #endif
 
@@ -116,7 +116,7 @@ enum EUIScene {
 // CConsoleMinecraftApp::NavigateToScene There are quite a few so you need to
 // check them all Also update UILayer::updateFocusState
 
-#ifndef _XBOX
+#if 1
     // Anything non-xbox should be added here. The ordering of scenes above is
     // required for sentient reporting on xbox 360 to continue to be accurate
     eUIComponent_Panorama,
@@ -133,7 +133,7 @@ enum EUIScene {
     eUIScene_EULA,
     eUIScene_InGameSaveManagementMenu,
     eUIScene_LanguageSelector,
-#endif  // ndef _XBOX
+#endif  // ndef 0
 
 #ifdef _DEBUG_MENUS_ENABLED
     eUIScene_DebugOverlay,
@@ -232,7 +232,7 @@ enum EHowToPlayPage {
 
     eHowToPlay_NetherPortal,
     eHowToPlay_TheEnd,
-#ifdef _XBOX
+#if 0
     eHowToPlay_SocialMedia,
     eHowToPlay_BanList,
 #endif

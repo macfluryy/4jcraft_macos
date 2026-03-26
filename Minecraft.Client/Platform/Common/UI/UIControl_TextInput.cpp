@@ -39,7 +39,7 @@ void UIControl_TextInput::init(UIString label, int id) {
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 2, value);
 
-#ifdef __PSVITA__
+#if 0
     // 4J-TomK - add this buttonlist to the vita touch box list
 
     switch (m_parentScene->GetParentLayer()->m_iLayer) {

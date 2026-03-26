@@ -85,7 +85,7 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"ambient/weather/rain",     //	eSoundType_AMBIENT_WEATHER_RAIN,
     L"ambient/weather/thunder",  //	eSoundType_AMBIENT_WEATHER_THUNDER,
     L"ambient/cave/cave",  //	eSoundType_CAVE_CAVE, DON'T USE FOR XBOX 360!!!
-#ifdef _XBOX
+#if 0
     L"ambient/cave/cave2",  //	eSoundType_CAVE_CAVE2 - removed the two sounds
                             //that were at 192k in the first ambient cave event
 #endif

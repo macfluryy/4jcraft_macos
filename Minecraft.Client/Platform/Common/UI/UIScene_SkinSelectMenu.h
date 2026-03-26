@@ -12,7 +12,7 @@ private:
     // 4J Stu - How many to show on each side of the main control
     static const int sidePreviewControls = 4;
 
-#ifdef __PSVITA__
+#if 0
     enum ETouchInput {
         ETouchInput_TabLeft = 10,
         ETouchInput_TabRight,
@@ -49,14 +49,14 @@ private:
     UIControl_Label m_labelSelected;
     UIControl m_controlSkinNamePlate, m_controlSelectedPanel,
         m_controlIggyCharacters, m_controlTimer;
-#ifdef __PSVITA__
+#if 0
     UIControl_Touch m_TouchTabLeft, m_TouchTabRight, m_TouchTabCenter,
         m_TouchIggyCharacters;
 #endif
     IggyName m_funcSetPlayerCharacterSelected, m_funcSetCharacterLocked;
     IggyName m_funcSetLeftLabel, m_funcSetRightLabel, m_funcSetCentreLabel;
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchTabLeft, "TouchTabLeft")
     UI_MAP_ELEMENT(m_TouchTabRight, "TouchTabRight")
     UI_MAP_ELEMENT(m_TouchTabCenter, "TouchTabCenter")
@@ -120,7 +120,7 @@ private:
 
 public:
     UIScene_SkinSelectMenu(int iPad, void* initData, UILayer* parentLayer);
-#ifdef __PSVITA__
+#if 0
     virtual ~UIScene_SkinSelectMenu() {
         DeleteCriticalSection(&m_DLCInstallCS);
     }
@@ -167,7 +167,7 @@ private:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled();
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange();
 #endif
 
@@ -179,23 +179,23 @@ private:
     void AddFavoriteSkin(int iPad, int iSkinID);
 
     void InputActionOK(unsigned int iPad);
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
-#endif  //__PSVITA__
+#endif  //0
     virtual void handleReload();
 
-#ifdef __ORBIS__
+#if 0
     bool m_bErrorDialogRunning;
 #endif
 
-#ifdef __PSVITA__
+#if 0
     static int MustSignInReturned(void* pParam, int iPad,
                                   C4JStorage::EMessageResult result);
     static int PSNSignInReturned(void* pParam, bool bContinue, int iPad);
 #endif
 
-#ifdef __PSVITA__
+#if 0
     CRITICAL_SECTION m_DLCInstallCS;  // to prevent a race condition between the
                                       // install and the mounted callback
 #endif

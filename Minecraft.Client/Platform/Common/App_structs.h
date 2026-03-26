@@ -117,7 +117,7 @@ typedef struct {
     };
 } GAME_SETTINGS;
 
-#ifdef _XBOX_ONE
+#if 0
 typedef struct {
     WCHAR wchPlayerUID[64];
     char pszLevelName[14];
@@ -150,11 +150,11 @@ typedef struct {
 
 typedef struct {
     eDLCContentType eDLCType;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     char chImageURL[256];  // SCE_NP_COMMERCE2_URL_LEN
 #else
 
-#ifdef _XBOX_ONE
+#if 0
 
     std::wstring wsProductId;
     std::wstring wsDisplayName;
@@ -196,7 +196,7 @@ typedef struct _TMSPPRequest {
     C4JStorage::eGlobalStorage eStorageFacility;
     C4JStorage::eTMS_FILETYPEVAL eFileTypeVal;
     // char szFilename[MAX_TMSFILENAME_SIZE];
-#ifdef _XBOX_ONE
+#if 0
     int (*CallbackFunc)(void*, int, int, void*, WCHAR*);
 #else
     int (*CallbackFunc)(void*, int, int, C4JStorage::PTMSPP_FILEDATA,

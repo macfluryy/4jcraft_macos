@@ -8,7 +8,7 @@
 
 #include "TelemetryManager.h"
 
-#if !defined(_DURANGO) && !defined(_XBOX)
+#if !0 && !0
 
 CTelemetryManager *TelemetryManager = new CTelemetryManager();
 
@@ -286,7 +286,7 @@ int CTelemetryManager::GetMultiplayerInstanceID()
 
 int CTelemetryManager::GenerateMultiplayerInstanceId()
 {
-#if defined(_DURANGO) || defined(_XBOX)
+#if 0 || 0
 	FILETIME SystemTimeAsFileTime;
 	GetSystemTimeAsFileTime( &SystemTimeAsFileTime );
 	return static_cast<int>(SystemTimeAsFileTime.dwLowDateTime);

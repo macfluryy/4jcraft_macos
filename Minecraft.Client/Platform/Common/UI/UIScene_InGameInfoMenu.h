@@ -69,7 +69,7 @@ public:
 private:
     PlayerInfo* BuildPlayerInfo(INetworkPlayer* player);
 
-#if defined(__PS3__) || defined(__PSVITA__) || defined(__ORBIS__)
+#if 0 || 0 || 0
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     static int ViewInvites_SignInReturned(void* pParam, bool bContinue,

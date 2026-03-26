@@ -2,7 +2,7 @@
 #include "UI.h"
 #include "UIScene_SettingsOptionsMenu.h"
 
-#if defined(_XBOX_ONE)
+#if 0
 #define _ENABLE_LANGUAGE_SELECT
 #endif
 
@@ -67,7 +67,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     removeControl(&m_sliderAutosave, true);
 #endif
 
@@ -209,7 +209,7 @@ void UIScene_SettingsOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);
@@ -277,7 +277,7 @@ void UIScene_SettingsOptionsMenu::handleReload() {
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
     removeControl(&m_sliderAutosave, true);
 #endif
 

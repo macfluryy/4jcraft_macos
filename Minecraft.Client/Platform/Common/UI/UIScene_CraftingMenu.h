@@ -63,7 +63,7 @@ public:
 
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
     virtual UIControl* GetMainPanel();
@@ -88,7 +88,7 @@ protected:
     IggyName m_funcMoveSelector, m_funcSelectVerticalItem, m_funcSetActiveTab;
     IggyName m_funcShowPanelDisplay, m_funcShowIngredientSlot;
 
-#ifdef __PSVITA__
+#if 0
     enum ETouchInput {
         ETouchInput_TouchPanel_0,
         ETouchInput_TouchPanel_1,
@@ -158,7 +158,7 @@ protected:
     UI_MAP_NAME(m_funcShowPanelDisplay, L"showPanelDisplay")
     UI_MAP_NAME(m_funcShowIngredientSlot, L"ShowIngredient")
 
-#ifdef __PSVITA__
+#if 0
     UI_MAP_ELEMENT(m_TouchInput[ETouchInput_TouchPanel_0], "TouchPanel_0")
     UI_MAP_ELEMENT(m_TouchInput[ETouchInput_TouchPanel_1], "TouchPanel_1")
     UI_MAP_ELEMENT(m_TouchInput[ETouchInput_TouchPanel_2], "TouchPanel_2")

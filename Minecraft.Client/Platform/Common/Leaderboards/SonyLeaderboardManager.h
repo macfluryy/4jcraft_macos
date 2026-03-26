@@ -2,7 +2,7 @@
 
 #include "Common/Leaderboards/LeaderboardManager.h"
 
-#ifdef __PS3__
+#if 0
 typedef CellRtcTick SonyRtcTick;
 #else
 typedef SceRtcTick SonyRtcTick;
@@ -135,7 +135,7 @@ protected:
     virtual HRESULT fillByIdsQuery(const SceNpId& myNpId, SceNpId*& npIds,
                                    uint32_t& len);
 
-#if (defined __ORBIS__) || (defined __PSVITA__)
+#if (0) || (0)
     virtual HRESULT getFriendsList(
         sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>&
             friendsList) = 0;

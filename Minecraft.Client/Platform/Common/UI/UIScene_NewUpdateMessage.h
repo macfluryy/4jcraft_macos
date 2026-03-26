@@ -24,7 +24,7 @@ public:
     virtual EUIScene getSceneType() { return eUIScene_EULA; }
 
     // Returns true if this scene has focus for the pad passed in
-#ifndef __PS3__
+#if 1
     virtual bool hasFocus(int iPad) { return bHasFocus; }
 #endif
     virtual void updateTooltips();

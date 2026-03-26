@@ -3,7 +3,7 @@
 #include <set>
 #include <functional>
 
-#ifndef __PS3__
+#if 1
 
 typedef std::function<std::wstring(void)> StringBuilder;
 

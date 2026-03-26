@@ -468,7 +468,7 @@ void LevelGenerationOptions::loadBaseSaveData() {
         mountIndex = m_parentDLCPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
-#ifdef _DURANGO
+#if 0
         if (StorageManager.MountInstalledDLC(
                 ProfileManager.GetPrimaryPad(), mountIndex,
                 &LevelGenerationOptions::packMounted, this,
@@ -624,7 +624,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
                 }
             }
         }
-#ifdef _DURANGO
+#if 0
         DWORD result = StorageManager.UnmountInstalledDLC(L"WPACK");
 #else
         DWORD result = StorageManager.UnmountInstalledDLC("WPACK");

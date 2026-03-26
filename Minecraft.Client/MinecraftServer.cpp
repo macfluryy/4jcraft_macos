@@ -260,7 +260,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
     mcprogress->progressStart(IDS_PROGRESS_INITIALISING_SERVER);
 
     if (findSeed) {
-#ifdef __PSVITA__
+#if 0
         seed = BiomeSource::findSeed(pLevelType, &running);
 #else
         seed = BiomeSource::findSeed(pLevelType);
@@ -337,7 +337,7 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         Sleep(1);
     } while (!server->m_postUpdateTerminate &&
              ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread));
-    // #ifndef __PS3__
+    // #ifndef 0
     //  One final pass through updates to make sure we're done
     EnterCriticalSection(&server->m_postProcessCS);
     int maxRequests = server->m_postProcessRequests.size();
@@ -349,7 +349,7 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         LeaveCriticalSection(&server->m_postProcessCS);
         request.chunkSource->postProcess(request.chunkSource, request.x,
                                          request.z);
-#ifdef __PS3__
+#if 0
 #ifndef _CONTENT_PACKAGE
         if ((server->m_postProcessRequests.size() % 10) == 0)
             printf("processing request %00d\n",
@@ -360,7 +360,7 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         EnterCriticalSection(&server->m_postProcessCS);
     }
     LeaveCriticalSection(&server->m_postProcessCS);
-    // #endif //__PS3__
+    // #endif //0
     Tile::ReleaseThreadStorage();
     AABB::ReleaseThreadStorage();
     Vec3::ReleaseThreadStorage();
@@ -586,7 +586,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     int64_t startTime = System::currentTimeMillis();
 
     // 4J Stu - Added this to temporarily make starting games on vita faster
-#ifdef __PSVITA__
+#if 0
     int r = 48;
 #else
     int r = 196;
@@ -900,7 +900,7 @@ void MinecraftServer::saveAllChunks() {
     for (unsigned int i = 0; i < levels.length; i++) {
         // 4J Stu - Due to the way save mounting is handled on XboxOne, we can
         // actually save after the player has signed out.
-#ifndef _XBOX_ONE
+#if 1
         if (m_bPrimaryPlayerSignedOut) break;
 #endif
         // 4J Stu - Save the levels in reverse order so we don't overwrite the
@@ -1005,7 +1005,7 @@ bool MinecraftServer::IsSuspending() { return m_suspending; }
 void MinecraftServer::stopServer(bool didInit) {
     // 4J-PB - need to halt the rendering of the data, since we're about to
     // remove it
-#ifdef __PS3__
+#if 0
     if (ShutdownManager::ShouldRun(
             ShutdownManager::eServerThread))  // This thread will take itself
                                               // out if we are shutting down
@@ -1023,7 +1023,7 @@ void MinecraftServer::stopServer(bool didInit) {
 
     // also need to check for a profile switch here - primary player signs out,
     // and another player signs in before dismissing the dash
-#ifdef _DURANGO
+#if 0
     // On Durango check if the primary user is signed in OR mid-sign-out
     if (ProfileManager.GetUser(0, true) != nullptr)
 #else
@@ -1031,7 +1031,7 @@ void MinecraftServer::stopServer(bool didInit) {
         ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
 #endif
     {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         // Always save on exit! Except if saves are disabled.
         if (!saveOnExitAnswered()) m_saveOnExit = true;
 #endif
@@ -1076,7 +1076,7 @@ void MinecraftServer::stopServer(bool didInit) {
     // ultimately delete the directory level storage & therefore the
     // ConsoleSaveSplit instance, which needs to be around until all the sub
     // files have completed saving.
-#if defined(_DURANGO) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
         Sleep(10);
     }
@@ -1091,7 +1091,7 @@ void MinecraftServer::stopServer(bool didInit) {
         }
     }
 
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
     // Clear the update flags as it's possible they could be out of sync,
     // causing a crash when starting a new world after the first new level ticks
     // Fix for PS3 #1538 - [IN GAME] If the user 'Exit without saving' from
@@ -1332,7 +1332,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
 
                 switch (eAction) {
                     case eXuiServerAction_AutoSaveGame:
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
                     {
                         PIXBeginNamedEvent(0, "Autosave");
 
@@ -1685,7 +1685,7 @@ void MinecraftServer::tick() {
                             GameRules::RULE_DAYLIGHT))),
                     level->dimension->id);
             }
-            // #ifndef __PS3__
+            // #ifndef 0
             static int64_t stc = 0;
             int64_t st0 = System::currentTimeMillis();
             PIXBeginNamedEvent(0, "Level tick %d", i);
@@ -1708,7 +1708,7 @@ void MinecraftServer::tick() {
             // nether, but Actually gets removed only when it returns
             if ((players->getPlayerCount(level) > 0) ||
                 (level->hasEntitiesToRemove())) {
-#ifdef __PSVITA__
+#if 0
                 // AP - the PlayerList->viewDistance initially starts out at 3
                 // to make starting a level speedy the problem with this is that
                 // spawned monsters are always generated on the edge of the
@@ -1736,7 +1736,7 @@ void MinecraftServer::tick() {
             //			printf(">>>>>>>>>>>>>>>>>>>>>> Tick %d %d %d :
             //%d\n", st1 - st0, st2 - st1, st3 - st2, st0 - stc );
             stc = st0;
-            // #endif// __PS3__
+            // #endif// 0
         }
     }
     Entity::tickExtraWandering();  // 4J added
@@ -1835,7 +1835,7 @@ bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
         }
     }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     return (player->GetOutstandingAckCount() < 3);
 #else
     return (player->GetOutstandingAckCount() < 2);

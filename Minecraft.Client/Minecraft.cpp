@@ -88,7 +88,7 @@ int Minecraft::frameTimePos = 0;
 int64_t Minecraft::warezTime = 0;
 File Minecraft::workDir = File(L"");
 
-#ifdef __PSVITA__
+#if 0
 
 TOUCHSCREENRECT QuickSelectRect[3] = {
     {560, 890, 1360, 980},
@@ -220,7 +220,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
 
     // 4J-PB - Removed it from here on Orbis due to it causing a crash with the
     // network init. We should work out why...
-#ifndef __ORBIS__
+#if 1
     this->soundEngine->init(NULL);
 #endif
 
@@ -433,7 +433,7 @@ void Minecraft::init() {
 void Minecraft::renderLoadingScreen() {
     // 4J Unused
     // testing stuff on vita just now
-#if (defined(__PSVITA__) || defined(ENABLE_JAVA_GUIS))
+#if (0 || defined(ENABLE_JAVA_GUIS))
     ScreenSizeCalculator ssc(options, width, height);
 
     // xxx
@@ -1011,7 +1011,7 @@ bool Minecraft::addLocalPlayer(int idx) {
 
     } else {
         app.DebugPrintf("g_NetworkManager.AddLocalPlayerByUserIndex failed\n");
-#ifdef _DURANGO
+#if 0
         ProfileManager.RemoveGamepadFromGame(idx);
 #endif
     }
@@ -1151,7 +1151,7 @@ void Minecraft::removeLocalPlayerIdx(int idx) {
         }
         getLevel(localplayers[idx]->dimension)->removeEntity(localplayers[idx]);
 
-#ifdef _XBOX
+#if 0
         // 4J Stu - Fix for #12368 - Crash: Game crashes when saving then
         // exiting and selecting to save
         app.TutorialSceneNavigateBack(idx);
@@ -1176,14 +1176,14 @@ void Minecraft::removeLocalPlayerIdx(int idx) {
         // Not sure how this works on qnet, but for other platforms, calling
         // RemoveLocalPlayerByUserIndex won't do anything if there isn't a local
         // user to remove Now just updating the UI directly in this case
-#ifdef _XBOX
+#if 0
         // 4J Stu - A signout early in the game creation before this player has
         // connected to the game server
         updateXui = false;
 #endif
         // 4J Stu - Adding this back in for exactly the reason my comment above
         // suggests it was added in the first place
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         g_NetworkManager.RemoveLocalPlayerByUserIndex(idx);
 #endif
     }
@@ -1458,7 +1458,7 @@ void Minecraft::run_middle() {
                         pauseGame();
 #endif
                     }
-#ifdef _DURANGO
+#if 0
                     if (InputManager.ButtonPressed(i, ACTION_MENU_GTC_PAUSE))
                         localplayers[i]->ullButtonsPressed |=
                             1LL << ACTION_MENU_GTC_PAUSE;
@@ -1522,7 +1522,7 @@ void Minecraft::run_middle() {
                         localplayers[i]->ullDpad_this = 0;
                         int dirCount = 0;
 
-#ifndef __PSVITA__
+#if 1
                         if (InputManager.ButtonDown(
                                 i, MINECRAFT_ACTION_DPAD_LEFT)) {
                             localplayers[i]->ullDpad_this |=
@@ -1573,7 +1573,7 @@ void Minecraft::run_middle() {
                 } else {
                     // 4J Stu - This doesn't make any sense with the way we
                     // handle XboxOne users
-#ifndef _DURANGO
+#if 1
                     // did we just get input from a player who doesn't exist?
                     // They'll be wanting to join the game then
                     bool tryJoin = !pause &&
@@ -1694,11 +1694,11 @@ void Minecraft::run_middle() {
                             }
                         }
                     }
-#endif  // _DURANGO
+#endif  // 0
                 }
             }
 
-#ifdef _DURANGO
+#if 0
             // did we just get input from a player who doesn't exist? They'll be
             // wanting to join the game then
             if (!pause &&
@@ -3628,7 +3628,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
 #ifdef _DEBUG_MENUS_ENABLED
         if (app.DebugSettingsOn()) {
-#ifndef __PSVITA__
+#if 1
             // 4J-PB - debugoverlay for primary player only
             if (iPad == ProfileManager.GetPrimaryPad()) {
                 if ((player->ullButtonsPressed &
@@ -3636,7 +3636,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 #ifndef _CONTENT_PACKAGE
 
                     options->renderDebug = !options->renderDebug;
-#ifdef _XBOX
+#if 0
                     app.EnableDebugOverlay(options->renderDebug, iPad);
 #else
                     // 4J Stu - The xbox uses a completely different way of
@@ -3738,7 +3738,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         }
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_PAUSEMENU))
-#ifdef _DURANGO
+#if 0
             || (player->ullButtonsPressed & (1LL << ACTION_MENU_GTC_PAUSE))
 #endif
         ) {
@@ -3759,7 +3759,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         uint64_t ullButtonsPressed = player->ullButtonsPressed;
 
         bool selected = false;
-#ifdef __PSVITA__
+#if 0
         // 4J-PB - use the touchscreen for quickselect
         SceTouchData* pTouchData = InputManager.GetTouchPadData(iPad, false);
 
@@ -4059,7 +4059,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
                 // optimisation to set the culling off early, in parallel with
                 // other stuff
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
+#if 0 && !defined DISABLE_SPU_CODE
                 // kick off the culling for all valid players in this level
                 int currPlayerIdx = getLocalPlayerIdx();
                 for (int idx = 0; idx < XUSER_MAX_COUNT; idx++) {
@@ -4093,7 +4093,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                     }
                 }
                 setLocalPlayerIdx(currPlayerIdx);
-#endif  // __PS3__
+#endif  // 0
 
                 // 4J Stu - We are always online, but still could be paused
                 if (!pause)  // || isClientSide())
@@ -4123,7 +4123,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         if (pause) tickAllConnections();
         // player->tick();
     }
-#ifdef __PS3__
+#if 0
 
     // 	while(!g_tickLevelQueue.empty())
     // 	{
@@ -4331,7 +4331,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
             PlayerUID playerXUIDOnline = INVALID_XUID;
             ProfileManager.GetXUID(iPrimaryPlayer, &playerXUIDOffline, false);
             ProfileManager.GetXUID(iPrimaryPlayer, &playerXUIDOnline, true);
-#ifdef __PSVITA__
+#if 0
             if (CGameNetworkManager::usingAdhocMode() &&
                 playerXUIDOnline.getOnlineID()[0] == 0) {
                 // player doesn't have an online UID, set it from the player
@@ -4773,7 +4773,7 @@ void Minecraft::main() {
     // On PS4, we call Minecraft::Start from another thread, as this has been
     // timed taking ~2.5 seconds and we need to do some basic rendering stuff so
     // that we don't break the TRCs on SubmitDone calls
-#ifndef __ORBIS__
+#if 1
     Minecraft::start(name, sessionId);
 #endif
 }
@@ -4994,7 +4994,7 @@ void Minecraft::playerLeftTutorial(int iPad) {
 
         // 4J Stu -This telemetry event means something different on XboxOne, so
         // we don't call it for simple state changes like this
-#ifndef _XBOX_ONE
+#if 1
         for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
             if (localplayers[idx] != NULL) {
                 TelemetryManager->RecordLevelStart(
@@ -5008,7 +5008,7 @@ void Minecraft::playerLeftTutorial(int iPad) {
     }
 }
 
-#ifdef _DURANGO
+#if 0
 void Minecraft::inGameSignInCheckAllPrivilegesCallback(void* lpParam,
                                                        bool hasPrivileges,
                                                        int iPad) {
@@ -5048,7 +5048,7 @@ void Minecraft::inGameSignInCheckAllPrivilegesCallback(void* lpParam,
 }
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
 int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad,
                                      int iController)
 #else
@@ -5074,7 +5074,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
         // It's possible that the player has not signed in - they can back out
         // or choose no for the converttoguest
         if (ProfileManager.IsSignedIn(iPad)) {
-#ifdef _DURANGO
+#if 0
             if (!g_NetworkManager.IsLocalGame() &&
                 ProfileManager.IsSignedInLive(iPad) &&
                 ProfileManager.AllowedToPlayMultiplayer(iPad)) {
@@ -5088,7 +5088,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
                 uiIDA[0] = IDS_OK;
                 ui.RequestErrorMessage(IDS_MULTIPLAYER_FULL_TITLE,
                                        IDS_MULTIPLAYER_FULL_TEXT, uiIDA, 1);
-#ifdef _DURANGO
+#if 0
                 ProfileManager.RemoveGamepadFromGame(iPad);
 #endif
             }
@@ -5126,7 +5126,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
                 ui.RequestErrorMessage(IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
                                        IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
                                        uiIDA, 1, iPad);
-#ifdef _DURANGO
+#if 0
                 ProfileManager.RemoveGamepadFromGame(iPad);
 #endif
             }
@@ -5182,7 +5182,7 @@ ColourTable* Minecraft::getColourTable() {
     return colours;
 }
 
-#if defined __ORBIS__
+#if 0
 int Minecraft::MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result) {
     Minecraft* pMinecraft = (Minecraft*)pParam;

@@ -117,7 +117,7 @@ F64 UIScene::getSafeZoneHalfHeight() {
 
     float safeHeight = 0.0f;
 
-#ifndef __PSVITA__
+#if 1
     if (!RenderManager.IsHiDef() && RenderManager.IsWidescreen()) {
         // 90% safezone
         safeHeight = height * (0.15f / 2);
@@ -133,7 +133,7 @@ F64 UIScene::getSafeZoneHalfWidth() {
     float width = ui.getScreenWidth();
 
     float safeWidth = 0.0f;
-#ifndef __PSVITA__
+#if 1
     if (!RenderManager.IsHiDef() && RenderManager.IsWidescreen()) {
         // 85% safezone
         safeWidth = width * (0.15f / 2);
@@ -223,7 +223,7 @@ void UIScene::initialiseMovie() {
     m_bUpdateOpacity = true;
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIScene::SetFocusToElement(int iID) {
     IggyDataValue result;
     IggyDataValue value[1];
@@ -262,7 +262,7 @@ void UIScene::loadMovie() {
                                           // were being reloaded
     std::wstring moviePath = getMoviePath();
 
-#ifdef __PS3__
+#if 0
     if (RenderManager.IsWidescreen()) {
         moviePath.append(L"720.swf");
         m_loadedResolution = eSceneResolution_720;
@@ -270,7 +270,7 @@ void UIScene::loadMovie() {
         moviePath.append(L"480.swf");
         m_loadedResolution = eSceneResolution_480;
     }
-#elif defined __PSVITA__
+#elif 0
     moviePath.append(L"Vita.swf");
     m_loadedResolution = eSceneResolution_Vita;
 #elif defined _WINDOWS64
@@ -498,7 +498,7 @@ void UIScene::removeControl(UIControl_Base* control, bool centreScene) {
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcRemoveObject, 2, value);
 
-#ifdef __PSVITA__
+#if 0
     // update the button positions since they may have changed
     UpdateSceneControls();
 
@@ -592,7 +592,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                 int list = m_parentLayer->m_parentGroup->getCommandBufferList();
 
                 bool useCommandBuffers = false;
-#ifdef _XBOX_ONE
+#if 0
                 useCommandBuffers = true;
 
                 // 4J Stu - Temporary until we fix the glint animation which
@@ -601,7 +601,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
 #endif
 
                 if (!useCommandBuffers || m_needsCacheRendered) {
-#if (!defined __PS3__) && (!defined __PSVITA__)
+#if (!0) && (!0)
                     if (useCommandBuffers) RenderManager.CBuffStart(list, true);
 #endif
                     PIXBeginNamedEvent(0, "Draw uncached");
@@ -627,13 +627,13 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                         delete drawData;
                     }
                     PIXEndNamedEvent();
-#ifndef __PS3__
+#if 1
                     if (useCommandBuffers) RenderManager.CBuffEnd();
 #endif
                 }
                 m_cachedSlotDraw.clear();
 
-#ifndef __PS3__
+#if 1
                 if (useCommandBuffers) RenderManager.CBuffCall(list);
 #endif
 
@@ -796,7 +796,7 @@ void UIScene::navigateBack() {
     } else {
         //		m_parentLayer->removeScene(this);
 
-#ifdef _DURANGO
+#if 0
         if (ui.GetTopScene(0))
             InputManager.SetEnabledGtcButtons(
                 ui.GetTopScene(0)->getDefaultGtcButtons());
@@ -860,7 +860,7 @@ void UIScene::loseFocus() {
 }
 
 void UIScene::handleGainFocus(bool navBack) {
-#ifdef _DURANGO
+#if 0
     InputManager.SetEnabledGtcButtons(this->getDefaultGtcButtons());
 #endif
 }
@@ -894,7 +894,7 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
     // TODO: This action to key mapping should probably use the control mapping
     int keycode = -1;
     switch (action) {
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
         case ACTION_MENU_A:
@@ -931,7 +931,7 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
             keycode = IGGY_KEYCODE_PAGE_UP;
             break;
         case ACTION_MENU_PAGEDOWN:
-#ifdef __PSVITA__
+#if 0
             if (!InputManager.IsVitaTV()) {
                 keycode = IGGY_KEYCODE_F6;
             } else
@@ -1213,7 +1213,7 @@ int UIScene::getControlFocus() { return m_iFocusControl; }
 void UIScene::setBackScene(UIScene* scene) { m_backScene = scene; }
 
 UIScene* UIScene::getBackScene() { return m_backScene; }
-#ifdef __PSVITA__
+#if 0
 void UIScene::UpdateSceneControls() {
     AUTO_VAR(itEnd, GetControls()->end());
     for (AUTO_VAR(it, GetControls()->begin()); it != itEnd; it++) {

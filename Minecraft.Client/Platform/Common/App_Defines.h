@@ -9,7 +9,7 @@
 #define MAX_TYPE_SIZE 32
 #define MAX_EXTENSION_TYPES 3
 
-#ifdef __PSVITA__
+#if 0
 #define MAX_LOCAL_PLAYERS 1
 #else
 #define MAX_LOCAL_PLAYERS 4
@@ -59,7 +59,7 @@ enum EGameHostOptionWorldSize {
     e_worldSize_Large
 };
 
-#ifdef _XBOX
+#if 0
 #define PROFILE_VERSION_1 1
 #define PROFILE_VERSION_2 2
 #define PROFILE_VERSION_3 3

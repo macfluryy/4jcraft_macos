@@ -55,7 +55,7 @@ UIScene_MessageBox::UIScene_MessageBox(int iPad, void* initData,
     parentLayer->addComponent(iPad, eUIComponent_MenuBackground);
 
     // 4J-TomK - rebuild touch after auto resize
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 }
@@ -111,7 +111,7 @@ void UIScene_MessageBox::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);

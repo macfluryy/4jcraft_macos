@@ -80,7 +80,7 @@ std::wstring getMountedDlcReadPath(const std::string& path) {
     if (!mountedPath.empty()) {
         readPath = convStringToWstring(mountedPath);
     }
-#elif defined(_DURANGO)
+#elif 0
     const std::wstring mountedPath =
         StorageManager.GetMountedPath(readPath.c_str());
     if (!mountedPath.empty()) {
@@ -235,7 +235,7 @@ DLCPack* DLCManager::getPack(const std::wstring& name) {
     return pack;
 }
 
-#ifdef _XBOX_ONE
+#if 0
 DLCPack* DLCManager::getPackFromProductID(const std::wstring& productID) {
     DLCPack* pack = NULL;
     // DWORD currentIndex = 0;

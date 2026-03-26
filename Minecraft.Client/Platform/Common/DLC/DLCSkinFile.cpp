@@ -107,7 +107,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             SKIN_BOX* pSkinBox = new SKIN_BOX;
             ZeroMemory(pSkinBox, sizeof(SKIN_BOX));
 
-#ifdef __PS3__
+#if 0
             // 4J Stu - The Xbox version used swscanf_s which isn't available in
             // GCC.
             swscanf(value.c_str(), L"%10ls%f%f%f%f%f%f%f%f", wchBodyPart,
@@ -136,7 +136,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             m_AdditionalBoxes.push_back(pSkinBox);
         } break;
         case DLCManager::e_DLCParamType_Anim: {
-#ifdef __PS3__
+#if 0
             // 4J Stu - The Xbox version used swscanf_s which isn't available in
             // GCC.
             swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask);

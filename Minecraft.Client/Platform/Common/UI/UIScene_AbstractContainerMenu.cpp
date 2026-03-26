@@ -14,7 +14,7 @@ UIScene_AbstractContainerMenu::UIScene_AbstractContainerMenu(
     // success or fail
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, true);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, true);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, true);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_X, true);
@@ -58,7 +58,7 @@ void UIScene_AbstractContainerMenu::handleDestroy() {
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
     ui.OverrideSFX(m_iPad, ACTION_MENU_OK, false);
-#ifdef __ORBIS__
+#if 0
     ui.OverrideSFX(m_iPad, ACTION_MENU_TOUCHPAD_PRESS, false);
 #endif
     ui.OverrideSFX(m_iPad, ACTION_MENU_X, false);
@@ -113,7 +113,7 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
     m_fPanelMinY = fPanelY;
     m_fPanelMaxY = fPanelY + fPanelHeight;
 
-#ifdef __ORBIS__
+#if 0
     // we need to map the touchpad rectangle to the UI rectangle. While it works
     // great for the creative menu, it is much too sensitive for the smaller
     // menus.
@@ -193,7 +193,7 @@ void UIScene_AbstractContainerMenu::tick() {
     IggyMakeEventMouseMove(&mouseEvent, x, y);
 
     // 4J Stu - This seems to be broken on Durango, so do it ourself
-#ifdef _DURANGO
+#if 0
     // mouseEvent.x = x;
     // mouseEvent.y = y;
 #endif

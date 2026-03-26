@@ -42,7 +42,7 @@ void UIControl_DynamicLabel::addText(const std::wstring& text,
 void UIControl_DynamicLabel::ReInit() { UIControl_Base::ReInit(); }
 
 void UIControl_DynamicLabel::SetupTouch() {
-#ifdef __PSVITA__
+#if 0
     // 4J-TomK - add this dynamic label to the vita touch box list
 
     switch (m_parentScene->GetParentLayer()->m_iLayer) {

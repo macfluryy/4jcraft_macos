@@ -72,7 +72,7 @@ enum eXuiAction {
     eAppAction_TexturePackRequired,  // when the user has joined from invite,
                                      // but doesn't have the texture pack
 
-#ifdef __ORBIS__
+#if 0
     eAppAction_OptionsSaveNoSpace,
 #endif
     eAppAction_DebugText,
@@ -630,7 +630,7 @@ enum eGameHostOption {
 
 // 4J-PB - If any new DLC items are added to the TMSFiles, this array needs
 // updated
-#ifdef _XBOX
+#if 0
 enum _TMSFILES {
     TMS_SP1 = 0,
     TMS_SP2,
@@ -808,12 +808,12 @@ enum EControllerActions {
     ACTION_MENU_OTHER_STICK_RIGHT,
     ACTION_MENU_PAUSEMENU,
 
-#ifdef _DURANGO
+#if 0
     ACTION_MENU_GTC_PAUSE,
     ACTION_MENU_GTC_RESUME,
 #endif
 
-#ifdef __ORBIS__
+#if 0
     ACTION_MENU_TOUCHPAD_PRESS,
 #endif
 

@@ -280,7 +280,7 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     g_NetworkManager.RegisterPlayerChangedCallback(
         m_iPad, &UIScene_InGamePlayerOptionsMenu::OnPlayerChanged, this);
 
-#ifdef __PSVITA__
+#if 0
     ui.TouchBoxRebuild(this);
 #endif
 }
@@ -548,7 +548,7 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);

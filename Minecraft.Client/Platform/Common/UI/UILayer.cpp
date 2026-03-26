@@ -301,7 +301,7 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
             newScene =
                 new UIScene_InGamePlayerOptionsMenu(iPad, initData, this);
             break;
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
+#if 0 || 0
         case eUIScene_InGameSaveManagementMenu:
             newScene =
                 new UIScene_InGameSaveManagementMenu(iPad, initData, this);
@@ -540,7 +540,7 @@ void UILayer::removeComponent(EUIScene scene) {
             for (AUTO_VAR(compIt, m_components.begin());
                  compIt != m_components.end();) {
                 if ((*compIt)->getSceneType() == scene) {
-#ifdef __PSVITA__
+#if 0
                     // remove any touchboxes
                     ui.TouchBoxesClear((*compIt));
 #endif
@@ -557,7 +557,7 @@ void UILayer::removeComponent(EUIScene scene) {
 }
 
 void UILayer::removeScene(UIScene* scene) {
-#ifdef __PSVITA__
+#if 0
     // remove any touchboxes
     ui.TouchBoxesClear(scene);
 #endif
@@ -586,7 +586,7 @@ void UILayer::closeAllScenes() {
     temp.insert(temp.end(), m_sceneStack.begin(), m_sceneStack.end());
     m_sceneStack.clear();
     for (AUTO_VAR(it, temp.begin()); it != temp.end(); ++it) {
-#ifdef __PSVITA__
+#if 0
         // remove any touchboxes
         ui.TouchBoxesClear(*it);
 #endif
@@ -645,7 +645,7 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
                 // (and likely Vita), but I'm removing it on XboxOne so that we
                 // can avoid the scene creation time (which can be >0.5s) since
                 // we have the memory to spare
-#ifndef _XBOX_ONE
+#if 1
                 m_scenesToDestroy.push_back(scene);
 #endif
             }
@@ -711,7 +711,7 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
     return m_hasFocus;
 }
 
-#ifdef __PSVITA__
+#if 0
 UIScene* UILayer::getCurrentScene() {
     // Note: reverse iterator, the last element is the top of the stack
     for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
@@ -767,7 +767,7 @@ void UILayer::HandleDLCInstalled() {
     }
 }
 
-#ifdef _XBOX_ONE
+#if 0
 void UILayer::HandleDLCLicenseChange() {
     for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
         UIScene* topScene = *it;

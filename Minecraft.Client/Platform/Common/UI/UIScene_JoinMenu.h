@@ -84,7 +84,7 @@ protected:
 
     void StartSharedLaunchFlow();
 
-#ifdef _DURANGO
+#if 0
     static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
                                        int iPad);
 #endif

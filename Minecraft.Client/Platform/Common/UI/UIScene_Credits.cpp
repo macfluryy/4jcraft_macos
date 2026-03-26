@@ -85,13 +85,13 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Harry Gordon", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Thomas Kronberg", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
-#ifdef _XBOX
+#if 0
     {L"Ian le Bruce", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Andy West", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Gordon McLean", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 #endif
 
-#ifdef __PSVITA__
+#if 0
     // 4J-PB - Aaron didn't want to be in the credits	{ L"Aaron Puzey",
     // NO_TRANSLATED_STRING,			NO_TRANSLATED_STRING,eSmallText
     // },
@@ -101,11 +101,11 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"%ls", IDS_CREDITS_ART, NO_TRANSLATED_STRING, eLargeText},
     {L"David Keningale", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
-#ifdef _XBOX
+#if 0
     {L"Pat McGovern", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 #endif
     {L"Alan Redmond", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
-#ifdef _XBOX
+#if 0
     {L"Julian Laing", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 
     {L"Caitlin Goodale", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
@@ -116,7 +116,7 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Chris Reeves", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Kate Wright", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Michael Hansen", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
-#ifdef _XBOX
+#if 0
     {L"Kate Flavell", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 #endif
     {L"Donald Robertson", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
@@ -130,7 +130,7 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"%ls", IDS_CREDITS_QA, NO_TRANSLATED_STRING, eLargeText},
     {L"Steven Gary Woodward", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
-#ifdef _XBOX
+#if 0
     {L"Richard Black", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
 #endif
     {L"George Vaughan", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
@@ -142,21 +142,21 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Roni Percy", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Anne Clarke", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Anthony Kent", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
-#ifdef _XBOX
+#if 0
 // credits are in the XUI file
-#elif defined(__PS3__)
+#elif 0
     // font credits
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
     {L"%ls", IDS_DYNAFONT, NO_TRANSLATED_STRING, eLargeText},
 
-#elif defined(__ORBIS__)
+#elif 0
     // font credits
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
     {L"%ls", IDS_DYNAFONT, NO_TRANSLATED_STRING, eLargeText},
 
-#elif defined(_DURANGO)
+#elif 0
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
@@ -638,7 +638,7 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
      NO_TRANSLATED_STRING, eSmallText},
 
 #elif defined(_WIN64)
-#elif defined(__PSVITA__)
+#elif 0
     // font credits
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
@@ -646,14 +646,14 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
 
 #endif
 
-#ifndef _XBOX
+#if 1
     // Miles & Iggy credits
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},                                      // extra blank line
     {L"", CREDIT_ICON, eCreditIcon_Iggy, eSmallText},  // extra blank line
     {L"Uses Iggy.", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
-#ifdef __PS3__
+#if 0
     {L"Copyright (C) 2009-2013 by RAD Game Tools, Inc.", NO_TRANSLATED_STRING,
      NO_TRANSLATED_STRING, eSmallText},  // extra blank line
 #else
@@ -665,14 +665,14 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"", CREDIT_ICON, eCreditIcon_Miles, eSmallText},  // extra blank line
     {L"Uses Miles Sound System.", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},  // extra blank line
-#ifdef __PS3__
+#if 0
     {L"Copyright (C) 1991-2013 by RAD Game Tools, Inc.", NO_TRANSLATED_STRING,
      NO_TRANSLATED_STRING, eSmallText},  // extra blank line
 #else
     {L"Copyright (C) 1991-2014 by RAD Game Tools, Inc.", NO_TRANSLATED_STRING,
      NO_TRANSLATED_STRING, eSmallText},  // extra blank line
 #endif
-#ifdef __PS3__
+#if 0
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},                                       // extra blank line
     {L"", CREDIT_ICON, eCreditIcon_Dolby, eSmallText},  // extra blank line
@@ -821,7 +821,7 @@ void UIScene_Credits::handleInput(int iPad, int key, bool repeat, bool pressed,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
         case ACTION_MENU_UP:

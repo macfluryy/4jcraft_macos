@@ -13,14 +13,14 @@ UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-#ifdef __PSVITA__
+#if 0
     // initialise vita touch controls with ids
     for (unsigned int i = 0; i < ETouchInput_Count; ++i) {
         m_TouchController[i].init(i);
     }
 #endif
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if (InputManager.IsCircleCrossSwapped()) {
         IggyDataValue result;
         IggyDataValue value[1];
@@ -59,7 +59,7 @@ F64 UIComponent_Tooltips::getSafeZoneHalfWidth() {
 
     float safeWidth = 0.0f;
 
-#ifndef __PSVITA__
+#if 1
     // 85% safezone for tooltips in either SD mode
     if (!RenderManager.IsHiDef()) {
         // 85% safezone
@@ -331,13 +331,13 @@ void UIComponent_Tooltips::_Relayout() {
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcUpdateLayout, 0, NULL);
 
-#ifdef __PSVITA__
+#if 0
     // rebuild touchboxes
     ui.TouchBoxRebuild(this);
 #endif
 }
 
-#ifdef __PSVITA__
+#if 0
 void UIComponent_Tooltips::handleTouchInput(unsigned int iPad, S32 x, S32 y,
                                             int iId, bool bPressed,
                                             bool bRepeat, bool bReleased) {
@@ -419,7 +419,7 @@ void UIComponent_Tooltips::handleTouchInput(unsigned int iPad, S32 x, S32 y,
 void UIComponent_Tooltips::handleReload() {
     app.DebugPrintf("UIComponent_Tooltips::handleReload\n");
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
+#if 0 || 0 || 0
     if (InputManager.IsCircleCrossSwapped()) {
         IggyDataValue result;
         IggyDataValue value[1];

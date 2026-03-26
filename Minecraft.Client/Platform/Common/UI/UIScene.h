@@ -112,7 +112,7 @@ public:
     int getRenderWidth() { return m_renderWidth; }
     int getRenderHeight() { return m_renderHeight; }
 
-#ifdef __PSVITA__
+#if 0
     UILayer* GetParentLayer() { return m_parentLayer; }
     EUIGroup GetParentLayerGroup() {
         return m_parentLayer->m_parentGroup->GetGroup();
@@ -148,7 +148,7 @@ public:
     virtual void tick();
 
     IggyName registerFastName(const std::wstring& name);
-#ifdef __PSVITA__
+#if 0
     void SetFocusToElement(int iID);
     void UpdateSceneControls();
 #endif
@@ -273,7 +273,7 @@ public:
     UIScene* getBackScene();
     virtual void HandleDLCMountingComplete() {}
     virtual void HandleDLCInstalled() {}
-#ifdef _XBOX_ONE
+#if 0
     virtual void HandleDLCLicenseChange() {}
 #endif
 
@@ -292,7 +292,7 @@ public:
     }
 
 protected:
-#ifdef _DURANGO
+#if 0
     virtual long long getDefaultGtcButtons() { return _360_GTC_BACK; }
 #endif
 

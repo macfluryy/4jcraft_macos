@@ -107,7 +107,7 @@ public:
                               DWORD dwThumbnailBytes);
 
 private:
-#ifdef _XBOX_ONE
+#if 0
     static int SignInReturned(void* pParam, bool bContinue, int iPad,
                               int iController);
 #else
@@ -117,7 +117,7 @@ private:
     void updateState();
     void setControllerState(int iPad, EControllerStatus state);
 
-#ifdef _DURANGO
+#if 0
     static void checkAllPrivilegesCallback(void* lpParam, bool hasPrivileges,
                                            int iPad);
 #endif

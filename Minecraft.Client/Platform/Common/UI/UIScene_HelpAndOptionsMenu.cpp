@@ -33,7 +33,7 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void* initData,
         removeControl(&m_buttons[BUTTON_HAO_DEBUG], false);
 #endif
 
-#ifdef _XBOX_ONE
+#if 0
     // 4J-PB - in order to buy the skin packs, we need the signed offer ids for
     // them, which we get in the availability info we need to retrieve this info
     // though, so do it here
@@ -178,7 +178,7 @@ void UIScene_HelpAndOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             // CD - Added for audio

@@ -28,7 +28,7 @@ protected:
         ETouchInput_Count,
     };
 
-#ifdef __PSVITA__
+#if 0
     // 4J - TomK - this only needs to be a touch component on vita!
     UIControl_Touch m_TouchInput[ETouchInput_Count];
 #else
@@ -77,7 +77,7 @@ public:
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
-#ifdef __PSVITA__
+#if 0
     virtual void handleTouchInput(unsigned int iPad, S32 x, S32 y, int iId,
                                   bool bPressed, bool bRepeat, bool bReleased);
     virtual UIControl* GetMainPanel();

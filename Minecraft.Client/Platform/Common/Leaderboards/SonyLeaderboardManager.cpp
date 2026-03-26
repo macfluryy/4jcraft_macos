@@ -13,13 +13,13 @@
 
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
-#ifdef __ORBIS__
+#if 0
 #include "Orbis/OrbisExtras/ShutdownManager.h"
 #include "Orbis/Orbis_App.h"
-#elif defined __PSVITA__
+#elif 0
 #include "PSVita/PSVitaExtras/ShutdownManager.h"
 #include "PSVita/PSVita_App.h"
-#elif defined __PS3__
+#elif 0
 #include "PS3/PS3Extras/ShutdownManager.h"
 #include "PS3/PS3_App.h"
 #else
@@ -194,7 +194,7 @@ HRESULT SonyLeaderboardManager::fillByIdsQuery(const SceNpId& myNpId,
     switch (m_eFilterMode) {
         case eFM_Friends: {
             // 4J-JEV: Implementation for Orbis & Vita as they a very similar.
-#if (defined __ORBIS__) || (defined __PSVITA__)
+#if (0) || (0)
 
             sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>
                 s_friendList;
@@ -238,7 +238,7 @@ HRESULT SonyLeaderboardManager::fillByIdsQuery(const SceNpId& myNpId,
                 npIds[0] = myNpId;
             }
 
-#elif (defined __PS3__)
+#elif (0)
             // PS3
 
             // 4J-JEV: Doesn't include the player (its just their friends).
@@ -295,7 +295,7 @@ bool SonyLeaderboardManager::getScoreByIds() {
     ProfileManager.GetSceNpId(0, &myNpId);
 
     ret = fillByIdsQuery(myNpId, npIds, num);
-#ifdef __PS3__
+#if 0
     if (ret < 0) goto error2;
 #endif
 
@@ -316,7 +316,7 @@ bool SonyLeaderboardManager::getScoreByIds() {
     int boardId = getBoardId(m_difficulty, m_statsType);
 
     // 4J-JEV: Orbis can only do with 100 ids max, so we use batches.
-#ifdef __ORBIS__
+#if 0
     for (int batch = 0; batch < num; batch += 100) {
 #endif
         ret = createTransactionContext(m_titleContext);
@@ -352,7 +352,7 @@ bool SonyLeaderboardManager::getScoreByIds() {
             m_requestId = ret;
         }
 
-#ifdef __ORBIS__
+#if 0
         int tmpNum = std::min(num - batch, (unsigned int)100);
         app.DebugPrintf(
             "[SonyLeaderboardManager]\t Requesting ids %i-%i of %i.\n", batch,
@@ -364,7 +364,7 @@ bool SonyLeaderboardManager::getScoreByIds() {
             m_requestId,
             boardId,  // BoardId
 
-#ifdef __ORBIS__
+#if 0
             batch + npIds, sizeof(SceNpId) * tmpNum,  // IN: Player IDs
             batch + ptr,
             sizeof(SceNpScorePlayerRankData) * tmpNum,  // OUT: Rank Data
@@ -407,7 +407,7 @@ bool SonyLeaderboardManager::getScoreByIds() {
         destroyTransactionContext(m_requestId);
         m_requestId = 0;
 
-#ifdef __ORBIS__
+#if 0
     }
 #endif
 
@@ -640,7 +640,7 @@ bool SonyLeaderboardManager::setScore() {
 
                                 &tmp,  // OUT: current rank,
 
-#ifndef __PS3__
+#if 1
                                 NULL,  // compareDate
 #endif
 

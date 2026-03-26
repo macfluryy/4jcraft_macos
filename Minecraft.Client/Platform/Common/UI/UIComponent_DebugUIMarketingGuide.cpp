@@ -12,15 +12,15 @@ UIComponent_DebugUIMarketingGuide::UIComponent_DebugUIMarketingGuide(
     IggyDataValue value[1];
     value[0].type = IGGY_DATATYPE_number;
     value[0].number = (F64)0;  // WIN64
-#if defined _XBOX
+#if 0
     value[0].number = (F64)1;
-#elif defined _DURANGO
+#elif 0
     value[0].number = (F64)2;
-#elif defined __PS3__
+#elif 0
     value[0].number = (F64)3;
-#elif defined __ORBIS__
+#elif 0
     value[0].number = (F64)4;
-#elif defined __PSVITA__
+#elif 0
     value[0].number = (F64)5;
 #elif defined _WINDOWS64 || defined __linux__
     value[0].number = (F64)0;

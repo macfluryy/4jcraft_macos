@@ -93,7 +93,7 @@ void UIScene_SettingsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
         case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
             sendInputToMovie(key, repeat, pressed, released);
@@ -144,8 +144,8 @@ int UIScene_SettingsMenu::ResetDefaultsDialogReturned(
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
+#if (0 || 0 || 0 || \
+     0)
         app.SetDefaultOptions(
             StorageManager.GetDashboardProfileSettings(pClass->m_iPad),
             pClass->m_iPad);

@@ -63,7 +63,7 @@ void UIScene_ConnectingProgress::tick() {
 
         Minecraft* pMinecraft = Minecraft::GetInstance();
         pMinecraft->removeLocalPlayerIdx(m_iPad);
-#ifdef _XBOX_ONE
+#if 0
         ProfileManager.RemoveGamepadFromGame(m_iPad);
 #endif
     }
@@ -130,7 +130,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
                 exitReasonStringId =
                     IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
                 break;
-#if defined(__PS3__) || defined(__ORBIS__)
+#if 0 || 0
             case DisconnectPacket::eDisconnect_ContentRestricted_AllLocal:
                 exitReasonStringId = IDS_CONTENT_RESTRICTION_MULTIPLAYER;
                 break;
@@ -138,7 +138,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
                 exitReasonStringId = IDS_CONTENT_RESTRICTION;
                 break;
 #endif
-#ifdef _XBOX
+#if 0
             case DisconnectPacket::eDisconnect_NoUGC_Remote:
                 exitReasonStringId =
                     IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_REMOTE;
@@ -156,7 +156,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
             case DisconnectPacket::eDisconnect_OutdatedClient:
                 exitReasonStringId = IDS_DISCONNECTED_CLIENT_OLD;
                 break;
-#if defined __ORBIS__ || defined __PS3__ || defined __PSVITA__
+#if 0 || 0 || 0
             case DisconnectPacket::eDisconnect_NATMismatch:
                 exitReasonStringId = IDS_DISCONNECTED_NAT_TYPE_MISMATCH;
                 break;
@@ -219,7 +219,7 @@ void UIScene_ConnectingProgress::handleInput(int iPad, int key, bool repeat,
                 // 			}
                 // 			break;
             case ACTION_MENU_OK:
-#ifdef __ORBIS__
+#if 0
             case ACTION_MENU_TOUCHPAD_PRESS:
 #endif
                 if (pressed) {
