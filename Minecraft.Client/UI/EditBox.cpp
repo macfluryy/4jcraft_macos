@@ -88,7 +88,7 @@ void EditBox::render() {
     if (active) {
         bool renderUnderscore = inFocus && (frame / 6 % 2 == 0);
         drawString(font, value + (renderUnderscore ? L"_" : L""), textX, textY,
-                   0xe0e0e0);
+                   (enableBackgroundDrawing ? 0xe0e0e0 : 0xffffff));
     } else {
         drawString(font, value, textX, textY,
                    (enableBackgroundDrawing ? 0xe0e0e0 : 0xffffff));
