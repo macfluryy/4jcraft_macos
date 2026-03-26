@@ -16,7 +16,7 @@
 
 // 4J - the Option sub-class used to be an java enumerated type, trying to
 // emulate that functionality here
-const Options::Option Options::Option::options[17] = {
+const Options::Option Options::Option::options[18] = {
     Options::Option(L"options.music", true, false),
     Options::Option(L"options.sound", true, false),
     Options::Option(L"options.invertMouse", false, true),
@@ -34,6 +34,7 @@ const Options::Option Options::Option::options[17] = {
     Options::Option(L"options.gamma", true, false),
     Options::Option(L"options.renderClouds", false, true),
     Options::Option(L"options.particles", false, false),
+    Options::Option(L"options.classicPanorama", false, true),
 };
 
 const Options::Option* Options::Option::MUSIC = &Options::Option::options[0];
@@ -65,6 +66,8 @@ const Options::Option* Options::Option::RENDER_CLOUDS =
     &Options::Option::options[15];
 const Options::Option* Options::Option::PARTICLES =
     &Options::Option::options[16];
+const Options::Option* Options::Option::CLASSIC_PANORAMA =
+    &(Options::Option::options[17]);
 
 const Options::Option* Options::Option::getItem(int id) { return &options[id]; }
 
@@ -111,6 +114,8 @@ void Options::init() {
     invertYMouse = false;
     viewDistance = 0;
     bobView = true;
+    // 4jcraft
+    classicPanorama = false;
     anaglyph3d = false;
     advancedOpengl = false;
 
@@ -238,9 +243,12 @@ void Options::toggle(const Options::Option* option, int dir) {
     if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
     // 4J-PB - changing
-    // if (option == Option::VIEW_BOBBING) bobView = !bobView;
-    if (option == Option::VIEW_BOBBING)
-        ((dir == 0) ? bobView = false : bobView = true);
+    // 4jcraft: uncommented this so that the view bobbing option works
+    if (option == Option::VIEW_BOBBING) bobView = !bobView;
+    // 4jcraft
+    if (option == Option::CLASSIC_PANORAMA) {
+        classicPanorama = !classicPanorama;
+    }
     if (option == Option::RENDER_CLOUDS) renderClouds = !renderClouds;
     if (option == Option::ADVANCED_OPENGL) {
         advancedOpengl = !advancedOpengl;
@@ -293,6 +301,8 @@ bool Options::getBooleanValue(const Options::Option* item) {
     // types
     if (item == Option::INVERT_MOUSE) return invertYMouse;
     if (item == Option::VIEW_BOBBING) return bobView;
+    // 4jcraft
+    if (item == Option::CLASSIC_PANORAMA) return classicPanorama;
     if (item == Option::ANAGLYPH) return anaglyph3d;
     if (item == Option::ADVANCED_OPENGL) return advancedOpengl;
     if (item == Option::AMBIENT_OCCLUSION) return ambientOcclusion;
@@ -405,6 +415,8 @@ void Options::load() {
         if (cmds[0] == L"guiScale") guiScale = _fromString<int>(cmds[1]);
         if (cmds[0] == L"particles") particles = _fromString<int>(cmds[1]);
         if (cmds[0] == L"bobView") bobView = cmds[1] == L"true";
+        // 4jcraft
+        if (cmds[0] == L"classicPanorama") classicPanorama = cmds[1] == L"true";
         if (cmds[0] == L"anaglyph3d") anaglyph3d = cmds[1] == L"true";
         if (cmds[0] == L"advancedOpengl") advancedOpengl = cmds[1] == L"true";
         if (cmds[0] == L"fpsLimit") framerateLimit = _fromString<int>(cmds[1]);
@@ -459,6 +471,9 @@ void Options::save() {
     dos.writeChars(L"guiScale:" + _toString<int>(guiScale));
     dos.writeChars(L"particles:" + _toString<int>(particles));
     dos.writeChars(L"bobView:" + std::wstring(bobView ? L"true" : L"false"));
+    // 4jcraft
+    dos.writeChars(L"classicPanorama:" +
+                   std::wstring(classicPanorama ? L"true" : L"false"));
     dos.writeChars(L"anaglyph3d:" +
                    std::wstring(anaglyph3d ? L"true" : L"false"));
     dos.writeChars(L"advancedOpengl:" +

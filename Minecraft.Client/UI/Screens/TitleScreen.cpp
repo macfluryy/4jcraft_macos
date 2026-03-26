@@ -17,8 +17,7 @@ Random* TitleScreen::random = new Random();
 
 TitleScreen::TitleScreen() {
     // 4J - added initialisers
-    // vo = 0; // 4jcraft removed
-    panoramaTimer = 0.0f;
+    vo = 0;
     multiplayerButton = NULL;
 
     splash = L"missingno";
@@ -67,18 +66,10 @@ TitleScreen::TitleScreen() {
     }
 
     splash = splashes.at(splashIndex);
-
-    titlePanoramaPaths[0] = L"title/bg/panorama0.png";
-    titlePanoramaPaths[1] = L"title/bg/panorama1.png";
-    titlePanoramaPaths[2] = L"title/bg/panorama2.png";
-    titlePanoramaPaths[3] = L"title/bg/panorama3.png";
-    titlePanoramaPaths[4] = L"title/bg/panorama4.png";
-    titlePanoramaPaths[5] = L"title/bg/panorama5.png";
 }
 
 void TitleScreen::tick() {
-    panoramaTimer += 1.0f;
-    // vo += 1.0f; // 4jcraft removed
+    vo += 1.0f;
     // if( vo > 100.0f ) minecraft->setScreen(new SelectWorldScreen(this));
     // // 4J - temp testing
 }
@@ -173,139 +164,203 @@ void TitleScreen::buttonClicked(Button* button) {
 void TitleScreen::renderPanorama(float a) {
 #ifdef ENABLE_JAVA_GUIS
     Tesselator* t = Tesselator::getInstance();
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    gluPerspective(120.0f, 1.0f, 0.05f, 10.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-    glEnable(GL_BLEND);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_CULL_FACE);
-    glDepthMask(false);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    char offsetPasses = 8;
-
-    for (int i = 0; i < (offsetPasses * offsetPasses); i++) {
+    if (minecraft->options->classicPanorama) {
+        glMatrixMode(GL_PROJECTION);
         glPushMatrix();
-        float x =
-            ((float)(i % offsetPasses) / (float)offsetPasses - 0.5f) / 64.0f;
-        float y =
-            ((float)(i / offsetPasses) / (float)offsetPasses - 0.5f) / 64.0f;
-        float z = 0.0f;
-        glTranslatef(x, y, z);
-        glRotatef(sin((panoramaTimer + a) / 400.0f) * 25.0f + 20.0f, 1.0f, 0.0f,
-                  0.0f);
-        glRotatef(-(panoramaTimer + a) * 0.1f, 0.0f, 1.0f, 0.0f);
+        glLoadIdentity();
+        gluPerspective(120.0f, 1.0f, 0.05f, 10.0f);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+        glEnable(GL_BLEND);
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_CULL_FACE);
+        glDepthMask(false);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        char offsetPasses = 8;
 
-        for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < (offsetPasses * offsetPasses); i++) {
             glPushMatrix();
+            float x = ((float)(i % offsetPasses) / (float)offsetPasses - 0.5f) /
+                      64.0f;
+            float y = ((float)(i / offsetPasses) / (float)offsetPasses - 0.5f) /
+                      64.0f;
+            float z = 0.0f;
+            glTranslatef(x, y, z);
+            glRotatef(sin((vo + a) / 400.0f) * 25.0f + 20.0f, 1.0f, 0.0f, 0.0f);
+            glRotatef(-(vo + a) * 0.1f, 0.0f, 1.0f, 0.0f);
 
-            switch (j) {
-                case 1:
-                    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-                    break;
-                case 2:
-                    glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
-                    break;
-                case 3:
-                    glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-                    break;
-                case 4:
-                    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-                    break;
-                case 5:
-                    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-                    break;
-                default:
-                    break;
+            for (int j = 0; j < 6; j++) {
+                glPushMatrix();
+
+                switch (j) {
+                    case 1:
+                        glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+                        break;
+                    case 2:
+                        glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+                        break;
+                    case 3:
+                        glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+                        break;
+                    case 4:
+                        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+                        break;
+                    case 5:
+                        glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+                        break;
+                    default:
+                        break;
+                }
+
+                glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(
+                                                 TN_TITLE_BG_PANORAMA0 + j));
+                t->begin();
+                t->color(16777215, 255 / (i + 1));
+                t->vertexUV(-1.0f, -1.0f, 1.0f, 0.0f, 0.0f);
+                t->vertexUV(1.0f, -1.0f, 1.0f, 1.0f, 0.0f);
+                t->vertexUV(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+                t->vertexUV(-1.0f, 1.0f, 1.0f, 0.0f, 1.0f);
+                t->end();
+                glPopMatrix();
             }
-
-            minecraft->textures->bindTexture(titlePanoramaPaths[j]);
-            t->begin();
-            t->color(16777215, 255 / (i + 1));
-            t->vertexUV(-1.0f, -1.0f, 1.0f, 0.0f, 0.0f);
-            t->vertexUV(1.0f, -1.0f, 1.0f, 1.0f, 0.0f);
-            t->vertexUV(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            t->vertexUV(-1.0f, 1.0f, 1.0f, 0.0f, 1.0f);
-            t->end();
             glPopMatrix();
+            glColorMask(true, true, true, false);
         }
-        glPopMatrix();
-        glColorMask(true, true, true, false);
-    }
 
-    t->offset(0.0f, 0.0f, 0.0f);
-    glColorMask(true, true, true, true);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glDepthMask(true);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_ALPHA_TEST);
-    glEnable(GL_DEPTH_TEST);
+        t->offset(0.0f, 0.0f, 0.0f);
+        glColorMask(true, true, true, true);
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+        glDepthMask(true);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_ALPHA_TEST);
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0, width, height, 0, 1000, 3000);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glTranslatef(0, 0, -2000);
+
+        glDisable(GL_LIGHTING);
+        glDisable(GL_FOG);
+        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_ALPHA_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDepthMask(false);
+
+        glBindTexture(GL_TEXTURE_2D,
+                      minecraft->textures->loadTexture(TN_TITLE_BG_PANORAMA));
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        float off = vo * 0.0004f;
+
+        float screenAspect = (float)width / (float)height;
+        float texAspect = 1748.0f / 144.0f;
+        float scale;
+        if (screenAspect > texAspect) {
+            scale = (float)width / 1748.0f;
+        } else {
+            scale = (float)height / 144.0f;
+        }
+
+        float texWidth = 1748.0f * scale;
+        float texHeight = 144.0f * scale;
+        float yOff = (height - texHeight) / 2.0f;
+
+        float uMax = off + (texWidth / 1748.0f);
+
+        t->begin(GL_QUADS);
+        t->color(0xffffff, 255);
+        t->vertexUV(0, yOff + texHeight, 0, off, 1.0f);
+        t->vertexUV(texWidth, yOff + texHeight, 0, uMax, 1.0f);
+        t->vertexUV(texWidth, yOff, 0, uMax, 0.0f);
+        t->vertexUV(0, yOff, 0, off, 0.0f);
+        t->end();
+
+        glDepthMask(true);
+        glDisable(GL_BLEND);
+        glEnable(GL_ALPHA_TEST);
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+    }
 #endif
 }
 
 // 4jcraft
 void TitleScreen::renderSkybox(float a) {
-    glViewport(0, 0, 256, 256);
-    renderPanorama(a);
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_TEXTURE_2D);
-
-    for (int i = 0; i < 8; i++) {
-        rotateAndBlur(a);
+#ifdef ENABLE_JAVA_GUIS
+    if (minecraft->options->classicPanorama) {
+        glViewport(0, 0, 256, 256);
     }
+    renderPanorama(a);
+    if (minecraft->options->classicPanorama) {
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);
 
-    glViewport(0, 0, minecraft->width, minecraft->height);
+        for (int i = 0; i < 8; i++) {
+            rotateAndBlur(a);
+        }
 
-    Tesselator* t = Tesselator::getInstance();
-    t->begin();
-    float aspect =
-        width > height ? 120.0f / (float)width : 120.0f / (float)height;
-    float sWidth = (float)height * aspect / 256.0f;
-    float sHeight = (float)width * aspect / 256.0f;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    t->color(1.0f, 1.0f, 1.0f, 1.0f);
-    t->vertexUV(0.0f, height, 0.0f, (0.5f - sWidth), (0.5f + sHeight));
-    t->vertexUV(width, height, 0.0f, (0.5f - sWidth), (0.5f - sHeight));
-    t->vertexUV(width, 0.0f, 0.0f, (0.5f + sWidth), (0.5f - sHeight));
-    t->vertexUV(0.0f, 0.0f, 0.0f, (0.5f + sWidth), (0.5f + sHeight));
-    t->end();
-    return;
+        glViewport(0, 0, minecraft->width, minecraft->height);
+
+        Tesselator* t = Tesselator::getInstance();
+        t->begin();
+        float aspect =
+            width > height ? 120.0f / (float)width : 120.0f / (float)height;
+        float sWidth = (float)height * aspect / 256.0f;
+        float sHeight = (float)width * aspect / 256.0f;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        t->color(1.0f, 1.0f, 1.0f, 1.0f);
+        t->vertexUV(0.0f, height, 0.0f, (0.5f - sWidth), (0.5f + sHeight));
+        t->vertexUV(width, height, 0.0f, (0.5f - sWidth), (0.5f - sHeight));
+        t->vertexUV(width, 0.0f, 0.0f, (0.5f + sWidth), (0.5f - sHeight));
+        t->vertexUV(0.0f, 0.0f, 0.0f, (0.5f + sWidth), (0.5f + sHeight));
+        t->end();
+    }
+#endif
 }
 
 // 4jcraft
 void TitleScreen::rotateAndBlur(float a) {
 #ifdef ENABLE_JAVA_GUIS
-    glBindTexture(GL_TEXTURE_2D, viewportTexture);
-    // this.mc.renderEngine.resetBoundTexture();
-    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColorMask(true, true, true, false);
-    Tesselator* t = Tesselator::getInstance();
-    t->begin();
-    char blurPasses = 3;
+    if (minecraft->options->classicPanorama) {
+        glBindTexture(GL_TEXTURE_2D, viewportTexture);
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColorMask(true, true, true, false);
+        Tesselator* t = Tesselator::getInstance();
+        t->begin();
+        char blurPasses = 3;
 
-    for (int i = 0; i < blurPasses; i++) {
-        t->color(1.0f, 1.0f, 1.0f, 1.0f / (float)(i + 1));
-        float offset = (float)(i - blurPasses / 2) / 256.0f;
-        t->vertexUV(width, height, 0.0f, (0.0f + offset), 0.0f);
-        t->vertexUV(width, 0.0f, 0.0f, (1.0f + offset), 0.0f);
-        t->vertexUV(0.0f, 0.0f, 0.0f, (1.0f + offset), 1.0f);
-        t->vertexUV(0.0f, height, 0.0f, (0.0f + offset), 1.0f);
+        for (int i = 0; i < blurPasses; i++) {
+            t->color(1.0f, 1.0f, 1.0f, 1.0f / (float)(i + 1));
+            float offset = (float)(i - blurPasses / 2) / 256.0f;
+            t->vertexUV(width, height, 0.0f, (0.0f + offset), 0.0f);
+            t->vertexUV(width, 0.0f, 0.0f, (1.0f + offset), 0.0f);
+            t->vertexUV(0.0f, 0.0f, 0.0f, (1.0f + offset), 1.0f);
+            t->vertexUV(0.0f, height, 0.0f, (0.0f + offset), 1.0f);
+        }
+
+        t->end();
+        glColorMask(true, true, true, true);
     }
-
-    t->end();
-    glColorMask(true, true, true, true);
-    // this.mc.renderEngine.resetBoundTexture();
 #endif
 }
 
@@ -321,9 +376,11 @@ void TitleScreen::render(int xm, int ym, float a) {
     int logoX = width / 2 - logoWidth / 2;
     int logoY = 30;
 
-    // 4jcraft: gradient
-    fillGradient(0, 0, width, height, -2130706433, 16777215);
-    fillGradient(0, 0, width, height, 0, INT_MIN);
+    // 4jcraft: gradient for classic panorama
+    if (minecraft->options->classicPanorama) {
+        fillGradient(0, 0, width, height, -2130706433, 16777215);
+        fillGradient(0, 0, width, height, 0, INT_MIN);
+    }
 
     glBindTexture(GL_TEXTURE_2D,
                   minecraft->textures->loadTexture(TN_TITLE_MCLOGO));
