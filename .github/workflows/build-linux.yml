@@ -32,9 +32,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
           python -m pip install meson
-          # Set a reasonable ccache size
-          ccache -M 5G || true
-          python -m pip install meson
 
       - name: Restore ccache
         uses: actions/cache@v4
@@ -52,10 +49,7 @@ jobs:
         env:
           CC: "ccache clang"
           CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          mkdir -p "$CCACHE_DIR"
-          export CCACHE_DIR="$CCACHE_DIR"
           meson setup build --wipe --native-file=./scripts/llvm_native.txt
 
       - name: Build with Meson
@@ -64,7 +58,6 @@ jobs:
           CXX: "ccache clang++"
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          export CCACHE_DIR="${{ runner.temp }}/ccache"
           # Use all available cores for faster parallel builds
           meson compile -C build -j $(nproc) -v Minecraft.Client
 
