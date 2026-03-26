@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
+#include "UI/Screens/HopperScreen.h"
 #include "UI/Screens/HorseInventoryScreen.h"
 #include "UI/Screens/RepairScreen.h"
 #include "User.h"
@@ -586,9 +587,13 @@ bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
 }
 
 bool LocalPlayer::openHopper(std::shared_ptr<HopperTileEntity> container) {
-    // minecraft->setScreen(new HopperScreen(inventory, container));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new HopperScreen(inventory, container));
+    bool success = true;
+#else
     bool success = app.LoadHopperMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 
