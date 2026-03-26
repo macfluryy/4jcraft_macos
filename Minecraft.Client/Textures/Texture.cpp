@@ -4,16 +4,6 @@
 #include "TextureManager.h"
 #include "Texture.h"
 
-#if 0
-#include "PS3/SPU_Tasks/Texture_blit/Texture_blit.h"
-#include "C4JSpursJob.h"
-static const int sc_maxTextureBlits = 256;
-static Texture_blit_DataIn g_textureBlitDataIn[sc_maxTextureBlits]
-    __attribute__((__aligned__(16)));
-static int g_currentTexBlit = 0;
-C4JSpursJobQueue::Port* g_texBlitJobQueuePort;
-// #define DISABLE_SPU_CODE
-#endif  //0
 
 #define MAX_MIP_LEVELS 5
 
@@ -27,11 +17,6 @@ Texture::Texture(const std::wstring& name, int mode, int width, int height,
 void Texture::_init(const std::wstring& name, int mode, int width, int height,
                     int depth, int wrapMode, int format, int minFilter,
                     int magFilter, bool mipMap) {
-#if 0
-    if (g_texBlitJobQueuePort == NULL)
-        g_texBlitJobQueuePort =
-            new C4JSpursJobQueue::Port("C4JSpursJob_Texture_blit");
-#endif
     this->name = name;
     this->mode = mode;
     this->width = width;
@@ -80,13 +65,6 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
         if (m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
     }
 
-#if 0
-    // vita doesn't have a mipmap conditional shader because it's too slow so
-    // make sure this texture don't look awful at the lower mips
-    if (name == L"terrain") {
-        m_iMipLevels = 3;
-    }
-#endif
 
     if (mode != TM_CONTAINER) {
         glId = glGenTextures();
@@ -116,11 +94,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
             for (int index = 0; index < tempBytes.length; index++) {
                 tempBytes[index] = 0;
             }
-#if 0
-            data[0] = new ByteBuffer_IO(tempBytes.length);
-#else
             data[0] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif  // __{S3__
             data[0]->clear();
             data[0]->put(tempBytes);
             data[0]->position(0)->limit(tempBytes.length);
@@ -137,11 +111,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
                         tempBytes[index] = 0;
                     }
 
-#if 0
-                    data[level] = new ByteBuffer_IO(tempBytes.length);
-#else
                     data[level] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif  // 0
                     data[level]->clear();
                     data[level]->put(tempBytes);
                     data[level]->position(0)->limit(tempBytes.length);
@@ -232,124 +202,10 @@ void Texture::fill(const Rect2i* rect, int color) {
 
 void Texture::writeAsBMP(const std::wstring& name) {
     // 4J Don't need
-#if 0
-	if (type == GL_TEXTURE_3D)
-	{
-		return;
-	}
-
-	File *outFile = new File(name);
-	if (outFile.exists())
-	{
-		outFile.delete();
-	}
-
-	DataOutputStream *outStream = NULL;
-	//try {
-	outStream = new DataOutputStream(new FileOutputStream(outFile));
-	//} catch (IOException e) {
-	// Unable to open file for writing for some reason
-	//	return;
-	//}
-
-	//try {
-	// Write the header
-	outStream->writeShort((short)0x424d);            // 0x0000: ID - 'BM'
-	int byteSize = width * height * 4 + 54;
-	outStream->writeByte((uint8_t)(byteSize >>  0));    // 0x0002: Raw file size
-	outStream->writeByte((uint8_t)(byteSize >>  8));
-	outStream->writeByte((uint8_t)(byteSize >> 16));
-	outStream->writeByte((uint8_t)(byteSize >> 24));
-	outStream->writeInt(0);                          // 0x0006: Reserved
-	outStream->writeByte(54);                        // 0x000A: Start of pixel data
-	outStream->writeByte(0);
-	outStream->writeByte(0);
-	outStream->writeByte(0);
-	outStream->writeByte(40);                        // 0x000E: Size of secondary header
-	outStream->writeByte(0);
-	outStream->writeByte(0);
-	outStream->writeByte(0);
-	outStream->writeByte((uint8_t)(width >>  0));       // 0x0012: Image width, in pixels
-	outStream->writeByte((uint8_t)(width >>  8));
-	outStream->writeByte((uint8_t)(width >> 16));
-	outStream->writeByte((uint8_t)(width >> 24));
-	outStream->writeByte((uint8_t)(height >>  0));      // 0x0016: Image height, in pixels
-	outStream->writeByte((uint8_t)(height >>  8));
-	outStream->writeByte((uint8_t)(height >> 16));
-	outStream->writeByte((uint8_t)(height >> 24));
-	outStream->writeByte(1);                         // 0x001A: Number of color planes, must be 1
-	outStream->writeByte(0);
-	outStream->writeByte(32);                        // 0x001C: Bit depth (32bpp)
-	outStream->writeByte(0);
-	outStream->writeInt(0);                          // 0x001E: Compression mode (BI_RGB, uncompressed)
-	int bufSize = width * height * 4;
-	outStream->writeInt((uint8_t)(bufSize >>  0));      // 0x0022: Raw size of bitmap data
-	outStream->writeInt((uint8_t)(bufSize >>  8));
-	outStream->writeInt((uint8_t)(bufSize >> 16));
-	outStream->writeInt((uint8_t)(bufSize >> 24));
-	outStream->writeInt(0);                          // 0x0026: Horizontal resolution in ppm
-	outStream->writeInt(0);                          // 0x002A: Vertical resolution in ppm
-	outStream->writeInt(0);                          // 0x002E: Palette size (0 to match bit depth)
-	outStream->writeInt(0);                          // 0x0032: Number of important colors, 0 for all
-
-	// Pixels follow in inverted Y order
-	uint8_t[] bytes = new uint8_t[width * height * 4];
-	data.position(0);
-	data.get(bytes);
-	for (int y = height - 1; y >= 0; y--)
-	{
-		int line = y * width * 4;
-		for (int x = 0; x < width; x++)
-		{
-			outStream->writeByte(bytes[line + x * 4 + 2]);
-			outStream->writeByte(bytes[line + x * 4 + 1]);
-			outStream->writeByte(bytes[line + x * 4 + 0]);
-			outStream->writeByte(bytes[line + x * 4 + 3]);
-		}
-	}
-
-	outStream->close();
-	//} catch (IOException e) {
-	// Unable to write to the file for some reason
-	//	return;
-	//}
-#endif
 }
 
 void Texture::writeAsPNG(const std::wstring& filename) {
     // 4J Don't need
-#if 0
-	BufferedImage *image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	ByteBuffer *buffer = this->getData();
-	uint8_t[] bytes = new uint8_t[width * height * 4];
-
-	buffer.position(0);
-	buffer.get(bytes);
-
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{
-			int pos = (y * width * 4) + x * 4;
-			int col = 0;
-
-			col |= (bytes[pos + 2] & 0xFF) << 0;
-			col |= (bytes[pos + 1] & 0xFF) << 8;
-			col |= (bytes[pos + 0] & 0xFF) << 16;
-			col |= (bytes[pos + 3] & 0xFF) << 24;
-
-			image.setRGB(x, y, col);
-		}
-	}
-
-	data.position(width * height * 4);
-
-	//try {
-	ImageIO::write(image, L"png", new File(Minecraft.getWorkingDirectory(), filename));
-	//} catch (IOException e) {
-	//	e.printStackTrace();
-	//}
-#endif
 }
 
 void Texture::blit(int x, int y, Texture* source) { blit(x, y, source, false); }
@@ -376,63 +232,6 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
         data[level]->position(0);
         srcBuffer->position(0);
 
-#if 0 && !defined DISABLE_SPU_CODE
-        if (g_texBlitJobQueuePort->hasCompleted()) {
-            // all outstanding blits have completed, so reset to the start of
-            // the blit list
-            g_currentTexBlit = 0;
-        }
-        Texture_blit_DataIn& dataIn = g_textureBlitDataIn[g_currentTexBlit];
-        g_currentTexBlit++;
-        if (g_currentTexBlit >= sc_maxTextureBlits) {
-            app.DebugPrintf(
-                "ran out of tex blit slots, stalling for completion\n");
-            g_texBlitJobQueuePort->waitForCompletion();
-            g_currentTexBlit = 0;
-        }
-        dataIn.pSrcData = srcBuffer->getBuffer();
-        dataIn.pDstData = data[level]->getBuffer();
-        dataIn.yy = yy;
-        dataIn.xx = xx;
-        dataIn.hh = hh;
-        dataIn.ww = ww;
-        dataIn.shh = shh;
-        dataIn.sww = sww;
-        dataIn.rotated = rotated;
-
-        C4JSpursJob_Texture_blit blitJob(&dataIn);
-        g_texBlitJobQueuePort->submitJob(&blitJob);
-        // 		p.waitForCompletion();
-
-#elif 0
-        unsigned int* src = (unsigned int*)srcBuffer->getBuffer();
-        unsigned int* dst = (unsigned int*)data[level]->getBuffer();
-
-        for (int srcY = 0; srcY < shh; srcY++) {
-            int dstY = yy + srcY;
-            int srcLine = srcY * sww;
-            int dstLine = dstY * ww;
-
-            if (rotated) {
-                dstY = yy + (shh - srcY);
-            }
-
-            if (!rotated) {
-                memcpy(dst + dstLine + xx, src + srcLine, sww * 4);
-            } else {
-                for (int srcX = 0; srcX < sww; srcX++) {
-                    int dstPos = dstLine + (srcX + xx);
-                    int srcPos = srcLine + srcX;
-
-                    if (rotated) {
-                        dstPos = (xx + srcX * ww) + dstY;
-                    }
-
-                    dst[dstPos] = src[srcPos];
-                }
-            }
-        }
-#else
 
         for (int srcY = 0; srcY < shh; srcY++) {
             int dstY = yy + srcY;
@@ -459,7 +258,6 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
         }
         // Don't delete this, as it belongs to the source texture
         // delete srcBuffer;
-#endif
         data[level]->position(ww * hh * 4);
     }
 
@@ -553,11 +351,7 @@ void Texture::transferFromImage(BufferedImage* image) {
 // 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
 // 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
 // #else
-#if 0
-    int byteRemapRGBA[] = {0, 1, 2, 3};
-#else
     int byteRemapRGBA[] = {3, 0, 1, 2};
-#endif
     int byteRemapBGRA[] = {3, 2, 1, 0};
     // #endif
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
@@ -593,11 +387,7 @@ void Texture::transferFromImage(BufferedImage* image) {
     }
 
     MemSect(51);
-#if 0
-    data[0] = new ByteBuffer_IO(tempBytes.length);
-#else
     data[0] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif  // __{S3__
     MemSect(0);
     data[0]->clear();
     data[0]->put(tempBytes);
@@ -647,7 +437,6 @@ void Texture::transferFromImage(BufferedImage* image) {
                             ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
                         int c3 = data[level - 1]->getInt(
                             ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
-#if 1
                         // 4J - convert our RGBA texels to ARGB that crispBlend
                         // is expecting 4jcraft, added uint cast to pervent
                         // shift of neg int
@@ -659,7 +448,6 @@ void Texture::transferFromImage(BufferedImage* image) {
                             ((c2 >> 8) & 0x00ffffff) | ((unsigned int)c2 << 24);
                         c3 =
                             ((c3 >> 8) & 0x00ffffff) | ((unsigned int)c3 << 24);
-#endif
                         int col =
                             crispBlend(crispBlend(c0, c1), crispBlend(c2, c3));
                         // 4J - and back from ARGB -> RGBA
@@ -684,11 +472,7 @@ void Texture::transferFromImage(BufferedImage* image) {
             }
 
             MemSect(51);
-#if 0
-            data[level] = new ByteBuffer_IO(tempBytes.length);
-#else
             data[level] = ByteBuffer::allocateDirect(tempBytes.length);
-#endif  // __{S3__
             MemSect(0);
             data[level]->clear();
             data[level]->put(tempBytes);
@@ -795,57 +579,24 @@ void Texture::updateOnGPU() {
     if (!m_bInitialised) {
         RenderManager.TextureSetTextureLevels(m_iMipLevels);  // 4J added
 
-#if 0
-        // AP - replace the dynamic ram buffer to one that points to a newly
-        // allocated video ram texture buffer. This means we don't have to
-        // memcpy the ram based buffer to it any more inside
-        // RenderManager.TextureDataUpdate
-        unsigned char* newData =
-            RenderManager.TextureData(width, height, data[0]->getBuffer(), 0,
-                                      C4JRender::TEXTURE_FORMAT_RxGyBzAw);
-        ByteBuffer* oldBuffer = data[0];
-        data[0] = new ByteBuffer(data[0]->getSize(), (uint8_t*)newData);
-        delete oldBuffer;
-        newData += width * height * 4;
-#else
         RenderManager.TextureData(width, height, data[0]->getBuffer(), 0,
                                   C4JRender::TEXTURE_FORMAT_RxGyBzAw);
-#endif
 
         if (mipmapped) {
             for (int level = 1; level < m_iMipLevels; level++) {
                 int levelWidth = width >> level;
                 int levelHeight = height >> level;
 
-#if 0
-                // AP - replace the dynamic ram buffer to one that points to a
-                // newly allocated video ram texture buffer. This means we don't
-                // have to memcpy the ram based buffer to it any more inside
-                // RenderManager.TextureDataUpdate
-                RenderManager.TextureDataUpdate(0, 0, levelWidth, levelHeight,
-                                                data[level]->getBuffer(),
-                                                level);
-                ByteBuffer* oldBuffer = data[level];
-                data[level] =
-                    new ByteBuffer(data[level]->getSize(), (uint8_t*)newData);
-                delete oldBuffer;
-                newData += levelWidth * levelHeight * 4;
-#else
                 RenderManager.TextureData(levelWidth, levelHeight,
                                           data[level]->getBuffer(), level,
                                           C4JRender::TEXTURE_FORMAT_RxGyBzAw);
-#endif
             }
         }
 
         m_bInitialised = true;
     } else {
-#if 0
-        RenderManager.TextureDataUpdate(data[0]->getBuffer(), 0);
-#else
         RenderManager.TextureDataUpdate(0, 0, width, height,
                                         data[0]->getBuffer(), 0);
-#endif
 
         if (mipmapped) {
             if (RenderManager.TextureGetTextureLevels() > 1) {
@@ -853,14 +604,9 @@ void Texture::updateOnGPU() {
                     int levelWidth = width >> level;
                     int levelHeight = height >> level;
 
-#if 0
-                    RenderManager.TextureDataUpdate(data[level]->getBuffer(),
-                                                    level);
-#else
                     RenderManager.TextureDataUpdate(
                         0, 0, levelWidth, levelHeight, data[level]->getBuffer(),
                         level);
-#endif
                 }
             }
         }

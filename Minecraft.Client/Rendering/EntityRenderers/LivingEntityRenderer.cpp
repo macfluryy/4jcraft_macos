@@ -511,32 +511,7 @@ void LivingEntityRenderer::renderNameTag(std::shared_ptr<LivingEntity> mob,
 
         if (app.isXuidDeadmau5(player->getXuid())) offs = -10;
 
-#if 0 || 0
-        // Check we have all the font characters for this player name
-        switch (player->GetPlayerNameValidState()) {
-            case Player::ePlayerNameValid_NotSet:
-                if (font->AllCharactersValid(name)) {
-                    playerName = name;
-                    player->SetPlayerNameValidState(true);
-                } else {
-                    memset(wchName, 0, sizeof(WCHAR) * 2);
-                    swprintf(wchName, 2, L"%d", player->getPlayerIndex() + 1);
-                    playerName = wchName;
-                    player->SetPlayerNameValidState(false);
-                }
-                break;
-            case Player::ePlayerNameValid_True:
-                playerName = name;
-                break;
-            case Player::ePlayerNameValid_False:
-                memset(wchName, 0, sizeof(WCHAR) * 2);
-                swprintf(wchName, 2, L"%d", player->getPlayerIndex() + 1);
-                playerName = wchName;
-                break;
-        }
-#else
         playerName = name;
-#endif
     } else {
         playerName = name;
     }

@@ -78,9 +78,6 @@ protected:
     void loadDefaultUI();
     void loadDefaultColourTable();
     void loadDefaultHTMLColourTable();
-#if 0
-    void loadHTMLColourTableFromXuiScene(HXUIOBJ hObj);
-#endif
 
 public:
     virtual BufferedImage* getImageResource(const std::wstring& File,

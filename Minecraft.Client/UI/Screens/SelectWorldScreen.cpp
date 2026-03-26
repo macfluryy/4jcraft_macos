@@ -117,11 +117,6 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             if (done) return;
             done = true;
 // 4J Stu - Not used, so commenting to stop the build failing
-#if 0
-            minecraft->gameMode = new DemoMode(minecraft);
-            minecraft->selectLevel(CreateWorldScreen::findAvailableFolderName(minecraft->getLevelSource(), L"Demo"), L"Demo World", 0L);
-            minecraft->setScreen(NULL);
-#endif
         }
     } else if (button->id == BUTTON_RENAME_ID) {
         minecraft->setScreen(
@@ -146,10 +141,6 @@ void SelectWorldScreen::worldSelected(int id) {
         worldFolderName = L"World" + _toString<int>(id);
     }
 // 4J Stu - Not used, so commenting to stop the build failing
-#if 0
-    minecraft->selectLevel(worldFolderName, getWorldName(id), 0);
-    minecraft->setScreen(NULL);
-#endif
 }
 
 void SelectWorldScreen::confirmResult(bool result, int id) {

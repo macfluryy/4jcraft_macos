@@ -16,7 +16,7 @@
 #include "../Rendering/LevelRenderer.h"
 
 // 4J added for testing
-#ifdef STRESS_TEST_MOVE
+#if defined(STRESS_TEST_MOVE)
 volatile bool stressTestEnabled = true;
 #endif
 
@@ -68,7 +68,7 @@ void MultiplayerLocalPlayer::tick() {
     LocalPlayer::tick();
 
     // 4J added for testing
-#ifdef STRESS_TEST_MOVE
+#if defined(STRESS_TEST_MOVE)
     if (stressTestEnabled) {
         StressTestMove(&tempX, &tempY, &tempZ);
     }
@@ -385,7 +385,7 @@ void MultiplayerLocalPlayer::StopSleeping() {
 void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId) {
     std::uint32_t oldSkinIndex = getCustomSkin();
     LocalPlayer::setCustomSkin(skinId);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(L"Skin for local player %ls has changed to %ls (%d)\n",
             name.c_str(), customTextureUrl.c_str(), getPlayerDefaultSkin());
 #endif
@@ -398,7 +398,7 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomSkin(std::uint32_t skinId) {
 void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
     std::uint32_t oldCapeIndex = getCustomCape();
     LocalPlayer::setCustomCape(capeId);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(L"Cape for local player %ls has changed to %ls\n", name.c_str(),
             customTextureUrl2.c_str());
 #endif
@@ -417,7 +417,7 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
 // back to mode 0 Whilst carrying out this movement pattern, this calls
 // checkAllPresentChunks which checks the integrity of all currently
 // loaded/created chunks round the player.
-#ifdef STRESS_TEST_MOVE
+#if defined(STRESS_TEST_MOVE)
 void MultiplayerLocalPlayer::StressTestMove(double* tempX, double* tempY,
                                             double* tempZ) {
     static volatile int64_t lastChangeTime = 0;
@@ -448,15 +448,6 @@ void MultiplayerLocalPlayer::StressTestMove(double* tempX, double* tempY,
     static float dx = cos(30.0);
     static float dz = sin(30.0);
 
-#if 0
-	if( ( stressTestCount % dirChangeTickCount) == 0 )
-	{
-		int angledeg = rand() % 360;
-		angle = (((double)angledeg) / 360.0 ) * ( 2.0 * 3.141592654 );
-		dx = cos(angle);
-		dz = sin(angle);
-	}
-#endif
 
     float nx = x + (dx * 1.2);
     float nz = z + (dz * 1.2);

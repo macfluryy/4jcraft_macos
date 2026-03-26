@@ -4,9 +4,6 @@ class Rect2i;
 class ByteBuffer;
 class BufferedImage;
 
-#if 0
-class ByteBuffer_IO;
-#endif
 
 class Texture {
 public:
@@ -58,11 +55,7 @@ private:
     bool immediateUpdate;
     bool updated;
     int m_iMipLevels;
-#if 0
-    ByteBuffer_IO* data[10];
-#else
     ByteBuffer* data[10];  // Arrays for mipmaps - NULL if not used
-#endif
 
 public:
     bool m_bInitialised;  // 4J Added

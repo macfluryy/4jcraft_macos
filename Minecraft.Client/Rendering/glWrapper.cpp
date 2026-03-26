@@ -1,6 +1,6 @@
 #include "../Platform/stdafx.h"
 
-#ifndef __linux__
+#if !defined(__linux__)
 
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
@@ -57,11 +57,7 @@ int glGenLists(int count) { return RenderManager.CBuffCreate(count); }
 void glNewList(int index, int mode) { RenderManager.CBuffStart(index); }
 
 void glEndList(int vertexCount) {
-#if 0
-    RenderManager.CBuffEnd(vertexCount);
-#else
     RenderManager.CBuffEnd();
-#endif
 }
 
 void glCallList(int index) { RenderManager.CBuffCall(index); }
@@ -75,25 +71,8 @@ void glCallLists(IntBuffer* ib) {
 void glClear(int flags) { RenderManager.Clear(flags); }
 
 void glClearColor(float r, float g, float b, float a) {
-#if 0
-    int ir = (int)(r * 255.0f);
-    if (ir < 0) ir = 0;
-    if (ir > 255) ir = 255;
-    int ig = (int)(g * 255.0f);
-    if (ig < 0) ig = 0;
-    if (ig > 255) ig = 255;
-    int ib = (int)(b * 255.0f);
-    if (ib < 0) ib = 0;
-    if (ib > 255) ib = 255;
-    int ia = (int)(a * 255.0f);
-    if (ia < 0) ia = 0;
-    if (ia > 255) ia = 255;
-
-    RenderManager.SetClearColour(D3DCOLOR_RGBA(ir, ig, ib, ia));
-#else
     float rgba[4] = {r, g, b, a};
     RenderManager.SetClearColour(rgba);
-#endif
 }
 
 void Display::update() {}
@@ -208,11 +187,7 @@ void glAlphaFunc(int func, float param) {
 }
 
 void glDepthFunc(int func) {
-#if 0
     RenderManager.StateSetDepthFunc(func);
-#else
-    RenderManager.StateSetDepthFunc(func);
-#endif
 }
 
 void glTexParameteri(int target, int param, int value) {
@@ -220,16 +195,12 @@ void glTexParameteri(int target, int param, int value) {
 }
 
 void glPolygonOffset(float factor, float units) {
-#if 0
-    RenderManager.StateSetDepthSlopeAndBias(factor, units);
-#else
     // DirectX specifies these offsets in z buffer 0 to 1 sort of range, whereas
     // opengl seems to be in a 0 -> depth buffer size sort of range. The slope
     // factor is quite possibly different too. Magic factor for now anyway.
     const float magicFactor = 65536.0f;
     RenderManager.StateSetDepthSlopeAndBias(factor / magicFactor,
                                             units / magicFactor);
-#endif
 }
 
 void glFogi(int param, int value) {

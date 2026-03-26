@@ -82,7 +82,7 @@ public:
     void flushLeaderboards();
     void saveLeaderboards();
     static void setupStatBoards();
-#ifdef _DEBUG
+#if defined(_DEBUG)
     void WipeLeaderboards();
 #endif
 
@@ -90,11 +90,6 @@ private:
     bool isLargeStat(Stat* stat);
     void dumpStatsToTTY();
 
-#if 0
-    static void setLeaderboardProperty(XUSER_PROPERTY* prop, std::uint32_t id,
-                                       unsigned int value);
-    static void setLeaderboardRating(XUSER_PROPERTY* prop, LONGLONG value);
-#endif
 
     void writeStats();
 };

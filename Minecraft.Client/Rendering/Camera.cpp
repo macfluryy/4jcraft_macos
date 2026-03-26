@@ -48,23 +48,6 @@ zPlayerOffs = position->get(2);
     memcpy(&_modelview, modelview->_getDataPointer(), 64);
     memcpy(&_proj, projection->_getDataPointer(), 64);
 
-#if (0) || (0)
-    _modelview = transpose(_modelview);
-    _proj = transpose(_proj);
-    _final = _modelview * _proj;
-    _invert = sce::Vectormath::Simd::Aos::inverse(_final);
-    xPlayerOffs = _invert.getElem(0, 3) / _invert.getElem(3, 3);
-    yPlayerOffs = _invert.getElem(1, 3) / _invert.getElem(3, 3);
-    zPlayerOffs = _invert.getElem(2, 3) / _invert.getElem(3, 3);
-#elif 0
-    _modelview = transpose(_modelview);
-    _proj = transpose(_proj);
-    _final = _modelview * _proj;
-    _invert = Vectormath::Aos::inverse(_final);
-    xPlayerOffs = _invert.getElem(0, 3) / _invert.getElem(3, 3);
-    yPlayerOffs = _invert.getElem(1, 3) / _invert.getElem(3, 3);
-    zPlayerOffs = _invert.getElem(2, 3) / _invert.getElem(3, 3);
-#else
     _final = XMMatrixMultiply(_modelview, _proj);
     _det = XMMatrixDeterminant(_final);
     _invert = XMMatrixInverse(&_det, _final);
@@ -74,7 +57,6 @@ zPlayerOffs = position->get(2);
     xPlayerOffs = trans.x / trans.w;
     yPlayerOffs = trans.y / trans.w;
     zPlayerOffs = trans.z / trans.w;
-#endif
 
     int flipCamera = mirror ? 1 : 0;
 

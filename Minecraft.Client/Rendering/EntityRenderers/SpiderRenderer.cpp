@@ -33,9 +33,6 @@ int SpiderRenderer::prepareArmor(std::shared_ptr<LivingEntity> _spider,
     // back on the renderer) However we do want it off for other platforms that
     // don't force it on in the render lib CBuff handling Several texture packs
     // have fully transparent bits that break if this is off
-#if 0
-    glDisable(GL_ALPHA_TEST);
-#endif
     // 4J - changes brought forward from 1.8.2
     glBlendFunc(GL_ONE, GL_ONE);
     if (spider->isInvisible())

@@ -127,44 +127,12 @@ void StatsScreen::GeneralStatisticsList::renderItem(int i, int x, int y, int h,
 
 void StatsScreen::blitSlot(int x, int y, int item) {
 // 4J Unused
-#if 0
-	blitSlotBg(x + SLOT_BG_X, y + SLOT_BG_Y);
-
-	glEnable(GL_RESCALE_NORMAL);
-
-	glPushMatrix();
-	glRotatef(180, 1, 0, 0);
-	Lighting::turnOn();
-	glPopMatrix();
-
-	itemRenderer->renderGuiItem(font, minecraft->textures, item, 0, Item::items[item]->getIcon(0), x + SLOT_FG_X, y + SLOT_FG_Y);
-	Lighting::turnOff();
-
-	glDisable(GL_RESCALE_NORMAL);
-#endif
 }
 
 void StatsScreen::blitSlotBg(int x, int y) { blitSlotIcon(x, y, 0, 0); }
 
 void StatsScreen::blitSlotIcon(int x, int y, int sx, int sy) {
     // 4J Unused
-#if 0
-    int tex = minecraft->textures->loadTexture(L"/gui/slot.png");
-    glColor4f(1, 1, 1, 1);
-    minecraft->textures->bind(tex);
-
-    const float us = 1 / SLOT_TEX_SIZE;
-    const float vs = 1 / SLOT_TEX_SIZE;
-    const int w = SLOT_BG_SIZE;
-    const int h = SLOT_BG_SIZE;
-    Tesselator *t = Tesselator::getInstance();
-    t->begin();
-    t->vertexUV((float)(x + 0), (float)( y + h), (float)( blitOffset), (float)( (sx + 0) * us), (float)( (sy + h) * vs));
-    t->vertexUV((float)(x + w), (float)( y + h), (float)( blitOffset), (float)( (sx + w) * us), (float)( (sy + h) * vs));
-    t->vertexUV((float)(x + w), (float)( y + 0), (float)( blitOffset), (float)( (sx + w) * us), (float)( (sy + 0) * vs));
-    t->vertexUV((float)(x + 0), (float)( y + 0), (float)( blitOffset), (float)( (sx + 0) * us), (float)( (sy + 0) * vs));
-    t->end();
-#endif
 }
 
 // 4J - added parameter so we can access parent
@@ -326,26 +294,6 @@ void StatsScreen::StatisticsList::renderDecorations(int mouseX, int mouseY) {
 void StatsScreen::StatisticsList::renderMousehoverTooltip(ItemStat* stat, int x,
                                                           int y) {
     // 4J Stu - Unused
-#if 0
-    if (stat == NULL)
-	{
-        return;
-    }
-
-    Item *item = Item::items[stat->getItemId()];
-
-    std::wstring elementName = trimString(L"" + Language::getInstance()->getElementName(item->getDescriptionId()));
-
-    if (elementName.length() > 0)
-	{
-        int rx = x + 12;
-        int ry = y - 12;
-        int width = parent->font->width(elementName);
-        parent->fillGradient(rx - 3, ry - 3, rx + width + 3, ry + 8 + 3, 0xc0000000, 0xc0000000);
-
-        parent->font->drawShadow(elementName, rx, ry, 0xffffffff);
-    }
-#endif
 }
 
 void StatsScreen::StatisticsList::sortByColumn(int column) {

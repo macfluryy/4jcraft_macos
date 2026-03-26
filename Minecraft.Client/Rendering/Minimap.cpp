@@ -8,40 +8,19 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.material.h"
 
-#if 0
-short Minimap::LUT[256];  // 4J added
-#else
 int Minimap::LUT[256];  // 4J added
-#endif
 bool Minimap::genLUT = true;  // 4J added
 
 Minimap::Minimap(Font* font, Options* options, Textures* textures,
                  bool optimised) {
-#if 0
-    // we're using the RSX now to upload textures to vram, so we need the main
-    // ram textures allocated from io space
-    this->pixels =
-        intArray((int*)RenderManager.allocIOMem(w * h * sizeof(int)), 16 * 16);
-
-#elif 0
-    this->pixels = shortArray(w * h);
-#else
     this->pixels = intArray(w * h);
-#endif
     this->options = options;
     this->font = font;
     BufferedImage* img = new BufferedImage(w, h, BufferedImage::TYPE_INT_ARGB);
-#if 0
-    mapTexture =
-        textures->getTexture(img, C4JRender::TEXTURE_FORMAT_RxGyBzAw5551,
-                             false);  // 4J - make sure we aren't mipmapping as
-                                      // we never set the data for mipmaps
-#else
     mapTexture =
         textures->getTexture(img, C4JRender::TEXTURE_FORMAT_RxGyBzAw,
                              false);  // 4J - make sure we aren't mipmapping as
                                       // we never set the data for mipmaps
-#endif
     delete img;
     for (int i = 0; i < w * h; i++) {
         pixels[i] = 0x00000000;
@@ -65,11 +44,7 @@ void Minimap::reloadColours() {
     {
         if (i / 4 == 0) {
             // 4J - changed byte order to save having to reorder later
-#if 0
-            LUT[i] = 0;
-#else
             LUT[i] = (((i + i / w) & 1) * 8 + 16);
-#endif
             // pixels[i] = (((i + i / w) & 1) * 8 + 16) << 24;
         } else {
             int color =
@@ -85,15 +60,8 @@ void Minimap::reloadColours() {
             int b = ((color) & 0xff) * br / 255;
 
             // 4J - changed byte order to save having to reorder later
-#if (0 || defined _WIN64 || 0 || __linux__)
+#if defined(_WIN64) || __linux__
             LUT[i] = 255 << 24 | b << 16 | g << 8 | r;
-#elif 0
-            LUT[i] = 255 << 24 | r << 16 | g << 8 | b;
-#elif 0
-            r >>= 3;
-            g >>= 3;
-            b >>= 3;
-            LUT[i] = 1 << 15 | (r << 10) | (g << 5) | b;
 #else
             LUT[i] = r << 24 | g << 16 | b << 8 | 255;
 #endif
@@ -139,9 +107,6 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     // 4J - moved to -0.02 to stop z fighting ( was -0.01)
     // AP - Vita still has issues so push it a bit more
     float Offset = -0.02f;
-#if 0
-    Offset = -0.03f;
-#endif
     t->vertexUV((float)(x + 0 + vo), (float)(y + h - vo), (float)(Offset),
                 (float)(0), (float)(1));
     t->vertexUV((float)(x + w - vo), (float)(y + h - vo), (float)(Offset),
@@ -159,7 +124,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
 
     AUTO_VAR(itEnd, data->decorations.end());
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     std::vector<MapItemSavedData::MapDecoration*> m_edgeIcons;
 #endif
 
@@ -175,7 +140,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
 
         char imgIndex = dec->img;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         // For edge icons, use a different texture
         if (imgIndex >= 16) {
             m_edgeIcons.push_back(dec);
@@ -218,7 +183,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
         fIconZ -= 0.01f;
     }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     // For players on the edge of the world
     textures->bind(textures->loadTexture(TN_MISC_ADDITIONALMAPICONS));
 

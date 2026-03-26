@@ -441,7 +441,7 @@ void ItemInHandRenderer::render(float a) {
                                                   Mth::floor(player->z), 0);
         int u = col % 65536;
         int v = col / 65536;
-#ifdef __linux__
+#if defined(__linux__)
         static int lightmapLogCount = 0;
         if (lightmapLogCount < 8) {
             ++lightmapLogCount;
@@ -588,13 +588,9 @@ void ItemInHandRenderer::render(float a) {
         glPushMatrix();
         float d = 0.8f;
 
-#if 0 || 0
-        static const float swingPowFactor = 1.0f;
-#else
         static const float swingPowFactor =
             4.0f;  // 4J added, to slow the swing down when nearest the player
                    // for avoiding luminance flash issues
-#endif
         if (player->getUseItemDuration() > 0) {
             UseAnim anim = item->getUseAnimation();
             if ((anim == UseAnim_eat) || (anim == UseAnim_drink)) {

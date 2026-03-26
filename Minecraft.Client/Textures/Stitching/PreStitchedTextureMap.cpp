@@ -92,18 +92,6 @@ void PreStitchedTextureMap::stitch() {
     std::wstring drive = L"";
 
     // 4J-PB - need to check for BD patched files
-#if 0
-    const char* pchName = wstringtofilename(filename);
-    if (app.GetBootedFromDiscPatch() && app.IsFileInPatchList(pchName)) {
-        if (texturePack->hasFile(L"res/" + filename, false)) {
-            drive = texturePack->getPath(true, pchName);
-        } else {
-            drive = Minecraft::GetInstance()->skins->getDefault()->getPath(
-                true, pchName);
-            texturePack = Minecraft::GetInstance()->skins->getDefault();
-        }
-    } else
-#endif
         if (texturePack->hasFile(L"res/" + filename, false)) {
         drive = texturePack->getPath(true);
     } else {
@@ -157,42 +145,6 @@ void PreStitchedTextureMap::stitch() {
     stitchResult->writeAsPNG(L"debug.stitched_" + name + L".png");
     stitchResult->updateOnGPU();
 
-#if 0
-    // AP - alpha cut out is expensive on vita so we mark which icons actually
-    // require it
-    DWORD* data = (DWORD*)this->getStitchedTexture()->getData()->getBuffer();
-    int Width = this->getStitchedTexture()->getWidth();
-    int Height = this->getStitchedTexture()->getHeight();
-    for (AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end();
-         ++it) {
-        StitchedTexture* preStitched = (StitchedTexture*)it->second;
-
-        bool Found = false;
-        int u0 = preStitched->getU0() * Width;
-        int u1 = preStitched->getU1() * Width;
-        int v0 = preStitched->getV0() * Height;
-        int v1 = preStitched->getV1() * Height;
-
-        // check all the texels for this icon. If ANY are transparent we mark it
-        // as 'cut out'
-        for (int v = v0; v < v1; v += 1) {
-            for (int u = u0; u < u1; u += 1) {
-                // is this texel alpha value < 0.1
-                if ((data[v * Width + u] & 0xff000000) < 0x20000000) {
-                    // this texel is transparent. Mark the icon as such and bail
-                    preStitched->setFlags(Icon::IS_ALPHA_CUT_OUT);
-                    Found = true;
-                    break;
-                }
-            }
-
-            if (Found) {
-                // move onto the next icon
-                break;
-            }
-        }
-    }
-#endif
 }
 
 void PreStitchedTextureMap::makeTextureAnimated(TexturePack* texturePack,
@@ -220,7 +172,7 @@ void PreStitchedTextureMap::makeTextureAnimated(TexturePack* texturePack,
 
         Texture* first = frames->at(0);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         if (first->getWidth() != tex->getWidth() ||
             first->getHeight() != tex->getHeight()) {
             app.DebugPrintf("%ls - first w - %d, h - %d, tex w - %d, h - %d\n",
@@ -243,16 +195,11 @@ void PreStitchedTextureMap::makeTextureAnimated(TexturePack* texturePack,
 }
 
 StitchedTexture* PreStitchedTextureMap::getTexture(const std::wstring& name) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     app.DebugPrintf("Not implemented!\n");
     __debugbreak();
 #endif
     return NULL;
-#if 0
-	StitchedTexture *result = texturesByName.find(name)->second;
-	if (result == NULL) result = missingPosition;
-	return result;
-#endif
 }
 
 void PreStitchedTextureMap::cycleAnimationFrames() {
@@ -271,7 +218,7 @@ Icon* PreStitchedTextureMap::registerIcon(const std::wstring& name) {
     Icon* result = NULL;
     if (name.empty()) {
         app.DebugPrintf("Don't register NULL\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
         result = missingPosition;
@@ -282,7 +229,7 @@ Icon* PreStitchedTextureMap::registerIcon(const std::wstring& name) {
     if (it != texturesByName.end()) result = it->second;
 
     if (result == NULL) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("Could not find uv data for icon %ls\n", name.c_str());
         __debugbreak();
 #endif

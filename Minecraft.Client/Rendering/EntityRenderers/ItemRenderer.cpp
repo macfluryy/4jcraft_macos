@@ -12,9 +12,6 @@
 #include "../../GameState/Options.h"
 #include "../../Textures/TextureAtlas.h"
 
-#if 0
-extern IDirect3DDevice9* g_pD3DDevice;
-#endif
 
 ItemRenderer::ItemRenderer() : EntityRenderer() {
     random = new Random();
@@ -41,12 +38,6 @@ ResourceLocation* ItemRenderer::getTextureLocation(int iconType) {
     if (iconType == Icon::TYPE_TERRAIN) {
         return &TextureAtlas::LOCATION_BLOCKS;  // L"/terrain.png"));
     } else {
-#if 0
-        // 4J - make sure we've got linear sampling on minification here as
-        // non-mipmapped things like this currently default to having point
-        // sampling, which makes very small icons render rather badly
-        g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-#endif
         return &TextureAtlas::LOCATION_ITEMS;  // L"/gui/items.png"));
     }
 }
@@ -360,7 +351,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glPushMatrix();
         // 4J - original code left here for reference
         // 4jcraft: original code reused for proper lighting
-#if 1
 		glTranslatef((float)(x), (float)(y), 0.0f);
 		glScalef(fScaleX, fScaleY, 1.0f);
 		glTranslatef(-2.0f,3.0f, -3.0f + blitOffset);
@@ -369,22 +359,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glScalef(1.0f, 1.0f, -1.0f);
         glRotatef(180.0f + 30.0f, 1.0f, 0.0f, 0.0f);
         glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
-#else
-        glTranslatef(x, y, 0.0f);  // Translate to screen coords
-        glScalef(16.0f * fScaleX, 16.0f * fScaleY,
-                 1.0f);                  // Scale to 0 to 16*scale range
-        glTranslatef(0.5f, 0.5f, 0.0f);  // Translate to 0 to 1 range
-        glScalef(
-            0.55f, 0.55f,
-            -1.0f);  // Scale to occupy full -0.5 to 0.5 bounding region (just
-                     // touching top & bottom) 0.55 comes from
-                     // 1/(1+sqrt(2)/sqrt(3)) which is determined by the angles
-                     // that the cube is rotated in an orthographic projection
-        glRotatef(180.0f + 30.0f, 1.0f, 0.0f,
-                  0.0f);  // Rotate round x axis (centre at origin)
-        glRotatef(45.0f, 0.0f, 1.0f,
-                  0.0f);  // Rotate round y axis (centre at origin)
-#endif
                           // 4J-PB - pass the alpha value in - the grass block
                           // render has the top surface coloured differently to
                           // the rest of the block
@@ -430,16 +404,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         } else {
             textures->bindTexture(
                 &TextureAtlas::LOCATION_ITEMS);  // L"/gui/items.png"));
-#if 0
-                                                 //  4J - make sure we've got
-                                                 //  linear sampling on
-                                                 //  minification here as
-                                                 //  non-mipmapped things like
-                                                 //  this currently
-            // default to having point sampling, which makes very small icons
-            // render rather badly
-            g_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-#endif
         }
         MemSect(0);
 

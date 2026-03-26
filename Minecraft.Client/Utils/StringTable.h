@@ -2,13 +2,7 @@
 
 #include <cstdint>
 
-#if 0 || 0 || 0
-#define LOCALE_COUNT 21
-#elif 0
-#define LOCALE_COUNT 19
-#else
 #define LOCALE_COUNT 11
-#endif
 
 class StringTable {
 private:

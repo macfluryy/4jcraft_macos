@@ -315,7 +315,7 @@ void PlayerConnection::handleMovePlayer(
             //            System.out.println("Got position " + xt + ", " + yt +
             //            ", " + zt); System.out.println("Expected " + player->x
             //            + ", " + player->y + ", " + player->z);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(L"%ls moved wrongly!\n", player->name.c_str());
             app.DebugPrintf("Got position %f, %f, %f\n", xt, yt, zt);
             app.DebugPrintf("Expected %f, %f, %f\n", player->x, player->y,
@@ -340,7 +340,7 @@ void PlayerConnection::handleMovePlayer(
                 if (aboveGroundTickCount > 80) {
                     //                    logger.warning(player->name + " was
                     //                    kicked for floating too long!");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     wprintf(L"%ls was kicked for floating too long!\n",
                             player->name.c_str());
 #endif
@@ -622,44 +622,10 @@ void PlayerConnection::handleSetCarriedItem(
 
 void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
     // 4J - TODO
-#if 0
-	std::wstring message = packet->message;
-	if (message.length() > SharedConstants::maxChatLength)
-	{
-		disconnect(L"Chat message too long");
-		return;
-	}
-	message = message.trim();
-	for (int i = 0; i < message.length(); i++)
-	{
-		if (SharedConstants.acceptableLetters.indexOf(message.charAt(i)) < 0 && (int) message.charAt(i) < 32)
-		{
-			disconnect(L"Illegal characters in chat");
-			return;
-		}
-	}
-
-	if (message.startsWith("/"))
-	{
-		handleCommand(message);
-	} else {
-		message = "<" + player.name + "> " + message;
-		logger.info(message);
-		server.players.broadcastAll(new ChatPacket(message));
-	}
-	chatSpamTickCount += SharedConstants::TICKS_PER_SECOND;
-	if (chatSpamTickCount > SharedConstants::TICKS_PER_SECOND * 10)
-	{
-		disconnect("disconnect.spam");
-	}
-#endif
 }
 
 void PlayerConnection::handleCommand(const std::wstring& message) {
     // 4J - TODO
-#if 0
-	server.getCommandDispatcher().performCommand(player, message);
-#endif
 }
 
 void PlayerConnection::handleAnimate(std::shared_ptr<AnimatePacket> packet) {
@@ -779,7 +745,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
 
     if (packet->dataBytes == 0) {
         // Request for texture
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
 #endif
@@ -795,7 +761,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
         }
     } else {
         // Response with texture data
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received custom texture %ls\n",
                 packet->textureName.c_str());
 #endif
@@ -812,7 +778,7 @@ void PlayerConnection::handleTextureAndGeometry(
 
     if (packet->dwTextureBytes == 0) {
         // Request for texture and geometry
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
 #endif
@@ -852,7 +818,7 @@ void PlayerConnection::handleTextureAndGeometry(
         }
     } else {
         // Response with texture and geometry data
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"Server received custom texture %ls and geometry\n",
                 packet->textureName.c_str());
 #endif
@@ -861,7 +827,7 @@ void PlayerConnection::handleTextureAndGeometry(
 
         // add the geometry to the app list
         if (packet->dwBoxC != 0) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(L"Adding skin boxes for skin id %X, box count %d\n",
                     packet->dwSkinID, packet->dwBoxC);
 #endif
@@ -938,7 +904,7 @@ void PlayerConnection::handleTextureChange(
     switch (packet->action) {
         case TextureChangePacket::e_TextureChange_Skin:
             player->setCustomSkin(app.getSkinIdFromPath(packet->path));
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(L"Skin for server player %ls has changed to %ls (%d)\n",
                     player->name.c_str(), player->customTextureUrl.c_str(),
                     player->getPlayerDefaultSkin());
@@ -947,7 +913,7 @@ void PlayerConnection::handleTextureChange(
         case TextureChangePacket::e_TextureChange_Cape:
             player->setCustomCape(Player::getCapeIdFromPath(packet->path));
             // player->customTextureUrl2 = packet->path;
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(L"Cape for server player %ls has changed to %ls\n",
                     player->name.c_str(), player->customTextureUrl2.c_str());
 #endif
@@ -957,7 +923,7 @@ void PlayerConnection::handleTextureChange(
         packet->path.substr(0, 3).compare(L"def") != 0 &&
         !app.IsFileInMemoryTextures(packet->path)) {
         if (server->connection->addPendingTextureRequest(packet->path)) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"Sending texture packet to get custom skin %ls from player "
                 L"%ls\n",
@@ -980,7 +946,7 @@ void PlayerConnection::handleTextureChange(
 void PlayerConnection::handleTextureAndGeometryChange(
     std::shared_ptr<TextureAndGeometryChangePacket> packet) {
     player->setCustomSkin(app.getSkinIdFromPath(packet->path));
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     wprintf(
         L"PlayerConnection::handleTextureAndGeometryChange - Skin for server "
         L"player %ls has changed to %ls (%d)\n",
@@ -992,7 +958,7 @@ void PlayerConnection::handleTextureAndGeometryChange(
         packet->path.substr(0, 3).compare(L"def") != 0 &&
         !app.IsFileInMemoryTextures(packet->path)) {
         if (server->connection->addPendingTextureRequest(packet->path)) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"Sending texture packet to get custom skin %ls from player "
                 L"%ls\n",
@@ -1131,7 +1097,7 @@ void PlayerConnection::handleContainerClose(
     player->doCloseContainer();
 }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 void PlayerConnection::handleContainerSetSlot(
     std::shared_ptr<ContainerSetSlotPacket> packet) {
     if (packet->containerId == AbstractContainerMenu::CONTAINER_ID_CARRIED) {
@@ -1218,7 +1184,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
 
         if (item != NULL && item->id == Item::map_Id) {
             int mapScale = 3;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
             int scale = MapItemSavedData::MAP_SIZE * 2 * (1 << mapScale);
             int centreXC = (int)(Math::round(player->x / scale) * scale);
             int centreZC = (int)(Math::round(player->z / scale) * scale);
@@ -1394,7 +1360,7 @@ void PlayerConnection::handlePlayerInfo(
                 gameType = LevelSettings::validateGameType(gameType->getId());
                 if (serverPlayer->gameMode->getGameModeForPlayer() !=
                     gameType) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     wprintf(L"Setting %ls to game mode %d\n",
                             serverPlayer->name.c_str(), gameType);
 #endif
@@ -1409,7 +1375,7 @@ void PlayerConnection::handlePlayerInfo(
                             GameEventPacket::CHANGE_GAME_MODE,
                             gameType->getId())));
                 } else {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     wprintf(L"%ls already has game mode %d\n",
                             serverPlayer->name.c_str(), gameType);
 #endif
@@ -1566,47 +1532,6 @@ void PlayerConnection::handlePlayerAbilities(
 
 void PlayerConnection::handleCustomPayload(
     std::shared_ptr<CustomPayloadPacket> customPayloadPacket) {
-#if 0
-	if (CustomPayloadPacket.CUSTOM_BOOK_PACKET.equals(customPayloadPacket.identifier))
-	{
-		ByteArrayInputStream bais(customPayloadPacket->data);
-		DataInputStream input(&bais);
-		std::shared_ptr<ItemInstance> sentItem = Packet::readItem(input);
-
-		if (!WritingBookItem.makeSureTagIsValid(sentItem.getTag()))
-		{
-			throw new IOException("Invalid book tag!");
-		}
-
-		// make sure the sent item is the currently carried item
-		ItemInstance carried = player.inventory.getSelected();
-		if (sentItem != null && sentItem.id == Item.writingBook.id && sentItem.id == carried.id)
-		{
-			carried.addTagElement(WrittenBookItem.TAG_PAGES, sentItem.getTag().getList(WrittenBookItem.TAG_PAGES));
-		}
-	}
-	else if (CustomPayloadPacket.CUSTOM_BOOK_SIGN_PACKET.equals(customPayloadPacket.identifier))
-	{
-		DataInputStream input = new DataInputStream(new ByteArrayInputStream(customPayloadPacket.data));
-		ItemInstance sentItem = Packet.readItem(input);
-
-		if (!WrittenBookItem.makeSureTagIsValid(sentItem.getTag()))
-		{
-			throw new IOException("Invalid book tag!");
-		}
-
-		// make sure the sent item is the currently carried item
-		ItemInstance carried = player.inventory.getSelected();
-		if (sentItem != null && sentItem.id == Item.writtenBook.id && carried.id == Item.writingBook.id)
-		{
-			carried.addTagElement(WrittenBookItem.TAG_AUTHOR, new StringTag(WrittenBookItem.TAG_AUTHOR, player.getName()));
-			carried.addTagElement(WrittenBookItem.TAG_TITLE, new StringTag(WrittenBookItem.TAG_TITLE, sentItem.getTag().getString(WrittenBookItem.TAG_TITLE)));
-			carried.addTagElement(WrittenBookItem.TAG_PAGES, sentItem.getTag().getList(WrittenBookItem.TAG_PAGES));
-			carried.id = Item.writtenBook.id;
-		}
-	}
-	else
-#endif
     if (CustomPayloadPacket::TRADER_SELECTION_PACKET.compare(
             customPayloadPacket->identifier) == 0) {
         ByteArrayInputStream bais(customPayloadPacket->data);

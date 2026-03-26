@@ -10,19 +10,11 @@ class Minimap {
 private:
     static const int w = MapItem::IMAGE_WIDTH;
     static const int h = MapItem::IMAGE_HEIGHT;
-#if 0
-    static short LUT[256];  // 4J added
-#else
     static int LUT[256];  // 4J added
-#endif
     static bool genLUT;  // 4J added
     int renderCount;     // 4J added
     bool m_optimised;    // 4J Added
-#if 0
-    shortArray pixels;
-#else
     intArray pixels;
-#endif
     int mapTexture;
     Options* options;
     Font* font;

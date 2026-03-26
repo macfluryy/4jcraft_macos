@@ -93,7 +93,7 @@ void MultiPlayerLevel::tick() {
     setGameTime(getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
         // 4J: Debug setting added to keep it at day time
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
         bool freezeTime =
             app.DebugSettingsOn() &&
             app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
@@ -221,7 +221,7 @@ void MultiPlayerLevel::tick() {
         }
     }
 
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     static int updateTick = 0;
 
     if ((updateTick % 60) == 0) {
@@ -262,7 +262,7 @@ void MultiPlayerLevel::tick() {
 
 #endif
 
-#ifdef DATA_COMPRESSION_STATS
+#if defined(DATA_COMPRESSION_STATS)
     static int updateTick = 0;
 
     if ((updateTick % 60) == 0) {
@@ -294,7 +294,7 @@ void MultiPlayerLevel::tick() {
 
 #endif
 
-#ifdef BLOCK_COMPRESSION_STATS
+#if defined(BLOCK_COMPRESSION_STATS)
     static int updateTick = 0;
 
     if ((updateTick % 60) == 0) {
@@ -391,15 +391,9 @@ void MultiPlayerLevel::tickTiles() {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Ticking client side tiles");
-#if 0
-    // AP - see CustomSet.h for and explanation
-    for (int i = 0; i < chunksToPoll.end(); i += 1) {
-        ChunkPos cp = chunksToPoll.get(i);
-#else
     AUTO_VAR(itEndCtp, chunksToPoll.end());
     for (AUTO_VAR(it, chunksToPoll.begin()); it != itEndCtp; it++) {
         ChunkPos cp = *it;
-#endif
         int xo = cp.x * 16;
         int zo = cp.z * 16;
 

@@ -15,22 +15,10 @@ FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring& name,
 InputStream* FolderTexturePack::getResourceImplementation(
     const std::wstring& name)  // throws IOException
 {
-#if 0
-	final File file = new File(this.file, name.substring(1));
-	if (!file.exists()) {
-		throw new FileNotFoundException(name);
-	}
-
-	return new BufferedInputStream(new FileInputStream(file));
-#endif
 
     std::wstring wDrive = L"";
     // Make the content package point to to the UPDATE: drive is needed
-#if 0
-    wDrive = L"GAME:\\DummyTexturePack\\res";
-#else
     wDrive = L"Common\\DummyTexturePack\\res";
-#endif
     InputStream* resource = InputStream::getResourceAsStream(wDrive + name);
     // InputStream *stream =
     // DefaultTexturePack::class->getResourceAsStream(name); if (stream == NULL)
@@ -49,62 +37,18 @@ bool FolderTexturePack::hasFile(const std::wstring& name) {
 }
 
 bool FolderTexturePack::isTerrainUpdateCompatible() {
-#if 0
-	final File dir = new File(this.file, "textures/");
-	final boolean hasTexturesFolder = dir.exists() && dir.isDirectory();
-	final boolean hasOldFiles = hasFile("terrain.png") || hasFile("gui/items.png");
-	return hasTexturesFolder || !hasOldFiles;
-#endif
     return true;
 }
 
 std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
                                         const char* pchBDPatchFilename) {
     std::wstring wDrive;
-#if 0
-    wDrive = L"GAME:\\" + file->getPath() + L"\\";
-#else
     wDrive = L"Common\\" + file->getPath() + L"\\";
-#endif
     return wDrive;
 }
 
 void FolderTexturePack::loadUI() {
-#if 0
-    //"file://" + Drive + PathToXZP + "#" + PathInsideXZP
-
-    // L"file://game:/ui.xzp#skin_default.xur"
-
-    // Load new skin
-    if (hasFile(L"TexturePack.xzp")) {
-        constexpr int LOCATOR_SIZE =
-            256;  // Use this to allocate space to hold a ResourceLocator string
-        WCHAR szResourceLocator[LOCATOR_SIZE];
-
-        swprintf(szResourceLocator, LOCATOR_SIZE,
-                 L"file://%lsTexturePack.xzp#skin_Minecraft.xur",
-                 getPath().c_str());
-
-        XuiFreeVisuals(L"");
-        app.LoadSkin(szResourceLocator, NULL);  // L"TexturePack");
-        bUILoaded = true;
-        // CXuiSceneBase::GetInstance()->SetVisualPrefix(L"TexturePack");
-    }
-
-    AbstractTexturePack::loadUI();
-#endif
 }
 
 void FolderTexturePack::unloadUI() {
-#if 0
-    // Unload skin
-    if (bUILoaded) {
-        XuiFreeVisuals(L"TexturePack");
-        XuiFreeVisuals(L"");
-        CXuiSceneBase::GetInstance()->SetVisualPrefix(L"");
-        CXuiSceneBase::GetInstance()->SkinChanged(
-            CXuiSceneBase::GetInstance()->m_hObj);
-    }
-    AbstractTexturePack::unloadUI();
-#endif
 }

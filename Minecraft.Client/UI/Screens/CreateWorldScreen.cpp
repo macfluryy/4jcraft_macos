@@ -140,12 +140,6 @@ std::wstring CreateWorldScreen::findAvailableFolderName(
     LevelStorageSource* levelSource, const std::wstring& folder) {
     std::wstring folder2 = folder;  // 4J - copy input as it is const
 
-#if 0
-    while (levelSource->getDataTagFor(folder2) != NULL)
-	{
-        folder2 = folder2 + L"-";
-    }
-#endif
     return folder2;
 }
 
@@ -300,11 +294,6 @@ void CreateWorldScreen::buttonClicked(Button* button) {
             new MessageScreen(language->getElement(L"menu.generatingLevel")));
         // 4J Stu - This screen is not used, so removing this to stop the build
         // failing
-#if 0
-        minecraft->gameMode = new SurvivalMode(minecraft);
-        minecraft->selectLevel(resultFolder, nameEdit->getValue(), seedValue);
-        minecraft->setScreen(NULL);
-#endif
     } else if (button->id == 2) {
         if (gameMode == L"survival")
             gameMode = L"creative";

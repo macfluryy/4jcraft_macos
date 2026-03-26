@@ -1,9 +1,6 @@
 #pragma once
 #include "MobRenderer.h"
 
-#if 0
-class EnderDragon;
-#endif
 class DragonModel;
 
 class EnderDragonRenderer : public MobRenderer {

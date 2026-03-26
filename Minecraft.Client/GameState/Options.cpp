@@ -108,7 +108,7 @@ void Options::init() {
     advancedOpengl = false;
 
 // 4JCRAFT V-Sync / VSync
-#ifdef ENABLE_VSYNC
+#if defined(ENABLE_VSYNC)
     framerateLimit = 2;
 #else
     framerateLimit = 3;
@@ -198,19 +198,11 @@ void Options::setKey(int i, int key) {
 void Options::set(const Options::Option* item, float fVal) {
     if (item == Option::MUSIC) {
         music = fVal;
-#if 0
-        minecraft->soundEngine->updateMusicVolume(fVal * 2.0f);
-#else
         minecraft->soundEngine->updateMusicVolume(fVal);
-#endif
     }
     if (item == Option::SOUND) {
         sound = fVal;
-#if 0
-        minecraft->soundEngine->updateSoundEffectVolume(fVal * 2.0f);
-#else
         minecraft->soundEngine->updateSoundEffectVolume(fVal);
-#endif
     }
     if (item == Option::SENSITIVITY) {
         sensitivity = fVal;

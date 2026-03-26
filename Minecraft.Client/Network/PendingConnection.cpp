@@ -122,14 +122,6 @@ void PendingConnection::sendPreLoginResponse() {
         }
     }
 
-#if 0
-    if (false)//	server->onlineMode) // 4J - removed
-	{
-        loginKey = L"TOIMPLEMENT"; // 4J - todo Long.toHexString(random.nextLong());
-        connection->send( std::shared_ptr<PreLoginPacket>( new PreLoginPacket(loginKey, ugcXuids, ugcXuidCount, ugcFriendsOnlyBits, server->m_ugcPlayersVersion, szUniqueMapName,app.GetGameHostOption(eGameHostOption_All),hostIndex) ) );
-    }
-	else
-#endif
     {
         connection->send(std::shared_ptr<PreLoginPacket>(
             new PreLoginPacket(L"-", ugcXuids, ugcXuidCount, ugcFriendsOnlyBits,
@@ -168,27 +160,6 @@ void PendingConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
     // else
     {
         // 4J - removed
-#if 0 
-        new Thread() {
-            public void run() {
-                try {
-                    String key = loginKey;
-                    URL url = new URL("http://www.minecraft.net/game/checkserver.jsp?user=" + URLEncoder.encode(packet.userName, "UTF-8") + "&serverId=" + URLEncoder.encode(key, "UTF-8"));
-                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-                    String msg = br.readLine();
-                    br.close();
-                    if (msg.equals("YES")) {
-                        acceptedLogin = packet;
-                    } else {
-                        disconnect("Failed to verify username!");
-                    }
-                } catch (Exception e) {
-                    disconnect("Failed to verify username! [internal error " + e + "]");
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-#endif
     }
 }
 

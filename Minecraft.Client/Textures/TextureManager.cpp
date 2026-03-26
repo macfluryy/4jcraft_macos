@@ -88,14 +88,6 @@ std::vector<Texture*>* TextureManager::createTextures(
     if (texturePack->hasFile(L"res/" + filename, false)) {
         drive = texturePack->getPath(true);
     } else {
-#if 0
-        if (app.GetBootedFromDiscPatch()) {
-            const char* pchTextureName = wstringtofilename(filename);
-            char* pchUsrDir = app.GetBDUsrDirPath(pchTextureName);
-            std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
-            drive = wstr + L"\\Common\\res\\TitleUpdate\\";
-        } else
-#endif
         {
             drive =
                 Minecraft::GetInstance()->skins->getDefault()->getPath(true);
@@ -142,7 +134,7 @@ std::vector<Texture*>* TextureManager::createTextures(
             // Minecraft.getInstance().getLogger().warning("TextureManager.createTexture:
             // Skipping " + filename + " because of broken aspect ratio and not
             // animation");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"TextureManager.createTexture: Skipping %ls because of broken "
                 L"aspect ratio and not animation\n",

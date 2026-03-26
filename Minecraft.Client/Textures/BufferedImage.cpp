@@ -4,25 +4,6 @@
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 #include "BufferedImage.h"
 
-#if 0
-typedef struct {
-    unsigned int filesz;
-    unsigned short creator1;
-    unsigned short creator2;
-    unsigned int bmp_offset;
-    unsigned int header_sz;
-    unsigned int width;
-    unsigned int height;
-    unsigned short nplanes;
-    unsigned short bitspp;
-    unsigned int compress_type;
-    unsigned int bmp_bytesz;
-    int hres;
-    int vres;
-    unsigned int ncolors;
-    unsigned int nimpcolors;
-} BITMAPINFOHEADER;
-#endif
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];
@@ -54,53 +35,6 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
     wDrive = drive;
     if (wDrive.empty()) {
-#if 0
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-#ifdef _TU_BUILD
-            wDrive = L"UPDATE:\\";
-#else
-
-            wDrive = L"GAME:\\res\\TitleUpdate\\";
-#endif
-        } else {
-            wDrive = L"GAME:\\";
-        }
-#else
-
-#if 0
-
-        char* pchUsrDir;
-        if (app.GetBootedFromDiscPatch()) {
-            const char* pchTextureName = wstringtofilename(File);
-            pchUsrDir = app.GetBDUsrDirPath(pchTextureName);
-        } else {
-            pchUsrDir = getUsrDirPath();
-        }
-
-        std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
-
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-            wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
-        } else {
-            wDrive = wstr + L"/Common/";
-        }
-#elif 0
-
-        /*char *pchUsrDir=getUsrDirPath();
-
-        wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
-
-        if(bTitleUpdateTexture)
-        {
-                // Make the content package point to to the UPDATE: drive is
-        needed wDrive= wstr + L"\\Common\\res\\TitleUpdate\\";
-        }
-        else
-        {
-                wDrive= wstr + L"/Common/";
-        }*/
 
         if (bTitleUpdateTexture) {
             // Make the content package point to to the UPDATE: drive is needed
@@ -108,16 +42,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         } else {
             wDrive = L"Common/";
         }
-#else
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-            wDrive = L"Common\\res\\TitleUpdate\\";
-        } else {
-            wDrive = L"Common/";
-        }
-#endif
 
-#endif
     }
 
     for (int l = 0; l < 10; l++) {
@@ -139,7 +64,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
         const char* pchTextureName = wstringtofilename(name);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("\n--- Loading TEXTURE - %s\n\n", pchTextureName);
 #endif
 

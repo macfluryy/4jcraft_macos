@@ -374,22 +374,9 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 
                 if (dontDelayChunks ||
                     (canSendToPlayer &&
-#if 0
-                     // The network manager on xbox one doesn't currently split
-                     // data into slow & fast queues - since we can only measure
-                     // both together then bytes provides a better metric than
-                     // count of data items to determine if we should avoid
-                     // queueing too much up
-                     (g_NetworkManager.GetHostPlayer()->GetSendQueueSizeBytes(
-                          NULL, true) < 8192) &&
-#elif 0
-                     (g_NetworkManager.GetHostPlayer()
-                          ->GetSendQueueSizeMessages(NULL, true) < 4) &&
-#else
                      (connection->countDelayedPackets() < 4) &&
                      (g_NetworkManager.GetHostPlayer()
                           ->GetSendQueueSizeMessages(NULL, true) < 4) &&
-#endif
                      //(tickCount - lastBrupSendTickCount) >
                      //(connection->getNetworkPlayer()->GetCurrentRtt()>>4) &&
                      !connection->done)) {
@@ -521,7 +508,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
 }
 
 void ServerPlayer::doTickB() {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     // check if there's a debug dimension change requested
     // if(app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_GoToNether))
     //{
@@ -1332,17 +1319,11 @@ void ServerPlayer::awardStat(Stat* stat, byteArray param) {
     }
 
     if (!stat->awardLocallyOnly) {
-#if 1
         int count = *((int*)param.data);
         delete[] param.data;
 
         connection->send(std::shared_ptr<AwardStatPacket>(
             new AwardStatPacket(stat->id, count)));
-#else
-        connection->send(std::shared_ptr<AwardStatPacket>(
-            new AwardStatPacket(stat->id, param)));
-        // byteArray deleted in AwardStatPacket destructor.
-#endif
     } else
         delete[] param.data;
 }
@@ -1824,7 +1805,7 @@ void ServerPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item) {
         gameMode->getGameRules()->onCollectItem(item);
 }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 void ServerPlayer::debug_setPosition(double x, double y, double z, double nYRot,
                                      double nXRot) {
     connection->teleport(x, y, z, nYRot, nXRot);

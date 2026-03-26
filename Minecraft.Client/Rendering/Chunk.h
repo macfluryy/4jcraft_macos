@@ -27,7 +27,7 @@ public:
     static LevelRenderer* levelRenderer;
 
 private:
-#ifndef _LARGE_WORLDS
+#if !defined(_LARGE_WORLDS)
     static Tesselator* t;
 #else
     static thread_local uint8_t* m_tlsTileIds;
@@ -73,9 +73,6 @@ private:
 public:
     void makeCopyForRebuild(Chunk* source);
     void rebuild();
-#if 0
-    void rebuild_SPU();
-#endif  // 0
     float distanceToSqr(std::shared_ptr<Entity> player) const;
     float squishedDistanceToSqr(std::shared_ptr<Entity> player);
     void reset();

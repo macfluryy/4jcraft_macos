@@ -36,11 +36,9 @@ public:
          bool enforceUnicode, ResourceLocation* textureLocation, int cols,
          int rows, int charWidth, int charHeight,
          unsigned short charMap[] = NULL);
-#if 1
     // 4J Stu - This dtor clashes with one in xui! We never delete these anyway
     // so take it out for now. Can go back when we have got rid of XUI
     ~Font();
-#endif
     void renderFakeCB(IntBuffer* cb);  // 4J added
 
 private:

@@ -36,7 +36,7 @@ ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =
 ResourceLocation Gui::GUI_GUI_LOCATION = ResourceLocation(TN_GUI_GUI);
 ResourceLocation Gui::GUI_ICONS_LOCATION = ResourceLocation(TN_GUI_ICONS);
 
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
 #define RENDER_HUD 1
 #else
 #define RENDER_HUD 0
@@ -414,7 +414,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 
 // 		if (false) //(true)
 // 		{
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
         renderBossHealth();
 #endif
         // 		}
@@ -693,7 +693,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
             Lighting::turnOff();
             glDisable(GL_RESCALE_NORMAL);
         }
-#endif  // RENDER_HUD
+#endif
 
         // 4J - do render of crouched player. This code is largely taken from
         // the inventory render of the player, with some special hard-coded
@@ -739,11 +739,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 int xo = iSafezoneXHalf + 10;
                 int yo = iSafezoneTopYHalf + 10;
 
-#if 0
-                // align directly with corners, there are no safe zones on vita
-                xo = 10;
-                yo = 10;
-#endif
 
                 glPushMatrix();
                 glTranslatef((float)xo, (float)yo, 50);
@@ -851,7 +846,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
             font->draw(str, x, y, col);
         }
     }
-#endif  // RENDER_HUD
+#endif
 
     // 4J - added to disable blends, which we have enabled previously to allow
     // gui fading
@@ -899,7 +894,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
     //            64; font.draw(str, x + 1, y, 0xffffff);
     //        }
 
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
     MemSect(31);
     if (minecraft->options->renderDebug) {
         glPushMatrix();
@@ -1014,7 +1009,7 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
 
     lastTickA = a;
     // 4J Stu - This is now displayed in a xui scene
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     // Jukebox CD message
     if (overlayMessageTime > 0) {
         float t = overlayMessageTime - a;
@@ -1064,7 +1059,7 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
     glDisable(GL_ALPHA_TEST);
 
 // 4J Stu - We have moved the chat text to a xui
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     glPushMatrix();
     // 4J-PB we need to move this up a bit because we've moved the quick select
     // glTranslatef(0, ((float)screenHeight) - 48, 0);
@@ -1114,62 +1109,6 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
 #endif
 
     // 4J Stu - Copied over but not used
-#if 0
-	if (minecraft.player instanceof MultiplayerLocalPlayer && minecraft.options.keyPlayerList.isDown)
-	{
-		ClientConnection connection = ((MultiplayerLocalPlayer) minecraft.player).connection;
-		List<PlayerInfo> playerInfos = connection.playerInfos;
-		int slots = connection.maxPlayers;
-
-		int rows = slots;
-		int cols = 1;
-		while (rows > 20) {
-			cols++;
-			rows = (slots + cols - 1) / cols;
-		}
-
-		/*
-		* int fakeCount = 39; while (playerInfos.size() > fakeCount)
-		* playerInfos.remove(playerInfos.size() - 1); while (playerInfos.size() <
-		* fakeCount) playerInfos.add(new PlayerInfo("fiddle"));
-		*/
-
-		int slotWidth = 300 / cols;
-		if (slotWidth > 150) slotWidth = 150;
-
-		int xxo = (screenWidth - cols * slotWidth) / 2;
-		int yyo = 10;
-		fill(xxo - 1, yyo - 1, xxo + slotWidth * cols, yyo + 9 * rows, 0x80000000);
-		for (int i = 0; i < slots; i++) {
-			int xo = xxo + i % cols * slotWidth;
-			int yo = yyo + i / cols * 9;
-
-			fill(xo, yo, xo + slotWidth - 1, yo + 8, 0x20ffffff);
-			glColor4f(1, 1, 1, 1);
-			glEnable(GL_ALPHA_TEST);
-
-			if (i < playerInfos.size()) {
-				PlayerInfo pl = playerInfos.get(i);
-				font.drawShadow(pl.name, xo, yo, 0xffffff);
-				minecraft.textures.bind(minecraft.textures.loadTexture("/gui/icons.png"));
-				int xt = 0;
-				int yt = 0;
-				xt = 0;
-				yt = 0;
-				if (pl.latency < 0) yt = 5;
-				else if (pl.latency < 150) yt = 0;
-				else if (pl.latency < 300) yt = 1;
-				else if (pl.latency < 600) yt = 2;
-				else if (pl.latency < 1000) yt = 3;
-				else yt = 4;
-
-				blitOffset += 100;
-				blit(xo + slotWidth - 12, yo, 0 + xt * 10, 176 + yt * 8, 10, 8);
-				blitOffset -= 100;
-			}
-		}
-	}
-#endif
 
     if (bDisplayGui && bTwoPlayerSplitscreen) {
         // pop the scaled matrix
@@ -1246,8 +1185,9 @@ void Gui::renderVignette(float br, int w, int h) {
     if (br > 1) br = 1;
     tbr += (br - tbr) * 0.01f;
 
-#ifdef ENABLE_JAVA_GUIS  // 4J - removed - TODO put back when we have blend
-                         // functions implemented
+    // 4J removed this path; keep it gated until the blend-function path is
+    // intentionally restored for the Java-style UI.
+#if defined(ENABLE_JAVA_GUIS)
     glDisable(GL_DEPTH_TEST);
     glDepthMask(false);
     glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
@@ -1403,9 +1343,6 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
             } else {
                 maximumChars = 55;
             }
-#if 0
-            maximumChars = 90;
-#endif
             switch (XGetLanguage()) {
                 case XC_LANGUAGE_JAPANESE:
                 case XC_LANGUAGE_TCHINESE:
@@ -1415,9 +1352,6 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
                     } else {
                         maximumChars = 35;
                     }
-#if 0
-                    maximumChars = 55;
-#endif
                     break;
             }
             break;

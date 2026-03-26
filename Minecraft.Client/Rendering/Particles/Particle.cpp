@@ -148,18 +148,6 @@ void Particle::render(Tesselator* t, float a, float xa, float ya, float za,
         br = getBrightness(a);
     }
 
-#if 0
-    // AP - this will set up the 4 vertices in half the time.
-    t->tileParticleQuad((float)(x - xa * r - xa2 * r), (float)(y - ya * r),
-                        (float)(z - za * r - za2 * r), (float)(u1), (float)(v1),
-                        (float)(x - xa * r + xa2 * r), (float)(y + ya * r),
-                        (float)(z - za * r + za2 * r), (float)(u1), (float)(v0),
-                        (float)(x + xa * r + xa2 * r), (float)(y + ya * r),
-                        (float)(z + za * r + za2 * r), (float)(u0), (float)(v0),
-                        (float)(x + xa * r - xa2 * r), (float)(y - ya * r),
-                        (float)(z + za * r - za2 * r), (float)(u0), (float)(v1),
-                        rCol * br, gCol * br, bCol * br, alpha);
-#else
     t->color(rCol * br, gCol * br, bCol * br, alpha);
 
     t->vertexUV((float)(x - xa * r - xa2 * r), (float)(y - ya * r),
@@ -170,7 +158,6 @@ void Particle::render(Tesselator* t, float a, float xa, float ya, float za,
                 (float)(z + za * r + za2 * r), (float)(u0), (float)(v0));
     t->vertexUV((float)(x + xa * r - xa2 * r), (float)(y - ya * r),
                 (float)(z + za * r - za2 * r), (float)(u0), (float)(v1));
-#endif
 }
 
 int Particle::getParticleTexture() { return ParticleEngine::MISC_TEXTURE; }
@@ -185,7 +172,7 @@ void Particle::setTex(Textures* textures, Icon* icon) {
     } else if (getParticleTexture() == ParticleEngine::ITEM_TEXTURE) {
         tex = icon;
     } else {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         printf("Invalid call to Particle.setTex, use coordinate methods\n");
         __debugbreak();
 #endif
@@ -197,7 +184,7 @@ void Particle::setTex(Textures* textures, Icon* icon) {
 void Particle::setMiscTex(int slotIndex) {
     if (getParticleTexture() != ParticleEngine::MISC_TEXTURE &&
         getParticleTexture() != ParticleEngine::DRAGON_BREATH_TEXTURE) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         printf("Invalid call to Particle.setMixTex\n");
         __debugbreak();
         // throw new RuntimeException("Invalid call to Particle.setMiscTex");

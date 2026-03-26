@@ -63,12 +63,6 @@
 
 // #define DISABLE_SPU_CODE
 
-#if 0
-static LevelRenderer_cull_DataIn g_cullDataIn[4]
-    __attribute__((__aligned__(16)));
-static LevelRenderer_FindNearestChunk_DataIn g_findNearestChunkDataIn
-    __attribute__((__aligned__(16)));
-#endif
 
 ResourceLocation LevelRenderer::MOON_LOCATION =
     ResourceLocation(TN_TERRAIN_MOON);
@@ -82,7 +76,7 @@ ResourceLocation LevelRenderer::END_SKY_LOCATION =
 
 const unsigned int HALO_RING_RADIUS = 100;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 Chunk LevelRenderer::permaChunk[MAX_CONCURRENT_CHUNK_REBUILDS];
 C4JThread* LevelRenderer::rebuildThreads[MAX_CHUNK_REBUILD_THREADS];
 C4JThread::EventArray* LevelRenderer::s_rebuildCompleteEvents;
@@ -163,7 +157,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
 
     InitializeCriticalSection(&m_csDirtyChunks);
     InitializeCriticalSection(&m_csRenderableTileEntities);
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     InitializeCriticalSection(&m_csChunkFlags);
 #endif
 
@@ -274,12 +268,6 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
     destroyedTileManager = new DestroyedTileManager();
 
     dirtyChunksLockFreeStack.Initialize();
-#if 0
-    m_jobPort_CullSPU =
-        new C4JSpursJobQueue::Port("C4JSpursJob_LevelRenderer_cull");
-    m_jobPort_FindNearestChunk = new C4JSpursJobQueue::Port(
-        "C4JSpursJob_LevelRenderer_FindNearestChunk");
-#endif  // 0
 }
 
 void LevelRenderer::renderStars() {
@@ -439,9 +427,6 @@ void LevelRenderer::allChanged(int playerIndex) {
     int dist = (int)sqrtf((float)PLAYER_RENDER_AREA / (float)activePlayers());
 
     // AP - poor little Vita just can't cope with such a big area
-#if 0
-    dist = 10;
-#endif
 
     lastPlayerCount[playerIndex] = activePlayers();
 
@@ -775,25 +760,10 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
     return count;
 }
 
-#if 0
-#include <stdlib.h>
-
-// this is need to sort the chunks by depth
-typedef struct {
-    int Index;
-    float Depth;
-} SChunckSort;
-
-int compare(const void* a, const void* b) {
-    return (((SChunckSort*)a)->Depth - ((SChunckSort*)b)->Depth);
-}
-
-#endif
 
 int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     int playerIndex = mc->player->GetXboxPad();  // 4J added
 
-#if 1
     // 4J - cut down version, we're not using offsetted render lists, or a
     // sorted chunk list, anymore
     mc->gameRenderer->turnOnLightLayer(
@@ -806,34 +776,8 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     glPushMatrix();
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
-#if 0
-    // AP - also set the camera position so we can work out if a chunk is fogged
-    // or not
-    RenderManager.SetCameraPosition((float)-xOff, (float)-yOff, (float)-zOff);
-#endif
 
-#if 0 && !defined DISABLE_SPU_CODE
-    // pre- calc'd on the SPU
-    int count = 0;
-    waitForCull_SPU();
-    if (layer == 0) {
-        count = g_cullDataIn[playerIndex].numToRender_layer0;
-        RenderManager.CBuffCallMultiple(
-            g_cullDataIn[playerIndex].listArray_layer0, count);
-    } else  // layer == 1
-    {
-        count = g_cullDataIn[playerIndex].numToRender_layer1;
-        RenderManager.CBuffCallMultiple(
-            g_cullDataIn[playerIndex].listArray_layer1, count);
-    }
 
-#else  // 0
-
-#if 0
-    // AP - alpha cut out is expensive on vita. First render all the non-alpha
-    // cut outs
-    glDisable(GL_ALPHA_TEST);
-#endif
 
     bool first = true;
     int count = 0;
@@ -859,105 +803,12 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         count++;
     }
 
-#if 0
-    // AP - alpha cut out is expensive on vita. Now we render all the alpha cut
-    // outs
-    glEnable(GL_ALPHA_TEST);
-    RenderManager.StateSetForceLOD(
-        0);  // AP - force mipmapping off for cut outs
-    first = true;
-    pClipChunk = chunks[playerIndex].data;
-    emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
-    for (int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++) {
-        if (!pClipChunk->visible)
-            continue;  // This will be set if the chunk isn't visible, or isn't
-                       // compiled, or has both empty flags set
-        if (pClipChunk->globalIdx == -1)
-            continue;  // Not sure if we should ever encounter this... TODO
-                       // check
-        if ((globalChunkFlags[pClipChunk->globalIdx] & emptyFlag) == emptyFlag)
-            continue;  // Check that this particular layer isn't empty
-        if (!(globalChunkFlags[pClipChunk->globalIdx] &
-              LevelRenderer::CHUNK_FLAG_CUT_OUT))
-            continue;  // Does this chunk contain any cut out geometry
 
-        // List can be calculated directly from the chunk's global idex
-        int list = pClipChunk->globalIdx * 2 + layer;
-        list += chunkLists;
-
-        if (RenderManager.CBuffCallCutOut(list, first)) {
-            first = false;
-        }
-    }
-    RenderManager.StateSetForceLOD(-1);  // AP - back to normal mipmapping
-#endif
-
-#endif  // 0
 
     glPopMatrix();
     mc->gameRenderer->turnOffLightLayer(
         alpha);  // 4J - brought forward from 1.8.2
 
-#else
-    _renderChunks.clear();
-    // int p = 0;
-    int count = 0;
-    for (int i = from; i < to; i++) {
-        if (layer == 0) {
-            totalChunks++;
-            if (sortedChunks[playerIndex]->at(i)->emptyFlagSet(layer))
-                emptyChunks++;
-            else if (!sortedChunks[playerIndex]->at(i)->visible)
-                offscreenChunks++;
-            else
-                renderedChunks++;
-        }
-
-        //            if (!sortedChunks[i].empty[layer] &&
-        //            sortedChunks[i].visible &&
-        //            (sortedChunks[i].occlusion_visible)) {
-        if (!(sortedChunks[playerIndex]->at(i)->emptyFlagSet(layer) &&
-              sortedChunks[playerIndex]->at(i)->visible)) {
-            int list = sortedChunks[playerIndex]->at(i)->getList(layer);
-            if (list >= 0) {
-                _renderChunks.push_back(sortedChunks[playerIndex]->at(i));
-                count++;
-            }
-        }
-    }
-
-    std::shared_ptr<Mob> player = mc->cameraTargetPlayer;
-    double xOff = player->xOld + (player->x - player->xOld) * alpha;
-    double yOff = player->yOld + (player->y - player->yOld) * alpha;
-    double zOff = player->zOld + (player->z - player->zOld) * alpha;
-
-    int lists = 0;
-    for (int l = 0; l < RENDERLISTS_LENGTH; l++) {
-        renderLists[l].clear();
-    }
-
-    AUTO_VAR(itEnd, _renderChunks.end());
-    for (AUTO_VAR(it, _renderChunks.begin()); it != itEnd; it++) {
-        Chunk* chunk = *it;  //_renderChunks[i];
-
-        int list = -1;
-        for (int l = 0; l < lists; l++) {
-            if (renderLists[l].isAt(chunk->xRender, chunk->yRender,
-                                    chunk->zRender)) {
-                list = l;
-            }
-        }
-        if (list < 0) {
-            list = lists++;
-            renderLists[list].init(chunk->xRender, chunk->yRender,
-                                   chunk->zRender, xOff, yOff, zOff);
-        }
-
-        renderLists[list].add(chunk->getList(layer));
-    }
-
-    renderSameAsLast(layer, alpha);
-#endif
 
     return count;
 }
@@ -1052,10 +903,6 @@ void LevelRenderer::renderSky(float alpha) {
 
     glDepthMask(false);
 
-#if 0
-    // AP - alpha cut out is expensive on vita.
-    glDisable(GL_ALPHA_TEST);
-#endif
 
     glEnable(GL_FOG);
     glColor3f(sr, sg, sb);
@@ -1171,10 +1018,6 @@ void LevelRenderer::renderSky(float alpha) {
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_FOG);
 
-#if 0
-    // AP - alpha cut out is expensive on vita.
-    glDisable(GL_ALPHA_TEST);
-#endif
 
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
@@ -1193,41 +1036,6 @@ void LevelRenderer::renderSky(float alpha) {
         // 4J - can't work out what this big black box is for. Taking it out
         // until someone misses it... it causes a big black box to visible
         // appear in 3rd person mode whilst under the ground.
-#if 0
-		float ss = 1;
-		float yo = -(float) (yy + 65);
-		float y0 = -ss;
-		float y1 = yo;
-
-
-		t->begin();
-		t->color(0x000000, 255);
-		t->vertex(-ss, y1, ss);
-		t->vertex(+ss, y1, ss);
-		t->vertex(+ss, y0, ss);
-		t->vertex(-ss, y0, ss);
-
-		t->vertex(-ss, y0, -ss);
-		t->vertex(+ss, y0, -ss);
-		t->vertex(+ss, y1, -ss);
-		t->vertex(-ss, y1, -ss);
-
-		t->vertex(+ss, y0, -ss);
-		t->vertex(+ss, y0, +ss);
-		t->vertex(+ss, y1, +ss);
-		t->vertex(+ss, y1, -ss);
-
-		t->vertex(-ss, y1, -ss);
-		t->vertex(-ss, y1, +ss);
-		t->vertex(-ss, y0, +ss);
-		t->vertex(-ss, y0, -ss);
-
-		t->vertex(-ss, y0, -ss);
-		t->vertex(-ss, y0, +ss);
-		t->vertex(+ss, y0, +ss);
-		t->vertex(+ss, y0, -ss);
-		t->end();
-#endif
     }
 
     if (level[playerIndex]->dimension->hasGround()) {
@@ -1245,7 +1053,6 @@ void LevelRenderer::renderSky(float alpha) {
 }
 
 void LevelRenderer::renderHaloRing(float alpha) {
-#if !0 && !0 && !0
     if (!mc->level->dimension->isNaturalDimension()) return;
 
     glDisable(GL_ALPHA_TEST);
@@ -1291,7 +1098,6 @@ void LevelRenderer::renderHaloRing(float alpha) {
     glEnable(GL_ALPHA_TEST);
 
     glDisable(GL_FOG);
-#endif
 }
 
 void LevelRenderer::renderClouds(float alpha) {
@@ -1686,78 +1492,6 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
                 // geometry to get rid of seams. This is a huge amount more
                 // quads to render, so now using command buffers to render each
                 // section to cut CPU hit.
-#if 0
-                float xx = (float)(xPos * D);
-                float zz = (float)(zPos * D);
-                float xp = xx - xoffs;
-                float zp = zz - zoffs;
-
-                if (!pFrustumData->cubeInFrustum(0 + xp, 0 + yy, 0 + zp, 8 + xp,
-                                                 4 + yy, 8 + zp))
-                    continue;
-
-                glMatrixMode(GL_TEXTURE);
-                glLoadIdentity();
-                glTranslatef(xx / 256.0f + uo, zz / 256.0f + vo, 0);
-                glMatrixMode(GL_MODELVIEW);
-                glPushMatrix();
-                glTranslatef(xp, yy, zp);
-
-                glColor4f(cr, cg, cb, 1.0f);
-                if (noBFCMode) {
-                    // This is the more complex form of render the clouds, based
-                    // on the way that the original code picked which sides to
-                    // render, with backface culling disabled. This is to give a
-                    // more solid version of the clouds for when the player
-                    // might be inside them.
-                    bool draw[6] = {false, false, false, false, false, false};
-
-                    // These rules to decide which sides to draw are the same as
-                    // the original code below
-                    if (yy > -h - 1) draw[0] = true;
-                    if (yy <= h + 1) draw[1] = true;
-                    if (xPos > -1) draw[2] = true;
-                    if (xPos <= 1) draw[3] = true;
-                    if (zPos > -1) draw[4] = true;
-                    if (zPos <= 1) draw[5] = true;
-
-                    // Top and bottom just render when required
-                    if (draw[0]) glCallList(cloudList);
-                    if (draw[1]) glCallList(cloudList + 1);
-                    // For x facing sides, if we are actually in the clouds and
-                    // about to draw both sides of the x sides too, then do a
-                    // little offsetting here to avoid z fighting
-                    if (draw[0] && draw[1] && draw[2] && draw[3]) {
-                        glTranslatef(e, 0.0f, 0.0f);
-                        glCallList(cloudList + 2);
-                        glTranslatef(-e, 0.0f, 0.0f);
-                        glCallList(cloudList + 3);
-                    } else {
-                        if (draw[2]) glCallList(cloudList + 2);
-                        if (draw[3]) glCallList(cloudList + 3);
-                    }
-                    // For z facing sides, if we are actually in the clouds and
-                    // about to draw both sides of the z sides too, then do a
-                    // little offsetting here to avoid z fighting
-                    if (draw[0] && draw[1] && draw[4] && draw[5]) {
-                        glTranslatef(0.0f, 0.0f, e);
-                        glCallList(cloudList + 4);
-                        glTranslatef(0.0f, 0.0f, -e);
-                        glCallList(cloudList + 5);
-                    } else {
-                        if (draw[4]) glCallList(cloudList + 4);
-                        if (draw[5]) glCallList(cloudList + 5);
-                    }
-                } else {
-                    // Simpler form of rendering that we can do most of the
-                    // time, when we aren't potentially inside a cloud
-                    glCallList(cloudList + 6);
-                }
-                glPopMatrix();
-                glMatrixMode(GL_TEXTURE);
-                glLoadIdentity();
-                glMatrixMode(GL_MODELVIEW);
-#else
                 glDisable(GL_CULL_FACE);
                 t->begin();
                 float xx = (float)(xPos * D);
@@ -1889,7 +1623,6 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
                     }
                 }
                 t->end();
-#endif
             }
         }
     }
@@ -1908,7 +1641,7 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
 }
 
 bool LevelRenderer::updateDirtyChunks() {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     std::list<std::pair<ClipChunk*, int> > nearestClipChunks;
 #endif
 
@@ -1939,7 +1672,7 @@ bool LevelRenderer::updateDirtyChunks() {
         // See comment on dirtyChunksLockFreeStack.Push() regarding details of
         // this casting/subtracting -2.
         index = (size_t)dirtyChunksLockFreeStack.Pop();
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
         int oldIndex = index;
         index &= 0x0fffffff;  // remove the top bit that marked the chunk as
                               // non-critical
@@ -1962,7 +1695,7 @@ bool LevelRenderer::updateDirtyChunks() {
             }
             setGlobalChunkFlag(index - 2, CHUNK_FLAG_DIRTY);
 
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
             if (!(oldIndex & 0x10000000))  // was this chunk not marked as
                                            // non-critical. Ugh double negatives
             {
@@ -1978,61 +1711,8 @@ bool LevelRenderer::updateDirtyChunks() {
     if (dirtyChunkPresent) {
         lastDirtyChunkFound = System::currentTimeMillis();
         PIXBeginNamedEvent(0, "Finding nearest chunk\n");
-#if 0 && !defined DISABLE_SPU_CODE
-        // find the nearest chunk with a spu task, copy all the data over here
-        // for uploading to SPU
-        g_findNearestChunkDataIn.numGlobalChunks = getGlobalChunkCount();
-        g_findNearestChunkDataIn.pGlobalChunkFlags = globalChunkFlags;
-        g_findNearestChunkDataIn.onlyRebuild = onlyRebuild;
-        g_findNearestChunkDataIn.lowerOffset =
-            (int)&((LevelChunk*)0)
-                ->lowerBlocks;  // dodgy bit of class structure poking, as we
-                                // don't want to try and get the whole of
-                                // LevelChunk copmpiling on SPU
-        g_findNearestChunkDataIn.upperOffset =
-            (int)&((LevelChunk*)0)->upperBlocks;
-        g_findNearestChunkDataIn.xChunks = xChunks;
-        g_findNearestChunkDataIn.yChunks = yChunks;
-        g_findNearestChunkDataIn.zChunks = zChunks;
 
-        for (int i = 0; i < 4; i++) {
-            g_findNearestChunkDataIn.chunks[i] =
-                (LevelRenderer_FindNearestChunk_DataIn::ClipChunk*)chunks[i]
-                    .data;
-            g_findNearestChunkDataIn.chunkLengths[i] = chunks[i].length;
-            g_findNearestChunkDataIn.level[i] = level[i];
-            g_findNearestChunkDataIn.playerData[i].bValid =
-                mc->localplayers[i] != NULL;
-            if (mc->localplayers[i] != NULL) {
-                g_findNearestChunkDataIn.playerData[i].x =
-                    mc->localplayers[i]->x;
-                g_findNearestChunkDataIn.playerData[i].y =
-                    mc->localplayers[i]->y;
-                g_findNearestChunkDataIn.playerData[i].z =
-                    mc->localplayers[i]->z;
-            }
-            if (level[i] != NULL) {
-                g_findNearestChunkDataIn.multiplayerChunkCache[i].XZOFFSET =
-                    ((MultiPlayerChunkCache*)(level[i]->chunkSource))->XZOFFSET;
-                g_findNearestChunkDataIn.multiplayerChunkCache[i].XZSIZE =
-                    ((MultiPlayerChunkCache*)(level[i]->chunkSource))->XZSIZE;
-                g_findNearestChunkDataIn.multiplayerChunkCache[i].cache =
-                    (void**)((MultiPlayerChunkCache*)(level[i]->chunkSource))
-                        ->cache;
-            }
-        }
-
-        // 		assert(sizeof(LevelRenderer_FindNearestChunk_DataIn::Chunk)
-        // == sizeof(Chunk));
-        C4JSpursJob_LevelRenderer_FindNearestChunk findJob(
-            &g_findNearestChunkDataIn);
-        m_jobPort_FindNearestChunk->submitJob(&findJob);
-        m_jobPort_FindNearestChunk->waitForCompletion();
-        nearChunk = (ClipChunk*)g_findNearestChunkDataIn.nearChunk;
-        veryNearCount = g_findNearestChunkDataIn.veryNearCount;
-#else  // 0
-
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         int maxNearestChunks = MAX_CONCURRENT_CHUNK_REBUILDS;
         // 4J Stu - On XboxOne we should cut this down if in a constrained state
         // so the saving threads get more time
@@ -2091,7 +1771,7 @@ bool LevelRenderer::updateDirtyChunks() {
                             {
                                 considered++;
                                 // Is this chunk nearer than our nearest?
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                                 bool isNearer = nearestClipChunks.empty();
                                 AUTO_VAR(itNearest, nearestClipChunks.begin());
                                 for (; itNearest != nearestClipChunks.end();
@@ -2107,7 +1787,7 @@ bool LevelRenderer::updateDirtyChunks() {
                                 bool isNearer = distSqWeighted < minDistSq;
 #endif
 
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
                                 // AP - this will make sure that if a deferred
                                 // grouping has started, only critical chunks go
                                 // into that grouping, even if a non-critical
@@ -2143,7 +1823,7 @@ bool LevelRenderer::updateDirtyChunks() {
                                     if (!lc->isRenderChunkEmpty(y * 16)) {
                                         nearChunk = pClipChunk;
                                         minDistSq = distSqWeighted;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
                                         nearestClipChunks.insert(
                                             itNearest,
                                             std::pair<ClipChunk*, int>(
@@ -2162,7 +1842,7 @@ bool LevelRenderer::updateDirtyChunks() {
                                     }
                                 }
 
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
                                 // AP - is the chunk near and also critical
                                 if (distSq < 20 * 20 &&
                                     ((globalChunkFlags[pClipChunk->globalIdx] &
@@ -2180,12 +1860,11 @@ bool LevelRenderer::updateDirtyChunks() {
             }
             //			app.DebugPrintf("[%d,%d,%d]\n",nearestClipChunks.empty(),considered,wouldBeNearButEmpty);
         }
-#endif  // 0
         PIXEndNamedEvent();
     }
 
     Chunk* chunk = NULL;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     if (!nearestClipChunks.empty()) {
         int index = 0;
         for (AUTO_VAR(it, nearestClipChunks.begin());
@@ -2316,9 +1995,6 @@ bool LevelRenderer::updateDirtyChunks() {
             dirtyChunkPresent = false;
         }
         LeaveCriticalSection(&m_csDirtyChunks);
-#if 0
-        Sleep(5);
-#endif  // 0
         return false;
     }
 
@@ -2398,15 +2074,7 @@ void LevelRenderer::renderDestroyAnimation(Tesselator* t,
 
         glEnable(GL_ALPHA_TEST);
         t->begin();
-#if 0
-        // AP : fix for bug 4952. No amount of polygon offset will push this
-        // close enough to be seen above the second tile layer when looking
-        // straight down so just add on a little bit of y to fix this. hacky
-        // hacky
-        t->offset((float)-xo, (float)-yo + 0.01f, (float)-zo);
-#else
         t->offset((float)-xo, (float)-yo, (float)-zo);
-#endif
         t->noColor();
 
         AUTO_VAR(it, destroyingBlocks.begin());
@@ -2552,7 +2220,7 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                 // Therefore adding 2 to our index value here to move our valid
                 // range from 1 to something quite big + 2
                 if (index > -1) {
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
                     index += 2;
 
                     // AP - by the time we reach this function the area passed
@@ -2603,13 +2271,8 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                         (int*)(intptr_t)(uintptr_t)(index + 2));
 #endif
 
-#if 0
-                    PIXSetMarker(0, "Setting chunk %d %d %d dirty", x * 16,
-                                 y * 16, z * 16);
-#else
                     PIXSetMarkerDeprecated(0, "Setting chunk %d %d %d dirty",
                                            x * 16, y * 16, z * 16);
-#endif
                 }
                 //				setGlobalChunkFlag(x * 16, y *
                 // 16, z * 16, level, CHUNK_FLAG_DIRTY);
@@ -2675,94 +2338,10 @@ bool inline clip(float* bb, float* frustum) {
     return true;
 }
 
-#if 0
-int g_listArray_layer0[4][LevelRenderer_cull_DataIn::sc_listSize]
-    __attribute__((__aligned__(16)));  // 8000
-int g_listArray_layer1[4][LevelRenderer_cull_DataIn::sc_listSize]
-    __attribute__((__aligned__(16)));
-float g_zDepth_layer0[4][LevelRenderer_cull_DataIn::sc_listSize]
-    __attribute__((__aligned__(16)));  // 8000
-float g_zDepth_layer1[4][LevelRenderer_cull_DataIn::sc_listSize]
-    __attribute__((__aligned__(16)));
-
-volatile bool g_useIdent = false;
-volatile float g_maxDepthRender = 1000;
-volatile float g_maxHeightRender = -1000;
-volatile float g_offMulVal = 1;
-
-void LevelRenderer::cull_SPU(int playerIndex, Culler* culler, float a) {
-    if (m_bSPUCullStarted[playerIndex]) {
-        return;  // running already
-    }
-
-    FrustumCuller* fc = (FrustumCuller*)culler;
-    FrustumData* fd = fc->frustum;
-    float fdraw[6 * 4];
-    for (int i = 0; i < 6; i++) {
-        double fx = fd->m_Frustum[i][0];
-        double fy = fd->m_Frustum[i][1];
-        double fz = fd->m_Frustum[i][2];
-        fdraw[i * 4 + 0] = (float)fx;
-        fdraw[i * 4 + 1] = (float)fy;
-        fdraw[i * 4 + 2] = (float)fz;
-        fdraw[i * 4 + 3] = (float)(fd->m_Frustum[i][3] + (fx * -fc->xOff) +
-                                   (fy * -fc->yOff) + (fz * -fc->zOff));
-    }
-
-    memcpy(&g_cullDataIn[playerIndex].fdraw, fdraw, sizeof(fdraw));
-    g_cullDataIn[playerIndex].numClipChunks = chunks[playerIndex].length;
-    g_cullDataIn[playerIndex].pClipChunks =
-        (ClipChunk_SPU*)chunks[playerIndex].data;
-    g_cullDataIn[playerIndex].numGlobalChunks = getGlobalChunkCount();
-    g_cullDataIn[playerIndex].pGlobalChunkFlags = globalChunkFlags;
-    g_cullDataIn[playerIndex].chunkLists = chunkLists;
-    g_cullDataIn[playerIndex].listArray_layer0 =
-        g_listArray_layer0[playerIndex];
-    g_cullDataIn[playerIndex].listArray_layer1 =
-        g_listArray_layer1[playerIndex];
-    g_cullDataIn[playerIndex].zDepth_layer0 = g_zDepth_layer0[playerIndex];
-    g_cullDataIn[playerIndex].zDepth_layer1 = g_zDepth_layer1[playerIndex];
-    g_cullDataIn[playerIndex].maxDepthRender = g_maxDepthRender;
-    g_cullDataIn[playerIndex].maxHeightRender = g_maxHeightRender;
-
-    if (g_useIdent)
-        g_cullDataIn[playerIndex].clipMat =
-            Vectormath::Aos::Matrix4::identity();
-    else {
-        memcpy(&g_cullDataIn[playerIndex].clipMat, &fc->frustum->modl[0],
-               sizeof(float) * 16);
-        g_cullDataIn[playerIndex].clipMat[3][0] = -fc->xOff;
-        g_cullDataIn[playerIndex].clipMat[3][1] = -fc->yOff;
-        g_cullDataIn[playerIndex].clipMat[3][2] = -fc->zOff;
-    }
-
-    C4JSpursJob_LevelRenderer_cull cullJob(&g_cullDataIn[playerIndex]);
-    C4JSpursJob_LevelRenderer_zSort sortJob(&g_cullDataIn[playerIndex]);
-
-    m_jobPort_CullSPU->submitJob(&cullJob);
-    m_jobPort_CullSPU->submitSync();
-    // 	static int doSort = false;
-    // 	if(doSort)
-    {
-        m_jobPort_CullSPU->submitJob(&sortJob);
-    }
-    // 	doSort ^= 1;
-    m_bSPUCullStarted[playerIndex] = true;
-}
-void LevelRenderer::waitForCull_SPU() {
-    m_jobPort_CullSPU->waitForCompletion();
-    int playerIndex = mc->player->GetXboxPad();  // 4J added
-    m_bSPUCullStarted[playerIndex] = false;
-}
-#endif  // 0
 
 void LevelRenderer::cull(Culler* culler, float a) {
     int playerIndex = mc->player->GetXboxPad();  // 4J added
 
-#if 0 && !defined DISABLE_SPU_CODE
-    cull_SPU(playerIndex, culler, a);
-    return;
-#endif  // 0
 
     FrustumCuller* fc = (FrustumCuller*)culler;
     FrustumData* fd = fc->frustum;
@@ -3250,17 +2829,6 @@ void LevelRenderer::entityRemoved(std::shared_ptr<Entity> entity) {
 
 void LevelRenderer::skyColorChanged() {
     // 4J - no longer used
-#if 0
-	EnterCriticalSection(&m_csDirtyChunks);
-	for( int i = 0; i < getGlobalChunkCountForOverworld(); i++ )
-	{
-		if( ( globalChunkFlags[i] & CHUNK_FLAG_NOTSKYLIT ) == 0 )
-		{
-			globalChunkFlags[i] |= CHUNK_FLAG_DIRTY;
-		}
-	}
-	LeaveCriticalSection(&m_csDirtyChunks);
-#endif
 }
 
 void LevelRenderer::clear() { MemoryTracker::releaseLists(chunkLists); }
@@ -3727,11 +3295,11 @@ void LevelRenderer::setGlobalChunkFlags(int x, int y, int z, Level* level,
                                         unsigned char flags) {
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         EnterCriticalSection(&m_csChunkFlags);
 #endif
         globalChunkFlags[index] = flags;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         LeaveCriticalSection(&m_csChunkFlags);
 #endif
     }
@@ -3742,11 +3310,11 @@ void LevelRenderer::setGlobalChunkFlag(int index, unsigned char flag,
     unsigned char sflag = flag << shift;
 
     if (index != -1) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         EnterCriticalSection(&m_csChunkFlags);
 #endif
         globalChunkFlags[index] |= sflag;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         LeaveCriticalSection(&m_csChunkFlags);
 #endif
     }
@@ -3758,11 +3326,11 @@ void LevelRenderer::setGlobalChunkFlag(int x, int y, int z, Level* level,
     unsigned char sflag = flag << shift;
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         EnterCriticalSection(&m_csChunkFlags);
 #endif
         globalChunkFlags[index] |= sflag;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         LeaveCriticalSection(&m_csChunkFlags);
 #endif
     }
@@ -3774,11 +3342,11 @@ void LevelRenderer::clearGlobalChunkFlag(int x, int y, int z, Level* level,
     unsigned char sflag = flag << shift;
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         EnterCriticalSection(&m_csChunkFlags);
 #endif
         globalChunkFlags[index] &= ~sflag;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         LeaveCriticalSection(&m_csChunkFlags);
 #endif
     }
@@ -4000,7 +3568,7 @@ void LevelRenderer::DestroyedTileManager::tick() {
     LeaveCriticalSection(&m_csDestroyedTiles);
 }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 void LevelRenderer::staticCtor() {
     s_rebuildCompleteEvents =
         new C4JThread::EventArray(MAX_CHUNK_REBUILD_THREADS);
@@ -4017,15 +3585,6 @@ void LevelRenderer::staticCtor() {
             rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_A);
         else if ((i % 3) == 1) {
             rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_B);
-#if 0
-            rebuildThreads[i]->SetPriority(
-                THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also
-                                                // used for Matching 2, and that
-                                                // priority of that seems to be
-                                                // always at default no matter
-                                                // what we set it to. Prioritise
-                                                // this below Matching 2.
-#endif
         } else if ((i % 3) == 2)
             rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_C);
 
