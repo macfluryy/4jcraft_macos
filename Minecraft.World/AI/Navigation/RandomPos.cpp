@@ -2,16 +2,17 @@
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "RandomPos.h"
+#include <optional>
 
-Vec3* RandomPos::tempDir = Vec3::newPermanent(0, 0, 0);
+Vec3* RandomPos::tempDir = new Vec3(0, 0, 0);
 
-Vec3* RandomPos::getPos(std::shared_ptr<PathfinderMob> mob, int xzDist,
+std::optional<Vec3> RandomPos::getPos(std::shared_ptr<PathfinderMob> mob, int xzDist,
                         int yDist, int quadrant /*=-1*/)  // 4J - added quadrant
 {
     return generateRandomPos(mob, xzDist, yDist, NULL, quadrant);
 }
 
-Vec3* RandomPos::getPosTowards(std::shared_ptr<PathfinderMob> mob, int xzDist,
+std::optional<Vec3> RandomPos::getPosTowards(std::shared_ptr<PathfinderMob> mob, int xzDist,
                                int yDist, Vec3* towardsPos) {
     tempDir->x = towardsPos->x - mob->x;
     tempDir->y = towardsPos->y - mob->y;
@@ -19,7 +20,7 @@ Vec3* RandomPos::getPosTowards(std::shared_ptr<PathfinderMob> mob, int xzDist,
     return generateRandomPos(mob, xzDist, yDist, tempDir);
 }
 
-Vec3* RandomPos::getPosAvoid(std::shared_ptr<PathfinderMob> mob, int xzDist,
+std::optional<Vec3> RandomPos::getPosAvoid(std::shared_ptr<PathfinderMob> mob, int xzDist,
                              int yDist, Vec3* avoidPos) {
     tempDir->x = mob->x - avoidPos->x;
     tempDir->y = mob->y - avoidPos->y;
@@ -27,7 +28,7 @@ Vec3* RandomPos::getPosAvoid(std::shared_ptr<PathfinderMob> mob, int xzDist,
     return generateRandomPos(mob, xzDist, yDist, tempDir);
 }
 
-Vec3* RandomPos::generateRandomPos(std::shared_ptr<PathfinderMob> mob,
+std::optional<Vec3> RandomPos::generateRandomPos(std::shared_ptr<PathfinderMob> mob,
                                    int xzDist, int yDist, Vec3* dir,
                                    int quadrant /*=-1*/)  // 4J - added quadrant
 {
@@ -81,8 +82,8 @@ Vec3* RandomPos::generateRandomPos(std::shared_ptr<PathfinderMob> mob,
         }
     }
     if (hasBest) {
-        return Vec3::newTemp(xBest, yBest, zBest);
+        return Vec3(xBest, yBest, zBest);
     }
 
-    return NULL;
+    return std::nullopt;
 }

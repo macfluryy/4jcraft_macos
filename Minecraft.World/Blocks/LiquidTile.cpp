@@ -7,6 +7,7 @@
 #include "LiquidTile.h"
 #include "../Util/Facing.h"
 #include "../Util/SoundTypes.h"
+#include "Blocks/Material.h"
 
 const std::wstring LiquidTile::TEXTURE_LAVA_STILL = L"lava";
 const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
@@ -116,8 +117,8 @@ int LiquidTile::getResource(int data, Random* random, int playerBonusLevel) {
 
 int LiquidTile::getResourceCount(Random* random) { return 0; }
 
-Vec3* LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
-    Vec3* flow = Vec3::newTemp(0, 0, 0);
+Vec3 LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
+    Vec3 flow(0, 0, 0);
     int mid = getRenderedDepth(level, x, y, z);
     for (int d = 0; d < 4; d++) {
         int xt = x;
@@ -135,15 +136,15 @@ Vec3* LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
                 t = getRenderedDepth(level, xt, yt - 1, zt);
                 if (t >= 0) {
                     int dir = t - (mid - 8);
-                    *flow = flow->add((xt - x) * dir, (yt - y) * dir,
+                    flow = flow.add((xt - x) * dir, (yt - y) * dir,
                                       (zt - z) * dir);
                 }
             }
         } else {
             if (t >= 0) {
                 int dir = t - mid;
-                *flow =
-                    flow->add((xt - x) * dir, (yt - y) * dir, (zt - z) * dir);
+                flow =
+                    flow.add((xt - x) * dir, (yt - y) * dir, (zt - z) * dir);
             }
         }
     }
@@ -157,18 +158,19 @@ Vec3* LiquidTile::getFlow(LevelSource* level, int x, int y, int z) {
         if (ok || isSolidFace(level, x, y + 1, z + 1, 3)) ok = true;
         if (ok || isSolidFace(level, x - 1, y + 1, z, 4)) ok = true;
         if (ok || isSolidFace(level, x + 1, y + 1, z, 5)) ok = true;
-        if (ok) *flow = flow->normalize().add(0, -6, 0);
+        if (ok) flow = flow.normalize().add(0, -6, 0);
     }
-    *flow = flow->normalize();
+    flow = flow.normalize();
+
     return flow;
 }
 
 void LiquidTile::handleEntityInside(Level* level, int x, int y, int z,
                                     std::shared_ptr<Entity> e, Vec3* current) {
-    Vec3* flow = getFlow(level, x, y, z);
-    current->x += flow->x;
-    current->y += flow->y;
-    current->z += flow->z;
+    Vec3 flow = getFlow(level, x, y, z);
+    current->x += flow.x;
+    current->y += flow.y;
+    current->z += flow.z;
 }
 
 int LiquidTile::getTickDelay(Level* level) {
@@ -305,13 +307,13 @@ void LiquidTile::animateTick(Level* level, int x, int y, int z,
 
 double LiquidTile::getSlopeAngle(LevelSource* level, int x, int y, int z,
                                  Material* m) {
-    Vec3* flow = NULL;
+    Vec3 flow;
     if (m == Material::water)
-        flow = ((LiquidTile*)Tile::water)->getFlow(level, x, y, z);
+        flow = Tile::water->getFlow(level, x, y, z);
     if (m == Material::lava)
-        flow = ((LiquidTile*)Tile::lava)->getFlow(level, x, y, z);
-    if (flow->x == 0 && flow->z == 0) return -1000;
-    return atan2(flow->z, flow->x) - PI / 2;
+        flow = Tile::lava->getFlow(level, x, y, z);
+    if (flow.x == 0 && flow.z == 0) return -1000;
+    return atan2(flow.z, flow.x) - PI / 2;
 }
 
 void LiquidTile::onPlace(Level* level, int x, int y, int z) {

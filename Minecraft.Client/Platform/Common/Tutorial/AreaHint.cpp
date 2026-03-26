@@ -24,10 +24,12 @@ AreaHint::~AreaHint() { delete area; }
 
 int AreaHint::tick() {
     Minecraft* minecraft = Minecraft::GetInstance();
+    Vec3 player_pos = minecraft->player->getPos(1);
+
     if ((m_displayState == e_Tutorial_State_Any ||
          m_tutorial->getCurrentState() == m_displayState) &&
         m_hintNeeded &&
-        area->contains(minecraft->player->getPos(1)) == contains) {
+        area->contains(&player_pos) == contains) {
         if (m_completeState == e_Tutorial_State_None) {
             m_hintNeeded = false;
         } else if (m_tutorial->isStateCompleted(m_completeState)) {

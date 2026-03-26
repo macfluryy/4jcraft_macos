@@ -6,6 +6,7 @@
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
 #include <cstdint>
+#include <optional>
 
 class LivingEntity;
 class LightningBolt;
@@ -342,7 +343,7 @@ public:
     virtual void lerpTo(double x, double y, double z, float yRot, float xRot,
                         int steps);
     virtual float getPickRadius();
-    virtual Vec3* getLookAngle();
+    virtual std::optional<Vec3> getLookAngle();
     virtual void handleInsidePortal();
     virtual int getDimensionChangingDelay();
     virtual void lerpMotion(double xd, double yd, double zd);

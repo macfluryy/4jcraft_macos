@@ -25,8 +25,8 @@ AreaConstraint::~AreaConstraint() {
 
 bool AreaConstraint::isConstraintSatisfied(int iPad) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    return messageArea->contains(minecraft->localplayers[iPad]->getPos(1)) ==
-           contains;
+    Vec3 ipad_player = minecraft->localplayers[iPad]->getPos(1);
+    return messageArea->contains(&ipad_player) == contains;
 }
 
 bool AreaConstraint::isConstraintRestrictive(int iPad) {

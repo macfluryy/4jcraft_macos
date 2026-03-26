@@ -1884,7 +1884,7 @@ float Level::getSkyDarken(float a) {
     return br * 0.8f + 0.2f;
 }
 
-Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
+Vec3 Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
@@ -1932,7 +1932,7 @@ Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
         b = b * (1 - f) + 1 * f;
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 float Level::getTimeOfDay(float a) {
@@ -1963,7 +1963,7 @@ float Level::getSunAngle(float a) {
     return td * PI * 2;
 }
 
-Vec3* Level::getCloudColor(float a) {
+Vec3 Level::getCloudColor(float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2.0f + 0.5f;
@@ -2001,10 +2001,10 @@ Vec3* Level::getCloudColor(float a) {
         b = b * ba + mid * (1 - ba);
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
-Vec3* Level::getFogColor(float a) {
+Vec3 Level::getFogColor(float a) {
     float td = getTimeOfDay(a);
     return dimension->getFogColor(td, a);
 }

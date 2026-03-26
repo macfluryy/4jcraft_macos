@@ -25,7 +25,7 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
         player->yo + (player->y - player->yo) + 1.62 - player->heightOffset;
     double z = player->zo + (player->z - player->zo);
 
-    Vec3* from = Vec3::newTemp(x, y, z);
+    Vec3 from(x, y, z);
 
     float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
     float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
@@ -37,9 +37,9 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = Vec3::newTemp(xa * range, ya * range, za * range);
-    *to = to->add(from->x, from->y, from->z);
-    HitResult* hr = level->clip(from, to, true);
+    Vec3 to(xa * range, ya * range, za * range);
+    to = to.add(from.x, from.y, from.z);
+    HitResult* hr = level->clip(&from, &to, true);
     if (hr == NULL) return false;
 
     if (hr->type == HitResult::TILE) {
@@ -80,12 +80,12 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     if (hr == NULL) return itemInstance;
 
     // check entity collision
-    Vec3* b = player->getViewVector(a);
+    Vec3 b = player->getViewVector(a);
     bool hitEntity = false;
     float overlap = 1;
     std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
         player,
-        player->bb->expand(b->x * (range), b->y * (range), b->z * (range))
+        player->bb->expand(b.x * (range), b.y * (range), b.z * (range))
             ->grow(overlap, overlap, overlap));
     // for (int i = 0; i < objects.size(); i++) {
     for (AUTO_VAR(it, objects->begin()); it != objects->end(); ++it) {

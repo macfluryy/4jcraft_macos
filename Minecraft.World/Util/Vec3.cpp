@@ -34,6 +34,7 @@ void Vec3::ReleaseThreadStorage() {
 }
 
 Vec3* Vec3::newPermanent(double x, double y, double z) {
+    assert(0);
     return new Vec3(x, y, z);
 };
 
@@ -42,6 +43,7 @@ void Vec3::clearPool() {}
 void Vec3::resetPool() {}
 
 Vec3* Vec3::newTemp(double x, double y, double z) {
+    assert(0);
     ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
     Vec3* thisVec = &tls->pool[tls->poolPointer];
     thisVec->set(x, y, z);

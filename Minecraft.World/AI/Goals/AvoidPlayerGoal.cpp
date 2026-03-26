@@ -65,17 +65,17 @@ bool AvoidPlayerGoal::canUse() {
     }
 
     Vec3 avoid_pos(toAvoid.lock()->x, toAvoid.lock()->y, toAvoid.lock()->z);
-    Vec3* pos = RandomPos::getPosAvoid(
+    auto pos = RandomPos::getPosAvoid(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
         7, &avoid_pos);
-    if (pos == NULL) return false;
+    if (!pos.has_value()) return false;
     if (toAvoid.lock()->distanceToSqr(pos->x, pos->y, pos->z) <
         toAvoid.lock()->distanceToSqr(mob->shared_from_this()))
         return false;
     delete path;
     path = pathNav->createPath(pos->x, pos->y, pos->z);
     if (path == NULL) return false;
-    if (!path->endsInXZ(pos)) return false;
+    if (!path->endsInXZ(&*pos)) return false;
     return true;
 }
 

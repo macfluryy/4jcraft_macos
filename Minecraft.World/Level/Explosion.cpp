@@ -28,9 +28,6 @@ Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
 
 Explosion::~Explosion() {
     delete random;
-    for (AUTO_VAR(it, hitPlayers.begin()); it != hitPlayers.end(); ++it) {
-        delete it->second;
-    }
 }
 
 void Explosion::explode() {
@@ -165,7 +162,7 @@ void Explosion::explode() {
                 // app.DebugPrintf("Adding player knockback (%f,%f,%f)\n", xa *
                 // pow, ya * pow, za * pow);
                 hitPlayers.insert(playerVec3Map::value_type(
-                    player, Vec3::newPermanent(xa * pow, ya * pow, za * pow)));
+                    player, Vec3(xa * pow, ya * pow, za * pow)));
             }
         }
     }
@@ -283,10 +280,10 @@ void Explosion::finalizeExplosion(
 
 Explosion::playerVec3Map* Explosion::getHitPlayers() { return &hitPlayers; }
 
-Vec3* Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
+Vec3 Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
     AUTO_VAR(it, hitPlayers.find(player));
 
-    if (it == hitPlayers.end()) return Vec3::newTemp(0.0, 0.0, 0.0);
+    if (it == hitPlayers.end()) return Vec3(0.0, 0.0, 0.0);
 
     return it->second;
 }

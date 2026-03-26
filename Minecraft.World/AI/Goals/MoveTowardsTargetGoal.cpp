@@ -21,10 +21,10 @@ bool MoveTowardsTargetGoal::canUse() {
     if (target.lock()->distanceToSqr(mob->shared_from_this()) > within * within)
         return false;
     Vec3 towards(target.lock()->x, target.lock()->y, target.lock()->z);
-    Vec3* pos = RandomPos::getPosTowards(
+    auto pos = RandomPos::getPosTowards(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
         7, &towards);
-    if (pos == NULL) return false;
+    if (!pos.has_value()) return false;
     wantedX = pos->x;
     wantedY = pos->y;
     wantedZ = pos->z;

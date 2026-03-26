@@ -85,8 +85,9 @@ void ChangeStateConstraint::tick(int iPad) {
             break;
         }
     }
+    Vec3 ipad_player = minecraft->localplayers[iPad]->getPos(1);
     if (!m_bHasChanged && inASourceState &&
-        movementArea->contains(minecraft->localplayers[iPad]->getPos(1)) ==
+        movementArea->contains(&ipad_player) ==
             contains) {
         m_bHasChanged = true;
         m_changedFromState = m_tutorial->getCurrentState();
@@ -126,7 +127,7 @@ void ChangeStateConstraint::tick(int iPad) {
         }
     } else if (m_bHasChanged &&
                movementArea->contains(
-                   minecraft->localplayers[iPad]->getPos(1)) != contains) {
+                   &ipad_player) != contains) {
         m_bHasChanged = false;
         m_tutorial->changeTutorialState(m_changedFromState);
 

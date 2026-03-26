@@ -14,6 +14,7 @@
 #include "../../Util/SharedConstants.h"
 #include "EnderDragon.h"
 #include <limits>
+#include <optional>
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
@@ -309,12 +310,12 @@ void EnderDragon::aiStep() {
             double xP = 0.0;
             double yP = 0.0;
             double zP = 0.0;
-            Vec3* v = getHeadLookVector(1);  // getViewVector(1);
+            Vec3 v = getHeadLookVector(1);  // getViewVector(1);
             // app.DebugPrintf("View vector is (%f,%f,%f) - lsteps %d\n", v->x,
             // v->y, v->z, lSteps); unsigned int d = 0; for(unsigned int d = 1;
             // d < 3; ++d)
             {
-                Vec3 vN = Vec3{v->x, v->y, v->z}.normalize();
+                Vec3 vN = Vec3{v.x, v.y, v.z}.normalize();
                 vN.yRot(-PI / 4);
 
                 for (unsigned int i = 0; i < 8; ++i) {
@@ -746,10 +747,10 @@ void EnderDragon::aiStep() {
                 if (m_fireballCharge >= 20 &&
                     (angleDegs >= 0 && angleDegs < 10)) {
                     double d = 1;
-                    Vec3* v = getViewVector(1);
-                    float startingX = head->x - v->x * d;
+                    Vec3 v = getViewVector(1);
+                    float startingX = head->x - v.x * d;
                     float startingY = head->y + head->bbHeight / 2 + 0.5f;
-                    float startingZ = head->z - v->z * d;
+                    float startingZ = head->z - v.z * d;
 
                     double xdd = attackTarget->x - startingX;
                     double ydd =
@@ -1022,9 +1023,9 @@ void EnderDragon::findNewTarget() {
             // !m_holdingPatternClockwise;
 
             if (getSynchedAction() == e_EnderdragonAction_Takeoff) {
-                Vec3* v = getHeadLookVector(1);
+                Vec3 v = getHeadLookVector(1);
                 targetNodeIndex =
-                    findClosestNode(-v->x * 40, 105.0, -v->z * 40);
+                    findClosestNode(-v.x * 40, 105.0, -v.z * 40);
             } else {
                 if (random->nextInt(8) == 0) {
                     m_holdingPatternClockwise = !m_holdingPatternClockwise;
@@ -1488,24 +1489,24 @@ void EnderDragon::strafeAttackTarget() {
 
 void EnderDragon::navigateToNextPathNode() {
     if (m_currentPath != NULL && !m_currentPath->isDone()) {
-        Vec3* curr = m_currentPath->currentPos();
+        Vec3 curr = m_currentPath->currentPos();
 
         m_currentPath->next();
-        xTarget = curr->x;
+        xTarget = curr.x;
 
         if (getSynchedAction() == e_EnderdragonAction_LandingApproach &&
             m_currentPath->isDone()) {
             // When heading to the last node on the landing approach, we want
             // the yCoord to be exact
-            yTarget = curr->y;
+            yTarget = curr.y;
         } else {
             do {
-                yTarget = curr->y + random->nextFloat() * 20;
-            } while (yTarget < (curr->y));
+                yTarget = curr.y + random->nextFloat() * 20;
+            } while (yTarget < (curr.y));
         }
-        zTarget = curr->z;
-        app.DebugPrintf("Path node pos is (%f,%f,%f)\n", curr->x, curr->y,
-                        curr->z);
+        zTarget = curr.z;
+        app.DebugPrintf("Path node pos is (%f,%f,%f)\n", curr.x, curr.y,
+                        curr.z);
         app.DebugPrintf("Setting new target to (%f,%f,%f)\n", xTarget, yTarget,
                         zTarget);
     }
@@ -1846,8 +1847,8 @@ double EnderDragon::getHeadPartYRotDiff(int partIndex, doubleArray bodyPos,
     return result;
 }
 
-Vec3* EnderDragon::getHeadLookVector(float a) {
-    Vec3* result = NULL;
+Vec3 EnderDragon::getHeadLookVector(float a) {
+    Vec3 result;
 
     if (getSynchedAction() == e_EnderdragonAction_Landing ||
         getSynchedAction() == e_EnderdragonAction_Takeoff) {
@@ -1888,5 +1889,6 @@ Vec3* EnderDragon::getHeadLookVector(float a) {
     } else {
         result = getViewVector(a);
     }
+
     return result;
 }

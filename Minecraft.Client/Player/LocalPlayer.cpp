@@ -404,25 +404,25 @@ void LocalPlayer::aiStep() {
 
     if (abilities.flying)  // minecraft->options->isFlying )
     {
-        Vec3* viewVector = getViewVector(1.0f);
+        Vec3 viewVector = getViewVector(1.0f);
 
         // 4J-PB - To let the player build easily while flying, we need to
         // change this
 
 #ifdef _DEBUG_MENUS_ENABLED
         if (abilities.debugflying) {
-            flyX = (float)viewVector->x * input->ya;
-            flyY = (float)viewVector->y * input->ya;
-            flyZ = (float)viewVector->z * input->ya;
+            flyX = (float)viewVector.x * input->ya;
+            flyY = (float)viewVector.y * input->ya;
+            flyZ = (float)viewVector.z * input->ya;
         } else
 #endif
         {
             if (isSprinting()) {
                 // Accelrate up to full speed if we are sprinting, moving in the
                 // direction of the view vector
-                flyX = (float)viewVector->x * input->ya;
-                flyY = (float)viewVector->y * input->ya;
-                flyZ = (float)viewVector->z * input->ya;
+                flyX = (float)viewVector.x * input->ya;
+                flyY = (float)viewVector.y * input->ya;
+                flyZ = (float)viewVector.z * input->ya;
 
                 float scale = ((float)(SPRINT_DURATION - sprintTime)) / 10.0f;
                 scale = scale * scale;

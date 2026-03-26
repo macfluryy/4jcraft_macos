@@ -1,5 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "MinecartRenderer.h"
+#include <optional>
 #include "../Models/MinecartModel.h"
 #include "../../Textures/TextureAtlas.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
@@ -40,15 +41,15 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
 
     double r = 0.3f;
 
-    Vec3* p = cart->getPos(xx, yy, zz);
+    std::optional<Vec3> p = cart->getPos(xx, yy, zz);
 
     float xRot = cart->xRotO + (cart->xRot - cart->xRotO) * a;
 
-    if (p != NULL) {
-        Vec3* p0 = cart->getPosOffs(xx, yy, zz, r);
-        Vec3* p1 = cart->getPosOffs(xx, yy, zz, -r);
-        if (p0 == NULL) p0 = p;
-        if (p1 == NULL) p1 = p;
+    if (p.has_value()) {
+        auto p0 = cart->getPosOffs(xx, yy, zz, r);
+        auto p1 = cart->getPosOffs(xx, yy, zz, -r);
+        if (!p0.has_value()) p0 = p;
+        if (!p1.has_value()) p1 = p;
 
         x += p->x - xx;
         y += (p0->y + p1->y) / 2 - yy;

@@ -52,7 +52,7 @@ public:
     void stop();
 
 private:
-    Vec3* getTempMobPos();
+    Vec3 getTempMobPos();
     int getSurfaceY();
     bool canUpdatePath();
     bool isInLiquid();

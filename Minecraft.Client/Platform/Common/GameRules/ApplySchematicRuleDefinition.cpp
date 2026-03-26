@@ -12,7 +12,7 @@
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {
     m_levelGenOptions = levelGenOptions;
-    m_location = Vec3::newPermanent(0, 0, 0);
+    m_location = new Vec3(0, 0, 0);
     m_locationBox = NULL;
     m_totalBlocksChanged = 0;
     m_totalBlocksChangedLighting = 0;

@@ -300,8 +300,8 @@ bool Fireball::hurt(DamageSource* source, float damage) {
     markHurt();
 
     if (source->getEntity() != NULL) {
-        Vec3* lookAngle = source->getEntity()->getLookAngle();
-        if (lookAngle != NULL) {
+        auto lookAngle = source->getEntity()->getLookAngle();
+        if (lookAngle.has_value()) {
             xd = lookAngle->x;
             yd = lookAngle->y;
             zd = lookAngle->z;
@@ -309,6 +309,7 @@ bool Fireball::hurt(DamageSource* source, float damage) {
             yPower = yd * 0.1;
             zPower = zd * 0.1;
         }
+
         if (source->getEntity()->instanceof(eTYPE_LIVINGENTITY)) {
             owner =
                 std::dynamic_pointer_cast<LivingEntity>(source->getEntity());

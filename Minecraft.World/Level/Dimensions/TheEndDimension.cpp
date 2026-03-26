@@ -23,7 +23,7 @@ float TheEndDimension::getTimeOfDay(int64_t time, float a) const {
 
 float* TheEndDimension::getSunriseColor(float td, float a) { return NULL; }
 
-Vec3* TheEndDimension::getFogColor(float td, float a) const {
+Vec3 TheEndDimension::getFogColor(float td, float a) const {
     int fogColor = Minecraft::GetInstance()->getColourTable()->getColor(
         eMinecraftColour_End_Fog_Colour);  // 0xa080a0;
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
@@ -37,7 +37,7 @@ Vec3* TheEndDimension::getFogColor(float td, float a) const {
     g *= br * 0.0f + 0.15f;
     b *= br * 0.0f + 0.15f;
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 bool TheEndDimension::hasGround() { return false; }

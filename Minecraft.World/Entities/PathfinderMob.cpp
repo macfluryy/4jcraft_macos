@@ -120,18 +120,20 @@ void PathfinderMob::serverAiStep() {
         return;
     }
 
-    Vec3* target = path->currentPos(shared_from_this());
+    Vec3 target = path->currentPos(shared_from_this());
     double r = bbWidth * 2;
-    while (target != NULL && target->distanceToSqr(x, target->y, z) < r * r) {
+    while (target.distanceToSqr(x, target.y, z) < r * r) {
         path->next();
         if (path->isDone()) {
-            target = NULL;
             setPath(NULL);  // 4J - changed to setPath from path =
+            break;
         } else
             target = path->currentPos(shared_from_this());
     }
 
     jumping = false;
+    // 4jcraft - refactoring Vec3 shows this branch never hits
+    /*
     if (target != NULL) {
         double xd = target->x - x;
         double zd = target->z - z;
@@ -165,6 +167,7 @@ void PathfinderMob::serverAiStep() {
             jumping = true;
         }
     }
+    */
 
     if (attackTarget != NULL) {
         lookAt(attackTarget, 30, 30);

@@ -13,6 +13,8 @@
 #include "../../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "Minecart.h"
+#include <cstddef>
+#include <optional>
 #include "../../Util/SharedConstants.h"
 
 const int Minecart::EXITS[][2][3] = {
@@ -361,7 +363,7 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
                               double slideSpeed, int tile, int data) {
     fallDistance = 0;
 
-    Vec3* oldPos = getPos(x, y, z);
+    auto oldPos = getPos(x, y, z);
     y = yt;
 
     bool powerTrack = false;
@@ -489,8 +491,8 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
 
     applyNaturalSlowdown();
 
-    Vec3* newPos = getPos(x, y, z);
-    if (newPos != NULL && oldPos != NULL) {
+    auto newPos = getPos(x, y, z);
+    if (newPos.has_value() && oldPos.has_value()) {
         double speed = (oldPos->y - newPos->y) * 0.05;
 
         pow = sqrt(xd * xd + zd * zd);
@@ -549,7 +551,7 @@ void Minecart::applyNaturalSlowdown() {
     }
 }
 
-Vec3* Minecart::getPosOffs(double x, double y, double z, double offs) {
+std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z, double offs) {
     int xt = Mth::floor(x);
     int yt = Mth::floor(y);
     int zt = Mth::floor(z);
@@ -594,10 +596,11 @@ Vec3* Minecart::getPosOffs(double x, double y, double z, double offs) {
 
         return getPos(x, y, z);
     }
-    return NULL;
+
+    return std::nullopt;
 }
 
-Vec3* Minecart::getPos(double x, double y, double z) {
+std::optional<Vec3> Minecart::getPos(double x, double y, double z) {
     int xt = Mth::floor(x);
     int yt = Mth::floor(y);
     int zt = Mth::floor(z);
@@ -653,9 +656,10 @@ Vec3* Minecart::getPos(double x, double y, double z) {
         z = z0 + zD * progress;
         if (yD < 0) y += 1;
         if (yD > 0) y += 0.5;
-        return Vec3::newTemp(x, y, z);
+        return Vec3(x, y, z);
     }
-    return NULL;
+
+    return std::nullopt;
 }
 
 void Minecart::readAdditionalSaveData(CompoundTag* tag) {

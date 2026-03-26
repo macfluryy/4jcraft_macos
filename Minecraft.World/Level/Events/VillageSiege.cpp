@@ -4,6 +4,7 @@
 #include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "VillageSiege.h"
+#include <optional>
 
 VillageSiege::VillageSiege(Level* level) {
     hasSetupSiege = false;
@@ -108,8 +109,8 @@ bool VillageSiege::tryToSetupSiege() {
         }
         if (overlaps) return false;
 
-        Vec3* spawnPos = findRandomSpawnPos(spawnX, spawnY, spawnZ);
-        if (spawnPos == NULL) continue;
+        auto spawnPos = findRandomSpawnPos(spawnX, spawnY, spawnZ);
+        if (!spawnPos.has_value()) continue;
 
         nextSpawnTime = 0;
         siegeCount = 20;
@@ -119,8 +120,8 @@ bool VillageSiege::tryToSetupSiege() {
 }
 
 bool VillageSiege::trySpawn() {
-    Vec3* spawnPos = findRandomSpawnPos(spawnX, spawnY, spawnZ);
-    if (spawnPos == NULL) return false;
+    auto spawnPos = findRandomSpawnPos(spawnX, spawnY, spawnZ);
+    if (!spawnPos.has_value()) return false;
     std::shared_ptr<Zombie> mob;
     // try
     {
@@ -143,9 +144,9 @@ bool VillageSiege::trySpawn() {
     return true;
 }
 
-Vec3* VillageSiege::findRandomSpawnPos(int x, int y, int z) {
+std::optional<Vec3> VillageSiege::findRandomSpawnPos(int x, int y, int z) {
     std::shared_ptr<Village> _village = village.lock();
-    if (_village == NULL) return NULL;
+    if (_village == NULL) return std::nullopt;
 
     for (int i = 0; i < 10; ++i) {
         int xx = x + level->random->nextInt(16) - 8;
@@ -154,7 +155,8 @@ Vec3* VillageSiege::findRandomSpawnPos(int x, int y, int z) {
         if (!_village->isInside(xx, yy, zz)) continue;
         if (MobSpawner::isSpawnPositionOk(MobCategory::monster, level, xx, yy,
                                           zz))
-            return Vec3::newTemp(xx, yy, zz);
+            return Vec3(xx, yy, zz);
     }
-    return NULL;
+
+    return std::nullopt;
 }
