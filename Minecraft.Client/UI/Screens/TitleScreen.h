@@ -13,7 +13,12 @@ private:
     Button* multiplayerButton;
 
     // 4jcraft: panorama
-    void renderPanorama();
+    void renderPanorama(float a);
+    void renderSkybox(float a);
+    void rotateAndBlur(float a);
+    int viewportTexture;
+    float panoramaTimer;
+    std::wstring titlePanoramaPaths[6];
 
     // 4jcraft: taken from UIScene_MainMenu
     // 4J Added

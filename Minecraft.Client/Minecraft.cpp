@@ -1967,7 +1967,11 @@ void Minecraft::run_middle() {
                         player->ullButtonsPressed = 0LL;
                     } else if (screen != NULL) {
                         screen->updateEvents();
-                        screen->tick();
+                        // 4jcraft: this fixes the title screen panorama running
+                        // faster than it should
+                        if (!idx) {
+                            screen->tick();
+                        }
                     }
                 }
 
