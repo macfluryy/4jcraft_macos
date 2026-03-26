@@ -1,21 +1,22 @@
 #include "../Platform/stdafx.h"
 #include "FrustumData.h"
 
-float** m_Frustum;
+// float** m_Frustum;
 
 FrustumData::FrustumData() {
-    m_Frustum = new float*[16];
-    for (int i = 0; i < 16; i++) m_Frustum[i] = new float[16];
+    this->m_Frustum = new float*[6];
+    for (int i = 0; i < 6; i++) {
+        this->m_Frustum[i] = new float[4];
+    }
     proj = floatArray(16);
     modl = floatArray(16);
     clip = floatArray(16);
 }
 
 FrustumData::~FrustumData() {
-    delete[] proj.data;
-    delete[] modl.data;
-    delete[] clip.data;
-    for (int i = 0; i < 16; i++) delete[] m_Frustum[i];
+    for (int i = 0; i < 6; i++) {
+        delete[] m_Frustum[i];
+    }
     delete[] m_Frustum;
 }
 

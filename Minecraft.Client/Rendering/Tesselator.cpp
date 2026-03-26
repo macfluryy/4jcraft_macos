@@ -215,10 +215,15 @@ void Tesselator::end() {
             }
 #endif
         }
-        glDisableClientState(GL_VERTEX_ARRAY);
-        if (hasTexture) glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        if (hasColor) glDisableClientState(GL_COLOR_ARRAY);
-        if (hasNormal) glDisableClientState(GL_NORMAL_ARRAY);
+        // 4jcraft: gldisableclientstate breaks gl compat, commenting those lead
+        // to some weird glitches with input but.. somehow stopped one day so..
+        // just keep an eye on these incase mouse locking stops working outta
+        // nowhere (i blame opengl not me)
+        //
+        // glDisableClientState(GL_VERTEX_ARRAY); if (hasTexture)
+        // glDisableClientState(GL_TEXTURE_COORD_ARRAY); if (hasColor)
+        // glDisableClientState(GL_COLOR_ARRAY); if (hasNormal)
+        // glDisableClientState(GL_NORMAL_ARRAY);
     }
 
     clear();

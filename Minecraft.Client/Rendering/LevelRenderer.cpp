@@ -856,6 +856,10 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         if ((globalChunkFlags[pClipChunk->globalIdx] & emptyFlag) == emptyFlag)
             continue;  // Check that this particular layer isn't empty
 
+        glPushMatrix();
+
+        glTranslatef((float)pClipChunk->chunk->x, (float)pClipChunk->chunk->y,
+                     (float)pClipChunk->chunk->z);
         // List can be calculated directly from the chunk's global idex
         int list = pClipChunk->globalIdx * 2 + layer;
         list += chunkLists;
@@ -863,6 +867,8 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         if (RenderManager.CBuffCall(list, first)) {
             first = false;
         }
+
+        glPopMatrix();
         count++;
     }
 
@@ -2248,8 +2254,12 @@ bool LevelRenderer::updateDirtyChunks() {
                 //		int64_t startTime = System::currentTimeMillis();
 
                 // app.DebugPrintf("Rebuilding permaChunk %d\n", index);
-
+                Tesselator::getInstance()->offset(-permaChunk[index].x,
+                                                  -permaChunk[index].y,
+                                                  -permaChunk[index].z);
                 permaChunk[index].rebuild();
+
+                Tesselator::getInstance()->offset(0, 0, 0);
 
                 if (index != 0)
                     s_rebuildCompleteEvents->Set(
@@ -2303,7 +2313,10 @@ bool LevelRenderer::updateDirtyChunks() {
         //		static int64_t totalTime = 0;
         //		static int64_t countTime = 0;
         //		int64_t startTime = System::currentTimeMillis();
+        Tesselator::getInstance()->offset(
+            -permaChunk[index].x, -permaChunk[index].y, -permaChunk[index].z);
         permaChunk.rebuild();
+        Tesselator::getInstance()->offset(0, 0, 0);
         //		int64_t endTime = System::currentTimeMillis();
         //		totalTime += (endTime - startTime);
         //		countTime++;
@@ -4039,10 +4052,12 @@ int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
 
     while (true) {
         s_activationEventA[index]->WaitForSignal(INFINITE);
-
+        Tesselator* t = Tesselator::getInstance();
+        Tesselator::getInstance()->offset(
+            -permaChunk[index].x, -permaChunk[index].y, -permaChunk[index].z);
         // app.DebugPrintf("Rebuilding permaChunk %d\n", index + 1);
         permaChunk[index + 1].rebuild();
-
+        Tesselator::getInstance()->offset(0, 0, 0);
         // Inform the producer thread that we are done with this chunk
         s_rebuildCompleteEvents->Set(index);
     }
