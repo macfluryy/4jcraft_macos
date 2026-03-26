@@ -12,7 +12,7 @@
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {
     m_levelGenOptions = levelGenOptions;
-    m_location = new Vec3(0, 0, 0);
+    m_location = Vec3(0, 0, 0);
     m_locationBox = NULL;
     m_totalBlocksChanged = 0;
     m_totalBlocksChangedLighting = 0;
@@ -26,7 +26,6 @@ ApplySchematicRuleDefinition::~ApplySchematicRuleDefinition() {
     app.DebugPrintf("Deleting ApplySchematicRuleDefinition.\n");
     if (!m_completed) m_levelGenOptions->releaseSchematicFile(m_schematicName);
     m_schematic = NULL;
-    delete m_location;
 }
 
 void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream* dos,
@@ -36,11 +35,11 @@ void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream* dos,
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_filename);
     dos->writeUTF(m_schematicName);
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_x);
-    dos->writeUTF(_toString(m_location->x));
+    dos->writeUTF(_toString(m_location.x));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_y);
-    dos->writeUTF(_toString(m_location->y));
+    dos->writeUTF(_toString(m_location.y));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_z);
-    dos->writeUTF(_toString(m_location->z));
+    dos->writeUTF(_toString(m_location.z));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_rot);
 
     switch (m_rotation) {
@@ -76,19 +75,19 @@ void ApplySchematicRuleDefinition::addAttribute(
             m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
         }
     } else if (attributeName.compare(L"x") == 0) {
-        m_location->x = _fromString<int>(attributeValue);
-        if (((int)abs(m_location->x)) % 2 != 0) m_location->x -= 1;
+        m_location.x = _fromString<int>(attributeValue);
+        if (((int)abs(m_location.x)) % 2 != 0) m_location.x -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // x=%f\n",m_location->x);
     } else if (attributeName.compare(L"y") == 0) {
-        m_location->y = _fromString<int>(attributeValue);
-        if (((int)abs(m_location->y)) % 2 != 0) m_location->y -= 1;
-        if (m_location->y < 0) m_location->y = 0;
+        m_location.y = _fromString<int>(attributeValue);
+        if (((int)abs(m_location.y)) % 2 != 0) m_location.y -= 1;
+        if (m_location.y < 0) m_location.y = 0;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // y=%f\n",m_location->y);
     } else if (attributeName.compare(L"z") == 0) {
-        m_location->z = _fromString<int>(attributeValue);
-        if (((int)abs(m_location->z)) % 2 != 0) m_location->z -= 1;
+        m_location.z = _fromString<int>(attributeValue);
+        if (((int)abs(m_location.z)) % 2 != 0) m_location.z -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // z=%f\n",m_location->z);
     } else if (attributeName.compare(L"rot") == 0) {
@@ -133,23 +132,23 @@ void ApplySchematicRuleDefinition::updateLocationBox() {
 
     m_locationBox = AABB::newPermanent(0, 0, 0, 0, 0, 0);
 
-    m_locationBox->x0 = m_location->x;
-    m_locationBox->y0 = m_location->y;
-    m_locationBox->z0 = m_location->z;
+    m_locationBox->x0 = m_location.x;
+    m_locationBox->y0 = m_location.y;
+    m_locationBox->z0 = m_location.z;
 
-    m_locationBox->y1 = m_location->y + m_schematic->getYSize();
+    m_locationBox->y1 = m_location.y + m_schematic->getYSize();
 
     switch (m_rotation) {
         case ConsoleSchematicFile::eSchematicRot_90:
         case ConsoleSchematicFile::eSchematicRot_270:
-            m_locationBox->x1 = m_location->x + m_schematic->getZSize();
-            m_locationBox->z1 = m_location->z + m_schematic->getXSize();
+            m_locationBox->x1 = m_location.x + m_schematic->getZSize();
+            m_locationBox->z1 = m_location.z + m_schematic->getXSize();
             break;
         case ConsoleSchematicFile::eSchematicRot_0:
         case ConsoleSchematicFile::eSchematicRot_180:
         default:
-            m_locationBox->x1 = m_location->x + m_schematic->getXSize();
-            m_locationBox->z1 = m_location->z + m_schematic->getZSize();
+            m_locationBox->x1 = m_location.x + m_schematic->getXSize();
+            m_locationBox->z1 = m_location.z + m_schematic->getZSize();
             break;
     };
 }

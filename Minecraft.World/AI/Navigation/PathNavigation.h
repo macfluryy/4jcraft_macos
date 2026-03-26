@@ -14,7 +14,7 @@ private:
     bool avoidSun;
     int _tick;
     int lastStuckCheck;
-    Vec3* lastStuckCheckPos;
+    Vec3 lastStuckCheckPos;
 
     bool _canPassDoors;
     bool _canOpenDoors;

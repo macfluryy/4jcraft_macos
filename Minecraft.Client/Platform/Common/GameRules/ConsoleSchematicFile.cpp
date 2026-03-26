@@ -155,8 +155,7 @@ void ConsoleSchematicFile::load(DataInputStream* dis) {
                 // app.DebugPrintf(1,"Loaded entity type %d at
                 // (%f,%f,%f)\n",(int)type,x,y,z);
 #endif
-                m_entities.push_back(std::pair<Vec3*, CompoundTag*>(
-                    new Vec3(x, y, z), (CompoundTag*)eTag->copy()));
+                m_entities.push_back(std::pair<Vec3, CompoundTag*>(Vec3(x, y, z), (CompoundTag*)eTag->copy()));
             }
         }
         delete tag;
@@ -500,12 +499,12 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
         }
     }
     for (AUTO_VAR(it, m_entities.begin()); it != m_entities.end();) {
-        Vec3* source = it->first;
+        Vec3 source = it->first;
 
-        double targetX = source->x;
-        double targetY = source->y + destinationBox->y0;
-        double targetZ = source->z;
-        schematicCoordToChunkCoord(destinationBox, source->x, source->z, rot,
+        double targetX = source.x;
+        double targetY = source.y + destinationBox->y0;
+        double targetZ = source.z;
+        schematicCoordToChunkCoord(destinationBox, source.x, source.z, rot,
                                    targetX, targetZ);
 
         // Add 0.01 as the AABB::contains function returns false if a value is

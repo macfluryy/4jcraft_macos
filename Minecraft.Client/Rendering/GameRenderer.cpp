@@ -90,7 +90,7 @@ GameRenderer::GameRenderer(Minecraft* mc) {
     tickSmoothYO = 0;
     lastTickA = 0;
 
-    cameraPos = new Vec3(0.0f, 0.0f, 0.0f);
+    cameraPos = Vec3(0.0f, 0.0f, 0.0f);
 
     fovOffset = 0;
     fovOffsetO = 0;
@@ -1370,10 +1370,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             // Gameplay: Items and mobs not belonging to end world are
             // disappearing when Enderdragon is damaged.
             Vec3 cameraPosTemp = cameraEntity->getPos(a);
-            cameraPos->x = cameraPosTemp.x;
-            cameraPos->y = cameraPosTemp.y;
-            cameraPos->z = cameraPosTemp.z;
-            levelRenderer->renderEntities(cameraPos, frustum, a);
+            cameraPos.x = cameraPosTemp.x;
+            cameraPos.y = cameraPosTemp.y;
+            cameraPos.z = cameraPosTemp.z;
+            levelRenderer->renderEntities(&cameraPos, frustum, a);
 #ifdef __PSVITA__
             // AP - make sure we're using the Alpha cut out effect for particles
             glEnable(GL_ALPHA_TEST);
