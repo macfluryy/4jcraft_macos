@@ -1349,7 +1349,8 @@ void Gui::renderSlot(int slot, int x, int y, float a) {
     }
 
     itemRenderer->renderAndDecorateItem(minecraft->font, minecraft->textures,
-                                        item, x, y);
+                                        item, x, y, 1.0f, 1.0f, 1.0f,
+                                        item->isFoil(), false);
 
     if (pop > 0) {
         glPopMatrix();
