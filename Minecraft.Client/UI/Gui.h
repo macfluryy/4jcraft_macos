@@ -34,6 +34,10 @@ private:
     float lastTickA;
     float fAlphaIncrementPerCent;
 
+    // 4jcraft: backported item switch tooltip display from 1.6.4
+    int remainingHighlightTicks;
+    std::shared_ptr<ItemInstance> highlightingItemStack;
+
 public:
     static float currentGuiBlendFactor;  // 4J added
     static float currentGuiScaleFactor;  // 4J added
