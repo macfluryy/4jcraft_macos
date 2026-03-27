@@ -4,6 +4,12 @@
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 #include "BufferedImage.h"
 
+#if defined(__linux__)
+#include <unistd.h>
+#endif
+#include <vector>
+#include <string>
+
 #ifdef _XBOX
 typedef struct {
     unsigned int filesz;
@@ -28,7 +34,7 @@ BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];
 
     for (int i = 1; i < 10; i++) {
-        data[i] = NULL;
+        data[i] = nullptr;
     }
     this->width = width;
     this->height = height;
@@ -43,136 +49,125 @@ void BufferedImage::ByteFlip4(unsigned int& data) {
 // the compression method. Compression method 3 is a 32-bit image with only
 // 24-bits used (ie no alpha channel) whereas method 0 is a full 32-bit image
 // with a valid alpha channel.
+
+// 4jcraft: mostly rewrote this function
 BufferedImage::BufferedImage(const std::wstring& File,
-                             bool filenameHasExtension /*=false*/,
-                             bool bTitleUpdateTexture /*=false*/,
-                             const std::wstring& drive /*=L""*/) {
-    HRESULT hr;
-    std::wstring wDrive;
-    std::wstring filePath;
-    filePath = File;
+                             bool filenameHasExtension,
+                             bool bTitleUpdateTexture,
+                             const std::wstring& drive) {
+    HRESULT hr = -1;
+    std::wstring filePath = File;
 
-    wDrive = drive;
-    if (wDrive.empty()) {
-#ifdef _XBOX
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-#ifdef _TU_BUILD
-            wDrive = L"UPDATE:\\";
-#else
+    // turn that \ upside down! (grace ref)
+    for (size_t i = 0; i < filePath.length(); ++i) {
+        if (filePath[i] == L'\\') filePath[i] = L'/';
+    }
+    for (int l = 0; l < 10; l++) data[l] = nullptr;
 
-            wDrive = L"GAME:\\res\\TitleUpdate\\";
-#endif
-        } else {
-            wDrive = L"GAME:\\";
+    // clean the filename
+    std::wstring baseName = filePath;
+    if (!filenameHasExtension) {
+        if (baseName.size() > 4 &&
+            baseName.substr(baseName.size() - 4) == L".png") {
+            baseName = baseName.substr(0, baseName.size() - 4);
         }
-#else
-
-#ifdef __PS3__
-
-        char* pchUsrDir;
-        if (app.GetBootedFromDiscPatch()) {
-            const char* pchTextureName = wstringtofilename(File);
-            pchUsrDir = app.GetBDUsrDirPath(pchTextureName);
-        } else {
-            pchUsrDir = getUsrDirPath();
-        }
-
-        std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
-
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-            wDrive = wstr + L"\\Common\\res\\TitleUpdate\\";
-        } else {
-            wDrive = wstr + L"/Common/";
-        }
-#elif __PSVITA__
-
-        /*char *pchUsrDir=getUsrDirPath();
-
-        wstring wstr (pchUsrDir, pchUsrDir+strlen(pchUsrDir));
-
-        if(bTitleUpdateTexture)
-        {
-                // Make the content package point to to the UPDATE: drive is
-        needed wDrive= wstr + L"\\Common\\res\\TitleUpdate\\";
-        }
-        else
-        {
-                wDrive= wstr + L"/Common/";
-        }*/
-
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-            wDrive = L"Common\\res\\TitleUpdate\\";
-        } else {
-            wDrive = L"Common/";
-        }
-#else
-        if (bTitleUpdateTexture) {
-            // Make the content package point to to the UPDATE: drive is needed
-            wDrive = L"Common\\res\\TitleUpdate\\";
-        } else {
-            wDrive = L"Common/";
-        }
-#endif
-
-#endif
     }
 
+    // avoid // mess
+    while (!baseName.empty() && baseName[0] == L'/')
+        baseName = baseName.substr(1);
+    if (baseName.find(L"res/") == 0) baseName = baseName.substr(4);
+
+    // bad code alert
+    // loops through stuff on the drives because i don't fucking know what 4j
+    // did with the paths and i don't to break it..
     for (int l = 0; l < 10; l++) {
-        data[l] = NULL;
-    }
+        std::wstring mipSuffix =
+            (l != 0) ? L"MipMapLevel" + _toString<int>(l + 1) : L"";
+        std::wstring fileName = baseName + mipSuffix + L".png";
 
-    for (int l = 0; l < 10; l++) {
-        std::wstring name;
-        std::wstring mipMapPath = L"";
-        if (l != 0) {
-            mipMapPath = L"MipMapLevel" + _toString<int>(l + 1);
+        bool foundOnDisk = false;
+        std::wstring finalPath;
+
+        // i tried everything i can think of.
+        std::vector<std::wstring> searchPaths = {
+            L"build/Minecraft.Client/Common/res/TitleUpdate/res/" + fileName,
+            L"build/Minecraft.Client/Common/res/" + fileName,
+            L"build/Minecraft.Client/Common/Media/" + fileName,
+            L"Common/res/TitleUpdate/res/" + fileName,
+            L"Common/res/" + fileName,
+            L"Minecraft.Assets/Common/res/TitleUpdate/res/" + fileName};
+
+        if (!drive.empty()) {
+            std::wstring drivePath = drive;
+            if (drivePath.back() != L'/') drivePath += L'/';
+            searchPaths.push_back(drivePath + fileName);
+            searchPaths.push_back(drivePath + L"res/" + fileName);
         }
-        if (filenameHasExtension) {
-            name = wDrive + L"res" + filePath.substr(0, filePath.length());
-        } else {
-            name = wDrive + L"res" + filePath.substr(0, filePath.length() - 4) +
-                   mipMapPath + L".png";
-        }
 
-        const char* pchTextureName = wstringtofilename(name);
+        for (auto& attempt : searchPaths) {
+            size_t p;
+            while ((p = attempt.find(L"//")) != std::wstring::npos)
+                attempt.replace(p, 2, L"/");
 
-#ifndef _CONTENT_PACKAGE
-        app.DebugPrintf("\n--- Loading TEXTURE - %s\n\n", pchTextureName);
+#if defined(__linux__)
+            if (access(wstringtofilename(attempt), F_OK) != -1) {
+                finalPath = attempt;
+                foundOnDisk = true;
+                break;
+            }
 #endif
+        }
 
         D3DXIMAGE_INFO ImageInfo;
         ZeroMemory(&ImageInfo, sizeof(D3DXIMAGE_INFO));
-        hr =
-            RenderManager.LoadTextureData(pchTextureName, &ImageInfo, &data[l]);
 
-        if (hr != ERROR_SUCCESS) {
-            // 4J - If we haven't loaded the non-mipmap version then exit the
-            // game
-            if (l == 0) {
-                app.FatalLoadError();
+        if (foundOnDisk) {
+            hr = RenderManager.LoadTextureData(wstringtofilename(finalPath),
+                                               &ImageInfo, &data[l]);
+        } else {
+            // if everything fails just try the archive maybe theres something
+            // in it
+            std::wstring archiveKey = L"res/" + fileName;
+            if (app.hasArchiveFile(archiveKey)) {
+                byteArray ba = app.getArchiveFile(archiveKey);
+                hr = RenderManager.LoadTextureData(ba.data, ba.length,
+                                                   &ImageInfo, &data[l]);
             }
-            return;
         }
 
-        if (l == 0) {
-            width = ImageInfo.Width;
-            height = ImageInfo.Height;
+        if (hr == ERROR_SUCCESS) {
+            if (l == 0) {
+                width = ImageInfo.Width;
+                height = ImageInfo.Height;
+            }
+        } else {
+            if (l == 0) {
+                app.DebugPrintf("[Texture Warning] Missing asset: %S\n",
+                                fileName.c_str());
+                // We MUST initialize width/height to avoid the program being a
+                // crybaby and crash
+                width = 1;
+                height = 1;
+                // Create a tiny missingno buffer so the rest of the game loads
+                // without crashing up
+                data[0] = new int[1];
+                data[0][0] = 0xFFFF00FF;
+            }
+            break;
         }
     }
 }
 
 BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
-                             bool filenameHasExtension /*= false*/) {
+                             bool filenameHasExtension) {
     HRESULT hr;
     std::wstring filePath = File;
-    std::uint8_t* pbData = NULL;
+    std::uint8_t* pbData = nullptr;
     std::uint32_t dataBytes = 0;
 
     for (int l = 0; l < 10; l++) {
-        data[l] = NULL;
+        data[l] = nullptr;
     }
 
     for (int l = 0; l < 10; l++) {
@@ -199,12 +194,8 @@ BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
 
         DLCFile* dlcFile = dlcPack->getFile(DLCManager::e_DLCType_All, name);
         pbData = dlcFile->getData(dataBytes);
-        if (pbData == NULL || dataBytes == 0) {
-            // 4J - If we haven't loaded the non-mipmap version then exit the
-            // game
-            if (l == 0) {
-                app.FatalLoadError();
-            }
+        if (pbData == nullptr || dataBytes == 0) {
+            if (l == 0) app.FatalLoadError();
             return;
         }
 
@@ -214,10 +205,54 @@ BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
                                            &data[l]);
 
         if (hr != ERROR_SUCCESS) {
-            // 4J - If we haven't loaded the non-mipmap version then exit the
-            // game
             if (l == 0) {
-                app.FatalLoadError();
+                std::wstring wname = L"res" +
+                                     filePath.substr(0, filePath.length() - 4) +
+                                     L".png";
+                std::vector<std::wstring> candidates;
+                candidates.push_back(wname);
+                if (wname.rfind(L"Common/res/", 0) == 0) {
+                    candidates.push_back(
+                        wname.substr(std::wstring(L"Common/res/").length()));
+                }
+                candidates.push_back(filePath);
+                if (!filePath.empty() && filePath[0] == L'/')
+                    candidates.push_back(filePath.substr(1));
+
+                std::wstring baseName2;
+                size_t posSlash2 = filePath.find_last_of(L"/\\");
+                if (posSlash2 == std::wstring::npos)
+                    baseName2 = filePath;
+                else
+                    baseName2 = filePath.substr(posSlash2 + 1);
+                // same thing but for the fonts.. i found a way to make this
+                // less horrible but im lazy sorry :/
+                if (!baseName2.empty()) {
+                    candidates.insert(candidates.begin(),
+                                      L"Common/Res/Font/" + baseName2);
+                    candidates.push_back(L"font/" + baseName2);
+                    candidates.push_back(L"font\\" + baseName2);
+                    candidates.push_back(L"res/font/" + baseName2);
+                    candidates.push_back(L"Common/res/font/" + baseName2);
+                    candidates.push_back(L"Common/Res/Font/" + baseName2);
+                }
+
+                bool loaded = false;
+                for (auto& key : candidates) {
+                    if (key.empty()) continue;
+                    if (app.hasArchiveFile(key)) {
+                        byteArray ba = app.getArchiveFile(key);
+                        if (ba.data != nullptr && ba.length > 0) {
+                            hr = RenderManager.LoadTextureData(
+                                ba.data, ba.length, &ImageInfo, &data[l]);
+                            if (hr == ERROR_SUCCESS) {
+                                loaded = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!loaded) app.FatalLoadError();
             }
             return;
         }
@@ -230,9 +265,8 @@ BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
 }
 
 BufferedImage::BufferedImage(std::uint8_t* pbData, std::uint32_t dataBytes) {
-    int iCurrentByte = 0;
     for (int l = 0; l < 10; l++) {
-        data[l] = NULL;
+        data[l] = nullptr;
     }
 
     D3DXIMAGE_INFO ImageInfo;
@@ -273,7 +307,7 @@ int* BufferedImage::getData() { return data[0]; }
 
 int* BufferedImage::getData(int level) { return data[level]; }
 
-Graphics* BufferedImage::getGraphics() { return NULL; }
+Graphics* BufferedImage::getGraphics() { return nullptr; }
 
 // Returns the transparency. Returns either OPAQUE, BITMASK, or TRANSLUCENT.
 // Specified by:
@@ -299,14 +333,15 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
     this->getRGB(x, y, w, h, arrayWrapper, 0, w);
 
     int level = 1;
-    while (getData(level) != NULL) {
+    // prevent overflow
+    while (level < 10 && getData(level) != nullptr) {
         int ww = w >> level;
         int hh = h >> level;
         int xx = x >> level;
         int yy = y >> level;
         img->data[level] = new int[ww * hh];
-        intArray arrayWrapper(img->data[level], ww * hh);
-        this->getRGB(xx, yy, ww, hh, arrayWrapper, 0, ww, level);
+        intArray levelWrapper(img->data[level], ww * hh);
+        this->getRGB(xx, yy, ww, hh, levelWrapper, 0, ww, level);
 
         ++level;
     }
@@ -324,7 +359,8 @@ void BufferedImage::preMultiplyAlpha() {
     int b = 0;
 
     int total = width * height;
-    for (unsigned int i = 0; i < total; ++i) {
+    // why was it unsigned??
+    for (int i = 0; i < total; ++i) {
         cur = curData[i];
         alpha = (cur >> 24) & 0xff;
         r = ((cur >> 16) & 0xff) * (float)alpha / 255;

@@ -1,4 +1,4 @@
-project('4jcraft-chucklegrounds', ['cpp', 'c'],
+project('4jcraft', ['cpp', 'c'],
   version : '0.1.0',
   meson_version: '>= 1.7',
   default_options : [

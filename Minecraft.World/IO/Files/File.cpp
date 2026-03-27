@@ -57,33 +57,44 @@ File::File(const File& parent, const std::wstring& child) {
 
 // Creates a new File instance by converting the given pathname string into an
 // abstract pathname.
-File::File(const std::wstring& pathname)  //: parent( NULL )
-{
-    // #ifndef _CONTENT_PACKAGE
-    // 	char buf[256];
-    // 	wcstombs(buf, pathname.c_str(), 256);
-    // 	printf("File::File - %s\n",buf);
-    // #endif
-    if (pathname.empty())
-        m_abstractPathName = std::wstring(L"");
-    else
-        m_abstractPathName = pathname;
+File::File(const std::wstring& pathname) {
+    if (pathname.empty()) {
+        m_abstractPathName = L"";
+        return;
+    }
+    // same thing as in bufferedoverflow
+    std::wstring fixedPath = pathname;
+
+    for (size_t i = 0; i < fixedPath.length(); ++i) {
+        if (fixedPath[i] == L'\\') fixedPath[i] = L'/';
+    }
+
+    size_t dpos;
+    while ((dpos = fixedPath.find(L"//")) != std::wstring::npos)
+        fixedPath.erase(dpos, 1);
+    if (fixedPath.find(L"GAME:/") == 0) fixedPath = fixedPath.substr(6);
+
+    m_abstractPathName = fixedPath;
 
 #if defined(__linux__)
     // If this is a relative path and it doesn't exist in the CWD, try to
-    // resolve it relative to the executable directory 
+    // resolve it relative to the executable directory
     if (!m_abstractPathName.empty() && m_abstractPathName[0] != L'/') {
         const char* native = wstringtofilename(m_abstractPathName);
         if (access(native, F_OK) == -1) {
             char exePathBuf[PATH_MAX];
-            ssize_t exeLen = readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
+            ssize_t exeLen =
+                readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
             if (exeLen != -1) {
                 exePathBuf[exeLen] = '\0';
                 std::string exePathStr(exePathBuf);
                 size_t pos = exePathStr.find_last_of('/');
-                std::string exeDir = (pos == std::string::npos) ? std::string(".") : exePathStr.substr(0, pos);
+                std::string exeDir = (pos == std::string::npos)
+                                         ? std::string(".")
+                                         : exePathStr.substr(0, pos);
                 std::wstring exeDirW = convStringToWstring(exeDir);
-                std::wstring candidate = exeDirW + pathSeparator + m_abstractPathName;
+                std::wstring candidate =
+                    exeDirW + pathSeparator + m_abstractPathName;
                 const char* candNative = wstringtofilename(candidate);
                 if (access(candNative, F_OK) != -1) {
                     m_abstractPathName = candidate;
