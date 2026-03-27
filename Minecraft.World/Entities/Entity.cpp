@@ -23,6 +23,7 @@
 #include "../../Minecraft.Client/Level/MultiPlayerLevel.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include <cstdint>
+#include <optional>
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
 
@@ -1533,7 +1534,7 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
 
 float Entity::getPickRadius() { return 0.1f; }
 
-Vec3* Entity::getLookAngle() { return NULL; }
+std::optional<Vec3> Entity::getLookAngle() { return std::nullopt; }
 
 void Entity::handleInsidePortal() {
     if (changingDimensionDelay > 0) {

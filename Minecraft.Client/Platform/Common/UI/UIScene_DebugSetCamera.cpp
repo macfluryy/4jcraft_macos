@@ -19,13 +19,13 @@ UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft != NULL) {
-        Vec3* vec = pMinecraft->localplayers[playerNo]->getPos(1.0);
+        Vec3 vec = pMinecraft->localplayers[playerNo]->getPos(1.0);
 
-        currentPosition->m_camX = vec->x;
+        currentPosition->m_camX = vec.x;
         currentPosition->m_camY =
-            vec->y -
+            vec.y -
             1.62;  // pMinecraft->localplayers[playerNo]->getHeadHeight();
-        currentPosition->m_camZ = vec->z;
+        currentPosition->m_camZ = vec.z;
 
         currentPosition->m_yRot = pMinecraft->localplayers[playerNo]->yRot;
         currentPosition->m_elev = pMinecraft->localplayers[playerNo]->xRot;

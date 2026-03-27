@@ -7,7 +7,7 @@ public:
     virtual ChunkSource* createRandomLevelSource() const;
     virtual float getTimeOfDay(int64_t time, float a) const;
     virtual float* getSunriseColor(float td, float a);
-    virtual Vec3* getFogColor(float td, float a) const;
+    virtual Vec3 getFogColor(float td, float a) const;
     virtual bool hasGround();
     virtual bool mayRespawn() const;
     virtual bool isNaturalDimension();

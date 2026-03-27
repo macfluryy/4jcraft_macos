@@ -2,7 +2,7 @@
 #include "Vertex.h"
 
 Vertex::Vertex(float x, float y, float z, float u, float v) {
-    this->pos = Vec3::newPermanent(x, y, z);
+    this->pos = Vec3(x, y, z);
     this->u = u;
     this->v = v;
 }
@@ -16,7 +16,7 @@ Vertex::Vertex(Vertex* vertex, float u, float v) {
 }
 
 Vertex::Vertex(Vec3* pos, float u, float v) {
-    this->pos = pos;
+    this->pos = *pos;
     this->u = u;
     this->v = v;
 }

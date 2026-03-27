@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "Entity.h"
 #include "MobType.h"
 #include "../AI/Goals/GoalSelector.h"
@@ -304,10 +305,10 @@ public:
     virtual bool canSee(std::shared_ptr<Entity> target);
 
 public:
-    virtual Vec3* getLookAngle();
-    virtual Vec3* getViewVector(float a);
+    virtual std::optional<Vec3> getLookAngle();
+    virtual Vec3 getViewVector(float a);
     virtual float getAttackAnim(float a);
-    virtual Vec3* getPos(float a);
+    virtual Vec3 getPos(float a);
     virtual HitResult* pick(double range, float a);
     virtual bool isEffectiveAi();
 
