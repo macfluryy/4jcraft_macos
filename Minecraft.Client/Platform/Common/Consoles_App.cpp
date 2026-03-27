@@ -54,7 +54,7 @@
 #include "../Minecraft.Client/Minecraft.h"
 #if defined(__linux__)
 #include <unistd.h>
-#include <limits.h>
+#include <climits>
 #endif
 #ifdef _XBOX
 #include "../Minecraft.Client/Platform/Xbox/GameConfig/Minecraft.spa.h"
@@ -4606,18 +4606,22 @@ void CMinecraftApp::loadMediaArchive() {
     if (!mediapath.empty()) {
         // (check file.cpp)
         // try to load the archive relative to the executable
-        // directory first. 
+        // directory first.
         // If that fails, fall back to the current working
         // directory (original behavior)
         // if everything fails, may god help you
 #if defined(__linux__)
+        // THIS CAN USE PATHHELPER.h
         char exePathBuf[PATH_MAX];
-        ssize_t exeLen = readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
+        ssize_t exeLen =
+            readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
         if (exeLen != -1) {
             exePathBuf[exeLen] = '\0';
             std::string exePathStr(exePathBuf);
             size_t pos = exePathStr.find_last_of('/');
-            std::string exeDir = (pos == std::string::npos) ? std::string(".") : exePathStr.substr(0, pos);
+            std::string exeDir = (pos == std::string::npos)
+                                     ? std::string(".")
+                                     : exePathStr.substr(0, pos);
             std::wstring exeDirW = convStringToWstring(exeDir.c_str());
             std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
             if (File(candidate).exists()) {

@@ -1,9 +1,9 @@
 #include "../Platform/stdafx.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "Textures.h"
+#include "PathHelper.h"
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 #include "BufferedImage.h"
-
 #if defined(__linux__)
 #include <unistd.h>
 #endif
@@ -58,13 +58,11 @@ BufferedImage::BufferedImage(const std::wstring& File,
     HRESULT hr = -1;
     std::wstring filePath = File;
 
-    // turn that \ upside down! (grace ref)
     for (size_t i = 0; i < filePath.length(); ++i) {
         if (filePath[i] == L'\\') filePath[i] = L'/';
     }
     for (int l = 0; l < 10; l++) data[l] = nullptr;
 
-    // clean the filename
     std::wstring baseName = filePath;
     if (!filenameHasExtension) {
         if (baseName.size() > 4 &&
@@ -73,50 +71,36 @@ BufferedImage::BufferedImage(const std::wstring& File,
         }
     }
 
-    // avoid // mess
-    while (!baseName.empty() && baseName[0] == L'/')
+    while (!baseName.empty() && (baseName[0] == L'/' || baseName[0] == L'\\'))
         baseName = baseName.substr(1);
     if (baseName.find(L"res/") == 0) baseName = baseName.substr(4);
 
-    // bad code alert
-    // loops through stuff on the drives because i don't fucking know what 4j
-    // did with the paths and i don't to break it..
+    std::wstring exeDir = PathHelper::GetExecutableDirW();
+
     for (int l = 0; l < 10; l++) {
         std::wstring mipSuffix =
             (l != 0) ? L"MipMapLevel" + _toString<int>(l + 1) : L"";
         std::wstring fileName = baseName + mipSuffix + L".png";
-
-        bool foundOnDisk = false;
         std::wstring finalPath;
+        bool foundOnDisk = false;
 
-        // i tried everything i can think of.
         std::vector<std::wstring> searchPaths = {
-            L"build/Minecraft.Client/Common/res/TitleUpdate/res/" + fileName,
-            L"build/Minecraft.Client/Common/res/" + fileName,
-            L"build/Minecraft.Client/Common/Media/" + fileName,
-            L"Common/res/TitleUpdate/res/" + fileName,
-            L"Common/res/" + fileName,
-            L"Minecraft.Assets/Common/res/TitleUpdate/res/" + fileName};
-
-        if (!drive.empty()) {
-            std::wstring drivePath = drive;
-            if (drivePath.back() != L'/') drivePath += L'/';
-            searchPaths.push_back(drivePath + fileName);
-            searchPaths.push_back(drivePath + L"res/" + fileName);
-        }
+            exeDir + L"/Common/res/TitleUpdate/res/" + fileName,
+            exeDir + L"/Common/res/" + fileName,
+            exeDir + L"/Common/Media/Graphics/" + fileName,
+            exeDir + L"/Common/Media/font/" + fileName,
+            exeDir + L"/Common/res/font/" + fileName,
+            exeDir + L"/Common/Media/" + fileName};
 
         for (auto& attempt : searchPaths) {
             size_t p;
             while ((p = attempt.find(L"//")) != std::wstring::npos)
                 attempt.replace(p, 2, L"/");
-
-#if defined(__linux__)
             if (access(wstringtofilename(attempt), F_OK) != -1) {
                 finalPath = attempt;
                 foundOnDisk = true;
                 break;
             }
-#endif
         }
 
         D3DXIMAGE_INFO ImageInfo;
@@ -126,8 +110,6 @@ BufferedImage::BufferedImage(const std::wstring& File,
             hr = RenderManager.LoadTextureData(wstringtofilename(finalPath),
                                                &ImageInfo, &data[l]);
         } else {
-            // if everything fails just try the archive maybe theres something
-            // in it
             std::wstring archiveKey = L"res/" + fileName;
             if (app.hasArchiveFile(archiveKey)) {
                 byteArray ba = app.getArchiveFile(archiveKey);
@@ -143,14 +125,9 @@ BufferedImage::BufferedImage(const std::wstring& File,
             }
         } else {
             if (l == 0) {
-                app.DebugPrintf("[Texture Warning] Missing asset: %S\n",
-                                fileName.c_str());
-                // We MUST initialize width/height to avoid the program being a
-                // crybaby and crash
+                // safety dummy to prevent crash
                 width = 1;
                 height = 1;
-                // Create a tiny missingno buffer so the rest of the game loads
-                // without crashing up
                 data[0] = new int[1];
                 data[0][0] = 0xFFFF00FF;
             }
@@ -158,37 +135,25 @@ BufferedImage::BufferedImage(const std::wstring& File,
         }
     }
 }
-
 BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
                              bool filenameHasExtension) {
     HRESULT hr;
     std::wstring filePath = File;
     std::uint8_t* pbData = nullptr;
     std::uint32_t dataBytes = 0;
-
-    for (int l = 0; l < 10; l++) {
-        data[l] = nullptr;
-    }
+    for (int l = 0; l < 10; l++) data[l] = nullptr;
 
     for (int l = 0; l < 10; l++) {
         std::wstring name;
-        std::wstring mipMapPath = L"";
-        if (l != 0) {
-            mipMapPath = L"MipMapLevel" + _toString<int>(l + 1);
-        }
-        if (filenameHasExtension) {
-            name = L"res" + filePath.substr(0, filePath.length());
-        } else {
-            name = L"res" + filePath.substr(0, filePath.length() - 4) +
-                   mipMapPath + L".png";
-        }
+        std::wstring mipMapPath =
+            (l != 0) ? L"MipMapLevel" + _toString<int>(l + 1) : L"";
+        name = L"res" + (filenameHasExtension
+                             ? filePath
+                             : filePath.substr(0, filePath.length() - 4) +
+                                   mipMapPath + L".png");
 
         if (!dlcPack->doesPackContainFile(DLCManager::e_DLCType_All, name)) {
-            // 4J - If we haven't loaded the non-mipmap version then exit the
-            // game
-            if (l == 0) {
-                app.FatalLoadError();
-            }
+            if (l == 0) app.FatalLoadError();
             return;
         }
 
@@ -200,64 +165,9 @@ BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
         }
 
         D3DXIMAGE_INFO ImageInfo;
-        ZeroMemory(&ImageInfo, sizeof(D3DXIMAGE_INFO));
         hr = RenderManager.LoadTextureData(pbData, dataBytes, &ImageInfo,
                                            &data[l]);
-
-        if (hr != ERROR_SUCCESS) {
-            if (l == 0) {
-                std::wstring wname = L"res" +
-                                     filePath.substr(0, filePath.length() - 4) +
-                                     L".png";
-                std::vector<std::wstring> candidates;
-                candidates.push_back(wname);
-                if (wname.rfind(L"Common/res/", 0) == 0) {
-                    candidates.push_back(
-                        wname.substr(std::wstring(L"Common/res/").length()));
-                }
-                candidates.push_back(filePath);
-                if (!filePath.empty() && filePath[0] == L'/')
-                    candidates.push_back(filePath.substr(1));
-
-                std::wstring baseName2;
-                size_t posSlash2 = filePath.find_last_of(L"/\\");
-                if (posSlash2 == std::wstring::npos)
-                    baseName2 = filePath;
-                else
-                    baseName2 = filePath.substr(posSlash2 + 1);
-                // same thing but for the fonts.. i found a way to make this
-                // less horrible but im lazy sorry :/
-                if (!baseName2.empty()) {
-                    candidates.insert(candidates.begin(),
-                                      L"Common/Res/Font/" + baseName2);
-                    candidates.push_back(L"font/" + baseName2);
-                    candidates.push_back(L"font\\" + baseName2);
-                    candidates.push_back(L"res/font/" + baseName2);
-                    candidates.push_back(L"Common/res/font/" + baseName2);
-                    candidates.push_back(L"Common/Res/Font/" + baseName2);
-                }
-
-                bool loaded = false;
-                for (auto& key : candidates) {
-                    if (key.empty()) continue;
-                    if (app.hasArchiveFile(key)) {
-                        byteArray ba = app.getArchiveFile(key);
-                        if (ba.data != nullptr && ba.length > 0) {
-                            hr = RenderManager.LoadTextureData(
-                                ba.data, ba.length, &ImageInfo, &data[l]);
-                            if (hr == ERROR_SUCCESS) {
-                                loaded = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (!loaded) app.FatalLoadError();
-            }
-            return;
-        }
-
-        if (l == 0) {
+        if (hr == ERROR_SUCCESS && l == 0) {
             width = ImageInfo.Width;
             height = ImageInfo.Height;
         }

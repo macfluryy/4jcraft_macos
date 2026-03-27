@@ -1,6 +1,6 @@
 ﻿#include "../../Minecraft.World/Platform/stdafx.h"
-
 #include "SoundEngine.h"
+#include "PathHelper.h"
 #include "../Consoles_App.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
@@ -188,69 +188,51 @@ void SoundEngine::init(Options* pOptions) {
     m_bSystemMusicPlaying = false;
 }
 void SoundEngine::destroy() { ma_engine_uninit(&m_engine); }
+
 void SoundEngine::play(int iSound, float x, float y, float z, float volume,
                        float pitch) {
     if (iSound == -1) return;
+    char szId[256];
+    wcstombs(szId, wchSoundNames[iSound], 255);
+    for (int i = 0; szId[i]; i++)
+        if (szId[i] == '.') szId[i] = '/';
 
-    char szIdentifier[256];
-    wcstombs(szIdentifier, wchSoundNames[iSound], 255);
-
-    // dot to folder structure (example step.grass -> step/grass)
-    for (int i = 0; szIdentifier[i]; i++) {
-        if (szIdentifier[i] == '.') szIdentifier[i] = '/';
-    }
-    // YES I KNOW SOUNDNAMES.CPP EXISTS.
-    const char* extensions[] = {".ogg", ".wav", ".mp3"};
-    const char* roots[] = {"Sound/Minecraft/",
-                           "build/Minecraft.Client/Sound/Minecraft/",
-                           "Common/Sound/Minecraft/",
+    std::string base = PathHelper::GetExecutableDirA() + "/";
+    const char* roots[] = {"Sound/Minecraft/", "Common/Sound/Minecraft/",
                            "Common/res/TitleUpdate/res/Sound/Minecraft/"};
-
     char finalPath[512] = {0};
     bool found = false;
-    // search for variants (grass1, grass2, etc.)
-    // this is hacky
+
     for (const char* root : roots) {
-        for (const char* ext : extensions) {
-            int maxVariant = 0;
+        std::string fullRoot = base + root;
+        for (const char* ext : {".ogg", ".wav"}) {
+            int count = 0;
             for (int i = 1; i <= 16; i++) {
-                char tryPath[512];
-                snprintf(tryPath, sizeof(tryPath), "%s%s%d%s", root,
-                         szIdentifier, i, ext);
-                if (access(tryPath, F_OK) != -1)
-                    maxVariant = i;
+                char tryP[512];
+                snprintf(tryP, 512, "%s%s%d%s", fullRoot.c_str(), szId, i, ext);
+                if (access(tryP, F_OK) != -1)
+                    count = i;
                 else
                     break;
             }
-
-            if (maxVariant > 0) {
-                int chosen = (rand() % maxVariant) + 1;
-                snprintf(finalPath, sizeof(finalPath), "%s%s%d%s", root,
-                         szIdentifier, chosen, ext);
+            if (count > 0) {
+                snprintf(finalPath, 512, "%s%s%d%s", fullRoot.c_str(), szId,
+                         (rand() % count) + 1, ext);
+                found = true;
+                break;
+            }
+            char tryP[512];
+            snprintf(tryP, 512, "%s%s%s", fullRoot.c_str(), szId, ext);
+            if (access(tryP, F_OK) != -1) {
+                strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
             }
         }
         if (found) break;
     }
-    if (!found) {
-        for (const char* root : roots) {
-            for (const char* ext : extensions) {
-                char tryPath[512];
-                snprintf(tryPath, sizeof(tryPath), "%s%s%s", root, szIdentifier,
-                         ext);
-                if (access(tryPath, F_OK) != -1) {
-                    strncpy(finalPath, tryPath, 511);
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
-        }
-    }
 
     if (!found) return;
-
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
     s->info.x = x;
@@ -266,43 +248,38 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
         ma_sound_set_min_distance(&s->sound, 2.0f);
         ma_sound_set_max_distance(&s->sound, 48.0f);
         ma_sound_set_volume(&s->sound, volume * m_MasterEffectsVolume);
-        ma_sound_set_pitch(&s->sound, pitch);
         ma_sound_set_position(&s->sound, x, y, z);
         ma_sound_start(&s->sound);
         m_activeSounds.push_back(s);
-    } else {
+    } else
         delete s;
-    }
 }
 
 void SoundEngine::playUI(int iSound, float volume, float pitch) {
     char szIdentifier[256];
-    if (iSound >= eSFX_MAX) {
+    if (iSound >= eSFX_MAX)
         wcstombs(szIdentifier, wchSoundNames[iSound], 255);
-    } else {
+    else
         wcstombs(szIdentifier, wchUISoundNames[iSound], 255);
-    }
-
-    for (int i = 0; szIdentifier[i]; i++) {
+    for (int i = 0; szIdentifier[i]; i++)
         if (szIdentifier[i] == '.') szIdentifier[i] = '/';
-    }
-    // ui sfx also WHO WHO THAT EWWW
-    const char* extensions[] = {".ogg", ".wav", ".mp3"};
-    const char* roots[] = {"Sound/Minecraft/UI/", "Sound/Minecraft/",
-                           "build/Minecraft.Client/Sound/Minecraft/UI/",
-                           "build/Minecraft.Client/Sound/Minecraft/",
-                           "Common/Sound/Minecraft/UI/"};
-
+    std::string base = PathHelper::GetExecutableDirA() + "/";
+    const char* roots[] = {
+        "Sound/Minecraft/UI/",
+        "Sound/Minecraft/",
+        "Common/Sound/Minecraft/UI/",
+        "Common/Sound/Minecraft/",
+    };
     char finalPath[512] = {0};
     bool found = false;
 
     for (const char* root : roots) {
-        for (const char* ext : extensions) {
-            char tryPath[512];
-            snprintf(tryPath, sizeof(tryPath), "%s%s%s", root, szIdentifier,
+        for (const char* ext : {".ogg", ".wav", ".mp3"}) {
+            char tryP[512];
+            snprintf(tryP, 512, "%s%s%s%s", base.c_str(), root, szIdentifier,
                      ext);
-            if (access(tryPath, F_OK) != -1) {
-                strncpy(finalPath, tryPath, 511);
+            if (access(tryP, F_OK) != -1) {
+                strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
             }
@@ -311,7 +288,6 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
     }
 
     if (!found) return;
-
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
     s->info.volume = volume;
@@ -325,9 +301,8 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
         ma_sound_set_pitch(&s->sound, pitch);
         ma_sound_start(&s->sound);
         m_activeSounds.push_back(s);
-    } else {
+    } else
         delete s;
-    }
 }
 
 int SoundEngine::getMusicID(int iDomain) {
@@ -344,9 +319,10 @@ int SoundEngine::getMusicID(int iDomain) {
     if (pMinecraft->skins->isUsingDefaultSkin()) {
         switch (iDomain) {
             case LevelData::DIMENSION_END:
-                // the end isn't random - it has different music depending on
-                // whether the dragon is alive or not, but we've not added the
-                // dead dragon music yet
+                // the end isn't random - it has different music depending
+                // whether the dragon is alive or not, but we've not
+                // added the dead dragon music yet
+                // haha they said wheter
                 return m_iStream_End_Min;
             case LevelData::DIMENSION_NETHER:
                 return GetRandomishTrack(m_iStream_Nether_Min,
@@ -464,7 +440,8 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 
     if (result != MA_SUCCESS) {
         app.DebugPrintf(
-            "SoundEngine::OpenStreamThreadProc - Failed to open stream: %s\n",
+            "SoundEngine::OpenStreamThreadProc - Failed to open stream: "
+            "%s\n",
             soundEngine->m_szStreamName);
         return 0;
     }
@@ -476,7 +453,6 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 
     return 0;
 }
-
 void SoundEngine::playMusicTick() {
     static float fMusicVol = 0.0f;
     fMusicVol = getMasterMusicVolume();
@@ -487,96 +463,51 @@ void SoundEngine::playMusicTick() {
                 m_iMusicDelay--;
                 return;
             }
-
-            if (m_musicStreamActive) {
-                m_StreamState = eMusicStreamState_Playing;
-                return;
-            }
-
             if (m_musicID != -1) {
+                std::string base = PathHelper::GetExecutableDirA() + "/";
                 bool isCD = (m_musicID >= m_iStream_CD_1);
                 const char* folder = isCD ? "cds/" : "music/";
-                const char* trackName = m_szStreamFileA[m_musicID];
-                const char* extensions[] = {".ogg", ".mp3", ".wav"};
-
+                const char* track = m_szStreamFileA[m_musicID];
                 bool found = false;
                 m_szStreamName[0] = '\0';
 
-                // DLC Mashup pack check
-                if (Minecraft::GetInstance()
-                        ->skins->getSelected()
-                        ->hasAudio()) {
-                    TexturePack* pTexPack =
-                        Minecraft::GetInstance()->skins->getSelected();
-                    DLCPack* pack =
-                        ((DLCTexturePack*)pTexPack)->getDLCInfoParentPack();
-                    DLCAudioFile* dlcAudioFile = (DLCAudioFile*)pack->getFile(
-                        DLCManager::e_DLCType_Audio, 0);
+                const char* roots[] = {"Common/music/", "music/", "./"};
 
-                    if (!isCD) {
-                        m_MusicType = eMusicType_Game;
-                        m_StreamingAudioInfo.bIs3D = false;
-
-                        wstring& wstrSoundName =
-                            dlcAudioFile->GetSoundName(m_musicID);
-                        char szName[255];
-                        wcstombs(szName, wstrSoundName.c_str(), 255);
-
-                        std::string strFile =
-                            "TPACK:\\Data\\" + string(szName) + ".wav";
-                        std::string mountedPath =
-                            StorageManager.GetMountedPath(strFile);
-                        strcpy(m_szStreamName, mountedPath.c_str());
-
-                        if (access(m_szStreamName, F_OK) != -1) found = true;
-                    }
-                }
-
-                // we're doing this again, daring aren't we
-                if (!found) {
-                    const char* roots[] = {
-                        "build/Minecraft.Client/Common/music/",
-                        "build/Minecraft.Client/music/", "Common/music/",
-                        "music/", "./"};
-
-                    for (const char* root : roots) {
-                        for (const char* ext : extensions) {
-                            char cand[512];
-
-                            // if only i wrote a function that does EXACTLY
-                            // that., nope ctrl c ctrl v it is
-                            snprintf(cand, sizeof(cand), "%s%s%s%s", root,
-                                     folder, trackName, ext);
-                            if (access(cand, F_OK) != -1) {
-                                strncpy(m_szStreamName, cand, 511);
-                                found = true;
-                                break;
-                            }
-
-                            snprintf(cand, sizeof(cand), "%s%s%s", root,
-                                     trackName, ext);
-                            if (access(cand, F_OK) != -1) {
-                                strncpy(m_szStreamName, cand, 511);
-                                found = true;
-                                break;
-                            }
+                for (const char* r : roots) {
+                    for (const char* e : {".ogg", ".mp3", ".wav"}) {
+                        char c[512];
+                        // try with folder prefix (music/ or cds/)
+                        snprintf(c, 512, "%s%s%s%s%s", base.c_str(), r, folder,
+                                 track, e);
+                        if (access(c, F_OK) != -1) {
+                            strncpy(m_szStreamName, c, 511);
+                            found = true;
+                            break;
                         }
-                        if (found) break;
+                        // try without folder prefix
+                        snprintf(c, 512, "%s%s%s%s", base.c_str(), r, track, e);
+                        if (access(c, F_OK) != -1) {
+                            strncpy(m_szStreamName, c, 511);
+                            found = true;
+                            break;
+                        }
                     }
+                    if (found) break;
                 }
 
                 if (found) {
-                    m_MusicType = isCD ? eMusicType_CD : eMusicType_Game;
-                    m_StreamingAudioInfo.bIs3D = isCD;
                     SetIsPlayingStreamingGameMusic(!isCD);
                     SetIsPlayingStreamingCDMusic(isCD);
-
                     m_openStreamThread = new C4JThread(
                         OpenStreamThreadProc, this, "OpenStreamThreadProc");
                     m_openStreamThread->Run();
                     m_StreamState = eMusicStreamState_Opening;
                 } else {
-                    // Retry later if missing
+                    app.DebugPrintf(
+                        "[SoundEngine] oh noes couldn't find music track '%s', "
+                        "retrying "
+                        "in 1min\n",
+                        track);
                     m_iMusicDelay = 20 * 60;
                 }
             }
@@ -686,7 +617,6 @@ void SoundEngine::playMusicTick() {
 
             } else if (m_StreamingAudioInfo.bIs3D && m_validListenerCount > 1 &&
                        m_musicStreamActive) {
-                // incase we're splitscreen
                 float fClosestDist = 1e6f;
                 int iClosest = 0;
                 for (size_t i = 0; i < MAX_LOCAL_PLAYERS; i++) {
@@ -716,18 +646,19 @@ void SoundEngine::playMusicTick() {
 
         case eMusicStreamState_Completed:
             m_iMusicDelay = random->nextInt(20 * 60 * 3);
-
-            int dim = LevelData::DIMENSION_OVERWORLD;
-            Minecraft* pMc = Minecraft::GetInstance();
-            for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
-                if (pMc->localplayers[i]) {
-                    dim = pMc->localplayers[i]->dimension;
-                    break;
+            {
+                int dim = LevelData::DIMENSION_OVERWORLD;
+                Minecraft* pMc = Minecraft::GetInstance();
+                for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
+                    if (pMc->localplayers[i]) {
+                        dim = pMc->localplayers[i]->dimension;
+                        break;
+                    }
                 }
+                m_musicID = getMusicID(dim);
+                SetIsPlayingEndMusic(dim == LevelData::DIMENSION_END);
+                SetIsPlayingNetherMusic(dim == LevelData::DIMENSION_NETHER);
             }
-            m_musicID = getMusicID(dim);
-            SetIsPlayingEndMusic(dim == LevelData::DIMENSION_END);
-            SetIsPlayingNetherMusic(dim == LevelData::DIMENSION_NETHER);
             m_StreamState = eMusicStreamState_Idle;
             break;
     }
@@ -2134,7 +2065,8 @@ F32 AILCALLBACK custom_falloff_function(HSAMPLE S, F32 distance,
 }
 #endif
 
-// Universal, these functions shouldn't need platform specific implementations
+// Universal, these functions shouldn't need platform specific
+// implementations
 void SoundEngine::updateMusicVolume(float fVal) { m_MasterMusicVolume = fVal; }
 void SoundEngine::updateSystemMusicPlaying(bool isPlaying) {
     m_bSystemMusicPlaying = isPlaying;

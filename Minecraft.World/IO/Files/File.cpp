@@ -2,7 +2,7 @@
 #include "FileFilter.h"
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"
-
+#include "PathHelper.h"
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 #include <chrono>
 #include <filesystem>
@@ -57,52 +57,55 @@ File::File(const File& parent, const std::wstring& child) {
 
 // Creates a new File instance by converting the given pathname string into an
 // abstract pathname.
+
 File::File(const std::wstring& pathname) {
     if (pathname.empty()) {
         m_abstractPathName = L"";
         return;
     }
-    // same thing as in bufferedoverflow
-    std::wstring fixedPath = pathname;
 
+    std::wstring fixedPath = pathname;
     for (size_t i = 0; i < fixedPath.length(); ++i) {
         if (fixedPath[i] == L'\\') fixedPath[i] = L'/';
     }
-
     size_t dpos;
     while ((dpos = fixedPath.find(L"//")) != std::wstring::npos)
         fixedPath.erase(dpos, 1);
     if (fixedPath.find(L"GAME:/") == 0) fixedPath = fixedPath.substr(6);
-
     m_abstractPathName = fixedPath;
 
 #if defined(__linux__)
-    // If this is a relative path and it doesn't exist in the CWD, try to
-    // resolve it relative to the executable directory
-    if (!m_abstractPathName.empty() && m_abstractPathName[0] != L'/') {
-        const char* native = wstringtofilename(m_abstractPathName);
-        if (access(native, F_OK) == -1) {
-            char exePathBuf[PATH_MAX];
-            ssize_t exeLen =
-                readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
-            if (exeLen != -1) {
-                exePathBuf[exeLen] = '\0';
-                std::string exePathStr(exePathBuf);
-                size_t pos = exePathStr.find_last_of('/');
-                std::string exeDir = (pos == std::string::npos)
-                                         ? std::string(".")
-                                         : exePathStr.substr(0, pos);
-                std::wstring exeDirW = convStringToWstring(exeDir);
-                std::wstring candidate =
-                    exeDirW + pathSeparator + m_abstractPathName;
-                const char* candNative = wstringtofilename(candidate);
-                if (access(candNative, F_OK) != -1) {
-                    m_abstractPathName = candidate;
-                }
-            }
+    std::string request = wstringtofilename(m_abstractPathName);
+    while (!request.empty() && request[0] == '/') request.erase(0, 1);
+    if (request.find("res/") == 0) request.erase(0, 4);
+
+    std::string exeDir = PathHelper::GetExecutableDirA();
+    std::string fileName = request;
+    size_t lastSlash = fileName.find_last_of('/');
+    if (lastSlash != std::string::npos)
+        fileName = fileName.substr(lastSlash + 1);
+
+    const char* bases[] = {"/",
+                           "/Common/res/TitleUpdate/res/",
+                           "/Common/Media/",
+                           "/Common/res/",
+                           "/Common/",
+                           "/Minecraft.Assets/"};
+
+    for (const char* base : bases) {
+        std::string tryFull = exeDir + base + request;
+        std::string tryFile = exeDir + base + fileName;
+        if (access(tryFull.c_str(), F_OK) != -1) {
+            m_abstractPathName = convStringToWstring(tryFull);
+            return;
+        }
+        if (access(tryFile.c_str(), F_OK) != -1) {
+            m_abstractPathName = convStringToWstring(tryFile);
+            return;
         }
     }
 #endif
+
 #ifdef _WINDOWS64
     std::string path = wstringtofilename(m_abstractPathName);
     std::string finalPath = StorageManager.GetMountedPath(path.c_str());
