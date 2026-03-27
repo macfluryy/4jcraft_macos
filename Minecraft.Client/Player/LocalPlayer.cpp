@@ -1,5 +1,7 @@
 #include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
+#include "UI/Screens/BrewingStandScreen.h"
+#include "UI/Screens/EnchantmentScreen.h"
 #include "UI/Screens/HopperScreen.h"
 #include "UI/Screens/HorseInventoryScreen.h"
 #include "UI/Screens/RepairScreen.h"
@@ -645,10 +647,14 @@ bool LocalPlayer::openFireworks(int x, int y, int z) {
 
 bool LocalPlayer::startEnchanting(int x, int y, int z,
                                   const std::wstring& name) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new EnchantmentScreen(inventory, level, x, y, z));
+    bool success = true;
+#else
     bool success =
         app.LoadEnchantingMenu(GetXboxPad(), inventory, x, y, z, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new EnchantmentScreen(inventory, level, x, y, z));
+#endif
     return success;
 }
 
@@ -677,10 +683,14 @@ bool LocalPlayer::openFurnace(std::shared_ptr<FurnaceTileEntity> furnace) {
 
 bool LocalPlayer::openBrewingStand(
     std::shared_ptr<BrewingStandTileEntity> brewingStand) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new BrewingStandScreen(inventory, brewingStand));
+    bool success = true;
+#else
     bool success =
         app.LoadBrewingStandMenu(GetXboxPad(), inventory, brewingStand);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new BrewingStandScreen(inventory, brewingStand));
+#endif
     return success;
 }
 
