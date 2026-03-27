@@ -4585,7 +4585,6 @@ int CMinecraftApp::BannedLevelDialogReturned(
 
     return 0;
 }
-
 void CMinecraftApp::loadMediaArchive() {
     std::wstring mediapath = L"";
 
@@ -4604,31 +4603,12 @@ void CMinecraftApp::loadMediaArchive() {
 #endif
 
     if (!mediapath.empty()) {
-        // (check file.cpp)
-        // try to load the archive relative to the executable
-        // directory first.
-        // If that fails, fall back to the current working
-        // directory (original behavior)
-        // if everything fails, may god help you
+        // boom headshot
 #if defined(__linux__)
-        // THIS CAN USE PATHHELPER.h
-        char exePathBuf[PATH_MAX];
-        ssize_t exeLen =
-            readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
-        if (exeLen != -1) {
-            exePathBuf[exeLen] = '\0';
-            std::string exePathStr(exePathBuf);
-            size_t pos = exePathStr.find_last_of('/');
-            std::string exeDir = (pos == std::string::npos)
-                                     ? std::string(".")
-                                     : exePathStr.substr(0, pos);
-            std::wstring exeDirW = convStringToWstring(exeDir.c_str());
-            std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
-            if (File(candidate).exists()) {
-                m_mediaArchive = new ArchiveFile(File(candidate));
-            } else {
-                m_mediaArchive = new ArchiveFile(File(mediapath));
-            }
+        std::wstring exeDirW = PathHelper::GetExecutableDirW();
+        std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
+        if (File(candidate).exists()) {
+            m_mediaArchive = new ArchiveFile(File(candidate));
         } else {
             m_mediaArchive = new ArchiveFile(File(mediapath));
         }
@@ -4636,6 +4616,7 @@ void CMinecraftApp::loadMediaArchive() {
         m_mediaArchive = new ArchiveFile(File(mediapath));
 #endif
     }
+}
 #if 0
 	std::string path = "Common\\media.arc";
 	HANDLE hFile = CreateFile(	path.c_str(),
