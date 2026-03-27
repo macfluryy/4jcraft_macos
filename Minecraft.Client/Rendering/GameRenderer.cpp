@@ -1778,7 +1778,7 @@ void GameRenderer::renderSnowAndRain(float a) {
                                 yy1 * s / 4.0f + ra * s);
 #endif
                     t->offset(0, 0, 0);
-                    t->end();
+                    
                 } else {
                     if (mode != 1) {
                         if (mode >= 0) t->end();

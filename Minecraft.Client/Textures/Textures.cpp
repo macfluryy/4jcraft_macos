@@ -541,11 +541,11 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 }
 
 void Textures::bind(int id) {
-    // if (id != lastBoundId)
+    if (id != lastBoundId)
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
-        //	lastBoundId = id;
+        lastBoundId = id;
     }
 }
 

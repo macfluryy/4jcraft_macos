@@ -35,6 +35,8 @@ static void restoreFixedFunctionStateAfterIggy() {
     RenderManager.MatrixMode(GL_MODELVIEW);
 
     RenderManager.Set_matrixDirty();
+    Minecraft::GetInstance()->textures->clearLastBoundId(); 
+    // 4jcraft: clears the last bound id, dumb fix but fine
 }
 
 void ConsoleUIController::init(S32 w, S32 h) {
