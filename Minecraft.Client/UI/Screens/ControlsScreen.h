@@ -25,12 +25,12 @@ private:
     int getLeftScreenPosition();
 
 public:
-    void init();
+    void init() override;
 
 protected:
-    void buttonClicked(Button* button);
-    void keyPressed(wchar_t eventCharacter, int eventKey);
+    void buttonClicked(Button* button) override;
+    void keyPressed(wchar_t eventCharacter, int eventKey) override;
 
 public:
-    void render(int xm, int ym, float a);
+    void render(int xm, int ym, float a) override;
 };

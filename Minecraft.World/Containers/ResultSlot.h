@@ -14,15 +14,15 @@ public:
                std::shared_ptr<Container> container, int id, int x, int y);
     virtual ~ResultSlot() {}
 
-    virtual bool mayPlace(std::shared_ptr<ItemInstance> item);
-    virtual std::shared_ptr<ItemInstance> remove(int c);
+    virtual bool mayPlace(std::shared_ptr<ItemInstance> item) override;
+    virtual std::shared_ptr<ItemInstance> remove(int c) override;
 
 protected:
-    virtual void onQuickCraft(std::shared_ptr<ItemInstance> picked, int count);
-    virtual void checkTakeAchievements(std::shared_ptr<ItemInstance> carried);
+    virtual void onQuickCraft(std::shared_ptr<ItemInstance> picked, int count) override;
+    virtual void checkTakeAchievements(std::shared_ptr<ItemInstance> carried) override;
 
 public:
     virtual void onTake(std::shared_ptr<Player> player,
-                        std::shared_ptr<ItemInstance> carried);
-    virtual bool mayCombine(std::shared_ptr<ItemInstance> item);  // 4J Added
+                        std::shared_ptr<ItemInstance> carried) override;
+    virtual bool mayCombine(std::shared_ptr<ItemInstance> item) override;  // 4J Added
 };

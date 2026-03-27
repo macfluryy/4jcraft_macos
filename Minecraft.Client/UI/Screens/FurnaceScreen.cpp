@@ -6,23 +6,27 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../../Minecraft.World/Blocks/TileEntities/FurnaceTileEntity.h"
 
+#ifdef ENABLE_JAVA_GUIS
+ResourceLocation GUI_FURNACE_LOCATION = ResourceLocation(TN_GUI_FURNACE);
+#endif
+
 FurnaceScreen::FurnaceScreen(std::shared_ptr<Inventory> inventory,
                              std::shared_ptr<FurnaceTileEntity> furnace)
     : AbstractContainerScreen(new FurnaceMenu(inventory, furnace)) {
+    this->inventory = inventory;
     this->furnace = furnace;
 }
 
 void FurnaceScreen::renderLabels() {
-    font->draw(L"Furnace", 16 + 4 + 40, 2 + 2 + 2, 0x404040);
-    font->draw(L"Inventory", 8, imageHeight - 96 + 2, 0x404040);
+    font->draw(furnace->getName(), 16 + 4 + 40, 2 + 2 + 2, 0x404040);
+    font->draw(inventory->getName(), 8, imageHeight - 96 + 2, 0x404040);
 }
 
 void FurnaceScreen::renderBg(float a) {
     // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
-    int tex = minecraft->textures->loadTexture(TN_GUI_FURNACE);
     glColor4f(1, 1, 1, 1);
-    minecraft->textures->bind(tex);
+    minecraft->textures->bindTexture(&GUI_FURNACE_LOCATION);
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
     this->blit(xo, yo, 0, 0, imageWidth, imageHeight);

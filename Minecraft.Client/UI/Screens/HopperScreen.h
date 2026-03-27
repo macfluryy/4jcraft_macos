@@ -12,8 +12,8 @@ public:
                  std::shared_ptr<Container> hopper);
 
 protected:
-    virtual void renderLabels();
-    virtual void renderBg(float a);
+    virtual void renderLabels() override;
+    virtual void renderBg(float a) override;
 
 private:
     std::shared_ptr<Inventory> inventory;

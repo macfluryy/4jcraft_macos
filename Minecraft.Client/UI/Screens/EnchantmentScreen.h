@@ -9,13 +9,13 @@ public:
                       int y, int z);
     virtual ~EnchantmentScreen();
 
-    void init();
-    void removed();
-    void tick();
-    void mouseClicked(int mouseX, int mouseY, int buttonNum);
-    void renderLabels();
-    void renderBg(float a);
-    void render(int xm, int ym, float a);
+    void init() override;
+    void removed() override;
+    void tick() override;
+    void mouseClicked(int mouseX, int mouseY, int buttonNum) override;
+    void renderLabels() override;
+    void renderBg(float a) override;
+    void render(int xm, int ym, float a) override;
 
 private:
     std::shared_ptr<Inventory> inventory;

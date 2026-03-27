@@ -17,8 +17,8 @@ public:
     AbstractContainerMenu* menu;
 
     AbstractContainerScreen(AbstractContainerMenu* menu);
-    virtual void init();
-    virtual void render(int xm, int ym, float a);
+    virtual void init() override;
+    virtual void render(int xm, int ym, float a) override;
 
 protected:
     virtual void renderLabels();
@@ -33,13 +33,13 @@ private:
     virtual void renderSlot(Slot* slot);
 
 protected:
-    virtual void mouseClicked(int x, int y, int buttonNum);
-    virtual void mouseReleased(int x, int y, int buttonNum);
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+    virtual void mouseClicked(int x, int y, int buttonNum) override;
+    virtual void mouseReleased(int x, int y, int buttonNum) override;
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
 
 public:
-    virtual void removed();
+    virtual void removed() override;
     virtual void slotsChanged(std::shared_ptr<Container> container);
-    virtual bool isPauseScreen();
-    virtual void tick();
+    virtual bool isPauseScreen() override;
+    virtual void tick() override;
 };

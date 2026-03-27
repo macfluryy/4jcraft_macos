@@ -16,10 +16,10 @@ public:
                 const std::wstring& msg, float value);
 
 protected:
-    virtual int getYImage(bool hovered);
-    virtual void renderBg(Minecraft* minecraft, int xm, int ym);
+    virtual int getYImage(bool hovered) override;
+    virtual void renderBg(Minecraft* minecraft, int xm, int ym) override;
 
 public:
-    virtual bool clicked(Minecraft* minecraft, int mx, int my);
-    virtual void released(int mx, int my);
+    virtual bool clicked(Minecraft* minecraft, int mx, int my) override;
+    virtual void released(int mx, int my) override;
 };

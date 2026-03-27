@@ -6,6 +6,7 @@ class Inventory;
 
 class FurnaceScreen : public AbstractContainerScreen {
 private:
+    std::shared_ptr<Inventory> inventory;
     std::shared_ptr<FurnaceTileEntity> furnace;
 
 public:
@@ -13,6 +14,6 @@ public:
                   std::shared_ptr<FurnaceTileEntity> furnace);
 
 protected:
-    virtual void renderLabels();
-    virtual void renderBg(float a);
+    virtual void renderLabels() override;
+    virtual void renderBg(float a) override;
 };

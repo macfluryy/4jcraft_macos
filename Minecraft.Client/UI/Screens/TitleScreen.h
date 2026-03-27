@@ -33,17 +33,17 @@ private:
 
 public:
     TitleScreen();
-    virtual void tick();
+    virtual void tick() override;
 
 protected:
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
 
 public:
-    virtual void init();
+    virtual void init() override;
 
 protected:
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a) override;
 };

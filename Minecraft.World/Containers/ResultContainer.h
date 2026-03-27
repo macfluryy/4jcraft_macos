@@ -10,19 +10,19 @@ public:
     // 4J Stu Added a ctor to init items
     ResultContainer();
 
-    virtual unsigned int getContainerSize();
-    virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot);
-    virtual std::wstring getName();
-    virtual std::wstring getCustomName();
-    virtual bool hasCustomName();
+    virtual unsigned int getContainerSize() override;
+    virtual std::shared_ptr<ItemInstance> getItem(unsigned int slot) override;
+    virtual std::wstring getName() override;
+    virtual std::wstring getCustomName() override;
+    virtual bool hasCustomName() override;
     virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot,
-                                                     int count);
-    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot);
-    virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
-    virtual int getMaxStackSize();
-    virtual void setChanged();
-    virtual bool stillValid(std::shared_ptr<Player> player);
-    virtual void startOpen() {}  // TODO Auto-generated method stub
-    virtual void stopOpen() {}   // TODO Auto-generated method stub
-    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
+                                                     int count) override;
+    virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot) override;
+    virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) override;
+    virtual int getMaxStackSize() override;
+    virtual void setChanged() override;
+    virtual bool stillValid(std::shared_ptr<Player> player) override;
+    virtual void startOpen() override {}  // TODO Auto-generated method stub
+    virtual void stopOpen() override {}   // TODO Auto-generated method stub
+    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item) override;
 };

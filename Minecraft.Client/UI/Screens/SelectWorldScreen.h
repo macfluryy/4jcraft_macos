@@ -41,7 +41,7 @@ private:
 
 public:
     SelectWorldScreen(Screen* lastScreen);
-    virtual void init();
+    virtual void init() override;
 
 private:
     void loadLevelList();
@@ -54,12 +54,12 @@ public:
     virtual void postInit();
 
 protected:
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
 
 public:
     void worldSelected(int id);
-    void confirmResult(bool result, int id);
-    virtual void render(int xm, int ym, float a);
+    void confirmResult(bool result, int id) override;
+    virtual void render(int xm, int ym, float a) override;
 
     class WorldSelectionList : public ScrolledSelectionList {
     public:

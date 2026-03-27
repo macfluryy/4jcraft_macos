@@ -60,21 +60,19 @@ public:
     };
 
 public:
-    CreativeInventoryScreen(std::shared_ptr<Player> player);
-    virtual void removed();
-    virtual void init();
-    virtual void containerTick();
-    virtual void tick();
-    virtual void updateEvents();
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
-    virtual void mouseClicked(int x, int y, int buttonNum);
-    virtual void mouseReleased(int x, int y, int buttonNum);
-    virtual void render(int xm, int ym, float a);
-
+	CreativeInventoryScreen(std::shared_ptr<Player> player);
+	virtual void removed() override;
+	virtual void init() override;
+	virtual void containerTick();
+	virtual void tick() override;
+	virtual void updateEvents() override;
+	virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
+	virtual void mouseClicked(int x, int y, int buttonNum) override;
+	virtual void mouseReleased(int x, int y, int buttonNum) override;
+	virtual void render(int xm, int ym, float a) override;
 protected:
-    virtual void renderLabels();
-    virtual void renderBg(float a);
-
+	virtual void renderLabels() override;
+	virtual void renderBg(float a) override;
 private:
     void setCurrentCreativeTab(int tab);
     void selectTab(int tab);
