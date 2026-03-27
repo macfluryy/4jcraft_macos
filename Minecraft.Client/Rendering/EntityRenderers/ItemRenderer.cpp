@@ -365,7 +365,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glEnable(GL_NORMALIZE);
         glDisable(GL_RESCALE_NORMAL);
 
-#if 1
+#if 0
         // does it work? too lazy to find out
         glTranslatef((float)(x), (float)(y), 0.0f);
         glScalef(fScaleX, fScaleY, 1.0f);
