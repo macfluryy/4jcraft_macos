@@ -20,7 +20,7 @@ protected:
 
 private:
     //	final DateFormat DATE_FORMAT = new SimpleDateFormat();		// 4J -
-    //removed
+    // removed
 
 protected:
     Screen* lastScreen;

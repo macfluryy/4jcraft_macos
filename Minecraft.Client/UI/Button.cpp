@@ -43,7 +43,7 @@ void Button::render(Minecraft* minecraft, int xm, int ym) {
     Font* font = minecraft->font;
 
     // glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(
-                                    //  TN_GUI_GUI));  // 4J was L"/gui/gui.png"
+    //  TN_GUI_GUI));  // 4J was L"/gui/gui.png"
     minecraft->textures->bindTexture(&GUI_GUI_LOCATION);
     glColor4f(1, 1, 1, 1);
 

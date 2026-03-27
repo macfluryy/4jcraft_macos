@@ -12,8 +12,8 @@ ResourceLocation GUI_CRAFTING_LOCATION = ResourceLocation(TN_GUI_CRAFTING);
 CraftingScreen::CraftingScreen(std::shared_ptr<Inventory> inventory,
                                Level* level, int x, int y, int z)
     : AbstractContainerScreen(new CraftingMenu(inventory, level, x, y, z)) {
-        this->inventory = inventory;
-    }
+    this->inventory = inventory;
+}
 
 void CraftingScreen::removed() {
     AbstractContainerScreen::removed();
@@ -21,7 +21,8 @@ void CraftingScreen::removed() {
 }
 
 void CraftingScreen::renderLabels() {
-    font->draw(Language::getInstance()->getElement(L"container.crafting"), 8 + 16 + 4, 2 + 2 + 2, 0x404040);
+    font->draw(Language::getInstance()->getElement(L"container.crafting"),
+               8 + 16 + 4, 2 + 2 + 2, 0x404040);
     font->draw(inventory->getName(), 8, imageHeight - 96 + 2, 0x404040);
 }
 
