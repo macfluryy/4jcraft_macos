@@ -9,8 +9,8 @@
 #include "HitResult.h"
 #include "Util/Vec3.h"
 
-unsigned int AABB::tlsIdx = 0;
-AABB::ThreadStorage* AABB::tlsDefault = NULL;
+thread_local AABB::ThreadStorage* AABB::m_tlsPool = nullptr;
+AABB::ThreadStorage* AABB::m_tlsPoolDefault = nullptr;
 
 AABB::ThreadStorage::ThreadStorage() {
     pool = new AABB[POOL_SIZE];  // 4jcraft, needs to be deleted with delete[]
@@ -23,21 +23,18 @@ AABB::ThreadStorage::~ThreadStorage() {
 
 void AABB::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
-    if (tlsDefault == NULL) {
-        tlsIdx = TlsAlloc();
-        tlsDefault = tls;
+    if (m_tlsPoolDefault == nullptr) {
+        m_tlsPoolDefault = tls;
     }
-
-    TlsSetValue(tlsIdx, tls);
+    m_tlsPool = tls;
 }
 
-void AABB::UseDefaultThreadStorage() { TlsSetValue(tlsIdx, tlsDefault); }
+void AABB::UseDefaultThreadStorage() { m_tlsPool = m_tlsPoolDefault; }
 
 void AABB::ReleaseThreadStorage() {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
-    if (tls == tlsDefault) return;
-
-    delete tls;
+    if (m_tlsPool != m_tlsPoolDefault) {
+        delete m_tlsPool;
+    }
 }
 
 AABB* AABB::newPermanent(double x0, double y0, double z0, double x1, double y1,
@@ -51,7 +48,7 @@ void AABB::resetPool() {}
 
 AABB* AABB::newTemp(double x0, double y0, double z0, double x1, double y1,
                     double z1) {
-    ThreadStorage* tls = (ThreadStorage*)TlsGetValue(tlsIdx);
+    ThreadStorage* tls = m_tlsPool;
     AABB* thisAABB = &tls->pool[tls->poolPointer];
     thisAABB->set(x0, y0, z0, x1, y1, z1);
     tls->poolPointer = (tls->poolPointer + 1) % ThreadStorage::POOL_SIZE;
