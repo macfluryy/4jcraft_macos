@@ -358,16 +358,22 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
+
         // 4J - original code left here for reference
         // 4jcraft: original code reused for proper lighting
+        // force normalize
+        glEnable(GL_NORMALIZE);
+        glDisable(GL_RESCALE_NORMAL);
+
 #if 1
-		glTranslatef((float)(x), (float)(y), 0.0f);
-		glScalef(fScaleX, fScaleY, 1.0f);
-		glTranslatef(-2.0f,3.0f, -3.0f + blitOffset);
-		glScalef(10.0f, 10.0f, 10.0f);
+        // does it work? too lazy to find out
+        glTranslatef((float)(x), (float)(y), 0.0f);
+        glScalef(fScaleX, fScaleY, 1.0f);
+        glTranslatef(-2.0f, 3.0f, -3.0f + blitOffset);
+        glScalef(10.0f, 10.0f, 10.0f);
         glTranslatef(1.0f, 0.5f, 8.0f);
-        glScalef(1.0f, 1.0f, -1.0f);
-        glRotatef(180.0f + 30.0f, 1.0f, 0.0f, 0.0f);
+        glScalef(1.0f, -1.0f, 1.0f);
+        glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
         glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 #else
         glTranslatef(x, y, 0.0f);  // Translate to screen coords
@@ -385,12 +391,16 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glRotatef(45.0f, 0.0f, 1.0f,
                   0.0f);  // Rotate round y axis (centre at origin)
 #endif
-                          // 4J-PB - pass the alpha value in - the grass block
-                          // render has the top surface coloured differently to
-                          // the rest of the block
-        glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+        // 4J-PB - pass the alpha value in - the grass block
+        // render has the top surface coloured differently to
+        // the rest of the block
+         glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+        // glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
+        // glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+        glDisable(GL_NORMALIZE);
         glPopMatrix();
         PIXEndNamedEvent();
     } else if (Item::items[itemId]->hasMultipleSpriteLayers()) {

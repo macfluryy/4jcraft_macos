@@ -52,9 +52,27 @@ FloatBuffer* Lighting::getBuffer(float a, float b, float c, float d) {
 }
 
 void Lighting::turnOnGui() {
-    glPushMatrix();
-    glRotatef(-30, 0, 1, 0);
-    glRotatef(165, 1, 0, 0);
-    turnOn();
-    glPopMatrix();
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    
+    float a = 0.4f;
+    float d = 0.6f;
+    float s = 0.0f;
+    // big john machine
+    // (copied from turnon)
+    RenderManager.StateSetLightDirection(0, 0.129f, 0.965f, 0.224f);
+    glLight(GL_LIGHT0, GL_DIFFUSE, getBuffer(d, d, d, 1));
+    glLight(GL_LIGHT0, GL_AMBIENT, getBuffer(0.0f, 0.0f, 0.0f, 1.0f));
+    glLight(GL_LIGHT0, GL_SPECULAR, getBuffer(s, s, s, 1.0f));
+
+    RenderManager.StateSetLightDirection(1, -0.129f, 0.965f, -0.224f);
+    glLight(GL_LIGHT1, GL_DIFFUSE, getBuffer(d, d, d, 1));
+    glLight(GL_LIGHT1, GL_AMBIENT, getBuffer(0.0f, 0.0f, 0.0f, 1.0f));
+    glLight(GL_LIGHT1, GL_SPECULAR, getBuffer(s, s, s, 1.0f));
+
+    glShadeModel(GL_FLAT);
+    glLightModel(GL_LIGHT_MODEL_AMBIENT, getBuffer(a, a, a, 1));
 }
