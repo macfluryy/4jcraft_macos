@@ -360,6 +360,8 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glPushMatrix();
 
         // 4J - original code left here for reference
+        // 4jcraft: original code reused for proper lighting
+        // force normalize
 #if 1
         // does it work? too lazy to find out
         glTranslatef((float)(x), (float)(y), 0.0f);
