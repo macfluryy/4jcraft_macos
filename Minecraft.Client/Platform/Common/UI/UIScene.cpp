@@ -712,7 +712,7 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
     }
     glEnable(GL_RESCALE_NORMAL);
     glPushMatrix();
-    Lighting::turnOnGui();
+    Lighting::turnOn();
     glRotatef(120, 1, 0, 0);
     glPopMatrix();
 
