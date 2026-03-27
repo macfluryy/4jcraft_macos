@@ -40,7 +40,6 @@ void HorseInventoryScreen::render(int xm, int ym, float a) {
 }
 
 void HorseInventoryScreen::renderBg(float a) {
-    // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
     glColor4f(1, 1, 1, 1);
     minecraft->textures->bindTexture(&GUI_HORSE_LOCATION);

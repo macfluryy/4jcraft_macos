@@ -240,7 +240,6 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 void AbstractContainerScreen::renderLabels() {}
 
 void AbstractContainerScreen::renderSlot(Slot* slot) {
-    // 4J Unused
 #if ENABLE_JAVA_GUIS
     int x = slot->x;
     int y = slot->y;

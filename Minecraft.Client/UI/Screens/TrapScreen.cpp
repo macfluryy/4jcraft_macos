@@ -23,7 +23,6 @@ void TrapScreen::renderLabels() {
 }
 
 void TrapScreen::renderBg(float a) {
-    // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
     glColor4f(1, 1, 1, 1);
     minecraft->textures->bindTexture(&GUI_TRAP_LOCATION);

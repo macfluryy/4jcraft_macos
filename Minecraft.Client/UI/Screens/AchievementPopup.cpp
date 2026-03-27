@@ -66,7 +66,6 @@ void AchievementPopup::prepareWindow() {
 }
 
 void AchievementPopup::render() {
-// 4J Unused
 #if ENABLE_JAVA_GUIS
     if (Minecraft::warezTime > 0) {
         glDisable(GL_DEPTH_TEST);

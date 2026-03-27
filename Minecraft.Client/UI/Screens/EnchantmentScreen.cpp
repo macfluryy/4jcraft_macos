@@ -125,7 +125,6 @@ void EnchantmentScreen::render(int xm, int ym, float a) {
 }
 
 void EnchantmentScreen::renderBg(float a) {
-    // 4J unused
 #ifdef ENABLE_JAVA_GUIS
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     Minecraft::GetInstance()->textures->bindTexture(&GUI_ENCHANT_LOCATION);

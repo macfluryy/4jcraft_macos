@@ -25,7 +25,6 @@ void ContainerScreen::renderLabels() {
 }
 
 void ContainerScreen::renderBg(float a) {
-    // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
     int tex = minecraft->textures->loadTexture(TN_GUI_CONTAINER);
     glColor4f(1, 1, 1, 1);

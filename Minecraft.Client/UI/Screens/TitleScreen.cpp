@@ -365,7 +365,6 @@ void TitleScreen::rotateAndBlur(float a) {
 }
 
 void TitleScreen::render(int xm, int ym, float a) {
-    // 4J Unused - Iggy Flash UI renders the title screen on consoles
 #ifdef ENABLE_JAVA_GUIS
     // 4jcraft: panorama
     renderSkybox(a);
