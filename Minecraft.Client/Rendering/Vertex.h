@@ -3,7 +3,7 @@
 
 class Vertex {
 public:
-    Vec3* pos;
+    Vec3 pos;
     float u, v;
 
 public:

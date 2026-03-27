@@ -6,8 +6,8 @@
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "PlayGoal.h"
+#include <limits>
 
 PlayGoal::PlayGoal(Villager* mob, double speedModifier) {
     followFriend = std::weak_ptr<LivingEntity>();
@@ -26,7 +26,7 @@ bool PlayGoal::canUse() {
     std::vector<std::shared_ptr<Entity> >* children =
         mob->level->getEntitiesOfClass(typeid(Villager),
                                        mob->bb->grow(6, 3, 6));
-    double closestDistSqr = Double::MAX_VALUE;
+    double closestDistSqr = std::numeric_limits<double>::max();
     // for (Entity c : children)
     for (AUTO_VAR(it, children->begin()); it != children->end(); ++it) {
         std::shared_ptr<Entity> c = *it;
@@ -43,10 +43,10 @@ bool PlayGoal::canUse() {
     delete children;
 
     if (followFriend.lock() == NULL) {
-        Vec3* pos = RandomPos::getPos(
+        auto pos = RandomPos::getPos(
             std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()),
             16, 3);
-        if (pos == NULL) return false;
+        if (!pos.has_value()) return false;
     }
     return true;
 }
@@ -72,11 +72,11 @@ void PlayGoal::tick() {
             mob->getNavigation()->moveTo(followFriend.lock(), speedModifier);
     } else {
         if (mob->getNavigation()->isDone()) {
-            Vec3* pos =
+            auto pos =
                 RandomPos::getPos(std::dynamic_pointer_cast<PathfinderMob>(
                                       mob->shared_from_this()),
                                   16, 3);
-            if (pos == NULL) return;
+            if (!pos.has_value()) return;
             mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, speedModifier);
         }
     }

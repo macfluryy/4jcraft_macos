@@ -9,8 +9,8 @@
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.entity.monster.h"
 #include "../../Headers/com.mojang.nbt.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "Spider.h"
+#include <limits>
 #include "../../../Minecraft.Client/Textures/Textures.h"
 #include "../../Util/SoundTypes.h"
 
@@ -173,7 +173,8 @@ MobGroupData* Spider::finalizeMobSpawn(
     if (dynamic_cast<SpiderEffectsGroupData*>(groupData) != NULL) {
         int effect = ((SpiderEffectsGroupData*)groupData)->effectId;
         if (effect > 0 && MobEffect::effects[effect] != NULL) {
-            addEffect(new MobEffectInstance(effect, Integer::MAX_VALUE));
+            addEffect(
+                new MobEffectInstance(effect, std::numeric_limits<int>::max()));
         }
     }
 

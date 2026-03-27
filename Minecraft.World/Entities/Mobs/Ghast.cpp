@@ -141,10 +141,10 @@ void Ghast::serverAiStep() {
                         ydd, zdd));
                 ie->explosionPower = explosionPower;
                 double d = 4;
-                Vec3* v = getViewVector(1);
-                ie->x = x + v->x * d;
+                Vec3 v = getViewVector(1);
+                ie->x = x + v.x * d;
                 ie->y = y + bbHeight / 2 + 0.5f;
-                ie->z = z + v->z * d;
+                ie->z = z + v.z * d;
                 level->addEntity(ie);
                 charge = -40;
             }

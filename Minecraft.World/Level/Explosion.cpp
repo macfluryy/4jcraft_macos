@@ -26,12 +26,7 @@ Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
     size = 16;
 }
 
-Explosion::~Explosion() {
-    delete random;
-    for (AUTO_VAR(it, hitPlayers.begin()); it != hitPlayers.end(); ++it) {
-        delete it->second;
-    }
-}
+Explosion::~Explosion() { delete random; }
 
 void Explosion::explode() {
     float oR = r;
@@ -108,7 +103,7 @@ void Explosion::explode() {
         level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
     std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(),
                                                    levelEntities->end());
-    Vec3* center = Vec3::newTemp(x, y, z);
+    Vec3 center(x, y, z);
 
     AUTO_VAR(itEnd, entities.end());
     for (AUTO_VAR(it, entities.begin()); it != itEnd; it++) {
@@ -146,7 +141,7 @@ void Explosion::explode() {
                 za /= da;
             }
 
-            double sp = level->getSeenPercent(center, e->bb);
+            double sp = level->getSeenPercent(&center, e->bb);
             double pow = (1 - dist) * sp;
             if (canDamage)
                 e->hurt(DamageSource::explosion(this),
@@ -165,7 +160,7 @@ void Explosion::explode() {
                 // app.DebugPrintf("Adding player knockback (%f,%f,%f)\n", xa *
                 // pow, ya * pow, za * pow);
                 hitPlayers.insert(playerVec3Map::value_type(
-                    player, Vec3::newPermanent(xa * pow, ya * pow, za * pow)));
+                    player, Vec3(xa * pow, ya * pow, za * pow)));
             }
         }
     }
@@ -283,10 +278,10 @@ void Explosion::finalizeExplosion(
 
 Explosion::playerVec3Map* Explosion::getHitPlayers() { return &hitPlayers; }
 
-Vec3* Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
+Vec3 Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
     AUTO_VAR(it, hitPlayers.find(player));
 
-    if (it == hitPlayers.end()) return Vec3::newTemp(0.0, 0.0, 0.0);
+    if (it == hitPlayers.end()) return Vec3(0.0, 0.0, 0.0);
 
     return it->second;
 }

@@ -14,7 +14,7 @@ private:
     bool avoidSun;
     int _tick;
     int lastStuckCheck;
-    Vec3* lastStuckCheckPos;
+    Vec3 lastStuckCheckPos;
 
     bool _canPassDoors;
     bool _canOpenDoors;
@@ -52,7 +52,7 @@ public:
     void stop();
 
 private:
-    Vec3* getTempMobPos();
+    Vec3 getTempMobPos();
     int getSurfaceY();
     bool canUpdatePath();
     bool isInLiquid();

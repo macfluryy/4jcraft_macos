@@ -365,13 +365,13 @@ public:
                        false);  // 4J: Added noEntities & blockAtEdge parameters
     int getOldSkyDarken(float a);  // 4J - change brought forward from 1.8.2
     float getSkyDarken(float a);   // 4J - change brought forward from 1.8.2
-    Vec3* getSkyColor(std::shared_ptr<Entity> source, float a);
+    Vec3 getSkyColor(std::shared_ptr<Entity> source, float a);
     float getTimeOfDay(float a);
     int getMoonPhase();
     float getMoonBrightness();
     float getSunAngle(float a);
-    Vec3* getCloudColor(float a);
-    Vec3* getFogColor(float a);
+    Vec3 getCloudColor(float a);
+    Vec3 getFogColor(float a);
     int getTopRainBlock(int x, int z);
     int getTopSolidBlock(int x, int z);
     bool biomeHasRain(int x, int z);  // 4J added

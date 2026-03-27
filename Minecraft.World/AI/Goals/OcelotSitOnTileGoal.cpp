@@ -6,9 +6,9 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.level.tile.entity.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "../../Util/Arrays.h"
 #include "OcelotSitOnTileGoal.h"
+#include <limits>
 
 const int OcelotSitOnTileGoal::GIVE_UP_TICKS =
     3 * SharedConstants::TICKS_PER_SECOND;
@@ -77,7 +77,7 @@ void OcelotSitOnTileGoal::tick() {
 
 bool OcelotSitOnTileGoal::findNearestTile() {
     int y = (int)ocelot->y;
-    double distSqr = Integer::MAX_VALUE;
+    double distSqr = std::numeric_limits<int>::max();
 
     for (int x = (int)ocelot->x - SEARCH_RANGE; x < ocelot->x + SEARCH_RANGE;
          x++) {
@@ -97,7 +97,7 @@ bool OcelotSitOnTileGoal::findNearestTile() {
         }
     }
 
-    return distSqr < Integer::MAX_VALUE;
+    return distSqr < std::numeric_limits<int>::max();
 }
 
 bool OcelotSitOnTileGoal::isValidTarget(Level* level, int x, int y, int z) {

@@ -5,6 +5,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.phys.h"
 #include "FleeSunGoal.h"
+#include <optional>
 
 FleeSunGoal::FleeSunGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;
@@ -20,8 +21,8 @@ bool FleeSunGoal::canUse() {
                           Mth::floor(mob->z)))
         return false;
 
-    Vec3* pos = getHidePos();
-    if (pos == NULL) return false;
+    auto pos = getHidePos();
+    if (!pos.has_value()) return false;
     wantedX = pos->x;
     wantedY = pos->y;
     wantedZ = pos->z;
@@ -34,7 +35,7 @@ void FleeSunGoal::start() {
     mob->getNavigation()->moveTo(wantedX, wantedY, wantedZ, speedModifier);
 }
 
-Vec3* FleeSunGoal::getHidePos() {
+std::optional<Vec3> FleeSunGoal::getHidePos() {
     Random* random = mob->getRandom();
     for (int i = 0; i < 10; i++) {
         int xt = Mth::floor(mob->x + random->nextInt(20) - 10);
@@ -42,7 +43,7 @@ Vec3* FleeSunGoal::getHidePos() {
         int zt = Mth::floor(mob->z + random->nextInt(20) - 10);
         if (!level->canSeeSky(xt, yt, zt) &&
             mob->getWalkTargetValue(xt, yt, zt) < 0)
-            return Vec3::newTemp(xt, yt, zt);
+            return Vec3(xt, yt, zt);
     }
-    return NULL;
+    return std::nullopt;
 }

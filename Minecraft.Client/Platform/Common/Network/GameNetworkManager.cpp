@@ -948,7 +948,6 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
     AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
     Tile::CreateNewThreadStorage();
 
@@ -1008,7 +1007,6 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
 
     SetThreadName(-1, "Minecraft Server thread");
     AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
     OldChunkStorage::UseDefaultThreadStorage();
     Entity::useSmallIds();
@@ -1022,7 +1020,6 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
 
     Tile::ReleaseThreadStorage();
     AABB::ReleaseThreadStorage();
-    Vec3::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
     if (lpParameter != NULL) delete (NetworkGameInitData*)lpParameter;
@@ -1034,7 +1031,6 @@ int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
     AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
@@ -1187,7 +1183,6 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
     AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     Minecraft* pMinecraft = Minecraft::GetInstance();

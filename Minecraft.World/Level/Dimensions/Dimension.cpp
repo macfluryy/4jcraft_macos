@@ -157,7 +157,7 @@ float* Dimension::getSunriseColor(float td, float a) {
     return NULL;
 }
 
-Vec3* Dimension::getFogColor(float td, float a) const {
+Vec3 Dimension::getFogColor(float td, float a) const {
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
@@ -172,7 +172,7 @@ Vec3* Dimension::getFogColor(float td, float a) const {
     g *= br * 0.94f + 0.06f;
     b *= br * 0.91f + 0.09f;
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 bool Dimension::mayRespawn() const { return true; }

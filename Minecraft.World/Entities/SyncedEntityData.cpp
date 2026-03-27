@@ -1,6 +1,5 @@
 #include "../Platform/stdafx.h"
 #include "../Util/Class.h"
-#include "../Util/BasicTypeContainers.h"
 #include "../IO/Streams/InputOutputStream.h"
 #include "../Headers/net.minecraft.h"
 #include "../Headers/net.minecraft.network.packet.h"

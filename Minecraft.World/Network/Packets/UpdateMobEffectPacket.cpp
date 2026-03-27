@@ -3,8 +3,8 @@
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
 #include "../../WorldGen/Features/BasicTreeFeature.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "UpdateMobEffectPacket.h"
+#include <limits>
 
 UpdateMobEffectPacket::UpdateMobEffectPacket() {
     entityId = 0;
@@ -19,8 +19,8 @@ UpdateMobEffectPacket::UpdateMobEffectPacket(int entityId,
     effectId = (BYTE)(effect->getId() & 0xff);
     effectAmplifier = (char)(effect->getAmplifier() & 0xff);
 
-    if (effect->getDuration() > Short::MAX_VALUE) {
-        effectDurationTicks = Short::MAX_VALUE;
+    if (effect->getDuration() > std::numeric_limits<short>::max()) {
+        effectDurationTicks = std::numeric_limits<short>::max();
     } else {
         effectDurationTicks = (short)effect->getDuration();
     }
@@ -41,7 +41,7 @@ void UpdateMobEffectPacket::write(DataOutputStream* dos) {
 }
 
 bool UpdateMobEffectPacket::isSuperLongDuration() {
-    return effectDurationTicks == Short::MAX_VALUE;
+    return effectDurationTicks == std::numeric_limits<short>::max();
 }
 
 void UpdateMobEffectPacket::handle(PacketListener* listener) {

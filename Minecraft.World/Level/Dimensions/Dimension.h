@@ -48,7 +48,7 @@ private:
 
 public:
     virtual float* getSunriseColor(float td, float a);
-    virtual Vec3* getFogColor(float td, float a) const;
+    virtual Vec3 getFogColor(float td, float a) const;
     virtual bool mayRespawn() const;
     static Dimension* getNew(int id);
     virtual float getCloudHeight();

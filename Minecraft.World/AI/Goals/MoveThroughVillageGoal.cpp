@@ -5,8 +5,8 @@
 #include "../../Headers/net.minecraft.world.entity.ai.village.h"
 #include "../../Headers/net.minecraft.world.entity.h"
 #include "../../Headers/net.minecraft.world.level.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "MoveThroughVillageGoal.h"
+#include <limits>
 #include "../Navigation/Path.h"
 
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
@@ -47,10 +47,11 @@ bool MoveThroughVillageGoal::canUse() {
     mob->getNavigation()->setCanOpenDoors(oldCanOpenDoors);
     if (path != NULL) return true;
 
-    Vec3* pos = RandomPos::getPosTowards(
+    Vec3 towards(_doorInfo->x, _doorInfo->y, _doorInfo->z);
+    auto pos = RandomPos::getPosTowards(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 10,
-        7, Vec3::newTemp(_doorInfo->x, _doorInfo->y, _doorInfo->z));
-    if (pos == NULL) return false;
+        7, &towards);
+    if (!pos.has_value()) return false;
     mob->getNavigation()->setCanOpenDoors(false);
     delete path;
     path = mob->getNavigation()->createPath(pos->x, pos->y, pos->z);
@@ -86,7 +87,7 @@ void MoveThroughVillageGoal::stop() {
 std::shared_ptr<DoorInfo> MoveThroughVillageGoal::getNextDoorInfo(
     std::shared_ptr<Village> village) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDistSqr = Integer::MAX_VALUE;
+    int closestDistSqr = std::numeric_limits<int>::max();
     std::vector<std::shared_ptr<DoorInfo> >* doorInfos =
         village->getDoorInfos();
     // for (DoorInfo di : doorInfos)

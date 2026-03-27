@@ -58,22 +58,22 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
         float swing = hook->owner->getAttackAnim(a);
         float swing2 = (float)Mth::sin(sqrt(swing) * PI);
 
-        Vec3* vv = Vec3::newTemp(-0.5, 0.03, 0.8);
-        vv->xRot(-(hook->owner->xRotO +
-                   (hook->owner->xRot - hook->owner->xRotO) * a) *
-                 PI / 180);
-        vv->yRot(-(hook->owner->yRotO +
-                   (hook->owner->yRot - hook->owner->yRotO) * a) *
-                 PI / 180);
-        vv->yRot(swing2 * 0.5f);
-        vv->xRot(-swing2 * 0.7f);
+        Vec3 vv(-0.5, 0.03, 0.8);
+        vv.xRot(-(hook->owner->xRotO +
+                  (hook->owner->xRot - hook->owner->xRotO) * a) *
+                PI / 180);
+        vv.yRot(-(hook->owner->yRotO +
+                  (hook->owner->yRot - hook->owner->yRotO) * a) *
+                PI / 180);
+        vv.yRot(swing2 * 0.5f);
+        vv.xRot(-swing2 * 0.7f);
 
         double xp =
-            hook->owner->xo + (hook->owner->x - hook->owner->xo) * a + vv->x;
+            hook->owner->xo + (hook->owner->x - hook->owner->xo) * a + vv.x;
         double yp =
-            hook->owner->yo + (hook->owner->y - hook->owner->yo) * a + vv->y;
+            hook->owner->yo + (hook->owner->y - hook->owner->yo) * a + vv.y;
         double zp =
-            hook->owner->zo + (hook->owner->z - hook->owner->zo) * a + vv->z;
+            hook->owner->zo + (hook->owner->z - hook->owner->zo) * a + vv.z;
         double yOffset = hook->owner == std::dynamic_pointer_cast<Player>(
                                             Minecraft::GetInstance()->player)
                              ? 0

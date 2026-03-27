@@ -469,6 +469,11 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::carrotGolden_Id)
     ITEM(Item::pumpkinPie_Id)
 
+// 4jcraft: Search
+#ifdef ENABLE_JAVA_GUIS
+    DEF(eCreativeInventory_Search)
+#endif
+
     // Tools, Armour and Weapons (Complete)
     DEF(eCreativeInventory_ToolsArmourWeapons)
     ITEM(Item::compass_Id)
@@ -856,6 +861,13 @@ void IUIScene_CreativeMenu::staticCtor() {
     specs[eCreativeInventoryTab_Food] =
         new TabSpec(L"Food", IDS_GROUPNAME_FOOD, 1, foodGroup);
 
+// 4jcraft
+#ifdef ENABLE_JAVA_GUIS
+    ECreative_Inventory_Groups searchGroup[] = {eCreativeInventory_Search};
+    specs[eCreativeInventoryTab_Search] =
+        new TabSpec(L"Search Items", IDS_GROUPNAME_SEARCH, 1, searchGroup);
+#endif
+
     ECreative_Inventory_Groups toolsGroup[] = {
         eCreativeInventory_ToolsArmourWeapons};
     specs[eCreativeInventoryTab_ToolsWeaponsArmor] =
@@ -898,7 +910,7 @@ IUIScene_CreativeMenu::IUIScene_CreativeMenu() {
     m_bCarryingCreativeItem = false;
     m_creativeSlotX = m_creativeSlotY = m_inventorySlotX = m_inventorySlotY = 0;
 
-    // 4J JEV - Settup Tabs
+    // 4J JEV - Setup Tabs
     for (int i = 0; i < eCreativeInventoryTab_COUNT; i++) {
         m_tabDynamicPos[i] = 0;
         m_tabPage[i] = 0;

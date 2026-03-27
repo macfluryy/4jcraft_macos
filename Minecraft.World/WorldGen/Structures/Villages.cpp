@@ -3,8 +3,8 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "Villages.h"
+#include <limits>
 
 const std::wstring Villages::VILLAGE_FILE_ID = L"villages";
 
@@ -74,7 +74,7 @@ std::vector<std::shared_ptr<Village> >* Villages::getVillages() {
 std::shared_ptr<Village> Villages::getClosestVillage(int x, int y, int z,
                                                      int maxDist) {
     std::shared_ptr<Village> closest = nullptr;
-    float closestDistSqr = Float::MAX_VALUE;
+    float closestDistSqr = std::numeric_limits<float>::max();
     // for (Village village : villages)
     for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
         std::shared_ptr<Village> village = *it;

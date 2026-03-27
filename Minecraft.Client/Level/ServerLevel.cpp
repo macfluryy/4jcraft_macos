@@ -1112,13 +1112,13 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
         }
 
         if (player->distanceToSqr(x, y, z) < 64 * 64) {
-            Vec3* knockbackVec = explosion->getHitPlayerKnockback(player);
+            Vec3 knockbackVec = explosion->getHitPlayerKnockback(player);
             // app.DebugPrintf("Sending %s with knockback (%f,%f,%f)\n",
             // knockbackOnly?"knockbackOnly":"allExplosion",knockbackVec->x,knockbackVec->y,knockbackVec->z);
             //  If the player is not the primary on the system, then we only
             //  want to send info for the knockback
             player->connection->send(std::shared_ptr<ExplodePacket>(
-                new ExplodePacket(x, y, z, r, &explosion->toBlow, knockbackVec,
+                new ExplodePacket(x, y, z, r, &explosion->toBlow, &knockbackVec,
                                   knockbackOnly)));
             sentTo.push_back(player);
         }

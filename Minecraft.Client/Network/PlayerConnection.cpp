@@ -1551,7 +1551,8 @@ void PlayerConnection::handlePlayerAbilities(
 //	StringBuilder result = new StringBuilder();
 
 //	for (String candidate : server.getAutoCompletions(player,
-//packet.getMessage())) { 		if (result.length() > 0) result.append("\0");
+// packet.getMessage())) { 		if (result.length() > 0)
+// result.append("\0");
 
 //		result.append(candidate);
 //	}

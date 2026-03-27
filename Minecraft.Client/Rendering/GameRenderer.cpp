@@ -90,7 +90,7 @@ GameRenderer::GameRenderer(Minecraft* mc) {
     tickSmoothYO = 0;
     lastTickA = 0;
 
-    cameraPos = Vec3::newPermanent(0.0f, 0.0f, 0.0f);
+    cameraPos = Vec3(0.0f, 0.0f, 0.0f);
 
     fovOffset = 0;
     fovOffsetO = 0;
@@ -291,7 +291,7 @@ void GameRenderer::pick(float a) {
     }
 
     double dist = range;
-    Vec3* from = mc->cameraTargetPlayer->getPos(a);
+    Vec3 from = mc->cameraTargetPlayer->getPos(a);
 
     if (mc->gameMode->hasFarPickRange()) {
         dist = range = 6;
@@ -301,17 +301,18 @@ void GameRenderer::pick(float a) {
     }
 
     if (mc->hitResult != NULL) {
-        dist = mc->hitResult->pos->distanceTo(from);
+        dist = mc->hitResult->pos.distanceTo(from);
     }
 
-    Vec3* b = mc->cameraTargetPlayer->getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
+    Vec3 b = mc->cameraTargetPlayer->getViewVector(a);
+    Vec3 to(b.x * range, b.y * range, b.z * range);
+    to = to.add(from.x, from.y, from.z);
     hovered = nullptr;
     float overlap = 1;
     std::vector<std::shared_ptr<Entity> >* objects = mc->level->getEntities(
         mc->cameraTargetPlayer,
         mc->cameraTargetPlayer->bb
-            ->expand(b->x * (range), b->y * (range), b->z * (range))
+            ->expand(b.x * (range), b.y * (range), b.z * (range))
             ->grow(overlap, overlap, overlap));
     double nearest = dist;
 
@@ -322,14 +323,14 @@ void GameRenderer::pick(float a) {
 
         float rr = e->getPickRadius();
         AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
-        if (bb->contains(from)) {
+        HitResult* p = bb->clip(&from, &to);
+        if (bb->contains(&from)) {
             if (0 < nearest || nearest == 0) {
                 hovered = e;
                 nearest = 0;
             }
         } else if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             std::shared_ptr<Entity> ridingEntity =
                 mc->cameraTargetPlayer->riding;
             // 4jcraft: compare the mounted entity explicitly so riding the hit
@@ -523,11 +524,12 @@ void GameRenderer::moveCameraToPlayer(float a) {
 
                 // 4J - corrected bug here where zo was also added to x
                 // component
-                HitResult* hr = mc->level->clip(
-                    Vec3::newTemp(x + xo, y + yo, z + zo),
-                    Vec3::newTemp(x - xd + xo, y - yd + yo, z - zd + zo));
+                Vec3 a(x + xo, y + yo, z + zo);
+                Vec3 b(x - xd + xo, y - yd + yo, z - zd + zo);
+                HitResult* hr = mc->level->clip(&a, &b);
                 if (hr != NULL) {
-                    double dist = hr->pos->distanceTo(Vec3::newTemp(x, y, z));
+                    Vec3 p(x, y, z);
+                    double dist = hr->pos.distanceTo(p);
                     if (dist < cameraDist) cameraDist = dist;
                     delete hr;
                 }
@@ -1113,7 +1115,6 @@ void GameRenderer::FinishedReassigning() {
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    Vec3::CreateNewThreadStorage();
     AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
@@ -1194,7 +1195,6 @@ int GameRenderer::runUpdate(void* lpParam) {
         //		PIXEndNamedEvent();
 
         AABB::resetPool();
-        Vec3::resetPool();
         m_updateEvents->Set(eUpdateEventIsFinished);
     }
 
@@ -1369,11 +1369,11 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             // storing the camera position Fix for #77745 - TU9: Content:
             // Gameplay: Items and mobs not belonging to end world are
             // disappearing when Enderdragon is damaged.
-            Vec3* cameraPosTemp = cameraEntity->getPos(a);
-            cameraPos->x = cameraPosTemp->x;
-            cameraPos->y = cameraPosTemp->y;
-            cameraPos->z = cameraPosTemp->z;
-            levelRenderer->renderEntities(cameraPos, frustum, a);
+            Vec3 cameraPosTemp = cameraEntity->getPos(a);
+            cameraPos.x = cameraPosTemp.x;
+            cameraPos.y = cameraPosTemp.y;
+            cameraPos.z = cameraPosTemp.z;
+            levelRenderer->renderEntities(&cameraPos, frustum, a);
 #ifdef __PSVITA__
             // AP - make sure we're using the Alpha cut out effect for particles
             glEnable(GL_ALPHA_TEST);
@@ -1853,21 +1853,20 @@ void GameRenderer::setupClearColor(float a) {
     float whiteness = 1.0f / (4 - mc->options->viewDistance);
     whiteness = 1 - (float)pow((double)whiteness, 0.25);
 
-    Vec3* skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
-    float sr = (float)skyColor->x;
-    float sg = (float)skyColor->y;
-    float sb = (float)skyColor->z;
+    Vec3 skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
+    float sr = (float)skyColor.x;
+    float sg = (float)skyColor.y;
+    float sb = (float)skyColor.z;
 
-    Vec3* fogColor = level->getFogColor(a);
-    fr = (float)fogColor->x;
-    fg = (float)fogColor->y;
-    fb = (float)fogColor->z;
+    Vec3 fogColor = level->getFogColor(a);
+    fr = (float)fogColor.x;
+    fg = (float)fogColor.y;
+    fb = (float)fogColor.z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3* sunAngle = Mth::sin(level->getSunAngle(a)) > 0
-                             ? Vec3::newTemp(-1, 0, 0)
-                             : Vec3::newTemp(1, 0, 0);
-        float d = (float)player->getViewVector(a)->dot(sunAngle);
+        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
+                                                            : Vec3(1, 0, 0);
+        float d = (float)player->getViewVector(a).dot(sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {
             float* c =
@@ -1903,10 +1902,10 @@ void GameRenderer::setupClearColor(float a) {
 
     int t = Camera::getBlockAt(mc->level, player, a);
     if (isInClouds) {
-        Vec3* cc = level->getCloudColor(a);
-        fr = (float)cc->x;
-        fg = (float)cc->y;
-        fb = (float)cc->z;
+        Vec3 cc = level->getCloudColor(a);
+        fr = (float)cc.x;
+        fg = (float)cc.y;
+        fb = (float)cc.z;
     } else if (t != 0 && Tile::tiles[t]->material == Material::water) {
         float clearness = EnchantmentHelper::getOxygenBonus(player) * 0.2f;
 

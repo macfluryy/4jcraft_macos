@@ -5,8 +5,9 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.world.phys.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "Village.h"
+#include <limits>
+#include <optional>
 
 Village::Aggressor::Aggressor(std::shared_ptr<LivingEntity> mob,
                               int timeStamp) {
@@ -60,9 +61,9 @@ void Village::tick(int tick) {
     int idealGolemCount = populationSize / 10;
     if (golemCount < idealGolemCount && doorInfos.size() > 20 &&
         level->random->nextInt(7000) == 0) {
-        Vec3* spawnPos =
+        auto spawnPos =
             findRandomSpawnPos(center->x, center->y, center->z, 2, 4, 2);
-        if (spawnPos != NULL) {
+        if (spawnPos.has_value()) {
             std::shared_ptr<VillagerGolem> vg =
                 std::shared_ptr<VillagerGolem>(new VillagerGolem(level));
             vg->setPos(spawnPos->x, spawnPos->y, spawnPos->z);
@@ -88,16 +89,17 @@ void Village::tick(int tick) {
     //        }
 }
 
-Vec3* Village::findRandomSpawnPos(int x, int y, int z, int sx, int sy, int sz) {
+std::optional<Vec3> Village::findRandomSpawnPos(int x, int y, int z, int sx,
+                                                int sy, int sz) {
     for (int i = 0; i < 10; ++i) {
         int xx = x + level->random->nextInt(16) - 8;
         int yy = y + level->random->nextInt(6) - 3;
         int zz = z + level->random->nextInt(16) - 8;
         if (!isInside(xx, yy, zz)) continue;
-        if (canSpawnAt(xx, yy, zz, sx, sy, sz))
-            return Vec3::newTemp(xx, yy, zz);
+        if (canSpawnAt(xx, yy, zz, sx, sy, sz)) return Vec3(xx, yy, zz);
     }
-    return NULL;
+
+    return std::nullopt;
 }
 
 bool Village::canSpawnAt(int x, int y, int z, int sx, int sy, int sz) {
@@ -159,7 +161,7 @@ std::vector<std::shared_ptr<DoorInfo> >* Village::getDoorInfos() {
 
 std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDistSqr = Integer::MAX_VALUE;
+    int closestDistSqr = std::numeric_limits<int>::max();
     // for (DoorInfo dm : doorInfos)
     for (AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
@@ -174,7 +176,7 @@ std::shared_ptr<DoorInfo> Village::getClosestDoorInfo(int x, int y, int z) {
 
 std::shared_ptr<DoorInfo> Village::getBestDoorInfo(int x, int y, int z) {
     std::shared_ptr<DoorInfo> closest = nullptr;
-    int closestDist = Integer::MAX_VALUE;
+    int closestDist = std::numeric_limits<int>::max();
     // for (DoorInfo dm : doorInfos)
     for (AUTO_VAR(it, doorInfos.begin()); it != doorInfos.end(); ++it) {
         std::shared_ptr<DoorInfo> dm = *it;
@@ -232,7 +234,7 @@ void Village::addAggressor(std::shared_ptr<LivingEntity> mob) {
 
 std::shared_ptr<LivingEntity> Village::getClosestAggressor(
     std::shared_ptr<LivingEntity> from) {
-    double closestSqr = Double::MAX_VALUE;
+    double closestSqr = std::numeric_limits<double>::max();
     Aggressor* closest = NULL;
     // for (int i = 0; i < aggressors.size(); ++i)
     for (AUTO_VAR(it, aggressors.begin()); it != aggressors.end(); ++it) {
@@ -247,7 +249,7 @@ std::shared_ptr<LivingEntity> Village::getClosestAggressor(
 
 std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
     std::shared_ptr<LivingEntity> from) {
-    double closestSqr = Double::MAX_VALUE;
+    double closestSqr = std::numeric_limits<double>::max();
     std::shared_ptr<Player> closest = nullptr;
 
     // for (String player : playerStanding.keySet())

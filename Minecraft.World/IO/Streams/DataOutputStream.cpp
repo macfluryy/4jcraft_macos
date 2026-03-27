@@ -1,7 +1,8 @@
 #include "../../Platform/stdafx.h"
-#include "../../Util/BasicTypeContainers.h"
 
 #include "DataOutputStream.h"
+#include <bit>
+#include <cstdint>
 
 // Creates a new data output stream to write data to the specified underlying
 // output stream. The counter written is set to zero. Parameters: out - the
@@ -86,7 +87,7 @@ void DataOutputStream::writeByte(uint8_t a) {
 // counter written is incremented by 8. Parameters: v - a double value to be
 // written.
 void DataOutputStream::writeDouble(double a) {
-    int64_t bits = Double::doubleToLongBits(a);
+    int64_t bits = std::bit_cast<int64_t>(a);
 
     writeLong(bits);
     // TODO 4J Stu - Error handling?
@@ -98,7 +99,7 @@ void DataOutputStream::writeDouble(double a) {
 // as a 4-byte quantity, high byte first. If no exception is thrown, the counter
 // written is incremented by 4. Parameters: v - a float value to be written.
 void DataOutputStream::writeFloat(float a) {
-    int bits = Float::floatToIntBits(a);
+    int bits = std::bit_cast<int>(a);
 
     writeInt(bits);
     // TODO 4J Stu - Error handling?
@@ -149,7 +150,8 @@ void DataOutputStream::writeShort(short a) {
 void DataOutputStream::writeUnsignedShort(unsigned short a) {
     if (stream == NULL) {
         app.DebugPrintf(
-            "DataOutputStream::writeUnsignedShort() but underlying stream is NULL\n");
+            "DataOutputStream::writeUnsignedShort() but underlying stream is "
+            "NULL\n");
         return;
     }
     stream->write(static_cast<unsigned int>((a >> 8) & 0xff));

@@ -1,6 +1,5 @@
 #include "../../Platform/stdafx.h"
 #include "../../Platform/System.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.network.packet.h"
 #include "PacketListener.h"
@@ -483,7 +482,8 @@ void Packet::writeUtf(const std::wstring& value,
                                               // should this declare a throws?
 {
 #if 0
-	if (value.length() > Short::MAX_VALUE) 
+#include <limits>
+	if (value.length() > std::numeric_limits<short>::max())
 	{
 		throw new IOException(L"String too big");
 	}

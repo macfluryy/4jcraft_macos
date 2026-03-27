@@ -1,8 +1,8 @@
 #include "../../Platform/stdafx.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "PacketListener.h"
-#include "../../Util/BasicTypeContainers.h"
 #include "CustomPayloadPacket.h"
+#include <limits>
 
 // Mojang-defined custom packets
 const std::wstring CustomPayloadPacket::CUSTOM_BOOK_PACKET = L"MC|BEdit";
@@ -25,7 +25,7 @@ CustomPayloadPacket::CustomPayloadPacket(const std::wstring& identifier,
     if (data.data != NULL) {
         length = data.length;
 
-        if (length > Short::MAX_VALUE) {
+        if (length > std::numeric_limits<short>::max()) {
             app.DebugPrintf("Payload may not be larger than 32K\n");
 #ifndef _CONTENT_PACKAGE
             __debugbreak();
@@ -40,7 +40,7 @@ void CustomPayloadPacket::read(DataInputStream* dis) {
     identifier = readUtf(dis, 20);
     length = dis->readShort();
 
-    if (length > 0 && length < Short::MAX_VALUE) {
+    if (length > 0 && length < std::numeric_limits<short>::max()) {
         if (data.data != NULL) {
             delete[] data.data;
         }

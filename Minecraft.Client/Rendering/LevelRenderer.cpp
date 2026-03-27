@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "LevelRenderer.h"
+#include <cmath>
 #include "../Textures/Textures.h"
 #include "../Textures/TextureAtlas.h"
 #include "Tesselator.h"
@@ -59,7 +60,6 @@
 #include "../Level/MultiPlayerLevel.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "FrustumCuller.h"
-#include "../../Minecraft.World/Util/BasicTypeContainers.h"
 
 // #define DISABLE_SPU_CODE
 
@@ -1035,10 +1035,10 @@ void LevelRenderer::renderSky(float alpha) {
     glDisable(GL_TEXTURE_2D);
 
     int playerIndex = mc->player->GetXboxPad();
-    Vec3* sc = level[playerIndex]->getSkyColor(mc->cameraTargetPlayer, alpha);
-    float sr = (float)sc->x;
-    float sg = (float)sc->y;
-    float sb = (float)sc->z;
+    Vec3 sc = level[playerIndex]->getSkyColor(mc->cameraTargetPlayer, alpha);
+    float sr = (float)sc.x;
+    float sg = (float)sc.y;
+    float sb = (float)sc.z;
 
     if (mc->options->anaglyph3d) {
         float srr = (sr * 30 + sg * 59 + sb * 11) / 100;
@@ -1185,7 +1185,7 @@ void LevelRenderer::renderSky(float alpha) {
     glColor3f(0, 0, 0);
 
     double yy =
-        mc->player->getPos(alpha)->y -
+        mc->player->getPos(alpha).y -
         level[playerIndex]->getHorizonHeight();  // 4J - getHorizonHeight moved
                                                  // forward from 1.2.3
     if (yy < 0) {
@@ -1259,10 +1259,10 @@ void LevelRenderer::renderHaloRing(float alpha) {
 
     int playerIndex = mc->player->GetXboxPad();
 
-    Vec3* sc = level[playerIndex]->getSkyColor(mc->cameraTargetPlayer, alpha);
-    float sr = (float)sc->x;
-    float sg = (float)sc->y;
-    float sb = (float)sc->z;
+    Vec3 sc = level[playerIndex]->getSkyColor(mc->cameraTargetPlayer, alpha);
+    float sr = (float)sc.x;
+    float sg = (float)sc.y;
+    float sb = (float)sc.z;
 
     // Rough lumninance calculation
     float Y = (sr + sr + sb + sg + sg + sg) / 6;
@@ -1335,10 +1335,10 @@ void LevelRenderer::renderClouds(float alpha) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Vec3* cc = level[playerIndex]->getCloudColor(alpha);
-    float cr = (float)cc->x;
-    float cg = (float)cc->y;
-    float cb = (float)cc->z;
+    Vec3 cc = level[playerIndex]->getCloudColor(alpha);
+    float cr = (float)cc.x;
+    float cg = (float)cc.y;
+    float cb = (float)cc.z;
 
     if (mc->options->anaglyph3d) {
         float crr = (cr * 30 + cg * 59 + cb * 11) / 100;
@@ -1632,10 +1632,10 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Vec3* cc = level[playerIndex]->getCloudColor(alpha);
-    float cr = (float)cc->x;
-    float cg = (float)cc->y;
-    float cb = (float)cc->z;
+    Vec3 cc = level[playerIndex]->getCloudColor(alpha);
+    float cr = (float)cc.x;
+    float cg = (float)cc.y;
+    float cb = (float)cc.z;
 
     if (mc->options->anaglyph3d) {
         float crr = (cr * 30 + cg * 59 + cb * 11) / 100;
@@ -2920,9 +2920,9 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
     // optimised PS3 code which reverses the logic on the comparison with
     // particleDistanceSquared and gets the opposite result to what you might
     // expect.
-    if (Double::isNaN(x)) return nullptr;
-    if (Double::isNaN(y)) return nullptr;
-    if (Double::isNaN(z)) return nullptr;
+    if (std::isnan(x)) return nullptr;
+    if (std::isnan(y)) return nullptr;
+    if (std::isnan(z)) return nullptr;
 
     int particleLevel = mc->options->particles;
 
@@ -4039,7 +4039,6 @@ void LevelRenderer::staticCtor() {
 }
 
 int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
-    Vec3::CreateNewThreadStorage();
     AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     RenderManager.InitialiseContext();

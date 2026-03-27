@@ -7,20 +7,24 @@ class SimpleContainer;
 
 class IUIScene_CreativeMenu : public virtual IUIScene_AbstractContainerMenu {
 public:
-    // 4J Stu - These map directly to the tabs seenon the screen
+    // 4J Stu - These map directly to the tabs seen on the screen
     enum ECreativeInventoryTabs {
         eCreativeInventoryTab_BuildingBlocks = 0,
         eCreativeInventoryTab_Decorations,
         eCreativeInventoryTab_RedstoneAndTransport,
         eCreativeInventoryTab_Materials,
         eCreativeInventoryTab_Food,
+// 4jcraft: java search tab
+#ifdef ENABLE_JAVA_GUIS
+        eCreativeInventoryTab_Search,
+#endif
         eCreativeInventoryTab_ToolsWeaponsArmor,
         eCreativeInventoryTab_Brewing,
         eCreativeInventoryTab_Misc,
         eCreativeInventoryTab_COUNT,
     };
 
-    // 4J Stu - These are logical groupings of items, and be be combined for
+    // 4J Stu - These are logical groupings of items, and are combined for
     // tabs on-screen
     enum ECreative_Inventory_Groups {
         eCreativeInventory_BuildingBlocks,
@@ -29,6 +33,10 @@ public:
         eCreativeInventory_Transport,
         eCreativeInventory_Materials,
         eCreativeInventory_Food,
+// 4jcraft
+#ifdef ENABLE_JAVA_GUIS
+        eCreativeInventory_Search,
+#endif
         eCreativeInventory_ToolsArmourWeapons,
         eCreativeInventory_Brewing,
         eCreativeInventory_Potions_Basic,
@@ -97,7 +105,7 @@ public:
         virtual void loopClick(int slotIndex, int buttonNum, bool quickKeyHeld,
                                std::shared_ptr<Player> player) {}  // do nothing
     }* itemPickerMenu;
-    
+
     // 4jcraft: changed these two from public to protected for the java UI
     static std::vector<std::shared_ptr<ItemInstance> >
         categoryGroups[eCreativeInventoryGroupsCount];

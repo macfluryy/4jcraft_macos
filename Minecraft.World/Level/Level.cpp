@@ -1,6 +1,5 @@
 #include "../Platform/stdafx.h"
 #include "../Platform/System.h"
-#include "../Util/BasicTypeContainers.h"
 #include "../IO/Files/File.h"
 #include "../Util/ProgressListener.h"
 #include "../Headers/net.minecraft.h"
@@ -39,7 +38,9 @@
 #include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
+#include <cmath>
 #include <cstdint>
+#include <limits>
 
 // 4J : WESTY : Added for time played stats.
 #include "../Headers/net.minecraft.stats.h"
@@ -1374,10 +1375,8 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid) {
 }
 
 HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
-    if (Double::isNaN(a->x) || Double::isNaN(a->y) || Double::isNaN(a->z))
-        return NULL;
-    if (Double::isNaN(b->x) || Double::isNaN(b->y) || Double::isNaN(b->z))
-        return NULL;
+    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z)) return NULL;
+    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z)) return NULL;
 
     int xTile1 = Mth::floor(b->x);
     int yTile1 = Mth::floor(b->y);
@@ -1403,7 +1402,7 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
 
     int maxIterations = 200;
     while (maxIterations-- >= 0) {
-        if (Double::isNaN(a->x) || Double::isNaN(a->y) || Double::isNaN(a->z))
+        if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z))
             return NULL;
         if (xTile0 == xTile1 && yTile0 == yTile1 && zTile0 == zTile1)
             return NULL;
@@ -1479,21 +1478,21 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
             a->z = zClip;
         }
 
-        Vec3* tPos = Vec3::newTemp(a->x, a->y, a->z);
-        xTile0 = (int)(tPos->x = floor(a->x));
+        Vec3 tPos(a->x, a->y, a->z);
+        xTile0 = (int)(tPos.x = floor(a->x));
         if (face == 5) {
             xTile0--;
-            tPos->x++;
+            tPos.x++;
         }
-        yTile0 = (int)(tPos->y = floor(a->y));
+        yTile0 = (int)(tPos.y = floor(a->y));
         if (face == 1) {
             yTile0--;
-            tPos->y++;
+            tPos.y++;
         }
-        zTile0 = (int)(tPos->z = floor(a->z));
+        zTile0 = (int)(tPos.z = floor(a->z));
         if (face == 3) {
             zTile0--;
-            tPos->z++;
+            tPos.z++;
         }
 
         int t = getTile(xTile0, yTile0, zTile0);
@@ -1885,7 +1884,7 @@ float Level::getSkyDarken(float a) {
     return br * 0.8f + 0.2f;
 }
 
-Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
+Vec3 Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
@@ -1933,7 +1932,7 @@ Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
         b = b * (1 - f) + 1 * f;
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 float Level::getTimeOfDay(float a) {
@@ -1964,7 +1963,7 @@ float Level::getSunAngle(float a) {
     return td * PI * 2;
 }
 
-Vec3* Level::getCloudColor(float a) {
+Vec3 Level::getCloudColor(float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2.0f + 0.5f;
@@ -2002,10 +2001,10 @@ Vec3* Level::getCloudColor(float a) {
         b = b * ba + mid * (1 - ba);
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
-Vec3* Level::getFogColor(float a) {
+Vec3 Level::getFogColor(float a) {
     float td = getTimeOfDay(a);
     return dimension->getFogColor(td, a);
 }
@@ -2308,13 +2307,12 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     }
 
     // SANTITY!!
-    if (Double::isNaN(e->x) || Double::isInfinite(e->x)) e->x = e->xOld;
-    if (Double::isNaN(e->y) || Double::isInfinite(e->y)) e->y = e->yOld;
-    if (Double::isNaN(e->z) || Double::isInfinite(e->z)) e->z = e->zOld;
-    if (Double::isNaN(e->xRot) || Double::isInfinite(e->xRot))
-        e->xRot = e->xRotO;
-    if (Double::isNaN(e->yRot) || Double::isInfinite(e->yRot))
-        e->yRot = e->yRotO;
+
+    if (!std::isfinite(e->x)) e->x = e->xOld;
+    if (!std::isfinite(e->y)) e->y = e->yOld;
+    if (!std::isfinite(e->z)) e->z = e->zOld;
+    if (!std::isfinite(e->xRot)) e->xRot = e->xRotO;
+    if (!std::isfinite(e->yRot)) e->yRot = e->yRotO;
 
     int xcn = Mth::floor(e->x / 16);
     int ycn = Mth::floor(e->y / 16);
@@ -2475,7 +2473,7 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
     }
 
     bool ok = false;
-    Vec3* current = Vec3::newTemp(0, 0, 0);
+    Vec3 current(0, 0, 0);
     for (int x = x0; x < x1; x++) {
         for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
@@ -2485,18 +2483,18 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
                         y + 1 - LiquidTile::getHeight(getData(x, y, z));
                     if (y1 >= yt0) {
                         ok = true;
-                        tile->handleEntityInside(this, x, y, z, e, current);
+                        tile->handleEntityInside(this, x, y, z, e, &current);
                     }
                 }
             }
         }
     }
-    if (current->length() > 0 && e->isPushedByWater()) {
-        current = current->normalize();
+    if (current.length() > 0 && e->isPushedByWater()) {
+        current = current.normalize();
         double pow = 0.014;
-        e->xd += current->x * pow;
-        e->yd += current->y * pow;
-        e->zd += current->z * pow;
+        e->xd += current.x * pow;
+        e->yd += current.y * pow;
+        e->zd += current.z * pow;
     }
     return ok;
 }
@@ -2582,7 +2580,8 @@ float Level::getSeenPercent(Vec3* center, AABB* bb) {
                 double x = bb->x0 + (bb->x1 - bb->x0) * xx;
                 double y = bb->y0 + (bb->y1 - bb->y0) * yy;
                 double z = bb->z0 + (bb->z1 - bb->z0) * zz;
-                HitResult* res = clip(Vec3::newTemp(x, y, z), center);
+                Vec3 a(x, y, z);
+                HitResult* res = clip(&a, center);
                 if (res == NULL) hits++;
                 delete res;
                 count++;
@@ -2931,7 +2930,7 @@ void Level::toggleDownfall() {
 }
 
 void Level::buildAndPrepareChunksToPoll() {
-#if 0	
+#if 0
 	AUTO_VAR(itEnd, players.end());
 	for (AUTO_VAR(it, players.begin()); it != itEnd; it++)
 	{
@@ -3512,7 +3511,7 @@ std::shared_ptr<Entity> Level::getClosestEntityOfClass(
     std::vector<std::shared_ptr<Entity> >* entities =
         getEntitiesOfClass(baseClass, bb);
     std::shared_ptr<Entity> closest = nullptr;
-    double closestDistSqr = Double::MAX_VALUE;
+    double closestDistSqr = std::numeric_limits<double>::max();
     // for (Entity entity : entities)
     for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
         std::shared_ptr<Entity> entity = *it;

@@ -1,8 +1,9 @@
 #include "../Platform/stdafx.h"
 #include "../AI/Navigation/Node.h"
 #include "../Platform/System.h"
-#include "BasicTypeContainers.h"
 #include "BinaryHeap.h"
+
+#include <limits>
 
 // 4J Jev, add common ctor code.
 void BinaryHeap::_init() {
@@ -113,7 +114,7 @@ void BinaryHeap::downHeap(int idx) {
         if (rightIdx >= sizeVar) {
             // Only need to compare with left.
             rightNode = NULL;
-            rightCost = Float::POSITIVE_INFINITY;
+            rightCost = std::numeric_limits<float>::infinity();
         } else {
             rightNode = heap[rightIdx];
             rightCost = rightNode->f;

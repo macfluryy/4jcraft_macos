@@ -15,7 +15,9 @@
 #include "../Headers/net.minecraft.world.food.h"
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.h"
+#include "Util/Vec3.h"
 #include "Tile.h"
+#include <optional>
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 
@@ -2120,41 +2122,52 @@ float Tile::getExplosionResistance(std::shared_ptr<Entity> source) {
 HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     updateShape(level, xt, yt, zt);
 
-    a = a->add(-xt, -yt, -zt);
-    b = b->add(-xt, -yt, -zt);
+    *a = a->add(-xt, -yt, -zt);
+    *b = b->add(-xt, -yt, -zt);
 
     ThreadStorage* tls = m_tlsShape;
-    Vec3* xh0 = a->clipX(b, tls->xx0);
-    Vec3* xh1 = a->clipX(b, tls->xx1);
+    auto xh0 = a->clipX(*b, tls->xx0);
+    auto xh1 = a->clipX(*b, tls->xx1);
 
-    Vec3* yh0 = a->clipY(b, tls->yy0);
-    Vec3* yh1 = a->clipY(b, tls->yy1);
+    auto yh0 = a->clipY(*b, tls->yy0);
+    auto yh1 = a->clipY(*b, tls->yy1);
 
-    Vec3* zh0 = a->clipZ(b, tls->zz0);
-    Vec3* zh1 = a->clipZ(b, tls->zz1);
+    auto zh0 = a->clipZ(*b, tls->zz0);
+    auto zh1 = a->clipZ(*b, tls->zz1);
 
-    Vec3* closest = NULL;
+    std::optional<Vec3> closest = std::nullopt;
 
-    if (containsX(xh0) &&
-        (closest == NULL || a->distanceToSqr(xh0) < a->distanceToSqr(closest)))
+    if (xh0.has_value() and containsX(&*xh0) and
+        (!closest.has_value() or
+         a->distanceToSqr(*xh0) < a->distanceToSqr(*closest)))
         closest = xh0;
-    if (containsX(xh1) &&
-        (closest == NULL || a->distanceToSqr(xh1) < a->distanceToSqr(closest)))
+
+    if (xh1.has_value() and containsX(&*xh1) and
+        (!closest.has_value() or
+         a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
         closest = xh1;
-    if (containsY(yh0) &&
-        (closest == NULL || a->distanceToSqr(yh0) < a->distanceToSqr(closest)))
+
+    if (yh0.has_value() and containsY(&*yh0) and
+        (!closest.has_value() or
+         a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
         closest = yh0;
-    if (containsY(yh1) &&
-        (closest == NULL || a->distanceToSqr(yh1) < a->distanceToSqr(closest)))
+
+    if (yh1.has_value() and containsY(&*yh1) and
+        (!closest.has_value() or
+         a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
         closest = yh1;
-    if (containsZ(zh0) &&
-        (closest == NULL || a->distanceToSqr(zh0) < a->distanceToSqr(closest)))
+
+    if (zh0.has_value() and containsZ(&*zh0) and
+        (!closest.has_value() or
+         a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
         closest = zh0;
-    if (containsZ(zh1) &&
-        (closest == NULL || a->distanceToSqr(zh1) < a->distanceToSqr(closest)))
+
+    if (zh1.has_value() and containsZ(&*zh1) and
+        (!closest.has_value() or
+         a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
         closest = zh1;
 
-    if (closest == NULL) return NULL;
+    if (!closest.has_value()) return nullptr;
 
     int face = -1;
 
@@ -2165,7 +2178,8 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     if (closest == zh0) face = Facing::NORTH;
     if (closest == zh1) face = Facing::SOUTH;
 
-    return new HitResult(xt, yt, zt, face, closest->add(xt, yt, zt));
+    Vec3 res = closest->add(xt, yt, zt);
+    return new HitResult(xt, yt, zt, face, res);
 }
 
 bool Tile::containsX(Vec3* v) {
