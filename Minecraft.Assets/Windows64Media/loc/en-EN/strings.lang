@@ -4760,6 +4760,9 @@ Would you like to unlock the full game?</value>
 	<data name="IDS_GROUPNAME_FOOD">
 		<value>Food</value>
 	</data>
+	<data name="IDS_GROUPNAME_SEARCH">
+		<value>Search Items</value>
+	</data>
 	<data name="IDS_GROUPNAME_STRUCTURES">
 		<value>Structures</value>
 	</data>

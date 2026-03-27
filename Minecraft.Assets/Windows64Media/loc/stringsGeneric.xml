@@ -1,4 +1,4 @@
-﻿<root>
+<root>
 	<data name="IDS_TIPS_GAMETIP_NEWDLC">
 		<value>New Downloadable Content is available! Access it from the Minecraft Store button on the Main Menu.</value>
 	</data>	
@@ -6042,6 +6042,10 @@ Would you like to unlock the full game now?</value>
 
 	<data name="IDS_GROUPNAME_FOOD">
 		<value>Food</value>
+	</data>	
+
+	<data name="IDS_GROUPNAME_SEARCH">
+		<value>Search Items</value>
 	</data>	
 
 	<data name="IDS_GROUPNAME_STRUCTURES">

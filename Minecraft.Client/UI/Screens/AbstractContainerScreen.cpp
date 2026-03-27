@@ -306,9 +306,10 @@ void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum) {
         }
 
         if (slotId != -1) {
-            bool quickKey = slotId != AbstractContainerMenu::SLOT_CLICKED_OUTSIDE &&
-                            (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) ||
-                             Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
+            bool quickKey =
+                slotId != AbstractContainerMenu::SLOT_CLICKED_OUTSIDE &&
+                (Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) ||
+                 Keyboard::isKeyDown(Keyboard::KEY_RSHIFT));
             minecraft->gameMode->handleInventoryMouseClick(
                 menu->containerId, slotId, buttonNum, quickKey,
                 minecraft->player);
