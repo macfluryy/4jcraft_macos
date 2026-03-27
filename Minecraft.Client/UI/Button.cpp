@@ -38,6 +38,7 @@ int Button::getYImage(bool hovered) {
 }
 
 void Button::render(Minecraft* minecraft, int xm, int ym) {
+#ifdef ENABLE_JAVA_GUIS
     if (!visible) return;
 
     Font* font = minecraft->font;
@@ -64,6 +65,7 @@ void Button::render(Minecraft* minecraft, int xm, int ym) {
             drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, 0xe0e0e0);
         }
     }
+#endif
 }
 
 void Button::renderBg(Minecraft* minecraft, int xm, int ym) {}
