@@ -443,7 +443,7 @@ HitResult* StairTile::clip(Level* level, int xt, int yt, int zt, Vec3* a,
     for (unsigned int i = 0; i < 8; ++i) {
         HitResult* result = results[i];
         if (result != NULL) {
-            double dist = result->pos->distanceToSqr(b);
+            double dist = result->pos.distanceToSqr(*b);
 
             if (dist > closestDist) {
                 closest = result;

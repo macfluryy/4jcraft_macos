@@ -4,7 +4,7 @@
 class HellDimension : public Dimension {
 public:
     virtual void init();
-    virtual Vec3* getFogColor(float td, float a) const;
+    virtual Vec3 getFogColor(float td, float a) const;
 
 protected:
     virtual void updateLightRamp();

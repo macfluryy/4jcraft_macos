@@ -24,7 +24,7 @@ public:
     std::unordered_set<TilePos, TilePosKeyHash, TilePosKeyEq> toBlow;
 
 private:
-    typedef std::unordered_map<std::shared_ptr<Player>, Vec3*, PlayerKeyHash,
+    typedef std::unordered_map<std::shared_ptr<Player>, Vec3, PlayerKeyHash,
                                PlayerKeyEq>
         playerVec3Map;
     playerVec3Map hitPlayers;
@@ -42,6 +42,6 @@ public:
                            std::vector<TilePos>* toBlowDirect =
                                NULL);  // 4J - added toBlow parameter
     playerVec3Map* getHitPlayers();
-    Vec3* getHitPlayerKnockback(std::shared_ptr<Player> player);
+    Vec3 getHitPlayerKnockback(std::shared_ptr<Player> player);
     std::shared_ptr<LivingEntity> getSourceMob();
 };

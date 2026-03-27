@@ -700,7 +700,6 @@ int __cdecl main() {
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     // Initialise TLS for AABB and Vec3 pools, for this main thread
     AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::CreateNewThreadStorage();
     OldChunkStorage::CreateNewThreadStorage();
     Level::enableLightingCache();
@@ -1029,9 +1028,6 @@ int __cdecl main() {
         }
 
         // Fix for #7318 - Title crashes after short soak in the leaderboards
-        // menu A memory leak was caused because the icon renderer kept creating
-        // new Vec3's because the pool wasn't reset
-        Vec3::resetPool();
     }
 
     // Free resources, unregister custom classes, and exit.

@@ -50,7 +50,7 @@ private:
     float thirdTiltO;
     float accumulatedSmoothXO, accumulatedSmoothYO;
     float tickSmoothXO, tickSmoothYO, lastTickA;
-    Vec3* cameraPos;  // 4J added
+    Vec3 cameraPos;  // 4J added
 
     // fov modification
     float fovOffset;

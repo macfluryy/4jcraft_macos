@@ -20,7 +20,7 @@ PathNavigation::PathNavigation(Mob* mob, Level* level) {
     avoidSun = false;
     _tick = 0;
     lastStuckCheck = 0;
-    lastStuckCheckPos = Vec3::newPermanent(0, 0, 0);
+    lastStuckCheckPos = Vec3(0, 0, 0);
     _canPassDoors = true;
     _canOpenDoors = false;
     avoidWater = false;
@@ -29,7 +29,6 @@ PathNavigation::PathNavigation(Mob* mob, Level* level) {
 
 PathNavigation::~PathNavigation() {
     if (path != NULL) delete path;
-    delete lastStuckCheckPos;
 }
 
 void PathNavigation::setAvoidWater(bool avoidWater) {
@@ -110,11 +109,11 @@ bool PathNavigation::moveTo(Path* newPath, double speedModifier) {
     if (path->getSize() == 0) return false;
 
     this->speedModifier = speedModifier;
-    Vec3* mobPos = getTempMobPos();
+    Vec3 mobPos = getTempMobPos();
     lastStuckCheck = _tick;
-    lastStuckCheckPos->x = mobPos->x;
-    lastStuckCheckPos->y = mobPos->y;
-    lastStuckCheckPos->z = mobPos->z;
+    lastStuckCheckPos.x = mobPos.x;
+    lastStuckCheckPos.y = mobPos.y;
+    lastStuckCheckPos.z = mobPos.z;
     return true;
 }
 
@@ -127,20 +126,19 @@ void PathNavigation::tick() {
     if (canUpdatePath()) updatePath();
 
     if (isDone()) return;
-    Vec3* target = path->currentPos(mob->shared_from_this());
-    if (target == NULL) return;
+    Vec3 target = path->currentPos(mob->shared_from_this());
 
-    mob->getMoveControl()->setWantedPosition(target->x, target->y, target->z,
+    mob->getMoveControl()->setWantedPosition(target.x, target.y, target.z,
                                              speedModifier);
 }
 
 void PathNavigation::updatePath() {
-    Vec3* mobPos = getTempMobPos();
+    Vec3 mobPos = getTempMobPos();
 
     // find first elevations in path
     int firstElevation = path->getSize();
     for (int i = path->getIndex(); path != NULL && i < path->getSize(); ++i) {
-        if ((int)path->get(i)->y != (int)mobPos->y) {
+        if ((int)path->get(i)->y != (int)mobPos.y) {
             firstElevation = i;
             break;
         }
@@ -150,8 +148,8 @@ void PathNavigation::updatePath() {
     // check canWalkDirectly also) possibly only check next as well
     float waypointRadiusSqr = mob->bbWidth * mob->bbWidth;
     for (int i = path->getIndex(); i < firstElevation; ++i) {
-        Vec3* pathPos = path->getPos(mob->shared_from_this(), i);
-        if (mobPos->distanceToSqr(pathPos) < waypointRadiusSqr) {
+        Vec3 pathPos = path->getPos(mob->shared_from_this(), i);
+        if (mobPos.distanceToSqr(pathPos) < waypointRadiusSqr) {
             path->setIndex(i + 1);
         }
     }
@@ -161,8 +159,8 @@ void PathNavigation::updatePath() {
     int sy = (int)mob->bbHeight + 1;
     int sz = sx;
     for (int i = firstElevation - 1; i >= path->getIndex(); --i) {
-        if (canMoveDirectly(mobPos, path->getPos(mob->shared_from_this(), i),
-                            sx, sy, sz)) {
+        Vec3 mob_pos = path->getPos(mob->shared_from_this(), i);
+        if (canMoveDirectly(&mobPos, &mob_pos, sx, sy, sz)) {
             path->setIndex(i);
             break;
         }
@@ -170,11 +168,11 @@ void PathNavigation::updatePath() {
 
     // stuck detection (probably pushed off path)
     if (_tick - lastStuckCheck > 100) {
-        if (mobPos->distanceToSqr(lastStuckCheckPos) < 1.5 * 1.5) stop();
+        if (mobPos.distanceToSqr(lastStuckCheckPos) < 1.5 * 1.5) stop();
         lastStuckCheck = _tick;
-        lastStuckCheckPos->x = mobPos->x;
-        lastStuckCheckPos->y = mobPos->y;
-        lastStuckCheckPos->z = mobPos->z;
+        lastStuckCheckPos.x = mobPos.x;
+        lastStuckCheckPos.y = mobPos.y;
+        lastStuckCheckPos.z = mobPos.z;
     }
 }
 
@@ -185,8 +183,8 @@ void PathNavigation::stop() {
     path = NULL;
 }
 
-Vec3* PathNavigation::getTempMobPos() {
-    return Vec3::newTemp(mob->x, getSurfaceY(), mob->z);
+Vec3 PathNavigation::getTempMobPos() {
+    return Vec3(mob->x, getSurfaceY(), mob->z);
 }
 
 int PathNavigation::getSurfaceY() {

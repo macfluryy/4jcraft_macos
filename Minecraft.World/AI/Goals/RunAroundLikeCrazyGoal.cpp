@@ -17,10 +17,10 @@ RunAroundLikeCrazyGoal::RunAroundLikeCrazyGoal(EntityHorse* mob,
 
 bool RunAroundLikeCrazyGoal::canUse() {
     if (horse->isTamed() || horse->rider.lock() == NULL) return false;
-    Vec3* pos = RandomPos::getPos(
+    auto pos = RandomPos::getPos(
         std::dynamic_pointer_cast<PathfinderMob>(horse->shared_from_this()), 5,
         4);
-    if (pos == NULL) return false;
+    if (!pos.has_value()) return false;
     posX = pos->x;
     posY = pos->y;
     posZ = pos->z;

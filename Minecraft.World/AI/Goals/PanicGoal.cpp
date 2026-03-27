@@ -22,10 +22,10 @@ bool PanicGoal::canUse() {
     const int panicDuration = random.nextInt(41) + 60;
     if (mob->tickCount - hurtTimeout > panicDuration) return false;
 
-    Vec3* pos = RandomPos::getPos(
+    auto pos = RandomPos::getPos(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 5,
         4);
-    if (pos == NULL) return false;
+    if (!pos.has_value()) return false;
     posX = pos->x;
     posY = pos->y;
     posZ = pos->z;

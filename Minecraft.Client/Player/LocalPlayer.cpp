@@ -404,25 +404,25 @@ void LocalPlayer::aiStep() {
 
     if (abilities.flying)  // minecraft->options->isFlying )
     {
-        Vec3* viewVector = getViewVector(1.0f);
+        Vec3 viewVector = getViewVector(1.0f);
 
         // 4J-PB - To let the player build easily while flying, we need to
         // change this
 
 #ifdef _DEBUG_MENUS_ENABLED
         if (abilities.debugflying) {
-            flyX = (float)viewVector->x * input->ya;
-            flyY = (float)viewVector->y * input->ya;
-            flyZ = (float)viewVector->z * input->ya;
+            flyX = (float)viewVector.x * input->ya;
+            flyY = (float)viewVector.y * input->ya;
+            flyZ = (float)viewVector.z * input->ya;
         } else
 #endif
         {
             if (isSprinting()) {
                 // Accelrate up to full speed if we are sprinting, moving in the
                 // direction of the view vector
-                flyX = (float)viewVector->x * input->ya;
-                flyY = (float)viewVector->y * input->ya;
-                flyZ = (float)viewVector->z * input->ya;
+                flyX = (float)viewVector.x * input->ya;
+                flyY = (float)viewVector.y * input->ya;
+                flyZ = (float)viewVector.z * input->ya;
 
                 float scale = ((float)(SPRINT_DURATION - sprintTime)) / 10.0f;
                 scale = scale * scale;
@@ -550,7 +550,8 @@ void LocalPlayer::closeContainer() {
 void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 #ifdef ENABLE_JAVA_GUIS
     if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
-        minecraft->setScreen(new TextEditScreen(std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
+        minecraft->setScreen(new TextEditScreen(
+            std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
         bool success = true;
     }
 #else
@@ -782,8 +783,7 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // storage device, so needs a primary player, and the player may not
         // have been a primary player when they first 'got' the award so let the
         // award manager figure it out
-        if (!minecraft->stats[m_iPad]->hasTaken(ach))
-        {
+        if (!minecraft->stats[m_iPad]->hasTaken(ach)) {
             // 4J-PB - Don't display the java popup
 #ifdef ENABLE_JAVA_GUIS
             minecraft->achievementPopup->popup(ach);
@@ -1506,7 +1506,7 @@ bool LocalPlayer::handleMouseClick(int button) {
             bool usedItem = false;
             if (minecraft->gameMode->useItemOn(
                     minecraft->localplayers[GetXboxPad()], level, item, x, y, z,
-                    face, minecraft->hitResult->pos, false, &usedItem)) {
+                    face, &minecraft->hitResult->pos, false, &usedItem)) {
                 // Presume that if we actually used the held item, then we've
                 // placed it
                 if (usedItem) {

@@ -24,6 +24,7 @@
 #include "../Headers/net.minecraft.world.scores.h"
 #include "../Headers/com.mojang.nbt.h"
 #include "LivingEntity.h"
+#include <optional>
 #include "../../Minecraft.Client/Textures/Textures.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Player/EntityTracker.h"
@@ -31,6 +32,7 @@
 #include "../Util/ParticleTypes.h"
 #include "../Stats/GenericStats.h"
 #include "ItemEntity.h"
+#include "Util/Vec3.h"
 
 const double LivingEntity::MIN_MOVEMENT_DISTANCE = 0.005;
 
@@ -791,18 +793,18 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
               0.8f + level->random->nextFloat() * 0.4f);
 
     for (int i = 0; i < 5; i++) {
-        Vec3* d = Vec3::newTemp((random->nextFloat() - 0.5) * 0.1,
-                                Math::random() * 0.1 + 0.1, 0);
-        d->xRot(-xRot * PI / 180);
-        d->yRot(-yRot * PI / 180);
+        Vec3 d = Vec3((random->nextFloat() - 0.5) * 0.1,
+                      Math::random() * 0.1 + 0.1, 0);
+        d.xRot(-xRot * PI / 180);
+        d.yRot(-yRot * PI / 180);
 
-        Vec3* p = Vec3::newTemp((random->nextFloat() - 0.5) * 0.3,
-                                -random->nextFloat() * 0.6 - 0.3, 0.6);
-        p->xRot(-xRot * PI / 180);
-        p->yRot(-yRot * PI / 180);
-        p = p->add(x, y + getHeadHeight(), z);
+        Vec3 p = Vec3((random->nextFloat() - 0.5) * 0.3,
+                      -random->nextFloat() * 0.6 - 0.3, 0.6);
+        p.xRot(-xRot * PI / 180);
+        p.yRot(-yRot * PI / 180);
+        p = p.add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
-                           p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
+                           p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
     }
 }
 
@@ -1640,25 +1642,25 @@ void LivingEntity::take(std::shared_ptr<Entity> e, int orgCount) {
 }
 
 bool LivingEntity::canSee(std::shared_ptr<Entity> target) {
-    HitResult* hres = level->clip(
-        Vec3::newTemp(x, y + getHeadHeight(), z),
-        Vec3::newTemp(target->x, target->y + target->getHeadHeight(),
-                      target->z));
+    Vec3 a{x, y + getHeadHeight(), z};
+    Vec3 b{target->x, target->y + target->getHeadHeight(), target->z};
+
+    HitResult* hres = level->clip(&a, &b);
     bool retVal = (hres == NULL);
     delete hres;
     return retVal;
 }
 
-Vec3* LivingEntity::getLookAngle() { return getViewVector(1); }
+std::optional<Vec3> LivingEntity::getLookAngle() { return getViewVector(1); }
 
-Vec3* LivingEntity::getViewVector(float a) {
+Vec3 LivingEntity::getViewVector(float a) {
     if (a == 1) {
         float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
         float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
         float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
         float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
-        return Vec3::newTemp(ySin * xCos, xSin, yCos * xCos);
+        return Vec3(ySin * xCos, xSin, yCos * xCos);
     }
     float xRot = xRotO + (this->xRot - xRotO) * a;
     float yRot = yRotO + (this->yRot - yRotO) * a;
@@ -1668,7 +1670,7 @@ Vec3* LivingEntity::getViewVector(float a) {
     float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
     float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
-    return Vec3::newTemp(ySin * xCos, xSin, yCos * xCos);
+    return Vec3(ySin * xCos, xSin, yCos * xCos);
 }
 
 float LivingEntity::getAttackAnim(float a) {
@@ -1677,22 +1679,23 @@ float LivingEntity::getAttackAnim(float a) {
     return oAttackAnim + diff * a;
 }
 
-Vec3* LivingEntity::getPos(float a) {
+Vec3 LivingEntity::getPos(float a) {
     if (a == 1) {
-        return Vec3::newTemp(x, y, z);
+        return Vec3(x, y, z);
     }
     double x = xo + (this->x - xo) * a;
     double y = yo + (this->y - yo) * a;
     double z = zo + (this->z - zo) * a;
 
-    return Vec3::newTemp(x, y, z);
+    return Vec3(x, y, z);
 }
 
 HitResult* LivingEntity::pick(double range, float a) {
-    Vec3* from = getPos(a);
-    Vec3* b = getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
-    return level->clip(from, to);
+    Vec3 from = getPos(a);
+    Vec3 b = getViewVector(a);
+    Vec3 to{b.x * range, b.y * range, b.z * range};
+    to = to.add(from.x, from.y, from.z);
+    return level->clip(&from, &to);
 }
 
 bool LivingEntity::isEffectiveAi() { return !level->isClientSide; }

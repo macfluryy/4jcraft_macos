@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 class VillageSiege {
 private:
     Level* level;
@@ -23,5 +25,5 @@ public:
 private:
     bool tryToSetupSiege();
     bool trySpawn();
-    Vec3* findRandomSpawnPos(int x, int y, int z);
+    std::optional<Vec3> findRandomSpawnPos(int x, int y, int z);
 };

@@ -711,7 +711,6 @@ void CleanupDevice() {
 #endif
 
 int StartMinecraftThreadProc(void* lpParameter) {
-    Vec3::UseDefaultThreadStorage();
     AABB::UseDefaultThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     RenderManager.InitialiseContext();
@@ -868,7 +867,6 @@ return -1;
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     // Initialise TLS for AABB and Vec3 pools, for this main thread
     AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::CreateNewThreadStorage();
     OldChunkStorage::CreateNewThreadStorage();
     Level::enableLightingCache();
@@ -1103,9 +1101,6 @@ PIXEndNamedEvent();
         }
 
         // Fix for #7318 - Title crashes after short soak in the leaderboards
-        // menu A memory leak was caused because the icon renderer kept creating
-        // new Vec3's because the pool wasn't reset
-        Vec3::resetPool();
     }  // end game loop
 
     // Graceful shutdown: destroy GL context and GLFW before any C++ dtors run.

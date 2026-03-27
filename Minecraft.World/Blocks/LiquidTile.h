@@ -46,7 +46,7 @@ public:
     virtual int getResourceCount(Random* random);
 
 private:
-    virtual Vec3* getFlow(LevelSource* level, int x, int y, int z);
+    virtual Vec3 getFlow(LevelSource* level, int x, int y, int z);
 
 public:
     virtual void handleEntityInside(Level* level, int x, int y, int z,

@@ -91,10 +91,11 @@ zPlayerOffs = position->get(2);
 
 TilePos* Camera::getCameraTilePos(std::shared_ptr<LivingEntity> player,
                                   double alpha) {
-    return new TilePos(getCameraPos(player, alpha));
+    Vec3 cam_pos = getCameraPos(player, alpha);
+    return new TilePos(&cam_pos);
 }
 
-Vec3* Camera::getCameraPos(std::shared_ptr<LivingEntity> player, double alpha) {
+Vec3 Camera::getCameraPos(std::shared_ptr<LivingEntity> player, double alpha) {
     double xx = player->xo + (player->x - player->xo) * alpha;
     double yy =
         player->yo + (player->y - player->yo) * alpha + player->getHeadHeight();
@@ -104,19 +105,19 @@ Vec3* Camera::getCameraPos(std::shared_ptr<LivingEntity> player, double alpha) {
     double yt = yy + Camera::yPlayerOffs * 1;
     double zt = zz + Camera::zPlayerOffs * 1;
 
-    return Vec3::newTemp(xt, yt, zt);
+    return Vec3(xt, yt, zt);
 }
 
 int Camera::getBlockAt(Level* level, std::shared_ptr<LivingEntity> player,
                        float alpha) {
-    Vec3* p = Camera::getCameraPos(player, alpha);
-    TilePos tp = TilePos(p);
+    Vec3 p = Camera::getCameraPos(player, alpha);
+    TilePos tp = TilePos(&p);
     int t = level->getTile(tp.x, tp.y, tp.z);
     if (t != 0 && Tile::tiles[t]->material->isLiquid()) {
         float hh =
             LiquidTile::getHeight(level->getData(tp.x, tp.y, tp.z)) - 1 / 9.0f;
         float h = tp.y + 1 - hh;
-        if (p->y >= h) {
+        if (p.y >= h) {
             t = level->getTile(tp.x, tp.y + 1, tp.z);
         }
     }
