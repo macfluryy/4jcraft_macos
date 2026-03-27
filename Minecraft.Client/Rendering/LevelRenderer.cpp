@@ -2469,7 +2469,6 @@ void LevelRenderer::renderDestroyAnimation(Tesselator* t,
         glPopMatrix();
     }
 }
-
 void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
                                      HitResult* h, int mode, float a) {
     if (mode == 0 && h->type == HitResult::TILE) {
@@ -2477,14 +2476,18 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
 
         // 4J-PB - If Display HUD is false, don't render the hit outline
         if (app.GetGameSettings(iPad, eGameSetting_DisplayHUD) == 0) return;
+        RenderManager.StateSetLightingEnable(false);
+        RenderManager.StateSetTextureEnable(false);
+        
+        // draw hit outline
+        RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
+        RenderManager.StateSetLineWidth(2.0f);
+        
+        // hack
+        glDepthFunc(GL_LEQUAL);
+        glEnable(GL_POLYGON_OFFSET_LINE);
+        glPolygonOffset(-2.0f, -2.0f);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glColor4f(0, 0, 0, 0.4f);
-        glLineWidth(2.0f);
-        glDisable(GL_TEXTURE_2D);
-        glDepthMask(false);
-        float ss = 0.002f;
         int tileId = level[iPad]->getTile(h->x, h->y, h->z);
 
         if (tileId > 0) {
@@ -2495,46 +2498,56 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
 
             AABB bb = Tile::tiles[tileId]
                           ->getTileAABB(level[iPad], h->x, h->y, h->z)
-                          .grow(ss, ss, ss)
+                          .grow(0.002f, 0.002f, 0.002f)
                           .move(-xo, -yo, -zo);
 
             render(&bb);
         }
-        glDepthMask(true);
-        glEnable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
+
+        // restore
+        glDisable(GL_POLYGON_OFFSET_LINE);
+        RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderManager.StateSetTextureEnable(true);
+        RenderManager.StateSetLightingEnable(true);
     }
 }
 
 void LevelRenderer::render(AABB* b) {
     Tesselator* t = Tesselator::getInstance();
+    RenderManager.StateSetLightingEnable(false);
+    RenderManager.StateSetTextureEnable(false);
+    RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
 
-    t->begin(GL_LINE_STRIP);
-    t->vertex((float)(b->x0), (float)(b->y0), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y0), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y0), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y0), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y0), (float)(b->z0));
-    t->end();
+    // prevent zfight
+    glEnable(GL_POLYGON_OFFSET_LINE);
+    glPolygonOffset(-2.0f, -2.0f);
 
-    t->begin(GL_LINE_STRIP);
-    t->vertex((float)(b->x0), (float)(b->y1), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y1), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y1), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y1), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y1), (float)(b->z0));
-    t->end();
+    // One call please!
+    t->begin(GL_LINES); 
 
-    t->begin(GL_LINES);
-    t->vertex((float)(b->x0), (float)(b->y0), (float)(b->z0));
-    t->vertex((float)(b->x0), (float)(b->y1), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y0), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y1), (float)(b->z0));
-    t->vertex((float)(b->x1), (float)(b->y0), (float)(b->z1));
-    t->vertex((float)(b->x1), (float)(b->y1), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y0), (float)(b->z1));
-    t->vertex((float)(b->x0), (float)(b->y1), (float)(b->z1));
+    // Bottom
+    t->vertex(b->x0, b->y0, b->z0); t->vertex(b->x1, b->y0, b->z0);
+    t->vertex(b->x1, b->y0, b->z0); t->vertex(b->x1, b->y0, b->z1);
+    t->vertex(b->x1, b->y0, b->z1); t->vertex(b->x0, b->y0, b->z1);
+    t->vertex(b->x0, b->y0, b->z1); t->vertex(b->x0, b->y0, b->z0);
+
+    // Top
+    t->vertex(b->x0, b->y1, b->z0); t->vertex(b->x1, b->y1, b->z0);
+    t->vertex(b->x1, b->y1, b->z0); t->vertex(b->x1, b->y1, b->z1);
+    t->vertex(b->x1, b->y1, b->z1); t->vertex(b->x0, b->y1, b->z1);
+    t->vertex(b->x0, b->y1, b->z1); t->vertex(b->x0, b->y1, b->z0);
+
+    // Vertical
+    t->vertex(b->x0, b->y0, b->z0); t->vertex(b->x0, b->y1, b->z0);
+    t->vertex(b->x1, b->y0, b->z0); t->vertex(b->x1, b->y1, b->z0);
+    t->vertex(b->x1, b->y0, b->z1); t->vertex(b->x1, b->y1, b->z1);
+    t->vertex(b->x0, b->y0, b->z1); t->vertex(b->x0, b->y1, b->z1);
+
     t->end();
+    glDisable(GL_POLYGON_OFFSET_LINE);
+    RenderManager.StateSetLightingEnable(true);
+    RenderManager.StateSetTextureEnable(true);
+    RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,

@@ -33,7 +33,7 @@ static void restoreFixedFunctionStateAfterIggy() {
 
     RenderManager.MatrixSetIdentity();
     RenderManager.MatrixMode(GL_MODELVIEW);
-
+    glDisable(GL_SCISSOR_TEST); // iggy is mean
     RenderManager.Set_matrixDirty();
     Minecraft::GetInstance()->textures->clearLastBoundId(); 
     // 4jcraft: clears the last bound id, dumb fix but fine
