@@ -2481,7 +2481,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
         
         // draw hit outline
         RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
-        RenderManager.StateSetLineWidth(2.0f);
+        RenderManager.StateSetLineWidth(1.0f);
         
         // hack
         glDepthFunc(GL_LEQUAL);
