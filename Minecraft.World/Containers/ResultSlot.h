@@ -18,11 +18,14 @@ public:
     virtual std::shared_ptr<ItemInstance> remove(int c) override;
 
 protected:
-    virtual void onQuickCraft(std::shared_ptr<ItemInstance> picked, int count) override;
-    virtual void checkTakeAchievements(std::shared_ptr<ItemInstance> carried) override;
+    virtual void onQuickCraft(std::shared_ptr<ItemInstance> picked,
+                              int count) override;
+    virtual void checkTakeAchievements(
+        std::shared_ptr<ItemInstance> carried) override;
 
 public:
     virtual void onTake(std::shared_ptr<Player> player,
                         std::shared_ptr<ItemInstance> carried) override;
-    virtual bool mayCombine(std::shared_ptr<ItemInstance> item) override;  // 4J Added
+    virtual bool mayCombine(
+        std::shared_ptr<ItemInstance> item) override;  // 4J Added
 };

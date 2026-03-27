@@ -18,11 +18,13 @@ public:
     virtual std::shared_ptr<ItemInstance> removeItem(unsigned int slot,
                                                      int count) override;
     virtual std::shared_ptr<ItemInstance> removeItemNoUpdate(int slot) override;
-    virtual void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) override;
+    virtual void setItem(unsigned int slot,
+                         std::shared_ptr<ItemInstance> item) override;
     virtual int getMaxStackSize() override;
     virtual void setChanged() override;
     virtual bool stillValid(std::shared_ptr<Player> player) override;
     virtual void startOpen() override {}  // TODO Auto-generated method stub
     virtual void stopOpen() override {}   // TODO Auto-generated method stub
-    virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item) override;
+    virtual bool canPlaceItem(int slot,
+                              std::shared_ptr<ItemInstance> item) override;
 };

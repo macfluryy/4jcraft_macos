@@ -18,5 +18,6 @@ public:
     bool mayPickup(std::shared_ptr<Player> player) override;
     void onTake(std::shared_ptr<Player> player,
                 std::shared_ptr<ItemInstance> carried) override;
-    virtual bool mayCombine(std::shared_ptr<ItemInstance> item) override;  // 4J Added
+    virtual bool mayCombine(
+        std::shared_ptr<ItemInstance> item) override;  // 4J Added
 };
