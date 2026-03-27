@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "ServerLevel.h"
 #include "../MinecraftServer.h"
@@ -1570,7 +1573,7 @@ int ServerLevel::runUpdate(void* lpParam) {
         }
         PIXEndNamedEvent();
 #ifdef __PS3__
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 #endif  //__PS3__
     }
 

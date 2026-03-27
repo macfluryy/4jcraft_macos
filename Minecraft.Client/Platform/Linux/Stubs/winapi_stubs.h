@@ -336,17 +336,7 @@ static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
 
 static inline DWORD GetLastError(VOID) { return errno; }
 
-static inline VOID Sleep(DWORD dwMilliseconds) {
-    struct timespec ts;
-    ts.tv_nsec = (dwMilliseconds * 1000000) % 1000000000;
-    ts.tv_sec = dwMilliseconds / 1000;
-
-    int ret;
-    do {
-        ret = nanosleep(&ts, &ts);
-    } while (ret == -1 && errno == EINTR);
-}
-
+#ifdef __LP64__
 static inline LONG64 InterlockedCompareExchangeRelease64(
     LONG64 volatile* Destination, LONG64 Exchange, LONG64 Comperand) {
     LONG64 expected = Comperand;
@@ -354,6 +344,15 @@ static inline LONG64 InterlockedCompareExchangeRelease64(
                                 __ATOMIC_RELEASE, __ATOMIC_RELAXED);
     return expected;
 }
+#else
+static inline LONG64 InterlockedCompareExchangeRelease(
+    LONG volatile* Destination, LONG Exchange, LONG Comperand) {
+    LONG expected = Comperand;
+    __atomic_compare_exchange_n(Destination, &expected, Exchange, false,
+                                __ATOMIC_RELEASE, __ATOMIC_RELAXED);
+    return expected;
+}
+#endif
 
 // internal helper: convert time_t to FILETIME (100ns intervals since
 // 1601-01-01)
