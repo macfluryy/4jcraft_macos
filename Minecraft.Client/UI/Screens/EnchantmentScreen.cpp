@@ -9,6 +9,7 @@
 #include "../../Textures/Textures.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 #include "../../../Minecraft.World/Containers/EnchantmentMenu.h"
+#include "../../../Minecraft.World/Containers/Slot.h"
 #include "../../Rendering/Models/BookModel.h"
 #include "../../../Minecraft.Client/Minecraft.h"
 
