@@ -69,6 +69,29 @@ File::File(const std::wstring& pathname)  //: parent( NULL )
     else
         m_abstractPathName = pathname;
 
+#if defined(__linux__)
+    // If this is a relative path and it doesn't exist in the CWD, try to
+    // resolve it relative to the executable directory 
+    if (!m_abstractPathName.empty() && m_abstractPathName[0] != L'/') {
+        const char* native = wstringtofilename(m_abstractPathName);
+        if (access(native, F_OK) == -1) {
+            char exePathBuf[PATH_MAX];
+            ssize_t exeLen = readlink("/proc/self/exe", exePathBuf, sizeof(exePathBuf) - 1);
+            if (exeLen != -1) {
+                exePathBuf[exeLen] = '\0';
+                std::string exePathStr(exePathBuf);
+                size_t pos = exePathStr.find_last_of('/');
+                std::string exeDir = (pos == std::string::npos) ? std::string(".") : exePathStr.substr(0, pos);
+                std::wstring exeDirW = convStringToWstring(exeDir);
+                std::wstring candidate = exeDirW + pathSeparator + m_abstractPathName;
+                const char* candNative = wstringtofilename(candidate);
+                if (access(candNative, F_OK) != -1) {
+                    m_abstractPathName = candidate;
+                }
+            }
+        }
+    }
+#endif
 #ifdef _WINDOWS64
     std::string path = wstringtofilename(m_abstractPathName);
     std::string finalPath = StorageManager.GetMountedPath(path.c_str());
