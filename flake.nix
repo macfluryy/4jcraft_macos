@@ -71,7 +71,7 @@
 
           # 4jcraft - `stb` and `simdutf` patches
           postPatch = ''
-            cp subprojects/packhagefiles/stb/meson.build subprojects/stb/meson.build
+            cp subprojects/packagefiles/stb/meson.build subprojects/stb/meson.build
             cp subprojects/packagefiles/simdutf/meson.build subprojects/simdutf/meson.build
             cp subprojects/packagefiles/simdutf/meson.options subprojects/simdutf/meson.options
 
