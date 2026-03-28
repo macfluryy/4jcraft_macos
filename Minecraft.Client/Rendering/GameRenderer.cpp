@@ -1121,7 +1121,6 @@ void GameRenderer::FinishedReassigning() {
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
     RenderManager.InitialiseContext();
@@ -1200,7 +1199,6 @@ int GameRenderer::runUpdate(void* lpParam) {
 
         //		PIXEndNamedEvent();
 
-        AABB::resetPool();
         m_updateEvents->Set(eUpdateEventIsFinished);
     }
 

@@ -4030,7 +4030,6 @@ void LevelRenderer::staticCtor() {
 }
 
 int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
-    AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     RenderManager.InitialiseContext();
     Chunk::CreateNewThreadStorage();
