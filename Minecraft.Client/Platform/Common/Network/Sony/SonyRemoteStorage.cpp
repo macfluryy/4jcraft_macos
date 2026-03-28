@@ -1,4 +1,5 @@
-
+#include <thread>
+#include <chrono>
 
 #include "../../../Minecraft.World/Platform/stdafx.h"
 #include "SonyRemoteStorage.h"
@@ -286,7 +287,7 @@ bool SonyRemoteStorage::shutdown() {
 void SonyRemoteStorage::waitForStorageManagerIdle() {
     C4JStorage::ESaveGameState storageState = StorageManager.GetSaveState();
     while (storageState != C4JStorage::ESaveGame_Idle) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         // 		app.DebugPrintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // >>>>>     storageState = %d\n", storageState);
         storageState = StorageManager.GetSaveState();

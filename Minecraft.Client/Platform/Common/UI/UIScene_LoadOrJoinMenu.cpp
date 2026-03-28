@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
 #include "UIScene_LoadOrJoinMenu.h"
@@ -2229,7 +2232,7 @@ int UIScene_LoadOrJoinMenu::MustSignInReturnedTexturePack(void* pParam,
     while (commerceState != CConsoleMinecraftApp::eCommerce_State_Offline &&
            commerceState != CConsoleMinecraftApp::eCommerce_State_Online &&
            commerceState != CConsoleMinecraftApp::eCommerce_State_Error) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         commerceState = app.GetCommerceState();
     }
 
@@ -2852,7 +2855,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 #if defined(_DURANGO) || defined(__ORBIS__)
                 while (StorageManager.GetSaveState() !=
                        C4JStorage::ESaveGame_Idle) {
-                    Sleep(10);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(10));
                     StorageManager.Tick();
                 }
 #endif
@@ -2999,7 +3002,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
             // waiting to dismiss the dialog
             break;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     m_bSaveTransferRunning = false;
 #ifdef __PS3__
@@ -3151,7 +3154,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void* lpParameter) {
                 // waiting for dialog to be dismissed
                 break;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     return 0;
@@ -3247,7 +3250,7 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void* lpParameter) {
 
     while (StorageManager.SaveTransferClearState() !=
            C4JStorage::eSaveTransfer_Idle) {
-        Sleep(5);
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     pStateContainer->m_bSaveTransferInProgress = true;
@@ -3432,7 +3435,7 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void* lpParameter) {
 
                 while (StorageManager.GetSaveState() !=
                        C4JStorage::ESaveGame_Idle) {
-                    Sleep(10);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
                     // 4J Stu - DO NOT tick this here. The main thread should be
                     // the only place ticking the StorageManager. You WILL get
@@ -3470,7 +3473,7 @@ int UIScene_LoadOrJoinMenu::DownloadXbox360SaveThreadProc(void* lpParameter) {
 
                 break;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     if (pStateContainer->m_bSaveTransferCancelled) {
@@ -3517,7 +3520,7 @@ void UIScene_LoadOrJoinMenu::RequestFileSize(SaveTransferStateContainer* pClass,
                 IDS_SAVETRANSFER_TITLE_GET);
             pMinecraft->progressRenderer->progressStage(
                 IDS_SAVETRANSFER_STAGE_GET_DETAILS);
-            Sleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             pClass->m_eSaveTransferState =
                 StorageManager.SaveTransferGetDetails(
                     pClass->m_iPad, C4JStorage::eGlobalStorage_TitleUser,
@@ -3573,7 +3576,7 @@ void UIScene_LoadOrJoinMenu::RequestFileData(SaveTransferStateContainer* pClass,
             pMinecraft->progressRenderer->progressStart(
                 IDS_SAVETRANSFER_TITLE_GET);
             pMinecraft->progressRenderer->progressStage(-1);
-            Sleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             pClass->m_eSaveTransferState = StorageManager.SaveTransferGetData(
                 pClass->m_iPad, C4JStorage::eGlobalStorage_TitleUser, filename,
                 &UIScene_LoadOrJoinMenu::SaveTransferReturned,
@@ -3740,7 +3743,7 @@ int UIScene_LoadOrJoinMenu::CopySaveThreadProc(void* lpParameter) {
 
         bool bContinue = true;
         do {
-            Sleep(100);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             ui.EnterCallbackIdCriticalSection();
             pClass = (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId(
                 (size_t)lpParameter);

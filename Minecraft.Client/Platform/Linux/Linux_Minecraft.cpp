@@ -5,7 +5,6 @@
 
 #include <assert.h>
 // #include <system_service.h>
-#include <codecvt>
 #if defined(__linux__) && defined(__GLIBC__)
 #include <signal.h>
 #include <execinfo.h>
@@ -710,15 +709,6 @@ void CleanupDevice() {
 }
 #endif
 
-int StartMinecraftThreadProc(void* lpParameter) {
-    AABB::UseDefaultThreadStorage();
-    Tesselator::CreateNewThreadStorage(1024 * 1024);
-    RenderManager.InitialiseContext();
-    Minecraft::start(std::wstring(), std::wstring());
-    delete Tesselator::getInstance();
-    return 0;
-}
-
 int main(int argc, const char* argv[]) {
 #if defined(__linux__) && defined(__GLIBC__)
     struct sigaction sa;
@@ -1197,7 +1187,7 @@ void FreeRichPresenceStrings() {
     vRichPresenceStrings.clear();
 }
 
-#ifdef MEMORY_TRACKING
+#if 0  // #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
 std::unordered_map<int, int> allocCounts;

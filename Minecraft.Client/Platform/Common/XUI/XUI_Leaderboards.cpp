@@ -7,6 +7,9 @@
 #include "XUI_Ctrl_CraftIngredientSlot.h"
 #include "XUI_XZP_Icons.h"
 
+#include <thread>
+#include <chrono>
+
 LPCWSTR CScene_Leaderboards::m_TitleIconNameA[7] = {
     L"XuiHSlot1", L"XuiHSlot2", L"XuiHSlot3", L"XuiHSlot4",
     L"XuiHSlot5", L"XuiHSlot6", L"XuiHSlot7",
@@ -283,7 +286,7 @@ HRESULT CScene_Leaderboards::OnDestroy() {
     app.SetLiveLinkRequired(false);
 
     while (m_isProcessingStatsRead) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     if (m_friends != NULL) delete[] m_friends;

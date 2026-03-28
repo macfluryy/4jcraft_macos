@@ -4,6 +4,8 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 
 #include <assert.h>
+#include <thread>
+#include <chrono>
 #include "../../Minecraft.World/Util/AABB.h"
 #include "../../Minecraft.World/Util/Vec3.h"
 #include "../../Minecraft.World/Headers/net.minecraft.stats.h"
@@ -1086,7 +1088,7 @@ int UIScene_PauseMenu::SaveWorldThreadProc(LPVOID lpParameter) {
         while (app.GetXuiServerAction(ProfileManager.GetPrimaryPad()) !=
                    eXuiServerAction_Idle &&
                !MinecraftServer::serverHalted()) {
-            Sleep(10);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
 
         if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
@@ -1295,7 +1297,7 @@ void UIScene_PauseMenu::_ExitWorld(LPVOID lpParameter) {
     // multiplayer client if host of the game will exit during the clients
     // loading to created world.
     while (g_NetworkManager.IsNetworkThreadRunning()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     pMinecraft->setLevel(NULL, exitReasonStringId, nullptr, saveStats);
 
@@ -1315,7 +1317,7 @@ void UIScene_PauseMenu::_ExitWorld(LPVOID lpParameter) {
     // loads saved data We can't start/join a new game until the session is
     // destroyed, so wait for it to be idle again
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     app.SetChangingSessionType(false);

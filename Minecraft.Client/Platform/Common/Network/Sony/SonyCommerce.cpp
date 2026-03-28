@@ -1,8 +1,11 @@
+#include <thread>
+#include <chrono>
+#include <sys/event.h>
+
 #include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include "SonyCommerce.h"
 #include "../../../../Platform/PS3/PS3Extras/ShutdownManager.h"
-#include <sys/event.h>
 
 bool SonyCommerce::m_bCommerceInitialised = false;
 SceNpCommerce2SessionInfo SonyCommerce::m_sessionInfo;
@@ -122,7 +125,8 @@ int SonyCommerce::TickLoop(void* lpParam) {
            ShutdownManager::ShouldRun(ShutdownManager::eCommerceThread)) {
         processEvent();
         processMessage();
-        Sleep(16);  //  sleep for a frame
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(16));  //  sleep for a frame
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eCommerceThread);

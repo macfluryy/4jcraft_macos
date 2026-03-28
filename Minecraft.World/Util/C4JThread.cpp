@@ -1,6 +1,8 @@
 #include "../Platform/stdafx.h"
 
 #include "C4JThread.h"
+#include <thread>
+#include <chrono>
 #ifdef __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/ShutdownManager.h"
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/PSVitaTLSStorage.h"
@@ -443,7 +445,7 @@ void C4JThread::Sleep(int millisecs) {
     // 4J Stu - 0 is an error, so add a tiny sleep when we just want to yield
     sceKernelDelayThread(millisecs * 1000 + 1);
 #else
-    ::Sleep(millisecs);
+    std::this_thread::sleep_for(std::chrono::milliseconds(millisecs));
 #endif  // __PS3__
 }
 
