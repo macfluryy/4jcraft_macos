@@ -846,6 +846,11 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     int count = 0;
     ClipChunk* pClipChunk = chunks[playerIndex].data;
     unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
+    static thread_local std::vector<ClipChunk*> sortList;
+    sortList.clear();
+    if (sortList.capacity() < (size_t)chunks[playerIndex].length) {
+        sortList.reserve(chunks[playerIndex].length);
+    }
     for (int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++) {
         if (!pClipChunk->visible)
             continue;  // This will be set if the chunk isn't visible, or isn't
@@ -854,17 +859,47 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
             continue;  // Not sure if we should ever encounter this... TODO
                        // check
         if ((globalChunkFlags[pClipChunk->globalIdx] & emptyFlag) == emptyFlag)
-            continue;  // Check that this particular layer isn't empty
+            continue;
 
-        // List can be calculated directly from the chunk's global idex
-        int list = pClipChunk->globalIdx * 2 + layer;
+        sortList.push_back(pClipChunk);
+    }
+    // he sorts me till i
+    std::sort(sortList.begin(), sortList.end(),
+              [xOff, yOff, zOff, layer](ClipChunk* a, ClipChunk* b) {
+                  float dxA = (float)((a->chunk->x + 8.0f) - xOff);
+                  float dyA = (float)((a->chunk->y + 8.0f) - yOff);
+                  float dzA = (float)((a->chunk->z + 8.0f) - zOff);
+                  float distSqA = dxA * dxA + dyA * dyA + dzA * dzA;
+
+                  float dxB = (float)((b->chunk->x + 8.0f) - xOff);
+                  float dyB = (float)((b->chunk->y + 8.0f) - yOff);
+                  float dzB = (float)((b->chunk->z + 8.0f) - zOff);
+                  float distSqB = dxB * dxB + dyB * dyB + dzB * dzB;
+
+                  if (layer == 0)
+                      return distSqA < distSqB;  // Opaque: Closest first
+                  return distSqA > distSqB;      // Transparent: Furthest first
+              });
+
+    for (ClipChunk* chunk : sortList) {
+        // ugly occluder
+        float dx = (chunk->chunk->x + 8.0f) - (float)xOff;
+        float dy = (chunk->chunk->y + 8.0f) - (float)yOff;
+        float dz = (chunk->chunk->z + 8.0f) - (float)zOff;
+        bool isVeryNear = (dx * dx + dy * dy + dz * dz) < (16.0f * 16.0f);
+
+        if (!isVeryNear && layer == 0) {
+            // todo: occlusion flag
+        }
+
+        int list = chunk->globalIdx * 2 + layer;
         list += chunkLists;
 
         // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per chunk
         // no more full MVP upload per chunk, can also be bkwards compat
-        RenderManager.SetChunkOffset((float)pClipChunk->chunk->x,
-                                     (float)pClipChunk->chunk->y,
-                                     (float)pClipChunk->chunk->z);
+        RenderManager.SetChunkOffset((float)chunk->chunk->x,
+                                     (float)chunk->chunk->y,
+                                     (float)chunk->chunk->z);
 
         if (RenderManager.CBuffCall(list, first)) {
             first = false;
@@ -945,31 +980,23 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     double yOff = player->yOld + (player->y - player->yOld) * alpha;
     double zOff = player->zOld + (player->z - player->zOld) * alpha;
 
+    for (int l = 0; l < RENDERLISTS_LENGTH; l++) renderLists[l].clear();
     int lists = 0;
-    for (int l = 0; l < RENDERLISTS_LENGTH; l++) {
-        renderLists[l].clear();
-    }
-
-    AUTO_VAR(itEnd, _renderChunks.end());
-    for (AUTO_VAR(it, _renderChunks.begin()); it != itEnd; it++) {
-        Chunk* chunk = *it;  //_renderChunks[i];
-
+    for (auto it = _renderChunks.begin(); it != _renderChunks.end(); it++) {
+        Chunk* chunk = *it;
         int list = -1;
         for (int l = 0; l < lists; l++) {
             if (renderLists[l].isAt(chunk->xRender, chunk->yRender,
-                                    chunk->zRender)) {
+                                    chunk->zRender))
                 list = l;
-            }
         }
         if (list < 0) {
             list = lists++;
             renderLists[list].init(chunk->xRender, chunk->yRender,
                                    chunk->zRender, xOff, yOff, zOff);
         }
-
         renderLists[list].add(chunk->getList(layer));
     }
-
     renderSameAsLast(layer, alpha);
 #endif
 
