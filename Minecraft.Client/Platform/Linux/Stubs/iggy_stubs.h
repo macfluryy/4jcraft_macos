@@ -254,7 +254,7 @@ RADEXPFUNC inline void* RADEXPLINK IggyPerfmonCreate(
 }
 RADEXPFUNC inline void RADEXPLINK IggyInstallPerfmon(void* perfmon) { STUBBED; }
 
-RADEXPFUNC IggyResult RADEXPLINK IggyValueGetTypeRS(IggyValuePath* var,
+RADEXPFUNC inline IggyResult RADEXPLINK IggyValueGetTypeRS(IggyValuePath* var,
                                                     IggyName sub_name,
                                                     char const* sub_name_utf8,
                                                     IggyDatatype* result) {
