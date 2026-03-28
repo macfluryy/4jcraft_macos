@@ -20,16 +20,8 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
       vertices({Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0},
                 Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0},
                 Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0},
-                Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0}}) {
-    // 	this->x0 = x0;
-    // 	this->y0 = y0;
-    // 	this->z0 = z0;
-    // 	this->x1 = x0 + w;
-    // 	this->y1 = y0 + h;
-    // 	this->z1 = z0 + d;
-
-    polygons = PolygonArray(6);
-
+                Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0}}),
+     polygons({}) {
     float x1 = x0 + w;
     float y1 = y0 + h;
     float z1 = z0 + d;
@@ -69,55 +61,54 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
     // 4J - added ability to mask individual faces
     int faceCount = 0;
     if (faceMask & 1)
-        polygons[faceCount++] = new _Polygon(
+        polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l1, u1, u2, l2}, xTexOffs + d + w,
             yTexOffs + d, xTexOffs + d + w + d, yTexOffs + d + h,
             modelPart->xTexSize, modelPart->yTexSize);  // Right
     if (faceMask & 2)
-        polygons[faceCount++] = new _Polygon(
+        polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{u0, l0, l3, u3}, xTexOffs + 0,
             yTexOffs + d, xTexOffs + d, yTexOffs + d + h, modelPart->xTexSize,
             modelPart->yTexSize);  // Left
     if (faceMask & 4)
-        polygons[faceCount++] = new _Polygon(
+        polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l1, l0, u0, u1}, xTexOffs + d,
             yTexOffs + 0, xTexOffs + d + w, yTexOffs + d, modelPart->xTexSize,
             modelPart->yTexSize);  // Up
     if (bFlipPoly3UVs) {
         if (faceMask & 8)
-            polygons[faceCount++] = new _Polygon(
+            polygons[faceCount++] = _Polygon(
                 std::array<const Vertex, 4>{u2, u3, l3, l2}, xTexOffs + d + w,
                 yTexOffs + 0, xTexOffs + d + w + w, yTexOffs + d,
                 modelPart->xTexSize, modelPart->yTexSize);  // Down
     } else {
         if (faceMask & 8)
-            polygons[faceCount++] = new _Polygon(
+            polygons[faceCount++] = _Polygon(
                 std::array<const Vertex, 4>{u2, u3, l3, l2}, xTexOffs + d + w,
                 yTexOffs + d, xTexOffs + d + w + w, yTexOffs + 0,
                 modelPart->xTexSize, modelPart->yTexSize);  // Down
     }
     if (faceMask & 16)
-        polygons[faceCount++] = new _Polygon(
+        polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{u1, u0, u3, u2}, xTexOffs + d,
             yTexOffs + d, xTexOffs + d + w, yTexOffs + d + h,
             modelPart->xTexSize, modelPart->yTexSize);  // Front
     if (faceMask & 32)
-        polygons[faceCount++] = new _Polygon(
+        polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l0, l1, l2, l3}, xTexOffs + d + w + d,
             yTexOffs + d, xTexOffs + d + w + d + w, yTexOffs + d + h,
             modelPart->xTexSize,
             modelPart->yTexSize);  // Back
-    polygons.length = faceCount;
 
     if (modelPart->bMirror) {
-        for (unsigned int i = 0; i < polygons.length; i++)
-            polygons[i]->mirror();
+        for (unsigned int i = 0; i < polygons.size(); i++)
+            polygons[i].mirror();
     }
 }
 
 void Cube::render(Tesselator* t, float scale) {
-    for (int i = 0; i < polygons.length; i++) {
-        polygons[i]->render(t, scale);
+    for (int i = 0; i < polygons.size(); i++) {
+        polygons[i].render(t, scale);
     }
 }
 

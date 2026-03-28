@@ -15,6 +15,7 @@ private:
     bool _flipNormal;
 
 public:
+    _Polygon() = default;
     _Polygon(std::span<const Vertex> vertices);
     _Polygon(std::span<const Vertex, 4> vertices, int u0, int v0, int u1,
              int v1, float xTexSize, float yTexSize);

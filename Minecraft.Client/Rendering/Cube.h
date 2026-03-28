@@ -9,7 +9,7 @@ class Model;
 class Cube {
 private:
     std::array<Vertex, 8> vertices;
-    PolygonArray polygons;
+    std::array<_Polygon, 6> polygons;
 
 public:
     const float x0, y0, z0, x1, y1, z1;
