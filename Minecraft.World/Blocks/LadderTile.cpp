@@ -11,7 +11,7 @@ std::optional<AABB> LadderTile::getAABB(Level* level, int x, int y, int z) {
     return Tile::getAABB(level, x, y, z);
 }
 
-AABB* LadderTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB LadderTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getTileAABB(level, x, y, z);
 }

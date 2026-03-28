@@ -65,7 +65,7 @@ public:
     virtual int getRenderLayer();
     virtual Icon* getTexture(int face, int data);
     virtual int getTickDelay(Level* level);
-    virtual AABB* getTileAABB(Level* level, int x, int y, int z);
+    virtual AABB getTileAABB(Level* level, int x, int y, int z);
     virtual void handleEntityInside(Level* level, int x, int y, int z,
                                     std::shared_ptr<Entity> e, Vec3* current);
     virtual bool mayPick();

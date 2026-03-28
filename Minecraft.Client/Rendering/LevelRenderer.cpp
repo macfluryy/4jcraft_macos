@@ -2482,7 +2482,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
 
             AABB bb = Tile::tiles[tileId]
                           ->getTileAABB(level[iPad], h->x, h->y, h->z)
-                          ->grow(ss, ss, ss)
+                          .grow(ss, ss, ss)
                           .move(-xo, -yo, -zo);
 
             render(&bb);

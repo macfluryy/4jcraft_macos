@@ -23,7 +23,7 @@ public:
     virtual bool isCubeShaped();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
-    virtual AABB* getTileAABB(Level* level, int x, int y, int z);
+    virtual AABB getTileAABB(Level* level, int x, int y, int z);
     virtual void updateShape(LevelSource* level, int x, int y, int z,
                              int forceData = -1,
                              std::shared_ptr<TileEntity> forceEntity =

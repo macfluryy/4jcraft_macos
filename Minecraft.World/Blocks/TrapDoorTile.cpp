@@ -25,7 +25,7 @@ bool TrapDoorTile::isPathfindable(LevelSource* level, int x, int y, int z) {
 
 int TrapDoorTile::getRenderShape() { return Tile::SHAPE_BLOCK; }
 
-AABB* TrapDoorTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB TrapDoorTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getTileAABB(level, x, y, z);
 }

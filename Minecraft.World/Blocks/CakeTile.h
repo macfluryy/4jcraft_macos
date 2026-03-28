@@ -25,7 +25,7 @@ protected:
             TileEntity>());  // 4J added forceData, forceEntity param
     virtual void updateDefaultShape();
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
-    virtual AABB* getTileAABB(Level* level, int x, int y, int z);
+    virtual AABB getTileAABB(Level* level, int x, int y, int z);
     virtual Icon* getTexture(int face, int data);
     //@Override
     void registerIcons(IconRegister* iconRegister);

@@ -62,7 +62,7 @@ std::optional<AABB> CocoaTile::getAABB(Level* level, int x, int y, int z) {
     return DirectionalTile::getAABB(level, x, y, z);
 }
 
-AABB* CocoaTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB CocoaTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return DirectionalTile::getTileAABB(level, x, y, z);
 }

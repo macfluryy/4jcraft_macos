@@ -631,7 +631,7 @@ public:
     virtual Icon* getTexture(LevelSource* level, int x, int y, int z, int face);
     virtual Icon* getTexture(int face, int data);
     virtual Icon* getTexture(int face);
-    virtual AABB* getTileAABB(Level* level, int x, int y, int z);
+    virtual AABB getTileAABB(Level* level, int x, int y, int z);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
                           AABBList* boxes, std::shared_ptr<Entity> source);
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);

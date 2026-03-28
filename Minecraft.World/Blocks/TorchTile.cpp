@@ -12,7 +12,7 @@ TorchTile::TorchTile(int id) : Tile(id, Material::decoration, false) {
 
 std::optional<AABB> TorchTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
-AABB* TorchTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB TorchTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getTileAABB(level, x, y, z);
 }

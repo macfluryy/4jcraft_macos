@@ -37,7 +37,7 @@ public:
     int getRenderShape();
 
 public:
-    AABB* getTileAABB(Level* level, int x, int y, int z);
+    AABB getTileAABB(Level* level, int x, int y, int z);
 
 public:
     std::optional<AABB> getAABB(Level* level, int x, int y, int z);
