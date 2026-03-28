@@ -59,7 +59,7 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
     vertices[7] = l3;
 
     // 4J - added ability to mask individual faces
-    int faceCount = 0;
+    faceCount = 0;
     if (faceMask & 1)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l1, u1, u2, l2}, xTexOffs + d + w,
@@ -107,7 +107,7 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
 }
 
 void Cube::render(Tesselator* t, float scale) {
-    for (int i = 0; i < polygons.size(); i++) {
+    for (int i = 0; i < faceCount; i++) {
         polygons[i].render(t, scale);
     }
 }

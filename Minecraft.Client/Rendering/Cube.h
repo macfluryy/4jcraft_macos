@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cstdint>
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 #include "Vertex.h"
 #include "Polygon.h"
@@ -10,6 +11,7 @@ class Cube {
 private:
     std::array<Vertex, 8> vertices;
     std::array<_Polygon, 6> polygons;
+    uint8_t faceCount;
 
 public:
     const float x0, y0, z0, x1, y1, z1;
