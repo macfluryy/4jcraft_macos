@@ -17,6 +17,6 @@ option('enable_vsync',
 option(
   'gles',
   type: 'boolean',
-  value: true,
+  value: false,
   description: 'Use OpenGL ES instead of Desktop GL',
 )
