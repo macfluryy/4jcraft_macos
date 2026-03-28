@@ -83,7 +83,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     Vec3 b = player->getViewVector(a);
     bool hitEntity = false;
     float overlap = 1;
-    AABB grown = player->bb->expand(b.x * (range), b.y * (range), b.z * (range))
+    AABB grown = player->bb.expand(b.x * (range), b.y * (range), b.z * (range))
                      .grow(overlap, overlap, overlap);
     std::vector<std::shared_ptr<Entity> >* objects =
         level->getEntities(player, &grown);
@@ -93,7 +93,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();
-        AABB bb = e->bb->grow(rr, rr, rr);
+        AABB bb = e->bb.grow(rr, rr, rr);
         if (bb.contains(from)) {
             hitEntity = true;
         }
@@ -116,7 +116,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
             boat->yRot =
                 ((Mth::floor(player->yRot * 4.0F / 360.0F + 0.5) & 0x3) - 1) *
                 90;
-            AABB grown = boat->bb->grow(-0.1, -0.1, -0.1);
+            AABB grown = boat->bb.grow(-0.1, -0.1, -0.1);
             if (!level->getCubes(boat, &grown)->empty()) {
                 return itemInstance;
             }

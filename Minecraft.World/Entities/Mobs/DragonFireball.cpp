@@ -29,7 +29,7 @@ DragonFireball::DragonFireball(Level* level, double x, double y, double z,
 
 void DragonFireball::onHit(HitResult* res) {
     if (!level->isClientSide) {
-        AABB aoe = bb->grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
+        AABB aoe = bb.grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
         std::vector<std::shared_ptr<Entity> >* entitiesOfClass =
             level->getEntitiesOfClass(typeid(LivingEntity), &aoe);
 

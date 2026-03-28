@@ -11,7 +11,7 @@ class GameType;
 
 class ChangeStateConstraint : public TutorialConstraint {
 private:
-    AABB* movementArea;
+    AABB movementArea;
     bool contains;  // If true we must stay in this area, if false must stay out
                     // of this area
     bool m_changeGameMode;

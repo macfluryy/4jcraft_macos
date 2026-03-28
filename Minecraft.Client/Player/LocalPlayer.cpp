@@ -245,10 +245,10 @@ void LocalPlayer::aiStep() {
         if (ySlideOffset < 0.2f) ySlideOffset = 0.2f;
     }
 
-    checkInTile(x - bbWidth * 0.35, bb->y0 + 0.5, z + bbWidth * 0.35);
-    checkInTile(x - bbWidth * 0.35, bb->y0 + 0.5, z - bbWidth * 0.35);
-    checkInTile(x + bbWidth * 0.35, bb->y0 + 0.5, z - bbWidth * 0.35);
-    checkInTile(x + bbWidth * 0.35, bb->y0 + 0.5, z + bbWidth * 0.35);
+    checkInTile(x - bbWidth * 0.35, bb.y0 + 0.5, z + bbWidth * 0.35);
+    checkInTile(x - bbWidth * 0.35, bb.y0 + 0.5, z - bbWidth * 0.35);
+    checkInTile(x + bbWidth * 0.35, bb.y0 + 0.5, z - bbWidth * 0.35);
+    checkInTile(x + bbWidth * 0.35, bb.y0 + 0.5, z + bbWidth * 0.35);
 
     bool enoughFoodToSprint =
         getFoodData()->getFoodLevel() >

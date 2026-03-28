@@ -1,15 +1,15 @@
 #pragma once
 
 #include "GameRuleDefinition.h"
+#include "../../Minecraft.World/Util/AABB.h"
 
 class NamedAreaRuleDefinition : public GameRuleDefinition {
 private:
     std::wstring m_name;
-    AABB* m_area;
+    AABB m_area;
 
 public:
     NamedAreaRuleDefinition();
-    ~NamedAreaRuleDefinition();
 
     virtual void writeAttributes(DataOutputStream* dos,
                                  unsigned int numAttributes);
@@ -21,6 +21,6 @@ public:
     virtual void addAttribute(const std::wstring& attributeName,
                               const std::wstring& attributeValue);
 
-    AABB* getArea() { return m_area; }
+    AABB* getArea() { return &m_area; }
     std::wstring getName() { return m_name; }
 };

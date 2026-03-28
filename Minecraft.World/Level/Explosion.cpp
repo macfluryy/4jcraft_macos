@@ -118,7 +118,7 @@ void Explosion::explode() {
         // walls
         bool canDamage = false;
         for (AUTO_VAR(it2, toBlow.begin()); it2 != toBlow.end(); ++it2) {
-            if (e->bb->intersects(it2->x, it2->y, it2->z, it2->x + 1,
+            if (e->bb.intersects(it2->x, it2->y, it2->z, it2->x + 1,
                                   it2->y + 1, it2->z + 1)) {
                 canDamage = true;
                 break;
@@ -144,7 +144,7 @@ void Explosion::explode() {
                 za /= da;
             }
 
-            double sp = level->getSeenPercent(&center, e->bb);
+            double sp = level->getSeenPercent(&center, &e->bb);
             double pow = (1 - dist) * sp;
             if (canDamage)
                 e->hurt(DamageSource::explosion(this),

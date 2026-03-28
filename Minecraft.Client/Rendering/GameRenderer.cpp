@@ -310,7 +310,7 @@ void GameRenderer::pick(float a) {
     hovered = nullptr;
     float overlap = 1;
     AABB grown = mc->cameraTargetPlayer->bb
-                     ->expand(b.x * (range), b.y * (range), b.z * (range))
+                     .expand(b.x * (range), b.y * (range), b.z * (range))
                      .grow(overlap, overlap, overlap);
 
     std::vector<std::shared_ptr<Entity> >* objects =
@@ -323,7 +323,7 @@ void GameRenderer::pick(float a) {
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();
-        AABB bb = e->bb->grow(rr, rr, rr);
+        AABB bb = e->bb.grow(rr, rr, rr);
         HitResult* p = bb.clip(from, to);
         if (bb.contains(from)) {
             if (0 < nearest || nearest == 0) {

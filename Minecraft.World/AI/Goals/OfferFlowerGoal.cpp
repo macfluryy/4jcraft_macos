@@ -15,10 +15,9 @@ OfferFlowerGoal::OfferFlowerGoal(VillagerGolem* golem) {
 bool OfferFlowerGoal::canUse() {
     if (!golem->level->isDay()) return false;
     if (golem->getRandom()->nextInt(8000) != 0) return false;
-    AABB golem_bb = golem->bb->grow(6, 2, 6);
+    AABB golem_bb = golem->bb.grow(6, 2, 6);
     villager = std::weak_ptr<Villager>(std::dynamic_pointer_cast<Villager>(
-        golem->level->getClosestEntityOfClass(typeid(Villager),
-                                              &golem_bb,
+        golem->level->getClosestEntityOfClass(typeid(Villager), &golem_bb,
                                               golem->shared_from_this())));
     return villager.lock() != NULL;
 }

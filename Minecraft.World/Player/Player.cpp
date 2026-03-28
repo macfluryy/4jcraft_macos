@@ -965,9 +965,9 @@ void Player::aiStep() {
         if (riding != NULL && !riding->removed) {
             // if the player is riding, also touch entities under the
             // pig/horse
-            pickupArea = bb->minmax(*riding->bb).grow(1, 0, 1);
+            pickupArea = bb.minmax(riding->bb).grow(1, 0, 1);
         } else {
-            pickupArea = bb->grow(1, .5, 1);
+            pickupArea = bb.grow(1, .5, 1);
         }
 
         std::vector<std::shared_ptr<Entity> >* entities =

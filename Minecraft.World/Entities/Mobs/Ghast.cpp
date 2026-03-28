@@ -119,7 +119,7 @@ void Ghast::serverAiStep() {
         target->distanceToSqr(shared_from_this()) < maxDist * maxDist) {
         double xdd = target->x - x;
         double ydd =
-            (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
+            (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zdd = target->z - z;
         yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / PI;
 
@@ -170,7 +170,6 @@ bool Ghast::canReach(double xt, double yt, double zt, double dist) {
     double yd = (yTarget - y) / dist;
     double zd = (zTarget - z) / dist;
 
-    AABB bb = *this->bb;
     for (int d = 1; d < dist; d++) {
         bb.move(xd, yd, zd);
         if (!level->getCubes(shared_from_this(), &bb)->empty()) return false;

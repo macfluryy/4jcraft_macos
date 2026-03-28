@@ -48,7 +48,7 @@ void BreedGoal::tick() {
 
 std::shared_ptr<Animal> BreedGoal::getFreePartner() {
     float r = 8;
-    AABB grown_bb = animal->bb->grow(r, r, r);
+    AABB grown_bb = animal->bb.grow(r, r, r);
     std::vector<std::shared_ptr<Entity> >* others =
         level->getEntitiesOfClass(typeid(*animal), &grown_bb);
     double dist = std::numeric_limits<double>::max();

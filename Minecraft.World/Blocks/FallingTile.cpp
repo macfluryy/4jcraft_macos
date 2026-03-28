@@ -168,7 +168,7 @@ void FallingTile::causeFallDamage(float distance) {
             // entities (invalidating our iterator)
             std::vector<std::shared_ptr<Entity> >* entities =
                 new std::vector<std::shared_ptr<Entity> >(
-                    *level->getEntities(shared_from_this(), bb));
+                    *level->getEntities(shared_from_this(), &bb));
             DamageSource* source = tile == Tile::anvil_Id
                                        ? DamageSource::anvil
                                        : DamageSource::fallingBlock;

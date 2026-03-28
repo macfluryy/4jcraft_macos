@@ -240,11 +240,11 @@ bool Ocelot::canSpawn() {
     if (level->random->nextInt(3) == 0) {
         return false;
     }
-    if (level->isUnobstructed(bb) &&
-        level->getCubes(shared_from_this(), bb)->empty() &&
-        !level->containsAnyLiquid(bb)) {
+    if (level->isUnobstructed(&bb) &&
+        level->getCubes(shared_from_this(), &bb)->empty() &&
+        !level->containsAnyLiquid(&bb)) {
         int xt = Mth::floor(x);
-        int yt = Mth::floor(bb->y0);
+        int yt = Mth::floor(bb.y0);
         int zt = Mth::floor(z);
         if (yt < level->seaLevel) {
             return false;

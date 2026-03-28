@@ -28,7 +28,7 @@ EyeOfEnderSignal::EyeOfEnderSignal(Level* level) : Entity(level) {
 void EyeOfEnderSignal::defineSynchedData() {}
 
 bool EyeOfEnderSignal::shouldRenderAtSqrDistance(double distance) {
-    double size = bb->getSize() * 4;
+    double size = bb.getSize() * 4;
     size *= 64.0f;
     return distance < size * size;
 }

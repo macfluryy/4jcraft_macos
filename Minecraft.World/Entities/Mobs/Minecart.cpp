@@ -98,7 +98,7 @@ void Minecart::defineSynchedData() {
 
 AABB* Minecart::getCollideAgainstBox(std::shared_ptr<Entity> entity) {
     if (entity->isPushable()) {
-        return entity->bb;
+        return &entity->bb;
     }
     return NULL;
 }
@@ -305,7 +305,7 @@ void Minecart::tick() {
         }
         setRot(yRot, xRot);
 
-        AABB grown = bb->grow(0.2, 0, 0.2);
+        AABB grown = bb.grow(0.2, 0, 0.2);
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntities(shared_from_this(), &grown);
         if (entities != NULL && !entities->empty()) {

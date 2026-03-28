@@ -46,7 +46,7 @@ public:
     int xRenderOffs, yRenderOffs, zRenderOffs;
 
     int xm, ym, zm;
-    AABB* bb;
+    AABB bb;
     ClipChunk* clipChunk;
 
     int id;
@@ -88,5 +88,4 @@ public:
     void setDirty();
     void clearDirty();  // 4J added
     bool emptyFlagSet(int layer);
-    ~Chunk();
 };

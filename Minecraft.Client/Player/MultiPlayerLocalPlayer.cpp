@@ -140,7 +140,7 @@ void MultiplayerLocalPlayer::sendPosition() {
     }
 
     double xdd = x - xLast;
-    double ydd1 = bb->y0 - yLast1;
+    double ydd1 = bb.y0 - yLast1;
     double zdd = z - zLast;
 
     double rydd = yRot - yRotLast;
@@ -158,11 +158,11 @@ void MultiplayerLocalPlayer::sendPosition() {
         if (move && rot) {
             connection->send(
                 std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
-                    x, bb->y0, y, z, yRot, xRot, onGround, abilities.flying)));
+                    x, bb.y0, y, z, yRot, xRot, onGround, abilities.flying)));
         } else if (move) {
             connection->send(
                 std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Pos(
-                    x, bb->y0, y, z, onGround, abilities.flying)));
+                    x, bb.y0, y, z, onGround, abilities.flying)));
         } else if (rot) {
             connection->send(
                 std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Rot(
@@ -178,7 +178,7 @@ void MultiplayerLocalPlayer::sendPosition() {
 
     if (move) {
         xLast = x;
-        yLast1 = bb->y0;
+        yLast1 = bb.y0;
         yLast2 = y;
         zLast = z;
         positionReminder = 0;

@@ -16,7 +16,7 @@ FollowParentGoal::FollowParentGoal(Animal* animal, double speedModifier) {
 bool FollowParentGoal::canUse() {
     if (animal->getAge() >= 0) return false;
 
-    AABB grown_bb = animal->bb->grow(8, 4, 8);
+    AABB grown_bb = animal->bb.grow(8, 4, 8);
     std::vector<std::shared_ptr<Entity> >* parents =
         animal->level->getEntitiesOfClass(typeid(*animal), &grown_bb);
 

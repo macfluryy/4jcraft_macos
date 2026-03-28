@@ -897,7 +897,7 @@ void LivingEntity::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 
 bool LivingEntity::onLadder() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
 
     // 4J-PB - TU9 - add climbable vines
@@ -1166,7 +1166,7 @@ void LivingEntity::teleportTo(double x, double y, double z) {
 void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
     AABB boundingBox;
     double fallbackX = vehicle->x;
-    double fallbackY = vehicle->bb->y0 + vehicle->bbHeight;
+    double fallbackY = vehicle->bb.y0 + vehicle->bbHeight;
     double fallbackZ = vehicle->z;
 
     for (double xDiff = -1.5; xDiff < 2; xDiff += 1.5) {
@@ -1177,7 +1177,7 @@ void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
 
             int xToInt = (int)(x + xDiff);
             int zToInt = (int)(z + zDiff);
-            boundingBox = bb->move(xDiff, 1, zDiff);
+            boundingBox = bb.move(xDiff, 1, zDiff);
 
             if (level->getTileCubes(&boundingBox, true)->empty()) {
                 if (level->isTopSolidBlocking(xToInt, (int)y, zToInt)) {
@@ -1259,7 +1259,7 @@ void LivingEntity::travel(float xa, float ya) {
         float friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                    Mth::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
@@ -1281,7 +1281,7 @@ void LivingEntity::travel(float xa, float ya) {
         friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                    Mth::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
@@ -1337,13 +1337,13 @@ void LivingEntity::travel(float xa, float ya) {
 // and out of lit areas, for example when bobbing in the water.
 int LivingEntity::getLightColor(float a) {
     float accum[2] = {0, 0};
-    float totVol = (bb->x1 - bb->x0) * (bb->y1 - bb->y0) * (bb->z1 - bb->z0);
-    int xmin = Mth::floor(bb->x0);
-    int xmax = Mth::floor(bb->x1);
-    int ymin = Mth::floor(bb->y0);
-    int ymax = Mth::floor(bb->y1);
-    int zmin = Mth::floor(bb->z0);
-    int zmax = Mth::floor(bb->z1);
+    float totVol = (bb.x1 - bb.x0) * (bb.y1 - bb.y0) * (bb.z1 - bb.z0);
+    int xmin = Mth::floor(bb.x0);
+    int xmax = Mth::floor(bb.x1);
+    int ymin = Mth::floor(bb.y0);
+    int ymax = Mth::floor(bb.y1);
+    int zmin = Mth::floor(bb.z0);
+    int zmax = Mth::floor(bb.z1);
     for (int xt = xmin; xt <= xmax; xt++)
         for (int yt = ymin; yt <= ymax; yt++)
             for (int zt = zmin; zt <= zmax; zt++) {
@@ -1353,12 +1353,12 @@ int LivingEntity::getLightColor(float a) {
                 float tileymax = (float)(yt + 1);
                 float tilezmin = (float)zt;
                 float tilezmax = (float)(zt + 1);
-                if (tilexmin < bb->x0) tilexmin = bb->x0;
-                if (tilexmax > bb->x1) tilexmax = bb->x1;
-                if (tileymin < bb->y0) tileymin = bb->y0;
-                if (tileymax > bb->y1) tileymax = bb->y1;
-                if (tilezmin < bb->z0) tilezmin = bb->z0;
-                if (tilezmax > bb->z1) tilezmax = bb->z1;
+                if (tilexmin < bb.x0) tilexmin = bb.x0;
+                if (tilexmax > bb.x1) tilexmax = bb.x1;
+                if (tileymin < bb.y0) tileymin = bb.y0;
+                if (tileymax > bb.y1) tileymax = bb.y1;
+                if (tilezmin < bb.z0) tilezmin = bb.z0;
+                if (tilezmax > bb.z1) tilezmax = bb.z1;
                 float tileVol = (tilexmax - tilexmin) * (tileymax - tileymin) *
                                 (tilezmax - tilezmin);
                 float frac = tileVol / totVol;
@@ -1508,10 +1508,10 @@ void LivingEntity::aiStep() {
         // 4J - this collision is carried out to try and stop the lerping push
         // the mob through the floor, in which case gravity can then carry on
         // moving the mob because the collision just won't work anymore. BB for
-        // collision used to be calculated as: bb->shrink(1 / 32.0, 0, 1 / 32.0)
+        // collision used to be calculated as: bb.shrink(1 / 32.0, 0, 1 / 32.0)
         // now using a reduced BB to try and get rid of some issues where mobs
         // pop up the sides of walls, undersides of trees etc.
-        AABB shrinkbb = bb->shrink(0.1, 0, 0.1);
+        AABB shrinkbb = bb.shrink(0.1, 0, 0.1);
         shrinkbb.y1 = shrinkbb.y0 + 0.1;
         AABBList* collisions = level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
@@ -1521,7 +1521,7 @@ void LivingEntity::aiStep() {
                 if (it->y1 > yTop) yTop = it->y1;
             }
 
-            yt += yTop - bb->y0;
+            yt += yTop - bb.y0;
             setPos(xt, yt, zt);
         }
     } else if (!isEffectiveAi()) {
@@ -1581,7 +1581,7 @@ void LivingEntity::aiStep() {
 void LivingEntity::newServerAiStep() {}
 
 void LivingEntity::pushEntities() {
-    AABB grown = bb->grow(0.2, 0, 0.2);
+    AABB grown = bb.grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {

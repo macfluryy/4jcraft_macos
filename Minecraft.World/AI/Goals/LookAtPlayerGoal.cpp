@@ -37,10 +37,9 @@ bool LookAtPlayerGoal::canUse() {
         lookAt =
             mob->level->getNearestPlayer(mob->shared_from_this(), lookDistance);
     } else {
-        AABB mob_bb = mob->bb->grow(lookDistance, 3, lookDistance);
+        AABB mob_bb = mob->bb.grow(lookDistance, 3, lookDistance);
         lookAt = std::weak_ptr<Entity>(mob->level->getClosestEntityOfClass(
-            lookAtType, &mob_bb,
-            mob->shared_from_this()));
+            lookAtType, &mob_bb, mob->shared_from_this()));
     }
     return lookAt.lock() != NULL;
 }

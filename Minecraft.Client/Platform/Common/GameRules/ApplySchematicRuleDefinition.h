@@ -1,6 +1,8 @@
 #pragma once
+#include <optional>
 #include "GameRuleDefinition.h"
 #include "ConsoleSchematicFile.h"
+#include "../../Minecraft.World/Util/AABB.h"
 
 class AABB;
 class Vec3;
@@ -14,7 +16,7 @@ private:
     std::wstring m_schematicName;
     ConsoleSchematicFile* m_schematic;
     Vec3 m_location;
-    AABB* m_locationBox;
+    std::optional<AABB> m_locationBox;
     ConsoleSchematicFile::ESchematicRotation m_rotation;
     int m_dimension;
 

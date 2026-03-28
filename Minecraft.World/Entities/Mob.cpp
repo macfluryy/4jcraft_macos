@@ -301,7 +301,7 @@ void Mob::aiStep() {
 
     if (!level->isClientSide && canPickUpLoot() && !dead &&
         level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
-            AABB grown = bb->grow(1, 0, 1);
+            AABB grown = bb.grow(1, 0, 1);
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntitiesOfClass(typeid(ItemEntity), &grown);
         for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
@@ -499,7 +499,7 @@ void Mob::lookAt(std::shared_ptr<Entity> e, float yMax, float xMax) {
             std::dynamic_pointer_cast<LivingEntity>(e);
         yd = (mob->y + mob->getHeadHeight()) - (y + getHeadHeight());
     } else {
-        yd = (e->bb->y0 + e->bb->y1) / 2 - (y + getHeadHeight());
+        yd = (e->bb.y0 + e->bb.y1) / 2 - (y + getHeadHeight());
     }
 
     double sd = Mth::sqrt(xd * xd + zd * zd);
@@ -527,9 +527,9 @@ float Mob::rotlerp(float a, float b, float max) {
 
 bool Mob::canSpawn() {
     // 4J - altered to use special containsAnyLiquid variant
-    return level->isUnobstructed(bb) &&
-           level->getCubes(shared_from_this(), bb)->empty() &&
-           !level->containsAnyLiquid_NoLoad(bb);
+    return level->isUnobstructed(&bb) &&
+           level->getCubes(shared_from_this(), &bb)->empty() &&
+           !level->containsAnyLiquid_NoLoad(&bb);
 }
 
 float Mob::getSizeScale() { return 1.0f; }
@@ -848,7 +848,7 @@ void Mob::restoreLeashFromSave() {
     if (_isLeashed && leashInfoTag != NULL) {
         if (leashInfoTag->contains(L"UUID")) {
             std::wstring leashUuid = leashInfoTag->getString(L"UUID");
-            AABB grown = bb->grow(10, 10, 10);
+            AABB grown = bb.grow(10, 10, 10);
             std::vector<std::shared_ptr<Entity> >* livingEnts =
                 level->getEntitiesOfClass(typeid(LivingEntity),
                                           &grown);
@@ -889,9 +889,9 @@ void Mob::restoreLeashFromSave() {
 // resolve bug 10327 :Gameplay: NPCs can spawn over chunks that have not yet
 // been streamed and display jitter.
 bool Mob::shouldRender(Vec3* c) {
-    if (!level->reallyHasChunksAt(Mth::floor(bb->x0), Mth::floor(bb->y0),
-                                  Mth::floor(bb->z0), Mth::floor(bb->x1),
-                                  Mth::floor(bb->y1), Mth::floor(bb->z1))) {
+    if (!level->reallyHasChunksAt(Mth::floor(bb.x0), Mth::floor(bb.y0),
+                                  Mth::floor(bb.z0), Mth::floor(bb.x1),
+                                  Mth::floor(bb.y1), Mth::floor(bb.z1))) {
         return false;
     }
     return Entity::shouldRender(c);

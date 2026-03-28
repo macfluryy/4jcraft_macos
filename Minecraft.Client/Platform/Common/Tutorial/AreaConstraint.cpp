@@ -10,17 +10,11 @@ AreaConstraint::AreaConstraint(int descriptionId, double x0, double y0,
                                bool contains /*= true*/,
                                bool restrictsMovement /*=true*/)
     : TutorialConstraint(descriptionId) {
-    messageArea =
-        new AABB(x0 + 2, y0 + 2, z0 + 2, x1 - 2, y1 - 2, z1 - 2);
-    movementArea = new AABB(x0, y0, z0, x1, y1, z1);
+    messageArea = AABB(x0 + 2, y0 + 2, z0 + 2, x1 - 2, y1 - 2, z1 - 2);
+    movementArea = AABB(x0, y0, z0, x1, y1, z1);
 
     this->contains = contains;
     m_restrictsMovement = restrictsMovement;
-}
-
-AreaConstraint::~AreaConstraint() {
-    delete messageArea;
-    delete movementArea;
 }
 
 bool AreaConstraint::isConstraintSatisfied(int iPad) {
@@ -28,7 +22,7 @@ bool AreaConstraint::isConstraintSatisfied(int iPad) {
 
     // TODO: check if this can be elided
     Vec3 ipad_player = minecraft->localplayers[iPad]->getPos(1);
-    return messageArea->contains(ipad_player) == contains;
+    return messageArea.contains(ipad_player) == contains;
 }
 
 bool AreaConstraint::isConstraintRestrictive(int iPad) {
@@ -42,12 +36,12 @@ bool AreaConstraint::canMoveToPosition(double xo, double yo, double zo,
     Vec3 targetPos(xt, yt, zt);
     Minecraft* minecraft = Minecraft::GetInstance();
 
-    if (movementArea->contains(targetPos) == contains) {
+    if (movementArea.contains(targetPos) == contains) {
         return true;
     }
     Vec3 origPos(xo, yo, zo);
 
-    double currDist = origPos.distanceTo(movementArea);
-    double targetDist = targetPos.distanceTo(movementArea);
+    double currDist = origPos.distanceTo(&movementArea);
+    double targetDist = targetPos.distanceTo(&movementArea);
     return targetDist < currDist;
 }

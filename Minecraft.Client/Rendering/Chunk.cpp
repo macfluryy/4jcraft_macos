@@ -43,7 +43,8 @@ Chunk::Chunk(Level* level, LevelRenderer::rteMap& globalRenderableTileEntities,
     : globalRenderableTileEntities(&globalRenderableTileEntities),
       globalRenderableTileEntities_cs(&globalRenderableTileEntities_cs) {
     clipChunk->visible = false;
-    bb = NULL;
+    const double g = 6;
+    bb = AABB(-g, -g, -g, XZSIZE + g, SIZE + g, XZSIZE + g);
     id = 0;
 
     this->level = level;
@@ -92,21 +93,13 @@ void Chunk::setPos(int x, int y, int z) {
 #endif
 
     float g = 6.0f;
-    // 4J - changed to just set the value rather than make a new one, if we've
-    // already created storage
-    if (bb == NULL) {
-        bb = new AABB(-g, -g, -g, XZSIZE + g, SIZE + g, XZSIZE + g);
-    } else {
-        // 4J MGH - bounds are relative to the position now, so the AABB will be
-        // setup already, either above, or from the tesselator bounds.
-        // 		bb->set(-g, -g, -g, SIZE+g, SIZE+g, SIZE+g);
-    }
-    clipChunk->aabb[0] = bb->x0 + x;
-    clipChunk->aabb[1] = bb->y0 + y;
-    clipChunk->aabb[2] = bb->z0 + z;
-    clipChunk->aabb[3] = bb->x1 + x;
-    clipChunk->aabb[4] = bb->y1 + y;
-    clipChunk->aabb[5] = bb->z1 + z;
+
+    clipChunk->aabb[0] = bb.x0 + x;
+    clipChunk->aabb[1] = bb.y0 + y;
+    clipChunk->aabb[2] = bb.z0 + z;
+    clipChunk->aabb[3] = bb.x1 + x;
+    clipChunk->aabb[4] = bb.y1 + y;
+    clipChunk->aabb[5] = bb.z1 + z;
 
     assigned = true;
 
@@ -508,11 +501,8 @@ void Chunk::rebuild() {
 
     // 4J MGH - added this to take the bound from the value calc'd in the
     // tesselator
-    if (bb) {
-        *bb = {bounds.boundingBox[0], bounds.boundingBox[1],
-                bounds.boundingBox[2], bounds.boundingBox[3],
-                bounds.boundingBox[4], bounds.boundingBox[5]};
-    }
+    bb = {bounds.boundingBox[0], bounds.boundingBox[1], bounds.boundingBox[2],
+          bounds.boundingBox[3], bounds.boundingBox[4], bounds.boundingBox[5]};
 
     delete tileRenderer;
     delete region;
@@ -1033,7 +1023,7 @@ int Chunk::getList(int layer) {
     return -1;
 }
 
-void Chunk::cull(Culler* culler) { clipChunk->visible = culler->isVisible(bb); }
+void Chunk::cull(Culler* culler) { clipChunk->visible = culler->isVisible(&bb); }
 
 void Chunk::renderBB() {
     //	glCallList(lists + 2);	// 4J - removed - TODO put back in
@@ -1063,8 +1053,6 @@ void Chunk::clearDirty() {
                                         LevelRenderer::CHUNK_FLAG_CRITICAL);
 #endif
 }
-
-Chunk::~Chunk() { delete bb; }
 
 bool Chunk::emptyFlagSet(int layer) {
     return levelRenderer->getGlobalChunkFlag(

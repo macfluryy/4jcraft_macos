@@ -216,7 +216,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
 
     float r = 8;
     if (getInLoveValue() > 0) {
-        AABB grown = bb->grow(r, r, r);
+        AABB grown = bb.grow(r, r, r);
         std::vector<std::shared_ptr<Entity> >* others =
             level->getEntitiesOfClass(typeid(*this), &grown);
         // for (int i = 0; i < others->size(); i++)
@@ -230,7 +230,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
         delete others;
     } else {
         if (getAge() == 0) {
-            AABB grown = bb->grow(r, r, r);
+            AABB grown = bb.grow(r, r, r);
             std::vector<std::shared_ptr<Entity> >* players =
                 level->getEntitiesOfClass(typeid(Player), &grown);
             // for (int i = 0; i < players.size(); i++)
@@ -247,7 +247,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
             }
             delete players;
         } else if (getAge() > 0) {
-            AABB grown = bb->grow(r, r, r);
+            AABB grown = bb.grow(r, r, r);
             std::vector<std::shared_ptr<Entity> >* others =
                 level->getEntitiesOfClass(typeid(*this), &grown);
             // for (int i = 0; i < others.size(); i++)
@@ -267,7 +267,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
 
 bool Animal::canSpawn() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
     return level->getTile(xt, yt - 1, zt) == Tile::grass_Id &&
            level->getDaytimeRawBrightness(xt, yt, zt) > 8 &&

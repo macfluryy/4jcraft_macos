@@ -67,7 +67,7 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
 // already really
 bool MushroomCow::canSpawn() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
     return (level->getTile(xt, yt - 1, zt) == Tile::grass_Id ||
             level->getTile(xt, yt - 1, zt) == Tile::mycel_Id) &&

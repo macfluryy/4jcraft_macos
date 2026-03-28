@@ -68,7 +68,7 @@ void ItemEntity::tick() {
     zo = z;
 
     yd -= 0.04f;
-    noPhysics = checkInTile(x, (bb->y0 + bb->y1) / 2, z);
+    noPhysics = checkInTile(x, (bb.y0 + bb.y1) / 2, z);
 
     // 4J - added parameter here so that these don't care about colliding with
     // other entities
@@ -96,7 +96,7 @@ void ItemEntity::tick() {
     float friction = 0.98f;
     if (onGround) {
         friction = 0.6f * 0.98f;
-        int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+        int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                Mth::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
@@ -119,7 +119,7 @@ void ItemEntity::tick() {
 }
 
 void ItemEntity::mergeWithNeighbours() {
-    AABB grown = bb->grow(0.5, 0, 0.5);
+    AABB grown = bb.grow(0.5, 0, 0.5);
     std::vector<std::shared_ptr<Entity> >* neighbours =
         level->getEntitiesOfClass(typeid(*this), &grown);
     for (AUTO_VAR(it, neighbours->begin()); it != neighbours->end(); ++it) {
@@ -164,7 +164,7 @@ void ItemEntity::setShortLifeTime() {
 }
 
 bool ItemEntity::updateInWaterState() {
-    return level->checkAndHandleWater(bb, Material::water, shared_from_this());
+    return level->checkAndHandleWater(&bb, Material::water, shared_from_this());
 }
 
 void ItemEntity::burn(int dmg) { hurt(DamageSource::inFire, dmg); }

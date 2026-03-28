@@ -272,7 +272,7 @@ void PlayerConnection::handleMovePlayer(
         */
 
         float r = 1 / 16.0f;
-        AABB shrunk = player->bb->shrink(r, r, r);
+        AABB shrunk = player->bb.shrink(r, r, r);
         bool oldOk =
             level->getCubes(player, &shrunk)
                 ->empty();
@@ -326,7 +326,7 @@ void PlayerConnection::handleMovePlayer(
         player->absMoveTo(xt, yt, zt, yRotT, xRotT);
 
         // TODO: check if this can be elided
-        shrunk = player->bb->shrink(r, r, r);
+        shrunk = player->bb.shrink(r, r, r);
         bool newOk =
             level->getCubes(player, &shrunk)
                 ->empty();
@@ -334,7 +334,7 @@ void PlayerConnection::handleMovePlayer(
             teleport(xLastOk, yLastOk, zLastOk, yRotT, xRotT);
             return;
         }
-        AABB testBox = (*player->bb).grow(r, r, r).expand(0, -0.55, 0);
+        AABB testBox = player->bb.grow(r, r, r).expand(0, -0.55, 0);
         // && server.level.getCubes(player, testBox).size() == 0
         if (!server->isFlightAllowed() && !player->gameMode->isCreative() &&
             !level->containsAnyBlocks(&testBox) && !player->isAllowedToFly()) {

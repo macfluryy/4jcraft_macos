@@ -1010,7 +1010,7 @@ void ClientConnection::handleMovePlayer(
     player->xd = player->yd = player->zd = 0;
     player->absMoveTo(x, y, z, yRot, xRot);
     packet->x = player->x;
-    packet->y = player->bb->y0;
+    packet->y = player->bb.y0;
     packet->z = player->z;
     packet->yView = player->y;
     connection->send(packet);

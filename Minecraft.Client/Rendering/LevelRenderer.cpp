@@ -585,14 +585,14 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
 
         bool shouldRender =
             (entity->shouldRender(cam) &&
-             (entity->noCulling || culler->isVisible(entity->bb)));
+             (entity->noCulling || culler->isVisible(&entity->bb)));
 
         // Render the mob if the mob's leash holder is within the culler
         if (!shouldRender && entity->instanceof(eTYPE_MOB)) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(entity);
             if (mob->isLeashed() && (mob->getLeashHolder() != NULL)) {
                 std::shared_ptr<Entity> leashHolder = mob->getLeashHolder();
-                shouldRender = culler->isVisible(leashHolder->bb);
+                shouldRender = culler->isVisible(&leashHolder->bb);
             }
         }
 

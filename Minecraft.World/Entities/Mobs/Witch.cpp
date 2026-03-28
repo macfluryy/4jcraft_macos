@@ -153,7 +153,7 @@ void Witch::handleEntityEvent(uint8_t id) {
         for (int i = 0; i < random->nextInt(35) + 10; i++) {
             level->addParticle(eParticleType_witchMagic,
                                x + random->nextGaussian() * .13f,
-                               bb->y1 + 0.5f + random->nextGaussian() * .13f,
+                               bb.y1 + 0.5f + random->nextGaussian() * .13f,
                                z + random->nextGaussian() * .13f, 0, 0, 0);
         }
     } else {
