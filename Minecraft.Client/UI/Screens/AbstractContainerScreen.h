@@ -6,7 +6,8 @@ class Slot;
 class Container;
 
 class AbstractContainerScreen : public Screen {
-private:
+protected:
+    // 4jcraft: made protected to match JE 1.6.4
     static ItemRenderer* itemRenderer;
 
 protected:
