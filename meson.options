@@ -9,14 +9,13 @@ option('classic_panorama',
   value : false, 
   description : 'Enable classic java edition panorama (ui_backend=java ONLY).')
 
-option('enable_vsync', 
+option('renderer',
+  type : 'combo', 
+  choices: ['gl2', 'gl3', 'gles'],
+  value : 'gl3', 
+  description : 'Specifies a rendering implementation for the game.')
+
+option('enable_vsync',
   type : 'boolean', 
   value : true, 
   description : 'Toggles V-Sync and adds options to unlock maximum in-game framerate.')
-
-option(
-  'gles',
-  type: 'boolean',
-  value: false,
-  description: 'Use OpenGL ES instead of Desktop GL',
-)

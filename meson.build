@@ -18,7 +18,7 @@ python = pymod.find_installation('python3', required: true)
 
 cc = meson.get_compiler('cpp')
 
-use_gles = get_option('gles')
+use_gles = get_option('renderer') == 'gles'
 
 global_cpp_defs = [
   '-DSPLIT_SAVES',
