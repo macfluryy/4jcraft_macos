@@ -653,6 +653,90 @@ static void RADLINK gdraw_DescribeVertexBuffer(GDrawVertexBuffer *vbuf, GDraw_Ve
 //   Create/free (or cache) render targets
 //
 
+#ifdef __linux__
+typedef struct
+{
+   S32 free_count;
+   S32 live_count;
+   S32 locked_count;
+   S32 dead_count;
+   S32 pinned_count;
+   S32 user_owned_count;
+   S32 alloc_count;
+} GDrawHandleStateCounts;
+
+enum
+{
+   GDRAW_RT_DIAG_color_memory = 1 << 0,
+   GDRAW_RT_DIAG_color_handles = 1 << 1,
+   GDRAW_RT_DIAG_cache_bitmap = 1 << 2,
+   GDRAW_RT_DIAG_stack_depth = 1 << 3,
+   GDRAW_RT_DIAG_empty_request = 1 << 4,
+};
+
+static U32 gdraw_rt_diag_emitted = 0;
+
+static void gdraw_CountHandleStates(GDrawHandleCache *cache,
+                                    GDrawHandleStateCounts *counts)
+{
+   S32 i;
+   counts->free_count = 0;
+   counts->live_count = 0;
+   counts->locked_count = 0;
+   counts->dead_count = 0;
+   counts->pinned_count = 0;
+   counts->user_owned_count = 0;
+   counts->alloc_count = 0;
+
+   if (!cache)
+      return;
+
+   for (i = 0; i < cache->max_handles; ++i) {
+      switch (cache->handle[i].state) {
+         case GDRAW_HANDLE_STATE_free:       ++counts->free_count; break;
+         case GDRAW_HANDLE_STATE_live:       ++counts->live_count; break;
+         case GDRAW_HANDLE_STATE_locked:     ++counts->locked_count; break;
+         case GDRAW_HANDLE_STATE_dead:       ++counts->dead_count; break;
+         case GDRAW_HANDLE_STATE_pinned:     ++counts->pinned_count; break;
+         case GDRAW_HANDLE_STATE_user_owned: ++counts->user_owned_count; break;
+         case GDRAW_HANDLE_STATE_alloc:      ++counts->alloc_count; break;
+         default: break;
+      }
+   }
+}
+
+static void gdraw_ReportHandleCacheDiag(char const *label,
+                                        GDrawHandleCache *cache,
+                                        U32 once_bit,
+                                        S32 req_w,
+                                        S32 req_h)
+{
+   GDrawHandleStateCounts counts;
+
+   if (gdraw_rt_diag_emitted & once_bit)
+      return;
+   gdraw_rt_diag_emitted |= once_bit;
+
+   gdraw_CountHandleStates(cache, &counts);
+   IggyGDrawSendWarning(NULL,
+      "GDraw[%s] diag: frame=%dx%d tile=%dx%d padded=%dx%d req=%dx%d depth=%d bytes_free=%d total_bytes=%d handles free=%d live=%d locked=%d dead=%d pinned=%d user=%d alloc=%d",
+      label,
+      gdraw->frametex_width, gdraw->frametex_height,
+      gdraw->tw, gdraw->th,
+      gdraw->tpw, gdraw->tph,
+      req_w, req_h,
+      (int) (gdraw->cur - gdraw->frame),
+      cache ? cache->bytes_free : 0,
+      cache ? cache->total_bytes : 0,
+      counts.free_count, counts.live_count, counts.locked_count,
+      counts.dead_count, counts.pinned_count, counts.user_owned_count,
+      counts.alloc_count);
+}
+#else
+#define gdraw_ReportHandleCacheDiag(label, cache, once_bit, req_w, req_h) \
+   ((void) 0)
+#endif
+
 static GDrawHandle *get_rendertarget_texture(int width, int height, void *owner, GDrawStats *gstats)
 {
    S32 size;
@@ -696,13 +780,17 @@ static GDrawHandle *get_color_rendertarget(GDrawStats *gstats)
    // ran out of RTs, allocate a new one
    size = gdraw->frametex_width * gdraw->frametex_height * 4;
    if (gdraw->rendertargets.bytes_free < size) {
-      IggyGDrawSendWarning(NULL, "GDraw exceeded available rendertarget memory");
+      gdraw_ReportHandleCacheDiag("rt-color-memory", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_color_memory, gdraw->tpw, gdraw->tph);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-color] exceeded available rendertarget memory");
       return NULL;
    }
 
    t = gdraw_HandleCacheAllocateBegin(&gdraw->rendertargets);
    if (!t) {
-      IggyGDrawSendWarning(NULL, "GDraw exceeded available rendertarget handles");
+      gdraw_ReportHandleCacheDiag("rt-color-handles", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_color_handles, gdraw->tpw, gdraw->tph);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-color] exceeded available rendertarget handles");
       return t;
    }
 
@@ -1010,25 +1098,31 @@ static rrbool RADLINK gdraw_TextureDrawBufferBegin(gswf_recti *region, gdraw_tex
    GDrawHandle *t;
    int k;
    if (gdraw->tw == 0 || gdraw->th == 0) {
-      IggyGDrawSendWarning(NULL, "GDraw got a request for an empty rendertarget");
+      gdraw_ReportHandleCacheDiag("rt-empty", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_empty_request, region->x1 - region->x0, region->y1 - region->y0);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-stack] got a request for an empty rendertarget");
       return false;
    }
 
    if (n >= &gdraw->frame[MAX_RENDER_STACK_DEPTH]) {
-      IggyGDrawSendWarning(NULL, "GDraw rendertarget nesting exceeded MAX_RENDER_STACK_DEPTH");
+      gdraw_ReportHandleCacheDiag("rt-stack-depth", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_stack_depth, region->x1 - region->x0, region->y1 - region->y0);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-stack] rendertarget nesting exceeded MAX_RENDER_STACK_DEPTH");
       return false;
    }
 
    if (owner) {
       t = get_rendertarget_texture(region->x1 - region->x0, region->y1 - region->y0, owner, gstats);
       if (!t) {
-         IggyGDrawSendWarning(NULL, "GDraw ran out of rendertargets for cacheAsBItmap");
+         gdraw_ReportHandleCacheDiag("rt-cacheAsBitmap", gdraw->texturecache,
+            GDRAW_RT_DIAG_cache_bitmap, region->x1 - region->x0, region->y1 - region->y0);
+         IggyGDrawSendWarning(NULL, "GDraw[rt-cacheAsBitmap] ran out of rendertargets");
          return false;
       }
    } else {
       t = get_color_rendertarget(gstats);
       if (!t) {
-         IggyGDrawSendWarning(NULL, "GDraw ran out of rendertargets");
+         IggyGDrawSendWarning(NULL, "GDraw[rt-color] ran out of rendertargets");
          return false;
       }
    }
