@@ -278,6 +278,12 @@ static void error_msg_platform_specific(const char* msg) {
     fprintf(stderr, "[GDraw] %s\n", msg);
 }
 
+#define GDRAW_PLATFORM_REPORT_GL_SITE(site)                                 \
+    do {                                                                    \
+        if ((site) != NULL)                                                 \
+            fprintf(stderr, "[GDraw] GL error site: %s\n", (site));         \
+    } while (0)
+
 #define GDRAW_MULTISAMPLING
 
 // i wish i could improve this function 
@@ -707,6 +713,7 @@ static void RADLINK hooked_RenderingBegin(void) {
     if (real_RenderingBegin) real_RenderingBegin();
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
+    OPENGL_CHECK_SITE("hooked_RenderingBegin:post_state");
 }
 
 // Creating the context

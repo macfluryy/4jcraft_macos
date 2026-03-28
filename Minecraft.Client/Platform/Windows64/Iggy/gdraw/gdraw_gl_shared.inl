@@ -57,6 +57,10 @@ static RADINLINE void break_on_err(GLint e)
 #endif
 }
 
+#ifndef GDRAW_PLATFORM_REPORT_GL_SITE
+#define GDRAW_PLATFORM_REPORT_GL_SITE(site) ((void)0)
+#endif
+
 static void report_err(GLint e)
 {
    break_on_err(e);
@@ -74,16 +78,30 @@ static void eat_gl_err(void)
    while (glGetError() != GL_NO_ERROR);
 }
 
+static void opengl_check_site(const char *site);
+
 static void opengl_check(void)
+{
+   opengl_check_site(NULL);
+}
+
+static void opengl_check_site(const char *site)
 {
 #ifdef _DEBUG
    GLint e = glGetError();
    if (e != GL_NO_ERROR) {
+      GDRAW_PLATFORM_REPORT_GL_SITE(site);
       report_err(e);
       eat_gl_err();
    }
+#else
+   (void) site;
 #endif
 }
+
+#ifndef OPENGL_CHECK_SITE
+#define OPENGL_CHECK_SITE(site) opengl_check_site(site)
+#endif
 
 static U32 is_pow2(S32 n)
 {
@@ -1355,18 +1373,18 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
    }
 
    use_lazy_shader(prg);
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:use_lazy_shader");
    fvars = prg->vars[0];
    vvars = prg->vars[1];
 
    if (vformat == GDRAW_vformat_ihud1) {
       F32 wv[2][4] = { 1.0f/960,0,0,-1.0, 0,-1.0f/540,0,+1.0 };
       glUniform4fv(vvars[VAR_ihudv_worldview], 2, wv[0]);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_worldview");
       glUniform4fv(vvars[VAR_ihudv_material], p->uniform_count, p->uniforms);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_material");
       glUniform1f(vvars[VAR_ihudv_textmode], p->drawprim_mode ? 0.0f : 1.0f);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_textmode");
    } else {
 
       // set vertex shader constants
@@ -1393,7 +1411,7 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
 
    // texture stuff
    set_texture(0, r->tex[0]);
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:set_texture0");
 
    if (r->tex[0] && gdraw->has_conditional_non_power_of_two && ((GDrawHandle*) r->tex[0])->handle.tex.nonpow2) {
       // only wrap mode allowed in conditional nonpow2 is clamp; this should
@@ -1490,7 +1508,7 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
    else
       glDepthMask(GL_FALSE);
 
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:final");
    if (ovvars)
       *ovvars = vvars;
 
@@ -1611,7 +1629,7 @@ static void RADLINK gdraw_DrawIndexedTriangles(GDrawRenderState *r, GDrawPrimiti
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
    }
 
-   opengl_check();
+   OPENGL_CHECK_SITE("gdraw_DrawIndexedTriangles:final");
    tag_resources(vb, r->tex[0], r->tex[1]);
 }
 
@@ -1628,33 +1646,33 @@ static void do_screen_quad(gswf_recti *s, F32 *tc, const int *vvars, GDrawStats 
    F32 vert[4][4];
    F32 world[2*4];
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:begin");
 
    vert[0][0] = px0;  vert[0][1] = py0; vert[0][2] = s0; vert[0][3] = t0;
    vert[1][0] = px1;  vert[1][1] = py0; vert[1][2] = s1; vert[1][3] = t0;
    vert[2][0] = px1;  vert[2][1] = py1; vert[2][2] = s1; vert[2][3] = t1;
    vert[3][0] = px0;  vert[3][1] = py1; vert[3][2] = s0; vert[3][3] = t1;
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_vertices");
    gdraw_PixelSpace(world);
    world[2] = depth;
    set_world_projection(vvars, world);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_projection");
 
    set_vertex_format(GDRAW_vformat_v2tc2, vert[0]);
    glBindBuffer(GL_ARRAY_BUFFER, 0);
    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:before_draw");
    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
    reset_vertex_format(GDRAW_vformat_v2tc2);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_draw");
 
    gstats->nonzero_flags |= GDRAW_STATS_batches;
    gstats->num_batches    += 1;
    gstats->drawn_vertices += 4;
    gstats->drawn_indices  += 6;
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:final");
 }
 
 #ifdef GDRAW_FEWER_CLEARS
@@ -1805,7 +1823,7 @@ static void RADLINK gdraw_FilterQuad(GDrawRenderState *r, S32 x0, S32 y0, S32 x1
    glColorMask(1,1,1,1);
    glDisable(GL_BLEND);
    glDisable(GL_DEPTH_TEST);
-   opengl_check();
+   OPENGL_CHECK_SITE("gdraw_FilterQuad:pre_filter");
 
    if (r->blend_mode == GDRAW_BLEND_filter) {
       switch (r->filter) {

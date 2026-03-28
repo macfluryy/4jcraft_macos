@@ -1845,6 +1845,34 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     // 4jcraft: use actual framebuffer dimensions instead of mc->width/height
     // to ensure GUI scales correctly after a window resize.
     ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
+
+    // 4jcraft: Java GUI screens still assume a clean 2D fixed-function style state.
+    RenderManager.StateSetFaceCull(false);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glColor4f(1, 1, 1, 1);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(true);
+
+    RenderManager.TextureBindVertex(-1);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+
     glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
