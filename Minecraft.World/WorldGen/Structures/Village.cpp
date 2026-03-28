@@ -117,21 +117,22 @@ bool Village::canSpawnAt(int x, int y, int z, int sx, int sy, int sz) {
 
 void Village::countGolem() {
     // Fix - let bots report themselves?
+    AABB village_golem_bb =
+        AABB(center->x, center->y, center->z, center->x, center->y, center->z)
+            .grow(radius, 4, radius);
     std::vector<std::shared_ptr<Entity> >* golems = level->getEntitiesOfClass(
         typeid(VillagerGolem),
-        AABB::newTemp(center->x - radius, center->y - 4, center->z - radius,
-                      center->x + radius, center->y + 4, center->z + radius));
+        &village_golem_bb);
     golemCount = golems->size();
     delete golems;
 }
 
 void Village::countPopulation() {
+    AABB villager_bb = AABB(center->x, center->y, center->z, center->x, center->y, center->z).grow(radius, 4, radius);
     std::vector<std::shared_ptr<Entity> >* villagers =
         level->getEntitiesOfClass(
             typeid(Villager),
-            AABB::newTemp(center->x - radius, center->y - 4, center->z - radius,
-                          center->x + radius, center->y + 4,
-                          center->z + radius));
+            &villager_bb);
     populationSize = villagers->size();
     delete villagers;
 

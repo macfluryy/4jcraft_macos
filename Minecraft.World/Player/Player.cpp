@@ -1596,11 +1596,10 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
 
             double hRange = 8;
             double vRange = 5;
+            AABB monster_bb =
+                AABB(x, y, z, x, y, z).grow(hRange, vRange, hRange);
             std::vector<std::shared_ptr<Entity> >* monsters =
-                level->getEntitiesOfClass(
-                    typeid(Monster),
-                    AABB::newTemp(x - hRange, y - vRange, z - hRange,
-                                  x + hRange, y + vRange, z + hRange));
+                level->getEntitiesOfClass(typeid(Monster), &monster_bb);
             if (!monsters->empty()) {
                 delete monsters;
                 return NOT_SAFE;

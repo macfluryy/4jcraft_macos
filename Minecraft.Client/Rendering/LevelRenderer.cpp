@@ -2481,9 +2481,9 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
             double zo = player->zOld + (player->z - player->zOld) * a;
 
             AABB bb = Tile::tiles[tileId]
-                       ->getTileAABB(level[iPad], h->x, h->y, h->z)
-                       ->grow(ss, ss, ss)
-                       .move(-xo, -yo, -zo);
+                          ->getTileAABB(level[iPad], h->x, h->y, h->z)
+                          ->grow(ss, ss, ss)
+                          .move(-xo, -yo, -zo);
 
             render(&bb);
         }
@@ -3891,20 +3891,20 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
     // ones, so make a temporary list and then copy over
 
     RecentTile* recentTile = new RecentTile(x, y, z, level);
-    AABB* box = AABB::newTemp((float)x, (float)y, (float)z, (float)(x + 1),
-                              (float)(y + 1), (float)(z + 1));
+    AABB box((float)x, (float)y, (float)z, (float)(x + 1), (float)(y + 1),
+             (float)(z + 1));
     Tile* tile = Tile::tiles[level->getTile(x, y, z)];
 
     if (tile != NULL) {
-        tile->addAABBs(level, x, y, z, box, &recentTile->boxes, nullptr);
+        tile->addAABBs(level, x, y, z, &box, &recentTile->boxes, nullptr);
     }
 
     // Make these temporary AABBs into permanently allocated AABBs
     for (unsigned int i = 0; i < recentTile->boxes.size(); i++) {
-        recentTile->boxes[i] = new AABB(
-            recentTile->boxes[i]->x0, recentTile->boxes[i]->y0,
-            recentTile->boxes[i]->z0, recentTile->boxes[i]->x1,
-            recentTile->boxes[i]->y1, recentTile->boxes[i]->z1);
+        recentTile->boxes[i] =
+            new AABB(recentTile->boxes[i]->x0, recentTile->boxes[i]->y0,
+                     recentTile->boxes[i]->z0, recentTile->boxes[i]->x1,
+                     recentTile->boxes[i]->y1, recentTile->boxes[i]->z1);
     }
 
     m_destroyedTiles.push_back(recentTile);
@@ -3978,13 +3978,13 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
                 // AABB copy so that we can destroy our own copy without
                 // worrying about the lifespan of the copy we've passed out
                 if (m_destroyedTiles[i]->boxes[j]->intersects(*box)) {
-                    boxes->push_back(
-                        AABB::newTemp(m_destroyedTiles[i]->boxes[j]->x0,
-                                      m_destroyedTiles[i]->boxes[j]->y0,
-                                      m_destroyedTiles[i]->boxes[j]->z0,
-                                      m_destroyedTiles[i]->boxes[j]->x1,
-                                      m_destroyedTiles[i]->boxes[j]->y1,
-                                      m_destroyedTiles[i]->boxes[j]->z1));
+                    AABB bb(m_destroyedTiles[i]->boxes[j]->x0,
+                            m_destroyedTiles[i]->boxes[j]->y0,
+                            m_destroyedTiles[i]->boxes[j]->z0,
+                            m_destroyedTiles[i]->boxes[j]->x1,
+                            m_destroyedTiles[i]->boxes[j]->y1,
+                            m_destroyedTiles[i]->boxes[j]->z1);
+                    boxes->push_back(&bb);
                 }
             }
         }

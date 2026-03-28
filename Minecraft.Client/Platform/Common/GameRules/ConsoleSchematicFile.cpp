@@ -733,9 +733,9 @@ void ConsoleSchematicFile::generateSchematicFile(
     }
     tag.put(L"TileEntities", tileEntitiesTag);
 
-    AABB* bb = AABB::newTemp(xStart, yStart, zStart, xEnd, yEnd, zEnd);
+    AABB bb(xStart, yStart, zStart, xEnd, yEnd, zEnd);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(nullptr, bb);
+        level->getEntities(nullptr, &bb);
     ListTag<CompoundTag>* entitiesTag = new ListTag<CompoundTag>(L"entities");
 
     for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {

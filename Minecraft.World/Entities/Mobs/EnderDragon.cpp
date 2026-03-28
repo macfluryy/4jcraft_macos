@@ -647,11 +647,9 @@ void EnderDragon::aiStep() {
     if (!level->isClientSide) checkAttack();
     if (!level->isClientSide && hurtDuration == 0) {
         AABB wing_mov = wing1->bb->grow(4, 2, 4).move(0, -2, 0);
-        knockBack(level->getEntities(shared_from_this(),
-            &wing_mov));
+        knockBack(level->getEntities(shared_from_this(), &wing_mov));
         wing_mov = wing2->bb->grow(4, 2, 4).move(0, -2, 0);
-        knockBack(level->getEntities(shared_from_this(),
-            &wing_mov));
+        knockBack(level->getEntities(shared_from_this(), &wing_mov));
 
         AABB neck_bb = neck->bb->grow(1, 1, 1);
         AABB head_bb = head->bb->grow(1, 1, 1);
@@ -689,8 +687,8 @@ void EnderDragon::aiStep() {
         double acidX = x + ss * 9.5f * ccTilt;
         double acidY = y + yOffset + ssTilt * 10.5f;
         double acidZ = z - cc * 9.5f * ccTilt;
-        *m_acidArea = {acidX - 5, acidY - 17, acidZ - 5, acidX + 5, acidY + 4,
-                        acidZ + 5};
+        *m_acidArea = {acidX - 5, acidY - 17, acidZ - 5,
+                       acidX + 5, acidY + 4,  acidZ + 5};
 
         // app.DebugPrintf("\nDragon is %s, yRot = %f, yRotA = %f, ss = %f, cc =
         // %f, ccTilt = %f\n",level->isClientSide?"client":"server", yRot,
@@ -816,11 +814,9 @@ void EnderDragon::checkCrystals() {
 
     if (random->nextInt(10) == 0) {
         float maxDist = 32;
-        AABB grown =
-bb->grow(maxDist, maxDist, maxDist);
+        AABB grown = bb->grow(maxDist, maxDist, maxDist);
         std::vector<std::shared_ptr<Entity> >* crystals =
-            level->getEntitiesOfClass(typeid(EnderCrystal),
-                &grown);
+            level->getEntitiesOfClass(typeid(EnderCrystal), &grown);
 
         std::shared_ptr<EnderCrystal> crystal = nullptr;
         double nearest = std::numeric_limits<double>::max();
@@ -1427,11 +1423,11 @@ EnderDragon::EEnderdragonAction EnderDragon::getSynchedAction() {
 }
 
 void EnderDragon::handleCrystalDestroyed(DamageSource* source) {
-    AABB* tempBB = AABB::newTemp(PODIUM_X_POS, 84.0, PODIUM_Z_POS,
-                                 PODIUM_X_POS + 1.0, 85.0, PODIUM_Z_POS + 1.0);
-    AABB grown = tempBB->grow(48, 40, 48);
-    std::vector<std::shared_ptr<Entity> >* crystals = level->getEntitiesOfClass(
-        typeid(EnderCrystal), &grown);
+    AABB tempBB(PODIUM_X_POS, 84.0, PODIUM_Z_POS, PODIUM_X_POS + 1.0, 85.0,
+                PODIUM_Z_POS + 1.0);
+    AABB grown = tempBB.grow(48, 40, 48);
+    std::vector<std::shared_ptr<Entity> >* crystals =
+        level->getEntitiesOfClass(typeid(EnderCrystal), &grown);
     m_remainingCrystalsCount = (int)crystals->size() - 1;
     if (m_remainingCrystalsCount < 0) m_remainingCrystalsCount = 0;
     delete crystals;

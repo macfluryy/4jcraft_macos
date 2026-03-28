@@ -9,6 +9,7 @@
 #include "TilePos.h"
 #include "Explosion.h"
 #include "../Util/SoundTypes.h"
+#include "Util/AABB.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
                      double y, double z, float r) {
@@ -99,8 +100,10 @@ void Explosion::explode() {
     // time. If we explode something next to an EnderCrystal then it creates a
     // new explosion that overwrites the shared vector in the level So copy it
     // here instead of directly using the shared one
+
+    AABB source_bb(x0, y0, z0, x1, y1, z1);
     std::vector<std::shared_ptr<Entity> >* levelEntities =
-        level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
+        level->getEntities(source, &source_bb);
     std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(),
                                                    levelEntities->end());
     Vec3 center(x, y, z);

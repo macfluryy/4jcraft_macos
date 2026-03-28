@@ -288,8 +288,8 @@ void FishingHook::tick() {
                     2 / 16.0f;
         double y1 = bb->y0 + (bb->y1 - bb->y0) * (i + 1) / steps - 2 / 16.0f +
                     2 / 16.0f;
-        AABB* bb2 = AABB::newTemp(bb->x0, y0, bb->z0, bb->x1, y1, bb->z1);
-        if (level->containsLiquid(bb2, Material::water)) {
+        AABB bb2(bb->x0, y0, bb->z0, bb->x1, y1, bb->z1);
+        if (level->containsLiquid(&bb2, Material::water)) {
             waterPercentage += 1.0 / steps;
         }
     }

@@ -26,10 +26,10 @@ std::shared_ptr<ItemInstance> ArmorItem::ArmorDispenseItemBehavior::execute(
     int x = source->getBlockX() + facing->getStepX();
     int y = source->getBlockY() + facing->getStepY();
     int z = source->getBlockZ() + facing->getStepZ();
-    AABB* bb = AABB::newTemp(x, y, z, x + 1, y + 1, z + 1);
+    AABB bb = AABB(x, y, z, x + 1, y + 1, z + 1);
     EntitySelector* selector = new MobCanWearArmourEntitySelector(dispensed);
     std::vector<std::shared_ptr<Entity> >* entities =
-        source->getWorld()->getEntitiesOfClass(typeid(LivingEntity), bb,
+        source->getWorld()->getEntitiesOfClass(typeid(LivingEntity), &bb,
                                                selector);
     delete selector;
 
