@@ -2472,7 +2472,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
         // 4J-PB - If Display HUD is false, don't render the hit outline
         if (app.GetGameSettings(iPad, eGameSetting_DisplayHUD) == 0) return;
         RenderManager.StateSetLightingEnable(false);
-        RenderManager.StateSetTextureEnable(false);
+        glDisable(GL_TEXTURE_2D);
         
         // draw hit outline
         RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
@@ -2502,7 +2502,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
         // restore
         glDisable(GL_POLYGON_OFFSET_LINE);
         RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderManager.StateSetTextureEnable(true);
+        glEnable(GL_TEXTURE_2D);
         RenderManager.StateSetLightingEnable(true);
     }
 }
@@ -2510,7 +2510,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
 void LevelRenderer::render(AABB* b) {
     Tesselator* t = Tesselator::getInstance();
     RenderManager.StateSetLightingEnable(false);
-    RenderManager.StateSetTextureEnable(false);
+    glDisable(GL_TEXTURE_2D);
     RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
 
     // prevent zfight
@@ -2541,7 +2541,7 @@ void LevelRenderer::render(AABB* b) {
     t->end();
     glDisable(GL_POLYGON_OFFSET_LINE);
     RenderManager.StateSetLightingEnable(true);
-    RenderManager.StateSetTextureEnable(true);
+    glEnable(GL_TEXTURE_2D);
     RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
 }
 

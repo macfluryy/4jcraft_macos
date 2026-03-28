@@ -28,11 +28,22 @@
 #undef glActiveTexture
 
 // _4j suffix shit (todo: make ts better)
+int glGenTextures() {
+    GLuint id = 0;
+    ::glGenTextures(1, &id);
+    return (int)id;
+}
+
 void glGenTextures_4J(IntBuffer* buf) {
     GLuint id = 0;
     ::glGenTextures(1, &id);
     buf->put((int)id);
     buf->flip();
+}
+
+void glDeleteTextures(int id) {
+    GLuint uid = (GLuint)id;
+    ::glDeleteTextures(1, &uid);
 }
 
 void glDeleteTextures_4J(IntBuffer* buf) {

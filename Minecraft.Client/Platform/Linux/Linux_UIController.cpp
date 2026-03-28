@@ -1,42 +1,35 @@
-// should we keep Linux_UIController.cpp?*
 #include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Linux_UIController.h"
 
-// Temp
-#include "../../Minecraft.h"
-#include "../../Textures/Textures.h"
-
 // GDraw GL backend for Linux
 #include "Iggy/gdraw/gdraw.h"
-#include "4J_Render.h"
 
 ConsoleUIController ui;
 
 static void restoreFixedFunctionStateAfterIggy() {
-    RenderManager.StateSetColour(1.0f, 1.0f, 1.0f, 1.0f);
-    RenderManager.StateSetAlphaTestEnable(true);
-    RenderManager.StateSetAlphaFunc(GL_GREATER, 0.1f);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
-    RenderManager.StateSetDepthTestEnable(true);
-    RenderManager.StateSetDepthFunc(GL_LEQUAL);
-    RenderManager.StateSetDepthMask(true);
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
 
-    RenderManager.StateSetFaceCull(true);
-    RenderManager.StateSetActiveTexture(GL_TEXTURE1);
-    RenderManager.StateSetTextureEnable(false);
-    RenderManager.MatrixMode(GL_TEXTURE);
-    RenderManager.MatrixSetIdentity();
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
 
-    RenderManager.StateSetActiveTexture(GL_TEXTURE0);
-    RenderManager.StateSetTextureEnable(true);
-    RenderManager.MatrixMode(GL_TEXTURE);
-
-    RenderManager.MatrixSetIdentity();
-    RenderManager.MatrixMode(GL_MODELVIEW);
-    glDisable(GL_SCISSOR_TEST); // iggy is mean
-    RenderManager.Set_matrixDirty();
-    Minecraft::GetInstance()->textures->clearLastBoundId(); 
-    // 4jcraft: clears the last bound id, dumb fix but fine
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void ConsoleUIController::init(S32 w, S32 h) {
@@ -69,11 +62,8 @@ void ConsoleUIController::render() {
     if (!gdraw_funcs) return;
 
     gdraw_GL_SetTileOrigin(0, 0, 0);
-    if (!app.GetGameStarted()) {
-        glDisable(GL_SCISSOR_TEST);
-        glClearDepth(1.0);
-        glDepthMask(GL_TRUE);
-        glClear(GL_DEPTH_BUFFER_BIT);
+    if (!app.GetGameStarted() && gdraw_funcs->ClearID) {
+        gdraw_funcs->ClearID();
     }
 
     // render

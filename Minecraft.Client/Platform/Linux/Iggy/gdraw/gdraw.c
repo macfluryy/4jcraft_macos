@@ -776,6 +776,7 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
 
     real_RenderingBegin = funcs->RenderingBegin;
     funcs->RenderingBegin = hooked_RenderingBegin;
+    funcs->ClearID = gdraw_ClearID;
 
     gdraw->tex_formats = tex_formats;
     gdraw->has_mapbuffer = true;
