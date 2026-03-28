@@ -2254,12 +2254,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 //		int64_t startTime = System::currentTimeMillis();
 
                 // app.DebugPrintf("Rebuilding permaChunk %d\n", index);
-                Tesselator::getInstance()->offset(-permaChunk[index].x,
-                                                  -permaChunk[index].y,
-                                                  -permaChunk[index].z);
                 permaChunk[index].rebuild();
-
-                Tesselator::getInstance()->offset(0, 0, 0);
 
                 if (index != 0)
                     s_rebuildCompleteEvents->Set(
@@ -4065,12 +4060,8 @@ int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
 
     while (true) {
         s_activationEventA[index]->WaitForSignal(INFINITE);
-        Tesselator* t = Tesselator::getInstance();
-        Tesselator::getInstance()->offset(
-            -permaChunk[index].x, -permaChunk[index].y, -permaChunk[index].z);
         // app.DebugPrintf("Rebuilding permaChunk %d\n", index + 1);
         permaChunk[index + 1].rebuild();
-        Tesselator::getInstance()->offset(0, 0, 0);
         // Inform the producer thread that we are done with this chunk
         s_rebuildCompleteEvents->Set(index);
     }

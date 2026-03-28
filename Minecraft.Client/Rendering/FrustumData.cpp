@@ -14,9 +14,10 @@ FrustumData::FrustumData() {
 }
 
 FrustumData::~FrustumData() {
-    for (int i = 0; i < 6; i++) {
-        delete[] m_Frustum[i];
-    }
+    delete[] proj.data;
+    delete[] modl.data;
+    delete[] clip.data;
+    for (int i = 0; i < 6; i++) delete[] m_Frustum[i];
     delete[] m_Frustum;
 }
 
