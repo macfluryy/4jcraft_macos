@@ -369,8 +369,8 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glTranslatef(-2.0f, 3.0f, -3.0f + blitOffset);
         glScalef(10.0f, 10.0f, 10.0f);
         glTranslatef(1.0f, 0.5f, 8.0f);
-        glScalef(1.0f, -1.0f, 1.0f);
-        glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
+        glScalef(1.0f, 1.0f, -1.0f);
+        glRotatef(180.0f + 30.0f, 1.0f, 0.0f, 0.0f);
         glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 #else
         glTranslatef(x, y, 0.0f);  // Translate to screen coords
