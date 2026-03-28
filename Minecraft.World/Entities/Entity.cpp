@@ -733,7 +733,7 @@ void Entity::move(double xa, double ya, double za,
         // But if we don't have the chunk data then all the collision info will
         // be incorrect as well
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            ya = (*it)->clipYCollide(*bb, ya);
+            ya = it->clipYCollide(*bb, ya);
         *bb = bb->move(0, ya, 0);
     }
 
@@ -745,7 +745,7 @@ void Entity::move(double xa, double ya, double za,
 
     itEndAABB = aABBs->end();
     for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-        xa = (*it)->clipXCollide(*bb, xa);
+        xa = it->clipXCollide(*bb, xa);
 
     *bb = bb->move(xa, 0, 0);
 
@@ -755,7 +755,7 @@ void Entity::move(double xa, double ya, double za,
 
     itEndAABB = aABBs->end();
     for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-        za = (*it)->clipZCollide(*bb, za);
+        za = it->clipZCollide(*bb, za);
     *bb = bb->move(0, 0, za);
 
     if (!slide && zaOrg != za) {
@@ -789,7 +789,7 @@ void Entity::move(double xa, double ya, double za,
             // all! But if we don't have the chunk data then all the collision
             // info will be incorrect as well
             for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-                ya = (*it)->clipYCollide(*bb, ya);
+                ya = it->clipYCollide(*bb, ya);
             *bb = bb->move(0, ya, 0);
         }
 
@@ -799,7 +799,7 @@ void Entity::move(double xa, double ya, double za,
 
         itEndAABB = aABBs->end();
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            xa = (*it)->clipXCollide(*bb, xa);
+            xa = it->clipXCollide(*bb, xa);
         *bb = bb->move(xa, 0, 0);
 
         if (!slide && xaOrg != xa) {
@@ -808,7 +808,7 @@ void Entity::move(double xa, double ya, double za,
 
         itEndAABB = aABBs->end();
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            za = (*it)->clipZCollide(*bb, za);
+            za = it->clipZCollide(*bb, za);
         *bb = bb->move(0, 0, za);
 
         if (!slide && zaOrg != za) {
@@ -822,7 +822,7 @@ void Entity::move(double xa, double ya, double za,
             // LAND FIRST, then x and z
             itEndAABB = aABBs->end();
             for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-                ya = (*it)->clipYCollide(*bb, ya);
+                ya = it->clipYCollide(*bb, ya);
             *bb = bb->move(0, ya, 0);
         }
 
@@ -1526,8 +1526,7 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
             double yTop = 0;
             AUTO_VAR(itEnd, collisions->end());
             for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
-                AABB* ab = *it;  // collisions->at(i);
-                if (ab->y1 > yTop) yTop = ab->y1;
+                if (it->y1 > yTop) yTop = it->y1;
             }
 
             y += yTop - bb->y0;
@@ -1668,7 +1667,7 @@ bool Entity::checkInTile(double x, double y, double z) {
     double yd = y - (yTile);
     double zd = z - (zTile);
 
-    std::vector<AABB*>* cubes = level->getTileCubes(bb);
+    auto* cubes = level->getTileCubes(bb);
     if ((cubes && !cubes->empty()) ||
         level->isFullAABBTile(xTile, yTile, zTile)) {
         bool west = !level->isFullAABBTile(xTile - 1, yTile, zTile);

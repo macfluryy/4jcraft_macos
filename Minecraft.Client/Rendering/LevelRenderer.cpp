@@ -3862,12 +3862,6 @@ LevelRenderer::DestroyedTileManager::RecentTile::RecentTile(int x, int y, int z,
     rebuilt = false;
 }
 
-LevelRenderer::DestroyedTileManager::RecentTile::~RecentTile() {
-    for (AUTO_VAR(it, boxes.begin()); it != boxes.end(); it++) {
-        delete *it;
-    }
-}
-
 LevelRenderer::DestroyedTileManager::DestroyedTileManager() {
     InitializeCriticalSection(&m_csDestroyedTiles);
 }
@@ -3897,14 +3891,6 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
 
     if (tile != NULL) {
         tile->addAABBs(level, x, y, z, &box, &recentTile->boxes, nullptr);
-    }
-
-    // Make these temporary AABBs into permanently allocated AABBs
-    for (unsigned int i = 0; i < recentTile->boxes.size(); i++) {
-        recentTile->boxes[i] =
-            new AABB(recentTile->boxes[i]->x0, recentTile->boxes[i]->y0,
-                     recentTile->boxes[i]->z0, recentTile->boxes[i]->x1,
-                     recentTile->boxes[i]->y1, recentTile->boxes[i]->z1);
     }
 
     m_destroyedTiles.push_back(recentTile);
@@ -3977,14 +3963,13 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
                 // interested in, add them to the output list, making a temp
                 // AABB copy so that we can destroy our own copy without
                 // worrying about the lifespan of the copy we've passed out
-                if (m_destroyedTiles[i]->boxes[j]->intersects(*box)) {
-                    AABB bb(m_destroyedTiles[i]->boxes[j]->x0,
-                            m_destroyedTiles[i]->boxes[j]->y0,
-                            m_destroyedTiles[i]->boxes[j]->z0,
-                            m_destroyedTiles[i]->boxes[j]->x1,
-                            m_destroyedTiles[i]->boxes[j]->y1,
-                            m_destroyedTiles[i]->boxes[j]->z1);
-                    boxes->push_back(&bb);
+                if (m_destroyedTiles[i]->boxes[j].intersects(*box)) {
+                    boxes->push_back({m_destroyedTiles[i]->boxes[j].x0,
+                                      m_destroyedTiles[i]->boxes[j].y0,
+                                      m_destroyedTiles[i]->boxes[j].z0,
+                                      m_destroyedTiles[i]->boxes[j].x1,
+                                      m_destroyedTiles[i]->boxes[j].y1,
+                                      m_destroyedTiles[i]->boxes[j].z1});
                 }
             }
         }

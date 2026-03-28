@@ -1805,12 +1805,12 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
     for (AUTO_VAR(it, ee->begin()); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
         if (collideBox != NULL && collideBox->intersects(*box)) {
-            boxes.push_back(collideBox);
+            boxes.push_back(*collideBox);
         }
 
         collideBox = source->getCollideAgainstBox(*it);
         if (collideBox != NULL && collideBox->intersects(*box)) {
-            boxes.push_back(collideBox);
+            boxes.push_back(*collideBox);
         }
     }
 

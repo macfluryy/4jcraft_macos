@@ -234,7 +234,7 @@ public:
             int timeout_ticks;
             bool rebuilt;
             RecentTile(int x, int y, int z, Level* level);
-            ~RecentTile();
+            ~RecentTile() = default;
         };
         CRITICAL_SECTION m_csDestroyedTiles;
         std::vector<RecentTile*> m_destroyedTiles;

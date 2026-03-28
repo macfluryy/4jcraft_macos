@@ -1518,8 +1518,7 @@ void LivingEntity::aiStep() {
             double yTop = 0;
             AUTO_VAR(itEnd, collisions->end());
             for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
-                AABB* ab = *it;  // collisions->at(i);
-                if (ab->y1 > yTop) yTop = ab->y1;
+                if (it->y1 > yTop) yTop = it->y1;
             }
 
             yt += yTop - bb->y0;
