@@ -2255,6 +2255,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 //		int64_t startTime = System::currentTimeMillis();
 
                 // app.DebugPrintf("Rebuilding permaChunk %d\n", index);
+
                 permaChunk[index].rebuild();
 
                 if (index != 0)
@@ -2493,7 +2494,7 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
 
             AABB bb = Tile::tiles[tileId]
                           ->getTileAABB(level[iPad], h->x, h->y, h->z)
-                          .grow(0.002f, 0.002f, 0.002f)
+                          .grow(ss, ss, ss)
                           .move(-xo, -yo, -zo);
 
             render(&bb);
