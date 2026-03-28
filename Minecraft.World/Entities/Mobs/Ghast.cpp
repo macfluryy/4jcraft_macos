@@ -169,10 +169,11 @@ bool Ghast::canReach(double xt, double yt, double zt, double dist) {
     double xd = (xTarget - x) / dist;
     double yd = (yTarget - y) / dist;
     double zd = (zTarget - z) / dist;
+    AABB probe = bb;
 
     for (int d = 1; d < dist; d++) {
-        bb.move(xd, yd, zd);
-        if (!level->getCubes(shared_from_this(), &bb)->empty()) return false;
+        probe = probe.move(xd, yd, zd);
+        if (!level->getCubes(shared_from_this(), &probe)->empty()) return false;
     }
 
     return true;

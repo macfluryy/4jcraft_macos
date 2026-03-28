@@ -885,8 +885,8 @@ void Entity::move(double xa, double ya, double za,
     checkInsideTiles();
 
     bool water = isInWaterOrRain();
-    const AABB& shrunk = bb.shrink(0.001, 0.001, 0.001);
-    if (level->containsFireTile(&bb)) {
+    AABB shrunk = bb.shrink(0.001, 0.001, 0.001);
+    if (level->containsFireTile(&shrunk)) {
         burn(1);
         if (!water) {
             onFire++;
