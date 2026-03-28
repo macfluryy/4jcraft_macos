@@ -33,7 +33,7 @@ public:
 
 protected:
     virtual void checkPressed(Level* level, int x, int y, int z, int oldSignal);
-    virtual AABB* getSensitiveAABB(int x, int y, int z);
+    virtual AABB getSensitiveAABB(int x, int y, int z);
 
 public:
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);

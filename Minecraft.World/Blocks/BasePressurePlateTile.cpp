@@ -40,7 +40,8 @@ int BasePressurePlateTile::getTickDelay(Level* level) {
     return SharedConstants::TICKS_PER_SECOND;
 }
 
-std::optional<AABB> BasePressurePlateTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> BasePressurePlateTile::getAABB(Level* level, int x, int y,
+                                                   int z) {
     return std::nullopt;
 }
 
@@ -113,9 +114,9 @@ void BasePressurePlateTile::checkPressed(Level* level, int x, int y, int z,
     }
 }
 
-AABB* BasePressurePlateTile::getSensitiveAABB(int x, int y, int z) {
+AABB BasePressurePlateTile::getSensitiveAABB(int x, int y, int z) {
     float b = 2 / 16.0f;
-    return AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b);
+    return AABB(x + b, y, z + b, x + 1 - b, y + 0.25, z + 1 - b);
 }
 
 void BasePressurePlateTile::onRemove(Level* level, int x, int y, int z, int id,
