@@ -2467,6 +2467,8 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
     if (mode == 0 && h->type == HitResult::TILE) {
         int iPad = mc->player->GetXboxPad();  // 4J added
 
+        const float ss = 0.002f;
+
         // 4J-PB - If Display HUD is false, don't render the hit outline
         if (app.GetGameSettings(iPad, eGameSetting_DisplayHUD) == 0) return;
         RenderManager.StateSetLightingEnable(false);
