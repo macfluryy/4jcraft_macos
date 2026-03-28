@@ -114,7 +114,6 @@ typedef arrayWithLength<Tile*> TileArray;
 typedef arrayWithLength<Stat*> StatArray;
 typedef arrayWithLength<MobCategory*> MobCategoryArray;
 typedef arrayWithLength<File*> FileArray;
-typedef arrayWithLength<Vertex*> VertexArray;
 typedef arrayWithLength<_Polygon*> PolygonArray;
 typedef arrayWithLength<ServerLevel*> ServerLevelArray;
 typedef arrayWithLength<MultiPlayerLevel*> MultiPlayerLevelArray;
