@@ -671,6 +671,11 @@ void GameRenderer::setupCamera(float a, int eye) {
 void GameRenderer::renderItemInHand(float a, int eye) {
     if (cameraFlip > 0) return;
 
+    // 4jcraft: this function sometimes causes a segfault (was hell to catch
+    // this in gdb) because of itemInHandRenderer not being initialized so let's
+    // add a nullcheck
+    if (itemInHandRenderer == nullptr) return;
+
     // 4J-JEV: I'm fairly confident this method would crash if the cameratarget
     // isnt a local player anyway, but oh well.
     std::shared_ptr<LocalPlayer> localplayer =
