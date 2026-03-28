@@ -95,7 +95,7 @@ void Chunk::setPos(int x, int y, int z) {
     // 4J - changed to just set the value rather than make a new one, if we've
     // already created storage
     if (bb == NULL) {
-        bb = AABB::newPermanent(-g, -g, -g, XZSIZE + g, SIZE + g, XZSIZE + g);
+        bb = new AABB(-g, -g, -g, XZSIZE + g, SIZE + g, XZSIZE + g);
     } else {
         // 4J MGH - bounds are relative to the position now, so the AABB will be
         // setup already, either above, or from the tesselator bounds.

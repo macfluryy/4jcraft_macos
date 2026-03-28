@@ -26,8 +26,6 @@ public:
     static void UseDefaultThreadStorage();
     static void ReleaseThreadStorage();
 
-    static AABB* newPermanent(double x0, double y0, double z0, double x1,
-                              double y1, double z1);
     static void clearPool();
     static void resetPool();
     static AABB* newTemp(double x0, double y0, double z0, double x1, double y1,

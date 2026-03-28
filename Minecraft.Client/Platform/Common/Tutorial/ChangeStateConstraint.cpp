@@ -16,7 +16,7 @@ ChangeStateConstraint::ChangeStateConstraint(
     bool contains /*= true*/, bool changeGameMode /*= false*/,
     GameType* targetGameMode /*= 0*/)
     : TutorialConstraint(-1) {
-    movementArea = AABB::newPermanent(x0, y0, z0, x1, y1, z1);
+    movementArea = new AABB(x0, y0, z0, x1, y1, z1);
 
     this->contains = contains;
 

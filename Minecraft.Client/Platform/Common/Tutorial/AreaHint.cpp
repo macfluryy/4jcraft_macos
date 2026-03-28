@@ -12,7 +12,7 @@ AreaHint::AreaHint(eTutorial_Hint id, Tutorial* tutorial,
                    double x1, double y1, double z1, bool allowFade /*= false*/,
                    bool contains /*= true*/)
     : TutorialHint(id, tutorial, descriptionId, e_Hint_Area, allowFade) {
-    area = AABB::newPermanent(x0, y0, z0, x1, y1, z1);
+    area = new AABB(x0, y0, z0, x1, y1, z1);
 
     this->contains = contains;
 

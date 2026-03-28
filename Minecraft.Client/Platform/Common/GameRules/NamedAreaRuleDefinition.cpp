@@ -5,7 +5,7 @@
 
 NamedAreaRuleDefinition::NamedAreaRuleDefinition() {
     m_name = L"";
-    m_area = AABB::newPermanent(0, 0, 0, 0, 0, 0);
+    m_area = new AABB(0, 0, 0, 0, 0, 0);
 }
 
 NamedAreaRuleDefinition::~NamedAreaRuleDefinition() { delete m_area; }

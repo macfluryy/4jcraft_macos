@@ -268,7 +268,7 @@ void Entity::_init(bool useSmallId, Level* level) {
     xd = yd = zd = 0.0;
     yRot = xRot = 0.0f;
     yRotO = xRotO = 0.0f;
-    bb = AABB::newPermanent(0, 0, 0, 0, 0, 0);  // 4J Was final
+    bb = new AABB(0, 0, 0, 0, 0, 0);  // 4J Was final
     onGround = false;
     horizontalCollision = verticalCollision = false;
     collision = false;

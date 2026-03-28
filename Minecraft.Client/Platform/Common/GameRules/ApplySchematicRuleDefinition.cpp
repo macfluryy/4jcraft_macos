@@ -130,7 +130,7 @@ void ApplySchematicRuleDefinition::updateLocationBox() {
     if (m_schematic == NULL)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
-    m_locationBox = AABB::newPermanent(0, 0, 0, 0, 0, 0);
+    m_locationBox = new AABB(0, 0, 0, 0, 0, 0);
 
     m_locationBox->x0 = m_location.x;
     m_locationBox->y0 = m_location.y;

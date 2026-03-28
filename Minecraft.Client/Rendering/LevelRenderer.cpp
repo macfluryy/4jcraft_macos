@@ -3901,7 +3901,7 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
 
     // Make these temporary AABBs into permanently allocated AABBs
     for (unsigned int i = 0; i < recentTile->boxes.size(); i++) {
-        recentTile->boxes[i] = AABB::newPermanent(
+        recentTile->boxes[i] = new AABB(
             recentTile->boxes[i]->x0, recentTile->boxes[i]->y0,
             recentTile->boxes[i]->z0, recentTile->boxes[i]->x1,
             recentTile->boxes[i]->y1, recentTile->boxes[i]->z1);

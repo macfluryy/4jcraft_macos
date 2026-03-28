@@ -73,7 +73,7 @@ void EnderDragon::_init() {
     m_actionTicks = 0;
     m_sittingDamageReceived = 0;
     m_headYRot = 0.0;
-    m_acidArea = AABB::newPermanent(-4, -10, -3, 6, 3, 3);
+    m_acidArea = new AABB(-4, -10, -3, 6, 3, 3);
     m_flameAttacks = 0;
 
     for (int i = 0; i < positionsLength; i++) {

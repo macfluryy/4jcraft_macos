@@ -11,8 +11,8 @@ AreaConstraint::AreaConstraint(int descriptionId, double x0, double y0,
                                bool restrictsMovement /*=true*/)
     : TutorialConstraint(descriptionId) {
     messageArea =
-        AABB::newPermanent(x0 + 2, y0 + 2, z0 + 2, x1 - 2, y1 - 2, z1 - 2);
-    movementArea = AABB::newPermanent(x0, y0, z0, x1, y1, z1);
+        new AABB(x0 + 2, y0 + 2, z0 + 2, x1 - 2, y1 - 2, z1 - 2);
+    movementArea = new AABB(x0, y0, z0, x1, y1, z1);
 
     this->contains = contains;
     m_restrictsMovement = restrictsMovement;
