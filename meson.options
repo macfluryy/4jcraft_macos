@@ -13,3 +13,10 @@ option('enable_vsync',
   type : 'boolean', 
   value : true, 
   description : 'Toggles V-Sync and adds options to unlock maximum in-game framerate.')
+
+option(
+  'gles',
+  type: 'boolean',
+  value: true,
+  description: 'Use OpenGL ES instead of Desktop GL',
+)

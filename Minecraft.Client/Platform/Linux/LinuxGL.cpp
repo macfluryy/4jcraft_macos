@@ -5,6 +5,7 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 #include <dlfcn.h>
+#include <vector>
 
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
@@ -27,7 +28,15 @@
 #undef glReadPixels
 #undef glActiveTexture
 
-// _4j suffix shit (todo: make ts better)
+// Helper functions & stuff
+inline GLuint* getIntPtr(IntBuffer* buf) {
+    return buf ? (GLuint*)((int*)buf->getBuffer() + buf->position()) : nullptr;
+}
+inline GLvoid* getBytePtr(ByteBuffer* buf) {
+    return buf ? (GLvoid*)((char*)buf->getBuffer() + buf->position()) : nullptr;
+}
+
+// _4j suffix shit
 int glGenTextures() {
     GLuint id = 0;
     ::glGenTextures(1, &id);
@@ -35,10 +44,11 @@ int glGenTextures() {
 }
 
 void glGenTextures_4J(IntBuffer* buf) {
-    GLuint id = 0;
-    ::glGenTextures(1, &id);
-    buf->put((int)id);
-    buf->flip();
+    if (!buf) return;
+    int n = buf->limit() - buf->position();
+    if (n > 0) {
+        ::glGenTextures(n, getIntPtr(buf));
+    }
 }
 
 void glDeleteTextures(int id) {
@@ -47,10 +57,10 @@ void glDeleteTextures(int id) {
 }
 
 void glDeleteTextures_4J(IntBuffer* buf) {
-    if (buf && buf->limit() > 0) {
-        int id = buf->get(0);
-        GLuint uid = (GLuint)id;
-        ::glDeleteTextures(1, &uid);
+    if (!buf) return;
+    int n = buf->limit() - buf->position();
+    if (n > 0) {
+        ::glDeleteTextures(n, getIntPtr(buf));
     }
 }
 
@@ -79,13 +89,13 @@ void glTexCoordPointer_4J(int size, int type, FloatBuffer* pointer) {
 }
 
 void glNormalPointer_4J(int type, ByteBuffer* pointer) {
-    ::glNormalPointer((GLenum)type, 0, pointer->getBuffer());
+    ::glNormalPointer((GLenum)type, 0, getBytePtr(pointer));
 }
 
 void glColorPointer_4J(int size, bool normalized, int stride,
                        ByteBuffer* pointer) {
     (void)normalized;
-    ::glColorPointer(size, GL_UNSIGNED_BYTE, stride, pointer->getBuffer());
+    ::glColorPointer(size, GL_UNSIGNED_BYTE, stride, getBytePtr(pointer));
 }
 
 void glVertexPointer_4J(int size, int type, FloatBuffer* pointer) {
@@ -100,20 +110,22 @@ void glEndList_4J(int dummy) {
 void glTexImage2D_4J(int target, int level, int internalformat, int width,
                      int height, int border, int format, int type,
                      ByteBuffer* pixels) {
-    void* data = pixels ? pixels->getBuffer() : nullptr;
     ::glTexImage2D((GLenum)target, level, internalformat, width, height, border,
-                   (GLenum)format, (GLenum)type, data);
+                   (GLenum)format, (GLenum)type, getBytePtr(pixels));
 }
 
 void glCallLists_4J(IntBuffer* lists) {
+    if (!lists) return;
     int count = lists->limit() - lists->position();
-    ::glCallLists(count, GL_INT, lists->getBuffer());
+    if (count > 0) {
+        ::glCallLists(count, GL_INT, getIntPtr(lists));
+    }
 }
 
 void glReadPixels_4J(int x, int y, int width, int height, int format, int type,
                      ByteBuffer* pixels) {
     ::glReadPixels(x, y, width, height, (GLenum)format, (GLenum)type,
-                   pixels->getBuffer());
+                   getBytePtr(pixels));
 }
 
 void glGetFloat(int pname, FloatBuffer* params) {
@@ -173,11 +185,11 @@ static void initQueryFuncs() {
 
 void glGenQueriesARB_4J(IntBuffer* buf) {
     initQueryFuncs();
-    if (_glGenQueriesARB) {
-        GLuint id = 0;
-        _glGenQueriesARB(1, &id);
-        buf->put((int)id);
-        buf->flip();
+    if (_glGenQueriesARB && buf) {
+        int n = buf->limit() - buf->position();
+        if (n > 0) {
+            _glGenQueriesARB(n, getIntPtr(buf));
+        }
     }
 }
 void glGenQueriesARB(IntBuffer* buf) { glGenQueriesARB_4J(buf); }
@@ -196,11 +208,10 @@ void glEndQueryARB(int target) { glEndQueryARB_4J(target); }
 
 void glGetQueryObjectuARB_4J(int id, int pname, IntBuffer* params) {
     initQueryFuncs();
-    if (_glGetQueryObjectuivARB) {
-        GLuint val = 0;
-        _glGetQueryObjectuivARB((GLuint)id, (GLenum)pname, &val);
-        params->put((int)val);
-        params->flip();
+    if (_glGetQueryObjectuivARB && params) {
+        // LWJGL does not change limits/positions during these calls, it
+        // reads/writes exactly at pointer!!
+        _glGetQueryObjectuivARB((GLuint)id, (GLenum)pname, getIntPtr(params));
     }
 }
 void glGetQueryObjectuARB(int id, int pname, IntBuffer* params) {
@@ -222,8 +233,8 @@ void LinuxGLLogLightmapState(const char* stage, int textureId,
     ::glActiveTexture(restoreTexture);
 
     app.DebugPrintf(
-        "[linux-lightmap] %s tex=%d scale=%d active=%#x unit1Bound=%d\n",
-        stage, textureId, scaleLight ? 1 : 0, activeTexture, unit1Binding);
+        "[linux-lightmap] %s tex=%d scale=%d active=%#x unit1Bound=%d\n", stage,
+        textureId, scaleLight ? 1 : 0, activeTexture, unit1Binding);
 }
 
 #endif
