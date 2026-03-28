@@ -18,6 +18,8 @@ python = pymod.find_installation('python3', required: true)
 
 cc = meson.get_compiler('cpp')
 
+use_gles = get_option('gles')
+
 global_cpp_defs = [
   '-DSPLIT_SAVES',
   '-D_LARGE_WORLDS',
@@ -28,11 +30,23 @@ global_cpp_defs = [
 ]
 
 if host_machine.system() == 'linux'
-  global_cpp_defs += [
-    '-Dlinux',
-    '-D__linux',
-    '-D__linux__',
-  ]
+  global_cpp_defs += ['-Dlinux', '-D__linux', '-D__linux__']
+endif
+
+if use_gles
+  global_cpp_defs += ['-DGLES']
+endif
+
+if get_option('enable_vsync')
+  global_cpp_defs += ['-DENABLE_VSYNC']
+endif
+
+if get_option('enable_shiggy')
+  global_cpp_defs += ['-D_ENABLEIGGY']
+endif
+
+if get_option('enable_java_guis')
+  global_cpp_defs += ['-DENABLE_JAVA_GUIS']
 endif
 
 add_project_arguments(global_cpp_defs, language: ['cpp', 'c'])
@@ -48,12 +62,13 @@ sdl2_dep = dependency('sdl2')
 thread_dep = dependency('threads')
 dl_dep = cc.find_library('dl', required: true)
 
-if '-DGLES' in global_cpp_defs
-  gl_dep = dependency('glesv2')
+# GLES vs Desktop GL
+if use_gles
+  gl_dep = dependency('glesv2', required: true)
   glu_dep = dependency('', required: false)
 else
-  gl_dep = dependency('gl')
-  glu_dep = dependency('glu')
+  gl_dep = dependency('gl', required: true)
+  glu_dep = dependency('glu', required: true)
 endif
 
 stb = subproject('stb').get_variable('stb_inc')
@@ -61,10 +76,12 @@ stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
 
-render_dep = dependency('4j-render', fallback: ['4jlibs', 'render_dep'])
-input_dep = dependency('4j-input', fallback: ['4jlibs', 'input_dep'])
-profile_dep = dependency('4j-profile', fallback: ['4jlibs', 'profile_dep'])
-storage_dep = dependency('4j-storage', fallback: ['4jlibs', 'storage_dep'])
+sub_opts = ['gles=' + use_gles.to_string()]
+
+render_dep = dependency('4j-render', fallback: ['4jlibs', 'render_dep'], default_options: sub_opts)
+input_dep = dependency('4j-input', fallback: ['4jlibs', 'input_dep'], default_options: sub_opts)
+profile_dep = dependency('4j-profile', fallback: ['4jlibs', 'profile_dep'], default_options: sub_opts)
+storage_dep = dependency('4j-storage', fallback: ['4jlibs', 'storage_dep'], default_options: sub_opts)
 
 all_deps = [
   gl_dep,

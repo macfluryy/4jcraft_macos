@@ -69,6 +69,7 @@ client_dependencies = [
   dl_dep,
   dependency('zlib'),
   miniaudio_dep,
+  stb_dep,
 ]
 
 if get_option('enable_vsync')
@@ -95,7 +96,7 @@ endif
 
 client = executable('Minecraft.Client',
   client_sources + platform_sources + localisation[1],
-  include_directories: [include_directories('Platform', 'Platform/Linux/Iggy/include'), stb],
+  include_directories: include_directories('Platform', 'Platform/Linux/Iggy/include'),
   dependencies: client_dependencies,
   cpp_args: global_cpp_args
   + global_cpp_defs

@@ -28,6 +28,32 @@
 #undef glReadPixels
 #undef glActiveTexture
 
+#ifdef GLES
+extern "C" {
+// TELL IT TO USE GLEW
+extern void glClearDepthf(float depth);
+
+void glClearDepth(double depth) { glClearDepthf((float)depth); }
+
+void glTexGeni(unsigned int coord, unsigned int pname, int param) {}
+void glTexGenfv(unsigned int coord, unsigned int pname, const float* params) {}
+void glTexCoordPointer(int size, unsigned int type, int stride,
+                       const void* pointer) {}
+void glNormalPointer(unsigned int type, int stride, const void* pointer) {}
+void glColorPointer(int size, unsigned int type, int stride,
+                    const void* pointer) {}
+void glVertexPointer(int size, unsigned int type, int stride,
+                     const void* pointer) {}
+void glEndList(void) {}
+void glCallLists(int n, unsigned int type, const void* lists) {}
+// Did you nose?
+// Did you know if you sniff pizza too much your nose
+// might think it. It's pizza?
+// This. This is because pizza smells trick your nose into pizza thinking.
+}
+
+#endif
+
 // Helper functions & stuff
 inline GLuint* getIntPtr(IntBuffer* buf) {
     return buf ? (GLuint*)((int*)buf->getBuffer() + buf->position()) : nullptr;

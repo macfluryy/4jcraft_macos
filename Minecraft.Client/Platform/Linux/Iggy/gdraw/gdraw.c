@@ -13,10 +13,10 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <dlfcn.h>
 
 #define true 1
 #define false 0
-
 
 #ifndef _ENABLEIGGY
 void* IggyGDrawMallocAnnotated(SINTa size, const char* file, int line) {
@@ -43,9 +43,26 @@ void IggyDiscardVertexBufferCallback(void* owner, void* buf) {
 }
 #endif
 
-// We track all the extensions we use.
+static void* get_gl_proc(const char* name) {
+    void* p = SDL_GL_GetProcAddress(name);
+    if (!p) p = dlsym(RTLD_DEFAULT, name);
+    if (!p) {
+        char buf[256];
+        strncpy(buf, name, sizeof(buf) - 1);
+        buf[255] = '\0';
+        char* ext = strstr(buf, "ARB");
+        if (!ext) ext = strstr(buf, "EXT");
+        if (ext && ext == buf + strlen(buf) - 3) {
+            *ext = '\0';
+            p = SDL_GL_GetProcAddress(buf);
+            if (!p) p = dlsym(RTLD_DEFAULT, buf);
+        }
+    }
+    return p;
+}
+
 #define GDRAW_GL_EXTENSION_LIST                                                \
-    /*  identifier                      import procname */                                                                   \
+    /*  identifier                      import procname */                     \
     /* GL_ARB_vertex_buffer_object */                                          \
     GLE(GenBuffers, "GenBuffersARB", GENBUFFERSARB)                            \
     GLE(DeleteBuffers, "DeleteBuffersARB", DELETEBUFFERSARB)                   \
@@ -102,7 +119,6 @@ void IggyDiscardVertexBufferCallback(void* owner, void* buf) {
         RENDERBUFFERSTORAGEMULTISAMPLEEXT)                                     \
     /* <end> */
 
-
 // Shared .inl
 #define gdraw_GLx_(id) gdraw_GL_##id
 #define GDRAW_GLx_(id) GDRAW_GL_##id
@@ -117,7 +133,6 @@ typedef gdraw_gl_resourcetype gdraw_resourcetype;
 #define GLE(id, import, procname) static PFNGL##procname##PROC gl##id;
 GDRAW_GL_EXTENSION_LIST
 #undef GLE
-
 
 typedef const GLubyte*(APIENTRYP PFNGLGETSTRINGIPROC_)(GLenum name,
                                                        GLuint index);
@@ -136,12 +151,10 @@ static GLuint gdraw_screenvbo = 0;
 static const void* gdraw_screenvbo_base = NULL;
 static size_t gdraw_expected_vbo_size = 0;
 
-
 typedef void(APIENTRYP gdraw_drawelements_fn)(GLenum mode, GLsizei count,
                                               GLenum type, const void* indices);
 static gdraw_drawelements_fn gdraw_real_drawelements = NULL;
 static GLuint gdraw_screenibo = 0;
-
 
 typedef GLuint(APIENTRYP gdraw_createshader_fn)(GLenum);
 typedef void(APIENTRYP gdraw_shadersource_fn)(GLuint, GLsizei, const GLchar**,
@@ -159,7 +172,6 @@ typedef void(APIENTRYP gdraw_useprogram_fn)(GLuint);
 static gdraw_useprogram_fn gdraw_real_useprogram = NULL;
 static GLuint gdraw_null_program = 0;
 
-
 typedef void(APIENTRYP gdraw_teximage2d_fn)(GLenum, GLint, GLint, GLsizei,
                                             GLsizei, GLint, GLenum, GLenum,
                                             const void*);
@@ -169,17 +181,17 @@ typedef void(APIENTRYP gdraw_texsubimage2d_fn)(GLenum, GLint, GLint, GLint,
 static gdraw_teximage2d_fn gdraw_real_teximage2d = NULL;
 static gdraw_texsubimage2d_fn gdraw_real_texsubimage2d = NULL;
 
-#define TRY(ptr, arb, core)                       \
-    do {                                          \
-        void* _p = SDL_GL_GetProcAddress(core);   \
-        if (!_p) _p = SDL_GL_GetProcAddress(arb); \
-        *(void**)&(ptr) = _p;                     \
+#define TRY(ptr, arb, core)             \
+    do {                                \
+        void* _p = get_gl_proc(core);   \
+        if (!_p) _p = get_gl_proc(arb); \
+        *(void**)&(ptr) = _p;           \
     } while (0)
 
 static void load_extensions(void) {
 // gl_shared requires ts shit ugh
 #define GLE(id, import, procname) \
-    gl##id = (PFNGL##procname##PROC)SDL_GL_GetProcAddress("gl" import);
+    gl##id = (PFNGL##procname##PROC)get_gl_proc("gl" import);
     GDRAW_GL_EXTENSION_LIST
 #undef GLE
 
@@ -240,24 +252,27 @@ static void load_extensions(void) {
         "glRenderbufferStorageMultisample");
 
     // Save raw pointers before we #define over the names below
-    gdraw_real_vtxattrib = (gdraw_vtxattrib_fn)(void*)glVertexAttribPointer;
-    gdraw_real_createshader = (gdraw_createshader_fn)(void*)glCreateShader;
-    gdraw_real_shadersource = (gdraw_shadersource_fn)(void*)glShaderSource;
-    gdraw_real_compileshader = (gdraw_compileshader_fn)(void*)glCompileShader;
-    gdraw_real_linkprogram = (gdraw_linkprogram_fn)(void*)glLinkProgram;
-    gdraw_real_teximage2d = (gdraw_teximage2d_fn)(void*)glTexImage2D;
-    gdraw_real_texsubimage2d = (gdraw_texsubimage2d_fn)(void*)glTexSubImage2D;
-    gdraw_real_useprogram = (gdraw_useprogram_fn)(void*)glUseProgram;
+    gdraw_real_vtxattrib =
+        (gdraw_vtxattrib_fn)get_gl_proc("glVertexAttribPointer");
+    gdraw_real_createshader =
+        (gdraw_createshader_fn)get_gl_proc("glCreateShader");
+    gdraw_real_shadersource =
+        (gdraw_shadersource_fn)get_gl_proc("glShaderSource");
+    gdraw_real_compileshader =
+        (gdraw_compileshader_fn)get_gl_proc("glCompileShader");
+    gdraw_real_linkprogram = (gdraw_linkprogram_fn)get_gl_proc("glLinkProgram");
+    gdraw_real_teximage2d = (gdraw_teximage2d_fn)get_gl_proc("glTexImage2D");
+    gdraw_real_texsubimage2d =
+        (gdraw_texsubimage2d_fn)get_gl_proc("glTexSubImage2D");
+    gdraw_real_useprogram = (gdraw_useprogram_fn)get_gl_proc("glUseProgram");
     gdraw_real_drawelements =
-        (gdraw_drawelements_fn)SDL_GL_GetProcAddress("glDrawElements");
+        (gdraw_drawelements_fn)get_gl_proc("glDrawElements");
 
-    gdraw_glGetStringi =
-        (PFNGLGETSTRINGIPROC_)SDL_GL_GetProcAddress("glGetStringi");
-    // VAO
+    gdraw_glGetStringi = (PFNGLGETSTRINGIPROC_)get_gl_proc("glGetStringi");
     gdraw_glGenVertexArrays =
-        (PFNGLGENVERTEXARRAYSPROC_)SDL_GL_GetProcAddress("glGenVertexArrays");
+        (PFNGLGENVERTEXARRAYSPROC_)get_gl_proc("glGenVertexArrays");
     gdraw_glBindVertexArray =
-        (PFNGLBINDVERTEXARRAYPROC_)SDL_GL_GetProcAddress("glBindVertexArray");
+        (PFNGLBINDVERTEXARRAYPROC_)get_gl_proc("glBindVertexArray");
 
     if (gdraw_glGenVertexArrays && gdraw_glBindVertexArray && gdraw_vao == 0) {
         gdraw_glGenVertexArrays(1, &gdraw_vao);
@@ -278,15 +293,15 @@ static void error_msg_platform_specific(const char* msg) {
     fprintf(stderr, "[GDraw] %s\n", msg);
 }
 
-#define GDRAW_PLATFORM_REPORT_GL_SITE(site)                                 \
-    do {                                                                    \
-        if ((site) != NULL)                                                 \
-            fprintf(stderr, "[GDraw] GL error site: %s\n", (site));         \
+#define GDRAW_PLATFORM_REPORT_GL_SITE(site)                         \
+    do {                                                            \
+        if ((site) != NULL)                                         \
+            fprintf(stderr, "[GDraw] GL error site: %s\n", (site)); \
     } while (0)
 
 #define GDRAW_MULTISAMPLING
 
-// i wish i could improve this function 
+// i wish i could improve this function
 #ifdef RR_BREAK
 #undef RR_BREAK
 #endif
@@ -294,7 +309,6 @@ static void error_msg_platform_specific(const char* msg) {
     do {                                                                    \
         fprintf(stderr, "[GDraw] GL error at %s:%d\n", __FILE__, __LINE__); \
     } while (0)
-
 
 // the magic number that tropical told me
 #define GDRAW_MAX_SHADERS 64
@@ -305,8 +319,7 @@ static struct {
 static int gdraw_shader_type_count = 0;
 
 static GLenum gdraw_get_shader_type(GLuint shader) {
-    int i;
-    for (i = 0; i < gdraw_shader_type_count; i++)
+    for (int i = 0; i < gdraw_shader_type_count; i++)
         if (gdraw_shader_types[i].handle == shader)
             return gdraw_shader_types[i].type;
     return GL_FRAGMENT_SHADER;
@@ -322,8 +335,6 @@ static GLuint gdraw_CreateShaderTracked(GLenum type) {
     return h;
 }
 
-
-
 static void gdraw_CompileShaderAndLog(GLuint shader) {
     GLint status = 0;
     gdraw_real_compileshader(shader);
@@ -335,7 +346,6 @@ static void gdraw_CompileShaderAndLog(GLuint shader) {
         log[len] = '\0';
         fprintf(stderr, "[GDraw GLSL] compile FAILED shader=%u:\n%s\n", shader,
                 log);
-        fflush(stderr);
     }
 }
 
@@ -350,7 +360,6 @@ static void gdraw_LinkProgramAndLog(GLuint program) {
         log[len] = '\0';
         fprintf(stderr, "[GDraw GLSL] link FAILED program=%u:\n%s\n", program,
                 log);
-        fflush(stderr);
     }
 }
 
@@ -393,33 +402,27 @@ static char* gdraw_strreplace(char* src, const char* find, const char* rep) {
 static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
                                        const GLchar** strings,
                                        const GLint* lengths) {
-    int i;
     size_t total = 0;
-    char* src;
-    char* patched;
-    int is_vert;
-    const GLchar* patched_ptr;
-
-    for (i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
         total += lengths ? (lengths[i] >= 0 ? (size_t)lengths[i]
                                             : strlen(strings[i]))
                          : strlen(strings[i]);
 
-    src = (char*)malloc(total + 1);
+    char* src = (char*)malloc(total + 1);
     if (!src) {
         gdraw_real_shadersource(shader, count, strings, lengths);
         return;
     }
 
     src[0] = '\0';
-    for (i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         size_t len = lengths ? (lengths[i] >= 0 ? (size_t)lengths[i]
                                                 : strlen(strings[i]))
                              : strlen(strings[i]);
         strncat(src, strings[i], len);
     }
 
-    is_vert = (gdraw_get_shader_type(shader) == GL_VERTEX_SHADER);
+    int is_vert = (gdraw_get_shader_type(shader) == GL_VERTEX_SHADER);
 
     // Strip any existing #version directive as i'll add our own
     {
@@ -451,37 +454,30 @@ static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
         src = gdraw_strreplace(src, "varying ", "in ");
         src = gdraw_strreplace(src, "varying\t", "in\t");
         src = gdraw_strreplace(src, "varying\n", "in\n");
-    }
-    if (!is_vert) {
         src = gdraw_strreplace(src, "gl_FragData[0]", "_gdraw_frag_out");
         src = gdraw_strreplace(src, "gl_FragColor", "_gdraw_frag_out");
     }
 
-    // finally turn it 330
-    {
-        const char* vert_header = "#version 330 core\n";
-        const char* frag_header =
-            "#version 330 core\nout vec4 _gdraw_frag_out;\n";
-        const char* header = is_vert ? vert_header : frag_header;
-        patched = (char*)malloc(strlen(header) + strlen(src) + 2);
-        if (!patched) {
-            free(src);
-            gdraw_real_shadersource(shader, count, strings, lengths);
-            return;
-        }
-        strcpy(patched, header);
-        strcat(patched, src);
+    const char* header = is_vert
+                             ? "#version 330 core\n"
+                             : "#version 330 core\nout vec4 _gdraw_frag_out;\n";
+    char* patched = (char*)malloc(strlen(header) + strlen(src) + 2);
+    if (!patched) {
         free(src);
+        gdraw_real_shadersource(shader, count, strings, lengths);
+        return;
     }
+    strcpy(patched, header);
+    strcat(patched, src);
+    free(src);
 
-    patched_ptr = (const GLchar*)patched;
+    const GLchar* patched_ptr = (const GLchar*)patched;
     gdraw_real_shadersource(shader, 1, &patched_ptr, NULL);
     free(patched);
 }
 
 #undef glShaderSource
 #define glShaderSource gdraw_ShaderSourceUpgraded
-
 
 // Remap all the deprecated internal formats to their modern equivalents
 // (idk why but just the word "swizzle" is cracking me up)
@@ -524,6 +520,9 @@ static GLenum gdraw_remap_fmt(GLenum fmt) {
 static void gdraw_TexImage2D(GLenum target, GLint level, GLint ifmt, GLsizei w,
                              GLsizei h, GLint border, GLenum fmt, GLenum type,
                              const void* data) {
+    // ES strictly requires explicitly sized formats & stuff
+    if (ifmt == GL_RGBA && data == NULL) ifmt = GL_RGBA8;
+
     GLenum new_ifmt = gdraw_remap_fmt((GLenum)ifmt);
     GLenum new_fmt = gdraw_remap_fmt(fmt);
     gdraw_real_teximage2d(target, level, (GLint)new_ifmt, w, h, border, new_fmt,
@@ -556,15 +555,13 @@ static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
             gdraw_glBindVertexArray(gdraw_vao);
     }
 
-    {
-        GLint current_vbo = 0;
-        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &current_vbo);
+    GLint current_vbo = 0;
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &current_vbo);
 
-        if (current_vbo != 0 && current_vbo != (GLint)gdraw_screenvbo) {
-            gdraw_real_vtxattrib(index, size, type, normalized, stride,
-                                 pointer);
-            return;
-        }
+    if (current_vbo != 0 && current_vbo != (GLint)gdraw_screenvbo) {
+        // no touchies
+        gdraw_real_vtxattrib(index, size, type, normalized, stride, pointer);
+        return;
     }
 
     if (pointer == NULL) {
@@ -572,12 +569,19 @@ static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
         return;
     }
 
-    if (gdraw_screenvbo_base == NULL) {
+    ptrdiff_t offset =
+        gdraw_screenvbo_base
+            ? ((const char*)pointer - (const char*)gdraw_screenvbo_base)
+            : -1;
+
+    if (gdraw_screenvbo_base == NULL || offset < 0 ||
+        offset >= (ptrdiff_t)gdraw_expected_vbo_size) {
         if (!gdraw_screenvbo) glGenBuffers(1, &gdraw_screenvbo);
         glBindBuffer(GL_ARRAY_BUFFER, gdraw_screenvbo);
 
-        size_t upload_size =
-            gdraw_expected_vbo_size > 0 ? gdraw_expected_vbo_size : 256;
+        size_t upload_size = gdraw_expected_vbo_size > 0
+                                 ? (gdraw_expected_vbo_size + 256)
+                                 : 65536;
         glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)upload_size, pointer,
                      GL_STREAM_DRAW);
 
@@ -586,8 +590,6 @@ static void gdraw_ClientVertexAttribPointer(GLuint index, GLint size,
                              (const void*)0);
     } else {
         glBindBuffer(GL_ARRAY_BUFFER, gdraw_screenvbo);
-        ptrdiff_t offset =
-            (const char*)pointer - (const char*)gdraw_screenvbo_base;
         gdraw_real_vtxattrib(index, size, type, normalized, stride,
                              (const void*)offset);
     }
@@ -641,7 +643,7 @@ static void gdraw_UseProgramSafe(GLuint program) {
             glDeleteShader(v);
             glDeleteShader(f);
         }
-        gdraw_real_useprogram(0);
+        gdraw_real_useprogram(gdraw_null_program);
         return;
     }
     gdraw_real_useprogram(program);
@@ -649,25 +651,48 @@ static void gdraw_UseProgramSafe(GLuint program) {
 
 #undef glUseProgram
 #define glUseProgram gdraw_UseProgramSafe
-
 #undef glCompileShader
 #define glCompileShader gdraw_CompileShaderAndLog
-
 #undef glLinkProgram
 #define glLinkProgram gdraw_LinkProgramAndLog
 
-//                     v ugh fuck you windows
+static void gdraw_FramebufferRenderbufferSafe(GLenum target, GLenum attachment,
+                                              GLenum renderbuffertarget,
+                                              GLuint renderbuffer) {
+    static GLuint last_depth_rb = 0;
+
+    if (attachment == GL_DEPTH_ATTACHMENT) {
+        last_depth_rb = renderbuffer;
+        (glFramebufferRenderbuffer)(target, attachment, renderbuffertarget,
+                                    renderbuffer);
+    } else if (attachment == GL_STENCIL_ATTACHMENT) {
+        if (renderbuffer == last_depth_rb && renderbuffer != 0) {
+            // If identical, bind as packed depth-stencil to satisfy strict GLES
+            // ^ how greedy -n-
+            (glFramebufferRenderbuffer)(
+                target, 0x821A /* GL_DEPTH_STENCIL_ATTACHMENT */,
+                renderbuffertarget, renderbuffer);
+        } else {
+            (glFramebufferRenderbuffer)(target, attachment, renderbuffertarget,
+                                        renderbuffer);
+        }
+    } else {
+        (glFramebufferRenderbuffer)(target, attachment, renderbuffertarget,
+                                    renderbuffer);
+    }
+}
+#define glFramebufferRenderbuffer_SAFE gdraw_FramebufferRenderbufferSafe
+#define glFramebufferRenderbuffer glFramebufferRenderbuffer_SAFE
+
 #include "../../../Windows64/Iggy/gdraw/gdraw_gl_shared.inl"
 #undef glVertexAttribPointer
 #define glVertexAttribPointer gdraw_real_vtxattrib
 
-// 3.3 c extension
 static int hasext_core(const char* name) {
     GLint n = 0;
-    GLint i;
     if (!gdraw_glGetStringi) return 0;
     glGetIntegerv(GL_NUM_EXTENSIONS, &n);
-    for (i = 0; i < n; i++) {
+    for (GLint i = 0; i < n; i++) {
         const char* e =
             (const char*)gdraw_glGetStringi(GL_EXTENSIONS, (GLuint)i);
         if (e && strcmp(e, name) == 0) return 1;
@@ -743,35 +768,21 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
         {0, 0, 0, 0, 0, 0, 0},
     };
 
-    GDrawFunctions* funcs;
-    GLint n;
     GLint major = 0, minor = 0;
-
-    // incase everything goes wrong and it goes like 1.1 or smh
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
-    if (major < 3 || (major == 3 && minor < 3)) {
-        fprintf(stderr, "[GDraw] GL 3.3 or higher required (got %d.%d)\n",
+    if (major < 3) {
+        fprintf(stderr, "[GDraw] GL 3.0 or higher required (got %d.%d)\n",
                 major, minor);
         return NULL;
     }
-
-    // FBO is core since 3.0
-    if (!hasext_core("GL_EXT_framebuffer_object")) {
-        fprintf(stderr,
-                "[GDraw] GL_EXT_framebuffer_object not listed, "
-                "fuck it, let's continue.\n");
-    }
-
-    if (!hasext_core("GL_EXT_framebuffer_multisample") && msaa_samples > 1)
-        return NULL;
 
     load_extensions();
 
     if (gdraw_glBindVertexArray && gdraw_vao)
         gdraw_glBindVertexArray(gdraw_vao);
 
-    funcs = create_context(w, h);
+    GDrawFunctions* funcs = create_context(w, h);
     if (!funcs) return NULL;
 
     // hook the vtable entries for VBO reset and render state
@@ -786,13 +797,13 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
     funcs->ClearID = gdraw_ClearID;
 
     gdraw->tex_formats = tex_formats;
-    gdraw->has_mapbuffer = true;
+    gdraw->has_mapbuffer = false;
     gdraw->has_depth24 = true;
     gdraw->has_texture_max_level = true;
 
-    if (hasext_core("GL_EXT_packed_depth_stencil"))
-        gdraw->has_packed_depth_stencil = true;
+    gdraw->has_packed_depth_stencil = true;
 
+    GLint n = 0;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &n);
     gdraw->has_conditional_non_power_of_two = (n < 8192);
 
@@ -802,10 +813,8 @@ GDrawFunctions* gdraw_GL_CreateContext(S32 w, S32 h, S32 msaa_samples) {
     }
 
     opengl_check();
-
-    fprintf(stderr,
-            "[GDraw] Context created successfully (%dx%d, msaa=%d)\n", w, h,
-            msaa_samples);
+    fprintf(stderr, "[GDraw] Context created successfully (%dx%d, msaa=%d)\n",
+            w, h, msaa_samples);
     return funcs;
 }
 
