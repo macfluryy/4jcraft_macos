@@ -72,6 +72,9 @@ ResourceLocation GameRenderer::RAIN_LOCATION =
 ResourceLocation GameRenderer::SNOW_LOCATION =
     ResourceLocation(TN_ENVIRONMENT_SNOW);
 
+// dirty light tracking
+static bool s_lightTexDirty[XUSER_MAX_COUNT] = {true, true, true, true};
+
 GameRenderer::GameRenderer(Minecraft* mc) {
     // 4J - added this block of initialisers
     renderDistance = 0;
@@ -871,6 +874,10 @@ void GameRenderer::tickLightTexture() {
     blr += (blrt - blr) * 1;
     blg += (blgt - blg) * 1;
     _updateLightTexture = true;
+
+    // Mark all players dirty so updateLightTexture() knows when it actually
+    // needs to tick, preventz unessesary player recompute
+    for (int j = 0; j < XUSER_MAX_COUNT; j++) s_lightTexDirty[j] = true;
 }
 
 void GameRenderer::updateLightTexture(float a) {
@@ -883,8 +890,10 @@ void GameRenderer::updateLightTexture(float a) {
             Minecraft::GetInstance()->localplayers[j];
         if (player == NULL) continue;
 
-        Level* level = player->level;  // 4J - was mc->level when it was just to
-                                       // update the one light texture
+        if (!s_lightTexDirty[j]) continue;
+        s_lightTexDirty[j] = false;
+
+        Level* level = player->level;
 
         float skyDarken1 = level->getSkyDarken((float)1);
         for (int i = 0; i < 256; i++) {
@@ -964,10 +973,10 @@ void GameRenderer::updateLightTexture(float a) {
             _b = _b * 0.96f + 0.03f;
 
             if (_r > 1) _r = 1;
-            if (_g > 1) _g = 1;
-            if (_b > 1) _b = 1;
             if (_r < 0) _r = 0;
+            if (_g > 1) _g = 1;
             if (_g < 0) _g = 0;
+            if (_b > 1) _b = 1;
             if (_b < 0) _b = 0;
 
             int alpha = 255;
@@ -1180,24 +1189,19 @@ int GameRenderer::runUpdate(void* lpParam) {
         // We've got stacks for things that can only safely be deleted whilst
         // this thread isn't updating things - delete those things now
         EnterCriticalSection(&m_csDeleteStack);
-        for (unsigned int i = 0; i < m_deleteStackByte.size(); i++) {
+        for (unsigned int i = 0; i < m_deleteStackByte.size(); i++)
             delete m_deleteStackByte[i];
-        }
         m_deleteStackByte.clear();
         for (unsigned int i = 0; i < m_deleteStackSparseLightStorage.size();
-             i++) {
+             i++)
             delete m_deleteStackSparseLightStorage[i];
-        }
         m_deleteStackSparseLightStorage.clear();
         for (unsigned int i = 0; i < m_deleteStackCompressedTileStorage.size();
-             i++) {
+             i++)
             delete m_deleteStackCompressedTileStorage[i];
-        }
         m_deleteStackCompressedTileStorage.clear();
-        for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size();
-             i++) {
+        for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size(); i++)
             delete m_deleteStackSparseDataStorage[i];
-        }
         m_deleteStackSparseDataStorage.clear();
         LeaveCriticalSection(&m_csDeleteStack);
 
@@ -1700,135 +1704,144 @@ void GameRenderer::renderSnowAndRain(float a) {
 
     glColor4f(1, 1, 1, 1);
 
-    for (int x = x0 - r; x <= x0 + r; x++)
+    // two snow/rain rendering
+    mc->textures->bindTexture(&RAIN_LOCATION);
+    t->begin();
+    for (int x = x0 - r; x <= x0 + r; x++) {
         for (int z = z0 - r; z <= z0 + r; z++) {
             int rainSlot = (z - z0 + 16) * 32 + (x - x0 + 16);
             float xa = rainXa[rainSlot] * 0.5f;
             float za = rainZa[rainSlot] * 0.5f;
 
-            // 4J - changes here brought forward from 1.8.2
             Biome* b = level->getBiome(x, z);
             if (!b->hasRain() && !b->hasSnow()) continue;
 
             int floor = level->getTopRainBlock(x, z);
-
             int yy0 = y0 - r;
             int yy1 = y0 + r;
-
             if (yy0 < floor) yy0 = floor;
             if (yy1 < floor) yy1 = floor;
-            float s = 1;
+            if (yy0 == yy1) continue;
 
             int yl = floor;
             if (yl < yMin) yl = yMin;
 
-            if (yy0 != yy1) {
-                random->setSeed((x * x * 3121 + x * 45238971) ^
-                                (z * z * 418711 + z * 13761));
+            float temp = b->getTemperature();
+            if (level->getBiomeSource()->scaleTemp(temp, floor) < 0.15f)
+                continue;
 
-                // 4J - changes here brought forward from 1.8.2
-                float temp = b->getTemperature();
-                if (level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f) {
-                    if (mode != 0) {
-                        if (mode >= 0) t->end();
-                        mode = 0;
-                        mc->textures->bindTexture(&RAIN_LOCATION);
-                        t->begin();
-                    }
+            random->setSeed((x * x * 3121 + x * 45238971) ^
+                            (z * z * 418711 + z * 13761));
 
-                    float ra = (((_tick + x * x * 3121 + x * 45238971 +
-                                  z * z * 418711 + z * 13761) &
-                                 31) +
-                                a) /
-                               32.0f * (3 + random->nextFloat());
+            float ra = (((_tick + x * x * 3121 + x * 45238971 + z * z * 418711 +
+                          z * 13761) &
+                         31) +
+                        a) /
+                       32.0f * (3 + random->nextFloat());
 
-                    double xd = (x + 0.5f) - player->x;
-                    double zd = (z + 0.5f) - player->z;
-                    float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
+            double xd = (x + 0.5f) - player->x;
+            double zd = (z + 0.5f) - player->z;
+            float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
 
-                    float br = 1;
-                    t->offset(-xo * 1, -yo * 1, -zo * 1);
+            float br = 1.0f;
+            float s = 1.0f;
+            t->offset(-xo, -yo, -zo);
 #ifdef __PSVITA__
-                    // AP - this will set up the 4 vertices in half the time
-                    float Alpha = ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel;
-                    int tex2 =
-                        (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
-                    t->tileRainQuad(
-                        x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
-                        yy0 * s / 4.0f + ra * s, x + xa + 0.5, yy0,
-                        z + za + 0.5, 1 * s, yy0 * s / 4.0f + ra * s,
-                        x + xa + 0.5, yy1, z + za + 0.5, 1 * s,
-                        yy1 * s / 4.0f + ra * s, x - xa + 0.5, yy1,
-                        z - za + 0.5, 0 * s, yy1 * s / 4.0f + ra * s, br, br,
-                        br, Alpha, br, br, br, 0, tex2);
+            float Alpha = ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel;
+            int tex2 = (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
+            t->tileRainQuad(
+                x - xa + 0.5, yy0, z - za + 0.5, 0 * s, yy0 * s / 4.0f + ra * s,
+                x + xa + 0.5, yy0, z + za + 0.5, 1 * s, yy0 * s / 4.0f + ra * s,
+                x + xa + 0.5, yy1, z + za + 0.5, 1 * s, yy1 * s / 4.0f + ra * s,
+                x - xa + 0.5, yy1, z - za + 0.5, 0 * s, yy1 * s / 4.0f + ra * s,
+                br, br, br, Alpha, br, br, br, 0, tex2);
 #else
-                    t->tex2(level->getLightColor(x, yl, z, 0));
-                    t->color(br, br, br,
-                             ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
-                    t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
-                                yy0 * s / 4.0f + ra * s);
-                    t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s,
-                                yy0 * s / 4.0f + ra * s);
-                    // 4jcraft: this color call made rain invisible
-                    // t->color(br, br, br, 0.0f);
-                    // // 4J - added to soften the top visible edge of the rain
-                    t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s,
-                                yy1 * s / 4.0f + ra * s);
-                    t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s,
-                                yy1 * s / 4.0f + ra * s);
+            t->tex2(level->getLightColor(x, yl, z, 0));
+            t->color(br, br, br, ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
+            t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
+                        yy0 * s / 4.0f + ra * s);
+            t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s,
+                        yy0 * s / 4.0f + ra * s);
+            t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s,
+                        yy1 * s / 4.0f + ra * s);
+            t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s,
+                        yy1 * s / 4.0f + ra * s);
 #endif
-                    t->offset(0, 0, 0);
-                    t->end();
-                } else {
-                    if (mode != 1) {
-                        if (mode >= 0) t->end();
-                        mode = 1;
-                        mc->textures->bindTexture(&SNOW_LOCATION);
-                        t->begin();
-                    }
-                    float ra = (((_tick) & 511) + a) / 512.0f;
-                    float uo = random->nextFloat() +
-                               time * 0.01f * (float)random->nextGaussian();
-                    float vo = random->nextFloat() +
-                               time * (float)random->nextGaussian() * 0.001f;
-                    double xd = (x + 0.5f) - player->x;
-                    double zd = (z + 0.5f) - player->z;
-                    float dd = (float)sqrt(xd * xd + zd * zd) / r;
-                    float br = 1;
-                    t->offset(-xo * 1, -yo * 1, -zo * 1);
-#ifdef __PSVITA__
-                    // AP - this will set up the 4 vertices in half the time
-                    float Alpha = ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel;
-                    int tex2 =
-                        (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
-                    t->tileRainQuad(
-                        x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
-                        yy0 * s / 4.0f + ra * s + vo, x + xa + 0.5, yy0,
-                        z + za + 0.5, 1 * s + uo, yy0 * s / 4.0f + ra * s + vo,
-                        x + xa + 0.5, yy1, z + za + 0.5, 1 * s + uo,
-                        yy1 * s / 4.0f + ra * s + vo, x - xa + 0.5, yy1,
-                        z - za + 0.5, 0 * s + uo, yy1 * s / 4.0f + ra * s + vo,
-                        br, br, br, Alpha, br, br, br, Alpha, tex2);
-#else
-                    t->tex2((level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) /
-                            4);
-                    t->color(br, br, br,
-                             ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel);
-                    t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
-                                yy0 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s + uo,
-                                yy0 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s + uo,
-                                yy1 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
-                                yy1 * s / 4.0f + ra * s + vo);
-#endif
-                    t->offset(0, 0, 0);
-                }
-            }
+            t->offset(0, 0, 0);
         }
+    }
+    t->end();  // single submit for all rain geometry
+    // sno time
+    mc->textures->bindTexture(&SNOW_LOCATION);
+    t->begin();
+    for (int x = x0 - r; x <= x0 + r; x++) {
+        for (int z = z0 - r; z <= z0 + r; z++) {
+            int rainSlot = (z - z0 + 16) * 32 + (x - x0 + 16);
+            float xa = rainXa[rainSlot] * 0.5f;
+            float za = rainZa[rainSlot] * 0.5f;
 
-    if (mode >= 0) t->end();
+            Biome* b = level->getBiome(x, z);
+            if (!b->hasRain() && !b->hasSnow()) continue;
+
+            int floor = level->getTopRainBlock(x, z);
+            int yy0 = y0 - r;
+            int yy1 = y0 + r;
+            if (yy0 < floor) yy0 = floor;
+            if (yy1 < floor) yy1 = floor;
+            if (yy0 == yy1) continue;
+
+            int yl = floor;
+            if (yl < yMin) yl = yMin;
+
+            float temp = b->getTemperature();
+            // only draw snow (not rain) in this pass
+            if (level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f)
+                continue;
+
+            random->setSeed((x * x * 3121 + x * 45238971) ^
+                            (z * z * 418711 + z * 13761));
+
+            float ra = (((_tick) & 511) + a) / 512.0f;
+            float uo = random->nextFloat() +
+                       time * 0.01f * (float)random->nextGaussian();
+            float vo = random->nextFloat() +
+                       time * (float)random->nextGaussian() * 0.001f;
+
+            double xd = (x + 0.5f) - player->x;
+            double zd = (z + 0.5f) - player->z;
+            float dd = (float)sqrt(xd * xd + zd * zd) / r;
+
+            float br = 1.0f;
+            float s = 1.0f;
+            t->offset(-xo, -yo, -zo);
+#ifdef __PSVITA__
+            float Alpha = ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel;
+            int tex2 = (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
+            t->tileRainQuad(
+                x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
+                yy0 * s / 4.0f + ra * s + vo, x + xa + 0.5, yy0, z + za + 0.5,
+                1 * s + uo, yy0 * s / 4.0f + ra * s + vo, x + xa + 0.5, yy1,
+                z + za + 0.5, 1 * s + uo, yy1 * s / 4.0f + ra * s + vo,
+                x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
+                yy1 * s / 4.0f + ra * s + vo, br, br, br, Alpha, br, br, br,
+                Alpha, tex2);
+#else
+            t->tex2((level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4);
+            t->color(br, br, br, ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel);
+            t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
+                        yy0 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s + uo,
+                        yy0 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s + uo,
+                        yy1 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
+                        yy1 * s / 4.0f + ra * s + vo);
+#endif
+            t->offset(0, 0, 0);
+        }
+    }
+    t->end();  // single submit for all snow geometry
+
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     glAlphaFunc(GL_GREATER, 0.1f);
@@ -1846,7 +1859,8 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     // to ensure GUI scales correctly after a window resize.
     ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
 
-    // 4jcraft: Java GUI screens still assume a clean 2D fixed-function style state.
+    // 4jcraft: Java GUI screens still assume a clean 2D fixed-function style
+    // state.
     RenderManager.StateSetFaceCull(false);
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);
