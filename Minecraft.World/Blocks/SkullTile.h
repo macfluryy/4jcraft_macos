@@ -26,7 +26,7 @@ public:
                      int forceData = -1,
                      std::shared_ptr<TileEntity> forceEntity =
                          std::shared_ptr<TileEntity>());
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     void setPlacedBy(Level* level, int x, int y, int z,
                      std::shared_ptr<LivingEntity> by);
     std::shared_ptr<TileEntity> newTileEntity(Level* level);

@@ -6,6 +6,7 @@
 #include "../../Headers/net.minecraft.world.level.tile.h"
 #include "../../Headers/net.minecraft.h"
 #include "StoneSlabTileItem.h"
+#include "../../Util/AABB.h"
 
 StoneSlabTileItem::StoneSlabTileItem(int id, HalfSlabTile* halfTile,
                                      HalfSlabTile* fullTile, bool full)
@@ -55,7 +56,8 @@ bool StoneSlabTileItem::useOn(std::shared_ptr<ItemInstance> instance,
             return true;
         }
 
-        if (level->isUnobstructed(fullTile->getAABB(level, x, y, z)) &&
+        auto tile_bb = fullTile->getAABB(level, x, y, z);
+        if (level->isUnobstructed(tile_bb.has_value() ? &*tile_bb : nullptr) &&
             level->setTileAndData(x, y, z, fullTile->id, slabType,
                                   Tile::UPDATE_ALL)) {
             level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,
@@ -127,7 +129,8 @@ bool StoneSlabTileItem::tryConvertTargetTile(
         if (bTestUseOnOnly) {
             return true;
         }
-        if (level->isUnobstructed(fullTile->getAABB(level, x, y, z)) &&
+        auto tile_bb = fullTile->getAABB(level, x, y, z);
+        if (level->isUnobstructed(tile_bb.has_value() ? &*tile_bb : nullptr) &&
             level->setTileAndData(x, y, z, fullTile->id, slabType,
                                   Tile::UPDATE_ALL)) {
             level->playSound(x + 0.5f, y + 0.5f, z + 0.5f,

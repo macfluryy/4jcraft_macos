@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "Tile.h"
 #include "../Util/Definitions.h"
 
@@ -28,7 +29,7 @@ public:
     bool canSurvive(Level* level, int x, int y, int z);
 
 public:
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
 
 public:
     int getResource(int data, Random* random, int playerBonusLevel);

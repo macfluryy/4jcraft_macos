@@ -4,6 +4,9 @@
 #include "../Headers/net.minecraft.world.level.dimension.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "PortalTile.h"
+#include <optional>
+
+#include "Util/AABB.h"
 #include "FireTile.h"
 
 PortalTile::PortalTile(int id)
@@ -34,7 +37,7 @@ void PortalTile::tick(Level* level, int x, int y, int z, Random* random) {
     }
 }
 
-AABB* PortalTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> PortalTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 void PortalTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,

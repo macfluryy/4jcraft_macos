@@ -2015,16 +2015,16 @@ AABB* Tile::getTileAABB(Level* level, int x, int y, int z) {
 
 void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
                     AABBList* boxes, std::shared_ptr<Entity> source) {
-    AABB* aabb = getAABB(level, x, y, z);
-    if (aabb != NULL && box->intersects(*aabb)) boxes->push_back(*aabb);
+    auto aabb = getAABB(level, x, y, z);
+    if (aabb.has_value() && box->intersects(*aabb)) boxes->push_back(*aabb);
 }
 
-AABB* Tile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> Tile::getAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
-    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + tls->yy1, z + tls->zz1);
+    return AABB{x + tls->xx0, y + tls->yy0, z + tls->zz0,
+                x + tls->xx1, y + tls->yy1, z + tls->zz1};
 }
 
 bool Tile::isSolidRender(bool isServerLevel) { return true; }

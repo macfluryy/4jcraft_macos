@@ -183,9 +183,9 @@ void Arrow::tick() {
         int t = level->getTile(xTile, yTile, zTile);
         if (t > 0) {
             Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
-            AABB* aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
+            auto aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
             Vec3 pos{x, y, z};
-            if (aabb != NULL && aabb->contains(pos)) {
+            if (aabb.has_value() && aabb->contains(pos)) {
                 inGround = true;
             }
         }

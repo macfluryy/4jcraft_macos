@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.h"
 #include "CocoaTile.h"
+#include "Util/AABB.h"
 
 const std::wstring CocoaTile::TEXTURE_AGES[] = {L"cocoa_0", L"cocoa_1",
                                                 L"cocoa_2"};
@@ -56,7 +57,7 @@ bool CocoaTile::isCubeShaped() { return false; }
 
 bool CocoaTile::isSolidRender(bool isServerLevel) { return false; }
 
-AABB* CocoaTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> CocoaTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return DirectionalTile::getAABB(level, x, y, z);
 }

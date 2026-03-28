@@ -4,6 +4,9 @@
 #include "Material.h"
 #include "TileEntities/SignTileEntity.h"
 #include "SignTile.h"
+#include "Util/AABB.h"
+
+#include <optional>
 
 SignTile::SignTile(int id, eINSTANCEOF clas, bool onGround)
     : BaseEntityTile(id, Material::wood, false) {
@@ -22,7 +25,7 @@ void SignTile::updateDefaultShape() {
     this->setShape(0.5f - r, 0, 0.5f - r, 0.5f + r, h, 0.5f + r);
 }
 
-AABB* SignTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> SignTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 AABB* SignTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);

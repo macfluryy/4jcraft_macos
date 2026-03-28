@@ -1,6 +1,8 @@
 #include "../Platform/stdafx.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "RedStoneDustTile.h"
+#include <cstddef>
+#include <optional>
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.redstone.h"
@@ -9,6 +11,7 @@
 #include "../Headers/net.minecraft.h"
 #include "../Util/Direction.h"
 #include "DiodeTile.h"
+#include "Util/AABB.h"
 
 // AP - added for Vita to set Alpha Cut out
 #include "../IO/Streams/IntBuffer.h"
@@ -36,8 +39,9 @@ void RedStoneDustTile::updateDefaultShape() {
     setShape(0, 0, 0, 1, 1 / 16.0f, 1);
 }
 
-AABB* RedStoneDustTile::getAABB(Level* level, int x, int y, int z) {
-    return NULL;
+std::optional<AABB> RedStoneDustTile::getAABB(Level* level, int x, int y,
+                                              int z) {
+    return std::nullopt;
 }
 
 bool RedStoneDustTile::isSolidRender(bool isServerLevel) { return false; }

@@ -17,7 +17,7 @@ protected:
 
 public:
     Icon* getTexture(int face, int data);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual int getTickDelay(Level* level);
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);

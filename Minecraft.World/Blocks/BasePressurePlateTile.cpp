@@ -6,6 +6,8 @@
 #include "../Headers/net.minecraft.h"
 #include "../Headers/net.minecraft.world.h"
 #include "BasePressurePlateTile.h"
+#include <optional>
+#include "Util/AABB.h"
 
 BasePressurePlateTile::BasePressurePlateTile(int id, const std::wstring& tex,
                                              Material* material)
@@ -38,8 +40,8 @@ int BasePressurePlateTile::getTickDelay(Level* level) {
     return SharedConstants::TICKS_PER_SECOND;
 }
 
-AABB* BasePressurePlateTile::getAABB(Level* level, int x, int y, int z) {
-    return NULL;
+std::optional<AABB> BasePressurePlateTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
 }
 
 bool BasePressurePlateTile::isSolidRender(bool isServerLevel) { return false; }

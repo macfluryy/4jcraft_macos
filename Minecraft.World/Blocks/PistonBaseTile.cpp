@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include <cstdint>
+#include <optional>
 #include "PistonBaseTile.h"
 #include "PistonMovingTileEntity.h"
 #include "TileEntities/PistonPieceTileEntity.h"
@@ -11,6 +12,8 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Level/LevelChunk.h"
 #include "../Level/Dimensions/Dimension.h"
+
+#include "Util/AABB.h"
 
 const std::wstring PistonBaseTile::EDGE_TEX = L"piston_side";
 const std::wstring PistonBaseTile::PLATFORM_TEX = L"piston_top";
@@ -398,7 +401,7 @@ void PistonBaseTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
     Tile::addAABBs(level, x, y, z, box, boxes, source);
 }
 
-AABB* PistonBaseTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> PistonBaseTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getAABB(level, x, y, z);
 }

@@ -4,6 +4,7 @@
 #include "../Util/Definitions.h"
 #include "../Util/SoundTypes.h"
 #include <cstdint>
+#include <optional>
 
 class GrassTile;
 class LeafTile;
@@ -633,7 +634,7 @@ public:
     virtual AABB* getTileAABB(Level* level, int x, int y, int z);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
                           AABBList* boxes, std::shared_ptr<Entity> source);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool isSolidRender(
         bool isServerLevel = false);  // 4J - Added isServerLevel param
     virtual bool mayPick(int data, bool liquid);

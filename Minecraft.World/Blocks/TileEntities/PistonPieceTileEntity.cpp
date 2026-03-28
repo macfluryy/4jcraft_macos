@@ -5,6 +5,7 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../Util/Facing.h"
 #include "../Tile.h"
+#include "../../Util/AABB.h"
 
 PistonPieceEntity::PistonPieceEntity() {
     // for the tile entity loader
@@ -81,11 +82,11 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
         progress = progress - 1.0f;
     }
 
-    AABB* aabb =
+    auto aabb =
         Tile::pistonMovingPiece->getAABB(level, x, y, z, id, progress, facing);
-    if (aabb != NULL) {
+    if (aabb.has_value()) {
         std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntities(nullptr, aabb);
+            level->getEntities(nullptr, &*aabb);
         if (!entities->empty()) {
             std::vector<std::shared_ptr<Entity> > collisionHolder;
             for (AUTO_VAR(it, entities->begin()); it != entities->end(); it++) {

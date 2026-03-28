@@ -34,12 +34,12 @@ void CakeTile::updateDefaultShape() {
     this->setShape(r, 0, r, 1 - r, h, 1 - r);
 }
 
-AABB* CakeTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> CakeTile::getAABB(Level* level, int x, int y, int z) {
     int d = level->getData(x, y, z);
     float r = 1 / 16.0f;
     float r2 = (1 + d * 2) / 16.0f;
     float h = 8 / 16.0f;
-    return AABB::newTemp(x + r2, y, z + r, x + 1 - r, y + h - r, z + 1 - r);
+    return AABB{x + r2, static_cast<double>(y), z + r, x + 1 - r, y + h - r, z + 1 - r};
 }
 
 AABB* CakeTile::getTileAABB(Level* level, int x, int y, int z) {

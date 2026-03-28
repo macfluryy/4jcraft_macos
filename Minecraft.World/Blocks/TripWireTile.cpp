@@ -4,6 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "TripWireTile.h"
+#include <optional>
 
 TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
     setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);
@@ -16,7 +17,7 @@ int TripWireTile::getTickDelay(Level* level) {
     return 20;  // 10;
 }
 
-AABB* TripWireTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> TripWireTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool TripWireTile::blocksLight() { return false; }
 

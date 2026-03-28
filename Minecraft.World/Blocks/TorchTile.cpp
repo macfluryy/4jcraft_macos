@@ -3,12 +3,14 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "TorchTile.h"
+#include <optional>
+#include "Util/AABB.h"
 
 TorchTile::TorchTile(int id) : Tile(id, Material::decoration, false) {
     this->setTicking(true);
 }
 
-AABB* TorchTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> TorchTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 AABB* TorchTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);

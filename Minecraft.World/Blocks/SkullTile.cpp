@@ -49,7 +49,7 @@ void SkullTile::updateShape(LevelSource* level, int x, int y, int z,
     }
 }
 
-AABB* SkullTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> SkullTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return BaseEntityTile::getAABB(level, x, y, z);
 }

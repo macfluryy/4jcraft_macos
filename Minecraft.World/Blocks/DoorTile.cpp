@@ -91,10 +91,9 @@ AABB* DoorTile::getTileAABB(Level* level, int x, int y, int z) {
     return retval;
 }
 
-AABB* DoorTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> DoorTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
-    AABB* retval = Tile::getAABB(level, x, y, z);
-    return retval;
+    return Tile::getAABB(level, x, y, z);
 }
 
 void DoorTile::updateShape(

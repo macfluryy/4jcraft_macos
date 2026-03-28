@@ -32,7 +32,7 @@ protected:
 
 public:
     virtual bool canSurvive(Level* level, int x, int y, int z);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool blocksLight();
 
     virtual bool isSolidRender(bool isServerLevel = false);

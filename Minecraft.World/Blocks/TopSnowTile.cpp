@@ -21,11 +21,11 @@ void TopSnowTile::registerIcons(IconRegister* iconRegister) {
     icon = iconRegister->registerIcon(L"snow");
 }
 
-AABB* TopSnowTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> TopSnowTile::getAABB(Level* level, int x, int y, int z) {
     int height = level->getData(x, y, z) & HEIGHT_MASK;
     float offset = 2.0f / SharedConstants::WORLD_RESOLUTION;
     ThreadStorage* tls = m_tlsShape;
-    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
+    return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                          y + (height * offset), z + tls->zz1);
 }
 

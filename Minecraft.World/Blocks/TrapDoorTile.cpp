@@ -4,6 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.h"
 #include "TrapDoorTile.h"
+#include "Util/AABB.h"
 
 TrapDoorTile::TrapDoorTile(int id, Material* material)
     : Tile(id, material, false) {
@@ -29,7 +30,7 @@ AABB* TrapDoorTile::getTileAABB(Level* level, int x, int y, int z) {
     return Tile::getTileAABB(level, x, y, z);
 }
 
-AABB* TrapDoorTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> TrapDoorTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getAABB(level, x, y, z);
 }

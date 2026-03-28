@@ -41,6 +41,7 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <optional>
 
 // 4J : WESTY : Added for time played stats.
 #include "../Headers/net.minecraft.stats.h"
@@ -1391,7 +1392,7 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
         if (solidOnly && tile != NULL &&
-            tile->getAABB(this, xTile0, yTile0, zTile0) == NULL) {
+            !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
@@ -1499,7 +1500,7 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
         if (solidOnly && tile != NULL &&
-            tile->getAABB(this, xTile0, yTile0, zTile0) == NULL) {
+            !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
@@ -2796,8 +2797,8 @@ bool Level::isFullAABBTile(int x, int y, int z) {
     if (tile == 0 || Tile::tiles[tile] == NULL) {
         return false;
     }
-    AABB* aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
-    return aabb != NULL && aabb->getSize() >= 1;
+    auto aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
+    return aabb.has_value() && aabb->getSize() >= 1;
 }
 
 bool Level::isTopSolidBlocking(int x, int y, int z) {
@@ -3664,9 +3665,9 @@ bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
 
     Tile* tile = Tile::tiles[tileId];
 
-    AABB* aabb = tile->getAABB(this, x, y, z);
-    if (ignoreEntities) aabb = NULL;
-    if (aabb != NULL && !isUnobstructed(aabb, ignoreEntity)) return false;
+    auto aabb = tile->getAABB(this, x, y, z);
+    if (ignoreEntities) aabb = std::nullopt;
+    if (aabb.has_value() && !isUnobstructed(&*aabb, ignoreEntity)) return false;
     if (targetTile != NULL &&
         (targetTile == Tile::water || targetTile == Tile::calmWater ||
          targetTile == Tile::lava || targetTile == Tile::calmLava ||

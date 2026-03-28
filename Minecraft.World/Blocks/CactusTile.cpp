@@ -33,9 +33,9 @@ void CactusTile::tick(Level* level, int x, int y, int z, Random* random) {
     }
 }
 
-AABB* CactusTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> CactusTile::getAABB(Level* level, int x, int y, int z) {
     float r = 1 / 16.0f;
-    return AABB::newTemp(x + r, y, z + r, x + 1 - r, y + 1 - r, z + 1 - r);
+    return AABB{x + r, static_cast<double>(y), z + r, x + 1 - r, y + 1 - r, z + 1 - r};
 }
 
 AABB* CactusTile::getTileAABB(Level* level, int x, int y, int z) {

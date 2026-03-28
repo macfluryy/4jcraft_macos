@@ -15,13 +15,13 @@ Icon* WoolCarpetTile::getTexture(int face, int data) {
     return Tile::wool->getTexture(face, data);
 }
 
-AABB* WoolCarpetTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> WoolCarpetTile::getAABB(Level* level, int x, int y, int z) {
     int height = 0;
     float offset = 1.0f / SharedConstants::WORLD_RESOLUTION;
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
-    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
+    return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
                          y + (height * offset), z + tls->zz1);
 }
 

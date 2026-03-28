@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "BaseEntityTile.h"
 #include "TileEntities/TileEntity.h"
 
@@ -19,7 +20,7 @@ protected:
 public:
     Icon* getTexture(int face, int data);
     virtual void updateDefaultShape();
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     AABB* getTileAABB(Level* level, int x, int y, int z);
     void updateShape(LevelSource* level, int x, int y, int z,
                      int forceData = -1,
