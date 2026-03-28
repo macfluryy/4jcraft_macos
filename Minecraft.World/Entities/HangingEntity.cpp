@@ -74,8 +74,8 @@ void HangingEntity::setDir(int dir) {
     float y1 = y + h + ss;
     float z0 = z - d - ss;
     float z1 = z + d + ss;
-    bb->set(std::min(x0, x1), std::min(y0, y1), std::min(z0, z1),
-            std::max(x0, x1), std::max(y0, y1), std::max(z0, z1));
+    *bb = {std::min(x0, x1), std::min(y0, y1), std::min(z0, z1),
+            std::max(x0, x1), std::max(y0, y1), std::max(z0, z1)};
 }
 
 float HangingEntity::offs(int w) {

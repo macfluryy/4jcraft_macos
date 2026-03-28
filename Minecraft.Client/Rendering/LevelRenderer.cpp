@@ -2479,10 +2479,13 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
             double xo = player->xOld + (player->x - player->xOld) * a;
             double yo = player->yOld + (player->y - player->yOld) * a;
             double zo = player->zOld + (player->z - player->zOld) * a;
-            render(Tile::tiles[tileId]
+
+            AABB bb = Tile::tiles[tileId]
                        ->getTileAABB(level[iPad], h->x, h->y, h->z)
                        ->grow(ss, ss, ss)
-                       ->cloneMove(-xo, -yo, -zo));
+                       .move(-xo, -yo, -zo);
+
+            render(&bb);
         }
         glDepthMask(true);
         glEnable(GL_TEXTURE_2D);
@@ -3974,7 +3977,7 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
                 // interested in, add them to the output list, making a temp
                 // AABB copy so that we can destroy our own copy without
                 // worrying about the lifespan of the copy we've passed out
-                if (m_destroyedTiles[i]->boxes[j]->intersects(box)) {
+                if (m_destroyedTiles[i]->boxes[j]->intersects(*box)) {
                     boxes->push_back(
                         AABB::newTemp(m_destroyedTiles[i]->boxes[j]->x0,
                                       m_destroyedTiles[i]->boxes[j]->y0,

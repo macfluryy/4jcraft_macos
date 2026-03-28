@@ -70,11 +70,10 @@ void BeaconTileEntity::applyEffects() {
             baseAmp = 1;
         }
 
-        AABB* bb = AABB::newTemp(x, y, z, x + 1, y + 1, z + 1)
-                       ->grow(range, range, range);
-        bb->y1 = level->getMaxBuildHeight();
+        AABB bb = AABB(x, y, z, x + 1, y + 1, z + 1).grow(range, range, range);
+        bb.y1 = level->getMaxBuildHeight();
         std::vector<std::shared_ptr<Entity> >* players =
-            level->getEntitiesOfClass(typeid(Player), bb);
+            level->getEntitiesOfClass(typeid(Player), &bb);
         for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
             std::shared_ptr<Player> player =
                 std::dynamic_pointer_cast<Player>(*it);

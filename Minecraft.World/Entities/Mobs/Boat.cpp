@@ -345,8 +345,9 @@ void Boat::tick() {
 
     if (level->isClientSide) return;
 
+    AABB grown = bb->grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(shared_from_this(), bb->grow(0.2f, 0, 0.2f));
+        level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {

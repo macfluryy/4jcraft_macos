@@ -170,10 +170,10 @@ bool Ghast::canReach(double xt, double yt, double zt, double dist) {
     double yd = (yTarget - y) / dist;
     double zd = (zTarget - z) / dist;
 
-    AABB* bb = this->bb->copy();
+    AABB bb = *this->bb;
     for (int d = 1; d < dist; d++) {
-        bb->move(xd, yd, zd);
-        if (!level->getCubes(shared_from_this(), bb)->empty()) return false;
+        bb.move(xd, yd, zd);
+        if (!level->getCubes(shared_from_this(), &bb)->empty()) return false;
     }
 
     return true;

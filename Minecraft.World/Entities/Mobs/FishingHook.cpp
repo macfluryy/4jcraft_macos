@@ -213,8 +213,9 @@ void FishingHook::tick() {
         to = Vec3(res->pos.x, res->pos.y, res->pos.z);
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    AABB grown = bb->expand(xd, yd, zd).grow(1, 1, 1);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -222,8 +223,8 @@ void FishingHook::tick() {
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(&from, &to);
+        AABB bb = e->bb->grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
         if (p != NULL) {
             double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {

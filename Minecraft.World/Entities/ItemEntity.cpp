@@ -119,8 +119,9 @@ void ItemEntity::tick() {
 }
 
 void ItemEntity::mergeWithNeighbours() {
+    AABB grown = bb->grow(0.5, 0, 0.5);
     std::vector<std::shared_ptr<Entity> >* neighbours =
-        level->getEntitiesOfClass(typeid(*this), bb->grow(0.5, 0, 0.5));
+        level->getEntitiesOfClass(typeid(*this), &grown);
     for (AUTO_VAR(it, neighbours->begin()); it != neighbours->end(); ++it) {
         std::shared_ptr<ItemEntity> entity =
             std::dynamic_pointer_cast<ItemEntity>(*it);

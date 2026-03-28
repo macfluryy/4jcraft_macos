@@ -53,9 +53,10 @@ bool AvoidPlayerGoal::canUse() {
             mob->level->getNearestPlayer(mob->shared_from_this(), maxDist));
         if (toAvoid.lock() == NULL) return false;
     } else {
+        AABB grown_bb = mob->bb->grow(maxDist, 3, maxDist);
         std::vector<std::shared_ptr<Entity> >* entities =
             mob->level->getEntitiesOfClass(
-                avoidType, mob->bb->grow(maxDist, 3, maxDist), entitySelector);
+                avoidType, &grown_bb, entitySelector);
         if (entities->empty()) {
             delete entities;
             return false;

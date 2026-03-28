@@ -301,8 +301,9 @@ void Mob::aiStep() {
 
     if (!level->isClientSide && canPickUpLoot() && !dead &&
         level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
+            AABB grown = bb->grow(1, 0, 1);
         std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntitiesOfClass(typeid(ItemEntity), bb->grow(1, 0, 1));
+            level->getEntitiesOfClass(typeid(ItemEntity), &grown);
         for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
             std::shared_ptr<ItemEntity> entity =
                 std::dynamic_pointer_cast<ItemEntity>(*it);
@@ -847,9 +848,10 @@ void Mob::restoreLeashFromSave() {
     if (_isLeashed && leashInfoTag != NULL) {
         if (leashInfoTag->contains(L"UUID")) {
             std::wstring leashUuid = leashInfoTag->getString(L"UUID");
+            AABB grown = bb->grow(10, 10, 10);
             std::vector<std::shared_ptr<Entity> >* livingEnts =
                 level->getEntitiesOfClass(typeid(LivingEntity),
-                                          bb->grow(10, 10, 10));
+                                          &grown);
             for (AUTO_VAR(it, livingEnts->begin()); it != livingEnts->end();
                  ++it) {
                 std::shared_ptr<LivingEntity> le =

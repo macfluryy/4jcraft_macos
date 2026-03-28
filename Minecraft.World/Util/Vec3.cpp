@@ -150,8 +150,9 @@ void Vec3::zRot(const float degs) {
 
 // Returns 0 if this point is within the box
 // Otherwise returns the distance to the box
+// TODO: rewrite this function
 double Vec3::distanceTo(AABB* box) {
-    if (box->contains(this)) return 0;
+    if (box->contains(*this)) return 0;
 
     double xd = 0, yd = 0, zd = 0;
 

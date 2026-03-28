@@ -2016,7 +2016,7 @@ AABB* Tile::getTileAABB(Level* level, int x, int y, int z) {
 void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
                     AABBList* boxes, std::shared_ptr<Entity> source) {
     AABB* aabb = getAABB(level, x, y, z);
-    if (aabb != NULL && box->intersects(aabb)) boxes->push_back(aabb);
+    if (aabb != NULL && box->intersects(*aabb)) boxes->push_back(aabb);
 }
 
 AABB* Tile::getAABB(Level* level, int x, int y, int z) {

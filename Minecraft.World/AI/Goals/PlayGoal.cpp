@@ -23,9 +23,10 @@ bool PlayGoal::canUse() {
     if (mob->getAge() >= 0) return false;
     if (mob->getRandom()->nextInt(400) != 0) return false;
 
+    AABB mob_bb = mob->bb->grow(6, 3, 6);
     std::vector<std::shared_ptr<Entity> >* children =
         mob->level->getEntitiesOfClass(typeid(Villager),
-                                       mob->bb->grow(6, 3, 6));
+            &mob_bb);
     double closestDistSqr = std::numeric_limits<double>::max();
     // for (Entity c : children)
     for (AUTO_VAR(it, children->begin()); it != children->end(); ++it) {

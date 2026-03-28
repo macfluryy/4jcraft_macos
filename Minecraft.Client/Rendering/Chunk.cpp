@@ -509,9 +509,9 @@ void Chunk::rebuild() {
     // 4J MGH - added this to take the bound from the value calc'd in the
     // tesselator
     if (bb) {
-        bb->set(bounds.boundingBox[0], bounds.boundingBox[1],
+        *bb = {bounds.boundingBox[0], bounds.boundingBox[1],
                 bounds.boundingBox[2], bounds.boundingBox[3],
-                bounds.boundingBox[4], bounds.boundingBox[5]);
+                bounds.boundingBox[4], bounds.boundingBox[5]};
     }
 
     delete tileRenderer;

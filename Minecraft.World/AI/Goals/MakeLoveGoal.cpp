@@ -29,8 +29,9 @@ bool MakeLoveGoal::canUse() {
     if (village.lock() == NULL) return false;
     if (!villageNeedsMoreVillagers()) return false;
 
+    AABB villager_bb = villager->bb->grow(8, 3, 8);
     std::shared_ptr<Entity> mate = level->getClosestEntityOfClass(
-        typeid(Villager), villager->bb->grow(8, 3, 8),
+        typeid(Villager), &villager_bb,
         villager->shared_from_this());
     if (mate == NULL) return false;
 

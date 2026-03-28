@@ -65,7 +65,8 @@ void Squid::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 }
 
 bool Squid::isInWater() {
-    return level->checkAndHandleWater(bb->grow(0, -0.6f, 0), Material::water,
+    AABB grown = bb->grow(0, -0.6, 0);
+    return level->checkAndHandleWater(&grown, Material::water,
                                       shared_from_this());
 }
 

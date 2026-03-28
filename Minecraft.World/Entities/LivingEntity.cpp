@@ -1164,7 +1164,7 @@ void LivingEntity::teleportTo(double x, double y, double z) {
 }
 
 void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
-    AABB* boundingBox;
+    AABB boundingBox;
     double fallbackX = vehicle->x;
     double fallbackY = vehicle->bb->y0 + vehicle->bbHeight;
     double fallbackZ = vehicle->z;
@@ -1177,9 +1177,9 @@ void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
 
             int xToInt = (int)(x + xDiff);
             int zToInt = (int)(z + zDiff);
-            boundingBox = bb->cloneMove(xDiff, 1, zDiff);
+            boundingBox = bb->move(xDiff, 1, zDiff);
 
-            if (level->getTileCubes(boundingBox, true)->empty()) {
+            if (level->getTileCubes(&boundingBox, true)->empty()) {
                 if (level->isTopSolidBlocking(xToInt, (int)y, zToInt)) {
                     teleportTo(x + xDiff, y + 1, z + zDiff);
                     return;
@@ -1511,9 +1511,9 @@ void LivingEntity::aiStep() {
         // collision used to be calculated as: bb->shrink(1 / 32.0, 0, 1 / 32.0)
         // now using a reduced BB to try and get rid of some issues where mobs
         // pop up the sides of walls, undersides of trees etc.
-        AABB* shrinkbb = bb->shrink(0.1, 0, 0.1);
-        shrinkbb->y1 = shrinkbb->y0 + 0.1;
-        AABBList* collisions = level->getCubes(shared_from_this(), shrinkbb);
+        AABB shrinkbb = bb->shrink(0.1, 0, 0.1);
+        shrinkbb.y1 = shrinkbb.y0 + 0.1;
+        AABBList* collisions = level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
             double yTop = 0;
             AUTO_VAR(itEnd, collisions->end());
@@ -1582,8 +1582,9 @@ void LivingEntity::aiStep() {
 void LivingEntity::newServerAiStep() {}
 
 void LivingEntity::pushEntities() {
+    AABB grown = bb->grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
+        level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {

@@ -464,7 +464,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
                                    targetZ);
 
         Vec3 pos(targetX, targetY, targetZ);
-        if (chunkBox->containsIncludingLowerBound(&pos)) {
+        if (chunkBox->containsIncludingLowerBound(pos)) {
             std::shared_ptr<TileEntity> teCopy = chunk->getTileEntity(
                 (int)targetX & 15, (int)targetY & 15, (int)targetZ & 15);
 
@@ -511,7 +511,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
         // Add 0.01 as the AABB::contains function returns false if a value is
         // <= the lower bound
         Vec3 pos(targetX + 0.01, targetY + 0.01, targetZ + 0.01);
-        if (!chunkBox->containsIncludingLowerBound(&pos)) {
+        if (!chunkBox->containsIncludingLowerBound(pos)) {
             ++it;
             continue;
         }

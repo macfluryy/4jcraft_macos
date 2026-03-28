@@ -1798,17 +1798,18 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
     if (noEntities) return &boxes;
 
     double r = 0.25;
+    AABB grown =  box->grow(r, r, r);
     std::vector<std::shared_ptr<Entity> >* ee =
-        getEntities(source, box->grow(r, r, r));
+        getEntities(source, &grown);
     std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
     for (AUTO_VAR(it, ee->begin()); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
-        if (collideBox != NULL && collideBox->intersects(box)) {
+        if (collideBox != NULL && collideBox->intersects(*box)) {
             boxes.push_back(collideBox);
         }
 
         collideBox = source->getCollideAgainstBox(*it);
-        if (collideBox != NULL && collideBox->intersects(box)) {
+        if (collideBox != NULL && collideBox->intersects(*box)) {
             boxes.push_back(collideBox);
         }
     }
