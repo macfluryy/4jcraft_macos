@@ -37,10 +37,6 @@ if use_gles
   global_cpp_defs += ['-DGLES']
 endif
 
-if get_option('enable_vsync')
-  global_cpp_defs += ['-DENABLE_VSYNC']
-endif
-
 add_project_arguments(global_cpp_defs, language: ['cpp', 'c'])
 
 global_cpp_args = [

@@ -78,8 +78,9 @@ static void RADLINK WarningCallback(void* user_callback_data, Iggy* player,
     //    IGGY_RESULT_Error_OutOfMemory = 1001,};
 
     if (message != NULL) {
-        // Some Linux movie variants do not ship these optional hooks/controls.
-        // We guard the call sites, so drop the residual Iggy warning noise.
+        // 4jcraft: Some Linux movie variants do not ship these optional
+        // hooks/controls. We guard the call sites, so drop the residual Iggy
+        // warning noise.
         if (strstr(message, "LabelGamertag") != NULL ||
             strstr(message, "Method SetSafeZone was not a function") != NULL) {
             return;
