@@ -58,15 +58,15 @@
 
           # 4jcraft - Meson expects this subprojects structure
           postUnpack = ''
-            mkdir -p source/subprojects
+            mkdir -p $sourceRoot/subprojects
 
-            cp -r ${inputs.shiggy} source/subprojects/shiggy
-            cp -r ${inputs."4jlibs"} source/subprojects/4jlibs
-            cp -r ${inputs.stb} source/subprojects/stb
-            cp -r ${inputs.simdutf} source/subprojects/simdutf
-            cp -r ${inputs.miniaudio} source/subprojects/miniaudio
+            cp -r ${inputs.shiggy} $sourceRoot/subprojects/shiggy
+            cp -r ${inputs."4jlibs"} $sourceRoot/subprojects/4jlibs
+            cp -r ${inputs.stb} $sourceRoot/subprojects/stb
+            cp -r ${inputs.simdutf} $sourceRoot/subprojects/simdutf
+            cp -r ${inputs.miniaudio} $sourceRoot/subprojects/miniaudio
 
-            chmod -R u+w source/subprojects
+            chmod -R u+w $sourceRoot/subprojects
           '';
 
           # 4jcraft - `stb` and `simdutf` patches
@@ -75,7 +75,7 @@
             cp subprojects/packagefiles/simdutf/meson.build subprojects/simdutf/meson.build
             cp subprojects/packagefiles/simdutf/meson.options subprojects/simdutf/meson.options
 
-            ${pkgs.unzip} ${inputs.miniaudio-patch} -d miniaudio-patch-tmp
+            unzip ${inputs.miniaudio-patch} -d miniaudio-patch-tmp
             cp -r miniaudio-patch-tmp/*/. subprojects/miniaudio/
 
             cat > subprojects/miniaudio.wrap <<EOF
@@ -88,10 +88,12 @@
 
           nativeBuildInputs = with pkgs; [
             lld
+            makeWrapper
             meson
             ninja
             pkg-config
             python3
+            unzip
           ];
 
           buildInputs = with pkgs; [
@@ -107,7 +109,7 @@
             cp -r Minecraft.Client/. $out/share/4jcraft/
 
             mkdir -p $out/bin
-            ${pkgs.makeWrapper} $out/share/4jcraft/Minecraft.Client $out/bin/4jcraft \
+            makeWrapper $out/share/4jcraft/Minecraft.Client $out/bin/4jcraft \
               --run "cd $out/share/4jcraft"
           '';
 
