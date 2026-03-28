@@ -1779,7 +1779,6 @@ void GameRenderer::renderSnowAndRain(float a) {
 #endif
                     t->offset(0, 0, 0);
                     t->end();
-
                 } else {
                     if (mode != 1) {
                         if (mode >= 0) t->end();

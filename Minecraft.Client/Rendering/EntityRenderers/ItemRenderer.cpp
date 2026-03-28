@@ -358,12 +358,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
-
         // 4J - original code left here for reference
         // 4jcraft: original code reused for proper lighting
-        // force normalize
 #if 1
-        // does it work? too lazy to find out
         glTranslatef((float)(x), (float)(y), 0.0f);
         glScalef(fScaleX, fScaleY, 1.0f);
         glTranslatef(-2.0f, 3.0f, -3.0f + blitOffset);
@@ -396,7 +393,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
-        // glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
         glPopMatrix();
         PIXEndNamedEvent();
     } else if (Item::items[itemId]->hasMultipleSpriteLayers()) {
