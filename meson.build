@@ -41,14 +41,6 @@ if get_option('enable_vsync')
   global_cpp_defs += ['-DENABLE_VSYNC']
 endif
 
-if get_option('enable_shiggy')
-  global_cpp_defs += ['-D_ENABLEIGGY']
-endif
-
-if get_option('enable_java_guis')
-  global_cpp_defs += ['-DENABLE_JAVA_GUIS']
-endif
-
 add_project_arguments(global_cpp_defs, language: ['cpp', 'c'])
 
 global_cpp_args = [
