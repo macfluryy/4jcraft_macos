@@ -24,7 +24,7 @@ float Camera::za2 = 0.0f;
 void Camera::prepare(std::shared_ptr<Player> player, bool mirror) {
     glGetFloat(GL_MODELVIEW_MATRIX, modelview);
     glGetFloat(GL_PROJECTION_MATRIX, projection);
-    
+
     /* Original java code for reference
 glGetInteger(GL_VIEWPORT, viewport);
 

@@ -389,7 +389,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         // render has the top surface coloured differently to
         // the rest of the block
          glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-        // glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
