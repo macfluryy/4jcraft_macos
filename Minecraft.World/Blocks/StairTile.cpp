@@ -326,7 +326,7 @@ Icon* StairTile::getTexture(int face, int data) {
 
 int StairTile::getTickDelay(Level* level) { return base->getTickDelay(level); }
 
-AABB* StairTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB StairTile::getTileAABB(Level* level, int x, int y, int z) {
     return base->getTileAABB(level, x, y, z);
 }
 

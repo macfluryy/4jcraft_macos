@@ -309,11 +309,12 @@ void GameRenderer::pick(float a) {
     to = to.add(from.x, from.y, from.z);
     hovered = nullptr;
     float overlap = 1;
-    std::vector<std::shared_ptr<Entity> >* objects = mc->level->getEntities(
-        mc->cameraTargetPlayer,
-        mc->cameraTargetPlayer->bb
-            ->expand(b.x * (range), b.y * (range), b.z * (range))
-            ->grow(overlap, overlap, overlap));
+    AABB grown = mc->cameraTargetPlayer->bb
+                     .expand(b.x * (range), b.y * (range), b.z * (range))
+                     .grow(overlap, overlap, overlap);
+
+    std::vector<std::shared_ptr<Entity> >* objects =
+        mc->level->getEntities(mc->cameraTargetPlayer, &grown);
     double nearest = dist;
 
     AUTO_VAR(itEnd, objects->end());
@@ -322,9 +323,9 @@ void GameRenderer::pick(float a) {
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(&from, &to);
-        if (bb->contains(&from)) {
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
+        if (bb.contains(from)) {
             if (0 < nearest || nearest == 0) {
                 hovered = e;
                 nearest = 0;
@@ -1120,7 +1121,6 @@ void GameRenderer::FinishedReassigning() {
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
     RenderManager.InitialiseContext();
@@ -1199,7 +1199,6 @@ int GameRenderer::runUpdate(void* lpParam) {
 
         //		PIXEndNamedEvent();
 
-        AABB::resetPool();
         m_updateEvents->Set(eUpdateEventIsFinished);
     }
 

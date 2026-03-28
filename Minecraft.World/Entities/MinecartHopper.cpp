@@ -85,8 +85,9 @@ void MinecartHopper::tick() {
 bool MinecartHopper::suckInItems() {
     if (HopperTileEntity::suckInItems(this)) return true;
 
+    AABB grown = bb.grow(0.25, 0, 0.25);
     std::vector<std::shared_ptr<Entity> >* items =
-        level->getEntitiesOfClass(typeid(ItemEntity), bb->grow(0.25f, 0, 0.25f),
+        level->getEntitiesOfClass(typeid(ItemEntity), &grown,
                                   EntitySelector::ENTITY_STILL_ALIVE);
 
     if (items->size() > 0) {

@@ -59,7 +59,7 @@ private:
     int m_iGrowlTimer;
 
     double m_headYRot;
-    AABB* m_acidArea;
+    AABB m_acidArea;
 
     NodeArray* m_nodes;
     int m_nodeAdjacency[24];

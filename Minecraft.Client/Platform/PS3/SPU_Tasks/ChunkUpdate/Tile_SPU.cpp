@@ -329,8 +329,8 @@ bool Tile_SPU::isSolidRender(bool isServerLevel) { return true; }
 // 		{
 // 			int newCount =
 // ExperienceOrb::getExperienceValue(amount); 			amount -=
-// newCount; 			level->addEntity(std::shared_ptr<ExperienceOrb>( new
-// ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
+// newCount; 			level->addEntity(std::shared_ptr<ExperienceOrb>(
+// new ExperienceOrb(level, x + .5, y + .5, z + .5, newCount)));
 // 		}
 // 	}
 // }

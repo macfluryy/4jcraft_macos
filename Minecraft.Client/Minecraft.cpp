@@ -726,7 +726,6 @@ void Minecraft::run()
 	{
 		//        try {	// 4J - removed try/catch
 		//            if (minecraftApplet != null && !minecraftApplet.isActive()) break;	// 4J - removed
-		AABB::resetPool();
 
 		//            if (parent == NULL && Display.isCloseRequested()) {		// 4J - removed
 		//                stop();
@@ -1282,7 +1281,6 @@ void Minecraft::run_middle() {
             //        try {	// 4J - removed try/catch
             //            if (minecraftApplet != null &&
             //            !minecraftApplet.isActive()) break;	// 4J - removed
-            AABB::resetPool();
 
             //            if (parent == NULL && Display.isCloseRequested()) {
             //            // 4J - removed
@@ -2226,7 +2224,6 @@ void Minecraft::run_end() { destroy(); }
 void Minecraft::emergencySave() {
     // 4J - lots of try/catches removed here, and garbage collector things
     levelRenderer->clear();
-    AABB::clearPool();
     setLevel(NULL);
 }
 
@@ -2402,7 +2399,6 @@ void Minecraft::levelTickUpdateFunc(void* pParam) {
 }
 
 void Minecraft::levelTickThreadInitFunc() {
-    AABB::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
 }
 

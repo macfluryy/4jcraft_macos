@@ -182,7 +182,7 @@ void Wolf::tick() {
             }
 
             if (shakeAnim > 0.4f) {
-                float yt = (float)bb->y0;
+                float yt = (float)bb.y0;
                 int shakeCount =
                     (int)(Mth::sin((shakeAnim - 0.4f) * PI) * 7.0f);
                 for (int i = 0; i < shakeCount; i++) {

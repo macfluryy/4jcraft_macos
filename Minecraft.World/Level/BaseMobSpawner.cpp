@@ -83,14 +83,13 @@ void BaseMobSpawner::tick() {
                 EntityIO::newEntity(getEntityId(), getLevel());
             if (entity == NULL) return;
 
-            int nearBy =
-                getLevel()
-                    ->getEntitiesOfClass(
-                        typeid(entity.get()),
-                        AABB::newTemp(getX(), getY(), getZ(), getX() + 1,
-                                      getY() + 1, getZ() + 1)
-                            ->grow(spawnRange * 2, 4, spawnRange * 2))
-                    ->size();
+            AABB grown =
+                AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1)
+                    .grow(spawnRange * 2, 4, spawnRange * 2);
+
+            int nearBy = getLevel()
+                             ->getEntitiesOfClass(typeid(entity.get()), &grown)
+                             ->size();
             if (nearBy >= maxNearbyEntities) {
                 delay();
                 return;

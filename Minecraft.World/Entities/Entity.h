@@ -5,6 +5,7 @@
 #include "../IO/NBT/FloatTag.h"
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
+#include "../Util/AABB.h"
 #include <cstdint>
 #include <optional>
 
@@ -72,7 +73,7 @@ public:
     double xd, yd, zd;
     float yRot, xRot;
     float yRotO, xRotO;
-    /*const*/ AABB* bb;  // 4J Was final
+    /*const*/ AABB bb;  // 4J Was final
     bool onGround;
     bool horizontalCollision, verticalCollision;
     bool collision;

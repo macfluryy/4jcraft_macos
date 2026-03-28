@@ -74,8 +74,8 @@ void HangingEntity::setDir(int dir) {
     float y1 = y + h + ss;
     float z0 = z - d - ss;
     float z1 = z + d + ss;
-    bb->set(std::min(x0, x1), std::min(y0, y1), std::min(z0, z1),
-            std::max(x0, x1), std::max(y0, y1), std::max(z0, z1));
+    bb = {std::min(x0, x1), std::min(y0, y1), std::min(z0, z1),
+          std::max(x0, x1), std::max(y0, y1), std::max(z0, z1)};
 }
 
 float HangingEntity::offs(int w) {
@@ -98,7 +98,7 @@ void HangingEntity::tick() {
 }
 
 bool HangingEntity::survives() {
-    if (level->getCubes(shared_from_this(), bb)->size() != 0)  // isEmpty())
+    if (level->getCubes(shared_from_this(), &bb)->size() != 0)  // isEmpty())
     {
         return false;
     } else {
@@ -128,7 +128,7 @@ bool HangingEntity::survives() {
             }
 
             std::vector<std::shared_ptr<Entity> >* entities =
-                level->getEntities(shared_from_this(), bb);
+                level->getEntities(shared_from_this(), &bb);
 
             if (entities != NULL && entities->size() > 0) {
                 AUTO_VAR(itEnd, entities->end());

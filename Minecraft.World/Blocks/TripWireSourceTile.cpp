@@ -4,14 +4,16 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.level.redstone.h"
 #include "TripWireSourceTile.h"
+#include "optional"
+#include "Util/AABB.h"
 
 TripWireSourceTile::TripWireSourceTile(int id)
     : Tile(id, Material::decoration, false) {
     this->setTicking(true);
 }
 
-AABB* TripWireSourceTile::getAABB(Level* level, int x, int y, int z) {
-    return NULL;
+std::optional<AABB> TripWireSourceTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
 }
 
 bool TripWireSourceTile::blocksLight() { return false; }

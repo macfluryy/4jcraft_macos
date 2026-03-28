@@ -585,14 +585,14 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
 
         bool shouldRender =
             (entity->shouldRender(cam) &&
-             (entity->noCulling || culler->isVisible(entity->bb)));
+             (entity->noCulling || culler->isVisible(&entity->bb)));
 
         // Render the mob if the mob's leash holder is within the culler
         if (!shouldRender && entity->instanceof(eTYPE_MOB)) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(entity);
             if (mob->isLeashed() && (mob->getLeashHolder() != NULL)) {
                 std::shared_ptr<Entity> leashHolder = mob->getLeashHolder();
-                shouldRender = culler->isVisible(leashHolder->bb);
+                shouldRender = culler->isVisible(&leashHolder->bb);
             }
         }
 
@@ -2479,10 +2479,13 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
             double xo = player->xOld + (player->x - player->xOld) * a;
             double yo = player->yOld + (player->y - player->yOld) * a;
             double zo = player->zOld + (player->z - player->zOld) * a;
-            render(Tile::tiles[tileId]
-                       ->getTileAABB(level[iPad], h->x, h->y, h->z)
-                       ->grow(ss, ss, ss)
-                       ->cloneMove(-xo, -yo, -zo));
+
+            AABB bb = Tile::tiles[tileId]
+                          ->getTileAABB(level[iPad], h->x, h->y, h->z)
+                          .grow(ss, ss, ss)
+                          .move(-xo, -yo, -zo);
+
+            render(&bb);
         }
         glDepthMask(true);
         glEnable(GL_TEXTURE_2D);
@@ -3859,12 +3862,6 @@ LevelRenderer::DestroyedTileManager::RecentTile::RecentTile(int x, int y, int z,
     rebuilt = false;
 }
 
-LevelRenderer::DestroyedTileManager::RecentTile::~RecentTile() {
-    for (AUTO_VAR(it, boxes.begin()); it != boxes.end(); it++) {
-        delete *it;
-    }
-}
-
 LevelRenderer::DestroyedTileManager::DestroyedTileManager() {
     InitializeCriticalSection(&m_csDestroyedTiles);
 }
@@ -3888,20 +3885,12 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
     // ones, so make a temporary list and then copy over
 
     RecentTile* recentTile = new RecentTile(x, y, z, level);
-    AABB* box = AABB::newTemp((float)x, (float)y, (float)z, (float)(x + 1),
-                              (float)(y + 1), (float)(z + 1));
+    AABB box((float)x, (float)y, (float)z, (float)(x + 1), (float)(y + 1),
+             (float)(z + 1));
     Tile* tile = Tile::tiles[level->getTile(x, y, z)];
 
     if (tile != NULL) {
-        tile->addAABBs(level, x, y, z, box, &recentTile->boxes, nullptr);
-    }
-
-    // Make these temporary AABBs into permanently allocated AABBs
-    for (unsigned int i = 0; i < recentTile->boxes.size(); i++) {
-        recentTile->boxes[i] = AABB::newPermanent(
-            recentTile->boxes[i]->x0, recentTile->boxes[i]->y0,
-            recentTile->boxes[i]->z0, recentTile->boxes[i]->x1,
-            recentTile->boxes[i]->y1, recentTile->boxes[i]->z1);
+        tile->addAABBs(level, x, y, z, &box, &recentTile->boxes, nullptr);
     }
 
     m_destroyedTiles.push_back(recentTile);
@@ -3974,14 +3963,13 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
                 // interested in, add them to the output list, making a temp
                 // AABB copy so that we can destroy our own copy without
                 // worrying about the lifespan of the copy we've passed out
-                if (m_destroyedTiles[i]->boxes[j]->intersects(box)) {
-                    boxes->push_back(
-                        AABB::newTemp(m_destroyedTiles[i]->boxes[j]->x0,
-                                      m_destroyedTiles[i]->boxes[j]->y0,
-                                      m_destroyedTiles[i]->boxes[j]->z0,
-                                      m_destroyedTiles[i]->boxes[j]->x1,
-                                      m_destroyedTiles[i]->boxes[j]->y1,
-                                      m_destroyedTiles[i]->boxes[j]->z1));
+                if (m_destroyedTiles[i]->boxes[j].intersects(*box)) {
+                    boxes->push_back({m_destroyedTiles[i]->boxes[j].x0,
+                                      m_destroyedTiles[i]->boxes[j].y0,
+                                      m_destroyedTiles[i]->boxes[j].z0,
+                                      m_destroyedTiles[i]->boxes[j].x1,
+                                      m_destroyedTiles[i]->boxes[j].y1,
+                                      m_destroyedTiles[i]->boxes[j].z1});
                 }
             }
         }
@@ -4042,7 +4030,6 @@ void LevelRenderer::staticCtor() {
 }
 
 int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
-    AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     RenderManager.InitialiseContext();
     Chunk::CreateNewThreadStorage();

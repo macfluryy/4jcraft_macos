@@ -38,7 +38,7 @@ void MoveControl::tick() {
     if (!_hasWanted) return;
     _hasWanted = false;
 
-    int yFloor = floor(mob->bb->y0 + .5f);
+    int yFloor = floor(mob->bb.y0 + .5f);
 
     double xd = wantedX - mob->x;
     double zd = wantedZ - mob->z;

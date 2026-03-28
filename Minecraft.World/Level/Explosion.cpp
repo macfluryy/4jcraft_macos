@@ -9,6 +9,7 @@
 #include "TilePos.h"
 #include "Explosion.h"
 #include "../Util/SoundTypes.h"
+#include "Util/AABB.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
                      double y, double z, float r) {
@@ -99,8 +100,10 @@ void Explosion::explode() {
     // time. If we explode something next to an EnderCrystal then it creates a
     // new explosion that overwrites the shared vector in the level So copy it
     // here instead of directly using the shared one
+
+    AABB source_bb(x0, y0, z0, x1, y1, z1);
     std::vector<std::shared_ptr<Entity> >* levelEntities =
-        level->getEntities(source, AABB::newTemp(x0, y0, z0, x1, y1, z1));
+        level->getEntities(source, &source_bb);
     std::vector<std::shared_ptr<Entity> > entities(levelEntities->begin(),
                                                    levelEntities->end());
     Vec3 center(x, y, z);
@@ -115,7 +118,7 @@ void Explosion::explode() {
         // walls
         bool canDamage = false;
         for (AUTO_VAR(it2, toBlow.begin()); it2 != toBlow.end(); ++it2) {
-            if (e->bb->intersects(it2->x, it2->y, it2->z, it2->x + 1,
+            if (e->bb.intersects(it2->x, it2->y, it2->z, it2->x + 1,
                                   it2->y + 1, it2->z + 1)) {
                 canDamage = true;
                 break;
@@ -141,7 +144,7 @@ void Explosion::explode() {
                 za /= da;
             }
 
-            double sp = level->getSeenPercent(&center, e->bb);
+            double sp = level->getSeenPercent(&center, &e->bb);
             double pow = (1 - dist) * sp;
             if (canDamage)
                 e->hurt(DamageSource::explosion(this),

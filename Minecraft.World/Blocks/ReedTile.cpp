@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.level.material.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "ReedTile.h"
+#include <optional>
 
 ReedTile::ReedTile(int id) : Tile(id, Material::plant, false) {
     this->updateDefaultShape();
@@ -64,7 +65,7 @@ bool ReedTile::canSurvive(Level* level, int x, int y, int z) {
     return mayPlace(level, x, y, z);
 }
 
-AABB* ReedTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> ReedTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 int ReedTile::getResource(int data, Random* random, int playerBonusLevel) {
     return Item::reeds->id;

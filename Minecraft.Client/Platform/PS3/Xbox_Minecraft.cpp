@@ -660,7 +660,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     // Initialise TLS for tesselator, for this main thread
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     // Initialise TLS for AABB and Vec3 pools, for this main thread
-    AABB::CreateNewThreadStorage();
     Level::enableLightingCache();
 
     Minecraft::main();

@@ -69,8 +69,8 @@ bool Silverfish::hurt(DamageSource* source, float dmg) {
 
 void Silverfish::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
     //        super.checkHurtTarget(target, d);
-    if (attackTime <= 0 && d < 1.2f && target->bb->y1 > bb->y0 &&
-        target->bb->y0 < bb->y1) {
+    if (attackTime <= 0 && d < 1.2f && target->bb.y1 > bb.y0 &&
+        target->bb.y0 < bb.y1) {
         attackTime = 20;
         doHurtTarget(target);
     }

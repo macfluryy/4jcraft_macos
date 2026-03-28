@@ -3,6 +3,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.h"
 #include "BaseRailTile.h"
+#include <optional>
 
 BaseRailTile::Rail::Rail(Level* level, int x, int y, int z) {
     this->level = level;
@@ -311,7 +312,7 @@ BaseRailTile::BaseRailTile(int id, bool usesDataBit)
 
 bool BaseRailTile::isUsesDataBit() { return usesDataBit; }
 
-AABB* BaseRailTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> BaseRailTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool BaseRailTile::blocksLight() { return false; }
 

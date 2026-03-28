@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "Tile.h"
 
 class WoolCarpetTile : public Tile {
@@ -10,7 +11,7 @@ protected:
 
 public:
     Icon* getTexture(int face, int data);
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     bool blocksLight();
     bool isSolidRender(bool isServerLevel = false);
     bool isCubeShaped();

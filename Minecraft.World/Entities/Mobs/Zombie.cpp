@@ -176,10 +176,10 @@ bool Zombie::hurt(DamageSource* source, float dmg) {
                     level->getRawBrightness(xt, yt, zt) < 10) {
                     reinforcement->setPos(xt, yt, zt);
 
-                    if (level->isUnobstructed(reinforcement->bb) &&
-                        level->getCubes(reinforcement, reinforcement->bb)
+                    if (level->isUnobstructed(&reinforcement->bb) &&
+                        level->getCubes(reinforcement, &reinforcement->bb)
                             ->empty() &&
-                        !level->containsAnyLiquid(reinforcement->bb)) {
+                        !level->containsAnyLiquid(&reinforcement->bb)) {
                         level->addEntity(reinforcement);
                         reinforcement->setTarget(target);
                         reinforcement->finalizeMobSpawn(NULL);

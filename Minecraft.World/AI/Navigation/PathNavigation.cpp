@@ -188,9 +188,9 @@ Vec3 PathNavigation::getTempMobPos() {
 }
 
 int PathNavigation::getSurfaceY() {
-    if (!mob->isInWater() || !canFloat) return (int)(mob->bb->y0 + 0.5);
+    if (!mob->isInWater() || !canFloat) return (int)(mob->bb.y0 + 0.5);
 
-    int surface = (int)(mob->bb->y0);
+    int surface = (int)(mob->bb.y0);
     int tileId =
         level->getTile(Mth::floor(mob->x), surface, Mth::floor(mob->z));
     int steps = 0;
@@ -198,7 +198,7 @@ int PathNavigation::getSurfaceY() {
         ++surface;
         tileId =
             level->getTile(Mth::floor(mob->x), surface, Mth::floor(mob->z));
-        if (++steps > 16) return (int)(mob->bb->y0);
+        if (++steps > 16) return (int)(mob->bb.y0);
     }
     return surface;
 }
@@ -212,7 +212,7 @@ bool PathNavigation::isInLiquid() {
 }
 
 void PathNavigation::trimPathFromSun() {
-    if (level->canSeeSky(Mth::floor(mob->x), (int)(mob->bb->y0 + 0.5),
+    if (level->canSeeSky(Mth::floor(mob->x), (int)(mob->bb.y0 + 0.5),
                          Mth::floor(mob->z)))
         return;
 

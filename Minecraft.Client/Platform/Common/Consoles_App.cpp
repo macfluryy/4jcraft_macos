@@ -4707,7 +4707,6 @@ int CMinecraftApp::EthernetDisconnectReturned(
 int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
@@ -7698,7 +7697,6 @@ void CMinecraftApp::LeaveSaveNotificationSection() {
 int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
     // The game should be stopped while we are doing this, but the connections
     // ticks may try to create some AABB's or Vec3's
-    AABB::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // 4J-PB - Xbox 360 - 163153 - [CRASH] TU17: Code: Multiplayer: During the

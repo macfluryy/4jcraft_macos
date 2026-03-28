@@ -961,17 +961,17 @@ void Player::aiStep() {
     tilt += (tTilt - tilt) * 0.8f;
 
     if (getHealth() > 0) {
-        AABB* pickupArea = NULL;
+        AABB pickupArea;
         if (riding != NULL && !riding->removed) {
             // if the player is riding, also touch entities under the
             // pig/horse
-            pickupArea = bb->minmax(riding->bb)->grow(1, 0, 1);
+            pickupArea = bb.minmax(riding->bb).grow(1, 0, 1);
         } else {
-            pickupArea = bb->grow(1, .5, 1);
+            pickupArea = bb.grow(1, .5, 1);
         }
 
         std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntities(shared_from_this(), pickupArea);
+            level->getEntities(shared_from_this(), &pickupArea);
         if (entities != NULL) {
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
@@ -1596,11 +1596,10 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
 
             double hRange = 8;
             double vRange = 5;
+            AABB monster_bb =
+                AABB(x, y, z, x, y, z).grow(hRange, vRange, hRange);
             std::vector<std::shared_ptr<Entity> >* monsters =
-                level->getEntitiesOfClass(
-                    typeid(Monster),
-                    AABB::newTemp(x - hRange, y - vRange, z - hRange,
-                                  x + hRange, y + vRange, z + hRange));
+                level->getEntitiesOfClass(typeid(Monster), &monster_bb);
             if (!monsters->empty()) {
                 delete monsters;
                 return NOT_SAFE;

@@ -3,6 +3,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.phys.h"
+#include "Util/AABB.h"
 #include "LeashItem.h"
 
 LeashItem::LeashItem(int id) : Item(id) {}
@@ -35,9 +36,9 @@ bool LeashItem::bindPlayerMobs(std::shared_ptr<Player> player, Level* level,
     // look for entities that can be attached to the fence
     bool foundMobs = false;
     double range = 7;
-    std::vector<std::shared_ptr<Entity> >* mobs = level->getEntitiesOfClass(
-        typeid(Mob), AABB::newTemp(x - range, y - range, z - range, x + range,
-                                   y + range, z + range));
+    AABB mob_bb = AABB(x, y, z, x, y, z).grow(range, range, range);
+    std::vector<std::shared_ptr<Entity> >* mobs =
+        level->getEntitiesOfClass(typeid(Mob), &mob_bb);
     if (mobs != NULL) {
         for (AUTO_VAR(it, mobs->begin()); it != mobs->end(); ++it) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(*it);
@@ -59,9 +60,9 @@ bool LeashItem::bindPlayerMobsTest(std::shared_ptr<Player> player, Level* level,
                                    int x, int y, int z) {
     // look for entities that can be attached to the fence
     double range = 7;
-    std::vector<std::shared_ptr<Entity> >* mobs = level->getEntitiesOfClass(
-        typeid(Mob), AABB::newTemp(x - range, y - range, z - range, x + range,
-                                   y + range, z + range));
+    AABB mob_bb = AABB(x, y, z, x, y, z).grow(range, range, range);
+    std::vector<std::shared_ptr<Entity> >* mobs =
+        level->getEntitiesOfClass(typeid(Mob), &mob_bb);
 
     if (mobs != NULL) {
         for (AUTO_VAR(it, mobs->begin()); it != mobs->end(); ++it) {

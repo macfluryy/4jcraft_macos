@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.item.h"
 #include "../Entities/Entity.h"
 #include "WeightedPressurePlateTile.h"
+#include "Util/AABB.h"
 
 WeightedPressurePlateTile::WeightedPressurePlateTile(int id,
                                                      const std::wstring& tex,
@@ -19,8 +20,9 @@ WeightedPressurePlateTile::WeightedPressurePlateTile(int id,
 
 int WeightedPressurePlateTile::getSignalStrength(Level* level, int x, int y,
                                                  int z) {
+    AABB at_bb = getSensitiveAABB(x, y, z);
     int weightOfEntities =
-        level->getEntitiesOfClass(typeid(Entity), getSensitiveAABB(x, y, z))
+        level->getEntitiesOfClass(typeid(Entity), &at_bb)
             ->size();
     int count = std::min(weightOfEntities, maxWeight);
 

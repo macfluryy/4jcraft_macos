@@ -316,7 +316,6 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     MinecraftServer* server = (MinecraftServer*)lpParam;
     Entity::useSmallIds();  // This thread can end up spawning entities as
                             // resources
-    AABB::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
     Level::enableLightingCache();
     Tile::CreateNewThreadStorage();
@@ -365,7 +364,6 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     LeaveCriticalSection(&server->m_postProcessCS);
     // #endif //__PS3__
     Tile::ReleaseThreadStorage();
-    AABB::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
     ShutdownManager::HasFinished(ShutdownManager::ePostProcessThread);
@@ -1649,8 +1647,6 @@ void MinecraftServer::tick() {
     for (unsigned int i = 0; i < toRemove.size(); i++) {
         ironTimers.erase(toRemove[i]);
     }
-
-    AABB::resetPool();
 
     tickCount++;
 

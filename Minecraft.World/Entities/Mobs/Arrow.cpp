@@ -183,9 +183,9 @@ void Arrow::tick() {
         int t = level->getTile(xTile, yTile, zTile);
         if (t > 0) {
             Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
-            AABB* aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
+            auto aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
             Vec3 pos{x, y, z};
-            if (aabb != NULL && aabb->contains(&pos)) {
+            if (aabb.has_value() && aabb->contains(pos)) {
                 inGround = true;
             }
         }
@@ -230,8 +230,9 @@ void Arrow::tick() {
     }
 
     std::shared_ptr<Entity> hitEntity = nullptr;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    AABB grown = bb.expand(xd, yd, zd).grow(1, 1, 1);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -239,8 +240,8 @@ void Arrow::tick() {
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(&from, &to);
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
         if (p != NULL) {
             double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {

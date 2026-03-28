@@ -17,8 +17,8 @@ FarmTile::FarmTile(int id) : Tile(id, Material::dirt, false) {
 // 4J Added override
 void FarmTile::updateDefaultShape() { setShape(0, 0, 0, 1, 15 / 16.0f, 1); }
 
-AABB* FarmTile::getAABB(Level* level, int x, int y, int z) {
-    return AABB::newTemp(x + 0, y + 0, z + 0, x + 1, y + 1, z + 1);
+std::optional<AABB> FarmTile::getAABB(Level* level, int x, int y, int z) {
+    return AABB(x + 0, y + 0, z + 0, x + 1, y + 1, z + 1);
 }
 
 bool FarmTile::isSolidRender(bool isServerLevel) { return false; }

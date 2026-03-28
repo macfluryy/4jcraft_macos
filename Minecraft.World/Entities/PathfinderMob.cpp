@@ -109,7 +109,7 @@ void PathfinderMob::serverAiStep() {
     // protected.
     considerForExtraWandering(isDespawnProtected());
 
-    int yFloor = Mth::floor(bb->y0 + 0.5f);
+    int yFloor = Mth::floor(bb.y0 + 0.5f);
 
     bool inWater = isInWater();
     bool inLava = isInLava();
@@ -226,7 +226,7 @@ std::shared_ptr<Entity> PathfinderMob::findAttackTarget() {
 
 bool PathfinderMob::canSpawn() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
     return this->Mob::canSpawn() && getWalkTargetValue(xt, yt, zt) >= 0;
 }

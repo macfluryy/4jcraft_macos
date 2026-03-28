@@ -20,7 +20,7 @@ protected:
 
 public:
     virtual int getTickDelay(Level* level);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool blocksLight();
     virtual bool isCubeShaped();
@@ -33,7 +33,7 @@ public:
 
 protected:
     virtual void checkPressed(Level* level, int x, int y, int z, int oldSignal);
-    virtual AABB* getSensitiveAABB(int x, int y, int z);
+    virtual AABB getSensitiveAABB(int x, int y, int z);
 
 public:
     virtual void onRemove(Level* level, int x, int y, int z, int id, int data);

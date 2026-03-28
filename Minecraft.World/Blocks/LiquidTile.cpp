@@ -5,9 +5,11 @@
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "../Headers/net.minecraft.world.h"
 #include "LiquidTile.h"
+#include <cstddef>
 #include "../Util/Facing.h"
 #include "../Util/SoundTypes.h"
 #include "Blocks/Material.h"
+#include "Util/AABB.h"
 
 const std::wstring LiquidTile::TEXTURE_LAVA_STILL = L"lava";
 const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";
@@ -107,7 +109,9 @@ bool LiquidTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
     return Tile::shouldRenderFace(level, x, y, z, face);
 }
 
-AABB* LiquidTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> LiquidTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 int LiquidTile::getRenderShape() { return Tile::SHAPE_WATER; }
 

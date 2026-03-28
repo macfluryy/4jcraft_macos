@@ -14,7 +14,7 @@ public:
 
     TripWireSourceTile(int id);
 
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     bool blocksLight();
     bool isSolidRender(bool isServerLevel = false);
     bool isCubeShaped();

@@ -1,6 +1,7 @@
 #pragma once
 #include "Tile.h"
 #include <cstdint>
+#include <optional>
 
 class PistonBaseTile : public Tile {
 public:
@@ -68,7 +69,7 @@ public:
     virtual void updateDefaultShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
                           AABBList* boxes, std::shared_ptr<Entity> source);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool isCubeShaped();
 
     static int getFacing(int data);

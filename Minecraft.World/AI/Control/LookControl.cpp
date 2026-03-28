@@ -20,7 +20,7 @@ void LookControl::setLookAt(std::shared_ptr<Entity> target, float yMax,
             target->y +
             std::dynamic_pointer_cast<LivingEntity>(target)->getHeadHeight();
     else
-        wantedY = (target->bb->y0 + target->bb->y1) / 2;
+        wantedY = (target->bb.y0 + target->bb.y1) / 2;
     wantedZ = target->z;
     this->yMax = yMax;
     this->xMax = xMax;

@@ -73,7 +73,7 @@ void EnderDragon::_init() {
     m_actionTicks = 0;
     m_sittingDamageReceived = 0;
     m_headYRot = 0.0;
-    m_acidArea = AABB::newPermanent(-4, -10, -3, 6, 3, 3);
+    m_acidArea = AABB(-4, -10, -3, 6, 3, 3);
     m_flameAttacks = 0;
 
     for (int i = 0; i < positionsLength; i++) {
@@ -324,7 +324,7 @@ void EnderDragon::aiStep() {
                         {
                             xP = head->x;  // - vN->x * d;
                             yP =
-                                head->bb->y0 +
+                                head->bb.y0 +
                                 head->bbHeight /
                                     2;  // - vN->y * d; //head->y +
                                         // head->bbHeight / 2 + 0.5f - v->y * d;
@@ -346,7 +346,7 @@ void EnderDragon::aiStep() {
                         for (unsigned int j = 0; j < 6; ++j) {
                             xP = head->x;  // - vN->x * d;
                             yP =
-                                head->bb->y0 +
+                                head->bb.y0 +
                                 head->bbHeight /
                                     2;  // - vN->y * d; //head->y +
                                         // head->bbHeight / 2 + 0.5f - v->y * d;
@@ -462,7 +462,7 @@ void EnderDragon::aiStep() {
             getSynchedAction() == e_EnderdragonAction_Landing) {
             if (m_actionTicks < (FLAME_TICKS - 10)) {
                 std::vector<std::shared_ptr<Entity> >* targets =
-                    level->getEntities(shared_from_this(), m_acidArea);
+                    level->getEntities(shared_from_this(), &m_acidArea);
 
                 for (AUTO_VAR(it, targets->begin()); it != targets->end();
                      ++it) {
@@ -491,7 +491,7 @@ void EnderDragon::aiStep() {
 
                 if (angleDegs < 0 || angleDegs > 10) {
                     double xdd = attackTarget->x - head->x;
-                    // double ydd = (attackTarget->bb->y0 +
+                    // double ydd = (attackTarget->bb.y0 +
                     // attackTarget->bbHeight / 2) - (head->y + head->bbHeight /
                     // 2);
                     double zdd = attackTarget->z - head->z;
@@ -541,7 +541,7 @@ void EnderDragon::aiStep() {
                 double sd = sqrt(xd * xd + zd * zd);
                 double ho = 0.4f + sd / 80.0f - 1;
                 if (ho > 10) ho = 10;
-                yTarget = attackTarget->bb->y0 + ho;
+                yTarget = attackTarget->bb.y0 + ho;
             } else {
                 // xTarget += random->nextGaussian() * 2;
                 // zTarget += random->nextGaussian() * 2;
@@ -646,12 +646,15 @@ void EnderDragon::aiStep() {
 
     if (!level->isClientSide) checkAttack();
     if (!level->isClientSide && hurtDuration == 0) {
-        knockBack(level->getEntities(shared_from_this(),
-                                     wing1->bb->grow(4, 2, 4)->move(0, -2, 0)));
-        knockBack(level->getEntities(shared_from_this(),
-                                     wing2->bb->grow(4, 2, 4)->move(0, -2, 0)));
-        hurt(level->getEntities(shared_from_this(), neck->bb->grow(1, 1, 1)));
-        hurt(level->getEntities(shared_from_this(), head->bb->grow(1, 1, 1)));
+        AABB wing_mov = wing1->bb.grow(4, 2, 4).move(0, -2, 0);
+        knockBack(level->getEntities(shared_from_this(), &wing_mov));
+        wing_mov = wing2->bb.grow(4, 2, 4).move(0, -2, 0);
+        knockBack(level->getEntities(shared_from_this(), &wing_mov));
+
+        AABB neck_bb = neck->bb.grow(1, 1, 1);
+        AABB head_bb = head->bb.grow(1, 1, 1);
+        hurt(level->getEntities(shared_from_this(), &neck_bb));
+        hurt(level->getEntities(shared_from_this(), &head_bb));
     }
 
     double p1components[3];
@@ -684,19 +687,19 @@ void EnderDragon::aiStep() {
         double acidX = x + ss * 9.5f * ccTilt;
         double acidY = y + yOffset + ssTilt * 10.5f;
         double acidZ = z - cc * 9.5f * ccTilt;
-        m_acidArea->set(acidX - 5, acidY - 17, acidZ - 5, acidX + 5, acidY + 4,
-                        acidZ + 5);
+        m_acidArea = {acidX - 5, acidY - 17, acidZ - 5,
+                       acidX + 5, acidY + 4,  acidZ + 5};
 
         // app.DebugPrintf("\nDragon is %s, yRot = %f, yRotA = %f, ss = %f, cc =
         // %f, ccTilt = %f\n",level->isClientSide?"client":"server", yRot,
         // yRotA, ss, cc, ccTilt); app.DebugPrintf("Body (%f,%f,%f) to
-        // (%f,%f,%f)\n", body->bb->x0, body->bb->y0, body->bb->z0,
-        // body->bb->x1, body->bb->y1, body->bb->z1); app.DebugPrintf("Neck
-        // (%f,%f,%f) to (%f,%f,%f)\n", neck->bb->x0, neck->bb->y0,
-        // neck->bb->z0, neck->bb->x1, neck->bb->y1, neck->bb->z1);
-        // app.DebugPrintf("Head (%f,%f,%f) to (%f,%f,%f)\n", head->bb->x0,
-        // head->bb->y0, head->bb->z0, head->bb->x1, head->bb->y1,
-        // head->bb->z1); app.DebugPrintf("Acid (%f,%f,%f) to (%f,%f,%f)\n\n",
+        // (%f,%f,%f)\n", body->bb.x0, body->bb.y0, body->bb.z0,
+        // body->bb.x1, body->bb.y1, body->bb.z1); app.DebugPrintf("Neck
+        // (%f,%f,%f) to (%f,%f,%f)\n", neck->bb.x0, neck->bb.y0,
+        // neck->bb.z0, neck->bb.x1, neck->bb.y1, neck->bb.z1);
+        // app.DebugPrintf("Head (%f,%f,%f) to (%f,%f,%f)\n", head->bb.x0,
+        // head->bb.y0, head->bb.z0, head->bb.x1, head->bb.y1,
+        // head->bb.z1); app.DebugPrintf("Acid (%f,%f,%f) to (%f,%f,%f)\n\n",
         // m_acidArea->x0, m_acidArea->y0, m_acidArea->z0, m_acidArea->x1,
         // m_acidArea->y1, m_acidArea->z1);
     }
@@ -754,7 +757,7 @@ void EnderDragon::aiStep() {
 
                     double xdd = attackTarget->x - startingX;
                     double ydd =
-                        (attackTarget->bb->y0 + attackTarget->bbHeight / 2) -
+                        (attackTarget->bb.y0 + attackTarget->bbHeight / 2) -
                         (startingY + head->bbHeight / 2);
                     double zdd = attackTarget->z - startingZ;
 
@@ -792,7 +795,7 @@ void EnderDragon::aiStep() {
 
     if (!level->isClientSide) {
         inWall =
-            checkWalls(head->bb) | checkWalls(neck->bb) | checkWalls(body->bb);
+            checkWalls(&head->bb) | checkWalls(&neck->bb) | checkWalls(&body->bb);
     }
 }
 
@@ -811,9 +814,9 @@ void EnderDragon::checkCrystals() {
 
     if (random->nextInt(10) == 0) {
         float maxDist = 32;
+        AABB grown = bb.grow(maxDist, maxDist, maxDist);
         std::vector<std::shared_ptr<Entity> >* crystals =
-            level->getEntitiesOfClass(typeid(EnderCrystal),
-                                      bb->grow(maxDist, maxDist, maxDist));
+            level->getEntitiesOfClass(typeid(EnderCrystal), &grown);
 
         std::shared_ptr<EnderCrystal> crystal = nullptr;
         double nearest = std::numeric_limits<double>::max();
@@ -848,9 +851,9 @@ void EnderDragon::checkAttack() {
 }
 
 void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> >* entities) {
-    double xm = (body->bb->x0 + body->bb->x1) / 2;
+    double xm = (body->bb.x0 + body->bb.x1) / 2;
     //        double ym = (body.bb.y0 + body.bb.y1) / 2;
-    double zm = (body->bb->z0 + body->bb->z1) / 2;
+    double zm = (body->bb.z0 + body->bb.z1) / 2;
 
     // for (Entity e : entities)
     for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
@@ -1420,10 +1423,11 @@ EnderDragon::EEnderdragonAction EnderDragon::getSynchedAction() {
 }
 
 void EnderDragon::handleCrystalDestroyed(DamageSource* source) {
-    AABB* tempBB = AABB::newTemp(PODIUM_X_POS, 84.0, PODIUM_Z_POS,
-                                 PODIUM_X_POS + 1.0, 85.0, PODIUM_Z_POS + 1.0);
-    std::vector<std::shared_ptr<Entity> >* crystals = level->getEntitiesOfClass(
-        typeid(EnderCrystal), tempBB->grow(48, 40, 48));
+    AABB tempBB(PODIUM_X_POS, 84.0, PODIUM_Z_POS, PODIUM_X_POS + 1.0, 85.0,
+                PODIUM_Z_POS + 1.0);
+    AABB grown = tempBB.grow(48, 40, 48);
+    std::vector<std::shared_ptr<Entity> >* crystals =
+        level->getEntitiesOfClass(typeid(EnderCrystal), &grown);
     m_remainingCrystalsCount = (int)crystals->size() - 1;
     if (m_remainingCrystalsCount < 0) m_remainingCrystalsCount = 0;
     delete crystals;
@@ -1471,7 +1475,7 @@ void EnderDragon::strafeAttackTarget() {
     double sd = sqrt(xd * xd + zd * zd);
     double ho = 0.4f + sd / 80.0f - 1;
     if (ho > 10) ho = 10;
-    int finalYTarget = attackTarget->bb->y0 + ho;
+    int finalYTarget = attackTarget->bb.y0 + ho;
 
     Node finalNode(finalXTarget, finalYTarget, finalZTarget);
 

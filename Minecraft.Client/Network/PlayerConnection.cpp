@@ -272,8 +272,9 @@ void PlayerConnection::handleMovePlayer(
         */
 
         float r = 1 / 16.0f;
+        AABB shrunk = player->bb.shrink(r, r, r);
         bool oldOk =
-            level->getCubes(player, player->bb->copy()->shrink(r, r, r))
+            level->getCubes(player, &shrunk)
                 ->empty();
 
         if (player->onGround && !packet->onGround && yDist > 0) {
@@ -324,17 +325,19 @@ void PlayerConnection::handleMovePlayer(
         }
         player->absMoveTo(xt, yt, zt, yRotT, xRotT);
 
+        // TODO: check if this can be elided
+        shrunk = player->bb.shrink(r, r, r);
         bool newOk =
-            level->getCubes(player, player->bb->copy()->shrink(r, r, r))
+            level->getCubes(player, &shrunk)
                 ->empty();
         if (oldOk && (fail || !newOk) && !player->isSleeping()) {
             teleport(xLastOk, yLastOk, zLastOk, yRotT, xRotT);
             return;
         }
-        AABB* testBox = player->bb->copy()->grow(r, r, r)->expand(0, -0.55, 0);
+        AABB testBox = player->bb.grow(r, r, r).expand(0, -0.55, 0);
         // && server.level.getCubes(player, testBox).size() == 0
         if (!server->isFlightAllowed() && !player->gameMode->isCreative() &&
-            !level->containsAnyBlocks(testBox) && !player->isAllowedToFly()) {
+            !level->containsAnyBlocks(&testBox) && !player->isAllowedToFly()) {
             if (oyDist >= (-0.5f / 16.0f)) {
                 aboveGroundTickCount++;
                 if (aboveGroundTickCount > 80) {

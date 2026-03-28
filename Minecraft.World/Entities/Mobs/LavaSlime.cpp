@@ -27,9 +27,9 @@ void LavaSlime::registerAttributes() {
 
 bool LavaSlime::canSpawn() {
     return level->difficulty > Difficulty::PEACEFUL &&
-           level->isUnobstructed(bb) &&
-           level->getCubes(shared_from_this(), bb)->empty() &&
-           !level->containsAnyLiquid(bb);
+           level->isUnobstructed(&bb) &&
+           level->getCubes(shared_from_this(), &bb)->empty() &&
+           !level->containsAnyLiquid(&bb);
 }
 
 int LavaSlime::getArmorValue() { return getSize() * 3; }

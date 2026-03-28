@@ -113,7 +113,7 @@ void VillagerGolem::aiStep() {
         if (t > 0) {
             level->addParticle(PARTICLE_TILECRACK(t, d),
                                x + (random->nextFloat() - 0.5) * bbWidth,
-                               bb->y0 + 0.1,
+                               bb.y0 + 0.1,
                                z + (random->nextFloat() - 0.5) * bbWidth,
                                4 * (random->nextFloat() - 0.5), .5,
                                (random->nextFloat() - 0.5) * 4);

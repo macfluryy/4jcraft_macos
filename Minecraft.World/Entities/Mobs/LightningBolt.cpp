@@ -105,10 +105,9 @@ void LightningBolt::tick() {
             level->skyFlashTime = 2;
         } else {
             double r = 3;
+            AABB aoe_bb = AABB(x, y, z, x, y + 6, z).grow(r, r, r);
             std::vector<std::shared_ptr<Entity> >* entities =
-                level->getEntities(shared_from_this(),
-                                   AABB::newTemp(x - r, y - r, z - r, x + r,
-                                                 y + 6 + r, z + r));
+                level->getEntities(shared_from_this(), &aoe_bb);
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = (*it);  // entities->at(i);

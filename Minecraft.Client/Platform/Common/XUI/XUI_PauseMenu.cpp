@@ -1075,7 +1075,6 @@ int UIScene_PauseMenu::SaveWorldThreadProc(LPVOID lpParameter) {
 
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -1107,7 +1106,6 @@ int UIScene_PauseMenu::SaveWorldThreadProc(LPVOID lpParameter) {
 int UIScene_PauseMenu::ExitWorldThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);

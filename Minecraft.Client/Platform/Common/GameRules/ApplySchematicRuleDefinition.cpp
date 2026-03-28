@@ -8,12 +8,13 @@
 #include "ApplySchematicRuleDefinition.h"
 #include "LevelGenerationOptions.h"
 #include "ConsoleSchematicFile.h"
+#include "../../Minecraft.World/Util/AABB.h"
 
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {
     m_levelGenOptions = levelGenOptions;
     m_location = Vec3(0, 0, 0);
-    m_locationBox = NULL;
+    m_locationBox = std::nullopt;
     m_totalBlocksChanged = 0;
     m_totalBlocksChangedLighting = 0;
     m_rotation = ConsoleSchematicFile::eSchematicRot_0;
@@ -130,7 +131,7 @@ void ApplySchematicRuleDefinition::updateLocationBox() {
     if (m_schematic == NULL)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
-    m_locationBox = AABB::newPermanent(0, 0, 0, 0, 0, 0);
+    m_locationBox = AABB(0, 0, 0, 0, 0, 0);
 
     m_locationBox->x0 = m_location.x;
     m_locationBox->y0 = m_location.y;
@@ -162,8 +163,8 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
     if (m_schematic == NULL)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
-    if (m_locationBox == NULL) updateLocationBox();
-    if (chunkBox->intersects(m_locationBox)) {
+    if (!m_locationBox.has_value()) updateLocationBox();
+    if (chunkBox->intersects(*m_locationBox)) {
         m_locationBox->y1 =
             std::min((double)Level::maxBuildHeight, m_locationBox->y1);
 
@@ -173,12 +174,12 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
 #endif
         PIXBeginNamedEvent(0, "Applying blocks and data");
         m_totalBlocksChanged += m_schematic->applyBlocksAndData(
-            chunk, chunkBox, m_locationBox, m_rotation);
+            chunk, chunkBox, &*m_locationBox, m_rotation);
         PIXEndNamedEvent();
 
         // Add the tileEntities
         PIXBeginNamedEvent(0, "Applying tile entities");
-        m_schematic->applyTileEntities(chunk, chunkBox, m_locationBox,
+        m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
                                        m_rotation);
         PIXEndNamedEvent();
 
@@ -206,8 +207,8 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
     if (m_schematic == NULL)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
-    if (m_locationBox == NULL) updateLocationBox();
-    if (chunkBox->intersects(m_locationBox)) {
+    if (!m_locationBox.has_value()) updateLocationBox();
+    if (chunkBox->intersects(*m_locationBox)) {
         m_locationBox->y1 =
             std::min((double)Level::maxBuildHeight, m_locationBox->y1);
 
@@ -217,7 +218,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
 #endif
         PIXBeginNamedEvent(0, "Patching lighting");
         m_totalBlocksChangedLighting += m_schematic->applyLighting(
-            chunk, chunkBox, m_locationBox, m_rotation);
+            chunk, chunkBox, &*m_locationBox, m_rotation);
         PIXEndNamedEvent();
 
         // TODO This does not take into account things that go outside the
@@ -237,12 +238,12 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
 
 bool ApplySchematicRuleDefinition::checkIntersects(int x0, int y0, int z0,
                                                    int x1, int y1, int z1) {
-    if (m_locationBox == NULL) updateLocationBox();
+    if (!m_locationBox.has_value()) updateLocationBox();
     return m_locationBox->intersects(x0, y0, z0, x1, y1, z1);
 }
 
 int ApplySchematicRuleDefinition::getMinY() {
-    if (m_locationBox == NULL) updateLocationBox();
+    if (!m_locationBox.has_value()) updateLocationBox();
     return m_locationBox->y0;
 }
 
