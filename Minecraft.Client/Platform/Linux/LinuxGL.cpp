@@ -219,14 +219,11 @@ void LinuxGLLogLightmapState(const char* stage, int textureId,
     ::glActiveTexture(GL_TEXTURE1);
     GLint unit1Binding = 0;
     ::glGetIntegerv(GL_TEXTURE_BINDING_2D, &unit1Binding);
-    const bool unit1Enabled = (::glIsEnabled(GL_TEXTURE_2D) == GL_TRUE);
     ::glActiveTexture(restoreTexture);
 
     app.DebugPrintf(
-        "[linux-lightmap] %s tex=%d scale=%d active=%#x unit1Bound=%d "
-        "unit1Enabled=%d\n",
-        stage, textureId, scaleLight ? 1 : 0, activeTexture, unit1Binding,
-        unit1Enabled ? 1 : 0);
+        "[linux-lightmap] %s tex=%d scale=%d active=%#x unit1Bound=%d\n",
+        stage, textureId, scaleLight ? 1 : 0, activeTexture, unit1Binding);
 }
 
 #endif

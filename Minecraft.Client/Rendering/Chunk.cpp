@@ -410,20 +410,8 @@ void Chunk::rebuild() {
                             MemSect(31);
                             glNewList(lists + currentLayer, GL_COMPILE);
                             MemSect(0);
-                            glPushMatrix();
                             glDepthMask(true);            // 4J added
                             t->useCompactVertices(true);  // 4J added
-                            translateToPos();
-                            float ss = 1.000001f;
-                            // 4J - have removed this scale as I don't think we
-                            // should need it, and have now optimised the vertex
-                            // shader so it doesn't do anything other than
-                            // translate with this matrix anyway
-#if 0
-							glTranslatef(-zs / 2.0f, -ys / 2.0f, -zs / 2.0f);
-							glScalef(ss, ss, ss);
-							glTranslatef(zs / 2.0f, ys / 2.0f, zs / 2.0f);
-#endif
                             t->begin();
                             t->offset((float)(-this->x), (float)(-this->y),
                                       (float)(-this->z));
@@ -471,7 +459,6 @@ void Chunk::rebuild() {
 #endif
             t->end();
             bounds.addBounds(t->bounds);  // 4J MGH - added
-            glPopMatrix();
             glEndList();
             t->useCompactVertices(false);  // 4J added
             t->offset(0, 0, 0);
@@ -734,19 +721,8 @@ void Chunk::rebuild_SPU() {
         {
             glNewList(lists + currentLayer, GL_COMPILE);
             MemSect(0);
-            glPushMatrix();
             glDepthMask(true);            // 4J added
             t->useCompactVertices(true);  // 4J added
-            translateToPos();
-            float ss = 1.000001f;
-            // 4J - have removed this scale as I don't think we should need it,
-            // and have now optimised the vertex shader so it doesn't do
-            // anything other than translate with this matrix anyway
-#if 0
-			glTranslatef(-zs / 2.0f, -ys / 2.0f, -zs / 2.0f);
-			glScalef(ss, ss, ss);
-			glTranslatef(zs / 2.0f, ys / 2.0f, zs / 2.0f);
-#endif
             t->begin();
             t->offset((float)(-this->x), (float)(-this->y), (float)(-this->z));
         }
@@ -806,7 +782,6 @@ void Chunk::rebuild_SPU() {
         {
             t->end();
             bounds.addBounds(t->bounds);
-            glPopMatrix();
             glEndList();
             t->useCompactVertices(false);  // 4J added
             t->offset(0, 0, 0);
