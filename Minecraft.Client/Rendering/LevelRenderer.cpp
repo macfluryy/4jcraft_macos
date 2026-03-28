@@ -856,24 +856,22 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         if ((globalChunkFlags[pClipChunk->globalIdx] & emptyFlag) == emptyFlag)
             continue;  // Check that this particular layer isn't empty
 
-        glPushMatrix();
-
-        // 4jcraft: added this. On OpenGL 2.1 this breaks, but the 3.3 renderer
-        // requires it.
-        // FIXME: find a way to get rid of this.
-        glTranslatef((float)pClipChunk->chunk->x, (float)pClipChunk->chunk->y,
-                     (float)pClipChunk->chunk->z);
         // List can be calculated directly from the chunk's global idex
         int list = pClipChunk->globalIdx * 2 + layer;
         list += chunkLists;
 
+        // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per chunk
+        // no more full MVP upload per chunk, can also be bkwards compat
+        RenderManager.SetChunkOffset((float)pClipChunk->chunk->x,
+                                     (float)pClipChunk->chunk->y,
+                                     (float)pClipChunk->chunk->z);
+
         if (RenderManager.CBuffCall(list, first)) {
             first = false;
         }
-
-        glPopMatrix();
         count++;
     }
+    RenderManager.SetChunkOffset(0.f, 0.f, 0.f);
 
 #ifdef __PSVITA__
     // AP - alpha cut out is expensive on vita. Now we render all the alpha cut
