@@ -541,11 +541,13 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 }
 
 void Textures::bind(int id) {
-    // Classic GUI code still performs some raw glBindTexture calls, so this
-    // path must always rebind rather than trusting lastBoundId to be in sync.
+    // 4jcraft: Classic GUI code still performs some raw glBindTexture calls, so
+    // this path must always rebind rather than trusting lastBoundId to be in sync.
+    // if (id != lastBoundId)
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
+        // lastBoundId = id;
     }
 }
 
