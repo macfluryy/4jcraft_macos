@@ -1060,7 +1060,11 @@ void GameRenderer::render(float a, bool bFirst) {
     int maxFps = getFpsCap(mc->options->framerateLimit);
 
     if (mc->level != NULL) {
-        if (mc->options->framerateLimit == 0) {
+        if (mc->options->framerateLimit == 0
+#ifndef ENABLE_VSYNC
+            || mc->options->framerateLimit == 3
+#endif
+        ) {
             renderLevel(a, 0);
         } else {
             renderLevel(a, lastNsTime + 1000000000 / maxFps);
@@ -2134,6 +2138,9 @@ int GameRenderer::getFpsCap(int option) {
     int maxFps = 200;
     if (option == 1) maxFps = 120;
     if (option == 2) maxFps = 35;
+#ifndef ENABLE_VSYNC
+    if (option == 3) maxFps = std::numeric_limits<int>::max();
+#endif
     return maxFps;
 }
 

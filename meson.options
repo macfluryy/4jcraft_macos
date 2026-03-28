@@ -1,14 +1,10 @@
-option('enable_java_guis', 
-  type : 'boolean', 
-  value : false, 
-  description : 'Re-enable the Java UI remnants in the code (for testing only)')
+option('ui_backend',
+  type : 'combo', 
+  choices: ['shiggy', 'java'],
+  value : 'shiggy', 
+  description : 'Specifies a backend implementation for the game UI.')
 
 option('enable_vsync', 
   type : 'boolean', 
   value : true, 
   description : 'Toggles V-Sync and adds options to unlock maximum in-game framerate.')
-
-option('enable_shiggy', 
-  type : 'boolean', 
-  value : true, 
-  description : 'Toggles shimmed PS4 Iggy binaries and UI for x86_64 Linux.')

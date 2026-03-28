@@ -75,7 +75,7 @@ if get_option('enable_vsync')
     global_cpp_defs += '-DENABLE_VSYNC'
 endif
 
-if get_option('enable_shiggy')
+if get_option('ui_backend') == 'shiggy'
     shiggy_dep = dependency(
       'shiggy',
       fallback : ['shiggy', 'shiggy_dep'],
@@ -85,12 +85,8 @@ if get_option('enable_shiggy')
     client_dependencies += shiggy_dep
 endif
 
-if get_option('enable_java_guis')
+if get_option('ui_backend') == 'java'
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
-endif
-
-if get_option('enable_shiggy') and get_option('enable_java_guis')
-  error('You cannot use the Iggy and Java UI at the same time, please choose one.')
 endif
 
 client = executable('Minecraft.Client',
