@@ -1,21 +1,27 @@
-option('ui_backend',
-  type : 'combo', 
+option(
+  'ui_backend',
+  type: 'combo',
   choices: ['shiggy', 'java'],
-  value : 'shiggy', 
-  description : 'Specifies a backend implementation for the game UI.')
+  value: 'shiggy',
+  description: 'Specifies a backend implementation for the game UI.',
+)
 
 option('classic_panorama',
   type : 'boolean', 
   value : false, 
   description : 'Enable classic java edition panorama (ui_backend=java ONLY).')
 
-option('renderer',
-  type : 'combo', 
+option(
+  'renderer',
+  type: 'combo',
   choices: ['gl3', 'gles'],
-  value : 'gl3', 
-  description : 'Specifies a rendering implementation for the game.')
+  value: 'gl3',
+  description: 'Specifies a rendering implementation for the game.',
+)
 
-option('enable_vsync',
-  type : 'boolean', 
-  value : true, 
-  description : 'Toggles V-Sync and adds options to unlock maximum in-game framerate.')
+option(
+  'enable_vsync',
+  type: 'boolean',
+  value: true,
+  description: 'Toggles V-Sync and adds options to unlock maximum in-game framerate.',
+)
