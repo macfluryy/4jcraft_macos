@@ -858,6 +858,9 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
 
         glPushMatrix();
 
+        // 4jcraft: added this. On OpenGL 2.1 this breaks, but the 3.3 renderer
+        // requires it.
+        // FIXME: find a way to get rid of this.
         glTranslatef((float)pClipChunk->chunk->x, (float)pClipChunk->chunk->y,
                      (float)pClipChunk->chunk->z);
         // List can be calculated directly from the chunk's global idex
@@ -2470,11 +2473,11 @@ void LevelRenderer::renderHitOutline(std::shared_ptr<Player> player,
         if (app.GetGameSettings(iPad, eGameSetting_DisplayHUD) == 0) return;
         RenderManager.StateSetLightingEnable(false);
         glDisable(GL_TEXTURE_2D);
-        
+
         // draw hit outline
         RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.4f);
         RenderManager.StateSetLineWidth(1.0f);
-        
+
         // hack
         glDepthFunc(GL_LEQUAL);
         glEnable(GL_POLYGON_OFFSET_LINE);
@@ -2515,25 +2518,37 @@ void LevelRenderer::render(AABB* b) {
     glPolygonOffset(-2.0f, -2.0f);
 
     // One call please!
-    t->begin(GL_LINES); 
+    t->begin(GL_LINES);
 
     // Bottom
-    t->vertex(b->x0, b->y0, b->z0); t->vertex(b->x1, b->y0, b->z0);
-    t->vertex(b->x1, b->y0, b->z0); t->vertex(b->x1, b->y0, b->z1);
-    t->vertex(b->x1, b->y0, b->z1); t->vertex(b->x0, b->y0, b->z1);
-    t->vertex(b->x0, b->y0, b->z1); t->vertex(b->x0, b->y0, b->z0);
+    t->vertex(b->x0, b->y0, b->z0);
+    t->vertex(b->x1, b->y0, b->z0);
+    t->vertex(b->x1, b->y0, b->z0);
+    t->vertex(b->x1, b->y0, b->z1);
+    t->vertex(b->x1, b->y0, b->z1);
+    t->vertex(b->x0, b->y0, b->z1);
+    t->vertex(b->x0, b->y0, b->z1);
+    t->vertex(b->x0, b->y0, b->z0);
 
     // Top
-    t->vertex(b->x0, b->y1, b->z0); t->vertex(b->x1, b->y1, b->z0);
-    t->vertex(b->x1, b->y1, b->z0); t->vertex(b->x1, b->y1, b->z1);
-    t->vertex(b->x1, b->y1, b->z1); t->vertex(b->x0, b->y1, b->z1);
-    t->vertex(b->x0, b->y1, b->z1); t->vertex(b->x0, b->y1, b->z0);
+    t->vertex(b->x0, b->y1, b->z0);
+    t->vertex(b->x1, b->y1, b->z0);
+    t->vertex(b->x1, b->y1, b->z0);
+    t->vertex(b->x1, b->y1, b->z1);
+    t->vertex(b->x1, b->y1, b->z1);
+    t->vertex(b->x0, b->y1, b->z1);
+    t->vertex(b->x0, b->y1, b->z1);
+    t->vertex(b->x0, b->y1, b->z0);
 
     // Vertical
-    t->vertex(b->x0, b->y0, b->z0); t->vertex(b->x0, b->y1, b->z0);
-    t->vertex(b->x1, b->y0, b->z0); t->vertex(b->x1, b->y1, b->z0);
-    t->vertex(b->x1, b->y0, b->z1); t->vertex(b->x1, b->y1, b->z1);
-    t->vertex(b->x0, b->y0, b->z1); t->vertex(b->x0, b->y1, b->z1);
+    t->vertex(b->x0, b->y0, b->z0);
+    t->vertex(b->x0, b->y1, b->z0);
+    t->vertex(b->x1, b->y0, b->z0);
+    t->vertex(b->x1, b->y1, b->z0);
+    t->vertex(b->x1, b->y0, b->z1);
+    t->vertex(b->x1, b->y1, b->z1);
+    t->vertex(b->x0, b->y0, b->z1);
+    t->vertex(b->x0, b->y1, b->z1);
 
     t->end();
     glDisable(GL_POLYGON_OFFSET_LINE);
@@ -4060,7 +4075,7 @@ int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
 
         // app.DebugPrintf("Rebuilding permaChunk %d\n", index + 1);
         permaChunk[index + 1].rebuild();
-        
+
         // Inform the producer thread that we are done with this chunk
         s_rebuildCompleteEvents->Set(index);
     }
