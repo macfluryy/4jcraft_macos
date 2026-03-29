@@ -48,7 +48,7 @@ void ConsoleUIController::init(S32 w, S32 h) {
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
                                128 * 1024 * 1024);
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
-                               32 * 1024 * 1024);
+                               64 * 1024 * 1024);
 
     IggySetGDraw(gdraw_funcs);
 #endif
