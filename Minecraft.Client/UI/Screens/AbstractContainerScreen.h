@@ -29,6 +29,10 @@ protected:
     // handling.
     virtual Slot* findSlot(int x, int y);
     virtual bool isHovering(Slot* slot, int xm, int ym);
+    // 4jcraft: extracted from render() into a standalone method so this can be
+    // used in other classes
+    virtual void renderTooltip(std::shared_ptr<ItemInstance> item, int x,
+                               int y);
 
 private:
     virtual void renderSlot(Slot* slot);

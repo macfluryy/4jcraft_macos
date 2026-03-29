@@ -95,138 +95,11 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
         hoveredSlot->hasItem()) {
         std::shared_ptr<ItemInstance> item = hoveredSlot->getItem();
 
-        // std::wstring elementName =
-        // trimString(Language::getInstance()->getElementName(hoveredSlot->getItem()->getDescriptionId()));
-        std::vector<std::wstring> elementName;
-        std::vector<std::wstring>* tooltipLines =
-            item->getHoverText(minecraft->player, false, elementName);
+        int xo = (width - imageWidth) / 2;
+        int yo = (height - imageHeight) / 2;
 
-        if (tooltipLines != NULL && tooltipLines->size() > 0) {
-            int tooltipWidth = 0;
-            std::vector<std::wstring> cleanedLines;
-            std::vector<int> lineColors;
-
-            for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
-                 ++lineIndex) {
-                std::wstring rawLine = (*tooltipLines)[lineIndex];
-                std::wstring clean = L"";
-                int lineColor = 0xffffffff;
-
-                // 4jcraft: LCE is using HTML font elements for its tooltip
-                // colors, so make sure to parse them for parity w iggy UI
-                //
-                // examples would be enchantment books, potions and music
-                // discs
-                size_t fontPos = rawLine.find(L"<font");
-                if (fontPos != std::wstring::npos) {
-                    size_t colorPos = rawLine.find(L"color=\"", fontPos);
-                    if (colorPos != std::wstring::npos) {
-                        colorPos += 7;
-                        size_t colorEnd = rawLine.find(L'"', colorPos);
-                        if (colorEnd != std::wstring::npos) {
-                            std::wstring colorStr =
-                                rawLine.substr(colorPos, colorEnd - colorPos);
-                            if (!colorStr.empty() && colorStr[0] == L'#') {
-                                colorStr = colorStr.substr(1);
-                            }
-                            if (!colorStr.empty()) {
-                                wchar_t* endPtr;
-                                long hexColor =
-                                    wcstol(colorStr.c_str(), &endPtr, 16);
-                                if (*endPtr == L'\0') {
-                                    lineColor = 0xff000000 | (int)hexColor;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                bool inTag = false;
-                for (wchar_t currentChar : rawLine) {
-                    if (currentChar == L'<') {
-                        inTag = true;
-                    } else if (currentChar == L'>') {
-                        inTag = false;
-                    } else if (!inTag) {
-                        clean += currentChar;
-                    }
-                }
-
-                cleanedLines.push_back(clean);
-                lineColors.push_back(lineColor);
-
-                int lineWidth = font->width(clean);
-                if (lineWidth > tooltipWidth) {
-                    tooltipWidth = lineWidth;
-                }
-            }
-
-            int tooltipX = xm - xo + 12;
-            int tooltipY = ym - yo - 12;
-
-            int tooltipHeight = 8;
-
-            if (tooltipLines->size() > 1) {
-                tooltipHeight += 2 + (tooltipLines->size() - 1) * 10;
-            }
-
-            int bgColor = 0xf0100010;
-            fillGradient(tooltipX - 3, tooltipY - 4,
-                         tooltipX + tooltipWidth + 3, tooltipY - 3, bgColor,
-                         bgColor);
-            fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 3,
-                         tooltipX + tooltipWidth + 3,
-                         tooltipY + tooltipHeight + 4, bgColor, bgColor);
-            fillGradient(tooltipX - 3, tooltipY - 3,
-                         tooltipX + tooltipWidth + 3,
-                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
-            fillGradient(tooltipX - 4, tooltipY - 3, tooltipX - 3,
-                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
-            fillGradient(tooltipX + tooltipWidth + 3, tooltipY - 3,
-                         tooltipX + tooltipWidth + 4,
-                         tooltipY + tooltipHeight + 3, bgColor, bgColor);
-
-            int borderStart = 0x505000ff;
-            int borderFinish =
-                (borderStart & 0xfefefe) >> 1 | borderStart & 0xff000000;
-            fillGradient(tooltipX - 3, (tooltipY - 3) + 1, (tooltipX - 3) + 1,
-                         (tooltipY + tooltipHeight + 3) - 1, borderStart,
-                         borderFinish);
-            fillGradient(tooltipX + tooltipWidth + 2, (tooltipY - 3) + 1,
-                         tooltipX + tooltipWidth + 3,
-                         (tooltipY + tooltipHeight + 3) - 1, borderStart,
-                         borderFinish);
-            fillGradient(tooltipX - 3, tooltipY - 3,
-                         tooltipX + tooltipWidth + 3, (tooltipY - 3) + 1,
-                         borderStart, borderStart);
-            fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 2,
-                         tooltipX + tooltipWidth + 3,
-                         tooltipY + tooltipHeight + 3, borderFinish,
-                         borderFinish);
-
-            int currentY = tooltipY;
-            for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
-                 ++lineIndex) {
-                std::wstring& currentLine = cleanedLines[lineIndex];
-                int textColor;
-
-                if (lineIndex == 0) {
-                    textColor = app.GetHTMLColour(item->getRarity()->color);
-                } else {
-                    textColor = (lineColors[lineIndex] != 0xffffffff)
-                                    ? lineColors[lineIndex]
-                                    : 0xffaaaaaa;
-                }
-
-                font->drawShadow(currentLine, tooltipX, currentY, textColor);
-
-                if (lineIndex == 0) {
-                    currentY += 2;
-                }
-
-                currentY += 10;
-            }
-        }
+        // 4jcraft: abstracted tooltip rendering into a new method
+        renderTooltip(item, xm - xo, ym - yo);
     }
 
     glPopMatrix();
@@ -235,6 +108,139 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
 #endif
+}
+
+// 4jcraft: extracted from render() into a standalone method so this can be used
+// in other derived classes
+void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
+                                            int x, int y) {
+    if (item == nullptr) return;
+
+    std::vector<std::wstring> elementName;
+    std::vector<std::wstring>* tooltipLines =
+        item->getHoverText(minecraft->player, false, elementName);
+
+    if (tooltipLines != NULL && tooltipLines->size() > 0) {
+        int tooltipWidth = 0;
+        std::vector<std::wstring> cleanedLines;
+        std::vector<int> lineColors;
+
+        for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
+             ++lineIndex) {
+            std::wstring rawLine = (*tooltipLines)[lineIndex];
+            std::wstring clean = L"";
+            int lineColor = 0xffffffff;
+
+            // 4jcraft: LCE is using HTML font elements for its tooltip
+            // colors, so make sure to parse them for parity w iggy UI
+            //
+            // examples would be enchantment books, potions and music
+            // discs
+            size_t fontPos = rawLine.find(L"<font");
+            if (fontPos != std::wstring::npos) {
+                size_t colorPos = rawLine.find(L"color=\"", fontPos);
+                if (colorPos != std::wstring::npos) {
+                    colorPos += 7;
+                    size_t colorEnd = rawLine.find(L'"', colorPos);
+                    if (colorEnd != std::wstring::npos) {
+                        std::wstring colorStr =
+                            rawLine.substr(colorPos, colorEnd - colorPos);
+                        if (!colorStr.empty() && colorStr[0] == L'#') {
+                            colorStr = colorStr.substr(1);
+                        }
+                        if (!colorStr.empty()) {
+                            wchar_t* endPtr;
+                            long hexColor =
+                                wcstol(colorStr.c_str(), &endPtr, 16);
+                            if (*endPtr == L'\0') {
+                                lineColor = 0xff000000 | (int)hexColor;
+                            }
+                        }
+                    }
+                }
+            }
+
+            bool inTag = false;
+            for (wchar_t currentChar : rawLine) {
+                if (currentChar == L'<') {
+                    inTag = true;
+                } else if (currentChar == L'>') {
+                    inTag = false;
+                } else if (!inTag) {
+                    clean += currentChar;
+                }
+            }
+
+            cleanedLines.push_back(clean);
+            lineColors.push_back(lineColor);
+
+            int lineWidth = font->width(clean);
+            if (lineWidth > tooltipWidth) {
+                tooltipWidth = lineWidth;
+            }
+        }
+
+        int tooltipX = x + 12;
+        int tooltipY = y - 12;
+        int tooltipHeight = 8;
+
+        if (tooltipLines->size() > 1) {
+            tooltipHeight += 2 + (tooltipLines->size() - 1) * 10;
+        }
+
+        int bgColor = 0xf0100010;
+        fillGradient(tooltipX - 3, tooltipY - 4, tooltipX + tooltipWidth + 3,
+                     tooltipY - 3, bgColor, bgColor);
+        fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 3,
+                     tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 4,
+                     bgColor, bgColor);
+        fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
+                     tooltipY + tooltipHeight + 3, bgColor, bgColor);
+        fillGradient(tooltipX - 4, tooltipY - 3, tooltipX - 3,
+                     tooltipY + tooltipHeight + 3, bgColor, bgColor);
+        fillGradient(tooltipX + tooltipWidth + 3, tooltipY - 3,
+                     tooltipX + tooltipWidth + 4, tooltipY + tooltipHeight + 3,
+                     bgColor, bgColor);
+
+        int borderStart = 0x505000ff;
+        int borderFinish =
+            (borderStart & 0xfefefe) >> 1 | borderStart & 0xff000000;
+        fillGradient(tooltipX - 3, (tooltipY - 3) + 1, (tooltipX - 3) + 1,
+                     (tooltipY + tooltipHeight + 3) - 1, borderStart,
+                     borderFinish);
+        fillGradient(tooltipX + tooltipWidth + 2, (tooltipY - 3) + 1,
+                     tooltipX + tooltipWidth + 3,
+                     (tooltipY + tooltipHeight + 3) - 1, borderStart,
+                     borderFinish);
+        fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
+                     (tooltipY - 3) + 1, borderStart, borderStart);
+        fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 2,
+                     tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 3,
+                     borderFinish, borderFinish);
+
+        int currentY = tooltipY;
+        for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
+             ++lineIndex) {
+            std::wstring& currentLine = cleanedLines[lineIndex];
+            int textColor;
+
+            if (lineIndex == 0) {
+                textColor = app.GetHTMLColour(item->getRarity()->color);
+            } else {
+                textColor = (lineColors[lineIndex] != 0xffffffff)
+                                ? lineColors[lineIndex]
+                                : 0xffaaaaaa;
+            }
+
+            font->drawShadow(currentLine, tooltipX, currentY, textColor);
+
+            if (lineIndex == 0) {
+                currentY += 2;
+            }
+
+            currentY += 10;
+        }
+    }
 }
 
 void AbstractContainerScreen::renderLabels() {}
