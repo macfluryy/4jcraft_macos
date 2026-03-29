@@ -13,7 +13,7 @@ public:
     // 4J - this used to be an enum
     class Option {
     public:
-        static const Option options[18];
+        static const Option options[17];
         static const Option* MUSIC;
         static const Option* SOUND;
         static const Option* INVERT_MOUSE;
@@ -31,7 +31,6 @@ public:
         static const Option* GAMMA;
         static const Option* RENDER_CLOUDS;
         static const Option* PARTICLES;
-        static const Option* CLASSIC_PANORAMA;
 
     private:
         const bool _isProgress;
@@ -62,7 +61,6 @@ public:
     bool invertYMouse;
     int viewDistance;
     bool bobView;
-    bool classicPanorama;
     bool anaglyph3d;
     bool advancedOpengl;
     int framerateLimit;

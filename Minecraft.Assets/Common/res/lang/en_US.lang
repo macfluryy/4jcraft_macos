@@ -189,7 +189,6 @@ options.renderDistance.short=Short
 options.renderDistance.normal=Normal
 options.renderDistance.far=Far
 options.viewBobbing=View Bobbing
-options.classicPanorama=Classic Panorama
 options.ao=Smooth Lighting
 options.anaglyph=3D Anaglyph
 options.framerateLimit=Performance

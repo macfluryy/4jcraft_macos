@@ -29,8 +29,7 @@ void VideoSettingsScreen::init() {
         Options::Option::GUI_SCALE,
         Options::Option::ADVANCED_OPENGL,
         Options::Option::GAMMA,
-        Options::Option::FOV,
-        Options::Option::CLASSIC_PANORAMA};
+        Options::Option::FOV};
 
     for (int i = 0; i < ITEM_COUNT; i++) {
         const Options::Option* item = items[i];

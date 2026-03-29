@@ -4,6 +4,11 @@ option('ui_backend',
   value : 'shiggy', 
   description : 'Specifies a backend implementation for the game UI.')
 
+option('classic_panorama',
+  type : 'boolean', 
+  value : false, 
+  description : 'Enable classic java edition panorama (ui_backend=java ONLY).')
+
 option('enable_vsync', 
   type : 'boolean', 
   value : true, 
