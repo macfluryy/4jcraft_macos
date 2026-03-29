@@ -807,11 +807,6 @@ int compare(const void* a, const void* b) {
 }
 
 #endif
-
-// 4jcraft: removed the vita & ps3 versions because they were SEVERELY annoying
-// me it looked so ugly, god.
-// if you ever hate me for it, deal with it, the source code is STILL visible if
-// you look at someone elses fork. like steamcmd
 int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     int playerIndex = mc->player->GetXboxPad();
     if (chunks[playerIndex].data == NULL) return 0;
@@ -824,17 +819,13 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     glPushMatrix();
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
-    ClipChunk* pClipChunk = chunks[playerIndex].data;
-    unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
-    bool first = true;
-    int count = 0;
+#ifdef __PS3__
     waitForCull_SPU();
     if (layer == 0) {
         count = g_cullDataIn[playerIndex].numToRender_layer0;
         RenderManager.CBuffCallMultiple(
             g_cullDataIn[playerIndex].listArray_layer0, count);
-    } else  // layer == 1
-    {
+    } else {  // layer == 1
         count = g_cullDataIn[playerIndex].numToRender_layer1;
         RenderManager.CBuffCallMultiple(
             g_cullDataIn[playerIndex].listArray_layer1, count);
@@ -891,19 +882,10 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
                                                      // first
                   });
     }
+
     {
         FRAME_PROFILE_SCOPE(ChunkPlayback);
         for (ClipChunk* chunk : sortList) {
-            // ugly occluder
-            float dx = (chunk->chunk->x + 8.0f) - (float)xOff;
-            float dy = (chunk->chunk->y + 8.0f) - (float)yOff;
-            float dz = (chunk->chunk->z + 8.0f) - (float)zOff;
-            bool isVeryNear = (dx * dx + dy * dy + dz * dz) < (16.0f * 16.0f);
-
-            if (!isVeryNear && layer == 0) {
-                // todo: occlusion flag
-            }
-
             int list = chunk->globalIdx * 2 + layer;
             list += chunkLists;
 
