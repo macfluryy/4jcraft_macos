@@ -4,6 +4,7 @@
 #include "UI/Screens/EnchantmentScreen.h"
 #include "UI/Screens/HopperScreen.h"
 #include "UI/Screens/HorseInventoryScreen.h"
+#include "UI/Screens/MerchantScreen.h"
 #include "UI/Screens/RepairScreen.h"
 #include "User.h"
 #include "../Input/Input.h"
@@ -714,10 +715,14 @@ bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap) {
 
 bool LocalPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
                               const std::wstring& name) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new MerchantScreen(inventory, traderTarget, level));
+    bool success = true;
+#else
     bool success =
         app.LoadTradingMenu(GetXboxPad(), inventory, traderTarget, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new MerchantScreen(inventory, traderTarget, level));
+#endif
     return success;
 }
 

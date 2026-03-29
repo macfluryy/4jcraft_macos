@@ -182,6 +182,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"gui/trap",
     L"gui/hopper",
     L"gui/enchant",
+    L"gui/villager",
     L"gui/brewing_stand",
     L"title/bg/panorama",
     L"title/bg/panorama0",
