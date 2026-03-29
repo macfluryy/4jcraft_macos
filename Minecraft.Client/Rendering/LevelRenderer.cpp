@@ -2948,15 +2948,20 @@ void LevelRenderer::cull(Culler* culler, float a) {
     int sizeX = maxCx - minCx + 1;
     int sizeY = maxCy - minCy + 1;
     int sizeZ = maxCz - minCz + 1;
+    int gridSize = sizeX * sizeY * sizeZ;
 
-    std::vector<ClipChunk*> grid(sizeX * sizeY * sizeZ, nullptr);
+    if (m_bfsGrid.size() < gridSize) {
+        m_bfsGrid.resize(gridSize);
+    }
+
+    memset(m_bfsGrid.data(), 0, gridSize * sizeof(ClipChunk*));
     for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         if (cc->globalIdx < 0) continue;
         int lx = intFloorDiv(cc->chunk->x, CHUNK_XZSIZE) - minCx;
         int ly = intFloorDiv(cc->chunk->y, CHUNK_SIZE) - minCy;
         int lz = intFloorDiv(cc->chunk->z, CHUNK_XZSIZE) - minCz;
-        grid[(lx * sizeY + ly) * sizeZ + lz] = cc;
+        m_bfsGrid[(lx * sizeY + ly) * sizeZ + lz] = cc;
     }
 
     auto getChunkAt = [&](int cx, int cy, int cz) -> ClipChunk* {
@@ -2965,7 +2970,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
         int lz = cz - minCz;
         if (lx >= 0 && lx < sizeX && ly >= 0 && ly < sizeY && lz >= 0 &&
             lz < sizeZ) {
-            return grid[(lx * sizeY + ly) * sizeZ + lz];
+            return m_bfsGrid[(lx * sizeY + ly) * sizeZ + lz];
         }
         return nullptr;
     };
@@ -3014,14 +3019,20 @@ void LevelRenderer::cull(Culler* culler, float a) {
         int incomingFace;
     };
 
-    std::vector<BFSNode> q;
-    q.reserve(chunks[playerIndex].length * 2);
+    static thread_local std::vector<BFSNode> q;
+    q.clear();
+    q.reserve(chunks[playerIndex].length);
     int qHead = 0;
 
-    std::vector<uint8_t> visitedFaces(chunks[playerIndex].length, 0);
+    int visitedSize = chunks[playerIndex].length;
+    if (m_bfsVisitedFaces[playerIndex].size() < visitedSize) {
+        m_bfsVisitedFaces[playerIndex].resize(visitedSize, 0);
+    }
+    memset(m_bfsVisitedFaces[playerIndex].data(), 0, visitedSize);
 
     q.push_back({startChunk, -1});
-    visitedFaces[startChunk - chunks[playerIndex].data] = 0x3F;
+    m_bfsVisitedFaces[playerIndex][startChunk - chunks[playerIndex].data] =
+        0x3F;
 
     static const int OFFSETS[6][3] = {
         {0, -1, 0},  // 0: -Y
@@ -3096,7 +3107,9 @@ void LevelRenderer::cull(Culler* culler, float a) {
             int nIdx = neighbor - chunks[playerIndex].data;
             int nextIncFace = outFace ^ 1;
 
-            if ((visitedFaces[nIdx] & (1 << nextIncFace)) != 0) continue;
+            if ((m_bfsVisitedFaces[playerIndex][nIdx] & (1 << nextIncFace)) !=
+                0)
+                continue;
 
             float cellBounds[6] = {
                 (float)neighbor->chunk->x - 0.1f,
@@ -3108,7 +3121,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
 
             if (!clip(cellBounds, fdraw)) continue;
 
-            visitedFaces[nIdx] |= (1 << nextIncFace);
+            m_bfsVisitedFaces[playerIndex][nIdx] |= (1 << nextIncFace);
             q.push_back({neighbor, nextIncFace});
         }
     }

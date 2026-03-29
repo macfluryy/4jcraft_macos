@@ -221,13 +221,15 @@ private:
     OffsettedRenderList renderLists[RENDERLISTS_LENGTH];
     void setGlobalChunkConnectivity(int index, uint64_t conn);
     uint64_t getGlobalChunkConnectivity(int index);
+    std::vector<ClipChunk*> m_bfsGrid;
+    std::vector<uint8_t> m_bfsVisitedFaces[4];
     std::unordered_map<int, BlockDestructionProgress*> destroyingBlocks;
     Icon** breakingTextures;
 
     void addRenderableTileEntity_Locked(
         int key, const std::shared_ptr<TileEntity>& tileEntity);
-    void eraseRenderableTileEntity_Locked(
-        RenderableTileEntityBucket& bucket, TileEntity* tileEntity);
+    void eraseRenderableTileEntity_Locked(RenderableTileEntityBucket& bucket,
+                                          TileEntity* tileEntity);
     void queueRenderableTileEntityForRemoval_Locked(int key,
                                                     TileEntity* tileEntity);
     void retireRenderableTileEntitiesForChunkKey(int key);
