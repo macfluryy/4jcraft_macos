@@ -6,8 +6,6 @@ class UIScene_SettingsOptionsMenu : public UIScene {
 private:
     enum EControls {
         eControl_ViewBob,
-        // 4jcraft
-        eControl_ClassicPanorama,
         eControl_ShowHints,
         eControl_ShowTooltips,
         eControl_InGameGamertags,
@@ -22,8 +20,8 @@ protected:
     static int m_iDifficultyTitleSettingA[4];
 
 private:
-    UIControl_CheckBox m_checkboxViewBob, m_checkboxClassicPanorama,
-        m_checkboxShowHints, m_checkboxShowTooltips, m_checkboxInGameGamertags,
+    UIControl_CheckBox m_checkboxViewBob, m_checkboxShowHints,
+        m_checkboxShowTooltips, m_checkboxInGameGamertags,
         m_checkboxMashupWorlds;                             // Checkboxes
     UIControl_Slider m_sliderAutosave, m_sliderDifficulty;  // Sliders
     UIControl_Label m_labelDifficultyText;                  // Text
@@ -31,8 +29,6 @@ private:
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_ELEMENT(m_checkboxViewBob, "ViewBob")
-    // 4jcraft
-    UI_MAP_ELEMENT(m_checkboxClassicPanorama, "ClassicPanorama")
     UI_MAP_ELEMENT(m_checkboxShowHints, "ShowHints")
     UI_MAP_ELEMENT(m_checkboxShowTooltips, "ShowTooltips")
     UI_MAP_ELEMENT(m_checkboxInGameGamertags, "InGameGamertags")
