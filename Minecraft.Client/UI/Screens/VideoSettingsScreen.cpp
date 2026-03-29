@@ -7,7 +7,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
 // 4jcraft
-#define ITEM_COUNT 11
+#define ITEM_COUNT 10
 
 VideoSettingsScreen::VideoSettingsScreen(Screen* lastScreen, Options* options) {
     this->title = L"Video Settings";  // 4J - added
