@@ -184,37 +184,37 @@ HitResult* AABB::clip(const Vec3& a, const Vec3& b) const {
     auto zh0 = a.clipZ(b, z0);
     auto zh1 = a.clipZ(b, z1);
 
-    if (!(xh0.has_value() and containsX(*xh0))) xh0 = std::nullopt;
-    if (!(xh1.has_value() and containsX(*xh1))) xh1 = std::nullopt;
-    if (!(yh0.has_value() and containsY(*yh0))) yh0 = std::nullopt;
-    if (!(yh1.has_value() and containsY(*yh1))) yh1 = std::nullopt;
-    if (!(zh0.has_value() and containsZ(*zh0))) zh0 = std::nullopt;
-    if (!(zh1.has_value() and containsZ(*zh1))) zh1 = std::nullopt;
+    if (!containsX(xh0)) xh0 = std::nullopt;
+    if (!containsX(xh1)) xh1 = std::nullopt;
+    if (!containsY(yh0)) yh0 = std::nullopt;
+    if (!containsY(yh1)) yh1 = std::nullopt;
+    if (!containsZ(zh0)) zh0 = std::nullopt;
+    if (!containsZ(zh1)) zh1 = std::nullopt;
 
     std::optional<Vec3> closest = std::nullopt;
 
-    if (xh0.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*xh0) < a.distanceToSqr(*closest)))
+    if (xh0.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*xh0) < a.distanceToSqr(*closest)))
         closest = xh0;
 
-    if (xh1.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*xh1) < a.distanceToSqr(*closest)))
+    if (xh1.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*xh1) < a.distanceToSqr(*closest)))
         closest = xh1;
 
-    if (yh0.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*yh0) < a.distanceToSqr(*closest)))
+    if (yh0.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*yh0) < a.distanceToSqr(*closest)))
         closest = yh0;
 
-    if (yh1.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*yh1) < a.distanceToSqr(*closest)))
+    if (yh1.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*yh1) < a.distanceToSqr(*closest)))
         closest = yh1;
 
-    if (zh0.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*zh0) < a.distanceToSqr(*closest)))
+    if (zh0.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*zh0) < a.distanceToSqr(*closest)))
         closest = zh0;
 
-    if (zh1.has_value() and (!closest.has_value() or
-                             a.distanceToSqr(*zh1) < a.distanceToSqr(*closest)))
+    if (zh1.has_value() && (!closest.has_value() ||
+                            a.distanceToSqr(*zh1) < a.distanceToSqr(*closest)))
         closest = zh1;
 
     if (!closest.has_value()) return nullptr;
@@ -231,16 +231,19 @@ HitResult* AABB::clip(const Vec3& a, const Vec3& b) const {
     return new HitResult(0, 0, 0, face, *closest);
 }
 
-bool AABB::containsX(const Vec3& v) const {
-    return v.y >= y0 && v.y <= y1 && v.z >= z0 && v.z <= z1;
+bool AABB::containsX(const std::optional<Vec3>& v) const {
+    if (!v.has_value()) return false;
+    return v->y >= y0 && v->y <= y1 && v->z >= z0 && v->z <= z1;
 }
 
-bool AABB::containsY(const Vec3& v) const {
-    return v.x >= x0 && v.x <= x1 && v.z >= z0 && v.z <= z1;
+bool AABB::containsY(const std::optional<Vec3>& v) const {
+    if (!v.has_value()) return false;
+    return v->x >= x0 && v->x <= x1 && v->z >= z0 && v->z <= z1;
 }
 
-bool AABB::containsZ(const Vec3& v) const {
-    return v.x >= x0 && v.x <= x1 && v.y >= y0 && v.y <= y1;
+bool AABB::containsZ(const std::optional<Vec3>& v) const {
+    if (!v.has_value()) return false;
+    return v->x >= x0 && v->x <= x1 && v->y >= y0 && v->y <= y1;
 }
 
 std::wstring AABB::toString() const {
