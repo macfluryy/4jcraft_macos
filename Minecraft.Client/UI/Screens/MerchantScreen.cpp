@@ -43,8 +43,10 @@ void MerchantScreen::init() {
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
 
-    nextRecipeButton = new TradeSwitchButton(1, xo + 120 + 27, yo + 24 - 1, true);
-    prevRecipeButton = new TradeSwitchButton(2, xo + 36 - 19, yo + 24 - 1, false);
+    nextRecipeButton =
+        new TradeSwitchButton(1, xo + 120 + 27, yo + 24 - 1, true);
+    prevRecipeButton =
+        new TradeSwitchButton(2, xo + 36 - 19, yo + 24 - 1, false);
 
     nextRecipeButton->active = false;
     prevRecipeButton->active = false;
@@ -73,7 +75,7 @@ void MerchantScreen::renderBg(float a) {
 
     MerchantRecipe* activeRecipe =
         merchantMenu->getTradeContainer()->getActiveRecipe();
-    if (activeRecipe != nullptr && !activeRecipe->isDeprecated()) {
+    if (activeRecipe != nullptr && activeRecipe->isDeprecated()) {
         blit(xo + 83, yo + 21, 212, 0, 28, 21);
         blit(xo + 83, yo + 51, 212, 0, 28, 21);
     }
