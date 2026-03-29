@@ -17,7 +17,7 @@
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex =
     IUIScene_CreativeMenu::eCreativeInventoryTab_BuildingBlocks;
-int CreativeInventoryScreen::tabIconIds
+const int CreativeInventoryScreen::tabIconIds
     [IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT] = {
         // Building Blocks
         Tile::redBrick_Id,
@@ -48,6 +48,7 @@ int CreativeInventoryScreen::tabIconIds
 
         // Materials
         Item::bucket_lava_Id};
+
 std::shared_ptr<SimpleContainer> CreativeInventoryScreen::basicInventory =
     std::make_shared<SimpleContainer>(0, L"", false, ITEMS_PER_PAGE);
 ItemRenderer* CreativeInventoryScreen::itemRenderer = new ItemRenderer();
@@ -378,6 +379,13 @@ void CreativeInventoryScreen::render(int xm, int ym, float a) {
     }
 
     AbstractContainerScreen::render(xm, ym, a);
+
+    for (int i = 0; i < IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT;
+         i++) {
+        if (renderIconTooltip(i, xm, ym)) {
+            break;
+        }
+    }
 }
 
 void CreativeInventoryScreen::renderLabels() {
@@ -409,7 +417,7 @@ void CreativeInventoryScreen::renderBg(float a) {
     for (int tab = 0; tab < IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT;
          tab++) {
         if (tab != selectedTabIndex) {
-            drawTab(tab);
+            renderTab(tab);
         }
     }
 
@@ -433,8 +441,31 @@ void CreativeInventoryScreen::renderBg(float a) {
     }
 
     // Render selected tab last (on top)
-    drawTab(selectedTabIndex);
+    renderTab(selectedTabIndex);
 #endif
+}
+
+bool CreativeInventoryScreen::isMouseOverInternal(int tab, int mouseX,
+                                                  int mouseY, int xo, int yo,
+                                                  int w, int h) {
+    int tabColumn = tab % 6;
+    int x = (tabColumn * 28) + xo;
+    int y = yo;
+
+    if (tabColumn == 5) {
+        x = imageWidth - 28 + 2;
+    } else if (tabColumn > 0) {
+        x += tabColumn;
+    }
+
+    if (tab < 6) {
+        y -= 32;
+    } else {
+        y = imageHeight;
+    }
+
+    return ((mouseX >= x && mouseX <= x + w) &&
+            (mouseY >= y && mouseY <= y + h));
 }
 
 void CreativeInventoryScreen::setCurrentCreativeTab(int tab) {
@@ -477,27 +508,14 @@ bool CreativeInventoryScreen::needsScrollBars() {
 }
 
 bool CreativeInventoryScreen::isMouseOverTab(int tab, int mouseX, int mouseY) {
-    int tabColumn = tab % 6;
-    int x = tabColumn * 28;
-    int y = 0;
-
-    if (tabColumn == 5) {
-        x = imageWidth - 28 + 2;
-    } else if (tabColumn > 0) {
-        x += tabColumn;
-    }
-
-    if (tab < 6) {
-        y -= 32;
-    } else {
-        y = imageHeight;
-    }
-
-    return ((mouseX >= x && mouseX <= x + 28) &&
-            (mouseY >= y && mouseY <= y + 32));
+    return isMouseOverInternal(tab, mouseX, mouseY, 0, 0, 28, 32);
 }
 
-void CreativeInventoryScreen::drawTab(int tab) {
+bool CreativeInventoryScreen::isMouseOverIcon(int tab, int mouseX, int mouseY) {
+    return isMouseOverInternal(tab, mouseX, mouseY, 7, 12, 14, 16);
+}
+
+void CreativeInventoryScreen::renderTab(int tab) {
 #ifdef ENABLE_JAVA_GUIS
     bool isSelected = (selectedTabIndex == tab);
     bool tabFirstRow = (tab < 6);
@@ -544,4 +562,22 @@ void CreativeInventoryScreen::drawTab(int tab) {
                                            tabIcons[tab], x, y);
     glDisable(GL_LIGHTING);
 #endif
+}
+
+bool CreativeInventoryScreen::renderIconTooltip(int tab, int mouseX,
+                                                int mouseY) {
+    int x = mouseX - (width - imageWidth) / 2;
+    int y = mouseY - (height - imageHeight) / 2;
+
+    if (isMouseOverIcon(tab, x, y)) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_DEPTH_TEST);
+        renderTooltip(
+            app.GetString(IUIScene_CreativeMenu::specs[tab]->m_descriptionId),
+            mouseX, mouseY);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_DEPTH_TEST);
+        return true;
+    }
+    return false;
 }
