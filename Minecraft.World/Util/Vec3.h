@@ -9,8 +9,9 @@ class Vec3 {
 public:
     double x, y, z;
 
-    Vec3() {}
-    Vec3(double x, double y, double z);
+    constexpr Vec3() = default;
+    constexpr Vec3(const double x, const double y, const double z)
+        : x(x), y(y), z(z) {}
 
     Vec3 vectorTo(const Vec3& p) const;
     Vec3 normalize() const;
