@@ -664,6 +664,8 @@ void Entity::move(double xa, double ya, double za,
     double yaOrg = ya;
     double zaOrg = za;
 
+    AABB bbOrg = bb;
+
     bool isPlayerSneaking =
         onGround && isSneaking() && instanceof(eTYPE_PLAYER);
 
@@ -769,6 +771,9 @@ void Entity::move(double xa, double ya, double za,
         ya = footSize;
         za = zaOrg;
 
+        AABB normal = bb;
+        bb = bbOrg;
+
         // 4J - added extra expand, as if we don't move up by footSize by
         // hitting a block above us, then overall we could be trying to move as
         // much as footSize downwards, so we'd better include cubes under our
@@ -825,6 +830,7 @@ void Entity::move(double xa, double ya, double za,
             xa = xaN;
             ya = yaN;
             za = zaN;
+            bb = normal;
         }
     }
 
