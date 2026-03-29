@@ -767,10 +767,10 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
     }
     Lighting::turnOff();
     glColor4f(1, 1, 1, 1);
-    glColor4f(1, 1, 1, 1);
+    mc->gameRenderer->turnOnLightLayer(alpha);
 
     int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
-
+    mc->gameRenderer->turnOffLightLayer(alpha);
     return count;
 }
 
@@ -791,13 +791,14 @@ int compare(const void* a, const void* b) {
 int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     int playerIndex = mc->player->GetXboxPad();
     if (chunks[playerIndex].data == NULL) return 0;
-
+    mc->gameRenderer->turnOnLightLayer(alpha);
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     double xOff = player->xOld + (player->x - player->xOld) * alpha;
     double yOff = player->yOld + (player->y - player->yOld) * alpha;
     double zOff = player->zOld + (player->z - player->zOld) * alpha;
 
     glPushMatrix();
+
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
 #ifdef __PS3__
