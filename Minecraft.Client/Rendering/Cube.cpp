@@ -21,7 +21,7 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
                 Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0},
                 Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0},
                 Vertex{0, 0, 0, 0, 0}, Vertex{0, 0, 0, 0, 0}}),
-     polygons({}) {
+      polygons({}) {
     float x1 = x0 + w;
     float y1 = y0 + h;
     float z1 = z0 + d;
@@ -89,10 +89,10 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
                 modelPart->xTexSize, modelPart->yTexSize);  // Down
     }
     if (faceMask & 16)
-        polygons[faceCount++] = _Polygon(
-            std::array<const Vertex, 4>{u1, u0, u3, u2}, xTexOffs + d,
-            yTexOffs + d, xTexOffs + d + w, yTexOffs + d + h,
-            modelPart->xTexSize, modelPart->yTexSize);  // Front
+        polygons[faceCount++] =
+            _Polygon(std::array<const Vertex, 4>{u1, u0, u3, u2}, xTexOffs + d,
+                     yTexOffs + d, xTexOffs + d + w, yTexOffs + d + h,
+                     modelPart->xTexSize, modelPart->yTexSize);  // Front
     if (faceMask & 32)
         polygons[faceCount++] = _Polygon(
             std::array<const Vertex, 4>{l0, l1, l2, l3}, xTexOffs + d + w + d,
@@ -101,8 +101,7 @@ Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,
             modelPart->yTexSize);  // Back
 
     if (modelPart->bMirror) {
-        for (unsigned int i = 0; i < polygons.size(); i++)
-            polygons[i].mirror();
+        for (unsigned int i = 0; i < polygons.size(); i++) polygons[i].mirror();
     }
 }
 

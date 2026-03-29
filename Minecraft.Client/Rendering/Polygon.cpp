@@ -5,7 +5,8 @@
 #include <vector>
 
 _Polygon::_Polygon(const std::span<const Vertex> vertices)
-    : vertexCount(vertices.size()), vertices(vertices.begin(), vertices.end()) {}
+    : vertexCount(vertices.size()),
+      vertices(vertices.begin(), vertices.end()) {}
 
 _Polygon::_Polygon(const std::span<const Vertex, 4> vertices, int u0, int v0,
                    int u1, int v1, float xTexSize, float yTexSize)
@@ -32,9 +33,7 @@ _Polygon::_Polygon(const std::span<const Vertex, 4> vertices, float u0,
           vertices[3].remap(u1, v1),
       }) {}
 
-void _Polygon::mirror() {
-    std::reverse(vertices.begin(), vertices.end());
-}
+void _Polygon::mirror() { std::reverse(vertices.begin(), vertices.end()); }
 
 void _Polygon::render(Tesselator* t, float scale) {
     Vec3 v0 = vertices[1].pos.vectorTo(vertices[0].pos);
