@@ -363,7 +363,6 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
             signInReturnedFunc =
                 &UIScene_MainMenu::UnlockFullGame_SignInReturned;
             break;
-#if defined _XBOX
         case eControl_Exit:
             if (ProfileManager.IsFullVersion()) {
                 unsigned int uiIDA[2];
@@ -372,14 +371,16 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
                 ui.RequestErrorMessage(
                     IDS_WARNING_ARCADE_TITLE, IDS_WARNING_ARCADE_TEXT, uiIDA, 2,
                     XUSER_INDEX_ANY, &UIScene_MainMenu::ExitGameReturned, this);
-            } else {
+            }
+#if defined _XBOX //|| _ENABLEIGGY
+            else {
 #ifdef _XBOX_ONE
                 ui.ShowPlayerDisplayname(true);
 #endif
                 ui.NavigateToScene(primaryPad, eUIScene_TrialExitUpsell);
             }
-            break;
 #endif
+            break;
 
 #ifdef _DURANGO
         case eControl_XboxHelp:

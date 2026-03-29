@@ -7071,6 +7071,9 @@ All Ender Chests in a world are linked. Items placed into an Ender Chest are acc
 	<data name="IDS_OK">
 		<value>OK</value>
 	</data>
+    <data name="IDS_CANCEL">
+          <value>Cancel</value>
+    </data>
 	<data name="IDS_BACK_BUTTON">
 		<value>SELECT</value>
 	</data>
@@ -7197,6 +7200,9 @@ You can upload a world save to the save transfer area using Minecraft: PlayStati
 	</data>
 	<data name="IDS_WARNING_ARCADE_TITLE">
 		<value>Exit Game</value>
+	</data>
+    <data name="IDS_WARNING_ARCADE_TEXT">
+		<value>Are you sure you want to exit the game?</value>
 	</data>
 	<data name="IDS_PRO_RETURNEDTOTITLESCREEN_TEXT">
 		<value>You have been returned to the title screen because your Xbox profile was signed out</value>
