@@ -91,6 +91,9 @@ ResourceLocation LevelRenderer::END_SKY_LOCATION =
 
 const unsigned int HALO_RING_RADIUS = 100;
 
+uint64_t* LevelRenderer::globalChunkConnectivity =
+    nullptr;  // bad placement do bettr juicey
+
 #ifdef _LARGE_WORLDS
 Chunk LevelRenderer::permaChunk[MAX_CONCURRENT_CHUNK_REBUILDS];
 C4JThread* LevelRenderer::rebuildThreads[MAX_CHUNK_REBUILD_THREADS];
@@ -188,6 +191,10 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
              // each of the opaque & transparent layers
     globalChunkFlags = new unsigned char[getGlobalChunkCount()];
     memset(globalChunkFlags, 0, getGlobalChunkCount());
+
+    globalChunkConnectivity = new uint64_t[getGlobalChunkCount()];
+    memset(globalChunkConnectivity, 0xFF,
+           getGlobalChunkCount() * sizeof(uint64_t));  // 0xFF >> Fully open
 
     starList = MemoryTracker::genLists(4);
 
@@ -801,14 +808,14 @@ int compare(const void* a, const void* b) {
 
 #endif
 
+// 4jcraft: removed the vita & ps3 versions because they were SEVERELY annoying
+// me it looked so ugly, god.
+// if you ever hate me for it, deal with it, the source code is STILL visible if
+// you look at someone elses fork. like steamcmd
 int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
-    int playerIndex = mc->player->GetXboxPad();  // 4J added
+    int playerIndex = mc->player->GetXboxPad();
+    if (chunks[playerIndex].data == NULL) return 0;
 
-#if 1
-    // 4J - cut down version, we're not using offsetted render lists, or a
-    // sorted chunk list, anymore
-    mc->gameRenderer->turnOnLightLayer(
-        alpha);  // 4J - brought forward from 1.8.2
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     double xOff = player->xOld + (player->x - player->xOld) * alpha;
     double yOff = player->yOld + (player->y - player->yOld) * alpha;
@@ -817,14 +824,9 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     glPushMatrix();
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
-#ifdef __PSVITA__
-    // AP - also set the camera position so we can work out if a chunk is fogged
-    // or not
-    RenderManager.SetCameraPosition((float)-xOff, (float)-yOff, (float)-zOff);
-#endif
-
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
-    // pre- calc'd on the SPU
+    ClipChunk* pClipChunk = chunks[playerIndex].data;
+    unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
+    bool first = true;
     int count = 0;
     waitForCull_SPU();
     if (layer == 0) {
@@ -905,12 +907,11 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
             int list = chunk->globalIdx * 2 + layer;
             list += chunkLists;
 
-            // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per
-            // chunk no more full MVP upload per chunk, can also be bkwards
-            // compat
-            RenderManager.SetChunkOffset((float)chunk->chunk->x,
-                                         (float)chunk->chunk->y,
-                                         (float)chunk->chunk->z);
+            // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per chunk
+            // no more full MVP upload per chunk, can also be bkwards compat
+            RenderManager.SetChunkOffset((float)pClipChunk->chunk->x,
+                                         (float)pClipChunk->chunk->y,
+                                         (float)pClipChunk->chunk->z);
 
             if (RenderManager.CBuffCall(list, first)) {
                 first = false;
@@ -960,61 +961,7 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
 #endif  // __PS3__
 
     glPopMatrix();
-    mc->gameRenderer->turnOffLightLayer(
-        alpha);  // 4J - brought forward from 1.8.2
-
-#else
-    _renderChunks.clear();
-    // int p = 0;
-    int count = 0;
-    for (int i = from; i < to; i++) {
-        if (layer == 0) {
-            totalChunks++;
-            if (sortedChunks[playerIndex]->at(i)->emptyFlagSet(layer))
-                emptyChunks++;
-            else if (!sortedChunks[playerIndex]->at(i)->visible)
-                offscreenChunks++;
-            else
-                renderedChunks++;
-        }
-
-        //            if (!sortedChunks[i].empty[layer] &&
-        //            sortedChunks[i].visible &&
-        //            (sortedChunks[i].occlusion_visible)) {
-        if (!(sortedChunks[playerIndex]->at(i)->emptyFlagSet(layer) &&
-              sortedChunks[playerIndex]->at(i)->visible)) {
-            int list = sortedChunks[playerIndex]->at(i)->getList(layer);
-            if (list >= 0) {
-                _renderChunks.push_back(sortedChunks[playerIndex]->at(i));
-                count++;
-            }
-        }
-    }
-
-    std::shared_ptr<Mob> player = mc->cameraTargetPlayer;
-    double xOff = player->xOld + (player->x - player->xOld) * alpha;
-    double yOff = player->yOld + (player->y - player->yOld) * alpha;
-    double zOff = player->zOld + (player->z - player->zOld) * alpha;
-
-    for (int l = 0; l < RENDERLISTS_LENGTH; l++) renderLists[l].clear();
-    int lists = 0;
-    for (auto it = _renderChunks.begin(); it != _renderChunks.end(); it++) {
-        Chunk* chunk = *it;
-        int list = -1;
-        for (int l = 0; l < lists; l++) {
-            if (renderLists[l].isAt(chunk->xRender, chunk->yRender,
-                                    chunk->zRender))
-                list = l;
-        }
-        if (list < 0) {
-            list = lists++;
-            renderLists[list].init(chunk->xRender, chunk->yRender,
-                                   chunk->zRender, xOff, yOff, zOff);
-        }
-        renderLists[list].add(chunk->getList(layer));
-    }
-    renderSameAsLast(layer, alpha);
-#endif
+    mc->gameRenderer->turnOffLightLayer(alpha);
 
     return count;
 }
@@ -1990,10 +1937,9 @@ bool LevelRenderer::updateDirtyChunks() {
                 return;
             }
 
-            const int newCount =
-                (count < MAX_CONCURRENT_CHUNK_REBUILDS)
-                    ? (count + 1)
-                    : MAX_CONCURRENT_CHUNK_REBUILDS;
+            const int newCount = (count < MAX_CONCURRENT_CHUNK_REBUILDS)
+                                     ? (count + 1)
+                                     : MAX_CONCURRENT_CHUNK_REBUILDS;
             for (int i = newCount - 1; i > pos; --i) {
                 items[i] = items[i - 1];
             }
@@ -2030,8 +1976,8 @@ bool LevelRenderer::updateDirtyChunks() {
         int index = 0;
 
         do {
-            // See comment on dirtyChunksLockFreeStack.Push() regarding details of
-            // this casting/subtracting -2.
+            // See comment on dirtyChunksLockFreeStack.Push() regarding details
+            // of this casting/subtracting -2.
             index = (size_t)dirtyChunksLockFreeStack.Pop();
 #ifdef _CRITICAL_CHUNKS
             int oldIndex = index;
@@ -2040,9 +1986,9 @@ bool LevelRenderer::updateDirtyChunks() {
 #endif
             if (index == 1)
                 dirtyChunkPresent =
-                    true;  // 1 is a special value passed to let this thread know
-                           // that a chunk which isn't on this stack has been set to
-                           // dirty
+                    true;  // 1 is a special value passed to let this thread
+                           // know that a chunk which isn't on this stack has
+                           // been set to dirty
             else if (index > 1) {
                 int i2 = index - 2;
                 if (i2 >= DIMENSION_OFFSETS[2]) {
@@ -2057,8 +2003,9 @@ bool LevelRenderer::updateDirtyChunks() {
                 setGlobalChunkFlag(index - 2, CHUNK_FLAG_DIRTY);
 
 #ifdef _CRITICAL_CHUNKS
-                if (!(oldIndex & 0x10000000))  // was this chunk not marked as
-                                               // non-critical. Ugh double negatives
+                if (!(oldIndex &
+                      0x10000000))  // was this chunk not marked as
+                                    // non-critical. Ugh double negatives
                 {
                     setGlobalChunkFlag(index - 2, CHUNK_FLAG_CRITICAL);
                 }
@@ -2068,20 +2015,21 @@ bool LevelRenderer::updateDirtyChunks() {
             }
         } while (index);
 
-        // Only bother searching round all the chunks if we have some dirty chunk(s)
+        // Only bother searching round all the chunks if we have some dirty
+        // chunk(s)
         if (dirtyChunkPresent) {
             lastDirtyChunkFound = System::currentTimeMillis();
             PIXBeginNamedEvent(0, "Finding nearest chunk\n");
 #if defined __PS3__ && !defined DISABLE_SPU_CODE
-            // find the nearest chunk with a spu task, copy all the data over here
-            // for uploading to SPU
+            // find the nearest chunk with a spu task, copy all the data over
+            // here for uploading to SPU
             g_findNearestChunkDataIn.numGlobalChunks = getGlobalChunkCount();
             g_findNearestChunkDataIn.pGlobalChunkFlags = globalChunkFlags;
             g_findNearestChunkDataIn.onlyRebuild = onlyRebuild;
             g_findNearestChunkDataIn.lowerOffset =
                 (int)&((LevelChunk*)0)
-                    ->lowerBlocks;  // dodgy bit of class structure poking, as we
-                                    // don't want to try and get the whole of
+                    ->lowerBlocks;  // dodgy bit of class structure poking, as
+                                    // we don't want to try and get the whole of
                                     // LevelChunk copmpiling on SPU
             g_findNearestChunkDataIn.upperOffset =
                 (int)&((LevelChunk*)0)->upperBlocks;
@@ -2107,11 +2055,14 @@ bool LevelRenderer::updateDirtyChunks() {
                 }
                 if (level[i] != NULL) {
                     g_findNearestChunkDataIn.multiplayerChunkCache[i].XZOFFSET =
-                        ((MultiPlayerChunkCache*)(level[i]->chunkSource))->XZOFFSET;
+                        ((MultiPlayerChunkCache*)(level[i]->chunkSource))
+                            ->XZOFFSET;
                     g_findNearestChunkDataIn.multiplayerChunkCache[i].XZSIZE =
-                        ((MultiPlayerChunkCache*)(level[i]->chunkSource))->XZSIZE;
+                        ((MultiPlayerChunkCache*)(level[i]->chunkSource))
+                            ->XZSIZE;
                     g_findNearestChunkDataIn.multiplayerChunkCache[i].cache =
-                        (void**)((MultiPlayerChunkCache*)(level[i]->chunkSource))
+                        (void**)((MultiPlayerChunkCache*)(level[i]
+                                                              ->chunkSource))
                             ->cache;
                 }
             }
@@ -2128,20 +2079,22 @@ bool LevelRenderer::updateDirtyChunks() {
 
             // Find nearest chunk that is dirty
             for (int p = 0; p < XUSER_MAX_COUNT; p++) {
-                // It's possible that the localplayers member can be set to NULL on
-                // the main thread when a player chooses to exit the game So take a
-                // reference to the player object now. As it is a shared_ptr it
-                // should live as long as we need it
+                // It's possible that the localplayers member can be set to NULL
+                // on the main thread when a player chooses to exit the game So
+                // take a reference to the player object now. As it is a
+                // shared_ptr it should live as long as we need it
                 std::shared_ptr<LocalPlayer> player = mc->localplayers[p];
                 if (player == NULL) continue;
                 if (chunks[p].data == NULL) continue;
                 if (level[p] == NULL) continue;
-                if (chunks[p].length != xChunks * zChunks * CHUNK_Y_COUNT) continue;
+                if (chunks[p].length != xChunks * zChunks * CHUNK_Y_COUNT)
+                    continue;
                 int px = (int)player->x;
                 int py = (int)player->y;
                 int pz = (int)player->z;
 
-                //			app.DebugPrintf("!! %d %d %d, %d %d %d {%d,%d}
+                //			app.DebugPrintf("!! %d %d %d, %d %d %d
+                //{%d,%d}
                 //",px,py,pz,stackChunkDirty,nonStackChunkDirty,onlyRebuild,
                 // xChunks, zChunks);
 
@@ -2152,19 +2105,19 @@ bool LevelRenderer::updateDirtyChunks() {
                         for (int y = 0; y < CHUNK_Y_COUNT; y++) {
                             ClipChunk* pClipChunk =
                                 &chunks[p][(z * yChunks + y) * xChunks + x];
-                            // Get distance to this chunk - deliberately not calling
-                            // the chunk's method of doing this to avoid overheads
-                            // (passing entitie, type conversion etc.) that this
-                            // involves
+                            // Get distance to this chunk - deliberately not
+                            // calling the chunk's method of doing this to avoid
+                            // overheads (passing entitie, type conversion etc.)
+                            // that this involves
                             int xd = pClipChunk->xm - px;
                             int yd = pClipChunk->ym - py;
                             int zd = pClipChunk->zm - pz;
                             int distSq = xd * xd + yd * yd + zd * zd;
                             int distSqWeighted =
                                 xd * xd + yd * yd * 4 +
-                                zd *
-                                    zd;  // Weighting against y to prioritise things
-                                         // in same x/z plane as player first
+                                zd * zd;  // Weighting against y to prioritise
+                                          // things in same x/z plane as player
+                                          // first
 
                             if (globalChunkFlags[pClipChunk->globalIdx] &
                                 CHUNK_FLAG_DIRTY) {
@@ -2172,11 +2125,11 @@ bool LevelRenderer::updateDirtyChunks() {
                                     globalChunkFlags[pClipChunk->globalIdx] &
                                         CHUNK_FLAG_COMPILED ||
                                     (distSq <
-                                     20 * 20))  // Always rebuild really near things
-                                                // or else building (say) at tower
-                                                // up into empty blocks when we are
-                                                // low on memory will not create
-                                                // render data
+                                     20 * 20))  // Always rebuild really near
+                                                // things or else building (say)
+                                                // at tower up into empty blocks
+                                                // when we are low on memory
+                                                // will not create render data
                                 {
                                     considered++;
                                     // Is this chunk nearer than our nearest?
@@ -2189,33 +2142,36 @@ bool LevelRenderer::updateDirtyChunks() {
 #endif
 
 #ifdef _CRITICAL_CHUNKS
-                                    // AP - this will make sure that if a deferred
-                                    // grouping has started, only critical chunks go
-                                    // into that grouping, even if a non-critical
-                                    // chunk is closer.
+                                    // AP - this will make sure that if a
+                                    // deferred grouping has started, only
+                                    // critical chunks go into that grouping,
+                                    // even if a non-critical chunk is closer.
                                     if ((!veryNearCount && isNearer) ||
                                         (distSq < 20 * 20 &&
-                                         (globalChunkFlags[pClipChunk->globalIdx] &
+                                         (globalChunkFlags[pClipChunk
+                                                               ->globalIdx] &
                                           CHUNK_FLAG_CRITICAL)))
 #else
                                     if (isNearer)
 #endif
                                     {
-                                        // At this point we've got a chunk that we
-                                        // would like to consider for rendering, at
-                                        // least based on its proximity to the
-                                        // player(s). Its *quite* quick to generate
-                                        // empty render data for render chunks, but
-                                        // if we let the rebuilding do that then the
-                                        // after rebuilding we will have to start
-                                        // searching for the next nearest chunk from
-                                        // scratch again. Instead, its better to
-                                        // detect empty chunks at this stage, flag
-                                        // them up as not dirty (and empty), and
-                                        // carry on. The levelchunk's
-                                        // isRenderChunkEmpty method can be quite
-                                        // optimal as it can make use of the chunk's
-                                        // data compression to detect emptiness
+                                        // At this point we've got a chunk that
+                                        // we would like to consider for
+                                        // rendering, at least based on its
+                                        // proximity to the player(s). Its
+                                        // *quite* quick to generate empty
+                                        // render data for render chunks, but if
+                                        // we let the rebuilding do that then
+                                        // the after rebuilding we will have to
+                                        // start searching for the next nearest
+                                        // chunk from scratch again. Instead,
+                                        // its better to detect empty chunks at
+                                        // this stage, flag them up as not dirty
+                                        // (and empty), and carry on. The
+                                        // levelchunk's isRenderChunkEmpty
+                                        // method can be quite optimal as it can
+                                        // make use of the chunk's data
+                                        // compression to detect emptiness
                                         // without actually testing as many data
                                         // items as uncompressed data would.
                                         Chunk* chunk = pClipChunk->chunk;
@@ -2225,8 +2181,8 @@ bool LevelRenderer::updateDirtyChunks() {
                                             nearChunk = pClipChunk;
                                             minDistSq = distSqWeighted;
 #ifdef _LARGE_WORLDS
-                                            nearestClipChunks.insert(
-                                                nearChunk, minDistSq);
+                                            nearestClipChunks.insert(nearChunk,
+                                                                     minDistSq);
 #endif
                                         } else {
                                             chunk->clearDirty();
@@ -2240,7 +2196,8 @@ bool LevelRenderer::updateDirtyChunks() {
 #ifdef _CRITICAL_CHUNKS
                                     // AP - is the chunk near and also critical
                                     if (distSq < 20 * 20 &&
-                                        ((globalChunkFlags[pClipChunk->globalIdx] &
+                                        ((globalChunkFlags[pClipChunk
+                                                               ->globalIdx] &
                                           CHUNK_FLAG_CRITICAL)))
 #else
                                     if (distSq < 20 * 20)
@@ -2270,24 +2227,25 @@ bool LevelRenderer::updateDirtyChunks() {
                 chunk = nearestClipChunks.items[i].first->chunk;
                 // If this chunk is very near, then move the renderer into a
                 // deferred mode. This won't commit any command buffers for
-                // rendering until we call CBuffDeferredModeEnd(), allowing us to
-                // group any near changes into an atomic unit. This is essential so
-                // we don't temporarily create any holes in the environment whilst
-                // updating one chunk and not the neighbours. The "ver near" aspect
-                // of this is just a cosmetic nicety - exactly the same thing would
-                // happen further away, but we just don't care about it so much from
-                // terms of visual impact.
+                // rendering until we call CBuffDeferredModeEnd(), allowing us
+                // to group any near changes into an atomic unit. This is
+                // essential so we don't temporarily create any holes in the
+                // environment whilst updating one chunk and not the neighbours.
+                // The "ver near" aspect of this is just a cosmetic nicety -
+                // exactly the same thing would happen further away, but we just
+                // don't care about it so much from terms of visual impact.
                 if (veryNearCount > 0) {
                     RenderManager.CBuffDeferredModeStart();
                 }
                 // Build this chunk & return false to continue processing
                 chunk->clearDirty();
                 // Take a copy of the details that are required for chunk
-                // rebuilding, and rebuild That instead of the original chunk data.
-                // This is done within the m_csDirtyChunks critical section, which
-                // means that any chunks can't be repositioned whilst we are doing
-                // this copy. The copy will then be guaranteed to be consistent
-                // whilst rebuilding takes place outside of that critical section.
+                // rebuilding, and rebuild That instead of the original chunk
+                // data. This is done within the m_csDirtyChunks critical
+                // section, which means that any chunks can't be repositioned
+                // whilst we are doing this copy. The copy will then be
+                // guaranteed to be consistent whilst rebuilding takes place
+                // outside of that critical section.
                 permaChunk[index].makeCopyForRebuild(chunk);
                 ++index;
             }
@@ -2361,25 +2319,26 @@ bool LevelRenderer::updateDirtyChunks() {
         static Chunk permaChunk;
         {
             FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
-            // If this chunk is very near, then move the renderer into a deferred
-            // mode. This won't commit any command buffers for rendering until we
-            // call CBuffDeferredModeEnd(), allowing us to group any near changes
-            // into an atomic unit. This is essential so we don't temporarily create
-            // any holes in the environment whilst updating one chunk and not the
-            // neighbours. The "ver near" aspect of this is just a cosmetic nicety -
-            // exactly the same thing would happen further away, but we just don't
-            // care about it so much from terms of visual impact.
+            // If this chunk is very near, then move the renderer into a
+            // deferred mode. This won't commit any command buffers for
+            // rendering until we call CBuffDeferredModeEnd(), allowing us to
+            // group any near changes into an atomic unit. This is essential so
+            // we don't temporarily create any holes in the environment whilst
+            // updating one chunk and not the neighbours. The "ver near" aspect
+            // of this is just a cosmetic nicety - exactly the same thing would
+            // happen further away, but we just don't care about it so much from
+            // terms of visual impact.
             if (veryNearCount > 0) {
                 RenderManager.CBuffDeferredModeStart();
             }
             // Build this chunk & return false to continue processing
             chunk->clearDirty();
-            // Take a copy of the details that are required for chunk rebuilding,
-            // and rebuild That instead of the original chunk data. This is done
-            // within the m_csDirtyChunks critical section, which means that any
-            // chunks can't be repositioned whilst we are doing this copy. The copy
-            // will then be guaranteed to be consistent whilst rebuilding takes
-            // place outside of that critical section.
+            // Take a copy of the details that are required for chunk
+            // rebuilding, and rebuild That instead of the original chunk data.
+            // This is done within the m_csDirtyChunks critical section, which
+            // means that any chunks can't be repositioned whilst we are doing
+            // this copy. The copy will then be guaranteed to be consistent
+            // whilst rebuilding takes place outside of that critical section.
             permaChunk.makeCopyForRebuild(chunk);
             LeaveCriticalSection(&m_csDirtyChunks);
         }
@@ -2879,13 +2838,16 @@ void LevelRenderer::waitForCull_SPU() {
 }
 #endif  // __PS3__
 
+// 4jcraft: optional occlusion culling system, i hope to upgrade it soon
+// gives better performances but mostly breaks chunk rendering
 void LevelRenderer::cull(Culler* culler, float a) {
-    int playerIndex = mc->player->GetXboxPad();  // 4J added
+    int playerIndex = mc->player->GetXboxPad();
+    if (chunks[playerIndex].data == nullptr) return;
 
 #if defined __PS3__ && !defined DISABLE_SPU_CODE
     cull_SPU(playerIndex, culler, a);
     return;
-#endif  // __PS3__
+#endif
 
     FrustumCuller* fc = (FrustumCuller*)culler;
     FrustumData* fd = fc->frustum;
@@ -2901,28 +2863,297 @@ void LevelRenderer::cull(Culler* culler, float a) {
                                    (fy * -fc->yOff) + (fz * -fc->zOff));
     }
 
-    ClipChunk* pClipChunk = chunks[playerIndex].data;
-    int vis = 0;
-    int total = 0;
-    int numWrong = 0;
+#if defined(OCCLUSION_MODE_NONE)
+    // just check if chunk is compiled and non-empty
     for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
-        unsigned char flags = pClipChunk->globalIdx == -1
-                                  ? 0
-                                  : globalChunkFlags[pClipChunk->globalIdx];
-
-        if ((flags & CHUNK_FLAG_COMPILED) &&
-            ((flags & CHUNK_FLAG_EMPTYBOTH) != CHUNK_FLAG_EMPTYBOTH)) {
-            bool clipres = clip(pClipChunk->aabb, fdraw);
-            pClipChunk->visible = clipres;
-            if (pClipChunk->visible) vis++;
-            total++;
-        } else {
-            pClipChunk->visible = false;
+        ClipChunk* cc = &chunks[playerIndex][i];
+        if (cc->globalIdx < 0) {
+            cc->visible = false;
+            continue;
         }
-        pClipChunk++;
-    }
-}
 
+        unsigned char flags = globalChunkFlags[cc->globalIdx];
+        bool isCompiled = (flags & CHUNK_FLAG_COMPILED) != 0;
+        bool isEmptyBoth =
+            (flags & CHUNK_FLAG_EMPTYBOTH) == CHUNK_FLAG_EMPTYBOTH;
+
+        cc->visible = isCompiled && !isEmptyBoth;
+    }
+
+#elif defined(OCCLUSION_MODE_FRUSTUM)
+    // Just ~~monika~~ frustum culling
+    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        ClipChunk* cc = &chunks[playerIndex][i];
+        if (cc->globalIdx < 0) {
+            cc->visible = false;
+            continue;
+        }
+
+        unsigned char flags = globalChunkFlags[cc->globalIdx];
+        bool isCompiled = (flags & CHUNK_FLAG_COMPILED) != 0;
+        bool isEmptyBoth =
+            (flags & CHUNK_FLAG_EMPTYBOTH) == CHUNK_FLAG_EMPTYBOTH;
+
+        if (isCompiled && !isEmptyBoth) {
+            float cellBounds[6] = {(float)cc->chunk->x - 0.1f,
+                                   (float)cc->chunk->y - 0.1f,
+                                   (float)cc->chunk->z - 0.1f,
+                                   (float)cc->chunk->x + CHUNK_XZSIZE + 0.1f,
+                                   (float)cc->chunk->y + CHUNK_SIZE + 0.1f,
+                                   (float)cc->chunk->z + CHUNK_XZSIZE + 0.1f};
+            cc->visible = clip(cellBounds, fdraw);
+        } else {
+            cc->visible = false;
+        }
+    }
+
+#elif defined(OCCLUSION_MODE_HARDWARE)
+// TODO: Hardware occlusion culling using GPU queries
+// For now, fall back to frustum culling
+#warning \
+    "OCCLUSION_MODE_HARDWARE is not implemented yet, falling back to frustum culling"
+    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        ClipChunk* cc = &chunks[playerIndex][i];
+        if (cc->globalIdx < 0) {
+            cc->visible = false;
+            continue;
+        }
+
+        unsigned char flags = globalChunkFlags[cc->globalIdx];
+        bool isCompiled = (flags & CHUNK_FLAG_COMPILED) != 0;
+        bool isEmptyBoth =
+            (flags & CHUNK_FLAG_EMPTYBOTH) == CHUNK_FLAG_EMPTYBOTH;
+
+        if (isCompiled && !isEmptyBoth) {
+            float cellBounds[6] = {(float)cc->chunk->x - 0.1f,
+                                   (float)cc->chunk->y - 0.1f,
+                                   (float)cc->chunk->z - 0.1f,
+                                   (float)cc->chunk->x + CHUNK_XZSIZE + 0.1f,
+                                   (float)cc->chunk->y + CHUNK_SIZE + 0.1f,
+                                   (float)cc->chunk->z + CHUNK_XZSIZE + 0.1f};
+            cc->visible = clip(cellBounds, fdraw);
+        } else {
+            cc->visible = false;
+        }
+    }
+
+#elif defined(OCCLUSION_MODE_BFS)
+    // Experimental BFS occlusion culling.
+    // Check https://tomcc.github.io/2014/08/31/visibility-1.html
+    // And https://tomcc.github.io/2014/08/31/visibility-2.html
+    // And finally https://en.wikipedia.org/wiki/Breadth-first_search
+    std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
+    float camX = (float)(player->xOld + (player->x - player->xOld) * a);
+    float camY = (float)(player->yOld + (player->y - player->yOld) * a);
+    float camZ = (float)(player->zOld + (player->z - player->zOld) * a);
+
+    auto intFloorDiv = [](int v, int div) {
+        if (v < 0 && v % div != 0) return (v / div) - 1;
+        return v / div;
+    };
+
+    auto floatFloorDiv = [](float v, int div) {
+        int iv = (int)v;
+        if (v < 0 && v != iv) iv--;
+        if (iv < 0 && iv % div != 0) return (iv / div) - 1;
+        return iv / div;
+    };
+
+    int minCx = INT_MAX, minCy = INT_MAX, minCz = INT_MAX;
+    int maxCx = INT_MIN, maxCy = INT_MIN, maxCz = INT_MIN;
+
+    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        ClipChunk* cc = &chunks[playerIndex][i];
+        cc->visible = false;
+        if (cc->globalIdx < 0) continue;
+
+        int cx = intFloorDiv(cc->chunk->x, CHUNK_XZSIZE);
+        int cy = intFloorDiv(cc->chunk->y, CHUNK_SIZE);
+        int cz = intFloorDiv(cc->chunk->z, CHUNK_XZSIZE);
+
+        if (cx < minCx) minCx = cx;
+        if (cy < minCy) minCy = cy;
+        if (cz < minCz) minCz = cz;
+        if (cx > maxCx) maxCx = cx;
+        if (cy > maxCy) maxCy = cy;
+        if (cz > maxCz) maxCz = cz;
+    }
+
+    if (minCx > maxCx) return;
+
+    int sizeX = maxCx - minCx + 1;
+    int sizeY = maxCy - minCy + 1;
+    int sizeZ = maxCz - minCz + 1;
+
+    std::vector<ClipChunk*> grid(sizeX * sizeY * sizeZ, nullptr);
+    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        ClipChunk* cc = &chunks[playerIndex][i];
+        if (cc->globalIdx < 0) continue;
+        int lx = intFloorDiv(cc->chunk->x, CHUNK_XZSIZE) - minCx;
+        int ly = intFloorDiv(cc->chunk->y, CHUNK_SIZE) - minCy;
+        int lz = intFloorDiv(cc->chunk->z, CHUNK_XZSIZE) - minCz;
+        grid[(lx * sizeY + ly) * sizeZ + lz] = cc;
+    }
+
+    auto getChunkAt = [&](int cx, int cy, int cz) -> ClipChunk* {
+        int lx = cx - minCx;
+        int ly = cy - minCy;
+        int lz = cz - minCz;
+        if (lx >= 0 && lx < sizeX && ly >= 0 && ly < sizeY && lz >= 0 &&
+            lz < sizeZ) {
+            return grid[(lx * sizeY + ly) * sizeZ + lz];
+        }
+        return nullptr;
+    };
+
+    int startCx = floatFloorDiv(camX, CHUNK_XZSIZE);
+    int startCy = floatFloorDiv(camY, CHUNK_SIZE);
+    int startCz = floatFloorDiv(camZ, CHUNK_XZSIZE);
+
+    if (startCx < minCx)
+        startCx = minCx;
+    else if (startCx > maxCx)
+        startCx = maxCx;
+    if (startCy < minCy)
+        startCy = minCy;
+    else if (startCy > maxCy)
+        startCy = maxCy;
+    if (startCz < minCz)
+        startCz = minCz;
+    else if (startCz > maxCz)
+        startCz = maxCz;
+
+    ClipChunk* startChunk = getChunkAt(startCx, startCy, startCz);
+
+    if (!startChunk) {
+        float minDist = 1e30f;
+        for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+            ClipChunk* cc = &chunks[playerIndex][i];
+            if (cc->globalIdx < 0) continue;
+            float midX = cc->chunk->x + CHUNK_XZSIZE * 0.5f;
+            float midY = cc->chunk->y + CHUNK_SIZE * 0.5f;
+            float midZ = cc->chunk->z + CHUNK_XZSIZE * 0.5f;
+            float dist = (camX - midX) * (camX - midX) +
+                         (camY - midY) * (camY - midY) +
+                         (camZ - midZ) * (camZ - midZ);
+            if (dist < minDist) {
+                minDist = dist;
+                startChunk = cc;
+            }
+        }
+    }
+
+    if (!startChunk) return;
+
+    struct BFSNode {
+        ClipChunk* cc;
+        int incomingFace;
+    };
+
+    std::vector<BFSNode> q;
+    q.reserve(chunks[playerIndex].length * 2);
+    int qHead = 0;
+
+    std::vector<uint8_t> visitedFaces(chunks[playerIndex].length, 0);
+
+    q.push_back({startChunk, -1});
+    visitedFaces[startChunk - chunks[playerIndex].data] = 0x3F;
+
+    static const int OFFSETS[6][3] = {
+        {0, -1, 0},  // 0: -Y
+        {0, 1, 0},   // 1: +Y
+        {0, 0, -1},  // 2: -Z
+        {0, 0, 1},   // 3: +Z
+        {-1, 0, 0},  // 4: -X
+        {1, 0, 0}    // 5: +X
+    };
+
+    while (qHead < (int)q.size()) {
+        BFSNode node = q[qHead++];
+        ClipChunk* curr = node.cc;
+        int incFace = node.incomingFace;
+
+        unsigned char flags = globalChunkFlags[curr->globalIdx];
+        bool isCompiled = (flags & CHUNK_FLAG_COMPILED) != 0;
+        bool isEmptyBoth =
+            (flags & CHUNK_FLAG_EMPTYBOTH) == CHUNK_FLAG_EMPTYBOTH;
+
+        if (isCompiled && !isEmptyBoth) {
+            curr->visible = true;
+        }
+
+        int cx = intFloorDiv(curr->chunk->x, CHUNK_XZSIZE);
+        int cy = intFloorDiv(curr->chunk->y, CHUNK_SIZE);
+        int cz = intFloorDiv(curr->chunk->z, CHUNK_XZSIZE);
+
+        uint64_t conn = getGlobalChunkConnectivity(curr->globalIdx);
+
+        for (int i = 0; i < 6; i++) {
+            int outFace = i;
+
+            bool canGo = false;
+            float chkX = curr->chunk->x;
+            float chkY = curr->chunk->y;
+            float chkZ = curr->chunk->z;
+            switch (outFace) {
+                case 0:
+                    canGo = camY >= chkY;
+                    break;
+                case 1:
+                    canGo = camY <= chkY + CHUNK_SIZE;
+                    break;
+                case 2:
+                    canGo = camZ >= chkZ;
+                    break;
+                case 3:
+                    canGo = camZ <= chkZ + CHUNK_XZSIZE;
+                    break;
+                case 4:
+                    canGo = camX >= chkX;
+                    break;
+                case 5:
+                    canGo = camX <= chkX + CHUNK_XZSIZE;
+                    break;
+            }
+            if (!canGo) continue;
+
+            if (incFace != -1) {
+                int shift = (incFace * 6) + outFace;
+                if ((conn & (1ULL << shift)) == 0) continue;
+            }
+
+            int nx = cx + OFFSETS[i][0];
+            int ny = cy + OFFSETS[i][1];
+            int nz = cz + OFFSETS[i][2];
+
+            ClipChunk* neighbor = getChunkAt(nx, ny, nz);
+            if (!neighbor) continue;
+
+            int nIdx = neighbor - chunks[playerIndex].data;
+            int nextIncFace = outFace ^ 1;
+
+            if ((visitedFaces[nIdx] & (1 << nextIncFace)) != 0) continue;
+
+            float cellBounds[6] = {
+                (float)neighbor->chunk->x - 0.1f,
+                (float)neighbor->chunk->y - 0.1f,
+                (float)neighbor->chunk->z - 0.1f,
+                (float)neighbor->chunk->x + CHUNK_XZSIZE + 0.1f,
+                (float)neighbor->chunk->y + CHUNK_SIZE + 0.1f,
+                (float)neighbor->chunk->z + CHUNK_XZSIZE + 0.1f};
+
+            if (!clip(cellBounds, fdraw)) continue;
+
+            visitedFaces[nIdx] |= (1 << nextIncFace);
+            q.push_back({neighbor, nextIncFace});
+        }
+    }
+
+#else
+#error \
+    "Unknown occlusion mode, this should NEVER happen, check meson.build for misconfiguration"
+#endif
+}
 void LevelRenderer::playStreamingMusic(const std::wstring& name, int x, int y,
                                        int z) {
     if (name != L"") {
@@ -3889,6 +4120,19 @@ void LevelRenderer::setGlobalChunkFlag(int x, int y, int z, Level* level,
         LeaveCriticalSection(&m_csChunkFlags);
 #endif
     }
+}
+
+void LevelRenderer::setGlobalChunkConnectivity(int index, uint64_t conn) {
+    if (index >= 0 && index < getGlobalChunkCount()) {
+        globalChunkConnectivity[index] = conn;
+    }
+}
+
+uint64_t LevelRenderer::getGlobalChunkConnectivity(int index) {
+    if (index >= 0 && index < getGlobalChunkCount()) {
+        return globalChunkConnectivity[index];
+    }
+    return ~(uint64_t)0;  // out of bounds
 }
 
 void LevelRenderer::clearGlobalChunkFlag(int x, int y, int z, Level* level,

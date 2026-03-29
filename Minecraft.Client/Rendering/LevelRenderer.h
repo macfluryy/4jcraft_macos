@@ -209,7 +209,8 @@ private:
         emptyChunks;
     static const int RENDERLISTS_LENGTH = 4;  // 4J - added
     OffsettedRenderList renderLists[RENDERLISTS_LENGTH];
-
+    void setGlobalChunkConnectivity(int index, uint64_t conn);
+    uint64_t getGlobalChunkConnectivity(int index);
     std::unordered_map<int, BlockDestructionProgress*> destroyingBlocks;
     Icon** breakingTextures;
 
@@ -295,6 +296,8 @@ public:
                             unsigned char shift = 0);
     void clearGlobalChunkFlag(int x, int y, int z, Level* level,
                               unsigned char flag, unsigned char shift = 0);
+
+    static uint64_t* globalChunkConnectivity;
 
     // Get/set whole byte of flags
     unsigned char getGlobalChunkFlags(int x, int y, int z, Level* level);

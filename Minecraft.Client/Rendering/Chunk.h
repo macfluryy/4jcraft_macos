@@ -48,7 +48,7 @@ public:
     int xm, ym, zm;
     AABB bb;
     ClipChunk* clipChunk;
-
+    uint64_t computeConnectivity(const uint8_t* tileIds);
     int id;
     // public:
     //	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;

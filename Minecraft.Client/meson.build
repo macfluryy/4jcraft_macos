@@ -85,10 +85,10 @@ if get_option('enable_frame_profiler')
 endif
 
 if get_option('ui_backend') == 'shiggy'
-    shiggy_dep = dependency(
-      'shiggy',
-      fallback : ['shiggy', 'shiggy_dep'],
-    )
+  shiggy_dep = dependency(
+    'shiggy',
+    fallback: ['shiggy', 'shiggy_dep'],
+  )
 
   global_cpp_defs += ['-D_ENABLEIGGY']
   client_dependencies += shiggy_dep
@@ -98,7 +98,18 @@ if get_option('ui_backend') == 'java'
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
-client = executable('Minecraft.Client',
+occlusion_mode = get_option('occlusion_culling')
+if occlusion_mode == 'off'
+  global_cpp_defs += ['-DOCCLUSION_MODE_NONE']
+elif occlusion_mode == 'frustum'
+  global_cpp_defs += ['-DOCCLUSION_MODE_FRUSTUM']
+elif occlusion_mode == 'bfs'
+  global_cpp_defs += ['-DOCCLUSION_MODE_BFS', '-DUSE_OCCLUSION_CULLING']
+elif occlusion_mode == 'hardware'
+  global_cpp_defs += ['-DOCCLUSION_MODE_HARDWARE', '-DUSE_OCCLUSION_CULLING']
+endif
+client = executable(
+  'Minecraft.Client',
   client_sources + platform_sources + localisation[1],
   include_directories: include_directories('Platform', 'Platform/Linux/Iggy/include'),
   dependencies: client_dependencies,

@@ -73,6 +73,7 @@ void Chunk::setPos(int x, int y, int z) {
 
     clipChunk->globalIdx =
         LevelRenderer::getGlobalIndexForChunk(x, y, z, level);
+    levelRenderer->setGlobalChunkConnectivity(clipChunk->globalIdx, ~0ULL);
 
 #if 1
     // 4J - we're not using offsetted renderlists anymore, so just set the full
@@ -358,6 +359,12 @@ void Chunk::rebuild() {
             RenderManager.CBuffClear(lists + currentLayer);
         }
 
+        int globalIdx = levelRenderer->getGlobalIndexForChunk(this->x, this->y,
+                                                              this->z, level);
+        levelRenderer->setGlobalChunkConnectivity(globalIdx, ~0ULL);
+        levelRenderer->setGlobalChunkFlag(this->x, this->y, this->z, level,
+                                          LevelRenderer::CHUNK_FLAG_COMPILED);
+
         delete region;
         delete tileRenderer;
         return;
@@ -494,6 +501,11 @@ void Chunk::rebuild() {
     // tesselator
     bb = {bounds.boundingBox[0], bounds.boundingBox[1], bounds.boundingBox[2],
           bounds.boundingBox[3], bounds.boundingBox[4], bounds.boundingBox[5]};
+
+    uint64_t conn = computeConnectivity(tileIds);  // pass tileIds
+    int globalIdx =
+        levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z, level);
+    levelRenderer->setGlobalChunkConnectivity(globalIdx, conn);
 
     delete tileRenderer;
     delete region;
@@ -958,6 +970,142 @@ float Chunk::squishedDistanceToSqr(std::shared_ptr<Entity> player) {
     return xd * xd + yd * yd + zd * zd;
 }
 
+uint64_t Chunk::computeConnectivity(const uint8_t* tileIds) {
+    const int W = 16;
+    const int H = 16;
+    const int VOLUME = W * H * W;
+
+    auto idx = [&](int x, int y, int z) -> int {
+        return y * W * W + z * W + x;
+    };
+
+    auto isOpen = [&](int lx, int ly, int lz) -> bool {
+        int worldY = this->y + ly;
+        int offset = 0;
+        int indexY = worldY;
+        if (indexY >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
+            indexY -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
+            offset = Level::COMPRESSED_CHUNK_SECTION_TILES;
+        }
+
+        uint8_t tileId = tileIds[offset + ((lx << 11) | (lz << 7) | indexY)];
+
+        if (tileId == 0) return true;      // air
+        if (tileId == 0xFF) return false;  // hidden tile (yeah)
+
+        Tile* t = Tile::tiles[tileId];
+        return (t == nullptr) || !t->isSolidRender();
+    };
+
+    uint8_t visited[6][512];
+    memset(visited, 0, sizeof(visited));
+
+    static const int FX[6] = {1, -1, 0, 0, 0, 0};
+    static const int FY[6] = {0, 0, 1, -1, 0, 0};
+    static const int FZ[6] = {0, 0, 0, 0, 1, -1};
+
+    struct Cell {
+        int8_t x, y, z;
+    };
+    static thread_local std::vector<Cell> queue;
+
+    uint64_t result = 0;
+
+    for (int entryFace = 0; entryFace < 6; entryFace++) {
+        uint8_t* vis = visited[entryFace];
+        queue.clear();
+        int x0s, x1s, y0s, y1s, z0s, z1s;
+        switch (entryFace) {
+            case 0:
+                x0s = W - 1;
+                x1s = W - 1;
+                y0s = 0;
+                y1s = H - 1;
+                z0s = 0;
+                z1s = W - 1;
+                break;  // +X
+            case 1:
+                x0s = 0;
+                x1s = 0;
+                y0s = 0;
+                y1s = H - 1;
+                z0s = 0;
+                z1s = W - 1;
+                break;  // -X
+            case 2:
+                x0s = 0;
+                x1s = W - 1;
+                y0s = H - 1;
+                y1s = H - 1;
+                z0s = 0;
+                z1s = W - 1;
+                break;  // +Y
+            case 3:
+                x0s = 0;
+                x1s = W - 1;
+                y0s = 0;
+                y1s = 0;
+                z0s = 0;
+                z1s = W - 1;
+                break;  // -Y
+            case 4:
+                x0s = 0;
+                x1s = W - 1;
+                y0s = 0;
+                y1s = H - 1;
+                z0s = W - 1;
+                z1s = W - 1;
+                break;  // +Z
+            case 5:
+                x0s = 0;
+                x1s = W - 1;
+                y0s = 0;
+                y1s = H - 1;
+                z0s = 0;
+                z1s = 0;
+                break;  // -Z
+            default:
+                continue;
+        }
+
+        for (int sy = y0s; sy <= y1s; sy++)
+            for (int sz = z0s; sz <= z1s; sz++)
+                for (int sx = x0s; sx <= x1s; sx++) {
+                    if (!isOpen(sx, sy, sz)) continue;
+                    int i = idx(sx, sy, sz);
+                    if (vis[i >> 3] & (1 << (i & 7))) continue;
+                    vis[i >> 3] |= (1 << (i & 7));
+                    queue.push_back({(int8_t)sx, (int8_t)sy, (int8_t)sz});
+                }
+
+        for (int qi = 0; qi < (int)queue.size(); qi++) {
+            Cell cur = queue[qi];
+
+            for (int nb = 0; nb < 6; nb++) {
+                int nx = cur.x + FX[nb];
+                int ny = cur.y + FY[nb];
+                int nz = cur.z + FZ[nb];
+
+                // entry exit conn
+                if (nx < 0 || nx >= W || ny < 0 || ny >= H || nz < 0 ||
+                    nz >= W) {
+                    // nb IS the exit face because FX,FY,FZ are aligned
+                    result |= ((uint64_t)1 << (entryFace * 6 + nb));
+                    continue;
+                }
+
+                if (!isOpen(nx, ny, nz)) continue;
+
+                int i = idx(nx, ny, nz);
+                if (vis[i >> 3] & (1 << (i & 7))) continue;
+                vis[i >> 3] |= (1 << (i & 7));
+                queue.push_back({(int8_t)nx, (int8_t)ny, (int8_t)nz});
+            }
+        }
+    }
+
+    return result;
+}
 void Chunk::reset() {
     if (assigned) {
         EnterCriticalSection(&levelRenderer->m_csDirtyChunks);
@@ -1002,7 +1150,11 @@ int Chunk::getList(int layer) {
     return -1;
 }
 
-void Chunk::cull(Culler* culler) { clipChunk->visible = culler->isVisible(&bb); }
+void Chunk::cull(Culler* culler) {
+    if (clipChunk->visible) {
+        clipChunk->visible = culler->isVisible(&bb);
+    }
+}
 
 void Chunk::renderBB() {
     //	glCallList(lists + 2);	// 4J - removed - TODO put back in
