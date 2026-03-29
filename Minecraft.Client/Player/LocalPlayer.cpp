@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
+#include "UI/Screens/BeaconScreen.h"
 #include "UI/Screens/BrewingStandScreen.h"
 #include "UI/Screens/EnchantmentScreen.h"
 #include "UI/Screens/HopperScreen.h"
@@ -696,9 +697,13 @@ bool LocalPlayer::openBrewingStand(
 }
 
 bool LocalPlayer::openBeacon(std::shared_ptr<BeaconTileEntity> beacon) {
-    // minecraft->setScreen(new BeaconScreen(inventory, beacon));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new BeaconScreen(inventory, beacon));
+    bool success = true;
+#else
     bool success = app.LoadBeaconMenu(GetXboxPad(), inventory, beacon);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 

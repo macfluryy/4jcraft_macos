@@ -5,6 +5,7 @@
 #include "JoinMultiplayerScreen.h"
 #include "../../Rendering/Tesselator.h"
 #include "../../Textures/Textures.h"
+#include "../../GameState/Options.h"
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "../../../Minecraft.World/IO/Streams/InputOutputStream.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"

@@ -436,6 +436,9 @@ tile.oreEmerald.name=Emerald Ore
 tile.blockEmerald.name=Block of Emerald
 tile.tripWire.name=Tripwire
 tile.tripWireSource.name=Tripwire Hook
+tile.beacon.name=Beacon
+tile.beacon.primary=Primary Power
+tile.beacon.secondary=Secondary Power
 
 item.shovelIron.name=Iron Shovel
 item.pickaxeIron.name=Iron Pickaxe
