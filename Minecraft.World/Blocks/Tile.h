@@ -668,9 +668,9 @@ public:
                             Vec3* b);
 
 private:
-    virtual bool containsX(Vec3* v);
-    virtual bool containsY(Vec3* v);
-    virtual bool containsZ(Vec3* v);
+    virtual bool containsX(const std::optional<Vec3>& v);
+    virtual bool containsY(const std::optional<Vec3>& v);
+    virtual bool containsZ(const std::optional<Vec3>& v);
 
 public:
     virtual void wasExploded(Level* level, int x, int y, int z,

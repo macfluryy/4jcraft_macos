@@ -28,8 +28,8 @@ public:
     double getSize() const;
     AABB shrink(double xa, double ya, double za) const;
     HitResult* clip(const Vec3& a, const Vec3& b) const;
-    bool containsX(const Vec3& v) const;
-    bool containsY(const Vec3& v) const;
-    bool containsZ(const Vec3& v) const;
+    bool containsX(const std::optional<Vec3>& v) const;
+    bool containsY(const std::optional<Vec3>& v) const;
+    bool containsZ(const std::optional<Vec3>& v) const;
     std::wstring toString() const;
 };
