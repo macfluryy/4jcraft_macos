@@ -646,12 +646,10 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
         if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
 
         for (AUTO_VAR(it2, it->second.tiles.begin());
-             it2 != it->second.tiles.end();
-             it2++) {
+             it2 != it->second.tiles.end(); it2++) {
             TileEntityRenderDispatcher::instance->render(*it2, a);
         }
     }
-
 
     LeaveCriticalSection(&m_csRenderableTileEntities);
 
@@ -874,9 +872,9 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
 
             // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per chunk
             // no more full MVP upload per chunk, can also be bkwards compat
-            RenderManager.SetChunkOffset((float)pClipChunk->chunk->x,
-                                         (float)pClipChunk->chunk->y,
-                                         (float)pClipChunk->chunk->z);
+            RenderManager.SetChunkOffset((float)chunk->chunk->x,
+                                         (float)chunk->chunk->y,
+                                         (float)chunk->chunk->z);
 
             if (RenderManager.CBuffCall(list, first)) {
                 first = false;
@@ -4229,7 +4227,8 @@ void LevelRenderer::fullyFlagRenderableTileEntitiesToBeRemoved() {
         RenderableTileEntityBucket& bucket = itChunk->second;
         for (AUTO_VAR(itPending, itKey->second.begin());
              itPending != itKey->second.end(); itPending++) {
-            if (bucket.indexByTile.find(*itPending) == bucket.indexByTile.end()) {
+            if (bucket.indexByTile.find(*itPending) ==
+                bucket.indexByTile.end()) {
                 continue;
             }
 
