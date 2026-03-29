@@ -49,6 +49,7 @@ public:
 
     void setRenderRemoveStage(unsigned char stage);  // 4J added
     void upgradeRenderRemoveStage();                 // 4J added
+    bool finalizeRenderRemoveStage();                // 4J added
     bool shouldRemoveForRender();                    // 4J added
 
     virtual Level* getLevel();

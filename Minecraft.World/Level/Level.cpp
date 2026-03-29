@@ -38,6 +38,7 @@
 #include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Utils/FrameProfiler.h"
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -2206,19 +2207,11 @@ void Level::tickEntities() {
     // 4J-PB - Stuart  - check this is correct here
 
     if (!tileEntitiesToUnload.empty()) {
-        // tileEntityList.removeAll(tileEntitiesToUnload);
+        FRAME_PROFILE_SCOPE(TileEntityUnloadCleanup);
 
         for (AUTO_VAR(it, tileEntityList.begin());
              it != tileEntityList.end();) {
-            bool found = false;
-            for (AUTO_VAR(it2, tileEntitiesToUnload.begin());
-                 it2 != tileEntitiesToUnload.end(); it2++) {
-                if ((*it) == (*it2)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
+            if (tileEntitiesToUnload.find(*it) != tileEntitiesToUnload.end()) {
                 if (isClientSide) {
                     __debugbreak();
                 }
@@ -2731,7 +2724,9 @@ void Level::removeTileEntity(int x, int y, int z) {
 }
 
 void Level::markForRemoval(std::shared_ptr<TileEntity> entity) {
-    tileEntitiesToUnload.push_back(entity);
+    EnterCriticalSection(&m_tileEntityListCS);
+    tileEntitiesToUnload.insert(entity);
+    LeaveCriticalSection(&m_tileEntityListCS);
 }
 
 bool Level::isSolidRenderTile(int x, int y, int z) {

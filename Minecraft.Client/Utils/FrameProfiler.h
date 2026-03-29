@@ -23,6 +23,8 @@ public:
         ChunkBlockFaceCull,
         ChunkBlockLighting,
         ChunkBlockEmit,
+        RenderableTileEntityCleanup,
+        TileEntityUnloadCleanup,
         Entity,
         Particle,
         WeatherSky,

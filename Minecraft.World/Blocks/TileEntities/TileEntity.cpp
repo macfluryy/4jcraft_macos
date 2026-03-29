@@ -187,6 +187,15 @@ void TileEntity::upgradeRenderRemoveStage() {
     }
 }
 
+bool TileEntity::finalizeRenderRemoveStage() {
+    if (renderRemoveStage == e_RenderRemoveStageFlaggedAtChunk) {
+        renderRemoveStage = e_RenderRemoveStageRemove;
+        return true;
+    }
+
+    return renderRemoveStage == e_RenderRemoveStageRemove;
+}
+
 // 4J Added
 void TileEntity::clone(std::shared_ptr<TileEntity> tileEntity) {
     tileEntity->level = this->level;

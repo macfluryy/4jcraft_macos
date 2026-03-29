@@ -44,6 +44,8 @@ constexpr std::array<FrameProfiler::BucketDescriptor, kBucketCount>
         {Bucket::ChunkBlockFaceCull, "chunkBlockFaceCull"},
         {Bucket::ChunkBlockLighting, "chunkBlockLighting"},
         {Bucket::ChunkBlockEmit, "chunkBlockEmit"},
+        {Bucket::RenderableTileEntityCleanup, "renderableTileEntityCleanup"},
+        {Bucket::TileEntityUnloadCleanup, "tileEntityUnloadCleanup"},
         {Bucket::Entity, "entities"},
         {Bucket::Particle, "particles"},
         {Bucket::WeatherSky, "weather"},
@@ -133,8 +135,7 @@ inline void recordWorkerBucket(Bucket bucket, std::uint64_t elapsedNs) noexcept 
     return t_threadState.frameScopeDepth != 0;
 }
 
-FRAME_PROFILER_NOINLINE
-[[nodiscard]] bool computeEnabled() noexcept {
+FRAME_PROFILER_NOINLINE bool computeEnabled() noexcept {
     const char* const envValue = std::getenv("C4J_FRAME_PROFILER");
     if (envValue == nullptr) return true;
     return !envSaysDisabled(envValue);

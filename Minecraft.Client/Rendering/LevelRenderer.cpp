@@ -410,8 +410,12 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
         // tile entities in the world dissappear We should only do this when
         // actually exiting the game, so only when the primary player sets there
         // level to NULL
-        if (playerIndex == ProfileManager.GetPrimaryPad())
+        if (playerIndex == ProfileManager.GetPrimaryPad()) {
+            EnterCriticalSection(&m_csRenderableTileEntities);
             renderableTileEntities.clear();
+            m_renderableTileEntitiesPendingRemoval.clear();
+            LeaveCriticalSection(&m_csRenderableTileEntities);
+        }
     }
 }
 
@@ -641,34 +645,13 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
         // Don't render if it isn't in the same dimension as this player
         if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
 
-        for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();
+        for (AUTO_VAR(it2, it->second.tiles.begin());
+             it2 != it->second.tiles.end();
              it2++) {
             TileEntityRenderDispatcher::instance->render(*it2, a);
         }
     }
 
-    // Now consider if any of these renderable tile entities have been flagged
-    // for removal, and if so, remove
-    for (AUTO_VAR(it, renderableTileEntities.begin());
-         it != renderableTileEntities.end();) {
-        int idx = it->first;
-
-        for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();) {
-            // If it has been flagged for removal, remove
-            if ((*it2)->shouldRemoveForRender()) {
-                it2 = it->second.erase(it2);
-            } else {
-                it2++;
-            }
-        }
-
-        // If there aren't any entities left for this key, then delete the key
-        if (it->second.size() == 0) {
-            it = renderableTileEntities.erase(it);
-        } else {
-            it++;
-        }
-    }
 
     LeaveCriticalSection(&m_csRenderableTileEntities);
 
@@ -4181,16 +4164,87 @@ unsigned char LevelRenderer::decGlobalChunkRefCount(int x, int y, int z,
     }
 }
 
+void LevelRenderer::queueRenderableTileEntityForRemoval_Locked(
+    int key, TileEntity* tileEntity) {
+    m_renderableTileEntitiesPendingRemoval[key].insert(tileEntity);
+}
+
+void LevelRenderer::addRenderableTileEntity_Locked(
+    int key, const std::shared_ptr<TileEntity>& tileEntity) {
+    RenderableTileEntityBucket& bucket = renderableTileEntities[key];
+    TileEntity* tileEntityPtr = tileEntity.get();
+    if (bucket.indexByTile.find(tileEntityPtr) != bucket.indexByTile.end()) {
+        return;
+    }
+
+    size_t index = bucket.tiles.size();
+    bucket.tiles.push_back(tileEntity);
+    bucket.indexByTile.insert(std::make_pair(tileEntityPtr, index));
+}
+
+void LevelRenderer::eraseRenderableTileEntity_Locked(
+    RenderableTileEntityBucket& bucket, TileEntity* tileEntity) {
+    auto it = bucket.indexByTile.find(tileEntity);
+    if (it == bucket.indexByTile.end()) {
+        return;
+    }
+
+    size_t index = it->second;
+    size_t lastIndex = bucket.tiles.size() - 1;
+    if (index != lastIndex) {
+        std::shared_ptr<TileEntity> moved = bucket.tiles[lastIndex];
+        bucket.tiles[index] = moved;
+        bucket.indexByTile[moved.get()] = index;
+    }
+
+    bucket.tiles.pop_back();
+    bucket.indexByTile.erase(it);
+}
+
+void LevelRenderer::retireRenderableTileEntitiesForChunkKey(int key) {
+    if (key == -1) return;
+
+    EnterCriticalSection(&m_csRenderableTileEntities);
+    renderableTileEntities.erase(key);
+    m_renderableTileEntitiesPendingRemoval.erase(key);
+    LeaveCriticalSection(&m_csRenderableTileEntities);
+}
+
 // 4J added
 void LevelRenderer::fullyFlagRenderableTileEntitiesToBeRemoved() {
+    FRAME_PROFILE_SCOPE(RenderableTileEntityCleanup);
+
     EnterCriticalSection(&m_csRenderableTileEntities);
-    AUTO_VAR(itChunkEnd, renderableTileEntities.end());
-    for (AUTO_VAR(it, renderableTileEntities.begin()); it != itChunkEnd; it++) {
-        AUTO_VAR(itTEEnd, it->second.end());
-        for (AUTO_VAR(it2, it->second.begin()); it2 != itTEEnd; it2++) {
-            (*it2)->upgradeRenderRemoveStage();
+    if (m_renderableTileEntitiesPendingRemoval.empty()) {
+        LeaveCriticalSection(&m_csRenderableTileEntities);
+        return;
+    }
+
+    auto itKeyEnd = m_renderableTileEntitiesPendingRemoval.end();
+    for (auto itKey = m_renderableTileEntitiesPendingRemoval.begin();
+         itKey != itKeyEnd; itKey++) {
+        auto itChunk = renderableTileEntities.find(itKey->first);
+        if (itChunk == renderableTileEntities.end()) continue;
+
+        RenderableTileEntityBucket& bucket = itChunk->second;
+        for (AUTO_VAR(itPending, itKey->second.begin());
+             itPending != itKey->second.end(); itPending++) {
+            if (bucket.indexByTile.find(*itPending) == bucket.indexByTile.end()) {
+                continue;
+            }
+
+            if (!(*itPending)->finalizeRenderRemoveStage()) {
+                continue;
+            }
+
+            eraseRenderableTileEntity_Locked(bucket, *itPending);
+        }
+
+        if (bucket.tiles.empty()) {
+            renderableTileEntities.erase(itChunk);
         }
     }
+    m_renderableTileEntitiesPendingRemoval.clear();
     LeaveCriticalSection(&m_csRenderableTileEntities);
 }
 

@@ -8,6 +8,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "LevelRenderer.h"
 #include "../Utils/FrameProfiler.h"
+#include <unordered_set>
 
 #ifdef __PS3__
 #include "../Platform/PS3/SPU_Tasks/ChunkUpdate/ChunkRebuildData.h"
@@ -35,6 +36,66 @@ uint8_t* Chunk::GetTileIdsStorage() { return m_tlsTileIds; }
 Tesselator* Chunk::t = Tesselator::getInstance();
 #endif
 LevelRenderer* Chunk::levelRenderer;
+
+void Chunk::reconcileRenderableTileEntities(
+    const std::vector<std::shared_ptr<TileEntity> >& renderableTileEntities) {
+    int key =
+        levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z, level);
+    AUTO_VAR(it, globalRenderableTileEntities->find(key));
+    if (!renderableTileEntities.empty()) {
+        std::unordered_set<TileEntity*> currentRenderableTileEntitySet;
+        currentRenderableTileEntitySet.reserve(renderableTileEntities.size());
+        for (size_t i = 0; i < renderableTileEntities.size(); i++) {
+            currentRenderableTileEntitySet.insert(renderableTileEntities[i].get());
+        }
+
+        if (it != globalRenderableTileEntities->end()) {
+            LevelRenderer::RenderableTileEntityBucket& existingBucket =
+                it->second;
+
+            for (AUTO_VAR(it2, existingBucket.tiles.begin());
+                 it2 != existingBucket.tiles.end(); it2++) {
+                TileEntity* tileEntity = (*it2).get();
+                if (currentRenderableTileEntitySet.find(tileEntity) ==
+                    currentRenderableTileEntitySet.end()) {
+                    (*it2)->setRenderRemoveStage(
+                        TileEntity::e_RenderRemoveStageFlaggedAtChunk);
+                    levelRenderer->queueRenderableTileEntityForRemoval_Locked(
+                        key, tileEntity);
+                } else {
+                    (*it2)->setRenderRemoveStage(
+                        TileEntity::e_RenderRemoveStageKeep);
+                }
+            }
+
+            for (size_t i = 0; i < renderableTileEntities.size(); i++) {
+                renderableTileEntities[i]->setRenderRemoveStage(
+                    TileEntity::e_RenderRemoveStageKeep);
+                if (existingBucket.indexByTile.find(renderableTileEntities[i].get()) ==
+                    existingBucket.indexByTile.end()) {
+                    levelRenderer->addRenderableTileEntity_Locked(
+                        key, renderableTileEntities[i]);
+                }
+            }
+        } else {
+            for (size_t i = 0; i < renderableTileEntities.size(); i++) {
+                renderableTileEntities[i]->setRenderRemoveStage(
+                    TileEntity::e_RenderRemoveStageKeep);
+                levelRenderer->addRenderableTileEntity_Locked(
+                    key, renderableTileEntities[i]);
+            }
+        }
+    } else if (it != globalRenderableTileEntities->end()) {
+        for (AUTO_VAR(it2, it->second.tiles.begin());
+             it2 != it->second.tiles.end();
+             it2++) {
+            (*it2)->setRenderRemoveStage(
+                TileEntity::e_RenderRemoveStageFlaggedAtChunk);
+            levelRenderer->queueRenderableTileEntityForRemoval_Locked(key,
+                                                                      (*it2).get());
+        }
+    }
+}
 
 // TODO - 4J see how input entity vector is set up and decide what way is best
 // to pass this to the function
@@ -519,57 +580,8 @@ void Chunk::rebuild() {
     // from the dimension and chunk position (using same index as is used for
     // global flags)
 #if 1
-    int key =
-        levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z, level);
     EnterCriticalSection(globalRenderableTileEntities_cs);
-    if (renderableTileEntities.size()) {
-        AUTO_VAR(it, globalRenderableTileEntities->find(key));
-        if (it != globalRenderableTileEntities->end()) {
-            // We've got some renderable tile entities that we want associated
-            // with this chunk, and an existing list of things that used to be.
-            // We need to flag any that we don't need any more to be removed,
-            // keep those that we do, and add any new ones
-
-            // First pass - flag everything already existing to be removed
-            for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();
-                 it2++) {
-                (*it2)->setRenderRemoveStage(
-                    TileEntity::e_RenderRemoveStageFlaggedAtChunk);
-            }
-
-            // Now go through the current list. If these are already in the
-            // list, then unflag the remove flag. If they aren't, then add
-            for (int i = 0; i < renderableTileEntities.size(); i++) {
-                AUTO_VAR(it2, find(it->second.begin(), it->second.end(),
-                                   renderableTileEntities[i]));
-                if (it2 == it->second.end()) {
-                    (*globalRenderableTileEntities)[key].push_back(
-                        renderableTileEntities[i]);
-                } else {
-                    (*it2)->setRenderRemoveStage(
-                        TileEntity::e_RenderRemoveStageKeep);
-                }
-            }
-        } else {
-            // Easy case - nothing already existing for this chunk. Add them all
-            // in.
-            for (int i = 0; i < renderableTileEntities.size(); i++) {
-                (*globalRenderableTileEntities)[key].push_back(
-                    renderableTileEntities[i]);
-            }
-        }
-    } else {
-        // Another easy case - we don't want any renderable tile entities
-        // associated with this chunk. Flag all to be removed.
-        AUTO_VAR(it, globalRenderableTileEntities->find(key));
-        if (it != globalRenderableTileEntities->end()) {
-            for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();
-                 it2++) {
-                (*it2)->setRenderRemoveStage(
-                    TileEntity::e_RenderRemoveStageFlaggedAtChunk);
-            }
-        }
-    }
+    reconcileRenderableTileEntities(renderableTileEntities);
     LeaveCriticalSection(globalRenderableTileEntities_cs);
     PIXEndNamedEvent();
 #else
@@ -831,57 +843,8 @@ void Chunk::rebuild_SPU() {
     // from the dimension and chunk position (using same index as is used for
     // global flags)
 #if 1
-    int key =
-        levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z, level);
     EnterCriticalSection(globalRenderableTileEntities_cs);
-    if (renderableTileEntities.size()) {
-        AUTO_VAR(it, globalRenderableTileEntities->find(key));
-        if (it != globalRenderableTileEntities->end()) {
-            // We've got some renderable tile entities that we want associated
-            // with this chunk, and an existing list of things that used to be.
-            // We need to flag any that we don't need any more to be removed,
-            // keep those that we do, and add any new ones
-
-            // First pass - flag everything already existing to be removed
-            for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();
-                 it2++) {
-                (*it2)->setRenderRemoveStage(
-                    TileEntity::e_RenderRemoveStageFlaggedAtChunk);
-            }
-
-            // Now go through the current list. If these are already in the
-            // list, then unflag the remove flag. If they aren't, then add
-            for (int i = 0; i < renderableTileEntities.size(); i++) {
-                AUTO_VAR(it2, find(it->second.begin(), it->second.end(),
-                                   renderableTileEntities[i]));
-                if (it2 == it->second.end()) {
-                    (*globalRenderableTileEntities)[key].push_back(
-                        renderableTileEntities[i]);
-                } else {
-                    (*it2)->setRenderRemoveStage(
-                        TileEntity::e_RenderRemoveStageKeep);
-                }
-            }
-        } else {
-            // Easy case - nothing already existing for this chunk. Add them all
-            // in.
-            for (int i = 0; i < renderableTileEntities.size(); i++) {
-                (*globalRenderableTileEntities)[key].push_back(
-                    renderableTileEntities[i]);
-            }
-        }
-    } else {
-        // Another easy case - we don't want any renderable tile entities
-        // associated with this chunk. Flag all to be removed.
-        AUTO_VAR(it, globalRenderableTileEntities->find(key));
-        if (it != globalRenderableTileEntities->end()) {
-            for (AUTO_VAR(it2, it->second.begin()); it2 != it->second.end();
-                 it2++) {
-                (*it2)->setRenderRemoveStage(
-                    TileEntity::e_RenderRemoveStageFlaggedAtChunk);
-            }
-        }
-    }
+    reconcileRenderableTileEntities(renderableTileEntities);
     LeaveCriticalSection(globalRenderableTileEntities_cs);
 #else
     // Find the removed ones:
@@ -1108,15 +1071,19 @@ uint64_t Chunk::computeConnectivity(const uint8_t* tileIds) {
 }
 void Chunk::reset() {
     if (assigned) {
+        int oldKey = -1;
+        bool retireRenderableTileEntities = false;
+
         EnterCriticalSection(&levelRenderer->m_csDirtyChunks);
+        oldKey = levelRenderer->getGlobalIndexForChunk(x, y, z, level);
         unsigned char refCount =
             levelRenderer->decGlobalChunkRefCount(x, y, z, level);
         assigned = false;
         //		printf("\t\t [dec] refcount %d at %d, %d,
         //%d\n",refCount,x,y,z);
-        if (refCount == 0) {
-            int lists =
-                levelRenderer->getGlobalIndexForChunk(x, y, z, level) * 2;
+        if (refCount == 0 && oldKey != -1) {
+            retireRenderableTileEntities = true;
+            int lists = oldKey * 2;
             if (lists >= 0) {
                 lists += levelRenderer->chunkLists;
                 for (int i = 0; i < 2; i++) {
@@ -1128,6 +1095,10 @@ void Chunk::reset() {
             }
         }
         LeaveCriticalSection(&levelRenderer->m_csDirtyChunks);
+
+        if (retireRenderableTileEntities) {
+            levelRenderer->retireRenderableTileEntitiesForChunkKey(oldKey);
+        }
     }
 
     clipChunk->visible = false;

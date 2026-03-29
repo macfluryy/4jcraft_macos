@@ -10,6 +10,7 @@
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
 #include <cstdint>
+#include <unordered_set>
 
 #ifdef __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"
@@ -118,7 +119,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<TileEntity> > pendingTileEntities;
-    std::vector<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
+    std::unordered_set<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
     bool updatingTileEntities;
 
 public:
@@ -665,3 +666,4 @@ public:
 
     bool canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType);
 };
+#include <unordered_set>
