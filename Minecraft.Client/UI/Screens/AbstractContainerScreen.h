@@ -36,9 +36,9 @@ protected:
     // used in other places
     virtual void renderTooltipInternal(
         const std::vector<std::wstring>& cleanedLines,
-        const std::vector<int>& lineColors, int mouseX, int mouseY);
-    virtual void renderTooltip(std::shared_ptr<ItemInstance> item, int x,
-                               int y);
+        const std::vector<int>& lineColors, int xm, int ym);
+    virtual void renderTooltip(std::shared_ptr<ItemInstance> item, int xm,
+                               int ym);
 
 private:
     virtual void renderSlot(Slot* slot);
@@ -55,7 +55,7 @@ public:
     virtual void tick() override;
 
     // 4jcraft: 1.6.x era overloads
-    virtual void renderTooltip(const std::vector<std::wstring>& lines, int x,
-                               int y);
-    virtual void renderTooltip(const std::wstring& line, int x, int y);
+    virtual void renderTooltip(const std::vector<std::wstring>& lines, int xm,
+                               int ym);
+    virtual void renderTooltip(const std::wstring& line, int xm, int ym);
 };

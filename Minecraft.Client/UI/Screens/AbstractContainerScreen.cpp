@@ -116,7 +116,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 // places)
 void AbstractContainerScreen::renderTooltipInternal(
     const std::vector<std::wstring>& cleanedLines,
-    const std::vector<int>& lineColors, int mouseX, int mouseY) {
+    const std::vector<int>& lineColors, int xm, int ym) {
     if (cleanedLines.empty()) return;
 
     int tooltipWidth = 0;
@@ -125,8 +125,8 @@ void AbstractContainerScreen::renderTooltipInternal(
         if (lineWidth > tooltipWidth) tooltipWidth = lineWidth;
     }
 
-    int tooltipX = mouseX + 12;
-    int tooltipY = mouseY - 12;
+    int tooltipX = xm + 12;
+    int tooltipY = ym - 12;
     int tooltipHeight = 8;
 
     if (cleanedLines.size() > 1) {
@@ -175,7 +175,7 @@ void AbstractContainerScreen::renderTooltipInternal(
 }
 
 void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
-                                            int mouseX, int mouseY) {
+                                            int xm, int ym) {
     if (item == nullptr) return;
 
     std::vector<std::wstring> elementName;
@@ -240,12 +240,12 @@ void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
             lineColors[0] = app.GetHTMLColour(item->getRarity()->color);
         }
 
-        renderTooltipInternal(cleanedLines, lineColors, mouseX, mouseY);
+        renderTooltipInternal(cleanedLines, lineColors, xm, ym);
     }
 }
 
 void AbstractContainerScreen::renderTooltip(
-    const std::vector<std::wstring>& lines, int mouseX, int mouseY) {
+    const std::vector<std::wstring>& lines, int xm, int ym) {
     if (lines.empty()) return;
 
     std::vector<std::wstring> cleanedLines = lines;
@@ -260,12 +260,12 @@ void AbstractContainerScreen::renderTooltip(
         }
     }
 
-    renderTooltipInternal(cleanedLines, lineColors, mouseX, mouseY);
+    renderTooltipInternal(cleanedLines, lineColors, xm, ym);
 }
 
-void AbstractContainerScreen::renderTooltip(const std::wstring& line,
-                                            int mouseX, int mouseY) {
-    renderTooltip(std::vector<std::wstring>{line}, mouseX, mouseY);
+void AbstractContainerScreen::renderTooltip(const std::wstring& line, int xm,
+                                            int ym) {
+    renderTooltip(std::vector<std::wstring>{line}, xm, ym);
 }
 
 void AbstractContainerScreen::renderLabels() {}

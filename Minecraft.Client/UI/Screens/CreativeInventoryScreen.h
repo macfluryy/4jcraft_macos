@@ -51,10 +51,10 @@ public:
         std::vector<std::shared_ptr<ItemInstance>> itemList;
 
         ContainerCreative(std::shared_ptr<Player> player);
-        virtual bool stillValid(std::shared_ptr<Player> player);
+        virtual bool stillValid(std::shared_ptr<Player> player) override;
         virtual std::shared_ptr<ItemInstance> clicked(
             int slotIndex, int buttonNum, int clickType,
-            std::shared_ptr<Player> player);
+            std::shared_ptr<Player> player, bool looped = false) override;
         void scrollTo(float pos);
         bool canScroll();
     };

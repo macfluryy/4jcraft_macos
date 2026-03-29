@@ -90,8 +90,8 @@ bool CreativeInventoryScreen::ContainerCreative::stillValid(
 
 std::shared_ptr<ItemInstance>
 CreativeInventoryScreen::ContainerCreative::clicked(
-    int slotIndex, int buttonNum, int clickType,
-    std::shared_ptr<Player> player) {
+    int slotIndex, int buttonNum, int clickType, std::shared_ptr<Player> player,
+    bool looped) {
     std::shared_ptr<Inventory> inventory = player->inventory;
     std::shared_ptr<ItemInstance> carried = inventory->getCarried();
 
