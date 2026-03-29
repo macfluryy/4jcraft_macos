@@ -11,6 +11,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.h"
 #include "../Tesselator.h"
+#include "../../Utils/FrameProfiler.h"
 #include "EntityTileRenderer.h"
 #include "../../GameState/Options.h"
 
@@ -267,7 +268,12 @@ bool TileRenderer::tesselateInWorld(
 {
     Tesselator* t = Tesselator::getInstance();
     int shape = tt->getRenderShape();
-    tt->updateShape(level, x, y, z, forceData, forceEntity);
+    if (shape == Tile::SHAPE_BLOCK) {
+        FRAME_PROFILE_SCOPE(ChunkBlockShape);
+        tt->updateShape(level, x, y, z, forceData, forceEntity);
+    } else {
+        tt->updateShape(level, x, y, z, forceData, forceEntity);
+    }
     // AP - now that the culling is done earlier we don't need to call setShape
     // until later on (only for SHAPE_BLOCK)
     if (shape != Tile::SHAPE_BLOCK) {
@@ -278,6 +284,11 @@ bool TileRenderer::tesselateInWorld(
     bool retVal = false;
     switch (shape) {
         case Tile::SHAPE_BLOCK: {
+            {
+                FRAME_PROFILE_SCOPE(ChunkBlockShape);
+                setShape(tt);
+            }
+
             // 4J - added these faceFlags so we can detect whether this block is
             // going to have no visible faces and early out the original code
             // checked noCulling and shouldRenderFace directly where faceFlags
@@ -290,6 +301,7 @@ bool TileRenderer::tesselateInWorld(
             if (noCulling) {
                 faceFlags = 0x3f;
             } else {
+                FRAME_PROFILE_SCOPE(ChunkBlockFaceCull);
                 // these block types can take advantage of a faster version of
                 // shouldRenderFace there are others but this is an easy check
                 // which covers the majority Note: This now covers rock, grass,
@@ -318,9 +330,6 @@ bool TileRenderer::tesselateInWorld(
                 retVal = false;
                 break;
             }
-
-            // now we need to set the shape
-            setShape(tt);
 
             retVal = tesselateBlockInWorld(tt, x, y, z, faceFlags);
         } break;
@@ -4828,9 +4837,11 @@ bool TileRenderer::tesselateBlockInWorld(Tile* tt, int x, int y, int z) {
     if (Tile::lightEmission[tt->id] ==
         0)  // 4J - TODO/remove (Minecraft::useAmbientOcclusion())
     {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorldWithAmbienceOcclusionTexLighting(
             tt, x, y, z, r, g, b, 0, smoothShapeLighting);
     } else {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorld(tt, x, y, z, r, g, b);
     }
 }
@@ -4856,9 +4867,11 @@ bool TileRenderer::tesselateBlockInWorld(Tile* tt, int x, int y, int z,
     if (Tile::lightEmission[tt->id] ==
         0)  // 4J - TODO/remove (Minecraft::useAmbientOcclusion())
     {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorldWithAmbienceOcclusionTexLighting(
             tt, x, y, z, r, g, b, faceFlags, smoothShapeLighting);
     } else {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorld(tt, x, y, z, r, g, b);
     }
 }
@@ -7049,6 +7062,7 @@ bool TileRenderer::tesselateDoorInWorld(Tile* tt, int x, int y, int z) {
 
 void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
                                   Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7167,6 +7181,7 @@ void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
                                 Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7286,6 +7301,7 @@ void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
                                Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7410,6 +7426,7 @@ void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
                                Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7534,6 +7551,7 @@ void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
                               Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7658,6 +7676,7 @@ void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderEast(Tile* tt, double x, double y, double z,
                               Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;

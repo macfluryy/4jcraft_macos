@@ -1,5 +1,6 @@
 #include <thread>
 #include <chrono>
+#include <array>
 
 #include "../Platform/stdafx.h"
 #include "LevelRenderer.h"
@@ -904,11 +905,12 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
             int list = chunk->globalIdx * 2 + layer;
             list += chunkLists;
 
-        // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per chunk
-        // no more full MVP upload per chunk, can also be bkwards compat
-        RenderManager.SetChunkOffset((float)chunk->chunk->x,
-                                     (float)chunk->chunk->y,
-                                     (float)chunk->chunk->z);
+            // 4jcraft: replaced glPushMatrix/glTranslatef/glPopMatrix per
+            // chunk no more full MVP upload per chunk, can also be bkwards
+            // compat
+            RenderManager.SetChunkOffset((float)chunk->chunk->x,
+                                         (float)chunk->chunk->y,
+                                         (float)chunk->chunk->z);
 
             if (RenderManager.CBuffCall(list, first)) {
                 first = false;
@@ -1964,7 +1966,41 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
 
 bool LevelRenderer::updateDirtyChunks() {
 #ifdef _LARGE_WORLDS
-    std::list<std::pair<ClipChunk*, int> > nearestClipChunks;
+    struct NearestClipChunkSet {
+        std::array<std::pair<ClipChunk*, int>, MAX_CONCURRENT_CHUNK_REBUILDS>
+            items;
+        int count = 0;
+
+        bool empty() const noexcept { return count == 0; }
+        int size() const noexcept { return count; }
+
+        bool wouldAccept(int distSqWeighted) const noexcept {
+            return (count < MAX_CONCURRENT_CHUNK_REBUILDS) ||
+                   (distSqWeighted < items[count - 1].second);
+        }
+
+        void insert(ClipChunk* chunk, int distSqWeighted) noexcept {
+            int pos = 0;
+            while ((pos < count) && (items[pos].second <= distSqWeighted)) {
+                ++pos;
+            }
+
+            if ((count == MAX_CONCURRENT_CHUNK_REBUILDS) &&
+                (pos >= MAX_CONCURRENT_CHUNK_REBUILDS)) {
+                return;
+            }
+
+            const int newCount =
+                (count < MAX_CONCURRENT_CHUNK_REBUILDS)
+                    ? (count + 1)
+                    : MAX_CONCURRENT_CHUNK_REBUILDS;
+            for (int i = newCount - 1; i > pos; --i) {
+                items[i] = items[i - 1];
+            }
+            items[pos] = std::pair<ClipChunk*, int>(chunk, distSqWeighted);
+            count = newCount;
+        }
+    } nearestClipChunks;
 #endif
 
     ClipChunk* nearChunk = NULL;  // Nearest chunk that is dirty
@@ -2090,11 +2126,6 @@ bool LevelRenderer::updateDirtyChunks() {
             veryNearCount = g_findNearestChunkDataIn.veryNearCount;
 #else  // __PS3__
 
-#ifdef _LARGE_WORLDS
-            int maxNearestChunks = MAX_CONCURRENT_CHUNK_REBUILDS;
-            // 4J Stu - On XboxOne we should cut this down if in a constrained state
-            // so the saving threads get more time
-#endif
             // Find nearest chunk that is dirty
             for (int p = 0; p < XUSER_MAX_COUNT; p++) {
                 // It's possible that the localplayers member can be set to NULL on
@@ -2150,17 +2181,9 @@ bool LevelRenderer::updateDirtyChunks() {
                                     considered++;
                                     // Is this chunk nearer than our nearest?
 #ifdef _LARGE_WORLDS
-                                    bool isNearer = nearestClipChunks.empty();
-                                    AUTO_VAR(itNearest, nearestClipChunks.begin());
-                                    for (; itNearest != nearestClipChunks.end();
-                                         ++itNearest) {
-                                        isNearer =
-                                            distSqWeighted < itNearest->second;
-                                        if (isNearer) break;
-                                    }
-                                    isNearer =
-                                        isNearer || (nearestClipChunks.size() <
-                                                     maxNearestChunks);
+                                    bool isNearer =
+                                        nearestClipChunks.wouldAccept(
+                                            distSqWeighted);
 #else
                                     bool isNearer = distSqWeighted < minDistSq;
 #endif
@@ -2203,13 +2226,7 @@ bool LevelRenderer::updateDirtyChunks() {
                                             minDistSq = distSqWeighted;
 #ifdef _LARGE_WORLDS
                                             nearestClipChunks.insert(
-                                                itNearest,
-                                                std::pair<ClipChunk*, int>(
-                                                    nearChunk, minDistSq));
-                                            if (nearestClipChunks.size() >
-                                                maxNearestChunks) {
-                                                nearestClipChunks.pop_back();
-                                            }
+                                                nearChunk, minDistSq);
 #endif
                                         } else {
                                             chunk->clearDirty();
@@ -2249,9 +2266,8 @@ bool LevelRenderer::updateDirtyChunks() {
         int index = 0;
         {
             FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
-            for (AUTO_VAR(it, nearestClipChunks.begin());
-                 it != nearestClipChunks.end(); ++it) {
-                chunk = it->first->chunk;
+            for (int i = 0; i < nearestClipChunks.size(); ++i) {
+                chunk = nearestClipChunks.items[i].first->chunk;
                 // If this chunk is very near, then move the renderer into a
                 // deferred mode. This won't commit any command buffers for
                 // rendering until we call CBuffDeferredModeEnd(), allowing us to
