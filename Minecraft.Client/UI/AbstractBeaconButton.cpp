@@ -28,13 +28,13 @@ void AbstractBeaconButton::renderBg(Minecraft* minecraft, int xm, int ym) {
 
     int texU = 0;
     if (!active) {
-        texU += w * 2;      
+        texU += w * 2;
     } else if (selected) {
-        texU += w * 1;      
+        texU += w * 1;
     } else if (hovered) {
-        texU += w * 3;      
+        texU += w * 3;
     }
-    int texV = 219;         
+    int texV = 219;
 
     blit(x, y, texU, texV, w, h);
 
