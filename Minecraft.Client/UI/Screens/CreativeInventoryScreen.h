@@ -20,7 +20,8 @@ private:
     static int selectedTabIndex;
 
     // Array of item ids for the tab icons
-    static int tabIconIds[IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT];
+    static const int
+        tabIconIds[IUIScene_CreativeMenu::eCreativeInventoryTab_COUNT];
 
     // Temporary inventory for creative mode items
     static std::shared_ptr<SimpleContainer> basicInventory;
@@ -60,23 +61,29 @@ public:
     };
 
 public:
-	CreativeInventoryScreen(std::shared_ptr<Player> player);
-	virtual void removed() override;
-	virtual void init() override;
-	virtual void containerTick();
-	virtual void tick() override;
-	virtual void updateEvents() override;
-	virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
-	virtual void mouseClicked(int x, int y, int buttonNum) override;
-	virtual void mouseReleased(int x, int y, int buttonNum) override;
-	virtual void render(int xm, int ym, float a) override;
+    CreativeInventoryScreen(std::shared_ptr<Player> player);
+    virtual void removed() override;
+    virtual void init() override;
+    virtual void containerTick();
+    virtual void tick() override;
+    virtual void updateEvents() override;
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
+    virtual void mouseClicked(int x, int y, int buttonNum) override;
+    virtual void mouseReleased(int x, int y, int buttonNum) override;
+    virtual void render(int xm, int ym, float a) override;
+
 protected:
-	virtual void renderLabels() override;
-	virtual void renderBg(float a) override;
+    virtual void renderLabels() override;
+    virtual void renderBg(float a) override;
+    virtual bool isMouseOverInternal(int tab, int mouseX, int mouseY, int xo,
+                                     int yo, int w, int h);
+
 private:
     void setCurrentCreativeTab(int tab);
     void selectTab(int tab);
     bool needsScrollBars();
     bool isMouseOverTab(int tab, int mouseX, int mouseY);
-    void drawTab(int tab);
+    bool isMouseOverIcon(int tab, int mouseX, int mouseY);
+    void renderTab(int tab);
+    bool renderIconTooltip(int tab, int mouseX, int mouseY);
 };

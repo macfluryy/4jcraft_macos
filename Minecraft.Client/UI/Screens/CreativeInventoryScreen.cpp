@@ -70,7 +70,7 @@ CreativeInventoryScreen::ContainerCreative::ContainerCreative(
     }
 
     // Add hotbar slots (9 slots at bottom)
-    for (int k = 0; k < 9; k++) {
+    for (int k = 0; k < 9; ++k) {
         addSlot(new Slot(inventoryplayer, k, 9 + k * 18, 112));
     }
 
@@ -181,8 +181,8 @@ void CreativeInventoryScreen::ContainerCreative::scrollTo(float pos) {
         j = 0;
     }
 
-    for (int k = 0; k < ROWS; k++) {
-        for (int l = 0; l < COLUMNS; l++) {
+    for (int k = 0; k < ROWS; ++k) {
+        for (int l = 0; l < COLUMNS; ++l) {
             int i1 = l + (k + j) * COLUMNS;
 
             if (i1 >= 0 && i1 < (int)itemList.size()) {
@@ -484,7 +484,7 @@ void CreativeInventoryScreen::setCurrentCreativeTab(int tab) {
             IUIScene_CreativeMenu::specs[tab];
 
         // Add items from static groups
-        for (int i = 0; i < spec->m_staticGroupsCount; i++) {
+        for (int i = 0; i < spec->m_staticGroupsCount; ++i) {
             int groupIdx = spec->m_staticGroupsA[i];
             if (groupIdx >= 0 &&
                 groupIdx <
