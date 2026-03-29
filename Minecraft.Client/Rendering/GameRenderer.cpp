@@ -50,6 +50,7 @@
 #include "../Textures/Packs/TexturePackRepository.h"
 #include "../Textures/Packs/TexturePack.h"
 #include "../Textures/TextureAtlas.h"
+#include "../Utils/FrameProfiler.h"
 
 bool GameRenderer::anaglyph3d = false;
 int GameRenderer::anaglyphPass = 0;
@@ -776,6 +777,7 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
+    FRAME_PROFILE_SCOPE(Lightmap);
 #ifdef __linux__
     if (SharedConstants::TEXTURE_LIGHTING) {
         LinuxLogStubLightmapProbe();
@@ -807,6 +809,7 @@ void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
 void GameRenderer::turnOnLightLayer(
     double alpha,
     bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
+    FRAME_PROFILE_SCOPE(Lightmap);
 #ifdef __linux__
     if (!SharedConstants::TEXTURE_LIGHTING) return;
 
@@ -881,6 +884,7 @@ void GameRenderer::tickLightTexture() {
 }
 
 void GameRenderer::updateLightTexture(float a) {
+    FRAME_PROFILE_SCOPE(Lightmap);
     // 4J-JEV: Now doing light textures on PER PLAYER basis.
     // 4J - we *had* added separate light textures for all dimensions, and this
     // loop to update them all here
@@ -1025,6 +1029,8 @@ int GameRenderer::getLightTexture(int iPad, Level* level) {
 }
 
 void GameRenderer::render(float a, bool bFirst) {
+    FRAME_PROFILE_FRAME_SCOPE();
+
     if (_updateLightTexture && bFirst) updateLightTexture(a);
     if (Display::isActive()) {
         lastActiveTime = System::currentTimeMillis();
@@ -1083,6 +1089,7 @@ void GameRenderer::render(float a, bool bFirst) {
         lastNsTime = System::nanoTime();
 
         if (!mc->options->hideGui || mc->screen != NULL) {
+            FRAME_PROFILE_SCOPE(UIHud);
             mc->gui->render(a, mc->screen != NULL, xMouse, yMouse);
         }
     } else {
@@ -1097,6 +1104,7 @@ void GameRenderer::render(float a, bool bFirst) {
     }
 
     if (mc->screen != NULL) {
+        FRAME_PROFILE_SCOPE(UIHud);
         glClear(GL_DEPTH_BUFFER_BIT);
         mc->screen->render(xMouse, yMouse, a);
         if (mc->screen != NULL && mc->screen->particles != NULL)
@@ -1244,6 +1252,8 @@ void GameRenderer::DisableUpdateThread() {
 }
 
 void GameRenderer::renderLevel(float a, int64_t until) {
+    FRAME_PROFILE_SCOPE(World);
+
     //	if (updateLightTexture) updateLightTexture();	// 4J - TODO -
     // Java 1.0.1 has this line enabled, should check why - don't want to put it
     // in now in case it breaks split-screen
@@ -1296,9 +1306,12 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         Frustum::getFrustum();
         if (mc->options->viewDistance < 2) {
             setupFog(-1, a);
-            levelRenderer->renderSky(a);
-            if (mc->skins->getSelected()->getId() == 1026)
-                levelRenderer->renderHaloRing(a);
+            {
+                FRAME_PROFILE_SCOPE(WeatherSky);
+                levelRenderer->renderSky(a);
+                if (mc->skins->getSelected()->getId() == 1026)
+                    levelRenderer->renderHaloRing(a);
+            }
         }
         // 4jcraft: needs to be enabled for proper transparent texturing on low
         // render dists this was done in renderSky() for the far and normal
@@ -1320,7 +1333,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         MemSect(0);
         frustum->prepare(xOff, yOff, zOff);
 
-        mc->levelRenderer->cull(frustum, a);
+        {
+            FRAME_PROFILE_SCOPE(ChunkCull);
+            mc->levelRenderer->cull(frustum, a);
+        }
         PIXEndNamedEvent();
 
 #ifndef MULTITHREAD_ENABLE
@@ -1347,6 +1363,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 #endif
 
         if (cameraEntity->y < Level::genDepth) {
+            FRAME_PROFILE_SCOPE(WeatherSky);
             prepareAndRenderClouds(levelRenderer, a);
         }
         Frustum::getFrustum();  // 4J added - re-calculate frustum as rendering
@@ -1385,7 +1402,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             cameraPos.x = cameraPosTemp.x;
             cameraPos.y = cameraPosTemp.y;
             cameraPos.z = cameraPosTemp.z;
-            levelRenderer->renderEntities(&cameraPos, frustum, a);
+            {
+                FRAME_PROFILE_SCOPE(Entity);
+                levelRenderer->renderEntities(&cameraPos, frustum, a);
+            }
 #ifdef __PSVITA__
             // AP - make sure we're using the Alpha cut out effect for particles
             glEnable(GL_ALPHA_TEST);
@@ -1393,12 +1413,18 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             PIXEndNamedEvent();
             PIXBeginNamedEvent(0, "Particle render");
             turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
-            particleEngine->renderLit(cameraEntity, a,
-                                      ParticleEngine::OPAQUE_LIST);
+            {
+                FRAME_PROFILE_SCOPE(Particle);
+                particleEngine->renderLit(cameraEntity, a,
+                                          ParticleEngine::OPAQUE_LIST);
+            }
             Lighting::turnOff();
             setupFog(0, a);
-            particleEngine->render(cameraEntity, a,
-                                   ParticleEngine::OPAQUE_LIST);
+            {
+                FRAME_PROFILE_SCOPE(Particle);
+                particleEngine->render(cameraEntity, a,
+                                       ParticleEngine::OPAQUE_LIST);
+            }
             PIXEndNamedEvent();
             turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
 
@@ -1467,12 +1493,18 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         PIXBeginNamedEvent(0, "Particle render (translucent)");
         Lighting::turnOn();
         turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
-        particleEngine->renderLit(cameraEntity, a,
-                                  ParticleEngine::TRANSLUCENT_LIST);
+        {
+            FRAME_PROFILE_SCOPE(Particle);
+            particleEngine->renderLit(cameraEntity, a,
+                                      ParticleEngine::TRANSLUCENT_LIST);
+        }
         Lighting::turnOff();
         setupFog(0, a);
-        particleEngine->render(cameraEntity, a,
-                               ParticleEngine::TRANSLUCENT_LIST);
+        {
+            FRAME_PROFILE_SCOPE(Particle);
+            particleEngine->render(cameraEntity, a,
+                                   ParticleEngine::TRANSLUCENT_LIST);
+        }
         PIXEndNamedEvent();
         turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
         ////////////////////////// End of 4J added section
@@ -1503,12 +1535,16 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        levelRenderer->renderDestroyAnimation(
-            Tesselator::getInstance(),
-            std::dynamic_pointer_cast<Player>(cameraEntity), a);
+        {
+            FRAME_PROFILE_SCOPE(WeatherSky);
+            levelRenderer->renderDestroyAnimation(
+                Tesselator::getInstance(),
+                std::dynamic_pointer_cast<Player>(cameraEntity), a);
+        }
         glDisable(GL_BLEND);
 
         if (cameraEntity->y >= Level::genDepth) {
+            FRAME_PROFILE_SCOPE(WeatherSky);
             prepareAndRenderClouds(levelRenderer, a);
         }
 
@@ -1517,7 +1553,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         setupFog(0, a);
         glEnable(GL_FOG);
         PIXBeginNamedEvent(0, "Rendering snow and rain");
-        renderSnowAndRain(a);
+        {
+            FRAME_PROFILE_SCOPE(WeatherSky);
+            renderSnowAndRain(a);
+        }
         PIXEndNamedEvent();
         glDisable(GL_FOG);
 

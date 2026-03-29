@@ -80,6 +80,10 @@ if get_option('classic_panorama')
     global_cpp_defs += '-DCLASSIC_PANORAMA'
 endif
 
+if get_option('enable_frame_profiler')
+  global_cpp_defs += ['-DENABLE_FRAME_PROFILER']
+endif
+
 if get_option('ui_backend') == 'shiggy'
     shiggy_dep = dependency(
       'shiggy',

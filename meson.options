@@ -25,3 +25,10 @@ option(
   value: true,
   description: 'Toggles V-Sync and adds options to unlock maximum in-game framerate.',
 )
+
+option(
+  'enable_frame_profiler',
+  type: 'boolean',
+  value: false,
+  description: 'Enable the in-engine frame profiler for render hotspot discovery.',
+)
