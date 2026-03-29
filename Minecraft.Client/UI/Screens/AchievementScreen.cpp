@@ -136,7 +136,6 @@ void AchievementScreen::renderLabels() {
 }
 
 void AchievementScreen::renderBg(int xm, int ym, float a) {
-    // 4J Unused
 #if 0
     int xScroll = Mth::floor(xScrollO + (xScrollP - xScrollO) * a);
     int yScroll = Mth::floor(yScrollO + (yScrollP - yScrollO) * a);

@@ -238,9 +238,8 @@ void Options::toggle(const Options::Option* option, int dir) {
     if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
     // 4J-PB - changing
-    // if (option == Option::VIEW_BOBBING) bobView = !bobView;
-    if (option == Option::VIEW_BOBBING)
-        ((dir == 0) ? bobView = false : bobView = true);
+    // 4jcraft: uncommented this so that the view bobbing option works
+    if (option == Option::VIEW_BOBBING) bobView = !bobView;
     if (option == Option::RENDER_CLOUDS) renderClouds = !renderClouds;
     if (option == Option::ADVANCED_OPENGL) {
         advancedOpengl = !advancedOpengl;

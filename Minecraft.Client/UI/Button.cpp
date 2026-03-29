@@ -2,6 +2,10 @@
 #include "Button.h"
 #include "../Textures/Textures.h"
 
+#ifdef ENABLE_JAVA_GUIS
+ResourceLocation GUI_GUI_LOCATION = ResourceLocation(TN_GUI_GUI);
+#endif
+
 Button::Button(int id, int x, int y, const std::wstring& msg) {
     init(id, x, y, 200, 20, msg);
 }
@@ -34,12 +38,14 @@ int Button::getYImage(bool hovered) {
 }
 
 void Button::render(Minecraft* minecraft, int xm, int ym) {
+#ifdef ENABLE_JAVA_GUIS
     if (!visible) return;
 
     Font* font = minecraft->font;
 
-    glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(
-                                     TN_GUI_GUI));  // 4J was L"/gui/gui.png"
+    // glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadTexture(
+    //  TN_GUI_GUI));  // 4J was L"/gui/gui.png"
+    minecraft->textures->bindTexture(&GUI_GUI_LOCATION);
     glColor4f(1, 1, 1, 1);
 
     bool hovered = xm >= x && ym >= y && xm < x + w && ym < y + h;
@@ -59,6 +65,7 @@ void Button::render(Minecraft* minecraft, int xm, int ym) {
             drawCenteredString(font, msg, x + w / 2, y + (h - 8) / 2, 0xe0e0e0);
         }
     }
+#endif
 }
 
 void Button::renderBg(Minecraft* minecraft, int xm, int ym) {}

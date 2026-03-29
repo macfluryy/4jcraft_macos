@@ -1965,11 +1965,14 @@ void Minecraft::run_middle() {
                         // clear the stored button downs since the tick for this
                         // player will now have actioned them
                         player->ullButtonsPressed = 0LL;
+                    } else if (screen != NULL) {
+                        screen->updateEvents();
+                        // 4jcraft: this fixes the title screen panorama running
+                        // faster than it should
+                        if (!idx) {
+                            screen->tick();
+                        }
                     }
-                }
-
-                if (screen != NULL) {
-                    screen->updateEvents();
                 }
 
                 ui.HandleGameTick();

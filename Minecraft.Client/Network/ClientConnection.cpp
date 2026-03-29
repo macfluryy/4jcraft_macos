@@ -46,6 +46,7 @@
 #include "../ClientConstants.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "../Textures/Packs/TexturePackRepository.h"
+#include "UI/Screens/MerchantScreen.h"
 #ifdef _XBOX
 #include "../Platform/Common/XUI/XUI_Scene_Trading.h"
 #else
@@ -3707,6 +3708,17 @@ void ClientConnection::handleCustomPayload(
         ByteArrayInputStream bais(customPayloadPacket->data);
         DataInputStream input(&bais);
         int containerId = input.readInt();
+#ifdef ENABLE_JAVA_GUIS
+        // 4jcraft: use the java gui getMerchant() to get trader as we don't
+        // have iggy's screen anymore
+        if (minecraft->screen &&
+            dynamic_cast<MerchantScreen*>(minecraft->screen) &&
+            containerId == minecraft->localplayers[m_userIndex]
+                               ->containerMenu->containerId) {
+            std::shared_ptr<Merchant> trader = nullptr;
+            MerchantScreen* screen = (MerchantScreen*)minecraft->screen;
+            trader = screen->getMerchant();
+#else
         if (ui.IsSceneInStack(m_userIndex, eUIScene_TradingMenu) &&
             containerId == minecraft->localplayers[m_userIndex]
                                ->containerMenu->containerId) {
@@ -3729,7 +3741,7 @@ void ClientConnection::handleCustomPayload(
             UIScene_TradingMenu* screen = (UIScene_TradingMenu*)scene;
             trader = screen->getMerchant();
 #endif
-
+#endif
             MerchantRecipeList* recipeList =
                 MerchantRecipeList::createFromStream(&input);
             trader->overrideOffers(recipeList);

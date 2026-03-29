@@ -31,8 +31,8 @@ private:
 
 public:
     CreateWorldScreen(Screen* lastScreen);
-    virtual void tick();
-    virtual void init();
+    virtual void tick() override;
+    virtual void init() override;
 
 private:
     void updateResultFolder();
@@ -41,16 +41,16 @@ private:
 public:
     static std::wstring findAvailableFolderName(LevelStorageSource* levelSource,
                                                 const std::wstring& folder);
-    virtual void removed();
+    virtual void removed() override;
 
 protected:
-    virtual void buttonClicked(Button* button);
-    virtual void keyPressed(wchar_t ch, int eventKey);
-    virtual void mouseClicked(int x, int y, int buttonNum);
+    virtual void buttonClicked(Button* button) override;
+    virtual void keyPressed(wchar_t ch, int eventKey) override;
+    virtual void mouseClicked(int x, int y, int buttonNum) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
-    virtual void tabPressed();
+    virtual void render(int xm, int ym, float a) override;
+    virtual void tabPressed() override;
 
 private:
     int m_iGameModeId;

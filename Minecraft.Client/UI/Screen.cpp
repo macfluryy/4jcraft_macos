@@ -174,7 +174,6 @@ void Screen::renderBackground(int vo) {
 }
 
 void Screen::renderDirtBackground(int vo) {
-    // 4J Unused - Iggy Flash UI renders the background on consoles
 #ifdef ENABLE_JAVA_GUIS
     glDisable(GL_LIGHTING);
     glDisable(GL_FOG);
