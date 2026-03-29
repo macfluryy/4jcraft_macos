@@ -283,14 +283,20 @@ Slot* AbstractContainerScreen::findSlot(int x, int y) {
     return NULL;
 }
 
-bool AbstractContainerScreen::isHovering(Slot* slot, int xm, int ym) {
+// 4jcraft: equivalent to MCP 8.11 (1.6.x)'s GuiContainer.isPointInRegion() for
+// use in other derived classes
+bool AbstractContainerScreen::isHoveringOver(int x, int y, int w, int h, int xm,
+                                             int ym) {
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;
     xm -= xo;
     ym -= yo;
 
-    return xm >= slot->x - 1 && xm < slot->x + 16 + 1 && ym >= slot->y - 1 &&
-           ym < slot->y + 16 + 1;
+    return xm >= x - 1 && xm < x + w + 1 && ym >= y - 1 && ym < y + h + 1;
+}
+
+bool AbstractContainerScreen::isHovering(Slot* slot, int xm, int ym) {
+    return isHoveringOver(slot->x, slot->y, 16, 16, xm, ym);
 }
 
 void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum) {

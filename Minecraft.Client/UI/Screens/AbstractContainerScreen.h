@@ -28,6 +28,9 @@ protected:
     // can call findSlot() and isHovering() directly for its custom click
     // handling.
     virtual Slot* findSlot(int x, int y);
+    // 4jcraft: equivalent to MCP 8.11 (1.6.x)'s GuiContainer.isPointInRegion()
+    // for use in other derived classes
+    virtual bool isHoveringOver(int x, int y, int w, int h, int xm, int ym);
     virtual bool isHovering(Slot* slot, int xm, int ym);
     // 4jcraft: extracted from render() into a standalone method so this can be
     // used in other classes
