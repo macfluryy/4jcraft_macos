@@ -462,8 +462,8 @@ void Entity::setPos(double x, double y, double z) {
     this->z = z;
     float w = bbWidth / 2;
     float h = bbHeight;
-    bb = {x - w, y - heightOffset + ySlideOffset, z - w, x + w,
-            y - heightOffset + ySlideOffset + h, z + w};
+    bb = {x - w, y - heightOffset + ySlideOffset,     z - w,
+          x + w, y - heightOffset + ySlideOffset + h, z + w};
 }
 
 void Entity::turn(float xo, float yo) {
