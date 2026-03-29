@@ -112,8 +112,70 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
 // 4jcraft: extracted from render() into a standalone method so this can be used
 // in other derived classes
+// update: also added 1.6.x era overloads (for the creative inventory and other
+// places)
+void AbstractContainerScreen::renderTooltipInternal(
+    const std::vector<std::wstring>& cleanedLines,
+    const std::vector<int>& lineColors, int mouseX, int mouseY) {
+    if (cleanedLines.empty()) return;
+
+    int tooltipWidth = 0;
+    for (const auto& line : cleanedLines) {
+        int lineWidth = font->width(line);
+        if (lineWidth > tooltipWidth) tooltipWidth = lineWidth;
+    }
+
+    int tooltipX = mouseX + 12;
+    int tooltipY = mouseY - 12;
+    int tooltipHeight = 8;
+
+    if (cleanedLines.size() > 1) {
+        tooltipHeight += 2 + (cleanedLines.size() - 1) * 10;
+    }
+
+    int bgColor = 0xf0100010;
+    fillGradient(tooltipX - 3, tooltipY - 4, tooltipX + tooltipWidth + 3,
+                 tooltipY - 3, bgColor, bgColor);
+    fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 3,
+                 tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 4,
+                 bgColor, bgColor);
+    fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
+                 tooltipY + tooltipHeight + 3, bgColor, bgColor);
+    fillGradient(tooltipX - 4, tooltipY - 3, tooltipX - 3,
+                 tooltipY + tooltipHeight + 3, bgColor, bgColor);
+    fillGradient(tooltipX + tooltipWidth + 3, tooltipY - 3,
+                 tooltipX + tooltipWidth + 4, tooltipY + tooltipHeight + 3,
+                 bgColor, bgColor);
+
+    int borderStart = 0x505000ff;
+    int borderFinish = (borderStart & 0xfefefe) >> 1 | borderStart & 0xff000000;
+    fillGradient(tooltipX - 3, (tooltipY - 3) + 1, (tooltipX - 3) + 1,
+                 (tooltipY + tooltipHeight + 3) - 1, borderStart, borderFinish);
+    fillGradient(tooltipX + tooltipWidth + 2, (tooltipY - 3) + 1,
+                 tooltipX + tooltipWidth + 3,
+                 (tooltipY + tooltipHeight + 3) - 1, borderStart, borderFinish);
+    fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
+                 (tooltipY - 3) + 1, borderStart, borderStart);
+    fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 2,
+                 tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 3,
+                 borderFinish, borderFinish);
+
+    int currentY = tooltipY;
+    for (size_t lineIndex = 0; lineIndex < cleanedLines.size(); ++lineIndex) {
+        const std::wstring& currentLine = cleanedLines[lineIndex];
+        int textColor = lineColors[lineIndex];
+
+        font->drawShadow(currentLine, tooltipX, currentY, textColor);
+
+        if (lineIndex == 0) {
+            currentY += 2;
+        }
+        currentY += 10;
+    }
+}
+
 void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
-                                            int x, int y) {
+                                            int mouseX, int mouseY) {
     if (item == nullptr) return;
 
     std::vector<std::wstring> elementName;
@@ -121,7 +183,6 @@ void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
         item->getHoverText(minecraft->player, false, elementName);
 
     if (tooltipLines != NULL && tooltipLines->size() > 0) {
-        int tooltipWidth = 0;
         std::vector<std::wstring> cleanedLines;
         std::vector<int> lineColors;
 
@@ -173,74 +234,38 @@ void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
 
             cleanedLines.push_back(clean);
             lineColors.push_back(lineColor);
-
-            int lineWidth = font->width(clean);
-            if (lineWidth > tooltipWidth) {
-                tooltipWidth = lineWidth;
-            }
         }
 
-        int tooltipX = x + 12;
-        int tooltipY = y - 12;
-        int tooltipHeight = 8;
-
-        if (tooltipLines->size() > 1) {
-            tooltipHeight += 2 + (tooltipLines->size() - 1) * 10;
+        if (!cleanedLines.empty()) {
+            lineColors[0] = app.GetHTMLColour(item->getRarity()->color);
         }
 
-        int bgColor = 0xf0100010;
-        fillGradient(tooltipX - 3, tooltipY - 4, tooltipX + tooltipWidth + 3,
-                     tooltipY - 3, bgColor, bgColor);
-        fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 3,
-                     tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 4,
-                     bgColor, bgColor);
-        fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
-                     tooltipY + tooltipHeight + 3, bgColor, bgColor);
-        fillGradient(tooltipX - 4, tooltipY - 3, tooltipX - 3,
-                     tooltipY + tooltipHeight + 3, bgColor, bgColor);
-        fillGradient(tooltipX + tooltipWidth + 3, tooltipY - 3,
-                     tooltipX + tooltipWidth + 4, tooltipY + tooltipHeight + 3,
-                     bgColor, bgColor);
+        renderTooltipInternal(cleanedLines, lineColors, mouseX, mouseY);
+    }
+}
 
-        int borderStart = 0x505000ff;
-        int borderFinish =
-            (borderStart & 0xfefefe) >> 1 | borderStart & 0xff000000;
-        fillGradient(tooltipX - 3, (tooltipY - 3) + 1, (tooltipX - 3) + 1,
-                     (tooltipY + tooltipHeight + 3) - 1, borderStart,
-                     borderFinish);
-        fillGradient(tooltipX + tooltipWidth + 2, (tooltipY - 3) + 1,
-                     tooltipX + tooltipWidth + 3,
-                     (tooltipY + tooltipHeight + 3) - 1, borderStart,
-                     borderFinish);
-        fillGradient(tooltipX - 3, tooltipY - 3, tooltipX + tooltipWidth + 3,
-                     (tooltipY - 3) + 1, borderStart, borderStart);
-        fillGradient(tooltipX - 3, tooltipY + tooltipHeight + 2,
-                     tooltipX + tooltipWidth + 3, tooltipY + tooltipHeight + 3,
-                     borderFinish, borderFinish);
+void AbstractContainerScreen::renderTooltip(
+    const std::vector<std::wstring>& lines, int mouseX, int mouseY) {
+    if (lines.empty()) return;
 
-        int currentY = tooltipY;
-        for (int lineIndex = 0; lineIndex < (int)tooltipLines->size();
-             ++lineIndex) {
-            std::wstring& currentLine = cleanedLines[lineIndex];
-            int textColor;
+    std::vector<std::wstring> cleanedLines = lines;
+    std::vector<int> lineColors;
+    lineColors.reserve(lines.size());
 
-            if (lineIndex == 0) {
-                textColor = app.GetHTMLColour(item->getRarity()->color);
-            } else {
-                textColor = (lineColors[lineIndex] != 0xffffffff)
-                                ? lineColors[lineIndex]
-                                : 0xffaaaaaa;
-            }
-
-            font->drawShadow(currentLine, tooltipX, currentY, textColor);
-
-            if (lineIndex == 0) {
-                currentY += 2;
-            }
-
-            currentY += 10;
+    for (size_t i = 0; i < lines.size(); ++i) {
+        if (i == 0) {
+            lineColors.push_back(0xffffffff);
+        } else {
+            lineColors.push_back(0xffaaaaaa);
         }
     }
+
+    renderTooltipInternal(cleanedLines, lineColors, mouseX, mouseY);
+}
+
+void AbstractContainerScreen::renderTooltip(const std::wstring& line,
+                                            int mouseX, int mouseY) {
+    renderTooltip(std::vector<std::wstring>{line}, mouseX, mouseY);
 }
 
 void AbstractContainerScreen::renderLabels() {}

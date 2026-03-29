@@ -33,7 +33,10 @@ protected:
     virtual bool isHoveringOver(int x, int y, int w, int h, int xm, int ym);
     virtual bool isHovering(Slot* slot, int xm, int ym);
     // 4jcraft: extracted from render() into a standalone method so this can be
-    // used in other classes
+    // used in other places
+    virtual void renderTooltipInternal(
+        const std::vector<std::wstring>& cleanedLines,
+        const std::vector<int>& lineColors, int mouseX, int mouseY);
     virtual void renderTooltip(std::shared_ptr<ItemInstance> item, int x,
                                int y);
 
@@ -50,4 +53,9 @@ public:
     virtual void slotsChanged(std::shared_ptr<Container> container);
     virtual bool isPauseScreen() override;
     virtual void tick() override;
+
+    // 4jcraft: 1.6.x era overloads
+    virtual void renderTooltip(const std::vector<std::wstring>& lines, int x,
+                               int y);
+    virtual void renderTooltip(const std::wstring& line, int x, int y);
 };
