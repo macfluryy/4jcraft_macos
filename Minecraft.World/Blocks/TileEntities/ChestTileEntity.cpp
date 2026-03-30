@@ -246,7 +246,7 @@ void ChestTileEntity::tick() {
                          y + 1 + range, z + 1 + range);
         std::vector<std::shared_ptr<Entity> >* players =
             level->getEntitiesOfClass(typeid(Player), &player_aabb);
-        for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+        for (auto it = players->begin(); it != players->end(); ++it) {
             std::shared_ptr<Player> player =
                 std::dynamic_pointer_cast<Player>(*it);
 

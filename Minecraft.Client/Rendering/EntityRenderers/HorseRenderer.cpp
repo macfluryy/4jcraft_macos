@@ -86,7 +86,7 @@ ResourceLocation* HorseRenderer::getOrCreateLayeredTextureLocation(
     std::shared_ptr<EntityHorse> horse) {
     std::wstring textureName = horse->getLayeredTextureHashName();
 
-    AUTO_VAR(it, LAYERED_LOCATION_CACHE.find(textureName));
+    auto it = LAYERED_LOCATION_CACHE.find(textureName);
 
     ResourceLocation* location;
     if (it != LAYERED_LOCATION_CACHE.end()) {

@@ -42,24 +42,24 @@ void AbstractContainerMenu::addSlotListener(ContainerListener* listener) {
 }
 
 void AbstractContainerMenu::removeSlotListener(ContainerListener* listener) {
-    AUTO_VAR(it, find(containerListeners.begin(), containerListeners.end(),
-                      listener));
+    auto it = find(containerListeners.begin(), containerListeners.end(),
+                      listener);
     if (it != containerListeners.end()) containerListeners.erase(it);
 }
 
 std::vector<std::shared_ptr<ItemInstance> >* AbstractContainerMenu::getItems() {
     std::vector<std::shared_ptr<ItemInstance> >* items =
         new std::vector<std::shared_ptr<ItemInstance> >();
-    AUTO_VAR(itEnd, slots.end());
-    for (AUTO_VAR(it, slots.begin()); it != itEnd; it++) {
+    auto itEnd = slots.end();
+    for (auto it = slots.begin(); it != itEnd; it++) {
         items->push_back((*it)->getItem());
     }
     return items;
 }
 
 void AbstractContainerMenu::sendData(int id, int value) {
-    AUTO_VAR(itEnd, containerListeners.end());
-    for (AUTO_VAR(it, containerListeners.begin()); it != itEnd; it++) {
+    auto itEnd = containerListeners.end();
+    for (auto it = containerListeners.begin(); it != itEnd; it++) {
         (*it)->setContainerData(this, id, value);
     }
 }
@@ -79,8 +79,8 @@ void AbstractContainerMenu::broadcastChanges() {
             lastSlots[i] = expected;
             m_bNeedsRendered = true;
 
-            AUTO_VAR(itEnd, containerListeners.end());
-            for (AUTO_VAR(it, containerListeners.begin()); it != itEnd; it++) {
+            auto itEnd = containerListeners.end();
+            for (auto it = containerListeners.begin(); it != itEnd; it++) {
                 (*it)->slotChanged(this, i, expected);
             }
         }
@@ -111,8 +111,8 @@ bool AbstractContainerMenu::clickMenuButton(std::shared_ptr<Player> player,
 
 Slot* AbstractContainerMenu::getSlotFor(std::shared_ptr<Container> c,
                                         int index) {
-    AUTO_VAR(itEnd, slots.end());
-    for (AUTO_VAR(it, slots.begin()); it != itEnd; it++) {
+    auto itEnd = slots.end();
+    for (auto it = slots.begin(); it != itEnd; it++) {
         Slot* slot = *it;  // slots->at(i);
         if (slot->isAt(c, index)) {
             return slot;
@@ -174,7 +174,7 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
                     inventory->getCarried()->copy();
                 int remaining = inventory->getCarried()->count;
 
-                for (AUTO_VAR(it, quickcraftSlots.begin());
+                for (auto it = quickcraftSlots.begin();
                      it != quickcraftSlots.end(); ++it) {
                     Slot* slot = *it;
                     if (slot != NULL &&
@@ -520,7 +520,7 @@ bool AbstractContainerMenu::isSynched(std::shared_ptr<Player> player) {
 void AbstractContainerMenu::setSynched(std::shared_ptr<Player> player,
                                        bool synched) {
     if (synched) {
-        AUTO_VAR(it, unSynchedPlayers.find(player));
+        auto it = unSynchedPlayers.find(player);
 
         if (it != unSynchedPlayers.end()) unSynchedPlayers.erase(it);
     } else {

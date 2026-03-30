@@ -564,8 +564,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
         level[playerIndex]->getAllEntities();
     totalEntities = (int)entities.size();
 
-    AUTO_VAR(itEndGE, level[playerIndex]->globalEntities.end());
-    for (AUTO_VAR(it, level[playerIndex]->globalEntities.begin());
+    auto itEndGE = level[playerIndex]->globalEntities.end();
+    for (auto it = level[playerIndex]->globalEntities.begin();
          it != itEndGE; it++) {
         std::shared_ptr<Entity> entity = *it;  // level->globalEntities[i];
         renderedEntities++;
@@ -573,8 +573,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
             EntityRenderDispatcher::instance->render(entity, a);
     }
 
-    AUTO_VAR(itEndEnts, entities.end());
-    for (AUTO_VAR(it, entities.begin()); it != itEndEnts; it++) {
+    auto itEndEnts = entities.end();
+    for (auto it = entities.begin(); it != itEndEnts; it++) {
         std::shared_ptr<Entity> entity = *it;  // entities[i];
 
         bool shouldRender =
@@ -620,13 +620,13 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
     // hashmap by chunk/dimension index. The index is calculated in the same way
     // as the global flags.
     EnterCriticalSection(&m_csRenderableTileEntities);
-    for (AUTO_VAR(it, renderableTileEntities.begin());
+    for (auto it = renderableTileEntities.begin();
          it != renderableTileEntities.end(); it++) {
         int idx = it->first;
         // Don't render if it isn't in the same dimension as this player
         if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
 
-        for (AUTO_VAR(it2, it->second.tiles.begin());
+        for (auto it2 = it->second.tiles.begin();
              it2 != it->second.tiles.end(); it2++) {
             TileEntityRenderDispatcher::instance->render(*it2, a);
         }
@@ -854,7 +854,7 @@ void LevelRenderer::tick() {
     ticks++;
 
     if ((ticks % SharedConstants::TICKS_PER_SECOND) == 0) {
-        AUTO_VAR(it, destroyingBlocks.begin());
+        auto it = destroyingBlocks.begin();
         while (it != destroyingBlocks.end()) {
             BlockDestructionProgress* block = it->second;
 
@@ -2153,7 +2153,7 @@ void LevelRenderer::renderDestroyAnimation(Tesselator* t,
         t->offset((float)-xo, (float)-yo, (float)-zo);
         t->noColor();
 
-        AUTO_VAR(it, destroyingBlocks.begin());
+        auto it = destroyingBlocks.begin();
         while (it != destroyingBlocks.end()) {
             BlockDestructionProgress* block = it->second;
             double xd = block->getX() - xo;
@@ -3578,7 +3578,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
 void LevelRenderer::destroyTileProgress(int id, int x, int y, int z,
                                         int progress) {
     if (progress < 0 || progress >= 10) {
-        AUTO_VAR(it, destroyingBlocks.find(id));
+        auto it = destroyingBlocks.find(id);
         if (it != destroyingBlocks.end()) {
             delete it->second;
             destroyingBlocks.erase(it);
@@ -3587,7 +3587,7 @@ void LevelRenderer::destroyTileProgress(int id, int x, int y, int z,
     } else {
         BlockDestructionProgress* entry = NULL;
 
-        AUTO_VAR(it, destroyingBlocks.find(id));
+        auto it = destroyingBlocks.find(id);
         if (it != destroyingBlocks.end()) entry = it->second;
 
         if (entry == NULL || entry->getX() != x || entry->getY() != y ||
@@ -3867,7 +3867,7 @@ void LevelRenderer::fullyFlagRenderableTileEntitiesToBeRemoved() {
         if (itChunk == renderableTileEntities.end()) continue;
 
         RenderableTileEntityBucket& bucket = itChunk->second;
-        for (AUTO_VAR(itPending, itKey->second.begin());
+        for (auto itPending = itKey->second.begin();
              itPending != itKey->second.end(); itPending++) {
             if (bucket.indexByTile.find(*itPending) ==
                 bucket.indexByTile.end()) {

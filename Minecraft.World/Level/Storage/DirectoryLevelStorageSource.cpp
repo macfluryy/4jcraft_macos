@@ -86,8 +86,8 @@ void DirectoryLevelStorageSource::deleteLevel(const std::wstring& levelId) {
 }
 
 void DirectoryLevelStorageSource::deleteRecursive(std::vector<File*>* files) {
-    AUTO_VAR(itEnd, files->end());
-    for (AUTO_VAR(it, files->begin()); it != itEnd; it++) {
+    auto itEnd = files->end();
+    for (auto it = files->begin(); it != itEnd; it++) {
         File* file = *it;
         if (file->isDirectory()) {
             deleteRecursive(file->listFiles());

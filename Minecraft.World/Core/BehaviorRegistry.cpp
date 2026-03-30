@@ -7,7 +7,7 @@ BehaviorRegistry::BehaviorRegistry(DispenseItemBehavior* defaultValue) {
 }
 
 BehaviorRegistry::~BehaviorRegistry() {
-    for (AUTO_VAR(it, storage.begin()); it != storage.end(); ++it) {
+    for (auto it = storage.begin(); it != storage.end(); ++it) {
         delete it->second;
     }
 
@@ -15,7 +15,7 @@ BehaviorRegistry::~BehaviorRegistry() {
 }
 
 DispenseItemBehavior* BehaviorRegistry::get(Item* key) {
-    AUTO_VAR(it, storage.find(key));
+    auto it = storage.find(key);
 
     return (it == storage.end()) ? defaultBehavior : it->second;
 }

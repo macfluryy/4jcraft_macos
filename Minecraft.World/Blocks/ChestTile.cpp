@@ -348,7 +348,7 @@ bool ChestTile::isCatSittingOnChest(Level* level, int x, int y, int z) {
     AABB ocelot_aabb(x, y + 1, z, x + 1, y + 2, z + 1);
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntitiesOfClass(typeid(Ocelot), &ocelot_aabb);
-    for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+    for (auto it = entities->begin(); it != entities->end(); ++it) {
         std::shared_ptr<Ocelot> ocelot = std::dynamic_pointer_cast<Ocelot>(*it);
         if (ocelot->isSitting()) {
             delete entities;

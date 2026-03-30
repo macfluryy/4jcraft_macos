@@ -71,7 +71,7 @@ ArchiveFile::~ArchiveFile() { delete m_cachedData; }
 std::vector<std::wstring>* ArchiveFile::getFileList() {
     std::vector<std::wstring>* out = new std::vector<std::wstring>();
 
-    for (AUTO_VAR(it, m_index.begin()); it != m_index.end(); it++)
+    for (auto it = m_index.begin(); it != m_index.end(); it++)
 
         out->push_back(it->first);
 
@@ -88,7 +88,7 @@ int ArchiveFile::getFileSize(const std::wstring& filename) {
 
 byteArray ArchiveFile::getFile(const std::wstring& filename) {
     byteArray out;
-    AUTO_VAR(it, m_index.find(filename));
+    auto it = m_index.find(filename);
 
     if (it == m_index.end()) {
         app.DebugPrintf("Couldn't find file in archive\n");

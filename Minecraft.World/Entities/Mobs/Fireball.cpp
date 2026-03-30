@@ -180,8 +180,8 @@ void Fireball::tick() {
     std::vector<std::shared_ptr<Entity> >* objects =
         level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
-    AUTO_VAR(itEnd, objects->end());
-    for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
+    auto itEnd = objects->end();
+    for (auto it = objects->begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;  // objects->at(i);
         if (!e->isPickable() || (e->is(owner)))
             continue;  // 4J Stu - Never collide with the owner (Enderdragon) //

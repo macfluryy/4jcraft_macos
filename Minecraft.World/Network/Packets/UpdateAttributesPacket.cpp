@@ -10,7 +10,7 @@ UpdateAttributesPacket::UpdateAttributesPacket(
     int entityId, std::unordered_set<AttributeInstance*>* values) {
     this->entityId = entityId;
 
-    for (AUTO_VAR(it, values->begin()); it != values->end(); ++it) {
+    for (auto it = values->begin(); it != values->end(); ++it) {
         AttributeInstance* value = *it;
         std::unordered_set<AttributeModifier*> mods;
         value->getModifiers(mods);
@@ -22,7 +22,7 @@ UpdateAttributesPacket::UpdateAttributesPacket(
 UpdateAttributesPacket::~UpdateAttributesPacket() {
     // Delete modifiers - these are always copies, either on construction or on
     // read
-    for (AUTO_VAR(it, attributes.begin()); it != attributes.end(); ++it) {
+    for (auto it = attributes.begin(); it != attributes.end(); ++it) {
         delete (*it);
     }
 }
@@ -50,7 +50,7 @@ void UpdateAttributesPacket::read(DataInputStream* dis) {
         attributes.insert(new AttributeSnapshot(id, base, &modifiers));
 
         // modifiers is copied in AttributeSnapshot ctor so delete contents
-        for (AUTO_VAR(it, modifiers.begin()); it != modifiers.end(); ++it) {
+        for (auto it = modifiers.begin(); it != modifiers.end(); ++it) {
             delete *it;
         }
     }
@@ -60,7 +60,7 @@ void UpdateAttributesPacket::write(DataOutputStream* dos) {
     dos->writeInt(entityId);
     dos->writeInt(attributes.size());
 
-    for (AUTO_VAR(it, attributes.begin()); it != attributes.end(); ++it) {
+    for (auto it = attributes.begin(); it != attributes.end(); ++it) {
         AttributeSnapshot* attribute = (*it);
 
         std::unordered_set<AttributeModifier*>* modifiers =
@@ -70,7 +70,7 @@ void UpdateAttributesPacket::write(DataOutputStream* dos) {
         dos->writeDouble(attribute->getBase());
         dos->writeShort(modifiers->size());
 
-        for (AUTO_VAR(it2, modifiers->begin()); it2 != modifiers->end();
+        for (auto it2 = modifiers->begin(); it2 != modifiers->end();
              ++it2) {
             AttributeModifier* modifier = (*it2);
             dos->writeInt(modifier->getId());
@@ -101,14 +101,14 @@ UpdateAttributesPacket::AttributeSnapshot::AttributeSnapshot(
     this->id = id;
     this->base = base;
 
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         this->modifiers.insert(new AttributeModifier(
             (*it)->getId(), (*it)->getAmount(), (*it)->getOperation()));
     }
 }
 
 UpdateAttributesPacket::AttributeSnapshot::~AttributeSnapshot() {
-    for (AUTO_VAR(it, modifiers.begin()); it != modifiers.end(); ++it) {
+    for (auto it = modifiers.begin(); it != modifiers.end(); ++it) {
         delete (*it);
     }
 }

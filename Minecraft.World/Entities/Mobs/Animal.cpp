@@ -220,7 +220,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
         std::vector<std::shared_ptr<Entity> >* others =
             level->getEntitiesOfClass(typeid(*this), &grown);
         // for (int i = 0; i < others->size(); i++)
-        for (AUTO_VAR(it, others->begin()); it != others->end(); ++it) {
+        for (auto it = others->begin(); it != others->end(); ++it) {
             std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);
             if (p != shared_from_this() && p->getInLoveValue() > 0) {
                 delete others;
@@ -234,7 +234,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
             std::vector<std::shared_ptr<Entity> >* players =
                 level->getEntitiesOfClass(typeid(Player), &grown);
             // for (int i = 0; i < players.size(); i++)
-            for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+            for (auto it = players->begin(); it != players->end(); ++it) {
                 setDespawnProtected();
 
                 std::shared_ptr<Player> p =
@@ -251,7 +251,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
             std::vector<std::shared_ptr<Entity> >* others =
                 level->getEntitiesOfClass(typeid(*this), &grown);
             // for (int i = 0; i < others.size(); i++)
-            for (AUTO_VAR(it, others->begin()); it != others->end(); ++it) {
+            for (auto it = others->begin(); it != others->end(); ++it) {
                 std::shared_ptr<Animal> p =
                     std::dynamic_pointer_cast<Animal>(*it);
                 if (p != shared_from_this() && p->getAge() < 0) {

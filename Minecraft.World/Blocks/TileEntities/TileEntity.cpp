@@ -83,7 +83,7 @@ void TileEntity::load(CompoundTag* tag) {
 }
 
 void TileEntity::save(CompoundTag* tag) {
-    AUTO_VAR(it, classIdMap.find(this->GetType()));
+    auto it = classIdMap.find(this->GetType());
     if (it == classIdMap.end()) {
         // TODO 4J Stu - Some sort of exception handling
         // throw new RuntimeException(this->getClass() + " is missing a mapping!
@@ -103,7 +103,7 @@ std::shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag* tag) {
 
     // try
     //{
-    AUTO_VAR(it, idCreateMap.find(tag->getString(L"id")));
+    auto it = idCreateMap.find(tag->getString(L"id"));
     if (it != idCreateMap.end())
         entity = std::shared_ptr<TileEntity>(it->second());
     //}

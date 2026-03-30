@@ -103,8 +103,8 @@ bool PigZombie::hurt(DamageSource* source, float dmg) {
         AABB grown = bb.grow(32, 32, 32);
         std::vector<std::shared_ptr<Entity> >* nearby =
             level->getEntities(shared_from_this(), &grown);
-        AUTO_VAR(itEnd, nearby->end());
-        for (AUTO_VAR(it, nearby->begin()); it != itEnd; it++) {
+        auto itEnd = nearby->end();
+        for (auto it = nearby->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // nearby->at(i);
             if (e->instanceof(eTYPE_PIGZOMBIE)) {
                 std::shared_ptr<PigZombie> pigZombie =

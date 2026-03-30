@@ -78,8 +78,8 @@ void RedStoneDustTile::updatePowerStrength(Level* level, int x, int y, int z) {
         std::vector<TilePos>(toUpdate.begin(), toUpdate.end());
     toUpdate.clear();
 
-    AUTO_VAR(itEnd, updates.end());
-    for (AUTO_VAR(it, updates.begin()); it != itEnd; it++) {
+    auto itEnd = updates.end();
+    for (auto it = updates.begin(); it != itEnd; it++) {
         TilePos tp = *it;
         level->updateNeighborsAt(tp.x, tp.y, tp.z, id);
     }

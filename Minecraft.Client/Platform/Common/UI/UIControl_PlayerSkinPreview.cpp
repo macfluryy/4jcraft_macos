@@ -214,7 +214,7 @@ void UIControl_PlayerSkinPreview::render(IggyCustomDrawCallbackRegion* region) {
         // *pAdditionalModelParts=mob->GetAdditionalModelParts();
 
         if (m_pvAdditionalModelParts && m_pvAdditionalModelParts->size() != 0) {
-            for (AUTO_VAR(it, m_pvAdditionalModelParts->begin());
+            for (auto it = m_pvAdditionalModelParts->begin();
                  it != m_pvAdditionalModelParts->end(); ++it) {
                 ModelPart* pModelPart = *it;
 
@@ -227,7 +227,7 @@ void UIControl_PlayerSkinPreview::render(IggyCustomDrawCallbackRegion* region) {
 
         // hide the additional parts
         if (m_pvAdditionalModelParts && m_pvAdditionalModelParts->size() != 0) {
-            for (AUTO_VAR(it, m_pvAdditionalModelParts->begin());
+            for (auto it = m_pvAdditionalModelParts->begin();
                  it != m_pvAdditionalModelParts->end(); ++it) {
                 ModelPart* pModelPart = *it;
 

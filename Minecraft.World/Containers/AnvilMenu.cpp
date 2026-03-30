@@ -135,11 +135,11 @@ void AnvilMenu::createResult() {
                 std::unordered_map<int, int>* additionalEnchantments =
                     EnchantmentHelper::getEnchantments(addition);
 
-                for (AUTO_VAR(it, additionalEnchantments->begin());
+                for (auto it = additionalEnchantments->begin();
                      it != additionalEnchantments->end(); ++it) {
                     int id = it->first;
                     Enchantment* enchantment = Enchantment::enchantments[id];
-                    AUTO_VAR(localIt, enchantments->find(id));
+                    auto localIt = enchantments->find(id);
                     int current =
                         localIt != enchantments->end() ? localIt->second : 0;
                     int level = it->second;
@@ -152,7 +152,7 @@ void AnvilMenu::createResult() {
                         input->id == EnchantedBookItem::enchantedBook_Id)
                         compatible = true;
 
-                    for (AUTO_VAR(it2, enchantments->begin());
+                    for (auto it2 = enchantments->begin();
                          it2 != enchantments->end(); ++it2) {
                         int other = it2->first;
                         if (other != id &&
@@ -242,7 +242,7 @@ void AnvilMenu::createResult() {
         }
 
         int count = 0;
-        for (AUTO_VAR(it, enchantments->begin()); it != enchantments->end();
+        for (auto it = enchantments->begin(); it != enchantments->end();
              ++it) {
             int id = it->first;
             Enchantment* enchantment = Enchantment::enchantments[id];

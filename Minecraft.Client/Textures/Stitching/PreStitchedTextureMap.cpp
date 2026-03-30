@@ -40,7 +40,7 @@ PreStitchedTextureMap::PreStitchedTextureMap(int type, const std::wstring& name,
 void PreStitchedTextureMap::stitch() {
     // Animated StitchedTextures store a vector of textures for each frame of
     // the animation. Free any pre-existing ones here.
-    for (AUTO_VAR(it, animatedTextures.begin()); it != animatedTextures.end();
+    for (auto it = animatedTextures.begin(); it != animatedTextures.end();
          ++it) {
         StitchedTexture* animatedStitchedTexture = *it;
         animatedStitchedTexture->freeFrameTextures();
@@ -119,7 +119,7 @@ void PreStitchedTextureMap::stitch() {
     TextureManager::getInstance()->registerName(name, stitchResult);
     // stitchResult = stitcher->constructTexture(m_mipMap);
 
-    for (AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end();
+    for (auto it = texturesByName.begin(); it != texturesByName.end();
          ++it) {
         StitchedTexture* preStitched = (StitchedTexture*)it->second;
 
@@ -132,7 +132,7 @@ void PreStitchedTextureMap::stitch() {
     }
 
     MemSect(52);
-    for (AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end();
+    for (auto it = texturesByName.begin(); it != texturesByName.end();
          ++it) {
         StitchedTexture* preStitched = (StitchedTexture*)(it->second);
 
@@ -204,7 +204,7 @@ StitchedTexture* PreStitchedTextureMap::getTexture(const std::wstring& name) {
 
 void PreStitchedTextureMap::cycleAnimationFrames() {
     // for (StitchedTexture texture : animatedTextures)
-    for (AUTO_VAR(it, animatedTextures.begin()); it != animatedTextures.end();
+    for (auto it = animatedTextures.begin(); it != animatedTextures.end();
          ++it) {
         StitchedTexture* texture = *it;
         texture->cycleFrames();
@@ -225,7 +225,7 @@ Icon* PreStitchedTextureMap::registerIcon(const std::wstring& name) {
         // new RuntimeException("Don't register null!").printStackTrace();
     }
 
-    AUTO_VAR(it, texturesByName.find(name));
+    auto it = texturesByName.find(name);
     if (it != texturesByName.end()) result = it->second;
 
     if (result == NULL) {
@@ -265,7 +265,7 @@ void PreStitchedTextureMap::loadUVs() {
         return;
     }
 
-    for (AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end();
+    for (auto it = texturesByName.begin(); it != texturesByName.end();
          ++it) {
         delete it->second;
     }

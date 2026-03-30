@@ -13,7 +13,7 @@ MineShaftFeature::MineShaftFeature(
     std::unordered_map<std::wstring, std::wstring> options) {
     chance = 0.01;
 
-    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+    for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_CHANCE) == 0) {
             chance = Mth::getDouble(it->second, chance);
         }

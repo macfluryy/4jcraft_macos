@@ -861,8 +861,8 @@ void Player::aiStep() {
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntities(shared_from_this(), &pickupArea);
         if (entities != NULL) {
-            AUTO_VAR(itEnd, entities->end());
-            for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+            auto itEnd = entities->end();
+            for (auto it = entities->begin(); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = *it;  // entities->at(i);
                 if (!e->removed) {
                     touch(e);
@@ -925,7 +925,7 @@ void Player::awardKillScore(std::shared_ptr<Entity> victim, int awardPoints) {
     // }
 
     if (objectives) {
-        for (AUTO_VAR(it, objectives->begin()); it != objectives->end(); ++it) {
+        for (auto it = objectives->begin(); it != objectives->end(); ++it) {
             Objective* objective = *it;
             Score* score =
                 getScoreboard()->getPlayerScore(getAName(), objective);

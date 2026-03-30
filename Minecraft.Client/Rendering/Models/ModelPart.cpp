@@ -55,10 +55,10 @@ void ModelPart::addChild(ModelPart* child) {
 }
 
 ModelPart* ModelPart::retrieveChild(SKIN_BOX* pBox) {
-    for (AUTO_VAR(it, children.begin()); it != children.end(); ++it) {
+    for (auto it = children.begin(); it != children.end(); ++it) {
         ModelPart* child = *it;
 
-        for (AUTO_VAR(itcube, child->cubes.begin());
+        for (auto itcube = child->cubes.begin();
              itcube != child->cubes.end(); ++itcube) {
             Cube* pCube = *itcube;
 

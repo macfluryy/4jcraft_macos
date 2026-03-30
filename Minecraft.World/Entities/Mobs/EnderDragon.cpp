@@ -464,7 +464,7 @@ void EnderDragon::aiStep() {
                 std::vector<std::shared_ptr<Entity> >* targets =
                     level->getEntities(shared_from_this(), &m_acidArea);
 
-                for (AUTO_VAR(it, targets->begin()); it != targets->end();
+                for (auto it = targets->begin(); it != targets->end();
                      ++it) {
                     if ((*it)->instanceof(eTYPE_LIVINGENTITY)) {
                         // app.DebugPrintf("Attacking entity with acid\n");
@@ -821,7 +821,7 @@ void EnderDragon::checkCrystals() {
         std::shared_ptr<EnderCrystal> crystal = nullptr;
         double nearest = std::numeric_limits<double>::max();
         // for (Entity ec : crystals)
-        for (AUTO_VAR(it, crystals->begin()); it != crystals->end(); ++it) {
+        for (auto it = crystals->begin(); it != crystals->end(); ++it) {
             std::shared_ptr<EnderCrystal> ec =
                 std::dynamic_pointer_cast<EnderCrystal>(*it);
             double dist = ec->distanceToSqr(shared_from_this());
@@ -856,7 +856,7 @@ void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> >* entities) {
     double zm = (body->bb.z0 + body->bb.z1) / 2;
 
     // for (Entity e : entities)
-    for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+    for (auto it = entities->begin(); it != entities->end(); ++it) {
         if ((*it)->instanceof(eTYPE_LIVINGENTITY))  //(e instanceof Mob)
         {
             std::shared_ptr<LivingEntity> e =
@@ -871,7 +871,7 @@ void EnderDragon::knockBack(std::vector<std::shared_ptr<Entity> >* entities) {
 
 void EnderDragon::hurt(std::vector<std::shared_ptr<Entity> >* entities) {
     // for (int i = 0; i < entities->size(); i++)
-    for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+    for (auto it = entities->begin(); it != entities->end(); ++it) {
         if ((*it)->instanceof(eTYPE_LIVINGENTITY))  //(e instanceof Mob)
         {
             std::shared_ptr<LivingEntity> e =

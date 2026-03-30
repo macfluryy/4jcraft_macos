@@ -36,7 +36,7 @@ std::wstring SpawnEggItem::getHoverName(
 
 int SpawnEggItem::getColor(std::shared_ptr<ItemInstance> item,
                            int spriteLayer) {
-    AUTO_VAR(it, EntityIO::idsSpawnableInCreative.find(item->getAuxValue()));
+    auto it = EntityIO::idsSpawnableInCreative.find(item->getAuxValue());
     if (it != EntityIO::idsSpawnableInCreative.end()) {
         EntityIO::SpawnableMobInfo* spawnableMobInfo = it->second;
         if (spriteLayer == 0) {

@@ -28,7 +28,7 @@ ExplodePacket::ExplodePacket(
 
     if (toBlow != NULL) {
         this->toBlow.assign(toBlow->begin(), toBlow->end());
-        // for( AUTO_VAR(it, toBlow->begin()); it != toBlow->end(); it++ )
+        // for( auto it = toBlow->begin(); it != toBlow->end(); it++ )
         //{
         //	this->toBlow.push_back(*it);
         // }
@@ -86,7 +86,7 @@ void ExplodePacket::write(DataOutputStream* dos)  // throws IOException
         //(Myset::const_iterator it = c1.begin();
         // it != c1.end(); ++it)
 
-        for (AUTO_VAR(it, toBlow.begin()); it != toBlow.end(); it++) {
+        for (auto it = toBlow.begin(); it != toBlow.end(); it++) {
             TilePos tp = *it;
 
             int xx = tp.x - xp;

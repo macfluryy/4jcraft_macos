@@ -131,7 +131,7 @@ void MultiPlayerLevel::tick() {
     // 4J HEG - Copy the connections vector to prevent crash when moving to
     // Nether
     std::vector<ClientConnection*> connectionsTemp = connections;
-    for (AUTO_VAR(connection, connectionsTemp.begin());
+    for (auto connection = connectionsTemp.begin();
          connection < connectionsTemp.end(); ++connection) {
         (*connection)->tick();
     }
@@ -391,8 +391,8 @@ void MultiPlayerLevel::tickTiles() {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Ticking client side tiles");
-    AUTO_VAR(itEndCtp, chunksToPoll.end());
-    for (AUTO_VAR(it, chunksToPoll.begin()); it != itEndCtp; it++) {
+    auto itEndCtp = chunksToPoll.end();
+    for (auto it = chunksToPoll.begin(); it != itEndCtp; it++) {
         ChunkPos cp = *it;
         int xo = cp.x * 16;
         int zo = cp.z * 16;
@@ -432,7 +432,7 @@ void MultiPlayerLevel::removeEntity(std::shared_ptr<Entity> e) {
     // 4J Stu - Add this remove from the reEntries collection to stop us
     // continually removing and re-adding things, in particular the
     // MultiPlayerLocalPlayer when they die
-    AUTO_VAR(it, reEntries.find(e));
+    auto it = reEntries.find(e);
     if (it != reEntries.end()) {
         reEntries.erase(it);
     }
@@ -443,7 +443,7 @@ void MultiPlayerLevel::removeEntity(std::shared_ptr<Entity> e) {
 
 void MultiPlayerLevel::entityAdded(std::shared_ptr<Entity> e) {
     Level::entityAdded(e);
-    AUTO_VAR(it, reEntries.find(e));
+    auto it = reEntries.find(e);
     if (it != reEntries.end()) {
         reEntries.erase(it);
     }
@@ -451,7 +451,7 @@ void MultiPlayerLevel::entityAdded(std::shared_ptr<Entity> e) {
 
 void MultiPlayerLevel::entityRemoved(std::shared_ptr<Entity> e) {
     Level::entityRemoved(e);
-    AUTO_VAR(it, forced.find(e));
+    auto it = forced.find(e);
     if (it != forced.end()) {
         reEntries.insert(e);
     }
@@ -472,14 +472,14 @@ void MultiPlayerLevel::putEntity(int id, std::shared_ptr<Entity> e) {
 }
 
 std::shared_ptr<Entity> MultiPlayerLevel::getEntity(int id) {
-    AUTO_VAR(it, entitiesById.find(id));
+    auto it = entitiesById.find(id);
     if (it == entitiesById.end()) return nullptr;
     return it->second;
 }
 
 std::shared_ptr<Entity> MultiPlayerLevel::removeEntity(int id) {
     std::shared_ptr<Entity> e;
-    AUTO_VAR(it, entitiesById.find(id));
+    auto it = entitiesById.find(id);
     if (it != entitiesById.end()) {
         e = it->second;
         entitiesById.erase(it);
@@ -495,10 +495,10 @@ std::shared_ptr<Entity> MultiPlayerLevel::removeEntity(int id) {
 // remove entities slightly differently
 void MultiPlayerLevel::removeEntities(
     std::vector<std::shared_ptr<Entity> >* list) {
-    for (AUTO_VAR(it, list->begin()); it < list->end(); ++it) {
+    for (auto it = list->begin(); it < list->end(); ++it) {
         std::shared_ptr<Entity> e = *it;
 
-        AUTO_VAR(reIt, reEntries.find(e));
+        auto reIt = reEntries.find(e);
         if (reIt != reEntries.end()) {
             reEntries.erase(reIt);
         }
@@ -613,12 +613,12 @@ bool MultiPlayerLevel::doSetTileAndData(int x, int y, int z, int tile,
 
 void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
     if (sendDisconnect) {
-        for (AUTO_VAR(it, connections.begin()); it < connections.end(); ++it) {
+        for (auto it = connections.begin(); it < connections.end(); ++it) {
             (*it)->sendAndDisconnect(std::shared_ptr<DisconnectPacket>(
                 new DisconnectPacket(DisconnectPacket::eDisconnect_Quitting)));
         }
     } else {
-        for (AUTO_VAR(it, connections.begin()); it < connections.end(); ++it) {
+        for (auto it = connections.begin(); it < connections.end(); ++it) {
             (*it)->close();
         }
     }
@@ -704,7 +704,7 @@ void MultiPlayerLevel::animateTickDoWork() {
     MemSect(0);
 
     for (int i = 0; i < ticksPerChunk; i++) {
-        for (AUTO_VAR(it, chunksToAnimate.begin()); it != chunksToAnimate.end();
+        for (auto it = chunksToAnimate.begin(); it != chunksToAnimate.end();
              it++) {
             int packed = *it;
             // 4jcraft changed the extraction logic to be safe
@@ -809,9 +809,9 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     // entities.removeAll(entitiesToRemove);
 
     EnterCriticalSection(&m_entitiesCS);
-    for (AUTO_VAR(it, entities.begin()); it != entities.end();) {
+    for (auto it = entities.begin(); it != entities.end();) {
         bool found = false;
-        for (AUTO_VAR(it2, entitiesToRemove.begin());
+        for (auto it2 = entitiesToRemove.begin();
              it2 != entitiesToRemove.end(); it2++) {
             if ((*it) == (*it2)) {
                 found = true;
@@ -826,8 +826,8 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     }
     LeaveCriticalSection(&m_entitiesCS);
 
-    AUTO_VAR(endIt, entitiesToRemove.end());
-    for (AUTO_VAR(it, entitiesToRemove.begin()); it != endIt; it++) {
+    auto endIt = entitiesToRemove.end();
+    for (auto it = entitiesToRemove.begin(); it != endIt; it++) {
         std::shared_ptr<Entity> e = *it;
         int xc = e->xChunk;
         int zc = e->zChunk;
@@ -839,7 +839,7 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     // 4J Stu - Is there a reason do this in a separate loop? Thats what the
     // Java does...
     endIt = entitiesToRemove.end();
-    for (AUTO_VAR(it, entitiesToRemove.begin()); it != endIt; it++) {
+    for (auto it = entitiesToRemove.begin(); it != endIt; it++) {
         entityRemoved(*it);
     }
     entitiesToRemove.clear();
@@ -884,7 +884,7 @@ void MultiPlayerLevel::removeClientConnection(ClientConnection* c,
             new DisconnectPacket(DisconnectPacket::eDisconnect_Quitting)));
     }
 
-    AUTO_VAR(it, find(connections.begin(), connections.end(), c));
+    auto it = find(connections.begin(), connections.end(), c);
     if (it != connections.end()) {
         connections.erase(it);
     }
@@ -892,7 +892,7 @@ void MultiPlayerLevel::removeClientConnection(ClientConnection* c,
 
 void MultiPlayerLevel::tickAllConnections() {
     PIXBeginNamedEvent(0, "Connection ticking");
-    for (AUTO_VAR(it, connections.begin()); it < connections.end(); ++it) {
+    for (auto it = connections.begin(); it < connections.end(); ++it) {
         (*it)->tick();
     }
     PIXEndNamedEvent();

@@ -26,8 +26,8 @@ PathFinder::~PathFinder() {
     // so just need to destroy their containers
     delete[] neighbors->data;
     delete neighbors;
-    AUTO_VAR(itEnd, nodes.end());
-    for (AUTO_VAR(it, nodes.begin()); it != itEnd; it++) {
+    auto itEnd = nodes.end();
+    for (auto it = nodes.begin(); it != itEnd; it++) {
         delete it->second;
     }
 }
@@ -188,7 +188,7 @@ Node* PathFinder::getNode(Entity* entity, int x, int y, int z, Node* size,
 /*final*/ Node* PathFinder::getNode(int x, int y, int z) {
     int i = Node::createHash(x, y, z);
     Node* node;
-    AUTO_VAR(it, nodes.find(i));
+    auto it = nodes.find(i);
     if (it == nodes.end()) {
         MemSect(54);
         node = new Node(x, y, z);

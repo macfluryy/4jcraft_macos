@@ -317,8 +317,8 @@ void Boat::tick() {
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
-        AUTO_VAR(itEnd, entities->end());
-        for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+        auto itEnd = entities->end();
+        for (auto it = entities->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = (*it);  // entities->at(i);
             if (e != rider.lock() && e->isPushable() &&
                 e->GetType() == eTYPE_BOAT) {

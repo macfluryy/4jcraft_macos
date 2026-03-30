@@ -304,7 +304,7 @@ void Mob::aiStep() {
             AABB grown = bb.grow(1, 0, 1);
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntitiesOfClass(typeid(ItemEntity), &grown);
-        for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+        for (auto it = entities->begin(); it != entities->end(); ++it) {
             std::shared_ptr<ItemEntity> entity =
                 std::dynamic_pointer_cast<ItemEntity>(*it);
             if (entity->removed || entity->getItem() == NULL) continue;
@@ -852,7 +852,7 @@ void Mob::restoreLeashFromSave() {
             std::vector<std::shared_ptr<Entity> >* livingEnts =
                 level->getEntitiesOfClass(typeid(LivingEntity),
                                           &grown);
-            for (AUTO_VAR(it, livingEnts->begin()); it != livingEnts->end();
+            for (auto it = livingEnts->begin(); it != livingEnts->end();
                  ++it) {
                 std::shared_ptr<LivingEntity> le =
                     std::dynamic_pointer_cast<LivingEntity>(*it);

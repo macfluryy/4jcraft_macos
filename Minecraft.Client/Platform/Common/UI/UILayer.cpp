@@ -18,7 +18,7 @@ void UILayer::tick() {
     // so we need to make a copy of the scenes that we are going to try and
     // destroy this tick
     std::vector<UIScene*> scenesToDeleteCopy;
-    for (AUTO_VAR(it, m_scenesToDelete.begin()); it != m_scenesToDelete.end();
+    for (auto it = m_scenesToDelete.begin(); it != m_scenesToDelete.end();
          it++) {
         UIScene* scene = (*it);
         scenesToDeleteCopy.push_back(scene);
@@ -28,7 +28,7 @@ void UILayer::tick() {
     // Delete the scenes in our copy if they are ready to delete, otherwise add
     // back to the ones that are still to be deleted. Actually deleting a scene
     // might also add something back into m_scenesToDelete.
-    for (AUTO_VAR(it, scenesToDeleteCopy.begin());
+    for (auto it = scenesToDeleteCopy.begin();
          it != scenesToDeleteCopy.end(); it++) {
         UIScene* scene = (*it);
         if (scene->isReadyToDelete()) {
@@ -45,12 +45,12 @@ void UILayer::tick() {
     }
     m_scenesToDestroy.clear();
 
-    for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
+    for (auto it = m_components.begin(); it != m_components.end(); ++it) {
         (*it)->tick();
     }
     // Note: reverse iterator, the last element is the top of the stack
     int sceneIndex = m_sceneStack.size() - 1;
-    // for(AUTO_VAR(it,m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it)
+    // for(auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it)
     while (sceneIndex >= 0 && sceneIndex < m_sceneStack.size()) {
         //(*it)->tick();
         UIScene* scene = m_sceneStack[sceneIndex];
@@ -63,9 +63,9 @@ void UILayer::tick() {
 
 void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
     if (!ui.IsExpectingOrReloadingSkin()) {
-        for (AUTO_VAR(it, m_components.begin()); it != m_components.end();
+        for (auto it = m_components.begin(); it != m_components.end();
              ++it) {
-            AUTO_VAR(itRef, m_componentRefCount.find((*it)->getSceneType()));
+            auto itRef = m_componentRefCount.find((*it)->getSceneType());
             if (itRef != m_componentRefCount.end() && itRef->second.second) {
                 if ((*it)->isVisible()) {
                     PIXBeginNamedEvent(0, "Rendering component %d",
@@ -125,7 +125,7 @@ bool UILayer::HasFocus(int iPad) {
 
 bool UILayer::hidesLowerScenes() {
     bool hidesScenes = false;
-    for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
+    for (auto it = m_components.begin(); it != m_components.end(); ++it) {
         if ((*it)->hidesLowerScenes()) {
             hidesScenes = true;
             break;
@@ -147,16 +147,16 @@ void UILayer::getRenderDimensions(S32& width, S32& height) {
 }
 
 void UILayer::DestroyAll() {
-    for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
+    for (auto it = m_components.begin(); it != m_components.end(); ++it) {
         (*it)->destroyMovie();
     }
-    for (AUTO_VAR(it, m_sceneStack.begin()); it != m_sceneStack.end(); ++it) {
+    for (auto it = m_sceneStack.begin(); it != m_sceneStack.end(); ++it) {
         (*it)->destroyMovie();
     }
 }
 
 void UILayer::ReloadAll(bool force) {
-    for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
+    for (auto it = m_components.begin(); it != m_components.end(); ++it) {
         (*it)->reloadMovie(force);
     }
     if (!m_sceneStack.empty()) {
@@ -437,7 +437,7 @@ bool UILayer::NavigateBack(int iPad, EUIScene eScene) {
 }
 
 void UILayer::showComponent(int iPad, EUIScene scene, bool show) {
-    AUTO_VAR(it, m_componentRefCount.find(scene));
+    auto it = m_componentRefCount.find(scene);
     if (it != m_componentRefCount.end()) {
         it->second.second = show;
         return;
@@ -447,7 +447,7 @@ void UILayer::showComponent(int iPad, EUIScene scene, bool show) {
 
 bool UILayer::isComponentVisible(EUIScene scene) {
     bool visible = false;
-    AUTO_VAR(it, m_componentRefCount.find(scene));
+    auto it = m_componentRefCount.find(scene);
     if (it != m_componentRefCount.end()) {
         visible = it->second.second;
     }
@@ -455,11 +455,11 @@ bool UILayer::isComponentVisible(EUIScene scene) {
 }
 
 UIScene* UILayer::addComponent(int iPad, EUIScene scene, void* initData) {
-    AUTO_VAR(it, m_componentRefCount.find(scene));
+    auto it = m_componentRefCount.find(scene);
     if (it != m_componentRefCount.end()) {
         ++it->second.first;
 
-        for (AUTO_VAR(itComp, m_components.begin());
+        for (auto itComp = m_components.begin();
              itComp != m_components.end(); ++itComp) {
             if ((*itComp)->getSceneType() == scene) {
                 return *itComp;
@@ -525,13 +525,13 @@ UIScene* UILayer::addComponent(int iPad, EUIScene scene, void* initData) {
 }
 
 void UILayer::removeComponent(EUIScene scene) {
-    AUTO_VAR(it, m_componentRefCount.find(scene));
+    auto it = m_componentRefCount.find(scene);
     if (it != m_componentRefCount.end()) {
         --it->second.first;
 
         if (it->second.first <= 0) {
             m_componentRefCount.erase(it);
-            for (AUTO_VAR(compIt, m_components.begin());
+            for (auto compIt = m_components.begin();
                  compIt != m_components.end();) {
                 if ((*compIt)->getSceneType() == scene) {
                     m_scenesToDelete.push_back((*compIt));
@@ -548,8 +548,8 @@ void UILayer::removeComponent(EUIScene scene) {
 
 void UILayer::removeScene(UIScene* scene) {
 
-    AUTO_VAR(newEnd,
-             std::remove(m_sceneStack.begin(), m_sceneStack.end(), scene));
+    auto newEnd =
+             std::remove(m_sceneStack.begin(), m_sceneStack.end(), scene);
     m_sceneStack.erase(newEnd, m_sceneStack.end());
 
     m_scenesToDelete.push_back(scene);
@@ -571,7 +571,7 @@ void UILayer::closeAllScenes() {
     std::vector<UIScene*> temp;
     temp.insert(temp.end(), m_sceneStack.begin(), m_sceneStack.end());
     m_sceneStack.clear();
-    for (AUTO_VAR(it, temp.begin()); it != temp.end(); ++it) {
+    for (auto it = temp.begin(); it != temp.end(); ++it) {
         m_scenesToDelete.push_back(*it);
         (*it)->handleDestroy();  // For anything that might require the pointer
                                  // be valid
@@ -612,7 +612,7 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
     m_bIgnorePlayerJoinMenuDisplayed = false;
 
     bool layerFocusSet = false;
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+    for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {
         UIScene* scene = *it;
 
         // UPDATE FOCUS STATES
@@ -695,7 +695,7 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
 void UILayer::handleInput(int iPad, int key, bool repeat, bool pressed,
                           bool released, bool& handled) {
     // Note: reverse iterator, the last element is the top of the stack
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+    for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {
         UIScene* scene = *it;
         if (scene->hasFocus(iPad) && scene->canHandleInput()) {
             // 4J-PB - ignore repeats of action ABXY buttons
@@ -719,7 +719,7 @@ void UILayer::handleInput(int iPad, int key, bool repeat, bool pressed,
 }
 
 void UILayer::HandleDLCMountingComplete() {
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+    for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {
         UIScene* topScene = *it;
         app.DebugPrintf("UILayer::HandleDLCMountingComplete - topScene\n");
         topScene->HandleDLCMountingComplete();
@@ -727,7 +727,7 @@ void UILayer::HandleDLCMountingComplete() {
 }
 
 void UILayer::HandleDLCInstalled() {
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+    for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {
         UIScene* topScene = *it;
         topScene->HandleDLCInstalled();
     }
@@ -735,7 +735,7 @@ void UILayer::HandleDLCInstalled() {
 
 
 void UILayer::HandleMessage(EUIMessage message, void* data) {
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
+    for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {
         UIScene* topScene = *it;
         topScene->HandleMessage(message, data);
     }
@@ -748,7 +748,7 @@ C4JRender::eViewportType UILayer::getViewport() {
 }
 
 void UILayer::handleUnlockFullVersion() {
-    for (AUTO_VAR(it, m_sceneStack.begin()); it != m_sceneStack.end(); ++it) {
+    for (auto it = m_sceneStack.begin(); it != m_sceneStack.end(); ++it) {
         (*it)->handleUnlockFullVersion();
     }
 }
@@ -757,10 +757,10 @@ void UILayer::PrintTotalMemoryUsage(int64_t& totalStatic,
                                     int64_t& totalDynamic) {
     int64_t layerStatic = 0;
     int64_t layerDynamic = 0;
-    for (AUTO_VAR(it, m_components.begin()); it != m_components.end(); ++it) {
+    for (auto it = m_components.begin(); it != m_components.end(); ++it) {
         (*it)->PrintTotalMemoryUsage(layerStatic, layerDynamic);
     }
-    for (AUTO_VAR(it, m_sceneStack.begin()); it != m_sceneStack.end(); ++it) {
+    for (auto it = m_sceneStack.begin(); it != m_sceneStack.end(); ++it) {
         (*it)->PrintTotalMemoryUsage(layerStatic, layerDynamic);
     }
     app.DebugPrintf(app.USER_SR, "  \\- Layer static: %d , Layer dynamic: %d\n",

@@ -47,7 +47,7 @@ StrongholdFeature::StrongholdFeature(
     std::unordered_map<std::wstring, std::wstring> options) {
     _init();
 
-    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+    for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_DISTANCE) == 0) {
             distance = Mth::getDouble(it->second, distance, 1);
         } else if (it->first.compare(OPTION_COUNT) == 0) {
@@ -248,7 +248,7 @@ StrongholdFeature::StrongholdStart::StrongholdStart(Level* level,
     std::vector<StructurePiece*>* pendingChildren = &startRoom->pendingChildren;
     while (!pendingChildren->empty()) {
         int pos = random->nextInt((int)pendingChildren->size());
-        AUTO_VAR(it, pendingChildren->begin() + pos);
+        auto it = pendingChildren->begin() + pos;
         StructurePiece* structurePiece = *it;
         pendingChildren->erase(it);
         structurePiece->addChildren(startRoom, &pieces, random);

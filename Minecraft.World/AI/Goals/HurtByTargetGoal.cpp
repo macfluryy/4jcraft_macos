@@ -26,7 +26,7 @@ void HurtByTargetGoal::start() {
         std::vector<std::shared_ptr<Entity> >* nearby =
             mob->level->getEntitiesOfClass(
                 typeid(*mob), &mob_bb);
-        for (AUTO_VAR(it, nearby->begin()); it != nearby->end(); ++it) {
+        for (auto it = nearby->begin(); it != nearby->end(); ++it) {
             std::shared_ptr<PathfinderMob> other =
                 std::dynamic_pointer_cast<PathfinderMob>(*it);
             if (this->mob->shared_from_this() == other) continue;

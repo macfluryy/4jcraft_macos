@@ -94,7 +94,7 @@ std::list<VillagePieces::PieceWeight*>* VillagePieces::createPieceSet(
         Mth::nextInt(random, 0 + villageSize, 3 + villageSize * 2)));
 
     // silly way of filtering "infinite" buildings
-    AUTO_VAR(it, newPieces->begin());
+    auto it = newPieces->begin();
     while (it != newPieces->end()) {
         if ((*it)->maxPlaceCount == 0) {
             delete (*it);
@@ -110,7 +110,7 @@ std::list<VillagePieces::PieceWeight*>* VillagePieces::createPieceSet(
 int VillagePieces::updatePieceWeight(std::list<PieceWeight*>* currentPieces) {
     bool hasAnyPieces = false;
     int totalWeight = 0;
-    for (AUTO_VAR(it, currentPieces->begin()); it != currentPieces->end();
+    for (auto it = currentPieces->begin(); it != currentPieces->end();
          it++) {
         PieceWeight* piece = *it;
         if (piece->maxPlaceCount > 0 &&
@@ -174,7 +174,7 @@ VillagePieces::VillagePiece* VillagePieces::generatePieceFromSmallDoor(
         numAttempts++;
 
         int weightSelection = random->nextInt(totalWeight);
-        for (AUTO_VAR(it, startPiece->pieceSet->begin());
+        for (auto it = startPiece->pieceSet->begin();
              it != startPiece->pieceSet->end(); it++) {
             PieceWeight* piece = *it;
             weightSelection -= piece->weight;
@@ -611,7 +611,7 @@ VillagePieces::StartPiece::StartPiece(BiomeSource* biomeSource, int genDepth,
 }
 
 VillagePieces::StartPiece::~StartPiece() {
-    for (AUTO_VAR(it, pieceSet->begin()); it != pieceSet->end(); it++) {
+    for (auto it = pieceSet->begin(); it != pieceSet->end(); it++) {
         delete (*it);
     }
     delete pieceSet;

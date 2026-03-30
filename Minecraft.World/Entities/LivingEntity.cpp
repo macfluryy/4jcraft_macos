@@ -120,7 +120,7 @@ LivingEntity::LivingEntity(Level* level) : Entity(level) {
 }
 
 LivingEntity::~LivingEntity() {
-    for (AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end(); ++it) {
+    for (auto it = activeEffects.begin(); it != activeEffects.end(); ++it) {
         delete it->second;
     }
 
@@ -378,7 +378,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     if (!activeEffects.empty()) {
         ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-        for (AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end();
+        for (auto it = activeEffects.begin(); it != activeEffects.end();
              ++it) {
             MobEffectInstance* effect = it->second;
             listTag->add(effect->save(new CompoundTag()));
@@ -429,7 +429,7 @@ void LivingEntity::readAdditionalSaveData(CompoundTag* tag) {
 
 void LivingEntity::tickEffects() {
     bool removed = false;
-    for (AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end();) {
+    for (auto it = activeEffects.begin(); it != activeEffects.end();) {
         MobEffectInstance* effect = it->second;
         removed = false;
         if (!effect->tick(
@@ -460,7 +460,7 @@ void LivingEntity::tickEffects() {
                 setWeakened(false);
             } else {
                 std::vector<MobEffectInstance*> values;
-                for (AUTO_VAR(it, activeEffects.begin());
+                for (auto it = activeEffects.begin();
                      it != activeEffects.end(); ++it) {
                     values.push_back(it->second);
                 }
@@ -516,7 +516,7 @@ void LivingEntity::removeAllEffects() {
     // Iterator<Integer> effectIdIterator =
     // activeEffects.keySet().iterator(); while
     // (effectIdIterator.hasNext())
-    for (AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end();) {
+    for (auto it = activeEffects.begin(); it != activeEffects.end();) {
         // Integer effectId = effectIdIterator.next();
         MobEffectInstance* effect = it->second;  // activeEffects.get(effectId);
 
@@ -535,7 +535,7 @@ std::vector<MobEffectInstance*>* LivingEntity::getActiveEffects() {
     std::vector<MobEffectInstance*>* active =
         new std::vector<MobEffectInstance*>();
 
-    for (AUTO_VAR(it, activeEffects.begin()); it != activeEffects.end(); ++it) {
+    for (auto it = activeEffects.begin(); it != activeEffects.end(); ++it) {
         active->push_back(it->second);
     }
 
@@ -554,7 +554,7 @@ bool LivingEntity::hasEffect(MobEffect* effect) {
 MobEffectInstance* LivingEntity::getEffect(MobEffect* effect) {
     MobEffectInstance* effectInst = NULL;
 
-    AUTO_VAR(it, activeEffects.find(effect->id));
+    auto it = activeEffects.find(effect->id);
     if (it != activeEffects.end()) effectInst = it->second;
 
     return effectInst;
@@ -611,7 +611,7 @@ bool LivingEntity::canBeAffected(MobEffectInstance* newEffect) {
 bool LivingEntity::isInvertedHealAndHarm() { return getMobType() == UNDEAD; }
 
 void LivingEntity::removeEffectNoUpdate(int effectId) {
-    AUTO_VAR(it, activeEffects.find(effectId));
+    auto it = activeEffects.find(effectId);
     if (it != activeEffects.end()) {
         MobEffectInstance* effect = it->second;
         if (effect != NULL) {
@@ -622,7 +622,7 @@ void LivingEntity::removeEffectNoUpdate(int effectId) {
 }
 
 void LivingEntity::removeEffect(int effectId) {
-    AUTO_VAR(it, activeEffects.find(effectId));
+    auto it = activeEffects.find(effectId);
     if (it != activeEffects.end()) {
         MobEffectInstance* effect = it->second;
         if (effect != NULL) {
@@ -1508,8 +1508,8 @@ void LivingEntity::aiStep() {
         AABBList* collisions = level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
             double yTop = 0;
-            AUTO_VAR(itEnd, collisions->end());
-            for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
+            auto itEnd = collisions->end();
+            for (auto it = collisions->begin(); it != itEnd; it++) {
                 if (it->y1 > yTop) yTop = it->y1;
             }
 
@@ -1577,8 +1577,8 @@ void LivingEntity::pushEntities() {
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
-        AUTO_VAR(itEnd, entities->end());
-        for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+        auto itEnd = entities->end();
+        for (auto it = entities->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
             if (e->isPushable()) e->push(shared_from_this());
         }

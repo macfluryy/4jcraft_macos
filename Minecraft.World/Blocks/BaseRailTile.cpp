@@ -117,8 +117,8 @@ BaseRailTile::Rail* BaseRailTile::Rail::getRail(TilePos* p) {
 
 bool BaseRailTile::Rail::connectsTo(Rail* rail) {
     if (m_bValidRail) {
-        AUTO_VAR(itEnd, connections.end());
-        for (AUTO_VAR(it, connections.begin()); it != itEnd; it++) {
+        auto itEnd = connections.end();
+        for (auto it = connections.begin(); it != itEnd; it++) {
             TilePos* p = *it;  // connections[i];
             if (p->x == rail->x && p->z == rail->z) {
                 return true;
@@ -130,8 +130,8 @@ bool BaseRailTile::Rail::connectsTo(Rail* rail) {
 
 bool BaseRailTile::Rail::hasConnection(int x, int y, int z) {
     if (m_bValidRail) {
-        AUTO_VAR(itEnd, connections.end());
-        for (AUTO_VAR(it, connections.begin()); it != itEnd; it++) {
+        auto itEnd = connections.end();
+        for (auto it = connections.begin(); it != itEnd; it++) {
             TilePos* p = *it;  // connections[i];
             if (p->x == x && p->z == z) {
                 return true;
@@ -278,8 +278,8 @@ void BaseRailTile::Rail::place(bool hasSignal, bool first) {
         if (first || level->getData(x, y, z) != data) {
             level->setData(x, y, z, data, Tile::UPDATE_ALL);
 
-            AUTO_VAR(itEnd, connections.end());
-            for (AUTO_VAR(it, connections.begin()); it != itEnd; it++) {
+            auto itEnd = connections.end();
+            for (auto it = connections.begin(); it != itEnd; it++) {
                 Rail* neighbor = getRail(*it);
                 if (neighbor == NULL) continue;
                 neighbor->removeSoftConnections();

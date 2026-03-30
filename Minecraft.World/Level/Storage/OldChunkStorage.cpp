@@ -202,7 +202,7 @@ bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
     EnterCriticalSection(&lc->m_csEntities);
 #endif
     for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++) {
-        AUTO_VAR(itEnd, lc->entityBlocks[i]->end());
+        auto itEnd = lc->entityBlocks[i]->end();
         for (std::vector<std::shared_ptr<Entity> >::iterator it =
                  lc->entityBlocks[i]->begin();
              it != itEnd; it++) {
@@ -259,7 +259,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
     PIXBeginNamedEvent(0, "Saving tile entities");
     ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
-    AUTO_VAR(itEnd, lc->tileEntities.end());
+    auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
                             TilePosKeyHash, TilePosKeyEq>::iterator it =
              lc->tileEntities.begin();
@@ -357,7 +357,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     PIXBeginNamedEvent(0, "Saving tile entities");
     ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
-    AUTO_VAR(itEnd, lc->tileEntities.end());
+    auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
                             TilePosKeyHash, TilePosKeyEq>::iterator it =
              lc->tileEntities.begin();

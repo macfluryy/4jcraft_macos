@@ -20,7 +20,7 @@ int MemoryTracker::genTextures() {
 }
 
 void MemoryTracker::releaseLists(int id) {
-    AUTO_VAR(it, GL_LIST_IDS.find(id));
+    auto it = GL_LIST_IDS.find(id);
     if (it != GL_LIST_IDS.end()) {
         glDeleteLists(id, it->second);
         GL_LIST_IDS.erase(it);
@@ -36,7 +36,7 @@ void MemoryTracker::releaseTextures() {
 
 void MemoryTracker::release() {
     // for (Map.Entry<Integer, Integer> entry : GL_LIST_IDS.entrySet())
-    for (AUTO_VAR(it, GL_LIST_IDS.begin()); it != GL_LIST_IDS.end(); ++it) {
+    for (auto it = GL_LIST_IDS.begin(); it != GL_LIST_IDS.end(); ++it) {
         glDeleteLists(it->first, it->second);
     }
     GL_LIST_IDS.clear();

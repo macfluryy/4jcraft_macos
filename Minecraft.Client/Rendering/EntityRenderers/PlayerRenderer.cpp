@@ -199,7 +199,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
         mob->GetAdditionalModelParts();
     // turn them on
     if (pAdditionalModelParts != NULL) {
-        for (AUTO_VAR(it, pAdditionalModelParts->begin());
+        for (auto it = pAdditionalModelParts->begin();
              it != pAdditionalModelParts->end(); ++it) {
             ModelPart* pModelPart = *it;
 
@@ -211,7 +211,7 @@ void PlayerRenderer::render(std::shared_ptr<Entity> _mob, double x, double y,
 
     // turn them off again
     if (pAdditionalModelParts && pAdditionalModelParts->size() != 0) {
-        for (AUTO_VAR(it, pAdditionalModelParts->begin());
+        for (auto it = pAdditionalModelParts->begin();
              it != pAdditionalModelParts->end(); ++it) {
             ModelPart* pModelPart = *it;
 
