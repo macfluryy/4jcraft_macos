@@ -12,11 +12,11 @@ At the moment, we're aiming to support the following platforms:
 
 Please note that these percentages are **estimates** and do not necessarily reflect the final playability of the game on each platform.
 
-- Linux (~85%)
+- Linux (~90%)
 - Emscripten (~10%) [[Check the Emscripten Branch](https://github.com/4jcraft/4jcraft/tree/feat/emscripten)]
 - macOS (not started) [No official support but people have been able to run the game on MacOS]
 - iOS (not started)
-- Android (~5%)
+- Android (~35%)
 
 > [!WARNING]
 > There is NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
